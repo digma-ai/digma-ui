@@ -28,3 +28,9 @@ export type ActivityEntry = {
   slimAggregatedInsights: SlimInsight[];
   isDisabled?: boolean;
 };
+
+export interface RecentActivityData {
+  envs: string[];
+  currentEnv: string;
+  entries: ActivityEntry[];
+}

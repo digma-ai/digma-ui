@@ -4,7 +4,7 @@ import * as s from "./styles";
 
 interface EnvironmentPanelProps {
   envs: { name: string; hasBadge: boolean }[];
-  selectedEnv: string;
+  selectedEnv?: string;
   onEnvSelect: (tabId: string) => void;
 }
 
@@ -14,19 +14,21 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
   };
 
   return (
-    <s.Container>
-      <s.LogoContainer>
-        <DigmaLogoFlatIcon size={22} />
-      </s.LogoContainer>
-      {props.envs.map((env) => (
-        <EnvironmentTab
-          key={env.name}
-          text={env.name}
-          hasBadge={env.hasBadge}
-          isSelected={props.selectedEnv === env.name}
-          onClick={handleEnvironmentTabClick}
-        />
-      ))}
-    </s.Container>
+    <s.BorderContainer>
+      <s.Container>
+        <s.LogoContainer>
+          <DigmaLogoFlatIcon size={22} />
+        </s.LogoContainer>
+        {props.envs.map((env) => (
+          <EnvironmentTab
+            key={env.name}
+            text={env.name}
+            hasBadge={env.hasBadge}
+            isSelected={props.selectedEnv === env.name}
+            onClick={handleEnvironmentTabClick}
+          />
+        ))}
+      </s.Container>
+    </s.BorderContainer>
   );
 };

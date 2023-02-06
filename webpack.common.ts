@@ -1,4 +1,4 @@
-import { CleanWebpackPlugin } from "clean-webpack-plugin";
+import CopyWebpackPlugin from "copy-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import path from "path";
 import { Configuration as WebpackConfiguration } from "webpack";
@@ -10,25 +10,24 @@ const config: WebpackConfiguration = {
   },
   output: {
     path: path.resolve(__dirname, "dist"),
-    filename: "[name].[contenthash].js",
-    chunkFilename: "[name].[contenthash].js",
-    publicPath: "/",
-    crossOriginLoading: "anonymous"
+    publicPath: "/"
   },
   module: {
     rules: [
       {
         test: /\.css$/,
         use: ["style-loader", "css-loader"]
-      },
-      {
-        test: /\.(woff2|ttf)$/,
-        type: "asset/resource"
       }
     ]
   },
   plugins: [
-    new CleanWebpackPlugin(),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname, "./public")
+        }
+      ]
+    }),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, "./assets/index.ejs"),
       inject: false,

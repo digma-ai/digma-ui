@@ -1,7 +1,9 @@
 import { RecentActivity } from "../RecentActivity";
-import "./styles";
+import { GlobalStyle } from "./styles";
 
-
-export const App = () => <>
-  <RecentActivity />
-</>;
+export const App = () => (
+  <>
+    <GlobalStyle />
+    <RecentActivity />
+  </>
+);

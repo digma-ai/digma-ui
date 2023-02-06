@@ -7,27 +7,27 @@ export const timeAgo = (date: string): string => {
   });
 
   if (years) {
-    return `${years} y`;
+    return `${years}y`;
   }
 
   if (months) {
-    return `${months} mo`;
+    return `${months}mo`;
   }
 
   if (days) {
-    return `${days} d`;
+    return `${days}d`;
   }
 
   if (hours) {
-    return `${hours} h`;
+    return `${hours}h`;
   }
 
   if (minutes) {
-    return `${minutes} m`;
+    return `${minutes}m`;
   }
 
   if (seconds) {
-    return `${seconds} s`;
+    return `${seconds}s`;
   }
 
   return "";

@@ -1,3 +1,11 @@
+import { ActivityEntry, EntrySpan } from "../RecentActivity/types";
+
+export type RecentActivityTableProps = {
+  data: ActivityEntry[];
+  onSpanLinkClick: (span: EntrySpan) => void;
+  onTraceButtonClick: (traceId: string, span: EntrySpan) => void;
+};
+
 export enum INSIGHT_TYPES {
   SpanUsageStatus = "SpanUsageStatus",
   TopErrorFlows = "TopErrorFlows",

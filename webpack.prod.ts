@@ -1,7 +1,10 @@
-import { merge } from "webpack-merge";
+import { CleanWebpackPlugin } from "clean-webpack-plugin";
+import { customizeArray, mergeWithCustomize } from "webpack-merge";
 import commonConfig from "./webpack.common";
 
-const config = merge(commonConfig, {
+const config = mergeWithCustomize({
+  customizeArray: customizeArray({ plugins: "prepend" })
+})(commonConfig, {
   mode: "production",
   module: {
     rules: [
@@ -10,7 +13,8 @@ const config = merge(commonConfig, {
         use: ["ts-loader"]
       }
     ]
-  }
+  },
+  plugins: [new CleanWebpackPlugin()]
 });
 
 export default config;

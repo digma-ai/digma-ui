@@ -2,13 +2,29 @@ import styled from "styled-components";
 
 export const Table = styled.table`
   width: 100%;
-  border-collapse: collapse;
+  border-spacing: 0 3px;
   font-weight: 400;
+  color: #dadada;
 `;
 
 export const TableBody = styled.tbody`
-  border-radius: 12px;
   background: #1e1e1e;
+
+  & tr:first-child td:first-child {
+    border-top-left-radius: 12px;
+  }
+
+  & tr:first-child td:last-child {
+    border-top-right-radius: 12px;
+  }
+
+  & tr:last-child td:first-child {
+    border-bottom-left-radius: 12px;
+  }
+
+  & tr:last-child td:last-child {
+    border-bottom-right-radius: 12px;
+  }
 `;
 
 export const Head = styled.thead`
