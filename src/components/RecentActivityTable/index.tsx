@@ -4,6 +4,7 @@ import {
   getCoreRowModel,
   useReactTable
 } from "@tanstack/react-table";
+import { DefaultTheme, useTheme } from "styled-components";
 import { timeAgo } from "../../utils/timeAgo";
 import { Button } from "../common/Button";
 import { AlarmClockIcon } from "../common/icons/AlarmClockIcon";
@@ -22,80 +23,110 @@ import { ActivityEntry, EntrySpan } from "../RecentActivity/types";
 import * as s from "./styles";
 import { INSIGHT_TYPES, RecentActivityTableProps } from "./types";
 
-const insightsInfo: Record<string, { icon: JSX.Element; label: string }> = {
-  [INSIGHT_TYPES.SpanUsageStatus]: {
-    icon: <>N/A</>,
-    label: "Span usage status"
-  },
-  [INSIGHT_TYPES.TopErrorFlows]: {
-    icon: <SpotIcon size={20} />,
-    label: "New and Trending Errors"
-  },
-  [INSIGHT_TYPES.SpanDurationChange]: {
-    icon: <>N/A</>, // TODO: use arrow icon
-    label: "Span duration change"
-  },
-  [INSIGHT_TYPES.HotSpot]: {
-    icon: <SpotIcon size={20} />,
-    label: "Error hotspot"
-  },
-  [INSIGHT_TYPES.Errors]: {
-    icon: <WarningCircleIcon size={20} color={"#F93967"} />,
-    label: "Errors"
-  },
-  [INSIGHT_TYPES.SlowEndpoint]: {
-    icon: <SnailIcon size={20} />,
-    label: "Slow Endpoint"
-  },
-  [INSIGHT_TYPES.LowUsage]: {
-    icon: <MeterLowIcon size={20} color={"#a7f4c1"} />,
-    label: "Endpoint low traffic"
-  },
-  [INSIGHT_TYPES.NormalUsage]: {
-    icon: <MeterMediumIcon size={20} color={"#ff810d"} />,
-    label: "Endpoint normal level of traffic"
-  },
-  [INSIGHT_TYPES.HighUsage]: {
-    icon: <MeterHighIcon size={20} color={"#F93967"} />,
-    label: "Endpoint high traffic"
-  },
-  [INSIGHT_TYPES.SlowestSpans]: {
-    icon: <BottleneckIcon size={20} />,
-    label: "Span Bottleneck"
-  },
-  [INSIGHT_TYPES.EndpointSpaNPlusOne]: {
-    icon: <>N/A</>,
-    label: "Suspected N-Plus-1"
-  },
-  [INSIGHT_TYPES.SpanUsages]: {
-    icon: <SineIcon size={20} />,
-    label: "Top Usage"
-  },
-  [INSIGHT_TYPES.SpaNPlusOne]: { icon: <>N/A</>, label: "Suspected N-Plus-1" },
-  [INSIGHT_TYPES.SpanEndpointBottleneck]: {
-    icon: <BottleneckIcon size={20} />,
-    label: "Bottleneck"
-  },
-  [INSIGHT_TYPES.SpanHighUsage]: {
-    icon: <>N/A</>,
-    label: ""
-  },
-  [INSIGHT_TYPES.SpanDurations]: {
-    icon: <>N/A</>, // TODO: use arrow icon
-    label: "Duration"
-  },
-  [INSIGHT_TYPES.SpanScaling]: {
-    icon: <ScalesIcon size={20} />,
-    label: "Scaling Issue Found"
-  },
-  [INSIGHT_TYPES.SpanScalingRootCause]: {
-    icon: <>N/A</>,
-    label: ""
-  },
-  [INSIGHT_TYPES.SpanDurationBreakdown]: {
-    icon: <AlarmClockIcon size={20} />,
-    label: "Duration Breakdown"
-  }
+const getInsightInfo = (
+  type: string,
+  theme: DefaultTheme
+): { icon: JSX.Element; label: string } => {
+  const insightInfoMap: Record<string, { icon: JSX.Element; label: string }> = {
+    [INSIGHT_TYPES.SpanUsageStatus]: {
+      icon: <>N/A</>,
+      label: ""
+    },
+    [INSIGHT_TYPES.TopErrorFlows]: {
+      icon: <>N/A</>,
+      label: "New and Trending Errors"
+    },
+    [INSIGHT_TYPES.SpanDurationChange]: {
+      icon: <>N/A</>,
+      label: "Performance changes"
+    },
+    [INSIGHT_TYPES.HotSpot]: {
+      icon: <SpotIcon size={20} />,
+      label: "Error hotspot"
+    },
+    [INSIGHT_TYPES.Errors]: {
+      icon: (
+        <WarningCircleIcon
+          size={20}
+          color={theme.mode === "light" ? "#e00036" : "#f93967"}
+        />
+      ),
+      label: "Errors"
+    },
+    [INSIGHT_TYPES.SlowEndpoint]: {
+      icon: <SnailIcon size={20} />,
+      label: "Slow Endpoint"
+    },
+    [INSIGHT_TYPES.LowUsage]: {
+      icon: (
+        <MeterLowIcon
+          size={20}
+          color={theme.mode === "light" ? "#1dc693" : "#a7f4c1"}
+        />
+      ),
+      label: "Endpoint low traffic"
+    },
+    [INSIGHT_TYPES.NormalUsage]: {
+      icon: (
+        <MeterMediumIcon
+          size={20}
+          color={theme.mode === "light" ? "#e06c00" : "#ff810d"}
+        />
+      ),
+      label: "Endpoint normal level of traffic"
+    },
+    [INSIGHT_TYPES.HighUsage]: {
+      icon: (
+        <MeterHighIcon
+          size={20}
+          color={theme.mode === "light" ? "#e00036" : "#f93967"}
+        />
+      ),
+      label: "Endpoint high traffic"
+    },
+    [INSIGHT_TYPES.SlowestSpans]: {
+      icon: <BottleneckIcon size={20} />,
+      label: "Span Bottleneck"
+    },
+    [INSIGHT_TYPES.EndpointSpaNPlusOne]: {
+      icon: <>N/A</>,
+      label: "Suspected N-Plus-1"
+    },
+    [INSIGHT_TYPES.SpanUsages]: {
+      icon: <SineIcon size={20} />,
+      label: "Top Usage"
+    },
+    [INSIGHT_TYPES.SpaNPlusOne]: {
+      icon: <>N/A</>,
+      label: "Suspected N-Plus-1"
+    },
+    [INSIGHT_TYPES.SpanEndpointBottleneck]: {
+      icon: <BottleneckIcon size={20} />,
+      label: "Bottleneck"
+    },
+    [INSIGHT_TYPES.SpanHighUsage]: {
+      icon: <>N/A</>,
+      label: ""
+    },
+    [INSIGHT_TYPES.SpanDurations]: {
+      icon: <AlarmClockIcon size={20} />,
+      label: "Duration"
+    },
+    [INSIGHT_TYPES.SpanScaling]: {
+      icon: <ScalesIcon size={20} />,
+      label: "Scaling Issue Found"
+    },
+    [INSIGHT_TYPES.SpanScalingRootCause]: {
+      icon: <>N/A</>,
+      label: ""
+    },
+    [INSIGHT_TYPES.SpanDurationBreakdown]: {
+      icon: <AlarmClockIcon size={20} />,
+      label: "Duration Breakdown"
+    }
+  };
+
+  return insightInfoMap[type];
 };
 
 const columnHelper = createColumnHelper<ActivityEntry>();
@@ -110,6 +141,8 @@ export const isRecent = (entry: ActivityEntry): boolean => {
 };
 
 export const RecentActivityTable = (props: RecentActivityTableProps) => {
+  const theme = useTheme();
+
   const handleSpanLinkClick = (span: EntrySpan) => {
     props.onSpanLinkClick(span);
   };
@@ -176,7 +209,7 @@ export const RecentActivityTable = (props: RecentActivityTableProps) => {
         return (
           <>
             {info.getValue().map((x) => {
-              const insightInfo = insightsInfo[x.type];
+              const insightInfo = getInsightInfo(x.type, theme);
               return (
                 <span title={insightInfo.label} key={x.type}>
                   {" "}

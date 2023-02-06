@@ -1,14 +1,16 @@
 import React, { useCallback, useState } from "react";
+import { DefaultTheme, useTheme } from "styled-components";
 import * as s from "./styles";
 import { ButtonProps } from "./types";
 
 const getIconColor = (
+  theme: DefaultTheme,
   isDisabled: boolean,
   isHovered: boolean,
   isFocused: boolean
 ): string => {
   if (isDisabled) {
-    return "#7c7c94";
+    return theme.mode === "light" ? "#f1f5fa" : "#7c7c94";
   }
 
   if (isFocused || isHovered) {
@@ -19,6 +21,8 @@ const getIconColor = (
 };
 
 export const Button = (props: ButtonProps) => {
+  const theme = useTheme();
+
   const [isHovered, setIsHovered] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
 
@@ -44,7 +48,12 @@ export const Button = (props: ButtonProps) => {
       <s.ContentContainer>
         {props.icon && (
           <props.icon
-            color={getIconColor(Boolean(props.disabled), isHovered, isFocused)}
+            color={getIconColor(
+              theme,
+              Boolean(props.disabled),
+              isHovered,
+              isFocused
+            )}
           />
         )}
         <span>{props.children}</span>

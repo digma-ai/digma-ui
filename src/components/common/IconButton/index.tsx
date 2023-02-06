@@ -1,24 +1,26 @@
 import { useCallback, useState } from "react";
+import { DefaultTheme, useTheme } from "styled-components";
 import * as s from "./styles";
 import { IconButtonProps } from "./types";
 
 const getIconColor = (
+  theme: DefaultTheme,
   isDisabled: boolean,
   isHovered: boolean,
   isFocused: boolean
-): string => {
+): string | undefined => {
   if (isDisabled) {
-    return "#49494d";
+    return theme.mode === "light" ? "#b9c0d4" : "#49494d";
   }
 
   if (isFocused || isHovered) {
-    return "#dadada";
+    return theme.mode === "light" ? "#002d61" : "#dadada";
   }
-
-  return "#7c7c94";
 };
 
 export const IconButton = (props: IconButtonProps) => {
+  const theme = useTheme();
+
   const [isHovered, setIsHovered] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
 
@@ -42,7 +44,12 @@ export const IconButton = (props: IconButtonProps) => {
       onBlur={handleBlur}
     >
       <props.icon
-        color={getIconColor(Boolean(props.disabled), isHovered, isFocused)}
+        color={getIconColor(
+          theme,
+          Boolean(props.disabled),
+          isHovered,
+          isFocused
+        )}
         size={22}
       />
     </s.Button>

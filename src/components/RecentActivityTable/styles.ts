@@ -1,14 +1,21 @@
 import styled from "styled-components";
+import theme from "styled-theming";
 
 export const Table = styled.table`
   width: 100%;
   border-spacing: 0 3px;
   font-weight: 400;
-  color: #dadada;
+  color: ${theme("mode", {
+    light: "#002d61",
+    dark: "#dadada"
+  })};
 `;
 
 export const TableBody = styled.tbody`
-  background: #1e1e1e;
+  background: ${theme("mode", {
+    light: "#fbfdff",
+    dark: "#1e1e1e"
+  })};
 
   & tr:first-child td:first-child {
     border-top-left-radius: 12px;
@@ -31,7 +38,10 @@ export const Head = styled.thead`
   font-size: 10px;
   line-height: 16px;
   height: 16px;
-  color: #49494d;
+  color: ${theme("mode", {
+    light: "#b9c0d4",
+    dark: "#49494d"
+  })};
 `;
 
 export const ColumnHeader = styled.th`
@@ -51,7 +61,10 @@ export const TraceButtonContainer = styled.div`
 export const Suffix = styled.span`
   margin-left: 2px;
   font-size: 10px;
-  color: #7c7c94;
+  color: ${theme("mode", {
+    light: "#828797",
+    dark: "#7c7c94"
+  })};
 `;
 
 export const DataRow = styled.tr`

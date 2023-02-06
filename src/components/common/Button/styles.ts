@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import theme from "styled-theming";
 
 export const Button = styled.button`
   font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI",
@@ -24,8 +25,14 @@ export const Button = styled.button`
   }
 
   &:disabled {
-    color: #7c7c94;
-    background: #49494d;
+    color: ${theme("mode", {
+      light: "#f1f5fa",
+      dark: "#7c7c94"
+    })};
+    background: ${theme("mode", {
+      light: "#b9c0d4",
+      dark: "#49494d"
+    })};
     cursor: initial;
   }
 `;

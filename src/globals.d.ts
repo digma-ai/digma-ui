@@ -1,5 +1,7 @@
 export {};
 
+export type Mode = "light" | "dark";
+
 declare global {
   interface Window {
     sendMessageToVSCode: (message) => void;
@@ -12,5 +14,6 @@ declare global {
     cefQueryCancel: (request_id: string) => void;
     sendMessageToDigma: (message: any) => string | undefined;
     cancelMessageToDigma: (request_id: string) => void;
+    theme?: Mode;
   }
 }
