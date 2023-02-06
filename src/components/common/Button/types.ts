@@ -1,6 +1,9 @@
+import { ComponentType } from "react";
+import { IconProps } from "../icons/types";
+
 export interface ButtonProps {
-  icon?: JSX.Element;
-  label: string;
-  onClick: () => void;
-  isDisabled?: boolean;
+  icon?: ComponentType<IconProps>;
+  children: React.ReactNode;
+  onClick: React.MouseEventHandler<HTMLButtonElement>;
+  disabled?: boolean;
 }

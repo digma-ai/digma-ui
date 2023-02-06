@@ -13,6 +13,7 @@ import { MeterHighIcon } from "../common/icons/MeterHighIcon";
 import { MeterLowIcon } from "../common/icons/MeterLowIcon";
 import { MeterMediumIcon } from "../common/icons/MeterMediumIcon";
 import { ScalesIcon } from "../common/icons/ScalesIcon";
+import { SineIcon } from "../common/icons/SineIcon";
 import { SnailIcon } from "../common/icons/SnailIcon";
 import { SpotIcon } from "../common/icons/SpotIcon";
 import { WarningCircleIcon } from "../common/icons/WarningCircleIcon";
@@ -27,68 +28,86 @@ const insightsInfo: Record<string, { icon: JSX.Element; label: string }> = {
     label: "Span usage status"
   },
   [INSIGHT_TYPES.TopErrorFlows]: {
-    icon: <WarningCircleIcon size={20} color={"#F93967"} />,
-    label: "Top error flows"
+    icon: <SpotIcon size={20} />,
+    label: "New and Trending Errors"
   },
   [INSIGHT_TYPES.SpanDurationChange]: {
-    icon: <AlarmClockIcon size={20} />,
+    icon: <>N/A</>, // TODO: use arrow icon
     label: "Span duration change"
   },
-  [INSIGHT_TYPES.HotSpot]: { icon: <SpotIcon size={20} />, label: "Hot spot" },
+  [INSIGHT_TYPES.HotSpot]: {
+    icon: <SpotIcon size={20} />,
+    label: "Error hotspot"
+  },
   [INSIGHT_TYPES.Errors]: {
-    icon: <WarningCircleIcon size={20} />,
+    icon: <WarningCircleIcon size={20} color={"#F93967"} />,
     label: "Errors"
   },
   [INSIGHT_TYPES.SlowEndpoint]: {
     icon: <SnailIcon size={20} />,
-    label: "Slow endpoint"
+    label: "Slow Endpoint"
   },
   [INSIGHT_TYPES.LowUsage]: {
-    icon: <MeterLowIcon size={20} />,
-    label: "Low usage"
+    icon: <MeterLowIcon size={20} color={"#a7f4c1"} />,
+    label: "Endpoint low traffic"
   },
   [INSIGHT_TYPES.NormalUsage]: {
-    icon: <MeterMediumIcon size={20} />,
-    label: "Normal usage"
+    icon: <MeterMediumIcon size={20} color={"#ff810d"} />,
+    label: "Endpoint normal level of traffic"
   },
   [INSIGHT_TYPES.HighUsage]: {
     icon: <MeterHighIcon size={20} color={"#F93967"} />,
-    label: "High usage"
+    label: "Endpoint high traffic"
   },
   [INSIGHT_TYPES.SlowestSpans]: {
-    icon: <SnailIcon size={20} />,
-    label: "Slowest spans"
+    icon: <BottleneckIcon size={20} />,
+    label: "Span Bottleneck"
   },
   [INSIGHT_TYPES.EndpointSpaNPlusOne]: {
     icon: <>N/A</>,
-    label: "Endpoint span N+1"
+    label: "Suspected N-Plus-1"
   },
-  [INSIGHT_TYPES.SpanUsages]: { icon: <>N/A</>, label: "Span usages" },
-  [INSIGHT_TYPES.SpaNPlusOne]: { icon: <>N/A</>, label: "Span N+1" },
+  [INSIGHT_TYPES.SpanUsages]: {
+    icon: <SineIcon size={20} />,
+    label: "Top Usage"
+  },
+  [INSIGHT_TYPES.SpaNPlusOne]: { icon: <>N/A</>, label: "Suspected N-Plus-1" },
   [INSIGHT_TYPES.SpanEndpointBottleneck]: {
     icon: <BottleneckIcon size={20} />,
-    label: "Span endpoint bottleneck"
+    label: "Bottleneck"
   },
   [INSIGHT_TYPES.SpanHighUsage]: {
-    icon: <MeterHighIcon color={"#F93967"} size={20} />,
-    label: "Span high usage"
+    icon: <>N/A</>,
+    label: ""
   },
   [INSIGHT_TYPES.SpanDurations]: {
-    icon: <AlarmClockIcon size={20} />,
-    label: "Span durations"
+    icon: <>N/A</>, // TODO: use arrow icon
+    label: "Duration"
   },
-  [INSIGHT_TYPES.SpanScaling]: { icon: <ScalesIcon size={20} />, label: "" },
-  [INSIGHT_TYPES.SpanScalingRootCause]: {
+  [INSIGHT_TYPES.SpanScaling]: {
     icon: <ScalesIcon size={20} />,
-    label: "Span scaling"
+    label: "Scaling Issue Found"
+  },
+  [INSIGHT_TYPES.SpanScalingRootCause]: {
+    icon: <>N/A</>,
+    label: ""
   },
   [INSIGHT_TYPES.SpanDurationBreakdown]: {
     icon: <AlarmClockIcon size={20} />,
-    label: "Span duration breakdown"
+    label: "Duration Breakdown"
   }
 };
 
 const columnHelper = createColumnHelper<ActivityEntry>();
+
+export const isRecent = (entry: ActivityEntry): boolean => {
+  const MAX_DISTANCE = 10 * 60 * 1000; // in milliseconds
+  const now = new Date();
+  return (
+    now.valueOf() - new Date(entry.latestTraceTimestamp).valueOf() <=
+    MAX_DISTANCE
+  );
+};
 
 export const RecentActivityTable = (props: RecentActivityTableProps) => {
   const handleSpanLinkClick = (span: EntrySpan) => {
@@ -179,9 +198,10 @@ export const RecentActivityTable = (props: RecentActivityTableProps) => {
               const value = info.getValue();
               handleTraceButtonClick(value.latestTraceId, value.firstEntrySpan);
             }}
-            icon={<CrosshairIcon />}
-            label={"Trace"}
-          />
+            icon={CrosshairIcon}
+          >
+            Trace
+          </Button>
         </s.TraceButtonContainer>
       )
     })

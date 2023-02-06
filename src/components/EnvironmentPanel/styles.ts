@@ -31,3 +31,7 @@ export const Container = styled.div`
 export const LogoContainer = styled.div`
   margin-right: 12px;
 `;
+
+export const ViewModeButtonContainer = styled.div`
+  margin-left: auto;
+`;

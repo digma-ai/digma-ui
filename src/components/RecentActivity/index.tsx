@@ -6,9 +6,10 @@ import { groupBy } from "../../utils/groupBy";
 import { CursorFollower } from "../common/CursorFollower";
 import { DigmaLogoFlatIcon } from "../common/icons/DigmaLogoFlatIcon";
 import { EnvironmentPanel } from "../EnvironmentPanel";
-import { RecentActivityTable } from "../RecentActivityTable";
+import { ViewMode } from "../EnvironmentPanel/types";
+import { isRecent, RecentActivityTable } from "../RecentActivityTable";
 import * as s from "./styles";
-import { ActivityEntry, EntrySpan, RecentActivityData } from "./types";
+import { EntrySpan, RecentActivityData } from "./types";
 
 const DOCUMENTATION_LINK =
   "https://github.com/digma-ai/digma-vscode-plugin#%EF%B8%8F-extension-settings";
@@ -24,19 +25,11 @@ const actions = getActions(ACTION_PREFIX, {
   goToTrace: "GO_TO_TRACE"
 });
 
-const isRecent = (entry: ActivityEntry): boolean => {
-  const MAX_DISTANCE = 10 * 60 * 1000; // in milliseconds
-  const now = new Date();
-  return (
-    now.valueOf() - new Date(entry.latestTraceTimestamp).valueOf() <=
-    MAX_DISTANCE
-  );
-};
-
 export const RecentActivity = () => {
   const [selectedEnv, setSelectedEnv] = useState<string>();
   const [data, setData] = useState<RecentActivityData>();
   const previousData = usePrevious(data);
+  const [viewMode, setViewMode] = useState<ViewMode>("table");
 
   useEffect(() => {
     window.sendMessageToDigma({
@@ -94,6 +87,10 @@ export const RecentActivity = () => {
     });
   };
 
+  const handleViewModeChange = (mode: ViewMode) => {
+    setViewMode(mode);
+  };
+
   const envActivities = data ? groupBy(data.entries, "environment") : {};
   const envs = Object.keys(envActivities).map((env) => ({
     name: env,
@@ -123,8 +120,10 @@ export const RecentActivity = () => {
     <s.Container>
       <EnvironmentPanel
         envs={envs}
+        viewMode={viewMode}
         selectedEnv={selectedEnv}
         onEnvSelect={handleEnvSelect}
+        onViewModeChange={handleViewModeChange}
       />
       {!selectedEnv || !envActivities[selectedEnv].length ? (
         <>

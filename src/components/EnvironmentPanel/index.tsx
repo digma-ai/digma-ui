@@ -1,16 +1,24 @@
+import { IconButton } from "../common/IconButton";
 import { DigmaLogoFlatIcon } from "../common/icons/DigmaLogoFlatIcon";
+import { ListIcon } from "../common/icons/ListIcon";
+import { TableIcon } from "../common/icons/TableIcon";
 import { EnvironmentTab } from "../EnvironmentTab";
 import * as s from "./styles";
-
-interface EnvironmentPanelProps {
-  envs: { name: string; hasBadge: boolean }[];
-  selectedEnv?: string;
-  onEnvSelect: (tabId: string) => void;
-}
+import { EnvironmentPanelProps } from "./types";
 
 export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
   const handleEnvironmentTabClick = (name: string) => {
     props.onEnvSelect(name);
+  };
+
+  const icons = {
+    list: ListIcon,
+    table: TableIcon
+  };
+
+  const handleViewModeButtonClick = () => {
+    const mode = props.viewMode === "table" ? "list" : "table";
+    props.onViewModeChange(mode);
   };
 
   return (
@@ -28,6 +36,12 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
             onClick={handleEnvironmentTabClick}
           />
         ))}
+        <s.ViewModeButtonContainer>
+          <IconButton
+            icon={icons[props.viewMode]}
+            onClick={handleViewModeButtonClick}
+          />
+        </s.ViewModeButtonContainer>
       </s.Container>
     </s.BorderContainer>
   );
