@@ -14,9 +14,9 @@ export const BorderContainer = styled.div`
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "#linear-gradient(90deg, #a3aaed 0%, #dde0ff 50%, #6172fe 100%)";
+        return "linear-gradient(90deg, #a3aaed 0%, #dde0ff 50%, #6172fe 100%)";
       case "dark":
-        return "#linear-gradient(90deg, #2f3750 0%, #3e489b 48.96%, #7b85d7 100%)";
+        return "linear-gradient(90deg, #2f3750 0%, #3e489b 48.96%, #7b85d7 100%)";
     }
   }};
 

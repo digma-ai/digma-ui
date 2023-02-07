@@ -24,7 +24,7 @@ export const BorderContainer = styled.div<ContainerProps>`
         `;
       case "dark":
         return `
-          background: linear-gradient(109.83deg, #3a3d41 0.01%, rgba(0, 0, 0, 0) 102.21%)
+          background: linear-gradient(109.83deg, #3a3d41 0.01%, rgba(0, 0, 0, 0) 102.21%);
           box-shadow: 2px 2px 7px rgba(0, 0, 0, 0.3);
       `;
     }
