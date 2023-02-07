@@ -1,5 +1,4 @@
 import styled, { keyframes } from "styled-components";
-import theme from "styled-theming";
 
 const BORDER_RADIUS = 8; // in pixels
 
@@ -12,21 +11,23 @@ export const BorderContainer = styled.div`
   padding: 1px;
   border-radius: ${BORDER_RADIUS}px;
   ${/* TODO: Change to radial gradient after cross-fading */ ""}
-  background: ${theme("mode", {
-    light: "linear-gradient(90deg, #a3aaed 0%, #Dde0ff 50%, #6172fe 100%)",
-    dark: "linear-gradient(90deg, #2f3750 0%, #3e489b 48.96%, #7b85d7 100%)"
-  })};
+  background: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#linear-gradient(90deg, #a3aaed 0%, #dde0ff 50%, #6172fe 100%)";
+      case "dark":
+        return "#linear-gradient(90deg, #2f3750 0%, #3e489b 48.96%, #7b85d7 100%)";
+    }
+  }};
 
-  box-shadow: 0px 0px 5px
-    rgba(
-      167,
-      176,
-      255,
-      ${theme("mode", {
-        light: "0.5",
-        dark: "0.25"
-      })}
-    );
+  box-shadow: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "0px 0px 5px rgba(167, 176, 255, 0.5)";
+      case "dark":
+        return "0px 0px 5px rgba(167, 176, 255, 0.25)";
+    }
+  }};
 
   ${/* TODO: Replace with cross-fading backgrounds */ ""}
   background-size: 400% 400%;
@@ -37,10 +38,14 @@ export const Container = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  background: ${theme("mode", {
-    light: "#fbfbff",
-    dark: "#1e1e1e"
-  })};
+  background: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#fbfbff";
+      case "dark":
+        return "#1e1e1e";
+    }
+  }};
   padding: 6px 12px;
   border-radius: 8px;
   position: relative;

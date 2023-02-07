@@ -1,9 +1,11 @@
-import { ActivityEntry, EntrySpan } from "../RecentActivity/types";
+import { ViewMode } from "../EnvironmentPanel/types";
+import { ActivityEntry, EntrySpan } from "../types";
 
 export type RecentActivityTableProps = {
   data: ActivityEntry[];
   onSpanLinkClick: (span: EntrySpan) => void;
   onTraceButtonClick: (traceId: string, span: EntrySpan) => void;
+  viewMode: ViewMode;
 };
 
 export enum INSIGHT_TYPES {

@@ -15,5 +15,7 @@ declare global {
     sendMessageToDigma: (message: any) => string | undefined;
     cancelMessageToDigma: (request_id: string) => void;
     theme?: Mode;
+    recentActivityRefreshInterval?: number;
+    recentActivityExpirationLimit?: number;
   }
 }

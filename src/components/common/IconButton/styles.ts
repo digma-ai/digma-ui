@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import theme from "styled-theming";
 
 export const Button = styled.button`
   width: 22px;
@@ -11,10 +10,14 @@ export const Button = styled.button`
 
   &:hover {
     border-radius: 4px;
-    background: ${theme("mode", {
-      light: "#f1f5fa",
-      dark: "#49494d"
-    })};
+    background: ${({ theme }) => {
+      switch (theme.mode) {
+        case "light":
+          return "#f1f5fa";
+        case "dark":
+          return "#49494d";
+      }
+    }};
   }
 
   &:disabled {

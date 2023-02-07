@@ -1,8 +1,8 @@
-import { IconButton } from "../common/IconButton";
-import { DigmaLogoFlatIcon } from "../common/icons/DigmaLogoFlatIcon";
-import { ListIcon } from "../common/icons/ListIcon";
-import { TableIcon } from "../common/icons/TableIcon";
-import { EnvironmentTab } from "../EnvironmentTab";
+import { IconButton } from "../../common/IconButton";
+import { DigmaLogoFlatIcon } from "../../common/icons/DigmaLogoFlatIcon";
+import { ListIcon } from "../../common/icons/ListIcon";
+import { TableIcon } from "../../common/icons/TableIcon";
+import { EnvironmentTab } from "./EnvironmentTab";
 import * as s from "./styles";
 import { EnvironmentPanelProps } from "./types";
 

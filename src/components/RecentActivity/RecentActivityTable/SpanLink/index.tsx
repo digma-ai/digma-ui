@@ -1,7 +1,7 @@
 import * as s from "./styles";
 import { LinkProps } from "./types";
 
-export const Link = (props: LinkProps) => {
+export const SpanLink = (props: LinkProps) => {
   const handleClick = () => {
     props.onClick();
   };

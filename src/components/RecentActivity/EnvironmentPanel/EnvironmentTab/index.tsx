@@ -1,4 +1,4 @@
-import { Badge } from "../common/Badge";
+import { Badge } from "../../../common/Badge";
 import * as s from "./styles";
 import { EnvironmentTabProps } from "./types";
 
@@ -10,7 +10,11 @@ export const EnvironmentTab = (props: EnvironmentTabProps) => {
   return (
     <s.BorderContainer isSelected={props.isSelected}>
       <s.Container isSelected={props.isSelected} onClick={handleClick}>
-        {props.hasBadge && <Badge />}
+        {props.hasBadge && (
+          <s.BadgeContainer>
+            <Badge />
+          </s.BadgeContainer>
+        )}
         {props.text}
       </s.Container>
     </s.BorderContainer>

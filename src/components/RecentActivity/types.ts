@@ -1,4 +1,4 @@
-type Duration = {
+export type Duration = {
   value: number;
   unit: string;
   raw: number;
@@ -12,7 +12,7 @@ export type EntrySpan = {
   methodCodeObjectId: string | null;
 };
 
-type SlimInsight = {
+export type SlimInsight = {
   type: string;
   codeObjectIds: string[];
 };
@@ -26,7 +26,6 @@ export type ActivityEntry = {
   latestTraceTimestamp: string;
   latestTraceDuration: Duration;
   slimAggregatedInsights: SlimInsight[];
-  isDisabled?: boolean;
 };
 
 export interface RecentActivityData {

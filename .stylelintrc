@@ -1,9 +1,10 @@
 {
   "extends": ["stylelint-config-recommended"],
-  "overrides": [
-    {
-      "files": ["**/*.ts"],
-      "customSyntax": "@stylelint/postcss-css-in-js"
-    }
-  ]
+  "customSyntax": "postcss-styled-components",
+  "rules": {
+    "font-family-no-missing-generic-family-keyword": [
+      true,
+      { "ignoreFontFamilies": ["Nunito"] }
+    ]
+  }
 }

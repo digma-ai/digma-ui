@@ -6,22 +6,23 @@ import {
 } from "@tanstack/react-table";
 import { useEffect, useState } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
-import { timeAgo } from "../../utils/timeAgo";
-import { Badge } from "../common/Badge";
-import { Button } from "../common/Button";
-import { AlarmClockIcon } from "../common/icons/AlarmClockIcon";
-import { BottleneckIcon } from "../common/icons/BottleneckIcon";
-import { CrosshairIcon } from "../common/icons/CrosshairIcon";
-import { MeterHighIcon } from "../common/icons/MeterHighIcon";
-import { MeterLowIcon } from "../common/icons/MeterLowIcon";
-import { MeterMediumIcon } from "../common/icons/MeterMediumIcon";
-import { ScalesIcon } from "../common/icons/ScalesIcon";
-import { SineIcon } from "../common/icons/SineIcon";
-import { SnailIcon } from "../common/icons/SnailIcon";
-import { SpotIcon } from "../common/icons/SpotIcon";
-import { WarningCircleIcon } from "../common/icons/WarningCircleIcon";
-import { Link } from "../common/Link";
-import { ActivityEntry, EntrySpan } from "../RecentActivity/types";
+import { timeAgo } from "../../../utils/timeAgo";
+import { Badge } from "../../common/Badge";
+import { Button } from "../../common/Button";
+import { AlarmClockIcon } from "../../common/icons/AlarmClockIcon";
+import { BottleneckIcon } from "../../common/icons/BottleneckIcon";
+import { CrosshairIcon } from "../../common/icons/CrosshairIcon";
+import { MeterHighIcon } from "../../common/icons/MeterHighIcon";
+import { MeterLowIcon } from "../../common/icons/MeterLowIcon";
+import { MeterMediumIcon } from "../../common/icons/MeterMediumIcon";
+import { ScalesIcon } from "../../common/icons/ScalesIcon";
+import { SineIcon } from "../../common/icons/SineIcon";
+import { SnailIcon } from "../../common/icons/SnailIcon";
+import { SpotIcon } from "../../common/icons/SpotIcon";
+import { WarningCircleIcon } from "../../common/icons/WarningCircleIcon";
+import { ViewMode } from "../EnvironmentPanel/types";
+import { ActivityEntry, Duration, EntrySpan, SlimInsight } from "../types";
+import { SpanLink } from "./SpanLink";
 import * as s from "./styles";
 import { INSIGHT_TYPES, RecentActivityTableProps } from "./types";
 
@@ -172,7 +173,10 @@ const getInsightInfo = (
 const columnHelper = createColumnHelper<ActivityEntry>();
 
 export const isRecent = (entry: ActivityEntry): boolean => {
-  const MAX_DISTANCE = 10 * 60 * 1000; // in milliseconds
+  const MAX_DISTANCE =
+    typeof window.recentActivityExpirationLimit === "number"
+      ? window.recentActivityExpirationLimit
+      : 10 * 60 * 1000; // in milliseconds
   const now = new Date();
   return (
     now.valueOf() - new Date(entry.latestTraceTimestamp).valueOf() <=
@@ -199,7 +203,7 @@ export const RecentActivityTable = (props: RecentActivityTableProps) => {
   };
 
   const renderSpanLink = (span: EntrySpan) => (
-    <Link
+    <SpanLink
       key={span.spanCodeObjectId}
       onClick={() => {
         handleSpanLinkClick(span);
@@ -208,83 +212,100 @@ export const RecentActivityTable = (props: RecentActivityTableProps) => {
     />
   );
 
+  const renderSpanLinks = (entry: ActivityEntry) => (
+    <span>
+      {renderSpanLink(entry.firstEntrySpan)}
+      {entry.lastEntrySpan && <> to {renderSpanLink(entry.lastEntrySpan)}</>}
+    </span>
+  );
+
+  const renderTimeDistance = (timestamp: string, viewMode: ViewMode) =>
+    viewMode === "table" ? (
+      <s.TimeDistanceContainer>
+        {timeAgo(timestamp)}
+        <s.Suffix>ago</s.Suffix>
+      </s.TimeDistanceContainer>
+    ) : (
+      <span>
+        {timeAgo(timestamp)}
+        <s.ListSuffix>ago</s.ListSuffix>
+      </span>
+    );
+
+  const renderDuration = (duration: Duration, viewMode: ViewMode) =>
+    viewMode === "table" ? (
+      <s.DurationContainer>
+        {duration.value}
+        <s.Suffix>{duration.unit}</s.Suffix>
+      </s.DurationContainer>
+    ) : (
+      <span>
+        {duration.value}
+        <s.ListSuffix>{duration.unit}</s.ListSuffix>
+      </span>
+    );
+
+  const renderInsights = (insights: SlimInsight[]) => (
+    <s.InsightsContainer>
+      {insights.map((x) => {
+        const insightInfo = getInsightInfo(x.type, theme);
+        return (
+          <span title={insightInfo.label} key={x.type}>
+            {" "}
+            {insightInfo.icon}
+          </span>
+        );
+      })}
+    </s.InsightsContainer>
+  );
+
+  const renderTraceButton = (entry: ActivityEntry) => (
+    <s.TraceButtonContainer>
+      <Button
+        onClick={() => {
+          handleTraceButtonClick(entry.latestTraceId, entry.firstEntrySpan);
+        }}
+        icon={CrosshairIcon}
+      >
+        Trace
+      </Button>
+    </s.TraceButtonContainer>
+  );
+
   const columns = [
     columnHelper.accessor((row) => row, {
       id: "recentActivity",
-      header: () => "Recent Activity",
+      header: "Recent Activity",
       cell: (info) => {
-        const value = info.getValue();
-        const firstSpan = value.firstEntrySpan;
-        const lastSpan = value.lastEntrySpan;
-
+        const entry = info.getValue();
         return (
           <>
-            {isRecent(value) && <Badge />}
-            {renderSpanLink(firstSpan)}
-            {lastSpan && <> to {renderSpanLink(lastSpan)}</>}
+            {isRecent(entry) && (
+              <s.BadgeContainer>
+                <Badge />
+              </s.BadgeContainer>
+            )}
+            {renderSpanLinks(entry)}
           </>
         );
       }
     }),
     columnHelper.accessor("latestTraceTimestamp", {
-      header: () => "Executed",
-      cell: (info) => (
-        <span>
-          {timeAgo(info.getValue())}
-          <s.Suffix> Ago</s.Suffix>
-        </span>
-      )
+      header: "Executed",
+      cell: (info) => <>{renderTimeDistance(info.getValue(), props.viewMode)}</>
     }),
     columnHelper.accessor("latestTraceDuration", {
-      header: () => <span>Duration</span>,
-      cell: (info) => {
-        const value = info.getValue();
-        if (!value) {
-          return "N/A";
-        }
-
-        return (
-          <span>
-            {value.value}
-            <s.Suffix> {value.unit}</s.Suffix>
-          </span>
-        );
-      }
+      header: "Duration",
+      cell: (info) => renderDuration(info.getValue(), props.viewMode)
     }),
     columnHelper.accessor("slimAggregatedInsights", {
-      header: () => <span>Insights</span>,
-      cell: (info) => {
-        return (
-          <>
-            {info.getValue().map((x) => {
-              const insightInfo = getInsightInfo(x.type, theme);
-              return (
-                <span title={insightInfo.label} key={x.type}>
-                  {" "}
-                  {insightInfo.icon}
-                </span>
-              );
-            })}
-          </>
-        );
-      }
+      header: "Insights",
+      cell: (info) => renderInsights(info.getValue())
     }),
     columnHelper.accessor((row) => row, {
       id: "latestTraceId",
       header: "",
-      cell: (info) => (
-        <s.TraceButtonContainer>
-          <Button
-            onClick={() => {
-              const value = info.getValue();
-              handleTraceButtonClick(value.latestTraceId, value.firstEntrySpan);
-            }}
-            icon={CrosshairIcon}
-          >
-            Trace
-          </Button>
-        </s.TraceButtonContainer>
-      )
+      cell: (info) => renderTraceButton(info.getValue())
     })
   ];
 
@@ -294,37 +315,55 @@ export const RecentActivityTable = (props: RecentActivityTableProps) => {
     getCoreRowModel: getCoreRowModel()
   });
 
-  console.log(data);
-
-  return (
+  return props.viewMode === "table" ? (
     <s.Table>
-      <s.Head>
+      <s.TableHead>
         {table.getHeaderGroups().map((headerGroup) => (
           <tr key={headerGroup.id}>
             {headerGroup.headers.map((header) => (
-              <s.ColumnHeader key={header.id}>
+              <s.TableHeaderRow key={header.id}>
                 {header.isPlaceholder
                   ? null
                   : flexRender(
                       header.column.columnDef.header,
                       header.getContext()
                     )}
-              </s.ColumnHeader>
+              </s.TableHeaderRow>
             ))}
           </tr>
         ))}
-      </s.Head>
+      </s.TableHead>
       <s.TableBody>
         {table.getRowModel().rows.map((row) => (
-          <s.DataRow key={row.id}>
+          <s.TableBodyRow key={row.id}>
             {row.getVisibleCells().map((cell) => (
-              <s.DataCell key={cell.id}>
+              <s.TableBodyCell key={cell.id}>
                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
-              </s.DataCell>
+              </s.TableBodyCell>
             ))}
-          </s.DataRow>
+          </s.TableBodyRow>
         ))}
       </s.TableBody>
     </s.Table>
+  ) : (
+    <s.ListContainer>
+      <s.ListHeader>Recent Activity</s.ListHeader>
+      <s.List>
+        {data.map((entry, i) => (
+          <s.ListItem key={i}>
+            {isRecent(entry) && (
+              <s.ListBadgeContainer>
+                <Badge />
+              </s.ListBadgeContainer>
+            )}
+            {renderTimeDistance(entry.latestTraceTimestamp, props.viewMode)}
+            {renderSpanLinks(entry)}
+            {renderDuration(entry.latestTraceDuration, props.viewMode)}
+            {renderInsights(entry.slimAggregatedInsights)}
+            {renderTraceButton(entry)}
+          </s.ListItem>
+        ))}
+      </s.List>
+    </s.ListContainer>
   );
 };

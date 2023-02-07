@@ -5,16 +5,19 @@ import { getActions } from "../../utils/getActions";
 import { groupBy } from "../../utils/groupBy";
 import { CursorFollower } from "../common/CursorFollower";
 import { DigmaLogoFlatIcon } from "../common/icons/DigmaLogoFlatIcon";
-import { EnvironmentPanel } from "../EnvironmentPanel";
-import { ViewMode } from "../EnvironmentPanel/types";
-import { isRecent, RecentActivityTable } from "../RecentActivityTable";
+import { EnvironmentPanel } from "./EnvironmentPanel";
+import { ViewMode } from "./EnvironmentPanel/types";
+import { isRecent, RecentActivityTable } from "./RecentActivityTable";
 import * as s from "./styles";
 import { EntrySpan, RecentActivityData } from "./types";
 
 const DOCUMENTATION_LINK =
   "https://github.com/digma-ai/digma-vscode-plugin#%EF%B8%8F-extension-settings";
 
-const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
+const REFRESH_INTERVAL =
+  typeof window.recentActivityRefreshInterval === "number"
+    ? window.recentActivityRefreshInterval
+    : 10 * 1000; // in milliseconds
 
 const ACTION_PREFIX = "RECENT_ACTIVITY";
 
@@ -132,6 +135,7 @@ export const RecentActivity = () => {
         </>
       ) : (
         <RecentActivityTable
+          viewMode={viewMode}
           data={envActivities[selectedEnv]}
           onSpanLinkClick={handleSpanLinkClick}
           onTraceButtonClick={handleTraceButtonClick}
