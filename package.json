@@ -5,13 +5,25 @@
   "main": "dist/index.js",
   "scripts": {
     "lint:eslint": "eslint --cache .",
-    "lint:stylelint": "stylelint '**/*.{css,ts}'",
+    "lint:stylelint": "stylelint '**/*.ts'",
     "lint": "npm run lint:eslint && npm run lint:stylelint",
-    "fix:prettier": "prettier --write '**/*.{css,js,json,md,ts,tsx}'",
+    "fix:prettier": "prettier --write '**/*.{js,json,md,ts,tsx}'",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack serve --progress --config webpack.dev.ts",
-    "build": "webpack --config webpack.prod.ts"
+    "build": "webpack --config webpack.prod.ts",
+    "precommit": "lint-staged"
   },
+  "lint-staged": {
+    "*.{js,ts}": [
+        "eslint --cache"
+    ],
+    "src/**/*.ts": [
+      "stylelint"
+  ],
+    "*.{js,json,md,ts,tsx}": [
+        "prettier --write"
+    ]
+},
   "repository": {
     "type": "git"
   },
@@ -32,6 +44,8 @@
     "eslint-plugin-react": "^7.32.1",
     "eslint-plugin-react-hooks": "^4.6.0",
     "html-webpack-plugin": "^5.5.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^13.1.1",
     "prettier": "^2.8.3",
     "style-loader": "^3.3.1",
     "stylelint": "^14.16.1",
