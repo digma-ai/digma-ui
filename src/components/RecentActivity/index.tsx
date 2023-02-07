@@ -14,7 +14,7 @@ import { EntrySpan, RecentActivityData } from "./types";
 const DOCUMENTATION_LINK =
   "https://github.com/digma-ai/digma-vscode-plugin#%EF%B8%8F-extension-settings";
 
-const REFRESH_INTERVAL = 30 * 1000; // in milliseconds
+const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 
 const ACTION_PREFIX = "RECENT_ACTIVITY";
 

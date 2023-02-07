@@ -24,9 +24,11 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
   return (
     <s.BorderContainer>
       <s.Container>
-        <s.LogoContainer>
-          <DigmaLogoFlatIcon size={22} />
-        </s.LogoContainer>
+        <s.LogoRotationContainer>
+          <s.LogoContainer>
+            <DigmaLogoFlatIcon size={22} />
+          </s.LogoContainer>
+        </s.LogoRotationContainer>
         {props.envs.map((env) => (
           <EnvironmentTab
             key={env.name}

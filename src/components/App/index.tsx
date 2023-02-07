@@ -4,7 +4,6 @@ import { RecentActivity } from "../RecentActivity";
 import { GlobalStyle } from "./styles";
 
 const getMode = (): Mode => {
-  console.log(window.theme);
   if (!window.theme) {
     const bodyEl = document.getElementsByTagName("body");
     const vscodeTheme =

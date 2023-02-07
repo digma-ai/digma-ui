@@ -36,20 +36,6 @@ export const NoDataContainer = styled.div`
   border-radius: 12px;
 `;
 
-// const rotateAnimation = keyframes`
-//   15% { transform: rotateY(-30deg); }
-//   45% { transform: rotateY(30deg); }
-//   60% { transform: rotateY(0); }
-// `;
-
-// export const LogoRotationContainer = styled.div`
-//   perspective: 100px;
-// `;
-
-// export const LogoContainer = styled.div`
-//   animation: ${rotateAnimation} 6s linear infinite;
-// `;
-
 export const NoDataTitle = styled.span`
   font-family: "Nunito";
   font-weight: 600;

@@ -4,6 +4,7 @@ import {
   getCoreRowModel,
   useReactTable
 } from "@tanstack/react-table";
+import { useEffect, useState } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
 import { timeAgo } from "../../utils/timeAgo";
 import { Button } from "../common/Button";
@@ -22,6 +23,44 @@ import { Link } from "../common/Link";
 import { ActivityEntry, EntrySpan } from "../RecentActivity/types";
 import * as s from "./styles";
 import { INSIGHT_TYPES, RecentActivityTableProps } from "./types";
+
+const insightTypesWithoutIcons = [
+  "SpanUsageStatus",
+  "TopErrorFlows",
+  "SpanDurationChange",
+  "EndpointSpaNPlusOne",
+  "SpaNPlusOne",
+  "SpanHighUsage",
+  "SpanScalingRootCause"
+];
+
+const insightTypesWithTheSameIcon = {
+  SlowestSpans: "SpanEndpointBottleneck",
+  SpanDurations: "SpanDurationBreakdown"
+};
+
+const filterData = (data: ActivityEntry[]): ActivityEntry[] =>
+  data.map((entry) => {
+    const insightTypes = entry.slimAggregatedInsights.map((x) => x.type);
+
+    const insightTypesToRemove: string[] = [];
+
+    for (const [key, value] of Object.entries(insightTypesWithTheSameIcon)) {
+      if (insightTypes.includes(key)) {
+        insightTypesToRemove.push(value);
+      }
+    }
+
+    const filteredInsights = entry.slimAggregatedInsights.filter(
+      (x) =>
+        ![...insightTypesWithoutIcons, ...insightTypesToRemove].includes(x.type)
+    );
+
+    return {
+      ...entry,
+      slimAggregatedInsights: filteredInsights
+    };
+  });
 
 const getInsightInfo = (
   type: string,
@@ -143,6 +182,13 @@ export const isRecent = (entry: ActivityEntry): boolean => {
 export const RecentActivityTable = (props: RecentActivityTableProps) => {
   const theme = useTheme();
 
+  // TODO: Remove after adding the filtering on BE
+  const [data, setData] = useState(filterData(props.data));
+
+  useEffect(() => {
+    setData(filterData(props.data));
+  }, [props.data]);
+
   const handleSpanLinkClick = (span: EntrySpan) => {
     props.onSpanLinkClick(span);
   };
@@ -241,7 +287,7 @@ export const RecentActivityTable = (props: RecentActivityTableProps) => {
   ];
 
   const table = useReactTable({
-    data: props.data,
+    data,
     columns,
     getCoreRowModel: getCoreRowModel()
   });
