@@ -7,6 +7,7 @@ import {
 import { useEffect, useState } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
 import { timeAgo } from "../../utils/timeAgo";
+import { Badge } from "../common/Badge";
 import { Button } from "../common/Button";
 import { AlarmClockIcon } from "../common/icons/AlarmClockIcon";
 import { BottleneckIcon } from "../common/icons/BottleneckIcon";
@@ -218,6 +219,7 @@ export const RecentActivityTable = (props: RecentActivityTableProps) => {
 
         return (
           <>
+            {isRecent(value) && <Badge />}
             {renderSpanLink(firstSpan)}
             {lastSpan && <> to {renderSpanLink(lastSpan)}</>}
           </>
@@ -291,6 +293,8 @@ export const RecentActivityTable = (props: RecentActivityTableProps) => {
     columns,
     getCoreRowModel: getCoreRowModel()
   });
+
+  console.log(data);
 
   return (
     <s.Table>

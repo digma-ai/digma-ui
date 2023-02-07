@@ -68,6 +68,7 @@ export const Suffix = styled.span`
 `;
 
 export const DataRow = styled.tr`
+  position: relative;
   height: 36px;
 `;
 
