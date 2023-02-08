@@ -29,9 +29,9 @@ const actions = getActions(ACTION_PREFIX, {
 });
 
 export const RecentActivity = () => {
-  const [selectedEnv, setSelectedEnv] = useState<string>();
+  const [selectedEnvironment, setSelectedEnvironment] = useState<string>();
   const [data, setData] = useState<RecentActivityData>();
-  const previousData = usePrevious(data);
+  const previousSelectedEnvironment = usePrevious(selectedEnvironment);
   const [viewMode, setViewMode] = useState<ViewMode>("table");
 
   useEffect(() => {
@@ -58,17 +58,13 @@ export const RecentActivity = () => {
   }, []);
 
   useEffect(() => {
-    if (!previousData && data) {
-      if (data.envs.includes(data.currentEnv)) {
-        setSelectedEnv(data.currentEnv);
-      } else {
-        setSelectedEnv(data.envs[0]);
-      }
+    if (!previousSelectedEnvironment && data && data.environments.length) {
+      setSelectedEnvironment(data.environments[0]);
     }
-  }, [previousData, data]);
+  }, [previousSelectedEnvironment, data]);
 
-  const handleEnvSelect = (env: string) => {
-    setSelectedEnv(env);
+  const handleEnvironmentSelect = (environment: string) => {
+    setSelectedEnvironment(environment);
   };
 
   const handleSpanLinkClick = (span: EntrySpan) => {
@@ -94,11 +90,15 @@ export const RecentActivity = () => {
     setViewMode(mode);
   };
 
-  const envActivities = data ? groupBy(data.entries, "environment") : {};
-  const envs = Object.keys(envActivities).map((env) => ({
-    name: env,
-    hasBadge: envActivities[env].some(isRecent)
-  }));
+  const environmentActivities = data
+    ? groupBy(data.entries, "environment")
+    : {};
+  const environments = Object.keys(environmentActivities).map(
+    (environment) => ({
+      name: environment,
+      hasBadge: environmentActivities[environment].some(isRecent)
+    })
+  );
 
   const renderNoData = () => {
     return (
@@ -122,13 +122,15 @@ export const RecentActivity = () => {
   return (
     <s.Container>
       <EnvironmentPanel
-        envs={envs}
+        environments={environments}
         viewMode={viewMode}
-        selectedEnv={selectedEnv}
-        onEnvSelect={handleEnvSelect}
+        selectedEnvironment={selectedEnvironment}
+        onEnvironmentSelect={handleEnvironmentSelect}
         onViewModeChange={handleViewModeChange}
       />
-      {!selectedEnv || !envActivities[selectedEnv].length ? (
+      {!selectedEnvironment ||
+      !environmentActivities[selectedEnvironment] ||
+      !environmentActivities[selectedEnvironment].length ? (
         <>
           <s.Header>Recent Activity</s.Header>
           {renderNoData()}
@@ -136,7 +138,7 @@ export const RecentActivity = () => {
       ) : (
         <RecentActivityTable
           viewMode={viewMode}
-          data={envActivities[selectedEnv]}
+          data={environmentActivities[selectedEnvironment]}
           onSpanLinkClick={handleSpanLinkClick}
           onTraceButtonClick={handleTraceButtonClick}
         />

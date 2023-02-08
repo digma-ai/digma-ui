@@ -8,7 +8,7 @@ import { EnvironmentPanelProps } from "./types";
 
 export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
   const handleEnvironmentTabClick = (name: string) => {
-    props.onEnvSelect(name);
+    props.onEnvironmentSelect(name);
   };
 
   const icons = {
@@ -29,12 +29,12 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
             <DigmaLogoFlatIcon size={22} />
           </s.LogoContainer>
         </s.LogoRotationContainer>
-        {props.envs.map((env) => (
+        {props.environments.map((environment) => (
           <EnvironmentTab
-            key={env.name}
-            text={env.name}
-            hasBadge={env.hasBadge}
-            isSelected={props.selectedEnv === env.name}
+            key={environment.name}
+            text={environment.name}
+            hasBadge={environment.hasBadge}
+            isSelected={props.selectedEnvironment === environment.name}
             onClick={handleEnvironmentTabClick}
           />
         ))}

@@ -9,36 +9,24 @@ import { DefaultTheme, useTheme } from "styled-components";
 import { timeAgo } from "../../../utils/timeAgo";
 import { Badge } from "../../common/Badge";
 import { Button } from "../../common/Button";
-import { AlarmClockIcon } from "../../common/icons/AlarmClockIcon";
 import { BottleneckIcon } from "../../common/icons/BottleneckIcon";
 import { CrosshairIcon } from "../../common/icons/CrosshairIcon";
 import { MeterHighIcon } from "../../common/icons/MeterHighIcon";
-import { MeterLowIcon } from "../../common/icons/MeterLowIcon";
-import { MeterMediumIcon } from "../../common/icons/MeterMediumIcon";
 import { ScalesIcon } from "../../common/icons/ScalesIcon";
-import { SineIcon } from "../../common/icons/SineIcon";
 import { SnailIcon } from "../../common/icons/SnailIcon";
 import { SpotIcon } from "../../common/icons/SpotIcon";
-import { WarningCircleIcon } from "../../common/icons/WarningCircleIcon";
 import { ViewMode } from "../EnvironmentPanel/types";
 import { ActivityEntry, Duration, EntrySpan, SlimInsight } from "../types";
 import { SpanLink } from "./SpanLink";
 import * as s from "./styles";
 import { INSIGHT_TYPES, RecentActivityTableProps } from "./types";
 
-const insightTypesWithoutIcons = [
-  "SpanUsageStatus",
-  "TopErrorFlows",
-  "SpanDurationChange",
-  "EndpointSpaNPlusOne",
-  "SpaNPlusOne",
-  "SpanHighUsage",
-  "SpanScalingRootCause"
-];
+const insightTypesWithoutIcons = ["EndpointSpaNPlusOne", "SpaNPlusOne"];
 
-const insightTypesWithTheSameIcon = {
+const insightTypesToDeduplicate = {
   SlowestSpans: "SpanEndpointBottleneck",
-  SpanDurations: "SpanDurationBreakdown"
+  SpanScaling: "SpanScalingRootCause",
+  SpaNPlusOne: "EndpointSpaNPlusOne"
 };
 
 const filterData = (data: ActivityEntry[]): ActivityEntry[] =>
@@ -47,7 +35,7 @@ const filterData = (data: ActivityEntry[]): ActivityEntry[] =>
 
     const insightTypesToRemove: string[] = [];
 
-    for (const [key, value] of Object.entries(insightTypesWithTheSameIcon)) {
+    for (const [key, value] of Object.entries(insightTypesToDeduplicate)) {
       if (insightTypes.includes(key)) {
         insightTypesToRemove.push(value);
       }
@@ -67,54 +55,15 @@ const filterData = (data: ActivityEntry[]): ActivityEntry[] =>
 const getInsightInfo = (
   type: string,
   theme: DefaultTheme
-): { icon: JSX.Element; label: string } => {
+): { icon: JSX.Element; label: string } | undefined => {
   const insightInfoMap: Record<string, { icon: JSX.Element; label: string }> = {
-    [INSIGHT_TYPES.SpanUsageStatus]: {
-      icon: <>N/A</>,
-      label: ""
-    },
-    [INSIGHT_TYPES.TopErrorFlows]: {
-      icon: <>N/A</>,
-      label: "New and Trending Errors"
-    },
-    [INSIGHT_TYPES.SpanDurationChange]: {
-      icon: <>N/A</>,
-      label: "Performance changes"
-    },
     [INSIGHT_TYPES.HotSpot]: {
       icon: <SpotIcon size={20} />,
-      label: "Error hotspot"
-    },
-    [INSIGHT_TYPES.Errors]: {
-      icon: (
-        <WarningCircleIcon
-          size={20}
-          color={theme.mode === "light" ? "#e00036" : "#f93967"}
-        />
-      ),
-      label: "Errors"
+      label: "Error Hotspot"
     },
     [INSIGHT_TYPES.SlowEndpoint]: {
       icon: <SnailIcon size={20} />,
       label: "Slow Endpoint"
-    },
-    [INSIGHT_TYPES.LowUsage]: {
-      icon: (
-        <MeterLowIcon
-          size={20}
-          color={theme.mode === "light" ? "#1dc693" : "#a7f4c1"}
-        />
-      ),
-      label: "Endpoint low traffic"
-    },
-    [INSIGHT_TYPES.NormalUsage]: {
-      icon: (
-        <MeterMediumIcon
-          size={20}
-          color={theme.mode === "light" ? "#e06c00" : "#ff810d"}
-        />
-      ),
-      label: "Endpoint normal level of traffic"
     },
     [INSIGHT_TYPES.HighUsage]: {
       icon: (
@@ -123,7 +72,7 @@ const getInsightInfo = (
           color={theme.mode === "light" ? "#e00036" : "#f93967"}
         />
       ),
-      label: "Endpoint high traffic"
+      label: "Endpoint High Traffic"
     },
     [INSIGHT_TYPES.SlowestSpans]: {
       icon: <BottleneckIcon size={20} />,
@@ -133,10 +82,6 @@ const getInsightInfo = (
       icon: <>N/A</>,
       label: "Suspected N-Plus-1"
     },
-    [INSIGHT_TYPES.SpanUsages]: {
-      icon: <SineIcon size={20} />,
-      label: "Top Usage"
-    },
     [INSIGHT_TYPES.SpaNPlusOne]: {
       icon: <>N/A</>,
       label: "Suspected N-Plus-1"
@@ -145,25 +90,13 @@ const getInsightInfo = (
       icon: <BottleneckIcon size={20} />,
       label: "Bottleneck"
     },
-    [INSIGHT_TYPES.SpanHighUsage]: {
-      icon: <>N/A</>,
-      label: ""
-    },
-    [INSIGHT_TYPES.SpanDurations]: {
-      icon: <AlarmClockIcon size={20} />,
-      label: "Duration"
-    },
     [INSIGHT_TYPES.SpanScaling]: {
       icon: <ScalesIcon size={20} />,
       label: "Scaling Issue Found"
     },
     [INSIGHT_TYPES.SpanScalingRootCause]: {
-      icon: <>N/A</>,
-      label: ""
-    },
-    [INSIGHT_TYPES.SpanDurationBreakdown]: {
-      icon: <AlarmClockIcon size={20} />,
-      label: "Duration Breakdown"
+      icon: <ScalesIcon size={20} />,
+      label: "Scaling Issue Root Cause Found"
     }
   };
 
@@ -247,15 +180,16 @@ export const RecentActivityTable = (props: RecentActivityTableProps) => {
 
   const renderInsights = (insights: SlimInsight[]) => (
     <s.InsightsContainer>
-      {insights.map((x) => {
-        const insightInfo = getInsightInfo(x.type, theme);
-        return (
-          <span title={insightInfo.label} key={x.type}>
-            {" "}
-            {insightInfo.icon}
-          </span>
-        );
-      })}
+      {insights
+        .map((x) => {
+          const insightInfo = getInsightInfo(x.type, theme);
+          return insightInfo ? (
+            <span title={insightInfo.label} key={x.type}>
+              {insightInfo.icon}
+            </span>
+          ) : null;
+        })
+        .filter(Boolean)}
     </s.InsightsContainer>
   );
 

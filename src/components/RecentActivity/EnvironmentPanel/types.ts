@@ -1,8 +1,8 @@
 export interface EnvironmentPanelProps {
   viewMode: ViewMode;
-  envs: { name: string; hasBadge: boolean }[];
-  selectedEnv?: string;
-  onEnvSelect: (tabId: string) => void;
+  environments: { name: string; hasBadge: boolean }[];
+  selectedEnvironment?: string;
+  onEnvironmentSelect: (tabId: string) => void;
   onViewModeChange: (mode: ViewMode) => void;
 }
 

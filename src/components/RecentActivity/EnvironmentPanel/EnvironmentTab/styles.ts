@@ -5,6 +5,7 @@ const BORDER_RADIUS = 8; // in pixels
 
 export const BorderContainer = styled.div<ContainerProps>`
   padding: 1px;
+  height: 26px;
   border-radius: ${BORDER_RADIUS}px;
   display: inline-block;
   margin-right: 4px;
@@ -36,6 +37,7 @@ export const Container = styled.button<ContainerProps>`
   font-weight: 700;
   font-size: 14px;
   padding: 4px 12px;
+  line-height: 18px;
 
   color: ${({ isSelected, theme }) => {
     if (isSelected) {
@@ -56,7 +58,7 @@ export const Container = styled.button<ContainerProps>`
   }};
 
   border-radius: ${BORDER_RADIUS}px;
-  height: 26px;
+  height: 100%;
   border: none;
   background: ${({ isSelected, theme }) => {
     if (!isSelected) {

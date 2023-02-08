@@ -29,7 +29,6 @@ export type ActivityEntry = {
 };
 
 export interface RecentActivityData {
-  envs: string[];
-  currentEnv: string;
+  environments: string[];
   entries: ActivityEntry[];
 }
