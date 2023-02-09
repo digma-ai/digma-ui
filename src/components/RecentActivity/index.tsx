@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
 import { getActions } from "../../utils/getActions";
@@ -27,6 +27,25 @@ const actions = getActions(ACTION_PREFIX, {
   goToSpan: "GO_TO_SPAN",
   goToTrace: "GO_TO_TRACE"
 });
+
+const renderNoData = () => {
+  return (
+    <s.NoDataContainer>
+      <CursorFollower>
+        <DigmaLogoFlatIcon size={64} />
+      </CursorFollower>
+      <s.NoDataTitle>No Recent Activity</s.NoDataTitle>
+      <s.NoDataText>Check out our documentation to learn how to</s.NoDataText>
+      <s.DocumentationLink
+        href={DOCUMENTATION_LINK}
+        rel={"noopener noreferrer"}
+        target={"_blank"}
+      >
+        dig with digma
+      </s.DocumentationLink>
+    </s.NoDataContainer>
+  );
+};
 
 export const RecentActivity = () => {
   const [selectedEnvironment, setSelectedEnvironment] = useState<string>();
@@ -90,34 +109,23 @@ export const RecentActivity = () => {
     setViewMode(mode);
   };
 
-  const environmentActivities = data
-    ? groupBy(data.entries, "environment")
-    : {};
-  const environments = Object.keys(environmentActivities).map(
-    (environment) => ({
-      name: environment,
-      hasBadge: environmentActivities[environment].some(isRecent)
-    })
+  const environmentActivities = useMemo(
+    () => (data ? groupBy(data.entries, "environment") : {}),
+    [data]
   );
 
-  const renderNoData = () => {
-    return (
-      <s.NoDataContainer>
-        <CursorFollower>
-          <DigmaLogoFlatIcon size={64} />
-        </CursorFollower>
-        <s.NoDataTitle>No Recent Activity</s.NoDataTitle>
-        <s.NoDataText>Check out our documentation to learn how to</s.NoDataText>
-        <s.DocumentationLink
-          href={DOCUMENTATION_LINK}
-          rel={"noopener noreferrer"}
-          target={"_blank"}
-        >
-          dig with digma
-        </s.DocumentationLink>
-      </s.NoDataContainer>
-    );
-  };
+  const environments = useMemo(
+    () =>
+      data
+        ? data.environments.map((environment) => ({
+            name: environment,
+            hasBadge: environmentActivities[environment]
+              ? environmentActivities[environment].some(isRecent)
+              : false
+          }))
+        : [],
+    [data, environmentActivities]
+  );
 
   return (
     <s.Container>

@@ -23,27 +23,10 @@ import { INSIGHT_TYPES, RecentActivityTableProps } from "./types";
 
 const insightTypesWithoutIcons = ["EndpointSpaNPlusOne", "SpaNPlusOne"];
 
-const insightTypesToDeduplicate = {
-  SlowestSpans: "SpanEndpointBottleneck",
-  SpanScaling: "SpanScalingRootCause",
-  SpaNPlusOne: "EndpointSpaNPlusOne"
-};
-
 const filterData = (data: ActivityEntry[]): ActivityEntry[] =>
   data.map((entry) => {
-    const insightTypes = entry.slimAggregatedInsights.map((x) => x.type);
-
-    const insightTypesToRemove: string[] = [];
-
-    for (const [key, value] of Object.entries(insightTypesToDeduplicate)) {
-      if (insightTypes.includes(key)) {
-        insightTypesToRemove.push(value);
-      }
-    }
-
     const filteredInsights = entry.slimAggregatedInsights.filter(
-      (x) =>
-        ![...insightTypesWithoutIcons, ...insightTypesToRemove].includes(x.type)
+      (x) => !insightTypesWithoutIcons.includes(x.type)
     );
 
     return {
@@ -120,7 +103,6 @@ export const isRecent = (entry: ActivityEntry): boolean => {
 export const RecentActivityTable = (props: RecentActivityTableProps) => {
   const theme = useTheme();
 
-  // TODO: Remove after adding the filtering on BE
   const [data, setData] = useState(filterData(props.data));
 
   useEffect(() => {
