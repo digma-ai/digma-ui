@@ -4,9 +4,9 @@ import { DIRECTION, RotatableIconProps } from "./types";
 
 const directionRotateMap: { [key in DIRECTION]: string } = {
   [DIRECTION.DOWN]: "0",
-  [DIRECTION.RIGHT]: "90",
+  [DIRECTION.LEFT]: "90",
   [DIRECTION.UP]: "180",
-  [DIRECTION.LEFT]: "270"
+  [DIRECTION.RIGHT]: "270"
 };
 
 const ChevronIconComponent = (props: RotatableIconProps) => {

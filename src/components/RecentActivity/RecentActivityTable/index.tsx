@@ -4,7 +4,6 @@ import {
   getCoreRowModel,
   useReactTable
 } from "@tanstack/react-table";
-import { useEffect, useState } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
 import { timeAgo } from "../../../utils/timeAgo";
 import { Badge } from "../../common/Badge";
@@ -15,25 +14,12 @@ import { MeterHighIcon } from "../../common/icons/MeterHighIcon";
 import { ScalesIcon } from "../../common/icons/ScalesIcon";
 import { SnailIcon } from "../../common/icons/SnailIcon";
 import { SpotIcon } from "../../common/icons/SpotIcon";
+import { SQLDatabaseIcon } from "../../common/icons/SQLDatabaseIcon";
 import { ViewMode } from "../EnvironmentPanel/types";
 import { ActivityEntry, Duration, EntrySpan, SlimInsight } from "../types";
 import { SpanLink } from "./SpanLink";
 import * as s from "./styles";
 import { INSIGHT_TYPES, RecentActivityTableProps } from "./types";
-
-const insightTypesWithoutIcons = ["EndpointSpaNPlusOne", "SpaNPlusOne"];
-
-const filterData = (data: ActivityEntry[]): ActivityEntry[] =>
-  data.map((entry) => {
-    const filteredInsights = entry.slimAggregatedInsights.filter(
-      (x) => !insightTypesWithoutIcons.includes(x.type)
-    );
-
-    return {
-      ...entry,
-      slimAggregatedInsights: filteredInsights
-    };
-  });
 
 const getInsightInfo = (
   type: string,
@@ -62,11 +48,11 @@ const getInsightInfo = (
       label: "Span Bottleneck"
     },
     [INSIGHT_TYPES.EndpointSpaNPlusOne]: {
-      icon: <>N/A</>,
+      icon: <SQLDatabaseIcon size={20} />,
       label: "Suspected N-Plus-1"
     },
     [INSIGHT_TYPES.SpaNPlusOne]: {
-      icon: <>N/A</>,
+      icon: <SQLDatabaseIcon size={20} />,
       label: "Suspected N-Plus-1"
     },
     [INSIGHT_TYPES.SpanEndpointBottleneck]: {
@@ -102,12 +88,6 @@ export const isRecent = (entry: ActivityEntry): boolean => {
 
 export const RecentActivityTable = (props: RecentActivityTableProps) => {
   const theme = useTheme();
-
-  const [data, setData] = useState(filterData(props.data));
-
-  useEffect(() => {
-    setData(filterData(props.data));
-  }, [props.data]);
 
   const handleSpanLinkClick = (span: EntrySpan) => {
     props.onSpanLinkClick(span);
@@ -226,7 +206,7 @@ export const RecentActivityTable = (props: RecentActivityTableProps) => {
   ];
 
   const table = useReactTable({
-    data,
+    data: props.data,
     columns,
     getCoreRowModel: getCoreRowModel()
   });
@@ -265,7 +245,7 @@ export const RecentActivityTable = (props: RecentActivityTableProps) => {
     <s.ListContainer>
       <s.ListHeader>Recent Activity</s.ListHeader>
       <s.List>
-        {data.map((entry, i) => (
+        {props.data.map((entry, i) => (
           <s.ListItem key={i}>
             {isRecent(entry) && (
               <s.ListBadgeContainer>
