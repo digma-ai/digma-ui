@@ -17,5 +17,6 @@ declare global {
     theme?: Mode;
     recentActivityRefreshInterval?: number;
     recentActivityExpirationLimit?: number;
+    recentActivityDocumentationURL?: string;
   }
 }

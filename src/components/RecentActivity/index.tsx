@@ -11,8 +11,10 @@ import { isRecent, RecentActivityTable } from "./RecentActivityTable";
 import * as s from "./styles";
 import { EntrySpan, RecentActivityData } from "./types";
 
-const DOCUMENTATION_LINK =
-  "https://github.com/digma-ai/digma-vscode-plugin#%EF%B8%8F-extension-settings";
+const documentationURL =
+  typeof window.recentActivityDocumentationURL === "string"
+    ? window.recentActivityDocumentationURL
+    : null;
 
 const REFRESH_INTERVAL =
   typeof window.recentActivityRefreshInterval === "number"
@@ -35,14 +37,21 @@ const renderNoData = () => {
         <DigmaLogoFlatIcon size={64} />
       </CursorFollower>
       <s.NoDataTitle>No Recent Activity</s.NoDataTitle>
-      <s.NoDataText>Check out our documentation to learn how to</s.NoDataText>
-      <s.DocumentationLink
-        href={DOCUMENTATION_LINK}
-        rel={"noopener noreferrer"}
-        target={"_blank"}
-      >
-        dig with digma
-      </s.DocumentationLink>
+      {documentationURL && (
+        <>
+          <s.NoDataText>
+            Check out our documentation to learn how to
+          </s.NoDataText>
+
+          <s.DocumentationLink
+            href={documentationURL}
+            rel={"noopener noreferrer"}
+            target={"_blank"}
+          >
+            dig with digma
+          </s.DocumentationLink>
+        </>
+      )}
     </s.NoDataContainer>
   );
 };
