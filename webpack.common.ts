@@ -31,6 +31,7 @@ const config: WebpackConfiguration = {
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, "./assets/index.ejs"),
       inject: false,
+      minify: false,
       scriptLoading: "blocking"
     })
   ]
