@@ -81,7 +81,10 @@ export const RecentActivity = () => {
     return () => {
       clearInterval(refreshInterval);
 
-      dispatcher.addActionListener(actions.setData, handleRecentActivityData);
+      dispatcher.removeActionListener(
+        actions.setData,
+        handleRecentActivityData
+      );
     };
   }, []);
 

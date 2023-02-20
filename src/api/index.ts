@@ -28,10 +28,10 @@ export const sendMessage = (message: {
   if (window.cefQuery) {
     return window.cefQuery({
       request: JSON.stringify(message),
-      onSuccess: (response) => {
+      onSuccess: function (response) {
         console.info("cefQuery has been successfully sent: %s", response);
       },
-      onFailure: (error_code, error_message) => {
+      onFailure: function (error_code, error_message) {
         console.error(
           "Failed to send cefQuery: %d, %s",
           error_code,
