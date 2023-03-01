@@ -9,34 +9,22 @@ import { os } from "../../os";
 export const getMainFont = (customFont: string): FlattenSimpleInterpolation => {
   let osFont = "";
 
-  // Source: https://github.com/microsoft/vscode/blob/main/src/vs/workbench/browser/media/style.css#L10
-  if (environment === "VS Code") {
-    if (os === "Linux") {
-      osFont = 'system-ui, Ubuntu, "Droid Sans"';
-    }
-
-    if (os === "macOS") {
-      osFont = "-apple-system, BlinkMacSystemFont";
-    }
-
-    if (os === "Windows") {
-      osFont = '"Segoe WPC", "Segoe UI"';
-    }
+  // Sources
+  //
+  // VS Code: https://github.com/microsoft/vscode/blob/main/src/vs/workbench/browser/media/style.css#L10
+  // JetBrains:
+  // https://jetbrains.github.io/ui/principles/typography/#ide-font
+  // https://github.com/JetBrains/intellij-community/blob/master/platform/platform-impl/src/com/intellij/ide/ui/laf/LafManagerImpl.kt#L1278
+  if (os === "Linux") {
+    osFont = 'system-ui, Ubuntu, "Droid Sans"';
   }
 
-  // Source: https://jetbrains.github.io/ui/principles/typography/#ide-font
-  if (environment === "JetBrains") {
-    if (os === "Linux") {
-      osFont = "Ubuntu";
-    }
+  if (os === "macOS") {
+    osFont = "-apple-system, BlinkMacSystemFont";
+  }
 
-    if (os === "macOS") {
-      osFont = '"SF Pro Text"';
-    }
-
-    if (os === "Windows") {
-      osFont = '"Segoe UI"';
-    }
+  if (os === "Windows") {
+    osFont = '"Segoe WPC", "Segoe UI"';
   }
 
   return css`
@@ -50,15 +38,14 @@ export const getMainFont = (customFont: string): FlattenSimpleInterpolation => {
 export const getCodeFont = (customFont: string): FlattenSimpleInterpolation => {
   let osFont = "";
 
-  // Source: https://github.com/microsoft/vscode/blob/main/src/vs/workbench/browser/media/style.css#L31
+  // Source: https://github.com/microsoft/vscode/blob/main/src/vs/editor/common/config/editorOptions.ts#L4721
   if (environment === "VS Code") {
     if (os === "Linux") {
-      osFont =
-        '"Ubuntu Mono", "Liberation Mono", "DejaVu Sans Mono", "Courier New"';
+      osFont = '"Droid Sans Mono", "monospace"';
     }
 
     if (os === "macOS") {
-      osFont = '"SF Mono", Monaco, Menlo, Courier';
+      osFont = 'Menlo, Monaco, "Courier New"';
     }
 
     if (os === "Windows") {
