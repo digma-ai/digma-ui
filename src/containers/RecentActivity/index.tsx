@@ -3,9 +3,10 @@ import {
   cancelMessage,
   initializeDigmaMessageListener,
   sendMessage
-} from "./api";
-import { App } from "./components/App";
-import { dispatcher } from "./dispatcher";
+} from "../../api";
+import { App } from "../../components/App";
+import { RecentActivity } from "../../components/RecentActivity";
+import { dispatcher } from "../../dispatcher";
 
 initializeDigmaMessageListener(dispatcher);
 
@@ -16,5 +17,9 @@ const rootElement = document.getElementById("root");
 
 if (rootElement) {
   const root = createRoot(rootElement);
-  root.render(<App />);
+  root.render(
+    <App>
+      <RecentActivity />
+    </App>
+  );
 }

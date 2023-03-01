@@ -15,6 +15,7 @@ export const Button = styled.button`
         case "light":
           return "#f1f5fa";
         case "dark":
+        case "dark-jetbrains":
           return "#49494d";
       }
     }};

@@ -1,15 +1,25 @@
+import { CleanWebpackPlugin } from "clean-webpack-plugin";
 import CopyWebpackPlugin from "copy-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import path from "path";
 import { Configuration as WebpackConfiguration } from "webpack";
 
+const entries = {
+  assets: path.resolve(__dirname, "./src/containers/Assets/index.tsx"),
+  recentActivity: path.resolve(
+    __dirname,
+    "./src/containers/RecentActivity/index.tsx"
+  )
+};
+
 const config: WebpackConfiguration = {
-  entry: path.resolve(__dirname, "./src/index.tsx"),
+  entry: entries,
   resolve: {
     extensions: [".ts", ".tsx", ".js"]
   },
   output: {
     path: path.resolve(__dirname, "dist"),
+    filename: "[name]/index.js",
     publicPath: "/"
   },
   module: {
@@ -21,6 +31,7 @@ const config: WebpackConfiguration = {
     ]
   },
   plugins: [
+    new CleanWebpackPlugin(),
     new CopyWebpackPlugin({
       patterns: [
         {
@@ -28,12 +39,17 @@ const config: WebpackConfiguration = {
         }
       ]
     }),
-    new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, "./assets/index.ejs"),
-      inject: false,
-      minify: false,
-      scriptLoading: "blocking"
-    })
+    ...Object.keys(entries).map(
+      (entry) =>
+        new HtmlWebpackPlugin({
+          template: path.resolve(__dirname, `./assets/${entry}/index.ejs`),
+          filename: `${entry}/index.html`,
+          chunks: [entry],
+          inject: false,
+          minify: false,
+          scriptLoading: "blocking"
+        })
+    )
   ]
 };
 

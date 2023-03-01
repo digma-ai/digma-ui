@@ -1,8 +1,7 @@
 import styled from "styled-components";
 
 export const Button = styled.button`
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI",
-    system-ui, "Ubuntu", "Droid Sans", sans-serif;
+  font-family: inherit;
   font-weight: 500;
   font-size: 10px;
   padding: 2px 4px;
@@ -29,6 +28,7 @@ export const Button = styled.button`
         case "light":
           return "#f1f5fa";
         case "dark":
+        case "dark-jetbrains":
           return "#7c7c94";
       }
     }};
@@ -37,6 +37,7 @@ export const Button = styled.button`
         case "light":
           return "#b9c0d4";
         case "dark":
+        case "dark-jetbrains":
           return "#49494d";
       }
     }};

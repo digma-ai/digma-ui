@@ -8,15 +8,13 @@ export const EnvironmentTab = (props: EnvironmentTabProps) => {
   };
 
   return (
-    <s.BorderContainer isSelected={props.isSelected}>
-      <s.Container isSelected={props.isSelected} onClick={handleClick}>
-        {props.hasBadge && (
-          <s.BadgeContainer>
-            <Badge />
-          </s.BadgeContainer>
-        )}
-        {props.text}
-      </s.Container>
-    </s.BorderContainer>
+    <s.Container isSelected={props.isSelected} onClick={handleClick}>
+      {props.hasBadge && (
+        <s.BadgeContainer>
+          <Badge />
+        </s.BadgeContainer>
+      )}
+      {props.text}
+    </s.Container>
   );
 };

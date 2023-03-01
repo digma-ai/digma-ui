@@ -11,12 +11,13 @@ export const Table = styled.table`
         return "#002d61";
       case "dark":
         return "#dadada";
+      case "dark-jetbrains":
+        return "#c6c6c6";
     }
   }};
 `;
 
 export const TableHead = styled.thead`
-  font-family: "Nunito";
   font-size: 10px;
   height: 26px;
   color: ${({ theme }) => {
@@ -24,7 +25,9 @@ export const TableHead = styled.thead`
       case "light":
         return "#b9c0d4";
       case "dark":
-        return "#49494d";
+        return "#b9c2eb";
+      case "dark-jetbrains":
+        return "#9b9b9b";
     }
   }};
 `;
@@ -45,6 +48,8 @@ export const TableBody = styled.tbody`
         return "#fbfdff";
       case "dark":
         return "#1e1e1e";
+      case "dark-jetbrains":
+        return "#3d3f41";
     }
   }};
 
@@ -116,6 +121,8 @@ export const Suffix = styled.span`
         return "#828797";
       case "dark":
         return "#7c7c94";
+      case "dark-jetbrains":
+        return "#9b9b9b";
     }
   }};
 `;
@@ -129,7 +136,6 @@ export const ListHeader = styled.div`
   margin: 8px 0;
   padding-left: 12px;
   line-height: 16px;
-  font-family: "Nunito";
   font-weight: 400;
   font-size: 10px;
   color: ${({ theme }) => {
@@ -137,7 +143,9 @@ export const ListHeader = styled.div`
       case "light":
         return "#b9c0d4";
       case "dark":
-        return "#49494d";
+        return "#b9c2eb";
+      case "dark-jetbrains":
+        return "#9b9b9b";
     }
   }};
 `;
@@ -157,6 +165,8 @@ export const List = styled.ul`
         return "#002d61";
       case "dark":
         return "#dadada";
+      case "dark-jetbrains":
+        return "#c6c6c6";
     }
   }};
   background: ${({ theme }) => {
@@ -165,6 +175,8 @@ export const List = styled.ul`
         return "#fbfdff";
       case "dark":
         return "#1e1e1e";
+      case "dark-jetbrains":
+        return "#3d3f41";
     }
   }};
 `;

@@ -18,6 +18,7 @@ export const BorderContainer = styled.div`
       case "light":
         return "linear-gradient(90deg, #a3aaed 0%, #dde0ff 50%, #6172fe 100%)";
       case "dark":
+      case "dark-jetbrains":
         return "linear-gradient(90deg, #2f3750 0%, #3e489b 48.96%, #7b85d7 100%)";
     }
   }};
@@ -27,6 +28,7 @@ export const BorderContainer = styled.div`
       case "light":
         return "0px 0px 5px rgba(167, 176, 255, 0.5)";
       case "dark":
+      case "dark-jetbrains":
         return "0px 0px 5px rgba(167, 176, 255, 0.25)";
     }
   }};
@@ -41,12 +43,15 @@ export const Container = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
+  gap: 12px;
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
         return "#fbfbff";
       case "dark":
         return "#1e1e1e";
+      case "dark-jetbrains":
+        return "#3d3f41";
     }
   }};
   padding: 6px 12px;
@@ -67,7 +72,6 @@ export const LogoRotationContainer = styled.div`
 
 export const LogoContainer = styled.div`
   animation: ${rotateAnimation} 6s ease-in-out infinite;
-  margin-right: 12px;
 `;
 
 export const ViewModeButtonContainer = styled.div`
