@@ -1,4 +1,5 @@
 dist/
+storybook-static/
 package.json
 package-lock.json
 tsconfig.json

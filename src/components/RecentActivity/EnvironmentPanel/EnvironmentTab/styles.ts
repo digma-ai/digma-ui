@@ -1,43 +1,14 @@
 import styled from "styled-components";
 import { ContainerProps } from "./types";
 
-const BORDER_RADIUS = 8; // in pixels
-
-export const BorderContainer = styled.div<ContainerProps>`
-  padding: 1px;
-  height: 26px;
-  border-radius: ${BORDER_RADIUS}px;
-  display: inline-block;
-  margin-right: 4px;
-  cursor: pointer;
-  position: relative;
-
-  ${({ isSelected, theme }) => {
-    if (!isSelected) {
-      return "";
-    }
-
-    switch (theme.mode) {
-      case "light":
-        return `
-          background: linear-gradient(125.97deg, #d5e4ff 17.33%, #e4eeff 85.67%);
-          box-shadow: 2px 2px 7px rgba(0, 0, 0, 0.07);
-        `;
-      case "dark":
-        return `
-          background: linear-gradient(109.83deg, #3a3d41 0.01%, rgba(0, 0, 0, 0) 102.21%);
-          box-shadow: 2px 2px 7px rgba(0, 0, 0, 0.3);
-      `;
-    }
-  }}
-`;
-
 export const Container = styled.button<ContainerProps>`
-  font-family: "Nunito", sans-serif;
-  font-weight: 700;
+  position: relative;
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+  font-weight: ${({ isSelected }) => (isSelected ? 700 : 500)};
   font-size: 14px;
   padding: 4px 12px;
-  line-height: 18px;
 
   color: ${({ isSelected, theme }) => {
     if (isSelected) {
@@ -46,6 +17,8 @@ export const Container = styled.button<ContainerProps>`
           return "#002d61";
         case "dark":
           return "#b9c2eb";
+        case "dark-jetbrains":
+          return "#dadada";
       }
     }
 
@@ -54,12 +27,11 @@ export const Container = styled.button<ContainerProps>`
         return "#4d668a";
       case "dark":
         return "#7c7c94";
+      case "dark-jetbrains":
+        return "#9b9b9b";
     }
   }};
 
-  border-radius: ${BORDER_RADIUS}px;
-  height: 100%;
-  border: none;
   background: ${({ isSelected, theme }) => {
     if (!isSelected) {
       return "none";
@@ -70,20 +42,30 @@ export const Container = styled.button<ContainerProps>`
         return "#fbfdff";
       case "dark":
         return "#1e1e1e";
+      case "dark-jetbrains":
+        return "#3d3f41";
     }
   }};
-  cursor: inherit;
 
   &:hover {
+    font-weight: 700;
     color: ${({ theme }) => {
       switch (theme.mode) {
         case "light":
           return "#002d61";
         case "dark":
           return "#b9c2eb";
+        case "dark-jetbrains":
+          return "#dadada";
       }
     }};
   }
+
+  ${({ isSelected }) => {
+    if (isSelected) {
+      return `border-bottom: 1px solid #5154ec`;
+    }
+  }}
 `;
 
 export const BadgeContainer = styled.div`

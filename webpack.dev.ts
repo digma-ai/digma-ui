@@ -1,23 +1,13 @@
 import path from "path";
 import createStyledComponentsTransformer from "typescript-plugin-styled-components";
 import { Configuration as WebpackConfiguration } from "webpack";
-import { Configuration as WebpackDevServerConfiguration } from "webpack-dev-server";
 import { merge } from "webpack-merge";
 import commonConfig from "./webpack.common";
 
 const styledComponentsTransformer = createStyledComponentsTransformer();
 
-const config = merge<
-  WebpackConfiguration & { devServer?: WebpackDevServerConfiguration }
->(commonConfig, {
+const config: WebpackConfiguration = merge(commonConfig, {
   mode: "development",
-  devServer: {
-    static: {
-      directory: path.resolve(__dirname, "./public")
-    },
-    port: 3000,
-    historyApiFallback: true
-  },
   devtool: "eval-source-map",
   module: {
     rules: [

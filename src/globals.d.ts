@@ -1,6 +1,7 @@
 export {};
 
-export type Mode = "light" | "dark";
+export type Environment = "JetBrains" | "VS Code" | "Other";
+export type Mode = "light" | "dark" | "dark-jetbrains";
 
 declare global {
   interface Window {
@@ -15,6 +16,9 @@ declare global {
     sendMessageToDigma: (message: any) => string | undefined;
     cancelMessageToDigma: (request_id: string) => void;
     theme?: Mode;
+    environment?: Environment;
+    mainFont?: string;
+    codeFont?: string;
     recentActivityRefreshInterval?: number;
     recentActivityExpirationLimit?: number;
     recentActivityDocumentationURL?: string;

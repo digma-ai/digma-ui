@@ -11,20 +11,18 @@ npm ci
 Build package:
 
 ```shell
-npm run build
+npm run build:prod
 ```
 
 Build of the package will be in the `dist` directory
 
-## Development
-
-To start application in development mode (with webpack-dev-server):
+### Storybook
 
 ```shell
-npm run start
+npm run storybook
 ```
 
-Application will start on `http://localhost:3000`
+Storybook will start on `http://localhost:6006`
 
 ## License
 

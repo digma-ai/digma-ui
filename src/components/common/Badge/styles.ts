@@ -11,6 +11,7 @@ export const Outline = styled.div`
       case "light":
         return "rgba(224, 0, 54, 0.3)";
       case "dark":
+      case "dark-jetbrains":
         return "rgba(241, 76, 106, 0.4)";
     }
   }};
@@ -26,6 +27,7 @@ export const Badge = styled.div`
       case "light":
         return "#e00036";
       case "dark":
+      case "dark-jetbrains":
         return "#f93967";
     }
   }};

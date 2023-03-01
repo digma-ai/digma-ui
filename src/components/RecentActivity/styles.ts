@@ -10,6 +10,8 @@ export const Container = styled.div`
         return "#f1f5fa";
       case "dark":
         return "#0f0f0f";
+      case "dark-jetbrains":
+        return "#383838";
     }
   }};
 `;
@@ -18,7 +20,6 @@ export const Header = styled.div`
   margin: 8px 0;
   padding-left: 12px;
   line-height: 16px;
-  font-family: "Nunito";
   font-weight: 400;
   font-size: 10px;
   color: ${({ theme }) => {
@@ -26,7 +27,9 @@ export const Header = styled.div`
       case "light":
         return "#b9c0d4";
       case "dark":
-        return "#49494d";
+        return "#b9c2eb";
+      case "dark-jetbrains":
+        return "#9b9b9b";
     }
   }};
 `;
@@ -42,13 +45,14 @@ export const NoDataContainer = styled.div`
         return "#fbfbff";
       case "dark":
         return "#1e1e1e";
+      case "dark-jetbrains":
+        return "#3d3f41";
     }
   }};
   border-radius: 12px;
 `;
 
 export const NoDataTitle = styled.span`
-  font-family: "Nunito";
   font-weight: 600;
   font-size: 12px;
   line-height: 19px;
@@ -57,6 +61,7 @@ export const NoDataTitle = styled.span`
       case "light":
         return "#002d61";
       case "dark":
+      case "dark-jetbrains":
         return "#b9c2eb";
     }
   }};
@@ -64,7 +69,6 @@ export const NoDataTitle = styled.span`
 `;
 
 export const NoDataText = styled.span`
-  font-family: "Nunito";
   font-weight: 400;
   font-size: 10px;
   line-height: 16px;
@@ -73,6 +77,7 @@ export const NoDataText = styled.span`
       case "light":
         return "#828797";
       case "dark":
+      case "dark-jetbrains":
         return "#7c7c94";
     }
   }};
@@ -80,7 +85,6 @@ export const NoDataText = styled.span`
 `;
 
 export const DocumentationLink = styled.a`
-  font-family: "Nunito";
   font-weight: 400;
   font-size: 10px;
   line-height: 16px;
@@ -89,6 +93,7 @@ export const DocumentationLink = styled.a`
       case "light":
         return "#426dda";
       case "dark":
+      case "dark-jetbrains":
         return "#7891d0";
     }
   }};

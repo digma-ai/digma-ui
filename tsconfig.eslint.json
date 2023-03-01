@@ -1,6 +1,6 @@
 {
   "extends": "./tsconfig.json",
-  "include": ["**/*.*"],
+  "include": ["**/*.*", ".storybook/**/*.*"],
   "compilerOptions": {
     "allowJs": true,
     "checkJs": true
