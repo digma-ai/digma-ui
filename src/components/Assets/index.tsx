@@ -7,8 +7,8 @@ import { AssetTypeList } from "./AssetTypeList";
 import * as s from "./styles";
 import {
   AssetEntry,
+  AssetsData,
   AssetsProps,
-  CodeObjectAssetsResponse,
   ExtendedAssetEntry,
   GroupedAssetEntries
 } from "./types";
@@ -26,7 +26,7 @@ const actions = getActions(ACTION_PREFIX, {
   goToAsset: "GO_TO_ASSET"
 });
 
-const groupEntries = (data: CodeObjectAssetsResponse): GroupedAssetEntries => {
+const groupEntries = (data: AssetsData): GroupedAssetEntries => {
   const assetEntries: ExtendedAssetEntry[] = data.serviceAssetsEntries
     .flat()
     .map((entry) =>
@@ -70,7 +70,7 @@ export const Assets = (props: AssetsProps) => {
     }, REFRESH_INTERVAL);
 
     const handleAssetsData = (data: unknown) => {
-      setData(groupEntries(data as CodeObjectAssetsResponse));
+      setData(groupEntries(data as AssetsData));
     };
 
     dispatcher.addActionListener(actions.setData, handleAssetsData);

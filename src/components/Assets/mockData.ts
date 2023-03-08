@@ -1,8 +1,6 @@
-import { CodeObjectAssetsResponse } from "./types";
+import { AssetsData } from "./types";
 
-export const data: CodeObjectAssetsResponse = {
-  accountId: "00000000-0000-0000-0000-000000000000",
-  environment: "ARIK-LAPTOP[LOCAL]",
+export const data: AssetsData = {
   serviceAssetsEntries: [
     {
       itemType: "SpanAssets",

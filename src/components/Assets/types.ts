@@ -23,7 +23,7 @@ export enum INSIGHT_TYPES {
 }
 
 export interface AssetsProps {
-  data?: CodeObjectAssetsResponse;
+  data?: AssetsData;
 }
 
 export interface ExtendedAssetEntry extends AssetEntry {
@@ -82,9 +82,7 @@ export interface AssetEntry {
   firstDataSeenTime: string;
 }
 
-export interface CodeObjectAssetsResponse {
-  accountId: string;
-  environment: string;
+export interface AssetsData {
   serviceAssetsEntries: {
     itemType: string;
     assetEntries: AssetEntry[];
