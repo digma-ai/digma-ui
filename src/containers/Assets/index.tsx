@@ -4,8 +4,9 @@ import {
   initializeDigmaMessageListener,
   sendMessage
 } from "../../api";
-import { App } from "../../components/App";
 import { Assets } from "../../components/Assets";
+import { data } from "../../components/Assets/mockData";
+import { App } from "../../components/common/App";
 import { dispatcher } from "../../dispatcher";
 
 initializeDigmaMessageListener(dispatcher);
@@ -19,7 +20,7 @@ if (rootElement) {
   const root = createRoot(rootElement);
   root.render(
     <App>
-      <Assets />
+      <Assets data={data} />
     </App>
   );
 }

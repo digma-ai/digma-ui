@@ -7,7 +7,7 @@ import {
   initializeDigmaMessageListener,
   sendMessage
 } from "../src/api";
-import { App } from "../src/components/App";
+import { App } from "../src/components/common/App";
 import { dispatcher } from "../src/dispatcher";
 
 export const decorators = [

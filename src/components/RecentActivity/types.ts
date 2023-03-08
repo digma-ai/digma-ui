@@ -1,8 +1,4 @@
-export type Duration = {
-  value: number;
-  unit: string;
-  raw: number;
-};
+import { Duration } from "../../globals";
 
 export type EntrySpan = {
   displayText: string;

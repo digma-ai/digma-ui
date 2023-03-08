@@ -5,6 +5,7 @@ import {
   useReactTable
 } from "@tanstack/react-table";
 import { DefaultTheme, useTheme } from "styled-components";
+import { Duration } from "../../../globals";
 import { timeAgo } from "../../../utils/timeAgo";
 import { Badge } from "../../common/Badge";
 import { Button } from "../../common/Button";
@@ -16,7 +17,7 @@ import { SnailIcon } from "../../common/icons/SnailIcon";
 import { SpotIcon } from "../../common/icons/SpotIcon";
 import { SQLDatabaseIcon } from "../../common/icons/SQLDatabaseIcon";
 import { ViewMode } from "../EnvironmentPanel/types";
-import { ActivityEntry, Duration, EntrySpan, SlimInsight } from "../types";
+import { ActivityEntry, EntrySpan, SlimInsight } from "../types";
 import { SpanLink } from "./SpanLink";
 import * as s from "./styles";
 import { INSIGHT_TYPES, RecentActivityTableProps } from "./types";

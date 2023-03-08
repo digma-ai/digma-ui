@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { getCodeFont } from "../../../App/styles";
+import { getCodeFont } from "../../../common/App/styles";
 
 export const Link = styled.a`
   ${({ theme }) => getCodeFont(theme.codeFont)}
