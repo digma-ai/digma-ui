@@ -1,6 +1,7 @@
-import { AssetEntry } from "../../common/AssetEntry";
+import { AssetEntry as AssetEntryComponent } from "../../common/AssetEntry";
 import { ChevronIcon } from "../../common/icons/ChevronIcon";
 import { DIRECTION } from "../../common/icons/types";
+import { AssetEntry } from "../types";
 import { getAssetTypeInfo } from "../utils";
 import * as s from "./styles";
 import { AssetListProps } from "./types";
@@ -10,8 +11,8 @@ export const AssetList = (props: AssetListProps) => {
     props.onBackButtonClick();
   };
 
-  const handleAssetLinkClick = () => {
-    // TODO
+  const handleAssetLinkClick = (entry: AssetEntry) => {
+    props.onAssetLinkClick(entry);
   };
 
   const assetTypeInfo = getAssetTypeInfo(props.assetTypeId);
@@ -36,21 +37,12 @@ export const AssetList = (props: AssetListProps) => {
             const entries = props.entries[entryId];
             return entries.map((entry) => {
               const services = entries.map((entry) => entry.serviceName);
-              const otherServices = services.filter(
-                (service) => service !== entry.serviceName
-              );
-              const duration = entry.durationPercentiles.find(
-                (duration) => duration.percentile === 0.5
-              )?.currentDuration;
 
               return (
-                <AssetEntry
+                <AssetEntryComponent
                   key={`${entryId}-${entry.serviceName}`}
-                  name={entry.span.displayName}
-                  services={[entry.serviceName, ...otherServices]}
-                  performance={duration}
-                  lastSeenDateTime={entry.lastSpanInstanceInfo.startTime}
-                  insights={entry.insights}
+                  entry={entry}
+                  relatedServices={services}
                   onAssetLinkClick={handleAssetLinkClick}
                 />
               );

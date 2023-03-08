@@ -17,7 +17,10 @@ const Template: ComponentStory<typeof Assets> = (args: AssetsProps) => (
   <Assets {...args} />
 );
 
-export const Default = Template.bind({});
-Default.args = {
+export const Empty = Template.bind({});
+Empty.args = {};
+
+export const WithData = Template.bind({});
+WithData.args = {
   data
 };

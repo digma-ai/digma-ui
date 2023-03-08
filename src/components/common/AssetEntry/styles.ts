@@ -5,7 +5,6 @@ export const Container = styled.div`
   flex-direction: column;
   gap: 8px;
   padding: 8px;
-  height: 76px;
   background: #383838;
   border-radius: 4px;
   color: #9b9b9b;
@@ -52,16 +51,27 @@ export const InsightIconContainer = styled(OpenTelemetryIconContainer)`
 
 export const StatsContainer = styled.div`
   display: flex;
+  justify-content: space-between;
   font-size: 10px;
   line-height: 12px;
-  gap: 24px;
 `;
 
 export const Stats = styled.div`
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
   gap: 4px;
+
+  &:first-child {
+    width: 40%;
+  }
+
+  &:nth-child(2) {
+    width: 20%;
+  }
+
+  &:nth-child(3) {
+    width: 20%;
+  }
 `;
 
 export const ServicesContainer = styled.div`
@@ -91,6 +101,6 @@ export const ValueContainer = styled.div`
 export const Suffix = styled.span`
   font-weight: 500;
   font-size: 11px;
-  line-height: 13px;
+  line-height: 14px;
   color: #565757;
 `;

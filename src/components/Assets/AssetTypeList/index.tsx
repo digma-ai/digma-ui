@@ -8,12 +8,13 @@ const ASSET_TYPE_IDS = [
   "Consumer",
   "DatabaseQueries",
   "CodeLocation",
+  "EndpointClient",
   "Other"
 ];
 
 export const AssetTypeList = (props: AssetListProps) => {
-  const handleSelect = (categoryId: string) => {
-    props.onSelect(categoryId);
+  const handleAssetTypeClick = (categoryId: string) => {
+    props.onAssetTypeSelect(categoryId);
   };
 
   return (
@@ -31,7 +32,7 @@ export const AssetTypeList = (props: AssetListProps) => {
             icon={assetTypeInfo?.icon}
             entryCount={entryCount}
             label={assetTypeInfo?.label}
-            onSelect={handleSelect}
+            onAssetTypeClick={handleAssetTypeClick}
           />
         );
       })}

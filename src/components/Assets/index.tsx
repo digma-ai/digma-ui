@@ -6,6 +6,7 @@ import { AssetList } from "./AssetList";
 import { AssetTypeList } from "./AssetTypeList";
 import * as s from "./styles";
 import {
+  AssetEntry,
   AssetsProps,
   CodeObjectAssetsResponse,
   ExtendedAssetEntry,
@@ -17,7 +18,7 @@ const REFRESH_INTERVAL =
     ? window.assetsRefreshInterval
     : 10 * 1000; // in milliseconds
 
-const ACTION_PREFIX = "RECENT_ACTIVITY";
+const ACTION_PREFIX = "ASSETS";
 
 const actions = getActions(ACTION_PREFIX, {
   getData: "GET_DATA",
@@ -82,29 +83,11 @@ export const Assets = (props: AssetsProps) => {
   }, []);
 
   useEffect(() => {
-    const assetEntries: ExtendedAssetEntry[] = props.data.serviceAssetsEntries
-      .flat()
-      .map((entry) =>
-        entry.assetEntries.map((entry) => ({
-          ...entry,
-          id: entry.span.spanCodeObjectId
-        }))
-      )
-      .flat();
+    if (!props.data) {
+      return;
+    }
 
-    const assetTypes = groupBy<ExtendedAssetEntry>(assetEntries, "assetType");
-
-    const groupedAssetEntries: {
-      [key: string]: { [key: string]: ExtendedAssetEntry[] };
-    } = {};
-
-    Object.keys(assetTypes).forEach((assetType) => {
-      groupedAssetEntries[assetType] = groupBy<ExtendedAssetEntry>(
-        assetTypes[assetType],
-        "id"
-      );
-    });
-
+    const groupedAssetEntries = groupEntries(props.data);
     setData(groupedAssetEntries);
   }, [props.data]);
 
@@ -112,8 +95,15 @@ export const Assets = (props: AssetsProps) => {
     setSelectedAssetTypeId(null);
   };
 
-  const handleSelect = (assetTypeId: string) => {
+  const handleAssetTypeSelect = (assetTypeId: string) => {
     setSelectedAssetTypeId(assetTypeId);
+  };
+
+  const handleAssetLinkClick = (entry: AssetEntry) => {
+    window.sendMessageToDigma({
+      action: actions.goToAsset,
+      data: { entry }
+    });
   };
 
   const renderContent = useMemo((): JSX.Element => {
@@ -122,7 +112,9 @@ export const Assets = (props: AssetsProps) => {
     }
 
     if (!selectedAssetTypeId) {
-      return <AssetTypeList data={data} onSelect={handleSelect} />;
+      return (
+        <AssetTypeList data={data} onAssetTypeSelect={handleAssetTypeSelect} />
+      );
     }
 
     const selectedAssetTypeEntries = data[selectedAssetTypeId] || [];
@@ -130,6 +122,7 @@ export const Assets = (props: AssetsProps) => {
     return (
       <AssetList
         onBackButtonClick={handleBackButtonClick}
+        onAssetLinkClick={handleAssetLinkClick}
         assetTypeId={selectedAssetTypeId}
         entries={selectedAssetTypeEntries}
       />

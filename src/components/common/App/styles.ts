@@ -14,8 +14,8 @@ export const getMainFont = (customFont: string): FlattenSimpleInterpolation => {
   // VS Code: https://github.com/microsoft/vscode/blob/main/src/vs/workbench/browser/media/style.css#L10
   //
   // JetBrains:
-  // https://jetbrains.github.io/ui/principles/typography/#ide-fonto
-  // https://github.com/JetBrains/intellij-community/blob/master/platform/platfrm-impl/src/com/intellij/ide/ui/laf/LafManagerImpl.kt#L1278
+  // https://jetbrains.github.io/ui/principles/typography/#ide-font
+  // https://github.com/JetBrains/intellij-community/blob/master/platform/platform-impl/src/com/intellij/ide/ui/laf/LafManagerImpl.kt#L1278
   if (os === "Linux") {
     osFont = 'system-ui, Ubuntu, "Droid Sans"';
   }

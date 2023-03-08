@@ -28,3 +28,7 @@ export interface RecentActivityData {
   environments: string[];
   entries: ActivityEntry[];
 }
+
+export interface RecentActivityProps {
+  data?: RecentActivityData;
+}

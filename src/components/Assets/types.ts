@@ -23,7 +23,7 @@ export enum INSIGHT_TYPES {
 }
 
 export interface AssetsProps {
-  data: CodeObjectAssetsResponse;
+  data?: CodeObjectAssetsResponse;
 }
 
 export interface ExtendedAssetEntry extends AssetEntry {

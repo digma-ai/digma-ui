@@ -9,8 +9,17 @@ export const AssetEntry = (props: AssetEntryProps) => {
   const theme = useTheme();
 
   const handleLinkClick = () => {
-    props.onAssetLinkClick();
+    props.onAssetLinkClick(props.entry);
   };
+
+  const name = props.entry.span.displayName;
+  const otherServices = props.relatedServices.filter(
+    (service) => service !== props.entry.serviceName
+  );
+  const performanceDuration = props.entry.durationPercentiles.find(
+    (duration) => duration.percentile === 0.5
+  )?.currentDuration;
+  const lastSeenDateTime = props.entry.lastSpanInstanceInfo.startTime;
 
   return (
     <s.Container>
@@ -18,11 +27,11 @@ export const AssetEntry = (props: AssetEntryProps) => {
         <s.OpenTelemetryIconContainer>
           <OpenTelemetryLogoIcon />
         </s.OpenTelemetryIconContainer>
-        <s.Link onClick={() => handleLinkClick()} title={props.name}>
-          {props.name}
+        <s.Link onClick={() => handleLinkClick()} title={name}>
+          {name}
         </s.Link>
         <s.InsightIconsContainer>
-          {props.insights.map((insight) => (
+          {props.entry.insights.map((insight) => (
             <s.InsightIconContainer
               key={insight.type}
               title={getInsightInfo(insight.type)?.label || insight.type}
@@ -36,10 +45,10 @@ export const AssetEntry = (props: AssetEntryProps) => {
         <s.Stats>
           <span>Services</span>
           <s.ServicesContainer>
-            <s.ServiceName>{props.services[0]}</s.ServiceName>
-            {props.services.length > 1 && (
-              <span title={props.services.slice(1).join(", ")}>
-                +{props.services.length - 1}
+            <s.ServiceName>{props.entry.serviceName}</s.ServiceName>
+            {otherServices.length > 0 && (
+              <span title={otherServices.join(", ")}>
+                +{otherServices.length}
               </span>
             )}
           </s.ServicesContainer>
@@ -47,14 +56,16 @@ export const AssetEntry = (props: AssetEntryProps) => {
         <s.Stats>
           <span>Performance</span>
           <s.ValueContainer>
-            {props.performance ? props.performance.value : "N/A"}
-            {props.performance && <s.Suffix>{props.performance.unit}</s.Suffix>}
+            {performanceDuration ? performanceDuration.value : "N/A"}
+            {performanceDuration && (
+              <s.Suffix>{performanceDuration.unit}</s.Suffix>
+            )}
           </s.ValueContainer>
         </s.Stats>
         <s.Stats>
           <span>Latest</span>
-          <s.ValueContainer title={new Date(props.lastSeenDateTime).toString()}>
-            {timeAgo(props.lastSeenDateTime)}
+          <s.ValueContainer title={new Date(lastSeenDateTime).toString()}>
+            {timeAgo(lastSeenDateTime)}
             <s.Suffix>ago</s.Suffix>
           </s.ValueContainer>
         </s.Stats>

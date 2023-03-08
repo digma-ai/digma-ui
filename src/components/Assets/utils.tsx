@@ -126,6 +126,9 @@ export const getAssetTypeInfo = (
       label: "Endpoints",
       icon: EndpointIcon
     },
+    EndpointClient: {
+      label: "HTTP Clients"
+    },
     Consumer: {
       label: "Consumers",
       icon: UserIcon

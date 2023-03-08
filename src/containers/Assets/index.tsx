@@ -5,7 +5,6 @@ import {
   sendMessage
 } from "../../api";
 import { Assets } from "../../components/Assets";
-import { data } from "../../components/Assets/mockData";
 import { App } from "../../components/common/App";
 import { dispatcher } from "../../dispatcher";
 
@@ -20,7 +19,7 @@ if (rootElement) {
   const root = createRoot(rootElement);
   root.render(
     <App>
-      <Assets data={data} />
+      <Assets />
     </App>
   );
 }

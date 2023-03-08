@@ -6,5 +6,5 @@ export interface AssetTypeListItemProps {
   label?: string;
   icon?: MemoExoticComponent<(props: IconProps) => JSX.Element>;
   entryCount: number;
-  onSelect: (assetTypeId: string) => void;
+  onAssetTypeClick: (assetTypeId: string) => void;
 }

@@ -4,4 +4,5 @@ export interface AssetListProps {
   onBackButtonClick: () => void;
   assetTypeId: string;
   entries: { [key: string]: AssetEntry[] };
+  onAssetLinkClick: (entry: AssetEntry) => void;
 }

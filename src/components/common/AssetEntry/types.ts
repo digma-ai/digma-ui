@@ -1,11 +1,7 @@
-import { Duration } from "../../../globals";
-import { Insight } from "../../Assets/types";
+import { AssetEntry } from "../../Assets/types";
 
 export interface AssetEntryProps {
-  name: string;
-  services: string[];
-  performance?: Duration;
-  lastSeenDateTime: string;
-  insights: Insight[];
-  onAssetLinkClick: () => void;
+  entry: AssetEntry;
+  relatedServices: string[];
+  onAssetLinkClick: (entry: AssetEntry) => void;
 }
