@@ -28279,6 +28279,61 @@ export const data: AssetsData = {
             }
           },
           firstDataSeenTime: "2023-02-19T10:09:01.942575Z"
+        },
+        {
+          span: {
+            classification: "EndpointClient",
+            role: "Unknown",
+            name: "GET PetClinicWithAgent /",
+            displayName: "GET",
+            instrumentationLibrary: "io.opentelemetry.okhttp-3.0",
+            spanCodeObjectId:
+              "span:io.opentelemetry.okhttp-3.0$_$GET PetClinicWithAgent /",
+            methodCodeObjectId: "",
+            kind: "Client",
+            codeObjectId: ""
+          },
+          assetType: "EndpointClient",
+          serviceName: "ClientTesterOfPetClinic",
+          endpointCodeObjectId: null,
+          durationPercentiles: [
+            {
+              percentile: 0.5,
+              currentDuration: {
+                value: 10.55,
+                unit: "ms",
+                raw: 10549000.0
+              },
+              previousDuration: null,
+              changeTime: null,
+              changeVerified: null,
+              traceIds: []
+            },
+            {
+              percentile: 0.95,
+              currentDuration: {
+                value: 16.34,
+                unit: "ms",
+                raw: 16340300.0
+              },
+              previousDuration: null,
+              changeTime: null,
+              changeVerified: null,
+              traceIds: []
+            }
+          ],
+          insights: [],
+          lastSpanInstanceInfo: {
+            traceId: "6FFAEE308F746E0982B60FF8DF656E8F",
+            spanId: "FCCF0B135AE9DA98",
+            startTime: "2023-03-06T09:27:44.196598Z",
+            duration: {
+              value: 8.42,
+              unit: "ms",
+              raw: 8421700.0
+            }
+          },
+          firstDataSeenTime: "2023-03-06T07:48:02.057359Z"
         }
       ],
       accountId: "00000000-0000-0000-0000-000000000000",

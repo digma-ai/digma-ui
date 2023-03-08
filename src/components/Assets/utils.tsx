@@ -4,6 +4,7 @@ import { BottleneckIcon } from "../common/icons/BottleneckIcon";
 import { CodeMarkerPinIcon } from "../common/icons/CodeMarkerPinIcon";
 import { DatabaseIcon } from "../common/icons/DatabaseIcon";
 import { EndpointIcon } from "../common/icons/EndpointIcon";
+import { HTTPClientIcon } from "../common/icons/HTTPClientIcon";
 import { MeterHighIcon } from "../common/icons/MeterHighIcon";
 import { MeterLowIcon } from "../common/icons/MeterLowIcon";
 import { ScalesIcon } from "../common/icons/ScalesIcon";
@@ -127,7 +128,8 @@ export const getAssetTypeInfo = (
       icon: EndpointIcon
     },
     EndpointClient: {
-      label: "HTTP Clients"
+      label: "HTTP Clients",
+      icon: HTTPClientIcon
     },
     Consumer: {
       label: "Consumers",
