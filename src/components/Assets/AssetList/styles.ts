@@ -41,7 +41,6 @@ export const List = styled.ul`
 
 export const ListItem = styled.li`
   display: flex;
-  /* justify-content: space-between; */
 `;
 
 export const Link = styled.a`
