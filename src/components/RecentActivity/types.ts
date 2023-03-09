@@ -1,8 +1,4 @@
-export type Duration = {
-  value: number;
-  unit: string;
-  raw: number;
-};
+import { Duration } from "../../globals";
 
 export type EntrySpan = {
   displayText: string;
@@ -31,4 +27,8 @@ export type ActivityEntry = {
 export interface RecentActivityData {
   environments: string[];
   entries: ActivityEntry[];
+}
+
+export interface RecentActivityProps {
+  data?: RecentActivityData;
 }

@@ -3,8 +3,8 @@ import {
   css,
   FlattenSimpleInterpolation
 } from "styled-components";
-import { environment } from "../../environment";
-import { os } from "../../os";
+import { environment } from "../../../environment";
+import { os } from "../../../os";
 
 export const getMainFont = (customFont: string): FlattenSimpleInterpolation => {
   let osFont = "";
@@ -12,6 +12,7 @@ export const getMainFont = (customFont: string): FlattenSimpleInterpolation => {
   // Sources
   //
   // VS Code: https://github.com/microsoft/vscode/blob/main/src/vs/workbench/browser/media/style.css#L10
+  //
   // JetBrains:
   // https://jetbrains.github.io/ui/principles/typography/#ide-font
   // https://github.com/JetBrains/intellij-community/blob/master/platform/platform-impl/src/com/intellij/ide/ui/laf/LafManagerImpl.kt#L1278
@@ -53,7 +54,9 @@ export const getCodeFont = (customFont: string): FlattenSimpleInterpolation => {
     }
   }
 
-  // Source: https://jetbrains.github.io/ui/principles/typography/#06
+  // Sources:
+  // https://jetbrains.github.io/ui/principles/typography/#06
+  // https://github.com/JetBrains/intellij-community/blob/master/platform/editor-ui-api/src/com/intellij/openapi/editor/colors/FontPreferences.java#L111
   if (environment === "JetBrains") {
     osFont = '"JetBrains Mono"';
   }

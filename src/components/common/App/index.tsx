@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { ThemeProvider } from "styled-components";
-import { dispatcher } from "../../dispatcher";
-import { Mode } from "../../globals";
-import { isObject } from "../../typeGuards/isObject";
-import { isString } from "../../typeGuards/isString";
+import { dispatcher } from "../../../dispatcher";
+import { Mode } from "../../../globals";
+import { isObject } from "../../../typeGuards/isObject";
+import { isString } from "../../../typeGuards/isString";
 import { GlobalStyle } from "./styles";
 import { AppProps } from "./types";
 

@@ -9,7 +9,7 @@ import { EnvironmentPanel } from "./EnvironmentPanel";
 import { ViewMode } from "./EnvironmentPanel/types";
 import { isRecent, RecentActivityTable } from "./RecentActivityTable";
 import * as s from "./styles";
-import { EntrySpan, RecentActivityData } from "./types";
+import { EntrySpan, RecentActivityData, RecentActivityProps } from "./types";
 
 const documentationURL =
   typeof window.recentActivityDocumentationURL === "string"
@@ -56,7 +56,7 @@ const renderNoData = () => {
   );
 };
 
-export const RecentActivity = () => {
+export const RecentActivity = (props: RecentActivityProps) => {
   const [selectedEnvironment, setSelectedEnvironment] = useState<string>();
   const [data, setData] = useState<RecentActivityData>();
   const previousSelectedEnvironment = usePrevious(selectedEnvironment);
@@ -87,6 +87,14 @@ export const RecentActivity = () => {
       );
     };
   }, []);
+
+  useEffect(() => {
+    if (!props.data) {
+      return;
+    }
+
+    setData(props.data);
+  }, [props.data]);
 
   useEffect(() => {
     if (!previousSelectedEnvironment && data && data.environments.length) {

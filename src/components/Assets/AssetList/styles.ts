@@ -10,6 +10,7 @@ export const BackButton = styled.button`
   border: none;
   display: flex;
   padding: 0;
+  cursor: pointer;
 `;
 
 export const Header = styled.div`
@@ -40,7 +41,6 @@ export const List = styled.ul`
 
 export const ListItem = styled.li`
   display: flex;
-  justify-content: space-between;
 `;
 
 export const Link = styled.a`

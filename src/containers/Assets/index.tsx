@@ -4,8 +4,8 @@ import {
   initializeDigmaMessageListener,
   sendMessage
 } from "../../api";
-import { App } from "../../components/App";
 import { Assets } from "../../components/Assets";
+import { App } from "../../components/common/App";
 import { dispatcher } from "../../dispatcher";
 
 initializeDigmaMessageListener(dispatcher);
