@@ -1,7 +1,6 @@
-import { AssetEntry } from "../../Assets/types";
+import { ExtendedAssetEntryWithServices } from "../../Assets/AssetList/types";
 
 export interface AssetEntryProps {
-  entry: AssetEntry;
-  relatedServices: string[];
-  onAssetLinkClick: (entry: AssetEntry) => void;
+  entry: ExtendedAssetEntryWithServices;
+  onAssetLinkClick: (entry: ExtendedAssetEntryWithServices) => void;
 }

@@ -25,14 +25,38 @@ export const Header = styled.div`
   padding: 8px 12px 8px 8px;
 `;
 
+export const Toolbar = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  padding: 8px;
+  gap: 12px;
+`;
+
+export const SortingMenuContainer = styled.div`
+  display: flex;
+  gap: 2px;
+  font-weight: 500;
+  font-size: 10px;
+  line-height: 12px;
+  color: #9b9b9b;
+  align-items: center;
+  height: 20px;
+`;
+
+export const SortingLabel = styled.span`
+  font-weight: 500;
+  font-size: 10px;
+  line-height: 12px;
+  color: #dadada;
+`;
+
 export const ItemsCount = styled.span`
   margin-left: auto;
-  font-weight: 400;
   color: #9f9f9f;
 `;
 
 export const List = styled.ul`
-  padding: 8px 9px;
+  padding: 0 9px 8px;
   display: flex;
   flex-direction: column;
   gap: 8px;

@@ -18,8 +18,9 @@ const Template: ComponentStory<typeof AssetEntry> = (args: AssetEntryProps) => (
 
 export const Default = Template.bind({});
 Default.args = {
-  relatedServices: ["service1", "service2"],
   entry: {
+    id: "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /SampleInsights/ErrorRecordedOnLocalRootSpan",
+    relatedServices: ["service1", "service2"],
     span: {
       classification: "Endpoint",
       role: "Entry",

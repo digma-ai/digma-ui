@@ -13,12 +13,13 @@ export const AssetEntry = (props: AssetEntryProps) => {
   };
 
   const name = props.entry.span.displayName;
-  const otherServices = props.relatedServices.filter(
+  const otherServices = props.entry.relatedServices.filter(
     (service) => service !== props.entry.serviceName
   );
   const performanceDuration = props.entry.durationPercentiles.find(
     (duration) => duration.percentile === 0.5
   )?.currentDuration;
+
   const lastSeenDateTime = props.entry.lastSpanInstanceInfo.startTime;
 
   return (
