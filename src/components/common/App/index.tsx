@@ -7,11 +7,10 @@ import { isString } from "../../../typeGuards/isString";
 import { GlobalStyle } from "./styles";
 import { AppProps } from "./types";
 
+export const THEMES = ["light", "dark", "dark-jetbrains"];
+
 const isMode = (mode: unknown): mode is Mode => {
-  return (
-    typeof mode === "string" &&
-    ["light", "dark", "dark-jetbrains"].includes(mode)
-  );
+  return typeof mode === "string" && THEMES.includes(mode);
 };
 
 const getMode = (): Mode => {
@@ -35,6 +34,13 @@ export const App = (props: AppProps) => {
   const [mode, setMode] = useState(getMode());
   const [mainFont, setMainFont] = useState("");
   const [codeFont, setCodeFont] = useState("");
+
+  useEffect(() => {
+    if (!props.theme) {
+      return;
+    }
+    setMode(props.theme);
+  }, [props.theme]);
 
   useEffect(() => {
     const handleSetColorMode = (data: unknown) => {

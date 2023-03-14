@@ -1,19 +1,19 @@
 import { Duration } from "../../globals";
 
-export type EntrySpan = {
+export interface EntrySpan {
   displayText: string;
   serviceName: string;
   scopeId: string;
   spanCodeObjectId: string;
   methodCodeObjectId: string | null;
-};
+}
 
-export type SlimInsight = {
+export interface SlimInsight {
   type: string;
   codeObjectIds: string[];
-};
+}
 
-export type ActivityEntry = {
+export interface ActivityEntry {
   environment: string;
   traceFlowDisplayName: string;
   firstEntrySpan: EntrySpan;
@@ -22,7 +22,7 @@ export type ActivityEntry = {
   latestTraceTimestamp: string;
   latestTraceDuration: Duration;
   slimAggregatedInsights: SlimInsight[];
-};
+}
 
 export interface RecentActivityData {
   environments: string[];
