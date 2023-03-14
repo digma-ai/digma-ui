@@ -13,7 +13,7 @@ export const AssetEntry = (props: AssetEntryProps) => {
   };
 
   const name = props.entry.span.displayName;
-  const otherServices = props.relatedServices.filter(
+  const otherServices = props.entry.relatedServices.filter(
     (service) => service !== props.entry.serviceName
   );
   const duration = props.entry.durationPercentiles.find(

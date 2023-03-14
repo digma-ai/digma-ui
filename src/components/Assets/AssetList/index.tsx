@@ -6,58 +6,44 @@ import { Menu } from "../../common/Menu";
 import { Popover } from "../../common/Popover";
 import { PopoverContent } from "../../common/Popover/PopoverContent";
 import { PopoverTrigger } from "../../common/Popover/PopoverTrigger";
-import { AssetEntry } from "../types";
 import { getAssetTypeInfo } from "../utils";
 import * as s from "./styles";
-import { AssetListProps } from "./types";
+import {
+  AssetListProps,
+  ExtendedAssetEntryWithServices,
+  Sorting
+} from "./types";
 
-const SORTING_CRITERION = [
-  "Insight Importance",
-  "Services",
-  "Duration",
-  "Latest",
-  "Errors"
-];
-
-interface AssetEntryWithServices extends AssetEntry {
-  id: string;
-  services: string[];
-}
-
-interface Sorting {
-  criterion: string;
-  isDesc: boolean;
-}
+const SORTING_CRITERION = ["Critical insights", "Performance", "Name"];
 
 const sortEntries = (
-  entries: AssetEntryWithServices[],
+  entries: ExtendedAssetEntryWithServices[],
   sorting: Sorting
-): AssetEntryWithServices[] => {
+): ExtendedAssetEntryWithServices[] => {
   entries = [...entries];
 
-  const sortByName = (a: AssetEntryWithServices, b: AssetEntryWithServices) =>
-    a.span.displayName.localeCompare(b.span.displayName);
+  const sortByName = (
+    a: ExtendedAssetEntryWithServices,
+    b: ExtendedAssetEntryWithServices
+  ) => a.span.displayName.localeCompare(b.span.displayName);
 
   switch (sorting.criterion) {
-    case "Insight Importance":
+    case "Critical insights":
       return entries.sort((a, b) => {
-        const aImportance = Math.min(...a.insights.map((x) => x.importance));
-        const bImportance = Math.min(...b.insights.map((x) => x.importance));
+        const aCriticalInsights = a.insights.filter(
+          (x) => x.importance < 3
+        ).length;
+        const bCriticalInsights = b.insights.filter(
+          (x) => x.importance < 3
+        ).length;
 
         return (
           (sorting.isDesc
-            ? aImportance - bImportance
-            : bImportance - aImportance) || sortByName(a, b)
+            ? aCriticalInsights - bCriticalInsights
+            : bCriticalInsights - aCriticalInsights) || sortByName(a, b)
         );
       });
-    case "Services":
-      return entries.sort(
-        (a, b) =>
-          (sorting.isDesc
-            ? b.serviceName.localeCompare(a.serviceName)
-            : a.serviceName.localeCompare(b.serviceName)) || sortByName(a, b)
-      );
-    case "Duration":
+    case "Performance":
       return entries.sort((a, b) => {
         const aDuration = a.durationPercentiles.find(
           (duration) => duration.percentile === 0.5
@@ -83,26 +69,8 @@ const sortEntries = (
           sortByName(a, b)
         );
       });
-
-    case "Latest":
-      return entries.sort((a, b) => {
-        const aDateTime = new Date(a.lastSpanInstanceInfo.startTime).valueOf();
-        const bDateTime = new Date(b.lastSpanInstanceInfo.startTime).valueOf();
-
-        return (
-          (sorting.isDesc ? bDateTime - aDateTime : aDateTime - bDateTime) ||
-          sortByName(a, b)
-        );
-      });
-    case "Errors":
-      return entries.sort((a, b) => {
-        const aErrors = a.insights.filter((x) => x.type === "Errors").length;
-        const bErrors = b.insights.filter((x) => x.type === "Errors").length;
-        return (
-          (sorting.isDesc ? bErrors - aErrors : aErrors - bErrors) ||
-          sortByName(a, b)
-        );
-      });
+    case "Name":
+      return entries.sort(sortByName);
     default:
       return entries;
   }
@@ -113,7 +81,7 @@ export const AssetList = (props: AssetListProps) => {
     criterion: string;
     isDesc: boolean;
   }>({
-    criterion: "Insight Importance",
+    criterion: "Critical insights",
     isDesc: true
   });
   const [isSortingMenuOpen, setIsSortingMenuOpen] = useState(false);
@@ -122,7 +90,7 @@ export const AssetList = (props: AssetListProps) => {
     props.onBackButtonClick();
   };
 
-  const handleAssetLinkClick = (entry: AssetEntry) => {
+  const handleAssetLinkClick = (entry: ExtendedAssetEntryWithServices) => {
     props.onAssetLinkClick(entry);
   };
 
@@ -147,17 +115,17 @@ export const AssetList = (props: AssetListProps) => {
 
   const assetTypeInfo = getAssetTypeInfo(props.assetTypeId);
 
-  const entries = useMemo(
+  const entries: ExtendedAssetEntryWithServices[] = useMemo(
     () =>
       Object.keys(props.entries)
         .map((entryId) => {
           const entries = props.entries[entryId];
           return entries.map((entry) => {
-            const services = entries.map((entry) => entry.serviceName);
+            const relatedServices = entries.map((entry) => entry.serviceName);
             return {
               ...entry,
               id: entryId,
-              services
+              relatedServices
             };
           });
         })
@@ -214,7 +182,6 @@ export const AssetList = (props: AssetListProps) => {
               <AssetEntryComponent
                 key={`${entry.id}-${entry.serviceName}`}
                 entry={entry}
-                relatedServices={entry.services}
                 onAssetLinkClick={handleAssetLinkClick}
               />
             );
