@@ -16,7 +16,7 @@ export const AssetEntry = (props: AssetEntryProps) => {
   const otherServices = props.entry.relatedServices.filter(
     (service) => service !== props.entry.serviceName
   );
-  const duration = props.entry.durationPercentiles.find(
+  const performanceDuration = props.entry.durationPercentiles.find(
     (duration) => duration.percentile === 0.5
   )?.currentDuration;
 
@@ -55,10 +55,12 @@ export const AssetEntry = (props: AssetEntryProps) => {
           </s.ServicesContainer>
         </s.Stats>
         <s.Stats>
-          <span>Duration</span>
+          <span>Performance</span>
           <s.ValueContainer>
-            {duration ? duration.value : "N/A"}
-            {duration && <s.Suffix>{duration.unit}</s.Suffix>}
+            {performanceDuration ? performanceDuration.value : "N/A"}
+            {performanceDuration && (
+              <s.Suffix>{performanceDuration.unit}</s.Suffix>
+            )}
           </s.ValueContainer>
         </s.Stats>
         <s.Stats>
