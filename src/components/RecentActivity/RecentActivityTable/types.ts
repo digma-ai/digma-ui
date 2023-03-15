@@ -3,7 +3,7 @@ import { ActivityEntry, EntrySpan } from "../types";
 
 export interface RecentActivityTableProps {
   data: ActivityEntry[];
-  onSpanLinkClick: (span: EntrySpan) => void;
+  onSpanLinkClick: (span: EntrySpan, environment: string) => void;
   onTraceButtonClick: (traceId: string, span: EntrySpan) => void;
   viewMode: ViewMode;
 }

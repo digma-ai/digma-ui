@@ -90,19 +90,19 @@ export const isRecent = (entry: ActivityEntry): boolean => {
 export const RecentActivityTable = (props: RecentActivityTableProps) => {
   const theme = useTheme();
 
-  const handleSpanLinkClick = (span: EntrySpan) => {
-    props.onSpanLinkClick(span);
+  const handleSpanLinkClick = (span: EntrySpan, environment: string) => {
+    props.onSpanLinkClick(span, environment);
   };
 
   const handleTraceButtonClick = (traceId: string, span: EntrySpan) => {
     props.onTraceButtonClick(traceId, span);
   };
 
-  const renderSpanLink = (span: EntrySpan) => (
+  const renderSpanLink = (span: EntrySpan, environment: string) => (
     <SpanLink
       key={span.spanCodeObjectId}
       onClick={() => {
-        handleSpanLinkClick(span);
+        handleSpanLinkClick(span, environment);
       }}
       text={span.displayText}
     />
@@ -110,8 +110,10 @@ export const RecentActivityTable = (props: RecentActivityTableProps) => {
 
   const renderSpanLinks = (entry: ActivityEntry) => (
     <span>
-      {renderSpanLink(entry.firstEntrySpan)}
-      {entry.lastEntrySpan && <> to {renderSpanLink(entry.lastEntrySpan)}</>}
+      {renderSpanLink(entry.firstEntrySpan, entry.environment)}
+      {entry.lastEntrySpan && (
+        <> to {renderSpanLink(entry.lastEntrySpan, entry.environment)}</>
+      )}
     </span>
   );
 
