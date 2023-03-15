@@ -48,6 +48,7 @@ export const SortingLabel = styled.span`
   font-size: 10px;
   line-height: 12px;
   color: #dadada;
+  text-transform: capitalize;
 `;
 
 export const ItemsCount = styled.span`

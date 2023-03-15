@@ -106,11 +106,12 @@ export const RecentActivity = (props: RecentActivityProps) => {
     setSelectedEnvironment(environment);
   };
 
-  const handleSpanLinkClick = (span: EntrySpan) => {
+  const handleSpanLinkClick = (span: EntrySpan, environment: string) => {
     window.sendMessageToDigma({
       action: actions.goToSpan,
       payload: {
-        span
+        span,
+        environment
       }
     });
   };
