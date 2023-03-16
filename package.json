@@ -74,6 +74,7 @@
   "dependencies": {
     "@floating-ui/react": "^0.21.0",
     "@tanstack/react-table": "^8.7.8",
+    "copy-to-clipboard": "^3.3.3",
     "date-fns": "^2.29.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

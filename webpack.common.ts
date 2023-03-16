@@ -9,6 +9,10 @@ const entries = {
   recentActivity: path.resolve(
     __dirname,
     "./src/containers/RecentActivity/index.tsx"
+  ),
+  installationWizard: path.resolve(
+    __dirname,
+    "./src/containers/InstallationWizard/index.tsx"
   )
 };
 
