@@ -1,6 +1,35 @@
 import React from "react";
 import { LoaderProps } from "./types";
 
+import styled, { keyframes } from "styled-components";
+
+const rotateAnimation = keyframes`
+  from { transform: rotate(0); }
+  to { transform: rotate(360deg); }
+`;
+
+const PupilOuterCircle = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 90deg at 50% 50%,
+    rgba(53, 56, 205, 0) 0deg,
+    #3538cd 360deg
+  );
+  animation: ${rotateAnimation} 1s linear infinite;
+`;
+
+const PupilInnerCircle = styled.div`
+  width: 83%;
+  height: 83%;
+  border-radius: 50%;
+  background: #f3f3f3;
+`;
+
 const LoaderComponent = (props: LoaderProps) => {
   switch (props.status) {
     case "success":
@@ -189,54 +218,16 @@ const LoaderComponent = (props: LoaderProps) => {
             fill="#353F6E"
             d="M112.241 75.0235C112.241 75.0235 121.052 67.0769 121.32 66.789C121.595 66.364 121.753 65.8742 121.779 65.3687C121.804 64.8632 121.696 64.36 121.464 63.9098C120.898 63.1132 121.349 64.4856 120.927 65.4358C120.505 66.3859 110.12 72.1539 110.12 72.1539L112.241 75.0235Z"
           />
-          <path
-            fill="url(#a)"
-            fillRule="evenodd"
-            d="M48.75 97.5C55.0322 97.5 60.125 92.4072 60.125 86.125C60.125 79.8428 55.0322 74.75 48.75 74.75C42.4678 74.75 37.375 79.8428 37.375 86.125C37.375 92.4072 42.4678 97.5 48.75 97.5ZM48.75 95.6042C53.9852 95.6042 58.2292 91.3602 58.2292 86.125C58.2292 80.8898 53.9852 76.6458 48.75 76.6458C43.5148 76.6458 39.2708 80.8898 39.2708 86.125C39.2708 91.3602 43.5148 95.6042 48.75 95.6042Z"
-            clipRule="evenodd"
-          />
-          <path
-            fill="#3538CD"
-            fillRule="evenodd"
-            d="M58.97 83.8507C59.4893 83.7837 59.9645 84.1503 60.0315 84.6695C60.0937 85.1522 60.125 85.6383 60.125 86.125C60.125 86.6485 59.7006 87.0729 59.177 87.0729C58.6535 87.0729 58.2291 86.6485 58.2291 86.125C58.2291 85.7195 58.2031 85.3143 58.1512 84.9121C58.0842 84.3929 58.4508 83.9177 58.97 83.8507Z"
-            clipRule="evenodd"
-          />
-          <path
-            fill="url(#b)"
-            fillRule="evenodd"
-            d="M94.25 97.5C100.532 97.5 105.625 92.4072 105.625 86.125C105.625 79.8428 100.532 74.75 94.25 74.75C87.9678 74.75 82.875 79.8428 82.875 86.125C82.875 92.4072 87.9678 97.5 94.25 97.5ZM94.25 95.6042C99.4852 95.6042 103.729 91.3602 103.729 86.125C103.729 80.8898 99.4852 76.6458 94.25 76.6458C89.0148 76.6458 84.7708 80.8898 84.7708 86.125C84.7708 91.3602 89.0148 95.6042 94.25 95.6042Z"
-            clipRule="evenodd"
-          />
-          <path
-            fill="#3538CD"
-            fillRule="evenodd"
-            d="M104.47 83.8507C104.989 83.7837 105.464 84.1503 105.531 84.6695C105.594 85.1522 105.625 85.6383 105.625 86.125C105.625 86.6485 105.201 87.0729 104.677 87.0729C104.154 87.0729 103.729 86.6485 103.729 86.125C103.729 85.7195 103.703 85.3143 103.651 84.9121C103.584 84.3929 103.951 83.9177 104.47 83.8507Z"
-            clipRule="evenodd"
-          />
-          <defs>
-            <radialGradient
-              id="a"
-              cx="0"
-              cy="0"
-              r="1"
-              gradientTransform="matrix(11 0 0 11 48.75 86.13)"
-              gradientUnits="userSpaceOnUse"
-            >
-              <stop stopColor="#3538CD" stopOpacity="0" />
-              <stop offset="1" stopColor="#3538CD" />
-            </radialGradient>
-            <radialGradient
-              id="b"
-              cx="0"
-              cy="0"
-              r="1"
-              gradientTransform="matrix(11 0 0 11 94.25 86.13)"
-              gradientUnits="userSpaceOnUse"
-            >
-              <stop stopColor="#3538CD" stopOpacity="0" />
-              <stop offset="1" stopColor="#3538CD" />
-            </radialGradient>
-          </defs>
+          <foreignObject x="37.375" y="74.75" width="22.75" height="22.75">
+            <PupilOuterCircle>
+              <PupilInnerCircle />
+            </PupilOuterCircle>
+          </foreignObject>
+          <foreignObject x="82.875" y="74.75" width="22.75" height="22.75">
+            <PupilOuterCircle>
+              <PupilInnerCircle />
+            </PupilOuterCircle>
+          </foreignObject>
         </svg>
       );
   }
