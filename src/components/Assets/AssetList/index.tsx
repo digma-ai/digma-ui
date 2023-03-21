@@ -14,7 +14,12 @@ import {
   Sorting
 } from "./types";
 
-const SORTING_CRITERION = ["Critical insights", "Performance", "Name"];
+const SORTING_CRITERION = [
+  "Critical insights",
+  "Performance",
+  "Latest",
+  "Name"
+];
 
 const sortEntries = (
   entries: ExtendedAssetEntryWithServices[],
@@ -66,6 +71,16 @@ const sortEntries = (
 
         return (
           (sorting.isDesc ? bDuration - aDuration : aDuration - bDuration) ||
+          sortByName(a, b)
+        );
+      });
+    case "Latest":
+      return entries.sort((a, b) => {
+        const aDateTime = new Date(a.lastSpanInstanceInfo.startTime).valueOf();
+        const bDateTime = new Date(b.lastSpanInstanceInfo.startTime).valueOf();
+
+        return (
+          (sorting.isDesc ? bDateTime - aDateTime : aDateTime - bDateTime) ||
           sortByName(a, b)
         );
       });

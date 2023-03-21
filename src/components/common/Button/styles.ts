@@ -47,8 +47,5 @@ export const Button = styled.button`
 
 export const ContentContainer = styled.span`
   display: flex;
-`;
-
-export const Label = styled.span`
-  margin-left: 4px;
+  gap: 2px;
 `;
