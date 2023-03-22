@@ -9,6 +9,7 @@ export const Container = styled.button<ContainerProps>`
   font-weight: ${({ isSelected }) => (isSelected ? 700 : 500)};
   font-size: 14px;
   padding: 4px 12px;
+  white-space: nowrap;
 
   color: ${({ isSelected, theme }) => {
     if (isSelected) {
