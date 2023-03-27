@@ -13,8 +13,8 @@ const ASSET_TYPE_IDS = [
 ];
 
 export const AssetTypeList = (props: AssetListProps) => {
-  const handleAssetTypeClick = (categoryId: string) => {
-    props.onAssetTypeSelect(categoryId);
+  const handleAssetTypeClick = (assetTypeId: string) => {
+    props.onAssetTypeSelect(assetTypeId);
   };
 
   return (

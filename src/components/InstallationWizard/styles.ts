@@ -8,9 +8,25 @@ export const Container = styled.div`
   flex-direction: column;
 `;
 
+export const PreviousStepHeader = styled.div`
+  display: flex;
+  gap: 8px;
+  padding: 9px;
+  color: #919191;
+  background: #6a6a6a;
+  font-weight: 500;
+  font-size: 10px;
+  line-height: 12px;
+  text-transform: uppercase;
+`;
+
+export const StepShortTitle = styled.span`
+  margin-left: auto;
+  text-transform: none;
+`;
+
 export const Header = styled.div`
   display: flex;
-  text-align: center;
   justify-content: center;
   // TODO: check font
   /* font-family: "Nunito"; */
@@ -64,6 +80,16 @@ export const SectionTitle = styled.span`
   color: #ededed;
 `;
 
+export const SectionDivider = styled.span`
+  // TODO: check font
+  /* font-family: "Nunito"; */
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 16px;
+  margin: 20px 0;
+  color: #ededed;
+`;
+
 export const SectionDescription = styled.span`
   // TODO: check font
   /* font-family: "Nunito"; */
@@ -93,6 +119,7 @@ export const Code = styled.code`
   line-height: 20px;
   letter-spacing: -0.1px;
   color: #dadada;
+  white-space: pre;
 `;
 
 export const CopyButton = styled.button`
@@ -124,6 +151,7 @@ export const Link = styled.a`
   line-height: 12px;
   color: #dadada;
   text-decoration: underline;
+  cursor: pointer;
 `;
 
 // export const SectionNumber = styled.div`
