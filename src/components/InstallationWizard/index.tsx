@@ -254,8 +254,7 @@ service:
       <>
         <s.SectionTitle>How to get started?</s.SectionTitle>
         <s.SectionDescription>
-          Click on the ‘Observe’ button seen below to enable collecting data
-          about your application whenever you run it.
+          Press in three dots icon and enable &quot;Observability&quot; toggle
         </s.SectionDescription>
         <s.Illustration src="/images/navigation.png" />
         <s.Footer>
