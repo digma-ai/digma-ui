@@ -1,4 +1,4 @@
 export interface LoaderProps {
   size?: number;
-  status: "pending" | "success";
+  status: "pending" | "success" | "failure";
 }

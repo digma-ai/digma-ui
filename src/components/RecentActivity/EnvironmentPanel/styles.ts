@@ -9,7 +9,6 @@ const backgroundAnimation = keyframes`
 `;
 export const BorderContainer = styled.div`
   padding: 1px;
-  height: 38px;
   min-width: fit-content;
   border-radius: ${BORDER_RADIUS}px;
   ${/* TODO: Change to radial gradient after cross-fading */ ""}
@@ -58,6 +57,8 @@ export const Container = styled.div`
   border-radius: 8px;
   position: relative;
   box-sizing: border-box;
+
+  flex-wrap: wrap;
 `;
 
 const rotateAnimation = keyframes`

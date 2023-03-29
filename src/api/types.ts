@@ -1,9 +1,14 @@
 export type ActionListener = (data: unknown) => void;
 
-export interface DigmaMessageEventData {
+export interface DigmaIncomingMessageData {
   type: "digma";
   action: string;
   payload?: unknown;
 }
 
-export type DigmaMessageEvent = MessageEvent<DigmaMessageEventData>;
+export interface DigmaOutgoingMessageData {
+  action: string;
+  payload?: Record<string, unknown>;
+}
+
+export type DigmaMessageEvent = MessageEvent<DigmaIncomingMessageData>;

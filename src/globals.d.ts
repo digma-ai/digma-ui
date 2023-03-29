@@ -1,3 +1,5 @@
+import { DigmaOutgoingMessageData } from "./api/types";
+
 export {};
 
 export type Environment = "JetBrains" | "VS Code" | "Other";
@@ -14,7 +16,9 @@ declare global {
       onFailure: (error_code, error_message) => void;
     }) => string;
     cefQueryCancel?: (request_id: string) => void;
-    sendMessageToDigma: (message: any) => string | undefined;
+    sendMessageToDigma: (
+      message: DigmaOutgoingMessageData
+    ) => string | undefined;
     cancelMessageToDigma: (request_id: string) => void;
     theme?: unknown;
     environment?: unknown;

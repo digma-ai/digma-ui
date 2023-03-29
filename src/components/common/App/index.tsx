@@ -4,6 +4,7 @@ import { dispatcher } from "../../../dispatcher";
 import { Mode } from "../../../globals";
 import { isObject } from "../../../typeGuards/isObject";
 import { isString } from "../../../typeGuards/isString";
+import { getActions } from "../../../utils/getActions";
 import { GlobalStyle } from "./styles";
 import { AppProps } from "./types";
 
@@ -24,11 +25,14 @@ const getMode = (): Mode => {
   return window.theme;
 };
 
-const actions = {
-  setColorMode: "GLOBAL/SET_THEME",
-  setMainFont: "GLOBAL/SET_MAIN_FONT",
-  setCodeFont: "GLOBAL/SET_CODE_FONT"
-};
+const ACTION_PREFIX = "GLOBAL";
+
+export const actions = getActions(ACTION_PREFIX, {
+  setColorMode: "SET_THEME",
+  setMainFont: "SET_MAIN_FONT",
+  setCodeFont: "SET_CODE_FONT",
+  openURLInDefaultBrowser: "OPEN_URL_IN_DEFAULT_BROWSER"
+});
 
 export const App = (props: AppProps) => {
   const [mode, setMode] = useState(getMode());

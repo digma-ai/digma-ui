@@ -1,6 +1,6 @@
 import { isObject } from "../typeGuards/isObject";
 import { ActionDispatcher } from "./ActionDispatcher";
-import { DigmaMessageEvent } from "./types";
+import { DigmaMessageEvent, DigmaOutgoingMessageData } from "./types";
 
 const isDigmaMessageEvent = (e: MessageEvent): e is DigmaMessageEvent =>
   isObject(e.data) && e.data.type === "digma";
@@ -16,10 +16,9 @@ export const initializeDigmaMessageListener = (
   });
 };
 
-export const sendMessage = (message: {
-  action: string;
-  payload?: unknown;
-}): string | undefined => {
+export const sendMessage = (
+  message: DigmaOutgoingMessageData
+): string | undefined => {
   if (window.sendMessageToVSCode) {
     window.sendMessageToVSCode(message);
     console.info("Message has been sent to VS Code: ", message);
