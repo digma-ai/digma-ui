@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { getCodeFont } from "../common/App/styles";
 
 export const Container = styled.div`
   background: #5a5a5a;
@@ -27,6 +26,7 @@ export const StepShortTitle = styled.span`
 
 export const Header = styled.div`
   display: flex;
+  text-align: center;
   justify-content: center;
   // TODO: check font
   /* font-family: "Nunito"; */
@@ -99,36 +99,6 @@ export const SectionDescription = styled.span`
   margin-bottom: 6px;
 `;
 
-export const CodeSnippetContainer = styled.div<{ disabled: boolean }>`
-  background: #0c0b0b;
-  padding: 8px 12px;
-  border-radius: 2px;
-  margin: 8px 0 12px;
-  display: flex;
-  gap: 27px;
-  align-items: flex-start;
-  justify-content: space-between;
-
-  ${({ disabled }) => (disabled ? "opacity: 0.5;" : "")}
-`;
-
-export const Code = styled.code`
-  ${({ theme }) => getCodeFont(theme.codeFont)}
-  font-weight: 500;
-  font-size: 9px;
-  line-height: 20px;
-  letter-spacing: -0.1px;
-  color: #dadada;
-  white-space: pre;
-`;
-
-export const CopyButton = styled.button`
-  padding: 0;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-`;
-
 export const LoaderContainer = styled.div`
   margin-top: 23;
   align-self: center;
@@ -143,6 +113,7 @@ export const Footer = styled.div`
   flex-direction: column;
   align-items: center;
   margin-top: auto;
+  padding-top: 8px;
   gap: 8px;
 `;
 
