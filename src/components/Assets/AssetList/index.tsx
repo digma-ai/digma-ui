@@ -183,7 +183,7 @@ export const AssetList = (props: AssetListProps) => {
               />
             </s.SortingMenuContainer>
           </PopoverTrigger>
-          <PopoverContent className="Popover">
+          <PopoverContent className={"Popover"}>
             <Menu
               title={"Sort by"}
               items={SORTING_CRITERION.map((x) => ({ value: x, label: x }))}

@@ -102,7 +102,7 @@ export const Assets = (props: AssetsProps) => {
   const handleAssetLinkClick = (entry: AssetEntry) => {
     window.sendMessageToDigma({
       action: actions.goToAsset,
-      data: { entry }
+      payload: { entry }
     });
   };
 

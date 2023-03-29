@@ -1,40 +1,78 @@
 import copy from "copy-to-clipboard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { dispatcher } from "../../dispatcher";
 import { getActions } from "../../utils/getActions";
+import { actions as globalActions } from "../common/App";
 import { CheckmarkCircleIcon } from "../common/icons/CheckmarkCircleIcon";
 import { CheckmarkCircleInvertedIcon } from "../common/icons/CheckmarkCircleInvertedIcon";
 import { CopyIcon } from "../common/icons/CopyIcon";
+import { CrossCircleIcon } from "../common/icons/CrossCircleIcon";
 import { Loader } from "../common/Loader";
 import { Button } from "./Button";
 import * as s from "./styles";
+import { ConnectionCheckResultData, ConnectionCheckStatus } from "./types";
 
 const ACTION_PREFIX = "INSTALLATION_WIZARD";
 
 const actions = getActions(ACTION_PREFIX, {
-  finish: "FINISH"
+  finish: "FINISH",
+  checkConnection: "CHECK_CONNECTION",
+  setConnectionCheckResult: "SET_CONNECTION_CHECK_RESULT"
 });
 
 export const InstallationWizard = () => {
   const [currentStep, setCurrentStep] = useState<number>(0);
-  const [isDigmaInstalled, setIsDigmaInstalled] = useState<boolean>(false);
   const [isCollectorModified, setIsCollectorModified] =
     useState<boolean>(false);
   const [isAlreadyUsingOtel, setIsAlreadyUsingOtel] = useState<boolean>(false);
+  const [connectionCheckStatus, setConnectionCheckStatus] =
+    useState<ConnectionCheckStatus>();
+
+  useEffect(() => {
+    const handleConnectionCheckResultData = (data: unknown) => {
+      const result = (data as ConnectionCheckResultData).result;
+      setConnectionCheckStatus(result);
+    };
+
+    dispatcher.addActionListener(
+      actions.setConnectionCheckResult,
+      handleConnectionCheckResultData
+    );
+
+    return () => {
+      dispatcher.removeActionListener(
+        actions.setConnectionCheckResult,
+        handleConnectionCheckResultData
+      );
+    };
+  }, []);
 
   const handleCopyButtonClick = (text: string) => {
     copy(text);
   };
 
+  const startConnectionCheck = () => {
+    setConnectionCheckStatus("pending");
+    window.sendMessageToDigma({
+      action: actions.checkConnection
+    });
+  };
+
   const handleDigmaIsInstalledButtonClick = () => {
-    setIsDigmaInstalled(true);
+    startConnectionCheck();
+  };
+
+  const handleRetryButtonClick = () => {
+    startConnectionCheck();
   };
 
   const handleInstallDigmaButtonClick = () => {
-    window.open(
-      "https://open.docker.com/extensions/marketplace?extensionId=digmaai/digma-docker-extension",
-      "_blank",
-      "noopener,noreferrer"
-    );
+    window.sendMessageToDigma({
+      action: globalActions.openURLInDefaultBrowser,
+      payload: {
+        url: "https://open.docker.com/extensions/marketplace?extensionId=digmaai/digma-docker-extension"
+      }
+    });
   };
 
   const handleContinueButtonClick = () => {
@@ -78,9 +116,9 @@ export const InstallationWizard = () => {
         <s.SectionDescription>
           (You’ll need{" "}
           <s.Link
-            href="https://www.docker.com/products/docker-desktop/"
-            target="_blank"
-            rel="noopener noreferrer"
+            href={"https://www.docker.com/products/docker-desktop/"}
+            target={"_blank"}
+            rel={"noopener noreferrer"}
           >
             Docker Desktop
           </s.Link>{" "}
@@ -88,7 +126,7 @@ export const InstallationWizard = () => {
         </s.SectionDescription>
         <s.SectionDescription>
           <Button
-            buttonType="secondary"
+            buttonType={"secondary"}
             onClick={handleInstallDigmaButtonClick}
           >
             Get Digma Docker Extension
@@ -102,94 +140,109 @@ export const InstallationWizard = () => {
         <s.SectionDescription>
           (You’ll need{" "}
           <s.Link
-            href="https://docs.docker.com/get-docker/"
-            target="_blank"
-            rel="noopener noreferrer"
+            href={"https://docs.docker.com/get-docker/"}
+            target={"_blank"}
+            rel={"noopener noreferrer"}
           >
             Docker
           </s.Link>{" "}
           and{" "}
           <s.Link
-            href="https://docs.docker.com/compose/install/"
-            target="_blank"
-            rel="noopener noreferrer"
+            href={"https://docs.docker.com/compose/install/"}
+            target={"_blank"}
+            rel={"noopener noreferrer"}
           >
             Docker Compose
           </s.Link>{" "}
           installed)
         </s.SectionDescription>
         <s.SectionDescription>Linux & MacOS:</s.SectionDescription>
-        <s.CodeSnippetContainer disabled={isDigmaInstalled}>
+        <s.CodeSnippetContainer disabled={Boolean(connectionCheckStatus)}>
           <s.Code>{getDigmaDockerComposeCommandLinux}</s.Code>
           <s.CopyButton
             onClick={() =>
               handleCopyButtonClick(getDigmaDockerComposeCommandLinux)
             }
           >
-            <CopyIcon color="#dadada" />
+            <CopyIcon color={"#dadada"} />
           </s.CopyButton>
         </s.CodeSnippetContainer>
         <s.SectionDescription>Windows (PowerShell):</s.SectionDescription>
-        <s.CodeSnippetContainer disabled={isDigmaInstalled}>
+        <s.CodeSnippetContainer disabled={Boolean(connectionCheckStatus)}>
           <s.Code>{getDigmaDockerComposeCommandWindows}</s.Code>
           <s.CopyButton
             onClick={() =>
               handleCopyButtonClick(getDigmaDockerComposeCommandWindows)
             }
           >
-            <CopyIcon color="#dadada" />
+            <CopyIcon color={"#dadada"} />
           </s.CopyButton>
         </s.CodeSnippetContainer>
         <s.SectionDescription>Then run:</s.SectionDescription>
-        <s.CodeSnippetContainer disabled={isDigmaInstalled}>
+        <s.CodeSnippetContainer disabled={Boolean(connectionCheckStatus)}>
           <s.Code>{runDockerComposeCommand}</s.Code>
           <s.CopyButton
             onClick={() => handleCopyButtonClick(runDockerComposeCommand)}
           >
-            <CopyIcon color="#dadada" />
+            <CopyIcon color={"#dadada"} />
           </s.CopyButton>
         </s.CodeSnippetContainer>
         <s.SectionDescription>
           Prefer to use a helm file? Check out{" "}
           <s.Link
-            href="https://github.com/digma-ai/helm-chart/tree/gh-pages"
-            target="_blank"
-            rel="noopener noreferrer"
+            href={"https://github.com/digma-ai/helm-chart/tree/gh-pages"}
+            target={"_blank"}
+            rel={"noopener noreferrer"}
           >
             these
           </s.Link>{" "}
           instructions instead
         </s.SectionDescription>
-        {isDigmaInstalled ? (
+        {!connectionCheckStatus && (
           <Button
-            buttonType="success"
-            disabled={true}
-            icon={<CheckmarkCircleIcon color={"#0fbf00"} />}
-          >
-            Complete
-          </Button>
-        ) : (
-          <Button
-            buttonType="secondary"
+            buttonType={"secondary"}
             onClick={handleDigmaIsInstalledButtonClick}
           >
             OK, I&apos;ve installed Digma
           </Button>
         )}
+        {connectionCheckStatus === "success" && (
+          <Button
+            buttonType={"success"}
+            disabled={true}
+            icon={<CheckmarkCircleIcon color={"#0fbf00"} />}
+          >
+            Complete
+          </Button>
+        )}
+        {connectionCheckStatus === "failure" && (
+          <Button
+            buttonType={"failure"}
+            disabled={true}
+            icon={<CrossCircleIcon color={"#ed5050"} />}
+          >
+            Failed
+          </Button>
+        )}
         <s.LoaderContainer>
-          <Loader
-            size={143}
-            status={isDigmaInstalled ? "success" : "pending"}
-          />
+          {connectionCheckStatus && (
+            <Loader size={143} status={connectionCheckStatus} />
+          )}
         </s.LoaderContainer>
         <s.Footer>
-          <Button
-            buttonType="primary"
-            disabled={!isDigmaInstalled}
-            onClick={handleContinueButtonClick}
-          >
-            Continue
-          </Button>
+          {connectionCheckStatus === "failure" ? (
+            <Button buttonType={"primary"} onClick={handleRetryButtonClick}>
+              Retry
+            </Button>
+          ) : (
+            <Button
+              buttonType={"primary"}
+              disabled={connectionCheckStatus !== "success"}
+              onClick={handleContinueButtonClick}
+            >
+              Continue
+            </Button>
+          )}
           <s.Link onClick={handleSkipLinkClick}>Skip for now</s.Link>
         </s.Footer>
       </>
@@ -218,12 +271,12 @@ service:
           <s.CopyButton
             onClick={() => handleCopyButtonClick(collectorConfigurationSnippet)}
           >
-            <CopyIcon color="#dadada" />
+            <CopyIcon color={"#dadada"} />
           </s.CopyButton>
         </s.CodeSnippetContainer>
         {isCollectorModified ? (
           <Button
-            buttonType="success"
+            buttonType={"success"}
             disabled={true}
             icon={<CheckmarkCircleIcon color={"#0fbf00"} />}
           >
@@ -231,7 +284,7 @@ service:
           </Button>
         ) : (
           <Button
-            buttonType="secondary"
+            buttonType={"secondary"}
             onClick={handleCollectorIsModifiedButtonClick}
           >
             OK, I&apos;ve modified collector configuration
@@ -239,7 +292,7 @@ service:
         )}
         <s.Footer>
           <Button
-            buttonType="primary"
+            buttonType={"primary"}
             onClick={handleContinueButtonClick}
             disabled={isAlreadyUsingOtel && !isCollectorModified}
           >
@@ -256,9 +309,9 @@ service:
         <s.SectionDescription>
           Press in three dots icon and enable &quot;Observability&quot; toggle
         </s.SectionDescription>
-        <s.Illustration src="/images/navigation.png" />
+        <s.Illustration src={"/images/navigation.png"} />
         <s.Footer>
-          <Button buttonType="primary" onClick={handleContinueButtonClick}>
+          <Button buttonType={"primary"} onClick={handleContinueButtonClick}>
             Finish
           </Button>
           <s.Link onClick={handleAlreadyUsingOTELLinkClick}>
