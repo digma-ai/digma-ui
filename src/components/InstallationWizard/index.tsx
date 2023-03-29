@@ -1,14 +1,13 @@
-import copy from "copy-to-clipboard";
 import { useEffect, useState } from "react";
 import { dispatcher } from "../../dispatcher";
 import { getActions } from "../../utils/getActions";
 import { actions as globalActions } from "../common/App";
 import { CheckmarkCircleIcon } from "../common/icons/CheckmarkCircleIcon";
 import { CheckmarkCircleInvertedIcon } from "../common/icons/CheckmarkCircleInvertedIcon";
-import { CopyIcon } from "../common/icons/CopyIcon";
 import { CrossCircleIcon } from "../common/icons/CrossCircleIcon";
 import { Loader } from "../common/Loader";
 import { Button } from "./Button";
+import { CodeSnippet } from "./CodeSnippet";
 import * as s from "./styles";
 import { ConnectionCheckResultData, ConnectionCheckStatus } from "./types";
 
@@ -47,23 +46,15 @@ export const InstallationWizard = () => {
     };
   }, []);
 
-  const handleCopyButtonClick = (text: string) => {
-    copy(text);
-  };
-
-  const startConnectionCheck = () => {
+  const handleDigmaIsInstalledButtonClick = () => {
     setConnectionCheckStatus("pending");
     window.sendMessageToDigma({
       action: actions.checkConnection
     });
   };
 
-  const handleDigmaIsInstalledButtonClick = () => {
-    startConnectionCheck();
-  };
-
   const handleRetryButtonClick = () => {
-    startConnectionCheck();
+    setConnectionCheckStatus(undefined);
   };
 
   const handleInstallDigmaButtonClick = () => {
@@ -157,36 +148,21 @@ export const InstallationWizard = () => {
           installed)
         </s.SectionDescription>
         <s.SectionDescription>Linux & MacOS:</s.SectionDescription>
-        <s.CodeSnippetContainer disabled={Boolean(connectionCheckStatus)}>
-          <s.Code>{getDigmaDockerComposeCommandLinux}</s.Code>
-          <s.CopyButton
-            onClick={() =>
-              handleCopyButtonClick(getDigmaDockerComposeCommandLinux)
-            }
-          >
-            <CopyIcon color={"#dadada"} />
-          </s.CopyButton>
-        </s.CodeSnippetContainer>
+        <CodeSnippet
+          disabled={Boolean(connectionCheckStatus)}
+          text={getDigmaDockerComposeCommandLinux}
+        />
+
         <s.SectionDescription>Windows (PowerShell):</s.SectionDescription>
-        <s.CodeSnippetContainer disabled={Boolean(connectionCheckStatus)}>
-          <s.Code>{getDigmaDockerComposeCommandWindows}</s.Code>
-          <s.CopyButton
-            onClick={() =>
-              handleCopyButtonClick(getDigmaDockerComposeCommandWindows)
-            }
-          >
-            <CopyIcon color={"#dadada"} />
-          </s.CopyButton>
-        </s.CodeSnippetContainer>
+        <CodeSnippet
+          disabled={Boolean(connectionCheckStatus)}
+          text={getDigmaDockerComposeCommandWindows}
+        />
         <s.SectionDescription>Then run:</s.SectionDescription>
-        <s.CodeSnippetContainer disabled={Boolean(connectionCheckStatus)}>
-          <s.Code>{runDockerComposeCommand}</s.Code>
-          <s.CopyButton
-            onClick={() => handleCopyButtonClick(runDockerComposeCommand)}
-          >
-            <CopyIcon color={"#dadada"} />
-          </s.CopyButton>
-        </s.CodeSnippetContainer>
+        <CodeSnippet
+          disabled={Boolean(connectionCheckStatus)}
+          text={runDockerComposeCommand}
+        />
         <s.SectionDescription>
           Prefer to use a helm file? Check out{" "}
           <s.Link
@@ -266,14 +242,10 @@ service:
           Modify your collector configuration file to add Digma’s backend as a
           target. For example:
         </s.SectionDescription>
-        <s.CodeSnippetContainer disabled={isCollectorModified}>
-          <s.Code>{collectorConfigurationSnippet}</s.Code>
-          <s.CopyButton
-            onClick={() => handleCopyButtonClick(collectorConfigurationSnippet)}
-          >
-            <CopyIcon color={"#dadada"} />
-          </s.CopyButton>
-        </s.CodeSnippetContainer>
+        <CodeSnippet
+          disabled={isCollectorModified}
+          text={collectorConfigurationSnippet}
+        />
         {isCollectorModified ? (
           <Button
             buttonType={"success"}

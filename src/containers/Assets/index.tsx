@@ -7,6 +7,7 @@ import {
 import { Assets } from "../../components/Assets";
 import { App } from "../../components/common/App";
 import { dispatcher } from "../../dispatcher";
+import { GlobalStyle } from "./styles";
 
 initializeDigmaMessageListener(dispatcher);
 
@@ -19,6 +20,7 @@ if (rootElement) {
   const root = createRoot(rootElement);
   root.render(
     <App>
+      <GlobalStyle />
       <Assets />
     </App>
   );
