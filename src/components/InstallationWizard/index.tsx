@@ -239,8 +239,8 @@ service:
       <>
         <s.SectionTitle>Add Digma to your collector:</s.SectionTitle>
         <s.SectionDescription>
-          Modify your collector configuration file to add Digma’s backend as a
-          target. For example:
+          Modify your collector configuration file to add Digma&apos;s backend
+          as a target. For example:
         </s.SectionDescription>
         <CodeSnippet
           disabled={isCollectorModified}
@@ -279,9 +279,14 @@ service:
       <>
         <s.SectionTitle>How to get started?</s.SectionTitle>
         <s.SectionDescription>
-          Press in three dots icon and enable &quot;Observability&quot; toggle
+          To quickly collect data from your application in IntelliJ, expand the
+          Digma side-panel and open the settings menu as seen below.
         </s.SectionDescription>
         <s.Illustration src={"/images/navigation.png"} />
+        <s.SectionDescription>
+          Click the &quot;Observability&quot; toggle button to automatically
+          collect data each time you run or debug via the IDE.
+        </s.SectionDescription>
         <s.Footer>
           <Button buttonType={"primary"} onClick={handleContinueButtonClick}>
             Finish
@@ -308,10 +313,10 @@ service:
     },
     {
       shortTitle: isAlreadyUsingOtel
-        ? "If you’re already using OpenTelemetry… "
+        ? "If you're already using OpenTelemetry…"
         : "Observe your application",
       title: isAlreadyUsingOtel
-        ? "If you’re already using OpenTelemetry… "
+        ? "If you're already using OpenTelemetry…"
         : "Observe your application",
       content: renderObservabilityContent(isAlreadyUsingOtel),
       link: {
