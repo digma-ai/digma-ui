@@ -70,6 +70,18 @@ export const getCodeFont = (customFont: string): FlattenSimpleInterpolation => {
 };
 
 export const GlobalStyle = createGlobalStyle`
+  :root {
+    color-scheme: ${({ theme }) => {
+      switch (theme.mode) {
+        case "light":
+          return "light";
+        case "dark":
+        case "dark-jetbrains":
+          return "dark";
+      }
+    }};
+  }
+
   html, body, #root {
     height: 100%;
   }
