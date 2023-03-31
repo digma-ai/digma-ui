@@ -3,8 +3,8 @@ import { ButtonProps } from "./types";
 
 export const Button = styled.button<ButtonProps>`
   font-weight: 500;
-  font-size: 10px;
-  line-height: 12px;
+  font-size: 12px;
+  line-height: 14px;
   display: flex;
   gap: 8px;
   align-items: center;
@@ -12,12 +12,14 @@ export const Button = styled.button<ButtonProps>`
   padding: 6px 8px;
   border-radius: 2px;
   cursor: pointer;
+  border: none;
 
   color: ${({ buttonType }) => {
     switch (buttonType) {
       case "primary":
-        return "#b9c2eB";
+        return "#b9c2eb";
       case "secondary":
+        return "#dadada";
       case "success":
       case "failure":
         return "#1e1e1e";
@@ -29,18 +31,22 @@ export const Button = styled.button<ButtonProps>`
       case "primary":
         return "#000";
       case "secondary":
+        return "#383838";
       case "success":
-        return "#646363";
+        return "#c8e5c9";
       case "failure":
         return "#e4c6c6";
     }
   }};
 
-  border: ${({ buttonType }) =>
-    buttonType === "secondary" ? "1px solid #1e1e1e" : "none"};
-
   width: ${({ buttonType }) =>
     buttonType === "primary" ? "100%" : "max-content"};
+
+  &:hover {
+    ${({ buttonType }) => {
+      return buttonType === "secondary" ? "background: #2e2e2e;" : "";
+    }}
+  }
 
   &:disabled {
     ${({ buttonType }) => (buttonType === "primary" ? "opacity: 0.2;" : "")}

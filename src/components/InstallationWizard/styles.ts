@@ -14,8 +14,8 @@ export const PreviousStepHeader = styled.div`
   color: #919191;
   background: #6a6a6a;
   font-weight: 500;
-  font-size: 10px;
-  line-height: 12px;
+  font-size: 12px;
+  line-height: 14px;
   text-transform: uppercase;
 `;
 
@@ -31,7 +31,7 @@ export const Header = styled.div`
   // TODO: check font
   /* font-family: "Nunito"; */
   font-weight: 700;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 18px;
   color: #fff;
   background: #6a6a6a;
@@ -47,8 +47,8 @@ export const Content = styled.div`
 
 export const StepCounter = styled.div`
   font-weight: 500;
-  font-size: 10px;
-  line-height: 12px;
+  font-size: 12px;
+  line-height: 14px;
   color: #919191;
   text-transform: uppercase;
 `;
@@ -74,9 +74,9 @@ export const SectionTitle = styled.span`
   // TODO: check font
   /* font-family: "Nunito"; */
   font-weight: 700;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 16px;
-  margin-bottom: 2px;
+  margin-bottom: 6px;
   color: #ededed;
 `;
 
@@ -93,8 +93,8 @@ export const SectionDivider = styled.span`
 export const SectionDescription = styled.span`
   // TODO: check font
   /* font-family: "Nunito"; */
-  font-size: 10px;
-  line-height: 14px;
+  font-size: 12px;
+  line-height: 16px;
   color: #cdcdcd;
   margin-bottom: 6px;
 `;
@@ -118,8 +118,8 @@ export const Footer = styled.div`
 `;
 
 export const Link = styled.a`
-  font-size: 10px;
-  line-height: 12px;
+  font-size: 12px;
+  line-height: 14px;
   color: #dadada;
   text-decoration: underline;
   cursor: pointer;

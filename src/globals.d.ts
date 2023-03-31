@@ -27,6 +27,7 @@ declare global {
     recentActivityRefreshInterval?: unknown;
     recentActivityExpirationLimit?: unknown;
     recentActivityDocumentationURL?: unknown;
+    wizardSkipInstallationStep?: unknown;
     assetsRefreshInterval?: unknown;
   }
 }

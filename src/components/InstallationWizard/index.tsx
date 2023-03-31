@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { dispatcher } from "../../dispatcher";
 import { getActions } from "../../utils/getActions";
 import { actions as globalActions } from "../common/App";
+import { Loader } from "../common/Loader";
 import { CheckmarkCircleIcon } from "../common/icons/CheckmarkCircleIcon";
 import { CheckmarkCircleInvertedIcon } from "../common/icons/CheckmarkCircleInvertedIcon";
 import { CrossCircleIcon } from "../common/icons/CrossCircleIcon";
-import { Loader } from "../common/Loader";
 import { Button } from "./Button";
 import { CodeSnippet } from "./CodeSnippet";
 import * as s from "./styles";
@@ -19,8 +19,10 @@ const actions = getActions(ACTION_PREFIX, {
   setConnectionCheckResult: "SET_CONNECTION_CHECK_RESULT"
 });
 
+const firstStep = window.wizardSkipInstallationStep === true ? 1 : 0;
+
 export const InstallationWizard = () => {
-  const [currentStep, setCurrentStep] = useState<number>(0);
+  const [currentStep, setCurrentStep] = useState<number>(firstStep);
   const [isCollectorModified, setIsCollectorModified] =
     useState<boolean>(false);
   const [isAlreadyUsingOtel, setIsAlreadyUsingOtel] = useState<boolean>(false);
