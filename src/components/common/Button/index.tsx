@@ -38,6 +38,7 @@ export const Button = (props: ButtonProps) => {
 
   return (
     <s.Button
+      className={props.className}
       onClick={handleClick}
       disabled={props.disabled}
       onMouseEnter={handleMouseEnter}

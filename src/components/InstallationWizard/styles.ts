@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Button } from "../common/Button";
 
 export const Container = styled.div`
   background: #5a5a5a;
@@ -144,4 +145,12 @@ export const Link = styled.a`
 export const Illustration = styled.img`
   margin: 12px 0;
   max-width: 500px;
+`;
+
+export const GetDigmaButton = styled(Button)`
+  width: max-content;
+  font-size: 12px;
+  line-height: 14px;
+  padding: 6px 8px;
+  height: 26px;
 `;

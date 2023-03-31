@@ -118,12 +118,9 @@ export const InstallationWizard = () => {
           installed)
         </s.SectionDescription>
         <s.SectionDescription>
-          <Button
-            buttonType={"secondary"}
-            onClick={handleInstallDigmaButtonClick}
-          >
+          <s.GetDigmaButton onClick={handleInstallDigmaButtonClick}>
             Get Digma Docker Extension
-          </Button>
+          </s.GetDigmaButton>
         </s.SectionDescription>
         <s.SectionDivider>or</s.SectionDivider>
         <s.SectionTitle>
