@@ -32,3 +32,7 @@ export interface RecentActivityData {
 export interface RecentActivityProps {
   data?: RecentActivityData;
 }
+
+export interface SetIsJaegerData {
+  isJaegerEnabled: boolean;
+}

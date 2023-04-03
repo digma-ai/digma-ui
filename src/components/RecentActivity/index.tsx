@@ -7,9 +7,14 @@ import { CursorFollower } from "../common/CursorFollower";
 import { DigmaLogoFlatIcon } from "../common/icons/DigmaLogoFlatIcon";
 import { EnvironmentPanel } from "./EnvironmentPanel";
 import { ViewMode } from "./EnvironmentPanel/types";
-import { isRecent, RecentActivityTable } from "./RecentActivityTable";
+import { RecentActivityTable, isRecent } from "./RecentActivityTable";
 import * as s from "./styles";
-import { EntrySpan, RecentActivityData, RecentActivityProps } from "./types";
+import {
+  EntrySpan,
+  RecentActivityData,
+  RecentActivityProps,
+  SetIsJaegerData
+} from "./types";
 
 const documentationURL =
   typeof window.recentActivityDocumentationURL === "string"
@@ -27,7 +32,8 @@ const actions = getActions(ACTION_PREFIX, {
   getData: "GET_DATA",
   setData: "SET_DATA",
   goToSpan: "GO_TO_SPAN",
-  goToTrace: "GO_TO_TRACE"
+  goToTrace: "GO_TO_TRACE",
+  setIsJaegerEnabled: "SET_IS_JAEGER_ENABLED"
 });
 
 const renderNoData = () => {
@@ -61,6 +67,9 @@ export const RecentActivity = (props: RecentActivityProps) => {
   const [data, setData] = useState<RecentActivityData>();
   const previousSelectedEnvironment = usePrevious(selectedEnvironment);
   const [viewMode, setViewMode] = useState<ViewMode>("table");
+  const [isJaegerEnabled, setIsJaegerEnabled] = useState(
+    window.isJaegerEnabled === true
+  );
 
   useEffect(() => {
     window.sendMessageToDigma({
@@ -76,7 +85,15 @@ export const RecentActivity = (props: RecentActivityProps) => {
       setData(data as RecentActivityData);
     };
 
+    const handleSetIsJaegerEnabledData = (data: unknown) => {
+      setIsJaegerEnabled((data as SetIsJaegerData).isJaegerEnabled);
+    };
+
     dispatcher.addActionListener(actions.setData, handleRecentActivityData);
+    dispatcher.addActionListener(
+      actions.setIsJaegerEnabled,
+      handleSetIsJaegerEnabledData
+    );
 
     return () => {
       clearInterval(refreshInterval);
@@ -84,6 +101,10 @@ export const RecentActivity = (props: RecentActivityProps) => {
       dispatcher.removeActionListener(
         actions.setData,
         handleRecentActivityData
+      );
+      dispatcher.removeActionListener(
+        actions.setIsJaegerEnabled,
+        handleSetIsJaegerEnabledData
       );
     };
   }, []);
@@ -170,6 +191,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
           data={environmentActivities[selectedEnvironment]}
           onSpanLinkClick={handleSpanLinkClick}
           onTraceButtonClick={handleTraceButtonClick}
+          isTraceButtonVisible={isJaegerEnabled}
         />
       )}
     </s.Container>
