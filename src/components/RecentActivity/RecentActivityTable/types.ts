@@ -6,6 +6,7 @@ export interface RecentActivityTableProps {
   onSpanLinkClick: (span: EntrySpan, environment: string) => void;
   onTraceButtonClick: (traceId: string, span: EntrySpan) => void;
   viewMode: ViewMode;
+  isTraceButtonVisible: boolean;
 }
 
 export enum INSIGHT_TYPES {

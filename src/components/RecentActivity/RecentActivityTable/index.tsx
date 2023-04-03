@@ -12,10 +12,10 @@ import { Button } from "../../common/Button";
 import { BottleneckIcon } from "../../common/icons/BottleneckIcon";
 import { CrosshairIcon } from "../../common/icons/CrosshairIcon";
 import { MeterHighIcon } from "../../common/icons/MeterHighIcon";
+import { SQLDatabaseIcon } from "../../common/icons/SQLDatabaseIcon";
 import { ScalesIcon } from "../../common/icons/ScalesIcon";
 import { SnailIcon } from "../../common/icons/SnailIcon";
 import { SpotIcon } from "../../common/icons/SpotIcon";
-import { SQLDatabaseIcon } from "../../common/icons/SQLDatabaseIcon";
 import { ViewMode } from "../EnvironmentPanel/types";
 import { ActivityEntry, EntrySpan, SlimInsight } from "../types";
 import { SpanLink } from "./SpanLink";
@@ -201,11 +201,15 @@ export const RecentActivityTable = (props: RecentActivityTableProps) => {
       header: "Insights",
       cell: (info) => renderInsights(info.getValue())
     }),
-    columnHelper.accessor((row) => row, {
-      id: "latestTraceId",
-      header: "",
-      cell: (info) => renderTraceButton(info.getValue())
-    })
+    ...(props.isTraceButtonVisible
+      ? [
+          columnHelper.accessor((row) => row, {
+            id: "latestTraceId",
+            header: "",
+            cell: (info) => renderTraceButton(info.getValue())
+          })
+        ]
+      : [])
   ];
 
   const table = useReactTable({
@@ -259,7 +263,7 @@ export const RecentActivityTable = (props: RecentActivityTableProps) => {
             {renderSpanLinks(entry)}
             {renderDuration(entry.latestTraceDuration, props.viewMode)}
             {renderInsights(entry.slimAggregatedInsights)}
-            {renderTraceButton(entry)}
+            {props.isTraceButtonVisible && renderTraceButton(entry)}
           </s.ListItem>
         ))}
       </s.List>
