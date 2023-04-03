@@ -22,8 +22,6 @@ import { SpanLink } from "./SpanLink";
 import * as s from "./styles";
 import { INSIGHT_TYPES, RecentActivityTableProps } from "./types";
 
-const isJaegerEnabled = window.isJaegerEnabled === true;
-
 const getInsightInfo = (
   type: string,
   theme: DefaultTheme
@@ -203,7 +201,7 @@ export const RecentActivityTable = (props: RecentActivityTableProps) => {
       header: "Insights",
       cell: (info) => renderInsights(info.getValue())
     }),
-    ...(isJaegerEnabled
+    ...(props.isTraceButtonVisible
       ? [
           columnHelper.accessor((row) => row, {
             id: "latestTraceId",
@@ -265,7 +263,7 @@ export const RecentActivityTable = (props: RecentActivityTableProps) => {
             {renderSpanLinks(entry)}
             {renderDuration(entry.latestTraceDuration, props.viewMode)}
             {renderInsights(entry.slimAggregatedInsights)}
-            {isJaegerEnabled && renderTraceButton(entry)}
+            {props.isTraceButtonVisible && renderTraceButton(entry)}
           </s.ListItem>
         ))}
       </s.List>
