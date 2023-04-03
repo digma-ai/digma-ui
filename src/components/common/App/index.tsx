@@ -31,7 +31,8 @@ export const actions = getActions(ACTION_PREFIX, {
   setColorMode: "SET_THEME",
   setMainFont: "SET_MAIN_FONT",
   setCodeFont: "SET_CODE_FONT",
-  openURLInDefaultBrowser: "OPEN_URL_IN_DEFAULT_BROWSER"
+  openURLInDefaultBrowser: "OPEN_URL_IN_DEFAULT_BROWSER",
+  sendTrackingEvent: "SEND_TRACKING_EVENT"
 });
 
 export const App = (props: AppProps) => {
