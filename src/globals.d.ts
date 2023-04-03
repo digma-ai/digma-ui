@@ -24,6 +24,7 @@ declare global {
     environment?: unknown;
     mainFont?: unknown;
     codeFont?: unknown;
+    isJaegerEnabled?: unknown;
     recentActivityRefreshInterval?: unknown;
     recentActivityExpirationLimit?: unknown;
     recentActivityDocumentationURL?: unknown;
