@@ -1,7 +1,10 @@
+import { ReactNode } from "react";
+
 export interface ButtonProps {
-  icon?: JSX.Element;
+  icon?: ReactNode;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   disabled?: boolean;
   children: React.ReactNode;
-  buttonType: "primary" | "secondary" | "success" | "failure";
+  buttonType?: "primary" | "secondary";
+  className?: string;
 }

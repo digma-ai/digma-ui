@@ -3,10 +3,9 @@ import { getCodeFont } from "../../common/App/styles";
 import { ContainerProps } from "./types";
 
 export const Container = styled.div<ContainerProps>`
-  background: #0c0b0b;
-  padding: 8px 12px;
-  border-radius: 2px;
-  margin: 8px 0 12px;
+  background: #252526;
+  padding: 4px 4px 4px 8px;
+  border-radius: 4px;
   display: flex;
   gap: 27px;
   align-items: flex-start;
@@ -27,7 +26,16 @@ export const Code = styled.code`
 
 export const CopyButton = styled.button`
   padding: 0;
-  background: transparent;
-  border: none;
   cursor: pointer;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  background: #2e2e2e;
+  border: 1px solid #383838;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 4px;
 `;

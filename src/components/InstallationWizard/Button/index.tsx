@@ -9,13 +9,12 @@ export const Button = (props: ButtonProps) => {
     }
   };
 
-  const disabled =
-    ["success", "failure"].includes(props.buttonType) || props.disabled;
   return (
     <s.Button
+      className={props.className}
       onClick={handleClick}
-      disabled={disabled}
-      buttonType={props.buttonType}
+      disabled={props.disabled}
+      buttonType={props.buttonType || "primary"}
     >
       <s.ContentContainer>
         {props.icon}
