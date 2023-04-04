@@ -3,6 +3,7 @@ import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
 import { getActions } from "../../utils/getActions";
 import { groupBy } from "../../utils/groupBy";
+import { actions as globalActions } from "../common/App";
 import { CursorFollower } from "../common/CursorFollower";
 import { DigmaLogoFlatIcon } from "../common/icons/DigmaLogoFlatIcon";
 import { EnvironmentPanel } from "./EnvironmentPanel";
@@ -32,8 +33,7 @@ const actions = getActions(ACTION_PREFIX, {
   getData: "GET_DATA",
   setData: "SET_DATA",
   goToSpan: "GO_TO_SPAN",
-  goToTrace: "GO_TO_TRACE",
-  setIsJaegerEnabled: "SET_IS_JAEGER_ENABLED"
+  goToTrace: "GO_TO_TRACE"
 });
 
 const renderNoData = () => {
@@ -91,7 +91,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
 
     dispatcher.addActionListener(actions.setData, handleRecentActivityData);
     dispatcher.addActionListener(
-      actions.setIsJaegerEnabled,
+      globalActions.setIsJaegerEnabled,
       handleSetIsJaegerEnabledData
     );
 
@@ -103,7 +103,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
         handleRecentActivityData
       );
       dispatcher.removeActionListener(
-        actions.setIsJaegerEnabled,
+        globalActions.setIsJaegerEnabled,
         handleSetIsJaegerEnabledData
       );
     };
