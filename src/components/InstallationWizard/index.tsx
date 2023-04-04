@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { dispatcher } from "../../dispatcher";
+import { usePrevious } from "../../hooks/usePrevious";
 import { getActions } from "../../utils/getActions";
 import { actions as globalActions } from "../common/App";
 import { Loader } from "../common/Loader";
@@ -23,6 +24,7 @@ const firstStep = window.wizardSkipInstallationStep === true ? 1 : 0;
 
 export const InstallationWizard = () => {
   const [currentStep, setCurrentStep] = useState<number>(firstStep);
+  const previousStep = usePrevious(currentStep);
   const [isCollectorModified, setIsCollectorModified] =
     useState<boolean>(false);
   const [isAlreadyUsingOtel, setIsAlreadyUsingOtel] = useState<boolean>(false);
@@ -30,6 +32,26 @@ export const InstallationWizard = () => {
     useState<ConnectionCheckStatus>();
 
   useEffect(() => {
+    if (previousStep === 0 && currentStep === 1) {
+      window.sendMessageToDigma({
+        action: globalActions.sendTrackingEvent,
+        payload: {
+          event_name: "installation wizard install step passed"
+        }
+      });
+    }
+  }, [previousStep, currentStep]);
+
+  useEffect(() => {
+    if (firstStep === 1) {
+      window.sendMessageToDigma({
+        action: globalActions.sendTrackingEvent,
+        payload: {
+          event_name: "installation wizard install step automatically passed"
+        }
+      });
+    }
+
     const handleConnectionCheckResultData = (data: unknown) => {
       const result = (data as ConnectionCheckResultData).result;
       setConnectionCheckStatus(result);
@@ -64,6 +86,13 @@ export const InstallationWizard = () => {
       action: globalActions.openURLInDefaultBrowser,
       payload: {
         url: "https://open.docker.com/extensions/marketplace?extensionId=digmaai/digma-docker-extension"
+      }
+    });
+    window.sendMessageToDigma({
+      action: globalActions.sendTrackingEvent,
+      payload: {
+        event_name:
+          "installation wizard get digma docker extension button clicked"
       }
     });
   };
@@ -107,7 +136,7 @@ export const InstallationWizard = () => {
       <>
         <s.SectionTitle>Install Digma Docker Extension</s.SectionTitle>
         <s.SectionDescription>
-          (You’ll need{" "}
+          (You&apos;ll need{" "}
           <s.Link
             href={"https://www.docker.com/products/docker-desktop/"}
             target={"_blank"}
@@ -128,7 +157,7 @@ export const InstallationWizard = () => {
           backend:
         </s.SectionTitle>
         <s.SectionDescription>
-          (You’ll need{" "}
+          (You&apos;ll need{" "}
           <s.Link
             href={"https://docs.docker.com/get-docker/"}
             target={"_blank"}
