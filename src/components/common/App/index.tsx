@@ -32,7 +32,8 @@ export const actions = getActions(ACTION_PREFIX, {
   setMainFont: "SET_MAIN_FONT",
   setCodeFont: "SET_CODE_FONT",
   openURLInDefaultBrowser: "OPEN_URL_IN_DEFAULT_BROWSER",
-  sendTrackingEvent: "SEND_TRACKING_EVENT"
+  sendTrackingEvent: "SEND_TRACKING_EVENT",
+  setIsJaegerEnabled: "SET_IS_JAEGER_ENABLED"
 });
 
 export const App = (props: AppProps) => {
