@@ -36,7 +36,7 @@ export const InstallationWizard = () => {
       window.sendMessageToDigma({
         action: globalActions.sendTrackingEvent,
         payload: {
-          event_name: "installation wizard install step passed"
+          eventName: "installation wizard install step passed"
         }
       });
     }
@@ -47,7 +47,7 @@ export const InstallationWizard = () => {
       window.sendMessageToDigma({
         action: globalActions.sendTrackingEvent,
         payload: {
-          event_name: "installation wizard install step automatically passed"
+          eventName: "installation wizard install step automatically passed"
         }
       });
     }
@@ -91,7 +91,7 @@ export const InstallationWizard = () => {
     window.sendMessageToDigma({
       action: globalActions.sendTrackingEvent,
       payload: {
-        event_name:
+        eventName:
           "installation wizard get digma docker extension button clicked"
       }
     });
