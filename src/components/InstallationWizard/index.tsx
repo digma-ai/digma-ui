@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
-import { getActions } from "../../utils/getActions";
+import { addPrefix } from "../../utils/addPrefix";
 import { actions as globalActions } from "../common/App";
 import { CheckmarkCircleInvertedIcon } from "../common/icons/CheckmarkCircleInvertedIcon";
 import { Button } from "./Button";
@@ -13,23 +13,29 @@ import { ConnectionCheckResultData, ConnectionCheckStatus } from "./types";
 
 const ACTION_PREFIX = "INSTALLATION_WIZARD";
 
-const actions = getActions(ACTION_PREFIX, {
-  finish: "FINISH",
-  checkConnection: "CHECK_CONNECTION",
-  setConnectionCheckResult: "SET_CONNECTION_CHECK_RESULT",
-  setObservability: "SET_OBSERVABILITY"
+const actions = addPrefix(ACTION_PREFIX, {
+  FINISH: "FINISH",
+  CHECK_CONNECTION: "CHECK_CONNECTION",
+  SET_CONNECTION_CHECK_RESULT: "SET_CONNECTION_CHECK_RESULT",
+  SET_OBSERVABILITY: "SET_OBSERVABILITY"
 });
 
 const DIGMA_DOCKER_EXTENSION_URL =
   "https://open.docker.com/extensions/marketplace?extensionId=digmaai/digma-docker-extension";
 
-const TRACKING_EVENTS = {
-  INSTALL_STEP_PASSED: "installation wizard install step passed",
-  INSTALL_STEP_AUTOMATICALLY_PASSED:
-    "installation wizard install step automatically passed",
-  GET_DIGMA_DOCKER_EXTENSION_BUTTON_CLICKED:
-    "installation wizard get digma docker extension button clicked"
-};
+const TRACKING_PREFIX = "installation wizard";
+
+const trackingEvents = addPrefix(
+  TRACKING_PREFIX,
+  {
+    INSTALL_STEP_PASSED: "install step passed",
+    INSTALL_STEP_AUTOMATICALLY_PASSED: "install step automatically passed",
+    GET_DIGMA_DOCKER_EXTENSION_BUTTON_CLICKED:
+      "get digma docker extension button clicked",
+    OBSERVABILITY_BUTTON_CLICKED: "set observability button clicked"
+  },
+  " "
+);
 
 const firstStep = window.wizardSkipInstallationStep === true ? 1 : 0;
 
@@ -46,9 +52,9 @@ export const InstallationWizard = () => {
   useEffect(() => {
     if (previousStep === 0 && currentStep === 1) {
       window.sendMessageToDigma({
-        action: globalActions.sendTrackingEvent,
+        action: globalActions.SEND_TRACKING_EVENT,
         payload: {
-          eventName: TRACKING_EVENTS.INSTALL_STEP_PASSED
+          eventName: trackingEvents.INSTALL_STEP_PASSED
         }
       });
     }
@@ -57,9 +63,9 @@ export const InstallationWizard = () => {
   useEffect(() => {
     if (firstStep === 1) {
       window.sendMessageToDigma({
-        action: globalActions.sendTrackingEvent,
+        action: globalActions.SEND_TRACKING_EVENT,
         payload: {
-          eventName: TRACKING_EVENTS.INSTALL_STEP_AUTOMATICALLY_PASSED
+          eventName: trackingEvents.INSTALL_STEP_AUTOMATICALLY_PASSED
         }
       });
     }
@@ -70,13 +76,13 @@ export const InstallationWizard = () => {
     };
 
     dispatcher.addActionListener(
-      actions.setConnectionCheckResult,
+      actions.SET_CONNECTION_CHECK_RESULT,
       handleConnectionCheckResultData
     );
 
     return () => {
       dispatcher.removeActionListener(
-        actions.setConnectionCheckResult,
+        actions.SET_CONNECTION_CHECK_RESULT,
         handleConnectionCheckResultData
       );
     };
@@ -85,7 +91,7 @@ export const InstallationWizard = () => {
   const handleConnectionStatusCheck = () => {
     setConnectionCheckStatus("pending");
     window.sendMessageToDigma({
-      action: actions.checkConnection
+      action: actions.CHECK_CONNECTION
     });
   };
 
@@ -95,15 +101,15 @@ export const InstallationWizard = () => {
 
   const handleGetDigmaDockerDesktopButtonClick = () => {
     window.sendMessageToDigma({
-      action: globalActions.openURLInDefaultBrowser,
+      action: globalActions.OPEN_URL_IN_DEFAULT_BROWSER,
       payload: {
         url: DIGMA_DOCKER_EXTENSION_URL
       }
     });
     window.sendMessageToDigma({
-      action: globalActions.sendTrackingEvent,
+      action: globalActions.SET_TRACKING_EVENT,
       payload: {
-        eventName: TRACKING_EVENTS.GET_DIGMA_DOCKER_EXTENSION_BUTTON_CLICKED
+        eventName: trackingEvents.GET_DIGMA_DOCKER_EXTENSION_BUTTON_CLICKED
       }
     });
   };
@@ -115,9 +121,15 @@ export const InstallationWizard = () => {
   const handleObservabilityChange = (value: boolean) => {
     setIsObservabilityEnabled(value);
     window.sendMessageToDigma({
-      action: actions.setObservability,
+      action: actions.SET_OBSERVABILITY,
       payload: {
         isObservabilityEnabled: value
+      }
+    });
+    window.sendMessageToDigma({
+      action: globalActions.SEND_TRACKING_EVENT,
+      payload: {
+        eventName: trackingEvents.OBSERVABILITY_BUTTON_CLICKED
       }
     });
   };
@@ -134,14 +146,14 @@ export const InstallationWizard = () => {
       setCurrentStep(currentStep + 1);
     } else {
       window.sendMessageToDigma({
-        action: actions.finish
+        action: actions.FINISH
       });
     }
   };
 
   const handleFinishButtonClick = () => {
     window.sendMessageToDigma({
-      action: actions.finish
+      action: actions.FINISH
     });
   };
 

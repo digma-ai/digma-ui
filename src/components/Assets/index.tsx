@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { dispatcher } from "../../dispatcher";
-import { getActions } from "../../utils/getActions";
+import { addPrefix } from "../../utils/addPrefix";
 import { groupBy } from "../../utils/groupBy";
 import { AssetList } from "./AssetList";
 import { AssetTypeList } from "./AssetTypeList";
@@ -20,10 +20,10 @@ const REFRESH_INTERVAL =
 
 const ACTION_PREFIX = "ASSETS";
 
-const actions = getActions(ACTION_PREFIX, {
-  getData: "GET_DATA",
-  setData: "SET_DATA",
-  goToAsset: "GO_TO_ASSET"
+const actions = addPrefix(ACTION_PREFIX, {
+  GET_DATA: "GET_DATA",
+  SET_DATA: "SET_DATA",
+  GO_TO_ASSET: "GO_TO_ASSET"
 });
 
 const groupEntries = (data: AssetsData): GroupedAssetEntries => {
@@ -61,11 +61,11 @@ export const Assets = (props: AssetsProps) => {
 
   useEffect(() => {
     window.sendMessageToDigma({
-      action: actions.getData
+      action: actions.GET_DATA
     });
     const refreshInterval = setInterval(() => {
       window.sendMessageToDigma({
-        action: actions.getData
+        action: actions.GET_DATA
       });
     }, REFRESH_INTERVAL);
 
@@ -73,12 +73,12 @@ export const Assets = (props: AssetsProps) => {
       setData(groupEntries(data as AssetsData));
     };
 
-    dispatcher.addActionListener(actions.setData, handleAssetsData);
+    dispatcher.addActionListener(actions.SET_DATA, handleAssetsData);
 
     return () => {
       clearInterval(refreshInterval);
 
-      dispatcher.removeActionListener(actions.setData, handleAssetsData);
+      dispatcher.removeActionListener(actions.SET_DATA, handleAssetsData);
     };
   }, []);
 
@@ -101,7 +101,7 @@ export const Assets = (props: AssetsProps) => {
 
   const handleAssetLinkClick = (entry: AssetEntry) => {
     window.sendMessageToDigma({
-      action: actions.goToAsset,
+      action: actions.GO_TO_ASSET,
       payload: { entry }
     });
   };

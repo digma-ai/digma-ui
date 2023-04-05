@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
-import { getActions } from "../../utils/getActions";
+import { addPrefix } from "../../utils/addPrefix";
 import { groupBy } from "../../utils/groupBy";
 import { actions as globalActions } from "../common/App";
 import { CursorFollower } from "../common/CursorFollower";
@@ -29,11 +29,11 @@ const REFRESH_INTERVAL =
 
 const ACTION_PREFIX = "RECENT_ACTIVITY";
 
-const actions = getActions(ACTION_PREFIX, {
-  getData: "GET_DATA",
-  setData: "SET_DATA",
-  goToSpan: "GO_TO_SPAN",
-  goToTrace: "GO_TO_TRACE"
+const actions = addPrefix(ACTION_PREFIX, {
+  GET_DATA: "GET_DATA",
+  SET_DATA: "SET_DATA",
+  GO_TO_SPAN: "GO_TO_SPAN",
+  GO_TO_TRACE: "GO_TO_TRACE"
 });
 
 const renderNoData = () => {
@@ -73,11 +73,11 @@ export const RecentActivity = (props: RecentActivityProps) => {
 
   useEffect(() => {
     window.sendMessageToDigma({
-      action: actions.getData
+      action: actions.GET_DATA
     });
     const refreshInterval = setInterval(() => {
       window.sendMessageToDigma({
-        action: actions.getData
+        action: actions.GET_DATA
       });
     }, REFRESH_INTERVAL);
 
@@ -89,9 +89,9 @@ export const RecentActivity = (props: RecentActivityProps) => {
       setIsJaegerEnabled((data as SetIsJaegerData).isJaegerEnabled);
     };
 
-    dispatcher.addActionListener(actions.setData, handleRecentActivityData);
+    dispatcher.addActionListener(actions.SET_DATA, handleRecentActivityData);
     dispatcher.addActionListener(
-      globalActions.setIsJaegerEnabled,
+      globalActions.SET_IS_JAEGER_ENABLED,
       handleSetIsJaegerEnabledData
     );
 
@@ -99,11 +99,11 @@ export const RecentActivity = (props: RecentActivityProps) => {
       clearInterval(refreshInterval);
 
       dispatcher.removeActionListener(
-        actions.setData,
+        actions.SET_DATA,
         handleRecentActivityData
       );
       dispatcher.removeActionListener(
-        globalActions.setIsJaegerEnabled,
+        globalActions.SET_IS_JAEGER_ENABLED,
         handleSetIsJaegerEnabledData
       );
     };
@@ -129,7 +129,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
 
   const handleSpanLinkClick = (span: EntrySpan, environment: string) => {
     window.sendMessageToDigma({
-      action: actions.goToSpan,
+      action: actions.GO_TO_SPAN,
       payload: {
         span,
         environment
@@ -139,7 +139,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
 
   const handleTraceButtonClick = (traceId: string, span: EntrySpan) => {
     window.sendMessageToDigma({
-      action: actions.goToTrace,
+      action: actions.GO_TO_TRACE,
       payload: {
         traceId,
         span
