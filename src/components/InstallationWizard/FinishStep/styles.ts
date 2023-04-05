@@ -16,13 +16,13 @@ export const IllustrationContainer = styled(s.IllustrationContainer)`
   margin: 12px 0 12px;
 `;
 
-export const ObservabilityPanelIllustration = styled.video`
+export const ObservabilityPanelIllustration = styled.img`
   bottom: 0;
   position: absolute;
   width: 100%;
 `;
 
-export const RunOrDebugIllustration = styled.video`
+export const RunOrDebugIllustration = styled.img`
   width: 206px;
 `;
 

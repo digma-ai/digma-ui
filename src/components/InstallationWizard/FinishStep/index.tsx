@@ -17,11 +17,7 @@ export const FinishStep = () => (
       observability.
     </SectionDescription>
     <s.IllustrationContainer>
-      <s.RunOrDebugIllustration
-        src={"/videos/runOrDebug.mp4"}
-        autoPlay={true}
-        loop={true}
-      />
+      <s.RunOrDebugIllustration src={"/images/runOrDebug.gif"} />
     </s.IllustrationContainer>
     <s.SectionTitle>
       <SectionIconContainer>
@@ -35,9 +31,7 @@ export const FinishStep = () => (
     </SectionDescription>
     <s.IllustrationContainer>
       <s.ObservabilityPanelIllustration
-        src={"/videos/observabilityPanel.mp4"}
-        autoPlay={true}
-        loop={true}
+        src={"/images/observabilityPanel.gif"}
       />
     </s.IllustrationContainer>
     <s.TipContainer>

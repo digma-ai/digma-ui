@@ -103,9 +103,7 @@ export const ObservabilityStep = (props: ObservabilityStepProps) => {
       </SectionDescription>
       <s.IllustrationContainer>
         <s.ObservabilityButtonIllustration
-          autoPlay={true}
-          loop={true}
-          src={"/videos/observabilityButton.mp4"}
+          src={"/images/observabilityButton.gif"}
         />
       </s.IllustrationContainer>
       <s.StepFooter>

@@ -69,7 +69,7 @@ export const IllustrationContainer = styled(s.IllustrationContainer)`
   margin-top: 8px;
 `;
 
-export const ObservabilityButtonIllustration = styled.video`
+export const ObservabilityButtonIllustration = styled.img`
   width: 100%;
 `;
 
