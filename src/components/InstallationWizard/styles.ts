@@ -116,13 +116,6 @@ export const SectionDescription = styled.span`
   color: #9b9b9b;
 `;
 
-export const StepFooter = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-`;
-
 export const IllustrationContainer = styled.div`
   height: 123px;
   width: 312px;

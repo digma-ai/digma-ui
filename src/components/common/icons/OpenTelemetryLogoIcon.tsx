@@ -3,7 +3,7 @@ import { useIconProps } from "./hooks";
 import { IconProps } from "./types";
 
 const OpenTelemetryLogoIconComponent = (props: IconProps) => {
-  const { size, color } = useIconProps(props);
+  const { size } = useIconProps(props);
 
   return (
     <svg
@@ -13,7 +13,7 @@ const OpenTelemetryLogoIconComponent = (props: IconProps) => {
       fill="none"
       viewBox="0 0 12 12"
     >
-      <g clipPath="url(#a)">
+      <g clipPath="url(#opentelemetry-logo-clip-1)">
         <path
           fill={props.color || "#4B5FAB"}
           d="M9.701 4.908a.387.387 0 0 1-.118.294c-.284.283-.568.567-.85.852-.04.04-.06.034-.098-.001a1.909 1.909 0 0 0-1.143-.525c-.479-.05-.918.06-1.317.327-.04.027-.066.02-.099-.012-.354-.357-.71-.711-1.065-1.067a.404.404 0 0 1 0-.565l1.797-1.798a.415.415 0 0 1 .582.01c.13.127.258.257.387.386l1.79 1.789c.086.087.137.19.134.31Z"
@@ -32,7 +32,7 @@ const OpenTelemetryLogoIconComponent = (props: IconProps) => {
         />
       </g>
       <defs>
-        <clipPath id="a">
+        <clipPath id="opentelemetry-logo-clip-1">
           <path fill="#fff" d="M0 0h12v12H0z" />
         </clipPath>
       </defs>

@@ -66,9 +66,21 @@ export const CongratulationsText = styled.span`
 `;
 
 export const IllustrationContainer = styled(s.IllustrationContainer)`
-  margin: 8px 0 12px;
+  margin-top: 8px;
 `;
 
 export const ObservabilityButtonIllustration = styled.video`
   width: 100%;
+`;
+
+export const StepFooter = styled.div`
+  padding-top: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+`;
+
+export const SectionDescription = styled(s.SectionDescription)`
+  padding: 8px 0;
 `;

@@ -4,7 +4,7 @@ import { ToggleSwitch } from "../../common/ToggleSwitch";
 import { OpenTelemetryLogoIcon } from "../../common/icons/OpenTelemetryLogoIcon";
 import { Button } from "../Button";
 import { CodeSnippet } from "../CodeSnippet";
-import { Link, SectionDescription, SectionTitle, StepFooter } from "../styles";
+import { Link, SectionDescription, SectionTitle } from "../styles";
 import * as s from "./styles";
 import { ObservabilityStepProps } from "./types";
 
@@ -42,17 +42,16 @@ export const ObservabilityStep = (props: ObservabilityStepProps) => {
 
   return props.isAlreadyUsingOtel ? (
     <s.Container>
-      <SectionTitle>Add Digma to your collector:</SectionTitle>
-      <SectionDescription>
+      <SectionTitle>Add Digma to your collector</SectionTitle>
+      <s.SectionDescription>
         Modify your collector configuration file to add Digma&apos;s backend as
         a target. For example:
-      </SectionDescription>
+      </s.SectionDescription>
       <CodeSnippet
         disabled={isCollectorModified}
         text={COLLECTOR_CONFIGURATION_SNIPPET}
       />
-
-      <StepFooter>
+      <s.StepFooter>
         {isCollectorModified ? (
           <Button
             onClick={handleNextButtonClick}
@@ -68,7 +67,7 @@ export const ObservabilityStep = (props: ObservabilityStepProps) => {
         <Link onClick={handleAlreadyUsingOTELLinkClick}>
           Observe your application
         </Link>
-      </StepFooter>
+      </s.StepFooter>
     </s.Container>
   ) : (
     <s.Container>
@@ -109,12 +108,12 @@ export const ObservabilityStep = (props: ObservabilityStepProps) => {
           src={"/videos/observabilityButton.mp4"}
         />
       </s.IllustrationContainer>
-      <StepFooter>
+      <s.StepFooter>
         <Button onClick={handleNextButtonClick}>Next</Button>
         <Link onClick={handleAlreadyUsingOTELLinkClick}>
           Already using OpenTelemetry?
         </Link>
-      </StepFooter>
+      </s.StepFooter>
     </s.Container>
   );
 };
