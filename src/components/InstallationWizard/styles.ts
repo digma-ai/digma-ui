@@ -1,68 +1,94 @@
 import styled from "styled-components";
-import { Button } from "../common/Button";
 
 export const Container = styled.div`
-  background: #5a5a5a;
+  background: #383838;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 `;
 
-export const PreviousStepHeader = styled.div`
-  display: flex;
-  gap: 8px;
-  padding: 9px;
-  color: #919191;
-  background: #6a6a6a;
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 14px;
-  text-transform: uppercase;
-`;
-
-export const StepShortTitle = styled.span`
-  margin-left: auto;
-  text-transform: none;
-`;
-
 export const Header = styled.div`
   display: flex;
   text-align: center;
-  justify-content: center;
-  // TODO: check font
-  /* font-family: "Nunito"; */
-  font-weight: 700;
-  font-size: 16px;
-  line-height: 18px;
+  font-weight: 500;
+  font-size: 12px;
   color: #fff;
-  background: #6a6a6a;
-  padding: 7px 0 5px;
+  background: #2e2e2e;
+  padding: 8px;
+`;
+
+export const HeaderTitle = styled.span`
+  padding-right: 8px;
+`;
+
+export const HeaderSubtitle = styled.span`
+  padding-left: 8px;
+  color: #9b9b9b;
+  border-left: 1px solid #7c7c94;
+`;
+
+export const Link = styled.a`
+  font-size: 12px;
+  line-height: 14px;
+  color: #b9c2eb;
+  text-decoration: underline;
+  cursor: pointer;
+`;
+
+export const SkipLink = styled(Link)`
+  padding: 2px 4px;
+  margin-left: auto;
+  font-weight: 400;
+`;
+
+export const StepHeader = styled.div`
+  display: flex;
+  gap: 4px;
+  padding: 12px 8px;
+  color: #fff;
+  font-weight: 500;
+  font-size: 14px;
+  text-transform: capitalize;
+  border-top: 1px solid #49494d;
+`;
+
+export const InactiveStepHeader = styled(StepHeader)`
+  color: #9b9b9b;
 `;
 
 export const Content = styled.div`
-  padding: 10px 16px 15px;
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
 `;
 
-export const StepCounter = styled.div`
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 14px;
-  color: #919191;
-  text-transform: uppercase;
-`;
-
-export const StepTitle = styled.span`
+export const Footer = styled.div`
+  background: #3d3f41;
   display: flex;
-  // TODO: check font
-  /* font-family: "Nunito"; */
-  font-weight: 700;
+  flex-grow: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: auto;
+  padding: 12px;
+`;
+
+export const StepNumber = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  background: #6a6dfa;
+  border-radius: 50%;
   font-size: 14px;
-  line-height: 18px;
-  margin: 4px 0 18px;
+  line-height: 100%;
+  font-weight: 500;
   color: #fff;
+  flex-shrink: 0;
+`;
+
+export const NextStepNumber = styled(StepNumber)`
+  color: #383838;
 `;
 
 export const StepContent = styled.div`
@@ -71,86 +97,33 @@ export const StepContent = styled.div`
   flex-grow: 1;
 `;
 
-export const SectionTitle = styled.span`
-  // TODO: check font
-  /* font-family: "Nunito"; */
-  font-weight: 700;
+export const SectionTitle = styled.div`
+  display: flex;
+  font-weight: 500;
   font-size: 14px;
-  line-height: 16px;
-  margin-bottom: 6px;
   color: #ededed;
+  align-items: center;
+  text-transform: capitalize;
 `;
 
-export const SectionDivider = styled.span`
-  // TODO: check font
-  /* font-family: "Nunito"; */
-  font-weight: 700;
-  font-size: 12px;
-  line-height: 16px;
-  margin: 20px 0;
-  color: #ededed;
+export const SectionIconContainer = styled.div`
+  display: flex;
+  flex-shrink: 0;
 `;
 
 export const SectionDescription = styled.span`
-  // TODO: check font
-  /* font-family: "Nunito"; */
   font-size: 12px;
-  line-height: 16px;
-  color: #cdcdcd;
-  margin-bottom: 6px;
+  color: #9b9b9b;
 `;
 
-export const LoaderContainer = styled.div`
-  margin-top: 23;
-  align-self: center;
+export const IllustrationContainer = styled.div`
+  height: 123px;
+  width: 312px;
+  background: #393739;
+  border-radius 4px;
+  position: relative;
+  overflow: hidden;
   display: flex;
+  align-items: center;
   justify-content: center;
-  align-items: center;
-  flex-grow: 1;
-`;
-
-export const Footer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: auto;
-  padding-top: 8px;
-  gap: 8px;
-`;
-
-export const Link = styled.a`
-  font-size: 12px;
-  line-height: 14px;
-  color: #dadada;
-  text-decoration: underline;
-  cursor: pointer;
-`;
-
-// export const SectionNumber = styled.div`
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   width: 17px;
-//   height: 17px;
-//   background: #5154ec;
-//   border-radius: 50%;
-//   TODO: check font
-/* font-family: "Mulish"; */
-//   font-size: 12px;
-//   line-height: 15px;
-//   color: #fff;
-//   margin: 15px 0 13px;
-// `;
-
-export const Illustration = styled.img`
-  margin: 12px 0;
-  max-width: 500px;
-`;
-
-export const GetDigmaButton = styled(Button)`
-  width: max-content;
-  font-size: 12px;
-  line-height: 14px;
-  padding: 6px 8px;
-  height: 26px;
 `;

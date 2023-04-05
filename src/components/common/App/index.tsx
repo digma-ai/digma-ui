@@ -4,7 +4,7 @@ import { dispatcher } from "../../../dispatcher";
 import { Mode } from "../../../globals";
 import { isObject } from "../../../typeGuards/isObject";
 import { isString } from "../../../typeGuards/isString";
-import { getActions } from "../../../utils/getActions";
+import { addPrefix } from "../../../utils/addPrefix";
 import { GlobalStyle } from "./styles";
 import { AppProps } from "./types";
 
@@ -27,13 +27,13 @@ const getMode = (): Mode => {
 
 const ACTION_PREFIX = "GLOBAL";
 
-export const actions = getActions(ACTION_PREFIX, {
-  setColorMode: "SET_THEME",
-  setMainFont: "SET_MAIN_FONT",
-  setCodeFont: "SET_CODE_FONT",
-  openURLInDefaultBrowser: "OPEN_URL_IN_DEFAULT_BROWSER",
-  sendTrackingEvent: "SEND_TRACKING_EVENT",
-  setIsJaegerEnabled: "SET_IS_JAEGER_ENABLED"
+export const actions = addPrefix(ACTION_PREFIX, {
+  SET_THEME: "SET_THEME",
+  SET_MAIN_FONT: "SET_MAIN_FONT",
+  SET_CODE_FONT: "SET_CODE_FONT",
+  OPEN_URL_IN_DEFAULT_BROWSER: "OPEN_URL_IN_DEFAULT_BROWSER",
+  SEND_TRACKING_EVENT: "SEND_TRACKING_EVENT",
+  SET_IS_JAEGER_ENABLED: "SET_IS_JAEGER_ENABLED"
 });
 
 export const App = (props: AppProps) => {
@@ -49,7 +49,7 @@ export const App = (props: AppProps) => {
   }, [props.theme]);
 
   useEffect(() => {
-    const handleSetColorMode = (data: unknown) => {
+    const handleSetTheme = (data: unknown) => {
       if (isObject(data) && isMode(data.theme)) {
         setMode(data.theme);
       }
@@ -67,14 +67,14 @@ export const App = (props: AppProps) => {
       }
     };
 
-    dispatcher.addActionListener(actions.setColorMode, handleSetColorMode);
-    dispatcher.addActionListener(actions.setMainFont, handleSetMainFont);
-    dispatcher.addActionListener(actions.setCodeFont, handleSetCodeFont);
+    dispatcher.addActionListener(actions.SET_THEME, handleSetTheme);
+    dispatcher.addActionListener(actions.SET_MAIN_FONT, handleSetMainFont);
+    dispatcher.addActionListener(actions.SET_CODE_FONT, handleSetCodeFont);
 
     return () => {
-      dispatcher.removeActionListener(actions.setColorMode, handleSetColorMode);
-      dispatcher.removeActionListener(actions.setMainFont, handleSetMainFont);
-      dispatcher.removeActionListener(actions.setCodeFont, handleSetCodeFont);
+      dispatcher.removeActionListener(actions.SET_THEME, handleSetTheme);
+      dispatcher.removeActionListener(actions.SET_MAIN_FONT, handleSetMainFont);
+      dispatcher.removeActionListener(actions.SET_CODE_FONT, handleSetCodeFont);
     };
   }, []);
 

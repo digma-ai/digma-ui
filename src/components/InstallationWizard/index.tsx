@@ -1,42 +1,60 @@
 import { useEffect, useState } from "react";
 import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
-import { getActions } from "../../utils/getActions";
+import { addPrefix } from "../../utils/addPrefix";
 import { actions as globalActions } from "../common/App";
-import { Loader } from "../common/Loader";
-import { CheckmarkCircleIcon } from "../common/icons/CheckmarkCircleIcon";
 import { CheckmarkCircleInvertedIcon } from "../common/icons/CheckmarkCircleInvertedIcon";
-import { CrossCircleIcon } from "../common/icons/CrossCircleIcon";
 import { Button } from "./Button";
-import { CodeSnippet } from "./CodeSnippet";
+import { FinishStep } from "./FinishStep";
+import { InstallStep } from "./InstallStep";
+import { ObservabilityStep } from "./ObservabilityStep";
 import * as s from "./styles";
 import { ConnectionCheckResultData, ConnectionCheckStatus } from "./types";
 
 const ACTION_PREFIX = "INSTALLATION_WIZARD";
 
-const actions = getActions(ACTION_PREFIX, {
-  finish: "FINISH",
-  checkConnection: "CHECK_CONNECTION",
-  setConnectionCheckResult: "SET_CONNECTION_CHECK_RESULT"
+const actions = addPrefix(ACTION_PREFIX, {
+  FINISH: "FINISH",
+  CHECK_CONNECTION: "CHECK_CONNECTION",
+  SET_CONNECTION_CHECK_RESULT: "SET_CONNECTION_CHECK_RESULT",
+  SET_OBSERVABILITY: "SET_OBSERVABILITY"
 });
+
+const DIGMA_DOCKER_EXTENSION_URL =
+  "https://open.docker.com/extensions/marketplace?extensionId=digmaai/digma-docker-extension";
+
+const TRACKING_PREFIX = "installation wizard";
+
+const trackingEvents = addPrefix(
+  TRACKING_PREFIX,
+  {
+    INSTALL_STEP_PASSED: "install step passed",
+    INSTALL_STEP_AUTOMATICALLY_PASSED: "install step automatically passed",
+    GET_DIGMA_DOCKER_EXTENSION_BUTTON_CLICKED:
+      "get digma docker extension button clicked",
+    OBSERVABILITY_BUTTON_CLICKED: "set observability button clicked"
+  },
+  " "
+);
 
 const firstStep = window.wizardSkipInstallationStep === true ? 1 : 0;
 
 export const InstallationWizard = () => {
   const [currentStep, setCurrentStep] = useState<number>(firstStep);
   const previousStep = usePrevious(currentStep);
-  const [isCollectorModified, setIsCollectorModified] =
-    useState<boolean>(false);
   const [isAlreadyUsingOtel, setIsAlreadyUsingOtel] = useState<boolean>(false);
+  const [isObservabilityEnabled, setIsObservabilityEnabled] =
+    useState<boolean>(false);
+
   const [connectionCheckStatus, setConnectionCheckStatus] =
     useState<ConnectionCheckStatus>();
 
   useEffect(() => {
     if (previousStep === 0 && currentStep === 1) {
       window.sendMessageToDigma({
-        action: globalActions.sendTrackingEvent,
+        action: globalActions.SEND_TRACKING_EVENT,
         payload: {
-          eventName: "installation wizard install step passed"
+          eventName: trackingEvents.INSTALL_STEP_PASSED
         }
       });
     }
@@ -45,9 +63,9 @@ export const InstallationWizard = () => {
   useEffect(() => {
     if (firstStep === 1) {
       window.sendMessageToDigma({
-        action: globalActions.sendTrackingEvent,
+        action: globalActions.SEND_TRACKING_EVENT,
         payload: {
-          eventName: "installation wizard install step automatically passed"
+          eventName: trackingEvents.INSTALL_STEP_AUTOMATICALLY_PASSED
         }
       });
     }
@@ -58,52 +76,67 @@ export const InstallationWizard = () => {
     };
 
     dispatcher.addActionListener(
-      actions.setConnectionCheckResult,
+      actions.SET_CONNECTION_CHECK_RESULT,
       handleConnectionCheckResultData
     );
 
     return () => {
       dispatcher.removeActionListener(
-        actions.setConnectionCheckResult,
+        actions.SET_CONNECTION_CHECK_RESULT,
         handleConnectionCheckResultData
       );
     };
   }, []);
 
-  const handleDigmaIsInstalledButtonClick = () => {
+  const handleConnectionStatusCheck = () => {
     setConnectionCheckStatus("pending");
     window.sendMessageToDigma({
-      action: actions.checkConnection
+      action: actions.CHECK_CONNECTION
     });
   };
 
-  const handleRetryButtonClick = () => {
+  const handleResetConnectionCheckStatus = () => {
     setConnectionCheckStatus(undefined);
   };
 
-  const handleInstallDigmaButtonClick = () => {
+  const handleGetDigmaDockerDesktopButtonClick = () => {
     window.sendMessageToDigma({
-      action: globalActions.openURLInDefaultBrowser,
+      action: globalActions.OPEN_URL_IN_DEFAULT_BROWSER,
       payload: {
-        url: "https://open.docker.com/extensions/marketplace?extensionId=digmaai/digma-docker-extension"
+        url: DIGMA_DOCKER_EXTENSION_URL
       }
     });
     window.sendMessageToDigma({
-      action: globalActions.sendTrackingEvent,
+      action: globalActions.SET_TRACKING_EVENT,
       payload: {
-        eventName:
-          "installation wizard get digma docker extension button clicked"
+        eventName: trackingEvents.GET_DIGMA_DOCKER_EXTENSION_BUTTON_CLICKED
       }
     });
   };
 
-  const handleContinueButtonClick = () => {
+  const handleIsAlreadyUsingOtelChange = (value: boolean) => {
+    setIsAlreadyUsingOtel(value);
+  };
+
+  const handleObservabilityChange = (value: boolean) => {
+    setIsObservabilityEnabled(value);
+    window.sendMessageToDigma({
+      action: actions.SET_OBSERVABILITY,
+      payload: {
+        isObservabilityEnabled: value
+      }
+    });
+    window.sendMessageToDigma({
+      action: globalActions.SEND_TRACKING_EVENT,
+      payload: {
+        eventName: trackingEvents.OBSERVABILITY_BUTTON_CLICKED
+      }
+    });
+  };
+
+  const goToNextStep = () => {
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
-    } else {
-      window.sendMessageToDigma({
-        action: actions.finish
-      });
     }
   };
 
@@ -111,274 +144,93 @@ export const InstallationWizard = () => {
     e.preventDefault();
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
+    } else {
+      window.sendMessageToDigma({
+        action: actions.FINISH
+      });
     }
   };
 
-  const handleAlreadyUsingOTELLinkClick = (
-    e: React.MouseEvent<HTMLAnchorElement>
-  ) => {
-    e.preventDefault();
-    setIsAlreadyUsingOtel(!isAlreadyUsingOtel);
-  };
-
-  const handleCollectorIsModifiedButtonClick = () => {
-    setIsCollectorModified(true);
-  };
-
-  const renderDigmaInstallationContent = () => {
-    const getDigmaDockerComposeCommandLinux =
-      "curl -L https://get.digma.ai/ --output docker-compose.yml";
-    const getDigmaDockerComposeCommandWindows =
-      "iwr https://get.digma.ai/ -outfile docker-compose.yml";
-    const runDockerComposeCommand = "docker compose up -d";
-
-    return (
-      <>
-        <s.SectionTitle>Install Digma Docker Extension</s.SectionTitle>
-        <s.SectionDescription>
-          (You&apos;ll need{" "}
-          <s.Link
-            href={"https://www.docker.com/products/docker-desktop/"}
-            target={"_blank"}
-            rel={"noopener noreferrer"}
-          >
-            Docker Desktop
-          </s.Link>{" "}
-          installed)
-        </s.SectionDescription>
-        <s.SectionDescription>
-          <s.GetDigmaButton onClick={handleInstallDigmaButtonClick}>
-            Get Digma Docker Extension
-          </s.GetDigmaButton>
-        </s.SectionDescription>
-        <s.SectionDivider>or</s.SectionDivider>
-        <s.SectionTitle>
-          Run the following from the terminal/command line to start the Digma
-          backend:
-        </s.SectionTitle>
-        <s.SectionDescription>
-          (You&apos;ll need{" "}
-          <s.Link
-            href={"https://docs.docker.com/get-docker/"}
-            target={"_blank"}
-            rel={"noopener noreferrer"}
-          >
-            Docker
-          </s.Link>{" "}
-          and{" "}
-          <s.Link
-            href={"https://docs.docker.com/compose/install/"}
-            target={"_blank"}
-            rel={"noopener noreferrer"}
-          >
-            Docker Compose
-          </s.Link>{" "}
-          installed)
-        </s.SectionDescription>
-        <s.SectionDescription>Linux & MacOS:</s.SectionDescription>
-        <CodeSnippet
-          disabled={Boolean(connectionCheckStatus)}
-          text={getDigmaDockerComposeCommandLinux}
-        />
-
-        <s.SectionDescription>Windows (PowerShell):</s.SectionDescription>
-        <CodeSnippet
-          disabled={Boolean(connectionCheckStatus)}
-          text={getDigmaDockerComposeCommandWindows}
-        />
-        <s.SectionDescription>Then run:</s.SectionDescription>
-        <CodeSnippet
-          disabled={Boolean(connectionCheckStatus)}
-          text={runDockerComposeCommand}
-        />
-        <s.SectionDescription>
-          Prefer to use a helm file? Check out{" "}
-          <s.Link
-            href={"https://github.com/digma-ai/helm-chart/tree/gh-pages"}
-            target={"_blank"}
-            rel={"noopener noreferrer"}
-          >
-            these
-          </s.Link>{" "}
-          instructions instead
-        </s.SectionDescription>
-        {!connectionCheckStatus && (
-          <Button
-            buttonType={"secondary"}
-            onClick={handleDigmaIsInstalledButtonClick}
-          >
-            OK, I&apos;ve installed Digma
-          </Button>
-        )}
-        {connectionCheckStatus === "success" && (
-          <Button
-            buttonType={"success"}
-            disabled={true}
-            icon={<CheckmarkCircleIcon color={"#0fbf00"} />}
-          >
-            Complete
-          </Button>
-        )}
-        {connectionCheckStatus === "failure" && (
-          <Button
-            buttonType={"failure"}
-            disabled={true}
-            icon={<CrossCircleIcon color={"#ed5050"} />}
-          >
-            Failed
-          </Button>
-        )}
-        <s.LoaderContainer>
-          {connectionCheckStatus && (
-            <Loader size={143} status={connectionCheckStatus} />
-          )}
-        </s.LoaderContainer>
-        <s.Footer>
-          {connectionCheckStatus === "failure" ? (
-            <Button buttonType={"primary"} onClick={handleRetryButtonClick}>
-              Retry
-            </Button>
-          ) : (
-            <Button
-              buttonType={"primary"}
-              disabled={connectionCheckStatus !== "success"}
-              onClick={handleContinueButtonClick}
-            >
-              Continue
-            </Button>
-          )}
-          <s.Link onClick={handleSkipLinkClick}>Skip for now</s.Link>
-        </s.Footer>
-      </>
-    );
-  };
-
-  const renderObservabilityContent = (isAlreadyUsingOtel: boolean) => {
-    const collectorConfigurationSnippet = `otlp/digma:
-    endpoint: "localhost:5050"
-    tls:
-      insecure: true
-service:
-  pipelines:
-    traces:
-      exporters: [otlp/digma, ...]`;
-
-    return isAlreadyUsingOtel ? (
-      <>
-        <s.SectionTitle>Add Digma to your collector:</s.SectionTitle>
-        <s.SectionDescription>
-          Modify your collector configuration file to add Digma&apos;s backend
-          as a target. For example:
-        </s.SectionDescription>
-        <CodeSnippet
-          disabled={isCollectorModified}
-          text={collectorConfigurationSnippet}
-        />
-        {isCollectorModified ? (
-          <Button
-            buttonType={"success"}
-            disabled={true}
-            icon={<CheckmarkCircleIcon color={"#0fbf00"} />}
-          >
-            Complete
-          </Button>
-        ) : (
-          <Button
-            buttonType={"secondary"}
-            onClick={handleCollectorIsModifiedButtonClick}
-          >
-            OK, I&apos;ve modified collector configuration
-          </Button>
-        )}
-        <s.Footer>
-          <Button
-            buttonType={"primary"}
-            onClick={handleContinueButtonClick}
-            disabled={isAlreadyUsingOtel && !isCollectorModified}
-          >
-            Finish
-          </Button>
-          <s.Link onClick={handleAlreadyUsingOTELLinkClick}>
-            Observe your application
-          </s.Link>
-        </s.Footer>
-      </>
-    ) : (
-      <>
-        <s.SectionTitle>How to get started?</s.SectionTitle>
-        <s.SectionDescription>
-          To quickly collect data from your application in IntelliJ, expand the
-          Digma side-panel and open the settings menu as seen below.
-        </s.SectionDescription>
-        <s.Illustration src={"/images/navigation.png"} />
-        <s.SectionDescription>
-          Click the &quot;Observability&quot; toggle button to automatically
-          collect data each time you run or debug via the IDE.
-        </s.SectionDescription>
-        <s.Footer>
-          <Button buttonType={"primary"} onClick={handleContinueButtonClick}>
-            Finish
-          </Button>
-          <s.Link onClick={handleAlreadyUsingOTELLinkClick}>
-            Already using OpenTelemetry?
-          </s.Link>
-        </s.Footer>
-      </>
-    );
+  const handleFinishButtonClick = () => {
+    window.sendMessageToDigma({
+      action: actions.FINISH
+    });
   };
 
   const steps = [
     {
-      shortTitle: "Install Digma",
       title: "Get Digma up and running",
-      content: renderDigmaInstallationContent(),
-      link: {
-        text: "Skip for now",
-        onClick: (e: React.MouseEvent<HTMLAnchorElement>) => {
-          handleSkipLinkClick(e);
-        }
-      }
+      content: (
+        <InstallStep
+          connectionCheckStatus={connectionCheckStatus}
+          onConnectionStatusCheck={handleConnectionStatusCheck}
+          onResetConnectionCheckStatus={handleResetConnectionCheckStatus}
+          onGetDigmaDockerDesktopButtonClick={
+            handleGetDigmaDockerDesktopButtonClick
+          }
+          onGoToNextStep={goToNextStep}
+        />
+      )
     },
     {
-      shortTitle: isAlreadyUsingOtel
-        ? "If you're already using OpenTelemetry…"
-        : "Observe your application",
       title: isAlreadyUsingOtel
         ? "If you're already using OpenTelemetry…"
         : "Observe your application",
-      content: renderObservabilityContent(isAlreadyUsingOtel),
-      link: {
-        text: "Already using OpenTelemetry?",
-        onClick: (e: React.MouseEvent<HTMLAnchorElement>) => {
-          handleAlreadyUsingOTELLinkClick(e);
-        }
-      }
+      content: (
+        <ObservabilityStep
+          isAlreadyUsingOtel={isAlreadyUsingOtel}
+          onIsAlreadyUsingOtelChange={handleIsAlreadyUsingOtelChange}
+          onGoToNextStep={goToNextStep}
+          isObservabilityEnabled={isObservabilityEnabled}
+          onObservabilityChange={handleObservabilityChange}
+        />
+      )
+    },
+    {
+      title: "You're done!",
+      content: <FinishStep />
     }
   ];
 
   const step = steps[currentStep];
-
   const previousSteps = steps.slice(0, currentStep);
+  const nextSteps = steps.slice(currentStep + 1);
 
   return (
     <s.Container>
-      {previousSteps.length > 0 ? (
-        previousSteps.map((step, i) => (
-          <s.PreviousStepHeader key={step.shortTitle}>
-            <CheckmarkCircleInvertedIcon color={"#909090"} />
-            Step {i + 1}
-            <s.StepShortTitle>{step.shortTitle}</s.StepShortTitle>
-          </s.PreviousStepHeader>
-        ))
-      ) : (
-        <s.Header>Follow the steps to configure your project</s.Header>
-      )}
-
+      <s.Header>
+        <s.HeaderTitle>Install Digma</s.HeaderTitle>
+        <s.HeaderSubtitle>
+          Follow the steps to configure your projects
+        </s.HeaderSubtitle>
+      </s.Header>
+      {previousSteps.length > 0 &&
+        previousSteps.map((step) => (
+          <s.InactiveStepHeader key={step.title}>
+            <CheckmarkCircleInvertedIcon size={16} color={"#6a6dfa"} />
+            {step.title}
+          </s.InactiveStepHeader>
+        ))}
       <s.Content>
-        <s.StepCounter>Step {currentStep + 1}</s.StepCounter>
-        <s.StepTitle>{step.title}</s.StepTitle>
+        <s.StepHeader>
+          <s.StepNumber>{currentStep + 1}</s.StepNumber>
+          {step.title}
+          <s.SkipLink onClick={handleSkipLinkClick}>Skip for now</s.SkipLink>
+        </s.StepHeader>
         <s.StepContent>{step.content}</s.StepContent>
       </s.Content>
+      {nextSteps.length > 0 &&
+        nextSteps.map((step, i) => (
+          <s.InactiveStepHeader key={step.title}>
+            <s.NextStepNumber>{currentStep + 2 + i}</s.NextStepNumber>
+            {step.title}
+          </s.InactiveStepHeader>
+        ))}
+      <s.Footer>
+        {currentStep === steps.length - 1 && (
+          <Button onClick={handleFinishButtonClick}>Finish</Button>
+        )}
+      </s.Footer>
     </s.Container>
   );
 };

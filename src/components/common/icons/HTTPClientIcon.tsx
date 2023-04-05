@@ -13,7 +13,11 @@ const HTTPClientIconComponent = (props: IconProps) => {
       fill="none"
       viewBox="0 0 16 16"
     >
-      <g stroke={color} strokeLinejoin="round" clipPath="url(#a)">
+      <g
+        stroke={color}
+        strokeLinejoin="round"
+        clipPath="url(#http-client-clip-1)"
+      >
         <path strokeLinecap="round" d="M13 11.333 14.667 13 13 14.667" />
         <path d="M2.667 4a1.333 1.333 0 1 0 0-2.667 1.333 1.333 0 0 0 0 2.667Z" />
         <path
@@ -22,7 +26,7 @@ const HTTPClientIconComponent = (props: IconProps) => {
         />
       </g>
       <defs>
-        <clipPath id="a">
+        <clipPath id="http-client-clip-1">
           <path fill="#fff" d="M0 0h16v16H0z" />
         </clipPath>
       </defs>

@@ -6,50 +6,47 @@ export const Button = styled.button<ButtonProps>`
   font-size: 12px;
   line-height: 14px;
   display: flex;
-  gap: 8px;
   align-items: center;
   justify-content: center;
-  padding: 6px 8px;
   border-radius: 2px;
   cursor: pointer;
+  color: #b9c2eb;
 
-  color: ${({ buttonType }) => {
-    switch (buttonType) {
-      case "primary":
-        return "#b9c2eb";
-      case "secondary":
-      case "success":
-      case "failure":
-        return "#1e1e1e";
-    }
-  }};
+  padding: ${({ buttonType }) =>
+    buttonType === "primary" ? "4px" : "2px 4px"};
 
-  background: ${({ buttonType }) => {
-    switch (buttonType) {
-      case "primary":
-        return "#000";
-      case "secondary":
-        return "#646363";
-      case "success":
-        return "#c8e5c9";
-      case "failure":
-        return "#e4c6c6";
-    }
-  }};
+  background: ${({ buttonType }) =>
+    buttonType === "primary" ? "#3538cd" : "none"};
 
   border: ${({ buttonType }) =>
-    buttonType === "secondary" ? "1px solid #1e1e1e" : "none"};
+    buttonType === "primary" ? "none" : "1px solid #3538cd"};
 
   width: ${({ buttonType }) =>
     buttonType === "primary" ? "100%" : "max-content"};
 
+  &:hover {
+    color: #dadada;
+    border: ${({ buttonType }) =>
+      buttonType === "primary" ? "none" : "1px solid #5154ec"};
+    background: ${({ buttonType }) =>
+      buttonType === "primary" ? "#5154ec" : "none"};
+  }
+
+  &:focus {
+    color: #dadada;
+    background: ${({ buttonType }) =>
+      buttonType === "primary" ? "#5154ec" : "none"};
+  }
+
   &:disabled {
-    ${({ buttonType }) => (buttonType === "primary" ? "opacity: 0.2;" : "")}
+    background: #2e2e2e;
+    color: #49494d;
     cursor: initial;
   }
 `;
 
-export const ContentContainer = styled.span`
+export const ContentContainer = styled.div`
   display: flex;
-  gap: 8px;
+  gap: 2px;
+  align-items: center;
 `;

@@ -12,7 +12,7 @@ export const CodeSnippet = (props: CodeSnippetProps) => {
     <s.Container disabled={props.disabled}>
       <s.Code>{props.text}</s.Code>
       <s.CopyButton onClick={handleCopyButtonClick}>
-        <CopyIcon color={"#dadada"} />
+        <CopyIcon size={10} color={"#b9c2eb"} />
       </s.CopyButton>
     </s.Container>
   );
