@@ -119,7 +119,7 @@ export const SectionDescription = styled.span`
 export const IllustrationContainer = styled.div`
   height: 123px;
   width: 312px;
-  background: #393739;
+  background: #313131;
   border-radius 4px;
   position: relative;
   overflow: hidden;
