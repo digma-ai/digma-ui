@@ -31,7 +31,7 @@ export const Circle = styled.div<CircleProps>`
   background: ${({ isChecked }) => (isChecked ? "#fbfdff" : "#b9c0d4")};
   position: absolute;
   top: 4px;
-  left: ${({ isChecked }) => (isChecked ? "4px" : "16px")};
+  left: ${({ isChecked }) => (isChecked ? "16px" : "4px")};
   transition-property: background, left;
   transition-duration: 0.3s;
 `;
