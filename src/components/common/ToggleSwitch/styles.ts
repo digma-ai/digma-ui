@@ -19,9 +19,10 @@ export const SwitchContainer = styled.div<SwitchContainerProps>`
   background: ${({ isChecked }) => (isChecked ? "#3538cd" : "#7c7c94")};
   width: 28px;
   height: 16px;
-  position: relative;
   transition-property: background;
   transition-duration: 0.3s;
+  display: flex;
+  align-items: center;
 `;
 
 export const Circle = styled.div<CircleProps>`
@@ -29,9 +30,7 @@ export const Circle = styled.div<CircleProps>`
   height: 8px;
   border-radius: 50%;
   background: ${({ isChecked }) => (isChecked ? "#fbfdff" : "#b9c0d4")};
-  position: absolute;
-  top: 4px;
-  left: ${({ isChecked }) => (isChecked ? "16px" : "4px")};
-  transition-property: background, left;
+  margin-left: ${({ isChecked }) => (isChecked ? "16px" : "4px")};
+  transition-property: background, margin-left;
   transition-duration: 0.3s;
 `;

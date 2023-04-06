@@ -29,4 +29,8 @@ export const Tab = styled.li<TabProps>`
     isSelected ? "3px solid #5154ec" : "none"};
 
   color: ${({ isSelected }) => (isSelected ? "#dadada" : "#9b9b9b")};
+
+  &:hover {
+    color: #dadada;
+  }
 `;

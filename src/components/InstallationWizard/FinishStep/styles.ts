@@ -17,8 +17,6 @@ export const IllustrationContainer = styled(s.IllustrationContainer)`
 `;
 
 export const ObservabilityPanelIllustration = styled.img`
-  bottom: 0;
-  position: absolute;
   width: 100%;
 `;
 

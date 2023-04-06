@@ -1,8 +1,13 @@
 import styled from "styled-components";
 import { getCodeFont } from "../../../common/App/styles";
 
+// postcss-styled-components-disable-next-line
 export const Link = styled.a`
   ${({ theme }) => getCodeFont(theme.codeFont)}
+
+  font-size: 12px;
+  cursor: pointer;
+
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -12,6 +17,4 @@ export const Link = styled.a`
         return "#7891d0";
     }
   }};
-  font-size: 12px;
-  cursor: pointer;
 `;

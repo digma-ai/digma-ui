@@ -67,6 +67,8 @@ export const CongratulationsText = styled.span`
 
 export const IllustrationContainer = styled(s.IllustrationContainer)`
   margin-top: 8px;
+  display: flex;
+  justify-content: center;
 `;
 
 export const ObservabilityButtonIllustration = styled.img`

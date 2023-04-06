@@ -14,8 +14,10 @@ export const Container = styled.div<ContainerProps>`
   ${({ disabled }) => (disabled ? "opacity: 0.5;" : "")}
 `;
 
+// postcss-styled-components-disable-next-line
 export const Code = styled.code`
   ${({ theme }) => getCodeFont(theme.codeFont)}
+
   font-weight: 500;
   font-size: 12px;
   line-height: 20px;
