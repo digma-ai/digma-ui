@@ -25,8 +25,7 @@ export const Step = (props: StepProps) => {
 
   const { observe, height } = useDimensions();
 
-  const handleSkipLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
+  const handleSkipLinkClick = () => {
     props.onSkip();
   };
 

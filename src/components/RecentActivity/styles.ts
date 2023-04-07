@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "../common/Link";
 
 export const Container = styled.div`
   min-height: 100vh;
@@ -84,10 +85,11 @@ export const NoDataText = styled.span`
   margin-top: 4px;
 `;
 
-export const DocumentationLink = styled.a`
-  font-weight: 400;
+export const DocumentationLink = styled(Link)`
   font-size: 10px;
   line-height: 16px;
+  text-decoration: none;
+
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -97,5 +99,4 @@ export const DocumentationLink = styled.a`
         return "#7891d0";
     }
   }};
-  text-decoration: none;
 `;

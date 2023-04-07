@@ -30,10 +30,7 @@ export const ObservabilityStep = (props: ObservabilityStepProps) => {
     props.onGoToNextStep();
   };
 
-  const handleAlreadyUsingOTELLinkClick = (
-    e: React.MouseEvent<HTMLAnchorElement>
-  ) => {
-    e.preventDefault();
+  const handleAlreadyUsingOTELLinkClick = () => {
     props.onIsAlreadyUsingOtelChange(!props.isAlreadyUsingOtel);
   };
 

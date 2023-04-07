@@ -45,9 +45,8 @@ export const Container = styled.div<ContainerProps>`
 
 export const SkipLink = styled(Link)<TransitionProps>`
   padding: 2px 4px;
-  margin-left: auto;
   font-weight: 400;
-  text-align: center;
+  margin-left: auto;
 
   ${({ transitionClassName, transitionDuration }) => {
     return `

@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Button } from "../common/Button";
+import { Link as CommonLink } from "../common/Link";
 
 export const Container = styled.div`
   min-height: 100vh;
@@ -73,21 +74,9 @@ export const HeaderSubtitle = styled.span`
   }};
 `;
 
-export const Link = styled.a`
+export const Link = styled(CommonLink)`
   font-size: 12px;
   line-height: 14px;
-  text-decoration: underline;
-  cursor: pointer;
-
-  color: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#426dda";
-      case "dark":
-      case "dark-jetbrains":
-        return "#b9c2eb";
-    }
-  }};
 `;
 
 export const Footer = styled.div`

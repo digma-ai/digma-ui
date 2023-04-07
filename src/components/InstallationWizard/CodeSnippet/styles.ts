@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { getCodeFont } from "../../common/App/styles";
+import { FloatingIconButton } from "../../common/FloatingIconButton";
 import { ContainerProps } from "./types";
 
 export const Container = styled.div<ContainerProps>`
@@ -44,46 +45,6 @@ export const Code = styled.code`
   }};
 `;
 
-export const CopyButton = styled.button`
-  padding: 0;
-  cursor: pointer;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  width: 18px;
-  height: 18px;
-
-  border-radius: 4px;
-
-  background: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#f1f5fa";
-      case "dark":
-      case "dark-jetbrains":
-        return "#2e2e2e";
-    }
-  }};
-
-  border: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "0.9px solid #fbfdff";
-      case "dark":
-      case "dark-jetbrains":
-        return "1px solid #383838";
-    }
-  }};
-
-  box-shadow: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "0.9px 0.9px 2.7px rgba(0, 0, 0, 0.15)";
-      case "dark":
-      case "dark-jetbrains":
-        return "1px 1px 4px rgba(0, 0, 0, 0.25)";
-    }
-  }};
+export const CopyButton = styled(FloatingIconButton)`
+  padding: 3px;
 `;
