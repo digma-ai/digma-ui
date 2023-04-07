@@ -10,8 +10,6 @@ export const Container = styled.div`
 export const ObservabilityContainer = styled.div`
   padding: 20px;
   margin: 8px 0 12px;
-  background: #303031;
-  border: 1px solid #9b9b9b;
   box-sizing: border-box;
   border-radius: 4px;
   display: flex;
@@ -21,24 +19,63 @@ export const ObservabilityContainer = styled.div`
   justify-content: center;
   user-select: none;
   cursor: pointer;
+
+  background: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#e5eaf1";
+      case "dark":
+      case "dark-jetbrains":
+        return "#303031";
+    }
+  }};
+
+  border: 1px solid
+    ${({ theme }) => {
+      switch (theme.mode) {
+        case "light":
+          return "#7891d0";
+        case "dark":
+        case "dark-jetbrains":
+          return "#9b9b9b";
+      }
+    }};
 `;
 
 export const ObservabilityTitle = styled.span`
   font-weight: 500;
   font-size: 14px;
   text-transform: capitalize;
-  color: #fff;
   text-align: center;
+
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#4d668a";
+      case "dark":
+      case "dark-jetbrains":
+        return "#fff";
+    }
+  }};
 `;
 
 export const ObservabilityDescription = styled.div`
   font-weight: 500;
   font-size: 10px;
   line-height: 12px;
-  color: #969798;
   text-align: center;
   display: flex;
   flex-direction: column;
+
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#828797";
+      case "dark":
+      case "dark-jetbrains":
+        return "#969798";
+    }
+  }};
 `;
 
 export const ObservabilityToggleSwitchContainer = styled.div`
@@ -54,15 +91,33 @@ export const CongratulationsTextContainer = styled.div`
   font-weight: 500;
   font-size: 10px;
   line-height: 11px;
-  color: #dadada;
   flex-wrap: wrap;
   justify-content: center;
+
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#4d668a";
+      case "dark":
+      case "dark-jetbrains":
+        return "#dadada";
+    }
+  }};
 `;
 
 export const CongratulationsText = styled.span`
   font-weight: 700;
   padding-left: 2px;
-  color: #67d28b;
+
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#00c108";
+      case "dark":
+      case "dark-jetbrains":
+        return "#67d28b";
+    }
+  }};
 `;
 
 export const IllustrationContainer = styled(s.IllustrationContainer)`

@@ -164,7 +164,9 @@ export const RecentActivityTable = (props: RecentActivityTableProps) => {
         onClick={() => {
           handleTraceButtonClick(entry.latestTraceId, entry.firstEntrySpan);
         }}
-        icon={CrosshairIcon}
+        icon={{
+          component: CrosshairIcon
+        }}
       >
         Trace
       </Button>

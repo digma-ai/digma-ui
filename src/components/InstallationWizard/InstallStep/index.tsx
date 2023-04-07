@@ -1,12 +1,13 @@
 import { useState } from "react";
+import { useTheme } from "styled-components";
+import { getThemeKind } from "../../common/App/styles";
 import { Loader } from "../../common/Loader";
 import { CheckmarkCircleInvertedIcon } from "../../common/icons/CheckmarkCircleInvertedIcon";
 import { CodeIcon } from "../../common/icons/CodeIcon";
 import { DockerLogoIcon } from "../../common/icons/DockerLogoIcon";
-import { Button } from "../Button";
 import { CodeSnippet } from "../CodeSnippet";
 import { Tabs } from "../Tabs";
-import { Link, SectionDescription } from "../styles";
+import { Link, MainButton, SectionDescription } from "../styles";
 import * as s from "./styles";
 import { InstallStepProps } from "./types";
 
@@ -23,6 +24,7 @@ const DIGMA_HELM_CHART_URL =
   "https://github.com/digma-ai/helm-chart/tree/gh-pages";
 
 export const InstallStep = (props: InstallStepProps) => {
+  const theme = useTheme();
   const isConnectionCheckStarted = Boolean(props.connectionCheckStatus);
   const [selectedInstallTab, setSelectedInstallTab] = useState(0);
   const [selectedDockerComposeOSTab, setSelectedDockerComposeOSTab] =
@@ -170,27 +172,34 @@ export const InstallStep = (props: InstallStepProps) => {
       />
       <s.LoaderContainer>
         {props.connectionCheckStatus && (
-          <Loader size={84} status={props.connectionCheckStatus} />
+          <Loader
+            size={84}
+            status={props.connectionCheckStatus}
+            themeKind={getThemeKind(theme)}
+          />
         )}
       </s.LoaderContainer>
       {!isConnectionCheckStarted && (
-        <Button onClick={handleDigmaIsInstalledButtonClick}>
+        <MainButton onClick={handleDigmaIsInstalledButtonClick}>
           OK, I&apos;ve installed Digma
-        </Button>
+        </MainButton>
       )}
       {props.connectionCheckStatus === "pending" && (
-        <Button disabled={true}>Complete</Button>
+        <MainButton disabled={true}>Complete</MainButton>
       )}
       {props.connectionCheckStatus === "failure" && (
-        <Button onClick={handleRetryButtonClick}>Retry</Button>
+        <MainButton onClick={handleRetryButtonClick}>Retry</MainButton>
       )}
       {props.connectionCheckStatus === "success" && (
-        <Button
-          icon={<CheckmarkCircleInvertedIcon color={"#0fbf00"} />}
+        <MainButton
+          icon={{
+            component: CheckmarkCircleInvertedIcon,
+            color: "#0fbf00"
+          }}
           onClick={handleNextButtonClick}
         >
           Complete
-        </Button>
+        </MainButton>
       )}
     </s.Container>
   );

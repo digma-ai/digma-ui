@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { DefaultTheme } from "styled-components";
 import { Link } from "../styles";
 import {
   ContainerProps,
@@ -79,10 +79,29 @@ export const Header = styled.div<HeaderProps>`
   font-weight: 500;
   font-size: 14px;
   text-transform: capitalize;
-  border-top: 1px solid #49494d;
-  height: ${HEADER_HEIGHT};
+  border-top: 1px solid
+    ${({ theme }) => {
+      switch (theme.mode) {
+        case "light":
+          return "#b9c0d4";
+        case "dark":
+        case "dark-jetbrains":
+          return "#49494d";
+      }
+    }};
+  height: ${HEADER_HEIGHT}px;
+  box-sizing: border-box;
 
-  color: ${({ status }) => (status === "active" ? "#fff" : "#9b9b9b")};
+  color: ${({ theme, status }) => {
+    switch (theme.mode) {
+      case "light":
+        return status === "active" ? "#4d668a" : "#b9c0d4";
+      case "dark":
+      case "dark-jetbrains":
+        return status === "active" ? "#fff" : "#9b9b9b";
+    }
+  }};
+
   transition: color ${({ transitionDuration }) => transitionDuration}ms ease-out;
 `;
 
@@ -95,12 +114,30 @@ export const NumberContainer = styled.div<NumberContainerProps>`
   justify-content: center;
   flex-shrink: 0;
 
-  color: ${({ isActive }) => (isActive ? "#fff" : "#383838")};
+  color: ${({ theme, isActive }) => {
+    switch (theme.mode) {
+      case "light":
+        return isActive ? "#f1f5fa" : "#b9c0d4";
+      case "dark":
+      case "dark-jetbrains":
+        return isActive ? "#fff" : "#383838";
+    }
+  }};
 
   transition-duration: ${({ transitionDuration }) => transitionDuration}ms;
   transition-property: color;
   transition-timing-function: ease-out;
 `;
+
+export const getNumberBackgroundColor = (theme: DefaultTheme): string => {
+  switch (theme.mode) {
+    case "light":
+      return "#4d668a";
+    case "dark":
+    case "dark-jetbrains":
+      return "#6a6dfa";
+  }
+};
 
 export const Number = styled.span<NumberProps>`
   width: 100%;
@@ -114,9 +151,10 @@ export const Number = styled.span<NumberProps>`
   justify-content: center;
   position: absolute;
 
-  background: ${({ status }) => (status === "completed" ? "none" : "#6a6dfa")};
+  background: ${({ theme, status }) =>
+    status === "completed" ? "none" : getNumberBackgroundColor(theme)};
 
-  ${({ transitionClassName, transitionDuration }) => {
+  ${({ theme, transitionClassName, transitionDuration }) => {
     return `
       &.${transitionClassName}-enter {
         background: none;
@@ -124,7 +162,7 @@ export const Number = styled.span<NumberProps>`
       }
       
       &.${transitionClassName}-enter-active {
-        background: #6a6dfa;
+        background: ${getNumberBackgroundColor(theme)};
         opacity: 1;
         transition-property: opacity, background;
         transition-duration: ${transitionDuration}ms;
@@ -132,7 +170,7 @@ export const Number = styled.span<NumberProps>`
       }
 
       &.${transitionClassName}-exit {
-        background: #6a6dfa;
+        background: ${getNumberBackgroundColor(theme)};
         opacity: 1;
       }
 

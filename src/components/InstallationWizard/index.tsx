@@ -4,7 +4,6 @@ import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
 import { addPrefix } from "../../utils/addPrefix";
 import { actions as globalActions } from "../common/App";
-import { Button } from "./Button";
 import { FinishStep } from "./FinishStep";
 import { InstallStep } from "./InstallStep";
 import { ObservabilityStep } from "./ObservabilityStep";
@@ -239,7 +238,9 @@ export const InstallationWizard = () => {
             transitionClassName={footerTransitionClassName}
             transitionDuration={TRANSITION_DURATION}
           >
-            <Button onClick={handleFinishButtonClick}>Finish</Button>
+            <s.MainButton onClick={handleFinishButtonClick}>
+              Finish
+            </s.MainButton>
           </s.FooterContent>
         </CSSTransition>
       </s.Footer>

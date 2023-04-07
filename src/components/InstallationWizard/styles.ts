@@ -1,10 +1,20 @@
 import styled from "styled-components";
+import { Button } from "../common/Button";
 
 export const Container = styled.div`
-  background: #383838;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+
+  background: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#f1f5fa";
+      case "dark":
+      case "dark-jetbrains":
+        return "#383838";
+    }
+  }};
 `;
 
 export const Header = styled.div`
@@ -12,9 +22,27 @@ export const Header = styled.div`
   text-align: center;
   font-weight: 500;
   font-size: 12px;
-  color: #fff;
-  background: #2e2e2e;
   padding: 8px;
+
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#fbfdff";
+      case "dark":
+      case "dark-jetbrains":
+        return "#fff";
+    }
+  }};
+
+  background: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#788ca9";
+      case "dark":
+      case "dark-jetbrains":
+        return "#2e2e2e";
+    }
+  }};
 `;
 
 export const HeaderTitle = styled.span`
@@ -23,23 +51,59 @@ export const HeaderTitle = styled.span`
 
 export const HeaderSubtitle = styled.span`
   padding-left: 8px;
-  color: #9b9b9b;
-  border-left: 1px solid #7c7c94;
+  border-left: 1px solid
+    ${({ theme }) => {
+      switch (theme.mode) {
+        case "light":
+          return "#fbfdff";
+        case "dark":
+        case "dark-jetbrains":
+          return "#7c7c94";
+      }
+    }};
+
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#f1f5fa";
+      case "dark":
+      case "dark-jetbrains":
+        return "#9b9b9b";
+    }
+  }};
 `;
 
 export const Link = styled.a`
   font-size: 12px;
   line-height: 14px;
-  color: #b9c2eb;
   text-decoration: underline;
   cursor: pointer;
+
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#426dda";
+      case "dark":
+      case "dark-jetbrains":
+        return "#b9c2eb";
+    }
+  }};
 `;
 
 export const Footer = styled.div`
-  background: #3d3f41;
   display: flex;
   flex-grow: 1;
   padding: 12px;
+
+  background: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#fbfdff";
+      case "dark":
+      case "dark-jetbrains":
+        return "#3d3f41";
+    }
+  }};
 `;
 
 // postcss-styled-components-disable-next-line
@@ -67,32 +131,43 @@ export const FooterContent = styled.div<{
   }};
 `;
 
-export const SectionTitle = styled.div`
-  display: flex;
-  font-weight: 500;
-  font-size: 14px;
-  color: #ededed;
-  align-items: center;
-  text-transform: capitalize;
-`;
-
-export const SectionIconContainer = styled.div`
-  display: flex;
-  flex-shrink: 0;
-`;
-
 export const SectionDescription = styled.span`
   font-size: 12px;
-  color: #9b9b9b;
+
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#828797";
+      case "dark":
+      case "dark-jetbrains":
+        return "#9b9b9b";
+    }
+  }};
 `;
 
 export const IllustrationContainer = styled.div`
   height: 123px;
   width: 312px;
-  background: #313131;
   border-radius: 4px;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
+
+  background: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#dfe6f0";
+      case "dark":
+      case "dark-jetbrains":
+        return "#313131";
+    }
+  }};
+`;
+
+export const MainButton = styled(Button)`
+  padding: 4px;
+  font-size: 12px;
+  line-height: 14px;
+  width: 100%;
 `;

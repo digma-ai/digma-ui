@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { Button } from "../Button";
+import { Button } from "../../common/Button";
+import { SectionTitle as CommonSectionTitle } from "../SectionTitle";
 import { Tabs } from "../Tabs";
-import * as s from "../styles";
 
 export const Container = styled.div`
   display: flex;
@@ -9,7 +9,7 @@ export const Container = styled.div`
   padding: 0 8px 12px;
 `;
 
-export const SectionTitle = styled(s.SectionTitle)`
+export const SectionTitle = styled(CommonSectionTitle)`
   gap: 2px;
   margin-bottom: 2px;
 `;

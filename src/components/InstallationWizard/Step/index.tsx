@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import useDimensions from "react-cool-dimensions";
 import { CSSTransition } from "react-transition-group";
+import { useTheme } from "styled-components";
 import { CheckmarkCircleInvertedIcon } from "../../common/icons/CheckmarkCircleInvertedIcon";
 import * as s from "./styles";
 import { StepProps } from "./types";
@@ -8,9 +9,11 @@ import { StepProps } from "./types";
 const TRANSITION_CLASS_NAME = "step";
 const SKIP_LINK_TRANSITION_CLASS_NAME = "skip-link";
 const NUMBER_TRANSITION_CLASS_NAME = "number-link";
-const DEFAULT_TRANSITION_DURATION = 3000; // in milliseconds
+const DEFAULT_TRANSITION_DURATION = 300; // in milliseconds
 
 export const Step = (props: StepProps) => {
+  const theme = useTheme();
+
   const transitionDuration =
     typeof props.transitionDuration === "number"
       ? props.transitionDuration
@@ -52,7 +55,10 @@ export const Step = (props: StepProps) => {
               isActive={isActive}
               transitionDuration={transitionDuration}
             >
-              <CheckmarkCircleInvertedIcon size={18} color={"#6a6dfa"} />
+              <CheckmarkCircleInvertedIcon
+                size={18}
+                color={s.getNumberBackgroundColor(theme)}
+              />
               <CSSTransition
                 in={props.status !== "completed"}
                 timeout={transitionDuration}
