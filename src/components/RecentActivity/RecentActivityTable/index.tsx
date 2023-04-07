@@ -18,7 +18,6 @@ import { SnailIcon } from "../../common/icons/SnailIcon";
 import { SpotIcon } from "../../common/icons/SpotIcon";
 import { ViewMode } from "../EnvironmentPanel/types";
 import { ActivityEntry, EntrySpan, SlimInsight } from "../types";
-import { SpanLink } from "./SpanLink";
 import * as s from "./styles";
 import { INSIGHT_TYPES, RecentActivityTableProps } from "./types";
 
@@ -99,13 +98,14 @@ export const RecentActivityTable = (props: RecentActivityTableProps) => {
   };
 
   const renderSpanLink = (span: EntrySpan, environment: string) => (
-    <SpanLink
+    <s.SpanLink
       key={span.spanCodeObjectId}
       onClick={() => {
         handleSpanLinkClick(span, environment);
       }}
-      text={span.displayText}
-    />
+    >
+      {span.displayText}
+    </s.SpanLink>
   );
 
   const renderSpanLinks = (entry: ActivityEntry) => (
@@ -164,7 +164,9 @@ export const RecentActivityTable = (props: RecentActivityTableProps) => {
         onClick={() => {
           handleTraceButtonClick(entry.latestTraceId, entry.firstEntrySpan);
         }}
-        icon={CrosshairIcon}
+        icon={{
+          component: CrosshairIcon
+        }}
       >
         Trace
       </Button>

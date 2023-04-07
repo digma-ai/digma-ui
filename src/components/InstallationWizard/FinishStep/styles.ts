@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import * as s from "../styles";
+import { SectionTitle as CommonSectionTitle } from "../SectionTitle";
+import { IllustrationContainer as CommonIllustrationContainer } from "../styles";
 
 export const Container = styled.div`
   display: flex;
@@ -7,18 +8,16 @@ export const Container = styled.div`
   padding: 12px 8px;
 `;
 
-export const SectionTitle = styled(s.SectionTitle)`
+export const SectionTitle = styled(CommonSectionTitle)`
   gap: 8px;
   margin-bottom: 4px;
 `;
 
-export const IllustrationContainer = styled(s.IllustrationContainer)`
+export const IllustrationContainer = styled(CommonIllustrationContainer)`
   margin: 12px 0 12px;
 `;
 
 export const ObservabilityPanelIllustration = styled.img`
-  bottom: 0;
-  position: absolute;
   width: 100%;
 `;
 
@@ -32,6 +31,20 @@ export const TipContainer = styled.div`
   gap: 4px;
   font-weight: 500;
   font-size: 12px;
-  color: #b9c2eb;
   margin-top: 8px;
+
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#788ca9";
+      case "dark":
+      case "dark-jetbrains":
+        return "#b9c2eb";
+    }
+  }};
+`;
+
+export const TipIconContainer = styled.div`
+  display: flex;
+  flex-shrink: 0;
 `;

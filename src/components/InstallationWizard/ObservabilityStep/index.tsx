@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { useTheme } from "styled-components";
+import { getThemeKind } from "../../common/App/styles";
 import { Loader } from "../../common/Loader";
 import { ToggleSwitch } from "../../common/ToggleSwitch";
 import { OpenTelemetryLogoIcon } from "../../common/icons/OpenTelemetryLogoIcon";
-import { Button } from "../Button";
 import { CodeSnippet } from "../CodeSnippet";
-import { Link, SectionDescription, SectionTitle } from "../styles";
+import { SectionTitle } from "../SectionTitle";
+import { Link, MainButton, SectionDescription } from "../styles";
 import * as s from "./styles";
 import { ObservabilityStepProps } from "./types";
 
@@ -18,6 +20,9 @@ traces:
   exporters: [otlp/digma, ...]`;
 
 export const ObservabilityStep = (props: ObservabilityStepProps) => {
+  const theme = useTheme();
+  const themeKind = getThemeKind(theme);
+
   const [isCollectorModified, setIsCollectorModified] =
     useState<boolean>(false);
 
@@ -25,10 +30,7 @@ export const ObservabilityStep = (props: ObservabilityStepProps) => {
     props.onGoToNextStep();
   };
 
-  const handleAlreadyUsingOTELLinkClick = (
-    e: React.MouseEvent<HTMLAnchorElement>
-  ) => {
-    e.preventDefault();
+  const handleAlreadyUsingOTELLinkClick = () => {
     props.onIsAlreadyUsingOtelChange(!props.isAlreadyUsingOtel);
   };
 
@@ -53,16 +55,16 @@ export const ObservabilityStep = (props: ObservabilityStepProps) => {
       />
       <s.StepFooter>
         {isCollectorModified ? (
-          <Button
+          <MainButton
             onClick={handleNextButtonClick}
             disabled={props.isAlreadyUsingOtel && !isCollectorModified}
           >
             Next
-          </Button>
+          </MainButton>
         ) : (
-          <Button onClick={handleCollectorIsModifiedButtonClick}>
+          <MainButton onClick={handleCollectorIsModifiedButtonClick}>
             OK, I&apos;ve modified collector configuration
-          </Button>
+          </MainButton>
         )}
         <Link onClick={handleAlreadyUsingOTELLinkClick}>
           Observe your application
@@ -79,7 +81,7 @@ export const ObservabilityStep = (props: ObservabilityStepProps) => {
         </s.ObservabilityTitle>
         <s.ObservabilityDescription>
           <span>
-            To quickly collect data from your application in intelliJ,
+            To quickly collect data from your application in IntelliJ,
           </span>
           <span>You can just toggle observability on now to get started</span>
           <s.ObservabilityToggleSwitchContainer>
@@ -91,23 +93,23 @@ export const ObservabilityStep = (props: ObservabilityStepProps) => {
         </s.ObservabilityDescription>
         {props.isObservabilityEnabled && (
           <s.CongratulationsTextContainer>
-            <Loader status={"success"} size={24} />
-            <s.CongratulationsText>Congratulation!</s.CongratulationsText>
+            <Loader status={"success"} size={24} themeKind={themeKind} />
+            <s.CongratulationsText>Congratulations!</s.CongratulationsText>
             Your application is now being observed.
           </s.CongratulationsTextContainer>
         )}
       </s.ObservabilityContainer>
       <SectionDescription>
-        You can always expand the Digma side-panel and open the settings menu as
+        You can always expand the Digma side panel and open the Settings menu as
         seen bellow
       </SectionDescription>
       <s.IllustrationContainer>
         <s.ObservabilityButtonIllustration
-          src={"/images/observabilityButton.gif"}
+          src={`/images/observabilityButton_${themeKind}.gif`}
         />
       </s.IllustrationContainer>
       <s.StepFooter>
-        <Button onClick={handleNextButtonClick}>Next</Button>
+        <MainButton onClick={handleNextButtonClick}>Next</MainButton>
         <Link onClick={handleAlreadyUsingOTELLinkClick}>
           Already using OpenTelemetry?
         </Link>

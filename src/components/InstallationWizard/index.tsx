@@ -1,13 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { CSSTransition } from "react-transition-group";
 import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
 import { addPrefix } from "../../utils/addPrefix";
 import { actions as globalActions } from "../common/App";
-import { CheckmarkCircleInvertedIcon } from "../common/icons/CheckmarkCircleInvertedIcon";
-import { Button } from "./Button";
 import { FinishStep } from "./FinishStep";
 import { InstallStep } from "./InstallStep";
 import { ObservabilityStep } from "./ObservabilityStep";
+import { Step } from "./Step";
+import { StepData, StepStatus } from "./Step/types";
 import * as s from "./styles";
 import { ConnectionCheckResultData, ConnectionCheckStatus } from "./types";
 
@@ -37,7 +38,22 @@ const trackingEvents = addPrefix(
   " "
 );
 
+const footerTransitionClassName = "footer";
+const TRANSITION_DURATION = 300; // in milliseconds
+
 const firstStep = window.wizardSkipInstallationStep === true ? 1 : 0;
+
+const getStepStatus = (index: number, currentStep: number): StepStatus => {
+  if (index < currentStep) {
+    return "completed";
+  }
+
+  if (index === currentStep) {
+    return "active";
+  }
+
+  return "not-completed";
+};
 
 export const InstallationWizard = () => {
   const [currentStep, setCurrentStep] = useState<number>(firstStep);
@@ -45,9 +61,9 @@ export const InstallationWizard = () => {
   const [isAlreadyUsingOtel, setIsAlreadyUsingOtel] = useState<boolean>(false);
   const [isObservabilityEnabled, setIsObservabilityEnabled] =
     useState<boolean>(false);
-
   const [connectionCheckStatus, setConnectionCheckStatus] =
     useState<ConnectionCheckStatus>();
+  const footerContentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (previousStep === 0 && currentStep === 1) {
@@ -140,8 +156,7 @@ export const InstallationWizard = () => {
     }
   };
 
-  const handleSkipLinkClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
+  const handleSkipStep = () => {
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
     } else {
@@ -157,7 +172,7 @@ export const InstallationWizard = () => {
     });
   };
 
-  const steps = [
+  const steps: StepData[] = [
     {
       title: "Get Digma up and running",
       content: (
@@ -192,10 +207,6 @@ export const InstallationWizard = () => {
     }
   ];
 
-  const step = steps[currentStep];
-  const previousSteps = steps.slice(0, currentStep);
-  const nextSteps = steps.slice(currentStep + 1);
-
   return (
     <s.Container>
       <s.Header>
@@ -204,32 +215,34 @@ export const InstallationWizard = () => {
           Follow the steps to configure your projects
         </s.HeaderSubtitle>
       </s.Header>
-      {previousSteps.length > 0 &&
-        previousSteps.map((step) => (
-          <s.InactiveStepHeader key={step.title}>
-            <CheckmarkCircleInvertedIcon size={16} color={"#6a6dfa"} />
-            {step.title}
-          </s.InactiveStepHeader>
-        ))}
-      <s.Content>
-        <s.StepHeader>
-          <s.StepNumber>{currentStep + 1}</s.StepNumber>
-          {step.title}
-          <s.SkipLink onClick={handleSkipLinkClick}>Skip for now</s.SkipLink>
-        </s.StepHeader>
-        <s.StepContent>{step.content}</s.StepContent>
-      </s.Content>
-      {nextSteps.length > 0 &&
-        nextSteps.map((step, i) => (
-          <s.InactiveStepHeader key={step.title}>
-            <s.NextStepNumber>{currentStep + 2 + i}</s.NextStepNumber>
-            {step.title}
-          </s.InactiveStepHeader>
-        ))}
+      {steps.map((step, i) => (
+        <Step
+          key={step.title}
+          onSkip={handleSkipStep}
+          data={step}
+          number={i + 1}
+          status={getStepStatus(i, currentStep)}
+          transitionDuration={TRANSITION_DURATION}
+        />
+      ))}
       <s.Footer>
-        {currentStep === steps.length - 1 && (
-          <Button onClick={handleFinishButtonClick}>Finish</Button>
-        )}
+        <CSSTransition
+          in={currentStep === steps.length - 1}
+          timeout={TRANSITION_DURATION}
+          classNames={footerTransitionClassName}
+          nodeRef={footerContentRef}
+          mountOnEnter={true}
+        >
+          <s.FooterContent
+            ref={footerContentRef}
+            transitionClassName={footerTransitionClassName}
+            transitionDuration={TRANSITION_DURATION}
+          >
+            <s.MainButton onClick={handleFinishButtonClick}>
+              Finish
+            </s.MainButton>
+          </s.FooterContent>
+        </CSSTransition>
       </s.Footer>
     </s.Container>
   );

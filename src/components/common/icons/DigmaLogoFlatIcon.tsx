@@ -3,7 +3,7 @@ import { useIconProps } from "./hooks";
 import { IconProps } from "./types";
 
 const DigmaLogoFlatIconComponent = (props: IconProps) => {
-  const { size, color } = useIconProps(props);
+  const { size } = useIconProps(props);
 
   return (
     <svg

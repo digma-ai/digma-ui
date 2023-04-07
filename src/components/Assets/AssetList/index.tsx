@@ -1,11 +1,11 @@
 import { useMemo, useState } from "react";
 import { AssetEntry as AssetEntryComponent } from "../../common/AssetEntry";
-import { ChevronIcon } from "../../common/icons/ChevronIcon";
-import { DIRECTION } from "../../common/icons/types";
 import { Menu } from "../../common/Menu";
 import { Popover } from "../../common/Popover";
 import { PopoverContent } from "../../common/Popover/PopoverContent";
 import { PopoverTrigger } from "../../common/Popover/PopoverTrigger";
+import { ChevronIcon } from "../../common/icons/ChevronIcon";
+import { DIRECTION } from "../../common/icons/types";
 import { getAssetTypeInfo } from "../utils";
 import * as s from "./styles";
 import {
@@ -206,7 +206,8 @@ export const AssetList = (props: AssetListProps) => {
         </s.List>
       ) : (
         <s.NoDataText>
-          Not seeing your data here? Maybe you’re missing some instrumentation!
+          Not seeing your data here? Maybe you&apos;re missing some
+          instrumentation!
         </s.NoDataText>
       )}
     </s.Container>

@@ -1,11 +1,10 @@
+import { Tab } from "./Tab";
 import * as s from "./styles";
 import { TabsProps } from "./types";
 
 export const Tabs = (props: TabsProps) => {
   const handleTabClick = (tabIndex: number) => {
-    if (!props.tabs[tabIndex].disabled) {
-      props.onSelect(tabIndex);
-    }
+    props.onSelect(tabIndex);
   };
 
   return (
@@ -15,20 +14,15 @@ export const Tabs = (props: TabsProps) => {
           const isSelected = props.selectedTab === i;
 
           return (
-            <s.Tab
-              disabled={tab.disabled}
+            <Tab
+              isDisabled={tab.disabled}
               key={tab.title}
               isSelected={isSelected}
               onClick={() => handleTabClick(i)}
+              icon={tab.icon}
             >
-              {tab.icon && (
-                <tab.icon
-                  size={14}
-                  color={isSelected ? "#dadada" : "#9b9b9b"}
-                />
-              )}
               {tab.title}
-            </s.Tab>
+            </Tab>
           );
         })}
       </s.TabList>

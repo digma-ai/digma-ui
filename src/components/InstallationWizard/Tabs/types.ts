@@ -12,8 +12,3 @@ export interface TabsProps {
   onSelect: (tabIndex: number) => void;
   className?: string;
 }
-
-export interface TabProps {
-  isSelected: boolean;
-  disabled?: boolean;
-}

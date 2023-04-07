@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import { getCodeFont } from "../../common/App/styles";
+import { Link } from "../../common/Link";
 
 export const Table = styled.table`
   width: 100%;
@@ -203,4 +205,20 @@ export const ListBadgeContainer = styled.div`
 
 export const ListSuffix = styled(Suffix)`
   font-size: 12px;
+`;
+
+export const SpanLink = styled(Link)`
+  ${({ theme }) => getCodeFont(theme.codeFont)}
+  font-size: 12px;
+  line-height: 14px;
+
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#426dda";
+      case "dark":
+      case "dark-jetbrains":
+        return "#7891d0";
+    }
+  }};
 `;

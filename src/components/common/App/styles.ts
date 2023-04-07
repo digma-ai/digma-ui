@@ -1,6 +1,7 @@
 import {
   createGlobalStyle,
   css,
+  DefaultTheme,
   FlattenSimpleInterpolation
 } from "styled-components";
 import { environment } from "../../../environment";
@@ -69,17 +70,19 @@ export const getCodeFont = (customFont: string): FlattenSimpleInterpolation => {
   `;
 };
 
+export const getThemeKind = (theme: DefaultTheme): "light" | "dark" => {
+  switch (theme.mode) {
+    case "light":
+      return "light";
+    case "dark":
+    case "dark-jetbrains":
+      return "dark";
+  }
+};
+
 export const GlobalStyle = createGlobalStyle`
   :root {
-    color-scheme: ${({ theme }) => {
-      switch (theme.mode) {
-        case "light":
-          return "light";
-        case "dark":
-        case "dark-jetbrains":
-          return "dark";
-      }
-    }};
+    color-scheme: ${({ theme }) => getThemeKind(theme)};
   }
 
   html, body, #root {

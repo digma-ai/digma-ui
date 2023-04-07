@@ -28,7 +28,6 @@ export const OpenTelemetryIconContainer = styled.div`
 export const Link = styled.a`
   color: #7891d0;
   text-decoration: none;
-  font-style: normal;
   font-weight: 500;
   font-size: 12px;
   line-height: 14px;
