@@ -151,9 +151,7 @@ export const InstallationWizard = () => {
   };
 
   const goToNextStep = () => {
-    if (currentStep < steps.length - 1) {
-      setCurrentStep(currentStep + 1);
-    }
+    setCurrentStep(currentStep + 1);
   };
 
   const handleSkipStep = () => {

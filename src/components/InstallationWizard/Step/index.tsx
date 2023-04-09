@@ -30,7 +30,9 @@ export const Step = (props: StepProps) => {
   };
 
   const handleHeaderClick = () => {
-    props.onGoToStep(props.stepIndex);
+    if (props.status === "completed") {
+      props.onGoToStep(props.stepIndex);
+    }
   };
 
   const isActive = props.status === "active";
