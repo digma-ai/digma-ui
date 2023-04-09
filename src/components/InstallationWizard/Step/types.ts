@@ -14,10 +14,11 @@ export interface StepData {
 
 export interface StepProps {
   data: StepData;
-  number: number;
+  stepIndex: number;
   status: StepStatus;
   transitionDuration?: number;
   onSkip: () => void;
+  onGoToStep: (stepIndex: number) => void;
 }
 
 export interface ContainerProps {

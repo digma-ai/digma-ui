@@ -95,7 +95,6 @@ export const Footer = styled.div`
   }};
 `;
 
-// postcss-styled-components-disable-next-line
 export const FooterContent = styled.div<{
   transitionClassName: string;
   transitionDuration: number;
@@ -117,7 +116,7 @@ export const FooterContent = styled.div<{
         transition: opacity ${transitionDuration}ms ease-out;
       }
       `;
-  }};
+  }}
 `;
 
 export const SectionDescription = styled.span`

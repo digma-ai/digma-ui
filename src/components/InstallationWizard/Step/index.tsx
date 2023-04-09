@@ -29,6 +29,10 @@ export const Step = (props: StepProps) => {
     props.onSkip();
   };
 
+  const handleHeaderClick = () => {
+    props.onGoToStep(props.stepIndex);
+  };
+
   const isActive = props.status === "active";
 
   return (
@@ -49,6 +53,7 @@ export const Step = (props: StepProps) => {
           <s.Header
             status={props.status}
             transitionDuration={transitionDuration}
+            onClick={handleHeaderClick}
           >
             <s.NumberContainer
               isActive={isActive}
@@ -72,7 +77,7 @@ export const Step = (props: StepProps) => {
                   transitionClassName={NUMBER_TRANSITION_CLASS_NAME}
                   transitionDuration={transitionDuration}
                 >
-                  {props.number}
+                  {props.stepIndex + 1}
                 </s.Number>
               </CSSTransition>
             </s.NumberContainer>

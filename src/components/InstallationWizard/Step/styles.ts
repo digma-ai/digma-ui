@@ -33,7 +33,7 @@ export const Container = styled.div<ContainerProps>`
         transition: height ${transitionDuration}ms ease-out;
       }
       `;
-  }};
+  }}
 
   height: ${({ status, contentHeight }) =>
     status === "active"
