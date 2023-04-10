@@ -7,3 +7,5 @@ export interface EnvironmentPanelProps {
 }
 
 export type ViewMode = "table" | "list";
+
+export type ScrollDirection = "left" | "right";

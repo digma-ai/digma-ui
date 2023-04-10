@@ -27,8 +27,7 @@ export const SwitchContainer = styled.div<SwitchContainerProps>`
   border-radius: 8px;
   width: 28px;
   height: 16px;
-  transition-property: background;
-  transition-duration: 0.3s;
+  transition: background 300ms;
   display: flex;
   align-items: center;
 
@@ -48,7 +47,7 @@ export const Circle = styled.div<CircleProps>`
   height: 8px;
   border-radius: 50%;
   transition-property: background, margin-left;
-  transition-duration: 0.3s;
+  transition-duration: 300ms;
 
   margin-left: ${({ isChecked }) => (isChecked ? "16px" : "4px")};
   background: ${({ isChecked, theme }) => {

@@ -9,7 +9,6 @@ const backgroundAnimation = keyframes`
 `;
 export const BorderContainer = styled.div`
   padding: 1px;
-  min-width: fit-content;
   border-radius: ${BORDER_RADIUS}px;
   ${/* TODO: Change to radial gradient after cross-fading */ ""}
   background: ${({ theme }) => {
@@ -42,7 +41,7 @@ export const Container = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
-  gap: 12px;
+  gap: 4px;
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -57,8 +56,28 @@ export const Container = styled.div`
   border-radius: 8px;
   position: relative;
   box-sizing: border-box;
+`;
 
-  flex-wrap: wrap;
+export const EnvironmentList = styled.ul`
+  display: flex;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+
+  scroll-behavior: smooth;
+`;
+
+export const CarouselButton = styled.button`
+  display: flex;
+  background: none;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+
+  &:disabled {
+    cursor: initial;
+  }
 `;
 
 const rotateAnimation = keyframes`

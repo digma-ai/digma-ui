@@ -1,15 +1,13 @@
 import styled from "styled-components";
 import { ContainerProps } from "./types";
 
-export const Container = styled.button<ContainerProps>`
+export const Container = styled.li<ContainerProps>`
+  display: flex;
   position: relative;
   cursor: pointer;
-  border: none;
-  font-family: inherit;
   font-weight: ${({ isSelected }) => (isSelected ? 700 : 500)};
   font-size: 14px;
   padding: 4px 12px;
-  white-space: nowrap;
 
   color: ${({ isSelected, theme }) => {
     if (isSelected) {
@@ -48,6 +46,9 @@ export const Container = styled.button<ContainerProps>`
     }
   }};
 
+  border-bottom: ${({ isSelected }) =>
+    isSelected ? "1px solid #5154ec" : "none"};
+
   &:hover {
     font-weight: 700;
     color: ${({ theme }) => {
@@ -62,11 +63,9 @@ export const Container = styled.button<ContainerProps>`
     }};
   }
 
-  ${({ isSelected }) => {
-    if (isSelected) {
-      return `border-bottom: 1px solid #5154ec`;
-    }
-  }}
+  transition-property: color, font-weight, border;
+  transition-duration: 300ms;
+  transition-timing-function: ease-out;
 `;
 
 export const BadgeContainer = styled.div`
