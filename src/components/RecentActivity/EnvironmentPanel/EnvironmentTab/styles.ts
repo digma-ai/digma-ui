@@ -68,6 +68,13 @@ export const Container = styled.li<ContainerProps>`
   transition-timing-function: ease-out;
 `;
 
+export const Label = styled.span`
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 110px;
+`;
+
 export const BadgeContainer = styled.div`
   position: absolute;
   top: -1px;

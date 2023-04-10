@@ -35,6 +35,7 @@ WithData.args = {
       "UNSET_ENV8",
       "UNSET_ENV9",
       "UNSET_ENV10",
+      "VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-LONG-NAME",
       "UNSET_ENV11"
     ],
     entries: [

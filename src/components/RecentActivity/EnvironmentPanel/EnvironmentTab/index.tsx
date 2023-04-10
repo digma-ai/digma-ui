@@ -14,7 +14,7 @@ export const EnvironmentTab = (props: EnvironmentTabProps) => {
           <Badge />
         </s.BadgeContainer>
       )}
-      {props.text}
+      <s.Label title={props.text}>{props.text}</s.Label>
     </s.Container>
   );
 };
