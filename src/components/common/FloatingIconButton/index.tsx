@@ -24,7 +24,7 @@ const getIconColor = (
 
   switch (theme.mode) {
     case "light":
-      return "#7891D0";
+      return "#7891d0";
     case "dark":
     case "dark-jetbrains":
       return "#b9c2eb";

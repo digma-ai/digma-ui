@@ -33,7 +33,7 @@ export const Container = styled.div<ContainerProps>`
         transition: height ${transitionDuration}ms ease-out;
       }
       `;
-  }};
+  }}
 
   height: ${({ status, contentHeight }) =>
     status === "active"
@@ -102,6 +102,10 @@ export const Header = styled.div<HeaderProps>`
   }};
 
   transition: color ${({ transitionDuration }) => transitionDuration}ms ease-out;
+
+  cursor: ${({ status }) => {
+    return status === "completed" ? "pointer" : "initial";
+  }};
 `;
 
 export const NumberContainer = styled.div<NumberContainerProps>`

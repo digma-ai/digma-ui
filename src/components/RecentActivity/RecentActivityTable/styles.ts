@@ -207,8 +207,10 @@ export const ListSuffix = styled(Suffix)`
   font-size: 12px;
 `;
 
+// postcss-styled-components-disable-next-line
 export const SpanLink = styled(Link)`
   ${({ theme }) => getCodeFont(theme.codeFont)}
+
   font-size: 12px;
   line-height: 14px;
 

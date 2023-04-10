@@ -151,9 +151,7 @@ export const InstallationWizard = () => {
   };
 
   const goToNextStep = () => {
-    if (currentStep < steps.length - 1) {
-      setCurrentStep(currentStep + 1);
-    }
+    setCurrentStep(currentStep + 1);
   };
 
   const handleSkipStep = () => {
@@ -163,6 +161,12 @@ export const InstallationWizard = () => {
       window.sendMessageToDigma({
         action: actions.FINISH
       });
+    }
+  };
+
+  const handleGoToStep = (stepIndex: number) => {
+    if (stepIndex < currentStep) {
+      setCurrentStep(stepIndex);
     }
   };
 
@@ -219,8 +223,9 @@ export const InstallationWizard = () => {
         <Step
           key={step.title}
           onSkip={handleSkipStep}
+          onGoToStep={handleGoToStep}
           data={step}
-          number={i + 1}
+          stepIndex={i}
           status={getStepStatus(i, currentStep)}
           transitionDuration={TRANSITION_DURATION}
         />
