@@ -10,7 +10,7 @@ export const getPlatform = (platform: unknown): Platform =>
 
 export const platform = getPlatform(window.platform);
 
-const IDES = ["IntelliJ IDEA", "Rider", "PyCharm"];
+const IDES = ["IDEA", "Rider", "PyCharm"];
 
 const isIDE = (ide: unknown): ide is IDE =>
   typeof ide === "string" && IDES.includes(ide);

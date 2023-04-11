@@ -4,7 +4,7 @@ export {};
 
 export type Platform = "JetBrains" | "VS Code" | "Other";
 
-export type IDE = "IntelliJ IDEA" | "Rider" | "PyCharm";
+export type IDE = "IDEA" | "Rider" | "PyCharm";
 
 export type Mode = "light" | "dark" | "dark-jetbrains";
 
@@ -33,6 +33,7 @@ declare global {
     recentActivityDocumentationURL?: unknown;
     wizardSkipInstallationStep?: unknown;
     assetsRefreshInterval?: unknown;
+    insightsRefreshInterval?: unknown;
   }
 }
 
