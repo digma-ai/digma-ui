@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import useDimensions from "react-cool-dimensions";
 import { DefaultTheme, useTheme } from "styled-components";
 import { IconButton } from "../../common/IconButton";
@@ -35,12 +35,6 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
     table: TableIcon
   };
 
-  useEffect(() => {
-    if (entry) {
-      entry.target.scrollLeft = scrollLeft;
-    }
-  }, [entry, scrollLeft]);
-
   const handleViewModeButtonClick = () => {
     const mode = props.viewMode === "table" ? "list" : "table";
     props.onViewModeChange(mode);
@@ -55,8 +49,9 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
 
       let newScrollLeft = entry.target.scrollLeft + delta;
 
-      if (newScrollLeft >= entry.target.scrollWidth - width) {
-        newScrollLeft = entry.target.scrollWidth - width;
+      const maxScrollLeft = entry.target.scrollWidth - width;
+      if (newScrollLeft >= maxScrollLeft) {
+        newScrollLeft = maxScrollLeft;
       }
 
       if (newScrollLeft < 0) {
@@ -64,6 +59,7 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
       }
 
       setScrollLeft(newScrollLeft);
+      entry.target.scrollLeft = newScrollLeft;
     }
   };
 

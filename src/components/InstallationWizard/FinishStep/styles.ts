@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import { SectionTitle as CommonSectionTitle } from "../SectionTitle";
-import { IllustrationContainer as CommonIllustrationContainer } from "../styles";
+import {
+  IllustrationContainer as CommonIllustrationContainer,
+  SectionDescription as CommonSectionDescription
+} from "../styles";
 
 export const Container = styled.div`
   display: flex;
@@ -13,8 +16,12 @@ export const SectionTitle = styled(CommonSectionTitle)`
   margin-bottom: 4px;
 `;
 
+export const SectionDescription = styled(CommonSectionDescription)`
+  margin-bottom: 12px;
+`;
+
 export const IllustrationContainer = styled(CommonIllustrationContainer)`
-  margin: 12px 0 12px;
+  margin: 0 0 12px;
 `;
 
 export const ObservabilityPanelIllustration = styled.img`

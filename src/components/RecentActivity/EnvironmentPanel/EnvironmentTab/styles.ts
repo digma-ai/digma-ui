@@ -8,6 +8,7 @@ export const Container = styled.li<ContainerProps>`
   font-weight: ${({ isSelected }) => (isSelected ? 700 : 500)};
   font-size: 14px;
   padding: 4px 12px;
+  user-select: none;
 
   color: ${({ isSelected, theme }) => {
     if (isSelected) {
