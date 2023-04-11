@@ -204,7 +204,7 @@ export const InstallationWizard = () => {
         />
       )
     },
-    ...(ide === "IntelliJ IDEA"
+    ...(ide === "IDEA"
       ? [
           {
             title: isAlreadyUsingOtel
