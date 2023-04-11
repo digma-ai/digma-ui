@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import { dispatcher } from "../../dispatcher";
+import { IDE } from "../../globals";
 import { usePrevious } from "../../hooks/usePrevious";
+import { ide } from "../../platform";
 import { addPrefix } from "../../utils/addPrefix";
 import { actions as globalActions } from "../common/App";
 import { FinishStep } from "./FinishStep";
@@ -23,6 +25,17 @@ const actions = addPrefix(ACTION_PREFIX, {
 
 const DIGMA_DOCKER_EXTENSION_URL =
   "https://open.docker.com/extensions/marketplace?extensionId=digmaai/digma-docker-extension";
+
+const getQuickstartURL = (ide: IDE | undefined): string | undefined => {
+  switch (ide) {
+    case "PyCharm":
+      return "https://digma.ai/python-quick-start-guide/";
+    case "Rider":
+      return "https://digma.ai/net-quick-start-guide/";
+  }
+};
+
+const quickstartURL = getQuickstartURL(ide);
 
 const TRACKING_PREFIX = "installation wizard";
 
@@ -191,23 +204,27 @@ export const InstallationWizard = () => {
         />
       )
     },
-    {
-      title: isAlreadyUsingOtel
-        ? "If you're already using OpenTelemetry…"
-        : "Observe your application",
-      content: (
-        <ObservabilityStep
-          isAlreadyUsingOtel={isAlreadyUsingOtel}
-          onIsAlreadyUsingOtelChange={handleIsAlreadyUsingOtelChange}
-          onGoToNextStep={goToNextStep}
-          isObservabilityEnabled={isObservabilityEnabled}
-          onObservabilityChange={handleObservabilityChange}
-        />
-      )
-    },
+    ...(ide === "IntelliJ IDEA"
+      ? [
+          {
+            title: isAlreadyUsingOtel
+              ? "If you're already using OpenTelemetry…"
+              : "Observe your application",
+            content: (
+              <ObservabilityStep
+                isAlreadyUsingOtel={isAlreadyUsingOtel}
+                onIsAlreadyUsingOtelChange={handleIsAlreadyUsingOtelChange}
+                onGoToNextStep={goToNextStep}
+                isObservabilityEnabled={isObservabilityEnabled}
+                onObservabilityChange={handleObservabilityChange}
+              />
+            )
+          }
+        ]
+      : []),
     {
       title: "You're done!",
-      content: <FinishStep />
+      content: <FinishStep quickstartURL={quickstartURL} />
     }
   ];
 

@@ -2,7 +2,9 @@ import { DigmaOutgoingMessageData } from "./api/types";
 
 export {};
 
-export type Environment = "JetBrains" | "VS Code" | "Other";
+export type Platform = "JetBrains" | "VS Code" | "Other";
+
+export type IDE = "IntelliJ IDEA" | "Rider" | "PyCharm";
 
 export type Mode = "light" | "dark" | "dark-jetbrains";
 
@@ -21,7 +23,8 @@ declare global {
     ) => string | undefined;
     cancelMessageToDigma: (request_id: string) => void;
     theme?: unknown;
-    environment?: unknown;
+    platform?: unknown;
+    ide?: unknown;
     mainFont?: unknown;
     codeFont?: unknown;
     isJaegerEnabled?: unknown;

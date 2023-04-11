@@ -4,8 +4,8 @@ import {
   DefaultTheme,
   FlattenSimpleInterpolation
 } from "styled-components";
-import { environment } from "../../../environment";
 import { os } from "../../../os";
+import { platform } from "../../../platform";
 
 export const getMainFont = (customFont: string): FlattenSimpleInterpolation => {
   let osFont = "";
@@ -41,7 +41,7 @@ export const getCodeFont = (customFont: string): FlattenSimpleInterpolation => {
   let osFont = "";
 
   // Source: https://github.com/microsoft/vscode/blob/main/src/vs/editor/common/config/editorOptions.ts#L4721
-  if (environment === "VS Code") {
+  if (platform === "VS Code") {
     if (os === "Linux") {
       osFont = '"Droid Sans Mono", "monospace"';
     }
@@ -58,7 +58,7 @@ export const getCodeFont = (customFont: string): FlattenSimpleInterpolation => {
   // Sources:
   // https://jetbrains.github.io/ui/principles/typography/#06
   // https://github.com/JetBrains/intellij-community/blob/master/platform/editor-ui-api/src/com/intellij/openapi/editor/colors/FontPreferences.java#L111
-  if (environment === "JetBrains") {
+  if (platform === "JetBrains") {
     osFont = '"JetBrains Mono"';
   }
 
