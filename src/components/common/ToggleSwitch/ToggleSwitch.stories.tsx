@@ -1,23 +1,24 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react";
 
 import { ToggleSwitch } from ".";
-import { ToggleSwitchProps } from "./types";
 
-export default {
+// More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
+const meta: Meta<typeof ToggleSwitch> = {
   title: "Common/ToggleSwitch",
   component: ToggleSwitch,
   parameters: {
-    // More on Story layout: https://storybook.js.org/docs/react/configure/story-layout
+    // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
     layout: "fullscreen"
   }
-} as ComponentMeta<typeof ToggleSwitch>;
+};
 
-const Template: ComponentStory<typeof ToggleSwitch> = (
-  args: ToggleSwitchProps
-) => <ToggleSwitch {...args} />;
+export default meta;
 
-export const Default = Template.bind({});
-Default.args = {
-  label: "Click here",
-  checked: false
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+  args: {
+    label: "Click here",
+    checked: false
+  }
 };

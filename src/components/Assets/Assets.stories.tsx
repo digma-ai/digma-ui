@@ -1,26 +1,22 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react";
 
 import { Assets } from ".";
 import { data } from "./mockData";
-import { AssetsProps } from "./types";
 
-export default {
+// More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
+const meta: Meta<typeof Assets> = {
   title: "Assets/Assets",
   component: Assets,
   parameters: {
-    // More on Story layout: https://storybook.js.org/docs/react/configure/story-layout
+    // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
     layout: "fullscreen"
   }
-} as ComponentMeta<typeof Assets>;
-
-const Template: ComponentStory<typeof Assets> = (args: AssetsProps) => (
-  <Assets {...args} />
-);
-
-export const Empty = Template.bind({});
-Empty.args = {};
-
-export const WithData = Template.bind({});
-WithData.args = {
-  data
 };
+
+export default meta;
+
+type Story = StoryObj<typeof meta>;
+
+export const Empty: Story = {};
+
+export const WithData: Story = { args: { data } };

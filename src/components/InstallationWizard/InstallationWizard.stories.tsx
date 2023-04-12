@@ -1,19 +1,20 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Meta, StoryObj } from "@storybook/react";
 
 import { InstallationWizard } from ".";
 
-export default {
+// More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
+const meta: Meta<typeof InstallationWizard> = {
   title: "Installation Wizard/InstallationWizard",
   component: InstallationWizard,
   parameters: {
-    // More on Story layout: https://storybook.js.org/docs/react/configure/story-layout
+    // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
     layout: "fullscreen"
   }
-} as ComponentMeta<typeof InstallationWizard>;
+};
 
-const Template: ComponentStory<typeof InstallationWizard> = () => (
-  <InstallationWizard />
-);
+export default meta;
 
-export const Default = Template.bind({});
-Default.args = {};
+type Story = StoryObj<typeof meta>;
+
+// More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
+export const Default: Story = {};
