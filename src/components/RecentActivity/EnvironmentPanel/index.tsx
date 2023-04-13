@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useDimensions from "react-cool-dimensions";
 import { DefaultTheme, useTheme } from "styled-components";
 import { IconButton } from "../../common/IconButton";
@@ -10,6 +10,8 @@ import { DIRECTION } from "../../common/icons/types";
 import { EnvironmentTab } from "./EnvironmentTab";
 import * as s from "./styles";
 import { EnvironmentPanelProps, ScrollDirection } from "./types";
+
+const FONT_WIDTH_TRANSITION_THRESHOLD = 5; // in pixels
 
 const getCarouselIconColor = (theme: DefaultTheme, isDisabled: boolean) => {
   switch (theme.mode) {
@@ -24,7 +26,18 @@ const getCarouselIconColor = (theme: DefaultTheme, isDisabled: boolean) => {
 export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
   const theme = useTheme();
   const [scrollLeft, setScrollLeft] = useState(0);
-  const { observe, width, entry } = useDimensions();
+  const environmentListContainerDimensions = useDimensions();
+  const environmentListDimensions = useDimensions();
+
+  useEffect(() => {
+    const entry = environmentListContainerDimensions.entry;
+    if (entry) {
+      setScrollLeft(entry.target.scrollLeft);
+    }
+  }, [
+    environmentListContainerDimensions.entry,
+    environmentListDimensions.entry
+  ]);
 
   const handleEnvironmentTabClick = (name: string) => {
     props.onEnvironmentSelect(name);
@@ -41,15 +54,19 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
   };
 
   const handleCarouselButtonClick = (direction: ScrollDirection) => {
-    if (entry) {
-      let delta = width;
+    const { entry: containerEntry, width: containerWidth } =
+      environmentListContainerDimensions;
+    const { entry } = environmentListDimensions;
+
+    if (containerEntry && entry) {
+      let delta = containerWidth;
       if (direction === "left") {
         delta *= -1;
       }
 
-      let newScrollLeft = entry.target.scrollLeft + delta;
+      let newScrollLeft = containerEntry.target.scrollLeft + delta;
 
-      const maxScrollLeft = entry.target.scrollWidth - width;
+      const maxScrollLeft = containerEntry.target.scrollWidth - containerWidth;
       if (newScrollLeft >= maxScrollLeft) {
         newScrollLeft = maxScrollLeft;
       }
@@ -59,18 +76,25 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
       }
 
       setScrollLeft(newScrollLeft);
-      entry.target.scrollLeft = newScrollLeft;
+      containerEntry.target.scrollLeft = newScrollLeft;
     }
   };
 
   const isCarouselButtonDisabled = (direction: ScrollDirection) => {
-    if (entry) {
+    const { entry: containerEntry, width: containerWidth } =
+      environmentListContainerDimensions;
+    const { entry } = environmentListDimensions;
+
+    if (containerEntry && entry) {
       if (direction === "left") {
         return scrollLeft === 0;
       }
 
       if (direction === "right") {
-        return scrollLeft === entry.target.scrollWidth - width;
+        return (
+          scrollLeft + containerWidth + FONT_WIDTH_TRANSITION_THRESHOLD >=
+          containerEntry.target.scrollWidth
+        );
       }
     }
 
@@ -80,6 +104,11 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
   const isLeftCarouselButtonDisabled = isCarouselButtonDisabled("left");
   const isRightCarouselButtonDisabled = isCarouselButtonDisabled("right");
 
+  const areCarouselButtonsVisible =
+    environmentListDimensions.width -
+      environmentListContainerDimensions.width >=
+    FONT_WIDTH_TRANSITION_THRESHOLD;
+
   return (
     <s.BorderContainer>
       <s.Container>
@@ -88,37 +117,53 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
             <DigmaLogoFlatIcon size={22} />
           </s.LogoContainer>
         </s.LogoRotationContainer>
-        <s.CarouselButton
-          key={"left"}
-          onClick={() => handleCarouselButtonClick("left")}
-          disabled={isLeftCarouselButtonDisabled}
+        <s.CarouselButtonContainer key={"left"}>
+          {areCarouselButtonsVisible && (
+            <s.CarouselButton
+              onClick={() => handleCarouselButtonClick("left")}
+              disabled={isLeftCarouselButtonDisabled}
+            >
+              <ChevronIcon
+                direction={DIRECTION.LEFT}
+                color={getCarouselIconColor(
+                  theme,
+                  isLeftCarouselButtonDisabled
+                )}
+              />
+            </s.CarouselButton>
+          )}
+        </s.CarouselButtonContainer>
+        <s.EnvironmentListContainer
+          ref={environmentListContainerDimensions.observe}
         >
-          <ChevronIcon
-            direction={DIRECTION.LEFT}
-            color={getCarouselIconColor(theme, isLeftCarouselButtonDisabled)}
-          />
-        </s.CarouselButton>
-        <s.EnvironmentList ref={observe}>
-          {props.environments.map((environment) => (
-            <EnvironmentTab
-              key={environment.name}
-              text={environment.name}
-              hasBadge={environment.hasBadge}
-              isSelected={props.selectedEnvironment === environment.name}
-              onClick={handleEnvironmentTabClick}
-            />
-          ))}
-        </s.EnvironmentList>
-        <s.CarouselButton
-          key={"right"}
-          onClick={() => handleCarouselButtonClick("right")}
-          disabled={isRightCarouselButtonDisabled}
-        >
-          <ChevronIcon
-            direction={DIRECTION.RIGHT}
-            color={getCarouselIconColor(theme, isRightCarouselButtonDisabled)}
-          />
-        </s.CarouselButton>
+          <s.EnvironmentList ref={environmentListDimensions.observe}>
+            {props.environments.map((environment) => (
+              <EnvironmentTab
+                key={environment.name}
+                text={environment.name}
+                hasBadge={environment.hasBadge}
+                isSelected={props.selectedEnvironment === environment.name}
+                onClick={handleEnvironmentTabClick}
+              />
+            ))}
+          </s.EnvironmentList>
+        </s.EnvironmentListContainer>
+        <s.CarouselButtonContainer key={"right"}>
+          {areCarouselButtonsVisible && (
+            <s.CarouselButton
+              onClick={() => handleCarouselButtonClick("right")}
+              disabled={isRightCarouselButtonDisabled}
+            >
+              <ChevronIcon
+                direction={DIRECTION.RIGHT}
+                color={getCarouselIconColor(
+                  theme,
+                  isRightCarouselButtonDisabled
+                )}
+              />
+            </s.CarouselButton>
+          )}
+        </s.CarouselButtonContainer>
         <s.ViewModeButtonContainer>
           <IconButton
             icon={icons[props.viewMode]}

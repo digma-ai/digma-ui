@@ -58,14 +58,22 @@ export const Container = styled.div`
   box-sizing: border-box;
 `;
 
+export const EnvironmentListContainer = styled.div`
+  display: flex;
+  flex-grow: 1;
+  overflow: hidden;
+  scroll-behavior: smooth;
+`;
+
 export const EnvironmentList = styled.ul`
   display: flex;
   gap: 12px;
   margin: 0;
   padding: 0;
-  overflow: hidden;
+`;
 
-  scroll-behavior: smooth;
+export const CarouselButtonContainer = styled.div`
+  width: 12px;
 `;
 
 export const CarouselButton = styled.button`

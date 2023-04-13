@@ -8,7 +8,7 @@ export const EnvironmentTab = (props: EnvironmentTabProps) => {
 
   const handleClick = () => {
     if (containerRef.current) {
-      containerRef.current.scrollIntoView();
+      containerRef.current.scrollIntoView(false);
     }
 
     props.onClick(props.text);
