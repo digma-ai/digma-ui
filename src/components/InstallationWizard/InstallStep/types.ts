@@ -5,5 +5,6 @@ export interface InstallStepProps {
   onConnectionStatusCheck: () => void;
   onResetConnectionCheckStatus: () => void;
   onGetDigmaDockerDesktopButtonClick: () => void;
+  onInstallTabSelect: (tabName: string) => void;
   onGoToNextStep: () => void;
 }

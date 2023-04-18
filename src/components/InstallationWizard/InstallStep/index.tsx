@@ -46,8 +46,9 @@ export const InstallStep = (props: InstallStepProps) => {
     props.onGoToNextStep();
   };
 
-  const handleSelectInstallTab = (tabIndex: number) => {
+  const handleInstallTabSelect = (tabIndex: number) => {
     setSelectedInstallTab(tabIndex);
+    props.onInstallTabSelect(installTabs[tabIndex].title);
   };
 
   const handleSelectDockerComposeOSTab = (tabIndex: number) => {
@@ -167,7 +168,7 @@ export const InstallStep = (props: InstallStepProps) => {
     <s.Container>
       <Tabs
         tabs={installTabs}
-        onSelect={handleSelectInstallTab}
+        onSelect={handleInstallTabSelect}
         selectedTab={selectedInstallTab}
       />
       <s.LoaderContainer>
