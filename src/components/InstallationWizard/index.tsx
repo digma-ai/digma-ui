@@ -46,7 +46,8 @@ const trackingEvents = addPrefix(
     INSTALL_STEP_AUTOMATICALLY_PASSED: "install step automatically passed",
     GET_DIGMA_DOCKER_EXTENSION_BUTTON_CLICKED:
       "get digma docker extension button clicked",
-    OBSERVABILITY_BUTTON_CLICKED: "set observability button clicked"
+    OBSERVABILITY_BUTTON_CLICKED: "set observability button clicked",
+    TAB_CLICKED: "tab clicked"
   },
   " "
 );
@@ -136,9 +137,21 @@ export const InstallationWizard = () => {
       }
     });
     window.sendMessageToDigma({
-      action: globalActions.SET_TRACKING_EVENT,
+      action: globalActions.SEND_TRACKING_EVENT,
       payload: {
         eventName: trackingEvents.GET_DIGMA_DOCKER_EXTENSION_BUTTON_CLICKED
+      }
+    });
+  };
+
+  const handleInstallTabSelect = (tabName: string) => {
+    window.sendMessageToDigma({
+      action: globalActions.SEND_TRACKING_EVENT,
+      payload: {
+        eventName: trackingEvents.TAB_CLICKED,
+        data: {
+          tabName
+        }
       }
     });
   };
@@ -200,6 +213,7 @@ export const InstallationWizard = () => {
           onGetDigmaDockerDesktopButtonClick={
             handleGetDigmaDockerDesktopButtonClick
           }
+          onInstallTabSelect={handleInstallTabSelect}
           onGoToNextStep={goToNextStep}
         />
       )
