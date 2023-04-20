@@ -2,11 +2,11 @@ import { useState } from "react";
 import { useTheme } from "styled-components";
 import { getThemeKind } from "../../common/App/styles";
 import { Loader } from "../../common/Loader";
-import { ToggleSwitch } from "../../common/ToggleSwitch";
 import { OpenTelemetryLogoIcon } from "../../common/icons/OpenTelemetryLogoIcon";
 import { CodeSnippet } from "../CodeSnippet";
 import { SectionTitle } from "../SectionTitle";
-import { Link, MainButton, SectionDescription } from "../styles";
+import { Tip } from "../Tip";
+import { Link, MainButton } from "../styles";
 import * as s from "./styles";
 import { ObservabilityStepProps } from "./types";
 
@@ -38,7 +38,7 @@ export const ObservabilityStep = (props: ObservabilityStepProps) => {
     setIsCollectorModified(true);
   };
 
-  const handleObservabilityContainerClick = () => {
+  const handleObservabilityToggleSwitch = () => {
     props.onObservabilityChange(!props.isObservabilityEnabled);
   };
 
@@ -74,7 +74,7 @@ export const ObservabilityStep = (props: ObservabilityStepProps) => {
   ) : (
     <s.Container>
       <SectionTitle>How to get started?</SectionTitle>
-      <s.ObservabilityContainer onClick={handleObservabilityContainerClick}>
+      <s.ObservabilityContainer>
         <OpenTelemetryLogoIcon size={32} />
         <s.ObservabilityTitle>
           Observe your application in one click
@@ -85,9 +85,11 @@ export const ObservabilityStep = (props: ObservabilityStepProps) => {
           </span>
           <span>You can just toggle observability on now to get started</span>
           <s.ObservabilityToggleSwitchContainer>
-            <ToggleSwitch
+            <s.ObservabilityToggleSwitch
+              onChange={handleObservabilityToggleSwitch}
               checked={props.isObservabilityEnabled}
               label={"Click here"}
+              size={"large"}
             />
           </s.ObservabilityToggleSwitchContainer>
         </s.ObservabilityDescription>
@@ -99,15 +101,10 @@ export const ObservabilityStep = (props: ObservabilityStepProps) => {
           </s.CongratulationsTextContainer>
         )}
       </s.ObservabilityContainer>
-      <SectionDescription>
-        You can always expand the Digma side panel and open the Settings menu as
-        seen bellow
-      </SectionDescription>
-      <s.IllustrationContainer>
-        <s.ObservabilityButtonIllustration
-          src={`/images/observabilityButton_${themeKind}.gif`}
-        />
-      </s.IllustrationContainer>
+      <Tip>
+        You can always expand the Digma side panel and open the settings menu to
+        toggle observability on/off later
+      </Tip>
       <s.StepFooter>
         <MainButton onClick={handleNextButtonClick}>Next</MainButton>
         <Link onClick={handleAlreadyUsingOTELLinkClick}>

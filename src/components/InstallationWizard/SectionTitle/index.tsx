@@ -17,9 +17,11 @@ export const SectionTitle = (props: SectionTitleProps) => {
 
   return (
     <s.Container className={props.className}>
-      <s.IconContainer>
-        {props.icon && <props.icon size={16} color={getIconColor(theme)} />}
-      </s.IconContainer>
+      {props.icon && (
+        <s.IconContainer>
+          <props.icon size={16} color={getIconColor(theme)} />
+        </s.IconContainer>
+      )}
       {props.children}
     </s.Container>
   );

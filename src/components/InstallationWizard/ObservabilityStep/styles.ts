@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { ToggleSwitch } from "../../common/ToggleSwitch";
 import * as s from "../styles";
 
 export const Container = styled.div`
@@ -17,29 +18,6 @@ export const ObservabilityContainer = styled.div`
   gap: 12px;
   align-items: center;
   justify-content: center;
-  user-select: none;
-  cursor: pointer;
-
-  background: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#e5eaf1";
-      case "dark":
-      case "dark-jetbrains":
-        return "#303031";
-    }
-  }};
-
-  border: 1px solid
-    ${({ theme }) => {
-      switch (theme.mode) {
-        case "light":
-          return "#7891d0";
-        case "dark":
-        case "dark-jetbrains":
-          return "#9b9b9b";
-      }
-    }};
 `;
 
 export const ObservabilityTitle = styled.span`
@@ -79,9 +57,21 @@ export const ObservabilityDescription = styled.div`
 `;
 
 export const ObservabilityToggleSwitchContainer = styled.div`
-  padding-top: 12px;
+  padding: 32px 0 12px;
   display: flex;
   justify-content: center;
+`;
+
+export const ObservabilityToggleSwitch = styled(ToggleSwitch)`
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#426dda";
+      case "dark":
+      case "dark-jetbrains":
+        return "#7891d0";
+    }
+  }};
 `;
 
 export const CongratulationsTextContainer = styled.div`

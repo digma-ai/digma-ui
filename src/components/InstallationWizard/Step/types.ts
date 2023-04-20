@@ -17,7 +17,6 @@ export interface StepProps {
   stepIndex: number;
   status: StepStatus;
   transitionDuration?: number;
-  onSkip: () => void;
   onGoToStep: (stepIndex: number) => void;
 }
 
