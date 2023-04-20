@@ -7,13 +7,13 @@ export const addPrefix = <T extends Record<string, string>>(
 ): PrefixedMap<T> => {
   const res = {} as PrefixedMap<T>;
 
-  Object.keys(actions).forEach((key) => {
+  for (const [key, value] of Object.entries(actions)) {
     const prop = key as keyof T;
 
     res[prop] = `${prefix}${
       typeof separator === "string" ? separator : "/"
-    }${String(res[prop])}`;
-  });
+    }${value}`;
+  }
 
   return res;
 };
