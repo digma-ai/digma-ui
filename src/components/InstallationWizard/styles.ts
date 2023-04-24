@@ -77,6 +77,7 @@ export const HeaderSubtitle = styled.span`
 export const Link = styled(CommonLink)`
   font-size: 12px;
   line-height: 14px;
+  width: max-content;
 `;
 
 export const Footer = styled.div`
@@ -158,4 +159,94 @@ export const MainButton = styled(Button)`
   font-size: 12px;
   line-height: 14px;
   width: 100%;
+`;
+
+export const WelcomeContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 20px 16px;
+  margin-bottom: auto;
+`;
+
+export const WelcomeTitleContainer = styled.div`
+  display: flex;
+  gap: 4px;
+  align-items: center;
+`;
+
+export const WelcomeIconContainer = styled.div`
+  height: 40px;
+`;
+
+export const WelcomeTitle = styled.span`
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#4d668a";
+      case "dark":
+      case "dark-jetbrains":
+        return "#fff";
+    }
+  }};
+`;
+
+export const WelcomeText = styled.span`
+  font-size: 12px;
+  line-height: 14px;
+  text-align: center;
+  letter-spacing: -0.1px;
+  padding: 20px 0;
+
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#828797";
+      case "dark":
+      case "dark-jetbrains":
+        return "#9b9b9b";
+    }
+  }};
+`;
+
+export const InstallationTypeText = styled.span`
+  font-size: 12px;
+  line-height: 14px;
+  padding-bottom: 4px;
+
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#828797";
+      case "dark":
+      case "dark-jetbrains":
+        return "#9b9b9b";
+    }
+  }};
+`;
+
+export const InstallationTypeButtonsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+export const Badge = styled.span`
+  color: #fff;
+  font-weight: 400;
+  border-radius: 4px;
+  padding: 2px 4px;
+
+  background: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#7891d0";
+      case "dark":
+      case "dark-jetbrains":
+        return "#4b5fab";
+    }
+  }};
 `;

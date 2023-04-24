@@ -8,3 +8,5 @@ export type ConnectionCheckStatus =
 export interface ConnectionCheckResultData {
   result: ConnectionCheckResult;
 }
+
+export type InstallationType = "local" | "cloud";

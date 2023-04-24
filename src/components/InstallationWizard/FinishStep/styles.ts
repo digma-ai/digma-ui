@@ -22,36 +22,24 @@ export const SectionDescription = styled(CommonSectionDescription)`
 
 export const IllustrationContainer = styled(CommonIllustrationContainer)`
   margin: 0 0 12px;
+  position: relative;
 `;
 
-export const ObservabilityPanelIllustration = styled.img`
+export const PlayIconContainer = styled.div`
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  height: 32px;
+  width: 32px;
+`;
+
+export const GettingStartedVideoThumbnail = styled.img`
   width: 100%;
 `;
 
 export const RunOrDebugIllustration = styled.img`
   width: 206px;
-`;
-
-export const TipContainer = styled.div`
-  display: flex;
-  flex-shrink: 0;
-  gap: 4px;
-  font-weight: 500;
-  font-size: 12px;
-  margin-top: 8px;
-
-  color: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#788ca9";
-      case "dark":
-      case "dark-jetbrains":
-        return "#b9c2eb";
-    }
-  }};
-`;
-
-export const TipIconContainer = styled.div`
-  display: flex;
-  flex-shrink: 0;
 `;

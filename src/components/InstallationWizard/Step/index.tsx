@@ -7,7 +7,6 @@ import * as s from "./styles";
 import { StepProps } from "./types";
 
 const TRANSITION_CLASS_NAME = "step";
-const SKIP_LINK_TRANSITION_CLASS_NAME = "skip-link";
 const NUMBER_TRANSITION_CLASS_NAME = "number-link";
 const DEFAULT_TRANSITION_DURATION = 300; // in milliseconds
 
@@ -20,14 +19,9 @@ export const Step = (props: StepProps) => {
       : DEFAULT_TRANSITION_DURATION;
 
   const containerRef = useRef<HTMLDivElement>(null);
-  const skipLinkRef = useRef<HTMLAnchorElement>(null);
   const numberRef = useRef<HTMLSpanElement>(null);
 
   const { observe, height } = useDimensions();
-
-  const handleSkipLinkClick = () => {
-    props.onSkip();
-  };
 
   const handleHeaderClick = () => {
     if (props.status === "completed") {
@@ -83,25 +77,7 @@ export const Step = (props: StepProps) => {
                 </s.Number>
               </CSSTransition>
             </s.NumberContainer>
-
             {props.data.title}
-            <CSSTransition
-              in={isActive}
-              timeout={transitionDuration}
-              classNames={SKIP_LINK_TRANSITION_CLASS_NAME}
-              nodeRef={skipLinkRef}
-              mountOnEnter={true}
-              unmountOnExit={true}
-            >
-              <s.SkipLink
-                ref={skipLinkRef}
-                onClick={handleSkipLinkClick}
-                transitionClassName={SKIP_LINK_TRANSITION_CLASS_NAME}
-                transitionDuration={transitionDuration}
-              >
-                Skip for now
-              </s.SkipLink>
-            </CSSTransition>
           </s.Header>
           <s.Content ref={observe}>{props.data.content}</s.Content>
         </s.ContentContainer>

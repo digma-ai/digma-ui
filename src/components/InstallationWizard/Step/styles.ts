@@ -1,11 +1,9 @@
 import styled, { DefaultTheme } from "styled-components";
-import { Link } from "../styles";
 import {
   ContainerProps,
   HeaderProps,
   NumberContainerProps,
-  NumberProps,
-  TransitionProps
+  NumberProps
 } from "./types";
 
 const HEADER_HEIGHT = 40; // in pixels;
@@ -41,34 +39,6 @@ export const Container = styled.div<ContainerProps>`
       : `${HEADER_HEIGHT}`}px;
 
   overflow: hidden;
-`;
-
-export const SkipLink = styled(Link)<TransitionProps>`
-  padding: 2px 4px;
-  font-weight: 400;
-  margin-left: auto;
-
-  ${({ transitionClassName, transitionDuration }) => {
-    return `
-      &.${transitionClassName}-enter {
-        opacity: 0;
-      }
-      
-      &.${transitionClassName}-enter-active {
-        opacity: 1;
-        transition: opacity ${transitionDuration}ms ease-out;
-      }
-
-      &.${transitionClassName}-exit {
-        opacity: 1;
-      }
-
-      &.${transitionClassName}-exit-active {
-        opacity: 0;
-        transition: opacity ${transitionDuration}ms ease-out;
-      }
-      `;
-  }}
 `;
 
 export const Header = styled.div<HeaderProps>`

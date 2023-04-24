@@ -1,16 +1,53 @@
 import styled from "styled-components";
-import { CircleProps, SwitchContainerProps } from "./types";
+import {
+  CircleProps,
+  ContainerProps,
+  SwitchContainerProps,
+  ToggleSwitchSize
+} from "./types";
 
-export const Container = styled.div`
+const getCircleRadius = (size: ToggleSwitchSize): number => {
+  switch (size) {
+    case "large":
+      return 5;
+    case "small":
+      return 2.5;
+  }
+};
+
+export const Container = styled.div<ContainerProps>`
   display: flex;
-  font-size: 10px;
-  font-weight: 500;
-  line-height: 12px;
-  gap: 10px;
-  padding: 8px 2px 8px 0;
+  gap: 8px;
   align-items: center;
   cursor: pointer;
   user-select: none;
+
+  font-weight: ${({ size }) => {
+    switch (size) {
+      case "large":
+        return "600";
+      case "small":
+        return "500";
+    }
+  }};
+
+  font-size: ${({ size }) => {
+    switch (size) {
+      case "large":
+        return "16px";
+      case "small":
+        return "10px";
+    }
+  }};
+
+  line-height: ${({ size }) => {
+    switch (size) {
+      case "large":
+        return "19px";
+      case "small":
+        return "12px";
+    }
+  }};
 
   color: ${({ theme }) => {
     switch (theme.mode) {
@@ -24,9 +61,9 @@ export const Container = styled.div`
 `;
 
 export const SwitchContainer = styled.div<SwitchContainerProps>`
-  border-radius: 8px;
-  width: 28px;
-  height: 16px;
+  border-radius: ${({ size }) => 2 * getCircleRadius(size)}px;
+  width: ${({ size }) => 7 * getCircleRadius(size)}px;
+  height: ${({ size }) => 4 * getCircleRadius(size)}px;
   transition: background 300ms;
   display: flex;
   align-items: center;
@@ -43,13 +80,16 @@ export const SwitchContainer = styled.div<SwitchContainerProps>`
 `;
 
 export const Circle = styled.div<CircleProps>`
-  width: 8px;
-  height: 8px;
+  width: ${({ size }) => 2 * getCircleRadius(size)}px;
+  height: ${({ size }) => 2 * getCircleRadius(size)}px;
   border-radius: 50%;
   transition-property: background, margin-left;
   transition-duration: 300ms;
 
-  margin-left: ${({ isChecked }) => (isChecked ? "16px" : "4px")};
+  margin-left: ${({ isChecked, size }) =>
+    isChecked
+      ? `${4 * getCircleRadius(size)}px`
+      : `${getCircleRadius(size)}px`};
   background: ${({ isChecked, theme }) => {
     switch (theme.mode) {
       case "light":
