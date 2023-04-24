@@ -22,15 +22,10 @@ const documentationURL =
     ? window.recentActivityDocumentationURL
     : null;
 
-const REFRESH_INTERVAL =
-  typeof window.recentActivityRefreshInterval === "number"
-    ? window.recentActivityRefreshInterval
-    : 10 * 1000; // in milliseconds
-
 const ACTION_PREFIX = "RECENT_ACTIVITY";
 
 const actions = addPrefix(ACTION_PREFIX, {
-  GET_DATA: "GET_DATA",
+  INITIALIZE: "INITIALIZE",
   SET_DATA: "SET_DATA",
   GO_TO_SPAN: "GO_TO_SPAN",
   GO_TO_TRACE: "GO_TO_TRACE"
@@ -73,13 +68,8 @@ export const RecentActivity = (props: RecentActivityProps) => {
 
   useEffect(() => {
     window.sendMessageToDigma({
-      action: actions.GET_DATA
+      action: actions.INITIALIZE
     });
-    const refreshInterval = setInterval(() => {
-      window.sendMessageToDigma({
-        action: actions.GET_DATA
-      });
-    }, REFRESH_INTERVAL);
 
     const handleRecentActivityData = (data: unknown) => {
       setData(data as RecentActivityData);
@@ -96,8 +86,6 @@ export const RecentActivity = (props: RecentActivityProps) => {
     );
 
     return () => {
-      clearInterval(refreshInterval);
-
       dispatcher.removeActionListener(
         actions.SET_DATA,
         handleRecentActivityData
