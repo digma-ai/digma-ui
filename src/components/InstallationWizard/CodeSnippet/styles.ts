@@ -1,9 +1,8 @@
 import styled from "styled-components";
 import { getCodeFont } from "../../common/App/styles";
 import { FloatingIconButton } from "../../common/FloatingIconButton";
-import { ContainerProps } from "./types";
 
-export const Container = styled.div<ContainerProps>`
+export const Container = styled.div`
   padding: 4px 4px 4px 8px;
   border-radius: 4px;
   display: flex;
@@ -20,8 +19,6 @@ export const Container = styled.div<ContainerProps>`
         return "#252526";
     }
   }};
-
-  ${({ disabled }) => (disabled ? "opacity: 0.5;" : "")}
 `;
 
 // postcss-styled-components-disable-next-line

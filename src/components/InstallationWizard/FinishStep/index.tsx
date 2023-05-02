@@ -1,8 +1,9 @@
 import { DefaultTheme, useTheme } from "styled-components";
 import { getThemeKind } from "../../common/App/styles";
+import { BellIcon } from "../../common/icons/BellIcon";
 import { GearIcon } from "../../common/icons/GearIcon";
-import { PlayCircleIcon } from "../../common/icons/PlayCircleIcon";
 import { PlayIcon } from "../../common/icons/PlayIcon";
+import { SlackLogoIcon } from "../../common/icons/SlackLogoIcon";
 import { Link } from "../styles";
 import * as s from "./styles";
 import { FinishStepProps } from "./types";
@@ -39,6 +40,29 @@ export const FinishStep = (props: FinishStepProps) => {
           </s.SectionDescription>
         </>
       )}
+      <s.SectionTitle icon={BellIcon}>
+        Stay Up To Date<s.SectionTitleNote>(optional)</s.SectionTitleNote>
+      </s.SectionTitle>
+      <s.SectionDescription>
+        Enter your E-mail to be the first to get updates
+      </s.SectionDescription>
+      <s.EmailInput
+        type={"text"}
+        placeholder={"Enter E-mail"}
+        onChange={props.onEmailChange}
+        value={props.email}
+      />
+      {props.emailErrorMessage && (
+        <s.ErrorMessage>{props.emailErrorMessage}</s.ErrorMessage>
+      )}
+      <s.SlackLink
+        target={"_blank"}
+        rel={"noopener noreferrer"}
+        href={props.slackChannelURL}
+      >
+        <SlackLogoIcon />
+        Join our Slack channel
+      </s.SlackLink>
       <s.SectionTitle icon={PlayIcon}>
         Run / Debug your application
       </s.SectionTitle>
@@ -61,7 +85,7 @@ export const FinishStep = (props: FinishStepProps) => {
       >
         <s.IllustrationContainer>
           <s.PlayIconContainer>
-            <PlayCircleIcon size={32} color={getPlayIconColor(theme)} />
+            <s.ThumbnailPlayCircleIcon color={getPlayIconColor(theme)} />
           </s.PlayIconContainer>
           <s.GettingStartedVideoThumbnail
             src={`/images/gettingStartedVideoThumbnail_${themeKind}.png`}

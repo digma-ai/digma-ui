@@ -24,6 +24,9 @@ import {
   InstallationType
 } from "./types";
 
+const EMAIL_ADDRESS_REGEX =
+  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; // source: https://piotr.gg/regexp/email-address-regular-expression-that-99-99-works.html
+
 const ACTION_PREFIX = "INSTALLATION_WIZARD";
 
 const actions = addPrefix(ACTION_PREFIX, {
@@ -32,6 +35,9 @@ const actions = addPrefix(ACTION_PREFIX, {
   SET_CONNECTION_CHECK_RESULT: "SET_CONNECTION_CHECK_RESULT",
   SET_OBSERVABILITY: "SET_OBSERVABILITY"
 });
+
+const SLACK_CHANNEL_URL =
+  "https://join.slack.com/t/continuous-feedback/shared_invite/zt-1hk5rbjow-yXOIxyyYOLSXpCZ4RXstgA";
 
 const DIGMA_DOCKER_EXTENSION_URL =
   "https://open.docker.com/extensions/marketplace?extensionId=digmaai/digma-docker-extension";
@@ -67,6 +73,12 @@ const TRANSITION_DURATION = 300; // in milliseconds
 
 const firstStep = window.wizardSkipInstallationStep === true ? 1 : 0;
 
+const preselectedIsObservabilityEnabled =
+  window.isObservabilityEnabled === true;
+
+const preselectedEmail =
+  typeof window.userEmail === "string" ? window.userEmail : "";
+
 // TO DO:
 // add environment variable for presetting the correct installation type
 // if Digma already installed
@@ -89,8 +101,9 @@ export const InstallationWizard = () => {
   const [currentStep, setCurrentStep] = useState<number>(firstStep);
   const previousStep = usePrevious(currentStep);
   const [isAlreadyUsingOtel, setIsAlreadyUsingOtel] = useState<boolean>(false);
-  const [isObservabilityEnabled, setIsObservabilityEnabled] =
-    useState<boolean>(false);
+  const [isObservabilityEnabled, setIsObservabilityEnabled] = useState<boolean>(
+    preselectedIsObservabilityEnabled
+  );
   const [connectionCheckStatus, setConnectionCheckStatus] =
     useState<ConnectionCheckStatus>();
   const footerContentRef = useRef<HTMLDivElement>(null);
@@ -99,6 +112,8 @@ export const InstallationWizard = () => {
   >(preselectedInstallationType);
   const theme = useTheme();
   const themeKind = getThemeKind(theme);
+  const [email, setEmail] = useState(preselectedEmail);
+  const [emailErrorMessage, setEmailErrorMessage] = useState("");
 
   useEffect(() => {
     if (previousStep === 0 && currentStep === 1) {
@@ -213,9 +228,30 @@ export const InstallationWizard = () => {
     setInstallationType(installationType);
   };
 
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (emailErrorMessage) {
+      setEmailErrorMessage("");
+    }
+    setEmail(e.target.value.trim());
+  };
+
+  const validateEmailFormat = (email: string): boolean => {
+    return new RegExp(EMAIL_ADDRESS_REGEX).test(email);
+  };
+
   const handleFinishButtonClick = () => {
+    if (email && !validateEmailFormat(email)) {
+      setEmailErrorMessage(
+        "E-mail has incorrect format. Please try another one"
+      );
+      return;
+    }
+
     window.sendMessageToDigma({
-      action: actions.FINISH
+      action: actions.FINISH,
+      payload: {
+        ...(email.length > 0 ? { email } : {})
+      }
     });
   };
 
@@ -255,7 +291,15 @@ export const InstallationWizard = () => {
       : []),
     {
       title: "You're done!",
-      content: <FinishStep quickstartURL={quickstartURL} />
+      content: (
+        <FinishStep
+          quickstartURL={quickstartURL}
+          slackChannelURL={SLACK_CHANNEL_URL}
+          email={email}
+          onEmailChange={handleEmailChange}
+          emailErrorMessage={emailErrorMessage}
+        />
+      )
     }
   ];
 

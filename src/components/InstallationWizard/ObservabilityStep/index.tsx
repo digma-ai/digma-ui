@@ -49,10 +49,7 @@ export const ObservabilityStep = (props: ObservabilityStepProps) => {
         Modify your collector configuration file to add Digma&apos;s backend as
         a target. For example:
       </s.SectionDescription>
-      <CodeSnippet
-        disabled={isCollectorModified}
-        text={COLLECTOR_CONFIGURATION_SNIPPET}
-      />
+      <CodeSnippet text={COLLECTOR_CONFIGURATION_SNIPPET} />
       <s.StepFooter>
         {isCollectorModified ? (
           <MainButton

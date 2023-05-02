@@ -9,6 +9,7 @@ const PlayCircleIconComponent = (props: IconProps) => {
     <svg
       width={size}
       height={size}
+      className={props.className}
       viewBox="0 0 32 33"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

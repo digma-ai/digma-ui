@@ -8,6 +8,7 @@ export enum DIRECTION {
 export interface IconProps {
   color?: string;
   size?: number;
+  className?: string;
 }
 
 export interface RotatableIconProps extends IconProps {

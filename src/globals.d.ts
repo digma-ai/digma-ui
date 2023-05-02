@@ -28,6 +28,8 @@ declare global {
     mainFont?: unknown;
     codeFont?: unknown;
     isJaegerEnabled?: unknown;
+    isObservabilityEnabled?: unknown;
+    userEmail?: unknown;
     recentActivityExpirationLimit?: unknown;
     recentActivityDocumentationURL?: unknown;
     wizardSkipInstallationStep?: unknown;

@@ -58,30 +58,17 @@ export const InstallStep = (props: InstallStepProps) => {
   const dockerComposeOSTabs = [
     {
       title: "Linux & macOS",
-      disabled: isConnectionCheckStarted,
-      content: (
-        <CodeSnippet
-          disabled={isConnectionCheckStarted}
-          text={GET_DIGMA_DOCKER_COMPOSE_COMMAND_LINUX}
-        />
-      )
+      content: <CodeSnippet text={GET_DIGMA_DOCKER_COMPOSE_COMMAND_LINUX} />
     },
     {
       title: "Windows (PowerShell)",
-      disabled: isConnectionCheckStarted,
-      content: (
-        <CodeSnippet
-          disabled={isConnectionCheckStarted}
-          text={GET_DIGMA_DOCKER_COMPOSE_COMMAND_WINDOWS}
-        />
-      )
+      content: <CodeSnippet text={GET_DIGMA_DOCKER_COMPOSE_COMMAND_WINDOWS} />
     }
   ];
 
   const installTabs = [
     {
       icon: DockerLogoIcon,
-      disabled: isConnectionCheckStarted,
       title: "Docker Desktop",
       content: (
         <s.InstallTabContentContainer>
@@ -98,7 +85,7 @@ export const InstallStep = (props: InstallStepProps) => {
             >
               Docker Desktop
             </Link>{" "}
-            installed)
+            4.8.0 or later installed)
           </SectionDescription>
           <s.GetDockerExtensionButton
             buttonType={"secondary"}
@@ -111,7 +98,6 @@ export const InstallStep = (props: InstallStepProps) => {
     },
     {
       icon: CodeIcon,
-      disabled: isConnectionCheckStarted,
       title: "Docker Compose",
       content: (
         <s.DockerComposeOSTabContentContainer>
@@ -144,10 +130,7 @@ export const InstallStep = (props: InstallStepProps) => {
             selectedTab={selectedDockerComposeOSTab}
           />
           <SectionDescription>Then run:</SectionDescription>
-          <CodeSnippet
-            disabled={isConnectionCheckStarted}
-            text={RUN_DOCKER_COMPOSE_COMMAND}
-          />
+          <CodeSnippet text={RUN_DOCKER_COMPOSE_COMMAND} />
           <SectionDescription>
             Prefer to use a helm file? Check out{" "}
             <Link
