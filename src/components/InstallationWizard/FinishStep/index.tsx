@@ -44,7 +44,7 @@ export const FinishStep = (props: FinishStepProps) => {
         Stay Up To Date<s.SectionTitleNote>(optional)</s.SectionTitleNote>
       </s.SectionTitle>
       <s.SectionDescription>
-        Enter your E-mail to be the first to get updates
+        Enter your E-mail address to be the first to get Digma updates
       </s.SectionDescription>
       <s.EmailInput
         type={"text"}
