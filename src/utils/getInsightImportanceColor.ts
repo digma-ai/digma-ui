@@ -5,14 +5,38 @@ export const getInsightImportanceColor = (
   theme: DefaultTheme
 ): string => {
   if (importance < 3) {
-    return theme.mode === "light" ? "#f93967" : "#e00036";
+    switch (theme.mode) {
+      case "light":
+        return "#f93967";
+      case "dark":
+      case "dark-jetbrains":
+        return "#e00036";
+    }
   }
   if (importance < 5) {
-    return theme.mode === "light" ? "#e06c00" : "#ff810d";
+    switch (theme.mode) {
+      case "light":
+        return "#e06c00";
+      case "dark":
+      case "dark-jetbrains":
+        return "#ff810d";
+    }
   }
   if (importance > 7) {
-    return theme.mode === "light" ? "#e8b500" : "#ffcb14";
+    switch (theme.mode) {
+      case "light":
+        return "#e8b500";
+      case "dark":
+      case "dark-jetbrains":
+        return "#ffcb14";
+    }
   }
 
-  return theme.mode === "light" ? "#1dc693" : "#67d28b";
+  switch (theme.mode) {
+    case "light":
+      return "#1dc693";
+    case "dark":
+    case "dark-jetbrains":
+      return "#67d28b";
+  }
 };
