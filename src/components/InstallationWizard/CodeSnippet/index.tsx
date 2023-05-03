@@ -9,7 +9,7 @@ export const CodeSnippet = (props: CodeSnippetProps) => {
   };
 
   return (
-    <s.Container disabled={props.disabled}>
+    <s.Container>
       <s.Code>{props.text}</s.Code>
       <s.CopyButton
         onClick={handleCopyButtonClick}

@@ -19,6 +19,8 @@ export const initializeDigmaMessageListener = (
 export const sendMessage = (
   message: DigmaOutgoingMessageData
 ): string | undefined => {
+  console.info("Message to send:", message);
+
   if (window.sendMessageToVSCode) {
     window.sendMessageToVSCode(message);
     console.info("Message has been sent to VS Code: ", message);

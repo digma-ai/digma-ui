@@ -15,9 +15,7 @@ const PlayIconComponent = (props: IconProps) => {
     >
       <path
         fill={color}
-        fillRule="evenodd"
-        d="m4 2 10 6-10 6V2Z"
-        clipRule="evenodd"
+        d="M14.53 7.16 5.52 1.65A1 1 0 0 0 4 2.49v11.02a1 1 0 0 0 1.52.84l9-5.5a.99.99 0 0 0 0-1.7ZM5 13.5v-11L13.99 8 5 13.5Z"
       />
     </svg>
   );

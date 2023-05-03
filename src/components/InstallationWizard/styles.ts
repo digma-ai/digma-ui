@@ -77,7 +77,6 @@ export const HeaderSubtitle = styled.span`
 export const Link = styled(CommonLink)`
   font-size: 12px;
   line-height: 14px;
-  width: max-content;
 `;
 
 export const Footer = styled.div`
@@ -135,10 +134,7 @@ export const SectionDescription = styled.span`
 `;
 
 export const IllustrationContainer = styled.div`
-  height: 123px;
-  width: 312px;
   border-radius: 4px;
-  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
