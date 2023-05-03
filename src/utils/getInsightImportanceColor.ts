@@ -3,7 +3,11 @@ import { DefaultTheme } from "styled-components";
 export const getInsightImportanceColor = (
   importance: number,
   theme: DefaultTheme
-): string => {
+): string | undefined => {
+  if (importance === 0) {
+    return undefined;
+  }
+
   if (importance < 3) {
     switch (theme.mode) {
       case "light":
