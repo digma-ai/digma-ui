@@ -6,7 +6,7 @@ import { ChevronIcon } from "../../common/icons/ChevronIcon";
 import { DigmaLogoFlatIcon } from "../../common/icons/DigmaLogoFlatIcon";
 import { ListIcon } from "../../common/icons/ListIcon";
 import { TableIcon } from "../../common/icons/TableIcon";
-import { DIRECTION } from "../../common/icons/types";
+import { Direction } from "../../common/icons/types";
 import { EnvironmentTab } from "./EnvironmentTab";
 import * as s from "./styles";
 import { EnvironmentPanelProps, ScrollDirection } from "./types";
@@ -124,7 +124,7 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
               disabled={isLeftCarouselButtonDisabled}
             >
               <ChevronIcon
-                direction={DIRECTION.LEFT}
+                direction={Direction.LEFT}
                 color={getCarouselIconColor(
                   theme,
                   isLeftCarouselButtonDisabled
@@ -155,7 +155,7 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
               disabled={isRightCarouselButtonDisabled}
             >
               <ChevronIcon
-                direction={DIRECTION.RIGHT}
+                direction={Direction.RIGHT}
                 color={getCarouselIconColor(
                   theme,
                   isRightCarouselButtonDisabled

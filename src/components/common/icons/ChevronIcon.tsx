@@ -1,12 +1,12 @@
 import React from "react";
 import { useIconProps } from "./hooks";
-import { DIRECTION, RotatableIconProps } from "./types";
+import { Direction, RotatableIconProps } from "./types";
 
-const directionRotateMap: { [key in DIRECTION]: string } = {
-  [DIRECTION.DOWN]: "0",
-  [DIRECTION.LEFT]: "90",
-  [DIRECTION.UP]: "180",
-  [DIRECTION.RIGHT]: "270"
+const directionRotateMap: { [key in Direction]: string } = {
+  [Direction.DOWN]: "0",
+  [Direction.LEFT]: "90",
+  [Direction.UP]: "180",
+  [Direction.RIGHT]: "270"
 };
 
 const ChevronIconComponent = (props: RotatableIconProps) => {
@@ -14,7 +14,7 @@ const ChevronIconComponent = (props: RotatableIconProps) => {
 
   const transform = {
     transform: `rotate(${
-      directionRotateMap[props.direction || DIRECTION.DOWN]
+      directionRotateMap[props.direction || Direction.DOWN]
     })`
   };
 
