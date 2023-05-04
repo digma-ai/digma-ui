@@ -41,6 +41,7 @@ export const SectionDescription = styled(CommonSectionDescription)`
 export const IllustrationContainer = styled(CommonIllustrationContainer)`
   margin: 0 0 12px;
   position: relative;
+  overflow: hidden;
 `;
 
 export const PlayIconContainer = styled.div`
@@ -60,6 +61,14 @@ export const GettingStartedVideoThumbnail = styled.img`
 export const RunOrDebugIllustration = styled.img`
   width: 66%;
   margin: 7% 17%;
+`;
+
+export const EmailField = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 20px;
+  position: relative;
 `;
 
 export const EmailInput = styled.input`
@@ -127,8 +136,22 @@ export const EmailInput = styled.input`
   }
 `;
 
+export const EmailInputIconContainer = styled.div`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 8px;
+  height: 16px;
+  width: 16px;
+  margin: auto;
+`;
+
 export const ErrorMessage = styled(CommonSectionDescription)`
-  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  line-height: 14px;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -144,10 +167,14 @@ export const SlackLink = styled(Link)`
   display: flex;
   align-items: center;
   gap: 4px;
-  margin: 12px 0 20px;
+  margin-bottom: 12px;
 `;
 
 export const ThumbnailPlayCircleIcon = styled(PlayCircleIcon)`
   width: 100%;
   height: 100%;
+`;
+
+export const GiveUsFeedbackTitle = styled(SectionTitle)`
+  margin-top: 8px;
 `;

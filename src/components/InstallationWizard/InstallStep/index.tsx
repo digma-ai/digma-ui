@@ -74,7 +74,7 @@ export const InstallStep = (props: InstallStepProps) => {
         <s.InstallTabContentContainer>
           <s.SectionTitle>
             <DockerLogoIcon size={24} color={"#2396ed"} />
-            Install Digma Docker Extension
+            Install Digma Docker extension
           </s.SectionTitle>
           <SectionDescription>
             (You&apos;ll need{" "}

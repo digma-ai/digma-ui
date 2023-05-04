@@ -1,34 +1,6 @@
 import React from "react";
+import { CircleLoader } from "../CircleLoader";
 import { LoaderProps } from "./types";
-
-import styled, { keyframes } from "styled-components";
-
-const rotateAnimation = keyframes`
-  from { transform: rotate(0); }
-  to { transform: rotate(360deg); }
-`;
-
-const PupilOuterCircle = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background: conic-gradient(
-    from 90deg at 50% 50%,
-    rgba(53, 56, 205, 0) 0deg,
-    #3538cd 360deg
-  );
-  animation: ${rotateAnimation} 1s linear infinite;
-`;
-
-const PupilInnerCircle = styled.div`
-  width: 83%;
-  height: 83%;
-  border-radius: 50%;
-  background: #f3f3f3;
-`;
 
 const LoaderComponent = (props: LoaderProps) => {
   const size = props.size || 20;
@@ -370,14 +342,24 @@ const LoaderComponent = (props: LoaderProps) => {
             d="M112.241 75.0235C112.241 75.0235 121.052 67.0769 121.32 66.789C121.595 66.364 121.753 65.8742 121.779 65.3687C121.804 64.8632 121.696 64.36 121.464 63.9098C120.898 63.1132 121.349 64.4856 120.927 65.4358C120.505 66.3859 110.12 72.1539 110.12 72.1539L112.241 75.0235Z"
           />
           <foreignObject x="37.375" y="74.75" width="22.75" height="22.75">
-            <PupilOuterCircle>
-              <PupilInnerCircle />
-            </PupilOuterCircle>
+            <CircleLoader
+              size={22.75}
+              colors={{
+                start: "rgba(53, 56, 205, 0)",
+                end: "#3538cd",
+                background: "#f3f3f3"
+              }}
+            />
           </foreignObject>
           <foreignObject x="82.875" y="74.75" width="22.75" height="22.75">
-            <PupilOuterCircle>
-              <PupilInnerCircle />
-            </PupilOuterCircle>
+            <CircleLoader
+              size={22.75}
+              colors={{
+                start: "rgba(53, 56, 205, 0)",
+                end: "#3538cd",
+                background: "#f3f3f3"
+              }}
+            />
           </foreignObject>
         </svg>
       );

@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import { useTheme } from "styled-components";
 import { dispatcher } from "../../dispatcher";
 import { IDE } from "../../globals";
+import { useDebounce } from "../../hooks/useDebounce";
 import { usePrevious } from "../../hooks/usePrevious";
 import { ide } from "../../platform";
 import { addPrefix } from "../../utils/addPrefix";
@@ -97,6 +98,10 @@ const getStepStatus = (index: number, currentStep: number): StepStatus => {
   return "not-completed";
 };
 
+const validateEmailFormat = (email: string): boolean => {
+  return new RegExp(EMAIL_ADDRESS_REGEX).test(email);
+};
+
 export const InstallationWizard = () => {
   const [currentStep, setCurrentStep] = useState<number>(firstStep);
   const previousStep = usePrevious(currentStep);
@@ -113,7 +118,20 @@ export const InstallationWizard = () => {
   const theme = useTheme();
   const themeKind = getThemeKind(theme);
   const [email, setEmail] = useState(preselectedEmail);
-  const [emailErrorMessage, setEmailErrorMessage] = useState("");
+  const [isEmailValid, setIsEmailValid] = useState(
+    email.length > 0 ? validateEmailFormat(email) : undefined
+  );
+  const [isEmailValidating, setIsEmailValidating] = useState(false);
+  const debouncedEmail = useDebounce<string>(email, 1000);
+
+  useEffect(() => {
+    const res =
+      debouncedEmail.length > 0
+        ? validateEmailFormat(debouncedEmail)
+        : undefined;
+    setIsEmailValid(res);
+    setIsEmailValidating(false);
+  }, [debouncedEmail]);
 
   useEffect(() => {
     if (previousStep === 0 && currentStep === 1) {
@@ -228,29 +246,17 @@ export const InstallationWizard = () => {
     setInstallationType(installationType);
   };
 
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (emailErrorMessage) {
-      setEmailErrorMessage("");
-    }
+  const handleEmailInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setIsEmailValid(undefined);
+    setIsEmailValidating(true);
     setEmail(e.target.value.trim());
   };
 
-  const validateEmailFormat = (email: string): boolean => {
-    return new RegExp(EMAIL_ADDRESS_REGEX).test(email);
-  };
-
   const handleFinishButtonClick = () => {
-    if (email && !validateEmailFormat(email)) {
-      setEmailErrorMessage(
-        "E-mail has incorrect format. Please try another one"
-      );
-      return;
-    }
-
     window.sendMessageToDigma({
       action: actions.FINISH,
       payload: {
-        ...(email.length > 0 ? { email } : {})
+        ...(debouncedEmail.length > 0 ? { email: debouncedEmail } : {})
       }
     });
   };
@@ -296,8 +302,9 @@ export const InstallationWizard = () => {
           quickstartURL={quickstartURL}
           slackChannelURL={SLACK_CHANNEL_URL}
           email={email}
-          onEmailChange={handleEmailChange}
-          emailErrorMessage={emailErrorMessage}
+          onEmailInputChange={handleEmailInputChange}
+          isEmailValid={isEmailValid}
+          isEmailValidating={isEmailValidating}
         />
       )
     }
@@ -393,7 +400,10 @@ export const InstallationWizard = () => {
               transitionClassName={footerTransitionClassName}
               transitionDuration={TRANSITION_DURATION}
             >
-              <s.MainButton onClick={handleFinishButtonClick}>
+              <s.MainButton
+                onClick={handleFinishButtonClick}
+                disabled={isEmailValid === false || isEmailValidating}
+              >
                 Finish
               </s.MainButton>
             </s.FooterContent>
