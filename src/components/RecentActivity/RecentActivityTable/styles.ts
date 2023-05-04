@@ -7,6 +7,7 @@ export const Table = styled.table`
   border-spacing: 0 3px;
   font-weight: 400;
   font-size: 14px;
+
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -22,6 +23,7 @@ export const Table = styled.table`
 export const TableHead = styled.thead`
   font-size: 10px;
   height: 26px;
+
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -105,7 +107,27 @@ export const DurationContainer = styled.span`
 
 export const InsightsContainer = styled.span`
   display: flex;
-  gap: 8px;
+  gap: 4px;
+`;
+
+export const InsightIconContainer = styled.span`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  border-radius: 4px;
+
+  background: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#e9eef4";
+      case "dark":
+      case "dark-jetbrains":
+        return "#2e2e2e";
+    }
+  }};
 `;
 
 export const TraceButtonContainer = styled.div`
@@ -117,6 +139,7 @@ export const TraceButtonContainer = styled.div`
 export const Suffix = styled.span`
   margin-left: 2px;
   font-size: 10px;
+
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -140,6 +163,7 @@ export const ListHeader = styled.div`
   line-height: 16px;
   font-weight: 400;
   font-size: 10px;
+
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -161,6 +185,7 @@ export const List = styled.ul`
   flex-direction: column;
   gap: 22px;
   font-weight: 400;
+
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

@@ -4,73 +4,18 @@ import {
   getCoreRowModel,
   useReactTable
 } from "@tanstack/react-table";
-import { DefaultTheme, useTheme } from "styled-components";
+import { useTheme } from "styled-components";
 import { Duration } from "../../../globals";
+import { getInsightImportanceColor } from "../../../utils/getInsightImportanceColor";
+import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
 import { timeAgo } from "../../../utils/timeAgo";
 import { Badge } from "../../common/Badge";
 import { Button } from "../../common/Button";
-import { BottleneckIcon } from "../../common/icons/BottleneckIcon";
 import { CrosshairIcon } from "../../common/icons/CrosshairIcon";
-import { MeterHighIcon } from "../../common/icons/MeterHighIcon";
-import { SQLDatabaseIcon } from "../../common/icons/SQLDatabaseIcon";
-import { ScalesIcon } from "../../common/icons/ScalesIcon";
-import { SnailIcon } from "../../common/icons/SnailIcon";
-import { SpotIcon } from "../../common/icons/SpotIcon";
 import { ViewMode } from "../EnvironmentPanel/types";
 import { ActivityEntry, EntrySpan, SlimInsight } from "../types";
 import * as s from "./styles";
-import { INSIGHT_TYPES, RecentActivityTableProps } from "./types";
-
-const getInsightInfo = (
-  type: string,
-  theme: DefaultTheme
-): { icon: JSX.Element; label: string } | undefined => {
-  const insightInfoMap: Record<string, { icon: JSX.Element; label: string }> = {
-    [INSIGHT_TYPES.HotSpot]: {
-      icon: <SpotIcon size={20} />,
-      label: "Error Hotspot"
-    },
-    [INSIGHT_TYPES.SlowEndpoint]: {
-      icon: <SnailIcon size={20} />,
-      label: "Slow Endpoint"
-    },
-    [INSIGHT_TYPES.HighUsage]: {
-      icon: (
-        <MeterHighIcon
-          size={20}
-          color={theme.mode === "light" ? "#e00036" : "#f93967"}
-        />
-      ),
-      label: "Endpoint High Traffic"
-    },
-    [INSIGHT_TYPES.SlowestSpans]: {
-      icon: <BottleneckIcon size={20} />,
-      label: "Span Bottleneck"
-    },
-    [INSIGHT_TYPES.EndpointSpaNPlusOne]: {
-      icon: <SQLDatabaseIcon size={20} />,
-      label: "Suspected N-Plus-1"
-    },
-    [INSIGHT_TYPES.SpaNPlusOne]: {
-      icon: <SQLDatabaseIcon size={20} />,
-      label: "Suspected N-Plus-1"
-    },
-    [INSIGHT_TYPES.SpanEndpointBottleneck]: {
-      icon: <BottleneckIcon size={20} />,
-      label: "Bottleneck"
-    },
-    [INSIGHT_TYPES.SpanScaling]: {
-      icon: <ScalesIcon size={20} />,
-      label: "Scaling Issue Found"
-    },
-    [INSIGHT_TYPES.SpanScalingRootCause]: {
-      icon: <ScalesIcon size={20} />,
-      label: "Scaling Issue Root Cause Found"
-    }
-  };
-
-  return insightInfoMap[type];
-};
+import { RecentActivityTableProps } from "./types";
 
 const columnHelper = createColumnHelper<ActivityEntry>();
 
@@ -147,11 +92,13 @@ export const RecentActivityTable = (props: RecentActivityTableProps) => {
     <s.InsightsContainer>
       {insights
         .map((x) => {
-          const insightInfo = getInsightInfo(x.type, theme);
-          return insightInfo ? (
-            <span title={insightInfo.label} key={x.type}>
-              {insightInfo.icon}
-            </span>
+          const insightTypeInfo = getInsightTypeInfo(x.type);
+          const iconColor = getInsightImportanceColor(x.importance, theme);
+
+          return insightTypeInfo ? (
+            <s.InsightIconContainer title={insightTypeInfo.label} key={x.type}>
+              <insightTypeInfo.icon color={iconColor} size={16} />
+            </s.InsightIconContainer>
           ) : null;
         })
         .filter(Boolean)}

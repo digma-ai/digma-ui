@@ -1,18 +1,18 @@
 import React from "react";
 import { useIconProps } from "./hooks";
-import { DIRECTION, RotatableIconProps } from "./types";
+import { Direction, RotatableIconProps } from "./types";
 
-const directionRotateMap: { [key in DIRECTION]: string } = {
-  [DIRECTION.UP]: "0",
-  [DIRECTION.LEFT]: "0",
-  [DIRECTION.RIGHT]: "0",
-  [DIRECTION.DOWN]: "90"
+const directionRotateMap: { [key in Direction]: string } = {
+  [Direction.UP]: "0",
+  [Direction.LEFT]: "0",
+  [Direction.RIGHT]: "0",
+  [Direction.DOWN]: "90"
 };
 
 const ArrowIconComponent = (props: RotatableIconProps) => {
   const { size, color } = useIconProps(props);
   const transform = {
-    transform: `rotate(${directionRotateMap[props.direction || DIRECTION.UP]})`
+    transform: `rotate(${directionRotateMap[props.direction || Direction.UP]})`
   };
 
   return (

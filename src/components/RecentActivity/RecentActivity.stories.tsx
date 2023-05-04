@@ -101,7 +101,8 @@ export const WithData: Story = {
               type: "HotSpot",
               codeObjectIds: [
                 "org.springframework.samples.petclinic.owner.OwnerController$_$showOwner"
-              ]
+              ],
+              importance: 2
             }
           ]
         },
@@ -130,13 +131,15 @@ export const WithData: Story = {
               type: "SlowestSpans",
               codeObjectIds: [
                 "org.springframework.samples.petclinic.owner.OwnerController$_$processFindForm"
-              ]
+              ],
+              importance: 2
             },
             {
               type: "SpanEndpointBottleneck",
               codeObjectIds: [
                 "org.springframework.samples.petclinic.owner.OwnerRepository$_$findByLastName"
-              ]
+              ],
+              importance: 2
             }
           ]
         },
@@ -208,13 +211,15 @@ export const WithData: Story = {
               type: "SlowestSpans",
               codeObjectIds: [
                 "org.springframework.samples.petclinic.vet.VetController$_$showVetList"
-              ]
+              ],
+              importance: 2
             },
             {
               type: "SpanEndpointBottleneck",
               codeObjectIds: [
                 "io.opentelemetry.spring-webmvc-6.0$_$Render vets/vetList"
-              ]
+              ],
+              importance: 2
             }
           ]
         },
@@ -245,7 +250,8 @@ export const WithData: Story = {
               type: "SpanEndpointBottleneck",
               codeObjectIds: [
                 "org.springframework.samples.petclinic.owner.OwnerRepository$_$save"
-              ]
+              ],
+              importance: 2
             }
           ]
         },
@@ -299,13 +305,15 @@ export const WithData: Story = {
               type: "SlowestSpans",
               codeObjectIds: [
                 "org.springframework.samples.petclinic.owner.OwnerController$_$processUpdateOwnerForm"
-              ]
+              ],
+              importance: 2
             },
             {
               type: "SpanEndpointBottleneck",
               codeObjectIds: [
                 "org.springframework.samples.petclinic.owner.OwnerRepository$_$save"
-              ]
+              ],
+              importance: 2
             }
           ]
         },

@@ -1,4 +1,4 @@
-export enum DIRECTION {
+export enum Direction {
   LEFT = "LEFT",
   UP = "UP",
   RIGHT = "RIGHT",
@@ -12,7 +12,7 @@ export interface IconProps {
 }
 
 export interface RotatableIconProps extends IconProps {
-  direction?: DIRECTION;
+  direction?: Direction;
 }
 
 export interface ThemeableIconProps {

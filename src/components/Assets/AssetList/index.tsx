@@ -5,7 +5,7 @@ import { Popover } from "../../common/Popover";
 import { PopoverContent } from "../../common/Popover/PopoverContent";
 import { PopoverTrigger } from "../../common/Popover/PopoverTrigger";
 import { ChevronIcon } from "../../common/icons/ChevronIcon";
-import { DIRECTION } from "../../common/icons/types";
+import { Direction } from "../../common/icons/types";
 import { getAssetTypeInfo } from "../utils";
 import * as s from "./styles";
 import {
@@ -159,7 +159,7 @@ export const AssetList = (props: AssetListProps) => {
     <s.Container>
       <s.Header>
         <s.BackButton onClick={handleBackButtonClick}>
-          <ChevronIcon direction={DIRECTION.LEFT} color={"#dadada"} />
+          <ChevronIcon direction={Direction.LEFT} color={"#dadada"} />
         </s.BackButton>
         {assetTypeInfo?.icon && <assetTypeInfo.icon color={"#9c9c9c"} />}
         <span>{assetTypeInfo?.label || props.assetTypeId}</span>
@@ -178,7 +178,7 @@ export const AssetList = (props: AssetListProps) => {
               <span>Sort by</span>
               <s.SortingLabel>{sorting.criterion}</s.SortingLabel>
               <ChevronIcon
-                direction={isSortingMenuOpen ? DIRECTION.UP : DIRECTION.DOWN}
+                direction={isSortingMenuOpen ? Direction.UP : Direction.DOWN}
                 color={"#dadada"}
               />
             </s.SortingMenuContainer>

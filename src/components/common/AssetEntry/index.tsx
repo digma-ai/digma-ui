@@ -1,6 +1,7 @@
 import { useTheme } from "styled-components";
+import { getInsightImportanceColor } from "../../../utils/getInsightImportanceColor";
+import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
 import { timeAgo } from "../../../utils/timeAgo";
-import { getInsightIcon, getInsightInfo } from "../../Assets/utils";
 import { OpenTelemetryLogoIcon } from "../icons/OpenTelemetryLogoIcon";
 import * as s from "./styles";
 import { AssetEntryProps } from "./types";
@@ -32,14 +33,24 @@ export const AssetEntry = (props: AssetEntryProps) => {
           {name}
         </s.Link>
         <s.InsightIconsContainer>
-          {props.entry.insights.map((insight) => (
-            <s.InsightIconContainer
-              key={insight.type}
-              title={getInsightInfo(insight.type)?.label || insight.type}
-            >
-              {getInsightIcon(insight, theme, 20)}
-            </s.InsightIconContainer>
-          ))}
+          {props.entry.insights.map((insight) => {
+            const insightTypeInfo = getInsightTypeInfo(insight.type);
+            const insightIconColor = getInsightImportanceColor(
+              insight.importance,
+              theme
+            );
+
+            return (
+              <s.InsightIconContainer
+                key={insight.type}
+                title={insightTypeInfo?.label || insight.type}
+              >
+                {insightTypeInfo && (
+                  <insightTypeInfo.icon color={insightIconColor} size={20} />
+                )}
+              </s.InsightIconContainer>
+            );
+          })}
         </s.InsightIconsContainer>
       </s.Header>
       <s.StatsContainer>

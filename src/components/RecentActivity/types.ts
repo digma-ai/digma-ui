@@ -11,6 +11,7 @@ export interface EntrySpan {
 export interface SlimInsight {
   type: string;
   codeObjectIds: string[];
+  importance: number;
 }
 
 export interface ActivityEntry {
