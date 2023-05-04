@@ -26,7 +26,7 @@ export const getInsightImportanceColor = (
         return "#ff810d";
     }
   }
-  if (importance > 7) {
+  if (importance < 7) {
     switch (theme.mode) {
       case "light":
         return "#e8b500";
