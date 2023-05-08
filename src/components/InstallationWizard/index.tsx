@@ -247,9 +247,13 @@ export const InstallationWizard = () => {
   };
 
   const handleEmailInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setIsEmailValid(undefined);
-    setIsEmailValidating(true);
-    setEmail(e.target.value.trim());
+    const value = e.target.value.trim();
+
+    if (email !== value) {
+      setIsEmailValid(undefined);
+      setIsEmailValidating(true);
+      setEmail(value);
+    }
   };
 
   const handleFinishButtonClick = () => {
