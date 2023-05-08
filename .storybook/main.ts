@@ -9,7 +9,10 @@ const config: StorybookConfig = {
   ],
   framework: {
     name: "@storybook/react-webpack5",
-    options: {}
+    options: {
+      fastRefresh: true,
+      strictMode: true
+    }
   },
   core: {
     disableTelemetry: true

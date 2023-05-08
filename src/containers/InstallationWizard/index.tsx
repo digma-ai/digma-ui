@@ -4,8 +4,8 @@ import {
   initializeDigmaMessageListener,
   sendMessage
 } from "../../api";
-import { App } from "../../components/common/App";
 import { InstallationWizard } from "../../components/InstallationWizard";
+import { App } from "../../components/common/App";
 import { dispatcher } from "../../dispatcher";
 import { GlobalStyle } from "./styles";
 
