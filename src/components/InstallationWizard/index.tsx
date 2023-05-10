@@ -122,16 +122,18 @@ export const InstallationWizard = () => {
     email.length > 0 ? validateEmailFormat(email) : undefined
   );
   const [isEmailValidating, setIsEmailValidating] = useState(false);
-  const debouncedEmail = useDebounce<string>(email, 1000);
+  const debouncedEmail = useDebounce(email, 1000);
 
   useEffect(() => {
-    const res =
-      debouncedEmail.length > 0
-        ? validateEmailFormat(debouncedEmail)
-        : undefined;
-    setIsEmailValid(res);
-    setIsEmailValidating(false);
-  }, [debouncedEmail]);
+    if (email === debouncedEmail) {
+      const res =
+        debouncedEmail.length > 0
+          ? validateEmailFormat(debouncedEmail)
+          : undefined;
+      setIsEmailValid(res);
+      setIsEmailValidating(false);
+    }
+  }, [email, debouncedEmail]);
 
   useEffect(() => {
     if (previousStep === 0 && currentStep === 1) {
