@@ -3,8 +3,8 @@ import styled from "styled-components";
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  min-width: 150px;
   height: 100%;
+  gap: 12px;
 
   border: 1px solid
     ${({ theme }) => {
@@ -16,6 +16,16 @@ export const Container = styled.div`
           return "#323232";
       }
     }};
+
+  background: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#fbfdff";
+      case "dark":
+      case "dark-jetbrains":
+        return "#383838";
+    }
+  }};
 `;
 
 export const Header = styled.div`
@@ -104,17 +114,53 @@ export const CloseButton = styled.button`
 `;
 
 export const ChartContainer = styled.div`
-  padding: 44px 12px 6px;
+  padding: 0 12px 12px;
   height: 100%;
-  overflow: hidden;
+  overflow: auto;
+`;
+
+export const ZoomButtonsContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  gap: 4px;
+  padding: 0 12px;
+`;
+
+export const ZoomButton = styled.button`
+  box-sizing: border-box;
+  display: flex;
+  padding: 4px;
+  border-radius: 4px;
+  cursor: pointer;
 
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "#fbfdff";
+        return "#f1f5fa";
       case "dark":
       case "dark-jetbrains":
-        return "#383838";
+        return "#2e2e2e";
+    }
+  }};
+
+  border: 1px solid
+    ${({ theme }) => {
+      switch (theme.mode) {
+        case "light":
+          return "#fbfdff";
+        case "dark":
+        case "dark-jetbrains":
+          return "#383838";
+      }
+    }};
+
+  box-shadow: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "1px 1px 3px rgba(0, 0, 0, 0.15)";
+      case "dark":
+      case "dark-jetbrains":
+        return "1px 1px 4px rgba(0, 0, 0, 0.25)";
     }
   }};
 `;

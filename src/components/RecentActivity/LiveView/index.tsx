@@ -1,4 +1,5 @@
 import { format } from "date-fns";
+import { useState } from "react";
 import {
   Area,
   CartesianGrid,
@@ -13,8 +14,13 @@ import { isNumber } from "../../../typeGuards/isNumber";
 import { CrossIcon } from "../../common/icons/CrossIcon";
 import { DoubleCircleIcon } from "../../common/icons/DoubleCircleIcon";
 import { EndpointIcon } from "../../common/icons/EndpointIcon";
+import { MinusIcon } from "../../common/icons/MinusIcon";
+import { PlusIcon } from "../../common/icons/PlusIcon";
 import * as s from "./styles";
 import { LiveDataEntry, LiveViewProps, PercentileInfo } from "./types";
+
+const ZOOM_FACTOR = 1.2;
+const DEFAULT_CHART_WIDTH = 388;
 
 const PERCENTILES = [
   { label: "Median", percentile: 0.5 },
@@ -91,6 +97,16 @@ const getAreaColor = (theme: DefaultTheme) => {
   }
 };
 
+const getZoomButtonIconColor = (theme: DefaultTheme) => {
+  switch (theme.mode) {
+    case "light":
+      return "#7891d0";
+    case "dark":
+    case "dark-jetbrains":
+      return "#e2e7ff";
+  }
+};
+
 const formatDate = (datetime: string): string =>
   format(new Date(datetime), "HH:mm:ss.SSS");
 
@@ -100,6 +116,8 @@ export const LiveView = (props: LiveViewProps) => {
   const axisColor = getAxisColor(theme);
   const areaColor = getAreaColor(theme);
   const tickLabelColor = getTickLabelColor(theme);
+  const zoomButtonIconColor = getZoomButtonIconColor(theme);
+  const [chartWidth, setChartWidth] = useState(DEFAULT_CHART_WIDTH);
 
   const percentiles = PERCENTILES.map((percentile) => ({
     ...percentile,
@@ -121,6 +139,18 @@ export const LiveView = (props: LiveViewProps) => {
 
   const spanName = props.data.durationInsight.spanInfo?.displayName;
 
+  const handleZoomOutButtonClick = () => {
+    const newWidth = Math.round(chartWidth / ZOOM_FACTOR);
+    if (newWidth >= DEFAULT_CHART_WIDTH) {
+      setChartWidth(newWidth);
+    }
+  };
+
+  const handleZoomInButtonClick = () => {
+    const newWidth = Math.round(chartWidth * ZOOM_FACTOR);
+    setChartWidth(newWidth);
+  };
+
   return (
     <s.Container>
       <s.Header>
@@ -140,14 +170,21 @@ export const LiveView = (props: LiveViewProps) => {
           <CrossIcon color={getCloseIconColor(theme)} size={16} />
         </s.CloseButton>
       </s.Header>
+      <s.ZoomButtonsContainer>
+        <s.ZoomButton onClick={handleZoomOutButtonClick}>
+          <MinusIcon size={16} color={zoomButtonIconColor} />
+        </s.ZoomButton>
+        <s.ZoomButton onClick={handleZoomInButtonClick}>
+          <PlusIcon size={16} color={zoomButtonIconColor} />
+        </s.ZoomButton>
+      </s.ZoomButtonsContainer>
       <s.ChartContainer>
-        <ResponsiveContainer width={"100%"} height={"100%"}>
+        <ResponsiveContainer width={chartWidth} height={"100%"}>
           <ComposedChart
-            width={730}
-            height={250}
             data={data}
             margin={{
-              left: 20
+              left: 12,
+              right: 12
             }}
           >
             <CartesianGrid
