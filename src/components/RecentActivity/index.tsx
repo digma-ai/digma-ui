@@ -209,7 +209,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
             />
           )}
         </s.RecentActivityContainer>
-        <Allotment.Pane visible={Boolean(liveData)}>
+        <Allotment.Pane visible={Boolean(liveData)} minSize={450}>
           {liveData && (
             <s.LiveViewContainer>
               <LiveView data={liveData} onClose={handleCloseLiveView} />
