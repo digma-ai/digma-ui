@@ -106,7 +106,7 @@ export const CloseButton = styled.button`
 export const ChartContainer = styled.div`
   padding: 44px 12px 6px;
   height: 100%;
-  overflow: auto;
+  overflow: hidden;
 
   background: ${({ theme }) => {
     switch (theme.mode) {
