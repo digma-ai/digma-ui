@@ -17,7 +17,7 @@ const CrosshairIconComponent = (props: IconProps) => {
         stroke={color}
         strokeLinecap="round"
         strokeLinejoin="round"
-        d="M10 6H8.4M3.6 6H2m4-2.4V2m0 8V8.4M9.2 6a3.2 3.2 0 1 1-6.4 0 3.2 3.2 0 0 1 6.4 0Z"
+        d="M10 6a4 4 0 0 1-4 4m4-4a4 4 0 0 0-4-4m4 4H7.87M6 10a4 4 0 0 1-4-4m4 4V7.88M2 6a4 4 0 0 1 4-4M2 6h2.13M6 2v2.13"
       />
     </svg>
   );

@@ -4,9 +4,8 @@ import { Link } from "../../common/Link";
 
 export const Table = styled.table`
   width: 100%;
-  border-spacing: 0 3px;
-  font-weight: 400;
-  font-size: 14px;
+  border-spacing: 0 4px;
+  font-size: 12px;
 
   color: ${({ theme }) => {
     switch (theme.mode) {
@@ -22,7 +21,7 @@ export const Table = styled.table`
 
 export const TableHead = styled.thead`
   font-size: 10px;
-  height: 26px;
+  height: 28px;
 
   color: ${({ theme }) => {
     switch (theme.mode) {
@@ -37,6 +36,7 @@ export const TableHead = styled.thead`
 `;
 
 export const TableHeaderRow = styled.th`
+  padding-top: 4px;
   font-weight: 400;
   text-align: start;
 
@@ -76,7 +76,7 @@ export const TableBody = styled.tbody`
 
 export const TableBodyRow = styled.tr`
   position: relative;
-  height: 36px;
+  height: 42px;
 `;
 
 export const TableBodyCell = styled.td`
@@ -98,11 +98,13 @@ export const BadgeContainer = styled.div`
 export const TimeDistanceContainer = styled.span`
   display: flex;
   align-items: center;
+  font-weight: 500;
 `;
 
 export const DurationContainer = styled.span`
   display: flex;
   align-items: center;
+  font-weight: 500;
 `;
 
 export const InsightsContainer = styled.span`
@@ -114,8 +116,8 @@ export const InsightIconContainer = styled.span`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   flex-shrink: 0;
   border-radius: 4px;
 
@@ -133,12 +135,12 @@ export const InsightIconContainer = styled.span`
 export const TraceButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
-  margin-left: auto;
 `;
 
 export const Suffix = styled.span`
   margin-left: 2px;
   font-size: 10px;
+  line-height: 12px;
 
   color: ${({ theme }) => {
     switch (theme.mode) {
@@ -158,10 +160,9 @@ export const ListContainer = styled.div`
 `;
 
 export const ListHeader = styled.div`
-  margin: 8px 0;
+  margin: 12px 0 8px;
   padding-left: 12px;
   line-height: 16px;
-  font-weight: 400;
   font-size: 10px;
 
   color: ${({ theme }) => {
@@ -179,12 +180,10 @@ export const ListHeader = styled.div`
 export const List = styled.ul`
   border-radius: 12px;
   margin: 0;
-  padding: 9px 0 6px;
+  padding: 0;
   list-style-type: none;
   display: flex;
   flex-direction: column;
-  gap: 22px;
-  font-weight: 400;
 
   color: ${({ theme }) => {
     switch (theme.mode) {
@@ -211,11 +210,13 @@ export const List = styled.ul`
 export const ListItem = styled.li`
   position: relative;
   font-size: 12px;
-  padding: 0 18px 0 12px;
-  height: 18px;
+  line-height: 14px;
+  padding: 0 12px;
+  height: 42px;
   display: flex;
   align-items: center;
   gap: 8px;
+  font-weight: 500;
 `;
 
 export const ListBadgeContainer = styled.div`
@@ -228,8 +229,14 @@ export const ListBadgeContainer = styled.div`
   height: fit-content;
 `;
 
+export const ListInsightsContainer = styled.div`
+  margin-left: auto;
+  margin-right: 16px;
+`;
+
 export const ListSuffix = styled(Suffix)`
   font-size: 12px;
+  line-height: 14px;
 `;
 
 // postcss-styled-components-disable-next-line

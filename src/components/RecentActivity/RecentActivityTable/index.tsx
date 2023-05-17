@@ -211,7 +211,9 @@ export const RecentActivityTable = (props: RecentActivityTableProps) => {
             {renderTimeDistance(entry.latestTraceTimestamp, props.viewMode)}
             {renderSpanLinks(entry)}
             {renderDuration(entry.latestTraceDuration, props.viewMode)}
-            {renderInsights(entry.slimAggregatedInsights)}
+            <s.ListInsightsContainer>
+              {renderInsights(entry.slimAggregatedInsights)}
+            </s.ListInsightsContainer>
             {props.isTraceButtonVisible && renderTraceButton(entry)}
           </s.ListItem>
         ))}

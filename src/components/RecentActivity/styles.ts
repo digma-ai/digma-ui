@@ -2,9 +2,8 @@ import styled from "styled-components";
 import { Link } from "../common/Link";
 
 export const Container = styled.div`
-  min-height: 100vh;
-  box-sizing: border-box;
-  padding: 12px;
+  height: 100%;
+
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -15,10 +14,41 @@ export const Container = styled.div`
         return "#383838";
     }
   }};
+
+  .sash {
+    --sash-size: 12px;
+  }
+
+  .sash-hover {
+    --focus-border: none;
+  }
+
+  &&&&& .split-view-view::before {
+    margin: 12px 0;
+    height: calc(100% - 24px);
+
+    --separator-border: ${({ theme }) => {
+      switch (theme.mode) {
+        case "light":
+          return "#b9c0d4";
+        case "dark":
+        case "dark-jetbrains":
+          return "#9b9b9b";
+      }
+    }};
+  }
+`;
+
+export const RecentActivityContainer = styled.div`
+  padding: 12px;
+  height: 100%;
+  overflow: auto;
+  box-sizing: border-box;
+  padding-right: 24px;
 `;
 
 export const Header = styled.div`
-  margin: 8px 0;
+  margin: 12px 0 8px;
   padding-left: 12px;
   line-height: 16px;
   font-weight: 400;
@@ -99,4 +129,12 @@ export const DocumentationLink = styled(Link)`
         return "#7891d0";
     }
   }};
+`;
+
+export const LiveViewContainer = styled.div`
+  padding: 12px;
+  padding-left: 24px;
+  height: 100%;
+  overflow-y: auto;
+  box-sizing: border-box;
 `;
