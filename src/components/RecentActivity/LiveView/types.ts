@@ -3,7 +3,7 @@ import { SpanDurationsInsight } from "../../../types";
 
 export interface LiveViewProps {
   data: LiveData;
-  onClose: () => void;
+  onClose: (codeObjectId: string) => void;
 }
 
 export interface LiveData {

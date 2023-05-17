@@ -116,7 +116,7 @@ export const LiveView = (props: LiveViewProps) => {
     }));
 
   const handleCloseButtonClick = () => {
-    props.onClose();
+    props.onClose(props.data.durationInsight.codeObjectId);
   };
 
   const spanName = props.data.durationInsight.spanInfo?.displayName;

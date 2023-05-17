@@ -34,7 +34,8 @@ const actions = addPrefix(ACTION_PREFIX, {
   SET_DATA: "SET_DATA",
   SET_LIVE_DATA: "SET_LIVE_DATA",
   GO_TO_SPAN: "GO_TO_SPAN",
-  GO_TO_TRACE: "GO_TO_TRACE"
+  GO_TO_TRACE: "GO_TO_TRACE",
+  CLOSE_LIVE_VIEW: "CLOSE_LIVE_VIEW"
 });
 
 const renderNoData = () => {
@@ -159,8 +160,14 @@ export const RecentActivity = (props: RecentActivityProps) => {
     setViewMode(mode);
   };
 
-  const handleCloseLiveView = () => {
+  const handleCloseLiveView = (codeObjectId: string) => {
     setLiveData(undefined);
+    window.sendMessageToDigma({
+      action: actions.CLOSE_LIVE_VIEW,
+      payload: {
+        codeObjectId
+      }
+    });
   };
 
   const environmentActivities = useMemo(
