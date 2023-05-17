@@ -46,7 +46,7 @@ const data = {
       },
       lastEntrySpan: null,
       latestTraceId: "DB80F24773E2BBE574E97960F9CB0D64",
-      latestTraceTimestamp: "2023-02-07T12:59:21.794Z",
+      latestTraceTimestamp: "2023-01-07T12:59:21.794Z",
       latestTraceDuration: {
         value: 3.9,
         unit: "ms",

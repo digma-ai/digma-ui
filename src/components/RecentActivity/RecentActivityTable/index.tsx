@@ -4,6 +4,7 @@ import {
   getCoreRowModel,
   useReactTable
 } from "@tanstack/react-table";
+import { useMemo } from "react";
 import { useTheme } from "styled-components";
 import { Duration } from "../../../globals";
 import { getInsightImportanceColor } from "../../../utils/getInsightImportanceColor";
@@ -161,8 +162,18 @@ export const RecentActivityTable = (props: RecentActivityTableProps) => {
       : [])
   ];
 
+  const sortedData = useMemo(
+    () =>
+      [...props.data].sort(
+        (a, b) =>
+          new Date(b.latestTraceTimestamp).valueOf() -
+          new Date(a.latestTraceTimestamp).valueOf()
+      ),
+    [props.data]
+  );
+
   const table = useReactTable({
-    data: props.data,
+    data: sortedData,
     columns,
     getCoreRowModel: getCoreRowModel()
   });
@@ -201,7 +212,7 @@ export const RecentActivityTable = (props: RecentActivityTableProps) => {
     <s.ListContainer>
       <s.ListHeader>Recent Activity</s.ListHeader>
       <s.List>
-        {props.data.map((entry, i) => (
+        {sortedData.map((entry, i) => (
           <s.ListItem key={i}>
             {isRecent(entry) && (
               <s.ListBadgeContainer>
