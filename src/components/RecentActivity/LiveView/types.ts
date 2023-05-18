@@ -6,8 +6,13 @@ export interface LiveViewProps {
   onClose: (codeObjectId: string) => void;
 }
 
+interface LiveDataRecord {
+  dateTime: string;
+  duration: Duration;
+}
+
 export interface LiveData {
-  liveDataRecords: { duration: Duration; dateTime: string }[];
+  liveDataRecords: LiveDataRecord[];
   durationInsight: SpanDurationsInsight;
 }
 
@@ -17,8 +22,6 @@ export interface PercentileInfo {
   percentile: number;
 }
 
-export interface LiveDataEntry {
-  dateTime: string;
-  duration: Duration;
+export interface ExtendedLiveDataRecord extends LiveDataRecord {
   percentiles: PercentileInfo[];
 }

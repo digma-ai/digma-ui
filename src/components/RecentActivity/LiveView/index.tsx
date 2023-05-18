@@ -19,7 +19,7 @@ import { EndpointIcon } from "../../common/icons/EndpointIcon";
 import { MinusIcon } from "../../common/icons/MinusIcon";
 import { PlusIcon } from "../../common/icons/PlusIcon";
 import * as s from "./styles";
-import { LiveDataEntry, LiveViewProps, PercentileInfo } from "./types";
+import { ExtendedLiveDataRecord, LiveViewProps, PercentileInfo } from "./types";
 
 const ZOOM_FACTOR = 1.2;
 
@@ -109,7 +109,7 @@ const getZoomButtonIconColor = (theme: DefaultTheme) => {
 };
 
 const formatDate = (datetime: string): string =>
-  format(new Date(datetime), "HH:mm:ss.SSS");
+  format(new Date(datetime), "HH:mm:ss.SSS MM/dd/yyyy");
 
 export const LiveView = (props: LiveViewProps) => {
   const theme = useTheme();
@@ -141,12 +141,12 @@ export const LiveView = (props: LiveViewProps) => {
     )?.currentDuration.raw
   })).filter((x) => isNumber(x.value)) as PercentileInfo[];
 
-  const data: LiveDataEntry[] = [...props.data.liveDataRecords]
-    .reverse()
-    .map((x) => ({
+  const data: ExtendedLiveDataRecord[] = [...props.data.liveDataRecords].map(
+    (x) => ({
       ...x,
       percentiles
-    }));
+    })
+  );
 
   const handleCloseButtonClick = () => {
     props.onClose(props.data.durationInsight.codeObjectId);
@@ -178,6 +178,19 @@ export const LiveView = (props: LiveViewProps) => {
       setChartWidth(newWidth);
       setIsZoomed(true);
     }
+  };
+
+  const YAxisTicks = [...new Set(percentiles.map((x) => x.value))];
+
+  const getYAxisTickLabel = (value: number): string => {
+    const labels: string[] = [];
+    percentiles.forEach((percentile) => {
+      if (percentile.value === value) {
+        labels.push(percentile.label);
+      }
+    });
+
+    return labels.join(" / ");
   };
 
   return (
@@ -216,7 +229,8 @@ export const LiveView = (props: LiveViewProps) => {
             data={data}
             margin={{
               left: 8,
-              right: 0
+              right: 0,
+              bottom: 4
             }}
           >
             <CartesianGrid
@@ -224,29 +238,34 @@ export const LiveView = (props: LiveViewProps) => {
               stroke={axisColor}
               horizontal={false}
             />
-            <Area
-              dataKey={(x: LiveDataEntry) => [
-                x.percentiles[0].value,
-                x.percentiles[1].value
-              ]}
-              stroke={areaColor}
-              fill={areaColor}
-              fillOpacity={0.2}
-            />
+            {data.length > 1 && (
+              <Area
+                dataKey={(x: ExtendedLiveDataRecord) => {
+                  const p50 = x.percentiles.find((p) => p.percentile === 0.5);
+                  const p95 = x.percentiles.find((p) => p.percentile === 0.95);
+
+                  return p50 && p95 ? [p50.value, p95.value] : [];
+                }}
+                stroke={areaColor}
+                fill={areaColor}
+                fillOpacity={0.2}
+              />
+            )}
             <XAxis
               dataKey={"dateTime"}
               tickLine={false}
               tick={{
                 fill: tickLabelColor,
-                fontSize: 10
+                fontSize: 10,
+                width: 60
               }}
               stroke={axisColor}
               tickFormatter={formatDate}
             />
             <YAxis
               tickLine={false}
-              ticks={percentiles.map((x) => x.value)}
-              tickFormatter={(x, i) => percentiles[i].label}
+              ticks={YAxisTicks}
+              tickFormatter={getYAxisTickLabel}
               tick={{
                 fill: tickLabelColor,
                 fontSize: 10,
@@ -256,7 +275,7 @@ export const LiveView = (props: LiveViewProps) => {
               tickMargin={7}
             />
             <Line
-              dataKey={(x: LiveDataEntry): number => x.duration.raw}
+              dataKey={(x: ExtendedLiveDataRecord): number => x.duration.raw}
               stroke={lineColor}
               dot={{ stroke: lineColor, fill: lineColor, r: 2 }}
             />
