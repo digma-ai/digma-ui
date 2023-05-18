@@ -1,5 +1,6 @@
 import { format } from "date-fns";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import useDimensions from "react-cool-dimensions";
 import {
   Area,
   CartesianGrid,
@@ -10,6 +11,7 @@ import {
   YAxis
 } from "recharts";
 import { DefaultTheme, useTheme } from "styled-components";
+import { usePrevious } from "../../../hooks/usePrevious";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { CrossIcon } from "../../common/icons/CrossIcon";
 import { DoubleCircleIcon } from "../../common/icons/DoubleCircleIcon";
@@ -20,7 +22,6 @@ import * as s from "./styles";
 import { LiveDataEntry, LiveViewProps, PercentileInfo } from "./types";
 
 const ZOOM_FACTOR = 1.2;
-const DEFAULT_CHART_WIDTH = 388;
 
 const PERCENTILES = [
   { label: "Median", percentile: 0.5 },
@@ -117,7 +118,21 @@ export const LiveView = (props: LiveViewProps) => {
   const areaColor = getAreaColor(theme);
   const tickLabelColor = getTickLabelColor(theme);
   const zoomButtonIconColor = getZoomButtonIconColor(theme);
-  const [chartWidth, setChartWidth] = useState(DEFAULT_CHART_WIDTH);
+  const { observe, width } = useDimensions();
+  const previousWidth = usePrevious(width);
+  const [containerInitialWidth, setContainerInitialWidth] =
+    useState<number>(width);
+  const [chartWidth, setChartWidth] = useState<number>(containerInitialWidth);
+  const [isZoomed, setIsZoomed] = useState(false);
+
+  useEffect(() => {
+    if (previousWidth !== width) {
+      setContainerInitialWidth(width);
+      if (width > chartWidth) {
+        setChartWidth(width);
+      }
+    }
+  }, [width, previousWidth, chartWidth]);
 
   const percentiles = PERCENTILES.map((percentile) => ({
     ...percentile,
@@ -140,15 +155,29 @@ export const LiveView = (props: LiveViewProps) => {
   const spanName = props.data.durationInsight.spanInfo?.displayName;
 
   const handleZoomOutButtonClick = () => {
-    const newWidth = Math.round(chartWidth / ZOOM_FACTOR);
-    if (newWidth >= DEFAULT_CHART_WIDTH) {
-      setChartWidth(newWidth);
+    if (chartWidth > containerInitialWidth) {
+      const newWidth = Math.round(chartWidth / ZOOM_FACTOR);
+
+      if (newWidth > containerInitialWidth) {
+        setChartWidth(newWidth);
+        setIsZoomed(true);
+      } else {
+        setChartWidth(containerInitialWidth);
+        setIsZoomed(false);
+      }
     }
   };
 
   const handleZoomInButtonClick = () => {
     const newWidth = Math.round(chartWidth * ZOOM_FACTOR);
-    setChartWidth(newWidth);
+
+    if (newWidth <= containerInitialWidth) {
+      setChartWidth(containerInitialWidth);
+      setIsZoomed(false);
+    } else {
+      setChartWidth(newWidth);
+      setIsZoomed(true);
+    }
   };
 
   return (
@@ -178,13 +207,16 @@ export const LiveView = (props: LiveViewProps) => {
           <PlusIcon size={16} color={zoomButtonIconColor} />
         </s.ZoomButton>
       </s.ZoomButtonsContainer>
-      <s.ChartContainer>
-        <ResponsiveContainer width={chartWidth} height={"100%"}>
+      <s.ChartContainer ref={observe}>
+        <ResponsiveContainer
+          width={isZoomed ? chartWidth : "100%"}
+          height={"100%"}
+        >
           <ComposedChart
             data={data}
             margin={{
-              left: 12,
-              right: 12
+              left: 8,
+              right: 0
             }}
           >
             <CartesianGrid

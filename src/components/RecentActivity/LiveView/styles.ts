@@ -114,7 +114,7 @@ export const CloseButton = styled.button`
 `;
 
 export const ChartContainer = styled.div`
-  padding: 0 12px 12px;
+  padding: 0 12px 4px;
   height: 100%;
   overflow: auto;
 `;
