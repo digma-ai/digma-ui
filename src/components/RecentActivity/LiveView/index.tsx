@@ -1,6 +1,8 @@
 import { format } from "date-fns";
 import { useEffect, useRef, useState } from "react";
 import useDimensions from "react-cool-dimensions";
+import useScrollbarSize from "react-scrollbar-size";
+
 import {
   Area,
   CartesianGrid,
@@ -161,6 +163,7 @@ export const LiveView = (props: LiveViewProps) => {
   const [areaTooltip, setAreaTooltip] = useState<Coordinates>();
   const [dotToolTip, setDotTooltip] = useState<DotTooltipProps>();
   const [scrollPercentagePosition, setScrollPercentagePosition] = useState(1);
+  const scrollbar = useScrollbarSize();
 
   useEffect(() => {
     observe(containerRef.current);
@@ -278,6 +281,12 @@ export const LiveView = (props: LiveViewProps) => {
   const maxDuration = getMaxDuration(data)?.duration;
 
   const maxDurationUnit = maxDuration?.unit || "ms";
+
+  const scrollbarOffset =
+    containerRef.current &&
+    containerRef.current.scrollWidth > containerRef.current.clientWidth
+      ? scrollbar.width
+      : 0;
 
   return (
     <s.Container>
@@ -440,7 +449,7 @@ export const LiveView = (props: LiveViewProps) => {
             </ComposedChart>
           </ResponsiveContainer>
         </s.ChartContainer>
-        <s.AxisChartContainer>
+        <s.AxisChartContainer scrollbarOffset={scrollbarOffset}>
           <ResponsiveContainer width={"100%"} height={"100%"}>
             <ComposedChart
               data={data}

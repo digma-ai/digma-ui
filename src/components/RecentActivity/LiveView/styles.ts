@@ -115,12 +115,16 @@ export const CloseButton = styled.button`
 
 export const ChartsContainer = styled.div`
   display: flex;
-  height: 100%;
+  height: calc(100% - 80px);
   padding: 0 12px 4px;
 `;
 
-export const AxisChartContainer = styled.div`
+export const AxisChartContainer = styled.div<{
+  scrollbarOffset: number;
+}>`
   width: 64px;
+  height: ${({ scrollbarOffset }) =>
+    scrollbarOffset ? `calc(100% - ${scrollbarOffset}px)` : "100%"};
 `;
 
 export const ChartContainer = styled.div`
