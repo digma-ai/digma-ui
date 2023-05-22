@@ -113,17 +113,43 @@ export const CloseButton = styled.button`
   cursor: pointer;
 `;
 
-export const ChartContainer = styled.div`
-  padding: 0 12px 4px;
+export const ChartsContainer = styled.div`
+  display: flex;
   height: 100%;
-  overflow: auto;
+  padding: 0 12px 4px;
+`;
+
+export const AxisChartContainer = styled.div`
+  width: 64px;
+`;
+
+export const ChartContainer = styled.div`
+  flex-grow: 1;
+  overflow-x: auto;
+  overflow-y: hidden;
+`;
+
+export const Subheader = styled.div`
+  display: flex;
+  padding: 0 12px;
+  justify-content: space-between;
+`;
+
+export const LegendContainer = styled.div`
+  display: flex;
+  gap: 4px;
+  padding-left: 12px;
+`;
+
+export const LegendRecord = styled.div<{ color: string }>`
+  display: flex;
+  gap: 4px;
+  color: ${({ color }) => color};
 `;
 
 export const ZoomButtonsContainer = styled.div`
   display: flex;
-  justify-content: flex-end;
   gap: 4px;
-  padding: 0 12px;
 `;
 
 export const ZoomButton = styled.button`

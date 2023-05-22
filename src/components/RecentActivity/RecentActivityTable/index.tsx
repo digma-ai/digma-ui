@@ -7,6 +7,7 @@ import {
 import { useMemo } from "react";
 import { useTheme } from "styled-components";
 import { Duration } from "../../../globals";
+import { isNumber } from "../../../typeGuards/isNumber";
 import { getInsightImportanceColor } from "../../../utils/getInsightImportanceColor";
 import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
 import { timeAgo } from "../../../utils/timeAgo";
@@ -21,10 +22,9 @@ import { RecentActivityTableProps } from "./types";
 const columnHelper = createColumnHelper<ActivityEntry>();
 
 export const isRecent = (entry: ActivityEntry): boolean => {
-  const MAX_DISTANCE =
-    typeof window.recentActivityExpirationLimit === "number"
-      ? window.recentActivityExpirationLimit
-      : 10 * 60 * 1000; // in milliseconds
+  const MAX_DISTANCE = isNumber(window.recentActivityExpirationLimit)
+    ? window.recentActivityExpirationLimit
+    : 10 * 60 * 1000; // in milliseconds
   const now = new Date();
   return (
     now.valueOf() - new Date(entry.latestTraceTimestamp).valueOf() <=

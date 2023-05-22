@@ -1,5 +1,4 @@
 import { Duration } from "../../../globals";
-import { SpanDurationsInsight } from "../../../types";
 
 export interface LiveViewProps {
   data: LiveData;
@@ -11,17 +10,40 @@ interface LiveDataRecord {
   duration: Duration;
 }
 
+interface LiveDataDurationPercentile {
+  percentile: number;
+  currentDuration: Duration;
+  previousDuration: Duration | null;
+  changeVerified: boolean | null;
+}
+
+interface LiveDataDuration {
+  percentiles: LiveDataDurationPercentile[];
+  codeObjectId: string;
+  displayName: string;
+}
+
 export interface LiveData {
   liveDataRecords: LiveDataRecord[];
-  durationInsight: SpanDurationsInsight;
+  durationData: LiveDataDuration;
 }
 
 export interface PercentileInfo {
-  value: number;
+  duration: Duration;
   label: string;
   percentile: number;
 }
 
 export interface ExtendedLiveDataRecord extends LiveDataRecord {
-  percentiles: PercentileInfo[];
+  dateTimeValue: number;
+}
+
+export interface Coordinates {
+  x: number;
+  y: number;
+}
+
+export interface DotTooltipProps {
+  coordinates: Coordinates;
+  data: ExtendedLiveDataRecord;
 }

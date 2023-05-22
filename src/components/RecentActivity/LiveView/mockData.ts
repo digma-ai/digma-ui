@@ -1,4 +1,3 @@
-import { InsightCategory, InsightScope, InsightType } from "../../../types";
 import { LiveData } from "./types";
 
 export const mockData: LiveData = {
@@ -804,27 +803,7 @@ export const mockData: LiveData = {
       dateTime: "2023-05-15T20:32:22.556144Z"
     }
   ],
-  durationInsight: {
-    name: "Performance Stats",
-    type: InsightType.SpanDurations,
-    category: InsightCategory.Performance,
-    specifity: 4,
-    isRecalculateEnabled: true,
-    spanCodeObjectId:
-      "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP GET SampleInsights/NormalUsage",
-    span: {
-      name: "HTTP GET SampleInsights/NormalUsage",
-      displayName: "HTTP GET SampleInsights/NormalUsage",
-      instrumentationLibrary: "OpenTelemetry.Instrumentation.AspNetCore",
-      spanCodeObjectId:
-        "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP GET SampleInsights/NormalUsage",
-      methodCodeObjectId:
-        "method:Sample.MoneyTransfer.API.Controllers.SampleInsightsController$_$NormalUsage",
-      kind: "Server",
-      codeObjectId:
-        "Sample.MoneyTransfer.API.Controllers.SampleInsightsController$_$NormalUsage"
-    },
-    periodicPercentiles: [],
+  durationData: {
     percentiles: [
       {
         percentile: 0.5,
@@ -834,9 +813,7 @@ export const mockData: LiveData = {
           raw: 5704000.0
         },
         previousDuration: null,
-        changeTime: null,
-        changeVerified: null,
-        traceIds: ["FF6A6EDDD99D70B50BD9DDA14447BDDB"]
+        changeVerified: null
       },
       {
         percentile: 0.95,
@@ -846,39 +823,11 @@ export const mockData: LiveData = {
           raw: 7488500.0
         },
         previousDuration: null,
-        changeTime: null,
-        changeVerified: null,
-        traceIds: ["54AEA66680710C8AEFD496DF65E291E3"]
+        changeVerified: null
       }
     ],
-    lastSpanInstanceInfo: null,
-    scope: InsightScope.Span,
-    spanInfo: {
-      name: "HTTP GET SampleInsights/NormalUsage",
-      displayName: "HTTP GET SampleInsights/NormalUsage",
-      instrumentationLibrary: "OpenTelemetry.Instrumentation.AspNetCore",
-      spanCodeObjectId:
-        "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP GET SampleInsights/NormalUsage",
-      methodCodeObjectId:
-        "method:Sample.MoneyTransfer.API.Controllers.SampleInsightsController$_$NormalUsage",
-      kind: "Server",
-      codeObjectId:
-        "Sample.MoneyTransfer.API.Controllers.SampleInsightsController$_$NormalUsage"
-    },
-    shortDisplayInfo: {
-      title: "",
-      targetDisplayName: "",
-      subtitle: "",
-      description: ""
-    },
+    displayName: "HTTP GET SampleInsights/NormalUsage",
     codeObjectId:
-      "method:Sample.MoneyTransfer.API.Controllers.SampleInsightsController$_$NormalUsage",
-    decorators: [],
-    environment: "KYRYLOS-MACBOOK-PRO.LOCAL[LOCAL]",
-    importance: 5,
-    severity: 0.0,
-    prefixedCodeObjectId: null,
-    customStartTime: null,
-    actualStartTime: null
+      "method:Sample.MoneyTransfer.API.Controllers.SampleInsightsController$_$NormalUsage"
   }
 };

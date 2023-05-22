@@ -1,3 +1,5 @@
+import { isString } from "../typeGuards/isString";
+
 type PrefixedMap<T> = Record<keyof T, string>;
 
 export const addPrefix = <T extends Record<string, string>>(
@@ -10,9 +12,7 @@ export const addPrefix = <T extends Record<string, string>>(
   for (const [key, value] of Object.entries(actions)) {
     const prop = key as keyof T;
 
-    res[prop] = `${prefix}${
-      typeof separator === "string" ? separator : "/"
-    }${value}`;
+    res[prop] = `${prefix}${isString(separator) ? separator : "/"}${value}`;
   }
 
   return res;

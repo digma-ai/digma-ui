@@ -11,7 +11,7 @@ import { AppProps } from "./types";
 export const THEMES = ["light", "dark", "dark-jetbrains"];
 
 const isMode = (mode: unknown): mode is Mode => {
-  return typeof mode === "string" && THEMES.includes(mode);
+  return isString(mode) && THEMES.includes(mode);
 };
 
 const getMode = (): Mode => {

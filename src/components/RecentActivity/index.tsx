@@ -15,6 +15,7 @@ import { LiveData } from "./LiveView/types";
 import { RecentActivityTable, isRecent } from "./RecentActivityTable";
 import * as s from "./styles";
 
+import { isString } from "../../typeGuards/isString";
 import {
   EntrySpan,
   RecentActivityData,
@@ -22,10 +23,9 @@ import {
   SetIsJaegerData
 } from "./types";
 
-const documentationURL =
-  typeof window.recentActivityDocumentationURL === "string"
-    ? window.recentActivityDocumentationURL
-    : null;
+const documentationURL = isString(window.recentActivityDocumentationURL)
+  ? window.recentActivityDocumentationURL
+  : null;
 
 const ACTION_PREFIX = "RECENT_ACTIVITY";
 

@@ -6,6 +6,7 @@ import { IDE } from "../../globals";
 import { useDebounce } from "../../hooks/useDebounce";
 import { usePrevious } from "../../hooks/usePrevious";
 import { ide } from "../../platform";
+import { isString } from "../../typeGuards/isString";
 import { addPrefix } from "../../utils/addPrefix";
 import { actions as globalActions } from "../common/App";
 import { getThemeKind } from "../common/App/styles";
@@ -77,8 +78,7 @@ const firstStep = window.wizardSkipInstallationStep === true ? 1 : 0;
 const preselectedIsObservabilityEnabled =
   window.isObservabilityEnabled === true;
 
-const preselectedEmail =
-  typeof window.userEmail === "string" ? window.userEmail : "";
+const preselectedEmail = isString(window.userEmail) ? window.userEmail : "";
 
 // TO DO:
 // add environment variable for presetting the correct installation type

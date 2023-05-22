@@ -1,6 +1,7 @@
 import { MemoExoticComponent } from "react";
 import { AlarmClockIcon } from "../components/common/icons/AlarmClockIcon";
 import { BottleneckIcon } from "../components/common/icons/BottleneckIcon";
+import { ClockWithTicksIcon } from "../components/common/icons/ClockWithTicksIcon";
 import { MeterHighIcon } from "../components/common/icons/MeterHighIcon";
 import { MeterLowIcon } from "../components/common/icons/MeterLowIcon";
 import { SQLDatabaseIcon } from "../components/common/icons/SQLDatabaseIcon";
@@ -80,7 +81,7 @@ export const getInsightTypeInfo = (
       label: "Duration"
     },
     [InsightType.SpanDurationBreakdown]: {
-      icon: AlarmClockIcon,
+      icon: ClockWithTicksIcon,
       label: "Duration Breakdown"
     }
   };
