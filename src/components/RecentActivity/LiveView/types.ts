@@ -47,3 +47,7 @@ export interface DotTooltipProps {
   coordinates: Coordinates;
   data: ExtendedLiveDataRecord;
 }
+
+export interface AxisChartContainerProps {
+  scrollbarOffset: number;
+}

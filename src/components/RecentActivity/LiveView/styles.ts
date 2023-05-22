@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { AxisChartContainerProps } from "./types";
 
 export const Container = styled.div`
   display: flex;
@@ -119,9 +120,7 @@ export const ChartsContainer = styled.div`
   padding: 0 12px 4px;
 `;
 
-export const AxisChartContainer = styled.div<{
-  scrollbarOffset: number;
-}>`
+export const AxisChartContainer = styled.div<AxisChartContainerProps>`
   width: 64px;
   height: ${({ scrollbarOffset }) =>
     scrollbarOffset ? `calc(100% - ${scrollbarOffset}px)` : "100%"};
