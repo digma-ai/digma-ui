@@ -305,27 +305,42 @@ export const LiveView = (props: LiveViewProps) => {
           <CrossIcon color={getCloseIconColor(theme)} size={16} />
         </s.CloseButton>
       </s.Header>
-      <s.Subheader>
-        <s.LegendContainer>
-          <s.LegendRecord color={lineColor}>
-            <MinusIcon size={16} color={lineColor} />
-            Duration
-          </s.LegendRecord>
-          <s.LegendRecord color={areaColor}>
-            <MinusIcon size={16} color={areaColor} />
-            P50 ~ P95
-          </s.LegendRecord>
-        </s.LegendContainer>
-        <s.ZoomButtonsContainer>
-          <s.ZoomButton onClick={handleZoomOutButtonClick}>
-            <MinusIcon size={16} color={zoomButtonIconColor} />
-          </s.ZoomButton>
-          <s.ZoomButton onClick={handleZoomInButtonClick}>
-            <PlusIcon size={16} color={zoomButtonIconColor} />
-          </s.ZoomButton>
-        </s.ZoomButtonsContainer>
-      </s.Subheader>
+      <s.ZoomButtonsContainer>
+        <s.ZoomButton onClick={handleZoomOutButtonClick}>
+          <MinusIcon size={16} color={zoomButtonIconColor} />
+        </s.ZoomButton>
+        <s.ZoomButton onClick={handleZoomInButtonClick}>
+          <PlusIcon size={16} color={zoomButtonIconColor} />
+        </s.ZoomButton>
+      </s.ZoomButtonsContainer>
       <s.ChartsContainer>
+        <s.AxisChartContainer scrollbarOffset={scrollbarOffset}>
+          <ResponsiveContainer width={"100%"} height={"100%"}>
+            <ComposedChart
+              data={data}
+              margin={{
+                bottom: 34
+              }}
+            >
+              <YAxis
+                dataKey={(x: ExtendedLiveDataRecord) => x.duration.raw}
+                tickLine={false}
+                tickFormatter={(x: number) =>
+                  String(roundTo(convertTo(x, maxDurationUnit), 0))
+                }
+                tick={{
+                  fill: tickLabelColor,
+                  fontSize: 10,
+                  textAnchor: "start"
+                  // width: 85
+                }}
+                stroke={axisColor}
+                tickMargin={11}
+                width={28}
+              />
+            </ComposedChart>
+          </ResponsiveContainer>
+        </s.AxisChartContainer>
         <s.ChartContainer ref={containerRef}>
           <ResponsiveContainer
             width={isZoomed ? chartWidth : "100%"}
@@ -334,7 +349,6 @@ export const LiveView = (props: LiveViewProps) => {
             <ComposedChart
               data={data}
               margin={{
-                left: 8,
                 bottom: 4
               }}
             >
@@ -354,7 +368,7 @@ export const LiveView = (props: LiveViewProps) => {
 
                   const lines = [];
                   const interval = Math.floor(props.width / linesCount);
-                  let left = props.offset.left;
+                  let left = props.offset.left + interval;
 
                   while (linesCount) {
                     lines.push(left);
@@ -367,7 +381,6 @@ export const LiveView = (props: LiveViewProps) => {
               />
               {data.length > 1 && (
                 <Area
-                  name={"P50 ~ P95"}
                   dataKey={() =>
                     p50 && p95 ? [p50.duration.raw, p95.duration.raw] : []
                   }
@@ -394,7 +407,6 @@ export const LiveView = (props: LiveViewProps) => {
                 tickFormatter={formatDate}
               />
               <Line
-                name={"Duration"}
                 dataKey={(x: ExtendedLiveDataRecord): number => x.duration.raw}
                 stroke={lineColor}
                 dot={{
@@ -449,39 +461,17 @@ export const LiveView = (props: LiveViewProps) => {
             </ComposedChart>
           </ResponsiveContainer>
         </s.ChartContainer>
-        <s.AxisChartContainer scrollbarOffset={scrollbarOffset}>
-          <ResponsiveContainer width={"100%"} height={"100%"}>
-            <ComposedChart
-              data={data}
-              margin={{
-                right: 3,
-                bottom: 34
-              }}
-            >
-              <YAxis
-                dataKey={(x: ExtendedLiveDataRecord) => x.duration.raw}
-                tickLine={false}
-                tickFormatter={(x: number) =>
-                  String(roundTo(convertTo(x, maxDurationUnit), 0))
-                }
-                tick={{
-                  fill: tickLabelColor,
-                  fontSize: 10,
-                  width: 85
-                }}
-                stroke={axisColor}
-                tickMargin={7}
-                orientation={"right"}
-                label={{
-                  value: `Duration, ${maxDurationUnit}`,
-                  angle: 90,
-                  position: "insideRight"
-                }}
-              />
-            </ComposedChart>
-          </ResponsiveContainer>
-        </s.AxisChartContainer>
       </s.ChartsContainer>
+      <s.LegendContainer>
+        <s.LegendRecord color={lineColor}>
+          <MinusIcon size={16} color={lineColor} />
+          Duration, {maxDurationUnit}
+        </s.LegendRecord>
+        <s.LegendRecord color={areaColor}>
+          <MinusIcon size={16} color={areaColor} />
+          Slowest 5% - Median
+        </s.LegendRecord>
+      </s.LegendContainer>
     </s.Container>
   );
 };

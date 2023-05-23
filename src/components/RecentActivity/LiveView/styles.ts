@@ -116,43 +116,43 @@ export const CloseButton = styled.button`
 
 export const ChartsContainer = styled.div`
   display: flex;
-  height: calc(100% - 80px);
-  padding: 0 12px 4px;
+  height: calc(100% - 124px);
+  padding-right: 12px;
 `;
 
 export const AxisChartContainer = styled.div<AxisChartContainerProps>`
-  width: 64px;
+  width: 29px;
   height: ${({ scrollbarOffset }) =>
     scrollbarOffset ? `calc(100% - ${scrollbarOffset}px)` : "100%"};
+  flex-shrink: 0;
 `;
 
 export const ChartContainer = styled.div`
-  flex-grow: 1;
+  width: 100%;
   overflow-x: auto;
   overflow-y: hidden;
-`;
-
-export const Subheader = styled.div`
-  display: flex;
-  padding: 0 12px;
-  justify-content: space-between;
 `;
 
 export const LegendContainer = styled.div`
   display: flex;
   gap: 4px;
-  padding-left: 12px;
+  padding: 4px 0 16px 12px;
+  font-size: 10px;
+  line-height: 12px;
 `;
 
 export const LegendRecord = styled.div<{ color: string }>`
   display: flex;
+  align-items: center;
   gap: 4px;
   color: ${({ color }) => color};
 `;
 
 export const ZoomButtonsContainer = styled.div`
   display: flex;
+  justify-content: flex-end;
   gap: 4px;
+  padding: 0 12px;
 `;
 
 export const ZoomButton = styled.button`
