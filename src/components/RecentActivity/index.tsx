@@ -1,3 +1,5 @@
+import { Allotment } from "allotment";
+import "allotment/dist/style.css";
 import { useEffect, useMemo, useState } from "react";
 import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
@@ -8,8 +10,12 @@ import { CursorFollower } from "../common/CursorFollower";
 import { DigmaLogoFlatIcon } from "../common/icons/DigmaLogoFlatIcon";
 import { EnvironmentPanel } from "./EnvironmentPanel";
 import { ViewMode } from "./EnvironmentPanel/types";
+import { LiveView } from "./LiveView";
+import { LiveData } from "./LiveView/types";
 import { RecentActivityTable, isRecent } from "./RecentActivityTable";
 import * as s from "./styles";
+
+import { isString } from "../../typeGuards/isString";
 import {
   EntrySpan,
   RecentActivityData,
@@ -17,18 +23,19 @@ import {
   SetIsJaegerData
 } from "./types";
 
-const documentationURL =
-  typeof window.recentActivityDocumentationURL === "string"
-    ? window.recentActivityDocumentationURL
-    : null;
+const documentationURL = isString(window.recentActivityDocumentationURL)
+  ? window.recentActivityDocumentationURL
+  : null;
 
 const ACTION_PREFIX = "RECENT_ACTIVITY";
 
 const actions = addPrefix(ACTION_PREFIX, {
   INITIALIZE: "INITIALIZE",
   SET_DATA: "SET_DATA",
+  SET_LIVE_DATA: "SET_LIVE_DATA",
   GO_TO_SPAN: "GO_TO_SPAN",
-  GO_TO_TRACE: "GO_TO_TRACE"
+  GO_TO_TRACE: "GO_TO_TRACE",
+  CLOSE_LIVE_VIEW: "CLOSE_LIVE_VIEW"
 });
 
 const renderNoData = () => {
@@ -65,6 +72,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
   const [isJaegerEnabled, setIsJaegerEnabled] = useState(
     window.isJaegerEnabled === true
   );
+  const [liveData, setLiveData] = useState<LiveData>();
 
   useEffect(() => {
     window.sendMessageToDigma({
@@ -79,11 +87,16 @@ export const RecentActivity = (props: RecentActivityProps) => {
       setIsJaegerEnabled((data as SetIsJaegerData).isJaegerEnabled);
     };
 
+    const handleLiveData = (data: unknown) => {
+      setLiveData(data as LiveData);
+    };
+
     dispatcher.addActionListener(actions.SET_DATA, handleRecentActivityData);
     dispatcher.addActionListener(
       globalActions.SET_IS_JAEGER_ENABLED,
       handleSetIsJaegerEnabledData
     );
+    dispatcher.addActionListener(actions.SET_LIVE_DATA, handleLiveData);
 
     return () => {
       dispatcher.removeActionListener(
@@ -104,6 +117,14 @@ export const RecentActivity = (props: RecentActivityProps) => {
 
     setData(props.data);
   }, [props.data]);
+
+  useEffect(() => {
+    if (!props.liveData) {
+      return;
+    }
+
+    setLiveData(props.liveData);
+  }, [props.liveData]);
 
   useEffect(() => {
     if (!previousSelectedEnvironment && data && data.environments.length) {
@@ -139,6 +160,16 @@ export const RecentActivity = (props: RecentActivityProps) => {
     setViewMode(mode);
   };
 
+  const handleCloseLiveView = (codeObjectId: string) => {
+    setLiveData(undefined);
+    window.sendMessageToDigma({
+      action: actions.CLOSE_LIVE_VIEW,
+      payload: {
+        codeObjectId
+      }
+    });
+  };
+
   const environmentActivities = useMemo(
     () => (data ? groupBy(data.entries, "environment") : {}),
     [data]
@@ -159,29 +190,40 @@ export const RecentActivity = (props: RecentActivityProps) => {
 
   return (
     <s.Container>
-      <EnvironmentPanel
-        environments={environments}
-        viewMode={viewMode}
-        selectedEnvironment={selectedEnvironment}
-        onEnvironmentSelect={handleEnvironmentSelect}
-        onViewModeChange={handleViewModeChange}
-      />
-      {!selectedEnvironment ||
-      !environmentActivities[selectedEnvironment] ||
-      !environmentActivities[selectedEnvironment].length ? (
-        <>
-          <s.Header>Recent Activity</s.Header>
-          {renderNoData()}
-        </>
-      ) : (
-        <RecentActivityTable
-          viewMode={viewMode}
-          data={environmentActivities[selectedEnvironment]}
-          onSpanLinkClick={handleSpanLinkClick}
-          onTraceButtonClick={handleTraceButtonClick}
-          isTraceButtonVisible={isJaegerEnabled}
-        />
-      )}
+      <Allotment defaultSizes={[70, 30]}>
+        <s.RecentActivityContainer>
+          <EnvironmentPanel
+            environments={environments}
+            viewMode={viewMode}
+            selectedEnvironment={selectedEnvironment}
+            onEnvironmentSelect={handleEnvironmentSelect}
+            onViewModeChange={handleViewModeChange}
+          />
+          {!selectedEnvironment ||
+          !environmentActivities[selectedEnvironment] ||
+          !environmentActivities[selectedEnvironment].length ? (
+            <>
+              <s.Header>Recent Activity</s.Header>
+              {renderNoData()}
+            </>
+          ) : (
+            <RecentActivityTable
+              viewMode={viewMode}
+              data={environmentActivities[selectedEnvironment]}
+              onSpanLinkClick={handleSpanLinkClick}
+              onTraceButtonClick={handleTraceButtonClick}
+              isTraceButtonVisible={isJaegerEnabled}
+            />
+          )}
+        </s.RecentActivityContainer>
+        <Allotment.Pane visible={Boolean(liveData)} minSize={450}>
+          {liveData && (
+            <s.LiveViewContainer>
+              <LiveView data={liveData} onClose={handleCloseLiveView} />
+            </s.LiveViewContainer>
+          )}
+        </Allotment.Pane>
+      </Allotment>
     </s.Container>
   );
 };

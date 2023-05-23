@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { dispatcher } from "../../dispatcher";
+import { isNumber } from "../../typeGuards/isNumber";
 import { addPrefix } from "../../utils/addPrefix";
 import { groupBy } from "../../utils/groupBy";
 import { AssetList } from "./AssetList";
@@ -13,10 +14,9 @@ import {
   GroupedAssetEntries
 } from "./types";
 
-const REFRESH_INTERVAL =
-  typeof window.assetsRefreshInterval === "number"
-    ? window.assetsRefreshInterval
-    : 10 * 1000; // in milliseconds
+const REFRESH_INTERVAL = isNumber(window.assetsRefreshInterval)
+  ? window.assetsRefreshInterval
+  : 10 * 1000; // in milliseconds
 
 const ACTION_PREFIX = "ASSETS";
 

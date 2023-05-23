@@ -11,10 +11,10 @@ export const getInsightImportanceColor = (
   if (importance < 3) {
     switch (theme.mode) {
       case "light":
-        return "#f93967";
+        return "#e00036";
       case "dark":
       case "dark-jetbrains":
-        return "#e00036";
+        return "#f93967";
     }
   }
   if (importance < 5) {

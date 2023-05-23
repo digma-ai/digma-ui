@@ -2,6 +2,7 @@ import { useRef } from "react";
 import useDimensions from "react-cool-dimensions";
 import { CSSTransition } from "react-transition-group";
 import { useTheme } from "styled-components";
+import { isNumber } from "../../../typeGuards/isNumber";
 import { CheckmarkCircleInvertedIcon } from "../../common/icons/CheckmarkCircleInvertedIcon";
 import * as s from "./styles";
 import { StepProps } from "./types";
@@ -13,10 +14,9 @@ const DEFAULT_TRANSITION_DURATION = 300; // in milliseconds
 export const Step = (props: StepProps) => {
   const theme = useTheme();
 
-  const transitionDuration =
-    typeof props.transitionDuration === "number"
-      ? props.transitionDuration
-      : DEFAULT_TRANSITION_DURATION;
+  const transitionDuration = isNumber(props.transitionDuration)
+    ? props.transitionDuration
+    : DEFAULT_TRANSITION_DURATION;
 
   const containerRef = useRef<HTMLDivElement>(null);
   const numberRef = useRef<HTMLSpanElement>(null);

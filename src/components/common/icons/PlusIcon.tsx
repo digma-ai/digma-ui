@@ -2,7 +2,7 @@ import React from "react";
 import { useIconProps } from "./hooks";
 import { IconProps } from "./types";
 
-const CheckmarkCircleIconComponent = (props: IconProps) => {
+const PlusIconComponent = (props: IconProps) => {
   const { size, color } = useIconProps(props);
 
   return (
@@ -13,15 +13,12 @@ const CheckmarkCircleIconComponent = (props: IconProps) => {
       fill="none"
       viewBox="0 0 12 12"
     >
-      <path fill={color} d="M6 12A6 6 0 1 0 6 0a6 6 0 0 0 0 12Z" />
       <path
-        stroke="#5A5A5A"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M8.75 4.5 5.08 8 3.25 6.25"
+        fill={color}
+        d="M10.5 6a.375.375 0 0 1-.375.375h-3.75v3.75a.375.375 0 0 1-.75 0v-3.75h-3.75a.375.375 0 1 1 0-.75h3.75v-3.75a.375.375 0 1 1 .75 0v3.75h3.75A.375.375 0 0 1 10.5 6Z"
       />
     </svg>
   );
 };
 
-export const CheckmarkCircleIcon = React.memo(CheckmarkCircleIconComponent);
+export const PlusIcon = React.memo(PlusIconComponent);

@@ -1,4 +1,5 @@
 import { Duration } from "../../globals";
+import { LiveData } from "./LiveView/types";
 
 export interface EntrySpan {
   displayText: string;
@@ -32,6 +33,7 @@ export interface RecentActivityData {
 
 export interface RecentActivityProps {
   data?: RecentActivityData;
+  liveData?: LiveData;
 }
 
 export interface SetIsJaegerData {
