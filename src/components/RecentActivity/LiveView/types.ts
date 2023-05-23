@@ -50,6 +50,7 @@ export interface DotTooltipProps {
 
 export interface AxisChartContainerProps {
   scrollbarOffset: number;
+  width: number;
 }
 
 export interface AreaLegendIllustrationProps {

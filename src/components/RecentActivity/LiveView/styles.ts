@@ -121,7 +121,7 @@ export const ChartsContainer = styled.div`
 `;
 
 export const AxisChartContainer = styled.div<AxisChartContainerProps>`
-  width: 29px;
+  width: ${({ width }) => width + 1}px;
   height: ${({ scrollbarOffset }) =>
     scrollbarOffset ? `calc(100% - ${scrollbarOffset}px)` : "100%"};
   flex-shrink: 0;

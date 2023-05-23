@@ -280,8 +280,12 @@ export const LiveView = (props: LiveViewProps) => {
   );
 
   const maxDuration = getMaxDuration(data)?.duration;
-
   const maxDurationUnit = maxDuration?.unit || "ms";
+  const maxDurationDigitCount = maxDuration
+    ? String(Math.ceil(maxDuration.value)).length
+    : 0;
+  const YAxisTickMargin = maxDurationDigitCount * 5.5;
+  const YAxisWidth = 12 + maxDurationDigitCount * 7.5;
 
   const scrollbarOffset =
     containerRef.current &&
@@ -317,7 +321,10 @@ export const LiveView = (props: LiveViewProps) => {
             </s.ZoomButton>
           </s.ZoomButtonsContainer>
           <s.ChartsContainer>
-            <s.AxisChartContainer scrollbarOffset={scrollbarOffset}>
+            <s.AxisChartContainer
+              scrollbarOffset={scrollbarOffset}
+              width={YAxisWidth}
+            >
               <ResponsiveContainer width={"100%"} height={"100%"}>
                 <ComposedChart
                   data={data}
@@ -337,8 +344,8 @@ export const LiveView = (props: LiveViewProps) => {
                       textAnchor: "start"
                     }}
                     stroke={axisColor}
-                    tickMargin={11}
-                    width={28}
+                    tickMargin={YAxisTickMargin}
+                    width={YAxisWidth}
                     label={{
                       value: maxDurationUnit,
                       position: "bottom",
