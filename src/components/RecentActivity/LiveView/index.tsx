@@ -284,8 +284,8 @@ export const LiveView = (props: LiveViewProps) => {
   const maxDurationDigitCount = maxDuration
     ? String(Math.ceil(maxDuration.value)).length
     : 0;
-  const YAxisTickMargin = maxDurationDigitCount * 5.5;
-  const YAxisWidth = 12 + maxDurationDigitCount * 7.5;
+  const YAxisTickMargin = Math.round(maxDurationDigitCount * 5.5);
+  const YAxisWidth = Math.round(12 + maxDurationDigitCount * 7.5);
 
   const scrollbarOffset =
     containerRef.current &&
