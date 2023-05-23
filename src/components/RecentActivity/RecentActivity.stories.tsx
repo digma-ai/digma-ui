@@ -556,3 +556,13 @@ export const WithLiveData: Story = {
     liveData
   }
 };
+
+export const WithEmptyLiveData: Story = {
+  args: {
+    data,
+    liveData: {
+      ...liveData,
+      liveDataRecords: []
+    }
+  }
+};

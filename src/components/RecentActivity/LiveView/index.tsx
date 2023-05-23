@@ -17,6 +17,7 @@ import { ChartOffset } from "recharts/types/util/types";
 import { DefaultTheme, useTheme } from "styled-components";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { roundTo } from "../../../utils/roundTo";
+import { ChartIcon } from "../../common/icons/ChartIcon";
 import { CrossIcon } from "../../common/icons/CrossIcon";
 import { DoubleCircleIcon } from "../../common/icons/DoubleCircleIcon";
 import { EndpointIcon } from "../../common/icons/EndpointIcon";
@@ -305,173 +306,187 @@ export const LiveView = (props: LiveViewProps) => {
           <CrossIcon color={getCloseIconColor(theme)} size={16} />
         </s.CloseButton>
       </s.Header>
-      <s.ZoomButtonsContainer>
-        <s.ZoomButton onClick={handleZoomOutButtonClick}>
-          <MinusIcon size={16} color={zoomButtonIconColor} />
-        </s.ZoomButton>
-        <s.ZoomButton onClick={handleZoomInButtonClick}>
-          <PlusIcon size={16} color={zoomButtonIconColor} />
-        </s.ZoomButton>
-      </s.ZoomButtonsContainer>
-      <s.ChartsContainer>
-        <s.AxisChartContainer scrollbarOffset={scrollbarOffset}>
-          <ResponsiveContainer width={"100%"} height={"100%"}>
-            <ComposedChart
-              data={data}
-              margin={{
-                bottom: 34
-              }}
-            >
-              <YAxis
-                dataKey={(x: ExtendedLiveDataRecord) => x.duration.raw}
-                tickLine={false}
-                tickFormatter={(x: number) =>
-                  String(roundTo(convertTo(x, maxDurationUnit), 0))
-                }
-                tick={{
-                  fill: tickLabelColor,
-                  fontSize: 10,
-                  textAnchor: "start"
-                  // width: 85
-                }}
-                stroke={axisColor}
-                tickMargin={11}
-                width={28}
-              />
-            </ComposedChart>
-          </ResponsiveContainer>
-        </s.AxisChartContainer>
-        <s.ChartContainer ref={containerRef}>
-          <ResponsiveContainer
-            width={isZoomed ? chartWidth : "100%"}
-            height={"100%"}
-          >
-            <ComposedChart
-              data={data}
-              margin={{
-                bottom: 4
-              }}
-            >
-              <CartesianGrid
-                strokeDasharray={"2 2"}
-                stroke={axisColor}
-                horizontal={false}
-                verticalCoordinatesGenerator={(props: {
-                  width: number | undefined;
-                  offset: ChartOffset;
-                }) => {
-                  if (!props.width || !props.offset.left) {
-                    return [];
-                  }
+      {data.length > 0 ? (
+        <>
+          <s.ZoomButtonsContainer>
+            <s.ZoomButton onClick={handleZoomOutButtonClick}>
+              <MinusIcon size={16} color={zoomButtonIconColor} />
+            </s.ZoomButton>
+            <s.ZoomButton onClick={handleZoomInButtonClick}>
+              <PlusIcon size={16} color={zoomButtonIconColor} />
+            </s.ZoomButton>
+          </s.ZoomButtonsContainer>
+          <s.ChartsContainer>
+            <s.AxisChartContainer scrollbarOffset={scrollbarOffset}>
+              <ResponsiveContainer width={"100%"} height={"100%"}>
+                <ComposedChart
+                  data={data}
+                  margin={{
+                    bottom: 34
+                  }}
+                >
+                  <YAxis
+                    dataKey={(x: ExtendedLiveDataRecord) => x.duration.raw}
+                    tickLine={false}
+                    tickFormatter={(x: number) =>
+                      String(roundTo(convertTo(x, maxDurationUnit), 0))
+                    }
+                    tick={{
+                      fill: tickLabelColor,
+                      fontSize: 10,
+                      textAnchor: "start"
+                    }}
+                    stroke={axisColor}
+                    tickMargin={11}
+                    width={28}
+                    label={{
+                      value: maxDurationUnit,
+                      position: "bottom",
+                      fill: tickLabelColor,
+                      fontSize: 10,
+                      offset: 16
+                    }}
+                  />
+                </ComposedChart>
+              </ResponsiveContainer>
+            </s.AxisChartContainer>
+            <s.ChartContainer ref={containerRef}>
+              <ResponsiveContainer
+                width={isZoomed ? chartWidth : "100%"}
+                height={"100%"}
+              >
+                <ComposedChart
+                  data={data}
+                  margin={{
+                    bottom: 4
+                  }}
+                >
+                  <CartesianGrid
+                    strokeDasharray={"2 2"}
+                    stroke={axisColor}
+                    horizontal={false}
+                    verticalCoordinatesGenerator={(props: {
+                      width: number | undefined;
+                      offset: ChartOffset;
+                    }) => {
+                      if (!props.width || !props.offset.left) {
+                        return [];
+                      }
 
-                  let linesCount = 5;
+                      let linesCount = 5;
 
-                  const lines = [];
-                  const interval = Math.floor(props.width / linesCount);
-                  let left = props.offset.left + interval;
+                      const lines = [];
+                      const interval = Math.floor(props.width / linesCount);
+                      let left = props.offset.left + interval;
 
-                  while (linesCount) {
-                    lines.push(left);
-                    linesCount--;
-                    left += interval;
-                  }
+                      while (linesCount) {
+                        lines.push(left);
+                        linesCount--;
+                        left += interval;
+                      }
 
-                  return lines;
-                }}
-              />
-              {data.length > 1 && (
-                <Area
-                  dataKey={() =>
-                    p50 && p95 ? [p50.duration.raw, p95.duration.raw] : []
-                  }
-                  stroke={areaColor}
-                  fill={areaColor}
-                  fillOpacity={0.2}
-                  isAnimationActive={false}
-                  activeDot={false}
-                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                  // @ts-ignore
-                  onMouseMove={handleAreaMouseMove}
-                  onMouseLeave={handleAreaMouseLeave}
-                />
-              )}
-              <XAxis
-                dataKey={"dateTimeValue"}
-                tickLine={false}
-                tick={{
-                  fill: tickLabelColor,
-                  fontSize: 10,
-                  width: 60
-                }}
-                stroke={axisColor}
-                tickFormatter={formatDate}
-              />
-              <Line
-                dataKey={(x: ExtendedLiveDataRecord): number => x.duration.raw}
-                stroke={lineColor}
-                dot={{
-                  stroke: lineColor,
-                  fill: lineColor,
-                  r: 2,
-                  onMouseOver: handleDotMouseOver,
-                  onMouseLeave: handleDotMouseLeave
-                }}
-                isAnimationActive={false}
-                activeDot={false}
-              />
-              {areaTooltip && (
-                <Tooltip
-                  coordinate={areaTooltip}
-                  content={
-                    <TooltipContent>
-                      {([p50, p95].filter(Boolean) as PercentileInfo[]).map(
-                        (x) => (
-                          <span key={x.percentile}>
-                            {x.label}: {x.duration.value} {x.duration.unit}
+                      return lines;
+                    }}
+                  />
+                  {data.length > 1 && (
+                    <Area
+                      dataKey={() =>
+                        p50 && p95 ? [p50.duration.raw, p95.duration.raw] : []
+                      }
+                      stroke={areaColor}
+                      fill={areaColor}
+                      fillOpacity={0.2}
+                      isAnimationActive={false}
+                      activeDot={false}
+                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                      // @ts-ignore
+                      onMouseMove={handleAreaMouseMove}
+                      onMouseLeave={handleAreaMouseLeave}
+                    />
+                  )}
+                  <XAxis
+                    dataKey={"dateTimeValue"}
+                    tickLine={false}
+                    tick={{
+                      fill: tickLabelColor,
+                      fontSize: 10,
+                      width: 60
+                    }}
+                    stroke={axisColor}
+                    tickFormatter={formatDate}
+                  />
+                  <Line
+                    dataKey={(x: ExtendedLiveDataRecord): number =>
+                      x.duration.raw
+                    }
+                    stroke={lineColor}
+                    dot={{
+                      stroke: lineColor,
+                      fill: lineColor,
+                      r: 2,
+                      onMouseOver: handleDotMouseOver,
+                      onMouseLeave: handleDotMouseLeave
+                    }}
+                    isAnimationActive={false}
+                    activeDot={false}
+                  />
+                  {areaTooltip && (
+                    <Tooltip
+                      coordinate={areaTooltip}
+                      content={
+                        <TooltipContent>
+                          {([p50, p95].filter(Boolean) as PercentileInfo[]).map(
+                            (x) => (
+                              <span key={x.percentile}>
+                                {x.label}: {x.duration.value} {x.duration.unit}
+                              </span>
+                            )
+                          )}
+                        </TooltipContent>
+                      }
+                      cursor={false}
+                      isAnimationActive={false}
+                    />
+                  )}
+                  {dotToolTip && (
+                    <Tooltip
+                      coordinate={dotToolTip.coordinates}
+                      content={
+                        <TooltipContent>
+                          <span>
+                            {dotToolTip.data.duration.value}{" "}
+                            {dotToolTip.data.duration.unit}
                           </span>
-                        )
-                      )}
-                    </TooltipContent>
-                  }
-                  cursor={false}
-                  isAnimationActive={false}
-                />
-              )}
-              {dotToolTip && (
-                <Tooltip
-                  coordinate={dotToolTip.coordinates}
-                  content={
-                    <TooltipContent>
-                      <span>
-                        {dotToolTip.data.duration.value}{" "}
-                        {dotToolTip.data.duration.unit}
-                      </span>
-                      <span>
-                        {format(
-                          new Date(dotToolTip.data.dateTime),
-                          "HH:mm:ss.SSS MM/dd/yyyy"
-                        )}
-                      </span>
-                    </TooltipContent>
-                  }
-                  isAnimationActive={false}
-                  cursor={false}
-                />
-              )}
-            </ComposedChart>
-          </ResponsiveContainer>
-        </s.ChartContainer>
-      </s.ChartsContainer>
-      <s.LegendContainer>
-        <s.LegendRecord color={lineColor}>
-          <MinusIcon size={16} color={lineColor} />
-          Duration, {maxDurationUnit}
-        </s.LegendRecord>
-        <s.LegendRecord color={areaColor}>
-          <MinusIcon size={16} color={areaColor} />
-          Slowest 5% - Median
-        </s.LegendRecord>
-      </s.LegendContainer>
+                          <span>
+                            {format(
+                              new Date(dotToolTip.data.dateTime),
+                              "HH:mm:ss.SSS MM/dd/yyyy"
+                            )}
+                          </span>
+                        </TooltipContent>
+                      }
+                      isAnimationActive={false}
+                      cursor={false}
+                    />
+                  )}
+                </ComposedChart>
+              </ResponsiveContainer>
+            </s.ChartContainer>
+          </s.ChartsContainer>
+          <s.LegendContainer>
+            <s.AreaLegendIllustration color={areaColor} />
+            Slowest 5% - Median
+          </s.LegendContainer>
+        </>
+      ) : (
+        <s.NoDataContainer>
+          <ChartIcon size={72} />
+          <s.NoDataTitle>No data yet</s.NoDataTitle>
+          <s.NoDataText>
+            Trigger some actions to follow the performance.
+          </s.NoDataText>
+        </s.NoDataContainer>
+      )}
     </s.Container>
   );
 };

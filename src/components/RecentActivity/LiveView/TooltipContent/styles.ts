@@ -6,6 +6,7 @@ export const Container = styled.div`
   border-radius: 4px;
   padding: 8px;
   gap: 4px;
+  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.15);
 
   color: ${({ theme }) => {
     switch (theme.mode) {
@@ -13,20 +14,9 @@ export const Container = styled.div`
         return "#4d668a";
       case "dark":
       case "dark-jetbrains":
-        return "#7891d0";
+        return "#dadada";
     }
   }};
-
-  border: 1px solid
-    ${({ theme }) => {
-      switch (theme.mode) {
-        case "light":
-          return "#d1d1d1";
-        case "dark":
-        case "dark-jetbrains":
-          return "#323232";
-      }
-    }};
 
   background: ${({ theme }) => {
     switch (theme.mode) {
@@ -34,7 +24,7 @@ export const Container = styled.div`
         return "#fbfdff";
       case "dark":
       case "dark-jetbrains":
-        return "#383838";
+        return "#2e2e2e";
     }
   }};
 `;

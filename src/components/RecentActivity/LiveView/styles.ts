@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { AxisChartContainerProps } from "./types";
+import { AreaLegendIllustrationProps, AxisChartContainerProps } from "./types";
 
 export const Container = styled.div`
   display: flex;
@@ -139,13 +139,26 @@ export const LegendContainer = styled.div`
   padding: 4px 0 16px 12px;
   font-size: 10px;
   line-height: 12px;
+
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#828797";
+      case "dark":
+      case "dark-jetbrains":
+        return "#9b9b9b";
+    }
+  }};
 `;
 
-export const LegendRecord = styled.div<{ color: string }>`
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  color: ${({ color }) => color};
+export const AreaLegendIllustration = styled.div<AreaLegendIllustrationProps>`
+  background: ${({ color }) => color}33; // 20% opacity
+  border-color: ${({ color }) => color};
+  border-style: solid none;
+  border-width: 1px;
+  width: 10px;
+  box-sizing: border-box;
+  height: 100%;
 `;
 
 export const ZoomButtonsContainer = styled.div`
@@ -192,4 +205,30 @@ export const ZoomButton = styled.button`
         return "1px 1px 4px rgba(0, 0, 0, 0.25)";
     }
   }};
+`;
+
+export const NoDataContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 14px;
+  text-align: center;
+  color: #7c7c94;
+`;
+
+export const NoDataTitle = styled.span`
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  text-transform: capitalize;
+  color: #dadada;
+`;
+
+export const NoDataText = styled.span`
+  width: 208px;
 `;
