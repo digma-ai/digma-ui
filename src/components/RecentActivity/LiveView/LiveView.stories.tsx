@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { LiveView } from ".";
 import { mockData } from "./mockData";
+import { LiveDataDurationPercentile } from "./types";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof LiveView> = {
@@ -27,8 +28,94 @@ export const Empty: Story = {
   }
 };
 
+const percentile: LiveDataDurationPercentile = {
+  ...mockData.durationData.percentiles[0]
+};
+
 export const WithData: Story = {
   args: {
-    data: mockData
+    data: {
+      ...mockData,
+      durationData: {
+        ...mockData.durationData,
+        percentiles: [
+          {
+            ...percentile,
+            previousDuration: null,
+            changeVerified: null
+          },
+          ...mockData.durationData.percentiles.slice(1)
+        ]
+      }
+    }
+  }
+};
+
+export const WithSlowdown: Story = {
+  args: {
+    data: {
+      ...mockData,
+      durationData: {
+        ...mockData.durationData,
+        percentiles: [
+          {
+            ...percentile,
+            previousDuration: {
+              ...percentile.currentDuration,
+              raw: percentile.currentDuration.raw - 1000000,
+              value: percentile.currentDuration.value - 1
+            },
+            changeVerified: true
+          },
+          ...mockData.durationData.percentiles.slice(1)
+        ]
+      }
+    }
+  }
+};
+
+export const WithSpeedup: Story = {
+  args: {
+    data: {
+      ...mockData,
+      durationData: {
+        ...mockData.durationData,
+        percentiles: [
+          {
+            ...percentile,
+            previousDuration: {
+              ...percentile.currentDuration,
+              raw: percentile.currentDuration.raw + 1000000,
+              value: percentile.currentDuration.value + 1
+            },
+            changeVerified: true
+          },
+          ...mockData.durationData.percentiles.slice(1)
+        ]
+      }
+    }
+  }
+};
+
+export const WithEvaluating: Story = {
+  args: {
+    data: {
+      ...mockData,
+      durationData: {
+        ...mockData.durationData,
+        percentiles: [
+          {
+            ...percentile,
+            previousDuration: {
+              ...percentile.currentDuration,
+              raw: percentile.currentDuration.raw + 1000000,
+              value: percentile.currentDuration.value + 1
+            },
+            changeVerified: false
+          },
+          ...mockData.durationData.percentiles.slice(1)
+        ]
+      }
+    }
   }
 };

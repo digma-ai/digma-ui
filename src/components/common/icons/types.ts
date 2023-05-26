@@ -15,6 +15,6 @@ export interface RotatableIconProps extends IconProps {
   direction?: Direction;
 }
 
-export interface ThemeableIconProps {
+export interface ThemeableIconProps extends IconProps {
   themeKind?: "light" | "dark";
 }
