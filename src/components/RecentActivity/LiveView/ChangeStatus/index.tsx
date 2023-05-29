@@ -52,8 +52,7 @@ const renderArrowIcon = (
 ): JSX.Element | null => {
   if (
     !percentile.previousDuration ||
-    percentile.currentDuration.raw === percentile.previousDuration.raw ||
-    !percentile.changeVerified
+    percentile.currentDuration.raw === percentile.previousDuration.raw
   ) {
     return null;
   }
@@ -104,14 +103,9 @@ export const ChangeStatus = (props: ChangeStatusProps) => {
 
   return (
     <s.Container>
-      {percentile.changeVerified ? (
-        <>
-          {renderArrowIcon(percentile, theme)}
-          {getStatusString(percentile)}
-        </>
-      ) : (
-        <>Evaluating</>
-      )}
+      {renderArrowIcon(percentile, theme)}
+      {getStatusString(percentile)}
+      {!percentile.changeVerified && <span>Evaluating</span>}
     </s.Container>
   );
 };
