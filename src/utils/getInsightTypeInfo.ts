@@ -83,6 +83,10 @@ export const getInsightTypeInfo = (
     [InsightType.SpanDurationBreakdown]: {
       icon: ClockWithTicksIcon,
       label: "Duration Breakdown"
+    },
+    [InsightType.EndpointDurationSlowdown]: {
+      icon: SnailIcon,
+      label: "Duration Slowdown Source Detected"
     }
   };
 
