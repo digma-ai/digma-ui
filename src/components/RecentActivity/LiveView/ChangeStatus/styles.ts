@@ -2,7 +2,6 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   display: flex;
-  flex-direction: row;
   align-items: center;
   padding: 0 8px;
   height: 100%;
@@ -29,6 +28,20 @@ export const Container = styled.div`
       case "dark":
       case "dark-jetbrains":
         return "#2e2e2e";
+    }
+  }};
+`;
+
+export const EvaluatingBadge = styled.span`
+  margin-left: 8px;
+
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#828797";
+      case "dark":
+      case "dark-jetbrains":
+        return "#9b9b9b";
     }
   }};
 `;

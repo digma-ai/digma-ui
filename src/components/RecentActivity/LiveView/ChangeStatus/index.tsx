@@ -65,6 +65,7 @@ const renderArrowIcon = (
   return (
     <ArrowIcon
       direction={direction}
+      dashed={!percentile.changeVerified}
       color={getArrowIconColor(direction, theme)}
       size={16}
     />
@@ -105,7 +106,9 @@ export const ChangeStatus = (props: ChangeStatusProps) => {
     <s.Container>
       {renderArrowIcon(percentile, theme)}
       {getStatusString(percentile)}
-      {!percentile.changeVerified && <span>Evaluating</span>}
+      {!percentile.changeVerified && (
+        <s.EvaluatingBadge>Evaluating</s.EvaluatingBadge>
+      )}
     </s.Container>
   );
 };

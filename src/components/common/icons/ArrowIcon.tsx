@@ -2,6 +2,10 @@ import React from "react";
 import { useIconProps } from "./hooks";
 import { Direction, RotatableIconProps } from "./types";
 
+interface ArrowIconProps extends RotatableIconProps {
+  dashed?: boolean;
+}
+
 const directionRotateMap: { [key in Direction]: string } = {
   [Direction.UP]: "0",
   [Direction.LEFT]: "0",
@@ -9,7 +13,7 @@ const directionRotateMap: { [key in Direction]: string } = {
   [Direction.DOWN]: "90"
 };
 
-const ArrowIconComponent = (props: RotatableIconProps) => {
+const ArrowIconComponent = (props: ArrowIconProps) => {
   const { size, color } = useIconProps(props);
   const transform = {
     transform: `rotate(${directionRotateMap[props.direction || Direction.UP]})`
@@ -21,15 +25,15 @@ const ArrowIconComponent = (props: RotatableIconProps) => {
       width={size}
       height={size}
       fill="none"
-      viewBox="0 0 32 32"
+      viewBox="0 0 16 16"
       {...transform}
     >
       <path
         stroke={color}
+        strokeDasharray={props.dashed ? "2 2" : "none"}
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth="2"
-        d="M8 24 24 8M11 8h13v13"
+        d="m4 12 8-8M5.5 4H12v6.5"
       />
     </svg>
   );
