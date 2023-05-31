@@ -10,6 +10,7 @@ import { Duration } from "../../../globals";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { getInsightImportanceColor } from "../../../utils/getInsightImportanceColor";
 import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
+import { getInsightTypeOrderPriority } from "../../../utils/getInsightTypeOrderPriority";
 import { timeAgo } from "../../../utils/timeAgo";
 import { Badge } from "../../common/Badge";
 import { Button } from "../../common/Button";
@@ -89,22 +90,34 @@ export const RecentActivityTable = (props: RecentActivityTableProps) => {
       </span>
     );
 
-  const renderInsights = (insights: SlimInsight[]) => (
-    <s.InsightsContainer>
-      {insights
-        .map((x) => {
-          const insightTypeInfo = getInsightTypeInfo(x.type);
-          const iconColor = getInsightImportanceColor(x.importance, theme);
+  const renderInsights = (insights: SlimInsight[]) => {
+    const sortedInsights = [...insights].sort(
+      (a, b) =>
+        a.importance - b.importance ||
+        getInsightTypeOrderPriority(a.type) -
+          getInsightTypeOrderPriority(b.type)
+    );
 
-          return insightTypeInfo ? (
-            <s.InsightIconContainer title={insightTypeInfo.label} key={x.type}>
-              <insightTypeInfo.icon color={iconColor} size={16} />
-            </s.InsightIconContainer>
-          ) : null;
-        })
-        .filter(Boolean)}
-    </s.InsightsContainer>
-  );
+    return (
+      <s.InsightsContainer>
+        {sortedInsights
+          .map((x) => {
+            const insightTypeInfo = getInsightTypeInfo(x.type);
+            const iconColor = getInsightImportanceColor(x.importance, theme);
+
+            return insightTypeInfo ? (
+              <s.InsightIconContainer
+                title={insightTypeInfo.label}
+                key={x.type}
+              >
+                <insightTypeInfo.icon color={iconColor} size={16} />
+              </s.InsightIconContainer>
+            ) : null;
+          })
+          .filter(Boolean)}
+      </s.InsightsContainer>
+    );
+  };
 
   const renderTraceButton = (entry: ActivityEntry) => (
     <s.TraceButtonContainer>
