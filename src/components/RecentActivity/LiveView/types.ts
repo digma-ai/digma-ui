@@ -10,7 +10,7 @@ interface LiveDataRecord {
   duration: Duration;
 }
 
-interface LiveDataDurationPercentile {
+export interface LiveDataDurationPercentile {
   percentile: number;
   currentDuration: Duration;
   previousDuration: Duration | null;

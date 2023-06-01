@@ -2,18 +2,14 @@ import React from "react";
 import { useIconProps } from "./hooks";
 import { Direction, RotatableIconProps } from "./types";
 
-interface ArrowIconProps extends RotatableIconProps {
-  dashed?: boolean;
-}
-
 const directionRotateMap: { [key in Direction]: string } = {
-  [Direction.UP]: "0",
-  [Direction.LEFT]: "0",
+  [Direction.UP]: "-90",
+  [Direction.LEFT]: "180",
   [Direction.RIGHT]: "0",
   [Direction.DOWN]: "90"
 };
 
-const ArrowIconComponent = (props: ArrowIconProps) => {
+const ArrowSmallIconComponent = (props: RotatableIconProps) => {
   const { size, color } = useIconProps(props);
   const transform = {
     transform: `rotate(${directionRotateMap[props.direction || Direction.UP]})`
@@ -25,18 +21,15 @@ const ArrowIconComponent = (props: ArrowIconProps) => {
       width={size}
       height={size}
       fill="none"
-      viewBox="0 0 16 16"
+      viewBox="0 0 12 13"
       {...transform}
     >
       <path
-        stroke={color}
-        strokeDasharray={props.dashed ? "2 2" : "none"}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="m4 12 8-8M5.5 4H12v6.5"
+        fill={color}
+        d="M10.39 6.27 7.015 9.645a.375.375 0 1 1-.53-.53L9.22 6.38H1.875a.375.375 0 1 1 0-.75H9.22L6.485 2.895a.375.375 0 1 1 .53-.53L10.39 5.74a.375.375 0 0 1 0 .53Z"
       />
     </svg>
   );
 };
 
-export const ArrowIcon = React.memo(ArrowIconComponent);
+export const ArrowSmallIcon = React.memo(ArrowSmallIconComponent);

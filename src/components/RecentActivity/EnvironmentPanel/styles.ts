@@ -52,7 +52,7 @@ export const Container = styled.div`
         return "#3d3f41";
     }
   }};
-  padding: 6px 12px;
+  padding: 5px 12px 6px;
   border-radius: 8px;
   position: relative;
   box-sizing: border-box;
@@ -69,7 +69,7 @@ export const EnvironmentList = styled.ul`
   display: flex;
   gap: 12px;
   margin: 0;
-  padding: 0;
+  padding: 1px 0 0 1px;
 `;
 
 export const CarouselButtonContainer = styled.div`

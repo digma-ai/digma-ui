@@ -812,8 +812,12 @@ export const mockData: LiveData = {
           unit: "ms",
           raw: 5704000.0
         },
-        previousDuration: null,
-        changeVerified: null
+        previousDuration: {
+          value: 6.7,
+          unit: "ms",
+          raw: 6704000.0
+        },
+        changeVerified: true
       },
       {
         percentile: 0.95,

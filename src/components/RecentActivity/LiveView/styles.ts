@@ -116,49 +116,8 @@ export const CloseButton = styled.button`
 
 export const ChartsContainer = styled.div`
   display: flex;
-  height: calc(100% - 124px);
+  height: calc(100% - 174px);
   padding-right: 12px;
-`;
-
-export const AxisChartContainer = styled.div<AxisChartContainerProps>`
-  width: ${({ width }) => width + 1}px;
-  height: ${({ scrollbarOffset }) =>
-    scrollbarOffset ? `calc(100% - ${scrollbarOffset}px)` : "100%"};
-  flex-shrink: 0;
-`;
-
-export const ChartContainer = styled.div`
-  width: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
-`;
-
-export const LegendContainer = styled.div`
-  display: flex;
-  gap: 4px;
-  padding: 4px 0 16px 12px;
-  font-size: 10px;
-  line-height: 12px;
-
-  color: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#828797";
-      case "dark":
-      case "dark-jetbrains":
-        return "#9b9b9b";
-    }
-  }};
-`;
-
-export const AreaLegendIllustration = styled.div<AreaLegendIllustrationProps>`
-  background: ${({ color }) => color}33; // 20% opacity
-  border-color: ${({ color }) => color};
-  border-style: solid none;
-  border-width: 1px;
-  width: 10px;
-  box-sizing: border-box;
-  height: 100%;
 `;
 
 export const ZoomButtonsContainer = styled.div`
@@ -207,6 +166,101 @@ export const ZoomButton = styled.button`
   }};
 `;
 
+export const ChangeStatusContainer = styled.div`
+  padding: 0 12px;
+  height: 32px;
+`;
+
+export const AxisChartContainer = styled.div<AxisChartContainerProps>`
+  width: ${({ width }) => width + 1}px;
+  height: ${({ scrollbarOffset }) =>
+    scrollbarOffset ? `calc(100% - ${scrollbarOffset}px)` : "100%"};
+  flex-shrink: 0;
+`;
+
+export const ChartContainer = styled.div`
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+`;
+
+export const Footer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 4px 12px;
+`;
+
+export const LegendContainer = styled.div`
+  display: flex;
+  gap: 4px;
+  font-size: 10px;
+  line-height: 12px;
+
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#828797";
+      case "dark":
+      case "dark-jetbrains":
+        return "#9b9b9b";
+    }
+  }};
+`;
+
+export const AreaLegendIllustration = styled.div<AreaLegendIllustrationProps>`
+  background: ${({ color }) => color}33; // 20% opacity
+  border-color: ${({ color }) => color};
+  border-style: solid none;
+  border-width: 1px;
+  width: 10px;
+  box-sizing: border-box;
+  height: 100%;
+`;
+
+export const LatestDataButton = styled.button`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 2px 4px;
+  gap: 2px;
+  border-radius: 2px;
+  align-self: flex-end;
+  font-size: 10px;
+  line-height: 12px;
+
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#3538cd";
+      case "dark":
+      case "dark-jetbrains":
+        return "#e2e7ff";
+    }
+  }};
+
+  border: 1px solid
+    ${({ theme }) => {
+      switch (theme.mode) {
+        case "light":
+          return "#3538cd";
+        case "dark":
+        case "dark-jetbrains":
+          return "#5154ec";
+      }
+    }};
+
+  background: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "none";
+      case "dark":
+      case "dark-jetbrains":
+        return "#414363";
+    }
+  }};
+`;
+
 export const NoDataContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -218,7 +272,16 @@ export const NoDataContainer = styled.div`
   font-size: 12px;
   line-height: 14px;
   text-align: center;
-  color: #7c7c94;
+
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#788ca9";
+      case "dark":
+      case "dark-jetbrains":
+        return "#7c7c94";
+    }
+  }};
 `;
 
 export const NoDataTitle = styled.span`
@@ -226,7 +289,16 @@ export const NoDataTitle = styled.span`
   font-size: 14px;
   line-height: 17px;
   text-transform: capitalize;
-  color: #dadada;
+
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#4d668a";
+      case "dark":
+      case "dark-jetbrains":
+        return "#dadada";
+    }
+  }};
 `;
 
 export const NoDataText = styled.span`

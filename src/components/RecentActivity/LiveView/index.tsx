@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { useEffect, useRef, useState } from "react";
+import { UIEvent, useEffect, useRef, useState } from "react";
 import useDimensions from "react-cool-dimensions";
 import useScrollbarSize from "react-scrollbar-size";
 
@@ -16,14 +16,20 @@ import {
 import { ChartOffset } from "recharts/types/util/types";
 import { DefaultTheme, useTheme } from "styled-components";
 import { usePrevious } from "../../../hooks/usePrevious";
+import { isNumber } from "../../../typeGuards/isNumber";
 import { roundTo } from "../../../utils/roundTo";
+import { getThemeKind } from "../../common/App/styles";
+import { ArrowSmallIcon } from "../../common/icons/ArrowSmallIcon";
 import { ChartIcon } from "../../common/icons/ChartIcon";
 import { CrossIcon } from "../../common/icons/CrossIcon";
 import { DoubleCircleIcon } from "../../common/icons/DoubleCircleIcon";
 import { EndpointIcon } from "../../common/icons/EndpointIcon";
 import { MinusIcon } from "../../common/icons/MinusIcon";
 import { PlusIcon } from "../../common/icons/PlusIcon";
-import { TooltipContent } from "./TooltipContent";
+import { Direction } from "../../common/icons/types";
+import { AreaTooltipContent } from "./AreaTooltipContent";
+import { ChangeStatus } from "./ChangeStatus";
+import { DotTooltipContent } from "./DotTooltipContent";
 import * as s from "./styles";
 import {
   Coordinates,
@@ -120,6 +126,16 @@ const getZoomButtonIconColor = (theme: DefaultTheme) => {
   }
 };
 
+const getLatestDataButtonIconColor = (theme: DefaultTheme) => {
+  switch (theme.mode) {
+    case "light":
+      return "#3538cd";
+    case "dark":
+    case "dark-jetbrains":
+      return "#b9c2eb";
+  }
+};
+
 const convertTo = (nanoseconds: number, unit: string) => {
   const milliseconds = nanoseconds / 1000 / 1000;
 
@@ -143,21 +159,23 @@ const getMaxDuration = (
     undefined
   );
 
-const formatDate = (dateTime: number): string =>
+const formatXAxisDate = (dateTime: number): string =>
   format(new Date(dateTime), "HH:mm MM/dd/yyyy");
 
 export const LiveView = (props: LiveViewProps) => {
   const theme = useTheme();
+  const themeKind = getThemeKind(theme);
   const lineColor = getLineColor(theme);
   const axisColor = getAxisColor(theme);
   const areaColor = getAreaColor(theme);
   const tickLabelColor = getTickLabelColor(theme);
   const zoomButtonIconColor = getZoomButtonIconColor(theme);
+  const latestDataButtonIconColor = getLatestDataButtonIconColor(theme);
   const { observe, width } = useDimensions();
   const previousWidth = usePrevious(width);
   const [containerInitialWidth, setContainerInitialWidth] =
     useState<number>(width);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const chartContainerRef = useRef<HTMLDivElement>(null);
   const [chartWidth, setChartWidth] = useState<number>(width);
   const previousChartWidth = usePrevious(chartWidth);
   const [isZoomed, setIsZoomed] = useState(false);
@@ -167,8 +185,8 @@ export const LiveView = (props: LiveViewProps) => {
   const scrollbar = useScrollbarSize();
 
   useEffect(() => {
-    observe(containerRef.current);
-  }, [observe, containerRef.current]);
+    observe(chartContainerRef.current);
+  }, [observe, chartContainerRef.current]);
 
   useEffect(() => {
     if (previousWidth !== width) {
@@ -180,18 +198,16 @@ export const LiveView = (props: LiveViewProps) => {
   }, [width, previousWidth, chartWidth]);
 
   useEffect(() => {
-    const containerEl = containerRef.current;
-    if (containerEl && previousChartWidth !== chartWidth) {
-      containerEl.scrollTo({
-        left:
-          scrollPercentagePosition * containerEl.scrollWidth -
-          containerEl.clientWidth
+    const el = chartContainerRef.current;
+    if (el && previousChartWidth !== chartWidth) {
+      el.scrollTo({
+        left: scrollPercentagePosition * el.scrollWidth - el.clientWidth
       });
     }
   }, [previousChartWidth, chartWidth, scrollPercentagePosition]);
 
   const persistScrollPosition = () => {
-    const el = containerRef.current;
+    const el = chartContainerRef.current;
     if (el) {
       if (el.clientWidth === el.scrollWidth) {
         setScrollPercentagePosition(1);
@@ -237,6 +253,13 @@ export const LiveView = (props: LiveViewProps) => {
     }
   };
 
+  const handleScroll = (e: UIEvent<HTMLDivElement>) => {
+    setScrollPercentagePosition(
+      (e.currentTarget.scrollLeft + e.currentTarget.clientWidth) /
+        e.currentTarget.scrollWidth
+    );
+  };
+
   const handleAreaMouseMove = (props: any, e: React.MouseEvent<SVGElement>) => {
     setAreaTooltip({ x: e.clientX, y: e.clientY });
   };
@@ -258,6 +281,17 @@ export const LiveView = (props: LiveViewProps) => {
 
   const handleDotMouseLeave = () => {
     setDotTooltip(undefined);
+  };
+
+  const handleLatestDataButtonClick = () => {
+    setScrollPercentagePosition(1);
+
+    const el = chartContainerRef.current;
+    if (el) {
+      el.scrollTo({
+        left: el.scrollWidth - el.clientWidth
+      });
+    }
   };
 
   const percentiles = PERCENTILES.map((percentile) => ({
@@ -288,8 +322,9 @@ export const LiveView = (props: LiveViewProps) => {
   const YAxisWidth = Math.round(12 + maxDurationDigitCount * 7.5);
 
   const scrollbarOffset =
-    containerRef.current &&
-    containerRef.current.scrollWidth > containerRef.current.clientWidth
+    chartContainerRef.current &&
+    chartContainerRef.current.scrollWidth >
+      chartContainerRef.current.clientWidth
       ? scrollbar.width
       : 0;
 
@@ -320,6 +355,9 @@ export const LiveView = (props: LiveViewProps) => {
               <PlusIcon size={16} color={zoomButtonIconColor} />
             </s.ZoomButton>
           </s.ZoomButtonsContainer>
+          <s.ChangeStatusContainer>
+            <ChangeStatus percentiles={props.data.durationData.percentiles} />
+          </s.ChangeStatusContainer>
           <s.ChartsContainer>
             <s.AxisChartContainer
               scrollbarOffset={scrollbarOffset}
@@ -357,7 +395,7 @@ export const LiveView = (props: LiveViewProps) => {
                 </ComposedChart>
               </ResponsiveContainer>
             </s.AxisChartContainer>
-            <s.ChartContainer ref={containerRef}>
+            <s.ChartContainer ref={chartContainerRef} onScroll={handleScroll}>
               <ResponsiveContainer
                 width={isZoomed ? chartWidth : "100%"}
                 height={"100%"}
@@ -369,14 +407,14 @@ export const LiveView = (props: LiveViewProps) => {
                   }}
                 >
                   <CartesianGrid
-                    strokeDasharray={"2 2"}
+                    strokeDasharray={"2"}
                     stroke={axisColor}
                     horizontal={false}
                     verticalCoordinatesGenerator={(props: {
                       width: number | undefined;
                       offset: ChartOffset;
                     }) => {
-                      if (!props.width || !props.offset.left) {
+                      if (!props.width || !isNumber(props.offset.left)) {
                         return [];
                       }
 
@@ -420,7 +458,7 @@ export const LiveView = (props: LiveViewProps) => {
                       width: 60
                     }}
                     stroke={axisColor}
-                    tickFormatter={formatDate}
+                    tickFormatter={formatXAxisDate}
                   />
                   <Line
                     dataKey={(x: ExtendedLiveDataRecord): number =>
@@ -437,20 +475,10 @@ export const LiveView = (props: LiveViewProps) => {
                     isAnimationActive={false}
                     activeDot={false}
                   />
-                  {areaTooltip && (
+                  {areaTooltip && p50 && p95 && (
                     <Tooltip
                       coordinate={areaTooltip}
-                      content={
-                        <TooltipContent>
-                          {([p50, p95].filter(Boolean) as PercentileInfo[]).map(
-                            (x) => (
-                              <span key={x.percentile}>
-                                {x.label}: {x.duration.value} {x.duration.unit}
-                              </span>
-                            )
-                          )}
-                        </TooltipContent>
-                      }
+                      content={<AreaTooltipContent p50={p50} p95={p95} />}
                       cursor={false}
                       isAnimationActive={false}
                     />
@@ -458,36 +486,37 @@ export const LiveView = (props: LiveViewProps) => {
                   {dotToolTip && (
                     <Tooltip
                       coordinate={dotToolTip.coordinates}
-                      content={
-                        <TooltipContent>
-                          <span>
-                            {dotToolTip.data.duration.value}{" "}
-                            {dotToolTip.data.duration.unit}
-                          </span>
-                          <span>
-                            {format(
-                              new Date(dotToolTip.data.dateTime),
-                              "HH:mm:ss.SSS MM/dd/yyyy"
-                            )}
-                          </span>
-                        </TooltipContent>
-                      }
+                      content={<DotTooltipContent data={dotToolTip.data} />}
                       isAnimationActive={false}
-                      cursor={false}
+                      cursor={{
+                        stroke: "#dadada",
+                        strokeDasharray: "3"
+                      }}
                     />
                   )}
                 </ComposedChart>
               </ResponsiveContainer>
             </s.ChartContainer>
           </s.ChartsContainer>
-          <s.LegendContainer>
-            <s.AreaLegendIllustration color={areaColor} />
-            Slowest 5% - Median
-          </s.LegendContainer>
+          <s.Footer>
+            <s.LegendContainer>
+              <s.AreaLegendIllustration color={areaColor} />
+              Slowest 5% - Median
+            </s.LegendContainer>
+            {scrollPercentagePosition < 1 && (
+              <s.LatestDataButton onClick={handleLatestDataButtonClick}>
+                Latest Data
+                <ArrowSmallIcon
+                  direction={Direction.RIGHT}
+                  color={latestDataButtonIconColor}
+                />
+              </s.LatestDataButton>
+            )}
+          </s.Footer>
         </>
       ) : (
         <s.NoDataContainer>
-          <ChartIcon size={72} />
+          <ChartIcon size={72} themeKind={themeKind} />
           <s.NoDataTitle>No data yet</s.NoDataTitle>
           <s.NoDataText>
             Trigger some actions to follow the performance.
