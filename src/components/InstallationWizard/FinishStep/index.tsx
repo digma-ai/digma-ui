@@ -1,4 +1,5 @@
 import { DefaultTheme, useTheme } from "styled-components";
+import { actions as globalActions } from "../../common/App";
 import { getThemeKind } from "../../common/App/styles";
 import { CircleLoader } from "../../common/CircleLoader";
 import { BellIcon } from "../../common/icons/BellIcon";
@@ -13,6 +14,8 @@ import * as s from "./styles";
 import { FinishStepProps } from "./types";
 
 const EMAIL_ERROR_MESSAGE = "Enter a valid email";
+
+const GETTING_STARTED_VIDEO_URL = "https://www.youtube.com/watch?v=jzBEXfCrnlg";
 
 const getPlayIconColor = (theme: DefaultTheme) => {
   switch (theme.mode) {
@@ -37,6 +40,15 @@ const getErrorIconColor = (theme: DefaultTheme) => {
 export const FinishStep = (props: FinishStepProps) => {
   const theme = useTheme();
   const themeKind = getThemeKind(theme);
+
+  const handleGettingStartedVideoLinkClick = () => {
+    window.sendMessageToDigma({
+      action: globalActions.OPEN_URL_IN_DEFAULT_BROWSER,
+      payload: {
+        url: GETTING_STARTED_VIDEO_URL
+      }
+    });
+  };
 
   return (
     <s.Container>
@@ -108,11 +120,7 @@ export const FinishStep = (props: FinishStepProps) => {
         We&apos;ve prepared a short video to show you the ropes on getting
         started analyzing your code with Digma.
       </s.SectionDescription>
-      <Link
-        href={"https://www.youtube.com/watch?v=jzBEXfCrnlg"}
-        target={"_blank"}
-        rel={"noopener noreferrer"}
-      >
+      <Link onClick={handleGettingStartedVideoLinkClick}>
         <s.IllustrationContainer>
           <s.PlayIconContainer>
             <s.ThumbnailPlayCircleIcon color={getPlayIconColor(theme)} />
