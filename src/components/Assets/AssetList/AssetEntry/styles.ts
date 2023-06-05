@@ -17,7 +17,7 @@ export const Header = styled.div`
   align-items: center;
 `;
 
-export const OpenTelemetryIconContainer = styled.div`
+export const AssetTypeIconContainer = styled.div`
   display: flex;
   justify-content: center;
   width: 20px;
@@ -43,7 +43,7 @@ export const InsightIconsContainer = styled.div`
   margin-left: auto;
 `;
 
-export const InsightIconContainer = styled(OpenTelemetryIconContainer)`
+export const InsightIconContainer = styled(AssetTypeIconContainer)`
   background: #2e2e2e;
   border-radius: 4px;
 `;
@@ -83,8 +83,9 @@ export const ServiceName = styled.div`
   padding: 4px 6px;
   background: #2e2e2e;
   border-radius: 23px;
-  width: fit-content;
   line-height: 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export const ValueContainer = styled.div`

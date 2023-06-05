@@ -11,7 +11,14 @@ export interface AssetListProps {
   onAssetLinkClick: (entry: ExtendedAssetEntryWithServices) => void;
 }
 
+export enum SORTING_CRITERION {
+  CRITICAL_INSIGHTS = "Critical insights",
+  PERFORMANCE = "Performance",
+  LATEST = "Latest",
+  NAME = "Name"
+}
+
 export interface Sorting {
-  criterion: string;
+  criterion: SORTING_CRITERION;
   isDesc: boolean;
 }
