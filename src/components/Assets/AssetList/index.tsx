@@ -1,5 +1,4 @@
 import { useMemo, useState } from "react";
-import { AssetEntry as AssetEntryComponent } from "../../common/AssetEntry";
 import { Menu } from "../../common/Menu";
 import { Popover } from "../../common/Popover";
 import { PopoverContent } from "../../common/Popover/PopoverContent";
@@ -7,19 +6,14 @@ import { PopoverTrigger } from "../../common/Popover/PopoverTrigger";
 import { ChevronIcon } from "../../common/icons/ChevronIcon";
 import { Direction } from "../../common/icons/types";
 import { getAssetTypeInfo } from "../utils";
+import { AssetEntry as AssetEntryComponent } from "./AssetEntry";
 import * as s from "./styles";
 import {
   AssetListProps,
   ExtendedAssetEntryWithServices,
+  SORTING_CRITERION,
   Sorting
 } from "./types";
-
-const SORTING_CRITERION = [
-  "Critical insights",
-  "Performance",
-  "Latest",
-  "Name"
-];
 
 const sortEntries = (
   entries: ExtendedAssetEntryWithServices[],
@@ -29,26 +23,43 @@ const sortEntries = (
 
   const sortByName = (
     a: ExtendedAssetEntryWithServices,
-    b: ExtendedAssetEntryWithServices
-  ) => a.span.displayName.localeCompare(b.span.displayName);
+    b: ExtendedAssetEntryWithServices,
+    isDesc: boolean
+  ) =>
+    isDesc
+      ? b.span.displayName.localeCompare(a.span.displayName)
+      : a.span.displayName.localeCompare(b.span.displayName);
 
   switch (sorting.criterion) {
-    case "Critical insights":
+    case SORTING_CRITERION.CRITICAL_INSIGHTS:
       return entries.sort((a, b) => {
-        const aCriticalInsights = a.insights.filter(
-          (x) => x.importance < 3
+        const aHighestImportance =
+          a.insights.length > 0
+            ? Math.min(...a.insights.map((x) => x.importance))
+            : Infinity;
+        const bHighestImportance =
+          b.insights.length > 0
+            ? Math.min(...b.insights.map((x) => x.importance))
+            : Infinity;
+
+        const aMostImportantInsightCount = a.insights.filter(
+          (x) => x.importance === aHighestImportance
         ).length;
-        const bCriticalInsights = b.insights.filter(
-          (x) => x.importance < 3
+        const bMostImportantInsightCount = b.insights.filter(
+          (x) => x.importance === bHighestImportance
         ).length;
 
         return (
           (sorting.isDesc
-            ? bCriticalInsights - aCriticalInsights
-            : aCriticalInsights - bCriticalInsights) || sortByName(a, b)
+            ? aHighestImportance - bHighestImportance
+            : bHighestImportance - aHighestImportance) ||
+          (sorting.isDesc
+            ? bMostImportantInsightCount - aMostImportantInsightCount
+            : aMostImportantInsightCount - bMostImportantInsightCount) ||
+          sortByName(a, b, sorting.isDesc)
         );
       });
-    case "Performance":
+    case SORTING_CRITERION.PERFORMANCE:
       return entries.sort((a, b) => {
         const aDuration = a.durationPercentiles.find(
           (duration) => duration.percentile === 0.5
@@ -62,7 +73,7 @@ const sortEntries = (
         }
 
         if (!aDuration) {
-          return sorting.isDesc ? -1 : 1;
+          return sorting.isDesc ? 1 : -1;
         }
 
         if (!bDuration) {
@@ -71,22 +82,24 @@ const sortEntries = (
 
         return (
           (sorting.isDesc ? bDuration - aDuration : aDuration - bDuration) ||
-          sortByName(a, b)
+          sortByName(a, b, sorting.isDesc)
         );
       });
-    case "Latest":
+    case SORTING_CRITERION.LATEST:
       return entries.sort((a, b) => {
         const aDateTime = new Date(a.lastSpanInstanceInfo.startTime).valueOf();
         const bDateTime = new Date(b.lastSpanInstanceInfo.startTime).valueOf();
 
         return (
           (sorting.isDesc ? bDateTime - aDateTime : aDateTime - bDateTime) ||
-          sortByName(a, b)
+          sortByName(a, b, sorting.isDesc)
         );
       });
-    case "Name":
+    case SORTING_CRITERION.NAME:
       return entries.sort((a, b) =>
-        sorting.isDesc ? sortByName(b, a) : sortByName(a, b)
+        sorting.isDesc
+          ? sortByName(b, a, sorting.isDesc)
+          : sortByName(a, b, sorting.isDesc)
       );
     default:
       return entries;
@@ -95,10 +108,10 @@ const sortEntries = (
 
 export const AssetList = (props: AssetListProps) => {
   const [sorting, setSorting] = useState<{
-    criterion: string;
+    criterion: SORTING_CRITERION;
     isDesc: boolean;
   }>({
-    criterion: "Critical insights",
+    criterion: SORTING_CRITERION.CRITICAL_INSIGHTS,
     isDesc: true
   });
   const [isSortingMenuOpen, setIsSortingMenuOpen] = useState(false);
@@ -123,7 +136,7 @@ export const AssetList = (props: AssetListProps) => {
       });
     } else {
       setSorting({
-        criterion: value,
+        criterion: value as SORTING_CRITERION,
         isDesc: false
       });
     }
@@ -186,7 +199,10 @@ export const AssetList = (props: AssetListProps) => {
           <PopoverContent className={"Popover"}>
             <Menu
               title={"Sort by"}
-              items={SORTING_CRITERION.map((x) => ({ value: x, label: x }))}
+              items={Object.values(SORTING_CRITERION).map((x) => ({
+                value: x,
+                label: x
+              }))}
               onSelect={handleSortingMenuItemSelect}
             />
           </PopoverContent>

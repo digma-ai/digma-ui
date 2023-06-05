@@ -1,4 +1,4 @@
-import { ExtendedAssetEntryWithServices } from "../../Assets/AssetList/types";
+import { ExtendedAssetEntryWithServices } from "../types";
 
 export interface AssetEntryProps {
   entry: ExtendedAssetEntryWithServices;

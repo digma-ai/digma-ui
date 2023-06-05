@@ -4,6 +4,7 @@ export const ListItem = styled.li`
   display: flex;
   flex-direction: column;
   background: #3d3f41;
+  cursor: pointer;
 `;
 
 export const AssetType = styled.span`

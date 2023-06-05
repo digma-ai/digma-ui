@@ -1,8 +1,9 @@
 import { useTheme } from "styled-components";
-import { getInsightImportanceColor } from "../../../utils/getInsightImportanceColor";
-import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
-import { timeAgo } from "../../../utils/timeAgo";
-import { OpenTelemetryLogoIcon } from "../icons/OpenTelemetryLogoIcon";
+import { getInsightImportanceColor } from "../../../../utils/getInsightImportanceColor";
+import { getInsightTypeInfo } from "../../../../utils/getInsightTypeInfo";
+import { getInsightTypeOrderPriority } from "../../../../utils/getInsightTypeOrderPriority";
+import { timeAgo } from "../../../../utils/timeAgo";
+import { getAssetTypeInfo } from "../../utils";
 import * as s from "./styles";
 import { AssetEntryProps } from "./types";
 
@@ -23,17 +24,27 @@ export const AssetEntry = (props: AssetEntryProps) => {
 
   const lastSeenDateTime = props.entry.lastSpanInstanceInfo.startTime;
 
+  const sortedInsights = [...props.entry.insights].sort(
+    (a, b) =>
+      a.importance - b.importance ||
+      getInsightTypeOrderPriority(a.type) - getInsightTypeOrderPriority(b.type)
+  );
+
+  const assetTypeInfo = getAssetTypeInfo(props.entry.assetType);
+
   return (
     <s.Container>
       <s.Header>
-        <s.OpenTelemetryIconContainer>
-          <OpenTelemetryLogoIcon />
-        </s.OpenTelemetryIconContainer>
+        {assetTypeInfo?.icon && (
+          <s.AssetTypeIconContainer>
+            <assetTypeInfo.icon color={"#7891d0"} />
+          </s.AssetTypeIconContainer>
+        )}
         <s.Link onClick={() => handleLinkClick()} title={name}>
           {name}
         </s.Link>
         <s.InsightIconsContainer>
-          {props.entry.insights.map((insight) => {
+          {sortedInsights.map((insight) => {
             const insightTypeInfo = getInsightTypeInfo(insight.type);
             const insightIconColor = getInsightImportanceColor(
               insight.importance,
@@ -57,7 +68,9 @@ export const AssetEntry = (props: AssetEntryProps) => {
         <s.Stats>
           <span>Services</span>
           <s.ServicesContainer>
-            <s.ServiceName>{props.entry.serviceName}</s.ServiceName>
+            <s.ServiceName title={props.entry.serviceName}>
+              {props.entry.serviceName}
+            </s.ServiceName>
             {otherServices.length > 0 && (
               <span title={otherServices.join(", ")}>
                 +{otherServices.length}
