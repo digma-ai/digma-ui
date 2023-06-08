@@ -8,7 +8,9 @@ const LinkComponent = (
 ) => {
   const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
     if (props.onClick) {
-      e.preventDefault();
+      if (!props.href) {
+        e.preventDefault();
+      }
       props.onClick();
     }
   };
