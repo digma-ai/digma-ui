@@ -79,8 +79,14 @@ export const Link = styled(CommonLink)`
   line-height: 14px;
 `;
 
+export const FooterSlackLink = styled(Link)`
+  margin: 0 auto;
+`;
+
 export const Footer = styled.div`
   display: flex;
+  flex-direction: column;
+  gap: 12px;
   flex-grow: 1;
   padding: 12px;
 

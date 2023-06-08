@@ -20,6 +20,7 @@ import { ObservabilityStep } from "./ObservabilityStep";
 import { Step } from "./Step";
 import { StepData, StepStatus } from "./Step/types";
 import * as s from "./styles";
+import { trackingEvents } from "./tracking";
 import {
   ConnectionCheckResultData,
   ConnectionCheckStatus,
@@ -54,21 +55,6 @@ const getQuickstartURL = (ide: IDE | undefined): string | undefined => {
 };
 
 const quickstartURL = getQuickstartURL(ide);
-
-const TRACKING_PREFIX = "installation wizard";
-
-const trackingEvents = addPrefix(
-  TRACKING_PREFIX,
-  {
-    INSTALL_STEP_PASSED: "install step passed",
-    INSTALL_STEP_AUTOMATICALLY_PASSED: "install step automatically passed",
-    GET_DIGMA_DOCKER_EXTENSION_BUTTON_CLICKED:
-      "get digma docker extension button clicked",
-    OBSERVABILITY_BUTTON_CLICKED: "set observability button clicked",
-    TAB_CLICKED: "tab clicked"
-  },
-  " "
-);
 
 const footerTransitionClassName = "footer";
 const TRANSITION_DURATION = 300; // in milliseconds
@@ -280,6 +266,7 @@ export const InstallationWizard = () => {
           }
           onInstallTabSelect={handleInstallTabSelect}
           onGoToNextStep={goToNextStep}
+          slackChannelURL={SLACK_CHANNEL_URL}
         />
       )
     },
@@ -392,8 +379,9 @@ export const InstallationWizard = () => {
           transitionDuration={TRANSITION_DURATION}
         />
       ))}
-      {installationType && (
-        <s.Footer>
+
+      <s.Footer>
+        {installationType && (
           <CSSTransition
             in={currentStep === steps.length - 1}
             timeout={TRANSITION_DURATION}
@@ -414,8 +402,15 @@ export const InstallationWizard = () => {
               </s.MainButton>
             </s.FooterContent>
           </CSSTransition>
-        </s.Footer>
-      )}
+        )}
+        <s.FooterSlackLink
+          href={SLACK_CHANNEL_URL}
+          target={"_blank"}
+          rel={"noopener noreferrer"}
+        >
+          Having trouble? Please reach out in our Slack group
+        </s.FooterSlackLink>
+      </s.Footer>
     </s.Container>
   );
 };
