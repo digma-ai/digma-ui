@@ -52,14 +52,14 @@ export const AssetEntry = (props: AssetEntryProps) => {
             );
 
             return (
-              <s.InsightIconContainer
-                key={insight.type}
-                title={insightTypeInfo?.label || insight.type}
-              >
-                {insightTypeInfo && (
+              insightTypeInfo && (
+                <s.InsightIconContainer
+                  key={insight.type}
+                  title={insightTypeInfo?.label || insight.type}
+                >
                   <insightTypeInfo.icon color={insightIconColor} size={20} />
-                )}
-              </s.InsightIconContainer>
+                </s.InsightIconContainer>
+              )
             );
           })}
         </s.InsightIconsContainer>

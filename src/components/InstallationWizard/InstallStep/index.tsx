@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useTheme } from "styled-components";
+import { actions as globalActions } from "../../common/App";
 import { getThemeKind } from "../../common/App/styles";
 import { Loader } from "../../common/Loader";
 import { CheckmarkCircleInvertedIcon } from "../../common/icons/CheckmarkCircleInvertedIcon";
@@ -8,6 +9,7 @@ import { DockerLogoIcon } from "../../common/icons/DockerLogoIcon";
 import { CodeSnippet } from "../CodeSnippet";
 import { Tabs } from "../Tabs";
 import { Link, MainButton, SectionDescription } from "../styles";
+import { trackingEvents } from "../tracking";
 import * as s from "./styles";
 import { InstallStepProps } from "./types";
 
@@ -66,6 +68,15 @@ export const InstallStep = (props: InstallStepProps) => {
     }
   ];
 
+  const handleSlackLinkClick = () => {
+    window.sendMessageToDigma({
+      action: globalActions.SEND_TRACKING_EVENT,
+      payload: {
+        eventName: trackingEvents.NO_DOCKER_SLACK_LINK_CLICKED
+      }
+    });
+  };
+
   const installTabs = [
     {
       icon: DockerLogoIcon,
@@ -85,7 +96,7 @@ export const InstallStep = (props: InstallStepProps) => {
             >
               Docker Desktop
             </Link>{" "}
-            4.8.0 or later installed)
+            4.10.0 or later installed)
           </SectionDescription>
           <s.GetDockerExtensionButton
             buttonType={"secondary"}
@@ -141,6 +152,25 @@ export const InstallStep = (props: InstallStepProps) => {
               these
             </Link>{" "}
             instructions instead
+          </SectionDescription>
+        </s.DockerComposeOSTabContentContainer>
+      )
+    },
+    {
+      title: "I don't have Docker",
+      content: (
+        <s.DockerComposeOSTabContentContainer>
+          <SectionDescription>
+            We&apos;ll be adding more options soon but please reach out via{" "}
+            <Link
+              onClick={handleSlackLinkClick}
+              href={props.slackChannelURL}
+              target={"_blank"}
+              rel={"noopener noreferrer"}
+            >
+              Slack
+            </Link>{" "}
+            and we&apos;ll see if we can still get your Digma up and running
           </SectionDescription>
         </s.DockerComposeOSTabContentContainer>
       )
