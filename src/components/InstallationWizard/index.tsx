@@ -253,6 +253,15 @@ export const InstallationWizard = () => {
     });
   };
 
+  const handleSlackLinkClick = () => {
+    window.sendMessageToDigma({
+      action: globalActions.OPEN_URL_IN_DEFAULT_BROWSER,
+      payload: {
+        url: SLACK_CHANNEL_URL
+      }
+    });
+  };
+
   const steps: StepData[] = [
     {
       title: "Get Digma up and running",
@@ -266,7 +275,7 @@ export const InstallationWizard = () => {
           }
           onInstallTabSelect={handleInstallTabSelect}
           onGoToNextStep={goToNextStep}
-          slackChannelURL={SLACK_CHANNEL_URL}
+          onSlackLinkClick={handleSlackLinkClick}
         />
       )
     },
@@ -293,7 +302,7 @@ export const InstallationWizard = () => {
       content: (
         <FinishStep
           quickstartURL={quickstartURL}
-          slackChannelURL={SLACK_CHANNEL_URL}
+          onSlackLinkClick={handleSlackLinkClick}
           email={email}
           onEmailInputChange={handleEmailInputChange}
           isEmailValid={isEmailValid}
@@ -403,11 +412,7 @@ export const InstallationWizard = () => {
             </s.FooterContent>
           </CSSTransition>
         )}
-        <s.FooterSlackLink
-          href={SLACK_CHANNEL_URL}
-          target={"_blank"}
-          rel={"noopener noreferrer"}
-        >
+        <s.FooterSlackLink onClick={handleSlackLinkClick}>
           Having trouble? Please reach out in our Slack group
         </s.FooterSlackLink>
       </s.Footer>

@@ -75,6 +75,7 @@ export const InstallStep = (props: InstallStepProps) => {
         eventName: trackingEvents.NO_DOCKER_SLACK_LINK_CLICKED
       }
     });
+    props.onSlackLinkClick();
   };
 
   const installTabs = [
@@ -162,15 +163,8 @@ export const InstallStep = (props: InstallStepProps) => {
         <s.DockerComposeOSTabContentContainer>
           <SectionDescription>
             We&apos;ll be adding more options soon but please reach out via{" "}
-            <Link
-              onClick={handleSlackLinkClick}
-              href={props.slackChannelURL}
-              target={"_blank"}
-              rel={"noopener noreferrer"}
-            >
-              Slack
-            </Link>{" "}
-            and we&apos;ll see if we can still get your Digma up and running
+            <Link onClick={handleSlackLinkClick}>Slack</Link> and we&apos;ll see
+            if we can still get your Digma up and running
           </SectionDescription>
         </s.DockerComposeOSTabContentContainer>
       )

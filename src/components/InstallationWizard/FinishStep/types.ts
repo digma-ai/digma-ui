@@ -2,7 +2,7 @@ import { ChangeEvent } from "react";
 
 export interface FinishStepProps {
   quickstartURL?: string;
-  slackChannelURL: string;
+  onSlackLinkClick: () => void;
   onEmailInputChange: (e: ChangeEvent<HTMLInputElement>) => void;
   email: string;
   isEmailValid?: boolean;
