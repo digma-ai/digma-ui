@@ -57,6 +57,15 @@ export const InstallStep = (props: InstallStepProps) => {
     setSelectedDockerComposeOSTab(tabIndex);
   };
 
+  const openLinkInDefaultBrowser = (url: string) => {
+    window.sendMessageToDigma({
+      action: globalActions.OPEN_URL_IN_DEFAULT_BROWSER,
+      payload: {
+        url
+      }
+    });
+  };
+
   const dockerComposeOSTabs = [
     {
       title: "Linux & macOS",
@@ -90,11 +99,7 @@ export const InstallStep = (props: InstallStepProps) => {
           </s.SectionTitle>
           <SectionDescription>
             (You&apos;ll need{" "}
-            <Link
-              href={DOCKER_DESKTOP_URL}
-              target={"_blank"}
-              rel={"noopener noreferrer"}
-            >
+            <Link onClick={() => openLinkInDefaultBrowser(DOCKER_DESKTOP_URL)}>
               Docker Desktop
             </Link>{" "}
             4.10.0 or later installed)
@@ -119,19 +124,11 @@ export const InstallStep = (props: InstallStepProps) => {
           </s.SectionTitle>
           <SectionDescription>
             (You&apos;ll need{" "}
-            <Link
-              href={DOCKER_URL}
-              target={"_blank"}
-              rel={"noopener noreferrer"}
-            >
+            <Link onClick={() => openLinkInDefaultBrowser(DOCKER_URL)}>
               Docker
             </Link>{" "}
             and{" "}
-            <Link
-              href={DOCKER_COMPOSE_URL}
-              target={"_blank"}
-              rel={"noopener noreferrer"}
-            >
+            <Link onClick={() => openLinkInDefaultBrowser(DOCKER_COMPOSE_URL)}>
               Docker Compose
             </Link>{" "}
             installed)
