@@ -133,11 +133,7 @@ export const FinishStep = (props: FinishStepProps) => {
       <s.GiveUsFeedbackTitle icon={ChatIcon}>
         Give us feedback
       </s.GiveUsFeedbackTitle>
-      <s.SlackLink
-        target={"_blank"}
-        rel={"noopener noreferrer"}
-        href={props.slackChannelURL}
-      >
+      <s.SlackLink onClick={props.onSlackLinkClick}>
         <SlackLogoIcon />
         Join Our Slack Channel
       </s.SlackLink>

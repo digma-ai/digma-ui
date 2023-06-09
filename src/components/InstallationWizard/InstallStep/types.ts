@@ -7,5 +7,5 @@ export interface InstallStepProps {
   onGetDigmaDockerDesktopButtonClick: () => void;
   onInstallTabSelect: (tabName: string) => void;
   onGoToNextStep: () => void;
-  slackChannelURL: string;
+  onSlackLinkClick: () => void;
 }
