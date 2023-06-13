@@ -4,6 +4,7 @@ import { BottleneckIcon } from "../components/common/icons/BottleneckIcon";
 import { ClockWithTicksIcon } from "../components/common/icons/ClockWithTicksIcon";
 import { MeterHighIcon } from "../components/common/icons/MeterHighIcon";
 import { MeterLowIcon } from "../components/common/icons/MeterLowIcon";
+import { PieChartIcon } from "../components/common/icons/PieChartIcon";
 import { SQLDatabaseIcon } from "../components/common/icons/SQLDatabaseIcon";
 import { ScalesIcon } from "../components/common/icons/ScalesIcon";
 import { SineIcon } from "../components/common/icons/SineIcon";
@@ -87,6 +88,10 @@ export const getInsightTypeInfo = (
     [InsightType.EndpointDurationSlowdown]: {
       icon: SnailIcon,
       label: "Duration Slowdown Source Detected"
+    },
+    [InsightType.EndpointBreakdown]: {
+      icon: PieChartIcon,
+      label: "Request Breakdown"
     }
   };
 

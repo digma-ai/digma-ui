@@ -1,6 +1,8 @@
 import { AssetsData } from "./types";
 
 export const data: AssetsData = {
+  accountId: "00000000-0000-0000-0000-000000000000",
+  environment: "BOB-LAPTOP[LOCAL]",
   serviceAssetsEntries: [
     {
       itemType: "SpanAssets",
@@ -4422,7 +4424,7 @@ export const data: AssetsData = {
         }
       ],
       accountId: "00000000-0000-0000-0000-000000000000",
-      environment: "ARIK-LAPTOP[LOCAL]",
+      environment: "BOB-LAPTOP[LOCAL]",
       serviceName: "Digma.Analytics"
     },
     {
@@ -4969,7 +4971,7 @@ export const data: AssetsData = {
         }
       ],
       accountId: "00000000-0000-0000-0000-000000000000",
-      environment: "ARIK-LAPTOP[LOCAL]",
+      environment: "BOB-LAPTOP[LOCAL]",
       serviceName: "Digma.Collector"
     },
     {
@@ -9375,7 +9377,7 @@ export const data: AssetsData = {
         }
       ],
       accountId: "00000000-0000-0000-0000-000000000000",
-      environment: "ARIK-LAPTOP[LOCAL]",
+      environment: "BOB-LAPTOP[LOCAL]",
       serviceName: "Digma.Insight.Analysis"
     },
     {
@@ -11408,7 +11410,7 @@ export const data: AssetsData = {
         }
       ],
       accountId: "00000000-0000-0000-0000-000000000000",
-      environment: "ARIK-LAPTOP[LOCAL]",
+      environment: "BOB-LAPTOP[LOCAL]",
       serviceName: "Digma.Measurement.Analysis"
     },
     {
@@ -11953,7 +11955,7 @@ export const data: AssetsData = {
         }
       ],
       accountId: "00000000-0000-0000-0000-000000000000",
-      environment: "ARIK-LAPTOP[LOCAL]",
+      environment: "BOB-LAPTOP[LOCAL]",
       serviceName: "Digma.PluginBackend"
     },
     {
@@ -19634,7 +19636,7 @@ export const data: AssetsData = {
         }
       ],
       accountId: "00000000-0000-0000-0000-000000000000",
-      environment: "ARIK-LAPTOP[LOCAL]",
+      environment: "BOB-LAPTOP[LOCAL]",
       serviceName: "Digma.Scheduler"
     },
     {
@@ -20016,7 +20018,7 @@ export const data: AssetsData = {
         }
       ],
       accountId: "00000000-0000-0000-0000-000000000000",
-      environment: "ARIK-LAPTOP[LOCAL]",
+      environment: "BOB-LAPTOP[LOCAL]",
       serviceName: "KafkaSample01WIthAgent"
     },
     {
@@ -26007,7 +26009,7 @@ export const data: AssetsData = {
         }
       ],
       accountId: "00000000-0000-0000-0000-000000000000",
-      environment: "ARIK-LAPTOP[LOCAL]",
+      environment: "BOB-LAPTOP[LOCAL]",
       serviceName: "PetClinicWithAgent"
     },
     {
@@ -28337,7 +28339,7 @@ export const data: AssetsData = {
         }
       ],
       accountId: "00000000-0000-0000-0000-000000000000",
-      environment: "ARIK-LAPTOP[LOCAL]",
+      environment: "BOB-LAPTOP[LOCAL]",
       serviceName: "Sample.MoneyTransfer.API"
     }
   ]

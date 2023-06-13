@@ -46,11 +46,15 @@ export interface AssetEntry {
 }
 
 export interface AssetsData {
-  serviceAssetsEntries: {
-    itemType: string;
-    assetEntries: AssetEntry[];
-    accountId: string;
-    environment: string;
-    serviceName: string;
-  }[];
+  accountId: string;
+  environment: string;
+  serviceAssetsEntries: ServiceAssetsEntry[];
+}
+
+export interface ServiceAssetsEntry {
+  itemType: string;
+  assetEntries: AssetEntry[];
+  accountId: string;
+  environment: string;
+  serviceName: string;
 }

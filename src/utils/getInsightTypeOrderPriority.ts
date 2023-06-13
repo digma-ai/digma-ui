@@ -20,7 +20,8 @@ export const getInsightTypeOrderPriority = (type: string): number => {
     [InsightType.NormalUsage]: 50,
     [InsightType.HighUsage]: 10,
     [InsightType.SlowEndpoint]: 20,
-    [InsightType.EndpointDurationSlowdown]: 25
+    [InsightType.EndpointDurationSlowdown]: 25,
+    [InsightType.EndpointBreakdown]: 5
   };
 
   return insightOrderPriorityMap[type] || Infinity;
