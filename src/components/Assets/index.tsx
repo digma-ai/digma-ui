@@ -11,7 +11,8 @@ import {
   AssetsData,
   AssetsProps,
   ExtendedAssetEntry,
-  GroupedAssetEntries
+  GroupedAssetEntries,
+  ServiceAssetsEntry
 } from "./types";
 
 const REFRESH_INTERVAL = isNumber(window.assetsRefreshInterval)
@@ -26,8 +27,8 @@ const actions = addPrefix(ACTION_PREFIX, {
   GO_TO_ASSET: "GO_TO_ASSET"
 });
 
-const groupEntries = (data: AssetsData): GroupedAssetEntries => {
-  const assetEntries: ExtendedAssetEntry[] = data.serviceAssetsEntries
+const groupEntries = (data: ServiceAssetsEntry[]): GroupedAssetEntries => {
+  const assetEntries: ExtendedAssetEntry[] = data
     .flat()
     .map((entry) =>
       entry.assetEntries.map((entry) => ({
@@ -70,7 +71,8 @@ export const Assets = (props: AssetsProps) => {
     }, REFRESH_INTERVAL);
 
     const handleAssetsData = (data: unknown) => {
-      setData(groupEntries(data as AssetsData));
+      const entries = (data as AssetsData).serviceAssetsEntries;
+      setData(groupEntries(entries));
     };
 
     dispatcher.addActionListener(actions.SET_DATA, handleAssetsData);
@@ -87,7 +89,7 @@ export const Assets = (props: AssetsProps) => {
       return;
     }
 
-    const groupedAssetEntries = groupEntries(props.data);
+    const groupedAssetEntries = groupEntries(props.data.serviceAssetsEntries);
     setData(groupedAssetEntries);
   }, [props.data]);
 

@@ -1,6 +1,8 @@
 import { AssetsData } from "./types";
 
 export const data: AssetsData = {
+  accountId: "00000000-0000-0000-0000-000000000000",
+  environment: "ARIK-LAPTOP[LOCAL]",
   serviceAssetsEntries: [
     {
       itemType: "SpanAssets",
