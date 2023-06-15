@@ -3,9 +3,11 @@ import { useTheme } from "styled-components";
 import { actions as globalActions } from "../../common/App";
 import { getThemeKind } from "../../common/App/styles";
 import { Loader } from "../../common/Loader";
+import { ChatFillIcon } from "../../common/icons/ChatIFillIcon";
 import { CheckmarkCircleInvertedIcon } from "../../common/icons/CheckmarkCircleInvertedIcon";
 import { CodeIcon } from "../../common/icons/CodeIcon";
 import { DockerLogoIcon } from "../../common/icons/DockerLogoIcon";
+import { SlackLogoIcon } from "../../common/icons/SlackLogoIcon";
 import { CodeSnippet } from "../CodeSnippet";
 import { Tabs } from "../Tabs";
 import { Link, MainButton, SectionDescription } from "../styles";
@@ -66,14 +68,42 @@ export const InstallStep = (props: InstallStepProps) => {
     });
   };
 
+  const renderDockerComposeInstructions = () => (
+    <>
+      <SectionDescription>Then run:</SectionDescription>
+      <CodeSnippet text={RUN_DOCKER_COMPOSE_COMMAND} />
+      <SectionDescription>
+        Prefer to use a helm file? Check out{" "}
+        <Link
+          href={DIGMA_HELM_CHART_URL}
+          target={"_blank"}
+          rel={"noopener noreferrer"}
+        >
+          these
+        </Link>{" "}
+        instructions instead
+      </SectionDescription>
+    </>
+  );
+
   const dockerComposeOSTabs = [
     {
       title: "Linux & macOS",
-      content: <CodeSnippet text={GET_DIGMA_DOCKER_COMPOSE_COMMAND_LINUX} />
+      content: (
+        <s.DockerComposeOSTabContentContainer>
+          <CodeSnippet text={GET_DIGMA_DOCKER_COMPOSE_COMMAND_LINUX} />
+          {renderDockerComposeInstructions()}
+        </s.DockerComposeOSTabContentContainer>
+      )
     },
     {
       title: "Windows (PowerShell)",
-      content: <CodeSnippet text={GET_DIGMA_DOCKER_COMPOSE_COMMAND_WINDOWS} />
+      content: (
+        <s.DockerComposeOSTabContentContainer>
+          <CodeSnippet text={GET_DIGMA_DOCKER_COMPOSE_COMMAND_WINDOWS} />
+          {renderDockerComposeInstructions()}
+        </s.DockerComposeOSTabContentContainer>
+      )
     }
   ];
 
@@ -92,7 +122,7 @@ export const InstallStep = (props: InstallStepProps) => {
       icon: DockerLogoIcon,
       title: "Docker Desktop",
       content: (
-        <s.InstallTabContentContainer>
+        <s.TabContentContainer>
           <s.SectionTitle>
             <DockerLogoIcon size={24} color={"#2396ed"} />
             Install Digma Docker extension
@@ -110,14 +140,14 @@ export const InstallStep = (props: InstallStepProps) => {
           >
             Get Digma Docker Extension
           </s.GetDockerExtensionButton>
-        </s.InstallTabContentContainer>
+        </s.TabContentContainer>
       )
     },
     {
       icon: CodeIcon,
       title: "Docker Compose",
       content: (
-        <s.DockerComposeOSTabContentContainer>
+        <s.TabContentContainer>
           <s.SectionTitle>
             Run the following from the terminal/command line to start the Digma
             backend:
@@ -138,32 +168,29 @@ export const InstallStep = (props: InstallStepProps) => {
             onSelect={handleSelectDockerComposeOSTab}
             selectedTab={selectedDockerComposeOSTab}
           />
-          <SectionDescription>Then run:</SectionDescription>
-          <CodeSnippet text={RUN_DOCKER_COMPOSE_COMMAND} />
-          <SectionDescription>
-            Prefer to use a helm file? Check out{" "}
-            <Link
-              href={DIGMA_HELM_CHART_URL}
-              target={"_blank"}
-              rel={"noopener noreferrer"}
-            >
-              these
-            </Link>{" "}
-            instructions instead
-          </SectionDescription>
-        </s.DockerComposeOSTabContentContainer>
+        </s.TabContentContainer>
       )
     },
     {
       title: "I don't have Docker",
       content: (
-        <s.DockerComposeOSTabContentContainer>
-          <SectionDescription>
-            We&apos;ll be adding more options soon but please reach out via{" "}
-            <Link onClick={handleSlackLinkClick}>Slack</Link> and we&apos;ll see
-            if we can still get your Digma up and running
-          </SectionDescription>
-        </s.DockerComposeOSTabContentContainer>
+        <s.NoDockerTabContentContainer>
+          <s.IconBackgroundCircle>
+            <ChatFillIcon
+              size={28}
+              color={theme.mode === "light" ? "#fbfdff" : "#83858e"}
+            />
+          </s.IconBackgroundCircle>
+          <s.NoDockerText>
+            <span>We&apos;ll be adding more options soon</span>
+            <span>but please reach out via Slack and we&apos;ll see</span>
+            <span>if we can still get your Digma up and running</span>
+          </s.NoDockerText>
+          <s.SlackLink onClick={handleSlackLinkClick}>
+            <SlackLogoIcon />
+            Slack group
+          </s.SlackLink>
+        </s.NoDockerTabContentContainer>
       )
     }
   ];
@@ -174,38 +201,41 @@ export const InstallStep = (props: InstallStepProps) => {
         tabs={installTabs}
         onSelect={handleInstallTabSelect}
         selectedTab={selectedInstallTab}
+        fullWidth={true}
       />
-      <s.LoaderContainer>
-        {props.connectionCheckStatus && (
-          <Loader
-            size={84}
-            status={props.connectionCheckStatus}
-            themeKind={getThemeKind(theme)}
-          />
+      <s.CommonContentContainer>
+        <s.LoaderContainer>
+          {props.connectionCheckStatus && (
+            <Loader
+              size={84}
+              status={props.connectionCheckStatus}
+              themeKind={getThemeKind(theme)}
+            />
+          )}
+        </s.LoaderContainer>
+        {!isConnectionCheckStarted && (
+          <MainButton onClick={handleDigmaIsInstalledButtonClick}>
+            OK, I&apos;ve installed Digma
+          </MainButton>
         )}
-      </s.LoaderContainer>
-      {!isConnectionCheckStarted && (
-        <MainButton onClick={handleDigmaIsInstalledButtonClick}>
-          OK, I&apos;ve installed Digma
-        </MainButton>
-      )}
-      {props.connectionCheckStatus === "pending" && (
-        <MainButton disabled={true}>Complete</MainButton>
-      )}
-      {props.connectionCheckStatus === "failure" && (
-        <MainButton onClick={handleRetryButtonClick}>Retry</MainButton>
-      )}
-      {props.connectionCheckStatus === "success" && (
-        <MainButton
-          icon={{
-            component: CheckmarkCircleInvertedIcon,
-            color: "#0fbf00"
-          }}
-          onClick={handleNextButtonClick}
-        >
-          Complete
-        </MainButton>
-      )}
+        {props.connectionCheckStatus === "pending" && (
+          <MainButton disabled={true}>Complete</MainButton>
+        )}
+        {props.connectionCheckStatus === "failure" && (
+          <MainButton onClick={handleRetryButtonClick}>Retry</MainButton>
+        )}
+        {props.connectionCheckStatus === "success" && (
+          <MainButton
+            icon={{
+              component: CheckmarkCircleInvertedIcon,
+              color: "#0fbf00"
+            }}
+            onClick={handleNextButtonClick}
+          >
+            Complete
+          </MainButton>
+        )}
+      </s.CommonContentContainer>
     </s.Container>
   );
 };

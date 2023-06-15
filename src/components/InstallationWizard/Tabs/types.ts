@@ -11,4 +11,5 @@ export interface TabsProps {
   selectedTab: number;
   onSelect: (tabIndex: number) => void;
   className?: string;
+  fullWidth?: boolean;
 }

@@ -135,7 +135,7 @@ export const FinishStep = (props: FinishStepProps) => {
       </s.GiveUsFeedbackTitle>
       <s.SlackLink onClick={props.onSlackLinkClick}>
         <SlackLogoIcon />
-        Join Our Slack Channel
+        Join Our Slack Group
       </s.SlackLink>
     </s.Container>
   );

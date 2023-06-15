@@ -11,6 +11,14 @@ export const Container = styled.li<TabProps>`
   gap: 4px;
   user-select: none;
 
+  ${({ fullWidth }) =>
+    fullWidth &&
+    `
+    flex-grow: 1;
+    flex-basis: 0;
+    justify-content: center;
+  `}
+
   cursor: ${({ isDisabled }) => (isDisabled ? "initial" : "pointer")};
 
   border-bottom: ${({ isSelected }) =>
