@@ -7,4 +7,5 @@ export interface TabProps {
   onClick: () => void;
   icon?: ComponentType<IconProps>;
   children: ReactNode;
+  fullWidth?: boolean;
 }

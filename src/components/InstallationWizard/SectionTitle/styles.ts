@@ -5,7 +5,6 @@ export const Container = styled.div`
   font-weight: 500;
   font-size: 14px;
   align-items: center;
-  text-transform: capitalize;
 
   color: ${({ theme }) => {
     switch (theme.mode) {

@@ -81,6 +81,9 @@ export const Link = styled(CommonLink)`
 
 export const FooterSlackLink = styled(Link)`
   margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 `;
 
 export const Footer = styled.div`

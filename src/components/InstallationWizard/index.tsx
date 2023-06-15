@@ -13,6 +13,7 @@ import { getThemeKind } from "../common/App/styles";
 import { CloudDownloadIcon } from "../common/icons/CloudDownloadIcon";
 import { DigmaGreetingIcon } from "../common/icons/DigmaGreetingIcon";
 import { OpenTelemetryDisplayIcon } from "../common/icons/OpenTelemetryDisplayIcon";
+import { SlackLogoIcon } from "../common/icons/SlackLogoIcon";
 import { FinishStep } from "./FinishStep";
 import { InstallStep } from "./InstallStep";
 import { InstallationTypeButton } from "./InstallationTypeButton";
@@ -39,7 +40,7 @@ const actions = addPrefix(ACTION_PREFIX, {
   SET_OBSERVABILITY: "SET_OBSERVABILITY"
 });
 
-const SLACK_CHANNEL_URL =
+const SLACK_WORKSPACE_URL =
   "https://join.slack.com/t/continuous-feedback/shared_invite/zt-1hk5rbjow-yXOIxyyYOLSXpCZ4RXstgA";
 
 const DIGMA_DOCKER_EXTENSION_URL =
@@ -257,7 +258,7 @@ export const InstallationWizard = () => {
     window.sendMessageToDigma({
       action: globalActions.OPEN_URL_IN_DEFAULT_BROWSER,
       payload: {
-        url: SLACK_CHANNEL_URL
+        url: SLACK_WORKSPACE_URL
       }
     });
   };
@@ -413,6 +414,7 @@ export const InstallationWizard = () => {
           </CSSTransition>
         )}
         <s.FooterSlackLink onClick={handleSlackLinkClick}>
+          <SlackLogoIcon />
           Having trouble? Please reach out in our Slack group
         </s.FooterSlackLink>
       </s.Footer>

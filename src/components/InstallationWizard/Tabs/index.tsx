@@ -20,6 +20,7 @@ export const Tabs = (props: TabsProps) => {
               isSelected={isSelected}
               onClick={() => handleTabClick(i)}
               icon={tab.icon}
+              fullWidth={props.fullWidth}
             >
               {tab.title}
             </Tab>

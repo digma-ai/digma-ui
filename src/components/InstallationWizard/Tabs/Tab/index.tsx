@@ -65,6 +65,7 @@ export const Tab = (props: TabProps) => {
       onMouseLeave={handleMouseLeave}
       onFocus={handleFocus}
       onBlur={handleBlur}
+      fullWidth={props.fullWidth}
     >
       {props.icon && (
         <props.icon
