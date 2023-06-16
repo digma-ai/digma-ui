@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { DefaultTheme, useTheme } from "styled-components";
 import { Menu } from "../../common/Menu";
 import { Popover } from "../../common/Popover";
 import { PopoverContent } from "../../common/Popover/PopoverContent";
@@ -106,6 +107,36 @@ const sortEntries = (
   }
 };
 
+const getBackIconColor = (theme: DefaultTheme) => {
+  switch (theme.mode) {
+    case "light":
+      return "#002d61";
+    case "dark":
+    case "dark-jetbrains":
+      return "#dadada";
+  }
+};
+
+const getAssetTypeIconColor = (theme: DefaultTheme) => {
+  switch (theme.mode) {
+    case "light":
+      return "#788ca9";
+    case "dark":
+    case "dark-jetbrains":
+      return "#9c9c9c";
+  }
+};
+
+const getSortingMenuChevronColor = (theme: DefaultTheme) => {
+  switch (theme.mode) {
+    case "light":
+      return "#4d668a";
+    case "dark":
+    case "dark-jetbrains":
+      return "#dadada";
+  }
+};
+
 export const AssetList = (props: AssetListProps) => {
   const [sorting, setSorting] = useState<{
     criterion: SORTING_CRITERION;
@@ -115,6 +146,11 @@ export const AssetList = (props: AssetListProps) => {
     isDesc: true
   });
   const [isSortingMenuOpen, setIsSortingMenuOpen] = useState(false);
+
+  const theme = useTheme();
+  const backIconColor = getBackIconColor(theme);
+  const assetTypeIconColor = getAssetTypeIconColor(theme);
+  const sortingMenuChevronColor = getSortingMenuChevronColor(theme);
 
   const handleBackButtonClick = () => {
     props.onBackButtonClick();
@@ -172,9 +208,11 @@ export const AssetList = (props: AssetListProps) => {
     <s.Container>
       <s.Header>
         <s.BackButton onClick={handleBackButtonClick}>
-          <ChevronIcon direction={Direction.LEFT} color={"#dadada"} />
+          <ChevronIcon direction={Direction.LEFT} color={backIconColor} />
         </s.BackButton>
-        {assetTypeInfo?.icon && <assetTypeInfo.icon color={"#9c9c9c"} />}
+        {assetTypeInfo?.icon && (
+          <assetTypeInfo.icon color={assetTypeIconColor} />
+        )}
         <span>{assetTypeInfo?.label || props.assetTypeId}</span>
         <s.ItemsCount>
           {Object.values(props.entries).flat().length}
@@ -192,7 +230,7 @@ export const AssetList = (props: AssetListProps) => {
               <s.SortingLabel>{sorting.criterion}</s.SortingLabel>
               <ChevronIcon
                 direction={isSortingMenuOpen ? Direction.UP : Direction.DOWN}
-                color={"#dadada"}
+                color={sortingMenuChevronColor}
               />
             </s.SortingMenuContainer>
           </PopoverTrigger>

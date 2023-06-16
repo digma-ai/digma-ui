@@ -15,14 +15,32 @@ export const BackButton = styled.button`
 
 export const Header = styled.div`
   display: flex;
-  background: #383838;
-  color: #dadada;
   align-items: center;
   gap: 4px;
   font-weight: 400;
   font-size: 11px;
   line-height: 14px;
   padding: 8px 12px 8px 8px;
+
+  background: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#f1f5fa";
+      case "dark":
+      case "dark-jetbrains":
+        return "#383838";
+    }
+  }};
+
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#002d61";
+      case "dark":
+      case "dark-jetbrains":
+        return "#dadada";
+    }
+  }};
 `;
 
 export const Toolbar = styled.div`
@@ -38,22 +56,49 @@ export const SortingMenuContainer = styled.div`
   font-weight: 500;
   font-size: 10px;
   line-height: 12px;
-  color: #9b9b9b;
   align-items: center;
   height: 20px;
+
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#828797";
+      case "dark":
+      case "dark-jetbrains":
+        return "#9b9b9b";
+    }
+  }};
 `;
 
 export const SortingLabel = styled.span`
   font-weight: 500;
   font-size: 10px;
   line-height: 12px;
-  color: #dadada;
   text-transform: capitalize;
+
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#4d668a";
+      case "dark":
+      case "dark-jetbrains":
+        return "#dadada";
+    }
+  }};
 `;
 
 export const ItemsCount = styled.span`
   margin-left: auto;
-  color: #9f9f9f;
+
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#828797";
+      case "dark":
+      case "dark-jetbrains":
+        return "#9f9f9f";
+    }
+  }};
 `;
 
 export const List = styled.ul`

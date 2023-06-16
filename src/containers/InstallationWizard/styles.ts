@@ -2,6 +2,14 @@ import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
   body {
-    background: #5a5a5a;
+    background: ${({ theme }) => {
+      switch (theme.mode) {
+        case "light":
+          return "#f1f5fa";
+        case "dark":
+        case "dark-jetbrains":
+          return "#3d3f41";
+      }
+    }};
   }
 `;
