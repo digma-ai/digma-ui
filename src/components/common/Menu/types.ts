@@ -1,5 +1,5 @@
 export interface MenuProps {
-  title: string;
+  title?: string;
   items: {
     label: string;
     value: string;

@@ -8,7 +8,7 @@ export const Menu = (props: MenuProps) => {
 
   return (
     <s.Container>
-      <s.Header>{props.title}</s.Header>
+      {props.title && <s.Header>{props.title}</s.Header>}
       <s.List>
         {props.items.map((item) => (
           <s.ListItem

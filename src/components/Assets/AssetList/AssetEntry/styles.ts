@@ -5,9 +5,27 @@ export const Container = styled.div`
   flex-direction: column;
   gap: 8px;
   padding: 8px;
-  background: #383838;
   border-radius: 4px;
-  color: #9b9b9b;
+
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#828797";
+      case "dark":
+      case "dark-jetbrains":
+        return "#9b9b9b";
+    }
+  }};
+
+  background: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#f1f5fa";
+      case "dark":
+      case "dark-jetbrains":
+        return "#383838";
+    }
+  }};
 `;
 
 export const Header = styled.div`
@@ -44,8 +62,17 @@ export const InsightIconsContainer = styled.div`
 `;
 
 export const InsightIconContainer = styled(AssetTypeIconContainer)`
-  background: #2e2e2e;
   border-radius: 4px;
+
+  background: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#e9eef4";
+      case "dark":
+      case "dark-jetbrains":
+        return "#2e2e2e";
+    }
+  }};
 `;
 
 export const StatsContainer = styled.div`
@@ -81,26 +108,63 @@ export const ServicesContainer = styled.div`
 
 export const ServiceName = styled.div`
   padding: 4px 6px;
-  background: #2e2e2e;
   border-radius: 23px;
   line-height: 8px;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#4d668a";
+      case "dark":
+      case "dark-jetbrains":
+        return "#dadada";
+    }
+  }};
+
+  background: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#e9eef4";
+      case "dark":
+      case "dark-jetbrains":
+        return "#2e2e2e";
+    }
+  }};
 `;
 
 export const ValueContainer = styled.div`
   display: flex;
   align-items: flex-end;
-  color: #c6c6c6;
   gap: 2px;
   font-size: 12px;
   line-height: 14px;
   font-weight: 500;
+
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#4d668a";
+      case "dark":
+      case "dark-jetbrains":
+        return "#c6c6c6";
+    }
+  }};
 `;
 
 export const Suffix = styled.span`
-  font-weight: 500;
+  font-weight: 400;
   font-size: 11px;
   line-height: 14px;
-  color: #565757;
+
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#828797";
+      case "dark":
+      case "dark-jetbrains":
+        return "#565757";
+    }
+  }};
 `;
