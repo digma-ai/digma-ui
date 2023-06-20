@@ -10,7 +10,7 @@ export const initializeDigmaMessageListener = (
 ) => {
   window.addEventListener("message", (e) => {
     if (isDigmaMessageEvent(e)) {
-      console.info("Digma message received: ", e);
+      console.debug("Digma message received: ", e);
       dispatcher.dispatch(e.data.action, e.data.payload);
     }
   });
@@ -19,18 +19,18 @@ export const initializeDigmaMessageListener = (
 export const sendMessage = (
   message: DigmaOutgoingMessageData
 ): string | undefined => {
-  console.info("Message to send:", message);
+  console.debug("Message to send:", message);
 
   if (window.sendMessageToVSCode) {
     window.sendMessageToVSCode(message);
-    console.info("Message has been sent to VS Code: ", message);
+    console.debug("Message has been sent to VS Code: ", message);
   }
 
   if (window.cefQuery) {
     return window.cefQuery({
       request: JSON.stringify(message),
       onSuccess: function (response) {
-        console.info("cefQuery has been successfully sent: %s", response);
+        console.debug("cefQuery has been successfully sent: %s", response);
       },
       onFailure: function (error_code, error_message) {
         console.error(
