@@ -64,7 +64,7 @@ export const getCodeFont = (customFont: string): FlattenSimpleInterpolation => {
 
   return css`
     /* stylelint-disable-next-line font-family-no-missing-generic-family-keyword */
-    font-family: ${[customFont, osFont, "monospace"]
+    font-family: ${[`"${customFont}"`, osFont, "monospace"]
       .filter(Boolean)
       .join(", ")};
   `;
