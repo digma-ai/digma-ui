@@ -64,21 +64,24 @@ export const Assets = (props: AssetsProps) => {
     window.sendMessageToDigma({
       action: actions.GET_DATA
     });
-    const refreshInterval = setInterval(() => {
-      window.sendMessageToDigma({
-        action: actions.GET_DATA
-      });
-    }, REFRESH_INTERVAL);
+
+    let getDataTimeout: number;
 
     const handleAssetsData = (data: unknown) => {
       const entries = (data as AssetsData).serviceAssetsEntries;
       setData(groupEntries(entries));
+
+      getDataTimeout = window.setTimeout(() => {
+        window.sendMessageToDigma({
+          action: actions.GET_DATA
+        });
+      }, REFRESH_INTERVAL);
     };
 
     dispatcher.addActionListener(actions.SET_DATA, handleAssetsData);
 
     return () => {
-      clearInterval(refreshInterval);
+      clearTimeout(getDataTimeout);
 
       dispatcher.removeActionListener(actions.SET_DATA, handleAssetsData);
     };
