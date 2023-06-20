@@ -36,10 +36,13 @@ export const actions = addPrefix(ACTION_PREFIX, {
   SET_IS_JAEGER_ENABLED: "SET_IS_JAEGER_ENABLED"
 });
 
+const defaultMainFont = isString(window.mainFont) ? window.mainFont : "";
+const defaultCodeFont = isString(window.codeFont) ? window.codeFont : "";
+
 export const App = (props: AppProps) => {
   const [mode, setMode] = useState(getMode());
-  const [mainFont, setMainFont] = useState("");
-  const [codeFont, setCodeFont] = useState("");
+  const [mainFont, setMainFont] = useState(defaultMainFont);
+  const [codeFont, setCodeFont] = useState(defaultCodeFont);
 
   useEffect(() => {
     if (!props.theme) {
