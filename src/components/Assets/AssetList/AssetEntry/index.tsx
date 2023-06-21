@@ -88,7 +88,7 @@ export const AssetEntry = (props: AssetEntryProps) => {
           </s.ValueContainer>
         </s.Stats>
         <s.Stats>
-          <span>Latest</span>
+          <span>Last</span>
           <s.ValueContainer title={new Date(lastSeenDateTime).toString()}>
             {timeAgo(lastSeenDateTime)}
             <s.Suffix>ago</s.Suffix>
