@@ -34,6 +34,7 @@ declare global {
     recentActivityDocumentationURL?: unknown;
     wizardSkipInstallationStep?: unknown;
     assetsRefreshInterval?: unknown;
+    assetsSearch?: unknown;
     insightsRefreshInterval?: unknown;
   }
 }
