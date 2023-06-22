@@ -49,6 +49,10 @@ export const Toolbar = styled.div`
   padding: 8px;
 `;
 
+export const PopoverContainer = styled.div`
+  margin-left: auto;
+`;
+
 export const SearchInputContainer = styled.div`
   display: flex;
   position: relative;

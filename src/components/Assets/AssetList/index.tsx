@@ -229,41 +229,45 @@ export const AssetList = (props: AssetListProps) => {
         </s.ItemsCount>
       </s.Header>
       <s.Toolbar>
-        <s.SearchInputContainer>
-          <s.SearchInputIconContainer>
-            <MagnifierIcon color={searchInputIconColor} />
-          </s.SearchInputIconContainer>
-          <s.SearchInput
-            placeholder="Search"
-            onChange={handleSearchInputChange}
-          />
-        </s.SearchInputContainer>
-        <Popover
-          open={isSortingMenuOpen}
-          onOpenChange={setIsSortingMenuOpen}
-          placement={"bottom-start"}
-        >
-          <PopoverTrigger onClick={handleSortingMenuToggle}>
-            <s.SortingMenuContainer>
-              <span>Sort by</span>
-              <s.SortingLabel>{sorting.criterion}</s.SortingLabel>
-              <ChevronIcon
-                direction={isSortingMenuOpen ? Direction.UP : Direction.DOWN}
-                color={sortingMenuChevronColor}
-              />
-            </s.SortingMenuContainer>
-          </PopoverTrigger>
-          <PopoverContent className={"Popover"}>
-            <Menu
-              title={"Sort by"}
-              items={Object.values(SORTING_CRITERION).map((x) => ({
-                value: x,
-                label: x
-              }))}
-              onSelect={handleSortingMenuItemSelect}
+        {window.assetsSearch === true && (
+          <s.SearchInputContainer>
+            <s.SearchInputIconContainer>
+              <MagnifierIcon color={searchInputIconColor} />
+            </s.SearchInputIconContainer>
+            <s.SearchInput
+              placeholder="Search"
+              onChange={handleSearchInputChange}
             />
-          </PopoverContent>
-        </Popover>
+          </s.SearchInputContainer>
+        )}
+        <s.PopoverContainer>
+          <Popover
+            open={isSortingMenuOpen}
+            onOpenChange={setIsSortingMenuOpen}
+            placement={"bottom-start"}
+          >
+            <PopoverTrigger onClick={handleSortingMenuToggle}>
+              <s.SortingMenuContainer>
+                <span>Sort by</span>
+                <s.SortingLabel>{sorting.criterion}</s.SortingLabel>
+                <ChevronIcon
+                  direction={isSortingMenuOpen ? Direction.UP : Direction.DOWN}
+                  color={sortingMenuChevronColor}
+                />
+              </s.SortingMenuContainer>
+            </PopoverTrigger>
+            <PopoverContent className={"Popover"}>
+              <Menu
+                title={"Sort by"}
+                items={Object.values(SORTING_CRITERION).map((x) => ({
+                  value: x,
+                  label: x
+                }))}
+                onSelect={handleSortingMenuItemSelect}
+              />
+            </PopoverContent>
+          </Popover>
+        </s.PopoverContainer>
       </s.Toolbar>
       {sortedEntries.length > 0 ? (
         <s.List>
