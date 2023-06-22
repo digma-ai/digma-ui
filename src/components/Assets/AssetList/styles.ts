@@ -45,9 +45,92 @@ export const Header = styled.div`
 
 export const Toolbar = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   padding: 8px;
-  gap: 12px;
+`;
+
+export const SearchInputContainer = styled.div`
+  display: flex;
+  position: relative;
+`;
+
+export const SearchInputIconContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin: auto;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 4px;
+`;
+
+export const SearchInput = styled.input`
+  font-size: 10px;
+  padding: 4px 4px 4px 18px;
+  border-radius: 4px;
+  width: 140px;
+  outline: none;
+
+  caret-color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#4d668a";
+      case "dark":
+      case "dark-jetbrains":
+        return "#dadada";
+    }
+  }};
+
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#4d668a";
+      case "dark":
+      case "dark-jetbrains":
+        return "#dadada";
+    }
+  }};
+
+  border: 1px solid
+    ${({ theme }) => {
+      switch (theme.mode) {
+        case "light":
+          return "#d0d6eb";
+        case "dark":
+        case "dark-jetbrains":
+          return "#606060";
+      }
+    }};
+
+  &:focus,
+  &:hover {
+    border: 1px solid
+      ${({ theme }) => {
+        switch (theme.mode) {
+          case "light":
+            return "#7891d0";
+          case "dark":
+          case "dark-jetbrains":
+            return "#9b9b9b";
+        }
+      }};
+  }
+
+  ::placeholder {
+    color: ${({ theme }) => {
+      switch (theme.mode) {
+        case "light":
+          return "#4d668a";
+        case "dark":
+        case "dark-jetbrains":
+          return "#dadada";
+      }
+    }};
+  }
+
+  &:focus::placeholder {
+    color: transparent;
+  }
 `;
 
 export const SortingMenuContainer = styled.div`
@@ -118,8 +201,17 @@ export const NoDataText = styled.span`
   font-weight: 500;
   font-size: 12px;
   line-height: 16px;
-  color: #9b9b9b;
   text-align: center;
+
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#828797";
+      case "dark":
+      case "dark-jetbrains":
+        return "#9b9b9b";
+    }
+  }};
 `;
 
 export const InsightIconsContainer = styled.span`

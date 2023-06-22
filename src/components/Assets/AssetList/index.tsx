@@ -1,10 +1,11 @@
-import { useMemo, useState } from "react";
+import { ChangeEvent, useMemo, useState } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
 import { Menu } from "../../common/Menu";
 import { Popover } from "../../common/Popover";
 import { PopoverContent } from "../../common/Popover/PopoverContent";
 import { PopoverTrigger } from "../../common/Popover/PopoverTrigger";
 import { ChevronIcon } from "../../common/icons/ChevronIcon";
+import { MagnifierIcon } from "../../common/icons/MagnifierIcon";
 import { Direction } from "../../common/icons/types";
 import { getAssetTypeInfo } from "../utils";
 import { AssetEntry as AssetEntryComponent } from "./AssetEntry";
@@ -146,18 +147,20 @@ export const AssetList = (props: AssetListProps) => {
     isDesc: true
   });
   const [isSortingMenuOpen, setIsSortingMenuOpen] = useState(false);
+  const [searchInputValue, setSearchInputValue] = useState("");
 
   const theme = useTheme();
   const backIconColor = getBackIconColor(theme);
   const assetTypeIconColor = getAssetTypeIconColor(theme);
   const sortingMenuChevronColor = getSortingMenuChevronColor(theme);
+  const searchInputIconColor = sortingMenuChevronColor;
 
   const handleBackButtonClick = () => {
     props.onBackButtonClick();
   };
 
-  const handleAssetLinkClick = (entry: ExtendedAssetEntryWithServices) => {
-    props.onAssetLinkClick(entry);
+  const handleSearchInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchInputValue(e.target.value);
   };
 
   const handleSortingMenuToggle = () => {
@@ -177,6 +180,10 @@ export const AssetList = (props: AssetListProps) => {
       });
     }
     handleSortingMenuToggle();
+  };
+
+  const handleAssetLinkClick = (entry: ExtendedAssetEntryWithServices) => {
+    props.onAssetLinkClick(entry);
   };
 
   const assetTypeInfo = getAssetTypeInfo(props.assetTypeId);
@@ -199,10 +206,13 @@ export const AssetList = (props: AssetListProps) => {
     [props.entries]
   );
 
-  const sortedEntries = useMemo(
-    () => sortEntries(entries, sorting),
-    [entries, sorting]
-  );
+  const sortedEntries = useMemo(() => {
+    const filteredEntries = entries.filter((x) =>
+      x.span.displayName.toLocaleLowerCase().includes(searchInputValue)
+    );
+
+    return sortEntries(filteredEntries, sorting);
+  }, [entries, sorting, searchInputValue]);
 
   return (
     <s.Container>
@@ -219,6 +229,15 @@ export const AssetList = (props: AssetListProps) => {
         </s.ItemsCount>
       </s.Header>
       <s.Toolbar>
+        <s.SearchInputContainer>
+          <s.SearchInputIconContainer>
+            <MagnifierIcon color={searchInputIconColor} />
+          </s.SearchInputIconContainer>
+          <s.SearchInput
+            placeholder="Search"
+            onChange={handleSearchInputChange}
+          />
+        </s.SearchInputContainer>
         <Popover
           open={isSortingMenuOpen}
           onOpenChange={setIsSortingMenuOpen}
