@@ -116,7 +116,7 @@ export const SearchInput = styled.input`
       }};
   }
 
-  ::placeholder {
+  &::placeholder {
     color: ${({ theme }) => {
       switch (theme.mode) {
         case "light":
