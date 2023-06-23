@@ -88,8 +88,8 @@ export const Assets = (props: AssetsProps) => {
     let getDataTimeout: number;
 
     const handleAssetsData = (data: unknown) => {
-      const entries = (data as AssetsData).serviceAssetsEntries;
-      setData(groupEntries(entries));
+      const entries = (data as AssetsData | null)?.serviceAssetsEntries;
+      setData(entries ? groupEntries(entries) : undefined);
 
       getDataTimeout = window.setTimeout(() => {
         window.sendMessageToDigma({
@@ -150,7 +150,7 @@ export const Assets = (props: AssetsProps) => {
   };
 
   const renderContent = useMemo((): JSX.Element => {
-    if (!data) {
+    if (!data || Object.keys(data).length === 0) {
       return (
         <s.NoDataContainer>
           <s.Circle>
