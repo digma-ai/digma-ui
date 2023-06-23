@@ -17,7 +17,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
-export const Empty: Story = {};
+export const NoData: Story = {};
 
 const data = {
   environments: [
@@ -557,7 +557,7 @@ export const WithLiveData: Story = {
   }
 };
 
-export const WithEmptyLiveData: Story = {
+export const WithNoLiveData: Story = {
   args: {
     data,
     liveData: {

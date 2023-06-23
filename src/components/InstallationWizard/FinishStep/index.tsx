@@ -1,4 +1,5 @@
 import { DefaultTheme, useTheme } from "styled-components";
+import { GETTING_STARTED_VIDEO_URL } from "../../../constants";
 import { actions as globalActions } from "../../common/App";
 import { getThemeKind } from "../../common/App/styles";
 import { CircleLoader } from "../../common/CircleLoader";
@@ -14,8 +15,6 @@ import * as s from "./styles";
 import { FinishStepProps } from "./types";
 
 const EMAIL_ERROR_MESSAGE = "Enter a valid email";
-
-const GETTING_STARTED_VIDEO_URL = "https://www.youtube.com/watch?v=jzBEXfCrnlg";
 
 const getPlayIconColor = (theme: DefaultTheme) => {
   switch (theme.mode) {
