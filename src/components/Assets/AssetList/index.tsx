@@ -235,7 +235,7 @@ export const AssetList = (props: AssetListProps) => {
               <MagnifierIcon color={searchInputIconColor} />
             </s.SearchInputIconContainer>
             <s.SearchInput
-              placeholder="Search"
+              placeholder={"Search"}
               onChange={handleSearchInputChange}
             />
           </s.SearchInputContainer>

@@ -1,6 +1,7 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import { useTheme } from "styled-components";
+import { SLACK_WORKSPACE_URL } from "../../constants";
 import { dispatcher } from "../../dispatcher";
 import { IDE } from "../../globals";
 import { useDebounce } from "../../hooks/useDebounce";
@@ -39,9 +40,6 @@ const actions = addPrefix(ACTION_PREFIX, {
   SET_CONNECTION_CHECK_RESULT: "SET_CONNECTION_CHECK_RESULT",
   SET_OBSERVABILITY: "SET_OBSERVABILITY"
 });
-
-const SLACK_WORKSPACE_URL =
-  "https://join.slack.com/t/continuous-feedback/shared_invite/zt-1hk5rbjow-yXOIxyyYOLSXpCZ4RXstgA";
 
 const DIGMA_DOCKER_EXTENSION_URL =
   "https://open.docker.com/extensions/marketplace?extensionId=digmaai/digma-docker-extension";
