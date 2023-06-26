@@ -1,4 +1,4 @@
-export type ActionListener = (data: unknown) => void;
+export type ActionListener = (data: unknown, timeStamp: number) => void;
 
 export interface DigmaIncomingMessageData {
   type: "digma";

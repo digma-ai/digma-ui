@@ -8,7 +8,7 @@ export const CursorFollower = (props: { children: JSX.Element }) => {
   const [degree, setDegree] = useState(0);
   const ref = useRef<HTMLDivElement | null>(null);
 
-  const handleMove = (event: MouseEvent) => {
+  const handleMouseMove = (event: MouseEvent) => {
     if (ref.current) {
       const elPosition = ref.current.getBoundingClientRect();
       const diffX = event.pageX - elPosition.left - elPosition.width / 2;
@@ -29,10 +29,10 @@ export const CursorFollower = (props: { children: JSX.Element }) => {
   };
 
   useEffect(() => {
-    document.addEventListener("mousemove", handleMove);
+    window.addEventListener("mousemove", handleMouseMove);
 
     return () => {
-      document.removeEventListener("mousemove", handleMove);
+      window.removeEventListener("mousemove", handleMouseMove);
     };
   });
 

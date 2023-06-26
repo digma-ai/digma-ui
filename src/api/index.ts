@@ -11,7 +11,7 @@ export const initializeDigmaMessageListener = (
   window.addEventListener("message", (e) => {
     if (isDigmaMessageEvent(e)) {
       console.debug("Digma message received: ", e);
-      dispatcher.dispatch(e.data.action, e.data.payload);
+      dispatcher.dispatch(e.timeStamp, e.data.action, e.data.payload);
     }
   });
 };
