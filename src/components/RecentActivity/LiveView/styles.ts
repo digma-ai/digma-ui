@@ -16,12 +16,7 @@ const getContainerMinHeight = (isChangeStatusBarPresent: boolean) =>
     FOOTER_HEIGHT
   ]
     .filter((x) => x > 0)
-    .reduce(
-      (acc, cur, i, arr) =>
-        acc + cur + (i === arr.length - 1 ? 0 : CONTAINER_GAP),
-      0
-    ) +
-  2 * CONTAINER_GAP;
+    .reduce((acc, cur) => acc + cur + CONTAINER_GAP, 0) + CONTAINER_GAP;
 
 export const Container = styled.div<{ isChangeStatusBarPresent: boolean }>`
   display: flex;

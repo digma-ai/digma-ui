@@ -360,7 +360,7 @@ export const LiveView = (props: LiveViewProps) => {
     }
 
     return percentile;
-  }, [props.data]);
+  }, [props.data.durationData.percentiles]);
 
   return (
     <s.Container isChangeStatusBarPresent={Boolean(changedPercentile)}>
