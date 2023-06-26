@@ -45,18 +45,6 @@ export const App = (props: AppProps) => {
   const [codeFont, setCodeFont] = useState(defaultCodeFont);
 
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      console.debug(e);
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);
-
-  useEffect(() => {
     if (!props.theme) {
       return;
     }

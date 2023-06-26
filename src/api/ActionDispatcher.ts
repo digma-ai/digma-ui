@@ -26,9 +26,9 @@ export class ActionDispatcher {
     }
   }
 
-  public dispatch(type: string, data?: unknown): void {
+  public dispatch(timeStamp: number, type: string, data?: unknown): void {
     if (this.actions[type]) {
-      this.actions[type].forEach((fn) => fn(data));
+      this.actions[type].forEach((fn) => fn(data, timeStamp));
     }
   }
 }

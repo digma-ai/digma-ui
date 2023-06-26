@@ -77,6 +77,7 @@ export const Assets = (props: AssetsProps) => {
     null
   );
   const [data, setData] = useState<GroupedAssetEntries>();
+  const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
   const theme = useTheme();
   const noDataIconColor = getNoDataIconColor(theme);
 
@@ -85,27 +86,30 @@ export const Assets = (props: AssetsProps) => {
       action: actions.GET_DATA
     });
 
-    let getDataTimeout: number;
-
-    const handleAssetsData = (data: unknown) => {
+    const handleAssetsData = (data: unknown, timeStamp: number) => {
       const entries = (data as AssetsData | null)?.serviceAssetsEntries;
       setData(entries ? groupEntries(entries) : undefined);
-
-      getDataTimeout = window.setTimeout(() => {
-        window.sendMessageToDigma({
-          action: actions.GET_DATA
-        });
-      }, REFRESH_INTERVAL);
+      setLastSetDataTimeStamp(timeStamp);
     };
 
     dispatcher.addActionListener(actions.SET_DATA, handleAssetsData);
 
     return () => {
-      clearTimeout(getDataTimeout);
-
       dispatcher.removeActionListener(actions.SET_DATA, handleAssetsData);
     };
   }, []);
+
+  useEffect(() => {
+    const timerId = window.setTimeout(() => {
+      window.sendMessageToDigma({
+        action: actions.GET_DATA
+      });
+    }, REFRESH_INTERVAL);
+
+    return () => {
+      window.clearTimeout(timerId);
+    };
+  }, [lastSetDataTimeStamp]);
 
   useEffect(() => {
     if (!props.data) {
