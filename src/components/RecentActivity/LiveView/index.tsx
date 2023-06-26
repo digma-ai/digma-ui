@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { UIEvent, useEffect, useRef, useState } from "react";
+import { UIEvent, useEffect, useMemo, useRef, useState } from "react";
 import useDimensions from "react-cool-dimensions";
 import useScrollbarSize from "react-scrollbar-size";
 
@@ -40,6 +40,8 @@ import {
 } from "./types";
 
 const ZOOM_FACTOR = 1.2;
+const DURATION_RATIO_MIN_LIMIT = 0.1;
+const DURATION_DIFF_MIN_LIMIT = 10 * 1000; // in nanoseconds
 
 const PERCENTILES = [
   { label: "Median", percentile: 0.5 },
@@ -328,8 +330,40 @@ export const LiveView = (props: LiveViewProps) => {
       ? scrollbar.width
       : 0;
 
+  const changedPercentile = useMemo(() => {
+    if (props.data.durationData.percentiles.length === 0) {
+      return null;
+    }
+
+    const percentile = props.data.durationData.percentiles.find(
+      (x) => x.previousDuration && typeof x.changeVerified === "boolean"
+    );
+
+    if (!percentile) {
+      return null;
+    }
+
+    let changeMeaningfulEnough = false;
+
+    if (percentile.previousDuration) {
+      const diff = Math.abs(
+        percentile.currentDuration.raw - percentile.previousDuration.raw
+      );
+
+      changeMeaningfulEnough =
+        diff / percentile.previousDuration.raw > DURATION_RATIO_MIN_LIMIT &&
+        diff > DURATION_DIFF_MIN_LIMIT;
+    }
+
+    if (!changeMeaningfulEnough) {
+      return null;
+    }
+
+    return percentile;
+  }, [props.data.durationData.percentiles]);
+
   return (
-    <s.Container>
+    <s.Container isChangeStatusBarPresent={Boolean(changedPercentile)}>
       <s.Header>
         <s.Title>
           <s.SpanIconContainer>
@@ -355,10 +389,14 @@ export const LiveView = (props: LiveViewProps) => {
               <PlusIcon size={16} color={zoomButtonIconColor} />
             </s.ZoomButton>
           </s.ZoomButtonsContainer>
-          <s.ChangeStatusContainer>
-            <ChangeStatus percentiles={props.data.durationData.percentiles} />
-          </s.ChangeStatusContainer>
-          <s.ChartsContainer>
+          {changedPercentile && (
+            <s.ChangeStatusContainer>
+              <ChangeStatus percentile={changedPercentile} />
+            </s.ChangeStatusContainer>
+          )}
+          <s.ChartsContainer
+            isChangeStatusBarPresent={Boolean(changedPercentile)}
+          >
             <s.AxisChartContainer
               scrollbarOffset={scrollbarOffset}
               width={YAxisWidth}
