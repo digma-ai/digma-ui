@@ -5,9 +5,6 @@ import { LiveDataDurationPercentile } from "../types";
 import * as s from "./styles";
 import { ChangeStatusProps } from "./types";
 
-const DURATION_RATIO_MIN_LIMIT = 0.1;
-const DURATION_DIFF_MIN_LIMIT = 10 * 1000; // in nanoseconds
-
 const getStatusString = (percentile: LiveDataDurationPercentile) => {
   if (!percentile.previousDuration) {
     return "";
@@ -74,39 +71,12 @@ const renderArrowIcon = (
 
 export const ChangeStatus = (props: ChangeStatusProps) => {
   const theme = useTheme();
-  if (props.percentiles.length === 0) {
-    return null;
-  }
-
-  const percentile = props.percentiles.find(
-    (x) => x.previousDuration && typeof x.changeVerified === "boolean"
-  );
-
-  if (!percentile) {
-    return null;
-  }
-
-  let changeMeaningfulEnough = false;
-
-  if (percentile.previousDuration) {
-    const diff = Math.abs(
-      percentile.currentDuration.raw - percentile.previousDuration.raw
-    );
-
-    changeMeaningfulEnough =
-      diff / percentile.previousDuration.raw > DURATION_RATIO_MIN_LIMIT &&
-      diff > DURATION_DIFF_MIN_LIMIT;
-  }
-
-  if (!changeMeaningfulEnough) {
-    return null;
-  }
 
   return (
     <s.Container>
-      {renderArrowIcon(percentile, theme)}
-      {getStatusString(percentile)}
-      {!percentile.changeVerified && (
+      {renderArrowIcon(props.percentile, theme)}
+      {getStatusString(props.percentile)}
+      {!props.percentile.changeVerified && (
         <s.EvaluatingBadge>Evaluating</s.EvaluatingBadge>
       )}
     </s.Container>

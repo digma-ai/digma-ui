@@ -1,11 +1,35 @@
 import styled from "styled-components";
 import { AreaLegendIllustrationProps, AxisChartContainerProps } from "./types";
 
-export const Container = styled.div`
+// In pixels
+const CONTAINER_GAP = 12;
+const HEADER_HEIGHT = 24;
+const ZOOM_BUTTONS_CONTAINER_HEIGHT = 26;
+const CHANGE_STATUS_CONTAINER_HEIGHT = 32;
+const FOOTER_HEIGHT = 20;
+
+const getContainerMinHeight = (isChangeStatusBarPresent: boolean) =>
+  [
+    HEADER_HEIGHT,
+    ZOOM_BUTTONS_CONTAINER_HEIGHT,
+    isChangeStatusBarPresent ? CHANGE_STATUS_CONTAINER_HEIGHT : 0,
+    FOOTER_HEIGHT
+  ]
+    .filter((x) => x > 0)
+    .reduce(
+      (acc, cur, i, arr) =>
+        acc + cur + (i === arr.length - 1 ? 0 : CONTAINER_GAP),
+      0
+    ) +
+  2 * CONTAINER_GAP;
+
+export const Container = styled.div<{ isChangeStatusBarPresent: boolean }>`
   display: flex;
   flex-direction: column;
   height: 100%;
-  gap: 12px;
+  gap: ${CONTAINER_GAP}px;
+  min-height: ${({ isChangeStatusBarPresent }) =>
+    getContainerMinHeight(isChangeStatusBarPresent)}px;
 
   border: 1px solid
     ${({ theme }) => {
@@ -37,6 +61,9 @@ export const Header = styled.div`
   font-weight: 500;
   font-size: 10px;
   line-height: 12px;
+  height: ${HEADER_HEIGHT}px;
+  box-sizing: border-box;
+  flex: none;
 
   border-bottom: ${({ theme }) => {
     switch (theme.mode) {
@@ -114,9 +141,15 @@ export const CloseButton = styled.button`
   cursor: pointer;
 `;
 
-export const ChartsContainer = styled.div`
+export const ChartsContainer = styled.div<{
+  isChangeStatusBarPresent: boolean;
+}>`
   display: flex;
-  height: calc(100% - 174px);
+  height: calc(
+    100% -
+      ${({ isChangeStatusBarPresent }) =>
+        getContainerMinHeight(isChangeStatusBarPresent)}px
+  );
   padding-right: 12px;
 `;
 
@@ -125,6 +158,8 @@ export const ZoomButtonsContainer = styled.div`
   justify-content: flex-end;
   gap: 4px;
   padding: 0 12px;
+  height: ${ZOOM_BUTTONS_CONTAINER_HEIGHT}px;
+  flex: none;
 `;
 
 export const ZoomButton = styled.button`
@@ -168,7 +203,8 @@ export const ZoomButton = styled.button`
 
 export const ChangeStatusContainer = styled.div`
   padding: 0 12px;
-  height: 32px;
+  height: ${CHANGE_STATUS_CONTAINER_HEIGHT}px;
+  flex: none;
 `;
 
 export const AxisChartContainer = styled.div<AxisChartContainerProps>`
@@ -189,6 +225,9 @@ export const Footer = styled.div`
   flex-direction: column;
   gap: 4px;
   padding: 4px 12px;
+  height: ${FOOTER_HEIGHT}px;
+  box-sizing: border-box;
+  flex: none;
 `;
 
 export const LegendContainer = styled.div`
