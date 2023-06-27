@@ -16,11 +16,13 @@ export enum InsightType {
   SpanNPlusOne = "SpaNPlusOne",
   SpanEndpointBottleneck = "SpanEndpointBottleneck",
   SpanDurations = "SpanDurations",
-  SpanScaling = "SpanScaling",
+  SpanScalingBadly = "SpanScaling",
   SpanScalingRootCause = "SpanScalingRootCause",
   SpanDurationBreakdown = "SpanDurationBreakdown",
   EndpointDurationSlowdown = "EndpointDurationSlowdown",
-  EndpointBreakdown = "EndpointBreakdown"
+  EndpointBreakdown = "EndpointBreakdown",
+  SpanScalingWell = "SpanScalingWell",
+  SpanScalingInsufficientData = "SpanScalingInsufficientData"
 }
 
 export enum InsightImportance {

@@ -65,7 +65,7 @@ export const getInsightTypeInfo = (
       icon: BottleneckIcon,
       label: "Bottleneck"
     },
-    [InsightType.SpanScaling]: {
+    [InsightType.SpanScalingBadly]: {
       icon: ScalesIcon,
       label: "Scaling Issue Found"
     },

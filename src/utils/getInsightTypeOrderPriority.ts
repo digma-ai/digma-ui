@@ -8,7 +8,7 @@ export const getInsightTypeOrderPriority = (type: string): number => {
 
     [InsightType.SpanDurations]: 60,
     [InsightType.SpanUsages]: 61,
-    [InsightType.SpanScaling]: 63,
+    [InsightType.SpanScalingBadly]: 63,
     [InsightType.SpanNPlusOne]: 65,
     [InsightType.SpanDurationChange]: 66,
     [InsightType.SpanEndpointBottleneck]: 67,
