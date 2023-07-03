@@ -6,8 +6,8 @@ import * as s from "./styles";
 import { BottleneckInsightProps } from "./types";
 
 export const BottleneckInsight = (props: BottleneckInsightProps) => {
-  const handleEndpointLinkClick = () => {
-    // TODO
+  const handleEndpointLinkClick = (spanCodeObjectId: string) => {
+    props.onAssetLinkClick(spanCodeObjectId);
   };
 
   return (
@@ -23,7 +23,13 @@ export const BottleneckInsight = (props: BottleneckInsightProps) => {
             return (
               <s.Endpoint key={i}>
                 <s.EndpointName>
-                  <Link onClick={() => handleEndpointLinkClick()}>
+                  <Link
+                    onClick={() =>
+                      handleEndpointLinkClick(
+                        endpoint.endpointInfo.spanCodeObjectId
+                      )
+                    }
+                  >
                     {endpointName}
                   </Link>
                   <s.Duration>

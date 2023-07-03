@@ -12,6 +12,8 @@ import { Direction } from "../../common/icons/types";
 import * as s from "./styles";
 import { InsightCardProps } from "./types";
 
+const RECALCULATE = "recalculate";
+
 export const InsightCard = (props: InsightCardProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isKebabMenuOpen, setIsKebabMenuOpen] = useState(false);
@@ -28,9 +30,10 @@ export const InsightCard = (props: InsightCardProps) => {
   };
 
   const handleKebabMenuItemSelect = (value: string) => {
-    if (value === "recalculate") {
-      // TODO
-      console.log("Recalculate");
+    if (value === RECALCULATE) {
+      props.data.prefixedCodeObjectId &&
+        props.onRecalculate &&
+        props.onRecalculate(props.data.prefixedCodeObjectId, props.data.type);
     }
 
     handleKebabMenuButtonToggle();
@@ -66,7 +69,7 @@ export const InsightCard = (props: InsightCardProps) => {
                 <Menu
                   items={[
                     ...(props.data.isRecalculateEnabled
-                      ? [{ value: "recalculate", label: "Recalculate" }]
+                      ? [{ value: RECALCULATE, label: "Recalculate" }]
                       : []),
                     ...(props.menuItems
                       ? props.menuItems.map((x) => ({ value: x, label: x }))

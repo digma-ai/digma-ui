@@ -1,4 +1,6 @@
 import { trimEndpointScheme } from "../../../utils/trimEndpointScheme";
+import { Button } from "../../common/Button";
+import { ChartIcon } from "../../common/icons/ChartIcon";
 import { CrosshairIcon } from "../../common/icons/CrosshairIcon";
 import { InsightCard } from "../InsightCard";
 import { Link } from "../styles";
@@ -7,12 +9,20 @@ import * as s from "./styles";
 import { ScalingIssueInsightProps } from "./types";
 
 export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
-  const handleLinkClick = () => {
-    // TODO
+  const handleLinkClick = (spanCodeObjectId: string) => {
+    props.onAssetLinkClick(spanCodeObjectId);
   };
 
   const handleTraceButtonClick = (trace: Trace) => {
-    // TODO
+    props.onTraceButtonClick(trace);
+  };
+
+  const handleHistogramButtonClick = () => {
+    props.insight.spanInfo &&
+      props.onHistogramButtonClick(
+        props.insight.spanInfo.spanCodeObjectId,
+        props.insight.type
+      );
   };
 
   return (
@@ -44,11 +54,14 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
               {props.insight.rootCauseSpans.map((span) => {
                 const spanName = span.displayName;
                 const traceId = span.sampleTraceId;
+                const spanCodeObjectId = span.spanCodeObjectId;
 
                 return (
-                  <s.RootCause key={span.spanCodeObjectId}>
+                  <s.RootCause key={spanCodeObjectId}>
                     <span>
-                      <Link onClick={() => handleLinkClick()}>{spanName}</Link>
+                      <Link onClick={() => handleLinkClick(spanCodeObjectId)}>
+                        {spanName}
+                      </Link>
                     </span>
                     {traceId && (
                       <s.Button
@@ -77,7 +90,9 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
 
                 return (
                   <span key={endpoint.route}>
-                    <Link onClick={() => handleLinkClick()}>
+                    <Link
+                      onClick={() => handleLinkClick(endpoint.spanCodeObjectId)}
+                    >
                       {endpointRoute}
                     </Link>
                   </span>
@@ -87,6 +102,19 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
           )}
         </s.ContentContainer>
       }
+      buttons={[
+        ...(props.insight.spanInfo
+          ? [
+              <Button
+                icon={{ component: ChartIcon }}
+                key={"histogram"}
+                onClick={handleHistogramButtonClick}
+              >
+                Histogram
+              </Button>
+            ]
+          : [])
+      ]}
     />
   );
 };

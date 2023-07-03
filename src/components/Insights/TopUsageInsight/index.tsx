@@ -2,18 +2,18 @@ import { roundTo } from "../../../utils/roundTo";
 import { CrosshairIcon } from "../../common/icons/CrosshairIcon";
 import { InsightCard } from "../InsightCard";
 import { Pagination } from "../Pagination";
-import { Link } from "../styles";
+import { Description, Link } from "../styles";
 import { Trace } from "../types";
 import * as s from "./styles";
 import { TopUsageInsightProps } from "./types";
 
 export const TopUsageInsight = (props: TopUsageInsightProps) => {
-  const handleServiceLinkClick = () => {
-    // TODO
+  const handleServiceLinkClick = (spanCodeObjectId?: string) => {
+    spanCodeObjectId && props.onAssetLinkClick(spanCodeObjectId);
   };
 
   const handleTraceButtonClick = (trace: Trace) => {
-    // TODO
+    props.onTraceButtonClick(trace);
   };
 
   return (
@@ -26,31 +26,44 @@ export const TopUsageInsight = (props: TopUsageInsightProps) => {
           >
             {props.insight.flows.map((flow, i) => {
               const firstServiceName = `${flow.firstService.service}:${flow.firstService.span}`;
-              const lastServiceName = flow.lastService
-                ? `${flow.lastService.service}:${flow.lastService.span}`
-                : "";
               const traceId = flow.sampleTraceIds[0];
 
               return (
                 <s.Flow key={i}>
                   <s.FlowData>
-                    <span>
-                      {roundTo(flow.percentage, 2)}%{" "}
-                      <Link onClick={() => handleServiceLinkClick()}>
-                        {firstServiceName}
+                    <span>{roundTo(flow.percentage, 2)}% </span>
+                    <s.FullSpanName>
+                      <Description>{flow.firstService.service}</Description>
+                      <Link
+                        onClick={() =>
+                          handleServiceLinkClick(
+                            flow.firstService.spanCodeObjectId
+                          )
+                        }
+                      >
+                        {flow.firstService.span}
                       </Link>
-                    </span>
+                    </s.FullSpanName>
                     <span>
                       {flow.intermediateSpan && (
                         <> -&gt; {flow.intermediateSpan}</>
                       )}
                     </span>
-                    <span>
-                      {flow.lastService ? (
-                        <Link onClick={() => handleServiceLinkClick()}>
-                          {lastServiceName}
+                    {flow.lastService ? (
+                      <s.FullSpanName>
+                        <Description>{flow.lastService.service}</Description>
+                        <Link
+                          onClick={() =>
+                            handleServiceLinkClick(
+                              flow.lastService?.spanCodeObjectId
+                            )
+                          }
+                        >
+                          {flow.lastService.span}
                         </Link>
-                      ) : null}
+                      </s.FullSpanName>
+                    ) : null}
+                    <span>
                       {flow.lastServiceSpan && (
                         <> -&gt; {flow.lastServiceSpan}</>
                       )}
@@ -75,6 +88,7 @@ export const TopUsageInsight = (props: TopUsageInsightProps) => {
           </Pagination>
         </s.FlowList>
       }
+      onRecalculate={props.onRecalculate}
     />
   );
 };

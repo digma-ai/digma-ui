@@ -61,6 +61,7 @@ export const RequestBreakdownInsight = (
           </s.Legend>
         </s.ContentContainer>
       }
+      onRecalculate={props.onRecalculate}
     />
   );
 };

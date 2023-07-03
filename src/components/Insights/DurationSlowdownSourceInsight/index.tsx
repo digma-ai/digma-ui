@@ -8,8 +8,8 @@ import { DurationSlowdownSourceInsightProps } from "./types";
 export const DurationSlowdownSourceInsight = (
   props: DurationSlowdownSourceInsightProps
 ) => {
-  const handleSpanLinkClick = () => {
-    // TODO
+  const handleSpanLinkClick = (spanCodeObjectId: string) => {
+    props.onAssetLinkClick(spanCodeObjectId);
   };
 
   const p50Sources = props.insight.durationSlowdownSources.filter(
@@ -24,10 +24,13 @@ export const DurationSlowdownSourceInsight = (
     <s.SourceList>
       {sources.map((x) => {
         const spanName = x.spanInfo.displayName;
+        const spanCodeObjectId = x.spanInfo.spanCodeObjectId;
 
         return (
-          <s.Source key={x.spanInfo.spanCodeObjectId}>
-            <Link onClick={() => handleSpanLinkClick()}>{spanName}</Link>
+          <s.Source key={spanCodeObjectId}>
+            <Link onClick={() => handleSpanLinkClick(spanCodeObjectId)}>
+              {spanName}
+            </Link>
             <DurationChange
               currentDuration={x.currentDuration}
               previousDuration={x.previousDuration}

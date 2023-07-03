@@ -5,9 +5,12 @@ import * as s from "./styles";
 import { ErrorsInsightProps } from "./types";
 
 export const ErrorsInsight = (props: ErrorsInsightProps) => {
+  const handleErrorLinkClick = (errorId: string) => {
+    props.onErrorSelect(errorId);
+  };
+
   const handleExpandButtonClick = () => {
-    // TODO
-    console.log("Expand");
+    props.onExpandButtonClick();
   };
 
   return (
@@ -26,7 +29,10 @@ export const ErrorsInsight = (props: ErrorsInsightProps) => {
           <s.ErrorList>
             {props.insight.topErrors.map((error) => (
               <s.Description key={error.uid}>
-                <Link>{error.errorType}</Link> from{" "}
+                <Link onClick={() => handleErrorLinkClick(error.uid)}>
+                  {error.errorType}
+                </Link>{" "}
+                from{" "}
                 <s.EntityName>
                   {error.sourceCodeObjectId.split("$_$")[1]}
                 </s.EntityName>

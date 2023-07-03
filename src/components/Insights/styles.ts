@@ -29,6 +29,7 @@ export const InsightsContainer = styled.div`
 
 export const Description = styled.span`
   font-size: 10px;
+  line-height: normal;
 
   color: ${({ theme }) => {
     switch (theme.mode) {

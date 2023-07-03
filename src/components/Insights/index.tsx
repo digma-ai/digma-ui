@@ -44,7 +44,8 @@ import {
   InsightGroup,
   InsightsData,
   InsightsProps,
-  SpanInsight
+  SpanInsight,
+  Trace
 } from "./types";
 
 const REFRESH_INTERVAL = isNumber(window.insightsRefreshInterval)
@@ -55,7 +56,15 @@ const ACTION_PREFIX = "INSIGHTS";
 
 const actions = addPrefix(ACTION_PREFIX, {
   GET_DATA: "GET_DATA",
-  SET_DATA: "SET_DATA"
+  SET_DATA: "SET_DATA",
+  GO_TO_ERRORS: "GO_TO_ERRORS",
+  GO_TO_ERROR: "GO_TO_ERROR",
+  GO_TO_TRACE: "GO_TO_TRACE",
+  GO_TO_TRACE_COMPARISON: "GO_TO_TRACE_COMPARISON",
+  GO_TO_ASSET: "GO_TO_ASSET",
+  OPEN_HISTOGRAM: "OPEN_HISTOGRAM",
+  OPEN_LIVE_VIEW: "OPEN_LIVE_VIEW",
+  RECALCULATE: "RECALCULATE"
 });
 
 export const getInsightTypeOrderPriority = (type: string): number => {
@@ -88,20 +97,133 @@ export const getInsightTypeOrderPriority = (type: string): number => {
 const renderInsightCard = (
   insight: GenericCodeObjectInsight
 ): JSX.Element | undefined => {
+  const handleErrorSelect = (errorId: string) => {
+    window.sendMessageToDigma({
+      action: actions.GO_TO_ERROR,
+      payload: {
+        errorId
+      }
+    });
+  };
+
+  const handleErrorsExpandButtonClick = () => {
+    window.sendMessageToDigma({
+      action: actions.GO_TO_ERRORS
+    });
+  };
+
+  const handleHistogramButtonClick = (
+    spanCodeObjectId: string,
+    insightType: string
+  ) => {
+    window.sendMessageToDigma({
+      action: actions.OPEN_HISTOGRAM,
+      payload: {
+        spanCodeObjectId,
+        insightType
+      }
+    });
+  };
+
+  const handleLiveButtonClick = (prefixedCodeObjectId: string) => {
+    window.sendMessageToDigma({
+      action: actions.OPEN_LIVE_VIEW,
+      payload: {
+        prefixedCodeObjectId
+      }
+    });
+  };
+
+  const handleTraceButtonClick = (trace: Trace) => {
+    window.sendMessageToDigma({
+      action: actions.GO_TO_TRACE,
+      payload: {
+        trace
+      }
+    });
+  };
+
+  const handleCompareButtonClick = (traces: [Trace, Trace]) => {
+    window.sendMessageToDigma({
+      action: actions.GO_TO_TRACE_COMPARISON,
+      payload: {
+        traces
+      }
+    });
+  };
+
+  const handleAssetLinkClick = (spanCodeObjectId: string) => {
+    window.sendMessageToDigma({
+      action: actions.GO_TO_ASSET,
+      payload: {
+        spanCodeObjectId
+      }
+    });
+  };
+
+  const handleRecalculate = (
+    prefixedCodeObjectId: string,
+    insightType: InsightType
+  ) => {
+    window.sendMessageToDigma({
+      action: actions.RECALCULATE,
+      payload: {
+        prefixedCodeObjectId,
+        insightType
+      }
+    });
+  };
+
   if (isSpanDurationsInsight(insight)) {
-    return <DurationInsight key={insight.type} insight={insight} />;
+    return (
+      <DurationInsight
+        key={insight.type}
+        insight={insight}
+        onHistogramButtonClick={handleHistogramButtonClick}
+        onLiveButtonClick={handleLiveButtonClick}
+        onCompareButtonClick={handleCompareButtonClick}
+        onRecalculate={handleRecalculate}
+      />
+    );
   }
   if (isSpanDurationBreakdownInsight(insight)) {
-    return <DurationBreakdownInsight key={insight.type} insight={insight} />;
+    return (
+      <DurationBreakdownInsight
+        key={insight.type}
+        insight={insight}
+        onAssetLinkClick={handleAssetLinkClick}
+        onRecalculate={handleRecalculate}
+      />
+    );
   }
   if (isSpanUsagesInsight(insight)) {
-    return <TopUsageInsight key={insight.type} insight={insight} />;
+    return (
+      <TopUsageInsight
+        key={insight.type}
+        insight={insight}
+        onAssetLinkClick={handleAssetLinkClick}
+        onTraceButtonClick={handleTraceButtonClick}
+        onRecalculate={handleRecalculate}
+      />
+    );
   }
   if (isSpanEndpointBottleneckInsight(insight)) {
-    return <BottleneckInsight key={insight.type} insight={insight} />;
+    return (
+      <BottleneckInsight
+        key={insight.type}
+        insight={insight}
+        onAssetLinkClick={handleAssetLinkClick}
+      />
+    );
   }
   if (isEndpointSlowestSpansInsight(insight)) {
-    return <SpanBottleneckInsight key={insight.type} insight={insight} />;
+    return (
+      <SpanBottleneckInsight
+        key={insight.type}
+        insight={insight}
+        onAssetLinkClick={handleAssetLinkClick}
+      />
+    );
   }
   if (isSlowEndpointInsight(insight)) {
     return <SlowEndpointInsight key={insight.type} insight={insight} />;
@@ -114,16 +236,45 @@ const renderInsightCard = (
     return <TrafficInsight key={insight.type} insight={insight} />;
   }
   if (isCodeObjectErrorsInsight(insight)) {
-    return <ErrorsInsight key={insight.type} insight={insight} />;
+    return (
+      <ErrorsInsight
+        key={insight.type}
+        insight={insight}
+        onErrorSelect={handleErrorSelect}
+        onExpandButtonClick={handleErrorsExpandButtonClick}
+      />
+    );
   }
   if (isEndpointSuspectedNPlusOneInsight(insight)) {
-    return <EndpointNPlusOneInsight key={insight.type} insight={insight} />;
+    return (
+      <EndpointNPlusOneInsight
+        key={insight.type}
+        insight={insight}
+        onAssetLinkClick={handleAssetLinkClick}
+        onTraceButtonClick={handleTraceButtonClick}
+      />
+    );
   }
   if (isSpanNPlusOneInsight(insight)) {
-    return <NPlusOneInsight key={insight.type} insight={insight} />;
+    return (
+      <NPlusOneInsight
+        key={insight.type}
+        insight={insight}
+        onAssetLinkClick={handleAssetLinkClick}
+        onTraceButtonClick={handleTraceButtonClick}
+      />
+    );
   }
   if (isSpanScalingBadlyInsight(insight)) {
-    return <ScalingIssueInsight key={insight.type} insight={insight} />;
+    return (
+      <ScalingIssueInsight
+        key={insight.type}
+        insight={insight}
+        onAssetLinkClick={handleAssetLinkClick}
+        onTraceButtonClick={handleTraceButtonClick}
+        onHistogramButtonClick={handleHistogramButtonClick}
+      />
+    );
   }
   if (isCodeObjectHotSpotInsight(insight)) {
     return (
@@ -140,12 +291,22 @@ const renderInsightCard = (
   }
   if (isEndpointDurationSlowdownInsight(insight)) {
     return (
-      <DurationSlowdownSourceInsight key={insight.type} insight={insight} />
+      <DurationSlowdownSourceInsight
+        key={insight.type}
+        insight={insight}
+        onAssetLinkClick={handleAssetLinkClick}
+      />
     );
   }
 
   if (isEndpointBreakdownInsight(insight)) {
-    return <RequestBreakdownInsight key={insight.type} insight={insight} />;
+    return (
+      <RequestBreakdownInsight
+        key={insight.type}
+        insight={insight}
+        onRecalculate={handleRecalculate}
+      />
+    );
   }
 };
 
@@ -182,7 +343,7 @@ const groupInsights = (
     if (
       !spanCodeObjectId
       // ||
-      // spanCodeObjectId === props.assetEntry.span.spanCodeObjectId
+      // spanCodeObjectId === props.data.spanCodeObjectId
     ) {
       ungroupedInsights.push(insight);
       continue;

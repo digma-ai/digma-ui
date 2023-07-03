@@ -55,8 +55,8 @@ export const DurationBreakdownInsight = (
     return 0;
   });
 
-  const handleSpanLinkClick = () => {
-    // TODO
+  const handleSpanLinkClick = (spanCodeObjectId: string) => {
+    props.onAssetLinkClick(spanCodeObjectId);
   };
 
   return (
@@ -71,13 +71,13 @@ export const DurationBreakdownInsight = (
               const percentile = getPercentile(entry, DEFAULT_PERCENTILE);
 
               const name = entry.spanDisplayName;
+              const spanCodeObjectId = entry.spanCodeObjectId;
 
               return percentile ? (
-                <s.Duration
-                  title={getTitle(entry)}
-                  key={entry.spanCodeObjectId}
-                >
-                  <Link onClick={() => handleSpanLinkClick()}>{name}</Link>{" "}
+                <s.Duration title={getTitle(entry)} key={spanCodeObjectId}>
+                  <Link onClick={() => handleSpanLinkClick(spanCodeObjectId)}>
+                    {name}
+                  </Link>{" "}
                   {`${percentile.duration.value} ${percentile.duration.unit}`}
                 </s.Duration>
               ) : null;
@@ -85,6 +85,7 @@ export const DurationBreakdownInsight = (
           </Pagination>
         </s.DurationList>
       }
+      onRecalculate={props.onRecalculate}
     />
   );
 };

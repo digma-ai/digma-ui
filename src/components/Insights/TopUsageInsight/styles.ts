@@ -36,6 +36,11 @@ export const FlowData = styled.span`
   word-break: break-all;
 `;
 
+export const FullSpanName = styled.span`
+  display: flex;
+  gap: 2px;
+`;
+
 export const Button = styled(CommonButton)`
   margin-left: auto;
   height: fit-content;

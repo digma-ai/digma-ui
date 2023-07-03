@@ -5,8 +5,8 @@ import * as s from "./styles";
 import { SpanBottleneckInsightProps } from "./types";
 
 export const SpanBottleneckInsight = (props: SpanBottleneckInsightProps) => {
-  const handleSpanLinkClick = () => {
-    // TODO
+  const handleSpanLinkClick = (spanCodeObjectId: string) => {
+    props.onAssetLinkClick(spanCodeObjectId);
   };
 
   return (
@@ -20,11 +20,12 @@ export const SpanBottleneckInsight = (props: SpanBottleneckInsightProps) => {
           <s.SpanList>
             {props.insight.spans.map((span) => {
               const spanName = span.spanInfo.displayName;
+              const spanCodeObjectId = span.spanInfo.spanCodeObjectId;
 
               return (
-                <s.SpanContainer key={span.spanInfo.spanCodeObjectId}>
+                <s.SpanContainer key={spanCodeObjectId}>
                   <s.Span>
-                    <Link onClick={() => handleSpanLinkClick()}>
+                    <Link onClick={() => handleSpanLinkClick(spanCodeObjectId)}>
                       {spanName}
                     </Link>
                   </s.Span>

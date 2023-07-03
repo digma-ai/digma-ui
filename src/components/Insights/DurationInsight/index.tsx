@@ -17,17 +17,20 @@ export const DurationInsight = (props: DurationInsightProps) => {
   const spanLastCall = props.insight.lastSpanInstanceInfo;
 
   const handleHistogramButtonClick = () => {
-    // TODO:
-    console.log("Histogram");
+    props.insight.spanInfo &&
+      props.onHistogramButtonClick(
+        props.insight.spanInfo.spanCodeObjectId,
+        props.insight.type
+      );
   };
 
   const handleLiveButtonClick = () => {
-    // TODO:
-    console.log("Live");
+    props.insight.prefixedCodeObjectId &&
+      props.onLiveButtonClick(props.insight.prefixedCodeObjectId);
   };
 
   const handleCompareButtonClick = (traces: [Trace, Trace]) => {
-    // TODO:
+    props.onCompareButtonClick(traces);
   };
 
   const traceIds: string[] = [];
@@ -84,22 +87,31 @@ export const DurationInsight = (props: DurationInsightProps) => {
           )}
         </>
       }
+      onRecalculate={props.onRecalculate}
       buttons={[
-        <Button
-          icon={{ component: ChartIcon }}
-          key={"histogram"}
-          onClick={handleHistogramButtonClick}
-        >
-          Histogram
-        </Button>,
-        <Button
-          icon={{ component: DoubleCircleIcon }}
-          key={"live"}
-          buttonType={"secondary"}
-          onClick={handleLiveButtonClick}
-        >
-          Live
-        </Button>
+        ...(props.insight.spanInfo
+          ? [
+              <Button
+                icon={{ component: ChartIcon }}
+                key={"histogram"}
+                onClick={handleHistogramButtonClick}
+              >
+                Histogram
+              </Button>
+            ]
+          : []),
+        ...(props.insight.prefixedCodeObjectId
+          ? [
+              <Button
+                icon={{ component: DoubleCircleIcon }}
+                key={"live"}
+                buttonType={"secondary"}
+                onClick={handleLiveButtonClick}
+              >
+                Live
+              </Button>
+            ]
+          : [])
       ]}
     />
   );

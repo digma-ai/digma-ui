@@ -12,12 +12,12 @@ const FRACTION_MIN_LIMIT = 0.01;
 export const EndpointNPlusOneInsight = (
   props: EndpointNPlusOneInsightProps
 ) => {
-  const handleSpanLinkClick = () => {
-    // TODO
+  const handleSpanLinkClick = (spanCodeObjectId: string) => {
+    props.onAssetLinkClick(spanCodeObjectId);
   };
 
   const handleTraceButtonClick = (trace: Trace) => {
-    // TODO
+    props.onTraceButtonClick(trace);
   };
 
   return (
@@ -40,7 +40,11 @@ export const EndpointNPlusOneInsight = (
 
                 return (
                   <s.Span key={spanName}>
-                    <Link onClick={() => handleSpanLinkClick()}>
+                    <Link
+                      onClick={() =>
+                        handleSpanLinkClick(spanInfo.spanCodeObjectId)
+                      }
+                    >
                       {spanName}
                     </Link>
                     <s.Stats>

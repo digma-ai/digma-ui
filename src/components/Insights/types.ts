@@ -34,7 +34,9 @@ export interface InsightsData {
 }
 
 export interface InsightsProps {
-  data?: { insights: GenericCodeObjectInsight[] };
+  data?: {
+    insights: GenericCodeObjectInsight[];
+  };
 }
 
 export interface InsightGroup {
