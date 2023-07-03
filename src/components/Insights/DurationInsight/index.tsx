@@ -1,6 +1,8 @@
 import { formatTimeDistance } from "../../../utils/formatTimeDistance";
 import { getPercentileLabel } from "../../../utils/getPercentileLabel";
 import { Button } from "../../common/Button";
+import { ChartIcon } from "../../common/icons/ChartIcon";
+import { DoubleCircleIcon } from "../../common/icons/DoubleCircleIcon";
 import { DurationChange } from "../DurationChange";
 import { InsightCard } from "../InsightCard";
 import { Trace } from "../types";
@@ -83,10 +85,19 @@ export const DurationInsight = (props: DurationInsightProps) => {
         </>
       }
       buttons={[
-        <Button key={"histogram"} onClick={handleHistogramButtonClick}>
+        <Button
+          icon={{ component: ChartIcon }}
+          key={"histogram"}
+          onClick={handleHistogramButtonClick}
+        >
           Histogram
         </Button>,
-        <Button key={"live"} onClick={handleLiveButtonClick}>
+        <Button
+          icon={{ component: DoubleCircleIcon }}
+          key={"live"}
+          buttonType={"secondary"}
+          onClick={handleLiveButtonClick}
+        >
           Live
         </Button>
       ]}

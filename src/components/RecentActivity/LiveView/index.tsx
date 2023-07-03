@@ -20,7 +20,7 @@ import { isNumber } from "../../../typeGuards/isNumber";
 import { roundTo } from "../../../utils/roundTo";
 import { getThemeKind } from "../../common/App/styles";
 import { ArrowSmallIcon } from "../../common/icons/ArrowSmallIcon";
-import { ChartIcon } from "../../common/icons/ChartIcon";
+import { ChartCircleIcon } from "../../common/icons/ChartCircleIcon";
 import { CrossIcon } from "../../common/icons/CrossIcon";
 import { DoubleCircleIcon } from "../../common/icons/DoubleCircleIcon";
 import { EndpointIcon } from "../../common/icons/EndpointIcon";
@@ -554,7 +554,7 @@ export const LiveView = (props: LiveViewProps) => {
         </>
       ) : (
         <s.NoDataContainer>
-          <ChartIcon size={72} themeKind={themeKind} />
+          <ChartCircleIcon size={72} themeKind={themeKind} />
           <s.NoDataTitle>No data yet</s.NoDataTitle>
           <s.NoDataText>
             Trigger some actions to follow the performance.
