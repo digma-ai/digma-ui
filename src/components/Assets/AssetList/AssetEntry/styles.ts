@@ -164,7 +164,7 @@ export const Suffix = styled.span`
         return "#828797";
       case "dark":
       case "dark-jetbrains":
-        return "#565757";
+        return "#9b9b9b";
     }
   }};
 `;

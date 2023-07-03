@@ -1,14 +1,12 @@
 import { Meta, StoryObj } from "@storybook/react";
-
-import { InsightCard } from ".";
+import { EndpointNPlusOneInsight } from ".";
 import { InsightType } from "../../../types";
-import { Button } from "../../common/Button";
 import { InsightCategory, InsightScope } from "../types";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
-const meta: Meta<typeof InsightCard> = {
-  title: "Insights/InsightCard",
-  component: InsightCard,
+const meta: Meta<typeof EndpointNPlusOneInsight> = {
+  title: "Insights/EndpointNPlusOneInsight",
+  component: EndpointNPlusOneInsight,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
     layout: "fullscreen"
@@ -21,7 +19,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    data: {
+    insight: {
       name: "Suspected N+1 Query",
       type: InsightType.EndpointSpanNPlusOne,
       category: InsightCategory.Performance,
@@ -89,35 +87,6 @@ export const Default: Story = {
         "method:org.springframework.samples.petclinic.sample.SampleInsightsController$_$genNPlusOneWithoutInternalSpan",
       customStartTime: null,
       actualStartTime: "2023-06-16T10:30:33.027Z"
-    },
-    stats: "Some stats",
-    content: (
-      <span>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe quis
-        iusto corrupti eum optio quibusdam odit laborum voluptatem excepturi. Et
-        eveniet at ducimus facilis temporibus nisi accusamus velit, illum
-        quisquam?
-      </span>
-    ),
-    buttons: [
-      <Button
-        key={"button_label"}
-        onClick={() => {
-          return;
-        }}
-      >
-        Button label
-      </Button>
-    ],
-    menuItems: ["menu item 1", "menu item 2", "menu item 3"],
-    isExpandable: true,
-    expandableContent: (
-      <span>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe quis
-        iusto corrupti eum optio quibusdam odit laborum voluptatem excepturi. Et
-        eveniet at ducimus facilis temporibus nisi accusamus velit, illum
-        quisquam?
-      </span>
-    )
+    }
   }
 };

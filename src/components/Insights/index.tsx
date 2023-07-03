@@ -260,7 +260,7 @@ export const Insights = (props: InsightsProps) => {
           <s.InsightGroup key={x.name || "__ungrouped"}>
             {x.name && (
               <s.InsightGroupName>
-                {x.icon && <x.icon size={20} />} {x.name}
+                {x.icon && <x.icon size={16} />} {x.name}
               </s.InsightGroupName>
             )}
             {x.insights.map((insight) => renderInsightCard(insight))}

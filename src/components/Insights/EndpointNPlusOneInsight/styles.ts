@@ -12,19 +12,9 @@ export const Span = styled.span`
   flex-direction: column;
   gap: 4px;
   margin-top: 4px;
-  font-size: 14px;
-  line-height: 17px;
+  font-size: 10px;
+  line-height: normal;
   font-weight: 500;
-
-  color: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#49494d";
-      case "dark":
-      case "dark-jetbrains":
-        return "#dadada";
-    }
-  }};
 `;
 
 export const Stats = styled.span`
@@ -44,13 +34,13 @@ export const ContentContainer = styled.div`
 `;
 
 export const Description = styled.span`
-  font-size: 14px;
-  line-height: 17px;
+  font-size: 10px;
+  line-height: normal;
 
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "#70787d";
+        return "#828797";
       case "dark":
       case "dark-jetbrains":
         return "#9b9b9b";

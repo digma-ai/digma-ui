@@ -19,19 +19,16 @@ export const Container = styled.div`
   }};
 `;
 
-//
-
 export const InsightsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
   overflow: auto;
   flex-grow: 1;
 `;
 
 export const Description = styled.span`
-  font-size: 12px;
-  line-height: 14px;
+  font-size: 10px;
 
   color: ${({ theme }) => {
     switch (theme.mode) {
@@ -45,14 +42,25 @@ export const Description = styled.span`
 `;
 
 export const Link = styled(CommonLink)`
-  font-size: 12px;
-  line-height: 14px;
+  font-size: 10px;
+  line-height: normal;
+  text-decoration: none;
+
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#7891d0";
+      case "dark":
+      case "dark-jetbrains":
+        return "#92affa";
+    }
+  }};
 `;
 
 export const InsightGroup = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
 `;
 
 export const InsightGroupName = styled.div`
@@ -60,9 +68,9 @@ export const InsightGroupName = styled.div`
   align-items: center;
   gap: 8px;
   font-weight: 500;
-  font-size: 16px;
-  line-height: 19px;
-  height: 28px;
+  font-size: 12px;
+  line-height: normal;
+  height: 16px;
 
   color: ${({ theme }) => {
     switch (theme.mode) {

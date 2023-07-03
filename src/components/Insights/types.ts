@@ -150,13 +150,13 @@ export interface SpanUsagesInsight extends SpanInsight {
   specifity: InsightSpecificity.OwnInsight;
   isRecalculateEnabled: true;
   importance: InsightImportance.Interesting;
-  sampleTrace: string;
+  sampleTrace: string | null;
   flows: {
     sampleTraceIds: string[];
     percentage: number;
     firstService: FlowSpan;
     intermediateSpan: string | null;
-    lastService?: FlowSpan;
+    lastService: FlowSpan | null;
     lastServiceSpan: string | null;
   }[];
 
@@ -203,6 +203,18 @@ export interface SpanEndpointBottleneckInsight extends SpanInsight {
     p99: Percentile;
   }[];
 
+  /**
+   * @deprecated
+   */
+  p50: Percentile;
+  /**
+   * @deprecated
+   */
+  p95: Percentile;
+  /**
+   * @deprecated
+   */
+  p99: Percentile;
   /**
    * @deprecated
    */
@@ -424,7 +436,7 @@ export interface EndpointSuspectedNPlusOneInsight extends EndpointInsight {
   specifity: InsightSpecificity.TargetAndReasonFound;
   importance: InsightImportance.HighlyImportant;
   spans: {
-    occurrences: string;
+    occurrences: number;
     internalSpan: SpanInfo | null;
     clientSpan: SpanInfo;
     traceId: string;

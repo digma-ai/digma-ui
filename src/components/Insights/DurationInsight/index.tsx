@@ -1,5 +1,6 @@
 import { formatTimeDistance } from "../../../utils/formatTimeDistance";
 import { getPercentileLabel } from "../../../utils/getPercentileLabel";
+import { Button } from "../../common/Button";
 import { DurationChange } from "../DurationChange";
 import { InsightCard } from "../InsightCard";
 import { Trace } from "../types";
@@ -12,6 +13,16 @@ export const DurationInsight = (props: DurationInsightProps) => {
   );
 
   const spanLastCall = props.insight.lastSpanInstanceInfo;
+
+  const handleHistogramButtonClick = () => {
+    // TODO:
+    console.log("Histogram");
+  };
+
+  const handleLiveButtonClick = () => {
+    // TODO:
+    console.log("Live");
+  };
 
   const handleCompareButtonClick = (traces: [Trace, Trace]) => {
     // TODO:
@@ -71,6 +82,14 @@ export const DurationInsight = (props: DurationInsightProps) => {
           )}
         </>
       }
+      buttons={[
+        <Button key={"histogram"} onClick={handleHistogramButtonClick}>
+          Histogram
+        </Button>,
+        <Button key={"live"} onClick={handleLiveButtonClick}>
+          Live
+        </Button>
+      ]}
     />
   );
 };

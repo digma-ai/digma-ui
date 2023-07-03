@@ -27,8 +27,13 @@ export const InsightCard = (props: InsightCardProps) => {
     setIsKebabMenuOpen(!isKebabMenuOpen);
   };
 
-  const handleKebabMenuItemSelect = () => {
-    // TODO
+  const handleKebabMenuItemSelect = (value: string) => {
+    if (value === "recalculate") {
+      // TODO
+      console.log("Recalculate");
+    }
+
+    handleKebabMenuButtonToggle();
   };
 
   const handleExpandButtonClick = () => {
@@ -38,37 +43,50 @@ export const InsightCard = (props: InsightCardProps) => {
   return (
     <s.Container>
       <s.TitleRow>
-        {insightTypeInfo && (
-          <insightTypeInfo.icon color={insightIconColor} size={22} />
-        )}
-        {insightTypeInfo?.label || props.data.type}
-        {props.stats && <s.Stats>{props.stats}</s.Stats>}
-        {props.menuItems && (
-          <Popover
-            open={isKebabMenuOpen}
-            onOpenChange={setIsKebabMenuOpen}
-            placement={"bottom-start"}
-          >
-            <PopoverTrigger onClick={handleKebabMenuButtonToggle}>
-              <KebabMenuButton />
-            </PopoverTrigger>
-            <PopoverContent className={"Popover"}>
-              <Menu
-                items={props.menuItems.map((x) => ({ value: x, label: x }))}
-                onSelect={handleKebabMenuItemSelect}
+        <s.Title>
+          <s.InsightIconContainer>
+            {insightTypeInfo && (
+              <insightTypeInfo.icon color={insightIconColor} size={16} />
+            )}
+          </s.InsightIconContainer>
+          {insightTypeInfo?.label || props.data.type}
+        </s.Title>
+        <s.Toolbar>
+          {props.stats && <s.Stats>{props.stats}</s.Stats>}
+          {(props.menuItems || props.data.isRecalculateEnabled) && (
+            <Popover
+              open={isKebabMenuOpen}
+              onOpenChange={setIsKebabMenuOpen}
+              placement={"bottom-start"}
+            >
+              <PopoverTrigger onClick={handleKebabMenuButtonToggle}>
+                <KebabMenuButton />
+              </PopoverTrigger>
+              <PopoverContent className={"Popover"}>
+                <Menu
+                  items={[
+                    ...(props.data.isRecalculateEnabled
+                      ? [{ value: "recalculate", label: "Recalculate" }]
+                      : []),
+                    ...(props.menuItems
+                      ? props.menuItems.map((x) => ({ value: x, label: x }))
+                      : [])
+                  ]}
+                  onSelect={handleKebabMenuItemSelect}
+                />
+              </PopoverContent>
+            </Popover>
+          )}
+          {props.isExpandable && (
+            <s.ExpandButton onClick={handleExpandButtonClick}>
+              <ChevronIcon
+                color={theme.mode === "light" ? "#828797" : "#b9c2eb"}
+                direction={isExpanded ? Direction.UP : Direction.DOWN}
+                size={12}
               />
-            </PopoverContent>
-          </Popover>
-        )}
-        {props.isExpandable && (
-          <s.ExpandButton onClick={handleExpandButtonClick}>
-            <ChevronIcon
-              color={theme.mode === "light" ? "#828797" : "#b9c2eb"}
-              direction={isExpanded ? Direction.UP : Direction.DOWN}
-              size={12}
-            />
-          </s.ExpandButton>
-        )}
+            </s.ExpandButton>
+          )}
+        </s.Toolbar>
       </s.TitleRow>
       {props.content && (
         <s.ContentContainer>{props.content}</s.ContentContainer>

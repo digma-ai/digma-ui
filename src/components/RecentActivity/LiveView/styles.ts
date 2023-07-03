@@ -217,9 +217,9 @@ export const ChartContainer = styled.div`
 
 export const Footer = styled.div`
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   gap: 4px;
-  padding: 4px 12px;
+  padding: 0 12px;
   height: ${FOOTER_HEIGHT}px;
   box-sizing: border-box;
   flex: none;
@@ -229,6 +229,7 @@ export const LegendContainer = styled.div`
   display: flex;
   gap: 4px;
   font-size: 10px;
+  padding: 4px 0;
   line-height: 12px;
 
   color: ${({ theme }) => {

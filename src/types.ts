@@ -43,7 +43,7 @@ export interface SpanInfo {
   instrumentationLibrary: string;
   spanCodeObjectId: string;
   methodCodeObjectId: string | null;
-  kind: string;
+  kind: string | null;
 
   /**
    * @deprecated

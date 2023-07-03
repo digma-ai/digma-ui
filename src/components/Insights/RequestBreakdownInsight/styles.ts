@@ -14,20 +14,20 @@ export const PieChartContainer = styled.div`
     ${({ theme }) => {
       switch (theme.mode) {
         case "light":
-          return "#efeff2";
+          return "#b9c0d4";
         case "dark":
         case "dark-jetbrains":
-          return "#465c6e";
+          return "#49494d";
       }
     }};
 
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "#f9f9f9";
+        return "#e5eaf1";
       case "dark":
       case "dark-jetbrains":
-        return "#36414e";
+        return "#1e1e1e";
     }
   }};
 `;
@@ -53,8 +53,8 @@ export const LegendItemDataColor = styled.div<{ color: string }>`
 `;
 
 export const LegendItemDataLabel = styled.span`
-  font-size: 14px;
-  line-height: 17px;
+  font-size: 10px;
+  line-height: normal;
 
   color: ${({ theme }) => {
     switch (theme.mode) {
@@ -69,8 +69,8 @@ export const LegendItemDataLabel = styled.span`
 
 export const LegendItemDataValue = styled.span`
   font-weight: 500;
-  font-size: 14px;
-  line-height: 17px;
+  font-size: 12px;
+  line-height: normal;
 
   color: ${({ theme }) => {
     switch (theme.mode) {

@@ -9,7 +9,7 @@ export const Change = styled.span`
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "#70787d";
+        return "#828797";
       case "dark":
       case "dark-jetbrains":
         return "#9b9b9b";

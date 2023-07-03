@@ -31,16 +31,48 @@ export const Container = styled.div`
 export const TitleRow = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 4px;
   font-weight: 500;
-  font-size: 14px;
-  line-height: 17px;
+  font-size: 12px;
+  line-height: normal;
+`;
+
+export const Title = styled.div`
+  display: flex;
+  gap: 4px;
+  align-items: center;
+`;
+
+export const InsightIconContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 2px;
+  border-radius: 4px;
+
+  background: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#e9eef4";
+      case "dark":
+      case "dark-jetbrains":
+        return "#2e2e2e";
+    }
+  }};
+`;
+
+export const Toolbar = styled.div`
+  display: flex;
+  gap: 4px;
+  align-items: center;
 `;
 
 export const Stats = styled.span`
-  margin-left: auto;
   font-size: 10px;
-  line-height: 12px;
+  line-height: normal;
+
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -60,11 +92,13 @@ export const ExpandButton = styled.button`
 
 export const ContentContainer = styled.div`
   font-size: 10px;
-  line-height: 12px;
+  line-height: normal;
 `;
 
 export const ButtonsContainer = styled.div`
   margin-top: auto;
+  padding-top: 4px;
   display: flex;
   justify-content: flex-end;
+  gap: 8px;
 `;

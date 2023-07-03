@@ -1,8 +1,8 @@
 import { ReactNode } from "react";
-import { Insight } from "../../Assets/types";
+import { GenericCodeObjectInsight } from "../types";
 
 export interface InsightCardProps {
-  data: Insight;
+  data: GenericCodeObjectInsight;
   content?: ReactNode;
   expandableContent?: ReactNode;
   menuItems?: string[];

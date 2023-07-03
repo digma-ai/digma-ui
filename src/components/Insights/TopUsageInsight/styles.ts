@@ -18,10 +18,10 @@ export const Flow = styled.div`
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "#f9f9f9";
+        return "#e9eef4";
       case "dark":
       case "dark-jetbrains":
-        return "#36414e";
+        return "#2e2e2e";
     }
   }};
 `;
@@ -30,24 +30,14 @@ export const FlowData = styled.span`
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
-  font-size: 14px;
-  line-height: 17px;
+  font-size: 10px;
+  line-height: normal;
   font-weight: 500;
   word-break: break-all;
-
-  color: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#49494d";
-      case "dark":
-      case "dark-jetbrains":
-        return "#dadada";
-    }
-  }};
 `;
 
 export const Button = styled(CommonButton)`
   margin-left: auto;
   height: fit-content;
-  align-self: flex-start;
+  align-self: flex-end;
 `;
