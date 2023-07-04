@@ -38,6 +38,7 @@ export const FlowData = styled.span`
 
 export const FullSpanName = styled.span`
   display: flex;
+  flex-wrap: wrap;
   gap: 2px;
 `;
 
