@@ -77,7 +77,8 @@ export const InsightIconContainer = styled(AssetTypeIconContainer)`
 
 export const StatsContainer = styled.div`
   display: flex;
-  justify-content: space-between;
+  gap: 15px 12px;
+  flex-wrap: wrap;
   font-size: 10px;
   line-height: 12px;
 `;
@@ -86,17 +87,19 @@ export const Stats = styled.div`
   display: flex;
   flex-direction: column;
   gap: 4px;
+`;
+
+export const StatsColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 
   &:first-child {
-    width: 40%;
+    width: 35%;
   }
 
   &:nth-child(2) {
-    width: 20%;
-  }
-
-  &:nth-child(3) {
-    width: 20%;
+    width: 35%;
   }
 `;
 
@@ -164,7 +167,7 @@ export const Suffix = styled.span`
         return "#828797";
       case "dark":
       case "dark-jetbrains":
-        return "#565757";
+        return "#9b9b9b";
     }
   }};
 `;

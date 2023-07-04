@@ -22,6 +22,10 @@ export const AssetEntry = (props: AssetEntryProps) => {
     (duration) => duration.percentile === 0.5
   )?.currentDuration;
 
+  const slowestFivePercentDuration = props.entry.durationPercentiles.find(
+    (duration) => duration.percentile === 0.95
+  )?.currentDuration;
+
   const lastSeenDateTime = props.entry.lastSpanInstanceInfo.startTime;
 
   const sortedInsights = [...props.entry.insights].sort(
@@ -65,35 +69,51 @@ export const AssetEntry = (props: AssetEntryProps) => {
         </s.InsightIconsContainer>
       </s.Header>
       <s.StatsContainer>
-        <s.Stats>
-          <span>Services</span>
-          <s.ServicesContainer>
-            <s.ServiceName title={props.entry.serviceName}>
-              {props.entry.serviceName}
-            </s.ServiceName>
-            {otherServices.length > 0 && (
-              <span title={otherServices.join(", ")}>
-                +{otherServices.length}
-              </span>
-            )}
-          </s.ServicesContainer>
-        </s.Stats>
-        <s.Stats>
-          <span>Performance</span>
-          <s.ValueContainer>
-            {performanceDuration ? performanceDuration.value : "N/A"}
-            {performanceDuration && (
-              <s.Suffix>{performanceDuration.unit}</s.Suffix>
-            )}
-          </s.ValueContainer>
-        </s.Stats>
-        <s.Stats>
-          <span>Last</span>
-          <s.ValueContainer title={new Date(lastSeenDateTime).toString()}>
-            {timeAgo(lastSeenDateTime)}
-            <s.Suffix>ago</s.Suffix>
-          </s.ValueContainer>
-        </s.Stats>
+        <s.StatsColumn>
+          <s.Stats>
+            <span>Services</span>
+            <s.ServicesContainer>
+              <s.ServiceName title={props.entry.serviceName}>
+                {props.entry.serviceName}
+              </s.ServiceName>
+              {otherServices.length > 0 && (
+                <span title={otherServices.join(", ")}>
+                  +{otherServices.length}
+                </span>
+              )}
+            </s.ServicesContainer>
+          </s.Stats>
+          <s.Stats>
+            <span>Last</span>
+            <s.ValueContainer title={new Date(lastSeenDateTime).toString()}>
+              {timeAgo(lastSeenDateTime)}
+              <s.Suffix>ago</s.Suffix>
+            </s.ValueContainer>
+          </s.Stats>
+        </s.StatsColumn>
+        <s.StatsColumn>
+          <s.Stats>
+            <span>Performance</span>
+            <s.ValueContainer>
+              {performanceDuration ? performanceDuration.value : "N/A"}
+              {performanceDuration && (
+                <s.Suffix>{performanceDuration.unit}</s.Suffix>
+              )}
+            </s.ValueContainer>
+          </s.Stats>
+
+          <s.Stats>
+            <span>Slowest 5%</span>
+            <s.ValueContainer>
+              {slowestFivePercentDuration
+                ? slowestFivePercentDuration.value
+                : "N/A"}
+              {slowestFivePercentDuration && (
+                <s.Suffix>{slowestFivePercentDuration.unit}</s.Suffix>
+              )}
+            </s.ValueContainer>
+          </s.Stats>
+        </s.StatsColumn>
       </s.StatsContainer>
     </s.Container>
   );
