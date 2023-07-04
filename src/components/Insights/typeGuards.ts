@@ -6,6 +6,7 @@ import {
   EndpointBreakdownInsight,
   EndpointDurationSlowdownInsight,
   EndpointHighUsageInsight,
+  EndpointInsight,
   EndpointLowUsageInsight,
   EndpointNormalUsageInsight,
   EndpointSlowestSpansInsight,
@@ -24,6 +25,10 @@ import {
 export const isSpanInsight = (
   insight: CodeObjectInsight
 ): insight is SpanInsight => insight.scope === InsightScope.Span;
+
+export const isEndpointInsight = (
+  insight: CodeObjectInsight
+): insight is EndpointInsight => insight.scope === InsightScope.EntrySpan;
 
 export const isSpanDurationsInsight = (
   insight: CodeObjectInsight

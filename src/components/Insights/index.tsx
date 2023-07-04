@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
+import { DefaultTheme, useTheme } from "styled-components";
 import { dispatcher } from "../../dispatcher";
 import { isNumber } from "../../typeGuards/isNumber";
 import { InsightType } from "../../types";
 import { addPrefix } from "../../utils/addPrefix";
 import { getInsightTypeInfo } from "../../utils/getInsightTypeInfo";
+import { EndpointIcon } from "../common/icons/EndpointIcon";
 import { OpenTelemetryLogoIcon } from "../common/icons/OpenTelemetryLogoIcon";
 import { BottleneckInsight } from "./BottleneckInsight";
 import { DurationBreakdownInsight } from "./DurationBreakdownInsight";
@@ -26,6 +28,7 @@ import {
   isEndpointBreakdownInsight,
   isEndpointDurationSlowdownInsight,
   isEndpointHighUsageInsight,
+  isEndpointInsight,
   isEndpointLowUsageInsight,
   isEndpointNormalUsageInsight,
   isEndpointSlowestSpansInsight,
@@ -40,6 +43,7 @@ import {
   isSpanUsagesInsight
 } from "./typeGuards";
 import {
+  EndpointInsight,
   GenericCodeObjectInsight,
   InsightGroup,
   InsightsData,
@@ -73,22 +77,24 @@ export const getInsightTypeOrderPriority = (type: string): number => {
     [InsightType.Errors]: 2,
     [InsightType.TopErrorFlows]: 3,
 
+    // Endpoint insights
+    [InsightType.EndpointBreakdown]: 5,
+    [InsightType.HighUsage]: 10,
+    [InsightType.SlowEndpoint]: 20,
+    [InsightType.EndpointDurationSlowdown]: 25,
+    [InsightType.LowUsage]: 30,
+    [InsightType.SlowestSpans]: 40,
+    [InsightType.NormalUsage]: 50,
+    [InsightType.EndpointSpanNPlusOne]: 55,
+
+    // Span insights
     [InsightType.SpanDurations]: 60,
     [InsightType.SpanUsages]: 61,
     [InsightType.SpanScalingBadly]: 63,
     [InsightType.SpanNPlusOne]: 65,
     [InsightType.SpanDurationChange]: 66,
     [InsightType.SpanEndpointBottleneck]: 67,
-    [InsightType.SpanDurationBreakdown]: 68,
-
-    [InsightType.EndpointSpanNPlusOne]: 55,
-    [InsightType.SlowestSpans]: 40,
-    [InsightType.LowUsage]: 30,
-    [InsightType.NormalUsage]: 50,
-    [InsightType.HighUsage]: 10,
-    [InsightType.SlowEndpoint]: 20,
-    [InsightType.EndpointDurationSlowdown]: 25,
-    [InsightType.EndpointBreakdown]: 5
+    [InsightType.SpanDurationBreakdown]: 68
   };
 
   return insightOrderPriorityMap[type] || Infinity;
@@ -318,8 +324,17 @@ const groupInsights = (
       getInsightTypeOrderPriority(a.type) - getInsightTypeOrderPriority(b.type)
   );
 
+  const sortByName = (a: InsightGroup, b: InsightGroup) => {
+    const aName = a.name || "";
+    const bName = b.name || "";
+    return aName.localeCompare(bName);
+  };
+
   const ungroupedInsights: GenericCodeObjectInsight[] = [];
   const spanInsightGroups: { [key: string]: SpanInsight[] } = {};
+  const endpointInsightGroups: {
+    [key: string]: (EndpointInsight | SpanInsight)[];
+  } = {};
 
   for (const insight of sortedInsights) {
     // Do not show unknown insights
@@ -333,43 +348,77 @@ const groupInsights = (
       continue;
     }
 
-    if (!isSpanInsight(insight)) {
+    if (!isSpanInsight(insight) && !isEndpointInsight(insight)) {
       ungroupedInsights.push(insight);
       continue;
     }
 
     const spanCodeObjectId = insight.spanInfo?.spanCodeObjectId;
 
-    if (
-      !spanCodeObjectId
-      // ||
-      // spanCodeObjectId === props.data.spanCodeObjectId
-    ) {
+    if (!spanCodeObjectId) {
       ungroupedInsights.push(insight);
       continue;
     }
 
-    if (!spanInsightGroups[spanCodeObjectId]) {
-      spanInsightGroups[spanCodeObjectId] = [];
+    if (isEndpointInsight(insight)) {
+      if (!endpointInsightGroups[spanCodeObjectId]) {
+        endpointInsightGroups[spanCodeObjectId] = [];
+      }
+
+      endpointInsightGroups[spanCodeObjectId].push(insight);
+      continue;
     }
 
-    spanInsightGroups[spanCodeObjectId].push(insight);
+    if (isSpanInsight(insight)) {
+      if (endpointInsightGroups[spanCodeObjectId]) {
+        endpointInsightGroups[spanCodeObjectId].push(insight);
+        continue;
+      }
+
+      if (!spanInsightGroups[spanCodeObjectId]) {
+        spanInsightGroups[spanCodeObjectId] = [];
+      }
+
+      spanInsightGroups[spanCodeObjectId].push(insight);
+    }
   }
 
   return [
     { insights: ungroupedInsights },
-    // span insight groups
-    ...Object.values(spanInsightGroups).map((x) => ({
-      icon: OpenTelemetryLogoIcon,
-      name: x[0].spanInfo?.displayName,
-      insights: x
-    }))
+    // Endpoint insight groups
+    ...Object.values(endpointInsightGroups)
+      .map((x) => ({
+        icon: EndpointIcon,
+        name: x[0].spanInfo?.displayName,
+        insights: x
+      }))
+      .sort(sortByName),
+    // Span insight groups
+    ...Object.values(spanInsightGroups)
+      .map((x) => ({
+        icon: OpenTelemetryLogoIcon,
+        name: x[0].spanInfo?.displayName,
+        insights: x
+      }))
+      .sort(sortByName)
   ];
+};
+
+const getInsightGroupIconColor = (theme: DefaultTheme) => {
+  switch (theme.mode) {
+    case "light":
+      return "#7891d0";
+    case "dark":
+    case "dark-jetbrains":
+      return "#dadada";
+  }
 };
 
 export const Insights = (props: InsightsProps) => {
   const [data, setData] = useState<InsightGroup[]>();
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
+  const theme = useTheme();
+  const insightGroupIconColor = getInsightGroupIconColor(theme);
 
   useEffect(() => {
     window.sendMessageToDigma({
@@ -421,7 +470,8 @@ export const Insights = (props: InsightsProps) => {
           <s.InsightGroup key={x.name || "__ungrouped"}>
             {x.name && (
               <s.InsightGroupName>
-                {x.icon && <x.icon size={16} />} {x.name}
+                {x.icon && <x.icon size={16} color={insightGroupIconColor} />}{" "}
+                {x.name}
               </s.InsightGroupName>
             )}
             {x.insights.map((insight) => renderInsightCard(insight))}
@@ -429,7 +479,7 @@ export const Insights = (props: InsightsProps) => {
         ))}
       </s.InsightsContainer>
     );
-  }, [data]);
+  }, [data, insightGroupIconColor]);
 
   return <s.Container>{renderContent}</s.Container>;
 };
