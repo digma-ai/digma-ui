@@ -14,6 +14,7 @@ export interface AssetListProps {
 export enum SORTING_CRITERION {
   CRITICAL_INSIGHTS = "Critical insights",
   PERFORMANCE = "Performance",
+  SLOWEST_FIVE_PERCENT = "Slowest 5%",
   LATEST = "Latest",
   NAME = "Name"
 }

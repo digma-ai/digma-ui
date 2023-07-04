@@ -10,7 +10,7 @@ export const Container = styled.div`
         return "#fbfdff";
       case "dark":
       case "dark-jetbrains":
-        return "#3d3f41";
+        return "#2b2d30";
     }
   }};
 `;

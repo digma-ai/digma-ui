@@ -32,6 +32,37 @@ const sortEntries = (
       ? b.span.displayName.localeCompare(a.span.displayName)
       : a.span.displayName.localeCompare(b.span.displayName);
 
+  const sortByPercentile = (
+    a: ExtendedAssetEntryWithServices,
+    b: ExtendedAssetEntryWithServices,
+    percentile: number,
+    isDesc: boolean
+  ) => {
+    const aDuration = a.durationPercentiles.find(
+      (duration) => duration.percentile === percentile
+    )?.currentDuration.raw;
+    const bDuration = b.durationPercentiles.find(
+      (duration) => duration.percentile === percentile
+    )?.currentDuration.raw;
+
+    if (!aDuration && !bDuration) {
+      return 0;
+    }
+
+    if (!aDuration) {
+      return isDesc ? 1 : -1;
+    }
+
+    if (!bDuration) {
+      return isDesc ? -1 : 1;
+    }
+
+    return (
+      (isDesc ? bDuration - aDuration : aDuration - bDuration) ||
+      sortByName(a, b, isDesc)
+    );
+  };
+
   switch (sorting.criterion) {
     case SORTING_CRITERION.CRITICAL_INSIGHTS:
       return entries.sort((a, b) => {
@@ -62,31 +93,13 @@ const sortEntries = (
         );
       });
     case SORTING_CRITERION.PERFORMANCE:
-      return entries.sort((a, b) => {
-        const aDuration = a.durationPercentiles.find(
-          (duration) => duration.percentile === 0.5
-        )?.currentDuration.raw;
-        const bDuration = b.durationPercentiles.find(
-          (duration) => duration.percentile === 0.5
-        )?.currentDuration.raw;
-
-        if (!aDuration && !bDuration) {
-          return 0;
-        }
-
-        if (!aDuration) {
-          return sorting.isDesc ? 1 : -1;
-        }
-
-        if (!bDuration) {
-          return sorting.isDesc ? -1 : 1;
-        }
-
-        return (
-          (sorting.isDesc ? bDuration - aDuration : aDuration - bDuration) ||
-          sortByName(a, b, sorting.isDesc)
-        );
-      });
+      return entries.sort((a, b) =>
+        sortByPercentile(a, b, 0.5, sorting.isDesc)
+      );
+    case SORTING_CRITERION.SLOWEST_FIVE_PERCENT:
+      return entries.sort((a, b) =>
+        sortByPercentile(a, b, 0.95, sorting.isDesc)
+      );
     case SORTING_CRITERION.LATEST:
       return entries.sort((a, b) => {
         const aDateTime = new Date(a.lastSpanInstanceInfo.startTime).valueOf();
