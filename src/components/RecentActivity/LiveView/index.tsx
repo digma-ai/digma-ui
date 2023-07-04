@@ -18,6 +18,7 @@ import { DefaultTheme, useTheme } from "styled-components";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { roundTo } from "../../../utils/roundTo";
+import { roundToNonZeroDecimals } from "../../../utils/roundToNonZeroDecimals";
 import { getThemeKind } from "../../common/App/styles";
 import { ArrowSmallIcon } from "../../common/icons/ArrowSmallIcon";
 import { ChartIcon } from "../../common/icons/ChartIcon";
@@ -42,6 +43,7 @@ import {
 const ZOOM_FACTOR = 1.2;
 const DURATION_RATIO_MIN_LIMIT = 0.1;
 const DURATION_DIFF_MIN_LIMIT = 10 * 1000; // in nanoseconds
+const Y_AXIS_TICK_COUNT = 5;
 
 const PERCENTILES = [
   { label: "Median", percentile: 0.5 },
@@ -139,16 +141,18 @@ const getLatestDataButtonIconColor = (theme: DefaultTheme) => {
 };
 
 const convertTo = (nanoseconds: number, unit: string) => {
-  const milliseconds = nanoseconds / 1000 / 1000;
-
   switch (unit) {
+    case "ns":
+      return nanoseconds;
+    case "μs":
+      return nanoseconds / 10 ** 3;
     case "ms":
-      return milliseconds;
+      return nanoseconds / 10 ** 6;
     case "sec":
-      return milliseconds / 1000;
+      return nanoseconds / 10 ** 9;
     case "min":
     default:
-      return milliseconds / 1000 / 60;
+      return nanoseconds / 10 ** 9 / 60;
   }
 };
 
@@ -316,12 +320,24 @@ export const LiveView = (props: LiveViewProps) => {
   );
 
   const maxDuration = getMaxDuration(data)?.duration;
-  const maxDurationUnit = maxDuration?.unit || "ms";
-  const maxDurationDigitCount = maxDuration
-    ? String(Math.ceil(maxDuration.value)).length
+  const maxDurationUnit = maxDuration?.unit || "ns";
+  const YAxisTickInterval = roundToNonZeroDecimals(
+    convertTo(maxDuration?.raw || 0 / Y_AXIS_TICK_COUNT, maxDurationUnit),
+    2
+  );
+  const YAxisTickDecimalPlaces =
+    Math.floor(YAxisTickInterval) === YAxisTickInterval
+      ? 0
+      : YAxisTickInterval.toString().split(".")[1].length || 0;
+  const YAxisMaxTickWholePart = Math.ceil(
+    convertTo(maxDuration?.raw || 0, maxDurationUnit)
+  );
+  const longestTickDigitCount = maxDuration
+    ? String(YAxisMaxTickWholePart).length + 1 + YAxisTickDecimalPlaces
     : 0;
-  const YAxisTickMargin = Math.round(maxDurationDigitCount * 5.5);
-  const YAxisWidth = Math.round(12 + maxDurationDigitCount * 7.5);
+
+  const YAxisTickMargin = Math.round(longestTickDigitCount * 5.5);
+  const YAxisWidth = Math.round(12 + longestTickDigitCount * 7.5);
 
   const scrollbarOffset =
     chartContainerRef.current &&
@@ -412,8 +428,14 @@ export const LiveView = (props: LiveViewProps) => {
                     dataKey={(x: ExtendedLiveDataRecord) => x.duration.raw}
                     tickLine={false}
                     tickFormatter={(x: number) =>
-                      String(roundTo(convertTo(x, maxDurationUnit), 0))
+                      String(
+                        roundTo(
+                          convertTo(x, maxDurationUnit),
+                          YAxisTickDecimalPlaces
+                        )
+                      )
                     }
+                    tickCount={Y_AXIS_TICK_COUNT}
                     tick={{
                       fill: tickLabelColor,
                       fontSize: 10,
