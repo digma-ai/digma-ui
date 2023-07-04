@@ -3,3 +3,8 @@ export const SLACK_WORKSPACE_URL =
 
 export const GETTING_STARTED_VIDEO_URL =
   "https://www.youtube.com/watch?v=jzBEXfCrnlg";
+
+export const PERCENTILES = [
+  { label: "Median", percentile: 0.5 },
+  { label: "Slowest 5%", percentile: 0.95 }
+];

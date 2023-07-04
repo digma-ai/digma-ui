@@ -14,4 +14,9 @@ export interface InsightCardProps {
     prefixedCodeObjectId: string,
     insightType: InsightType
   ) => void;
+  onPercentileViewModeChange?: (value: number) => void;
+}
+
+export interface PercentileViewModeOptionProps {
+  selected: boolean;
 }

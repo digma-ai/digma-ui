@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { getPercentileLabel } from "../../../utils/getPercentileLabel";
 import { InsightCard } from "../InsightCard";
 import { Pagination } from "../Pagination";
@@ -38,15 +39,18 @@ const getTitle = (breakdownEntry: SpanDurationBreakdownEntry) => {
 export const DurationBreakdownInsight = (
   props: DurationBreakdownInsightProps
 ) => {
+  const [percentileViewMode, setPercentileViewMode] =
+    useState<number>(DEFAULT_PERCENTILE);
+
   const filteredEntries = props.insight.breakdownEntries.filter((entry) =>
     entry.percentiles.some(
-      (percentile) => percentile.percentile === DEFAULT_PERCENTILE
+      (percentile) => percentile.percentile === percentileViewMode
     )
   );
 
   const sortedEntries = [...filteredEntries].sort((a, b) => {
-    const aPercentile = getPercentile(a, DEFAULT_PERCENTILE);
-    const bPercentile = getPercentile(b, DEFAULT_PERCENTILE);
+    const aPercentile = getPercentile(a, percentileViewMode);
+    const bPercentile = getPercentile(b, percentileViewMode);
 
     if (aPercentile && bPercentile) {
       return bPercentile.duration.raw - aPercentile.duration.raw;
@@ -59,6 +63,10 @@ export const DurationBreakdownInsight = (
     props.onAssetLinkClick(spanCodeObjectId);
   };
 
+  const handlePercentileViewModeChange = (value: number) => {
+    setPercentileViewMode(value);
+  };
+
   return (
     <InsightCard
       data={props.insight}
@@ -68,7 +76,7 @@ export const DurationBreakdownInsight = (
             id={`${props.insight.codeObjectId}_${props.insight.type}`}
           >
             {sortedEntries.map((entry) => {
-              const percentile = getPercentile(entry, DEFAULT_PERCENTILE);
+              const percentile = getPercentile(entry, percentileViewMode);
 
               const name = entry.spanDisplayName;
               const spanCodeObjectId = entry.spanCodeObjectId;
@@ -85,6 +93,7 @@ export const DurationBreakdownInsight = (
           </Pagination>
         </s.DurationList>
       }
+      onPercentileViewModeChange={handlePercentileViewModeChange}
       onRecalculate={props.onRecalculate}
     />
   );

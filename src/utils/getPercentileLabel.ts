@@ -1,7 +1,4 @@
-const PERCENTILES = [
-  { label: "Median", percentile: 0.5 },
-  { label: "Slowest 5%", percentile: 0.95 },
-];
+import { PERCENTILES } from "../constants";
 
 export const getPercentileLabel = (percentile: number) =>
   PERCENTILES.find((x) => x.percentile === percentile)?.label ||

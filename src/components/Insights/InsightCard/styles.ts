@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { PercentileViewModeOptionProps } from "./types";
 
 export const Container = styled.div`
   display: flex;
@@ -101,4 +102,48 @@ export const ButtonsContainer = styled.div`
   display: flex;
   justify-content: flex-end;
   gap: 8px;
+`;
+
+export const PercentileViewModeToggle = styled.div`
+  display: flex;
+  border-radius: 4px;
+  padding: 4px;
+  gap: 4px;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: normal;
+
+  border: 1px solid
+    ${({ theme }) => {
+      switch (theme.mode) {
+        case "light":
+          return "#b9c0d4";
+        case "dark":
+        case "dark-jetbrains":
+          return "#49494d";
+      }
+    }};
+`;
+
+export const PercentileViewModeToggleOption = styled.div<PercentileViewModeOptionProps>`
+  border-radius: 4px;
+  padding: 2px 4px;
+  cursor: pointer;
+  user-select: none;
+
+  color: ${({ theme, selected }) => {
+    if (selected) {
+      return "#e2e7ff";
+    }
+
+    switch (theme.mode) {
+      case "light":
+        return "#3538cd";
+      case "dark":
+      case "dark-jetbrains":
+        return "#e2e7ff";
+    }
+  }};
+
+  background: ${({ selected }) => (selected ? "#3538cd" : "transparent")};
 `;

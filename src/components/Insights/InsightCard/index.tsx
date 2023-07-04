@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useTheme } from "styled-components";
+import { PERCENTILES } from "../../../constants";
 import { getInsightImportanceColor } from "../../../utils/getInsightImportanceColor";
 import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
 import { KebabMenuButton } from "../../common/KebabMenuButton";
@@ -13,10 +14,13 @@ import * as s from "./styles";
 import { InsightCardProps } from "./types";
 
 const RECALCULATE = "recalculate";
+const DEFAULT_PERCENTILE = 0.5;
 
 export const InsightCard = (props: InsightCardProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isKebabMenuOpen, setIsKebabMenuOpen] = useState(false);
+  const [percentileViewMode, setPercentileViewMode] =
+    useState<number>(DEFAULT_PERCENTILE);
 
   const theme = useTheme();
   const insightTypeInfo = getInsightTypeInfo(props.data.type);
@@ -43,6 +47,14 @@ export const InsightCard = (props: InsightCardProps) => {
     setIsExpanded(!isExpanded);
   };
 
+  const handleDurationPercentileToggleOptionClick = (value: number) => {
+    if (value !== percentileViewMode) {
+      setPercentileViewMode(value);
+      props.onPercentileViewModeChange &&
+        props.onPercentileViewModeChange(value);
+    }
+  };
+
   return (
     <s.Container>
       <s.TitleRow>
@@ -55,6 +67,21 @@ export const InsightCard = (props: InsightCardProps) => {
           {insightTypeInfo?.label || props.data.type}
         </s.Title>
         <s.Toolbar>
+          <s.PercentileViewModeToggle>
+            {PERCENTILES.map((percentile) => (
+              <s.PercentileViewModeToggleOption
+                key={percentile.percentile}
+                selected={percentile.percentile === percentileViewMode}
+                onClick={() =>
+                  handleDurationPercentileToggleOptionClick(
+                    percentile.percentile
+                  )
+                }
+              >
+                {percentile.label}
+              </s.PercentileViewModeToggleOption>
+            ))}
+          </s.PercentileViewModeToggle>
           {props.stats && <s.Stats>{props.stats}</s.Stats>}
           {(props.menuItems || props.data.isRecalculateEnabled) && (
             <Popover
