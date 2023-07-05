@@ -92,6 +92,14 @@ export const getInsightTypeInfo = (
     [InsightType.EndpointBreakdown]: {
       icon: PieChartIcon,
       label: "Request Breakdown"
+    },
+    [InsightType.SpanScalingWell]: {
+      icon: ScalesIcon,
+      label: "No Scaling Issue Detected"
+    },
+    [InsightType.SpanScalingInsufficientData]: {
+      icon: ScalesIcon,
+      label: "Performance at Scale"
     }
   };
 

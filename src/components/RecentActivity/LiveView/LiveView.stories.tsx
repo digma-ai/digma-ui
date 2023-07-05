@@ -51,6 +51,50 @@ export const WithData: Story = {
   }
 };
 
+export const WithLowLatencyData: Story = {
+  args: {
+    data: {
+      liveDataRecords: [
+        {
+          duration: {
+            value: 0.13508,
+            unit: "ms",
+            raw: 135084
+          },
+          dateTime: "2023-06-30T10:30:18.9634654Z"
+        }
+      ],
+      durationData: {
+        percentiles: [
+          {
+            percentile: 0.5,
+            currentDuration: {
+              value: 0.13508,
+              unit: "ms",
+              raw: 135084
+            },
+            previousDuration: null,
+            changeVerified: null
+          },
+          {
+            percentile: 0.95,
+            currentDuration: {
+              value: 0.13508,
+              unit: "ms",
+              raw: 135084
+            },
+            previousDuration: null,
+            changeVerified: null
+          }
+        ],
+        codeObjectId:
+          "method:org.springframework.samples.petclinic.sample.SampleInsightsController$_$method1",
+        displayName: "SampleInsightsController.method1"
+      }
+    }
+  }
+};
+
 export const WithSlowdown: Story = {
   args: {
     data: {
@@ -115,50 +159,6 @@ export const WithEvaluating: Story = {
           },
           ...mockData.durationData.percentiles.slice(1)
         ]
-      }
-    }
-  }
-};
-
-export const WithLowLatencyData: Story = {
-  args: {
-    data: {
-      liveDataRecords: [
-        {
-          duration: {
-            value: 0.13508,
-            unit: "ms",
-            raw: 135084
-          },
-          dateTime: "2023-06-30T10:30:18.9634654Z"
-        }
-      ],
-      durationData: {
-        percentiles: [
-          {
-            percentile: 0.5,
-            currentDuration: {
-              value: 0.13508,
-              unit: "ms",
-              raw: 135084
-            },
-            previousDuration: null,
-            changeVerified: null
-          },
-          {
-            percentile: 0.95,
-            currentDuration: {
-              value: 0.13508,
-              unit: "ms",
-              raw: 135084
-            },
-            previousDuration: null,
-            changeVerified: null
-          }
-        ],
-        codeObjectId:
-          "method:org.springframework.samples.petclinic.sample.SampleInsightsController$_$method1",
-        displayName: "SampleInsightsController.method1"
       }
     }
   }

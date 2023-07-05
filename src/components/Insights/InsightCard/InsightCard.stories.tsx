@@ -110,7 +110,6 @@ export const Default: Story = {
       </Button>
     ],
     menuItems: ["menu item 1", "menu item 2", "menu item 3"],
-    isExpandable: true,
     expandableContent: (
       <span>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe quis

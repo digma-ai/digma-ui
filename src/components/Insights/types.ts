@@ -529,14 +529,16 @@ export interface SpanScalingWellInsight extends SpanInsight {
   maxDuration: Duration;
 }
 
+export interface Concurrency {
+  calls: number;
+  meanDuration: Duration;
+}
+
 export interface SpanScalingInsufficientDataInsight extends SpanInsight {
   name: "Scaling Insufficient Data";
   type: InsightType.SpanScalingInsufficientData;
   category: InsightCategory.Performance;
   specifity: InsightSpecificity.OwnInsight;
   importance: InsightImportance.Interesting;
-  concurrencies: {
-    calls: number;
-    meanDuration: Duration;
-  }[];
+  concurrencies: Concurrency[];
 }

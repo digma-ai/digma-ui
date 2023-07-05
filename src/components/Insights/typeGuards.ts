@@ -19,6 +19,8 @@ import {
   SpanInsight,
   SpanNPlusOneInsight,
   SpanScalingBadlyInsight,
+  SpanScalingInsufficientDataInsight,
+  SpanScalingWellInsight,
   SpanUsagesInsight
 } from "./types";
 
@@ -103,3 +105,13 @@ export const isEndpointBreakdownInsight = (
   insight: CodeObjectInsight
 ): insight is EndpointBreakdownInsight =>
   insight.type === InsightType.EndpointBreakdown;
+
+export const isSpanScalingWellInsight = (
+  insight: CodeObjectInsight
+): insight is SpanScalingWellInsight =>
+  insight.type === InsightType.SpanScalingWell;
+
+export const isSpanScalingInsufficientDataInsight = (
+  insight: CodeObjectInsight
+): insight is SpanScalingInsufficientDataInsight =>
+  insight.type === InsightType.SpanScalingInsufficientData;

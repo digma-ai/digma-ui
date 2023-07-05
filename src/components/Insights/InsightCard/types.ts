@@ -9,7 +9,6 @@ export interface InsightCardProps {
   menuItems?: string[];
   stats?: string;
   buttons?: ReactNode[];
-  isExpandable?: boolean;
   onRecalculate?: (
     prefixedCodeObjectId: string,
     insightType: InsightType

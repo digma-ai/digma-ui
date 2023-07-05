@@ -84,7 +84,6 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
           {props.insight.affectedEndpoints.length > 0 && (
             <s.List>
               <s.Description>Affected endpoints:</s.Description>
-
               {props.insight.affectedEndpoints.map((endpoint) => {
                 const endpointRoute = trimEndpointScheme(endpoint.route);
 
