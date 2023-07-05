@@ -156,7 +156,7 @@ const convertTo = (nanoseconds: number, unit: string) => {
   }
 };
 
-const getMaxDuration = (
+const getMaxDurationRecord = (
   records: ExtendedLiveDataRecord[]
 ): ExtendedLiveDataRecord | undefined =>
   records.reduce(
@@ -319,7 +319,29 @@ export const LiveView = (props: LiveViewProps) => {
     })
   );
 
-  const maxDuration = getMaxDuration(data)?.duration;
+  // Add P50 and P95 values to build the correct scale for Y axis
+  const YAxisData = data.concat([
+    ...(p50
+      ? [
+          {
+            dateTime: new Date(0).toISOString(),
+            duration: p50?.duration,
+            dateTimeValue: 0
+          }
+        ]
+      : []),
+    ...(p95
+      ? [
+          {
+            dateTime: new Date(0).toISOString(),
+            duration: p95?.duration,
+            dateTimeValue: 0
+          }
+        ]
+      : [])
+  ]);
+
+  const maxDuration = getMaxDurationRecord(YAxisData)?.duration;
   const maxDurationUnit = maxDuration?.unit || "ns";
   const YAxisTickInterval = roundToNonZeroDecimals(
     convertTo(maxDuration?.raw || 0 / Y_AXIS_TICK_COUNT, maxDurationUnit),
@@ -419,7 +441,7 @@ export const LiveView = (props: LiveViewProps) => {
             >
               <ResponsiveContainer width={"100%"} height={"100%"}>
                 <ComposedChart
-                  data={data}
+                  data={YAxisData}
                   margin={{
                     bottom: 34
                   }}
