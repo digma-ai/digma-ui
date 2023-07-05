@@ -328,7 +328,7 @@ export const LiveView = (props: LiveViewProps) => {
   const YAxisTickDecimalPlaces =
     Math.floor(YAxisTickInterval) === YAxisTickInterval
       ? 0
-      : YAxisTickInterval.toString().split(".")[1].length || 0;
+      : String(YAxisTickInterval).split(".")[1].length || 0;
   const YAxisMaxTickWholePart = Math.ceil(
     convertTo(maxDuration?.raw || 0, maxDurationUnit)
   );

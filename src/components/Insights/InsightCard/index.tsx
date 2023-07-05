@@ -67,21 +67,23 @@ export const InsightCard = (props: InsightCardProps) => {
           {insightTypeInfo?.label || props.data.type}
         </s.Title>
         <s.Toolbar>
-          <s.PercentileViewModeToggle>
-            {PERCENTILES.map((percentile) => (
-              <s.PercentileViewModeToggleOption
-                key={percentile.percentile}
-                selected={percentile.percentile === percentileViewMode}
-                onClick={() =>
-                  handleDurationPercentileToggleOptionClick(
-                    percentile.percentile
-                  )
-                }
-              >
-                {percentile.label}
-              </s.PercentileViewModeToggleOption>
-            ))}
-          </s.PercentileViewModeToggle>
+          {props.onPercentileViewModeChange && (
+            <s.PercentileViewModeToggle>
+              {PERCENTILES.map((percentile) => (
+                <s.PercentileViewModeToggleOption
+                  key={percentile.percentile}
+                  selected={percentile.percentile === percentileViewMode}
+                  onClick={() =>
+                    handleDurationPercentileToggleOptionClick(
+                      percentile.percentile
+                    )
+                  }
+                >
+                  {percentile.label}
+                </s.PercentileViewModeToggleOption>
+              ))}
+            </s.PercentileViewModeToggle>
+          )}
           {props.stats && <s.Stats>{props.stats}</s.Stats>}
           {(props.menuItems || props.data.isRecalculateEnabled) && (
             <Popover
