@@ -16,6 +16,7 @@ import { ErrorsInsight } from "./ErrorsInsight";
 import { InsightCard } from "./InsightCard";
 import { NPlusOneInsight } from "./NPlusOneInsight";
 import { NoScalingIssueInsight } from "./NoScalingIssueInsight";
+import { PerformanceAtScaleInsight } from "./PerformanceAtScaleInsight";
 import { RequestBreakdownInsight } from "./RequestBreakdownInsight";
 import { ScalingIssueInsight } from "./ScalingIssueInsight";
 import { SlowEndpointInsight } from "./SlowEndpointInsight";
@@ -41,6 +42,7 @@ import {
   isSpanInsight,
   isSpanNPlusOneInsight,
   isSpanScalingBadlyInsight,
+  isSpanScalingInsufficientDataInsight,
   isSpanScalingWellInsight,
   isSpanUsagesInsight
 } from "./typeGuards";
@@ -320,6 +322,16 @@ const renderInsightCard = (
   if (isSpanScalingWellInsight(insight)) {
     return (
       <NoScalingIssueInsight
+        key={insight.type}
+        insight={insight}
+        onHistogramButtonClick={handleHistogramButtonClick}
+      />
+    );
+  }
+
+  if (isSpanScalingInsufficientDataInsight(insight)) {
+    return (
+      <PerformanceAtScaleInsight
         key={insight.type}
         insight={insight}
         onHistogramButtonClick={handleHistogramButtonClick}
