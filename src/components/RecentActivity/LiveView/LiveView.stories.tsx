@@ -120,7 +120,7 @@ export const WithEvaluating: Story = {
   }
 };
 
-export const LowLatency: Story = {
+export const WithLowLatencyData: Story = {
   args: {
     data: {
       liveDataRecords: [
