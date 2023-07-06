@@ -6,7 +6,6 @@ export const Container = styled.div`
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -24,7 +23,6 @@ export const Header = styled.div`
   font-weight: 500;
   font-size: 12px;
   padding: 8px;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -34,7 +32,6 @@ export const Header = styled.div`
         return "#fff";
     }
   }};
-
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -62,7 +59,6 @@ export const HeaderSubtitle = styled.span`
           return "#7c7c94";
       }
     }};
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -92,7 +88,6 @@ export const Footer = styled.div`
   gap: 12px;
   flex-grow: 1;
   padding: 12px;
-
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -130,7 +125,6 @@ export const FooterContent = styled.div<{
 
 export const SectionDescription = styled.span`
   font-size: 12px;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -147,7 +141,6 @@ export const IllustrationContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -187,7 +180,6 @@ export const WelcomeTitle = styled.span`
   font-weight: 500;
   font-size: 14px;
   line-height: 16px;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -205,7 +197,6 @@ export const WelcomeText = styled.span`
   text-align: center;
   letter-spacing: -0.1px;
   padding: 20px 0;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -221,7 +212,6 @@ export const InstallationTypeText = styled.span`
   font-size: 12px;
   line-height: 14px;
   padding-bottom: 4px;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -244,7 +234,6 @@ export const Badge = styled.span`
   font-weight: 400;
   border-radius: 4px;
   padding: 2px 4px;
-
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

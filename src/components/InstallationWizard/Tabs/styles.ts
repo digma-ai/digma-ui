@@ -11,7 +11,6 @@ export const TabList = styled.ul`
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-
   border-bottom: 1px solid
     ${({ theme }) => {
       switch (theme.mode) {

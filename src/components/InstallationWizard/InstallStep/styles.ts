@@ -57,7 +57,6 @@ export const IconBackgroundCircle = styled.div`
   height: 40px;
   width: 40px;
   border-radius: 50%;
-
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

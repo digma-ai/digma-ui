@@ -21,7 +21,6 @@ export const Container = styled.div<ContainerProps>`
   align-items: center;
   cursor: pointer;
   user-select: none;
-
   font-weight: ${({ size }) => {
     switch (size) {
       case "large":
@@ -30,7 +29,6 @@ export const Container = styled.div<ContainerProps>`
         return "500";
     }
   }};
-
   font-size: ${({ size }) => {
     switch (size) {
       case "large":
@@ -39,7 +37,6 @@ export const Container = styled.div<ContainerProps>`
         return "10px";
     }
   }};
-
   line-height: ${({ size }) => {
     switch (size) {
       case "large":
@@ -48,7 +45,6 @@ export const Container = styled.div<ContainerProps>`
         return "12px";
     }
   }};
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -67,7 +63,6 @@ export const SwitchContainer = styled.div<SwitchContainerProps>`
   transition: background 300ms;
   display: flex;
   align-items: center;
-
   background: ${({ isChecked, theme }) => {
     switch (theme.mode) {
       case "light":
@@ -85,7 +80,6 @@ export const Circle = styled.div<CircleProps>`
   border-radius: 50%;
   transition-property: background, margin-left;
   transition-duration: 300ms;
-
   margin-left: ${({ isChecked, size }) =>
     isChecked
       ? `${4 * getCircleRadius(size)}px`

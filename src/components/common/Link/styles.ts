@@ -4,7 +4,6 @@ export const Link = styled.a`
   font-size: 8px;
   line-height: 10px;
   cursor: pointer;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

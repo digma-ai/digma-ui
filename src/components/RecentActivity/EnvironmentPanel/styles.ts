@@ -7,6 +7,7 @@ const backgroundAnimation = keyframes`
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 `;
+
 export const BorderContainer = styled.div`
   padding: 1px;
   border-radius: ${BORDER_RADIUS}px;
@@ -20,17 +21,15 @@ export const BorderContainer = styled.div`
         return "linear-gradient(90deg, #2f3750 0%, #3e489b 48.96%, #7b85d7 100%)";
     }
   }};
-
   box-shadow: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "0px 0px 5px rgba(167, 176, 255, 0.5)";
+        return "0px 0px 5px rgb(167 176 255 / 50%)";
       case "dark":
       case "dark-jetbrains":
-        return "0px 0px 5px rgba(167, 176, 255, 0.25)";
+        return "0px 0px 5px rgb(167 176 255 / 25%)";
     }
   }};
-
   ${/* TODO: Replace with cross-fading backgrounds */ ""}
   background-size: 400% 400%;
   animation: ${backgroundAnimation} 4s ease-in-out infinite;

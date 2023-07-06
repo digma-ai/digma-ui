@@ -96,7 +96,7 @@ export const FinishStep = (props: FinishStepProps) => {
             <CircleLoader
               size={16}
               colors={{
-                start: "rgba(53, 56, 205, 0.3)",
+                start: "rgb(53 56 205 / 30%)",
                 end: "#fff",
                 background: "#252526"
               }}
