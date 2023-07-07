@@ -3,8 +3,7 @@ import styled from "styled-components";
 export const Container = styled.div`
   border-radius: 4px;
   padding: 8px;
-  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.15);
-
+  box-shadow: 0 0 6px rgb(0 0 0 / 15%);
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

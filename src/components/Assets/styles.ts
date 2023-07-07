@@ -3,7 +3,6 @@ import { Link } from "../common/Link";
 
 export const Container = styled.div`
   min-height: 100vh;
-
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -23,7 +22,6 @@ export const NoDataContainer = styled.div`
   font-weight: 500;
   font-size: 12px;
   text-align: center;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -39,7 +37,6 @@ export const NoDataTitle = styled.span`
   font-size: 14px;
   text-transform: capitalize;
   margin: 20px 0 4px;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -62,7 +59,6 @@ export const Circle = styled.div`
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

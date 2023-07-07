@@ -46,16 +46,16 @@ const groupEntries = (data: ServiceAssetsEntry[]): GroupedAssetEntries => {
     )
     .flat();
 
-  const assetTypes = groupBy<ExtendedAssetEntry>(assetEntries, "assetType");
+  const assetTypes = groupBy(assetEntries, (x) => x.assetType);
 
   const groupedAssetEntries: {
     [key: string]: { [key: string]: ExtendedAssetEntry[] };
   } = {};
 
   Object.keys(assetTypes).forEach((assetType) => {
-    groupedAssetEntries[assetType] = groupBy<ExtendedAssetEntry>(
+    groupedAssetEntries[assetType] = groupBy(
       assetTypes[assetType],
-      "id"
+      (x) => x.id
     );
   });
 

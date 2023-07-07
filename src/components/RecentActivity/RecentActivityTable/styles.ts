@@ -6,7 +6,6 @@ export const Table = styled.table`
   width: 100%;
   border-spacing: 0 4px;
   font-size: 12px;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -22,7 +21,6 @@ export const Table = styled.table`
 export const TableHead = styled.thead`
   font-size: 10px;
   height: 28px;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -120,7 +118,6 @@ export const InsightIconContainer = styled.span`
   height: 24px;
   flex-shrink: 0;
   border-radius: 4px;
-
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -141,7 +138,6 @@ export const Suffix = styled.span`
   margin-left: 2px;
   font-size: 10px;
   line-height: 12px;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -164,7 +160,6 @@ export const ListHeader = styled.div`
   padding-left: 12px;
   line-height: 16px;
   font-size: 10px;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -184,7 +179,6 @@ export const List = styled.ul`
   list-style-type: none;
   display: flex;
   flex-direction: column;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -239,13 +233,11 @@ export const ListSuffix = styled(Suffix)`
   line-height: 14px;
 `;
 
-// postcss-styled-components-disable-next-line
 export const SpanLink = styled(Link)`
   ${({ theme }) => getCodeFont(theme.codeFont)}
 
   font-size: 12px;
   line-height: 14px;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

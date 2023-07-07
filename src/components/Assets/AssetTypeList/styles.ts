@@ -6,7 +6,6 @@ export const List = styled.ul`
   gap: 8px;
   padding: 8px;
   margin: 0;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

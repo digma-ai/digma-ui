@@ -9,7 +9,6 @@ export const Container = styled.li<ContainerProps>`
   font-size: 14px;
   padding: 4px 12px;
   user-select: none;
-
   color: ${({ isSelected, theme }) => {
     if (isSelected) {
       switch (theme.mode) {
@@ -31,7 +30,6 @@ export const Container = styled.li<ContainerProps>`
         return "#9b9b9b";
     }
   }};
-
   background: ${({ isSelected, theme }) => {
     if (!isSelected) {
       return "none";
@@ -46,7 +44,6 @@ export const Container = styled.li<ContainerProps>`
         return "#3d3f41";
     }
   }};
-
   border-bottom: ${({ isSelected }) =>
     isSelected ? "1px solid #5154ec" : "none"};
 

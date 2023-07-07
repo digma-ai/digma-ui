@@ -14,7 +14,6 @@ export const Button = styled.button<ButtonElementProps>`
   justify-content: center;
   width: max-content;
   user-select: none;
-
   color: ${({ theme, buttonType }) => {
     if (buttonType === "secondary") {
       switch (theme.mode) {
@@ -28,7 +27,6 @@ export const Button = styled.button<ButtonElementProps>`
 
     return "#b9c2eb";
   }};
-
   background: ${({ theme, buttonType }) => {
     if (buttonType === "secondary") {
       switch (theme.mode) {
@@ -42,7 +40,6 @@ export const Button = styled.button<ButtonElementProps>`
 
     return "#3538cd";
   }};
-
   border: ${({ theme, buttonType }) => {
     if (buttonType === "secondary") {
       switch (theme.mode) {
@@ -78,7 +75,6 @@ export const Button = styled.button<ButtonElementProps>`
           return "#b9c2eb";
       }
     }};
-
     background: ${({ theme, buttonType }) => {
       if (buttonType === "secondary") {
         switch (theme.mode) {
@@ -92,7 +88,6 @@ export const Button = styled.button<ButtonElementProps>`
 
       return "#5154ec";
     }};
-
     border: ${({ buttonType }) => {
       if (buttonType === "secondary") {
         return "1px solid #5154ec";
@@ -122,7 +117,6 @@ export const Button = styled.button<ButtonElementProps>`
           return "#dadada";
       }
     }};
-
     background: ${({ theme, buttonType }) => {
       if (buttonType === "secondary") {
         switch (theme.mode) {
@@ -136,7 +130,6 @@ export const Button = styled.button<ButtonElementProps>`
 
       return "#3538cd";
     }};
-
     border: ${({ theme, buttonType }) => {
       if (buttonType === "secondary") {
         switch (theme.mode) {
@@ -154,7 +147,6 @@ export const Button = styled.button<ButtonElementProps>`
 
   &:disabled {
     cursor: initial;
-
     color: ${({ theme, buttonType }) => {
       if (buttonType === "secondary") {
         switch (theme.mode) {
@@ -174,7 +166,6 @@ export const Button = styled.button<ButtonElementProps>`
           return "#49494d";
       }
     }};
-
     background: ${({ theme, buttonType }) => {
       if (buttonType === "secondary") {
         return "none";
@@ -188,7 +179,6 @@ export const Button = styled.button<ButtonElementProps>`
           return "#2e2e2e";
       }
     }};
-
     border: ${({ theme, buttonType }) => {
       if (buttonType === "secondary") {
         switch (theme.mode) {

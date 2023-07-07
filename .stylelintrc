@@ -1,6 +1,6 @@
 {
-  "extends": ["stylelint-config-recommended"],
-  "customSyntax": "postcss-styled-components",
+  "extends": ["stylelint-config-standard"],
+  "customSyntax": "postcss-styled-syntax",
   "rules": {
     "font-family-no-missing-generic-family-keyword": [
       true,

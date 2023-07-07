@@ -10,7 +10,6 @@ export const Container = styled.div`
   font-weight: 500;
   font-size: 10px;
   line-height: 12px;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -20,7 +19,6 @@ export const Container = styled.div`
         return "#e2e7ff";
     }
   }};
-
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -34,7 +32,6 @@ export const Container = styled.div`
 
 export const EvaluatingBadge = styled.span`
   margin-left: 8px;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

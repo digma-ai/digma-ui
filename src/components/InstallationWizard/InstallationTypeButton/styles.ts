@@ -9,7 +9,6 @@ export const InstallationTypeButton = styled.button`
   font-size: 12px;
   line-height: 14px;
   border: 1px solid transparent;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -19,7 +18,6 @@ export const InstallationTypeButton = styled.button`
         return "#9b9b9b";
     }
   }};
-
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -85,7 +83,6 @@ export const InstallationTypeButtonIconContainer = styled.span<InstallationTypeB
   align-items: center;
   justify-content: center;
   border-radius: 4px;
-
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -113,7 +110,6 @@ export const InstallationTypeButtonTitle = styled.span<InstallationTypeButtonEle
   font-size: 14px;
   line-height: 16px;
   margin-bottom: 8px;
-
   color: ${({ disabled, theme }) => {
     if (disabled) {
       switch (theme.mode) {

@@ -6,7 +6,6 @@ export const Container = styled.div`
   gap: 8px;
   padding: 8px;
   border-radius: 4px;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -16,7 +15,6 @@ export const Container = styled.div`
         return "#9b9b9b";
     }
   }};
-
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -63,7 +61,6 @@ export const InsightIconsContainer = styled.div`
 
 export const InsightIconContainer = styled(AssetTypeIconContainer)`
   border-radius: 4px;
-
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -115,7 +112,7 @@ export const ServiceName = styled.div`
   line-height: 8px;
   overflow: hidden;
   text-overflow: ellipsis;
-
+  white-space: nowrap;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -125,7 +122,6 @@ export const ServiceName = styled.div`
         return "#dadada";
     }
   }};
-
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -144,7 +140,6 @@ export const ValueContainer = styled.div`
   font-size: 12px;
   line-height: 14px;
   font-weight: 500;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -160,7 +155,6 @@ export const Suffix = styled.span`
   font-weight: 400;
   font-size: 11px;
   line-height: 14px;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
