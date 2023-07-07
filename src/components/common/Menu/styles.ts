@@ -3,9 +3,8 @@ import styled from "styled-components";
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 4px 4px rgb(0 0 0 / 12%);
   border-radius: 2px;
-
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -21,7 +20,6 @@ export const Header = styled.div`
   padding: 2px 8px;
   font-size: 10px;
   line-height: 14px;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -48,7 +46,6 @@ export const ListItem = styled.li`
   font-size: 10px;
   line-height: 12px;
   cursor: pointer;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

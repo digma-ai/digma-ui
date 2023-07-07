@@ -10,7 +10,6 @@ export const TabList = styled.ul`
   display: flex;
   margin: 0;
   padding: 0;
-
   border-bottom: 1px solid
     ${({ theme }) => {
       switch (theme.mode) {

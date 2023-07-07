@@ -11,7 +11,6 @@ export const ListItem = styled.li`
   letter-spacing: -0.1px;
   user-select: none;
   border-radius: 4px;
-
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -25,7 +24,6 @@ export const ListItem = styled.li`
 
 export const EntryCount = styled.span`
   margin-left: auto;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

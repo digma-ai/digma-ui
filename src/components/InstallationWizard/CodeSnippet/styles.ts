@@ -9,7 +9,6 @@ export const Container = styled.div`
   gap: 27px;
   align-items: flex-start;
   justify-content: space-between;
-
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -21,7 +20,6 @@ export const Container = styled.div`
   }};
 `;
 
-// postcss-styled-components-disable-next-line
 export const Code = styled.code`
   ${({ theme }) => getCodeFont(theme.codeFont)}
 
@@ -30,7 +28,6 @@ export const Code = styled.code`
   line-height: 20px;
   letter-spacing: -0.1px;
   white-space: pre-wrap;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

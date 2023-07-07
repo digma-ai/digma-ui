@@ -7,7 +7,6 @@ export const Container = styled.div`
   font-weight: 400;
   font-size: 10px;
   line-height: 12px;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -27,7 +26,6 @@ export const Percentile = styled.div`
 
 export const Value = styled.span`
   font-weight: 500;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

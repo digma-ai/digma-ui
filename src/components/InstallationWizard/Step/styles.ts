@@ -8,7 +8,6 @@ import {
 
 const HEADER_HEIGHT = 40; // in pixels;
 
-// postcss-styled-components-disable-next-line
 export const Container = styled.div<ContainerProps>`
   ${({ transitionClassName, transitionDuration, contentHeight }) => {
     const totalHeight = HEADER_HEIGHT + contentHeight;
@@ -37,7 +36,6 @@ export const Container = styled.div<ContainerProps>`
     status === "active"
       ? `${HEADER_HEIGHT + contentHeight}`
       : `${HEADER_HEIGHT}`}px;
-
   overflow: hidden;
 `;
 
@@ -60,7 +58,6 @@ export const Header = styled.div<HeaderProps>`
     }};
   height: ${HEADER_HEIGHT}px;
   box-sizing: border-box;
-
   color: ${({ theme, status }) => {
     switch (theme.mode) {
       case "light":
@@ -70,9 +67,7 @@ export const Header = styled.div<HeaderProps>`
         return status === "active" ? "#fff" : "#9b9b9b";
     }
   }};
-
   transition: color ${({ transitionDuration }) => transitionDuration}ms ease-out;
-
   cursor: ${({ status }) => {
     return status === "completed" ? "pointer" : "initial";
   }};
@@ -86,7 +81,6 @@ export const NumberContainer = styled.div<NumberContainerProps>`
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-
   color: ${({ theme, isActive }) => {
     switch (theme.mode) {
       case "light":
@@ -96,7 +90,6 @@ export const NumberContainer = styled.div<NumberContainerProps>`
         return isActive ? "#fff" : "#383838";
     }
   }};
-
   transition-duration: ${({ transitionDuration }) => transitionDuration}ms;
   transition-property: color;
   transition-timing-function: ease-out;
@@ -123,7 +116,6 @@ export const Number = styled.span<NumberProps>`
   align-items: center;
   justify-content: center;
   position: absolute;
-
   background: ${({ theme, status }) =>
     status === "completed" ? "none" : getNumberBackgroundColor(theme)};
 

@@ -7,7 +7,6 @@ export const Container = styled.div`
   font-weight: 500;
   font-size: 12px;
   line-height: 14px;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -23,10 +22,8 @@ export const Timestamp = styled.span`
   display: flex;
   align-items: center;
   gap: 4px;
-
   font-size: 8px;
   line-height: 10px;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -41,7 +38,6 @@ export const Timestamp = styled.span`
 export const Divider = styled.span`
   height: 10px;
   width: 1px;
-
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

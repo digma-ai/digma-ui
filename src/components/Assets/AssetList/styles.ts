@@ -21,7 +21,6 @@ export const Header = styled.div`
   font-size: 11px;
   line-height: 14px;
   padding: 8px 12px 8px 8px;
-
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -31,7 +30,6 @@ export const Header = styled.div`
         return "#383838";
     }
   }};
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -74,7 +72,6 @@ export const SearchInput = styled.input`
   border-radius: 4px;
   width: 140px;
   outline: none;
-
   caret-color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -84,7 +81,6 @@ export const SearchInput = styled.input`
         return "#dadada";
     }
   }};
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -94,7 +90,6 @@ export const SearchInput = styled.input`
         return "#dadada";
     }
   }};
-
   border: 1px solid
     ${({ theme }) => {
       switch (theme.mode) {
@@ -145,7 +140,6 @@ export const SortingMenuContainer = styled.div`
   line-height: 12px;
   align-items: center;
   height: 20px;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -162,7 +156,6 @@ export const SortingLabel = styled.span`
   font-size: 10px;
   line-height: 12px;
   text-transform: capitalize;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -176,7 +169,6 @@ export const SortingLabel = styled.span`
 
 export const ItemsCount = styled.span`
   margin-left: auto;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -206,7 +198,6 @@ export const NoDataText = styled.span`
   font-size: 12px;
   line-height: 16px;
   text-align: center;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

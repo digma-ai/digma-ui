@@ -9,17 +9,15 @@ export const Button = styled.button`
   justify-content: center;
   width: max-content;
   user-select: none;
-
   box-shadow: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "1px 1px 3px rgba(0, 0, 0, 0.15)";
+        return "1px 1px 3px rgb(0 0 0 / 15%)";
       case "dark":
       case "dark-jetbrains":
-        return "1px 1px 4px rgba(0, 0, 0, 0.25)";
+        return "1px 1px 4px rgb(0 0 0 / 25%)";
     }
   }};
-
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -29,7 +27,6 @@ export const Button = styled.button`
         return "#2e2e2e";
     }
   }};
-
   border: 1px solid
     ${({ theme }) => {
       switch (theme.mode) {
@@ -64,7 +61,6 @@ export const Button = styled.button`
           return "#2e2e2e";
       }
     }};
-
     border: 1px solid
       ${({ theme }) => {
         switch (theme.mode) {
@@ -79,7 +75,6 @@ export const Button = styled.button`
 
   &:disabled {
     cursor: initial;
-
     background: ${({ theme }) => {
       switch (theme.mode) {
         case "light":
@@ -89,7 +84,6 @@ export const Button = styled.button`
           return "#2e2e2e";
       }
     }};
-
     border: 1px solid
       ${({ theme }) => {
         switch (theme.mode) {

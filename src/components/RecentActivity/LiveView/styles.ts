@@ -25,7 +25,6 @@ export const Container = styled.div<{ isChangeStatusBarPresent: boolean }>`
   gap: ${CONTAINER_GAP}px;
   min-height: ${({ isChangeStatusBarPresent }) =>
     getContainerMinHeight(isChangeStatusBarPresent)}px;
-
   border: 1px solid
     ${({ theme }) => {
       switch (theme.mode) {
@@ -36,7 +35,6 @@ export const Container = styled.div<{ isChangeStatusBarPresent: boolean }>`
           return "#323232";
       }
     }};
-
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -59,7 +57,6 @@ export const Header = styled.div`
   height: ${HEADER_HEIGHT}px;
   box-sizing: border-box;
   flex: none;
-
   border-bottom: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -69,7 +66,6 @@ export const Header = styled.div`
         return "none";
     }
   }};
-
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -98,7 +94,6 @@ export const SpanName = styled.span`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -116,7 +111,6 @@ export const LiveBadge = styled.span`
   gap: 2px;
   margin-left: auto;
   padding: 2px 4px;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -162,7 +156,6 @@ export const ZoomButton = styled.button`
   padding: 4px;
   border-radius: 4px;
   cursor: pointer;
-
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -172,7 +165,6 @@ export const ZoomButton = styled.button`
         return "#2e2e2e";
     }
   }};
-
   border: 1px solid
     ${({ theme }) => {
       switch (theme.mode) {
@@ -183,14 +175,13 @@ export const ZoomButton = styled.button`
           return "#383838";
       }
     }};
-
   box-shadow: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "1px 1px 3px rgba(0, 0, 0, 0.15)";
+        return "1px 1px 3px rgb(0 0 0 / 15%)";
       case "dark":
       case "dark-jetbrains":
-        return "1px 1px 4px rgba(0, 0, 0, 0.25)";
+        return "1px 1px 4px rgb(0 0 0 / 25%)";
     }
   }};
 `;
@@ -230,7 +221,6 @@ export const LegendContainer = styled.div`
   font-size: 10px;
   padding: 4px 0;
   line-height: 12px;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -243,8 +233,8 @@ export const LegendContainer = styled.div`
 `;
 
 export const AreaLegendIllustration = styled.div<AreaLegendIllustrationProps>`
-  background: ${({ color }) => color}33; // 20% opacity
-  border-color: ${({ color }) => color};
+  ${/* 20% opacity */ ""}
+  background: ${({ color }) => color}33;
   border-style: solid none;
   border-width: 1px;
   width: 10px;
@@ -262,7 +252,6 @@ export const LatestDataButton = styled.button`
   align-self: flex-end;
   font-size: 10px;
   line-height: 12px;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -272,7 +261,6 @@ export const LatestDataButton = styled.button`
         return "#e2e7ff";
     }
   }};
-
   border: 1px solid
     ${({ theme }) => {
       switch (theme.mode) {
@@ -283,7 +271,6 @@ export const LatestDataButton = styled.button`
           return "#5154ec";
       }
     }};
-
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -306,7 +293,6 @@ export const NoDataContainer = styled.div`
   font-size: 12px;
   line-height: 14px;
   text-align: center;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -323,7 +309,6 @@ export const NoDataTitle = styled.span`
   font-size: 14px;
   line-height: 17px;
   text-transform: capitalize;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

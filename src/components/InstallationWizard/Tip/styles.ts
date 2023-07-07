@@ -7,7 +7,6 @@ export const TipContainer = styled.div`
   font-weight: 500;
   font-size: 12px;
   margin-top: 8px;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

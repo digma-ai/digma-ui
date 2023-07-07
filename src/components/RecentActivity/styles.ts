@@ -3,7 +3,6 @@ import { Link } from "../common/Link";
 
 export const Container = styled.div`
   height: 100%;
-
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -119,7 +118,6 @@ export const DocumentationLink = styled(Link)`
   font-size: 10px;
   line-height: 16px;
   text-decoration: none;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

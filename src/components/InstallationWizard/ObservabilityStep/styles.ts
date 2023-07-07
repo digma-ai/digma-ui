@@ -24,7 +24,6 @@ export const ObservabilityTitle = styled.span`
   font-size: 14px;
   text-transform: capitalize;
   text-align: center;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -43,7 +42,6 @@ export const ObservabilityDescription = styled.div`
   text-align: center;
   display: flex;
   flex-direction: column;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -82,7 +80,6 @@ export const CongratulationsTextContainer = styled.div`
   line-height: 11px;
   flex-wrap: wrap;
   justify-content: center;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -97,7 +94,6 @@ export const CongratulationsTextContainer = styled.div`
 export const CongratulationsText = styled.span`
   font-weight: 700;
   padding-left: 2px;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

@@ -22,7 +22,6 @@ export const SectionTitleNote = styled.span`
   font-size: 10px;
   line-height: 12px;
   font-weight: 400;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -46,10 +45,7 @@ export const IllustrationContainer = styled(CommonIllustrationContainer)`
 
 export const PlayIconContainer = styled.div`
   position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
+  inset: 0;
   margin: auto;
   width: 8%;
 `;
@@ -76,7 +72,6 @@ export const EmailInput = styled.input`
   line-height: 14px;
   padding: 8px 10px;
   border-radius: 4px;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -86,7 +81,6 @@ export const EmailInput = styled.input`
         return "#dadada";
     }
   }};
-
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -96,7 +90,6 @@ export const EmailInput = styled.input`
         return "#252526";
     }
   }};
-
   border: 1px solid
     ${({ theme }) => {
       switch (theme.mode) {
