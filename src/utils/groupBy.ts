@@ -1,14 +1,12 @@
-export type GroupBy<T> = { [key: string]: T[] };
-
-export const groupBy = <T>(data: T[], key: keyof T): GroupBy<T> =>
-  data.reduce((acc: GroupBy<T>, curr: T) => {
-    const groupKey = String(curr[key]);
-
-    if (!acc[groupKey]) {
-      acc[groupKey] = [];
+export const groupBy = <T, K extends keyof any>(
+  list: T[],
+  getKey: (item: T) => K
+) =>
+  list.reduce((acc, curr) => {
+    const group = getKey(curr);
+    if (!acc[group]) {
+      acc[group] = [];
     }
-
-    acc[groupKey].push(curr);
-
+    acc[group].push(curr);
     return acc;
-  }, {});
+  }, {} as Record<K, T[]>);

@@ -171,7 +171,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
   };
 
   const environmentActivities = useMemo(
-    () => (data ? groupBy(data.entries, "environment") : {}),
+    () => (data ? groupBy(data.entries, (x) => x.environment) : {}),
     [data]
   );
 
