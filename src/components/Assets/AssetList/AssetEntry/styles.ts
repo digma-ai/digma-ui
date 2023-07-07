@@ -112,6 +112,7 @@ export const ServiceName = styled.div`
   line-height: 8px;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
