@@ -5,7 +5,7 @@ export const Button = styled.button<ButtonElementProps>`
   font-family: inherit;
   font-weight: 500;
   font-size: 12px;
-  line-height: 14px;
+  line-height: normal;
   padding: 4px 8px;
   border-radius: 2px;
   cursor: pointer;
@@ -22,36 +22,24 @@ export const Button = styled.button<ButtonElementProps>`
           return "#3538cd";
         case "dark":
         case "dark-jetbrains":
-          return "#b9c2eb";
+          return "#e2e7ff";
       }
     }
 
-    return "#b9c2eb";
+    return "#e2e7ff";
   }};
 
-  background: ${({ theme, buttonType }) => {
+  background: ${({ buttonType }) => {
     if (buttonType === "secondary") {
-      switch (theme.mode) {
-        case "light":
-          return "none";
-        case "dark":
-        case "dark-jetbrains":
-          return "#414363";
-      }
+      return "none";
     }
 
     return "#3538cd";
   }};
 
-  border: ${({ theme, buttonType }) => {
+  border: ${({ buttonType }) => {
     if (buttonType === "secondary") {
-      switch (theme.mode) {
-        case "light":
-          return "1px solid #3538cd";
-        case "dark":
-        case "dark-jetbrains":
-          return "1px solid #5154ec";
-      }
+      return "1px solid #3538cd";
     }
 
     return "none";
@@ -70,24 +58,12 @@ export const Button = styled.button<ButtonElementProps>`
         }
       }
 
-      switch (theme.mode) {
-        case "light":
-          return "#e2e7ff";
-        case "dark":
-        case "dark-jetbrains":
-          return "#b9c2eb";
-      }
+      return "#e2e7ff";
     }};
 
-    background: ${({ theme, buttonType }) => {
+    background: ${({ buttonType }) => {
       if (buttonType === "secondary") {
-        switch (theme.mode) {
-          case "light":
-            return "#eeeefd";
-          case "dark":
-          case "dark-jetbrains":
-            return "#414363";
-        }
+        return "none";
       }
 
       return "#5154ec";
@@ -116,36 +92,24 @@ export const Button = styled.button<ButtonElementProps>`
 
       switch (theme.mode) {
         case "light":
-          return "#f1f5fa";
+          return "#fbfdff";
         case "dark":
         case "dark-jetbrains":
           return "#dadada";
       }
     }};
 
-    background: ${({ theme, buttonType }) => {
+    background: ${({ buttonType }) => {
       if (buttonType === "secondary") {
-        switch (theme.mode) {
-          case "light":
-            return "#eeeefd";
-          case "dark":
-          case "dark-jetbrains":
-            return "#414363";
-        }
+        return "none";
       }
 
       return "#3538cd";
     }};
 
-    border: ${({ theme, buttonType }) => {
+    border: ${({ buttonType }) => {
       if (buttonType === "secondary") {
-        switch (theme.mode) {
-          case "light":
-            return "1px solid #3538cd";
-          case "dark":
-          case "dark-jetbrains":
-            return "1px solid #5154ec";
-        }
+        return "1px solid #3538cd";
       }
 
       return "none";

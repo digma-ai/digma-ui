@@ -47,7 +47,7 @@ const getIconColor = (
         return "#3538cd";
       case "dark":
       case "dark-jetbrains":
-        return "#b9c2eb";
+        return "#e2e7ff";
     }
   }
 
@@ -64,7 +64,7 @@ const getIconColor = (
   if (isPressed) {
     switch (theme.mode) {
       case "light":
-        return "#f1f5fa";
+        return "#fbfdff";
       case "dark":
       case "dark-jetbrains":
         return "#dadada";
@@ -72,16 +72,10 @@ const getIconColor = (
   }
 
   if (isFocused || isHovered) {
-    switch (theme.mode) {
-      case "light":
-        return "#e2e7ff";
-      case "dark":
-      case "dark-jetbrains":
-        return "#b9c2eb";
-    }
+    return "#e2e7ff";
   }
 
-  return "#b9c2eb";
+  return "#e2e7ff";
 };
 
 export const Button = (props: ButtonProps) => {
