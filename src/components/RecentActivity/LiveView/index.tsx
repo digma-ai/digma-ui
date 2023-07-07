@@ -1,5 +1,12 @@
 import { format } from "date-fns";
-import { UIEvent, useEffect, useMemo, useRef, useState } from "react";
+import {
+  UIEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from "react";
 import useDimensions from "react-cool-dimensions";
 import useScrollbarSize from "react-scrollbar-size";
 
@@ -181,7 +188,7 @@ export const LiveView = (props: LiveViewProps) => {
   const previousWidth = usePrevious(width);
   const [containerInitialWidth, setContainerInitialWidth] =
     useState<number>(width);
-  const chartContainerRef = useRef<HTMLDivElement>(null);
+  const chartContainerRef = useRef<HTMLDivElement | null>(null);
   const [chartWidth, setChartWidth] = useState<number>(width);
   const previousChartWidth = usePrevious(chartWidth);
   const [isZoomed, setIsZoomed] = useState(false);
@@ -189,10 +196,6 @@ export const LiveView = (props: LiveViewProps) => {
   const [dotToolTip, setDotTooltip] = useState<DotTooltipProps>();
   const [scrollPercentagePosition, setScrollPercentagePosition] = useState(1);
   const scrollbar = useScrollbarSize();
-
-  useEffect(() => {
-    observe(chartContainerRef.current);
-  }, [observe, chartContainerRef.current]);
 
   useEffect(() => {
     if (previousWidth !== width) {
@@ -211,6 +214,14 @@ export const LiveView = (props: LiveViewProps) => {
       });
     }
   }, [previousChartWidth, chartWidth, scrollPercentagePosition]);
+
+  const getChartContainerRef = useCallback(
+    (el: HTMLDivElement | null) => {
+      observe(el);
+      chartContainerRef.current = el;
+    },
+    [observe]
+  );
 
   const persistScrollPosition = () => {
     const el = chartContainerRef.current;
@@ -477,7 +488,10 @@ export const LiveView = (props: LiveViewProps) => {
                 </ComposedChart>
               </ResponsiveContainer>
             </s.AxisChartContainer>
-            <s.ChartContainer ref={chartContainerRef} onScroll={handleScroll}>
+            <s.ChartContainer
+              ref={getChartContainerRef}
+              onScroll={handleScroll}
+            >
               <ResponsiveContainer
                 width={isZoomed ? chartWidth : "100%"}
                 height={"100%"}
