@@ -7,6 +7,7 @@ export const Button = styled.button<ButtonElementProps>`
   font-size: 12px;
   line-height: normal;
   padding: 4px 8px;
+  height: 22px;
   border-radius: 2px;
   cursor: pointer;
   display: flex;
