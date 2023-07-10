@@ -125,9 +125,11 @@ export const InsightCard = (props: InsightCardProps) => {
         <s.ContentContainer>{props.content}</s.ContentContainer>
       )}
       {props.expandableContent && (
-        <Link onClick={handleExpandButtonClick}>
-          Show {isExpanded ? "less" : "more"}
-        </Link>
+        <span>
+          <Link onClick={handleExpandButtonClick}>
+            Show {isExpanded ? "less" : "more"}
+          </Link>
+        </span>
       )}
       {isExpanded && props.expandableContent && (
         <s.ContentContainer>{props.expandableContent}</s.ContentContainer>

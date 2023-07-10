@@ -85,6 +85,7 @@ export const ExpandButton = styled.button`
   padding: 0;
   border: none;
   background: none;
+  cursor: pointer;
 `;
 
 export const ContentContainer = styled.div`
