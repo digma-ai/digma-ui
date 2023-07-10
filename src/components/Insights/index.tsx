@@ -223,6 +223,7 @@ const renderInsightCard = (
         key={insight.type}
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
+        onRecalculate={handleRecalculate}
       />
     );
   }
@@ -232,18 +233,31 @@ const renderInsightCard = (
         key={insight.type}
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
+        onRecalculate={handleRecalculate}
       />
     );
   }
   if (isSlowEndpointInsight(insight)) {
-    return <SlowEndpointInsight key={insight.type} insight={insight} />;
+    return (
+      <SlowEndpointInsight
+        key={insight.type}
+        insight={insight}
+        onRecalculate={handleRecalculate}
+      />
+    );
   }
   if (
     isEndpointLowUsageInsight(insight) ||
     isEndpointNormalUsageInsight(insight) ||
     isEndpointHighUsageInsight(insight)
   ) {
-    return <TrafficInsight key={insight.type} insight={insight} />;
+    return (
+      <TrafficInsight
+        key={insight.type}
+        insight={insight}
+        onRecalculate={handleRecalculate}
+      />
+    );
   }
   if (isCodeObjectErrorsInsight(insight)) {
     return (
@@ -252,6 +266,7 @@ const renderInsightCard = (
         insight={insight}
         onErrorSelect={handleErrorSelect}
         onExpandButtonClick={handleErrorsExpandButtonClick}
+        onRecalculate={handleRecalculate}
       />
     );
   }
@@ -262,6 +277,7 @@ const renderInsightCard = (
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
         onTraceButtonClick={handleTraceButtonClick}
+        onRecalculate={handleRecalculate}
       />
     );
   }
@@ -272,6 +288,7 @@ const renderInsightCard = (
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
         onTraceButtonClick={handleTraceButtonClick}
+        onRecalculate={handleRecalculate}
       />
     );
   }
@@ -283,6 +300,7 @@ const renderInsightCard = (
         onAssetLinkClick={handleAssetLinkClick}
         onTraceButtonClick={handleTraceButtonClick}
         onHistogramButtonClick={handleHistogramButtonClick}
+        onRecalculate={handleRecalculate}
       />
     );
   }
@@ -296,6 +314,7 @@ const renderInsightCard = (
             Major errors occur or propagate through this function
           </s.Description>
         }
+        onRecalculate={handleRecalculate}
       />
     );
   }
@@ -305,6 +324,7 @@ const renderInsightCard = (
         key={insight.type}
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
+        onRecalculate={handleRecalculate}
       />
     );
   }
@@ -325,6 +345,7 @@ const renderInsightCard = (
         key={insight.type}
         insight={insight}
         onHistogramButtonClick={handleHistogramButtonClick}
+        onRecalculate={handleRecalculate}
       />
     );
   }
@@ -335,6 +356,7 @@ const renderInsightCard = (
         key={insight.type}
         insight={insight}
         onHistogramButtonClick={handleHistogramButtonClick}
+        onRecalculate={handleRecalculate}
       />
     );
   }

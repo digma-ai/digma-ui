@@ -46,6 +46,7 @@ export const ErrorsInsight = (props: ErrorsInsightProps) => {
           Expand
         </Button>
       ]}
+      onRecalculate={props.onRecalculate}
     />
   );
 };

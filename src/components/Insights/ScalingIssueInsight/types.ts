@@ -1,7 +1,7 @@
 import { InsightType } from "../../../types";
-import { SpanScalingBadlyInsight, Trace } from "../types";
+import { InsightProps, SpanScalingBadlyInsight, Trace } from "../types";
 
-export interface ScalingIssueInsightProps {
+export interface ScalingIssueInsightProps extends InsightProps {
   insight: SpanScalingBadlyInsight;
   onAssetLinkClick: (spanCodeObjectId: string) => void;
   onTraceButtonClick: (trace: Trace) => void;

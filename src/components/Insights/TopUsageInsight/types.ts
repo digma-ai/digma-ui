@@ -1,12 +1,7 @@
-import { InsightType } from "../../../types";
-import { SpanUsagesInsight, Trace } from "../types";
+import { InsightProps, SpanUsagesInsight, Trace } from "../types";
 
-export interface TopUsageInsightProps {
+export interface TopUsageInsightProps extends InsightProps {
   insight: SpanUsagesInsight;
-  onRecalculate: (
-    prefixedCodeObjectId: string,
-    insightType: InsightType
-  ) => void;
   onAssetLinkClick: (spanCodeObjectId: string) => void;
   onTraceButtonClick: (trace: Trace) => void;
 }

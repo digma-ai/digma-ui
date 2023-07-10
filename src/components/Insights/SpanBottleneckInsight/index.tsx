@@ -43,6 +43,7 @@ export const SpanBottleneckInsight = (props: SpanBottleneckInsightProps) => {
           </s.SpanList>
         </>
       }
+      onRecalculate={props.onRecalculate}
     />
   );
 };

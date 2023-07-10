@@ -1,6 +1,10 @@
-import { EndpointSuspectedNPlusOneInsight, Trace } from "../types";
+import {
+  EndpointSuspectedNPlusOneInsight,
+  InsightProps,
+  Trace
+} from "../types";
 
-export interface EndpointNPlusOneInsightProps {
+export interface EndpointNPlusOneInsightProps extends InsightProps {
   insight: EndpointSuspectedNPlusOneInsight;
   onAssetLinkClick: (spanCodeObjectId: string) => void;
   onTraceButtonClick: (trace: Trace) => void;

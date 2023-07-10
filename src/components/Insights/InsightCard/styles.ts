@@ -7,7 +7,6 @@ export const Container = styled.div`
   padding: 8px;
   gap: 8px;
   border-radius: 4px;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -17,7 +16,6 @@ export const Container = styled.div`
         return "#dadada";
     }
   }};
-
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -52,7 +50,6 @@ export const InsightIconContainer = styled.div`
   flex-shrink: 0;
   padding: 2px;
   border-radius: 4px;
-
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -73,7 +70,6 @@ export const Toolbar = styled.div`
 export const Stats = styled.span`
   font-size: 10px;
   line-height: normal;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -112,7 +108,6 @@ export const PercentileViewModeToggle = styled.div`
   font-size: 10px;
   font-weight: 500;
   line-height: normal;
-
   border: 1px solid
     ${({ theme }) => {
       switch (theme.mode) {
@@ -130,7 +125,6 @@ export const PercentileViewModeToggleOption = styled.div<PercentileViewModeOptio
   padding: 2px 4px;
   cursor: pointer;
   user-select: none;
-
   color: ${({ theme, selected }) => {
     if (selected) {
       return "#e2e7ff";
@@ -144,6 +138,5 @@ export const PercentileViewModeToggleOption = styled.div<PercentileViewModeOptio
         return "#e2e7ff";
     }
   }};
-
   background: ${({ selected }) => (selected ? "#3538cd" : "transparent")};
 `;

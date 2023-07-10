@@ -1,6 +1,6 @@
-import { CodeObjectErrorsInsight } from "../types";
+import { CodeObjectErrorsInsight, InsightProps } from "../types";
 
-export interface ErrorsInsightProps {
+export interface ErrorsInsightProps extends InsightProps {
   insight: CodeObjectErrorsInsight;
   onErrorSelect: (id: string) => void;
   onExpandButtonClick: () => void;

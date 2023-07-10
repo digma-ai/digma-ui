@@ -81,6 +81,7 @@ export const EndpointNPlusOneInsight = (
           </s.SpanList>
         </s.ContentContainer>
       }
+      onRecalculate={props.onRecalculate}
     />
   );
 };

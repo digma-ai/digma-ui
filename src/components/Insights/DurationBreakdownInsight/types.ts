@@ -1,11 +1,7 @@
-import { InsightType } from "../../../types";
-import { SpanDurationBreakdownInsight } from "../types";
+import { InsightProps, SpanDurationBreakdownInsight } from "../types";
 
-export interface DurationBreakdownInsightProps {
+export interface DurationBreakdownInsightProps extends InsightProps {
   insight: SpanDurationBreakdownInsight;
-  onRecalculate: (
-    prefixedCodeObjectId: string,
-    insightType: InsightType
-  ) => void;
+
   onAssetLinkClick: (spanCodeObjectId: string) => void;
 }

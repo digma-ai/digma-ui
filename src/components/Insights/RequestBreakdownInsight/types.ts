@@ -1,10 +1,5 @@
-import { InsightType } from "../../../types";
-import { EndpointBreakdownInsight } from "../types";
+import { EndpointBreakdownInsight, InsightProps } from "../types";
 
-export interface RequestBreakdownInsightProps {
+export interface RequestBreakdownInsightProps extends InsightProps {
   insight: EndpointBreakdownInsight;
-  onRecalculate: (
-    prefixedCodeObjectId: string,
-    insightType: InsightType
-  ) => void;
 }

@@ -79,6 +79,7 @@ export const NPlusOneInsight = (props: NPlusOneInsightProps) => {
           </div>
         </s.ContentContainer>
       }
+      onRecalculate={props.onRecalculate}
     />
   );
 };

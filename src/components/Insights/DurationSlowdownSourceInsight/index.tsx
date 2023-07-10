@@ -63,6 +63,7 @@ export const DurationSlowdownSourceInsight = (
           )}
         </s.Container>
       }
+      onRecalculate={props.onRecalculate}
     />
   );
 };

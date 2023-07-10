@@ -30,6 +30,7 @@ export const NoScalingIssueInsight = (props: NoScalingIssueInsightProps) => {
             ]
           : [])
       ]}
+      onRecalculate={props.onRecalculate}
     />
   );
 };

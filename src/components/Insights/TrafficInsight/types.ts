@@ -2,9 +2,10 @@ import {
   EndpointHighUsageInsight,
   EndpointLowUsageInsight,
   EndpointNormalUsageInsight,
+  InsightProps
 } from "../types";
 
-export interface TrafficInsightProps {
+export interface TrafficInsightProps extends InsightProps {
   insight:
     | EndpointLowUsageInsight
     | EndpointNormalUsageInsight

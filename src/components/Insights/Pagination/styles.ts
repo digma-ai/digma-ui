@@ -11,7 +11,6 @@ export const Button = styled.button`
   cursor: pointer;
   font-size: 10px;
   line-height: normal;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -24,7 +23,6 @@ export const Button = styled.button`
 
   &:disabled {
     cursor: default;
-
     color: ${({ theme }) => {
       switch (theme.mode) {
         case "light":

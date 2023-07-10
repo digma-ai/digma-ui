@@ -21,6 +21,7 @@ export const SlowEndpointInsight = (props: SlowEndpointInsightProps) => {
         </s.Description>
       }
       stats={`${props.insight.median.value} ${props.insight.median.unit}`}
+      onRecalculate={props.onRecalculate}
     />
   );
 };

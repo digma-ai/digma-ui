@@ -5,7 +5,6 @@ export const Change = styled.span`
   gap: 4px;
   align-items: center;
   font-weight: 400;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

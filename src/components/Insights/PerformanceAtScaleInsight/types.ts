@@ -1,7 +1,7 @@
 import { InsightType } from "../../../types";
-import { SpanScalingInsufficientDataInsight } from "../types";
+import { InsightProps, SpanScalingInsufficientDataInsight } from "../types";
 
-export interface PerformanceAtScaleInsightProps {
+export interface PerformanceAtScaleInsightProps extends InsightProps {
   insight: SpanScalingInsufficientDataInsight;
   onHistogramButtonClick: (
     spanCodeObjectId: string,

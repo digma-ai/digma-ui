@@ -49,6 +49,7 @@ export const TrafficInsight = (props: TrafficInsightProps) => {
         <s.Description>{getDescription(props.insight.type)}</s.Description>
       }
       stats={`${valueString}/min`}
+      onRecalculate={props.onRecalculate}
     />
   );
 };

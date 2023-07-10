@@ -1,7 +1,7 @@
 import { InsightType } from "../../../types";
-import { SpanScalingWellInsight } from "../types";
+import { InsightProps, SpanScalingWellInsight } from "../types";
 
-export interface NoScalingIssueInsightProps {
+export interface NoScalingIssueInsightProps extends InsightProps {
   insight: SpanScalingWellInsight;
   onHistogramButtonClick: (
     spanCodeObjectId: string,

@@ -1,12 +1,8 @@
 import { InsightType } from "../../../types";
-import { SpanDurationsInsight, Trace } from "../types";
+import { InsightProps, SpanDurationsInsight, Trace } from "../types";
 
-export interface DurationInsightProps {
+export interface DurationInsightProps extends InsightProps {
   insight: SpanDurationsInsight;
-  onRecalculate: (
-    prefixedCodeObjectId: string,
-    insightType: InsightType
-  ) => void;
   onHistogramButtonClick: (
     spanCodeObjectId: string,
     InsightType: InsightType

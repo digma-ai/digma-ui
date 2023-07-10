@@ -22,7 +22,6 @@ export const ContentContainer = styled.div`
 
 export const Description = styled.span`
   font-weight: 400;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

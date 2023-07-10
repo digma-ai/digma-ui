@@ -18,7 +18,6 @@ export const ContentContainer = styled.div`
   font-size: 10px;
   line-height: normal;
   font-weight: 500;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -32,7 +31,6 @@ export const ContentContainer = styled.div`
 
 export const Description = styled.span`
   font-weight: 400;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

@@ -1,5 +1,5 @@
-import { SlowEndpointInsight } from "../types";
+import { InsightProps, SlowEndpointInsight } from "../types";
 
-export interface SlowEndpointInsightProps {
+export interface SlowEndpointInsightProps extends InsightProps {
   insight: SlowEndpointInsight;
 }

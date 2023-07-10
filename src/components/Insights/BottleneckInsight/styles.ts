@@ -18,7 +18,6 @@ export const Description = styled.div`
   gap: 8px;
   font-size: 10px;
   line-height: normal;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

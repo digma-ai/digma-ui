@@ -7,7 +7,6 @@ export const Container = styled.div`
   padding: 8px;
   gap: 8px;
   min-height: 100vh;
-
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -30,7 +29,6 @@ export const InsightsContainer = styled.div`
 export const Description = styled.span`
   font-size: 10px;
   line-height: normal;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -46,7 +44,6 @@ export const Link = styled(CommonLink)`
   font-size: 10px;
   line-height: normal;
   text-decoration: none;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -72,7 +69,6 @@ export const InsightGroupName = styled.div`
   font-size: 12px;
   line-height: normal;
   height: 16px;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

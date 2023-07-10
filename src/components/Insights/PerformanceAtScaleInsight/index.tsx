@@ -117,6 +117,7 @@ export const PerformanceAtScaleInsight = (
             ]
           : [])
       ]}
+      onRecalculate={props.onRecalculate}
     />
   );
 };

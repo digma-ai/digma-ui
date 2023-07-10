@@ -8,7 +8,6 @@ export const Table = styled.table`
   line-height: 12px;
   border-radius: 4px;
   padding: 8px;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -18,7 +17,6 @@ export const Table = styled.table`
         return "#dadada";
     }
   }};
-
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -33,7 +31,6 @@ export const Table = styled.table`
 export const TableHead = styled.thead`
   font-size: 8px;
   line-height: 10px;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -77,7 +74,6 @@ export const DurationContainer = styled.span`
   line-height: 14px;
   display: inline-flex;
   align-items: center;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -93,7 +89,6 @@ export const Suffix = styled.span`
   margin-left: 2px;
   font-size: 10px;
   line-height: 12px;
-
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

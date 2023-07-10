@@ -45,6 +45,13 @@ export interface InsightGroup {
   icon?: MemoExoticComponent<(props: IconProps) => JSX.Element>;
 }
 
+export interface InsightProps {
+  onRecalculate: (
+    prefixedCodeObjectId: string,
+    insightType: InsightType
+  ) => void;
+}
+
 export enum InsightScope {
   EntrySpan = "EntrySpan",
   Span = "Span",
