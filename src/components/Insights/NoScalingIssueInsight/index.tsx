@@ -7,7 +7,8 @@ export const NoScalingIssueInsight = (props: NoScalingIssueInsightProps) => {
   const handleHistogramButtonClick = () => {
     props.insight.spanInfo &&
       props.onHistogramButtonClick(
-        props.insight.spanInfo.spanCodeObjectId,
+        props.insight.spanInfo.instrumentationLibrary,
+        props.insight.spanInfo.name,
         props.insight.type
       );
   };

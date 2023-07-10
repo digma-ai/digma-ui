@@ -6,7 +6,8 @@ export interface ScalingIssueInsightProps extends InsightProps {
   onAssetLinkClick: (spanCodeObjectId: string) => void;
   onTraceButtonClick: (trace: Trace) => void;
   onHistogramButtonClick: (
-    spanCodeObjectId: string,
+    instrumentationLibrary: string,
+    name: string,
     insightType: InsightType
   ) => void;
 }

@@ -123,13 +123,15 @@ const renderInsightCard = (
   };
 
   const handleHistogramButtonClick = (
-    spanCodeObjectId: string,
+    instrumentationLibrary: string,
+    name: string,
     insightType: string
   ) => {
     window.sendMessageToDigma({
       action: actions.OPEN_HISTOGRAM,
       payload: {
-        spanCodeObjectId,
+        instrumentationLibrary,
+        name,
         insightType
       }
     });

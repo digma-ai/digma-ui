@@ -4,7 +4,8 @@ import { InsightProps, SpanScalingWellInsight } from "../types";
 export interface NoScalingIssueInsightProps extends InsightProps {
   insight: SpanScalingWellInsight;
   onHistogramButtonClick: (
-    spanCodeObjectId: string,
+    instrumentationLibrary: string,
+    name: string,
     insightType: InsightType
   ) => void;
 }

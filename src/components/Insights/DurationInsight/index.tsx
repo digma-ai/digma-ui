@@ -19,7 +19,8 @@ export const DurationInsight = (props: DurationInsightProps) => {
   const handleHistogramButtonClick = () => {
     props.insight.spanInfo &&
       props.onHistogramButtonClick(
-        props.insight.spanInfo.spanCodeObjectId,
+        props.insight.spanInfo.instrumentationLibrary,
+        props.insight.spanInfo.name,
         props.insight.type
       );
   };
