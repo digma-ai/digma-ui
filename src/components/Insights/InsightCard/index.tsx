@@ -11,6 +11,7 @@ import { PopoverContent } from "../../common/Popover/PopoverContent";
 import { PopoverTrigger } from "../../common/Popover/PopoverTrigger";
 import { ChevronIcon } from "../../common/icons/ChevronIcon";
 import { Direction } from "../../common/icons/types";
+import { Card } from "../Card";
 import { Description, Link } from "../styles";
 import * as s from "./styles";
 import { InsightCardProps } from "./types";
@@ -61,102 +62,109 @@ export const InsightCard = (props: InsightCardProps) => {
   };
 
   return (
-    <s.Container>
-      <s.TitleRow>
-        <s.Title>
-          <s.InsightIconContainer>
-            {props.isRecent && (
-              <s.BadgeContainer>
-                <Badge />
-              </s.BadgeContainer>
+    <Card
+      header={
+        <>
+          <s.Title>
+            <s.InsightIconContainer>
+              {props.isRecent && (
+                <s.BadgeContainer>
+                  <Badge />
+                </s.BadgeContainer>
+              )}
+              {insightTypeInfo && (
+                <insightTypeInfo.icon color={insightIconColor} size={16} />
+              )}
+            </s.InsightIconContainer>
+            {insightTypeInfo?.label || props.data.type}
+          </s.Title>
+          <s.Toolbar>
+            {props.onPercentileViewModeChange && (
+              <s.PercentileViewModeToggle>
+                {PERCENTILES.map((percentile) => (
+                  <s.PercentileViewModeToggleOption
+                    key={percentile.percentile}
+                    selected={percentile.percentile === percentileViewMode}
+                    onClick={() =>
+                      handleDurationPercentileToggleOptionClick(
+                        percentile.percentile
+                      )
+                    }
+                  >
+                    {percentile.label}
+                  </s.PercentileViewModeToggleOption>
+                ))}
+              </s.PercentileViewModeToggle>
             )}
-            {insightTypeInfo && (
-              <insightTypeInfo.icon color={insightIconColor} size={16} />
+            {props.stats && <s.Stats>{props.stats}</s.Stats>}
+            {(props.menuItems || props.data.isRecalculateEnabled) && (
+              <Popover
+                open={isKebabMenuOpen}
+                onOpenChange={setIsKebabMenuOpen}
+                placement={"bottom-start"}
+              >
+                <PopoverTrigger onClick={handleKebabMenuButtonToggle}>
+                  <KebabMenuButton />
+                </PopoverTrigger>
+                <PopoverContent className={"Popover"}>
+                  <Menu
+                    items={[
+                      ...(props.data.isRecalculateEnabled
+                        ? [{ value: RECALCULATE, label: "Recalculate" }]
+                        : []),
+                      ...(props.menuItems
+                        ? props.menuItems.map((x) => ({ value: x, label: x }))
+                        : [])
+                    ]}
+                    onSelect={handleKebabMenuItemSelect}
+                  />
+                </PopoverContent>
+              </Popover>
             )}
-          </s.InsightIconContainer>
-          {insightTypeInfo?.label || props.data.type}
-        </s.Title>
-        <s.Toolbar>
-          {props.onPercentileViewModeChange && (
-            <s.PercentileViewModeToggle>
-              {PERCENTILES.map((percentile) => (
-                <s.PercentileViewModeToggleOption
-                  key={percentile.percentile}
-                  selected={percentile.percentile === percentileViewMode}
-                  onClick={() =>
-                    handleDurationPercentileToggleOptionClick(
-                      percentile.percentile
-                    )
-                  }
-                >
-                  {percentile.label}
-                </s.PercentileViewModeToggleOption>
-              ))}
-            </s.PercentileViewModeToggle>
-          )}
-          {props.stats && <s.Stats>{props.stats}</s.Stats>}
-          {(props.menuItems || props.data.isRecalculateEnabled) && (
-            <Popover
-              open={isKebabMenuOpen}
-              onOpenChange={setIsKebabMenuOpen}
-              placement={"bottom-start"}
-            >
-              <PopoverTrigger onClick={handleKebabMenuButtonToggle}>
-                <KebabMenuButton />
-              </PopoverTrigger>
-              <PopoverContent className={"Popover"}>
-                <Menu
-                  items={[
-                    ...(props.data.isRecalculateEnabled
-                      ? [{ value: RECALCULATE, label: "Recalculate" }]
-                      : []),
-                    ...(props.menuItems
-                      ? props.menuItems.map((x) => ({ value: x, label: x }))
-                      : [])
-                  ]}
-                  onSelect={handleKebabMenuItemSelect}
+            {props.expandableContent && (
+              <s.ExpandButton onClick={handleExpandButtonClick}>
+                <ChevronIcon
+                  color={theme.mode === "light" ? "#828797" : "#b9c2eb"}
+                  direction={isExpanded ? Direction.UP : Direction.DOWN}
+                  size={12}
                 />
-              </PopoverContent>
-            </Popover>
+              </s.ExpandButton>
+            )}
+          </s.Toolbar>
+        </>
+      }
+      content={
+        <>
+          {/* TODO: Pass insight recalculating state */}
+          {false && (
+            <s.RefreshContainer>
+              <Description>
+                Applying the new time filter. Wait a few minutes and then
+                refresh.
+              </Description>
+              <span>
+                <Link onClick={handleRefreshLinkClick}>Refresh</Link>
+              </span>
+            </s.RefreshContainer>
+          )}
+          {props.content && (
+            <s.ContentContainer>{props.content}</s.ContentContainer>
           )}
           {props.expandableContent && (
-            <s.ExpandButton onClick={handleExpandButtonClick}>
-              <ChevronIcon
-                color={theme.mode === "light" ? "#828797" : "#b9c2eb"}
-                direction={isExpanded ? Direction.UP : Direction.DOWN}
-                size={12}
-              />
-            </s.ExpandButton>
+            <span>
+              <Link onClick={handleExpandButtonClick}>
+                Show {isExpanded ? "less" : "more"}
+              </Link>
+            </span>
           )}
-        </s.Toolbar>
-      </s.TitleRow>
-      {/* TODO: Pass insight recalculating state */}
-      {false && (
-        <s.RefreshContainer>
-          <Description>
-            Applying the new time filter. Wait a few minutes and then refresh.
-          </Description>
-          <span>
-            <Link onClick={handleRefreshLinkClick}>Refresh</Link>
-          </span>
-        </s.RefreshContainer>
-      )}
-      {props.content && (
-        <s.ContentContainer>{props.content}</s.ContentContainer>
-      )}
-      {props.expandableContent && (
-        <span>
-          <Link onClick={handleExpandButtonClick}>
-            Show {isExpanded ? "less" : "more"}
-          </Link>
-        </span>
-      )}
-      {isExpanded && props.expandableContent && (
-        <s.ContentContainer>{props.expandableContent}</s.ContentContainer>
-      )}
-      {props.buttons && (
-        <s.ButtonsContainer>{props.buttons}</s.ButtonsContainer>
-      )}
-    </s.Container>
+          {isExpanded && props.expandableContent && (
+            <s.ContentContainer>{props.expandableContent}</s.ContentContainer>
+          )}
+          {props.buttons && (
+            <s.ButtonsContainer>{props.buttons}</s.ButtonsContainer>
+          )}
+        </>
+      }
+    />
   );
 };

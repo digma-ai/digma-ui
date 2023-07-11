@@ -29,14 +29,24 @@ export type GenericCodeObjectInsight =
   | SpanScalingWellInsight
   | SpanScalingInsufficientDataInsight;
 
+export interface MethodSpan {
+  spanCodeObjectId: string;
+  spanName: string;
+}
+
 export interface InsightsData {
   insights: GenericCodeObjectInsight[];
+  methodInfo: {
+    spans: MethodSpan[];
+    hasRelatedCodeObjectIds: boolean;
+  };
+  assetId: string;
+  serviceName: string;
+  environment: string;
 }
 
 export interface InsightsProps {
-  data?: {
-    insights: GenericCodeObjectInsight[];
-  };
+  data?: InsightsData;
 }
 
 export interface InsightGroup {

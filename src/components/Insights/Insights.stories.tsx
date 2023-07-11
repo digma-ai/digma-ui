@@ -484,7 +484,23 @@ export const WithData: Story = {
           customStartTime: null,
           actualStartTime: "2023-06-20T00:00:00.000Z"
         }
-      ]
+      ],
+      methodInfo: {
+        spans: [
+          {
+            spanCodeObjectId: "empty_span1_id",
+            spanName: "empty_span1"
+          },
+          {
+            spanCodeObjectId: "empty_span2_id",
+            spanName: "empty_span2"
+          }
+        ],
+        hasRelatedCodeObjectIds: true
+      },
+      assetId: "string",
+      serviceName: "string",
+      environment: "string"
     }
   }
 };

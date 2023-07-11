@@ -82,7 +82,7 @@ export const InsightGroupName = styled.div`
         return "#7891d0";
       case "dark":
       case "dark-jetbrains":
-        return "#dadada";
+        return "#7c7c94";
     }
   }};
 `;

@@ -11,6 +11,7 @@ import { CircleLoaderProps } from "../common/CircleLoader/types";
 import { EndpointIcon } from "../common/icons/EndpointIcon";
 import { OpenTelemetryLogoIcon } from "../common/icons/OpenTelemetryLogoIcon";
 import { BottleneckInsight } from "./BottleneckInsight";
+import { Card } from "./Card";
 import { DurationBreakdownInsight } from "./DurationBreakdownInsight";
 import { DurationInsight } from "./DurationInsight";
 import { DurationSlowdownSourceInsight } from "./DurationSlowdownSourceInsight";
@@ -55,6 +56,7 @@ import {
   InsightGroup,
   InsightsData,
   InsightsProps,
+  MethodSpan,
   SpanInsight,
   Trace
 } from "./types";
@@ -385,7 +387,8 @@ const renderInsightCard = (
 };
 
 const groupInsights = (
-  insights: GenericCodeObjectInsight[]
+  insights: GenericCodeObjectInsight[],
+  spans: MethodSpan[]
 ): InsightGroup[] => {
   const sortedInsights = [...insights].sort(
     (a, b) =>
@@ -451,6 +454,13 @@ const groupInsights = (
     }
   }
 
+  // Add empty span groups
+  spans.forEach((x) => {
+    if (!spanInsightGroups[x.spanCodeObjectId]) {
+      spanInsightGroups[x.spanCodeObjectId] = [];
+    }
+  });
+
   return [
     { insights: ungroupedInsights },
     // Endpoint insight groups
@@ -462,11 +472,16 @@ const groupInsights = (
       }))
       .sort(sortByName),
     // Span insight groups
-    ...Object.values(spanInsightGroups)
-      .map((x) => ({
+    ...Object.entries(spanInsightGroups)
+      .map(([spanCodeObjectId, insights]) => ({
         icon: OpenTelemetryLogoIcon,
-        name: x[0].spanInfo?.displayName,
-        insights: x
+        // TODO: get span name only from methodInfo spans
+        name: insights[0]
+          ? insights[0].spanInfo?.displayName
+          : spans.find(
+              (methodSpan) => spanCodeObjectId === methodSpan.spanCodeObjectId
+            )?.spanName || "",
+        insights
       }))
       .sort(sortByName)
   ];
@@ -519,7 +534,12 @@ export const Insights = (props: InsightsProps) => {
 
     const handleInsightsData = (data: unknown, timeStamp: number) => {
       setData(
-        data ? groupInsights((data as InsightsData).insights) : undefined
+        data
+          ? groupInsights(
+              (data as InsightsData).insights,
+              (data as InsightsData).methodInfo.spans
+            )
+          : undefined
       );
       setLastSetDataTimeStamp(timeStamp);
     };
@@ -548,7 +568,7 @@ export const Insights = (props: InsightsProps) => {
       return;
     }
 
-    setData(groupInsights(props.data.insights));
+    setData(groupInsights(props.data.insights, props.data.methodInfo.spans));
   }, [props.data]);
 
   useEffect(() => {
@@ -578,8 +598,20 @@ export const Insights = (props: InsightsProps) => {
                 {x.name}
               </s.InsightGroupName>
             )}
-            {x.insights.map((insight) =>
-              renderInsightCard(insight, handleRefresh)
+            {x.insights.length > 0 ? (
+              x.insights.map((insight) =>
+                renderInsightCard(insight, handleRefresh)
+              )
+            ) : (
+              <Card
+                header={<>No data yet</>}
+                content={
+                  <s.Description>
+                    No data received yet for this span, please trigger some
+                    actions using this code to see more insights.
+                  </s.Description>
+                }
+              />
             )}
           </s.InsightGroup>
         ))}
