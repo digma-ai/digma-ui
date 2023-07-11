@@ -1,10 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
 import { dispatcher } from "../../dispatcher";
+import { usePrevious } from "../../hooks/usePrevious";
 import { isNumber } from "../../typeGuards/isNumber";
 import { InsightType } from "../../types";
 import { addPrefix } from "../../utils/addPrefix";
 import { getInsightTypeInfo } from "../../utils/getInsightTypeInfo";
+import { CircleLoader } from "../common/CircleLoader";
+import { CircleLoaderProps } from "../common/CircleLoader/types";
 import { EndpointIcon } from "../common/icons/EndpointIcon";
 import { OpenTelemetryLogoIcon } from "../common/icons/OpenTelemetryLogoIcon";
 import { BottleneckInsight } from "./BottleneckInsight";
@@ -105,7 +108,8 @@ export const getInsightTypeOrderPriority = (type: string): number => {
 };
 
 const renderInsightCard = (
-  insight: GenericCodeObjectInsight
+  insight: GenericCodeObjectInsight,
+  handleRefresh: () => void
 ): JSX.Element | undefined => {
   const handleErrorSelect = (errorId: string) => {
     window.sendMessageToDigma({
@@ -195,6 +199,7 @@ const renderInsightCard = (
         onLiveButtonClick={handleLiveButtonClick}
         onCompareButtonClick={handleCompareButtonClick}
         onRecalculate={handleRecalculate}
+        onRefresh={handleRefresh}
       />
     );
   }
@@ -205,6 +210,7 @@ const renderInsightCard = (
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
         onRecalculate={handleRecalculate}
+        onRefresh={handleRefresh}
       />
     );
   }
@@ -216,6 +222,7 @@ const renderInsightCard = (
         onAssetLinkClick={handleAssetLinkClick}
         onTraceButtonClick={handleTraceButtonClick}
         onRecalculate={handleRecalculate}
+        onRefresh={handleRefresh}
       />
     );
   }
@@ -226,6 +233,7 @@ const renderInsightCard = (
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
         onRecalculate={handleRecalculate}
+        onRefresh={handleRefresh}
       />
     );
   }
@@ -236,6 +244,7 @@ const renderInsightCard = (
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
         onRecalculate={handleRecalculate}
+        onRefresh={handleRefresh}
       />
     );
   }
@@ -245,6 +254,7 @@ const renderInsightCard = (
         key={insight.type}
         insight={insight}
         onRecalculate={handleRecalculate}
+        onRefresh={handleRefresh}
       />
     );
   }
@@ -258,6 +268,7 @@ const renderInsightCard = (
         key={insight.type}
         insight={insight}
         onRecalculate={handleRecalculate}
+        onRefresh={handleRefresh}
       />
     );
   }
@@ -269,6 +280,7 @@ const renderInsightCard = (
         onErrorSelect={handleErrorSelect}
         onExpandButtonClick={handleErrorsExpandButtonClick}
         onRecalculate={handleRecalculate}
+        onRefresh={handleRefresh}
       />
     );
   }
@@ -280,6 +292,7 @@ const renderInsightCard = (
         onAssetLinkClick={handleAssetLinkClick}
         onTraceButtonClick={handleTraceButtonClick}
         onRecalculate={handleRecalculate}
+        onRefresh={handleRefresh}
       />
     );
   }
@@ -291,6 +304,7 @@ const renderInsightCard = (
         onAssetLinkClick={handleAssetLinkClick}
         onTraceButtonClick={handleTraceButtonClick}
         onRecalculate={handleRecalculate}
+        onRefresh={handleRefresh}
       />
     );
   }
@@ -303,6 +317,7 @@ const renderInsightCard = (
         onTraceButtonClick={handleTraceButtonClick}
         onHistogramButtonClick={handleHistogramButtonClick}
         onRecalculate={handleRecalculate}
+        onRefresh={handleRefresh}
       />
     );
   }
@@ -317,6 +332,7 @@ const renderInsightCard = (
           </s.Description>
         }
         onRecalculate={handleRecalculate}
+        onRefresh={handleRefresh}
       />
     );
   }
@@ -327,6 +343,7 @@ const renderInsightCard = (
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
         onRecalculate={handleRecalculate}
+        onRefresh={handleRefresh}
       />
     );
   }
@@ -337,6 +354,7 @@ const renderInsightCard = (
         key={insight.type}
         insight={insight}
         onRecalculate={handleRecalculate}
+        onRefresh={handleRefresh}
       />
     );
   }
@@ -348,6 +366,7 @@ const renderInsightCard = (
         insight={insight}
         onHistogramButtonClick={handleHistogramButtonClick}
         onRecalculate={handleRecalculate}
+        onRefresh={handleRefresh}
       />
     );
   }
@@ -359,6 +378,7 @@ const renderInsightCard = (
         insight={insight}
         onHistogramButtonClick={handleHistogramButtonClick}
         onRecalculate={handleRecalculate}
+        onRefresh={handleRefresh}
       />
     );
   }
@@ -462,16 +482,40 @@ const getInsightGroupIconColor = (theme: DefaultTheme) => {
   }
 };
 
+const getCircleLoaderColors = (
+  theme: DefaultTheme
+): CircleLoaderProps["colors"] => {
+  switch (theme.mode) {
+    case "light":
+      return {
+        start: "rgb(81 84 236 / 0%)",
+        end: "#5154ec",
+        background: "#fff"
+      };
+    case "dark":
+    case "dark-jetbrains":
+      return {
+        start: "rgb(120 145 208 / 0%)",
+        end: "#7891d0",
+        background: "#3d3f41"
+      };
+  }
+};
+
 export const Insights = (props: InsightsProps) => {
   const [data, setData] = useState<InsightGroup[]>();
+  const previousData = usePrevious(data);
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
+  const [isLoaderVisible, setIsLoaderVisible] = useState(false);
   const theme = useTheme();
   const insightGroupIconColor = getInsightGroupIconColor(theme);
+  const circleLoaderColors = getCircleLoaderColors(theme);
 
   useEffect(() => {
     window.sendMessageToDigma({
       action: actions.GET_DATA
     });
+    setIsLoaderVisible(true);
 
     const handleInsightsData = (data: unknown, timeStamp: number) => {
       setData(
@@ -507,6 +551,18 @@ export const Insights = (props: InsightsProps) => {
     setData(groupInsights(props.data.insights));
   }, [props.data]);
 
+  useEffect(() => {
+    if (!previousData && data) {
+      setIsLoaderVisible(false);
+    }
+  }, [previousData, data]);
+
+  const handleRefresh = () => {
+    window.sendMessageToDigma({
+      action: actions.GET_DATA
+    });
+  };
+
   const renderContent = useMemo((): JSX.Element => {
     if (!data) {
       return <>No insights</>;
@@ -522,12 +578,24 @@ export const Insights = (props: InsightsProps) => {
                 {x.name}
               </s.InsightGroupName>
             )}
-            {x.insights.map((insight) => renderInsightCard(insight))}
+            {x.insights.map((insight) =>
+              renderInsightCard(insight, handleRefresh)
+            )}
           </s.InsightGroup>
         ))}
       </s.InsightsContainer>
     );
   }, [data, insightGroupIconColor]);
 
-  return <s.Container>{renderContent}</s.Container>;
+  return (
+    <s.Container>
+      {isLoaderVisible ? (
+        <s.LoaderContainer>
+          <CircleLoader colors={circleLoaderColors} size={32} />
+        </s.LoaderContainer>
+      ) : (
+        renderContent
+      )}
+    </s.Container>
+  );
 };

@@ -18,6 +18,13 @@ export const Container = styled.div`
   }};
 `;
 
+export const LoaderContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+`;
+
 export const InsightsContainer = styled.div`
   display: flex;
   flex-direction: column;

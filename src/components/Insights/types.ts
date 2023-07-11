@@ -50,6 +50,7 @@ export interface InsightProps {
     prefixedCodeObjectId: string,
     insightType: InsightType
   ) => void;
+  onRefresh: () => void;
 }
 
 export enum InsightScope {

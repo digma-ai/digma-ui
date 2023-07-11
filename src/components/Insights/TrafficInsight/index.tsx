@@ -50,6 +50,7 @@ export const TrafficInsight = (props: TrafficInsightProps) => {
       }
       stats={`${valueString}/min`}
       onRecalculate={props.onRecalculate}
+      onRefresh={props.onRefresh}
     />
   );
 };

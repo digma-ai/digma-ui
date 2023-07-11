@@ -62,6 +62,7 @@ export const RequestBreakdownInsight = (
         </s.ContentContainer>
       }
       onRecalculate={props.onRecalculate}
+      onRefresh={props.onRefresh}
     />
   );
 };

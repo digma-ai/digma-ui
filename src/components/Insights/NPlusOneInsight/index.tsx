@@ -80,6 +80,7 @@ export const NPlusOneInsight = (props: NPlusOneInsightProps) => {
         </s.ContentContainer>
       }
       onRecalculate={props.onRecalculate}
+      onRefresh={props.onRefresh}
     />
   );
 };

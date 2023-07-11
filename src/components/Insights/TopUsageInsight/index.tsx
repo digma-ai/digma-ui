@@ -89,6 +89,7 @@ export const TopUsageInsight = (props: TopUsageInsightProps) => {
         </s.FlowList>
       }
       onRecalculate={props.onRecalculate}
+      onRefresh={props.onRefresh}
     />
   );
 };

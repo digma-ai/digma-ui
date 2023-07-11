@@ -9,11 +9,13 @@ export interface InsightCardProps {
   menuItems?: string[];
   stats?: string;
   buttons?: ReactNode[];
-  onRecalculate?: (
+  onRecalculate: (
     prefixedCodeObjectId: string,
     insightType: InsightType
   ) => void;
   onPercentileViewModeChange?: (value: number) => void;
+  isRecent?: boolean;
+  onRefresh: () => void;
 }
 
 export interface PercentileViewModeOptionProps {

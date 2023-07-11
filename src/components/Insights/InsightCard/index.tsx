@@ -3,6 +3,7 @@ import { useTheme } from "styled-components";
 import { PERCENTILES } from "../../../constants";
 import { getInsightImportanceColor } from "../../../utils/getInsightImportanceColor";
 import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
+import { Badge } from "../../common/Badge";
 import { KebabMenuButton } from "../../common/KebabMenuButton";
 import { Menu } from "../../common/Menu";
 import { Popover } from "../../common/Popover";
@@ -10,7 +11,7 @@ import { PopoverContent } from "../../common/Popover/PopoverContent";
 import { PopoverTrigger } from "../../common/Popover/PopoverTrigger";
 import { ChevronIcon } from "../../common/icons/ChevronIcon";
 import { Direction } from "../../common/icons/types";
-import { Link } from "../styles";
+import { Description, Link } from "../styles";
 import * as s from "./styles";
 import { InsightCardProps } from "./types";
 
@@ -37,7 +38,6 @@ export const InsightCard = (props: InsightCardProps) => {
   const handleKebabMenuItemSelect = (value: string) => {
     if (value === RECALCULATE) {
       props.data.prefixedCodeObjectId &&
-        props.onRecalculate &&
         props.onRecalculate(props.data.prefixedCodeObjectId, props.data.type);
     }
 
@@ -56,11 +56,20 @@ export const InsightCard = (props: InsightCardProps) => {
     }
   };
 
+  const handleRefreshLinkClick = () => {
+    props.onRefresh();
+  };
+
   return (
     <s.Container>
       <s.TitleRow>
         <s.Title>
           <s.InsightIconContainer>
+            {props.isRecent && (
+              <s.BadgeContainer>
+                <Badge />
+              </s.BadgeContainer>
+            )}
             {insightTypeInfo && (
               <insightTypeInfo.icon color={insightIconColor} size={16} />
             )}
@@ -121,6 +130,17 @@ export const InsightCard = (props: InsightCardProps) => {
           )}
         </s.Toolbar>
       </s.TitleRow>
+      {/* TODO: Pass insight recalculating state */}
+      {false && (
+        <s.RefreshContainer>
+          <Description>
+            Applying the new time filter. Wait a few minutes and then refresh.
+          </Description>
+          <span>
+            <Link onClick={handleRefreshLinkClick}>Refresh</Link>
+          </span>
+        </s.RefreshContainer>
+      )}
       {props.content && (
         <s.ContentContainer>{props.content}</s.ContentContainer>
       )}

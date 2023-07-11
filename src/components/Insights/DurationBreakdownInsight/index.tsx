@@ -95,6 +95,7 @@ export const DurationBreakdownInsight = (
       }
       onPercentileViewModeChange={handlePercentileViewModeChange}
       onRecalculate={props.onRecalculate}
+      onRefresh={props.onRefresh}
     />
   );
 };

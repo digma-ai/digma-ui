@@ -50,6 +50,7 @@ export const InsightIconContainer = styled.div`
   flex-shrink: 0;
   padding: 2px;
   border-radius: 4px;
+  position: relative;
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -59,6 +60,12 @@ export const InsightIconContainer = styled.div`
         return "#2e2e2e";
     }
   }};
+`;
+
+export const BadgeContainer = styled.div`
+  position: absolute;
+  left: -1px;
+  top: -1px;
 `;
 
 export const Toolbar = styled.div`
@@ -86,6 +93,12 @@ export const ExpandButton = styled.button`
   border: none;
   background: none;
   cursor: pointer;
+`;
+
+export const RefreshContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 `;
 
 export const ContentContainer = styled.div`

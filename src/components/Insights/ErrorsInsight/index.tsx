@@ -47,6 +47,7 @@ export const ErrorsInsight = (props: ErrorsInsightProps) => {
         </Button>
       ]}
       onRecalculate={props.onRecalculate}
+      onRefresh={props.onRefresh}
     />
   );
 };

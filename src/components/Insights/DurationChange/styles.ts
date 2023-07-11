@@ -4,7 +4,7 @@ export const Change = styled.span`
   display: flex;
   gap: 4px;
   align-items: center;
-  font-weight: 400;
+  font-weight: 500;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

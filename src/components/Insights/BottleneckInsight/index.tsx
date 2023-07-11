@@ -48,6 +48,7 @@ export const BottleneckInsight = (props: BottleneckInsightProps) => {
         </s.EndpointList>
       }
       onRecalculate={props.onRecalculate}
+      onRefresh={props.onRefresh}
     />
   );
 };

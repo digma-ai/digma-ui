@@ -9,6 +9,8 @@ import { Trace } from "../types";
 import * as s from "./styles";
 import { DurationInsightProps } from "./types";
 
+const LAST_CALL_TIME_DISTANCE_LIMIT = 10 * 1000; // in milliseconds
+
 export const DurationInsight = (props: DurationInsightProps) => {
   const sortedPercentiles = [...props.insight.percentiles].sort(
     (a, b) => a.percentile - b.percentile
@@ -36,39 +38,53 @@ export const DurationInsight = (props: DurationInsightProps) => {
 
   const traceIds: string[] = [];
 
+  const isLastCallRecent =
+    Date.now() - new Date(spanLastCall.startTime).valueOf() <=
+    LAST_CALL_TIME_DISTANCE_LIMIT;
+
   return (
     <InsightCard
       data={props.insight}
       content={
-        <>
-          <s.LastCall>
-            Last call: {spanLastCall.duration.value}{" "}
-            {spanLastCall.duration.unit}{" "}
-            {formatTimeDistance(spanLastCall.startTime)}
-          </s.LastCall>
+        <s.Container>
+          <s.Stats>
+            <s.Label>Last call</s.Label>
+            <s.Value>
+              <span>
+                {spanLastCall.duration.value} {spanLastCall.duration.unit}
+              </span>
+              <s.LastCallTimeDistance isRecent={isLastCallRecent}>
+                •{" "}
+                {isLastCallRecent
+                  ? "Moments ago"
+                  : formatTimeDistance(spanLastCall.startTime)}
+              </s.LastCallTimeDistance>
+            </s.Value>
+          </s.Stats>
           {sortedPercentiles.length > 0 ? (
             <>
-              <s.PercentileList>
-                {sortedPercentiles.map((percentile) => {
-                  if (traceIds.length > 0) {
-                    traceIds.push(percentile.traceIds[0]);
-                  }
+              {sortedPercentiles.map((percentile) => {
+                if (traceIds.length > 0) {
+                  traceIds.push(percentile.traceIds[0]);
+                }
 
-                  return (
-                    <s.Percentile key={percentile.percentile}>
-                      {`${getPercentileLabel(percentile.percentile)}: ${
-                        percentile.currentDuration.value
-                      } ${percentile.currentDuration.unit}`}
+                return (
+                  <s.Stats key={percentile.percentile}>
+                    <s.Label>
+                      {getPercentileLabel(percentile.percentile)}
+                    </s.Label>
+                    <s.Value>
+                      {`${percentile.currentDuration.value} ${percentile.currentDuration.unit}`}
                       <DurationChange
                         currentDuration={percentile.currentDuration}
                         previousDuration={percentile.previousDuration}
                         changeTime={percentile.changeTime}
                         changeVerified={percentile.changeVerified}
                       />
-                    </s.Percentile>
-                  );
-                })}
-              </s.PercentileList>
+                    </s.Value>
+                  </s.Stats>
+                );
+              })}
               {traceIds.length > 1 && (
                 <s.Button
                   onClick={() =>
@@ -86,9 +102,10 @@ export const DurationInsight = (props: DurationInsightProps) => {
             // TODO: add hourglass icon
             <span>Waiting for more data...</span>
           )}
-        </>
+        </s.Container>
       }
       onRecalculate={props.onRecalculate}
+      onRefresh={props.onRefresh}
       buttons={[
         ...(props.insight.spanInfo
           ? [
