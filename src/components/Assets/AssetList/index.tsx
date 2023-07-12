@@ -6,6 +6,7 @@ import { PopoverContent } from "../../common/Popover/PopoverContent";
 import { PopoverTrigger } from "../../common/Popover/PopoverTrigger";
 import { ChevronIcon } from "../../common/icons/ChevronIcon";
 import { MagnifierIcon } from "../../common/icons/MagnifierIcon";
+import { SortIcon } from "../../common/icons/SortIcon";
 import { Direction } from "../../common/icons/types";
 import { getAssetTypeInfo } from "../utils";
 import { AssetEntry as AssetEntryComponent } from "./AssetEntry";
@@ -14,6 +15,7 @@ import {
   AssetListProps,
   ExtendedAssetEntryWithServices,
   SORTING_CRITERION,
+  SORTING_ORDER,
   Sorting
 } from "./types";
 
@@ -22,6 +24,8 @@ const sortEntries = (
   sorting: Sorting
 ): ExtendedAssetEntryWithServices[] => {
   entries = [...entries];
+
+  const isDesc = sorting.order === SORTING_ORDER.DESC;
 
   const sortByName = (
     a: ExtendedAssetEntryWithServices,
@@ -83,38 +87,32 @@ const sortEntries = (
         ).length;
 
         return (
-          (sorting.isDesc
+          (isDesc
             ? aHighestImportance - bHighestImportance
             : bHighestImportance - aHighestImportance) ||
-          (sorting.isDesc
+          (isDesc
             ? bMostImportantInsightCount - aMostImportantInsightCount
             : aMostImportantInsightCount - bMostImportantInsightCount) ||
-          sortByName(a, b, sorting.isDesc)
+          sortByName(a, b, isDesc)
         );
       });
     case SORTING_CRITERION.PERFORMANCE:
-      return entries.sort((a, b) =>
-        sortByPercentile(a, b, 0.5, sorting.isDesc)
-      );
+      return entries.sort((a, b) => sortByPercentile(a, b, 0.5, isDesc));
     case SORTING_CRITERION.SLOWEST_FIVE_PERCENT:
-      return entries.sort((a, b) =>
-        sortByPercentile(a, b, 0.95, sorting.isDesc)
-      );
+      return entries.sort((a, b) => sortByPercentile(a, b, 0.95, isDesc));
     case SORTING_CRITERION.LATEST:
       return entries.sort((a, b) => {
         const aDateTime = new Date(a.lastSpanInstanceInfo.startTime).valueOf();
         const bDateTime = new Date(b.lastSpanInstanceInfo.startTime).valueOf();
 
         return (
-          (sorting.isDesc ? bDateTime - aDateTime : aDateTime - bDateTime) ||
-          sortByName(a, b, sorting.isDesc)
+          (isDesc ? bDateTime - aDateTime : aDateTime - bDateTime) ||
+          sortByName(a, b, isDesc)
         );
       });
     case SORTING_CRITERION.NAME:
       return entries.sort((a, b) =>
-        sorting.isDesc
-          ? sortByName(b, a, sorting.isDesc)
-          : sortByName(a, b, sorting.isDesc)
+        isDesc ? sortByName(b, a, isDesc) : sortByName(a, b, isDesc)
       );
     default:
       return entries;
@@ -151,13 +149,29 @@ const getSortingMenuChevronColor = (theme: DefaultTheme) => {
   }
 };
 
+const getSortIconColor = (theme: DefaultTheme, selected: boolean) => {
+  if (selected) {
+    switch (theme.mode) {
+      case "light":
+        return "#f1f5fa";
+      case "dark":
+      case "dark-jetbrains":
+        return "#dadada";
+    }
+  }
+  switch (theme.mode) {
+    case "light":
+      return "#828797";
+    case "dark":
+    case "dark-jetbrains":
+      return "#dadada";
+  }
+};
+
 export const AssetList = (props: AssetListProps) => {
-  const [sorting, setSorting] = useState<{
-    criterion: SORTING_CRITERION;
-    isDesc: boolean;
-  }>({
+  const [sorting, setSorting] = useState<Sorting>({
     criterion: SORTING_CRITERION.CRITICAL_INSIGHTS,
-    isDesc: true
+    order: SORTING_ORDER.DESC
   });
   const [isSortingMenuOpen, setIsSortingMenuOpen] = useState(false);
   const [searchInputValue, setSearchInputValue] = useState("");
@@ -181,15 +195,10 @@ export const AssetList = (props: AssetListProps) => {
   };
 
   const handleSortingMenuItemSelect = (value: string) => {
-    if (sorting.criterion === value) {
-      setSorting({
-        ...sorting,
-        isDesc: !sorting.isDesc
-      });
-    } else {
+    if (sorting.criterion !== value) {
       setSorting({
         criterion: value as SORTING_CRITERION,
-        isDesc: false
+        order: SORTING_ORDER.DESC
       });
     }
     handleSortingMenuToggle();
@@ -227,6 +236,13 @@ export const AssetList = (props: AssetListProps) => {
     return sortEntries(filteredEntries, sorting);
   }, [entries, sorting, searchInputValue]);
 
+  const handleSortingOrderToggleOptionButtonClick = (order: SORTING_ORDER) => {
+    setSorting({
+      ...sorting,
+      order
+    });
+  };
+
   return (
     <s.Container>
       <s.Header>
@@ -260,14 +276,14 @@ export const AssetList = (props: AssetListProps) => {
             placement={"bottom-start"}
           >
             <PopoverTrigger onClick={handleSortingMenuToggle}>
-              <s.SortingMenuContainer>
+              <s.SortingMenuButton isOpen={isSortingMenuOpen}>
                 <span>Sort by</span>
                 <s.SortingLabel>{sorting.criterion}</s.SortingLabel>
                 <ChevronIcon
                   direction={isSortingMenuOpen ? Direction.UP : Direction.DOWN}
                   color={sortingMenuChevronColor}
                 />
-              </s.SortingMenuContainer>
+              </s.SortingMenuButton>
             </PopoverTrigger>
             <PopoverContent className={"Popover"}>
               <Menu
@@ -281,6 +297,24 @@ export const AssetList = (props: AssetListProps) => {
             </PopoverContent>
           </Popover>
         </s.PopoverContainer>
+        <s.SortingOrderToggle>
+          {[SORTING_ORDER.DESC, SORTING_ORDER.ASC].map((order) => {
+            const isSelected = sorting.order === order;
+            const iconColor = getSortIconColor(theme, isSelected);
+
+            return (
+              <s.SortingOrderToggleOptionButton
+                key={order}
+                selected={isSelected}
+                onClick={() => handleSortingOrderToggleOptionButtonClick(order)}
+              >
+                <s.SortingOrderIconContainer sortingOrder={order}>
+                  <SortIcon color={iconColor} />
+                </s.SortingOrderIconContainer>
+              </s.SortingOrderToggleOptionButton>
+            );
+          })}
+        </s.SortingOrderToggle>
       </s.Toolbar>
       {sortedEntries.length > 0 ? (
         <s.List>

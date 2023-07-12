@@ -5,7 +5,7 @@ import {
   FloatingPortal,
   useMergeRefs
 } from "@floating-ui/react";
-import { CSSProperties, ForwardedRef, forwardRef, HTMLProps } from "react";
+import { CSSProperties, ForwardedRef, HTMLProps, forwardRef } from "react";
 import { usePopoverContext } from "../hooks";
 
 const PopoverContentComponent = (
@@ -26,7 +26,9 @@ const PopoverContentComponent = (
                 position: context.strategy,
                 top: context.y ?? 0,
                 left: context.x ?? 0,
-                width: "max-content",
+                width:
+                  context.elements.reference?.getBoundingClientRect().width,
+                outline: "none",
                 ...props.style
               } as CSSProperties
             }
