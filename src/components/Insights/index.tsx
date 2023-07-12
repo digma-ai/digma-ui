@@ -482,7 +482,7 @@ const groupInsights = (
           ? insights[0].spanInfo?.displayName
           : spans.find(
               (methodSpan) => spanCodeObjectId === methodSpan.spanCodeObjectId
-            )?.spanName || "",
+            )?.spanDisplayName || "",
         insights
       }))
       .sort(sortByName)
@@ -551,7 +551,7 @@ export const Insights = (props: InsightsProps) => {
         data
           ? groupInsights(
               (data as InsightsData).insights,
-              (data as InsightsData).methodInfo.spans
+              (data as InsightsData).spans
             )
           : undefined
       );
@@ -582,7 +582,7 @@ export const Insights = (props: InsightsProps) => {
       return;
     }
 
-    setData(groupInsights(props.data.insights, props.data.methodInfo.spans));
+    setData(groupInsights(props.data.insights, props.data.spans));
   }, [props.data]);
 
   useEffect(() => {

@@ -134,7 +134,12 @@ export const PercentileViewModeToggle = styled.div`
     }};
 `;
 
-export const PercentileViewModeToggleOption = styled.div<PercentileViewModeOptionProps>`
+export const PercentileViewModeToggleOptionButton = styled.button<PercentileViewModeOptionProps>`
+  border: none;
+  outline: none;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
   border-radius: 4px;
   padding: 2px 4px;
   cursor: pointer;

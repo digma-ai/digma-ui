@@ -31,15 +31,12 @@ export type GenericCodeObjectInsight =
 
 export interface MethodSpan {
   spanCodeObjectId: string;
-  spanName: string;
+  spanDisplayName: string;
 }
 
 export interface InsightsData {
   insights: GenericCodeObjectInsight[];
-  methodInfo: {
-    spans: MethodSpan[];
-    hasRelatedCodeObjectIds: boolean;
-  };
+  spans: MethodSpan[];
   assetId: string;
   serviceName: string;
   environment: string;

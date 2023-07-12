@@ -49,7 +49,7 @@ export const InsightCard = (props: InsightCardProps) => {
     setIsExpanded(!isExpanded);
   };
 
-  const handleDurationPercentileToggleOptionClick = (value: number) => {
+  const handleDurationPercentileToggleOptionButtonClick = (value: number) => {
     if (value !== percentileViewMode) {
       setPercentileViewMode(value);
       props.onPercentileViewModeChange &&
@@ -82,17 +82,17 @@ export const InsightCard = (props: InsightCardProps) => {
             {props.onPercentileViewModeChange && (
               <s.PercentileViewModeToggle>
                 {PERCENTILES.map((percentile) => (
-                  <s.PercentileViewModeToggleOption
+                  <s.PercentileViewModeToggleOptionButton
                     key={percentile.percentile}
                     selected={percentile.percentile === percentileViewMode}
                     onClick={() =>
-                      handleDurationPercentileToggleOptionClick(
+                      handleDurationPercentileToggleOptionButtonClick(
                         percentile.percentile
                       )
                     }
                   >
                     {percentile.label}
-                  </s.PercentileViewModeToggleOption>
+                  </s.PercentileViewModeToggleOptionButton>
                 ))}
               </s.PercentileViewModeToggle>
             )}
