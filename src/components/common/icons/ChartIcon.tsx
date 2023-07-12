@@ -1,8 +1,8 @@
 import React from "react";
 import { useIconProps } from "./hooks";
-import { ThemeableIconProps } from "./types";
+import { IconProps } from "./types";
 
-const ChartIconComponent = (props: ThemeableIconProps) => {
+const ChartIconComponent = (props: IconProps) => {
   const { size, color } = useIconProps(props);
   return (
     <svg

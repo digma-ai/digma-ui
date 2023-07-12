@@ -18,11 +18,40 @@ export const Container = styled.div`
   }};
 `;
 
-export const LoaderContainer = styled.div`
+export const EmptyStateContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
+  gap: 20px;
   flex-grow: 1;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: normal;
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#4d668a";
+      case "dark":
+      case "dark-jetbrains":
+        return "#dadada";
+    }
+  }};
+`;
+
+export const EmptyStateIconContainer = styled.div`
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#d0d6eb";
+      case "dark":
+      case "dark-jetbrains":
+        return "#323334";
+    }
+  }};
 `;
 
 export const InsightsContainer = styled.div`

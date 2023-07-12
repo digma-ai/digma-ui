@@ -6,9 +6,11 @@ import { isNumber } from "../../typeGuards/isNumber";
 import { InsightType } from "../../types";
 import { addPrefix } from "../../utils/addPrefix";
 import { getInsightTypeInfo } from "../../utils/getInsightTypeInfo";
+import { getThemeKind } from "../common/App/styles";
 import { CircleLoader } from "../common/CircleLoader";
 import { CircleLoaderProps } from "../common/CircleLoader/types";
 import { EndpointIcon } from "../common/icons/EndpointIcon";
+import { LightBulbCircleCrossedIcon } from "../common/icons/LightBulbCircleCrossedIcon";
 import { OpenTelemetryLogoIcon } from "../common/icons/OpenTelemetryLogoIcon";
 import { BottleneckInsight } from "./BottleneckInsight";
 import { Card } from "./Card";
@@ -462,7 +464,7 @@ const groupInsights = (
   });
 
   return [
-    { insights: ungroupedInsights },
+    ...(ungroupedInsights.length > 0 ? [{ insights: ungroupedInsights }] : []),
     // Endpoint insight groups
     ...Object.values(endpointInsightGroups)
       .map((x) => ({
@@ -517,14 +519,26 @@ const getCircleLoaderColors = (
   }
 };
 
+const getEmptyStateIconColor = (theme: DefaultTheme) => {
+  switch (theme.mode) {
+    case "light":
+      return "#fbfdff";
+    case "dark":
+    case "dark-jetbrains":
+      return "#83858e";
+  }
+};
+
 export const Insights = (props: InsightsProps) => {
   const [data, setData] = useState<InsightGroup[]>();
   const previousData = usePrevious(data);
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
   const [isLoaderVisible, setIsLoaderVisible] = useState(false);
   const theme = useTheme();
+  const themeKind = getThemeKind(theme);
   const insightGroupIconColor = getInsightGroupIconColor(theme);
   const circleLoaderColors = getCircleLoaderColors(theme);
+  const emptyStateIconColor = getEmptyStateIconColor(theme);
 
   useEffect(() => {
     window.sendMessageToDigma({
@@ -585,7 +599,30 @@ export const Insights = (props: InsightsProps) => {
 
   const renderContent = useMemo((): JSX.Element => {
     if (!data) {
-      return <>No insights</>;
+      if (isLoaderVisible) {
+        return (
+          <s.EmptyStateContainer>
+            <CircleLoader colors={circleLoaderColors} size={32} />
+          </s.EmptyStateContainer>
+        );
+      }
+
+      return <></>;
+    }
+
+    if (data.length === 0) {
+      return (
+        <s.EmptyStateContainer>
+          <s.EmptyStateIconContainer>
+            <LightBulbCircleCrossedIcon
+              size={72}
+              color={emptyStateIconColor}
+              themeKind={themeKind}
+            />
+          </s.EmptyStateIconContainer>
+          No insights
+        </s.EmptyStateContainer>
+      );
     }
 
     return (
@@ -617,17 +654,14 @@ export const Insights = (props: InsightsProps) => {
         ))}
       </s.InsightsContainer>
     );
-  }, [data, insightGroupIconColor]);
+  }, [
+    data,
+    insightGroupIconColor,
+    isLoaderVisible,
+    circleLoaderColors,
+    themeKind,
+    emptyStateIconColor
+  ]);
 
-  return (
-    <s.Container>
-      {isLoaderVisible ? (
-        <s.LoaderContainer>
-          <CircleLoader colors={circleLoaderColors} size={32} />
-        </s.LoaderContainer>
-      ) : (
-        renderContent
-      )}
-    </s.Container>
-  );
+  return <s.Container>{renderContent}</s.Container>;
 };
