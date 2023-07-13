@@ -111,9 +111,7 @@ const sortEntries = (
         );
       });
     case SORTING_CRITERION.NAME:
-      return entries.sort((a, b) =>
-        isDesc ? sortByName(b, a, isDesc) : sortByName(a, b, isDesc)
-      );
+      return entries.sort((a, b) => sortByName(a, b, isDesc));
     default:
       return entries;
   }
@@ -168,6 +166,21 @@ const getSortIconColor = (theme: DefaultTheme, selected: boolean) => {
   }
 };
 
+const getDefaultSortingOrder = (
+  criterion: SORTING_CRITERION
+): SORTING_ORDER => {
+  switch (criterion) {
+    case SORTING_CRITERION.NAME:
+      return SORTING_ORDER.ASC;
+    case SORTING_CRITERION.PERFORMANCE:
+    case SORTING_CRITERION.SLOWEST_FIVE_PERCENT:
+    case SORTING_CRITERION.CRITICAL_INSIGHTS:
+    case SORTING_CRITERION.LATEST:
+    default:
+      return SORTING_ORDER.DESC;
+  }
+};
+
 export const AssetList = (props: AssetListProps) => {
   const [sorting, setSorting] = useState<Sorting>({
     criterion: SORTING_CRITERION.CRITICAL_INSIGHTS,
@@ -195,10 +208,18 @@ export const AssetList = (props: AssetListProps) => {
   };
 
   const handleSortingMenuItemSelect = (value: string) => {
-    if (sorting.criterion !== value) {
+    if (sorting.criterion === value) {
+      setSorting({
+        ...sorting,
+        order:
+          sorting.order === SORTING_ORDER.DESC
+            ? SORTING_ORDER.ASC
+            : SORTING_ORDER.DESC
+      });
+    } else {
       setSorting({
         criterion: value as SORTING_CRITERION,
-        order: SORTING_ORDER.DESC
+        order: getDefaultSortingOrder(value as SORTING_CRITERION)
       });
     }
     handleSortingMenuToggle();

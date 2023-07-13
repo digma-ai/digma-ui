@@ -107,7 +107,10 @@ export const ServicesContainer = styled.div`
 `;
 
 export const ServiceName = styled.div`
-  padding: 4px 6px;
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  padding: 4px 0;
   border-radius: 23px;
   line-height: 8px;
   overflow: hidden;
@@ -120,15 +123,6 @@ export const ServiceName = styled.div`
       case "dark":
       case "dark-jetbrains":
         return "#dadada";
-    }
-  }};
-  background: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#e9eef4";
-      case "dark":
-      case "dark-jetbrains":
-        return "#2e2e2e";
     }
   }};
 `;
