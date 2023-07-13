@@ -426,40 +426,40 @@ const groupInsights = (
       continue;
     }
 
-    const spanCodeObjectId = insight.spanInfo?.spanCodeObjectId;
+    const displayName = insight.spanInfo?.displayName;
 
-    if (!spanCodeObjectId) {
+    if (!displayName) {
       ungroupedInsights.push(insight);
       continue;
     }
 
     if (isEndpointInsight(insight)) {
-      if (!endpointInsightGroups[spanCodeObjectId]) {
-        endpointInsightGroups[spanCodeObjectId] = [];
+      if (!endpointInsightGroups[displayName]) {
+        endpointInsightGroups[displayName] = [];
       }
 
-      endpointInsightGroups[spanCodeObjectId].push(insight);
+      endpointInsightGroups[displayName].push(insight);
       continue;
     }
 
     if (isSpanInsight(insight)) {
-      if (endpointInsightGroups[spanCodeObjectId]) {
-        endpointInsightGroups[spanCodeObjectId].push(insight);
+      if (endpointInsightGroups[displayName]) {
+        endpointInsightGroups[displayName].push(insight);
         continue;
       }
 
-      if (!spanInsightGroups[spanCodeObjectId]) {
-        spanInsightGroups[spanCodeObjectId] = [];
+      if (!spanInsightGroups[displayName]) {
+        spanInsightGroups[displayName] = [];
       }
 
-      spanInsightGroups[spanCodeObjectId].push(insight);
+      spanInsightGroups[displayName].push(insight);
     }
   }
 
   // Add empty span groups
   spans.forEach((x) => {
-    if (!spanInsightGroups[x.spanCodeObjectId]) {
-      spanInsightGroups[x.spanCodeObjectId] = [];
+    if (!spanInsightGroups[x.spanDisplayName]) {
+      spanInsightGroups[x.spanDisplayName] = [];
     }
   });
 
@@ -475,13 +475,13 @@ const groupInsights = (
       .sort(sortByName),
     // Span insight groups
     ...Object.entries(spanInsightGroups)
-      .map(([spanCodeObjectId, insights]) => ({
+      .map(([spanDisplayName, insights]) => ({
         icon: OpenTelemetryLogoIcon,
         // TODO: get span name only from methodInfo spans
         name: insights[0]
           ? insights[0].spanInfo?.displayName
           : spans.find(
-              (methodSpan) => spanCodeObjectId === methodSpan.spanCodeObjectId
+              (methodSpan) => spanDisplayName === methodSpan.spanDisplayName
             )?.spanDisplayName || "",
         insights
       }))
@@ -495,7 +495,7 @@ const getInsightGroupIconColor = (theme: DefaultTheme) => {
       return "#7891d0";
     case "dark":
     case "dark-jetbrains":
-      return "#dadada";
+      return "#7c7c94";
   }
 };
 
