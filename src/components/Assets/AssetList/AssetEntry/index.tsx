@@ -81,12 +81,12 @@ export const AssetEntry = (props: AssetEntryProps) => {
         </s.InsightIconsContainer>
       </s.Header>
       <s.StatsContainer>
-        <s.StatsColumn>
+        <s.StatsRow>
           <s.Stats>
             <span>Services</span>
             <s.ServicesContainer>
+              <GlobeIcon color={serviceIconColor} />
               <s.ServiceName title={props.entry.serviceName}>
-                <GlobeIcon color={serviceIconColor} />
                 {props.entry.serviceName}
               </s.ServiceName>
               {otherServices.length > 0 && (
@@ -97,15 +97,6 @@ export const AssetEntry = (props: AssetEntryProps) => {
             </s.ServicesContainer>
           </s.Stats>
           <s.Stats>
-            <span>Last</span>
-            <s.ValueContainer title={new Date(lastSeenDateTime).toString()}>
-              {timeAgo(lastSeenDateTime)}
-              <s.Suffix>ago</s.Suffix>
-            </s.ValueContainer>
-          </s.Stats>
-        </s.StatsColumn>
-        <s.StatsColumn>
-          <s.Stats>
             <span>Performance</span>
             <s.ValueContainer>
               {performanceDuration ? performanceDuration.value : "N/A"}
@@ -114,7 +105,15 @@ export const AssetEntry = (props: AssetEntryProps) => {
               )}
             </s.ValueContainer>
           </s.Stats>
-
+        </s.StatsRow>
+        <s.StatsRow>
+          <s.Stats>
+            <span>Last</span>
+            <s.ValueContainer title={new Date(lastSeenDateTime).toString()}>
+              {timeAgo(lastSeenDateTime)}
+              <s.Suffix>ago</s.Suffix>
+            </s.ValueContainer>
+          </s.Stats>
           <s.Stats>
             <span>Slowest 5%</span>
             <s.ValueContainer>
@@ -126,7 +125,7 @@ export const AssetEntry = (props: AssetEntryProps) => {
               )}
             </s.ValueContainer>
           </s.Stats>
-        </s.StatsColumn>
+        </s.StatsRow>
       </s.StatsContainer>
     </s.Container>
   );
