@@ -1,5 +1,9 @@
 import styled from "styled-components";
-import { SortingMenuButtonProps, SortingOrderOptionProps } from "./types";
+import {
+  SORTING_ORDER,
+  SortingMenuButtonProps,
+  SortingOrderOptionProps
+} from "./types";
 
 export const Container = styled.div`
   display: flex;
@@ -234,11 +238,11 @@ export const SortingOrderToggleOptionButton = styled.button<SortingOrderOptionPr
 `;
 
 export const SortingOrderIconContainer = styled.div<{
-  sortingOrder: "asc" | "desc";
+  sortingOrder: SORTING_ORDER;
 }>`
   display: flex;
   transform: scaleY(
-    ${({ sortingOrder }) => (sortingOrder === "desc" ? -1 : 1)}
+    ${({ sortingOrder }) => (sortingOrder === SORTING_ORDER.DESC ? -1 : 1)}
   );
 `;
 

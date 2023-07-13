@@ -229,6 +229,13 @@ export const AssetList = (props: AssetListProps) => {
     props.onAssetLinkClick(entry);
   };
 
+  const handleSortingOrderToggleOptionButtonClick = (order: SORTING_ORDER) => {
+    setSorting({
+      ...sorting,
+      order
+    });
+  };
+
   const assetTypeInfo = getAssetTypeInfo(props.assetTypeId);
 
   const entries: ExtendedAssetEntryWithServices[] = useMemo(
@@ -256,13 +263,6 @@ export const AssetList = (props: AssetListProps) => {
 
     return sortEntries(filteredEntries, sorting);
   }, [entries, sorting, searchInputValue]);
-
-  const handleSortingOrderToggleOptionButtonClick = (order: SORTING_ORDER) => {
-    setSorting({
-      ...sorting,
-      order
-    });
-  };
 
   return (
     <s.Container>
