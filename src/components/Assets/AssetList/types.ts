@@ -19,7 +19,20 @@ export enum SORTING_CRITERION {
   NAME = "Name"
 }
 
+export enum SORTING_ORDER {
+  ASC = "asc",
+  DESC = "desc"
+}
+
 export interface Sorting {
   criterion: SORTING_CRITERION;
-  isDesc: boolean;
+  order: SORTING_ORDER;
+}
+
+export interface SortingMenuButtonProps {
+  isOpen: boolean;
+}
+
+export interface SortingOrderOptionProps {
+  selected: boolean;
 }

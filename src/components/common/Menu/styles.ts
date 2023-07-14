@@ -41,6 +41,7 @@ export const List = styled.ul`
 export const ListItem = styled.li`
   flex-direction: row;
   width: 100%;
+  box-sizing: border-box;
   list-style-type: none;
   padding: 6px 8px;
   font-size: 10px;
@@ -55,4 +56,37 @@ export const ListItem = styled.li`
         return "#9b9b9b";
     }
   }};
+
+  &:hover {
+    background: ${({ theme }) => {
+      switch (theme.mode) {
+        case "light":
+          return "#f1f5fa";
+        case "dark":
+        case "dark-jetbrains":
+          return "#383838";
+      }
+    }};
+  }
+
+  &:active {
+    color: ${({ theme }) => {
+      switch (theme.mode) {
+        case "light":
+          return "#4d668a";
+        case "dark":
+        case "dark-jetbrains":
+          return "#e2e7ff";
+      }
+    }};
+    background: ${({ theme }) => {
+      switch (theme.mode) {
+        case "light":
+          return "#e9eef4";
+        case "dark":
+        case "dark-jetbrains":
+          return "#49494d";
+      }
+    }};
+  }
 `;

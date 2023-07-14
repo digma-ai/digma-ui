@@ -74,7 +74,7 @@ export const InsightIconContainer = styled(AssetTypeIconContainer)`
 
 export const StatsContainer = styled.div`
   display: flex;
-  gap: 15px 12px;
+  gap: 16px 12px;
   flex-wrap: wrap;
   font-size: 10px;
   line-height: 12px;
@@ -84,20 +84,12 @@ export const Stats = styled.div`
   display: flex;
   flex-direction: column;
   gap: 4px;
+  width: 120px;
 `;
 
-export const StatsColumn = styled.div`
+export const StatsRow = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 12px;
-
-  &:first-child {
-    width: 35%;
-  }
-
-  &:nth-child(2) {
-    width: 35%;
-  }
+  gap: 16px;
 `;
 
 export const ServicesContainer = styled.div`
@@ -107,7 +99,7 @@ export const ServicesContainer = styled.div`
 `;
 
 export const ServiceName = styled.div`
-  padding: 4px 6px;
+  padding: 4px 0;
   border-radius: 23px;
   line-height: 8px;
   overflow: hidden;
@@ -120,15 +112,6 @@ export const ServiceName = styled.div`
       case "dark":
       case "dark-jetbrains":
         return "#dadada";
-    }
-  }};
-  background: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#e9eef4";
-      case "dark":
-      case "dark-jetbrains":
-        return "#2e2e2e";
     }
   }};
 `;

@@ -1,14 +1,26 @@
-import { useTheme } from "styled-components";
+import { DefaultTheme, useTheme } from "styled-components";
 import { getInsightImportanceColor } from "../../../../utils/getInsightImportanceColor";
 import { getInsightTypeInfo } from "../../../../utils/getInsightTypeInfo";
 import { getInsightTypeOrderPriority } from "../../../../utils/getInsightTypeOrderPriority";
 import { timeAgo } from "../../../../utils/timeAgo";
+import { GlobeIcon } from "../../../common/icons/GlobeIcon";
 import { getAssetTypeInfo } from "../../utils";
 import * as s from "./styles";
 import { AssetEntryProps } from "./types";
 
+const getServiceIconColor = (theme: DefaultTheme) => {
+  switch (theme.mode) {
+    case "light":
+      return "#4d668a";
+    case "dark":
+    case "dark-jetbrains":
+      return "#dadada";
+  }
+};
+
 export const AssetEntry = (props: AssetEntryProps) => {
   const theme = useTheme();
+  const serviceIconColor = getServiceIconColor(theme);
 
   const handleLinkClick = () => {
     props.onAssetLinkClick(props.entry);
@@ -69,10 +81,11 @@ export const AssetEntry = (props: AssetEntryProps) => {
         </s.InsightIconsContainer>
       </s.Header>
       <s.StatsContainer>
-        <s.StatsColumn>
+        <s.StatsRow>
           <s.Stats>
             <span>Services</span>
             <s.ServicesContainer>
+              <GlobeIcon color={serviceIconColor} />
               <s.ServiceName title={props.entry.serviceName}>
                 {props.entry.serviceName}
               </s.ServiceName>
@@ -84,15 +97,6 @@ export const AssetEntry = (props: AssetEntryProps) => {
             </s.ServicesContainer>
           </s.Stats>
           <s.Stats>
-            <span>Last</span>
-            <s.ValueContainer title={new Date(lastSeenDateTime).toString()}>
-              {timeAgo(lastSeenDateTime)}
-              <s.Suffix>ago</s.Suffix>
-            </s.ValueContainer>
-          </s.Stats>
-        </s.StatsColumn>
-        <s.StatsColumn>
-          <s.Stats>
             <span>Performance</span>
             <s.ValueContainer>
               {performanceDuration ? performanceDuration.value : "N/A"}
@@ -101,7 +105,15 @@ export const AssetEntry = (props: AssetEntryProps) => {
               )}
             </s.ValueContainer>
           </s.Stats>
-
+        </s.StatsRow>
+        <s.StatsRow>
+          <s.Stats>
+            <span>Last</span>
+            <s.ValueContainer title={new Date(lastSeenDateTime).toString()}>
+              {timeAgo(lastSeenDateTime)}
+              <s.Suffix>ago</s.Suffix>
+            </s.ValueContainer>
+          </s.Stats>
           <s.Stats>
             <span>Slowest 5%</span>
             <s.ValueContainer>
@@ -113,7 +125,7 @@ export const AssetEntry = (props: AssetEntryProps) => {
               )}
             </s.ValueContainer>
           </s.Stats>
-        </s.StatsColumn>
+        </s.StatsRow>
       </s.StatsContainer>
     </s.Container>
   );
