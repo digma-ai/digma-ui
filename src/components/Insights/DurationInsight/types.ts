@@ -9,5 +9,8 @@ export interface DurationInsightProps extends InsightProps {
     insightType: InsightType
   ) => void;
   onLiveButtonClick: (prefixedCodeObjectId: string) => void;
-  onCompareButtonClick: (traces: [Trace, Trace]) => void;
+  onCompareButtonClick: (
+    traces: [Trace, Trace],
+    insightType: InsightType
+  ) => void;
 }

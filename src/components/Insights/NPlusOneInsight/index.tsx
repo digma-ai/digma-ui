@@ -11,7 +11,7 @@ export const NPlusOneInsight = (props: NPlusOneInsightProps) => {
   };
 
   const handleTraceButtonClick = (trace: Trace) => {
-    props.onTraceButtonClick(trace);
+    props.onTraceButtonClick(trace, props.insight.type);
   };
 
   const spanName = props.insight.clientSpanName || undefined;

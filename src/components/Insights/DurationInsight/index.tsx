@@ -33,7 +33,7 @@ export const DurationInsight = (props: DurationInsightProps) => {
   };
 
   const handleCompareButtonClick = (traces: [Trace, Trace]) => {
-    props.onCompareButtonClick(traces);
+    props.onCompareButtonClick(traces, props.insight.type);
   };
 
   const traces: Trace[] = [];

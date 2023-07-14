@@ -13,7 +13,7 @@ export const TopUsageInsight = (props: TopUsageInsightProps) => {
   };
 
   const handleTraceButtonClick = (trace: Trace) => {
-    props.onTraceButtonClick(trace);
+    props.onTraceButtonClick(trace, props.insight.type);
   };
 
   return (

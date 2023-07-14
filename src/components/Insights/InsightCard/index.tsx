@@ -58,8 +58,9 @@ export const InsightCard = (props: InsightCardProps) => {
   };
 
   const handleRefreshLinkClick = () => {
-    props.onRefresh();
+    props.onRefresh(props.data.type);
   };
+
   const areStartTimesEqual = Boolean(
     props.data.actualStartTime &&
       props.data.customStartTime &&

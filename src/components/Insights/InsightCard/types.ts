@@ -15,7 +15,7 @@ export interface InsightCardProps {
   ) => void;
   onPercentileViewModeChange?: (value: number) => void;
   isRecent?: boolean;
-  onRefresh: () => void;
+  onRefresh: (insightType: InsightType) => void;
 }
 
 export interface PercentileViewModeOptionProps {

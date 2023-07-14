@@ -14,7 +14,7 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
   };
 
   const handleTraceButtonClick = (trace: Trace) => {
-    props.onTraceButtonClick(trace);
+    props.onTraceButtonClick(trace, props.insight.type);
   };
 
   const handleHistogramButtonClick = () => {

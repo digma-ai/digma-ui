@@ -198,8 +198,7 @@ const getInsightGroupIconColor = (theme: DefaultTheme) => {
 };
 
 const renderInsightCard = (
-  insight: GenericCodeObjectInsight,
-  handleRefresh: () => void
+  insight: GenericCodeObjectInsight
 ): JSX.Element | undefined => {
   const handleErrorSelect = (errorId: string) => {
     window.sendMessageToDigma({
@@ -219,7 +218,7 @@ const renderInsightCard = (
   const handleHistogramButtonClick = (
     instrumentationLibrary: string,
     name: string,
-    insightType: string
+    insightType: InsightType
   ) => {
     window.sendMessageToDigma({
       action: actions.OPEN_HISTOGRAM,
@@ -240,20 +239,25 @@ const renderInsightCard = (
     });
   };
 
-  const handleTraceButtonClick = (trace: Trace) => {
+  const handleTraceButtonClick = (trace: Trace, insightType: InsightType) => {
     window.sendMessageToDigma({
       action: actions.GO_TO_TRACE,
       payload: {
-        trace
+        trace,
+        insightType
       }
     });
   };
 
-  const handleCompareButtonClick = (traces: [Trace, Trace]) => {
+  const handleCompareButtonClick = (
+    traces: [Trace, Trace],
+    insightType: InsightType
+  ) => {
     window.sendMessageToDigma({
       action: actions.GO_TO_TRACE_COMPARISON,
       payload: {
-        traces
+        traces,
+        insightType
       }
     });
   };
@@ -275,6 +279,15 @@ const renderInsightCard = (
       action: actions.RECALCULATE,
       payload: {
         prefixedCodeObjectId,
+        insightType
+      }
+    });
+  };
+
+  const handleRefresh = (insightType: InsightType) => {
+    window.sendMessageToDigma({
+      action: actions.REFRESH_ALL,
+      payload: {
         insightType
       }
     });
@@ -490,12 +503,6 @@ export const InsightList = (props: InsightListProps) => {
     setInsightGroups(groupInsights(props.insights, props.spans));
   }, [props.insights, props.spans]);
 
-  const handleRefresh = () => {
-    window.sendMessageToDigma({
-      action: actions.GET_DATA
-    });
-  };
-
   const handleAddAnnotationButtonClick = () => {
     window.sendMessageToDigma({
       action: actions.ADD_ANNOTATION,
@@ -525,9 +532,7 @@ export const InsightList = (props: InsightListProps) => {
             </s.InsightGroupName>
           )}
           {x.insights.length > 0 ? (
-            x.insights.map((insight) =>
-              renderInsightCard(insight, handleRefresh)
-            )
+            x.insights.map((insight) => renderInsightCard(insight))
           ) : (
             <Card
               header={<>No data yet</>}
