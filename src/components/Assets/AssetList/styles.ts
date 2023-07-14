@@ -1,4 +1,9 @@
 import styled from "styled-components";
+import {
+  SORTING_ORDER,
+  SortingMenuButtonProps,
+  SortingOrderOptionProps
+} from "./types";
 
 export const Container = styled.div`
   display: flex;
@@ -45,6 +50,7 @@ export const Toolbar = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 8px;
+  gap: 4px;
 `;
 
 export const PopoverContainer = styled.div`
@@ -70,7 +76,7 @@ export const SearchInput = styled.input`
   font-size: 10px;
   padding: 4px 4px 4px 18px;
   border-radius: 4px;
-  width: 140px;
+  width: 70px;
   outline: none;
   caret-color: ${({ theme }) => {
     switch (theme.mode) {
@@ -132,14 +138,17 @@ export const SearchInput = styled.input`
   }
 `;
 
-export const SortingMenuContainer = styled.div`
+export const SortingMenuButton = styled.button<SortingMenuButtonProps>`
+  background: none;
+  cursor: pointer;
   display: flex;
   gap: 2px;
   font-weight: 500;
   font-size: 10px;
   line-height: 12px;
   align-items: center;
-  height: 20px;
+  border-radius: 4px;
+  padding: 4px 8px;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -149,6 +158,41 @@ export const SortingMenuContainer = styled.div`
         return "#9b9b9b";
     }
   }};
+  border: 1px solid
+    ${({ theme, isOpen }) => {
+      if (isOpen) {
+        switch (theme.mode) {
+          case "light":
+            return "#7891d0";
+          case "dark":
+          case "dark-jetbrains":
+            return "#9b9b9b";
+        }
+      }
+
+      switch (theme.mode) {
+        case "light":
+          return "#d0d6eb";
+        case "dark":
+        case "dark-jetbrains":
+          return "#49494d";
+      }
+    }};
+
+  &:hover,
+  &:focus {
+    outline: none;
+    border: 1px solid
+      ${({ theme }) => {
+        switch (theme.mode) {
+          case "light":
+            return "#7891d0";
+          case "dark":
+          case "dark-jetbrains":
+            return "#9b9b9b";
+        }
+      }};
+  }
 `;
 
 export const SortingLabel = styled.span`
@@ -165,6 +209,41 @@ export const SortingLabel = styled.span`
         return "#dadada";
     }
   }};
+`;
+
+export const SortingOrderToggle = styled.div`
+  display: flex;
+  border-radius: 4px;
+  padding: 4px;
+  gap: 4px;
+  border: 1px solid
+    ${({ theme }) => {
+      switch (theme.mode) {
+        case "light":
+          return "#b9c0d4";
+        case "dark":
+        case "dark-jetbrains":
+          return "#49494d";
+      }
+    }};
+`;
+
+export const SortingOrderToggleOptionButton = styled.button<SortingOrderOptionProps>`
+  border: none;
+  outline: none;
+  padding: 0;
+  border-radius: 2px;
+  cursor: pointer;
+  background: ${({ selected }) => (selected ? "#3538cd" : "transparent")};
+`;
+
+export const SortingOrderIconContainer = styled.div<{
+  sortingOrder: SORTING_ORDER;
+}>`
+  display: flex;
+  transform: scaleY(
+    ${({ sortingOrder }) => (sortingOrder === SORTING_ORDER.DESC ? -1 : 1)}
+  );
 `;
 
 export const ItemsCount = styled.span`

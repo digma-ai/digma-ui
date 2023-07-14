@@ -132,7 +132,7 @@ export const InstallStep = (props: InstallStepProps) => {
             <Link onClick={() => openLinkInDefaultBrowser(DOCKER_DESKTOP_URL)}>
               Docker Desktop
             </Link>{" "}
-            4.10.0 or later installed)
+            4.10.0 or higher installed)
           </SectionDescription>
           <s.GetDockerExtensionButton
             buttonType={"secondary"}
