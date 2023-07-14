@@ -18,48 +18,11 @@ export const Container = styled.div`
   }};
 `;
 
-export const EmptyStateContainer = styled.div`
+export const StartupText = styled.span`
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 20px;
-  flex-grow: 1;
-  font-size: 14px;
-  font-weight: 500;
-  line-height: normal;
-  color: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#4d668a";
-      case "dark":
-      case "dark-jetbrains":
-        return "#dadada";
-    }
-  }};
-`;
-
-export const EmptyStateIconContainer = styled.div`
-  width: 72px;
-  height: 72px;
-  border-radius: 50%;
-  background: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#d0d6eb";
-      case "dark":
-      case "dark-jetbrains":
-        return "#323334";
-    }
-  }};
-`;
-
-export const InsightsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  overflow: auto;
-  flex-grow: 1;
+  text-align: center;
 `;
 
 export const Description = styled.span`
@@ -72,6 +35,25 @@ export const Description = styled.span`
       case "dark":
       case "dark-jetbrains":
         return "#9b9b9b";
+    }
+  }};
+`;
+
+export const MissingDependencyContainer = styled.div`
+  display: flex;
+  gap: 6px;
+`;
+
+export const MissingDependencyText = styled.span`
+  font-size: 10px;
+  line-height: normal;
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#e00036";
+      case "dark":
+      case "dark-jetbrains":
+        return "#f93967";
     }
   }};
 `;
@@ -91,27 +73,8 @@ export const Link = styled(CommonLink)`
   }};
 `;
 
-export const InsightGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-`;
-
-export const InsightGroupName = styled.div`
+export const SlackLink = styled(Link)`
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-weight: 500;
-  font-size: 12px;
-  line-height: normal;
-  height: 16px;
-  color: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#7891d0";
-      case "dark":
-      case "dark-jetbrains":
-        return "#7c7c94";
-    }
-  }};
+  gap: 4px;
 `;

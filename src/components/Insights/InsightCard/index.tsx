@@ -60,6 +60,13 @@ export const InsightCard = (props: InsightCardProps) => {
   const handleRefreshLinkClick = () => {
     props.onRefresh();
   };
+  const areStartTimesEqual = Boolean(
+    props.data.actualStartTime &&
+      props.data.customStartTime &&
+      new Date(props.data.actualStartTime).valueOf() -
+        new Date(props.data.customStartTime).valueOf() ===
+        0
+  );
 
   return (
     <Card
@@ -135,8 +142,7 @@ export const InsightCard = (props: InsightCardProps) => {
       }
       content={
         <>
-          {/* TODO: Pass insight recalculating state */}
-          {false && (
+          {!areStartTimesEqual && (
             <s.RefreshContainer>
               <Description>
                 Applying the new time filter. Wait a few minutes and then

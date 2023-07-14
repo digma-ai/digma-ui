@@ -8,6 +8,21 @@ import {
 } from "../../types";
 import { IconProps } from "../common/icons/types";
 
+export enum ViewMode {
+  PREVIEW = "PREVIEW",
+  INSIGHTS = "INSIGHTS"
+}
+
+export enum InsightsStatus {
+  STARTUP = "Startup",
+  DEFAULT = "Default",
+  NO_INSIGHTS = "NoInsights",
+  INSIGHT_PENDING = "InsightPending",
+  NO_SPANS_DATA = "NoSpanData",
+  NO_OBSERVABILITY = "NoObservability",
+  LOADING = "Loading"
+}
+
 export type GenericCodeObjectInsight =
   | SpanUsageStatusInsight
   | SpanDurationsInsight
@@ -34,12 +49,21 @@ export interface MethodSpan {
   spanDisplayName: string;
 }
 
+export interface Method {
+  id: string;
+  name: string;
+}
+
 export interface InsightsData {
   insights: GenericCodeObjectInsight[];
   spans: MethodSpan[];
-  assetId: string;
+  assetId?: string;
   serviceName: string;
   environment: string;
+  insightsStatus: InsightsStatus;
+  viewMode: ViewMode;
+  methods: Method[];
+  hasMissingDependency: boolean;
 }
 
 export interface InsightsProps {

@@ -1,66 +1,39 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
+import { SLACK_WORKSPACE_URL } from "../../constants";
 import { dispatcher } from "../../dispatcher";
-import { usePrevious } from "../../hooks/usePrevious";
 import { isNumber } from "../../typeGuards/isNumber";
 import { InsightType } from "../../types";
 import { addPrefix } from "../../utils/addPrefix";
 import { getInsightTypeInfo } from "../../utils/getInsightTypeInfo";
-import { getThemeKind } from "../common/App/styles";
+import { actions as globalActions } from "../common/App";
+import { Button } from "../common/Button";
 import { CircleLoader } from "../common/CircleLoader";
 import { CircleLoaderProps } from "../common/CircleLoader/types";
+import { CardsIcon } from "../common/icons/CardsIcon";
+import { DocumentWithMagnifierIcon } from "../common/icons/DocumentWithMagnifierIcon";
 import { EndpointIcon } from "../common/icons/EndpointIcon";
-import { LightBulbCircleCrossedIcon } from "../common/icons/LightBulbCircleCrossedIcon";
+import { LightBulbSmallCrossedIcon } from "../common/icons/LightBulbSmallCrossedIcon";
+import { LightBulbSmallIcon } from "../common/icons/LightBulbSmallIcon";
+import { OpenTelemetryLogoCrossedSmallIcon } from "../common/icons/OpenTelemetryLogoCrossedSmallIcon";
 import { OpenTelemetryLogoIcon } from "../common/icons/OpenTelemetryLogoIcon";
-import { BottleneckInsight } from "./BottleneckInsight";
-import { Card } from "./Card";
-import { DurationBreakdownInsight } from "./DurationBreakdownInsight";
-import { DurationInsight } from "./DurationInsight";
-import { DurationSlowdownSourceInsight } from "./DurationSlowdownSourceInsight";
-import { EndpointNPlusOneInsight } from "./EndpointNPlusOneInsight";
-import { ErrorsInsight } from "./ErrorsInsight";
-import { InsightCard } from "./InsightCard";
-import { NPlusOneInsight } from "./NPlusOneInsight";
-import { NoScalingIssueInsight } from "./NoScalingIssueInsight";
-import { PerformanceAtScaleInsight } from "./PerformanceAtScaleInsight";
-import { RequestBreakdownInsight } from "./RequestBreakdownInsight";
-import { ScalingIssueInsight } from "./ScalingIssueInsight";
-import { SlowEndpointInsight } from "./SlowEndpointInsight";
-import { SpanBottleneckInsight } from "./SpanBottleneckInsight";
-import { TopUsageInsight } from "./TopUsageInsight";
-import { TrafficInsight } from "./TrafficInsight";
+import { SlackLogoIcon } from "../common/icons/SlackLogoIcon";
+import { EmptyState } from "./EmptyState";
+import { InsightList } from "./InsightList";
+import { Preview } from "./Preview";
 import * as s from "./styles";
-import {
-  isCodeObjectErrorsInsight,
-  isCodeObjectHotSpotInsight,
-  isEndpointBreakdownInsight,
-  isEndpointDurationSlowdownInsight,
-  isEndpointHighUsageInsight,
-  isEndpointInsight,
-  isEndpointLowUsageInsight,
-  isEndpointNormalUsageInsight,
-  isEndpointSlowestSpansInsight,
-  isEndpointSuspectedNPlusOneInsight,
-  isSlowEndpointInsight,
-  isSpanDurationBreakdownInsight,
-  isSpanDurationsInsight,
-  isSpanEndpointBottleneckInsight,
-  isSpanInsight,
-  isSpanNPlusOneInsight,
-  isSpanScalingBadlyInsight,
-  isSpanScalingInsufficientDataInsight,
-  isSpanScalingWellInsight,
-  isSpanUsagesInsight
-} from "./typeGuards";
+import { isEndpointInsight, isSpanInsight } from "./typeGuards";
 import {
   EndpointInsight,
   GenericCodeObjectInsight,
   InsightGroup,
   InsightsData,
   InsightsProps,
+  InsightsStatus,
+  Method,
   MethodSpan,
   SpanInsight,
-  Trace
+  ViewMode
 } from "./types";
 
 const REFRESH_INTERVAL = isNumber(window.insightsRefreshInterval)
@@ -69,17 +42,20 @@ const REFRESH_INTERVAL = isNumber(window.insightsRefreshInterval)
 
 const ACTION_PREFIX = "INSIGHTS";
 
-const actions = addPrefix(ACTION_PREFIX, {
+export const actions = addPrefix(ACTION_PREFIX, {
   GET_DATA: "GET_DATA",
   SET_DATA: "SET_DATA",
   GO_TO_ERRORS: "GO_TO_ERRORS",
   GO_TO_ERROR: "GO_TO_ERROR",
+  GO_TO_METHOD: "GO_TO_METHOD",
   GO_TO_TRACE: "GO_TO_TRACE",
   GO_TO_TRACE_COMPARISON: "GO_TO_TRACE_COMPARISON",
   GO_TO_ASSET: "GO_TO_ASSET",
   OPEN_HISTOGRAM: "OPEN_HISTOGRAM",
   OPEN_LIVE_VIEW: "OPEN_LIVE_VIEW",
-  RECALCULATE: "RECALCULATE"
+  RECALCULATE: "RECALCULATE",
+  AUTOFIX_MISSING_DEPENDENCY: "AUTOFIX_MISSING_DEPENDENCY",
+  ADD_ANNOTATION: "ADD_ANNOTATION"
 });
 
 export const getInsightTypeOrderPriority = (type: string): number => {
@@ -109,283 +85,6 @@ export const getInsightTypeOrderPriority = (type: string): number => {
   };
 
   return insightOrderPriorityMap[type] || Infinity;
-};
-
-const renderInsightCard = (
-  insight: GenericCodeObjectInsight,
-  handleRefresh: () => void
-): JSX.Element | undefined => {
-  const handleErrorSelect = (errorId: string) => {
-    window.sendMessageToDigma({
-      action: actions.GO_TO_ERROR,
-      payload: {
-        errorId
-      }
-    });
-  };
-
-  const handleErrorsExpandButtonClick = () => {
-    window.sendMessageToDigma({
-      action: actions.GO_TO_ERRORS
-    });
-  };
-
-  const handleHistogramButtonClick = (
-    instrumentationLibrary: string,
-    name: string,
-    insightType: string
-  ) => {
-    window.sendMessageToDigma({
-      action: actions.OPEN_HISTOGRAM,
-      payload: {
-        instrumentationLibrary,
-        name,
-        insightType
-      }
-    });
-  };
-
-  const handleLiveButtonClick = (prefixedCodeObjectId: string) => {
-    window.sendMessageToDigma({
-      action: actions.OPEN_LIVE_VIEW,
-      payload: {
-        prefixedCodeObjectId
-      }
-    });
-  };
-
-  const handleTraceButtonClick = (trace: Trace) => {
-    window.sendMessageToDigma({
-      action: actions.GO_TO_TRACE,
-      payload: {
-        trace
-      }
-    });
-  };
-
-  const handleCompareButtonClick = (traces: [Trace, Trace]) => {
-    window.sendMessageToDigma({
-      action: actions.GO_TO_TRACE_COMPARISON,
-      payload: {
-        traces
-      }
-    });
-  };
-
-  const handleAssetLinkClick = (spanCodeObjectId: string) => {
-    window.sendMessageToDigma({
-      action: actions.GO_TO_ASSET,
-      payload: {
-        spanCodeObjectId
-      }
-    });
-  };
-
-  const handleRecalculate = (
-    prefixedCodeObjectId: string,
-    insightType: InsightType
-  ) => {
-    window.sendMessageToDigma({
-      action: actions.RECALCULATE,
-      payload: {
-        prefixedCodeObjectId,
-        insightType
-      }
-    });
-  };
-
-  if (isSpanDurationsInsight(insight)) {
-    return (
-      <DurationInsight
-        key={insight.type}
-        insight={insight}
-        onHistogramButtonClick={handleHistogramButtonClick}
-        onLiveButtonClick={handleLiveButtonClick}
-        onCompareButtonClick={handleCompareButtonClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-      />
-    );
-  }
-  if (isSpanDurationBreakdownInsight(insight)) {
-    return (
-      <DurationBreakdownInsight
-        key={insight.type}
-        insight={insight}
-        onAssetLinkClick={handleAssetLinkClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-      />
-    );
-  }
-  if (isSpanUsagesInsight(insight)) {
-    return (
-      <TopUsageInsight
-        key={insight.type}
-        insight={insight}
-        onAssetLinkClick={handleAssetLinkClick}
-        onTraceButtonClick={handleTraceButtonClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-      />
-    );
-  }
-  if (isSpanEndpointBottleneckInsight(insight)) {
-    return (
-      <BottleneckInsight
-        key={insight.type}
-        insight={insight}
-        onAssetLinkClick={handleAssetLinkClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-      />
-    );
-  }
-  if (isEndpointSlowestSpansInsight(insight)) {
-    return (
-      <SpanBottleneckInsight
-        key={insight.type}
-        insight={insight}
-        onAssetLinkClick={handleAssetLinkClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-      />
-    );
-  }
-  if (isSlowEndpointInsight(insight)) {
-    return (
-      <SlowEndpointInsight
-        key={insight.type}
-        insight={insight}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-      />
-    );
-  }
-  if (
-    isEndpointLowUsageInsight(insight) ||
-    isEndpointNormalUsageInsight(insight) ||
-    isEndpointHighUsageInsight(insight)
-  ) {
-    return (
-      <TrafficInsight
-        key={insight.type}
-        insight={insight}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-      />
-    );
-  }
-  if (isCodeObjectErrorsInsight(insight)) {
-    return (
-      <ErrorsInsight
-        key={insight.type}
-        insight={insight}
-        onErrorSelect={handleErrorSelect}
-        onExpandButtonClick={handleErrorsExpandButtonClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-      />
-    );
-  }
-  if (isEndpointSuspectedNPlusOneInsight(insight)) {
-    return (
-      <EndpointNPlusOneInsight
-        key={insight.type}
-        insight={insight}
-        onAssetLinkClick={handleAssetLinkClick}
-        onTraceButtonClick={handleTraceButtonClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-      />
-    );
-  }
-  if (isSpanNPlusOneInsight(insight)) {
-    return (
-      <NPlusOneInsight
-        key={insight.type}
-        insight={insight}
-        onAssetLinkClick={handleAssetLinkClick}
-        onTraceButtonClick={handleTraceButtonClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-      />
-    );
-  }
-  if (isSpanScalingBadlyInsight(insight)) {
-    return (
-      <ScalingIssueInsight
-        key={insight.type}
-        insight={insight}
-        onAssetLinkClick={handleAssetLinkClick}
-        onTraceButtonClick={handleTraceButtonClick}
-        onHistogramButtonClick={handleHistogramButtonClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-      />
-    );
-  }
-  if (isCodeObjectHotSpotInsight(insight)) {
-    return (
-      <InsightCard
-        key={insight.type}
-        data={insight}
-        content={
-          <s.Description>
-            Major errors occur or propagate through this function
-          </s.Description>
-        }
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-      />
-    );
-  }
-  if (isEndpointDurationSlowdownInsight(insight)) {
-    return (
-      <DurationSlowdownSourceInsight
-        key={insight.type}
-        insight={insight}
-        onAssetLinkClick={handleAssetLinkClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-      />
-    );
-  }
-
-  if (isEndpointBreakdownInsight(insight)) {
-    return (
-      <RequestBreakdownInsight
-        key={insight.type}
-        insight={insight}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-      />
-    );
-  }
-
-  if (isSpanScalingWellInsight(insight)) {
-    return (
-      <NoScalingIssueInsight
-        key={insight.type}
-        insight={insight}
-        onHistogramButtonClick={handleHistogramButtonClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-      />
-    );
-  }
-
-  if (isSpanScalingInsufficientDataInsight(insight)) {
-    return (
-      <PerformanceAtScaleInsight
-        key={insight.type}
-        insight={insight}
-        onHistogramButtonClick={handleHistogramButtonClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-      />
-    );
-  }
 };
 
 const groupInsights = (
@@ -489,16 +188,6 @@ const groupInsights = (
   ];
 };
 
-const getInsightGroupIconColor = (theme: DefaultTheme) => {
-  switch (theme.mode) {
-    case "light":
-      return "#7891d0";
-    case "dark":
-    case "dark-jetbrains":
-      return "#7c7c94";
-  }
-};
-
 const getCircleLoaderColors = (
   theme: DefaultTheme
 ): CircleLoaderProps["colors"] => {
@@ -519,42 +208,23 @@ const getCircleLoaderColors = (
   }
 };
 
-const getEmptyStateIconColor = (theme: DefaultTheme) => {
-  switch (theme.mode) {
-    case "light":
-      return "#fbfdff";
-    case "dark":
-    case "dark-jetbrains":
-      return "#83858e";
-  }
-};
-
 export const Insights = (props: InsightsProps) => {
-  const [data, setData] = useState<InsightGroup[]>();
-  const previousData = usePrevious(data);
+  const [data, setData] = useState<InsightsData>();
+  // const previousData = usePrevious(data);
+  const [insightGroups, setInsightGroups] = useState<InsightGroup[]>();
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
-  const [isLoaderVisible, setIsLoaderVisible] = useState(false);
+  // const [isLoaderVisible, setIsLoaderVisible] = useState(false);
   const theme = useTheme();
-  const themeKind = getThemeKind(theme);
-  const insightGroupIconColor = getInsightGroupIconColor(theme);
   const circleLoaderColors = getCircleLoaderColors(theme);
-  const emptyStateIconColor = getEmptyStateIconColor(theme);
 
   useEffect(() => {
     window.sendMessageToDigma({
       action: actions.GET_DATA
     });
-    setIsLoaderVisible(true);
+    // setIsLoaderVisible(true);
 
     const handleInsightsData = (data: unknown, timeStamp: number) => {
-      setData(
-        data
-          ? groupInsights(
-              (data as InsightsData).insights,
-              (data as InsightsData).spans
-            )
-          : undefined
-      );
+      setData(data as InsightsData);
       setLastSetDataTimeStamp(timeStamp);
     };
 
@@ -582,86 +252,161 @@ export const Insights = (props: InsightsProps) => {
       return;
     }
 
-    setData(groupInsights(props.data.insights, props.data.spans));
+    setData(props.data);
   }, [props.data]);
 
   useEffect(() => {
-    if (!previousData && data) {
-      setIsLoaderVisible(false);
+    if (data) {
+      setInsightGroups(groupInsights(data.insights, data.spans));
     }
-  }, [previousData, data]);
+  }, [data]);
 
-  const handleRefresh = () => {
+  // useEffect(() => {
+  //   if (!previousData && data) {
+  //     setIsLoaderVisible(false);
+  //   }
+  // }, [previousData, data]);
+
+  const handleMethodSelect = (method: Method) => {
     window.sendMessageToDigma({
-      action: actions.GET_DATA
+      action: actions.GO_TO_METHOD,
+      payload: {
+        ...method
+      }
     });
   };
 
-  const renderContent = useMemo((): JSX.Element => {
-    if (!data) {
-      if (isLoaderVisible) {
-        return (
-          <s.EmptyStateContainer>
-            <CircleLoader colors={circleLoaderColors} size={32} />
-          </s.EmptyStateContainer>
-        );
+  const handleSlackLinkClick = () => {
+    window.sendMessageToDigma({
+      action: globalActions.OPEN_URL_IN_DEFAULT_BROWSER,
+      payload: {
+        url: SLACK_WORKSPACE_URL
       }
+    });
+  };
 
-      return <></>;
-    }
+  const handleAddAnnotationButtonClick = () => {
+    window.sendMessageToDigma({
+      action: actions.ADD_ANNOTATION,
+      payload: {
+        methodId: data?.assetId
+      }
+    });
+  };
 
-    if (data.length === 0) {
-      return (
-        <s.EmptyStateContainer>
-          <s.EmptyStateIconContainer>
-            <LightBulbCircleCrossedIcon
-              size={72}
-              color={emptyStateIconColor}
-              themeKind={themeKind}
-            />
-          </s.EmptyStateIconContainer>
-          No insights
-        </s.EmptyStateContainer>
-      );
-    }
+  const handleAutofixLinkClick = () => {
+    window.sendMessageToDigma({
+      action: actions.AUTOFIX_MISSING_DEPENDENCY,
+      payload: {
+        methodId: data?.assetId
+      }
+    });
+  };
 
-    return (
-      <s.InsightsContainer>
-        {data.map((x) => (
-          <s.InsightGroup key={x.name || "__ungrouped"}>
-            {x.name && (
-              <s.InsightGroupName>
-                {x.icon && <x.icon size={16} color={insightGroupIconColor} />}{" "}
-                {x.name}
-              </s.InsightGroupName>
-            )}
-            {x.insights.length > 0 ? (
-              x.insights.map((insight) =>
-                renderInsightCard(insight, handleRefresh)
-              )
-            ) : (
-              <Card
-                header={<>No data yet</>}
-                content={
+  const renderInsightsContent = (data: InsightsData): JSX.Element => {
+    switch (data.insightsStatus) {
+      case InsightsStatus.STARTUP:
+        return (
+          <EmptyState
+            title={"Nothing to show"}
+            icon={DocumentWithMagnifierIcon}
+            content={
+              <>
+                <s.StartupText>
                   <s.Description>
-                    No data received yet for this span, please trigger some
-                    actions using this code to see more insights.
+                    Navigate to any code file in your workspace,
                   </s.Description>
-                }
-              />
-            )}
-          </s.InsightGroup>
-        ))}
-      </s.InsightsContainer>
-    );
-  }, [
-    data,
-    insightGroupIconColor,
-    isLoaderVisible,
-    circleLoaderColors,
-    themeKind,
-    emptyStateIconColor
-  ]);
+                  <s.Description>or click a recent activity,</s.Description>
+                  <s.Description>
+                    to see runtime data and insights here.
+                  </s.Description>
+                </s.StartupText>
+                <s.SlackLink onClick={handleSlackLinkClick}>
+                  <SlackLogoIcon />
+                  Join Our Slack Channel for Support
+                </s.SlackLink>
+              </>
+            }
+          />
+        );
 
-  return <s.Container>{renderContent}</s.Container>;
+      case InsightsStatus.NO_INSIGHTS:
+        return (
+          <EmptyState icon={LightBulbSmallCrossedIcon} title={"No insights"} />
+        );
+      case InsightsStatus.INSIGHT_PENDING:
+        return (
+          <EmptyState
+            icon={LightBulbSmallIcon}
+            title={"Processing insights..."}
+          />
+        );
+      case InsightsStatus.NO_SPANS_DATA:
+        return (
+          <EmptyState
+            icon={CardsIcon}
+            title={"No data yet"}
+            content={
+              <s.Description>
+                Trigger actions that call this code object to learn more about
+                its runtime behavior
+              </s.Description>
+            }
+          />
+        );
+      case InsightsStatus.NO_OBSERVABILITY:
+        return (
+          <EmptyState
+            icon={OpenTelemetryLogoCrossedSmallIcon}
+            title={"No observability"}
+            content={
+              <>
+                <s.Description>
+                  Add an annotation to observe this method and collect data
+                  about its runtime behavior
+                </s.Description>
+                {data.hasMissingDependency && (
+                  <s.MissingDependencyContainer>
+                    <s.MissingDependencyText>
+                      missing dependency: opentelemetry.annotation
+                    </s.MissingDependencyText>
+                    <s.Link onClick={handleAutofixLinkClick}>Autofix</s.Link>
+                  </s.MissingDependencyContainer>
+                )}
+                <Button onClick={handleAddAnnotationButtonClick}>
+                  Add annotation
+                </Button>
+              </>
+            }
+          />
+        );
+      case InsightsStatus.LOADING:
+        return (
+          <EmptyState
+            content={<CircleLoader colors={circleLoaderColors} size={32} />}
+          />
+        );
+      case InsightsStatus.DEFAULT:
+      default:
+        return data.assetId && insightGroups ? (
+          <InsightList
+            insightGroups={insightGroups}
+            environment={data.environment}
+            assetId={data.assetId}
+            serviceName={data.serviceName}
+          />
+        ) : (
+          <></>
+        );
+    }
+  };
+
+  return (
+    <s.Container>
+      {data?.viewMode === ViewMode.PREVIEW && (
+        <Preview methods={data.methods} onMethodSelect={handleMethodSelect} />
+      )}
+      {data?.viewMode === ViewMode.INSIGHTS && renderInsightsContent(data)}
+    </s.Container>
+  );
 };

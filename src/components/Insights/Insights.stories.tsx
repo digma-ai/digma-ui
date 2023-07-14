@@ -1,7 +1,13 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { Insights } from ".";
 import { InsightType } from "../../types";
-import { ComponentType, InsightCategory, InsightScope } from "./types";
+import {
+  ComponentType,
+  InsightCategory,
+  InsightScope,
+  InsightsStatus,
+  ViewMode
+} from "./types";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof Insights> = {
@@ -17,11 +23,26 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const NoData: Story = {};
-
-export const WithData: Story = {
+export const Default: Story = {
   args: {
     data: {
+      spans: [
+        {
+          spanCodeObjectId: "empty_span1_id",
+          spanDisplayName: "empty_span1"
+        },
+        {
+          spanCodeObjectId: "empty_span2_id",
+          spanDisplayName: "empty_span2"
+        }
+      ],
+      assetId: "string",
+      serviceName: "string",
+      environment: "string",
+      viewMode: ViewMode.INSIGHTS,
+      hasMissingDependency: false,
+      insightsStatus: InsightsStatus.DEFAULT,
+      methods: [],
       insights: [
         {
           name: "Request Breakdown",
@@ -484,20 +505,146 @@ export const WithData: Story = {
           customStartTime: null,
           actualStartTime: "2023-06-20T00:00:00.000Z"
         }
-      ],
-      spans: [
-        {
-          spanCodeObjectId: "empty_span1_id",
-          spanDisplayName: "empty_span1"
-        },
-        {
-          spanCodeObjectId: "empty_span2_id",
-          spanDisplayName: "empty_span2"
-        }
-      ],
+      ]
+    }
+  }
+};
+
+export const NoInsights: Story = {
+  args: {
+    data: {
+      spans: [],
       assetId: "string",
       serviceName: "string",
-      environment: "string"
+      environment: "string",
+      viewMode: ViewMode.INSIGHTS,
+      hasMissingDependency: false,
+      insightsStatus: InsightsStatus.NO_INSIGHTS,
+      methods: [],
+      insights: []
+    }
+  }
+};
+
+export const NoDataYet: Story = {
+  args: {
+    data: {
+      spans: [],
+      assetId: "string",
+      serviceName: "string",
+      environment: "string",
+      viewMode: ViewMode.INSIGHTS,
+      hasMissingDependency: false,
+      insightsStatus: InsightsStatus.NO_SPANS_DATA,
+      methods: [],
+      insights: []
+    }
+  }
+};
+
+export const ProcessingInsights: Story = {
+  args: {
+    data: {
+      spans: [],
+      assetId: "string",
+      serviceName: "string",
+      environment: "string",
+      viewMode: ViewMode.INSIGHTS,
+      hasMissingDependency: false,
+      insightsStatus: InsightsStatus.INSIGHT_PENDING,
+      methods: [],
+      insights: []
+    }
+  }
+};
+
+export const NoObservability: Story = {
+  args: {
+    data: {
+      spans: [],
+      assetId: "string",
+      serviceName: "string",
+      environment: "string",
+      viewMode: ViewMode.INSIGHTS,
+      hasMissingDependency: false,
+      insightsStatus: InsightsStatus.NO_OBSERVABILITY,
+      methods: [],
+      insights: []
+    }
+  }
+};
+
+export const HasMissingDependency: Story = {
+  args: {
+    data: {
+      spans: [],
+      assetId: "string",
+      serviceName: "string",
+      environment: "string",
+      viewMode: ViewMode.INSIGHTS,
+      hasMissingDependency: true,
+      insightsStatus: InsightsStatus.NO_OBSERVABILITY,
+      methods: [],
+      insights: []
+    }
+  }
+};
+
+export const Startup: Story = {
+  args: {
+    data: {
+      spans: [],
+      serviceName: "string",
+      environment: "string",
+      viewMode: ViewMode.INSIGHTS,
+      hasMissingDependency: false,
+      insightsStatus: InsightsStatus.STARTUP,
+      methods: [],
+      insights: []
+    }
+  }
+};
+
+export const Loading: Story = {
+  args: {
+    data: {
+      spans: [],
+      assetId: "string",
+      serviceName: "string",
+      environment: "string",
+      viewMode: ViewMode.INSIGHTS,
+      hasMissingDependency: false,
+      insightsStatus: InsightsStatus.LOADING,
+      methods: [],
+      insights: []
+    }
+  }
+};
+
+export const Preview: Story = {
+  args: {
+    data: {
+      spans: [],
+      serviceName: "string",
+      environment: "string",
+      viewMode: ViewMode.PREVIEW,
+      hasMissingDependency: false,
+      insightsStatus: InsightsStatus.DEFAULT,
+      methods: [
+        {
+          id: "method1",
+          name: "method1"
+        },
+        {
+          id: "method2",
+          name: "method2"
+        },
+        {
+          id: "method3",
+          name: "method3"
+        }
+      ],
+      insights: []
     }
   }
 };

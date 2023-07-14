@@ -9,7 +9,7 @@ import { Trace } from "../types";
 import * as s from "./styles";
 import { DurationInsightProps } from "./types";
 
-const LAST_CALL_TIME_DISTANCE_LIMIT = 10 * 1000; // in milliseconds
+const LAST_CALL_TIME_DISTANCE_LIMIT = 60 * 1000; // in milliseconds
 
 export const DurationInsight = (props: DurationInsightProps) => {
   const sortedPercentiles = [...props.insight.percentiles].sort(
@@ -36,10 +36,10 @@ export const DurationInsight = (props: DurationInsightProps) => {
     props.onCompareButtonClick(traces);
   };
 
-  const traceIds: string[] = [];
+  const traces: Trace[] = [];
 
   const isLastCallRecent =
-    Date.now() - new Date(spanLastCall.startTime).valueOf() <=
+    Date.now() - new Date(spanLastCall.startTime).valueOf() <
     LAST_CALL_TIME_DISTANCE_LIMIT;
 
   return (
@@ -64,8 +64,11 @@ export const DurationInsight = (props: DurationInsightProps) => {
           {sortedPercentiles.length > 0 ? (
             <>
               {sortedPercentiles.map((percentile) => {
-                if (traceIds.length > 0) {
-                  traceIds.push(percentile.traceIds[0]);
+                if (percentile.traceIds.length > 0) {
+                  traces.push({
+                    id: percentile.traceIds[0],
+                    name: `P${percentile.percentile * 100}`
+                  });
                 }
 
                 return (
@@ -85,13 +88,10 @@ export const DurationInsight = (props: DurationInsightProps) => {
                   </s.Stats>
                 );
               })}
-              {traceIds.length > 1 && (
+              {traces.length > 1 && (
                 <s.Button
                   onClick={() =>
-                    handleCompareButtonClick([
-                      { id: traceIds[0] },
-                      { id: traceIds[1] }
-                    ])
+                    handleCompareButtonClick([traces[0], traces[1]])
                   }
                 >
                   Compare
