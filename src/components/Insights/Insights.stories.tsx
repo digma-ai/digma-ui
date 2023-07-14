@@ -574,6 +574,68 @@ export const NoObservability: Story = {
   }
 };
 
+export const NoObservabilityWithInsights: Story = {
+  args: {
+    data: {
+      spans: [],
+      assetId: "string",
+      serviceName: "string",
+      environment: "string",
+      viewMode: ViewMode.INSIGHTS,
+      hasMissingDependency: false,
+      insightsStatus: InsightsStatus.NO_OBSERVABILITY,
+      methods: [],
+      insights: [
+        {
+          name: "Errors",
+          type: InsightType.Errors,
+          scope: InsightScope.Function,
+          category: InsightCategory.Errors,
+          specifity: 4,
+          importance: 5,
+          errorCount: 2,
+          unhandledCount: 0,
+          unexpectedCount: 0,
+          topErrors: [
+            {
+              uid: "305f52ec-1428-11ee-a28c-0242ac170004",
+              codeObjectId:
+                "method:Sample.MoneyTransfer.API.Controllers.TransferController$_$TransferFunds(TransferRequest)",
+              errorType: "System.NullReferenceException",
+              sourceCodeObjectId:
+                "method:Sample.MoneyTransfer.API.Domain.Services.MoneyTransferDomainService$_$ValidateAccountFunds(Account,Int32)"
+            },
+            {
+              uid: "29dbdf80-1428-11ee-b389-0242ac170004",
+              codeObjectId:
+                "method:Sample.MoneyTransfer.API.Controllers.TransferController$_$TransferFunds(TransferRequest)",
+              errorType: "System.Exception",
+              sourceCodeObjectId:
+                "method:Sample.MoneyTransfer.API.Domain.Services.MoneyTransferDomainService$_$TransferFunds(Int64,Int64,Int32)"
+            }
+          ],
+          shortDisplayInfo: {
+            title: "",
+            targetDisplayName: "",
+            subtitle: "",
+            description: ""
+          },
+          codeObjectId:
+            "Sample.MoneyTransfer.API.Controllers.TransferController$_$TransferFunds(TransferRequest)",
+          decorators: null,
+          environment: "BOB-LAPTOP[LOCAL]",
+          severity: 0,
+          isRecalculateEnabled: false,
+          prefixedCodeObjectId:
+            "method:Sample.MoneyTransfer.API.Controllers.TransferController$_$TransferFunds(TransferRequest)",
+          customStartTime: null,
+          actualStartTime: "2023-06-26T13:53:53.645Z"
+        }
+      ]
+    }
+  }
+};
+
 export const HasMissingDependency: Story = {
   args: {
     data: {

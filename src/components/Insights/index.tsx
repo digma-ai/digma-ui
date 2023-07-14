@@ -3,36 +3,26 @@ import { DefaultTheme, useTheme } from "styled-components";
 import { SLACK_WORKSPACE_URL } from "../../constants";
 import { dispatcher } from "../../dispatcher";
 import { isNumber } from "../../typeGuards/isNumber";
-import { InsightType } from "../../types";
 import { addPrefix } from "../../utils/addPrefix";
-import { getInsightTypeInfo } from "../../utils/getInsightTypeInfo";
 import { actions as globalActions } from "../common/App";
 import { Button } from "../common/Button";
 import { CircleLoader } from "../common/CircleLoader";
 import { CircleLoaderProps } from "../common/CircleLoader/types";
 import { CardsIcon } from "../common/icons/CardsIcon";
 import { DocumentWithMagnifierIcon } from "../common/icons/DocumentWithMagnifierIcon";
-import { EndpointIcon } from "../common/icons/EndpointIcon";
 import { LightBulbSmallCrossedIcon } from "../common/icons/LightBulbSmallCrossedIcon";
 import { LightBulbSmallIcon } from "../common/icons/LightBulbSmallIcon";
 import { OpenTelemetryLogoCrossedSmallIcon } from "../common/icons/OpenTelemetryLogoCrossedSmallIcon";
-import { OpenTelemetryLogoIcon } from "../common/icons/OpenTelemetryLogoIcon";
 import { SlackLogoIcon } from "../common/icons/SlackLogoIcon";
 import { EmptyState } from "./EmptyState";
 import { InsightList } from "./InsightList";
 import { Preview } from "./Preview";
 import * as s from "./styles";
-import { isEndpointInsight, isSpanInsight } from "./typeGuards";
 import {
-  EndpointInsight,
-  GenericCodeObjectInsight,
-  InsightGroup,
   InsightsData,
   InsightsProps,
   InsightsStatus,
   Method,
-  MethodSpan,
-  SpanInsight,
   ViewMode
 } from "./types";
 
@@ -58,136 +48,6 @@ export const actions = addPrefix(ACTION_PREFIX, {
   ADD_ANNOTATION: "ADD_ANNOTATION"
 });
 
-export const getInsightTypeOrderPriority = (type: string): number => {
-  const insightOrderPriorityMap: Record<string, number> = {
-    [InsightType.HotSpot]: 1,
-    [InsightType.Errors]: 2,
-    [InsightType.TopErrorFlows]: 3,
-
-    // Endpoint insights
-    [InsightType.EndpointBreakdown]: 5,
-    [InsightType.HighUsage]: 10,
-    [InsightType.SlowEndpoint]: 20,
-    [InsightType.EndpointDurationSlowdown]: 25,
-    [InsightType.LowUsage]: 30,
-    [InsightType.SlowestSpans]: 40,
-    [InsightType.NormalUsage]: 50,
-    [InsightType.EndpointSpanNPlusOne]: 55,
-
-    // Span insights
-    [InsightType.SpanDurations]: 60,
-    [InsightType.SpanUsages]: 61,
-    [InsightType.SpanScalingBadly]: 63,
-    [InsightType.SpanNPlusOne]: 65,
-    [InsightType.SpanDurationChange]: 66,
-    [InsightType.SpanEndpointBottleneck]: 67,
-    [InsightType.SpanDurationBreakdown]: 68
-  };
-
-  return insightOrderPriorityMap[type] || Infinity;
-};
-
-const groupInsights = (
-  insights: GenericCodeObjectInsight[],
-  spans: MethodSpan[]
-): InsightGroup[] => {
-  const sortedInsights = [...insights].sort(
-    (a, b) =>
-      getInsightTypeOrderPriority(a.type) - getInsightTypeOrderPriority(b.type)
-  );
-
-  const sortByName = (a: InsightGroup, b: InsightGroup) => {
-    const aName = a.name || "";
-    const bName = b.name || "";
-    return aName.localeCompare(bName);
-  };
-
-  const ungroupedInsights: GenericCodeObjectInsight[] = [];
-  const spanInsightGroups: { [key: string]: SpanInsight[] } = {};
-  const endpointInsightGroups: {
-    [key: string]: (EndpointInsight | SpanInsight)[];
-  } = {};
-
-  for (const insight of sortedInsights) {
-    // Do not show unknown insights
-    const insightTypeInfo = getInsightTypeInfo(insight.type);
-    if (!insightTypeInfo) {
-      continue;
-    }
-
-    // Do not show Span Usage insight
-    if (insight.type === InsightType.SpanUsageStatus) {
-      continue;
-    }
-
-    if (!isSpanInsight(insight) && !isEndpointInsight(insight)) {
-      ungroupedInsights.push(insight);
-      continue;
-    }
-
-    const displayName = insight.spanInfo?.displayName;
-
-    if (!displayName) {
-      ungroupedInsights.push(insight);
-      continue;
-    }
-
-    if (isEndpointInsight(insight)) {
-      if (!endpointInsightGroups[displayName]) {
-        endpointInsightGroups[displayName] = [];
-      }
-
-      endpointInsightGroups[displayName].push(insight);
-      continue;
-    }
-
-    if (isSpanInsight(insight)) {
-      if (endpointInsightGroups[displayName]) {
-        endpointInsightGroups[displayName].push(insight);
-        continue;
-      }
-
-      if (!spanInsightGroups[displayName]) {
-        spanInsightGroups[displayName] = [];
-      }
-
-      spanInsightGroups[displayName].push(insight);
-    }
-  }
-
-  // Add empty span groups
-  spans.forEach((x) => {
-    if (!spanInsightGroups[x.spanDisplayName]) {
-      spanInsightGroups[x.spanDisplayName] = [];
-    }
-  });
-
-  return [
-    ...(ungroupedInsights.length > 0 ? [{ insights: ungroupedInsights }] : []),
-    // Endpoint insight groups
-    ...Object.values(endpointInsightGroups)
-      .map((x) => ({
-        icon: EndpointIcon,
-        name: x[0].spanInfo?.displayName,
-        insights: x
-      }))
-      .sort(sortByName),
-    // Span insight groups
-    ...Object.entries(spanInsightGroups)
-      .map(([spanDisplayName, insights]) => ({
-        icon: OpenTelemetryLogoIcon,
-        // TODO: get span name only from methodInfo spans
-        name: insights[0]
-          ? insights[0].spanInfo?.displayName
-          : spans.find(
-              (methodSpan) => spanDisplayName === methodSpan.spanDisplayName
-            )?.spanDisplayName || "",
-        insights
-      }))
-      .sort(sortByName)
-  ];
-};
-
 const getCircleLoaderColors = (
   theme: DefaultTheme
 ): CircleLoaderProps["colors"] => {
@@ -211,7 +71,6 @@ const getCircleLoaderColors = (
 export const Insights = (props: InsightsProps) => {
   const [data, setData] = useState<InsightsData>();
   // const previousData = usePrevious(data);
-  const [insightGroups, setInsightGroups] = useState<InsightGroup[]>();
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
   // const [isLoaderVisible, setIsLoaderVisible] = useState(false);
   const theme = useTheme();
@@ -254,12 +113,6 @@ export const Insights = (props: InsightsProps) => {
 
     setData(props.data);
   }, [props.data]);
-
-  useEffect(() => {
-    if (data) {
-      setInsightGroups(groupInsights(data.insights, data.spans));
-    }
-  }, [data]);
 
   // useEffect(() => {
   //   if (!previousData && data) {
@@ -355,7 +208,17 @@ export const Insights = (props: InsightsProps) => {
           />
         );
       case InsightsStatus.NO_OBSERVABILITY:
-        return (
+        return data.assetId && data.insights.length > 0 ? (
+          <InsightList
+            insights={data.insights}
+            spans={data.spans}
+            environment={data.environment}
+            assetId={data.assetId}
+            serviceName={data.serviceName}
+            hasMissingDependency={data.hasMissingDependency}
+            hasObservability={false}
+          />
+        ) : (
           <EmptyState
             icon={OpenTelemetryLogoCrossedSmallIcon}
             title={"No observability"}
@@ -373,7 +236,10 @@ export const Insights = (props: InsightsProps) => {
                     <s.Link onClick={handleAutofixLinkClick}>Autofix</s.Link>
                   </s.MissingDependencyContainer>
                 )}
-                <Button onClick={handleAddAnnotationButtonClick}>
+                <Button
+                  onClick={handleAddAnnotationButtonClick}
+                  disabled={data.hasMissingDependency}
+                >
                   Add annotation
                 </Button>
               </>
@@ -388,12 +254,15 @@ export const Insights = (props: InsightsProps) => {
         );
       case InsightsStatus.DEFAULT:
       default:
-        return data.assetId && insightGroups ? (
+        return data.assetId ? (
           <InsightList
-            insightGroups={insightGroups}
+            insights={data.insights}
+            spans={data.spans}
             environment={data.environment}
             assetId={data.assetId}
             serviceName={data.serviceName}
+            hasMissingDependency={data.hasMissingDependency}
+            hasObservability={true}
           />
         ) : (
           <></>

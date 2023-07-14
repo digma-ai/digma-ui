@@ -1,7 +1,11 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
 import { actions } from "..";
 import { InsightType } from "../../../types";
+import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
+import { Button } from "../../common/Button";
+import { EndpointIcon } from "../../common/icons/EndpointIcon";
+import { OpenTelemetryLogoIcon } from "../../common/icons/OpenTelemetryLogoIcon";
 import { BottleneckInsight } from "../BottleneckInsight";
 import { Card } from "../Card";
 import { DurationBreakdownInsight } from "../DurationBreakdownInsight";
@@ -19,13 +23,14 @@ import { SlowEndpointInsight } from "../SlowEndpointInsight";
 import { SpanBottleneckInsight } from "../SpanBottleneckInsight";
 import { TopUsageInsight } from "../TopUsageInsight";
 import { TrafficInsight } from "../TrafficInsight";
-import { Description } from "../styles";
+import { Description, Link } from "../styles";
 import {
   isCodeObjectErrorsInsight,
   isCodeObjectHotSpotInsight,
   isEndpointBreakdownInsight,
   isEndpointDurationSlowdownInsight,
   isEndpointHighUsageInsight,
+  isEndpointInsight,
   isEndpointLowUsageInsight,
   isEndpointNormalUsageInsight,
   isEndpointSlowestSpansInsight,
@@ -34,15 +39,153 @@ import {
   isSpanDurationBreakdownInsight,
   isSpanDurationsInsight,
   isSpanEndpointBottleneckInsight,
+  isSpanInsight,
   isSpanNPlusOneInsight,
   isSpanScalingBadlyInsight,
   isSpanScalingInsufficientDataInsight,
   isSpanScalingWellInsight,
   isSpanUsagesInsight
 } from "../typeGuards";
-import { GenericCodeObjectInsight, Trace } from "../types";
+import {
+  EndpointInsight,
+  GenericCodeObjectInsight,
+  InsightGroup,
+  MethodSpan,
+  SpanInsight,
+  Trace
+} from "../types";
 import * as s from "./styles";
 import { InsightListProps } from "./types";
+
+export const getInsightTypeOrderPriority = (type: string): number => {
+  const insightOrderPriorityMap: Record<string, number> = {
+    [InsightType.HotSpot]: 1,
+    [InsightType.Errors]: 2,
+    [InsightType.TopErrorFlows]: 3,
+
+    // Endpoint insights
+    [InsightType.EndpointBreakdown]: 5,
+    [InsightType.HighUsage]: 10,
+    [InsightType.SlowEndpoint]: 20,
+    [InsightType.EndpointDurationSlowdown]: 25,
+    [InsightType.LowUsage]: 30,
+    [InsightType.SlowestSpans]: 40,
+    [InsightType.NormalUsage]: 50,
+    [InsightType.EndpointSpanNPlusOne]: 55,
+
+    // Span insights
+    [InsightType.SpanDurations]: 60,
+    [InsightType.SpanUsages]: 61,
+    [InsightType.SpanScalingBadly]: 63,
+    [InsightType.SpanNPlusOne]: 65,
+    [InsightType.SpanDurationChange]: 66,
+    [InsightType.SpanEndpointBottleneck]: 67,
+    [InsightType.SpanDurationBreakdown]: 68
+  };
+
+  return insightOrderPriorityMap[type] || Infinity;
+};
+
+const groupInsights = (
+  insights: GenericCodeObjectInsight[],
+  spans: MethodSpan[]
+): InsightGroup[] => {
+  const sortedInsights = [...insights].sort(
+    (a, b) =>
+      getInsightTypeOrderPriority(a.type) - getInsightTypeOrderPriority(b.type)
+  );
+
+  const sortByName = (a: InsightGroup, b: InsightGroup) => {
+    const aName = a.name || "";
+    const bName = b.name || "";
+    return aName.localeCompare(bName);
+  };
+
+  const ungroupedInsights: GenericCodeObjectInsight[] = [];
+  const spanInsightGroups: { [key: string]: SpanInsight[] } = {};
+  const endpointInsightGroups: {
+    [key: string]: (EndpointInsight | SpanInsight)[];
+  } = {};
+
+  for (const insight of sortedInsights) {
+    // Do not show unknown insights
+    const insightTypeInfo = getInsightTypeInfo(insight.type);
+    if (!insightTypeInfo) {
+      continue;
+    }
+
+    // Do not show Span Usage insight
+    if (insight.type === InsightType.SpanUsageStatus) {
+      continue;
+    }
+
+    if (!isSpanInsight(insight) && !isEndpointInsight(insight)) {
+      ungroupedInsights.push(insight);
+      continue;
+    }
+
+    const displayName = insight.spanInfo?.displayName;
+
+    if (!displayName) {
+      ungroupedInsights.push(insight);
+      continue;
+    }
+
+    if (isEndpointInsight(insight)) {
+      if (!endpointInsightGroups[displayName]) {
+        endpointInsightGroups[displayName] = [];
+      }
+
+      endpointInsightGroups[displayName].push(insight);
+      continue;
+    }
+
+    if (isSpanInsight(insight)) {
+      if (endpointInsightGroups[displayName]) {
+        endpointInsightGroups[displayName].push(insight);
+        continue;
+      }
+
+      if (!spanInsightGroups[displayName]) {
+        spanInsightGroups[displayName] = [];
+      }
+
+      spanInsightGroups[displayName].push(insight);
+    }
+  }
+
+  // Add empty span groups
+  spans.forEach((x) => {
+    if (!spanInsightGroups[x.spanDisplayName]) {
+      spanInsightGroups[x.spanDisplayName] = [];
+    }
+  });
+
+  return [
+    ...(ungroupedInsights.length > 0 ? [{ insights: ungroupedInsights }] : []),
+    // Endpoint insight groups
+    ...Object.values(endpointInsightGroups)
+      .map((x) => ({
+        icon: EndpointIcon,
+        name: x[0].spanInfo?.displayName,
+        insights: x
+      }))
+      .sort(sortByName),
+    // Span insight groups
+    ...Object.entries(spanInsightGroups)
+      .map(([spanDisplayName, insights]) => ({
+        icon: OpenTelemetryLogoIcon,
+        // TODO: get span name only from methodInfo spans
+        name: insights[0]
+          ? insights[0].spanInfo?.displayName
+          : spans.find(
+              (methodSpan) => spanDisplayName === methodSpan.spanDisplayName
+            )?.spanDisplayName || "",
+        insights
+      }))
+      .sort(sortByName)
+  ];
+};
 
 const getInsightGroupIconColor = (theme: DefaultTheme) => {
   switch (theme.mode) {
@@ -332,6 +475,7 @@ const renderInsightCard = (
 };
 
 export const InsightList = (props: InsightListProps) => {
+  const [insightGroups, setInsightGroups] = useState<InsightGroup[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
   const theme = useTheme();
   const insightGroupIconColor = getInsightGroupIconColor(theme);
@@ -342,15 +486,37 @@ export const InsightList = (props: InsightListProps) => {
     }
   }, [props.assetId, props.environment, props.serviceName]);
 
+  useEffect(() => {
+    setInsightGroups(groupInsights(props.insights, props.spans));
+  }, [props.insights, props.spans]);
+
   const handleRefresh = () => {
     window.sendMessageToDigma({
       action: actions.GET_DATA
     });
   };
 
+  const handleAddAnnotationButtonClick = () => {
+    window.sendMessageToDigma({
+      action: actions.ADD_ANNOTATION,
+      payload: {
+        methodId: props.assetId
+      }
+    });
+  };
+
+  const handleAutofixLinkClick = () => {
+    window.sendMessageToDigma({
+      action: actions.AUTOFIX_MISSING_DEPENDENCY,
+      payload: {
+        methodId: props.assetId
+      }
+    });
+  };
+
   return (
     <s.Container ref={containerRef}>
-      {props.insightGroups.map((x) => (
+      {insightGroups.map((x) => (
         <s.InsightGroup key={x.name || "__ungrouped"}>
           {x.name && (
             <s.InsightGroupName>
@@ -371,6 +537,36 @@ export const InsightList = (props: InsightListProps) => {
                   actions using this code to see more insights.
                 </Description>
               }
+            />
+          )}
+          {!props.hasObservability && (
+            <Card
+              header={<>No observability</>}
+              content={
+                <>
+                  <Description>
+                    Add an annotation to observe this method and collect data
+                    about its runtime behavior
+                  </Description>
+                  {props.hasMissingDependency && (
+                    <s.MissingDependencyContainer>
+                      <s.MissingDependencyText>
+                        missing dependency: opentelemetry.annotation
+                      </s.MissingDependencyText>
+                      <Link onClick={handleAutofixLinkClick}>Autofix</Link>
+                    </s.MissingDependencyContainer>
+                  )}
+                </>
+              }
+              buttons={[
+                <Button
+                  key={"addAnnotation"}
+                  onClick={handleAddAnnotationButtonClick}
+                  disabled={props.hasMissingDependency}
+                >
+                  Add annotation
+                </Button>
+              ]}
             />
           )}
         </s.InsightGroup>

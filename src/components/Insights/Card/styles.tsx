@@ -35,3 +35,11 @@ export const Header = styled.div`
   font-size: 12px;
   line-height: normal;
 `;
+
+export const ButtonsContainer = styled.div`
+  margin-top: auto;
+  padding-top: 4px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+`;

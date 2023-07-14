@@ -32,3 +32,22 @@ export const InsightGroupName = styled.div`
     }
   }};
 `;
+
+export const MissingDependencyContainer = styled.div`
+  display: flex;
+  gap: 6px;
+`;
+
+export const MissingDependencyText = styled.span`
+  font-size: 10px;
+  line-height: normal;
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#e00036";
+      case "dark":
+      case "dark-jetbrains":
+        return "#f93967";
+    }
+  }};
+`;

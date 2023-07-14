@@ -106,14 +106,6 @@ export const ContentContainer = styled.div`
   line-height: normal;
 `;
 
-export const ButtonsContainer = styled.div`
-  margin-top: auto;
-  padding-top: 4px;
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-`;
-
 export const PercentileViewModeToggle = styled.div`
   display: flex;
   border-radius: 4px;

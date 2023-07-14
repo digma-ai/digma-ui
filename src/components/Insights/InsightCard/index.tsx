@@ -166,11 +166,9 @@ export const InsightCard = (props: InsightCardProps) => {
           {isExpanded && props.expandableContent && (
             <s.ContentContainer>{props.expandableContent}</s.ContentContainer>
           )}
-          {props.buttons && (
-            <s.ButtonsContainer>{props.buttons}</s.ButtonsContainer>
-          )}
         </>
       }
+      buttons={props.buttons}
     />
   );
 };

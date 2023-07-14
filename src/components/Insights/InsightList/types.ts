@@ -1,8 +1,11 @@
-import { InsightGroup } from "../types";
+import { GenericCodeObjectInsight, MethodSpan } from "../types";
 
 export interface InsightListProps {
-  insightGroups: InsightGroup[];
+  insights: GenericCodeObjectInsight[];
+  spans: MethodSpan[];
   environment: string;
   serviceName?: string;
   assetId: string;
+  hasObservability: boolean;
+  hasMissingDependency: boolean;
 }
