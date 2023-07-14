@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useTheme } from "styled-components";
 import { actions } from "../..";
 import { dispatcher } from "../../../../dispatcher";
+import { ConfigContext } from "../../../common/App/ConfigContext";
 import { getThemeKind } from "../../../common/App/styles";
 import { Button } from "../../../common/Button";
 import { Loader } from "../../../common/Loader";
@@ -33,12 +34,11 @@ const getLoaderStatus = (
 };
 
 export const AutomaticInstaller = (props: AutomaticInstallerProps) => {
+  const config = useContext(ConfigContext);
   const [isDigmaInstalled, setIsDigmaInstalled] = useState(
-    window.isDigmaInstalled === true
+    config.isDigmaInstalled
   );
-  const [isDigmaRunning, setIsDigmaRunning] = useState(
-    window.isDigmaRunning === true
-  );
+  const [isDigmaRunning, setIsDigmaRunning] = useState(config.isDigmaRunning);
   const [currentOperation, setCurrentOperation] = useState<{
     operation: Operation;
     status: AsyncActionStatus;

@@ -1,11 +1,10 @@
 import { Allotment } from "allotment";
 import "allotment/dist/style.css";
-import { useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
 import { addPrefix } from "../../utils/addPrefix";
 import { groupBy } from "../../utils/groupBy";
-import { actions as globalActions } from "../common/App";
 import { CursorFollower } from "../common/CursorFollower";
 import { DigmaLogoFlatIcon } from "../common/icons/DigmaLogoFlatIcon";
 import { EnvironmentPanel } from "./EnvironmentPanel";
@@ -16,12 +15,8 @@ import { RecentActivityTable, isRecent } from "./RecentActivityTable";
 import * as s from "./styles";
 
 import { isString } from "../../typeGuards/isString";
-import {
-  EntrySpan,
-  RecentActivityData,
-  RecentActivityProps,
-  SetIsJaegerData
-} from "./types";
+import { ConfigContext } from "../common/App/ConfigContext";
+import { EntrySpan, RecentActivityData, RecentActivityProps } from "./types";
 
 const documentationURL = isString(window.recentActivityDocumentationURL)
   ? window.recentActivityDocumentationURL
@@ -69,10 +64,8 @@ export const RecentActivity = (props: RecentActivityProps) => {
   const [data, setData] = useState<RecentActivityData>();
   const previousSelectedEnvironment = usePrevious(selectedEnvironment);
   const [viewMode, setViewMode] = useState<ViewMode>("table");
-  const [isJaegerEnabled, setIsJaegerEnabled] = useState(
-    window.isJaegerEnabled === true
-  );
   const [liveData, setLiveData] = useState<LiveData>();
+  const config = useContext(ConfigContext);
 
   useEffect(() => {
     window.sendMessageToDigma({
@@ -83,29 +76,17 @@ export const RecentActivity = (props: RecentActivityProps) => {
       setData(data as RecentActivityData);
     };
 
-    const handleSetIsJaegerEnabledData = (data: unknown) => {
-      setIsJaegerEnabled((data as SetIsJaegerData).isJaegerEnabled);
-    };
-
     const handleLiveData = (data: unknown) => {
       setLiveData(data as LiveData);
     };
 
     dispatcher.addActionListener(actions.SET_DATA, handleRecentActivityData);
-    dispatcher.addActionListener(
-      globalActions.SET_IS_JAEGER_ENABLED,
-      handleSetIsJaegerEnabledData
-    );
     dispatcher.addActionListener(actions.SET_LIVE_DATA, handleLiveData);
 
     return () => {
       dispatcher.removeActionListener(
         actions.SET_DATA,
         handleRecentActivityData
-      );
-      dispatcher.removeActionListener(
-        globalActions.SET_IS_JAEGER_ENABLED,
-        handleSetIsJaegerEnabledData
       );
     };
   }, []);
@@ -212,7 +193,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
               data={environmentActivities[selectedEnvironment]}
               onSpanLinkClick={handleSpanLinkClick}
               onTraceButtonClick={handleTraceButtonClick}
-              isTraceButtonVisible={isJaegerEnabled}
+              isTraceButtonVisible={config.isJaegerEnabled}
             />
           )}
         </s.RecentActivityContainer>

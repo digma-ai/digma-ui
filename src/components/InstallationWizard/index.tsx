@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useContext, useEffect, useRef, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import { useTheme } from "styled-components";
 import { SLACK_WORKSPACE_URL } from "../../constants";
@@ -7,9 +7,9 @@ import { IDE } from "../../globals";
 import { useDebounce } from "../../hooks/useDebounce";
 import { usePrevious } from "../../hooks/usePrevious";
 import { ide } from "../../platform";
-import { isString } from "../../typeGuards/isString";
 import { addPrefix } from "../../utils/addPrefix";
 import { actions as globalActions } from "../common/App";
+import { ConfigContext } from "../common/App/ConfigContext";
 import { getThemeKind } from "../common/App/styles";
 import { CloudDownloadIcon } from "../common/icons/CloudDownloadIcon";
 import { DigmaGreetingIcon } from "../common/icons/DigmaGreetingIcon";
@@ -68,11 +68,6 @@ const TRANSITION_DURATION = 300; // in milliseconds
 
 const firstStep = window.wizardSkipInstallationStep === true ? 1 : 0;
 
-const preselectedIsObservabilityEnabled =
-  window.isObservabilityEnabled === true;
-
-const preselectedEmail = isString(window.userEmail) ? window.userEmail : "";
-
 // TO DO:
 // add environment variable for presetting the correct installation type
 // if Digma already installed
@@ -96,11 +91,12 @@ const validateEmailFormat = (email: string): boolean => {
 };
 
 export const InstallationWizard = () => {
+  const config = useContext(ConfigContext);
   const [currentStep, setCurrentStep] = useState<number>(firstStep);
   const previousStep = usePrevious(currentStep);
   const [isAlreadyUsingOtel, setIsAlreadyUsingOtel] = useState<boolean>(false);
   const [isObservabilityEnabled, setIsObservabilityEnabled] = useState<boolean>(
-    preselectedIsObservabilityEnabled
+    config.isObservabilityEnabled
   );
   const [connectionCheckStatus, setConnectionCheckStatus] =
     useState<AsyncActionStatus>();
@@ -110,7 +106,7 @@ export const InstallationWizard = () => {
   >(preselectedInstallationType);
   const theme = useTheme();
   const themeKind = getThemeKind(theme);
-  const [email, setEmail] = useState(preselectedEmail);
+  const [email, setEmail] = useState(config.userEmail);
   const [isEmailValid, setIsEmailValid] = useState(
     email.length > 0 ? validateEmailFormat(email) : undefined
   );
