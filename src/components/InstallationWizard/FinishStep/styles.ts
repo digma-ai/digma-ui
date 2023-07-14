@@ -68,7 +68,6 @@ export const EmailField = styled.div`
 `;
 
 export const EmailInput = styled.input`
-  box-sizing: border-box;
   font-size: 12px;
   line-height: 14px;
   padding: 8px 10px;

@@ -152,7 +152,6 @@ export const ZoomButtonsContainer = styled.div`
 `;
 
 export const ZoomButton = styled.button`
-  box-sizing: border-box;
   display: flex;
   padding: 4px;
   border-radius: 4px;

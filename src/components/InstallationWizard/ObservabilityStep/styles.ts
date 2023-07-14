@@ -11,7 +11,6 @@ export const Container = styled.div`
 export const ObservabilityContainer = styled.div`
   padding: 20px;
   margin: 8px 0 12px;
-  box-sizing: border-box;
   border-radius: 4px;
   display: flex;
   flex-direction: column;

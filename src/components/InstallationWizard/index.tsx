@@ -24,8 +24,8 @@ import { StepData, StepStatus } from "./Step/types";
 import * as s from "./styles";
 import { trackingEvents } from "./tracking";
 import {
-  ConnectionCheckResultData,
-  ConnectionCheckStatus,
+  AsyncActionResultData,
+  AsyncActionStatus,
   InstallationType
 } from "./types";
 
@@ -34,11 +34,19 @@ const EMAIL_ADDRESS_REGEX =
 
 const ACTION_PREFIX = "INSTALLATION_WIZARD";
 
-const actions = addPrefix(ACTION_PREFIX, {
+export const actions = addPrefix(ACTION_PREFIX, {
   FINISH: "FINISH",
   CHECK_CONNECTION: "CHECK_CONNECTION",
   SET_CONNECTION_CHECK_RESULT: "SET_CONNECTION_CHECK_RESULT",
-  SET_OBSERVABILITY: "SET_OBSERVABILITY"
+  SET_OBSERVABILITY: "SET_OBSERVABILITY",
+  INSTALL_DIGMA: "INSTALL_DIGMA",
+  UNINSTALL_DIGMA: "UNINSTALL_DIGMA",
+  START_DIGMA: "START_DIGMA",
+  STOP_DIGMA: "STOP_DIGMA",
+  SET_INSTALL_DIGMA_RESULT: "SET_INSTALL_DIGMA_RESULT",
+  SET_UNINSTALL_DIGMA_RESULT: "SET_UNINSTALL_DIGMA_RESULT",
+  SET_START_DIGMA_RESULT: "SET_START_DIGMA_RESULT",
+  SET_STOP_DIGMA_RESULT: "SET_STOP_DIGMA_RESULT"
 });
 
 const DIGMA_DOCKER_EXTENSION_URL =
@@ -95,7 +103,7 @@ export const InstallationWizard = () => {
     preselectedIsObservabilityEnabled
   );
   const [connectionCheckStatus, setConnectionCheckStatus] =
-    useState<ConnectionCheckStatus>();
+    useState<AsyncActionStatus>();
   const footerContentRef = useRef<HTMLDivElement>(null);
   const [installationType, setInstallationType] = useState<
     InstallationType | undefined
@@ -142,7 +150,7 @@ export const InstallationWizard = () => {
     }
 
     const handleConnectionCheckResultData = (data: unknown) => {
-      const result = (data as ConnectionCheckResultData).result;
+      const result = (data as AsyncActionResultData).result;
       setConnectionCheckStatus(result);
     };
 

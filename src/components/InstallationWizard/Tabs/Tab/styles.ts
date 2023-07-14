@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { TabProps } from "./types";
 
 export const Container = styled.li<TabProps>`
-  box-sizing: border-box;
   font-weight: 500;
   font-size: 12px;
   line-height: 14px;
