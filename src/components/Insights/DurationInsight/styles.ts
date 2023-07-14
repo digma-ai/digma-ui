@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { Button as CommonButton } from "../../common/Button";
 import { Description } from "../styles";
 
 export const Container = styled.div`
@@ -56,8 +55,4 @@ export const Percentile = styled.span`
   font-size: 10px;
   line-height: normal;
   font-weight: 500;
-`;
-
-export const Button = styled(CommonButton)`
-  margin-left: auto;
 `;

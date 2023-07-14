@@ -88,15 +88,6 @@ export const DurationInsight = (props: DurationInsightProps) => {
                   </s.Stats>
                 );
               })}
-              {traces.length > 1 && (
-                <s.Button
-                  onClick={() =>
-                    handleCompareButtonClick([traces[0], traces[1]])
-                  }
-                >
-                  Compare
-                </s.Button>
-              )}
             </>
           ) : (
             // TODO: add hourglass icon
@@ -115,6 +106,16 @@ export const DurationInsight = (props: DurationInsightProps) => {
                 onClick={handleHistogramButtonClick}
               >
                 Histogram
+              </Button>
+            ]
+          : []),
+        ...(traces.length > 1
+          ? [
+              <Button
+                key={"compare"}
+                onClick={() => handleCompareButtonClick([traces[0], traces[1]])}
+              >
+                Compare
               </Button>
             ]
           : []),
