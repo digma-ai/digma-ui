@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useContext, useEffect, useRef, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import { useTheme } from "styled-components";
 import { SLACK_WORKSPACE_URL } from "../../constants";
@@ -7,9 +7,9 @@ import { IDE } from "../../globals";
 import { useDebounce } from "../../hooks/useDebounce";
 import { usePrevious } from "../../hooks/usePrevious";
 import { ide } from "../../platform";
-import { isString } from "../../typeGuards/isString";
 import { addPrefix } from "../../utils/addPrefix";
 import { actions as globalActions } from "../common/App";
+import { ConfigContext } from "../common/App/ConfigContext";
 import { getThemeKind } from "../common/App/styles";
 import { CloudDownloadIcon } from "../common/icons/CloudDownloadIcon";
 import { DigmaGreetingIcon } from "../common/icons/DigmaGreetingIcon";
@@ -24,8 +24,8 @@ import { StepData, StepStatus } from "./Step/types";
 import * as s from "./styles";
 import { trackingEvents } from "./tracking";
 import {
-  ConnectionCheckResultData,
-  ConnectionCheckStatus,
+  AsyncActionResultData,
+  AsyncActionStatus,
   InstallationType
 } from "./types";
 
@@ -34,11 +34,19 @@ const EMAIL_ADDRESS_REGEX =
 
 const ACTION_PREFIX = "INSTALLATION_WIZARD";
 
-const actions = addPrefix(ACTION_PREFIX, {
+export const actions = addPrefix(ACTION_PREFIX, {
   FINISH: "FINISH",
   CHECK_CONNECTION: "CHECK_CONNECTION",
   SET_CONNECTION_CHECK_RESULT: "SET_CONNECTION_CHECK_RESULT",
-  SET_OBSERVABILITY: "SET_OBSERVABILITY"
+  SET_OBSERVABILITY: "SET_OBSERVABILITY",
+  INSTALL_DIGMA: "INSTALL_DIGMA",
+  UNINSTALL_DIGMA: "UNINSTALL_DIGMA",
+  START_DIGMA: "START_DIGMA",
+  STOP_DIGMA: "STOP_DIGMA",
+  SET_INSTALL_DIGMA_RESULT: "SET_INSTALL_DIGMA_RESULT",
+  SET_UNINSTALL_DIGMA_RESULT: "SET_UNINSTALL_DIGMA_RESULT",
+  SET_START_DIGMA_RESULT: "SET_START_DIGMA_RESULT",
+  SET_STOP_DIGMA_RESULT: "SET_STOP_DIGMA_RESULT"
 });
 
 const DIGMA_DOCKER_EXTENSION_URL =
@@ -59,11 +67,6 @@ const footerTransitionClassName = "footer";
 const TRANSITION_DURATION = 300; // in milliseconds
 
 const firstStep = window.wizardSkipInstallationStep === true ? 1 : 0;
-
-const preselectedIsObservabilityEnabled =
-  window.isObservabilityEnabled === true;
-
-const preselectedEmail = isString(window.userEmail) ? window.userEmail : "";
 
 // TO DO:
 // add environment variable for presetting the correct installation type
@@ -88,21 +91,22 @@ const validateEmailFormat = (email: string): boolean => {
 };
 
 export const InstallationWizard = () => {
+  const config = useContext(ConfigContext);
   const [currentStep, setCurrentStep] = useState<number>(firstStep);
   const previousStep = usePrevious(currentStep);
   const [isAlreadyUsingOtel, setIsAlreadyUsingOtel] = useState<boolean>(false);
   const [isObservabilityEnabled, setIsObservabilityEnabled] = useState<boolean>(
-    preselectedIsObservabilityEnabled
+    config.isObservabilityEnabled
   );
   const [connectionCheckStatus, setConnectionCheckStatus] =
-    useState<ConnectionCheckStatus>();
+    useState<AsyncActionStatus>();
   const footerContentRef = useRef<HTMLDivElement>(null);
   const [installationType, setInstallationType] = useState<
     InstallationType | undefined
   >(preselectedInstallationType);
   const theme = useTheme();
   const themeKind = getThemeKind(theme);
-  const [email, setEmail] = useState(preselectedEmail);
+  const [email, setEmail] = useState(config.userEmail);
   const [isEmailValid, setIsEmailValid] = useState(
     email.length > 0 ? validateEmailFormat(email) : undefined
   );
@@ -142,7 +146,7 @@ export const InstallationWizard = () => {
     }
 
     const handleConnectionCheckResultData = (data: unknown) => {
-      const result = (data as ConnectionCheckResultData).result;
+      const result = (data as AsyncActionResultData).result;
       setConnectionCheckStatus(result);
     };
 

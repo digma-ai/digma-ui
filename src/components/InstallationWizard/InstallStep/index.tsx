@@ -12,6 +12,7 @@ import { CodeSnippet } from "../CodeSnippet";
 import { Tabs } from "../Tabs";
 import { Link, MainButton, SectionDescription } from "../styles";
 import { trackingEvents } from "../tracking";
+import { AutomaticInstaller } from "./AutomaticInstaller";
 import * as s from "./styles";
 import { InstallStepProps } from "./types";
 
@@ -33,6 +34,7 @@ export const InstallStep = (props: InstallStepProps) => {
   const [selectedInstallTab, setSelectedInstallTab] = useState(0);
   const [selectedDockerComposeOSTab, setSelectedDockerComposeOSTab] =
     useState(0);
+  const [isAutomaticInstallation, setIsAutomaticInstallation] = useState(true);
 
   const handleInstallDigmaButtonClick = () => {
     props.onGetDigmaDockerDesktopButtonClick();
@@ -117,6 +119,10 @@ export const InstallStep = (props: InstallStepProps) => {
     props.onSlackLinkClick();
   };
 
+  const handleManualInstallSelect = () => {
+    setIsAutomaticInstallation(false);
+  };
+
   const installTabs = [
     {
       icon: DockerLogoIcon,
@@ -197,45 +203,54 @@ export const InstallStep = (props: InstallStepProps) => {
 
   return (
     <s.Container>
-      <Tabs
-        tabs={installTabs}
-        onSelect={handleInstallTabSelect}
-        selectedTab={selectedInstallTab}
-        fullWidth={true}
-      />
-      <s.CommonContentContainer>
-        <s.LoaderContainer>
-          {props.connectionCheckStatus && (
-            <Loader
-              size={84}
-              status={props.connectionCheckStatus}
-              themeKind={getThemeKind(theme)}
-            />
-          )}
-        </s.LoaderContainer>
-        {!isConnectionCheckStarted && (
-          <MainButton onClick={handleDigmaIsInstalledButtonClick}>
-            OK, I&apos;ve installed Digma
-          </MainButton>
-        )}
-        {props.connectionCheckStatus === "pending" && (
-          <MainButton disabled={true}>Complete</MainButton>
-        )}
-        {props.connectionCheckStatus === "failure" && (
-          <MainButton onClick={handleRetryButtonClick}>Retry</MainButton>
-        )}
-        {props.connectionCheckStatus === "success" && (
-          <MainButton
-            icon={{
-              component: CheckmarkCircleInvertedIcon,
-              color: "#0fbf00"
-            }}
-            onClick={handleNextButtonClick}
-          >
-            Complete
-          </MainButton>
-        )}
-      </s.CommonContentContainer>
+      {isAutomaticInstallation ? (
+        <AutomaticInstaller
+          onManualInstallSelect={handleManualInstallSelect}
+          onGoToNextStep={handleNextButtonClick}
+        />
+      ) : (
+        <>
+          <Tabs
+            tabs={installTabs}
+            onSelect={handleInstallTabSelect}
+            selectedTab={selectedInstallTab}
+            fullWidth={true}
+          />
+          <s.CommonContentContainer>
+            <s.LoaderContainer>
+              {props.connectionCheckStatus && (
+                <Loader
+                  size={84}
+                  status={props.connectionCheckStatus}
+                  themeKind={getThemeKind(theme)}
+                />
+              )}
+            </s.LoaderContainer>
+            {!isConnectionCheckStarted && (
+              <MainButton onClick={handleDigmaIsInstalledButtonClick}>
+                OK, I&apos;ve installed Digma
+              </MainButton>
+            )}
+            {props.connectionCheckStatus === "pending" && (
+              <MainButton disabled={true}>Complete</MainButton>
+            )}
+            {props.connectionCheckStatus === "failure" && (
+              <MainButton onClick={handleRetryButtonClick}>Retry</MainButton>
+            )}
+            {props.connectionCheckStatus === "success" && (
+              <MainButton
+                icon={{
+                  component: CheckmarkCircleInvertedIcon,
+                  color: "#0fbf00"
+                }}
+                onClick={handleNextButtonClick}
+              >
+                Complete
+              </MainButton>
+            )}
+          </s.CommonContentContainer>
+        </>
+      )}
     </s.Container>
   );
 };
