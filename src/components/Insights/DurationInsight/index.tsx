@@ -1,5 +1,7 @@
+import { useContext } from "react";
 import { formatTimeDistance } from "../../../utils/formatTimeDistance";
 import { getPercentileLabel } from "../../../utils/getPercentileLabel";
+import { ConfigContext } from "../../common/App/ConfigContext";
 import { Button } from "../../common/Button";
 import { ChartIcon } from "../../common/icons/ChartIcon";
 import { DoubleCircleIcon } from "../../common/icons/DoubleCircleIcon";
@@ -12,6 +14,8 @@ import { DurationInsightProps } from "./types";
 const LAST_CALL_TIME_DISTANCE_LIMIT = 60 * 1000; // in milliseconds
 
 export const DurationInsight = (props: DurationInsightProps) => {
+  const config = useContext(ConfigContext);
+
   const sortedPercentiles = [...props.insight.percentiles].sort(
     (a, b) => a.percentile - b.percentile
   );
@@ -109,7 +113,7 @@ export const DurationInsight = (props: DurationInsightProps) => {
               </Button>
             ]
           : []),
-        ...(traces.length > 1
+        ...(config.isJaegerEnabled && traces.length > 1
           ? [
               <Button
                 key={"compare"}

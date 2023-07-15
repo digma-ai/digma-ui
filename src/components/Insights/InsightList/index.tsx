@@ -564,13 +564,17 @@ export const InsightList = (props: InsightListProps) => {
                 </>
               }
               buttons={[
-                <Button
-                  key={"addAnnotation"}
-                  onClick={handleAddAnnotationButtonClick}
-                  disabled={props.hasMissingDependency}
-                >
-                  Add annotation
-                </Button>
+                ...(props.canInstrumentMethod
+                  ? [
+                      <Button
+                        key={"addAnnotation"}
+                        onClick={handleAddAnnotationButtonClick}
+                        disabled={props.hasMissingDependency}
+                      >
+                        Add annotation
+                      </Button>
+                    ]
+                  : [])
               ]}
             />
           )}

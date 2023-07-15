@@ -7,6 +7,7 @@ export const Container = styled.div`
   padding: 8px;
   gap: 8px;
   min-height: 100vh;
+  box-sizing: border-box;
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

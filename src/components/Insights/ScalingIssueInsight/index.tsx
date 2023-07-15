@@ -1,4 +1,6 @@
+import { useContext } from "react";
 import { trimEndpointScheme } from "../../../utils/trimEndpointScheme";
+import { ConfigContext } from "../../common/App/ConfigContext";
 import { Button } from "../../common/Button";
 import { ChartIcon } from "../../common/icons/ChartIcon";
 import { CrosshairIcon } from "../../common/icons/CrosshairIcon";
@@ -9,6 +11,8 @@ import * as s from "./styles";
 import { ScalingIssueInsightProps } from "./types";
 
 export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
+  const config = useContext(ConfigContext);
+
   const handleLinkClick = (spanCodeObjectId: string) => {
     props.onAssetLinkClick(spanCodeObjectId);
   };
@@ -64,9 +68,9 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
                         {spanName}
                       </Link>
                     </span>
-                    {traceId && (
+                    {config.isJaegerEnabled && traceId && (
                       <s.Button
-                        icon={{ component: CrosshairIcon, size: 16 }}
+                        icon={{ component: CrosshairIcon }}
                         onClick={() =>
                           handleTraceButtonClick({
                             name: spanName,

@@ -1,3 +1,5 @@
+import { useContext } from "react";
+import { ConfigContext } from "../../common/App/ConfigContext";
 import { CrosshairIcon } from "../../common/icons/CrosshairIcon";
 import { InsightCard } from "../InsightCard";
 import { Link } from "../styles";
@@ -6,6 +8,8 @@ import * as s from "./styles";
 import { NPlusOneInsightProps } from "./types";
 
 export const NPlusOneInsight = (props: NPlusOneInsightProps) => {
+  const config = useContext(ConfigContext);
+
   const handleSpanLinkClick = (spanCodeObjectId?: string) => {
     spanCodeObjectId && props.onAssetLinkClick(spanCodeObjectId);
   };
@@ -34,7 +38,7 @@ export const NPlusOneInsight = (props: NPlusOneInsightProps) => {
                 spanName
               )}
             </span>
-            {traceId && (
+            {config.isJaegerEnabled && traceId && (
               <s.Button
                 onClick={() =>
                   handleTraceButtonClick({
@@ -42,7 +46,7 @@ export const NPlusOneInsight = (props: NPlusOneInsightProps) => {
                     id: traceId
                   })
                 }
-                icon={{ component: CrosshairIcon, size: 16 }}
+                icon={{ component: CrosshairIcon }}
               >
                 Trace
               </s.Button>

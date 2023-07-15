@@ -8,4 +8,5 @@ export interface InsightListProps {
   assetId: string;
   hasObservability: boolean;
   hasMissingDependency: boolean;
+  canInstrumentMethod: boolean;
 }

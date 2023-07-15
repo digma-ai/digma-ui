@@ -217,6 +217,7 @@ export const Insights = (props: InsightsProps) => {
             assetId={data.assetId}
             serviceName={data.serviceName}
             hasMissingDependency={data.hasMissingDependency}
+            canInstrumentMethod={data.canInstrumentMethod}
             hasObservability={false}
           />
         ) : (
@@ -237,12 +238,14 @@ export const Insights = (props: InsightsProps) => {
                     <s.Link onClick={handleAutofixLinkClick}>Autofix</s.Link>
                   </s.MissingDependencyContainer>
                 )}
-                <Button
-                  onClick={handleAddAnnotationButtonClick}
-                  disabled={data.hasMissingDependency}
-                >
-                  Add annotation
-                </Button>
+                {data.canInstrumentMethod && (
+                  <Button
+                    onClick={handleAddAnnotationButtonClick}
+                    disabled={data.hasMissingDependency}
+                  >
+                    Add annotation
+                  </Button>
+                )}
               </>
             }
           />
@@ -263,6 +266,7 @@ export const Insights = (props: InsightsProps) => {
             assetId={data.assetId}
             serviceName={data.serviceName}
             hasMissingDependency={data.hasMissingDependency}
+            canInstrumentMethod={data.canInstrumentMethod}
             hasObservability={true}
           />
         ) : (

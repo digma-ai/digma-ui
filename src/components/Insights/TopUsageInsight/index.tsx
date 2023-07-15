@@ -1,4 +1,6 @@
+import { useContext } from "react";
 import { roundTo } from "../../../utils/roundTo";
+import { ConfigContext } from "../../common/App/ConfigContext";
 import { CrosshairIcon } from "../../common/icons/CrosshairIcon";
 import { InsightCard } from "../InsightCard";
 import { Pagination } from "../Pagination";
@@ -8,6 +10,8 @@ import * as s from "./styles";
 import { TopUsageInsightProps } from "./types";
 
 export const TopUsageInsight = (props: TopUsageInsightProps) => {
+  const config = useContext(ConfigContext);
+
   const handleServiceLinkClick = (spanCodeObjectId?: string) => {
     spanCodeObjectId && props.onAssetLinkClick(spanCodeObjectId);
   };
@@ -69,9 +73,9 @@ export const TopUsageInsight = (props: TopUsageInsightProps) => {
                       )}
                     </span>
                   </s.FlowData>
-                  {traceId && (
+                  {config.isJaegerEnabled && traceId && (
                     <s.Button
-                      icon={{ component: CrosshairIcon, size: 16 }}
+                      icon={{ component: CrosshairIcon }}
                       onClick={() =>
                         handleTraceButtonClick({
                           name: firstServiceName,

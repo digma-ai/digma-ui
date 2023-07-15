@@ -44,6 +44,7 @@ export const Default: Story = {
       hasMissingDependency: false,
       insightsStatus: InsightsStatus.DEFAULT,
       methods: [],
+      canInstrumentMethod: false,
       insights: [
         {
           name: "Request Breakdown",
@@ -522,7 +523,8 @@ export const NoInsights: Story = {
       hasMissingDependency: false,
       insightsStatus: InsightsStatus.NO_INSIGHTS,
       methods: [],
-      insights: []
+      insights: [],
+      canInstrumentMethod: false
     }
   }
 };
@@ -538,7 +540,8 @@ export const NoDataYet: Story = {
       hasMissingDependency: false,
       insightsStatus: InsightsStatus.NO_SPANS_DATA,
       methods: [],
-      insights: []
+      insights: [],
+      canInstrumentMethod: false
     }
   }
 };
@@ -554,7 +557,8 @@ export const ProcessingInsights: Story = {
       hasMissingDependency: false,
       insightsStatus: InsightsStatus.INSIGHT_PENDING,
       methods: [],
-      insights: []
+      insights: [],
+      canInstrumentMethod: false
     }
   }
 };
@@ -570,7 +574,8 @@ export const NoObservability: Story = {
       hasMissingDependency: false,
       insightsStatus: InsightsStatus.NO_OBSERVABILITY,
       methods: [],
-      insights: []
+      insights: [],
+      canInstrumentMethod: false
     }
   }
 };
@@ -632,7 +637,8 @@ export const NoObservabilityWithInsights: Story = {
       hasMissingDependency: false,
       insightsStatus: InsightsStatus.NO_OBSERVABILITY,
       methods: [],
-      insights: [errorsInsight]
+      insights: [errorsInsight],
+      canInstrumentMethod: false
     }
   }
 };
@@ -648,7 +654,8 @@ export const HasMissingDependency: Story = {
       hasMissingDependency: true,
       insightsStatus: InsightsStatus.NO_OBSERVABILITY,
       methods: [],
-      insights: []
+      insights: [],
+      canInstrumentMethod: false
     }
   }
 };
@@ -664,7 +671,8 @@ export const HasMissingDependencyWithInsights: Story = {
       hasMissingDependency: true,
       insightsStatus: InsightsStatus.NO_OBSERVABILITY,
       methods: [],
-      insights: [errorsInsight]
+      insights: [errorsInsight],
+      canInstrumentMethod: false
     }
   }
 };
@@ -679,7 +687,8 @@ export const Startup: Story = {
       hasMissingDependency: false,
       insightsStatus: InsightsStatus.STARTUP,
       methods: [],
-      insights: []
+      insights: [],
+      canInstrumentMethod: false
     }
   }
 };
@@ -695,7 +704,8 @@ export const Loading: Story = {
       hasMissingDependency: false,
       insightsStatus: InsightsStatus.LOADING,
       methods: [],
-      insights: []
+      insights: [],
+      canInstrumentMethod: false
     }
   }
 };
@@ -709,6 +719,7 @@ export const Preview: Story = {
       viewMode: ViewMode.PREVIEW,
       hasMissingDependency: false,
       insightsStatus: InsightsStatus.DEFAULT,
+      canInstrumentMethod: false,
       methods: [
         {
           id: "method1",

@@ -1,4 +1,6 @@
+import { useContext } from "react";
 import { roundTo } from "../../../utils/roundTo";
+import { ConfigContext } from "../../common/App/ConfigContext";
 import { CrosshairIcon } from "../../common/icons/CrosshairIcon";
 import { InsightCard } from "../InsightCard";
 import { Pagination } from "../Pagination";
@@ -12,6 +14,8 @@ const FRACTION_MIN_LIMIT = 0.01;
 export const EndpointNPlusOneInsight = (
   props: EndpointNPlusOneInsightProps
 ) => {
+  const config = useContext(ConfigContext);
+
   const handleSpanLinkClick = (spanCodeObjectId: string) => {
     props.onAssetLinkClick(spanCodeObjectId);
   };
@@ -63,17 +67,19 @@ export const EndpointNPlusOneInsight = (
                         </span>
                       </s.Stat>
                     </s.Stats>
-                    <s.Button
-                      icon={{ component: CrosshairIcon, size: 16 }}
-                      onClick={() =>
-                        handleTraceButtonClick({
-                          name: spanName,
-                          id: span.traceId
-                        })
-                      }
-                    >
-                      Trace
-                    </s.Button>
+                    {config.isJaegerEnabled && (
+                      <s.Button
+                        icon={{ component: CrosshairIcon }}
+                        onClick={() =>
+                          handleTraceButtonClick({
+                            name: spanName,
+                            id: span.traceId
+                          })
+                        }
+                      >
+                        Trace
+                      </s.Button>
+                    )}
                   </s.Span>
                 );
               })}

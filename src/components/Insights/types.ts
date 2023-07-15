@@ -64,6 +64,7 @@ export interface InsightsData {
   viewMode: ViewMode;
   methods: Method[];
   hasMissingDependency: boolean;
+  canInstrumentMethod: boolean;
 }
 
 export interface InsightsProps {
