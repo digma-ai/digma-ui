@@ -9,7 +9,7 @@ import { CSSProperties, ForwardedRef, HTMLProps, forwardRef } from "react";
 import { usePopoverContext } from "../hooks";
 
 const PopoverContentComponent = (
-  props: HTMLProps<HTMLDivElement>,
+  { style, width, ...props }: HTMLProps<HTMLDivElement>,
   propRef: ForwardedRef<HTMLDivElement>
 ) => {
   const { context: floatingContext, ...context } = usePopoverContext();
@@ -27,9 +27,10 @@ const PopoverContentComponent = (
                 top: context.y ?? 0,
                 left: context.x ?? 0,
                 width:
+                  width ||
                   context.elements.reference?.getBoundingClientRect().width,
                 outline: "none",
-                ...props.style
+                ...style
               } as CSSProperties
             }
             aria-labelledby={context.labelId}

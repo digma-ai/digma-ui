@@ -21,7 +21,6 @@ export const InsightGroupName = styled.div`
   font-weight: 500;
   font-size: 12px;
   line-height: normal;
-  height: 16px;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

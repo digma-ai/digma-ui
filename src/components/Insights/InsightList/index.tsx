@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
 import { actions } from "..";
 import { InsightType } from "../../../types";
@@ -489,14 +489,11 @@ const renderInsightCard = (
 
 export const InsightList = (props: InsightListProps) => {
   const [insightGroups, setInsightGroups] = useState<InsightGroup[]>([]);
-  const containerRef = useRef<HTMLDivElement>(null);
   const theme = useTheme();
   const insightGroupIconColor = getInsightGroupIconColor(theme);
 
   useEffect(() => {
-    if (containerRef.current) {
-      containerRef.current.scrollTop = 0;
-    }
+    window.scrollTo(0, 0);
   }, [props.assetId, props.environment, props.serviceName]);
 
   useEffect(() => {
@@ -522,7 +519,7 @@ export const InsightList = (props: InsightListProps) => {
   };
 
   return (
-    <s.Container ref={containerRef}>
+    <s.Container>
       {insightGroups.map((x) => (
         <s.InsightGroup key={x.name || "__ungrouped"}>
           {x.name && (
