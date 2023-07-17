@@ -36,8 +36,8 @@ export const DockerComposeOSTabContentContainer = styled.div`
 `;
 
 export const LoaderContainer = styled.div`
-  padding: 80px 0 16px;
-  height: 172px;
+  padding: 80px 0 10px;
+  height: 174px;
   display: flex;
   justify-content: center;
   flex-grow: 1;
