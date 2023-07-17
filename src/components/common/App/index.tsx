@@ -79,43 +79,46 @@ export const App = (props: AppProps) => {
 
     const handleSetIsJaegerEnabled = (data: unknown) => {
       if (isObject(data) && isBoolean(data.isJaegerEnabled)) {
-        setConfig({ ...config, isJaegerEnabled: data.isJaegerEnabled });
+        setConfig((config) => ({
+          ...config,
+          isJaegerEnabled: data.isJaegerEnabled as boolean
+        }));
       }
     };
 
     const handleSetIsDigmaEngineInstalled = (data: unknown) => {
       if (isObject(data) && isBoolean(data.isDigmaEngineInstalled)) {
-        setConfig({
+        setConfig((config) => ({
           ...config,
-          isDigmaEngineInstalled: data.isDigmaEngineInstalled
-        });
+          isDigmaEngineInstalled: data.isDigmaEngineInstalled as boolean
+        }));
       }
     };
 
     const handleSetIsDigmaEngineRunning = (data: unknown) => {
       if (isObject(data) && isBoolean(data.isDigmaEngineRunning)) {
-        setConfig({
+        setConfig((config) => ({
           ...config,
-          isDigmaEngineRunning: data.isDigmaEngineRunning
-        });
+          isDigmaEngineRunning: data.isDigmaEngineRunning as boolean
+        }));
       }
     };
 
     const handleSetIsDockerInstalled = (data: unknown) => {
       if (isObject(data) && isBoolean(data.isDockerInstalled)) {
-        setConfig({
+        setConfig((config) => ({
           ...config,
-          isDockerInstalled: data.isDockerInstalled
-        });
+          isDockerInstalled: data.isDockerInstalled as boolean
+        }));
       }
     };
 
     const handleSetIsDockerComposeInstalled = (data: unknown) => {
       if (isObject(data) && isBoolean(data.isDockerComposeInstalled)) {
-        setConfig({
+        setConfig((config) => ({
           ...config,
-          isDockerComposeInstalled: data.isDockerComposeInstalled
-        });
+          isDockerComposeInstalled: data.isDockerComposeInstalled as boolean
+        }));
       }
     };
 

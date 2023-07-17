@@ -3,11 +3,12 @@ import { IconProps } from "../../../common/icons/types";
 import { AsyncActionStatus } from "../../types";
 
 export interface EngineManagerProps {
-  onManualInstallSelect: () => void;
-  onAutoInstallFinish: () => void;
-  // onGoToNextStep: () => void;
-  // onToggleNextStep: (isEnabled: boolean) => void;
-  autoInstall: boolean;
+  onManualInstallSelect?: () => void;
+  onAutoInstallFinish?: () => void;
+  onRemoveFinish?: () => void;
+  onOperationStart?: () => void;
+  onOperationFinish?: () => void;
+  autoInstall?: boolean;
 }
 
 export enum Operation {

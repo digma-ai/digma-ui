@@ -42,12 +42,6 @@ const getLoaderStatus = (
 
 export const EngineManager = (props: EngineManagerProps) => {
   const config = useContext(ConfigContext);
-  const [isDigmaEngineInstalled, setIsDigmaEngineInstalled] = useState(
-    config.isDigmaEngineInstalled
-  );
-  const [isDigmaEngineRunning, setIsDigmaEngineRunning] = useState(
-    config.isDigmaEngineRunning
-  );
   const [currentOperation, setCurrentOperation] = useState<CurrentOperation>();
   const [failedOperation, setFailedOperation] = useState<FailedOperation>();
   const theme = useTheme();
@@ -77,40 +71,36 @@ export const EngineManager = (props: EngineManagerProps) => {
   };
 
   useEffect(() => {
-    const handleInstallDigmaResultData = (data: unknown) => {
-      const payload = data as AsyncActionResultData;
+    const handleOperationResultData = (
+      data: AsyncActionResultData,
+      operation: Operation
+    ) => {
       setCurrentOperation({
-        operation: Operation.INSTALL,
-        status: payload.result,
-        error: payload.error
+        operation: operation,
+        status: data.result,
+        error: data.error
       });
+    };
+    const handleInstallDigmaResultData = (data: unknown) => {
+      handleOperationResultData(
+        data as AsyncActionResultData,
+        Operation.INSTALL
+      );
     };
 
     const handleUninstallDigmaResultData = (data: unknown) => {
-      const payload = data as AsyncActionResultData;
-      setCurrentOperation({
-        operation: Operation.UNINSTALL,
-        status: payload.result,
-        error: payload.error
-      });
+      handleOperationResultData(
+        data as AsyncActionResultData,
+        Operation.UNINSTALL
+      );
     };
 
     const handleStartDigmaResultData = (data: unknown) => {
-      const payload = data as AsyncActionResultData;
-      setCurrentOperation({
-        operation: Operation.START,
-        status: payload.result,
-        error: payload.error
-      });
+      handleOperationResultData(data as AsyncActionResultData, Operation.START);
     };
 
     const handleStopDigmaResultData = (data: unknown) => {
-      const payload = data as AsyncActionResultData;
-      setCurrentOperation({
-        operation: Operation.STOP,
-        status: payload.result,
-        error: payload.error
-      });
+      handleOperationResultData(data as AsyncActionResultData, Operation.STOP);
     };
 
     dispatcher.addActionListener(
@@ -170,18 +160,23 @@ export const EngineManager = (props: EngineManagerProps) => {
       if (currentOperation.status === "success") {
         switch (currentOperation.operation) {
           case Operation.INSTALL:
-            setIsDigmaEngineInstalled(true);
-            setIsDigmaEngineRunning(true);
+            if (props.autoInstall && props.onAutoInstallFinish) {
+              props.onAutoInstallFinish();
+            }
             break;
           case Operation.UNINSTALL:
-            setIsDigmaEngineInstalled(false);
-            props.onManualInstallSelect();
+            if (props.autoInstall) {
+              if (props.onManualInstallSelect) {
+                props.onManualInstallSelect();
+              }
+            } else {
+              if (props.onRemoveFinish) {
+                props.onRemoveFinish();
+              }
+            }
             break;
           case Operation.START:
-            setIsDigmaEngineRunning(true);
-            break;
           case Operation.STOP:
-            setIsDigmaEngineRunning(false);
             break;
         }
       }
@@ -189,12 +184,8 @@ export const EngineManager = (props: EngineManagerProps) => {
       if (currentOperation.status === "failure") {
         switch (currentOperation.operation) {
           case Operation.INSTALL:
-            if (props.autoInstall) {
-              props.onAutoInstallFinish();
-            }
-            break;
           case Operation.UNINSTALL:
-            if (props.autoInstall) {
+            if (props.autoInstall && props.onManualInstallSelect) {
               props.onManualInstallSelect();
             }
             break;
@@ -207,6 +198,9 @@ export const EngineManager = (props: EngineManagerProps) => {
       switch (currentOperation.status) {
         case "success":
           setCurrentOperation(undefined);
+          if (props.onOperationFinish) {
+            props.onOperationFinish();
+          }
           break;
         case "failure":
           setFailedOperation({
@@ -214,13 +208,19 @@ export const EngineManager = (props: EngineManagerProps) => {
             error: currentOperation.error
           });
           setCurrentOperation(undefined);
+          if (props.onOperationFinish) {
+            props.onOperationFinish();
+          }
           break;
         case "pending":
           setFailedOperation(undefined);
+          if (props.onOperationStart) {
+            props.onOperationStart();
+          }
           break;
       }
     }
-  }, [currentOperation, props.onManualInstallSelect]);
+  }, [currentOperation, props]);
 
   const sendActionButtonTrackingEvent = (buttonName: string) => {
     window.sendMessageToDigma({
@@ -245,7 +245,7 @@ export const EngineManager = (props: EngineManagerProps) => {
   };
 
   const handleInstallManuallyButtonClick = () => {
-    props.onManualInstallSelect();
+    props.onManualInstallSelect && props.onManualInstallSelect();
   };
 
   const renderOperationButton = (operation: Operation) => {
@@ -273,7 +273,7 @@ export const EngineManager = (props: EngineManagerProps) => {
 
   const renderContent = () => {
     const loaderStatus = getLoaderStatus(
-      isDigmaEngineRunning,
+      config.isDigmaEngineRunning,
       currentOperation?.status,
       failedOperation?.operation
     );
@@ -292,8 +292,8 @@ export const EngineManager = (props: EngineManagerProps) => {
     if (lastOperation) {
       title += operationsInfo[lastOperation].titleSuffix;
     } else {
-      title += isDigmaEngineInstalled
-        ? isDigmaEngineRunning
+      title += config.isDigmaEngineInstalled
+        ? config.isDigmaEngineRunning
           ? "Running"
           : "Stopped"
         : "Not installed";
@@ -316,7 +316,7 @@ export const EngineManager = (props: EngineManagerProps) => {
         </Button>
       );
 
-      if (props.autoInstall) {
+      if (props.onManualInstallSelect) {
         buttons.push(
           <Button
             onClick={handleInstallManuallyButtonClick}
@@ -328,8 +328,8 @@ export const EngineManager = (props: EngineManagerProps) => {
         );
       }
     } else {
-      if (isDigmaEngineInstalled) {
-        if (isDigmaEngineRunning) {
+      if (config.isDigmaEngineInstalled) {
+        if (config.isDigmaEngineRunning) {
           if (!props.autoInstall) {
             buttons.push(renderOperationButton(Operation.STOP));
           }

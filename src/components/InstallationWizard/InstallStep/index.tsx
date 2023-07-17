@@ -29,6 +29,8 @@ const DOCKER_COMPOSE_URL = "https://docs.docker.com/compose/install/";
 const DIGMA_HELM_CHART_URL =
   "https://github.com/digma-ai/helm-chart/tree/gh-pages";
 
+const isFirstLaunch = window.wizardFirstLaunch === true;
+
 export const InstallStep = (props: InstallStepProps) => {
   const theme = useTheme();
   const isConnectionCheckStarted = Boolean(props.connectionCheckStatus);
@@ -36,18 +38,20 @@ export const InstallStep = (props: InstallStepProps) => {
   const [selectedDockerComposeOSTab, setSelectedDockerComposeOSTab] =
     useState(0);
   const config = useContext(ConfigContext);
-  const [isAutomaticInstallation, setIsAutomaticInstallation] = useState(
-    !config.isDigmaEngineInstalled &&
+  const [isAutoInstallationFlow] = useState(
+    isFirstLaunch &&
+      !config.isDigmaEngineInstalled &&
       config.isDockerInstalled &&
       config.isDockerComposeInstalled
   );
   const [isAutoInstallationFinished, setIsAutoInstallationFinished] =
     useState(false);
-
-  const isAutoInstallTabVisible =
-    !config.isDigmaEngineInstalled &&
-    config.isDockerInstalled &&
-    config.isDockerComposeInstalled;
+  const [areTabsVisible, setAreTabsVisible] = useState(
+    !config.isDockerInstalled || !config.isDockerComposeInstalled
+  );
+  const [isAutoInstallTabVisible, setIsAutoInstallTabVisible] = useState(false);
+  const [isEngineOperationInProgress, setIsEngineOperationInProgress] =
+    useState(false);
 
   const handleInstallDigmaButtonClick = () => {
     props.onGetDigmaDockerDesktopButtonClick();
@@ -93,12 +97,27 @@ export const InstallStep = (props: InstallStepProps) => {
     props.onSlackLinkClick();
   };
 
-  const handleAutoInstallFinish = () => {
+  const handleEngineAutoInstallationFinish = () => {
     setIsAutoInstallationFinished(true);
   };
 
-  const handleManualInstallSelect = () => {
-    setIsAutomaticInstallation(false);
+  const handleEngineRemovalFinish = () => {
+    setAreTabsVisible(true);
+    setIsAutoInstallTabVisible(true);
+  };
+
+  const handleEngineManualInstallSelect = () => {
+    setIsAutoInstallationFinished(true);
+    setAreTabsVisible(true);
+    setIsAutoInstallTabVisible(false);
+  };
+
+  const handleEngineOperationStart = () => {
+    setIsEngineOperationInProgress(true);
+  };
+
+  const handleEngineOperationFinish = () => {
+    setIsEngineOperationInProgress(false);
   };
 
   const renderLoader = () => (
@@ -114,14 +133,7 @@ export const InstallStep = (props: InstallStepProps) => {
   );
 
   const renderMainButton = () => {
-    if (
-      isAutoInstallationFinished ||
-      (isAutoInstallTabVisible && selectedInstallTab === 0)
-    ) {
-      return <MainButton onClick={handleNextButtonClick}>Next</MainButton>;
-    }
-
-    if (!isAutoInstallTabVisible && !isConnectionCheckStarted) {
+    if (!isConnectionCheckStarted) {
       return (
         <MainButton onClick={handleDigmaIsInstalledButtonClick}>
           OK, I&apos;ve installed Digma
@@ -194,13 +206,23 @@ export const InstallStep = (props: InstallStepProps) => {
           {
             title: "Auto install",
             content: (
-              <s.TabContentContainer>
-                <EngineManager
-                  autoInstall={false}
-                  onManualInstallSelect={handleManualInstallSelect}
-                  onAutoInstallFinish={handleAutoInstallFinish}
-                />
-              </s.TabContentContainer>
+              <>
+                <s.TabContentContainer>
+                  <EngineManager
+                    onOperationStart={handleEngineOperationStart}
+                    onOperationFinish={handleEngineOperationFinish}
+                  />
+                </s.TabContentContainer>
+                {
+                  <s.CommonContentContainer>
+                    {!isEngineOperationInProgress && (
+                      <MainButton onClick={handleNextButtonClick}>
+                        Next
+                      </MainButton>
+                    )}
+                  </s.CommonContentContainer>
+                }
+              </>
             )
           }
         ]
@@ -231,7 +253,10 @@ export const InstallStep = (props: InstallStepProps) => {
               Get Digma Docker Extension
             </s.GetDockerExtensionButton>
           </s.TabContentContainer>
-          {renderLoader()}
+          <s.CommonContentContainer>
+            {renderLoader()}
+            {renderMainButton()}
+          </s.CommonContentContainer>
         </>
       )
     },
@@ -264,7 +289,10 @@ export const InstallStep = (props: InstallStepProps) => {
               selectedTab={selectedDockerComposeOSTab}
             />
           </s.TabContentContainer>
-          {renderLoader()}
+          <s.CommonContentContainer>
+            {renderLoader()}
+            {renderMainButton()}
+          </s.CommonContentContainer>
         </>
       )
     },
@@ -289,7 +317,10 @@ export const InstallStep = (props: InstallStepProps) => {
               Slack group
             </s.SlackLink>
           </s.NoDockerTabContentContainer>
-          {renderLoader()}
+          <s.CommonContentContainer>
+            {renderLoader()}
+            {renderMainButton()}
+          </s.CommonContentContainer>
         </>
       )
     }
@@ -297,22 +328,30 @@ export const InstallStep = (props: InstallStepProps) => {
 
   return (
     <s.Container>
-      {isAutomaticInstallation ? (
-        <EngineManager
-          autoInstall={true}
-          onManualInstallSelect={handleManualInstallSelect}
-          onAutoInstallFinish={handleAutoInstallFinish}
+      {areTabsVisible ? (
+        <Tabs
+          tabs={installTabs}
+          onSelect={handleInstallTabSelect}
+          selectedTab={selectedInstallTab}
+          fullWidth={true}
         />
       ) : (
         <>
-          <Tabs
-            tabs={installTabs}
-            onSelect={handleInstallTabSelect}
-            selectedTab={selectedInstallTab}
-            fullWidth={true}
+          <EngineManager
+            autoInstall={isAutoInstallationFlow}
+            onAutoInstallFinish={handleEngineAutoInstallationFinish}
+            onManualInstallSelect={handleEngineManualInstallSelect}
+            onRemoveFinish={handleEngineRemovalFinish}
+            onOperationStart={handleEngineOperationStart}
+            onOperationFinish={handleEngineOperationFinish}
           />
           <s.CommonContentContainer>
-            {renderMainButton()}
+            {((isAutoInstallationFlow && isAutoInstallationFinished) ||
+              (!isAutoInstallationFlow &&
+                config.isDigmaEngineInstalled &&
+                !isEngineOperationInProgress)) && (
+              <MainButton onClick={handleNextButtonClick}>Next</MainButton>
+            )}
           </s.CommonContentContainer>
         </>
       )}

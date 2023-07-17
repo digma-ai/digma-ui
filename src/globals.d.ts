@@ -40,6 +40,7 @@ declare global {
     recentActivityExpirationLimit?: unknown;
     recentActivityDocumentationURL?: unknown;
     wizardSkipInstallationStep?: unknown;
+    wizardFirstLaunch?: unknown;
   }
 }
 
