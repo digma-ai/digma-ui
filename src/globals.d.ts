@@ -30,8 +30,10 @@ declare global {
     isJaegerEnabled?: unknown;
     userEmail?: unknown;
     isObservabilityEnabled?: unknown;
-    isDigmaInstalled?: unknown;
-    isDigmaRunning?: unknown;
+    isDigmaEngineInstalled?: unknown;
+    isDigmaEngineRunning?: unknown;
+    isDockerInstalled?: unknown;
+    isDockerComposeInstalled?: unknown;
     assetsRefreshInterval?: unknown;
     assetsSearch?: unknown;
     insightsRefreshInterval?: unknown;

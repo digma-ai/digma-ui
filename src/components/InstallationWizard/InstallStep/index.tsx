@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useTheme } from "styled-components";
 import { actions as globalActions } from "../../common/App";
+import { ConfigContext } from "../../common/App/ConfigContext";
 import { getThemeKind } from "../../common/App/styles";
 import { Loader } from "../../common/Loader";
 import { ChatFillIcon } from "../../common/icons/ChatIFillIcon";
@@ -12,7 +13,7 @@ import { CodeSnippet } from "../CodeSnippet";
 import { Tabs } from "../Tabs";
 import { Link, MainButton, SectionDescription } from "../styles";
 import { trackingEvents } from "../tracking";
-import { AutomaticInstaller } from "./AutomaticInstaller";
+import { EngineManager } from "./EngineManager";
 import * as s from "./styles";
 import { InstallStepProps } from "./types";
 
@@ -34,7 +35,19 @@ export const InstallStep = (props: InstallStepProps) => {
   const [selectedInstallTab, setSelectedInstallTab] = useState(0);
   const [selectedDockerComposeOSTab, setSelectedDockerComposeOSTab] =
     useState(0);
-  const [isAutomaticInstallation, setIsAutomaticInstallation] = useState(true);
+  const config = useContext(ConfigContext);
+  const [isAutomaticInstallation, setIsAutomaticInstallation] = useState(
+    !config.isDigmaEngineInstalled &&
+      config.isDockerInstalled &&
+      config.isDockerComposeInstalled
+  );
+  const [isAutoInstallationFinished, setIsAutoInstallationFinished] =
+    useState(false);
+
+  const isAutoInstallTabVisible =
+    !config.isDigmaEngineInstalled &&
+    config.isDockerInstalled &&
+    config.isDockerComposeInstalled;
 
   const handleInstallDigmaButtonClick = () => {
     props.onGetDigmaDockerDesktopButtonClick();
@@ -68,6 +81,72 @@ export const InstallStep = (props: InstallStepProps) => {
         url
       }
     });
+  };
+
+  const handleSlackLinkClick = () => {
+    window.sendMessageToDigma({
+      action: globalActions.SEND_TRACKING_EVENT,
+      payload: {
+        eventName: trackingEvents.NO_DOCKER_SLACK_LINK_CLICKED
+      }
+    });
+    props.onSlackLinkClick();
+  };
+
+  const handleAutoInstallFinish = () => {
+    setIsAutoInstallationFinished(true);
+  };
+
+  const handleManualInstallSelect = () => {
+    setIsAutomaticInstallation(false);
+  };
+
+  const renderLoader = () => (
+    <s.LoaderContainer>
+      {props.connectionCheckStatus && (
+        <Loader
+          size={84}
+          status={props.connectionCheckStatus}
+          themeKind={getThemeKind(theme)}
+        />
+      )}
+    </s.LoaderContainer>
+  );
+
+  const renderMainButton = () => {
+    if (
+      isAutoInstallationFinished ||
+      (isAutoInstallTabVisible && selectedInstallTab === 0)
+    ) {
+      return <MainButton onClick={handleNextButtonClick}>Next</MainButton>;
+    }
+
+    if (!isAutoInstallTabVisible && !isConnectionCheckStarted) {
+      return (
+        <MainButton onClick={handleDigmaIsInstalledButtonClick}>
+          OK, I&apos;ve installed Digma
+        </MainButton>
+      );
+    }
+
+    switch (props.connectionCheckStatus) {
+      case "pending":
+        return <MainButton disabled={true}>Complete</MainButton>;
+      case "failure":
+        return <MainButton onClick={handleRetryButtonClick}>Retry</MainButton>;
+      case "success":
+        return (
+          <MainButton
+            icon={{
+              component: CheckmarkCircleInvertedIcon,
+              color: "#0fbf00"
+            }}
+            onClick={handleNextButtonClick}
+          >
+            Complete
+          </MainButton>
+        );
+    }
   };
 
   const renderDockerComposeInstructions = () => (
@@ -109,94 +188,109 @@ export const InstallStep = (props: InstallStepProps) => {
     }
   ];
 
-  const handleSlackLinkClick = () => {
-    window.sendMessageToDigma({
-      action: globalActions.SEND_TRACKING_EVENT,
-      payload: {
-        eventName: trackingEvents.NO_DOCKER_SLACK_LINK_CLICKED
-      }
-    });
-    props.onSlackLinkClick();
-  };
-
-  const handleManualInstallSelect = () => {
-    setIsAutomaticInstallation(false);
-  };
-
   const installTabs = [
+    ...(isAutoInstallTabVisible
+      ? [
+          {
+            title: "Auto install",
+            content: (
+              <s.TabContentContainer>
+                <EngineManager
+                  autoInstall={false}
+                  onManualInstallSelect={handleManualInstallSelect}
+                  onAutoInstallFinish={handleAutoInstallFinish}
+                />
+              </s.TabContentContainer>
+            )
+          }
+        ]
+      : []),
     {
       icon: DockerLogoIcon,
       title: "Docker Desktop",
       content: (
-        <s.TabContentContainer>
-          <s.SectionTitle>
-            <DockerLogoIcon size={24} color={"#2396ed"} />
-            Install Digma Docker extension
-          </s.SectionTitle>
-          <SectionDescription>
-            (You&apos;ll need{" "}
-            <Link onClick={() => openLinkInDefaultBrowser(DOCKER_DESKTOP_URL)}>
-              Docker Desktop
-            </Link>{" "}
-            4.10.0 or higher installed)
-          </SectionDescription>
-          <s.GetDockerExtensionButton
-            buttonType={"secondary"}
-            onClick={handleInstallDigmaButtonClick}
-          >
-            Get Digma Docker Extension
-          </s.GetDockerExtensionButton>
-        </s.TabContentContainer>
+        <>
+          <s.TabContentContainer>
+            <s.SectionTitle>
+              <DockerLogoIcon size={24} color={"#2396ed"} />
+              Install Digma Docker extension
+            </s.SectionTitle>
+            <SectionDescription>
+              (You&apos;ll need{" "}
+              <Link
+                onClick={() => openLinkInDefaultBrowser(DOCKER_DESKTOP_URL)}
+              >
+                Docker Desktop
+              </Link>{" "}
+              4.10.0 or higher installed)
+            </SectionDescription>
+            <s.GetDockerExtensionButton
+              buttonType={"secondary"}
+              onClick={handleInstallDigmaButtonClick}
+            >
+              Get Digma Docker Extension
+            </s.GetDockerExtensionButton>
+          </s.TabContentContainer>
+          {renderLoader()}
+        </>
       )
     },
     {
       icon: CodeIcon,
       title: "Docker Compose",
       content: (
-        <s.TabContentContainer>
-          <s.SectionTitle>
-            Run the following from the terminal/command line to start the Digma
-            backend:
-          </s.SectionTitle>
-          <SectionDescription>
-            (You&apos;ll need{" "}
-            <Link onClick={() => openLinkInDefaultBrowser(DOCKER_URL)}>
-              Docker
-            </Link>{" "}
-            and{" "}
-            <Link onClick={() => openLinkInDefaultBrowser(DOCKER_COMPOSE_URL)}>
-              Docker Compose
-            </Link>{" "}
-            installed)
-          </SectionDescription>
-          <s.DockerComposeTabs
-            tabs={dockerComposeOSTabs}
-            onSelect={handleSelectDockerComposeOSTab}
-            selectedTab={selectedDockerComposeOSTab}
-          />
-        </s.TabContentContainer>
+        <>
+          <s.TabContentContainer>
+            <s.SectionTitle>
+              Run the following from the terminal/command line to start the
+              Digma backend:
+            </s.SectionTitle>
+            <SectionDescription>
+              (You&apos;ll need{" "}
+              <Link onClick={() => openLinkInDefaultBrowser(DOCKER_URL)}>
+                Docker
+              </Link>{" "}
+              and{" "}
+              <Link
+                onClick={() => openLinkInDefaultBrowser(DOCKER_COMPOSE_URL)}
+              >
+                Docker Compose
+              </Link>{" "}
+              installed)
+            </SectionDescription>
+            <s.DockerComposeTabs
+              tabs={dockerComposeOSTabs}
+              onSelect={handleSelectDockerComposeOSTab}
+              selectedTab={selectedDockerComposeOSTab}
+            />
+          </s.TabContentContainer>
+          {renderLoader()}
+        </>
       )
     },
     {
       title: "I don't have Docker",
       content: (
-        <s.NoDockerTabContentContainer>
-          <s.IconBackgroundCircle>
-            <ChatFillIcon
-              size={28}
-              color={theme.mode === "light" ? "#fbfdff" : "#83858e"}
-            />
-          </s.IconBackgroundCircle>
-          <s.NoDockerText>
-            <span>We&apos;ll be adding more options soon</span>
-            <span>but please reach out via Slack and we&apos;ll see</span>
-            <span>if we can still get your Digma up and running</span>
-          </s.NoDockerText>
-          <s.SlackLink onClick={handleSlackLinkClick}>
-            <SlackLogoIcon />
-            Slack group
-          </s.SlackLink>
-        </s.NoDockerTabContentContainer>
+        <>
+          <s.NoDockerTabContentContainer>
+            <s.IconBackgroundCircle>
+              <ChatFillIcon
+                size={28}
+                color={theme.mode === "light" ? "#fbfdff" : "#83858e"}
+              />
+            </s.IconBackgroundCircle>
+            <s.NoDockerText>
+              <span>We&apos;ll be adding more options soon</span>
+              <span>but please reach out via Slack and we&apos;ll see</span>
+              <span>if we can still get your Digma up and running</span>
+            </s.NoDockerText>
+            <s.SlackLink onClick={handleSlackLinkClick}>
+              <SlackLogoIcon />
+              Slack group
+            </s.SlackLink>
+          </s.NoDockerTabContentContainer>
+          {renderLoader()}
+        </>
       )
     }
   ];
@@ -204,9 +298,10 @@ export const InstallStep = (props: InstallStepProps) => {
   return (
     <s.Container>
       {isAutomaticInstallation ? (
-        <AutomaticInstaller
+        <EngineManager
+          autoInstall={true}
           onManualInstallSelect={handleManualInstallSelect}
-          onGoToNextStep={handleNextButtonClick}
+          onAutoInstallFinish={handleAutoInstallFinish}
         />
       ) : (
         <>
@@ -217,37 +312,7 @@ export const InstallStep = (props: InstallStepProps) => {
             fullWidth={true}
           />
           <s.CommonContentContainer>
-            <s.LoaderContainer>
-              {props.connectionCheckStatus && (
-                <Loader
-                  size={84}
-                  status={props.connectionCheckStatus}
-                  themeKind={getThemeKind(theme)}
-                />
-              )}
-            </s.LoaderContainer>
-            {!isConnectionCheckStarted && (
-              <MainButton onClick={handleDigmaIsInstalledButtonClick}>
-                OK, I&apos;ve installed Digma
-              </MainButton>
-            )}
-            {props.connectionCheckStatus === "pending" && (
-              <MainButton disabled={true}>Complete</MainButton>
-            )}
-            {props.connectionCheckStatus === "failure" && (
-              <MainButton onClick={handleRetryButtonClick}>Retry</MainButton>
-            )}
-            {props.connectionCheckStatus === "success" && (
-              <MainButton
-                icon={{
-                  component: CheckmarkCircleInvertedIcon,
-                  color: "#0fbf00"
-                }}
-                onClick={handleNextButtonClick}
-              >
-                Complete
-              </MainButton>
-            )}
+            {renderMainButton()}
           </s.CommonContentContainer>
         </>
       )}

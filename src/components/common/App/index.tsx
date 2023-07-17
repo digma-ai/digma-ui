@@ -36,8 +36,10 @@ export const actions = addPrefix(ACTION_PREFIX, {
   OPEN_URL_IN_DEFAULT_BROWSER: "OPEN_URL_IN_DEFAULT_BROWSER",
   SEND_TRACKING_EVENT: "SEND_TRACKING_EVENT",
   SET_IS_JAEGER_ENABLED: "SET_IS_JAEGER_ENABLED",
-  SET_IS_DIGMA_INSTALLED: "SET_IS_DIGMA_INSTALLED",
-  SET_IS_DIGMA_RUNNING: "SET_IS_DIGMA_RUNNING"
+  SET_IS_DIGMA_ENGINE_INSTALLED: "SET_IS_DIGMA_ENGINE_INSTALLED",
+  SET_IS_DIGMA_ENGINE_RUNNING: "SET_IS_DIGMA_ENGINE_RUNNING",
+  SET_IS_DOCKER_INSTALLED: "SET_IS_DOCKER_INSTALLED",
+  SET_IS_DOCKER_COMPOSE_INSTALLED: "SET_IS_DOCKER_COMPOSE_INSTALLED"
 });
 
 const defaultMainFont = isString(window.mainFont) ? window.mainFont : "";
@@ -81,15 +83,39 @@ export const App = (props: AppProps) => {
       }
     };
 
-    const handleSetIsDigmaInstalled = (data: unknown) => {
-      if (isObject(data) && isBoolean(data.isDigmaInstalled)) {
-        setConfig({ ...config, isDigmaInstalled: data.isDigmaInstalled });
+    const handleSetIsDigmaEngineInstalled = (data: unknown) => {
+      if (isObject(data) && isBoolean(data.isDigmaEngineInstalled)) {
+        setConfig({
+          ...config,
+          isDigmaEngineInstalled: data.isDigmaEngineInstalled
+        });
       }
     };
 
-    const handleSetIsDigmaRunning = (data: unknown) => {
-      if (isObject(data) && isBoolean(data.isDigmaRunning)) {
-        setConfig({ ...config, isDigmaRunning: data.isDigmaRunning });
+    const handleSetIsDigmaEngineRunning = (data: unknown) => {
+      if (isObject(data) && isBoolean(data.isDigmaEngineRunning)) {
+        setConfig({
+          ...config,
+          isDigmaEngineRunning: data.isDigmaEngineRunning
+        });
+      }
+    };
+
+    const handleSetIsDockerInstalled = (data: unknown) => {
+      if (isObject(data) && isBoolean(data.isDockerInstalled)) {
+        setConfig({
+          ...config,
+          isDockerInstalled: data.isDockerInstalled
+        });
+      }
+    };
+
+    const handleSetIsDockerComposeInstalled = (data: unknown) => {
+      if (isObject(data) && isBoolean(data.isDockerComposeInstalled)) {
+        setConfig({
+          ...config,
+          isDockerComposeInstalled: data.isDockerComposeInstalled
+        });
       }
     };
 
@@ -101,12 +127,20 @@ export const App = (props: AppProps) => {
       handleSetIsJaegerEnabled
     );
     dispatcher.addActionListener(
-      actions.SET_IS_DIGMA_INSTALLED,
-      handleSetIsDigmaInstalled
+      actions.SET_IS_DIGMA_ENGINE_INSTALLED,
+      handleSetIsDigmaEngineInstalled
     );
     dispatcher.addActionListener(
-      actions.SET_IS_DIGMA_RUNNING,
-      handleSetIsDigmaRunning
+      actions.SET_IS_DIGMA_ENGINE_RUNNING,
+      handleSetIsDigmaEngineRunning
+    );
+    dispatcher.addActionListener(
+      actions.SET_IS_DOCKER_INSTALLED,
+      handleSetIsDockerInstalled
+    );
+    dispatcher.addActionListener(
+      actions.SET_IS_DOCKER_COMPOSE_INSTALLED,
+      handleSetIsDockerComposeInstalled
     );
 
     return () => {
@@ -118,15 +152,23 @@ export const App = (props: AppProps) => {
         handleSetIsJaegerEnabled
       );
       dispatcher.removeActionListener(
-        actions.SET_IS_DIGMA_INSTALLED,
-        handleSetIsDigmaInstalled
+        actions.SET_IS_DIGMA_ENGINE_INSTALLED,
+        handleSetIsDigmaEngineInstalled
       );
       dispatcher.removeActionListener(
-        actions.SET_IS_DIGMA_RUNNING,
-        handleSetIsDigmaRunning
+        actions.SET_IS_DIGMA_ENGINE_RUNNING,
+        handleSetIsDigmaEngineRunning
+      );
+      dispatcher.removeActionListener(
+        actions.SET_IS_DOCKER_INSTALLED,
+        handleSetIsDockerInstalled
+      );
+      dispatcher.removeActionListener(
+        actions.SET_IS_DOCKER_COMPOSE_INSTALLED,
+        handleSetIsDockerComposeInstalled
       );
     };
-  }, []);
+  }, [config]);
 
   return (
     <>

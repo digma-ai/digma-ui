@@ -44,6 +44,18 @@ export const ContentContainer = styled.div`
   }};
 `;
 
+export const ErrorMessage = styled.span`
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#e00036";
+      case "dark":
+      case "dark-jetbrains":
+        return "#f93967";
+    }
+  }};
+`;
+
 export const ButtonsContainer = styled.div`
   display: flex;
   align-items: center;

@@ -11,7 +11,8 @@ export const trackingEvents = addPrefix(
       "get digma docker extension button clicked",
     OBSERVABILITY_BUTTON_CLICKED: "set observability button clicked",
     TAB_CLICKED: "tab clicked",
-    NO_DOCKER_SLACK_LINK_CLICKED: "no docker slack link clicked"
+    NO_DOCKER_SLACK_LINK_CLICKED: "no docker slack link clicked",
+    ENGINE_ACTION_BUTTON_CLICKED: "engine action button clicked"
   },
   " "
 );
