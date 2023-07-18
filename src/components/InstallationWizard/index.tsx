@@ -66,6 +66,8 @@ const quickstartURL = getQuickstartURL(ide);
 const footerTransitionClassName = "footer";
 const TRANSITION_DURATION = 300; // in milliseconds
 
+const isFirstLaunch = window.wizardFirstLaunch === true;
+
 const firstStep = window.wizardSkipInstallationStep === true ? 1 : 0;
 
 // TO DO:
@@ -133,7 +135,22 @@ export const InstallationWizard = () => {
         }
       });
     }
-  }, [previousStep, currentStep]);
+
+    if (
+      previousStep === 1 &&
+      currentStep === 2 &&
+      isFirstLaunch &&
+      !isObservabilityEnabled
+    ) {
+      setIsObservabilityEnabled(true);
+      window.sendMessageToDigma({
+        action: actions.SET_OBSERVABILITY,
+        payload: {
+          isObservabilityEnabled: true
+        }
+      });
+    }
+  }, [previousStep, currentStep, isObservabilityEnabled]);
 
   useEffect(() => {
     if (firstStep === 1) {
