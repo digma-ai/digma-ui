@@ -8,3 +8,7 @@ export interface AsyncActionResultData {
 }
 
 export type InstallationType = "local" | "cloud";
+
+export interface SetCurrentStepData {
+  currentStep: string;
+}

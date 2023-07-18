@@ -8,6 +8,7 @@ export interface TransitionProps {
 }
 
 export interface StepData {
+  key: string;
   title: string;
   content: ReactNode;
 }
