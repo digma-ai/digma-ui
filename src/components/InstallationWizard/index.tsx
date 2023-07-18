@@ -26,8 +26,7 @@ import { trackingEvents } from "./tracking";
 import {
   AsyncActionResultData,
   AsyncActionStatus,
-  InstallationType,
-  SetCurrentStepData
+  InstallationType
 } from "./types";
 
 const EMAIL_ADDRESS_REGEX =
@@ -36,7 +35,6 @@ const EMAIL_ADDRESS_REGEX =
 const ACTION_PREFIX = "INSTALLATION_WIZARD";
 
 export const actions = addPrefix(ACTION_PREFIX, {
-  INITIALIZE: "INITIALIZE",
   FINISH: "FINISH",
   CHECK_CONNECTION: "CHECK_CONNECTION",
   SET_CONNECTION_CHECK_RESULT: "SET_CONNECTION_CHECK_RESULT",
@@ -48,8 +46,7 @@ export const actions = addPrefix(ACTION_PREFIX, {
   SET_INSTALL_DIGMA_ENGINE_RESULT: "SET_INSTALL_DIGMA_ENGINE_RESULT",
   SET_UNINSTALL_DIGMA_ENGINE_RESULT: "SET_UNINSTALL_DIGMA_ENGINE_RESULT",
   SET_START_DIGMA_ENGINE_RESULT: "SET_START_DIGMA_ENGINE_RESULT",
-  SET_STOP_DIGMA_ENGINE_RESULT: "SET_STOP_DIGMA_ENGINE_RESULT",
-  SET_CURRENT_STEP: "SET_CURRENT_STEP"
+  SET_STOP_DIGMA_ENGINE_RESULT: "SET_STOP_DIGMA_ENGINE_RESULT"
 });
 
 const DIGMA_DOCKER_EXTENSION_URL =
@@ -173,38 +170,15 @@ export const InstallationWizard = () => {
       setConnectionCheckStatus(result);
     };
 
-    const handleSetCurrentStepData = (data: unknown) => {
-      // TODO: refactor to use SpanData array
-      const steps = ["install", "observability", "finish"];
-
-      const newCurrentStep = steps.findIndex(
-        (x) => x === (data as SetCurrentStepData).currentStep
-      );
-
-      if (newCurrentStep >= 0 && newCurrentStep <= steps.length - 1) {
-        setCurrentStep(newCurrentStep);
-      }
-    };
-
     dispatcher.addActionListener(
       actions.SET_CONNECTION_CHECK_RESULT,
       handleConnectionCheckResultData
-    );
-
-    dispatcher.addActionListener(
-      actions.SET_CURRENT_STEP,
-      handleSetCurrentStepData
     );
 
     return () => {
       dispatcher.removeActionListener(
         actions.SET_CONNECTION_CHECK_RESULT,
         handleConnectionCheckResultData
-      );
-
-      dispatcher.removeActionListener(
-        actions.SET_CURRENT_STEP,
-        handleSetCurrentStepData
       );
     };
   }, []);
