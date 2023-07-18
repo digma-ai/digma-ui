@@ -73,12 +73,6 @@ const isFirstLaunch = window.wizardFirstLaunch === true;
 
 const firstStep = window.wizardSkipInstallationStep === true ? 1 : 0;
 
-// TO DO:
-// add environment variable for presetting the correct installation type
-// if Digma already installed
-const preselectedInstallationType =
-  window.wizardSkipInstallationStep === true ? "local" : undefined;
-
 const getStepStatus = (index: number, currentStep: number): StepStatus => {
   if (index < currentStep) {
     return "completed";
@@ -106,9 +100,18 @@ export const InstallationWizard = () => {
   const [connectionCheckStatus, setConnectionCheckStatus] =
     useState<AsyncActionStatus>();
   const footerContentRef = useRef<HTMLDivElement>(null);
+
+  // TO DO:
+  // add environment variable for presetting the correct installation type
+  // if Digma already installed
+  const preselectedInstallationType =
+    window.wizardSkipInstallationStep === true || config.isDigmaEngineInstalled
+      ? "local"
+      : undefined;
   const [installationType, setInstallationType] = useState<
     InstallationType | undefined
   >(preselectedInstallationType);
+
   const theme = useTheme();
   const themeKind = getThemeKind(theme);
   const [email, setEmail] = useState(config.userEmail);
