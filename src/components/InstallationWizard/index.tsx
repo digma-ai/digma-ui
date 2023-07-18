@@ -36,6 +36,7 @@ const EMAIL_ADDRESS_REGEX =
 const ACTION_PREFIX = "INSTALLATION_WIZARD";
 
 export const actions = addPrefix(ACTION_PREFIX, {
+  INITIALIZE: "INITIALIZE",
   FINISH: "FINISH",
   CHECK_CONNECTION: "CHECK_CONNECTION",
   SET_CONNECTION_CHECK_RESULT: "SET_CONNECTION_CHECK_RESULT",
@@ -154,6 +155,57 @@ export const InstallationWizard = () => {
     }
   }, [previousStep, currentStep, isObservabilityEnabled]);
 
+  useEffect(() => {
+    if (firstStep === 1) {
+      window.sendMessageToDigma({
+        action: globalActions.SEND_TRACKING_EVENT,
+        payload: {
+          eventName: trackingEvents.INSTALL_STEP_AUTOMATICALLY_PASSED
+        }
+      });
+    }
+
+    const handleConnectionCheckResultData = (data: unknown) => {
+      const result = (data as AsyncActionResultData).result;
+      setConnectionCheckStatus(result);
+    };
+
+    const handleSetCurrentStepData = (data: unknown) => {
+      // TODO: refactor to use SpanData array
+      const steps = ["install", "observability", "finish"];
+
+      const newCurrentStep = steps.findIndex(
+        (x) => x === (data as SetCurrentStepData).currentStep
+      );
+
+      if (newCurrentStep >= 0 && newCurrentStep <= steps.length - 1) {
+        setCurrentStep(newCurrentStep);
+      }
+    };
+
+    dispatcher.addActionListener(
+      actions.SET_CONNECTION_CHECK_RESULT,
+      handleConnectionCheckResultData
+    );
+
+    dispatcher.addActionListener(
+      actions.SET_CURRENT_STEP,
+      handleSetCurrentStepData
+    );
+
+    return () => {
+      dispatcher.removeActionListener(
+        actions.SET_CONNECTION_CHECK_RESULT,
+        handleConnectionCheckResultData
+      );
+
+      dispatcher.removeActionListener(
+        actions.SET_CURRENT_STEP,
+        handleSetCurrentStepData
+      );
+    };
+  }, []);
+
   const handleConnectionStatusCheck = () => {
     setConnectionCheckStatus("pending");
     window.sendMessageToDigma({
@@ -256,7 +308,6 @@ export const InstallationWizard = () => {
     });
   };
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const steps: StepData[] = [
     {
       key: "install",
@@ -309,54 +360,6 @@ export const InstallationWizard = () => {
       )
     }
   ];
-
-  useEffect(() => {
-    if (firstStep === 1) {
-      window.sendMessageToDigma({
-        action: globalActions.SEND_TRACKING_EVENT,
-        payload: {
-          eventName: trackingEvents.INSTALL_STEP_AUTOMATICALLY_PASSED
-        }
-      });
-    }
-
-    const handleConnectionCheckResultData = (data: unknown) => {
-      const result = (data as AsyncActionResultData).result;
-      setConnectionCheckStatus(result);
-    };
-
-    const handleSetCurrentStepData = (data: unknown) => {
-      const newCurrentStep = steps.findIndex(
-        (x) => x.key === (data as SetCurrentStepData).currentStep
-      );
-
-      if (newCurrentStep >= 0) {
-        setCurrentStep(newCurrentStep);
-      }
-    };
-
-    dispatcher.addActionListener(
-      actions.SET_CONNECTION_CHECK_RESULT,
-      handleConnectionCheckResultData
-    );
-
-    dispatcher.addActionListener(
-      actions.SET_CURRENT_STEP,
-      handleSetCurrentStepData
-    );
-
-    return () => {
-      dispatcher.removeActionListener(
-        actions.SET_CONNECTION_CHECK_RESULT,
-        handleConnectionCheckResultData
-      );
-
-      dispatcher.removeActionListener(
-        actions.SET_CURRENT_STEP,
-        handleSetCurrentStepData
-      );
-    };
-  }, [steps]);
 
   return (
     <s.Container>
