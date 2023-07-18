@@ -379,18 +379,17 @@ export const InstallationWizard = () => {
           </s.InstallationTypeButtonsContainer>
         </s.WelcomeContainer>
       )}
-      {steps.map((step, i) => (
-        <Step
-          key={step.title}
-          onGoToStep={handleGoToStep}
-          data={step}
-          stepIndex={i}
-          status={
-            installationType ? getStepStatus(i, currentStep) : "not-completed"
-          }
-          transitionDuration={TRANSITION_DURATION}
-        />
-      ))}
+      {installationType &&
+        steps.map((step, i) => (
+          <Step
+            key={step.title}
+            onGoToStep={handleGoToStep}
+            data={step}
+            stepIndex={i}
+            status={getStepStatus(i, currentStep)}
+            transitionDuration={TRANSITION_DURATION}
+          />
+        ))}
 
       <s.Footer>
         {installationType && (
