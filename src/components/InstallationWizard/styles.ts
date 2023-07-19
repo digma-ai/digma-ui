@@ -234,6 +234,7 @@ export const Badge = styled.span`
   font-weight: 400;
   border-radius: 4px;
   padding: 2px 4px;
+  text-align: center;
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
