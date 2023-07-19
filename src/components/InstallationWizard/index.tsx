@@ -456,6 +456,7 @@ export const InstallationWizard = () => {
                         <TextField
                           onChange={handleUserEmailInputChange}
                           value={userEmail}
+                          placeholder={"Enter your email address to register"}
                           inputEndContent={
                             <Button
                               disabled={userEmail.length === 0}
