@@ -244,3 +244,28 @@ export const Badge = styled.span`
     }
   }};
 `;
+
+export const SubscriptionContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+export const SubscriptionSuccessMessage = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: normal;
+  margin-bottom: 43px;
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#1dc693";
+      case "dark":
+      case "dark-jetbrains":
+        return "#67d28b";
+    }
+  }};
+`;
