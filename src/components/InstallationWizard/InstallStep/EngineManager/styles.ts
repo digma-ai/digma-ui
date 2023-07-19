@@ -30,7 +30,7 @@ export const ContentContainer = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 12px;
-  font-size: 10px;
+  font-size: 12px;
   font-style: normal;
   font-weight: 500;
   color: ${({ theme }) => {
