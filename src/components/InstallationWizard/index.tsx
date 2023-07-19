@@ -405,7 +405,7 @@ export const InstallationWizard = () => {
       {installationType &&
         steps.map((step, i) => (
           <Step
-            key={step.title}
+            key={step.key}
             onGoToStep={handleGoToStep}
             data={step}
             stepIndex={i}
