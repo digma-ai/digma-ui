@@ -11,13 +11,17 @@ import { addPrefix } from "../../utils/addPrefix";
 import { actions as globalActions } from "../common/App";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { getThemeKind } from "../common/App/styles";
+import { Button } from "../common/Button";
+import { Checkbox } from "../common/Checkbox";
+import { Loader } from "../common/Loader";
+import { TextField } from "../common/TextField";
 import { CloudDownloadIcon } from "../common/icons/CloudDownloadIcon";
 import { DigmaGreetingIcon } from "../common/icons/DigmaGreetingIcon";
 import { OpenTelemetryDisplayIcon } from "../common/icons/OpenTelemetryDisplayIcon";
 import { SlackLogoIcon } from "../common/icons/SlackLogoIcon";
 import { FinishStep } from "./FinishStep";
 import { InstallStep } from "./InstallStep";
-import { InstallationTypeButton } from "./InstallationTypeButton";
+import { InstallationTypeCard } from "./InstallationTypeCard";
 import { ObservabilityStep } from "./ObservabilityStep";
 import { Step } from "./Step";
 import { StepData, StepStatus } from "./Step/types";
@@ -97,6 +101,8 @@ export const InstallationWizard = () => {
   const [connectionCheckStatus, setConnectionCheckStatus] =
     useState<AsyncActionStatus>();
   const footerContentRef = useRef<HTMLDivElement>(null);
+  const [userEmail, setUserEmail] = useState("");
+  const [isUserEmailCaptured, setIsUserEmailCaptured] = useState(false);
 
   // TO DO:
   // add environment variable for presetting the correct installation type
@@ -117,6 +123,10 @@ export const InstallationWizard = () => {
   );
   const [isEmailValidating, setIsEmailValidating] = useState(false);
   const debouncedEmail = useDebounce(email, 1000);
+  const [
+    isDigmaCloudNotificationCheckboxChecked,
+    setIsDigmaCloudNotificationCheckboxChecked
+  ] = useState(false);
 
   useEffect(() => {
     if (email === debouncedEmail) {
@@ -285,6 +295,30 @@ export const InstallationWizard = () => {
     });
   };
 
+  const handleDigmaCloudNotificationCheckboxChange = (value: boolean) => {
+    setIsDigmaCloudNotificationCheckboxChecked(value);
+  };
+
+  const handleUserEmailInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setUserEmail(e.target.value);
+  };
+
+  const handleEmailAddButton = () => {
+    if (userEmail.length > 0) {
+      setIsUserEmailCaptured(true);
+      window.sendMessageToDigma({
+        action: globalActions.SEND_TRACKING_EVENT,
+        payload: {
+          eventName:
+            trackingEvents.DIGMA_CLOUD_AVAILABILITY_NOTIFICATION_EMAIL_ADDRESS_CAPTURED,
+          data: {
+            email: userEmail
+          }
+        }
+      });
+    }
+  };
+
   const steps: StepData[] = [
     {
       key: "install",
@@ -365,7 +399,7 @@ export const InstallationWizard = () => {
             Select installation type:
           </s.InstallationTypeText>
           <s.InstallationTypeButtonsContainer>
-            <InstallationTypeButton
+            <InstallationTypeCard
               key={"local"}
               installationType={"local"}
               onClick={handleInstallationTypeButtonClick}
@@ -383,7 +417,7 @@ export const InstallationWizard = () => {
                 </>
               }
             />
-            <InstallationTypeButton
+            <InstallationTypeCard
               key={"cloud"}
               installationType={"cloud"}
               onClick={handleInstallationTypeButtonClick}
@@ -396,6 +430,45 @@ export const InstallationWizard = () => {
               }
               description={
                 <>Data will be sent anonymously to Digma for processing</>
+              }
+              additionalContent={
+                <s.SubscriptionContentContainer>
+                  {isUserEmailCaptured ? (
+                    <s.SubscriptionSuccessMessage>
+                      <Loader
+                        size={24}
+                        status={"success"}
+                        themeKind={themeKind}
+                      />
+                      Thank you for subscription!
+                    </s.SubscriptionSuccessMessage>
+                  ) : (
+                    <>
+                      <Checkbox
+                        id={"digma-cloud-notification"}
+                        onChange={handleDigmaCloudNotificationCheckboxChange}
+                        label={
+                          "Let me know when Digma Cloud will become available"
+                        }
+                        value={isDigmaCloudNotificationCheckboxChecked}
+                      />
+                      {isDigmaCloudNotificationCheckboxChecked && (
+                        <TextField
+                          onChange={handleUserEmailInputChange}
+                          value={userEmail}
+                          inputEndContent={
+                            <Button
+                              disabled={userEmail.length === 0}
+                              onClick={handleEmailAddButton}
+                            >
+                              Add
+                            </Button>
+                          }
+                        />
+                      )}
+                    </>
+                  )}
+                </s.SubscriptionContentContainer>
               }
               disabled={true}
             />
