@@ -47,6 +47,7 @@ export const ContentContainer = styled.div`
 export const ErrorMessage = styled.span`
   word-break: break-word;
   max-width: 300px;
+  white-space: pre-line;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
