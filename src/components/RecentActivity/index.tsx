@@ -15,6 +15,7 @@ import { RecentActivityTable, isRecent } from "./RecentActivityTable";
 import * as s from "./styles";
 
 import { isString } from "../../typeGuards/isString";
+import { actions as globalActions } from "../common/App";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { EntrySpan, RecentActivityData, RecentActivityProps } from "./types";
 
@@ -33,6 +34,15 @@ const actions = addPrefix(ACTION_PREFIX, {
   CLOSE_LIVE_VIEW: "CLOSE_LIVE_VIEW"
 });
 
+const handleDigWithDigmaLinkClick = () => {
+  window.sendMessageToDigma({
+    action: globalActions.OPEN_URL_IN_DEFAULT_BROWSER,
+    payload: {
+      url: documentationURL
+    }
+  });
+};
+
 const renderNoData = () => {
   return (
     <s.NoDataContainer>
@@ -45,12 +55,7 @@ const renderNoData = () => {
           <s.NoDataText>
             Check out our documentation to learn how to
           </s.NoDataText>
-
-          <s.DocumentationLink
-            href={documentationURL}
-            rel={"noopener noreferrer"}
-            target={"_blank"}
-          >
+          <s.DocumentationLink onClick={handleDigWithDigmaLinkClick}>
             dig with digma
           </s.DocumentationLink>
         </>
