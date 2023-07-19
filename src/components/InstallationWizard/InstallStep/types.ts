@@ -1,7 +1,7 @@
-import { ConnectionCheckStatus } from "../types";
+import { AsyncActionStatus } from "../types";
 
 export interface InstallStepProps {
-  connectionCheckStatus: ConnectionCheckStatus;
+  connectionCheckStatus: AsyncActionStatus;
   onConnectionStatusCheck: () => void;
   onResetConnectionCheckStatus: () => void;
   onGetDigmaDockerDesktopButtonClick: () => void;

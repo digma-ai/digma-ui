@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { TabProps } from "./types";
 
 export const Container = styled.li<TabProps>`
-  box-sizing: border-box;
   font-weight: 500;
   font-size: 12px;
   line-height: 14px;
@@ -10,6 +9,8 @@ export const Container = styled.li<TabProps>`
   display: flex;
   gap: 4px;
   user-select: none;
+  text-align: center;
+  align-items: center;
   cursor: ${({ isDisabled }) => (isDisabled ? "initial" : "pointer")};
   border-bottom: ${({ isSelected }) =>
     isSelected ? "3px solid #5154ec" : "none"};
@@ -43,4 +44,9 @@ export const Container = styled.li<TabProps>`
       }
     }};
   }
+`;
+
+export const IconContainer = styled.div`
+  display: flex;
+  flex-shrink: 0;
 `;

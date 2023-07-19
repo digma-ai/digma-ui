@@ -1,12 +1,14 @@
-export type ConnectionCheckResult = "success" | "failure";
+export type AsyncActionResult = "success" | "failure";
 
-export type ConnectionCheckStatus =
-  | ConnectionCheckResult
-  | "pending"
-  | undefined;
+export type AsyncActionStatus = AsyncActionResult | "pending" | undefined;
 
-export interface ConnectionCheckResultData {
-  result: ConnectionCheckResult;
+export interface AsyncActionResultData {
+  result: AsyncActionResult;
+  error?: string;
 }
 
 export type InstallationType = "local" | "cloud";
+
+export interface SetCurrentStepData {
+  currentStep: string;
+}

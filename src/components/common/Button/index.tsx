@@ -11,6 +11,46 @@ const getIconColor = (
   isPressed: boolean,
   buttonType: ButtonType
 ): string => {
+  if (buttonType === "tertiary") {
+    if (isDisabled) {
+      switch (theme.mode) {
+        case "light":
+          return "#b9c0d4";
+        case "dark":
+        case "dark-jetbrains":
+          return "#49494d";
+      }
+    }
+
+    if (isPressed) {
+      switch (theme.mode) {
+        case "light":
+          return "#5154ec";
+        case "dark":
+        case "dark-jetbrains":
+          return "#7891d0";
+      }
+    }
+
+    if (isHovered || isFocused) {
+      switch (theme.mode) {
+        case "light":
+          return "#5154ec";
+        case "dark":
+        case "dark-jetbrains":
+          return "#92affa";
+      }
+    }
+
+    switch (theme.mode) {
+      case "light":
+        return "#3538cd";
+      case "dark":
+      case "dark-jetbrains":
+        return "#e2e7ff";
+    }
+  }
+
   if (buttonType === "secondary") {
     if (isDisabled) {
       switch (theme.mode) {
@@ -47,7 +87,7 @@ const getIconColor = (
         return "#3538cd";
       case "dark":
       case "dark-jetbrains":
-        return "#b9c2eb";
+        return "#e2e7ff";
     }
   }
 
@@ -64,7 +104,7 @@ const getIconColor = (
   if (isPressed) {
     switch (theme.mode) {
       case "light":
-        return "#f1f5fa";
+        return "#fbfdff";
       case "dark":
       case "dark-jetbrains":
         return "#dadada";
@@ -72,16 +112,10 @@ const getIconColor = (
   }
 
   if (isFocused || isHovered) {
-    switch (theme.mode) {
-      case "light":
-        return "#e2e7ff";
-      case "dark":
-      case "dark-jetbrains":
-        return "#b9c2eb";
-    }
+    return "#e2e7ff";
   }
 
-  return "#b9c2eb";
+  return "#e2e7ff";
 };
 
 export const Button = (props: ButtonProps) => {

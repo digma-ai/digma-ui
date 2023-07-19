@@ -28,14 +28,19 @@ declare global {
     mainFont?: unknown;
     codeFont?: unknown;
     isJaegerEnabled?: unknown;
-    isObservabilityEnabled?: unknown;
     userEmail?: unknown;
-    recentActivityExpirationLimit?: unknown;
-    recentActivityDocumentationURL?: unknown;
-    wizardSkipInstallationStep?: unknown;
+    isObservabilityEnabled?: unknown;
+    isDigmaEngineInstalled?: unknown;
+    isDigmaEngineRunning?: unknown;
+    isDockerInstalled?: unknown;
+    isDockerComposeInstalled?: unknown;
     assetsRefreshInterval?: unknown;
     assetsSearch?: unknown;
     insightsRefreshInterval?: unknown;
+    recentActivityExpirationLimit?: unknown;
+    recentActivityDocumentationURL?: unknown;
+    wizardSkipInstallationStep?: unknown;
+    wizardFirstLaunch?: unknown;
   }
 }
 

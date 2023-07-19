@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ThemeProvider } from "styled-components";
 import { dispatcher } from "../../../dispatcher";
 import { Mode } from "../../../globals";
+import { isBoolean } from "../../../typeGuards/isBoolean";
 import { isObject } from "../../../typeGuards/isObject";
 import { isString } from "../../../typeGuards/isString";
 import { addPrefix } from "../../../utils/addPrefix";
+import { ConfigContext } from "./ConfigContext";
 import { GlobalStyle } from "./styles";
 import { AppProps } from "./types";
 
@@ -33,7 +35,11 @@ export const actions = addPrefix(ACTION_PREFIX, {
   SET_CODE_FONT: "SET_CODE_FONT",
   OPEN_URL_IN_DEFAULT_BROWSER: "OPEN_URL_IN_DEFAULT_BROWSER",
   SEND_TRACKING_EVENT: "SEND_TRACKING_EVENT",
-  SET_IS_JAEGER_ENABLED: "SET_IS_JAEGER_ENABLED"
+  SET_IS_JAEGER_ENABLED: "SET_IS_JAEGER_ENABLED",
+  SET_IS_DIGMA_ENGINE_INSTALLED: "SET_IS_DIGMA_ENGINE_INSTALLED",
+  SET_IS_DIGMA_ENGINE_RUNNING: "SET_IS_DIGMA_ENGINE_RUNNING",
+  SET_IS_DOCKER_INSTALLED: "SET_IS_DOCKER_INSTALLED",
+  SET_IS_DOCKER_COMPOSE_INSTALLED: "SET_IS_DOCKER_COMPOSE_INSTALLED"
 });
 
 const defaultMainFont = isString(window.mainFont) ? window.mainFont : "";
@@ -43,6 +49,7 @@ export const App = (props: AppProps) => {
   const [mode, setMode] = useState(getMode());
   const [mainFont, setMainFont] = useState(defaultMainFont);
   const [codeFont, setCodeFont] = useState(defaultCodeFont);
+  const [config, setConfig] = useState(useContext(ConfigContext));
 
   useEffect(() => {
     if (!props.theme) {
@@ -70,23 +77,110 @@ export const App = (props: AppProps) => {
       }
     };
 
+    const handleSetIsJaegerEnabled = (data: unknown) => {
+      if (isObject(data) && isBoolean(data.isJaegerEnabled)) {
+        setConfig((config) => ({
+          ...config,
+          isJaegerEnabled: data.isJaegerEnabled as boolean
+        }));
+      }
+    };
+
+    const handleSetIsDigmaEngineInstalled = (data: unknown) => {
+      if (isObject(data) && isBoolean(data.isDigmaEngineInstalled)) {
+        setConfig((config) => ({
+          ...config,
+          isDigmaEngineInstalled: data.isDigmaEngineInstalled as boolean
+        }));
+      }
+    };
+
+    const handleSetIsDigmaEngineRunning = (data: unknown) => {
+      if (isObject(data) && isBoolean(data.isDigmaEngineRunning)) {
+        setConfig((config) => ({
+          ...config,
+          isDigmaEngineRunning: data.isDigmaEngineRunning as boolean
+        }));
+      }
+    };
+
+    const handleSetIsDockerInstalled = (data: unknown) => {
+      if (isObject(data) && isBoolean(data.isDockerInstalled)) {
+        setConfig((config) => ({
+          ...config,
+          isDockerInstalled: data.isDockerInstalled as boolean
+        }));
+      }
+    };
+
+    const handleSetIsDockerComposeInstalled = (data: unknown) => {
+      if (isObject(data) && isBoolean(data.isDockerComposeInstalled)) {
+        setConfig((config) => ({
+          ...config,
+          isDockerComposeInstalled: data.isDockerComposeInstalled as boolean
+        }));
+      }
+    };
+
     dispatcher.addActionListener(actions.SET_THEME, handleSetTheme);
     dispatcher.addActionListener(actions.SET_MAIN_FONT, handleSetMainFont);
     dispatcher.addActionListener(actions.SET_CODE_FONT, handleSetCodeFont);
+    dispatcher.addActionListener(
+      actions.SET_IS_JAEGER_ENABLED,
+      handleSetIsJaegerEnabled
+    );
+    dispatcher.addActionListener(
+      actions.SET_IS_DIGMA_ENGINE_INSTALLED,
+      handleSetIsDigmaEngineInstalled
+    );
+    dispatcher.addActionListener(
+      actions.SET_IS_DIGMA_ENGINE_RUNNING,
+      handleSetIsDigmaEngineRunning
+    );
+    dispatcher.addActionListener(
+      actions.SET_IS_DOCKER_INSTALLED,
+      handleSetIsDockerInstalled
+    );
+    dispatcher.addActionListener(
+      actions.SET_IS_DOCKER_COMPOSE_INSTALLED,
+      handleSetIsDockerComposeInstalled
+    );
 
     return () => {
       dispatcher.removeActionListener(actions.SET_THEME, handleSetTheme);
       dispatcher.removeActionListener(actions.SET_MAIN_FONT, handleSetMainFont);
       dispatcher.removeActionListener(actions.SET_CODE_FONT, handleSetCodeFont);
+      dispatcher.removeActionListener(
+        actions.SET_IS_JAEGER_ENABLED,
+        handleSetIsJaegerEnabled
+      );
+      dispatcher.removeActionListener(
+        actions.SET_IS_DIGMA_ENGINE_INSTALLED,
+        handleSetIsDigmaEngineInstalled
+      );
+      dispatcher.removeActionListener(
+        actions.SET_IS_DIGMA_ENGINE_RUNNING,
+        handleSetIsDigmaEngineRunning
+      );
+      dispatcher.removeActionListener(
+        actions.SET_IS_DOCKER_INSTALLED,
+        handleSetIsDockerInstalled
+      );
+      dispatcher.removeActionListener(
+        actions.SET_IS_DOCKER_COMPOSE_INSTALLED,
+        handleSetIsDockerComposeInstalled
+      );
     };
   }, []);
 
   return (
     <>
-      <ThemeProvider theme={{ mode, mainFont, codeFont }}>
-        <GlobalStyle />
-        {props.children}
-      </ThemeProvider>
+      <ConfigContext.Provider value={config}>
+        <ThemeProvider theme={{ mode, mainFont, codeFont }}>
+          <GlobalStyle />
+          {props.children}
+        </ThemeProvider>
+      </ConfigContext.Provider>
     </>
   );
 };

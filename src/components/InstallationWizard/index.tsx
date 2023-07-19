@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useContext, useEffect, useRef, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import { useTheme } from "styled-components";
 import { SLACK_WORKSPACE_URL } from "../../constants";
@@ -7,9 +7,9 @@ import { IDE } from "../../globals";
 import { useDebounce } from "../../hooks/useDebounce";
 import { usePrevious } from "../../hooks/usePrevious";
 import { ide } from "../../platform";
-import { isString } from "../../typeGuards/isString";
 import { addPrefix } from "../../utils/addPrefix";
 import { actions as globalActions } from "../common/App";
+import { ConfigContext } from "../common/App/ConfigContext";
 import { getThemeKind } from "../common/App/styles";
 import { CloudDownloadIcon } from "../common/icons/CloudDownloadIcon";
 import { DigmaGreetingIcon } from "../common/icons/DigmaGreetingIcon";
@@ -24,8 +24,8 @@ import { StepData, StepStatus } from "./Step/types";
 import * as s from "./styles";
 import { trackingEvents } from "./tracking";
 import {
-  ConnectionCheckResultData,
-  ConnectionCheckStatus,
+  AsyncActionResultData,
+  AsyncActionStatus,
   InstallationType
 } from "./types";
 
@@ -34,11 +34,19 @@ const EMAIL_ADDRESS_REGEX =
 
 const ACTION_PREFIX = "INSTALLATION_WIZARD";
 
-const actions = addPrefix(ACTION_PREFIX, {
+export const actions = addPrefix(ACTION_PREFIX, {
   FINISH: "FINISH",
   CHECK_CONNECTION: "CHECK_CONNECTION",
   SET_CONNECTION_CHECK_RESULT: "SET_CONNECTION_CHECK_RESULT",
-  SET_OBSERVABILITY: "SET_OBSERVABILITY"
+  SET_OBSERVABILITY: "SET_OBSERVABILITY",
+  INSTALL_DIGMA_ENGINE: "INSTALL_DIGMA_ENGINE",
+  UNINSTALL_DIGMA_ENGINE: "UNINSTALL_DIGMA_ENGINE",
+  START_DIGMA_ENGINE: "START_DIGMA_ENGINE",
+  STOP_DIGMA_ENGINE: "STOP_DIGMA_ENGINE",
+  SET_INSTALL_DIGMA_ENGINE_RESULT: "SET_INSTALL_DIGMA_ENGINE_RESULT",
+  SET_UNINSTALL_DIGMA_ENGINE_RESULT: "SET_UNINSTALL_DIGMA_ENGINE_RESULT",
+  SET_START_DIGMA_ENGINE_RESULT: "SET_START_DIGMA_ENGINE_RESULT",
+  SET_STOP_DIGMA_ENGINE_RESULT: "SET_STOP_DIGMA_ENGINE_RESULT"
 });
 
 const DIGMA_DOCKER_EXTENSION_URL =
@@ -58,18 +66,9 @@ const quickstartURL = getQuickstartURL(ide);
 const footerTransitionClassName = "footer";
 const TRANSITION_DURATION = 300; // in milliseconds
 
+const isFirstLaunch = window.wizardFirstLaunch === true;
+
 const firstStep = window.wizardSkipInstallationStep === true ? 1 : 0;
-
-const preselectedIsObservabilityEnabled =
-  window.isObservabilityEnabled === true;
-
-const preselectedEmail = isString(window.userEmail) ? window.userEmail : "";
-
-// TO DO:
-// add environment variable for presetting the correct installation type
-// if Digma already installed
-const preselectedInstallationType =
-  window.wizardSkipInstallationStep === true ? "local" : undefined;
 
 const getStepStatus = (index: number, currentStep: number): StepStatus => {
   if (index < currentStep) {
@@ -88,21 +87,31 @@ const validateEmailFormat = (email: string): boolean => {
 };
 
 export const InstallationWizard = () => {
+  const config = useContext(ConfigContext);
   const [currentStep, setCurrentStep] = useState<number>(firstStep);
   const previousStep = usePrevious(currentStep);
   const [isAlreadyUsingOtel, setIsAlreadyUsingOtel] = useState<boolean>(false);
   const [isObservabilityEnabled, setIsObservabilityEnabled] = useState<boolean>(
-    preselectedIsObservabilityEnabled
+    config.isObservabilityEnabled
   );
   const [connectionCheckStatus, setConnectionCheckStatus] =
-    useState<ConnectionCheckStatus>();
+    useState<AsyncActionStatus>();
   const footerContentRef = useRef<HTMLDivElement>(null);
+
+  // TO DO:
+  // add environment variable for presetting the correct installation type
+  // if Digma already installed
+  const preselectedInstallationType =
+    window.wizardSkipInstallationStep === true || config.isDigmaEngineInstalled
+      ? "local"
+      : undefined;
   const [installationType, setInstallationType] = useState<
     InstallationType | undefined
   >(preselectedInstallationType);
+
   const theme = useTheme();
   const themeKind = getThemeKind(theme);
-  const [email, setEmail] = useState(preselectedEmail);
+  const [email, setEmail] = useState(config.userEmail);
   const [isEmailValid, setIsEmailValid] = useState(
     email.length > 0 ? validateEmailFormat(email) : undefined
   );
@@ -129,7 +138,22 @@ export const InstallationWizard = () => {
         }
       });
     }
-  }, [previousStep, currentStep]);
+
+    if (
+      previousStep === 1 &&
+      currentStep === 2 &&
+      isFirstLaunch &&
+      !isObservabilityEnabled
+    ) {
+      setIsObservabilityEnabled(true);
+      window.sendMessageToDigma({
+        action: actions.SET_OBSERVABILITY,
+        payload: {
+          isObservabilityEnabled: true
+        }
+      });
+    }
+  }, [previousStep, currentStep, isObservabilityEnabled]);
 
   useEffect(() => {
     if (firstStep === 1) {
@@ -142,7 +166,7 @@ export const InstallationWizard = () => {
     }
 
     const handleConnectionCheckResultData = (data: unknown) => {
-      const result = (data as ConnectionCheckResultData).result;
+      const result = (data as AsyncActionResultData).result;
       setConnectionCheckStatus(result);
     };
 
@@ -263,6 +287,7 @@ export const InstallationWizard = () => {
 
   const steps: StepData[] = [
     {
+      key: "install",
       title: "Get Digma up and running",
       content: (
         <InstallStep
@@ -281,6 +306,7 @@ export const InstallationWizard = () => {
     ...(ide === "IDEA"
       ? [
           {
+            key: "observability",
             title: isAlreadyUsingOtel
               ? "If you're already using OpenTelemetry…"
               : "Observe your application",
@@ -297,6 +323,7 @@ export const InstallationWizard = () => {
         ]
       : []),
     {
+      key: "finish",
       title: "You're done!",
       content: (
         <FinishStep
@@ -375,18 +402,17 @@ export const InstallationWizard = () => {
           </s.InstallationTypeButtonsContainer>
         </s.WelcomeContainer>
       )}
-      {steps.map((step, i) => (
-        <Step
-          key={step.title}
-          onGoToStep={handleGoToStep}
-          data={step}
-          stepIndex={i}
-          status={
-            installationType ? getStepStatus(i, currentStep) : "not-completed"
-          }
-          transitionDuration={TRANSITION_DURATION}
-        />
-      ))}
+      {installationType &&
+        steps.map((step, i) => (
+          <Step
+            key={step.key}
+            onGoToStep={handleGoToStep}
+            data={step}
+            stepIndex={i}
+            status={getStepStatus(i, currentStep)}
+            transitionDuration={TRANSITION_DURATION}
+          />
+        ))}
 
       <s.Footer>
         {installationType && (

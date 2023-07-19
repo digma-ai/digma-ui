@@ -67,18 +67,20 @@ export const Tab = (props: TabProps) => {
       onBlur={handleBlur}
       fullWidth={props.fullWidth}
     >
-      {props.icon && (
-        <props.icon
-          size={14}
-          color={getIconColor(
-            theme,
-            Boolean(props.isDisabled),
-            isHovered,
-            isFocused,
-            props.isSelected
-          )}
-        />
-      )}
+      <s.IconContainer>
+        {props.icon && (
+          <props.icon
+            size={14}
+            color={getIconColor(
+              theme,
+              Boolean(props.isDisabled),
+              isHovered,
+              isFocused,
+              props.isSelected
+            )}
+          />
+        )}
+      </s.IconContainer>
       {props.children}
     </s.Container>
   );
