@@ -346,10 +346,8 @@ export const InstallStep = (props: InstallStepProps) => {
             onOperationFinish={handleEngineOperationFinish}
           />
           <s.CommonContentContainer>
-            {((isAutoInstallationFlow && isAutoInstallationFinished) ||
-              (!isAutoInstallationFlow &&
-                config.isDigmaEngineInstalled &&
-                !isEngineOperationInProgress)) && (
+            {(isAutoInstallationFinished ||
+              (!isFirstLaunch && !isEngineOperationInProgress)) && (
               <MainButton onClick={handleNextButtonClick}>Next</MainButton>
             )}
           </s.CommonContentContainer>
