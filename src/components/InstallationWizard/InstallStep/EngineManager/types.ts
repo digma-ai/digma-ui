@@ -1,10 +1,10 @@
 import { MemoExoticComponent } from "react";
 import { IconProps } from "../../../common/icons/types";
-import { AsyncActionStatus } from "../../types";
+import { AsyncActionResult, AsyncActionStatus } from "../../types";
 
 export interface EngineManagerProps {
   onManualInstallSelect?: () => void;
-  onAutoInstallFinish?: () => void;
+  onAutoInstallFinish?: (result: AsyncActionResult) => void;
   onRemoveFinish?: () => void;
   onOperationStart?: () => void;
   onOperationFinish?: () => void;

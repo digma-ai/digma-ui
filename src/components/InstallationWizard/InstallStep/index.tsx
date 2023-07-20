@@ -13,6 +13,7 @@ import { CodeSnippet } from "../CodeSnippet";
 import { Tabs } from "../Tabs";
 import { Link, MainButton, SectionDescription } from "../styles";
 import { trackingEvents } from "../tracking";
+import { AsyncActionResult } from "../types";
 import { EngineManager } from "./EngineManager";
 import * as s from "./styles";
 import { InstallStepProps } from "./types";
@@ -97,8 +98,21 @@ export const InstallStep = (props: InstallStepProps) => {
     props.onSlackLinkClick();
   };
 
-  const handleEngineAutoInstallationFinish = () => {
+  const handleEngineAutoInstallationFinish = (result: AsyncActionResult) => {
     setIsAutoInstallationFinished(true);
+    window.sendMessageToDigma({
+      action: globalActions.SEND_TRACKING_EVENT,
+      payload: {
+        eventName: trackingEvents.AUTO_INSTALLATION_FLOW_FINISHED,
+        data: {
+          result
+        }
+      }
+    });
+
+    if (result === "failure") {
+      handleEngineManualInstallSelect();
+    }
   };
 
   const handleEngineRemovalFinish = () => {
@@ -107,7 +121,6 @@ export const InstallStep = (props: InstallStepProps) => {
   };
 
   const handleEngineManualInstallSelect = () => {
-    setIsAutoInstallationFinished(true);
     setAreTabsVisible(true);
     setIsAutoInstallTabVisible(false);
   };

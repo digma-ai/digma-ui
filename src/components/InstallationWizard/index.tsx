@@ -265,6 +265,15 @@ export const InstallationWizard = () => {
     installationType: InstallationType
   ) => {
     setInstallationType(installationType);
+    window.sendMessageToDigma({
+      action: globalActions.SEND_TRACKING_EVENT,
+      payload: {
+        eventName: trackingEvents.INSTALLATION_TYPE_BUTTON_CLICKED,
+        data: {
+          installationType
+        }
+      }
+    });
   };
 
   const handleEmailInputChange = (e: ChangeEvent<HTMLInputElement>) => {
