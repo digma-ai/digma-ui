@@ -75,10 +75,20 @@ export const EngineManager = (props: EngineManagerProps) => {
       data: AsyncActionResultData,
       operation: Operation
     ) => {
-      setCurrentOperation({
+      const operationData = {
         operation: operation,
         status: data.result,
         error: data.error
+      };
+
+      setCurrentOperation(operationData);
+
+      window.sendMessageToDigma({
+        action: globalActions.SEND_TRACKING_EVENT,
+        payload: {
+          eventName: trackingEvents.ENGINE_ACTION_RESULT_MESSAGE_RECEIVED,
+          data: operationData
+        }
       });
     };
     const handleInstallDigmaResultData = (data: unknown) => {
@@ -149,6 +159,12 @@ export const EngineManager = (props: EngineManagerProps) => {
   useEffect(() => {
     if (props.autoInstall) {
       window.sendMessageToDigma({
+        action: globalActions.SEND_TRACKING_EVENT,
+        payload: {
+          eventName: trackingEvents.AUTO_INSTALLATION_FLOW_STARTED
+        }
+      });
+      window.sendMessageToDigma({
         action: actions.INSTALL_DIGMA_ENGINE
       });
       setCurrentOperation({ operation: Operation.INSTALL, status: "pending" });
@@ -161,18 +177,12 @@ export const EngineManager = (props: EngineManagerProps) => {
         switch (currentOperation.operation) {
           case Operation.INSTALL:
             if (props.autoInstall && props.onAutoInstallFinish) {
-              props.onAutoInstallFinish();
+              props.onAutoInstallFinish("success");
             }
             break;
           case Operation.UNINSTALL:
-            if (props.autoInstall) {
-              if (props.onManualInstallSelect) {
-                props.onManualInstallSelect();
-              }
-            } else {
-              if (props.onRemoveFinish) {
-                props.onRemoveFinish();
-              }
+            if (!props.autoInstall && props.onRemoveFinish) {
+              props.onRemoveFinish();
             }
             break;
           case Operation.START:
@@ -184,11 +194,11 @@ export const EngineManager = (props: EngineManagerProps) => {
       if (currentOperation.status === "failure") {
         switch (currentOperation.operation) {
           case Operation.INSTALL:
-          case Operation.UNINSTALL:
-            if (props.autoInstall && props.onManualInstallSelect) {
-              props.onManualInstallSelect();
+            if (props.autoInstall && props.onAutoInstallFinish) {
+              props.onAutoInstallFinish("failure");
             }
             break;
+          case Operation.UNINSTALL:
           case Operation.START:
           case Operation.STOP:
             break;
@@ -233,6 +243,7 @@ export const EngineManager = (props: EngineManagerProps) => {
   };
 
   const handleRetryButtonClick = () => {
+    sendActionButtonTrackingEvent("Retry");
     if (failedOperation) {
       window.sendMessageToDigma({
         action: operationsInfo[failedOperation.operation].action
@@ -245,16 +256,26 @@ export const EngineManager = (props: EngineManagerProps) => {
   };
 
   const handleInstallManuallyButtonClick = () => {
+    sendActionButtonTrackingEvent("Install manually");
     props.onManualInstallSelect && props.onManualInstallSelect();
   };
 
   const renderOperationButton = (operation: Operation) => {
     const handleOperationButtonClick = () => {
       const operationInfo = operationsInfo[operation];
+      sendActionButtonTrackingEvent(operationInfo.button.label);
+
       window.sendMessageToDigma({
         action: operationInfo.action
       });
-      sendActionButtonTrackingEvent(operationInfo.button.label);
+      window.sendMessageToDigma({
+        action: globalActions.SEND_TRACKING_EVENT,
+        payload: {
+          eventName: trackingEvents.ENGINE_ACTION_MESSAGE_SENT,
+          data: { action: operationInfo.action }
+        }
+      });
+
       setCurrentOperation({ operation, status: "pending" });
     };
 
