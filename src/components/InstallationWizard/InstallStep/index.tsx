@@ -48,7 +48,7 @@ export const InstallStep = (props: InstallStepProps) => {
   const [isAutoInstallationFinished, setIsAutoInstallationFinished] =
     useState(false);
   const [areTabsVisible, setAreTabsVisible] = useState(
-    !config.isDockerInstalled || !config.isDockerComposeInstalled
+      !config.isDigmaEngineInstalled && !isAutoInstallationFlow
   );
   const [isAutoInstallTabVisible, setIsAutoInstallTabVisible] = useState(false);
   const [isEngineOperationInProgress, setIsEngineOperationInProgress] =
