@@ -115,6 +115,9 @@ export const InstallationWizard = () => {
     InstallationType | undefined
   >(preselectedInstallationType);
 
+  const isStartAutoInstall = true
+
+
   const theme = useTheme();
   const themeKind = getThemeKind(theme);
   const [email, setEmail] = useState(config.userEmail);
@@ -267,7 +270,7 @@ export const InstallationWizard = () => {
     setInstallationType(installationType);
     window.sendMessageToDigma({
       action: globalActions.SEND_TRACKING_EVENT,
-      payload: {
+      payload: { 
         eventName: trackingEvents.INSTALLATION_TYPE_BUTTON_CLICKED,
         data: {
           installationType
@@ -383,7 +386,7 @@ export const InstallationWizard = () => {
 
   return (
     <s.Container>
-      {installationType ? (
+      {isStartAutoInstall || installationType ? (
         <s.Header>
           <s.HeaderTitle>Install Digma</s.HeaderTitle>
           <s.HeaderSubtitle>
@@ -485,7 +488,7 @@ export const InstallationWizard = () => {
           </s.InstallationTypeButtonsContainer>
         </s.WelcomeContainer>
       )}
-      {installationType &&
+      {(isStartAutoInstall || installationType) &&
         steps.map((step, i) => (
           <Step
             key={step.key}
@@ -498,7 +501,7 @@ export const InstallationWizard = () => {
         ))}
 
       <s.Footer>
-        {installationType && (
+        {(isStartAutoInstall || installationType) && (
           <CSSTransition
             in={currentStep === steps.length - 1}
             timeout={TRANSITION_DURATION}
