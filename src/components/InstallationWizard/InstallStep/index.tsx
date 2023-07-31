@@ -1,5 +1,6 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useTheme } from "styled-components";
+import { useDigmaConnectionCheck } from "../../../hooks/useDigmaConnection";
 import { actions as globalActions } from "../../common/App";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { getThemeKind } from "../../common/App/styles";
@@ -39,6 +40,9 @@ export const InstallStep = (props: InstallStepProps) => {
   const [selectedDockerComposeOSTab, setSelectedDockerComposeOSTab] =
     useState(0);
   const config = useContext(ConfigContext);
+  const [initialConnectionCheckStatus, startInitialConnectionCheck] =
+    useDigmaConnectionCheck();
+  const [isDigmaInstalled, setIsDigmaInstalled] = useState<boolean>();
   const [isAutoInstallationFlow] = useState(
     isFirstLaunch &&
       !config.isDigmaEngineInstalled &&
@@ -53,6 +57,25 @@ export const InstallStep = (props: InstallStepProps) => {
   const [isAutoInstallTabVisible, setIsAutoInstallTabVisible] = useState(false);
   const [isEngineOperationInProgress, setIsEngineOperationInProgress] =
     useState(false);
+
+  // check if Digma installed
+  useEffect(() => {
+    startInitialConnectionCheck();
+  }, [startInitialConnectionCheck]);
+
+  useEffect(() => {
+    console.log(initialConnectionCheckStatus);
+    switch (initialConnectionCheckStatus) {
+      case "success":
+        setIsDigmaInstalled(true);
+        setAreTabsVisible(true);
+        break;
+      case "failure":
+        setIsDigmaInstalled(false);
+        break;
+    }
+    props.onResetConnectionCheckStatus();
+  }, [initialConnectionCheckStatus, props.onResetConnectionCheckStatus]);
 
   const handleInstallDigmaButtonClick = () => {
     props.onGetDigmaDockerDesktopButtonClick();
@@ -339,33 +362,37 @@ export const InstallStep = (props: InstallStepProps) => {
     }
   ];
 
+  console.log(areTabsVisible, isDigmaInstalled);
   return (
     <s.Container>
-      {areTabsVisible ? (
-        <Tabs
-          tabs={installTabs}
-          onSelect={handleInstallTabSelect}
-          selectedTab={selectedInstallTab}
-          fullWidth={true}
-        />
-      ) : (
-        <>
-          <EngineManager
-            autoInstall={isAutoInstallationFlow}
-            onAutoInstallFinish={handleEngineAutoInstallationFinish}
-            onManualInstallSelect={handleEngineManualInstallSelect}
-            onRemoveFinish={handleEngineRemovalFinish}
-            onOperationStart={handleEngineOperationStart}
-            onOperationFinish={handleEngineOperationFinish}
+      <>
+        {areTabsVisible && isDigmaInstalled === true && (
+          <Tabs
+            tabs={installTabs}
+            onSelect={handleInstallTabSelect}
+            selectedTab={selectedInstallTab}
+            fullWidth={true}
           />
-          <s.CommonContentContainer>
-            {(isAutoInstallationFinished ||
-              (!isAutoInstallationFlow && !isEngineOperationInProgress)) && (
-              <MainButton onClick={handleNextButtonClick}>Next</MainButton>
-            )}
-          </s.CommonContentContainer>
-        </>
-      )}
+        )}
+        {!areTabsVisible && isDigmaInstalled === false && (
+          <>
+            <EngineManager
+              autoInstall={isAutoInstallationFlow}
+              onAutoInstallFinish={handleEngineAutoInstallationFinish}
+              onManualInstallSelect={handleEngineManualInstallSelect}
+              onRemoveFinish={handleEngineRemovalFinish}
+              onOperationStart={handleEngineOperationStart}
+              onOperationFinish={handleEngineOperationFinish}
+            />
+            <s.CommonContentContainer>
+              {(isAutoInstallationFinished ||
+                (!isAutoInstallationFlow && !isEngineOperationInProgress)) && (
+                <MainButton onClick={handleNextButtonClick}>Next</MainButton>
+              )}
+            </s.CommonContentContainer>
+          </>
+        )}
+      </>
     </s.Container>
   );
 };
