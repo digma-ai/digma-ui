@@ -49,9 +49,16 @@ export const Title = styled.h1`
   }};
 `;
 
+export const ContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+`;
+
 export const Section = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 12px;
 `;
 
 export const SectionHeader = styled.div`
@@ -77,7 +84,6 @@ export const SectionTitleContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 5px;
-  margin-bottom: 12px;
 `;
 
 export const SectionTitle = styled.h2`

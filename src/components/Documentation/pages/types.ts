@@ -1,5 +1,12 @@
+import { ReactNode } from "react";
+
 export interface PageContent {
   title: string;
-  description?: string[];
-  sections: { title: string; description?: string[]; code?: string }[];
+  description?: ReactNode;
+  sections?: {
+    title?: string;
+    number?: number;
+    description?: ReactNode;
+    content?: ReactNode;
+  }[];
 }

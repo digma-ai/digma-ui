@@ -17,7 +17,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
-export const RunDigmaWithTerminal: Story = {
+export const RunDigmaWithCommandLine: Story = {
   args: {
     page: "run-digma-with-terminal"
   }

@@ -158,7 +158,7 @@ export const InstallStep = (props: InstallStepProps) => {
   const renderDockerComposeInstructions = () => (
     <>
       <SectionDescription>Then run:</SectionDescription>
-      <CodeSnippet text={RUN_DOCKER_COMPOSE_COMMAND} />
+      <CodeSnippet text={RUN_DOCKER_COMPOSE_COMMAND} language={"bash"} />
       <SectionDescription>
         Prefer to use a helm file? Check out{" "}
         <Link
@@ -178,7 +178,10 @@ export const InstallStep = (props: InstallStepProps) => {
       title: "Linux & macOS",
       content: (
         <s.DockerComposeOSTabContentContainer>
-          <CodeSnippet text={GET_DIGMA_DOCKER_COMPOSE_COMMAND_LINUX} />
+          <CodeSnippet
+            text={GET_DIGMA_DOCKER_COMPOSE_COMMAND_LINUX}
+            language={"bash"}
+          />
           {renderDockerComposeInstructions()}
         </s.DockerComposeOSTabContentContainer>
       )
@@ -187,7 +190,10 @@ export const InstallStep = (props: InstallStepProps) => {
       title: "Windows (PowerShell)",
       content: (
         <s.DockerComposeOSTabContentContainer>
-          <CodeSnippet text={GET_DIGMA_DOCKER_COMPOSE_COMMAND_WINDOWS} />
+          <CodeSnippet
+            text={GET_DIGMA_DOCKER_COMPOSE_COMMAND_WINDOWS}
+            language={"powershell"}
+          />
           {renderDockerComposeInstructions()}
         </s.DockerComposeOSTabContentContainer>
       )
