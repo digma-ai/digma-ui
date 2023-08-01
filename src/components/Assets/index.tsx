@@ -1,15 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
-import {
-  GETTING_STARTED_VIDEO_URL,
-  SLACK_WORKSPACE_URL
-} from "../../constants";
+import { actions as globalActions } from "../../actions";
+import { SLACK_WORKSPACE_URL } from "../../constants";
 import { dispatcher } from "../../dispatcher";
 import { isNumber } from "../../typeGuards/isNumber";
 import { addPrefix } from "../../utils/addPrefix";
 import { groupBy } from "../../utils/groupBy";
 import { openURLInDefaultBrowser } from "../../utils/openURLInDefaultBrowser";
-import { Button } from "../common/Button";
 import { StackIcon } from "../common/icons/StackIcon";
 import { AssetList } from "./AssetList";
 import { AssetTypeList } from "./AssetTypeList";
@@ -137,8 +134,10 @@ export const Assets = (props: AssetsProps) => {
     openURLInDefaultBrowser(SLACK_WORKSPACE_URL);
   };
 
-  const handleGettingStartedButtonClick = () => {
-    openURLInDefaultBrowser(GETTING_STARTED_VIDEO_URL);
+  const handleDocumentationLinkClick = () => {
+    window.sendMessageToDigma({
+      action: globalActions.OPEN_TROUBLESHOOTING_GUIDE
+    });
   };
 
   const renderContent = useMemo((): JSX.Element => {
@@ -150,15 +149,14 @@ export const Assets = (props: AssetsProps) => {
           </s.Circle>
           <s.NoDataTitle>No Data</s.NoDataTitle>
           <s.NoDataText>
-            Please check out the &quot;Getting started&quot; video to see how to
-            collect data from your application. If you still have any issues,
-            please let us know on our{" "}
-            <s.SlackLink onClick={handleSlackLinkClick}>Slack</s.SlackLink>{" "}
-            channel.
+            Please check out our{" "}
+            <s.Link onClick={handleDocumentationLinkClick}>
+              documentation
+            </s.Link>{" "}
+            to see how to collect data from your application. If you still have
+            any issues, please let us know on our{" "}
+            <s.Link onClick={handleSlackLinkClick}>Slack</s.Link> channel.
           </s.NoDataText>
-          <Button onClick={handleGettingStartedButtonClick}>
-            Getting Started
-          </Button>
         </s.NoDataContainer>
       );
     }
