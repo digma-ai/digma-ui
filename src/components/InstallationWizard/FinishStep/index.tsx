@@ -1,6 +1,6 @@
 import { DefaultTheme, useTheme } from "styled-components";
 import { GETTING_STARTED_VIDEO_URL } from "../../../constants";
-import { actions as globalActions } from "../../common/App";
+import { openURLInDefaultBrowser } from "../../../utils/openURLInDefaultBrowser";
 import { getThemeKind } from "../../common/App/styles";
 import { CircleLoader } from "../../common/CircleLoader";
 import { BellIcon } from "../../common/icons/BellIcon";
@@ -41,12 +41,7 @@ export const FinishStep = (props: FinishStepProps) => {
   const themeKind = getThemeKind(theme);
 
   const handleGettingStartedVideoLinkClick = () => {
-    window.sendMessageToDigma({
-      action: globalActions.OPEN_URL_IN_DEFAULT_BROWSER,
-      payload: {
-        url: GETTING_STARTED_VIDEO_URL
-      }
-    });
+    openURLInDefaultBrowser(GETTING_STARTED_VIDEO_URL);
   };
 
   return (

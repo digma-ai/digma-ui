@@ -28,6 +28,7 @@ export const Code = styled.code`
   line-height: 20px;
   letter-spacing: -0.1px;
   white-space: pre-wrap;
+  word-break: break-word;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

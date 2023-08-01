@@ -1,0 +1,47 @@
+import { PageContent } from "./types";
+
+export const runDigmaWithTerminal: PageContent = {
+  title: "How to use Digma if your application is running via Docker Compose",
+  description: [
+    "These are simple steps to help you collect observability data from your application running via Docker compose without changing the original docker-compose.yml file."
+  ],
+  sections: [
+    {
+      title: "Download the agent and extension",
+      description: [
+        "Download them to a relative path to the Docker Compose file you are running"
+      ],
+      code: `curl --create-dirs -O -L --output-dir ./otel https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar
+
+curl --create-dirs -O -L --output-dir ./otel https://github.com/digma-ai/otel-java-instrumentation/releases/latest/download/digma-otel-agent-extension.jar`
+    },
+    {
+      title: "Add a docker-compose override file",
+      description: [
+        "Create a file docker-composer.override.otel.yml which we'll use to extend the original compose file. We'll add volumes and the env. variables for configuring the agent.",
+        "Add the following code, and replace [your-service] with the service you wish to instrument:"
+      ],
+      code: `#docker-compose.override.otel.yml
+  version: '3'
+  
+  services:
+  #[your-service]:
+    volumes:
+      - "./otel/opentelemetry-javaagent.jar:/otel/opentelemetry-javaagent.jar"
+      - "./otel/digma-otel-agent-extension.jar:/otel/digma-otel-agent-extension.jar"
+    environment:
+      - JAVA_TOOL_OPTIONS=-javaagent:/otel/opentelemetry-javaagent.jar -Dotel.exporter.otlp.endpoint=http://host.docker.internal:5050 -Dotel.javaagent.extensions=/otel/digma-otel-agent-extension.jar
+      - OTEL_SERVICE_NAME=#[your-service]
+      - DEPLOYMENT_ENV=DOCKER_LOCAL
+      - OTEL_METRICS_EXPORTER=none
+    extra_hosts:
+        - "host.docker.internal:host-gateway"`
+    },
+    {
+      title:
+        "Run the original docker-compose file along with the extended file we just created",
+      description: ["For example:"],
+      code: "docker compose -f docker-compose.yml -f docker-compose.override.otel.yml up -d"
+    }
+  ]
+};

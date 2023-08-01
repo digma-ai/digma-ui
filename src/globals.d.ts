@@ -36,6 +36,7 @@ declare global {
     isDockerComposeInstalled?: unknown;
     assetsRefreshInterval?: unknown;
     assetsSearch?: unknown;
+    documentationPage?: unknown;
     insightsRefreshInterval?: unknown;
     recentActivityExpirationLimit?: unknown;
     recentActivityDocumentationURL?: unknown;

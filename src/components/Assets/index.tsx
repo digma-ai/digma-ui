@@ -8,7 +8,7 @@ import { dispatcher } from "../../dispatcher";
 import { isNumber } from "../../typeGuards/isNumber";
 import { addPrefix } from "../../utils/addPrefix";
 import { groupBy } from "../../utils/groupBy";
-import { actions as globalActions } from "../common/App";
+import { openURLInDefaultBrowser } from "../../utils/openURLInDefaultBrowser";
 import { Button } from "../common/Button";
 import { StackIcon } from "../common/icons/StackIcon";
 import { AssetList } from "./AssetList";
@@ -112,12 +112,10 @@ export const Assets = (props: AssetsProps) => {
   }, [lastSetDataTimeStamp]);
 
   useEffect(() => {
-    if (!props.data) {
-      return;
+    if (props.data) {
+      const groupedAssetEntries = groupEntries(props.data.serviceAssetsEntries);
+      setData(groupedAssetEntries);
     }
-
-    const groupedAssetEntries = groupEntries(props.data.serviceAssetsEntries);
-    setData(groupedAssetEntries);
   }, [props.data]);
 
   const handleBackButtonClick = () => {
@@ -136,21 +134,11 @@ export const Assets = (props: AssetsProps) => {
   };
 
   const handleSlackLinkClick = () => {
-    window.sendMessageToDigma({
-      action: globalActions.OPEN_URL_IN_DEFAULT_BROWSER,
-      payload: {
-        url: SLACK_WORKSPACE_URL
-      }
-    });
+    openURLInDefaultBrowser(SLACK_WORKSPACE_URL);
   };
 
   const handleGettingStartedButtonClick = () => {
-    window.sendMessageToDigma({
-      action: globalActions.OPEN_URL_IN_DEFAULT_BROWSER,
-      payload: {
-        url: GETTING_STARTED_VIDEO_URL
-      }
-    });
+    openURLInDefaultBrowser(GETTING_STARTED_VIDEO_URL);
   };
 
   const renderContent = useMemo((): JSX.Element => {
