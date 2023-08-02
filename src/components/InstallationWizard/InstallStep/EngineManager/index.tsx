@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useTheme } from "styled-components";
 import { actions } from "../..";
 import { dispatcher } from "../../../../dispatcher";
-import { actions as globalActions } from "../../../common/App";
+import { sendTrackingEvent } from "../../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../../common/App/ConfigContext";
 import { getThemeKind } from "../../../common/App/styles";
 import { Button } from "../../../common/Button";
@@ -81,15 +81,12 @@ export const EngineManager = (props: EngineManagerProps) => {
         error: data.error
       };
 
-      setCurrentOperation(operationData);
+      sendTrackingEvent(
+        trackingEvents.ENGINE_ACTION_RESULT_MESSAGE_RECEIVED,
+        operationData
+      );
 
-      window.sendMessageToDigma({
-        action: globalActions.SEND_TRACKING_EVENT,
-        payload: {
-          eventName: trackingEvents.ENGINE_ACTION_RESULT_MESSAGE_RECEIVED,
-          data: operationData
-        }
-      });
+      setCurrentOperation(operationData);
     };
     const handleInstallDigmaResultData = (data: unknown) => {
       handleOperationResultData(
@@ -158,12 +155,7 @@ export const EngineManager = (props: EngineManagerProps) => {
 
   useEffect(() => {
     if (props.autoInstall) {
-      window.sendMessageToDigma({
-        action: globalActions.SEND_TRACKING_EVENT,
-        payload: {
-          eventName: trackingEvents.AUTO_INSTALLATION_FLOW_STARTED
-        }
-      });
+      sendTrackingEvent(trackingEvents.AUTO_INSTALLATION_FLOW_STARTED);
       window.sendMessageToDigma({
         action: actions.INSTALL_DIGMA_ENGINE
       });
@@ -233,12 +225,8 @@ export const EngineManager = (props: EngineManagerProps) => {
   }, [currentOperation, props]);
 
   const sendActionButtonTrackingEvent = (buttonName: string) => {
-    window.sendMessageToDigma({
-      action: globalActions.SEND_TRACKING_EVENT,
-      payload: {
-        eventName: trackingEvents.ENGINE_ACTION_BUTTON_CLICKED,
-        buttonName
-      }
+    sendTrackingEvent(trackingEvents.ENGINE_ACTION_BUTTON_CLICKED, {
+      buttonName
     });
   };
 
@@ -268,12 +256,8 @@ export const EngineManager = (props: EngineManagerProps) => {
       window.sendMessageToDigma({
         action: operationInfo.action
       });
-      window.sendMessageToDigma({
-        action: globalActions.SEND_TRACKING_EVENT,
-        payload: {
-          eventName: trackingEvents.ENGINE_ACTION_MESSAGE_SENT,
-          data: { action: operationInfo.action }
-        }
+      sendTrackingEvent(trackingEvents.ENGINE_ACTION_MESSAGE_SENT, {
+        action: operationInfo.action
       });
 
       setCurrentOperation({ operation, status: "pending" });

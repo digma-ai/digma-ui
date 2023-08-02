@@ -8,7 +8,8 @@ import { useDebounce } from "../../hooks/useDebounce";
 import { usePrevious } from "../../hooks/usePrevious";
 import { ide } from "../../platform";
 import { addPrefix } from "../../utils/addPrefix";
-import { actions as globalActions } from "../common/App";
+import { openURLInDefaultBrowser } from "../../utils/openURLInDefaultBrowser";
+import { sendTrackingEvent } from "../../utils/sendTrackingEvent";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { getThemeKind } from "../common/App/styles";
 import { Button } from "../common/Button";
@@ -115,8 +116,7 @@ export const InstallationWizard = () => {
     InstallationType | undefined
   >(preselectedInstallationType);
 
-  const isStartAutoInstall = true
-
+  const isStartAutoInstall = true;
 
   const theme = useTheme();
   const themeKind = getThemeKind(theme);
@@ -144,12 +144,7 @@ export const InstallationWizard = () => {
 
   useEffect(() => {
     if (previousStep === 0 && currentStep === 1) {
-      window.sendMessageToDigma({
-        action: globalActions.SEND_TRACKING_EVENT,
-        payload: {
-          eventName: trackingEvents.INSTALL_STEP_PASSED
-        }
-      });
+      sendTrackingEvent(trackingEvents.INSTALL_STEP_PASSED);
     }
 
     if (
@@ -170,12 +165,7 @@ export const InstallationWizard = () => {
 
   useEffect(() => {
     if (firstStep === 1) {
-      window.sendMessageToDigma({
-        action: globalActions.SEND_TRACKING_EVENT,
-        payload: {
-          eventName: trackingEvents.INSTALL_STEP_AUTOMATICALLY_PASSED
-        }
-      });
+      sendTrackingEvent(trackingEvents.INSTALL_STEP_AUTOMATICALLY_PASSED);
     }
 
     const handleConnectionCheckResultData = (data: unknown) => {
@@ -208,29 +198,13 @@ export const InstallationWizard = () => {
   };
 
   const handleGetDigmaDockerDesktopButtonClick = () => {
-    window.sendMessageToDigma({
-      action: globalActions.OPEN_URL_IN_DEFAULT_BROWSER,
-      payload: {
-        url: DIGMA_DOCKER_EXTENSION_URL
-      }
-    });
-    window.sendMessageToDigma({
-      action: globalActions.SEND_TRACKING_EVENT,
-      payload: {
-        eventName: trackingEvents.GET_DIGMA_DOCKER_EXTENSION_BUTTON_CLICKED
-      }
-    });
+    sendTrackingEvent(trackingEvents.GET_DIGMA_DOCKER_EXTENSION_BUTTON_CLICKED);
+    openURLInDefaultBrowser(DIGMA_DOCKER_EXTENSION_URL);
   };
 
   const handleInstallTabSelect = (tabName: string) => {
-    window.sendMessageToDigma({
-      action: globalActions.SEND_TRACKING_EVENT,
-      payload: {
-        eventName: trackingEvents.TAB_CLICKED,
-        data: {
-          tabName
-        }
-      }
+    sendTrackingEvent(trackingEvents.TAB_CLICKED, {
+      tabName
     });
   };
 
@@ -239,17 +213,12 @@ export const InstallationWizard = () => {
   };
 
   const handleObservabilityChange = (value: boolean) => {
+    sendTrackingEvent(trackingEvents.OBSERVABILITY_BUTTON_CLICKED);
     setIsObservabilityEnabled(value);
     window.sendMessageToDigma({
       action: actions.SET_OBSERVABILITY,
       payload: {
         isObservabilityEnabled: value
-      }
-    });
-    window.sendMessageToDigma({
-      action: globalActions.SEND_TRACKING_EVENT,
-      payload: {
-        eventName: trackingEvents.OBSERVABILITY_BUTTON_CLICKED
       }
     });
   };
@@ -267,16 +236,10 @@ export const InstallationWizard = () => {
   const handleInstallationTypeButtonClick = (
     installationType: InstallationType
   ) => {
-    setInstallationType(installationType);
-    window.sendMessageToDigma({
-      action: globalActions.SEND_TRACKING_EVENT,
-      payload: { 
-        eventName: trackingEvents.INSTALLATION_TYPE_BUTTON_CLICKED,
-        data: {
-          installationType
-        }
-      }
+    sendTrackingEvent(trackingEvents.INSTALLATION_TYPE_BUTTON_CLICKED, {
+      installationType
     });
+    setInstallationType(installationType);
   };
 
   const handleEmailInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -299,12 +262,7 @@ export const InstallationWizard = () => {
   };
 
   const handleSlackLinkClick = () => {
-    window.sendMessageToDigma({
-      action: globalActions.OPEN_URL_IN_DEFAULT_BROWSER,
-      payload: {
-        url: SLACK_WORKSPACE_URL
-      }
-    });
+    openURLInDefaultBrowser(SLACK_WORKSPACE_URL);
   };
 
   const handleDigmaCloudNotificationCheckboxChange = (value: boolean) => {
@@ -318,16 +276,12 @@ export const InstallationWizard = () => {
   const handleEmailAddButton = () => {
     if (userEmail.length > 0) {
       setIsUserEmailCaptured(true);
-      window.sendMessageToDigma({
-        action: globalActions.SEND_TRACKING_EVENT,
-        payload: {
-          eventName:
-            trackingEvents.DIGMA_CLOUD_AVAILABILITY_NOTIFICATION_EMAIL_ADDRESS_CAPTURED,
-          data: {
-            email: userEmail
-          }
+      sendTrackingEvent(
+        trackingEvents.DIGMA_CLOUD_AVAILABILITY_NOTIFICATION_EMAIL_ADDRESS_CAPTURED,
+        {
+          email: userEmail
         }
-      });
+      );
     }
   };
 

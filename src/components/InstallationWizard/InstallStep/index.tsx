@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { useTheme } from "styled-components";
-import { actions as globalActions } from "../../common/App";
+import { openURLInDefaultBrowser } from "../../../utils/openURLInDefaultBrowser";
+import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { getThemeKind } from "../../common/App/styles";
 import { Loader } from "../../common/Loader";
@@ -48,7 +49,7 @@ export const InstallStep = (props: InstallStepProps) => {
   const [isAutoInstallationFinished, setIsAutoInstallationFinished] =
     useState(false);
   const [areTabsVisible, setAreTabsVisible] = useState(
-      !config.isDigmaEngineInstalled && !isAutoInstallationFlow
+    !config.isDigmaEngineInstalled && !isAutoInstallationFlow
   );
   const [isAutoInstallTabVisible, setIsAutoInstallTabVisible] = useState(false);
   const [isEngineOperationInProgress, setIsEngineOperationInProgress] =
@@ -79,35 +80,15 @@ export const InstallStep = (props: InstallStepProps) => {
     setSelectedDockerComposeOSTab(tabIndex);
   };
 
-  const openLinkInDefaultBrowser = (url: string) => {
-    window.sendMessageToDigma({
-      action: globalActions.OPEN_URL_IN_DEFAULT_BROWSER,
-      payload: {
-        url
-      }
-    });
-  };
-
   const handleSlackLinkClick = () => {
-    window.sendMessageToDigma({
-      action: globalActions.SEND_TRACKING_EVENT,
-      payload: {
-        eventName: trackingEvents.NO_DOCKER_SLACK_LINK_CLICKED
-      }
-    });
+    sendTrackingEvent(trackingEvents.NO_DOCKER_SLACK_LINK_CLICKED);
     props.onSlackLinkClick();
   };
 
   const handleEngineAutoInstallationFinish = (result: AsyncActionResult) => {
     setIsAutoInstallationFinished(true);
-    window.sendMessageToDigma({
-      action: globalActions.SEND_TRACKING_EVENT,
-      payload: {
-        eventName: trackingEvents.AUTO_INSTALLATION_FLOW_FINISHED,
-        data: {
-          result
-        }
-      }
+    sendTrackingEvent(trackingEvents.AUTO_INSTALLATION_FLOW_FINISHED, {
+      result
     });
 
     if (result === "failure") {
@@ -177,7 +158,7 @@ export const InstallStep = (props: InstallStepProps) => {
   const renderDockerComposeInstructions = () => (
     <>
       <SectionDescription>Then run:</SectionDescription>
-      <CodeSnippet text={RUN_DOCKER_COMPOSE_COMMAND} />
+      <CodeSnippet text={RUN_DOCKER_COMPOSE_COMMAND} language={"bash"} />
       <SectionDescription>
         Prefer to use a helm file? Check out{" "}
         <Link
@@ -197,7 +178,10 @@ export const InstallStep = (props: InstallStepProps) => {
       title: "Linux & macOS",
       content: (
         <s.DockerComposeOSTabContentContainer>
-          <CodeSnippet text={GET_DIGMA_DOCKER_COMPOSE_COMMAND_LINUX} />
+          <CodeSnippet
+            text={GET_DIGMA_DOCKER_COMPOSE_COMMAND_LINUX}
+            language={"bash"}
+          />
           {renderDockerComposeInstructions()}
         </s.DockerComposeOSTabContentContainer>
       )
@@ -206,7 +190,10 @@ export const InstallStep = (props: InstallStepProps) => {
       title: "Windows (PowerShell)",
       content: (
         <s.DockerComposeOSTabContentContainer>
-          <CodeSnippet text={GET_DIGMA_DOCKER_COMPOSE_COMMAND_WINDOWS} />
+          <CodeSnippet
+            text={GET_DIGMA_DOCKER_COMPOSE_COMMAND_WINDOWS}
+            language={"powershell"}
+          />
           {renderDockerComposeInstructions()}
         </s.DockerComposeOSTabContentContainer>
       )
@@ -252,13 +239,11 @@ export const InstallStep = (props: InstallStepProps) => {
             </s.SectionTitle>
             <SectionDescription>
               (You&apos;ll need{" "}
-              <Link onClick={() => openLinkInDefaultBrowser(DOCKER_URL)}>
+              <Link onClick={() => openURLInDefaultBrowser(DOCKER_URL)}>
                 Docker
               </Link>{" "}
               and{" "}
-              <Link
-                onClick={() => openLinkInDefaultBrowser(DOCKER_COMPOSE_URL)}
-              >
+              <Link onClick={() => openURLInDefaultBrowser(DOCKER_COMPOSE_URL)}>
                 Docker Compose
               </Link>{" "}
               installed)
@@ -288,9 +273,7 @@ export const InstallStep = (props: InstallStepProps) => {
             </s.SectionTitle>
             <SectionDescription>
               (You&apos;ll need{" "}
-              <Link
-                onClick={() => openLinkInDefaultBrowser(DOCKER_DESKTOP_URL)}
-              >
+              <Link onClick={() => openURLInDefaultBrowser(DOCKER_DESKTOP_URL)}>
                 Docker Desktop
               </Link>{" "}
               4.10.0 or higher installed)
