@@ -1,6 +1,6 @@
 import { DurationChange } from "../DurationChange";
 import { InsightCard } from "../InsightCard";
-import { Link } from "../styles";
+import { Description, Link } from "../styles";
 import { DurationSlowdownSource } from "../types";
 import * as s from "./styles";
 import { DurationSlowdownSourceInsightProps } from "./types";
@@ -28,9 +28,11 @@ export const DurationSlowdownSourceInsight = (
 
         return (
           <s.Source key={spanCodeObjectId}>
-            <Link onClick={() => handleSpanLinkClick(spanCodeObjectId)}>
-              {spanName}
-            </Link>
+            <s.SourceName>
+              <Link onClick={() => handleSpanLinkClick(spanCodeObjectId)}>
+                {spanName}
+              </Link>
+            </s.SourceName>
             <DurationChange
               currentDuration={x.currentDuration}
               previousDuration={x.previousDuration}
@@ -48,7 +50,7 @@ export const DurationSlowdownSourceInsight = (
       data={props.insight}
       content={
         <s.Container>
-          <s.Description>Found spans slowing the endpoint</s.Description>
+          <Description>Found spans slowing the endpoint</Description>
           {p50Sources.length > 0 && (
             <>
               <span>Affecting most requests:</span>

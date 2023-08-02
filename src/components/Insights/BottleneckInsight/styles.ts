@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Description as InsightDescription } from "../styles";
 
 export const EndpointList = styled.div`
   display: flex;
@@ -12,27 +13,14 @@ export const Endpoint = styled.span`
   gap: 8px;
 `;
 
-export const Description = styled.div`
+export const Description = styled(InsightDescription)`
   display: flex;
   flex-direction: column;
   gap: 8px;
-  font-size: 10px;
-  line-height: normal;
-  color: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#828797";
-      case "dark":
-      case "dark-jetbrains":
-        return "#9b9b9b";
-    }
-  }};
 `;
 
 export const EndpointName = styled.span`
   display: flex;
-  font-size: 10px;
-  line-height: normal;
   font-weight: 500;
   word-break: break-all;
 `;

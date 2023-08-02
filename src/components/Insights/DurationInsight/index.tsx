@@ -7,6 +7,7 @@ import { ChartIcon } from "../../common/icons/ChartIcon";
 import { DoubleCircleIcon } from "../../common/icons/DoubleCircleIcon";
 import { DurationChange } from "../DurationChange";
 import { InsightCard } from "../InsightCard";
+import { Description } from "../styles";
 import { Trace } from "../types";
 import * as s from "./styles";
 import { DurationInsightProps } from "./types";
@@ -52,18 +53,18 @@ export const DurationInsight = (props: DurationInsightProps) => {
       content={
         <s.Container>
           <s.Stats>
-            <s.Label>Last call</s.Label>
-            <s.Value>
-              <span>
+            <Description>Last call</Description>
+            <s.ValueContainer>
+              <s.Value>
                 {spanLastCall.duration.value} {spanLastCall.duration.unit}
-              </span>
+              </s.Value>
               <s.LastCallTimeDistance isRecent={isLastCallRecent}>
                 •{" "}
                 {isLastCallRecent
                   ? "Moments ago"
                   : formatTimeDistance(spanLastCall.startTime)}
               </s.LastCallTimeDistance>
-            </s.Value>
+            </s.ValueContainer>
           </s.Stats>
           {sortedPercentiles.length > 0 ? (
             <>
@@ -77,18 +78,20 @@ export const DurationInsight = (props: DurationInsightProps) => {
 
                 return (
                   <s.Stats key={percentile.percentile}>
-                    <s.Label>
+                    <Description>
                       {getPercentileLabel(percentile.percentile)}
-                    </s.Label>
-                    <s.Value>
-                      {`${percentile.currentDuration.value} ${percentile.currentDuration.unit}`}
+                    </Description>
+                    <s.ValueContainer>
+                      <s.Value>
+                        {`${percentile.currentDuration.value} ${percentile.currentDuration.unit}`}
+                      </s.Value>
                       <DurationChange
                         currentDuration={percentile.currentDuration}
                         previousDuration={percentile.previousDuration}
                         changeTime={percentile.changeTime}
                         changeVerified={percentile.changeVerified}
                       />
-                    </s.Value>
+                    </s.ValueContainer>
                   </s.Stats>
                 );
               })}

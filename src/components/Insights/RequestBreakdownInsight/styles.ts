@@ -50,8 +50,6 @@ export const LegendItemDataColor = styled.div<{ color: string }>`
 `;
 
 export const LegendItemDataLabel = styled.span`
-  font-size: 10px;
-  line-height: normal;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -65,8 +63,6 @@ export const LegendItemDataLabel = styled.span`
 
 export const LegendItemDataValue = styled.span`
   font-weight: 500;
-  font-size: 12px;
-  line-height: normal;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

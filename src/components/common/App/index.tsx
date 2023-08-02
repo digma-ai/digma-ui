@@ -155,7 +155,7 @@ export const App = (props: AppProps) => {
         handleSetIsDockerComposeInstalled
       );
     };
-  }, [config]);
+  }, []);
 
   return (
     <>

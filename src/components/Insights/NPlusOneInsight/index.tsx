@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { CrosshairIcon } from "../../common/icons/CrosshairIcon";
 import { InsightCard } from "../InsightCard";
-import { Link } from "../styles";
+import { Description, Link } from "../styles";
 import { Trace } from "../types";
 import * as s from "./styles";
 import { NPlusOneInsightProps } from "./types";
@@ -27,9 +27,9 @@ export const NPlusOneInsight = (props: NPlusOneInsightProps) => {
       data={props.insight}
       content={
         <s.ContentContainer>
-          <s.Description>Check the following SELECT statement:</s.Description>
+          <Description>Check the following SELECT statement:</Description>
           <s.SpanContainer>
-            <span>
+            <s.Name>
               {spanCodeObjectId ? (
                 <Link onClick={() => handleSpanLinkClick(spanCodeObjectId)}>
                   {spanName}
@@ -37,7 +37,7 @@ export const NPlusOneInsight = (props: NPlusOneInsightProps) => {
               ) : (
                 spanName
               )}
-            </span>
+            </s.Name>
             {config.isJaegerEnabled && traceId && (
               <s.Button
                 onClick={() =>
@@ -54,27 +54,29 @@ export const NPlusOneInsight = (props: NPlusOneInsightProps) => {
           </s.SpanContainer>
           <s.Stats>
             <s.Stat>
-              <s.Description>Repeats</s.Description>
+              <Description>Repeats</Description>
               <span>{props.insight.occurrences} (median)</span>
             </s.Stat>
             <s.Stat>
-              <s.Description>Duration</s.Description>
+              <Description>Duration</Description>
               <span>
                 {props.insight.duration.value} {props.insight.duration.unit}
               </span>
             </s.Stat>
           </s.Stats>
-          <s.Description>Affected endpoints:</s.Description>
+          <Description>Affected endpoints:</Description>
           <div>
             {props.insight.endpoints.map((x) => {
               const spanCodeObjectId = x.endpointInfo.entrySpanCodeObjectId;
               return (
                 <s.Endpoint key={spanCodeObjectId}>
-                  <Link onClick={() => handleSpanLinkClick(spanCodeObjectId)}>
-                    {x.endpointInfo.route}
-                  </Link>
+                  <s.Name>
+                    <Link onClick={() => handleSpanLinkClick(spanCodeObjectId)}>
+                      {x.endpointInfo.route}
+                    </Link>
+                  </s.Name>
                   <s.Stat>
-                    <s.Description>Repeats</s.Description>
+                    <Description>Repeats</Description>
                     <span>{x.occurrences} (median)</span>
                   </s.Stat>
                 </s.Endpoint>

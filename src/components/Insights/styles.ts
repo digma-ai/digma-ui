@@ -27,8 +27,7 @@ export const StartupText = styled.span`
 `;
 
 export const Description = styled.span`
-  font-size: 10px;
-  line-height: normal;
+  font-size: 12px;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -47,7 +46,6 @@ export const MissingDependencyContainer = styled.div`
 
 export const MissingDependencyText = styled.span`
   font-size: 10px;
-  line-height: normal;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -60,7 +58,7 @@ export const MissingDependencyText = styled.span`
 `;
 
 export const Link = styled(CommonLink)`
-  font-size: 10px;
+  font-size: 12px;
   line-height: normal;
   text-decoration: none;
   color: ${({ theme }) => {

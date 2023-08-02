@@ -4,7 +4,7 @@ import { ConfigContext } from "../../common/App/ConfigContext";
 import { CrosshairIcon } from "../../common/icons/CrosshairIcon";
 import { InsightCard } from "../InsightCard";
 import { Pagination } from "../Pagination";
-import { Link } from "../styles";
+import { Description, Link } from "../styles";
 import { Trace } from "../types";
 import * as s from "./styles";
 import { EndpointNPlusOneInsightProps } from "./types";
@@ -29,7 +29,7 @@ export const EndpointNPlusOneInsight = (
       data={props.insight}
       content={
         <s.ContentContainer>
-          <s.Description>Check the following locations:</s.Description>
+          <Description>Check the following locations:</Description>
           <s.SpanList>
             <Pagination
               id={`${props.insight.codeObjectId}_${props.insight.type}`}
@@ -44,24 +44,27 @@ export const EndpointNPlusOneInsight = (
 
                 return (
                   <s.Span key={spanName}>
-                    <Link
-                      onClick={() =>
-                        handleSpanLinkClick(spanInfo.spanCodeObjectId)
-                      }
-                    >
-                      {spanName}
-                    </Link>
+                    <s.SpanName>
+                      <Link
+                        onClick={() =>
+                          handleSpanLinkClick(spanInfo.spanCodeObjectId)
+                        }
+                      >
+                        {spanName}
+                      </Link>
+                    </s.SpanName>
+
                     <s.Stats>
                       <s.Stat>
-                        <s.Description>Impact</s.Description>
+                        <Description>Impact</Description>
                         <span>{fraction}</span>
                       </s.Stat>
                       <s.Stat>
-                        <s.Description>Repeats</s.Description>
+                        <Description>Repeats</Description>
                         <span>{span.occurrences}</span>
                       </s.Stat>
                       <s.Stat>
-                        <s.Description>Duration</s.Description>
+                        <Description>Duration</Description>
                         <span>
                           {span.duration.value} {span.duration.unit}
                         </span>

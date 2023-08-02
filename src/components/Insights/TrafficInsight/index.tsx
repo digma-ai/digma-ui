@@ -1,7 +1,7 @@
 import { InsightType } from "../../../types";
 import { roundTo } from "../../../utils/roundTo";
 import { InsightCard } from "../InsightCard";
-import * as s from "./styles";
+import { Description } from "../styles";
 import { TrafficInsightProps } from "./types";
 
 const suffixes = [
@@ -45,9 +45,7 @@ export const TrafficInsight = (props: TrafficInsightProps) => {
   return (
     <InsightCard
       data={props.insight}
-      content={
-        <s.Description>{getDescription(props.insight.type)}</s.Description>
-      }
+      content={<Description>{getDescription(props.insight.type)}</Description>}
       stats={`${valueString}/min`}
       onRecalculate={props.onRecalculate}
       onRefresh={props.onRefresh}

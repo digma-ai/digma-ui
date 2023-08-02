@@ -71,7 +71,7 @@ export const DurationBreakdownInsight = (
     <InsightCard
       data={props.insight}
       content={
-        <s.DurationList>
+        <s.EntryList>
           <Pagination
             id={`${props.insight.codeObjectId}_${props.insight.type}`}
           >
@@ -82,16 +82,18 @@ export const DurationBreakdownInsight = (
               const spanCodeObjectId = entry.spanCodeObjectId;
 
               return percentile ? (
-                <s.Duration title={getTitle(entry)} key={spanCodeObjectId}>
-                  <Link onClick={() => handleSpanLinkClick(spanCodeObjectId)}>
-                    {name}
-                  </Link>{" "}
+                <s.Entry title={getTitle(entry)} key={spanCodeObjectId}>
+                  <s.EntryName>
+                    <Link onClick={() => handleSpanLinkClick(spanCodeObjectId)}>
+                      {name}
+                    </Link>
+                  </s.EntryName>{" "}
                   {`${percentile.duration.value} ${percentile.duration.unit}`}
-                </s.Duration>
+                </s.Entry>
               ) : null;
             })}
           </Pagination>
-        </s.DurationList>
+        </s.EntryList>
       }
       onPercentileViewModeChange={handlePercentileViewModeChange}
       onRecalculate={props.onRecalculate}

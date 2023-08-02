@@ -4,8 +4,6 @@ export const Table = styled.table`
   width: 100%;
   border-spacing: 0 3px;
   font-weight: 500;
-  font-size: 10px;
-  line-height: 12px;
   border-radius: 4px;
   padding: 8px;
   color: ${({ theme }) => {
@@ -29,8 +27,6 @@ export const Table = styled.table`
 `;
 
 export const TableHead = styled.thead`
-  font-size: 8px;
-  line-height: 10px;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -70,8 +66,6 @@ export const TableBodyCell = styled.td`
 `;
 
 export const DurationContainer = styled.span`
-  font-size: 12px;
-  line-height: 14px;
   display: inline-flex;
   align-items: center;
   color: ${({ theme }) => {
@@ -88,7 +82,6 @@ export const DurationContainer = styled.span`
 export const Suffix = styled.span`
   margin-left: 2px;
   font-size: 10px;
-  line-height: 12px;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

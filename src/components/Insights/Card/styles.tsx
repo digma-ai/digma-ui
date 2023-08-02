@@ -32,8 +32,7 @@ export const Header = styled.div`
   justify-content: space-between;
   gap: 4px;
   font-weight: 500;
-  font-size: 12px;
-  line-height: normal;
+  font-size: 14px;
 `;
 
 export const ButtonsContainer = styled.div`

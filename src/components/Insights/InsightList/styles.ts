@@ -20,7 +20,6 @@ export const InsightGroupName = styled.div`
   gap: 8px;
   font-weight: 500;
   font-size: 12px;
-  line-height: normal;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -38,8 +37,7 @@ export const MissingDependencyContainer = styled.div`
 `;
 
 export const MissingDependencyText = styled.span`
-  font-size: 10px;
-  line-height: normal;
+  font-size: 12px;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

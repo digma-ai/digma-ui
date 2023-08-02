@@ -12,7 +12,6 @@ export const Container = styled.div`
 export const Title = styled.span`
   font-size: 14px;
   font-weight: 500;
-  line-height: normal;
   text-transform: capitalize;
   color: ${({ theme }) => {
     switch (theme.mode) {

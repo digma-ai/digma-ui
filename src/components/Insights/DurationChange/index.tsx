@@ -73,7 +73,6 @@ const renderArrowIcon = (
     <ArrowIcon
       direction={direction}
       color={getArrowIconColor(direction, theme)}
-      size={10}
     />
   );
 };

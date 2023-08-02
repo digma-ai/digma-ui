@@ -29,7 +29,6 @@ export const Title = styled.div`
   text-transform: capitalize;
   font-size: 14px;
   font-weight: 500;
-  line-height: normal;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

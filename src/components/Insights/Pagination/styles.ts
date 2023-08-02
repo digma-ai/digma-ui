@@ -9,8 +9,7 @@ export const Button = styled.button`
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 10px;
-  line-height: normal;
+  font-size: 12px;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

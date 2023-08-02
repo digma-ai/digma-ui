@@ -15,9 +15,6 @@ export const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
-  font-size: 10px;
-  line-height: normal;
-  font-weight: 500;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -25,19 +22,6 @@ export const ContentContainer = styled.div`
       case "dark":
       case "dark-jetbrains":
         return "#dadada";
-    }
-  }};
-`;
-
-export const Description = styled.span`
-  font-weight: 400;
-  color: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#828797";
-      case "dark":
-      case "dark-jetbrains":
-        return "#9b9b9b";
     }
   }};
 `;
@@ -55,4 +39,8 @@ export const Endpoint = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
+`;
+
+export const Name = styled.span`
+  font-weight: 500;
 `;

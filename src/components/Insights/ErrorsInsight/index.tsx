@@ -1,6 +1,6 @@
 import { Button } from "../../common/Button";
 import { InsightCard } from "../InsightCard";
-import { Link } from "../styles";
+import { Description, Link } from "../styles";
 import * as s from "./styles";
 import { ErrorsInsightProps } from "./types";
 
@@ -18,25 +18,24 @@ export const ErrorsInsight = (props: ErrorsInsightProps) => {
       data={props.insight}
       content={
         <s.ContentContainer>
-          <s.Description>
+          <Description>
             {props.insight.errorCount} Error
             {props.insight.errorCount === 1 ? "" : "s"}
-          </s.Description>
-          <s.EntityName>
+          </Description>
+          <span>
             {props.insight.unhandledCount} unhandled,{" "}
             {props.insight.unexpectedCount} unexpected
-          </s.EntityName>
+          </span>
           <s.ErrorList>
             {props.insight.topErrors.map((error) => (
-              <s.Description key={error.uid}>
-                <Link onClick={() => handleErrorLinkClick(error.uid)}>
-                  {error.errorType}
-                </Link>{" "}
-                from{" "}
+              <Description key={error.uid}>
                 <s.EntityName>
-                  {error.sourceCodeObjectId.split("$_$")[1]}
-                </s.EntityName>
-              </s.Description>
+                  <Link onClick={() => handleErrorLinkClick(error.uid)}>
+                    {error.errorType}
+                  </Link>
+                </s.EntityName>{" "}
+                from {error.sourceCodeObjectId.split("$_$")[1]}
+              </Description>
             ))}
           </s.ErrorList>
         </s.ContentContainer>

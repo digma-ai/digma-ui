@@ -5,7 +5,7 @@ import { Button } from "../../common/Button";
 import { ChartIcon } from "../../common/icons/ChartIcon";
 import { CrosshairIcon } from "../../common/icons/CrosshairIcon";
 import { InsightCard } from "../InsightCard";
-import { Link } from "../styles";
+import { Description, Link } from "../styles";
 import { Trace } from "../types";
 import * as s from "./styles";
 import { ScalingIssueInsightProps } from "./types";
@@ -35,16 +35,16 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
       data={props.insight}
       content={
         <s.ContentContainer>
-          <s.Description>
+          <Description>
             {props.insight.shortDisplayInfo.description}
-          </s.Description>
+          </Description>
           <s.Stats>
             <s.Stat>
-              <s.Description>Tested concurrency</s.Description>
+              <Description>Tested concurrency</Description>
               <span>{props.insight.maxConcurrency}</span>
             </s.Stat>
             <s.Stat>
-              <s.Description>Duration</s.Description>
+              <Description>Duration</Description>
               <span>
                 {props.insight.minDuration.value}{" "}
                 {props.insight.minDuration.unit} -{" "}
@@ -55,7 +55,7 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
           </s.Stats>
           {props.insight.rootCauseSpans.length > 0 && (
             <s.List>
-              <s.Description>Caused by:</s.Description>
+              <Description>Caused by:</Description>
               {props.insight.rootCauseSpans.map((span) => {
                 const spanName = span.displayName;
                 const traceId = span.sampleTraceId;
@@ -88,18 +88,18 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
           )}
           {props.insight.affectedEndpoints.length > 0 && (
             <s.List>
-              <s.Description>Affected endpoints:</s.Description>
+              <Description>Affected endpoints:</Description>
               {props.insight.affectedEndpoints.map((endpoint) => {
                 const endpointRoute = trimEndpointScheme(endpoint.route);
 
                 return (
-                  <span key={endpoint.route}>
+                  <s.Endpoint key={endpoint.route}>
                     <Link
                       onClick={() => handleLinkClick(endpoint.spanCodeObjectId)}
                     >
                       {endpointRoute}
                     </Link>
-                  </span>
+                  </s.Endpoint>
                 );
               })}
             </s.List>

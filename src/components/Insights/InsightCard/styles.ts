@@ -27,16 +27,6 @@ export const Container = styled.div`
   }};
 `;
 
-export const TitleRow = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 4px;
-  font-weight: 500;
-  font-size: 12px;
-  line-height: normal;
-`;
-
 export const Title = styled.div`
   display: flex;
   gap: 4px;
@@ -75,8 +65,7 @@ export const Toolbar = styled.div`
 `;
 
 export const Stats = styled.span`
-  font-size: 10px;
-  line-height: normal;
+  font-size: 12px;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -102,8 +91,7 @@ export const RefreshContainer = styled.div`
 `;
 
 export const ContentContainer = styled.div`
-  font-size: 10px;
-  line-height: normal;
+  font-size: 12px;
 `;
 
 export const PercentileViewModeToggle = styled.div`
@@ -111,9 +99,8 @@ export const PercentileViewModeToggle = styled.div`
   border-radius: 4px;
   padding: 4px;
   gap: 4px;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 500;
-  line-height: normal;
   border: 1px solid
     ${({ theme }) => {
       switch (theme.mode) {

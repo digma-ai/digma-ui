@@ -58,7 +58,6 @@ export const ContentContainer = styled.div`
   display: flex;
   gap: 8px;
   font-size: 12px;
-  line-height: normal;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

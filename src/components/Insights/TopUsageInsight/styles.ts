@@ -29,8 +29,6 @@ export const FlowData = styled.span`
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
-  font-size: 10px;
-  line-height: normal;
   font-weight: 500;
   word-break: break-all;
 `;
