@@ -54,11 +54,7 @@ export const runDigmaWithCommandLine: PageContent = {
       title: "Spring Boot + Gradle",
       content: (
         <>
-          <span>
-            Add the following XML to your Pom.xml under the{" "}
-            <code>&lt;Profiles&gt;</code> element (add this element if it
-            doesn&apos;t exist)
-          </span>
+          <span>Add the following to your build.gradle file</span>
           <CodeSnippet
             text={`tasks.named("bootRun") {
   if (project.hasProperty('digma')) {
@@ -72,11 +68,25 @@ export const runDigmaWithCommandLine: PageContent = {
   }
 }`}
             language={"groovy"}
-          ></CodeSnippet>
+          />
           <span>
             if you&apos;re using <code>build.gradle.kts</code> you can use the
             following:
           </span>
+          <CodeSnippet
+            text={`tasks.named<BootRun>("bootRun") {
+  if (project.hasProperty("digma")) {
+    val tempDir = System.getProperty("java.io.tmpdir")
+    environment["JAVA_TOOL_OPTIONS"] = "-javaagent:\${tempDir}/temp-digma-otel-jars/opentelemetry-javaagent.jar"
+    systemProperty("otel.exporter.otlp.traces.endpoint", "http://localhost:5050")
+    systemProperty("otel.traces.exporter", "otlp")
+    systemProperty("otel.metrics.exporter", "none")
+    systemProperty("otel.service.name", project.name)
+    systemProperty("otel.javaagent.extensions", "\${tempDir}/temp-digma-otel-jars/digma-otel-agent-extension.jar")
+  }
+}`}
+            language={"kotlin"}
+          />
         </>
       )
     },
