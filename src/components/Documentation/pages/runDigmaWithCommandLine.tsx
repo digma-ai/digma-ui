@@ -54,11 +54,7 @@ export const runDigmaWithCommandLine: PageContent = {
       title: "Spring Boot + Gradle",
       content: (
         <>
-          <span>
-            Add the following XML to your Pom.xml under the{" "}
-            <code>&lt;Profiles&gt;</code> element (add this element if it
-            doesn&apos;t exist)
-          </span>
+          <span>Add the following to your build.gradle file</span>
           <CodeSnippet
             text={`tasks.named("bootRun") {
   if (project.hasProperty('digma')) {
