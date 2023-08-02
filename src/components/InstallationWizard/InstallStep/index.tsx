@@ -49,7 +49,7 @@ export const InstallStep = (props: InstallStepProps) => {
   const [isAutoInstallationFinished, setIsAutoInstallationFinished] =
     useState(false);
   const [areTabsVisible, setAreTabsVisible] = useState(
-    !config.isDockerInstalled || !config.isDockerComposeInstalled
+    !config.isDigmaEngineInstalled && !isAutoInstallationFlow
   );
   const [isAutoInstallTabVisible, setIsAutoInstallTabVisible] = useState(false);
   const [isEngineOperationInProgress, setIsEngineOperationInProgress] =
@@ -228,37 +228,6 @@ export const InstallStep = (props: InstallStepProps) => {
         ]
       : []),
     {
-      icon: DockerLogoIcon,
-      title: "Docker Desktop",
-      content: (
-        <>
-          <s.TabContentContainer>
-            <s.SectionTitle>
-              <DockerLogoIcon size={24} color={"#2396ed"} />
-              Install Digma Docker extension
-            </s.SectionTitle>
-            <SectionDescription>
-              (You&apos;ll need{" "}
-              <Link onClick={() => openURLInDefaultBrowser(DOCKER_DESKTOP_URL)}>
-                Docker Desktop
-              </Link>{" "}
-              4.10.0 or higher installed)
-            </SectionDescription>
-            <s.GetDockerExtensionButton
-              buttonType={"secondary"}
-              onClick={handleInstallDigmaButtonClick}
-            >
-              Get Digma Docker Extension
-            </s.GetDockerExtensionButton>
-          </s.TabContentContainer>
-          <s.CommonContentContainer>
-            {renderLoader()}
-            {renderMainButton()}
-          </s.CommonContentContainer>
-        </>
-      )
-    },
-    {
       icon: CodeIcon,
       title: "Docker Compose",
       content: (
@@ -284,6 +253,37 @@ export const InstallStep = (props: InstallStepProps) => {
               onSelect={handleSelectDockerComposeOSTab}
               selectedTab={selectedDockerComposeOSTab}
             />
+          </s.TabContentContainer>
+          <s.CommonContentContainer>
+            {renderLoader()}
+            {renderMainButton()}
+          </s.CommonContentContainer>
+        </>
+      )
+    },
+    {
+      icon: DockerLogoIcon,
+      title: "Docker Desktop",
+      content: (
+        <>
+          <s.TabContentContainer>
+            <s.SectionTitle>
+              <DockerLogoIcon size={24} color={"#2396ed"} />
+              Install Digma Docker extension
+            </s.SectionTitle>
+            <SectionDescription>
+              (You&apos;ll need{" "}
+              <Link onClick={() => openURLInDefaultBrowser(DOCKER_DESKTOP_URL)}>
+                Docker Desktop
+              </Link>{" "}
+              4.10.0 or higher installed)
+            </SectionDescription>
+            <s.GetDockerExtensionButton
+              buttonType={"secondary"}
+              onClick={handleInstallDigmaButtonClick}
+            >
+              Get Digma Docker Extension
+            </s.GetDockerExtensionButton>
           </s.TabContentContainer>
           <s.CommonContentContainer>
             {renderLoader()}
