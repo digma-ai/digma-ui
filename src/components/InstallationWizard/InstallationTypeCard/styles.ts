@@ -1,27 +1,18 @@
 import styled from "styled-components";
-import { InstallationTypeButtonElementProps } from "./types";
+import { ButtonProps, ContainerProps } from "./types";
 
-export const InstallationTypeButton = styled.button`
+export const Container = styled.div<ContainerProps>`
   display: flex;
+  flex-direction: column;
+  gap: 20px;
   padding: 12px;
-  gap: 8px;
   border-radius: 4px;
-  font-size: 12px;
-  line-height: 14px;
   border: 1px solid transparent;
-  color: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#828797";
-      case "dark":
-      case "dark-jetbrains":
-        return "#9b9b9b";
-    }
-  }};
+  cursor: ${({ disabled }) => (disabled ? "default" : "pointer")};
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "#f1f5fa";
+        return "#e9eef4";
       case "dark":
       case "dark-jetbrains":
         return "#2e2e2e";
@@ -61,21 +52,25 @@ export const InstallationTypeButton = styled.button`
         }
       }};
   }
-
-  &:disabled {
-    color: ${({ theme }) => {
-      switch (theme.mode) {
-        case "light":
-          return "#b9c0d4";
-        case "dark":
-        case "dark-jetbrains":
-          return "#9b9b9b";
-      }
-    }};
-  }
 `;
 
-export const InstallationTypeButtonIconContainer = styled.span<InstallationTypeButtonElementProps>`
+export const ContentContainer = styled.div`
+  display: flex;
+  gap: 8px;
+  font-size: 12px;
+  line-height: normal;
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#828797";
+      case "dark":
+      case "dark-jetbrains":
+        return "#9b9b9b";
+    }
+  }};
+`;
+
+export const IconContainer = styled.span<ButtonProps>`
   display: flex;
   flex-shrink: 0;
   height: 72px;
@@ -92,17 +87,15 @@ export const InstallationTypeButtonIconContainer = styled.span<InstallationTypeB
         return "#3c3c3c";
     }
   }};
-
-  ${({ disabled }) => (disabled ? "opacity: 0.5;" : "")}
 `;
 
-export const InstallationTypeButtonTextContainer = styled.span`
+export const TextContainer = styled.span`
   display: flex;
   flex-direction: column;
   text-align: start;
 `;
 
-export const InstallationTypeButtonTitle = styled.span<InstallationTypeButtonElementProps>`
+export const Title = styled.span<ButtonProps>`
   display: flex;
   align-items: center;
   gap: 4px;
@@ -110,17 +103,7 @@ export const InstallationTypeButtonTitle = styled.span<InstallationTypeButtonEle
   font-size: 14px;
   line-height: 16px;
   margin-bottom: 8px;
-  color: ${({ disabled, theme }) => {
-    if (disabled) {
-      switch (theme.mode) {
-        case "light":
-          return "#b9c0d4";
-        case "dark":
-        case "dark-jetbrains":
-          return "#9b9b9b";
-      }
-    }
-
+  color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
         return "#4d668a";

@@ -1,15 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
-import {
-  GETTING_STARTED_VIDEO_URL,
-  SLACK_WORKSPACE_URL
-} from "../../constants";
+import { actions as globalActions } from "../../actions";
+import { SLACK_WORKSPACE_URL } from "../../constants";
 import { dispatcher } from "../../dispatcher";
 import { isNumber } from "../../typeGuards/isNumber";
 import { addPrefix } from "../../utils/addPrefix";
 import { groupBy } from "../../utils/groupBy";
-import { actions as globalActions } from "../common/App";
-import { Button } from "../common/Button";
+import { openURLInDefaultBrowser } from "../../utils/openURLInDefaultBrowser";
 import { StackIcon } from "../common/icons/StackIcon";
 import { AssetList } from "./AssetList";
 import { AssetTypeList } from "./AssetTypeList";
@@ -112,12 +109,10 @@ export const Assets = (props: AssetsProps) => {
   }, [lastSetDataTimeStamp]);
 
   useEffect(() => {
-    if (!props.data) {
-      return;
+    if (props.data) {
+      const groupedAssetEntries = groupEntries(props.data.serviceAssetsEntries);
+      setData(groupedAssetEntries);
     }
-
-    const groupedAssetEntries = groupEntries(props.data.serviceAssetsEntries);
-    setData(groupedAssetEntries);
   }, [props.data]);
 
   const handleBackButtonClick = () => {
@@ -136,20 +131,12 @@ export const Assets = (props: AssetsProps) => {
   };
 
   const handleSlackLinkClick = () => {
-    window.sendMessageToDigma({
-      action: globalActions.OPEN_URL_IN_DEFAULT_BROWSER,
-      payload: {
-        url: SLACK_WORKSPACE_URL
-      }
-    });
+    openURLInDefaultBrowser(SLACK_WORKSPACE_URL);
   };
 
-  const handleGettingStartedButtonClick = () => {
+  const handleDocumentationLinkClick = () => {
     window.sendMessageToDigma({
-      action: globalActions.OPEN_URL_IN_DEFAULT_BROWSER,
-      payload: {
-        url: GETTING_STARTED_VIDEO_URL
-      }
+      action: globalActions.OPEN_TROUBLESHOOTING_GUIDE
     });
   };
 
@@ -162,15 +149,14 @@ export const Assets = (props: AssetsProps) => {
           </s.Circle>
           <s.NoDataTitle>No Data</s.NoDataTitle>
           <s.NoDataText>
-            Please check out the &quot;Getting started&quot; video to see how to
-            collect data from your application. If you still have any issues,
-            please let us know on our{" "}
-            <s.SlackLink onClick={handleSlackLinkClick}>Slack</s.SlackLink>{" "}
-            channel.
+            Please check out our{" "}
+            <s.Link onClick={handleDocumentationLinkClick}>
+              documentation
+            </s.Link>{" "}
+            to see how to collect data from your application. If you still have
+            any issues, please let us know on our{" "}
+            <s.Link onClick={handleSlackLinkClick}>Slack</s.Link> channel.
           </s.NoDataText>
-          <Button onClick={handleGettingStartedButtonClick}>
-            Getting Started
-          </Button>
         </s.NoDataContainer>
       );
     }

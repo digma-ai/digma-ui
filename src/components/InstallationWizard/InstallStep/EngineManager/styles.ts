@@ -6,6 +6,7 @@ export const Container = styled.div`
   align-items: center;
   gap: 20px;
   padding: 40px 8px 0;
+  text-align: center;
 `;
 
 export const Title = styled.span`
@@ -29,9 +30,7 @@ export const ContentContainer = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 12px;
-  text-align: center;
-  font-size: 10px;
-  font-style: normal;
+  font-size: 12px;
   font-weight: 500;
   color: ${({ theme }) => {
     switch (theme.mode) {
@@ -45,6 +44,9 @@ export const ContentContainer = styled.div`
 `;
 
 export const ErrorMessage = styled.span`
+  word-break: break-word;
+  max-width: 300px;
+  white-space: pre-line;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

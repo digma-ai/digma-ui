@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Link } from "../common/Link";
+import { Link as CommonLink } from "../common/Link";
 
 export const Container = styled.div`
   min-height: 100vh;
@@ -70,7 +70,7 @@ export const Circle = styled.div`
   }};
 `;
 
-export const SlackLink = styled(Link)`
+export const Link = styled(CommonLink)`
   font-size: 12px;
   line-height: 16px;
 `;

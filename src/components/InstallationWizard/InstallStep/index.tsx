@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { useTheme } from "styled-components";
-import { actions as globalActions } from "../../common/App";
+import { openURLInDefaultBrowser } from "../../../utils/openURLInDefaultBrowser";
+import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { getThemeKind } from "../../common/App/styles";
 import { Loader } from "../../common/Loader";
@@ -13,6 +14,7 @@ import { CodeSnippet } from "../CodeSnippet";
 import { Tabs } from "../Tabs";
 import { Link, MainButton, SectionDescription } from "../styles";
 import { trackingEvents } from "../tracking";
+import { AsyncActionResult } from "../types";
 import { EngineManager } from "./EngineManager";
 import * as s from "./styles";
 import { InstallStepProps } from "./types";
@@ -47,7 +49,7 @@ export const InstallStep = (props: InstallStepProps) => {
   const [isAutoInstallationFinished, setIsAutoInstallationFinished] =
     useState(false);
   const [areTabsVisible, setAreTabsVisible] = useState(
-    !config.isDockerInstalled || !config.isDockerComposeInstalled
+    !config.isDigmaEngineInstalled && !isAutoInstallationFlow
   );
   const [isAutoInstallTabVisible, setIsAutoInstallTabVisible] = useState(false);
   const [isEngineOperationInProgress, setIsEngineOperationInProgress] =
@@ -78,27 +80,20 @@ export const InstallStep = (props: InstallStepProps) => {
     setSelectedDockerComposeOSTab(tabIndex);
   };
 
-  const openLinkInDefaultBrowser = (url: string) => {
-    window.sendMessageToDigma({
-      action: globalActions.OPEN_URL_IN_DEFAULT_BROWSER,
-      payload: {
-        url
-      }
-    });
-  };
-
   const handleSlackLinkClick = () => {
-    window.sendMessageToDigma({
-      action: globalActions.SEND_TRACKING_EVENT,
-      payload: {
-        eventName: trackingEvents.NO_DOCKER_SLACK_LINK_CLICKED
-      }
-    });
+    sendTrackingEvent(trackingEvents.NO_DOCKER_SLACK_LINK_CLICKED);
     props.onSlackLinkClick();
   };
 
-  const handleEngineAutoInstallationFinish = () => {
+  const handleEngineAutoInstallationFinish = (result: AsyncActionResult) => {
     setIsAutoInstallationFinished(true);
+    sendTrackingEvent(trackingEvents.AUTO_INSTALLATION_FLOW_FINISHED, {
+      result
+    });
+
+    if (result === "failure") {
+      handleEngineManualInstallSelect();
+    }
   };
 
   const handleEngineRemovalFinish = () => {
@@ -107,7 +102,6 @@ export const InstallStep = (props: InstallStepProps) => {
   };
 
   const handleEngineManualInstallSelect = () => {
-    setIsAutoInstallationFinished(true);
     setAreTabsVisible(true);
     setIsAutoInstallTabVisible(false);
   };
@@ -164,7 +158,7 @@ export const InstallStep = (props: InstallStepProps) => {
   const renderDockerComposeInstructions = () => (
     <>
       <SectionDescription>Then run:</SectionDescription>
-      <CodeSnippet text={RUN_DOCKER_COMPOSE_COMMAND} />
+      <CodeSnippet text={RUN_DOCKER_COMPOSE_COMMAND} language={"bash"} />
       <SectionDescription>
         Prefer to use a helm file? Check out{" "}
         <Link
@@ -184,7 +178,10 @@ export const InstallStep = (props: InstallStepProps) => {
       title: "Linux & macOS",
       content: (
         <s.DockerComposeOSTabContentContainer>
-          <CodeSnippet text={GET_DIGMA_DOCKER_COMPOSE_COMMAND_LINUX} />
+          <CodeSnippet
+            text={GET_DIGMA_DOCKER_COMPOSE_COMMAND_LINUX}
+            language={"bash"}
+          />
           {renderDockerComposeInstructions()}
         </s.DockerComposeOSTabContentContainer>
       )
@@ -193,7 +190,10 @@ export const InstallStep = (props: InstallStepProps) => {
       title: "Windows (PowerShell)",
       content: (
         <s.DockerComposeOSTabContentContainer>
-          <CodeSnippet text={GET_DIGMA_DOCKER_COMPOSE_COMMAND_WINDOWS} />
+          <CodeSnippet
+            text={GET_DIGMA_DOCKER_COMPOSE_COMMAND_WINDOWS}
+            language={"powershell"}
+          />
           {renderDockerComposeInstructions()}
         </s.DockerComposeOSTabContentContainer>
       )
@@ -228,39 +228,6 @@ export const InstallStep = (props: InstallStepProps) => {
         ]
       : []),
     {
-      icon: DockerLogoIcon,
-      title: "Docker Desktop",
-      content: (
-        <>
-          <s.TabContentContainer>
-            <s.SectionTitle>
-              <DockerLogoIcon size={24} color={"#2396ed"} />
-              Install Digma Docker extension
-            </s.SectionTitle>
-            <SectionDescription>
-              (You&apos;ll need{" "}
-              <Link
-                onClick={() => openLinkInDefaultBrowser(DOCKER_DESKTOP_URL)}
-              >
-                Docker Desktop
-              </Link>{" "}
-              4.10.0 or higher installed)
-            </SectionDescription>
-            <s.GetDockerExtensionButton
-              buttonType={"secondary"}
-              onClick={handleInstallDigmaButtonClick}
-            >
-              Get Digma Docker Extension
-            </s.GetDockerExtensionButton>
-          </s.TabContentContainer>
-          <s.CommonContentContainer>
-            {renderLoader()}
-            {renderMainButton()}
-          </s.CommonContentContainer>
-        </>
-      )
-    },
-    {
       icon: CodeIcon,
       title: "Docker Compose",
       content: (
@@ -272,13 +239,11 @@ export const InstallStep = (props: InstallStepProps) => {
             </s.SectionTitle>
             <SectionDescription>
               (You&apos;ll need{" "}
-              <Link onClick={() => openLinkInDefaultBrowser(DOCKER_URL)}>
+              <Link onClick={() => openURLInDefaultBrowser(DOCKER_URL)}>
                 Docker
               </Link>{" "}
               and{" "}
-              <Link
-                onClick={() => openLinkInDefaultBrowser(DOCKER_COMPOSE_URL)}
-              >
+              <Link onClick={() => openURLInDefaultBrowser(DOCKER_COMPOSE_URL)}>
                 Docker Compose
               </Link>{" "}
               installed)
@@ -288,6 +253,37 @@ export const InstallStep = (props: InstallStepProps) => {
               onSelect={handleSelectDockerComposeOSTab}
               selectedTab={selectedDockerComposeOSTab}
             />
+          </s.TabContentContainer>
+          <s.CommonContentContainer>
+            {renderLoader()}
+            {renderMainButton()}
+          </s.CommonContentContainer>
+        </>
+      )
+    },
+    {
+      icon: DockerLogoIcon,
+      title: "Docker Desktop",
+      content: (
+        <>
+          <s.TabContentContainer>
+            <s.SectionTitle>
+              <DockerLogoIcon size={24} color={"#2396ed"} />
+              Install Digma Docker extension
+            </s.SectionTitle>
+            <SectionDescription>
+              (You&apos;ll need{" "}
+              <Link onClick={() => openURLInDefaultBrowser(DOCKER_DESKTOP_URL)}>
+                Docker Desktop
+              </Link>{" "}
+              4.10.0 or higher installed)
+            </SectionDescription>
+            <s.GetDockerExtensionButton
+              buttonType={"secondary"}
+              onClick={handleInstallDigmaButtonClick}
+            >
+              Get Digma Docker Extension
+            </s.GetDockerExtensionButton>
           </s.TabContentContainer>
           <s.CommonContentContainer>
             {renderLoader()}
@@ -346,10 +342,8 @@ export const InstallStep = (props: InstallStepProps) => {
             onOperationFinish={handleEngineOperationFinish}
           />
           <s.CommonContentContainer>
-            {((isAutoInstallationFlow && isAutoInstallationFinished) ||
-              (!isAutoInstallationFlow &&
-                config.isDigmaEngineInstalled &&
-                !isEngineOperationInProgress)) && (
+            {(isAutoInstallationFinished ||
+              (!isAutoInstallationFlow && !isEngineOperationInProgress)) && (
               <MainButton onClick={handleNextButtonClick}>Next</MainButton>
             )}
           </s.CommonContentContainer>

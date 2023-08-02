@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { useTheme } from "styled-components";
 import { actions } from "../..";
 import { dispatcher } from "../../../../dispatcher";
-import { actions as globalActions } from "../../../common/App";
+import { sendTrackingEvent } from "../../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../../common/App/ConfigContext";
 import { getThemeKind } from "../../../common/App/styles";
 import { Button } from "../../../common/Button";
@@ -75,11 +75,18 @@ export const EngineManager = (props: EngineManagerProps) => {
       data: AsyncActionResultData,
       operation: Operation
     ) => {
-      setCurrentOperation({
+      const operationData = {
         operation: operation,
         status: data.result,
         error: data.error
-      });
+      };
+
+      sendTrackingEvent(
+        trackingEvents.ENGINE_ACTION_RESULT_MESSAGE_RECEIVED,
+        operationData
+      );
+
+      setCurrentOperation(operationData);
     };
     const handleInstallDigmaResultData = (data: unknown) => {
       handleOperationResultData(
@@ -148,6 +155,7 @@ export const EngineManager = (props: EngineManagerProps) => {
 
   useEffect(() => {
     if (props.autoInstall) {
+      sendTrackingEvent(trackingEvents.AUTO_INSTALLATION_FLOW_STARTED);
       window.sendMessageToDigma({
         action: actions.INSTALL_DIGMA_ENGINE
       });
@@ -161,18 +169,12 @@ export const EngineManager = (props: EngineManagerProps) => {
         switch (currentOperation.operation) {
           case Operation.INSTALL:
             if (props.autoInstall && props.onAutoInstallFinish) {
-              props.onAutoInstallFinish();
+              props.onAutoInstallFinish("success");
             }
             break;
           case Operation.UNINSTALL:
-            if (props.autoInstall) {
-              if (props.onManualInstallSelect) {
-                props.onManualInstallSelect();
-              }
-            } else {
-              if (props.onRemoveFinish) {
-                props.onRemoveFinish();
-              }
+            if (!props.autoInstall && props.onRemoveFinish) {
+              props.onRemoveFinish();
             }
             break;
           case Operation.START:
@@ -184,11 +186,11 @@ export const EngineManager = (props: EngineManagerProps) => {
       if (currentOperation.status === "failure") {
         switch (currentOperation.operation) {
           case Operation.INSTALL:
-          case Operation.UNINSTALL:
-            if (props.autoInstall && props.onManualInstallSelect) {
-              props.onManualInstallSelect();
+            if (props.autoInstall && props.onAutoInstallFinish) {
+              props.onAutoInstallFinish("failure");
             }
             break;
+          case Operation.UNINSTALL:
           case Operation.START:
           case Operation.STOP:
             break;
@@ -223,16 +225,13 @@ export const EngineManager = (props: EngineManagerProps) => {
   }, [currentOperation, props]);
 
   const sendActionButtonTrackingEvent = (buttonName: string) => {
-    window.sendMessageToDigma({
-      action: globalActions.SEND_TRACKING_EVENT,
-      payload: {
-        eventName: trackingEvents.ENGINE_ACTION_BUTTON_CLICKED,
-        buttonName
-      }
+    sendTrackingEvent(trackingEvents.ENGINE_ACTION_BUTTON_CLICKED, {
+      buttonName
     });
   };
 
   const handleRetryButtonClick = () => {
+    sendActionButtonTrackingEvent("Retry");
     if (failedOperation) {
       window.sendMessageToDigma({
         action: operationsInfo[failedOperation.operation].action
@@ -245,16 +244,22 @@ export const EngineManager = (props: EngineManagerProps) => {
   };
 
   const handleInstallManuallyButtonClick = () => {
+    sendActionButtonTrackingEvent("Install manually");
     props.onManualInstallSelect && props.onManualInstallSelect();
   };
 
   const renderOperationButton = (operation: Operation) => {
     const handleOperationButtonClick = () => {
       const operationInfo = operationsInfo[operation];
+      sendActionButtonTrackingEvent(operationInfo.button.label);
+
       window.sendMessageToDigma({
         action: operationInfo.action
       });
-      sendActionButtonTrackingEvent(operationInfo.button.label);
+      sendTrackingEvent(trackingEvents.ENGINE_ACTION_MESSAGE_SENT, {
+        action: operationInfo.action
+      });
+
       setCurrentOperation({ operation, status: "pending" });
     };
 

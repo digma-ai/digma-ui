@@ -1,10 +1,12 @@
 import { Allotment } from "allotment";
 import "allotment/dist/style.css";
 import { useContext, useEffect, useMemo, useState } from "react";
+import { actions as globalActions } from "../../actions";
 import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
 import { addPrefix } from "../../utils/addPrefix";
 import { groupBy } from "../../utils/groupBy";
+import { ConfigContext } from "../common/App/ConfigContext";
 import { CursorFollower } from "../common/CursorFollower";
 import { DigmaLogoFlatIcon } from "../common/icons/DigmaLogoFlatIcon";
 import { EnvironmentPanel } from "./EnvironmentPanel";
@@ -13,14 +15,7 @@ import { LiveView } from "./LiveView";
 import { LiveData } from "./LiveView/types";
 import { RecentActivityTable, isRecent } from "./RecentActivityTable";
 import * as s from "./styles";
-
-import { isString } from "../../typeGuards/isString";
-import { ConfigContext } from "../common/App/ConfigContext";
 import { EntrySpan, RecentActivityData, RecentActivityProps } from "./types";
-
-const documentationURL = isString(window.recentActivityDocumentationURL)
-  ? window.recentActivityDocumentationURL
-  : null;
 
 const ACTION_PREFIX = "RECENT_ACTIVITY";
 
@@ -33,6 +28,12 @@ const actions = addPrefix(ACTION_PREFIX, {
   CLOSE_LIVE_VIEW: "CLOSE_LIVE_VIEW"
 });
 
+const handleDocumentationLinkClick = () => {
+  window.sendMessageToDigma({
+    action: globalActions.OPEN_TROUBLESHOOTING_GUIDE
+  });
+};
+
 const renderNoData = () => {
   return (
     <s.NoDataContainer>
@@ -40,21 +41,10 @@ const renderNoData = () => {
         <DigmaLogoFlatIcon size={64} />
       </CursorFollower>
       <s.NoDataTitle>No Recent Activity</s.NoDataTitle>
-      {documentationURL && (
-        <>
-          <s.NoDataText>
-            Check out our documentation to learn how to
-          </s.NoDataText>
-
-          <s.DocumentationLink
-            href={documentationURL}
-            rel={"noopener noreferrer"}
-            target={"_blank"}
-          >
-            dig with digma
-          </s.DocumentationLink>
-        </>
-      )}
+      <s.NoDataText>Check our documentation</s.NoDataText>
+      <s.DocumentationLink onClick={handleDocumentationLinkClick}>
+        Not seeing your application data?
+      </s.DocumentationLink>
     </s.NoDataContainer>
   );
 };
@@ -92,19 +82,15 @@ export const RecentActivity = (props: RecentActivityProps) => {
   }, []);
 
   useEffect(() => {
-    if (!props.data) {
-      return;
+    if (props.data) {
+      setData(props.data);
     }
-
-    setData(props.data);
   }, [props.data]);
 
   useEffect(() => {
-    if (!props.liveData) {
-      return;
+    if (props.liveData) {
+      setLiveData(props.liveData);
     }
-
-    setLiveData(props.liveData);
   }, [props.liveData]);
 
   useEffect(() => {

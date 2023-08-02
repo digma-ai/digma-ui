@@ -8,16 +8,21 @@ import { useDebounce } from "../../hooks/useDebounce";
 import { usePrevious } from "../../hooks/usePrevious";
 import { ide } from "../../platform";
 import { addPrefix } from "../../utils/addPrefix";
-import { actions as globalActions } from "../common/App";
+import { openURLInDefaultBrowser } from "../../utils/openURLInDefaultBrowser";
+import { sendTrackingEvent } from "../../utils/sendTrackingEvent";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { getThemeKind } from "../common/App/styles";
+import { Button } from "../common/Button";
+import { Checkbox } from "../common/Checkbox";
+import { Loader } from "../common/Loader";
+import { TextField } from "../common/TextField";
 import { CloudDownloadIcon } from "../common/icons/CloudDownloadIcon";
 import { DigmaGreetingIcon } from "../common/icons/DigmaGreetingIcon";
 import { OpenTelemetryDisplayIcon } from "../common/icons/OpenTelemetryDisplayIcon";
 import { SlackLogoIcon } from "../common/icons/SlackLogoIcon";
 import { FinishStep } from "./FinishStep";
 import { InstallStep } from "./InstallStep";
-import { InstallationTypeButton } from "./InstallationTypeButton";
+import { InstallationTypeCard } from "./InstallationTypeCard";
 import { ObservabilityStep } from "./ObservabilityStep";
 import { Step } from "./Step";
 import { StepData, StepStatus } from "./Step/types";
@@ -66,13 +71,9 @@ const quickstartURL = getQuickstartURL(ide);
 const footerTransitionClassName = "footer";
 const TRANSITION_DURATION = 300; // in milliseconds
 
-const firstStep = window.wizardSkipInstallationStep === true ? 1 : 0;
+const isFirstLaunch = window.wizardFirstLaunch === true;
 
-// TO DO:
-// add environment variable for presetting the correct installation type
-// if Digma already installed
-const preselectedInstallationType =
-  window.wizardSkipInstallationStep === true ? "local" : undefined;
+const firstStep = window.wizardSkipInstallationStep === true ? 1 : 0;
 
 const getStepStatus = (index: number, currentStep: number): StepStatus => {
   if (index < currentStep) {
@@ -101,9 +102,22 @@ export const InstallationWizard = () => {
   const [connectionCheckStatus, setConnectionCheckStatus] =
     useState<AsyncActionStatus>();
   const footerContentRef = useRef<HTMLDivElement>(null);
+  const [userEmail, setUserEmail] = useState("");
+  const [isUserEmailCaptured, setIsUserEmailCaptured] = useState(false);
+
+  // TO DO:
+  // add environment variable for presetting the correct installation type
+  // if Digma already installed
+  const preselectedInstallationType =
+    window.wizardSkipInstallationStep === true || config.isDigmaEngineInstalled
+      ? "local"
+      : undefined;
   const [installationType, setInstallationType] = useState<
     InstallationType | undefined
   >(preselectedInstallationType);
+
+  const isStartAutoInstall = true;
+
   const theme = useTheme();
   const themeKind = getThemeKind(theme);
   const [email, setEmail] = useState(config.userEmail);
@@ -112,6 +126,10 @@ export const InstallationWizard = () => {
   );
   const [isEmailValidating, setIsEmailValidating] = useState(false);
   const debouncedEmail = useDebounce(email, 1000);
+  const [
+    isDigmaCloudNotificationCheckboxChecked,
+    setIsDigmaCloudNotificationCheckboxChecked
+  ] = useState(false);
 
   useEffect(() => {
     if (email === debouncedEmail) {
@@ -126,23 +144,28 @@ export const InstallationWizard = () => {
 
   useEffect(() => {
     if (previousStep === 0 && currentStep === 1) {
+      sendTrackingEvent(trackingEvents.INSTALL_STEP_PASSED);
+    }
+
+    if (
+      previousStep === 1 &&
+      currentStep === 2 &&
+      isFirstLaunch &&
+      !isObservabilityEnabled
+    ) {
+      setIsObservabilityEnabled(true);
       window.sendMessageToDigma({
-        action: globalActions.SEND_TRACKING_EVENT,
+        action: actions.SET_OBSERVABILITY,
         payload: {
-          eventName: trackingEvents.INSTALL_STEP_PASSED
+          isObservabilityEnabled: true
         }
       });
     }
-  }, [previousStep, currentStep]);
+  }, [previousStep, currentStep, isObservabilityEnabled]);
 
   useEffect(() => {
     if (firstStep === 1) {
-      window.sendMessageToDigma({
-        action: globalActions.SEND_TRACKING_EVENT,
-        payload: {
-          eventName: trackingEvents.INSTALL_STEP_AUTOMATICALLY_PASSED
-        }
-      });
+      sendTrackingEvent(trackingEvents.INSTALL_STEP_AUTOMATICALLY_PASSED);
     }
 
     const handleConnectionCheckResultData = (data: unknown) => {
@@ -175,29 +198,13 @@ export const InstallationWizard = () => {
   };
 
   const handleGetDigmaDockerDesktopButtonClick = () => {
-    window.sendMessageToDigma({
-      action: globalActions.OPEN_URL_IN_DEFAULT_BROWSER,
-      payload: {
-        url: DIGMA_DOCKER_EXTENSION_URL
-      }
-    });
-    window.sendMessageToDigma({
-      action: globalActions.SEND_TRACKING_EVENT,
-      payload: {
-        eventName: trackingEvents.GET_DIGMA_DOCKER_EXTENSION_BUTTON_CLICKED
-      }
-    });
+    sendTrackingEvent(trackingEvents.GET_DIGMA_DOCKER_EXTENSION_BUTTON_CLICKED);
+    openURLInDefaultBrowser(DIGMA_DOCKER_EXTENSION_URL);
   };
 
   const handleInstallTabSelect = (tabName: string) => {
-    window.sendMessageToDigma({
-      action: globalActions.SEND_TRACKING_EVENT,
-      payload: {
-        eventName: trackingEvents.TAB_CLICKED,
-        data: {
-          tabName
-        }
-      }
+    sendTrackingEvent(trackingEvents.TAB_CLICKED, {
+      tabName
     });
   };
 
@@ -206,17 +213,12 @@ export const InstallationWizard = () => {
   };
 
   const handleObservabilityChange = (value: boolean) => {
+    sendTrackingEvent(trackingEvents.OBSERVABILITY_BUTTON_CLICKED);
     setIsObservabilityEnabled(value);
     window.sendMessageToDigma({
       action: actions.SET_OBSERVABILITY,
       payload: {
         isObservabilityEnabled: value
-      }
-    });
-    window.sendMessageToDigma({
-      action: globalActions.SEND_TRACKING_EVENT,
-      payload: {
-        eventName: trackingEvents.OBSERVABILITY_BUTTON_CLICKED
       }
     });
   };
@@ -234,6 +236,9 @@ export const InstallationWizard = () => {
   const handleInstallationTypeButtonClick = (
     installationType: InstallationType
   ) => {
+    sendTrackingEvent(trackingEvents.INSTALLATION_TYPE_BUTTON_CLICKED, {
+      installationType
+    });
     setInstallationType(installationType);
   };
 
@@ -257,16 +262,32 @@ export const InstallationWizard = () => {
   };
 
   const handleSlackLinkClick = () => {
-    window.sendMessageToDigma({
-      action: globalActions.OPEN_URL_IN_DEFAULT_BROWSER,
-      payload: {
-        url: SLACK_WORKSPACE_URL
-      }
-    });
+    openURLInDefaultBrowser(SLACK_WORKSPACE_URL);
+  };
+
+  const handleDigmaCloudNotificationCheckboxChange = (value: boolean) => {
+    setIsDigmaCloudNotificationCheckboxChecked(value);
+  };
+
+  const handleUserEmailInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setUserEmail(e.target.value);
+  };
+
+  const handleEmailAddButton = () => {
+    if (userEmail.length > 0) {
+      setIsUserEmailCaptured(true);
+      sendTrackingEvent(
+        trackingEvents.DIGMA_CLOUD_AVAILABILITY_NOTIFICATION_EMAIL_ADDRESS_CAPTURED,
+        {
+          email: userEmail
+        }
+      );
+    }
   };
 
   const steps: StepData[] = [
     {
+      key: "install",
       title: "Get Digma up and running",
       content: (
         <InstallStep
@@ -285,6 +306,7 @@ export const InstallationWizard = () => {
     ...(ide === "IDEA"
       ? [
           {
+            key: "observability",
             title: isAlreadyUsingOtel
               ? "If you're already using OpenTelemetry…"
               : "Observe your application",
@@ -301,6 +323,7 @@ export const InstallationWizard = () => {
         ]
       : []),
     {
+      key: "finish",
       title: "You're done!",
       content: (
         <FinishStep
@@ -317,7 +340,7 @@ export const InstallationWizard = () => {
 
   return (
     <s.Container>
-      {installationType ? (
+      {isStartAutoInstall || installationType ? (
         <s.Header>
           <s.HeaderTitle>Install Digma</s.HeaderTitle>
           <s.HeaderSubtitle>
@@ -342,7 +365,7 @@ export const InstallationWizard = () => {
             Select installation type:
           </s.InstallationTypeText>
           <s.InstallationTypeButtonsContainer>
-            <InstallationTypeButton
+            <InstallationTypeCard
               key={"local"}
               installationType={"local"}
               onClick={handleInstallationTypeButtonClick}
@@ -360,7 +383,7 @@ export const InstallationWizard = () => {
                 </>
               }
             />
-            <InstallationTypeButton
+            <InstallationTypeCard
               key={"cloud"}
               installationType={"cloud"}
               onClick={handleInstallationTypeButtonClick}
@@ -374,26 +397,65 @@ export const InstallationWizard = () => {
               description={
                 <>Data will be sent anonymously to Digma for processing</>
               }
+              additionalContent={
+                <s.SubscriptionContentContainer>
+                  {isUserEmailCaptured ? (
+                    <s.SubscriptionSuccessMessage>
+                      <Loader
+                        size={24}
+                        status={"success"}
+                        themeKind={themeKind}
+                      />
+                      Thank you for subscription!
+                    </s.SubscriptionSuccessMessage>
+                  ) : (
+                    <>
+                      <Checkbox
+                        id={"digma-cloud-notification"}
+                        onChange={handleDigmaCloudNotificationCheckboxChange}
+                        label={
+                          "Let me know when Digma Cloud will become available"
+                        }
+                        value={isDigmaCloudNotificationCheckboxChecked}
+                      />
+                      {isDigmaCloudNotificationCheckboxChecked && (
+                        <TextField
+                          onChange={handleUserEmailInputChange}
+                          value={userEmail}
+                          placeholder={"Enter your email address to register"}
+                          inputEndContent={
+                            <Button
+                              disabled={userEmail.length === 0}
+                              onClick={handleEmailAddButton}
+                            >
+                              Add
+                            </Button>
+                          }
+                        />
+                      )}
+                    </>
+                  )}
+                </s.SubscriptionContentContainer>
+              }
               disabled={true}
             />
           </s.InstallationTypeButtonsContainer>
         </s.WelcomeContainer>
       )}
-      {steps.map((step, i) => (
-        <Step
-          key={step.title}
-          onGoToStep={handleGoToStep}
-          data={step}
-          stepIndex={i}
-          status={
-            installationType ? getStepStatus(i, currentStep) : "not-completed"
-          }
-          transitionDuration={TRANSITION_DURATION}
-        />
-      ))}
+      {(isStartAutoInstall || installationType) &&
+        steps.map((step, i) => (
+          <Step
+            key={step.key}
+            onGoToStep={handleGoToStep}
+            data={step}
+            stepIndex={i}
+            status={getStepStatus(i, currentStep)}
+            transitionDuration={TRANSITION_DURATION}
+          />
+        ))}
 
       <s.Footer>
-        {installationType && (
+        {(isStartAutoInstall || installationType) && (
           <CSSTransition
             in={currentStep === steps.length - 1}
             timeout={TRANSITION_DURATION}

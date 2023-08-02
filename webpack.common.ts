@@ -6,6 +6,10 @@ import { Configuration as WebpackConfiguration } from "webpack";
 
 const entries = {
   assets: path.resolve(__dirname, "./src/containers/Assets/index.tsx"),
+  documentation: path.resolve(
+    __dirname,
+    "./src/containers/Documentation/index.tsx"
+  ),
   insights: path.resolve(__dirname, "./src/containers/Insights/index.tsx"),
   installationWizard: path.resolve(
     __dirname,
@@ -14,6 +18,10 @@ const entries = {
   recentActivity: path.resolve(
     __dirname,
     "./src/containers/RecentActivity/index.tsx"
+  ),
+  troubleshooting: path.resolve(
+    __dirname,
+    "./src/containers/Troubleshooting/index.tsx"
   )
 };
 

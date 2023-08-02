@@ -1,11 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import { ThemeProvider } from "styled-components";
+import { actions } from "../../../actions";
 import { dispatcher } from "../../../dispatcher";
 import { Mode } from "../../../globals";
 import { isBoolean } from "../../../typeGuards/isBoolean";
 import { isObject } from "../../../typeGuards/isObject";
 import { isString } from "../../../typeGuards/isString";
-import { addPrefix } from "../../../utils/addPrefix";
 import { ConfigContext } from "./ConfigContext";
 import { GlobalStyle } from "./styles";
 import { AppProps } from "./types";
@@ -27,21 +27,6 @@ const getMode = (): Mode => {
   return window.theme;
 };
 
-const ACTION_PREFIX = "GLOBAL";
-
-export const actions = addPrefix(ACTION_PREFIX, {
-  SET_THEME: "SET_THEME",
-  SET_MAIN_FONT: "SET_MAIN_FONT",
-  SET_CODE_FONT: "SET_CODE_FONT",
-  OPEN_URL_IN_DEFAULT_BROWSER: "OPEN_URL_IN_DEFAULT_BROWSER",
-  SEND_TRACKING_EVENT: "SEND_TRACKING_EVENT",
-  SET_IS_JAEGER_ENABLED: "SET_IS_JAEGER_ENABLED",
-  SET_IS_DIGMA_ENGINE_INSTALLED: "SET_IS_DIGMA_ENGINE_INSTALLED",
-  SET_IS_DIGMA_ENGINE_RUNNING: "SET_IS_DIGMA_ENGINE_RUNNING",
-  SET_IS_DOCKER_INSTALLED: "SET_IS_DOCKER_INSTALLED",
-  SET_IS_DOCKER_COMPOSE_INSTALLED: "SET_IS_DOCKER_COMPOSE_INSTALLED"
-});
-
 const defaultMainFont = isString(window.mainFont) ? window.mainFont : "";
 const defaultCodeFont = isString(window.codeFont) ? window.codeFont : "";
 
@@ -52,10 +37,9 @@ export const App = (props: AppProps) => {
   const [config, setConfig] = useState(useContext(ConfigContext));
 
   useEffect(() => {
-    if (!props.theme) {
-      return;
+    if (props.theme) {
+      setMode(props.theme);
     }
-    setMode(props.theme);
   }, [props.theme]);
 
   useEffect(() => {

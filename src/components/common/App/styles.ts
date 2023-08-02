@@ -8,7 +8,9 @@ import { os } from "../../../os";
 import { platform } from "../../../platform";
 
 export const getMainFont = (customFont: string): FlattenSimpleInterpolation => {
-  let osFont = "";
+  const customFontString = customFont ? `"${customFont}"` : "";
+
+  let osFontString = "";
 
   // Sources
   //
@@ -18,40 +20,42 @@ export const getMainFont = (customFont: string): FlattenSimpleInterpolation => {
   // https://jetbrains.github.io/ui/principles/typography/#ide-font
   // https://github.com/JetBrains/intellij-community/blob/master/platform/platform-impl/src/com/intellij/ide/ui/laf/LafManagerImpl.kt#L1278
   if (os === "Linux") {
-    osFont = 'system-ui, Ubuntu, "Droid Sans"';
+    osFontString = 'system-ui, Ubuntu, "Droid Sans"';
   }
 
   if (os === "macOS") {
-    osFont = "-apple-system, BlinkMacSystemFont";
+    osFontString = "-apple-system, BlinkMacSystemFont";
   }
 
   if (os === "Windows") {
-    osFont = '"Segoe WPC", "Segoe UI"';
+    osFontString = '"Segoe WPC", "Segoe UI"';
   }
 
   return css`
     /* stylelint-disable-next-line font-family-no-missing-generic-family-keyword */
-    font-family: ${[`"${customFont}"`, osFont, "sans-serif"]
+    font-family: ${[customFontString, osFontString, "sans-serif"]
       .filter(Boolean)
       .join(", ")};
   `;
 };
 
 export const getCodeFont = (customFont: string): FlattenSimpleInterpolation => {
-  let osFont = "";
+  const customFontString = customFont ? `"${customFont}"` : "";
+
+  let osFontString = "";
 
   // Source: https://github.com/microsoft/vscode/blob/main/src/vs/editor/common/config/editorOptions.ts#L4721
   if (platform === "VS Code") {
     if (os === "Linux") {
-      osFont = '"Droid Sans Mono", "monospace"';
+      osFontString = '"Droid Sans Mono", "monospace"';
     }
 
     if (os === "macOS") {
-      osFont = 'Menlo, Monaco, "Courier New"';
+      osFontString = 'Menlo, Monaco, "Courier New"';
     }
 
     if (os === "Windows") {
-      osFont = 'Consolas, "Courier New"';
+      osFontString = 'Consolas, "Courier New"';
     }
   }
 
@@ -59,12 +63,12 @@ export const getCodeFont = (customFont: string): FlattenSimpleInterpolation => {
   // https://jetbrains.github.io/ui/principles/typography/#06
   // https://github.com/JetBrains/intellij-community/blob/master/platform/editor-ui-api/src/com/intellij/openapi/editor/colors/FontPreferences.java#L111
   if (platform === "JetBrains") {
-    osFont = '"JetBrains Mono"';
+    osFontString = '"JetBrains Mono"';
   }
 
   return css`
     /* stylelint-disable-next-line font-family-no-missing-generic-family-keyword */
-    font-family: ${[`"${customFont}"`, osFont, "monospace"]
+    font-family: ${[customFontString, osFontString, "monospace"]
       .filter(Boolean)
       .join(", ")};
   `;
