@@ -4,7 +4,7 @@ import { SLACK_WORKSPACE_URL } from "../../constants";
 import { dispatcher } from "../../dispatcher";
 import { isNumber } from "../../typeGuards/isNumber";
 import { addPrefix } from "../../utils/addPrefix";
-import { actions as globalActions } from "../common/App";
+import { openURLInDefaultBrowser } from "../../utils/openURLInDefaultBrowser";
 import { Button } from "../common/Button";
 import { CircleLoader } from "../common/CircleLoader";
 import { CircleLoaderProps } from "../common/CircleLoader/types";
@@ -131,12 +131,7 @@ export const Insights = (props: InsightsProps) => {
   };
 
   const handleSlackLinkClick = () => {
-    window.sendMessageToDigma({
-      action: globalActions.OPEN_URL_IN_DEFAULT_BROWSER,
-      payload: {
-        url: SLACK_WORKSPACE_URL
-      }
-    });
+    openURLInDefaultBrowser(SLACK_WORKSPACE_URL);
   };
 
   const handleAddAnnotationButtonClick = () => {
