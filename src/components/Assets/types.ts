@@ -34,6 +34,11 @@ export interface AssetEntrySpanInfo extends SpanInfo {
   role: string;
 }
 
+export interface ImpactScores {
+  ScoreExp25: number;
+  ScoreExp1000: number;
+}
+
 export interface AssetEntry {
   span: AssetEntrySpanInfo;
   assetType: string;
@@ -43,6 +48,7 @@ export interface AssetEntry {
   insights: Insight[];
   lastSpanInstanceInfo: SpanInstanceInfo;
   firstDataSeenTime: string;
+  impactScores?: ImpactScores;
 }
 
 export interface AssetsData {

@@ -16,7 +16,9 @@ export enum SORTING_CRITERION {
   PERFORMANCE = "Performance",
   SLOWEST_FIVE_PERCENT = "Slowest 5%",
   LATEST = "Latest",
-  NAME = "Name"
+  NAME = "Name",
+  PERFORMANCE_IMPACT = "Performance impact",
+  OVERALL_IMPACT = "Overall impact"
 }
 
 export enum SORTING_ORDER {
