@@ -41,7 +41,7 @@ export const AssetEntry = (props: AssetEntryProps) => {
 
   const lastSeenDateTime = props.entry.lastSpanInstanceInfo.startTime;
 
-  // Do not show not unimplemented insights
+  // Do not show unimplemented insights
   const filteredInsights = props.entry.insights.filter(
     (x) =>
       ![
