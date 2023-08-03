@@ -8,6 +8,7 @@ import { ChevronIcon } from "../../common/icons/ChevronIcon";
 import { MagnifierIcon } from "../../common/icons/MagnifierIcon";
 import { SortIcon } from "../../common/icons/SortIcon";
 import { Direction } from "../../common/icons/types";
+import { ImpactScores } from "../types";
 import { getAssetTypeInfo } from "../utils";
 import { AssetEntry as AssetEntryComponent } from "./AssetEntry";
 import * as s from "./styles";
@@ -67,6 +68,24 @@ const sortEntries = (
     );
   };
 
+  const sortByScore = (
+    a: ExtendedAssetEntryWithServices,
+    b: ExtendedAssetEntryWithServices,
+    scoreName: keyof ImpactScores,
+    isDesc: boolean
+  ) => {
+    if (!a.impactScores || !b.impactScores) {
+      return 0;
+    }
+
+    const aScore = a.impactScores[scoreName];
+    const bScore = b.impactScores[scoreName];
+
+    return (
+      (isDesc ? bScore - aScore : aScore - bScore) || sortByName(a, b, isDesc)
+    );
+  };
+
   switch (sorting.criterion) {
     case SORTING_CRITERION.CRITICAL_INSIGHTS:
       return entries.sort((a, b) => {
@@ -110,6 +129,10 @@ const sortEntries = (
           sortByName(a, b, isDesc)
         );
       });
+    case SORTING_CRITERION.PERFORMANCE_IMPACT:
+      return entries.sort((a, b) => sortByScore(a, b, "ScoreExp25", isDesc));
+    case SORTING_CRITERION.OVERALL_IMPACT:
+      return entries.sort((a, b) => sortByScore(a, b, "ScoreExp1000", isDesc));
     case SORTING_CRITERION.NAME:
       return entries.sort((a, b) => sortByName(a, b, isDesc));
     default:
@@ -176,9 +199,32 @@ const getDefaultSortingOrder = (
     case SORTING_CRITERION.SLOWEST_FIVE_PERCENT:
     case SORTING_CRITERION.CRITICAL_INSIGHTS:
     case SORTING_CRITERION.LATEST:
+    case SORTING_CRITERION.OVERALL_IMPACT:
+    case SORTING_CRITERION.PERFORMANCE_IMPACT:
     default:
       return SORTING_ORDER.DESC;
   }
+};
+
+const getAvailableSortingCriterions = (
+  assets: ExtendedAssetEntryWithServices[]
+) => {
+  const criterions = [
+    SORTING_CRITERION.CRITICAL_INSIGHTS,
+    SORTING_CRITERION.PERFORMANCE,
+    SORTING_CRITERION.SLOWEST_FIVE_PERCENT,
+    SORTING_CRITERION.LATEST,
+    SORTING_CRITERION.NAME
+  ];
+
+  if (assets[0].impactScores) {
+    criterions.push(
+      SORTING_CRITERION.PERFORMANCE_IMPACT,
+      SORTING_CRITERION.OVERALL_IMPACT
+    );
+  }
+
+  return criterions;
 };
 
 export const AssetList = (props: AssetListProps) => {
@@ -256,6 +302,8 @@ export const AssetList = (props: AssetListProps) => {
     [props.entries]
   );
 
+  const sortingCriterions = getAvailableSortingCriterions(entries);
+
   const sortedEntries = useMemo(() => {
     const filteredEntries = entries.filter((x) =>
       x.span.displayName.toLocaleLowerCase().includes(searchInputValue)
@@ -309,7 +357,7 @@ export const AssetList = (props: AssetListProps) => {
             <PopoverContent className={"Popover"}>
               <Menu
                 title={"Sort by"}
-                items={Object.values(SORTING_CRITERION).map((x) => ({
+                items={sortingCriterions.map((x) => ({
                   value: x,
                   label: x
                 }))}
