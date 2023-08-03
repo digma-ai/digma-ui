@@ -217,7 +217,7 @@ const getAvailableSortingCriterions = (
     SORTING_CRITERION.NAME
   ];
 
-  if (assets[0].impactScores) {
+  if (assets.length > 0 && assets[0].impactScores) {
     criterions.push(
       SORTING_CRITERION.PERFORMANCE_IMPACT,
       SORTING_CRITERION.OVERALL_IMPACT
