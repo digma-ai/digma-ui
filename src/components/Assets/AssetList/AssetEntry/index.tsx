@@ -1,4 +1,5 @@
 import { DefaultTheme, useTheme } from "styled-components";
+import { InsightType } from "../../../../types";
 import { getInsightImportanceColor } from "../../../../utils/getInsightImportanceColor";
 import { getInsightTypeInfo } from "../../../../utils/getInsightTypeInfo";
 import { getInsightTypeOrderPriority } from "../../../../utils/getInsightTypeOrderPriority";
@@ -40,7 +41,16 @@ export const AssetEntry = (props: AssetEntryProps) => {
 
   const lastSeenDateTime = props.entry.lastSpanInstanceInfo.startTime;
 
-  const sortedInsights = [...props.entry.insights].sort(
+  // Do not show unimplemented insights
+  const filteredInsights = props.entry.insights.filter(
+    (x) =>
+      ![
+        InsightType.SpanScalingWell,
+        InsightType.SpanScalingInsufficientData
+      ].includes(x.type as InsightType)
+  );
+
+  const sortedInsights = [...filteredInsights].sort(
     (a, b) =>
       a.importance - b.importance ||
       getInsightTypeOrderPriority(a.type) - getInsightTypeOrderPriority(b.type)
