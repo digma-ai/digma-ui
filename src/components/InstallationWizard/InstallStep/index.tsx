@@ -103,7 +103,8 @@ export const InstallStep = (props: InstallStepProps) => {
 
   const handleEngineManualInstallSelect = () => {
     setAreTabsVisible(true);
-    setIsAutoInstallTabVisible(false);
+    setIsAutoInstallTabVisible(true);
+    setSelectedInstallTab(1);
   };
 
   const handleEngineOperationStart = () => {
