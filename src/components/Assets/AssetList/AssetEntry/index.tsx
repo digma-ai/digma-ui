@@ -1,4 +1,5 @@
 import { DefaultTheme, useTheme } from "styled-components";
+import { InsightType } from "../../../../types";
 import { getInsightImportanceColor } from "../../../../utils/getInsightImportanceColor";
 import { getInsightTypeInfo } from "../../../../utils/getInsightTypeInfo";
 import { getInsightTypeOrderPriority } from "../../../../utils/getInsightTypeOrderPriority";
@@ -7,6 +8,22 @@ import { GlobeIcon } from "../../../common/icons/GlobeIcon";
 import { getAssetTypeInfo } from "../../utils";
 import * as s from "./styles";
 import { AssetEntryProps } from "./types";
+
+const getImpactScoreLabel = (score: number) => {
+  if (score < 0) {
+    return "No data";
+  }
+
+  if (score < 0.4) {
+    return "Low";
+  }
+
+  if (score < 0.8) {
+    return "Medium";
+  }
+
+  return "High";
+};
 
 const getServiceIconColor = (theme: DefaultTheme) => {
   switch (theme.mode) {
@@ -40,7 +57,16 @@ export const AssetEntry = (props: AssetEntryProps) => {
 
   const lastSeenDateTime = props.entry.lastSpanInstanceInfo.startTime;
 
-  const sortedInsights = [...props.entry.insights].sort(
+  // Do not show unimplemented insights
+  const filteredInsights = props.entry.insights.filter(
+    (x) =>
+      ![
+        InsightType.SpanScalingWell,
+        InsightType.SpanScalingInsufficientData
+      ].includes(x.type as InsightType)
+  );
+
+  const sortedInsights = [...filteredInsights].sort(
     (a, b) =>
       a.importance - b.importance ||
       getInsightTypeOrderPriority(a.type) - getInsightTypeOrderPriority(b.type)
@@ -105,6 +131,14 @@ export const AssetEntry = (props: AssetEntryProps) => {
               )}
             </s.ValueContainer>
           </s.Stats>
+          {props.entry.impactScores && (
+            <s.Stats>
+              <span>Performance impact</span>
+              <s.ValueContainer>
+                {getImpactScoreLabel(props.entry.impactScores.ScoreExp25)}
+              </s.ValueContainer>
+            </s.Stats>
+          )}
         </s.StatsRow>
         <s.StatsRow>
           <s.Stats>
@@ -125,6 +159,14 @@ export const AssetEntry = (props: AssetEntryProps) => {
               )}
             </s.ValueContainer>
           </s.Stats>
+          {props.entry.impactScores && (
+            <s.Stats>
+              <span>Overall impact</span>
+              <s.ValueContainer>
+                {getImpactScoreLabel(props.entry.impactScores.ScoreExp1000)}
+              </s.ValueContainer>
+            </s.Stats>
+          )}
         </s.StatsRow>
       </s.StatsContainer>
     </s.Container>
