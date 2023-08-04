@@ -19,7 +19,7 @@ const getImpactScoreLabel = (score: number) => {
   }
 
   if (score < 0.8) {
-    return "Low";
+    return "Medium";
   }
 
   return "High";
