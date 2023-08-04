@@ -5,15 +5,24 @@ import { getInsightTypeInfo } from "../../../../utils/getInsightTypeInfo";
 import { getInsightTypeOrderPriority } from "../../../../utils/getInsightTypeOrderPriority";
 import { timeAgo } from "../../../../utils/timeAgo";
 import { GlobeIcon } from "../../../common/icons/GlobeIcon";
-import { ImpactScore } from "../../types";
 import { getAssetTypeInfo } from "../../utils";
 import * as s from "./styles";
 import { AssetEntryProps } from "./types";
 
-const impactScoreLabels = {
-  [ImpactScore.High]: "High",
-  [ImpactScore.Medium]: "Medium",
-  [ImpactScore.Low]: "Low"
+const getImpactScoreLabel = (score: number) => {
+  if (score < 0) {
+    return "No data";
+  }
+
+  if (score < 0.4) {
+    return "Low";
+  }
+
+  if (score < 0.8) {
+    return "Medium";
+  }
+
+  return "High";
 };
 
 const getServiceIconColor = (theme: DefaultTheme) => {
@@ -126,11 +135,7 @@ export const AssetEntry = (props: AssetEntryProps) => {
             <s.Stats>
               <span>Performance impact</span>
               <s.ValueContainer>
-                {
-                  impactScoreLabels[
-                    props.entry.impactScores.ScoreExp25 as ImpactScore
-                  ]
-                }
+                {getImpactScoreLabel(props.entry.impactScores.ScoreExp25)}
               </s.ValueContainer>
             </s.Stats>
           )}
@@ -158,11 +163,7 @@ export const AssetEntry = (props: AssetEntryProps) => {
             <s.Stats>
               <span>Overall impact</span>
               <s.ValueContainer>
-                {
-                  impactScoreLabels[
-                    props.entry.impactScores.ScoreExp1000 as ImpactScore
-                  ]
-                }
+                {getImpactScoreLabel(props.entry.impactScores.ScoreExp1000)}
               </s.ValueContainer>
             </s.Stats>
           )}
