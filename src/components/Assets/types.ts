@@ -4,6 +4,12 @@ import {
   SpanInstanceInfo
 } from "../../types";
 
+export enum ImpactScore {
+  High = 2,
+  Medium = 1,
+  Low = 0
+}
+
 export interface AssetsProps {
   data?: AssetsData;
 }

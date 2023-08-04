@@ -5,9 +5,16 @@ import { getInsightTypeInfo } from "../../../../utils/getInsightTypeInfo";
 import { getInsightTypeOrderPriority } from "../../../../utils/getInsightTypeOrderPriority";
 import { timeAgo } from "../../../../utils/timeAgo";
 import { GlobeIcon } from "../../../common/icons/GlobeIcon";
+import { ImpactScore } from "../../types";
 import { getAssetTypeInfo } from "../../utils";
 import * as s from "./styles";
 import { AssetEntryProps } from "./types";
+
+const impactScoreLabels = {
+  [ImpactScore.High]: "High",
+  [ImpactScore.Medium]: "Medium",
+  [ImpactScore.Low]: "Low"
+};
 
 const getServiceIconColor = (theme: DefaultTheme) => {
   switch (theme.mode) {
@@ -115,6 +122,18 @@ export const AssetEntry = (props: AssetEntryProps) => {
               )}
             </s.ValueContainer>
           </s.Stats>
+          {props.entry.impactScores && (
+            <s.Stats>
+              <span>Performance impact</span>
+              <s.ValueContainer>
+                {
+                  impactScoreLabels[
+                    props.entry.impactScores.ScoreExp25 as ImpactScore
+                  ]
+                }
+              </s.ValueContainer>
+            </s.Stats>
+          )}
         </s.StatsRow>
         <s.StatsRow>
           <s.Stats>
@@ -135,6 +154,18 @@ export const AssetEntry = (props: AssetEntryProps) => {
               )}
             </s.ValueContainer>
           </s.Stats>
+          {props.entry.impactScores && (
+            <s.Stats>
+              <span>Overall impact</span>
+              <s.ValueContainer>
+                {
+                  impactScoreLabels[
+                    props.entry.impactScores.ScoreExp1000 as ImpactScore
+                  ]
+                }
+              </s.ValueContainer>
+            </s.Stats>
+          )}
         </s.StatsRow>
       </s.StatsContainer>
     </s.Container>
