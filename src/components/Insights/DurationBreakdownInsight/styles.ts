@@ -8,6 +8,7 @@ export const EntryList = styled.div`
 
 export const Entry = styled.span`
   display: flex;
+  gap: 4px;
   justify-content: space-between;
 `;
 
@@ -16,4 +17,8 @@ export const EntryName = styled.span`
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+`;
+
+export const Duration = styled.span`
+  flex-shrink: 0;
 `;

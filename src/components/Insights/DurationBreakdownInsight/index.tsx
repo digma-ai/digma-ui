@@ -88,7 +88,7 @@ export const DurationBreakdownInsight = (
                       {name}
                     </Link>
                   </s.EntryName>{" "}
-                  {`${percentile.duration.value} ${percentile.duration.unit}`}
+                  <s.Duration>{`${percentile.duration.value} ${percentile.duration.unit}`}</s.Duration>
                 </s.Entry>
               ) : null;
             })}
