@@ -88,7 +88,8 @@ export const Default: Story = {
       isRecalculateEnabled: false,
       prefixedCodeObjectId: "span:SampleInsightsController$_$WaitForLock",
       customStartTime: null,
-      actualStartTime: "2023-06-24T00:00:00.000Z"
+      actualStartTime: "2023-06-24T00:00:00.000Z",
+      flowHash: null
     }
   }
 };

@@ -138,7 +138,7 @@ export const Default: Story = {
       decorators: null,
       environment: "BOB-LAPTOP[LOCAL]",
       severity: 0,
-      isRecalculateEnabled: false,
+      isRecalculateEnabled: true,
       prefixedCodeObjectId:
         "method:Sample.MoneyTransfer.API.Controllers.SampleInsightsController$_$Lock(Double)",
       customStartTime: null,

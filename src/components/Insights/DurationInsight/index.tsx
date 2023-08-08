@@ -50,6 +50,7 @@ export const DurationInsight = (props: DurationInsightProps) => {
   return (
     <InsightCard
       data={props.insight}
+      isRecent={isLastCallRecent}
       content={
         <s.Container>
           <s.Stats>

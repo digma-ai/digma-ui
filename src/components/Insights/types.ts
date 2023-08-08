@@ -347,6 +347,7 @@ export interface EndpointSlowestSpansInsight extends EndpointInsight {
   category: InsightCategory.Performance;
   specifity: InsightSpecificity.TargetFound;
   importance: InsightImportance.Critical;
+  isRecalculateEnabled: true;
   spans: {
     spanInfo: SpanInfo;
     probabilityOfBeingBottleneck: number;
@@ -433,6 +434,7 @@ export interface SpanScalingBadlyInsight extends SpanInsight {
   maxDuration: Duration;
   rootCauseSpans: RootCauseSpanInfo[];
   affectedEndpoints: AffectedEndpoint[];
+  flowHash: string | null;
 
   /**
    * @deprecated
@@ -568,6 +570,7 @@ export interface SpanScalingWellInsight extends SpanInsight {
   maxConcurrency: number;
   minDuration: Duration;
   maxDuration: Duration;
+  flowHash: string | null;
 }
 
 export interface Concurrency {
