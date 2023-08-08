@@ -41,11 +41,15 @@ export const Description = styled.span`
 
 export const MissingDependencyContainer = styled.div`
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 6px;
+  margin: 2px 0 6px;
 `;
 
 export const MissingDependencyText = styled.span`
-  font-size: 10px;
+  font-size: 12px;
+  text-align: center;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -76,4 +80,20 @@ export const SlackLink = styled(Link)`
   display: flex;
   align-items: center;
   gap: 4px;
+`;
+
+export const EmptyStateDescription = styled.span`
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 4px;
+  text-align: center;
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#788ca9";
+      case "dark":
+      case "dark-jetbrains":
+        return "#7c7c94";
+    }
+  }};
 `;

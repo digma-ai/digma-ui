@@ -29,12 +29,13 @@ export const ErrorsInsight = (props: ErrorsInsightProps) => {
           <s.ErrorList>
             {props.insight.topErrors.map((error) => (
               <Description key={error.uid}>
-                <s.EntityName>
+                <s.Error>
                   <Link onClick={() => handleErrorLinkClick(error.uid)}>
                     {error.errorType}
                   </Link>
-                </s.EntityName>{" "}
-                from {error.sourceCodeObjectId.split("$_$")[1]}
+                </s.Error>{" "}
+                from{" "}
+                <s.Source>{error.sourceCodeObjectId.split("$_$")[1]}</s.Source>
               </Description>
             ))}
           </s.ErrorList>

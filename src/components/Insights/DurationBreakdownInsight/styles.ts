@@ -7,9 +7,13 @@ export const EntryList = styled.div`
 `;
 
 export const Entry = styled.span`
-  word-break: break-all;
+  display: flex;
+  justify-content: space-between;
 `;
 
 export const EntryName = styled.span`
   font-weight: 500;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 `;

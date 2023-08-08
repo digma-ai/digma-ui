@@ -45,6 +45,7 @@ export const Default: Story = {
       insightsStatus: InsightsStatus.DEFAULT,
       methods: [],
       canInstrumentMethod: false,
+      needsObservabilityFix: false,
       insights: [
         {
           name: "Request Breakdown",
@@ -524,7 +525,8 @@ export const NoInsights: Story = {
       insightsStatus: InsightsStatus.NO_INSIGHTS,
       methods: [],
       insights: [],
-      canInstrumentMethod: false
+      canInstrumentMethod: false,
+      needsObservabilityFix: false
     }
   }
 };
@@ -541,7 +543,8 @@ export const NoDataYet: Story = {
       insightsStatus: InsightsStatus.NO_SPANS_DATA,
       methods: [],
       insights: [],
-      canInstrumentMethod: false
+      canInstrumentMethod: false,
+      needsObservabilityFix: false
     }
   }
 };
@@ -558,7 +561,8 @@ export const ProcessingInsights: Story = {
       insightsStatus: InsightsStatus.INSIGHT_PENDING,
       methods: [],
       insights: [],
-      canInstrumentMethod: false
+      canInstrumentMethod: false,
+      needsObservabilityFix: false
     }
   }
 };
@@ -575,7 +579,8 @@ export const NoObservability: Story = {
       insightsStatus: InsightsStatus.NO_OBSERVABILITY,
       methods: [],
       insights: [],
-      canInstrumentMethod: false
+      canInstrumentMethod: true,
+      needsObservabilityFix: true
     }
   }
 };
@@ -635,10 +640,11 @@ export const NoObservabilityWithInsights: Story = {
       environment: "string",
       viewMode: ViewMode.INSIGHTS,
       hasMissingDependency: false,
-      insightsStatus: InsightsStatus.NO_OBSERVABILITY,
+      insightsStatus: InsightsStatus.DEFAULT,
       methods: [],
       insights: [errorsInsight],
-      canInstrumentMethod: false
+      canInstrumentMethod: true,
+      needsObservabilityFix: true
     }
   }
 };
@@ -655,7 +661,8 @@ export const HasMissingDependency: Story = {
       insightsStatus: InsightsStatus.NO_OBSERVABILITY,
       methods: [],
       insights: [],
-      canInstrumentMethod: false
+      canInstrumentMethod: true,
+      needsObservabilityFix: true
     }
   }
 };
@@ -669,10 +676,11 @@ export const HasMissingDependencyWithInsights: Story = {
       environment: "string",
       viewMode: ViewMode.INSIGHTS,
       hasMissingDependency: true,
-      insightsStatus: InsightsStatus.NO_OBSERVABILITY,
+      insightsStatus: InsightsStatus.DEFAULT,
       methods: [],
       insights: [errorsInsight],
-      canInstrumentMethod: false
+      canInstrumentMethod: true,
+      needsObservabilityFix: true
     }
   }
 };
@@ -688,7 +696,8 @@ export const Startup: Story = {
       insightsStatus: InsightsStatus.STARTUP,
       methods: [],
       insights: [],
-      canInstrumentMethod: false
+      canInstrumentMethod: false,
+      needsObservabilityFix: false
     }
   }
 };
@@ -705,7 +714,8 @@ export const Loading: Story = {
       insightsStatus: InsightsStatus.LOADING,
       methods: [],
       insights: [],
-      canInstrumentMethod: false
+      canInstrumentMethod: false,
+      needsObservabilityFix: false
     }
   }
 };
@@ -734,7 +744,8 @@ export const Preview: Story = {
           name: "method3"
         }
       ],
-      insights: []
+      insights: [],
+      needsObservabilityFix: false
     }
   }
 };

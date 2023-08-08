@@ -65,6 +65,7 @@ export interface InsightsData {
   methods: Method[];
   hasMissingDependency: boolean;
   canInstrumentMethod: boolean;
+  needsObservabilityFix: boolean;
 }
 
 export interface InsightsProps {

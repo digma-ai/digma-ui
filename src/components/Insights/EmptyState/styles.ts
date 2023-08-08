@@ -5,6 +5,7 @@ export const Container = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  padding: 0 40px;
   gap: 4px;
   flex-grow: 1;
 `;
@@ -29,6 +30,7 @@ export const Title = styled.div`
   text-transform: capitalize;
   font-size: 14px;
   font-weight: 500;
+  text-align: center;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

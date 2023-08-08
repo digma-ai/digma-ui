@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTheme } from "styled-components";
 import { PERCENTILES } from "../../../constants";
+import { formatTimeDistance } from "../../../utils/formatTimeDistance";
 import { getInsightImportanceColor } from "../../../utils/getInsightImportanceColor";
 import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
 import { Badge } from "../../common/Badge";
@@ -19,31 +20,12 @@ import { InsightCardProps } from "./types";
 const RECALCULATE = "recalculate";
 const DEFAULT_PERCENTILE = 0.5;
 
-const areTimesEqual = (a: string, b: string) =>
-  new Date(a).valueOf() - new Date(b).valueOf() === 0;
-
 export const InsightCard = (props: InsightCardProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isKebabMenuOpen, setIsKebabMenuOpen] = useState(false);
   const [percentileViewMode, setPercentileViewMode] =
     useState<number>(DEFAULT_PERCENTILE);
-  const initialIsRecalculating =
-    props.data.actualStartTime &&
-    props.data.customStartTime &&
-    !areTimesEqual(props.data.actualStartTime, props.data.customStartTime);
-  const [isRecalculating, setIsRecalculating] = useState(
-    initialIsRecalculating
-  );
-
-  useEffect(() => {
-    if (
-      props.data.actualStartTime &&
-      props.data.customStartTime &&
-      areTimesEqual(props.data.actualStartTime, props.data.customStartTime)
-    ) {
-      setIsRecalculating(false);
-    }
-  }, [props.data.actualStartTime, props.data.customStartTime]);
+  const [isRecalculatingStarted, setIsRecalculatingStarted] = useState(false);
 
   const theme = useTheme();
   const insightTypeInfo = getInsightTypeInfo(props.data.type);
@@ -60,7 +42,7 @@ export const InsightCard = (props: InsightCardProps) => {
     if (value === RECALCULATE) {
       props.data.prefixedCodeObjectId &&
         props.onRecalculate(props.data.prefixedCodeObjectId, props.data.type);
-      setIsRecalculating(true);
+      setIsRecalculatingStarted(true);
     }
 
     handleKebabMenuButtonToggle();
@@ -80,6 +62,36 @@ export const InsightCard = (props: InsightCardProps) => {
 
   const handleRefreshLinkClick = () => {
     props.onRefresh(props.data.type);
+  };
+
+  const renderRecalculationBlock = (
+    actualStartTime: string,
+    customStartTime: string | null
+  ) => {
+    const areStartTimesEqual =
+      customStartTime &&
+      new Date(actualStartTime).valueOf() -
+        new Date(customStartTime).valueOf() ===
+        0;
+
+    return (
+      <>
+        {areStartTimesEqual ? (
+          <Description>
+            Data from: {formatTimeDistance(actualStartTime)}
+          </Description>
+        ) : (
+          <s.RefreshContainer>
+            <Description>
+              Applying the new time filter. Wait a few minutes and then refresh.
+            </Description>
+            <span>
+              <Link onClick={handleRefreshLinkClick}>Refresh</Link>
+            </span>
+          </s.RefreshContainer>
+        )}
+      </>
+    );
   };
 
   return (
@@ -156,17 +168,12 @@ export const InsightCard = (props: InsightCardProps) => {
       }
       content={
         <>
-          {isRecalculating && (
-            <s.RefreshContainer>
-              <Description>
-                Applying the new time filter. Wait a few minutes and then
-                refresh.
-              </Description>
-              <span>
-                <Link onClick={handleRefreshLinkClick}>Refresh</Link>
-              </span>
-            </s.RefreshContainer>
-          )}
+          {props.data.actualStartTime &&
+            (props.data.customStartTime || isRecalculatingStarted) &&
+            renderRecalculationBlock(
+              props.data.actualStartTime,
+              props.data.customStartTime
+            )}
           {props.content && (
             <s.ContentContainer>{props.content}</s.ContentContainer>
           )}

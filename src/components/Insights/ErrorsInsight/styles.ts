@@ -11,9 +11,12 @@ export const ErrorList = styled.div`
   flex-direction: column;
   margin-top: 4px;
   gap: 4px;
+`;
+
+export const Source = styled.span`
   word-break: break-all;
 `;
 
-export const EntityName = styled.span`
+export const Error = styled(Source)`
   font-weight: 500;
 `;

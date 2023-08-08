@@ -3,7 +3,6 @@ import { DefaultTheme, useTheme } from "styled-components";
 import { actions } from "..";
 import { InsightType } from "../../../types";
 import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
-import { Button } from "../../common/Button";
 import { EndpointIcon } from "../../common/icons/EndpointIcon";
 import { OpenTelemetryLogoIcon } from "../../common/icons/OpenTelemetryLogoIcon";
 import { BottleneckInsight } from "../BottleneckInsight";
@@ -15,6 +14,7 @@ import { EndpointNPlusOneInsight } from "../EndpointNPlusOneInsight";
 import { ErrorsInsight } from "../ErrorsInsight";
 import { InsightCard } from "../InsightCard";
 import { NPlusOneInsight } from "../NPlusOneInsight";
+import { NoObservabilityCard } from "../NoObservabilityCard";
 import { NoScalingIssueInsight } from "../NoScalingIssueInsight";
 import { PerformanceAtScaleInsight } from "../PerformanceAtScaleInsight";
 import { RequestBreakdownInsight } from "../RequestBreakdownInsight";
@@ -23,7 +23,7 @@ import { SlowEndpointInsight } from "../SlowEndpointInsight";
 import { SpanBottleneckInsight } from "../SpanBottleneckInsight";
 import { TopUsageInsight } from "../TopUsageInsight";
 import { TrafficInsight } from "../TrafficInsight";
-import { Description, Link } from "../styles";
+import { Description } from "../styles";
 import {
   isCodeObjectErrorsInsight,
   isCodeObjectHotSpotInsight,
@@ -489,6 +489,7 @@ const renderInsightCard = (
 
 export const InsightList = (props: InsightListProps) => {
   const [insightGroups, setInsightGroups] = useState<InsightGroup[]>([]);
+  const [isAutofixing, setIsAutofixing] = useState(false);
   const theme = useTheme();
   const insightGroupIconColor = getInsightGroupIconColor(theme);
 
@@ -500,7 +501,7 @@ export const InsightList = (props: InsightListProps) => {
     setInsightGroups(groupInsights(props.insights, props.spans));
   }, [props.insights, props.spans]);
 
-  const handleAddAnnotationButtonClick = () => {
+  const handleAddAnnotation = () => {
     window.sendMessageToDigma({
       action: actions.ADD_ANNOTATION,
       payload: {
@@ -509,13 +510,16 @@ export const InsightList = (props: InsightListProps) => {
     });
   };
 
-  const handleAutofixLinkClick = () => {
-    window.sendMessageToDigma({
-      action: actions.AUTOFIX_MISSING_DEPENDENCY,
-      payload: {
-        methodId: props.assetId
-      }
-    });
+  const handleAutofix = () => {
+    if (!isAutofixing) {
+      window.sendMessageToDigma({
+        action: actions.AUTOFIX_MISSING_DEPENDENCY,
+        payload: {
+          methodId: props.assetId
+        }
+      });
+    }
+    setIsAutofixing(true);
   };
 
   return (
@@ -542,37 +546,11 @@ export const InsightList = (props: InsightListProps) => {
             />
           )}
           {!props.hasObservability && (
-            <Card
-              header={<>No observability</>}
-              content={
-                <>
-                  <Description>
-                    Add an annotation to observe this method and collect data
-                    about its runtime behavior
-                  </Description>
-                  {props.hasMissingDependency && (
-                    <s.MissingDependencyContainer>
-                      <s.MissingDependencyText>
-                        missing dependency: opentelemetry.annotation
-                      </s.MissingDependencyText>
-                      <Link onClick={handleAutofixLinkClick}>Autofix</Link>
-                    </s.MissingDependencyContainer>
-                  )}
-                </>
-              }
-              buttons={[
-                ...(props.canInstrumentMethod
-                  ? [
-                      <Button
-                        key={"addAnnotation"}
-                        onClick={handleAddAnnotationButtonClick}
-                        disabled={props.hasMissingDependency}
-                      >
-                        Add annotation
-                      </Button>
-                    ]
-                  : [])
-              ]}
+            <NoObservabilityCard
+              canInstrumentMethod={props.canInstrumentMethod}
+              hasMissingDependency={props.hasMissingDependency}
+              onAutofix={handleAutofix}
+              onAddAnnotation={handleAddAnnotation}
             />
           )}
         </s.InsightGroup>

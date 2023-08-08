@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
+import { actions as globalActions } from "../../actions";
 import { SLACK_WORKSPACE_URL } from "../../constants";
 import { dispatcher } from "../../dispatcher";
+import { usePrevious } from "../../hooks/usePrevious";
 import { isNumber } from "../../typeGuards/isNumber";
 import { addPrefix } from "../../utils/addPrefix";
 import { openURLInDefaultBrowser } from "../../utils/openURLInDefaultBrowser";
@@ -71,17 +73,18 @@ const getCircleLoaderColors = (
 
 export const Insights = (props: InsightsProps) => {
   const [data, setData] = useState<InsightsData>();
-  // const previousData = usePrevious(data);
+  const previousData = usePrevious(data);
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
-  // const [isLoaderVisible, setIsLoaderVisible] = useState(false);
+  // const [isInitialLoading, setIsInitialLoading] = useState(false);
   const theme = useTheme();
   const circleLoaderColors = getCircleLoaderColors(theme);
+  const [isAutofixing, setIsAutofixing] = useState(false);
 
   useEffect(() => {
     window.sendMessageToDigma({
       action: actions.GET_DATA
     });
-    // setIsLoaderVisible(true);
+    // setIsInitialLoading(true);
 
     const handleInsightsData = (data: unknown, timeStamp: number) => {
       setData(data as InsightsData);
@@ -117,9 +120,15 @@ export const Insights = (props: InsightsProps) => {
 
   // useEffect(() => {
   //   if (!previousData && data) {
-  //     setIsLoaderVisible(false);
+  //     setIsInitialLoading(false);
   //   }
   // }, [previousData, data]);
+
+  useEffect(() => {
+    if (previousData && data && previousData.assetId !== data.assetId) {
+      setIsAutofixing(false);
+    }
+  }, [previousData, data]);
 
   const handleMethodSelect = (method: Method) => {
     window.sendMessageToDigma({
@@ -144,16 +153,51 @@ export const Insights = (props: InsightsProps) => {
   };
 
   const handleAutofixLinkClick = () => {
+    if (!isAutofixing) {
+      window.sendMessageToDigma({
+        action: actions.AUTOFIX_MISSING_DEPENDENCY,
+        payload: {
+          methodId: data?.assetId
+        }
+      });
+      setIsAutofixing(true);
+    }
+  };
+
+  const handleTroubleshootingLinkClick = () => {
     window.sendMessageToDigma({
-      action: actions.AUTOFIX_MISSING_DEPENDENCY,
-      payload: {
-        methodId: data?.assetId
-      }
+      action: globalActions.OPEN_TROUBLESHOOTING_GUIDE
     });
   };
 
-  const renderInsightsContent = (data: InsightsData): JSX.Element => {
-    switch (data.insightsStatus) {
+  const renderDefaultContent = (data?: InsightsData): JSX.Element => {
+    if (data?.viewMode === ViewMode.PREVIEW) {
+      return (
+        <Preview methods={data.methods} onMethodSelect={handleMethodSelect} />
+      );
+    }
+
+    if (data?.viewMode === ViewMode.INSIGHTS && data.assetId) {
+      return (
+        <InsightList
+          key={data.assetId}
+          insights={data.insights}
+          spans={data.spans}
+          environment={data.environment}
+          assetId={data.assetId}
+          serviceName={data.serviceName}
+          hasMissingDependency={data.hasMissingDependency}
+          canInstrumentMethod={data.canInstrumentMethod}
+          hasObservability={!data.needsObservabilityFix}
+        />
+      );
+    }
+
+    return <></>;
+  };
+
+  const renderContent = (data?: InsightsData): JSX.Element => {
+    switch (data?.insightsStatus) {
       case InsightsStatus.STARTUP:
         return (
           <EmptyState
@@ -162,13 +206,15 @@ export const Insights = (props: InsightsProps) => {
             content={
               <>
                 <s.StartupText>
-                  <s.Description>
+                  <s.EmptyStateDescription>
                     Navigate to any code file in your workspace,
-                  </s.Description>
-                  <s.Description>or click a recent activity,</s.Description>
-                  <s.Description>
+                  </s.EmptyStateDescription>
+                  <s.EmptyStateDescription>
+                    or click a recent activity,
+                  </s.EmptyStateDescription>
+                  <s.EmptyStateDescription>
                     to see runtime data and insights here.
-                  </s.Description>
+                  </s.EmptyStateDescription>
                 </s.StartupText>
                 <s.SlackLink onClick={handleSlackLinkClick}>
                   <SlackLogoIcon />
@@ -196,35 +242,29 @@ export const Insights = (props: InsightsProps) => {
             icon={CardsIcon}
             title={"No data yet"}
             content={
-              <s.Description>
-                Trigger actions that call this code object to learn more about
-                its runtime behavior
-              </s.Description>
+              <>
+                <s.EmptyStateDescription>
+                  Trigger actions that call this code object to learn more about
+                  its runtime behavior
+                </s.EmptyStateDescription>
+                <s.Link onClick={handleTroubleshootingLinkClick}>
+                  Not seeing your application data?
+                </s.Link>
+              </>
             }
           />
         );
       case InsightsStatus.NO_OBSERVABILITY:
-        return data.assetId && data.insights.length > 0 ? (
-          <InsightList
-            insights={data.insights}
-            spans={data.spans}
-            environment={data.environment}
-            assetId={data.assetId}
-            serviceName={data.serviceName}
-            hasMissingDependency={data.hasMissingDependency}
-            canInstrumentMethod={data.canInstrumentMethod}
-            hasObservability={false}
-          />
-        ) : (
+        return (
           <EmptyState
             icon={OpenTelemetryLogoCrossedSmallIcon}
             title={"No observability"}
             content={
               <>
-                <s.Description>
+                <s.EmptyStateDescription>
                   Add an annotation to observe this method and collect data
                   about its runtime behavior
-                </s.Description>
+                </s.EmptyStateDescription>
                 {data.hasMissingDependency && (
                   <s.MissingDependencyContainer>
                     <s.MissingDependencyText>
@@ -253,29 +293,9 @@ export const Insights = (props: InsightsProps) => {
         );
       case InsightsStatus.DEFAULT:
       default:
-        return data.assetId ? (
-          <InsightList
-            insights={data.insights}
-            spans={data.spans}
-            environment={data.environment}
-            assetId={data.assetId}
-            serviceName={data.serviceName}
-            hasMissingDependency={data.hasMissingDependency}
-            canInstrumentMethod={data.canInstrumentMethod}
-            hasObservability={true}
-          />
-        ) : (
-          <></>
-        );
+        return renderDefaultContent(data);
     }
   };
 
-  return (
-    <s.Container>
-      {data?.viewMode === ViewMode.PREVIEW && (
-        <Preview methods={data.methods} onMethodSelect={handleMethodSelect} />
-      )}
-      {data?.viewMode === ViewMode.INSIGHTS && renderInsightsContent(data)}
-    </s.Container>
-  );
+  return <s.Container>{renderContent(data)}</s.Container>;
 };
