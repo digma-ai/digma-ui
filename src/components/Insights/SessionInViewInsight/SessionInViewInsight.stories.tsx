@@ -28,44 +28,46 @@ export const Default: Story = {
       spans: [
         {
           renderSpan: {
-            name: "WaitForLock",
-            displayName: "WaitForLock",
-            instrumentationLibrary: "SampleInsightsController",
-            spanCodeObjectId: "span:SampleInsightsController$_$WaitForLock",
-            methodCodeObjectId: null,
+            name: "Render owners/ownerDetails",
+            displayName: "Render owners/ownerDetails",
+            instrumentationLibrary: "io.opentelemetry.spring-webmvc-6.0",
+            spanCodeObjectId:
+              "span:io.opentelemetry.spring-webmvc-6.0$_$Render owners/ownerDetails",
+            methodCodeObjectId: "",
             kind: "Internal",
-            codeObjectId: null
+            codeObjectId: ""
           },
           clientSpan: {
-            name: "1D138649EB4FFA92C0E3C8103404F2",
-            displayName: "select * from users where id = :id",
-            instrumentationLibrary: "SampleInsightsController",
+            name: "6AFAE587D3FEC813CD353F4CC91076",
+            displayName:
+              "select p1_0.pet_id,p1_0.id,p1_0.vaccine_date from pet_vaccines p1_0 where p1_0.pet_id=? order by p1_0.vaccine_date",
+            instrumentationLibrary: "io.opentelemetry.jdbc",
             spanCodeObjectId:
-              "span:SampleInsightsController$_$1D138649EB4FFA92C0E3C8103404F2",
-            methodCodeObjectId: null,
+              "span:io.opentelemetry.jdbc$_$6AFAE587D3FEC813CD353F4CC91076",
+            methodCodeObjectId: "",
             kind: "Client",
-            codeObjectId: null
+            codeObjectId: ""
           },
-          traceId: "9C510BC1E1CD59DD7E820BC3E8DFD4C4"
+          traceId: "937BDA41E6AAEAF9B140E3A7FD02D4B0"
         }
       ],
       scope: InsightScope.EntrySpan,
-      endpointSpan: "HTTP GET /SampleInsights/NPlusOneWithoutInternalSpan",
+      endpointSpan: "HTTP GET /owners/{ownerId}",
       spanCodeObjectId:
-        "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /SampleInsights/NPlusOneWithoutInternalSpan",
-      route: "epHTTP:HTTP GET /SampleInsights/NPlusOneWithoutInternalSpan",
-      serviceName: "PetClinic",
+        "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /owners/{ownerId}",
+      route: "epHTTP:HTTP GET /owners/{ownerId}",
+      serviceName: "spring-petclinic",
       spanInfo: {
-        name: "HTTP GET /SampleInsights/NPlusOneWithoutInternalSpan",
-        displayName: "HTTP GET /SampleInsights/NPlusOneWithoutInternalSpan",
+        name: "HTTP GET /owners/{ownerId}",
+        displayName: "HTTP GET /owners/{ownerId}",
         instrumentationLibrary: "io.opentelemetry.tomcat-10.0",
         spanCodeObjectId:
-          "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /SampleInsights/NPlusOneWithoutInternalSpan",
+          "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /owners/{ownerId}",
         methodCodeObjectId:
-          "method:org.springframework.samples.petclinic.sample.SampleInsightsController$_$genNPlusOneWithoutInternalSpan",
+          "method:org.springframework.samples.petclinic.owner.OwnerController$_$showOwner",
         kind: "Server",
         codeObjectId:
-          "org.springframework.samples.petclinic.sample.SampleInsightsController$_$genNPlusOneWithoutInternalSpan"
+          "org.springframework.samples.petclinic.owner.OwnerController$_$showOwner"
       },
       shortDisplayInfo: {
         title: "",
@@ -74,20 +76,20 @@ export const Default: Story = {
         description: ""
       },
       codeObjectId:
-        "org.springframework.samples.petclinic.sample.SampleInsightsController$_$genNPlusOneWithoutInternalSpan",
+        "org.springframework.samples.petclinic.owner.OwnerController$_$showOwner",
       decorators: [
         {
-          title: "N+1 Suspected",
-          description: "Supected NPlus One"
+          title: "Session in View",
+          description: "Session in View query detected"
         }
       ],
-      environment: "SAMPLE_ENV",
-      severity: 0,
-      isRecalculateEnabled: true,
+      environment: "BOB-LAPTOP[LOCAL]",
+      severity: 0.0,
+      isRecalculateEnabled: false,
       prefixedCodeObjectId:
-        "method:org.springframework.samples.petclinic.sample.SampleInsightsController$_$genNPlusOneWithoutInternalSpan",
+        "method:org.springframework.samples.petclinic.owner.OwnerController$_$showOwner",
       customStartTime: null,
-      actualStartTime: "2023-06-16T10:30:33.027Z"
+      actualStartTime: "2023-08-10T08:59:14.093073Z"
     }
   }
 };

@@ -65,7 +65,7 @@ export const Default: Story = {
       codeObjectId:
         "Sample.MoneyTransfer.API.Controllers.TransferController$_$TransferFunds(TransferRequest)",
       decorators: null,
-      environment: "KYRYLOS-MACBOOK-PRO.HOME[LOCAL]",
+      environment: "BOB-LAPTOP[LOCAL]",
       severity: 0,
       isRecalculateEnabled: false,
       prefixedCodeObjectId:

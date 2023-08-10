@@ -8,6 +8,13 @@ export const SpanList = styled.div`
 `;
 
 export const Span = styled.span`
+  margin-top: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const SpanDetails = styled.span`
   display: flex;
   flex-direction: column;
   gap: 4px;

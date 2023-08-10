@@ -44,32 +44,33 @@ export const EndpointNPlusOneInsight = (
 
                 return (
                   <s.Span key={spanName}>
-                    <s.SpanName>
-                      <Link
-                        onClick={() =>
-                          handleSpanLinkClick(spanInfo.spanCodeObjectId)
-                        }
-                      >
-                        {spanName}
-                      </Link>
-                    </s.SpanName>
-
-                    <s.Stats>
-                      <s.Stat>
-                        <Description>Impact</Description>
-                        <span>{fraction}</span>
-                      </s.Stat>
-                      <s.Stat>
-                        <Description>Repeats</Description>
-                        <span>{span.occurrences}</span>
-                      </s.Stat>
-                      <s.Stat>
-                        <Description>Duration</Description>
-                        <span>
-                          {span.duration.value} {span.duration.unit}
-                        </span>
-                      </s.Stat>
-                    </s.Stats>
+                    <s.SpanDetails>
+                      <s.SpanName>
+                        <Link
+                          onClick={() =>
+                            handleSpanLinkClick(spanInfo.spanCodeObjectId)
+                          }
+                        >
+                          {spanName}
+                        </Link>
+                      </s.SpanName>
+                      <s.Stats>
+                        <s.Stat>
+                          <Description>Impact</Description>
+                          <span>{fraction}</span>
+                        </s.Stat>
+                        <s.Stat>
+                          <Description>Repeats</Description>
+                          <span>{span.occurrences}</span>
+                        </s.Stat>
+                        <s.Stat>
+                          <Description>Duration</Description>
+                          <span>
+                            {span.duration.value} {span.duration.unit}
+                          </span>
+                        </s.Stat>
+                      </s.Stats>
+                    </s.SpanDetails>
                     {config.isJaegerEnabled && (
                       <s.Button
                         icon={{ component: CrosshairIcon }}

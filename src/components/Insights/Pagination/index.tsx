@@ -75,6 +75,7 @@ export const Pagination = (props: PaginationProps) => {
           >
             {"Next >"}
           </s.Button>
+          {currentPage + 1} of {pageCount}
         </s.Container>
       )}
     </>
