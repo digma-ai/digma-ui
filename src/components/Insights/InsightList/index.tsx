@@ -563,7 +563,7 @@ export const InsightList = (props: InsightListProps) => {
               <div>
                 {x.icon && <x.icon size={16} color={insightGroupIconColor} />}{" "}
               </div>
-              <s.InsightGroupName>{x.name}</s.InsightGroupName>
+              <s.InsightGroupName title={x.name}>{x.name}</s.InsightGroupName>
             </s.InsightGroupHeader>
           )}
           {x.insights.length > 0 ? (
