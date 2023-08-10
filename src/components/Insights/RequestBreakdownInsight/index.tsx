@@ -24,9 +24,9 @@ const getComponents = (
 ): Component[] => {
   switch (percentile) {
     case 0.5:
-      return insight.p50Components;
+      return insight.p50Components || [];
     case 0.95:
-      return insight.p95Components;
+      return insight.p95Components || [];
     default:
       return [];
   }

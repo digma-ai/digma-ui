@@ -561,8 +561,8 @@ export interface EndpointBreakdownInsight extends EndpointInsight {
   importance: InsightImportance.Info;
   isRecalculateEnabled: true;
   components: Component[];
-  p50Components: Component[];
-  p95Components: Component[];
+  p50Components: Component[] | null;
+  p95Components: Component[] | null;
 }
 
 export type SpanUsageStatusInsight = SpanInsight;
