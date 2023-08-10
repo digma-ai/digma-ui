@@ -60,6 +60,18 @@ export const Default: Story = {
               fraction: 1
             }
           ],
+          p50Components: [
+            {
+              type: ComponentType.Internal,
+              fraction: 1
+            }
+          ],
+          p95Components: [
+            {
+              type: ComponentType.Internal,
+              fraction: 1
+            }
+          ],
           scope: InsightScope.EntrySpan,
           endpointSpan: "HTTP POST Transfer/TransferFunds",
           spanCodeObjectId:

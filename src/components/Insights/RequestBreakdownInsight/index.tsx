@@ -1,7 +1,8 @@
+import { useState } from "react";
 import { Cell, Pie, PieChart } from "recharts";
 import { roundTo } from "../../../utils/roundTo";
 import { InsightCard } from "../InsightCard";
-import { ComponentType } from "../types";
+import { Component, ComponentType, EndpointBreakdownInsight } from "../types";
 import * as s from "./styles";
 import { RequestBreakdownInsightProps } from "./types";
 
@@ -15,12 +16,35 @@ const componentTypeColors = {
   [ComponentType.Rendering]: "#f55385"
 };
 
+const DEFAULT_PERCENTILE = 0.5;
+
+const getComponents = (
+  insight: EndpointBreakdownInsight,
+  percentile: number
+): Component[] => {
+  switch (percentile) {
+    case 0.5:
+      return insight.p50Components;
+    case 0.95:
+      return insight.p95Components;
+    default:
+      return [];
+  }
+};
+
 export const RequestBreakdownInsight = (
   props: RequestBreakdownInsightProps
 ) => {
-  const data = [...props.insight.components].sort(
+  const [percentileViewMode, setPercentileViewMode] =
+    useState<number>(DEFAULT_PERCENTILE);
+
+  const data = [...getComponents(props.insight, percentileViewMode)].sort(
     (a, b) => b.fraction - a.fraction
   );
+
+  const handlePercentileViewModeChange = (value: number) => {
+    setPercentileViewMode(value);
+  };
 
   return (
     <InsightCard
@@ -63,6 +87,7 @@ export const RequestBreakdownInsight = (
       }
       onRecalculate={props.onRecalculate}
       onRefresh={props.onRefresh}
+      onPercentileViewModeChange={handlePercentileViewModeChange}
     />
   );
 };

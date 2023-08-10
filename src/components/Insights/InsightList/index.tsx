@@ -12,6 +12,7 @@ import { DurationInsight } from "../DurationInsight";
 import { DurationSlowdownSourceInsight } from "../DurationSlowdownSourceInsight";
 import { EndpointNPlusOneInsight } from "../EndpointNPlusOneInsight";
 import { ErrorsInsight } from "../ErrorsInsight";
+import { ExcessiveAPICallsInsight } from "../ExcessiveAPICallsInsight";
 import { InsightCard } from "../InsightCard";
 import { NPlusOneInsight } from "../NPlusOneInsight";
 import { NoObservabilityCard } from "../NoObservabilityCard";
@@ -19,12 +20,14 @@ import { NoScalingIssueInsight } from "../NoScalingIssueInsight";
 import { PerformanceAtScaleInsight } from "../PerformanceAtScaleInsight";
 import { RequestBreakdownInsight } from "../RequestBreakdownInsight";
 import { ScalingIssueInsight } from "../ScalingIssueInsight";
+import { SessionInViewInsight } from "../SessionInViewInsight";
 import { SlowEndpointInsight } from "../SlowEndpointInsight";
 import { SpanBottleneckInsight } from "../SpanBottleneckInsight";
 import { TopUsageInsight } from "../TopUsageInsight";
 import { TrafficInsight } from "../TrafficInsight";
 import { Description } from "../styles";
 import {
+  isChattyApiEndpointInsight,
   isCodeObjectErrorsInsight,
   isCodeObjectHotSpotInsight,
   isEndpointBreakdownInsight,
@@ -35,6 +38,7 @@ import {
   isEndpointNormalUsageInsight,
   isEndpointSlowestSpansInsight,
   isEndpointSuspectedNPlusOneInsight,
+  isSessionInViewEndpointInsight,
   isSlowEndpointInsight,
   isSpanDurationBreakdownInsight,
   isSpanDurationsInsight,
@@ -72,6 +76,8 @@ export const getInsightTypeOrderPriority = (type: string): number => {
     [InsightType.SlowestSpans]: 40,
     [InsightType.NormalUsage]: 50,
     [InsightType.EndpointSpanNPlusOne]: 55,
+    [InsightType.EndpointSessionInView]: 56,
+    [InsightType.EndpointChattyApi]: 57,
 
     // Span insights
     [InsightType.SpanDurations]: 60,
@@ -485,6 +491,32 @@ const renderInsightCard = (
       />
     );
   }
+
+  if (isSessionInViewEndpointInsight(insight)) {
+    return (
+      <SessionInViewInsight
+        key={insight.type}
+        insight={insight}
+        onAssetLinkClick={handleAssetLinkClick}
+        onTraceButtonClick={handleTraceButtonClick}
+        onRecalculate={handleRecalculate}
+        onRefresh={handleRefresh}
+      />
+    );
+  }
+
+  if (isChattyApiEndpointInsight(insight)) {
+    return (
+      <ExcessiveAPICallsInsight
+        key={insight.type}
+        insight={insight}
+        onAssetLinkClick={handleAssetLinkClick}
+        onTraceButtonClick={handleTraceButtonClick}
+        onRecalculate={handleRecalculate}
+        onRefresh={handleRefresh}
+      />
+    );
+  }
 };
 
 export const InsightList = (props: InsightListProps) => {
@@ -527,10 +559,12 @@ export const InsightList = (props: InsightListProps) => {
       {insightGroups.map((x) => (
         <s.InsightGroup key={x.name || "__ungrouped"}>
           {x.name && (
-            <s.InsightGroupName>
-              {x.icon && <x.icon size={16} color={insightGroupIconColor} />}{" "}
-              {x.name}
-            </s.InsightGroupName>
+            <s.InsightGroupHeader>
+              <div>
+                {x.icon && <x.icon size={16} color={insightGroupIconColor} />}{" "}
+              </div>
+              <s.InsightGroupName>{x.name}</s.InsightGroupName>
+            </s.InsightGroupHeader>
           )}
           {x.insights.length > 0 ? (
             x.insights.map((insight) => renderInsightCard(insight))

@@ -14,7 +14,7 @@ export const InsightGroup = styled.div`
   gap: 8px;
 `;
 
-export const InsightGroupName = styled.div`
+export const InsightGroupHeader = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
@@ -29,6 +29,12 @@ export const InsightGroupName = styled.div`
         return "#7c7c94";
     }
   }};
+`;
+
+export const InsightGroupName = styled.span`
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 `;
 
 export const MissingDependencyContainer = styled.div`

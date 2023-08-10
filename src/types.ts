@@ -17,12 +17,13 @@ export enum InsightType {
   SpanEndpointBottleneck = "SpanEndpointBottleneck",
   SpanDurations = "SpanDurations",
   SpanScalingBadly = "SpanScaling",
-  SpanScalingRootCause = "SpanScalingRootCause",
   SpanDurationBreakdown = "SpanDurationBreakdown",
   EndpointDurationSlowdown = "EndpointDurationSlowdown",
   EndpointBreakdown = "EndpointBreakdown",
   SpanScalingWell = "SpanScalingWell",
-  SpanScalingInsufficientData = "SpanScalingInsufficientData"
+  SpanScalingInsufficientData = "SpanScalingInsufficientData",
+  EndpointSessionInView = "EndpointSessionInView",
+  EndpointChattyApi = "EndpointChattyApi"
 }
 
 export interface SpanInfo {

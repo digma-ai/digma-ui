@@ -1,5 +1,6 @@
 import { InsightType } from "../../types";
 import {
+  ChattyApiEndpointInsight,
   CodeObjectErrorsInsight,
   CodeObjectHotSpotInsight,
   CodeObjectInsight,
@@ -12,6 +13,7 @@ import {
   EndpointSlowestSpansInsight,
   EndpointSuspectedNPlusOneInsight,
   InsightScope,
+  SessionInViewEndpointInsight,
   SlowEndpointInsight,
   SpanDurationBreakdownInsight,
   SpanDurationsInsight,
@@ -115,3 +117,13 @@ export const isSpanScalingInsufficientDataInsight = (
   insight: CodeObjectInsight
 ): insight is SpanScalingInsufficientDataInsight =>
   insight.type === InsightType.SpanScalingInsufficientData;
+
+export const isSessionInViewEndpointInsight = (
+  insight: CodeObjectInsight
+): insight is SessionInViewEndpointInsight =>
+  insight.type === InsightType.EndpointSessionInView;
+
+export const isChattyApiEndpointInsight = (
+  insight: CodeObjectInsight
+): insight is ChattyApiEndpointInsight =>
+  insight.type === InsightType.EndpointChattyApi;

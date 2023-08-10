@@ -42,7 +42,9 @@ export type GenericCodeObjectInsight =
   | EndpointDurationSlowdownInsight
   | EndpointBreakdownInsight
   | SpanScalingWellInsight
-  | SpanScalingInsufficientDataInsight;
+  | SpanScalingInsufficientDataInsight
+  | SessionInViewEndpointInsight
+  | ChattyApiEndpointInsight;
 
 export interface MethodSpan {
   spanCodeObjectId: string;
@@ -546,6 +548,11 @@ export enum ComponentType {
   Rendering = "Rendering"
 }
 
+export interface Component {
+  type: ComponentType;
+  fraction: number;
+}
+
 export interface EndpointBreakdownInsight extends EndpointInsight {
   name: "Request Breakdown";
   type: InsightType.EndpointBreakdown;
@@ -553,10 +560,9 @@ export interface EndpointBreakdownInsight extends EndpointInsight {
   specifity: InsightSpecificity.OwnInsight;
   importance: InsightImportance.Info;
   isRecalculateEnabled: true;
-  components: {
-    type: ComponentType;
-    fraction: number;
-  }[];
+  components: Component[];
+  p50Components: Component[];
+  p95Components: Component[];
 }
 
 export type SpanUsageStatusInsight = SpanInsight;
@@ -585,4 +591,30 @@ export interface SpanScalingInsufficientDataInsight extends SpanInsight {
   specifity: InsightSpecificity.OwnInsight;
   importance: InsightImportance.Interesting;
   concurrencies: Concurrency[];
+}
+
+export interface SessionInViewEndpointInsight extends EndpointInsight {
+  name: "Session in View Query";
+  type: InsightType.EndpointSessionInView;
+  category: InsightCategory.Performance;
+  specifity: InsightSpecificity.TargetAndReasonFound;
+  importance: InsightImportance.HighlyImportant;
+  spans: {
+    renderSpan: SpanInfo;
+    clientSpan: SpanInfo;
+    traceId?: string;
+  }[];
+}
+
+export interface ChattyApiEndpointInsight extends EndpointInsight {
+  name: "HTTP Chatter";
+  type: InsightType.EndpointChattyApi;
+  category: InsightCategory.Performance;
+  specifity: InsightSpecificity.TargetAndReasonFound;
+  importance: InsightImportance.HighlyImportant;
+  spans: {
+    repeats: number;
+    clientSpan: SpanInfo;
+    traceId?: string;
+  }[];
 }

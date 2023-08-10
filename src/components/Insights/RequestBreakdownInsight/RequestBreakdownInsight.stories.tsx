@@ -36,6 +36,26 @@ export const Default: Story = {
           fraction: 0.0034605162707679665
         }
       ],
+      p50Components: [
+        {
+          type: ComponentType.Internal,
+          fraction: 0.996539483729232
+        },
+        {
+          type: ComponentType.Rendering,
+          fraction: 0.0034605162707679665
+        }
+      ],
+      p95Components: [
+        {
+          type: ComponentType.Internal,
+          fraction: 0.796539483729232
+        },
+        {
+          type: ComponentType.Rendering,
+          fraction: 0.20346051627
+        }
+      ],
       scope: InsightScope.EntrySpan,
       endpointSpan: "HTTP GET /owners/new",
       spanCodeObjectId:
