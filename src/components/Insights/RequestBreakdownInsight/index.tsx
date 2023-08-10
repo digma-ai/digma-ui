@@ -21,14 +21,14 @@ const DEFAULT_PERCENTILE = 0.5;
 const getComponents = (
   insight: EndpointBreakdownInsight,
   percentile: number
-): Component[] => {
+): Component[] | undefined => {
   switch (percentile) {
     case 0.5:
-      return insight.p50Components || [];
+      return insight.p50Components || undefined;
     case 0.95:
-      return insight.p95Components || [];
+      return insight.p95Components || undefined;
     default:
-      return [];
+      return undefined;
   }
 };
 
@@ -38,9 +38,11 @@ export const RequestBreakdownInsight = (
   const [percentileViewMode, setPercentileViewMode] =
     useState<number>(DEFAULT_PERCENTILE);
 
-  const data = [...getComponents(props.insight, percentileViewMode)].sort(
-    (a, b) => b.fraction - a.fraction
-  );
+  const components =
+    getComponents(props.insight, percentileViewMode) ||
+    props.insight.components;
+
+  const data = [...components].sort((a, b) => b.fraction - a.fraction);
 
   const handlePercentileViewModeChange = (value: number) => {
     setPercentileViewMode(value);
@@ -87,7 +89,11 @@ export const RequestBreakdownInsight = (
       }
       onRecalculate={props.onRecalculate}
       onRefresh={props.onRefresh}
-      onPercentileViewModeChange={handlePercentileViewModeChange}
+      onPercentileViewModeChange={
+        props.insight.p50Components && props.insight.p95Components
+          ? handlePercentileViewModeChange
+          : undefined
+      }
     />
   );
 };
