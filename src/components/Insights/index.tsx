@@ -4,19 +4,21 @@ import { actions as globalActions } from "../../actions";
 import { SLACK_WORKSPACE_URL } from "../../constants";
 import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
+import { trackingEvents as globalTrackingEvents } from "../../trackingEvents";
 import { isNumber } from "../../typeGuards/isNumber";
 import { addPrefix } from "../../utils/addPrefix";
 import { openURLInDefaultBrowser } from "../../utils/openURLInDefaultBrowser";
+import { sendTrackingEvent } from "../../utils/sendTrackingEvent";
 import { Button } from "../common/Button";
 import { CircleLoader } from "../common/CircleLoader";
 import { CircleLoaderProps } from "../common/CircleLoader/types";
+import { EmptyState } from "../common/EmptyState";
 import { CardsIcon } from "../common/icons/CardsIcon";
 import { DocumentWithMagnifierIcon } from "../common/icons/DocumentWithMagnifierIcon";
 import { LightBulbSmallCrossedIcon } from "../common/icons/LightBulbSmallCrossedIcon";
 import { LightBulbSmallIcon } from "../common/icons/LightBulbSmallIcon";
 import { OpenTelemetryLogoCrossedSmallIcon } from "../common/icons/OpenTelemetryLogoCrossedSmallIcon";
 import { SlackLogoIcon } from "../common/icons/SlackLogoIcon";
-import { EmptyState } from "./EmptyState";
 import { InsightList } from "./InsightList";
 import { Preview } from "./Preview";
 import * as s from "./styles";
@@ -165,6 +167,10 @@ export const Insights = (props: InsightsProps) => {
   };
 
   const handleTroubleshootingLinkClick = () => {
+    sendTrackingEvent(globalTrackingEvents.TROUBLESHOOTING_LINK_CLICKED, {
+      origin: "insights"
+    });
+
     window.sendMessageToDigma({
       action: globalActions.OPEN_TROUBLESHOOTING_GUIDE
     });
