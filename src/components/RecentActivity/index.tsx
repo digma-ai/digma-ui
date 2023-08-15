@@ -4,8 +4,10 @@ import { useContext, useEffect, useMemo, useState } from "react";
 import { actions as globalActions } from "../../actions";
 import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
+import { trackingEvents as globalTrackingEvents } from "../../trackingEvents";
 import { addPrefix } from "../../utils/addPrefix";
 import { groupBy } from "../../utils/groupBy";
+import { sendTrackingEvent } from "../../utils/sendTrackingEvent";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { CursorFollower } from "../common/CursorFollower";
 import { DigmaLogoFlatIcon } from "../common/icons/DigmaLogoFlatIcon";
@@ -28,7 +30,11 @@ const actions = addPrefix(ACTION_PREFIX, {
   CLOSE_LIVE_VIEW: "CLOSE_LIVE_VIEW"
 });
 
-const handleDocumentationLinkClick = () => {
+const handleTroubleshootingLinkClick = () => {
+  sendTrackingEvent(globalTrackingEvents.TROUBLESHOOTING_LINK_CLICKED, {
+    origin: "recent activity"
+  });
+
   window.sendMessageToDigma({
     action: globalActions.OPEN_TROUBLESHOOTING_GUIDE
   });
@@ -40,11 +46,14 @@ const renderNoData = () => {
       <CursorFollower>
         <DigmaLogoFlatIcon size={64} />
       </CursorFollower>
-      <s.NoDataTitle>No Recent Activity</s.NoDataTitle>
-      <s.NoDataText>Check our documentation</s.NoDataText>
-      <s.DocumentationLink onClick={handleDocumentationLinkClick}>
+      <s.NoDataTitle>No Data Yet</s.NoDataTitle>
+      <s.NoDataText>
+        Trigger actions that call this application to learn more about its
+        runtime behavior
+      </s.NoDataText>
+      <s.TroubleshootingLink onClick={handleTroubleshootingLinkClick}>
         Not seeing your application data?
-      </s.DocumentationLink>
+      </s.TroubleshootingLink>
     </s.NoDataContainer>
   );
 };

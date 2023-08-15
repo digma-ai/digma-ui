@@ -74,7 +74,7 @@ export const InsightIconContainer = styled(AssetTypeIconContainer)`
 
 export const StatsContainer = styled.div`
   display: flex;
-  gap: 16px 12px;
+  gap: 12px 16px;
   flex-wrap: wrap;
   font-size: 10px;
   line-height: 12px;
@@ -83,13 +83,14 @@ export const StatsContainer = styled.div`
 export const Stats = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 8px;
   width: 120px;
 `;
 
-export const StatsRow = styled.div`
+export const StatsColumn = styled.div`
+  flex-direction: column;
   display: flex;
-  gap: 16px;
+  gap: 12px;
 `;
 
 export const ServicesContainer = styled.div`

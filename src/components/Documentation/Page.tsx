@@ -8,8 +8,8 @@ export const Page = (props: PageProps) => (
       {props.description}
     </s.Header>
     {props.sections &&
-      props.sections.map((section) => (
-        <s.Section key={section.title}>
+      props.sections.map((section, i) => (
+        <s.Section key={i}>
           <s.SectionHeader>
             {Number.isInteger(section.number) && (
               <s.SectionNumber>{section.number}</s.SectionNumber>

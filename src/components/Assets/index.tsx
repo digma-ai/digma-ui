@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
-import { DefaultTheme, useTheme } from "styled-components";
 import { actions as globalActions } from "../../actions";
-import { SLACK_WORKSPACE_URL } from "../../constants";
 import { dispatcher } from "../../dispatcher";
+import { trackingEvents as globalTrackingEvents } from "../../trackingEvents";
 import { isNumber } from "../../typeGuards/isNumber";
 import { addPrefix } from "../../utils/addPrefix";
 import { groupBy } from "../../utils/groupBy";
-import { openURLInDefaultBrowser } from "../../utils/openURLInDefaultBrowser";
-import { StackIcon } from "../common/icons/StackIcon";
+import { sendTrackingEvent } from "../../utils/sendTrackingEvent";
+import { EmptyState } from "../common/EmptyState";
+import { CardsIcon } from "../common/icons/CardsIcon";
 import { AssetList } from "./AssetList";
 import { AssetTypeList } from "./AssetTypeList";
 import * as s from "./styles";
@@ -59,24 +59,12 @@ const groupEntries = (data: ServiceAssetsEntry[]): GroupedAssetEntries => {
   return groupedAssetEntries;
 };
 
-const getNoDataIconColor = (theme: DefaultTheme) => {
-  switch (theme.mode) {
-    case "light":
-      return "#f1f5fa";
-    case "dark":
-    case "dark-jetbrains":
-      return "#c6c6c6";
-  }
-};
-
 export const Assets = (props: AssetsProps) => {
   const [selectedAssetTypeId, setSelectedAssetTypeId] = useState<string | null>(
     null
   );
   const [data, setData] = useState<GroupedAssetEntries>();
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
-  const theme = useTheme();
-  const noDataIconColor = getNoDataIconColor(theme);
 
   useEffect(() => {
     window.sendMessageToDigma({
@@ -130,11 +118,11 @@ export const Assets = (props: AssetsProps) => {
     });
   };
 
-  const handleSlackLinkClick = () => {
-    openURLInDefaultBrowser(SLACK_WORKSPACE_URL);
-  };
+  const handleTroubleshootingLinkClick = () => {
+    sendTrackingEvent(globalTrackingEvents.TROUBLESHOOTING_LINK_CLICKED, {
+      origin: "assets"
+    });
 
-  const handleDocumentationLinkClick = () => {
     window.sendMessageToDigma({
       action: globalActions.OPEN_TROUBLESHOOTING_GUIDE
     });
@@ -144,19 +132,21 @@ export const Assets = (props: AssetsProps) => {
     if (!data || Object.keys(data).length === 0) {
       return (
         <s.NoDataContainer>
-          <s.Circle>
-            <StackIcon size={41} color={noDataIconColor} />
-          </s.Circle>
-          <s.NoDataTitle>No Data</s.NoDataTitle>
-          <s.NoDataText>
-            Please check out our{" "}
-            <s.Link onClick={handleDocumentationLinkClick}>
-              documentation
-            </s.Link>{" "}
-            to see how to collect data from your application. If you still have
-            any issues, please let us know on our{" "}
-            <s.Link onClick={handleSlackLinkClick}>Slack</s.Link> channel.
-          </s.NoDataText>
+          <EmptyState
+            icon={CardsIcon}
+            title={"No data yet"}
+            content={
+              <>
+                <s.EmptyStateDescription>
+                  Trigger actions that call this application to learn more about
+                  its runtime behavior
+                </s.EmptyStateDescription>
+                <s.TroubleshootingLink onClick={handleTroubleshootingLinkClick}>
+                  Not seeing your application data?
+                </s.TroubleshootingLink>
+              </>
+            }
+          />
         </s.NoDataContainer>
       );
     }
@@ -177,7 +167,7 @@ export const Assets = (props: AssetsProps) => {
         entries={selectedAssetTypeEntries}
       />
     );
-  }, [data, selectedAssetTypeId, noDataIconColor]);
+  }, [data, selectedAssetTypeId]);
 
   return <s.Container>{renderContent}</s.Container>;
 };
