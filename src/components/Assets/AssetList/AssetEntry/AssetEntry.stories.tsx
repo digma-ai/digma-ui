@@ -65,6 +65,10 @@ export const Default: Story = {
           traceIds: ["7343BEA8BDBC98BA4779A8808E5BD7C9"]
         }
       ],
+      impactScores: {
+        ScoreExp25: 0,
+        ScoreExp1000: 0
+      },
       insights: [
         {
           type: "Errors",

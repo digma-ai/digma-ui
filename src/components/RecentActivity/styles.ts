@@ -69,6 +69,8 @@ export const NoDataContainer = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 12px 0 18px;
+  border-radius: 12px;
+  gap: 4px;
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -79,7 +81,6 @@ export const NoDataContainer = styled.div`
         return "#3d3f41";
     }
   }};
-  border-radius: 12px;
 `;
 
 export const NoDataTitle = styled.span`
@@ -95,12 +96,11 @@ export const NoDataTitle = styled.span`
         return "#b9c2eb";
     }
   }};
-  margin-top: 4px;
 `;
 
 export const NoDataText = styled.span`
   font-weight: 400;
-  font-size: 10px;
+  font-size: 12px;
   line-height: 16px;
   color: ${({ theme }) => {
     switch (theme.mode) {
@@ -111,11 +111,10 @@ export const NoDataText = styled.span`
         return "#7c7c94";
     }
   }};
-  margin-top: 4px;
 `;
 
-export const DocumentationLink = styled(Link)`
-  font-size: 10px;
+export const TroubleshootingLink = styled(Link)`
+  font-size: 14px;
   line-height: 16px;
   text-decoration: none;
   color: ${({ theme }) => {
