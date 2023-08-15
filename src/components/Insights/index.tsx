@@ -244,7 +244,7 @@ export const Insights = (props: InsightsProps) => {
             content={
               <>
                 <s.EmptyStateDescription>
-                  Trigger actions that call this code object to learn more about
+                  Trigger actions that call this application to learn more about
                   its runtime behavior
                 </s.EmptyStateDescription>
                 <s.TroubleshootingLink onClick={handleTroubleshootingLinkClick}>
