@@ -8,6 +8,7 @@ export interface LiveViewProps {
 interface LiveDataRecord {
   dateTime: string;
   duration: Duration;
+  hasError?: boolean;
 }
 
 export interface LiveDataDurationPercentile {
@@ -55,4 +56,8 @@ export interface AxisChartContainerProps {
 
 export interface AreaLegendIllustrationProps {
   color: string;
+}
+
+export interface DotProps {
+  payload: ExtendedLiveDataRecord;
 }

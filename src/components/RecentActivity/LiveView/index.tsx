@@ -14,6 +14,7 @@ import {
   Area,
   CartesianGrid,
   ComposedChart,
+  Dot,
   Line,
   ResponsiveContainer,
   Tooltip,
@@ -41,6 +42,7 @@ import { DotTooltipContent } from "./DotTooltipContent";
 import * as s from "./styles";
 import {
   Coordinates,
+  DotProps,
   DotTooltipProps,
   ExtendedLiveDataRecord,
   LiveViewProps,
@@ -144,6 +146,16 @@ const getLatestDataButtonIconColor = (theme: DefaultTheme) => {
     case "dark":
     case "dark-jetbrains":
       return "#b9c2eb";
+  }
+};
+
+const getDotWithErrorsColor = (theme: DefaultTheme) => {
+  switch (theme.mode) {
+    case "light":
+      return "#e00036";
+    case "dark":
+    case "dark-jetbrains":
+      return "#f93967";
   }
 };
 
@@ -561,12 +573,21 @@ export const LiveView = (props: LiveViewProps) => {
                       x.duration.raw
                     }
                     stroke={lineColor}
-                    dot={{
-                      stroke: lineColor,
-                      fill: lineColor,
-                      r: 2,
-                      onMouseOver: handleDotMouseOver,
-                      onMouseLeave: handleDotMouseLeave
+                    dot={(x: DotProps) => {
+                      const color = x.payload.hasError
+                        ? getDotWithErrorsColor(theme)
+                        : lineColor;
+
+                      return (
+                        <Dot
+                          {...x}
+                          stroke={color}
+                          fill={color}
+                          r={3}
+                          onMouseOver={handleDotMouseOver}
+                          onMouseLeave={handleDotMouseLeave}
+                        />
+                      );
                     }}
                     isAnimationActive={false}
                     activeDot={false}
