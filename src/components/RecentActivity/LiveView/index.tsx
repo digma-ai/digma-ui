@@ -28,6 +28,7 @@ import { isNumber } from "../../../typeGuards/isNumber";
 import { roundTo } from "../../../utils/roundTo";
 import { roundToNonZeroDecimals } from "../../../utils/roundToNonZeroDecimals";
 import { getThemeKind } from "../../common/App/styles";
+import { ToggleSwitch } from "../../common/ToggleSwitch";
 import { ArrowSmallIcon } from "../../common/icons/ArrowSmallIcon";
 import { ChartIcon } from "../../common/icons/ChartIcon";
 import { CrossIcon } from "../../common/icons/CrossIcon";
@@ -208,6 +209,7 @@ export const LiveView = (props: LiveViewProps) => {
   const [dotToolTip, setDotTooltip] = useState<DotTooltipProps>();
   const [scrollPercentagePosition, setScrollPercentagePosition] = useState(1);
   const scrollbar = useScrollbarSize();
+  const [areErrorsVisible, setAreErrorsVisible] = useState(false);
 
   useEffect(() => {
     if (previousWidth !== width) {
@@ -250,6 +252,10 @@ export const LiveView = (props: LiveViewProps) => {
 
   const handleCloseButtonClick = () => {
     props.onClose(props.data.durationData.codeObjectId);
+  };
+
+  const handleShowErrorsToggleSwitchChange = (value: boolean) => {
+    setAreErrorsVisible(value);
   };
 
   const handleZoomOutButtonClick = () => {
@@ -335,12 +341,16 @@ export const LiveView = (props: LiveViewProps) => {
 
   const spanName = props.data.durationData.displayName;
 
-  const data: ExtendedLiveDataRecord[] = [...props.data.liveDataRecords].map(
+  let data: ExtendedLiveDataRecord[] = [...props.data.liveDataRecords].map(
     (x) => ({
       ...x,
       dateTimeValue: new Date(x.dateTime).valueOf()
     })
   );
+
+  if (!areErrorsVisible) {
+    data = data.filter((x) => !x.hasError);
+  }
 
   // Add P50 and P95 values to build the correct scale for Y axis
   const YAxisData = data.concat([
@@ -442,14 +452,22 @@ export const LiveView = (props: LiveViewProps) => {
       </s.Header>
       {data.length > 0 ? (
         <>
-          <s.ZoomButtonsContainer>
-            <s.ZoomButton onClick={handleZoomOutButtonClick}>
-              <MinusIcon size={16} color={zoomButtonIconColor} />
-            </s.ZoomButton>
-            <s.ZoomButton onClick={handleZoomInButtonClick}>
-              <PlusIcon size={16} color={zoomButtonIconColor} />
-            </s.ZoomButton>
-          </s.ZoomButtonsContainer>
+          <s.Toolbar>
+            <ToggleSwitch
+              label={"Show Errors"}
+              labelPosition={"end"}
+              checked={areErrorsVisible}
+              onChange={handleShowErrorsToggleSwitchChange}
+            />
+            <s.ZoomButtonsContainer>
+              <s.ZoomButton onClick={handleZoomOutButtonClick}>
+                <MinusIcon size={16} color={zoomButtonIconColor} />
+              </s.ZoomButton>
+              <s.ZoomButton onClick={handleZoomInButtonClick}>
+                <PlusIcon size={16} color={zoomButtonIconColor} />
+              </s.ZoomButton>
+            </s.ZoomButtonsContainer>
+          </s.Toolbar>
           {changedPercentile && (
             <s.ChangeStatusContainer>
               <ChangeStatus percentile={changedPercentile} />
@@ -573,14 +591,14 @@ export const LiveView = (props: LiveViewProps) => {
                       x.duration.raw
                     }
                     stroke={lineColor}
-                    dot={(x: DotProps) => {
-                      const color = x.payload.hasError
+                    dot={(props: DotProps) => {
+                      const color = props.payload.hasError
                         ? getDotWithErrorsColor(theme)
                         : lineColor;
 
                       return (
                         <Dot
-                          {...x}
+                          {...props}
                           stroke={color}
                           fill={color}
                           r={3}
