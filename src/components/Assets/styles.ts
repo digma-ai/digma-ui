@@ -15,12 +15,16 @@ export const Container = styled.div`
 `;
 
 export const NoDataContainer = styled.div`
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 62px 38px;
-  font-weight: 500;
+`;
+
+export const EmptyStateDescription = styled.span`
   font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 4px;
   text-align: center;
   color: ${({ theme }) => {
     switch (theme.mode) {
@@ -33,44 +37,16 @@ export const NoDataContainer = styled.div`
   }};
 `;
 
-export const NoDataTitle = styled.span`
+export const TroubleshootingLink = styled(CommonLink)`
   font-size: 14px;
-  text-transform: capitalize;
-  margin: 20px 0 4px;
+  line-height: normal;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "#4d668a";
+        return "#7891d0";
       case "dark":
       case "dark-jetbrains":
-        return "#dadada";
+        return "#92affa";
     }
   }};
-`;
-
-export const NoDataText = styled.span`
-  margin-bottom: 14px;
-`;
-
-export const Circle = styled.div`
-  width: 72px;
-  height: 72px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#d0d6eb";
-      case "dark":
-      case "dark-jetbrains":
-        return "#323334";
-    }
-  }};
-`;
-
-export const Link = styled(CommonLink)`
-  font-size: 12px;
-  line-height: 16px;
 `;

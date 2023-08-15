@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
 import { actions as globalActions } from "../../actions";
 import { SLACK_WORKSPACE_URL } from "../../constants";
@@ -23,6 +24,7 @@ const TRACKING_PREFIX = "troubleshooting";
 export const trackingEvents = addPrefix(
   TRACKING_PREFIX,
   {
+    PAGE_LOADED: "page loaded",
     RUN_OPTION_BUTTON_CLICKED: "run option button clicked",
     CLOSE_BUTTON_CLICKED: "close button clicked",
     SLACK_LINK_CLICKED: "slack link clicked"
@@ -55,6 +57,10 @@ export const Troubleshooting = () => {
   const themeKind = getThemeKind(theme);
   const runOptionButtonIconColor = getRunOptionButtonIconColor(theme);
   const closeButtonIconColor = getCloseButtonIconColor(theme);
+
+  useEffect(() => {
+    sendTrackingEvent(trackingEvents.PAGE_LOADED);
+  }, []);
 
   const runOptions = [
     {

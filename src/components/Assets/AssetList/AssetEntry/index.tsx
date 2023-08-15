@@ -107,7 +107,7 @@ export const AssetEntry = (props: AssetEntryProps) => {
         </s.InsightIconsContainer>
       </s.Header>
       <s.StatsContainer>
-        <s.StatsRow>
+        <s.StatsColumn>
           <s.Stats>
             <span>Services</span>
             <s.ServicesContainer>
@@ -123,29 +123,21 @@ export const AssetEntry = (props: AssetEntryProps) => {
             </s.ServicesContainer>
           </s.Stats>
           <s.Stats>
+            <span>Last</span>
+            <s.ValueContainer title={new Date(lastSeenDateTime).toString()}>
+              {timeAgo(lastSeenDateTime)}
+              <s.Suffix>ago</s.Suffix>
+            </s.ValueContainer>
+          </s.Stats>
+        </s.StatsColumn>
+        <s.StatsColumn>
+          <s.Stats>
             <span>Performance</span>
             <s.ValueContainer>
               {performanceDuration ? performanceDuration.value : "N/A"}
               {performanceDuration && (
                 <s.Suffix>{performanceDuration.unit}</s.Suffix>
               )}
-            </s.ValueContainer>
-          </s.Stats>
-          {props.entry.impactScores && (
-            <s.Stats>
-              <span>Performance impact</span>
-              <s.ValueContainer>
-                {getImpactScoreLabel(props.entry.impactScores.ScoreExp25)}
-              </s.ValueContainer>
-            </s.Stats>
-          )}
-        </s.StatsRow>
-        <s.StatsRow>
-          <s.Stats>
-            <span>Last</span>
-            <s.ValueContainer title={new Date(lastSeenDateTime).toString()}>
-              {timeAgo(lastSeenDateTime)}
-              <s.Suffix>ago</s.Suffix>
             </s.ValueContainer>
           </s.Stats>
           <s.Stats>
@@ -159,15 +151,23 @@ export const AssetEntry = (props: AssetEntryProps) => {
               )}
             </s.ValueContainer>
           </s.Stats>
-          {props.entry.impactScores && (
+        </s.StatsColumn>
+        {props.entry.impactScores && (
+          <s.StatsColumn>
+            <s.Stats>
+              <span>Performance impact</span>
+              <s.ValueContainer>
+                {getImpactScoreLabel(props.entry.impactScores.ScoreExp25)}
+              </s.ValueContainer>
+            </s.Stats>
             <s.Stats>
               <span>Overall impact</span>
               <s.ValueContainer>
                 {getImpactScoreLabel(props.entry.impactScores.ScoreExp1000)}
               </s.ValueContainer>
             </s.Stats>
-          )}
-        </s.StatsRow>
+          </s.StatsColumn>
+        )}
       </s.StatsContainer>
     </s.Container>
   );
