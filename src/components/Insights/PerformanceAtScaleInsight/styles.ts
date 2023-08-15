@@ -38,7 +38,7 @@ export const TableHead = styled.thead`
   }};
 `;
 
-export const TableHeaderRow = styled.th`
+export const TableHeaderCell = styled.th`
   font-weight: 400;
   text-align: center;
   padding: 0;

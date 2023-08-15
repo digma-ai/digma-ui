@@ -80,14 +80,14 @@ export const PerformanceAtScaleInsight = (
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <s.TableHeaderRow key={header.id}>
+                  <s.TableHeaderCell key={header.id}>
                     {header.isPlaceholder
                       ? null
                       : flexRender(
                           header.column.columnDef.header,
                           header.getContext()
                         )}
-                  </s.TableHeaderRow>
+                  </s.TableHeaderCell>
                 ))}
               </tr>
             ))}

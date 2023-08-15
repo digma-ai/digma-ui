@@ -33,7 +33,7 @@ export const TableHead = styled.thead`
   }};
 `;
 
-export const TableHeaderRow = styled.th`
+export const TableHeaderCell = styled.th`
   padding-top: 4px;
   font-weight: 400;
   text-align: start;

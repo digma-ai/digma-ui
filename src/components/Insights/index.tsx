@@ -247,9 +247,9 @@ export const Insights = (props: InsightsProps) => {
                   Trigger actions that call this code object to learn more about
                   its runtime behavior
                 </s.EmptyStateDescription>
-                <s.Link onClick={handleTroubleshootingLinkClick}>
+                <s.TroubleshootingLink onClick={handleTroubleshootingLinkClick}>
                   Not seeing your application data?
-                </s.Link>
+                </s.TroubleshootingLink>
               </>
             }
           />
