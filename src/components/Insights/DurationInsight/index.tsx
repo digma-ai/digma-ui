@@ -105,6 +105,7 @@ export const DurationInsight = (props: DurationInsightProps) => {
       }
       onRecalculate={props.onRecalculate}
       onRefresh={props.onRefresh}
+      isAsync={props.insight.isAsync}
       buttons={[
         ...(props.insight.spanInfo
           ? [

@@ -100,4 +100,5 @@ export const EmptyStateDescription = styled.span`
 
 export const TroubleshootingLink = styled(Link)`
   font-size: 14px;
+  text-decoration: underline;
 `;

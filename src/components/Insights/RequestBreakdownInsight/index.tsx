@@ -1,3 +1,9 @@
+import {
+  createColumnHelper,
+  flexRender,
+  getCoreRowModel,
+  useReactTable
+} from "@tanstack/react-table";
 import { useState } from "react";
 import { Cell, Pie, PieChart } from "recharts";
 import { roundTo } from "../../../utils/roundTo";
@@ -32,6 +38,8 @@ const getComponents = (
   }
 };
 
+const columnHelper = createColumnHelper<Component>();
+
 export const RequestBreakdownInsight = (
   props: RequestBreakdownInsightProps
 ) => {
@@ -48,45 +56,120 @@ export const RequestBreakdownInsight = (
     setPercentileViewMode(value);
   };
 
+  const renderPieChart = () => (
+    <s.ContentContainer>
+      <s.PieChartContainer>
+        <PieChart width={PIE_CHART_RADIUS} height={PIE_CHART_RADIUS}>
+          <Pie
+            data={data}
+            innerRadius={(PIE_CHART_RADIUS - PIE_CHART_ARC_WIDTH) / 2}
+            outerRadius={PIE_CHART_RADIUS / 2}
+            cornerRadius={PIE_CHART_ARC_WIDTH / 2}
+            paddingAngle={1}
+            dataKey={"fraction"}
+            isAnimationActive={false}
+          >
+            {data.map((entry) => (
+              <Cell
+                key={entry.type}
+                fill={componentTypeColors[entry.type]}
+                stroke={"none"}
+              />
+            ))}
+          </Pie>
+        </PieChart>
+      </s.PieChartContainer>
+      <s.Legend>
+        {data.map((x) => (
+          <s.LegendItem key={x.type}>
+            <s.LegendItemDataColor color={componentTypeColors[x.type]} />
+            <s.LegendItemDataLabel>{x.type}</s.LegendItemDataLabel>
+            <s.LegendItemDataValue>
+              {roundTo(x.fraction * 100, 2)}%
+            </s.LegendItemDataValue>
+          </s.LegendItem>
+        ))}
+      </s.Legend>
+    </s.ContentContainer>
+  );
+
+  const columns = [
+    columnHelper.accessor("type", {
+      header: "Category",
+      cell: (info) => {
+        const category = info.getValue();
+        return <span>{category}</span>;
+      }
+    }),
+    columnHelper.accessor("fraction", {
+      header: "Request Time",
+      cell: (info) => {
+        const fraction = info.getValue();
+        return (
+          <s.FractionProgressBarContainer>
+            <s.FractionProgressBar>
+              <s.FractionProgressBarValue value={fraction} />
+            </s.FractionProgressBar>
+          </s.FractionProgressBarContainer>
+        );
+      }
+    }),
+    columnHelper.accessor("duration", {
+      header: "",
+      cell: (info) => {
+        const duration = info.getValue();
+        return (
+          <s.DurationContainer>
+            {duration?.value}
+            <s.Suffix>{duration?.unit}</s.Suffix>
+          </s.DurationContainer>
+        );
+      }
+    })
+  ];
+
+  const table = useReactTable({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel()
+  });
+
+  const renderTable = () => (
+    <s.Table>
+      <s.TableHead>
+        {table.getHeaderGroups().map((headerGroup) => (
+          <tr key={headerGroup.id}>
+            {headerGroup.headers.map((header) => (
+              <s.TableHeaderCell key={header.id}>
+                {header.isPlaceholder
+                  ? null
+                  : flexRender(
+                      header.column.columnDef.header,
+                      header.getContext()
+                    )}
+              </s.TableHeaderCell>
+            ))}
+          </tr>
+        ))}
+      </s.TableHead>
+      <s.TableBody>
+        {table.getRowModel().rows.map((row) => (
+          <tr key={row.id}>
+            {row.getVisibleCells().map((cell) => (
+              <s.TableBodyCell key={cell.id}>
+                {flexRender(cell.column.columnDef.cell, cell.getContext())}
+              </s.TableBodyCell>
+            ))}
+          </tr>
+        ))}
+      </s.TableBody>
+    </s.Table>
+  );
+
   return (
     <InsightCard
       data={props.insight}
-      content={
-        <s.ContentContainer>
-          <s.PieChartContainer>
-            <PieChart width={PIE_CHART_RADIUS} height={PIE_CHART_RADIUS}>
-              <Pie
-                data={data}
-                innerRadius={(PIE_CHART_RADIUS - PIE_CHART_ARC_WIDTH) / 2}
-                outerRadius={PIE_CHART_RADIUS / 2}
-                cornerRadius={PIE_CHART_ARC_WIDTH / 2}
-                paddingAngle={1}
-                dataKey={"fraction"}
-                isAnimationActive={false}
-              >
-                {data.map((entry) => (
-                  <Cell
-                    key={entry.type}
-                    fill={componentTypeColors[entry.type]}
-                    stroke={"none"}
-                  />
-                ))}
-              </Pie>
-            </PieChart>
-          </s.PieChartContainer>
-          <s.Legend>
-            {data.map((x) => (
-              <s.LegendItem key={x.type}>
-                <s.LegendItemDataColor color={componentTypeColors[x.type]} />
-                <s.LegendItemDataLabel>{x.type}</s.LegendItemDataLabel>
-                <s.LegendItemDataValue>
-                  {roundTo(x.fraction * 100, 2)}%
-                </s.LegendItemDataValue>
-              </s.LegendItem>
-            ))}
-          </s.Legend>
-        </s.ContentContainer>
-      }
+      content={props.insight.isAsync ? renderTable() : renderPieChart()}
       onRecalculate={props.onRecalculate}
       onRefresh={props.onRefresh}
       onPercentileViewModeChange={
@@ -94,6 +177,7 @@ export const RequestBreakdownInsight = (
           ? handlePercentileViewModeChange
           : undefined
       }
+      isAsync={props.insight.isAsync}
     />
   );
 };
