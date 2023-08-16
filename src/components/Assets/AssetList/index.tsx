@@ -290,7 +290,10 @@ export const AssetList = (props: AssetListProps) => {
         .map((entryId) => {
           const entries = props.entries[entryId];
           return entries.map((entry) => {
-            const relatedServices = entries.map((entry) => entry.serviceName);
+            const relatedServices = entries
+              .map((entry) => entry.serviceName)
+              .filter((x, i, arr) => arr.indexOf(x) === i);
+
             return {
               ...entry,
               id: entryId,
@@ -388,9 +391,17 @@ export const AssetList = (props: AssetListProps) => {
       {sortedEntries.length > 0 ? (
         <s.List>
           {sortedEntries.map((entry) => {
+            const key = [
+              entry.serviceName,
+              entry.endpointCodeObjectId,
+              entry.span.spanCodeObjectId
+            ]
+              .filter(Boolean)
+              .join("|_|");
+
             return (
               <AssetEntryComponent
-                key={`${entry.id}-${entry.serviceName}`}
+                key={key}
                 entry={entry}
                 onAssetLinkClick={handleAssetLinkClick}
               />

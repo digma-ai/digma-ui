@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Link } from "../common/Link";
+import { Button } from "../common/Button";
 
 export const Container = styled.div`
   height: 100%;
@@ -113,19 +113,8 @@ export const NoDataText = styled.span`
   }};
 `;
 
-export const TroubleshootingLink = styled(Link)`
-  font-size: 14px;
-  line-height: 16px;
-  text-decoration: none;
-  color: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#426dda";
-      case "dark":
-      case "dark-jetbrains":
-        return "#7891d0";
-    }
-  }};
+export const TroubleshootButton = styled(Button)`
+  margin-top: 8px;
 `;
 
 export const LiveViewContainer = styled.div`
