@@ -73,3 +73,127 @@ export const LegendItemDataValue = styled.span`
     }
   }};
 `;
+
+export const Table = styled.table`
+  width: 100%;
+  border-spacing: 0 4px;
+`;
+
+export const TableHead = styled.thead`
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#828797";
+      case "dark":
+      case "dark-jetbrains":
+        return "#9b9b9b";
+    }
+  }};
+`;
+
+export const TableHeaderCell = styled.th`
+  text-align: left;
+  font-weight: 400;
+  padding-left: 4px;
+  padding-bottom: 8px;
+`;
+
+export const TableBody = styled.tbody`
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#4d668a";
+      case "dark":
+      case "dark-jetbrains":
+        return "#dadada";
+    }
+  }};
+`;
+
+export const TableBodyCell = styled.td`
+  &:first-child {
+    padding: 4px 22px 4px 4px;
+  }
+
+  &:nth-child(2) {
+    width: 100%;
+    padding: 4px 0;
+  }
+
+  &:last-child {
+    padding: 4px 4px 4px 22px;
+    text-align: right;
+  }
+`;
+
+export const FractionProgressBarContainer = styled.div`
+  height: 8px;
+  position: relative;
+  border-left: 1px solid
+    ${({ theme }) => {
+      switch (theme.mode) {
+        case "light":
+          return "#b9c0d4";
+        case "dark":
+        case "dark-jetbrains":
+          return "#7c7c94";
+      }
+    }};
+  border-right: 1px solid
+    ${({ theme }) => {
+      switch (theme.mode) {
+        case "light":
+          return "#b9c0d4";
+        case "dark":
+        case "dark-jetbrains":
+          return "#7c7c94";
+      }
+    }};
+`;
+
+export const FractionProgressBar = styled.div`
+  height: 1px;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  background: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#b9c0d4";
+      case "dark":
+      case "dark-jetbrains":
+        return "#7c7c94";
+    }
+  }};
+`;
+
+export const FractionProgressBarValue = styled.div<{ value: number }>`
+  width: ${({ value }) => Math.floor(value * 100)}%;
+  height: 4px;
+  border-radius: 2px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  background: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#788ca9";
+      case "dark":
+      case "dark-jetbrains":
+        return "#9b9b9b";
+    }
+  }};
+`;
+
+export const DurationContainer = styled.span`
+  display: inline-flex;
+  align-items: center;
+  font-weight: 500;
+`;
+
+export const Suffix = styled.span`
+  margin-left: 2px;
+`;

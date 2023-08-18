@@ -94,6 +94,24 @@ export const ContentContainer = styled.div`
   font-size: 12px;
 `;
 
+export const AsyncBadge = styled.div`
+  color: #fff;
+  font-size: 12px;
+  font-weight: 400;
+  border-radius: 4px;
+  padding: 2px 4px;
+  text-align: center;
+  background: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#7891d0";
+      case "dark":
+      case "dark-jetbrains":
+        return "#4b5fab";
+    }
+  }};
+`;
+
 export const PercentileViewModeToggle = styled.div`
   display: flex;
   border-radius: 4px;
@@ -101,6 +119,7 @@ export const PercentileViewModeToggle = styled.div`
   gap: 4px;
   font-size: 12px;
   font-weight: 500;
+  width: fit-content;
   border: 1px solid
     ${({ theme }) => {
       switch (theme.mode) {

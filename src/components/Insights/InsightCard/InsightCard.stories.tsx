@@ -91,6 +91,7 @@ export const Default: Story = {
       actualStartTime: "2023-06-16T10:30:33.027Z"
     },
     stats: "Some stats",
+    isAsync: true,
     content: (
       <span>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe quis

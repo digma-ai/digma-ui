@@ -112,23 +112,7 @@ export const InsightCard = (props: InsightCardProps) => {
             {insightTypeInfo?.label || props.data.type}
           </s.Title>
           <s.Toolbar>
-            {props.onPercentileViewModeChange && (
-              <s.PercentileViewModeToggle>
-                {PERCENTILES.map((percentile) => (
-                  <s.PercentileViewModeToggleOptionButton
-                    key={percentile.percentile}
-                    selected={percentile.percentile === percentileViewMode}
-                    onClick={() =>
-                      handleDurationPercentileToggleOptionButtonClick(
-                        percentile.percentile
-                      )
-                    }
-                  >
-                    {percentile.label}
-                  </s.PercentileViewModeToggleOptionButton>
-                ))}
-              </s.PercentileViewModeToggle>
-            )}
+            {props.isAsync && <s.AsyncBadge>Async</s.AsyncBadge>}
             {props.stats && <s.Stats>{props.stats}</s.Stats>}
             {(props.menuItems || props.data.isRecalculateEnabled) && (
               <Popover
@@ -168,6 +152,23 @@ export const InsightCard = (props: InsightCardProps) => {
       }
       content={
         <>
+          {props.onPercentileViewModeChange && (
+            <s.PercentileViewModeToggle>
+              {PERCENTILES.map((percentile) => (
+                <s.PercentileViewModeToggleOptionButton
+                  key={percentile.percentile}
+                  selected={percentile.percentile === percentileViewMode}
+                  onClick={() =>
+                    handleDurationPercentileToggleOptionButtonClick(
+                      percentile.percentile
+                    )
+                  }
+                >
+                  {percentile.label}
+                </s.PercentileViewModeToggleOptionButton>
+              ))}
+            </s.PercentileViewModeToggle>
+          )}
           {props.data.actualStartTime &&
             (props.data.customStartTime || isRecalculatingStarted) &&
             renderRecalculationBlock(
