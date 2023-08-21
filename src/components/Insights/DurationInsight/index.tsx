@@ -121,16 +121,16 @@ export const DurationInsight = (props: DurationInsightProps) => {
               </Button>
             ]
           : []),
-        ...(config.isJaegerEnabled && traces.length > 1
-          ? [
-              <Button
-                key={"compare"}
-                onClick={() => handleCompareButtonClick([traces[0], traces[1]])}
-              >
-                Compare
-              </Button>
-            ]
-          : []),
+        // ...(config.isJaegerEnabled && traces.length > 1
+        //   ? [
+        //       <Button
+        //         key={"compare"}
+        //         onClick={() => handleCompareButtonClick([traces[0], traces[1]])}
+        //       >
+        //         Compare
+        //       </Button>
+        //     ]
+        //   : []),
         ...(props.insight.prefixedCodeObjectId
           ? [
               <Button
