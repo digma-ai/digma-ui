@@ -1,5 +1,6 @@
 import { ChangeEvent, useMemo, useState } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
+import { groupBy } from "../../../utils/groupBy";
 import { Menu } from "../../common/Menu";
 import { Popover } from "../../common/Popover";
 import { PopoverContent } from "../../common/Popover/PopoverContent";
@@ -289,17 +290,37 @@ export const AssetList = (props: AssetListProps) => {
       Object.keys(props.entries)
         .map((entryId) => {
           const entries = props.entries[entryId];
-          return entries.map((entry) => {
-            const relatedServices = entries
-              .map((entry) => entry.serviceName)
-              .filter((x, i, arr) => arr.indexOf(x) === i);
+          const dedupedEntries = [];
 
-            return {
-              ...entry,
+          const endpointGroups = groupBy(
+            entries,
+            (entry) => entry.endpointCodeObjectId || "__ungrouped"
+          );
+
+          for (const endpoint in endpointGroups) {
+            const endpointGroupEntries = endpointGroups[endpoint];
+
+            const latestEntry = endpointGroupEntries.reduce(
+              (acc, cur) =>
+                new Date(cur.lastSpanInstanceInfo.startTime).valueOf() >
+                new Date(acc.lastSpanInstanceInfo.startTime).valueOf()
+                  ? acc
+                  : cur,
+              endpointGroupEntries[0]
+            );
+
+            const relatedServices = endpointGroupEntries
+              .map((entry) => entry.serviceName)
+              .sort();
+
+            dedupedEntries.push({
+              ...latestEntry,
               id: entryId,
               relatedServices
-            };
-          });
+            });
+          }
+
+          return dedupedEntries;
         })
         .flat(),
     [props.entries]

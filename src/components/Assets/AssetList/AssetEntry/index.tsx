@@ -45,9 +45,7 @@ export const AssetEntry = (props: AssetEntryProps) => {
   };
 
   const name = props.entry.span.displayName;
-  const otherServices = props.entry.relatedServices.filter(
-    (service) => service !== props.entry.serviceName
-  );
+  const otherServices = props.entry.relatedServices.slice(1);
   const performanceDuration = props.entry.durationPercentiles.find(
     (duration) => duration.percentile === 0.5
   )?.currentDuration;
@@ -75,7 +73,7 @@ export const AssetEntry = (props: AssetEntryProps) => {
 
   const assetTypeInfo = getAssetTypeInfo(props.entry.assetType);
 
-  const servicesTitle = [props.entry.serviceName, ...otherServices].join(", ");
+  const servicesTitle = props.entry.relatedServices.join(", ");
 
   return (
     <s.Container>
@@ -118,7 +116,7 @@ export const AssetEntry = (props: AssetEntryProps) => {
             <Tooltip title={servicesTitle}>
               <s.ServicesContainer>
                 <GlobeIcon color={serviceIconColor} />
-                <s.ServiceName>{props.entry.serviceName}</s.ServiceName>
+                <s.ServiceName>{props.entry.relatedServices[0]}</s.ServiceName>
                 {otherServices.length > 0 && (
                   <span>+{otherServices.length}</span>
                 )}
