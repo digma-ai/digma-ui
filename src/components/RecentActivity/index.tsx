@@ -30,7 +30,7 @@ const actions = addPrefix(ACTION_PREFIX, {
   CLOSE_LIVE_VIEW: "CLOSE_LIVE_VIEW"
 });
 
-const handleTroubleshootingLinkClick = () => {
+const handleTroubleshootButtonClick = () => {
   sendTrackingEvent(globalTrackingEvents.TROUBLESHOOTING_LINK_CLICKED, {
     origin: "recent activity"
   });
@@ -46,14 +46,11 @@ const renderNoData = () => {
       <CursorFollower>
         <DigmaLogoFlatIcon size={64} />
       </CursorFollower>
-      <s.NoDataTitle>No Data Yet</s.NoDataTitle>
-      <s.NoDataText>
-        Trigger actions that call this application to learn more about its
-        runtime behavior
-      </s.NoDataText>
-      <s.TroubleshootingLink onClick={handleTroubleshootingLinkClick}>
-        Not seeing your application data?
-      </s.TroubleshootingLink>
+      <s.NoDataTitle>No Recent Activity</s.NoDataTitle>
+      <s.NoDataText>Not seeing your application data?</s.NoDataText>
+      <s.TroubleshootButton onClick={handleTroubleshootButtonClick}>
+        Troubleshoot
+      </s.TroubleshootButton>
     </s.NoDataContainer>
   );
 };
