@@ -21,12 +21,12 @@ const getPercentile = (
   }
 };
 
-const getTitle = (breakdownEntry: SpanDurationBreakdownEntry) => {
+const getDurationTitle = (breakdownEntry: SpanDurationBreakdownEntry) => {
   const sortedPercentiles = breakdownEntry.percentiles.sort(
     (a, b) => a.percentile - b.percentile
   );
 
-  let title = `${breakdownEntry.spanDisplayName}\nPercentage of time spent in span:`;
+  let title = "Percentage of time spent in span:";
 
   sortedPercentiles.forEach((percentile) => {
     title += `\n${getPercentileLabel(percentile.percentile)}: ${
@@ -34,7 +34,7 @@ const getTitle = (breakdownEntry: SpanDurationBreakdownEntry) => {
     } ${percentile.duration.unit}`;
   });
 
-  return title;
+  return <s.DurationTitle>{title}</s.DurationTitle>;
 };
 
 export const DurationBreakdownInsight = (
@@ -83,18 +83,20 @@ export const DurationBreakdownInsight = (
               const spanCodeObjectId = entry.spanCodeObjectId;
 
               return percentile ? (
-                <Tooltip title={getTitle(entry)} key={spanCodeObjectId}>
-                  <s.Entry>
+                <s.Entry key={spanCodeObjectId}>
+                  <Tooltip title={name}>
                     <s.EntryName>
                       <Link
                         onClick={() => handleSpanLinkClick(spanCodeObjectId)}
                       >
                         {name}
                       </Link>
-                    </s.EntryName>{" "}
+                    </s.EntryName>
+                  </Tooltip>
+                  <Tooltip title={getDurationTitle(entry)}>
                     <s.Duration>{`${percentile.duration.value} ${percentile.duration.unit}`}</s.Duration>
-                  </s.Entry>
-                </Tooltip>
+                  </Tooltip>
+                </s.Entry>
               ) : null;
             })}
           </Pagination>

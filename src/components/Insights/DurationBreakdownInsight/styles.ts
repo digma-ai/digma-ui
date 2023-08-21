@@ -22,3 +22,7 @@ export const EntryName = styled.span`
 export const Duration = styled.span`
   flex-shrink: 0;
 `;
+
+export const DurationTitle = styled.span`
+  white-space: pre;
+`;
