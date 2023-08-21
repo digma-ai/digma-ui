@@ -19,4 +19,7 @@ export const Source = styled.span`
 
 export const SourceName = styled.span`
   font-weight: 500;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 `;

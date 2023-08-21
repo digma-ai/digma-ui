@@ -1,5 +1,6 @@
 import { roundTo } from "../../../utils/roundTo";
 import { trimEndpointScheme } from "../../../utils/trimEndpointScheme";
+import { Tooltip } from "../../common/Tooltip";
 import { InsightCard } from "../InsightCard";
 import { Link } from "../styles";
 import * as s from "./styles";
@@ -22,21 +23,25 @@ export const BottleneckInsight = (props: BottleneckInsightProps) => {
 
             return (
               <s.Endpoint key={i}>
-                <s.EndpointName>
-                  <Link
-                    onClick={() =>
-                      handleEndpointLinkClick(
-                        endpoint.endpointInfo.spanCodeObjectId
-                      )
-                    }
-                  >
-                    {endpointName}
-                  </Link>
+                <s.EndpointData>
+                  <Tooltip title={endpointName}>
+                    <s.EndpointName>
+                      <Link
+                        onClick={() =>
+                          handleEndpointLinkClick(
+                            endpoint.endpointInfo.spanCodeObjectId
+                          )
+                        }
+                      >
+                        {endpointName}
+                      </Link>
+                    </s.EndpointName>
+                  </Tooltip>
                   <s.Duration>
                     {endpoint.avgDurationWhenBeingBottleneck.value}{" "}
                     {endpoint.avgDurationWhenBeingBottleneck.unit}
                   </s.Duration>
-                </s.EndpointName>
+                </s.EndpointData>
                 <s.Description>
                   Slowing{" "}
                   {roundTo(endpoint.probabilityOfBeingBottleneck * 100, 2)}% of

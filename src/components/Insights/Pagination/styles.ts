@@ -2,34 +2,31 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   display: flex;
+  gap: 12px;
+`;
+
+export const ButtonsContainer = styled.div`
+  display: flex;
   gap: 8px;
 `;
 
 export const Button = styled.button`
+  padding: 0;
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 12px;
+  display: flex;
+  align-items: center;
+`;
+
+export const CurrentPage = styled.span`
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "#7891d0";
+        return "#4d668a";
       case "dark":
       case "dark-jetbrains":
-        return "#92affa";
+        return "#dfe1e5";
     }
   }};
-
-  &:disabled {
-    cursor: default;
-    color: ${({ theme }) => {
-      switch (theme.mode) {
-        case "light":
-          return "#828797";
-        case "dark":
-        case "dark-jetbrains":
-          return "#9b9b9b";
-      }
-    }};
-  }
 `;

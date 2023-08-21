@@ -4,6 +4,7 @@ import { getInsightImportanceColor } from "../../../../utils/getInsightImportanc
 import { getInsightTypeInfo } from "../../../../utils/getInsightTypeInfo";
 import { getInsightTypeOrderPriority } from "../../../../utils/getInsightTypeOrderPriority";
 import { timeAgo } from "../../../../utils/timeAgo";
+import { Tooltip } from "../../../common/Tooltip";
 import { GlobeIcon } from "../../../common/icons/GlobeIcon";
 import { getAssetTypeInfo } from "../../utils";
 import * as s from "./styles";
@@ -82,9 +83,9 @@ export const AssetEntry = (props: AssetEntryProps) => {
             <assetTypeInfo.icon color={"#7891d0"} />
           </s.AssetTypeIconContainer>
         )}
-        <s.Link onClick={() => handleLinkClick()} title={name}>
-          {name}
-        </s.Link>
+        <Tooltip title={name}>
+          <s.Link onClick={() => handleLinkClick()}>{name}</s.Link>
+        </Tooltip>
         <s.InsightIconsContainer>
           {sortedInsights.map((insight) => {
             const insightTypeInfo = getInsightTypeInfo(insight.type);
@@ -95,12 +96,14 @@ export const AssetEntry = (props: AssetEntryProps) => {
 
             return (
               insightTypeInfo && (
-                <s.InsightIconContainer
+                <Tooltip
                   key={insight.type}
                   title={insightTypeInfo?.label || insight.type}
                 >
-                  <insightTypeInfo.icon color={insightIconColor} size={20} />
-                </s.InsightIconContainer>
+                  <s.InsightIconContainer>
+                    <insightTypeInfo.icon color={insightIconColor} size={20} />
+                  </s.InsightIconContainer>
+                </Tooltip>
               )
             );
           })}
@@ -112,22 +115,24 @@ export const AssetEntry = (props: AssetEntryProps) => {
             <span>Services</span>
             <s.ServicesContainer>
               <GlobeIcon color={serviceIconColor} />
-              <s.ServiceName title={props.entry.serviceName}>
-                {props.entry.serviceName}
-              </s.ServiceName>
+              <Tooltip title={props.entry.serviceName}>
+                <s.ServiceName>{props.entry.serviceName}</s.ServiceName>
+              </Tooltip>
               {otherServices.length > 0 && (
-                <span title={otherServices.join(", ")}>
-                  +{otherServices.length}
-                </span>
+                <Tooltip title={otherServices.join(", ")}>
+                  <span>+{otherServices.length}</span>
+                </Tooltip>
               )}
             </s.ServicesContainer>
           </s.Stats>
           <s.Stats>
             <span>Last</span>
-            <s.ValueContainer title={new Date(lastSeenDateTime).toString()}>
-              {timeAgo(lastSeenDateTime)}
-              <s.Suffix>ago</s.Suffix>
-            </s.ValueContainer>
+            <Tooltip title={new Date(lastSeenDateTime).toString()}>
+              <s.ValueContainer>
+                {timeAgo(lastSeenDateTime)}
+                <s.Suffix>ago</s.Suffix>
+              </s.ValueContainer>
+            </Tooltip>
           </s.Stats>
         </s.StatsColumn>
         <s.StatsColumn>

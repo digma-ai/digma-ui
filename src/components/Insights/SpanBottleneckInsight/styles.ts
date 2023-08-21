@@ -15,5 +15,8 @@ export const SpanContainer = styled.div`
 
 export const Span = styled.span`
   font-weight: 500;
-  word-break: break-all;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: fit-content;
 `;

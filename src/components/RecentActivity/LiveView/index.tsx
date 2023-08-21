@@ -27,6 +27,7 @@ import { isNumber } from "../../../typeGuards/isNumber";
 import { roundTo } from "../../../utils/roundTo";
 import { roundToNonZeroDecimals } from "../../../utils/roundToNonZeroDecimals";
 import { getThemeKind } from "../../common/App/styles";
+import { Tooltip as CommonTooltip } from "../../common/Tooltip";
 import { ArrowSmallIcon } from "../../common/icons/ArrowSmallIcon";
 import { ChartCircleIcon } from "../../common/icons/ChartCircleIcon";
 import { CrossIcon } from "../../common/icons/CrossIcon";
@@ -418,7 +419,9 @@ export const LiveView = (props: LiveViewProps) => {
           <s.SpanIconContainer>
             <EndpointIcon color={getSpanIconColor(theme)} size={16} />
           </s.SpanIconContainer>
-          <s.SpanName title={spanName}>{spanName}</s.SpanName>
+          <CommonTooltip title={spanName}>
+            <s.SpanName>{spanName}</s.SpanName>
+          </CommonTooltip>
         </s.Title>
         <s.LiveBadge>
           <DoubleCircleIcon color={getLiveIconColor(theme)} size={8} />

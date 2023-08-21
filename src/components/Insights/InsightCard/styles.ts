@@ -1,32 +1,6 @@
 import styled from "styled-components";
 import { PercentileViewModeOptionProps } from "./types";
 
-export const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  padding: 8px;
-  gap: 8px;
-  border-radius: 4px;
-  color: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#4d668a";
-      case "dark":
-      case "dark-jetbrains":
-        return "#dadada";
-    }
-  }};
-  background: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#f1f5fa";
-      case "dark":
-      case "dark-jetbrains":
-        return "#383838";
-    }
-  }};
-`;
-
 export const Title = styled.div`
   display: flex;
   gap: 4px;
@@ -127,7 +101,7 @@ export const PercentileViewModeToggle = styled.div`
           return "#b9c0d4";
         case "dark":
         case "dark-jetbrains":
-          return "#49494d";
+          return "#4e5157";
       }
     }};
 `;
@@ -155,5 +129,5 @@ export const PercentileViewModeToggleOptionButton = styled.button<PercentileView
         return "#e2e7ff";
     }
   }};
-  background: ${({ selected }) => (selected ? "#3538cd" : "transparent")};
+  background: ${({ selected }) => (selected ? "#5154ec" : "transparent")};
 `;

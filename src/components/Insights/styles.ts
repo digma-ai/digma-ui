@@ -14,7 +14,7 @@ export const Container = styled.div`
         return "#fbfdff";
       case "dark":
       case "dark-jetbrains":
-        return "#3d3f41";
+        return "#2b2d30";
     }
   }};
 `;
@@ -34,7 +34,7 @@ export const Description = styled.span`
         return "#828797";
       case "dark":
       case "dark-jetbrains":
-        return "#9b9b9b";
+        return "#b4b8bf";
     }
   }};
 `;

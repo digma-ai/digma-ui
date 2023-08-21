@@ -11,7 +11,7 @@ export const Container = styled.div`
         return "#828797";
       case "dark":
       case "dark-jetbrains":
-        return "#9b9b9b";
+        return "#9da0a8";
     }
   }};
 `;

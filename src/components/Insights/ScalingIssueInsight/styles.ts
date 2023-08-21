@@ -28,10 +28,21 @@ export const RootCause = styled.div`
   align-items: center;
   justify-content: space-between;
   font-weight: 500;
+  gap: 4px;
+`;
+
+export const SpanName = styled.span`
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 `;
 
 export const Endpoint = styled.span`
   font-weight: 500;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: fit-content;
 `;
 
 export const Button = styled(CommonButton)`

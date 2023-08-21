@@ -169,8 +169,8 @@ export interface SpanDurationsInsight extends SpanInsight {
   specifity: InsightSpecificity.OwnInsight;
   isRecalculateEnabled: true;
   percentiles: DurationPercentileWithChange[];
-  lastSpanInstanceInfo: SpanInstanceInfo;
-  isAsync?: boolean;
+  lastSpanInstanceInfo: SpanInstanceInfo | null;
+  isAsync: boolean;
 
   /**
    * @deprecated
@@ -552,7 +552,7 @@ export enum ComponentType {
 export interface Component {
   type: ComponentType;
   fraction: number;
-  duration?: Duration;
+  duration: Duration | null;
 }
 
 export interface EndpointBreakdownInsight extends EndpointInsight {
@@ -565,7 +565,7 @@ export interface EndpointBreakdownInsight extends EndpointInsight {
   components: Component[];
   p50Components: Component[] | null;
   p95Components: Component[] | null;
-  isAsync?: boolean;
+  hasAsyncSpans: boolean;
 }
 
 export type SpanUsageStatusInsight = SpanInsight;

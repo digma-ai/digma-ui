@@ -1,4 +1,5 @@
 import { roundTo } from "../../../utils/roundTo";
+import { Tooltip } from "../../common/Tooltip";
 import { InsightCard } from "../InsightCard";
 import { Description, Link } from "../styles";
 import * as s from "./styles";
@@ -24,11 +25,15 @@ export const SpanBottleneckInsight = (props: SpanBottleneckInsightProps) => {
 
               return (
                 <s.SpanContainer key={spanCodeObjectId}>
-                  <s.Span>
-                    <Link onClick={() => handleSpanLinkClick(spanCodeObjectId)}>
-                      {spanName}
-                    </Link>
-                  </s.Span>
+                  <Tooltip title={spanName}>
+                    <s.Span>
+                      <Link
+                        onClick={() => handleSpanLinkClick(spanCodeObjectId)}
+                      >
+                        {spanName}
+                      </Link>
+                    </s.Span>
+                  </Tooltip>
                   <Description>
                     {`Slowing ${roundTo(
                       span.probabilityOfBeingBottleneck * 100,

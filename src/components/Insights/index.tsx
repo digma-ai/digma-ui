@@ -68,7 +68,7 @@ const getCircleLoaderColors = (
       return {
         start: "rgb(120 145 208 / 0%)",
         end: "#7891d0",
-        background: "#3d3f41"
+        background: "#2b2d30"
       };
   }
 };

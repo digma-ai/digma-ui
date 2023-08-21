@@ -107,7 +107,8 @@ export const WithChange: Story = {
       severity: 0,
       prefixedCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
       customStartTime: null,
-      actualStartTime: "2023-06-17T00:00:00.000Z"
+      actualStartTime: "2023-06-17T00:00:00.000Z",
+      isAsync: false
     }
   }
 };
@@ -202,7 +203,8 @@ export const WithEvaluatingChange: Story = {
       severity: 0,
       prefixedCodeObjectId: "span:SampleInsightsController$_$WaitForLock",
       customStartTime: null,
-      actualStartTime: "2023-06-17T00:00:00.000Z"
+      actualStartTime: "2023-06-17T00:00:00.000Z",
+      isAsync: false
     }
   }
 };

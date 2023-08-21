@@ -29,34 +29,41 @@ const data: EndpointBreakdownInsight = {
   specifity: 4,
   importance: 6,
   isRecalculateEnabled: true,
+  hasAsyncSpans: false,
   components: [
     {
       type: ComponentType.Internal,
-      fraction: 0.996539483729232
+      fraction: 0.996539483729232,
+      duration: null
     },
     {
       type: ComponentType.Rendering,
-      fraction: 0.0034605162707679665
+      fraction: 0.0034605162707679665,
+      duration: null
     }
   ],
   p50Components: [
     {
       type: ComponentType.Internal,
-      fraction: 0.996539483729232
+      fraction: 0.996539483729232,
+      duration: null
     },
     {
       type: ComponentType.Rendering,
-      fraction: 0.0034605162707679665
+      fraction: 0.0034605162707679665,
+      duration: null
     }
   ],
   p95Components: [
     {
       type: ComponentType.Internal,
-      fraction: 0.796539483729232
+      fraction: 0.796539483729232,
+      duration: null
     },
     {
       type: ComponentType.Rendering,
-      fraction: 0.20346051627
+      fraction: 0.20346051627,
+      duration: null
     }
   ],
   scope: InsightScope.EntrySpan,
@@ -95,7 +102,7 @@ const data: EndpointBreakdownInsight = {
 
 export const Default: Story = {
   args: {
-    insight: { ...data, isAsync: false }
+    insight: data
   }
 };
 
@@ -127,7 +134,7 @@ export const Async: Story = {
           raw: 2063332.9999999993
         }
       })),
-      isAsync: true
+      hasAsyncSpans: true
     }
   }
 };

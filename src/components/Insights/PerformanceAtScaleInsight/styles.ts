@@ -33,7 +33,7 @@ export const TableHead = styled.thead`
         return "#828797";
       case "dark":
       case "dark-jetbrains":
-        return "#9b9b9b";
+        return "#9da0a8";
     }
   }};
 `;
@@ -88,7 +88,7 @@ export const Suffix = styled.span`
         return "#828797";
       case "dark":
       case "dark-jetbrains":
-        return "#9b9b9b";
+        return "#9da0a8";
     }
   }};
 `;

@@ -1,3 +1,4 @@
+import { Tooltip } from "../../common/Tooltip";
 import { DurationChange } from "../DurationChange";
 import { InsightCard } from "../InsightCard";
 import { Description, Link } from "../styles";
@@ -28,11 +29,13 @@ export const DurationSlowdownSourceInsight = (
 
         return (
           <s.Source key={spanCodeObjectId}>
-            <s.SourceName>
-              <Link onClick={() => handleSpanLinkClick(spanCodeObjectId)}>
-                {spanName}
-              </Link>
-            </s.SourceName>
+            <Tooltip title={spanName}>
+              <s.SourceName>
+                <Link onClick={() => handleSpanLinkClick(spanCodeObjectId)}>
+                  {spanName}
+                </Link>
+              </s.SourceName>
+            </Tooltip>
             <DurationChange
               currentDuration={x.currentDuration}
               previousDuration={x.previousDuration}

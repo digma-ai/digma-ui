@@ -7,9 +7,16 @@ export const EndpointList = styled.div`
   gap: 12px;
 `;
 
-export const Endpoint = styled.span`
+export const Endpoint = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 8px;
+  font-weight: 500;
+`;
+
+export const EndpointData = styled.div`
+  display: flex;
+  justify-content: space-between;
   gap: 8px;
 `;
 
@@ -20,11 +27,12 @@ export const Description = styled(InsightDescription)`
 `;
 
 export const EndpointName = styled.span`
-  display: flex;
-  font-weight: 500;
-  word-break: break-all;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 `;
 
 export const Duration = styled.span`
-  margin-left: auto;
+  display: flex;
+  flex-shrink: 0;
 `;

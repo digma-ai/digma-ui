@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { roundTo } from "../../../utils/roundTo";
 import { ConfigContext } from "../../common/App/ConfigContext";
+import { Tooltip } from "../../common/Tooltip";
 import { CrosshairIcon } from "../../common/icons/CrosshairIcon";
 import { InsightCard } from "../InsightCard";
 import { Pagination } from "../Pagination";
@@ -45,15 +46,17 @@ export const EndpointNPlusOneInsight = (
                 return (
                   <s.Span key={spanName}>
                     <s.SpanDetails>
-                      <s.SpanName>
-                        <Link
-                          onClick={() =>
-                            handleSpanLinkClick(spanInfo.spanCodeObjectId)
-                          }
-                        >
-                          {spanName}
-                        </Link>
-                      </s.SpanName>
+                      <Tooltip title={spanName}>
+                        <s.SpanName>
+                          <Link
+                            onClick={() =>
+                              handleSpanLinkClick(spanInfo.spanCodeObjectId)
+                            }
+                          >
+                            {spanName}
+                          </Link>
+                        </s.SpanName>
+                      </Tooltip>
                       <s.Stats>
                         <s.Stat>
                           <Description>Impact</Description>

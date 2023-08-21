@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { ConfigContext } from "../../common/App/ConfigContext";
+import { Tooltip } from "../../common/Tooltip";
 import { CrosshairIcon } from "../../common/icons/CrosshairIcon";
 import { InsightCard } from "../InsightCard";
 import { Pagination } from "../Pagination";
@@ -38,11 +39,13 @@ export const SessionInViewInsight = (props: SessionInViewInsightProps) => {
 
                 return (
                   <s.Span key={spanCodeObjectId}>
-                    <span>
-                      <Link onClick={() => handleLinkClick(spanCodeObjectId)}>
-                        {spanName}
-                      </Link>
-                    </span>
+                    <Tooltip title={spanName}>
+                      <s.SpanName>
+                        <Link onClick={() => handleLinkClick(spanCodeObjectId)}>
+                          {spanName}
+                        </Link>
+                      </s.SpanName>
+                    </Tooltip>
                     {config.isJaegerEnabled && traceId && (
                       <s.Button
                         icon={{ component: CrosshairIcon }}

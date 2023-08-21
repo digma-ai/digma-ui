@@ -12,7 +12,7 @@ export const Container = styled.div`
         return "#4d668a";
       case "dark":
       case "dark-jetbrains":
-        return "#dadada";
+        return "#b4b8bf";
     }
   }};
   background: ${({ theme }) => {
@@ -21,7 +21,7 @@ export const Container = styled.div`
         return "#f1f5fa";
       case "dark":
       case "dark-jetbrains":
-        return "#383838";
+        return "#393b40";
     }
   }};
 `;
@@ -33,6 +33,15 @@ export const Header = styled.div`
   gap: 4px;
   font-weight: 500;
   font-size: 14px;
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#4d668a";
+      case "dark":
+      case "dark-jetbrains":
+        return "#dfe1e5";
+    }
+  }};
 `;
 
 export const ButtonsContainer = styled.div`

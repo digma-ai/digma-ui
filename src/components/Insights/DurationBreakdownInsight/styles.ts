@@ -10,10 +10,10 @@ export const Entry = styled.span`
   display: flex;
   gap: 4px;
   justify-content: space-between;
+  font-weight: 500;
 `;
 
 export const EntryName = styled.span`
-  font-weight: 500;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;

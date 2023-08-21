@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { ConfigContext } from "../../common/App/ConfigContext";
+import { Tooltip } from "../../common/Tooltip";
 import { CrosshairIcon } from "../../common/icons/CrosshairIcon";
 import { InsightCard } from "../InsightCard";
 import { Description, Link } from "../styles";
@@ -29,15 +30,17 @@ export const NPlusOneInsight = (props: NPlusOneInsightProps) => {
         <s.ContentContainer>
           <Description>Check the following SELECT statement:</Description>
           <s.SpanContainer>
-            <s.Name>
-              {spanCodeObjectId ? (
-                <Link onClick={() => handleSpanLinkClick(spanCodeObjectId)}>
-                  {spanName}
-                </Link>
-              ) : (
-                spanName
-              )}
-            </s.Name>
+            <Tooltip title={spanName}>
+              <s.Name>
+                {spanCodeObjectId ? (
+                  <Link onClick={() => handleSpanLinkClick(spanCodeObjectId)}>
+                    {spanName}
+                  </Link>
+                ) : (
+                  spanName
+                )}
+              </s.Name>
+            </Tooltip>
             {config.isJaegerEnabled && traceId && (
               <s.Button
                 onClick={() =>
@@ -65,16 +68,21 @@ export const NPlusOneInsight = (props: NPlusOneInsightProps) => {
             </s.Stat>
           </s.Stats>
           <Description>Affected endpoints:</Description>
-          <div>
+          <s.EndpointList>
             {props.insight.endpoints.map((x) => {
               const spanCodeObjectId = x.endpointInfo.entrySpanCodeObjectId;
+              const route = x.endpointInfo.route;
               return (
                 <s.Endpoint key={spanCodeObjectId}>
-                  <s.Name>
-                    <Link onClick={() => handleSpanLinkClick(spanCodeObjectId)}>
-                      {x.endpointInfo.route}
-                    </Link>
-                  </s.Name>
+                  <Tooltip title={route}>
+                    <s.Name>
+                      <Link
+                        onClick={() => handleSpanLinkClick(spanCodeObjectId)}
+                      >
+                        {route}
+                      </Link>
+                    </s.Name>
+                  </Tooltip>
                   <s.Stat>
                     <Description>Repeats</Description>
                     <span>{x.occurrences} (median)</span>
@@ -82,7 +90,7 @@ export const NPlusOneInsight = (props: NPlusOneInsightProps) => {
                 </s.Endpoint>
               );
             })}
-          </div>
+          </s.EndpointList>
         </s.ContentContainer>
       }
       onRecalculate={props.onRecalculate}

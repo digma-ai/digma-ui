@@ -3,6 +3,7 @@ import { DefaultTheme, useTheme } from "styled-components";
 import { actions } from "..";
 import { InsightType } from "../../../types";
 import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
+import { Tooltip } from "../../common/Tooltip";
 import { EndpointIcon } from "../../common/icons/EndpointIcon";
 import { OpenTelemetryLogoIcon } from "../../common/icons/OpenTelemetryLogoIcon";
 import { BottleneckInsight } from "../BottleneckInsight";
@@ -199,7 +200,7 @@ const getInsightGroupIconColor = (theme: DefaultTheme) => {
       return "#7891d0";
     case "dark":
     case "dark-jetbrains":
-      return "#7c7c94";
+      return "#b4b8bf";
   }
 };
 
@@ -560,10 +561,12 @@ export const InsightList = (props: InsightListProps) => {
         <s.InsightGroup key={x.name || "__ungrouped"}>
           {x.name && (
             <s.InsightGroupHeader>
-              <div>
+              <s.InsightGroupIconContainer>
                 {x.icon && <x.icon size={16} color={insightGroupIconColor} />}{" "}
-              </div>
-              <s.InsightGroupName title={x.name}>{x.name}</s.InsightGroupName>
+              </s.InsightGroupIconContainer>
+              <Tooltip title={x.name}>
+                <s.InsightGroupName>{x.name}</s.InsightGroupName>
+              </Tooltip>
             </s.InsightGroupHeader>
           )}
           {x.insights.length > 0 ? (

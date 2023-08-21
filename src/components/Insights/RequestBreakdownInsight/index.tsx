@@ -169,7 +169,7 @@ export const RequestBreakdownInsight = (
   return (
     <InsightCard
       data={props.insight}
-      content={props.insight.isAsync ? renderTable() : renderPieChart()}
+      content={props.insight.hasAsyncSpans ? renderTable() : renderPieChart()}
       onRecalculate={props.onRecalculate}
       onRefresh={props.onRefresh}
       onPercentileViewModeChange={
@@ -177,7 +177,7 @@ export const RequestBreakdownInsight = (
           ? handlePercentileViewModeChange
           : undefined
       }
-      isAsync={props.insight.isAsync}
+      isAsync={props.insight.hasAsyncSpans}
     />
   );
 };

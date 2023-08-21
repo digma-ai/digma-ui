@@ -43,9 +43,10 @@ export const DurationInsight = (props: DurationInsightProps) => {
 
   const traces: Trace[] = [];
 
-  const isLastCallRecent =
-    Date.now() - new Date(spanLastCall.startTime).valueOf() <
-    LAST_CALL_TIME_DISTANCE_LIMIT;
+  const isLastCallRecent = spanLastCall
+    ? Date.now() - new Date(spanLastCall.startTime).valueOf() <
+      LAST_CALL_TIME_DISTANCE_LIMIT
+    : false;
 
   return (
     <InsightCard
@@ -53,20 +54,22 @@ export const DurationInsight = (props: DurationInsightProps) => {
       isRecent={isLastCallRecent}
       content={
         <s.Container>
-          <s.Stats>
-            <Description>Last call</Description>
-            <s.ValueContainer>
-              <s.Value>
-                {spanLastCall.duration.value} {spanLastCall.duration.unit}
-              </s.Value>
-              <s.LastCallTimeDistance isRecent={isLastCallRecent}>
-                •{" "}
-                {isLastCallRecent
-                  ? "Moments ago"
-                  : formatTimeDistance(spanLastCall.startTime)}
-              </s.LastCallTimeDistance>
-            </s.ValueContainer>
-          </s.Stats>
+          {spanLastCall && (
+            <s.Stats>
+              <Description>Last call</Description>
+              <s.ValueContainer>
+                <s.Value>
+                  {spanLastCall.duration.value} {spanLastCall.duration.unit}
+                </s.Value>
+                <s.LastCallTimeDistance isRecent={isLastCallRecent}>
+                  •{" "}
+                  {isLastCallRecent
+                    ? "Moments ago"
+                    : formatTimeDistance(spanLastCall.startTime)}
+                </s.LastCallTimeDistance>
+              </s.ValueContainer>
+            </s.Stats>
+          )}
           {sortedPercentiles.length > 0 ? (
             <>
               {sortedPercentiles.map((percentile) => {

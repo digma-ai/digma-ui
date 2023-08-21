@@ -3,6 +3,7 @@ import { DefaultTheme, useTheme } from "styled-components";
 import { Duration } from "../../../globals";
 import { formatTimeDistance } from "../../../utils/formatTimeDistance";
 import { roundTo } from "../../../utils/roundTo";
+import { Tooltip } from "../../common/Tooltip";
 import { ArrowIcon } from "../../common/icons/ArrowIcon";
 import { Direction } from "../../common/icons/types";
 import * as s from "./styles";
@@ -111,13 +112,13 @@ export const DurationChange = (props: DurationChangeProps) => {
       {props.changeTime &&
         changeMeaningfulEnough &&
         props.changeVerified === false && (
-          <span
+          <Tooltip
             title={
               "This change is still being validated and is based on initial data"
             }
           >
-            Evaluating
-          </span>
+            <span>Evaluating</span>
+          </Tooltip>
         )}
     </>
   );

@@ -56,12 +56,13 @@ export const LegendItemDataLabel = styled.span`
         return "#828797";
       case "dark":
       case "dark-jetbrains":
-        return "#9b9b9b";
+        return "#9da0a8";
     }
   }};
 `;
 
 export const LegendItemDataValue = styled.span`
+  font-size: 14px;
   font-weight: 500;
   color: ${({ theme }) => {
     switch (theme.mode) {
@@ -69,7 +70,7 @@ export const LegendItemDataValue = styled.span`
         return "#4d668a";
       case "dark":
       case "dark-jetbrains":
-        return "#dadada";
+        return "#dfe1e5";
     }
   }};
 `;
@@ -86,7 +87,7 @@ export const TableHead = styled.thead`
         return "#828797";
       case "dark":
       case "dark-jetbrains":
-        return "#9b9b9b";
+        return "#9da0a8";
     }
   }};
 `;
@@ -183,7 +184,7 @@ export const FractionProgressBarValue = styled.div<{ value: number }>`
         return "#788ca9";
       case "dark":
       case "dark-jetbrains":
-        return "#9b9b9b";
+        return "#9da0a8";
     }
   }};
 `;

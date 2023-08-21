@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { trimEndpointScheme } from "../../../utils/trimEndpointScheme";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Button } from "../../common/Button";
+import { Tooltip } from "../../common/Tooltip";
 import { ChartIcon } from "../../common/icons/ChartIcon";
 import { CrosshairIcon } from "../../common/icons/CrosshairIcon";
 import { InsightCard } from "../InsightCard";
@@ -63,11 +64,13 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
 
                 return (
                   <s.RootCause key={spanCodeObjectId}>
-                    <span>
-                      <Link onClick={() => handleLinkClick(spanCodeObjectId)}>
-                        {spanName}
-                      </Link>
-                    </span>
+                    <Tooltip title={spanName}>
+                      <s.SpanName>
+                        <Link onClick={() => handleLinkClick(spanCodeObjectId)}>
+                          {spanName}
+                        </Link>
+                      </s.SpanName>
+                    </Tooltip>
                     {config.isJaegerEnabled && traceId && (
                       <s.Button
                         icon={{ component: CrosshairIcon }}
@@ -93,13 +96,17 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
                 const endpointRoute = trimEndpointScheme(endpoint.route);
 
                 return (
-                  <s.Endpoint key={endpoint.route}>
-                    <Link
-                      onClick={() => handleLinkClick(endpoint.spanCodeObjectId)}
-                    >
-                      {endpointRoute}
-                    </Link>
-                  </s.Endpoint>
+                  <Tooltip title={endpointRoute} key={endpoint.route}>
+                    <s.Endpoint>
+                      <Link
+                        onClick={() =>
+                          handleLinkClick(endpoint.spanCodeObjectId)
+                        }
+                      >
+                        {endpointRoute}
+                      </Link>
+                    </s.Endpoint>
+                  </Tooltip>
                 );
               })}
             </s.List>

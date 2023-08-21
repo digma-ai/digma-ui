@@ -30,10 +30,17 @@ export const SpanContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 4px;
 `;
 
 export const Button = styled(CommonButton)`
   height: fit-content;
+`;
+
+export const EndpointList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 `;
 
 export const Endpoint = styled.div`
@@ -44,4 +51,8 @@ export const Endpoint = styled.div`
 
 export const Name = styled.span`
   font-weight: 500;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: fit-content;
 `;

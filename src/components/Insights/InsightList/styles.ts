@@ -19,16 +19,21 @@ export const InsightGroupHeader = styled.div`
   align-items: center;
   gap: 8px;
   font-weight: 500;
-  font-size: 12px;
+  font-size: 14px;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
         return "#7891d0";
       case "dark":
       case "dark-jetbrains":
-        return "#7c7c94";
+        return "#b4b8bf";
     }
   }};
+`;
+
+export const InsightGroupIconContainer = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 export const InsightGroupName = styled.span`
