@@ -4,7 +4,7 @@ import {
   getCoreRowModel,
   useReactTable
 } from "@tanstack/react-table";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Cell, Pie, PieChart } from "recharts";
 import { roundTo } from "../../../utils/roundTo";
 import { InsightCard } from "../InsightCard";
@@ -46,11 +46,13 @@ export const RequestBreakdownInsight = (
   const [percentileViewMode, setPercentileViewMode] =
     useState<number>(DEFAULT_PERCENTILE);
 
-  const components =
-    getComponents(props.insight, percentileViewMode) ||
-    props.insight.components;
+  const data = useMemo(() => {
+    const components =
+      getComponents(props.insight, percentileViewMode) ||
+      props.insight.components;
 
-  const data = [...components].sort((a, b) => b.fraction - a.fraction);
+    return [...components].sort((a, b) => b.fraction - a.fraction);
+  }, [props.insight, percentileViewMode]);
 
   const handlePercentileViewModeChange = (value: number) => {
     setPercentileViewMode(value);

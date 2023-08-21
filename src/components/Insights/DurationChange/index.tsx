@@ -71,10 +71,12 @@ const renderArrowIcon = (
     previousDuration.raw > currentDuration.raw ? Direction.DOWN : Direction.UP;
 
   return (
-    <ArrowIcon
-      direction={direction}
-      color={getArrowIconColor(direction, theme)}
-    />
+    <s.ArrowContainer>
+      <ArrowIcon
+        direction={direction}
+        color={getArrowIconColor(direction, theme)}
+      />
+    </s.ArrowContainer>
   );
 };
 

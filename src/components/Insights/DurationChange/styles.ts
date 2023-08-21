@@ -4,7 +4,6 @@ export const Change = styled.span`
   display: flex;
   gap: 4px;
   align-items: center;
-  flex-shrink: 0;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -14,4 +13,8 @@ export const Change = styled.span`
         return "#9da0a8";
     }
   }};
+`;
+
+export const ArrowContainer = styled.div`
+  display: flex;
 `;

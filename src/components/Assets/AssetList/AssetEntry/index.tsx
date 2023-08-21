@@ -75,6 +75,8 @@ export const AssetEntry = (props: AssetEntryProps) => {
 
   const assetTypeInfo = getAssetTypeInfo(props.entry.assetType);
 
+  const servicesTitle = [props.entry.serviceName, ...otherServices].join(", ");
+
   return (
     <s.Container>
       <s.Header>
@@ -113,17 +115,15 @@ export const AssetEntry = (props: AssetEntryProps) => {
         <s.StatsColumn>
           <s.Stats>
             <span>Services</span>
-            <s.ServicesContainer>
-              <GlobeIcon color={serviceIconColor} />
-              <Tooltip title={props.entry.serviceName}>
+            <Tooltip title={servicesTitle}>
+              <s.ServicesContainer>
+                <GlobeIcon color={serviceIconColor} />
                 <s.ServiceName>{props.entry.serviceName}</s.ServiceName>
-              </Tooltip>
-              {otherServices.length > 0 && (
-                <Tooltip title={otherServices.join(", ")}>
+                {otherServices.length > 0 && (
                   <span>+{otherServices.length}</span>
-                </Tooltip>
-              )}
-            </s.ServicesContainer>
+                )}
+              </s.ServicesContainer>
+            </Tooltip>
           </s.Stats>
           <s.Stats>
             <span>Last</span>

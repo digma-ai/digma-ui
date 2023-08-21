@@ -25,7 +25,7 @@ export const PieChartContainer = styled.div`
         return "#e5eaf1";
       case "dark":
       case "dark-jetbrains":
-        return "#1e1e1e";
+        return "#43454a";
     }
   }};
 `;
@@ -33,7 +33,7 @@ export const PieChartContainer = styled.div`
 export const Legend = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 5px;
+  gap: 8px;
 `;
 
 export const LegendItem = styled.div`
