@@ -69,10 +69,6 @@ export const getInsightTypeInfo = (
       icon: ScalesIcon,
       label: "Scaling Issue Found"
     },
-    [InsightType.SpanScalingRootCause]: {
-      icon: ScalesIcon,
-      label: "Scaling Issue Root Cause Found"
-    },
     [InsightType.SpanUsages]: {
       icon: SineIcon,
       label: "Top Usage"
@@ -100,6 +96,14 @@ export const getInsightTypeInfo = (
     [InsightType.SpanScalingInsufficientData]: {
       icon: ScalesIcon,
       label: "Performance at Scale"
+    },
+    [InsightType.EndpointSessionInView]: {
+      icon: SQLDatabaseIcon,
+      label: "Session in View Query Detected"
+    },
+    [InsightType.EndpointChattyApi]: {
+      icon: SQLDatabaseIcon,
+      label: "Excessive API Calls Detected"
     }
   };
 

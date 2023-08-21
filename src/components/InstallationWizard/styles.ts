@@ -258,7 +258,6 @@ export const SubscriptionSuccessMessage = styled.div`
   gap: 4px;
   font-size: 12px;
   font-weight: 700;
-  line-height: normal;
   margin-bottom: 43px;
   color: ${({ theme }) => {
     switch (theme.mode) {

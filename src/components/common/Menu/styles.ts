@@ -44,8 +44,7 @@ export const ListItem = styled.li`
   box-sizing: border-box;
   list-style-type: none;
   padding: 6px 8px;
-  font-size: 10px;
-  line-height: 12px;
+  font-size: 12px;
   cursor: pointer;
   color: ${({ theme }) => {
     switch (theme.mode) {

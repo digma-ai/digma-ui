@@ -10,13 +10,14 @@ const entries = {
     __dirname,
     "./src/containers/Documentation/index.tsx"
   ),
-  recentActivity: path.resolve(
-    __dirname,
-    "./src/containers/RecentActivity/index.tsx"
-  ),
+  insights: path.resolve(__dirname, "./src/containers/Insights/index.tsx"),
   installationWizard: path.resolve(
     __dirname,
     "./src/containers/InstallationWizard/index.tsx"
+  ),
+  recentActivity: path.resolve(
+    __dirname,
+    "./src/containers/RecentActivity/index.tsx"
   ),
   troubleshooting: path.resolve(
     __dirname,

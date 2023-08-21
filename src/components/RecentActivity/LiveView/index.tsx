@@ -27,8 +27,9 @@ import { isNumber } from "../../../typeGuards/isNumber";
 import { roundTo } from "../../../utils/roundTo";
 import { roundToNonZeroDecimals } from "../../../utils/roundToNonZeroDecimals";
 import { getThemeKind } from "../../common/App/styles";
+import { Tooltip as CommonTooltip } from "../../common/Tooltip";
 import { ArrowSmallIcon } from "../../common/icons/ArrowSmallIcon";
-import { ChartIcon } from "../../common/icons/ChartIcon";
+import { ChartCircleIcon } from "../../common/icons/ChartCircleIcon";
 import { CrossIcon } from "../../common/icons/CrossIcon";
 import { DoubleCircleIcon } from "../../common/icons/DoubleCircleIcon";
 import { EndpointIcon } from "../../common/icons/EndpointIcon";
@@ -361,7 +362,7 @@ export const LiveView = (props: LiveViewProps) => {
   const YAxisTickDecimalPlaces =
     Math.floor(YAxisTickInterval) === YAxisTickInterval
       ? 0
-      : YAxisTickInterval.toString().split(".")[1].length || 0;
+      : String(YAxisTickInterval).split(".")[1].length || 0;
   const YAxisMaxTickWholePart = Math.ceil(
     convertTo(maxDuration?.raw || 0, maxDurationUnit)
   );
@@ -418,7 +419,9 @@ export const LiveView = (props: LiveViewProps) => {
           <s.SpanIconContainer>
             <EndpointIcon color={getSpanIconColor(theme)} size={16} />
           </s.SpanIconContainer>
-          <s.SpanName title={spanName}>{spanName}</s.SpanName>
+          <CommonTooltip title={spanName}>
+            <s.SpanName>{spanName}</s.SpanName>
+          </CommonTooltip>
         </s.Title>
         <s.LiveBadge>
           <DoubleCircleIcon color={getLiveIconColor(theme)} size={8} />
@@ -612,7 +615,7 @@ export const LiveView = (props: LiveViewProps) => {
         </>
       ) : (
         <s.NoDataContainer>
-          <ChartIcon size={72} themeKind={themeKind} />
+          <ChartCircleIcon size={72} themeKind={themeKind} />
           <s.NoDataTitle>No data yet</s.NoDataTitle>
           <s.NoDataText>
             Trigger some actions to follow the performance.

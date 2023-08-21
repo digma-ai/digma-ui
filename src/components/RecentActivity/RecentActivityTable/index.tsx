@@ -14,6 +14,7 @@ import { getInsightTypeOrderPriority } from "../../../utils/getInsightTypeOrderP
 import { timeAgo } from "../../../utils/timeAgo";
 import { Badge } from "../../common/Badge";
 import { Button } from "../../common/Button";
+import { Tooltip } from "../../common/Tooltip";
 import { CrosshairIcon } from "../../common/icons/CrosshairIcon";
 import { ViewMode } from "../EnvironmentPanel/types";
 import { ActivityEntry, EntrySpan, SlimInsight } from "../types";
@@ -106,12 +107,11 @@ export const RecentActivityTable = (props: RecentActivityTableProps) => {
             const iconColor = getInsightImportanceColor(x.importance, theme);
 
             return insightTypeInfo ? (
-              <s.InsightIconContainer
-                title={insightTypeInfo.label}
-                key={x.type}
-              >
-                <insightTypeInfo.icon color={iconColor} size={16} />
-              </s.InsightIconContainer>
+              <Tooltip key={x.type} title={insightTypeInfo.label}>
+                <s.InsightIconContainer>
+                  <insightTypeInfo.icon color={iconColor} size={16} />
+                </s.InsightIconContainer>
+              </Tooltip>
             ) : null;
           })
           .filter(Boolean)}
@@ -197,14 +197,14 @@ export const RecentActivityTable = (props: RecentActivityTableProps) => {
         {table.getHeaderGroups().map((headerGroup) => (
           <tr key={headerGroup.id}>
             {headerGroup.headers.map((header) => (
-              <s.TableHeaderRow key={header.id}>
+              <s.TableHeaderCell key={header.id}>
                 {header.isPlaceholder
                   ? null
                   : flexRender(
                       header.column.columnDef.header,
                       header.getContext()
                     )}
-              </s.TableHeaderRow>
+              </s.TableHeaderCell>
             ))}
           </tr>
         ))}
