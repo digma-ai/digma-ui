@@ -349,7 +349,7 @@ export const LiveView = (props: LiveViewProps) => {
   );
 
   if (!areErrorsVisible) {
-    data = data.filter((x) => !x.hasError);
+    data = data.filter((x) => !x.isError);
   }
 
   // Add P50 and P95 values to build the correct scale for Y axis
@@ -592,7 +592,7 @@ export const LiveView = (props: LiveViewProps) => {
                     }
                     stroke={lineColor}
                     dot={(props: DotProps) => {
-                      const color = props.payload.hasError
+                      const color = props.payload.isError
                         ? getDotWithErrorsColor(theme)
                         : lineColor;
 

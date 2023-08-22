@@ -8,7 +8,7 @@ export interface LiveViewProps {
 interface LiveDataRecord {
   dateTime: string;
   duration: Duration;
-  hasError?: boolean;
+  isError?: boolean;
 }
 
 export interface LiveDataDurationPercentile {

@@ -729,7 +729,7 @@ export const mockData: LiveData = {
         raw: 5367000.0
       },
       dateTime: "2023-05-15T20:32:22.613257Z",
-      hasError: true
+      isError: true
     },
     {
       duration: {
@@ -746,7 +746,7 @@ export const mockData: LiveData = {
         raw: 6491000.0
       },
       dateTime: "2023-05-15T20:32:22.600531Z",
-      hasError: true
+      isError: true
     },
     {
       duration: {
@@ -771,7 +771,7 @@ export const mockData: LiveData = {
         raw: 5158000.0
       },
       dateTime: "2023-05-15T20:32:22.582783Z",
-      hasError: true
+      isError: true
     },
     {
       duration: {
@@ -788,7 +788,7 @@ export const mockData: LiveData = {
         raw: 5464000.0
       },
       dateTime: "2023-05-15T20:32:22.570563Z",
-      hasError: true
+      isError: true
     },
     {
       duration: {
@@ -805,7 +805,7 @@ export const mockData: LiveData = {
         raw: 8287000.0
       },
       dateTime: "2023-05-15T20:32:22.556144Z",
-      hasError: true
+      isError: true
     }
   ],
   durationData: {
