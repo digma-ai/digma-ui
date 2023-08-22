@@ -1,7 +1,6 @@
-import { useContext } from "react";
+import { Bar, BarChart, Cell, ResponsiveContainer } from "recharts";
 import { formatTimeDistance } from "../../../utils/formatTimeDistance";
 import { getPercentileLabel } from "../../../utils/getPercentileLabel";
-import { ConfigContext } from "../../common/App/ConfigContext";
 import { Button } from "../../common/Button";
 import { ChartIcon } from "../../common/icons/ChartIcon";
 import { DoubleCircleIcon } from "../../common/icons/DoubleCircleIcon";
@@ -14,8 +13,31 @@ import { DurationInsightProps } from "./types";
 
 const LAST_CALL_TIME_DISTANCE_LIMIT = 60 * 1000; // in milliseconds
 
+const TriangleBar = (props: any) => {
+  const getPath = (x: number, y: number, width: number, height: number) => {
+    return `M${x},${y + height}C${x + width / 3},${y + height} ${
+      x + width / 2
+    },${y + height / 3}
+    ${x + width / 2}, ${y}
+    C${x + width / 2},${y + height / 3} ${x + (2 * width) / 3},${y + height} ${
+      x + width
+    }, ${y + height}
+    Z`;
+  };
+
+  const { fill, x, y, width, height } = props as {
+    fill: string;
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  };
+
+  return <path d={getPath(x, y, width, height)} stroke="none" fill={fill} />;
+};
+
 export const DurationInsight = (props: DurationInsightProps) => {
-  const config = useContext(ConfigContext);
+  // const config = useContext(ConfigContext);
 
   const sortedPercentiles = [...props.insight.percentiles].sort(
     (a, b) => a.percentile - b.percentile
@@ -37,9 +59,9 @@ export const DurationInsight = (props: DurationInsightProps) => {
       props.onLiveButtonClick(props.insight.prefixedCodeObjectId);
   };
 
-  const handleCompareButtonClick = (traces: [Trace, Trace]) => {
-    props.onCompareButtonClick(traces, props.insight.type);
-  };
+  // const handleCompareButtonClick = (traces: [Trace, Trace]) => {
+  //   props.onCompareButtonClick(traces, props.insight.type);
+  // };
 
   const traces: Trace[] = [];
 
@@ -47,6 +69,28 @@ export const DurationInsight = (props: DurationInsightProps) => {
     ? Date.now() - new Date(spanLastCall.startTime).valueOf() <
       LAST_CALL_TIME_DISTANCE_LIMIT
     : false;
+
+  const histogramData = [];
+
+  if (props.insight.histogramData) {
+    for (let i = 0; i < props.insight.histogramData.bars.length - 1; i++) {
+      const bar = props.insight.histogramData.bars[i];
+
+      if (i !== 0) {
+        const prevBar = props.insight.histogramData.bars[i - 1];
+        for (let j = prevBar.index + 1; j < bar.index; j++) {
+          histogramData.push({
+            index: j,
+            count: 0,
+            start: "",
+            end: ""
+          });
+        }
+      }
+
+      histogramData[i] = bar;
+    }
+  }
 
   return (
     <InsightCard
@@ -104,6 +148,41 @@ export const DurationInsight = (props: DurationInsightProps) => {
             // TODO: add hourglass icon
             <span>Waiting for more data...</span>
           )}
+
+          <s.HistogramContainer>
+            {props.insight.histogramData && (
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  // width={500}
+                  // height={300}
+                  data={histogramData}
+                  // margin={{
+                  //   top: 20,
+                  //   right: 30,
+                  //   left: 20,
+                  //   bottom: 5
+                  // }}
+                >
+                  {/* <XAxis dataKey="index" /> */}
+                  {/* <YAxis dataKey="count" /> */}
+                  <Bar
+                    dataKey={"count"}
+                    // width={5}
+                    // fill="#8884d8"
+                    // shape={<TriangleBar />}
+                    // label={{ position: "top" }}
+                  >
+                    {props.insight.histogramData.bars.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={entry.count < 1 ? "red" : "#4e45a3"}
+                      />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            )}
+          </s.HistogramContainer>
         </s.Container>
       }
       onRecalculate={props.onRecalculate}

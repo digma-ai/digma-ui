@@ -180,6 +180,18 @@ export interface SpanDurationsInsight extends SpanInsight {
    * @deprecated
    */
   span: SpanInfo;
+  histogramData?: {
+    bars: {
+      index: number;
+      count: number;
+      start: string;
+      end: string;
+    }[];
+    quantiles: {
+      timestamp: string;
+      quantileValue: number;
+    }[];
+  };
 }
 
 export interface FlowSpan {
