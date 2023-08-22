@@ -51,7 +51,6 @@ export const InstallStep = (props: InstallStepProps) => {
   const [areTabsVisible, setAreTabsVisible] = useState(
     !config.isDigmaEngineInstalled && !isAutoInstallationFlow
   );
-  const [isAutoInstallTabVisible, setIsAutoInstallTabVisible] = useState(false);
   const [isEngineOperationInProgress, setIsEngineOperationInProgress] =
     useState(false);
 
@@ -98,12 +97,10 @@ export const InstallStep = (props: InstallStepProps) => {
 
   const handleEngineRemovalFinish = () => {
     setAreTabsVisible(true);
-    setIsAutoInstallTabVisible(true);
   };
 
   const handleEngineManualInstallSelect = () => {
     setAreTabsVisible(true);
-    setIsAutoInstallTabVisible(true);
     setSelectedInstallTab(1);
   };
 
@@ -202,7 +199,7 @@ export const InstallStep = (props: InstallStepProps) => {
   ];
 
   const installTabs = [
-    ...(isAutoInstallTabVisible
+    ...(config.isDockerInstalled && config.isDockerComposeInstalled
       ? [
           {
             title: "Auto install",
