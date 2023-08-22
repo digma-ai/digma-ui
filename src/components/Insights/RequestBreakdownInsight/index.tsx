@@ -38,6 +38,9 @@ const getComponents = (
   }
 };
 
+const sortByType = (a: Component, b: Component) =>
+  String(a.type).localeCompare(String(b.type));
+
 const columnHelper = createColumnHelper<Component>();
 
 export const RequestBreakdownInsight = (
@@ -51,7 +54,17 @@ export const RequestBreakdownInsight = (
       getComponents(props.insight, percentileViewMode) ||
       props.insight.components;
 
-    return [...components].sort((a, b) => b.fraction - a.fraction);
+    const sortedComponents = props.insight.hasAsyncSpans
+      ? [...components].sort((a, b) =>
+          a.duration && b.duration
+            ? a.duration.raw - b.duration.raw
+            : sortByType(a, b)
+        )
+      : [...components].sort(
+          (a, b) => b.fraction - a.fraction || sortByType(a, b)
+        );
+
+    return sortedComponents;
   }, [props.insight, percentileViewMode]);
 
   const handlePercentileViewModeChange = (value: number) => {
@@ -95,6 +108,12 @@ export const RequestBreakdownInsight = (
     </s.ContentContainer>
   );
 
+  const maxDuration = data.reduce(
+    (acc, cur) =>
+      cur.duration && cur.duration.raw > acc ? cur.duration.raw : acc,
+    0
+  );
+
   const columns = [
     columnHelper.accessor("type", {
       header: "Category",
@@ -103,14 +122,15 @@ export const RequestBreakdownInsight = (
         return <span>{category}</span>;
       }
     }),
-    columnHelper.accessor("fraction", {
+    columnHelper.accessor("duration", {
       header: "Request Time",
       cell: (info) => {
-        const fraction = info.getValue();
+        const duration = info.getValue();
+        const value = duration && maxDuration ? duration.raw / maxDuration : 0;
         return (
           <s.FractionProgressBarContainer>
             <s.FractionProgressBar>
-              <s.FractionProgressBarValue value={fraction} />
+              <s.FractionProgressBarValue value={value} />
             </s.FractionProgressBar>
           </s.FractionProgressBarContainer>
         );

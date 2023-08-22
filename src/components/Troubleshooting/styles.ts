@@ -99,7 +99,6 @@ export const RunOptionButton = styled.button`
   border: 1px solid transparent;
   outline: none;
   font-weight: 600;
-  text-transform: capitalize;
   cursor: pointer;
   color: ${({ theme }) => {
     switch (theme.mode) {
