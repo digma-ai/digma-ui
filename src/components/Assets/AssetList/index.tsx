@@ -304,8 +304,8 @@ export const AssetList = (props: AssetListProps) => {
               (acc, cur) =>
                 new Date(cur.lastSpanInstanceInfo.startTime).valueOf() >
                 new Date(acc.lastSpanInstanceInfo.startTime).valueOf()
-                  ? acc
-                  : cur,
+                  ? cur
+                  : acc,
               endpointGroupEntries[0]
             );
 

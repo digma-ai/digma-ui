@@ -66,17 +66,17 @@ export const Troubleshooting = () => {
     {
       key: "terminal",
       icon: TerminalIcon,
-      label: "I run it via terminal"
+      label: "I Run it via Terminal"
     },
     {
       key: "docker",
       icon: DockerLogoIcon,
-      label: "I run it on Docker"
+      label: "I Run it on Docker"
     },
     {
       key: "gradle-tasks",
       icon: GradleLogoIcon,
-      label: "I run it using native Gradle tasks"
+      label: "I Run it using Native Gradle Tasks"
     }
   ];
 
