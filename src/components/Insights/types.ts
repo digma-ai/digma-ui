@@ -187,7 +187,7 @@ export interface SpanDurationsInsight extends SpanInsight {
    * @deprecated
    */
   span: SpanInfo;
-  histogramData?: {
+  histogramPlot?: {
     bars: HistogramBarData[];
     quantiles: {
       timestamp: Duration;

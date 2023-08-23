@@ -166,26 +166,26 @@ export const DurationInsight = (props: DurationInsightProps) => {
       LAST_CALL_TIME_DISTANCE_LIMIT
     : false;
 
-  const histogramData = props.insight.histogramData
-    ? calculateBars(props.insight.histogramData.bars, width)
+  const chartData = props.insight.histogramPlot
+    ? calculateBars(props.insight.histogramPlot.bars, width)
     : [];
 
-  const XAxisPadding = (width - histogramData.length * BAR_WIDTH * 2) / 2;
+  const XAxisPadding = (width - chartData.length * BAR_WIDTH * 2) / 2;
 
-  const p50 = props.insight.histogramData?.quantiles.find(
+  const p50 = props.insight.histogramPlot?.quantiles.find(
     (x) => x.quantileValue === 0.5
   )?.timestamp;
 
-  const p95 = props.insight.histogramData?.quantiles.find(
+  const p95 = props.insight.histogramPlot?.quantiles.find(
     (x) => x.quantileValue === 0.95
   )?.timestamp;
 
   const p50BarIndex = p50
-    ? histogramData.findIndex((x) => x.end.raw >= p50.raw)
+    ? chartData.findIndex((x) => x.end.raw >= p50.raw)
     : undefined;
 
   const p95BarIndex = p95
-    ? histogramData.findIndex((x) => x.end.raw >= p95.raw)
+    ? chartData.findIndex((x) => x.end.raw >= p95.raw)
     : undefined;
 
   const ticks: Record<number, TickData> = {};
@@ -240,7 +240,7 @@ export const DurationInsight = (props: DurationInsightProps) => {
                   percentile.changeTime
                 );
 
-                if (!props.insight.histogramData) {
+                if (!props.insight.histogramPlot) {
                   return (
                     <s.Stats key={percentile.percentile}>
                       <Description>
@@ -261,7 +261,7 @@ export const DurationInsight = (props: DurationInsightProps) => {
                   );
                 }
 
-                return props.insight.histogramData && isChangeMeaningful ? (
+                return props.insight.histogramPlot && isChangeMeaningful ? (
                   <s.Stats key={percentile.percentile}>
                     <Description>
                       {getPercentileLabel(percentile.percentile)}
@@ -283,20 +283,20 @@ export const DurationInsight = (props: DurationInsightProps) => {
             <span>Waiting for more data...</span>
           )}
 
-          {props.insight.histogramData && (
-            <s.HistogramContainer ref={observe}>
+          {props.insight.histogramPlot && (
+            <s.ChartContainer ref={observe}>
               <ResponsiveContainer width={"100%"} height={"100%"}>
                 <BarChart
                   margin={{ top: 20, right: 0, bottom: 0, left: 0 }}
                   barSize={BAR_WIDTH}
-                  data={histogramData}
+                  data={chartData}
                 >
                   <Bar
                     dataKey={"count"}
                     radius={BAR_WIDTH / 2}
                     isAnimationActive={false}
                   >
-                    {histogramData.map((entry, index) => (
+                    {chartData.map((entry, index) => (
                       <Cell
                         key={`cell-${index}`}
                         fill={getBarColor(entry.end, p50, p95)}
@@ -353,7 +353,7 @@ export const DurationInsight = (props: DurationInsightProps) => {
                   ))}
                 </BarChart>
               </ResponsiveContainer>
-            </s.HistogramContainer>
+            </s.ChartContainer>
           )}
         </s.Container>
       }

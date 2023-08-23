@@ -301,7 +301,7 @@ export const HistogramWithManyBars: Story = {
       customStartTime: null,
       actualStartTime: "2023-06-17T00:00:00.000Z",
       isAsync: false,
-      histogramData: {
+      histogramPlot: {
         bars: [
           {
             index: 0,
@@ -4815,7 +4815,7 @@ export const HistogramWithGaps: Story = {
       customStartTime: null,
       actualStartTime: "2023-06-17T00:00:00.000Z",
       isAsync: false,
-      histogramData: {
+      histogramPlot: {
         bars: [
           {
             index: 0,
@@ -5059,7 +5059,7 @@ export const HistogramWithAFewBars: Story = {
       customStartTime: null,
       actualStartTime: "2023-06-17T00:00:00.000Z",
       isAsync: false,
-      histogramData: {
+      histogramPlot: {
         bars: [
           {
             index: 0,

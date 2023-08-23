@@ -43,7 +43,7 @@ export const LastCallTimeDistance = styled.div<{ isRecent: boolean }>`
   }};
 `;
 
-export const HistogramContainer = styled.div`
+export const ChartContainer = styled.div`
   width: 100%;
   height: 120px;
 `;
