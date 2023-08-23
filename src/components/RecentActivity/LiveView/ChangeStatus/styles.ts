@@ -8,8 +8,7 @@ export const Container = styled.div`
   gap: 4px;
   border-radius: 4px;
   font-weight: 500;
-  font-size: 10px;
-  line-height: 12px;
+  font-size: 14px;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

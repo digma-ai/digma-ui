@@ -370,7 +370,7 @@ export const LiveView = (props: LiveViewProps) => {
     ? String(YAxisMaxTickWholePart).length + 1 + YAxisTickDecimalPlaces
     : 0;
 
-  const YAxisTickMargin = Math.round(longestTickDigitCount * 5.5);
+  const YAxisTickMargin = Math.round(longestTickDigitCount * 6.5);
   const YAxisWidth = Math.round(12 + longestTickDigitCount * 7.5);
 
   const scrollbarOffset =
@@ -424,7 +424,7 @@ export const LiveView = (props: LiveViewProps) => {
           </CommonTooltip>
         </s.Title>
         <s.LiveBadge>
-          <DoubleCircleIcon color={getLiveIconColor(theme)} size={8} />
+          <DoubleCircleIcon color={getLiveIconColor(theme)} size={14} />
           Live
         </s.LiveBadge>
         <s.CloseButton onClick={handleCloseButtonClick}>
@@ -474,7 +474,7 @@ export const LiveView = (props: LiveViewProps) => {
                     tickCount={Y_AXIS_TICK_COUNT}
                     tick={{
                       fill: tickLabelColor,
-                      fontSize: 10,
+                      fontSize: 14,
                       textAnchor: "start"
                     }}
                     stroke={axisColor}
@@ -484,7 +484,7 @@ export const LiveView = (props: LiveViewProps) => {
                       value: maxDurationUnit,
                       position: "bottom",
                       fill: tickLabelColor,
-                      fontSize: 10,
+                      fontSize: 14,
                       offset: 16
                     }}
                   />
@@ -553,7 +553,7 @@ export const LiveView = (props: LiveViewProps) => {
                     tickLine={false}
                     tick={{
                       fill: tickLabelColor,
-                      fontSize: 10,
+                      fontSize: 14,
                       width: 60
                     }}
                     stroke={axisColor}
