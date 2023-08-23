@@ -80,8 +80,8 @@ const calculateBars = (
 
   for (let i = 0, j = 0; i < bars.length - 1; i += groupSize, j++) {
     const group = bars.slice(i, i + groupSize);
-    // console.log(barsCount, group, i, i + groupSize);
     const newCount = group.reduce((acc, cur) => acc + cur.count, 0);
+
     newBars.push({
       index: j,
       count: newCount,
@@ -98,8 +98,6 @@ export const DurationInsight = (props: DurationInsightProps) => {
   const theme = useTheme();
   const tickColor = getTickColor(theme);
   const { observe, width } = useDimensions();
-
-  console.log(width);
 
   const sortedPercentiles = [...props.insight.percentiles].sort(
     (a, b) => a.percentile - b.percentile
@@ -168,7 +166,6 @@ export const DurationInsight = (props: DurationInsightProps) => {
 
       histogramData[bar.index] = bar;
     }
-    console.log(calculatedBars.length, histogramData.length);
   }
 
   const p50 = props.insight.histogramData?.quantiles.find(

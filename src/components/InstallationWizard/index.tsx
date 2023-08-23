@@ -23,7 +23,6 @@ import { SlackLogoIcon } from "../common/icons/SlackLogoIcon";
 import { FinishStep } from "./FinishStep";
 import { InstallStep } from "./InstallStep";
 import { InstallationTypeCard } from "./InstallationTypeCard";
-import { ObservabilityStep } from "./ObservabilityStep";
 import { Step } from "./Step";
 import { StepData, StepStatus } from "./Step/types";
 import * as s from "./styles";
@@ -71,7 +70,7 @@ const quickstartURL = getQuickstartURL(ide);
 const footerTransitionClassName = "footer";
 const TRANSITION_DURATION = 300; // in milliseconds
 
-const isFirstLaunch = window.wizardFirstLaunch === true;
+// const isFirstLaunch = window.wizardFirstLaunch === true;
 
 const firstStep = window.wizardSkipInstallationStep === true ? 1 : 0;
 
@@ -95,10 +94,10 @@ export const InstallationWizard = () => {
   const config = useContext(ConfigContext);
   const [currentStep, setCurrentStep] = useState<number>(firstStep);
   const previousStep = usePrevious(currentStep);
-  const [isAlreadyUsingOtel, setIsAlreadyUsingOtel] = useState<boolean>(false);
-  const [isObservabilityEnabled, setIsObservabilityEnabled] = useState<boolean>(
-    config.isObservabilityEnabled
-  );
+  // const [isAlreadyUsingOtel, setIsAlreadyUsingOtel] = useState<boolean>(false);
+  // const [isObservabilityEnabled, setIsObservabilityEnabled] = useState<boolean>(
+  //   config.isObservabilityEnabled
+  // );
   const [connectionCheckStatus, setConnectionCheckStatus] =
     useState<AsyncActionStatus>();
   const footerContentRef = useRef<HTMLDivElement>(null);
@@ -147,21 +146,25 @@ export const InstallationWizard = () => {
       sendTrackingEvent(trackingEvents.INSTALL_STEP_PASSED);
     }
 
-    if (
-      previousStep === 1 &&
-      currentStep === 2 &&
-      isFirstLaunch &&
-      !isObservabilityEnabled
-    ) {
-      setIsObservabilityEnabled(true);
-      window.sendMessageToDigma({
-        action: actions.SET_OBSERVABILITY,
-        payload: {
-          isObservabilityEnabled: true
-        }
-      });
-    }
-  }, [previousStep, currentStep, isObservabilityEnabled]);
+    //   if (
+    //     previousStep === 1 &&
+    //     currentStep === 2 &&
+    //     isFirstLaunch &&
+    //     !isObservabilityEnabled
+    //   ) {
+    //     setIsObservabilityEnabled(true);
+    //     window.sendMessageToDigma({
+    //       action: actions.SET_OBSERVABILITY,
+    //       payload: {
+    //         isObservabilityEnabled: true
+    //       }
+    //     });
+    //   }
+  }, [
+    previousStep,
+    currentStep
+    // ,isObservabilityEnabled
+  ]);
 
   useEffect(() => {
     if (firstStep === 1) {
@@ -208,20 +211,20 @@ export const InstallationWizard = () => {
     });
   };
 
-  const handleIsAlreadyUsingOtelChange = (value: boolean) => {
-    setIsAlreadyUsingOtel(value);
-  };
+  // const handleIsAlreadyUsingOtelChange = (value: boolean) => {
+  //   setIsAlreadyUsingOtel(value);
+  // };
 
-  const handleObservabilityChange = (value: boolean) => {
-    sendTrackingEvent(trackingEvents.OBSERVABILITY_BUTTON_CLICKED);
-    setIsObservabilityEnabled(value);
-    window.sendMessageToDigma({
-      action: actions.SET_OBSERVABILITY,
-      payload: {
-        isObservabilityEnabled: value
-      }
-    });
-  };
+  // const handleObservabilityChange = (value: boolean) => {
+  //   sendTrackingEvent(trackingEvents.OBSERVABILITY_BUTTON_CLICKED);
+  //   setIsObservabilityEnabled(value);
+  //   window.sendMessageToDigma({
+  //     action: actions.SET_OBSERVABILITY,
+  //     payload: {
+  //       isObservabilityEnabled: value
+  //     }
+  //   });
+  // };
 
   const goToNextStep = () => {
     setCurrentStep(currentStep + 1);
@@ -303,25 +306,25 @@ export const InstallationWizard = () => {
         />
       )
     },
-    ...(ide === "IDEA"
-      ? [
-          {
-            key: "observability",
-            title: isAlreadyUsingOtel
-              ? "If you're already using OpenTelemetry…"
-              : "Observe your application",
-            content: (
-              <ObservabilityStep
-                isAlreadyUsingOtel={isAlreadyUsingOtel}
-                onIsAlreadyUsingOtelChange={handleIsAlreadyUsingOtelChange}
-                onGoToNextStep={goToNextStep}
-                isObservabilityEnabled={isObservabilityEnabled}
-                onObservabilityChange={handleObservabilityChange}
-              />
-            )
-          }
-        ]
-      : []),
+    // ...(ide === "IDEA"
+    //   ? [
+    //       {
+    //         key: "observability",
+    //         title: isAlreadyUsingOtel
+    //           ? "If you're already using OpenTelemetry…"
+    //           : "Observe your application",
+    //         content: (
+    //           <ObservabilityStep
+    //             isAlreadyUsingOtel={isAlreadyUsingOtel}
+    //             onIsAlreadyUsingOtelChange={handleIsAlreadyUsingOtelChange}
+    //             onGoToNextStep={goToNextStep}
+    //             isObservabilityEnabled={isObservabilityEnabled}
+    //             onObservabilityChange={handleObservabilityChange}
+    //           />
+    //         )
+    //       }
+    //     ]
+    //   : []),
     {
       key: "finish",
       title: "You're done!",
