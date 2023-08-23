@@ -209,7 +209,7 @@ export const WithEvaluatingChange: Story = {
   }
 };
 
-export const WithHistogram: Story = {
+export const HistogramWithManyBars: Story = {
   args: {
     insight: {
       name: "Performance Stats",
@@ -2198,6 +2198,289 @@ export const WithHistogram: Story = {
             quantileValue: 0.95
           }
         ]
+      }
+    }
+  }
+};
+
+export const HistogramWithGaps: Story = {
+  args: {
+    insight: {
+      name: "Performance Stats",
+      type: InsightType.SpanDurations,
+      category: InsightCategory.Performance,
+      specifity: 4,
+      isRecalculateEnabled: true,
+      spanCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
+      span: {
+        name: "DelayAsync",
+        displayName: "DelayAsync",
+        instrumentationLibrary: "SampleInsightsController",
+        spanCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
+        methodCodeObjectId: null,
+        kind: "Internal",
+        codeObjectId: null
+      },
+      percentiles: [
+        {
+          percentile: 0.5,
+          currentDuration: {
+            value: 110.74,
+            unit: "ms",
+            raw: 110735000
+          },
+          previousDuration: {
+            value: 12.55,
+            unit: "ms",
+            raw: 12548500
+          },
+          changeTime: "2023-06-30T11:08:55.000Z",
+          changeVerified: true,
+          traceIds: ["6FB14B53449D3D360DC42A5F44F9D35B"]
+        },
+        {
+          percentile: 0.95,
+          currentDuration: {
+            value: 2.01,
+            unit: "sec",
+            raw: 2005005050
+          },
+          previousDuration: {
+            value: 2.01,
+            unit: "sec",
+            raw: 2005133700
+          },
+          changeTime: "2023-06-30T11:10:00.000Z",
+          changeVerified: true,
+          traceIds: ["E6FE5ACDDB1C6E6D5284B1D9579964B0"]
+        }
+      ],
+      lastSpanInstanceInfo: {
+        traceId: "3E41E4197B696CA9BF1157AEB254DFE0",
+        spanId: "9C31D7C85CF413B4",
+        startTime: "2023-06-30T11:10:13.542Z",
+        duration: {
+          value: 91.95,
+          unit: "ms",
+          raw: 91951000
+        }
+      },
+      scope: InsightScope.Span,
+      spanInfo: {
+        name: "DelayAsync",
+        displayName: "DelayAsync",
+        instrumentationLibrary: "SampleInsightsController",
+        spanCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
+        methodCodeObjectId: null,
+        kind: "Internal",
+        codeObjectId: null
+      },
+      shortDisplayInfo: {
+        title: "",
+        targetDisplayName: "",
+        subtitle: "",
+        description: ""
+      },
+      codeObjectId: "SampleInsightsController$_$DelayAsync",
+      decorators: [
+        {
+          title: "Slowing",
+          description: "Duration for this section is increasing"
+        }
+      ],
+      environment: "BOB-LAPTOP[LOCAL]",
+      importance: 2,
+      severity: 0,
+      prefixedCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
+      customStartTime: null,
+      actualStartTime: "2023-06-17T00:00:00.000Z",
+      isAsync: false,
+      histogramData: {
+        bars: [
+          {
+            index: 0,
+            count: 5,
+            start: "00:00:00.0100000",
+            end: "00:00:00.0110000"
+          },
+          {
+            index: 1,
+            count: 7,
+            start: "00:00:00.0110000",
+            end: "00:00:00.0120000"
+          },
+          {
+            index: 2,
+            count: 6,
+            start: "00:00:00.0120000",
+            end: "00:00:00.0130000"
+          },
+          {
+            index: 3,
+            count: 4,
+            start: "00:00:00.0130000",
+            end: "00:00:00.0140000"
+          },
+          {
+            index: 4,
+            count: 3,
+            start: "00:00:00.0140000",
+            end: "00:00:00.0150000"
+          },
+          {
+            index: 5,
+            count: 1,
+            start: "00:00:00.0150000",
+            end: "00:00:00.0160000"
+          },
+          {
+            index: 7,
+            count: 1,
+            start: "00:00:00.0170000",
+            end: "00:00:00.0170000"
+          },
+          {
+            index: 10,
+            count: 2,
+            start: "00:00:00.0200000",
+            end: "00:00:00.0210000"
+          },
+          {
+            index: 20,
+            count: 1,
+            start: "00:00:00.0300000",
+            end: "00:00:00.0310000"
+          }
+        ],
+        quantiles: [
+          {
+            timestamp: "00:00:00.0125000",
+            quantileValue: 0.5
+          },
+          {
+            timestamp: "00:00:00.0205000",
+            quantileValue: 0.95
+          }
+        ]
+      }
+    }
+  }
+};
+
+export const HistogramWithAFewBars: Story = {
+  args: {
+    insight: {
+      name: "Performance Stats",
+      type: InsightType.SpanDurations,
+      category: InsightCategory.Performance,
+      specifity: 4,
+      isRecalculateEnabled: true,
+      spanCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
+      span: {
+        name: "DelayAsync",
+        displayName: "DelayAsync",
+        instrumentationLibrary: "SampleInsightsController",
+        spanCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
+        methodCodeObjectId: null,
+        kind: "Internal",
+        codeObjectId: null
+      },
+      percentiles: [
+        {
+          percentile: 0.5,
+          currentDuration: {
+            value: 110.74,
+            unit: "ms",
+            raw: 110735000
+          },
+          previousDuration: {
+            value: 12.55,
+            unit: "ms",
+            raw: 12548500
+          },
+          changeTime: "2023-06-30T11:08:55.000Z",
+          changeVerified: true,
+          traceIds: ["6FB14B53449D3D360DC42A5F44F9D35B"]
+        },
+        {
+          percentile: 0.95,
+          currentDuration: {
+            value: 2.01,
+            unit: "sec",
+            raw: 2005005050
+          },
+          previousDuration: {
+            value: 2.01,
+            unit: "sec",
+            raw: 2005133700
+          },
+          changeTime: "2023-06-30T11:10:00.000Z",
+          changeVerified: true,
+          traceIds: ["E6FE5ACDDB1C6E6D5284B1D9579964B0"]
+        }
+      ],
+      lastSpanInstanceInfo: {
+        traceId: "3E41E4197B696CA9BF1157AEB254DFE0",
+        spanId: "9C31D7C85CF413B4",
+        startTime: "2023-06-30T11:10:13.542Z",
+        duration: {
+          value: 91.95,
+          unit: "ms",
+          raw: 91951000
+        }
+      },
+      scope: InsightScope.Span,
+      spanInfo: {
+        name: "DelayAsync",
+        displayName: "DelayAsync",
+        instrumentationLibrary: "SampleInsightsController",
+        spanCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
+        methodCodeObjectId: null,
+        kind: "Internal",
+        codeObjectId: null
+      },
+      shortDisplayInfo: {
+        title: "",
+        targetDisplayName: "",
+        subtitle: "",
+        description: ""
+      },
+      codeObjectId: "SampleInsightsController$_$DelayAsync",
+      decorators: [
+        {
+          title: "Slowing",
+          description: "Duration for this section is increasing"
+        }
+      ],
+      environment: "BOB-LAPTOP[LOCAL]",
+      importance: 2,
+      severity: 0,
+      prefixedCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
+      customStartTime: null,
+      actualStartTime: "2023-06-17T00:00:00.000Z",
+      isAsync: false,
+      histogramData: {
+        bars: [
+          {
+            index: 0,
+            count: 5,
+            start: "00:00:00.0010000",
+            end: "00:00:00.0020000"
+          },
+          {
+            index: 1,
+            count: 7,
+            start: "00:00:00.0020000",
+            end: "00:00:00.0030000"
+          },
+          {
+            index: 3,
+            count: 6,
+            start: "00:00:00.0050000",
+            end: "00:00:00.0060000"
+          }
+        ],
+        quantiles: []
       }
     }
   }

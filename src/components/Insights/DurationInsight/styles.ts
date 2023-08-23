@@ -46,5 +46,23 @@ export const LastCallTimeDistance = styled.div<{ isRecent: boolean }>`
 
 export const HistogramContainer = styled.div`
   width: 100%;
-  height: 200px;
+  height: 120px;
+`;
+
+export const TooltipContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-radius: 4px;
+  padding: 8px;
+  box-shadow: 0 0 6px rgb(0 0 0 / 15%);
+  background: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#fbfdff";
+      case "dark":
+      case "dark-jetbrains":
+        return "#2e2e2e";
+    }
+  }};
 `;

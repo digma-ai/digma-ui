@@ -162,6 +162,13 @@ export interface SpanInsight extends CodeObjectInsight {
   spanInfo: SpanInfo | null;
 }
 
+export interface HistogramBarData {
+  index: number;
+  count: number;
+  start: string;
+  end: string;
+}
+
 export interface SpanDurationsInsight extends SpanInsight {
   name: "Performance Stats";
   type: InsightType.SpanDurations;
@@ -181,12 +188,7 @@ export interface SpanDurationsInsight extends SpanInsight {
    */
   span: SpanInfo;
   histogramData?: {
-    bars: {
-      index: number;
-      count: number;
-      start: string;
-      end: string;
-    }[];
+    bars: HistogramBarData[];
     quantiles: {
       timestamp: string;
       quantileValue: number;
