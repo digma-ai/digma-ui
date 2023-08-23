@@ -67,6 +67,16 @@ const getTickColor = (theme: DefaultTheme) => {
   }
 };
 
+const getTickLabelColor = (theme: DefaultTheme) => {
+  switch (theme.mode) {
+    case "light":
+      return "#4d668a";
+    case "dark":
+    case "dark-jetbrains":
+      return "#dfe1e5";
+  }
+};
+
 const calculateBars = (
   bars: HistogramBarData[],
   chartWidth: number
@@ -129,6 +139,7 @@ export const DurationInsight = (props: DurationInsightProps) => {
   // const config = useContext(ConfigContext);
   const theme = useTheme();
   const tickColor = getTickColor(theme);
+  const tickLabelColor = getTickLabelColor(theme);
   const { observe, width } = useDimensions();
 
   const sortedPercentiles = [...props.insight.percentiles].sort(
@@ -302,7 +313,11 @@ export const DurationInsight = (props: DurationInsightProps) => {
                   />
                   <XAxis
                     stroke={tickColor}
-                    tick={Boolean(Object.keys(ticks).length)}
+                    tick={
+                      Boolean(Object.keys(ticks).length) && {
+                        fill: tickLabelColor
+                      }
+                    }
                     ticks={Object.keys(ticks).map((x) => Number(x))}
                     tickFormatter={(x: number) => ticks[x].value}
                   />
