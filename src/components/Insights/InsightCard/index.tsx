@@ -143,7 +143,7 @@ export const InsightCard = (props: InsightCardProps) => {
                 <ChevronIcon
                   color={theme.mode === "light" ? "#828797" : "#b9c2eb"}
                   direction={isExpanded ? Direction.UP : Direction.DOWN}
-                  size={12}
+                  size={14}
                 />
               </s.ExpandButton>
             )}

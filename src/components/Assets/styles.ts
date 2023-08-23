@@ -22,7 +22,7 @@ export const NoDataContainer = styled.div`
 `;
 
 export const EmptyStateDescription = styled.span`
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 500;
   margin-bottom: 4px;
   text-align: center;
@@ -38,8 +38,6 @@ export const EmptyStateDescription = styled.span`
 `;
 
 export const TroubleshootingLink = styled(CommonLink)`
-  font-size: 14px;
-  line-height: normal;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

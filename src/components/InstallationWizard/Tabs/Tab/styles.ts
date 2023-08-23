@@ -3,8 +3,7 @@ import { TabProps } from "./types";
 
 export const Container = styled.li<TabProps>`
   font-weight: 500;
-  font-size: 12px;
-  line-height: 14px;
+  font-size: 14px;
   padding: 9px 10px;
   display: flex;
   gap: 4px;

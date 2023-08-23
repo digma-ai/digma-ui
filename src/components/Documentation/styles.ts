@@ -5,7 +5,7 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 500;
   padding: 20px;
   color: ${({ theme }) => {
@@ -67,10 +67,10 @@ export const SectionHeader = styled.div`
 `;
 
 export const SectionNumber = styled.span`
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   flex-shrink: 0;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 500;
   border-radius: 50%;
   display: flex;
@@ -88,9 +88,8 @@ export const SectionTitleContainer = styled.div`
 
 export const SectionTitle = styled.h2`
   margin: 0;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 600;
-  line-height: 16px;
   align-items: center;
   color: ${({ theme }) => {
     switch (theme.mode) {

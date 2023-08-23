@@ -57,7 +57,7 @@ export const Container = styled.div<ContainerProps>`
 export const ContentContainer = styled.div`
   display: flex;
   gap: 8px;
-  font-size: 12px;
+  font-size: 14px;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -100,7 +100,6 @@ export const Title = styled.span<ButtonProps>`
   gap: 4px;
   font-weight: 600;
   font-size: 14px;
-  line-height: 16px;
   margin-bottom: 8px;
   color: ${({ theme }) => {
     switch (theme.mode) {

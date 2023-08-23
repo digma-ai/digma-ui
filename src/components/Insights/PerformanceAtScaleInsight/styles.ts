@@ -81,7 +81,7 @@ export const DurationContainer = styled.span`
 
 export const Suffix = styled.span`
   margin-left: 2px;
-  font-size: 10px;
+  font-size: 14px;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

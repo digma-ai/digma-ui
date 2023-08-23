@@ -27,7 +27,7 @@ export const StartupText = styled.span`
 `;
 
 export const Description = styled.span`
-  font-size: 12px;
+  font-size: 14px;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -48,7 +48,7 @@ export const MissingDependencyContainer = styled.div`
 `;
 
 export const MissingDependencyText = styled.span`
-  font-size: 12px;
+  font-size: 14px;
   text-align: center;
   color: ${({ theme }) => {
     switch (theme.mode) {
@@ -62,8 +62,6 @@ export const MissingDependencyText = styled.span`
 `;
 
 export const Link = styled(CommonLink)`
-  font-size: 12px;
-  line-height: normal;
   text-decoration: none;
   color: ${({ theme }) => {
     switch (theme.mode) {
@@ -83,7 +81,7 @@ export const SlackLink = styled(Link)`
 `;
 
 export const EmptyStateDescription = styled.span`
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 500;
   margin-bottom: 4px;
   text-align: center;

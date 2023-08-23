@@ -93,6 +93,7 @@ const renderArrowIcon = (
       <ArrowIcon
         direction={direction}
         color={getArrowIconColor(direction, theme)}
+        size={14}
       />
     </s.ArrowContainer>
   );

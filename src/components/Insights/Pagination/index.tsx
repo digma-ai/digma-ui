@@ -98,6 +98,7 @@ export const Pagination = (props: PaginationProps) => {
               <ChevronIcon
                 direction={Direction.LEFT}
                 color={getPaginationButtonIconColor(theme, isPrevDisabled)}
+                size={14}
               />
             </s.Button>
             <s.Button
@@ -107,6 +108,7 @@ export const Pagination = (props: PaginationProps) => {
               <ChevronIcon
                 direction={Direction.RIGHT}
                 color={getPaginationButtonIconColor(theme, isNextDisabled)}
+                size={14}
               />
             </s.Button>
           </s.ButtonsContainer>

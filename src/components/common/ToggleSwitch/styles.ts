@@ -11,7 +11,7 @@ const getCircleRadius = (size: ToggleSwitchSize): number => {
     case "large":
       return 5;
     case "small":
-      return 2.5;
+      return 4;
   }
 };
 
@@ -34,15 +34,7 @@ export const Container = styled.div<ContainerProps>`
       case "large":
         return "16px";
       case "small":
-        return "10px";
-    }
-  }};
-  line-height: ${({ size }) => {
-    switch (size) {
-      case "large":
-        return "19px";
-      case "small":
-        return "12px";
+        return "14px";
     }
   }};
   color: ${({ theme }) => {

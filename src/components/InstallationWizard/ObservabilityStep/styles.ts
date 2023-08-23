@@ -37,8 +37,7 @@ export const ObservabilityTitle = styled.span`
 
 export const ObservabilityDescription = styled.div`
   font-weight: 500;
-  font-size: 10px;
-  line-height: 12px;
+  font-size: 14px;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -76,8 +75,7 @@ export const CongratulationsTextContainer = styled.div`
   align-items: center;
   gap: 2px;
   font-weight: 500;
-  font-size: 10px;
-  line-height: 11px;
+  font-size: 14px;
   flex-wrap: wrap;
   justify-content: center;
   color: ${({ theme }) => {

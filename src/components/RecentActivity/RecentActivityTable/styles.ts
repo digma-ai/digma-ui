@@ -5,7 +5,7 @@ import { Link } from "../../common/Link";
 export const Table = styled.table`
   width: 100%;
   border-spacing: 0 4px;
-  font-size: 12px;
+  font-size: 14px;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -19,7 +19,7 @@ export const Table = styled.table`
 `;
 
 export const TableHead = styled.thead`
-  font-size: 10px;
+  font-size: 14px;
   height: 28px;
   color: ${({ theme }) => {
     switch (theme.mode) {
@@ -136,8 +136,7 @@ export const TraceButtonContainer = styled.div`
 
 export const Suffix = styled.span`
   margin-left: 2px;
-  font-size: 10px;
-  line-height: 12px;
+  font-size: 14px;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -158,8 +157,7 @@ export const ListContainer = styled.div`
 export const ListHeader = styled.div`
   margin: 12px 0 8px;
   padding-left: 12px;
-  line-height: 16px;
-  font-size: 10px;
+  font-size: 14px;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -203,8 +201,7 @@ export const List = styled.ul`
 
 export const ListItem = styled.li`
   position: relative;
-  font-size: 12px;
-  line-height: 14px;
+  font-size: 14px;
   padding: 0 12px;
   height: 42px;
   display: flex;
@@ -229,15 +226,12 @@ export const ListInsightsContainer = styled.div`
 `;
 
 export const ListSuffix = styled(Suffix)`
-  font-size: 12px;
-  line-height: 14px;
+  font-size: 14px;
 `;
 
 export const SpanLink = styled(Link)`
   ${({ theme }) => getCodeFont(theme.codeFont)}
 
-  font-size: 12px;
-  line-height: 14px;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

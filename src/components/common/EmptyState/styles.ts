@@ -28,7 +28,7 @@ export const IconContainer = styled.div`
 export const Title = styled.div`
   margin-top: 4px;
   text-transform: capitalize;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
   text-align: center;
   color: ${({ theme }) => {

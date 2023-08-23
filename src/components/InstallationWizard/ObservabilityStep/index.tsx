@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useTheme } from "styled-components";
 import { getThemeKind } from "../../common/App/styles";
+import { CodeSnippet } from "../../common/CodeSnippet";
+import { Link } from "../../common/Link";
 import { Loader } from "../../common/Loader";
 import { OpenTelemetryLogoIcon } from "../../common/icons/OpenTelemetryLogoIcon";
-import { CodeSnippet } from "../CodeSnippet";
 import { SectionTitle } from "../SectionTitle";
 import { Tip } from "../Tip";
-import { Link, MainButton } from "../styles";
+import { MainButton } from "../styles";
 import * as s from "./styles";
 import { ObservabilityStepProps } from "./types";
 

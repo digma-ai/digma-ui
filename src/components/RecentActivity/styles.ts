@@ -49,9 +49,8 @@ export const RecentActivityContainer = styled.div`
 export const Header = styled.div`
   margin: 12px 0 8px;
   padding-left: 12px;
-  line-height: 16px;
   font-weight: 400;
-  font-size: 10px;
+  font-size: 14px;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -85,8 +84,7 @@ export const NoDataContainer = styled.div`
 
 export const NoDataTitle = styled.span`
   font-weight: 600;
-  font-size: 12px;
-  line-height: 19px;
+  font-size: 16px;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -100,8 +98,7 @@ export const NoDataTitle = styled.span`
 
 export const NoDataText = styled.span`
   font-weight: 400;
-  font-size: 12px;
-  line-height: 16px;
+  font-size: 14px;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

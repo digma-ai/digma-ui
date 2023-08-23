@@ -223,7 +223,7 @@ export const Insights = (props: InsightsProps) => {
                   </s.EmptyStateDescription>
                 </s.StartupText>
                 <s.SlackLink onClick={handleSlackLinkClick}>
-                  <SlackLogoIcon />
+                  <SlackLogoIcon size={14} />
                   Join Our Slack Channel for Support
                 </s.SlackLink>
               </>
