@@ -14,3 +14,8 @@ export interface DurationInsightProps extends InsightProps {
     insightType: InsightType
   ) => void;
 }
+
+export interface TickData {
+  value: string;
+  label: string;
+}
