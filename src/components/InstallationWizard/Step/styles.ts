@@ -109,7 +109,6 @@ export const Number = styled.span<NumberProps>`
   width: 100%;
   height: 100%;
   font-size: 14px;
-  line-height: 100%;
   font-weight: 500;
   border-radius: 50%;
   display: flex;

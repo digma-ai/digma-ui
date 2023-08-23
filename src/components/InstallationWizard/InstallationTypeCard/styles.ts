@@ -100,7 +100,6 @@ export const Title = styled.span<ButtonProps>`
   gap: 4px;
   font-weight: 600;
   font-size: 14px;
-  line-height: 16px;
   margin-bottom: 8px;
   color: ${({ theme }) => {
     switch (theme.mode) {

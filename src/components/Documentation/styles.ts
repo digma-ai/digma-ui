@@ -90,7 +90,6 @@ export const SectionTitle = styled.h2`
   margin: 0;
   font-size: 14px;
   font-weight: 600;
-  line-height: 16px;
   align-items: center;
   color: ${({ theme }) => {
     switch (theme.mode) {

@@ -38,8 +38,6 @@ export const EmptyStateDescription = styled.span`
 `;
 
 export const TroubleshootingLink = styled(CommonLink)`
-  font-size: 14px;
-  line-height: normal;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
