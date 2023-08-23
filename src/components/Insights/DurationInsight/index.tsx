@@ -71,22 +71,54 @@ const calculateBars = (
   bars: HistogramBarData[],
   chartWidth: number
 ): HistogramBarData[] => {
+  const filledBars: HistogramBarData[] = [];
+
+  for (let i = 0; i < bars.length; i++) {
+    const bar = bars[i];
+
+    if (i === 0 && bar.index > 0) {
+      for (let j = 0; j < bar.index; j++) {
+        filledBars[j] = {
+          index: j,
+          count: 0,
+          start: "",
+          end: ""
+        };
+      }
+    }
+
+    if (i !== 0) {
+      const prevBar = bars[i - 1];
+      for (let j = prevBar.index + 1; j < bar.index; j++) {
+        filledBars[j] = {
+          index: j,
+          count: 0,
+          start: "",
+          end: ""
+        };
+      }
+    }
+
+    filledBars[bar.index] = bar;
+  }
+
   const barWidth = BAR_WIDTH * 2;
   const newBarCount = Math.floor(chartWidth / barWidth);
-  const barsCount = bars[bars.length - 1].index;
+  const barsCount = filledBars.length;
   const groupSize = Math.ceil(barsCount / newBarCount);
 
   const newBars: HistogramBarData[] = [];
 
-  for (let i = 0, j = 0; i < bars.length - 1; i += groupSize, j++) {
-    const group = bars.slice(i, i + groupSize);
+  for (let i = 0, j = 0; i < barsCount; i += groupSize, j++) {
+    const group = filledBars.slice(i, i + groupSize);
     const newCount = group.reduce((acc, cur) => acc + cur.count, 0);
+    const notEmptyBars = group.filter((x) => x.count > 0);
 
     newBars.push({
       index: j,
       count: newCount,
-      start: group[0].start,
-      end: group[group.length - 1].end
+      start: newCount > 0 ? notEmptyBars[0].start : "",
+      end: newCount > 0 ? notEmptyBars[notEmptyBars.length - 1].end : ""
     });
   }
 
@@ -130,43 +162,9 @@ export const DurationInsight = (props: DurationInsightProps) => {
       LAST_CALL_TIME_DISTANCE_LIMIT
     : false;
 
-  const histogramData = [];
-
-  if (props.insight.histogramData) {
-    const calculatedBars = calculateBars(
-      props.insight.histogramData.bars,
-      width
-    );
-
-    for (let i = 0; i < calculatedBars.length; i++) {
-      const bar = calculatedBars[i];
-
-      if (i === 0 && bar.index > 0) {
-        for (let j = 0; j < bar.index; j++) {
-          histogramData[j] = {
-            index: j,
-            count: 0,
-            start: "",
-            end: ""
-          };
-        }
-      }
-
-      if (i !== 0) {
-        const prevBar = calculatedBars[i - 1];
-        for (let j = prevBar.index + 1; j < bar.index; j++) {
-          histogramData[j] = {
-            index: j,
-            count: 0,
-            start: "",
-            end: ""
-          };
-        }
-      }
-
-      histogramData[bar.index] = bar;
-    }
-  }
+  const histogramData = props.insight.histogramData
+    ? calculateBars(props.insight.histogramData.bars, width)
+    : [];
 
   const p50 = props.insight.histogramData?.quantiles.find(
     (x) => x.quantileValue === 0.5
@@ -261,7 +259,7 @@ export const DurationInsight = (props: DurationInsightProps) => {
 
           {props.insight.histogramData && (
             <s.HistogramContainer ref={observe}>
-              <ResponsiveContainer width="100%" height="100%">
+              <ResponsiveContainer width={"100%"} height={"100%"}>
                 <BarChart
                   margin={{ top: 20, right: 0, bottom: 0, left: 0 }}
                   barSize={BAR_WIDTH}
