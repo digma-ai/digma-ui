@@ -10,6 +10,7 @@ import {
 } from "recharts";
 import { DefaultTheme, useTheme } from "styled-components";
 import { Duration } from "../../../globals";
+import { isNumber } from "../../../typeGuards/isNumber";
 import { formatTimeDistance } from "../../../utils/formatTimeDistance";
 import { getPercentileLabel } from "../../../utils/getPercentileLabel";
 import { Button } from "../../common/Button";
@@ -24,7 +25,9 @@ import { DurationInsightProps, TickData } from "./types";
 
 const LAST_CALL_TIME_DISTANCE_LIMIT = 60 * 1000; // in milliseconds
 
+// in pixels
 const BAR_WIDTH = 5;
+const MIN_X_AXIS_PADDING = 40;
 
 const durationPlaceholder: Duration = { value: 0, unit: "ns", raw: 0 };
 
@@ -170,7 +173,10 @@ export const DurationInsight = (props: DurationInsightProps) => {
     ? calculateBars(props.insight.histogramPlot.bars, width)
     : [];
 
-  const XAxisPadding = (width - chartData.length * BAR_WIDTH * 2) / 2;
+  const XAxisPadding = Math.max(
+    (width - chartData.length * BAR_WIDTH * 2) / 2,
+    MIN_X_AXIS_PADDING
+  );
 
   const p50 = props.insight.histogramPlot?.quantiles.find(
     (x) => x.quantileValue === 0.5
@@ -190,17 +196,31 @@ export const DurationInsight = (props: DurationInsightProps) => {
 
   const ticks: Record<number, TickData> = {};
 
-  if (p50 && p50BarIndex) {
+  if (p50 && isNumber(p50BarIndex) && p50BarIndex > -1) {
     ticks[p50BarIndex] = {
       value: getDurationString(p50),
       label: getPercentileLabel(0.5)
     };
   }
 
-  if (p95 && p95BarIndex) {
+  if (p95 && isNumber(p95BarIndex) && p95BarIndex > -1) {
     ticks[p95BarIndex] = {
       value: getDurationString(p95),
       label: getPercentileLabel(0.95)
+    };
+  }
+
+  const notEmptyBars = chartData.filter((x) => x.count > 0);
+
+  if (!p50 && !p95 && notEmptyBars.length) {
+    const minBar = notEmptyBars[0];
+    ticks[minBar.index] = {
+      value: getDurationString(minBar.start)
+    };
+
+    const maxBar = notEmptyBars[notEmptyBars.length - 1];
+    ticks[maxBar.index] = {
+      value: getDurationString(maxBar.end)
     };
   }
 
@@ -212,9 +232,11 @@ export const DurationInsight = (props: DurationInsightProps) => {
         <s.Container>
           {spanLastCall && (
             <s.Stats>
-              <Description>Last call</Description>
+              <s.StatsTitle>Last call</s.StatsTitle>
               <s.ValueContainer>
-                <s.Value>{getDurationString(spanLastCall.duration)}</s.Value>
+                <Description>
+                  {getDurationString(spanLastCall.duration)}
+                </Description>
                 <s.LastCallTimeDistance isRecent={isLastCallRecent}>
                   •{" "}
                   {isLastCallRecent
@@ -243,13 +265,13 @@ export const DurationInsight = (props: DurationInsightProps) => {
                 if (!props.insight.histogramPlot) {
                   return (
                     <s.Stats key={percentile.percentile}>
-                      <Description>
+                      <s.StatsTitle>
                         {getPercentileLabel(percentile.percentile)}
-                      </Description>
+                      </s.StatsTitle>
                       <s.ValueContainer>
-                        <s.Value>
+                        <Description>
                           {getDurationString(percentile.currentDuration)}
-                        </s.Value>
+                        </Description>
                         <DurationChange
                           currentDuration={percentile.currentDuration}
                           previousDuration={percentile.previousDuration}
@@ -263,9 +285,9 @@ export const DurationInsight = (props: DurationInsightProps) => {
 
                 return props.insight.histogramPlot && isChangeMeaningful ? (
                   <s.Stats key={percentile.percentile}>
-                    <Description>
+                    <s.StatsTitle>
                       {getPercentileLabel(percentile.percentile)}
-                    </Description>
+                    </s.StatsTitle>
                     <s.ValueContainer>
                       <DurationChange
                         currentDuration={percentile.currentDuration}
@@ -334,23 +356,26 @@ export const DurationInsight = (props: DurationInsightProps) => {
                         fill: tickLabelColor
                       }
                     }
+                    interval={0}
                     ticks={Object.keys(ticks).map((x) => Number(x))}
                     tickFormatter={(x: number) => ticks[x].value}
                     height={20}
                   />
-                  {Object.entries(ticks).map(([barIndex, tickData]) => (
-                    <ReferenceLine
-                      key={tickData.label}
-                      x={Number(barIndex)}
-                      stroke={tickColor}
-                      strokeDasharray={"5 5"}
-                      label={{
-                        position: "top",
-                        value: tickData.label,
-                        fill: tickColor
-                      }}
-                    />
-                  ))}
+                  {Object.entries(ticks)
+                    .filter(([, tickData]) => tickData.label)
+                    .map(([barIndex, tickData]) => (
+                      <ReferenceLine
+                        key={tickData.label}
+                        x={Number(barIndex)}
+                        stroke={tickColor}
+                        strokeDasharray={"5 5"}
+                        label={{
+                          position: "top",
+                          value: tickData.label,
+                          fill: tickColor
+                        }}
+                      />
+                    ))}
                 </BarChart>
               </ResponsiveContainer>
             </s.ChartContainer>
