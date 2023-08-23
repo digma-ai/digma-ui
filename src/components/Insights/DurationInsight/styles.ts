@@ -9,8 +9,7 @@ export const Container = styled.div`
 
 export const Stats = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  gap: 8px;
 `;
 
 export const ValueContainer = styled.div`

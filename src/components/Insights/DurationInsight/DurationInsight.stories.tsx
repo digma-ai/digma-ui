@@ -306,1895 +306,4415 @@ export const HistogramWithManyBars: Story = {
           {
             index: 0,
             count: 30,
-            start: "00:00:00.0026565",
-            end: "00:00:00.0029221"
+            start: {
+              value: 2.66,
+              unit: "ms",
+              raw: 2656500
+            },
+            end: {
+              value: 2.92,
+              unit: "ms",
+              raw: 2922100
+            }
           },
           {
             index: 1,
             count: 3,
-            start: "00:00:00.0029221",
-            end: "00:00:00.0031878"
+            start: {
+              value: 2.92,
+              unit: "ms",
+              raw: 2922100
+            },
+            end: {
+              value: 3.19,
+              unit: "ms",
+              raw: 3187800
+            }
           },
           {
             index: 4,
             count: 10,
-            start: "00:00:00.0037191",
-            end: "00:00:00.0039847"
+            start: {
+              value: 3.72,
+              unit: "ms",
+              raw: 3719100
+            },
+            end: {
+              value: 3.98,
+              unit: "ms",
+              raw: 3984700.0000000005
+            }
           },
           {
             index: 5,
             count: 9,
-            start: "00:00:00.0039847",
-            end: "00:00:00.0042504"
+            start: {
+              value: 3.98,
+              unit: "ms",
+              raw: 3984700.0000000005
+            },
+            end: {
+              value: 4.25,
+              unit: "ms",
+              raw: 4250400
+            }
           },
           {
             index: 7,
             count: 3,
-            start: "00:00:00.0045160",
-            end: "00:00:00.0047817"
+            start: {
+              value: 4.52,
+              unit: "ms",
+              raw: 4516000
+            },
+            end: {
+              value: 4.78,
+              unit: "ms",
+              raw: 4781700
+            }
           },
           {
             index: 8,
             count: 2,
-            start: "00:00:00.0047817",
-            end: "00:00:00.0050473"
+            start: {
+              value: 4.78,
+              unit: "ms",
+              raw: 4781700
+            },
+            end: {
+              value: 5.05,
+              unit: "ms",
+              raw: 5047300
+            }
           },
           {
             index: 13,
             count: 2,
-            start: "00:00:00.0061099",
-            end: "00:00:00.0063756"
+            start: {
+              value: 6.11,
+              unit: "ms",
+              raw: 6109900
+            },
+            end: {
+              value: 6.38,
+              unit: "ms",
+              raw: 6375600
+            }
           },
           {
             index: 14,
             count: 2,
-            start: "00:00:00.0063756",
-            end: "00:00:00.0066412"
+            start: {
+              value: 6.38,
+              unit: "ms",
+              raw: 6375600
+            },
+            end: {
+              value: 6.64,
+              unit: "ms",
+              raw: 6641200.000000001
+            }
           },
           {
             index: 15,
             count: 1,
-            start: "00:00:00.0066412",
-            end: "00:00:00.0069069"
+            start: {
+              value: 6.64,
+              unit: "ms",
+              raw: 6641200.000000001
+            },
+            end: {
+              value: 6.91,
+              unit: "ms",
+              raw: 6906900.000000001
+            }
           },
           {
             index: 18,
             count: 6,
-            start: "00:00:00.0074382",
-            end: "00:00:00.0077038"
+            start: {
+              value: 7.44,
+              unit: "ms",
+              raw: 7438200
+            },
+            end: {
+              value: 7.7,
+              unit: "ms",
+              raw: 7703800
+            }
           },
           {
             index: 19,
             count: 6,
-            start: "00:00:00.0077038",
-            end: "00:00:00.0079695"
+            start: {
+              value: 7.7,
+              unit: "ms",
+              raw: 7703800
+            },
+            end: {
+              value: 7.97,
+              unit: "ms",
+              raw: 7969500
+            }
           },
           {
             index: 20,
             count: 6,
-            start: "00:00:00.0079695",
-            end: "00:00:00.0082351"
+            start: {
+              value: 7.97,
+              unit: "ms",
+              raw: 7969500
+            },
+            end: {
+              value: 8.24,
+              unit: "ms",
+              raw: 8235099.999999998
+            }
           },
           {
             index: 21,
             count: 2,
-            start: "00:00:00.0082351",
-            end: "00:00:00.0085008"
+            start: {
+              value: 8.24,
+              unit: "ms",
+              raw: 8235099.999999998
+            },
+            end: {
+              value: 8.5,
+              unit: "ms",
+              raw: 8500800
+            }
           },
           {
             index: 22,
             count: 2,
-            start: "00:00:00.0085008",
-            end: "00:00:00.0087664"
+            start: {
+              value: 8.5,
+              unit: "ms",
+              raw: 8500800
+            },
+            end: {
+              value: 8.77,
+              unit: "ms",
+              raw: 8766400.000000002
+            }
           },
           {
             index: 23,
             count: 1,
-            start: "00:00:00.0087664",
-            end: "00:00:00.0090321"
+            start: {
+              value: 8.77,
+              unit: "ms",
+              raw: 8766400.000000002
+            },
+            end: {
+              value: 9.03,
+              unit: "ms",
+              raw: 9032100
+            }
           },
           {
             index: 27,
             count: 2,
-            start: "00:00:00.0098290",
-            end: "00:00:00.0100947"
+            start: {
+              value: 9.83,
+              unit: "ms",
+              raw: 9829000
+            },
+            end: {
+              value: 10.09,
+              unit: "ms",
+              raw: 10094699.999999998
+            }
           },
           {
             index: 28,
             count: 1,
-            start: "00:00:00.0100947",
-            end: "00:00:00.0103603"
+            start: {
+              value: 10.09,
+              unit: "ms",
+              raw: 10094699.999999998
+            },
+            end: {
+              value: 10.36,
+              unit: "ms",
+              raw: 10360300.000000002
+            }
           },
           {
             index: 29,
             count: 1,
-            start: "00:00:00.0103603",
-            end: "00:00:00.0106260"
+            start: {
+              value: 10.36,
+              unit: "ms",
+              raw: 10360300.000000002
+            },
+            end: {
+              value: 10.63,
+              unit: "ms",
+              raw: 10626000
+            }
           },
           {
             index: 30,
             count: 1,
-            start: "00:00:00.0106260",
-            end: "00:00:00.0108916"
+            start: {
+              value: 10.63,
+              unit: "ms",
+              raw: 10626000
+            },
+            end: {
+              value: 10.89,
+              unit: "ms",
+              raw: 10891600
+            }
           },
           {
             index: 31,
             count: 5,
-            start: "00:00:00.0108916",
-            end: "00:00:00.0111573"
+            start: {
+              value: 10.89,
+              unit: "ms",
+              raw: 10891600
+            },
+            end: {
+              value: 11.16,
+              unit: "ms",
+              raw: 11157300
+            }
           },
           {
             index: 32,
             count: 5,
-            start: "00:00:00.0111573",
-            end: "00:00:00.0114229"
+            start: {
+              value: 11.16,
+              unit: "ms",
+              raw: 11157300
+            },
+            end: {
+              value: 11.42,
+              unit: "ms",
+              raw: 11422900
+            }
           },
           {
             index: 33,
             count: 4,
-            start: "00:00:00.0114229",
-            end: "00:00:00.0116886"
+            start: {
+              value: 11.42,
+              unit: "ms",
+              raw: 11422900
+            },
+            end: {
+              value: 11.69,
+              unit: "ms",
+              raw: 11688599.999999998
+            }
           },
           {
             index: 34,
             count: 4,
-            start: "00:00:00.0116886",
-            end: "00:00:00.0119543"
+            start: {
+              value: 11.69,
+              unit: "ms",
+              raw: 11688599.999999998
+            },
+            end: {
+              value: 11.95,
+              unit: "ms",
+              raw: 11954300
+            }
           },
           {
             index: 35,
             count: 1,
-            start: "00:00:00.0119543",
-            end: "00:00:00.0122199"
+            start: {
+              value: 11.95,
+              unit: "ms",
+              raw: 11954300
+            },
+            end: {
+              value: 12.22,
+              unit: "ms",
+              raw: 12219900.000000002
+            }
           },
           {
             index: 36,
             count: 1,
-            start: "00:00:00.0122199",
-            end: "00:00:00.0124856"
+            start: {
+              value: 12.22,
+              unit: "ms",
+              raw: 12219900.000000002
+            },
+            end: {
+              value: 12.49,
+              unit: "ms",
+              raw: 12485600
+            }
           },
           {
             index: 37,
             count: 1,
-            start: "00:00:00.0124856",
-            end: "00:00:00.0127512"
+            start: {
+              value: 12.49,
+              unit: "ms",
+              raw: 12485600
+            },
+            end: {
+              value: 12.75,
+              unit: "ms",
+              raw: 12751200
+            }
           },
           {
             index: 38,
             count: 1,
-            start: "00:00:00.0127512",
-            end: "00:00:00.0130169"
+            start: {
+              value: 12.75,
+              unit: "ms",
+              raw: 12751200
+            },
+            end: {
+              value: 13.02,
+              unit: "ms",
+              raw: 13016900
+            }
           },
           {
             index: 39,
             count: 1,
-            start: "00:00:00.0130169",
-            end: "00:00:00.0132825"
+            start: {
+              value: 13.02,
+              unit: "ms",
+              raw: 13016900
+            },
+            end: {
+              value: 13.28,
+              unit: "ms",
+              raw: 13282500
+            }
           },
           {
             index: 45,
             count: 5,
-            start: "00:00:00.0146108",
-            end: "00:00:00.0148764"
+            start: {
+              value: 14.61,
+              unit: "ms",
+              raw: 14610800
+            },
+            end: {
+              value: 14.88,
+              unit: "ms",
+              raw: 14876400
+            }
           },
           {
             index: 46,
             count: 4,
-            start: "00:00:00.0148764",
-            end: "00:00:00.0151421"
+            start: {
+              value: 14.88,
+              unit: "ms",
+              raw: 14876400
+            },
+            end: {
+              value: 15.14,
+              unit: "ms",
+              raw: 15142099.999999998
+            }
           },
           {
             index: 47,
             count: 4,
-            start: "00:00:00.0151421",
-            end: "00:00:00.0154077"
+            start: {
+              value: 15.14,
+              unit: "ms",
+              raw: 15142099.999999998
+            },
+            end: {
+              value: 15.41,
+              unit: "ms",
+              raw: 15407700
+            }
           },
           {
             index: 48,
             count: 4,
-            start: "00:00:00.0154077",
-            end: "00:00:00.0156734"
+            start: {
+              value: 15.41,
+              unit: "ms",
+              raw: 15407700
+            },
+            end: {
+              value: 15.67,
+              unit: "ms",
+              raw: 15673400.000000002
+            }
           },
           {
             index: 49,
             count: 4,
-            start: "00:00:00.0156734",
-            end: "00:00:00.0159390"
+            start: {
+              value: 15.67,
+              unit: "ms",
+              raw: 15673400.000000002
+            },
+            end: {
+              value: 15.94,
+              unit: "ms",
+              raw: 15939000
+            }
           },
           {
             index: 50,
             count: 4,
-            start: "00:00:00.0159390",
-            end: "00:00:00.0162047"
+            start: {
+              value: 15.94,
+              unit: "ms",
+              raw: 15939000
+            },
+            end: {
+              value: 16.2,
+              unit: "ms",
+              raw: 16204699.999999998
+            }
           },
           {
             index: 51,
             count: 1,
-            start: "00:00:00.0162047",
-            end: "00:00:00.0164703"
+            start: {
+              value: 16.2,
+              unit: "ms",
+              raw: 16204699.999999998
+            },
+            end: {
+              value: 16.47,
+              unit: "ms",
+              raw: 16470300.000000004
+            }
           },
           {
             index: 52,
             count: 1,
-            start: "00:00:00.0164703",
-            end: "00:00:00.0167360"
+            start: {
+              value: 16.47,
+              unit: "ms",
+              raw: 16470300.000000004
+            },
+            end: {
+              value: 16.74,
+              unit: "ms",
+              raw: 16736000
+            }
           },
           {
             index: 53,
             count: 1,
-            start: "00:00:00.0167360",
-            end: "00:00:00.0170016"
+            start: {
+              value: 16.74,
+              unit: "ms",
+              raw: 16736000
+            },
+            end: {
+              value: 17,
+              unit: "ms",
+              raw: 17001600
+            }
           },
           {
             index: 54,
             count: 1,
-            start: "00:00:00.0170016",
-            end: "00:00:00.0172673"
+            start: {
+              value: 17,
+              unit: "ms",
+              raw: 17001600
+            },
+            end: {
+              value: 17.27,
+              unit: "ms",
+              raw: 17267300
+            }
           },
           {
             index: 55,
             count: 1,
-            start: "00:00:00.0172673",
-            end: "00:00:00.0175329"
+            start: {
+              value: 17.27,
+              unit: "ms",
+              raw: 17267300
+            },
+            end: {
+              value: 17.53,
+              unit: "ms",
+              raw: 17532900
+            }
           },
           {
             index: 57,
             count: 1,
-            start: "00:00:00.0177986",
-            end: "00:00:00.0180642"
+            start: {
+              value: 17.8,
+              unit: "ms",
+              raw: 17798600.000000004
+            },
+            end: {
+              value: 18.06,
+              unit: "ms",
+              raw: 18064200
+            }
           },
           {
             index: 58,
             count: 1,
-            start: "00:00:00.0180642",
-            end: "00:00:00.0183299"
+            start: {
+              value: 18.06,
+              unit: "ms",
+              raw: 18064200
+            },
+            end: {
+              value: 18.33,
+              unit: "ms",
+              raw: 18329899.999999996
+            }
           },
           {
             index: 59,
             count: 1,
-            start: "00:00:00.0183299",
-            end: "00:00:00.0185955"
+            start: {
+              value: 18.33,
+              unit: "ms",
+              raw: 18329899.999999996
+            },
+            end: {
+              value: 18.6,
+              unit: "ms",
+              raw: 18595500
+            }
           },
           {
             index: 60,
             count: 1,
-            start: "00:00:00.0185955",
-            end: "00:00:00.0188612"
+            start: {
+              value: 18.6,
+              unit: "ms",
+              raw: 18595500
+            },
+            end: {
+              value: 18.86,
+              unit: "ms",
+              raw: 18861200
+            }
           },
           {
             index: 61,
             count: 1,
-            start: "00:00:00.0188612",
-            end: "00:00:00.0191268"
+            start: {
+              value: 18.86,
+              unit: "ms",
+              raw: 18861200
+            },
+            end: {
+              value: 19.13,
+              unit: "ms",
+              raw: 19126800
+            }
           },
           {
             index: 64,
             count: 4,
-            start: "00:00:00.0196581",
-            end: "00:00:00.0199238"
+            start: {
+              value: 19.66,
+              unit: "ms",
+              raw: 19658100.000000004
+            },
+            end: {
+              value: 19.92,
+              unit: "ms",
+              raw: 19923800
+            }
           },
           {
             index: 65,
             count: 3,
-            start: "00:00:00.0199238",
-            end: "00:00:00.0201894"
+            start: {
+              value: 19.92,
+              unit: "ms",
+              raw: 19923800
+            },
+            end: {
+              value: 20.19,
+              unit: "ms",
+              raw: 20189399.999999996
+            }
           },
           {
             index: 66,
             count: 3,
-            start: "00:00:00.0201894",
-            end: "00:00:00.0204551"
+            start: {
+              value: 20.19,
+              unit: "ms",
+              raw: 20189399.999999996
+            },
+            end: {
+              value: 20.46,
+              unit: "ms",
+              raw: 20455100.000000004
+            }
           },
           {
             index: 67,
             count: 3,
-            start: "00:00:00.0204551",
-            end: "00:00:00.0207207"
+            start: {
+              value: 20.46,
+              unit: "ms",
+              raw: 20455100.000000004
+            },
+            end: {
+              value: 20.72,
+              unit: "ms",
+              raw: 20720700
+            }
           },
           {
             index: 68,
             count: 3,
-            start: "00:00:00.0207207",
-            end: "00:00:00.0209864"
+            start: {
+              value: 20.72,
+              unit: "ms",
+              raw: 20720700
+            },
+            end: {
+              value: 20.99,
+              unit: "ms",
+              raw: 20986400
+            }
           },
           {
             index: 69,
             count: 3,
-            start: "00:00:00.0209864",
-            end: "00:00:00.0212520"
+            start: {
+              value: 20.99,
+              unit: "ms",
+              raw: 20986400
+            },
+            end: {
+              value: 21.25,
+              unit: "ms",
+              raw: 21252000
+            }
           },
           {
             index: 70,
             count: 3,
-            start: "00:00:00.0212520",
-            end: "00:00:00.0215177"
+            start: {
+              value: 21.25,
+              unit: "ms",
+              raw: 21252000
+            },
+            end: {
+              value: 21.52,
+              unit: "ms",
+              raw: 21517700
+            }
           },
           {
             index: 71,
             count: 1,
-            start: "00:00:00.0215177",
-            end: "00:00:00.0217833"
+            start: {
+              value: 21.52,
+              unit: "ms",
+              raw: 21517700
+            },
+            end: {
+              value: 21.78,
+              unit: "ms",
+              raw: 21783300
+            }
           },
           {
             index: 72,
             count: 1,
-            start: "00:00:00.0217833",
-            end: "00:00:00.0220490"
+            start: {
+              value: 21.78,
+              unit: "ms",
+              raw: 21783300
+            },
+            end: {
+              value: 22.05,
+              unit: "ms",
+              raw: 22049000
+            }
           },
           {
             index: 73,
             count: 1,
-            start: "00:00:00.0220490",
-            end: "00:00:00.0223146"
+            start: {
+              value: 22.05,
+              unit: "ms",
+              raw: 22049000
+            },
+            end: {
+              value: 22.31,
+              unit: "ms",
+              raw: 22314600
+            }
           },
           {
             index: 79,
             count: 3,
-            start: "00:00:00.0236429",
-            end: "00:00:00.0239086"
+            start: {
+              value: 23.64,
+              unit: "ms",
+              raw: 23642900
+            },
+            end: {
+              value: 23.91,
+              unit: "ms",
+              raw: 23908600
+            }
           },
           {
             index: 80,
             count: 3,
-            start: "00:00:00.0239086",
-            end: "00:00:00.0241742"
+            start: {
+              value: 23.91,
+              unit: "ms",
+              raw: 23908600
+            },
+            end: {
+              value: 24.17,
+              unit: "ms",
+              raw: 24174200
+            }
           },
           {
             index: 81,
             count: 3,
-            start: "00:00:00.0241742",
-            end: "00:00:00.0244399"
+            start: {
+              value: 24.17,
+              unit: "ms",
+              raw: 24174200
+            },
+            end: {
+              value: 24.44,
+              unit: "ms",
+              raw: 24439900
+            }
           },
           {
             index: 82,
             count: 3,
-            start: "00:00:00.0244399",
-            end: "00:00:00.0247055"
+            start: {
+              value: 24.44,
+              unit: "ms",
+              raw: 24439900
+            },
+            end: {
+              value: 24.71,
+              unit: "ms",
+              raw: 24705500
+            }
           },
           {
             index: 83,
             count: 2,
-            start: "00:00:00.0247055",
-            end: "00:00:00.0249712"
+            start: {
+              value: 24.71,
+              unit: "ms",
+              raw: 24705500
+            },
+            end: {
+              value: 24.97,
+              unit: "ms",
+              raw: 24971200
+            }
           },
           {
             index: 84,
             count: 2,
-            start: "00:00:00.0249712",
-            end: "00:00:00.0252368"
+            start: {
+              value: 24.97,
+              unit: "ms",
+              raw: 24971200
+            },
+            end: {
+              value: 25.24,
+              unit: "ms",
+              raw: 25236800
+            }
           },
           {
             index: 85,
             count: 2,
-            start: "00:00:00.0252368",
-            end: "00:00:00.0255025"
+            start: {
+              value: 25.24,
+              unit: "ms",
+              raw: 25236800
+            },
+            end: {
+              value: 25.5,
+              unit: "ms",
+              raw: 25502500
+            }
           },
           {
             index: 86,
             count: 2,
-            start: "00:00:00.0255025",
-            end: "00:00:00.0257681"
+            start: {
+              value: 25.5,
+              unit: "ms",
+              raw: 25502500
+            },
+            end: {
+              value: 25.77,
+              unit: "ms",
+              raw: 25768100.000000004
+            }
           },
           {
             index: 87,
             count: 2,
-            start: "00:00:00.0257681",
-            end: "00:00:00.0260338"
+            start: {
+              value: 25.77,
+              unit: "ms",
+              raw: 25768100.000000004
+            },
+            end: {
+              value: 26.03,
+              unit: "ms",
+              raw: 26033800
+            }
           },
           {
             index: 88,
             count: 3,
-            start: "00:00:00.0260338",
-            end: "00:00:00.0262994"
+            start: {
+              value: 26.03,
+              unit: "ms",
+              raw: 26033800
+            },
+            end: {
+              value: 26.3,
+              unit: "ms",
+              raw: 26299399.999999996
+            }
           },
           {
             index: 89,
             count: 3,
-            start: "00:00:00.0262994",
-            end: "00:00:00.0265651"
+            start: {
+              value: 26.3,
+              unit: "ms",
+              raw: 26299399.999999996
+            },
+            end: {
+              value: 26.57,
+              unit: "ms",
+              raw: 26565100.000000004
+            }
           },
           {
             index: 90,
             count: 2,
-            start: "00:00:00.0265651",
-            end: "00:00:00.0268307"
+            start: {
+              value: 26.57,
+              unit: "ms",
+              raw: 26565100.000000004
+            },
+            end: {
+              value: 26.83,
+              unit: "ms",
+              raw: 26830700
+            }
           },
           {
             index: 91,
             count: 2,
-            start: "00:00:00.0268307",
-            end: "00:00:00.0270964"
+            start: {
+              value: 26.83,
+              unit: "ms",
+              raw: 26830700
+            },
+            end: {
+              value: 27.1,
+              unit: "ms",
+              raw: 27096399.999999996
+            }
           },
           {
             index: 92,
             count: 2,
-            start: "00:00:00.0270964",
-            end: "00:00:00.0273620"
+            start: {
+              value: 27.1,
+              unit: "ms",
+              raw: 27096399.999999996
+            },
+            end: {
+              value: 27.36,
+              unit: "ms",
+              raw: 27362000
+            }
           },
           {
             index: 93,
             count: 2,
-            start: "00:00:00.0273620",
-            end: "00:00:00.0276277"
+            start: {
+              value: 27.36,
+              unit: "ms",
+              raw: 27362000
+            },
+            end: {
+              value: 27.63,
+              unit: "ms",
+              raw: 27627700
+            }
           },
           {
             index: 94,
             count: 2,
-            start: "00:00:00.0276277",
-            end: "00:00:00.0278933"
+            start: {
+              value: 27.63,
+              unit: "ms",
+              raw: 27627700
+            },
+            end: {
+              value: 27.89,
+              unit: "ms",
+              raw: 27893300
+            }
           },
           {
             index: 95,
             count: 2,
-            start: "00:00:00.0278933",
-            end: "00:00:00.0281590"
+            start: {
+              value: 27.89,
+              unit: "ms",
+              raw: 27893300
+            },
+            end: {
+              value: 28.16,
+              unit: "ms",
+              raw: 28159000
+            }
           },
           {
             index: 96,
             count: 2,
-            start: "00:00:00.0281590",
-            end: "00:00:00.0284246"
+            start: {
+              value: 28.16,
+              unit: "ms",
+              raw: 28159000
+            },
+            end: {
+              value: 28.42,
+              unit: "ms",
+              raw: 28424600.000000004
+            }
           },
           {
             index: 97,
             count: 2,
-            start: "00:00:00.0284246",
-            end: "00:00:00.0286903"
+            start: {
+              value: 28.42,
+              unit: "ms",
+              raw: 28424600.000000004
+            },
+            end: {
+              value: 28.69,
+              unit: "ms",
+              raw: 28690300
+            }
           },
           {
             index: 98,
             count: 1,
-            start: "00:00:00.0286903",
-            end: "00:00:00.0289559"
+            start: {
+              value: 28.69,
+              unit: "ms",
+              raw: 28690300
+            },
+            end: {
+              value: 28.96,
+              unit: "ms",
+              raw: 28955900
+            }
           },
           {
             index: 99,
             count: 1,
-            start: "00:00:00.0289559",
-            end: "00:00:00.0292216"
+            start: {
+              value: 28.96,
+              unit: "ms",
+              raw: 28955900
+            },
+            end: {
+              value: 29.22,
+              unit: "ms",
+              raw: 29221600
+            }
           },
           {
             index: 100,
             count: 1,
-            start: "00:00:00.0292216",
-            end: "00:00:00.0294872"
+            start: {
+              value: 29.22,
+              unit: "ms",
+              raw: 29221600
+            },
+            end: {
+              value: 29.49,
+              unit: "ms",
+              raw: 29487200
+            }
           },
           {
             index: 101,
             count: 1,
-            start: "00:00:00.0294872",
-            end: "00:00:00.0297529"
+            start: {
+              value: 29.49,
+              unit: "ms",
+              raw: 29487200
+            },
+            end: {
+              value: 29.75,
+              unit: "ms",
+              raw: 29752900
+            }
           },
           {
             index: 102,
             count: 1,
-            start: "00:00:00.0297529",
-            end: "00:00:00.0300185"
+            start: {
+              value: 29.75,
+              unit: "ms",
+              raw: 29752900
+            },
+            end: {
+              value: 30.02,
+              unit: "ms",
+              raw: 30018500
+            }
           },
           {
             index: 103,
             count: 1,
-            start: "00:00:00.0300185",
-            end: "00:00:00.0302842"
+            start: {
+              value: 30.02,
+              unit: "ms",
+              raw: 30018500
+            },
+            end: {
+              value: 30.28,
+              unit: "ms",
+              raw: 30284199.999999996
+            }
           },
           {
             index: 109,
             count: 2,
-            start: "00:00:00.0316124",
-            end: "00:00:00.0318781"
+            start: {
+              value: 31.61,
+              unit: "ms",
+              raw: 31612400
+            },
+            end: {
+              value: 31.88,
+              unit: "ms",
+              raw: 31878100
+            }
           },
           {
             index: 110,
             count: 2,
-            start: "00:00:00.0318781",
-            end: "00:00:00.0321437"
+            start: {
+              value: 31.88,
+              unit: "ms",
+              raw: 31878100
+            },
+            end: {
+              value: 32.14,
+              unit: "ms",
+              raw: 32143700.000000004
+            }
           },
           {
             index: 111,
             count: 2,
-            start: "00:00:00.0321437",
-            end: "00:00:00.0324094"
+            start: {
+              value: 32.14,
+              unit: "ms",
+              raw: 32143700.000000004
+            },
+            end: {
+              value: 32.41,
+              unit: "ms",
+              raw: 32409399.999999996
+            }
           },
           {
             index: 112,
             count: 2,
-            start: "00:00:00.0324094",
-            end: "00:00:00.0326750"
+            start: {
+              value: 32.41,
+              unit: "ms",
+              raw: 32409399.999999996
+            },
+            end: {
+              value: 32.67,
+              unit: "ms",
+              raw: 32674999.999999996
+            }
           },
           {
             index: 113,
             count: 2,
-            start: "00:00:00.0326750",
-            end: "00:00:00.0329407"
+            start: {
+              value: 32.67,
+              unit: "ms",
+              raw: 32674999.999999996
+            },
+            end: {
+              value: 32.94,
+              unit: "ms",
+              raw: 32940699.999999996
+            }
           },
           {
             index: 114,
             count: 2,
-            start: "00:00:00.0329407",
-            end: "00:00:00.0332063"
+            start: {
+              value: 32.94,
+              unit: "ms",
+              raw: 32940699.999999996
+            },
+            end: {
+              value: 33.21,
+              unit: "ms",
+              raw: 33206299.999999996
+            }
           },
           {
             index: 115,
             count: 2,
-            start: "00:00:00.0332063",
-            end: "00:00:00.0334720"
+            start: {
+              value: 33.21,
+              unit: "ms",
+              raw: 33206299.999999996
+            },
+            end: {
+              value: 33.47,
+              unit: "ms",
+              raw: 33472000
+            }
           },
           {
             index: 116,
             count: 2,
-            start: "00:00:00.0334720",
-            end: "00:00:00.0337376"
+            start: {
+              value: 33.47,
+              unit: "ms",
+              raw: 33472000
+            },
+            end: {
+              value: 33.74,
+              unit: "ms",
+              raw: 33737600
+            }
           },
           {
             index: 117,
             count: 2,
-            start: "00:00:00.0337376",
-            end: "00:00:00.0340033"
+            start: {
+              value: 33.74,
+              unit: "ms",
+              raw: 33737600
+            },
+            end: {
+              value: 34,
+              unit: "ms",
+              raw: 34003300
+            }
           },
           {
             index: 118,
             count: 1,
-            start: "00:00:00.0340033",
-            end: "00:00:00.0342689"
+            start: {
+              value: 34,
+              unit: "ms",
+              raw: 34003300
+            },
+            end: {
+              value: 34.27,
+              unit: "ms",
+              raw: 34268900
+            }
           },
           {
             index: 119,
             count: 1,
-            start: "00:00:00.0342689",
-            end: "00:00:00.0345346"
+            start: {
+              value: 34.27,
+              unit: "ms",
+              raw: 34268900
+            },
+            end: {
+              value: 34.53,
+              unit: "ms",
+              raw: 34534600
+            }
           },
           {
             index: 120,
             count: 1,
-            start: "00:00:00.0345346",
-            end: "00:00:00.0348002"
+            start: {
+              value: 34.53,
+              unit: "ms",
+              raw: 34534600
+            },
+            end: {
+              value: 34.8,
+              unit: "ms",
+              raw: 34800200
+            }
           },
           {
             index: 121,
             count: 2,
-            start: "00:00:00.0348002",
-            end: "00:00:00.0350659"
+            start: {
+              value: 34.8,
+              unit: "ms",
+              raw: 34800200
+            },
+            end: {
+              value: 35.07,
+              unit: "ms",
+              raw: 35065900
+            }
           },
           {
             index: 122,
             count: 2,
-            start: "00:00:00.0350659",
-            end: "00:00:00.0353316"
+            start: {
+              value: 35.07,
+              unit: "ms",
+              raw: 35065900
+            },
+            end: {
+              value: 35.33,
+              unit: "ms",
+              raw: 35331600
+            }
           },
           {
             index: 123,
             count: 2,
-            start: "00:00:00.0353316",
-            end: "00:00:00.0355972"
+            start: {
+              value: 35.33,
+              unit: "ms",
+              raw: 35331600
+            },
+            end: {
+              value: 35.6,
+              unit: "ms",
+              raw: 35597200.00000001
+            }
           },
           {
             index: 124,
             count: 2,
-            start: "00:00:00.0355972",
-            end: "00:00:00.0358629"
+            start: {
+              value: 35.6,
+              unit: "ms",
+              raw: 35597200.00000001
+            },
+            end: {
+              value: 35.86,
+              unit: "ms",
+              raw: 35862900
+            }
           },
           {
             index: 125,
             count: 2,
-            start: "00:00:00.0358629",
-            end: "00:00:00.0361285"
+            start: {
+              value: 35.86,
+              unit: "ms",
+              raw: 35862900
+            },
+            end: {
+              value: 36.13,
+              unit: "ms",
+              raw: 36128500
+            }
           },
           {
             index: 126,
             count: 2,
-            start: "00:00:00.0361285",
-            end: "00:00:00.0363942"
+            start: {
+              value: 36.13,
+              unit: "ms",
+              raw: 36128500
+            },
+            end: {
+              value: 36.39,
+              unit: "ms",
+              raw: 36394200
+            }
           },
           {
             index: 127,
             count: 2,
-            start: "00:00:00.0363942",
-            end: "00:00:00.0366598"
+            start: {
+              value: 36.39,
+              unit: "ms",
+              raw: 36394200
+            },
+            end: {
+              value: 36.66,
+              unit: "ms",
+              raw: 36659799.99999999
+            }
           },
           {
             index: 128,
             count: 2,
-            start: "00:00:00.0366598",
-            end: "00:00:00.0369255"
+            start: {
+              value: 36.66,
+              unit: "ms",
+              raw: 36659799.99999999
+            },
+            end: {
+              value: 36.93,
+              unit: "ms",
+              raw: 36925500
+            }
           },
           {
             index: 129,
             count: 1,
-            start: "00:00:00.0369255",
-            end: "00:00:00.0371911"
+            start: {
+              value: 36.93,
+              unit: "ms",
+              raw: 36925500
+            },
+            end: {
+              value: 37.19,
+              unit: "ms",
+              raw: 37191100
+            }
           },
           {
             index: 130,
             count: 1,
-            start: "00:00:00.0371911",
-            end: "00:00:00.0374568"
+            start: {
+              value: 37.19,
+              unit: "ms",
+              raw: 37191100
+            },
+            end: {
+              value: 37.46,
+              unit: "ms",
+              raw: 37456800
+            }
           },
           {
             index: 131,
             count: 1,
-            start: "00:00:00.0374568",
-            end: "00:00:00.0377224"
+            start: {
+              value: 37.46,
+              unit: "ms",
+              raw: 37456800
+            },
+            end: {
+              value: 37.72,
+              unit: "ms",
+              raw: 37722400
+            }
           },
           {
             index: 132,
             count: 1,
-            start: "00:00:00.0377224",
-            end: "00:00:00.0379881"
+            start: {
+              value: 37.72,
+              unit: "ms",
+              raw: 37722400
+            },
+            end: {
+              value: 37.99,
+              unit: "ms",
+              raw: 37988100.00000001
+            }
           },
           {
             index: 133,
             count: 1,
-            start: "00:00:00.0379881",
-            end: "00:00:00.0382537"
+            start: {
+              value: 37.99,
+              unit: "ms",
+              raw: 37988100.00000001
+            },
+            end: {
+              value: 38.25,
+              unit: "ms",
+              raw: 38253700.00000001
+            }
           },
           {
             index: 134,
             count: 2,
-            start: "00:00:00.0382537",
-            end: "00:00:00.0385194"
+            start: {
+              value: 38.25,
+              unit: "ms",
+              raw: 38253700.00000001
+            },
+            end: {
+              value: 38.52,
+              unit: "ms",
+              raw: 38519399.99999999
+            }
           },
           {
             index: 135,
             count: 2,
-            start: "00:00:00.0385194",
-            end: "00:00:00.0387850"
+            start: {
+              value: 38.52,
+              unit: "ms",
+              raw: 38519399.99999999
+            },
+            end: {
+              value: 38.78,
+              unit: "ms",
+              raw: 38785000
+            }
           },
           {
             index: 136,
             count: 2,
-            start: "00:00:00.0387850",
-            end: "00:00:00.0390507"
+            start: {
+              value: 38.78,
+              unit: "ms",
+              raw: 38785000
+            },
+            end: {
+              value: 39.05,
+              unit: "ms",
+              raw: 39050700
+            }
           },
           {
             index: 137,
             count: 2,
-            start: "00:00:00.0390507",
-            end: "00:00:00.0393163"
+            start: {
+              value: 39.05,
+              unit: "ms",
+              raw: 39050700
+            },
+            end: {
+              value: 39.32,
+              unit: "ms",
+              raw: 39316299.99999999
+            }
           },
           {
             index: 138,
             count: 2,
-            start: "00:00:00.0393163",
-            end: "00:00:00.0395820"
+            start: {
+              value: 39.32,
+              unit: "ms",
+              raw: 39316299.99999999
+            },
+            end: {
+              value: 39.58,
+              unit: "ms",
+              raw: 39582000
+            }
           },
           {
             index: 139,
             count: 2,
-            start: "00:00:00.0395820",
-            end: "00:00:00.0398476"
+            start: {
+              value: 39.58,
+              unit: "ms",
+              raw: 39582000
+            },
+            end: {
+              value: 39.85,
+              unit: "ms",
+              raw: 39847600
+            }
           },
           {
             index: 140,
             count: 2,
-            start: "00:00:00.0398476",
-            end: "00:00:00.0401133"
+            start: {
+              value: 39.85,
+              unit: "ms",
+              raw: 39847600
+            },
+            end: {
+              value: 40.11,
+              unit: "ms",
+              raw: 40113300
+            }
           },
           {
             index: 141,
             count: 1,
-            start: "00:00:00.0401133",
-            end: "00:00:00.0403789"
+            start: {
+              value: 40.11,
+              unit: "ms",
+              raw: 40113300
+            },
+            end: {
+              value: 40.38,
+              unit: "ms",
+              raw: 40378900
+            }
           },
           {
             index: 142,
             count: 1,
-            start: "00:00:00.0403789",
-            end: "00:00:00.0406446"
+            start: {
+              value: 40.38,
+              unit: "ms",
+              raw: 40378900
+            },
+            end: {
+              value: 40.64,
+              unit: "ms",
+              raw: 40644600
+            }
           },
           {
             index: 143,
             count: 1,
-            start: "00:00:00.0406446",
-            end: "00:00:00.0409102"
+            start: {
+              value: 40.64,
+              unit: "ms",
+              raw: 40644600
+            },
+            end: {
+              value: 40.91,
+              unit: "ms",
+              raw: 40910200.00000001
+            }
           },
           {
             index: 144,
             count: 1,
-            start: "00:00:00.0409102",
-            end: "00:00:00.0411759"
+            start: {
+              value: 40.91,
+              unit: "ms",
+              raw: 40910200.00000001
+            },
+            end: {
+              value: 41.18,
+              unit: "ms",
+              raw: 41175900
+            }
           },
           {
             index: 145,
             count: 1,
-            start: "00:00:00.0411759",
-            end: "00:00:00.0414415"
+            start: {
+              value: 41.18,
+              unit: "ms",
+              raw: 41175900
+            },
+            end: {
+              value: 41.44,
+              unit: "ms",
+              raw: 41441500
+            }
           },
           {
             index: 146,
             count: 1,
-            start: "00:00:00.0414415",
-            end: "00:00:00.0417072"
+            start: {
+              value: 41.44,
+              unit: "ms",
+              raw: 41441500
+            },
+            end: {
+              value: 41.71,
+              unit: "ms",
+              raw: 41707200
+            }
           },
           {
             index: 147,
             count: 1,
-            start: "00:00:00.0417072",
-            end: "00:00:00.0419728"
+            start: {
+              value: 41.71,
+              unit: "ms",
+              raw: 41707200
+            },
+            end: {
+              value: 41.97,
+              unit: "ms",
+              raw: 41972800
+            }
           },
           {
             index: 148,
             count: 2,
-            start: "00:00:00.0419728",
-            end: "00:00:00.0422385"
+            start: {
+              value: 41.97,
+              unit: "ms",
+              raw: 41972800
+            },
+            end: {
+              value: 42.24,
+              unit: "ms",
+              raw: 42238500
+            }
           },
           {
             index: 149,
             count: 2,
-            start: "00:00:00.0422385",
-            end: "00:00:00.0425041"
+            start: {
+              value: 42.24,
+              unit: "ms",
+              raw: 42238500
+            },
+            end: {
+              value: 42.5,
+              unit: "ms",
+              raw: 42504100
+            }
           },
           {
             index: 150,
             count: 2,
-            start: "00:00:00.0425041",
-            end: "00:00:00.0427698"
+            start: {
+              value: 42.5,
+              unit: "ms",
+              raw: 42504100
+            },
+            end: {
+              value: 42.77,
+              unit: "ms",
+              raw: 42769799.99999999
+            }
           },
           {
             index: 151,
             count: 2,
-            start: "00:00:00.0427698",
-            end: "00:00:00.0430354"
+            start: {
+              value: 42.77,
+              unit: "ms",
+              raw: 42769799.99999999
+            },
+            end: {
+              value: 43.04,
+              unit: "ms",
+              raw: 43035400
+            }
           },
           {
             index: 152,
             count: 2,
-            start: "00:00:00.0430354",
-            end: "00:00:00.0433011"
+            start: {
+              value: 43.04,
+              unit: "ms",
+              raw: 43035400
+            },
+            end: {
+              value: 43.3,
+              unit: "ms",
+              raw: 43301100
+            }
           },
           {
             index: 153,
             count: 1,
-            start: "00:00:00.0433011",
-            end: "00:00:00.0435667"
+            start: {
+              value: 43.3,
+              unit: "ms",
+              raw: 43301100
+            },
+            end: {
+              value: 43.57,
+              unit: "ms",
+              raw: 43566700
+            }
           },
           {
             index: 154,
             count: 1,
-            start: "00:00:00.0435667",
-            end: "00:00:00.0438324"
+            start: {
+              value: 43.57,
+              unit: "ms",
+              raw: 43566700
+            },
+            end: {
+              value: 43.83,
+              unit: "ms",
+              raw: 43832400
+            }
           },
           {
             index: 155,
             count: 1,
-            start: "00:00:00.0438324",
-            end: "00:00:00.0440980"
+            start: {
+              value: 43.83,
+              unit: "ms",
+              raw: 43832400
+            },
+            end: {
+              value: 44.1,
+              unit: "ms",
+              raw: 44098000
+            }
           },
           {
             index: 156,
             count: 1,
-            start: "00:00:00.0440980",
-            end: "00:00:00.0443637"
+            start: {
+              value: 44.1,
+              unit: "ms",
+              raw: 44098000
+            },
+            end: {
+              value: 44.36,
+              unit: "ms",
+              raw: 44363700.00000001
+            }
           },
           {
             index: 157,
             count: 1,
-            start: "00:00:00.0443637",
-            end: "00:00:00.0446293"
+            start: {
+              value: 44.36,
+              unit: "ms",
+              raw: 44363700.00000001
+            },
+            end: {
+              value: 44.63,
+              unit: "ms",
+              raw: 44629300
+            }
           },
           {
             index: 158,
             count: 1,
-            start: "00:00:00.0446293",
-            end: "00:00:00.0448950"
+            start: {
+              value: 44.63,
+              unit: "ms",
+              raw: 44629300
+            },
+            end: {
+              value: 44.9,
+              unit: "ms",
+              raw: 44895000
+            }
           },
           {
             index: 159,
             count: 1,
-            start: "00:00:00.0448950",
-            end: "00:00:00.0451606"
+            start: {
+              value: 44.9,
+              unit: "ms",
+              raw: 44895000
+            },
+            end: {
+              value: 45.16,
+              unit: "ms",
+              raw: 45160600.00000001
+            }
           },
           {
             index: 160,
             count: 1,
-            start: "00:00:00.0451606",
-            end: "00:00:00.0454263"
+            start: {
+              value: 45.16,
+              unit: "ms",
+              raw: 45160600.00000001
+            },
+            end: {
+              value: 45.43,
+              unit: "ms",
+              raw: 45426299.99999999
+            }
           },
           {
             index: 161,
             count: 1,
-            start: "00:00:00.0454263",
-            end: "00:00:00.0456919"
+            start: {
+              value: 45.43,
+              unit: "ms",
+              raw: 45426299.99999999
+            },
+            end: {
+              value: 45.69,
+              unit: "ms",
+              raw: 45691899.99999999
+            }
           },
           {
             index: 162,
             count: 1,
-            start: "00:00:00.0456919",
-            end: "00:00:00.0459576"
+            start: {
+              value: 45.69,
+              unit: "ms",
+              raw: 45691899.99999999
+            },
+            end: {
+              value: 45.96,
+              unit: "ms",
+              raw: 45957600
+            }
           },
           {
             index: 163,
             count: 1,
-            start: "00:00:00.0459576",
-            end: "00:00:00.0462232"
+            start: {
+              value: 45.96,
+              unit: "ms",
+              raw: 45957600
+            },
+            end: {
+              value: 46.22,
+              unit: "ms",
+              raw: 46223200
+            }
           },
           {
             index: 164,
             count: 2,
-            start: "00:00:00.0462232",
-            end: "00:00:00.0464889"
+            start: {
+              value: 46.22,
+              unit: "ms",
+              raw: 46223200
+            },
+            end: {
+              value: 46.49,
+              unit: "ms",
+              raw: 46488900
+            }
           },
           {
             index: 165,
             count: 2,
-            start: "00:00:00.0464889",
-            end: "00:00:00.0467545"
+            start: {
+              value: 46.49,
+              unit: "ms",
+              raw: 46488900
+            },
+            end: {
+              value: 46.75,
+              unit: "ms",
+              raw: 46754500
+            }
           },
           {
             index: 166,
             count: 2,
-            start: "00:00:00.0467545",
-            end: "00:00:00.0470202"
+            start: {
+              value: 46.75,
+              unit: "ms",
+              raw: 46754500
+            },
+            end: {
+              value: 47.02,
+              unit: "ms",
+              raw: 47020200.00000001
+            }
           },
           {
             index: 167,
             count: 2,
-            start: "00:00:00.0470202",
-            end: "00:00:00.0472859"
+            start: {
+              value: 47.02,
+              unit: "ms",
+              raw: 47020200.00000001
+            },
+            end: {
+              value: 47.29,
+              unit: "ms",
+              raw: 47285900
+            }
           },
           {
             index: 168,
             count: 1,
-            start: "00:00:00.0472859",
-            end: "00:00:00.0475515"
+            start: {
+              value: 47.29,
+              unit: "ms",
+              raw: 47285900
+            },
+            end: {
+              value: 47.55,
+              unit: "ms",
+              raw: 47551500
+            }
           },
           {
             index: 169,
             count: 1,
-            start: "00:00:00.0475515",
-            end: "00:00:00.0478172"
+            start: {
+              value: 47.55,
+              unit: "ms",
+              raw: 47551500
+            },
+            end: {
+              value: 47.82,
+              unit: "ms",
+              raw: 47817200
+            }
           },
           {
             index: 170,
             count: 1,
-            start: "00:00:00.0478172",
-            end: "00:00:00.0480828"
+            start: {
+              value: 47.82,
+              unit: "ms",
+              raw: 47817200
+            },
+            end: {
+              value: 48.08,
+              unit: "ms",
+              raw: 48082799.99999999
+            }
           },
           {
             index: 171,
             count: 1,
-            start: "00:00:00.0480828",
-            end: "00:00:00.0483485"
+            start: {
+              value: 48.08,
+              unit: "ms",
+              raw: 48082799.99999999
+            },
+            end: {
+              value: 48.35,
+              unit: "ms",
+              raw: 48348500
+            }
           },
           {
             index: 172,
             count: 1,
-            start: "00:00:00.0483485",
-            end: "00:00:00.0486141"
+            start: {
+              value: 48.35,
+              unit: "ms",
+              raw: 48348500
+            },
+            end: {
+              value: 48.61,
+              unit: "ms",
+              raw: 48614100
+            }
           },
           {
             index: 173,
             count: 1,
-            start: "00:00:00.0486141",
-            end: "00:00:00.0488798"
+            start: {
+              value: 48.61,
+              unit: "ms",
+              raw: 48614100
+            },
+            end: {
+              value: 48.88,
+              unit: "ms",
+              raw: 48879800
+            }
           },
           {
             index: 174,
             count: 1,
-            start: "00:00:00.0488798",
-            end: "00:00:00.0491454"
+            start: {
+              value: 48.88,
+              unit: "ms",
+              raw: 48879800
+            },
+            end: {
+              value: 49.15,
+              unit: "ms",
+              raw: 49145400
+            }
           },
           {
             index: 175,
             count: 1,
-            start: "00:00:00.0491454",
-            end: "00:00:00.0494111"
+            start: {
+              value: 49.15,
+              unit: "ms",
+              raw: 49145400
+            },
+            end: {
+              value: 49.41,
+              unit: "ms",
+              raw: 49411100
+            }
           },
           {
             index: 176,
             count: 1,
-            start: "00:00:00.0494111",
-            end: "00:00:00.0496767"
+            start: {
+              value: 49.41,
+              unit: "ms",
+              raw: 49411100
+            },
+            end: {
+              value: 49.68,
+              unit: "ms",
+              raw: 49676700
+            }
           },
           {
             index: 177,
             count: 1,
-            start: "00:00:00.0496767",
-            end: "00:00:00.0499424"
+            start: {
+              value: 49.68,
+              unit: "ms",
+              raw: 49676700
+            },
+            end: {
+              value: 49.94,
+              unit: "ms",
+              raw: 49942400
+            }
           },
           {
             index: 178,
             count: 1,
-            start: "00:00:00.0499424",
-            end: "00:00:00.0502080"
+            start: {
+              value: 49.94,
+              unit: "ms",
+              raw: 49942400
+            },
+            end: {
+              value: 50.21,
+              unit: "ms",
+              raw: 50208000
+            }
           },
           {
             index: 179,
             count: 1,
-            start: "00:00:00.0502080",
-            end: "00:00:00.0504737"
+            start: {
+              value: 50.21,
+              unit: "ms",
+              raw: 50208000
+            },
+            end: {
+              value: 50.47,
+              unit: "ms",
+              raw: 50473700.00000001
+            }
           },
           {
             index: 180,
             count: 1,
-            start: "00:00:00.0504737",
-            end: "00:00:00.0507393"
+            start: {
+              value: 50.47,
+              unit: "ms",
+              raw: 50473700.00000001
+            },
+            end: {
+              value: 50.74,
+              unit: "ms",
+              raw: 50739300
+            }
           },
           {
             index: 181,
             count: 2,
-            start: "00:00:00.0507393",
-            end: "00:00:00.0510050"
+            start: {
+              value: 50.74,
+              unit: "ms",
+              raw: 50739300
+            },
+            end: {
+              value: 51,
+              unit: "ms",
+              raw: 51005000
+            }
           },
           {
             index: 182,
             count: 1,
-            start: "00:00:00.0510050",
-            end: "00:00:00.0512706"
+            start: {
+              value: 51,
+              unit: "ms",
+              raw: 51005000
+            },
+            end: {
+              value: 51.27,
+              unit: "ms",
+              raw: 51270600
+            }
           },
           {
             index: 183,
             count: 1,
-            start: "00:00:00.0512706",
-            end: "00:00:00.0515363"
+            start: {
+              value: 51.27,
+              unit: "ms",
+              raw: 51270600
+            },
+            end: {
+              value: 51.54,
+              unit: "ms",
+              raw: 51536299.99999999
+            }
           },
           {
             index: 184,
             count: 1,
-            start: "00:00:00.0515363",
-            end: "00:00:00.0518019"
+            start: {
+              value: 51.54,
+              unit: "ms",
+              raw: 51536299.99999999
+            },
+            end: {
+              value: 51.8,
+              unit: "ms",
+              raw: 51801900
+            }
           },
           {
             index: 185,
             count: 1,
-            start: "00:00:00.0518019",
-            end: "00:00:00.0520676"
+            start: {
+              value: 51.8,
+              unit: "ms",
+              raw: 51801900
+            },
+            end: {
+              value: 52.07,
+              unit: "ms",
+              raw: 52067600
+            }
           },
           {
             index: 186,
             count: 1,
-            start: "00:00:00.0520676",
-            end: "00:00:00.0523332"
+            start: {
+              value: 52.07,
+              unit: "ms",
+              raw: 52067600
+            },
+            end: {
+              value: 52.33,
+              unit: "ms",
+              raw: 52333200
+            }
           },
           {
             index: 187,
             count: 1,
-            start: "00:00:00.0523332",
-            end: "00:00:00.0525989"
+            start: {
+              value: 52.33,
+              unit: "ms",
+              raw: 52333200
+            },
+            end: {
+              value: 52.6,
+              unit: "ms",
+              raw: 52598900
+            }
           },
           {
             index: 188,
             count: 1,
-            start: "00:00:00.0525989",
-            end: "00:00:00.0528645"
+            start: {
+              value: 52.6,
+              unit: "ms",
+              raw: 52598900
+            },
+            end: {
+              value: 52.86,
+              unit: "ms",
+              raw: 52864500
+            }
           },
           {
             index: 189,
             count: 1,
-            start: "00:00:00.0528645",
-            end: "00:00:00.0531302"
+            start: {
+              value: 52.86,
+              unit: "ms",
+              raw: 52864500
+            },
+            end: {
+              value: 53.13,
+              unit: "ms",
+              raw: 53130200.00000001
+            }
           },
           {
             index: 190,
             count: 1,
-            start: "00:00:00.0531302",
-            end: "00:00:00.0533958"
+            start: {
+              value: 53.13,
+              unit: "ms",
+              raw: 53130200.00000001
+            },
+            end: {
+              value: 53.4,
+              unit: "ms",
+              raw: 53395800
+            }
           },
           {
             index: 191,
             count: 1,
-            start: "00:00:00.0533958",
-            end: "00:00:00.0536615"
+            start: {
+              value: 53.4,
+              unit: "ms",
+              raw: 53395800
+            },
+            end: {
+              value: 53.66,
+              unit: "ms",
+              raw: 53661500
+            }
           },
           {
             index: 192,
             count: 1,
-            start: "00:00:00.0536615",
-            end: "00:00:00.0539271"
+            start: {
+              value: 53.66,
+              unit: "ms",
+              raw: 53661500
+            },
+            end: {
+              value: 53.93,
+              unit: "ms",
+              raw: 53927100.00000001
+            }
           },
           {
             index: 193,
             count: 1,
-            start: "00:00:00.0539271",
-            end: "00:00:00.0541928"
+            start: {
+              value: 53.93,
+              unit: "ms",
+              raw: 53927100.00000001
+            },
+            end: {
+              value: 54.19,
+              unit: "ms",
+              raw: 54192799.99999999
+            }
           },
           {
             index: 194,
             count: 1,
-            start: "00:00:00.0541928",
-            end: "00:00:00.0544584"
+            start: {
+              value: 54.19,
+              unit: "ms",
+              raw: 54192799.99999999
+            },
+            end: {
+              value: 54.46,
+              unit: "ms",
+              raw: 54458399.99999999
+            }
           },
           {
             index: 195,
             count: 1,
-            start: "00:00:00.0544584",
-            end: "00:00:00.0547241"
+            start: {
+              value: 54.46,
+              unit: "ms",
+              raw: 54458399.99999999
+            },
+            end: {
+              value: 54.72,
+              unit: "ms",
+              raw: 54724100
+            }
           },
           {
             index: 196,
             count: 1,
-            start: "00:00:00.0547241",
-            end: "00:00:00.0549897"
+            start: {
+              value: 54.72,
+              unit: "ms",
+              raw: 54724100
+            },
+            end: {
+              value: 54.99,
+              unit: "ms",
+              raw: 54989700
+            }
           },
           {
             index: 197,
             count: 1,
-            start: "00:00:00.0549897",
-            end: "00:00:00.0552554"
+            start: {
+              value: 54.99,
+              unit: "ms",
+              raw: 54989700
+            },
+            end: {
+              value: 55.26,
+              unit: "ms",
+              raw: 55255400
+            }
           },
           {
             index: 198,
             count: 1,
-            start: "00:00:00.0552554",
-            end: "00:00:00.0555210"
+            start: {
+              value: 55.26,
+              unit: "ms",
+              raw: 55255400
+            },
+            end: {
+              value: 55.52,
+              unit: "ms",
+              raw: 55521000
+            }
           },
           {
             index: 199,
             count: 1,
-            start: "00:00:00.0555210",
-            end: "00:00:00.0557867"
+            start: {
+              value: 55.52,
+              unit: "ms",
+              raw: 55521000
+            },
+            end: {
+              value: 55.79,
+              unit: "ms",
+              raw: 55786700.00000001
+            }
           },
           {
             index: 200,
             count: 1,
-            start: "00:00:00.0557867",
-            end: "00:00:00.0560523"
+            start: {
+              value: 55.79,
+              unit: "ms",
+              raw: 55786700.00000001
+            },
+            end: {
+              value: 56.05,
+              unit: "ms",
+              raw: 56052300
+            }
           },
           {
             index: 201,
             count: 2,
-            start: "00:00:00.0560523",
-            end: "00:00:00.0563180"
+            start: {
+              value: 56.05,
+              unit: "ms",
+              raw: 56052300
+            },
+            end: {
+              value: 56.32,
+              unit: "ms",
+              raw: 56318000
+            }
           },
           {
             index: 202,
             count: 2,
-            start: "00:00:00.0563180",
-            end: "00:00:00.0565836"
+            start: {
+              value: 56.32,
+              unit: "ms",
+              raw: 56318000
+            },
+            end: {
+              value: 56.58,
+              unit: "ms",
+              raw: 56583600
+            }
           },
           {
             index: 203,
             count: 2,
-            start: "00:00:00.0565836",
-            end: "00:00:00.0568493"
+            start: {
+              value: 56.58,
+              unit: "ms",
+              raw: 56583600
+            },
+            end: {
+              value: 56.85,
+              unit: "ms",
+              raw: 56849300
+            }
           },
           {
             index: 204,
             count: 2,
-            start: "00:00:00.0568493",
-            end: "00:00:00.0571149"
+            start: {
+              value: 56.85,
+              unit: "ms",
+              raw: 56849300
+            },
+            end: {
+              value: 57.11,
+              unit: "ms",
+              raw: 57114900
+            }
           },
           {
             index: 205,
             count: 2,
-            start: "00:00:00.0571149",
-            end: "00:00:00.0573806"
+            start: {
+              value: 57.11,
+              unit: "ms",
+              raw: 57114900
+            },
+            end: {
+              value: 57.38,
+              unit: "ms",
+              raw: 57380600
+            }
           },
           {
             index: 206,
             count: 2,
-            start: "00:00:00.0573806",
-            end: "00:00:00.0576462"
+            start: {
+              value: 57.38,
+              unit: "ms",
+              raw: 57380600
+            },
+            end: {
+              value: 57.65,
+              unit: "ms",
+              raw: 57646200
+            }
           },
           {
             index: 207,
             count: 2,
-            start: "00:00:00.0576462",
-            end: "00:00:00.0579119"
+            start: {
+              value: 57.65,
+              unit: "ms",
+              raw: 57646200
+            },
+            end: {
+              value: 57.91,
+              unit: "ms",
+              raw: 57911900
+            }
           },
           {
             index: 208,
             count: 2,
-            start: "00:00:00.0579119",
-            end: "00:00:00.0581775"
+            start: {
+              value: 57.91,
+              unit: "ms",
+              raw: 57911900
+            },
+            end: {
+              value: 58.18,
+              unit: "ms",
+              raw: 58177500
+            }
           },
           {
             index: 209,
             count: 1,
-            start: "00:00:00.0581775",
-            end: "00:00:00.0584432"
+            start: {
+              value: 58.18,
+              unit: "ms",
+              raw: 58177500
+            },
+            end: {
+              value: 58.44,
+              unit: "ms",
+              raw: 58443200
+            }
           },
           {
             index: 210,
             count: 1,
-            start: "00:00:00.0584432",
-            end: "00:00:00.0587088"
+            start: {
+              value: 58.44,
+              unit: "ms",
+              raw: 58443200
+            },
+            end: {
+              value: 58.71,
+              unit: "ms",
+              raw: 58708799.99999999
+            }
           },
           {
             index: 211,
             count: 1,
-            start: "00:00:00.0587088",
-            end: "00:00:00.0589745"
+            start: {
+              value: 58.71,
+              unit: "ms",
+              raw: 58708799.99999999
+            },
+            end: {
+              value: 58.97,
+              unit: "ms",
+              raw: 58974500
+            }
           },
           {
             index: 212,
             count: 1,
-            start: "00:00:00.0589745",
-            end: "00:00:00.0592402"
+            start: {
+              value: 58.97,
+              unit: "ms",
+              raw: 58974500
+            },
+            end: {
+              value: 59.24,
+              unit: "ms",
+              raw: 59240200.00000001
+            }
           },
           {
             index: 213,
             count: 1,
-            start: "00:00:00.0592402",
-            end: "00:00:00.0595058"
+            start: {
+              value: 59.24,
+              unit: "ms",
+              raw: 59240200.00000001
+            },
+            end: {
+              value: 59.51,
+              unit: "ms",
+              raw: 59505800
+            }
           },
           {
             index: 214,
             count: 1,
-            start: "00:00:00.0595058",
-            end: "00:00:00.0597715"
+            start: {
+              value: 59.51,
+              unit: "ms",
+              raw: 59505800
+            },
+            end: {
+              value: 59.77,
+              unit: "ms",
+              raw: 59771500
+            }
           },
           {
             index: 215,
             count: 1,
-            start: "00:00:00.0597715",
-            end: "00:00:00.0600371"
+            start: {
+              value: 59.77,
+              unit: "ms",
+              raw: 59771500
+            },
+            end: {
+              value: 60.04,
+              unit: "ms",
+              raw: 60037100.00000001
+            }
           },
           {
             index: 216,
             count: 1,
-            start: "00:00:00.0600371",
-            end: "00:00:00.0603028"
+            start: {
+              value: 60.04,
+              unit: "ms",
+              raw: 60037100.00000001
+            },
+            end: {
+              value: 60.3,
+              unit: "ms",
+              raw: 60302799.99999999
+            }
           },
           {
             index: 217,
             count: 1,
-            start: "00:00:00.0603028",
-            end: "00:00:00.0605684"
+            start: {
+              value: 60.3,
+              unit: "ms",
+              raw: 60302799.99999999
+            },
+            end: {
+              value: 60.57,
+              unit: "ms",
+              raw: 60568399.99999999
+            }
           },
           {
             index: 218,
             count: 1,
-            start: "00:00:00.0605684",
-            end: "00:00:00.0608341"
+            start: {
+              value: 60.57,
+              unit: "ms",
+              raw: 60568399.99999999
+            },
+            end: {
+              value: 60.83,
+              unit: "ms",
+              raw: 60834100
+            }
           },
           {
             index: 219,
             count: 1,
-            start: "00:00:00.0608341",
-            end: "00:00:00.0610997"
+            start: {
+              value: 60.83,
+              unit: "ms",
+              raw: 60834100
+            },
+            end: {
+              value: 61.1,
+              unit: "ms",
+              raw: 61099700
+            }
           },
           {
             index: 220,
             count: 1,
-            start: "00:00:00.0610997",
-            end: "00:00:00.0613654"
+            start: {
+              value: 61.1,
+              unit: "ms",
+              raw: 61099700
+            },
+            end: {
+              value: 61.37,
+              unit: "ms",
+              raw: 61365400
+            }
           },
           {
             index: 221,
             count: 1,
-            start: "00:00:00.0613654",
-            end: "00:00:00.0616310"
+            start: {
+              value: 61.37,
+              unit: "ms",
+              raw: 61365400
+            },
+            end: {
+              value: 61.63,
+              unit: "ms",
+              raw: 61631000
+            }
           },
           {
             index: 222,
             count: 1,
-            start: "00:00:00.0616310",
-            end: "00:00:00.0618967"
+            start: {
+              value: 61.63,
+              unit: "ms",
+              raw: 61631000
+            },
+            end: {
+              value: 61.9,
+              unit: "ms",
+              raw: 61896700.00000001
+            }
           },
           {
             index: 223,
             count: 1,
-            start: "00:00:00.0618967",
-            end: "00:00:00.0621623"
+            start: {
+              value: 61.9,
+              unit: "ms",
+              raw: 61896700.00000001
+            },
+            end: {
+              value: 62.16,
+              unit: "ms",
+              raw: 62162300
+            }
           },
           {
             index: 224,
             count: 1,
-            start: "00:00:00.0621623",
-            end: "00:00:00.0624280"
+            start: {
+              value: 62.16,
+              unit: "ms",
+              raw: 62162300
+            },
+            end: {
+              value: 62.43,
+              unit: "ms",
+              raw: 62428000
+            }
           },
           {
             index: 225,
             count: 1,
-            start: "00:00:00.0624280",
-            end: "00:00:00.0626936"
+            start: {
+              value: 62.43,
+              unit: "ms",
+              raw: 62428000
+            },
+            end: {
+              value: 62.69,
+              unit: "ms",
+              raw: 62693600.00000001
+            }
           },
           {
             index: 226,
             count: 1,
-            start: "00:00:00.0626936",
-            end: "00:00:00.0629593"
+            start: {
+              value: 62.69,
+              unit: "ms",
+              raw: 62693600.00000001
+            },
+            end: {
+              value: 62.96,
+              unit: "ms",
+              raw: 62959299.99999999
+            }
           },
           {
             index: 227,
             count: 1,
-            start: "00:00:00.0629593",
-            end: "00:00:00.0632249"
+            start: {
+              value: 62.96,
+              unit: "ms",
+              raw: 62959299.99999999
+            },
+            end: {
+              value: 63.22,
+              unit: "ms",
+              raw: 63224900
+            }
           },
           {
             index: 228,
             count: 1,
-            start: "00:00:00.0632249",
-            end: "00:00:00.0634906"
+            start: {
+              value: 63.22,
+              unit: "ms",
+              raw: 63224900
+            },
+            end: {
+              value: 63.49,
+              unit: "ms",
+              raw: 63490600
+            }
           },
           {
             index: 229,
             count: 1,
-            start: "00:00:00.0634906",
-            end: "00:00:00.0637562"
+            start: {
+              value: 63.49,
+              unit: "ms",
+              raw: 63490600
+            },
+            end: {
+              value: 63.76,
+              unit: "ms",
+              raw: 63756200
+            }
           },
           {
             index: 230,
             count: 1,
-            start: "00:00:00.0637562",
-            end: "00:00:00.0640219"
+            start: {
+              value: 63.76,
+              unit: "ms",
+              raw: 63756200
+            },
+            end: {
+              value: 64.02,
+              unit: "ms",
+              raw: 64021900
+            }
           },
           {
             index: 245,
             count: 1,
-            start: "00:00:00.0677410",
-            end: "00:00:00.0680066"
+            start: {
+              value: 67.74,
+              unit: "ms",
+              raw: 67741000
+            },
+            end: {
+              value: 68.01,
+              unit: "ms",
+              raw: 68006600
+            }
           },
           {
             index: 246,
             count: 1,
-            start: "00:00:00.0680066",
-            end: "00:00:00.0682723"
+            start: {
+              value: 68.01,
+              unit: "ms",
+              raw: 68006600
+            },
+            end: {
+              value: 68.27,
+              unit: "ms",
+              raw: 68272300
+            }
           },
           {
             index: 247,
             count: 1,
-            start: "00:00:00.0682723",
-            end: "00:00:00.0685379"
+            start: {
+              value: 68.27,
+              unit: "ms",
+              raw: 68272300
+            },
+            end: {
+              value: 68.54,
+              unit: "ms",
+              raw: 68537900
+            }
           },
           {
             index: 248,
             count: 1,
-            start: "00:00:00.0685379",
-            end: "00:00:00.0688036"
+            start: {
+              value: 68.54,
+              unit: "ms",
+              raw: 68537900
+            },
+            end: {
+              value: 68.8,
+              unit: "ms",
+              raw: 68803600
+            }
           },
           {
             index: 249,
             count: 1,
-            start: "00:00:00.0688036",
-            end: "00:00:00.0690692"
+            start: {
+              value: 68.8,
+              unit: "ms",
+              raw: 68803600
+            },
+            end: {
+              value: 69.07,
+              unit: "ms",
+              raw: 69069200
+            }
           },
           {
             index: 250,
             count: 1,
-            start: "00:00:00.0690692",
-            end: "00:00:00.0693349"
+            start: {
+              value: 69.07,
+              unit: "ms",
+              raw: 69069200
+            },
+            end: {
+              value: 69.33,
+              unit: "ms",
+              raw: 69334900.00000001
+            }
           },
           {
             index: 251,
             count: 1,
-            start: "00:00:00.0693349",
-            end: "00:00:00.0696005"
+            start: {
+              value: 69.33,
+              unit: "ms",
+              raw: 69334900.00000001
+            },
+            end: {
+              value: 69.6,
+              unit: "ms",
+              raw: 69600500
+            }
           },
           {
             index: 252,
             count: 1,
-            start: "00:00:00.0696005",
-            end: "00:00:00.0698662"
+            start: {
+              value: 69.6,
+              unit: "ms",
+              raw: 69600500
+            },
+            end: {
+              value: 69.87,
+              unit: "ms",
+              raw: 69866200.00000001
+            }
           },
           {
             index: 253,
             count: 1,
-            start: "00:00:00.0698662",
-            end: "00:00:00.0701318"
+            start: {
+              value: 69.87,
+              unit: "ms",
+              raw: 69866200.00000001
+            },
+            end: {
+              value: 70.13,
+              unit: "ms",
+              raw: 70131800
+            }
           },
           {
             index: 254,
             count: 1,
-            start: "00:00:00.0701318",
-            end: "00:00:00.0703975"
+            start: {
+              value: 70.13,
+              unit: "ms",
+              raw: 70131800
+            },
+            end: {
+              value: 70.4,
+              unit: "ms",
+              raw: 70397500
+            }
           },
           {
             index: 255,
             count: 1,
-            start: "00:00:00.0703975",
-            end: "00:00:00.0706632"
+            start: {
+              value: 70.4,
+              unit: "ms",
+              raw: 70397500
+            },
+            end: {
+              value: 70.66,
+              unit: "ms",
+              raw: 70663200
+            }
           },
           {
             index: 256,
             count: 1,
-            start: "00:00:00.0706632",
-            end: "00:00:00.0709288"
+            start: {
+              value: 70.66,
+              unit: "ms",
+              raw: 70663200
+            },
+            end: {
+              value: 70.93,
+              unit: "ms",
+              raw: 70928799.99999999
+            }
           },
           {
             index: 257,
             count: 1,
-            start: "00:00:00.0709288",
-            end: "00:00:00.0711945"
+            start: {
+              value: 70.93,
+              unit: "ms",
+              raw: 70928799.99999999
+            },
+            end: {
+              value: 71.19,
+              unit: "ms",
+              raw: 71194500
+            }
           },
           {
             index: 258,
             count: 1,
-            start: "00:00:00.0711945",
-            end: "00:00:00.0714601"
+            start: {
+              value: 71.19,
+              unit: "ms",
+              raw: 71194500
+            },
+            end: {
+              value: 71.46,
+              unit: "ms",
+              raw: 71460099.99999999
+            }
           },
           {
             index: 259,
             count: 1,
-            start: "00:00:00.0714601",
-            end: "00:00:00.0717258"
+            start: {
+              value: 71.46,
+              unit: "ms",
+              raw: 71460099.99999999
+            },
+            end: {
+              value: 71.73,
+              unit: "ms",
+              raw: 71725800
+            }
           },
           {
             index: 260,
             count: 1,
-            start: "00:00:00.0717258",
-            end: "00:00:00.0719914"
+            start: {
+              value: 71.73,
+              unit: "ms",
+              raw: 71725800
+            },
+            end: {
+              value: 71.99,
+              unit: "ms",
+              raw: 71991400
+            }
           },
           {
             index: 261,
             count: 1,
-            start: "00:00:00.0719914",
-            end: "00:00:00.0722571"
+            start: {
+              value: 71.99,
+              unit: "ms",
+              raw: 71991400
+            },
+            end: {
+              value: 72.26,
+              unit: "ms",
+              raw: 72257099.99999999
+            }
           },
           {
             index: 262,
             count: 1,
-            start: "00:00:00.0722571",
-            end: "00:00:00.0725227"
+            start: {
+              value: 72.26,
+              unit: "ms",
+              raw: 72257099.99999999
+            },
+            end: {
+              value: 72.52,
+              unit: "ms",
+              raw: 72522700
+            }
           },
           {
             index: 271,
             count: 1,
-            start: "00:00:00.0746479",
-            end: "00:00:00.0749136"
+            start: {
+              value: 74.65,
+              unit: "ms",
+              raw: 74647900.00000001
+            },
+            end: {
+              value: 74.91,
+              unit: "ms",
+              raw: 74913600
+            }
           },
           {
             index: 272,
             count: 1,
-            start: "00:00:00.0749136",
-            end: "00:00:00.0751792"
+            start: {
+              value: 74.91,
+              unit: "ms",
+              raw: 74913600
+            },
+            end: {
+              value: 75.18,
+              unit: "ms",
+              raw: 75179200
+            }
           },
           {
             index: 273,
             count: 1,
-            start: "00:00:00.0751792",
-            end: "00:00:00.0754449"
+            start: {
+              value: 75.18,
+              unit: "ms",
+              raw: 75179200
+            },
+            end: {
+              value: 75.44,
+              unit: "ms",
+              raw: 75444900.00000001
+            }
           },
           {
             index: 274,
             count: 1,
-            start: "00:00:00.0754449",
-            end: "00:00:00.0757105"
+            start: {
+              value: 75.44,
+              unit: "ms",
+              raw: 75444900.00000001
+            },
+            end: {
+              value: 75.71,
+              unit: "ms",
+              raw: 75710500
+            }
           },
           {
             index: 275,
             count: 1,
-            start: "00:00:00.0757105",
-            end: "00:00:00.0759762"
+            start: {
+              value: 75.71,
+              unit: "ms",
+              raw: 75710500
+            },
+            end: {
+              value: 75.98,
+              unit: "ms",
+              raw: 75976200.00000001
+            }
           },
           {
             index: 276,
             count: 1,
-            start: "00:00:00.0759762",
-            end: "00:00:00.0762418"
+            start: {
+              value: 75.98,
+              unit: "ms",
+              raw: 75976200.00000001
+            },
+            end: {
+              value: 76.24,
+              unit: "ms",
+              raw: 76241800
+            }
           },
           {
             index: 277,
             count: 1,
-            start: "00:00:00.0762418",
-            end: "00:00:00.0765075"
+            start: {
+              value: 76.24,
+              unit: "ms",
+              raw: 76241800
+            },
+            end: {
+              value: 76.51,
+              unit: "ms",
+              raw: 76507500
+            }
           },
           {
             index: 278,
             count: 1,
-            start: "00:00:00.0765075",
-            end: "00:00:00.0767731"
+            start: {
+              value: 76.51,
+              unit: "ms",
+              raw: 76507500
+            },
+            end: {
+              value: 76.77,
+              unit: "ms",
+              raw: 76773100
+            }
           },
           {
             index: 279,
             count: 1,
-            start: "00:00:00.0767731",
-            end: "00:00:00.0770388"
+            start: {
+              value: 76.77,
+              unit: "ms",
+              raw: 76773100
+            },
+            end: {
+              value: 77.04,
+              unit: "ms",
+              raw: 77038799.99999999
+            }
           },
           {
             index: 280,
             count: 1,
-            start: "00:00:00.0770388",
-            end: "00:00:00.0773044"
+            start: {
+              value: 77.04,
+              unit: "ms",
+              raw: 77038799.99999999
+            },
+            end: {
+              value: 77.3,
+              unit: "ms",
+              raw: 77304400
+            }
           },
           {
             index: 281,
             count: 1,
-            start: "00:00:00.0773044",
-            end: "00:00:00.0775701"
+            start: {
+              value: 77.3,
+              unit: "ms",
+              raw: 77304400
+            },
+            end: {
+              value: 77.57,
+              unit: "ms",
+              raw: 77570099.99999999
+            }
           },
           {
             index: 282,
             count: 1,
-            start: "00:00:00.0775701",
-            end: "00:00:00.0778357"
+            start: {
+              value: 77.57,
+              unit: "ms",
+              raw: 77570099.99999999
+            },
+            end: {
+              value: 77.84,
+              unit: "ms",
+              raw: 77835700
+            }
           },
           {
             index: 283,
             count: 1,
-            start: "00:00:00.0778357",
-            end: "00:00:00.0781014"
+            start: {
+              value: 77.84,
+              unit: "ms",
+              raw: 77835700
+            },
+            end: {
+              value: 78.1,
+              unit: "ms",
+              raw: 78101400
+            }
           },
           {
             index: 284,
             count: 1,
-            start: "00:00:00.0781014",
-            end: "00:00:00.0783670"
+            start: {
+              value: 78.1,
+              unit: "ms",
+              raw: 78101400
+            },
+            end: {
+              value: 78.37,
+              unit: "ms",
+              raw: 78367000
+            }
           },
           {
             index: 285,
             count: 1,
-            start: "00:00:00.0783670",
-            end: "00:00:00.0786327"
+            start: {
+              value: 78.37,
+              unit: "ms",
+              raw: 78367000
+            },
+            end: {
+              value: 78.63,
+              unit: "ms",
+              raw: 78632700
+            }
           },
           {
             index: 286,
             count: 1,
-            start: "00:00:00.0786327",
-            end: "00:00:00.0788983"
+            start: {
+              value: 78.63,
+              unit: "ms",
+              raw: 78632700
+            },
+            end: {
+              value: 78.9,
+              unit: "ms",
+              raw: 78898300
+            }
           },
           {
             index: 287,
             count: 1,
-            start: "00:00:00.0788983",
-            end: "00:00:00.0791640"
+            start: {
+              value: 78.9,
+              unit: "ms",
+              raw: 78898300
+            },
+            end: {
+              value: 79.16,
+              unit: "ms",
+              raw: 79164000
+            }
           },
           {
             index: 288,
             count: 1,
-            start: "00:00:00.0791640",
-            end: "00:00:00.0794296"
+            start: {
+              value: 79.16,
+              unit: "ms",
+              raw: 79164000
+            },
+            end: {
+              value: 79.43,
+              unit: "ms",
+              raw: 79429599.99999999
+            }
           },
           {
             index: 299,
             count: 1,
-            start: "00:00:00.0820861",
-            end: "00:00:00.0823518"
+            start: {
+              value: 82.09,
+              unit: "ms",
+              raw: 82086100
+            },
+            end: {
+              value: 82.35,
+              unit: "ms",
+              raw: 82351800
+            }
           },
           {
             index: 300,
             count: 1,
-            start: "00:00:00.0823518",
-            end: "00:00:00.0826175"
+            start: {
+              value: 82.35,
+              unit: "ms",
+              raw: 82351800
+            },
+            end: {
+              value: 82.62,
+              unit: "ms",
+              raw: 82617500
+            }
           },
           {
             index: 301,
             count: 1,
-            start: "00:00:00.0826175",
-            end: "00:00:00.0828831"
+            start: {
+              value: 82.62,
+              unit: "ms",
+              raw: 82617500
+            },
+            end: {
+              value: 82.88,
+              unit: "ms",
+              raw: 82883100
+            }
           },
           {
             index: 302,
             count: 1,
-            start: "00:00:00.0828831",
-            end: "00:00:00.0831488"
+            start: {
+              value: 82.88,
+              unit: "ms",
+              raw: 82883100
+            },
+            end: {
+              value: 83.15,
+              unit: "ms",
+              raw: 83148799.99999999
+            }
           },
           {
             index: 303,
             count: 1,
-            start: "00:00:00.0831488",
-            end: "00:00:00.0834144"
+            start: {
+              value: 83.15,
+              unit: "ms",
+              raw: 83148799.99999999
+            },
+            end: {
+              value: 83.41,
+              unit: "ms",
+              raw: 83414400
+            }
           },
           {
             index: 304,
             count: 1,
-            start: "00:00:00.0834144",
-            end: "00:00:00.0836801"
+            start: {
+              value: 83.41,
+              unit: "ms",
+              raw: 83414400
+            },
+            end: {
+              value: 83.68,
+              unit: "ms",
+              raw: 83680099.99999999
+            }
           },
           {
             index: 305,
             count: 1,
-            start: "00:00:00.0836801",
-            end: "00:00:00.0839457"
+            start: {
+              value: 83.68,
+              unit: "ms",
+              raw: 83680099.99999999
+            },
+            end: {
+              value: 83.95,
+              unit: "ms",
+              raw: 83945700
+            }
           },
           {
             index: 306,
             count: 1,
-            start: "00:00:00.0839457",
-            end: "00:00:00.0842114"
+            start: {
+              value: 83.95,
+              unit: "ms",
+              raw: 83945700
+            },
+            end: {
+              value: 84.21,
+              unit: "ms",
+              raw: 84211400
+            }
           },
           {
             index: 307,
             count: 1,
-            start: "00:00:00.0842114",
-            end: "00:00:00.0844770"
+            start: {
+              value: 84.21,
+              unit: "ms",
+              raw: 84211400
+            },
+            end: {
+              value: 84.48,
+              unit: "ms",
+              raw: 84477000
+            }
           },
           {
             index: 308,
             count: 1,
-            start: "00:00:00.0844770",
-            end: "00:00:00.0847427"
+            start: {
+              value: 84.48,
+              unit: "ms",
+              raw: 84477000
+            },
+            end: {
+              value: 84.74,
+              unit: "ms",
+              raw: 84742700
+            }
           },
           {
             index: 309,
             count: 1,
-            start: "00:00:00.0847427",
-            end: "00:00:00.0850083"
+            start: {
+              value: 84.74,
+              unit: "ms",
+              raw: 84742700
+            },
+            end: {
+              value: 85.01,
+              unit: "ms",
+              raw: 85008300
+            }
           },
           {
             index: 310,
             count: 1,
-            start: "00:00:00.0850083",
-            end: "00:00:00.0852740"
+            start: {
+              value: 85.01,
+              unit: "ms",
+              raw: 85008300
+            },
+            end: {
+              value: 85.27,
+              unit: "ms",
+              raw: 85274000
+            }
           },
           {
             index: 311,
             count: 1,
-            start: "00:00:00.0852740",
-            end: "00:00:00.0855396"
+            start: {
+              value: 85.27,
+              unit: "ms",
+              raw: 85274000
+            },
+            end: {
+              value: 85.54,
+              unit: "ms",
+              raw: 85539599.99999999
+            }
           },
           {
             index: 312,
             count: 1,
-            start: "00:00:00.0855396",
-            end: "00:00:00.0858053"
+            start: {
+              value: 85.54,
+              unit: "ms",
+              raw: 85539599.99999999
+            },
+            end: {
+              value: 85.81,
+              unit: "ms",
+              raw: 85805300
+            }
           },
           {
             index: 313,
             count: 1,
-            start: "00:00:00.0858053",
-            end: "00:00:00.0860709"
+            start: {
+              value: 85.81,
+              unit: "ms",
+              raw: 85805300
+            },
+            end: {
+              value: 86.07,
+              unit: "ms",
+              raw: 86070900
+            }
           },
           {
             index: 314,
             count: 1,
-            start: "00:00:00.0860709",
-            end: "00:00:00.0863366"
+            start: {
+              value: 86.07,
+              unit: "ms",
+              raw: 86070900
+            },
+            end: {
+              value: 86.34,
+              unit: "ms",
+              raw: 86336600
+            }
           },
           {
             index: 315,
             count: 1,
-            start: "00:00:00.0863366",
-            end: "00:00:00.0866022"
+            start: {
+              value: 86.34,
+              unit: "ms",
+              raw: 86336600
+            },
+            end: {
+              value: 86.6,
+              unit: "ms",
+              raw: 86602200
+            }
           },
           {
             index: 316,
             count: 1,
-            start: "00:00:00.0866022",
-            end: "00:00:00.0868679"
+            start: {
+              value: 86.6,
+              unit: "ms",
+              raw: 86602200
+            },
+            end: {
+              value: 86.87,
+              unit: "ms",
+              raw: 86867900.00000001
+            }
           },
           {
             index: 330,
             count: 1,
-            start: "00:00:00.0903213",
-            end: "00:00:00.0905870"
+            start: {
+              value: 90.32,
+              unit: "ms",
+              raw: 90321299.99999999
+            },
+            end: {
+              value: 90.59,
+              unit: "ms",
+              raw: 90587000
+            }
           },
           {
             index: 331,
             count: 1,
-            start: "00:00:00.0905870",
-            end: "00:00:00.0908526"
+            start: {
+              value: 90.59,
+              unit: "ms",
+              raw: 90587000
+            },
+            end: {
+              value: 90.85,
+              unit: "ms",
+              raw: 90852599.99999999
+            }
           },
           {
             index: 332,
             count: 1,
-            start: "00:00:00.0908526",
-            end: "00:00:00.0911183"
+            start: {
+              value: 90.85,
+              unit: "ms",
+              raw: 90852599.99999999
+            },
+            end: {
+              value: 91.12,
+              unit: "ms",
+              raw: 91118300
+            }
           },
           {
             index: 333,
             count: 1,
-            start: "00:00:00.0911183",
-            end: "00:00:00.0913839"
+            start: {
+              value: 91.12,
+              unit: "ms",
+              raw: 91118300
+            },
+            end: {
+              value: 91.38,
+              unit: "ms",
+              raw: 91383900
+            }
           },
           {
             index: 334,
             count: 1,
-            start: "00:00:00.0913839",
-            end: "00:00:00.0916496"
+            start: {
+              value: 91.38,
+              unit: "ms",
+              raw: 91383900
+            },
+            end: {
+              value: 91.65,
+              unit: "ms",
+              raw: 91649600
+            }
           },
           {
             index: 335,
             count: 1,
-            start: "00:00:00.0916496",
-            end: "00:00:00.0919152"
+            start: {
+              value: 91.65,
+              unit: "ms",
+              raw: 91649600
+            },
+            end: {
+              value: 91.92,
+              unit: "ms",
+              raw: 91915200
+            }
           },
           {
             index: 336,
             count: 1,
-            start: "00:00:00.0919152",
-            end: "00:00:00.0921809"
+            start: {
+              value: 91.92,
+              unit: "ms",
+              raw: 91915200
+            },
+            end: {
+              value: 92.18,
+              unit: "ms",
+              raw: 92180900
+            }
           },
           {
             index: 337,
             count: 1,
-            start: "00:00:00.0921809",
-            end: "00:00:00.0924465"
+            start: {
+              value: 92.18,
+              unit: "ms",
+              raw: 92180900
+            },
+            end: {
+              value: 92.45,
+              unit: "ms",
+              raw: 92446500
+            }
           },
           {
             index: 338,
             count: 1,
-            start: "00:00:00.0924465",
-            end: "00:00:00.0927122"
+            start: {
+              value: 92.45,
+              unit: "ms",
+              raw: 92446500
+            },
+            end: {
+              value: 92.71,
+              unit: "ms",
+              raw: 92712200
+            }
           },
           {
             index: 339,
             count: 1,
-            start: "00:00:00.0927122",
-            end: "00:00:00.0929778"
+            start: {
+              value: 92.71,
+              unit: "ms",
+              raw: 92712200
+            },
+            end: {
+              value: 92.98,
+              unit: "ms",
+              raw: 92977800
+            }
           },
           {
             index: 340,
             count: 1,
-            start: "00:00:00.0929778",
-            end: "00:00:00.0932435"
+            start: {
+              value: 92.98,
+              unit: "ms",
+              raw: 92977800
+            },
+            end: {
+              value: 93.24,
+              unit: "ms",
+              raw: 93243500
+            }
           },
           {
             index: 341,
             count: 1,
-            start: "00:00:00.0932435",
-            end: "00:00:00.0935091"
+            start: {
+              value: 93.24,
+              unit: "ms",
+              raw: 93243500
+            },
+            end: {
+              value: 93.51,
+              unit: "ms",
+              raw: 93509100
+            }
           },
           {
             index: 342,
             count: 1,
-            start: "00:00:00.0935091",
-            end: "00:00:00.0937748"
+            start: {
+              value: 93.51,
+              unit: "ms",
+              raw: 93509100
+            },
+            end: {
+              value: 93.77,
+              unit: "ms",
+              raw: 93774800
+            }
           },
           {
             index: 343,
             count: 1,
-            start: "00:00:00.0937748",
-            end: "00:00:00.0940405"
+            start: {
+              value: 93.77,
+              unit: "ms",
+              raw: 93774800
+            },
+            end: {
+              value: 94.04,
+              unit: "ms",
+              raw: 94040500
+            }
           },
           {
             index: 344,
             count: 1,
-            start: "00:00:00.0940405",
-            end: "00:00:00.0943061"
+            start: {
+              value: 94.04,
+              unit: "ms",
+              raw: 94040500
+            },
+            end: {
+              value: 94.31,
+              unit: "ms",
+              raw: 94306100
+            }
           },
           {
             index: 345,
             count: 1,
-            start: "00:00:00.0943061",
-            end: "00:00:00.0945718"
+            start: {
+              value: 94.31,
+              unit: "ms",
+              raw: 94306100
+            },
+            end: {
+              value: 94.57,
+              unit: "ms",
+              raw: 94571800
+            }
           },
           {
             index: 346,
             count: 1,
-            start: "00:00:00.0945718",
-            end: "00:00:00.0948374"
+            start: {
+              value: 94.57,
+              unit: "ms",
+              raw: 94571800
+            },
+            end: {
+              value: 94.84,
+              unit: "ms",
+              raw: 94837400.00000001
+            }
           },
           {
             index: 347,
             count: 1,
-            start: "00:00:00.0948374",
-            end: "00:00:00.0951031"
+            start: {
+              value: 94.84,
+              unit: "ms",
+              raw: 94837400.00000001
+            },
+            end: {
+              value: 95.1,
+              unit: "ms",
+              raw: 95103099.99999999
+            }
           },
           {
             index: 364,
             count: 1,
-            start: "00:00:00.0993535",
-            end: "00:00:00.0996191"
+            start: {
+              value: 99.35,
+              unit: "ms",
+              raw: 99353500
+            },
+            end: {
+              value: 99.62,
+              unit: "ms",
+              raw: 99619100
+            }
           },
           {
             index: 365,
             count: 1,
-            start: "00:00:00.0996191",
-            end: "00:00:00.0998848"
+            start: {
+              value: 99.62,
+              unit: "ms",
+              raw: 99619100
+            },
+            end: {
+              value: 99.88,
+              unit: "ms",
+              raw: 99884800
+            }
           },
           {
             index: 366,
             count: 1,
-            start: "00:00:00.0998848",
-            end: "00:00:00.1001504"
+            start: {
+              value: 99.88,
+              unit: "ms",
+              raw: 99884800
+            },
+            end: {
+              value: 100.15,
+              unit: "ms",
+              raw: 100150400.00000001
+            }
           },
           {
             index: 367,
             count: 1,
-            start: "00:00:00.1001504",
-            end: "00:00:00.1004161"
+            start: {
+              value: 100.15,
+              unit: "ms",
+              raw: 100150400.00000001
+            },
+            end: {
+              value: 100.42,
+              unit: "ms",
+              raw: 100416100
+            }
           },
           {
             index: 368,
             count: 1,
-            start: "00:00:00.1004161",
-            end: "00:00:00.1006817"
+            start: {
+              value: 100.42,
+              unit: "ms",
+              raw: 100416100
+            },
+            end: {
+              value: 100.68,
+              unit: "ms",
+              raw: 100681700.00000001
+            }
           },
           {
             index: 369,
             count: 1,
-            start: "00:00:00.1006817",
-            end: "00:00:00.1009474"
+            start: {
+              value: 100.68,
+              unit: "ms",
+              raw: 100681700.00000001
+            },
+            end: {
+              value: 100.95,
+              unit: "ms",
+              raw: 100947400.00000001
+            }
           },
           {
             index: 370,
             count: 1,
-            start: "00:00:00.1009474",
-            end: "00:00:00.1012130"
+            start: {
+              value: 100.95,
+              unit: "ms",
+              raw: 100947400.00000001
+            },
+            end: {
+              value: 101.21,
+              unit: "ms",
+              raw: 101213000
+            }
           },
           {
             index: 371,
             count: 1,
-            start: "00:00:00.1012130",
-            end: "00:00:00.1014787"
+            start: {
+              value: 101.21,
+              unit: "ms",
+              raw: 101213000
+            },
+            end: {
+              value: 101.48,
+              unit: "ms",
+              raw: 101478700
+            }
           },
           {
             index: 372,
             count: 1,
-            start: "00:00:00.1014787",
-            end: "00:00:00.1017443"
+            start: {
+              value: 101.48,
+              unit: "ms",
+              raw: 101478700
+            },
+            end: {
+              value: 101.74,
+              unit: "ms",
+              raw: 101744299.99999999
+            }
           },
           {
             index: 373,
             count: 1,
-            start: "00:00:00.1017443",
-            end: "00:00:00.1020100"
+            start: {
+              value: 101.74,
+              unit: "ms",
+              raw: 101744299.99999999
+            },
+            end: {
+              value: 102.01,
+              unit: "ms",
+              raw: 102010000
+            }
           },
           {
             index: 374,
             count: 1,
-            start: "00:00:00.1020100",
-            end: "00:00:00.1022756"
+            start: {
+              value: 102.01,
+              unit: "ms",
+              raw: 102010000
+            },
+            end: {
+              value: 102.28,
+              unit: "ms",
+              raw: 102275599.99999999
+            }
           },
           {
             index: 375,
             count: 1,
-            start: "00:00:00.1022756",
-            end: "00:00:00.1025413"
+            start: {
+              value: 102.28,
+              unit: "ms",
+              raw: 102275599.99999999
+            },
+            end: {
+              value: 102.54,
+              unit: "ms",
+              raw: 102541300
+            }
           },
           {
             index: 376,
             count: 1,
-            start: "00:00:00.1025413",
-            end: "00:00:00.1028069"
+            start: {
+              value: 102.54,
+              unit: "ms",
+              raw: 102541300
+            },
+            end: {
+              value: 102.81,
+              unit: "ms",
+              raw: 102806900
+            }
           },
           {
             index: 377,
             count: 1,
-            start: "00:00:00.1028069",
-            end: "00:00:00.1030726"
+            start: {
+              value: 102.81,
+              unit: "ms",
+              raw: 102806900
+            },
+            end: {
+              value: 103.07,
+              unit: "ms",
+              raw: 103072599.99999999
+            }
           },
           {
             index: 378,
             count: 1,
-            start: "00:00:00.1030726",
-            end: "00:00:00.1033382"
+            start: {
+              value: 103.07,
+              unit: "ms",
+              raw: 103072599.99999999
+            },
+            end: {
+              value: 103.34,
+              unit: "ms",
+              raw: 103338200
+            }
           },
           {
             index: 379,
             count: 1,
-            start: "00:00:00.1033382",
-            end: "00:00:00.1036039"
+            start: {
+              value: 103.34,
+              unit: "ms",
+              raw: 103338200
+            },
+            end: {
+              value: 103.6,
+              unit: "ms",
+              raw: 103603900
+            }
           },
           {
             index: 380,
             count: 1,
-            start: "00:00:00.1036039",
-            end: "00:00:00.1038695"
+            start: {
+              value: 103.6,
+              unit: "ms",
+              raw: 103603900
+            },
+            end: {
+              value: 103.87,
+              unit: "ms",
+              raw: 103869500
+            }
           },
           {
             index: 381,
             count: 1,
-            start: "00:00:00.1038695",
-            end: "00:00:00.1041352"
+            start: {
+              value: 103.87,
+              unit: "ms",
+              raw: 103869500
+            },
+            end: {
+              value: 104.14,
+              unit: "ms",
+              raw: 104135200
+            }
           },
           {
             index: 382,
             count: 1,
-            start: "00:00:00.1041352",
-            end: "00:00:00.1044008"
+            start: {
+              value: 104.14,
+              unit: "ms",
+              raw: 104135200
+            },
+            end: {
+              value: 104.4,
+              unit: "ms",
+              raw: 104400800
+            }
           },
           {
             index: 383,
             count: 1,
-            start: "00:00:00.1044008",
-            end: "00:00:00.1046665"
+            start: {
+              value: 104.4,
+              unit: "ms",
+              raw: 104400800
+            },
+            end: {
+              value: 104.67,
+              unit: "ms",
+              raw: 104666500
+            }
           },
           {
             index: 384,
             count: 1,
-            start: "00:00:00.1046665",
-            end: "00:00:00.1049321"
+            start: {
+              value: 104.67,
+              unit: "ms",
+              raw: 104666500
+            },
+            end: {
+              value: 104.93,
+              unit: "ms",
+              raw: 104932100
+            }
           },
           {
             index: 385,
             count: 1,
-            start: "00:00:00.1049321",
-            end: "00:00:00.1051978"
+            start: {
+              value: 104.93,
+              unit: "ms",
+              raw: 104932100
+            },
+            end: {
+              value: 105.2,
+              unit: "ms",
+              raw: 105197800
+            }
           },
           {
             index: 386,
             count: 1,
-            start: "00:00:00.1051978",
-            end: "00:00:00.1054634"
+            start: {
+              value: 105.2,
+              unit: "ms",
+              raw: 105197800
+            },
+            end: {
+              value: 105.46,
+              unit: "ms",
+              raw: 105463400
+            }
           },
           {
             index: 387,
             count: 1,
-            start: "00:00:00.1054634",
-            end: "00:00:00.1057291"
+            start: {
+              value: 105.46,
+              unit: "ms",
+              raw: 105463400
+            },
+            end: {
+              value: 105.73,
+              unit: "ms",
+              raw: 105729100
+            }
           },
           {
             index: 388,
             count: 1,
-            start: "00:00:00.1057291",
-            end: "00:00:00.1059948"
+            start: {
+              value: 105.73,
+              unit: "ms",
+              raw: 105729100
+            },
+            end: {
+              value: 105.99,
+              unit: "ms",
+              raw: 105994800
+            }
           },
           {
             index: 401,
             count: 1,
-            start: "00:00:00.1091826",
-            end: "00:00:00.1094482"
+            start: {
+              value: 109.18,
+              unit: "ms",
+              raw: 109182599.99999999
+            },
+            end: {
+              value: 109.45,
+              unit: "ms",
+              raw: 109448200
+            }
           },
           {
             index: 402,
             count: 1,
-            start: "00:00:00.1094482",
-            end: "00:00:00.1097139"
+            start: {
+              value: 109.45,
+              unit: "ms",
+              raw: 109448200
+            },
+            end: {
+              value: 109.71,
+              unit: "ms",
+              raw: 109713900
+            }
           },
           {
             index: 403,
             count: 1,
-            start: "00:00:00.1097139",
-            end: "00:00:00.1099795"
+            start: {
+              value: 109.71,
+              unit: "ms",
+              raw: 109713900
+            },
+            end: {
+              value: 109.98,
+              unit: "ms",
+              raw: 109979500
+            }
           },
           {
             index: 404,
             count: 1,
-            start: "00:00:00.1099795",
-            end: "00:00:00.1102452"
+            start: {
+              value: 109.98,
+              unit: "ms",
+              raw: 109979500
+            },
+            end: {
+              value: 110.25,
+              unit: "ms",
+              raw: 110245200
+            }
           },
           {
             index: 405,
             count: 1,
-            start: "00:00:00.1102452",
-            end: "00:00:00.1105108"
+            start: {
+              value: 110.25,
+              unit: "ms",
+              raw: 110245200
+            },
+            end: {
+              value: 110.51,
+              unit: "ms",
+              raw: 110510800
+            }
           },
           {
             index: 406,
             count: 1,
-            start: "00:00:00.1105108",
-            end: "00:00:00.1107765"
+            start: {
+              value: 110.51,
+              unit: "ms",
+              raw: 110510800
+            },
+            end: {
+              value: 110.78,
+              unit: "ms",
+              raw: 110776500
+            }
           },
           {
             index: 407,
             count: 1,
-            start: "00:00:00.1107765",
-            end: "00:00:00.1110421"
+            start: {
+              value: 110.78,
+              unit: "ms",
+              raw: 110776500
+            },
+            end: {
+              value: 111.04,
+              unit: "ms",
+              raw: 111042100
+            }
           },
           {
             index: 408,
             count: 1,
-            start: "00:00:00.1110421",
-            end: "00:00:00.1113078"
+            start: {
+              value: 111.04,
+              unit: "ms",
+              raw: 111042100
+            },
+            end: {
+              value: 111.31,
+              unit: "ms",
+              raw: 111307800
+            }
           },
           {
             index: 409,
             count: 1,
-            start: "00:00:00.1113078",
-            end: "00:00:00.1115734"
+            start: {
+              value: 111.31,
+              unit: "ms",
+              raw: 111307800
+            },
+            end: {
+              value: 111.57,
+              unit: "ms",
+              raw: 111573400.00000001
+            }
           },
           {
             index: 410,
             count: 1,
-            start: "00:00:00.1115734",
-            end: "00:00:00.1118391"
+            start: {
+              value: 111.57,
+              unit: "ms",
+              raw: 111573400.00000001
+            },
+            end: {
+              value: 111.84,
+              unit: "ms",
+              raw: 111839100
+            }
           },
           {
             index: 411,
             count: 1,
-            start: "00:00:00.1118391",
-            end: "00:00:00.1121047"
+            start: {
+              value: 111.84,
+              unit: "ms",
+              raw: 111839100
+            },
+            end: {
+              value: 112.1,
+              unit: "ms",
+              raw: 112104700
+            }
           },
           {
             index: 412,
             count: 1,
-            start: "00:00:00.1121047",
-            end: "00:00:00.1123704"
+            start: {
+              value: 112.1,
+              unit: "ms",
+              raw: 112104700
+            },
+            end: {
+              value: 112.37,
+              unit: "ms",
+              raw: 112370400.00000001
+            }
           },
           {
             index: 413,
             count: 1,
-            start: "00:00:00.1123704",
-            end: "00:00:00.1126360"
+            start: {
+              value: 112.37,
+              unit: "ms",
+              raw: 112370400.00000001
+            },
+            end: {
+              value: 112.64,
+              unit: "ms",
+              raw: 112636000
+            }
           },
           {
             index: 414,
             count: 1,
-            start: "00:00:00.1126360",
-            end: "00:00:00.1129017"
+            start: {
+              value: 112.64,
+              unit: "ms",
+              raw: 112636000
+            },
+            end: {
+              value: 112.9,
+              unit: "ms",
+              raw: 112901700.00000001
+            }
           },
           {
             index: 415,
             count: 1,
-            start: "00:00:00.1129017",
-            end: "00:00:00.1131673"
+            start: {
+              value: 112.9,
+              unit: "ms",
+              raw: 112901700.00000001
+            },
+            end: {
+              value: 113.17,
+              unit: "ms",
+              raw: 113167300
+            }
           },
           {
             index: 416,
             count: 1,
-            start: "00:00:00.1131673",
-            end: "00:00:00.1134330"
+            start: {
+              value: 113.17,
+              unit: "ms",
+              raw: 113167300
+            },
+            end: {
+              value: 113.43,
+              unit: "ms",
+              raw: 113433000
+            }
           }
         ],
         quantiles: [
           {
-            timestamp: "00:00:00.0354644",
+            timestamp: {
+              value: 35.46,
+              unit: "ms",
+              raw: 35464400
+            },
             quantileValue: 0.5
           },
           {
-            timestamp: "00:00:00.1034710",
+            timestamp: {
+              value: 103.47,
+              unit: "ms",
+              raw: 103471050
+            },
             quantileValue: 0.95
           }
         ]
@@ -2300,65 +4820,145 @@ export const HistogramWithGaps: Story = {
           {
             index: 0,
             count: 5,
-            start: "00:00:00.0100000",
-            end: "00:00:00.0110000"
+            start: {
+              value: 10,
+              unit: "ms",
+              raw: 10000000
+            },
+            end: {
+              value: 11,
+              unit: "ms",
+              raw: 11000000
+            }
           },
           {
             index: 1,
             count: 7,
-            start: "00:00:00.0110000",
-            end: "00:00:00.0120000"
+            start: {
+              value: 11,
+              unit: "ms",
+              raw: 11000000
+            },
+            end: {
+              value: 12,
+              unit: "ms",
+              raw: 12000000
+            }
           },
           {
             index: 2,
             count: 6,
-            start: "00:00:00.0120000",
-            end: "00:00:00.0130000"
+            start: {
+              value: 12,
+              unit: "ms",
+              raw: 12000000
+            },
+            end: {
+              value: 13,
+              unit: "ms",
+              raw: 13000000
+            }
           },
           {
             index: 3,
             count: 4,
-            start: "00:00:00.0130000",
-            end: "00:00:00.0140000"
+            start: {
+              value: 13,
+              unit: "ms",
+              raw: 13000000
+            },
+            end: {
+              value: 14,
+              unit: "ms",
+              raw: 14000000
+            }
           },
           {
             index: 4,
             count: 3,
-            start: "00:00:00.0140000",
-            end: "00:00:00.0150000"
+            start: {
+              value: 14,
+              unit: "ms",
+              raw: 14000000
+            },
+            end: {
+              value: 15,
+              unit: "ms",
+              raw: 15000000
+            }
           },
           {
             index: 5,
             count: 1,
-            start: "00:00:00.0150000",
-            end: "00:00:00.0160000"
+            start: {
+              value: 15,
+              unit: "ms",
+              raw: 15000000
+            },
+            end: {
+              value: 16,
+              unit: "ms",
+              raw: 16000000
+            }
           },
           {
             index: 7,
             count: 1,
-            start: "00:00:00.0170000",
-            end: "00:00:00.0170000"
+            start: {
+              value: 17,
+              unit: "ms",
+              raw: 17000000
+            },
+            end: {
+              value: 17,
+              unit: "ms",
+              raw: 17000000
+            }
           },
           {
             index: 10,
             count: 2,
-            start: "00:00:00.0200000",
-            end: "00:00:00.0210000"
+            start: {
+              value: 20,
+              unit: "ms",
+              raw: 20000000
+            },
+            end: {
+              value: 21,
+              unit: "ms",
+              raw: 21000000
+            }
           },
           {
             index: 20,
             count: 1,
-            start: "00:00:00.0300000",
-            end: "00:00:00.0310000"
+            start: {
+              value: 30,
+              unit: "ms",
+              raw: 30000000
+            },
+            end: {
+              value: 31,
+              unit: "ms",
+              raw: 31000000
+            }
           }
         ],
         quantiles: [
           {
-            timestamp: "00:00:00.0125000",
+            timestamp: {
+              value: 12.5,
+              unit: "ms",
+              raw: 12500000
+            },
             quantileValue: 0.5
           },
           {
-            timestamp: "00:00:00.0205000",
+            timestamp: {
+              value: 20.5,
+              unit: "ms",
+              raw: 20500000
+            },
             quantileValue: 0.95
           }
         ]
@@ -2464,20 +5064,44 @@ export const HistogramWithAFewBars: Story = {
           {
             index: 0,
             count: 5,
-            start: "00:00:00.0010000",
-            end: "00:00:00.0020000"
+            start: {
+              value: 1,
+              unit: "ms",
+              raw: 1000000
+            },
+            end: {
+              value: 2,
+              unit: "ms",
+              raw: 2000000
+            }
           },
           {
             index: 1,
             count: 7,
-            start: "00:00:00.0020000",
-            end: "00:00:00.0030000"
+            start: {
+              value: 2,
+              unit: "ms",
+              raw: 2000000
+            },
+            end: {
+              value: 3,
+              unit: "ms",
+              raw: 3000000
+            }
           },
           {
             index: 3,
             count: 6,
-            start: "00:00:00.0050000",
-            end: "00:00:00.0060000"
+            start: {
+              value: 5,
+              unit: "ms",
+              raw: 5000000
+            },
+            end: {
+              value: 6,
+              unit: "ms",
+              raw: 6000000
+            }
           }
         ],
         quantiles: []

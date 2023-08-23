@@ -12,6 +12,24 @@ import { DurationChangeProps } from "./types";
 const DURATION_RATIO_MIN_LIMIT = 0.1;
 const DURATION_DIFF_MIN_LIMIT = 10 * 1000; // in nanoseconds
 
+export const isChangeMeaningfulEnough = (
+  currentDuration: Duration,
+  previousDuration: Duration | null,
+  changeTime: string | null
+): boolean => {
+  let isChangeMeaningfulEnough = false;
+
+  if (previousDuration && changeTime) {
+    const diff = Math.abs(currentDuration.raw - previousDuration.raw);
+
+    isChangeMeaningfulEnough =
+      diff / previousDuration.raw > DURATION_RATIO_MIN_LIMIT &&
+      diff > DURATION_DIFF_MIN_LIMIT;
+  }
+
+  return isChangeMeaningfulEnough;
+};
+
 export const getDurationDifferenceString = (
   previousDuration: Duration,
   currentDuration: Duration
@@ -83,27 +101,22 @@ const renderArrowIcon = (
 export const DurationChange = (props: DurationChangeProps) => {
   const theme = useTheme();
 
-  let changeMeaningfulEnough = false;
-
-  if (props.previousDuration && props.changeTime) {
-    const diff = Math.abs(
-      props.currentDuration.raw - props.previousDuration.raw
-    );
-
-    changeMeaningfulEnough =
-      diff / props.previousDuration.raw > DURATION_RATIO_MIN_LIMIT &&
-      diff > DURATION_DIFF_MIN_LIMIT;
-  }
+  const isChangeMeaningful = isChangeMeaningfulEnough(
+    props.currentDuration,
+    props.previousDuration,
+    props.changeTime
+  );
 
   return (
     <>
-      {props.previousDuration && props.changeTime && changeMeaningfulEnough && (
+      {props.previousDuration && props.changeTime && isChangeMeaningful && (
         <s.Change>
           {renderArrowIcon(
             props.currentDuration,
             props.previousDuration,
             theme
           )}
+          by{" "}
           {getDurationDifferenceString(
             props.previousDuration,
             props.currentDuration
@@ -111,17 +124,15 @@ export const DurationChange = (props: DurationChangeProps) => {
           , {formatTimeDistance(props.changeTime)}
         </s.Change>
       )}
-      {props.changeTime &&
-        changeMeaningfulEnough &&
-        props.changeVerified === false && (
-          <Tooltip
-            title={
-              "This change is still being validated and is based on initial data"
-            }
-          >
-            <span>Evaluating</span>
-          </Tooltip>
-        )}
+      {isChangeMeaningful && props.changeVerified === false && (
+        <Tooltip
+          title={
+            "This change is still being validated and is based on initial data"
+          }
+        >
+          <span>• Evaluating</span>
+        </Tooltip>
+      )}
     </>
   );
 };

@@ -9,12 +9,13 @@ import {
   XAxis
 } from "recharts";
 import { DefaultTheme, useTheme } from "styled-components";
+import { Duration } from "../../../globals";
 import { formatTimeDistance } from "../../../utils/formatTimeDistance";
 import { getPercentileLabel } from "../../../utils/getPercentileLabel";
 import { Button } from "../../common/Button";
 import { ChartIcon } from "../../common/icons/ChartIcon";
 import { DoubleCircleIcon } from "../../common/icons/DoubleCircleIcon";
-import { DurationChange } from "../DurationChange";
+import { DurationChange, isChangeMeaningfulEnough } from "../DurationChange";
 import { InsightCard } from "../InsightCard";
 import { Description } from "../styles";
 import { HistogramBarData, Trace } from "../types";
@@ -25,32 +26,21 @@ const LAST_CALL_TIME_DISTANCE_LIMIT = 60 * 1000; // in milliseconds
 
 const BAR_WIDTH = 5;
 
-const convertDurationStringToNumber = (value: string): number => {
-  const res = value.match(/^(\d+):(\d+):([\d.]+)$/);
+const durationPlaceholder: Duration = { value: 0, unit: "ns", raw: 0 };
 
-  if (!res) {
-    return 0;
-  }
+const getDurationString = (duration: Duration) =>
+  `${duration.value} ${duration.unit}`;
 
-  return Number(res[1]) * 60 * 60 + Number(res[2]) * 60 + Number(res[3]);
-};
-
-const getBarColor = (value: string, p50?: string, p95?: string) => {
+const getBarColor = (value: Duration, p50?: Duration, p95?: Duration) => {
   const blueColor = "#4b46a2";
   const purpleColor = "#6f46a2";
   const redColor = "#a24666";
 
-  if (
-    p50 &&
-    convertDurationStringToNumber(value) < convertDurationStringToNumber(p50)
-  ) {
+  if (p50 && value.raw < p50.raw) {
     return blueColor;
   }
 
-  if (
-    p95 &&
-    convertDurationStringToNumber(value) > convertDurationStringToNumber(p95)
-  ) {
+  if (p95 && value.raw >= p95.raw) {
     return redColor;
   }
 
@@ -91,8 +81,8 @@ const calculateBars = (
         filledBars[j] = {
           index: j,
           count: 0,
-          start: "",
-          end: ""
+          start: durationPlaceholder,
+          end: durationPlaceholder
         };
       }
     }
@@ -103,8 +93,8 @@ const calculateBars = (
         filledBars[j] = {
           index: j,
           count: 0,
-          start: "",
-          end: ""
+          start: durationPlaceholder,
+          end: durationPlaceholder
         };
       }
     }
@@ -112,8 +102,8 @@ const calculateBars = (
     filledBars[bar.index] = bar;
   }
 
-  const barWidth = BAR_WIDTH * 2;
-  const newBarCount = Math.floor(chartWidth / barWidth);
+  const barReservedWidth = BAR_WIDTH * 2;
+  const newBarCount = Math.floor(chartWidth / barReservedWidth);
   const barsCount = filledBars.length;
   const groupSize = Math.ceil(barsCount / newBarCount);
 
@@ -127,8 +117,11 @@ const calculateBars = (
     newBars.push({
       index: j,
       count: newCount,
-      start: newCount > 0 ? notEmptyBars[0].start : "",
-      end: newCount > 0 ? notEmptyBars[notEmptyBars.length - 1].end : ""
+      start: newCount > 0 ? notEmptyBars[0].start : durationPlaceholder,
+      end:
+        newCount > 0
+          ? notEmptyBars[notEmptyBars.length - 1].end
+          : durationPlaceholder
     });
   }
 
@@ -177,6 +170,8 @@ export const DurationInsight = (props: DurationInsightProps) => {
     ? calculateBars(props.insight.histogramData.bars, width)
     : [];
 
+  const XAxisPadding = (width - histogramData.length * BAR_WIDTH * 2) / 2;
+
   const p50 = props.insight.histogramData?.quantiles.find(
     (x) => x.quantileValue === 0.5
   )?.timestamp;
@@ -186,29 +181,27 @@ export const DurationInsight = (props: DurationInsightProps) => {
   )?.timestamp;
 
   const p50BarIndex = p50
-    ? histogramData.findIndex(
-        (x) =>
-          convertDurationStringToNumber(x.end) >=
-          convertDurationStringToNumber(p50)
-      )
+    ? histogramData.findIndex((x) => x.end.raw >= p50.raw)
     : undefined;
 
   const p95BarIndex = p95
-    ? histogramData.findIndex(
-        (x) =>
-          convertDurationStringToNumber(x.end) >=
-          convertDurationStringToNumber(p95)
-      )
+    ? histogramData.findIndex((x) => x.end.raw >= p95.raw)
     : undefined;
 
   const ticks: Record<number, TickData> = {};
 
   if (p50 && p50BarIndex) {
-    ticks[p50BarIndex] = { value: p50, label: "P50" };
+    ticks[p50BarIndex] = {
+      value: getDurationString(p50),
+      label: getPercentileLabel(0.5)
+    };
   }
 
   if (p95 && p95BarIndex) {
-    ticks[p95BarIndex] = { value: p95, label: "P95" };
+    ticks[p95BarIndex] = {
+      value: getDurationString(p95),
+      label: getPercentileLabel(0.95)
+    };
   }
 
   return (
@@ -221,9 +214,7 @@ export const DurationInsight = (props: DurationInsightProps) => {
             <s.Stats>
               <Description>Last call</Description>
               <s.ValueContainer>
-                <s.Value>
-                  {spanLastCall.duration.value} {spanLastCall.duration.unit}
-                </s.Value>
+                <s.Value>{getDurationString(spanLastCall.duration)}</s.Value>
                 <s.LastCallTimeDistance isRecent={isLastCallRecent}>
                   •{" "}
                   {isLastCallRecent
@@ -243,15 +234,39 @@ export const DurationInsight = (props: DurationInsightProps) => {
                   });
                 }
 
-                return (
+                const isChangeMeaningful = isChangeMeaningfulEnough(
+                  percentile.currentDuration,
+                  percentile.previousDuration,
+                  percentile.changeTime
+                );
+
+                if (!props.insight.histogramData) {
+                  return (
+                    <s.Stats key={percentile.percentile}>
+                      <Description>
+                        {getPercentileLabel(percentile.percentile)}
+                      </Description>
+                      <s.ValueContainer>
+                        <s.Value>
+                          {getDurationString(percentile.currentDuration)}
+                        </s.Value>
+                        <DurationChange
+                          currentDuration={percentile.currentDuration}
+                          previousDuration={percentile.previousDuration}
+                          changeTime={percentile.changeTime}
+                          changeVerified={percentile.changeVerified}
+                        />
+                      </s.ValueContainer>
+                    </s.Stats>
+                  );
+                }
+
+                return props.insight.histogramData && isChangeMeaningful ? (
                   <s.Stats key={percentile.percentile}>
                     <Description>
                       {getPercentileLabel(percentile.percentile)}
                     </Description>
                     <s.ValueContainer>
-                      <s.Value>
-                        {`${percentile.currentDuration.value} ${percentile.currentDuration.unit}`}
-                      </s.Value>
                       <DurationChange
                         currentDuration={percentile.currentDuration}
                         previousDuration={percentile.previousDuration}
@@ -260,7 +275,7 @@ export const DurationInsight = (props: DurationInsightProps) => {
                       />
                     </s.ValueContainer>
                   </s.Stats>
-                );
+                ) : null;
               })}
             </>
           ) : (
@@ -274,7 +289,6 @@ export const DurationInsight = (props: DurationInsightProps) => {
                 <BarChart
                   margin={{ top: 20, right: 0, bottom: 0, left: 0 }}
                   barSize={BAR_WIDTH}
-                  barGap={BAR_WIDTH}
                   data={histogramData}
                 >
                   <Bar
@@ -304,7 +318,8 @@ export const DurationInsight = (props: DurationInsightProps) => {
                         <s.TooltipContainer>
                           <span>Request count: {data.count}</span>
                           <span>
-                            Duration range: {data.start}-{data.end}
+                            Duration range: {getDurationString(data.start)} -{" "}
+                            {getDurationString(data.end)}
                           </span>
                         </s.TooltipContainer>
                       );
@@ -312,6 +327,7 @@ export const DurationInsight = (props: DurationInsightProps) => {
                     isAnimationActive={false}
                   />
                   <XAxis
+                    padding={{ left: XAxisPadding, right: XAxisPadding }}
                     stroke={tickColor}
                     tick={
                       Boolean(Object.keys(ticks).length) && {
@@ -320,6 +336,7 @@ export const DurationInsight = (props: DurationInsightProps) => {
                     }
                     ticks={Object.keys(ticks).map((x) => Number(x))}
                     tickFormatter={(x: number) => ticks[x].value}
+                    height={20}
                   />
                   {Object.entries(ticks).map(([barIndex, tickData]) => (
                     <ReferenceLine
