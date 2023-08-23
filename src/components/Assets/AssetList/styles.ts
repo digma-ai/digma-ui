@@ -23,8 +23,7 @@ export const Header = styled.div`
   align-items: center;
   gap: 4px;
   font-weight: 400;
-  font-size: 11px;
-  line-height: 14px;
+  font-size: 14px;
   padding: 8px 12px 8px 8px;
   background: ${({ theme }) => {
     switch (theme.mode) {
@@ -38,7 +37,7 @@ export const Header = styled.div`
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "#002d61";
+        return "#788ca9";
       case "dark":
       case "dark-jetbrains":
         return "#dadada";
@@ -73,7 +72,7 @@ export const SearchInputIconContainer = styled.div`
 `;
 
 export const SearchInput = styled.input`
-  font-size: 10px;
+  font-size: 14px;
   padding: 4px 4px 4px 18px;
   border-radius: 4px;
   width: 70px;
@@ -144,8 +143,7 @@ export const SortingMenuButton = styled.button<SortingMenuButtonProps>`
   display: flex;
   gap: 2px;
   font-weight: 500;
-  font-size: 10px;
-  line-height: 12px;
+  font-size: 14px;
   align-items: center;
   border-radius: 4px;
   padding: 4px 8px;
@@ -197,8 +195,7 @@ export const SortingMenuButton = styled.button<SortingMenuButtonProps>`
 
 export const SortingLabel = styled.span`
   font-weight: 500;
-  font-size: 10px;
-  line-height: 12px;
+  font-size: 14px;
   text-transform: capitalize;
   color: ${({ theme }) => {
     switch (theme.mode) {
@@ -231,7 +228,7 @@ export const SortingOrderToggle = styled.div`
 export const SortingOrderToggleOptionButton = styled.button<SortingOrderOptionProps>`
   border: none;
   outline: none;
-  padding: 0;
+  padding: 0 1px;
   border-radius: 2px;
   cursor: pointer;
   background: ${({ selected }) => (selected ? "#3538cd" : "transparent")};
@@ -274,8 +271,7 @@ export const ListItem = styled.li`
 export const NoDataText = styled.span`
   padding: 10px;
   font-weight: 500;
-  font-size: 12px;
-  line-height: 16px;
+  font-size: 14px;
   text-align: center;
   color: ${({ theme }) => {
     switch (theme.mode) {

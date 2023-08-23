@@ -5,8 +5,7 @@ export const Container = styled.div`
   flex-direction: column;
   gap: 4px;
   font-weight: 500;
-  font-size: 12px;
-  line-height: 14px;
+  font-size: 14px;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -22,8 +21,7 @@ export const Timestamp = styled.span`
   display: flex;
   align-items: center;
   gap: 4px;
-  font-size: 8px;
-  line-height: 10px;
+  font-size: 14px;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

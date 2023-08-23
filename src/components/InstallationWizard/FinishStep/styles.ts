@@ -1,10 +1,10 @@
 import styled from "styled-components";
+import { Link } from "../../common/Link";
 import { PlayCircleIcon } from "../../common/icons/PlayCircleIcon";
 import { SectionTitle as CommonSectionTitle } from "../SectionTitle";
 import {
   IllustrationContainer as CommonIllustrationContainer,
-  SectionDescription as CommonSectionDescription,
-  Link
+  SectionDescription as CommonSectionDescription
 } from "../styles";
 
 export const Container = styled.div`

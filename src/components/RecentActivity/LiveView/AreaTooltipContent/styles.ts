@@ -5,8 +5,7 @@ export const Container = styled.div`
   flex-direction: column;
   gap: 4px;
   font-weight: 400;
-  font-size: 10px;
-  line-height: 12px;
+  font-size: 14px;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

@@ -481,7 +481,7 @@ export const InstallationWizard = () => {
           </CSSTransition>
         )}
         <s.FooterSlackLink onClick={handleSlackLinkClick}>
-          <SlackLogoIcon />
+          <SlackLogoIcon size={14} />
           Having trouble? Please reach out in our Slack group
         </s.FooterSlackLink>
       </s.Footer>

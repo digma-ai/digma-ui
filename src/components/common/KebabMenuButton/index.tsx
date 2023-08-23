@@ -49,7 +49,7 @@ export const KebabMenuButton = (props: KebabMenuButtonProps) => {
           isHovered,
           isFocused
         )}
-        size={12}
+        size={14}
       />
     </s.Container>
   );

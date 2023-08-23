@@ -144,7 +144,7 @@ const sortEntries = (
 const getBackIconColor = (theme: DefaultTheme) => {
   switch (theme.mode) {
     case "light":
-      return "#002d61";
+      return "#4D668A";
     case "dark":
     case "dark-jetbrains":
       return "#dadada";
@@ -340,10 +340,14 @@ export const AssetList = (props: AssetListProps) => {
     <s.Container>
       <s.Header>
         <s.BackButton onClick={handleBackButtonClick}>
-          <ChevronIcon direction={Direction.LEFT} color={backIconColor} />
+          <ChevronIcon
+            direction={Direction.LEFT}
+            color={backIconColor}
+            size={14}
+          />
         </s.BackButton>
         {assetTypeInfo?.icon && (
-          <assetTypeInfo.icon color={assetTypeIconColor} />
+          <assetTypeInfo.icon color={assetTypeIconColor} size={14} />
         )}
         <span>{assetTypeInfo?.label || props.assetTypeId}</span>
         <s.ItemsCount>
@@ -354,7 +358,7 @@ export const AssetList = (props: AssetListProps) => {
         {window.assetsSearch === true && (
           <s.SearchInputContainer>
             <s.SearchInputIconContainer>
-              <MagnifierIcon color={searchInputIconColor} />
+              <MagnifierIcon color={searchInputIconColor} size={14} />
             </s.SearchInputIconContainer>
             <s.SearchInput
               placeholder={"Search"}
@@ -402,7 +406,7 @@ export const AssetList = (props: AssetListProps) => {
                 onClick={() => handleSortingOrderToggleOptionButtonClick(order)}
               >
                 <s.SortingOrderIconContainer sortingOrder={order}>
-                  <SortIcon color={iconColor} />
+                  <SortIcon color={iconColor} size={14} />
                 </s.SortingOrderIconContainer>
               </s.SortingOrderToggleOptionButton>
             );

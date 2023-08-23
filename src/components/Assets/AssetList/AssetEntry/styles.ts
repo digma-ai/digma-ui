@@ -45,8 +45,7 @@ export const Link = styled.a`
   color: #7891d0;
   text-decoration: none;
   font-weight: 500;
-  font-size: 12px;
-  line-height: 14px;
+  font-size: 14px;
   cursor: pointer;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -76,8 +75,7 @@ export const StatsContainer = styled.div`
   display: flex;
   gap: 12px 16px;
   flex-wrap: wrap;
-  font-size: 10px;
-  line-height: 12px;
+  font-size: 14px;
 `;
 
 export const Stats = styled.div`
@@ -95,14 +93,11 @@ export const StatsColumn = styled.div`
 
 export const ServicesContainer = styled.div`
   display: flex;
-  gap: 2px;
+  gap: 4px;
   align-items: center;
 `;
 
 export const ServiceName = styled.div`
-  padding: 4px 0;
-  border-radius: 23px;
-  line-height: 8px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -121,8 +116,7 @@ export const ValueContainer = styled.div`
   display: flex;
   align-items: flex-end;
   gap: 2px;
-  font-size: 12px;
-  line-height: 14px;
+  font-size: 14px;
   font-weight: 500;
   color: ${({ theme }) => {
     switch (theme.mode) {
@@ -137,8 +131,7 @@ export const ValueContainer = styled.div`
 
 export const Suffix = styled.span`
   font-weight: 400;
-  font-size: 11px;
-  line-height: 14px;
+  font-size: 14px;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

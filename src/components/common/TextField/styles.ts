@@ -44,8 +44,7 @@ export const Input = styled.input`
   outline: none;
   display: flex;
   flex-grow: 1;
-  font-size: 12px;
-  line-height: 14px;
+  font-size: 14px;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

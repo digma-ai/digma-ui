@@ -80,7 +80,7 @@ export const AssetEntry = (props: AssetEntryProps) => {
       <s.Header>
         {assetTypeInfo?.icon && (
           <s.AssetTypeIconContainer>
-            <assetTypeInfo.icon color={"#7891d0"} />
+            <assetTypeInfo.icon color={"#7891d0"} size={16} />
           </s.AssetTypeIconContainer>
         )}
         <Tooltip title={name}>
@@ -115,7 +115,7 @@ export const AssetEntry = (props: AssetEntryProps) => {
             <span>Services</span>
             <Tooltip title={servicesTitle}>
               <s.ServicesContainer>
-                <GlobeIcon color={serviceIconColor} />
+                <GlobeIcon color={serviceIconColor} size={14} />
                 <s.ServiceName>{props.entry.relatedServices[0]}</s.ServiceName>
                 {otherServices.length > 0 && (
                   <span>+{otherServices.length}</span>

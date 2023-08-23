@@ -1,4 +1,4 @@
-import { CodeSnippet } from "../../InstallationWizard/CodeSnippet";
+import { CodeSnippet } from "../../common/CodeSnippet";
 import { PageContent } from "./types";
 
 export const runDigmaWithDocker: PageContent = {

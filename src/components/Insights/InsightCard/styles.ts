@@ -39,7 +39,7 @@ export const Toolbar = styled.div`
 `;
 
 export const Stats = styled.span`
-  font-size: 12px;
+  font-size: 14px;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -65,12 +65,12 @@ export const RefreshContainer = styled.div`
 `;
 
 export const ContentContainer = styled.div`
-  font-size: 12px;
+  font-size: 14px;
 `;
 
 export const AsyncBadge = styled.div`
   color: #fff;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 400;
   border-radius: 4px;
   padding: 2px 4px;
@@ -91,7 +91,7 @@ export const PercentileViewModeToggle = styled.div`
   border-radius: 4px;
   padding: 4px;
   gap: 4px;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 500;
   width: fit-content;
   border: 1px solid

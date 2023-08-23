@@ -41,7 +41,7 @@ export const Container = styled.div<ContainerProps>`
 
 export const Header = styled.div<HeaderProps>`
   display: flex;
-  gap: 4px;
+  gap: 8px;
   padding: 12px 8px;
   font-weight: 500;
   font-size: 14px;

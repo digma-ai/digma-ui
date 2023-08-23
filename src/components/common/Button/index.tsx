@@ -168,7 +168,7 @@ export const Button = (props: ButtonProps) => {
       <s.ContentContainer>
         {props.icon && (
           <props.icon.component
-            size={props.icon.size}
+            size={props.icon.size || 14}
             color={
               props.icon.color ||
               getIconColor(

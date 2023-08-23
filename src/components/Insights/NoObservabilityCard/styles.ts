@@ -31,7 +31,7 @@ export const MissingDependencyContainer = styled.div`
 `;
 
 export const MissingDependencyText = styled.span`
-  font-size: 12px;
+  font-size: 14px;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
