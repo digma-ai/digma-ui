@@ -233,14 +233,20 @@ export const DurationInsight = (props: DurationInsightProps) => {
     payload: { value: number };
     textAnchor: "start" | "end" | "middle" | "inherit" | undefined;
   }) => {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    props = JSON.parse(JSON.stringify(props));
     const tick = ticks[props.payload.value];
-    if (tick.role) props.textAnchor = tick.role == "min" ? "end" : "start";
+    let textAnchor = props.textAnchor;
+
+    if (tick.role) {
+      textAnchor = tick.role === "min" ? "end" : "start";
+    }
 
     // https://github.com/recharts/recharts/blob/d6aa41f2d5ade9bd61a7bbdc1cfed07438049122/src/cartesian/CartesianAxis.tsx#L241C5-L241C5
     return (
-      <Text {...props} className="recharts-cartesian-axis-tick-value">
+      <Text
+        {...props}
+        textAnchor={textAnchor}
+        className="recharts-cartesian-axis-tick-value"
+      >
         {tick.value}
       </Text>
     );
@@ -373,9 +379,7 @@ export const DurationInsight = (props: DurationInsightProps) => {
                   <XAxis
                     padding={{ left: XAxisPadding, right: XAxisPadding }}
                     stroke={tickColor}
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-ignore
-                    tick={<CustomizedAxisTick />}
+                    tick={CustomizedAxisTick}
                     interval={0}
                     ticks={Object.keys(ticks).map((x) => Number(x))}
                     tickFormatter={(x: number) => ticks[x].value}
