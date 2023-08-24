@@ -5,6 +5,7 @@ import {
   Cell,
   ReferenceLine,
   ResponsiveContainer,
+  Text,
   Tooltip,
   XAxis
 } from "recharts";
@@ -215,14 +216,35 @@ export const DurationInsight = (props: DurationInsightProps) => {
   if (!p50 && !p95 && notEmptyBars.length) {
     const minBar = notEmptyBars[0];
     ticks[minBar.index] = {
-      value: getDurationString(minBar.start)
+      value: getDurationString(minBar.start),
+      role: "min"
     };
 
     const maxBar = notEmptyBars[notEmptyBars.length - 1];
     ticks[maxBar.index] = {
-      value: getDurationString(maxBar.end)
+      value: getDurationString(maxBar.end),
+      role: "max"
     };
   }
+
+  const CustomizedAxisTick = (props: {
+    x: number;
+    y: number;
+    payload: { value: number };
+    textAnchor: "start" | "end" | "middle" | "inherit" | undefined;
+  }) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    props = JSON.parse(JSON.stringify(props));
+    const tick = ticks[props.payload.value];
+    if (tick.role) props.textAnchor = tick.role == "min" ? "end" : "start";
+
+    // https://github.com/recharts/recharts/blob/d6aa41f2d5ade9bd61a7bbdc1cfed07438049122/src/cartesian/CartesianAxis.tsx#L241C5-L241C5
+    return (
+      <Text {...props} className="recharts-cartesian-axis-tick-value">
+        {tick.value}
+      </Text>
+    );
+  };
 
   return (
     <InsightCard
@@ -351,11 +373,9 @@ export const DurationInsight = (props: DurationInsightProps) => {
                   <XAxis
                     padding={{ left: XAxisPadding, right: XAxisPadding }}
                     stroke={tickColor}
-                    tick={
-                      Boolean(Object.keys(ticks).length) && {
-                        fill: tickLabelColor
-                      }
-                    }
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    tick={<CustomizedAxisTick />}
                     interval={0}
                     ticks={Object.keys(ticks).map((x) => Number(x))}
                     tickFormatter={(x: number) => ticks[x].value}
