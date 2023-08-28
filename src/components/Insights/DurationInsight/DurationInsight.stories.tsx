@@ -5053,9 +5053,9 @@ export const HistogramWithGaps: Story = {
         quantiles: [
           {
             timestamp: {
-              value: 12.5,
+              value: 20.2,
               unit: "ms",
-              raw: 12500000
+              raw: 20200000
             },
             quantileValue: 0.5
           },

@@ -1,5 +1,6 @@
 import { Text } from "recharts";
 import { DefaultTheme, useTheme } from "styled-components";
+import { DIVIDER, LABEL_HEIGHT } from "../constants";
 import { XAxisTickProps } from "./types";
 
 const getTickLabelColor = (theme: DefaultTheme) => {
@@ -29,15 +30,23 @@ export const XAxisTick = (props: XAxisTickProps) => {
       break;
   }
 
+  const labels = tick.value.split(DIVIDER);
+
   // Source: https://github.com/recharts/recharts/blob/d6aa41f2d5ade9bd61a7bbdc1cfed07438049122/src/cartesian/CartesianAxis.tsx#L241C5-L241C5
   return (
-    <Text
-      {...props}
-      fill={tickLabelColor}
-      textAnchor={textAnchor}
-      className={"recharts-cartesian-axis-tick-value"}
-    >
-      {tick.value}
-    </Text>
+    <>
+      {labels.map((text, i) => (
+        <Text
+          {...props}
+          key={text}
+          fill={tickLabelColor}
+          textAnchor={textAnchor}
+          y={props.y + i * LABEL_HEIGHT}
+          className={"recharts-cartesian-axis-tick-value"}
+        >
+          {text}
+        </Text>
+      ))}
+    </>
   );
 };

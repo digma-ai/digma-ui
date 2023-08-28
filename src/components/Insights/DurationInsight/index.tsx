@@ -20,7 +20,9 @@ import { DurationChange, isChangeMeaningfulEnough } from "../DurationChange";
 import { InsightCard } from "../InsightCard";
 import { Description } from "../styles";
 import { HistogramBarData, Trace } from "../types";
+import { ReferenceLineLabel } from "./ReferenceLineLabel";
 import { XAxisTick } from "./XAxisTick";
+import { DIVIDER } from "./constants";
 import * as s from "./styles";
 import { DurationInsightProps, TickData } from "./types";
 
@@ -29,6 +31,8 @@ const LAST_CALL_TIME_DISTANCE_LIMIT = 60 * 1000; // in milliseconds
 // in pixels
 const BAR_WIDTH = 5;
 const MIN_X_AXIS_PADDING = 40;
+const MIN_CHART_CONTAINER_HEIGHT = 120;
+const CHART_Y_MARGIN = 20;
 
 const durationPlaceholder: Duration = { value: 0, unit: "ns", raw: 0 };
 
@@ -186,18 +190,40 @@ export const DurationInsight = (props: DurationInsightProps) => {
 
   const ticks: Record<number, TickData> = {};
 
-  if (p50 && isNumber(p50BarIndex) && p50BarIndex > -1) {
+  const isP50Present = p50 && isNumber(p50BarIndex) && p50BarIndex > -1;
+  const isP95Present = p95 && isNumber(p95BarIndex) && p95BarIndex > -1;
+
+  if (isP50Present) {
     ticks[p50BarIndex] = {
       value: getDurationString(p50),
       label: getPercentileLabel(0.5)
     };
   }
 
-  if (p95 && isNumber(p95BarIndex) && p95BarIndex > -1) {
+  if (isP95Present) {
     ticks[p95BarIndex] = {
       value: getDurationString(p95),
       label: getPercentileLabel(0.95)
     };
+  }
+
+  if (isP50Present && isP95Present && p50BarIndex === p95BarIndex) {
+    ticks[p95BarIndex] = {
+      value: [getDurationString(p50), getDurationString(p95)].join(DIVIDER),
+      label: [getPercentileLabel(0.5), getPercentileLabel(0.95)].join(DIVIDER),
+      multiline: true
+    };
+  }
+
+  let chartContainerHeight = MIN_CHART_CONTAINER_HEIGHT;
+  let chartMarginTop = CHART_Y_MARGIN;
+  let chartMarginBottom = 0;
+  const hasMultilineLabels = Object.values(ticks).some((x) => x.multiline);
+
+  if (hasMultilineLabels) {
+    chartMarginTop += CHART_Y_MARGIN;
+    chartMarginBottom += CHART_Y_MARGIN;
+    chartContainerHeight += CHART_Y_MARGIN * 2;
   }
 
   const notEmptyBars = chartData.filter((x) => x.count > 0);
@@ -289,10 +315,15 @@ export const DurationInsight = (props: DurationInsightProps) => {
             )}
 
           {props.insight.histogramPlot && (
-            <s.ChartContainer ref={observe}>
+            <s.ChartContainer ref={observe} height={chartContainerHeight}>
               <ResponsiveContainer width={"100%"} height={"100%"}>
                 <BarChart
-                  margin={{ top: 20, right: 0, bottom: 0, left: 0 }}
+                  margin={{
+                    top: chartMarginTop,
+                    right: 0,
+                    bottom: chartMarginBottom,
+                    left: 0
+                  }}
                   barSize={BAR_WIDTH}
                   data={chartData}
                 >
@@ -351,7 +382,8 @@ export const DurationInsight = (props: DurationInsightProps) => {
                         label={{
                           position: "top",
                           value: tickData.label,
-                          fill: tickColor
+                          fill: tickColor,
+                          content: ReferenceLineLabel
                         }}
                       />
                     ))}

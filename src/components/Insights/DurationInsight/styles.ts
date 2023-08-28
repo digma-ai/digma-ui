@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Description } from "../styles";
+import { ChartContainerProps } from "./types";
 
 export const Container = styled.div`
   display: flex;
@@ -52,9 +53,9 @@ export const LastCallTimeDistance = styled.div<{ isRecent: boolean }>`
   }};
 `;
 
-export const ChartContainer = styled.div`
+export const ChartContainer = styled.div<ChartContainerProps>`
   width: 100%;
-  height: 120px;
+  height: ${({ height }) => height}px;
 `;
 
 export const TooltipContainer = styled.div`

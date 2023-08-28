@@ -19,4 +19,9 @@ export interface TickData {
   value: string;
   label?: string;
   role?: string;
+  multiline?: boolean;
+}
+
+export interface ChartContainerProps {
+  height: number;
 }
