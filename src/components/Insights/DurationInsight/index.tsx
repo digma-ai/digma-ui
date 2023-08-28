@@ -5,7 +5,6 @@ import {
   Cell,
   ReferenceLine,
   ResponsiveContainer,
-  Text,
   Tooltip,
   XAxis
 } from "recharts";
@@ -21,6 +20,7 @@ import { DurationChange, isChangeMeaningfulEnough } from "../DurationChange";
 import { InsightCard } from "../InsightCard";
 import { Description } from "../styles";
 import { HistogramBarData, Trace } from "../types";
+import { XAxisTick } from "./XAxisTick";
 import * as s from "./styles";
 import { DurationInsightProps, TickData } from "./types";
 
@@ -227,31 +227,6 @@ export const DurationInsight = (props: DurationInsightProps) => {
     };
   }
 
-  const CustomizedAxisTick = (props: {
-    x: number;
-    y: number;
-    payload: { value: number };
-    textAnchor: "start" | "end" | "middle" | "inherit" | undefined;
-  }) => {
-    const tick = ticks[props.payload.value];
-    let textAnchor = props.textAnchor;
-
-    if (tick.role) {
-      textAnchor = tick.role === "min" ? "end" : "start";
-    }
-
-    // https://github.com/recharts/recharts/blob/d6aa41f2d5ade9bd61a7bbdc1cfed07438049122/src/cartesian/CartesianAxis.tsx#L241C5-L241C5
-    return (
-      <Text
-        {...props}
-        textAnchor={textAnchor}
-        className={"recharts-cartesian-axis-tick-value"}
-      >
-        {tick.value}
-      </Text>
-    );
-  };
-
   return (
     <InsightCard
       data={props.insight}
@@ -379,7 +354,7 @@ export const DurationInsight = (props: DurationInsightProps) => {
                   <XAxis
                     padding={{ left: XAxisPadding, right: XAxisPadding }}
                     stroke={tickColor}
-                    tick={CustomizedAxisTick}
+                    tick={(props) => <XAxisTick {...props} ticks={ticks} />}
                     interval={0}
                     ticks={Object.keys(ticks).map((x) => Number(x))}
                     tickFormatter={(x: number) => ticks[x].value}
