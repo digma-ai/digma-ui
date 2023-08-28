@@ -302,7 +302,7 @@ export const DurationInsight = (props: DurationInsightProps) => {
               <s.Stats key={"average"}>
                 <s.StatsTitle>Average</s.StatsTitle>
                 <Description>
-                  {getDurationString(props.insight.average)} +-{" "}
+                  {getDurationString(props.insight.average)} ±{" "}
                   {getDurationString(props.insight.standardDeviation)}
                 </Description>
               </s.Stats>
