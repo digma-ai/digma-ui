@@ -4,15 +4,16 @@ import { openURLInDefaultBrowser } from "../../../utils/openURLInDefaultBrowser"
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { getThemeKind } from "../../common/App/styles";
+import { CodeSnippet } from "../../common/CodeSnippet";
+import { Link } from "../../common/Link";
 import { Loader } from "../../common/Loader";
 import { ChatFillIcon } from "../../common/icons/ChatIFillIcon";
 import { CheckmarkCircleInvertedIcon } from "../../common/icons/CheckmarkCircleInvertedIcon";
 import { CodeIcon } from "../../common/icons/CodeIcon";
 import { DockerLogoIcon } from "../../common/icons/DockerLogoIcon";
 import { SlackLogoIcon } from "../../common/icons/SlackLogoIcon";
-import { CodeSnippet } from "../CodeSnippet";
 import { Tabs } from "../Tabs";
-import { Link, MainButton, SectionDescription } from "../styles";
+import { MainButton, SectionDescription } from "../styles";
 import { trackingEvents } from "../tracking";
 import { AsyncActionResult } from "../types";
 import { EngineManager } from "./EngineManager";
@@ -51,7 +52,6 @@ export const InstallStep = (props: InstallStepProps) => {
   const [areTabsVisible, setAreTabsVisible] = useState(
     !config.isDigmaEngineInstalled && !isAutoInstallationFlow
   );
-  const [isAutoInstallTabVisible, setIsAutoInstallTabVisible] = useState(false);
   const [isEngineOperationInProgress, setIsEngineOperationInProgress] =
     useState(false);
 
@@ -98,12 +98,10 @@ export const InstallStep = (props: InstallStepProps) => {
 
   const handleEngineRemovalFinish = () => {
     setAreTabsVisible(true);
-    setIsAutoInstallTabVisible(true);
   };
 
   const handleEngineManualInstallSelect = () => {
     setAreTabsVisible(true);
-    setIsAutoInstallTabVisible(true);
     setSelectedInstallTab(1);
   };
 
@@ -202,7 +200,7 @@ export const InstallStep = (props: InstallStepProps) => {
   ];
 
   const installTabs = [
-    ...(isAutoInstallTabVisible
+    ...(config.isDockerInstalled && config.isDockerComposeInstalled
       ? [
           {
             title: "Auto install",
@@ -310,7 +308,7 @@ export const InstallStep = (props: InstallStepProps) => {
               <span>if we can still get your Digma up and running</span>
             </s.NoDockerText>
             <s.SlackLink onClick={handleSlackLinkClick}>
-              <SlackLogoIcon />
+              <SlackLogoIcon size={14} />
               Slack group
             </s.SlackLink>
           </s.NoDockerTabContentContainer>

@@ -51,8 +51,8 @@ export const data: AssetsData = {
             }
           ],
           impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
+            ScoreExp25: -1,
+            ScoreExp1000: -1
           },
           insights: [
             {

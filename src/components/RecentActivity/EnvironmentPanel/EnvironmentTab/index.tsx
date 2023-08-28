@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { Badge } from "../../../common/Badge";
+import { Tooltip } from "../../../common/Tooltip";
 import * as s from "./styles";
 import { EnvironmentTabProps } from "./types";
 
@@ -25,7 +26,9 @@ export const EnvironmentTab = (props: EnvironmentTabProps) => {
           <Badge />
         </s.BadgeContainer>
       )}
-      <s.Label title={props.text}>{props.text}</s.Label>
+      <Tooltip title={props.text}>
+        <s.Label>{props.text}</s.Label>
+      </Tooltip>
     </s.Container>
   );
 };

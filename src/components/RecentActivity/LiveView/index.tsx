@@ -29,8 +29,9 @@ import { roundTo } from "../../../utils/roundTo";
 import { roundToNonZeroDecimals } from "../../../utils/roundToNonZeroDecimals";
 import { getThemeKind } from "../../common/App/styles";
 import { ToggleSwitch } from "../../common/ToggleSwitch";
+import { Tooltip as CommonTooltip } from "../../common/Tooltip";
 import { ArrowSmallIcon } from "../../common/icons/ArrowSmallIcon";
-import { ChartIcon } from "../../common/icons/ChartIcon";
+import { ChartCircleIcon } from "../../common/icons/ChartCircleIcon";
 import { CrossIcon } from "../../common/icons/CrossIcon";
 import { DoubleCircleIcon } from "../../common/icons/DoubleCircleIcon";
 import { EndpointIcon } from "../../common/icons/EndpointIcon";
@@ -383,7 +384,7 @@ export const LiveView = (props: LiveViewProps) => {
   const YAxisTickDecimalPlaces =
     Math.floor(YAxisTickInterval) === YAxisTickInterval
       ? 0
-      : YAxisTickInterval.toString().split(".")[1].length || 0;
+      : String(YAxisTickInterval).split(".")[1].length || 0;
   const YAxisMaxTickWholePart = Math.ceil(
     convertTo(maxDuration?.raw || 0, maxDurationUnit)
   );
@@ -391,7 +392,7 @@ export const LiveView = (props: LiveViewProps) => {
     ? String(YAxisMaxTickWholePart).length + 1 + YAxisTickDecimalPlaces
     : 0;
 
-  const YAxisTickMargin = Math.round(longestTickDigitCount * 5.5);
+  const YAxisTickMargin = Math.round(longestTickDigitCount * 6.5);
   const YAxisWidth = Math.round(12 + longestTickDigitCount * 7.5);
 
   const scrollbarOffset =
@@ -440,10 +441,12 @@ export const LiveView = (props: LiveViewProps) => {
           <s.SpanIconContainer>
             <EndpointIcon color={getSpanIconColor(theme)} size={16} />
           </s.SpanIconContainer>
-          <s.SpanName title={spanName}>{spanName}</s.SpanName>
+          <CommonTooltip title={spanName}>
+            <s.SpanName>{spanName}</s.SpanName>
+          </CommonTooltip>
         </s.Title>
         <s.LiveBadge>
-          <DoubleCircleIcon color={getLiveIconColor(theme)} size={8} />
+          <DoubleCircleIcon color={getLiveIconColor(theme)} size={14} />
           Live
         </s.LiveBadge>
         <s.CloseButton onClick={handleCloseButtonClick}>
@@ -501,7 +504,7 @@ export const LiveView = (props: LiveViewProps) => {
                     tickCount={Y_AXIS_TICK_COUNT}
                     tick={{
                       fill: tickLabelColor,
-                      fontSize: 10,
+                      fontSize: 14,
                       textAnchor: "start"
                     }}
                     stroke={axisColor}
@@ -511,7 +514,7 @@ export const LiveView = (props: LiveViewProps) => {
                       value: maxDurationUnit,
                       position: "bottom",
                       fill: tickLabelColor,
-                      fontSize: 10,
+                      fontSize: 14,
                       offset: 16
                     }}
                   />
@@ -580,7 +583,7 @@ export const LiveView = (props: LiveViewProps) => {
                     tickLine={false}
                     tick={{
                       fill: tickLabelColor,
-                      fontSize: 10,
+                      fontSize: 14,
                       width: 60
                     }}
                     stroke={axisColor}
@@ -651,7 +654,7 @@ export const LiveView = (props: LiveViewProps) => {
         </>
       ) : (
         <s.NoDataContainer>
-          <ChartIcon size={72} themeKind={themeKind} />
+          <ChartCircleIcon size={72} themeKind={themeKind} />
           <s.NoDataTitle>No data yet</s.NoDataTitle>
           <s.NoDataText>
             Trigger some actions to follow the performance.

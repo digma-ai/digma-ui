@@ -1,8 +1,7 @@
 import styled from "styled-components";
 
 export const Link = styled.a`
-  font-size: 8px;
-  line-height: 10px;
+  font-size: 14px;
   cursor: pointer;
   color: ${({ theme }) => {
     switch (theme.mode) {

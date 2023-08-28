@@ -42,7 +42,6 @@ export const CloseButton = styled.button`
   cursor: pointer;
   background: none;
   border: none;
-  line-height: 12px;
   height: 12px;
 `;
 
@@ -50,7 +49,7 @@ export const Section = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
-  font-size: 12px;
+  font-size: 14px;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -63,7 +62,7 @@ export const Section = styled.div`
 `;
 
 export const SectionTitle = styled.h2`
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 600;
   margin: 0;
   text-transform: capitalize;
@@ -99,7 +98,6 @@ export const RunOptionButton = styled.button`
   border: 1px solid transparent;
   outline: none;
   font-weight: 600;
-  text-transform: capitalize;
   cursor: pointer;
   color: ${({ theme }) => {
     switch (theme.mode) {
@@ -164,7 +162,5 @@ export const SlackLink = styled(Link)`
   display: flex;
   align-items: flex-start;
   gap: 4px;
-  font-size: 12px;
-  line-height: normal;
   text-transform: capitalize;
 `;

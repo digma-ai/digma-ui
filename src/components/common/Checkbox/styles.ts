@@ -4,8 +4,7 @@ export const Container = styled.div`
   display: flex;
   gap: 4px;
   align-items: center;
-  font-size: 12px;
-  line-height: normal;
+  font-size: 14px;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

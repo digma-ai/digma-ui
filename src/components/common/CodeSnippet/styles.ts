@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { getCodeFont } from "../../common/App/styles";
-import { FloatingIconButton } from "../../common/FloatingIconButton";
+import { getCodeFont } from "../App/styles";
+import { FloatingIconButton } from "../FloatingIconButton";
 
 export const Container = styled.div`
   padding: 4px 4px 4px 8px;
@@ -24,7 +24,7 @@ export const Code = styled.code`
   ${({ theme }) => getCodeFont(theme.codeFont)}
 
   font-weight: 500;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 20px;
   letter-spacing: -0.1px;
   white-space: pre-wrap;

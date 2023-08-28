@@ -1,8 +1,9 @@
 import styled from "styled-components";
 import { Button } from "../../common/Button";
+import { Link } from "../../common/Link";
 import { SectionTitle as CommonSectionTitle } from "../SectionTitle";
 import { Tabs } from "../Tabs";
-import { Link, SectionDescription } from "../styles";
+import { SectionDescription } from "../styles";
 
 export const Container = styled.div`
   display: flex;

@@ -5,7 +5,7 @@ export const TipContainer = styled.div`
   flex-shrink: 0;
   gap: 4px;
   font-weight: 500;
-  font-size: 12px;
+  font-size: 14px;
   margin-top: 8px;
   color: ${({ theme }) => {
     switch (theme.mode) {

@@ -6,8 +6,7 @@ export const ListItem = styled.li`
   align-items: center;
   gap: 4px;
   padding: 8px 12px 8px 8px;
-  font-size: 11px;
-  line-height: 14px;
+  font-size: 14px;
   letter-spacing: -0.1px;
   user-select: none;
   border-radius: 4px;

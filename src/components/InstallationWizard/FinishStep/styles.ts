@@ -1,10 +1,10 @@
 import styled from "styled-components";
+import { Link } from "../../common/Link";
 import { PlayCircleIcon } from "../../common/icons/PlayCircleIcon";
 import { SectionTitle as CommonSectionTitle } from "../SectionTitle";
 import {
   IllustrationContainer as CommonIllustrationContainer,
-  SectionDescription as CommonSectionDescription,
-  Link
+  SectionDescription as CommonSectionDescription
 } from "../styles";
 
 export const Container = styled.div`
@@ -19,8 +19,7 @@ export const SectionTitle = styled(CommonSectionTitle)`
 `;
 
 export const SectionTitleNote = styled.span`
-  font-size: 10px;
-  line-height: 12px;
+  font-size: 14px;
   font-weight: 400;
   color: ${({ theme }) => {
     switch (theme.mode) {
@@ -68,8 +67,7 @@ export const EmailField = styled.div`
 `;
 
 export const EmailInput = styled.input`
-  font-size: 12px;
-  line-height: 14px;
+  font-size: 14px;
   padding: 8px 10px;
   border-radius: 4px;
   color: ${({ theme }) => {
@@ -142,8 +140,7 @@ export const ErrorMessage = styled(CommonSectionDescription)`
   display: flex;
   align-items: center;
   gap: 4px;
-  font-size: 12px;
-  line-height: 14px;
+  font-size: 14px;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

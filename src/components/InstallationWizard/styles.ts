@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Button } from "../common/Button";
-import { Link as CommonLink } from "../common/Link";
+import { Link } from "../common/Link";
 
 export const Container = styled.div`
   min-height: 100vh;
@@ -21,7 +21,7 @@ export const Header = styled.div`
   display: flex;
   text-align: center;
   font-weight: 500;
-  font-size: 12px;
+  font-size: 14px;
   padding: 8px;
   color: ${({ theme }) => {
     switch (theme.mode) {
@@ -68,11 +68,6 @@ export const HeaderSubtitle = styled.span`
         return "#9b9b9b";
     }
   }};
-`;
-
-export const Link = styled(CommonLink)`
-  font-size: 12px;
-  line-height: 14px;
 `;
 
 export const FooterSlackLink = styled(Link)`
@@ -124,7 +119,7 @@ export const FooterContent = styled.div<{
 `;
 
 export const SectionDescription = styled.span`
-  font-size: 12px;
+  font-size: 14px;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -154,8 +149,7 @@ export const IllustrationContainer = styled.div`
 
 export const MainButton = styled(Button)`
   padding: 4px;
-  font-size: 12px;
-  line-height: 14px;
+  font-size: 14px;
   width: 100%;
 `;
 
@@ -178,8 +172,7 @@ export const WelcomeIconContainer = styled.div`
 
 export const WelcomeTitle = styled.span`
   font-weight: 500;
-  font-size: 14px;
-  line-height: 16px;
+  font-size: 16px;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -192,8 +185,7 @@ export const WelcomeTitle = styled.span`
 `;
 
 export const WelcomeText = styled.span`
-  font-size: 12px;
-  line-height: 14px;
+  font-size: 14px;
   text-align: center;
   letter-spacing: -0.1px;
   padding: 20px 0;
@@ -209,8 +201,7 @@ export const WelcomeText = styled.span`
 `;
 
 export const InstallationTypeText = styled.span`
-  font-size: 12px;
-  line-height: 14px;
+  font-size: 14px;
   padding-bottom: 4px;
   color: ${({ theme }) => {
     switch (theme.mode) {
@@ -256,9 +247,8 @@ export const SubscriptionSuccessMessage = styled.div`
   display: flex;
   align-items: center;
   gap: 4px;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
-  line-height: normal;
   margin-bottom: 43px;
   color: ${({ theme }) => {
     switch (theme.mode) {

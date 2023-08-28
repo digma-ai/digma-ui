@@ -4,8 +4,7 @@ import { ButtonElementProps } from "./types";
 export const Button = styled.button<ButtonElementProps>`
   font-family: inherit;
   font-weight: 500;
-  font-size: 12px;
-  line-height: normal;
+  font-size: 14px;
   padding: 4px 8px;
   height: 22px;
   border-radius: 2px;
@@ -218,6 +217,6 @@ export const Button = styled.button<ButtonElementProps>`
 
 export const ContentContainer = styled.span`
   display: flex;
-  gap: 2px;
+  gap: 4px;
   align-items: center;
 `;

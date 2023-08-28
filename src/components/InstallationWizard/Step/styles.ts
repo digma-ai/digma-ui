@@ -41,7 +41,7 @@ export const Container = styled.div<ContainerProps>`
 
 export const Header = styled.div<HeaderProps>`
   display: flex;
-  gap: 4px;
+  gap: 8px;
   padding: 12px 8px;
   font-weight: 500;
   font-size: 14px;
@@ -109,7 +109,6 @@ export const Number = styled.span<NumberProps>`
   width: 100%;
   height: 100%;
   font-size: 14px;
-  line-height: 100%;
   font-weight: 500;
   border-radius: 50%;
   display: flex;

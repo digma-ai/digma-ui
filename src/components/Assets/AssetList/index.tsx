@@ -1,5 +1,6 @@
 import { ChangeEvent, useMemo, useState } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
+import { groupBy } from "../../../utils/groupBy";
 import { Menu } from "../../common/Menu";
 import { Popover } from "../../common/Popover";
 import { PopoverContent } from "../../common/Popover/PopoverContent";
@@ -143,7 +144,7 @@ const sortEntries = (
 const getBackIconColor = (theme: DefaultTheme) => {
   switch (theme.mode) {
     case "light":
-      return "#002d61";
+      return "#4D668A";
     case "dark":
     case "dark-jetbrains":
       return "#dadada";
@@ -289,14 +290,37 @@ export const AssetList = (props: AssetListProps) => {
       Object.keys(props.entries)
         .map((entryId) => {
           const entries = props.entries[entryId];
-          return entries.map((entry) => {
-            const relatedServices = entries.map((entry) => entry.serviceName);
-            return {
-              ...entry,
+          const dedupedEntries = [];
+
+          const endpointGroups = groupBy(
+            entries,
+            (entry) => entry.endpointCodeObjectId || "__ungrouped"
+          );
+
+          for (const endpoint in endpointGroups) {
+            const endpointGroupEntries = endpointGroups[endpoint];
+
+            const latestEntry = endpointGroupEntries.reduce(
+              (acc, cur) =>
+                new Date(cur.lastSpanInstanceInfo.startTime).valueOf() >
+                new Date(acc.lastSpanInstanceInfo.startTime).valueOf()
+                  ? cur
+                  : acc,
+              endpointGroupEntries[0]
+            );
+
+            const relatedServices = endpointGroupEntries
+              .map((entry) => entry.serviceName)
+              .sort();
+
+            dedupedEntries.push({
+              ...latestEntry,
               id: entryId,
               relatedServices
-            };
-          });
+            });
+          }
+
+          return dedupedEntries;
         })
         .flat(),
     [props.entries]
@@ -316,10 +340,14 @@ export const AssetList = (props: AssetListProps) => {
     <s.Container>
       <s.Header>
         <s.BackButton onClick={handleBackButtonClick}>
-          <ChevronIcon direction={Direction.LEFT} color={backIconColor} />
+          <ChevronIcon
+            direction={Direction.LEFT}
+            color={backIconColor}
+            size={14}
+          />
         </s.BackButton>
         {assetTypeInfo?.icon && (
-          <assetTypeInfo.icon color={assetTypeIconColor} />
+          <assetTypeInfo.icon color={assetTypeIconColor} size={14} />
         )}
         <span>{assetTypeInfo?.label || props.assetTypeId}</span>
         <s.ItemsCount>
@@ -330,7 +358,7 @@ export const AssetList = (props: AssetListProps) => {
         {window.assetsSearch === true && (
           <s.SearchInputContainer>
             <s.SearchInputIconContainer>
-              <MagnifierIcon color={searchInputIconColor} />
+              <MagnifierIcon color={searchInputIconColor} size={14} />
             </s.SearchInputIconContainer>
             <s.SearchInput
               placeholder={"Search"}
@@ -378,7 +406,7 @@ export const AssetList = (props: AssetListProps) => {
                 onClick={() => handleSortingOrderToggleOptionButtonClick(order)}
               >
                 <s.SortingOrderIconContainer sortingOrder={order}>
-                  <SortIcon color={iconColor} />
+                  <SortIcon color={iconColor} size={14} />
                 </s.SortingOrderIconContainer>
               </s.SortingOrderToggleOptionButton>
             );
@@ -388,9 +416,17 @@ export const AssetList = (props: AssetListProps) => {
       {sortedEntries.length > 0 ? (
         <s.List>
           {sortedEntries.map((entry) => {
+            const key = [
+              entry.serviceName,
+              entry.endpointCodeObjectId,
+              entry.span.spanCodeObjectId
+            ]
+              .filter(Boolean)
+              .join("|_|");
+
             return (
               <AssetEntryComponent
-                key={`${entry.id}-${entry.serviceName}`}
+                key={key}
                 entry={entry}
                 onAssetLinkClick={handleAssetLinkClick}
               />

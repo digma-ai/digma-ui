@@ -17,24 +17,13 @@ export enum InsightType {
   SpanEndpointBottleneck = "SpanEndpointBottleneck",
   SpanDurations = "SpanDurations",
   SpanScalingBadly = "SpanScaling",
-  SpanScalingRootCause = "SpanScalingRootCause",
   SpanDurationBreakdown = "SpanDurationBreakdown",
   EndpointDurationSlowdown = "EndpointDurationSlowdown",
   EndpointBreakdown = "EndpointBreakdown",
   SpanScalingWell = "SpanScalingWell",
-  SpanScalingInsufficientData = "SpanScalingInsufficientData"
-}
-
-export enum InsightImportance {
-  Spam = 9,
-  Clutter = 8,
-  NotInteresting = 7,
-  Info = 6,
-  Interesting = 5,
-  Important = 4,
-  HighlyImportant = 3,
-  Critical = 2,
-  ShowStopper = 1
+  SpanScalingInsufficientData = "SpanScalingInsufficientData",
+  EndpointSessionInView = "EndpointSessionInView",
+  EndpointChattyApi = "EndpointChattyApi"
 }
 
 export interface SpanInfo {

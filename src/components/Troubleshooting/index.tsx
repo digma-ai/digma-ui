@@ -66,17 +66,17 @@ export const Troubleshooting = () => {
     {
       key: "terminal",
       icon: TerminalIcon,
-      label: "I run it via terminal"
+      label: "I Run it via Terminal"
     },
     {
       key: "docker",
       icon: DockerLogoIcon,
-      label: "I run it on Docker"
+      label: "I Run it on Docker"
     },
     {
       key: "gradle-tasks",
       icon: GradleLogoIcon,
-      label: "I run it using native Gradle tasks"
+      label: "I Run it using Native Gradle Tasks"
     }
   ];
 
@@ -111,7 +111,7 @@ export const Troubleshooting = () => {
       <s.Header>
         Not seeing your application data?
         <s.CloseButton onClick={handleCloseButtonClick}>
-          <CrossIcon color={closeButtonIconColor} />
+          <CrossIcon color={closeButtonIconColor} size={14} />
         </s.CloseButton>
       </s.Header>
       <s.Section>
@@ -146,7 +146,7 @@ export const Troubleshooting = () => {
         <span>We need your help to find out why!</span>
         <s.SlackLink onClick={handleSlackLinkClick}>
           <s.SlackLogoIconContainer>
-            <SlackLogoIcon />
+            <SlackLogoIcon size={14} />
           </s.SlackLogoIconContainer>
           Report this issue and help us improve Digma
         </s.SlackLink>

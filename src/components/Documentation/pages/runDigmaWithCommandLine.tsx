@@ -1,4 +1,4 @@
-import { CodeSnippet } from "../../InstallationWizard/CodeSnippet";
+import { CodeSnippet } from "../../common/CodeSnippet";
 import { PageContent } from "./types";
 
 export const runDigmaWithCommandLine: PageContent = {
@@ -17,25 +17,25 @@ export const runDigmaWithCommandLine: PageContent = {
           </span>
           <CodeSnippet
             text={`<profile>
-<id>digma</id>
-<build>
-<plugins>
-<plugin>
-  <groupId>org.springframework.boot</groupId>
-  <artifactId>spring-boot-maven-plugin</artifactId>
-  <configuration>
-    <jvmArguments>-javaagent:\${env.TMPDIR}/temp-digma-otel-jars/opentelemetry-javaagent.jar</jvmArguments>
-    <systemPropertyVariables>
-      <otel.exporter.otlp.traces.endpoint>http://localhost:5050</otel.exporter.otlp.traces.endpoint>
-      <otel.traces.exporter>otlp</otel.traces.exporter>
-      <otel.metrics.exporter>none</otel.metrics.exporter>
-      <otel.service.name>\${pom.artifactId}</otel.service.name>
-      <otel.javaagent.extensions>\${env.TMPDIR}/temp-digma-otel-jars/digma-otel-agent-extension.jar</otel.javaagent.extensions>
-    </systemPropertyVariables>
-  </configuration>
-</plugin>
-</plugins>
-</build>
+  <id>digma</id>
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <jvmArguments>-javaagent:\${env.TMPDIR}/temp-digma-otel-jars/opentelemetry-javaagent.jar</jvmArguments>
+          <systemPropertyVariables>
+            <otel.exporter.otlp.traces.endpoint>http://localhost:5050</otel.exporter.otlp.traces.endpoint>
+            <otel.traces.exporter>otlp</otel.traces.exporter>
+            <otel.metrics.exporter>none</otel.metrics.exporter>
+            <otel.service.name>\${pom.artifactId}</otel.service.name>
+            <otel.javaagent.extensions>\${env.TMPDIR}/temp-digma-otel-jars/digma-otel-agent-extension.jar</otel.javaagent.extensions>
+          </systemPropertyVariables>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </profile>`}
             language={"xml"}
           ></CodeSnippet>

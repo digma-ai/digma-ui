@@ -3,10 +3,10 @@ import { AreaLegendIllustrationProps, AxisChartContainerProps } from "./types";
 
 // In pixels
 const CONTAINER_GAP = 12;
-const HEADER_HEIGHT = 24;
+const HEADER_HEIGHT = 26;
 const ZOOM_BUTTONS_CONTAINER_HEIGHT = 26;
 const CHANGE_STATUS_CONTAINER_HEIGHT = 32;
-const FOOTER_HEIGHT = 20;
+const FOOTER_HEIGHT = 22;
 
 const getContainerMinHeight = (isChangeStatusBarPresent: boolean) =>
   [
@@ -52,8 +52,7 @@ export const Header = styled.div`
   padding: 4px 8px;
   gap: 12px;
   font-weight: 500;
-  font-size: 10px;
-  line-height: 12px;
+  font-size: 14px;
   height: ${HEADER_HEIGHT}px;
   box-sizing: border-box;
   flex: none;
@@ -89,8 +88,7 @@ export const SpanIconContainer = styled.span`
 `;
 
 export const SpanName = styled.span`
-  font-size: 12px;
-  line-height: 14px;
+  font-size: 14px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -223,9 +221,8 @@ export const Footer = styled.div`
 export const LegendContainer = styled.div`
   display: flex;
   gap: 4px;
-  font-size: 10px;
+  font-size: 14px;
   padding: 4px 0;
-  line-height: 12px;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -255,8 +252,7 @@ export const LatestDataButton = styled.button`
   gap: 2px;
   border-radius: 2px;
   align-self: flex-end;
-  font-size: 10px;
-  line-height: 12px;
+  font-size: 14px;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -295,8 +291,7 @@ export const NoDataContainer = styled.div`
   justify-content: center;
   gap: 4px;
   font-weight: 500;
-  font-size: 12px;
-  line-height: 14px;
+  font-size: 14px;
   text-align: center;
   color: ${({ theme }) => {
     switch (theme.mode) {
@@ -311,8 +306,7 @@ export const NoDataContainer = styled.div`
 
 export const NoDataTitle = styled.span`
   font-weight: 500;
-  font-size: 14px;
-  line-height: 17px;
+  font-size: 16px;
   text-transform: capitalize;
   color: ${({ theme }) => {
     switch (theme.mode) {

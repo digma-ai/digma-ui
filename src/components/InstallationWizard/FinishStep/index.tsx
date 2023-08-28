@@ -3,6 +3,7 @@ import { GETTING_STARTED_VIDEO_URL } from "../../../constants";
 import { openURLInDefaultBrowser } from "../../../utils/openURLInDefaultBrowser";
 import { getThemeKind } from "../../common/App/styles";
 import { CircleLoader } from "../../common/CircleLoader";
+import { Link } from "../../common/Link";
 import { BellIcon } from "../../common/icons/BellIcon";
 import { ChatIcon } from "../../common/icons/ChatIcon";
 import { CheckmarkCircleInvertedIcon } from "../../common/icons/CheckmarkCircleInvertedIcon";
@@ -10,7 +11,6 @@ import { GearIcon } from "../../common/icons/GearIcon";
 import { PlayIcon } from "../../common/icons/PlayIcon";
 import { SlackLogoIcon } from "../../common/icons/SlackLogoIcon";
 import { WarningCircleLargeIcon } from "../../common/icons/WarningCircleLargeIcon";
-import { Link } from "../styles";
 import * as s from "./styles";
 import { FinishStepProps } from "./types";
 
@@ -128,7 +128,7 @@ export const FinishStep = (props: FinishStepProps) => {
         Give us feedback
       </s.GiveUsFeedbackTitle>
       <s.SlackLink onClick={props.onSlackLinkClick}>
-        <SlackLogoIcon />
+        <SlackLogoIcon size={14} />
         Join Our Slack Group
       </s.SlackLink>
     </s.Container>

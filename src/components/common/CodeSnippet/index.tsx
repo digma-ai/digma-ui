@@ -5,7 +5,7 @@ import {
   atomOneLight
 } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import { DefaultTheme, useTheme } from "styled-components";
-import { CopyIcon } from "../../common/icons/CopyIcon";
+import { CopyIcon } from "../icons/CopyIcon";
 import * as s from "./styles";
 import { CodeSnippetProps, HighlighterTheme } from "./types";
 
@@ -50,8 +50,7 @@ export const CodeSnippet = (props: CodeSnippetProps) => {
       <s.CopyButton
         onClick={handleCopyButtonClick}
         icon={{
-          component: CopyIcon,
-          size: 10
+          component: CopyIcon
         }}
       />
     </s.Container>

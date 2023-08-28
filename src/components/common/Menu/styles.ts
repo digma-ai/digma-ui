@@ -18,8 +18,7 @@ export const Container = styled.div`
 
 export const Header = styled.div`
   padding: 2px 8px;
-  font-size: 10px;
-  line-height: 14px;
+  font-size: 14px;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -44,8 +43,7 @@ export const ListItem = styled.li`
   box-sizing: border-box;
   list-style-type: none;
   padding: 6px 8px;
-  font-size: 10px;
-  line-height: 12px;
+  font-size: 14px;
   cursor: pointer;
   color: ${({ theme }) => {
     switch (theme.mode) {

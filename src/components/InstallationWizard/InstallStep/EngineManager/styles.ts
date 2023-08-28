@@ -12,7 +12,6 @@ export const Container = styled.div`
 export const Title = styled.span`
   font-size: 14px;
   font-weight: 500;
-  line-height: normal;
   text-transform: capitalize;
   color: ${({ theme }) => {
     switch (theme.mode) {
@@ -30,8 +29,7 @@ export const ContentContainer = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 12px;
-  font-size: 12px;
-  font-style: normal;
+  font-size: 14px;
   font-weight: 500;
   color: ${({ theme }) => {
     switch (theme.mode) {
