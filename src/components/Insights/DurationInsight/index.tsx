@@ -245,7 +245,7 @@ export const DurationInsight = (props: DurationInsightProps) => {
       <Text
         {...props}
         textAnchor={textAnchor}
-        className="recharts-cartesian-axis-tick-value"
+        className={"recharts-cartesian-axis-tick-value"}
       >
         {tick.value}
       </Text>
