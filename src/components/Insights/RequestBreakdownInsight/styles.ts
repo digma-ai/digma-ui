@@ -114,6 +114,7 @@ export const TableBody = styled.tbody`
 export const TableBodyCell = styled.td`
   &:first-child {
     padding: 4px 22px 4px 4px;
+    white-space: nowrap;
   }
 
   &:nth-child(2) {

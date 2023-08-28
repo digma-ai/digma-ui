@@ -123,6 +123,7 @@ export const RequestBreakdownInsight = (
       }
     }),
     columnHelper.accessor("duration", {
+      id: "requestTime",
       header: "Request Time",
       cell: (info) => {
         const duration = info.getValue();
@@ -137,6 +138,7 @@ export const RequestBreakdownInsight = (
       }
     }),
     columnHelper.accessor("duration", {
+      id: "duration",
       header: "",
       cell: (info) => {
         const duration = info.getValue();
