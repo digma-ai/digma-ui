@@ -14,6 +14,7 @@ import {
   Area,
   CartesianGrid,
   ComposedChart,
+  Dot,
   Line,
   ResponsiveContainer,
   Tooltip,
@@ -27,6 +28,7 @@ import { isNumber } from "../../../typeGuards/isNumber";
 import { roundTo } from "../../../utils/roundTo";
 import { roundToNonZeroDecimals } from "../../../utils/roundToNonZeroDecimals";
 import { getThemeKind } from "../../common/App/styles";
+import { ToggleSwitch } from "../../common/ToggleSwitch";
 import { Tooltip as CommonTooltip } from "../../common/Tooltip";
 import { ArrowSmallIcon } from "../../common/icons/ArrowSmallIcon";
 import { ChartCircleIcon } from "../../common/icons/ChartCircleIcon";
@@ -42,6 +44,7 @@ import { DotTooltipContent } from "./DotTooltipContent";
 import * as s from "./styles";
 import {
   Coordinates,
+  DotProps,
   DotTooltipProps,
   ExtendedLiveDataRecord,
   LiveViewProps,
@@ -148,6 +151,16 @@ const getLatestDataButtonIconColor = (theme: DefaultTheme) => {
   }
 };
 
+const getDotWithErrorsColor = (theme: DefaultTheme) => {
+  switch (theme.mode) {
+    case "light":
+      return "#e00036";
+    case "dark":
+    case "dark-jetbrains":
+      return "#f93967";
+  }
+};
+
 const convertTo = (nanoseconds: number, unit: string) => {
   switch (unit) {
     case "ns":
@@ -197,6 +210,7 @@ export const LiveView = (props: LiveViewProps) => {
   const [dotToolTip, setDotTooltip] = useState<DotTooltipProps>();
   const [scrollPercentagePosition, setScrollPercentagePosition] = useState(1);
   const scrollbar = useScrollbarSize();
+  const [areErrorsVisible, setAreErrorsVisible] = useState(false);
 
   useEffect(() => {
     if (previousWidth !== width) {
@@ -239,6 +253,10 @@ export const LiveView = (props: LiveViewProps) => {
 
   const handleCloseButtonClick = () => {
     props.onClose(props.data.durationData.codeObjectId);
+  };
+
+  const handleShowErrorsToggleSwitchChange = (value: boolean) => {
+    setAreErrorsVisible(value);
   };
 
   const handleZoomOutButtonClick = () => {
@@ -324,12 +342,16 @@ export const LiveView = (props: LiveViewProps) => {
 
   const spanName = props.data.durationData.displayName;
 
-  const data: ExtendedLiveDataRecord[] = [...props.data.liveDataRecords].map(
+  let data: ExtendedLiveDataRecord[] = [...props.data.liveDataRecords].map(
     (x) => ({
       ...x,
       dateTimeValue: new Date(x.dateTime).valueOf()
     })
   );
+
+  if (!areErrorsVisible) {
+    data = data.filter((x) => !x.isError);
+  }
 
   // Add P50 and P95 values to build the correct scale for Y axis
   const YAxisData = data.concat([
@@ -433,14 +455,22 @@ export const LiveView = (props: LiveViewProps) => {
       </s.Header>
       {data.length > 0 ? (
         <>
-          <s.ZoomButtonsContainer>
-            <s.ZoomButton onClick={handleZoomOutButtonClick}>
-              <MinusIcon size={16} color={zoomButtonIconColor} />
-            </s.ZoomButton>
-            <s.ZoomButton onClick={handleZoomInButtonClick}>
-              <PlusIcon size={16} color={zoomButtonIconColor} />
-            </s.ZoomButton>
-          </s.ZoomButtonsContainer>
+          <s.Toolbar>
+            <ToggleSwitch
+              label={"Show Errors"}
+              labelPosition={"end"}
+              checked={areErrorsVisible}
+              onChange={handleShowErrorsToggleSwitchChange}
+            />
+            <s.ZoomButtonsContainer>
+              <s.ZoomButton onClick={handleZoomOutButtonClick}>
+                <MinusIcon size={16} color={zoomButtonIconColor} />
+              </s.ZoomButton>
+              <s.ZoomButton onClick={handleZoomInButtonClick}>
+                <PlusIcon size={16} color={zoomButtonIconColor} />
+              </s.ZoomButton>
+            </s.ZoomButtonsContainer>
+          </s.Toolbar>
           {changedPercentile && (
             <s.ChangeStatusContainer>
               <ChangeStatus percentile={changedPercentile} />
@@ -564,12 +594,21 @@ export const LiveView = (props: LiveViewProps) => {
                       x.duration.raw
                     }
                     stroke={lineColor}
-                    dot={{
-                      stroke: lineColor,
-                      fill: lineColor,
-                      r: 2,
-                      onMouseOver: handleDotMouseOver,
-                      onMouseLeave: handleDotMouseLeave
+                    dot={(props: DotProps) => {
+                      const color = props.payload.isError
+                        ? getDotWithErrorsColor(theme)
+                        : lineColor;
+
+                      return (
+                        <Dot
+                          {...props}
+                          stroke={color}
+                          fill={color}
+                          r={3}
+                          onMouseOver={handleDotMouseOver}
+                          onMouseLeave={handleDotMouseLeave}
+                        />
+                      );
                     }}
                     isAnimationActive={false}
                     activeDot={false}

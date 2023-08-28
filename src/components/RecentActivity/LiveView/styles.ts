@@ -140,11 +140,16 @@ export const ChartsContainer = styled.div<{
   padding-right: 12px;
 `;
 
-export const ZoomButtonsContainer = styled.div`
+export const Toolbar = styled.div`
   display: flex;
   justify-content: flex-end;
+  gap: 8px;
+`;
+
+export const ZoomButtonsContainer = styled.div`
+  display: flex;
   gap: 4px;
-  padding: 0 12px;
+  padding-right: 12px;
   height: ${ZOOM_BUTTONS_CONTAINER_HEIGHT}px;
   flex: none;
 `;

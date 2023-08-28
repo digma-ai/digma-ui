@@ -15,10 +15,11 @@ export const ToggleSwitch = (props: ToggleSwitchProps) => {
       className={props.className}
       size={size}
     >
-      {props.label}
+      {(!props.labelPosition || props.labelPosition === "start") && props.label}
       <s.SwitchContainer isChecked={props.checked} size={size}>
         <s.Circle isChecked={props.checked} size={size} />
       </s.SwitchContainer>
+      {props.labelPosition === "end" && props.label}
     </s.Container>
   );
 };

@@ -728,7 +728,8 @@ export const mockData: LiveData = {
         unit: "ms",
         raw: 5367000.0
       },
-      dateTime: "2023-05-15T20:32:22.613257Z"
+      dateTime: "2023-05-15T20:32:22.613257Z",
+      isError: true
     },
     {
       duration: {
@@ -744,7 +745,8 @@ export const mockData: LiveData = {
         unit: "ms",
         raw: 6491000.0
       },
-      dateTime: "2023-05-15T20:32:22.600531Z"
+      dateTime: "2023-05-15T20:32:22.600531Z",
+      isError: true
     },
     {
       duration: {
@@ -768,7 +770,8 @@ export const mockData: LiveData = {
         unit: "ms",
         raw: 5158000.0
       },
-      dateTime: "2023-05-15T20:32:22.582783Z"
+      dateTime: "2023-05-15T20:32:22.582783Z",
+      isError: true
     },
     {
       duration: {
@@ -784,7 +787,8 @@ export const mockData: LiveData = {
         unit: "ms",
         raw: 5464000.0
       },
-      dateTime: "2023-05-15T20:32:22.570563Z"
+      dateTime: "2023-05-15T20:32:22.570563Z",
+      isError: true
     },
     {
       duration: {
@@ -800,7 +804,8 @@ export const mockData: LiveData = {
         unit: "ms",
         raw: 8287000.0
       },
-      dateTime: "2023-05-15T20:32:22.556144Z"
+      dateTime: "2023-05-15T20:32:22.556144Z",
+      isError: true
     }
   ],
   durationData: {

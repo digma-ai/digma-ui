@@ -6,6 +6,7 @@ export interface ToggleSwitchProps {
   size?: ToggleSwitchSize;
   onChange?: (value: boolean) => void;
   className?: string;
+  labelPosition?: "start" | "end";
 }
 
 export interface ContainerProps {
