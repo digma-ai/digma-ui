@@ -193,7 +193,9 @@ export interface SpanDurationsInsight extends SpanInsight {
       timestamp: Duration;
       quantileValue: number;
     }[];
-  };
+  } | null;
+  average?: Duration;
+  standardDeviation?: Duration;
 }
 
 export interface FlowSpan {

@@ -296,6 +296,17 @@ export const DurationInsight = (props: DurationInsightProps) => {
             // TODO: add hourglass icon
             <span>Waiting for more data...</span>
           )}
+          {!props.insight.histogramPlot &&
+            props.insight.average &&
+            props.insight.standardDeviation && (
+              <s.Stats key={"average"}>
+                <s.StatsTitle>Average</s.StatsTitle>
+                <Description>
+                  {getDurationString(props.insight.average)} +-{" "}
+                  {getDurationString(props.insight.standardDeviation)}
+                </Description>
+              </s.Stats>
+            )}
 
           {props.insight.histogramPlot && (
             <s.ChartContainer ref={observe}>
