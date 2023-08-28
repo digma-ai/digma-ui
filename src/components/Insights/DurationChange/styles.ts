@@ -10,7 +10,7 @@ export const Change = styled.span`
         return "#828797";
       case "dark":
       case "dark-jetbrains":
-        return "#9da0a8";
+        return "#b4b8bf";
     }
   }};
 `;

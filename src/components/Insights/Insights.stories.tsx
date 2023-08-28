@@ -57,19 +57,22 @@ export const Default: Story = {
           components: [
             {
               type: ComponentType.Internal,
-              fraction: 1
+              fraction: 1,
+              duration: null
             }
           ],
           p50Components: [
             {
               type: ComponentType.Internal,
-              fraction: 1
+              fraction: 1,
+              duration: null
             }
           ],
           p95Components: [
             {
               type: ComponentType.Internal,
-              fraction: 1
+              fraction: 1,
+              duration: null
             }
           ],
           scope: InsightScope.EntrySpan,

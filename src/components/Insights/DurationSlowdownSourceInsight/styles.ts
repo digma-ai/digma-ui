@@ -23,3 +23,9 @@ export const SourceName = styled.span`
   overflow: hidden;
   white-space: nowrap;
 `;
+
+export const DurationChangeContainer = styled.div`
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+`;

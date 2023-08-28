@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import { Description } from "../styles";
+import { ChartContainerProps } from "./types";
 
 export const Container = styled.div`
   display: flex;
@@ -12,13 +14,21 @@ export const Stats = styled.div`
   gap: 8px;
 `;
 
+export const StatsTitle = styled(Description)`
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#4d668a";
+      case "dark":
+      case "dark-jetbrains":
+        return "#dfe1e5";
+    }
+  }};
+`;
+
 export const ValueContainer = styled.div`
   display: flex;
   gap: 5px;
-`;
-
-export const Value = styled.span`
-  font-weight: 500;
 `;
 
 export const LastCallTimeDistance = styled.div<{ isRecent: boolean }>`
@@ -38,14 +48,14 @@ export const LastCallTimeDistance = styled.div<{ isRecent: boolean }>`
         return "#828797";
       case "dark":
       case "dark-jetbrains":
-        return "#9da0a8";
+        return "#b4b8bf";
     }
   }};
 `;
 
-export const ChartContainer = styled.div`
+export const ChartContainer = styled.div<ChartContainerProps>`
   width: 100%;
-  height: 120px;
+  height: ${({ height }) => height}px;
 `;
 
 export const TooltipContainer = styled.div`

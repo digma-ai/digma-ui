@@ -73,7 +73,7 @@ export const SearchInputIconContainer = styled.div`
 
 export const SearchInput = styled.input`
   font-size: 14px;
-  padding: 4px 4px 4px 18px;
+  padding: 4px 4px 4px 20px;
   border-radius: 4px;
   width: 70px;
   outline: none;
@@ -141,7 +141,7 @@ export const SortingMenuButton = styled.button<SortingMenuButtonProps>`
   background: none;
   cursor: pointer;
   display: flex;
-  gap: 2px;
+  gap: 4px;
   font-weight: 500;
   font-size: 14px;
   align-items: center;

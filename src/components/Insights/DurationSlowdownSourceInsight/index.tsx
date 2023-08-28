@@ -36,12 +36,14 @@ export const DurationSlowdownSourceInsight = (
                 </Link>
               </s.SourceName>
             </Tooltip>
-            <DurationChange
-              currentDuration={x.currentDuration}
-              previousDuration={x.previousDuration}
-              changeTime={x.changeTime}
-              changeVerified={x.changeVerified}
-            />
+            <s.DurationChangeContainer>
+              <DurationChange
+                currentDuration={x.currentDuration}
+                previousDuration={x.previousDuration}
+                changeTime={x.changeTime}
+                changeVerified={x.changeVerified}
+              />
+            </s.DurationChangeContainer>
           </s.Source>
         );
       })}
