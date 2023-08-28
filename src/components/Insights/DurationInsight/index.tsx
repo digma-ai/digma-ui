@@ -254,28 +254,7 @@ export const DurationInsight = (props: DurationInsightProps) => {
                   percentile.changeTime
                 );
 
-                if (!props.insight.histogramPlot) {
-                  return (
-                    <s.Stats key={percentile.percentile}>
-                      <s.StatsTitle>
-                        {getPercentileLabel(percentile.percentile)}
-                      </s.StatsTitle>
-                      <s.ValueContainer>
-                        <Description>
-                          {getDurationString(percentile.currentDuration)}
-                        </Description>
-                        <DurationChange
-                          currentDuration={percentile.currentDuration}
-                          previousDuration={percentile.previousDuration}
-                          changeTime={percentile.changeTime}
-                          changeVerified={percentile.changeVerified}
-                        />
-                      </s.ValueContainer>
-                    </s.Stats>
-                  );
-                }
-
-                return props.insight.histogramPlot && isChangeMeaningful ? (
+                return isChangeMeaningful ? (
                   <s.Stats key={percentile.percentile}>
                     <s.StatsTitle>
                       {getPercentileLabel(percentile.percentile)}
@@ -302,8 +281,9 @@ export const DurationInsight = (props: DurationInsightProps) => {
               <s.Stats key={"average"}>
                 <s.StatsTitle>Average</s.StatsTitle>
                 <Description>
-                  {getDurationString(props.insight.average)} ±{" "}
-                  {getDurationString(props.insight.standardDeviation)}
+                  {getDurationString(props.insight.average)}
+                  {props.insight.standardDeviation.raw > 0 &&
+                    ` ± ${getDurationString(props.insight.standardDeviation)}`}
                 </Description>
               </s.Stats>
             )}
