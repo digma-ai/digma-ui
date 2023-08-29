@@ -210,7 +210,7 @@ export const LiveView = (props: LiveViewProps) => {
   const [dotToolTip, setDotTooltip] = useState<DotTooltipProps>();
   const [scrollPercentagePosition, setScrollPercentagePosition] = useState(1);
   const scrollbar = useScrollbarSize();
-  const [areErrorsVisible, setAreErrorsVisible] = useState(false);
+  const [areErrorsVisible, setAreErrorsVisible] = useState(true);
 
   useEffect(() => {
     if (previousWidth !== width) {
