@@ -31,7 +31,7 @@ const LAST_CALL_TIME_DISTANCE_LIMIT = 60 * 1000; // in milliseconds
 
 // in pixels
 const BAR_WIDTH = 5;
-const MIN_X_AXIS_PADDING = 40;
+const MIN_X_AXIS_PADDING = 80;
 const MIN_CHART_CONTAINER_HEIGHT = 120;
 const CHART_Y_MARGIN = 20;
 const MIN_BAR_DISTANCE = 6; // minimum distance between the bars before moving the labels aside
@@ -169,7 +169,10 @@ export const DurationInsight = (props: DurationInsightProps) => {
     : false;
 
   const chartData = props.insight.histogramPlot
-    ? calculateBars(props.insight.histogramPlot.bars, width)
+    ? calculateBars(
+        props.insight.histogramPlot.bars,
+        Math.max(width - MIN_X_AXIS_PADDING * 2, 0)
+      )
     : [];
 
   const XAxisPadding = Math.max(
@@ -243,6 +246,14 @@ export const DurationInsight = (props: DurationInsightProps) => {
       value: getDurationString(maxBar.end),
       textAnchor: "start"
     };
+
+    if (minBar.index === maxBar.index) {
+      ticks[maxBar.index] = {
+        value: `${getDurationString(minBar.start)} ${getDurationString(
+          maxBar.end
+        )}`
+      };
+    }
   }
 
   let chartContainerHeight = MIN_CHART_CONTAINER_HEIGHT;
