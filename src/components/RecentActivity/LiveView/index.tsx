@@ -25,6 +25,7 @@ import { ChartOffset } from "recharts/types/util/types";
 import { DefaultTheme, useTheme } from "styled-components";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { isNumber } from "../../../typeGuards/isNumber";
+import { convertToDurationUnit } from "../../../utils/convertToDurationUnit";
 import { roundTo } from "../../../utils/roundTo";
 import { roundToNonZeroDecimals } from "../../../utils/roundToNonZeroDecimals";
 import { getThemeKind } from "../../common/App/styles";
@@ -158,22 +159,6 @@ const getDotWithErrorsColor = (theme: DefaultTheme) => {
     case "dark":
     case "dark-jetbrains":
       return "#f93967";
-  }
-};
-
-const convertTo = (nanoseconds: number, unit: string) => {
-  switch (unit) {
-    case "ns":
-      return nanoseconds;
-    case "μs":
-      return nanoseconds / 10 ** 3;
-    case "ms":
-      return nanoseconds / 10 ** 6;
-    case "sec":
-      return nanoseconds / 10 ** 9;
-    case "min":
-    default:
-      return nanoseconds / 10 ** 9 / 60;
   }
 };
 
@@ -378,7 +363,10 @@ export const LiveView = (props: LiveViewProps) => {
   const maxDuration = getMaxDurationRecord(YAxisData)?.duration;
   const maxDurationUnit = maxDuration?.unit || "ns";
   const YAxisTickInterval = roundToNonZeroDecimals(
-    convertTo(maxDuration?.raw || 0 / Y_AXIS_TICK_COUNT, maxDurationUnit),
+    convertToDurationUnit(
+      maxDuration?.raw || 0 / Y_AXIS_TICK_COUNT,
+      maxDurationUnit
+    ),
     2
   );
   const YAxisTickDecimalPlaces =
@@ -386,7 +374,7 @@ export const LiveView = (props: LiveViewProps) => {
       ? 0
       : String(YAxisTickInterval).split(".")[1].length || 0;
   const YAxisMaxTickWholePart = Math.ceil(
-    convertTo(maxDuration?.raw || 0, maxDurationUnit)
+    convertToDurationUnit(maxDuration?.raw || 0, maxDurationUnit)
   );
   const longestTickDigitCount = maxDuration
     ? String(YAxisMaxTickWholePart).length + 1 + YAxisTickDecimalPlaces
@@ -496,7 +484,7 @@ export const LiveView = (props: LiveViewProps) => {
                     tickFormatter={(x: number) =>
                       String(
                         roundTo(
-                          convertTo(x, maxDurationUnit),
+                          convertToDurationUnit(x, maxDurationUnit),
                           YAxisTickDecimalPlaces
                         )
                       )

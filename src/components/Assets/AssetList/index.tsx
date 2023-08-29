@@ -330,7 +330,9 @@ export const AssetList = (props: AssetListProps) => {
 
   const sortedEntries = useMemo(() => {
     const filteredEntries = entries.filter((x) =>
-      x.span.displayName.toLocaleLowerCase().includes(searchInputValue)
+      x.span.displayName
+        .toLocaleLowerCase()
+        .includes(searchInputValue.toLowerCase())
     );
 
     return sortEntries(filteredEntries, sorting);
