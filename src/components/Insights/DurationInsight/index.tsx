@@ -11,6 +11,7 @@ import {
 import { DefaultTheme, useTheme } from "styled-components";
 import { Duration } from "../../../globals";
 import { isNumber } from "../../../typeGuards/isNumber";
+import { convertToDuration } from "../../../utils/convertToDuration";
 import { formatTimeDistance } from "../../../utils/formatTimeDistance";
 import { getPercentileLabel } from "../../../utils/getPercentileLabel";
 import { Button } from "../../common/Button";
@@ -33,8 +34,7 @@ const BAR_WIDTH = 5;
 const MIN_X_AXIS_PADDING = 40;
 const MIN_CHART_CONTAINER_HEIGHT = 120;
 const CHART_Y_MARGIN = 20;
-
-const durationPlaceholder: Duration = { value: 0, unit: "ns", raw: 0 };
+const MIN_BAR_DISTANCE = 6; // minimum distance between the bars before moving the labels aside
 
 const getDurationString = (duration: Duration) =>
   `${duration.value} ${duration.unit}`;
@@ -75,24 +75,33 @@ const calculateBars = (
     const bar = bars[i];
 
     if (i === 0 && bar.index > 0) {
-      for (let j = 0; j < bar.index; j++) {
+      const interval = bar.end.raw - bar.start.raw;
+
+      for (let j = bar.index - 1, offset = 0; j >= 0; j--, offset++) {
         filledBars[j] = {
           index: j,
           count: 0,
-          start: durationPlaceholder,
-          end: durationPlaceholder
+          start: convertToDuration(bar.start.raw - interval * (offset + 1)),
+          end: convertToDuration(bar.start.raw - interval * offset)
         };
       }
     }
 
     if (i !== 0) {
       const prevBar = bars[i - 1];
-      for (let j = prevBar.index + 1; j < bar.index; j++) {
+      const gapCount = bar.index - prevBar.index - 1;
+      const interval = (bar.end.raw - prevBar.start.raw) / gapCount;
+
+      for (
+        let j = prevBar.index + 1, offset = 0;
+        j < bar.index;
+        j++, offset++
+      ) {
         filledBars[j] = {
           index: j,
           count: 0,
-          start: durationPlaceholder,
-          end: durationPlaceholder
+          start: convertToDuration(prevBar.end.raw + interval * offset),
+          end: convertToDuration(prevBar.end.raw + interval * (offset + 1))
         };
       }
     }
@@ -110,16 +119,12 @@ const calculateBars = (
   for (let i = 0, j = 0; i < barsCount; i += groupSize, j++) {
     const group = filledBars.slice(i, i + groupSize);
     const newCount = group.reduce((acc, cur) => acc + cur.count, 0);
-    const notEmptyBars = group.filter((x) => x.count > 0);
 
     newBars.push({
       index: j,
       count: newCount,
-      start: newCount > 0 ? notEmptyBars[0].start : durationPlaceholder,
-      end:
-        newCount > 0
-          ? notEmptyBars[notEmptyBars.length - 1].end
-          : durationPlaceholder
+      start: group[0].start,
+      end: group[group.length - 1].end
     });
   }
 
@@ -207,11 +212,36 @@ export const DurationInsight = (props: DurationInsightProps) => {
     };
   }
 
+  if (
+    isP50Present &&
+    isP95Present &&
+    p95BarIndex - p50BarIndex <= MIN_BAR_DISTANCE
+  ) {
+    ticks[p50BarIndex].textAnchor = "end";
+    ticks[p95BarIndex].textAnchor = "start";
+  }
+
   if (isP50Present && isP95Present && p50BarIndex === p95BarIndex) {
     ticks[p95BarIndex] = {
       value: [getDurationString(p50), getDurationString(p95)].join(DIVIDER),
       label: [getPercentileLabel(0.5), getPercentileLabel(0.95)].join(DIVIDER),
       multiline: true
+    };
+  }
+
+  const notEmptyBars = chartData.filter((x) => x.count > 0);
+
+  if (!p50 && !p95 && notEmptyBars.length) {
+    const minBar = notEmptyBars[0];
+    ticks[minBar.index] = {
+      value: getDurationString(minBar.start),
+      textAnchor: "end"
+    };
+
+    const maxBar = notEmptyBars[notEmptyBars.length - 1];
+    ticks[maxBar.index] = {
+      value: getDurationString(maxBar.end),
+      textAnchor: "start"
     };
   }
 
@@ -224,22 +254,6 @@ export const DurationInsight = (props: DurationInsightProps) => {
     chartMarginTop += CHART_Y_MARGIN;
     chartMarginBottom += CHART_Y_MARGIN;
     chartContainerHeight += CHART_Y_MARGIN * 2;
-  }
-
-  const notEmptyBars = chartData.filter((x) => x.count > 0);
-
-  if (!p50 && !p95 && notEmptyBars.length) {
-    const minBar = notEmptyBars[0];
-    ticks[minBar.index] = {
-      value: getDurationString(minBar.start),
-      role: "min"
-    };
-
-    const maxBar = notEmptyBars[notEmptyBars.length - 1];
-    ticks[maxBar.index] = {
-      value: getDurationString(maxBar.end),
-      role: "max"
-    };
   }
 
   return (
@@ -383,6 +397,7 @@ export const DurationInsight = (props: DurationInsightProps) => {
                           position: "top",
                           value: tickData.label,
                           fill: tickColor,
+                          textAnchor: tickData.textAnchor,
                           content: ReferenceLineLabel
                         }}
                       />

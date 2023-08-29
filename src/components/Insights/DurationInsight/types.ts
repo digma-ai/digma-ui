@@ -18,7 +18,7 @@ export interface DurationInsightProps extends InsightProps {
 export interface TickData {
   value: string;
   label?: string;
-  role?: string;
+  textAnchor?: "start" | "end" | "middle" | "inherit";
   multiline?: boolean;
 }
 

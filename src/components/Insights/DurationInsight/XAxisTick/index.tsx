@@ -17,18 +17,8 @@ export const XAxisTick = (props: XAxisTickProps) => {
   const theme = useTheme();
   const tickLabelColor = getTickLabelColor(theme);
 
-  let textAnchor = props.textAnchor;
-
   const tick = props.ticks[props.payload.value];
-
-  switch (tick.role) {
-    case "min":
-      textAnchor = "end";
-      break;
-    case "max":
-      textAnchor = "start";
-      break;
-  }
+  const textAnchor = tick.textAnchor || props.textAnchor;
 
   const labels = tick.value.split(DIVIDER);
 
