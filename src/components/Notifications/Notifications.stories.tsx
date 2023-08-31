@@ -20,65 +20,265 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+const notifications = [
+  {
+    notificationId: "1",
+    accountId: "1",
+    environment: "env",
+    title: "Title",
+    message: "Lorem ipsum dolor sit, amet consectetur adipisicing elit.",
+    type: "insight",
+    data: {
+      insightType: InsightType.HotSpot,
+      codeObject: {
+        displayName: "HTTP POST Transfer/TransferFunds",
+        codeObjectId:
+          "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP POST Transfer/TransferFunds"
+      }
+    },
+    isRead: false,
+    timestamp: "2023-01-07T12:59:21.794Z"
+  },
+  {
+    notificationId: "2",
+    accountId: "1",
+    environment: "env",
+    title: "Title",
+    message: "Lorem ipsum dolor sit, amet consectetur adipisicing elit.",
+    type: "insight",
+    data: {
+      insightType: InsightType.EndpointBreakdown,
+      codeObject: {
+        displayName: "HTTP POST Transfer/TransferFunds",
+        codeObjectId:
+          "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP POST Transfer/TransferFunds"
+      }
+    },
+    isRead: true,
+    timestamp: "2023-01-07T12:59:21.794Z"
+  },
+  {
+    notificationId: "3",
+    accountId: "1",
+    environment: "env",
+    title: "Title",
+    message: "Lorem ipsum dolor sit, amet consectetur adipisicing elit.",
+    type: "insight",
+    data: {
+      insightType: InsightType.EndpointDurationSlowdown,
+      codeObject: {
+        displayName: "HTTP POST Transfer/TransferFunds",
+        codeObjectId:
+          "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP POST Transfer/TransferFunds"
+      }
+    },
+    isRead: true,
+    timestamp: "2023-01-07T12:59:21.794Z"
+  },
+  {
+    notificationId: "4",
+    accountId: "1",
+    environment: "env",
+    title: "Title",
+    message: "Lorem ipsum dolor sit, amet consectetur adipisicing elit.",
+    type: "insight",
+    data: {
+      insightType: InsightType.EndpointDurationSlowdown,
+      codeObject: {
+        displayName: "HTTP POST Transfer/TransferFunds",
+        codeObjectId:
+          "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP POST Transfer/TransferFunds"
+      }
+    },
+    isRead: true,
+    timestamp: "2023-01-07T12:59:21.794Z"
+  },
+  {
+    notificationId: "5",
+    accountId: "1",
+    environment: "env",
+    title: "Title",
+    message: "Lorem ipsum dolor sit, amet consectetur adipisicing elit.",
+    type: "insight",
+    data: {
+      insightType: InsightType.EndpointDurationSlowdown,
+      codeObject: {
+        displayName: "HTTP POST Transfer/TransferFunds",
+        codeObjectId:
+          "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP POST Transfer/TransferFunds"
+      }
+    },
+    isRead: true,
+    timestamp: "2023-01-07T12:59:21.794Z"
+  },
+  {
+    notificationId: "6",
+    accountId: "1",
+    environment: "env",
+    title: "Title",
+    message: "Lorem ipsum dolor sit, amet consectetur adipisicing elit.",
+    type: "insight",
+    data: {
+      insightType: InsightType.EndpointDurationSlowdown,
+      codeObject: {
+        displayName: "HTTP POST Transfer/TransferFunds",
+        codeObjectId:
+          "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP POST Transfer/TransferFunds"
+      }
+    },
+    isRead: true,
+    timestamp: "2023-01-07T12:59:21.794Z"
+  },
+  {
+    notificationId: "7",
+    accountId: "1",
+    environment: "env",
+    title: "Title",
+    message: "Lorem ipsum dolor sit, amet consectetur adipisicing elit.",
+    type: "insight",
+    data: {
+      insightType: InsightType.EndpointDurationSlowdown,
+      codeObject: {
+        displayName: "HTTP POST Transfer/TransferFunds",
+        codeObjectId:
+          "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP POST Transfer/TransferFunds"
+      }
+    },
+    isRead: true,
+    timestamp: "2023-01-07T12:59:21.794Z"
+  },
+  {
+    notificationId: "8",
+    accountId: "1",
+    environment: "env",
+    title: "Title",
+    message: "Lorem ipsum dolor sit, amet consectetur adipisicing elit.",
+    type: "insight",
+    data: {
+      insightType: InsightType.EndpointDurationSlowdown,
+      codeObject: {
+        displayName: "HTTP POST Transfer/TransferFunds",
+        codeObjectId:
+          "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP POST Transfer/TransferFunds"
+      }
+    },
+    isRead: true,
+    timestamp: "2023-01-07T12:59:21.794Z"
+  },
+  {
+    notificationId: "9",
+    accountId: "1",
+    environment: "env",
+    title: "Title",
+    message: "Lorem ipsum dolor sit, amet consectetur adipisicing elit.",
+    type: "insight",
+    data: {
+      insightType: InsightType.EndpointDurationSlowdown,
+      codeObject: {
+        displayName: "HTTP POST Transfer/TransferFunds",
+        codeObjectId:
+          "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP POST Transfer/TransferFunds"
+      }
+    },
+    isRead: true,
+    timestamp: "2023-01-07T12:59:21.794Z"
+  },
+  {
+    notificationId: "10",
+    accountId: "1",
+    environment: "env",
+    title: "Title",
+    message: "Lorem ipsum dolor sit, amet consectetur adipisicing elit.",
+    type: "insight",
+    data: {
+      insightType: InsightType.EndpointDurationSlowdown,
+      codeObject: {
+        displayName: "HTTP POST Transfer/TransferFunds",
+        codeObjectId:
+          "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP POST Transfer/TransferFunds"
+      }
+    },
+    isRead: true,
+    timestamp: "2023-01-07T12:59:21.794Z"
+  },
+  {
+    notificationId: "11",
+    accountId: "1",
+    environment: "env",
+    title: "Title",
+    message: "Lorem ipsum dolor sit, amet consectetur adipisicing elit.",
+    type: "insight",
+    data: {
+      insightType: InsightType.EndpointDurationSlowdown,
+      codeObject: {
+        displayName: "HTTP POST Transfer/TransferFunds",
+        codeObjectId:
+          "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP POST Transfer/TransferFunds"
+      }
+    },
+    isRead: true,
+    timestamp: "2023-01-07T12:59:21.794Z"
+  },
+  {
+    notificationId: "12",
+    accountId: "1",
+    environment: "env",
+    title: "Title",
+    message: "Lorem ipsum dolor sit, amet consectetur adipisicing elit.",
+    type: "insight",
+    data: {
+      insightType: InsightType.EndpointDurationSlowdown,
+      codeObject: {
+        displayName: "HTTP POST Transfer/TransferFunds",
+        codeObjectId:
+          "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP POST Transfer/TransferFunds"
+      }
+    },
+    isRead: true,
+    timestamp: "2023-01-07T12:59:21.794Z"
+  }
+];
+
+export const NoDataRecent: Story = {
   args: {
     data: {
-      notifications: [
-        {
-          notificationId: "1",
-          accountId: "1",
-          environment: "env",
-          title: "Title",
-          message: "Lorem ipsum dolor sit, amet consectetur adipisicing elit.",
-          type: "insight",
-          data: {
-            insightType: InsightType.HotSpot,
-            codeObject: {
-              displayName: "HTTP POST Transfer/TransferFunds",
-              codeObjectId:
-                "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP POST Transfer/TransferFunds"
-            }
-          },
-          isRead: false,
-          timestamp: new Date().toISOString()
-        },
-        {
-          notificationId: "2",
-          accountId: "1",
-          environment: "env",
-          title: "Title",
-          message: "Lorem ipsum dolor sit, amet consectetur adipisicing elit.",
-          type: "insight",
-          data: {
-            insightType: InsightType.EndpointBreakdown,
-            codeObject: {
-              displayName: "HTTP POST Transfer/TransferFunds",
-              codeObjectId:
-                "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP POST Transfer/TransferFunds"
-            }
-          },
-          isRead: true,
-          timestamp: new Date().toISOString()
-        },
-        {
-          notificationId: "3",
-          accountId: "1",
-          environment: "env",
-          title: "Title",
-          message: "Lorem ipsum dolor sit, amet consectetur adipisicing elit.",
-          type: "insight",
-          data: {
-            insightType: InsightType.EndpointDurationSlowdown,
-            codeObject: {
-              displayName: "HTTP POST Transfer/TransferFunds",
-              codeObjectId:
-                "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP POST Transfer/TransferFunds"
-            }
-          },
-          isRead: true,
-          timestamp: new Date().toISOString()
-        }
-      ]
-    }
+      notifications: [],
+      totalCount: 0,
+      unreadCount: 0
+    },
+    viewMode: "popup"
+  }
+};
+
+export const Recent: Story = {
+  args: {
+    data: {
+      notifications: notifications.slice(0, 3),
+      totalCount: 3,
+      unreadCount: 1
+    },
+    viewMode: "popup"
+  }
+};
+
+export const NoDataFull: Story = {
+  args: {
+    data: {
+      notifications: [],
+      totalCount: 0,
+      unreadCount: 0
+    },
+    viewMode: "full"
+  }
+};
+
+export const Full: Story = {
+  args: {
+    data: {
+      notifications,
+      totalCount: 12,
+      unreadCount: 1
+    },
+    viewMode: "full"
   }
 };

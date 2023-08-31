@@ -122,7 +122,10 @@ export const DurationChange = (props: DurationChangeProps) => {
             props.previousDuration,
             props.currentDuration
           )}
-          , {formatTimeDistance(props.changeTime)}
+          ,{" "}
+          <Tooltip title={new Date(props.changeTime).toString()}>
+            <span>{formatTimeDistance(props.changeTime)}</span>
+          </Tooltip>
         </s.Change>
       )}
       {isChangeMeaningful && props.changeVerified === false && (

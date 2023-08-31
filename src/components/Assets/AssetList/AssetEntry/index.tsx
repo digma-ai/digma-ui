@@ -75,6 +75,12 @@ export const AssetEntry = (props: AssetEntryProps) => {
 
   const servicesTitle = props.entry.relatedServices.join(", ");
 
+  const timeDistance = timeAgo(lastSeenDateTime, "short");
+  const timeDistanceString = timeDistance
+    ? `${timeDistance.value}${timeDistance.unit}`
+    : "";
+  const timeDistanceTitle = new Date(lastSeenDateTime).toString();
+
   return (
     <s.Container>
       <s.Header>
@@ -125,9 +131,9 @@ export const AssetEntry = (props: AssetEntryProps) => {
           </s.Stats>
           <s.Stats>
             <span>Last</span>
-            <Tooltip title={new Date(lastSeenDateTime).toString()}>
+            <Tooltip title={timeDistanceTitle}>
               <s.ValueContainer>
-                {timeAgo(lastSeenDateTime)}
+                {timeDistanceString}
                 <s.Suffix>ago</s.Suffix>
               </s.ValueContainer>
             </Tooltip>

@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
-import { DefaultTheme, useTheme } from "styled-components";
 import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
+import { isBoolean } from "../../typeGuards/isBoolean";
 import { isNumber } from "../../typeGuards/isNumber";
 import { addPrefix } from "../../utils/addPrefix";
-import { CircleLoaderProps } from "../common/CircleLoader/types";
-import { IconButton } from "../common/IconButton";
-import { CrossIcon } from "../common/icons/CrossIcon";
-import { NotificationCard } from "./NotificationCard";
+import { FullView } from "./FullView";
+import { RecentView } from "./RecentView";
 import * as s from "./styles";
 import { NotificationsData, NotificationsProps } from "./types";
 
@@ -25,63 +23,108 @@ export const actions = addPrefix(ACTION_PREFIX, {
   GO_TO_NOTIFICATIONS: "GO_TO_NOTIFICATIONS"
 });
 
-const getCircleLoaderColors = (
-  theme: DefaultTheme
-): CircleLoaderProps["colors"] => {
-  switch (theme.mode) {
-    case "light":
-      return {
-        start: "rgb(81 84 236 / 0%)",
-        end: "#5154ec",
-        background: "#fff"
-      };
-    case "dark":
-    case "dark-jetbrains":
-      return {
-        start: "rgb(120 145 208 / 0%)",
-        end: "#7891d0",
-        background: "#2b2d30"
-      };
-  }
-};
+// const getCircleLoaderColors = (
+//   theme: DefaultTheme
+// ): CircleLoaderProps["colors"] => {
+//   switch (theme.mode) {
+//     case "light":
+//       return {
+//         start: "rgb(81 84 236 / 0%)",
+//         end: "#5154ec",
+//         background: "#fff"
+//       };
+//     case "dark":
+//     case "dark-jetbrains":
+//       return {
+//         start: "rgb(120 145 208 / 0%)",
+//         end: "#7891d0",
+//         background: "#2b2d30"
+//       };
+//   }
+// };
 
 export const Notifications = (props: NotificationsProps) => {
   const [data, setData] = useState<NotificationsData>();
-  const previousData = usePrevious(data);
+  // const previousData = usePrevious(data);
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
+  const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
   // const [isInitialLoading, setIsInitialLoading] = useState(false);
-  const theme = useTheme();
-  const circleLoaderColors = getCircleLoaderColors(theme);
+  // const circleLoaderColors = getCircleLoaderColors(theme);
+  const [showAll, setShowAll] = useState(false);
+  const previousShowAll = usePrevious(showAll);
+  const [page, setPage] = useState(0);
+  const previousPage = usePrevious(page);
+  const [latestNotificationTimestamp, setLatestNotificationTimestamp] =
+    useState<string>();
+  const viewMode = window.notificationsViewMode || props.viewMode || "full";
+  const pageSize = viewMode === "popup" ? 3 : 10;
 
   useEffect(() => {
     window.sendMessageToDigma({
-      action: actions.GET_DATA
+      action: actions.GET_DATA,
+      payload: {
+        pageNumber: 0,
+        pageSize,
+        isRead: false
+      }
     });
     // setIsInitialLoading(true);
 
-    const handleInsightsData = (data: unknown, timeStamp: number) => {
+    const handleNotificationsData = (data: unknown, timeStamp: number) => {
       setData(data as NotificationsData);
       setLastSetDataTimeStamp(timeStamp);
     };
 
-    dispatcher.addActionListener(actions.SET_DATA, handleInsightsData);
+    dispatcher.addActionListener(actions.SET_DATA, handleNotificationsData);
 
     return () => {
-      dispatcher.removeActionListener(actions.SET_DATA, handleInsightsData);
+      dispatcher.removeActionListener(
+        actions.SET_DATA,
+        handleNotificationsData
+      );
     };
-  }, []);
+  }, [pageSize]);
 
   useEffect(() => {
-    const timerId = window.setTimeout(() => {
-      window.sendMessageToDigma({
-        action: actions.GET_DATA
-      });
-    }, REFRESH_INTERVAL);
+    if (previousLastSetDataTimeStamp !== lastSetDataTimeStamp) {
+      const timerId = window.setTimeout(() => {
+        window.sendMessageToDigma({
+          action: actions.GET_DATA,
+          payload: {
+            pageNumber: page,
+            pageSize,
+            isRead: showAll
+          }
+        });
+      }, REFRESH_INTERVAL);
 
-    return () => {
-      window.clearTimeout(timerId);
-    };
-  }, [lastSetDataTimeStamp]);
+      return () => {
+        window.clearTimeout(timerId);
+      };
+    }
+  }, [
+    previousLastSetDataTimeStamp,
+    lastSetDataTimeStamp,
+    page,
+    showAll,
+    pageSize
+  ]);
+
+  useEffect(() => {
+    if (
+      (isNumber(previousPage) && previousPage !== page) ||
+      (isBoolean(previousShowAll) && previousShowAll !== showAll)
+    ) {
+      window.sendMessageToDigma({
+        action: actions.GET_DATA,
+        payload: {
+          pageNumber: page,
+          pageSize,
+          isRead: showAll
+        }
+      });
+    }
+  }, [previousPage, page, previousShowAll, showAll, pageSize]);
 
   useEffect(() => {
     if (!props.data) {
@@ -91,16 +134,52 @@ export const Notifications = (props: NotificationsProps) => {
     setData(props.data);
   }, [props.data]);
 
+  useEffect(() => {
+    if (data && data.notifications.length) {
+      const timestamp = data.notifications[0].timestamp;
+      if (
+        !latestNotificationTimestamp ||
+        (latestNotificationTimestamp &&
+          new Date(timestamp).valueOf() >
+            new Date(latestNotificationTimestamp).valueOf())
+      ) {
+        setLatestNotificationTimestamp(timestamp);
+      }
+    }
+  }, [data, latestNotificationTimestamp]);
+
+  useEffect(() => {
+    if (data) {
+      const pageCount = Math.ceil(data.notifications.length / pageSize);
+      if (page >= pageCount) {
+        setPage(pageCount - 1);
+      }
+    }
+  }, [data, page, pageSize]);
+
   // useEffect(() => {
   //   if (!previousData && data) {
   //     setIsInitialLoading(false);
   //   }
   // }, [previousData, data]);
 
-  const handleCloseButtonClick = () => {
+  const handleClose = () => {
     window.sendMessageToDigma({
-      action: actions.CLOSE
+      action: actions.CLOSE,
+      payload: {
+        upToDateTime: latestNotificationTimestamp
+      }
     });
+  };
+
+  const handleGoToNotifications = () => {
+    window.sendMessageToDigma({
+      action: actions.GO_TO_NOTIFICATIONS
+    });
+  };
+
+  const handleFilterChange = (showAll: boolean) => {
+    setShowAll(showAll);
   };
 
   const handleSpanLinkClick = (spanCodeObjectId: string) => {
@@ -114,15 +193,24 @@ export const Notifications = (props: NotificationsProps) => {
 
   return (
     <s.Container>
-      <IconButton onClick={handleCloseButtonClick} icon={CrossIcon} />
-      {data &&
-        data.notifications.map((x) => (
-          <NotificationCard
-            key={x.notificationId}
-            data={x}
-            onSpanLinkClick={handleSpanLinkClick}
-          />
-        ))}
+      {viewMode === "popup" ? (
+        <RecentView
+          data={data}
+          onSpanLinkClick={handleSpanLinkClick}
+          onGoToNotifications={handleGoToNotifications}
+          onClose={handleClose}
+        />
+      ) : (
+        <FullView
+          data={data}
+          onSpanLinkClick={handleSpanLinkClick}
+          onPageChange={setPage}
+          onFilterChange={handleFilterChange}
+          showAll={showAll}
+          onClose={handleClose}
+          page={page}
+        />
+      )}
     </s.Container>
   );
 };

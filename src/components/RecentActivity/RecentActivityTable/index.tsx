@@ -65,18 +65,30 @@ export const RecentActivityTable = (props: RecentActivityTableProps) => {
     </span>
   );
 
-  const renderTimeDistance = (timestamp: string, viewMode: ViewMode) =>
-    viewMode === "table" ? (
+  const renderTimeDistance = (timestamp: string, viewMode: ViewMode) => {
+    const title = new Date(timestamp).toString();
+    const timeDistance = timeAgo(timestamp, "short");
+    const timeDistanceString = timeDistance
+      ? `${timeDistance.value}${timeDistance.unit}`
+      : "";
+
+    return viewMode === "table" ? (
       <s.TimeDistanceContainer>
-        {timeAgo(timestamp)}
+        <Tooltip title={title}>
+          <span>{timeDistanceString}</span>
+        </Tooltip>
+
         <s.Suffix>ago</s.Suffix>
       </s.TimeDistanceContainer>
     ) : (
       <span>
-        {timeAgo(timestamp)}
+        <Tooltip title={title}>
+          <span>{timeDistanceString}</span>
+        </Tooltip>
         <s.ListSuffix>ago</s.ListSuffix>
       </span>
     );
+  };
 
   const renderDuration = (duration: Duration, viewMode: ViewMode) =>
     viewMode === "table" ? (

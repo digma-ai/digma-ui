@@ -4,11 +4,11 @@ import { openURLInDefaultBrowser } from "../../../utils/openURLInDefaultBrowser"
 import { getThemeKind } from "../../common/App/styles";
 import { CircleLoader } from "../../common/CircleLoader";
 import { Link } from "../../common/Link";
-import { BellIcon } from "../../common/icons/BellIcon";
 import { ChatIcon } from "../../common/icons/ChatIcon";
 import { CheckmarkCircleInvertedIcon } from "../../common/icons/CheckmarkCircleInvertedIcon";
 import { GearIcon } from "../../common/icons/GearIcon";
 import { PlayIcon } from "../../common/icons/PlayIcon";
+import { RingingBellIcon } from "../../common/icons/RingingBellIcon";
 import { SlackLogoIcon } from "../../common/icons/SlackLogoIcon";
 import { WarningCircleLargeIcon } from "../../common/icons/WarningCircleLargeIcon";
 import * as s from "./styles";
@@ -62,7 +62,7 @@ export const FinishStep = (props: FinishStepProps) => {
           </s.SectionDescription>
         </>
       )}
-      <s.SectionTitle icon={BellIcon}>
+      <s.SectionTitle icon={RingingBellIcon}>
         Stay up to date<s.SectionTitleNote>(optional)</s.SectionTitleNote>
       </s.SectionTitle>
       <s.SectionDescription>

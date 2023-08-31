@@ -9,7 +9,7 @@ export const Link = styled.a`
         return "#426dda";
       case "dark":
       case "dark-jetbrains":
-        return "#b9c2eb";
+        return "#7891d0";
     }
   }};
 

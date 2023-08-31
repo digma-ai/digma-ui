@@ -1,34 +1,54 @@
 import intervalToDuration from "date-fns/intervalToDuration";
+import { isNumber } from "../typeGuards/isNumber";
 
-export const timeAgo = (date: string): string => {
+export const timeAgo = (
+  date: string,
+  format?: "short" | "medium"
+): { value: number; unit: string } | undefined => {
   const { years, months, days, hours, minutes, seconds } = intervalToDuration({
     start: new Date(),
     end: new Date(date)
   });
 
-  if (years) {
-    return `${years}y`;
-  }
+  let value: number | undefined;
+  let unit: string | undefined;
 
-  if (months) {
-    return `${months}mo`;
-  }
-
-  if (days) {
-    return `${days}d`;
-  }
-
-  if (hours) {
-    return `${hours}h`;
+  if (seconds) {
+    value = seconds;
+    unit = format === "short" ? "s" : "sec";
   }
 
   if (minutes) {
-    return `${minutes}m`;
+    value = minutes;
+    unit = format === "short" ? "m" : "min";
   }
 
-  if (seconds) {
-    return `${seconds}s`;
+  if (hours) {
+    value = hours;
+    unit = "h";
   }
 
-  return "";
+  if (days) {
+    value = days;
+    unit = "d";
+  }
+
+  if (months) {
+    value = months;
+    unit = "mo";
+  }
+
+  if (years) {
+    value = years;
+    unit = "y";
+  }
+
+  if (!unit || !isNumber(value)) {
+    return;
+  }
+
+  return {
+    value,
+    unit
+  };
 };

@@ -1,14 +1,16 @@
 import { useState } from "react";
+import { usePagination } from "../../../hooks/usePagination";
 import { getPercentileLabel } from "../../../utils/getPercentileLabel";
+import { Pagination } from "../../common/Pagination";
 import { Tooltip } from "../../common/Tooltip";
 import { InsightCard } from "../InsightCard";
-import { Pagination } from "../Pagination";
 import { Link } from "../styles";
 import { DurationPercentile, SpanDurationBreakdownEntry } from "../types";
 import * as s from "./styles";
 import { DurationBreakdownInsightProps } from "./types";
 
 const DEFAULT_PERCENTILE = 0.5;
+const PAGE_SIZE = 3;
 
 const getPercentile = (
   entry: SpanDurationBreakdownEntry,
@@ -60,6 +62,12 @@ export const DurationBreakdownInsight = (
     return 0;
   });
 
+  const [pageItems, page, setPage] = usePagination(
+    sortedEntries,
+    PAGE_SIZE,
+    props.insight.codeObjectId
+  );
+
   const handleSpanLinkClick = (spanCodeObjectId: string) => {
     props.onAssetLinkClick(spanCodeObjectId);
   };
@@ -73,33 +81,33 @@ export const DurationBreakdownInsight = (
       data={props.insight}
       content={
         <s.EntryList>
+          {pageItems.map((entry) => {
+            const percentile = getPercentile(entry, percentileViewMode);
+
+            const name = entry.spanDisplayName;
+            const spanCodeObjectId = entry.spanCodeObjectId;
+
+            return percentile ? (
+              <s.Entry key={spanCodeObjectId}>
+                <Tooltip title={name}>
+                  <s.EntryName>
+                    <Link onClick={() => handleSpanLinkClick(spanCodeObjectId)}>
+                      {name}
+                    </Link>
+                  </s.EntryName>
+                </Tooltip>
+                <Tooltip title={getDurationTitle(entry)}>
+                  <s.Duration>{`${percentile.duration.value} ${percentile.duration.unit}`}</s.Duration>
+                </Tooltip>
+              </s.Entry>
+            ) : null;
+          })}
           <Pagination
-            id={`${props.insight.codeObjectId}_${props.insight.type}`}
-          >
-            {sortedEntries.map((entry) => {
-              const percentile = getPercentile(entry, percentileViewMode);
-
-              const name = entry.spanDisplayName;
-              const spanCodeObjectId = entry.spanCodeObjectId;
-
-              return percentile ? (
-                <s.Entry key={spanCodeObjectId}>
-                  <Tooltip title={name}>
-                    <s.EntryName>
-                      <Link
-                        onClick={() => handleSpanLinkClick(spanCodeObjectId)}
-                      >
-                        {name}
-                      </Link>
-                    </s.EntryName>
-                  </Tooltip>
-                  <Tooltip title={getDurationTitle(entry)}>
-                    <s.Duration>{`${percentile.duration.value} ${percentile.duration.unit}`}</s.Duration>
-                  </Tooltip>
-                </s.Entry>
-              ) : null;
-            })}
-          </Pagination>
+            itemsCount={sortedEntries.length}
+            page={page}
+            pageSize={PAGE_SIZE}
+            onPageChange={setPage}
+          />
         </s.EntryList>
       }
       onPercentileViewModeChange={handlePercentileViewModeChange}

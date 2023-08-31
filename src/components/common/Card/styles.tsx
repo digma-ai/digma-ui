@@ -9,7 +9,7 @@ export const Container = styled.div`
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "#4d668a";
+        return "#818594";
       case "dark":
       case "dark-jetbrains":
         return "#b4b8bf";
@@ -18,7 +18,7 @@ export const Container = styled.div`
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "#f1f5fa";
+        return "#ebecf0";
       case "dark":
       case "dark-jetbrains":
         return "#393b40";
@@ -36,7 +36,7 @@ export const Header = styled.div`
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "#4d668a";
+        return "#494b57";
       case "dark":
       case "dark-jetbrains":
         return "#dfe1e5";

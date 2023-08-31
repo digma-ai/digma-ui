@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { PercentileViewModeOptionProps } from "./types";
 
 export const Title = styled.div`
   display: flex;
@@ -18,10 +17,10 @@ export const InsightIconContainer = styled.div`
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "#e9eef4";
+        return "#dfe1e5";
       case "dark":
       case "dark-jetbrains":
-        return "#2e2e2e";
+        return "#43454a";
     }
   }};
 `;
@@ -84,50 +83,4 @@ export const AsyncBadge = styled.div`
         return "#4b5fab";
     }
   }};
-`;
-
-export const PercentileViewModeToggle = styled.div`
-  display: flex;
-  border-radius: 4px;
-  padding: 4px;
-  gap: 4px;
-  font-size: 14px;
-  font-weight: 500;
-  width: fit-content;
-  border: 1px solid
-    ${({ theme }) => {
-      switch (theme.mode) {
-        case "light":
-          return "#b9c0d4";
-        case "dark":
-        case "dark-jetbrains":
-          return "#4e5157";
-      }
-    }};
-`;
-
-export const PercentileViewModeToggleOptionButton = styled.button<PercentileViewModeOptionProps>`
-  border: none;
-  outline: none;
-  font-family: inherit;
-  font-size: inherit;
-  font-weight: inherit;
-  border-radius: 4px;
-  padding: 2px 4px;
-  cursor: pointer;
-  user-select: none;
-  color: ${({ theme, selected }) => {
-    if (selected) {
-      return "#e2e7ff";
-    }
-
-    switch (theme.mode) {
-      case "light":
-        return "#3538cd";
-      case "dark":
-      case "dark-jetbrains":
-        return "#e2e7ff";
-    }
-  }};
-  background: ${({ selected }) => (selected ? "#5154ec" : "transparent")};
 `;
