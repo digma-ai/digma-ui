@@ -4,6 +4,7 @@ import { usePrevious } from "../../hooks/usePrevious";
 import { isBoolean } from "../../typeGuards/isBoolean";
 import { isNumber } from "../../typeGuards/isNumber";
 import { addPrefix } from "../../utils/addPrefix";
+import { sendTrackingEvent } from "../../utils/sendTrackingEvent";
 import { FullView } from "./FullView";
 import { RecentView } from "./RecentView";
 import * as s from "./styles";
@@ -15,13 +16,23 @@ const REFRESH_INTERVAL = isNumber(window.notificationsRefreshInterval)
 
 const ACTION_PREFIX = "NOTIFICATIONS";
 
-export const actions = addPrefix(ACTION_PREFIX, {
+const actions = addPrefix(ACTION_PREFIX, {
   GET_DATA: "GET_DATA",
   SET_DATA: "SET_DATA",
   CLOSE: "CLOSE",
   GO_TO_SPAN: "GO_TO_SPAN",
   GO_TO_NOTIFICATIONS: "GO_TO_NOTIFICATIONS"
 });
+
+const TRACKING_PREFIX = "notifications";
+
+export const trackingEvents = addPrefix(
+  TRACKING_PREFIX,
+  {
+    SPAN_LINK_CLICKED: "span link clicked"
+  },
+  " "
+);
 
 // const getCircleLoaderColors = (
 //   theme: DefaultTheme
@@ -183,6 +194,7 @@ export const Notifications = (props: NotificationsProps) => {
   };
 
   const handleSpanLinkClick = (spanCodeObjectId: string) => {
+    sendTrackingEvent(trackingEvents.SPAN_LINK_CLICKED);
     window.sendMessageToDigma({
       action: actions.GO_TO_SPAN,
       payload: {
