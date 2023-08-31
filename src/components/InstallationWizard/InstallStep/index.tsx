@@ -102,7 +102,13 @@ export const InstallStep = (props: InstallStepProps) => {
 
   const handleEngineManualInstallSelect = () => {
     setAreTabsVisible(true);
-    setSelectedInstallTab(1);
+    const dockerComposeTabIndex = installTabs.findIndex(
+      (x) => x.title === "Docker Compose"
+    );
+    if (dockerComposeTabIndex >= 0) {
+      setSelectedInstallTab(dockerComposeTabIndex);
+      sendTrackingEvent(trackingEvents.DOCKER_COMPOSE_TAB_VIEWED);
+    }
   };
 
   const handleEngineOperationStart = () => {
