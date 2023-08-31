@@ -3,7 +3,8 @@ import { Button as CommonButton } from "../../common/Button";
 
 export const Stats = styled.span`
   display: flex;
-  gap: 24px;
+  flex-wrap: wrap;
+  gap: 8px 24px;
 `;
 
 export const Stat = styled.span`
