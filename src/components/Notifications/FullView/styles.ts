@@ -6,7 +6,7 @@ export const Container = styled.div`
   gap: 12px;
   padding: 12px 8px;
   flex-grow: 1;
-  height: 100%;
+  height: 100vh;
   box-sizing: border-box;
 `;
 

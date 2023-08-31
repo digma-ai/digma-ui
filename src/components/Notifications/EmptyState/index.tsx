@@ -1,26 +1,28 @@
 import { DefaultTheme, useTheme } from "styled-components";
-import { EmptyState as CommonEmptyState } from "../../common/EmptyState";
-import { CrossedBellDarkIcon } from "../../common/icons/CrossedBellIconDark";
-import { CrossedBellLightIcon } from "../../common/icons/CrossedBellIconLight";
+import { CrossedBellIcon } from "../../common/icons/CrossedBellIcon";
 import * as s from "./styles";
 import { EmptyStateProps } from "./types";
 
-const getIcon = (theme: DefaultTheme) => {
+const getIconColor = (theme: DefaultTheme) => {
   switch (theme.mode) {
     case "light":
-      return CrossedBellLightIcon;
+      return "#fff";
     case "dark":
     case "dark-jetbrains":
-      return CrossedBellDarkIcon;
+      return "#868a91";
   }
 };
 
 export const EmptyState = (props: EmptyStateProps) => {
   const theme = useTheme();
-  const icon = getIcon(theme);
+  const iconColor = getIconColor(theme);
+
   return (
     <s.Container>
-      <CommonEmptyState icon={icon} title={props.title} />
+      <s.IconContainer>
+        <CrossedBellIcon size={72} color={iconColor} />
+      </s.IconContainer>
+      <s.Title>{props.title}</s.Title>
     </s.Container>
   );
 };
