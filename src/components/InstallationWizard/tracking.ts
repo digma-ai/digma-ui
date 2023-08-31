@@ -20,7 +20,8 @@ export const trackingEvents = addPrefix(
     ENGINE_ACTION_BUTTON_CLICKED: "engine action button clicked",
     ENGINE_ACTION_MESSAGE_SENT: "engine action message sent",
     ENGINE_ACTION_RESULT_MESSAGE_RECEIVED:
-      "engine action result message received"
+      "engine action result message received",
+    DOCKER_COMPOSE_TAB_VIEWED: "docker compose tab viewed"
   },
   " "
 );

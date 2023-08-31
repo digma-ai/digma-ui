@@ -532,6 +532,13 @@ export const InsightList = (props: InsightListProps) => {
 
   useEffect(() => {
     setInsightGroups(groupInsights(props.insights, props.spans));
+
+    window.sendMessageToDigma({
+      action: actions.MARK_INSIGHT_TYPES_AS_VIEWED,
+      payload: {
+        insightTypes: props.insights.map((x) => x.type)
+      }
+    });
   }, [props.insights, props.spans]);
 
   const handleAddAnnotation = () => {
