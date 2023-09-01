@@ -74,7 +74,7 @@ export const Notifications = (props: NotificationsProps) => {
     window.sendMessageToDigma({
       action: actions.GET_DATA,
       payload: {
-        pageNumber: 0,
+        pageNumber: 1,
         pageSize,
         isRead: false
       }
@@ -102,7 +102,7 @@ export const Notifications = (props: NotificationsProps) => {
         window.sendMessageToDigma({
           action: actions.GET_DATA,
           payload: {
-            pageNumber: page,
+            pageNumber: page + 1,
             pageSize,
             isRead: showAll
           }
@@ -129,7 +129,7 @@ export const Notifications = (props: NotificationsProps) => {
       window.sendMessageToDigma({
         action: actions.GET_DATA,
         payload: {
-          pageNumber: page,
+          pageNumber: page + 1,
           pageSize,
           isRead: showAll
         }
