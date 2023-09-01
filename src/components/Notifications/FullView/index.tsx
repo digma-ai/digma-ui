@@ -41,52 +41,49 @@ export const FullView = (props: FullViewProps) => {
   return (
     <s.Container>
       <Header onClose={handleClose} />
-      {props.data && (
+      <Toggle
+        options={[
+          {
+            label: `Unread (${props.data?.unreadCount || 0})`,
+            value: "unread"
+          },
+          { label: `All (${props.data?.totalCount || 0})`, value: "all" }
+        ]}
+        value={props.showAll ? "all" : "unread"}
+        onValueChange={handleToggleValueChange}
+      />
+      {props.data && totalCount > 0 ? (
         <>
-          <Toggle
-            options={[
-              { label: `Unread (${props.data.unreadCount})`, value: "unread" },
-              { label: `All (${props.data.totalCount})`, value: "all" }
-            ]}
-            value={props.showAll ? "all" : "unread"}
-            onValueChange={handleToggleValueChange}
-          />
-          {totalCount > 0 ? (
-            <>
-              <s.NotificationsContainer>
-                {props.data.notifications.map((x) => (
-                  <NotificationCard
-                    key={x.notificationId}
-                    data={x}
-                    onSpanLinkClick={handleSpanLinkClick}
-                  />
-                ))}
-              </s.NotificationsContainer>
-              <s.Footer>
-                <s.ItemsCount>
-                  Showing{" "}
-                  <s.PageItemsCount>
-                    {pageStartItemNumber} - {pageEndItemNumber}
-                  </s.PageItemsCount>{" "}
-                  of {totalCount}
-                </s.ItemsCount>
-                <Pagination
-                  itemsCount={totalCount}
-                  onPageChange={props.onPageChange}
-                  page={props.page}
-                  pageSize={props.pageSize}
-                  extendedNavigation={true}
-                />
-              </s.Footer>
-            </>
-          ) : (
-            <EmptyState
-              title={
-                props.showAll ? "No notifications" : "No unread notifications"
-              }
+          <s.NotificationsContainer>
+            {props.data.notifications.map((x) => (
+              <NotificationCard
+                key={x.notificationId}
+                data={x}
+                onSpanLinkClick={handleSpanLinkClick}
+              />
+            ))}
+          </s.NotificationsContainer>
+          <s.Footer>
+            <s.ItemsCount>
+              Showing{" "}
+              <s.PageItemsCount>
+                {pageStartItemNumber} - {pageEndItemNumber}
+              </s.PageItemsCount>{" "}
+              of {totalCount}
+            </s.ItemsCount>
+            <Pagination
+              itemsCount={totalCount}
+              onPageChange={props.onPageChange}
+              page={props.page}
+              pageSize={props.pageSize}
+              extendedNavigation={true}
             />
-          )}
+          </s.Footer>
         </>
+      ) : (
+        <EmptyState
+          title={props.showAll ? "No notifications" : "No unread notifications"}
+        />
       )}
     </s.Container>
   );
