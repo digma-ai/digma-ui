@@ -61,4 +61,5 @@ export const SpanLink = styled(Link)`
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+  width: fit-content;
 `;
