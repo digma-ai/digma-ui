@@ -31,7 +31,7 @@ export const FullView = (props: FullViewProps) => {
 
   useEffect(() => {
     if (props.data) {
-      const pageCount = Math.ceil(totalCount / props.pageSize);
+      const pageCount = Math.ceil(totalCount / props.pageSize) || 1;
       if (props.page >= pageCount) {
         props.onPageChange(pageCount - 1);
       }

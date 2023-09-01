@@ -7,7 +7,7 @@ export const usePagination = <T>(
 ): [T[], number, React.Dispatch<React.SetStateAction<number>>] => {
   const [page, setPage] = useState(0);
 
-  const pageCount = Math.ceil(items.length / pageSize);
+  const pageCount = Math.ceil(items.length / pageSize) || 1;
   const pageStart = page * pageSize;
   const pageEnd = pageStart + pageSize;
 
