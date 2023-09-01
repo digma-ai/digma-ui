@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
 import { isBoolean } from "../../typeGuards/isBoolean";
@@ -67,6 +67,7 @@ export const Notifications = (props: NotificationsProps) => {
   const previousPage = usePrevious(page);
   const [latestNotificationTimestamp, setLatestNotificationTimestamp] =
     useState<string>();
+  const refreshTimerId = useRef<number>();
   const viewMode = window.notificationsViewMode || props.viewMode || "full";
   const pageSize = viewMode === "popup" ? 3 : 10;
 
@@ -93,12 +94,14 @@ export const Notifications = (props: NotificationsProps) => {
         actions.SET_DATA,
         handleNotificationsData
       );
+      window.clearTimeout(refreshTimerId.current);
     };
   }, [pageSize]);
 
   useEffect(() => {
     if (previousLastSetDataTimeStamp !== lastSetDataTimeStamp) {
-      const timerId = window.setTimeout(() => {
+      window.clearTimeout(refreshTimerId.current);
+      refreshTimerId.current = window.setTimeout(() => {
         window.sendMessageToDigma({
           action: actions.GET_DATA,
           payload: {
@@ -108,10 +111,6 @@ export const Notifications = (props: NotificationsProps) => {
           }
         });
       }, REFRESH_INTERVAL);
-
-      return () => {
-        window.clearTimeout(timerId);
-      };
     }
   }, [
     previousLastSetDataTimeStamp,

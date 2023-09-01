@@ -18,14 +18,19 @@ export const RecentView = (props: RecentViewProps) => {
     props.onGoToNotifications();
   };
 
+  const notificationsCount = props.data?.notifications.length || 0;
+
   return (
     <s.Container>
       <Header onClose={handleClose} />
-      {props.data?.notifications.length ? (
+      {notificationsCount ? (
         <s.ContentContainer>
-          <s.Subtitle>Top 3 Unread Notifications</s.Subtitle>
+          <s.Subtitle>
+            Top {notificationsCount} Unread Notification
+            {notificationsCount > 1 ? "s" : ""}
+          </s.Subtitle>
           <s.NotificationsContainer>
-            {props.data.notifications.map((x) => (
+            {props.data?.notifications.map((x) => (
               <NotificationCard
                 key={x.notificationId}
                 data={x}
