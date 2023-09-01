@@ -96,30 +96,30 @@ export const Notifications = (props: NotificationsProps) => {
     };
   }, [pageSize]);
 
-  useEffect(() => {
-    if (previousLastSetDataTimeStamp !== lastSetDataTimeStamp) {
-      const timerId = window.setTimeout(() => {
-        window.sendMessageToDigma({
-          action: actions.GET_DATA,
-          payload: {
-            pageNumber: page + 1,
-            pageSize,
-            isRead: showAll
-          }
-        });
-      }, REFRESH_INTERVAL);
+  // useEffect(() => {
+  //   if (previousLastSetDataTimeStamp !== lastSetDataTimeStamp) {
+  //     const timerId = window.setTimeout(() => {
+  //       window.sendMessageToDigma({
+  //         action: actions.GET_DATA,
+  //         payload: {
+  //           pageNumber: page + 1,
+  //           pageSize,
+  //           isRead: showAll
+  //         }
+  //       });
+  //     }, REFRESH_INTERVAL);
 
-      return () => {
-        window.clearTimeout(timerId);
-      };
-    }
-  }, [
-    previousLastSetDataTimeStamp,
-    lastSetDataTimeStamp,
-    page,
-    showAll,
-    pageSize
-  ]);
+  //     return () => {
+  //       window.clearTimeout(timerId);
+  //     };
+  //   }
+  // }, [
+  //   previousLastSetDataTimeStamp,
+  //   lastSetDataTimeStamp,
+  //   page,
+  //   showAll,
+  //   pageSize
+  // ]);
 
   useEffect(() => {
     if (
