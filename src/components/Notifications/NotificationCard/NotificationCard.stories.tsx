@@ -34,7 +34,7 @@ export const Default: Story = {
         }
       },
       isRead: true,
-      timestamp: new Date().toISOString()
+      timestamp: "2023-01-07T12:59:21.794Z"
     }
   }
 };

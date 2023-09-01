@@ -18,19 +18,24 @@ export const BadgeContainer = styled.div`
 
 export const Header = styled.div`
   display: flex;
-  justify-content: space-between;
   gap: 4px;
   width: 100%;
 `;
 
-export const Title = styled.div`
-  display: flex;
-  gap: 4px;
-  align-items: center;
+export const Title = styled.span`
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+`;
+
+export const IconContainer = styled.div`
+  flex-shrink: 0;
 `;
 
 export const TimeDistance = styled.span`
   font-weight: 400;
+  flex-shrink: 0;
+  margin-left: auto;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -46,10 +51,14 @@ export const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
+  word-break: break-all;
 `;
 
 export const SpanLink = styled(Link)`
   text-decoration: none;
   font-weight: 500;
   color: #92affa;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 `;

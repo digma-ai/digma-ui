@@ -57,18 +57,22 @@ export const NotificationCard = (props: NotificationCardProps) => {
     props.data.type === "insight" &&
     getInsightTypeInfo(props.data.data.insightType);
 
+  const title = props.data.title;
+  const spanName = props.data.data.codeObject.displayName;
   const timeDistance = timeAgo(props.data.timestamp);
 
   return (
     <s.Card
       header={
         <s.Header>
-          <s.Title>
+          <s.IconContainer>
             {insightTypeInfo && (
               <insightTypeInfo.icon color={iconColor} size={16} />
             )}
-            {props.data.title}
-          </s.Title>
+          </s.IconContainer>
+          <Tooltip title={title}>
+            <s.Title>{title}</s.Title>
+          </Tooltip>
           {timeDistance && (
             <Tooltip title={new Date(props.data.timestamp).toString()}>
               <s.TimeDistance>
@@ -86,9 +90,9 @@ export const NotificationCard = (props: NotificationCardProps) => {
             </s.BadgeContainer>
           )}
           {props.data.message}
-          <s.SpanLink onClick={handleLinkClick}>
-            {props.data.data.codeObject.displayName}
-          </s.SpanLink>
+          <Tooltip title={spanName}>
+            <s.SpanLink onClick={handleLinkClick}>{spanName}</s.SpanLink>
+          </Tooltip>
         </s.ContentContainer>
       }
     />
