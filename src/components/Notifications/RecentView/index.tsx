@@ -33,13 +33,13 @@ export const RecentView = (props: RecentViewProps) => {
               />
             ))}
           </s.NotificationsContainer>
-          <s.Footer>
-            <Link onClick={handleViewAllLinkClick}>View All</Link>
-          </s.Footer>
         </s.ContentContainer>
       ) : (
         <EmptyState title={"No unread notifications"} />
       )}
+      <s.Footer>
+        <Link onClick={handleViewAllLinkClick}>View All</Link>
+      </s.Footer>
     </s.Container>
   );
 };

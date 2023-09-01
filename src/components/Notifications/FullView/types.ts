@@ -8,6 +8,7 @@ export interface FullViewProps {
   };
   showAll: boolean;
   page: number;
+  pageSize: number;
   onSpanLinkClick: (spanCodeObjectId: string) => void;
   onPageChange: (page: number) => void;
   onFilterChange: (showAll: boolean) => void;

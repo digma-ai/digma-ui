@@ -96,30 +96,36 @@ export const Notifications = (props: NotificationsProps) => {
     };
   }, [pageSize]);
 
-  // useEffect(() => {
-  //   if (previousLastSetDataTimeStamp !== lastSetDataTimeStamp) {
-  //     const timerId = window.setTimeout(() => {
-  //       window.sendMessageToDigma({
-  //         action: actions.GET_DATA,
-  //         payload: {
-  //           pageNumber: page + 1,
-  //           pageSize,
-  //           isRead: showAll
-  //         }
-  //       });
-  //     }, REFRESH_INTERVAL);
+  useEffect(() => {
+    if (previousLastSetDataTimeStamp !== lastSetDataTimeStamp) {
+      const timerId = window.setTimeout(() => {
+        window.sendMessageToDigma({
+          action: actions.GET_DATA,
+          payload: {
+            pageNumber: page + 1,
+            pageSize,
+            isRead: showAll
+          }
+        });
+      }, REFRESH_INTERVAL);
 
-  //     return () => {
-  //       window.clearTimeout(timerId);
-  //     };
-  //   }
-  // }, [
-  //   previousLastSetDataTimeStamp,
-  //   lastSetDataTimeStamp,
-  //   page,
-  //   showAll,
-  //   pageSize
-  // ]);
+      return () => {
+        window.clearTimeout(timerId);
+      };
+    }
+  }, [
+    previousLastSetDataTimeStamp,
+    lastSetDataTimeStamp,
+    page,
+    showAll,
+    pageSize
+  ]);
+
+  useEffect(() => {
+    if (isBoolean(previousShowAll) && previousShowAll !== showAll) {
+      setPage(0);
+    }
+  }, [previousShowAll, showAll]);
 
   useEffect(() => {
     if (
@@ -135,7 +141,7 @@ export const Notifications = (props: NotificationsProps) => {
         }
       });
     }
-  }, [previousPage, page, previousShowAll, showAll, pageSize]);
+  }, [previousShowAll, showAll, previousPage, page, pageSize]);
 
   useEffect(() => {
     if (!props.data) {
@@ -158,15 +164,6 @@ export const Notifications = (props: NotificationsProps) => {
       }
     }
   }, [data, latestNotificationTimestamp]);
-
-  useEffect(() => {
-    if (data) {
-      const pageCount = Math.ceil(data.notifications.length / pageSize);
-      if (page >= pageCount) {
-        setPage(pageCount - 1);
-      }
-    }
-  }, [data, page, pageSize]);
 
   // useEffect(() => {
   //   if (!previousData && data) {
@@ -221,6 +218,7 @@ export const Notifications = (props: NotificationsProps) => {
           showAll={showAll}
           onClose={handleClose}
           page={page}
+          pageSize={pageSize}
         />
       )}
     </s.Container>

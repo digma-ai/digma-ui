@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Pagination } from "../../common/Pagination";
 import { Toggle } from "../../common/Toggle";
 import { ToggleValue } from "../../common/Toggle/types";
@@ -6,8 +7,6 @@ import { Header } from "../Header";
 import { NotificationCard } from "../NotificationCard";
 import * as s from "./styles";
 import { FullViewProps } from "./types";
-
-const PAGE_SIZE = 10;
 
 export const FullView = (props: FullViewProps) => {
   const handleClose = () => {
@@ -24,11 +23,20 @@ export const FullView = (props: FullViewProps) => {
 
   const totalCount =
     (props.showAll ? props.data?.totalCount : props.data?.unreadCount) || 0;
-  const pageStartItemNumber = props.page * PAGE_SIZE + 1;
+  const pageStartItemNumber = props.page * props.pageSize + 1;
   const pageEndItemNumber = Math.min(
-    pageStartItemNumber + PAGE_SIZE - 1,
+    pageStartItemNumber + props.pageSize - 1,
     totalCount
   );
+
+  useEffect(() => {
+    if (props.data) {
+      const pageCount = Math.ceil(totalCount / props.pageSize);
+      if (props.page >= pageCount) {
+        props.onPageChange(pageCount - 1);
+      }
+    }
+  }, [props.data, props.page, props.pageSize, props.onPageChange, totalCount]);
 
   return (
     <s.Container>
@@ -66,7 +74,7 @@ export const FullView = (props: FullViewProps) => {
                   itemsCount={totalCount}
                   onPageChange={props.onPageChange}
                   page={props.page}
-                  pageSize={PAGE_SIZE}
+                  pageSize={props.pageSize}
                   extendedNavigation={true}
                 />
               </s.Footer>
