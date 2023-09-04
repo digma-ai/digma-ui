@@ -1,5 +1,6 @@
 import { Link } from "../../common/Link";
 import { EmptyState } from "../EmptyState";
+import { ErrorEmptyState } from "../ErrorEmptyState";
 import { Header } from "../Header";
 import { NotificationList } from "../NotificationList";
 import * as s from "./styles";
@@ -20,6 +21,13 @@ export const RecentView = (props: RecentViewProps) => {
 
   const notificationsCount = props.data?.notifications.length || 0;
 
+  const renderEmptyState = () =>
+    props.error ? (
+      <ErrorEmptyState />
+    ) : (
+      <EmptyState title={"No unread notifications"} />
+    );
+
   return (
     <s.Container>
       <Header onClose={handleClose} />
@@ -35,7 +43,7 @@ export const RecentView = (props: RecentViewProps) => {
           />
         </s.ContentContainer>
       ) : (
-        <EmptyState title={"No unread notifications"} />
+        renderEmptyState()
       )}
       <s.Footer>
         <Link onClick={handleViewAllLinkClick}>View All</Link>

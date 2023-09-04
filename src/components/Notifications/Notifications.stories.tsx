@@ -242,9 +242,24 @@ const notifications = [
 export const NoDataRecent: Story = {
   args: {
     data: {
-      notifications: [],
-      totalCount: 0,
-      unreadCount: 0
+      data: {
+        notifications: [],
+        totalCount: 0,
+        unreadCount: 0
+      },
+      error: null
+    },
+    viewMode: "popup"
+  }
+};
+
+export const RecentWithError: Story = {
+  args: {
+    data: {
+      data: null,
+      error: {
+        message: "error message"
+      }
     },
     viewMode: "popup"
   }
@@ -253,9 +268,12 @@ export const NoDataRecent: Story = {
 export const Recent: Story = {
   args: {
     data: {
-      notifications: notifications.slice(0, 3),
-      totalCount: 3,
-      unreadCount: 1
+      data: {
+        notifications: notifications.slice(0, 3),
+        totalCount: 3,
+        unreadCount: 1
+      },
+      error: null
     },
     viewMode: "popup"
   }
@@ -264,9 +282,12 @@ export const Recent: Story = {
 export const NoDataFull: Story = {
   args: {
     data: {
-      notifications: [],
-      totalCount: 0,
-      unreadCount: 0
+      data: {
+        notifications: [],
+        totalCount: 0,
+        unreadCount: 0
+      },
+      error: null
     },
     viewMode: "full"
   }
@@ -275,9 +296,24 @@ export const NoDataFull: Story = {
 export const Full: Story = {
   args: {
     data: {
-      notifications,
-      totalCount: 12,
-      unreadCount: 1
+      data: {
+        notifications,
+        totalCount: 12,
+        unreadCount: 1
+      },
+      error: null
+    },
+    viewMode: "full"
+  }
+};
+
+export const FullWithError: Story = {
+  args: {
+    data: {
+      data: null,
+      error: {
+        message: "error message"
+      }
     },
     viewMode: "full"
   }

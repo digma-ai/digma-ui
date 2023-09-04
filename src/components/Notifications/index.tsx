@@ -8,7 +8,12 @@ import { sendTrackingEvent } from "../../utils/sendTrackingEvent";
 import { FullView } from "./FullView";
 import { RecentView } from "./RecentView";
 import * as s from "./styles";
-import { NotificationsData, NotificationsProps } from "./types";
+import {
+  NotificationsData,
+  NotificationsError,
+  NotificationsProps,
+  NotificationsSetDataPayload
+} from "./types";
 
 const REFRESH_INTERVAL = isNumber(window.notificationsRefreshInterval)
   ? window.notificationsRefreshInterval
@@ -55,7 +60,12 @@ export const trackingEvents = addPrefix(
 // };
 
 export const Notifications = (props: NotificationsProps) => {
-  const [data, setData] = useState<NotificationsData>();
+  const [data, setData] = useState<NotificationsSetDataPayload>();
+  const previousData = usePrevious(data);
+  const [notificationsData, setNotificationsData] =
+    useState<NotificationsData>();
+  const [notificationError, setNotificationsError] =
+    useState<NotificationsError>();
   // const previousData = usePrevious(data);
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
@@ -82,21 +92,30 @@ export const Notifications = (props: NotificationsProps) => {
     });
     // setIsInitialLoading(true);
 
-    const handleNotificationsData = (data: unknown, timeStamp: number) => {
-      setData(data as NotificationsData);
+    const handleSetData = (data: unknown, timeStamp: number) => {
+      setData(data as NotificationsSetDataPayload);
       setLastSetDataTimeStamp(timeStamp);
     };
 
-    dispatcher.addActionListener(actions.SET_DATA, handleNotificationsData);
+    dispatcher.addActionListener(actions.SET_DATA, handleSetData);
 
     return () => {
-      dispatcher.removeActionListener(
-        actions.SET_DATA,
-        handleNotificationsData
-      );
+      dispatcher.removeActionListener(actions.SET_DATA, handleSetData);
       window.clearTimeout(refreshTimerId.current);
     };
   }, [pageSize]);
+
+  useEffect(() => {
+    if (previousData !== data && data) {
+      setNotificationsData(data.data || undefined);
+
+      if (!notificationsData) {
+        setNotificationsError(data.error || undefined);
+      } else {
+        setNotificationsError(undefined);
+      }
+    }
+  }, [previousData, data, notificationsData]);
 
   useEffect(() => {
     if (previousLastSetDataTimeStamp !== lastSetDataTimeStamp) {
@@ -148,11 +167,11 @@ export const Notifications = (props: NotificationsProps) => {
     }
 
     setData(props.data);
-  }, [props.data]);
+  }, [data, props.data]);
 
   useEffect(() => {
-    if (data && data.notifications.length) {
-      const timestamp = data.notifications[0].timestamp;
+    if (data && data.data?.notifications.length) {
+      const timestamp = data.data.notifications[0].timestamp;
       if (
         !latestNotificationTimestamp ||
         (latestNotificationTimestamp &&
@@ -203,14 +222,16 @@ export const Notifications = (props: NotificationsProps) => {
     <s.Container>
       {viewMode === "popup" ? (
         <RecentView
-          data={data}
+          data={notificationsData}
+          error={notificationError}
           onSpanLinkClick={handleSpanLinkClick}
           onGoToNotifications={handleGoToNotifications}
           onClose={handleClose}
         />
       ) : (
         <FullView
-          data={data}
+          data={notificationsData}
+          error={notificationError}
           onSpanLinkClick={handleSpanLinkClick}
           onPageChange={setPage}
           onFilterChange={handleFilterChange}

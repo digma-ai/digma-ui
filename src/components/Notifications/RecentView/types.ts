@@ -1,11 +1,8 @@
-import { Notification } from "../types";
+import { NotificationsData, NotificationsError } from "../types";
 
 export interface RecentViewProps {
-  data?: {
-    notifications: Notification[];
-    totalCount: number;
-    unreadCount: number;
-  };
+  data?: NotificationsData;
+  error?: NotificationsError;
   onSpanLinkClick: (spanCodeObjectId: string) => void;
   onGoToNotifications: () => void;
   onClose: () => void;

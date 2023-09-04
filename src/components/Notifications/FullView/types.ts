@@ -1,11 +1,8 @@
-import { Notification } from "../types";
+import { NotificationsData, NotificationsError } from "../types";
 
 export interface FullViewProps {
-  data?: {
-    notifications: Notification[];
-    totalCount: number;
-    unreadCount: number;
-  };
+  data?: NotificationsData;
+  error?: NotificationsError;
   showAll: boolean;
   page: number;
   pageSize: number;

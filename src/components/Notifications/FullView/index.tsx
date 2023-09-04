@@ -3,6 +3,7 @@ import { Pagination } from "../../common/Pagination";
 import { Toggle } from "../../common/Toggle";
 import { ToggleValue } from "../../common/Toggle/types";
 import { EmptyState } from "../EmptyState";
+import { ErrorEmptyState } from "../ErrorEmptyState";
 import { Header } from "../Header";
 import { NotificationList } from "../NotificationList";
 import * as s from "./styles";
@@ -37,6 +38,15 @@ export const FullView = (props: FullViewProps) => {
       }
     }
   }, [props.data, props.page, props.pageSize, props.onPageChange, totalCount]);
+
+  const renderEmptyState = () =>
+    props.error ? (
+      <ErrorEmptyState />
+    ) : (
+      <EmptyState
+        title={props.showAll ? "No notifications" : "No unread notifications"}
+      />
+    );
 
   return (
     <s.Container>
@@ -76,9 +86,7 @@ export const FullView = (props: FullViewProps) => {
           </s.Footer>
         </>
       ) : (
-        <EmptyState
-          title={props.showAll ? "No notifications" : "No unread notifications"}
-        />
+        renderEmptyState()
       )}
     </s.Container>
   );

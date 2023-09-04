@@ -23,6 +23,7 @@ export const EmptyState = (props: EmptyStateProps) => {
         <CrossedBellIcon size={72} color={iconColor} />
       </s.IconContainer>
       <s.Title>{props.title}</s.Title>
+      {props.content}
     </s.Container>
   );
 };
