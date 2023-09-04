@@ -27,7 +27,7 @@ const notifications = [
     environment: "env",
     title: "Title",
     message: "Lorem ipsum dolor sit, amet consectetur adipisicing elit.",
-    type: "insight",
+    type: "NewInsight",
     data: {
       insightType: InsightType.HotSpot,
       codeObject: {
@@ -45,7 +45,7 @@ const notifications = [
     environment: "env",
     title: "Title",
     message: "Lorem ipsum dolor sit, amet consectetur adipisicing elit.",
-    type: "insight",
+    type: "NewInsight",
     data: {
       insightType: InsightType.EndpointBreakdown,
       codeObject: {
@@ -63,7 +63,7 @@ const notifications = [
     environment: "env",
     title: "Title",
     message: "Lorem ipsum dolor sit, amet consectetur adipisicing elit.",
-    type: "insight",
+    type: "NewInsight",
     data: {
       insightType: InsightType.EndpointDurationSlowdown,
       codeObject: {
@@ -81,7 +81,7 @@ const notifications = [
     environment: "env",
     title: "Title",
     message: "Lorem ipsum dolor sit, amet consectetur adipisicing elit.",
-    type: "insight",
+    type: "NewInsight",
     data: {
       insightType: InsightType.EndpointDurationSlowdown,
       codeObject: {
@@ -99,7 +99,7 @@ const notifications = [
     environment: "env",
     title: "Title",
     message: "Lorem ipsum dolor sit, amet consectetur adipisicing elit.",
-    type: "insight",
+    type: "NewInsight",
     data: {
       insightType: InsightType.EndpointDurationSlowdown,
       codeObject: {
@@ -117,7 +117,7 @@ const notifications = [
     environment: "env",
     title: "Title",
     message: "Lorem ipsum dolor sit, amet consectetur adipisicing elit.",
-    type: "insight",
+    type: "NewInsight",
     data: {
       insightType: InsightType.EndpointDurationSlowdown,
       codeObject: {
@@ -135,7 +135,7 @@ const notifications = [
     environment: "env",
     title: "Title",
     message: "Lorem ipsum dolor sit, amet consectetur adipisicing elit.",
-    type: "insight",
+    type: "NewInsight",
     data: {
       insightType: InsightType.EndpointDurationSlowdown,
       codeObject: {
@@ -153,7 +153,7 @@ const notifications = [
     environment: "env",
     title: "Title",
     message: "Lorem ipsum dolor sit, amet consectetur adipisicing elit.",
-    type: "insight",
+    type: "NewInsight",
     data: {
       insightType: InsightType.EndpointDurationSlowdown,
       codeObject: {
@@ -171,7 +171,7 @@ const notifications = [
     environment: "env",
     title: "Title",
     message: "Lorem ipsum dolor sit, amet consectetur adipisicing elit.",
-    type: "insight",
+    type: "NewInsight",
     data: {
       insightType: InsightType.EndpointDurationSlowdown,
       codeObject: {
@@ -189,7 +189,7 @@ const notifications = [
     environment: "env",
     title: "Title",
     message: "Lorem ipsum dolor sit, amet consectetur adipisicing elit.",
-    type: "insight",
+    type: "NewInsight",
     data: {
       insightType: InsightType.EndpointDurationSlowdown,
       codeObject: {
@@ -207,7 +207,7 @@ const notifications = [
     environment: "env",
     title: "Title",
     message: "Lorem ipsum dolor sit, amet consectetur adipisicing elit.",
-    type: "insight",
+    type: "NewInsight",
     data: {
       insightType: InsightType.EndpointDurationSlowdown,
       codeObject: {
@@ -225,7 +225,7 @@ const notifications = [
     environment: "env",
     title: "Title",
     message: "Lorem ipsum dolor sit, amet consectetur adipisicing elit.",
-    type: "insight",
+    type: "NewInsight",
     data: {
       insightType: InsightType.EndpointDurationSlowdown,
       codeObject: {

@@ -53,9 +53,9 @@ export const NotificationCard = (props: NotificationCardProps) => {
     props.onSpanLinkClick(props.data.data.codeObject.codeObjectId);
   };
 
-  const insightTypeInfo =
-    props.data.type === "insight" &&
-    getInsightTypeInfo(props.data.data.insightType);
+  const Icon =
+    props.data.type === "NewInsight" &&
+    getInsightTypeInfo(props.data.data.insightType)?.icon;
 
   const title = props.data.title;
   const spanName = props.data.data.codeObject.displayName;
@@ -65,11 +65,11 @@ export const NotificationCard = (props: NotificationCardProps) => {
     <s.Card
       header={
         <s.Header>
-          <s.IconContainer>
-            {insightTypeInfo && (
-              <insightTypeInfo.icon color={iconColor} size={16} />
-            )}
-          </s.IconContainer>
+          {Icon && (
+            <s.IconContainer>
+              <Icon color={iconColor} size={16} />
+            </s.IconContainer>
+          )}
           <Tooltip title={title}>
             <s.Title>{title}</s.Title>
           </Tooltip>
