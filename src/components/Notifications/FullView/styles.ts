@@ -10,15 +10,6 @@ export const Container = styled.div`
   box-sizing: border-box;
 `;
 
-export const NotificationsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 3px 0 0 11px;
-  margin: -3px 0 0 -11px;
-  overflow: auto;
-`;
-
 export const Footer = styled.div`
   display: flex;
   justify-content: space-between;

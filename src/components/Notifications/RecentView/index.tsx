@@ -1,7 +1,7 @@
 import { Link } from "../../common/Link";
 import { EmptyState } from "../EmptyState";
 import { Header } from "../Header";
-import { NotificationCard } from "../NotificationCard";
+import { NotificationList } from "../NotificationList";
 import * as s from "./styles";
 import { RecentViewProps } from "./types";
 
@@ -10,7 +10,7 @@ export const RecentView = (props: RecentViewProps) => {
     props.onClose();
   };
 
-  const handleSpanLinkClick = (spanCodeObjectId: string) => {
+  const handleGoToSpan = (spanCodeObjectId: string) => {
     props.onSpanLinkClick(spanCodeObjectId);
   };
 
@@ -23,21 +23,16 @@ export const RecentView = (props: RecentViewProps) => {
   return (
     <s.Container>
       <Header onClose={handleClose} />
-      {notificationsCount ? (
+      {props.data && notificationsCount ? (
         <s.ContentContainer>
           <s.Subtitle>
             Top {notificationsCount} Unread Notification
             {notificationsCount > 1 ? "s" : ""}
           </s.Subtitle>
-          <s.NotificationsContainer>
-            {props.data?.notifications.map((x) => (
-              <NotificationCard
-                key={x.notificationId}
-                data={x}
-                onSpanLinkClick={handleSpanLinkClick}
-              />
-            ))}
-          </s.NotificationsContainer>
+          <NotificationList
+            notifications={props.data.notifications}
+            onGoToSpan={handleGoToSpan}
+          />
         </s.ContentContainer>
       ) : (
         <EmptyState title={"No unread notifications"} />

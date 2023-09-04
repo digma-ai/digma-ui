@@ -4,7 +4,7 @@ import { Toggle } from "../../common/Toggle";
 import { ToggleValue } from "../../common/Toggle/types";
 import { EmptyState } from "../EmptyState";
 import { Header } from "../Header";
-import { NotificationCard } from "../NotificationCard";
+import { NotificationList } from "../NotificationList";
 import * as s from "./styles";
 import { FullViewProps } from "./types";
 
@@ -17,7 +17,7 @@ export const FullView = (props: FullViewProps) => {
     props.onFilterChange(value === "all");
   };
 
-  const handleSpanLinkClick = (spanCodeObjectId: string) => {
+  const handleGoToSpan = (spanCodeObjectId: string) => {
     props.onSpanLinkClick(spanCodeObjectId);
   };
 
@@ -54,15 +54,10 @@ export const FullView = (props: FullViewProps) => {
       />
       {props.data && totalCount > 0 ? (
         <>
-          <s.NotificationsContainer>
-            {props.data.notifications.map((x) => (
-              <NotificationCard
-                key={x.notificationId}
-                data={x}
-                onSpanLinkClick={handleSpanLinkClick}
-              />
-            ))}
-          </s.NotificationsContainer>
+          <NotificationList
+            notifications={props.data.notifications}
+            onGoToSpan={handleGoToSpan}
+          />
           <s.Footer>
             <s.ItemsCount>
               Showing{" "}
