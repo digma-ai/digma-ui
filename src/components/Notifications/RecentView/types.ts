@@ -1,9 +1,13 @@
-import { NotificationsData, NotificationsError } from "../types";
+import {
+  GoToInsightsPayload,
+  NotificationsData,
+  NotificationsError
+} from "../types";
 
 export interface RecentViewProps {
   data?: NotificationsData;
   error?: NotificationsError;
-  onSpanLinkClick: (spanCodeObjectId: string) => void;
+  onLinkClick: (codeObjectData: GoToInsightsPayload) => void;
   onGoToNotifications: () => void;
   onClose: () => void;
 }

@@ -1,4 +1,5 @@
-import { InsightType } from "../../types";
+import { InsightType, SpanInfo } from "../../types";
+import { InsightScope } from "../Insights/types";
 
 type NotificationsViewMode = "popup" | "full";
 
@@ -22,6 +23,13 @@ export interface NotificationsError {
   message: string;
 }
 
+export interface InsightNotificationData {
+  insightType: InsightType;
+  scope: InsightScope;
+  codeObjectId: string;
+  spanInfo?: SpanInfo;
+}
+
 export interface Notification {
   notificationId: string;
   accountId: string;
@@ -30,12 +38,11 @@ export interface Notification {
   title: string;
   message: string;
   timestamp: string;
-  data: {
-    insightType: InsightType;
-    codeObject: {
-      displayName: string;
-      codeObjectId: string;
-    };
-  };
+  data: InsightNotificationData;
   isRead: boolean;
+}
+
+export interface GoToInsightsPayload {
+  spanCodeObjectId?: string;
+  methodCodeObjectId?: string;
 }

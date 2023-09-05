@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { NotificationCard } from ".";
 import { InsightType } from "../../../types";
+import { InsightScope } from "../../Insights/types";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof NotificationCard> = {
@@ -26,12 +27,18 @@ export const Default: Story = {
       message: "Lorem ipsum dolor sit, amet consectetur adipisicing elit.",
       type: "insight",
       data: {
-        insightType: InsightType.HotSpot,
-        codeObject: {
-          displayName: "HTTP POST Transfer/TransferFunds",
-          codeObjectId:
-            "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP POST Transfer/TransferFunds"
-        }
+        insightType: InsightType.SpanEndpointBottleneck,
+        scope: InsightScope.Span,
+        spanInfo: {
+          name: "WaitForLock",
+          displayName: "WaitForLock",
+          instrumentationLibrary: "SampleInsightsController",
+          spanCodeObjectId: "span:SampleInsightsController$_$WaitForLock",
+          methodCodeObjectId: null,
+          kind: null,
+          codeObjectId: null
+        },
+        codeObjectId: "SampleInsightsController$_$WaitForLock"
       },
       isRead: true,
       timestamp: "2023-01-07T12:59:21.794Z"

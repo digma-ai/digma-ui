@@ -1,8 +1,10 @@
 import { DefaultTheme, useTheme } from "styled-components";
 import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
 import { timeAgo } from "../../../utils/timeAgo";
+import { InsightScope } from "../../Insights/types";
 import { Badge } from "../../common/Badge";
 import { Tooltip } from "../../common/Tooltip";
+import { GoToInsightsPayload, InsightNotificationData } from "../types";
 import * as s from "./styles";
 import { NotificationCardProps } from "./types";
 
@@ -44,13 +46,53 @@ const getBadgeStyles = (theme: DefaultTheme) => {
   }
 };
 
+const getCodeObjectData = (
+  data: InsightNotificationData
+): GoToInsightsPayload => {
+  const codeObjectData: GoToInsightsPayload = {};
+
+  // for top level insights
+  if (data.scope === InsightScope.Function) {
+    codeObjectData.methodCodeObjectId = data.codeObjectId;
+  }
+
+  // for span end endpoint insights
+  if (
+    [InsightScope.Span, InsightScope.EntrySpan].includes(data.scope) &&
+    data.spanInfo
+  ) {
+    codeObjectData.spanCodeObjectId = data.spanInfo.spanCodeObjectId;
+    if (data.spanInfo.methodCodeObjectId) {
+      codeObjectData.methodCodeObjectId = data.spanInfo.methodCodeObjectId;
+    }
+  }
+
+  return codeObjectData;
+};
+
+const getLinkName = (data: InsightNotificationData) => {
+  // for top level insights
+  if (data.scope === InsightScope.Function && data.codeObjectId) {
+    return data.codeObjectId.split("$_$")[1];
+  }
+
+  // for span end endpoint insights
+  if (
+    [InsightScope.Span, InsightScope.EntrySpan].includes(data.scope) &&
+    data.spanInfo
+  ) {
+    return data.spanInfo.displayName;
+  }
+};
+
 export const NotificationCard = (props: NotificationCardProps) => {
   const theme = useTheme();
   const iconColor = getIconColor(theme);
   const badgeStyles = getBadgeStyles(theme);
 
   const handleLinkClick = () => {
-    props.onSpanLinkClick(props.data.data.codeObject.codeObjectId);
+    const codeObjectData = getCodeObjectData(props.data.data);
+    props.onLinkClick(codeObjectData);
   };
 
   const Icon =
@@ -58,7 +100,7 @@ export const NotificationCard = (props: NotificationCardProps) => {
     getInsightTypeInfo(props.data.data.insightType)?.icon;
 
   const title = props.data.title;
-  const spanName = props.data.data.codeObject.displayName;
+  const linkName = getLinkName(props.data.data);
   const timeDistance = timeAgo(props.data.timestamp);
 
   return (
@@ -90,8 +132,8 @@ export const NotificationCard = (props: NotificationCardProps) => {
             </s.BadgeContainer>
           )}
           {props.data.message}
-          <Tooltip title={spanName}>
-            <s.SpanLink onClick={handleLinkClick}>{spanName}</s.SpanLink>
+          <Tooltip title={linkName}>
+            <s.Link onClick={handleLinkClick}>{linkName}</s.Link>
           </Tooltip>
         </s.ContentContainer>
       }

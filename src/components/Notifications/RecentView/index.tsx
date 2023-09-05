@@ -3,6 +3,7 @@ import { EmptyState } from "../EmptyState";
 import { ErrorEmptyState } from "../ErrorEmptyState";
 import { Header } from "../Header";
 import { NotificationList } from "../NotificationList";
+import { GoToInsightsPayload } from "../types";
 import * as s from "./styles";
 import { RecentViewProps } from "./types";
 
@@ -11,8 +12,8 @@ export const RecentView = (props: RecentViewProps) => {
     props.onClose();
   };
 
-  const handleGoToSpan = (spanCodeObjectId: string) => {
-    props.onSpanLinkClick(spanCodeObjectId);
+  const handleGoToInsights = (codeObjectData: GoToInsightsPayload) => {
+    props.onLinkClick(codeObjectData);
   };
 
   const handleViewAllLinkClick = () => {
@@ -39,7 +40,7 @@ export const RecentView = (props: RecentViewProps) => {
           </s.Subtitle>
           <NotificationList
             notifications={props.data.notifications}
-            onGoToSpan={handleGoToSpan}
+            onGoToInsights={handleGoToInsights}
           />
         </s.ContentContainer>
       ) : (

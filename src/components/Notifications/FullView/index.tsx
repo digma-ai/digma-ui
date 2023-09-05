@@ -6,6 +6,7 @@ import { EmptyState } from "../EmptyState";
 import { ErrorEmptyState } from "../ErrorEmptyState";
 import { Header } from "../Header";
 import { NotificationList } from "../NotificationList";
+import { GoToInsightsPayload } from "../types";
 import * as s from "./styles";
 import { FullViewProps } from "./types";
 
@@ -18,8 +19,8 @@ export const FullView = (props: FullViewProps) => {
     props.onFilterChange(value === "all");
   };
 
-  const handleGoToSpan = (spanCodeObjectId: string) => {
-    props.onSpanLinkClick(spanCodeObjectId);
+  const handleGoToInsights = (codeObjectData: GoToInsightsPayload) => {
+    props.onLinkClick(codeObjectData);
   };
 
   const totalCount =
@@ -66,7 +67,7 @@ export const FullView = (props: FullViewProps) => {
         <>
           <NotificationList
             notifications={props.data.notifications}
-            onGoToSpan={handleGoToSpan}
+            onGoToInsights={handleGoToInsights}
           />
           <s.Footer>
             <s.ItemsCount>

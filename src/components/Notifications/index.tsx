@@ -9,6 +9,7 @@ import { FullView } from "./FullView";
 import { RecentView } from "./RecentView";
 import * as s from "./styles";
 import {
+  GoToInsightsPayload,
   NotificationsData,
   NotificationsError,
   NotificationsProps,
@@ -25,7 +26,7 @@ const actions = addPrefix(ACTION_PREFIX, {
   GET_DATA: "GET_DATA",
   SET_DATA: "SET_DATA",
   CLOSE: "CLOSE",
-  GO_TO_SPAN: "GO_TO_SPAN",
+  GO_TO_INSIGHTS: "GO_TO_INSIGHTS",
   GO_TO_NOTIFICATIONS: "GO_TO_NOTIFICATIONS"
 });
 
@@ -34,7 +35,7 @@ const TRACKING_PREFIX = "notifications";
 export const trackingEvents = addPrefix(
   TRACKING_PREFIX,
   {
-    SPAN_LINK_CLICKED: "span link clicked"
+    LINK_CLICKED: "link clicked"
   },
   " "
 );
@@ -189,13 +190,11 @@ export const Notifications = (props: NotificationsProps) => {
     setShowAll(showAll);
   };
 
-  const handleSpanLinkClick = (spanCodeObjectId: string) => {
-    sendTrackingEvent(trackingEvents.SPAN_LINK_CLICKED);
+  const handleLinkClick = (codeObjectData: GoToInsightsPayload) => {
+    sendTrackingEvent(trackingEvents.LINK_CLICKED);
     window.sendMessageToDigma({
-      action: actions.GO_TO_SPAN,
-      payload: {
-        spanCodeObjectId
-      }
+      action: actions.GO_TO_INSIGHTS,
+      payload: { ...codeObjectData }
     });
   };
 
@@ -205,7 +204,7 @@ export const Notifications = (props: NotificationsProps) => {
         <RecentView
           data={notificationsData}
           error={notificationError}
-          onSpanLinkClick={handleSpanLinkClick}
+          onLinkClick={handleLinkClick}
           onGoToNotifications={handleGoToNotifications}
           onClose={handleClose}
         />
@@ -213,7 +212,7 @@ export const Notifications = (props: NotificationsProps) => {
         <FullView
           data={notificationsData}
           error={notificationError}
-          onSpanLinkClick={handleSpanLinkClick}
+          onLinkClick={handleLinkClick}
           onPageChange={setPage}
           onFilterChange={handleFilterChange}
           showAll={showAll}

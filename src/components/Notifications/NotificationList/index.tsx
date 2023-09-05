@@ -1,10 +1,11 @@
 import { NotificationCard } from "../NotificationCard";
+import { GoToInsightsPayload } from "../types";
 import * as s from "./styles";
 import { NotificationListProps } from "./types";
 
 export const NotificationList = (props: NotificationListProps) => {
-  const handleSpanLinkClick = (spanCodeObjectId: string) => {
-    props.onGoToSpan(spanCodeObjectId);
+  const handleLinkClick = (codeObjectData: GoToInsightsPayload) => {
+    props.onGoToInsights(codeObjectData);
   };
 
   return (
@@ -13,7 +14,7 @@ export const NotificationList = (props: NotificationListProps) => {
         <NotificationCard
           key={x.notificationId}
           data={x}
-          onSpanLinkClick={handleSpanLinkClick}
+          onLinkClick={handleLinkClick}
         />
       ))}
     </s.Container>

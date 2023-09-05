@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Card as CommonCard } from "../../common/Card";
-import { Link } from "../../common/Link";
+import { Link as CommonLink } from "../../common/Link";
 
 export const Card = styled(CommonCard)`
   position: relative;
@@ -54,7 +54,7 @@ export const ContentContainer = styled.div`
   word-break: break-all;
 `;
 
-export const SpanLink = styled(Link)`
+export const Link = styled(CommonLink)`
   text-decoration: none;
   font-weight: 500;
   color: #92affa;

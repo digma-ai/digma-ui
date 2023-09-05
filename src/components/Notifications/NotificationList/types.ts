@@ -1,6 +1,6 @@
-import { Notification } from "../types";
+import { GoToInsightsPayload, Notification } from "../types";
 
 export interface NotificationListProps {
   notifications: Notification[];
-  onGoToSpan: (spanCodeObjectId: string) => void;
+  onGoToInsights: (codeObjectData: GoToInsightsPayload) => void;
 }

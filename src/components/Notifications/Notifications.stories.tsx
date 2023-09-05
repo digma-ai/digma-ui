@@ -5,6 +5,8 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { Notifications } from ".";
 import { InsightType } from "../../types";
+import { InsightScope } from "../Insights/types";
+import { Notification } from "./types";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof Notifications> = {
@@ -20,7 +22,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-const notifications = [
+const notifications: Notification[] = [
   {
     notificationId: "1",
     accountId: "1",
@@ -30,11 +32,9 @@ const notifications = [
     type: "NewInsight",
     data: {
       insightType: InsightType.HotSpot,
-      codeObject: {
-        displayName: "HTTP POST Transfer/TransferFunds",
-        codeObjectId:
-          "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP POST Transfer/TransferFunds"
-      }
+      scope: InsightScope.Function,
+      codeObjectId:
+        "Sample.MoneyTransfer.API.Domain.Services.MoneyTransferDomainService$_$TransferFunds(Int64,Int64,Int32)"
     },
     isRead: false,
     timestamp: "2023-01-07T12:59:21.794Z"
@@ -47,12 +47,22 @@ const notifications = [
     message: "Lorem ipsum dolor sit, amet consectetur adipisicing elit.",
     type: "NewInsight",
     data: {
-      insightType: InsightType.EndpointBreakdown,
-      codeObject: {
-        displayName: "HTTP POST Transfer/TransferFunds",
+      insightType: InsightType.EndpointSpanNPlusOne,
+      scope: InsightScope.EntrySpan,
+      spanInfo: {
+        name: "HTTP GET /SampleInsights/NPlusOneWithoutInternalSpan",
+        displayName: "HTTP GET /SampleInsights/NPlusOneWithoutInternalSpan",
+        instrumentationLibrary: "io.opentelemetry.tomcat-10.0",
+        spanCodeObjectId:
+          "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /SampleInsights/NPlusOneWithoutInternalSpan",
+        methodCodeObjectId:
+          "method:org.springframework.samples.petclinic.sample.SampleInsightsController$_$genNPlusOneWithoutInternalSpan",
+        kind: "Server",
         codeObjectId:
-          "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP POST Transfer/TransferFunds"
-      }
+          "org.springframework.samples.petclinic.sample.SampleInsightsController$_$genNPlusOneWithoutInternalSpan"
+      },
+      codeObjectId:
+        "org.springframework.samples.petclinic.sample.SampleInsightsController$_$genNPlusOneWithoutInternalSpan"
     },
     isRead: true,
     timestamp: "2023-01-07T12:59:21.794Z"
@@ -65,12 +75,18 @@ const notifications = [
     message: "Lorem ipsum dolor sit, amet consectetur adipisicing elit.",
     type: "NewInsight",
     data: {
-      insightType: InsightType.EndpointDurationSlowdown,
-      codeObject: {
-        displayName: "HTTP POST Transfer/TransferFunds",
-        codeObjectId:
-          "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP POST Transfer/TransferFunds"
-      }
+      insightType: InsightType.SpanEndpointBottleneck,
+      scope: InsightScope.Span,
+      spanInfo: {
+        name: "WaitForLock",
+        displayName: "WaitForLock",
+        instrumentationLibrary: "SampleInsightsController",
+        spanCodeObjectId: "span:SampleInsightsController$_$WaitForLock",
+        methodCodeObjectId: null,
+        kind: null,
+        codeObjectId: null
+      },
+      codeObjectId: "SampleInsightsController$_$WaitForLock"
     },
     isRead: true,
     timestamp: "2023-01-07T12:59:21.794Z"
@@ -83,12 +99,18 @@ const notifications = [
     message: "Lorem ipsum dolor sit, amet consectetur adipisicing elit.",
     type: "NewInsight",
     data: {
-      insightType: InsightType.EndpointDurationSlowdown,
-      codeObject: {
-        displayName: "HTTP POST Transfer/TransferFunds",
-        codeObjectId:
-          "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP POST Transfer/TransferFunds"
-      }
+      insightType: InsightType.SpanEndpointBottleneck,
+      scope: InsightScope.Span,
+      spanInfo: {
+        name: "WaitForLock",
+        displayName: "WaitForLock",
+        instrumentationLibrary: "SampleInsightsController",
+        spanCodeObjectId: "span:SampleInsightsController$_$WaitForLock",
+        methodCodeObjectId: null,
+        kind: null,
+        codeObjectId: null
+      },
+      codeObjectId: "SampleInsightsController$_$WaitForLock"
     },
     isRead: true,
     timestamp: "2023-01-07T12:59:21.794Z"
@@ -101,12 +123,18 @@ const notifications = [
     message: "Lorem ipsum dolor sit, amet consectetur adipisicing elit.",
     type: "NewInsight",
     data: {
-      insightType: InsightType.EndpointDurationSlowdown,
-      codeObject: {
-        displayName: "HTTP POST Transfer/TransferFunds",
-        codeObjectId:
-          "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP POST Transfer/TransferFunds"
-      }
+      insightType: InsightType.SpanEndpointBottleneck,
+      scope: InsightScope.Span,
+      spanInfo: {
+        name: "WaitForLock",
+        displayName: "WaitForLock",
+        instrumentationLibrary: "SampleInsightsController",
+        spanCodeObjectId: "span:SampleInsightsController$_$WaitForLock",
+        methodCodeObjectId: null,
+        kind: null,
+        codeObjectId: null
+      },
+      codeObjectId: "SampleInsightsController$_$WaitForLock"
     },
     isRead: true,
     timestamp: "2023-01-07T12:59:21.794Z"
@@ -119,12 +147,18 @@ const notifications = [
     message: "Lorem ipsum dolor sit, amet consectetur adipisicing elit.",
     type: "NewInsight",
     data: {
-      insightType: InsightType.EndpointDurationSlowdown,
-      codeObject: {
-        displayName: "HTTP POST Transfer/TransferFunds",
-        codeObjectId:
-          "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP POST Transfer/TransferFunds"
-      }
+      insightType: InsightType.SpanEndpointBottleneck,
+      scope: InsightScope.Span,
+      spanInfo: {
+        name: "WaitForLock",
+        displayName: "WaitForLock",
+        instrumentationLibrary: "SampleInsightsController",
+        spanCodeObjectId: "span:SampleInsightsController$_$WaitForLock",
+        methodCodeObjectId: null,
+        kind: null,
+        codeObjectId: null
+      },
+      codeObjectId: "SampleInsightsController$_$WaitForLock"
     },
     isRead: true,
     timestamp: "2023-01-07T12:59:21.794Z"
@@ -137,12 +171,18 @@ const notifications = [
     message: "Lorem ipsum dolor sit, amet consectetur adipisicing elit.",
     type: "NewInsight",
     data: {
-      insightType: InsightType.EndpointDurationSlowdown,
-      codeObject: {
-        displayName: "HTTP POST Transfer/TransferFunds",
-        codeObjectId:
-          "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP POST Transfer/TransferFunds"
-      }
+      insightType: InsightType.SpanEndpointBottleneck,
+      scope: InsightScope.Span,
+      spanInfo: {
+        name: "WaitForLock",
+        displayName: "WaitForLock",
+        instrumentationLibrary: "SampleInsightsController",
+        spanCodeObjectId: "span:SampleInsightsController$_$WaitForLock",
+        methodCodeObjectId: null,
+        kind: null,
+        codeObjectId: null
+      },
+      codeObjectId: "SampleInsightsController$_$WaitForLock"
     },
     isRead: true,
     timestamp: "2023-01-07T12:59:21.794Z"
@@ -155,12 +195,18 @@ const notifications = [
     message: "Lorem ipsum dolor sit, amet consectetur adipisicing elit.",
     type: "NewInsight",
     data: {
-      insightType: InsightType.EndpointDurationSlowdown,
-      codeObject: {
-        displayName: "HTTP POST Transfer/TransferFunds",
-        codeObjectId:
-          "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP POST Transfer/TransferFunds"
-      }
+      insightType: InsightType.SpanEndpointBottleneck,
+      scope: InsightScope.Span,
+      spanInfo: {
+        name: "WaitForLock",
+        displayName: "WaitForLock",
+        instrumentationLibrary: "SampleInsightsController",
+        spanCodeObjectId: "span:SampleInsightsController$_$WaitForLock",
+        methodCodeObjectId: null,
+        kind: null,
+        codeObjectId: null
+      },
+      codeObjectId: "SampleInsightsController$_$WaitForLock"
     },
     isRead: true,
     timestamp: "2023-01-07T12:59:21.794Z"
@@ -173,12 +219,18 @@ const notifications = [
     message: "Lorem ipsum dolor sit, amet consectetur adipisicing elit.",
     type: "NewInsight",
     data: {
-      insightType: InsightType.EndpointDurationSlowdown,
-      codeObject: {
-        displayName: "HTTP POST Transfer/TransferFunds",
-        codeObjectId:
-          "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP POST Transfer/TransferFunds"
-      }
+      insightType: InsightType.SpanEndpointBottleneck,
+      scope: InsightScope.Span,
+      spanInfo: {
+        name: "WaitForLock",
+        displayName: "WaitForLock",
+        instrumentationLibrary: "SampleInsightsController",
+        spanCodeObjectId: "span:SampleInsightsController$_$WaitForLock",
+        methodCodeObjectId: null,
+        kind: null,
+        codeObjectId: null
+      },
+      codeObjectId: "SampleInsightsController$_$WaitForLock"
     },
     isRead: true,
     timestamp: "2023-01-07T12:59:21.794Z"
@@ -191,12 +243,18 @@ const notifications = [
     message: "Lorem ipsum dolor sit, amet consectetur adipisicing elit.",
     type: "NewInsight",
     data: {
-      insightType: InsightType.EndpointDurationSlowdown,
-      codeObject: {
-        displayName: "HTTP POST Transfer/TransferFunds",
-        codeObjectId:
-          "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP POST Transfer/TransferFunds"
-      }
+      insightType: InsightType.SpanEndpointBottleneck,
+      scope: InsightScope.Span,
+      spanInfo: {
+        name: "WaitForLock",
+        displayName: "WaitForLock",
+        instrumentationLibrary: "SampleInsightsController",
+        spanCodeObjectId: "span:SampleInsightsController$_$WaitForLock",
+        methodCodeObjectId: null,
+        kind: null,
+        codeObjectId: null
+      },
+      codeObjectId: "SampleInsightsController$_$WaitForLock"
     },
     isRead: true,
     timestamp: "2023-01-07T12:59:21.794Z"
@@ -209,30 +267,18 @@ const notifications = [
     message: "Lorem ipsum dolor sit, amet consectetur adipisicing elit.",
     type: "NewInsight",
     data: {
-      insightType: InsightType.EndpointDurationSlowdown,
-      codeObject: {
-        displayName: "HTTP POST Transfer/TransferFunds",
-        codeObjectId:
-          "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP POST Transfer/TransferFunds"
-      }
-    },
-    isRead: true,
-    timestamp: "2023-01-07T12:59:21.794Z"
-  },
-  {
-    notificationId: "12",
-    accountId: "1",
-    environment: "env",
-    title: "Title",
-    message: "Lorem ipsum dolor sit, amet consectetur adipisicing elit.",
-    type: "NewInsight",
-    data: {
-      insightType: InsightType.EndpointDurationSlowdown,
-      codeObject: {
-        displayName: "HTTP POST Transfer/TransferFunds",
-        codeObjectId:
-          "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP POST Transfer/TransferFunds"
-      }
+      insightType: InsightType.SpanEndpointBottleneck,
+      scope: InsightScope.Span,
+      spanInfo: {
+        name: "WaitForLock",
+        displayName: "WaitForLock",
+        instrumentationLibrary: "SampleInsightsController",
+        spanCodeObjectId: "span:SampleInsightsController$_$WaitForLock",
+        methodCodeObjectId: null,
+        kind: null,
+        codeObjectId: null
+      },
+      codeObjectId: "SampleInsightsController$_$WaitForLock"
     },
     isRead: true,
     timestamp: "2023-01-07T12:59:21.794Z"

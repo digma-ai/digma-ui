@@ -1,4 +1,8 @@
-import { NotificationsData, NotificationsError } from "../types";
+import {
+  GoToInsightsPayload,
+  NotificationsData,
+  NotificationsError
+} from "../types";
 
 export interface FullViewProps {
   data?: NotificationsData;
@@ -6,7 +10,7 @@ export interface FullViewProps {
   showAll: boolean;
   page: number;
   pageSize: number;
-  onSpanLinkClick: (spanCodeObjectId: string) => void;
+  onLinkClick: (codeObjectData: GoToInsightsPayload) => void;
   onPageChange: (page: number) => void;
   onFilterChange: (showAll: boolean) => void;
   onClose: () => void;
