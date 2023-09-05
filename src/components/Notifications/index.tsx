@@ -75,8 +75,6 @@ export const Notifications = (props: NotificationsProps) => {
   const previousShowAll = usePrevious(showAll);
   const [page, setPage] = useState(0);
   const previousPage = usePrevious(page);
-  const [latestNotificationTimestamp, setLatestNotificationTimestamp] =
-    useState<string>();
   const refreshTimerId = useRef<number>();
   const viewMode = window.notificationsViewMode || props.viewMode || "full";
   const pageSize = viewMode === "popup" ? 3 : 10;
@@ -169,20 +167,6 @@ export const Notifications = (props: NotificationsProps) => {
     setData(props.data);
   }, [data, props.data]);
 
-  useEffect(() => {
-    if (data && data.data?.notifications.length) {
-      const timestamp = data.data.notifications[0].timestamp;
-      if (
-        !latestNotificationTimestamp ||
-        (latestNotificationTimestamp &&
-          new Date(timestamp).valueOf() >
-            new Date(latestNotificationTimestamp).valueOf())
-      ) {
-        setLatestNotificationTimestamp(timestamp);
-      }
-    }
-  }, [data, latestNotificationTimestamp]);
-
   // useEffect(() => {
   //   if (!previousData && data) {
   //     setIsInitialLoading(false);
@@ -191,10 +175,7 @@ export const Notifications = (props: NotificationsProps) => {
 
   const handleClose = () => {
     window.sendMessageToDigma({
-      action: actions.CLOSE,
-      payload: {
-        upToDateTime: latestNotificationTimestamp
-      }
+      action: actions.CLOSE
     });
   };
 
