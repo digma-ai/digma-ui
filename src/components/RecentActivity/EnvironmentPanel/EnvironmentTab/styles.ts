@@ -9,7 +9,19 @@ export const Container = styled.li<ContainerProps>`
   font-size: 14px;
   padding: 4px 12px;
   user-select: none;
-  color: ${({ isSelected, theme }) => {
+  align-items: center;
+  gap: 4px;
+  color: ${({ isPending, isSelected, theme }) => {
+    if (isPending) {
+      switch (theme.mode) {
+        case "light":
+          return "#c9ccd6";
+        case "dark":
+        case "dark-jetbrains":
+          return "#5a5d63";
+      }
+    }
+
     if (isSelected) {
       switch (theme.mode) {
         case "light":

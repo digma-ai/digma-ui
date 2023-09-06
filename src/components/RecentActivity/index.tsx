@@ -11,13 +11,19 @@ import { sendTrackingEvent } from "../../utils/sendTrackingEvent";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { CursorFollower } from "../common/CursorFollower";
 import { DigmaLogoFlatIcon } from "../common/icons/DigmaLogoFlatIcon";
+import { AddEnvironmentPanel } from "./AddEnvironmentPanel";
 import { EnvironmentPanel } from "./EnvironmentPanel";
 import { ViewMode } from "./EnvironmentPanel/types";
 import { LiveView } from "./LiveView";
 import { LiveData } from "./LiveView/types";
 import { RecentActivityTable, isRecent } from "./RecentActivityTable";
 import * as s from "./styles";
-import { EntrySpan, RecentActivityData, RecentActivityProps } from "./types";
+import {
+  EntrySpan,
+  ExtendedEnvironment,
+  RecentActivityData,
+  RecentActivityProps
+} from "./types";
 
 const ACTION_PREFIX = "RECENT_ACTIVITY";
 
@@ -27,7 +33,10 @@ const actions = addPrefix(ACTION_PREFIX, {
   SET_LIVE_DATA: "SET_LIVE_DATA",
   GO_TO_SPAN: "GO_TO_SPAN",
   GO_TO_TRACE: "GO_TO_TRACE",
-  CLOSE_LIVE_VIEW: "CLOSE_LIVE_VIEW"
+  CLOSE_LIVE_VIEW: "CLOSE_LIVE_VIEW",
+  ADD_ENVIRONMENT: "ADD_ENVIRONMENT",
+  DELETE_ENVIRONMENT: "DELETE_ENVIRONMENT",
+  ADD_ENVIRONMENT_TO_RUN_CONFIG: "ADD_ENVIRONMENT_TO_RUN_CONFIG"
 });
 
 const handleTroubleshootButtonClick = () => {
@@ -56,12 +65,31 @@ const renderNoData = () => {
 };
 
 export const RecentActivity = (props: RecentActivityProps) => {
-  const [selectedEnvironment, setSelectedEnvironment] = useState<string>();
+  const [selectedEnvironment, setSelectedEnvironment] =
+    useState<ExtendedEnvironment>();
   const [data, setData] = useState<RecentActivityData>();
   const previousSelectedEnvironment = usePrevious(selectedEnvironment);
   const [viewMode, setViewMode] = useState<ViewMode>("table");
   const [liveData, setLiveData] = useState<LiveData>();
   const config = useContext(ConfigContext);
+
+  const environmentActivities = useMemo(
+    () => (data ? groupBy(data.entries, (x) => x.environment) : {}),
+    [data]
+  );
+
+  const environments: ExtendedEnvironment[] = useMemo(
+    () =>
+      data
+        ? data.environments.map((environment) => ({
+            ...environment,
+            hasRecentActivity: environmentActivities[environment.name]
+              ? environmentActivities[environment.name].some(isRecent)
+              : false
+          }))
+        : [],
+    [data, environmentActivities]
+  );
 
   useEffect(() => {
     window.sendMessageToDigma({
@@ -100,12 +128,22 @@ export const RecentActivity = (props: RecentActivityProps) => {
   }, [props.liveData]);
 
   useEffect(() => {
-    if (!previousSelectedEnvironment && data && data.environments.length) {
-      setSelectedEnvironment(data.environments[0]);
+    if (!previousSelectedEnvironment && environments.length) {
+      setSelectedEnvironment(environments[0]);
     }
-  }, [previousSelectedEnvironment, data]);
+  }, [previousSelectedEnvironment, environments]);
 
-  const handleEnvironmentSelect = (environment: string) => {
+  useEffect(() => {
+    const isSelectedEnvironmentExists = environments.find(
+      (x) => x.name === selectedEnvironment?.name
+    );
+
+    if (!isSelectedEnvironmentExists) {
+      setSelectedEnvironment(environments[0]);
+    }
+  }, [environments, selectedEnvironment]);
+
+  const handleEnvironmentSelect = (environment: ExtendedEnvironment) => {
     setSelectedEnvironment(environment);
   };
 
@@ -143,23 +181,68 @@ export const RecentActivity = (props: RecentActivityProps) => {
     });
   };
 
-  const environmentActivities = useMemo(
-    () => (data ? groupBy(data.entries, (x) => x.environment) : {}),
-    [data]
-  );
+  const handleEnvironmentAdd = (environment: string) => {
+    window.sendMessageToDigma({
+      action: actions.ADD_ENVIRONMENT,
+      payload: {
+        environment
+      }
+    });
+  };
 
-  const environments = useMemo(
-    () =>
-      data
-        ? data.environments.map((environment) => ({
-            name: environment,
-            hasBadge: environmentActivities[environment]
-              ? environmentActivities[environment].some(isRecent)
-              : false
-          }))
-        : [],
-    [data, environmentActivities]
-  );
+  const handleEnvironmentDelete = (environment: string) => {
+    window.sendMessageToDigma({
+      action: actions.DELETE_ENVIRONMENT,
+      payload: {
+        environment
+      }
+    });
+  };
+
+  const handleAddEnvironmentToRunConfig = () => {
+    if (selectedEnvironment) {
+      window.sendMessageToDigma({
+        action: actions.ADD_ENVIRONMENT_TO_RUN_CONFIG,
+        payload: {
+          environment: selectedEnvironment.name
+        }
+      });
+    }
+  };
+
+  const renderContent = () => {
+    if (selectedEnvironment?.isPending) {
+      return (
+        <AddEnvironmentPanel
+          environmentName={selectedEnvironment.name}
+          onAddEnvironmentToRunConfig={handleAddEnvironmentToRunConfig}
+        />
+      );
+    }
+
+    if (
+      !selectedEnvironment ||
+      !environmentActivities[selectedEnvironment.name] ||
+      !environmentActivities[selectedEnvironment.name].length
+    ) {
+      return (
+        <>
+          <s.Header>Recent Activity</s.Header>
+          {renderNoData()}
+        </>
+      );
+    }
+
+    return (
+      <RecentActivityTable
+        viewMode={viewMode}
+        data={environmentActivities[selectedEnvironment.name]}
+        onSpanLinkClick={handleSpanLinkClick}
+        onTraceButtonClick={handleTraceButtonClick}
+        isTraceButtonVisible={config.isJaegerEnabled}
+      />
+    );
+  };
 
   return (
     <s.Container>
@@ -171,23 +254,10 @@ export const RecentActivity = (props: RecentActivityProps) => {
             selectedEnvironment={selectedEnvironment}
             onEnvironmentSelect={handleEnvironmentSelect}
             onViewModeChange={handleViewModeChange}
+            onEnvironmentAdd={handleEnvironmentAdd}
+            onEnvironmentDelete={handleEnvironmentDelete}
           />
-          {!selectedEnvironment ||
-          !environmentActivities[selectedEnvironment] ||
-          !environmentActivities[selectedEnvironment].length ? (
-            <>
-              <s.Header>Recent Activity</s.Header>
-              {renderNoData()}
-            </>
-          ) : (
-            <RecentActivityTable
-              viewMode={viewMode}
-              data={environmentActivities[selectedEnvironment]}
-              onSpanLinkClick={handleSpanLinkClick}
-              onTraceButtonClick={handleTraceButtonClick}
-              isTraceButtonVisible={config.isJaegerEnabled}
-            />
-          )}
+          {renderContent()}
         </s.RecentActivityContainer>
         <Allotment.Pane visible={Boolean(liveData)} minSize={450}>
           {liveData && (

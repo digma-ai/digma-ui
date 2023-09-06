@@ -12,10 +12,10 @@ export const Container = styled.div`
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "#e9eef4";
+        return "#f7f8fa";
       case "dark":
       case "dark-jetbrains":
-        return "#252526";
+        return "#2b2d30";
     }
   }};
 `;
@@ -32,10 +32,10 @@ export const Code = styled.code`
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "#828797";
+        return "#494b57";
       case "dark":
       case "dark-jetbrains":
-        return "#dadada";
+        return "#dfe1e5";
     }
   }};
 `;

@@ -21,16 +21,16 @@ export const NoData: Story = {};
 
 const data = {
   environments: [
-    "ENV_RENDER",
-    "UNSET_ENV",
-    "UNSET_ENV1",
-    "UNSET_ENV2",
-    "UNSET_ENV3",
-    "UNSET_ENV4",
-    "UNSET_ENV5",
-    "UNSET_ENV6",
-    "UNSET_ENV7",
-    "VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-LONG-NAME"
+    { name: "ENV_RENDER", isPending: false },
+    { name: "UNSET_ENV", isPending: false },
+    { name: "UNSET_ENV1", isPending: true },
+    { name: "UNSET_ENV2", isPending: false },
+    { name: "UNSET_ENV3", isPending: false },
+    { name: "UNSET_ENV4", isPending: false },
+    {
+      name: " VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-LONG-NAME",
+      isPending: false
+    }
   ],
   entries: [
     {

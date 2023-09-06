@@ -101,6 +101,21 @@ export const LogoContainer = styled.div`
   animation: ${rotateAnimation} 6s ease-in-out infinite;
 `;
 
+export const AddButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+  height: 100%;
+
+  &:disabled {
+    cursor: initial;
+  }
+`;
+
 export const ViewModeButtonContainer = styled.div`
   margin-left: auto;
 `;

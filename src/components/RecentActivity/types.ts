@@ -26,8 +26,17 @@ export interface ActivityEntry {
   slimAggregatedInsights: SlimInsight[];
 }
 
+export interface Environment {
+  name: string;
+  isPending: boolean;
+}
+
+export interface ExtendedEnvironment extends Environment {
+  hasRecentActivity: boolean;
+}
+
 export interface RecentActivityData {
-  environments: string[];
+  environments: Environment[];
   entries: ActivityEntry[];
 }
 

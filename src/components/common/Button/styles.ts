@@ -46,7 +46,7 @@ export const Button = styled.button<ButtonElementProps>`
       return "none";
     }
 
-    return "#3538cd";
+    return "#5154ec";
   }};
   border: ${({ buttonType }) => {
     if (buttonType === "secondary") {

@@ -24,10 +24,10 @@ const getIconColor = (
 
   switch (theme.mode) {
     case "light":
-      return "#7891d0";
+      return "#494b57";
     case "dark":
     case "dark-jetbrains":
-      return "#b9c2eb";
+      return "#dfe1e5";
   }
 };
 

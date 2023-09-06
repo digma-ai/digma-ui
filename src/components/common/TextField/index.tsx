@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { ForwardedRef, forwardRef, useState } from "react";
 import * as s from "./styles";
 import { TextFieldProps } from "./types";
 
-export const TextField = (props: TextFieldProps) => {
+export const TextFieldComponent = (
+  props: TextFieldProps,
+  ref: ForwardedRef<HTMLInputElement>
+) => {
   const [isFocused, setIsFocused] = useState(false);
 
   const handleFocus = () => {
@@ -22,8 +25,11 @@ export const TextField = (props: TextFieldProps) => {
         placeholder={props.placeholder}
         onFocus={handleFocus}
         onBlur={handleBlur}
+        ref={ref}
       />
       {props.inputEndContent && <div>{props.inputEndContent}</div>}
     </s.Container>
   );
 };
+
+export const TextField = forwardRef(TextFieldComponent);
