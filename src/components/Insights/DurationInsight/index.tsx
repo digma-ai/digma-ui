@@ -328,6 +328,7 @@ export const DurationInsight = (props: DurationInsightProps) => {
           )}
           {!props.insight.histogramPlot &&
             props.insight.average &&
+            props.insight.average.raw > 0 &&
             props.insight.standardDeviation && (
               <s.Stats key={"average"}>
                 <s.StatsTitle>Average</s.StatsTitle>
