@@ -15,6 +15,7 @@ import { convertToDuration } from "../../../utils/convertToDuration";
 import { formatTimeDistance } from "../../../utils/formatTimeDistance";
 import { getPercentileLabel } from "../../../utils/getPercentileLabel";
 import { Button } from "../../common/Button";
+import { Tooltip as CommonTooltip } from "../../common/Tooltip";
 import { ChartIcon } from "../../common/icons/ChartIcon";
 import { DoubleCircleIcon } from "../../common/icons/DoubleCircleIcon";
 import { DurationChange, isChangeMeaningfulEnough } from "../DurationChange";
@@ -282,9 +283,15 @@ export const DurationInsight = (props: DurationInsightProps) => {
                 </Description>
                 <s.LastCallTimeDistance isRecent={isLastCallRecent}>
                   •{" "}
-                  {isLastCallRecent
-                    ? "Moments ago"
-                    : formatTimeDistance(spanLastCall.startTime)}
+                  <CommonTooltip
+                    title={new Date(spanLastCall.startTime).toString()}
+                  >
+                    <span>
+                      {isLastCallRecent
+                        ? "Moments ago"
+                        : formatTimeDistance(spanLastCall.startTime)}
+                    </span>
+                  </CommonTooltip>
                 </s.LastCallTimeDistance>
               </s.ValueContainer>
             </s.Stats>

@@ -15,6 +15,10 @@ const entries = {
     __dirname,
     "./src/containers/InstallationWizard/index.tsx"
   ),
+  notifications: path.resolve(
+    __dirname,
+    "./src/containers/Notifications/index.tsx"
+  ),
   recentActivity: path.resolve(
     __dirname,
     "./src/containers/RecentActivity/index.tsx"

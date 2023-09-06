@@ -38,6 +38,8 @@ declare global {
     assetsSearch?: unknown;
     documentationPage?: unknown;
     insightsRefreshInterval?: unknown;
+    notificationsRefreshInterval?: unknown;
+    notificationsViewMode?: unknown;
     recentActivityExpirationLimit?: unknown;
     recentActivityDocumentationURL?: unknown;
     wizardSkipInstallationStep?: unknown;

@@ -5,14 +5,17 @@ import { formatTimeDistance } from "../../../utils/formatTimeDistance";
 import { getInsightImportanceColor } from "../../../utils/getInsightImportanceColor";
 import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
 import { Badge } from "../../common/Badge";
+import { Card } from "../../common/Card";
 import { KebabMenuButton } from "../../common/KebabMenuButton";
 import { Menu } from "../../common/Menu";
 import { Popover } from "../../common/Popover";
 import { PopoverContent } from "../../common/Popover/PopoverContent";
 import { PopoverTrigger } from "../../common/Popover/PopoverTrigger";
+import { Toggle } from "../../common/Toggle";
+import { ToggleValue } from "../../common/Toggle/types";
+import { Tooltip } from "../../common/Tooltip";
 import { ChevronIcon } from "../../common/icons/ChevronIcon";
 import { Direction } from "../../common/icons/types";
-import { Card } from "../Card";
 import { Description, Link } from "../styles";
 import * as s from "./styles";
 import { InsightCardProps } from "./types";
@@ -52,11 +55,11 @@ export const InsightCard = (props: InsightCardProps) => {
     setIsExpanded(!isExpanded);
   };
 
-  const handleDurationPercentileToggleOptionButtonClick = (value: number) => {
+  const handlePercentileToggleValueChange = (value: ToggleValue) => {
     if (value !== percentileViewMode) {
-      setPercentileViewMode(value);
+      setPercentileViewMode(value as number);
       props.onPercentileViewModeChange &&
-        props.onPercentileViewModeChange(value);
+        props.onPercentileViewModeChange(value as number);
     }
   };
 
@@ -74,11 +77,16 @@ export const InsightCard = (props: InsightCardProps) => {
         new Date(customStartTime).valueOf() ===
         0;
 
+    const title = new Date(actualStartTime).toString();
+
     return (
       <>
         {areStartTimesEqual ? (
           <Description>
-            Data from: {formatTimeDistance(actualStartTime)}
+            Data from:{" "}
+            <Tooltip title={title}>
+              <span>{formatTimeDistance(actualStartTime)}</span>
+            </Tooltip>
           </Description>
         ) : (
           <s.RefreshContainer>
@@ -153,21 +161,14 @@ export const InsightCard = (props: InsightCardProps) => {
       content={
         <>
           {props.onPercentileViewModeChange && (
-            <s.PercentileViewModeToggle>
-              {PERCENTILES.map((percentile) => (
-                <s.PercentileViewModeToggleOptionButton
-                  key={percentile.percentile}
-                  selected={percentile.percentile === percentileViewMode}
-                  onClick={() =>
-                    handleDurationPercentileToggleOptionButtonClick(
-                      percentile.percentile
-                    )
-                  }
-                >
-                  {percentile.label}
-                </s.PercentileViewModeToggleOptionButton>
-              ))}
-            </s.PercentileViewModeToggle>
+            <Toggle
+              options={PERCENTILES.map((percentile) => ({
+                value: percentile.percentile,
+                label: percentile.label
+              }))}
+              value={percentileViewMode}
+              onValueChange={handlePercentileToggleValueChange}
+            />
           )}
           {props.data.actualStartTime &&
             (props.data.customStartTime || isRecalculatingStarted) &&

@@ -1,5 +1,4 @@
 import { Meta, StoryObj } from "@storybook/react";
-
 import { InsightCard } from ".";
 import { InsightType } from "../../../types";
 import { Button } from "../../common/Button";

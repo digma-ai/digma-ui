@@ -1,7 +1,7 @@
 import { DefaultTheme, useTheme } from "styled-components";
 import { Button } from "../../common/Button";
+import { Card } from "../../common/Card";
 import { OpenTelemetryLogoCrossedSmallIcon } from "../../common/icons/OpenTelemetryLogoCrossedSmallIcon";
-import { Card } from "../Card";
 import { Description, Link } from "../styles";
 import * as s from "./styles";
 import { NoObservabilityCardProps } from "./types";

@@ -42,7 +42,7 @@ export const CloseButton = styled.button`
   cursor: pointer;
   background: none;
   border: none;
-  height: 12px;
+  height: 14px;
 `;
 
 export const Section = styled.div`

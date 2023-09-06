@@ -19,7 +19,7 @@ const getIconColor = (
     return theme.mode === "light" ? "#7c7c94" : "#dadada";
   }
 
-  return theme.mode === "light" ? "#b9c0d4" : "#b9c2eb";
+  return theme.mode === "light" ? "#494b57" : "#dfe1e5";
 };
 
 export const KebabMenuButton = (props: KebabMenuButtonProps) => {
