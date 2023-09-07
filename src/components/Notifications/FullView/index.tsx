@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { CircleLoader } from "../../common/CircleLoader";
 import { Pagination } from "../../common/Pagination";
 import { Toggle } from "../../common/Toggle";
 import { ToggleValue } from "../../common/Toggle/types";
@@ -40,7 +41,15 @@ export const FullView = (props: FullViewProps) => {
     }
   }, [props.data, props.page, props.pageSize, props.onPageChange, totalCount]);
 
-  const renderEmptyState = () =>
+  const renderEmptyState = () => {
+    if (props.isLoading) {
+      return (
+        <s.CircleLoaderContainer>
+          <CircleLoader size={32} />
+        </s.CircleLoaderContainer>
+      );
+    }
+
     props.error ? (
       <ErrorEmptyState />
     ) : (
@@ -48,6 +57,7 @@ export const FullView = (props: FullViewProps) => {
         title={props.showAll ? "No notifications" : "No unread notifications"}
       />
     );
+  };
 
   return (
     <s.Container>

@@ -39,3 +39,11 @@ export const PageItemsCount = styled.span`
     }
   }};
 `;
+
+export const CircleLoaderContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+`;
