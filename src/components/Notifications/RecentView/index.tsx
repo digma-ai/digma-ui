@@ -1,3 +1,4 @@
+import { CircleLoader } from "../../common/CircleLoader";
 import { Link } from "../../common/Link";
 import { EmptyState } from "../EmptyState";
 import { ErrorEmptyState } from "../ErrorEmptyState";
@@ -22,12 +23,21 @@ export const RecentView = (props: RecentViewProps) => {
 
   const notificationsCount = props.data?.notifications.length || 0;
 
-  const renderEmptyState = () =>
-    props.error ? (
+  const renderEmptyState = () => {
+    if (props.isLoading) {
+      return (
+        <s.CircleLoaderContainer>
+          <CircleLoader size={32} />
+        </s.CircleLoaderContainer>
+      );
+    }
+
+    return props.error ? (
       <ErrorEmptyState />
     ) : (
       <EmptyState title={"No unread notifications"} />
     );
+  };
 
   return (
     <s.Container>

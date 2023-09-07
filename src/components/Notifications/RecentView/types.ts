@@ -10,4 +10,5 @@ export interface RecentViewProps {
   onLinkClick: (codeObjectData: GoToInsightsPayload) => void;
   onGoToNotifications: () => void;
   onClose: () => void;
+  isLoading: boolean;
 }

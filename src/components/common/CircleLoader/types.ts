@@ -1,10 +1,12 @@
+export interface CircleLoaderColors {
+  start: string;
+  end: string;
+  background: string;
+}
+
 export interface CircleLoaderProps {
   size?: number;
-  colors: {
-    start: string;
-    end: string;
-    background: string;
-  };
+  colors?: CircleLoaderColors;
 }
 
 export interface OuterCircleProps {

@@ -41,26 +41,6 @@ export const trackingEvents = addPrefix(
   " "
 );
 
-// const getCircleLoaderColors = (
-//   theme: DefaultTheme
-// ): CircleLoaderProps["colors"] => {
-//   switch (theme.mode) {
-//     case "light":
-//       return {
-//         start: "rgb(81 84 236 / 0%)",
-//         end: "#5154ec",
-//         background: "#fff"
-//       };
-//     case "dark":
-//     case "dark-jetbrains":
-//       return {
-//         start: "rgb(120 145 208 / 0%)",
-//         end: "#7891d0",
-//         background: "#2b2d30"
-//       };
-//   }
-// };
-
 export const Notifications = (props: NotificationsProps) => {
   const [data, setData] = useState<NotificationsSetDataPayload>();
   const previousData = usePrevious(data);
@@ -68,11 +48,9 @@ export const Notifications = (props: NotificationsProps) => {
     useState<NotificationsData>();
   const [notificationError, setNotificationsError] =
     useState<NotificationsError>();
-  // const previousData = usePrevious(data);
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
-  // const [isInitialLoading, setIsInitialLoading] = useState(false);
-  // const circleLoaderColors = getCircleLoaderColors(theme);
+  const [isInitialLoading, setIsInitialLoading] = useState(false);
   const [showAll, setShowAll] = useState(false);
   const previousShowAll = usePrevious(showAll);
   const [page, setPage] = useState(0);
@@ -90,7 +68,7 @@ export const Notifications = (props: NotificationsProps) => {
         isRead: false
       }
     });
-    // setIsInitialLoading(true);
+    setIsInitialLoading(true);
 
     const handleSetData = (data: unknown, timeStamp: number) => {
       setData(data as NotificationsSetDataPayload);
@@ -169,11 +147,11 @@ export const Notifications = (props: NotificationsProps) => {
     setData(props.data);
   }, [data, props.data]);
 
-  // useEffect(() => {
-  //   if (!previousData && data) {
-  //     setIsInitialLoading(false);
-  //   }
-  // }, [previousData, data]);
+  useEffect(() => {
+    if (!previousData && data) {
+      setIsInitialLoading(false);
+    }
+  }, [previousData, data]);
 
   const handleClose = () => {
     window.sendMessageToDigma({
@@ -209,6 +187,7 @@ export const Notifications = (props: NotificationsProps) => {
           onLinkClick={handleLinkClick}
           onGoToNotifications={handleGoToNotifications}
           onClose={handleClose}
+          isLoading={isInitialLoading}
         />
       ) : (
         <FullView
@@ -221,6 +200,7 @@ export const Notifications = (props: NotificationsProps) => {
           onClose={handleClose}
           page={page}
           pageSize={pageSize}
+          isLoading={isInitialLoading}
         />
       )}
     </s.Container>

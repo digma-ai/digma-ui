@@ -14,4 +14,5 @@ export interface FullViewProps {
   onPageChange: (page: number) => void;
   onFilterChange: (showAll: boolean) => void;
   onClose: () => void;
+  isLoading: boolean;
 }

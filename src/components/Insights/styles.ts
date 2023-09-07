@@ -17,6 +17,13 @@ export const Container = styled.div`
         return "#2b2d30";
     }
   }};
+  position: relative;
+`;
+
+export const CircleLoaderContainer = styled.div`
+  position: absolute;
+  top: 8px;
+  right: 8px;
 `;
 
 export const StartupText = styled.span`
