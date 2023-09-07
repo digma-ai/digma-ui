@@ -35,7 +35,8 @@ const TRACKING_PREFIX = "notifications";
 export const trackingEvents = addPrefix(
   TRACKING_PREFIX,
   {
-    LINK_CLICKED: "link clicked"
+    LINK_CLICKED: "link clicked",
+    VIEW_ALL_LINK_CLICKED: "view all link clicked"
   },
   " "
 );
@@ -181,6 +182,7 @@ export const Notifications = (props: NotificationsProps) => {
   };
 
   const handleGoToNotifications = () => {
+    sendTrackingEvent(trackingEvents.VIEW_ALL_LINK_CLICKED);
     window.sendMessageToDigma({
       action: actions.GO_TO_NOTIFICATIONS
     });

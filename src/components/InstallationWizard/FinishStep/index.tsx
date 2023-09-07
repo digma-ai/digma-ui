@@ -1,6 +1,7 @@
 import { DefaultTheme, useTheme } from "styled-components";
 import { GETTING_STARTED_VIDEO_URL } from "../../../constants";
 import { openURLInDefaultBrowser } from "../../../utils/openURLInDefaultBrowser";
+import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { getThemeKind } from "../../common/App/styles";
 import { CircleLoader } from "../../common/CircleLoader";
 import { Link } from "../../common/Link";
@@ -11,6 +12,7 @@ import { PlayIcon } from "../../common/icons/PlayIcon";
 import { RingingBellIcon } from "../../common/icons/RingingBellIcon";
 import { SlackLogoIcon } from "../../common/icons/SlackLogoIcon";
 import { WarningCircleLargeIcon } from "../../common/icons/WarningCircleLargeIcon";
+import { trackingEvents } from "../tracking";
 import * as s from "./styles";
 import { FinishStepProps } from "./types";
 
@@ -41,6 +43,7 @@ export const FinishStep = (props: FinishStepProps) => {
   const themeKind = getThemeKind(theme);
 
   const handleGettingStartedVideoLinkClick = () => {
+    sendTrackingEvent(trackingEvents.GETTING_STARTED_VIDEO_LINK_CLICKED);
     openURLInDefaultBrowser(GETTING_STARTED_VIDEO_URL);
   };
 
