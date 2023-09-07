@@ -1,9 +1,10 @@
 import { useCallback, useRef, useState } from "react";
 import { Badge } from "../../../common/Badge";
 import { KebabMenuButton } from "../../../common/KebabMenuButton";
-import { Menu } from "../../../common/Menu";
 import { NewPopover } from "../../../common/NewPopover";
 import { Tooltip } from "../../../common/Tooltip";
+import { TrashBinIcon } from "../../../common/icons/TrashBinIcon";
+import { EnvironmentMenu } from "../../EnvironmentMenu";
 import * as s from "./styles";
 import { EnvironmentTabProps } from "./types";
 
@@ -39,7 +40,7 @@ export const EnvironmentTab = (props: EnvironmentTabProps) => {
 
   const handleMenuItemSelect = (value: string) => {
     switch (value) {
-      case "Delete":
+      case "delete":
         props.onEnvironmentDelete(props.environment.name);
         break;
     }
@@ -47,9 +48,11 @@ export const EnvironmentTab = (props: EnvironmentTabProps) => {
     setIsMenuOpen(false);
   };
 
-  const menuItems = [...(props.environment.isPending ? ["Delete"] : [])].map(
-    (x) => ({ label: x, value: x })
-  );
+  const menuItems = [
+    ...(props.environment.isPending
+      ? [{ label: "Delete", value: "delete", icon: TrashBinIcon }]
+      : [])
+  ];
 
   return (
     <s.Container
@@ -72,7 +75,12 @@ export const EnvironmentTab = (props: EnvironmentTabProps) => {
       </Tooltip>
       {menuItems.length > 0 && (isHovered || isFocused || isMenuOpen) && (
         <NewPopover
-          content={<Menu items={menuItems} onSelect={handleMenuItemSelect} />}
+          content={
+            <EnvironmentMenu
+              items={menuItems}
+              onSelect={handleMenuItemSelect}
+            />
+          }
           onOpenChange={setIsMenuOpen}
           isOpen={isMenuOpen}
           placement={"bottom-start"}
