@@ -21,7 +21,8 @@ export const trackingEvents = addPrefix(
     ENGINE_ACTION_MESSAGE_SENT: "engine action message sent",
     ENGINE_ACTION_RESULT_MESSAGE_RECEIVED:
       "engine action result message received",
-    DOCKER_COMPOSE_TAB_VIEWED: "docker compose tab viewed"
+    DOCKER_COMPOSE_TAB_VIEWED: "docker compose tab viewed",
+    GETTING_STARTED_VIDEO_LINK_CLICKED: "getting started video link clicked"
   },
   " "
 );

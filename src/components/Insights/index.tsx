@@ -231,7 +231,6 @@ export const Insights = (props: InsightsProps) => {
             }
           />
         );
-
       case InsightsStatus.NO_INSIGHTS:
         return (
           <EmptyState icon={LightBulbSmallCrossedIcon} title={"No insights"} />
