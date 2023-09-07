@@ -25,6 +25,8 @@ import {
   RecentActivityProps
 } from "./types";
 
+export const RECENT_ACTIVITY_CONTAINER_ID = "recent-activity";
+
 const ACTION_PREFIX = "RECENT_ACTIVITY";
 
 const actions = addPrefix(ACTION_PREFIX, {
@@ -247,7 +249,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
   return (
     <s.Container>
       <Allotment defaultSizes={[70, 30]}>
-        <s.RecentActivityContainer>
+        <s.RecentActivityContainer id={RECENT_ACTIVITY_CONTAINER_ID}>
           <EnvironmentPanel
             environments={environments}
             viewMode={viewMode}

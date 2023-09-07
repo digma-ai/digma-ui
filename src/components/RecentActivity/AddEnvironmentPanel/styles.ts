@@ -31,6 +31,7 @@ export const Container = styled.div`
 export const Title = styled.span`
   font-size: 16px;
   text-transform: capitalize;
+  font-weight: 600;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -44,10 +45,11 @@ export const Title = styled.span`
 
 export const ContentContainer = styled.div`
   display: flex;
+  gap: 12px;
   justify-content: space-between;
 `;
 
-export const InstructionContainer = styled.div`
+export const Column = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -56,7 +58,6 @@ export const InstructionContainer = styled.div`
 export const IllustrationContainer = styled.div`
   display: flex;
   align-items: flex-end;
-  justify-content: space-between;
 `;
 
 export const RunOrDebugIllustration = styled.img`

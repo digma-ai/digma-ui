@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import useDimensions from "react-cool-dimensions";
 import { DefaultTheme, useTheme } from "styled-components";
+import { RECENT_ACTIVITY_CONTAINER_ID } from "..";
 import { IconButton } from "../../common/IconButton";
 import { NewPopover } from "../../common/NewPopover";
 import { ChevronIcon } from "../../common/icons/ChevronIcon";
@@ -149,26 +150,32 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
       environmentListContainerDimensions.width >=
     FONT_WIDTH_TRANSITION_THRESHOLD;
 
-  const renderAddButton = () => (
-    <NewPopover
-      placement={"bottom-start"}
-      onOpenChange={setIsAddEnvironmentDialogOpen}
-      isOpen={isAddEnvironmentDialogOpen}
-      content={
-        <AddEnvironmentDialog
-          onClose={handleCloseAddEnvironmentDialog}
-          onEnvironmentAdd={handleEnvironmentAdd}
-          environments={props.environments}
-        />
-      }
-    >
-      <div>
-        <s.AddButton>
-          <PlusIcon color={plusButtonIconColor} />
-        </s.AddButton>
-      </div>
-    </NewPopover>
-  );
+  const renderAddButton = () => {
+    const boundaryEl =
+      document.getElementById(RECENT_ACTIVITY_CONTAINER_ID) || undefined;
+
+    return (
+      <NewPopover
+        boundary={boundaryEl}
+        placement={"bottom-start"}
+        onOpenChange={setIsAddEnvironmentDialogOpen}
+        isOpen={isAddEnvironmentDialogOpen}
+        content={
+          <AddEnvironmentDialog
+            onClose={handleCloseAddEnvironmentDialog}
+            onEnvironmentAdd={handleEnvironmentAdd}
+            environments={props.environments}
+          />
+        }
+      >
+        <div>
+          <s.AddButton>
+            <PlusIcon color={plusButtonIconColor} />
+          </s.AddButton>
+        </div>
+      </NewPopover>
+    );
+  };
 
   return (
     <s.BorderContainer>

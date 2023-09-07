@@ -1,6 +1,5 @@
 import {
   FloatingArrow,
-  FloatingFocusManager,
   FloatingPortal,
   Placement,
   arrow,
@@ -77,7 +76,9 @@ export const NewPopover = (props: PopoverProps) => {
     middleware: [
       offset(props.arrow ? ARROW_HEIGHT + ARROW_GAP : GAP),
       flip(),
-      shift(),
+      shift({
+        boundary: props.boundary || undefined
+      }),
       ...(props.arrow
         ? [
             arrow({
@@ -127,9 +128,7 @@ export const NewPopover = (props: PopoverProps) => {
                 style={getArrowStyles(context.placement)}
               />
             )}
-            <FloatingFocusManager context={context}>
-              <div style={{ zIndex: 1000 }}>{props.content}</div>
-            </FloatingFocusManager>
+            <div>{props.content}</div>
           </div>
         </FloatingPortal>
       )}

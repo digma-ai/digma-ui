@@ -11,9 +11,9 @@ const validateName = (
   value: string,
   environments: ExtendedEnvironment[]
 ): { isValid: boolean; errorMessage?: string } => {
-  const ENVIRONMENT_NAME_REGEX = /^[a-zA-Z0-9_.-]{1,50}$/;
+  const ENVIRONMENT_NAME_REGEX = /^[A-Z0-9_.-]{1,50}$/;
   const ENVIRONMENT_NAME_MESSAGE =
-    "Name must contain only Latin letters (a-z, A-Z), digits (0-9), hyphen (-), underscore (_) and dot(.) and must be at most 50 characters long";
+    "Name must contain only Latin letters (A-Z), digits (0-9), hyphen (-), underscore (_) and dot(.) and must be at most 50 characters long";
   const ENVIRONMENT_EXISTS_MESSAGE =
     "Environment with such name already exists";
 
@@ -57,7 +57,7 @@ export const AddEnvironmentDialog = (props: AddEnvironmentDialogProps) => {
   }, []);
 
   const handleTextFieldValueChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setTextFieldValue(e.target.value);
+    setTextFieldValue(e.target.value.toLocaleUpperCase());
   };
 
   const handleCloseButtonClick = () => {

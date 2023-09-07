@@ -8,4 +8,5 @@ export interface PopoverProps {
   arrow?: boolean;
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
+  boundary?: HTMLElement;
 }

@@ -15,20 +15,17 @@ export const EnvironmentTab = (props: EnvironmentTabProps) => {
   const containerRef = useRef<HTMLLIElement>(null);
 
   const handleMouseEnter = useCallback(() => {
-    // console.log("handleMouseEnter");
     setIsHovered(true);
   }, []);
   const handleMouseLeave = useCallback(() => {
-    // console.log("handleMouseLeave");
     setIsHovered(false);
   }, []);
 
   const handleFocus = useCallback(() => {
-    // console.log("handleFocus");
     setIsFocused(true);
   }, []);
+
   const handleBlur = useCallback(() => {
-    // console.log("handleBlur");
     setIsFocused(false);
   }, []);
 
@@ -46,6 +43,8 @@ export const EnvironmentTab = (props: EnvironmentTabProps) => {
         props.onEnvironmentDelete(props.environment.name);
         break;
     }
+
+    setIsMenuOpen(false);
   };
 
   const menuItems = [...(props.environment.isPending ? ["Delete"] : [])].map(
@@ -71,7 +70,7 @@ export const EnvironmentTab = (props: EnvironmentTabProps) => {
       <Tooltip title={props.environment.name}>
         <s.Label>{props.environment.name}</s.Label>
       </Tooltip>
-      {menuItems.length > 0 && (isHovered || isFocused) && (
+      {menuItems.length > 0 && (isHovered || isFocused || isMenuOpen) && (
         <NewPopover
           content={<Menu items={menuItems} onSelect={handleMenuItemSelect} />}
           onOpenChange={setIsMenuOpen}

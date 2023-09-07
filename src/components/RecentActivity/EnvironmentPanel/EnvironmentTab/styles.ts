@@ -12,6 +12,17 @@ export const Container = styled.li<ContainerProps>`
   align-items: center;
   gap: 4px;
   color: ${({ isPending, isSelected, theme }) => {
+    if (isSelected) {
+      switch (theme.mode) {
+        case "light":
+          return "#494b57";
+        case "dark":
+          return "#b9c2eb";
+        case "dark-jetbrains":
+          return "#dfe1e5";
+      }
+    }
+
     if (isPending) {
       switch (theme.mode) {
         case "light":
@@ -22,38 +33,13 @@ export const Container = styled.li<ContainerProps>`
       }
     }
 
-    if (isSelected) {
-      switch (theme.mode) {
-        case "light":
-          return "#002d61";
-        case "dark":
-          return "#b9c2eb";
-        case "dark-jetbrains":
-          return "#dadada";
-      }
-    }
-
     switch (theme.mode) {
       case "light":
-        return "#4d668a";
+        return "#818594";
       case "dark":
         return "#7c7c94";
       case "dark-jetbrains":
-        return "#9b9b9b";
-    }
-  }};
-  background: ${({ isSelected, theme }) => {
-    if (!isSelected) {
-      return "none";
-    }
-
-    switch (theme.mode) {
-      case "light":
-        return "#fbfdff";
-      case "dark":
-        return "#1e1e1e";
-      case "dark-jetbrains":
-        return "#3d3f41";
+        return "#b4b8bf";
     }
   }};
   border-bottom: ${({ isSelected }) =>
@@ -68,7 +54,7 @@ export const Container = styled.li<ContainerProps>`
         case "dark":
           return "#b9c2eb";
         case "dark-jetbrains":
-          return "#dadada";
+          return "#dfe1e5";
       }
     }};
   }

@@ -44,11 +44,11 @@ export const Container = styled.div`
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "#fbfbff";
+        return "#ebecf0";
       case "dark":
         return "#1e1e1e";
       case "dark-jetbrains":
-        return "#3d3f41";
+        return "#393b40";
     }
   }};
   padding: 5px 12px 6px;

@@ -6,7 +6,7 @@ export const Container = styled.div`
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "#f1f5fa";
+        return "#f7f8fa";
       case "dark":
         return "#0f0f0f";
       case "dark-jetbrains":
@@ -54,11 +54,11 @@ export const Header = styled.div`
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "#b9c0d4";
+        return "#818594";
       case "dark":
         return "#b9c2eb";
       case "dark-jetbrains":
-        return "#9b9b9b";
+        return "#b4b8bf";
     }
   }};
 `;
@@ -73,11 +73,11 @@ export const NoDataContainer = styled.div`
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "#fbfbff";
+        return "#ebecf0";
       case "dark":
         return "#1e1e1e";
       case "dark-jetbrains":
-        return "#3d3f41";
+        return "#393b40";
     }
   }};
 `;

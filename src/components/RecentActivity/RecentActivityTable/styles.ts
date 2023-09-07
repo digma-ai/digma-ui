@@ -24,11 +24,11 @@ export const TableHead = styled.thead`
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "#b9c0d4";
+        return "#818594";
       case "dark":
         return "#b9c2eb";
       case "dark-jetbrains":
-        return "#9b9b9b";
+        return "#b4b8bf";
     }
   }};
 `;
@@ -47,11 +47,11 @@ export const TableBody = styled.tbody`
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "#fbfdff";
+        return "#ebecf0";
       case "dark":
         return "#1e1e1e";
       case "dark-jetbrains":
-        return "#3d3f41";
+        return "#393b40";
     }
   }};
 
@@ -161,11 +161,11 @@ export const ListHeader = styled.div`
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "#b9c0d4";
+        return "#818594";
       case "dark":
         return "#b9c2eb";
       case "dark-jetbrains":
-        return "#9b9b9b";
+        return "#b4b8bf";
     }
   }};
 `;
@@ -190,11 +190,11 @@ export const List = styled.ul`
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "#fbfdff";
+        return "#ebecf0";
       case "dark":
         return "#1e1e1e";
       case "dark-jetbrains":
-        return "#3d3f41";
+        return "#393b40";
     }
   }};
 `;

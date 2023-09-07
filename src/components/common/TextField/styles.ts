@@ -10,10 +10,10 @@ export const Container = styled.div<ContainerProps>`
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "#e9eef4";
+        return "#f7f8fa";
       case "dark":
       case "dark-jetbrains":
-        return "#252526";
+        return "#2b2d30";
     }
   }};
   border: 1px solid
@@ -21,19 +21,19 @@ export const Container = styled.div<ContainerProps>`
       if (focused) {
         switch (theme.mode) {
           case "light":
-            return "#7891d0";
+            return "#383a42";
           case "dark":
           case "dark-jetbrains":
-            return "#9b9b9b";
+            return "#dfe1e5";
         }
       }
 
       switch (theme.mode) {
         case "light":
-          return "#d0d6eb";
+          return "#c9ccd6";
         case "dark":
         case "dark-jetbrains":
-          return "#49494d";
+          return "#4e5157";
       }
     }};
 `;
@@ -48,10 +48,10 @@ export const Input = styled.input`
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "#4d668a";
+        return "#494b57";
       case "dark":
       case "dark-jetbrains":
-        return "#dadada";
+        return "#dfe1e5";
     }
   }};
 
@@ -59,10 +59,10 @@ export const Input = styled.input`
     color: ${({ theme }) => {
       switch (theme.mode) {
         case "light":
-          return "#4d668a";
+          return "#494b57";
         case "dark":
         case "dark-jetbrains":
-          return "#dadada";
+          return "#dfe1e5";
       }
     }};
   }

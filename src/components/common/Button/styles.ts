@@ -28,14 +28,14 @@ export const Button = styled.button<ButtonElementProps>`
     if (buttonType === "secondary") {
       switch (theme.mode) {
         case "light":
-          return "#3538cd";
+          return "#494b57";
         case "dark":
         case "dark-jetbrains":
-          return "#e2e7ff";
+          return "#dfe1e5";
       }
     }
 
-    return "#e2e7ff";
+    return "#fff";
   }};
   background: ${({ buttonType }) => {
     if (buttonType === "tertiary") {

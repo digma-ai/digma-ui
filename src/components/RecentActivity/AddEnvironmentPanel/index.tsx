@@ -17,7 +17,7 @@ export const AddEnvironmentPanel = (props: AddEnvironmentPanelProps) => {
     <s.Container>
       <s.Title>Setting up your environment</s.Title>
       <s.ContentContainer>
-        <s.InstructionContainer>
+        <s.Column>
           <span>Set up the following environment in your code</span>
           <CodeSnippet
             text={`OTEL_RESOURCE_ATTRIBUTES=digma.environment=${props.environmentName}`}
@@ -25,12 +25,13 @@ export const AddEnvironmentPanel = (props: AddEnvironmentPanelProps) => {
           <Link onClick={handleAddToRunConfigLinkClick}>
             Add to the active run config
           </Link>
-        </s.InstructionContainer>
-        <s.IllustrationContainer>
+        </s.Column>
+        <s.Column>
+          Run your app
           <s.RunOrDebugIllustration
             src={`/images/runOrDebug_${themeKind}.gif`}
           />
-        </s.IllustrationContainer>
+        </s.Column>
       </s.ContentContainer>
     </s.Container>
   );
