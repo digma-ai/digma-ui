@@ -216,7 +216,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
     if (selectedEnvironment?.isPending) {
       return (
         <AddEnvironmentPanel
-          environmentName={selectedEnvironment.name}
+          environment={selectedEnvironment}
           onAddEnvironmentToRunConfig={handleAddEnvironmentToRunConfig}
         />
       );

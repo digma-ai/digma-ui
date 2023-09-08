@@ -62,6 +62,7 @@ export const EnvironmentListContainer = styled.div`
   flex-grow: 1;
   overflow: hidden;
   scroll-behavior: smooth;
+  gap: 12px;
 `;
 
 export const EnvironmentList = styled.ul`

@@ -29,6 +29,7 @@ export interface ActivityEntry {
 export interface Environment {
   name: string;
   isPending: boolean;
+  additionToConfigResult: "success" | "failure" | null;
 }
 
 export interface ExtendedEnvironment extends Environment {

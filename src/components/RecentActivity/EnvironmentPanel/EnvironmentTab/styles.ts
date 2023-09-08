@@ -12,6 +12,16 @@ export const Container = styled.li<ContainerProps>`
   align-items: center;
   gap: 4px;
   color: ${({ isPending, isSelected, theme }) => {
+    if (isPending) {
+      switch (theme.mode) {
+        case "light":
+          return "#c9ccd6";
+        case "dark":
+        case "dark-jetbrains":
+          return "#5a5d63";
+      }
+    }
+
     if (isSelected) {
       switch (theme.mode) {
         case "light":
@@ -20,16 +30,6 @@ export const Container = styled.li<ContainerProps>`
           return "#b9c2eb";
         case "dark-jetbrains":
           return "#dfe1e5";
-      }
-    }
-
-    if (isPending) {
-      switch (theme.mode) {
-        case "light":
-          return "#c9ccd6";
-        case "dark":
-        case "dark-jetbrains":
-          return "#5a5d63";
       }
     }
 
@@ -47,15 +47,24 @@ export const Container = styled.li<ContainerProps>`
 
   &:hover {
     font-weight: 700;
-    color: ${({ theme }) => {
-      switch (theme.mode) {
-        case "light":
-          return "#002d61";
-        case "dark":
-          return "#b9c2eb";
-        case "dark-jetbrains":
-          return "#dfe1e5";
+    ${({ theme, isPending }) => {
+      let color = "";
+
+      if (!isPending) {
+        switch (theme.mode) {
+          case "light":
+            color = "#002d61";
+            break;
+          case "dark":
+            color = "#b9c2eb";
+            break;
+          case "dark-jetbrains":
+            color = "#dfe1e5";
+            break;
+        }
       }
+
+      return color ? `color: ${color}` : "";
     }};
   }
 

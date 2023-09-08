@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { RecentActivity } from ".";
 import { mockData as liveData } from "./LiveView/mockData";
+import { RecentActivityData } from "./types";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof RecentActivity> = {
@@ -19,17 +20,18 @@ type Story = StoryObj<typeof meta>;
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 export const NoData: Story = {};
 
-const data = {
+const data: RecentActivityData = {
   environments: [
-    { name: "ENV_RENDER", isPending: false },
-    { name: "UNSET_ENV", isPending: false },
-    { name: "UNSET_ENV1", isPending: true },
-    { name: "UNSET_ENV2", isPending: false },
-    { name: "UNSET_ENV3", isPending: false },
-    { name: "UNSET_ENV4", isPending: false },
+    { name: "ENV_RENDER", isPending: false, additionToConfigResult: null },
+    { name: "UNSET_ENV", isPending: false, additionToConfigResult: null },
+    { name: "UNSET_ENV1", isPending: true, additionToConfigResult: null },
+    { name: "UNSET_ENV2", isPending: false, additionToConfigResult: null },
+    { name: "UNSET_ENV3", isPending: false, additionToConfigResult: null },
+    { name: "UNSET_ENV4", isPending: false, additionToConfigResult: null },
     {
       name: " VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-LONG-NAME",
-      isPending: false
+      isPending: false,
+      additionToConfigResult: null
     }
   ],
   entries: [

@@ -6,6 +6,7 @@ export const ConfigContext = createContext({
   isJaegerEnabled: window.isJaegerEnabled === true,
   isDigmaEngineInstalled: window.isDigmaEngineInstalled === true,
   isDigmaEngineRunning: window.isDigmaEngineRunning === true,
+  isDigmaRunning: window.isDigmaRunning === true,
   isDockerInstalled: window.isDockerInstalled === true,
   isDockerComposeInstalled: window.isDockerComposeInstalled === true,
   userEmail: isString(window.userEmail) ? window.userEmail : ""

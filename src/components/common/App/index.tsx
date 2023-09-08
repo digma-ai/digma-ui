@@ -88,6 +88,15 @@ export const App = (props: AppProps) => {
       }
     };
 
+    const handleSetIsDigmaRunning = (data: unknown) => {
+      if (isObject(data) && isBoolean(data.isDigmaRunning)) {
+        setConfig((config) => ({
+          ...config,
+          isDigmaRunning: data.isDigmaRunning as boolean
+        }));
+      }
+    };
+
     const handleSetIsDockerInstalled = (data: unknown) => {
       if (isObject(data) && isBoolean(data.isDockerInstalled)) {
         setConfig((config) => ({
@@ -122,6 +131,10 @@ export const App = (props: AppProps) => {
       handleSetIsDigmaEngineRunning
     );
     dispatcher.addActionListener(
+      actions.SET_IS_DIGMA_RUNNING,
+      handleSetIsDigmaRunning
+    );
+    dispatcher.addActionListener(
       actions.SET_IS_DOCKER_INSTALLED,
       handleSetIsDockerInstalled
     );
@@ -145,6 +158,10 @@ export const App = (props: AppProps) => {
       dispatcher.removeActionListener(
         actions.SET_IS_DIGMA_ENGINE_RUNNING,
         handleSetIsDigmaEngineRunning
+      );
+      dispatcher.removeActionListener(
+        actions.SET_IS_DIGMA_RUNNING,
+        handleSetIsDigmaRunning
       );
       dispatcher.removeActionListener(
         actions.SET_IS_DOCKER_INSTALLED,

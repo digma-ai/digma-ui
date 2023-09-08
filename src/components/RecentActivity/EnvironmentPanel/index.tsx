@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import useDimensions from "react-cool-dimensions";
 import { DefaultTheme, useTheme } from "styled-components";
 import { RECENT_ACTIVITY_CONTAINER_ID } from "..";
+import { ConfigContext } from "../../common/App/ConfigContext";
 import { IconButton } from "../../common/IconButton";
 import { NewPopover } from "../../common/NewPopover";
 import { ChevronIcon } from "../../common/icons/ChevronIcon";
@@ -46,9 +47,10 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
   const plusButtonIconColor = getPlusButtonIconColor(theme);
   const [isAddEnvironmentDialogOpen, setIsAddEnvironmentDialogOpen] =
     useState(false);
-  // const [addedEnvironments, setAddedEnvironments] = useState<
-  //   ExtendedEnvironment[]
-  // >([]);
+  const config = useContext(ConfigContext);
+  const isAddButtonVisible =
+    config.isDigmaRunning &&
+    window.recentActivityIsEnvironmentManagementEnabled === true;
 
   useEffect(() => {
     const entry = environmentListContainerDimensions.entry;
@@ -79,13 +81,6 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
   };
 
   const handleEnvironmentAdd = (environmentName: string) => {
-    // const newEnvironment = {
-    //   name: environmentName,
-    //   hasRecentActivity: false,
-    //   isPending: true
-    // };
-    // setAddedEnvironments([...addedEnvironments, newEnvironment]);
-    // setIsAddEnvironmentDialogOpen(false);
     props.onEnvironmentAdd(environmentName);
     // props.onEnvironmentSelect(newEnvironment);
   };
@@ -217,7 +212,9 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
               />
             ))}
           </s.EnvironmentList>
-          {!areCarouselButtonsVisible && renderAddButton()}
+          {!areCarouselButtonsVisible &&
+            isAddButtonVisible &&
+            renderAddButton()}
         </s.EnvironmentListContainer>
         <s.CarouselButtonContainer key={"right"}>
           {areCarouselButtonsVisible && (
@@ -235,7 +232,7 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
             </s.CarouselButton>
           )}
         </s.CarouselButtonContainer>
-        {areCarouselButtonsVisible && renderAddButton()}
+        {areCarouselButtonsVisible && isAddButtonVisible && renderAddButton()}
         <s.ViewModeButtonContainer>
           <IconButton
             icon={icons[props.viewMode]}

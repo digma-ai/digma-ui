@@ -32,6 +32,7 @@ declare global {
     isObservabilityEnabled?: unknown;
     isDigmaEngineInstalled?: unknown;
     isDigmaEngineRunning?: unknown;
+    isDigmaRunning?: unknown;
     isDockerInstalled?: unknown;
     isDockerComposeInstalled?: unknown;
     assetsRefreshInterval?: unknown;
@@ -42,6 +43,7 @@ declare global {
     notificationsViewMode?: unknown;
     recentActivityExpirationLimit?: unknown;
     recentActivityDocumentationURL?: unknown;
+    recentActivityIsEnvironmentManagementEnabled?: unknown;
     wizardSkipInstallationStep?: unknown;
     wizardFirstLaunch?: unknown;
   }

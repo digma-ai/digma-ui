@@ -1,4 +1,6 @@
+import { ExtendedEnvironment } from "../types";
+
 export interface AddEnvironmentPanelProps {
-  environmentName: string;
+  environment: ExtendedEnvironment;
   onAddEnvironmentToRunConfig: () => void;
 }
