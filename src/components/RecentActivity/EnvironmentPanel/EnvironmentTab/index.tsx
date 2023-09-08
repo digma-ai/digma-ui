@@ -1,4 +1,5 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useContext, useRef, useState } from "react";
+import { ConfigContext } from "../../../common/App/ConfigContext";
 import { Badge } from "../../../common/Badge";
 import { KebabMenuButton } from "../../../common/KebabMenuButton";
 import { NewPopover } from "../../../common/NewPopover";
@@ -12,6 +13,10 @@ export const EnvironmentTab = (props: EnvironmentTabProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const config = useContext(ConfigContext);
+  const isMenuVisible =
+    config.isDigmaRunning &&
+    window.recentActivityIsEnvironmentManagementEnabled === true;
 
   const containerRef = useRef<HTMLLIElement>(null);
 
@@ -73,23 +78,25 @@ export const EnvironmentTab = (props: EnvironmentTabProps) => {
       <Tooltip title={props.environment.name}>
         <s.Label>{props.environment.name}</s.Label>
       </Tooltip>
-      {menuItems.length > 0 && (isHovered || isFocused || isMenuOpen) && (
-        <NewPopover
-          content={
-            <EnvironmentMenu
-              items={menuItems}
-              onSelect={handleMenuItemSelect}
-            />
-          }
-          onOpenChange={setIsMenuOpen}
-          isOpen={isMenuOpen}
-          placement={"bottom-start"}
-        >
-          <span>
-            <KebabMenuButton />
-          </span>
-        </NewPopover>
-      )}
+      {isMenuVisible &&
+        menuItems.length > 0 &&
+        (isHovered || isFocused || isMenuOpen) && (
+          <NewPopover
+            content={
+              <EnvironmentMenu
+                items={menuItems}
+                onSelect={handleMenuItemSelect}
+              />
+            }
+            onOpenChange={setIsMenuOpen}
+            isOpen={isMenuOpen}
+            placement={"bottom-start"}
+          >
+            <span>
+              <KebabMenuButton />
+            </span>
+          </NewPopover>
+        )}
     </s.Container>
   );
 };

@@ -1,7 +1,7 @@
 import { useTheme } from "styled-components";
 import { getThemeKind } from "../../common/App/styles";
 import { CodeSnippet } from "../../common/CodeSnippet";
-import { Link } from "../../common/Link";
+import { DesktopIcon } from "../../common/icons/DesktopIcon";
 import * as s from "./styles";
 import { AddEnvironmentPanelProps } from "./types";
 
@@ -15,32 +15,56 @@ export const AddEnvironmentPanel = (props: AddEnvironmentPanelProps) => {
 
   return (
     <s.Container>
-      <s.Title>Setting up your environment</s.Title>
+      <s.Header>
+        <DesktopIcon size={16} color={"currentColor"} />
+        How to setup your local environment
+      </s.Header>
       <s.ContentContainer>
-        <s.Column>
-          <span>
-            Set up the following environment variables when running your code to
-            tag the observability data with this environment
-          </span>
-          <CodeSnippet
-            text={`OTEL_RESOURCE_ATTRIBUTES=digma.environment=${props.environment.name}`}
-          />
-          <Link onClick={handleAddToRunConfigLinkClick}>
-            Add to the active run config
-          </Link>
-          {props.environment.additionToConfigResult === "success" && (
-            <span>Successfully added</span>
-          )}
-          {props.environment.additionToConfigResult === "failure" && (
-            <span>Failed to add the environment</span>
-          )}
-        </s.Column>
-        <s.Column>
-          Run your app
-          <s.RunOrDebugIllustration
-            src={`/images/runOrDebug_${themeKind}.gif`}
-          />
-        </s.Column>
+        <s.Section>
+          <s.SectionHeader>
+            <s.SectionNumber>1</s.SectionNumber>
+            <s.SectionTitle>Integrate Code</s.SectionTitle>
+          </s.SectionHeader>
+          <s.SectionContentContainer>
+            <span>
+              Set up the following environment variables when running your code
+              to tag the observability data with this environment
+            </span>
+            <CodeSnippet
+              text={`OTEL_RESOURCE_ATTRIBUTES=digma.environment=${props.environment.name}`}
+            />
+            <s.AddToConfigContainer>
+              <s.Link onClick={handleAddToRunConfigLinkClick}>
+                Add to the active run config
+              </s.Link>
+              {props.environment.additionToConfigResult === "success" && (
+                <s.AddToConfigSuccessMessage>
+                  Successfully added
+                </s.AddToConfigSuccessMessage>
+              )}
+              {props.environment.additionToConfigResult === "failure" && (
+                <s.AddToConfigFailureMessage>
+                  Failed to add
+                </s.AddToConfigFailureMessage>
+              )}
+            </s.AddToConfigContainer>
+          </s.SectionContentContainer>
+        </s.Section>
+        <s.Section>
+          <s.SectionHeader>
+            <s.SectionNumber>2</s.SectionNumber>
+            <s.SectionTitle>Run your Application</s.SectionTitle>
+          </s.SectionHeader>
+          <s.SectionContentContainer>
+            <span>
+              Running your app will integrate your environment and Digma can
+              start showing you info!
+            </span>
+            <s.RunOrDebugIllustration
+              src={`/images/runOrDebug_${themeKind}.gif`}
+            />
+          </s.SectionContentContainer>
+        </s.Section>
       </s.ContentContainer>
     </s.Container>
   );
