@@ -64,11 +64,11 @@ export const Container = styled.li<ContainerProps>`
         }
       }
 
-      return color ? `color: ${color}` : "";
+      return color ? `color: ${color};` : "";
     }};
   }
 
-  transition-property: color, font-weight, border;
+  transition-property: color, font-weight;
   transition-duration: 300ms;
   transition-timing-function: ease-out;
 `;

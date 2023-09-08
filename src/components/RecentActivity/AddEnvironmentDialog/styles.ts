@@ -47,3 +47,18 @@ export const ButtonsContainer = styled.div`
   gap: 8px;
   justify-content: flex-end;
 `;
+
+export const ErrorMessage = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#e00036";
+      case "dark":
+      case "dark-jetbrains":
+        return "#f93967";
+    }
+  }};
+`;

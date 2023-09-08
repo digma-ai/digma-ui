@@ -3,7 +3,6 @@ import "allotment/dist/style.css";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { actions as globalActions } from "../../actions";
 import { dispatcher } from "../../dispatcher";
-import { usePrevious } from "../../hooks/usePrevious";
 import { trackingEvents as globalTrackingEvents } from "../../trackingEvents";
 import { addPrefix } from "../../utils/addPrefix";
 import { groupBy } from "../../utils/groupBy";
@@ -70,7 +69,6 @@ export const RecentActivity = (props: RecentActivityProps) => {
   const [selectedEnvironment, setSelectedEnvironment] =
     useState<ExtendedEnvironment>();
   const [data, setData] = useState<RecentActivityData>();
-  const previousSelectedEnvironment = usePrevious(selectedEnvironment);
   const [viewMode, setViewMode] = useState<ViewMode>("table");
   const [liveData, setLiveData] = useState<LiveData>();
   const config = useContext(ConfigContext);
@@ -92,6 +90,20 @@ export const RecentActivity = (props: RecentActivityProps) => {
         : [],
     [data, environmentActivities]
   );
+
+  useEffect(() => {
+    setSelectedEnvironment((selectedEnvironment) => {
+      const environmentToSelect = environments.find(
+        (x) => x.name === selectedEnvironment?.name
+      );
+
+      if (environmentToSelect) {
+        return environmentToSelect;
+      }
+
+      return environments[0];
+    });
+  }, [environments]);
 
   useEffect(() => {
     window.sendMessageToDigma({
@@ -128,22 +140,6 @@ export const RecentActivity = (props: RecentActivityProps) => {
       setLiveData(props.liveData);
     }
   }, [props.liveData]);
-
-  useEffect(() => {
-    if (!previousSelectedEnvironment && environments.length) {
-      setSelectedEnvironment(environments[0]);
-    }
-  }, [previousSelectedEnvironment, environments]);
-
-  useEffect(() => {
-    const isSelectedEnvironmentExists = environments.find(
-      (x) => x.name === selectedEnvironment?.name
-    );
-
-    if (!isSelectedEnvironmentExists) {
-      setSelectedEnvironment(environments[0]);
-    }
-  }, [environments, selectedEnvironment]);
 
   const handleEnvironmentSelect = (environment: ExtendedEnvironment) => {
     setSelectedEnvironment(environment);
@@ -189,6 +185,14 @@ export const RecentActivity = (props: RecentActivityProps) => {
       payload: {
         environment
       }
+    });
+
+    // Set environment placeholder until the next data refresh
+    setSelectedEnvironment({
+      name: environment,
+      isPending: true,
+      hasRecentActivity: false,
+      additionToConfigResult: null
     });
   };
 

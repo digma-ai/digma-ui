@@ -1,8 +1,16 @@
-import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
+import {
+  ChangeEvent,
+  KeyboardEvent,
+  ReactNode,
+  useEffect,
+  useRef,
+  useState
+} from "react";
 import { DefaultTheme, useTheme } from "styled-components";
 import { Button } from "../../common/Button";
 import { TextField } from "../../common/TextField";
 import { CrossIcon } from "../../common/icons/CrossIcon";
+import { WarningCircleLargeIcon } from "../../common/icons/WarningCircleLargeIcon";
 import { ExtendedEnvironment } from "../types";
 import * as s from "./styles";
 import { AddEnvironmentDialogProps } from "./types";
@@ -10,7 +18,7 @@ import { AddEnvironmentDialogProps } from "./types";
 const validateName = (
   value: string,
   environments: ExtendedEnvironment[]
-): { isValid: boolean; errorMessage?: string } => {
+): { isValid: boolean; errorMessage?: ReactNode } => {
   const ENVIRONMENT_NAME_REGEX = /^[A-Z0-9_.-]{1,50}$/;
   const ENVIRONMENT_NAME_MESSAGE =
     "Name must contain only Latin letters (A-Z), digits (0-9), hyphen (-), underscore (_) and dot(.) and must be at most 50 characters long";
@@ -20,14 +28,19 @@ const validateName = (
   if (!ENVIRONMENT_NAME_REGEX.test(value)) {
     return {
       isValid: false,
-      errorMessage: ENVIRONMENT_NAME_MESSAGE
+      errorMessage: <>{ENVIRONMENT_NAME_MESSAGE}</>
     };
   }
 
   if (environments.find((x) => x.name === value)) {
     return {
       isValid: false,
-      errorMessage: ENVIRONMENT_EXISTS_MESSAGE
+      errorMessage: (
+        <s.ErrorMessage>
+          <WarningCircleLargeIcon color={"currentColor"} />
+          {ENVIRONMENT_EXISTS_MESSAGE}
+        </s.ErrorMessage>
+      )
     };
   }
 
