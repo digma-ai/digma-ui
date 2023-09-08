@@ -717,24 +717,6 @@ export const Startup: Story = {
   }
 };
 
-export const Loading: Story = {
-  args: {
-    data: {
-      spans: [],
-      assetId: "string",
-      serviceName: "string",
-      environment: "string",
-      viewMode: ViewMode.INSIGHTS,
-      hasMissingDependency: false,
-      insightsStatus: InsightsStatus.LOADING,
-      methods: [],
-      insights: [],
-      canInstrumentMethod: false,
-      needsObservabilityFix: false
-    }
-  }
-};
-
 export const Preview: Story = {
   args: {
     data: {

@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { DefaultTheme, useTheme } from "styled-components";
 import { actions as globalActions } from "../../actions";
 import { SLACK_WORKSPACE_URL } from "../../constants";
 import { dispatcher } from "../../dispatcher";
@@ -11,7 +10,6 @@ import { openURLInDefaultBrowser } from "../../utils/openURLInDefaultBrowser";
 import { sendTrackingEvent } from "../../utils/sendTrackingEvent";
 import { Button } from "../common/Button";
 import { CircleLoader } from "../common/CircleLoader";
-import { CircleLoaderProps } from "../common/CircleLoader/types";
 import { EmptyState } from "../common/EmptyState";
 import { CardsIcon } from "../common/icons/CardsIcon";
 import { DocumentWithMagnifierIcon } from "../common/icons/DocumentWithMagnifierIcon";
@@ -54,43 +52,28 @@ export const actions = addPrefix(ACTION_PREFIX, {
   MARK_INSIGHT_TYPES_AS_VIEWED: "MARK_INSIGHT_TYPES_AS_VIEWED"
 });
 
-const getCircleLoaderColors = (
-  theme: DefaultTheme
-): CircleLoaderProps["colors"] => {
-  switch (theme.mode) {
-    case "light":
-      return {
-        start: "rgb(81 84 236 / 0%)",
-        end: "#5154ec",
-        background: "#fff"
-      };
-    case "dark":
-    case "dark-jetbrains":
-      return {
-        start: "rgb(120 145 208 / 0%)",
-        end: "#7891d0",
-        background: "#2b2d30"
-      };
-  }
-};
-
 export const Insights = (props: InsightsProps) => {
   const [data, setData] = useState<InsightsData>();
   const previousData = usePrevious(data);
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
-  // const [isInitialLoading, setIsInitialLoading] = useState(false);
-  const theme = useTheme();
-  const circleLoaderColors = getCircleLoaderColors(theme);
+  const [isInitialLoading, setIsInitialLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [isAutofixing, setIsAutofixing] = useState(false);
 
   useEffect(() => {
     window.sendMessageToDigma({
       action: actions.GET_DATA
     });
-    // setIsInitialLoading(true);
+    setIsInitialLoading(true);
 
     const handleInsightsData = (data: unknown, timeStamp: number) => {
-      setData(data as InsightsData);
+      const insightsData = data as InsightsData;
+
+      setIsLoading(insightsData.insightsStatus === InsightsStatus.LOADING);
+
+      if (insightsData.insightsStatus !== InsightsStatus.LOADING) {
+        setData(insightsData);
+      }
       setLastSetDataTimeStamp(timeStamp);
     };
 
@@ -121,11 +104,11 @@ export const Insights = (props: InsightsProps) => {
     setData(props.data);
   }, [props.data]);
 
-  // useEffect(() => {
-  //   if (!previousData && data) {
-  //     setIsInitialLoading(false);
-  //   }
-  // }, [previousData, data]);
+  useEffect(() => {
+    if (!previousData && data) {
+      setIsInitialLoading(false);
+    }
+  }, [previousData, data]);
 
   useEffect(() => {
     if (previousData && data && previousData.assetId !== data.assetId) {
@@ -203,7 +186,14 @@ export const Insights = (props: InsightsProps) => {
     return <></>;
   };
 
-  const renderContent = (data?: InsightsData): JSX.Element => {
+  const renderContent = (
+    data: InsightsData | undefined,
+    isInitialLoading: boolean
+  ): JSX.Element => {
+    if (isInitialLoading) {
+      return <EmptyState content={<CircleLoader size={32} />} />;
+    }
+
     switch (data?.insightsStatus) {
       case InsightsStatus.STARTUP:
         return (
@@ -231,7 +221,6 @@ export const Insights = (props: InsightsProps) => {
             }
           />
         );
-
       case InsightsStatus.NO_INSIGHTS:
         return (
           <EmptyState icon={LightBulbSmallCrossedIcon} title={"No insights"} />
@@ -292,17 +281,20 @@ export const Insights = (props: InsightsProps) => {
             }
           />
         );
-      case InsightsStatus.LOADING:
-        return (
-          <EmptyState
-            content={<CircleLoader colors={circleLoaderColors} size={32} />}
-          />
-        );
       case InsightsStatus.DEFAULT:
       default:
         return renderDefaultContent(data);
     }
   };
 
-  return <s.Container>{renderContent(data)}</s.Container>;
+  return (
+    <s.Container>
+      {isLoading && (
+        <s.CircleLoaderContainer>
+          <CircleLoader size={14} />
+        </s.CircleLoaderContainer>
+      )}
+      {renderContent(data, isInitialLoading)}
+    </s.Container>
+  );
 };
