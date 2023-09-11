@@ -7,7 +7,7 @@ export interface AsyncActionResultData {
   error?: string;
 }
 
-export type InstallationType = "local" | "cloud";
+// export type InstallationType = "local" | "cloud";
 
 export interface SetCurrentStepData {
   currentStep: string;

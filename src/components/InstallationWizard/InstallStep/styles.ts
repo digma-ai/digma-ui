@@ -87,3 +87,8 @@ export const SlackLink = styled(Link)`
   align-items: center;
   gap: 4px;
 `;
+
+export const AlreadyRunningMessage = styled(NoDockerText)`
+  margin: 64px;
+  text-align: center;
+`;

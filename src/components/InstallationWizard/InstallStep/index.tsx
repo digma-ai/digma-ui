@@ -41,17 +41,16 @@ export const InstallStep = (props: InstallStepProps) => {
   const [selectedDockerComposeOSTab, setSelectedDockerComposeOSTab] =
     useState(0);
   const config = useContext(ConfigContext);
-  const [isAutoInstallationFlow] = useState(
+  const [isAutoInstallationFlow, setIsAutoInstallationFlow] = useState(
     isFirstLaunch &&
+      config.digmaStatus?.isRunning === false &&
+      config.digmaStatus?.type === null &&
       !config.isDigmaEngineInstalled &&
       config.isDockerInstalled &&
       config.isDockerComposeInstalled
   );
   const [isAutoInstallationFinished, setIsAutoInstallationFinished] =
     useState(false);
-  const [areTabsVisible, setAreTabsVisible] = useState(
-    !config.isDigmaEngineInstalled && !isAutoInstallationFlow
-  );
   const [isEngineOperationInProgress, setIsEngineOperationInProgress] =
     useState(false);
 
@@ -97,11 +96,11 @@ export const InstallStep = (props: InstallStepProps) => {
   };
 
   const handleEngineRemovalFinish = () => {
-    setAreTabsVisible(true);
+    setIsAutoInstallationFlow(false);
   };
 
   const handleEngineManualInstallSelect = () => {
-    setAreTabsVisible(true);
+    setIsAutoInstallationFlow(false);
     const dockerComposeTabIndex = installTabs.findIndex(
       (x) => x.title === "Docker Compose"
     );
@@ -327,33 +326,56 @@ export const InstallStep = (props: InstallStepProps) => {
     }
   ];
 
-  return (
-    <s.Container>
-      {areTabsVisible ? (
-        <Tabs
-          tabs={installTabs}
-          onSelect={handleInstallTabSelect}
-          selectedTab={selectedInstallTab}
-          fullWidth={true}
-        />
-      ) : (
-        <>
-          <EngineManager
-            autoInstall={isAutoInstallationFlow}
-            onAutoInstallFinish={handleEngineAutoInstallationFinish}
-            onManualInstallSelect={handleEngineManualInstallSelect}
-            onRemoveFinish={handleEngineRemovalFinish}
-            onOperationStart={handleEngineOperationStart}
-            onOperationFinish={handleEngineOperationFinish}
-          />
-          <s.CommonContentContainer>
-            {(isAutoInstallationFinished ||
-              (!isAutoInstallationFlow && !isEngineOperationInProgress)) && (
-              <MainButton onClick={handleNextButtonClick}>Next</MainButton>
-            )}
-          </s.CommonContentContainer>
-        </>
-      )}
-    </s.Container>
+  const renderEngineManager = () => (
+    <>
+      <EngineManager
+        autoInstall={isAutoInstallationFlow}
+        onAutoInstallFinish={handleEngineAutoInstallationFinish}
+        onManualInstallSelect={handleEngineManualInstallSelect}
+        onRemoveFinish={handleEngineRemovalFinish}
+        onOperationStart={handleEngineOperationStart}
+        onOperationFinish={handleEngineOperationFinish}
+      />
+      <s.CommonContentContainer>
+        {(isAutoInstallationFinished ||
+          (!isAutoInstallationFlow && !isEngineOperationInProgress)) && (
+          <MainButton onClick={handleNextButtonClick}>Next</MainButton>
+        )}
+      </s.CommonContentContainer>
+    </>
   );
+
+  const renderContent = () => {
+    if (isAutoInstallationFlow || config.isDigmaEngineInstalled) {
+      return renderEngineManager();
+    }
+
+    const digmaStatus = config.digmaStatus;
+
+    if (digmaStatus && digmaStatus.isRunning) {
+      let messageString =
+        "Digma is already running, please remove all running containers to re-install";
+
+      switch (digmaStatus.type) {
+        // TODO: migrate from "isDigmaEngineInstalled" flag to "localEngine" type
+        case "dockerDesktop":
+          messageString =
+            "Digma is already running as Docker extension, please remove the extension first to re-install";
+          break;
+      }
+
+      return <s.AlreadyRunningMessage>{messageString}</s.AlreadyRunningMessage>;
+    }
+
+    return (
+      <Tabs
+        tabs={installTabs}
+        onSelect={handleInstallTabSelect}
+        selectedTab={selectedInstallTab}
+        fullWidth={true}
+      />
+    );
+  };
+
+  return <s.Container>{renderContent()}</s.Container>;
 };

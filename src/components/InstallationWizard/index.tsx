@@ -1,6 +1,5 @@
 import { ChangeEvent, useContext, useEffect, useRef, useState } from "react";
 import { CSSTransition } from "react-transition-group";
-import { useTheme } from "styled-components";
 import { SLACK_WORKSPACE_URL } from "../../constants";
 import { dispatcher } from "../../dispatcher";
 import { IDE } from "../../globals";
@@ -11,27 +10,14 @@ import { addPrefix } from "../../utils/addPrefix";
 import { openURLInDefaultBrowser } from "../../utils/openURLInDefaultBrowser";
 import { sendTrackingEvent } from "../../utils/sendTrackingEvent";
 import { ConfigContext } from "../common/App/ConfigContext";
-import { getThemeKind } from "../common/App/styles";
-import { Button } from "../common/Button";
-import { Checkbox } from "../common/Checkbox";
-import { Loader } from "../common/Loader";
-import { TextField } from "../common/TextField";
-import { CloudDownloadIcon } from "../common/icons/CloudDownloadIcon";
-import { DigmaGreetingIcon } from "../common/icons/DigmaGreetingIcon";
-import { OpenTelemetryDisplayIcon } from "../common/icons/OpenTelemetryDisplayIcon";
 import { SlackLogoIcon } from "../common/icons/SlackLogoIcon";
 import { FinishStep } from "./FinishStep";
 import { InstallStep } from "./InstallStep";
-import { InstallationTypeCard } from "./InstallationTypeCard";
 import { Step } from "./Step";
 import { StepData, StepStatus } from "./Step/types";
 import * as s from "./styles";
 import { trackingEvents } from "./tracking";
-import {
-  AsyncActionResultData,
-  AsyncActionStatus,
-  InstallationType
-} from "./types";
+import { AsyncActionResultData, AsyncActionStatus } from "./types";
 
 const EMAIL_ADDRESS_REGEX =
   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; // source: https://piotr.gg/regexp/email-address-regular-expression-that-99-99-works.html
@@ -101,34 +87,34 @@ export const InstallationWizard = () => {
   const [connectionCheckStatus, setConnectionCheckStatus] =
     useState<AsyncActionStatus>();
   const footerContentRef = useRef<HTMLDivElement>(null);
-  const [userEmail, setUserEmail] = useState("");
-  const [isUserEmailCaptured, setIsUserEmailCaptured] = useState(false);
+  // const [userEmail, setUserEmail] = useState("");
+  // const [isUserEmailCaptured, setIsUserEmailCaptured] = useState(false);
 
   // TO DO:
   // add environment variable for presetting the correct installation type
   // if Digma already installed
-  const preselectedInstallationType =
-    window.wizardSkipInstallationStep === true || config.isDigmaEngineInstalled
-      ? "local"
-      : undefined;
-  const [installationType, setInstallationType] = useState<
-    InstallationType | undefined
-  >(preselectedInstallationType);
+  // const preselectedInstallationType =
+  //   window.wizardSkipInstallationStep === true || config.isDigmaEngineInstalled
+  //     ? "local"
+  //     : undefined;
+  // const [installationType, setInstallationType] = useState<
+  //   InstallationType | undefined
+  // >(preselectedInstallationType);
 
-  const isStartAutoInstall = true;
+  // const isStartAutoInstall = true;
 
-  const theme = useTheme();
-  const themeKind = getThemeKind(theme);
+  // const theme = useTheme();
+  // const themeKind = getThemeKind(theme);
   const [email, setEmail] = useState(config.userEmail);
   const [isEmailValid, setIsEmailValid] = useState(
     email.length > 0 ? validateEmailFormat(email) : undefined
   );
   const [isEmailValidating, setIsEmailValidating] = useState(false);
   const debouncedEmail = useDebounce(email, 1000);
-  const [
-    isDigmaCloudNotificationCheckboxChecked,
-    setIsDigmaCloudNotificationCheckboxChecked
-  ] = useState(false);
+  // const [
+  //   isDigmaCloudNotificationCheckboxChecked,
+  //   setIsDigmaCloudNotificationCheckboxChecked
+  // ] = useState(false);
 
   useEffect(() => {
     if (email === debouncedEmail) {
@@ -236,14 +222,14 @@ export const InstallationWizard = () => {
     }
   };
 
-  const handleInstallationTypeButtonClick = (
-    installationType: InstallationType
-  ) => {
-    sendTrackingEvent(trackingEvents.INSTALLATION_TYPE_BUTTON_CLICKED, {
-      installationType
-    });
-    setInstallationType(installationType);
-  };
+  // const handleInstallationTypeButtonClick = (
+  //   installationType: InstallationType
+  // ) => {
+  //   sendTrackingEvent(trackingEvents.INSTALLATION_TYPE_BUTTON_CLICKED, {
+  //     installationType
+  //   });
+  //   setInstallationType(installationType);
+  // };
 
   const handleEmailInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.trim();
@@ -268,25 +254,25 @@ export const InstallationWizard = () => {
     openURLInDefaultBrowser(SLACK_WORKSPACE_URL);
   };
 
-  const handleDigmaCloudNotificationCheckboxChange = (value: boolean) => {
-    setIsDigmaCloudNotificationCheckboxChecked(value);
-  };
+  // const handleDigmaCloudNotificationCheckboxChange = (value: boolean) => {
+  //   setIsDigmaCloudNotificationCheckboxChecked(value);
+  // };
 
-  const handleUserEmailInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setUserEmail(e.target.value);
-  };
+  // const handleUserEmailInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+  //   setUserEmail(e.target.value);
+  // };
 
-  const handleEmailAddButton = () => {
-    if (userEmail.length > 0) {
-      setIsUserEmailCaptured(true);
-      sendTrackingEvent(
-        trackingEvents.DIGMA_CLOUD_AVAILABILITY_NOTIFICATION_EMAIL_ADDRESS_CAPTURED,
-        {
-          email: userEmail
-        }
-      );
-    }
-  };
+  // const handleEmailAddButton = () => {
+  //   if (userEmail.length > 0) {
+  //     setIsUserEmailCaptured(true);
+  //     sendTrackingEvent(
+  //       trackingEvents.DIGMA_CLOUD_AVAILABILITY_NOTIFICATION_EMAIL_ADDRESS_CAPTURED,
+  //       {
+  //         email: userEmail
+  //       }
+  //     );
+  //   }
+  // };
 
   const steps: StepData[] = [
     {
@@ -343,14 +329,14 @@ export const InstallationWizard = () => {
 
   return (
     <s.Container>
-      {isStartAutoInstall || installationType ? (
-        <s.Header>
-          <s.HeaderTitle>Install Digma</s.HeaderTitle>
-          <s.HeaderSubtitle>
-            Follow the steps to configure your projects
-          </s.HeaderSubtitle>
-        </s.Header>
-      ) : (
+      {/* {isStartAutoInstall || installationType ? ( */}
+      <s.Header>
+        <s.HeaderTitle>Install Digma</s.HeaderTitle>
+        <s.HeaderSubtitle>
+          Follow the steps to configure your projects
+        </s.HeaderSubtitle>
+      </s.Header>
+      {/* ) : (
         <s.WelcomeContainer>
           <s.WelcomeTitleContainer>
             <s.WelcomeIconContainer>
@@ -444,8 +430,9 @@ export const InstallationWizard = () => {
             />
           </s.InstallationTypeButtonsContainer>
         </s.WelcomeContainer>
-      )}
-      {(isStartAutoInstall || installationType) &&
+      )} */}
+      {
+        // (isStartAutoInstall || installationType) &&
         steps.map((step, i) => (
           <Step
             key={step.key}
@@ -455,31 +442,31 @@ export const InstallationWizard = () => {
             status={getStepStatus(i, currentStep)}
             transitionDuration={TRANSITION_DURATION}
           />
-        ))}
-
+        ))
+      }
       <s.Footer>
-        {(isStartAutoInstall || installationType) && (
-          <CSSTransition
-            in={currentStep === steps.length - 1}
-            timeout={TRANSITION_DURATION}
-            classNames={footerTransitionClassName}
-            nodeRef={footerContentRef}
-            mountOnEnter={true}
+        {/* {(isStartAutoInstall || installationType) && ( */}
+        <CSSTransition
+          in={currentStep === steps.length - 1}
+          timeout={TRANSITION_DURATION}
+          classNames={footerTransitionClassName}
+          nodeRef={footerContentRef}
+          mountOnEnter={true}
+        >
+          <s.FooterContent
+            ref={footerContentRef}
+            transitionClassName={footerTransitionClassName}
+            transitionDuration={TRANSITION_DURATION}
           >
-            <s.FooterContent
-              ref={footerContentRef}
-              transitionClassName={footerTransitionClassName}
-              transitionDuration={TRANSITION_DURATION}
+            <s.MainButton
+              onClick={handleFinishButtonClick}
+              disabled={isEmailValid === false || isEmailValidating}
             >
-              <s.MainButton
-                onClick={handleFinishButtonClick}
-                disabled={isEmailValid === false || isEmailValidating}
-              >
-                Finish
-              </s.MainButton>
-            </s.FooterContent>
-          </CSSTransition>
-        )}
+              Finish
+            </s.MainButton>
+          </s.FooterContent>
+        </CSSTransition>
+        {/* )} */}
         <s.FooterSlackLink onClick={handleSlackLinkClick}>
           <SlackLogoIcon size={14} />
           Having trouble? Please reach out in our Slack group

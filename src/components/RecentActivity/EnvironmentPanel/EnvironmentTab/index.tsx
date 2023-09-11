@@ -15,7 +15,7 @@ export const EnvironmentTab = (props: EnvironmentTabProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const config = useContext(ConfigContext);
   const isMenuVisible =
-    config.isDigmaRunning &&
+    config.digmaStatus?.isRunning &&
     window.recentActivityIsEnvironmentManagementEnabled === true;
 
   const containerRef = useRef<HTMLLIElement>(null);

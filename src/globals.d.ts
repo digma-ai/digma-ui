@@ -32,7 +32,7 @@ declare global {
     isObservabilityEnabled?: unknown;
     isDigmaEngineInstalled?: unknown;
     isDigmaEngineRunning?: unknown;
-    isDigmaRunning?: unknown;
+    digmaStatus?: unknown;
     isDockerInstalled?: unknown;
     isDockerComposeInstalled?: unknown;
     assetsRefreshInterval?: unknown;
