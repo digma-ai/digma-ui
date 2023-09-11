@@ -1,9 +1,13 @@
+import { ExtendedEnvironment } from "../types";
+
 export interface EnvironmentPanelProps {
   viewMode: ViewMode;
-  environments: { name: string; hasBadge: boolean }[];
-  selectedEnvironment?: string;
-  onEnvironmentSelect: (tabId: string) => void;
+  environments: ExtendedEnvironment[];
+  selectedEnvironment?: ExtendedEnvironment;
+  onEnvironmentSelect: (environment: ExtendedEnvironment) => void;
   onViewModeChange: (mode: ViewMode) => void;
+  onEnvironmentAdd: (environment: string) => void;
+  onEnvironmentDelete: (environment: string) => void;
 }
 
 export type ViewMode = "table" | "list";

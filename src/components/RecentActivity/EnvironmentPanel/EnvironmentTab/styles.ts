@@ -9,39 +9,37 @@ export const Container = styled.li<ContainerProps>`
   font-size: 14px;
   padding: 4px 12px;
   user-select: none;
-  color: ${({ isSelected, theme }) => {
+  align-items: center;
+  gap: 4px;
+  color: ${({ isPending, isSelected, theme }) => {
+    if (isPending) {
+      switch (theme.mode) {
+        case "light":
+          return "#c9ccd6";
+        case "dark":
+        case "dark-jetbrains":
+          return "#5a5d63";
+      }
+    }
+
     if (isSelected) {
       switch (theme.mode) {
         case "light":
-          return "#002d61";
+          return "#494b57";
         case "dark":
           return "#b9c2eb";
         case "dark-jetbrains":
-          return "#dadada";
+          return "#dfe1e5";
       }
     }
 
     switch (theme.mode) {
       case "light":
-        return "#4d668a";
+        return "#818594";
       case "dark":
         return "#7c7c94";
       case "dark-jetbrains":
-        return "#9b9b9b";
-    }
-  }};
-  background: ${({ isSelected, theme }) => {
-    if (!isSelected) {
-      return "none";
-    }
-
-    switch (theme.mode) {
-      case "light":
-        return "#fbfdff";
-      case "dark":
-        return "#1e1e1e";
-      case "dark-jetbrains":
-        return "#3d3f41";
+        return "#b4b8bf";
     }
   }};
   border-bottom: ${({ isSelected }) =>
@@ -49,19 +47,28 @@ export const Container = styled.li<ContainerProps>`
 
   &:hover {
     font-weight: 700;
-    color: ${({ theme }) => {
-      switch (theme.mode) {
-        case "light":
-          return "#002d61";
-        case "dark":
-          return "#b9c2eb";
-        case "dark-jetbrains":
-          return "#dadada";
+    ${({ theme, isPending }) => {
+      let color = "";
+
+      if (!isPending) {
+        switch (theme.mode) {
+          case "light":
+            color = "#002d61";
+            break;
+          case "dark":
+            color = "#b9c2eb";
+            break;
+          case "dark-jetbrains":
+            color = "#dfe1e5";
+            break;
+        }
       }
+
+      return color ? `color: ${color};` : "";
     }};
   }
 
-  transition-property: color, font-weight, border;
+  transition-property: color, font-weight;
   transition-duration: 300ms;
   transition-timing-function: ease-out;
 `;

@@ -72,6 +72,7 @@ export const SectionNumber = styled.span`
   flex-shrink: 0;
   font-size: 14px;
   font-weight: 500;
+  line-height: 100%;
   border-radius: 50%;
   display: flex;
   align-items: center;

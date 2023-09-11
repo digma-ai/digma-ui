@@ -2,8 +2,8 @@ import styled from "styled-components";
 import { KebabMenuButtonProps } from "./types";
 
 export const Container = styled.div<KebabMenuButtonProps>`
-  width: 12px;
-  height: 12px;
+  width: 14px;
+  height: 14px;
   cursor: pointer;
 
   &:disabled {

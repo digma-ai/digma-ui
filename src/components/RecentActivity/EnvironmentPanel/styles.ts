@@ -44,11 +44,11 @@ export const Container = styled.div`
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "#fbfbff";
+        return "#ebecf0";
       case "dark":
         return "#1e1e1e";
       case "dark-jetbrains":
-        return "#3d3f41";
+        return "#393b40";
     }
   }};
   padding: 5px 12px 6px;
@@ -62,6 +62,7 @@ export const EnvironmentListContainer = styled.div`
   flex-grow: 1;
   overflow: hidden;
   scroll-behavior: smooth;
+  gap: 12px;
 `;
 
 export const EnvironmentList = styled.ul`
@@ -99,6 +100,21 @@ export const LogoRotationContainer = styled.div`
 
 export const LogoContainer = styled.div`
   animation: ${rotateAnimation} 6s ease-in-out infinite;
+`;
+
+export const AddButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+  height: 100%;
+
+  &:disabled {
+    cursor: initial;
+  }
 `;
 
 export const ViewModeButtonContainer = styled.div`
