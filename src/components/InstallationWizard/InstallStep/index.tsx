@@ -393,13 +393,9 @@ export const InstallStep = (props: InstallStepProps) => {
   );
 
   const renderContent = () => {
-    if (isAutoInstallationFlow || config.isDigmaEngineInstalled) {
-      return renderEngineManager();
-    }
-
     const digmaStatus = config.digmaStatus;
 
-    if (digmaStatus && digmaStatus.isRunning) {
+    if (digmaStatus?.type) {
       let messageString =
         "Digma is already running, please remove all running containers to re-install";
 
@@ -413,6 +409,10 @@ export const InstallStep = (props: InstallStepProps) => {
       }
 
       return <s.AlreadyRunningMessage>{messageString}</s.AlreadyRunningMessage>;
+    }
+
+    if (config.isDigmaEngineInstalled) {
+      return renderEngineManager();
     }
 
     return (
