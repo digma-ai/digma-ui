@@ -4,16 +4,22 @@ import { actions } from "../../../actions";
 import { dispatcher } from "../../../dispatcher";
 import { Mode } from "../../../globals";
 import { isBoolean } from "../../../typeGuards/isBoolean";
+import { isNull } from "../../../typeGuards/isNull";
 import { isObject } from "../../../typeGuards/isObject";
 import { isString } from "../../../typeGuards/isString";
-import { ConfigContext, isDigmaStatus } from "./ConfigContext";
+import { ConfigContext } from "./ConfigContext";
 import { GlobalStyle } from "./styles";
-import { AppProps } from "./types";
+import { AppProps, DigmaStatus } from "./types";
 
 export const THEMES = ["light", "dark", "dark-jetbrains"];
 
 const isMode = (mode: unknown): mode is Mode =>
   isString(mode) && THEMES.includes(mode);
+
+export const isDigmaStatus = (status: unknown): status is DigmaStatus =>
+  isObject(status) &&
+  isBoolean(status.isRunning) &&
+  (isString(status.type) || isNull(status.type));
 
 const getMode = (): Mode => {
   if (!isMode(window.theme)) {

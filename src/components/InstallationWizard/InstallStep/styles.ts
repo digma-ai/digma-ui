@@ -89,6 +89,14 @@ export const SlackLink = styled(Link)`
 `;
 
 export const AlreadyRunningMessage = styled(NoDockerText)`
-  margin: 64px;
+  padding: 64px 0;
+  text-align: center;
+`;
+
+export const CircleLoaderContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 64px 0;
   text-align: center;
 `;

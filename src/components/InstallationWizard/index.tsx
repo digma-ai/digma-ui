@@ -25,6 +25,7 @@ const EMAIL_ADDRESS_REGEX =
 const ACTION_PREFIX = "INSTALLATION_WIZARD";
 
 export const actions = addPrefix(ACTION_PREFIX, {
+  INITIALIZE: "INITIALIZE",
   FINISH: "FINISH",
   CHECK_CONNECTION: "CHECK_CONNECTION",
   SET_CONNECTION_CHECK_RESULT: "SET_CONNECTION_CHECK_RESULT",
@@ -117,6 +118,33 @@ export const InstallationWizard = () => {
   // ] = useState(false);
 
   useEffect(() => {
+    window.sendMessageToDigma({
+      action: actions.INITIALIZE
+    });
+
+    if (firstStep === 1) {
+      sendTrackingEvent(trackingEvents.INSTALL_STEP_AUTOMATICALLY_PASSED);
+    }
+
+    const handleConnectionCheckResultData = (data: unknown) => {
+      const result = (data as AsyncActionResultData).result;
+      setConnectionCheckStatus(result);
+    };
+
+    dispatcher.addActionListener(
+      actions.SET_CONNECTION_CHECK_RESULT,
+      handleConnectionCheckResultData
+    );
+
+    return () => {
+      dispatcher.removeActionListener(
+        actions.SET_CONNECTION_CHECK_RESULT,
+        handleConnectionCheckResultData
+      );
+    };
+  }, []);
+
+  useEffect(() => {
     if (email === debouncedEmail) {
       const res =
         debouncedEmail.length > 0
@@ -151,29 +179,6 @@ export const InstallationWizard = () => {
     currentStep
     // ,isObservabilityEnabled
   ]);
-
-  useEffect(() => {
-    if (firstStep === 1) {
-      sendTrackingEvent(trackingEvents.INSTALL_STEP_AUTOMATICALLY_PASSED);
-    }
-
-    const handleConnectionCheckResultData = (data: unknown) => {
-      const result = (data as AsyncActionResultData).result;
-      setConnectionCheckStatus(result);
-    };
-
-    dispatcher.addActionListener(
-      actions.SET_CONNECTION_CHECK_RESULT,
-      handleConnectionCheckResultData
-    );
-
-    return () => {
-      dispatcher.removeActionListener(
-        actions.SET_CONNECTION_CHECK_RESULT,
-        handleConnectionCheckResultData
-      );
-    };
-  }, []);
 
   const handleConnectionStatusCheck = () => {
     setConnectionCheckStatus("pending");

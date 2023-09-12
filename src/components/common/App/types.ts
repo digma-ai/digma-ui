@@ -16,3 +16,14 @@ export type DigmaStatus = {
   isRunning: boolean;
   type: InstallationType;
 };
+
+export interface ConfigContextData {
+  digmaStatus: DigmaStatus | undefined;
+  isObservabilityEnabled: boolean;
+  isJaegerEnabled: boolean;
+  isDigmaEngineInstalled: boolean;
+  isDigmaEngineRunning: boolean;
+  isDockerInstalled: boolean;
+  isDockerComposeInstalled: boolean;
+  userEmail: string;
+}

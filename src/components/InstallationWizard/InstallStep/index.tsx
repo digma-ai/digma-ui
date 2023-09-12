@@ -1,9 +1,11 @@
-import { useContext, useState } from "react";
-import { useTheme } from "styled-components";
+import { useContext, useEffect, useState } from "react";
+import { DefaultTheme, useTheme } from "styled-components";
 import { openURLInDefaultBrowser } from "../../../utils/openURLInDefaultBrowser";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { getThemeKind } from "../../common/App/styles";
+import { CircleLoader } from "../../common/CircleLoader";
+import { CircleLoaderColors } from "../../common/CircleLoader/types";
 import { CodeSnippet } from "../../common/CodeSnippet";
 import { Link } from "../../common/Link";
 import { Loader } from "../../common/Loader";
@@ -19,6 +21,24 @@ import { AsyncActionResult } from "../types";
 import { EngineManager } from "./EngineManager";
 import * as s from "./styles";
 import { InstallStepProps } from "./types";
+
+const getCircleLoaderColors = (theme: DefaultTheme): CircleLoaderColors => {
+  switch (theme.mode) {
+    case "light":
+      return {
+        start: "rgb(81 84 236 / 0%)",
+        end: "#5154ec",
+        background: "#f1f5fa"
+      };
+    case "dark":
+    case "dark-jetbrains":
+      return {
+        start: "rgb(120 145 208 / 0%)",
+        end: "#7891d0",
+        background: "#383838"
+      };
+  }
+};
 
 const GET_DIGMA_DOCKER_COMPOSE_COMMAND_LINUX =
   "curl -L https://get.digma.ai/ --output docker-compose.yml";
@@ -41,6 +61,7 @@ export const InstallStep = (props: InstallStepProps) => {
   const [selectedDockerComposeOSTab, setSelectedDockerComposeOSTab] =
     useState(0);
   const config = useContext(ConfigContext);
+  const [isInitializing, setIsInitializing] = useState(true);
   const [isAutoInstallationFlow, setIsAutoInstallationFlow] = useState(
     isFirstLaunch &&
       config.digmaStatus?.isRunning === false &&
@@ -53,6 +74,13 @@ export const InstallStep = (props: InstallStepProps) => {
     useState(false);
   const [isEngineOperationInProgress, setIsEngineOperationInProgress] =
     useState(false);
+  const circleLoaderColors = getCircleLoaderColors(theme);
+
+  useEffect(() => {
+    if (config.digmaStatus) {
+      setIsInitializing(false);
+    }
+  }, [config.digmaStatus]);
 
   const handleInstallDigmaButtonClick = () => {
     props.onGetDigmaDockerDesktopButtonClick();
@@ -377,5 +405,15 @@ export const InstallStep = (props: InstallStepProps) => {
     );
   };
 
-  return <s.Container>{renderContent()}</s.Container>;
+  return (
+    <s.Container>
+      {isInitializing ? (
+        <s.CircleLoaderContainer>
+          <CircleLoader size={32} colors={circleLoaderColors} />
+        </s.CircleLoaderContainer>
+      ) : (
+        renderContent()
+      )}
+    </s.Container>
+  );
 };

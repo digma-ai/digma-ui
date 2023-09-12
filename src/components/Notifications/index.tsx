@@ -23,6 +23,7 @@ const REFRESH_INTERVAL = isNumber(window.notificationsRefreshInterval)
 const ACTION_PREFIX = "NOTIFICATIONS";
 
 const actions = addPrefix(ACTION_PREFIX, {
+  INITIALIZE: "INITIALIZE",
   GET_DATA: "GET_DATA",
   SET_DATA: "SET_DATA",
   CLOSE: "CLOSE",
@@ -60,6 +61,10 @@ export const Notifications = (props: NotificationsProps) => {
   const pageSize = viewMode === "popup" ? 3 : 10;
 
   useEffect(() => {
+    window.sendMessageToDigma({
+      action: actions.INITIALIZE
+    });
+
     window.sendMessageToDigma({
       action: actions.GET_DATA,
       payload: {
