@@ -60,13 +60,15 @@ const checkIfAutoInstallationFlow = (
   config: ConfigContextData,
   isFirstLaunch: boolean
 ) =>
-  isFirstLaunch &&
-  config.digmaStatus &&
-  config.digmaStatus.isRunning === false &&
-  config.digmaStatus.type === null &&
-  !config.isDigmaEngineInstalled &&
-  config.isDockerInstalled &&
-  config.isDockerComposeInstalled;
+  Boolean(
+    isFirstLaunch &&
+      config.digmaStatus &&
+      config.digmaStatus.isRunning === false &&
+      config.digmaStatus.type === null &&
+      !config.isDigmaEngineInstalled &&
+      config.isDockerInstalled &&
+      config.isDockerComposeInstalled
+  );
 
 export const InstallStep = (props: InstallStepProps) => {
   const theme = useTheme();
@@ -257,23 +259,12 @@ export const InstallStep = (props: InstallStepProps) => {
           {
             title: "Auto install",
             content: (
-              <>
-                <s.TabContentContainer>
-                  <EngineManager
-                    onOperationStart={handleEngineOperationStart}
-                    onOperationFinish={handleEngineOperationFinish}
-                  />
-                </s.TabContentContainer>
-                {
-                  <s.CommonContentContainer>
-                    {!isEngineOperationInProgress && (
-                      <MainButton onClick={handleNextButtonClick}>
-                        Next
-                      </MainButton>
-                    )}
-                  </s.CommonContentContainer>
-                }
-              </>
+              <s.TabContentContainer>
+                <EngineManager
+                  onOperationStart={handleEngineOperationStart}
+                  onOperationFinish={handleEngineOperationFinish}
+                />
+              </s.TabContentContainer>
             )
           }
         ]
@@ -374,22 +365,14 @@ export const InstallStep = (props: InstallStepProps) => {
   ];
 
   const renderEngineManager = () => (
-    <>
-      <EngineManager
-        autoInstall={isAutoInstallationFlow}
-        onAutoInstallFinish={handleEngineAutoInstallationFinish}
-        onManualInstallSelect={handleEngineManualInstallSelect}
-        onRemoveFinish={handleEngineRemovalFinish}
-        onOperationStart={handleEngineOperationStart}
-        onOperationFinish={handleEngineOperationFinish}
-      />
-      <s.CommonContentContainer>
-        {(isAutoInstallationFinished ||
-          (!isAutoInstallationFlow && !isEngineOperationInProgress)) && (
-          <MainButton onClick={handleNextButtonClick}>Next</MainButton>
-        )}
-      </s.CommonContentContainer>
-    </>
+    <EngineManager
+      autoInstall={isAutoInstallationFlow}
+      onAutoInstallFinish={handleEngineAutoInstallationFinish}
+      onManualInstallSelect={handleEngineManualInstallSelect}
+      onRemoveFinish={handleEngineRemovalFinish}
+      onOperationStart={handleEngineOperationStart}
+      onOperationFinish={handleEngineOperationFinish}
+    />
   );
 
   const renderContent = () => {
@@ -411,7 +394,7 @@ export const InstallStep = (props: InstallStepProps) => {
       return <s.AlreadyRunningMessage>{messageString}</s.AlreadyRunningMessage>;
     }
 
-    if (config.isDigmaEngineInstalled) {
+    if (isAutoInstallationFlow || config.isDigmaEngineInstalled) {
       return renderEngineManager();
     }
 
@@ -425,6 +408,15 @@ export const InstallStep = (props: InstallStepProps) => {
     );
   };
 
+  const renderNextButton = () => (
+    <s.CommonContentContainer>
+      {(isAutoInstallationFinished ||
+        (!isAutoInstallationFlow && !isEngineOperationInProgress)) && (
+        <MainButton onClick={handleNextButtonClick}>Next</MainButton>
+      )}
+    </s.CommonContentContainer>
+  );
+
   return (
     <s.Container>
       {isInitializing ? (
@@ -432,7 +424,10 @@ export const InstallStep = (props: InstallStepProps) => {
           <CircleLoader size={32} colors={circleLoaderColors} />
         </s.CircleLoaderContainer>
       ) : (
-        renderContent()
+        <>
+          {renderContent()}
+          {renderNextButton()}
+        </>
       )}
     </s.Container>
   );
