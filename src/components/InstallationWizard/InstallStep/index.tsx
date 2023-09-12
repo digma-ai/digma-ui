@@ -61,7 +61,9 @@ export const InstallStep = (props: InstallStepProps) => {
   const [selectedDockerComposeOSTab, setSelectedDockerComposeOSTab] =
     useState(0);
   const config = useContext(ConfigContext);
-  const [isInitializing, setIsInitializing] = useState(true);
+  const [isInitializing, setIsInitializing] = useState(
+    !config.isDigmaEngineInstalled
+  );
   const [isAutoInstallationFlow, setIsAutoInstallationFlow] = useState(
     isFirstLaunch &&
       config.digmaStatus?.isRunning === false &&
