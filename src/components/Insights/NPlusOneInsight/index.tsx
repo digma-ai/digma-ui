@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import { trimEndpointScheme } from "../../../utils/trimEndpointScheme";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Tooltip } from "../../common/Tooltip";
 import { CrosshairIcon } from "../../common/icons/CrosshairIcon";
@@ -71,7 +72,8 @@ export const NPlusOneInsight = (props: NPlusOneInsightProps) => {
           <s.EndpointList>
             {props.insight.endpoints.map((x) => {
               const spanCodeObjectId = x.endpointInfo.entrySpanCodeObjectId;
-              const route = x.endpointInfo.route;
+              const route = trimEndpointScheme(x.endpointInfo.route);
+
               return (
                 <s.Endpoint key={spanCodeObjectId}>
                   <Tooltip title={route}>
