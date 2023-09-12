@@ -1,9 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
+import { usePrevious } from "../../../hooks/usePrevious";
 import { openURLInDefaultBrowser } from "../../../utils/openURLInDefaultBrowser";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { getThemeKind } from "../../common/App/styles";
+import { ConfigContextData } from "../../common/App/types";
 import { CircleLoader } from "../../common/CircleLoader";
 import { CircleLoaderColors } from "../../common/CircleLoader/types";
 import { CodeSnippet } from "../../common/CodeSnippet";
@@ -54,6 +56,18 @@ const DIGMA_HELM_CHART_URL =
 
 const isFirstLaunch = window.wizardFirstLaunch === true;
 
+const checkIfAutoInstallationFlow = (
+  config: ConfigContextData,
+  isFirstLaunch: boolean
+) =>
+  isFirstLaunch &&
+  config.digmaStatus &&
+  config.digmaStatus.isRunning === false &&
+  config.digmaStatus.type === null &&
+  !config.isDigmaEngineInstalled &&
+  config.isDockerInstalled &&
+  config.isDockerComposeInstalled;
+
 export const InstallStep = (props: InstallStepProps) => {
   const theme = useTheme();
   const isConnectionCheckStarted = Boolean(props.connectionCheckStatus);
@@ -61,16 +75,10 @@ export const InstallStep = (props: InstallStepProps) => {
   const [selectedDockerComposeOSTab, setSelectedDockerComposeOSTab] =
     useState(0);
   const config = useContext(ConfigContext);
-  const [isInitializing, setIsInitializing] = useState(
-    !config.isDigmaEngineInstalled
-  );
+  const [isInitializing, setIsInitializing] = useState(!config.digmaStatus);
+  const previousDigmaStatus = usePrevious(config.digmaStatus);
   const [isAutoInstallationFlow, setIsAutoInstallationFlow] = useState(
-    isFirstLaunch &&
-      config.digmaStatus?.isRunning === false &&
-      config.digmaStatus?.type === null &&
-      !config.isDigmaEngineInstalled &&
-      config.isDockerInstalled &&
-      config.isDockerComposeInstalled
+    checkIfAutoInstallationFlow(config, isFirstLaunch)
   );
   const [isAutoInstallationFinished, setIsAutoInstallationFinished] =
     useState(false);
@@ -79,10 +87,19 @@ export const InstallStep = (props: InstallStepProps) => {
   const circleLoaderColors = getCircleLoaderColors(theme);
 
   useEffect(() => {
-    if (config.digmaStatus) {
+    if (!previousDigmaStatus && config.digmaStatus) {
       setIsInitializing(false);
+
+      const isAutoInstallationFlow = checkIfAutoInstallationFlow(
+        config,
+        isFirstLaunch
+      );
+
+      if (isAutoInstallationFlow) {
+        setIsAutoInstallationFlow(isAutoInstallationFlow);
+      }
     }
-  }, [config.digmaStatus]);
+  }, [config.digmaStatus, previousDigmaStatus, config]);
 
   const handleInstallDigmaButtonClick = () => {
     props.onGetDigmaDockerDesktopButtonClick();
@@ -387,7 +404,8 @@ export const InstallStep = (props: InstallStepProps) => {
         "Digma is already running, please remove all running containers to re-install";
 
       switch (digmaStatus.type) {
-        // TODO: migrate from "isDigmaEngineInstalled" flag to "localEngine" type
+        case "localEngine":
+          return renderEngineManager();
         case "dockerDesktop":
           messageString =
             "Digma is already running as Docker extension, please remove the extension first to re-install";

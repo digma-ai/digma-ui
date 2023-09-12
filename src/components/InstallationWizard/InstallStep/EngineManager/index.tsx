@@ -278,7 +278,7 @@ export const EngineManager = (props: EngineManagerProps) => {
 
   const renderContent = () => {
     const loaderStatus = getLoaderStatus(
-      config.isDigmaEngineRunning,
+      Boolean(config.digmaStatus?.isRunning),
       currentOperation?.status,
       failedOperation?.operation
     );
@@ -298,7 +298,7 @@ export const EngineManager = (props: EngineManagerProps) => {
       title += operationsInfo[lastOperation].titleSuffix;
     } else {
       title += config.isDigmaEngineInstalled
-        ? config.isDigmaEngineRunning
+        ? config.digmaStatus?.isRunning
           ? "Running"
           : "Stopped"
         : "Not installed";
@@ -334,7 +334,7 @@ export const EngineManager = (props: EngineManagerProps) => {
       }
     } else {
       if (config.isDigmaEngineInstalled) {
-        if (config.isDigmaEngineRunning) {
+        if (config.digmaStatus?.isRunning) {
           if (!props.autoInstall) {
             buttons.push(renderOperationButton(Operation.STOP));
           }
