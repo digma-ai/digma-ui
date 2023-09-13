@@ -165,15 +165,19 @@ export const AssetEntry = (props: AssetEntryProps) => {
           <s.StatsColumn>
             <s.Stats>
               <span>Performance impact</span>
-              <s.ValueContainer>
-                {getImpactScoreLabel(props.entry.impactScores.ScoreExp25)}
-              </s.ValueContainer>
+              <Tooltip title={props.entry.impactScores.ScoreExp25}>
+                <s.ValueContainer>
+                  {getImpactScoreLabel(props.entry.impactScores.ScoreExp25)}
+                </s.ValueContainer>
+              </Tooltip>
             </s.Stats>
             <s.Stats>
               <span>Overall impact</span>
-              <s.ValueContainer>
-                {getImpactScoreLabel(props.entry.impactScores.ScoreExp1000)}
-              </s.ValueContainer>
+              <Tooltip title={props.entry.impactScores.ScoreExp1000}>
+                <s.ValueContainer>
+                  {getImpactScoreLabel(props.entry.impactScores.ScoreExp1000)}
+                </s.ValueContainer>
+              </Tooltip>
             </s.Stats>
           </s.StatsColumn>
         )}
