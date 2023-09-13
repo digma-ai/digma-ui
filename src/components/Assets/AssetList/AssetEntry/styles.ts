@@ -127,6 +127,7 @@ export const ValueContainer = styled.div`
         return "#c6c6c6";
     }
   }};
+  width: fit-content;
 `;
 
 export const Suffix = styled.span`
