@@ -47,6 +47,9 @@ export const EngineManager = (props: EngineManagerProps) => {
   const theme = useTheme();
   const themeKind = getThemeKind(theme);
 
+  const isDigmaEngineRunning =
+    config.digmaStatus?.type === "localEngine" && config.digmaStatus?.isRunning;
+
   const operationsInfo: Record<Operation, OperationInfo> = {
     [Operation.INSTALL]: {
       action: actions.INSTALL_DIGMA_ENGINE,
@@ -278,7 +281,7 @@ export const EngineManager = (props: EngineManagerProps) => {
 
   const renderContent = () => {
     const loaderStatus = getLoaderStatus(
-      Boolean(config.digmaStatus?.isRunning),
+      isDigmaEngineRunning,
       currentOperation?.status,
       failedOperation?.operation
     );
@@ -298,7 +301,7 @@ export const EngineManager = (props: EngineManagerProps) => {
       title += operationsInfo[lastOperation].titleSuffix;
     } else {
       title += config.isDigmaEngineInstalled
-        ? config.digmaStatus?.isRunning
+        ? isDigmaEngineRunning
           ? "Running"
           : "Stopped"
         : "Not installed";
@@ -334,18 +337,18 @@ export const EngineManager = (props: EngineManagerProps) => {
       }
     } else {
       if (config.isDigmaEngineInstalled) {
-        if (config.digmaStatus?.isRunning) {
+        if (isDigmaEngineRunning) {
           if (!props.autoInstall) {
             buttons.push(renderOperationButton(Operation.STOP));
           }
-        } else {
+        } else if (!config.digmaStatus?.isRunning) {
           buttons.push(renderOperationButton(Operation.START));
         }
 
         if (!props.autoInstall) {
           buttons.push(renderOperationButton(Operation.UNINSTALL));
         }
-      } else {
+      } else if (!config.digmaStatus?.isRunning) {
         buttons.push(renderOperationButton(Operation.INSTALL));
       }
     }

@@ -89,8 +89,17 @@ export const SlackLink = styled(Link)`
 `;
 
 export const AlreadyRunningMessage = styled(NoDockerText)`
-  padding: 64px 0;
   text-align: center;
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#e00036";
+      case "dark":
+      case "dark-jetbrains":
+        return "#f93967";
+    }
+  }};
+  padding-bottom: 24px;
 `;
 
 export const CircleLoaderContainer = styled.div`

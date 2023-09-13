@@ -179,6 +179,26 @@ export const InstallStep = (props: InstallStepProps) => {
     </s.LoaderContainer>
   );
 
+  const renderAlreadyRunningMessage = () => {
+    const digmaStatus = config.digmaStatus;
+
+    if (digmaStatus?.isRunning && digmaStatus?.type !== "localEngine") {
+      let messageString =
+        "Digma is already running, please remove all running containers to re-install";
+
+      switch (digmaStatus.type) {
+        case "dockerDesktop":
+          messageString =
+            "Digma is already running as Docker extension, please remove the extension first to re-install";
+          break;
+      }
+
+      return <s.AlreadyRunningMessage>{messageString}</s.AlreadyRunningMessage>;
+    }
+
+    return <></>;
+  };
+
   const renderMainButton = () => {
     if (!isConnectionCheckStarted) {
       return (
@@ -259,12 +279,22 @@ export const InstallStep = (props: InstallStepProps) => {
           {
             title: "Auto install",
             content: (
-              <s.TabContentContainer>
-                <EngineManager
-                  onOperationStart={handleEngineOperationStart}
-                  onOperationFinish={handleEngineOperationFinish}
-                />
-              </s.TabContentContainer>
+              <>
+                <s.TabContentContainer>
+                  <EngineManager
+                    onOperationStart={handleEngineOperationStart}
+                    onOperationFinish={handleEngineOperationFinish}
+                  />
+                </s.TabContentContainer>
+                <s.CommonContentContainer>
+                  {renderAlreadyRunningMessage()}
+                  {!isEngineOperationInProgress && (
+                    <MainButton onClick={handleNextButtonClick}>
+                      Next
+                    </MainButton>
+                  )}
+                </s.CommonContentContainer>
+              </>
             )
           }
         ]
@@ -298,6 +328,7 @@ export const InstallStep = (props: InstallStepProps) => {
           </s.TabContentContainer>
           <s.CommonContentContainer>
             {renderLoader()}
+            {renderAlreadyRunningMessage()}
             {renderMainButton()}
           </s.CommonContentContainer>
         </>
@@ -321,6 +352,7 @@ export const InstallStep = (props: InstallStepProps) => {
               4.10.0 or higher installed)
             </SectionDescription>
             <s.GetDockerExtensionButton
+              disabled={config.digmaStatus?.isRunning}
               buttonType={"secondary"}
               onClick={handleInstallDigmaButtonClick}
             >
@@ -329,6 +361,7 @@ export const InstallStep = (props: InstallStepProps) => {
           </s.TabContentContainer>
           <s.CommonContentContainer>
             {renderLoader()}
+            {renderAlreadyRunningMessage()}
             {renderMainButton()}
           </s.CommonContentContainer>
         </>
@@ -357,6 +390,7 @@ export const InstallStep = (props: InstallStepProps) => {
           </s.NoDockerTabContentContainer>
           <s.CommonContentContainer>
             {renderLoader()}
+            {renderAlreadyRunningMessage()}
             {renderMainButton()}
           </s.CommonContentContainer>
         </>
@@ -365,57 +399,45 @@ export const InstallStep = (props: InstallStepProps) => {
   ];
 
   const renderEngineManager = () => (
-    <EngineManager
-      autoInstall={isAutoInstallationFlow}
-      onAutoInstallFinish={handleEngineAutoInstallationFinish}
-      onManualInstallSelect={handleEngineManualInstallSelect}
-      onRemoveFinish={handleEngineRemovalFinish}
-      onOperationStart={handleEngineOperationStart}
-      onOperationFinish={handleEngineOperationFinish}
+    <>
+      <EngineManager
+        autoInstall={isAutoInstallationFlow}
+        onAutoInstallFinish={handleEngineAutoInstallationFinish}
+        onManualInstallSelect={handleEngineManualInstallSelect}
+        onRemoveFinish={handleEngineRemovalFinish}
+        onOperationStart={handleEngineOperationStart}
+        onOperationFinish={handleEngineOperationFinish}
+      />
+      <s.CommonContentContainer>
+        {renderAlreadyRunningMessage()}
+        {(isAutoInstallationFinished ||
+          (!isAutoInstallationFlow && !isEngineOperationInProgress)) && (
+          <MainButton onClick={handleNextButtonClick}>Next</MainButton>
+        )}
+      </s.CommonContentContainer>
+    </>
+  );
+
+  const renderTabs = () => (
+    <Tabs
+      tabs={installTabs}
+      onSelect={handleInstallTabSelect}
+      selectedTab={selectedInstallTab}
+      fullWidth={true}
     />
   );
 
   const renderContent = () => {
-    const digmaStatus = config.digmaStatus;
-
-    if (digmaStatus?.type) {
-      let messageString =
-        "Digma is already running, please remove all running containers to re-install";
-
-      switch (digmaStatus.type) {
-        case "localEngine":
-          return renderEngineManager();
-        case "dockerDesktop":
-          messageString =
-            "Digma is already running as Docker extension, please remove the extension first to re-install";
-          break;
-      }
-
-      return <s.AlreadyRunningMessage>{messageString}</s.AlreadyRunningMessage>;
-    }
-
-    if (isAutoInstallationFlow || config.isDigmaEngineInstalled) {
+    if (
+      isAutoInstallationFlow ||
+      (config.digmaStatus?.type === "localEngine" &&
+        config.digmaStatus.isRunning)
+    ) {
       return renderEngineManager();
     }
 
-    return (
-      <Tabs
-        tabs={installTabs}
-        onSelect={handleInstallTabSelect}
-        selectedTab={selectedInstallTab}
-        fullWidth={true}
-      />
-    );
+    return renderTabs();
   };
-
-  const renderNextButton = () => (
-    <s.CommonContentContainer>
-      {(isAutoInstallationFinished ||
-        (!isAutoInstallationFlow && !isEngineOperationInProgress)) && (
-        <MainButton onClick={handleNextButtonClick}>Next</MainButton>
-      )}
-    </s.CommonContentContainer>
-  );
 
   return (
     <s.Container>
@@ -424,10 +446,7 @@ export const InstallStep = (props: InstallStepProps) => {
           <CircleLoader size={32} colors={circleLoaderColors} />
         </s.CircleLoaderContainer>
       ) : (
-        <>
-          {renderContent()}
-          {renderNextButton()}
-        </>
+        renderContent()
       )}
     </s.Container>
   );
