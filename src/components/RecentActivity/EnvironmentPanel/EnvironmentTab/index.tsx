@@ -53,11 +53,7 @@ export const EnvironmentTab = (props: EnvironmentTabProps) => {
     setIsMenuOpen(false);
   };
 
-  const menuItems = [
-    ...(props.environment.isPending
-      ? [{ label: "Delete", value: "delete", icon: TrashBinIcon }]
-      : [])
-  ];
+  const menuItems = [{ label: "Delete", value: "delete", icon: TrashBinIcon }];
 
   return (
     <s.Container
