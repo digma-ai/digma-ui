@@ -4,6 +4,8 @@ import { Badge } from "../../../common/Badge";
 import { KebabMenuButton } from "../../../common/KebabMenuButton";
 import { NewPopover } from "../../../common/NewPopover";
 import { Tooltip } from "../../../common/Tooltip";
+import { DesktopIcon } from "../../../common/icons/DesktopIcon";
+import { InfinityIcon } from "../../../common/icons/InfinityIcon";
 import { TrashBinIcon } from "../../../common/icons/TrashBinIcon";
 import { EnvironmentMenu } from "../../EnvironmentMenu";
 import * as s from "./styles";
@@ -55,6 +57,13 @@ export const EnvironmentTab = (props: EnvironmentTabProps) => {
 
   const menuItems = [{ label: "Delete", value: "delete", icon: TrashBinIcon }];
 
+  const icon =
+    props.environment.type === "local" ? (
+      <DesktopIcon size={16} color={"currentColor"} />
+    ) : (
+      <InfinityIcon size={16} color={"currentColor"} />
+    );
+
   return (
     <s.Container
       ref={containerRef}
@@ -71,6 +80,7 @@ export const EnvironmentTab = (props: EnvironmentTabProps) => {
           <Badge />
         </s.BadgeContainer>
       )}
+      {icon}
       <Tooltip title={props.environment.name}>
         <s.Label>{props.environment.name}</s.Label>
       </Tooltip>

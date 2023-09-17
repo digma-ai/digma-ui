@@ -20,6 +20,7 @@ import { RecentActivityTable, isRecent } from "./RecentActivityTable";
 import * as s from "./styles";
 import {
   EntrySpan,
+  EnvironmentType,
   ExtendedEnvironment,
   RecentActivityData,
   RecentActivityProps
@@ -181,7 +182,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
     });
   };
 
-  const handleEnvironmentAdd = (environment: string) => {
+  const handleEnvironmentAdd = (environment: string, type: EnvironmentType) => {
     window.sendMessageToDigma({
       action: actions.ADD_ENVIRONMENT,
       payload: {
@@ -194,7 +195,8 @@ export const RecentActivity = (props: RecentActivityProps) => {
       name: environment,
       isPending: true,
       hasRecentActivity: false,
-      additionToConfigResult: null
+      additionToConfigResult: null,
+      type
     });
   };
 

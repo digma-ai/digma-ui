@@ -81,8 +81,7 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
   };
 
   const handleEnvironmentAdd = (environmentName: string) => {
-    props.onEnvironmentAdd(environmentName);
-    // props.onEnvironmentSelect(newEnvironment);
+    props.onEnvironmentAdd(environmentName, "local");
   };
 
   const handleEnvironmentDelete = (environment: string) => {

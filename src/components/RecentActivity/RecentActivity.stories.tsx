@@ -22,16 +22,47 @@ export const NoData: Story = {};
 
 const data: RecentActivityData = {
   environments: [
-    { name: "ENV_RENDER", isPending: false, additionToConfigResult: null },
-    { name: "UNSET_ENV", isPending: false, additionToConfigResult: null },
-    { name: "UNSET_ENV1", isPending: true, additionToConfigResult: null },
-    { name: "UNSET_ENV2", isPending: false, additionToConfigResult: null },
-    { name: "UNSET_ENV3", isPending: false, additionToConfigResult: null },
-    { name: "UNSET_ENV4", isPending: false, additionToConfigResult: null },
+    {
+      name: "ENV_RENDER",
+      isPending: false,
+      additionToConfigResult: null,
+      type: "local"
+    },
+    {
+      name: "UNSET_ENV",
+      isPending: false,
+      additionToConfigResult: null,
+      type: "remote"
+    },
+    {
+      name: "UNSET_ENV1",
+      isPending: true,
+      additionToConfigResult: null,
+      type: "local"
+    },
+    {
+      name: "UNSET_ENV2",
+      isPending: false,
+      additionToConfigResult: null,
+      type: "remote"
+    },
+    {
+      name: "UNSET_ENV3",
+      isPending: false,
+      additionToConfigResult: null,
+      type: "local"
+    },
+    {
+      name: "UNSET_ENV4",
+      isPending: false,
+      additionToConfigResult: null,
+      type: "remote"
+    },
     {
       name: " VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-LONG-NAME",
       isPending: false,
-      additionToConfigResult: null
+      additionToConfigResult: null,
+      type: "remote"
     }
   ],
   entries: [

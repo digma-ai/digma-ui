@@ -26,10 +26,13 @@ export interface ActivityEntry {
   slimAggregatedInsights: SlimInsight[];
 }
 
+export type EnvironmentType = "local" | "remote";
+
 export interface Environment {
   name: string;
   isPending: boolean;
   additionToConfigResult: "success" | "failure" | null;
+  type: EnvironmentType;
 }
 
 export interface ExtendedEnvironment extends Environment {

@@ -1,4 +1,4 @@
-import { ExtendedEnvironment } from "../types";
+import { EnvironmentType, ExtendedEnvironment } from "../types";
 
 export interface EnvironmentPanelProps {
   viewMode: ViewMode;
@@ -6,7 +6,7 @@ export interface EnvironmentPanelProps {
   selectedEnvironment?: ExtendedEnvironment;
   onEnvironmentSelect: (environment: ExtendedEnvironment) => void;
   onViewModeChange: (mode: ViewMode) => void;
-  onEnvironmentAdd: (environment: string) => void;
+  onEnvironmentAdd: (environment: string, type: EnvironmentType) => void;
   onEnvironmentDelete: (environment: string) => void;
 }
 
