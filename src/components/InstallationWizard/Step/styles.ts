@@ -31,7 +31,15 @@ export const Container = styled.div<ContainerProps>`
       }
       `;
   }}
-
+  background: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#ebecf0";
+      case "dark":
+      case "dark-jetbrains":
+        return "#393b40";
+    }
+  }};
   height: ${({ status, contentHeight }) =>
     status === "active"
       ? `${HEADER_HEIGHT + contentHeight}`

@@ -1,9 +1,10 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Button } from "../../common/Button";
 import { Link } from "../../common/Link";
 import { SectionTitle as CommonSectionTitle } from "../SectionTitle";
 import { Tabs } from "../Tabs";
 import { SectionDescription } from "../styles";
+import { TabContentContainerProps } from "./types";
 
 export const Container = styled.div`
   display: flex;
@@ -24,10 +25,37 @@ export const GetDockerExtensionButton = styled(Button)`
   margin-top: 12px;
 `;
 
-export const TabContentContainer = styled.div`
+export const TabContentContainer = styled.div<TabContentContainerProps>`
   display: flex;
   flex-direction: column;
   padding: 12px 8px;
+  position: relative;
+
+  ${({ overlay }) => {
+    if (overlay) {
+      return css`
+        &::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: ${({ theme }) => {
+            switch (theme.mode) {
+              case "light":
+                return "#ebecf0";
+              case "dark":
+              case "dark-jetbrains":
+                return "#393b40";
+            }
+          }};
+          opacity: 0.5;
+          pointer-events: none;
+        }
+      `;
+    }
+  }};
 `;
 
 export const DockerComposeOSTabContentContainer = styled.div`
@@ -36,13 +64,17 @@ export const DockerComposeOSTabContentContainer = styled.div`
   gap: 8px;
 `;
 
-export const LoaderContainer = styled.div`
-  padding: 80px 0 10px;
-  height: 174px;
-  display: flex;
-  justify-content: center;
-  flex-grow: 1;
-  box-sizing: border-box;
+// export const LoaderContainer = styled.div`
+//   padding: 80px 0 10px;
+//   height: 174px;
+//   display: flex;
+//   justify-content: center;
+//   flex-grow: 1;
+//   box-sizing: border-box;
+// `;
+
+export const EngineManagerContainer = styled.div`
+  padding-bottom: 24px;
 `;
 
 export const CommonContentContainer = styled.div`
@@ -72,7 +104,7 @@ export const IconBackgroundCircle = styled.div`
 export const NoDockerTabContentContainer = styled(TabContentContainer)`
   align-items: center;
   gap: 8px;
-  padding: 79px 21px 0;
+  padding: 79px 21px;
 `;
 
 export const NoDockerText = styled(SectionDescription)`
@@ -88,8 +120,10 @@ export const SlackLink = styled(Link)`
   gap: 4px;
 `;
 
-export const AlreadyRunningMessage = styled(NoDockerText)`
+export const AlreadyRunningMessage = styled.span`
   text-align: center;
+  padding: 12px 8px 0;
+  font-size: 16px;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -99,7 +133,6 @@ export const AlreadyRunningMessage = styled(NoDockerText)`
         return "#f93967";
     }
   }};
-  padding-bottom: 24px;
 `;
 
 export const CircleLoaderContainer = styled.div`

@@ -18,8 +18,9 @@ const isMode = (mode: unknown): mode is Mode =>
 
 export const isDigmaStatus = (status: unknown): status is DigmaStatus =>
   isObject(status) &&
-  isBoolean(status.isRunning) &&
-  (isString(status.type) || isNull(status.type));
+  isObject(status.connection) &&
+  (isString(status.connection.type) || isNull(status.connection.type)) &&
+  Array.isArray(status.runningDigmaInstances);
 
 const getMode = (): Mode => {
   if (!isMode(window.theme)) {

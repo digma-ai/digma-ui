@@ -49,7 +49,7 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
     useState(false);
   const config = useContext(ConfigContext);
   const isAddButtonVisible =
-    config.digmaStatus?.isRunning &&
+    config.digmaStatus?.connection.status &&
     window.recentActivityIsEnvironmentManagementEnabled === true;
 
   useEffect(() => {

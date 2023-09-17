@@ -9,65 +9,61 @@ export const Container = styled.div`
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "#f1f5fa";
+        return "#fbfdff";
       case "dark":
       case "dark-jetbrains":
-        return "#383838";
+        return "#2b2d30";
     }
   }};
 `;
 
 export const Header = styled.div`
   display: flex;
-  text-align: center;
   font-weight: 500;
   font-size: 14px;
   padding: 8px;
-  color: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#fbfdff";
-      case "dark":
-      case "dark-jetbrains":
-        return "#fff";
-    }
-  }};
-  background: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#788ca9";
-      case "dark":
-      case "dark-jetbrains":
-        return "#2e2e2e";
-    }
-  }};
+`;
+
+export const HeaderTitleContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 `;
 
 export const HeaderTitle = styled.span`
-  padding-right: 8px;
-`;
-
-export const HeaderSubtitle = styled.span`
-  padding-left: 8px;
-  border-left: 1px solid
-    ${({ theme }) => {
-      switch (theme.mode) {
-        case "light":
-          return "#fbfdff";
-        case "dark":
-        case "dark-jetbrains":
-          return "#7c7c94";
-      }
-    }};
+  display: flex;
+  gap: 4px;
+  align-items: center;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "#f1f5fa";
+        return "#494b57";
       case "dark":
       case "dark-jetbrains":
-        return "#9b9b9b";
+        return "#dfe1e5";
     }
   }};
+`;
+
+export const HeaderSubtitle = styled.span`
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#828797";
+      case "dark":
+      case "dark-jetbrains":
+        return "#b4b8bf";
+    }
+  }};
+`;
+
+export const CloseButton = styled.button`
+  margin-left: auto;
+  padding: 0;
+  cursor: pointer;
+  background: none;
+  border: none;
+  height: 14px;
 `;
 
 export const FooterSlackLink = styled(Link)`
@@ -83,15 +79,6 @@ export const Footer = styled.div`
   gap: 12px;
   flex-grow: 1;
   padding: 12px;
-  background: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#fbfdff";
-      case "dark":
-      case "dark-jetbrains":
-        return "#3d3f41";
-    }
-  }};
 `;
 
 export const FooterContent = styled.div<{
@@ -112,6 +99,15 @@ export const FooterContent = styled.div<{
       
       &.${transitionClassName}-enter-active {
         opacity: 1;
+        transition: opacity ${transitionDuration}ms ease-out;
+      }
+
+      &.${transitionClassName}-exit {
+        opacity: 1;
+      }
+      
+      &.${transitionClassName}-exit-active {
+        opacity: 0;
         transition: opacity ${transitionDuration}ms ease-out;
       }
       `;

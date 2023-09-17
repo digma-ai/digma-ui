@@ -8,13 +8,14 @@ export interface AppProps {
 export type InstallationType =
   | "localEngine"
   | "dockerCompose"
-  | "dockerDesktop"
-  | "remote"
-  | null;
+  | "dockerDesktop";
 
 export type DigmaStatus = {
-  isRunning: boolean;
-  type: InstallationType;
+  connection: {
+    type: "local" | "remote" | null;
+    status: boolean;
+  };
+  runningDigmaInstances: InstallationType[];
 };
 
 export interface ConfigContextData {

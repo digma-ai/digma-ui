@@ -1,44 +1,23 @@
 import { ChangeEvent, useContext, useEffect, useRef, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import { SLACK_WORKSPACE_URL } from "../../constants";
-import { dispatcher } from "../../dispatcher";
 import { IDE } from "../../globals";
 import { useDebounce } from "../../hooks/useDebounce";
-import { usePrevious } from "../../hooks/usePrevious";
 import { ide } from "../../platform";
-import { addPrefix } from "../../utils/addPrefix";
 import { openURLInDefaultBrowser } from "../../utils/openURLInDefaultBrowser";
 import { sendTrackingEvent } from "../../utils/sendTrackingEvent";
+import { validateEmailFormat } from "../../utils/validateEmailFormat";
 import { ConfigContext } from "../common/App/ConfigContext";
+import { CrossIcon } from "../common/icons/CrossIcon";
+import { DesktopIcon } from "../common/icons/DesktopIcon";
 import { SlackLogoIcon } from "../common/icons/SlackLogoIcon";
 import { FinishStep } from "./FinishStep";
 import { InstallStep } from "./InstallStep";
 import { Step } from "./Step";
 import { StepData, StepStatus } from "./Step/types";
+import { actions } from "./actions";
 import * as s from "./styles";
 import { trackingEvents } from "./tracking";
-import { AsyncActionResultData, AsyncActionStatus } from "./types";
-
-const EMAIL_ADDRESS_REGEX =
-  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; // source: https://piotr.gg/regexp/email-address-regular-expression-that-99-99-works.html
-
-const ACTION_PREFIX = "INSTALLATION_WIZARD";
-
-export const actions = addPrefix(ACTION_PREFIX, {
-  INITIALIZE: "INITIALIZE",
-  FINISH: "FINISH",
-  CHECK_CONNECTION: "CHECK_CONNECTION",
-  SET_CONNECTION_CHECK_RESULT: "SET_CONNECTION_CHECK_RESULT",
-  SET_OBSERVABILITY: "SET_OBSERVABILITY",
-  INSTALL_DIGMA_ENGINE: "INSTALL_DIGMA_ENGINE",
-  UNINSTALL_DIGMA_ENGINE: "UNINSTALL_DIGMA_ENGINE",
-  START_DIGMA_ENGINE: "START_DIGMA_ENGINE",
-  STOP_DIGMA_ENGINE: "STOP_DIGMA_ENGINE",
-  SET_INSTALL_DIGMA_ENGINE_RESULT: "SET_INSTALL_DIGMA_ENGINE_RESULT",
-  SET_UNINSTALL_DIGMA_ENGINE_RESULT: "SET_UNINSTALL_DIGMA_ENGINE_RESULT",
-  SET_START_DIGMA_ENGINE_RESULT: "SET_START_DIGMA_ENGINE_RESULT",
-  SET_STOP_DIGMA_ENGINE_RESULT: "SET_STOP_DIGMA_ENGINE_RESULT"
-});
 
 const DIGMA_DOCKER_EXTENSION_URL =
   "https://open.docker.com/extensions/marketplace?extensionId=digmaai/digma-docker-extension";
@@ -57,7 +36,7 @@ const quickstartURL = getQuickstartURL(ide);
 const footerTransitionClassName = "footer";
 const TRANSITION_DURATION = 300; // in milliseconds
 
-// const isFirstLaunch = window.wizardFirstLaunch === true;
+const isFirstLaunch = window.wizardFirstLaunch === true;
 
 const firstStep = window.wizardSkipInstallationStep === true ? 1 : 0;
 
@@ -73,20 +52,16 @@ const getStepStatus = (index: number, currentStep: number): StepStatus => {
   return "not-completed";
 };
 
-const validateEmailFormat = (email: string): boolean => {
-  return new RegExp(EMAIL_ADDRESS_REGEX).test(email);
-};
-
 export const InstallationWizard = () => {
   const config = useContext(ConfigContext);
   const [currentStep, setCurrentStep] = useState<number>(firstStep);
-  const previousStep = usePrevious(currentStep);
+  // const previousStep = usePrevious(currentStep);
   // const [isAlreadyUsingOtel, setIsAlreadyUsingOtel] = useState<boolean>(false);
   // const [isObservabilityEnabled, setIsObservabilityEnabled] = useState<boolean>(
   //   config.isObservabilityEnabled
   // );
-  const [connectionCheckStatus, setConnectionCheckStatus] =
-    useState<AsyncActionStatus>();
+  // const [connectionCheckStatus, setConnectionCheckStatus] =
+  //   useState<AsyncActionStatus>();
   const footerContentRef = useRef<HTMLDivElement>(null);
   // const [userEmail, setUserEmail] = useState("");
   // const [isUserEmailCaptured, setIsUserEmailCaptured] = useState(false);
@@ -101,8 +76,6 @@ export const InstallationWizard = () => {
   // const [installationType, setInstallationType] = useState<
   //   InstallationType | undefined
   // >(preselectedInstallationType);
-
-  // const isStartAutoInstall = true;
 
   // const theme = useTheme();
   // const themeKind = getThemeKind(theme);
@@ -126,22 +99,22 @@ export const InstallationWizard = () => {
       sendTrackingEvent(trackingEvents.INSTALL_STEP_AUTOMATICALLY_PASSED);
     }
 
-    const handleConnectionCheckResultData = (data: unknown) => {
-      const result = (data as AsyncActionResultData).result;
-      setConnectionCheckStatus(result);
-    };
+    // const handleConnectionCheckResultData = (data: unknown) => {
+    //   const result = (data as AsyncActionResultData).result;
+    //   setConnectionCheckStatus(result);
+    // };
 
-    dispatcher.addActionListener(
-      actions.SET_CONNECTION_CHECK_RESULT,
-      handleConnectionCheckResultData
-    );
+    // dispatcher.addActionListener(
+    //   actions.SET_CONNECTION_CHECK_RESULT,
+    //   handleConnectionCheckResultData
+    // );
 
-    return () => {
-      dispatcher.removeActionListener(
-        actions.SET_CONNECTION_CHECK_RESULT,
-        handleConnectionCheckResultData
-      );
-    };
+    // return () => {
+    //   dispatcher.removeActionListener(
+    //     actions.SET_CONNECTION_CHECK_RESULT,
+    //     handleConnectionCheckResultData
+    //   );
+    // };
   }, []);
 
   useEffect(() => {
@@ -155,41 +128,37 @@ export const InstallationWizard = () => {
     }
   }, [email, debouncedEmail]);
 
-  useEffect(() => {
-    if (previousStep === 0 && currentStep === 1) {
-      sendTrackingEvent(trackingEvents.INSTALL_STEP_PASSED);
-    }
+  // useEffect(() => {
+  //   if (
+  //     previousStep === 1 &&
+  //     currentStep === 2 &&
+  //     isFirstLaunch &&
+  //     !isObservabilityEnabled
+  //   ) {
+  //     setIsObservabilityEnabled(true);
+  //     window.sendMessageToDigma({
+  //       action: actions.SET_OBSERVABILITY,
+  //       payload: {
+  //         isObservabilityEnabled: true
+  //       }
+  //     });
+  //   }
+  // }, [
+  //   previousStep,
+  //   currentStep
+  // ,isObservabilityEnabled
+  // ]);
 
-    //   if (
-    //     previousStep === 1 &&
-    //     currentStep === 2 &&
-    //     isFirstLaunch &&
-    //     !isObservabilityEnabled
-    //   ) {
-    //     setIsObservabilityEnabled(true);
-    //     window.sendMessageToDigma({
-    //       action: actions.SET_OBSERVABILITY,
-    //       payload: {
-    //         isObservabilityEnabled: true
-    //       }
-    //     });
-    //   }
-  }, [
-    previousStep,
-    currentStep
-    // ,isObservabilityEnabled
-  ]);
+  // const handleConnectionStatusCheck = () => {
+  //   setConnectionCheckStatus("pending");
+  //   window.sendMessageToDigma({
+  //     action: actions.CHECK_CONNECTION
+  //   });
+  // };
 
-  const handleConnectionStatusCheck = () => {
-    setConnectionCheckStatus("pending");
-    window.sendMessageToDigma({
-      action: actions.CHECK_CONNECTION
-    });
-  };
-
-  const handleResetConnectionCheckStatus = () => {
-    setConnectionCheckStatus(undefined);
-  };
+  // const handleResetConnectionCheckStatus = () => {
+  //   setConnectionCheckStatus(undefined);
+  // };
 
   const handleGetDigmaDockerDesktopButtonClick = () => {
     sendTrackingEvent(trackingEvents.GET_DIGMA_DOCKER_EXTENSION_BUTTON_CLICKED);
@@ -217,8 +186,20 @@ export const InstallationWizard = () => {
   //   });
   // };
 
-  const goToNextStep = () => {
+  const goToNextStep = (isAutomatic?: boolean) => {
     setCurrentStep(currentStep + 1);
+
+    if (steps[currentStep].key === "install") {
+      if (isFirstLaunch && isAutomatic) {
+        sendTrackingEvent(trackingEvents.INSTALL_STEP_AUTOMATICALLY_PASSED, {
+          isFirstTimeSetup: true
+        });
+      }
+
+      if (!isAutomatic) {
+        sendTrackingEvent(trackingEvents.INSTALL_STEP_PASSED);
+      }
+    }
   };
 
   const handleGoToStep = (stepIndex: number) => {
@@ -244,6 +225,17 @@ export const InstallationWizard = () => {
       setIsEmailValidating(true);
       setEmail(value);
     }
+  };
+
+  const handleCloseButtonClick = () => {
+    window.sendMessageToDigma({
+      action: actions.CLOSE
+    });
+
+    // TODO: remove
+    window.sendMessageToDigma({
+      action: actions.FINISH
+    });
   };
 
   const handleFinishButtonClick = () => {
@@ -285,9 +277,9 @@ export const InstallationWizard = () => {
       title: "Get Digma up and running",
       content: (
         <InstallStep
-          connectionCheckStatus={connectionCheckStatus}
-          onConnectionStatusCheck={handleConnectionStatusCheck}
-          onResetConnectionCheckStatus={handleResetConnectionCheckStatus}
+          // connectionCheckStatus={connectionCheckStatus}
+          // onConnectionStatusCheck={handleConnectionStatusCheck}
+          // onResetConnectionCheckStatus={handleResetConnectionCheckStatus}
           onGetDigmaDockerDesktopButtonClick={
             handleGetDigmaDockerDesktopButtonClick
           }
@@ -334,12 +326,22 @@ export const InstallationWizard = () => {
 
   return (
     <s.Container>
-      {/* {isStartAutoInstall || installationType ? ( */}
+      {/* {installationType ? ( */}
       <s.Header>
-        <s.HeaderTitle>Install Digma</s.HeaderTitle>
-        <s.HeaderSubtitle>
-          Follow the steps to configure your projects
-        </s.HeaderSubtitle>
+        <s.HeaderTitleContainer>
+          <s.HeaderTitle>
+            <DesktopIcon color={"currentColor"} size={16} />
+            Install Digma Locally
+          </s.HeaderTitle>
+          <s.HeaderSubtitle>
+            Follow the steps to configure your projects
+          </s.HeaderSubtitle>
+        </s.HeaderTitleContainer>
+        {!isFirstLaunch && (
+          <s.CloseButton onClick={handleCloseButtonClick}>
+            <CrossIcon color={"currentColor"} size={14} />
+          </s.CloseButton>
+        )}
       </s.Header>
       {/* ) : (
         <s.WelcomeContainer>
@@ -437,7 +439,7 @@ export const InstallationWizard = () => {
         </s.WelcomeContainer>
       )} */}
       {
-        // (isStartAutoInstall || installationType) &&
+        // installationType &&
         steps.map((step, i) => (
           <Step
             key={step.key}
@@ -450,13 +452,14 @@ export const InstallationWizard = () => {
         ))
       }
       <s.Footer>
-        {/* {(isStartAutoInstall || installationType) && ( */}
+        {/* {installationType && ( */}
         <CSSTransition
           in={currentStep === steps.length - 1}
           timeout={TRANSITION_DURATION}
           classNames={footerTransitionClassName}
           nodeRef={footerContentRef}
           mountOnEnter={true}
+          unmountOnExit={true}
         >
           <s.FooterContent
             ref={footerContentRef}

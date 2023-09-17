@@ -11,8 +11,8 @@ export const Container = styled.li<TabProps>`
   text-align: center;
   align-items: center;
   cursor: ${({ isDisabled }) => (isDisabled ? "initial" : "pointer")};
-  border-bottom: ${({ isSelected }) =>
-    isSelected ? "3px solid #5154ec" : "none"};
+  border-bottom: 3px solid
+    ${({ isSelected }) => (isSelected ? "#5154ec" : "transparent")};
   color: ${({ theme, isSelected, isDisabled }) => {
     switch (theme.mode) {
       case "light":
