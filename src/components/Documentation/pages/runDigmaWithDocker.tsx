@@ -6,8 +6,8 @@ export const runDigmaWithDocker: PageContent = {
   description: (
     <span>
       These are simple steps to help you collect observability data from your
-      application running via Docker compose without changing the original
-      docker-compose.yml file.
+      application running via Docker compose without changing the original{" "}
+      <code>docker-compose.yml</code> file.
     </span>
   ),
   sections: [

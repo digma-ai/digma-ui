@@ -3,6 +3,7 @@ import { Button } from "../common/Button";
 
 export const Container = styled.div`
   height: 100%;
+  position: relative;
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -119,4 +120,14 @@ export const LiveViewContainer = styled.div`
   padding-left: 24px;
   height: 100%;
   box-sizing: border-box;
+`;
+
+export const DeleteEnvironmentConfirmationContainer = styled.div`
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(2px);
+  background: rgb(43 45 48 / 55%);
+  display: flex;
+  justify-content: center;
+  padding-top: 80px;
 `;
