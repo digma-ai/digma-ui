@@ -82,3 +82,15 @@ export const EmailTextField = styled(TextField)`
 export const SubmitButton = styled(Button)`
   height: auto;
 `;
+
+export const ErrorMessage = styled.span`
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#e00036";
+      case "dark":
+      case "dark-jetbrains":
+        return "#f93967";
+    }
+  }};
+`;
