@@ -238,10 +238,14 @@ export const InstallStep = (props: InstallStepProps) => {
       "Digma is already running, please remove all running containers to re-install";
     const digmaStatus = config.digmaStatus;
 
+    if (digmaStatus && digmaStatus.runningDigmaInstances.length > 1) {
+      showMessage = true;
+    }
+
     if (
       digmaStatus &&
-      !digmaStatus.connection.status &&
-      digmaStatus.runningDigmaInstances.length > 0
+      digmaStatus.runningDigmaInstances.length === 1 &&
+      !digmaStatus.runningDigmaInstances.includes("localEngine")
     ) {
       showMessage = true;
     }
@@ -249,17 +253,10 @@ export const InstallStep = (props: InstallStepProps) => {
     if (
       digmaStatus &&
       digmaStatus.runningDigmaInstances.length === 1 &&
-      (digmaStatus.runningDigmaInstances.includes("dockerCompose") ||
-        digmaStatus.runningDigmaInstances.includes("dockerDesktop"))
+      digmaStatus.runningDigmaInstances.includes("dockerDesktop")
     ) {
-      if (digmaStatus.runningDigmaInstances.includes("dockerDesktop")) {
-        messageString =
-          "Digma is already running as Docker extension, please remove the extension first to re-install";
-      }
-      showMessage = true;
-    }
-
-    if (digmaStatus && digmaStatus.runningDigmaInstances.length > 1) {
+      messageString =
+        "Digma is already running as Docker extension, please remove the extension first to re-install";
       showMessage = true;
     }
 
