@@ -35,6 +35,7 @@ const REFRESH_INTERVAL = isNumber(window.insightsRefreshInterval)
 const ACTION_PREFIX = "INSIGHTS";
 
 export const actions = addPrefix(ACTION_PREFIX, {
+  INITIALIZE: "INITIALIZE",
   GET_DATA: "GET_DATA",
   SET_DATA: "SET_DATA",
   GO_TO_ERRORS: "GO_TO_ERRORS",
@@ -61,6 +62,10 @@ export const Insights = (props: InsightsProps) => {
   const [isAutofixing, setIsAutofixing] = useState(false);
 
   useEffect(() => {
+    window.sendMessageToDigma({
+      action: actions.INITIALIZE
+    });
+
     window.sendMessageToDigma({
       action: actions.GET_DATA
     });

@@ -1,7 +1,5 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { useTheme } from "styled-components";
-import { actions } from "../..";
-import { dispatcher } from "../../../../dispatcher";
 import { sendTrackingEvent } from "../../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../../common/App/ConfigContext";
 import { getThemeKind } from "../../../common/App/styles";
@@ -12,18 +10,14 @@ import { DigmaLogoIcon } from "../../../common/icons/DigmaLogoIcon";
 import { PlayCircleIcon } from "../../../common/icons/PlayCircleIcon";
 import { StopCircleIcon } from "../../../common/icons/StopCircleIcon";
 import { trackingEvents } from "../../tracking";
-import { AsyncActionResultData, AsyncActionStatus } from "../../types";
+import { AsyncActionStatus } from "../../types";
+import { Operation } from "../types";
 import * as s from "./styles";
-import {
-  CurrentOperation,
-  EngineManagerProps,
-  FailedOperation,
-  Operation,
-  OperationInfo
-} from "./types";
+import { EngineManagerProps, OperationInfo } from "./types";
 
 const getLoaderStatus = (
-  isDigmaRunning: boolean,
+  isEngineInstalled: boolean,
+  isEngineRunning: boolean,
   currentOperationStatus: AsyncActionStatus,
   failedOperation: Operation | undefined
 ) => {
@@ -35,194 +29,52 @@ const getLoaderStatus = (
     return "failure";
   }
 
-  if (isDigmaRunning) {
+  if (isEngineInstalled && isEngineRunning) {
     return "success";
   }
 };
 
 export const EngineManager = (props: EngineManagerProps) => {
   const config = useContext(ConfigContext);
-  const [currentOperation, setCurrentOperation] = useState<CurrentOperation>();
-  const [failedOperation, setFailedOperation] = useState<FailedOperation>();
   const theme = useTheme();
   const themeKind = getThemeKind(theme);
 
+  const isDigmaEngineRunning = Boolean(
+    config.digmaStatus?.connection.status &&
+      // config.digmaStatus.connection.type === "local" &&
+      config.digmaStatus.runningDigmaInstances.length === 1 &&
+      config.digmaStatus.runningDigmaInstances.includes("localEngine")
+  );
+
+  // const isNotEngineDigmaInstanceRunning = Boolean(
+  //   config.digmaStatus &&
+  //     config.digmaStatus.runningDigmaInstances.length > 0 &&
+  //     !config.digmaStatus.runningDigmaInstances.includes("localEngine")
+  // );
+
+  // const areMultipleDigmaInstancesRunning = Boolean(
+  //   config.digmaStatus?.connection.status &&
+  //     config.digmaStatus.runningDigmaInstances.length > 1
+  // );
+
   const operationsInfo: Record<Operation, OperationInfo> = {
     [Operation.INSTALL]: {
-      action: actions.INSTALL_DIGMA_ENGINE,
       button: { label: "Start", icon: PlayCircleIcon },
       titleSuffix: "Starting"
     },
     [Operation.UNINSTALL]: {
-      action: actions.UNINSTALL_DIGMA_ENGINE,
       button: { label: "Remove", icon: CrossCircleIcon },
       titleSuffix: "Removing"
     },
     [Operation.START]: {
-      action: actions.START_DIGMA_ENGINE,
       button: { label: "Start", icon: PlayCircleIcon },
       titleSuffix: "Starting"
     },
     [Operation.STOP]: {
-      action: actions.STOP_DIGMA_ENGINE,
       button: { label: "Stop", icon: StopCircleIcon },
       titleSuffix: "Stopping"
     }
   };
-
-  useEffect(() => {
-    const handleOperationResultData = (
-      data: AsyncActionResultData,
-      operation: Operation
-    ) => {
-      const operationData = {
-        operation: operation,
-        status: data.result,
-        error: data.error
-      };
-
-      sendTrackingEvent(
-        trackingEvents.ENGINE_ACTION_RESULT_MESSAGE_RECEIVED,
-        operationData
-      );
-
-      setCurrentOperation(operationData);
-    };
-    const handleInstallDigmaResultData = (data: unknown) => {
-      handleOperationResultData(
-        data as AsyncActionResultData,
-        Operation.INSTALL
-      );
-    };
-
-    const handleUninstallDigmaResultData = (data: unknown) => {
-      handleOperationResultData(
-        data as AsyncActionResultData,
-        Operation.UNINSTALL
-      );
-    };
-
-    const handleStartDigmaResultData = (data: unknown) => {
-      handleOperationResultData(data as AsyncActionResultData, Operation.START);
-    };
-
-    const handleStopDigmaResultData = (data: unknown) => {
-      handleOperationResultData(data as AsyncActionResultData, Operation.STOP);
-    };
-
-    dispatcher.addActionListener(
-      actions.SET_INSTALL_DIGMA_ENGINE_RESULT,
-      handleInstallDigmaResultData
-    );
-
-    dispatcher.addActionListener(
-      actions.SET_UNINSTALL_DIGMA_ENGINE_RESULT,
-      handleUninstallDigmaResultData
-    );
-
-    dispatcher.addActionListener(
-      actions.SET_START_DIGMA_ENGINE_RESULT,
-      handleStartDigmaResultData
-    );
-
-    dispatcher.addActionListener(
-      actions.SET_STOP_DIGMA_ENGINE_RESULT,
-      handleStopDigmaResultData
-    );
-
-    return () => {
-      dispatcher.removeActionListener(
-        actions.SET_INSTALL_DIGMA_ENGINE_RESULT,
-        handleInstallDigmaResultData
-      );
-
-      dispatcher.removeActionListener(
-        actions.SET_UNINSTALL_DIGMA_ENGINE_RESULT,
-        handleUninstallDigmaResultData
-      );
-
-      dispatcher.removeActionListener(
-        actions.SET_START_DIGMA_ENGINE_RESULT,
-        handleStartDigmaResultData
-      );
-
-      dispatcher.removeActionListener(
-        actions.SET_STOP_DIGMA_ENGINE_RESULT,
-        handleStopDigmaResultData
-      );
-    };
-  }, []);
-
-  useEffect(() => {
-    if (props.autoInstall) {
-      sendTrackingEvent(trackingEvents.AUTO_INSTALLATION_FLOW_STARTED);
-      window.sendMessageToDigma({
-        action: actions.INSTALL_DIGMA_ENGINE
-      });
-      setCurrentOperation({ operation: Operation.INSTALL, status: "pending" });
-    }
-  }, [props.autoInstall]);
-
-  useEffect(() => {
-    if (currentOperation) {
-      if (currentOperation.status === "success") {
-        switch (currentOperation.operation) {
-          case Operation.INSTALL:
-            if (props.autoInstall && props.onAutoInstallFinish) {
-              props.onAutoInstallFinish("success");
-            }
-            break;
-          case Operation.UNINSTALL:
-            if (!props.autoInstall && props.onRemoveFinish) {
-              props.onRemoveFinish();
-            }
-            break;
-          case Operation.START:
-          case Operation.STOP:
-            break;
-        }
-      }
-
-      if (currentOperation.status === "failure") {
-        switch (currentOperation.operation) {
-          case Operation.INSTALL:
-            if (props.autoInstall && props.onAutoInstallFinish) {
-              props.onAutoInstallFinish("failure");
-            }
-            break;
-          case Operation.UNINSTALL:
-          case Operation.START:
-          case Operation.STOP:
-            break;
-        }
-      }
-
-      switch (currentOperation.status) {
-        case "success":
-          setCurrentOperation(undefined);
-          if (props.onOperationFinish) {
-            props.onOperationFinish();
-          }
-          break;
-        case "failure":
-          setFailedOperation({
-            operation: currentOperation.operation,
-            error: currentOperation.error
-          });
-          setCurrentOperation(undefined);
-          if (props.onOperationFinish) {
-            props.onOperationFinish();
-          }
-          break;
-        case "pending":
-          setFailedOperation(undefined);
-          if (props.onOperationStart) {
-            props.onOperationStart();
-          }
-          break;
-      }
-    }
-  }, [currentOperation, props]);
 
   const sendActionButtonTrackingEvent = (buttonName: string) => {
     sendTrackingEvent(trackingEvents.ENGINE_ACTION_BUTTON_CLICKED, {
@@ -232,14 +84,8 @@ export const EngineManager = (props: EngineManagerProps) => {
 
   const handleRetryButtonClick = () => {
     sendActionButtonTrackingEvent("Retry");
-    if (failedOperation) {
-      window.sendMessageToDigma({
-        action: operationsInfo[failedOperation.operation].action
-      });
-      setCurrentOperation({
-        operation: failedOperation.operation,
-        status: "pending"
-      });
+    if (props.engine.failedOperation) {
+      props.engine.startOperation(props.engine.failedOperation.operation);
     }
   };
 
@@ -248,19 +94,11 @@ export const EngineManager = (props: EngineManagerProps) => {
     props.onManualInstallSelect && props.onManualInstallSelect();
   };
 
-  const renderOperationButton = (operation: Operation) => {
+  const renderOperationButton = (operation: Operation, disabled?: boolean) => {
     const handleOperationButtonClick = () => {
       const operationInfo = operationsInfo[operation];
       sendActionButtonTrackingEvent(operationInfo.button.label);
-
-      window.sendMessageToDigma({
-        action: operationInfo.action
-      });
-      sendTrackingEvent(trackingEvents.ENGINE_ACTION_MESSAGE_SENT, {
-        action: operationInfo.action
-      });
-
-      setCurrentOperation({ operation, status: "pending" });
+      props.engine.startOperation(operation);
     };
 
     const operationInfo = operationsInfo[operation];
@@ -268,19 +106,30 @@ export const EngineManager = (props: EngineManagerProps) => {
       <Button
         onClick={handleOperationButtonClick}
         buttonType={"tertiary"}
-        key={operationInfo.action}
+        key={operation}
         icon={{ component: operationInfo.button.icon }}
+        disabled={disabled}
       >
         {operationInfo.button.label}
       </Button>
     );
   };
 
+  const handleStartButtonClick = () => {
+    const operation = config.isDigmaEngineInstalled
+      ? Operation.START
+      : Operation.INSTALL;
+    const operationInfo = operationsInfo[operation];
+    sendActionButtonTrackingEvent(operationInfo.button.label);
+    props.engine.startOperation(operation);
+  };
+
   const renderContent = () => {
     const loaderStatus = getLoaderStatus(
-      config.isDigmaEngineRunning,
-      currentOperation?.status,
-      failedOperation?.operation
+      config.isDigmaEngineInstalled,
+      isDigmaEngineRunning,
+      props.engine.currentOperation?.status,
+      props.engine.failedOperation?.operation
     );
 
     const icon = loaderStatus ? (
@@ -292,25 +141,26 @@ export const EngineManager = (props: EngineManagerProps) => {
     let title = "Digma Local Analysis Engine ";
 
     const lastOperation =
-      currentOperation?.operation || failedOperation?.operation;
+      props.engine.currentOperation?.operation ||
+      props.engine.failedOperation?.operation;
 
     if (lastOperation) {
       title += operationsInfo[lastOperation].titleSuffix;
     } else {
       title += config.isDigmaEngineInstalled
-        ? config.isDigmaEngineRunning
+        ? isDigmaEngineRunning
           ? "Running"
           : "Stopped"
         : "Not installed";
     }
 
-    if (failedOperation) {
+    if (props.engine.failedOperation) {
       title += " Failed";
     }
 
     const buttons = [];
 
-    if (failedOperation) {
+    if (props.engine.failedOperation) {
       buttons.push(
         <Button
           onClick={handleRetryButtonClick}
@@ -333,20 +183,12 @@ export const EngineManager = (props: EngineManagerProps) => {
         );
       }
     } else {
-      if (config.isDigmaEngineInstalled) {
-        if (config.isDigmaEngineRunning) {
-          if (!props.autoInstall) {
-            buttons.push(renderOperationButton(Operation.STOP));
-          }
-        } else {
-          buttons.push(renderOperationButton(Operation.START));
+      if (config.isDigmaEngineInstalled && !props.isAutoInstallationFlow) {
+        if (isDigmaEngineRunning) {
+          buttons.push(renderOperationButton(Operation.STOP));
         }
 
-        if (!props.autoInstall) {
-          buttons.push(renderOperationButton(Operation.UNINSTALL));
-        }
-      } else {
-        buttons.push(renderOperationButton(Operation.INSTALL));
+        buttons.push(renderOperationButton(Operation.UNINSTALL));
       }
     }
 
@@ -356,30 +198,52 @@ export const EngineManager = (props: EngineManagerProps) => {
         : button
     );
 
+    const isStartButtonDisabled =
+      props.engine.currentOperation?.status === "pending" ||
+      (config.digmaStatus &&
+        config.digmaStatus.runningDigmaInstances.length > 0);
+
     return (
       <>
-        {icon}
-        <s.Title>{title}</s.Title>
-        <s.ContentContainer>
-          {!failedOperation && (
-            <span>
-              {currentOperation?.status === "pending"
-                ? "This may take a few minutes..."
-                : 'Click "Next" to continue setup'}
-            </span>
-          )}
-          {failedOperation ? (
-            <s.ErrorMessage>{failedOperation.error}</s.ErrorMessage>
-          ) : (
-            <span>
-              You can always start / stop / remove the Digma Engine from the
-              Digma panel
-            </span>
+        <s.ContentContainer overlay={props.overlay}>
+          {icon}
+          <s.TextContainer>
+            <s.Title>{title}</s.Title>
+            {!props.engine.failedOperation && (
+              <span>
+                {props.engine.currentOperation?.status === "pending"
+                  ? "This may take a few minutes..."
+                  : `Click "${
+                      isDigmaEngineRunning ? "Next" : "Start"
+                    }" to continue setup`}
+              </span>
+            )}
+            {props.engine.failedOperation ? (
+              <s.ErrorMessage>
+                {props.engine.failedOperation.error}
+              </s.ErrorMessage>
+            ) : (
+              <span>
+                You can always start / stop / remove the Digma Engine from the
+                Digma panel
+              </span>
+            )}
+          </s.TextContainer>
+          {buttons.length > 0 && (
+            <s.ButtonsContainer>
+              {!props.engine.currentOperation && buttonsWithDividers}
+            </s.ButtonsContainer>
           )}
         </s.ContentContainer>
-        <s.ButtonsContainer>
-          {!currentOperation && buttonsWithDividers}
-        </s.ButtonsContainer>
+        {!props.isAutoInstallationFlow && (
+          <s.MainButton
+            disabled={isStartButtonDisabled}
+            onClick={handleStartButtonClick}
+            icon={{ component: PlayCircleIcon }}
+          >
+            Start
+          </s.MainButton>
+        )}
       </>
     );
   };
