@@ -120,17 +120,34 @@ export const SlackLink = styled(Link)`
   gap: 4px;
 `;
 
-export const AlreadyRunningMessage = styled.span`
+export const RunningDigmaMessageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#828797";
+      case "dark":
+      case "dark-jetbrains":
+        return "#9b9b9b";
+    }
+  }};
+`;
+
+export const RunningDigmaMessageTitle = styled.span`
   text-align: center;
   padding: 12px 8px 0;
   font-size: 16px;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "#e00036";
+        return "#00c108";
       case "dark":
       case "dark-jetbrains":
-        return "#f93967";
+        return "#67d28b";
     }
   }};
 `;

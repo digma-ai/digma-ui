@@ -177,7 +177,7 @@ export const InstallStep = (props: InstallStepProps) => {
   //   props.onResetConnectionCheckStatus();
   // };
 
-  const handleNextButtonClick = () => {
+  const handleConfigureButtonClick = () => {
     props.onGoToNextStep();
   };
 
@@ -232,10 +232,9 @@ export const InstallStep = (props: InstallStepProps) => {
   //   </s.LoaderContainer>
   // );
 
-  const renderAlreadyRunningMessage = () => {
+  const renderRunningDigmaMessage = () => {
     let showMessage = false;
-    let messageString =
-      "Digma is already running, please remove all running containers to re-install";
+    let messageString = "Digma is currently running!";
     const digmaStatus = config.digmaStatus;
 
     if (digmaStatus && digmaStatus.runningDigmaInstances.length > 1) {
@@ -255,13 +254,15 @@ export const InstallStep = (props: InstallStepProps) => {
       digmaStatus.runningDigmaInstances.length === 1 &&
       digmaStatus.runningDigmaInstances.includes("dockerDesktop")
     ) {
-      messageString =
-        "Digma is already running as Docker extension, please remove the extension first to re-install";
+      messageString = "Digma is currently running as a Docker Extension!";
       showMessage = true;
     }
 
     return showMessage ? (
-      <s.AlreadyRunningMessage>{messageString}</s.AlreadyRunningMessage>
+      <s.RunningDigmaMessageContainer>
+        <s.RunningDigmaMessageTitle>{messageString}</s.RunningDigmaMessageTitle>
+        <span>If you wish to re-install Digma please uninstall first</span>
+      </s.RunningDigmaMessageContainer>
     ) : null;
   };
 
@@ -294,7 +295,7 @@ export const InstallStep = (props: InstallStepProps) => {
   //   }
   // };
 
-  const alreadyRunningMessage = renderAlreadyRunningMessage();
+  const runningDigmaMessage = renderRunningDigmaMessage();
 
   const renderDockerComposeInstructions = () => (
     <>
@@ -348,19 +349,19 @@ export const InstallStep = (props: InstallStepProps) => {
             title: "Auto install",
             content: (
               <>
-                {alreadyRunningMessage}
+                {runningDigmaMessage}
                 <s.TabContentContainer>
                   <EngineManager
-                    overlay={Boolean(alreadyRunningMessage)}
+                    overlay={Boolean(runningDigmaMessage)}
                     engine={engine}
                   />
                 </s.TabContentContainer>
                 <s.CommonContentContainer>
                   <MainButton
                     disabled={isEngineOperationInProgress}
-                    onClick={handleNextButtonClick}
+                    onClick={handleConfigureButtonClick}
                   >
-                    Next
+                    Configure
                   </MainButton>
                 </s.CommonContentContainer>
               </>
@@ -374,8 +375,8 @@ export const InstallStep = (props: InstallStepProps) => {
       disabled: isEngineOperationInProgress,
       content: (
         <>
-          {alreadyRunningMessage}
-          <s.TabContentContainer overlay={Boolean(alreadyRunningMessage)}>
+          {runningDigmaMessage}
+          <s.TabContentContainer overlay={Boolean(runningDigmaMessage)}>
             <s.SectionTitle>
               Run the following from the terminal/command line to start the
               Digma backend:
@@ -401,7 +402,9 @@ export const InstallStep = (props: InstallStepProps) => {
             {/* {renderLoader()} */}
             {/* {renderMainButton()} */}
             {!isFirstLaunch && (
-              <MainButton onClick={handleNextButtonClick}>Next</MainButton>
+              <MainButton onClick={handleConfigureButtonClick}>
+                Configure
+              </MainButton>
             )}
           </s.CommonContentContainer>
         </>
@@ -413,8 +416,8 @@ export const InstallStep = (props: InstallStepProps) => {
       disabled: isEngineOperationInProgress,
       content: (
         <>
-          {alreadyRunningMessage}
-          <s.TabContentContainer overlay={Boolean(alreadyRunningMessage)}>
+          {runningDigmaMessage}
+          <s.TabContentContainer overlay={Boolean(runningDigmaMessage)}>
             <s.SectionTitle>
               <DockerLogoIcon size={24} color={"#2396ed"} />
               Install Digma Docker extension
@@ -441,7 +444,9 @@ export const InstallStep = (props: InstallStepProps) => {
             {/* {renderLoader()} */}
             {/* {renderMainButton()} */}
             {!isFirstLaunch && (
-              <MainButton onClick={handleNextButtonClick}>Next</MainButton>
+              <MainButton onClick={handleConfigureButtonClick}>
+                Configure
+              </MainButton>
             )}
           </s.CommonContentContainer>
         </>
@@ -473,7 +478,9 @@ export const InstallStep = (props: InstallStepProps) => {
             {/* {renderLoader()} */}
             {/* {renderMainButton()} */}
             {!isFirstLaunch && (
-              <MainButton onClick={handleNextButtonClick}>Next</MainButton>
+              <MainButton onClick={handleConfigureButtonClick}>
+                Configure
+              </MainButton>
             )}
           </s.CommonContentContainer>
         </>
@@ -488,7 +495,7 @@ export const InstallStep = (props: InstallStepProps) => {
         config.digmaStatus.runningDigmaInstances.includes("localEngine")
     );
 
-    const isNextButtonEnabled =
+    const isConfigureButtonEnabled =
       (isFirstLaunch &&
         isAutoInstallationFinished &&
         config.isDigmaEngineInstalled &&
@@ -497,10 +504,10 @@ export const InstallStep = (props: InstallStepProps) => {
 
     return (
       <>
-        {alreadyRunningMessage}
+        {runningDigmaMessage}
         <s.EngineManagerContainer>
           <EngineManager
-            overlay={Boolean(alreadyRunningMessage)}
+            overlay={Boolean(runningDigmaMessage)}
             isAutoInstallationFlow={isAutoInstallationFlow}
             onManualInstallSelect={handleEngineManualInstallSelect}
             engine={engine}
@@ -508,10 +515,10 @@ export const InstallStep = (props: InstallStepProps) => {
         </s.EngineManagerContainer>
         <s.CommonContentContainer>
           <MainButton
-            disabled={!isNextButtonEnabled}
-            onClick={handleNextButtonClick}
+            disabled={!isConfigureButtonEnabled}
+            onClick={handleConfigureButtonClick}
           >
-            Next
+            Configure
           </MainButton>
         </s.CommonContentContainer>
       </>
