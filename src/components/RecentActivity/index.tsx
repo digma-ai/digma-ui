@@ -206,7 +206,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
     window.sendMessageToDigma({
       action: actions.DELETE_ENVIRONMENT,
       payload: {
-        environmentToDelete
+        environment: environmentToDelete
       }
     });
     setEnvironmentToDelete(undefined);
