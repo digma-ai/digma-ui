@@ -8,10 +8,10 @@ export const runDigmaWithGradleTasks: PageContent = {
         <>
           <span>
             Digma will automatically collect application data from common Gradle
-            tasks such as bootRun. If you&apos;re using your own custom task and
-            want Digma to collect data from it, you can add an environment
-            variable to your run configuration so that Digma will know to
-            observe this task.
+            tasks such as <code>bootRun</code>. If you&apos;re using your own
+            custom task and want Digma to collect data from it, you can add an
+            environment variable to your run configuration so that Digma will
+            know to observe this task.
           </span>
           <span>
             To do so, simply add the environment variable{" "}

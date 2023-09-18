@@ -11,6 +11,7 @@ import { ConfigContext } from "../common/App/ConfigContext";
 import { CursorFollower } from "../common/CursorFollower";
 import { DigmaLogoFlatIcon } from "../common/icons/DigmaLogoFlatIcon";
 import { AddEnvironmentPanel } from "./AddEnvironmentPanel";
+import { DeleteEnvironmentConfirmation } from "./DeleteEnvironmentConfirmation";
 import { EnvironmentPanel } from "./EnvironmentPanel";
 import { ViewMode } from "./EnvironmentPanel/types";
 import { LiveView } from "./LiveView";
@@ -68,6 +69,7 @@ const renderNoData = () => {
 export const RecentActivity = (props: RecentActivityProps) => {
   const [selectedEnvironment, setSelectedEnvironment] =
     useState<ExtendedEnvironment>();
+  const [environmentToDelete, setEnvironmentToDelete] = useState<string>();
   const [data, setData] = useState<RecentActivityData>();
   const [viewMode, setViewMode] = useState<ViewMode>("table");
   const [liveData, setLiveData] = useState<LiveData>();
@@ -197,12 +199,21 @@ export const RecentActivity = (props: RecentActivityProps) => {
   };
 
   const handleEnvironmentDelete = (environment: string) => {
+    setEnvironmentToDelete(environment);
+  };
+
+  const handleConfirmEnvironmentDeletion = () => {
     window.sendMessageToDigma({
       action: actions.DELETE_ENVIRONMENT,
       payload: {
-        environment
+        environmentToDelete
       }
     });
+    setEnvironmentToDelete(undefined);
+  };
+
+  const handleCloseDeleteConfirmation = () => {
+    setEnvironmentToDelete(undefined);
   };
 
   const handleAddEnvironmentToRunConfig = () => {
@@ -273,6 +284,14 @@ export const RecentActivity = (props: RecentActivityProps) => {
           )}
         </Allotment.Pane>
       </Allotment>
+      {environmentToDelete && (
+        <s.DeleteEnvironmentConfirmationContainer>
+          <DeleteEnvironmentConfirmation
+            onClose={handleCloseDeleteConfirmation}
+            onDelete={handleConfirmEnvironmentDeletion}
+          />
+        </s.DeleteEnvironmentConfirmationContainer>
+      )}
     </s.Container>
   );
 };
