@@ -11,7 +11,7 @@ export const runDigmaWithCommandLine: PageContent = {
       content: (
         <>
           <span>
-            Add the following XML to your Pom.xml under the{" "}
+            Add the following XML to your <code>Pom.xml</code> under the{" "}
             <code>&lt;Profiles&gt;</code> element (add this element if it
             doesn&apos;t exist)
           </span>
@@ -54,7 +54,9 @@ export const runDigmaWithCommandLine: PageContent = {
       title: "Spring Boot + Gradle",
       content: (
         <>
-          <span>Add the following to your build.gradle file</span>
+          <span>
+            Add the following to your <code>build.gradle</code> file
+          </span>
           <CodeSnippet
             text={`tasks.named("bootRun") {
   if (project.hasProperty('digma')) {
@@ -96,8 +98,8 @@ export const runDigmaWithCommandLine: PageContent = {
       content: (
         <>
           <span>
-            Make sure to substitute OTEL_SERVICE_NAME with your application
-            name:
+            Make sure to substitute <code>OTEL_SERVICE_NAME</code> with your
+            application name:
           </span>
           <CodeSnippet
             text={`curl --create-dirs -O -L --output-dir ./otel
