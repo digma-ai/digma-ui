@@ -231,11 +231,6 @@ export const InstallationWizard = () => {
     window.sendMessageToDigma({
       action: actions.CLOSE
     });
-
-    // TODO: remove
-    window.sendMessageToDigma({
-      action: actions.FINISH
-    });
   };
 
   const handleFinishButtonClick = () => {
