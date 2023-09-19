@@ -4,9 +4,11 @@ import { useContext, useEffect, useMemo, useState } from "react";
 import { actions as globalActions } from "../../actions";
 import { dispatcher } from "../../dispatcher";
 import { trackingEvents as globalTrackingEvents } from "../../trackingEvents";
+import { getHostnameFromURL } from "../../utils/getHostNameFromURL";
 import { groupBy } from "../../utils/groupBy";
 import { sendTrackingEvent } from "../../utils/sendTrackingEvent";
 import { ConfigContext } from "../common/App/ConfigContext";
+import { ConfigContextData } from "../common/App/types";
 import { CursorFollower } from "../common/CursorFollower";
 import { DigmaLogoFlatIcon } from "../common/icons/DigmaLogoFlatIcon";
 import { AddEnvironmentPanel } from "./AddEnvironmentPanel";
@@ -30,6 +32,16 @@ import {
 } from "./types";
 
 export const RECENT_ACTIVITY_CONTAINER_ID = "recent-activity";
+
+const isIDEConnectedToLocalDigma = (config: ConfigContextData): boolean => {
+  const hostname = getHostnameFromURL(config.digmaApiUrl);
+
+  if (hostname && ["localhost", "127.0.0.1"].includes(hostname)) {
+    return true;
+  }
+
+  return false;
+};
 
 const handleTroubleshootButtonClick = () => {
   sendTrackingEvent(globalTrackingEvents.TROUBLESHOOTING_LINK_CLICKED, {
@@ -275,7 +287,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
             />
           );
         case "shared":
-          return selectedEnvironment.serverApiUrl === config.digmaApiUrl ? (
+          return !isIDEConnectedToLocalDigma(config) ? (
             <AddEnvironmentPanel environment={selectedEnvironment} />
           ) : (
             <AddSharedEnvironmentPanel

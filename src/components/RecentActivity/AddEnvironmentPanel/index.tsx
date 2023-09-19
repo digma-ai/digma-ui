@@ -1,5 +1,8 @@
+import { useContext } from "react";
 import { useTheme } from "styled-components";
 import { actions as globalActions } from "../../../actions";
+import { getHostnameFromURL } from "../../../utils/getHostNameFromURL";
+import { ConfigContext } from "../../common/App/ConfigContext";
 import { getThemeKind } from "../../common/App/styles";
 import { CodeSnippet } from "../../common/CodeSnippet";
 import { DesktopIcon } from "../../common/icons/DesktopIcon";
@@ -11,6 +14,9 @@ import { AddEnvironmentPanelContent, AddEnvironmentPanelProps } from "./types";
 export const AddEnvironmentPanel = (props: AddEnvironmentPanelProps) => {
   const theme = useTheme();
   const themeKind = getThemeKind(theme);
+  const config = useContext(ConfigContext);
+  const hostname =
+    getHostnameFromURL(config.digmaApiUrl) || "[DIGMA_BACKEND_URL]";
 
   const handleAddToRunConfigLinkClick = () => {
     if (props.onAddEnvironmentToRunConfig) {
@@ -80,14 +86,10 @@ export const AddEnvironmentPanel = (props: AddEnvironmentPanelProps) => {
 
 curl --create-dirs -O -L --output-dir ./otel https://github.com/digma-ai/otel-java-instrumentation/releases/latest/download/digma-otel-agent-extension.jar export 
 
-JAVA_TOOL_OPTIONS="-javaagent:/otel/javaagent.jar -Dotel.exporter.otlp.endpoint=${
-                props.environment.serverApiUrl || ""
-              } -Dotel.javaagent.extensions=/otel/digma-otel-agent-extension.jar"
+JAVA_TOOL_OPTIONS="-javaagent:/otel/javaagent.jar -Dotel.exporter.otlp.endpoint=http://${hostname}:5050 -Dotel.javaagent.extensions=/otel/digma-otel-agent-extension.jar"
 
 export OTEL_SERVICE_NAME={--ENTER YOUR SERVICE NAME HERE--} 
-export OTEL_RESOURCE_ATTRIBUTES=digma.environment.name=${
-                props.environment.originalName
-              }`}
+export OTEL_RESOURCE_ATTRIBUTES=digma.environment.name=${props.environment.originalName}`}
             />
           </>
         )
