@@ -4,17 +4,23 @@ import { actions } from "../../../actions";
 import { dispatcher } from "../../../dispatcher";
 import { Mode } from "../../../globals";
 import { isBoolean } from "../../../typeGuards/isBoolean";
+import { isNull } from "../../../typeGuards/isNull";
 import { isObject } from "../../../typeGuards/isObject";
 import { isString } from "../../../typeGuards/isString";
 import { ConfigContext } from "./ConfigContext";
 import { GlobalStyle } from "./styles";
-import { AppProps } from "./types";
+import { AppProps, DigmaStatus } from "./types";
 
 export const THEMES = ["light", "dark", "dark-jetbrains"];
 
-const isMode = (mode: unknown): mode is Mode => {
-  return isString(mode) && THEMES.includes(mode);
-};
+const isMode = (mode: unknown): mode is Mode =>
+  isString(mode) && THEMES.includes(mode);
+
+export const isDigmaStatus = (status: unknown): status is DigmaStatus =>
+  isObject(status) &&
+  isObject(status.connection) &&
+  (isString(status.connection.type) || isNull(status.connection.type)) &&
+  Array.isArray(status.runningDigmaInstances);
 
 const getMode = (): Mode => {
   if (!isMode(window.theme)) {
@@ -88,11 +94,11 @@ export const App = (props: AppProps) => {
       }
     };
 
-    const handleSetIsDigmaRunning = (data: unknown) => {
-      if (isObject(data) && isBoolean(data.isDigmaRunning)) {
+    const handleSetDigmaStatus = (data: unknown) => {
+      if (isDigmaStatus(data)) {
         setConfig((config) => ({
           ...config,
-          isDigmaRunning: data.isDigmaRunning as boolean
+          digmaStatus: data
         }));
       }
     };
@@ -131,8 +137,8 @@ export const App = (props: AppProps) => {
       handleSetIsDigmaEngineRunning
     );
     dispatcher.addActionListener(
-      actions.SET_IS_DIGMA_RUNNING,
-      handleSetIsDigmaRunning
+      actions.SET_DIGMA_STATUS,
+      handleSetDigmaStatus
     );
     dispatcher.addActionListener(
       actions.SET_IS_DOCKER_INSTALLED,
@@ -160,8 +166,8 @@ export const App = (props: AppProps) => {
         handleSetIsDigmaEngineRunning
       );
       dispatcher.removeActionListener(
-        actions.SET_IS_DIGMA_RUNNING,
-        handleSetIsDigmaRunning
+        actions.SET_DIGMA_STATUS,
+        handleSetDigmaStatus
       );
       dispatcher.removeActionListener(
         actions.SET_IS_DOCKER_INSTALLED,

@@ -64,13 +64,20 @@ export const AddEnvironmentDialog = (props: AddEnvironmentDialogProps) => {
   const theme = useTheme();
   const closeButtonIconColor = getCloseButtonIconColor(theme);
   const textFieldRef = useRef<HTMLInputElement>(null);
+  const [isEnvironmentNameValid, setIsEnvironmentNameValid] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<ReactNode>();
 
   useEffect(() => {
     textFieldRef.current?.focus();
   }, []);
 
   const handleTextFieldValueChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setTextFieldValue(e.target.value.toLocaleUpperCase());
+    const value = e.target.value.toLocaleUpperCase();
+    setTextFieldValue(value);
+
+    const { isValid, errorMessage } = validateName(value, props.environments);
+    setIsEnvironmentNameValid(isValid);
+    setErrorMessage(errorMessage);
   };
 
   const handleCloseButtonClick = () => {
@@ -87,16 +94,11 @@ export const AddEnvironmentDialog = (props: AddEnvironmentDialogProps) => {
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" && isEnvironmentNameValid) {
       props.onEnvironmentAdd(textFieldValue);
       props.onClose();
     }
   };
-
-  const { isValid: isNameValid, errorMessage } = validateName(
-    textFieldValue,
-    props.environments
-  );
 
   return (
     <s.Container onKeyDown={handleKeyDown}>
@@ -116,7 +118,10 @@ export const AddEnvironmentDialog = (props: AddEnvironmentDialogProps) => {
         <Button buttonType={"secondary"} onClick={handleCancelButtonClick}>
           Cancel
         </Button>
-        <Button disabled={!isNameValid} onClick={handleNextButtonClick}>
+        <Button
+          disabled={!isEnvironmentNameValid}
+          onClick={handleNextButtonClick}
+        >
           Next
         </Button>
       </s.ButtonsContainer>

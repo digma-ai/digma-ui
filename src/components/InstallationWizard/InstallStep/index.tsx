@@ -1,24 +1,44 @@
-import { useContext, useState } from "react";
-import { useTheme } from "styled-components";
+import { useContext, useEffect, useState } from "react";
+import { DefaultTheme, useTheme } from "styled-components";
+import { usePrevious } from "../../../hooks/usePrevious";
 import { openURLInDefaultBrowser } from "../../../utils/openURLInDefaultBrowser";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
-import { getThemeKind } from "../../common/App/styles";
+import { ConfigContextData } from "../../common/App/types";
+import { CircleLoader } from "../../common/CircleLoader";
+import { CircleLoaderColors } from "../../common/CircleLoader/types";
 import { CodeSnippet } from "../../common/CodeSnippet";
 import { Link } from "../../common/Link";
-import { Loader } from "../../common/Loader";
 import { ChatFillIcon } from "../../common/icons/ChatIFillIcon";
-import { CheckmarkCircleInvertedIcon } from "../../common/icons/CheckmarkCircleInvertedIcon";
 import { CodeIcon } from "../../common/icons/CodeIcon";
 import { DockerLogoIcon } from "../../common/icons/DockerLogoIcon";
 import { SlackLogoIcon } from "../../common/icons/SlackLogoIcon";
 import { Tabs } from "../Tabs";
 import { MainButton, SectionDescription } from "../styles";
 import { trackingEvents } from "../tracking";
-import { AsyncActionResult } from "../types";
+import { AsyncActionResultData } from "../types";
 import { EngineManager } from "./EngineManager";
 import * as s from "./styles";
-import { InstallStepProps } from "./types";
+import { InstallStepProps, Operation } from "./types";
+import { useEngine } from "./useEngine";
+
+const getCircleLoaderColors = (theme: DefaultTheme): CircleLoaderColors => {
+  switch (theme.mode) {
+    case "light":
+      return {
+        start: "rgb(81 84 236 / 0%)",
+        end: "#5154ec",
+        background: "#ebecf0"
+      };
+    case "dark":
+    case "dark-jetbrains":
+      return {
+        start: "rgb(120 145 208 / 0%)",
+        end: "#7891d0",
+        background: "#393b40"
+      };
+  }
+};
 
 const GET_DIGMA_DOCKER_COMPOSE_COMMAND_LINUX =
   "curl -L https://get.digma.ai/ --output docker-compose.yml";
@@ -34,40 +54,130 @@ const DIGMA_HELM_CHART_URL =
 
 const isFirstLaunch = window.wizardFirstLaunch === true;
 
-export const InstallStep = (props: InstallStepProps) => {
-  const theme = useTheme();
-  const isConnectionCheckStarted = Boolean(props.connectionCheckStatus);
-  const [selectedInstallTab, setSelectedInstallTab] = useState(0);
-  const [selectedDockerComposeOSTab, setSelectedDockerComposeOSTab] =
-    useState(0);
-  const config = useContext(ConfigContext);
-  const [isAutoInstallationFlow] = useState(
+const checkIfAutoInstallationFlow = (
+  config: ConfigContextData,
+  isFirstLaunch: boolean
+) =>
+  Boolean(
     isFirstLaunch &&
+      config.digmaStatus &&
+      config.digmaStatus.runningDigmaInstances.length === 0 &&
       !config.isDigmaEngineInstalled &&
       config.isDockerInstalled &&
       config.isDockerComposeInstalled
   );
+
+export const InstallStep = (props: InstallStepProps) => {
+  const theme = useTheme();
+  // const isConnectionCheckStarted = Boolean(props.connectionCheckStatus);
+  const [selectedInstallTab, setSelectedInstallTab] = useState(0);
+  const [selectedDockerComposeOSTab, setSelectedDockerComposeOSTab] =
+    useState(0);
+  const config = useContext(ConfigContext);
+  const [isInitializing, setIsInitializing] = useState(!config.digmaStatus);
+  const previousDigmaStatus = usePrevious(config.digmaStatus);
+  const [isAutoInstallationFlow, setIsAutoInstallationFlow] = useState(
+    checkIfAutoInstallationFlow(config, isFirstLaunch)
+  );
   const [isAutoInstallationFinished, setIsAutoInstallationFinished] =
     useState(false);
-  const [areTabsVisible, setAreTabsVisible] = useState(
-    !config.isDigmaEngineInstalled && !isAutoInstallationFlow
-  );
   const [isEngineOperationInProgress, setIsEngineOperationInProgress] =
     useState(false);
+  const circleLoaderColors = getCircleLoaderColors(theme);
+
+  const handleEngineOperationStart = () => {
+    setIsEngineOperationInProgress(true);
+  };
+
+  const handleEngineOperationFinish = (
+    operation: Operation,
+    resultData: AsyncActionResultData
+  ) => {
+    setIsEngineOperationInProgress(false);
+
+    if (isAutoInstallationFlow) {
+      if (operation === Operation.INSTALL) {
+        setIsAutoInstallationFinished(true);
+        sendTrackingEvent(trackingEvents.AUTO_INSTALLATION_FLOW_FINISHED, {
+          result: resultData.result
+        });
+
+        if (resultData.result === "failure") {
+          setIsAutoInstallationFlow(false);
+          handleEngineManualInstallSelect();
+        }
+      }
+
+      if (operation === Operation.UNINSTALL) {
+        setIsAutoInstallationFlow(false);
+      }
+    }
+  };
+
+  const engine = useEngine(
+    handleEngineOperationStart,
+    handleEngineOperationFinish
+  );
+
+  useEffect(() => {
+    if (!previousDigmaStatus && config.digmaStatus) {
+      setIsInitializing(false);
+
+      const isAutoInstallationFlow = checkIfAutoInstallationFlow(
+        config,
+        isFirstLaunch
+      );
+
+      if (isAutoInstallationFlow) {
+        setIsAutoInstallationFlow(isAutoInstallationFlow);
+
+        sendTrackingEvent(trackingEvents.AUTO_INSTALLATION_FLOW_STARTED);
+        engine.startOperation(Operation.INSTALL);
+      }
+    }
+  }, [config.digmaStatus, previousDigmaStatus, config, engine]);
+
+  // Move to the next step if connection to Digma is already available
+  // on the first launch of the plugin
+  useEffect(() => {
+    if (
+      isFirstLaunch &&
+      !previousDigmaStatus &&
+      config.digmaStatus?.connection.status &&
+      config.digmaStatus.runningDigmaInstances.length === 1
+    ) {
+      props.onGoToNextStep(true);
+    }
+  }, [config, previousDigmaStatus, props.onGoToNextStep]);
+
+  // Move to the next step if connection has been established
+  // on the first launch of the plugin
+  useEffect(() => {
+    if (
+      isFirstLaunch &&
+      previousDigmaStatus &&
+      !previousDigmaStatus.connection.status &&
+      config.digmaStatus?.connection.status &&
+      config.digmaStatus.runningDigmaInstances.length === 1 &&
+      config.digmaStatus.runningDigmaInstances
+    ) {
+      props.onGoToNextStep();
+    }
+  }, [config, previousDigmaStatus, props.onGoToNextStep]);
 
   const handleInstallDigmaButtonClick = () => {
     props.onGetDigmaDockerDesktopButtonClick();
   };
 
-  const handleDigmaIsInstalledButtonClick = () => {
-    props.onConnectionStatusCheck();
-  };
+  // const handleDigmaIsInstalledButtonClick = () => {
+  //   props.onConnectionStatusCheck();
+  // };
 
-  const handleRetryButtonClick = () => {
-    props.onResetConnectionCheckStatus();
-  };
+  // const handleRetryButtonClick = () => {
+  //   props.onResetConnectionCheckStatus();
+  // };
 
-  const handleNextButtonClick = () => {
+  const handleConfigureButtonClick = () => {
     props.onGoToNextStep();
   };
 
@@ -85,23 +195,22 @@ export const InstallStep = (props: InstallStepProps) => {
     props.onSlackLinkClick();
   };
 
-  const handleEngineAutoInstallationFinish = (result: AsyncActionResult) => {
-    setIsAutoInstallationFinished(true);
-    sendTrackingEvent(trackingEvents.AUTO_INSTALLATION_FLOW_FINISHED, {
-      result
-    });
+  // const handleEngineAutoInstallationFinish = (result: AsyncActionResult) => {
+  //   setIsAutoInstallationFinished(true);
+  //   sendTrackingEvent(trackingEvents.AUTO_INSTALLATION_FLOW_FINISHED, {
+  //     result
+  //   });
 
-    if (result === "failure") {
-      handleEngineManualInstallSelect();
-    }
-  };
+  //   if (result === "failure") {
+  //     handleEngineManualInstallSelect();
+  //   }
+  // };
 
-  const handleEngineRemovalFinish = () => {
-    setAreTabsVisible(true);
-  };
+  // const handleEngineRemovalFinish = () => {
+  //   setIsAutoInstallationFlow(false);
+  // };
 
   const handleEngineManualInstallSelect = () => {
-    setAreTabsVisible(true);
     const dockerComposeTabIndex = installTabs.findIndex(
       (x) => x.title === "Docker Compose"
     );
@@ -111,54 +220,82 @@ export const InstallStep = (props: InstallStepProps) => {
     }
   };
 
-  const handleEngineOperationStart = () => {
-    setIsEngineOperationInProgress(true);
-  };
+  // const renderLoader = () => (
+  //   <s.LoaderContainer>
+  //     {props.connectionCheckStatus && (
+  //       <Loader
+  //         size={84}
+  //         status={props.connectionCheckStatus}
+  //         themeKind={getThemeKind(theme)}
+  //       />
+  //     )}
+  //   </s.LoaderContainer>
+  // );
 
-  const handleEngineOperationFinish = () => {
-    setIsEngineOperationInProgress(false);
-  };
+  const renderRunningDigmaMessage = () => {
+    let showMessage = false;
+    let messageString = "Digma is currently running!";
+    const digmaStatus = config.digmaStatus;
 
-  const renderLoader = () => (
-    <s.LoaderContainer>
-      {props.connectionCheckStatus && (
-        <Loader
-          size={84}
-          status={props.connectionCheckStatus}
-          themeKind={getThemeKind(theme)}
-        />
-      )}
-    </s.LoaderContainer>
-  );
-
-  const renderMainButton = () => {
-    if (!isConnectionCheckStarted) {
-      return (
-        <MainButton onClick={handleDigmaIsInstalledButtonClick}>
-          OK, I&apos;ve installed Digma
-        </MainButton>
-      );
+    if (digmaStatus && digmaStatus.runningDigmaInstances.length > 1) {
+      showMessage = true;
     }
 
-    switch (props.connectionCheckStatus) {
-      case "pending":
-        return <MainButton disabled={true}>Complete</MainButton>;
-      case "failure":
-        return <MainButton onClick={handleRetryButtonClick}>Retry</MainButton>;
-      case "success":
-        return (
-          <MainButton
-            icon={{
-              component: CheckmarkCircleInvertedIcon,
-              color: "#0fbf00"
-            }}
-            onClick={handleNextButtonClick}
-          >
-            Complete
-          </MainButton>
-        );
+    if (
+      digmaStatus &&
+      digmaStatus.runningDigmaInstances.length === 1 &&
+      !digmaStatus.runningDigmaInstances.includes("localEngine")
+    ) {
+      showMessage = true;
     }
+
+    if (
+      digmaStatus &&
+      digmaStatus.runningDigmaInstances.length === 1 &&
+      digmaStatus.runningDigmaInstances.includes("dockerDesktop")
+    ) {
+      messageString = "Digma is currently running as a Docker Extension!";
+      showMessage = true;
+    }
+
+    return showMessage ? (
+      <s.RunningDigmaMessageContainer>
+        <s.RunningDigmaMessageTitle>{messageString}</s.RunningDigmaMessageTitle>
+        <span>If you wish to re-install Digma please uninstall first</span>
+      </s.RunningDigmaMessageContainer>
+    ) : null;
   };
+
+  // const renderMainButton = () => {
+  //   if (!isConnectionCheckStarted) {
+  //     return (
+  //       <MainButton onClick={handleDigmaIsInstalledButtonClick}>
+  //         OK, I&apos;ve installed Digma
+  //       </MainButton>
+  //     );
+  //   }
+
+  //   switch (props.connectionCheckStatus) {
+  //     case "pending":
+  //       return <MainButton disabled={true}>Complete</MainButton>;
+  //     case "failure":
+  //       return <MainButton onClick={handleRetryButtonClick}>Retry</MainButton>;
+  //     case "success":
+  //       return (
+  //         <MainButton
+  //           icon={{
+  //             component: CheckmarkCircleInvertedIcon,
+  //             color: "#0fbf00"
+  //           }}
+  //           onClick={handleNextButtonClick}
+  //         >
+  //           Complete
+  //         </MainButton>
+  //       );
+  //   }
+  // };
+
+  const runningDigmaMessage = renderRunningDigmaMessage();
 
   const renderDockerComposeInstructions = () => (
     <>
@@ -212,21 +349,21 @@ export const InstallStep = (props: InstallStepProps) => {
             title: "Auto install",
             content: (
               <>
+                {runningDigmaMessage}
                 <s.TabContentContainer>
                   <EngineManager
-                    onOperationStart={handleEngineOperationStart}
-                    onOperationFinish={handleEngineOperationFinish}
+                    overlay={Boolean(runningDigmaMessage)}
+                    engine={engine}
                   />
                 </s.TabContentContainer>
-                {
-                  <s.CommonContentContainer>
-                    {!isEngineOperationInProgress && (
-                      <MainButton onClick={handleNextButtonClick}>
-                        Next
-                      </MainButton>
-                    )}
-                  </s.CommonContentContainer>
-                }
+                <s.CommonContentContainer>
+                  <MainButton
+                    disabled={isEngineOperationInProgress}
+                    onClick={handleConfigureButtonClick}
+                  >
+                    Configure
+                  </MainButton>
+                </s.CommonContentContainer>
               </>
             )
           }
@@ -235,9 +372,11 @@ export const InstallStep = (props: InstallStepProps) => {
     {
       icon: CodeIcon,
       title: "Docker Compose",
+      disabled: isEngineOperationInProgress,
       content: (
         <>
-          <s.TabContentContainer>
+          {runningDigmaMessage}
+          <s.TabContentContainer overlay={Boolean(runningDigmaMessage)}>
             <s.SectionTitle>
               Run the following from the terminal/command line to start the
               Digma backend:
@@ -260,8 +399,13 @@ export const InstallStep = (props: InstallStepProps) => {
             />
           </s.TabContentContainer>
           <s.CommonContentContainer>
-            {renderLoader()}
-            {renderMainButton()}
+            {/* {renderLoader()} */}
+            {/* {renderMainButton()} */}
+            {!isFirstLaunch && (
+              <MainButton onClick={handleConfigureButtonClick}>
+                Configure
+              </MainButton>
+            )}
           </s.CommonContentContainer>
         </>
       )
@@ -269,9 +413,11 @@ export const InstallStep = (props: InstallStepProps) => {
     {
       icon: DockerLogoIcon,
       title: "Docker Desktop",
+      disabled: isEngineOperationInProgress,
       content: (
         <>
-          <s.TabContentContainer>
+          {runningDigmaMessage}
+          <s.TabContentContainer overlay={Boolean(runningDigmaMessage)}>
             <s.SectionTitle>
               <DockerLogoIcon size={24} color={"#2396ed"} />
               Install Digma Docker extension
@@ -284,6 +430,10 @@ export const InstallStep = (props: InstallStepProps) => {
               4.10.0 or higher installed)
             </SectionDescription>
             <s.GetDockerExtensionButton
+              disabled={
+                config.digmaStatus &&
+                config.digmaStatus.runningDigmaInstances.length > 0
+              }
               buttonType={"secondary"}
               onClick={handleInstallDigmaButtonClick}
             >
@@ -291,14 +441,20 @@ export const InstallStep = (props: InstallStepProps) => {
             </s.GetDockerExtensionButton>
           </s.TabContentContainer>
           <s.CommonContentContainer>
-            {renderLoader()}
-            {renderMainButton()}
+            {/* {renderLoader()} */}
+            {/* {renderMainButton()} */}
+            {!isFirstLaunch && (
+              <MainButton onClick={handleConfigureButtonClick}>
+                Configure
+              </MainButton>
+            )}
           </s.CommonContentContainer>
         </>
       )
     },
     {
       title: "I don't have Docker",
+      disabled: isEngineOperationInProgress,
       content: (
         <>
           <s.NoDockerTabContentContainer>
@@ -319,40 +475,81 @@ export const InstallStep = (props: InstallStepProps) => {
             </s.SlackLink>
           </s.NoDockerTabContentContainer>
           <s.CommonContentContainer>
-            {renderLoader()}
-            {renderMainButton()}
+            {/* {renderLoader()} */}
+            {/* {renderMainButton()} */}
+            {!isFirstLaunch && (
+              <MainButton onClick={handleConfigureButtonClick}>
+                Configure
+              </MainButton>
+            )}
           </s.CommonContentContainer>
         </>
       )
     }
   ];
 
+  const renderEngineManager = () => {
+    const isDigmaEngineRunning = Boolean(
+      config.digmaStatus?.connection.status &&
+        config.digmaStatus.runningDigmaInstances.length === 1 &&
+        config.digmaStatus.runningDigmaInstances.includes("localEngine")
+    );
+
+    const isConfigureButtonEnabled =
+      (isFirstLaunch &&
+        isAutoInstallationFinished &&
+        config.isDigmaEngineInstalled &&
+        isDigmaEngineRunning) ||
+      !isEngineOperationInProgress;
+
+    return (
+      <>
+        {runningDigmaMessage}
+        <s.EngineManagerContainer>
+          <EngineManager
+            overlay={Boolean(runningDigmaMessage)}
+            isAutoInstallationFlow={isAutoInstallationFlow}
+            onManualInstallSelect={handleEngineManualInstallSelect}
+            engine={engine}
+          />
+        </s.EngineManagerContainer>
+        <s.CommonContentContainer>
+          <MainButton
+            disabled={!isConfigureButtonEnabled}
+            onClick={handleConfigureButtonClick}
+          >
+            Configure
+          </MainButton>
+        </s.CommonContentContainer>
+      </>
+    );
+  };
+
+  const renderTabs = () => (
+    <Tabs
+      tabs={installTabs}
+      onSelect={handleInstallTabSelect}
+      selectedTab={selectedInstallTab}
+      fullWidth={true}
+    />
+  );
+
+  const renderContent = () => {
+    if (isAutoInstallationFlow || config.isDigmaEngineInstalled) {
+      return renderEngineManager();
+    }
+
+    return renderTabs();
+  };
+
   return (
     <s.Container>
-      {areTabsVisible ? (
-        <Tabs
-          tabs={installTabs}
-          onSelect={handleInstallTabSelect}
-          selectedTab={selectedInstallTab}
-          fullWidth={true}
-        />
+      {isInitializing ? (
+        <s.CircleLoaderContainer>
+          <CircleLoader size={32} colors={circleLoaderColors} />
+        </s.CircleLoaderContainer>
       ) : (
-        <>
-          <EngineManager
-            autoInstall={isAutoInstallationFlow}
-            onAutoInstallFinish={handleEngineAutoInstallationFinish}
-            onManualInstallSelect={handleEngineManualInstallSelect}
-            onRemoveFinish={handleEngineRemovalFinish}
-            onOperationStart={handleEngineOperationStart}
-            onOperationFinish={handleEngineOperationFinish}
-          />
-          <s.CommonContentContainer>
-            {(isAutoInstallationFinished ||
-              (!isAutoInstallationFlow && !isEngineOperationInProgress)) && (
-              <MainButton onClick={handleNextButtonClick}>Next</MainButton>
-            )}
-          </s.CommonContentContainer>
-        </>
+        renderContent()
       )}
     </s.Container>
   );

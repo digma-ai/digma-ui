@@ -16,6 +16,7 @@ import * as s from "./styles";
 const ACTION_PREFIX = "TROUBLESHOOTING";
 
 const actions = addPrefix(ACTION_PREFIX, {
+  INITIALIZE: "INITIALIZE",
   CLOSE: "CLOSE"
 });
 
@@ -59,6 +60,10 @@ export const Troubleshooting = () => {
   const closeButtonIconColor = getCloseButtonIconColor(theme);
 
   useEffect(() => {
+    window.sendMessageToDigma({
+      action: actions.INITIALIZE
+    });
+
     sendTrackingEvent(trackingEvents.PAGE_LOADED);
   }, []);
 

@@ -27,6 +27,7 @@ const REFRESH_INTERVAL = isNumber(window.assetsRefreshInterval)
 const ACTION_PREFIX = "ASSETS";
 
 const actions = addPrefix(ACTION_PREFIX, {
+  INITIALIZE: "INITIALIZE",
   GET_DATA: "GET_DATA",
   SET_DATA: "SET_DATA",
   GO_TO_ASSET: "GO_TO_ASSET"
@@ -67,6 +68,10 @@ export const Assets = (props: AssetsProps) => {
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
 
   useEffect(() => {
+    window.sendMessageToDigma({
+      action: actions.INITIALIZE
+    });
+
     window.sendMessageToDigma({
       action: actions.GET_DATA
     });
