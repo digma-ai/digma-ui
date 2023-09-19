@@ -81,7 +81,7 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
   };
 
   const handleEnvironmentAdd = (environmentName: string) => {
-    props.onEnvironmentAdd(environmentName, "local");
+    props.onEnvironmentAdd(environmentName);
   };
 
   const handleEnvironmentDelete = (environment: string) => {
@@ -201,10 +201,11 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
           <s.EnvironmentList ref={environmentListDimensions.observe}>
             {props.environments.map((environment) => (
               <EnvironmentTab
-                key={environment.name}
+                key={environment.originalName}
                 environment={environment}
                 isSelected={
-                  props.selectedEnvironment?.name === environment.name
+                  props.selectedEnvironment?.originalName ===
+                  environment.originalName
                 }
                 onClick={handleEnvironmentTabClick}
                 onEnvironmentDelete={handleEnvironmentDelete}

@@ -1,4 +1,4 @@
-import { ChangeEvent, KeyboardEvent, useState } from "react";
+import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
 import { validateEmailFormat } from "../../../utils/validateEmailFormat";
 import { CrossIcon } from "../../common/icons/CrossIcon";
 import * as s from "./styles";
@@ -9,6 +9,11 @@ const EMAIL_ERROR_MESSAGE = "Enter a valid email";
 export const RegistrationPanel = (props: RegistrationPanelProps) => {
   const [email, setEmail] = useState("");
   const [isEmailValid, setIsEmailValid] = useState(false);
+  const emailTextFieldRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    emailTextFieldRef.current?.focus();
+  }, []);
 
   const handleSubmitButtonClick = () => {
     props.onSubmit(email);
@@ -47,6 +52,7 @@ export const RegistrationPanel = (props: RegistrationPanelProps) => {
       </s.Description>
       <s.TextFieldContainer>
         <s.EmailTextField
+          ref={emailTextFieldRef}
           value={email}
           onChange={handleEmailTextFieldChange}
           placeholder={"Enter your email"}

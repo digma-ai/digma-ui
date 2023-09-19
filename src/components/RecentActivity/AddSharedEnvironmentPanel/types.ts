@@ -1,5 +1,5 @@
 import { ExtendedEnvironment } from "../types";
 
-export interface AddRemoteEnvironmentPanelProps {
+export interface AddSharedEnvironmentPanelProps {
   environment: ExtendedEnvironment;
 }

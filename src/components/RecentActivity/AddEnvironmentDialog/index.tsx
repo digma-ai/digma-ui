@@ -32,7 +32,7 @@ const validateName = (
     };
   }
 
-  if (environments.find((x) => x.name === value)) {
+  if (environments.find((x) => x.name === value || x.originalName === value)) {
     return {
       isValid: false,
       errorMessage: (

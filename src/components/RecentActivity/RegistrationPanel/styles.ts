@@ -28,6 +28,7 @@ export const Container = styled.div`
     }
   }};
   width: 390px;
+  height: fit-content;
 `;
 
 export const Header = styled.div`

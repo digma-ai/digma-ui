@@ -1,8 +1,9 @@
 import { ReactNode, useCallback, useState } from "react";
 import { CodeDisplayIcon } from "../../common/icons/CodeDisplayIcon";
 import { InfiniteLoopIcon } from "../../common/icons/InfiniteLoopIcon";
+import { EnvironmentType } from "../types";
 import * as s from "./styles";
-import { EnvironmentType, EnvironmentTypePanelProps } from "./types";
+import { EnvironmentTypePanelProps } from "./types";
 
 export const EnvironmentTypePanel = (props: EnvironmentTypePanelProps) => {
   const [selectedType, setSelectedType] = useState<EnvironmentType>();
@@ -37,9 +38,9 @@ export const EnvironmentTypePanel = (props: EnvironmentTypePanelProps) => {
       icon: <CodeDisplayIcon />
     },
     {
-      type: "ci",
-      title: "CI environment",
-      description: "CI is an environment shared with your colleagues",
+      type: "shared",
+      title: "CI/Prod environment",
+      description: "CI/Prod is an environment shared with your colleagues",
       icon: <InfiniteLoopIcon />
     }
   ];
@@ -87,7 +88,7 @@ export const EnvironmentTypePanel = (props: EnvironmentTypePanelProps) => {
           </s.EnvironmentTypeButton>
         ))}
         <s.EnvironmentTypeDescription>
-          {selectedType === "ci" && getEnvironmentTypeDescription("ci")}
+          {selectedType === "shared" && getEnvironmentTypeDescription("shared")}
         </s.EnvironmentTypeDescription>
       </s.ContentContainer>
     </s.Container>

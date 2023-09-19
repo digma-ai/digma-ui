@@ -19,6 +19,7 @@ export type DigmaStatus = {
 };
 
 export interface ConfigContextData {
+  digmaApiUrl: string;
   digmaStatus: DigmaStatus | undefined;
   isObservabilityEnabled: boolean;
   isJaegerEnabled: boolean;

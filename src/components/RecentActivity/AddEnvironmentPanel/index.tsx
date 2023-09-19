@@ -1,42 +1,53 @@
 import { useTheme } from "styled-components";
+import { actions as globalActions } from "../../../actions";
 import { getThemeKind } from "../../common/App/styles";
 import { CodeSnippet } from "../../common/CodeSnippet";
 import { DesktopIcon } from "../../common/icons/DesktopIcon";
+import { InfinityIcon } from "../../common/icons/InfinityIcon";
+import { EnvironmentType } from "../types";
 import * as s from "./styles";
-import { AddEnvironmentPanelProps } from "./types";
+import { AddEnvironmentPanelContent, AddEnvironmentPanelProps } from "./types";
 
 export const AddEnvironmentPanel = (props: AddEnvironmentPanelProps) => {
   const theme = useTheme();
   const themeKind = getThemeKind(theme);
 
   const handleAddToRunConfigLinkClick = () => {
-    props.onAddEnvironmentToRunConfig();
+    if (props.onAddEnvironmentToRunConfig) {
+      props.onAddEnvironmentToRunConfig();
+    }
   };
 
-  return (
-    <s.Container>
-      <s.Header>
-        <DesktopIcon size={16} color={"currentColor"} />
-        How to setup your local environment
-      </s.Header>
-      <s.ContentContainer>
-        <s.Section>
-          <s.SectionHeader>
-            <s.SectionNumber>1</s.SectionNumber>
-            <s.SectionTitle>Integrate Code</s.SectionTitle>
-          </s.SectionHeader>
-          <s.SectionContentContainer>
+  const handleTroubleshootLinkClick = () => {
+    globalActions.OPEN_TROUBLESHOOTING_GUIDE;
+    window.sendMessageToDigma({
+      action: globalActions.OPEN_TROUBLESHOOTING_GUIDE
+    });
+  };
+
+  const environmentTypesContent: Record<
+    EnvironmentType,
+    AddEnvironmentPanelContent
+  > = {
+    local: {
+      icon: DesktopIcon,
+      title: "How to setup your Local Environment",
+      instrumentation: {
+        title: "Instrument your code",
+        content: (
+          <>
             <span>
               Set up the following environment variables when running your code
-              to tag the observability data with this environment
+              to tag the observability data with this run config:
             </span>
             <CodeSnippet
-              text={`OTEL_RESOURCE_ATTRIBUTES=digma.environment=${props.environment.name}`}
+              text={`OTEL_RESOURCE_ATTRIBUTES=digma.environment=${props.environment.originalName}`}
             />
             <s.AddToConfigContainer>
               <s.Link onClick={handleAddToRunConfigLinkClick}>
                 Add to the active run config
               </s.Link>
+
               {props.environment.additionToConfigResult === "success" && (
                 <s.AddToConfigSuccessMessage>
                   Successfully added
@@ -48,12 +59,73 @@ export const AddEnvironmentPanel = (props: AddEnvironmentPanelProps) => {
                 </s.AddToConfigFailureMessage>
               )}
             </s.AddToConfigContainer>
+            <s.Link onClick={handleTroubleshootLinkClick}>Troubleshoot</s.Link>
+          </>
+        )
+      },
+      run: {
+        title: "Run your Application"
+      }
+    },
+    shared: {
+      icon: InfinityIcon,
+      title: "Connecting your CI/Prod Environment",
+      instrumentation: {
+        title: "Instrument your application",
+        content: (
+          <>
+            <span>Add the following code to your build/prod env:</span>
+            <CodeSnippet
+              text={`curl --create-dirs -O -L --output-dir ./otel https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar 
+
+curl --create-dirs -O -L --output-dir ./otel https://github.com/digma-ai/otel-java-instrumentation/releases/latest/download/digma-otel-agent-extension.jar export 
+
+JAVA_TOOL_OPTIONS="-javaagent:/otel/javaagent.jar -Dotel.exporter.otlp.endpoint=${
+                props.environment.serverApiUrl || ""
+              } -Dotel.javaagent.extensions=/otel/digma-otel-agent-extension.jar"
+
+export OTEL_SERVICE_NAME={--ENTER YOUR SERVICE NAME HERE--} 
+export OTEL_RESOURCE_ATTRIBUTES=digma.environment.name=${
+                props.environment.originalName
+              }`}
+            />
+          </>
+        )
+      },
+      run: {
+        title: "Deploy your application / run the build"
+      }
+    }
+  };
+
+  const content = props.environment.type
+    ? environmentTypesContent[props.environment.type]
+    : null;
+
+  if (!content) {
+    return null;
+  }
+
+  return (
+    <s.Container>
+      <s.Header>
+        <content.icon size={16} color={"currentColor"} />
+        {content.title}
+      </s.Header>
+      <s.ContentContainer>
+        <s.Section>
+          <s.SectionHeader>
+            <s.SectionNumber>1</s.SectionNumber>
+            <s.SectionTitle>{content.instrumentation.title}</s.SectionTitle>
+          </s.SectionHeader>
+          <s.SectionContentContainer>
+            {content.instrumentation.content}
           </s.SectionContentContainer>
         </s.Section>
         <s.Section>
           <s.SectionHeader>
             <s.SectionNumber>2</s.SectionNumber>
-            <s.SectionTitle>Run your Application</s.SectionTitle>
+            <s.SectionTitle>{content.run.title}</s.SectionTitle>
           </s.SectionHeader>
           <s.SectionContentContainer>
             <span>

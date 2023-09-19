@@ -1,10 +1,10 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { AddRemoteEnvironmentPanel } from ".";
+import { AddSharedEnvironmentPanel } from ".";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
-const meta: Meta<typeof AddRemoteEnvironmentPanel> = {
-  title: "Recent Activity/AddRemoteEnvironmentPanel",
-  component: AddRemoteEnvironmentPanel,
+const meta: Meta<typeof AddSharedEnvironmentPanel> = {
+  title: "Recent Activity/AddSharedEnvironmentPanel",
+  component: AddSharedEnvironmentPanel,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
     layout: "fullscreen"
@@ -19,11 +19,14 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     environment: {
-      name: "ENVIRONMENT_NAME",
+      name: "MY_ENV",
+      originalName: "MY_ENV",
       isPending: true,
       hasRecentActivity: false,
       additionToConfigResult: null,
-      type: "local"
+      type: "shared",
+      token: "token_string",
+      serverApiUrl: "https://example.com:80"
     }
   }
 };

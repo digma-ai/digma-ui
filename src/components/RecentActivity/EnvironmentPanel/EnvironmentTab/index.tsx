@@ -48,7 +48,7 @@ export const EnvironmentTab = (props: EnvironmentTabProps) => {
   const handleMenuItemSelect = (value: string) => {
     switch (value) {
       case "delete":
-        props.onEnvironmentDelete(props.environment.name);
+        props.onEnvironmentDelete(props.environment.originalName);
         break;
     }
 
@@ -57,12 +57,18 @@ export const EnvironmentTab = (props: EnvironmentTabProps) => {
 
   const menuItems = [{ label: "Delete", value: "delete", icon: TrashBinIcon }];
 
-  const icon =
-    props.environment.type === "local" ? (
-      <DesktopIcon size={16} color={"currentColor"} />
-    ) : (
-      <InfinityIcon size={16} color={"currentColor"} />
-    );
+  const renderIcon = () => {
+    if (!props.environment.type) {
+      return null;
+    }
+
+    switch (props.environment.type) {
+      case "local":
+        return <DesktopIcon size={16} color={"currentColor"} />;
+      case "shared":
+        return <InfinityIcon size={16} color={"currentColor"} />;
+    }
+  };
 
   return (
     <s.Container
@@ -80,7 +86,7 @@ export const EnvironmentTab = (props: EnvironmentTabProps) => {
           <Badge />
         </s.BadgeContainer>
       )}
-      {icon}
+      {renderIcon()}
       <Tooltip title={props.environment.name}>
         <s.Label>{props.environment.name}</s.Label>
       </Tooltip>

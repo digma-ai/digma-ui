@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { Link as CommonLink } from "../../common/Link";
 
 export const Container = styled.div`
-  margin-top: 16px;
+  margin-top: 12px;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -11,7 +11,6 @@ export const Container = styled.div`
 export const Header = styled.div`
   display: flex;
   gap: 8px;
-  text-transform: capitalize;
   align-items: center;
   font-size: 16px;
 `;
@@ -47,6 +46,7 @@ export const Section = styled.div`
         return "#393b40";
     }
   }};
+  height: fit-content;
 `;
 
 export const SectionHeader = styled.div`

@@ -4,19 +4,22 @@ import { useContext, useEffect, useMemo, useState } from "react";
 import { actions as globalActions } from "../../actions";
 import { dispatcher } from "../../dispatcher";
 import { trackingEvents as globalTrackingEvents } from "../../trackingEvents";
-import { addPrefix } from "../../utils/addPrefix";
 import { groupBy } from "../../utils/groupBy";
 import { sendTrackingEvent } from "../../utils/sendTrackingEvent";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { CursorFollower } from "../common/CursorFollower";
 import { DigmaLogoFlatIcon } from "../common/icons/DigmaLogoFlatIcon";
 import { AddEnvironmentPanel } from "./AddEnvironmentPanel";
+import { AddSharedEnvironmentPanel } from "./AddSharedEnvironmentPanel";
 import { DeleteEnvironmentConfirmation } from "./DeleteEnvironmentConfirmation";
 import { EnvironmentPanel } from "./EnvironmentPanel";
 import { ViewMode } from "./EnvironmentPanel/types";
+import { EnvironmentTypePanel } from "./EnvironmentTypePanel";
 import { LiveView } from "./LiveView";
 import { LiveData } from "./LiveView/types";
 import { RecentActivityTable, isRecent } from "./RecentActivityTable";
+import { RegistrationPanel } from "./RegistrationPanel";
+import { actions } from "./actions";
 import * as s from "./styles";
 import {
   EntrySpan,
@@ -27,20 +30,6 @@ import {
 } from "./types";
 
 export const RECENT_ACTIVITY_CONTAINER_ID = "recent-activity";
-
-const ACTION_PREFIX = "RECENT_ACTIVITY";
-
-const actions = addPrefix(ACTION_PREFIX, {
-  INITIALIZE: "INITIALIZE",
-  SET_DATA: "SET_DATA",
-  SET_LIVE_DATA: "SET_LIVE_DATA",
-  GO_TO_SPAN: "GO_TO_SPAN",
-  GO_TO_TRACE: "GO_TO_TRACE",
-  CLOSE_LIVE_VIEW: "CLOSE_LIVE_VIEW",
-  ADD_ENVIRONMENT: "ADD_ENVIRONMENT",
-  DELETE_ENVIRONMENT: "DELETE_ENVIRONMENT",
-  ADD_ENVIRONMENT_TO_RUN_CONFIG: "ADD_ENVIRONMENT_TO_RUN_CONFIG"
-});
 
 const handleTroubleshootButtonClick = () => {
   sendTrackingEvent(globalTrackingEvents.TROUBLESHOOTING_LINK_CLICKED, {
@@ -74,6 +63,8 @@ export const RecentActivity = (props: RecentActivityProps) => {
   const [data, setData] = useState<RecentActivityData>();
   const [viewMode, setViewMode] = useState<ViewMode>("table");
   const [liveData, setLiveData] = useState<LiveData>();
+  const [isRegistrationPopupVisible, setIsRegistrationPopupVisible] =
+    useState(false);
   const config = useContext(ConfigContext);
 
   const environmentActivities = useMemo(
@@ -86,8 +77,8 @@ export const RecentActivity = (props: RecentActivityProps) => {
       data
         ? data.environments.map((environment) => ({
             ...environment,
-            hasRecentActivity: environmentActivities[environment.name]
-              ? environmentActivities[environment.name].some(isRecent)
+            hasRecentActivity: environmentActivities[environment.originalName]
+              ? environmentActivities[environment.originalName].some(isRecent)
               : false
           }))
         : [],
@@ -97,7 +88,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
   useEffect(() => {
     setSelectedEnvironment((selectedEnvironment) => {
       const environmentToSelect = environments.find(
-        (x) => x.name === selectedEnvironment?.name
+        (x) => x.originalName === selectedEnvironment?.originalName
       );
 
       if (environmentToSelect) {
@@ -148,14 +139,16 @@ export const RecentActivity = (props: RecentActivityProps) => {
     setSelectedEnvironment(environment);
   };
 
-  const handleSpanLinkClick = (span: EntrySpan, environment: string) => {
-    window.sendMessageToDigma({
-      action: actions.GO_TO_SPAN,
-      payload: {
-        span,
-        environment
-      }
-    });
+  const handleSpanLinkClick = (span: EntrySpan) => {
+    if (selectedEnvironment) {
+      window.sendMessageToDigma({
+        action: actions.GO_TO_SPAN,
+        payload: {
+          span,
+          environment: selectedEnvironment.originalName
+        }
+      });
+    }
   };
 
   const handleTraceButtonClick = (traceId: string, span: EntrySpan) => {
@@ -182,7 +175,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
     });
   };
 
-  const handleEnvironmentAdd = (environment: string, type: EnvironmentType) => {
+  const handleEnvironmentAdd = (environment: string) => {
     window.sendMessageToDigma({
       action: actions.ADD_ENVIRONMENT,
       payload: {
@@ -193,11 +186,30 @@ export const RecentActivity = (props: RecentActivityProps) => {
     // Set environment placeholder until the next data refresh
     setSelectedEnvironment({
       name: environment,
+      originalName: environment,
       isPending: true,
       hasRecentActivity: false,
       additionToConfigResult: null,
-      type
+      type: null,
+      serverApiUrl: null,
+      token: null
     });
+  };
+
+  const handleEnvironmentTypeSelect = (type: EnvironmentType) => {
+    if (type === "shared" && !config.userEmail) {
+      setIsRegistrationPopupVisible(true);
+    }
+
+    if (selectedEnvironment) {
+      window.sendMessageToDigma({
+        action: actions.SET_ENVIRONMENT_TYPE,
+        payload: {
+          environment: selectedEnvironment.originalName,
+          type
+        }
+      });
+    }
   };
 
   const handleEnvironmentDelete = (environment: string) => {
@@ -223,26 +235,67 @@ export const RecentActivity = (props: RecentActivityProps) => {
       window.sendMessageToDigma({
         action: actions.ADD_ENVIRONMENT_TO_RUN_CONFIG,
         payload: {
-          environment: selectedEnvironment.name
+          environment: selectedEnvironment.originalName
         }
       });
     }
   };
 
+  const handleRegistrationSubmit = (email: string) => {
+    window.sendMessageToDigma({
+      action: actions.REGISTER,
+      payload: {
+        email
+      }
+    });
+  };
+
+  const handleRegistrationPopupClose = () => {
+    setIsRegistrationPopupVisible(false);
+  };
+
+  const handleOverlayKeyDown = () => {
+    if (setEnvironmentToDelete) {
+      setEnvironmentToDelete(undefined);
+    }
+
+    if (setIsRegistrationPopupVisible) {
+      setIsRegistrationPopupVisible(false);
+    }
+  };
+
   const renderContent = () => {
     if (selectedEnvironment?.isPending) {
-      return (
-        <AddEnvironmentPanel
-          environment={selectedEnvironment}
-          onAddEnvironmentToRunConfig={handleAddEnvironmentToRunConfig}
-        />
-      );
+      switch (selectedEnvironment.type) {
+        case "local":
+          return (
+            <AddEnvironmentPanel
+              environment={selectedEnvironment}
+              onAddEnvironmentToRunConfig={handleAddEnvironmentToRunConfig}
+            />
+          );
+        case "shared":
+          return selectedEnvironment.serverApiUrl === config.digmaApiUrl ? (
+            <AddEnvironmentPanel environment={selectedEnvironment} />
+          ) : (
+            <AddSharedEnvironmentPanel
+              environment={selectedEnvironment}
+              key={selectedEnvironment.originalName}
+            />
+          );
+        case null:
+          return (
+            <EnvironmentTypePanel
+              onEnvironmentTypeSelect={handleEnvironmentTypeSelect}
+            />
+          );
+      }
     }
 
     if (
       !selectedEnvironment ||
-      !environmentActivities[selectedEnvironment.name] ||
-      !environmentActivities[selectedEnvironment.name].length
+      !environmentActivities[selectedEnvironment.originalName] ||
+      !environmentActivities[selectedEnvironment.originalName].length
     ) {
       return (
         <>
@@ -255,7 +308,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
     return (
       <RecentActivityTable
         viewMode={viewMode}
-        data={environmentActivities[selectedEnvironment.name]}
+        data={environmentActivities[selectedEnvironment.originalName]}
         onSpanLinkClick={handleSpanLinkClick}
         onTraceButtonClick={handleTraceButtonClick}
         isTraceButtonVisible={config.isJaegerEnabled}
@@ -287,12 +340,20 @@ export const RecentActivity = (props: RecentActivityProps) => {
         </Allotment.Pane>
       </Allotment>
       {environmentToDelete && (
-        <s.DeleteEnvironmentConfirmationContainer>
+        <s.Overlay onKeyDown={handleOverlayKeyDown}>
           <DeleteEnvironmentConfirmation
             onClose={handleCloseDeleteConfirmation}
             onDelete={handleConfirmEnvironmentDeletion}
           />
-        </s.DeleteEnvironmentConfirmationContainer>
+        </s.Overlay>
+      )}
+      {isRegistrationPopupVisible && (
+        <s.Overlay onKeyDown={handleOverlayKeyDown}>
+          <RegistrationPanel
+            onSubmit={handleRegistrationSubmit}
+            onClose={handleRegistrationPopupClose}
+          />
+        </s.Overlay>
       )}
     </s.Container>
   );

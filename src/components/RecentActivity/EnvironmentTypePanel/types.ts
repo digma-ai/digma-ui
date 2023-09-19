@@ -1,5 +1,5 @@
-export interface EnvironmentTypePanelProps {
-  onEnvironmentTypeSelect: (type: "local" | "ci") => void;
-}
+import { EnvironmentType } from "../types";
 
-export type EnvironmentType = "local" | "ci";
+export interface EnvironmentTypePanelProps {
+  onEnvironmentTypeSelect: (type: EnvironmentType) => void;
+}
