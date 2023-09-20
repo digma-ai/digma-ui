@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { Button as CommonButton } from "../../common/Button";
 import { Link as CommonLink } from "../../common/Link";
 import { TextField as CommonTextField } from "../../common/TextField";
+import { NotificationMessageProps } from "./types";
 
 export const Container = styled.div`
   margin-top: 12px;
@@ -23,6 +24,34 @@ export const ContentContainer = styled.div`
   gap: 12px;
 `;
 
+export const TestConnectionContainer = styled.div`
+  display: flex;
+  padding: 12px;
+  flex-direction: column;
+  gap: 8px;
+  border-radius: 4px;
+  font-size: 14px;
+  overflow: hidden;
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#818594";
+      case "dark":
+      case "dark-jetbrains":
+        return "#b4b8bf";
+    }
+  }};
+  background: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#ebecf0";
+      case "dark":
+      case "dark-jetbrains":
+        return "#393b40";
+    }
+  }};
+`;
+
 export const TextFieldContainer = styled.div`
   display: flex;
   gap: 8px;
@@ -38,7 +67,7 @@ export const Link = styled(CommonLink)`
   max-width: fit-content;
 `;
 
-export const TestConnectionContainer = styled.div`
+export const ButtonsContainer = styled.div`
   display: flex;
   gap: 8px;
   align-items: center;
@@ -79,14 +108,12 @@ export const ServiceTitle = styled.div`
   }};
 `;
 
-export const ConnectionTestResultMessage = styled.span<{
-  result: "success" | "failure";
-}>`
+export const NotificationMessage = styled.span<NotificationMessageProps>`
   display: flex;
   gap: 4px;
   align-items: center;
-  color: ${({ theme, result }) => {
-    if (result === "success") {
+  color: ${({ theme, type }) => {
+    if (type === "success") {
       switch (theme.mode) {
         case "light":
           return "#00c108";
@@ -96,7 +123,7 @@ export const ConnectionTestResultMessage = styled.span<{
       }
     }
 
-    if (result === "failure") {
+    if (type === "failure") {
       switch (theme.mode) {
         case "light":
           return "#e00036";
@@ -106,4 +133,13 @@ export const ConnectionTestResultMessage = styled.span<{
       }
     }
   }};
+`;
+
+export const CopyButton = styled.button`
+  background: none;
+  border: none;
+  display: inline-flex;
+  padding: 0 4px;
+  cursor: pointer;
+  color: currentcolor;
 `;

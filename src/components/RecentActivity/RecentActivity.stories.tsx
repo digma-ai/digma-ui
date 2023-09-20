@@ -29,7 +29,8 @@ const data: RecentActivityData = {
       additionToConfigResult: null,
       type: "local",
       token: null,
-      serverApiUrl: null
+      serverApiUrl: null,
+      isOrgDigmaSetupFinished: false
     },
     {
       name: "ENV_RENDER",
@@ -38,7 +39,8 @@ const data: RecentActivityData = {
       additionToConfigResult: null,
       type: "local",
       token: null,
-      serverApiUrl: null
+      serverApiUrl: null,
+      isOrgDigmaSetupFinished: false
     },
     {
       name: "UNSET_ENV",
@@ -47,7 +49,8 @@ const data: RecentActivityData = {
       additionToConfigResult: null,
       type: "shared",
       token: null,
-      serverApiUrl: null
+      serverApiUrl: null,
+      isOrgDigmaSetupFinished: false
     },
     {
       name: "PENDING_NO_TYPE",
@@ -56,7 +59,8 @@ const data: RecentActivityData = {
       additionToConfigResult: null,
       type: null,
       token: null,
-      serverApiUrl: null
+      serverApiUrl: null,
+      isOrgDigmaSetupFinished: false
     },
     {
       name: "PENDING_LOCAL",
@@ -65,7 +69,8 @@ const data: RecentActivityData = {
       additionToConfigResult: null,
       type: "local",
       token: null,
-      serverApiUrl: null
+      serverApiUrl: null,
+      isOrgDigmaSetupFinished: false
     },
     {
       name: "PENDING_SHARED",
@@ -74,7 +79,8 @@ const data: RecentActivityData = {
       additionToConfigResult: null,
       type: "shared",
       token: null,
-      serverApiUrl: null
+      serverApiUrl: null,
+      isOrgDigmaSetupFinished: false
     },
     {
       name: "PENDING_SHARED_LOCALHOST",
@@ -83,7 +89,8 @@ const data: RecentActivityData = {
       additionToConfigResult: null,
       type: "shared",
       token: null,
-      serverApiUrl: "https://localhost:5051"
+      serverApiUrl: "https://localhost:5051",
+      isOrgDigmaSetupFinished: false
     },
     {
       name: "PENDING_SHARED_CUSTOM_DOMAIN",
@@ -92,7 +99,8 @@ const data: RecentActivityData = {
       additionToConfigResult: null,
       type: "shared",
       token: "token_string",
-      serverApiUrl: "https://example.com"
+      serverApiUrl: "https://example.com",
+      isOrgDigmaSetupFinished: false
     },
     {
       name: "VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-LONG-NAME",
@@ -102,7 +110,8 @@ const data: RecentActivityData = {
       additionToConfigResult: null,
       type: "local",
       token: null,
-      serverApiUrl: null
+      serverApiUrl: null,
+      isOrgDigmaSetupFinished: false
     }
   ],
   entries: [

@@ -17,8 +17,9 @@ export const EnvironmentTab = (props: EnvironmentTabProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const config = useContext(ConfigContext);
   const isMenuVisible =
-    config.digmaStatus?.connection.status &&
-    window.recentActivityIsEnvironmentManagementEnabled === true;
+    window.recentActivityIsEnvironmentManagementEnabled === true &&
+    ((config.digmaStatus?.connection.status && !props.environment.isPending) ||
+      props.environment.isPending);
 
   const containerRef = useRef<HTMLLIElement>(null);
 
@@ -62,12 +63,11 @@ export const EnvironmentTab = (props: EnvironmentTabProps) => {
       return null;
     }
 
-    switch (props.environment.type) {
-      case "local":
-        return <DesktopIcon size={16} color={"currentColor"} />;
-      case "shared":
-        return <InfinityIcon size={16} color={"currentColor"} />;
-    }
+    return props.environment.name === props.environment.originalName ? (
+      <InfinityIcon size={16} color={"currentColor"} />
+    ) : (
+      <DesktopIcon size={16} color={"currentColor"} />
+    );
   };
 
   return (

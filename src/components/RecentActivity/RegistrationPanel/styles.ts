@@ -80,11 +80,21 @@ export const EmailTextField = styled(TextField)`
   width: 301px;
 `;
 
+export const CircleLoaderContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+`;
+
 export const SubmitButton = styled(Button)`
   height: auto;
 `;
 
 export const ErrorMessage = styled.span`
+  display: flex;
+  gap: 4px;
+  align-items: center;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

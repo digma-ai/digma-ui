@@ -122,10 +122,10 @@ export const App = (props: AppProps) => {
     };
 
     const handleSetDigmaApiUrl = (data: unknown) => {
-      if (isObject(data) && isString(data.digmaApiUrl)) {
+      if (isObject(data) && isString(data.url)) {
         setConfig((config) => ({
           ...config,
-          digmaApiUrl: data.digmaApiUrl as string
+          digmaApiUrl: data.url as string
         }));
       }
     };

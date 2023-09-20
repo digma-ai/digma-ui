@@ -6,6 +6,16 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
+  font-size: 14px;
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#818594";
+      case "dark":
+      case "dark-jetbrains":
+        return "#b4b8bf";
+    }
+  }};
 `;
 
 export const Header = styled.div`
@@ -13,6 +23,16 @@ export const Header = styled.div`
   gap: 8px;
   align-items: center;
   font-size: 16px;
+  font-weight: 600;
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#494b57";
+      case "dark":
+      case "dark-jetbrains":
+        return "#dfe1e5";
+    }
+  }};
 `;
 
 export const ContentContainer = styled.div`

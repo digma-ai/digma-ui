@@ -1,19 +1,18 @@
 import { Allotment } from "allotment";
 import "allotment/dist/style.css";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { KeyboardEvent, useContext, useEffect, useMemo, useState } from "react";
 import { actions as globalActions } from "../../actions";
+import { INSTALL_DIGMA_IN_ORGANIZATION_DOCUMENTATION_URL } from "../../constants";
 import { dispatcher } from "../../dispatcher";
+import { usePrevious } from "../../hooks/usePrevious";
 import { trackingEvents as globalTrackingEvents } from "../../trackingEvents";
-import { getHostnameFromURL } from "../../utils/getHostNameFromURL";
 import { groupBy } from "../../utils/groupBy";
 import { sendTrackingEvent } from "../../utils/sendTrackingEvent";
 import { ConfigContext } from "../common/App/ConfigContext";
-import { ConfigContextData } from "../common/App/types";
 import { CursorFollower } from "../common/CursorFollower";
 import { DigmaLogoFlatIcon } from "../common/icons/DigmaLogoFlatIcon";
-import { AddEnvironmentPanel } from "./AddEnvironmentPanel";
-import { AddSharedEnvironmentPanel } from "./AddSharedEnvironmentPanel";
 import { DeleteEnvironmentConfirmation } from "./DeleteEnvironmentConfirmation";
+import { EnvironmentInstructionsPanel } from "./EnvironmentInstructionsPanel";
 import { EnvironmentPanel } from "./EnvironmentPanel";
 import { ViewMode } from "./EnvironmentPanel/types";
 import { EnvironmentTypePanel } from "./EnvironmentTypePanel";
@@ -21,6 +20,7 @@ import { LiveView } from "./LiveView";
 import { LiveData } from "./LiveView/types";
 import { RecentActivityTable, isRecent } from "./RecentActivityTable";
 import { RegistrationPanel } from "./RegistrationPanel";
+import { SetupOrgDigmaPanel } from "./SetupOrgDigmaPanel";
 import { actions } from "./actions";
 import * as s from "./styles";
 import {
@@ -32,16 +32,6 @@ import {
 } from "./types";
 
 export const RECENT_ACTIVITY_CONTAINER_ID = "recent-activity";
-
-const isIDEConnectedToLocalDigma = (config: ConfigContextData): boolean => {
-  const hostname = getHostnameFromURL(config.digmaApiUrl);
-
-  if (hostname && ["localhost", "127.0.0.1"].includes(hostname)) {
-    return true;
-  }
-
-  return false;
-};
 
 const handleTroubleshootButtonClick = () => {
   sendTrackingEvent(globalTrackingEvents.TROUBLESHOOTING_LINK_CLICKED, {
@@ -72,12 +62,19 @@ export const RecentActivity = (props: RecentActivityProps) => {
   const [selectedEnvironment, setSelectedEnvironment] =
     useState<ExtendedEnvironment>();
   const [environmentToDelete, setEnvironmentToDelete] = useState<string>();
+  const [environmentToSetType, setEnvironmentToSetType] = useState<{
+    environment: string;
+    type: EnvironmentType;
+  }>();
   const [data, setData] = useState<RecentActivityData>();
   const [viewMode, setViewMode] = useState<ViewMode>("table");
   const [liveData, setLiveData] = useState<LiveData>();
   const [isRegistrationPopupVisible, setIsRegistrationPopupVisible] =
     useState(false);
+  const [isRegistrationInProgress, setIsRegistrationInProgress] =
+    useState(false);
   const config = useContext(ConfigContext);
+  const previousUserEmail = usePrevious(config.userEmail);
 
   const environmentActivities = useMemo(
     () => (data ? groupBy(data.entries, (x) => x.environment) : {}),
@@ -147,6 +144,27 @@ export const RecentActivity = (props: RecentActivityProps) => {
     }
   }, [props.liveData]);
 
+  useEffect(() => {
+    if (previousUserEmail !== config.userEmail && isRegistrationInProgress) {
+      setIsRegistrationPopupVisible(false);
+      setIsRegistrationInProgress(false);
+
+      if (environmentToSetType) {
+        setEnvironmentType(
+          environmentToSetType.environment,
+          environmentToSetType.type
+        );
+
+        setEnvironmentToSetType(undefined);
+      }
+    }
+  }, [
+    config.userEmail,
+    isRegistrationInProgress,
+    environmentToSetType,
+    previousUserEmail
+  ]);
+
   const handleEnvironmentSelect = (environment: ExtendedEnvironment) => {
     setSelectedEnvironment(environment);
   };
@@ -204,24 +222,53 @@ export const RecentActivity = (props: RecentActivityProps) => {
       additionToConfigResult: null,
       type: null,
       serverApiUrl: null,
-      token: null
+      token: null,
+      isOrgDigmaSetupFinished: false
     });
   };
 
-  const handleEnvironmentTypeSelect = (type: EnvironmentType) => {
-    if (type === "shared" && !config.userEmail) {
-      setIsRegistrationPopupVisible(true);
-    }
+  const setEnvironmentType = (environment: string, type: EnvironmentType) => {
+    window.sendMessageToDigma({
+      action: actions.SET_ENVIRONMENT_TYPE,
+      payload: {
+        environment: environment,
+        type
+      }
+    });
 
-    if (selectedEnvironment) {
+    if (type === "shared") {
       window.sendMessageToDigma({
-        action: actions.SET_ENVIRONMENT_TYPE,
+        action: globalActions.OPEN_URL_IN_EDITOR_TAB,
         payload: {
-          environment: selectedEnvironment.originalName,
-          type
+          url: INSTALL_DIGMA_IN_ORGANIZATION_DOCUMENTATION_URL,
+          title: "Installing Digma in your organization"
         }
       });
     }
+  };
+
+  const handleEnvironmentTypeSelect = (
+    environment: string,
+    type: EnvironmentType
+  ) => {
+    if (type === "shared" && !config.userEmail) {
+      setIsRegistrationPopupVisible(true);
+      setEnvironmentToSetType({
+        environment,
+        type
+      });
+    } else {
+      setEnvironmentType(environment, type);
+    }
+  };
+
+  const handleFinishOrgDigmaSetup = (environment: string) => {
+    window.sendMessageToDigma({
+      action: actions.FINISH_ORG_DIGMA_SETUP,
+      payload: {
+        environment
+      }
+    });
   };
 
   const handleEnvironmentDelete = (environment: string) => {
@@ -242,15 +289,13 @@ export const RecentActivity = (props: RecentActivityProps) => {
     setEnvironmentToDelete(undefined);
   };
 
-  const handleAddEnvironmentToRunConfig = () => {
-    if (selectedEnvironment) {
-      window.sendMessageToDigma({
-        action: actions.ADD_ENVIRONMENT_TO_RUN_CONFIG,
-        payload: {
-          environment: selectedEnvironment.originalName
-        }
-      });
-    }
+  const handleAddEnvironmentToRunConfig = (environment: string) => {
+    window.sendMessageToDigma({
+      action: actions.ADD_ENVIRONMENT_TO_RUN_CONFIG,
+      payload: {
+        environment
+      }
+    });
   };
 
   const handleRegistrationSubmit = (email: string) => {
@@ -260,18 +305,17 @@ export const RecentActivity = (props: RecentActivityProps) => {
         email
       }
     });
+
+    setIsRegistrationInProgress(true);
   };
 
   const handleRegistrationPopupClose = () => {
     setIsRegistrationPopupVisible(false);
   };
 
-  const handleOverlayKeyDown = () => {
-    if (setEnvironmentToDelete) {
+  const handleOverlayKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Escape") {
       setEnvironmentToDelete(undefined);
-    }
-
-    if (setIsRegistrationPopupVisible) {
       setIsRegistrationPopupVisible(false);
     }
   };
@@ -281,23 +325,25 @@ export const RecentActivity = (props: RecentActivityProps) => {
       switch (selectedEnvironment.type) {
         case "local":
           return (
-            <AddEnvironmentPanel
+            <EnvironmentInstructionsPanel
               environment={selectedEnvironment}
               onAddEnvironmentToRunConfig={handleAddEnvironmentToRunConfig}
             />
           );
         case "shared":
-          return !isIDEConnectedToLocalDigma(config) ? (
-            <AddEnvironmentPanel environment={selectedEnvironment} />
+          return selectedEnvironment.isOrgDigmaSetupFinished ? (
+            <EnvironmentInstructionsPanel environment={selectedEnvironment} />
           ) : (
-            <AddSharedEnvironmentPanel
+            <SetupOrgDigmaPanel
               environment={selectedEnvironment}
               key={selectedEnvironment.originalName}
+              onFinish={handleFinishOrgDigmaSetup}
             />
           );
         case null:
           return (
             <EnvironmentTypePanel
+              environment={selectedEnvironment}
               onEnvironmentTypeSelect={handleEnvironmentTypeSelect}
             />
           );
@@ -364,6 +410,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
           <RegistrationPanel
             onSubmit={handleRegistrationSubmit}
             onClose={handleRegistrationPopupClose}
+            isRegistrationInProgress={isRegistrationInProgress}
           />
         </s.Overlay>
       )}

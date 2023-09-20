@@ -1,8 +1,7 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import useDimensions from "react-cool-dimensions";
 import { DefaultTheme, useTheme } from "styled-components";
 import { RECENT_ACTIVITY_CONTAINER_ID } from "..";
-import { ConfigContext } from "../../common/App/ConfigContext";
 import { IconButton } from "../../common/IconButton";
 import { NewPopover } from "../../common/NewPopover";
 import { ChevronIcon } from "../../common/icons/ChevronIcon";
@@ -39,6 +38,9 @@ const getPlusButtonIconColor = (theme: DefaultTheme) => {
   }
 };
 
+const isAddButtonVisible =
+  window.recentActivityIsEnvironmentManagementEnabled === true;
+
 export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
   const theme = useTheme();
   const [scrollLeft, setScrollLeft] = useState(0);
@@ -47,10 +49,6 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
   const plusButtonIconColor = getPlusButtonIconColor(theme);
   const [isAddEnvironmentDialogOpen, setIsAddEnvironmentDialogOpen] =
     useState(false);
-  const config = useContext(ConfigContext);
-  const isAddButtonVisible =
-    config.digmaStatus?.connection.status &&
-    window.recentActivityIsEnvironmentManagementEnabled === true;
 
   useEffect(() => {
     const entry = environmentListContainerDimensions.entry;

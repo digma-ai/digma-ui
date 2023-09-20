@@ -1,43 +1,87 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import copy from "copy-to-clipboard";
+import { ChangeEvent, useContext, useEffect, useState } from "react";
 import { actions as globalActions } from "../../../actions";
 import {
   INSTALL_DIGMA_IN_ORGANIZATION_DOCUMENTATION_URL,
-  SETUP_PLUGIN_TO_ORGANIZATION_DIGMA_URL,
   SLACK_WORKSPACE_URL
 } from "../../../constants";
 import { dispatcher } from "../../../dispatcher";
+import { usePrevious } from "../../../hooks/usePrevious";
+import { getHostnameFromURL } from "../../../utils/getHostNameFromURL";
 import { openURLInDefaultBrowser } from "../../../utils/openURLInDefaultBrowser";
+import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { AsyncActionResultData } from "../../InstallationWizard/types";
+import { ConfigContext } from "../../common/App/ConfigContext";
+import { ConfigContextData } from "../../common/App/types";
 import { NewCircleLoader } from "../../common/NewCircleLoader";
 import { Tooltip } from "../../common/Tooltip";
 import { CheckmarkCircleInvertedIcon } from "../../common/icons/CheckmarkCircleInvertedIcon";
+import { CopyIcon } from "../../common/icons/CopyIcon";
 import { InfinityIcon } from "../../common/icons/InfinityIcon";
 import { InfoCircleIcon } from "../../common/icons/InfoCircleIcon";
 import { WarningCircleLargeIcon } from "../../common/icons/WarningCircleLargeIcon";
+import { EnvironmentInstructionsPanel } from "../EnvironmentInstructionsPanel";
 import { actions } from "../actions";
-import { Section } from "./Section";
+import { trackingEvents } from "../tracking";
 import * as s from "./styles";
-import { AddSharedEnvironmentPanelProps } from "./types";
+import { SetupOrgDigmaPanelProps } from "./types";
 
-export const AddSharedEnvironmentPanel = (
-  props: AddSharedEnvironmentPanelProps
-) => {
+const isIDEConnectedToLocalDigma = (config: ConfigContextData): boolean => {
+  const hostname = getHostnameFromURL(config.digmaApiUrl);
+  if (hostname && ["localhost", "127.0.0.1"].includes(hostname)) {
+    return true;
+  }
+
+  return false;
+};
+
+const SETTINGS_MISMATCH_ERROR_MESSAGE =
+  "Please make sure to update your plugin settings based on the value above. See the documentation for more info";
+
+export const SetupOrgDigmaPanel = (props: SetupOrgDigmaPanelProps) => {
   const [apiToken, setApiToken] = useState(props.environment.token || "");
-  const [ip, setIP] = useState(props.environment.serverApiUrl || "");
+  const [serverApiUrl, setServerApiUrl] = useState(
+    props.environment.serverApiUrl || ""
+  );
   const [connectionTestResult, setConnectionTestResult] =
     useState<AsyncActionResultData>();
   const [isConnectionCheckInProgress, setIsConnectionCheckInProgress] =
     useState(false);
+  const previousIsConnectionInProgress = usePrevious(
+    isConnectionCheckInProgress
+  );
+  const [urlToCheckConnection, setUrlToCheckConnection] = useState<string>();
+  const [isSettingsMessageVisible, setIsSettingsMessageVisible] =
+    useState(false);
+  const [isInstructionsCopyButtonClicked, setIsInstructionsCopyButtonClicked] =
+    useState(false);
+  const config = useContext(ConfigContext);
+  const [areEnvInstructionsVisible] = useState(
+    !isIDEConnectedToLocalDigma(config)
+  );
 
   useEffect(() => {
-    window.sendMessageToDigma({
-      action: globalActions.OPEN_URL_IN_EDITOR_TAB,
-      payload: {
-        url: INSTALL_DIGMA_IN_ORGANIZATION_DOCUMENTATION_URL,
-        title: "Installing Digma in your organization"
-      }
-    });
+    if (isSettingsMessageVisible) {
+      setIsSettingsMessageVisible(config.digmaApiUrl !== serverApiUrl);
+    }
+  }, [config.digmaApiUrl, isSettingsMessageVisible, serverApiUrl]);
 
+  useEffect(() => {
+    if (previousIsConnectionInProgress && !isConnectionCheckInProgress) {
+      sendTrackingEvent(trackingEvents.CHECK_CONNECTION_RESULT_RECEIVED, {
+        serverApiUrl: urlToCheckConnection,
+        result: connectionTestResult
+      });
+      setUrlToCheckConnection(undefined);
+    }
+  }, [
+    previousIsConnectionInProgress,
+    isConnectionCheckInProgress,
+    connectionTestResult,
+    urlToCheckConnection
+  ]);
+
+  useEffect(() => {
     const handleConnectionCheckResultData = (data: unknown) => {
       setConnectionTestResult(data as AsyncActionResultData);
       setIsConnectionCheckInProgress(false);
@@ -66,13 +110,18 @@ export const AddSharedEnvironmentPanel = (
     });
   };
 
+  const handleCopyInstructionsLinkButtonClick = () => {
+    copy(INSTALL_DIGMA_IN_ORGANIZATION_DOCUMENTATION_URL);
+    setIsInstructionsCopyButtonClicked(true);
+  };
+
   const handleApiTokenTextFieldChange = (e: ChangeEvent<HTMLInputElement>) => {
     setApiToken(e.target.value);
     setConnectionTestResult(undefined);
   };
 
   const handleIPTextFieldChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setIP(e.target.value);
+    setServerApiUrl(e.target.value);
     setConnectionTestResult(undefined);
   };
 
@@ -80,21 +129,13 @@ export const AddSharedEnvironmentPanel = (
     window.sendMessageToDigma({
       action: actions.CHECK_REMOTE_ENVIRONMENT_CONNECTION,
       payload: {
+        environment: props.environment.originalName,
         token: apiToken,
-        serverAddress: ip
+        serverAddress: serverApiUrl
       }
     });
     setIsConnectionCheckInProgress(true);
-  };
-
-  const handleSetupPluginLinkClick = () => {
-    window.sendMessageToDigma({
-      action: globalActions.OPEN_URL_IN_EDITOR_TAB,
-      payload: {
-        url: SETUP_PLUGIN_TO_ORGANIZATION_DIGMA_URL,
-        title: "Connecting your IDE to the Org Digma deployment"
-      }
-    });
+    setUrlToCheckConnection(serverApiUrl);
   };
 
   // const handleAutoApplyButtonClick = () => {
@@ -108,29 +149,47 @@ export const AddSharedEnvironmentPanel = (
   // };
 
   const handleFinishButtonClick = () => {
-    // TODO
+    const areSettingsMatch = config.digmaApiUrl === serverApiUrl;
+
+    sendTrackingEvent(trackingEvents.FINISH_BUTTON_CLICKED, {
+      result: areSettingsMatch ? "success" : "failure",
+      ...(areSettingsMatch ? [] : [{ error: SETTINGS_MISMATCH_ERROR_MESSAGE }])
+    });
+
+    if (areSettingsMatch) {
+      props.onFinish(props.environment.originalName);
+    } else {
+      setIsSettingsMessageVisible(true);
+    }
   };
 
   const handleContactUsLinkClick = () => {
     openURLInDefaultBrowser(SLACK_WORKSPACE_URL);
   };
 
-  const renderConnectionResultMessage = () => {
-    const result = connectionTestResult?.result;
+  if (areEnvInstructionsVisible) {
+    return <EnvironmentInstructionsPanel environment={props.environment} />;
+  }
+
+  const renderConnectionResultMessage = (data: AsyncActionResultData) => {
+    const { result, error } = data;
+
     switch (result) {
       case "success":
         return (
-          <s.ConnectionTestResultMessage result={result}>
+          <s.NotificationMessage type={result}>
             <WarningCircleLargeIcon size={14} color={"currentColor"} />
             Connected to server successfully
-          </s.ConnectionTestResultMessage>
+          </s.NotificationMessage>
         );
       case "failure":
         return (
-          <s.ConnectionTestResultMessage result={result}>
-            <CheckmarkCircleInvertedIcon size={14} color={"currentColor"} />
-            Connection to server failed
-          </s.ConnectionTestResultMessage>
+          <Tooltip title={error}>
+            <s.NotificationMessage type={result}>
+              <CheckmarkCircleInvertedIcon size={14} color={"currentColor"} />
+              Connection to server failed
+            </s.NotificationMessage>
+          </Tooltip>
         );
     }
   };
@@ -139,17 +198,22 @@ export const AddSharedEnvironmentPanel = (
     <s.Container>
       <s.Header>
         <InfinityIcon size={16} color={"currentColor"} />
-        How to setup your CI/Prod Environment
+        How to set up Digma in your organization
       </s.Header>
       <s.ContentContainer>
-        <Section
-          number={1}
-          title={"Installing Digma in your organization"}
-          isExpanded={true}
-        >
+        <s.TestConnectionContainer>
           <span>
             Follow the{" "}
-            <s.Link onClick={handleInstructionsLinkClick}>instructions</s.Link>{" "}
+            <s.Link onClick={handleInstructionsLinkClick}>instructions</s.Link>
+            <Tooltip
+              title={
+                isInstructionsCopyButtonClicked ? "Link copied!" : "Copy link"
+              }
+            >
+              <s.CopyButton onClick={handleCopyInstructionsLinkButtonClick}>
+                <CopyIcon color={"currentColor"} />
+              </s.CopyButton>
+            </Tooltip>
             to set up Digma in your organization
           </span>
           <s.TextFieldContainer>
@@ -170,7 +234,7 @@ export const AddSharedEnvironmentPanel = (
           </s.TextFieldContainer>
           <s.TextFieldContainer>
             <s.TextField
-              value={ip}
+              value={serverApiUrl}
               onChange={handleIPTextFieldChange}
               placeholder={"Enter Digma IP/DNS"}
             />
@@ -184,40 +248,39 @@ export const AddSharedEnvironmentPanel = (
               </span>
             </Tooltip>
           </s.TextFieldContainer>
-          <s.TestConnectionContainer>
+          <s.ButtonsContainer>
             <s.Button
               onClick={handleTestConnectionButtonClick}
               buttonType={"secondary"}
-              disabled={[apiToken, ip].some((x) => x.length === 0)}
+              disabled={serverApiUrl.length === 0}
             >
               Test Connection
+            </s.Button>
+            <s.Button
+              disabled={connectionTestResult?.result !== "success"}
+              onClick={handleFinishButtonClick}
+            >
+              Finish
             </s.Button>
             {isConnectionCheckInProgress && (
               <NewCircleLoader size={20} color={"#5154ec"} />
             )}
-            {connectionTestResult && renderConnectionResultMessage()}
-          </s.TestConnectionContainer>
-        </Section>
-        <Section number={2} title={"Connect Plugin"} isExpanded={false}>
-          <span>
-            <s.Link onClick={handleSetupPluginLinkClick}>
-              Setup the plugin
-            </s.Link>{" "}
-            to connect to Org Digma
-          </span>
-          {/* <s.Button
+          </s.ButtonsContainer>
+          {connectionTestResult &&
+            renderConnectionResultMessage(connectionTestResult)}
+          {isSettingsMessageVisible && (
+            <s.NotificationMessage type={"failure"}>
+              <WarningCircleLargeIcon size={14} color={"currentColor"} />
+              {SETTINGS_MISMATCH_ERROR_MESSAGE}
+            </s.NotificationMessage>
+          )}
+        </s.TestConnectionContainer>
+        {/* <s.Button
             disabled={connectionTestResult?.result !== "success"}
             onClick={handleAutoApplyButtonClick}
           >
             Auto Apply
           </s.Button> */}
-        </Section>
-        <s.Button
-          disabled={connectionTestResult?.result !== "success"}
-          onClick={handleFinishButtonClick}
-        >
-          Finish
-        </s.Button>
         <s.Link onClick={handleContactUsLinkClick}>
           Having Trouble? Contact us
         </s.Link>

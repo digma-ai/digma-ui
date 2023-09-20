@@ -36,6 +36,7 @@ export interface Environment {
   type: EnvironmentType | null;
   token: string | null;
   serverApiUrl: string | null;
+  isOrgDigmaSetupFinished: boolean;
 }
 
 export interface ExtendedEnvironment extends Environment {

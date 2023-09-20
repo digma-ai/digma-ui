@@ -4,9 +4,9 @@ import { SLACK_WORKSPACE_URL } from "../../constants";
 import { IDE } from "../../globals";
 import { useDebounce } from "../../hooks/useDebounce";
 import { ide } from "../../platform";
+import { isValidEmailFormat } from "../../utils/isValidEmailFormat";
 import { openURLInDefaultBrowser } from "../../utils/openURLInDefaultBrowser";
 import { sendTrackingEvent } from "../../utils/sendTrackingEvent";
-import { validateEmailFormat } from "../../utils/validateEmailFormat";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { CrossIcon } from "../common/icons/CrossIcon";
 import { DesktopIcon } from "../common/icons/DesktopIcon";
@@ -81,7 +81,7 @@ export const InstallationWizard = () => {
   // const themeKind = getThemeKind(theme);
   const [email, setEmail] = useState(config.userEmail);
   const [isEmailValid, setIsEmailValid] = useState(
-    email.length > 0 ? validateEmailFormat(email) : undefined
+    email.length > 0 ? isValidEmailFormat(email) : undefined
   );
   const [isEmailValidating, setIsEmailValidating] = useState(false);
   const debouncedEmail = useDebounce(email, 1000);
@@ -121,7 +121,7 @@ export const InstallationWizard = () => {
     if (email === debouncedEmail) {
       const res =
         debouncedEmail.length > 0
-          ? validateEmailFormat(debouncedEmail)
+          ? isValidEmailFormat(debouncedEmail)
           : undefined;
       setIsEmailValid(res);
       setIsEmailValidating(false);

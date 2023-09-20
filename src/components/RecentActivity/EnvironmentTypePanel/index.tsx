@@ -1,6 +1,8 @@
 import { ReactNode, useCallback, useState } from "react";
+import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { CodeDisplayIcon } from "../../common/icons/CodeDisplayIcon";
 import { InfiniteLoopIcon } from "../../common/icons/InfiniteLoopIcon";
+import { trackingEvents } from "../tracking";
 import { EnvironmentType } from "../types";
 import * as s from "./styles";
 import { EnvironmentTypePanelProps } from "./types";
@@ -22,7 +24,15 @@ export const EnvironmentTypePanel = (props: EnvironmentTypePanelProps) => {
   const handleBlur = useCallback(() => setSelectedType(undefined), []);
 
   const handleEnvironmentTypeButtonClick = (type: EnvironmentType) => {
-    props.onEnvironmentTypeSelect(type);
+    const typeData = environmentTypes.find((x) => x.type === type);
+
+    if (typeData) {
+      sendTrackingEvent(trackingEvents.ENVIRONMENT_TYPE_BUTTON_CLICKED, {
+        type: typeData.title
+      });
+    }
+
+    props.onEnvironmentTypeSelect(props.environment.originalName, type);
   };
 
   const environmentTypes: {
@@ -33,7 +43,7 @@ export const EnvironmentTypePanel = (props: EnvironmentTypePanelProps) => {
   }[] = [
     {
       type: "local",
-      title: "Local environment",
+      title: "Digma environment",
       description: "This environment will be on your local machine",
       icon: <CodeDisplayIcon />
     },

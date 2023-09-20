@@ -1,5 +1,6 @@
-import { EnvironmentType } from "../types";
+import { EnvironmentType, ExtendedEnvironment } from "../types";
 
 export interface EnvironmentTypePanelProps {
-  onEnvironmentTypeSelect: (type: EnvironmentType) => void;
+  environment: ExtendedEnvironment;
+  onEnvironmentTypeSelect: (environment: string, type: EnvironmentType) => void;
 }

@@ -2,12 +2,12 @@ import { MemoExoticComponent } from "react";
 import { IconProps } from "../../common/icons/types";
 import { ExtendedEnvironment } from "../types";
 
-export interface AddEnvironmentPanelProps {
+export interface EnvironmentInstructionsPanelProps {
   environment: ExtendedEnvironment;
-  onAddEnvironmentToRunConfig?: () => void;
+  onAddEnvironmentToRunConfig?: (environment: string) => void;
 }
 
-export interface AddEnvironmentPanelContent {
+export interface EnvironmentInstructionsPanelContent {
   icon: MemoExoticComponent<(props: IconProps) => JSX.Element>;
   title: string;
   instrumentation: {

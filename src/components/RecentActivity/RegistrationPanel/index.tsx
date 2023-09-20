@@ -1,15 +1,31 @@
 import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
-import { validateEmailFormat } from "../../../utils/validateEmailFormat";
+import { isValidEmailFormat } from "../../../utils/isValidEmailFormat";
+import { NewCircleLoader } from "../../common/NewCircleLoader";
 import { CrossIcon } from "../../common/icons/CrossIcon";
+import { WarningCircleLargeIcon } from "../../common/icons/WarningCircleLargeIcon";
+import { isWorkEmail } from "./isWorkEmail";
 import * as s from "./styles";
 import { RegistrationPanelProps } from "./types";
 
-const EMAIL_ERROR_MESSAGE = "Enter a valid email";
+const validateEmail = (email: string): string | null => {
+  const message = "Please enter a valid work email address";
+
+  if (!isValidEmailFormat(email)) {
+    return message;
+  }
+
+  if (!isWorkEmail(email)) {
+    return message;
+  }
+
+  return null;
+};
 
 export const RegistrationPanel = (props: RegistrationPanelProps) => {
   const [email, setEmail] = useState("");
-  const [isEmailValid, setIsEmailValid] = useState(false);
   const emailTextFieldRef = useRef<HTMLInputElement>(null);
+
+  const errorMessage = validateEmail(email);
 
   useEffect(() => {
     emailTextFieldRef.current?.focus();
@@ -17,7 +33,6 @@ export const RegistrationPanel = (props: RegistrationPanelProps) => {
 
   const handleSubmitButtonClick = () => {
     props.onSubmit(email);
-    props.onClose();
   };
 
   const handleCloseButtonClick = () => {
@@ -26,15 +41,11 @@ export const RegistrationPanel = (props: RegistrationPanelProps) => {
 
   const handleEmailTextFieldChange = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
-
-    const isEmailValid = validateEmailFormat(email);
-    setIsEmailValid(isEmailValid);
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === "Enter" && isEmailValid) {
+    if (e.key === "Enter" && !errorMessage) {
       props.onSubmit(email);
-      props.onClose();
     }
   };
 
@@ -57,15 +68,24 @@ export const RegistrationPanel = (props: RegistrationPanelProps) => {
           onChange={handleEmailTextFieldChange}
           placeholder={"Enter your email"}
         />
-        <s.SubmitButton
-          disabled={!isEmailValid}
-          onClick={handleSubmitButtonClick}
-        >
-          Submit
-        </s.SubmitButton>
+        {props.isRegistrationInProgress ? (
+          <s.CircleLoaderContainer>
+            <NewCircleLoader size={32} />
+          </s.CircleLoaderContainer>
+        ) : (
+          <s.SubmitButton
+            disabled={Boolean(errorMessage)}
+            onClick={handleSubmitButtonClick}
+          >
+            Submit
+          </s.SubmitButton>
+        )}
       </s.TextFieldContainer>
-      {email.length > 0 && !isEmailValid && (
-        <s.ErrorMessage>{EMAIL_ERROR_MESSAGE}</s.ErrorMessage>
+      {email.length > 0 && errorMessage && (
+        <s.ErrorMessage>
+          <WarningCircleLargeIcon size={14} color={"currentColor"} />
+          {errorMessage}
+        </s.ErrorMessage>
       )}
     </s.Container>
   );
