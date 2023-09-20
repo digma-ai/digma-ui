@@ -120,7 +120,7 @@ export const EnvironmentInstructionsPanel = (
           <>
             <span>
               Add the following to your build/prod deployment scripts,
-              don&apos;t forget to set the SERVICE_NAME variable
+              don&apos;t forget to set the <code>SERVICE_NAME</code> variable
             </span>
             <CodeSnippet
               text={`curl --create-dirs -O -L --output-dir ./otel https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v1.29.0/opentelemetry-javaagent.jar

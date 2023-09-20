@@ -254,7 +254,11 @@ export const SetupOrgDigmaPanel = (props: SetupOrgDigmaPanelProps) => {
             />
             <Tooltip
               title={
-                "Use the Digma Plugin API url which is typically exposed by the service: digma-plugin-api-service-lb in the helm deployment"
+                <span>
+                  Use the Digma Plugin API url which is typically exposed by the
+                  service: <code>digma-plugin-api-service-lb</code> in the helm
+                  deployment
+                </span>
               }
             >
               <span>
