@@ -8,6 +8,7 @@ import { CodeSnippet } from "../../common/CodeSnippet";
 import { Link } from "../../common/Link";
 import { DesktopIcon } from "../../common/icons/DesktopIcon";
 import { InfinityIcon } from "../../common/icons/InfinityIcon";
+import { PlayButtonWithCursorIcon } from "../../common/icons/PlayButtonWithCursorIcon";
 import { SetupOrgDigmaPanel } from "../SetupOrgDigmaPanel";
 import { EnvironmentType } from "../types";
 import * as s from "./styles";
@@ -96,7 +97,18 @@ export const EnvironmentInstructionsPanel = (
         )
       },
       run: {
-        title: "Run your Application"
+        title: "Run your Application",
+        content: (
+          <>
+            <span>
+              Running your app will integrate your environment and Digma can
+              start showing you info!
+            </span>
+            <s.RunOrDebugIllustration
+              src={`/images/runOrDebug_${themeKind}.gif`}
+            />
+          </>
+        )
       }
     },
     shared: {
@@ -121,7 +133,18 @@ export OTEL_RESOURCE_ATTRIBUTES=digma.environment.name=${props.environment.origi
         )
       },
       run: {
-        title: "Deploy your application / run the build"
+        title: "Deploy your application / run the build",
+        content: (
+          <>
+            <span>
+              Running your app will integrate your environment and Digma can
+              start showing you info!
+            </span>
+            <s.IllustrationContainer>
+              <PlayButtonWithCursorIcon size={100} />
+            </s.IllustrationContainer>
+          </>
+        )
       }
     }
   };
@@ -164,13 +187,7 @@ export OTEL_RESOURCE_ATTRIBUTES=digma.environment.name=${props.environment.origi
             <s.SectionTitle>{content.run.title}</s.SectionTitle>
           </s.SectionHeader>
           <s.SectionContentContainer>
-            <span>
-              Running your app will integrate your environment and Digma can
-              start showing you info!
-            </span>
-            <s.RunOrDebugIllustration
-              src={`/images/runOrDebug_${themeKind}.gif`}
-            />
+            {content.run.content}
           </s.SectionContentContainer>
         </s.Section>
       </s.ContentContainer>

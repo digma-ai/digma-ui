@@ -16,5 +16,6 @@ export interface EnvironmentInstructionsPanelContent {
   };
   run: {
     title: string;
+    content: JSX.Element;
   };
 }

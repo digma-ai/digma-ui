@@ -144,8 +144,10 @@ export const AddToConfigFailureMessage = styled.span`
 `;
 
 export const IllustrationContainer = styled.div`
+  padding-top: 4px;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const RunOrDebugIllustration = styled.img`
