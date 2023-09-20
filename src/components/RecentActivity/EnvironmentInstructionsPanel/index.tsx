@@ -118,16 +118,20 @@ export const EnvironmentInstructionsPanel = (
         title: "Instrument your application",
         content: (
           <>
-            <span>Add the following code to your build/prod env:</span>
+            <span>
+              Add the following to your build/prod deployment scripts,
+              don&apos;t forget to set the SERVICE_NAME variable
+            </span>
             <CodeSnippet
-              text={`curl --create-dirs -O -L --output-dir ./otel https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar 
+              text={`curl --create-dirs -O -L --output-dir ./otel https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v1.29.0/opentelemetry-javaagent.jar
 
-curl --create-dirs -O -L --output-dir ./otel https://github.com/digma-ai/otel-java-instrumentation/releases/latest/download/digma-otel-agent-extension.jar export 
+curl --create-dirs -O -L --output-dir ./otel https://github.com/digma-ai/otel-java-instrumentation/releases/latest/download/digma-otel-agent-extension.jar
 
-JAVA_TOOL_OPTIONS="-javaagent:/otel/javaagent.jar -Dotel.exporter.otlp.endpoint=http://${hostname}:5050 -Dotel.javaagent.extensions=/otel/digma-otel-agent-extension.jar"
+export JAVA_TOOL_OPTIONS="-javaagent:/otel/javaagent.jar -Dotel.exporter.otlp.endpoint=http://${hostname}:5050 -Dotel.javaagent.extensions=/otel/digma-otel-agent-extension.jar"
 
-export OTEL_SERVICE_NAME={--ENTER YOUR SERVICE NAME HERE--} 
+export OTEL_SERVICE_NAME={--ENTER YOUR SERVICE NAME HERE--}
 export OTEL_RESOURCE_ATTRIBUTES=digma.environment.name=${props.environment.originalName}`}
+              language={"bash"}
             />
           </>
         )

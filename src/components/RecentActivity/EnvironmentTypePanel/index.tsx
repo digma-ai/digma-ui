@@ -44,13 +44,15 @@ export const EnvironmentTypePanel = (props: EnvironmentTypePanelProps) => {
     {
       type: "local",
       title: "Digma environment",
-      description: "This environment will be on your local machine",
+      description:
+        "Define an environment for specific branches, types of tests or other criteria you wish to group data by",
       icon: <CodeDisplayIcon />
     },
     {
       type: "shared",
       title: "CI/Prod environment",
-      description: "CI/Prod is an environment shared with your colleagues",
+      description:
+        "Connect to centralized org systems such as CI builds, production servers etc.",
       icon: <InfiniteLoopIcon />
     }
   ];

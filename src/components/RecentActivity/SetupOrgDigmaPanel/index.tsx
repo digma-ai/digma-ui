@@ -125,6 +125,16 @@ export const SetupOrgDigmaPanel = (props: SetupOrgDigmaPanelProps) => {
     setConnectionTestResult(undefined);
   };
 
+  const handleCancelButtonClick = () => {
+    window.sendMessageToDigma({
+      action: actions.SET_ENVIRONMENT_TYPE,
+      payload: {
+        environment: props.environment.originalName,
+        type: null
+      }
+    });
+  };
+
   const handleTestConnectionButtonClick = () => {
     window.sendMessageToDigma({
       action: actions.CHECK_REMOTE_ENVIRONMENT_CONNECTION,
@@ -198,12 +208,16 @@ export const SetupOrgDigmaPanel = (props: SetupOrgDigmaPanelProps) => {
     <s.Container>
       <s.Header>
         <InfinityIcon size={16} color={"currentColor"} />
-        How to set up Digma in your organization
+        Set up Digma in your organization
       </s.Header>
       <s.ContentContainer>
         <s.TestConnectionContainer>
           <span>
-            Follow the{" "}
+            Environments that connect to org systems such as build systems or
+            prod, need to be deployed to a shared location.
+          </span>
+          <span>
+            Digma is easily distributed as a Helm file, you can follow the{" "}
             <s.Link onClick={handleInstructionsLinkClick}>instructions</s.Link>
             <Tooltip
               title={
@@ -249,6 +263,12 @@ export const SetupOrgDigmaPanel = (props: SetupOrgDigmaPanelProps) => {
             </Tooltip>
           </s.TextFieldContainer>
           <s.ButtonsContainer>
+            <s.Button
+              onClick={handleCancelButtonClick}
+              buttonType={"secondary"}
+            >
+              Cancel
+            </s.Button>
             <s.Button
               onClick={handleTestConnectionButtonClick}
               buttonType={"secondary"}

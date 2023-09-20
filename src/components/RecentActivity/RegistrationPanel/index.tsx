@@ -58,8 +58,8 @@ export const RegistrationPanel = (props: RegistrationPanelProps) => {
         </s.CloseButton>
       </s.Header>
       <s.Description>
-        Please register using your work email to start collecting data from a
-        centralized CI/test environment
+        Please register using your work email to start collecting data from
+        CI/Prod or other shared environments
       </s.Description>
       <s.TextFieldContainer>
         <s.EmailTextField
