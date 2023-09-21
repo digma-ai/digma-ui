@@ -209,24 +209,28 @@ export const EngineManager = (props: EngineManagerProps) => {
           {icon}
           <s.TextContainer>
             <s.Title>{title}</s.Title>
-            {!props.engine.failedOperation && (
-              <span>
-                {props.engine.currentOperation?.status === "pending"
-                  ? "This may take a few minutes..."
-                  : `Click "${
-                      isDigmaEngineRunning ? "Configure" : "Start"
-                    }" to continue setup`}
-              </span>
-            )}
-            {props.engine.failedOperation ? (
-              <s.ErrorMessage>
-                {props.engine.failedOperation.error}
-              </s.ErrorMessage>
-            ) : (
-              <span>
-                You can always start / stop / remove the Digma Engine from the
-                Digma panel
-              </span>
+            {!props.overlay && (
+              <>
+                {!props.engine.failedOperation && (
+                  <span>
+                    {props.engine.currentOperation?.status === "pending"
+                      ? "This may take a few minutes..."
+                      : `Click "${
+                          isDigmaEngineRunning ? "Configure" : "Start"
+                        }" to continue setup`}
+                  </span>
+                )}
+                {props.engine.failedOperation ? (
+                  <s.ErrorMessage>
+                    {props.engine.failedOperation.error}
+                  </s.ErrorMessage>
+                ) : (
+                  <span>
+                    You can always start / stop / remove the Digma Engine from
+                    the Digma panel
+                  </span>
+                )}
+              </>
             )}
           </s.TextContainer>
           {buttons.length > 0 && (
