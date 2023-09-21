@@ -2,7 +2,6 @@ import { Allotment } from "allotment";
 import "allotment/dist/style.css";
 import { KeyboardEvent, useContext, useEffect, useMemo, useState } from "react";
 import { actions as globalActions } from "../../actions";
-import { INSTALL_DIGMA_IN_ORGANIZATION_DOCUMENTATION_URL } from "../../constants";
 import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
 import { trackingEvents as globalTrackingEvents } from "../../trackingEvents";
@@ -236,15 +235,15 @@ export const RecentActivity = (props: RecentActivityProps) => {
       }
     });
 
-    if (type === "shared") {
-      window.sendMessageToDigma({
-        action: globalActions.OPEN_URL_IN_EDITOR_TAB,
-        payload: {
-          url: INSTALL_DIGMA_IN_ORGANIZATION_DOCUMENTATION_URL,
-          title: "Installing Digma in your organization"
-        }
-      });
-    }
+    // if (type === "shared") {
+    //   window.sendMessageToDigma({
+    //     action: globalActions.OPEN_URL_IN_EDITOR_TAB,
+    //     payload: {
+    //       url: INSTALL_DIGMA_IN_ORGANIZATION_DOCUMENTATION_URL,
+    //       title: "Installing Digma in your organization"
+    //     }
+    //   });
+    // }
   };
 
   const handleEnvironmentTypeSelect = (

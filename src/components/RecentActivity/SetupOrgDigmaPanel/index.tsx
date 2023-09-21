@@ -1,4 +1,3 @@
-import copy from "copy-to-clipboard";
 import { ChangeEvent, useContext, useEffect, useState } from "react";
 import { actions as globalActions } from "../../../actions";
 import {
@@ -16,7 +15,6 @@ import { ConfigContextData } from "../../common/App/types";
 import { NewCircleLoader } from "../../common/NewCircleLoader";
 import { Tooltip } from "../../common/Tooltip";
 import { CheckmarkCircleInvertedIcon } from "../../common/icons/CheckmarkCircleInvertedIcon";
-import { CopyIcon } from "../../common/icons/CopyIcon";
 import { InfinityIcon } from "../../common/icons/InfinityIcon";
 import { InfoCircleIcon } from "../../common/icons/InfoCircleIcon";
 import { WarningCircleLargeIcon } from "../../common/icons/WarningCircleLargeIcon";
@@ -53,8 +51,8 @@ export const SetupOrgDigmaPanel = (props: SetupOrgDigmaPanelProps) => {
   const [urlToCheckConnection, setUrlToCheckConnection] = useState<string>();
   const [isSettingsMessageVisible, setIsSettingsMessageVisible] =
     useState(false);
-  const [isInstructionsCopyButtonClicked, setIsInstructionsCopyButtonClicked] =
-    useState(false);
+  // const [isInstructionsCopyButtonClicked, setIsInstructionsCopyButtonClicked] =
+  //   useState(false);
   const config = useContext(ConfigContext);
   const [areEnvInstructionsVisible] = useState(
     !isIDEConnectedToLocalDigma(config)
@@ -102,7 +100,7 @@ export const SetupOrgDigmaPanel = (props: SetupOrgDigmaPanelProps) => {
 
   const handleInstructionsLinkClick = () => {
     window.sendMessageToDigma({
-      action: globalActions.OPEN_URL_IN_EDITOR_TAB,
+      action: globalActions.OPEN_URL_IN_DEFAULT_BROWSER,
       payload: {
         url: INSTALL_DIGMA_IN_ORGANIZATION_DOCUMENTATION_URL,
         title: "Installing Digma in your organization"
@@ -110,10 +108,10 @@ export const SetupOrgDigmaPanel = (props: SetupOrgDigmaPanelProps) => {
     });
   };
 
-  const handleCopyInstructionsLinkButtonClick = () => {
-    copy(INSTALL_DIGMA_IN_ORGANIZATION_DOCUMENTATION_URL);
-    setIsInstructionsCopyButtonClicked(true);
-  };
+  // const handleCopyInstructionsLinkButtonClick = () => {
+  //   copy(INSTALL_DIGMA_IN_ORGANIZATION_DOCUMENTATION_URL);
+  //   setIsInstructionsCopyButtonClicked(true);
+  // };
 
   const handleApiTokenTextFieldChange = (e: ChangeEvent<HTMLInputElement>) => {
     setApiToken(e.target.value);
@@ -218,8 +216,8 @@ export const SetupOrgDigmaPanel = (props: SetupOrgDigmaPanelProps) => {
           </span>
           <span>
             Digma is easily distributed as a Helm file, you can follow the{" "}
-            <s.Link onClick={handleInstructionsLinkClick}>instructions</s.Link>
-            <Tooltip
+            <s.Link onClick={handleInstructionsLinkClick}>instructions</s.Link>{" "}
+            {/* <Tooltip
               title={
                 isInstructionsCopyButtonClicked ? "Link copied!" : "Copy link"
               }
@@ -227,7 +225,7 @@ export const SetupOrgDigmaPanel = (props: SetupOrgDigmaPanelProps) => {
               <s.CopyButton onClick={handleCopyInstructionsLinkButtonClick}>
                 <CopyIcon color={"currentColor"} />
               </s.CopyButton>
-            </Tooltip>
+            </Tooltip> */}
             to set up Digma in your organization
           </span>
           <s.TextFieldContainer>
