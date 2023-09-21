@@ -2,6 +2,7 @@ import { ChangeEvent, useContext, useEffect, useState } from "react";
 import { actions as globalActions } from "../../../actions";
 import {
   INSTALL_DIGMA_IN_ORGANIZATION_DOCUMENTATION_URL,
+  SETUP_PLUGIN_TO_ORGANIZATION_DIGMA_URL,
   SLACK_WORKSPACE_URL
 } from "../../../constants";
 import { dispatcher } from "../../../dispatcher";
@@ -18,7 +19,6 @@ import { CheckmarkCircleInvertedIcon } from "../../common/icons/CheckmarkCircleI
 import { InfinityIcon } from "../../common/icons/InfinityIcon";
 import { InfoCircleIcon } from "../../common/icons/InfoCircleIcon";
 import { WarningCircleLargeIcon } from "../../common/icons/WarningCircleLargeIcon";
-import { EnvironmentInstructionsPanel } from "../EnvironmentInstructionsPanel";
 import { actions } from "../actions";
 import { trackingEvents } from "../tracking";
 import * as s from "./styles";
@@ -35,6 +35,29 @@ const isIDEConnectedToLocalDigma = (config: ConfigContextData): boolean => {
 
 const SETTINGS_MISMATCH_ERROR_MESSAGE =
   "Please make sure to update your plugin settings based on the value above. See the documentation for more info";
+
+const renderUpdatePluginSettingsMessage = () => {
+  const handleLinkClick = () => {
+    window.sendMessageToDigma({
+      action: globalActions.OPEN_URL_IN_DEFAULT_BROWSER,
+      payload: {
+        url: SETUP_PLUGIN_TO_ORGANIZATION_DIGMA_URL,
+        title: "Installing Digma in your organization"
+      }
+    });
+  };
+
+  return (
+    <s.NotificationMessage type={"failure"}>
+      <WarningCircleLargeIcon size={14} color={"currentColor"} />
+      <span>
+        Please make sure to update your plugin settings based on the value
+        above. See the <s.Link onClick={handleLinkClick}>documentation</s.Link>{" "}
+        for more info
+      </span>
+    </s.NotificationMessage>
+  );
+};
 
 export const SetupOrgDigmaPanel = (props: SetupOrgDigmaPanelProps) => {
   const [apiToken, setApiToken] = useState(props.environment.token || "");
@@ -54,8 +77,9 @@ export const SetupOrgDigmaPanel = (props: SetupOrgDigmaPanelProps) => {
   // const [isInstructionsCopyButtonClicked, setIsInstructionsCopyButtonClicked] =
   //   useState(false);
   const config = useContext(ConfigContext);
-  const [areEnvInstructionsVisible] = useState(
-    !isIDEConnectedToLocalDigma(config)
+  const [skipOrgDigmaSetupGuide] = useState(
+    !props.environment.isOrgDigmaSetupFinished &&
+      !isIDEConnectedToLocalDigma(config)
   );
 
   useEffect(() => {
@@ -175,8 +199,9 @@ export const SetupOrgDigmaPanel = (props: SetupOrgDigmaPanelProps) => {
     openURLInDefaultBrowser(SLACK_WORKSPACE_URL);
   };
 
-  if (areEnvInstructionsVisible) {
-    return <EnvironmentInstructionsPanel environment={props.environment} />;
+  if (skipOrgDigmaSetupGuide) {
+    props.onFinish(props.environment.originalName);
+    return null;
   }
 
   const renderConnectionResultMessage = (data: AsyncActionResultData) => {
@@ -265,12 +290,14 @@ export const SetupOrgDigmaPanel = (props: SetupOrgDigmaPanelProps) => {
             </Tooltip>
           </s.TextFieldContainer>
           <s.ButtonsContainer>
-            <s.Button
-              onClick={handleCancelButtonClick}
-              buttonType={"secondary"}
-            >
-              Cancel
-            </s.Button>
+            {!props.environment.isOrgDigmaSetupFinished && (
+              <s.Button
+                onClick={handleCancelButtonClick}
+                buttonType={"secondary"}
+              >
+                Cancel
+              </s.Button>
+            )}
             <s.Button
               onClick={handleTestConnectionButtonClick}
               buttonType={"secondary"}
@@ -290,12 +317,7 @@ export const SetupOrgDigmaPanel = (props: SetupOrgDigmaPanelProps) => {
           </s.ButtonsContainer>
           {connectionTestResult &&
             renderConnectionResultMessage(connectionTestResult)}
-          {isSettingsMessageVisible && (
-            <s.NotificationMessage type={"failure"}>
-              <WarningCircleLargeIcon size={14} color={"currentColor"} />
-              {SETTINGS_MISMATCH_ERROR_MESSAGE}
-            </s.NotificationMessage>
-          )}
+          {isSettingsMessageVisible && renderUpdatePluginSettingsMessage()}
         </s.TestConnectionContainer>
         {/* <s.Button
             disabled={connectionTestResult?.result !== "success"}

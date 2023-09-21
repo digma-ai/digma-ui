@@ -45,7 +45,7 @@ export const EnvironmentTypePanel = (props: EnvironmentTypePanelProps) => {
       type: "local",
       title: "Digma environment",
       description:
-        "Define an environment for specific branches, types of tests or other criteria you wish to group data by",
+        "Define an environment for specific branches, types of tests or other criteria",
       icon: <CodeDisplayIcon />
     },
     {

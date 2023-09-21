@@ -130,7 +130,7 @@ curl --create-dirs -O -L --output-dir ./otel https://github.com/digma-ai/otel-ja
 export JAVA_TOOL_OPTIONS="-javaagent:/otel/javaagent.jar -Dotel.exporter.otlp.endpoint=http://${hostname}:5050 -Dotel.javaagent.extensions=/otel/digma-otel-agent-extension.jar"
 
 export OTEL_SERVICE_NAME={--ENTER YOUR SERVICE NAME HERE--}
-export OTEL_RESOURCE_ATTRIBUTES=digma.environment.name=${props.environment.originalName}`}
+export OTEL_RESOURCE_ATTRIBUTES=digma.environment=${props.environment.originalName}`}
               language={"bash"}
             />
           </>
