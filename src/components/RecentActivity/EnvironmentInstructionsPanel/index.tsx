@@ -145,7 +145,7 @@ export OTEL_RESOURCE_ATTRIBUTES=digma.environment.name=${props.environment.origi
               start showing you info!
             </span>
             <s.IllustrationContainer>
-              <PlayButtonWithCursorIcon size={100} />
+              <PlayButtonWithCursorIcon size={100} themeKind={themeKind} />
             </s.IllustrationContainer>
           </>
         )
