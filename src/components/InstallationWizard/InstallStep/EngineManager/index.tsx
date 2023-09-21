@@ -214,7 +214,7 @@ export const EngineManager = (props: EngineManagerProps) => {
                 {props.engine.currentOperation?.status === "pending"
                   ? "This may take a few minutes..."
                   : `Click "${
-                      isDigmaEngineRunning ? "Next" : "Start"
+                      isDigmaEngineRunning ? "Configure" : "Start"
                     }" to continue setup`}
               </span>
             )}

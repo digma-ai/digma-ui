@@ -5,6 +5,7 @@ export interface TextFieldProps {
   inputEndContent?: ReactNode;
   value: string;
   onChange: ChangeEventHandler<HTMLInputElement>;
+  className?: string;
 }
 
 export interface ContainerProps {

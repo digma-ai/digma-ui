@@ -2,18 +2,37 @@ import styled from "styled-components";
 import { Link as CommonLink } from "../../common/Link";
 
 export const Container = styled.div`
-  margin-top: 16px;
+  margin-top: 12px;
   display: flex;
   flex-direction: column;
   gap: 12px;
+  font-size: 14px;
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#818594";
+      case "dark":
+      case "dark-jetbrains":
+        return "#b4b8bf";
+    }
+  }};
 `;
 
 export const Header = styled.div`
   display: flex;
   gap: 8px;
-  text-transform: capitalize;
   align-items: center;
   font-size: 16px;
+  font-weight: 600;
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#494b57";
+      case "dark":
+      case "dark-jetbrains":
+        return "#dfe1e5";
+    }
+  }};
 `;
 
 export const ContentContainer = styled.div`
@@ -47,6 +66,7 @@ export const Section = styled.div`
         return "#393b40";
     }
   }};
+  height: fit-content;
 `;
 
 export const SectionHeader = styled.div`
@@ -124,8 +144,10 @@ export const AddToConfigFailureMessage = styled.span`
 `;
 
 export const IllustrationContainer = styled.div`
+  padding-top: 4px;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const RunOrDebugIllustration = styled.img`

@@ -122,7 +122,7 @@ export const LiveViewContainer = styled.div`
   box-sizing: border-box;
 `;
 
-export const DeleteEnvironmentConfirmationContainer = styled.div`
+export const Overlay = styled.div`
   position: absolute;
   inset: 0;
   backdrop-filter: blur(2px);

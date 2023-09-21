@@ -22,16 +22,96 @@ export const NoData: Story = {};
 
 const data: RecentActivityData = {
   environments: [
-    { name: "ENV_RENDER", isPending: false, additionToConfigResult: null },
-    { name: "UNSET_ENV", isPending: false, additionToConfigResult: null },
-    { name: "UNSET_ENV1", isPending: true, additionToConfigResult: null },
-    { name: "UNSET_ENV2", isPending: false, additionToConfigResult: null },
-    { name: "UNSET_ENV3", isPending: false, additionToConfigResult: null },
-    { name: "UNSET_ENV4", isPending: false, additionToConfigResult: null },
     {
-      name: " VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-LONG-NAME",
+      name: "ENV_RENDER",
+      originalName: "ENV_RENDER",
       isPending: false,
-      additionToConfigResult: null
+      additionToConfigResult: null,
+      type: "local",
+      token: null,
+      serverApiUrl: null,
+      isOrgDigmaSetupFinished: false
+    },
+    {
+      name: "ENV_RENDER",
+      originalName: "ENV_RENDER1",
+      isPending: false,
+      additionToConfigResult: null,
+      type: "local",
+      token: null,
+      serverApiUrl: null,
+      isOrgDigmaSetupFinished: false
+    },
+    {
+      name: "UNSET_ENV",
+      originalName: "UNSET_ENV",
+      isPending: false,
+      additionToConfigResult: null,
+      type: "shared",
+      token: null,
+      serverApiUrl: null,
+      isOrgDigmaSetupFinished: false
+    },
+    {
+      name: "PENDING_NO_TYPE",
+      originalName: "PENDING_NO_TYPE",
+      isPending: true,
+      additionToConfigResult: null,
+      type: null,
+      token: null,
+      serverApiUrl: null,
+      isOrgDigmaSetupFinished: false
+    },
+    {
+      name: "PENDING_LOCAL",
+      originalName: "PENDING_LOCAL",
+      isPending: true,
+      additionToConfigResult: null,
+      type: "local",
+      token: null,
+      serverApiUrl: null,
+      isOrgDigmaSetupFinished: false
+    },
+    {
+      name: "PENDING_SHARED",
+      originalName: "PENDING_SHARED",
+      isPending: true,
+      additionToConfigResult: null,
+      type: "shared",
+      token: null,
+      serverApiUrl: null,
+      isOrgDigmaSetupFinished: false
+    },
+    {
+      name: "PENDING_SHARED_LOCALHOST",
+      originalName: "PENDING_SHARED_LOCALHOST",
+      isPending: true,
+      additionToConfigResult: null,
+      type: "shared",
+      token: null,
+      serverApiUrl: "https://localhost:5051",
+      isOrgDigmaSetupFinished: false
+    },
+    {
+      name: "PENDING_SHARED_CUSTOM_DOMAIN",
+      originalName: "PENDING_SHARED_CUSTOM_DOMAIN",
+      isPending: true,
+      additionToConfigResult: null,
+      type: "shared",
+      token: "token_string",
+      serverApiUrl: "https://example.com",
+      isOrgDigmaSetupFinished: false
+    },
+    {
+      name: "VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-LONG-NAME",
+      originalName:
+        "VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-LONG-NAME",
+      isPending: false,
+      additionToConfigResult: null,
+      type: "local",
+      token: null,
+      serverApiUrl: null,
+      isOrgDigmaSetupFinished: false
     }
   ],
   entries: [

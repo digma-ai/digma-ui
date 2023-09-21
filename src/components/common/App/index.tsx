@@ -121,6 +121,24 @@ export const App = (props: AppProps) => {
       }
     };
 
+    const handleSetDigmaApiUrl = (data: unknown) => {
+      if (isObject(data) && isString(data.url)) {
+        setConfig((config) => ({
+          ...config,
+          digmaApiUrl: data.url as string
+        }));
+      }
+    };
+
+    const handleSetUserEmail = (data: unknown) => {
+      if (isObject(data) && isString(data.email)) {
+        setConfig((config) => ({
+          ...config,
+          userEmail: data.email as string
+        }));
+      }
+    };
+
     dispatcher.addActionListener(actions.SET_THEME, handleSetTheme);
     dispatcher.addActionListener(actions.SET_MAIN_FONT, handleSetMainFont);
     dispatcher.addActionListener(actions.SET_CODE_FONT, handleSetCodeFont);
@@ -148,6 +166,11 @@ export const App = (props: AppProps) => {
       actions.SET_IS_DOCKER_COMPOSE_INSTALLED,
       handleSetIsDockerComposeInstalled
     );
+    dispatcher.addActionListener(
+      actions.SET_DIGMA_API_URL,
+      handleSetDigmaApiUrl
+    );
+    dispatcher.addActionListener(actions.SET_USER_EMAIL, handleSetUserEmail);
 
     return () => {
       dispatcher.removeActionListener(actions.SET_THEME, handleSetTheme);
@@ -176,6 +199,14 @@ export const App = (props: AppProps) => {
       dispatcher.removeActionListener(
         actions.SET_IS_DOCKER_COMPOSE_INSTALLED,
         handleSetIsDockerComposeInstalled
+      );
+      dispatcher.removeActionListener(
+        actions.SET_DIGMA_API_URL,
+        handleSetDigmaApiUrl
+      );
+      dispatcher.removeActionListener(
+        actions.SET_USER_EMAIL,
+        handleSetUserEmail
       );
     };
   }, []);

@@ -22,6 +22,7 @@ declare global {
       message: DigmaOutgoingMessageData
     ) => string | undefined;
     cancelMessageToDigma: (request_id: string) => void;
+    digmaApiUrl?: unknown;
     theme?: unknown;
     platform?: unknown;
     ide?: unknown;

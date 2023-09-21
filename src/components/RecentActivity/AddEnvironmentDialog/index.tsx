@@ -7,10 +7,12 @@ import {
   useState
 } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
+import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { Button } from "../../common/Button";
 import { TextField } from "../../common/TextField";
 import { CrossIcon } from "../../common/icons/CrossIcon";
 import { WarningCircleLargeIcon } from "../../common/icons/WarningCircleLargeIcon";
+import { trackingEvents } from "../tracking";
 import { ExtendedEnvironment } from "../types";
 import * as s from "./styles";
 import { AddEnvironmentDialogProps } from "./types";
@@ -32,7 +34,7 @@ const validateName = (
     };
   }
 
-  if (environments.find((x) => x.name === value)) {
+  if (environments.find((x) => x.name === value || x.originalName === value)) {
     return {
       isValid: false,
       errorMessage: (
@@ -89,6 +91,9 @@ export const AddEnvironmentDialog = (props: AddEnvironmentDialogProps) => {
   };
 
   const handleNextButtonClick = () => {
+    sendTrackingEvent(
+      trackingEvents.NAVIGATED_TO_THE_NEWLY_CREATED_PENDING_ENVIRONMENT
+    );
     props.onEnvironmentAdd(textFieldValue);
     props.onClose();
   };

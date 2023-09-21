@@ -4,6 +4,8 @@ import { Badge } from "../../../common/Badge";
 import { KebabMenuButton } from "../../../common/KebabMenuButton";
 import { NewPopover } from "../../../common/NewPopover";
 import { Tooltip } from "../../../common/Tooltip";
+import { DesktopIcon } from "../../../common/icons/DesktopIcon";
+import { InfinityIcon } from "../../../common/icons/InfinityIcon";
 import { TrashBinIcon } from "../../../common/icons/TrashBinIcon";
 import { EnvironmentMenu } from "../../EnvironmentMenu";
 import * as s from "./styles";
@@ -15,8 +17,9 @@ export const EnvironmentTab = (props: EnvironmentTabProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const config = useContext(ConfigContext);
   const isMenuVisible =
-    config.digmaStatus?.connection.status &&
-    window.recentActivityIsEnvironmentManagementEnabled === true;
+    window.recentActivityIsEnvironmentManagementEnabled === true &&
+    ((config.digmaStatus?.connection.status && !props.environment.isPending) ||
+      props.environment.isPending);
 
   const containerRef = useRef<HTMLLIElement>(null);
 
@@ -46,7 +49,7 @@ export const EnvironmentTab = (props: EnvironmentTabProps) => {
   const handleMenuItemSelect = (value: string) => {
     switch (value) {
       case "delete":
-        props.onEnvironmentDelete(props.environment.name);
+        props.onEnvironmentDelete(props.environment.originalName);
         break;
     }
 
@@ -54,6 +57,18 @@ export const EnvironmentTab = (props: EnvironmentTabProps) => {
   };
 
   const menuItems = [{ label: "Delete", value: "delete", icon: TrashBinIcon }];
+
+  const renderIcon = () => {
+    if (!props.environment.type) {
+      return null;
+    }
+
+    return props.environment.name === props.environment.originalName ? (
+      <InfinityIcon size={16} color={"currentColor"} />
+    ) : (
+      <DesktopIcon size={16} color={"currentColor"} />
+    );
+  };
 
   return (
     <s.Container
@@ -71,6 +86,7 @@ export const EnvironmentTab = (props: EnvironmentTabProps) => {
           <Badge />
         </s.BadgeContainer>
       )}
+      {renderIcon()}
       <Tooltip title={props.environment.name}>
         <s.Label>{props.environment.name}</s.Label>
       </Tooltip>

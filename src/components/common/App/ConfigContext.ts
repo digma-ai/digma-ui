@@ -3,6 +3,7 @@ import { isString } from "../../../typeGuards/isString";
 import { ConfigContextData } from "./types";
 
 export const ConfigContext = createContext<ConfigContextData>({
+  digmaApiUrl: isString(window.digmaApiUrl) ? window.digmaApiUrl : "",
   digmaStatus: undefined,
   isObservabilityEnabled: window.isObservabilityEnabled === true,
   isJaegerEnabled: window.isJaegerEnabled === true,
