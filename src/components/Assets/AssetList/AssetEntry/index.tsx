@@ -7,8 +7,21 @@ import { timeAgo } from "../../../../utils/timeAgo";
 import { Tooltip } from "../../../common/Tooltip";
 import { GlobeIcon } from "../../../common/icons/GlobeIcon";
 import { getAssetTypeInfo } from "../../utils";
+import { SORTING_CRITERION } from "../types";
 import * as s from "./styles";
 import { AssetEntryProps } from "./types";
+
+const getImpactScoreIndicator = (score: number) => {
+  if (score < 0) {
+    return null;
+  }
+
+  return (
+    <s.ImpactScoreIndicatorContainer>
+      <s.ImpactScoreIndicator score={score} />
+    </s.ImpactScoreIndicatorContainer>
+  );
+};
 
 const getImpactScoreLabel = (score: number) => {
   if (score < 0) {
@@ -168,6 +181,11 @@ export const AssetEntry = (props: AssetEntryProps) => {
               <Tooltip title={props.entry.impactScores.ScoreExp25}>
                 <s.ValueContainer>
                   {getImpactScoreLabel(props.entry.impactScores.ScoreExp25)}
+                  {props.sortingCriterion ===
+                    SORTING_CRITERION.PERFORMANCE_IMPACT &&
+                    getImpactScoreIndicator(
+                      props.entry.impactScores.ScoreExp25
+                    )}
                 </s.ValueContainer>
               </Tooltip>
             </s.Stats>
@@ -176,6 +194,11 @@ export const AssetEntry = (props: AssetEntryProps) => {
               <Tooltip title={props.entry.impactScores.ScoreExp1000}>
                 <s.ValueContainer>
                   {getImpactScoreLabel(props.entry.impactScores.ScoreExp1000)}
+                  {props.sortingCriterion ===
+                    SORTING_CRITERION.OVERALL_IMPACT &&
+                    getImpactScoreIndicator(
+                      props.entry.impactScores.ScoreExp25
+                    )}
                 </s.ValueContainer>
               </Tooltip>
             </s.Stats>

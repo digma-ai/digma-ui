@@ -143,3 +143,17 @@ export const Suffix = styled.span`
     }
   }};
 `;
+
+export const ImpactScoreIndicatorContainer = styled.div`
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding-left: 4px;
+`;
+
+export const ImpactScoreIndicator = styled.div<{ score: number }>`
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  background: hsl(14deg 66% ${({ score }) => 100 - 50 * score}%);
+`;

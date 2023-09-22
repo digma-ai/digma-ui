@@ -6497,8 +6497,8 @@ export const data: AssetsData = {
             }
           ],
           impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
+            ScoreExp25: 0.05,
+            ScoreExp1000: 0.05
           },
           insights: [
             {
@@ -6600,8 +6600,8 @@ export const data: AssetsData = {
             }
           ],
           impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
+            ScoreExp25: 0.1,
+            ScoreExp1000: 0.1
           },
           insights: [
             {
@@ -6712,8 +6712,8 @@ export const data: AssetsData = {
             }
           ],
           impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
+            ScoreExp25: 0.15,
+            ScoreExp1000: 0.15
           },
           insights: [
             {
@@ -6795,8 +6795,8 @@ export const data: AssetsData = {
             }
           ],
           impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
+            ScoreExp25: 0.2,
+            ScoreExp1000: 0.2
           },
           insights: [
             {
@@ -6897,8 +6897,8 @@ export const data: AssetsData = {
             }
           ],
           impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
+            ScoreExp25: 0.25,
+            ScoreExp1000: 0.25
           },
           insights: [
             {
@@ -6989,8 +6989,8 @@ export const data: AssetsData = {
             }
           ],
           impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
+            ScoreExp25: 0.3,
+            ScoreExp1000: 0.3
           },
           insights: [
             {
@@ -7102,8 +7102,8 @@ export const data: AssetsData = {
             }
           ],
           impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
+            ScoreExp25: 0.35,
+            ScoreExp1000: 0.35
           },
           insights: [
             {
@@ -7195,8 +7195,8 @@ export const data: AssetsData = {
             }
           ],
           impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
+            ScoreExp25: 0.4,
+            ScoreExp1000: 0.4
           },
           insights: [
             {
@@ -7294,8 +7294,8 @@ export const data: AssetsData = {
             }
           ],
           impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
+            ScoreExp25: 0.45,
+            ScoreExp1000: 0.45
           },
           insights: [
             {
@@ -7387,8 +7387,8 @@ export const data: AssetsData = {
             }
           ],
           impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
+            ScoreExp25: 0.5,
+            ScoreExp1000: 0.5
           },
           insights: [
             {
@@ -7489,8 +7489,8 @@ export const data: AssetsData = {
             }
           ],
           impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
+            ScoreExp25: 0.55,
+            ScoreExp1000: 0.55
           },
           insights: [
             {
@@ -7602,8 +7602,8 @@ export const data: AssetsData = {
             }
           ],
           impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
+            ScoreExp25: 0.6,
+            ScoreExp1000: 0.6
           },
           insights: [
             {
@@ -7715,8 +7715,8 @@ export const data: AssetsData = {
             }
           ],
           impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
+            ScoreExp25: 0.65,
+            ScoreExp1000: 0.65
           },
           insights: [
             {
@@ -7808,8 +7808,8 @@ export const data: AssetsData = {
             }
           ],
           impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
+            ScoreExp25: 0.7,
+            ScoreExp1000: 0.7
           },
           insights: [
             {
@@ -7911,8 +7911,8 @@ export const data: AssetsData = {
             }
           ],
           impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
+            ScoreExp25: 0.75,
+            ScoreExp1000: 0.75
           },
           insights: [
             {
@@ -8004,8 +8004,8 @@ export const data: AssetsData = {
             }
           ],
           impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
+            ScoreExp25: 0.8,
+            ScoreExp1000: 0.8
           },
           insights: [
             {
@@ -8108,8 +8108,8 @@ export const data: AssetsData = {
             }
           ],
           impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
+            ScoreExp25: 0.85,
+            ScoreExp1000: 0.85
           },
           insights: [
             {
@@ -8211,8 +8211,8 @@ export const data: AssetsData = {
             }
           ],
           impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
+            ScoreExp25: 0.95,
+            ScoreExp1000: 0.95
           },
           insights: [
             {
@@ -8315,8 +8315,8 @@ export const data: AssetsData = {
             }
           ],
           impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
+            ScoreExp25: 1,
+            ScoreExp1000: 1
           },
           insights: [
             {

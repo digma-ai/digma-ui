@@ -431,6 +431,7 @@ export const AssetList = (props: AssetListProps) => {
                 key={key}
                 entry={entry}
                 onAssetLinkClick={handleAssetLinkClick}
+                sortingCriterion={sorting.criterion}
               />
             );
           })}
