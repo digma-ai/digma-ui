@@ -9,27 +9,19 @@ import { TabContentContainerProps } from "./types";
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  padding-bottom: 12px;
+  padding-bottom: 16px;
 `;
 
 export const SectionTitle = styled(CommonSectionTitle)`
   gap: 2px;
-  margin-bottom: 2px;
-`;
-
-export const DockerComposeTabs = styled(Tabs)`
-  margin-top: 21px;
-`;
-
-export const GetDockerExtensionButton = styled(Button)`
-  margin-top: 12px;
 `;
 
 export const TabContentContainer = styled.div<TabContentContainerProps>`
   display: flex;
   flex-direction: column;
-  padding: 12px 8px;
+  padding: 8px 8px 0;
   position: relative;
+  height: 474px;
 
   ${({ overlay }) => {
     if (overlay) {
@@ -58,10 +50,76 @@ export const TabContentContainer = styled.div<TabContentContainerProps>`
   }};
 `;
 
+export const TextContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+export const DockerDesktopTabContentContainer = styled(TabContentContainer)`
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+`;
+
+export const IconBackgroundCircle = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 72px;
+  width: 72px;
+  border-radius: 50%;
+  box-sizing: border-box;
+  background: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#d0d6eb";
+      case "dark":
+      case "dark-jetbrains":
+        return "#323334";
+    }
+  }};
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#fbfdff";
+      case "dark":
+      case "dark-jetbrains":
+        return "#b4b8bf";
+    }
+  }};
+`;
+
+export const DockerLogoBackgroundCircle = styled(IconBackgroundCircle)`
+  padding-left: 5px;
+`;
+
+export const GetDockerExtensionButton = styled(Button)`
+  padding: 6px 12px;
+  background: #3538cd;
+  height: initial;
+  font-size: 16px;
+`;
+
+export const DockerComposeTabs = styled(Tabs)`
+  margin-top: 21px;
+`;
+
 export const DockerComposeOSTabContentContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
+  border-radius: 4px;
+  padding: 8px;
+  background: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#fbfdff";
+      case "dark":
+      case "dark-jetbrains":
+        return "#43454a";
+    }
+  }};
 `;
 
 // export const LoaderContainer = styled.div`
@@ -83,28 +141,10 @@ export const CommonContentContainer = styled.div`
   padding: 0 8px;
 `;
 
-export const IconBackgroundCircle = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 40px;
-  width: 40px;
-  border-radius: 50%;
-  background: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#d0d6eb";
-      case "dark":
-      case "dark-jetbrains":
-        return "#323334";
-    }
-  }};
-`;
-
 export const NoDockerTabContentContainer = styled(TabContentContainer)`
+  justify-content: center;
   align-items: center;
-  gap: 8px;
-  padding: 79px 21px;
+  gap: 20px;
 `;
 
 export const NoDockerText = styled(SectionDescription)`

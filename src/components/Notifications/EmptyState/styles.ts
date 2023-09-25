@@ -13,6 +13,15 @@ export const IconContainer = styled.div`
   width: 72px;
   height: 72px;
   border-radius: 50%;
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#fff";
+      case "dark":
+      case "dark-jetbrains":
+        return "#868a91";
+    }
+  }};
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

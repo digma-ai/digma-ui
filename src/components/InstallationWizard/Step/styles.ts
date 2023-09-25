@@ -45,14 +45,15 @@ export const Container = styled.div<ContainerProps>`
       ? `${HEADER_HEIGHT + contentHeight}`
       : `${HEADER_HEIGHT}`}px;
   overflow: hidden;
+  flex-shrink: 0;
 `;
 
 export const Header = styled.div<HeaderProps>`
   display: flex;
   gap: 8px;
   padding: 12px 8px;
-  font-weight: 500;
-  font-size: 14px;
+  font-weight: 700;
+  font-size: 16px;
   text-transform: capitalize;
   border-top: 1px solid
     ${({ theme }) => {
@@ -69,10 +70,10 @@ export const Header = styled.div<HeaderProps>`
   color: ${({ theme, status }) => {
     switch (theme.mode) {
       case "light":
-        return status === "active" ? "#4d668a" : "#b9c0d4";
+        return status === "active" ? "#494b57" : "#818594";
       case "dark":
       case "dark-jetbrains":
-        return status === "active" ? "#fff" : "#9b9b9b";
+        return status === "active" ? "#dfe1e5" : "#b4b8bf";
     }
   }};
   transition: color ${({ transitionDuration }) => transitionDuration}ms ease-out;
@@ -114,6 +115,7 @@ export const getNumberBackgroundColor = (theme: DefaultTheme): string => {
 };
 
 export const Number = styled.span<NumberProps>`
+  line-height: 100%;
   width: 100%;
   height: 100%;
   font-size: 14px;

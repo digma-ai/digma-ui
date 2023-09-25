@@ -71,6 +71,7 @@ export const EnvironmentTypeButton = styled.button`
   width: 120px;
   border-radius: 4px;
   font-weight: 600;
+  font-family: inherit;
   font-size: 16px;
   border: 1px solid transparent;
   color: ${({ theme }) => {

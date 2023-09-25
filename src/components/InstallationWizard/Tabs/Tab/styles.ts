@@ -16,10 +16,10 @@ export const Container = styled.li<TabProps>`
   color: ${({ theme, isSelected, isDisabled }) => {
     switch (theme.mode) {
       case "light":
-        return isDisabled ? "#b9c0d4" : isSelected ? "#002d61" : "#828797";
+        return isDisabled ? "#b9c0d4" : isSelected ? "#494b57" : "#818594";
       case "dark":
       case "dark-jetbrains":
-        return isDisabled ? "#49494d" : isSelected ? "#dadada" : "#9b9b9b";
+        return isDisabled ? "#49494d" : isSelected ? "#dfe1e5" : "#b4b8bf";
     }
   }};
 
@@ -36,10 +36,10 @@ export const Container = styled.li<TabProps>`
     color: ${({ theme, isDisabled }) => {
       switch (theme.mode) {
         case "light":
-          return isDisabled ? "#b9c0d4" : "#002d61";
+          return isDisabled ? "#b9c0d4" : "#494b57";
         case "dark":
         case "dark-jetbrains":
-          return isDisabled ? "#49494d" : "#dadada";
+          return isDisabled ? "#49494d" : "#dfe1e5";
       }
     }};
   }

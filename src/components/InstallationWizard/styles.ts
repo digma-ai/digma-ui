@@ -3,7 +3,7 @@ import { Button } from "../common/Button";
 import { Link } from "../common/Link";
 
 export const Container = styled.div`
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   background: ${({ theme }) => {
@@ -66,22 +66,21 @@ export const CloseButton = styled.button`
   height: 14px;
 `;
 
-export const FooterSlackLink = styled(Link)`
-  margin: 0 auto;
+export const StepsContainer = styled.div`
+  overflow: auto;
   display: flex;
-  align-items: center;
-  gap: 4px;
+  flex-direction: column;
+  flex-grow: 1;
 `;
 
 export const Footer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  flex-grow: 1;
-  padding: 12px;
+  gap: 8px;
+  padding: 8px;
 `;
 
-export const FooterContent = styled.div<{
+export const FinishStepFooterContent = styled.div<{
   transitionClassName: string;
   transitionDuration: number;
 }>`
@@ -90,6 +89,7 @@ export const FooterContent = styled.div<{
   align-items: center;
   flex-grow: 1;
   justify-content: flex-end;
+  gap: 8px;
 
   ${({ transitionClassName, transitionDuration }) => {
     return `
@@ -114,15 +114,22 @@ export const FooterContent = styled.div<{
   }}
 `;
 
+export const FooterSlackLink = styled(Link)`
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+`;
+
 export const SectionDescription = styled.span`
   font-size: 14px;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "#828797";
+        return "#818594";
       case "dark":
       case "dark-jetbrains":
-        return "#9b9b9b";
+        return "#b4b8bf";
     }
   }};
 `;
@@ -143,10 +150,19 @@ export const IllustrationContainer = styled.div`
   }};
 `;
 
-export const MainButton = styled(Button)`
-  padding: 4px;
-  font-size: 14px;
+export const BackToInstallMethodButton = styled(Button)`
   width: 100%;
+  padding: 6px 12px;
+  height: initial;
+  font-size: 16px;
+`;
+
+export const MainButton = styled(Button)`
+  width: 100%;
+  padding: 6px 12px;
+  background: #3538cd;
+  height: initial;
+  font-size: 16px;
 `;
 
 // export const WelcomeContainer = styled.div`

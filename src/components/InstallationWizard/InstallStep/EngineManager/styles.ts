@@ -6,22 +6,23 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
-  padding: 40px 8px 0;
+  justify-content: center;
+  gap: 20px;
+  height: 445px;
   text-align: center;
 `;
 
 export const Title = styled.span`
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
   text-transform: capitalize;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "#788ca9";
+        return "#494b57";
       case "dark":
       case "dark-jetbrains":
-        return "#dadada";
+        return "#dfe1e5";
     }
   }};
 `;
@@ -64,16 +65,16 @@ export const TextContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   font-size: 14px;
   font-weight: 500;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "#828797";
+        return "#818594";
       case "dark":
       case "dark-jetbrains":
-        return "#9b9b9b";
+        return "#b4b8bf";
     }
   }};
 `;
@@ -96,25 +97,31 @@ export const ErrorMessage = styled.span`
 export const ButtonsContainer = styled.div`
   display: flex;
   align-items: center;
-`;
-
-export const ButtonDivider = styled.div`
-  height: 22px;
-  width: 1px;
-  margin: 4px;
-  background: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#b9c0d4";
-      case "dark":
-      case "dark-jetbrains":
-        return "#49494d";
-    }
-  }};
+  gap: 8px;
 `;
 
 export const MainButton = styled(Button)`
   font-size: 16px;
-  width: 142px;
-  height: 25px;
+  padding: 6px 12px;
+  height: initial;
+  background: #3538cd;
+
+  & > span {
+    gap: 2px;
+  }
+`;
+
+export const ActionButton = styled.button`
+  padding: 8px 12px;
+  color: #fff;
+  background: #4e5157;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  margin: 0;
+  border-radius: 2px;
+  border: none;
+  font-family: inherit;
+  font-weight: 500;
 `;

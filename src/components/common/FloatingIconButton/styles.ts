@@ -37,9 +37,19 @@ export const Button = styled.button`
           return "#383838";
       }
     }};
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#494b57";
+      case "dark":
+      case "dark-jetbrains":
+        return "#dfe1e5";
+    }
+  }};
 
   &:hover,
   &:focus {
+    color: #7891d0;
     background: ${({ theme }) => {
       switch (theme.mode) {
         case "light":
@@ -52,6 +62,7 @@ export const Button = styled.button`
   }
 
   &:active {
+    color: #b9c2eb;
     background: ${({ theme }) => {
       switch (theme.mode) {
         case "light":
@@ -75,6 +86,7 @@ export const Button = styled.button`
 
   &:disabled {
     cursor: initial;
+    color: #49494d;
     background: ${({ theme }) => {
       switch (theme.mode) {
         case "light":
