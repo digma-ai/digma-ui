@@ -6,7 +6,7 @@ import {
   NumberProps
 } from "./types";
 
-const HEADER_HEIGHT = 40; // in pixels;
+const HEADER_HEIGHT = 44; // in pixels;
 
 export const Container = styled.div<ContainerProps>`
   ${({ transitionClassName, transitionDuration, contentHeight }) => {
@@ -50,7 +50,8 @@ export const Container = styled.div<ContainerProps>`
 
 export const Header = styled.div<HeaderProps>`
   display: flex;
-  gap: 8px;
+  align-items: center;
+  gap: 4px;
   padding: 12px 8px;
   font-weight: 700;
   font-size: 16px;
