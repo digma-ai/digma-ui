@@ -16,8 +16,9 @@ import { ConfigContextData } from "../../common/App/types";
 import { NewCircleLoader } from "../../common/NewCircleLoader";
 import { Tooltip } from "../../common/Tooltip";
 import { CheckmarkCircleInvertedIcon } from "../../common/icons/CheckmarkCircleInvertedIcon";
-import { InfinityIcon } from "../../common/icons/InfinityIcon";
+import { CrossIcon } from "../../common/icons/CrossIcon";
 import { InfoCircleIcon } from "../../common/icons/InfoCircleIcon";
+import { PlugAndSocketIcon } from "../../common/icons/PlugAndSocketIcon";
 import { WarningCircleLargeIcon } from "../../common/icons/WarningCircleLargeIcon";
 import { actions } from "../actions";
 import { trackingEvents } from "../tracking";
@@ -49,7 +50,9 @@ const renderUpdatePluginSettingsMessage = () => {
 
   return (
     <s.NotificationMessage type={"failure"}>
-      <WarningCircleLargeIcon size={14} color={"currentColor"} />
+      <div>
+        <WarningCircleLargeIcon size={14} color={"currentColor"} />
+      </div>
       <span>
         Please make sure to update your plugin settings based on the value
         above. See the <s.Link onClick={handleLinkClick}>documentation</s.Link>{" "}
@@ -147,14 +150,12 @@ export const SetupOrgDigmaPanel = (props: SetupOrgDigmaPanelProps) => {
     setConnectionTestResult(undefined);
   };
 
+  const handleCloseButtonClick = () => {
+    props.onCancel(props.environment.originalName);
+  };
+
   const handleCancelButtonClick = () => {
-    window.sendMessageToDigma({
-      action: actions.SET_ENVIRONMENT_TYPE,
-      payload: {
-        environment: props.environment.originalName,
-        type: null
-      }
-    });
+    props.onCancel(props.environment.originalName);
   };
 
   const handleTestConnectionButtonClick = () => {
@@ -230,19 +231,21 @@ export const SetupOrgDigmaPanel = (props: SetupOrgDigmaPanelProps) => {
   return (
     <s.Container>
       <s.Header>
-        <InfinityIcon size={16} color={"currentColor"} />
-        Set up Digma in your organization
-      </s.Header>
-      <s.ContentContainer>
-        <s.TestConnectionContainer>
-          <span>
-            Environments that connect to org systems such as build systems or
-            prod, need to be deployed to a shared location.
-          </span>
-          <span>
-            Digma is easily distributed as a Helm file, you can follow the{" "}
-            <s.Link onClick={handleInstructionsLinkClick}>instructions</s.Link>{" "}
-            {/* <Tooltip
+        <s.Title>
+          <PlugAndSocketIcon size={20} color={"currentColor"} />
+          Set up Digma in your organization
+          <s.CloseButton onClick={handleCloseButtonClick}>
+            <CrossIcon color={"currentColor"} size={14} />
+          </s.CloseButton>
+        </s.Title>
+        <span>
+          Environments that connect to org systems such as build systems or
+          prod, need to be deployed to a shared location.
+        </span>
+        <span>
+          Digma is easily distributed as a Helm file, you can follow the{" "}
+          <s.Link onClick={handleInstructionsLinkClick}>instructions</s.Link>{" "}
+          {/* <Tooltip
               title={
                 isInstructionsCopyButtonClicked ? "Link copied!" : "Copy link"
               }
@@ -251,84 +254,83 @@ export const SetupOrgDigmaPanel = (props: SetupOrgDigmaPanelProps) => {
                 <CopyIcon color={"currentColor"} />
               </s.CopyButton>
             </Tooltip> */}
-            to set up Digma in your organization
-          </span>
-          <s.TextFieldContainer>
-            <s.TextField
-              value={apiToken}
-              onChange={handleApiTokenTextFieldChange}
-              placeholder={"Enter API Token"}
-            />
-            <Tooltip
-              title={
-                "The API Token is provided as an argument when you deploy the Helm chart for Digma. Copy its value into this field"
-              }
-            >
+          to set up Digma in your organization
+        </span>
+      </s.Header>
+      <s.ContentContainer>
+        <s.TextFieldContainer>
+          <s.TextField
+            value={apiToken}
+            onChange={handleApiTokenTextFieldChange}
+            placeholder={"Enter API Token"}
+          />
+          <Tooltip
+            title={
+              "The API Token is provided as an argument when you deploy the Helm chart for Digma. Copy its value into this field"
+            }
+          >
+            <span>
+              <InfoCircleIcon size={16} color={"currentColor"} />
+            </span>
+          </Tooltip>
+        </s.TextFieldContainer>
+        <s.TextFieldContainer>
+          <s.TextField
+            value={serverApiUrl}
+            onChange={handleIPTextFieldChange}
+            placeholder={"Enter Digma IP/DNS"}
+          />
+          <Tooltip
+            title={
               <span>
-                <InfoCircleIcon size={16} color={"currentColor"} />
+                Use the Digma Plugin API url which is typically exposed by the
+                service: <code>digma-plugin-api-service-lb</code> in the helm
+                deployment
               </span>
-            </Tooltip>
-          </s.TextFieldContainer>
-          <s.TextFieldContainer>
-            <s.TextField
-              value={serverApiUrl}
-              onChange={handleIPTextFieldChange}
-              placeholder={"Enter Digma IP/DNS"}
-            />
-            <Tooltip
-              title={
-                <span>
-                  Use the Digma Plugin API url which is typically exposed by the
-                  service: <code>digma-plugin-api-service-lb</code> in the helm
-                  deployment
-                </span>
-              }
-            >
-              <span>
-                <InfoCircleIcon size={16} color={"currentColor"} />
-              </span>
-            </Tooltip>
-          </s.TextFieldContainer>
-          <s.ButtonsContainer>
-            {!props.environment.isOrgDigmaSetupFinished && (
-              <s.Button
-                onClick={handleCancelButtonClick}
-                buttonType={"secondary"}
-              >
-                Cancel
-              </s.Button>
-            )}
-            <s.Button
-              onClick={handleTestConnectionButtonClick}
-              buttonType={"secondary"}
-              disabled={serverApiUrl.length === 0}
-            >
-              Test Connection
-            </s.Button>
-            <s.Button
-              disabled={connectionTestResult?.result !== "success"}
-              onClick={handleFinishButtonClick}
-            >
-              Finish
-            </s.Button>
-            {isConnectionCheckInProgress && (
-              <NewCircleLoader size={20} color={"#5154ec"} />
-            )}
-          </s.ButtonsContainer>
+            }
+          >
+            <span>
+              <InfoCircleIcon size={16} color={"currentColor"} />
+            </span>
+          </Tooltip>
+        </s.TextFieldContainer>
+        <s.TestConnectionStatusContainer>
+          <s.Button
+            onClick={handleTestConnectionButtonClick}
+            buttonType={"secondary"}
+            disabled={serverApiUrl.length === 0}
+          >
+            Test Connection
+          </s.Button>
+          {isConnectionCheckInProgress && (
+            <NewCircleLoader size={20} color={"#5154ec"} />
+          )}
           {connectionTestResult &&
             renderConnectionResultMessage(connectionTestResult)}
-          {isSettingsMessageVisible && renderUpdatePluginSettingsMessage()}
-        </s.TestConnectionContainer>
+        </s.TestConnectionStatusContainer>
+        {isSettingsMessageVisible && renderUpdatePluginSettingsMessage()}
+
         {/* <s.Button
             disabled={connectionTestResult?.result !== "success"}
             onClick={handleAutoApplyButtonClick}
           >
             Auto Apply
           </s.Button> */}
-        <s.Link onClick={handleContactUsLinkClick}>
-          Having Trouble? Contact us
-        </s.Link>
       </s.ContentContainer>
+      <s.ButtonsContainer>
+        <s.Button onClick={handleCancelButtonClick} buttonType={"secondary"}>
+          Cancel
+        </s.Button>
+        <s.Button
+          disabled={connectionTestResult?.result !== "success"}
+          onClick={handleFinishButtonClick}
+        >
+          Finish
+        </s.Button>
+      </s.ButtonsContainer>
+      <s.Link onClick={handleContactUsLinkClick}>
+        Having Trouble? Contact us
+      </s.Link>
     </s.Container>
   );
 };

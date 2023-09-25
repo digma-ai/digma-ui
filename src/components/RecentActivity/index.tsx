@@ -261,6 +261,16 @@ export const RecentActivity = (props: RecentActivityProps) => {
     }
   };
 
+  const handleCancelOrgDigmaSetup = (environment: string) => {
+    window.sendMessageToDigma({
+      action: actions.SET_ENVIRONMENT_TYPE,
+      payload: {
+        environment,
+        type: null
+      }
+    });
+  };
+
   const handleFinishOrgDigmaSetup = (environment: string) => {
     window.sendMessageToDigma({
       action: actions.FINISH_ORG_DIGMA_SETUP,
@@ -333,11 +343,14 @@ export const RecentActivity = (props: RecentActivityProps) => {
           return selectedEnvironment.isOrgDigmaSetupFinished ? (
             <EnvironmentInstructionsPanel environment={selectedEnvironment} />
           ) : (
-            <SetupOrgDigmaPanel
-              environment={selectedEnvironment}
-              key={selectedEnvironment.originalName}
-              onFinish={handleFinishOrgDigmaSetup}
-            />
+            <s.Overlay>
+              <SetupOrgDigmaPanel
+                environment={selectedEnvironment}
+                key={selectedEnvironment.originalName}
+                onFinish={handleFinishOrgDigmaSetup}
+                onCancel={handleCancelOrgDigmaSetup}
+              />
+            </s.Overlay>
           );
         case null:
           return (
