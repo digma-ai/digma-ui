@@ -35,6 +35,7 @@ export const HeaderButton = styled.button`
   border: none;
   background: none;
   cursor: pointer;
+  font-family: inherit;
 `;
 
 export const Header = styled.div`

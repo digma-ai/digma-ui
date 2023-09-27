@@ -319,6 +319,8 @@ export const InstallationWizard = () => {
     }
   ];
 
+  const installStepIndex = steps.findIndex((x) => x.key === "install");
+
   return (
     <s.Container>
       {/* {installationType ? ( */}
@@ -433,41 +435,50 @@ export const InstallationWizard = () => {
           </s.InstallationTypeButtonsContainer>
         </s.WelcomeContainer>
       )} */}
-      {
-        // installationType &&
-        steps.map((step, i) => (
-          <Step
-            key={step.key}
-            onGoToStep={handleGoToStep}
-            data={step}
-            stepIndex={i}
-            status={getStepStatus(i, currentStep)}
-            transitionDuration={TRANSITION_DURATION}
-          />
-        ))
-      }
+      <s.StepsContainer>
+        {
+          // installationType &&
+          steps.map((step, i) => (
+            <Step
+              key={step.key}
+              onGoToStep={handleGoToStep}
+              data={step}
+              stepIndex={i}
+              status={getStepStatus(i, currentStep)}
+              transitionDuration={TRANSITION_DURATION}
+            />
+          ))
+        }
+      </s.StepsContainer>
       <s.Footer>
         {/* {installationType && ( */}
         <CSSTransition
-          in={currentStep === steps.length - 1}
+          in={currentStep === steps.length - 1 && installStepIndex !== -1}
           timeout={TRANSITION_DURATION}
           classNames={footerTransitionClassName}
           nodeRef={footerContentRef}
           mountOnEnter={true}
           unmountOnExit={true}
         >
-          <s.FooterContent
+          <s.FinishStepFooterContent
             ref={footerContentRef}
             transitionClassName={footerTransitionClassName}
             transitionDuration={TRANSITION_DURATION}
           >
+            <s.BackToInstallMethodButton
+              onClick={() => handleGoToStep(installStepIndex)}
+              disabled={isEmailValid === false || isEmailValidating}
+              buttonType={"secondary"}
+            >
+              Back to installation method
+            </s.BackToInstallMethodButton>
             <s.MainButton
               onClick={handleFinishButtonClick}
               disabled={isEmailValid === false || isEmailValidating}
             >
               Finish
             </s.MainButton>
-          </s.FooterContent>
+          </s.FinishStepFooterContent>
         </CSSTransition>
         {/* )} */}
         <s.FooterSlackLink onClick={handleSlackLinkClick}>

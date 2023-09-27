@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const Container = styled.div`
   display: flex;
   font-weight: 500;
-  font-size: 14px;
+  font-size: 16px;
   align-items: center;
   color: ${({ theme }) => {
     switch (theme.mode) {
@@ -11,7 +11,7 @@ export const Container = styled.div`
         return "#4d668a";
       case "dark":
       case "dark-jetbrains":
-        return "#ededed";
+        return "#dfe1e5";
     }
   }};
 `;

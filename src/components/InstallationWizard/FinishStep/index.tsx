@@ -12,6 +12,7 @@ import { PlayIcon } from "../../common/icons/PlayIcon";
 import { RingingBellIcon } from "../../common/icons/RingingBellIcon";
 import { SlackLogoIcon } from "../../common/icons/SlackLogoIcon";
 import { WarningCircleLargeIcon } from "../../common/icons/WarningCircleLargeIcon";
+import { SectionDescription } from "../styles";
 import { trackingEvents } from "../tracking";
 import * as s from "./styles";
 import { FinishStepProps } from "./types";
@@ -50,9 +51,9 @@ export const FinishStep = (props: FinishStepProps) => {
   return (
     <s.Container>
       {props.quickstartURL && (
-        <>
+        <s.Section>
           <s.SectionTitle icon={GearIcon}>Instrument your code</s.SectionTitle>
-          <s.SectionDescription>
+          <SectionDescription>
             Follow our{" "}
             <Link
               target={"_blank"}
@@ -62,78 +63,86 @@ export const FinishStep = (props: FinishStepProps) => {
               quickstart
             </Link>{" "}
             guide to begin collecting data from your code
-          </s.SectionDescription>
-        </>
+          </SectionDescription>
+        </s.Section>
       )}
-      <s.SectionTitle icon={RingingBellIcon}>
-        Stay up to date<s.SectionTitleNote>(optional)</s.SectionTitleNote>
-      </s.SectionTitle>
-      <s.SectionDescription>
-        Enter your E-mail address to be the first to get Digma updates
-      </s.SectionDescription>
-      <s.EmailField>
-        <s.EmailInput
-          type={"text"}
-          placeholder={"Enter E-mail"}
-          value={props.email}
-          onChange={props.onEmailInputChange}
-        />
-        {props.isEmailValid === false && (
-          <s.ErrorMessage>
-            <WarningCircleLargeIcon color={getErrorIconColor(theme)} />
-            {EMAIL_ERROR_MESSAGE}
-          </s.ErrorMessage>
-        )}
-        {props.isEmailValid && (
-          <s.EmailInputIconContainer>
-            <CheckmarkCircleInvertedIcon color={"#00c108"} size={16} />
-          </s.EmailInputIconContainer>
-        )}
-        {props.isEmailValidating && (
-          <s.EmailInputIconContainer>
-            <CircleLoader
-              size={16}
-              colors={{
-                start: "rgb(53 56 205 / 30%)",
-                end: "#fff",
-                background: "#252526"
-              }}
-            />
-          </s.EmailInputIconContainer>
-        )}
-      </s.EmailField>
-      <s.SectionTitle icon={PlayIcon}>
-        Run / Debug your application
-      </s.SectionTitle>
-      <s.SectionDescription>
-        Run or debug your application and trigger some actions or APIs to
-        collect observability.
-      </s.SectionDescription>
-      <s.IllustrationContainer>
-        <s.RunOrDebugIllustration src={`/images/runOrDebug_${themeKind}.gif`} />
-      </s.IllustrationContainer>
-      <s.SectionTitle>Getting started</s.SectionTitle>
-      <s.SectionDescription>
-        We&apos;ve prepared a short video to show you the ropes on getting
-        started analyzing your code with Digma.
-      </s.SectionDescription>
-      <Link onClick={handleGettingStartedVideoLinkClick}>
+      <s.Section>
+        <s.SectionTitle icon={RingingBellIcon}>
+          Stay up to date<s.SectionTitleNote>(optional)</s.SectionTitleNote>
+        </s.SectionTitle>
+        <SectionDescription>
+          Enter your E-mail address to be the first to get Digma updates
+        </SectionDescription>
+        <s.EmailField>
+          <s.EmailInput
+            type={"text"}
+            placeholder={"Enter E-mail"}
+            value={props.email}
+            onChange={props.onEmailInputChange}
+          />
+          {props.isEmailValid === false && (
+            <s.ErrorMessage>
+              <WarningCircleLargeIcon color={getErrorIconColor(theme)} />
+              {EMAIL_ERROR_MESSAGE}
+            </s.ErrorMessage>
+          )}
+          {props.isEmailValid && (
+            <s.EmailInputIconContainer>
+              <CheckmarkCircleInvertedIcon color={"#00c108"} size={16} />
+            </s.EmailInputIconContainer>
+          )}
+          {props.isEmailValidating && (
+            <s.EmailInputIconContainer>
+              <CircleLoader
+                size={16}
+                colors={{
+                  start: "rgb(53 56 205 / 30%)",
+                  end: "#fff",
+                  background: "#252526"
+                }}
+              />
+            </s.EmailInputIconContainer>
+          )}
+        </s.EmailField>
+      </s.Section>
+      <s.Section>
+        <s.SectionTitle icon={PlayIcon}>
+          Run / Debug your application
+        </s.SectionTitle>
+        <SectionDescription>
+          Run or debug your application and trigger some actions or APIs to
+          collect observability.
+        </SectionDescription>
         <s.IllustrationContainer>
-          <s.PlayIconContainer>
-            <s.ThumbnailPlayCircleIcon color={getPlayIconColor(theme)} />
-          </s.PlayIconContainer>
-          <s.GettingStartedVideoThumbnail
-            src={`/images/gettingStartedVideoThumbnail_${themeKind}.png`}
+          <s.RunOrDebugIllustration
+            src={`/images/runOrDebug_${themeKind}.gif`}
           />
         </s.IllustrationContainer>
-      </Link>
-      <s.GiveUsFeedbackTitle icon={ChatIcon}>
-        Give us feedback
-      </s.GiveUsFeedbackTitle>
-      <s.SlackLink onClick={props.onSlackLinkClick}>
-        <SlackLogoIcon size={14} />
-        Join Our Slack Group
-      </s.SlackLink>
+      </s.Section>
+      <s.Section>
+        <s.SectionTitle>Getting started</s.SectionTitle>
+        <SectionDescription>
+          We&apos;ve prepared a short video to show you the ropes on getting
+          started analyzing your code with Digma.
+        </SectionDescription>
+        <Link onClick={handleGettingStartedVideoLinkClick}>
+          <s.IllustrationContainer>
+            <s.PlayIconContainer>
+              <s.ThumbnailPlayCircleIcon color={getPlayIconColor(theme)} />
+            </s.PlayIconContainer>
+            <s.GettingStartedVideoThumbnail
+              src={`/images/gettingStartedVideoThumbnail_${themeKind}.png`}
+            />
+          </s.IllustrationContainer>
+        </Link>
+      </s.Section>
+      <s.Section>
+        <s.SectionTitle icon={ChatIcon}>Give us feedback</s.SectionTitle>
+        <s.SlackLink onClick={props.onSlackLinkClick}>
+          <SlackLogoIcon size={14} />
+          Join Our Slack Group
+        </s.SlackLink>
+      </s.Section>
     </s.Container>
   );
 };

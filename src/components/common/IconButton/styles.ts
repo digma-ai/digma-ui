@@ -7,6 +7,15 @@ export const Button = styled.button`
   background: transparent;
   border: none;
   cursor: pointer;
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#828797";
+      case "dark":
+      case "dark-jetbrains":
+        return "#7c7c94";
+    }
+  }};
 
   &:hover {
     border-radius: 4px;
@@ -21,8 +30,30 @@ export const Button = styled.button`
     }};
   }
 
+  &:hover,
+  &focus {
+    color: ${({ theme }) => {
+      switch (theme.mode) {
+        case "light":
+          return "#002d61";
+        case "dark":
+        case "dark-jetbrains":
+          return "#dadada";
+      }
+    }};
+  }
+
   &:disabled {
     background: transparent;
     cursor: initial;
+    color: ${({ theme }) => {
+      switch (theme.mode) {
+        case "light":
+          return "#b9c0d4";
+        case "dark":
+        case "dark-jetbrains":
+          return "#49494d";
+      }
+    }};
   }
 `;

@@ -3,7 +3,6 @@ import { useTheme } from "styled-components";
 import { sendTrackingEvent } from "../../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../../common/App/ConfigContext";
 import { getThemeKind } from "../../../common/App/styles";
-import { Button } from "../../../common/Button";
 import { Loader } from "../../../common/Loader";
 import { CrossCircleIcon } from "../../../common/icons/CrossCircleIcon";
 import { DigmaLogoIcon } from "../../../common/icons/DigmaLogoIcon";
@@ -103,15 +102,14 @@ export const EngineManager = (props: EngineManagerProps) => {
 
     const operationInfo = operationsInfo[operation];
     return (
-      <Button
+      <s.ActionButton
         onClick={handleOperationButtonClick}
-        buttonType={"tertiary"}
         key={operation}
-        icon={{ component: operationInfo.button.icon }}
         disabled={disabled}
       >
+        <operationInfo.button.icon size={14} color={"currentColor"} />
         {operationInfo.button.label}
-      </Button>
+      </s.ActionButton>
     );
   };
 
@@ -162,24 +160,19 @@ export const EngineManager = (props: EngineManagerProps) => {
 
     if (props.engine.failedOperation) {
       buttons.push(
-        <Button
-          onClick={handleRetryButtonClick}
-          buttonType={"tertiary"}
-          key={"retry"}
-        >
+        <s.ActionButton onClick={handleRetryButtonClick} key={"retry"}>
           Retry
-        </Button>
+        </s.ActionButton>
       );
 
       if (props.onManualInstallSelect) {
         buttons.push(
-          <Button
+          <s.ActionButton
             onClick={handleInstallManuallyButtonClick}
-            buttonType={"tertiary"}
             key={"install-manually"}
           >
             Install manually
-          </Button>
+          </s.ActionButton>
         );
       }
     } else {
@@ -191,12 +184,6 @@ export const EngineManager = (props: EngineManagerProps) => {
         buttons.push(renderOperationButton(Operation.UNINSTALL));
       }
     }
-
-    const buttonsWithDividers = buttons.flatMap((button, i, arr) =>
-      i !== arr.length - 1
-        ? [button, <s.ButtonDivider key={`divider-${i}`} />]
-        : button
-    );
 
     const isStartButtonDisabled =
       props.engine.currentOperation?.status === "pending" ||
@@ -235,7 +222,7 @@ export const EngineManager = (props: EngineManagerProps) => {
           </s.TextContainer>
           {buttons.length > 0 && (
             <s.ButtonsContainer>
-              {!props.engine.currentOperation && buttonsWithDividers}
+              {!props.engine.currentOperation && buttons}
             </s.ButtonsContainer>
           )}
         </s.ContentContainer>
@@ -243,7 +230,7 @@ export const EngineManager = (props: EngineManagerProps) => {
           <s.MainButton
             disabled={isStartButtonDisabled}
             onClick={handleStartButtonClick}
-            icon={{ component: PlayCircleIcon }}
+            icon={{ component: PlayCircleIcon, size: 16 }}
           >
             Start
           </s.MainButton>

@@ -98,6 +98,7 @@ export const RunOptionButton = styled.button`
   border: 1px solid transparent;
   outline: none;
   font-weight: 600;
+  font-family: inherit;
   cursor: pointer;
   color: ${({ theme }) => {
     switch (theme.mode) {

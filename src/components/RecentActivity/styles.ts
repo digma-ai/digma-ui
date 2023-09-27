@@ -129,5 +129,6 @@ export const Overlay = styled.div`
   background: rgb(43 45 48 / 55%);
   display: flex;
   justify-content: center;
-  padding-top: 80px;
+  padding: 80px 0;
+  overflow: auto;
 `;

@@ -12,6 +12,7 @@ import { Link } from "../../common/Link";
 import { ChatFillIcon } from "../../common/icons/ChatIFillIcon";
 import { CodeIcon } from "../../common/icons/CodeIcon";
 import { DockerLogoIcon } from "../../common/icons/DockerLogoIcon";
+import { LightningIcon } from "../../common/icons/LightningIcon";
 import { SlackLogoIcon } from "../../common/icons/SlackLogoIcon";
 import { Tabs } from "../Tabs";
 import { MainButton, SectionDescription } from "../styles";
@@ -346,6 +347,7 @@ export const InstallStep = (props: InstallStepProps) => {
     ...(config.isDockerInstalled && config.isDockerComposeInstalled
       ? [
           {
+            icon: LightningIcon,
             title: "Auto install",
             content: (
               <>
@@ -377,21 +379,25 @@ export const InstallStep = (props: InstallStepProps) => {
         <>
           {runningDigmaMessage}
           <s.TabContentContainer overlay={Boolean(runningDigmaMessage)}>
-            <s.SectionTitle>
-              Run the following from the terminal/command line to start the
-              Digma backend:
-            </s.SectionTitle>
-            <SectionDescription>
-              (You&apos;ll need{" "}
-              <Link onClick={() => openURLInDefaultBrowser(DOCKER_URL)}>
-                Docker
-              </Link>{" "}
-              and{" "}
-              <Link onClick={() => openURLInDefaultBrowser(DOCKER_COMPOSE_URL)}>
-                Docker Compose
-              </Link>{" "}
-              installed)
-            </SectionDescription>
+            <s.TextContainer>
+              <s.SectionTitle>
+                Run the following from the terminal/command line to start the
+                Digma backend:
+              </s.SectionTitle>
+              <SectionDescription>
+                (You&apos;ll need{" "}
+                <Link onClick={() => openURLInDefaultBrowser(DOCKER_URL)}>
+                  Docker
+                </Link>{" "}
+                and{" "}
+                <Link
+                  onClick={() => openURLInDefaultBrowser(DOCKER_COMPOSE_URL)}
+                >
+                  Docker Compose
+                </Link>{" "}
+                installed)
+              </SectionDescription>
+            </s.TextContainer>
             <s.DockerComposeTabs
               tabs={dockerComposeOSTabs}
               onSelect={handleSelectDockerComposeOSTab}
@@ -417,11 +423,13 @@ export const InstallStep = (props: InstallStepProps) => {
       content: (
         <>
           {runningDigmaMessage}
-          <s.TabContentContainer overlay={Boolean(runningDigmaMessage)}>
-            <s.SectionTitle>
-              <DockerLogoIcon size={24} color={"#2396ed"} />
-              Install Digma Docker extension
-            </s.SectionTitle>
+          <s.DockerDesktopTabContentContainer
+            overlay={Boolean(runningDigmaMessage)}
+          >
+            <s.DockerLogoBackgroundCircle>
+              <DockerLogoIcon size={55} color={"currentColor"} />
+            </s.DockerLogoBackgroundCircle>
+            Install Digma Docker extension
             <SectionDescription>
               (You&apos;ll need{" "}
               <Link onClick={() => openURLInDefaultBrowser(DOCKER_DESKTOP_URL)}>
@@ -434,12 +442,11 @@ export const InstallStep = (props: InstallStepProps) => {
                 config.digmaStatus &&
                 config.digmaStatus.runningDigmaInstances.length > 0
               }
-              buttonType={"secondary"}
               onClick={handleInstallDigmaButtonClick}
             >
               Get Digma Docker Extension
             </s.GetDockerExtensionButton>
-          </s.TabContentContainer>
+          </s.DockerDesktopTabContentContainer>
           <s.CommonContentContainer>
             {/* {renderLoader()} */}
             {/* {renderMainButton()} */}
@@ -459,10 +466,7 @@ export const InstallStep = (props: InstallStepProps) => {
         <>
           <s.NoDockerTabContentContainer>
             <s.IconBackgroundCircle>
-              <ChatFillIcon
-                size={28}
-                color={theme.mode === "light" ? "#fbfdff" : "#83858e"}
-              />
+              <ChatFillIcon size={50} color={"currentColor"} />
             </s.IconBackgroundCircle>
             <s.NoDockerText>
               <span>We&apos;ll be adding more options soon</span>

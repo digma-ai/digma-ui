@@ -10,6 +10,7 @@ import { DesktopIcon } from "../../common/icons/DesktopIcon";
 import { InfinityIcon } from "../../common/icons/InfinityIcon";
 import { PlayButtonWithCursorIcon } from "../../common/icons/PlayButtonWithCursorIcon";
 import { SetupOrgDigmaPanel } from "../SetupOrgDigmaPanel";
+import { Overlay } from "../styles";
 import { EnvironmentType } from "../types";
 import * as s from "./styles";
 import {
@@ -45,16 +46,19 @@ export const EnvironmentInstructionsPanel = (
     });
   };
 
-  const handleOrgDigmaSetupFinish = () => {
+  const handleOrgDigmaSetupClose = () => {
     setIsOrgDigmaSetupGuideVisible(false);
   };
 
   if (isOrgDigmaSetupGuideVisible) {
     return (
-      <SetupOrgDigmaPanel
-        environment={props.environment}
-        onFinish={handleOrgDigmaSetupFinish}
-      />
+      <Overlay>
+        <SetupOrgDigmaPanel
+          environment={props.environment}
+          onFinish={handleOrgDigmaSetupClose}
+          onCancel={handleOrgDigmaSetupClose}
+        />
+      </Overlay>
     );
   }
 

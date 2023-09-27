@@ -253,6 +253,7 @@ export const LatestDataButton = styled.button`
   border-radius: 2px;
   align-self: flex-end;
   font-size: 14px;
+  font-family: inherit;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

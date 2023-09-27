@@ -10,34 +10,33 @@ import {
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 12px 8px;
+  padding: 16px 8px;
+  gap: 20px;
+`;
+
+export const Section = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 `;
 
 export const SectionTitle = styled(CommonSectionTitle)`
-  gap: 8px;
-  margin-bottom: 4px;
+  gap: 4px;
 `;
 
 export const SectionTitleNote = styled.span`
-  font-size: 14px;
-  font-weight: 400;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
         return "#788ca9";
       case "dark":
       case "dark-jetbrains":
-        return "#dadada";
+        return "#5a5d63";
     }
   }};
 `;
 
-export const SectionDescription = styled(CommonSectionDescription)`
-  margin-bottom: 12px;
-`;
-
 export const IllustrationContainer = styled(CommonIllustrationContainer)`
-  margin: 0 0 12px;
   position: relative;
   overflow: hidden;
 `;
@@ -62,7 +61,6 @@ export const EmailField = styled.div`
   display: flex;
   flex-direction: column;
   gap: 4px;
-  margin-bottom: 20px;
   position: relative;
 `;
 
@@ -156,14 +154,9 @@ export const SlackLink = styled(Link)`
   display: flex;
   align-items: center;
   gap: 4px;
-  margin-bottom: 12px;
 `;
 
 export const ThumbnailPlayCircleIcon = styled(PlayCircleIcon)`
   width: 100%;
   height: 100%;
-`;
-
-export const GiveUsFeedbackTitle = styled(SectionTitle)`
-  margin-top: 8px;
 `;

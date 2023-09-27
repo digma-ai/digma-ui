@@ -9,6 +9,8 @@ export const Container = styled.div`
   padding: 12px;
   font-size: 14px;
   border-radius: 4px;
+  width: 390px;
+  height: fit-content;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -27,8 +29,6 @@ export const Container = styled.div`
         return "#393b40";
     }
   }};
-  width: 390px;
-  height: fit-content;
 `;
 
 export const Header = styled.div`
@@ -40,6 +40,7 @@ export const Header = styled.div`
 export const Title = styled.span`
   font-weight: 600;
   font-size: 16px;
+  text-transform: capitalize;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -49,7 +50,6 @@ export const Title = styled.span`
         return "#dfe1e5";
     }
   }};
-  text-transform: capitalize;
 `;
 
 export const Description = styled.span`

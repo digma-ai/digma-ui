@@ -5,42 +5,14 @@ import { TextField as CommonTextField } from "../../common/TextField";
 import { NotificationMessageProps } from "./types";
 
 export const Container = styled.div`
-  margin-top: 12px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-`;
-
-export const Header = styled.div`
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  font-size: 16px;
-`;
-
-export const ContentContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-`;
-
-export const TestConnectionContainer = styled.div`
-  display: flex;
+  gap: 16px;
   padding: 12px;
-  flex-direction: column;
-  gap: 8px;
   border-radius: 4px;
   font-size: 14px;
-  overflow: hidden;
-  color: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#818594";
-      case "dark":
-      case "dark-jetbrains":
-        return "#b4b8bf";
-    }
-  }};
+  height: fit-content;
+  width: 462px;
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -50,6 +22,53 @@ export const TestConnectionContainer = styled.div`
         return "#393b40";
     }
   }};
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#818594";
+      case "dark":
+      case "dark-jetbrains":
+        return "#b4b8bf";
+    }
+  }};
+`;
+
+export const Header = styled.div`
+  display: flex;
+  gap: 8px;
+  flex-direction: column;
+`;
+
+export const Title = styled.div`
+  display: flex;
+  gap: 8px;
+  font-size: 16px;
+  align-items: center;
+  font-weight: 600;
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#494b57";
+      case "dark":
+      case "dark-jetbrains":
+        return "#dfe1e5";
+    }
+  }};
+`;
+
+export const CloseButton = styled.button`
+  margin-left: auto;
+  padding: 0;
+  cursor: pointer;
+  background: none;
+  border: none;
+  height: 14px;
+`;
+
+export const ContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 `;
 
 export const TextFieldContainer = styled.div`
@@ -67,10 +86,16 @@ export const Link = styled(CommonLink)`
   max-width: fit-content;
 `;
 
+export const TestConnectionStatusContainer = styled.div`
+  display: flex;
+  gap: 4px;
+  align-items: center;
+`;
+
 export const ButtonsContainer = styled.div`
   display: flex;
   gap: 8px;
-  align-items: center;
+  justify-content: flex-end;
 `;
 
 export const Button = styled(CommonButton)`
@@ -108,7 +133,7 @@ export const ServiceTitle = styled.div`
   }};
 `;
 
-export const NotificationMessage = styled.span<NotificationMessageProps>`
+export const NotificationMessage = styled.div<NotificationMessageProps>`
   display: flex;
   gap: 4px;
   align-items: center;
