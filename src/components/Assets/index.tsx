@@ -16,6 +16,7 @@ import {
   AssetsData,
   AssetsProps,
   ExtendedAssetEntry,
+  ExtendedAssetEntryWithServices,
   GroupedAssetEntries,
   ServiceAssetsEntry
 } from "./types";
@@ -33,6 +34,46 @@ const actions = addPrefix(ACTION_PREFIX, {
   GO_TO_ASSET: "GO_TO_ASSET"
 });
 
+const dedupeEntries = (groupedEntries: {
+  [key: string]: ExtendedAssetEntry[];
+}): ExtendedAssetEntryWithServices[] =>
+  Object.keys(groupedEntries)
+    .map((entryId) => {
+      const entries = groupedEntries[entryId];
+      const dedupedEntries = [];
+
+      const endpointGroups = groupBy(
+        entries,
+        (entry) => entry.endpointCodeObjectId || "__ungrouped"
+      );
+
+      for (const endpoint in endpointGroups) {
+        const endpointGroupEntries = endpointGroups[endpoint];
+
+        const latestEntry = endpointGroupEntries.reduce(
+          (acc, cur) =>
+            new Date(cur.lastSpanInstanceInfo.startTime).valueOf() >
+            new Date(acc.lastSpanInstanceInfo.startTime).valueOf()
+              ? cur
+              : acc,
+          endpointGroupEntries[0]
+        );
+
+        const relatedServices = endpointGroupEntries
+          .map((entry) => entry.serviceName)
+          .sort();
+
+        dedupedEntries.push({
+          ...latestEntry,
+          id: entryId,
+          relatedServices
+        });
+      }
+
+      return dedupedEntries;
+    })
+    .flat();
+
 const groupEntries = (data: ServiceAssetsEntry[]): GroupedAssetEntries => {
   const assetEntries: ExtendedAssetEntry[] = data
     .flat()
@@ -46,14 +87,11 @@ const groupEntries = (data: ServiceAssetsEntry[]): GroupedAssetEntries => {
 
   const assetTypes = groupBy(assetEntries, (x) => x.assetType);
 
-  const groupedAssetEntries: {
-    [key: string]: { [key: string]: ExtendedAssetEntry[] };
-  } = {};
+  const groupedAssetEntries: GroupedAssetEntries = {};
 
   Object.keys(assetTypes).forEach((assetType) => {
-    groupedAssetEntries[assetType] = groupBy(
-      assetTypes[assetType],
-      (x) => x.id
+    groupedAssetEntries[assetType] = dedupeEntries(
+      groupBy(assetTypes[assetType], (x) => x.id)
     );
   });
 

@@ -1,6 +1,5 @@
 import { ChangeEvent, useMemo, useState } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
-import { groupBy } from "../../../utils/groupBy";
 import { Menu } from "../../common/Menu";
 import { Popover } from "../../common/Popover";
 import { PopoverContent } from "../../common/Popover/PopoverContent";
@@ -9,13 +8,12 @@ import { ChevronIcon } from "../../common/icons/ChevronIcon";
 import { MagnifierIcon } from "../../common/icons/MagnifierIcon";
 import { SortIcon } from "../../common/icons/SortIcon";
 import { Direction } from "../../common/icons/types";
-import { ImpactScores } from "../types";
+import { ExtendedAssetEntryWithServices, ImpactScores } from "../types";
 import { getAssetTypeInfo } from "../utils";
 import { AssetEntry as AssetEntryComponent } from "./AssetEntry";
 import * as s from "./styles";
 import {
   AssetListProps,
-  ExtendedAssetEntryWithServices,
   SORTING_CRITERION,
   SORTING_ORDER,
   Sorting
@@ -285,58 +283,17 @@ export const AssetList = (props: AssetListProps) => {
 
   const assetTypeInfo = getAssetTypeInfo(props.assetTypeId);
 
-  const entries: ExtendedAssetEntryWithServices[] = useMemo(
-    () =>
-      Object.keys(props.entries)
-        .map((entryId) => {
-          const entries = props.entries[entryId];
-          const dedupedEntries = [];
-
-          const endpointGroups = groupBy(
-            entries,
-            (entry) => entry.endpointCodeObjectId || "__ungrouped"
-          );
-
-          for (const endpoint in endpointGroups) {
-            const endpointGroupEntries = endpointGroups[endpoint];
-
-            const latestEntry = endpointGroupEntries.reduce(
-              (acc, cur) =>
-                new Date(cur.lastSpanInstanceInfo.startTime).valueOf() >
-                new Date(acc.lastSpanInstanceInfo.startTime).valueOf()
-                  ? cur
-                  : acc,
-              endpointGroupEntries[0]
-            );
-
-            const relatedServices = endpointGroupEntries
-              .map((entry) => entry.serviceName)
-              .sort();
-
-            dedupedEntries.push({
-              ...latestEntry,
-              id: entryId,
-              relatedServices
-            });
-          }
-
-          return dedupedEntries;
-        })
-        .flat(),
-    [props.entries]
-  );
-
-  const sortingCriterions = getAvailableSortingCriterions(entries);
+  const sortingCriterions = getAvailableSortingCriterions(props.entries);
 
   const sortedEntries = useMemo(() => {
-    const filteredEntries = entries.filter((x) =>
+    const filteredEntries = props.entries.filter((x) =>
       x.span.displayName
         .toLocaleLowerCase()
         .includes(searchInputValue.toLowerCase())
     );
 
     return sortEntries(filteredEntries, sorting);
-  }, [entries, sorting, searchInputValue]);
+  }, [props.entries, sorting, searchInputValue]);
 
   return (
     <s.Container>
@@ -352,9 +309,7 @@ export const AssetList = (props: AssetListProps) => {
           <assetTypeInfo.icon color={assetTypeIconColor} size={14} />
         )}
         <span>{assetTypeInfo?.label || props.assetTypeId}</span>
-        <s.ItemsCount>
-          {Object.values(props.entries).flat().length}
-        </s.ItemsCount>
+        <s.ItemsCount>{props.entries.length}</s.ItemsCount>
       </s.Header>
       <s.Toolbar>
         {window.assetsSearch === true && (

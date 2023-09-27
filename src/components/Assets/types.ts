@@ -12,10 +12,12 @@ export interface ExtendedAssetEntry extends AssetEntry {
   id: string;
 }
 
+export interface ExtendedAssetEntryWithServices extends ExtendedAssetEntry {
+  relatedServices: string[];
+}
+
 export interface GroupedAssetEntries {
-  [key: string]: {
-    [key: string]: ExtendedAssetEntry[];
-  };
+  [key: string]: ExtendedAssetEntryWithServices[];
 }
 
 export interface Insight {

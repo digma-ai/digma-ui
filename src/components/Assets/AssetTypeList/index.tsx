@@ -22,7 +22,7 @@ export const AssetTypeList = (props: AssetListProps) => {
       {ASSET_TYPE_IDS.map((assetTypeId) => {
         const assetTypeInfo = getAssetTypeInfo(assetTypeId);
         const entryCount = props.data[assetTypeId]
-          ? Object.values(props.data[assetTypeId]).flat().length
+          ? Object.values(props.data[assetTypeId]).length
           : 0;
 
         return (
