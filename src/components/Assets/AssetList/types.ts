@@ -1,13 +1,9 @@
-import { ExtendedAssetEntry } from "../types";
-
-export interface ExtendedAssetEntryWithServices extends ExtendedAssetEntry {
-  relatedServices: string[];
-}
+import { ExtendedAssetEntryWithServices } from "../types";
 
 export interface AssetListProps {
   onBackButtonClick: () => void;
   assetTypeId: string;
-  entries: { [key: string]: ExtendedAssetEntry[] };
+  entries: ExtendedAssetEntryWithServices[];
   onAssetLinkClick: (entry: ExtendedAssetEntryWithServices) => void;
 }
 

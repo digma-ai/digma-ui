@@ -1,4 +1,5 @@
-import { ExtendedAssetEntryWithServices, SORTING_CRITERION } from "../types";
+import { ExtendedAssetEntryWithServices } from "../../types";
+import { SORTING_CRITERION } from "../types";
 
 export interface AssetEntryProps {
   entry: ExtendedAssetEntryWithServices;
