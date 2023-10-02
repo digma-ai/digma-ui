@@ -2,6 +2,7 @@ import path from "path";
 
 export const entries = {
   assets: path.resolve(__dirname, "./src/containers/Assets/index.tsx"),
+  dashboard: path.resolve(__dirname, "./src/containers/Dashboard/index.tsx"),
   documentation: path.resolve(
     __dirname,
     "./src/containers/Documentation/index.tsx"
