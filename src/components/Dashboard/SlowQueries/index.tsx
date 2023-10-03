@@ -54,10 +54,10 @@ export const SlowQueries = (props: SlowQueriesProps) => {
       payload: {
         type: DASHBOARD_TYPE,
         environment: props.environment,
-        percentile: getPercentileKey(DEFAULT_PERCENTILE),
         query: {
           page: 0,
-          pageSize: PAGE_SIZE
+          pageSize: PAGE_SIZE,
+          percentile: getPercentileKey(DEFAULT_PERCENTILE)
         }
       }
     });
@@ -85,10 +85,10 @@ export const SlowQueries = (props: SlowQueriesProps) => {
           payload: {
             type: DASHBOARD_TYPE,
             environment: props.environment,
-            percentile,
             query: {
               page,
-              pageSize: PAGE_SIZE
+              pageSize: PAGE_SIZE,
+              percentile
             }
           }
         });
@@ -112,10 +112,10 @@ export const SlowQueries = (props: SlowQueriesProps) => {
         payload: {
           type: DASHBOARD_TYPE,
           environment: props.environment,
-          percentile,
           query: {
             page,
-            pageSize: PAGE_SIZE
+            pageSize: PAGE_SIZE,
+            percentile
           }
         }
       });
