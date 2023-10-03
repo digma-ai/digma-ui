@@ -197,7 +197,7 @@ export const AssetEntry = (props: AssetEntryProps) => {
                   {props.sortingCriterion ===
                     SORTING_CRITERION.OVERALL_IMPACT &&
                     getImpactScoreIndicator(
-                      props.entry.impactScores.ScoreExp25
+                      props.entry.impactScores.ScoreExp1000
                     )}
                 </s.ValueContainer>
               </Tooltip>
