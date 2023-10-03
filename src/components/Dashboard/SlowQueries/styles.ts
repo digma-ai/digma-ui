@@ -40,9 +40,13 @@ export const Title = styled.div`
 `;
 
 export const ContentContainer = styled.div`
+  padding: 12px 0 18px;
+`;
+
+export const EntryList = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 12px 0 18px;
+  gap: 8px;
 `;
 
 export const Entry = styled.div`
@@ -106,6 +110,5 @@ export const CircleLoaderContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  flex-grow: 1;
-  height: 200px;
+  height: 164px;
 `;

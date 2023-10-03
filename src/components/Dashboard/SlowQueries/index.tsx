@@ -8,6 +8,7 @@ import { NewCircleLoader } from "../../common/NewCircleLoader";
 import { Pagination } from "../../common/Pagination";
 import { Toggle } from "../../common/Toggle";
 import { ToggleValue } from "../../common/Toggle/types";
+import { Tooltip } from "../../common/Tooltip";
 import { SnailIcon } from "../../common/icons/SnailIcon";
 import { actions } from "../actions";
 import * as s from "./styles";
@@ -181,7 +182,7 @@ export const SlowQueries = (props: SlowQueriesProps) => {
       ) : (
         <>
           <s.ContentContainer>
-            <div>
+            <s.EntryList>
               {entries.map((x) => {
                 const durationKey = getPercentileKey(percentileViewMode);
                 const duration = durationKey ? x[durationKey] : undefined;
@@ -191,16 +192,18 @@ export const SlowQueries = (props: SlowQueriesProps) => {
 
                 return (
                   <s.Entry key={x.spanCodeObjectId}>
-                    <s.SpanLink
-                      onClick={() => handleSpanClick(x.spanCodeObjectId)}
-                    >
-                      {x.displayName}
-                    </s.SpanLink>
+                    <Tooltip title={x.displayName}>
+                      <s.SpanLink
+                        onClick={() => handleSpanClick(x.spanCodeObjectId)}
+                      >
+                        {x.displayName}
+                      </s.SpanLink>
+                    </Tooltip>
                     <s.Duration>{durationString}</s.Duration>
                   </s.Entry>
                 );
               })}
-            </div>
+            </s.EntryList>
           </s.ContentContainer>
           <s.Footer>
             <s.ItemsCount>
