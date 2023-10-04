@@ -146,7 +146,8 @@ export const SlowQueries = (props: SlowQueriesProps) => {
     window.sendMessageToDigma({
       action: actions.GO_TO_SPAN,
       payload: {
-        spanCodeObjectId
+        spanCodeObjectId,
+        type: DASHBOARD_TYPE
       }
     });
   };
