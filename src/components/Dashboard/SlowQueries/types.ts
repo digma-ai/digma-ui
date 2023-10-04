@@ -5,7 +5,6 @@ export interface SlowQueryEntry {
   displayName: string;
   p50: Duration | null;
   p95: Duration | null;
-  type: "SlowQuery";
 }
 
 export interface SlowQueriesData {
