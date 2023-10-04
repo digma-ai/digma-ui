@@ -21,7 +21,7 @@ import { DoubleCircleIcon } from "../../common/icons/DoubleCircleIcon";
 import { DurationChange, isChangeMeaningfulEnough } from "../DurationChange";
 import { InsightCard } from "../InsightCard";
 import { Description } from "../styles";
-import { HistogramBarData, Trace } from "../types";
+import { HistogramBarData, NormalizedHistogramBarData, Trace } from "../types";
 import { ReferenceLineLabel } from "./ReferenceLineLabel";
 import { XAxisTick } from "./XAxisTick";
 import { DIVIDER } from "./constants";
@@ -31,6 +31,8 @@ import { DurationInsightProps, TickData } from "./types";
 const LAST_CALL_TIME_DISTANCE_LIMIT = 60 * 1000; // in milliseconds
 
 // in pixels
+const MIN_BAR_HEIGHT = 5;
+const MAX_BAR_HEIGHT = 80;
 const BAR_WIDTH = 5;
 const MIN_X_AXIS_PADDING = 80;
 const MIN_CHART_CONTAINER_HEIGHT = 120;
@@ -268,6 +270,17 @@ export const DurationInsight = (props: DurationInsightProps) => {
     chartContainerHeight += CHART_Y_MARGIN * 2;
   }
 
+  const maxCount = Math.max(...notEmptyBars.map((x) => x.count));
+  const normalizedChartData: NormalizedHistogramBarData[] = chartData.map(
+    (x) => ({
+      ...x,
+      normalizedCount:
+        x.count > 0
+          ? Math.max((maxCount / MAX_BAR_HEIGHT) * MIN_BAR_HEIGHT, x.count)
+          : 0
+    })
+  );
+
   return (
     <InsightCard
       data={props.insight}
@@ -358,14 +371,14 @@ export const DurationInsight = (props: DurationInsightProps) => {
                     left: 0
                   }}
                   barSize={BAR_WIDTH}
-                  data={chartData}
+                  data={normalizedChartData}
                 >
                   <Bar
-                    dataKey={"count"}
+                    dataKey={"normalizedCount"}
                     radius={BAR_WIDTH / 2}
                     isAnimationActive={false}
                   >
-                    {chartData.map((entry, index) => (
+                    {normalizedChartData.map((entry, index) => (
                       <Cell
                         key={`cell-${index}`}
                         fill={getBarColor(entry.end, p50, p95)}

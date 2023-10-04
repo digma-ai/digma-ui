@@ -169,6 +169,10 @@ export interface HistogramBarData {
   end: Duration;
 }
 
+export interface NormalizedHistogramBarData extends HistogramBarData {
+  normalizedCount: number;
+}
+
 export interface SpanDurationsInsight extends SpanInsight {
   name: "Performance Stats";
   type: InsightType.SpanDurations;
