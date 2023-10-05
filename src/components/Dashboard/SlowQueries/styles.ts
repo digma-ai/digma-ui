@@ -54,6 +54,7 @@ export const EntryList = styled.div`
 export const Entry = styled.div`
   display: flex;
   justify-content: space-between;
+  gap: 4px;
 `;
 
 export const SpanLink = styled(Link)`
