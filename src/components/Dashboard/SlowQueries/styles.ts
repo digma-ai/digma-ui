@@ -4,6 +4,7 @@ import { Link } from "../../common/Link";
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
 `;
 
 export const Header = styled.div`
@@ -41,6 +42,7 @@ export const Title = styled.div`
 
 export const ContentContainer = styled.div`
   padding: 12px 0 18px;
+  flex-grow: 1;
 `;
 
 export const EntryList = styled.div`
@@ -105,10 +107,26 @@ export const PageItemsCount = styled.span`
   }};
 `;
 
-export const CircleLoaderContainer = styled.div`
+export const EmptyStateContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 164px;
+  font-size: 14px;
+  flex-grow: 1;
+`;
+
+export const ErrorMessage = styled.span`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#e00036";
+      case "dark":
+      case "dark-jetbrains":
+        return "#f93967";
+    }
+  }};
 `;

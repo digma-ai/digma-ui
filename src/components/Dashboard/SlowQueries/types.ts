@@ -11,7 +11,10 @@ export interface SlowQueriesData {
   data: {
     entries: SlowQueryEntry[];
     totalCount: number;
-  };
+  } | null;
+  error: {
+    message: string;
+  } | null;
   type: string;
 }
 

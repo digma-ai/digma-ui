@@ -10,6 +10,7 @@ import { Toggle } from "../../common/Toggle";
 import { ToggleValue } from "../../common/Toggle/types";
 import { Tooltip } from "../../common/Tooltip";
 import { SnailIcon } from "../../common/icons/SnailIcon";
+import { WarningCircleLargeIcon } from "../../common/icons/WarningCircleLargeIcon";
 import { actions } from "../actions";
 import * as s from "./styles";
 import { SlowQueriesData, SlowQueriesProps } from "./types";
@@ -43,8 +44,9 @@ export const SlowQueries = (props: SlowQueriesProps) => {
   const previousPage = usePrevious(page);
   const [data, setData] = useState<SlowQueriesData>();
   const previousData = usePrevious(data);
-  const entries = data ? data.data.entries : [];
-  const totalCount = data?.data.totalCount || 0;
+  const entries = data?.data ? data.data.entries : [];
+  const totalCount = data?.data?.totalCount || 0;
+  const error = data?.error?.message;
   const percentile = getPercentileKey(percentileViewMode);
   const previousPercentile = usePrevious(percentile);
 
@@ -176,10 +178,19 @@ export const SlowQueries = (props: SlowQueriesProps) => {
           onValueChange={handlePercentileToggleValueChange}
         />
       </s.Header>
-      {isInitialLoading ? (
-        <s.CircleLoaderContainer>
-          <NewCircleLoader size={24} />
-        </s.CircleLoaderContainer>
+      {entries.length === 0 ? (
+        <s.EmptyStateContainer>
+          {isInitialLoading ? (
+            <NewCircleLoader size={24} />
+          ) : error ? (
+            <s.ErrorMessage>
+              <WarningCircleLargeIcon color={"currentColor"} size={14} />
+              {error}
+            </s.ErrorMessage>
+          ) : (
+            <span>No data</span>
+          )}
+        </s.EmptyStateContainer>
       ) : (
         <>
           <s.ContentContainer>

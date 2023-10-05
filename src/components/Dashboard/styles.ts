@@ -66,6 +66,7 @@ export const DashboardCard = styled.div`
   gap: 12px;
   box-sizing: border-box;
   overflow: auto;
+  height: 231px;
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

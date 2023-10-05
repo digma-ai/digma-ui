@@ -84,7 +84,8 @@ export const Default: Story = {
           }
         ]
       },
-      type: "SlowQuery"
+      type: "SlowQuery",
+      error: null
     }
   }
 };
