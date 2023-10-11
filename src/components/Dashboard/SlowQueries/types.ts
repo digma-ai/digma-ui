@@ -1,0 +1,24 @@
+import { Duration } from "../../../globals";
+
+export interface SlowQueryEntry {
+  spanCodeObjectId: string;
+  displayName: string;
+  p50: Duration | null;
+  p95: Duration | null;
+}
+
+export interface SlowQueriesData {
+  data: {
+    entries: SlowQueryEntry[];
+    totalCount: number;
+  } | null;
+  error: {
+    message: string;
+  } | null;
+  type: string;
+}
+
+export interface SlowQueriesProps {
+  data?: SlowQueriesData;
+  environment: string;
+}

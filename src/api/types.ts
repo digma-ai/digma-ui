@@ -8,7 +8,7 @@ export interface DigmaIncomingMessageData {
 
 export interface DigmaOutgoingMessageData {
   action: string;
-  payload?: Record<string, unknown>;
+  payload?: unknown;
 }
 
 export type DigmaMessageEvent = MessageEvent<DigmaIncomingMessageData>;

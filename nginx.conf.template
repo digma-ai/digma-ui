@@ -1,0 +1,9 @@
+server {
+  listen 80;
+  root /usr/share/nginx/html;
+  absolute_redirect off;
+
+  location /api/ {
+    proxy_pass ${PLUGIN_API_URL}/;
+  }
+}

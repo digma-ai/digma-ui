@@ -2,7 +2,7 @@ import { DigmaOutgoingMessageData } from "./api/types";
 
 export {};
 
-export type Platform = "JetBrains" | "VS Code" | "Other";
+export type Platform = "JetBrains" | "VS Code" | "Web";
 
 export type IDE = "IDEA" | "Rider" | "PyCharm";
 
@@ -37,6 +37,8 @@ declare global {
     isDockerComposeInstalled?: unknown;
     assetsRefreshInterval?: unknown;
     assetsSearch?: unknown;
+    dashboardEnvironment?: unknown;
+    dashboardRefreshInterval?: unknown;
     documentationPage?: unknown;
     insightsRefreshInterval?: unknown;
     notificationsRefreshInterval?: unknown;
