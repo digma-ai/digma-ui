@@ -9,6 +9,7 @@ import { Pagination } from "../../common/Pagination";
 import { Toggle } from "../../common/Toggle";
 import { ToggleValue } from "../../common/Toggle/types";
 import { Tooltip } from "../../common/Tooltip";
+import { LightBulbSmallCrossedIcon } from "../../common/icons/LightBulbSmallCrossedIcon";
 import { SnailIcon } from "../../common/icons/SnailIcon";
 import { WarningCircleLargeIcon } from "../../common/icons/WarningCircleLargeIcon";
 import { actions } from "../actions";
@@ -190,7 +191,12 @@ export const SlowQueries = (props: SlowQueriesProps) => {
               {error}
             </s.ErrorMessage>
           ) : (
-            <span>No data</span>
+            <>
+              <s.EmptyStateIconContainer>
+                <LightBulbSmallCrossedIcon color={"currentColor"} size={72} />
+              </s.EmptyStateIconContainer>
+              <span>No data</span>
+            </>
           )}
         </s.EmptyStateContainer>
       ) : (

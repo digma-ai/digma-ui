@@ -113,8 +113,34 @@ export const EmptyStateContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 8px;
   font-size: 14px;
   flex-grow: 1;
+  color: #dadada;
+`;
+
+export const EmptyStateIconContainer = styled.div`
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#fbfdff";
+      case "dark":
+      case "dark-jetbrains":
+        return "#9b9b9b";
+    }
+  }};
+  background: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#d0d6eb";
+      case "dark":
+      case "dark-jetbrains":
+        return "#323334";
+    }
+  }};
 `;
 
 export const ErrorMessage = styled.span`

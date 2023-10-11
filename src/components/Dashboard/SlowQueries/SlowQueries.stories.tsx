@@ -89,3 +89,16 @@ export const Default: Story = {
     }
   }
 };
+
+export const Empty: Story = {
+  args: {
+    data: {
+      data: {
+        totalCount: 0,
+        entries: []
+      },
+      type: "SlowQuery",
+      error: null
+    }
+  }
+};
