@@ -184,7 +184,9 @@ export const SlowQueries = (props: SlowQueriesProps) => {
             <NewCircleLoader size={24} />
           ) : error ? (
             <s.ErrorMessage>
-              <WarningCircleLargeIcon color={"currentColor"} size={14} />
+              <s.IconContainer>
+                <WarningCircleLargeIcon color={"currentColor"} size={14} />
+              </s.IconContainer>
               {error}
             </s.ErrorMessage>
           ) : (

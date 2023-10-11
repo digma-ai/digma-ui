@@ -2,7 +2,7 @@ import { DigmaOutgoingMessageData } from "./api/types";
 
 export {};
 
-export type Platform = "JetBrains" | "VS Code" | "Other";
+export type Platform = "JetBrains" | "VS Code" | "Web";
 
 export type IDE = "IDEA" | "Rider" | "PyCharm";
 

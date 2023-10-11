@@ -44,8 +44,15 @@ export const getCodeFont = (customFont: string): FlattenSimpleInterpolation => {
 
   let osFontString = "";
 
-  // Source: https://github.com/microsoft/vscode/blob/main/src/vs/editor/common/config/editorOptions.ts#L4721
-  if (platform === "VS Code") {
+  // Sources:
+  // https://jetbrains.github.io/ui/principles/typography/#06
+  // https://github.com/JetBrains/intellij-community/blob/master/platform/editor-ui-api/src/com/intellij/openapi/editor/colors/FontPreferences.java#L111
+  if (platform === "JetBrains") {
+    osFontString = '"JetBrains Mono"';
+  } else {
+    // Sources
+    //
+    // VS Code: https://github.com/microsoft/vscode/blob/main/src/vs/editor/common/config/editorOptions.ts#L4721
     if (os === "Linux") {
       osFontString = '"Droid Sans Mono", "monospace"';
     }
@@ -57,13 +64,6 @@ export const getCodeFont = (customFont: string): FlattenSimpleInterpolation => {
     if (os === "Windows") {
       osFontString = 'Consolas, "Courier New"';
     }
-  }
-
-  // Sources:
-  // https://jetbrains.github.io/ui/principles/typography/#06
-  // https://github.com/JetBrains/intellij-community/blob/master/platform/editor-ui-api/src/com/intellij/openapi/editor/colors/FontPreferences.java#L111
-  if (platform === "JetBrains") {
-    osFontString = '"JetBrains Mono"';
   }
 
   return css`

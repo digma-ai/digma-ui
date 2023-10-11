@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "../common/Link";
 
 export const Container = styled.div`
   min-height: 100vh;
@@ -19,9 +20,11 @@ export const Header = styled.div`
   display: flex;
   padding: 12px 16px 0;
   gap: 16px;
+  justify-content: space-between;
+  align-items: center;
 `;
 
-export const LogoContainer = styled.div`
+export const IconContainer = styled.div`
   display: flex;
   align-self: center;
 `;
@@ -48,6 +51,12 @@ export const EnvironmentName = styled.span`
   color: #5a5d63;
   font-size: 14px;
   font-weight: 500;
+`;
+
+export const OpenInBrowserLink = styled(Link)`
+  display: flex;
+  gap: 4px;
+  align-items: center;
 `;
 
 export const ContentContainer = styled.div`

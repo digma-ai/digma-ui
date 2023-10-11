@@ -131,3 +131,8 @@ export const ErrorMessage = styled.span`
     }
   }};
 `;
+
+export const IconContainer = styled.div`
+  display: flex;
+  align-self: center;
+`;

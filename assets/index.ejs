@@ -28,10 +28,9 @@
       window.isDigmaEngineRunning;
       window.isDockerInstalled;
       window.isDockerComposeInstalled;
-
-      window.assetsRefreshInterval;
-      window.assetsSearch;
+      <% for (var i = 0; i < environmentVariables.length; i++) { %>
+      window.<%= environmentVariables[i] %>;<% } %>
     </script>
-    <script src="/index.js"></script>
+    <script src="./index.js"></script>
   </body>
 </html>
