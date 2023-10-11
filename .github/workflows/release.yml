@@ -48,8 +48,8 @@ jobs:
     steps:
       - uses: actions/download-artifact@v3
         with:
-          name: jaeger-build
-          path: build
+          name: build
+          path: dist
 
       - uses: actions/download-artifact@v3
         with:
