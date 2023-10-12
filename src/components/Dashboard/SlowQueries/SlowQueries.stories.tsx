@@ -17,7 +17,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
-export const Default: Story = {
+export const WithData: Story = {
   args: {
     data: {
       data: {
@@ -90,7 +90,7 @@ export const Default: Story = {
   }
 };
 
-export const Empty: Story = {
+export const NoData: Story = {
   args: {
     data: {
       data: {
