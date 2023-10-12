@@ -8,6 +8,7 @@ import {
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
+  height: 100vh;
 `;
 
 export const BackButton = styled.button`
@@ -262,6 +263,7 @@ export const List = styled.ul`
   flex-direction: column;
   gap: 8px;
   margin: 0;
+  overflow: auto;
 `;
 
 export const ListItem = styled.li`
