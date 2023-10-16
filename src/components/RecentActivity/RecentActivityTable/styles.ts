@@ -1,10 +1,13 @@
 import styled from "styled-components";
 import { getCodeFont } from "../../common/App/styles";
 import { Link } from "../../common/Link";
+import { HEADER_HEIGHT } from "../styles";
+
+export const TABLE_BORDER_SPACING = 4; // in pixels;
 
 export const Table = styled.table`
   width: 100%;
-  border-spacing: 0 4px;
+  border-spacing: 0 ${TABLE_BORDER_SPACING}px;
   font-size: 14px;
   color: ${({ theme }) => {
     switch (theme.mode) {
@@ -19,6 +22,9 @@ export const Table = styled.table`
 `;
 
 export const TableHead = styled.thead`
+  position: sticky;
+  top: ${HEADER_HEIGHT + TABLE_BORDER_SPACING}px;
+  z-index: 1;
   font-size: 14px;
   height: 28px;
   color: ${({ theme }) => {
@@ -29,6 +35,27 @@ export const TableHead = styled.thead`
         return "#b9c2eb";
       case "dark-jetbrains":
         return "#b4b8bf";
+    }
+  }};
+  outline: ${TABLE_BORDER_SPACING}px solid
+    ${({ theme }) => {
+      switch (theme.mode) {
+        case "light":
+          return "#f7f8fa";
+        case "dark":
+          return "#0f0f0f";
+        case "dark-jetbrains":
+          return "#2b2d30";
+      }
+    }};
+  background: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#f7f8fa";
+      case "dark":
+        return "#0f0f0f";
+      case "dark-jetbrains":
+        return "#2b2d30";
     }
   }};
 `;
@@ -155,8 +182,10 @@ export const ListContainer = styled.div`
 `;
 
 export const ListHeader = styled.div`
-  margin: 12px 0 8px;
-  padding-left: 12px;
+  position: sticky;
+  top: ${HEADER_HEIGHT}px;
+  z-index: 1;
+  padding: 12px 0 8px 12px;
   font-size: 14px;
   color: ${({ theme }) => {
     switch (theme.mode) {
@@ -166,6 +195,16 @@ export const ListHeader = styled.div`
         return "#b9c2eb";
       case "dark-jetbrains":
         return "#b4b8bf";
+    }
+  }};
+  background: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#f7f8fa";
+      case "dark":
+        return "#0f0f0f";
+      case "dark-jetbrains":
+        return "#2b2d30";
     }
   }};
 `;

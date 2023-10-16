@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { Button } from "../common/Button";
 
+export const HEADER_HEIGHT = 64; // in pixels;
+
 export const Container = styled.div`
   height: 100%;
   position: relative;
@@ -39,15 +41,37 @@ export const Container = styled.div`
   }
 `;
 
-export const RecentActivityContainer = styled.div`
+export const RecentActivityHeader = styled.div`
+  height: ${HEADER_HEIGHT}px;
+  box-sizing: border-box;
   padding: 12px;
+  padding-right: 24px;
+  z-index: 1;
+  position: sticky;
+  top: 0;
+  background: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#f7f8fa";
+      case "dark":
+        return "#0f0f0f";
+      case "dark-jetbrains":
+        return "#2b2d30";
+    }
+  }};
+`;
+
+export const RecentActivityContainer = styled.div`
   height: 100%;
   overflow: auto;
   box-sizing: border-box;
-  padding-right: 24px;
 `;
 
-export const Header = styled.div`
+export const RecentActivityContentContainer = styled.div`
+  padding: 0 24px 12px 12px;
+`;
+
+export const RecentActivityTableTitle = styled.div`
   margin: 12px 0 8px;
   padding-left: 12px;
   font-weight: 400;

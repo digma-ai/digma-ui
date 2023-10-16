@@ -369,7 +369,9 @@ export const RecentActivity = (props: RecentActivityProps) => {
     ) {
       return (
         <>
-          <s.Header>Recent Activity</s.Header>
+          <s.RecentActivityTableTitle>
+            Recent Activity
+          </s.RecentActivityTableTitle>
           {renderNoData()}
         </>
       );
@@ -390,16 +392,20 @@ export const RecentActivity = (props: RecentActivityProps) => {
     <s.Container>
       <Allotment defaultSizes={[70, 30]}>
         <s.RecentActivityContainer id={RECENT_ACTIVITY_CONTAINER_ID}>
-          <EnvironmentPanel
-            environments={environments}
-            viewMode={viewMode}
-            selectedEnvironment={selectedEnvironment}
-            onEnvironmentSelect={handleEnvironmentSelect}
-            onViewModeChange={handleViewModeChange}
-            onEnvironmentAdd={handleEnvironmentAdd}
-            onEnvironmentDelete={handleEnvironmentDelete}
-          />
-          {renderContent()}
+          <s.RecentActivityHeader>
+            <EnvironmentPanel
+              environments={environments}
+              viewMode={viewMode}
+              selectedEnvironment={selectedEnvironment}
+              onEnvironmentSelect={handleEnvironmentSelect}
+              onViewModeChange={handleViewModeChange}
+              onEnvironmentAdd={handleEnvironmentAdd}
+              onEnvironmentDelete={handleEnvironmentDelete}
+            />
+          </s.RecentActivityHeader>
+          <s.RecentActivityContentContainer>
+            {renderContent()}
+          </s.RecentActivityContentContainer>
         </s.RecentActivityContainer>
         <Allotment.Pane visible={Boolean(liveData)} minSize={450}>
           {liveData && (
