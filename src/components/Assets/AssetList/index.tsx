@@ -373,17 +373,11 @@ export const AssetList = (props: AssetListProps) => {
       {sortedEntries.length > 0 ? (
         <s.List>
           {sortedEntries.map((entry) => {
-            const key = [
-              entry.serviceName,
-              entry.endpointCodeObjectId,
-              entry.span.spanCodeObjectId
-            ]
-              .filter(Boolean)
-              .join("|_|");
+            const id = entry.id;
 
             return (
               <AssetEntryComponent
-                key={key}
+                key={id}
                 entry={entry}
                 onAssetLinkClick={handleAssetLinkClick}
                 sortingCriterion={sorting.criterion}
