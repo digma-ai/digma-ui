@@ -7,6 +7,11 @@ import {
 import { os } from "../../../os";
 import { platform } from "../../../platform";
 
+export const LAYERS = {
+  MODAL: 1000,
+  TOOLTIP: 2000
+};
+
 export const getMainFont = (customFont: string): FlattenSimpleInterpolation => {
   const customFontString = customFont ? `"${customFont}"` : "";
 

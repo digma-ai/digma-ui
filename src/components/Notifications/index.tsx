@@ -150,7 +150,7 @@ export const Notifications = (props: NotificationsProps) => {
     }
 
     setData(props.data);
-  }, [data, props.data]);
+  }, [props.data]);
 
   useEffect(() => {
     if (!previousData && data) {

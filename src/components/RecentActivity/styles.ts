@@ -155,4 +155,5 @@ export const Overlay = styled.div`
   justify-content: center;
   padding: 80px 0;
   overflow: auto;
+  z-index: 2;
 `;
