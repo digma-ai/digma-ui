@@ -39,6 +39,16 @@ export const Default: Story = {
       serviceName: "PetClinicWithAgent",
       endpointCodeObjectId:
         "endpoint:epHTTP:HTTP GET /SampleInsights/ErrorRecordedOnLocalRootSpan",
+      p50: {
+        value: 804.65,
+        unit: "μs",
+        raw: 804649.5
+      },
+      p95: {
+        value: 62.47,
+        unit: "ms",
+        raw: 62466300.59999996
+      },
       durationPercentiles: [
         {
           percentile: 0.5,
@@ -46,11 +56,7 @@ export const Default: Story = {
             value: 804.65,
             unit: "μs",
             raw: 804649.5
-          },
-          previousDuration: null,
-          changeTime: null,
-          changeVerified: null,
-          traceIds: ["79410CF020D937E9F78EFECC703907D6"]
+          }
         },
         {
           percentile: 0.95,
@@ -58,11 +64,7 @@ export const Default: Story = {
             value: 62.47,
             unit: "ms",
             raw: 62466300.59999996
-          },
-          previousDuration: null,
-          changeTime: null,
-          changeVerified: null,
-          traceIds: ["7343BEA8BDBC98BA4779A8808E5BD7C9"]
+          }
         }
       ],
       impactScores: {

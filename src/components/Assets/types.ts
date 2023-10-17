@@ -1,8 +1,5 @@
-import {
-  DurationPercentileWithChange,
-  SpanInfo,
-  SpanInstanceInfo
-} from "../../types";
+import { Duration } from "../../globals";
+import { SpanInfo, SpanInstanceInfo } from "../../types";
 
 export interface AssetsProps {
   data?: AssetsData;
@@ -46,7 +43,15 @@ export interface AssetEntry {
   assetType: string;
   serviceName: string;
   endpointCodeObjectId: string | null;
-  durationPercentiles: DurationPercentileWithChange[];
+  p50: Duration | null;
+  p95: Duration | null;
+  /**
+   * @deprecated
+   */
+  durationPercentiles: {
+    percentile: number;
+    currentDuration: Duration | null;
+  }[];
   insights: Insight[];
   lastSpanInstanceInfo: SpanInstanceInfo;
   firstDataSeenTime: string;

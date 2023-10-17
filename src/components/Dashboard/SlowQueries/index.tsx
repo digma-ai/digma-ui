@@ -4,6 +4,7 @@ import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { isString } from "../../../typeGuards/isString";
+import { getPercentileKey } from "../../../utils/getPercentileKey";
 import { NewCircleLoader } from "../../common/NewCircleLoader";
 import { Pagination } from "../../common/Pagination";
 import { Toggle } from "../../common/Toggle";
@@ -22,17 +23,6 @@ const PAGE_SIZE = 4;
 const REFRESH_INTERVAL = isNumber(window.dashboardRefreshInterval)
   ? window.dashboardRefreshInterval
   : 10 * 1000; // in milliseconds
-
-const getPercentileKey = (percentileValue: number): "p50" | "p95" | null => {
-  switch (percentileValue) {
-    case 0.5:
-      return "p50";
-    case 0.95:
-      return "p95";
-    default:
-      return null;
-  }
-};
 
 export const SlowQueries = (props: SlowQueriesProps) => {
   const [percentileViewMode, setPercentileViewMode] =
