@@ -1,5 +1,7 @@
 import { ChangeEvent, useMemo, useState } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
+import { isNumber } from "../../../typeGuards/isNumber";
+import { getPercentileKey } from "../../../utils/getPercentileKey";
 import { Menu } from "../../common/Menu";
 import { Popover } from "../../common/Popover";
 import { PopoverContent } from "../../common/Popover/PopoverContent";
@@ -42,22 +44,21 @@ const sortEntries = (
     percentile: number,
     isDesc: boolean
   ) => {
-    const aDuration = a.durationPercentiles.find(
-      (duration) => duration.percentile === percentile
-    )?.currentDuration.raw;
-    const bDuration = b.durationPercentiles.find(
-      (duration) => duration.percentile === percentile
-    )?.currentDuration.raw;
+    const aPercentile = getPercentileKey(percentile);
+    const aDuration = aPercentile && a[aPercentile]?.raw;
+
+    const bPercentile = getPercentileKey(percentile);
+    const bDuration = bPercentile && b[bPercentile]?.raw;
 
     if (!aDuration && !bDuration) {
       return 0;
     }
 
-    if (!aDuration) {
+    if (!isNumber(aDuration)) {
       return isDesc ? 1 : -1;
     }
 
-    if (!bDuration) {
+    if (!isNumber(bDuration)) {
       return isDesc ? -1 : 1;
     }
 

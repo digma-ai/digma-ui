@@ -27,15 +27,7 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 442.04,
-                unit: "μs",
-                raw: 442042
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["9316AB9977582858CF8486458925BB4A"]
+              currentDuration: { value: 442.04, unit: "μs", raw: 442042 }
             },
             {
               percentile: 0.95,
@@ -43,17 +35,10 @@ export const data: AssetsData = {
                 value: 2.06,
                 unit: "ms",
                 raw: 2063332.9999999993
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["0B9E578557989324EEA1509B22EA2D6E"]
+              }
             }
           ],
-          impactScores: {
-            ScoreExp25: -1,
-            ScoreExp1000: -1
-          },
+          impactScores: { ScoreExp25: -1, ScoreExp1000: -1 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -70,13 +55,11 @@ export const data: AssetsData = {
             traceId: "9316AB9977582858CF8486458925BB4A",
             spanId: "04F731D0409E792A",
             startTime: "2023-08-03T15:03:10.033838Z",
-            duration: {
-              value: 118.79,
-              unit: "μs",
-              raw: 118791
-            }
+            duration: { value: 118.79, unit: "μs", raw: 118791 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:17.92583Z"
+          firstDataSeenTime: "2023-08-03T15:03:17.92583Z",
+          p50: { value: 442.04, unit: "μs", raw: 442042 },
+          p95: { value: 2.06, unit: "ms", raw: 2063332.9999999993 }
         },
         {
           span: {
@@ -97,33 +80,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 163.88,
-                unit: "ms",
-                raw: 163878333
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["4D38B1BF14B7D13C45CF7C58B76E2E17"]
+              currentDuration: { value: 163.88, unit: "ms", raw: 163878333 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 163.88,
-                unit: "ms",
-                raw: 163878333
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["4D38B1BF14B7D13C45CF7C58B76E2E17"]
+              currentDuration: { value: 163.88, unit: "ms", raw: 163878333 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanEndpointBottleneck",
@@ -150,13 +114,11 @@ export const data: AssetsData = {
             traceId: "4D38B1BF14B7D13C45CF7C58B76E2E17",
             spanId: "F17FE0AFEE441259",
             startTime: "2023-08-03T15:02:51.294666Z",
-            duration: {
-              value: 5.03,
-              unit: "ms",
-              raw: 5034583
-            }
+            duration: { value: 5.03, unit: "ms", raw: 5034583 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:07.942604Z"
+          firstDataSeenTime: "2023-08-03T15:03:07.942604Z",
+          p50: { value: 163.88, unit: "ms", raw: 163878333 },
+          p95: { value: 163.88, unit: "ms", raw: 163878333 }
         },
         {
           span: {
@@ -177,15 +139,7 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 46.79,
-                unit: "μs",
-                raw: 46792
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["D076C5BBD0FA8838F2063C7120A72260"]
+              currentDuration: { value: 46.79, unit: "μs", raw: 46792 }
             },
             {
               percentile: 0.95,
@@ -193,17 +147,10 @@ export const data: AssetsData = {
                 value: 108.84,
                 unit: "μs",
                 raw: 108843.79999999999
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["916006BE36E867C3FAD77626C1B73BEF"]
+              }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingWell",
@@ -221,13 +168,11 @@ export const data: AssetsData = {
             traceId: "9316AB9977582858CF8486458925BB4A",
             spanId: "AA6A59110CCDEC7D",
             startTime: "2023-08-03T15:03:10.033996Z",
-            duration: {
-              value: 20.04,
-              unit: "μs",
-              raw: 20042
-            }
+            duration: { value: 20.04, unit: "μs", raw: 20042 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:17.92863Z"
+          firstDataSeenTime: "2023-08-03T15:03:17.92863Z",
+          p50: { value: 46.79, unit: "μs", raw: 46792 },
+          p95: { value: 108.84, unit: "μs", raw: 108843.79999999999 }
         },
         {
           span: {
@@ -248,15 +193,7 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 3.57,
-                unit: "ms",
-                raw: 3569646
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3CDF279F7208336BC76A80B0E1FBF611"]
+              currentDuration: { value: 3.57, unit: "ms", raw: 3569646 }
             },
             {
               percentile: 0.95,
@@ -264,17 +201,10 @@ export const data: AssetsData = {
                 value: 34.51,
                 unit: "ms",
                 raw: 34514016.79999999
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["6A524B7D6F2170A7E933F8645D9FB9E0"]
+              }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -291,13 +221,11 @@ export const data: AssetsData = {
             traceId: "A5B2C18C7F88BF17381ED1FD7B57A3C3",
             spanId: "CE24F4630310BE97",
             startTime: "2023-08-03T15:03:10.022954Z",
-            duration: {
-              value: 1.61,
-              unit: "ms",
-              raw: 1609333
-            }
+            duration: { value: 1.61, unit: "ms", raw: 1609333 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:17.900691Z"
+          firstDataSeenTime: "2023-08-03T15:03:17.900691Z",
+          p50: { value: 3.57, unit: "ms", raw: 3569646 },
+          p95: { value: 34.51, unit: "ms", raw: 34514016.79999999 }
         },
         {
           span: {
@@ -318,15 +246,7 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 627.17,
-                unit: "μs",
-                raw: 627167
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["244DAD19FF36A648BFDCF18CEC58EB97"]
+              currentDuration: { value: 627.17, unit: "μs", raw: 627167 }
             },
             {
               percentile: 0.95,
@@ -334,17 +254,10 @@ export const data: AssetsData = {
                 value: 8.25,
                 unit: "ms",
                 raw: 8252414.349999995
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["CE966416543013950B27E0295939D336"]
+              }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -361,13 +274,11 @@ export const data: AssetsData = {
             traceId: "9D767B5368F97B6C6349C45D5EE82AE8",
             spanId: "51B38C21E4F11C69",
             startTime: "2023-08-03T15:02:51.72937Z",
-            duration: {
-              value: 641.33,
-              unit: "μs",
-              raw: 641333
-            }
+            duration: { value: 641.33, unit: "μs", raw: 641333 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:07.973588Z"
+          firstDataSeenTime: "2023-08-03T15:03:07.973588Z",
+          p50: { value: 627.17, unit: "μs", raw: 627167 },
+          p95: { value: 8.25, unit: "ms", raw: 8252414.349999995 }
         },
         {
           span: {
@@ -388,15 +299,7 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 1.28,
-                unit: "ms",
-                raw: 1275917
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["39D9C1A27AF2BFFA5D51DDB14447755E"]
+              currentDuration: { value: 1.28, unit: "ms", raw: 1275917 }
             },
             {
               percentile: 0.95,
@@ -404,17 +307,10 @@ export const data: AssetsData = {
                 value: 10.42,
                 unit: "ms",
                 raw: 10419499.999999996
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["916006BE36E867C3FAD77626C1B73BEF"]
+              }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -431,13 +327,11 @@ export const data: AssetsData = {
             traceId: "974ADBA5DCC1E662F4832D54D4D5C6C9",
             spanId: "5840D7194838F6FD",
             startTime: "2023-08-03T15:02:51.580973Z",
-            duration: {
-              value: 2.85,
-              unit: "ms",
-              raw: 2850750
-            }
+            duration: { value: 2.85, unit: "ms", raw: 2850750 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:07.97477Z"
+          firstDataSeenTime: "2023-08-03T15:03:07.97477Z",
+          p50: { value: 1.28, unit: "ms", raw: 1275917 },
+          p95: { value: 10.42, unit: "ms", raw: 10419499.999999996 }
         },
         {
           span: {
@@ -458,33 +352,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 1.03,
-                unit: "ms",
-                raw: 1026604
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3D386C057A67DB84EFF002176AD6B34F"]
+              currentDuration: { value: 1.03, unit: "ms", raw: 1026604 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 8.84,
-                unit: "ms",
-                raw: 8836250
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["E459E0CCBCE2A1B4400C67E9593FC9BD"]
+              currentDuration: { value: 8.84, unit: "ms", raw: 8836250 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -501,13 +376,11 @@ export const data: AssetsData = {
             traceId: "327F1AF74124C7044B7DB1022B5E77FD",
             spanId: "BEC12D7D553A900E",
             startTime: "2023-08-03T15:02:51.708697Z",
-            duration: {
-              value: 781.29,
-              unit: "μs",
-              raw: 781291
-            }
+            duration: { value: 781.29, unit: "μs", raw: 781291 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:07.99183Z"
+          firstDataSeenTime: "2023-08-03T15:03:07.99183Z",
+          p50: { value: 1.03, unit: "ms", raw: 1026604 },
+          p95: { value: 8.84, unit: "ms", raw: 8836250 }
         },
         {
           span: {
@@ -528,33 +401,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 4.06,
-                unit: "ms",
-                raw: 4059917
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["9316AB9977582858CF8486458925BB4A"]
+              currentDuration: { value: 4.06, unit: "ms", raw: 4059917 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 18.48,
-                unit: "ms",
-                raw: 18478625
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["0B9E578557989324EEA1509B22EA2D6E"]
+              currentDuration: { value: 18.48, unit: "ms", raw: 18478625 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -571,13 +425,11 @@ export const data: AssetsData = {
             traceId: "9316AB9977582858CF8486458925BB4A",
             spanId: "7A4212ADDBC89608",
             startTime: "2023-08-03T15:03:10.030119Z",
-            duration: {
-              value: 4.06,
-              unit: "ms",
-              raw: 4059917
-            }
+            duration: { value: 4.06, unit: "ms", raw: 4059917 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:17.907205Z"
+          firstDataSeenTime: "2023-08-03T15:03:17.907205Z",
+          p50: { value: 4.06, unit: "ms", raw: 4059917 },
+          p95: { value: 18.48, unit: "ms", raw: 18478625 }
         },
         {
           span: {
@@ -598,33 +450,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 1.45,
-                unit: "ms",
-                raw: 1445792
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["0BF4464EFEED7AAE66435AE762109D29"]
+              currentDuration: { value: 1.45, unit: "ms", raw: 1445792 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 23.13,
-                unit: "ms",
-                raw: 23128875
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["4D38B1BF14B7D13C45CF7C58B76E2E17"]
+              currentDuration: { value: 23.13, unit: "ms", raw: 23128875 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -641,13 +474,11 @@ export const data: AssetsData = {
             traceId: "E4A02B938FEB0DB76132BDF0F452F48A",
             spanId: "DCD0B23F13AE577C",
             startTime: "2023-08-03T15:02:51.347746Z",
-            duration: {
-              value: 936.38,
-              unit: "μs",
-              raw: 936375
-            }
+            duration: { value: 936.38, unit: "μs", raw: 936375 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:07.98249Z"
+          firstDataSeenTime: "2023-08-03T15:03:07.98249Z",
+          p50: { value: 1.45, unit: "ms", raw: 1445792 },
+          p95: { value: 23.13, unit: "ms", raw: 23128875 }
         },
         {
           span: {
@@ -668,19 +499,7 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 1.04,
-                unit: "ms",
-                raw: 1043333
-              },
-              previousDuration: {
-                value: 1.9,
-                unit: "ms",
-                raw: 1900187.5
-              },
-              changeTime: "2023-08-03T15:01:55Z",
-              changeVerified: true,
-              traceIds: ["037FA570EC20318753AA187EA9D3CD5A"]
+              currentDuration: { value: 1.04, unit: "ms", raw: 1043333 }
             },
             {
               percentile: 0.95,
@@ -688,21 +507,10 @@ export const data: AssetsData = {
                 value: 7.32,
                 unit: "ms",
                 raw: 7317791.999999999
-              },
-              previousDuration: {
-                value: 3.91,
-                unit: "ms",
-                raw: 3910703.799999999
-              },
-              changeTime: "2023-08-03T15:01:55Z",
-              changeVerified: true,
-              traceIds: ["037FA570EC20318753AA187EA9D3CD5A"]
+              }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -719,13 +527,11 @@ export const data: AssetsData = {
             traceId: "5E374DCAC4131F844AF870B6EF58F11D",
             spanId: "A6AAF26C32FB1A40",
             startTime: "2023-08-03T15:05:55.953559Z",
-            duration: {
-              value: 1.04,
-              unit: "ms",
-              raw: 1043333
-            }
+            duration: { value: 1.04, unit: "ms", raw: 1043333 }
           },
-          firstDataSeenTime: "2023-08-03T14:18:06.952074Z"
+          firstDataSeenTime: "2023-08-03T14:18:06.952074Z",
+          p50: { value: 1.04, unit: "ms", raw: 1043333 },
+          p95: { value: 7.32, unit: "ms", raw: 7317791.999999999 }
         },
         {
           span: {
@@ -745,33 +551,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 1.45,
-                unit: "ms",
-                raw: 1449167
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 1.45, unit: "ms", raw: 1449167 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 1.45,
-                unit: "ms",
-                raw: 1449167
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 1.45, unit: "ms", raw: 1449167 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -788,13 +575,11 @@ export const data: AssetsData = {
             traceId: "3A3D10C8C5C6B499DAB699B7DB310E7A",
             spanId: "C33B2D4E684D00C5",
             startTime: "2023-08-03T15:03:15.617662Z",
-            duration: {
-              value: 244.46,
-              unit: "μs",
-              raw: 244458
-            }
+            duration: { value: 244.46, unit: "μs", raw: 244458 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:37.966613Z"
+          firstDataSeenTime: "2023-08-03T15:03:37.966613Z",
+          p50: { value: 1.45, unit: "ms", raw: 1449167 },
+          p95: { value: 1.45, unit: "ms", raw: 1449167 }
         },
         {
           span: {
@@ -815,33 +600,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 867.42,
-                unit: "μs",
-                raw: 867417
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 867.42, unit: "μs", raw: 867417 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 867.42,
-                unit: "μs",
-                raw: 867417
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 867.42, unit: "μs", raw: 867417 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -858,13 +624,11 @@ export const data: AssetsData = {
             traceId: "3A3D10C8C5C6B499DAB699B7DB310E7A",
             spanId: "47C7C36FD7F32792",
             startTime: "2023-08-03T15:03:18.311232Z",
-            duration: {
-              value: 21.12,
-              unit: "μs",
-              raw: 21125
-            }
+            duration: { value: 21.12, unit: "μs", raw: 21125 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:37.991072Z"
+          firstDataSeenTime: "2023-08-03T15:03:37.991072Z",
+          p50: { value: 867.42, unit: "μs", raw: 867417 },
+          p95: { value: 867.42, unit: "μs", raw: 867417 }
         },
         {
           span: {
@@ -886,33 +650,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 222.71,
-                unit: "μs",
-                raw: 222709
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["4D38B1BF14B7D13C45CF7C58B76E2E17"]
+              currentDuration: { value: 222.71, unit: "μs", raw: 222709 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 222.71,
-                unit: "μs",
-                raw: 222709
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["4D38B1BF14B7D13C45CF7C58B76E2E17"]
+              currentDuration: { value: 222.71, unit: "μs", raw: 222709 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -929,13 +674,11 @@ export const data: AssetsData = {
             traceId: "4D38B1BF14B7D13C45CF7C58B76E2E17",
             spanId: "E1FC6231ED5D0B1A",
             startTime: "2023-08-03T15:02:51.292223Z",
-            duration: {
-              value: 69.12,
-              unit: "μs",
-              raw: 69125
-            }
+            duration: { value: 69.12, unit: "μs", raw: 69125 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:07.940226Z"
+          firstDataSeenTime: "2023-08-03T15:03:07.940226Z",
+          p50: { value: 222.71, unit: "μs", raw: 222709 },
+          p95: { value: 222.71, unit: "μs", raw: 222709 }
         },
         {
           span: {
@@ -956,33 +699,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 207.79,
-                unit: "μs",
-                raw: 207792
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["1D54BCB0F538EE13C259F5529B9A45CE"]
+              currentDuration: { value: 207.79, unit: "μs", raw: 207792 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 207.79,
-                unit: "μs",
-                raw: 207792
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["1D54BCB0F538EE13C259F5529B9A45CE"]
+              currentDuration: { value: 207.79, unit: "μs", raw: 207792 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -999,13 +723,11 @@ export const data: AssetsData = {
             traceId: "1D54BCB0F538EE13C259F5529B9A45CE",
             spanId: "523D2451AD4E7CC4",
             startTime: "2023-08-03T14:17:27.624452Z",
-            duration: {
-              value: 207.79,
-              unit: "μs",
-              raw: 207792
-            }
+            duration: { value: 207.79, unit: "μs", raw: 207792 }
           },
-          firstDataSeenTime: "2023-08-03T14:17:38.041911Z"
+          firstDataSeenTime: "2023-08-03T14:17:38.041911Z",
+          p50: { value: 207.79, unit: "μs", raw: 207792 },
+          p95: { value: 207.79, unit: "μs", raw: 207792 }
         },
         {
           span: {
@@ -1027,15 +749,7 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 304.02,
-                unit: "μs",
-                raw: 304021
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["F44698EA151C3CAA9C6D07B970308552"]
+              currentDuration: { value: 304.02, unit: "μs", raw: 304021 }
             },
             {
               percentile: 0.95,
@@ -1043,17 +757,10 @@ export const data: AssetsData = {
                 value: 782.08,
                 unit: "μs",
                 raw: 782083.3999999998
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["E459E0CCBCE2A1B4400C67E9593FC9BD"]
+              }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -1070,13 +777,11 @@ export const data: AssetsData = {
             traceId: "9D767B5368F97B6C6349C45D5EE82AE8",
             spanId: "1E12EF1A6392E7AD",
             startTime: "2023-08-03T15:02:51.728956Z",
-            duration: {
-              value: 220,
-              unit: "μs",
-              raw: 220000
-            }
+            duration: { value: 220, unit: "μs", raw: 220000 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:08.01632Z"
+          firstDataSeenTime: "2023-08-03T15:03:08.01632Z",
+          p50: { value: 304.02, unit: "μs", raw: 304021 },
+          p95: { value: 782.08, unit: "μs", raw: 782083.3999999998 }
         },
         {
           span: {
@@ -1097,33 +802,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 90.75,
-                unit: "μs",
-                raw: 90750
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["4D38B1BF14B7D13C45CF7C58B76E2E17"]
+              currentDuration: { value: 90.75, unit: "μs", raw: 90750 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 90.75,
-                unit: "μs",
-                raw: 90750
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["4D38B1BF14B7D13C45CF7C58B76E2E17"]
+              currentDuration: { value: 90.75, unit: "μs", raw: 90750 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -1140,13 +826,11 @@ export const data: AssetsData = {
             traceId: "4D38B1BF14B7D13C45CF7C58B76E2E17",
             spanId: "A48191E4344D6071",
             startTime: "2023-08-03T15:02:51.299524Z",
-            duration: {
-              value: 90.75,
-              unit: "μs",
-              raw: 90750
-            }
+            duration: { value: 90.75, unit: "μs", raw: 90750 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:07.929329Z"
+          firstDataSeenTime: "2023-08-03T15:03:07.929329Z",
+          p50: { value: 90.75, unit: "μs", raw: 90750 },
+          p95: { value: 90.75, unit: "μs", raw: 90750 }
         },
         {
           span: {
@@ -1167,33 +851,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 161.38,
-                unit: "μs",
-                raw: 161375
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["383CFDFB7B8F65E805AB2B45FEB2411C"]
+              currentDuration: { value: 161.38, unit: "μs", raw: 161375 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 161.38,
-                unit: "μs",
-                raw: 161375
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["383CFDFB7B8F65E805AB2B45FEB2411C"]
+              currentDuration: { value: 161.38, unit: "μs", raw: 161375 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -1210,13 +875,11 @@ export const data: AssetsData = {
             traceId: "383CFDFB7B8F65E805AB2B45FEB2411C",
             spanId: "D77D5BB346E4EA1D",
             startTime: "2023-08-03T14:17:27.635069Z",
-            duration: {
-              value: 161.38,
-              unit: "μs",
-              raw: 161375
-            }
+            duration: { value: 161.38, unit: "μs", raw: 161375 }
           },
-          firstDataSeenTime: "2023-08-03T14:17:38.133815Z"
+          firstDataSeenTime: "2023-08-03T14:17:38.133815Z",
+          p50: { value: 161.38, unit: "μs", raw: 161375 },
+          p95: { value: 161.38, unit: "μs", raw: 161375 }
         },
         {
           span: {
@@ -1237,15 +900,7 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 156.96,
-                unit: "μs",
-                raw: 156958
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: []
+              currentDuration: { value: 156.96, unit: "μs", raw: 156958 }
             },
             {
               percentile: 0.95,
@@ -1253,17 +908,10 @@ export const data: AssetsData = {
                 value: 394.16,
                 unit: "μs",
                 raw: 394159.7499999999
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: []
+              }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -1280,13 +928,11 @@ export const data: AssetsData = {
             traceId: "FD4E5DA878CC59F552DE3A3BC0DB59D6",
             spanId: "903EF594E1849B37",
             startTime: "2023-08-03T14:17:27.645178Z",
-            duration: {
-              value: 154.08,
-              unit: "μs",
-              raw: 154083
-            }
+            duration: { value: 154.08, unit: "μs", raw: 154083 }
           },
-          firstDataSeenTime: "2023-08-03T14:17:37.981216Z"
+          firstDataSeenTime: "2023-08-03T14:17:37.981216Z",
+          p50: { value: 156.96, unit: "μs", raw: 156958 },
+          p95: { value: 394.16, unit: "μs", raw: 394159.7499999999 }
         },
         {
           span: {
@@ -1308,15 +954,7 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 55.62,
-                unit: "μs",
-                raw: 55625
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["2CD05493B3F64BB401730A4D77076FB2"]
+              currentDuration: { value: 55.62, unit: "μs", raw: 55625 }
             },
             {
               percentile: 0.95,
@@ -1324,17 +962,10 @@ export const data: AssetsData = {
                 value: 146.46,
                 unit: "μs",
                 raw: 146457.99999999997
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["0B9E578557989324EEA1509B22EA2D6E"]
+              }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -1351,13 +982,11 @@ export const data: AssetsData = {
             traceId: "9316AB9977582858CF8486458925BB4A",
             spanId: "0C8450B4C29649E7",
             startTime: "2023-08-03T15:03:10.033896Z",
-            duration: {
-              value: 15.75,
-              unit: "μs",
-              raw: 15750
-            }
+            duration: { value: 15.75, unit: "μs", raw: 15750 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:17.92238Z"
+          firstDataSeenTime: "2023-08-03T15:03:17.92238Z",
+          p50: { value: 55.62, unit: "μs", raw: 55625 },
+          p95: { value: 146.46, unit: "μs", raw: 146457.99999999997 }
         },
         {
           span: {
@@ -1378,33 +1007,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 68.79,
-                unit: "μs",
-                raw: 68792
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: []
+              currentDuration: { value: 68.79, unit: "μs", raw: 68792 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 68.79,
-                unit: "μs",
-                raw: 68792
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: []
+              currentDuration: { value: 68.79, unit: "μs", raw: 68792 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -1421,13 +1031,11 @@ export const data: AssetsData = {
             traceId: "78C9AB4436CF9B86EEFD0A8C75DF641D",
             spanId: "A2671193E8CE75A5",
             startTime: "2023-08-03T14:17:27.619715Z",
-            duration: {
-              value: 68.79,
-              unit: "μs",
-              raw: 68792
-            }
+            duration: { value: 68.79, unit: "μs", raw: 68792 }
           },
-          firstDataSeenTime: "2023-08-03T14:17:38.074041Z"
+          firstDataSeenTime: "2023-08-03T14:17:38.074041Z",
+          p50: { value: 68.79, unit: "μs", raw: 68792 },
+          p95: { value: 68.79, unit: "μs", raw: 68792 }
         },
         {
           span: {
@@ -1449,33 +1057,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 340.92,
-                unit: "μs",
-                raw: 340917
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: []
+              currentDuration: { value: 340.92, unit: "μs", raw: 340917 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 340.92,
-                unit: "μs",
-                raw: 340917
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: []
+              currentDuration: { value: 340.92, unit: "μs", raw: 340917 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -1492,13 +1081,11 @@ export const data: AssetsData = {
             traceId: "C9468D9B8085EB7D4FBC81C496A4B1C8",
             spanId: "0CB14677A7CE7BF4",
             startTime: "2023-08-03T14:17:27.630597Z",
-            duration: {
-              value: 340.92,
-              unit: "μs",
-              raw: 340917
-            }
+            duration: { value: 340.92, unit: "μs", raw: 340917 }
           },
-          firstDataSeenTime: "2023-08-03T14:17:37.995539Z"
+          firstDataSeenTime: "2023-08-03T14:17:37.995539Z",
+          p50: { value: 340.92, unit: "μs", raw: 340917 },
+          p95: { value: 340.92, unit: "μs", raw: 340917 }
         },
         {
           span: {
@@ -1520,33 +1107,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 197.12,
-                unit: "μs",
-                raw: 197125
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["CDEE0D19C14CBD8B61F1CDEC066230FD"]
+              currentDuration: { value: 197.12, unit: "μs", raw: 197125 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 197.12,
-                unit: "μs",
-                raw: 197125
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["CDEE0D19C14CBD8B61F1CDEC066230FD"]
+              currentDuration: { value: 197.12, unit: "μs", raw: 197125 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -1563,13 +1131,11 @@ export const data: AssetsData = {
             traceId: "CDEE0D19C14CBD8B61F1CDEC066230FD",
             spanId: "1D2151B8C6FB40CF",
             startTime: "2023-08-03T14:17:27.624708Z",
-            duration: {
-              value: 197.12,
-              unit: "μs",
-              raw: 197125
-            }
+            duration: { value: 197.12, unit: "μs", raw: 197125 }
           },
-          firstDataSeenTime: "2023-08-03T14:17:37.935399Z"
+          firstDataSeenTime: "2023-08-03T14:17:37.935399Z",
+          p50: { value: 197.12, unit: "μs", raw: 197125 },
+          p95: { value: 197.12, unit: "μs", raw: 197125 }
         },
         {
           span: {
@@ -1591,33 +1157,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 419.29,
-                unit: "μs",
-                raw: 419292
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["5EEF271B121A3184D4B3D95303398247"]
+              currentDuration: { value: 419.29, unit: "μs", raw: 419292 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 419.29,
-                unit: "μs",
-                raw: 419292
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["5EEF271B121A3184D4B3D95303398247"]
+              currentDuration: { value: 419.29, unit: "μs", raw: 419292 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -1634,13 +1181,11 @@ export const data: AssetsData = {
             traceId: "5EEF271B121A3184D4B3D95303398247",
             spanId: "91B7C4849A85AA9A",
             startTime: "2023-08-03T14:17:27.623981Z",
-            duration: {
-              value: 419.29,
-              unit: "μs",
-              raw: 419292
-            }
+            duration: { value: 419.29, unit: "μs", raw: 419292 }
           },
-          firstDataSeenTime: "2023-08-03T14:17:37.820406Z"
+          firstDataSeenTime: "2023-08-03T14:17:37.820406Z",
+          p50: { value: 419.29, unit: "μs", raw: 419292 },
+          p95: { value: 419.29, unit: "μs", raw: 419292 }
         },
         {
           span: {
@@ -1662,33 +1207,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 76.15,
-                unit: "μs",
-                raw: 76145.5
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3D386C057A67DB84EFF002176AD6B34F"]
+              currentDuration: { value: 76.15, unit: "μs", raw: 76145.5 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 115.17,
-                unit: "μs",
-                raw: 115166
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["E459E0CCBCE2A1B4400C67E9593FC9BD"]
+              currentDuration: { value: 115.17, unit: "μs", raw: 115166 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -1705,13 +1231,11 @@ export const data: AssetsData = {
             traceId: "327F1AF74124C7044B7DB1022B5E77FD",
             spanId: "F5A70B0D6F8DBD54",
             startTime: "2023-08-03T15:02:51.708232Z",
-            duration: {
-              value: 72.79,
-              unit: "μs",
-              raw: 72792
-            }
+            duration: { value: 72.79, unit: "μs", raw: 72792 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:07.991984Z"
+          firstDataSeenTime: "2023-08-03T15:03:07.991984Z",
+          p50: { value: 76.15, unit: "μs", raw: 76145.5 },
+          p95: { value: 115.17, unit: "μs", raw: 115166 }
         },
         {
           span: {
@@ -1732,33 +1256,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 48.54,
-                unit: "μs",
-                raw: 48542
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: []
+              currentDuration: { value: 48.54, unit: "μs", raw: 48542 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 48.54,
-                unit: "μs",
-                raw: 48542
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: []
+              currentDuration: { value: 48.54, unit: "μs", raw: 48542 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -1775,13 +1280,11 @@ export const data: AssetsData = {
             traceId: "972193204A5C7B134D7A023321EBA2F0",
             spanId: "13784E040C19DE6A",
             startTime: "2023-08-03T14:17:27.619626Z",
-            duration: {
-              value: 48.54,
-              unit: "μs",
-              raw: 48542
-            }
+            duration: { value: 48.54, unit: "μs", raw: 48542 }
           },
-          firstDataSeenTime: "2023-08-03T14:17:37.826511Z"
+          firstDataSeenTime: "2023-08-03T14:17:37.826511Z",
+          p50: { value: 48.54, unit: "μs", raw: 48542 },
+          p95: { value: 48.54, unit: "μs", raw: 48542 }
         },
         {
           span: {
@@ -1803,33 +1306,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 340.46,
-                unit: "μs",
-                raw: 340458
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: []
+              currentDuration: { value: 340.46, unit: "μs", raw: 340458 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 340.46,
-                unit: "μs",
-                raw: 340458
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: []
+              currentDuration: { value: 340.46, unit: "μs", raw: 340458 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -1846,13 +1330,11 @@ export const data: AssetsData = {
             traceId: "6F750907BF7EC0B7BB46117D7FC6EFEF",
             spanId: "2194EAC4B1DD8938",
             startTime: "2023-08-03T14:17:27.631933Z",
-            duration: {
-              value: 340.46,
-              unit: "μs",
-              raw: 340458
-            }
+            duration: { value: 340.46, unit: "μs", raw: 340458 }
           },
-          firstDataSeenTime: "2023-08-03T14:17:37.882855Z"
+          firstDataSeenTime: "2023-08-03T14:17:37.882855Z",
+          p50: { value: 340.46, unit: "μs", raw: 340458 },
+          p95: { value: 340.46, unit: "μs", raw: 340458 }
         },
         {
           span: {
@@ -1873,33 +1355,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 190.71,
-                unit: "μs",
-                raw: 190709
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: []
+              currentDuration: { value: 190.71, unit: "μs", raw: 190709 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 190.71,
-                unit: "μs",
-                raw: 190709
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: []
+              currentDuration: { value: 190.71, unit: "μs", raw: 190709 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -1916,13 +1379,11 @@ export const data: AssetsData = {
             traceId: "671AAFCFD34FB15DB3C35B1704B4560A",
             spanId: "0523147E2A4F259C",
             startTime: "2023-08-03T14:17:27.63098Z",
-            duration: {
-              value: 190.71,
-              unit: "μs",
-              raw: 190709
-            }
+            duration: { value: 190.71, unit: "μs", raw: 190709 }
           },
-          firstDataSeenTime: "2023-08-03T14:17:38.169938Z"
+          firstDataSeenTime: "2023-08-03T14:17:38.169938Z",
+          p50: { value: 190.71, unit: "μs", raw: 190709 },
+          p95: { value: 190.71, unit: "μs", raw: 190709 }
         },
         {
           span: {
@@ -1943,33 +1404,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 110.94,
-                unit: "μs",
-                raw: 110937.5
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: []
+              currentDuration: { value: 110.94, unit: "μs", raw: 110937.5 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 170,
-                unit: "μs",
-                raw: 170000
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["8B22E3DA2A01147481EC8AEAC5DD0B21"]
+              currentDuration: { value: 170, unit: "μs", raw: 170000 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -1986,13 +1428,11 @@ export const data: AssetsData = {
             traceId: "6912D6AA41D92B88CDED509D1B87482D",
             spanId: "29929DBE0657587B",
             startTime: "2023-08-03T14:17:27.640519Z",
-            duration: {
-              value: 112.12,
-              unit: "μs",
-              raw: 112125
-            }
+            duration: { value: 112.12, unit: "μs", raw: 112125 }
           },
-          firstDataSeenTime: "2023-08-03T14:17:37.997529Z"
+          firstDataSeenTime: "2023-08-03T14:17:37.997529Z",
+          p50: { value: 110.94, unit: "μs", raw: 110937.5 },
+          p95: { value: 170, unit: "μs", raw: 170000 }
         },
         {
           span: {
@@ -2014,33 +1454,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 4.62,
-                unit: "ms",
-                raw: 4618041
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["4D38B1BF14B7D13C45CF7C58B76E2E17"]
+              currentDuration: { value: 4.62, unit: "ms", raw: 4618041 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 4.62,
-                unit: "ms",
-                raw: 4618041
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["4D38B1BF14B7D13C45CF7C58B76E2E17"]
+              currentDuration: { value: 4.62, unit: "ms", raw: 4618041 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -2057,13 +1478,11 @@ export const data: AssetsData = {
             traceId: "4D38B1BF14B7D13C45CF7C58B76E2E17",
             spanId: "B4A84364A5FB65D8",
             startTime: "2023-08-03T15:02:51.253293Z",
-            duration: {
-              value: 4.62,
-              unit: "ms",
-              raw: 4618041
-            }
+            duration: { value: 4.62, unit: "ms", raw: 4618041 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:07.9406Z"
+          firstDataSeenTime: "2023-08-03T15:03:07.9406Z",
+          p50: { value: 4.62, unit: "ms", raw: 4618041 },
+          p95: { value: 4.62, unit: "ms", raw: 4618041 }
         },
         {
           span: {
@@ -2084,33 +1503,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 138.17,
-                unit: "μs",
-                raw: 138167
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: []
+              currentDuration: { value: 138.17, unit: "μs", raw: 138167 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 175.38,
-                unit: "μs",
-                raw: 175375
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: []
+              currentDuration: { value: 175.38, unit: "μs", raw: 175375 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -2127,13 +1527,11 @@ export const data: AssetsData = {
             traceId: "593C490C243751ECB9C69EA33440F68D",
             spanId: "B709DE84149B3DBB",
             startTime: "2023-08-03T14:17:27.639681Z",
-            duration: {
-              value: 138.17,
-              unit: "μs",
-              raw: 138167
-            }
+            duration: { value: 138.17, unit: "μs", raw: 138167 }
           },
-          firstDataSeenTime: "2023-08-03T14:17:37.885077Z"
+          firstDataSeenTime: "2023-08-03T14:17:37.885077Z",
+          p50: { value: 138.17, unit: "μs", raw: 138167 },
+          p95: { value: 175.38, unit: "μs", raw: 175375 }
         },
         {
           span: {
@@ -2154,33 +1552,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 148.08,
-                unit: "μs",
-                raw: 148083.5
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: []
+              currentDuration: { value: 148.08, unit: "μs", raw: 148083.5 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 217.79,
-                unit: "μs",
-                raw: 217791
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: []
+              currentDuration: { value: 217.79, unit: "μs", raw: 217791 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -2197,13 +1576,11 @@ export const data: AssetsData = {
             traceId: "FEAF905C81650A2484125F29E0B3A49E",
             spanId: "613DED7D14981617",
             startTime: "2023-08-03T14:17:27.641544Z",
-            duration: {
-              value: 159.71,
-              unit: "μs",
-              raw: 159708
-            }
+            duration: { value: 159.71, unit: "μs", raw: 159708 }
           },
-          firstDataSeenTime: "2023-08-03T14:17:37.971044Z"
+          firstDataSeenTime: "2023-08-03T14:17:37.971044Z",
+          p50: { value: 148.08, unit: "μs", raw: 148083.5 },
+          p95: { value: 217.79, unit: "μs", raw: 217791 }
         },
         {
           span: {
@@ -2225,33 +1602,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 567.54,
-                unit: "μs",
-                raw: 567541
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["CCF2DB1909BA03BA419999D9CB1607AE"]
+              currentDuration: { value: 567.54, unit: "μs", raw: 567541 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 567.54,
-                unit: "μs",
-                raw: 567541
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["CCF2DB1909BA03BA419999D9CB1607AE"]
+              currentDuration: { value: 567.54, unit: "μs", raw: 567541 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -2268,13 +1626,11 @@ export const data: AssetsData = {
             traceId: "CCF2DB1909BA03BA419999D9CB1607AE",
             spanId: "25A740251B76B1A4",
             startTime: "2023-08-03T14:17:27.633899Z",
-            duration: {
-              value: 567.54,
-              unit: "μs",
-              raw: 567541
-            }
+            duration: { value: 567.54, unit: "μs", raw: 567541 }
           },
-          firstDataSeenTime: "2023-08-03T14:17:38.080574Z"
+          firstDataSeenTime: "2023-08-03T14:17:38.080574Z",
+          p50: { value: 567.54, unit: "μs", raw: 567541 },
+          p95: { value: 567.54, unit: "μs", raw: 567541 }
         },
         {
           span: {
@@ -2295,33 +1651,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 494.08,
-                unit: "μs",
-                raw: 494084
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["45EA1AA311940A3CC828C3882635DEE1"]
+              currentDuration: { value: 494.08, unit: "μs", raw: 494084 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 494.08,
-                unit: "μs",
-                raw: 494084
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["45EA1AA311940A3CC828C3882635DEE1"]
+              currentDuration: { value: 494.08, unit: "μs", raw: 494084 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -2338,13 +1675,11 @@ export const data: AssetsData = {
             traceId: "45EA1AA311940A3CC828C3882635DEE1",
             spanId: "4E22C497EBDE038F",
             startTime: "2023-08-03T14:17:27.623428Z",
-            duration: {
-              value: 494.08,
-              unit: "μs",
-              raw: 494084
-            }
+            duration: { value: 494.08, unit: "μs", raw: 494084 }
           },
-          firstDataSeenTime: "2023-08-03T14:17:38.139932Z"
+          firstDataSeenTime: "2023-08-03T14:17:38.139932Z",
+          p50: { value: 494.08, unit: "μs", raw: 494084 },
+          p95: { value: 494.08, unit: "μs", raw: 494084 }
         },
         {
           span: {
@@ -2366,33 +1701,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 46.88,
-                unit: "μs",
-                raw: 46875
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["A8E16D65BA136391D56FEA5FFB5D30FA"]
+              currentDuration: { value: 46.88, unit: "μs", raw: 46875 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 91.35,
-                unit: "μs",
-                raw: 91354.25
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["916006BE36E867C3FAD77626C1B73BEF"]
+              currentDuration: { value: 91.35, unit: "μs", raw: 91354.25 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -2409,13 +1725,11 @@ export const data: AssetsData = {
             traceId: "A5B2C18C7F88BF17381ED1FD7B57A3C3",
             spanId: "DD9F8D79CE45AC10",
             startTime: "2023-08-03T15:03:10.020894Z",
-            duration: {
-              value: 46.88,
-              unit: "μs",
-              raw: 46875
-            }
+            duration: { value: 46.88, unit: "μs", raw: 46875 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:17.890981Z"
+          firstDataSeenTime: "2023-08-03T15:03:17.890981Z",
+          p50: { value: 46.88, unit: "μs", raw: 46875 },
+          p95: { value: 91.35, unit: "μs", raw: 91354.25 }
         },
         {
           span: {
@@ -2437,15 +1751,7 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 56.21,
-                unit: "μs",
-                raw: 56208.5
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["8940349945ECC7254D4D6FD4156AF80C"]
+              currentDuration: { value: 56.21, unit: "μs", raw: 56208.5 }
             },
             {
               percentile: 0.95,
@@ -2453,17 +1759,10 @@ export const data: AssetsData = {
                 value: 105.23,
                 unit: "μs",
                 raw: 105228.99999999997
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["974ADBA5DCC1E662F4832D54D4D5C6C9"]
+              }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -2480,13 +1779,11 @@ export const data: AssetsData = {
             traceId: "9316AB9977582858CF8486458925BB4A",
             spanId: "C164200EDD5483B4",
             startTime: "2023-08-03T15:03:10.029498Z",
-            duration: {
-              value: 68.04,
-              unit: "μs",
-              raw: 68042
-            }
+            duration: { value: 68.04, unit: "μs", raw: 68042 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:17.921681Z"
+          firstDataSeenTime: "2023-08-03T15:03:17.921681Z",
+          p50: { value: 56.21, unit: "μs", raw: 56208.5 },
+          p95: { value: 105.23, unit: "μs", raw: 105228.99999999997 }
         },
         {
           span: {
@@ -2507,33 +1804,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 134.83,
-                unit: "μs",
-                raw: 134833.5
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["B47F2B981A0340296369CF8E052CC609"]
+              currentDuration: { value: 134.83, unit: "μs", raw: 134833.5 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 1.03,
-                unit: "ms",
-                raw: 1026291
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["410B3D9F149FA007DF54A5319CCC10F1"]
+              currentDuration: { value: 1.03, unit: "ms", raw: 1026291 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -2550,13 +1828,11 @@ export const data: AssetsData = {
             traceId: "73B4FDF439EB772ABA164D02A0DEE2E9",
             spanId: "F0AC28FC53003E82",
             startTime: "2023-08-03T14:17:27.638102Z",
-            duration: {
-              value: 125.12,
-              unit: "μs",
-              raw: 125125
-            }
+            duration: { value: 125.12, unit: "μs", raw: 125125 }
           },
-          firstDataSeenTime: "2023-08-03T14:17:37.826711Z"
+          firstDataSeenTime: "2023-08-03T14:17:37.826711Z",
+          p50: { value: 134.83, unit: "μs", raw: 134833.5 },
+          p95: { value: 1.03, unit: "ms", raw: 1026291 }
         },
         {
           span: {
@@ -2578,15 +1854,7 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 100.17,
-                unit: "μs",
-                raw: 100166.5
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["8940349945ECC7254D4D6FD4156AF80C"]
+              currentDuration: { value: 100.17, unit: "μs", raw: 100166.5 }
             },
             {
               percentile: 0.95,
@@ -2594,17 +1862,10 @@ export const data: AssetsData = {
                 value: 304.96,
                 unit: "μs",
                 raw: 304957.99999999994
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["916006BE36E867C3FAD77626C1B73BEF"]
+              }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -2621,13 +1882,11 @@ export const data: AssetsData = {
             traceId: "9316AB9977582858CF8486458925BB4A",
             spanId: "C8A8F26FCB84CB6C",
             startTime: "2023-08-03T15:03:10.028836Z",
-            duration: {
-              value: 33,
-              unit: "μs",
-              raw: 33000
-            }
+            duration: { value: 33, unit: "μs", raw: 33000 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:17.912946Z"
+          firstDataSeenTime: "2023-08-03T15:03:17.912946Z",
+          p50: { value: 100.17, unit: "μs", raw: 100166.5 },
+          p95: { value: 304.96, unit: "μs", raw: 304957.99999999994 }
         },
         {
           span: {
@@ -2649,33 +1908,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 542.58,
-                unit: "μs",
-                raw: 542584
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: []
+              currentDuration: { value: 542.58, unit: "μs", raw: 542584 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 542.58,
-                unit: "μs",
-                raw: 542584
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: []
+              currentDuration: { value: 542.58, unit: "μs", raw: 542584 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -2692,13 +1932,11 @@ export const data: AssetsData = {
             traceId: "4F8A6264CFA0804BE71A65AE9D327D35",
             spanId: "1AAF9C2078703CC6",
             startTime: "2023-08-03T14:17:27.6331Z",
-            duration: {
-              value: 542.58,
-              unit: "μs",
-              raw: 542584
-            }
+            duration: { value: 542.58, unit: "μs", raw: 542584 }
           },
-          firstDataSeenTime: "2023-08-03T14:17:38.093788Z"
+          firstDataSeenTime: "2023-08-03T14:17:38.093788Z",
+          p50: { value: 542.58, unit: "μs", raw: 542584 },
+          p95: { value: 542.58, unit: "μs", raw: 542584 }
         },
         {
           span: {
@@ -2720,33 +1958,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 397.83,
-                unit: "μs",
-                raw: 397833
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: []
+              currentDuration: { value: 397.83, unit: "μs", raw: 397833 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 397.83,
-                unit: "μs",
-                raw: 397833
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: []
+              currentDuration: { value: 397.83, unit: "μs", raw: 397833 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -2763,13 +1982,11 @@ export const data: AssetsData = {
             traceId: "0B96DDC7979A36B18CA3B33A7ACD2EBF",
             spanId: "CEB6110C6C116F40",
             startTime: "2023-08-03T14:17:27.631233Z",
-            duration: {
-              value: 397.83,
-              unit: "μs",
-              raw: 397833
-            }
+            duration: { value: 397.83, unit: "μs", raw: 397833 }
           },
-          firstDataSeenTime: "2023-08-03T14:17:37.981161Z"
+          firstDataSeenTime: "2023-08-03T14:17:37.981161Z",
+          p50: { value: 397.83, unit: "μs", raw: 397833 },
+          p95: { value: 397.83, unit: "μs", raw: 397833 }
         },
         {
           span: {
@@ -2791,33 +2008,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 495.04,
-                unit: "μs",
-                raw: 495042
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["717AFE3701BEA2149B28C963B56C1374"]
+              currentDuration: { value: 495.04, unit: "μs", raw: 495042 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 495.04,
-                unit: "μs",
-                raw: 495042
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["717AFE3701BEA2149B28C963B56C1374"]
+              currentDuration: { value: 495.04, unit: "μs", raw: 495042 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -2834,13 +2032,11 @@ export const data: AssetsData = {
             traceId: "717AFE3701BEA2149B28C963B56C1374",
             spanId: "58A3C3BC6E5E4707",
             startTime: "2023-08-03T14:17:27.634518Z",
-            duration: {
-              value: 495.04,
-              unit: "μs",
-              raw: 495042
-            }
+            duration: { value: 495.04, unit: "μs", raw: 495042 }
           },
-          firstDataSeenTime: "2023-08-03T14:17:38.16309Z"
+          firstDataSeenTime: "2023-08-03T14:17:38.16309Z",
+          p50: { value: 495.04, unit: "μs", raw: 495042 },
+          p95: { value: 495.04, unit: "μs", raw: 495042 }
         },
         {
           span: {
@@ -2861,33 +2057,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 139.08,
-                unit: "μs",
-                raw: 139083.5
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["328BE1802602B6AB70180F04CF95DB61"]
+              currentDuration: { value: 139.08, unit: "μs", raw: 139083.5 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 176.04,
-                unit: "μs",
-                raw: 176042
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["A247687874291BFECC50D83579F14EB7"]
+              currentDuration: { value: 176.04, unit: "μs", raw: 176042 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -2904,13 +2081,11 @@ export const data: AssetsData = {
             traceId: "0084F37650072074A3F8390137D42B27",
             spanId: "05D1F3C9A4AEF95F",
             startTime: "2023-08-03T14:17:27.646363Z",
-            duration: {
-              value: 121.88,
-              unit: "μs",
-              raw: 121875
-            }
+            duration: { value: 121.88, unit: "μs", raw: 121875 }
           },
-          firstDataSeenTime: "2023-08-03T14:17:38.173262Z"
+          firstDataSeenTime: "2023-08-03T14:17:38.173262Z",
+          p50: { value: 139.08, unit: "μs", raw: 139083.5 },
+          p95: { value: 176.04, unit: "μs", raw: 176042 }
         },
         {
           span: {
@@ -2932,33 +2107,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 4.84,
-                unit: "ms",
-                raw: 4837916
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["FEA0145AAD602B3E9A0BECE8337B420C"]
+              currentDuration: { value: 4.84, unit: "ms", raw: 4837916 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 4.84,
-                unit: "ms",
-                raw: 4837916
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["FEA0145AAD602B3E9A0BECE8337B420C"]
+              currentDuration: { value: 4.84, unit: "ms", raw: 4837916 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -2975,13 +2131,11 @@ export const data: AssetsData = {
             traceId: "FEA0145AAD602B3E9A0BECE8337B420C",
             spanId: "9BF21E63E15BCBA0",
             startTime: "2023-08-03T14:17:27.624955Z",
-            duration: {
-              value: 4.84,
-              unit: "ms",
-              raw: 4837916
-            }
+            duration: { value: 4.84, unit: "ms", raw: 4837916 }
           },
-          firstDataSeenTime: "2023-08-03T14:17:38.114511Z"
+          firstDataSeenTime: "2023-08-03T14:17:38.114511Z",
+          p50: { value: 4.84, unit: "ms", raw: 4837916 },
+          p95: { value: 4.84, unit: "ms", raw: 4837916 }
         },
         {
           span: {
@@ -3002,33 +2156,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 133.96,
-                unit: "μs",
-                raw: 133958
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["C422AA88D11C487DDC7FA14CAA62504E"]
+              currentDuration: { value: 133.96, unit: "μs", raw: 133958 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 237.29,
-                unit: "μs",
-                raw: 237291
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["6FB58A1A9B64BE5F4E1D68C19B0A4BF1"]
+              currentDuration: { value: 237.29, unit: "μs", raw: 237291 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -3045,13 +2180,11 @@ export const data: AssetsData = {
             traceId: "23F298CD6B2D7AA59DB6A38EC0429DB8",
             spanId: "B991F49604344C4E",
             startTime: "2023-08-03T14:17:27.638757Z",
-            duration: {
-              value: 121,
-              unit: "μs",
-              raw: 121000
-            }
+            duration: { value: 121, unit: "μs", raw: 121000 }
           },
-          firstDataSeenTime: "2023-08-03T14:17:37.947691Z"
+          firstDataSeenTime: "2023-08-03T14:17:37.947691Z",
+          p50: { value: 133.96, unit: "μs", raw: 133958 },
+          p95: { value: 237.29, unit: "μs", raw: 237291 }
         },
         {
           span: {
@@ -3072,33 +2205,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 47.38,
-                unit: "μs",
-                raw: 47375
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["44A3F5D45E84F23DF4C6ED2F008CFF5E"]
+              currentDuration: { value: 47.38, unit: "μs", raw: 47375 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 47.38,
-                unit: "μs",
-                raw: 47375
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["44A3F5D45E84F23DF4C6ED2F008CFF5E"]
+              currentDuration: { value: 47.38, unit: "μs", raw: 47375 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -3115,13 +2229,11 @@ export const data: AssetsData = {
             traceId: "44A3F5D45E84F23DF4C6ED2F008CFF5E",
             spanId: "BD5A7FB77FC990C0",
             startTime: "2023-08-03T14:17:27.619537Z",
-            duration: {
-              value: 47.38,
-              unit: "μs",
-              raw: 47375
-            }
+            duration: { value: 47.38, unit: "μs", raw: 47375 }
           },
-          firstDataSeenTime: "2023-08-03T14:17:37.916407Z"
+          firstDataSeenTime: "2023-08-03T14:17:37.916407Z",
+          p50: { value: 47.38, unit: "μs", raw: 47375 },
+          p95: { value: 47.38, unit: "μs", raw: 47375 }
         },
         {
           span: {
@@ -3142,33 +2254,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 58.54,
-                unit: "μs",
-                raw: 58541
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: []
+              currentDuration: { value: 58.54, unit: "μs", raw: 58541 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 58.54,
-                unit: "μs",
-                raw: 58541
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: []
+              currentDuration: { value: 58.54, unit: "μs", raw: 58541 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -3185,13 +2278,11 @@ export const data: AssetsData = {
             traceId: "9D5D2BE9098EA27DF44BCF79F2E0BEE9",
             spanId: "423CC0F62D75BF69",
             startTime: "2023-08-03T14:17:27.619836Z",
-            duration: {
-              value: 58.54,
-              unit: "μs",
-              raw: 58541
-            }
+            duration: { value: 58.54, unit: "μs", raw: 58541 }
           },
-          firstDataSeenTime: "2023-08-03T14:17:38.080324Z"
+          firstDataSeenTime: "2023-08-03T14:17:38.080324Z",
+          p50: { value: 58.54, unit: "μs", raw: 58541 },
+          p95: { value: 58.54, unit: "μs", raw: 58541 }
         },
         {
           span: {
@@ -3212,33 +2303,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 60.79,
-                unit: "μs",
-                raw: 60791
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["42FD3EC797C4783F205756A0E595337C"]
+              currentDuration: { value: 60.79, unit: "μs", raw: 60791 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 60.79,
-                unit: "μs",
-                raw: 60791
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["42FD3EC797C4783F205756A0E595337C"]
+              currentDuration: { value: 60.79, unit: "μs", raw: 60791 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -3255,13 +2327,11 @@ export const data: AssetsData = {
             traceId: "42FD3EC797C4783F205756A0E595337C",
             spanId: "F6459AF51497F5B9",
             startTime: "2023-08-03T14:17:27.619334Z",
-            duration: {
-              value: 60.79,
-              unit: "μs",
-              raw: 60791
-            }
+            duration: { value: 60.79, unit: "μs", raw: 60791 }
           },
-          firstDataSeenTime: "2023-08-03T14:17:38.135248Z"
+          firstDataSeenTime: "2023-08-03T14:17:38.135248Z",
+          p50: { value: 60.79, unit: "μs", raw: 60791 },
+          p95: { value: 60.79, unit: "μs", raw: 60791 }
         },
         {
           span: {
@@ -3283,33 +2353,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 714.67,
-                unit: "μs",
-                raw: 714667
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: []
+              currentDuration: { value: 714.67, unit: "μs", raw: 714667 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 714.67,
-                unit: "μs",
-                raw: 714667
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: []
+              currentDuration: { value: 714.67, unit: "μs", raw: 714667 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -3326,13 +2377,11 @@ export const data: AssetsData = {
             traceId: "B3AA50AC8F88D1F45FE2E8BC0A2546BB",
             spanId: "4924762CA30BA9BC",
             startTime: "2023-08-03T14:17:27.632323Z",
-            duration: {
-              value: 714.67,
-              unit: "μs",
-              raw: 714667
-            }
+            duration: { value: 714.67, unit: "μs", raw: 714667 }
           },
-          firstDataSeenTime: "2023-08-03T14:17:38.017748Z"
+          firstDataSeenTime: "2023-08-03T14:17:38.017748Z",
+          p50: { value: 714.67, unit: "μs", raw: 714667 },
+          p95: { value: 714.67, unit: "μs", raw: 714667 }
         },
         {
           span: {
@@ -3353,33 +2402,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 956.96,
-                unit: "μs",
-                raw: 956958
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["FFD7F21A177B9539711921A9012660CE"]
+              currentDuration: { value: 956.96, unit: "μs", raw: 956958 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 956.96,
-                unit: "μs",
-                raw: 956958
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["FFD7F21A177B9539711921A9012660CE"]
+              currentDuration: { value: 956.96, unit: "μs", raw: 956958 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -3396,13 +2426,11 @@ export const data: AssetsData = {
             traceId: "FFD7F21A177B9539711921A9012660CE",
             spanId: "97AF3FEB176DFBE1",
             startTime: "2023-08-03T14:17:27.618245Z",
-            duration: {
-              value: 956.96,
-              unit: "μs",
-              raw: 956958
-            }
+            duration: { value: 956.96, unit: "μs", raw: 956958 }
           },
-          firstDataSeenTime: "2023-08-03T14:17:37.936082Z"
+          firstDataSeenTime: "2023-08-03T14:17:37.936082Z",
+          p50: { value: 956.96, unit: "μs", raw: 956958 },
+          p95: { value: 956.96, unit: "μs", raw: 956958 }
         },
         {
           span: {
@@ -3424,33 +2452,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 3.38,
-                unit: "ms",
-                raw: 3378791
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: []
+              currentDuration: { value: 3.38, unit: "ms", raw: 3378791 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 3.38,
-                unit: "ms",
-                raw: 3378791
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: []
+              currentDuration: { value: 3.38, unit: "ms", raw: 3378791 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -3467,13 +2476,11 @@ export const data: AssetsData = {
             traceId: "2057C4C0A0B3BFC857C263A389005708",
             spanId: "EF49E7CE30E4CC7F",
             startTime: "2023-08-03T14:17:27.619978Z",
-            duration: {
-              value: 3.38,
-              unit: "ms",
-              raw: 3378791
-            }
+            duration: { value: 3.38, unit: "ms", raw: 3378791 }
           },
-          firstDataSeenTime: "2023-08-03T14:17:38.046151Z"
+          firstDataSeenTime: "2023-08-03T14:17:38.046151Z",
+          p50: { value: 3.38, unit: "ms", raw: 3378791 },
+          p95: { value: 3.38, unit: "ms", raw: 3378791 }
         },
         {
           span: {
@@ -3494,33 +2501,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 174.96,
-                unit: "μs",
-                raw: 174959
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: []
+              currentDuration: { value: 174.96, unit: "μs", raw: 174959 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 174.96,
-                unit: "μs",
-                raw: 174959
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: []
+              currentDuration: { value: 174.96, unit: "μs", raw: 174959 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -3537,13 +2525,11 @@ export const data: AssetsData = {
             traceId: "7BF1C4AB05EF85A30C7D2EC4936D5274",
             spanId: "301BE4772E61CA47",
             startTime: "2023-08-03T14:17:27.631674Z",
-            duration: {
-              value: 174.96,
-              unit: "μs",
-              raw: 174959
-            }
+            duration: { value: 174.96, unit: "μs", raw: 174959 }
           },
-          firstDataSeenTime: "2023-08-03T14:17:37.930442Z"
+          firstDataSeenTime: "2023-08-03T14:17:37.930442Z",
+          p50: { value: 174.96, unit: "μs", raw: 174959 },
+          p95: { value: 174.96, unit: "μs", raw: 174959 }
         },
         {
           span: {
@@ -3564,33 +2550,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 51.96,
-                unit: "μs",
-                raw: 51959
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["E726A325ED3BA9B3C3CBB8FEA0EEC5B3"]
+              currentDuration: { value: 51.96, unit: "μs", raw: 51959 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 51.96,
-                unit: "μs",
-                raw: 51959
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["E726A325ED3BA9B3C3CBB8FEA0EEC5B3"]
+              currentDuration: { value: 51.96, unit: "μs", raw: 51959 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -3607,13 +2574,11 @@ export const data: AssetsData = {
             traceId: "E726A325ED3BA9B3C3CBB8FEA0EEC5B3",
             spanId: "954FDE1FB211E4E4",
             startTime: "2023-08-03T14:17:27.619443Z",
-            duration: {
-              value: 51.96,
-              unit: "μs",
-              raw: 51959
-            }
+            duration: { value: 51.96, unit: "μs", raw: 51959 }
           },
-          firstDataSeenTime: "2023-08-03T14:17:37.883655Z"
+          firstDataSeenTime: "2023-08-03T14:17:37.883655Z",
+          p50: { value: 51.96, unit: "μs", raw: 51959 },
+          p95: { value: 51.96, unit: "μs", raw: 51959 }
         },
         {
           span: {
@@ -3635,33 +2600,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 675.38,
-                unit: "μs",
-                raw: 675375
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["55B7808FEE2AFA0CBC6026026C12B524"]
+              currentDuration: { value: 675.38, unit: "μs", raw: 675375 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 675.38,
-                unit: "μs",
-                raw: 675375
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["55B7808FEE2AFA0CBC6026026C12B524"]
+              currentDuration: { value: 675.38, unit: "μs", raw: 675375 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -3678,13 +2624,11 @@ export const data: AssetsData = {
             traceId: "55B7808FEE2AFA0CBC6026026C12B524",
             spanId: "13D4FFBECD9C106A",
             startTime: "2023-08-03T14:17:27.629862Z",
-            duration: {
-              value: 675.38,
-              unit: "μs",
-              raw: 675375
-            }
+            duration: { value: 675.38, unit: "μs", raw: 675375 }
           },
-          firstDataSeenTime: "2023-08-03T14:17:37.827419Z"
+          firstDataSeenTime: "2023-08-03T14:17:37.827419Z",
+          p50: { value: 675.38, unit: "μs", raw: 675375 },
+          p95: { value: 675.38, unit: "μs", raw: 675375 }
         },
         {
           span: {
@@ -3705,33 +2649,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 156.67,
-                unit: "μs",
-                raw: 156666
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["2753FA8A3E7E6C600AFEF874F6273234"]
+              currentDuration: { value: 156.67, unit: "μs", raw: 156666 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 156.67,
-                unit: "μs",
-                raw: 156666
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["2753FA8A3E7E6C600AFEF874F6273234"]
+              currentDuration: { value: 156.67, unit: "μs", raw: 156666 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -3748,13 +2673,11 @@ export const data: AssetsData = {
             traceId: "2753FA8A3E7E6C600AFEF874F6273234",
             spanId: "4E5A5EB9A27B0CB0",
             startTime: "2023-08-03T14:17:27.633683Z",
-            duration: {
-              value: 156.67,
-              unit: "μs",
-              raw: 156666
-            }
+            duration: { value: 156.67, unit: "μs", raw: 156666 }
           },
-          firstDataSeenTime: "2023-08-03T14:17:37.897115Z"
+          firstDataSeenTime: "2023-08-03T14:17:37.897115Z",
+          p50: { value: 156.67, unit: "μs", raw: 156666 },
+          p95: { value: 156.67, unit: "μs", raw: 156666 }
         },
         {
           span: {
@@ -3775,33 +2698,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 4.79,
-                unit: "μs",
-                raw: 4791.5
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 4.79, unit: "μs", raw: 4791.5 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 8.38,
-                unit: "μs",
-                raw: 8375
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 8.38, unit: "μs", raw: 8375 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -3818,13 +2722,11 @@ export const data: AssetsData = {
             traceId: "3A3D10C8C5C6B499DAB699B7DB310E7A",
             spanId: "B98E9DC02FD25EFD",
             startTime: "2023-08-03T15:03:15.619948Z",
-            duration: {
-              value: 208,
-              unit: "ns",
-              raw: 208
-            }
+            duration: { value: 208, unit: "ns", raw: 208 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:37.973516Z"
+          firstDataSeenTime: "2023-08-03T15:03:37.973516Z",
+          p50: { value: 4.79, unit: "μs", raw: 4791.5 },
+          p95: { value: 8.38, unit: "μs", raw: 8375 }
         },
         {
           span: {
@@ -3845,33 +2747,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 1.52,
-                unit: "ms",
-                raw: 1524583.5
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["1EEA224BD921C247F416519D5ED50563"]
+              currentDuration: { value: 1.52, unit: "ms", raw: 1524583.5 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 1.66,
-                unit: "ms",
-                raw: 1655125
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["DE0FFBC0598B5328C676FF694F4D39D8"]
+              currentDuration: { value: 1.66, unit: "ms", raw: 1655125 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -3888,13 +2771,11 @@ export const data: AssetsData = {
             traceId: "DE0FFBC0598B5328C676FF694F4D39D8",
             spanId: "CCAB5DC8ADD7A48F",
             startTime: "2023-08-03T15:02:51.469005Z",
-            duration: {
-              value: 1.66,
-              unit: "ms",
-              raw: 1655125
-            }
+            duration: { value: 1.66, unit: "ms", raw: 1655125 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:07.954681Z"
+          firstDataSeenTime: "2023-08-03T15:03:07.954681Z",
+          p50: { value: 1.52, unit: "ms", raw: 1524583.5 },
+          p95: { value: 1.66, unit: "ms", raw: 1655125 }
         },
         {
           span: {
@@ -3915,33 +2796,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 2.17,
-                unit: "ms",
-                raw: 2165833
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["D4E6C460133C68CE7B718A587A335F0B"]
+              currentDuration: { value: 2.17, unit: "ms", raw: 2165833 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 41.08,
-                unit: "ms",
-                raw: 41084250
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["A1C2070890935DC54CB5ACB579A00CED"]
+              currentDuration: { value: 41.08, unit: "ms", raw: 41084250 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -3958,13 +2820,11 @@ export const data: AssetsData = {
             traceId: "D4E6C460133C68CE7B718A587A335F0B",
             spanId: "7550F4686CCA9E5B",
             startTime: "2023-08-03T15:02:51.464518Z",
-            duration: {
-              value: 2.17,
-              unit: "ms",
-              raw: 2165833
-            }
+            duration: { value: 2.17, unit: "ms", raw: 2165833 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:07.962432Z"
+          firstDataSeenTime: "2023-08-03T15:03:07.962432Z",
+          p50: { value: 2.17, unit: "ms", raw: 2165833 },
+          p95: { value: 41.08, unit: "ms", raw: 41084250 }
         },
         {
           span: {
@@ -3985,33 +2845,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 31.35,
-                unit: "ms",
-                raw: 31351833.5
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["100DE1ECF252299A366B1FDD1567974F"]
+              currentDuration: { value: 31.35, unit: "ms", raw: 31351833.5 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 58.44,
-                unit: "ms",
-                raw: 58441750
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["904D24ED9E6C1A1FDDEDEECE41B615E8"]
+              currentDuration: { value: 58.44, unit: "ms", raw: 58441750 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -4028,13 +2869,11 @@ export const data: AssetsData = {
             traceId: "100DE1ECF252299A366B1FDD1567974F",
             spanId: "861C30FCB79D65DF",
             startTime: "2023-08-03T15:02:51.408498Z",
-            duration: {
-              value: 4.26,
-              unit: "ms",
-              raw: 4261917
-            }
+            duration: { value: 4.26, unit: "ms", raw: 4261917 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:07.931716Z"
+          firstDataSeenTime: "2023-08-03T15:03:07.931716Z",
+          p50: { value: 31.35, unit: "ms", raw: 31351833.5 },
+          p95: { value: 58.44, unit: "ms", raw: 58441750 }
         },
         {
           span: {
@@ -4055,15 +2894,7 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 3.9,
-                unit: "ms",
-                raw: 3895625
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["D076C5BBD0FA8838F2063C7120A72260"]
+              currentDuration: { value: 3.9, unit: "ms", raw: 3895625 }
             },
             {
               percentile: 0.95,
@@ -4071,17 +2902,10 @@ export const data: AssetsData = {
                 value: 26.15,
                 unit: "ms",
                 raw: 26153599.699999988
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["E459E0CCBCE2A1B4400C67E9593FC9BD"]
+              }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -4098,13 +2922,11 @@ export const data: AssetsData = {
             traceId: "9D767B5368F97B6C6349C45D5EE82AE8",
             spanId: "02C35DE40091E40E",
             startTime: "2023-08-03T15:02:51.727341Z",
-            duration: {
-              value: 3.14,
-              unit: "ms",
-              raw: 3136333
-            }
+            duration: { value: 3.14, unit: "ms", raw: 3136333 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:07.993182Z"
+          firstDataSeenTime: "2023-08-03T15:03:07.993182Z",
+          p50: { value: 3.9, unit: "ms", raw: 3895625 },
+          p95: { value: 26.15, unit: "ms", raw: 26153599.699999988 }
         },
         {
           span: {
@@ -4125,33 +2947,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 2.48,
-                unit: "ms",
-                raw: 2483917
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["244DAD19FF36A648BFDCF18CEC58EB97"]
+              currentDuration: { value: 2.48, unit: "ms", raw: 2483917 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 14.3,
-                unit: "ms",
-                raw: 14296334
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["CE966416543013950B27E0295939D336"]
+              currentDuration: { value: 14.3, unit: "ms", raw: 14296334 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -4168,13 +2971,11 @@ export const data: AssetsData = {
             traceId: "84571EC8F94A546279BAA4B4F9D455A2",
             spanId: "C6D8C5AF551B1741",
             startTime: "2023-08-03T15:02:51.499536Z",
-            duration: {
-              value: 1.98,
-              unit: "ms",
-              raw: 1983959
-            }
+            duration: { value: 1.98, unit: "ms", raw: 1983959 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:07.954491Z"
+          firstDataSeenTime: "2023-08-03T15:03:07.954491Z",
+          p50: { value: 2.48, unit: "ms", raw: 2483917 },
+          p95: { value: 14.3, unit: "ms", raw: 14296334 }
         },
         {
           span: {
@@ -4195,33 +2996,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 2.01,
-                unit: "sec",
-                raw: 2014992543
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3CDF279F7208336BC76A80B0E1FBF611"]
+              currentDuration: { value: 2.01, unit: "sec", raw: 2014992543 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 2.05,
-                unit: "sec",
-                raw: 2046338917
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["6A524B7D6F2170A7E933F8645D9FB9E0"]
+              currentDuration: { value: 2.05, unit: "sec", raw: 2046338917 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -4238,13 +3020,11 @@ export const data: AssetsData = {
             traceId: "954EB94F06A76B6A7376BAB6AEAD26E3",
             spanId: "B5CBAC96801B85E3",
             startTime: "2023-08-03T15:03:05.893497Z",
-            duration: {
-              value: 2.01,
-              unit: "sec",
-              raw: 2005051293
-            }
+            duration: { value: 2.01, unit: "sec", raw: 2005051293 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:08.005988Z"
+          firstDataSeenTime: "2023-08-03T15:03:08.005988Z",
+          p50: { value: 2.01, unit: "sec", raw: 2014992543 },
+          p95: { value: 2.05, unit: "sec", raw: 2046338917 }
         },
         {
           span: {
@@ -4265,15 +3045,7 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 5.04,
-                unit: "ms",
-                raw: 5039208.5
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["ECF264755F95C01B7A21A338C6DF6ED9"]
+              currentDuration: { value: 5.04, unit: "ms", raw: 5039208.5 }
             },
             {
               percentile: 0.95,
@@ -4281,17 +3053,10 @@ export const data: AssetsData = {
                 value: 29.02,
                 unit: "ms",
                 raw: 29018749.49999996
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["974ADBA5DCC1E662F4832D54D4D5C6C9"]
+              }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -4308,13 +3073,11 @@ export const data: AssetsData = {
             traceId: "B8D8219E439656DD91DCEA7785AB40C4",
             spanId: "A055072AD9E71718",
             startTime: "2023-08-03T15:02:51.650539Z",
-            duration: {
-              value: 4.37,
-              unit: "ms",
-              raw: 4373375
-            }
+            duration: { value: 4.37, unit: "ms", raw: 4373375 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:07.982383Z"
+          firstDataSeenTime: "2023-08-03T15:03:07.982383Z",
+          p50: { value: 5.04, unit: "ms", raw: 5039208.5 },
+          p95: { value: 29.02, unit: "ms", raw: 29018749.49999996 }
         },
         {
           span: {
@@ -4335,33 +3098,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 8.66,
-                unit: "ms",
-                raw: 8660417
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["2360B5AA264EBB7D81331A5C2FA85E1D"]
+              currentDuration: { value: 8.66, unit: "ms", raw: 8660417 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 14.46,
-                unit: "ms",
-                raw: 14459209
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["BEA0F857FCA0FA84DC0B719A231A604B"]
+              currentDuration: { value: 14.46, unit: "ms", raw: 14459209 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -4378,13 +3122,11 @@ export const data: AssetsData = {
             traceId: "A5B2C18C7F88BF17381ED1FD7B57A3C3",
             spanId: "62EAA95B58D13F90",
             startTime: "2023-08-03T15:03:10.015594Z",
-            duration: {
-              value: 10,
-              unit: "ms",
-              raw: 10004291
-            }
+            duration: { value: 10, unit: "ms", raw: 10004291 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:17.912744Z"
+          firstDataSeenTime: "2023-08-03T15:03:17.912744Z",
+          p50: { value: 8.66, unit: "ms", raw: 8660417 },
+          p95: { value: 14.46, unit: "ms", raw: 14459209 }
         },
         {
           span: {
@@ -4405,33 +3147,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 8.9,
-                unit: "ms",
-                raw: 8899208
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["9316AB9977582858CF8486458925BB4A"]
+              currentDuration: { value: 8.9, unit: "ms", raw: 8899208 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 33.25,
-                unit: "ms",
-                raw: 33253500
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["0B9E578557989324EEA1509B22EA2D6E"]
+              currentDuration: { value: 33.25, unit: "ms", raw: 33253500 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -4448,13 +3171,11 @@ export const data: AssetsData = {
             traceId: "9316AB9977582858CF8486458925BB4A",
             spanId: "DC164996503152F6",
             startTime: "2023-08-03T15:03:10.025806Z",
-            duration: {
-              value: 8.9,
-              unit: "ms",
-              raw: 8899208
-            }
+            duration: { value: 8.9, unit: "ms", raw: 8899208 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:17.903451Z"
+          firstDataSeenTime: "2023-08-03T15:03:17.903451Z",
+          p50: { value: 8.9, unit: "ms", raw: 8899208 },
+          p95: { value: 33.25, unit: "ms", raw: 33253500 }
         },
         {
           span: {
@@ -4475,33 +3196,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 5.72,
-                unit: "ms",
-                raw: 5716208
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 5.72, unit: "ms", raw: 5716208 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 5.72,
-                unit: "ms",
-                raw: 5716208
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 5.72, unit: "ms", raw: 5716208 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -4518,13 +3220,11 @@ export const data: AssetsData = {
             traceId: "3A3D10C8C5C6B499DAB699B7DB310E7A",
             spanId: "DF682BEA15DA0737",
             startTime: "2023-08-03T15:03:15.601645Z",
-            duration: {
-              value: 5.06,
-              unit: "ms",
-              raw: 5063084
-            }
+            duration: { value: 5.06, unit: "ms", raw: 5063084 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:37.933137Z"
+          firstDataSeenTime: "2023-08-03T15:03:37.933137Z",
+          p50: { value: 5.72, unit: "ms", raw: 5716208 },
+          p95: { value: 5.72, unit: "ms", raw: 5716208 }
         },
         {
           span: {
@@ -4545,33 +3245,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 1.38,
-                unit: "ms",
-                raw: 1375125
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 1.38, unit: "ms", raw: 1375125 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 1.38,
-                unit: "ms",
-                raw: 1375125
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 1.38, unit: "ms", raw: 1375125 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -4588,13 +3269,11 @@ export const data: AssetsData = {
             traceId: "3A3D10C8C5C6B499DAB699B7DB310E7A",
             spanId: "D6CA7DCB818CE309",
             startTime: "2023-08-03T15:03:18.335509Z",
-            duration: {
-              value: 1.19,
-              unit: "ms",
-              raw: 1187209
-            }
+            duration: { value: 1.19, unit: "ms", raw: 1187209 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:37.993433Z"
+          firstDataSeenTime: "2023-08-03T15:03:37.993433Z",
+          p50: { value: 1.38, unit: "ms", raw: 1375125 },
+          p95: { value: 1.38, unit: "ms", raw: 1375125 }
         },
         {
           span: {
@@ -4615,33 +3294,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 1.94,
-                unit: "ms",
-                raw: 1936875
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 1.94, unit: "ms", raw: 1936875 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 1.94,
-                unit: "ms",
-                raw: 1936875
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 1.94, unit: "ms", raw: 1936875 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -4658,13 +3318,11 @@ export const data: AssetsData = {
             traceId: "3A3D10C8C5C6B499DAB699B7DB310E7A",
             spanId: "AFF6725266841889",
             startTime: "2023-08-03T15:03:18.310698Z",
-            duration: {
-              value: 1.1,
-              unit: "ms",
-              raw: 1095209
-            }
+            duration: { value: 1.1, unit: "ms", raw: 1095209 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:37.994975Z"
+          firstDataSeenTime: "2023-08-03T15:03:37.994975Z",
+          p50: { value: 1.94, unit: "ms", raw: 1936875 },
+          p95: { value: 1.94, unit: "ms", raw: 1936875 }
         },
         {
           span: {
@@ -4685,33 +3343,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 19.89,
-                unit: "ms",
-                raw: 19887125
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 19.89, unit: "ms", raw: 19887125 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 19.89,
-                unit: "ms",
-                raw: 19887125
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 19.89, unit: "ms", raw: 19887125 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -4728,13 +3367,11 @@ export const data: AssetsData = {
             traceId: "3A3D10C8C5C6B499DAB699B7DB310E7A",
             spanId: "9BAD5FC34D41D178",
             startTime: "2023-08-03T15:03:18.332075Z",
-            duration: {
-              value: 1.61,
-              unit: "ms",
-              raw: 1611041
-            }
+            duration: { value: 1.61, unit: "ms", raw: 1611041 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:37.984199Z"
+          firstDataSeenTime: "2023-08-03T15:03:37.984199Z",
+          p50: { value: 19.89, unit: "ms", raw: 19887125 },
+          p95: { value: 19.89, unit: "ms", raw: 19887125 }
         },
         {
           span: {
@@ -4755,33 +3392,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 8.25,
-                unit: "ms",
-                raw: 8245042
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 8.25, unit: "ms", raw: 8245042 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 8.25,
-                unit: "ms",
-                raw: 8245042
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 8.25, unit: "ms", raw: 8245042 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -4798,13 +3416,11 @@ export const data: AssetsData = {
             traceId: "3A3D10C8C5C6B499DAB699B7DB310E7A",
             spanId: "A6CBD202A10DB50F",
             startTime: "2023-08-03T15:03:18.298969Z",
-            duration: {
-              value: 6.57,
-              unit: "ms",
-              raw: 6571416
-            }
+            duration: { value: 6.57, unit: "ms", raw: 6571416 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:37.976204Z"
+          firstDataSeenTime: "2023-08-03T15:03:37.976204Z",
+          p50: { value: 8.25, unit: "ms", raw: 8245042 },
+          p95: { value: 8.25, unit: "ms", raw: 8245042 }
         },
         {
           span: {
@@ -4825,33 +3441,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 7.07,
-                unit: "ms",
-                raw: 7067166
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 7.07, unit: "ms", raw: 7067166 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 7.07,
-                unit: "ms",
-                raw: 7067166
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 7.07, unit: "ms", raw: 7067166 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -4868,13 +3465,11 @@ export const data: AssetsData = {
             traceId: "3A3D10C8C5C6B499DAB699B7DB310E7A",
             spanId: "40A3E82F211885ED",
             startTime: "2023-08-03T15:03:15.616734Z",
-            duration: {
-              value: 1.89,
-              unit: "ms",
-              raw: 1886417
-            }
+            duration: { value: 1.89, unit: "ms", raw: 1886417 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:37.943745Z"
+          firstDataSeenTime: "2023-08-03T15:03:37.943745Z",
+          p50: { value: 7.07, unit: "ms", raw: 7067166 },
+          p95: { value: 7.07, unit: "ms", raw: 7067166 }
         },
         {
           span: {
@@ -4895,33 +3490,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 2.21,
-                unit: "ms",
-                raw: 2214875
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 2.21, unit: "ms", raw: 2214875 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 2.21,
-                unit: "ms",
-                raw: 2214875
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 2.21, unit: "ms", raw: 2214875 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -4938,13 +3514,11 @@ export const data: AssetsData = {
             traceId: "3A3D10C8C5C6B499DAB699B7DB310E7A",
             spanId: "E829D61C69EE9128",
             startTime: "2023-08-03T15:03:15.618729Z",
-            duration: {
-              value: 1.91,
-              unit: "ms",
-              raw: 1911167
-            }
+            duration: { value: 1.91, unit: "ms", raw: 1911167 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:37.960793Z"
+          firstDataSeenTime: "2023-08-03T15:03:37.960793Z",
+          p50: { value: 2.21, unit: "ms", raw: 2214875 },
+          p95: { value: 2.21, unit: "ms", raw: 2214875 }
         },
         {
           span: {
@@ -4965,33 +3539,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 1.62,
-                unit: "ms",
-                raw: 1618042
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 1.62, unit: "ms", raw: 1618042 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 1.62,
-                unit: "ms",
-                raw: 1618042
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 1.62, unit: "ms", raw: 1618042 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -5008,13 +3563,11 @@ export const data: AssetsData = {
             traceId: "3A3D10C8C5C6B499DAB699B7DB310E7A",
             spanId: "1F45660470992C92",
             startTime: "2023-08-03T15:03:18.307371Z",
-            duration: {
-              value: 1.03,
-              unit: "ms",
-              raw: 1032792
-            }
+            duration: { value: 1.03, unit: "ms", raw: 1032792 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:37.978286Z"
+          firstDataSeenTime: "2023-08-03T15:03:37.978286Z",
+          p50: { value: 1.62, unit: "ms", raw: 1618042 },
+          p95: { value: 1.62, unit: "ms", raw: 1618042 }
         },
         {
           span: {
@@ -5035,33 +3588,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 2.53,
-                unit: "sec",
-                raw: 2525240210
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 2.53, unit: "sec", raw: 2525240210 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 2.53,
-                unit: "sec",
-                raw: 2525240210
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 2.53, unit: "sec", raw: 2525240210 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -5078,13 +3612,11 @@ export const data: AssetsData = {
             traceId: "3A3D10C8C5C6B499DAB699B7DB310E7A",
             spanId: "C203D01BBBA731EC",
             startTime: "2023-08-03T15:03:12.571576Z",
-            duration: {
-              value: 2.51,
-              unit: "sec",
-              raw: 2510482792
-            }
+            duration: { value: 2.51, unit: "sec", raw: 2510482792 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:37.962496Z"
+          firstDataSeenTime: "2023-08-03T15:03:37.962496Z",
+          p50: { value: 2.53, unit: "sec", raw: 2525240210 },
+          p95: { value: 2.53, unit: "sec", raw: 2525240210 }
         },
         {
           span: {
@@ -5105,33 +3637,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 253.94,
-                unit: "ms",
-                raw: 253942833
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 253.94, unit: "ms", raw: 253942833 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 253.94,
-                unit: "ms",
-                raw: 253942833
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 253.94, unit: "ms", raw: 253942833 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -5148,13 +3661,11 @@ export const data: AssetsData = {
             traceId: "3A3D10C8C5C6B499DAB699B7DB310E7A",
             spanId: "46F7234DE821AA54",
             startTime: "2023-08-03T15:03:15.336689Z",
-            duration: {
-              value: 258.4,
-              unit: "ms",
-              raw: 258403834
-            }
+            duration: { value: 258.4, unit: "ms", raw: 258403834 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:37.927494Z"
+          firstDataSeenTime: "2023-08-03T15:03:37.927494Z",
+          p50: { value: 253.94, unit: "ms", raw: 253942833 },
+          p95: { value: 253.94, unit: "ms", raw: 253942833 }
         },
         {
           span: {
@@ -5175,33 +3686,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 3.35,
-                unit: "ms",
-                raw: 3347209
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["7A2AA0ACFE768816084B2E1EADEF03DA"]
+              currentDuration: { value: 3.35, unit: "ms", raw: 3347209 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 351.89,
-                unit: "ms",
-                raw: 351893958
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["4D38B1BF14B7D13C45CF7C58B76E2E17"]
+              currentDuration: { value: 351.89, unit: "ms", raw: 351893958 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -5218,13 +3710,11 @@ export const data: AssetsData = {
             traceId: "E4A02B938FEB0DB76132BDF0F452F48A",
             spanId: "FBA51806DBE86D2E",
             startTime: "2023-08-03T15:02:51.346784Z",
-            duration: {
-              value: 2.28,
-              unit: "ms",
-              raw: 2275042
-            }
+            duration: { value: 2.28, unit: "ms", raw: 2275042 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:07.930586Z"
+          firstDataSeenTime: "2023-08-03T15:03:07.930586Z",
+          p50: { value: 3.35, unit: "ms", raw: 3347209 },
+          p95: { value: 351.89, unit: "ms", raw: 351893958 }
         },
         {
           span: {
@@ -5247,33 +3737,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 8.29,
-                unit: "sec",
-                raw: 8293080046
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 8.29, unit: "sec", raw: 8293080046 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 8.29,
-                unit: "sec",
-                raw: 8293080046
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 8.29, unit: "sec", raw: 8293080046 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SlowEndpoint",
@@ -5330,13 +3801,11 @@ export const data: AssetsData = {
             traceId: "3A3D10C8C5C6B499DAB699B7DB310E7A",
             spanId: "6B726C8E50E57CB7",
             startTime: "2023-08-03T15:03:10.044191Z",
-            duration: {
-              value: 8.29,
-              unit: "sec",
-              raw: 8293080046
-            }
+            duration: { value: 8.29, unit: "sec", raw: 8293080046 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:37.958693Z"
+          firstDataSeenTime: "2023-08-03T15:03:37.958693Z",
+          p50: { value: 8.29, unit: "sec", raw: 8293080046 },
+          p95: { value: 8.29, unit: "sec", raw: 8293080046 }
         },
         {
           span: {
@@ -5360,15 +3829,7 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 1.21,
-                unit: "ms",
-                raw: 1213000
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["9D767B5368F97B6C6349C45D5EE82AE8"]
+              currentDuration: { value: 1.21, unit: "ms", raw: 1213000 }
             },
             {
               percentile: 0.95,
@@ -5376,17 +3837,10 @@ export const data: AssetsData = {
                 value: 6.91,
                 unit: "ms",
                 raw: 6912791.8999999985
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["E459E0CCBCE2A1B4400C67E9593FC9BD"]
+              }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -5403,13 +3857,11 @@ export const data: AssetsData = {
             traceId: "9D767B5368F97B6C6349C45D5EE82AE8",
             spanId: "2411B993DB22E87E",
             startTime: "2023-08-03T15:02:51.72839Z",
-            duration: {
-              value: 899.92,
-              unit: "μs",
-              raw: 899917
-            }
+            duration: { value: 899.92, unit: "μs", raw: 899917 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:08.000282Z"
+          firstDataSeenTime: "2023-08-03T15:03:08.000282Z",
+          p50: { value: 1.21, unit: "ms", raw: 1213000 },
+          p95: { value: 6.91, unit: "ms", raw: 6912791.8999999985 }
         },
         {
           span: {
@@ -5433,33 +3885,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 2,
-                unit: "sec",
-                raw: 2000510376
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3CDF279F7208336BC76A80B0E1FBF611"]
+              currentDuration: { value: 2, unit: "sec", raw: 2000510376 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 2,
-                unit: "sec",
-                raw: 2003027126
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["6A524B7D6F2170A7E933F8645D9FB9E0"]
+              currentDuration: { value: 2, unit: "sec", raw: 2003027126 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanEndpointBottleneck",
@@ -5486,13 +3919,11 @@ export const data: AssetsData = {
             traceId: "954EB94F06A76B6A7376BAB6AEAD26E3",
             spanId: "78AEEF1091C25D85",
             startTime: "2023-08-03T15:03:05.894775Z",
-            duration: {
-              value: 2,
-              unit: "sec",
-              raw: 2000223834
-            }
+            duration: { value: 2, unit: "sec", raw: 2000223834 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:08.012358Z"
+          firstDataSeenTime: "2023-08-03T15:03:08.012358Z",
+          p50: { value: 2, unit: "sec", raw: 2000510376 },
+          p95: { value: 2, unit: "sec", raw: 2003027126 }
         },
         {
           span: {
@@ -5516,33 +3947,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 2,
-                unit: "sec",
-                raw: 2000643792
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3CDF279F7208336BC76A80B0E1FBF611"]
+              currentDuration: { value: 2, unit: "sec", raw: 2000643792 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 2,
-                unit: "sec",
-                raw: 2003089251
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["6A524B7D6F2170A7E933F8645D9FB9E0"]
+              currentDuration: { value: 2, unit: "sec", raw: 2003089251 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -5559,13 +3971,11 @@ export const data: AssetsData = {
             traceId: "954EB94F06A76B6A7376BAB6AEAD26E3",
             spanId: "4A0C038AFB37745B",
             startTime: "2023-08-03T15:03:05.894769Z",
-            duration: {
-              value: 2,
-              unit: "sec",
-              raw: 2000238043
-            }
+            duration: { value: 2, unit: "sec", raw: 2000238043 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:08.010792Z"
+          firstDataSeenTime: "2023-08-03T15:03:08.010792Z",
+          p50: { value: 2, unit: "sec", raw: 2000643792 },
+          p95: { value: 2, unit: "sec", raw: 2003089251 }
         },
         {
           span: {
@@ -5589,33 +3999,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 89.17,
-                unit: "μs",
-                raw: 89166
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 89.17, unit: "μs", raw: 89166 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 89.17,
-                unit: "μs",
-                raw: 89166
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 89.17, unit: "μs", raw: 89166 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -5652,13 +4043,11 @@ export const data: AssetsData = {
             traceId: "3A3D10C8C5C6B499DAB699B7DB310E7A",
             spanId: "D01CA5A988472E9A",
             startTime: "2023-08-03T15:03:15.604147Z",
-            duration: {
-              value: 49.67,
-              unit: "μs",
-              raw: 49667
-            }
+            duration: { value: 49.67, unit: "μs", raw: 49667 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:37.971036Z"
+          firstDataSeenTime: "2023-08-03T15:03:37.971036Z",
+          p50: { value: 89.17, unit: "μs", raw: 89166 },
+          p95: { value: 89.17, unit: "μs", raw: 89166 }
         },
         {
           span: {
@@ -5682,33 +4071,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 78.79,
-                unit: "μs",
-                raw: 78792
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 78.79, unit: "μs", raw: 78792 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 78.79,
-                unit: "μs",
-                raw: 78792
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 78.79, unit: "μs", raw: 78792 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -5745,13 +4115,11 @@ export const data: AssetsData = {
             traceId: "3A3D10C8C5C6B499DAB699B7DB310E7A",
             spanId: "6DBB5D062717E557",
             startTime: "2023-08-03T15:03:15.604152Z",
-            duration: {
-              value: 41.92,
-              unit: "μs",
-              raw: 41917
-            }
+            duration: { value: 41.92, unit: "μs", raw: 41917 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:37.934715Z"
+          firstDataSeenTime: "2023-08-03T15:03:37.934715Z",
+          p50: { value: 78.79, unit: "μs", raw: 78792 },
+          p95: { value: 78.79, unit: "μs", raw: 78792 }
         },
         {
           span: {
@@ -5775,33 +4143,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 68.25,
-                unit: "μs",
-                raw: 68250
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 68.25, unit: "μs", raw: 68250 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 68.25,
-                unit: "μs",
-                raw: 68250
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 68.25, unit: "μs", raw: 68250 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -5838,13 +4187,11 @@ export const data: AssetsData = {
             traceId: "3A3D10C8C5C6B499DAB699B7DB310E7A",
             spanId: "C8085B9727E6ED0B",
             startTime: "2023-08-03T15:03:15.604156Z",
-            duration: {
-              value: 32.79,
-              unit: "μs",
-              raw: 32792
-            }
+            duration: { value: 32.79, unit: "μs", raw: 32792 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:37.954738Z"
+          firstDataSeenTime: "2023-08-03T15:03:37.954738Z",
+          p50: { value: 68.25, unit: "μs", raw: 68250 },
+          p95: { value: 68.25, unit: "μs", raw: 68250 }
         },
         {
           span: {
@@ -5868,33 +4215,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 200.16,
-                unit: "ms",
-                raw: 200158125
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 200.16, unit: "ms", raw: 200158125 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 200.16,
-                unit: "ms",
-                raw: 200158125
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 200.16, unit: "ms", raw: 200158125 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 2,
-            ScoreExp1000: 2
-          },
+          impactScores: { ScoreExp25: 2, ScoreExp1000: 2 },
           insights: [
             {
               type: "SpanEndpointBottleneck",
@@ -5921,13 +4249,11 @@ export const data: AssetsData = {
             traceId: "3A3D10C8C5C6B499DAB699B7DB310E7A",
             spanId: "ABACB87C41FB8895",
             startTime: "2023-08-03T15:03:15.33804Z",
-            duration: {
-              value: 202.47,
-              unit: "ms",
-              raw: 202474792
-            }
+            duration: { value: 202.47, unit: "ms", raw: 202474792 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:37.949695Z"
+          firstDataSeenTime: "2023-08-03T15:03:37.949695Z",
+          p50: { value: 200.16, unit: "ms", raw: 200158125 },
+          p95: { value: 200.16, unit: "ms", raw: 200158125 }
         },
         {
           span: {
@@ -5951,33 +4277,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 50.5,
-                unit: "ms",
-                raw: 50496126
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 50.5, unit: "ms", raw: 50496126 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 50.5,
-                unit: "ms",
-                raw: 50496126
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 50.5, unit: "ms", raw: 50496126 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -5994,13 +4301,11 @@ export const data: AssetsData = {
             traceId: "3A3D10C8C5C6B499DAB699B7DB310E7A",
             spanId: "CE0512097F998CB1",
             startTime: "2023-08-03T15:03:15.540576Z",
-            duration: {
-              value: 52.62,
-              unit: "ms",
-              raw: 52621125
-            }
+            duration: { value: 52.62, unit: "ms", raw: 52621125 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:37.946311Z"
+          firstDataSeenTime: "2023-08-03T15:03:37.946311Z",
+          p50: { value: 50.5, unit: "ms", raw: 50496126 },
+          p95: { value: 50.5, unit: "ms", raw: 50496126 }
         },
         {
           span: {
@@ -6023,33 +4328,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 7.38,
-                unit: "μs",
-                raw: 7375
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["F12C235A5888B8FB967ADE1A7197EE44"]
+              currentDuration: { value: 7.38, unit: "μs", raw: 7375 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 270.96,
-                unit: "μs",
-                raw: 270958
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["A1C2070890935DC54CB5ACB579A00CED"]
+              currentDuration: { value: 270.96, unit: "μs", raw: 270958 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -6066,13 +4352,11 @@ export const data: AssetsData = {
             traceId: "D4E6C460133C68CE7B718A587A335F0B",
             spanId: "EBFEE4AB0B0B66D4",
             startTime: "2023-08-03T15:02:51.465689Z",
-            duration: {
-              value: 8.21,
-              unit: "μs",
-              raw: 8208
-            }
+            duration: { value: 8.21, unit: "μs", raw: 8208 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:07.957808Z"
+          firstDataSeenTime: "2023-08-03T15:03:07.957808Z",
+          p50: { value: 7.38, unit: "μs", raw: 7375 },
+          p95: { value: 270.96, unit: "μs", raw: 270958 }
         },
         {
           span: {
@@ -6095,15 +4379,7 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 1.26,
-                unit: "ms",
-                raw: 1258979
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["8A8CF497B549662BC644037F3BC2FC05"]
+              currentDuration: { value: 1.26, unit: "ms", raw: 1258979 }
             },
             {
               percentile: 0.95,
@@ -6111,17 +4387,10 @@ export const data: AssetsData = {
                 value: 5.13,
                 unit: "ms",
                 raw: 5131124.999999998
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["411AE283DC18465498B2D01D3EEE1053"]
+              }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -6138,13 +4407,11 @@ export const data: AssetsData = {
             traceId: "9316AB9977582858CF8486458925BB4A",
             spanId: "00A06168C8E3F3AC",
             startTime: "2023-08-03T15:03:10.028539Z",
-            duration: {
-              value: 1.21,
-              unit: "ms",
-              raw: 1211292
-            }
+            duration: { value: 1.21, unit: "ms", raw: 1211292 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:17.913415Z"
+          firstDataSeenTime: "2023-08-03T15:03:17.913415Z",
+          p50: { value: 1.26, unit: "ms", raw: 1258979 },
+          p95: { value: 5.13, unit: "ms", raw: 5131124.999999998 }
         },
         {
           span: {
@@ -6167,15 +4434,7 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 1.19,
-                unit: "ms",
-                raw: 1193729.5
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["9D767B5368F97B6C6349C45D5EE82AE8"]
+              currentDuration: { value: 1.19, unit: "ms", raw: 1193729.5 }
             },
             {
               percentile: 0.95,
@@ -6183,17 +4442,10 @@ export const data: AssetsData = {
                 value: 6.58,
                 unit: "ms",
                 raw: 6582599.999999998
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["E459E0CCBCE2A1B4400C67E9593FC9BD"]
+              }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -6210,13 +4462,11 @@ export const data: AssetsData = {
             traceId: "9D767B5368F97B6C6349C45D5EE82AE8",
             spanId: "5C19D3077D769F94",
             startTime: "2023-08-03T15:02:51.728404Z",
-            duration: {
-              value: 881.58,
-              unit: "μs",
-              raw: 881584
-            }
+            duration: { value: 881.58, unit: "μs", raw: 881584 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:08.00023Z"
+          firstDataSeenTime: "2023-08-03T15:03:08.00023Z",
+          p50: { value: 1.19, unit: "ms", raw: 1193729.5 },
+          p95: { value: 6.58, unit: "ms", raw: 6582599.999999998 }
         },
         {
           span: {
@@ -6239,15 +4489,7 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 901.98,
-                unit: "μs",
-                raw: 901979.5
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["2CD05493B3F64BB401730A4D77076FB2"]
+              currentDuration: { value: 901.98, unit: "μs", raw: 901979.5 }
             },
             {
               percentile: 0.95,
@@ -6255,17 +4497,10 @@ export const data: AssetsData = {
                 value: 5.93,
                 unit: "ms",
                 raw: 5928957.999999998
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["0B9E578557989324EEA1509B22EA2D6E"]
+              }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -6282,13 +4517,11 @@ export const data: AssetsData = {
             traceId: "9316AB9977582858CF8486458925BB4A",
             spanId: "4695A05B24CFD498",
             startTime: "2023-08-03T15:03:10.033754Z",
-            duration: {
-              value: 268.38,
-              unit: "μs",
-              raw: 268375
-            }
+            duration: { value: 268.38, unit: "μs", raw: 268375 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:17.923456Z"
+          firstDataSeenTime: "2023-08-03T15:03:17.923456Z",
+          p50: { value: 901.98, unit: "μs", raw: 901979.5 },
+          p95: { value: 5.93, unit: "ms", raw: 5928957.999999998 }
         },
         {
           span: {
@@ -6311,33 +4544,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 210.8,
-                unit: "ms",
-                raw: 210803916
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["4D38B1BF14B7D13C45CF7C58B76E2E17"]
+              currentDuration: { value: 210.8, unit: "ms", raw: 210803916 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 210.8,
-                unit: "ms",
-                raw: 210803916
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["4D38B1BF14B7D13C45CF7C58B76E2E17"]
+              currentDuration: { value: 210.8, unit: "ms", raw: 210803916 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -6354,13 +4568,11 @@ export const data: AssetsData = {
             traceId: "4D38B1BF14B7D13C45CF7C58B76E2E17",
             spanId: "A34C19D4AAE79903",
             startTime: "2023-08-03T15:02:51.092723Z",
-            duration: {
-              value: 210.8,
-              unit: "ms",
-              raw: 210803916
-            }
+            duration: { value: 210.8, unit: "ms", raw: 210803916 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:07.945702Z"
+          firstDataSeenTime: "2023-08-03T15:03:07.945702Z",
+          p50: { value: 210.8, unit: "ms", raw: 210803916 },
+          p95: { value: 210.8, unit: "ms", raw: 210803916 }
         },
         {
           span: {
@@ -6381,33 +4593,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 1.43,
-                unit: "ms",
-                raw: 1432875
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["D4E6C460133C68CE7B718A587A335F0B"]
+              currentDuration: { value: 1.43, unit: "ms", raw: 1432875 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 39.62,
-                unit: "ms",
-                raw: 39619666
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["A1C2070890935DC54CB5ACB579A00CED"]
+              currentDuration: { value: 39.62, unit: "ms", raw: 39619666 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0,
-            ScoreExp1000: 0
-          },
+          impactScores: { ScoreExp25: 0, ScoreExp1000: 0 },
           insights: [
             {
               type: "EndpointBreakdown",
@@ -6444,13 +4637,11 @@ export const data: AssetsData = {
             traceId: "D4E6C460133C68CE7B718A587A335F0B",
             spanId: "EBE0CDEFBBFE74EA",
             startTime: "2023-08-03T15:02:51.465052Z",
-            duration: {
-              value: 1.43,
-              unit: "ms",
-              raw: 1432875
-            }
+            duration: { value: 1.43, unit: "ms", raw: 1432875 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:07.957981Z"
+          firstDataSeenTime: "2023-08-03T15:03:07.957981Z",
+          p50: { value: 1.43, unit: "ms", raw: 1432875 },
+          p95: { value: 39.62, unit: "ms", raw: 39619666 }
         },
         {
           span: {
@@ -6473,33 +4664,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 2.42,
-                unit: "ms",
-                raw: 2418666
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["7A2AA0ACFE768816084B2E1EADEF03DA"]
+              currentDuration: { value: 2.42, unit: "ms", raw: 2418666 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 307.67,
-                unit: "ms",
-                raw: 307672208
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["4D38B1BF14B7D13C45CF7C58B76E2E17"]
+              currentDuration: { value: 307.67, unit: "ms", raw: 307672208 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0.05,
-            ScoreExp1000: 0.05
-          },
+          impactScores: { ScoreExp25: 0.05, ScoreExp1000: 0.05 },
           insights: [
             {
               type: "SlowestSpans",
@@ -6547,13 +4719,11 @@ export const data: AssetsData = {
             traceId: "E4A02B938FEB0DB76132BDF0F452F48A",
             spanId: "46F4A1D81817E01E",
             startTime: "2023-08-03T15:02:51.347316Z",
-            duration: {
-              value: 1.52,
-              unit: "ms",
-              raw: 1519042
-            }
+            duration: { value: 1.52, unit: "ms", raw: 1519042 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:07.919354Z"
+          firstDataSeenTime: "2023-08-03T15:03:07.919354Z",
+          p50: { value: 2.42, unit: "ms", raw: 2418666 },
+          p95: { value: 307.67, unit: "ms", raw: 307672208 }
         },
         {
           span: {
@@ -6576,33 +4746,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 29.97,
-                unit: "ms",
-                raw: 29967187.5
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["100DE1ECF252299A366B1FDD1567974F"]
+              currentDuration: { value: 29.97, unit: "ms", raw: 29967187.5 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 57.4,
-                unit: "ms",
-                raw: 57404750
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["904D24ED9E6C1A1FDDEDEECE41B615E8"]
+              currentDuration: { value: 57.4, unit: "ms", raw: 57404750 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0.1,
-            ScoreExp1000: 0.1
-          },
+          impactScores: { ScoreExp25: 0.1, ScoreExp1000: 0.1 },
           insights: [
             {
               type: "EndpointBreakdown",
@@ -6659,13 +4810,11 @@ export const data: AssetsData = {
             traceId: "100DE1ECF252299A366B1FDD1567974F",
             spanId: "08A41626CCD6ECAC",
             startTime: "2023-08-03T15:02:51.409988Z",
-            duration: {
-              value: 2.53,
-              unit: "ms",
-              raw: 2529625
-            }
+            duration: { value: 2.53, unit: "ms", raw: 2529625 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:07.930173Z"
+          firstDataSeenTime: "2023-08-03T15:03:07.930173Z",
+          p50: { value: 29.97, unit: "ms", raw: 29967187.5 },
+          p95: { value: 57.4, unit: "ms", raw: 57404750 }
         },
         {
           span: {
@@ -6688,15 +4837,7 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 3.16,
-                unit: "ms",
-                raw: 3160625.5
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["D076C5BBD0FA8838F2063C7120A72260"]
+              currentDuration: { value: 3.16, unit: "ms", raw: 3160625.5 }
             },
             {
               percentile: 0.95,
@@ -6704,17 +4845,10 @@ export const data: AssetsData = {
                 value: 24.62,
                 unit: "ms",
                 raw: 24616016.29999999
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["E459E0CCBCE2A1B4400C67E9593FC9BD"]
+              }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0.15,
-            ScoreExp1000: 0.15
-          },
+          impactScores: { ScoreExp25: 0.15, ScoreExp1000: 0.15 },
           insights: [
             {
               type: "EndpointBreakdown",
@@ -6741,13 +4875,11 @@ export const data: AssetsData = {
             traceId: "9D767B5368F97B6C6349C45D5EE82AE8",
             spanId: "6D309B819FAFA6A3",
             startTime: "2023-08-03T15:02:51.727867Z",
-            duration: {
-              value: 2.32,
-              unit: "ms",
-              raw: 2316417
-            }
+            duration: { value: 2.32, unit: "ms", raw: 2316417 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:07.991742Z"
+          firstDataSeenTime: "2023-08-03T15:03:07.991742Z",
+          p50: { value: 3.16, unit: "ms", raw: 3160625.5 },
+          p95: { value: 24.62, unit: "ms", raw: 24616016.29999999 }
         },
         {
           span: {
@@ -6771,33 +4903,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 2.52,
-                unit: "sec",
-                raw: 2515083293
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 2.52, unit: "sec", raw: 2515083293 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 2.52,
-                unit: "sec",
-                raw: 2515083293
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 2.52, unit: "sec", raw: 2515083293 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0.2,
-            ScoreExp1000: 0.2
-          },
+          impactScores: { ScoreExp25: 0.2, ScoreExp1000: 0.2 },
           insights: [
             {
               type: "EndpointBreakdown",
@@ -6844,13 +4957,11 @@ export const data: AssetsData = {
             traceId: "3A3D10C8C5C6B499DAB699B7DB310E7A",
             spanId: "A65337F6C32E922E",
             startTime: "2023-08-03T15:03:12.576873Z",
-            duration: {
-              value: 2.5,
-              unit: "sec",
-              raw: 2504879751
-            }
+            duration: { value: 2.5, unit: "sec", raw: 2504879751 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:37.921587Z"
+          firstDataSeenTime: "2023-08-03T15:03:37.921587Z",
+          p50: { value: 2.52, unit: "sec", raw: 2515083293 },
+          p95: { value: 2.52, unit: "sec", raw: 2515083293 }
         },
         {
           span: {
@@ -6873,33 +4984,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 1.47,
-                unit: "ms",
-                raw: 1470250
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["E095F72C71CAB2F992C93586CBDEAE42"]
+              currentDuration: { value: 1.47, unit: "ms", raw: 1470250 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 13.62,
-                unit: "ms",
-                raw: 13622875
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["CE966416543013950B27E0295939D336"]
+              currentDuration: { value: 13.62, unit: "ms", raw: 13622875 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0.25,
-            ScoreExp1000: 0.25
-          },
+          impactScores: { ScoreExp25: 0.25, ScoreExp1000: 0.25 },
           insights: [
             {
               type: "EndpointBreakdown",
@@ -6936,13 +5028,11 @@ export const data: AssetsData = {
             traceId: "84571EC8F94A546279BAA4B4F9D455A2",
             spanId: "B8715B2ADF98BA66",
             startTime: "2023-08-03T15:02:51.500086Z",
-            duration: {
-              value: 1.38,
-              unit: "ms",
-              raw: 1376334
-            }
+            duration: { value: 1.38, unit: "ms", raw: 1376334 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:07.972101Z"
+          firstDataSeenTime: "2023-08-03T15:03:07.972101Z",
+          p50: { value: 1.47, unit: "ms", raw: 1470250 },
+          p95: { value: 13.62, unit: "ms", raw: 13622875 }
         },
         {
           span: {
@@ -6965,33 +5055,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 2.01,
-                unit: "sec",
-                raw: 2013787084
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3CDF279F7208336BC76A80B0E1FBF611"]
+              currentDuration: { value: 2.01, unit: "sec", raw: 2013787084 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 2.05,
-                unit: "sec",
-                raw: 2045196501
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["6A524B7D6F2170A7E933F8645D9FB9E0"]
+              currentDuration: { value: 2.05, unit: "sec", raw: 2045196501 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0.3,
-            ScoreExp1000: 0.3
-          },
+          impactScores: { ScoreExp25: 0.3, ScoreExp1000: 0.3 },
           insights: [
             {
               type: "EndpointBreakdown",
@@ -7048,13 +5119,11 @@ export const data: AssetsData = {
             traceId: "954EB94F06A76B6A7376BAB6AEAD26E3",
             spanId: "2805D91026FBE6DF",
             startTime: "2023-08-03T15:03:05.894079Z",
-            duration: {
-              value: 2,
-              unit: "sec",
-              raw: 2004276293
-            }
+            duration: { value: 2, unit: "sec", raw: 2004276293 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:08.007833Z"
+          firstDataSeenTime: "2023-08-03T15:03:08.007833Z",
+          p50: { value: 2.01, unit: "sec", raw: 2013787084 },
+          p95: { value: 2.05, unit: "sec", raw: 2045196501 }
         },
         {
           span: {
@@ -7078,33 +5147,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 6.95,
-                unit: "ms",
-                raw: 6954291
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["2360B5AA264EBB7D81331A5C2FA85E1D"]
+              currentDuration: { value: 6.95, unit: "ms", raw: 6954291 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 12.9,
-                unit: "ms",
-                raw: 12902542
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["BEA0F857FCA0FA84DC0B719A231A604B"]
+              currentDuration: { value: 12.9, unit: "ms", raw: 12902542 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0.35,
-            ScoreExp1000: 0.35
-          },
+          impactScores: { ScoreExp25: 0.35, ScoreExp1000: 0.35 },
           insights: [
             {
               type: "EndpointBreakdown",
@@ -7141,13 +5191,11 @@ export const data: AssetsData = {
             traceId: "A5B2C18C7F88BF17381ED1FD7B57A3C3",
             spanId: "BF99BA57B3FD51DF",
             startTime: "2023-08-03T15:03:10.016219Z",
-            duration: {
-              value: 8.77,
-              unit: "ms",
-              raw: 8771500
-            }
+            duration: { value: 8.77, unit: "ms", raw: 8771500 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:17.90665Z"
+          firstDataSeenTime: "2023-08-03T15:03:17.90665Z",
+          p50: { value: 6.95, unit: "ms", raw: 6954291 },
+          p95: { value: 12.9, unit: "ms", raw: 12902542 }
         },
         {
           span: {
@@ -7171,33 +5219,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 8.73,
-                unit: "ms",
-                raw: 8731042
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["9316AB9977582858CF8486458925BB4A"]
+              currentDuration: { value: 8.73, unit: "ms", raw: 8731042 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 31.39,
-                unit: "ms",
-                raw: 31385666
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["0B9E578557989324EEA1509B22EA2D6E"]
+              currentDuration: { value: 31.39, unit: "ms", raw: 31385666 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0.4,
-            ScoreExp1000: 0.4
-          },
+          impactScores: { ScoreExp25: 0.4, ScoreExp1000: 0.4 },
           insights: [
             {
               type: "LowUsage",
@@ -7234,13 +5263,11 @@ export const data: AssetsData = {
             traceId: "9316AB9977582858CF8486458925BB4A",
             spanId: "0A0D7751A50FEEB0",
             startTime: "2023-08-03T15:03:10.026656Z",
-            duration: {
-              value: 8.73,
-              unit: "ms",
-              raw: 8731042
-            }
+            duration: { value: 8.73, unit: "ms", raw: 8731042 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:17.903065Z"
+          firstDataSeenTime: "2023-08-03T15:03:17.903065Z",
+          p50: { value: 8.73, unit: "ms", raw: 8731042 },
+          p95: { value: 31.39, unit: "ms", raw: 31385666 }
         },
         {
           span: {
@@ -7262,41 +5289,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 3.17,
-                unit: "ms",
-                raw: 3171187
-              },
-              previousDuration: {
-                value: 4.49,
-                unit: "ms",
-                raw: 4491666.5
-              },
-              changeTime: "2023-08-03T15:04:15Z",
-              changeVerified: true,
-              traceIds: ["E4B81BD26CFA28F9AC60C1C272DF6E44"]
+              currentDuration: { value: 3.17, unit: "ms", raw: 3171187 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 14.58,
-                unit: "ms",
-                raw: 14582833
-              },
-              previousDuration: {
-                value: 13.49,
-                unit: "ms",
-                raw: 13493391.599999985
-              },
-              changeTime: "2023-08-03T15:04:15Z",
-              changeVerified: true,
-              traceIds: ["E4B81BD26CFA28F9AC60C1C272DF6E44"]
+              currentDuration: { value: 14.58, unit: "ms", raw: 14582833 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0.45,
-            ScoreExp1000: 0.45
-          },
+          impactScores: { ScoreExp25: 0.45, ScoreExp1000: 0.45 },
           insights: [
             {
               type: "EndpointBreakdown",
@@ -7333,13 +5333,11 @@ export const data: AssetsData = {
             traceId: "5E374DCAC4131F844AF870B6EF58F11D",
             spanId: "14DDF35C702BC220",
             startTime: "2023-08-03T15:05:55.952739Z",
-            duration: {
-              value: 2.12,
-              unit: "ms",
-              raw: 2117959
-            }
+            duration: { value: 2.12, unit: "ms", raw: 2117959 }
           },
-          firstDataSeenTime: "2023-08-03T14:18:06.945586Z"
+          firstDataSeenTime: "2023-08-03T14:18:06.945586Z",
+          p50: { value: 3.17, unit: "ms", raw: 3171187 },
+          p95: { value: 14.58, unit: "ms", raw: 14582833 }
         },
         {
           span: {
@@ -7363,33 +5361,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 252.82,
-                unit: "ms",
-                raw: 252820334
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 252.82, unit: "ms", raw: 252820334 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 252.82,
-                unit: "ms",
-                raw: 252820334
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 252.82, unit: "ms", raw: 252820334 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0.5,
-            ScoreExp1000: 0.5
-          },
+          impactScores: { ScoreExp25: 0.5, ScoreExp1000: 0.5 },
           insights: [
             {
               type: "EndpointBreakdown",
@@ -7436,13 +5415,11 @@ export const data: AssetsData = {
             traceId: "3A3D10C8C5C6B499DAB699B7DB310E7A",
             spanId: "92E2E59D60212533",
             startTime: "2023-08-03T15:03:15.337437Z",
-            duration: {
-              value: 257.51,
-              unit: "ms",
-              raw: 257506958
-            }
+            duration: { value: 257.51, unit: "ms", raw: 257506958 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:37.930177Z"
+          firstDataSeenTime: "2023-08-03T15:03:37.930177Z",
+          p50: { value: 252.82, unit: "ms", raw: 252820334 },
+          p95: { value: 252.82, unit: "ms", raw: 252820334 }
         },
         {
           span: {
@@ -7465,15 +5442,7 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 3.46,
-                unit: "ms",
-                raw: 3455333.5
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["6989660348554B849D94B4433F933547"]
+              currentDuration: { value: 3.46, unit: "ms", raw: 3455333.5 }
             },
             {
               percentile: 0.95,
@@ -7481,17 +5450,10 @@ export const data: AssetsData = {
                 value: 28.38,
                 unit: "ms",
                 raw: 28375499.99999996
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["974ADBA5DCC1E662F4832D54D4D5C6C9"]
+              }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0.55,
-            ScoreExp1000: 0.55
-          },
+          impactScores: { ScoreExp25: 0.55, ScoreExp1000: 0.55 },
           insights: [
             {
               type: "EndpointBreakdown",
@@ -7548,13 +5510,11 @@ export const data: AssetsData = {
             traceId: "B8D8219E439656DD91DCEA7785AB40C4",
             spanId: "E5D52CEDED04AC84",
             startTime: "2023-08-03T15:02:51.651732Z",
-            duration: {
-              value: 2.89,
-              unit: "ms",
-              raw: 2890833
-            }
+            duration: { value: 2.89, unit: "ms", raw: 2890833 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:07.976146Z"
+          firstDataSeenTime: "2023-08-03T15:03:07.976146Z",
+          p50: { value: 3.46, unit: "ms", raw: 3455333.5 },
+          p95: { value: 28.38, unit: "ms", raw: 28375499.99999996 }
         },
         {
           span: {
@@ -7578,33 +5538,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 4.39,
-                unit: "ms",
-                raw: 4392875
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 4.39, unit: "ms", raw: 4392875 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 4.39,
-                unit: "ms",
-                raw: 4392875
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 4.39, unit: "ms", raw: 4392875 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0.6,
-            ScoreExp1000: 0.6
-          },
+          impactScores: { ScoreExp25: 0.6, ScoreExp1000: 0.6 },
           insights: [
             {
               type: "EndpointBreakdown",
@@ -7661,13 +5602,11 @@ export const data: AssetsData = {
             traceId: "3A3D10C8C5C6B499DAB699B7DB310E7A",
             spanId: "7CFC34FA4BCDC48A",
             startTime: "2023-08-03T15:03:15.603532Z",
-            duration: {
-              value: 2.82,
-              unit: "ms",
-              raw: 2821666
-            }
+            duration: { value: 2.82, unit: "ms", raw: 2821666 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:37.919855Z"
+          firstDataSeenTime: "2023-08-03T15:03:37.919855Z",
+          p50: { value: 4.39, unit: "ms", raw: 4392875 },
+          p95: { value: 4.39, unit: "ms", raw: 4392875 }
         },
         {
           span: {
@@ -7691,33 +5630,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 7.47,
-                unit: "ms",
-                raw: 7470791
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 7.47, unit: "ms", raw: 7470791 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 7.47,
-                unit: "ms",
-                raw: 7470791
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 7.47, unit: "ms", raw: 7470791 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0.65,
-            ScoreExp1000: 0.65
-          },
+          impactScores: { ScoreExp25: 0.65, ScoreExp1000: 0.65 },
           insights: [
             {
               type: "EndpointBreakdown",
@@ -7754,13 +5674,11 @@ export const data: AssetsData = {
             traceId: "3A3D10C8C5C6B499DAB699B7DB310E7A",
             spanId: "3DA527EF15B8B983",
             startTime: "2023-08-03T15:03:18.299467Z",
-            duration: {
-              value: 5.82,
-              unit: "ms",
-              raw: 5822125
-            }
+            duration: { value: 5.82, unit: "ms", raw: 5822125 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:37.991395Z"
+          firstDataSeenTime: "2023-08-03T15:03:37.991395Z",
+          p50: { value: 7.47, unit: "ms", raw: 7470791 },
+          p95: { value: 7.47, unit: "ms", raw: 7470791 }
         },
         {
           span: {
@@ -7784,33 +5702,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 1.54,
-                unit: "ms",
-                raw: 1544375
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 1.54, unit: "ms", raw: 1544375 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 1.54,
-                unit: "ms",
-                raw: 1544375
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 1.54, unit: "ms", raw: 1544375 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0.7,
-            ScoreExp1000: 0.7
-          },
+          impactScores: { ScoreExp25: 0.7, ScoreExp1000: 0.7 },
           insights: [
             {
               type: "LowUsage",
@@ -7857,13 +5756,11 @@ export const data: AssetsData = {
             traceId: "3A3D10C8C5C6B499DAB699B7DB310E7A",
             spanId: "941F0F8E4C6C59B1",
             startTime: "2023-08-03T15:03:15.619261Z",
-            duration: {
-              value: 1.23,
-              unit: "ms",
-              raw: 1226667
-            }
+            duration: { value: 1.23, unit: "ms", raw: 1226667 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:37.974236Z"
+          firstDataSeenTime: "2023-08-03T15:03:37.974236Z",
+          p50: { value: 1.54, unit: "ms", raw: 1544375 },
+          p95: { value: 1.54, unit: "ms", raw: 1544375 }
         },
         {
           span: {
@@ -7887,33 +5784,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 848.38,
-                unit: "μs",
-                raw: 848375
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 848.38, unit: "μs", raw: 848375 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 848.38,
-                unit: "μs",
-                raw: 848375
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 848.38, unit: "μs", raw: 848375 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0.75,
-            ScoreExp1000: 0.75
-          },
+          impactScores: { ScoreExp25: 0.75, ScoreExp1000: 0.75 },
           insights: [
             {
               type: "EndpointBreakdown",
@@ -7950,13 +5828,11 @@ export const data: AssetsData = {
             traceId: "3A3D10C8C5C6B499DAB699B7DB310E7A",
             spanId: "D63F1AAAEBD1CF29",
             startTime: "2023-08-03T15:03:18.307729Z",
-            duration: {
-              value: 503.79,
-              unit: "μs",
-              raw: 503792
-            }
+            duration: { value: 503.79, unit: "μs", raw: 503792 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:37.981053Z"
+          firstDataSeenTime: "2023-08-03T15:03:37.981053Z",
+          p50: { value: 848.38, unit: "μs", raw: 848375 },
+          p95: { value: 848.38, unit: "μs", raw: 848375 }
         },
         {
           span: {
@@ -7980,33 +5856,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 717.21,
-                unit: "μs",
-                raw: 717208
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 717.21, unit: "μs", raw: 717208 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 717.21,
-                unit: "μs",
-                raw: 717208
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 717.21, unit: "μs", raw: 717208 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0.8,
-            ScoreExp1000: 0.8
-          },
+          impactScores: { ScoreExp25: 0.8, ScoreExp1000: 0.8 },
           insights: [
             {
               type: "EndpointBreakdown",
@@ -8053,13 +5910,11 @@ export const data: AssetsData = {
             traceId: "3A3D10C8C5C6B499DAB699B7DB310E7A",
             spanId: "AD4D4FE0A11A2170",
             startTime: "2023-08-03T15:03:18.336006Z",
-            duration: {
-              value: 443.17,
-              unit: "μs",
-              raw: 443166
-            }
+            duration: { value: 443.17, unit: "μs", raw: 443166 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:38.006345Z"
+          firstDataSeenTime: "2023-08-03T15:03:38.006345Z",
+          p50: { value: 717.21, unit: "μs", raw: 717208 },
+          p95: { value: 717.21, unit: "μs", raw: 717208 }
         },
         {
           span: {
@@ -8084,33 +5939,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 1.38,
-                unit: "ms",
-                raw: 1381500
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 1.38, unit: "ms", raw: 1381500 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 1.38,
-                unit: "ms",
-                raw: 1381500
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 1.38, unit: "ms", raw: 1381500 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0.85,
-            ScoreExp1000: 0.85
-          },
+          impactScores: { ScoreExp25: 0.85, ScoreExp1000: 0.85 },
           insights: [
             {
               type: "SpanScalingInsufficientData",
@@ -8157,13 +5993,11 @@ export const data: AssetsData = {
             traceId: "3A3D10C8C5C6B499DAB699B7DB310E7A",
             spanId: "58BC12FDA32858AF",
             startTime: "2023-08-03T15:03:18.311066Z",
-            duration: {
-              value: 539,
-              unit: "μs",
-              raw: 539000
-            }
+            duration: { value: 539, unit: "μs", raw: 539000 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:37.9828Z"
+          firstDataSeenTime: "2023-08-03T15:03:37.9828Z",
+          p50: { value: 1.38, unit: "ms", raw: 1381500 },
+          p95: { value: 1.38, unit: "ms", raw: 1381500 }
         },
         {
           span: {
@@ -8187,33 +6021,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 5.58,
-                unit: "ms",
-                raw: 5584625
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 5.58, unit: "ms", raw: 5584625 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 5.58,
-                unit: "ms",
-                raw: 5584625
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 5.58, unit: "ms", raw: 5584625 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 0.95,
-            ScoreExp1000: 0.95
-          },
+          impactScores: { ScoreExp25: 0.95, ScoreExp1000: 0.95 },
           insights: [
             {
               type: "EndpointBreakdown",
@@ -8260,13 +6075,11 @@ export const data: AssetsData = {
             traceId: "3A3D10C8C5C6B499DAB699B7DB310E7A",
             spanId: "3871328751120A7C",
             startTime: "2023-08-03T15:03:15.617267Z",
-            duration: {
-              value: 1.13,
-              unit: "ms",
-              raw: 1128834
-            }
+            duration: { value: 1.13, unit: "ms", raw: 1128834 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:37.946461Z"
+          firstDataSeenTime: "2023-08-03T15:03:37.946461Z",
+          p50: { value: 5.58, unit: "ms", raw: 5584625 },
+          p95: { value: 5.58, unit: "ms", raw: 5584625 }
         },
         {
           span: {
@@ -8291,33 +6104,14 @@ export const data: AssetsData = {
           durationPercentiles: [
             {
               percentile: 0.5,
-              currentDuration: {
-                value: 19.55,
-                unit: "ms",
-                raw: 19547667
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 19.55, unit: "ms", raw: 19547667 }
             },
             {
               percentile: 0.95,
-              currentDuration: {
-                value: 19.55,
-                unit: "ms",
-                raw: 19547667
-              },
-              previousDuration: null,
-              changeTime: null,
-              changeVerified: null,
-              traceIds: ["3A3D10C8C5C6B499DAB699B7DB310E7A"]
+              currentDuration: { value: 19.55, unit: "ms", raw: 19547667 }
             }
           ],
-          impactScores: {
-            ScoreExp25: 1,
-            ScoreExp1000: 1
-          },
+          impactScores: { ScoreExp25: 1, ScoreExp1000: 1 },
           insights: [
             {
               type: "EndpointBreakdown",
@@ -8374,13 +6168,11 @@ export const data: AssetsData = {
             traceId: "3A3D10C8C5C6B499DAB699B7DB310E7A",
             spanId: "BF20230D9EE14707",
             startTime: "2023-08-03T15:03:18.33264Z",
-            duration: {
-              value: 918.67,
-              unit: "μs",
-              raw: 918667
-            }
+            duration: { value: 918.67, unit: "μs", raw: 918667 }
           },
-          firstDataSeenTime: "2023-08-03T15:03:38.006385Z"
+          firstDataSeenTime: "2023-08-03T15:03:38.006385Z",
+          p50: { value: 19.55, unit: "ms", raw: 19547667 },
+          p95: { value: 19.55, unit: "ms", raw: 19547667 }
         }
       ],
       accountId: "00000000-0000-0000-0000-000000000000",

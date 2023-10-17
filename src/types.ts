@@ -26,6 +26,8 @@ export enum InsightType {
   EndpointChattyApi = "EndpointChattyApi"
 }
 
+export type PercentileKey = "p50" | "p95";
+
 export interface SpanInfo {
   name: string;
   displayName: string;
@@ -38,15 +40,6 @@ export interface SpanInfo {
    * @deprecated
    */
   codeObjectId: string | null;
-}
-
-export interface DurationPercentileWithChange {
-  percentile: number;
-  currentDuration: Duration;
-  previousDuration: Duration | null;
-  changeTime: string | null;
-  changeVerified: boolean | null;
-  traceIds: string[];
 }
 
 export interface SpanInstanceInfo {

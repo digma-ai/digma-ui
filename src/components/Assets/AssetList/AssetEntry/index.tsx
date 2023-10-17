@@ -59,13 +59,8 @@ export const AssetEntry = (props: AssetEntryProps) => {
 
   const name = props.entry.span.displayName;
   const otherServices = props.entry.relatedServices.slice(1);
-  const performanceDuration = props.entry.durationPercentiles.find(
-    (duration) => duration.percentile === 0.5
-  )?.currentDuration;
-
-  const slowestFivePercentDuration = props.entry.durationPercentiles.find(
-    (duration) => duration.percentile === 0.95
-  )?.currentDuration;
+  const performanceDuration = props.entry.p50;
+  const slowestFivePercentDuration = props.entry.p95;
 
   const lastSeenDateTime = props.entry.lastSpanInstanceInfo.startTime;
 
