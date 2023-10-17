@@ -82,7 +82,7 @@ export const Default: Story = {
       ],
       environment: "SAMPLE_ENV",
       severity: 0,
-      isRecalculateEnabled: false,
+      isRecalculateEnabled: true,
       prefixedCodeObjectId:
         "method:org.springframework.samples.petclinic.sample.SampleInsightsController$_$genNPlusOneWithoutInternalSpan",
       customStartTime: null,

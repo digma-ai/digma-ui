@@ -503,6 +503,7 @@ export interface EndpointSuspectedNPlusOneInsight extends EndpointInsight {
   category: InsightCategory.Performance;
   specifity: InsightSpecificity.TargetAndReasonFound;
   importance: InsightImportance.HighlyImportant;
+  isRecalculateEnabled: true;
   spans: {
     occurrences: number;
     internalSpan: SpanInfo | null;

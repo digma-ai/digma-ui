@@ -14,6 +14,7 @@ import {
 } from "@floating-ui/react";
 import { Children, cloneElement, useRef } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
+import { LAYERS } from "../App/styles";
 import { PopoverProps } from "./types";
 
 // in pixels
@@ -111,7 +112,8 @@ export const NewPopover = (props: PopoverProps) => {
           <div
             ref={refs.setFloating}
             style={{
-              ...floatingStyles
+              ...floatingStyles,
+              zIndex: LAYERS.MODAL
             }}
             {...getFloatingProps()}
           >

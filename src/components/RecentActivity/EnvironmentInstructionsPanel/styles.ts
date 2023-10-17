@@ -35,6 +35,11 @@ export const Header = styled.div`
   }};
 `;
 
+export const IconContainer = styled.div`
+  display: flex;
+  align-self: center;
+`;
+
 export const ContentContainer = styled.div`
   display: flex;
   gap: 12px;

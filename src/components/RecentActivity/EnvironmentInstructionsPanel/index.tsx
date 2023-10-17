@@ -168,7 +168,9 @@ export OTEL_RESOURCE_ATTRIBUTES=digma.environment=${props.environment.originalNa
   return (
     <s.Container>
       <s.Header>
-        <content.icon size={16} color={"currentColor"} />
+        <s.IconContainer>
+          <content.icon size={16} color={"currentColor"} />
+        </s.IconContainer>
         {content.title}
       </s.Header>
       {props.environment.type === "shared" && (
