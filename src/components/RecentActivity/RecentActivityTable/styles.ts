@@ -37,17 +37,26 @@ export const TableHead = styled.thead`
         return "#b4b8bf";
     }
   }};
-  outline: ${TABLE_BORDER_SPACING}px solid
-    ${({ theme }) => {
-      switch (theme.mode) {
-        case "light":
-          return "#f7f8fa";
-        case "dark":
-          return "#0f0f0f";
-        case "dark-jetbrains":
-          return "#2b2d30";
-      }
-    }};
+  box-shadow: -12px -${TABLE_BORDER_SPACING}px 0 ${({ theme }) => {
+        switch (theme.mode) {
+          case "light":
+            return "#f7f8fa";
+          case "dark":
+            return "#0f0f0f";
+          case "dark-jetbrains":
+            return "#2b2d30";
+        }
+      }},
+    0 -${TABLE_BORDER_SPACING}px 0 ${({ theme }) => {
+        switch (theme.mode) {
+          case "light":
+            return "#f7f8fa";
+          case "dark":
+            return "#0f0f0f";
+          case "dark-jetbrains":
+            return "#2b2d30";
+        }
+      }};
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -186,6 +195,17 @@ export const ListHeader = styled.div`
   top: ${HEADER_HEIGHT}px;
   z-index: 1;
   padding: 12px 0 8px 12px;
+  box-shadow: -12px 0 0
+    ${({ theme }) => {
+      switch (theme.mode) {
+        case "light":
+          return "#f7f8fa";
+        case "dark":
+          return "#0f0f0f";
+        case "dark-jetbrains":
+          return "#2b2d30";
+      }
+    }};
   font-size: 14px;
   color: ${({ theme }) => {
     switch (theme.mode) {
