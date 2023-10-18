@@ -50,7 +50,7 @@ export const FullView = (props: FullViewProps) => {
       );
     }
 
-    props.error ? (
+    return props.error ? (
       <ErrorEmptyState />
     ) : (
       <EmptyState
