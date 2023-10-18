@@ -190,45 +190,6 @@ export const ListContainer = styled.div`
   flex-direction: column;
 `;
 
-export const ListHeader = styled.div`
-  position: sticky;
-  top: ${HEADER_HEIGHT}px;
-  z-index: 1;
-  padding: 12px 0 8px 12px;
-  box-shadow: -12px 0 0
-    ${({ theme }) => {
-      switch (theme.mode) {
-        case "light":
-          return "#f7f8fa";
-        case "dark":
-          return "#0f0f0f";
-        case "dark-jetbrains":
-          return "#2b2d30";
-      }
-    }};
-  font-size: 14px;
-  color: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#818594";
-      case "dark":
-        return "#b9c2eb";
-      case "dark-jetbrains":
-        return "#b4b8bf";
-    }
-  }};
-  background: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#f7f8fa";
-      case "dark":
-        return "#0f0f0f";
-      case "dark-jetbrains":
-        return "#2b2d30";
-    }
-  }};
-`;
-
 export const List = styled.ul`
   border-radius: 12px;
   margin: 0;

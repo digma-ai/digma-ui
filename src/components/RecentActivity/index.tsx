@@ -17,6 +17,7 @@ import { ViewMode } from "./EnvironmentPanel/types";
 import { EnvironmentTypePanel } from "./EnvironmentTypePanel";
 import { LiveView } from "./LiveView";
 import { LiveData } from "./LiveView/types";
+import { ObservabilityStatusBadge } from "./ObservabilityStatusBadge";
 import { RecentActivityTable, isRecent } from "./RecentActivityTable";
 import { RegistrationPanel } from "./RegistrationPanel";
 import { SetupOrgDigmaPanel } from "./SetupOrgDigmaPanel";
@@ -367,14 +368,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
       !environmentActivities[selectedEnvironment.originalName] ||
       !environmentActivities[selectedEnvironment.originalName].length
     ) {
-      return (
-        <>
-          <s.RecentActivityTableTitle>
-            Recent Activity
-          </s.RecentActivityTableTitle>
-          {renderNoData()}
-        </>
-      );
+      return <>{renderNoData()}</>;
     }
 
     return (
@@ -402,6 +396,10 @@ export const RecentActivity = (props: RecentActivityProps) => {
               onEnvironmentAdd={handleEnvironmentAdd}
               onEnvironmentDelete={handleEnvironmentDelete}
             />
+            <s.RecentActivityToolbar>
+              <span>Recent Activity</span>
+            </s.RecentActivityToolbar>
+            {!config.isObservabilityEnabled && <ObservabilityStatusBadge />}
           </s.RecentActivityHeader>
           <s.RecentActivityContentContainer>
             {renderContent()}
