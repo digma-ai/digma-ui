@@ -17,10 +17,10 @@ export const InsightIconContainer = styled.div`
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "#e9eef4";
+        return "#dfe1e5";
       case "dark":
       case "dark-jetbrains":
-        return "#2e2e2e";
+        return "#43454a";
     }
   }};
 `;
