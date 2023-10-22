@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { getCodeFont } from "../../common/App/styles";
 import { Link } from "../../common/Link";
-import { HEADER_HEIGHT } from "../styles";
 
 export const TABLE_BORDER_SPACING = 4; // in pixels;
 
@@ -21,9 +20,9 @@ export const Table = styled.table`
   }};
 `;
 
-export const TableHead = styled.thead`
+export const TableHead = styled.thead<{ offset: number }>`
   position: sticky;
-  top: ${HEADER_HEIGHT + TABLE_BORDER_SPACING}px;
+  top: ${({ offset }) => offset + TABLE_BORDER_SPACING - 1}px;
   z-index: 1;
   font-size: 14px;
   height: 28px;

@@ -1,8 +1,6 @@
 import styled from "styled-components";
 import { Button } from "../common/Button";
 
-export const HEADER_HEIGHT = 150; // in pixels;
-
 export const Container = styled.div`
   height: 100%;
   position: relative;
@@ -47,7 +45,6 @@ export const RecentActivityContainer = styled.div`
 `;
 
 export const RecentActivityHeader = styled.div`
-  height: ${HEADER_HEIGHT}px;
   box-sizing: border-box;
   padding: 12px 12px 8px;
   z-index: 1;

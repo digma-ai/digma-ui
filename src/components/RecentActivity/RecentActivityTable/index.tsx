@@ -203,7 +203,7 @@ export const RecentActivityTable = (props: RecentActivityTableProps) => {
 
   return props.viewMode === "table" ? (
     <s.Table>
-      <s.TableHead>
+      <s.TableHead offset={props.headerHeight}>
         {table.getHeaderGroups().map((headerGroup) => (
           <tr key={headerGroup.id}>
             {headerGroup.headers.map((header) => (
