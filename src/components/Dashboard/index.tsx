@@ -11,7 +11,6 @@ import { OpenLinkIcon } from "../common/icons/OpenLinkIcon";
 import { SlowQueries } from "./SlowQueries";
 import { actions } from "./actions";
 import * as s from "./styles";
-import { DashboardProps } from "./types";
 
 const DIGMA_UI_DEFAULT_PORT = 5280;
 
@@ -19,7 +18,7 @@ const environment = isString(window.dashboardEnvironment)
   ? window.dashboardEnvironment
   : new URLSearchParams(window.location.search).get("environment") || "";
 
-export const Dashboard = (props: DashboardProps) => {
+export const Dashboard = () => {
   const config = useContext(ConfigContext);
   const theme = useTheme();
   const themeKind = getThemeKind(theme);

@@ -28,4 +28,5 @@ export interface ConfigContextData {
   isDockerInstalled: boolean;
   isDockerComposeInstalled: boolean;
   userEmail: string;
+  environment: string;
 }

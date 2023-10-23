@@ -82,7 +82,7 @@ export const Stats = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
-  width: 120px;
+  width: 140px;
 `;
 
 export const StatsColumn = styled.div`
@@ -94,6 +94,11 @@ export const StatsColumn = styled.div`
 export const ServicesContainer = styled.div`
   display: flex;
   gap: 4px;
+  align-items: center;
+`;
+
+export const IconContainer = styled.div`
+  display: flex;
   align-items: center;
 `;
 

@@ -139,6 +139,15 @@ export const App = (props: AppProps) => {
       }
     };
 
+    const handleSetEnvironment = (data: unknown) => {
+      if (isObject(data) && isString(data.environment)) {
+        setConfig((config) => ({
+          ...config,
+          environment: data.environment as string
+        }));
+      }
+    };
+
     dispatcher.addActionListener(actions.SET_THEME, handleSetTheme);
     dispatcher.addActionListener(actions.SET_MAIN_FONT, handleSetMainFont);
     dispatcher.addActionListener(actions.SET_CODE_FONT, handleSetCodeFont);
@@ -171,6 +180,7 @@ export const App = (props: AppProps) => {
       handleSetDigmaApiUrl
     );
     dispatcher.addActionListener(actions.SET_USER_EMAIL, handleSetUserEmail);
+    dispatcher.addActionListener(actions.SET_ENVIRONMENT, handleSetEnvironment);
 
     return () => {
       dispatcher.removeActionListener(actions.SET_THEME, handleSetTheme);
@@ -207,6 +217,10 @@ export const App = (props: AppProps) => {
       dispatcher.removeActionListener(
         actions.SET_USER_EMAIL,
         handleSetUserEmail
+      );
+      dispatcher.removeActionListener(
+        actions.SET_ENVIRONMENT,
+        handleSetEnvironment
       );
     };
   }, []);
