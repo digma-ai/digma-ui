@@ -401,9 +401,13 @@ export const RecentActivity = (props: RecentActivityProps) => {
               onEnvironmentAdd={handleEnvironmentAdd}
               onEnvironmentDelete={handleEnvironmentDelete}
             />
-            <s.RecentActivityToolbar>
-              <span>Recent Activity</span>
-            </s.RecentActivityToolbar>
+            {!selectedEnvironment?.isPending && (
+              <>
+                <s.RecentActivityToolbar>
+                  <span>Recent Activity</span>
+                </s.RecentActivityToolbar>
+              </>
+            )}
             {!config.isObservabilityEnabled && <ObservabilityStatusBadge />}
           </s.RecentActivityHeader>
           <s.RecentActivityContentContainer>
