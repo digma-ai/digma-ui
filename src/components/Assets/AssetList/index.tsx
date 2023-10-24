@@ -197,11 +197,11 @@ export const AssetList = (props: AssetListProps) => {
   const searchInputIconColor = sortingMenuChevronColor;
   const [page, setPage] = useState(0);
   const previousPage = usePrevious(page);
-  const totalCount = data?.totalCount || 0;
+  const filteredCount = data?.filteredCount || 0;
   const pageStartItemNumber = page * PAGE_SIZE + 1;
   const pageEndItemNumber = Math.min(
     pageStartItemNumber + PAGE_SIZE - 1,
-    totalCount
+    filteredCount
   );
   const listRef = useRef<HTMLUListElement>(null);
   const config = useContext(ConfigContext);
@@ -371,10 +371,10 @@ export const AssetList = (props: AssetListProps) => {
             <s.FooterPageItemsCount>
               {pageStartItemNumber} - {pageEndItemNumber}
             </s.FooterPageItemsCount>{" "}
-            of {totalCount}
+            of {filteredCount}
           </s.FooterItemsCount>
           <Pagination
-            itemsCount={totalCount}
+            itemsCount={filteredCount}
             page={page}
             pageSize={PAGE_SIZE}
             onPageChange={setPage}

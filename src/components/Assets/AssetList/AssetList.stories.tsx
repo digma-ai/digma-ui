@@ -806,7 +806,8 @@ export const Default: Story = {
           }
         }
       ],
-      totalCount: 20
+      totalCount: 20,
+      filteredCount: 20
     }
   }
 };

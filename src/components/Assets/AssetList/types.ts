@@ -63,4 +63,5 @@ export interface AssetEntryWithServices extends AssetEntry {
 export type AssetsData = {
   data: AssetEntry[];
   totalCount: number;
+  filteredCount: number;
 };

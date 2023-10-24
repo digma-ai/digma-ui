@@ -35,7 +35,7 @@ export const SlowQueries = (props: SlowQueriesProps) => {
   const previousPage = usePrevious(page);
   const [data, setData] = useState<SlowQueriesData>();
   const previousData = usePrevious(data);
-  const entries = data?.data ? data.data.entries : [];
+  const entries = data?.data?.entries || [];
   const totalCount = data?.data?.totalCount || 0;
   const error = data?.error?.message;
   const percentile = getPercentileKey(percentileViewMode);
