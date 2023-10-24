@@ -1,9 +1,4 @@
-import {
-  createGlobalStyle,
-  css,
-  DefaultTheme,
-  FlattenSimpleInterpolation
-} from "styled-components";
+import { createGlobalStyle, css, DefaultTheme } from "styled-components";
 import { os } from "../../../os";
 import { platform } from "../../../platform";
 
@@ -12,7 +7,7 @@ export const LAYERS = {
   TOOLTIP: 2000
 };
 
-export const getMainFont = (customFont: string): FlattenSimpleInterpolation => {
+export const getMainFont = (customFont: string) => {
   const customFontString = customFont ? `"${customFont}"` : "";
 
   let osFontString = "";
@@ -44,7 +39,7 @@ export const getMainFont = (customFont: string): FlattenSimpleInterpolation => {
   `;
 };
 
-export const getCodeFont = (customFont: string): FlattenSimpleInterpolation => {
+export const getCodeFont = (customFont: string) => {
   const customFontString = customFont ? `"${customFont}"` : "";
 
   let osFontString = "";
