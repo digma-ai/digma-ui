@@ -126,25 +126,6 @@ const getSortingCriterionInfo = (
   return sortingCriterionInfoMap[sortingCriterion];
 };
 
-const getAvailableSortingCriterions = (assets: AssetEntryWithServices[]) => {
-  const criterions = [
-    SORTING_CRITERION.CRITICAL_INSIGHTS,
-    SORTING_CRITERION.PERFORMANCE,
-    SORTING_CRITERION.SLOWEST_FIVE_PERCENT,
-    SORTING_CRITERION.LATEST,
-    SORTING_CRITERION.NAME
-  ];
-
-  if (assets.length > 0 && assets[0].impactScores) {
-    criterions.push(
-      SORTING_CRITERION.PERFORMANCE_IMPACT,
-      SORTING_CRITERION.OVERALL_IMPACT
-    );
-  }
-
-  return criterions;
-};
-
 // Keep only the latest entry for every spanCodeObjectId across all services
 const removeDuplicatedEntries = (
   data: AssetEntry[]
@@ -179,6 +160,7 @@ export const AssetList = (props: AssetListProps) => {
   const previousData = usePrevious(data);
   const [isInitialLoading, setIsInitialLoading] = useState(false);
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
+  const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
   const [sorting, setSorting] = useState<Sorting>({
     criterion: SORTING_CRITERION.CRITICAL_INSIGHTS,
     order: SORTING_ORDER.DESC
@@ -205,12 +187,12 @@ export const AssetList = (props: AssetListProps) => {
   );
   const listRef = useRef<HTMLUListElement>(null);
   const config = useContext(ConfigContext);
+  const refreshTimerId = useRef<number>();
+  const previousEnvironment = usePrevious(config.environment);
 
   const entries = data ? removeDuplicatedEntries(data.data) : [];
 
   const assetTypeInfo = getAssetTypeInfo(props.assetTypeId);
-
-  const sortingCriterions = getAvailableSortingCriterions(entries);
 
   useEffect(() => {
     window.sendMessageToDigma({
@@ -222,11 +204,25 @@ export const AssetList = (props: AssetListProps) => {
       }
     });
     setIsInitialLoading(true);
+
+    const handleAssetsData = (data: unknown, timeStamp: number) => {
+      setData(data as AssetsData);
+      setLastSetDataTimeStamp(timeStamp);
+    };
+
+    dispatcher.addActionListener(actions.SET_DATA, handleAssetsData);
+
+    return () => {
+      dispatcher.removeActionListener(actions.SET_DATA, handleAssetsData);
+      window.clearTimeout(refreshTimerId.current);
+    };
   }, [props.assetTypeId]);
 
   useEffect(() => {
     if (
       (isNumber(previousPage) && previousPage !== page) ||
+      (isString(previousEnvironment) &&
+        previousEnvironment !== config.environment) ||
       (previousSorting && previousSorting !== sorting) ||
       (isString(previousDebouncedSearchInputValue) &&
         previousDebouncedSearchInputValue !== debouncedSearchInputValue)
@@ -247,17 +243,6 @@ export const AssetList = (props: AssetListProps) => {
         }
       });
     }
-
-    const handleAssetsData = (data: unknown, timeStamp: number) => {
-      setData(data as AssetsData);
-      setLastSetDataTimeStamp(timeStamp);
-    };
-
-    dispatcher.addActionListener(actions.SET_DATA, handleAssetsData);
-
-    return () => {
-      dispatcher.removeActionListener(actions.SET_DATA, handleAssetsData);
-    };
   }, [
     props.assetTypeId,
     previousDebouncedSearchInputValue,
@@ -265,20 +250,41 @@ export const AssetList = (props: AssetListProps) => {
     previousSorting,
     sorting,
     previousPage,
-    page
+    page,
+    previousEnvironment,
+    config.environment
   ]);
 
   useEffect(() => {
-    const timerId = window.setTimeout(() => {
-      window.sendMessageToDigma({
-        action: actions.GET_DATA
-      });
-    }, REFRESH_INTERVAL);
-
-    return () => {
-      window.clearTimeout(timerId);
-    };
-  }, [lastSetDataTimeStamp]);
+    if (previousLastSetDataTimeStamp !== lastSetDataTimeStamp) {
+      window.clearTimeout(refreshTimerId.current);
+      refreshTimerId.current = window.setTimeout(() => {
+        window.sendMessageToDigma({
+          action: actions.GET_DATA,
+          payload: {
+            query: {
+              assetType: props.assetTypeId,
+              page,
+              pageSize: PAGE_SIZE,
+              sortBy: sorting.criterion,
+              sortOrder: sorting.order,
+              ...(debouncedSearchInputValue.length > 0
+                ? { displayName: debouncedSearchInputValue }
+                : {})
+            }
+          }
+        });
+      }, REFRESH_INTERVAL);
+    }
+  }, [
+    lastSetDataTimeStamp,
+    previousLastSetDataTimeStamp,
+    props.assetTypeId,
+    page,
+    sorting,
+    debouncedSearchInputValue,
+    config.environment
+  ]);
 
   useEffect(() => {
     if (props.data) {
@@ -439,7 +445,7 @@ export const AssetList = (props: AssetListProps) => {
             <PopoverContent className={"Popover"}>
               <Menu
                 title={"Sort by"}
-                items={sortingCriterions.map((x) => ({
+                items={Object.values(SORTING_CRITERION).map((x) => ({
                   value: x,
                   label: getSortingCriterionInfo(x).label
                 }))}

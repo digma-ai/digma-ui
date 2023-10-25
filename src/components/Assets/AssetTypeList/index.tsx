@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { actions as globalActions } from "../../../actions";
 import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { trackingEvents as globalTrackingEvents } from "../../../trackingEvents";
 import { isNumber } from "../../../typeGuards/isNumber";
+import { isString } from "../../../typeGuards/isString";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
+import { ConfigContext } from "../../common/App/ConfigContext";
 import { EmptyState } from "../../common/EmptyState";
 import { NewCircleLoader } from "../../common/NewCircleLoader";
 import { CardsIcon } from "../../common/icons/CardsIcon";
@@ -32,6 +34,8 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
   const previousData = usePrevious(data);
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
   const [isInitialLoading, setIsInitialLoading] = useState(false);
+  const config = useContext(ConfigContext);
+  const previousEnvironment = usePrevious(config.environment);
 
   useEffect(() => {
     window.sendMessageToDigma({
@@ -56,6 +60,17 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
       );
     };
   }, []);
+
+  useEffect(() => {
+    if (
+      isString(previousEnvironment) &&
+      previousEnvironment !== config.environment
+    ) {
+      window.sendMessageToDigma({
+        action: actions.GET_CATEGORIES_DATA
+      });
+    }
+  }, [previousEnvironment, config.environment]);
 
   useEffect(() => {
     const timerId = window.setTimeout(() => {
@@ -98,7 +113,7 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
   if (isInitialLoading) {
     return (
       <s.NoDataContainer>
-        <EmptyState content={<NewCircleLoader size={32} />} />;
+        <EmptyState content={<NewCircleLoader size={32} />} />
       </s.NoDataContainer>
     );
   }
