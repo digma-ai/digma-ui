@@ -18,7 +18,7 @@ const getImpactScoreIndicator = (score: number) => {
 
   return (
     <s.ImpactScoreIndicatorContainer>
-      <s.ImpactScoreIndicator score={score} />
+      <s.ImpactScoreIndicator $score={score} />
     </s.ImpactScoreIndicatorContainer>
   );
 };

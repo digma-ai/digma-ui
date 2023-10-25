@@ -9,5 +9,5 @@ export interface TextFieldProps {
 }
 
 export interface ContainerProps {
-  focused: boolean;
+  $focused: boolean;
 }

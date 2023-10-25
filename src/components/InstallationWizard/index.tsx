@@ -462,8 +462,8 @@ export const InstallationWizard = () => {
         >
           <s.FinishStepFooterContent
             ref={footerContentRef}
-            transitionClassName={footerTransitionClassName}
-            transitionDuration={TRANSITION_DURATION}
+            $transitionClassName={footerTransitionClassName}
+            $transitionDuration={TRANSITION_DURATION}
           >
             <s.BackToInstallMethodButton
               onClick={() => handleGoToStep(installStepIndex)}

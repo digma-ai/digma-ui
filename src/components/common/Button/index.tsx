@@ -16,7 +16,7 @@ export const Button = (props: ButtonProps) => {
       className={props.className}
       onClick={handleClick}
       disabled={props.disabled}
-      buttonType={buttonType}
+      $buttonType={buttonType}
     >
       <s.ContentContainer>
         {props.icon && (

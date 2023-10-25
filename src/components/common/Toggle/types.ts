@@ -7,5 +7,5 @@ export interface ToggleProps {
 }
 
 export interface OptionButtonProps {
-  selected: boolean;
+  $selected: boolean;
 }

@@ -27,11 +27,15 @@ export interface Sorting {
 }
 
 export interface SortingMenuButtonProps {
-  isOpen: boolean;
+  $isOpen: boolean;
 }
 
 export interface SortingOrderOptionProps {
-  selected: boolean;
+  $selected: boolean;
+}
+
+export interface SortingOrderIconContainerProps {
+  $sortingOrder: SORTING_ORDER;
 }
 
 export interface Insight {

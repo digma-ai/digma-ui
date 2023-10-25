@@ -14,8 +14,8 @@ export const Button = styled.button<ButtonElementProps>`
   justify-content: center;
   width: max-content;
   user-select: none;
-  color: ${({ theme, buttonType }) => {
-    if (buttonType === "tertiary") {
+  color: ${({ theme, $buttonType }) => {
+    if ($buttonType === "tertiary") {
       switch (theme.mode) {
         case "light":
           return "#3538cd";
@@ -25,7 +25,7 @@ export const Button = styled.button<ButtonElementProps>`
       }
     }
 
-    if (buttonType === "secondary") {
+    if ($buttonType === "secondary") {
       switch (theme.mode) {
         case "light":
           return "#494b57";
@@ -37,19 +37,19 @@ export const Button = styled.button<ButtonElementProps>`
 
     return "#fff";
   }};
-  background: ${({ buttonType }) => {
-    if (buttonType === "tertiary") {
+  background: ${({ $buttonType }) => {
+    if ($buttonType === "tertiary") {
       return "none";
     }
 
-    if (buttonType === "secondary") {
+    if ($buttonType === "secondary") {
       return "none";
     }
 
     return "#5154ec";
   }};
-  border: ${({ buttonType }) => {
-    if (buttonType === "secondary") {
+  border: ${({ $buttonType }) => {
+    if ($buttonType === "secondary") {
       return "1px solid #3538cd";
     }
 
@@ -58,8 +58,8 @@ export const Button = styled.button<ButtonElementProps>`
 
   &:hover,
   &:focus {
-    color: ${({ theme, buttonType }) => {
-      if (buttonType === "tertiary") {
+    color: ${({ theme, $buttonType }) => {
+      if ($buttonType === "tertiary") {
         switch (theme.mode) {
           case "light":
             return "#5154ec";
@@ -69,7 +69,7 @@ export const Button = styled.button<ButtonElementProps>`
         }
       }
 
-      if (buttonType === "secondary") {
+      if ($buttonType === "secondary") {
         switch (theme.mode) {
           case "light":
             return "#5154ec";
@@ -81,19 +81,19 @@ export const Button = styled.button<ButtonElementProps>`
 
       return "#e2e7ff";
     }};
-    background: ${({ buttonType }) => {
-      if (buttonType === "tertiary") {
+    background: ${({ $buttonType }) => {
+      if ($buttonType === "tertiary") {
         return "none";
       }
 
-      if (buttonType === "secondary") {
+      if ($buttonType === "secondary") {
         return "none";
       }
 
       return "#5154ec";
     }};
-    border: ${({ buttonType }) => {
-      if (buttonType === "secondary") {
+    border: ${({ $buttonType }) => {
+      if ($buttonType === "secondary") {
         return "1px solid #5154ec";
       }
 
@@ -102,8 +102,8 @@ export const Button = styled.button<ButtonElementProps>`
   }
 
   &:active {
-    color: ${({ theme, buttonType }) => {
-      if (buttonType === "tertiary") {
+    color: ${({ theme, $buttonType }) => {
+      if ($buttonType === "tertiary") {
         switch (theme.mode) {
           case "light":
             return "#5154ec";
@@ -113,7 +113,7 @@ export const Button = styled.button<ButtonElementProps>`
         }
       }
 
-      if (buttonType === "secondary") {
+      if ($buttonType === "secondary") {
         switch (theme.mode) {
           case "light":
             return "#3538cd";
@@ -131,19 +131,19 @@ export const Button = styled.button<ButtonElementProps>`
           return "#dadada";
       }
     }};
-    background: ${({ buttonType }) => {
-      if (buttonType === "tertiary") {
+    background: ${({ $buttonType }) => {
+      if ($buttonType === "tertiary") {
         return "none";
       }
 
-      if (buttonType === "secondary") {
+      if ($buttonType === "secondary") {
         return "none";
       }
 
       return "#3538cd";
     }};
-    border: ${({ buttonType }) => {
-      if (buttonType === "secondary") {
+    border: ${({ $buttonType }) => {
+      if ($buttonType === "secondary") {
         return "1px solid #3538cd";
       }
 
@@ -153,8 +153,8 @@ export const Button = styled.button<ButtonElementProps>`
 
   &:disabled {
     cursor: initial;
-    color: ${({ theme, buttonType }) => {
-      if (buttonType === "tertiary") {
+    color: ${({ theme, $buttonType }) => {
+      if ($buttonType === "tertiary") {
         switch (theme.mode) {
           case "light":
             return "#b9c0d4";
@@ -164,7 +164,7 @@ export const Button = styled.button<ButtonElementProps>`
         }
       }
 
-      if (buttonType === "secondary") {
+      if ($buttonType === "secondary") {
         switch (theme.mode) {
           case "light":
             return "#b9c0d4";
@@ -182,12 +182,12 @@ export const Button = styled.button<ButtonElementProps>`
           return "#49494d";
       }
     }};
-    background: ${({ theme, buttonType }) => {
-      if (buttonType === "tertiary") {
+    background: ${({ theme, $buttonType }) => {
+      if ($buttonType === "tertiary") {
         return "none";
       }
 
-      if (buttonType === "secondary") {
+      if ($buttonType === "secondary") {
         return "none";
       }
 
@@ -199,8 +199,8 @@ export const Button = styled.button<ButtonElementProps>`
           return "#2e2e2e";
       }
     }};
-    border: ${({ theme, buttonType }) => {
-      if (buttonType === "secondary") {
+    border: ${({ theme, $buttonType }) => {
+      if ($buttonType === "secondary") {
         switch (theme.mode) {
           case "light":
             return "#b9c0d4";

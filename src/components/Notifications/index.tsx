@@ -68,9 +68,9 @@ export const Notifications = (props: NotificationsProps) => {
     window.sendMessageToDigma({
       action: actions.GET_DATA,
       payload: {
-        pageNumber: 1,
+        pageNumber: page + 1,
         pageSize,
-        isRead: false
+        isRead: showAll
       }
     });
     setIsInitialLoading(true);
@@ -86,7 +86,7 @@ export const Notifications = (props: NotificationsProps) => {
       dispatcher.removeActionListener(actions.SET_DATA, handleSetData);
       window.clearTimeout(refreshTimerId.current);
     };
-  }, [pageSize]);
+  }, []);
 
   useEffect(() => {
     if (previousData !== data && data) {

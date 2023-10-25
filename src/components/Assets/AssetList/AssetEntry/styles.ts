@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { ImpactScoreIndicatorProps } from "./types";
 
 export const Container = styled.div`
   display: flex;
@@ -156,9 +157,9 @@ export const ImpactScoreIndicatorContainer = styled.div`
   padding-left: 4px;
 `;
 
-export const ImpactScoreIndicator = styled.div<{ score: number }>`
+export const ImpactScoreIndicator = styled.div<ImpactScoreIndicatorProps>`
   border-radius: 50%;
   width: 10px;
   height: 10px;
-  background: hsl(14deg 66% ${({ score }) => 100 - 50 * score}%);
+  background: hsl(14deg 66% ${({ $score }) => 100 - 50 * $score}%);
 `;

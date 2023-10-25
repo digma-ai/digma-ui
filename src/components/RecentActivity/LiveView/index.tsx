@@ -423,7 +423,7 @@ export const LiveView = (props: LiveViewProps) => {
   }, [props.data.durationData.percentiles]);
 
   return (
-    <s.Container isChangeStatusBarPresent={Boolean(changedPercentile)}>
+    <s.Container $isChangeStatusBarPresent={Boolean(changedPercentile)}>
       <s.Header>
         <s.Title>
           <s.SpanIconContainer>
@@ -465,11 +465,11 @@ export const LiveView = (props: LiveViewProps) => {
             </s.ChangeStatusContainer>
           )}
           <s.ChartsContainer
-            isChangeStatusBarPresent={Boolean(changedPercentile)}
+            $isChangeStatusBarPresent={Boolean(changedPercentile)}
           >
             <s.AxisChartContainer
-              scrollbarOffset={scrollbarOffset}
-              width={YAxisWidth}
+              $scrollbarOffset={scrollbarOffset}
+              $width={YAxisWidth}
             >
               <ResponsiveContainer width={"100%"} height={"100%"}>
                 <ComposedChart
@@ -626,7 +626,7 @@ export const LiveView = (props: LiveViewProps) => {
           </s.ChartsContainer>
           <s.Footer>
             <s.LegendContainer>
-              <s.AreaLegendIllustration color={areaColor} />
+              <s.AreaLegendIllustration $color={areaColor} />
               Slowest 5% - Median
             </s.LegendContainer>
             {scrollPercentagePosition < 1 && (

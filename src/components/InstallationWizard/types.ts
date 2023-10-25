@@ -12,3 +12,8 @@ export type InstallationType = "local" | "cloud";
 export interface SetCurrentStepData {
   currentStep: string;
 }
+
+export interface FinishStepFooterContentProps {
+  $transitionClassName: string;
+  $transitionDuration: number;
+}

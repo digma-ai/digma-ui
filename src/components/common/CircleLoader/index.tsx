@@ -28,8 +28,12 @@ export const CircleLoader = (props: CircleLoaderProps) => {
   const colors = props.colors || getDefaultColors(theme);
 
   return (
-    <s.OuterCircle size={size} startColor={colors.start} endColor={colors.end}>
-      <s.InnerCircle background={colors.background} />
+    <s.OuterCircle
+      $size={size}
+      $startColor={colors.start}
+      $endColor={colors.end}
+    >
+      <s.InnerCircle $background={colors.background} />
     </s.OuterCircle>
   );
 };

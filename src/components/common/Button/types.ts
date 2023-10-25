@@ -17,5 +17,5 @@ export interface ButtonProps {
 }
 
 export interface ButtonElementProps {
-  buttonType?: ButtonType;
+  $buttonType?: ButtonType;
 }

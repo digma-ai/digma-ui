@@ -137,8 +137,8 @@ export const NotificationMessage = styled.div<NotificationMessageProps>`
   display: flex;
   gap: 4px;
   align-items: center;
-  color: ${({ theme, type }) => {
-    if (type === "success") {
+  color: ${({ theme, $type }) => {
+    if ($type === "success") {
       switch (theme.mode) {
         case "light":
           return "#00c108";
@@ -148,7 +148,7 @@ export const NotificationMessage = styled.div<NotificationMessageProps>`
       }
     }
 
-    if (type === "failure") {
+    if ($type === "failure") {
       switch (theme.mode) {
         case "light":
           return "#e00036";

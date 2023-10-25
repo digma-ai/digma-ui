@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { Button } from "../common/Button";
 import { Link } from "../common/Link";
+import { FinishStepFooterContentProps } from "./types";
 
 export const Container = styled.div`
   height: 100vh;
@@ -80,10 +81,7 @@ export const Footer = styled.div`
   padding: 8px;
 `;
 
-export const FinishStepFooterContent = styled.div<{
-  transitionClassName: string;
-  transitionDuration: number;
-}>`
+export const FinishStepFooterContent = styled.div<FinishStepFooterContentProps>`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -91,24 +89,24 @@ export const FinishStepFooterContent = styled.div<{
   justify-content: flex-end;
   gap: 8px;
 
-  ${({ transitionClassName, transitionDuration }) => {
+  ${({ $transitionClassName, $transitionDuration }) => {
     return `
-      &.${transitionClassName}-enter {
+      &.${$transitionClassName}-enter {
         opacity: 0;
       }
       
-      &.${transitionClassName}-enter-active {
+      &.${$transitionClassName}-enter-active {
         opacity: 1;
-        transition: opacity ${transitionDuration}ms ease-out;
+        transition: opacity ${$transitionDuration}ms ease-out;
       }
 
-      &.${transitionClassName}-exit {
+      &.${$transitionClassName}-exit {
         opacity: 1;
       }
       
-      &.${transitionClassName}-exit-active {
+      &.${$transitionClassName}-exit-active {
         opacity: 0;
-        transition: opacity ${transitionDuration}ms ease-out;
+        transition: opacity ${$transitionDuration}ms ease-out;
       }
       `;
   }}

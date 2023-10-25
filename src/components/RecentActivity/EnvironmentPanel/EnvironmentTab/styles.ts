@@ -5,14 +5,14 @@ export const Container = styled.li<ContainerProps>`
   display: flex;
   position: relative;
   cursor: pointer;
-  font-weight: ${({ isSelected }) => (isSelected ? 700 : 500)};
+  font-weight: ${({ $isSelected }) => ($isSelected ? 700 : 500)};
   font-size: 14px;
   padding: 4px 12px;
   user-select: none;
   align-items: center;
   gap: 4px;
-  color: ${({ isPending, isSelected, theme }) => {
-    if (isPending) {
+  color: ${({ $isPending, $isSelected, theme }) => {
+    if ($isPending) {
       switch (theme.mode) {
         case "light":
           return "#c9ccd6";
@@ -22,7 +22,7 @@ export const Container = styled.li<ContainerProps>`
       }
     }
 
-    if (isSelected) {
+    if ($isSelected) {
       switch (theme.mode) {
         case "light":
           return "#494b57";
@@ -42,15 +42,15 @@ export const Container = styled.li<ContainerProps>`
         return "#b4b8bf";
     }
   }};
-  border-bottom: ${({ isSelected }) =>
-    isSelected ? "1px solid #5154ec" : "none"};
+  border-bottom: ${({ $isSelected }) =>
+    $isSelected ? "1px solid #5154ec" : "none"};
 
   &:hover {
     font-weight: 700;
-    ${({ theme, isPending }) => {
+    ${({ theme, $isPending }) => {
       let color = "";
 
-      if (!isPending) {
+      if (!$isPending) {
         switch (theme.mode) {
           case "light":
             color = "#002d61";

@@ -8,6 +8,6 @@ export interface EnvironmentTabProps {
 }
 
 export interface ContainerProps {
-  isSelected: boolean;
-  isPending?: boolean;
+  $isSelected: boolean;
+  $isPending?: boolean;
 }

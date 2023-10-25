@@ -17,8 +17,8 @@ export const Container = styled.div<ContainerProps>`
     }
   }};
   border: 1px solid
-    ${({ theme, focused }) => {
-      if (focused) {
+    ${({ theme, $focused }) => {
+      if ($focused) {
         switch (theme.mode) {
           case "light":
             return "#383a42";

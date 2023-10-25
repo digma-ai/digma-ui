@@ -189,6 +189,7 @@ export const AssetList = (props: AssetListProps) => {
   const config = useContext(ConfigContext);
   const refreshTimerId = useRef<number>();
   const previousEnvironment = usePrevious(config.environment);
+  const previousAssetTypeId = usePrevious(props.assetTypeId);
 
   const entries = data ? removeDuplicatedEntries(data.data) : [];
 
@@ -199,7 +200,14 @@ export const AssetList = (props: AssetListProps) => {
       action: actions.GET_DATA,
       payload: {
         query: {
-          assetType: props.assetTypeId
+          assetType: props.assetTypeId,
+          page,
+          pageSize: PAGE_SIZE,
+          sortBy: sorting.criterion,
+          sortOrder: sorting.order,
+          ...(debouncedSearchInputValue.length > 0
+            ? { displayName: debouncedSearchInputValue }
+            : {})
         }
       }
     });
@@ -216,7 +224,7 @@ export const AssetList = (props: AssetListProps) => {
       dispatcher.removeActionListener(actions.SET_DATA, handleAssetsData);
       window.clearTimeout(refreshTimerId.current);
     };
-  }, [props.assetTypeId]);
+  }, []);
 
   useEffect(() => {
     if (
@@ -225,7 +233,9 @@ export const AssetList = (props: AssetListProps) => {
         previousEnvironment !== config.environment) ||
       (previousSorting && previousSorting !== sorting) ||
       (isString(previousDebouncedSearchInputValue) &&
-        previousDebouncedSearchInputValue !== debouncedSearchInputValue)
+        previousDebouncedSearchInputValue !== debouncedSearchInputValue) ||
+      (isString(previousAssetTypeId) &&
+        previousAssetTypeId !== props.assetTypeId)
     ) {
       window.sendMessageToDigma({
         action: actions.GET_DATA,
@@ -245,6 +255,7 @@ export const AssetList = (props: AssetListProps) => {
     }
   }, [
     props.assetTypeId,
+    previousAssetTypeId,
     previousDebouncedSearchInputValue,
     debouncedSearchInputValue,
     previousSorting,
@@ -300,11 +311,22 @@ export const AssetList = (props: AssetListProps) => {
 
   useEffect(() => {
     setPage(0);
-  }, [config.environment, debouncedSearchInputValue, sorting]);
+  }, [
+    config.environment,
+    debouncedSearchInputValue,
+    sorting,
+    props.assetTypeId
+  ]);
 
   useEffect(() => {
     listRef.current?.scrollTo(0, 0);
-  }, [config.environment, debouncedSearchInputValue, sorting, page]);
+  }, [
+    config.environment,
+    debouncedSearchInputValue,
+    sorting,
+    page,
+    props.assetTypeId
+  ]);
 
   const handleBackButtonClick = () => {
     props.onBackButtonClick();
@@ -431,7 +453,7 @@ export const AssetList = (props: AssetListProps) => {
             placement={"bottom-start"}
           >
             <PopoverTrigger onClick={handleSortingMenuToggle}>
-              <s.SortingMenuButton isOpen={isSortingMenuOpen}>
+              <s.SortingMenuButton $isOpen={isSortingMenuOpen}>
                 <span>Sort by</span>
                 <s.SortingLabel>
                   {getSortingCriterionInfo(sorting.criterion).label}
@@ -462,10 +484,10 @@ export const AssetList = (props: AssetListProps) => {
             return (
               <s.SortingOrderToggleOptionButton
                 key={order}
-                selected={isSelected}
+                $selected={isSelected}
                 onClick={() => handleSortingOrderToggleOptionButtonClick(order)}
               >
-                <s.SortingOrderIconContainer sortingOrder={order}>
+                <s.SortingOrderIconContainer $sortingOrder={order}>
                   <SortIcon color={iconColor} size={14} />
                 </s.SortingOrderIconContainer>
               </s.SortingOrderToggleOptionButton>

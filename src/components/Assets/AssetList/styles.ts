@@ -2,6 +2,7 @@ import styled from "styled-components";
 import {
   SORTING_ORDER,
   SortingMenuButtonProps,
+  SortingOrderIconContainerProps,
   SortingOrderOptionProps
 } from "./types";
 
@@ -158,8 +159,8 @@ export const SortingMenuButton = styled.button<SortingMenuButtonProps>`
     }
   }};
   border: 1px solid
-    ${({ theme, isOpen }) => {
-      if (isOpen) {
+    ${({ theme, $isOpen }) => {
+      if ($isOpen) {
         switch (theme.mode) {
           case "light":
             return "#7891d0";
@@ -232,15 +233,13 @@ export const SortingOrderToggleOptionButton = styled.button<SortingOrderOptionPr
   padding: 0 1px;
   border-radius: 2px;
   cursor: pointer;
-  background: ${({ selected }) => (selected ? "#3538cd" : "transparent")};
+  background: ${({ $selected }) => ($selected ? "#3538cd" : "transparent")};
 `;
 
-export const SortingOrderIconContainer = styled.div<{
-  sortingOrder: SORTING_ORDER;
-}>`
+export const SortingOrderIconContainer = styled.div<SortingOrderIconContainerProps>`
   display: flex;
   transform: scaleY(
-    ${({ sortingOrder }) => (sortingOrder === SORTING_ORDER.DESC ? -1 : 1)}
+    ${({ $sortingOrder }) => ($sortingOrder === SORTING_ORDER.DESC ? -1 : 1)}
   );
 `;
 

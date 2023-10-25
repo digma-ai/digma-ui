@@ -5,3 +5,7 @@ export interface AssetEntryProps {
   onAssetLinkClick: (entry: AssetEntryWithServices) => void;
   sortingCriterion: SORTING_CRITERION;
 }
+
+export interface ImpactScoreIndicatorProps {
+  $score: number;
+}

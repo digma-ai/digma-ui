@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useLayoutEffect } from "react";
 import { Helmet } from "react-helmet";
 import { useTheme } from "styled-components";
 import { platform } from "../../platform";
@@ -35,7 +35,7 @@ export const Dashboard = () => {
     openURLInDefaultBrowser(dashboardUrl.toString());
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     window.sendMessageToDigma({
       action: actions.INITIALIZE
     });

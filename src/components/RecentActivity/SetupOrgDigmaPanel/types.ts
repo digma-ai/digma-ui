@@ -7,5 +7,5 @@ export interface SetupOrgDigmaPanelProps {
 }
 
 export interface NotificationMessageProps {
-  type: "success" | "failure";
+  $type: "success" | "failure";
 }

@@ -3,8 +3,8 @@ import { ReactNode } from "react";
 export type StepStatus = "completed" | "active" | "not-completed";
 
 export interface TransitionProps {
-  transitionClassName: string;
-  transitionDuration: number;
+  $transitionClassName: string;
+  $transitionDuration: number;
 }
 
 export interface StepData {
@@ -21,21 +21,19 @@ export interface StepProps {
   onGoToStep: (stepIndex: number) => void;
 }
 
-export interface ContainerProps {
-  status: StepStatus;
-  contentHeight: number;
-  transitionClassName: string;
-  transitionDuration: number;
+export interface ContainerProps extends TransitionProps {
+  $status: StepStatus;
+  $contentHeight: number;
 }
 
 export interface HeaderProps {
-  status: StepStatus;
-  transitionDuration: number;
+  $status: StepStatus;
+  $transitionDuration: number;
 }
 
 export interface NumberContainerProps {
-  isActive: boolean;
-  transitionDuration: number;
+  $isActive: boolean;
+  $transitionDuration: number;
 }
 
 export interface NumberProps extends TransitionProps {
