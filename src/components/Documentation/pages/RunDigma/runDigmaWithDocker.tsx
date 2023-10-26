@@ -1,5 +1,5 @@
-import { CodeSnippet } from "../../common/CodeSnippet";
-import { PageContent } from "./types";
+import { CodeSnippet } from "../../../common/CodeSnippet";
+import { PageContent } from "./Page/types";
 
 export const runDigmaWithDocker: PageContent = {
   title: "How to use Digma if your application is running via Docker Compose",

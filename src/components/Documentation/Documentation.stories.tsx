@@ -34,3 +34,9 @@ export const RunDigmaWithGradleTasks: Story = {
     page: "run-digma-with-gradle-tasks"
   }
 };
+
+export const EnvironmentTypes: Story = {
+  args: {
+    page: "environment-types"
+  }
+};

@@ -22,7 +22,7 @@ export const Button = (props: ButtonProps) => {
         {props.icon && (
           <props.icon.component
             size={props.icon.size || 14}
-            color={"currentColor"}
+            color={props.icon.color || "currentColor"}
           />
         )}
         <span>{props.children}</span>
