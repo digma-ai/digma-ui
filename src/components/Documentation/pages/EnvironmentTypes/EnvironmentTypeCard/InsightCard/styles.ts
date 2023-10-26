@@ -43,6 +43,7 @@ export const Header = styled.div`
 
 export const StatusContainer = styled.div`
   margin-top: 8px;
+  height: 18px;
 `;
 
 export const Chip = styled.div`

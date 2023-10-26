@@ -22,21 +22,23 @@ export const InsightCard = (props: InsightCardProps) => {
         ducimus architecto natus omnis aut, illum totam non maiores fuga,
         accusantium vero dolorum.
       </span>
-      {!props.isDisabled && (
-        <s.StatusContainer>
-          {isNumber(props.count) ? (
-            <s.CountChip $count={props.count}>{`${props.count} issue${
-              props.count === 1 ? "" : "s"
-            } found`}</s.CountChip>
-          ) : (
-            <s.NoDataContainer>
-              <s.NoDataChip>No Data</s.NoDataChip>
-              <InfoCircleIcon size={14} color={"currentColor"} />
-              <s.Link>What is this?</s.Link>
-            </s.NoDataContainer>
-          )}
-        </s.StatusContainer>
-      )}
+      <s.StatusContainer>
+        {!props.isDisabled && (
+          <>
+            {isNumber(props.count) ? (
+              <s.CountChip $count={props.count}>{`${props.count} issue${
+                props.count === 1 ? "" : "s"
+              } found`}</s.CountChip>
+            ) : (
+              <s.NoDataContainer>
+                <s.NoDataChip>No Data</s.NoDataChip>
+                <InfoCircleIcon size={14} color={"currentColor"} />
+                <s.Link>What is this?</s.Link>
+              </s.NoDataContainer>
+            )}
+          </>
+        )}
+      </s.StatusContainer>
     </s.Container>
   );
 };
