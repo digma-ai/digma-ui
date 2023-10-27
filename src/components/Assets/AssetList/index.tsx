@@ -5,7 +5,6 @@ import { useDebounce } from "../../../hooks/useDebounce";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { isString } from "../../../typeGuards/isString";
-import { groupBy } from "../../../utils/groupBy";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { EmptyState } from "../../common/EmptyState";
 import { Menu } from "../../common/Menu";
@@ -24,7 +23,6 @@ import { AssetEntry as AssetEntryComponent } from "./AssetEntry";
 import * as s from "./styles";
 import {
   AssetEntry,
-  AssetEntryWithServices,
   AssetListProps,
   AssetsData,
   SORTING_CRITERION,
@@ -126,35 +124,6 @@ const getSortingCriterionInfo = (
   return sortingCriterionInfoMap[sortingCriterion];
 };
 
-// Keep only the latest entry for every spanCodeObjectId across all services
-const removeDuplicatedEntries = (
-  data: AssetEntry[]
-): AssetEntryWithServices[] => {
-  const groupedEntries = groupBy(data, (x) => x.spanCodeObjectId);
-
-  const uniqueEntries: AssetEntryWithServices[] = [];
-
-  Object.values(groupedEntries).forEach((entries) => {
-    const latestEntry = entries.reduce(
-      (acc, cur) =>
-        new Date(cur.latestSpanTimestamp).valueOf() >
-        new Date(acc.latestSpanTimestamp).valueOf()
-          ? cur
-          : acc,
-      entries[0]
-    );
-
-    const relatedServices = entries.map((entry) => entry.service).sort();
-
-    uniqueEntries.push({
-      ...latestEntry,
-      relatedServices
-    });
-  });
-
-  return uniqueEntries;
-};
-
 export const AssetList = (props: AssetListProps) => {
   const [data, setData] = useState<AssetsData>();
   const previousData = usePrevious(data);
@@ -191,7 +160,7 @@ export const AssetList = (props: AssetListProps) => {
   const previousEnvironment = usePrevious(config.environment);
   const previousAssetTypeId = usePrevious(props.assetTypeId);
 
-  const entries = data ? removeDuplicatedEntries(data.data) : [];
+  const entries = data?.data || [];
 
   const assetTypeInfo = getAssetTypeInfo(props.assetTypeId);
 

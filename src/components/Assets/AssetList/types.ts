@@ -57,11 +57,8 @@ export interface AssetEntry {
   latestSpanTimestamp: string;
   impactScores?: ImpactScores;
   service: string;
+  services: string[];
   spanCodeObjectId: string;
-}
-
-export interface AssetEntryWithServices extends AssetEntry {
-  relatedServices: string[];
 }
 
 export type AssetsData = {

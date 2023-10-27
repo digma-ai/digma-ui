@@ -58,7 +58,7 @@ export const AssetEntry = (props: AssetEntryProps) => {
   };
 
   const name = props.entry.displayName;
-  const otherServices = props.entry.relatedServices.slice(1);
+  const otherServices = props.entry.services.slice(1);
   const performanceDuration = props.entry.p50;
   const slowestFivePercentDuration = props.entry.p95;
   const lastSeenDateTime = props.entry.latestSpanTimestamp;
@@ -80,7 +80,7 @@ export const AssetEntry = (props: AssetEntryProps) => {
 
   const assetTypeInfo = getAssetTypeInfo(props.entry.assetType);
 
-  const servicesTitle = props.entry.relatedServices.join(", ");
+  const servicesTitle = props.entry.services.join(", ");
 
   const timeDistance = timeAgo(lastSeenDateTime, "short");
   const timeDistanceString = timeDistance
@@ -131,7 +131,7 @@ export const AssetEntry = (props: AssetEntryProps) => {
                 <s.IconContainer>
                   <GlobeIcon color={serviceIconColor} size={14} />
                 </s.IconContainer>
-                <s.ServiceName>{props.entry.relatedServices[0]}</s.ServiceName>
+                <s.ServiceName>{props.entry.services[0]}</s.ServiceName>
                 {otherServices.length > 0 && (
                   <span>+{otherServices.length}</span>
                 )}

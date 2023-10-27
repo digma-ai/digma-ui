@@ -19,7 +19,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     entry: {
-      relatedServices: ["service1", "service2"],
+      services: ["service1", "service2"],
       displayName: "HTTP GET /SampleInsights/ErrorRecordedOnLocalRootSpan",
       spanCodeObjectId:
         "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /SampleInsights/ErrorRecordedOnLocalRootSpan",

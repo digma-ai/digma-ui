@@ -24,6 +24,7 @@ export const Default: Story = {
       data: [
         {
           service: "PetClinic",
+          services: ["PetClinic"],
           displayName: "HTTP GET /owners/new",
           spanCodeObjectId:
             "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /owners/new",
@@ -68,6 +69,7 @@ export const Default: Story = {
         },
         {
           service: "PetClinic",
+          services: ["PetClinic"],
           displayName: "HTTP GET /owners/{ownerId}",
           spanCodeObjectId:
             "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /owners/{ownerId}",
@@ -112,6 +114,7 @@ export const Default: Story = {
         },
         {
           service: "PetClinic",
+          services: ["PetClinic"],
           displayName: "HTTP GET /oups",
           spanCodeObjectId:
             "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /oups",
@@ -156,6 +159,7 @@ export const Default: Story = {
         },
         {
           service: "PetClinic",
+          services: ["PetClinic"],
           displayName: "HTTP GET /SampleInsights/ErrorHotspot",
           spanCodeObjectId:
             "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /SampleInsights/ErrorHotspot",
@@ -200,6 +204,7 @@ export const Default: Story = {
         },
         {
           service: "PetClinic",
+          services: ["PetClinic"],
           displayName: "HTTP GET /SampleInsights/ErrorRecordedOnLocalRootSpan",
           spanCodeObjectId:
             "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /SampleInsights/ErrorRecordedOnLocalRootSpan",
@@ -244,6 +249,7 @@ export const Default: Story = {
         },
         {
           service: "PetClinic",
+          services: ["PetClinic"],
           displayName: "HTTP GET /owners/{ownerId}/pets/new",
           spanCodeObjectId:
             "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /owners/{ownerId}/pets/new",
@@ -284,6 +290,7 @@ export const Default: Story = {
         },
         {
           service: "PetClinic",
+          services: ["PetClinic"],
           displayName: "HTTP GET /SampleInsights/SpanBottleneck",
           spanCodeObjectId:
             "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /SampleInsights/SpanBottleneck",
@@ -324,6 +331,7 @@ export const Default: Story = {
         },
         {
           service: "PetClinic",
+          services: ["PetClinic"],
           displayName: "HTTP GET /SampleInsights/NPlusOneWithInternalSpan",
           spanCodeObjectId:
             "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /SampleInsights/NPlusOneWithInternalSpan",
@@ -364,6 +372,7 @@ export const Default: Story = {
         },
         {
           service: "PetClinic",
+          services: ["PetClinic"],
           displayName: "HTTP GET /SampleInsights/NPlusOneWithoutInternalSpan",
           spanCodeObjectId:
             "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /SampleInsights/NPlusOneWithoutInternalSpan",
@@ -404,6 +413,7 @@ export const Default: Story = {
         },
         {
           service: "PetClinic",
+          services: ["PetClinic"],
           displayName: "HTTP GET /SampleInsights/ErrorRecordedOnCurrentSpan",
           spanCodeObjectId:
             "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /SampleInsights/ErrorRecordedOnCurrentSpan",
@@ -444,6 +454,7 @@ export const Default: Story = {
         },
         {
           service: "PetClinic",
+          services: ["PetClinic"],
           displayName:
             "HTTP GET /SampleInsights/ErrorRecordedOnDeeplyNestedSpan",
           spanCodeObjectId:
@@ -485,6 +496,7 @@ export const Default: Story = {
         },
         {
           service: "PetClinic",
+          services: ["PetClinic"],
           displayName: "HTTP GET /",
           spanCodeObjectId: "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /",
           assetType: "Endpoint",
@@ -520,6 +532,7 @@ export const Default: Story = {
         },
         {
           service: "PetClinic",
+          services: ["PetClinic"],
           displayName: "HTTP GET /**",
           spanCodeObjectId: "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /**",
           assetType: "Endpoint",
@@ -555,6 +568,7 @@ export const Default: Story = {
         },
         {
           service: "PetClinic",
+          services: ["PetClinic"],
           displayName: "HTTP GET /owners",
           spanCodeObjectId:
             "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /owners",
@@ -591,6 +605,7 @@ export const Default: Story = {
         },
         {
           service: "PetClinic",
+          services: ["PetClinic"],
           displayName: "HTTP GET /owners/{ownerId}/edit",
           spanCodeObjectId:
             "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /owners/{ownerId}/edit",
@@ -627,6 +642,7 @@ export const Default: Story = {
         },
         {
           service: "PetClinic",
+          services: ["PetClinic"],
           displayName: "HTTP GET /owners/find",
           spanCodeObjectId:
             "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /owners/find",
@@ -663,6 +679,7 @@ export const Default: Story = {
         },
         {
           service: "PetClinic",
+          services: ["PetClinic"],
           displayName: "HTTP GET /SampleInsights/HighUsage",
           spanCodeObjectId:
             "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /SampleInsights/HighUsage",
@@ -699,6 +716,7 @@ export const Default: Story = {
         },
         {
           service: "PetClinic",
+          services: ["PetClinic"],
           displayName: "HTTP GET /SampleInsights/req-map-get",
           spanCodeObjectId:
             "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /SampleInsights/req-map-get",
@@ -735,6 +753,7 @@ export const Default: Story = {
         },
         {
           service: "PetClinic",
+          services: ["PetClinic"],
           displayName: "HTTP GET /SampleInsights/SlowEndpoint",
           spanCodeObjectId:
             "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /SampleInsights/SlowEndpoint",
@@ -771,6 +790,7 @@ export const Default: Story = {
         },
         {
           service: "PetClinic",
+          services: ["PetClinic"],
           displayName: "HTTP GET /vets.html",
           spanCodeObjectId:
             "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /vets.html",
