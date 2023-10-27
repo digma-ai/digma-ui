@@ -147,7 +147,7 @@ export const RecentActivityTable = (props: RecentActivityTableProps) => {
   const columns = [
     columnHelper.accessor((row) => row, {
       id: "recentActivity",
-      header: "Recent Activity",
+      header: "",
       cell: (info) => {
         const entry = info.getValue();
         return (
@@ -203,7 +203,7 @@ export const RecentActivityTable = (props: RecentActivityTableProps) => {
 
   return props.viewMode === "table" ? (
     <s.Table>
-      <s.TableHead>
+      <s.TableHead offset={props.headerHeight}>
         {table.getHeaderGroups().map((headerGroup) => (
           <tr key={headerGroup.id}>
             {headerGroup.headers.map((header) => (
@@ -233,7 +233,6 @@ export const RecentActivityTable = (props: RecentActivityTableProps) => {
     </s.Table>
   ) : (
     <s.ListContainer>
-      <s.ListHeader>Recent Activity</s.ListHeader>
       <s.List>
         {sortedData.map((entry, i) => (
           <s.ListItem key={i}>

@@ -7,4 +7,5 @@ export interface RecentActivityTableProps {
   onTraceButtonClick: (traceId: string, span: EntrySpan) => void;
   viewMode: ViewMode;
   isTraceButtonVisible: boolean;
+  headerHeight: number;
 }
