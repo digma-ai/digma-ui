@@ -1,8 +1,6 @@
 import styled from "styled-components";
 import { Button } from "../common/Button";
 
-export const HEADER_HEIGHT = 64; // in pixels;
-
 export const Container = styled.div`
   height: 100%;
   position: relative;
@@ -40,12 +38,15 @@ export const Container = styled.div`
     }};
   }
 `;
+export const RecentActivityContainer = styled.div`
+  height: 100%;
+  overflow: auto;
+  box-sizing: border-box;
+`;
 
 export const RecentActivityHeader = styled.div`
-  height: ${HEADER_HEIGHT}px;
   box-sizing: border-box;
-  padding: 12px;
-  padding-right: 24px;
+  padding: 12px 12px 8px;
   z-index: 1;
   position: sticky;
   top: 0;
@@ -59,33 +60,30 @@ export const RecentActivityHeader = styled.div`
         return "#2b2d30";
     }
   }};
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 `;
 
-export const RecentActivityContainer = styled.div`
-  height: 100%;
-  overflow: auto;
-  box-sizing: border-box;
-`;
-
-export const RecentActivityContentContainer = styled.div`
-  padding: 0 24px 12px 12px;
-`;
-
-export const RecentActivityTableTitle = styled.div`
-  margin: 12px 0 8px;
-  padding-left: 12px;
+export const RecentActivityToolbar = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
   font-weight: 400;
   font-size: 14px;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "#818594";
+        return "#494b57";
       case "dark":
-        return "#b9c2eb";
       case "dark-jetbrains":
-        return "#b4b8bf";
+        return "#dfe1e5";
     }
   }};
+`;
+
+export const RecentActivityContentContainer = styled.div`
+  padding: 0 12px 12px;
 `;
 
 export const NoDataContainer = styled.div`

@@ -1,6 +1,7 @@
 import { Allotment } from "allotment";
 import "allotment/dist/style.css";
 import { KeyboardEvent, useContext, useEffect, useMemo, useState } from "react";
+import useDimensions from "react-cool-dimensions";
 import { actions as globalActions } from "../../actions";
 import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
@@ -17,6 +18,7 @@ import { ViewMode } from "./EnvironmentPanel/types";
 import { EnvironmentTypePanel } from "./EnvironmentTypePanel";
 import { LiveView } from "./LiveView";
 import { LiveData } from "./LiveView/types";
+import { ObservabilityStatusBadge } from "./ObservabilityStatusBadge";
 import { RecentActivityTable, isRecent } from "./RecentActivityTable";
 import { RegistrationPanel } from "./RegistrationPanel";
 import { SetupOrgDigmaPanel } from "./SetupOrgDigmaPanel";
@@ -74,6 +76,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
     useState(false);
   const config = useContext(ConfigContext);
   const previousUserEmail = usePrevious(config.userEmail);
+  const { observe, entry } = useDimensions();
 
   const environmentActivities = useMemo(
     () => (data ? groupBy(data.entries, (x) => x.environment) : {}),
@@ -367,15 +370,10 @@ export const RecentActivity = (props: RecentActivityProps) => {
       !environmentActivities[selectedEnvironment.originalName] ||
       !environmentActivities[selectedEnvironment.originalName].length
     ) {
-      return (
-        <>
-          <s.RecentActivityTableTitle>
-            Recent Activity
-          </s.RecentActivityTableTitle>
-          {renderNoData()}
-        </>
-      );
+      return <>{renderNoData()}</>;
     }
+
+    const headerHeight = entry?.target.clientHeight || 0;
 
     return (
       <RecentActivityTable
@@ -384,6 +382,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
         onSpanLinkClick={handleSpanLinkClick}
         onTraceButtonClick={handleTraceButtonClick}
         isTraceButtonVisible={config.isJaegerEnabled}
+        headerHeight={headerHeight}
       />
     );
   };
@@ -392,7 +391,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
     <s.Container>
       <Allotment defaultSizes={[70, 30]}>
         <s.RecentActivityContainer id={RECENT_ACTIVITY_CONTAINER_ID}>
-          <s.RecentActivityHeader>
+          <s.RecentActivityHeader ref={observe}>
             <EnvironmentPanel
               environments={environments}
               viewMode={viewMode}
@@ -402,6 +401,14 @@ export const RecentActivity = (props: RecentActivityProps) => {
               onEnvironmentAdd={handleEnvironmentAdd}
               onEnvironmentDelete={handleEnvironmentDelete}
             />
+            {!selectedEnvironment?.isPending && (
+              <>
+                <s.RecentActivityToolbar>
+                  <span>Recent Activity</span>
+                </s.RecentActivityToolbar>
+              </>
+            )}
+            {!config.isObservabilityEnabled && <ObservabilityStatusBadge />}
           </s.RecentActivityHeader>
           <s.RecentActivityContentContainer>
             {renderContent()}

@@ -148,6 +148,15 @@ export const App = (props: AppProps) => {
       }
     };
 
+    const handleIsObservabilityEnabled = (data: unknown) => {
+      if (isObject(data) && isBoolean(data.isObservabilityEnabled)) {
+        setConfig((config) => ({
+          ...config,
+          isObservabilityEnabled: data.isObservabilityEnabled as boolean
+        }));
+      }
+    };
+
     dispatcher.addActionListener(actions.SET_THEME, handleSetTheme);
     dispatcher.addActionListener(actions.SET_MAIN_FONT, handleSetMainFont);
     dispatcher.addActionListener(actions.SET_CODE_FONT, handleSetCodeFont);
@@ -181,6 +190,10 @@ export const App = (props: AppProps) => {
     );
     dispatcher.addActionListener(actions.SET_USER_EMAIL, handleSetUserEmail);
     dispatcher.addActionListener(actions.SET_ENVIRONMENT, handleSetEnvironment);
+    dispatcher.addActionListener(
+      actions.SET_IS_OBSERVABILITY_ENABLED,
+      handleIsObservabilityEnabled
+    );
 
     return () => {
       dispatcher.removeActionListener(actions.SET_THEME, handleSetTheme);
@@ -221,6 +234,10 @@ export const App = (props: AppProps) => {
       dispatcher.removeActionListener(
         actions.SET_ENVIRONMENT,
         handleSetEnvironment
+      );
+      dispatcher.removeActionListener(
+        actions.SET_IS_OBSERVABILITY_ENABLED,
+        handleIsObservabilityEnabled
       );
     };
   }, []);
