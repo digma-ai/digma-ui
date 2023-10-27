@@ -2,11 +2,11 @@ import styled from "styled-components";
 import { getCodeFont } from "../../common/App/styles";
 import { Link } from "../../common/Link";
 
-export const TABLE_BORDER_SPACING = 4; // in pixels;
+export const TABLE_BODY_ROW_VERTICAL_SPACING = 4; // in pixels;
 
 export const Table = styled.table`
   width: 100%;
-  border-spacing: 0 ${TABLE_BORDER_SPACING}px;
+  border-spacing: 0;
   font-size: 14px;
   color: ${({ theme }) => {
     switch (theme.mode) {
@@ -22,10 +22,9 @@ export const Table = styled.table`
 
 export const TableHead = styled.thead<{ offset: number }>`
   position: sticky;
-  top: ${({ offset }) => offset + TABLE_BORDER_SPACING - 1}px;
+  top: ${({ offset }) => offset - 1}px;
   z-index: 1;
   font-size: 14px;
-  height: 28px;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -36,26 +35,17 @@ export const TableHead = styled.thead<{ offset: number }>`
         return "#b4b8bf";
     }
   }};
-  box-shadow: -12px -${TABLE_BORDER_SPACING}px 0 ${({ theme }) => {
-        switch (theme.mode) {
-          case "light":
-            return "#f7f8fa";
-          case "dark":
-            return "#0f0f0f";
-          case "dark-jetbrains":
-            return "#2b2d30";
-        }
-      }},
-    0 -${TABLE_BORDER_SPACING}px 0 ${({ theme }) => {
-        switch (theme.mode) {
-          case "light":
-            return "#f7f8fa";
-          case "dark":
-            return "#0f0f0f";
-          case "dark-jetbrains":
-            return "#2b2d30";
-        }
-      }};
+  box-shadow: -4px 0
+    ${({ theme }) => {
+      switch (theme.mode) {
+        case "light":
+          return "#f7f8fa";
+        case "dark":
+          return "#0f0f0f";
+        case "dark-jetbrains":
+          return "#2b2d30";
+      }
+    }};
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -69,7 +59,7 @@ export const TableHead = styled.thead<{ offset: number }>`
 `;
 
 export const TableHeaderCell = styled.th`
-  padding-top: 4px;
+  padding: 4px 0;
   font-weight: 400;
   text-align: start;
 
@@ -90,6 +80,22 @@ export const TableBody = styled.tbody`
     }
   }};
 
+  &::before {
+    content: "";
+    display: block;
+    height: 2px;
+    background: ${({ theme }) => {
+      switch (theme.mode) {
+        case "light":
+          return "#f7f8fa";
+        case "dark":
+          return "#0f0f0f";
+        case "dark-jetbrains":
+          return "#2b2d30";
+      }
+    }};
+  }
+
   & tr:first-child td:first-child {
     border-top-left-radius: 12px;
   }
@@ -109,10 +115,26 @@ export const TableBody = styled.tbody`
 
 export const TableBodyRow = styled.tr`
   position: relative;
-  height: 42px;
+  height: ${42 + TABLE_BODY_ROW_VERTICAL_SPACING}px;
+
+  &:not(:last-child) > td {
+    border-bottom: ${TABLE_BODY_ROW_VERTICAL_SPACING}px solid
+      ${({ theme }) => {
+        switch (theme.mode) {
+          case "light":
+            return "#f7f8fa";
+          case "dark":
+            return "#0f0f0f";
+          case "dark-jetbrains":
+            return "#2b2d30";
+        }
+      }};
+  }
 `;
 
 export const TableBodyCell = styled.td`
+  padding: 0;
+
   &:first-child {
     padding-left: 12px;
   }
