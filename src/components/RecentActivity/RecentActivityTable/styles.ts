@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { getCodeFont } from "../../common/App/styles";
 import { Link } from "../../common/Link";
-import { HEADER_HEIGHT } from "../styles";
 
 export const TABLE_BORDER_SPACING = 4; // in pixels;
 
@@ -21,9 +20,9 @@ export const Table = styled.table`
   }};
 `;
 
-export const TableHead = styled.thead`
+export const TableHead = styled.thead<{ offset: number }>`
   position: sticky;
-  top: ${HEADER_HEIGHT + TABLE_BORDER_SPACING}px;
+  top: ${({ offset }) => offset + TABLE_BORDER_SPACING - 1}px;
   z-index: 1;
   font-size: 14px;
   height: 28px;
@@ -188,45 +187,6 @@ export const Suffix = styled.span`
 export const ListContainer = styled.div`
   display: flex;
   flex-direction: column;
-`;
-
-export const ListHeader = styled.div`
-  position: sticky;
-  top: ${HEADER_HEIGHT}px;
-  z-index: 1;
-  padding: 12px 0 8px 12px;
-  box-shadow: -12px 0 0
-    ${({ theme }) => {
-      switch (theme.mode) {
-        case "light":
-          return "#f7f8fa";
-        case "dark":
-          return "#0f0f0f";
-        case "dark-jetbrains":
-          return "#2b2d30";
-      }
-    }};
-  font-size: 14px;
-  color: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#818594";
-      case "dark":
-        return "#b9c2eb";
-      case "dark-jetbrains":
-        return "#b4b8bf";
-    }
-  }};
-  background: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#f7f8fa";
-      case "dark":
-        return "#0f0f0f";
-      case "dark-jetbrains":
-        return "#2b2d30";
-    }
-  }};
 `;
 
 export const List = styled.ul`
