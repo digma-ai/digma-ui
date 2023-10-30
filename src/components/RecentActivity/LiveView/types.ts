@@ -44,18 +44,24 @@ export interface Coordinates {
   y: number;
 }
 
+export interface ContainerProps {
+  $isChangeStatusBarPresent: boolean;
+}
+
+export type ChartsContainerProps = ContainerProps;
+
 export interface DotTooltipProps {
   coordinates: Coordinates;
   data: ExtendedLiveDataRecord;
 }
 
 export interface AxisChartContainerProps {
-  scrollbarOffset: number;
-  width: number;
+  $scrollbarOffset: number;
+  $width: number;
 }
 
 export interface AreaLegendIllustrationProps {
-  color: string;
+  $color: string;
 }
 
 export interface DotProps {

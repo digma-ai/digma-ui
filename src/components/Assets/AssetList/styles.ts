@@ -2,6 +2,7 @@ import styled from "styled-components";
 import {
   SORTING_ORDER,
   SortingMenuButtonProps,
+  SortingOrderIconContainerProps,
   SortingOrderOptionProps
 } from "./types";
 
@@ -158,8 +159,8 @@ export const SortingMenuButton = styled.button<SortingMenuButtonProps>`
     }
   }};
   border: 1px solid
-    ${({ theme, isOpen }) => {
-      if (isOpen) {
+    ${({ theme, $isOpen }) => {
+      if ($isOpen) {
         switch (theme.mode) {
           case "light":
             return "#7891d0";
@@ -232,15 +233,13 @@ export const SortingOrderToggleOptionButton = styled.button<SortingOrderOptionPr
   padding: 0 1px;
   border-radius: 2px;
   cursor: pointer;
-  background: ${({ selected }) => (selected ? "#3538cd" : "transparent")};
+  background: ${({ $selected }) => ($selected ? "#3538cd" : "transparent")};
 `;
 
-export const SortingOrderIconContainer = styled.div<{
-  sortingOrder: SORTING_ORDER;
-}>`
+export const SortingOrderIconContainer = styled.div<SortingOrderIconContainerProps>`
   display: flex;
   transform: scaleY(
-    ${({ sortingOrder }) => (sortingOrder === SORTING_ORDER.DESC ? -1 : 1)}
+    ${({ $sortingOrder }) => ($sortingOrder === SORTING_ORDER.DESC ? -1 : 1)}
   );
 `;
 
@@ -264,6 +263,7 @@ export const List = styled.ul`
   gap: 8px;
   margin: 0;
   overflow: auto;
+  height: 100%;
 `;
 
 export const ListItem = styled.li`
@@ -299,4 +299,36 @@ export const InsightIconContainer = styled.span`
   align-items: center;
   width: 20px;
   height: 20px;
+`;
+
+export const Footer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 8px;
+  font-size: 14px;
+`;
+
+export const FooterItemsCount = styled.span`
+  font-weight: 500;
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#818594";
+      case "dark":
+      case "dark-jetbrains":
+        return "#b4b8bf";
+    }
+  }};
+`;
+
+export const FooterPageItemsCount = styled.span`
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#494b57";
+      case "dark":
+      case "dark-jetbrains":
+        return "#dfe1e5";
+    }
+  }};
 `;

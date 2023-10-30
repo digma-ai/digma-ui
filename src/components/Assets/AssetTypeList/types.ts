@@ -1,6 +1,11 @@
-import { ExtendedAssetEntryWithServices } from "../types";
-
-export interface AssetListProps {
-  data: { [key: string]: ExtendedAssetEntryWithServices[] };
+export interface AssetTypeListProps {
+  data?: AssetCategoriesData;
   onAssetTypeSelect: (assetTypeId: string) => void;
+}
+
+export interface AssetCategoriesData {
+  assetCategories: {
+    name: string;
+    count: number;
+  }[];
 }

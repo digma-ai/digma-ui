@@ -23,5 +23,9 @@ export interface TickData {
 }
 
 export interface ChartContainerProps {
-  height: number;
+  $height: number;
+}
+
+export interface LastCallTimeDistanceProps {
+  $isRecent: boolean;
 }

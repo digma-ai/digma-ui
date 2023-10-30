@@ -97,7 +97,7 @@ export const RequestBreakdownInsight = (
       <s.Legend>
         {data.map((x) => (
           <s.LegendItem key={x.type}>
-            <s.LegendItemDataColor color={componentTypeColors[x.type]} />
+            <s.LegendItemDataColor $color={componentTypeColors[x.type]} />
             <s.LegendItemDataLabel>{x.type}</s.LegendItemDataLabel>
             <s.LegendItemDataValue>
               {roundTo(x.fraction * 100, 2)}%
@@ -131,7 +131,7 @@ export const RequestBreakdownInsight = (
         return (
           <s.FractionProgressBarContainer>
             <s.FractionProgressBar>
-              <s.FractionProgressBarValue value={value} />
+              <s.FractionProgressBarValue $value={value} />
             </s.FractionProgressBar>
           </s.FractionProgressBarContainer>
         );

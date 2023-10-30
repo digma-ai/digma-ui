@@ -1,4 +1,8 @@
 import styled from "styled-components";
+import {
+  FractionProgressBarValueProps,
+  LegendItemDataColorProps
+} from "./types";
 
 export const ContentContainer = styled.div`
   display: flex;
@@ -42,11 +46,11 @@ export const LegendItem = styled.div`
   gap: 5px;
 `;
 
-export const LegendItemDataColor = styled.div<{ color: string }>`
+export const LegendItemDataColor = styled.div<LegendItemDataColorProps>`
   height: 4px;
   width: 4px;
   border-radius: 50%;
-  background: ${({ color }) => color};
+  background: ${({ $color }) => $color};
 `;
 
 export const LegendItemDataLabel = styled.span`
@@ -171,8 +175,8 @@ export const FractionProgressBar = styled.div`
   }};
 `;
 
-export const FractionProgressBarValue = styled.div<{ value: number }>`
-  width: ${({ value }) => Math.floor(value * 100)}%;
+export const FractionProgressBarValue = styled.div<FractionProgressBarValueProps>`
+  width: ${({ $value }) => Math.floor($value * 100)}%;
   height: 4px;
   border-radius: 2px;
   position: absolute;

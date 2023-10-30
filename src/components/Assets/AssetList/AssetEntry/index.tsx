@@ -18,7 +18,7 @@ const getImpactScoreIndicator = (score: number) => {
 
   return (
     <s.ImpactScoreIndicatorContainer>
-      <s.ImpactScoreIndicator score={score} />
+      <s.ImpactScoreIndicator $score={score} />
     </s.ImpactScoreIndicatorContainer>
   );
 };
@@ -57,12 +57,11 @@ export const AssetEntry = (props: AssetEntryProps) => {
     props.onAssetLinkClick(props.entry);
   };
 
-  const name = props.entry.span.displayName;
-  const otherServices = props.entry.relatedServices.slice(1);
+  const name = props.entry.displayName;
+  const otherServices = props.entry.services.slice(1);
   const performanceDuration = props.entry.p50;
   const slowestFivePercentDuration = props.entry.p95;
-
-  const lastSeenDateTime = props.entry.lastSpanInstanceInfo.startTime;
+  const lastSeenDateTime = props.entry.latestSpanTimestamp;
 
   // Do not show unimplemented insights
   const filteredInsights = props.entry.insights.filter(
@@ -81,7 +80,7 @@ export const AssetEntry = (props: AssetEntryProps) => {
 
   const assetTypeInfo = getAssetTypeInfo(props.entry.assetType);
 
-  const servicesTitle = props.entry.relatedServices.join(", ");
+  const servicesTitle = props.entry.services.join(", ");
 
   const timeDistance = timeAgo(lastSeenDateTime, "short");
   const timeDistanceString = timeDistance
@@ -129,8 +128,10 @@ export const AssetEntry = (props: AssetEntryProps) => {
             <span>Services</span>
             <Tooltip title={servicesTitle}>
               <s.ServicesContainer>
-                <GlobeIcon color={serviceIconColor} size={14} />
-                <s.ServiceName>{props.entry.relatedServices[0]}</s.ServiceName>
+                <s.IconContainer>
+                  <GlobeIcon color={serviceIconColor} size={14} />
+                </s.IconContainer>
+                <s.ServiceName>{props.entry.services[0]}</s.ServiceName>
                 {otherServices.length > 0 && (
                   <span>+{otherServices.length}</span>
                 )}

@@ -20,5 +20,5 @@ export interface OperationInfo {
 }
 
 export interface ContentContainerProps {
-  overlay?: boolean;
+  $overlay?: boolean;
 }

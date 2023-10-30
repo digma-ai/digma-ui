@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { ButtonProps, ContainerProps } from "./types";
+import { ContainerProps } from "./types";
 
 export const Container = styled.div<ContainerProps>`
   display: flex;
@@ -8,7 +8,7 @@ export const Container = styled.div<ContainerProps>`
   padding: 12px;
   border-radius: 4px;
   border: 1px solid transparent;
-  cursor: ${({ disabled }) => (disabled ? "default" : "pointer")};
+  cursor: ${({ $disabled }) => ($disabled ? "default" : "pointer")};
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -21,8 +21,8 @@ export const Container = styled.div<ContainerProps>`
 
   &:hover {
     border: 1px solid
-      ${({ theme, disabled }) => {
-        if (disabled) {
+      ${({ theme, $disabled }) => {
+        if ($disabled) {
           return "transparent";
         }
 
@@ -38,8 +38,8 @@ export const Container = styled.div<ContainerProps>`
 
   &:active {
     border: 1px solid
-      ${({ theme, disabled }) => {
-        if (disabled) {
+      ${({ theme, $disabled }) => {
+        if ($disabled) {
           return "transparent";
         }
 
@@ -69,7 +69,7 @@ export const ContentContainer = styled.div`
   }};
 `;
 
-export const IconContainer = styled.span<ButtonProps>`
+export const IconContainer = styled.span`
   display: flex;
   flex-shrink: 0;
   height: 72px;
@@ -94,7 +94,7 @@ export const TextContainer = styled.span`
   text-align: start;
 `;
 
-export const Title = styled.span<ButtonProps>`
+export const Title = styled.span`
   display: flex;
   align-items: center;
   gap: 4px;

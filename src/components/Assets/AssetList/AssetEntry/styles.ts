@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { ImpactScoreIndicatorProps } from "./types";
 
 export const Container = styled.div`
   display: flex;
@@ -82,7 +83,7 @@ export const Stats = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
-  width: 120px;
+  width: 140px;
 `;
 
 export const StatsColumn = styled.div`
@@ -94,6 +95,11 @@ export const StatsColumn = styled.div`
 export const ServicesContainer = styled.div`
   display: flex;
   gap: 4px;
+  align-items: center;
+`;
+
+export const IconContainer = styled.div`
+  display: flex;
   align-items: center;
 `;
 
@@ -151,9 +157,9 @@ export const ImpactScoreIndicatorContainer = styled.div`
   padding-left: 4px;
 `;
 
-export const ImpactScoreIndicator = styled.div<{ score: number }>`
+export const ImpactScoreIndicator = styled.div<ImpactScoreIndicatorProps>`
   border-radius: 50%;
   width: 10px;
   height: 10px;
-  background: hsl(14deg 66% ${({ score }) => 100 - 50 * score}%);
+  background: hsl(14deg 66% ${({ $score }) => 100 - 50 * $score}%);
 `;

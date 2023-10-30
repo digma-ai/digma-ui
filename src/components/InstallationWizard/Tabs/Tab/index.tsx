@@ -9,10 +9,10 @@ export const Tab = (props: TabProps) => {
   };
   return (
     <s.Container
-      isDisabled={props.isDisabled}
-      isSelected={props.isSelected}
+      $isDisabled={props.isDisabled}
+      $isSelected={props.isSelected}
       onClick={handleContainerClick}
-      fullWidth={props.fullWidth}
+      $fullWidth={props.fullWidth}
     >
       <s.IconContainer>
         {props.icon && <props.icon size={14} color={"currentColor"} />}

@@ -6,5 +6,5 @@ export interface BadgeProps {
 }
 
 export interface CustomStylesProps {
-  customStyles?: React.CSSProperties;
+  $customStyles?: React.CSSProperties;
 }

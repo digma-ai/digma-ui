@@ -9,3 +9,9 @@ export interface TabProps {
   children: ReactNode;
   fullWidth?: boolean;
 }
+
+export interface ContainerProps {
+  $isSelected: boolean;
+  $isDisabled?: boolean;
+  $fullWidth?: boolean;
+}

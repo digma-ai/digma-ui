@@ -139,6 +139,15 @@ export const App = (props: AppProps) => {
       }
     };
 
+    const handleSetEnvironment = (data: unknown) => {
+      if (isObject(data) && isString(data.environment)) {
+        setConfig((config) => ({
+          ...config,
+          environment: data.environment as string
+        }));
+      }
+    };
+
     const handleIsObservabilityEnabled = (data: unknown) => {
       if (isObject(data) && isBoolean(data.isObservabilityEnabled)) {
         setConfig((config) => ({
@@ -180,6 +189,7 @@ export const App = (props: AppProps) => {
       handleSetDigmaApiUrl
     );
     dispatcher.addActionListener(actions.SET_USER_EMAIL, handleSetUserEmail);
+    dispatcher.addActionListener(actions.SET_ENVIRONMENT, handleSetEnvironment);
     dispatcher.addActionListener(
       actions.SET_IS_OBSERVABILITY_ENABLED,
       handleIsObservabilityEnabled
@@ -220,6 +230,10 @@ export const App = (props: AppProps) => {
       dispatcher.removeActionListener(
         actions.SET_USER_EMAIL,
         handleSetUserEmail
+      );
+      dispatcher.removeActionListener(
+        actions.SET_ENVIRONMENT,
+        handleSetEnvironment
       );
       dispatcher.removeActionListener(
         actions.SET_IS_OBSERVABILITY_ENABLED,

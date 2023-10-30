@@ -49,7 +49,7 @@ const renderUpdatePluginSettingsMessage = () => {
   };
 
   return (
-    <s.NotificationMessage type={"failure"}>
+    <s.NotificationMessage $type={"failure"}>
       <div>
         <WarningCircleLargeIcon size={14} color={"currentColor"} />
       </div>
@@ -211,7 +211,7 @@ export const SetupOrgDigmaPanel = (props: SetupOrgDigmaPanelProps) => {
     switch (result) {
       case "success":
         return (
-          <s.NotificationMessage type={result}>
+          <s.NotificationMessage $type={result}>
             <WarningCircleLargeIcon size={14} color={"currentColor"} />
             Connected to server successfully
           </s.NotificationMessage>
@@ -219,7 +219,7 @@ export const SetupOrgDigmaPanel = (props: SetupOrgDigmaPanelProps) => {
       case "failure":
         return (
           <Tooltip title={error}>
-            <s.NotificationMessage type={result}>
+            <s.NotificationMessage $type={result}>
               <CheckmarkCircleInvertedIcon size={14} color={"currentColor"} />
               Connection to server failed
             </s.NotificationMessage>

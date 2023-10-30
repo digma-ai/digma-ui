@@ -11,5 +11,6 @@ export const ConfigContext = createContext<ConfigContextData>({
   isDigmaEngineRunning: window.isDigmaEngineRunning === true,
   isDockerInstalled: window.isDockerInstalled === true,
   isDockerComposeInstalled: window.isDockerComposeInstalled === true,
-  userEmail: isString(window.userEmail) ? window.userEmail : ""
+  userEmail: isString(window.userEmail) ? window.userEmail : "",
+  environment: isString(window.environment) ? window.environment : ""
 });

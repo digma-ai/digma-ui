@@ -35,11 +35,12 @@ export const SlowQueries = (props: SlowQueriesProps) => {
   const previousPage = usePrevious(page);
   const [data, setData] = useState<SlowQueriesData>();
   const previousData = usePrevious(data);
-  const entries = data?.data ? data.data.entries : [];
+  const entries = data?.data?.entries || [];
   const totalCount = data?.data?.totalCount || 0;
   const error = data?.error?.message;
   const percentile = getPercentileKey(percentileViewMode);
   const previousPercentile = usePrevious(percentile);
+  const previousEnvironment = usePrevious(props.environment);
 
   useEffect(() => {
     window.sendMessageToDigma({
@@ -48,7 +49,7 @@ export const SlowQueries = (props: SlowQueriesProps) => {
         type: DASHBOARD_TYPE,
         environment: props.environment,
         query: {
-          page: 0,
+          page,
           pageSize: PAGE_SIZE,
           percentile: getPercentileKey(DEFAULT_PERCENTILE)
         }
@@ -67,7 +68,7 @@ export const SlowQueries = (props: SlowQueriesProps) => {
       dispatcher.removeActionListener(actions.SET_DATA, handleSetData);
       window.clearTimeout(refreshTimerId.current);
     };
-  }, [props.environment]);
+  }, []);
 
   useEffect(() => {
     if (previousLastSetDataTimeStamp !== lastSetDataTimeStamp) {
@@ -98,7 +99,9 @@ export const SlowQueries = (props: SlowQueriesProps) => {
   useEffect(() => {
     if (
       (isNumber(previousPage) && previousPage !== page) ||
-      (isString(previousPercentile) && previousPercentile !== percentile)
+      (isString(previousPercentile) && previousPercentile !== percentile) ||
+      (isString(previousEnvironment) &&
+        previousEnvironment !== props.environment)
     ) {
       window.sendMessageToDigma({
         action: actions.GET_DATA,
@@ -113,7 +116,18 @@ export const SlowQueries = (props: SlowQueriesProps) => {
         }
       });
     }
-  }, [previousPage, page, previousPercentile, percentile, props.environment]);
+  }, [
+    previousPage,
+    page,
+    previousPercentile,
+    percentile,
+    props.environment,
+    previousEnvironment
+  ]);
+
+  useEffect(() => {
+    setPage(0);
+  }, [props.environment]);
 
   useEffect(() => {
     if (!props.data) {

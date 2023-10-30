@@ -34,8 +34,8 @@ export const ContentContainer = styled.div<ContentContainerProps>`
   gap: 20px;
   position: relative;
 
-  ${({ overlay }) => {
-    if (overlay) {
+  ${({ $overlay }) => {
+    if ($overlay) {
       return css`
         &::after {
           content: "";

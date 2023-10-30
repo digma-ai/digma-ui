@@ -30,6 +30,7 @@ declare global {
     codeFont?: unknown;
     isJaegerEnabled?: unknown;
     userEmail?: unknown;
+    environment?: unknown;
     isObservabilityEnabled?: unknown;
     isDigmaEngineInstalled?: unknown;
     isDigmaEngineRunning?: unknown;
