@@ -1,49 +1,37 @@
-import { InsightType } from "../../../../types";
 import { InfiniteLoopIcon } from "../../../common/icons/InfiniteLoopIcon";
+import { InsightCardType } from "./EnvironmentTypeCard/InsightCard/types";
 import { EnvironmentTypeData } from "./types";
 
 export const environmentTypesData: EnvironmentTypeData[] = [
   {
-    id: "local-deployment",
+    id: "dev",
     icon: <InfiniteLoopIcon height={24} />,
-    name: "Local Deployment",
+    name: "Dev Environment",
     description:
       "Download them to a relative path to the Docker Compose file you are running",
     status: "active",
     insights: [
-      {
-        type: InsightType.SpanEndpointBottleneck,
-        count: 0
-      },
-      {
-        type: InsightType.EndpointDurationSlowdown
-      },
-      {
-        type: InsightType.SlowestSpans,
-        count: 34
-      }
+      { type: InsightCardType.TRACING_DATA },
+      { type: InsightCardType.QUERY_ISSUES },
+      { type: InsightCardType.BOTTLENECKS },
+      { type: InsightCardType.ERRORS }
     ]
   },
   {
-    id: "testing-and-ci",
+    id: "ci-testing",
     icon: <InfiniteLoopIcon height={24} />,
-    name: "Testing & CI",
+    name: "CI/Testing Environment",
     description:
       "Download them to a relative path to the Docker Compose file you are running",
     status: "waiting-for-data",
     insights: [
-      {
-        type: InsightType.SpanEndpointBottleneck,
-        count: 0
-      },
-      {
-        type: InsightType.EndpointDurationSlowdown,
-        count: 34
-      },
-      {
-        type: InsightType.SlowestSpans,
-        count: 34
-      }
+      { type: InsightCardType.SCALING_ISSUES },
+      { type: InsightCardType.SLOWDOWN_PERF_IMPROVEMENTS },
+      { type: InsightCardType.SLOWDOWN_ROOT_CAUSE_DETECTION },
+      { type: InsightCardType.TRACING_DATA },
+      { type: InsightCardType.QUERY_ISSUES },
+      { type: InsightCardType.BOTTLENECKS },
+      { type: InsightCardType.ERRORS }
     ]
   },
   {
@@ -53,18 +41,15 @@ export const environmentTypesData: EnvironmentTypeData[] = [
     description:
       "Download them to a relative path to the Docker Compose file you are running",
     insights: [
-      {
-        type: InsightType.SpanEndpointBottleneck,
-        isDisabled: true
-      },
-      {
-        type: InsightType.EndpointDurationSlowdown,
-        isDisabled: true
-      },
-      {
-        type: InsightType.SlowestSpans,
-        isDisabled: true
-      }
+      { type: InsightCardType.PERFORMANCE_IMPACT },
+      { type: InsightCardType.USAGE_ANALYSIS },
+      { type: InsightCardType.SCALING_ISSUES },
+      { type: InsightCardType.ERROR_HOTSPOTS },
+      { type: InsightCardType.TOO_MANY_HTTP_CALLS },
+      { type: InsightCardType.TRACING_DATA },
+      { type: InsightCardType.QUERY_ISSUES },
+      { type: InsightCardType.BOTTLENECKS },
+      { type: InsightCardType.ERRORS }
     ]
   }
 ];

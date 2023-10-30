@@ -1,4 +1,4 @@
-import { InsightType } from "../../../../../types";
+import { InsightCardType } from "./InsightCard/types";
 
 export type EnvironmentStatus = "active" | "waiting-for-data";
 
@@ -7,5 +7,5 @@ export interface EnvironmentTypeCardProps {
   icon: JSX.Element;
   description?: string;
   status?: EnvironmentStatus;
-  insights: { type: InsightType; count?: number; isDisabled?: boolean }[];
+  insights: { type: InsightCardType; count?: number; isDisabled?: boolean }[];
 }

@@ -4,9 +4,11 @@ import { environmentTypesData } from "./data";
 import * as s from "./styles";
 
 export const EnvironmentTypes = () => {
+  const columnCount = environmentTypesData.length;
+
   return (
-    <s.Container>
-      <s.Header>
+    <s.Container $columnCount={columnCount}>
+      <s.Header $columnCount={columnCount}>
         <s.Title>
           <DigmaLogoIcon size={16} />
           <span>Feature rich Observability across the SDLC</span>
@@ -19,14 +21,15 @@ export const EnvironmentTypes = () => {
       </s.Header>
       <s.EnvironmentsContainer>
         {environmentTypesData.map((x) => (
-          <EnvironmentTypeCard
-            key={x.id}
-            name={x.name}
-            icon={x.icon}
-            description={x.description}
-            insights={x.insights}
-            status={x.status}
-          />
+          <s.EnvironmentTypeContainer key={x.id}>
+            <EnvironmentTypeCard
+              name={x.name}
+              icon={x.icon}
+              description={x.description}
+              insights={x.insights}
+              status={x.status}
+            />
+          </s.EnvironmentTypeContainer>
         ))}
       </s.EnvironmentsContainer>
     </s.Container>

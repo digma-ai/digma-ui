@@ -40,7 +40,7 @@ export const EnvironmentTypeCard = (props: EnvironmentTypeCardProps) => {
             key={x.type}
             type={x.type}
             count={x.count}
-            isDisabled={x.isDisabled}
+            isDisabled={!props.status}
           />
         ))}
       </s.InsightContainer>

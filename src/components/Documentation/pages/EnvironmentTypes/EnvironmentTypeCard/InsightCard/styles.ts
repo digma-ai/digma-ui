@@ -19,13 +19,13 @@ export const Container = styled.div<ContainerProps>`
         return "#9b9b9b";
     }
   }};
-
   ${({ $isDisabled }) => ($isDisabled ? "opacity: 0.4;" : "")}
 `;
 
 export const Header = styled.div`
   font-size: 14px;
   font-weight: 600;
+  min-height: 22px;
   text-transform: capitalize;
   display: flex;
   gap: 8px;
@@ -39,6 +39,10 @@ export const Header = styled.div`
         return "#dadada";
     }
   }};
+`;
+
+export const Description = styled.span`
+  min-height: 115px;
 `;
 
 export const StatusContainer = styled.div`
