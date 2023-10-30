@@ -68,7 +68,7 @@ export const RecentActivityHeader = styled.div`
 export const RecentActivityToolbar = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 8px 0;
+  padding-top: 8px;
   font-weight: 400;
   font-size: 14px;
   color: ${({ theme }) => {
