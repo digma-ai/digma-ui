@@ -11,7 +11,7 @@ export const Outline = styled.div<CustomStylesProps>`
   box-shadow: 0 0 8px rgb(76 142 241 / 12%);
   border-radius: 2px;
 
-  ${({ customStyles }) => ({ ...customStyles })};
+  ${({ $customStyles }) => ({ ...$customStyles })};
 `;
 
 export const Badge = styled.div<CustomStylesProps>`
@@ -21,5 +21,5 @@ export const Badge = styled.div<CustomStylesProps>`
   box-shadow: 0 0 4px #67d28b;
   border-radius: 1px;
 
-  ${({ customStyles }) => ({ ...customStyles })};
+  ${({ $customStyles }) => ({ ...$customStyles })};
 `;

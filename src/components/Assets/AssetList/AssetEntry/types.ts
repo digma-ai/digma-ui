@@ -1,8 +1,11 @@
-import { ExtendedAssetEntryWithServices } from "../../types";
-import { SORTING_CRITERION } from "../types";
+import { AssetEntry, SORTING_CRITERION } from "../types";
 
 export interface AssetEntryProps {
-  entry: ExtendedAssetEntryWithServices;
-  onAssetLinkClick: (entry: ExtendedAssetEntryWithServices) => void;
+  entry: AssetEntry;
+  onAssetLinkClick: (entry: AssetEntry) => void;
   sortingCriterion: SORTING_CRITERION;
+}
+
+export interface ImpactScoreIndicatorProps {
+  $score: number;
 }

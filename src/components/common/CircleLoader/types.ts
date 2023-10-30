@@ -10,11 +10,11 @@ export interface CircleLoaderProps {
 }
 
 export interface OuterCircleProps {
-  size: number;
-  startColor: string;
-  endColor: string;
+  $size: number;
+  $startColor: string;
+  $endColor: string;
 }
 
 export interface InnerCircleProps {
-  background: string;
+  $background: string;
 }

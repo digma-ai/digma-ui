@@ -11,7 +11,7 @@ export const Toggle = (props: ToggleProps) => {
       {props.options.map((option) => (
         <s.OptionButton
           key={option.value}
-          selected={props.value === option.value}
+          $selected={props.value === option.value}
           onClick={() => handleOptionButtonClick(option.value)}
         >
           {option.label}

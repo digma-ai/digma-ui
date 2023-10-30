@@ -192,7 +192,7 @@ export const EngineManager = (props: EngineManagerProps) => {
 
     return (
       <>
-        <s.ContentContainer overlay={props.overlay}>
+        <s.ContentContainer $overlay={props.overlay}>
           {icon}
           <s.TextContainer>
             <s.Title>{title}</s.Title>

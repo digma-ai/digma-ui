@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Description } from "../styles";
-import { ChartContainerProps } from "./types";
+import { ChartContainerProps, LastCallTimeDistanceProps } from "./types";
 
 export const Container = styled.div`
   display: flex;
@@ -31,9 +31,9 @@ export const ValueContainer = styled.div`
   gap: 5px;
 `;
 
-export const LastCallTimeDistance = styled.div<{ isRecent: boolean }>`
-  color: ${({ theme, isRecent }) => {
-    if (isRecent) {
+export const LastCallTimeDistance = styled.div<LastCallTimeDistanceProps>`
+  color: ${({ theme, $isRecent }) => {
+    if ($isRecent) {
       switch (theme.mode) {
         case "light":
           return "#426dda";
@@ -55,7 +55,7 @@ export const LastCallTimeDistance = styled.div<{ isRecent: boolean }>`
 
 export const ChartContainer = styled.div<ChartContainerProps>`
   width: 100%;
-  height: ${({ height }) => height}px;
+  height: ${({ $height }) => $height}px;
 `;
 
 export const TooltipContainer = styled.div`

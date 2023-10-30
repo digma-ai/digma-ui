@@ -9,25 +9,25 @@ import {
 const HEADER_HEIGHT = 44; // in pixels;
 
 export const Container = styled.div<ContainerProps>`
-  ${({ transitionClassName, transitionDuration, contentHeight }) => {
-    const totalHeight = HEADER_HEIGHT + contentHeight;
+  ${({ $transitionClassName, $transitionDuration, $contentHeight }) => {
+    const totalHeight = HEADER_HEIGHT + $contentHeight;
     return `
-      &.${transitionClassName}-enter {
+      &.${$transitionClassName}-enter {
         height: ${HEADER_HEIGHT}px;
       }
       
-      &.${transitionClassName}-enter-active {
+      &.${$transitionClassName}-enter-active {
         height: ${totalHeight}px;
-        transition: height ${transitionDuration}ms ease-out;
+        transition: height ${$transitionDuration}ms ease-out;
       }
 
-      &.${transitionClassName}-exit {
+      &.${$transitionClassName}-exit {
         height: ${totalHeight}px;
       }
 
-      &.${transitionClassName}-exit-active {
+      &.${$transitionClassName}-exit-active {
         height: ${HEADER_HEIGHT}px;
-        transition: height ${transitionDuration}ms ease-out;
+        transition: height ${$transitionDuration}ms ease-out;
       }
       `;
   }}
@@ -40,9 +40,9 @@ export const Container = styled.div<ContainerProps>`
         return "#393b40";
     }
   }};
-  height: ${({ status, contentHeight }) =>
-    status === "active"
-      ? `${HEADER_HEIGHT + contentHeight}`
+  height: ${({ $status, $contentHeight }) =>
+    $status === "active"
+      ? `${HEADER_HEIGHT + $contentHeight}`
       : `${HEADER_HEIGHT}`}px;
   overflow: hidden;
   flex-shrink: 0;
@@ -68,18 +68,19 @@ export const Header = styled.div<HeaderProps>`
     }};
   height: ${HEADER_HEIGHT}px;
   box-sizing: border-box;
-  color: ${({ theme, status }) => {
+  color: ${({ theme, $status }) => {
     switch (theme.mode) {
       case "light":
-        return status === "active" ? "#494b57" : "#818594";
+        return $status === "active" ? "#494b57" : "#818594";
       case "dark":
       case "dark-jetbrains":
-        return status === "active" ? "#dfe1e5" : "#b4b8bf";
+        return $status === "active" ? "#dfe1e5" : "#b4b8bf";
     }
   }};
-  transition: color ${({ transitionDuration }) => transitionDuration}ms ease-out;
-  cursor: ${({ status }) => {
-    return status === "completed" ? "pointer" : "initial";
+  transition: color ${({ $transitionDuration }) => $transitionDuration}ms
+    ease-out;
+  cursor: ${({ $status }) => {
+    return $status === "completed" ? "pointer" : "initial";
   }};
 `;
 
@@ -91,16 +92,16 @@ export const NumberContainer = styled.div<NumberContainerProps>`
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  color: ${({ theme, isActive }) => {
+  color: ${({ theme, $isActive }) => {
     switch (theme.mode) {
       case "light":
-        return isActive ? "#f1f5fa" : "#b9c0d4";
+        return $isActive ? "#f1f5fa" : "#b9c0d4";
       case "dark":
       case "dark-jetbrains":
-        return isActive ? "#fff" : "#383838";
+        return $isActive ? "#fff" : "#383838";
     }
   }};
-  transition-duration: ${({ transitionDuration }) => transitionDuration}ms;
+  transition-duration: ${({ $transitionDuration }) => $transitionDuration}ms;
   transition-property: color;
   transition-timing-function: ease-out;
 `;
@@ -129,31 +130,31 @@ export const Number = styled.span<NumberProps>`
   background: ${({ theme, status }) =>
     status === "completed" ? "none" : getNumberBackgroundColor(theme)};
 
-  ${({ theme, transitionClassName, transitionDuration }) => {
+  ${({ theme, $transitionClassName, $transitionDuration }) => {
     return `
-      &.${transitionClassName}-enter {
+      &.${$transitionClassName}-enter {
         background: none;
         opacity: 0;
       }
       
-      &.${transitionClassName}-enter-active {
+      &.${$transitionClassName}-enter-active {
         background: ${getNumberBackgroundColor(theme)};
         opacity: 1;
         transition-property: opacity, background;
-        transition-duration: ${transitionDuration}ms;
+        transition-duration: ${$transitionDuration}ms;
         transition-timing-function: ease-out;
       }
 
-      &.${transitionClassName}-exit {
+      &.${$transitionClassName}-exit {
         background: ${getNumberBackgroundColor(theme)};
         opacity: 1;
       }
 
-      &.${transitionClassName}-exit-active {
+      &.${$transitionClassName}-exit-active {
         background: none;
         opacity: 0;
         transition-property: opacity, background;
-        transition-duration: ${transitionDuration}ms;
+        transition-duration: ${$transitionDuration}ms;
         transition-timing-function: ease-out;
       }
       `;

@@ -294,7 +294,7 @@ export const DurationInsight = (props: DurationInsightProps) => {
                 <Description>
                   {getDurationString(spanLastCall.duration)}
                 </Description>
-                <s.LastCallTimeDistance isRecent={isLastCallRecent}>
+                <s.LastCallTimeDistance $isRecent={isLastCallRecent}>
                   •{" "}
                   <CommonTooltip
                     title={new Date(spanLastCall.startTime).toString()}
@@ -361,7 +361,7 @@ export const DurationInsight = (props: DurationInsightProps) => {
             )}
 
           {props.insight.histogramPlot && (
-            <s.ChartContainer ref={observe} height={chartContainerHeight}>
+            <s.ChartContainer ref={observe} $height={chartContainerHeight}>
               <ResponsiveContainer width={"100%"} height={"100%"}>
                 <BarChart
                   margin={{

@@ -31,8 +31,8 @@ export const OptionButton = styled.button<OptionButtonProps>`
   padding: 2px 4px;
   cursor: pointer;
   user-select: none;
-  color: ${({ theme, selected }) => {
-    if (selected) {
+  color: ${({ theme, $selected }) => {
+    if ($selected) {
       switch (theme.mode) {
         case "light":
           return "#f7f8fa";
@@ -50,5 +50,5 @@ export const OptionButton = styled.button<OptionButtonProps>`
         return "#b4b8bf";
     }
   }};
-  background: ${({ selected }) => (selected ? "#5154ec" : "transparent")};
+  background: ${({ $selected }) => ($selected ? "#5154ec" : "transparent")};
 `;

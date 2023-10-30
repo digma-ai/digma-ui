@@ -378,7 +378,7 @@ export const InstallStep = (props: InstallStepProps) => {
       content: (
         <>
           {runningDigmaMessage}
-          <s.TabContentContainer overlay={Boolean(runningDigmaMessage)}>
+          <s.TabContentContainer $overlay={Boolean(runningDigmaMessage)}>
             <s.TextContainer>
               <s.SectionTitle>
                 Run the following from the terminal/command line to start the
@@ -424,7 +424,7 @@ export const InstallStep = (props: InstallStepProps) => {
         <>
           {runningDigmaMessage}
           <s.DockerDesktopTabContentContainer
-            overlay={Boolean(runningDigmaMessage)}
+            $overlay={Boolean(runningDigmaMessage)}
           >
             <s.DockerLogoBackgroundCircle>
               <DockerLogoIcon size={55} color={"currentColor"} />

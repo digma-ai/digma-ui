@@ -1,5 +1,10 @@
 import styled from "styled-components";
-import { AreaLegendIllustrationProps, AxisChartContainerProps } from "./types";
+import {
+  AreaLegendIllustrationProps,
+  AxisChartContainerProps,
+  ChartsContainerProps,
+  ContainerProps
+} from "./types";
 
 // In pixels
 const CONTAINER_GAP = 12;
@@ -18,13 +23,13 @@ const getContainerMinHeight = (isChangeStatusBarPresent: boolean) =>
     .filter((x) => x > 0)
     .reduce((acc, cur) => acc + cur + CONTAINER_GAP, 0) + CONTAINER_GAP;
 
-export const Container = styled.div<{ isChangeStatusBarPresent: boolean }>`
+export const Container = styled.div<ContainerProps>`
   display: flex;
   flex-direction: column;
   height: 100%;
   gap: ${CONTAINER_GAP}px;
-  min-height: ${({ isChangeStatusBarPresent }) =>
-    getContainerMinHeight(isChangeStatusBarPresent)}px;
+  min-height: ${({ $isChangeStatusBarPresent }) =>
+    getContainerMinHeight($isChangeStatusBarPresent)}px;
   border: 1px solid
     ${({ theme }) => {
       switch (theme.mode) {
@@ -32,7 +37,7 @@ export const Container = styled.div<{ isChangeStatusBarPresent: boolean }>`
           return "#d1d1d1";
         case "dark":
         case "dark-jetbrains":
-          return "#323232";
+          return "#323232s";
       }
     }};
   background: ${({ theme }) => {
@@ -128,14 +133,12 @@ export const CloseButton = styled.button`
   cursor: pointer;
 `;
 
-export const ChartsContainer = styled.div<{
-  isChangeStatusBarPresent: boolean;
-}>`
+export const ChartsContainer = styled.div<ChartsContainerProps>`
   display: flex;
   height: calc(
     100% -
-      ${({ isChangeStatusBarPresent }) =>
-        getContainerMinHeight(isChangeStatusBarPresent)}px
+      ${({ $isChangeStatusBarPresent }) =>
+        getContainerMinHeight($isChangeStatusBarPresent)}px
   );
   padding-right: 12px;
 `;
@@ -196,9 +199,9 @@ export const ChangeStatusContainer = styled.div`
 `;
 
 export const AxisChartContainer = styled.div<AxisChartContainerProps>`
-  width: ${({ width }) => width + 1}px;
-  height: ${({ scrollbarOffset }) =>
-    scrollbarOffset ? `calc(100% - ${scrollbarOffset}px)` : "100%"};
+  width: ${({ $width }) => $width + 1}px;
+  height: ${({ $scrollbarOffset }) =>
+    $scrollbarOffset ? `calc(100% - ${$scrollbarOffset}px)` : "100%"};
   flex-shrink: 0;
 `;
 
@@ -236,7 +239,7 @@ export const LegendContainer = styled.div`
 
 export const AreaLegendIllustration = styled.div<AreaLegendIllustrationProps>`
   ${/* 20% opacity */ ""}
-  background: ${({ color }) => color}33;
+  background: ${({ $color }) => $color}33;
   border-style: solid none;
   border-width: 1px;
   width: 10px;

@@ -39,21 +39,21 @@ export const Step = (props: StepProps) => {
       nodeRef={containerRef}
     >
       <s.Container
-        status={props.status}
+        $status={props.status}
         ref={containerRef}
-        contentHeight={height}
-        transitionClassName={TRANSITION_CLASS_NAME}
-        transitionDuration={transitionDuration}
+        $contentHeight={height}
+        $transitionClassName={TRANSITION_CLASS_NAME}
+        $transitionDuration={transitionDuration}
       >
         <s.ContentContainer>
           <s.Header
-            status={props.status}
-            transitionDuration={transitionDuration}
+            $status={props.status}
+            $transitionDuration={transitionDuration}
             onClick={handleHeaderClick}
           >
             <s.NumberContainer
-              isActive={isActive}
-              transitionDuration={transitionDuration}
+              $isActive={isActive}
+              $transitionDuration={transitionDuration}
             >
               <CheckmarkCircleInvertedIcon
                 size={18}
@@ -70,8 +70,8 @@ export const Step = (props: StepProps) => {
                 <s.Number
                   ref={numberRef}
                   status={props.status}
-                  transitionClassName={NUMBER_TRANSITION_CLASS_NAME}
-                  transitionDuration={transitionDuration}
+                  $transitionClassName={NUMBER_TRANSITION_CLASS_NAME}
+                  $transitionDuration={transitionDuration}
                 >
                   {props.stepIndex + 1}
                 </s.Number>

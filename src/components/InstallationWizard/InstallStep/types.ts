@@ -29,7 +29,7 @@ export interface InstallStepProps {
 }
 
 export interface TabContentContainerProps {
-  overlay?: boolean;
+  $overlay?: boolean;
 }
 
 export interface EngineState {

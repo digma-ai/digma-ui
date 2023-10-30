@@ -31,7 +31,7 @@ export const Button = styled.button`
   }
 
   &:hover,
-  &focus {
+  &:focus {
     color: ${({ theme }) => {
       switch (theme.mode) {
         case "light":

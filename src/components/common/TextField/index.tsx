@@ -17,7 +17,7 @@ export const TextFieldComponent = (
   };
 
   return (
-    <s.Container focused={isFocused} className={props.className}>
+    <s.Container $focused={isFocused} className={props.className}>
       <s.Input
         type={"text"}
         value={props.value}

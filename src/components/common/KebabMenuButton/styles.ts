@@ -16,7 +16,7 @@ export const Container = styled.div<KebabMenuButtonProps>`
   }};
 
   &:hover,
-  &focus {
+  &:focus {
     color: ${({ theme }) => {
       switch (theme.mode) {
         case "light":

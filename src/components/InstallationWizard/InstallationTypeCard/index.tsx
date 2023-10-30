@@ -9,13 +9,11 @@ export const InstallationTypeCard = (props: InstallationTypeCardProps) => {
   };
 
   return (
-    <s.Container disabled={props.disabled} onClick={handleClick}>
+    <s.Container $disabled={props.disabled} onClick={handleClick}>
       <s.ContentContainer>
-        <s.IconContainer disabled={props.disabled}>
-          {props.icon}
-        </s.IconContainer>
+        <s.IconContainer>{props.icon}</s.IconContainer>
         <s.TextContainer>
-          <s.Title disabled={props.disabled}>{props.title}</s.Title>
+          <s.Title>{props.title}</s.Title>
           {props.description}
         </s.TextContainer>
       </s.ContentContainer>

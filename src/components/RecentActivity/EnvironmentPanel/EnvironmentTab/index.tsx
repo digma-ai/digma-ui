@@ -73,8 +73,8 @@ export const EnvironmentTab = (props: EnvironmentTabProps) => {
   return (
     <s.Container
       ref={containerRef}
-      isSelected={props.isSelected}
-      isPending={props.environment.isPending}
+      $isSelected={props.isSelected}
+      $isPending={props.environment.isPending}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onFocus={handleFocus}

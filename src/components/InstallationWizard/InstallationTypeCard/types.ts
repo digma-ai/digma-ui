@@ -11,8 +11,6 @@ export type InstallationTypeCardProps = {
   additionalContent?: ReactNode;
 };
 
-export type ButtonProps = {
-  disabled?: boolean;
+export type ContainerProps = {
+  $disabled?: boolean;
 };
-
-export type ContainerProps = ButtonProps;

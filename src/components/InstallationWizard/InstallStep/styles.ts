@@ -23,8 +23,8 @@ export const TabContentContainer = styled.div<TabContentContainerProps>`
   position: relative;
   height: 474px;
 
-  ${({ overlay }) => {
-    if (overlay) {
+  ${({ $overlay }) => {
+    if ($overlay) {
       return css`
         &::after {
           content: "";
