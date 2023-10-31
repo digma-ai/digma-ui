@@ -1,3 +1,5 @@
+import { CloudDownloadIcon } from "../../../common/icons/CloudDownloadIcon";
+import { CodeDisplayIcon } from "../../../common/icons/CodeDisplayIcon";
 import { InfiniteLoopIcon } from "../../../common/icons/InfiniteLoopIcon";
 import { InsightCardType } from "./EnvironmentTypeCard/InsightCard/types";
 import { EnvironmentTypeData } from "./types";
@@ -5,7 +7,7 @@ import { EnvironmentTypeData } from "./types";
 export const environmentTypesData: EnvironmentTypeData[] = [
   {
     id: "dev",
-    icon: <InfiniteLoopIcon height={24} />,
+    icon: CodeDisplayIcon,
     name: "Local and All Environments",
     description:
       "Download them to a relative path to the Docker Compose file you are running",
@@ -19,7 +21,7 @@ export const environmentTypesData: EnvironmentTypeData[] = [
   },
   {
     id: "ci-testing",
-    icon: <InfiniteLoopIcon height={24} />,
+    icon: InfiniteLoopIcon,
     name: "CI/Testing Environment",
     description:
       "Download them to a relative path to the Docker Compose file you are running",
@@ -33,7 +35,7 @@ export const environmentTypesData: EnvironmentTypeData[] = [
   },
   {
     id: "production",
-    icon: <InfiniteLoopIcon height={24} />,
+    icon: CloudDownloadIcon,
     name: "Production",
     description:
       "Download them to a relative path to the Docker Compose file you are running",

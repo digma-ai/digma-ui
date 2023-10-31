@@ -1,7 +1,7 @@
 import React from "react";
-import { ThemeableIconProps } from "./types";
+import { IconProps } from "./types";
 
-interface CodeDisplayIconProps extends ThemeableIconProps {
+interface CodeDisplayIconProps extends IconProps {
   height?: number;
 }
 

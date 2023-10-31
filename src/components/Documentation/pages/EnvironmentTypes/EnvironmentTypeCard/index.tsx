@@ -1,13 +1,18 @@
+import { useTheme } from "styled-components";
+import { getThemeKind } from "../../../../common/App/styles";
 import { InsightCard } from "./InsightCard";
 import * as s from "./styles";
 import { EnvironmentTypeCardProps } from "./types";
 
 export const EnvironmentTypeCard = (props: EnvironmentTypeCardProps) => {
+  const theme = useTheme();
+  const themeKind = getThemeKind(theme);
+
   return (
     <s.Container>
       <s.Header>
         <s.Title>
-          {props.icon}
+          <props.icon height={24} themeKind={themeKind} />
           <span>{props.name}</span>
         </s.Title>
         <span>{props.description}</span>
