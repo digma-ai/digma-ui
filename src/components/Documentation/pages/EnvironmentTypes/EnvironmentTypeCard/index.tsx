@@ -1,7 +1,4 @@
-import { InfoCircleIcon } from "../../../../common/icons/InfoCircleIcon";
-import { PlusIcon } from "../../../../common/icons/PlusIcon";
 import { InsightCard } from "./InsightCard";
-import { StatusChip } from "./StatusChip";
 import * as s from "./styles";
 import { EnvironmentTypeCardProps } from "./types";
 
@@ -14,7 +11,7 @@ export const EnvironmentTypeCard = (props: EnvironmentTypeCardProps) => {
           <span>{props.name}</span>
         </s.Title>
         <span>{props.description}</span>
-        <s.StatusContainer>
+        {/* <s.StatusContainer>
           {props.status === "active" && <StatusChip status={props.status} />}
           {props.status === "waiting-for-data" && (
             <>
@@ -32,7 +29,7 @@ export const EnvironmentTypeCard = (props: EnvironmentTypeCardProps) => {
               Add Environment
             </s.AddEnvironmentButton>
           )}
-        </s.StatusContainer>
+        </s.StatusContainer> */}
       </s.Header>
       <s.InsightContainer>
         {props.insights.map((x) => (

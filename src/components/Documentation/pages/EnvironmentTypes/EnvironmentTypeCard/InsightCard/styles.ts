@@ -19,6 +19,15 @@ export const Container = styled.div<ContainerProps>`
         return "#9b9b9b";
     }
   }};
+  background: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#f7f8fa";
+      case "dark":
+      case "dark-jetbrains":
+        return "#1e1f22";
+    }
+  }};
   ${({ $isDisabled }) => ($isDisabled ? "opacity: 0.4;" : "")}
 `;
 
@@ -41,9 +50,7 @@ export const Header = styled.div`
   }};
 `;
 
-export const Description = styled.span`
-  min-height: 115px;
-`;
+export const Description = styled.span``;
 
 export const StatusContainer = styled.div`
   margin-top: 8px;
