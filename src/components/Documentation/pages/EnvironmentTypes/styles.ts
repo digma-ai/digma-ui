@@ -77,12 +77,31 @@ export const Title = styled.div`
 export const EnvironmentsContainer = styled.div`
   position: relative;
   padding: ${ENVIRONMENT_TYPES_OFFSET}px ${COLUMN_PADDING}px ${COLUMN_PADDING}px;
-  display: flex;
-  width: 100%;
-  box-sizing: border-box;
-  gap: 8px;
 `;
 
-export const EnvironmentTypeContainer = styled.div`
-  min-width: ${COLUMN_MIN_WIDTH}px;
+export const Table = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+`;
+
+export const TableRow = styled.div`
+  display: flex;
+  gap: 8px;
+  flex-grow: 1;
+`;
+
+export const TableCell = styled.div`
+  display: flex;
+  flex: 1 1 0;
+  padding-bottom: 12px;
+  background: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#f7f8fa";
+      case "dark":
+      case "dark-jetbrains":
+        return "#1e1f22";
+    }
+  }};
 `;

@@ -1,16 +1,16 @@
 import { CloudDownloadIcon } from "../../../common/icons/CloudDownloadIcon";
 import { CodeDisplayIcon } from "../../../common/icons/CodeDisplayIcon";
 import { InfiniteLoopIcon } from "../../../common/icons/InfiniteLoopIcon";
-import { InsightCardType } from "./EnvironmentTypeCard/InsightCard/types";
+import { InsightCardType } from "./InsightCard/types";
 import { EnvironmentTypeData } from "./types";
 
 export const environmentTypesData: EnvironmentTypeData[] = [
   {
     id: "dev",
     icon: CodeDisplayIcon,
-    name: "Local and All Environments",
+    name: "Local Environments / Any",
     description:
-      "Download them to a relative path to the Docker Compose file you are running",
+      "Local environment uses observability collected from your local machine. This information can be automatically collected when your run or debug your code in the IDE or run tests.",
     status: "active",
     insights: [
       { type: InsightCardType.TRACING_DATA },
@@ -24,7 +24,7 @@ export const environmentTypesData: EnvironmentTypeData[] = [
     icon: InfiniteLoopIcon,
     name: "CI/Testing Environment",
     description:
-      "Download them to a relative path to the Docker Compose file you are running",
+      "Collect information from your CI build to monitor releases over time.",
     status: "active",
     insights: [
       { type: InsightCardType.SCALING_ISSUES_CI },
@@ -36,9 +36,9 @@ export const environmentTypesData: EnvironmentTypeData[] = [
   {
     id: "production",
     icon: CloudDownloadIcon,
-    name: "Production",
+    name: "Production Environment",
     description:
-      "Download them to a relative path to the Docker Compose file you are running",
+      "Digma can ingest data from your production to provide real world data about your code and issues currently in the wild.",
     status: "active",
     insights: [
       { type: InsightCardType.PERFORMANCE_IMPACT },

@@ -1,5 +1,5 @@
 import { ThemeableIconProps } from "../../../../common/icons/types";
-import { InsightCardType } from "./InsightCard/types";
+import { InsightCardType } from "../InsightCard/types";
 
 export type EnvironmentStatus = "active" | "waiting-for-data";
 

@@ -1,14 +1,14 @@
 import styled from "styled-components";
-import { Link as CommonLink } from "../../../../../common/Link";
+import { Link as CommonLink } from "../../../../common/Link";
 import { ContainerProps, CountChipProps } from "./types";
 
 export const Container = styled.div<ContainerProps>`
   display: flex;
-  padding: 8px 12px 12px;
+  padding: 8px 12px;
   flex-direction: column;
   align-items: flex-start;
   gap: 4px;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 500;
   color: ${({ theme }) => {
     switch (theme.mode) {
@@ -17,15 +17,6 @@ export const Container = styled.div<ContainerProps>`
       case "dark":
       case "dark-jetbrains":
         return "#9b9b9b";
-    }
-  }};
-  background: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#f7f8fa";
-      case "dark":
-      case "dark-jetbrains":
-        return "#1e1f22";
     }
   }};
   ${({ $isDisabled }) => ($isDisabled ? "opacity: 0.4;" : "")}
@@ -50,11 +41,10 @@ export const Header = styled.div`
   }};
 `;
 
-export const Description = styled.span``;
-
 export const StatusContainer = styled.div`
-  margin-top: 8px;
-  height: 18px;
+  padding-top: 4px;
+  margin-top: auto;
+  height: 21px;
 `;
 
 export const Chip = styled.div`
@@ -63,7 +53,7 @@ export const Chip = styled.div`
   padding: 2px 8px;
   justify-content: center;
   align-items: center;
-  font-size: 12px;
+  font-size: 14px;
 `;
 
 export const CountChip = styled(Chip)<CountChipProps>`
@@ -98,10 +88,9 @@ export const NoDataContainer = styled.div`
   gap: 5px;
   color: #9b9b9b;
   font-weight: 500;
-  font-size: 12px;
+  font-size: 14px;
 `;
 
 export const Link = styled(CommonLink)`
   color: inherit;
-  font-size: 12px;
 `;

@@ -1,6 +1,6 @@
 import { ThemeableIconProps } from "../../../common/icons/types";
-import { InsightCardType } from "./EnvironmentTypeCard/InsightCard/types";
 import { EnvironmentStatus } from "./EnvironmentTypeCard/types";
+import { InsightCardType } from "./InsightCard/types";
 
 export interface EnvironmentTypeData {
   id: string;

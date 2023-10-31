@@ -5,22 +5,7 @@ import { Link as CommonLink } from "../../../../common/Link";
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 12px;
   flex-grow: 1;
-  background: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#f7f8fa";
-      case "dark":
-      case "dark-jetbrains":
-        return "#1e1f22";
-    }
-  }};
-`;
-
-export const Header = styled.div`
-  display: flex;
-  flex-direction: column;
   padding: 8px 12px 12px;
   gap: 4px;
   font-size: 14px;
@@ -56,14 +41,15 @@ export const Title = styled.div`
         return "#fff";
     }
   }};
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 500;
   text-transform: capitalize;
   align-items: center;
 `;
 
 export const StatusContainer = styled.div`
-  margin-top: 8px;
+  padding-top: 8px;
+  margin-top: auto;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -75,7 +61,7 @@ export const NoDataContainer = styled.div`
   gap: 4px;
   color: #9b9b9b;
   font-weight: 500;
-  font-size: 12px;
+  font-size: 14px;
 `;
 
 export const Link = styled(CommonLink)`

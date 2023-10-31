@@ -1,9 +1,11 @@
-import { BottleneckIcon } from "../../../../../common/icons/BottleneckIcon";
-import { SQLDatabaseIcon } from "../../../../../common/icons/SQLDatabaseIcon";
-import { ScalesIcon } from "../../../../../common/icons/ScalesIcon";
-import { SnailIcon } from "../../../../../common/icons/SnailIcon";
-import { SpotIcon } from "../../../../../common/icons/SpotIcon";
-import { WarningCircleIcon } from "../../../../../common/icons/WarningCircleIcon";
+import { BottleneckIcon } from "../../../../common/icons/BottleneckIcon";
+import { OpenTelemetryLogoSmallIcon } from "../../../../common/icons/OpenTelemetryLogoSmallIcon";
+import { SQLDatabaseIcon } from "../../../../common/icons/SQLDatabaseIcon";
+import { ScalesIcon } from "../../../../common/icons/ScalesIcon";
+import { SineIcon } from "../../../../common/icons/SineIcon";
+import { SnailIcon } from "../../../../common/icons/SnailIcon";
+import { SpotIcon } from "../../../../common/icons/SpotIcon";
+import { WarningCircleIcon } from "../../../../common/icons/WarningCircleIcon";
 import * as s from "./styles";
 import {
   InsightCardProps,
@@ -14,6 +16,7 @@ import {
 const getInsightTypeCardData = (type: InsightCardType): InsightCardTypeData => {
   const data = {
     [InsightCardType.TRACING_DATA]: {
+      icon: OpenTelemetryLogoSmallIcon,
       name: "Tracing Data",
       description:
         "Tracing data allows you to see clear visualizations of handling requests, scheduled jobs, tasks, or other processes within your application. For each code Digma captures observability data for, you can see the flow of control, parameters, and even queries through trace visualization."
@@ -61,11 +64,13 @@ const getInsightTypeCardData = (type: InsightCardType): InsightCardTypeData => {
         "Sometimes a slowdown can be traced to a specific query, HTTP request, or code section that is experiencing a slowdown. Digma is able to pin point the culprit for the slowdown in order to better highlight a specific problem or issue."
     },
     [InsightCardType.USAGE_ANALYSIS]: {
+      icon: SineIcon,
       name: "Usage Analysis",
       description:
         "See the real runtime usage of any observed code or query. Detect areas in code that are never reached or have a clear view of the impacted flows, consumers, or endpoints by code changes in any given class or module."
     },
     [InsightCardType.PERFORMANCE_IMPACT]: {
+      icon: SnailIcon,
       name: "Performance impact",
       description:
         'Digma analyzes the performance impact of different areas and code locations to be able to a "punch for the bucks" view of where to focus optimization efforts. To improve performance it\'s not enough to examine the durations and statistics, usage and overall effect can make a lot of difference.'
@@ -107,7 +112,7 @@ export const InsightCard = (props: InsightCardProps) => {
         )}
         <span>{insightTypeCardInfo.name}</span>
       </s.Header>
-      <s.Description>{insightTypeCardInfo.description}</s.Description>
+      <span>{insightTypeCardInfo.description}</span>
       {/* <s.StatusContainer>
         {!props.isDisabled && (
           <>

@@ -1,4 +1,4 @@
-import { IconProps } from "../../../../../common/icons/types";
+import { IconProps } from "../../../../common/icons/types";
 
 export interface InsightCardProps {
   type: InsightCardType;
