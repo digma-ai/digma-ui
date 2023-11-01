@@ -8,10 +8,10 @@ import { useMemo } from "react";
 import { useTheme } from "styled-components";
 import { Duration } from "../../../globals";
 import { isNumber } from "../../../typeGuards/isNumber";
+import { formatTimeDistance } from "../../../utils/formatTimeDistance";
 import { getInsightImportanceColor } from "../../../utils/getInsightImportanceColor";
 import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
 import { getInsightTypeOrderPriority } from "../../../utils/getInsightTypeOrderPriority";
-import { timeAgo } from "../../../utils/timeAgo";
 import { Badge } from "../../common/Badge";
 import { Button } from "../../common/Button";
 import { Tooltip } from "../../common/Tooltip";
@@ -65,10 +65,10 @@ export const RecentActivityTable = (props: RecentActivityTableProps) => {
 
   const renderTimeDistance = (timestamp: string, viewMode: ViewMode) => {
     const title = new Date(timestamp).toString();
-    const timeDistance = timeAgo(timestamp, "short");
-    const timeDistanceString = timeDistance
-      ? `${timeDistance.value}${timeDistance.unit}`
-      : "";
+    const timeDistanceString = formatTimeDistance(timestamp, {
+      format: "short",
+      withDescriptiveWords: false
+    }).replace(" ", "");
 
     return viewMode === "table" ? (
       <s.TimeDistanceContainer>

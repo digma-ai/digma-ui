@@ -54,14 +54,15 @@ export const TopUsageInsight = (props: TopUsageInsightProps) => {
                       {flow.firstService.span}
                     </Link>
                   </s.FullSpanName>
-                  <span>
-                    {flow.intermediateSpan && (
-                      <> -&gt; {flow.intermediateSpan}</>
-                    )}
-                  </span>
-                  {flow.lastService ? (
+                  {flow.intermediateSpan && (
+                    <span> -&gt; {flow.intermediateSpan}</span>
+                  )}
+                  {flow.lastService && (
                     <s.FullSpanName>
-                      <Description>{flow.lastService.service}</Description>
+                      <Description>
+                        {" "}
+                        -&gt; {flow.lastService.service}
+                      </Description>
                       <Link
                         onClick={() =>
                           handleServiceLinkClick(
@@ -72,10 +73,10 @@ export const TopUsageInsight = (props: TopUsageInsightProps) => {
                         {flow.lastService.span}
                       </Link>
                     </s.FullSpanName>
-                  ) : null}
-                  <span>
-                    {flow.lastServiceSpan && <> -&gt; {flow.lastServiceSpan}</>}
-                  </span>
+                  )}
+                  {flow.lastServiceSpan && (
+                    <span> -&gt; {flow.lastServiceSpan}</span>
+                  )}
                 </s.FlowData>
                 {config.isJaegerEnabled && traceId && (
                   <s.Button

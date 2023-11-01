@@ -1,9 +1,9 @@
 import { DefaultTheme, useTheme } from "styled-components";
 import { InsightType } from "../../../../types";
+import { formatTimeDistance } from "../../../../utils/formatTimeDistance";
 import { getInsightImportanceColor } from "../../../../utils/getInsightImportanceColor";
 import { getInsightTypeInfo } from "../../../../utils/getInsightTypeInfo";
 import { getInsightTypeOrderPriority } from "../../../../utils/getInsightTypeOrderPriority";
-import { timeAgo } from "../../../../utils/timeAgo";
 import { Tooltip } from "../../../common/Tooltip";
 import { GlobeIcon } from "../../../common/icons/GlobeIcon";
 import { getAssetTypeInfo } from "../../utils";
@@ -82,10 +82,10 @@ export const AssetEntry = (props: AssetEntryProps) => {
 
   const servicesTitle = props.entry.services.join(", ");
 
-  const timeDistance = timeAgo(lastSeenDateTime, "short");
-  const timeDistanceString = timeDistance
-    ? `${timeDistance.value}${timeDistance.unit}`
-    : "";
+  const timeDistanceString = formatTimeDistance(lastSeenDateTime, {
+    format: "short",
+    withDescriptiveWords: false
+  }).replace(" ", "");
   const timeDistanceTitle = new Date(lastSeenDateTime).toString();
 
   return (
