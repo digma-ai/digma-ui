@@ -1,6 +1,6 @@
 import { DefaultTheme, useTheme } from "styled-components";
+import { formatTimeDistance } from "../../../utils/formatTimeDistance";
 import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
-import { timeAgo } from "../../../utils/timeAgo";
 import { InsightScope } from "../../Insights/types";
 import { Badge } from "../../common/Badge";
 import { Tooltip } from "../../common/Tooltip";
@@ -101,7 +101,9 @@ export const NotificationCard = (props: NotificationCardProps) => {
 
   const title = props.data.title;
   const linkName = getLinkName(props.data.data);
-  const timeDistance = timeAgo(props.data.timestamp);
+  const timeDistanceString = formatTimeDistance(props.data.timestamp, {
+    format: "medium"
+  });
 
   return (
     <s.Card
@@ -115,11 +117,9 @@ export const NotificationCard = (props: NotificationCardProps) => {
           <Tooltip title={title}>
             <s.Title>{title}</s.Title>
           </Tooltip>
-          {timeDistance && (
+          {timeDistanceString && (
             <Tooltip title={new Date(props.data.timestamp).toString()}>
-              <s.TimeDistance>
-                {timeDistance.value} {timeDistance.unit} ago
-              </s.TimeDistance>
+              <s.TimeDistance>{timeDistanceString}</s.TimeDistance>
             </Tooltip>
           )}
         </s.Header>
