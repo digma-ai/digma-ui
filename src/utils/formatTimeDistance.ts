@@ -129,7 +129,7 @@ export const formatTimeDistance = (
   const format = options?.format || "long";
   let unitString = unitFormats[distance.unit][format];
 
-  if (distance.value === 1 && format === "long") {
+  if (distance.value !== 1 && format === "long") {
     unitString = `${unitString}s`;
   }
 
