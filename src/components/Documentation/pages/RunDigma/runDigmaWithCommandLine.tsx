@@ -1,5 +1,5 @@
-import { CodeSnippet } from "../../common/CodeSnippet";
-import { PageContent } from "./types";
+import { CodeSnippet } from "../../../common/CodeSnippet";
+import { PageContent } from "./Page/types";
 
 export const runDigmaWithCommandLine: PageContent = {
   title:

@@ -10,3 +10,5 @@ export interface PageContent {
     content?: ReactNode;
   }[];
 }
+
+export type PageProps = PageContent;

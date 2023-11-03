@@ -1,4 +1,4 @@
-import { PageContent } from "./types";
+import { PageContent } from "./Page/types";
 
 export const runDigmaWithGradleTasks: PageContent = {
   title: "How to use Digma if you're using custom native Gradle tasks",

@@ -1,12 +1,11 @@
 import { useEffect } from "react";
 import { isString } from "../../typeGuards/isString";
 import { addPrefix } from "../../utils/addPrefix";
-import { Page } from "./Page";
-import { runDigmaWithCommandLine } from "./pages/runDigmaWithCommandLine";
-import { runDigmaWithDocker } from "./pages/runDigmaWithDocker";
-import { runDigmaWithGradleTasks } from "./pages/runDigmaWithGradleTasks";
-import { PageContent } from "./pages/types";
-import * as s from "./styles";
+import { EnvironmentTypes } from "./pages/EnvironmentTypes";
+import { Page } from "./pages/RunDigma/Page";
+import { runDigmaWithCommandLine } from "./pages/RunDigma/runDigmaWithCommandLine";
+import { runDigmaWithDocker } from "./pages/RunDigma/runDigmaWithDocker";
+import { runDigmaWithGradleTasks } from "./pages/RunDigma/runDigmaWithGradleTasks";
 import { DocumentationProps } from "./types";
 
 const ACTION_PREFIX = "DOCUMENTATION";
@@ -15,10 +14,11 @@ const actions = addPrefix(ACTION_PREFIX, {
   INITIALIZE: "INITIALIZE"
 });
 
-const pages: Record<string, PageContent> = {
-  "run-digma-with-terminal": runDigmaWithCommandLine,
-  "run-digma-with-docker": runDigmaWithDocker,
-  "run-digma-with-gradle-tasks": runDigmaWithGradleTasks
+const pages: Record<string, JSX.Element> = {
+  "run-digma-with-terminal": <Page {...runDigmaWithCommandLine} />,
+  "run-digma-with-docker": <Page {...runDigmaWithDocker} />,
+  "run-digma-with-gradle-tasks": <Page {...runDigmaWithGradleTasks} />,
+  "environment-types": <EnvironmentTypes />
 };
 
 const initialPage = isString(window.documentationPage)
@@ -35,5 +35,5 @@ export const Documentation = (props: DocumentationProps) => {
     });
   }, []);
 
-  return <s.Container>{pageContent && <Page {...pageContent} />}</s.Container>;
+  return <>{pageContent}</>;
 };

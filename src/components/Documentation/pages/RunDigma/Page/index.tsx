@@ -2,7 +2,7 @@ import * as s from "./styles";
 import { PageProps } from "./types";
 
 export const Page = (props: PageProps) => (
-  <>
+  <s.Container>
     <s.Header>
       <s.Title>{props.title}</s.Title>
       {props.description}
@@ -22,5 +22,5 @@ export const Page = (props: PageProps) => (
           {section.content}
         </s.Section>
       ))}
-  </>
+  </s.Container>
 );
