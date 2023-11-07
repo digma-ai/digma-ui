@@ -90,7 +90,7 @@ export const getInsightTypeOrderPriority = (type: string): number => {
     [InsightType.SpanDurationBreakdown]: 68
   };
 
-  return insightOrderPriorityMap[type] || Infinity;
+  return insightOrderPriorityMap[type] || -Infinity;
 };
 
 const groupInsights = (
@@ -163,7 +163,10 @@ const groupInsights = (
 
   // Add empty span groups
   spans.forEach((x) => {
-    if (!spanInsightGroups[x.spanDisplayName]) {
+    if (
+      !endpointInsightGroups[x.spanDisplayName] &&
+      !spanInsightGroups[x.spanDisplayName]
+    ) {
       spanInsightGroups[x.spanDisplayName] = [];
     }
   });
