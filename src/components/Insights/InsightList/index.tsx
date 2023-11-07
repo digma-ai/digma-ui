@@ -163,7 +163,10 @@ const groupInsights = (
 
   // Add empty span groups
   spans.forEach((x) => {
-    if (!spanInsightGroups[x.spanDisplayName]) {
+    if (
+      !endpointInsightGroups[x.spanDisplayName] &&
+      !spanInsightGroups[x.spanDisplayName]
+    ) {
       spanInsightGroups[x.spanDisplayName] = [];
     }
   });
