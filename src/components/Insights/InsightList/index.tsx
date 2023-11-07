@@ -90,7 +90,7 @@ export const getInsightTypeOrderPriority = (type: string): number => {
     [InsightType.SpanDurationBreakdown]: 68
   };
 
-  return insightOrderPriorityMap[type] || Infinity;
+  return insightOrderPriorityMap[type] || -Infinity;
 };
 
 const groupInsights = (
