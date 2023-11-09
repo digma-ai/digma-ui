@@ -18,15 +18,6 @@ export const Container = styled.div`
         return "#9b9b9b";
     }
   }};
-  background: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#fff";
-      case "dark":
-      case "dark-jetbrains":
-        return "#393b40";
-    }
-  }};
 `;
 
 export const Title = styled.div`

@@ -13,7 +13,6 @@ export interface EnvironmentTypeData {
   insights: {
     type: InsightCardType;
     count?: number;
-    isDisabled?: boolean;
   }[];
 }
 
