@@ -4,12 +4,7 @@ import { InsightCard } from "./InsightCard";
 import { environmentTypesData } from "./data";
 import * as s from "./styles";
 
-const renderEnvironmentsTable = () => {
-  const rowsCount = Math.max(
-    ...environmentTypesData.map((x) => x.insights.length)
-  );
-  const rowsArray = new Array(rowsCount).fill(0);
-
+const renderEnvironmentTypesTable = () => {
   return (
     <s.Table>
       <s.TableRow>
@@ -25,6 +20,18 @@ const renderEnvironmentsTable = () => {
           </s.TableCell>
         ))}
       </s.TableRow>
+    </s.Table>
+  );
+};
+
+const renderInsightsTable = () => {
+  const rowsCount = Math.max(
+    ...environmentTypesData.map((x) => x.insights.length)
+  );
+  const rowsArray = new Array(rowsCount).fill(0);
+
+  return (
+    <s.Table>
       {rowsArray.map((_, i) => (
         <s.TableRow key={i}>
           {environmentTypesData.map((x) => {
@@ -52,20 +59,27 @@ export const EnvironmentTypes = () => {
 
   return (
     <s.Container $columnCount={columnCount}>
-      <s.Header $columnCount={columnCount}>
-        <s.Title>
-          <DigmaLogoIcon size={16} />
-          <span>Digma Insight Overview</span>
-        </s.Title>
-        <span>
-          The following lists describes some Digma&apos;s capabilities in
-          analyzing observability for multiple environment types, from local dev
-          and test through CI to real world production environment.
-        </span>
-      </s.Header>
-      <s.EnvironmentsContainer>
-        {renderEnvironmentsTable()}
-      </s.EnvironmentsContainer>
+      <s.TopGradientBackground />
+      <s.BottomGradientBackground />
+      <s.ContentContainer>
+        <s.Header $columnCount={columnCount}>
+          <s.HeaderTextContainer>
+            <s.Title>
+              <DigmaLogoIcon size={16} />
+              <span>Digma Insight Overview</span>
+            </s.Title>
+            <span>
+              The following lists describes some Digma&apos;s capabilities in
+              analyzing observability for multiple environment types, from local
+              dev and test through CI to real world production environment.
+            </span>
+          </s.HeaderTextContainer>
+          {renderEnvironmentTypesTable()}
+        </s.Header>
+        <s.EnvironmentsContainer>
+          {renderInsightsTable()}
+        </s.EnvironmentsContainer>
+      </s.ContentContainer>
     </s.Container>
   );
 };

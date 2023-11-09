@@ -10,6 +10,9 @@ export const Container = styled.div<ContainerProps>`
   gap: 4px;
   font-size: 14px;
   font-weight: 500;
+  border-radius: 2px;
+  border: 1px solid #434343;
+  box-shadow: 0 4px 8px 0 rgba(0 0 0 / 12%);
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -19,7 +22,16 @@ export const Container = styled.div<ContainerProps>`
         return "#9b9b9b";
     }
   }};
-  ${({ $isDisabled }) => ($isDisabled ? "opacity: 0.4;" : "")}
+  background: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#e9eef4";
+      case "dark":
+      case "dark-jetbrains":
+        return "#23282f";
+    }
+  }};
+  ${({ $isDisabled }) => ($isDisabled ? "opacity: 0.6;" : "")}
 `;
 
 export const Header = styled.div`
