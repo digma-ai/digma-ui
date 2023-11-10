@@ -1,4 +1,3 @@
-import { DigmaLogoIcon } from "../../../common/icons/DigmaLogoIcon";
 import { EnvironmentTypeCard } from "./EnvironmentTypeCard";
 import { InsightCard } from "./InsightCard";
 import { environmentTypesData } from "./data";
@@ -63,7 +62,7 @@ export const EnvironmentTypes = () => {
       <s.BottomGradientBackground />
       <s.ContentContainer>
         <s.Header $columnCount={columnCount}>
-          <s.HeaderTextContainer>
+          {/* <s.HeaderTextContainer>
             <s.Title>
               <DigmaLogoIcon size={16} />
               <span>Digma Insight Overview</span>
@@ -73,7 +72,7 @@ export const EnvironmentTypes = () => {
               analyzing observability for multiple environment types, from local
               dev and test through CI to real world production environment.
             </span>
-          </s.HeaderTextContainer>
+          </s.HeaderTextContainer> */}
           {renderEnvironmentTypesTable()}
         </s.Header>
         <s.EnvironmentsContainer>
