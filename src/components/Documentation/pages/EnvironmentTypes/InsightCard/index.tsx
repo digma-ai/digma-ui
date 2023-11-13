@@ -108,7 +108,7 @@ export const InsightCard = (props: InsightCardProps) => {
     <s.Container $isDisabled={props.isDisabled}>
       <s.Header>
         {insightTypeCardInfo.icon && (
-          <insightTypeCardInfo.icon size={22} color={"currentcolor"} />
+          <insightTypeCardInfo.icon size={22} color={"currentColor"} />
         )}
         <span>{insightTypeCardInfo.name}</span>
       </s.Header>
