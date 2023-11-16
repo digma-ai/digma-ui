@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { actions as globalActions } from "../../../actions";
 import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
@@ -36,6 +36,12 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
   const [isInitialLoading, setIsInitialLoading] = useState(false);
   const config = useContext(ConfigContext);
   const previousEnvironment = usePrevious(config.environment);
+
+  const assetsCount = useMemo(
+    () =>
+      data ? data.assetCategories.reduce((acc, cur) => acc + cur.count, 0) : 0,
+    [data]
+  );
 
   useEffect(() => {
     window.sendMessageToDigma({
@@ -118,10 +124,7 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
     );
   }
 
-  if (
-    data?.assetCategories.length === 0 ||
-    data?.assetCategories.every((x) => x.count === 0)
-  ) {
+  if (assetsCount === 0) {
     return (
       <s.NoDataContainer>
         <EmptyState
