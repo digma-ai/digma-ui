@@ -45,7 +45,7 @@ const GET_DIGMA_DOCKER_COMPOSE_COMMAND_LINUX =
   "curl -L https://get.digma.ai/ --output docker-compose.yml";
 const GET_DIGMA_DOCKER_COMPOSE_COMMAND_WINDOWS =
   "iwr https://get.digma.ai/ -outfile docker-compose.yml";
-const RUN_DOCKER_COMPOSE_COMMAND = "docker compose up -d";
+const RUN_DOCKER_COMPOSE_COMMAND = "docker compose up -d --remove-orphans";
 
 const DOCKER_DESKTOP_URL = "https://www.docker.com/products/docker-desktop/";
 const DOCKER_URL = "https://docs.docker.com/get-docker/";
