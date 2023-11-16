@@ -118,7 +118,10 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
     );
   }
 
-  if (data?.assetCategories.every((x) => x.count === 0)) {
+  if (
+    data?.assetCategories.length === 0 ||
+    data?.assetCategories.every((x) => x.count === 0)
+  ) {
     return (
       <s.NoDataContainer>
         <EmptyState
