@@ -40,9 +40,32 @@ jobs:
           name: dockerfile
           path: Dockerfile
 
-  download:
-    name: Build and push Docker image
+  bump_version:
+    name: Bump version
     needs: [build]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get tag
+        id: tag
+        uses: dawidd6/action-get-tag@v1
+        with:
+          strip_v: true
+
+      - name: Bump version
+        run: npm version ${{ steps.tag.outputs.tag }} --no-commit-hooks --no-git-tag-version
+
+      - name: Upload assets to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ${{ steps.publishToMarketplace.outputs.vsixPath }}
+          asset_name: digma.vsix
+          tag: ${{ github.ref }}
+
+  publish:
+    name: Build and push Docker image
+    needs: [bump_version]
     runs-on: ubuntu-latest
 
     steps:
