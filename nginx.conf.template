@@ -1,3 +1,8 @@
+map "${PLUGIN_API_TOKEN}" $headerValue {
+  "" "";
+  "~*^(.+)$" "Token $1";
+}
+
 server {
   listen 80;
   root /usr/share/nginx/html;
@@ -5,5 +10,6 @@ server {
 
   location /api/ {
     proxy_pass ${PLUGIN_API_URL}/;
+    proxy_set_header Authorization $headerValue;
   }
 }
