@@ -4,5 +4,9 @@ import { InsightProps, SpanUsagesInsight, Trace } from "../types";
 export interface TopUsageInsightProps extends InsightProps {
   insight: SpanUsagesInsight;
   onAssetLinkClick: (spanCodeObjectId: string) => void;
-  onTraceButtonClick: (trace: Trace, insightType: InsightType) => void;
+  onTraceButtonClick: (
+    trace: Trace,
+    insightType: InsightType,
+    spanCodeObjectId: string
+  ) => void;
 }

@@ -8,5 +8,9 @@ import {
 export interface EndpointNPlusOneInsightProps extends InsightProps {
   insight: EndpointSuspectedNPlusOneInsight;
   onAssetLinkClick: (spanCodeObjectId: string) => void;
-  onTraceButtonClick: (trace: Trace, insightType: InsightType) => void;
+  onTraceButtonClick: (
+    trace: Trace,
+    insightType: InsightType,
+    spanCodeObjectId: string
+  ) => void;
 }
