@@ -15,6 +15,8 @@ export const trackingEvents = addPrefix(
     DIGMA_CLOUD_AVAILABILITY_NOTIFICATION_EMAIL_ADDRESS_CAPTURED:
       "digma cloud availability notification email address captured",
     INSTALLATION_TYPE_BUTTON_CLICKED: "installation type button clicked",
+    AUTO_INSTALLATION_PREREQUISITES_WERE_NOT_MET:
+      "auto installation prerequisites were not met",
     AUTO_INSTALLATION_FLOW_STARTED: "auto installation flow started",
     AUTO_INSTALLATION_FLOW_FINISHED: "auto installation flow finished",
     ENGINE_ACTION_BUTTON_CLICKED: "engine action button clicked",

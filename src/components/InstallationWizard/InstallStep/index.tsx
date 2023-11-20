@@ -134,6 +134,17 @@ export const InstallStep = (props: InstallStepProps) => {
 
         sendTrackingEvent(trackingEvents.AUTO_INSTALLATION_FLOW_STARTED);
         engine.startOperation(Operation.INSTALL);
+      } else {
+        sendTrackingEvent(
+          trackingEvents.AUTO_INSTALLATION_PREREQUISITES_WERE_NOT_MET,
+          {
+            isFirstLaunch: isFirstLaunch,
+            digmaStatus: config.digmaStatus,
+            isDigmaEngineInstalled: config.isDigmaEngineInstalled,
+            isDockerInstalled: config.isDockerInstalled,
+            isDockerComposeInstalled: config.isDockerComposeInstalled
+          }
+        );
       }
     }
   }, [config.digmaStatus, previousDigmaStatus, config, engine]);
