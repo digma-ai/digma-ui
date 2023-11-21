@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { usePagination } from "../../../hooks/usePagination";
+import { InsightType } from "../../../types";
 import { roundTo } from "../../../utils/roundTo";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Pagination } from "../../common/Pagination";
@@ -25,8 +26,12 @@ export const TopUsageInsight = (props: TopUsageInsightProps) => {
     spanCodeObjectId && props.onAssetLinkClick(spanCodeObjectId);
   };
 
-  const handleTraceButtonClick = (trace: Trace) => {
-    props.onTraceButtonClick(trace, props.insight.type);
+  const handleTraceButtonClick = (
+    trace: Trace,
+    insightType: InsightType,
+    spanCodeObjectId: string
+  ) => {
+    props.onTraceButtonClick(trace, insightType, spanCodeObjectId);
   };
 
   return (
@@ -82,10 +87,14 @@ export const TopUsageInsight = (props: TopUsageInsightProps) => {
                   <s.Button
                     icon={{ component: CrosshairIcon }}
                     onClick={() =>
-                      handleTraceButtonClick({
-                        name: firstServiceName,
-                        id: traceId
-                      })
+                      handleTraceButtonClick(
+                        {
+                          name: firstServiceName,
+                          id: traceId
+                        },
+                        props.insight.type,
+                        flow.firstService.spanCodeObjectId
+                      )
                     }
                   >
                     Trace

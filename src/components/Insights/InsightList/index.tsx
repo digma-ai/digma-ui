@@ -251,12 +251,17 @@ const renderInsightCard = (
     });
   };
 
-  const handleTraceButtonClick = (trace: Trace, insightType: InsightType) => {
+  const handleTraceButtonClick = (
+    trace: Trace,
+    insightType: InsightType,
+    spanCodeObjectId?: string
+  ) => {
     window.sendMessageToDigma({
       action: actions.GO_TO_TRACE,
       payload: {
         trace,
-        insightType
+        insightType,
+        spanCodeObjectId
       }
     });
   };

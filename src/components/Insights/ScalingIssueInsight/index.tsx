@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import { InsightType } from "../../../types";
 import { trimEndpointScheme } from "../../../utils/trimEndpointScheme";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Button } from "../../common/Button";
@@ -18,8 +19,12 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
     props.onAssetLinkClick(spanCodeObjectId);
   };
 
-  const handleTraceButtonClick = (trace: Trace) => {
-    props.onTraceButtonClick(trace, props.insight.type);
+  const handleTraceButtonClick = (
+    trace: Trace,
+    insightType: InsightType,
+    spanCodeObjectId: string
+  ) => {
+    props.onTraceButtonClick(trace, insightType, spanCodeObjectId);
   };
 
   const handleHistogramButtonClick = () => {
@@ -75,10 +80,14 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
                       <s.Button
                         icon={{ component: CrosshairIcon }}
                         onClick={() =>
-                          handleTraceButtonClick({
-                            name: spanName,
-                            id: traceId
-                          })
+                          handleTraceButtonClick(
+                            {
+                              name: spanName,
+                              id: traceId
+                            },
+                            props.insight.type,
+                            spanCodeObjectId
+                          )
                         }
                       >
                         Trace

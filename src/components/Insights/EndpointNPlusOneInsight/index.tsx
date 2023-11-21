@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { usePagination } from "../../../hooks/usePagination";
+import { InsightType } from "../../../types";
 import { roundTo } from "../../../utils/roundTo";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Pagination } from "../../common/Pagination";
@@ -29,8 +30,12 @@ export const EndpointNPlusOneInsight = (
     props.onAssetLinkClick(spanCodeObjectId);
   };
 
-  const handleTraceButtonClick = (trace: Trace) => {
-    props.onTraceButtonClick(trace, props.insight.type);
+  const handleTraceButtonClick = (
+    trace: Trace,
+    insightType: InsightType,
+    spanCodeObjectId: string
+  ) => {
+    props.onTraceButtonClick(trace, insightType, spanCodeObjectId);
   };
 
   return (
@@ -83,10 +88,14 @@ export const EndpointNPlusOneInsight = (
                     <s.Button
                       icon={{ component: CrosshairIcon }}
                       onClick={() =>
-                        handleTraceButtonClick({
-                          name: spanName,
-                          id: span.traceId
-                        })
+                        handleTraceButtonClick(
+                          {
+                            name: spanName,
+                            id: span.traceId
+                          },
+                          props.insight.type,
+                          spanInfo.spanCodeObjectId
+                        )
                       }
                     >
                       Trace
