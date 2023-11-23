@@ -1,43 +1,9 @@
 import styled from "styled-components";
-import { Link } from "../../common/Link";
 
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-`;
-
-export const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-  padding-bottom: 12px;
-  border-bottom: 1px solid
-    ${({ theme }) => {
-      switch (theme.mode) {
-        case "light":
-          return "#c9ccd6";
-        case "dark":
-        case "dark-jetbrains":
-          return "#4e5157";
-      }
-    }};
-`;
-
-export const Title = styled.div`
-  display: flex;
-  gap: 4px;
-  font-size: 14px;
-  font-weight: 700;
-  align-items: center;
-  color: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#494b57";
-      case "dark":
-      case "dark-jetbrains":
-        return "#dfe1e5";
-    }
-  }};
 `;
 
 export const ContentContainer = styled.div`
@@ -49,33 +15,6 @@ export const EntryList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
-`;
-
-export const Entry = styled.div`
-  display: flex;
-  justify-content: space-between;
-  gap: 4px;
-`;
-
-export const SpanLink = styled(Link)`
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-`;
-
-export const Duration = styled.span`
-  flex-shrink: 0;
-  font-size: 14px;
-  font-weight: 500;
-  color: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#818594";
-      case "dark":
-      case "dark-jetbrains":
-        return "#b4b8bf";
-    }
-  }};
 `;
 
 export const Footer = styled.div`
@@ -160,5 +99,5 @@ export const ErrorMessage = styled.span`
 
 export const IconContainer = styled.div`
   display: flex;
-  align-self: center;
+  align-items: center;
 `;

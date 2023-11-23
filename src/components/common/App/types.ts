@@ -18,6 +18,16 @@ export type DigmaStatus = {
   runningDigmaInstances: InstallationType[];
 };
 
+export interface BackendInfo {
+  applicationVersion: string;
+  deploymentType: DeploymentType;
+}
+
+export enum DeploymentType {
+  DOCKER_COMPOSE = "DockerCompose",
+  DOCKER_EXTENSION = "DockerExtension"
+}
+
 export interface ConfigContextData {
   digmaApiUrl: string;
   digmaStatus: DigmaStatus | undefined;
@@ -29,4 +39,5 @@ export interface ConfigContextData {
   isDockerComposeInstalled: boolean;
   userEmail: string;
   environment: string;
+  backendInfo: BackendInfo | undefined;
 }

@@ -9,9 +9,14 @@ import { isObject } from "../../../typeGuards/isObject";
 import { isString } from "../../../typeGuards/isString";
 import { ConfigContext } from "./ConfigContext";
 import { GlobalStyle } from "./styles";
-import { AppProps, DigmaStatus } from "./types";
+import { AppProps, BackendInfo, DigmaStatus } from "./types";
 
 export const THEMES = ["light", "dark", "dark-jetbrains"];
+
+export const isBackendInfo = (info: unknown): info is BackendInfo =>
+  isObject(info) &&
+  isString(info.applicationVersion) &&
+  isString(info.deploymentType);
 
 const isMode = (mode: unknown): mode is Mode =>
   isString(mode) && THEMES.includes(mode);
@@ -157,6 +162,15 @@ export const App = (props: AppProps) => {
       }
     };
 
+    const handleSetBackendInfo = (data: unknown) => {
+      if (isBackendInfo(data)) {
+        setConfig((config) => ({
+          ...config,
+          backendInfo: data
+        }));
+      }
+    };
+
     dispatcher.addActionListener(actions.SET_THEME, handleSetTheme);
     dispatcher.addActionListener(actions.SET_MAIN_FONT, handleSetMainFont);
     dispatcher.addActionListener(actions.SET_CODE_FONT, handleSetCodeFont);
@@ -193,6 +207,10 @@ export const App = (props: AppProps) => {
     dispatcher.addActionListener(
       actions.SET_IS_OBSERVABILITY_ENABLED,
       handleIsObservabilityEnabled
+    );
+    dispatcher.addActionListener(
+      actions.SET_BACKEND_INFO,
+      handleSetBackendInfo
     );
 
     return () => {
@@ -238,6 +256,10 @@ export const App = (props: AppProps) => {
       dispatcher.removeActionListener(
         actions.SET_IS_OBSERVABILITY_ENABLED,
         handleIsObservabilityEnabled
+      );
+      dispatcher.removeActionListener(
+        actions.SET_BACKEND_INFO,
+        handleSetBackendInfo
       );
     };
   }, []);
