@@ -18,15 +18,30 @@ const getImpactScoreLabel = (score: number) => {
   return "High";
 };
 
-export const ImpactScore = (props: ImpactScoreProps) => (
-  <Tooltip title={props.score}>
-    <s.Container>
-      {getImpactScoreLabel(props.score)}
-      {props.score >= 0 && props.showIndicator && (
-        <s.IndicatorContainer>
-          <s.Indicator $score={props.score} />
-        </s.IndicatorContainer>
-      )}
-    </s.Container>
-  </Tooltip>
+const renderIndicator = (score: number) => (
+  <s.IndicatorContainer>
+    <s.Indicator $score={score} />
+  </s.IndicatorContainer>
 );
+
+export const ImpactScore = (props: ImpactScoreProps) => {
+  let indicatorPosition: "start" | "end" | undefined;
+
+  if (props.score >= 0 && props.showIndicator) {
+    indicatorPosition = "end";
+
+    if (props.indicatorPosition) {
+      indicatorPosition = props.indicatorPosition;
+    }
+  }
+
+  return (
+    <Tooltip title={props.score}>
+      <s.Container>
+        {indicatorPosition === "start" && renderIndicator(props.score)}
+        {getImpactScoreLabel(props.score)}
+        {indicatorPosition === "end" && renderIndicator(props.score)}
+      </s.Container>
+    </Tooltip>
+  );
+};

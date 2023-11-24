@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet";
 import { gte, valid } from "semver";
 import { useTheme } from "styled-components";
 import { actions as globalActions } from "../../actions";
+import { dispatcher } from "../../dispatcher";
 import { platform } from "../../platform";
 import { isString } from "../../typeGuards/isString";
 import { openURLInDefaultBrowser } from "../../utils/openURLInDefaultBrowser";
@@ -14,6 +15,7 @@ import { DigmaLogoIcon } from "../common/icons/DigmaLogoIcon";
 import { OpenLinkIcon } from "../common/icons/OpenLinkIcon";
 import { actions } from "./actions";
 import * as s from "./styles";
+import { EnvironmentInfoData } from "./types";
 import { ClientSpansPerformanceImpact } from "./widgets/ClientSpansPerformanceImpact";
 import { SlowQueries } from "./widgets/SlowQueries";
 
@@ -40,9 +42,11 @@ export const Dashboard = () => {
   const config = useContext(ConfigContext);
   const theme = useTheme();
   const themeKind = getThemeKind(theme);
+  const [environmentName, setEnvironmentName] = useState(
+    platform === "Web" ? "" : formatEnvironmentName(environment)
+  );
 
   const backendVersion = config.backendInfo?.applicationVersion;
-  const formattedEnvironmentName = formatEnvironmentName(environment);
 
   const isClientSpansOverallImpactEnabled =
     backendVersion &&
@@ -68,6 +72,30 @@ export const Dashboard = () => {
     window.sendMessageToDigma({
       action: globalActions.GET_BACKEND_INFO
     });
+    window.sendMessageToDigma({
+      action: actions.GET_ENVIRONMENT_INFO
+    });
+
+    const handleSetEnvironmentInfoData = (data: unknown) => {
+      const environmentInfo = data as EnvironmentInfoData;
+      if (environmentInfo.data) {
+        setEnvironmentName(environmentInfo.data.displayName);
+      } else {
+        setEnvironmentName(formatEnvironmentName(environment));
+      }
+    };
+
+    dispatcher.addActionListener(
+      actions.SET_ENVIRONMENT_INFO,
+      handleSetEnvironmentInfoData
+    );
+
+    return () => {
+      dispatcher.removeActionListener(
+        actions.SET_ENVIRONMENT_INFO,
+        handleSetEnvironmentInfoData
+      );
+    };
   }, []);
 
   useEffect(() => {
@@ -76,10 +104,14 @@ export const Dashboard = () => {
     }
   }, [config.backendInfo]);
 
+  const title = `Dashboard${
+    environmentName.length > 0 ? ` - ${environmentName}` : ""
+  }`;
+
   return (
     <s.Container>
       <Helmet>
-        <title>Dashboard - {formattedEnvironmentName}</title>
+        <title>{title}</title>
       </Helmet>
       <s.Header>
         <s.Title>
@@ -88,7 +120,7 @@ export const Dashboard = () => {
           </s.IconContainer>
           Dashboard
           {environment.length > 0 && (
-            <s.EnvironmentName>{formattedEnvironmentName}</s.EnvironmentName>
+            <s.EnvironmentName>{environmentName}</s.EnvironmentName>
           )}
         </s.Title>
         {platform !== "Web" &&

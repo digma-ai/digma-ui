@@ -30,7 +30,13 @@ const renderClientSpanOverallImpactEntry = (
           {item.displayName}
         </s.SpanLink>
       </Tooltip>
-      <ImpactScore score={item.overallImpact} showIndicator={true} />
+      <s.ImpactScoreContainer>
+        <ImpactScore
+          score={item.overallImpact}
+          showIndicator={true}
+          indicatorPosition={"start"}
+        />
+      </s.ImpactScoreContainer>
     </s.Entry>
   );
 };

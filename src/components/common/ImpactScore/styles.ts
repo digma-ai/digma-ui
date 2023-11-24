@@ -2,8 +2,9 @@ import styled from "styled-components";
 import { ImpactScoreIndicatorProps } from "./types";
 
 export const Container = styled.div`
+  width: 100%;
   display: flex;
-  gap: 2px;
+  gap: 6px;
   align-items: center;
   font-size: 14px;
   font-weight: 500;
@@ -22,7 +23,6 @@ export const IndicatorContainer = styled.div`
   display: flex;
   align-items: center;
   height: 100%;
-  padding-left: 4px;
 `;
 
 export const Indicator = styled.div<ImpactScoreIndicatorProps>`

@@ -2,9 +2,11 @@ import { actions as globalActions } from "../../../actions";
 import { BackendInfo } from "../../../components/common/App/types";
 import { client } from "../client";
 
+type GetAboutResponse = BackendInfo;
+
 export const getAboutInfo = async () => {
   try {
-    const response = await client.get<BackendInfo>("/about");
+    const response = await client.get<GetAboutResponse>("/about");
 
     window.postMessage({
       type: "digma",

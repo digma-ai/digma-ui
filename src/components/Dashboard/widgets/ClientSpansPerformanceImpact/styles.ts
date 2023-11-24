@@ -12,3 +12,9 @@ export const SpanLink = styled(Link)`
   white-space: nowrap;
   overflow: hidden;
 `;
+
+export const ImpactScoreContainer = styled.div`
+  display: flex;
+  width: 70px;
+  flex-shrink: 0;
+`;
