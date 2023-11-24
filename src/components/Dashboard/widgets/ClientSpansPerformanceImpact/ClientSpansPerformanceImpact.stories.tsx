@@ -33,7 +33,7 @@ export const WithData: Story = {
             spanCodeObjectId:
               "span:io.opentelemetry.okhttp-3.0$_$GET PetClinic /SampleInsights/SlowEndpoint",
             displayName: "GET PetClinic /SampleInsights/SlowEndpoint",
-            overallImpact: 0.54110615842038732
+            overallImpact: 0.5411061584203873
           },
           {
             spanCodeObjectId:
