@@ -4,40 +4,13 @@ import { formatTimeDistance } from "../../../../utils/formatTimeDistance";
 import { getInsightImportanceColor } from "../../../../utils/getInsightImportanceColor";
 import { getInsightTypeInfo } from "../../../../utils/getInsightTypeInfo";
 import { getInsightTypeOrderPriority } from "../../../../utils/getInsightTypeOrderPriority";
+import { ImpactScore } from "../../../common/ImpactScore";
 import { Tooltip } from "../../../common/Tooltip";
 import { GlobeIcon } from "../../../common/icons/GlobeIcon";
 import { getAssetTypeInfo } from "../../utils";
 import { SORTING_CRITERION } from "../types";
 import * as s from "./styles";
 import { AssetEntryProps } from "./types";
-
-const getImpactScoreIndicator = (score: number) => {
-  if (score < 0) {
-    return null;
-  }
-
-  return (
-    <s.ImpactScoreIndicatorContainer>
-      <s.ImpactScoreIndicator $score={score} />
-    </s.ImpactScoreIndicatorContainer>
-  );
-};
-
-const getImpactScoreLabel = (score: number) => {
-  if (score < 0) {
-    return "No data";
-  }
-
-  if (score < 0.4) {
-    return "Low";
-  }
-
-  if (score < 0.8) {
-    return "Medium";
-  }
-
-  return "High";
-};
 
 const getServiceIconColor = (theme: DefaultTheme) => {
   switch (theme.mode) {
@@ -176,12 +149,13 @@ export const AssetEntry = (props: AssetEntryProps) => {
               <span>Performance impact</span>
               <Tooltip title={props.entry.impactScores.ScoreExp25}>
                 <s.ValueContainer>
-                  {getImpactScoreLabel(props.entry.impactScores.ScoreExp25)}
-                  {props.sortingCriterion ===
-                    SORTING_CRITERION.PERFORMANCE_IMPACT &&
-                    getImpactScoreIndicator(
-                      props.entry.impactScores.ScoreExp25
-                    )}
+                  <ImpactScore
+                    score={props.entry.impactScores.ScoreExp25}
+                    showIndicator={
+                      props.sortingCriterion ===
+                      SORTING_CRITERION.PERFORMANCE_IMPACT
+                    }
+                  />
                 </s.ValueContainer>
               </Tooltip>
             </s.Stats>
@@ -189,12 +163,13 @@ export const AssetEntry = (props: AssetEntryProps) => {
               <span>Overall impact</span>
               <Tooltip title={props.entry.impactScores.ScoreExp1000}>
                 <s.ValueContainer>
-                  {getImpactScoreLabel(props.entry.impactScores.ScoreExp1000)}
-                  {props.sortingCriterion ===
-                    SORTING_CRITERION.OVERALL_IMPACT &&
-                    getImpactScoreIndicator(
-                      props.entry.impactScores.ScoreExp1000
-                    )}
+                  <ImpactScore
+                    score={props.entry.impactScores.ScoreExp1000}
+                    showIndicator={
+                      props.sortingCriterion ===
+                      SORTING_CRITERION.OVERALL_IMPACT
+                    }
+                  />
                 </s.ValueContainer>
               </Tooltip>
             </s.Stats>

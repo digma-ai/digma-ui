@@ -12,5 +12,6 @@ export const ConfigContext = createContext<ConfigContextData>({
   isDockerInstalled: window.isDockerInstalled === true,
   isDockerComposeInstalled: window.isDockerComposeInstalled === true,
   userEmail: isString(window.userEmail) ? window.userEmail : "",
-  environment: isString(window.environment) ? window.environment : ""
+  environment: isString(window.environment) ? window.environment : "",
+  backendInfo: undefined
 });

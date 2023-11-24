@@ -2,16 +2,16 @@ import { AxiosError } from "axios";
 import { actions as dashboardActions } from "../../../components/Dashboard/actions";
 import { client } from "../client";
 
-export type GetDashboardResponse<T> = {
-  type: string;
-  data: T;
-};
-
 export interface GetDashboardParams<T> {
   environment: string;
   type: string;
   query: T;
 }
+
+export type GetDashboardResponse<T> = {
+  type: string;
+  data: T;
+};
 
 export const getDashboard = async (
   data: GetDashboardParams<Record<string, unknown>>
