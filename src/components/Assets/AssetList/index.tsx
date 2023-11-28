@@ -207,7 +207,7 @@ export const AssetList = (props: AssetListProps) => {
         previousDebouncedSearchInputValue !== debouncedSearchInputValue) ||
       (isString(previousAssetTypeId) &&
         previousAssetTypeId !== props.assetTypeId) ||
-      previousServices !== props.services
+      (Array.isArray(previousServices) && previousServices !== props.services)
     ) {
       window.sendMessageToDigma({
         action: actions.GET_DATA,

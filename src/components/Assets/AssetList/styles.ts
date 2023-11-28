@@ -9,7 +9,8 @@ import {
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 100%;
+  overflow: hidden;
 `;
 
 export const BackButton = styled.button`
@@ -18,6 +19,13 @@ export const BackButton = styled.button`
   display: flex;
   padding: 0;
   cursor: pointer;
+`;
+
+export const Toolbar = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 8px;
+  gap: 4px;
 `;
 
 export const Header = styled.div`
@@ -45,13 +53,6 @@ export const Header = styled.div`
         return "#dadada";
     }
   }};
-`;
-
-export const Toolbar = styled.div`
-  display: flex;
-  justify-content: space-between;
-  padding: 8px;
-  gap: 4px;
 `;
 
 export const PopoverContainer = styled.div`

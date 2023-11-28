@@ -1,6 +1,14 @@
-import { useEffect, useMemo, useState } from "react";
+import {
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useState
+} from "react";
+import { gte, valid } from "semver";
 import { dispatcher } from "../../dispatcher";
 import { isNumber } from "../../typeGuards/isNumber";
+import { ConfigContext } from "../common/App/ConfigContext";
 import { NewPopover } from "../common/NewPopover";
 import { ChevronIcon } from "../common/icons/ChevronIcon";
 import { FilterIcon } from "../common/icons/FilterIcon";
@@ -24,8 +32,19 @@ export const Assets = (props: AssetsProps) => {
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [isServiceMenuOpen, setIsServiceMenuOpen] = useState(false);
+  const config = useContext(ConfigContext);
 
-  useEffect(() => {
+  const backendVersion = config.backendInfo?.applicationVersion;
+
+  const isServiceFilterVisible =
+    backendVersion &&
+    (backendVersion === "unknown" ||
+      (valid(backendVersion) && gte(backendVersion, "v0.2.174")));
+
+  useLayoutEffect(() => {
+    window.sendMessageToDigma({
+      action: actions.INITIALIZE
+    });
     window.sendMessageToDigma({
       action: actions.GET_SERVICES
     });
@@ -114,40 +133,42 @@ export const Assets = (props: AssetsProps) => {
     <s.Container>
       <s.Header>
         Assets
-        <NewPopover
-          content={
-            <FilterMenu
-              title={"Filter by services"}
-              items={filterMenuItems}
-              onItemClick={handleServiceMenuItemClick}
-              onClose={handleServiceMenuClose}
-            />
-          }
-          onOpenChange={setIsServiceMenuOpen}
-          isOpen={isServiceMenuOpen}
-          placement={"bottom-start"}
-        >
-          <s.ServiceMenuButton>
-            <s.ServiceMenuButtonLabel>
-              <FilterIcon color={"currentColor"} size={14} />
-              <span>Services</span>
-              {selectedServices.length > 0 ? (
-                <s.Number>{selectedServices.length}</s.Number>
-              ) : (
-                <s.SelectedServiceNumberPlaceholder>
-                  All
-                </s.SelectedServiceNumberPlaceholder>
-              )}
-            </s.ServiceMenuButtonLabel>
-            <s.ServiceMenuChevronIconContainer>
-              <ChevronIcon
-                color={"currentColor"}
-                size={14}
-                direction={isServiceMenuOpen ? Direction.UP : Direction.DOWN}
+        {isServiceFilterVisible && (
+          <NewPopover
+            content={
+              <FilterMenu
+                title={"Filter by services"}
+                items={filterMenuItems}
+                onItemClick={handleServiceMenuItemClick}
+                onClose={handleServiceMenuClose}
               />
-            </s.ServiceMenuChevronIconContainer>
-          </s.ServiceMenuButton>
-        </NewPopover>
+            }
+            onOpenChange={setIsServiceMenuOpen}
+            isOpen={isServiceMenuOpen}
+            placement={"bottom-start"}
+          >
+            <s.ServiceMenuButton>
+              <s.ServiceMenuButtonLabel>
+                <FilterIcon color={"currentColor"} size={14} />
+                <span>Services</span>
+                {selectedServices.length > 0 ? (
+                  <s.Number>{selectedServices.length}</s.Number>
+                ) : (
+                  <s.SelectedServiceNumberPlaceholder>
+                    All
+                  </s.SelectedServiceNumberPlaceholder>
+                )}
+              </s.ServiceMenuButtonLabel>
+              <s.ServiceMenuChevronIconContainer>
+                <ChevronIcon
+                  color={"currentColor"}
+                  size={14}
+                  direction={isServiceMenuOpen ? Direction.UP : Direction.DOWN}
+                />
+              </s.ServiceMenuChevronIconContainer>
+            </s.ServiceMenuButton>
+          </NewPopover>
+        )}
       </s.Header>
       {renderContent}
     </s.Container>

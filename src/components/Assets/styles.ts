@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  min-height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   background: ${({ theme }) => {
@@ -21,6 +21,8 @@ export const Header = styled.div`
   gap: 8px;
   align-items: center;
   font-size: 16px;
+  flex-shrink: 0;
+  height: 36px;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

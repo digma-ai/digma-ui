@@ -72,7 +72,7 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
     if (
       (isString(previousEnvironment) &&
         previousEnvironment !== config.environment) ||
-      previousServices !== props.services
+      (Array.isArray(previousServices) && previousServices !== props.services)
     ) {
       window.sendMessageToDigma({
         action: actions.GET_CATEGORIES_DATA,
@@ -99,10 +99,6 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
           }
         });
       }, REFRESH_INTERVAL);
-
-      return () => {
-        window.clearTimeout(refreshTimerId.current);
-      };
     }
   }, [props.services, previousLastSetDataTimeStamp, lastSetDataTimeStamp]);
 
