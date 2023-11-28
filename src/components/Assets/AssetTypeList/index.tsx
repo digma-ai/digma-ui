@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { actions as globalActions } from "../../../actions";
 import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
@@ -33,13 +33,19 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
   const [data, setData] = useState<AssetCategoriesData>();
   const previousData = usePrevious(data);
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
+  const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
   const [isInitialLoading, setIsInitialLoading] = useState(false);
   const config = useContext(ConfigContext);
   const previousEnvironment = usePrevious(config.environment);
+  const refreshTimerId = useRef<number>();
+  const previousServices = usePrevious(props.services);
 
   useEffect(() => {
     window.sendMessageToDigma({
-      action: actions.GET_CATEGORIES_DATA
+      action: actions.GET_CATEGORIES_DATA,
+      payload: {
+        services: props.services
+      }
     });
     setIsInitialLoading(true);
 
@@ -58,31 +64,47 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
         actions.SET_CATEGORIES_DATA,
         handleCategoriesData
       );
+      window.clearTimeout(refreshTimerId.current);
     };
   }, []);
 
   useEffect(() => {
     if (
-      isString(previousEnvironment) &&
-      previousEnvironment !== config.environment
+      (isString(previousEnvironment) &&
+        previousEnvironment !== config.environment) ||
+      previousServices !== props.services
     ) {
       window.sendMessageToDigma({
-        action: actions.GET_CATEGORIES_DATA
+        action: actions.GET_CATEGORIES_DATA,
+        payload: {
+          services: props.services
+        }
       });
     }
-  }, [previousEnvironment, config.environment]);
+  }, [
+    previousEnvironment,
+    config.environment,
+    previousServices,
+    props.services
+  ]);
 
   useEffect(() => {
-    const timerId = window.setTimeout(() => {
-      window.sendMessageToDigma({
-        action: actions.GET_CATEGORIES_DATA
-      });
-    }, REFRESH_INTERVAL);
+    if (previousLastSetDataTimeStamp !== lastSetDataTimeStamp) {
+      window.clearTimeout(refreshTimerId.current);
+      refreshTimerId.current = window.setTimeout(() => {
+        window.sendMessageToDigma({
+          action: actions.GET_CATEGORIES_DATA,
+          payload: {
+            services: props.services
+          }
+        });
+      }, REFRESH_INTERVAL);
 
-    return () => {
-      window.clearTimeout(timerId);
-    };
-  }, [lastSetDataTimeStamp]);
+      return () => {
+        window.clearTimeout(refreshTimerId.current);
+      };
+    }
+  }, [props.services, previousLastSetDataTimeStamp, lastSetDataTimeStamp]);
 
   useEffect(() => {
     if (props.data) {

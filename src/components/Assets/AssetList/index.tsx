@@ -159,6 +159,7 @@ export const AssetList = (props: AssetListProps) => {
   const refreshTimerId = useRef<number>();
   const previousEnvironment = usePrevious(config.environment);
   const previousAssetTypeId = usePrevious(props.assetTypeId);
+  const previousServices = usePrevious(props.services);
 
   const entries = data?.data || [];
 
@@ -176,7 +177,8 @@ export const AssetList = (props: AssetListProps) => {
           sortOrder: sorting.order,
           ...(debouncedSearchInputValue.length > 0
             ? { displayName: debouncedSearchInputValue }
-            : {})
+            : {}),
+          services: props.services
         }
       }
     });
@@ -204,7 +206,8 @@ export const AssetList = (props: AssetListProps) => {
       (isString(previousDebouncedSearchInputValue) &&
         previousDebouncedSearchInputValue !== debouncedSearchInputValue) ||
       (isString(previousAssetTypeId) &&
-        previousAssetTypeId !== props.assetTypeId)
+        previousAssetTypeId !== props.assetTypeId) ||
+      previousServices !== props.services
     ) {
       window.sendMessageToDigma({
         action: actions.GET_DATA,
@@ -217,7 +220,8 @@ export const AssetList = (props: AssetListProps) => {
             sortOrder: sorting.order,
             ...(debouncedSearchInputValue.length > 0
               ? { displayName: debouncedSearchInputValue }
-              : {})
+              : {}),
+            services: props.services
           }
         }
       });
@@ -232,7 +236,9 @@ export const AssetList = (props: AssetListProps) => {
     previousPage,
     page,
     previousEnvironment,
-    config.environment
+    config.environment,
+    props.services,
+    previousServices
   ]);
 
   useEffect(() => {
@@ -250,7 +256,8 @@ export const AssetList = (props: AssetListProps) => {
               sortOrder: sorting.order,
               ...(debouncedSearchInputValue.length > 0
                 ? { displayName: debouncedSearchInputValue }
-                : {})
+                : {}),
+              services: props.services
             }
           }
         });
@@ -263,7 +270,8 @@ export const AssetList = (props: AssetListProps) => {
     page,
     sorting,
     debouncedSearchInputValue,
-    config.environment
+    config.environment,
+    props.services
   ]);
 
   useEffect(() => {

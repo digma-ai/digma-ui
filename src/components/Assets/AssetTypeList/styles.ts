@@ -19,7 +19,7 @@ export const List = styled.ul`
 `;
 
 export const NoDataContainer = styled.div`
-  min-height: 100vh;
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
   align-items: center;

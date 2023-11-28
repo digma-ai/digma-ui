@@ -4,6 +4,7 @@ export interface AssetListProps {
   data?: AssetsData;
   onBackButtonClick: () => void;
   assetTypeId: string;
+  services: string[];
 }
 
 export enum SORTING_CRITERION {
