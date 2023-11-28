@@ -84,7 +84,6 @@ export const Number = styled.span`
   justify-content: center;
   color: #fff;
   background: #5053d4;
-  padding: 4px;
 `;
 
 export const ServiceMenuChevronIconContainer = styled.span`

@@ -21,7 +21,7 @@ export const Checkbox = (props: CheckboxProps) => {
           />
           {props.value && (
             <s.CheckContainer>
-              <CheckmarkIcon color={"currentColor"} />
+              <CheckmarkIcon color={"currentColor"} height={5} />
             </s.CheckContainer>
           )}
         </s.CheckboxContainer>
