@@ -18,17 +18,5 @@ type Story = StoryObj<typeof meta>;
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 export const Default: Story = {
-  args: {
-    services: [
-      "service_1",
-      "service_2",
-      "service_3",
-      "service_4",
-      "service_5",
-      "service_6",
-      "service_7",
-      "service_8",
-      "service_9"
-    ]
-  }
+  args: {}
 };
