@@ -3,7 +3,11 @@ import path from "path";
 export const entries: AppEntries = {
   assets: {
     entry: path.resolve(__dirname, "./src/containers/Assets/index.tsx"),
-    environmentVariables: ["assetsRefreshInterval", "assetsSearch"]
+    environmentVariables: [
+      "assetsRefreshInterval",
+      "assetsSearch",
+      "assetsSelectedServices"
+    ]
   },
   dashboard: {
     entry: path.resolve(__dirname, "./src/containers/Dashboard/index.tsx"),

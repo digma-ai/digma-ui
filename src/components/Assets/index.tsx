@@ -7,7 +7,9 @@ import {
 } from "react";
 import { gte, valid } from "semver";
 import { dispatcher } from "../../dispatcher";
+import { usePrevious } from "../../hooks/usePrevious";
 import { isNumber } from "../../typeGuards/isNumber";
+import { isString } from "../../typeGuards/isString";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { NewPopover } from "../common/NewPopover";
 import { ChevronIcon } from "../common/icons/ChevronIcon";
@@ -18,19 +20,26 @@ import { AssetTypeList } from "./AssetTypeList";
 import { FilterMenu } from "./FilterMenu";
 import { actions } from "./actions";
 import * as s from "./styles";
-import { AssetsProps, ServiceData } from "./types";
+import { ServiceData } from "./types";
 
 const REFRESH_INTERVAL = isNumber(window.assetsRefreshInterval)
   ? window.assetsRefreshInterval
   : 10 * 1000; // in milliseconds
 
-export const Assets = (props: AssetsProps) => {
+const preselectedServices =
+  Array.isArray(window.assetsSelectedServices) &&
+  window.assetsSelectedServices.every(isString)
+    ? window.assetsSelectedServices
+    : [];
+
+export const Assets = () => {
   const [selectedAssetTypeId, setSelectedAssetTypeId] = useState<string | null>(
     null
   );
   const [services, setServices] = useState<string[]>([]);
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
+  const previousSelectedServices = usePrevious(selectedServices);
   const [isServiceMenuOpen, setIsServiceMenuOpen] = useState(false);
   const config = useContext(ConfigContext);
 
@@ -50,8 +59,15 @@ export const Assets = (props: AssetsProps) => {
     });
 
     const handleServicesData = (data: unknown, timeStamp: number) => {
-      setServices((data as ServiceData).services);
+      const services = (data as ServiceData).services;
+      setServices(services);
       setLastSetDataTimeStamp(timeStamp);
+      if (lastSetDataTimeStamp === undefined) {
+        const selectedServices = services.filter((x) =>
+          preselectedServices.includes(x)
+        );
+        setSelectedServices(selectedServices);
+      }
     };
 
     dispatcher.addActionListener(actions.SET_SERVICES, handleServicesData);
@@ -74,10 +90,18 @@ export const Assets = (props: AssetsProps) => {
   }, [lastSetDataTimeStamp]);
 
   useEffect(() => {
-    if (props.services) {
-      setServices(props.services);
+    if (
+      previousSelectedServices &&
+      previousSelectedServices !== selectedServices
+    ) {
+      window.sendMessageToDigma({
+        action: actions.SET_SELECTED_SERVICES,
+        payload: {
+          services: selectedServices
+        }
+      });
     }
-  }, [props.services]);
+  }, [previousSelectedServices, selectedServices]);
 
   const handleServiceMenuClose = () => {
     setIsServiceMenuOpen(false);
