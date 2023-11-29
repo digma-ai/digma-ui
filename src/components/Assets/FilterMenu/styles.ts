@@ -153,6 +153,7 @@ export const ContentContainer = styled.div`
   flex-direction: column;
   overflow: auto;
   gap: 8px;
+  flex-grow: 1;
 `;
 
 export const TagsContainer = styled.div`
@@ -192,4 +193,11 @@ export const ListItem = styled.li`
   width: 100%;
   box-sizing: border-box;
   list-style-type: none;
+`;
+
+export const EmptyStateContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
 `;

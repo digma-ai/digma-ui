@@ -20,6 +20,7 @@ export const Header = styled.div`
   display: flex;
   gap: 8px;
   align-items: center;
+  justify-content: space-between;
   font-size: 16px;
   flex-shrink: 0;
   height: 36px;
