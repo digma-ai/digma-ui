@@ -404,7 +404,6 @@ export const InstallationWizard = () => {
                   ) : (
                     <>
                       <Checkbox
-                        id={"digma-cloud-notification"}
                         onChange={handleDigmaCloudNotificationCheckboxChange}
                         label={
                           "Let me know when Digma Cloud will become available"

@@ -1,10 +1,11 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { Checkbox } from ".";
+
+import { Assets } from ".";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
-const meta: Meta<typeof Checkbox> = {
-  title: "Common/Checkbox",
-  component: Checkbox,
+const meta: Meta<typeof Assets> = {
+  title: "Assets/Assets",
+  component: Assets,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
     layout: "fullscreen"
@@ -15,24 +16,19 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
+// More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 export const Default: Story = {
   args: {
-    label: "Click me",
-    value: false
-  }
-};
-
-export const Checked: Story = {
-  args: {
-    label: "Click me",
-    value: true
-  }
-};
-
-export const Disabled: Story = {
-  args: {
-    label: "Click me",
-    value: true,
-    disabled: true
+    services: [
+      "service_1",
+      "service_2",
+      "service_3",
+      "service_4",
+      "service_5",
+      "service_6",
+      "service_7",
+      "service_8",
+      "service_9"
+    ]
   }
 };

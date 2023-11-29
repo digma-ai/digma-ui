@@ -5,7 +5,7 @@ export const List = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 8px;
+  padding: 0 8px 8px;
   margin: 0;
   color: ${({ theme }) => {
     switch (theme.mode) {
@@ -19,7 +19,7 @@ export const List = styled.ul`
 `;
 
 export const NoDataContainer = styled.div`
-  min-height: 100vh;
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
