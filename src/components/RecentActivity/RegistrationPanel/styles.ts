@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { Button } from "../../common/Button";
-import { TextField } from "../../common/TextField";
 
 export const Container = styled.div`
   display: flex;
@@ -52,10 +51,6 @@ export const Title = styled.span`
   }};
 `;
 
-export const Description = styled.span`
-  width: 350px;
-`;
-
 export const ButtonsContainer = styled.div`
   display: flex;
   padding-top: 8px;
@@ -69,15 +64,6 @@ export const CloseButton = styled.button`
   background: none;
   border: none;
   cursor: pointer;
-`;
-
-export const TextFieldContainer = styled.div`
-  display: flex;
-  gap: 8px;
-`;
-
-export const EmailTextField = styled(TextField)`
-  width: 301px;
 `;
 
 export const CircleLoaderContainer = styled.div`

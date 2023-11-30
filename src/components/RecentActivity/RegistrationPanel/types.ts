@@ -1,5 +1,10 @@
 export interface RegistrationPanelProps {
-  onSubmit: (email: string) => void;
+  onSubmit: (data: RegistrationFormData) => void;
   onClose: () => void;
   isRegistrationInProgress: boolean;
+}
+
+export interface RegistrationFormData {
+  fullName: string;
+  email: string;
 }

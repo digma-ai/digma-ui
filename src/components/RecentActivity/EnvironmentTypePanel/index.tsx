@@ -43,7 +43,7 @@ export const EnvironmentTypePanel = (props: EnvironmentTypePanelProps) => {
   }[] = [
     {
       type: "local",
-      title: "Digma environment",
+      title: "Local environment",
       description:
         "Define an environment for specific branches, types of tests or other criteria",
       icon: <CodeDisplayIcon />

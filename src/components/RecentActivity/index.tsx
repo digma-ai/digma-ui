@@ -21,6 +21,7 @@ import { LiveData } from "./LiveView/types";
 import { ObservabilityStatusBadge } from "./ObservabilityStatusBadge";
 import { RecentActivityTable, isRecent } from "./RecentActivityTable";
 import { RegistrationPanel } from "./RegistrationPanel";
+import { RegistrationFormData } from "./RegistrationPanel/types";
 import { SetupOrgDigmaPanel } from "./SetupOrgDigmaPanel";
 import { actions } from "./actions";
 import * as s from "./styles";
@@ -253,7 +254,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
     environment: string,
     type: EnvironmentType
   ) => {
-    if (type === "shared" && !config.userEmail) {
+    if (!config.userEmail) {
       setIsRegistrationPopupVisible(true);
       setEnvironmentToSetType({
         environment,
@@ -310,11 +311,11 @@ export const RecentActivity = (props: RecentActivityProps) => {
     });
   };
 
-  const handleRegistrationSubmit = (email: string) => {
+  const handleRegistrationSubmit = (formData: RegistrationFormData) => {
     window.sendMessageToDigma({
       action: actions.REGISTER,
       payload: {
-        email
+        ...formData
       }
     });
 
