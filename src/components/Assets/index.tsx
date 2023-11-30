@@ -36,12 +36,14 @@ export const Assets = () => {
   const [selectedAssetTypeId, setSelectedAssetTypeId] = useState<string | null>(
     null
   );
-  const [services, setServices] = useState<string[]>([]);
+  const [services, setServices] = useState<string[]>();
+  const [areServicesLoading, setAreServicesLoading] = useState(false);
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const previousSelectedServices = usePrevious(selectedServices);
   const [isServiceMenuOpen, setIsServiceMenuOpen] = useState(false);
   const config = useContext(ConfigContext);
+  const previousEnvironment = usePrevious(config.environment);
 
   const backendVersion = config.backendInfo?.applicationVersion;
 
@@ -57,17 +59,25 @@ export const Assets = () => {
     window.sendMessageToDigma({
       action: actions.GET_SERVICES
     });
+    setAreServicesLoading(true);
 
     const handleServicesData = (data: unknown, timeStamp: number) => {
-      const services = (data as ServiceData).services;
-      setServices(services);
+      const serviceData = data as ServiceData;
       setLastSetDataTimeStamp(timeStamp);
-      if (lastSetDataTimeStamp === undefined) {
-        const selectedServices = services.filter((x) =>
-          preselectedServices.includes(x)
-        );
-        setSelectedServices(selectedServices);
+      if (services === undefined) {
+        setSelectedServices((selectedServices) => {
+          const oldSelectedServices = Array.isArray(selectedServices)
+            ? selectedServices
+            : preselectedServices;
+
+          const newSelectedServices = serviceData.services.filter((x) =>
+            oldSelectedServices.includes(x)
+          );
+          return newSelectedServices;
+        });
       }
+      setServices(serviceData.services);
+      setAreServicesLoading(false);
     };
 
     dispatcher.addActionListener(actions.SET_SERVICES, handleServicesData);
@@ -76,6 +86,19 @@ export const Assets = () => {
       dispatcher.removeActionListener(actions.SET_SERVICES, handleServicesData);
     };
   }, []);
+
+  useEffect(() => {
+    if (
+      isString(previousEnvironment) &&
+      previousEnvironment !== config.environment
+    ) {
+      setServices(undefined);
+      window.sendMessageToDigma({
+        action: actions.GET_SERVICES
+      });
+      setAreServicesLoading(true);
+    }
+  }, [previousEnvironment, config.environment, services]);
 
   useEffect(() => {
     const timerId = window.setTimeout(() => {
@@ -120,7 +143,7 @@ export const Assets = () => {
     }
   };
 
-  const filterMenuItems = services.map((x) => ({
+  const filterMenuItems = (services || []).map((x) => ({
     label: x,
     value: x,
     selected: selectedServices.includes(x)
@@ -165,17 +188,20 @@ export const Assets = () => {
                 items={filterMenuItems}
                 onItemClick={handleServiceMenuItemClick}
                 onClose={handleServiceMenuClose}
+                isLoading={areServicesLoading}
               />
             }
             onOpenChange={setIsServiceMenuOpen}
             isOpen={isServiceMenuOpen}
-            placement={"bottom-start"}
+            placement={"bottom-end"}
           >
             <s.ServiceMenuButton>
               <s.ServiceMenuButtonLabel>
                 <FilterIcon color={"currentColor"} size={14} />
                 <span>Services</span>
-                {selectedServices.length > 0 ? (
+                {selectedServices &&
+                selectedServices.length > 0 &&
+                !areServicesLoading ? (
                   <s.Number>{selectedServices.length}</s.Number>
                 ) : (
                   <s.SelectedServiceNumberPlaceholder>

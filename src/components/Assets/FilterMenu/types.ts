@@ -9,4 +9,5 @@ export interface FilterMenuProps {
   items: MenuItem[];
   onItemClick: (value: string) => void;
   onClose: () => void;
+  isLoading: boolean;
 }

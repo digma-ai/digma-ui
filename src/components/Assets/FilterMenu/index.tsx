@@ -1,5 +1,6 @@
 import { ChangeEvent, useState } from "react";
 import { Checkbox } from "../../common/Checkbox";
+import { NewCircleLoader } from "../../common/NewCircleLoader";
 import { Tooltip } from "../../common/Tooltip";
 import { CrossIcon } from "../../common/icons/CrossIcon";
 import { MagnifierIcon } from "../../common/icons/MagnifierIcon";
@@ -27,24 +28,17 @@ export const FilterMenu = (props: FilterMenuProps) => {
 
   const selectedItems = props.items.filter((x) => x.selected);
 
-  return (
-    <s.Container>
-      <s.Header>
-        {props.title}
-        <s.CloseButton onClick={handleCloseButtonClick}>
-          <CrossIcon color={"currentColor"} size={14} />
-        </s.CloseButton>
-      </s.Header>
-      <s.SearchInputContainer>
-        <s.SearchInputIconContainer>
-          <MagnifierIcon color={"currentColor"} size={14} />
-        </s.SearchInputIconContainer>
-        <s.SearchInput
-          placeholder={"Search"}
-          onChange={handleSearchInputChange}
-        />
-      </s.SearchInputContainer>
-      <s.ContentContainer>
+  const renderContent = () => {
+    if (props.isLoading) {
+      return (
+        <s.EmptyStateContainer>
+          <NewCircleLoader size={24} />
+        </s.EmptyStateContainer>
+      );
+    }
+
+    return (
+      <>
         {selectedItems.length > 0 && (
           <s.TagsContainer>
             {selectedItems.map((x) => (
@@ -74,7 +68,28 @@ export const FilterMenu = (props: FilterMenuProps) => {
             </s.ListItem>
           ))}
         </s.List>
-      </s.ContentContainer>
+      </>
+    );
+  };
+
+  return (
+    <s.Container>
+      <s.Header>
+        {props.title}
+        <s.CloseButton onClick={handleCloseButtonClick}>
+          <CrossIcon color={"currentColor"} size={14} />
+        </s.CloseButton>
+      </s.Header>
+      <s.SearchInputContainer>
+        <s.SearchInputIconContainer>
+          <MagnifierIcon color={"currentColor"} size={14} />
+        </s.SearchInputIconContainer>
+        <s.SearchInput
+          placeholder={"Search"}
+          onChange={handleSearchInputChange}
+        />
+      </s.SearchInputContainer>
+      <s.ContentContainer>{renderContent()}</s.ContentContainer>
     </s.Container>
   );
 };
