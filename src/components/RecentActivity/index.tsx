@@ -21,7 +21,7 @@ import { LiveData } from "./LiveView/types";
 import { ObservabilityStatusBadge } from "./ObservabilityStatusBadge";
 import { RecentActivityTable, isRecent } from "./RecentActivityTable";
 import { RegistrationPanel } from "./RegistrationPanel";
-import { RegistrationFormData } from "./RegistrationPanel/types";
+import { RegistrationFormValues } from "./RegistrationPanel/types";
 import { SetupOrgDigmaPanel } from "./SetupOrgDigmaPanel";
 import { actions } from "./actions";
 import * as s from "./styles";
@@ -311,7 +311,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
     });
   };
 
-  const handleRegistrationSubmit = (formData: RegistrationFormData) => {
+  const handleRegistrationSubmit = (formData: RegistrationFormValues) => {
     window.sendMessageToDigma({
       action: actions.REGISTER,
       payload: {
@@ -392,6 +392,9 @@ export const RecentActivity = (props: RecentActivityProps) => {
     <s.Container>
       <Allotment defaultSizes={[70, 30]}>
         <s.RecentActivityContainer id={RECENT_ACTIVITY_CONTAINER_ID}>
+          {/* <s.RecentActivityContainerBackground>
+            <s.RecentActivityContainerBackgroundGradient />
+          </s.RecentActivityContainerBackground> */}
           <s.RecentActivityHeader ref={observe}>
             <EnvironmentPanel
               environments={environments}

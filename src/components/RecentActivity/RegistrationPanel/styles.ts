@@ -1,31 +1,43 @@
 import styled from "styled-components";
-import { Button } from "../../common/Button";
+import { grayScale, redScale } from "../../common/App/getTheme";
+import { NewButton } from "../../common/NewButton";
 
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
   padding: 12px;
-  font-size: 14px;
-  border-radius: 4px;
+  font-size: 13px;
+  border-radius: 7px;
   width: 390px;
   height: fit-content;
-  color: ${({ theme }) => {
+  color: ${grayScale[500]};
+  border: 1px solid
+    ${({ theme }) => {
+      switch (theme.mode) {
+        case "light":
+          return grayScale[200];
+        case "dark":
+        case "dark-jetbrains":
+          return grayScale[900];
+      }
+    }};
+  box-shadow: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "#818594";
+        return "0 1px 5px 0 rgba(0 0 0 / 12%)";
       case "dark":
       case "dark-jetbrains":
-        return "#b4b8bf";
+        return "0 1px 4px 0 rgba(0 0 0 / 45%)";
     }
   }};
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "#ebecf0";
+        return grayScale[50];
       case "dark":
       case "dark-jetbrains":
-        return "#393b40";
+        return grayScale[1000];
     }
   }};
 `;
@@ -37,23 +49,28 @@ export const Header = styled.div`
 `;
 
 export const Title = styled.span`
-  font-weight: 600;
   font-size: 16px;
   text-transform: capitalize;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "#494b57";
+        return grayScale[900];
       case "dark":
       case "dark-jetbrains":
-        return "#dfe1e5";
+        return grayScale[100];
     }
   }};
 `;
 
+export const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
 export const ButtonsContainer = styled.div`
   display: flex;
-  padding-top: 8px;
+  padding-top: 4px;
   gap: 8px;
   justify-content: flex-end;
 `;
@@ -64,30 +81,39 @@ export const CloseButton = styled.button`
   background: none;
   border: none;
   cursor: pointer;
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return grayScale[800];
+      case "dark":
+      case "dark-jetbrains":
+        return grayScale[200];
+    }
+  }};
 `;
 
 export const CircleLoaderContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-grow: 1;
 `;
 
-export const SubmitButton = styled(Button)`
-  height: auto;
+export const SubmitButton = styled(NewButton)`
+  align-self: flex-end;
 `;
 
 export const ErrorMessage = styled.span`
   display: flex;
-  gap: 4px;
+  font-size: 13px;
+  height: 15px;
   align-items: center;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "#e00036";
+        return redScale[500];
       case "dark":
       case "dark-jetbrains":
-        return "#f93967";
+        return redScale[300];
     }
   }};
 `;

@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import { grayScale } from "../common/App/getTheme";
+import { LAYERS } from "../common/App/styles";
 import { Button } from "../common/Button";
 
 export const Container = styled.div`
@@ -11,7 +13,7 @@ export const Container = styled.div`
       case "dark":
         return "#0f0f0f";
       case "dark-jetbrains":
-        return "#2b2d30";
+        return grayScale[1200];
     }
   }};
 
@@ -38,11 +40,37 @@ export const Container = styled.div`
     }};
   }
 `;
+
 export const RecentActivityContainer = styled.div`
   height: 100%;
   overflow: auto;
   box-sizing: border-box;
+  /* position: relative; */
 `;
+
+// export const RecentActivityContainerBackground = styled.div`
+//   position: absolute;
+//   inset: 0;
+//   overflow: hidden;
+// `;
+
+// export const RecentActivityContainerBackgroundGradient = styled.div`
+//   position: absolute;
+//   left: 0;
+//   right: 0;
+//   margin: auto;
+//   top: 16.8%;
+//   height: 413%;
+//   width: 80.4%;
+//   border-radius: 413px;
+//   opacity: 0.7;
+//   background: radial-gradient(
+//     50% 50% at 50% 50%,
+//     rgb(79 93 163 / 60%) 0%,
+//     rgb(79 93 163 / 0%) 100%
+//   );
+//   filter: blur(5px);
+// `;
 
 export const RecentActivityHeader = styled.div`
   box-sizing: border-box;
@@ -57,7 +85,7 @@ export const RecentActivityHeader = styled.div`
       case "dark":
         return "#0f0f0f";
       case "dark-jetbrains":
-        return "#2b2d30";
+        return grayScale[1200];
     }
   }};
   display: flex;
@@ -147,11 +175,10 @@ export const LiveViewContainer = styled.div`
 export const Overlay = styled.div`
   position: absolute;
   inset: 0;
-  backdrop-filter: blur(2px);
-  background: rgb(43 45 48 / 55%);
+  background: rgb(18 18 21 / 70%);
   display: flex;
   justify-content: center;
   padding: 80px 0;
   overflow: auto;
-  z-index: 2;
+  z-index: ${LAYERS.OVERLAY};
 `;

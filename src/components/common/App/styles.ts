@@ -4,7 +4,8 @@ import { platform } from "../../../platform";
 
 export const LAYERS = {
   MODAL: 1000,
-  TOOLTIP: 2000
+  TOOLTIP: 2000,
+  OVERLAY: 3000
 };
 
 export const getMainFont = (customFont: string) => {

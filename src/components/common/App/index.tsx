@@ -8,6 +8,7 @@ import { isNull } from "../../../typeGuards/isNull";
 import { isObject } from "../../../typeGuards/isObject";
 import { isString } from "../../../typeGuards/isString";
 import { ConfigContext } from "./ConfigContext";
+import { getTheme } from "./getTheme";
 import { GlobalStyle } from "./styles";
 import { AppProps, BackendInfo, DigmaStatus } from "./types";
 
@@ -264,10 +265,12 @@ export const App = (props: AppProps) => {
     };
   }, []);
 
+  const theme = getTheme(mode, mainFont, codeFont);
+
   return (
     <>
       <ConfigContext.Provider value={config}>
-        <ThemeProvider theme={{ mode, mainFont, codeFont }}>
+        <ThemeProvider theme={theme}>
           <GlobalStyle />
           {props.children}
         </ThemeProvider>

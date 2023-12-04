@@ -167,7 +167,7 @@ export const Tag = styled.div`
   border-radius: 2px;
   align-items: center;
   gap: 4px;
-  background: rgba(53 56 205 / 50%);
+  background: rgb(53 56 205 / 50%);
   font-size: 14px;
   padding: 4px;
   color: #dfe1e5;

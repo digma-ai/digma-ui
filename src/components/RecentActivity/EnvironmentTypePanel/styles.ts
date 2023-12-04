@@ -1,9 +1,10 @@
 import styled from "styled-components";
+import { grayScale } from "../../common/App/getTheme";
 
 export const Container = styled.div`
   margin-top: 12px;
   display: flex;
-  gap: 8px;
+  gap: 4px;
   flex-direction: column;
   align-items: center;
   font-size: 14px;
@@ -11,15 +12,15 @@ export const Container = styled.div`
 
 export const Title = styled.span`
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
   text-transform: capitalize;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "#494b57";
+        return grayScale[900];
       case "dark":
       case "dark-jetbrains":
-        return "#dfe1e5";
+        return grayScale[50];
     }
   }};
 `;
@@ -28,95 +29,109 @@ export const Subtitle = styled.span`
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "#818594";
+        return grayScale[600];
       case "dark":
       case "dark-jetbrains":
-        return "#b4b8bf";
+        return grayScale[400];
     }
   }};
 `;
 
 export const ContentContainer = styled.div`
   display: flex;
-  margin-top: 4px;
+  margin-top: 8px;
   gap: 16px;
-  width: 100%;
 `;
 
-export const EnvironmentTypeDescription = styled.span`
+export const EnvironmentTypeCard = styled.div`
+  border: 1px solid
+    ${({ theme }) => {
+      switch (theme.mode) {
+        case "light":
+          return grayScale[200];
+        case "dark":
+        case "dark-jetbrains":
+          return grayScale[900];
+      }
+    }};
+  background: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return grayScale[50];
+      case "dark":
+      case "dark-jetbrains":
+        return grayScale[1000];
+    }
+  }};
+  box-shadow: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "0 1px 5px 0 rgba(0 0 0 / 12%)";
+      case "dark":
+      case "dark-jetbrains":
+        return "0 1px 4px 0 rgba(0 0 0 / 45%)";
+    }
+  }};
+  border-radius: 7px;
   display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 8px;
-  flex: 1;
-
-  &:first-child {
-    text-align: right;
-    align-items: flex-end;
-  }
-`;
-
-export const EnvironmentTypeDescriptionTitle = styled.span`
-  font-weight: 600;
-  text-transform: capitalize;
-`;
-
-export const EnvironmentTypeButton = styled.button`
-  display: flex;
-  flex-direction: column;
+  width: 218px;
   padding: 12px;
-  gap: 8px;
-  text-transform: capitalize;
+  flex-direction: column;
   align-items: center;
-  width: 120px;
-  border-radius: 4px;
-  font-weight: 600;
-  font-family: inherit;
-  font-size: 16px;
-  border: 1px solid transparent;
+  gap: 8px;
+`;
+
+export const EnvironmentTypeTextContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  color: ${grayScale[500]};
+`;
+
+export const EnvironmentTypeTitle = styled.span`
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "#494b57";
+        return grayScale[900];
       case "dark":
       case "dark-jetbrains":
-        return "#dfe1e5";
+        return grayScale[100];
     }
   }};
-  background: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#ebecf0";
-      case "dark":
-      case "dark-jetbrains":
-        return "#393b40";
-    }
-  }};
-
-  &:hover,
-  &:focus {
-    border-color: ${({ theme }) => {
-      switch (theme.mode) {
-        case "light":
-          return "#92affa";
-        case "dark":
-        case "dark-jetbrains":
-          return "#7c7c94";
-      }
-    }};
-  }
+  font-weight: 500;
 `;
 
 export const EnvironmentTypeIconContainer = styled.div`
+  display: flex;
   border-radius: 4px;
-  padding: 14px 10px;
+  padding: 6px;
+  border: 1px solid
+    ${({ theme }) => {
+      switch (theme.mode) {
+        case "light":
+          return grayScale[300];
+        case "dark":
+        case "dark-jetbrains":
+          return grayScale[700];
+      }
+    }};
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "#dfe1e5";
+        return grayScale[50];
       case "dark":
       case "dark-jetbrains":
-        return "#43454a";
+        return grayScale[1000];
+    }
+  }};
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return grayScale[800];
+      case "dark":
+      case "dark-jetbrains":
+        return grayScale[200];
     }
   }};
 `;

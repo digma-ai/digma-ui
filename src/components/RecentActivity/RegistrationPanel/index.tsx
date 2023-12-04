@@ -1,46 +1,59 @@
-import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
+import { KeyboardEvent, useEffect } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { isValidEmailFormat } from "../../../utils/isValidEmailFormat";
 import { NewCircleLoader } from "../../common/NewCircleLoader";
-import { TextField } from "../../common/TextField";
 import { CrossIcon } from "../../common/icons/CrossIcon";
-import { WarningCircleLargeIcon } from "../../common/icons/WarningCircleLargeIcon";
+import { EnvelopeIcon } from "../../common/icons/EnvelopeIcon";
+import { UserIcon } from "../../common/icons/UserIcon";
+import { TextField } from "./TextField";
 import { isWorkEmail } from "./isWorkEmail";
 import * as s from "./styles";
-import { RegistrationFormData, RegistrationPanelProps } from "./types";
+import { RegistrationFormValues, RegistrationPanelProps } from "./types";
 
-const validateTextFields = (data: RegistrationFormData): string | null => {
-  if (data.fullName.length === 0) {
-    return "Full name is required";
-  }
-
+const validateEmail = (email: string): string | boolean => {
   const emailMessage = "Please enter a valid work email address";
 
-  if (!isValidEmailFormat(data.email)) {
+  if (email.length === 0) {
     return emailMessage;
   }
 
-  if (!isWorkEmail(data.email)) {
+  if (!isValidEmailFormat(email)) {
     return emailMessage;
   }
 
-  return null;
+  if (!isWorkEmail(email)) {
+    return emailMessage;
+  }
+
+  return true;
+};
+
+const formDefaultValues: RegistrationFormValues = {
+  fullName: "",
+  email: ""
 };
 
 export const RegistrationPanel = (props: RegistrationPanelProps) => {
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const fullNameTextFieldRef = useRef<HTMLInputElement>(null);
-
-  const errorMessage = validateTextFields({ fullName, email });
+  const {
+    handleSubmit,
+    control,
+    getValues,
+    formState: { errors, isValid, touchedFields },
+    setFocus
+  } = useForm<RegistrationFormValues>({
+    mode: "onChange",
+    defaultValues: formDefaultValues
+  });
+  const values = getValues();
 
   useEffect(() => {
-    fullNameTextFieldRef.current?.focus();
-  }, []);
+    setFocus("fullName");
+  }, [setFocus]);
 
-  const handleSubmitButtonClick = () => {
+  const onSubmit = (data: RegistrationFormValues) => {
     props.onSubmit({
-      fullName: fullName.trim(),
-      email
+      fullName: data.fullName.trim(),
+      email: data.email
     });
   };
 
@@ -48,22 +61,14 @@ export const RegistrationPanel = (props: RegistrationPanelProps) => {
     props.onClose();
   };
 
-  const handleFullNameTextFieldChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setFullName(e.target.value);
-  };
-
-  const handleEmailTextFieldChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-  };
-
   const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === "Enter" && !errorMessage) {
-      props.onSubmit({
-        fullName,
-        email
-      });
+    if (e.key === "Enter" && isValid) {
+      onSubmit(values);
     }
   };
+
+  const errorMessage =
+    Object.values(errors).length > 0 ? Object.values(errors)[0].message : "";
 
   return (
     <s.Container onKeyDown={handleKeyDown}>
@@ -74,35 +79,63 @@ export const RegistrationPanel = (props: RegistrationPanelProps) => {
         </s.CloseButton>
       </s.Header>
       Please register first to create new environments in Digma
-      <TextField
-        ref={fullNameTextFieldRef}
-        value={fullName}
-        onChange={handleFullNameTextFieldChange}
-        placeholder={"Enter your full name"}
-      />
-      <TextField
-        value={email}
-        onChange={handleEmailTextFieldChange}
-        placeholder={"Enter your email"}
-      />
-      {props.isRegistrationInProgress ? (
-        <s.CircleLoaderContainer>
-          <NewCircleLoader size={32} />
-        </s.CircleLoaderContainer>
-      ) : (
+      <s.Form
+        id={"registrationForm"}
+        onSubmit={(e) => {
+          e.preventDefault();
+          void handleSubmit(onSubmit)(e);
+        }}
+      >
+        <Controller
+          name={"fullName"}
+          control={control}
+          defaultValue={formDefaultValues.fullName}
+          rules={{ required: "Name is required" }}
+          render={({ field }) => (
+            <TextField
+              icon={UserIcon}
+              placeholder={"Enter your full name"}
+              isValid={
+                touchedFields.fullName || errors.fullName
+                  ? !errors.fullName
+                  : undefined
+              }
+              {...field}
+            />
+          )}
+        />
+        <Controller
+          name={"email"}
+          control={control}
+          rules={{ required: "Email is required", validate: validateEmail }}
+          defaultValue={formDefaultValues.email}
+          render={({ field }) => (
+            <TextField
+              icon={EnvelopeIcon}
+              placeholder={"Enter your email"}
+              isValid={
+                touchedFields.email || errors.email ? !errors.email : undefined
+              }
+              {...field}
+            />
+          )}
+        />
+      </s.Form>
+      <s.ErrorMessage>{errorMessage}</s.ErrorMessage>
+      <s.ButtonsContainer>
+        {props.isRegistrationInProgress && (
+          <s.CircleLoaderContainer>
+            <NewCircleLoader size={18} />
+          </s.CircleLoaderContainer>
+        )}
         <s.SubmitButton
-          disabled={Boolean(errorMessage)}
-          onClick={handleSubmitButtonClick}
-        >
-          Submit
-        </s.SubmitButton>
-      )}
-      {email.length > 0 && errorMessage && (
-        <s.ErrorMessage>
-          <WarningCircleLargeIcon size={14} color={"currentColor"} />
-          {errorMessage}
-        </s.ErrorMessage>
-      )}
+          disabled={!isValid || props.isRegistrationInProgress}
+          label={"Submit"}
+          size={"large"}
+          type={"submit"}
+          form={"registrationForm"}
+        />
+      </s.ButtonsContainer>
     </s.Container>
   );
 };

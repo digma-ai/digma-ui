@@ -15,10 +15,10 @@ export const Container = styled.div<ContainerProps>`
   background: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "rgba(235 236 240 / 59%)";
+        return "rgb(235 236 240 / 59%)";
       case "dark":
       case "dark-jetbrains":
-        return "rgba(66 65 65 / 59%)";
+        return "rgb(66 65 65 / 59%)";
     }
   }};
   backdrop-filter: blur(12px);
@@ -36,7 +36,7 @@ export const TopGradientBackground = styled.div`
   background: radial-gradient(
     50% 50% at 50% 50%,
     #4f5da3 0%,
-    rgba(79 93 163 / 0%) 100%
+    rgb(79 93 163 / 0%) 100%
   );
   filter: blur(5px);
   z-index: -1;
@@ -52,7 +52,7 @@ export const BottomGradientBackground = styled.div`
   background: radial-gradient(
     50% 50% at 50% 50%,
     #4f5da3 0%,
-    rgba(79 93 163 / 0%) 100%
+    rgb(79 93 163 / 0%) 100%
   );
   filter: blur(5px);
   z-index: -1;

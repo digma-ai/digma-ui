@@ -37,18 +37,9 @@ export const Container = styled.div<ContainerProps>`
           return "#d1d1d1";
         case "dark":
         case "dark-jetbrains":
-          return "#323232s";
+          return "#323232";
       }
     }};
-  background: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#fbfdff";
-      case "dark":
-      case "dark-jetbrains":
-        return "#383838";
-    }
-  }};
 `;
 
 export const Header = styled.div`
