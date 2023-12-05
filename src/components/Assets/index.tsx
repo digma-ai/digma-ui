@@ -39,7 +39,7 @@ export const Assets = () => {
   const [services, setServices] = useState<string[]>();
   const [areServicesLoading, setAreServicesLoading] = useState(false);
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
-  const [selectedServices, setSelectedServices] = useState<string[]>([]);
+  const [selectedServices, setSelectedServices] = useState<string[]>();
   const previousSelectedServices = usePrevious(selectedServices);
   const [isServiceMenuOpen, setIsServiceMenuOpen] = useState(false);
   const config = useContext(ConfigContext);
@@ -131,14 +131,15 @@ export const Assets = () => {
   };
 
   const handleServiceMenuItemClick = (service: string) => {
-    const serviceIndex = selectedServices.findIndex((x) => x === service);
+    const oldSelectedServices = selectedServices || [];
+    const serviceIndex = oldSelectedServices.findIndex((x) => x === service);
 
     if (serviceIndex < 0) {
-      setSelectedServices([...selectedServices, service]);
+      setSelectedServices([...oldSelectedServices, service]);
     } else {
       setSelectedServices([
-        ...selectedServices.slice(0, serviceIndex),
-        ...selectedServices.slice(serviceIndex + 1)
+        ...oldSelectedServices.slice(0, serviceIndex),
+        ...oldSelectedServices.slice(serviceIndex + 1)
       ]);
     }
   };
@@ -146,7 +147,7 @@ export const Assets = () => {
   const filterMenuItems = (services || []).map((x) => ({
     label: x,
     value: x,
-    selected: selectedServices.includes(x)
+    selected: (selectedServices || []).includes(x)
   }));
 
   const handleBackButtonClick = () => {
@@ -162,7 +163,7 @@ export const Assets = () => {
       return (
         <AssetTypeList
           onAssetTypeSelect={handleAssetTypeSelect}
-          services={selectedServices}
+          services={selectedServices || []}
         />
       );
     }
@@ -171,7 +172,7 @@ export const Assets = () => {
       <AssetList
         onBackButtonClick={handleBackButtonClick}
         assetTypeId={selectedAssetTypeId}
-        services={selectedServices}
+        services={selectedServices || []}
       />
     );
   }, [selectedAssetTypeId, selectedServices]);
