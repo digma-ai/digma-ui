@@ -45,7 +45,6 @@ export const RecentActivityContainer = styled.div`
   height: 100%;
   overflow: auto;
   box-sizing: border-box;
-  /* position: relative; */
 `;
 
 // export const RecentActivityContainerBackground = styled.div`
