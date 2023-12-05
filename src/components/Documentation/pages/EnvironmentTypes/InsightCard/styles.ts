@@ -12,7 +12,7 @@ export const Container = styled.div<ContainerProps>`
   font-weight: 500;
   border-radius: 2px;
   border: 1px solid #434343;
-  box-shadow: 0 4px 8px 0 rgba(0 0 0 / 12%);
+  box-shadow: 0 4px 8px 0 rgb(0 0 0 / 12%);
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -81,10 +81,10 @@ export const CountChip = styled(Chip)<CountChipProps>`
   background: ${({ theme, $count }) => {
     switch (theme.mode) {
       case "light":
-        return `rgba(${$count > 0 ? "29 198 147" : "224 0 54"} / 30%)`;
+        return `rgb(${$count > 0 ? "29 198 147" : "224 0 54"} / 30%)`;
       case "dark":
       case "dark-jetbrains":
-        return `rgba(${$count > 0 ? "103 210 139" : "249 57 103"} / 30%)`;
+        return `rgb(${$count > 0 ? "103 210 139" : "249 57 103"} / 30%)`;
     }
   }};
 `;

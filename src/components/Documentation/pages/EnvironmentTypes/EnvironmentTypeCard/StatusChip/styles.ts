@@ -21,10 +21,10 @@ export const Container = styled.div<ContainerProps>`
     }
     switch (theme.mode) {
       case "light":
-        return "rgba(103 210 139 / 64%)";
+        return "rgb(103 210 139 / 64%)";
       case "dark":
       case "dark-jetbrains":
-        return "rgba(103 210 139 / 24%)";
+        return "rgb(103 210 139 / 24%)";
     }
   }};
 `;

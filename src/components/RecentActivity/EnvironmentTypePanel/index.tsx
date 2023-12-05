@@ -1,28 +1,13 @@
-import { ReactNode, useCallback, useState } from "react";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
-import { CodeDisplayIcon } from "../../common/icons/CodeDisplayIcon";
-import { InfiniteLoopIcon } from "../../common/icons/InfiniteLoopIcon";
+import { NewButton } from "../../common/NewButton";
+import { CodeIcon } from "../../common/icons/CodeIcon";
+import { InfinityIcon } from "../../common/icons/InfinityIcon";
 import { trackingEvents } from "../tracking";
 import { EnvironmentType } from "../types";
 import * as s from "./styles";
-import { EnvironmentTypePanelProps } from "./types";
+import { EnvironmentTypeData, EnvironmentTypePanelProps } from "./types";
 
 export const EnvironmentTypePanel = (props: EnvironmentTypePanelProps) => {
-  const [selectedType, setSelectedType] = useState<EnvironmentType>();
-
-  const handleMouseEnter = useCallback(
-    (type: EnvironmentType) => setSelectedType(type),
-    []
-  );
-
-  const handleMouseLeave = useCallback(() => setSelectedType(undefined), []);
-
-  const handleFocus = useCallback(
-    (type: EnvironmentType) => setSelectedType(type),
-    []
-  );
-  const handleBlur = useCallback(() => setSelectedType(undefined), []);
-
   const handleEnvironmentTypeButtonClick = (type: EnvironmentType) => {
     const typeData = environmentTypes.find((x) => x.type === type);
 
@@ -35,44 +20,38 @@ export const EnvironmentTypePanel = (props: EnvironmentTypePanelProps) => {
     props.onEnvironmentTypeSelect(props.environment.originalName, type);
   };
 
-  const environmentTypes: {
-    type: EnvironmentType;
-    title: string;
-    description: ReactNode;
-    icon: ReactNode;
-  }[] = [
+  const environmentTypes: EnvironmentTypeData[] = [
     {
       type: "local",
       title: "Local environment",
       description:
         "Define an environment for specific branches, types of tests or other criteria",
-      icon: <CodeDisplayIcon />
+      icon: <CodeIcon size={16} color={"currentColor"} />,
+      button: (
+        <NewButton
+          onClick={() => handleEnvironmentTypeButtonClick("local")}
+          label={"Add"}
+          buttonType={"primary"}
+          size={"large"}
+        />
+      )
     },
     {
       type: "shared",
       title: "CI/Prod environment",
       description:
         "Connect to centralized org systems such as CI builds, production servers etc.",
-      icon: <InfiniteLoopIcon />
+      icon: <InfinityIcon size={16} color={"currentColor"} />,
+      button: (
+        <NewButton
+          onClick={() => handleEnvironmentTypeButtonClick("local")}
+          label={"Learn more"}
+          buttonType={"secondary"}
+          size={"large"}
+        />
+      )
     }
   ];
-
-  const getEnvironmentTypeDescription = (type: EnvironmentType) => {
-    const data = environmentTypes.find((x) => x.type === type);
-
-    if (!data) {
-      return null;
-    }
-
-    return (
-      <>
-        <s.EnvironmentTypeDescriptionTitle>
-          {data.title}
-        </s.EnvironmentTypeDescriptionTitle>
-        {data.description}
-      </>
-    );
-  };
 
   return (
     <s.Container>
@@ -81,27 +60,18 @@ export const EnvironmentTypePanel = (props: EnvironmentTypePanelProps) => {
         Choose which environment type you would like to create
       </s.Subtitle>
       <s.ContentContainer>
-        <s.EnvironmentTypeDescription>
-          {selectedType === "local" && getEnvironmentTypeDescription("local")}
-        </s.EnvironmentTypeDescription>
         {environmentTypes.map((x) => (
-          <s.EnvironmentTypeButton
-            key={x.type}
-            onClick={() => handleEnvironmentTypeButtonClick(x.type)}
-            onMouseEnter={() => handleMouseEnter(x.type)}
-            onMouseLeave={() => handleMouseLeave()}
-            onFocus={() => handleFocus(x.type)}
-            onBlur={() => handleBlur()}
-          >
+          <s.EnvironmentTypeCard key={x.type}>
             <s.EnvironmentTypeIconContainer>
               {x.icon}
             </s.EnvironmentTypeIconContainer>
-            {x.title}
-          </s.EnvironmentTypeButton>
+            <s.EnvironmentTypeTextContainer>
+              <s.EnvironmentTypeTitle>{x.title}</s.EnvironmentTypeTitle>
+              {x.description}
+            </s.EnvironmentTypeTextContainer>
+            {x.button}
+          </s.EnvironmentTypeCard>
         ))}
-        <s.EnvironmentTypeDescription>
-          {selectedType === "shared" && getEnvironmentTypeDescription("shared")}
-        </s.EnvironmentTypeDescription>
       </s.ContentContainer>
     </s.Container>
   );

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { grayScale } from "../../common/App/getTheme";
 import { getCodeFont } from "../../common/App/styles";
 import { Link } from "../../common/Link";
 
@@ -43,7 +44,7 @@ export const TableHead = styled.thead<{ offset: number }>`
         case "dark":
           return "#0f0f0f";
         case "dark-jetbrains":
-          return "#2b2d30";
+          return grayScale[1200];
       }
     }};
   background: ${({ theme }) => {
@@ -53,7 +54,7 @@ export const TableHead = styled.thead<{ offset: number }>`
       case "dark":
         return "#0f0f0f";
       case "dark-jetbrains":
-        return "#2b2d30";
+        return grayScale[1200];
     }
   }};
 `;
@@ -91,7 +92,7 @@ export const TableBody = styled.tbody`
         case "dark":
           return "#0f0f0f";
         case "dark-jetbrains":
-          return "#2b2d30";
+          return grayScale[1200];
       }
     }};
   }

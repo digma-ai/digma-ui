@@ -3,8 +3,8 @@ import { Link } from "../../common/Link";
 
 export const Container = styled.div`
   border-radius: 8px;
-  border: 1px solid rgba(255 129 13 / 50%);
-  background: rgba(255 129 13 / 10%);
+  border: 1px solid rgb(255 129 13 / 50%);
+  background: rgb(255 129 13 / 10%);
   display: flex;
   justify-content: space-between;
   align-items: center;
