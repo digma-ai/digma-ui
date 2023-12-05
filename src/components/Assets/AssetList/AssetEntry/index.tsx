@@ -1,9 +1,12 @@
+import { useContext } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
-import { InsightType } from "../../../../types";
+import { getFeatureFlagValue } from "../../../../featureFlags";
+import { FeatureFlag, InsightType } from "../../../../types";
 import { formatTimeDistance } from "../../../../utils/formatTimeDistance";
 import { getInsightImportanceColor } from "../../../../utils/getInsightImportanceColor";
 import { getInsightTypeInfo } from "../../../../utils/getInsightTypeInfo";
 import { getInsightTypeOrderPriority } from "../../../../utils/getInsightTypeOrderPriority";
+import { ConfigContext } from "../../../common/App/ConfigContext";
 import { ImpactScore } from "../../../common/ImpactScore";
 import { Tooltip } from "../../../common/Tooltip";
 import { GlobeIcon } from "../../../common/icons/GlobeIcon";
@@ -25,6 +28,11 @@ const getServiceIconColor = (theme: DefaultTheme) => {
 export const AssetEntry = (props: AssetEntryProps) => {
   const theme = useTheme();
   const serviceIconColor = getServiceIconColor(theme);
+  const config = useContext(ConfigContext);
+  const isPerformanceImpactHidden = getFeatureFlagValue(
+    config,
+    FeatureFlag.IS_ASSETS_PERFORMANCE_IMPACT_HIDDEN
+  );
 
   const handleLinkClick = () => {
     props.onAssetLinkClick(props.entry);
@@ -145,20 +153,22 @@ export const AssetEntry = (props: AssetEntryProps) => {
         </s.StatsColumn>
         {props.entry.impactScores && (
           <s.StatsColumn>
-            <s.Stats>
-              <span>Performance impact</span>
-              <Tooltip title={props.entry.impactScores.ScoreExp25}>
-                <s.ValueContainer>
-                  <ImpactScore
-                    score={props.entry.impactScores.ScoreExp25}
-                    showIndicator={
-                      props.sortingCriterion ===
-                      SORTING_CRITERION.PERFORMANCE_IMPACT
-                    }
-                  />
-                </s.ValueContainer>
-              </Tooltip>
-            </s.Stats>
+            {!isPerformanceImpactHidden && (
+              <s.Stats>
+                <span>Performance impact</span>
+                <Tooltip title={props.entry.impactScores.ScoreExp25}>
+                  <s.ValueContainer>
+                    <ImpactScore
+                      score={props.entry.impactScores.ScoreExp25}
+                      showIndicator={
+                        props.sortingCriterion ===
+                        SORTING_CRITERION.PERFORMANCE_IMPACT
+                      }
+                    />
+                  </s.ValueContainer>
+                </Tooltip>
+              </s.Stats>
+            )}
             <s.Stats>
               <span>Overall impact</span>
               <Tooltip title={props.entry.impactScores.ScoreExp1000}>

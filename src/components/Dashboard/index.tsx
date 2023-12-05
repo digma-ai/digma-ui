@@ -1,11 +1,12 @@
 import { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { Helmet } from "react-helmet";
-import { gte, valid } from "semver";
 import { useTheme } from "styled-components";
 import { actions as globalActions } from "../../actions";
 import { dispatcher } from "../../dispatcher";
+import { getFeatureFlagValue } from "../../featureFlags";
 import { platform } from "../../platform";
 import { isString } from "../../typeGuards/isString";
+import { FeatureFlag } from "../../types";
 import { openURLInDefaultBrowser } from "../../utils/openURLInDefaultBrowser";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { getThemeKind } from "../common/App/styles";
@@ -46,12 +47,10 @@ export const Dashboard = () => {
     platform === "Web" ? "" : formatEnvironmentName(environment)
   );
 
-  const backendVersion = config.backendInfo?.applicationVersion;
-
-  const isClientSpansOverallImpactEnabled =
-    backendVersion &&
-    (backendVersion === "unknown" ||
-      (valid(backendVersion) && gte(backendVersion, "v0.2.172-alpha.8")));
+  const isClientSpansOverallImpactEnabled = getFeatureFlagValue(
+    config,
+    FeatureFlag.IS_DASHBOARD_CLIENT_SPANS_OVERALL_IMPACT_ENABLED
+  );
 
   const handleOpenInBrowserLinkClick = () => {
     const hostname = new URL(config.digmaApiUrl).hostname;

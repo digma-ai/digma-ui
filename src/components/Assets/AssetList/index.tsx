@@ -1,10 +1,12 @@
 import { ChangeEvent, useContext, useEffect, useRef, useState } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
 import { dispatcher } from "../../../dispatcher";
+import { getFeatureFlagValue } from "../../../featureFlags";
 import { useDebounce } from "../../../hooks/useDebounce";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { isString } from "../../../typeGuards/isString";
+import { FeatureFlag } from "../../../types";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { EmptyState } from "../../common/EmptyState";
 import { Menu } from "../../common/Menu";
@@ -164,6 +166,17 @@ export const AssetList = (props: AssetListProps) => {
   const entries = data?.data || [];
 
   const assetTypeInfo = getAssetTypeInfo(props.assetTypeId);
+
+  const isPerformanceImpactHidden = getFeatureFlagValue(
+    config,
+    FeatureFlag.IS_ASSETS_PERFORMANCE_IMPACT_HIDDEN
+  );
+
+  const sortingCriteria = isPerformanceImpactHidden
+    ? Object.values(SORTING_CRITERION).filter(
+        (x) => x !== SORTING_CRITERION.PERFORMANCE_IMPACT
+      )
+    : Object.values(SORTING_CRITERION);
 
   useEffect(() => {
     window.sendMessageToDigma({
@@ -444,7 +457,7 @@ export const AssetList = (props: AssetListProps) => {
             <PopoverContent className={"Popover"}>
               <Menu
                 title={"Sort by"}
-                items={Object.values(SORTING_CRITERION).map((x) => ({
+                items={sortingCriteria.map((x) => ({
                   value: x,
                   label: getSortingCriterionInfo(x).label
                 }))}
