@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import useDimensions from "react-cool-dimensions";
-import { DefaultTheme, useTheme } from "styled-components";
 import { RECENT_ACTIVITY_CONTAINER_ID } from "..";
 import { IconButton } from "../../common/IconButton";
+import { NewButton } from "../../common/NewButton";
 import { NewPopover } from "../../common/NewPopover";
 import { ChevronIcon } from "../../common/icons/ChevronIcon";
 import { DigmaLogoFlatDetailedIcon } from "../../common/icons/DigmaLogoFlatDetailedIcon";
@@ -18,35 +18,13 @@ import { EnvironmentPanelProps, ScrollDirection } from "./types";
 
 const FONT_WIDTH_TRANSITION_THRESHOLD = 5; // in pixels
 
-const getCarouselIconColor = (theme: DefaultTheme, isDisabled: boolean) => {
-  switch (theme.mode) {
-    case "light":
-      return isDisabled ? "#b9c0d4" : "#4d668a";
-    case "dark":
-    case "dark-jetbrains":
-      return isDisabled ? "#7c7c94" : "#e2e7ff";
-  }
-};
-
-const getPlusButtonIconColor = (theme: DefaultTheme) => {
-  switch (theme.mode) {
-    case "light":
-      return "#494b57";
-    case "dark":
-    case "dark-jetbrains":
-      return "#dfe1e5";
-  }
-};
-
 const isAddButtonVisible =
   window.recentActivityIsEnvironmentManagementEnabled === true;
 
 export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
-  const theme = useTheme();
   const [scrollLeft, setScrollLeft] = useState(0);
   const environmentListContainerDimensions = useDimensions();
   const environmentListDimensions = useDimensions();
-  const plusButtonIconColor = getPlusButtonIconColor(theme);
   const [isAddEnvironmentDialogOpen, setIsAddEnvironmentDialogOpen] =
     useState(false);
 
@@ -149,7 +127,7 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
     return (
       <NewPopover
         boundary={boundaryEl}
-        placement={"bottom-start"}
+        placement={"bottom-end"}
         onOpenChange={setIsAddEnvironmentDialogOpen}
         isOpen={isAddEnvironmentDialogOpen}
         content={
@@ -161,9 +139,7 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
         }
       >
         <div>
-          <s.AddButton>
-            <PlusIcon color={plusButtonIconColor} />
-          </s.AddButton>
+          <NewButton label={"Add Environment"} size={"small"} icon={PlusIcon} />
         </div>
       </NewPopover>
     );
@@ -183,13 +159,7 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
               onClick={() => handleCarouselButtonClick("left")}
               disabled={isLeftCarouselButtonDisabled}
             >
-              <ChevronIcon
-                direction={Direction.LEFT}
-                color={getCarouselIconColor(
-                  theme,
-                  isLeftCarouselButtonDisabled
-                )}
-              />
+              <ChevronIcon direction={Direction.LEFT} color={"currentColor"} />
             </s.CarouselButton>
           )}
         </s.CarouselButtonContainer>
@@ -210,9 +180,6 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
               />
             ))}
           </s.EnvironmentList>
-          {!areCarouselButtonsVisible &&
-            isAddButtonVisible &&
-            renderAddButton()}
         </s.EnvironmentListContainer>
         <s.CarouselButtonContainer key={"right"}>
           {areCarouselButtonsVisible && (
@@ -220,23 +187,17 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
               onClick={() => handleCarouselButtonClick("right")}
               disabled={isRightCarouselButtonDisabled}
             >
-              <ChevronIcon
-                direction={Direction.RIGHT}
-                color={getCarouselIconColor(
-                  theme,
-                  isRightCarouselButtonDisabled
-                )}
-              />
+              <ChevronIcon direction={Direction.RIGHT} color={"currentColor"} />
             </s.CarouselButton>
           )}
         </s.CarouselButtonContainer>
-        {areCarouselButtonsVisible && isAddButtonVisible && renderAddButton()}
-        <s.ViewModeButtonContainer>
+        <s.ButtonsContainer>
+          {isAddButtonVisible && renderAddButton()}
           <IconButton
             icon={icons[props.viewMode]}
             onClick={handleViewModeButtonClick}
           />
-        </s.ViewModeButtonContainer>
+        </s.ButtonsContainer>
       </s.Container>
     </s.BorderContainer>
   );
