@@ -371,7 +371,7 @@ export const AssetList = (props: AssetListProps) => {
       <>
         <s.List ref={listRef}>
           {entries.map((entry) => {
-            const id = entry.spanCodeObjectId;
+            const id = `${entry.spanCodeObjectId}__${entry.services.join(",")}`;
 
             return (
               <AssetEntryComponent
