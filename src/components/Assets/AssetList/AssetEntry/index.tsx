@@ -29,9 +29,9 @@ export const AssetEntry = (props: AssetEntryProps) => {
   const theme = useTheme();
   const serviceIconColor = getServiceIconColor(theme);
   const config = useContext(ConfigContext);
-  const isPerformanceImpactHidden = getFeatureFlagValue(
+  const isOverallImpactHidden = getFeatureFlagValue(
     config,
-    FeatureFlag.IS_ASSETS_PERFORMANCE_IMPACT_HIDDEN
+    FeatureFlag.IS_ASSETS_OVERALL_IMPACT_HIDDEN
   );
 
   const handleLinkClick = () => {
@@ -153,36 +153,36 @@ export const AssetEntry = (props: AssetEntryProps) => {
         </s.StatsColumn>
         {props.entry.impactScores && (
           <s.StatsColumn>
-            {!isPerformanceImpactHidden && (
+            <s.Stats>
+              <span>Performance impact</span>
+              <Tooltip title={props.entry.impactScores.ScoreExp25}>
+                <s.ValueContainer>
+                  <ImpactScore
+                    score={props.entry.impactScores.ScoreExp25}
+                    showIndicator={
+                      props.sortingCriterion ===
+                      SORTING_CRITERION.PERFORMANCE_IMPACT
+                    }
+                  />
+                </s.ValueContainer>
+              </Tooltip>
+            </s.Stats>
+            {!isOverallImpactHidden && (
               <s.Stats>
-                <span>Performance impact</span>
-                <Tooltip title={props.entry.impactScores.ScoreExp25}>
+                <span>Overall impact</span>
+                <Tooltip title={props.entry.impactScores.ScoreExp1000}>
                   <s.ValueContainer>
                     <ImpactScore
-                      score={props.entry.impactScores.ScoreExp25}
+                      score={props.entry.impactScores.ScoreExp1000}
                       showIndicator={
                         props.sortingCriterion ===
-                        SORTING_CRITERION.PERFORMANCE_IMPACT
+                        SORTING_CRITERION.OVERALL_IMPACT
                       }
                     />
                   </s.ValueContainer>
                 </Tooltip>
               </s.Stats>
             )}
-            <s.Stats>
-              <span>Overall impact</span>
-              <Tooltip title={props.entry.impactScores.ScoreExp1000}>
-                <s.ValueContainer>
-                  <ImpactScore
-                    score={props.entry.impactScores.ScoreExp1000}
-                    showIndicator={
-                      props.sortingCriterion ===
-                      SORTING_CRITERION.OVERALL_IMPACT
-                    }
-                  />
-                </s.ValueContainer>
-              </Tooltip>
-            </s.Stats>
           </s.StatsColumn>
         )}
       </s.StatsContainer>

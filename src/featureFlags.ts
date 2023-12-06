@@ -6,7 +6,7 @@ const featureFlagMinBackendVersions: Record<FeatureFlag, string> = {
   [FeatureFlag.IS_DASHBOARD_CLIENT_SPANS_OVERALL_IMPACT_ENABLED]:
     "v0.2.172-alpha.8",
   [FeatureFlag.IS_ASSETS_SERVICE_FILTER_VISIBLE]: "v0.2.174",
-  [FeatureFlag.IS_ASSETS_PERFORMANCE_IMPACT_HIDDEN]: "v0.2.181"
+  [FeatureFlag.IS_ASSETS_OVERALL_IMPACT_HIDDEN]: "v0.2.181-alpha.1"
 };
 
 export const getFeatureFlagValue = (

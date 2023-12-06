@@ -10,7 +10,7 @@ import { ImpactScoreProps } from "./types";
 const getImpactScoreLabel = (score: number, config: ConfigContextData) => {
   const isWaitingForDataLabel = getFeatureFlagValue(
     config,
-    FeatureFlag.IS_ASSETS_PERFORMANCE_IMPACT_HIDDEN
+    FeatureFlag.IS_ASSETS_OVERALL_IMPACT_HIDDEN
   );
 
   if (isWaitingForDataLabel) {

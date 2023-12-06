@@ -167,14 +167,14 @@ export const AssetList = (props: AssetListProps) => {
 
   const assetTypeInfo = getAssetTypeInfo(props.assetTypeId);
 
-  const isPerformanceImpactHidden = getFeatureFlagValue(
+  const isOverallImpactHidden = getFeatureFlagValue(
     config,
-    FeatureFlag.IS_ASSETS_PERFORMANCE_IMPACT_HIDDEN
+    FeatureFlag.IS_ASSETS_OVERALL_IMPACT_HIDDEN
   );
 
-  const sortingCriteria = isPerformanceImpactHidden
+  const sortingCriteria = isOverallImpactHidden
     ? Object.values(SORTING_CRITERION).filter(
-        (x) => x !== SORTING_CRITERION.PERFORMANCE_IMPACT
+        (x) => x !== SORTING_CRITERION.OVERALL_IMPACT
       )
     : Object.values(SORTING_CRITERION);
 

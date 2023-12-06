@@ -3,7 +3,7 @@ import { Duration } from "./globals";
 export enum FeatureFlag {
   IS_DASHBOARD_CLIENT_SPANS_OVERALL_IMPACT_ENABLED,
   IS_ASSETS_SERVICE_FILTER_VISIBLE,
-  IS_ASSETS_PERFORMANCE_IMPACT_HIDDEN
+  IS_ASSETS_OVERALL_IMPACT_HIDDEN
 }
 
 export enum InsightType {
