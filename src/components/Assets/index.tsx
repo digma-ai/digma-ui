@@ -5,11 +5,12 @@ import {
   useMemo,
   useState
 } from "react";
-import { gte, valid } from "semver";
 import { dispatcher } from "../../dispatcher";
+import { getFeatureFlagValue } from "../../featureFlags";
 import { usePrevious } from "../../hooks/usePrevious";
 import { isNumber } from "../../typeGuards/isNumber";
 import { isString } from "../../typeGuards/isString";
+import { FeatureFlag } from "../../types";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { NewPopover } from "../common/NewPopover";
 import { ChevronIcon } from "../common/icons/ChevronIcon";
@@ -45,12 +46,10 @@ export const Assets = () => {
   const config = useContext(ConfigContext);
   const previousEnvironment = usePrevious(config.environment);
 
-  const backendVersion = config.backendInfo?.applicationVersion;
-
-  const isServiceFilterVisible =
-    backendVersion &&
-    (backendVersion === "unknown" ||
-      (valid(backendVersion) && gte(backendVersion, "v0.2.174")));
+  const isServiceFilterVisible = getFeatureFlagValue(
+    config,
+    FeatureFlag.IS_ASSETS_SERVICE_FILTER_VISIBLE
+  );
 
   useLayoutEffect(() => {
     window.sendMessageToDigma({
