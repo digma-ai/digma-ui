@@ -82,6 +82,15 @@ export const CarouselButton = styled.button`
   padding: 0;
   border: none;
   cursor: pointer;
+  color: ${({ theme, disabled }) => {
+    switch (theme.mode) {
+      case "light":
+        return disabled ? "#b9c0d4" : "#4d668a";
+      case "dark":
+      case "dark-jetbrains":
+        return disabled ? "#7c7c94" : "#e2e7ff";
+    }
+  }};
 
   &:disabled {
     cursor: initial;
@@ -102,21 +111,8 @@ export const LogoContainer = styled.div`
   animation: ${rotateAnimation} 6s ease-in-out infinite;
 `;
 
-export const AddButton = styled.button`
+export const ButtonsContainer = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: center;
-  background: none;
-  padding: 0;
-  border: none;
-  cursor: pointer;
-  height: 100%;
-
-  &:disabled {
-    cursor: initial;
-  }
-`;
-
-export const ViewModeButtonContainer = styled.div`
-  margin-left: auto;
+  flex-shrink: 0;
+  gap: 4px;
 `;
