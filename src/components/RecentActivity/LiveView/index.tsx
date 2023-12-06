@@ -441,7 +441,7 @@ export const LiveView = (props: LiveViewProps) => {
           <CrossIcon color={getCloseIconColor(theme)} size={16} />
         </s.CloseButton>
       </s.Header>
-      {data.length > 0 ? (
+      {props.data.liveDataRecords.length > 0 ? (
         <>
           <s.Toolbar>
             <ToggleSwitch

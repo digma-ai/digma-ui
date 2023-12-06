@@ -51,6 +51,28 @@ export const WithData: Story = {
   }
 };
 
+export const WithAllErrorsData: Story = {
+  args: {
+    data: {
+      liveDataRecords: mockData.liveDataRecords.map((x) => ({
+        ...x,
+        isError: true
+      })),
+      durationData: {
+        ...mockData.durationData,
+        percentiles: [
+          {
+            ...percentile,
+            previousDuration: null,
+            changeVerified: null
+          },
+          ...mockData.durationData.percentiles.slice(1)
+        ]
+      }
+    }
+  }
+};
+
 export const WithLowLatencyData: Story = {
   args: {
     data: {
