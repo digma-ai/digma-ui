@@ -44,7 +44,7 @@ const renderBadge = () => (
 const renderTimeDistance = (timestamp: string, viewMode: ViewMode) => {
   const title = new Date(timestamp).toString();
   const timeDistanceString = formatTimeDistance(timestamp, {
-    format: "short",
+    format: "medium",
     withDescriptiveWords: false
   });
 
