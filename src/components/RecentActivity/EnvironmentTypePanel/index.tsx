@@ -44,7 +44,7 @@ export const EnvironmentTypePanel = (props: EnvironmentTypePanelProps) => {
       icon: <InfinityIcon size={16} color={"currentColor"} />,
       button: (
         <NewButton
-          onClick={() => handleEnvironmentTypeButtonClick("local")}
+          onClick={() => handleEnvironmentTypeButtonClick("shared")}
           label={"Learn more"}
           buttonType={"secondary"}
           size={"large"}

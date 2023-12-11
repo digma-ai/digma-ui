@@ -330,7 +330,8 @@ export const RecentActivity = (props: RecentActivityProps) => {
     window.sendMessageToDigma({
       action: actions.REGISTER,
       payload: {
-        ...formData
+        ...formData,
+        selectedEnvironmentType: environmentToSetType?.type
       }
     });
 
