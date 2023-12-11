@@ -5,21 +5,22 @@ import {
   useReactTable
 } from "@tanstack/react-table";
 import { useMemo } from "react";
-import { useTheme } from "styled-components";
 import { Duration } from "../../../globals";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { formatTimeDistance } from "../../../utils/formatTimeDistance";
-import { getInsightImportanceColor } from "../../../utils/getInsightImportanceColor";
 import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
 import { getInsightTypeOrderPriority } from "../../../utils/getInsightTypeOrderPriority";
-import { Badge } from "../../common/Badge";
-import { Button } from "../../common/Button";
+import { greenScale } from "../../common/App/getTheme";
+import { NewButton } from "../../common/NewButton";
+import { Tag } from "../../common/Tag";
 import { Tooltip } from "../../common/Tooltip";
 import { CrosshairIcon } from "../../common/icons/CrosshairIcon";
+import { Badge } from "../Badge";
 import { ViewMode } from "../EnvironmentPanel/types";
 import { ActivityEntry, EntrySpan, SlimInsight } from "../types";
+import { getTagType } from "./getTagType";
 import * as s from "./styles";
-import { RecentActivityTableProps } from "./types";
+import { ColumnMeta, RecentActivityTableProps } from "./types";
 
 const columnHelper = createColumnHelper<ActivityEntry>();
 
@@ -34,9 +35,70 @@ export const isRecent = (entry: ActivityEntry): boolean => {
   );
 };
 
-export const RecentActivityTable = (props: RecentActivityTableProps) => {
-  const theme = useTheme();
+const renderBadge = () => (
+  <s.BadgeContainer>
+    <Badge backgroundColor={greenScale[300]} borderColor={greenScale[400]} />
+  </s.BadgeContainer>
+);
 
+const renderTimeDistance = (timestamp: string, viewMode: ViewMode) => {
+  const title = new Date(timestamp).toString();
+  const timeDistanceString = formatTimeDistance(timestamp, {
+    format: "medium",
+    withDescriptiveWords: false
+  });
+
+  return viewMode === "table" ? (
+    <Tag title={title} value={`${timeDistanceString} ago`} />
+  ) : (
+    <span>
+      <Tooltip title={title}>
+        <span>{timeDistanceString.replace(" ", "")}</span>
+      </Tooltip>
+      <s.ListSuffix>ago</s.ListSuffix>
+    </span>
+  );
+};
+
+const renderDuration = (duration: Duration, viewMode: ViewMode) =>
+  viewMode === "table" ? (
+    <Tag value={`${duration.value} ${duration.unit}`} />
+  ) : (
+    <span>
+      {duration.value}
+      <s.ListSuffix>{duration.unit}</s.ListSuffix>
+    </span>
+  );
+
+const renderInsights = (insights: SlimInsight[]) => {
+  const sortedInsights = [...insights].sort(
+    (a, b) =>
+      a.importance - b.importance ||
+      getInsightTypeOrderPriority(a.type) - getInsightTypeOrderPriority(b.type)
+  );
+
+  return (
+    <s.InsightsContainer>
+      {sortedInsights
+        .map((x) => {
+          const insightTypeInfo = getInsightTypeInfo(x.type);
+          const tagType = getTagType(x.importance);
+
+          return insightTypeInfo ? (
+            <Tag
+              key={x.type}
+              title={insightTypeInfo.label}
+              icon={insightTypeInfo.icon}
+              type={tagType}
+            />
+          ) : null;
+        })
+        .filter(Boolean)}
+    </s.InsightsContainer>
+  );
+};
+
+export const RecentActivityTable = (props: RecentActivityTableProps) => {
   const handleSpanLinkClick = (span: EntrySpan) => {
     props.onSpanLinkClick(span);
   };
@@ -46,117 +108,52 @@ export const RecentActivityTable = (props: RecentActivityTableProps) => {
   };
 
   const renderSpanLink = (span: EntrySpan) => (
-    <s.SpanLink
-      key={span.spanCodeObjectId}
-      onClick={() => {
-        handleSpanLinkClick(span);
-      }}
-    >
-      {span.displayText}
-    </s.SpanLink>
+    <Tooltip title={span.displayText}>
+      <s.SpanLink
+        key={span.spanCodeObjectId}
+        onClick={() => {
+          handleSpanLinkClick(span);
+        }}
+      >
+        {span.displayText}
+      </s.SpanLink>
+    </Tooltip>
   );
 
   const renderSpanLinks = (entry: ActivityEntry) => (
-    <span>
+    <s.SpanLinksContainer>
       {renderSpanLink(entry.firstEntrySpan)}
       {entry.lastEntrySpan && <> to {renderSpanLink(entry.lastEntrySpan)}</>}
-    </span>
+    </s.SpanLinksContainer>
   );
 
-  const renderTimeDistance = (timestamp: string, viewMode: ViewMode) => {
-    const title = new Date(timestamp).toString();
-    const timeDistanceString = formatTimeDistance(timestamp, {
-      format: "short",
-      withDescriptiveWords: false
-    }).replace(" ", "");
-
-    return viewMode === "table" ? (
-      <s.TimeDistanceContainer>
-        <Tooltip title={title}>
-          <span>{timeDistanceString}</span>
-        </Tooltip>
-
-        <s.Suffix>ago</s.Suffix>
-      </s.TimeDistanceContainer>
-    ) : (
-      <span>
-        <Tooltip title={title}>
-          <span>{timeDistanceString}</span>
-        </Tooltip>
-        <s.ListSuffix>ago</s.ListSuffix>
-      </span>
-    );
-  };
-
-  const renderDuration = (duration: Duration, viewMode: ViewMode) =>
-    viewMode === "table" ? (
-      <s.DurationContainer>
-        {duration.value}
-        <s.Suffix>{duration.unit}</s.Suffix>
-      </s.DurationContainer>
-    ) : (
-      <span>
-        {duration.value}
-        <s.ListSuffix>{duration.unit}</s.ListSuffix>
-      </span>
-    );
-
-  const renderInsights = (insights: SlimInsight[]) => {
-    const sortedInsights = [...insights].sort(
-      (a, b) =>
-        a.importance - b.importance ||
-        getInsightTypeOrderPriority(a.type) -
-          getInsightTypeOrderPriority(b.type)
-    );
-
-    return (
-      <s.InsightsContainer>
-        {sortedInsights
-          .map((x) => {
-            const insightTypeInfo = getInsightTypeInfo(x.type);
-            const iconColor = getInsightImportanceColor(x.importance, theme);
-
-            return insightTypeInfo ? (
-              <Tooltip key={x.type} title={insightTypeInfo.label}>
-                <s.InsightIconContainer>
-                  <insightTypeInfo.icon color={iconColor} size={16} />
-                </s.InsightIconContainer>
-              </Tooltip>
-            ) : null;
-          })
-          .filter(Boolean)}
-      </s.InsightsContainer>
-    );
-  };
-
   const renderTraceButton = (entry: ActivityEntry) => (
-    <s.TraceButtonContainer>
-      <Button
-        onClick={() => {
-          handleTraceButtonClick(entry.latestTraceId, entry.firstEntrySpan);
-        }}
-        icon={{
-          component: CrosshairIcon
-        }}
-      >
-        Trace
-      </Button>
-    </s.TraceButtonContainer>
+    <Tooltip title={"Trace"}>
+      <div>
+        <NewButton
+          onClick={() => {
+            handleTraceButtonClick(entry.latestTraceId, entry.firstEntrySpan);
+          }}
+          icon={CrosshairIcon}
+          buttonType={"secondary"}
+        />
+      </div>
+    </Tooltip>
   );
 
   const columns = [
     columnHelper.accessor((row) => row, {
       id: "recentActivity",
-      header: "",
+      header: "Asset",
+      meta: {
+        width: "60%",
+        minWidth: 60
+      },
       cell: (info) => {
         const entry = info.getValue();
         return (
           <>
-            {isRecent(entry) && (
-              <s.BadgeContainer>
-                <Badge />
-              </s.BadgeContainer>
-            )}
+            {isRecent(entry) && renderBadge()}
             {renderSpanLinks(entry)}
           </>
         );
@@ -164,21 +161,37 @@ export const RecentActivityTable = (props: RecentActivityTableProps) => {
     }),
     columnHelper.accessor("latestTraceTimestamp", {
       header: "Executed",
+      meta: {
+        width: "10%",
+        minWidth: 100
+      },
       cell: (info) => <>{renderTimeDistance(info.getValue(), props.viewMode)}</>
     }),
     columnHelper.accessor("latestTraceDuration", {
       header: "Duration",
+      meta: {
+        width: "10%",
+        minWidth: 100
+      },
       cell: (info) => renderDuration(info.getValue(), props.viewMode)
     }),
     columnHelper.accessor("slimAggregatedInsights", {
       header: "Insights",
+      meta: {
+        width: "15%",
+        minWidth: 60
+      },
       cell: (info) => renderInsights(info.getValue())
     }),
     ...(props.isTraceButtonVisible
       ? [
           columnHelper.accessor((row) => row, {
             id: "latestTraceId",
-            header: "",
+            header: "Actions",
+            meta: {
+              width: "5%",
+              minWidth: 55
+            },
             cell: (info) => renderTraceButton(info.getValue())
           })
         ]
@@ -203,30 +216,50 @@ export const RecentActivityTable = (props: RecentActivityTableProps) => {
 
   return props.viewMode === "table" ? (
     <s.Table>
-      <s.TableHead offset={props.headerHeight}>
+      <s.TableHead $offset={props.headerHeight}>
         {table.getHeaderGroups().map((headerGroup) => (
-          <tr key={headerGroup.id}>
-            {headerGroup.headers.map((header) => (
-              <s.TableHeaderCell key={header.id}>
-                {header.isPlaceholder
-                  ? null
-                  : flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
-              </s.TableHeaderCell>
-            ))}
-          </tr>
+          <s.TableHeadRow key={headerGroup.id}>
+            {headerGroup.headers.map((header) => {
+              const meta = header.column.columnDef.meta as ColumnMeta;
+
+              return (
+                <s.TableHeaderCell
+                  key={header.id}
+                  style={{
+                    width: meta.width,
+                    minWidth: meta.minWidth
+                  }}
+                >
+                  {header.isPlaceholder
+                    ? null
+                    : flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                </s.TableHeaderCell>
+              );
+            })}
+          </s.TableHeadRow>
         ))}
       </s.TableHead>
       <s.TableBody>
         {table.getRowModel().rows.map((row) => (
-          <s.TableBodyRow key={row.id}>
-            {row.getVisibleCells().map((cell) => (
-              <s.TableBodyCell key={cell.id}>
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-              </s.TableBodyCell>
-            ))}
+          <s.TableBodyRow key={row.id} $isRecent={isRecent(row.original)}>
+            {row.getVisibleCells().map((cell) => {
+              const meta = cell.column.columnDef.meta as ColumnMeta;
+
+              return (
+                <s.TableBodyCell
+                  key={cell.id}
+                  style={{
+                    width: meta.width,
+                    minWidth: meta.minWidth
+                  }}
+                >
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </s.TableBodyCell>
+              );
+            })}
           </s.TableBodyRow>
         ))}
       </s.TableBody>
@@ -235,12 +268,8 @@ export const RecentActivityTable = (props: RecentActivityTableProps) => {
     <s.ListContainer>
       <s.List>
         {sortedData.map((entry, i) => (
-          <s.ListItem key={i}>
-            {isRecent(entry) && (
-              <s.ListBadgeContainer>
-                <Badge />
-              </s.ListBadgeContainer>
-            )}
+          <s.ListItem key={i} $isRecent={isRecent(entry)}>
+            {isRecent(entry) && renderBadge()}
             {renderTimeDistance(entry.latestTraceTimestamp, props.viewMode)}
             {renderSpanLinks(entry)}
             {renderDuration(entry.latestTraceDuration, props.viewMode)}

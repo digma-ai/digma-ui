@@ -1,12 +1,13 @@
 import { useCallback, useContext, useRef, useState } from "react";
 import { ConfigContext } from "../../../common/App/ConfigContext";
-import { Badge } from "../../../common/Badge";
+import { greenScale } from "../../../common/App/getTheme";
 import { KebabMenuButton } from "../../../common/KebabMenuButton";
 import { NewPopover } from "../../../common/NewPopover";
 import { Tooltip } from "../../../common/Tooltip";
 import { DesktopIcon } from "../../../common/icons/DesktopIcon";
 import { InfinityIcon } from "../../../common/icons/InfinityIcon";
 import { TrashBinIcon } from "../../../common/icons/TrashBinIcon";
+import { Badge } from "../../Badge";
 import { EnvironmentMenu } from "../../EnvironmentMenu";
 import * as s from "./styles";
 import { EnvironmentTabProps } from "./types";
@@ -81,14 +82,17 @@ export const EnvironmentTab = (props: EnvironmentTabProps) => {
       onBlur={handleBlur}
       onClick={handleClick}
     >
-      {props.environment.hasRecentActivity && (
-        <s.BadgeContainer>
-          <Badge />
-        </s.BadgeContainer>
-      )}
       {renderIcon()}
       <Tooltip title={props.environment.name}>
-        <s.Label>{props.environment.name}</s.Label>
+        <s.LabelContainer>
+          <s.Label>{props.environment.name}</s.Label>
+          {props.environment.hasRecentActivity && (
+            <Badge
+              backgroundColor={greenScale[300]}
+              borderColor={greenScale[400]}
+            />
+          )}
+        </s.LabelContainer>
       </Tooltip>
       {isMenuVisible &&
         menuItems.length > 0 &&

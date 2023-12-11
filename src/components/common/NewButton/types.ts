@@ -1,6 +1,33 @@
 import { ButtonHTMLAttributes } from "react";
 import { IconProps } from "../../common/icons/types";
 
+export interface ButtonThemeColors {
+  background?: {
+    default: string;
+    hover: string;
+    focus: string;
+    disabled: string;
+  };
+  border?: {
+    default: string;
+    hover: string;
+    focus: string;
+    disabled: string;
+  };
+  icon: {
+    default: string;
+    hover: string;
+    focus: string;
+    disabled: string;
+  };
+  text: {
+    default: string;
+    hover: string;
+    focus: string;
+    disabled: string;
+  };
+}
+
 export type ButtonType = "primary" | "secondary" | "tertiary";
 export type ButtonSize = "small" | "large";
 

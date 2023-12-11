@@ -3,74 +3,51 @@ import { ContainerProps } from "./types";
 
 export const Container = styled.li<ContainerProps>`
   display: flex;
-  position: relative;
   cursor: pointer;
-  font-weight: ${({ $isSelected }) => ($isSelected ? 700 : 500)};
-  font-size: 14px;
-  padding: 4px 12px;
+  font-size: 13px;
+  padding: 0 4px;
   user-select: none;
   align-items: center;
   gap: 4px;
-  color: ${({ $isPending, $isSelected, theme }) => {
+  box-sizing: border-box;
+  color: ${({ theme, $isPending, $isSelected }) => {
     if ($isPending) {
-      switch (theme.mode) {
-        case "light":
-          return "#c9ccd6";
-        case "dark":
-        case "dark-jetbrains":
-          return "#5a5d63";
-      }
+      return theme.colors.tab.text.disabled;
     }
 
     if ($isSelected) {
-      switch (theme.mode) {
-        case "light":
-          return "#494b57";
-        case "dark":
-          return "#b9c2eb";
-        case "dark-jetbrains":
-          return "#dfe1e5";
-      }
+      return theme.colors.tab.text.focus;
     }
 
-    switch (theme.mode) {
-      case "light":
-        return "#818594";
-      case "dark":
-        return "#7c7c94";
-      case "dark-jetbrains":
-        return "#b4b8bf";
-    }
+    return theme.colors.tab.text.default;
   }};
-  border-bottom: ${({ $isSelected }) =>
-    $isSelected ? "1px solid #5154ec" : "none"};
+  background: ${({ theme }) => theme.colors.tab.background.default};
+  border-bottom: ${({ theme, $isSelected }) =>
+    $isSelected ? `1px solid ${theme.colors.tab.borderBottom.focus}` : "none"};
 
-  &:hover {
-    font-weight: 700;
-    ${({ theme, $isPending }) => {
-      let color = "";
-
-      if (!$isPending) {
-        switch (theme.mode) {
-          case "light":
-            color = "#002d61";
-            break;
-          case "dark":
-            color = "#b9c2eb";
-            break;
-          case "dark-jetbrains":
-            color = "#dfe1e5";
-            break;
-        }
+  &:hover,
+  &:focus {
+    color: ${({ theme, $isPending, $isSelected }) => {
+      if ($isPending) {
+        return theme.colors.tab.text.disabled;
       }
 
-      return color ? `color: ${color};` : "";
-    }};
-  }
+      if ($isSelected) {
+        return theme.colors.tab.text.focus;
+      }
 
-  transition-property: color, font-weight;
-  transition-duration: 300ms;
-  transition-timing-function: ease-out;
+      return theme.colors.tab.text.hover;
+    }};
+    background: ${({ theme }) => theme.colors.tab.background.hover};
+    border-bottom: ${({ theme }) =>
+      `1px solid ${theme.colors.tab.borderBottom.hover}`};
+  }
+`;
+
+export const LabelContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
 `;
 
 export const Label = styled.span`
@@ -78,10 +55,4 @@ export const Label = styled.span`
   text-overflow: ellipsis;
   overflow: hidden;
   max-width: 110px;
-`;
-
-export const BadgeContainer = styled.div`
-  position: absolute;
-  top: -1px;
-  left: -1px;
 `;

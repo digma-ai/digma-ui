@@ -1,14 +1,11 @@
 import { useEffect, useState } from "react";
 import useDimensions from "react-cool-dimensions";
 import { RECENT_ACTIVITY_CONTAINER_ID } from "..";
-import { IconButton } from "../../common/IconButton";
 import { NewButton } from "../../common/NewButton";
 import { NewPopover } from "../../common/NewPopover";
 import { ChevronIcon } from "../../common/icons/ChevronIcon";
-import { DigmaLogoFlatDetailedIcon } from "../../common/icons/DigmaLogoFlatDetailedIcon";
-import { ListIcon } from "../../common/icons/ListIcon";
+import { DigmaLogoIcon } from "../../common/icons/DigmaLogoIcon";
 import { PlusIcon } from "../../common/icons/PlusIcon";
-import { TableIcon } from "../../common/icons/TableIcon";
 import { Direction } from "../../common/icons/types";
 import { AddEnvironmentDialog } from "../AddEnvironmentDialog";
 import { ExtendedEnvironment } from "../types";
@@ -40,16 +37,6 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
 
   const handleEnvironmentTabClick = (environment: ExtendedEnvironment) => {
     props.onEnvironmentSelect(environment);
-  };
-
-  const icons = {
-    list: ListIcon,
-    table: TableIcon
-  };
-
-  const handleViewModeButtonClick = () => {
-    const mode = props.viewMode === "table" ? "list" : "table";
-    props.onViewModeChange(mode);
   };
 
   const handleCloseAddEnvironmentDialog = () => {
@@ -146,59 +133,54 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
   };
 
   return (
-    <s.BorderContainer>
-      <s.Container>
-        <s.LogoRotationContainer>
-          <s.LogoContainer>
-            <DigmaLogoFlatDetailedIcon color={"#5154ec"} size={22} />
-          </s.LogoContainer>
-        </s.LogoRotationContainer>
-        <s.CarouselButtonContainer key={"left"}>
-          {areCarouselButtonsVisible && (
-            <s.CarouselButton
-              onClick={() => handleCarouselButtonClick("left")}
-              disabled={isLeftCarouselButtonDisabled}
-            >
-              <ChevronIcon direction={Direction.LEFT} color={"currentColor"} />
-            </s.CarouselButton>
-          )}
-        </s.CarouselButtonContainer>
-        <s.EnvironmentListContainer
-          ref={environmentListContainerDimensions.observe}
-        >
-          <s.EnvironmentList ref={environmentListDimensions.observe}>
-            {props.environments.map((environment) => (
-              <EnvironmentTab
-                key={environment.originalName}
-                environment={environment}
-                isSelected={
-                  props.selectedEnvironment?.originalName ===
-                  environment.originalName
-                }
-                onClick={handleEnvironmentTabClick}
-                onEnvironmentDelete={handleEnvironmentDelete}
-              />
-            ))}
-          </s.EnvironmentList>
-        </s.EnvironmentListContainer>
-        <s.CarouselButtonContainer key={"right"}>
-          {areCarouselButtonsVisible && (
-            <s.CarouselButton
-              onClick={() => handleCarouselButtonClick("right")}
-              disabled={isRightCarouselButtonDisabled}
-            >
-              <ChevronIcon direction={Direction.RIGHT} color={"currentColor"} />
-            </s.CarouselButton>
-          )}
-        </s.CarouselButtonContainer>
-        <s.ButtonsContainer>
-          {isAddButtonVisible && renderAddButton()}
-          <IconButton
-            icon={icons[props.viewMode]}
-            onClick={handleViewModeButtonClick}
-          />
-        </s.ButtonsContainer>
-      </s.Container>
-    </s.BorderContainer>
+    <s.Container>
+      <s.LogoRotationContainer>
+        <s.LogoContainer>
+          <DigmaLogoIcon size={12} />
+        </s.LogoContainer>
+      </s.LogoRotationContainer>
+      <s.Divider />
+      <s.CarouselButtonContainer key={"left"}>
+        {areCarouselButtonsVisible && (
+          <s.CarouselButton
+            onClick={() => handleCarouselButtonClick("left")}
+            disabled={isLeftCarouselButtonDisabled}
+          >
+            <ChevronIcon direction={Direction.LEFT} color={"currentColor"} />
+          </s.CarouselButton>
+        )}
+      </s.CarouselButtonContainer>
+      <s.EnvironmentListContainer
+        ref={environmentListContainerDimensions.observe}
+      >
+        <s.EnvironmentList ref={environmentListDimensions.observe}>
+          {props.environments.map((environment) => (
+            <EnvironmentTab
+              key={environment.originalName}
+              environment={environment}
+              isSelected={
+                props.selectedEnvironment?.originalName ===
+                environment.originalName
+              }
+              onClick={handleEnvironmentTabClick}
+              onEnvironmentDelete={handleEnvironmentDelete}
+            />
+          ))}
+        </s.EnvironmentList>
+      </s.EnvironmentListContainer>
+      <s.CarouselButtonContainer key={"right"}>
+        {areCarouselButtonsVisible && (
+          <s.CarouselButton
+            onClick={() => handleCarouselButtonClick("right")}
+            disabled={isRightCarouselButtonDisabled}
+          >
+            <ChevronIcon direction={Direction.RIGHT} color={"currentColor"} />
+          </s.CarouselButton>
+        )}
+      </s.CarouselButtonContainer>
+      <s.ButtonsContainer>
+        {isAddButtonVisible && renderAddButton()}
+      </s.ButtonsContainer>
+    </s.Container>
   );
 };

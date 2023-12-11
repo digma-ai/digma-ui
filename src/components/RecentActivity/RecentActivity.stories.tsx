@@ -126,9 +126,16 @@ const data: RecentActivityData = {
           "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /webjars/**",
         methodCodeObjectId: ""
       },
-      lastEntrySpan: null,
+      lastEntrySpan: {
+        displayText: "PetClinicWithAgent:HTTP GET /webjars/**",
+        serviceName: "PetClinicWithAgent",
+        scopeId: "HTTP GET /webjars/**",
+        spanCodeObjectId:
+          "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /webjars/**",
+        methodCodeObjectId: ""
+      },
       latestTraceId: "DB80F24773E2BBE574E97960F9CB0D64",
-      latestTraceTimestamp: "2023-10-27T13:47:21.794Z",
+      latestTraceTimestamp: "2023-12-11T15:40:21.794Z",
       latestTraceDuration: {
         value: 3.9,
         unit: "ms",

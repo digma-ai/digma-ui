@@ -31,11 +31,23 @@ export const primaryScale = {
   700: "#28293e"
 };
 
+export const blueScale = {
+  300: "#58a5ff",
+  400: "#2c344f",
+  500: "#2d87da"
+};
+
 export const redScale = {
   200: "faf1f3",
   300: "#ff7e7e",
   400: "#3d2327",
   500: "#da2d5f"
+};
+
+export const orangeScale = {
+  300: "#ff8a58",
+  400: "#3c2c23",
+  500: "#da802d"
 };
 
 export const greenScale = {
@@ -44,72 +56,8 @@ export const greenScale = {
   500: "#2ddabb"
 };
 
-const lightThemeColors: ThemeColors = {
-  button: {
-    primary: {
-      background: {
-        default: primaryScale[300],
-        hover: primaryScale[200],
-        focus: primaryScale[200],
-        disabled: grayScale[200]
-      },
-      icon: {
-        default: grayScale[200],
-        hover: grayScale[200],
-        focus: grayScale[200],
-        disabled: grayScale[500]
-      },
-      text: {
-        default: grayScale[0],
-        hover: grayScale[0],
-        focus: grayScale[0],
-        disabled: grayScale[500]
-      }
-    },
-    secondary: {
-      background: {
-        default: grayScale[50],
-        hover: grayScale[50],
-        focus: grayScale[50],
-        disabled: "transparent"
-      },
-      border: {
-        default: primaryScale[300],
-        hover: primaryScale[200],
-        focus: primaryScale[200],
-        disabled: grayScale[200]
-      },
-      icon: {
-        default: primaryScale[300],
-        hover: primaryScale[300],
-        focus: primaryScale[300],
-        disabled: grayScale[400]
-      },
-      text: {
-        default: grayScale[900],
-        hover: grayScale[900],
-        focus: grayScale[900],
-        disabled: grayScale[400]
-      }
-    },
-    tertiary: {
-      icon: {
-        default: grayScale[800],
-        hover: primaryScale[300],
-        focus: primaryScale[300],
-        disabled: grayScale[400]
-      },
-      text: {
-        default: grayScale[900],
-        hover: primaryScale[300],
-        focus: primaryScale[300],
-        disabled: grayScale[400]
-      }
-    }
-  }
-};
-
 const darkThemeColors: ThemeColors = {
+  icon: grayScale[200],
   button: {
     primary: {
       background: {
@@ -171,6 +119,246 @@ const darkThemeColors: ThemeColors = {
         disabled: grayScale[700]
       }
     }
+  },
+  tab: {
+    text: {
+      default: grayScale[400],
+      hover: grayScale[400],
+      focus: grayScale[200],
+      disabled: grayScale[700]
+    },
+    background: {
+      default: "transparent",
+      hover: grayScale[800],
+      focus: "transparent",
+      disabled: "transparent"
+    },
+    borderBottom: {
+      hover: primaryScale[300],
+      focus: primaryScale[300]
+    }
+  },
+  tabPanel: {
+    background: grayScale[1100],
+    divider: grayScale[800]
+  },
+  tag: {
+    default: {
+      background: grayScale[850],
+      text: grayScale[200]
+    },
+    highSeverity: {
+      background: redScale[400],
+      text: redScale[300]
+    },
+    mediumSeverity: {
+      background: orangeScale[400],
+      text: orangeScale[300]
+    },
+    lowSeverity: {
+      background: blueScale[400],
+      text: blueScale[300]
+    },
+    success: {
+      background: greenScale[400],
+      text: greenScale[300]
+    }
+  },
+  toggle: {
+    background: grayScale[1000],
+    border: grayScale[850],
+    option: {
+      default: {
+        background: "transparent",
+        icon: grayScale[200],
+        text: grayScale[100]
+      },
+      selected: {
+        background: primaryScale[300],
+        icon: grayScale[200],
+        text: grayScale[100]
+      }
+    }
+  },
+  recentActivity: {
+    background: grayScale[1200],
+    header: {
+      text: grayScale[100]
+    },
+    table: {
+      header: {
+        text: grayScale[400]
+      },
+      row: {
+        default: {
+          border: grayScale[850],
+          background: grayScale[1100],
+          link: primaryScale[100]
+        },
+        new: {
+          border: grayScale[850],
+          background: grayScale[900],
+          link: primaryScale[100]
+        }
+      }
+    }
+  },
+  tooltip: {
+    background: grayScale[800],
+    text: grayScale[100]
+  }
+};
+
+const lightThemeColors: ThemeColors = {
+  icon: grayScale[800],
+  button: {
+    primary: {
+      background: {
+        default: primaryScale[300],
+        hover: primaryScale[200],
+        focus: primaryScale[200],
+        disabled: grayScale[200]
+      },
+      icon: {
+        default: grayScale[200],
+        hover: grayScale[200],
+        focus: grayScale[200],
+        disabled: grayScale[500]
+      },
+      text: {
+        default: grayScale[0],
+        hover: grayScale[0],
+        focus: grayScale[0],
+        disabled: grayScale[500]
+      }
+    },
+    secondary: {
+      background: {
+        default: grayScale[50],
+        hover: grayScale[50],
+        focus: grayScale[50],
+        disabled: "transparent"
+      },
+      border: {
+        default: primaryScale[300],
+        hover: primaryScale[200],
+        focus: primaryScale[200],
+        disabled: grayScale[200]
+      },
+      icon: {
+        default: primaryScale[300],
+        hover: primaryScale[300],
+        focus: primaryScale[300],
+        disabled: grayScale[400]
+      },
+      text: {
+        default: grayScale[900],
+        hover: grayScale[900],
+        focus: grayScale[900],
+        disabled: grayScale[400]
+      }
+    },
+    tertiary: {
+      icon: {
+        default: grayScale[800],
+        hover: primaryScale[300],
+        focus: primaryScale[300],
+        disabled: grayScale[400]
+      },
+      text: {
+        default: grayScale[900],
+        hover: primaryScale[300],
+        focus: primaryScale[300],
+        disabled: grayScale[400]
+      }
+    }
+  },
+  tab: {
+    text: {
+      default: grayScale[600],
+      hover: grayScale[600],
+      focus: grayScale[900],
+      disabled: grayScale[300]
+    },
+    background: {
+      default: "transparent",
+      hover: grayScale[150],
+      focus: "transparent",
+      disabled: "transparent"
+    },
+    borderBottom: {
+      hover: primaryScale[300],
+      focus: primaryScale[300]
+    }
+  },
+  tabPanel: {
+    background: grayScale[50],
+    divider: grayScale[300]
+  },
+  tag: {
+    default: {
+      background: grayScale[200],
+      text: grayScale[800]
+    },
+    highSeverity: {
+      background: redScale[500],
+      text: grayScale[0]
+    },
+    mediumSeverity: {
+      background: orangeScale[500],
+      text: grayScale[0]
+    },
+    lowSeverity: {
+      background: blueScale[500],
+      text: grayScale[0]
+    },
+    success: {
+      background: greenScale[500],
+      text: grayScale[0]
+    }
+  },
+  toggle: {
+    background: grayScale[100],
+    border: grayScale[200],
+    option: {
+      default: {
+        background: "transparent",
+        icon: grayScale[800],
+        text: grayScale[700]
+      },
+      selected: {
+        background: primaryScale[300],
+        icon: grayScale[200],
+        text: grayScale[100]
+      }
+    }
+  },
+  recentActivity: {
+    background: grayScale[0],
+    header: {
+      text: grayScale[900]
+    },
+    table: {
+      header: {
+        text: grayScale[600]
+      },
+      row: {
+        default: {
+          border: grayScale[200],
+          background: grayScale[50],
+          link: primaryScale[300]
+        },
+        new: {
+          border: grayScale[200],
+          background: grayScale[150],
+          link: primaryScale[300]
+        }
+      }
+    }
+  },
+  tooltip: {
+    background: grayScale[100],
+    text: grayScale[900]
   }
 };
 

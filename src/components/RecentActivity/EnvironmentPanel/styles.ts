@@ -1,60 +1,23 @@
 import styled, { keyframes } from "styled-components";
 
-const BORDER_RADIUS = 8; // in pixels
-
-const backgroundAnimation = keyframes`
-	0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-`;
-
-export const BorderContainer = styled.div`
-  padding: 1px;
-  border-radius: ${BORDER_RADIUS}px;
-  ${/* TODO: Change to radial gradient after cross-fading */ ""}
-  background: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "linear-gradient(90deg, #a3aaed 0%, #dde0ff 50%, #6172fe 100%)";
-      case "dark":
-      case "dark-jetbrains":
-        return "linear-gradient(90deg, #2f3750 0%, #3e489b 48.96%, #7b85d7 100%)";
-    }
-  }};
-  box-shadow: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "0px 0px 5px rgb(167 176 255 / 50%)";
-      case "dark":
-      case "dark-jetbrains":
-        return "0px 0px 5px rgb(167 176 255 / 25%)";
-    }
-  }};
-  ${/* TODO: Replace with cross-fading backgrounds */ ""}
-  background-size: 400% 400%;
-  animation: ${backgroundAnimation} 4s ease-in-out infinite;
-`;
-
 export const Container = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  height: 100%;
   gap: 4px;
-  background: ${({ theme }) => {
+  padding: 0 12px;
+  height: 36px;
+  box-sizing: border-box;
+  background: ${({ theme }) => theme.colors.tabPanel.background};
+  box-shadow: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "#ebecf0";
+        return "0 5px 10px 0 rgb(0 0 0 / 15%)";
       case "dark":
-        return "#1e1e1e";
       case "dark-jetbrains":
-        return "#393b40";
+        return "0 9px 24px 0 rgb(0 0 0 / 30%)";
     }
   }};
-  padding: 5px 12px 6px;
-  border-radius: 8px;
-  position: relative;
-  box-sizing: border-box;
 `;
 
 export const EnvironmentListContainer = styled.div`
@@ -63,13 +26,14 @@ export const EnvironmentListContainer = styled.div`
   overflow: hidden;
   scroll-behavior: smooth;
   gap: 12px;
+  height: 100%;
 `;
 
 export const EnvironmentList = styled.ul`
   display: flex;
   gap: 12px;
   margin: 0;
-  padding: 1px 0 0 1px;
+  padding: 0;
 `;
 
 export const CarouselButtonContainer = styled.div`
@@ -109,6 +73,14 @@ export const LogoRotationContainer = styled.div`
 
 export const LogoContainer = styled.div`
   animation: ${rotateAnimation} 6s ease-in-out infinite;
+`;
+
+export const Divider = styled.div`
+  margin: 0 8px;
+  border-radius: 1px;
+  width: 1px;
+  height: 13px;
+  background: ${({ theme }) => theme.colors.tabPanel.divider};
 `;
 
 export const ButtonsContainer = styled.div`

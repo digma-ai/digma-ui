@@ -800,9 +800,9 @@ export const mockData: LiveData = {
     },
     {
       duration: {
-        value: 8.29,
+        value: 18.29,
         unit: "ms",
-        raw: 8287000.0
+        raw: 18287000.0
       },
       dateTime: "2023-05-15T20:32:22.556144Z",
       isError: true
