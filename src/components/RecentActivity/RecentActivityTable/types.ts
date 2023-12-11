@@ -9,3 +9,18 @@ export interface RecentActivityTableProps {
   isTraceButtonVisible: boolean;
   headerHeight: number;
 }
+
+export interface ColumnMeta {
+  width: string;
+  minWidth: number;
+}
+
+export interface TableHeadProps {
+  $offset: number;
+}
+
+export interface TableBodyRowProps {
+  $isRecent: boolean;
+}
+
+export type ListItemProps = TableBodyRowProps;

@@ -1,21 +1,13 @@
 import styled from "styled-components";
-import { grayScale } from "../common/App/getTheme";
 import { LAYERS } from "../common/App/styles";
 import { Button } from "../common/Button";
+
+const RECENT_ACTIVITY_MIN_WIDTH = 550; // in pixels
 
 export const Container = styled.div`
   height: 100%;
   position: relative;
-  background: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#f7f8fa";
-      case "dark":
-        return "#0f0f0f";
-      case "dark-jetbrains":
-        return grayScale[1200];
-    }
-  }};
+  background: ${({ theme }) => theme.colors.recentActivity.background};
 
   .sash {
     --sash-size: 12px;
@@ -73,44 +65,34 @@ export const RecentActivityContainer = styled.div`
 
 export const RecentActivityHeader = styled.div`
   box-sizing: border-box;
-  padding: 12px 12px 8px;
   z-index: 1;
   position: sticky;
   top: 0;
-  background: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#f7f8fa";
-      case "dark":
-        return "#0f0f0f";
-      case "dark-jetbrains":
-        return grayScale[1200];
-    }
-  }};
+  display: flex;
+  flex-direction: column;
+  min-width: ${RECENT_ACTIVITY_MIN_WIDTH}px;
+  background: ${({ theme }) => theme.colors.recentActivity.background};
+`;
+
+export const RecentActivityToolbarContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
+  padding: 16px 12px 20px;
 `;
 
 export const RecentActivityToolbar = styled.div`
   display: flex;
   justify-content: space-between;
-  padding-top: 8px;
-  font-weight: 400;
+  font-weight: 500;
   font-size: 14px;
-  color: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#494b57";
-      case "dark":
-      case "dark-jetbrains":
-        return "#dfe1e5";
-    }
-  }};
+  color: ${({ theme }) => theme.colors.recentActivity.header.text};
 `;
 
 export const RecentActivityContentContainer = styled.div`
   padding: 0 12px 12px;
+  box-sizing: border-box;
+  min-width: ${RECENT_ACTIVITY_MIN_WIDTH}px;
 `;
 
 export const NoDataContainer = styled.div`

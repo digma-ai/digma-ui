@@ -11,6 +11,8 @@ import { sendTrackingEvent } from "../../utils/sendTrackingEvent";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { CursorFollower } from "../common/CursorFollower";
 import { DigmaLogoFlatIcon } from "../common/icons/DigmaLogoFlatIcon";
+import { ListIcon } from "../common/icons/ListIcon";
+import { TableIcon } from "../common/icons/TableIcon";
 import { DeleteEnvironmentConfirmation } from "./DeleteEnvironmentConfirmation";
 import { EnvironmentInstructionsPanel } from "./EnvironmentInstructionsPanel";
 import { EnvironmentPanel } from "./EnvironmentPanel";
@@ -23,6 +25,7 @@ import { RecentActivityTable, isRecent } from "./RecentActivityTable";
 import { RegistrationPanel } from "./RegistrationPanel";
 import { RegistrationFormValues } from "./RegistrationPanel/types";
 import { SetupOrgDigmaPanel } from "./SetupOrgDigmaPanel";
+import { Toggle } from "./Toggle";
 import { actions } from "./actions";
 import * as s from "./styles";
 import {
@@ -30,10 +33,22 @@ import {
   EnvironmentType,
   ExtendedEnvironment,
   RecentActivityData,
-  RecentActivityProps
+  RecentActivityProps,
+  ViewModeOption
 } from "./types";
 
 export const RECENT_ACTIVITY_CONTAINER_ID = "recent-activity";
+
+const viewModeOptions: ViewModeOption[] = [
+  {
+    value: "table",
+    icon: TableIcon
+  },
+  {
+    value: "list",
+    icon: ListIcon
+  }
+];
 
 const handleTroubleshootButtonClick = () => {
   sendTrackingEvent(globalTrackingEvents.TROUBLESHOOTING_LINK_CLICKED, {
@@ -398,21 +413,24 @@ export const RecentActivity = (props: RecentActivityProps) => {
           <s.RecentActivityHeader ref={observe}>
             <EnvironmentPanel
               environments={environments}
-              viewMode={viewMode}
               selectedEnvironment={selectedEnvironment}
               onEnvironmentSelect={handleEnvironmentSelect}
-              onViewModeChange={handleViewModeChange}
               onEnvironmentAdd={handleEnvironmentAdd}
               onEnvironmentDelete={handleEnvironmentDelete}
             />
-            {!selectedEnvironment?.isPending && (
-              <>
+            <s.RecentActivityToolbarContainer>
+              {!selectedEnvironment?.isPending && (
                 <s.RecentActivityToolbar>
                   <span>Recent Activity</span>
+                  <Toggle
+                    value={viewMode}
+                    options={viewModeOptions}
+                    onChange={handleViewModeChange}
+                  />
                 </s.RecentActivityToolbar>
-              </>
-            )}
-            {!config.isObservabilityEnabled && <ObservabilityStatusBadge />}
+              )}
+              {!config.isObservabilityEnabled && <ObservabilityStatusBadge />}
+            </s.RecentActivityToolbarContainer>
           </s.RecentActivityHeader>
           <s.RecentActivityContentContainer>
             {renderContent()}

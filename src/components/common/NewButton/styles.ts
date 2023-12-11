@@ -5,7 +5,7 @@ import { ButtonElementProps, ButtonType, LabelProps } from "./types";
 const getButtonStyles = (
   theme: DefaultTheme,
   type: ButtonType,
-  state: "default" | "hover" | "hover" | "focus" | "disabled"
+  state: "default" | "hover" | "focus" | "disabled"
 ) => {
   const backgroundColor = theme.colors.button[type].background;
   const borderColor = theme.colors.button[type].border;

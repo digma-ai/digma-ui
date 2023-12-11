@@ -1,5 +1,37 @@
+import { ComponentType } from "react";
 import { Duration } from "../../globals";
+import { IconProps } from "../common/icons/types";
+import { ViewMode } from "./EnvironmentPanel/types";
 import { LiveData } from "./LiveView/types";
+
+export interface RecentActivityThemeColors {
+  background: string;
+  header: {
+    text: string;
+  };
+  table: {
+    header: {
+      text: string;
+    };
+    row: {
+      default: {
+        border: string;
+        background: string;
+        link: string;
+      };
+      new: {
+        border: string;
+        background: string;
+        link: string;
+      };
+    };
+  };
+}
+
+export interface ViewModeOption {
+  value: ViewMode;
+  icon: ComponentType<IconProps>;
+}
 
 export interface EntrySpan {
   displayText: string;
@@ -55,4 +87,8 @@ export interface RecentActivityProps {
 
 export interface SetIsJaegerData {
   isJaegerEnabled: boolean;
+}
+
+export interface ViewModeOptionProps {
+  $selected: boolean;
 }

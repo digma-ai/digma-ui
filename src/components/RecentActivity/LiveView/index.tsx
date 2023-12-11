@@ -327,19 +327,23 @@ export const LiveView = (props: LiveViewProps) => {
 
   const spanName = props.data.durationData.displayName;
 
-  let data: ExtendedLiveDataRecord[] = [...props.data.liveDataRecords].map(
+  const data: ExtendedLiveDataRecord[] = [...props.data.liveDataRecords].map(
     (x) => ({
       ...x,
       dateTimeValue: new Date(x.dateTime).valueOf()
     })
   );
 
+  let filteredData: ExtendedLiveDataRecord[] = data;
+
   if (!areErrorsVisible) {
-    data = data.filter((x) => !x.isError);
+    filteredData = data.filter((x) => !x.isError);
   }
 
+  const dataForAxes = filteredData.length > 0 ? filteredData : data;
+
   // Add P50 and P95 values to build the correct scale for Y axis
-  const YAxisData = data.concat([
+  const YAxisData = dataForAxes.concat([
     ...(p50
       ? [
           {
@@ -441,7 +445,7 @@ export const LiveView = (props: LiveViewProps) => {
           <CrossIcon color={getCloseIconColor(theme)} size={16} />
         </s.CloseButton>
       </s.Header>
-      {props.data.liveDataRecords.length > 0 ? (
+      {data.length > 0 ? (
         <>
           <s.Toolbar>
             <ToggleSwitch
@@ -518,7 +522,7 @@ export const LiveView = (props: LiveViewProps) => {
                 height={"100%"}
               >
                 <ComposedChart
-                  data={data}
+                  data={filteredData}
                   margin={{
                     bottom: 4
                   }}
@@ -564,6 +568,7 @@ export const LiveView = (props: LiveViewProps) => {
                       // @ts-ignore
                       onMouseMove={handleAreaMouseMove}
                       onMouseLeave={handleAreaMouseLeave}
+                      data={dataForAxes}
                     />
                   )}
                   <XAxis
@@ -576,6 +581,7 @@ export const LiveView = (props: LiveViewProps) => {
                     }}
                     stroke={axisColor}
                     tickFormatter={formatXAxisDate}
+                    domain={dataForAxes.map((x) => x.dateTimeValue)}
                   />
                   <Line
                     dataKey={(x: ExtendedLiveDataRecord): number =>

@@ -1,13 +1,11 @@
 import styled from "styled-components";
-import { grayScale } from "../../common/App/getTheme";
-import { getCodeFont } from "../../common/App/styles";
 import { Link } from "../../common/Link";
+import { ListItemProps, TableBodyRowProps, TableHeadProps } from "./types";
 
-export const TABLE_BODY_ROW_VERTICAL_SPACING = 4; // in pixels;
-
-export const Table = styled.table`
+export const Table = styled.div`
   width: 100%;
-  border-spacing: 0;
+  display: flex;
+  flex-direction: column;
   font-size: 14px;
   color: ${({ theme }) => {
     switch (theme.mode) {
@@ -21,134 +19,79 @@ export const Table = styled.table`
   }};
 `;
 
-export const TableHead = styled.thead<{ offset: number }>`
+export const TableHead = styled.div<TableHeadProps>`
   position: sticky;
-  top: ${({ offset }) => offset - 1}px;
+  display: flex;
+  top: ${({ $offset }) => $offset - 1}px;
   z-index: 1;
   font-size: 14px;
-  color: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#818594";
-      case "dark":
-        return "#b9c2eb";
-      case "dark-jetbrains":
-        return "#b4b8bf";
-    }
-  }};
-  box-shadow: -4px 0
-    ${({ theme }) => {
-      switch (theme.mode) {
-        case "light":
-          return "#f7f8fa";
-        case "dark":
-          return "#0f0f0f";
-        case "dark-jetbrains":
-          return grayScale[1200];
-      }
-    }};
-  background: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#f7f8fa";
-      case "dark":
-        return "#0f0f0f";
-      case "dark-jetbrains":
-        return grayScale[1200];
-    }
-  }};
+  color: ${({ theme }) => theme.colors.recentActivity.table.header.text};
+  box-shadow: -4px 0 ${({ theme }) => theme.colors.recentActivity.background};
+  background: ${({ theme }) => theme.colors.recentActivity.background};
+  padding-bottom: 8px;
 `;
 
-export const TableHeaderCell = styled.th`
-  padding: 4px 0;
-  font-weight: 400;
+export const TableHeadRow = styled.div`
+  display: flex;
+  width: 100%;
+  gap: 20px;
+`;
+
+export const TableHeaderCell = styled.div`
   text-align: start;
+  overflow: hidden;
 
   &:first-child {
-    padding-left: 12px;
-  }
-`;
-
-export const TableBody = styled.tbody`
-  background: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#ebecf0";
-      case "dark":
-        return "#1e1e1e";
-      case "dark-jetbrains":
-        return "#393b40";
-    }
-  }};
-
-  &::before {
-    content: "";
-    display: block;
-    height: 2px;
-    background: ${({ theme }) => {
-      switch (theme.mode) {
-        case "light":
-          return "#f7f8fa";
-        case "dark":
-          return "#0f0f0f";
-        case "dark-jetbrains":
-          return grayScale[1200];
-      }
-    }};
-  }
-
-  & tr:first-child td:first-child {
-    border-top-left-radius: 12px;
-  }
-
-  & tr:first-child td:last-child {
-    border-top-right-radius: 12px;
-  }
-
-  & tr:last-child td:first-child {
-    border-bottom-left-radius: 12px;
-  }
-
-  & tr:last-child td:last-child {
-    border-bottom-right-radius: 12px;
-  }
-`;
-
-export const TableBodyRow = styled.tr`
-  position: relative;
-  height: ${42 + TABLE_BODY_ROW_VERTICAL_SPACING}px;
-
-  &:not(:last-child) > td {
-    border-bottom: ${TABLE_BODY_ROW_VERTICAL_SPACING}px solid
-      ${({ theme }) => {
-        switch (theme.mode) {
-          case "light":
-            return "#f7f8fa";
-          case "dark":
-            return "#0f0f0f";
-          case "dark-jetbrains":
-            return "#2b2d30";
-        }
-      }};
-  }
-`;
-
-export const TableBodyCell = styled.td`
-  padding: 0;
-
-  &:first-child {
-    padding-left: 12px;
+    padding-left: 8px;
   }
 
   &:last-child {
-    padding-right: 12px;
+    padding-right: 8px;
+  }
+`;
+
+export const TableBody = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+export const TableBodyRow = styled.div<TableBodyRowProps>`
+  display: flex;
+  position: relative;
+  height: 36px;
+  border-radius: 4px;
+  border: 1px solid
+    ${({ theme, $isRecent }) =>
+      $isRecent
+        ? theme.colors.recentActivity.table.row.new.border
+        : theme.colors.recentActivity.table.row.default.border};
+  gap: 20px;
+  background: ${({ theme, $isRecent }) =>
+    $isRecent
+      ? theme.colors.recentActivity.table.row.new.background
+      : theme.colors.recentActivity.table.row.default.background};
+  box-sizing: border-box;
+`;
+
+export const TableBodyCell = styled.div`
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+
+  &:first-child {
+    padding-left: 8px;
+  }
+
+  &:last-child {
+    padding-right: 8px;
   }
 `;
 
 export const BadgeContainer = styled.div`
   position: absolute;
-  top: -1px;
-  left: -1px;
+  margin: auto;
+  left: -4px;
 `;
 
 export const TimeDistanceContainer = styled.span`
@@ -168,28 +111,8 @@ export const InsightsContainer = styled.span`
   gap: 4px;
 `;
 
-export const InsightIconContainer = styled.span`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 24px;
-  height: 24px;
-  flex-shrink: 0;
-  border-radius: 4px;
-  background: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#e9eef4";
-      case "dark":
-      case "dark-jetbrains":
-        return "#2e2e2e";
-    }
-  }};
-`;
-
 export const TraceButtonContainer = styled.div`
   display: flex;
-  justify-content: flex-end;
 `;
 
 export const Suffix = styled.span`
@@ -229,19 +152,11 @@ export const List = styled.ul`
         return "#c6c6c6";
     }
   }};
-  background: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#ebecf0";
-      case "dark":
-        return "#1e1e1e";
-      case "dark-jetbrains":
-        return "#393b40";
-    }
-  }};
+  border: 1px solid
+    ${({ theme }) => theme.colors.recentActivity.table.row.default.border};
 `;
 
-export const ListItem = styled.li`
+export const ListItem = styled.li<ListItemProps>`
   position: relative;
   font-size: 14px;
   padding: 0 12px;
@@ -250,16 +165,20 @@ export const ListItem = styled.li`
   align-items: center;
   gap: 8px;
   font-weight: 500;
-`;
+  background: ${({ theme, $isRecent }) =>
+    $isRecent
+      ? theme.colors.recentActivity.table.row.new.background
+      : theme.colors.recentActivity.table.row.default.background};
 
-export const ListBadgeContainer = styled.div`
-  position: absolute;
-  display: flex;
-  top: 0;
-  bottom: 0;
-  left: -4px;
-  margin: auto;
-  height: fit-content;
+  &:first-child {
+    border-top-left-radius: 11px;
+    border-top-right-radius: 11px;
+  }
+
+  &:last-child {
+    border-bottom-left-radius: 11px;
+    border-bottom-right-radius: 11px;
+  }
 `;
 
 export const ListInsightsContainer = styled.div`
@@ -271,16 +190,16 @@ export const ListSuffix = styled(Suffix)`
   font-size: 14px;
 `;
 
-export const SpanLink = styled(Link)`
-  ${({ theme }) => getCodeFont(theme.codeFont)}
+export const SpanLinksContainer = styled.span`
+  overflow: hidden;
+  display: flex;
+  gap: 4px;
+`;
 
-  color: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#426dda";
-      case "dark":
-      case "dark-jetbrains":
-        return "#7891d0";
-    }
-  }};
+export const SpanLink = styled(Link)`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-decoration: none;
+  color: ${({ theme }) => theme.colors.recentActivity.table.row.default.link};
 `;

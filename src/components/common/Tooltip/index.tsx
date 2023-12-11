@@ -11,7 +11,7 @@ import {
   useInteractions
 } from "@floating-ui/react";
 import { Children, cloneElement, useRef, useState } from "react";
-import { DefaultTheme, useTheme } from "styled-components";
+import { useTheme } from "styled-components";
 import * as s from "./styles";
 import { TooltipProps } from "./types";
 
@@ -50,22 +50,11 @@ const getArrowStyles = (placement: Placement) => {
   }
 };
 
-const getArrowColor = (theme: DefaultTheme) => {
-  switch (theme.mode) {
-    case "light":
-      return "#fbfdff";
-    case "dark":
-    case "dark-jetbrains":
-      return "#2e2e2e";
-  }
-};
-
 export const Tooltip = (props: TooltipProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const arrowRef = useRef(null);
 
   const theme = useTheme();
-  const arrowColor = getArrowColor(theme);
 
   const placement = props.placement || "top";
 
@@ -107,7 +96,7 @@ export const Tooltip = (props: TooltipProps) => {
             <FloatingArrow
               ref={arrowRef}
               context={context}
-              fill={arrowColor}
+              fill={theme.colors.tooltip.background}
               width={10}
               height={8}
               d={
