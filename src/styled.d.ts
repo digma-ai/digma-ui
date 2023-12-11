@@ -1,9 +1,9 @@
 import "styled-components";
-import { TagThemeColors } from "./components/Insights/common/Tag/types";
 import { TabThemeColors } from "./components/RecentActivity/EnvironmentPanel/EnvironmentTab/types";
 import { ToggleThemeColors } from "./components/RecentActivity/Toggle/types";
 import { RecentActivityThemeColors } from "./components/RecentActivity/types";
 import { ButtonThemeColors } from "./components/common/NewButton/types";
+import { TagThemeColors } from "./components/common/Tag/types";
 import { TooltipThemeColors } from "./components/common/Tooltip/types";
 import { Mode } from "./globals";
 
