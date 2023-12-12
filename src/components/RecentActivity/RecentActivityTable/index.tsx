@@ -128,15 +128,13 @@ export const RecentActivityTable = (props: RecentActivityTableProps) => {
   );
 
   const renderTraceButton = (entry: ActivityEntry) => (
-    <div>
-      <NewButton
-        onClick={() => {
-          handleTraceButtonClick(entry.latestTraceId, entry.firstEntrySpan);
-        }}
-        icon={TraceIcon}
-        label={"Trace"}
-      />
-    </div>
+    <NewButton
+      onClick={() => {
+        handleTraceButtonClick(entry.latestTraceId, entry.firstEntrySpan);
+      }}
+      icon={TraceIcon}
+      label={"Trace"}
+    />
   );
 
   const columns = [
