@@ -11,8 +11,8 @@ export interface RecentActivityTableProps {
 }
 
 export interface ColumnMeta {
-  width: string;
-  minWidth: number;
+  width: string | number;
+  minWidth?: string | number;
 }
 
 export interface TableHeadProps {
