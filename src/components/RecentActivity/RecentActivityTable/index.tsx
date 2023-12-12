@@ -185,8 +185,7 @@ export const RecentActivityTable = (props: RecentActivityTableProps) => {
             id: "latestTraceId",
             header: "Actions",
             meta: {
-              width: "5%",
-              minWidth: 55
+              width: 60
             },
             cell: (info) => renderTraceButton(info.getValue())
           })
