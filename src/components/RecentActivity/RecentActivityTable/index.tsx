@@ -14,7 +14,7 @@ import { greenScale } from "../../common/App/getTheme";
 import { NewButton } from "../../common/NewButton";
 import { Tag } from "../../common/Tag";
 import { Tooltip } from "../../common/Tooltip";
-import { CrosshairIcon } from "../../common/icons/CrosshairIcon";
+import { TraceIcon } from "../../common/icons/12px/TraceIcon";
 import { Badge } from "../Badge";
 import { ViewMode } from "../EnvironmentPanel/types";
 import { ActivityEntry, EntrySpan, SlimInsight } from "../types";
@@ -128,17 +128,15 @@ export const RecentActivityTable = (props: RecentActivityTableProps) => {
   );
 
   const renderTraceButton = (entry: ActivityEntry) => (
-    <Tooltip title={"Trace"}>
-      <div>
-        <NewButton
-          onClick={() => {
-            handleTraceButtonClick(entry.latestTraceId, entry.firstEntrySpan);
-          }}
-          icon={CrosshairIcon}
-          buttonType={"secondary"}
-        />
-      </div>
-    </Tooltip>
+    <div>
+      <NewButton
+        onClick={() => {
+          handleTraceButtonClick(entry.latestTraceId, entry.firstEntrySpan);
+        }}
+        icon={TraceIcon}
+        label={"Trace"}
+      />
+    </div>
   );
 
   const columns = [
