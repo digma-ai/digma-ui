@@ -20,6 +20,8 @@ type Story = StoryObj<typeof meta>;
 export const WithEvaluatingChange: Story = {
   args: {
     insight: {
+      criticality: 0,
+      impact: 0,
       name: "Endpoint Duration Slowdown Source",
       type: InsightType.EndpointDurationSlowdown,
       category: InsightCategory.Performance,

@@ -21,6 +21,8 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     data: {
+      criticality: 0,
+      impact: 0,
       name: "Suspected N+1 Query",
       type: InsightType.EndpointSpanNPlusOne,
       category: InsightCategory.Performance,

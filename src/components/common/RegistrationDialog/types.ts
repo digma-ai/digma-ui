@@ -1,4 +1,4 @@
-export interface RegistrationPanelProps {
+export interface RegistrationDialogProps {
   onSubmit: (data: RegistrationFormValues) => void;
   onClose: () => void;
   isRegistrationInProgress: boolean;

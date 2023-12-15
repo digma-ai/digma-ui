@@ -10,6 +10,8 @@ import { groupBy } from "../../utils/groupBy";
 import { sendTrackingEvent } from "../../utils/sendTrackingEvent";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { CursorFollower } from "../common/CursorFollower";
+import { RegistrationDialog } from "../common/RegistrationDialog";
+import { RegistrationFormValues } from "../common/RegistrationDialog/types";
 import { DigmaLogoFlatIcon } from "../common/icons/DigmaLogoFlatIcon";
 import { ListIcon } from "../common/icons/ListIcon";
 import { TableIcon } from "../common/icons/TableIcon";
@@ -22,8 +24,6 @@ import { LiveView } from "./LiveView";
 import { LiveData } from "./LiveView/types";
 import { ObservabilityStatusBadge } from "./ObservabilityStatusBadge";
 import { RecentActivityTable, isRecent } from "./RecentActivityTable";
-import { RegistrationPanel } from "./RegistrationPanel";
-import { RegistrationFormValues } from "./RegistrationPanel/types";
 import { SetupOrgDigmaPanel } from "./SetupOrgDigmaPanel";
 import { Toggle } from "./Toggle";
 import { actions } from "./actions";
@@ -91,7 +91,9 @@ export const RecentActivity = (props: RecentActivityProps) => {
   const [isRegistrationInProgress, setIsRegistrationInProgress] =
     useState(false);
   const config = useContext(ConfigContext);
-  const previousUserEmail = usePrevious(config.userEmail);
+  const previousUserRegistrationEmail = usePrevious(
+    config.userRegistrationEmail
+  );
   const { observe, entry } = useDimensions();
 
   const environmentActivities = useMemo(
@@ -163,7 +165,10 @@ export const RecentActivity = (props: RecentActivityProps) => {
   }, [props.liveData]);
 
   useEffect(() => {
-    if (previousUserEmail !== config.userEmail && isRegistrationInProgress) {
+    if (
+      previousUserRegistrationEmail !== config.userRegistrationEmail &&
+      isRegistrationInProgress
+    ) {
       setIsRegistrationPopupVisible(false);
       setIsRegistrationInProgress(false);
 
@@ -177,10 +182,10 @@ export const RecentActivity = (props: RecentActivityProps) => {
       }
     }
   }, [
-    config.userEmail,
+    config.userRegistrationEmail,
     isRegistrationInProgress,
     environmentToSetType,
-    previousUserEmail
+    previousUserRegistrationEmail
   ]);
 
   const handleEnvironmentSelect = (environment: ExtendedEnvironment) => {
@@ -269,7 +274,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
     environment: string,
     type: EnvironmentType
   ) => {
-    if (!config.userEmail) {
+    if (!config.userRegistrationEmail) {
       setIsRegistrationPopupVisible(true);
       setEnvironmentToSetType({
         environment,
@@ -328,9 +333,10 @@ export const RecentActivity = (props: RecentActivityProps) => {
 
   const handleRegistrationSubmit = (formData: RegistrationFormValues) => {
     window.sendMessageToDigma({
-      action: actions.REGISTER,
+      action: globalActions.REGISTER,
       payload: {
         ...formData,
+        scope: "recent activity add environment",
         selectedEnvironmentType: environmentToSetType?.type
       }
     });
@@ -338,7 +344,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
     setIsRegistrationInProgress(true);
   };
 
-  const handleRegistrationPopupClose = () => {
+  const handleRegistrationDialogClose = () => {
     setIsRegistrationPopupVisible(false);
   };
 
@@ -455,9 +461,9 @@ export const RecentActivity = (props: RecentActivityProps) => {
       )}
       {isRegistrationPopupVisible && (
         <s.Overlay onKeyDown={handleOverlayKeyDown}>
-          <RegistrationPanel
+          <RegistrationDialog
             onSubmit={handleRegistrationSubmit}
-            onClose={handleRegistrationPopupClose}
+            onClose={handleRegistrationDialogClose}
             isRegistrationInProgress={isRegistrationInProgress}
           />
         </s.Overlay>

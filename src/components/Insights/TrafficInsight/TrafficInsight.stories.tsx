@@ -20,6 +20,8 @@ type Story = StoryObj<typeof meta>;
 export const LowTraffic: Story = {
   args: {
     insight: {
+      criticality: 0,
+      impact: 0,
       name: "Low Usage",
       type: InsightType.LowUsage,
       category: InsightCategory.Usage,
@@ -72,6 +74,8 @@ export const LowTraffic: Story = {
 export const HighTraffic: Story = {
   args: {
     insight: {
+      criticality: 0,
+      impact: 0,
       name: "High Usage",
       type: InsightType.HighUsage,
       category: InsightCategory.Usage,

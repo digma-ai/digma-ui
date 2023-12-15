@@ -101,37 +101,3 @@ export const EnvironmentTypeTitle = styled.span`
   }};
   font-weight: 500;
 `;
-
-export const EnvironmentTypeIconContainer = styled.div`
-  display: flex;
-  border-radius: 4px;
-  padding: 6px;
-  border: 1px solid
-    ${({ theme }) => {
-      switch (theme.mode) {
-        case "light":
-          return grayScale[300];
-        case "dark":
-        case "dark-jetbrains":
-          return grayScale[700];
-      }
-    }};
-  background: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return grayScale[50];
-      case "dark":
-      case "dark-jetbrains":
-        return grayScale[1000];
-    }
-  }};
-  color: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return grayScale[800];
-      case "dark":
-      case "dark-jetbrains":
-        return grayScale[200];
-    }
-  }};
-`;

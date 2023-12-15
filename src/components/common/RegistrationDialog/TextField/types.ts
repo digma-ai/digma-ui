@@ -1,5 +1,5 @@
 import { ChangeEventHandler, FocusEventHandler } from "react";
-import { IconProps } from "../../../common/icons/types";
+import { IconProps } from "../../icons/types";
 
 export interface TextFieldProps {
   placeholder?: string;

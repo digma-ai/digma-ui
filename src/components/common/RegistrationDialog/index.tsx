@@ -1,14 +1,14 @@
 import { KeyboardEvent, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { isValidEmailFormat } from "../../../utils/isValidEmailFormat";
-import { NewCircleLoader } from "../../common/NewCircleLoader";
-import { CrossIcon } from "../../common/icons/CrossIcon";
-import { EnvelopeIcon } from "../../common/icons/EnvelopeIcon";
-import { UserIcon } from "../../common/icons/UserIcon";
+import { NewCircleLoader } from "../NewCircleLoader";
+import { EnvelopeIcon } from "../icons/16px/EnvelopeIcon";
+import { CrossIcon } from "../icons/CrossIcon";
+import { UserIcon } from "../icons/UserIcon";
 import { TextField } from "./TextField";
 import { isWorkEmail } from "./isWorkEmail";
 import * as s from "./styles";
-import { RegistrationFormValues, RegistrationPanelProps } from "./types";
+import { RegistrationDialogProps, RegistrationFormValues } from "./types";
 
 const validateEmail = (email: string): string | boolean => {
   const emailMessage = "Please enter a valid work email address";
@@ -33,7 +33,7 @@ const formDefaultValues: RegistrationFormValues = {
   email: ""
 };
 
-export const RegistrationPanel = (props: RegistrationPanelProps) => {
+export const RegistrationDialog = (props: RegistrationDialogProps) => {
   const {
     handleSubmit,
     control,
@@ -78,7 +78,7 @@ export const RegistrationPanel = (props: RegistrationPanelProps) => {
           <CrossIcon color={"currentColor"} size={14} />
         </s.CloseButton>
       </s.Header>
-      Please register first to create new environments in Digma
+      Please register with your email address
       <s.Form
         id={"registrationForm"}
         onSubmit={(e) => {

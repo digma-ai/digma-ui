@@ -20,6 +20,8 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     insight: {
+      criticality: 0,
+      impact: 0,
       name: "Scaling Issue Found",
       type: InsightType.SpanScalingBadly,
       category: InsightCategory.Performance,

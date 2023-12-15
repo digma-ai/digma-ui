@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { TextField } from ".";
-import { DigmaLogoIcon } from "../../../common/icons/DigmaLogoIcon";
+import { DigmaLogoIcon } from "../../icons/DigmaLogoIcon";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof TextField> = {

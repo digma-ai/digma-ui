@@ -1,4 +1,5 @@
-import { ReactNode } from "react";
+import { ComponentType, ReactNode } from "react";
+import { IconProps } from "../../common/icons/types";
 import { EnvironmentType, ExtendedEnvironment } from "../types";
 
 export interface EnvironmentTypePanelProps {
@@ -10,6 +11,6 @@ export interface EnvironmentTypeData {
   type: EnvironmentType;
   title: string;
   description: ReactNode;
-  icon: ReactNode;
+  icon: ComponentType<IconProps>;
   button: ReactNode;
 }

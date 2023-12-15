@@ -81,6 +81,7 @@ export interface InsightProps {
     insightType: InsightType
   ) => void;
   onRefresh: (insightType: InsightType) => void;
+  onJiraTicketCreate?: (insight: GenericCodeObjectInsight) => void;
 }
 
 export enum InsightScope {
@@ -151,6 +152,8 @@ export interface CodeObjectInsight extends Insight {
   prefixedCodeObjectId: string | null;
   customStartTime: string | null;
   actualStartTime: string | null;
+  criticality: number;
+  impact: number;
 }
 
 export interface SpanInsight extends CodeObjectInsight {
@@ -491,6 +494,9 @@ export interface SpanNPlusOneInsight extends SpanInsight {
       serviceName: string;
     };
     occurrences: number;
+    criticality: number;
+    impact: number;
+    severity: number;
   }[];
 
   /**

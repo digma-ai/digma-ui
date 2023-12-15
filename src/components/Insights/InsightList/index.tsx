@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
-import { actions } from "..";
 import { InsightType } from "../../../types";
 import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
 import { Card } from "../../common/Card";
@@ -26,6 +25,7 @@ import { SlowEndpointInsight } from "../SlowEndpointInsight";
 import { SpanBottleneckInsight } from "../SpanBottleneckInsight";
 import { TopUsageInsight } from "../TopUsageInsight";
 import { TrafficInsight } from "../TrafficInsight";
+import { actions } from "../actions";
 import { Description } from "../styles";
 import {
   isChattyApiEndpointInsight,
@@ -210,7 +210,8 @@ const getInsightGroupIconColor = (theme: DefaultTheme) => {
 };
 
 const renderInsightCard = (
-  insight: GenericCodeObjectInsight
+  insight: GenericCodeObjectInsight,
+  onJiraTicketCreate: (insight: GenericCodeObjectInsight) => void
 ): JSX.Element | undefined => {
   const handleErrorSelect = (errorId: string) => {
     window.sendMessageToDigma({
@@ -425,6 +426,7 @@ const renderInsightCard = (
         onTraceButtonClick={handleTraceButtonClick}
         onRecalculate={handleRecalculate}
         onRefresh={handleRefresh}
+        onJiraTicketCreate={onJiraTicketCreate}
       />
     );
   }
@@ -587,7 +589,9 @@ export const InsightList = (props: InsightListProps) => {
             </s.InsightGroupHeader>
           )}
           {x.insights.length > 0 ? (
-            x.insights.map((insight) => renderInsightCard(insight))
+            x.insights.map((insight) =>
+              renderInsightCard(insight, props.onJiraTicketCreate)
+            )
           ) : (
             <Card
               header={<>No data yet</>}

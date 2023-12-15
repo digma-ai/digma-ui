@@ -20,6 +20,8 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     insight: {
+      criticality: 0,
+      impact: 0,
       name: "HTTP Chatter",
       type: InsightType.EndpointChattyApi,
       category: InsightCategory.Performance,
