@@ -23,6 +23,8 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const data: EndpointBreakdownInsight = {
+  criticality: 0,
+  impact: 0,
   name: "Request Breakdown",
   type: InsightType.EndpointBreakdown,
   category: InsightCategory.Usage,

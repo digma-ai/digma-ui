@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { LAYERS } from "../common/App/styles";
 import { Link as CommonLink } from "../common/Link";
 
 export const Container = styled.div`
@@ -106,4 +107,20 @@ export const EmptyStateDescription = styled.span`
 export const TroubleshootingLink = styled(Link)`
   font-size: 14px;
   text-decoration: underline;
+`;
+
+export const Overlay = styled.div`
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  background: rgb(18 18 21 / 70%);
+  z-index: ${LAYERS.OVERLAY};
+`;
+
+export const PopupContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 0 4%;
 `;

@@ -20,6 +20,8 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     insight: {
+      criticality: 0,
+      impact: 0,
       name: "N+1",
       type: InsightType.SpanNPlusOne,
       category: InsightCategory.Performance,
@@ -59,7 +61,10 @@ export const Default: Story = {
               "span:io.opentelemetry.tomcat-10.0$_$HTTP POST /owners/new",
             serviceName: "spring-petclinic"
           },
-          occurrences: 100
+          occurrences: 100,
+          criticality: 0,
+          impact: 0,
+          severity: 0
         }
       ],
       scope: InsightScope.Span,

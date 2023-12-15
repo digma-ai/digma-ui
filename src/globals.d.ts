@@ -28,8 +28,10 @@ declare global {
     ide?: unknown;
     mainFont?: unknown;
     codeFont?: unknown;
+    jaegerURL?: unknown;
     isJaegerEnabled?: unknown;
     userEmail?: unknown;
+    userRegistrationEmail?: unknown;
     environment?: unknown;
     isObservabilityEnabled?: unknown;
     isDigmaEngineInstalled?: unknown;

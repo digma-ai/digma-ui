@@ -44,7 +44,7 @@ export const ImpactScore = (props: ImpactScoreProps) => {
   const config = useContext(ConfigContext);
   let indicatorPosition: "start" | "end" | undefined;
 
-  if (props.score >= 0 && props.showIndicator) {
+  if (props.score > 0 && props.showIndicator) {
     indicatorPosition = "end";
 
     if (props.indicatorPosition) {

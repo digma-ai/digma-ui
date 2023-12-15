@@ -1,16 +1,18 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { actions as globalActions } from "../../actions";
 import { SLACK_WORKSPACE_URL } from "../../constants";
 import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
 import { trackingEvents as globalTrackingEvents } from "../../trackingEvents";
 import { isNumber } from "../../typeGuards/isNumber";
-import { addPrefix } from "../../utils/addPrefix";
 import { openURLInDefaultBrowser } from "../../utils/openURLInDefaultBrowser";
 import { sendTrackingEvent } from "../../utils/sendTrackingEvent";
+import { ConfigContext } from "../common/App/ConfigContext";
 import { Button } from "../common/Button";
 import { CircleLoader } from "../common/CircleLoader";
 import { EmptyState } from "../common/EmptyState";
+import { RegistrationDialog } from "../common/RegistrationDialog";
+import { RegistrationFormValues } from "../common/RegistrationDialog/types";
 import { CardsIcon } from "../common/icons/CardsIcon";
 import { DocumentWithMagnifierIcon } from "../common/icons/DocumentWithMagnifierIcon";
 import { LightBulbSmallCrossedIcon } from "../common/icons/LightBulbSmallCrossedIcon";
@@ -18,9 +20,12 @@ import { LightBulbSmallIcon } from "../common/icons/LightBulbSmallIcon";
 import { OpenTelemetryLogoCrossedSmallIcon } from "../common/icons/OpenTelemetryLogoCrossedSmallIcon";
 import { SlackLogoIcon } from "../common/icons/SlackLogoIcon";
 import { InsightList } from "./InsightList";
+import { JiraTicket } from "./JiraTicket";
 import { Preview } from "./Preview";
+import { actions } from "./actions";
 import * as s from "./styles";
 import {
+  GenericCodeObjectInsight,
   InsightsData,
   InsightsProps,
   InsightsStatus,
@@ -32,27 +37,6 @@ const REFRESH_INTERVAL = isNumber(window.insightsRefreshInterval)
   ? window.insightsRefreshInterval
   : 10 * 1000; // in milliseconds
 
-const ACTION_PREFIX = "INSIGHTS";
-
-export const actions = addPrefix(ACTION_PREFIX, {
-  INITIALIZE: "INITIALIZE",
-  GET_DATA: "GET_DATA",
-  SET_DATA: "SET_DATA",
-  GO_TO_ERRORS: "GO_TO_ERRORS",
-  GO_TO_ERROR: "GO_TO_ERROR",
-  GO_TO_METHOD: "GO_TO_METHOD",
-  GO_TO_TRACE: "GO_TO_TRACE",
-  GO_TO_TRACE_COMPARISON: "GO_TO_TRACE_COMPARISON",
-  GO_TO_ASSET: "GO_TO_ASSET",
-  OPEN_HISTOGRAM: "OPEN_HISTOGRAM",
-  OPEN_LIVE_VIEW: "OPEN_LIVE_VIEW",
-  RECALCULATE: "RECALCULATE",
-  AUTOFIX_MISSING_DEPENDENCY: "AUTOFIX_MISSING_DEPENDENCY",
-  ADD_ANNOTATION: "ADD_ANNOTATION",
-  REFRESH_ALL: "REFRESH_ALL",
-  MARK_INSIGHT_TYPES_AS_VIEWED: "MARK_INSIGHT_TYPES_AS_VIEWED"
-});
-
 export const Insights = (props: InsightsProps) => {
   const [data, setData] = useState<InsightsData>();
   const previousData = usePrevious(data);
@@ -60,6 +44,15 @@ export const Insights = (props: InsightsProps) => {
   const [isInitialLoading, setIsInitialLoading] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isAutofixing, setIsAutofixing] = useState(false);
+  const [insightToOpenJiraTicket, setInsightToOpenJiraTicket] =
+    useState<GenericCodeObjectInsight>();
+  const config = useContext(ConfigContext);
+  const previousUserRegistrationEmail = usePrevious(
+    config.userRegistrationEmail
+  );
+  useState(false);
+  const [isRegistrationInProgress, setIsRegistrationInProgress] =
+    useState(false);
 
   useEffect(() => {
     window.sendMessageToDigma({
@@ -121,6 +114,19 @@ export const Insights = (props: InsightsProps) => {
     }
   }, [previousData, data]);
 
+  useEffect(() => {
+    if (
+      previousUserRegistrationEmail !== config.userRegistrationEmail &&
+      isRegistrationInProgress
+    ) {
+      setIsRegistrationInProgress(false);
+    }
+  }, [
+    config.userRegistrationEmail,
+    isRegistrationInProgress,
+    previousUserRegistrationEmail
+  ]);
+
   const handleMethodSelect = (method: Method) => {
     window.sendMessageToDigma({
       action: actions.GO_TO_METHOD,
@@ -165,6 +171,30 @@ export const Insights = (props: InsightsProps) => {
     });
   };
 
+  const handleJiraTicketPopupOpen = (insight: GenericCodeObjectInsight) => {
+    setInsightToOpenJiraTicket(insight);
+  };
+
+  const handleJiraTicketPopupClose = () => {
+    setInsightToOpenJiraTicket(undefined);
+  };
+
+  const handleRegistrationSubmit = (formData: RegistrationFormValues) => {
+    window.sendMessageToDigma({
+      action: globalActions.REGISTER,
+      payload: {
+        ...formData,
+        scope: "insights view jira ticket info"
+      }
+    });
+
+    setIsRegistrationInProgress(true);
+  };
+
+  const handleRegistrationDialogClose = () => {
+    setInsightToOpenJiraTicket(undefined);
+  };
+
   const renderDefaultContent = (data?: InsightsData): JSX.Element => {
     if (data?.viewMode === ViewMode.PREVIEW) {
       return (
@@ -184,6 +214,7 @@ export const Insights = (props: InsightsProps) => {
           hasMissingDependency={data.hasMissingDependency}
           canInstrumentMethod={data.canInstrumentMethod}
           hasObservability={!data.needsObservabilityFix}
+          onJiraTicketCreate={handleJiraTicketPopupOpen}
         />
       );
     }
@@ -300,6 +331,24 @@ export const Insights = (props: InsightsProps) => {
         </s.CircleLoaderContainer>
       )}
       {renderContent(data, isInitialLoading)}
+      {insightToOpenJiraTicket && (
+        <s.Overlay>
+          <s.PopupContainer>
+            {config.userRegistrationEmail ? (
+              <JiraTicket
+                insight={insightToOpenJiraTicket}
+                onClose={handleJiraTicketPopupClose}
+              />
+            ) : (
+              <RegistrationDialog
+                onSubmit={handleRegistrationSubmit}
+                onClose={handleRegistrationDialogClose}
+                isRegistrationInProgress={isRegistrationInProgress}
+              />
+            )}
+          </s.PopupContainer>
+        </s.Overlay>
+      )}
     </s.Container>
   );
 };

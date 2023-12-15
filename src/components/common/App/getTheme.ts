@@ -164,6 +164,11 @@ const darkThemeColors: ThemeColors = {
       text: greenScale[300]
     }
   },
+  iconTag: {
+    background: grayScale[1000],
+    border: grayScale[700],
+    icon: grayScale[200]
+  },
   toggle: {
     background: grayScale[1000],
     border: grayScale[850],
@@ -205,6 +210,29 @@ const darkThemeColors: ThemeColors = {
   },
   tooltip: {
     background: grayScale[800],
+    text: grayScale[100]
+  },
+  attachmentTag: {
+    background: grayScale[1000],
+    border: grayScale[850],
+    icon: {
+      background: primaryScale[300],
+      stroke: grayScale[200]
+    },
+    text: grayScale[0]
+  },
+  jiraTicket: {
+    background: grayScale[1000],
+    border: grayScale[900],
+    text: {
+      primary: grayScale[100],
+      secondary: grayScale[500]
+    },
+    icon: grayScale[200]
+  },
+  field: {
+    border: grayScale[700],
+    icon: grayScale[200],
     text: grayScale[100]
   }
 };
@@ -317,6 +345,11 @@ const lightThemeColors: ThemeColors = {
       text: grayScale[0]
     }
   },
+  iconTag: {
+    background: grayScale[150],
+    border: grayScale[0],
+    icon: grayScale[800]
+  },
   toggle: {
     background: grayScale[100],
     border: grayScale[200],
@@ -359,6 +392,29 @@ const lightThemeColors: ThemeColors = {
   tooltip: {
     background: grayScale[100],
     text: grayScale[900]
+  },
+  attachmentTag: {
+    background: grayScale[150],
+    border: grayScale[0],
+    icon: {
+      background: primaryScale[300],
+      stroke: grayScale[200]
+    },
+    text: grayScale[900]
+  },
+  jiraTicket: {
+    background: grayScale[50],
+    border: grayScale[300],
+    text: {
+      primary: grayScale[900],
+      secondary: grayScale[700]
+    },
+    icon: grayScale[800]
+  },
+  field: {
+    border: grayScale[300],
+    icon: grayScale[800],
+    text: grayScale[800]
   }
 };
 

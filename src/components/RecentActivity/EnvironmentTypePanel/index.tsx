@@ -1,6 +1,7 @@
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
+import { IconTag } from "../../common/IconTag";
 import { NewButton } from "../../common/NewButton";
-import { CodeIcon } from "../../common/icons/CodeIcon";
+import { CodeIcon } from "../../common/icons/16px/CodeIcon";
 import { InfinityIcon } from "../../common/icons/InfinityIcon";
 import { trackingEvents } from "../tracking";
 import { EnvironmentType } from "../types";
@@ -26,7 +27,7 @@ export const EnvironmentTypePanel = (props: EnvironmentTypePanelProps) => {
       title: "Local environment",
       description:
         "Define an environment for specific branches, types of tests or other criteria",
-      icon: <CodeIcon size={16} color={"currentColor"} />,
+      icon: CodeIcon,
       button: (
         <NewButton
           onClick={() => handleEnvironmentTypeButtonClick("local")}
@@ -41,7 +42,7 @@ export const EnvironmentTypePanel = (props: EnvironmentTypePanelProps) => {
       title: "CI/Prod environment",
       description:
         "Connect to centralized org systems such as CI builds, production servers etc.",
-      icon: <InfinityIcon size={16} color={"currentColor"} />,
+      icon: InfinityIcon,
       button: (
         <NewButton
           onClick={() => handleEnvironmentTypeButtonClick("shared")}
@@ -62,9 +63,7 @@ export const EnvironmentTypePanel = (props: EnvironmentTypePanelProps) => {
       <s.ContentContainer>
         {environmentTypes.map((x) => (
           <s.EnvironmentTypeCard key={x.type}>
-            <s.EnvironmentTypeIconContainer>
-              {x.icon}
-            </s.EnvironmentTypeIconContainer>
+            <IconTag icon={x.icon} size={"large"} />
             <s.EnvironmentTypeTextContainer>
               <s.EnvironmentTypeTitle>{x.title}</s.EnvironmentTypeTitle>
               {x.description}

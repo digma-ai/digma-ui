@@ -1,6 +1,6 @@
 import { FocusEvent, ForwardedRef, forwardRef, useState } from "react";
-import { CheckmarkCircleInvertedIcon } from "../../../common/icons/CheckmarkCircleInvertedIcon";
-import { CrossCircleIcon } from "../../../common/icons/CrossCircleIcon";
+import { CheckmarkCircleInvertedIcon } from "../../icons/CheckmarkCircleInvertedIcon";
+import { CrossCircleIcon } from "../../icons/CrossCircleIcon";
 import * as s from "./styles";
 import { TextFieldProps } from "./types";
 

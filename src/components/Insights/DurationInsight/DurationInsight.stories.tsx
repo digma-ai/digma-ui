@@ -20,6 +20,8 @@ type Story = StoryObj<typeof meta>;
 export const WithAverage: Story = {
   args: {
     insight: {
+      criticality: 0,
+      impact: 0,
       name: "Performance Stats",
       type: InsightType.SpanDurations,
       category: InsightCategory.Performance,
@@ -126,6 +128,8 @@ export const WithAverage: Story = {
 export const WithChange: Story = {
   args: {
     insight: {
+      criticality: 0,
+      impact: 0,
       name: "Performance Stats",
       type: InsightType.SpanDurations,
       category: InsightCategory.Performance,
@@ -222,6 +226,8 @@ export const WithChange: Story = {
 export const WithEvaluatingChange: Story = {
   args: {
     insight: {
+      criticality: 0,
+      impact: 0,
       name: "Performance Stats",
       type: InsightType.SpanDurations,
       category: InsightCategory.Performance,
@@ -318,6 +324,8 @@ export const WithEvaluatingChange: Story = {
 export const HistogramWithManyBars: Story = {
   args: {
     insight: {
+      criticality: 0,
+      impact: 0,
       name: "Performance Stats",
       type: InsightType.SpanDurations,
       category: InsightCategory.Performance,
@@ -4832,6 +4840,8 @@ export const HistogramWithManyBars: Story = {
 export const HistogramWithGaps: Story = {
   args: {
     insight: {
+      criticality: 0,
+      impact: 0,
       name: "Performance Stats",
       type: InsightType.SpanDurations,
       category: InsightCategory.Performance,
@@ -5076,6 +5086,8 @@ export const HistogramWithGaps: Story = {
 export const HistogramWithAFewBars: Story = {
   args: {
     insight: {
+      criticality: 0,
+      impact: 0,
       name: "Performance Stats",
       type: InsightType.SpanDurations,
       category: InsightCategory.Performance,

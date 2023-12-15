@@ -73,6 +73,15 @@ export const App = (props: AppProps) => {
       }
     };
 
+    const handleSetJaegerURL = (data: unknown) => {
+      if (isObject(data) && isString(data.jaegerURL)) {
+        setConfig((config) => ({
+          ...config,
+          jaegerURL: data.jaegerURL as string
+        }));
+      }
+    };
+
     const handleSetIsJaegerEnabled = (data: unknown) => {
       if (isObject(data) && isBoolean(data.isJaegerEnabled)) {
         setConfig((config) => ({
@@ -136,11 +145,11 @@ export const App = (props: AppProps) => {
       }
     };
 
-    const handleSetUserEmail = (data: unknown) => {
+    const handleSetUserRegistrationEmail = (data: unknown) => {
       if (isObject(data) && isString(data.email)) {
         setConfig((config) => ({
           ...config,
-          userEmail: data.email as string
+          userRegistrationEmail: data.email as string
         }));
       }
     };
@@ -175,6 +184,7 @@ export const App = (props: AppProps) => {
     dispatcher.addActionListener(actions.SET_THEME, handleSetTheme);
     dispatcher.addActionListener(actions.SET_MAIN_FONT, handleSetMainFont);
     dispatcher.addActionListener(actions.SET_CODE_FONT, handleSetCodeFont);
+    dispatcher.addActionListener(actions.SET_JAEGER_URL, handleSetJaegerURL);
     dispatcher.addActionListener(
       actions.SET_IS_JAEGER_ENABLED,
       handleSetIsJaegerEnabled
@@ -203,7 +213,10 @@ export const App = (props: AppProps) => {
       actions.SET_DIGMA_API_URL,
       handleSetDigmaApiUrl
     );
-    dispatcher.addActionListener(actions.SET_USER_EMAIL, handleSetUserEmail);
+    dispatcher.addActionListener(
+      actions.SET_USER_REGISTRATION_EMAIL,
+      handleSetUserRegistrationEmail
+    );
     dispatcher.addActionListener(actions.SET_ENVIRONMENT, handleSetEnvironment);
     dispatcher.addActionListener(
       actions.SET_IS_OBSERVABILITY_ENABLED,
@@ -218,6 +231,10 @@ export const App = (props: AppProps) => {
       dispatcher.removeActionListener(actions.SET_THEME, handleSetTheme);
       dispatcher.removeActionListener(actions.SET_MAIN_FONT, handleSetMainFont);
       dispatcher.removeActionListener(actions.SET_CODE_FONT, handleSetCodeFont);
+      dispatcher.removeActionListener(
+        actions.SET_JAEGER_URL,
+        handleSetJaegerURL
+      );
       dispatcher.removeActionListener(
         actions.SET_IS_JAEGER_ENABLED,
         handleSetIsJaegerEnabled
@@ -247,8 +264,8 @@ export const App = (props: AppProps) => {
         handleSetDigmaApiUrl
       );
       dispatcher.removeActionListener(
-        actions.SET_USER_EMAIL,
-        handleSetUserEmail
+        actions.SET_USER_REGISTRATION_EMAIL,
+        handleSetUserRegistrationEmail
       );
       dispatcher.removeActionListener(
         actions.SET_ENVIRONMENT,

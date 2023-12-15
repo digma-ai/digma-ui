@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { grayScale, redScale } from "../../common/App/getTheme";
-import { NewButton } from "../../common/NewButton";
+import { grayScale, redScale } from "../App/getTheme";
+import { NewButton } from "../NewButton";
 
 export const Container = styled.div`
   display: flex;

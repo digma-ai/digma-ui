@@ -1,11 +1,14 @@
 import { useContext } from "react";
 import { InsightType } from "../../../types";
+import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { trimEndpointScheme } from "../../../utils/trimEndpointScheme";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Tooltip } from "../../common/Tooltip";
+import { JiraLogoIcon } from "../../common/icons/12px/JiraLogoIcon";
 import { CrosshairIcon } from "../../common/icons/CrosshairIcon";
 import { InsightCard } from "../InsightCard";
 import { Description, Link } from "../styles";
+import { trackingEvents } from "../tracking";
 import { Trace } from "../types";
 import * as s from "./styles";
 import { NPlusOneInsightProps } from "./types";
@@ -23,6 +26,13 @@ export const NPlusOneInsight = (props: NPlusOneInsightProps) => {
     spanCodeObjectId?: string
   ) => {
     props.onTraceButtonClick(trace, insightType, spanCodeObjectId);
+  };
+
+  const handleCreateJiraTicketButtonClick = () => {
+    sendTrackingEvent(trackingEvents.JIRA_TICKET_INFO_BUTTON_CLICKED, {
+      insightType: props.insight.type
+    });
+    props.onJiraTicketCreate && props.onJiraTicketCreate(props.insight);
   };
 
   const spanName = props.insight.clientSpanName || undefined;
@@ -106,6 +116,15 @@ export const NPlusOneInsight = (props: NPlusOneInsightProps) => {
       }
       onRecalculate={props.onRecalculate}
       onRefresh={props.onRefresh}
+      buttons={[
+        <s.Button
+          key={"view-ticket-info"}
+          onClick={handleCreateJiraTicketButtonClick}
+          icon={{ component: JiraLogoIcon }}
+        >
+          Ticket Info
+        </s.Button>
+      ]}
     />
   );
 };
