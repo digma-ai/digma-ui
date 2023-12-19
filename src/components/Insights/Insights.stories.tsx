@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { Insights } from ".";
 import { InsightType } from "../../types";
+import { mockedEndpointNPlusOneInsight } from "./EndpointNPlusOneInsight/mockData";
 import {
   CodeObjectErrorsInsight,
   ComponentType,
@@ -637,7 +638,8 @@ export const Default: Story = {
             "method:Sample.MoneyTransfer.API.Controllers.TransferController$_$TransferFunds(TransferRequest)",
           customStartTime: null,
           actualStartTime: "2023-06-20T00:00:00.000Z"
-        }
+        },
+        mockedEndpointNPlusOneInsight
       ]
     }
   }

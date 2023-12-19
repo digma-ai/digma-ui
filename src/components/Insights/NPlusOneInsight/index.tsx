@@ -1,8 +1,10 @@
 import { useContext } from "react";
 import { InsightType } from "../../../types";
+import { getCriticalityLabel } from "../../../utils/getCriticalityLabel";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { trimEndpointScheme } from "../../../utils/trimEndpointScheme";
 import { ConfigContext } from "../../common/App/ConfigContext";
+import { ScoreIndicator } from "../../common/ScoreIndicator";
 import { Tooltip } from "../../common/Tooltip";
 import { JiraLogoIcon } from "../../common/icons/12px/JiraLogoIcon";
 import { CrosshairIcon } from "../../common/icons/CrosshairIcon";
@@ -104,10 +106,23 @@ export const NPlusOneInsight = (props: NPlusOneInsightProps) => {
                       </Link>
                     </s.Name>
                   </Tooltip>
-                  <s.Stat>
-                    <Description>Repeats</Description>
-                    <span>{x.occurrences} (median)</span>
-                  </s.Stat>
+                  <s.Stats>
+                    <s.Stat>
+                      <Description>Criticality</Description>
+                      <Tooltip title={x.criticality}>
+                        <s.CriticalityValue>
+                          {x.criticality > 0 && (
+                            <ScoreIndicator score={x.criticality} />
+                          )}
+                          {getCriticalityLabel(x.criticality)}
+                        </s.CriticalityValue>
+                      </Tooltip>
+                    </s.Stat>
+                    <s.Stat>
+                      <Description>Repeats</Description>
+                      <span>{x.occurrences} (median)</span>
+                    </s.Stat>
+                  </s.Stats>
                 </s.Endpoint>
               );
             })}

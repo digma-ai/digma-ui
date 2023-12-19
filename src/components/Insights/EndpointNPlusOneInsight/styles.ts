@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { Button as CommonButton } from "../../common/Button";
 
 export const SpanList = styled.div`
   display: flex;
@@ -41,12 +40,18 @@ export const Stat = styled.span`
   gap: 4px;
 `;
 
+export const CriticalityValue = styled.span`
+  display: flex;
+  gap: 4px;
+`;
+
 export const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 4px;
 `;
 
-export const Button = styled(CommonButton)`
-  margin-left: auto;
+export const ButtonsContainer = styled.div`
+  display: flex;
+  gap: 8px;
 `;

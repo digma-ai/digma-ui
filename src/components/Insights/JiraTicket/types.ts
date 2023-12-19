@@ -11,10 +11,9 @@ export interface JiraTicketThemeColors {
 }
 
 export interface JiraTicketProps {
+  summary: string;
+  description: { text: string; isLoading?: boolean };
+  attachment?: { url: string; fileName: string };
   insight: GenericCodeObjectInsight;
   onClose: () => void;
-}
-
-export interface CodeLocationsData {
-  codeLocations: [];
 }

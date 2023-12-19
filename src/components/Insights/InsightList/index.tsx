@@ -211,7 +211,10 @@ const getInsightGroupIconColor = (theme: DefaultTheme) => {
 
 const renderInsightCard = (
   insight: GenericCodeObjectInsight,
-  onJiraTicketCreate: (insight: GenericCodeObjectInsight) => void
+  onJiraTicketCreate: (
+    insight: GenericCodeObjectInsight,
+    spanCodeObjectId?: string
+  ) => void
 ): JSX.Element | undefined => {
   const handleErrorSelect = (errorId: string) => {
     window.sendMessageToDigma({
@@ -414,6 +417,7 @@ const renderInsightCard = (
         onTraceButtonClick={handleTraceButtonClick}
         onRecalculate={handleRecalculate}
         onRefresh={handleRefresh}
+        onJiraTicketCreate={onJiraTicketCreate}
       />
     );
   }

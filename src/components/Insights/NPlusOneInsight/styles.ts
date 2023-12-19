@@ -57,3 +57,8 @@ export const Name = styled.span`
   white-space: nowrap;
   max-width: fit-content;
 `;
+
+export const CriticalityValue = styled.span`
+  display: flex;
+  gap: 4px;
+`;

@@ -9,5 +9,8 @@ export interface InsightListProps {
   hasObservability: boolean;
   hasMissingDependency: boolean;
   canInstrumentMethod: boolean;
-  onJiraTicketCreate: (insight: GenericCodeObjectInsight) => void;
+  onJiraTicketCreate: (
+    insight: GenericCodeObjectInsight,
+    spanCodeObjectId?: string
+  ) => void;
 }
