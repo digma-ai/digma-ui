@@ -81,7 +81,15 @@ export interface InsightProps {
     insightType: InsightType
   ) => void;
   onRefresh: (insightType: InsightType) => void;
-  onJiraTicketCreate?: (insight: GenericCodeObjectInsight) => void;
+  onJiraTicketCreate?: (
+    insight: GenericCodeObjectInsight,
+    spanCodeObjectId?: string
+  ) => void;
+}
+
+export interface InsightTicketInfo<T extends GenericCodeObjectInsight> {
+  insight: T;
+  spanCodeObjectId?: string;
 }
 
 export enum InsightScope {
@@ -519,6 +527,9 @@ export interface EndpointSuspectedNPlusOneInsight extends EndpointInsight {
     traceId: string;
     duration: Duration;
     fraction: number;
+    criticality: number;
+    impact: number;
+    severity: number;
   }[];
 }
 

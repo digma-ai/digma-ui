@@ -20,22 +20,53 @@ import { LightBulbSmallIcon } from "../common/icons/LightBulbSmallIcon";
 import { OpenTelemetryLogoCrossedSmallIcon } from "../common/icons/OpenTelemetryLogoCrossedSmallIcon";
 import { SlackLogoIcon } from "../common/icons/SlackLogoIcon";
 import { InsightList } from "./InsightList";
-import { JiraTicket } from "./JiraTicket";
 import { Preview } from "./Preview";
 import { actions } from "./actions";
 import * as s from "./styles";
+import { EndpointNPlusOneInsightTicket } from "./tickets/EndpointNPlusOneInsightTicket";
+import { NPlusOneInsightTicket } from "./tickets/NPlusOneInsightTicket";
 import {
+  isEndpointSuspectedNPlusOneInsight,
+  isSpanNPlusOneInsight
+} from "./typeGuards";
+import {
+  EndpointSuspectedNPlusOneInsight,
   GenericCodeObjectInsight,
+  InsightTicketInfo,
   InsightsData,
   InsightsProps,
   InsightsStatus,
   Method,
+  SpanNPlusOneInsight,
   ViewMode
 } from "./types";
 
 const REFRESH_INTERVAL = isNumber(window.insightsRefreshInterval)
   ? window.insightsRefreshInterval
   : 10 * 1000; // in milliseconds
+
+const renderInsightTicket = (
+  data: InsightTicketInfo<GenericCodeObjectInsight>,
+  onClose: () => void
+) => {
+  if (isSpanNPlusOneInsight(data.insight)) {
+    const ticketData = data as InsightTicketInfo<SpanNPlusOneInsight>;
+    return <NPlusOneInsightTicket data={ticketData} onClose={onClose} />;
+  }
+
+  if (
+    isEndpointSuspectedNPlusOneInsight(data.insight) &&
+    data.spanCodeObjectId
+  ) {
+    const ticketData =
+      data as InsightTicketInfo<EndpointSuspectedNPlusOneInsight>;
+    return (
+      <EndpointNPlusOneInsightTicket data={ticketData} onClose={onClose} />
+    );
+  }
+
+  return null;
+};
 
 export const Insights = (props: InsightsProps) => {
   const [data, setData] = useState<InsightsData>();
@@ -44,8 +75,8 @@ export const Insights = (props: InsightsProps) => {
   const [isInitialLoading, setIsInitialLoading] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isAutofixing, setIsAutofixing] = useState(false);
-  const [insightToOpenJiraTicket, setInsightToOpenJiraTicket] =
-    useState<GenericCodeObjectInsight>();
+  const [infoToOpenJiraTicket, setInfoToOpenJiraTicket] =
+    useState<InsightTicketInfo<GenericCodeObjectInsight>>();
   const config = useContext(ConfigContext);
   const previousUserRegistrationEmail = usePrevious(
     config.userRegistrationEmail
@@ -171,12 +202,15 @@ export const Insights = (props: InsightsProps) => {
     });
   };
 
-  const handleJiraTicketPopupOpen = (insight: GenericCodeObjectInsight) => {
-    setInsightToOpenJiraTicket(insight);
+  const handleJiraTicketPopupOpen = (
+    insight: GenericCodeObjectInsight,
+    spanCodeObjectId?: string
+  ) => {
+    setInfoToOpenJiraTicket({ insight, spanCodeObjectId });
   };
 
   const handleJiraTicketPopupClose = () => {
-    setInsightToOpenJiraTicket(undefined);
+    setInfoToOpenJiraTicket(undefined);
   };
 
   const handleRegistrationSubmit = (formData: RegistrationFormValues) => {
@@ -192,7 +226,7 @@ export const Insights = (props: InsightsProps) => {
   };
 
   const handleRegistrationDialogClose = () => {
-    setInsightToOpenJiraTicket(undefined);
+    setInfoToOpenJiraTicket(undefined);
   };
 
   const renderDefaultContent = (data?: InsightsData): JSX.Element => {
@@ -331,14 +365,14 @@ export const Insights = (props: InsightsProps) => {
         </s.CircleLoaderContainer>
       )}
       {renderContent(data, isInitialLoading)}
-      {insightToOpenJiraTicket && (
+      {infoToOpenJiraTicket && (
         <s.Overlay>
           <s.PopupContainer>
             {config.userRegistrationEmail ? (
-              <JiraTicket
-                insight={insightToOpenJiraTicket}
-                onClose={handleJiraTicketPopupClose}
-              />
+              renderInsightTicket(
+                infoToOpenJiraTicket,
+                handleJiraTicketPopupClose
+              )
             ) : (
               <RegistrationDialog
                 onSubmit={handleRegistrationSubmit}

@@ -1,8 +1,11 @@
-import React from "react";
+import React, { ForwardedRef, forwardRef } from "react";
 import * as s from "./styles";
 import { ButtonProps } from "./types";
 
-export const Button = (props: ButtonProps) => {
+export const ButtonComponent = (
+  props: ButtonProps,
+  ref: ForwardedRef<HTMLButtonElement>
+) => {
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (props.onClick) {
       props.onClick(e);
@@ -13,6 +16,7 @@ export const Button = (props: ButtonProps) => {
 
   return (
     <s.Button
+      ref={ref}
       className={props.className}
       onClick={handleClick}
       disabled={props.disabled}
@@ -25,8 +29,10 @@ export const Button = (props: ButtonProps) => {
             color={props.icon.color || "currentColor"}
           />
         )}
-        <span>{props.children}</span>
+        {props.children && <span>{props.children}</span>}
       </s.ContentContainer>
     </s.Button>
   );
 };
+
+export const Button = forwardRef(ButtonComponent);

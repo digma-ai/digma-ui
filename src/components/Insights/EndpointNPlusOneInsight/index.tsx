@@ -1,13 +1,19 @@
 import { useContext } from "react";
 import { usePagination } from "../../../hooks/usePagination";
 import { InsightType } from "../../../types";
+import { getCriticalityLabel } from "../../../utils/getCriticalityLabel";
 import { roundTo } from "../../../utils/roundTo";
+import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
+import { Button } from "../../common/Button";
 import { Pagination } from "../../common/Pagination";
+import { ScoreIndicator } from "../../common/ScoreIndicator";
 import { Tooltip } from "../../common/Tooltip";
+import { JiraLogoIcon } from "../../common/icons/12px/JiraLogoIcon";
 import { CrosshairIcon } from "../../common/icons/CrosshairIcon";
 import { InsightCard } from "../InsightCard";
 import { Description, Link } from "../styles";
+import { trackingEvents } from "../tracking";
 import { Trace } from "../types";
 import * as s from "./styles";
 import { EndpointNPlusOneInsightProps } from "./types";
@@ -28,6 +34,13 @@ export const EndpointNPlusOneInsight = (
 
   const handleSpanLinkClick = (spanCodeObjectId: string) => {
     props.onAssetLinkClick(spanCodeObjectId);
+  };
+
+  const handleTicketInfoButtonClick = (span: string) => {
+    sendTrackingEvent(trackingEvents.JIRA_TICKET_INFO_BUTTON_CLICKED, {
+      insightType: props.insight.type
+    });
+    props.onJiraTicketCreate && props.onJiraTicketCreate(props.insight, span);
   };
 
   const handleTraceButtonClick = (
@@ -69,6 +82,17 @@ export const EndpointNPlusOneInsight = (
                     </Tooltip>
                     <s.Stats>
                       <s.Stat>
+                        <Description>Criticality</Description>
+                        <Tooltip title={span.criticality}>
+                          <s.CriticalityValue>
+                            {span.criticality > 0 && (
+                              <ScoreIndicator score={span.criticality} />
+                            )}
+                            {getCriticalityLabel(span.criticality)}
+                          </s.CriticalityValue>
+                        </Tooltip>
+                      </s.Stat>
+                      <s.Stat>
                         <Description>Impact</Description>
                         <span>{fraction}</span>
                       </s.Stat>
@@ -84,23 +108,33 @@ export const EndpointNPlusOneInsight = (
                       </s.Stat>
                     </s.Stats>
                   </s.SpanDetails>
-                  {config.isJaegerEnabled && (
-                    <s.Button
-                      icon={{ component: CrosshairIcon }}
-                      onClick={() =>
-                        handleTraceButtonClick(
-                          {
-                            name: spanName,
-                            id: span.traceId
-                          },
-                          props.insight.type,
-                          spanInfo.spanCodeObjectId
-                        )
-                      }
-                    >
-                      Trace
-                    </s.Button>
-                  )}
+                  <s.ButtonsContainer>
+                    <Tooltip title={"Ticket Info"}>
+                      <Button
+                        icon={{ component: JiraLogoIcon }}
+                        onClick={() =>
+                          handleTicketInfoButtonClick(spanInfo.spanCodeObjectId)
+                        }
+                      />
+                    </Tooltip>
+                    {config.isJaegerEnabled && (
+                      <Tooltip title={"Trace"}>
+                        <Button
+                          icon={{ component: CrosshairIcon }}
+                          onClick={() =>
+                            handleTraceButtonClick(
+                              {
+                                name: spanName,
+                                id: span.traceId
+                              },
+                              props.insight.type,
+                              spanInfo.spanCodeObjectId
+                            )
+                          }
+                        />
+                      </Tooltip>
+                    )}
+                  </s.ButtonsContainer>
                 </s.Span>
               );
             })}

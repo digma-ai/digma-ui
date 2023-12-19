@@ -3,6 +3,7 @@ import { getFeatureFlagValue } from "../../../featureFlags";
 import { FeatureFlag } from "../../../types";
 import { ConfigContext } from "../App/ConfigContext";
 import { ConfigContextData } from "../App/types";
+import { ScoreIndicator } from "../ScoreIndicator";
 import { Tooltip } from "../Tooltip";
 import * as s from "./styles";
 import { ImpactScoreProps } from "./types";
@@ -34,12 +35,6 @@ const getImpactScoreLabel = (score: number, config: ConfigContextData) => {
   return "High";
 };
 
-const renderIndicator = (score: number) => (
-  <s.IndicatorContainer>
-    <s.Indicator $score={score} />
-  </s.IndicatorContainer>
-);
-
 export const ImpactScore = (props: ImpactScoreProps) => {
   const config = useContext(ConfigContext);
   let indicatorPosition: "start" | "end" | undefined;
@@ -55,9 +50,11 @@ export const ImpactScore = (props: ImpactScoreProps) => {
   return (
     <Tooltip title={props.score}>
       <s.Container>
-        {indicatorPosition === "start" && renderIndicator(props.score)}
+        {indicatorPosition === "start" && (
+          <ScoreIndicator score={props.score} />
+        )}
         {getImpactScoreLabel(props.score, config)}
-        {indicatorPosition === "end" && renderIndicator(props.score)}
+        {indicatorPosition === "end" && <ScoreIndicator score={props.score} />}
       </s.Container>
     </Tooltip>
   );
