@@ -33,7 +33,7 @@ export const EndpointNPlusOneInsight = (
   );
 
   const handleSpanLinkClick = (spanCodeObjectId: string) => {
-    props.onAssetLinkClick(spanCodeObjectId);
+    props.onAssetLinkClick(spanCodeObjectId, props.insight.type);
   };
 
   const handleTicketInfoButtonClick = (span: string) => {

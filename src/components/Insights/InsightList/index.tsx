@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
+import { trackingEvents as globalTrackingEvents } from "../../../trackingEvents";
 import { InsightType } from "../../../types";
 import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
+import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { Card } from "../../common/Card";
 import { Tooltip } from "../../common/Tooltip";
 import { EndpointIcon } from "../../common/icons/EndpointIcon";
@@ -216,7 +218,10 @@ const renderInsightCard = (
     spanCodeObjectId?: string
   ) => void
 ): JSX.Element | undefined => {
-  const handleErrorSelect = (errorId: string) => {
+  const handleErrorSelect = (errorId: string, insightType: InsightType) => {
+    sendTrackingEvent(globalTrackingEvents.USER_ACTION, {
+      action: `Follow ${insightType} link`
+    });
     window.sendMessageToDigma({
       action: actions.GO_TO_ERROR,
       payload: {
@@ -283,7 +288,13 @@ const renderInsightCard = (
     });
   };
 
-  const handleAssetLinkClick = (spanCodeObjectId: string) => {
+  const handleAssetLinkClick = (
+    spanCodeObjectId: string,
+    insightType: InsightType
+  ) => {
+    sendTrackingEvent(globalTrackingEvents.USER_ACTION, {
+      action: `Follow ${insightType} link`
+    });
     window.sendMessageToDigma({
       action: actions.GO_TO_ASSET,
       payload: {

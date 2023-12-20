@@ -23,7 +23,8 @@ export const TopUsageInsight = (props: TopUsageInsightProps) => {
   );
 
   const handleServiceLinkClick = (spanCodeObjectId?: string) => {
-    spanCodeObjectId && props.onAssetLinkClick(spanCodeObjectId);
+    spanCodeObjectId &&
+      props.onAssetLinkClick(spanCodeObjectId, props.insight.type);
   };
 
   const handleTraceButtonClick = (

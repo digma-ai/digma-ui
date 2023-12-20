@@ -10,7 +10,7 @@ export const DurationSlowdownSourceInsight = (
   props: DurationSlowdownSourceInsightProps
 ) => {
   const handleSpanLinkClick = (spanCodeObjectId: string) => {
-    props.onAssetLinkClick(spanCodeObjectId);
+    props.onAssetLinkClick(spanCodeObjectId, props.insight.type);
   };
 
   const p50Sources = props.insight.durationSlowdownSources.filter(

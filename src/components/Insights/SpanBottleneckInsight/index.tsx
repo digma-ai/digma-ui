@@ -7,7 +7,7 @@ import { SpanBottleneckInsightProps } from "./types";
 
 export const SpanBottleneckInsight = (props: SpanBottleneckInsightProps) => {
   const handleSpanLinkClick = (spanCodeObjectId: string) => {
-    props.onAssetLinkClick(spanCodeObjectId);
+    props.onAssetLinkClick(spanCodeObjectId, props.insight.type);
   };
 
   return (

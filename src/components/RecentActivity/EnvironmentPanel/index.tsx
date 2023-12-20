@@ -136,7 +136,7 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
     <s.Container>
       <s.LogoRotationContainer>
         <s.LogoContainer>
-          <DigmaLogoIcon size={12} />
+          <DigmaLogoIcon size={20} />
         </s.LogoContainer>
       </s.LogoRotationContainer>
       <s.Divider />
