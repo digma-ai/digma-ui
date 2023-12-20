@@ -8,7 +8,7 @@ import { BottleneckInsightProps } from "./types";
 
 export const BottleneckInsight = (props: BottleneckInsightProps) => {
   const handleEndpointLinkClick = (spanCodeObjectId: string) => {
-    props.onAssetLinkClick(spanCodeObjectId);
+    props.onAssetLinkClick(spanCodeObjectId, props.insight.type);
   };
 
   return (

@@ -6,7 +6,7 @@ import { ErrorsInsightProps } from "./types";
 
 export const ErrorsInsight = (props: ErrorsInsightProps) => {
   const handleErrorLinkClick = (errorId: string) => {
-    props.onErrorSelect(errorId);
+    props.onErrorSelect(errorId, props.insight.type);
   };
 
   const handleExpandButtonClick = () => {

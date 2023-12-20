@@ -23,7 +23,7 @@ export const SessionInViewInsight = (props: SessionInViewInsightProps) => {
   );
 
   const handleLinkClick = (spanCodeObjectId: string) => {
-    props.onAssetLinkClick(spanCodeObjectId);
+    props.onAssetLinkClick(spanCodeObjectId, props.insight.type);
   };
 
   const handleTraceButtonClick = (

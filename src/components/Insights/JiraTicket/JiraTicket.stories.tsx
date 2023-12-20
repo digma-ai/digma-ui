@@ -18,7 +18,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     summary: "Summary text",
-    description: { text: "Multiline \ndescription text", isLoading: false },
+    description: { text: "Multiline\ndescription text", isLoading: false },
     attachment: { url: "https://www.example.com", fileName: "attachment.ext" }
   }
 };

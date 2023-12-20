@@ -1,4 +1,4 @@
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 
 export const Container = styled.div`
   display: flex;
@@ -61,18 +61,8 @@ export const CarouselButton = styled.button`
   }
 `;
 
-const rotateAnimation = keyframes`
-  15% { transform: rotateY(-40deg); }
-  45% { transform: rotateY(40deg); }
-  60% { transform: rotateY(0); }
-`;
-
-export const LogoRotationContainer = styled.div`
-  perspective: 25px;
-`;
-
 export const LogoContainer = styled.div`
-  animation: ${rotateAnimation} 6s ease-in-out infinite;
+  display: flex;
 `;
 
 export const Divider = styled.div`

@@ -19,7 +19,8 @@ export const NPlusOneInsight = (props: NPlusOneInsightProps) => {
   const config = useContext(ConfigContext);
 
   const handleSpanLinkClick = (spanCodeObjectId?: string) => {
-    spanCodeObjectId && props.onAssetLinkClick(spanCodeObjectId);
+    spanCodeObjectId &&
+      props.onAssetLinkClick(spanCodeObjectId, props.insight.type);
   };
 
   const handleTraceButtonClick = (

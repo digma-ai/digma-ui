@@ -134,11 +134,9 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
 
   return (
     <s.Container>
-      <s.LogoRotationContainer>
-        <s.LogoContainer>
-          <DigmaLogoIcon size={12} />
-        </s.LogoContainer>
-      </s.LogoRotationContainer>
+      <s.LogoContainer>
+        <DigmaLogoIcon size={20} />
+      </s.LogoContainer>
       <s.Divider />
       <s.CarouselButtonContainer key={"left"}>
         {areCarouselButtonsVisible && (

@@ -25,7 +25,7 @@ export const ExcessiveAPICallsInsight = (
   );
 
   const handleLinkClick = (spanCodeObjectId: string) => {
-    props.onAssetLinkClick(spanCodeObjectId);
+    props.onAssetLinkClick(spanCodeObjectId, props.insight.type);
   };
 
   const handleTraceButtonClick = (

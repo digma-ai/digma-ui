@@ -3,7 +3,10 @@ import { ChattyApiEndpointInsight, InsightProps, Trace } from "../types";
 
 export interface ExcessiveAPICallsInsightProps extends InsightProps {
   insight: ChattyApiEndpointInsight;
-  onAssetLinkClick: (spanCodeObjectId: string) => void;
+  onAssetLinkClick: (
+    spanCodeObjectId: string,
+    insightType: InsightType
+  ) => void;
   onTraceButtonClick: (
     trace: Trace,
     insightType: InsightType,

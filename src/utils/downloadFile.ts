@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 
-export const downloadFile = async (
+export const downloadFile = (
   url: string,
   fileName: string
 ): Promise<Error | undefined> =>
