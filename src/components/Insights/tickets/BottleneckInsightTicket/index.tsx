@@ -1,23 +1,22 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { dispatcher } from "../../../../dispatcher";
 import { getCriticalityLabel } from "../../../../utils/getCriticalityLabel";
+import { roundTo } from "../../../../utils/roundTo";
 import { trimEndpointScheme } from "../../../../utils/trimEndpointScheme";
-import { ConfigContext } from "../../../common/App/ConfigContext";
 import { JiraTicket } from "../../JiraTicket";
 import { actions } from "../../actions";
-import { SpanNPlusOneInsight } from "../../types";
+import { SpanEndpointBottleneckInsight } from "../../types";
 import { CodeLocationsData, InsightTicketProps } from "../types";
 
-export const NPlusOneInsightTicket = (
-  props: InsightTicketProps<SpanNPlusOneInsight>
+export const BottleneckInsightTicket = (
+  props: InsightTicketProps<SpanEndpointBottleneckInsight>
 ) => {
   const [isInitialLoading, setIsInitialLoading] = useState(false);
   const [codeLocations, setCodeLocations] = useState<string[]>([]);
-  const config = useContext(ConfigContext);
 
   const services = [
     ...new Set(
-      props.data.insight.endpoints.map((x) => x.endpointInfo.serviceName)
+      props.data.insight.slowEndpoints.map((x) => x.endpointInfo.serviceName)
     )
   ];
   const serviceString = services.length > 0 ? services.join(", ") : "";
@@ -27,56 +26,43 @@ export const NPlusOneInsightTicket = (
       ? `Criticality: ${getCriticalityLabel(props.data.insight.criticality)}`
       : "";
 
-  const summary = ["N+1 Issue found", serviceString, criticalityString]
+  const summary = ["Bottleneck found", serviceString, criticalityString]
     .filter(Boolean)
     .join(" - ");
 
-  const queryString = props.data.insight.spanInfo?.displayName || "";
+  const spanString = `The span ${
+    props.data.insight.spanInfo?.displayName || ""
+  } is slowing down the following endpoints:`;
+
+  const endpointsDataString = props.data.insight.slowEndpoints
+    .map((x) =>
+      [
+        `• ${x.endpointInfo.serviceName} ${trimEndpointScheme(
+          x.endpointInfo.route
+        )}`,
+        `Slowing ${roundTo(
+          x.probabilityOfBeingBottleneck * 100,
+          2
+        )}% of the requests by ${x.avgDurationWhenBeingBottleneck.value} ${
+          x.avgDurationWhenBeingBottleneck.unit
+        }`
+      ].join("\n")
+    )
+    .join("\n");
 
   const codeLocationsString =
     codeLocations.length > 0
       ? ["Related code locations:", ...codeLocations].join("\n")
       : "";
 
-  const endpointsDataString = props.data.insight.endpoints
-    .map((x) =>
-      [
-        `• ${x.endpointInfo.serviceName} ${trimEndpointScheme(
-          x.endpointInfo.route
-        )}`,
-        `Repeats: ${x.occurrences} ${
-          x.criticality > 0
-            ? `Criticality: ${getCriticalityLabel(x.criticality)}`
-            : ""
-        }`
-      ]
-        .filter(Boolean)
-        .join("\n")
-    )
-    .join("\n\n");
-
-  const affectedEndpointsString =
-    props.data.insight.endpoints.length > 0
-      ? ["Affected endpoints:", endpointsDataString].join("\n")
-      : "";
-
   const description = [
-    "N+1 Query Detected",
-    queryString,
+    spanString,
+    endpointsDataString,
     codeLocationsString,
-    affectedEndpointsString,
     "info by digma.ai"
   ]
     .filter(Boolean)
     .join("\n\n");
-
-  const traceId = props.data.insight.traceId;
-  const attachment = traceId
-    ? {
-        url: `${config.jaegerURL}/api/traces/${traceId}?prettyPrint=true`,
-        fileName: `trace-${traceId}.json`
-      }
-    : undefined;
 
   useEffect(() => {
     const spanCodeObjectId = props.data.insight.spanInfo?.spanCodeObjectId;
@@ -115,7 +101,6 @@ export const NPlusOneInsightTicket = (
     <JiraTicket
       summary={summary}
       description={{ text: description, isLoading: isInitialLoading }}
-      attachment={attachment}
       insight={props.data.insight}
       onClose={props.onClose}
     />

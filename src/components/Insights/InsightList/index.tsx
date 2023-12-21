@@ -369,6 +369,7 @@ const renderInsightCard = (
         onAssetLinkClick={handleAssetLinkClick}
         onRecalculate={handleRecalculate}
         onRefresh={handleRefresh}
+        onJiraTicketCreate={onJiraTicketCreate}
       />
     );
   }
@@ -380,6 +381,7 @@ const renderInsightCard = (
         onAssetLinkClick={handleAssetLinkClick}
         onRecalculate={handleRecalculate}
         onRefresh={handleRefresh}
+        onJiraTicketCreate={onJiraTicketCreate}
       />
     );
   }
