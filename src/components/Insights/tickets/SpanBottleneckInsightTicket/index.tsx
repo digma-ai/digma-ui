@@ -53,9 +53,9 @@ export const SpanBottleneckInsightTicket = (
         `Slowing ${roundTo(
           x.probabilityOfBeingBottleneck * 100,
           2
-        )}% of the requests by ${x.avgDurationWhenBeingBottleneck.value} ${
+        )}% of the requests (~${x.avgDurationWhenBeingBottleneck.value} ${
           x.avgDurationWhenBeingBottleneck.unit
-        }`
+        })`
       ].join("\n")
     )
     .join("\n");

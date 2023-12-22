@@ -39,7 +39,8 @@ export type GenericCodeObjectInsight =
   | SpanScalingWellInsight
   | SpanScalingInsufficientDataInsight
   | SessionInViewEndpointInsight
-  | ChattyApiEndpointInsight;
+  | ChattyApiEndpointInsight
+  | EndpointHighNumberOfQueriesInsight;
 
 export interface MethodSpan {
   spanCodeObjectId: string;
@@ -661,4 +662,13 @@ export interface ChattyApiEndpointInsight extends EndpointInsight {
     clientSpan: SpanInfo;
     traceId?: string;
   }[];
+}
+
+export interface EndpointHighNumberOfQueriesInsight extends EndpointInsight {
+  type: InsightType.EndpointHighNumberOfQueries;
+  queriesCount: number;
+  typicalCount: number;
+  medianDuration: Duration;
+  traceId: string | null;
+  requestFraction: number;
 }

@@ -3,6 +3,7 @@ import { Insights } from ".";
 import { InsightType } from "../../types";
 import { mockedBottleneckInsight } from "./BottleneckInsight/mockData";
 import { mockedEndpointNPlusOneInsight } from "./EndpointNPlusOneInsight/mockData";
+import { mockedHighNumberOfQueriesInsight } from "./HighNumberOfQueriesInsight/mockData";
 import {
   CodeObjectErrorsInsight,
   ComponentType,
@@ -642,7 +643,8 @@ export const Default: Story = {
           actualStartTime: "2023-06-20T00:00:00.000Z"
         },
         mockedEndpointNPlusOneInsight,
-        mockedBottleneckInsight
+        mockedBottleneckInsight,
+        mockedHighNumberOfQueriesInsight
       ]
     }
   }
