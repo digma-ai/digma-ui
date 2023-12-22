@@ -4,6 +4,7 @@ import { getCriticalityLabel } from "../../../utils/getCriticalityLabel";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { trimEndpointScheme } from "../../../utils/trimEndpointScheme";
 import { ConfigContext } from "../../common/App/ConfigContext";
+import { Button } from "../../common/Button";
 import { ScoreIndicator } from "../../common/ScoreIndicator";
 import { Tooltip } from "../../common/Tooltip";
 import { JiraLogoIcon } from "../../common/icons/12px/JiraLogoIcon";
@@ -133,13 +134,13 @@ export const NPlusOneInsight = (props: NPlusOneInsightProps) => {
       onRecalculate={props.onRecalculate}
       onRefresh={props.onRefresh}
       buttons={[
-        <s.Button
+        <Button
           key={"view-ticket-info"}
           onClick={handleCreateJiraTicketButtonClick}
           icon={{ component: JiraLogoIcon }}
         >
           Ticket Info
-        </s.Button>
+        </Button>
       ]}
     />
   );

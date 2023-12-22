@@ -36,11 +36,12 @@ export const EndpointNPlusOneInsight = (
     props.onAssetLinkClick(spanCodeObjectId, props.insight.type);
   };
 
-  const handleTicketInfoButtonClick = (span: string) => {
+  const handleTicketInfoButtonClick = (spanCodeObjectId: string) => {
     sendTrackingEvent(trackingEvents.JIRA_TICKET_INFO_BUTTON_CLICKED, {
       insightType: props.insight.type
     });
-    props.onJiraTicketCreate && props.onJiraTicketCreate(props.insight, span);
+    props.onJiraTicketCreate &&
+      props.onJiraTicketCreate(props.insight, spanCodeObjectId);
   };
 
   const handleTraceButtonClick = (

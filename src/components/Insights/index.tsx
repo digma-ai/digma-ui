@@ -23,13 +23,18 @@ import { InsightList } from "./InsightList";
 import { Preview } from "./Preview";
 import { actions } from "./actions";
 import * as s from "./styles";
+import { BottleneckInsightTicket } from "./tickets/BottleneckInsightTicket";
 import { EndpointNPlusOneInsightTicket } from "./tickets/EndpointNPlusOneInsightTicket";
 import { NPlusOneInsightTicket } from "./tickets/NPlusOneInsightTicket";
+import { SpanBottleneckInsightTicket } from "./tickets/SpanBottleneckInsightTicket";
 import {
+  isEndpointSlowestSpansInsight,
   isEndpointSuspectedNPlusOneInsight,
+  isSpanEndpointBottleneckInsight,
   isSpanNPlusOneInsight
 } from "./typeGuards";
 import {
+  EndpointSlowestSpansInsight,
   EndpointSuspectedNPlusOneInsight,
   GenericCodeObjectInsight,
   InsightTicketInfo,
@@ -37,6 +42,7 @@ import {
   InsightsProps,
   InsightsStatus,
   Method,
+  SpanEndpointBottleneckInsight,
   SpanNPlusOneInsight,
   ViewMode
 } from "./types";
@@ -63,6 +69,16 @@ const renderInsightTicket = (
     return (
       <EndpointNPlusOneInsightTicket data={ticketData} onClose={onClose} />
     );
+  }
+
+  if (isSpanEndpointBottleneckInsight(data.insight)) {
+    const ticketData = data as InsightTicketInfo<SpanEndpointBottleneckInsight>;
+    return <BottleneckInsightTicket data={ticketData} onClose={onClose} />;
+  }
+
+  if (isEndpointSlowestSpansInsight(data.insight) && data.spanCodeObjectId) {
+    const ticketData = data as InsightTicketInfo<EndpointSlowestSpansInsight>;
+    return <SpanBottleneckInsightTicket data={ticketData} onClose={onClose} />;
   }
 
   return null;

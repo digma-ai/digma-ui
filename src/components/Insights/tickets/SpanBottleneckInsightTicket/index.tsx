@@ -1,56 +1,48 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { dispatcher } from "../../../../dispatcher";
 import { InsightType } from "../../../../types";
 import { getCriticalityLabel } from "../../../../utils/getCriticalityLabel";
+import { roundTo } from "../../../../utils/roundTo";
 import { trimEndpointScheme } from "../../../../utils/trimEndpointScheme";
-import { ConfigContext } from "../../../common/App/ConfigContext";
 import { JiraTicket } from "../../JiraTicket";
 import { actions } from "../../actions";
-import { isSpanNPlusOneInsight } from "../../typeGuards";
+import { isSpanEndpointBottleneckInsight } from "../../typeGuards";
 import {
-  EndpointSuspectedNPlusOneInsight,
+  EndpointSlowestSpansInsight,
   GenericCodeObjectInsight,
-  SpanNPlusOneInsight
+  SpanEndpointBottleneckInsight
 } from "../../types";
 import { CodeLocationsData, InsightTicketProps } from "../types";
 
-export const EndpointNPlusOneInsightTicket = (
-  props: InsightTicketProps<EndpointSuspectedNPlusOneInsight>
+export const SpanBottleneckInsightTicket = (
+  props: InsightTicketProps<EndpointSlowestSpansInsight>
 ) => {
   const [isInitialLoading, setIsInitialLoading] = useState(false);
-  const [codeLocations, setCodeLocations] = useState<string[]>([]);
-  const config = useContext(ConfigContext);
+  const [codeLocations, setCodeLocations] = useState<string[]>();
   const [endpoints, setEndpoints] =
-    useState<SpanNPlusOneInsight["endpoints"]>();
+    useState<SpanEndpointBottleneckInsight["slowEndpoints"]>();
 
   const span = props.data.insight.spans.find(
-    (x) =>
-      (x.internalSpan?.spanCodeObjectId &&
-        x.internalSpan.spanCodeObjectId === props.data.spanCodeObjectId) ||
-      x.clientSpan.spanCodeObjectId === props.data.spanCodeObjectId
+    (x) => x.spanInfo.spanCodeObjectId === props.data.spanCodeObjectId
   );
-
-  const spanInfo = span?.internalSpan || span?.clientSpan;
 
   const services = [
     ...new Set((endpoints || []).map((x) => x.endpointInfo.serviceName))
   ];
   const serviceString = services.length > 0 ? services.join(", ") : "";
 
-  const criticalityString = `Criticality: ${getCriticalityLabel(
-    props.data.insight.criticality
-  )}`;
+  const criticalityString =
+    span && span.criticality > 0
+      ? `Criticality: ${getCriticalityLabel(span.criticality)}`
+      : "";
 
-  const summary = ["N+1 Issue found", serviceString, criticalityString]
+  const summary = ["Bottleneck found", serviceString, criticalityString]
     .filter(Boolean)
     .join(" - ");
 
-  const queryString = spanInfo?.displayName || "";
-
-  const codeLocationsString =
-    codeLocations.length > 0
-      ? ["Related code locations:", ...codeLocations].join("\n")
-      : "";
+  const spanString = `The span ${
+    span?.spanInfo.displayName || ""
+  } is slowing down the following endpoints:`;
 
   const endpointsDataString = (endpoints || [])
     .map((x) =>
@@ -58,43 +50,33 @@ export const EndpointNPlusOneInsightTicket = (
         `• ${x.endpointInfo.serviceName} ${trimEndpointScheme(
           x.endpointInfo.route
         )}`,
-        `Repeats: ${x.occurrences} ${
-          x.criticality > 0
-            ? ` Criticality: ${getCriticalityLabel(x.criticality)}`
-            : ""
+        `Slowing ${roundTo(
+          x.probabilityOfBeingBottleneck * 100,
+          2
+        )}% of the requests by ${x.avgDurationWhenBeingBottleneck.value} ${
+          x.avgDurationWhenBeingBottleneck.unit
         }`
-      ]
-        .filter(Boolean)
-        .join("\n")
+      ].join("\n")
     )
-    .join("\n\n");
+    .join("\n");
 
-  const affectedEndpointsString =
-    (endpoints || []).length > 0
-      ? ["Affected endpoints:", endpointsDataString].join("\n")
+  const codeLocationsString =
+    codeLocations && codeLocations.length > 0
+      ? ["Related code locations:", ...codeLocations].join("\n")
       : "";
 
   const description = [
-    "N+1 Query Detected",
-    queryString,
+    spanString,
+    endpointsDataString,
     codeLocationsString,
-    affectedEndpointsString,
     "info by digma.ai"
   ]
     .filter(Boolean)
     .join("\n\n");
 
-  const traceId = span?.traceId;
-  const attachment = traceId
-    ? {
-        url: `${config.jaegerURL}/api/traces/${traceId}?prettyPrint=true`,
-        fileName: `trace-${traceId}.json`
-      }
-    : undefined;
-
   useEffect(() => {
-    const spanCodeObjectId = spanInfo?.spanCodeObjectId;
-    const methodCodeObjectId = spanInfo?.methodCodeObjectId || undefined;
+    const spanCodeObjectId = span?.spanInfo.spanCodeObjectId;
+    const methodCodeObjectId = span?.spanInfo.methodCodeObjectId || undefined;
 
     window.sendMessageToDigma({
       action: actions.GET_CODE_LOCATIONS,
@@ -107,7 +89,7 @@ export const EndpointNPlusOneInsightTicket = (
       action: actions.GET_SPAN_INSIGHT,
       payload: {
         spanCodeObjectId,
-        insightType: InsightType.SpanNPlusOne
+        insightType: InsightType.SpanEndpointBottleneck
       }
     });
 
@@ -121,8 +103,8 @@ export const EndpointNPlusOneInsightTicket = (
     const handleSpanInsightData = (data: unknown) => {
       const insightData = data as { insight: GenericCodeObjectInsight | null };
       if (insightData.insight) {
-        if (isSpanNPlusOneInsight(insightData.insight)) {
-          setEndpoints(insightData.insight.endpoints);
+        if (isSpanEndpointBottleneckInsight(insightData.insight)) {
+          setEndpoints(insightData.insight.slowEndpoints);
         } else {
           setEndpoints([]);
         }
@@ -162,7 +144,6 @@ export const EndpointNPlusOneInsightTicket = (
     <JiraTicket
       summary={summary}
       description={{ text: description, isLoading: isInitialLoading }}
-      attachment={attachment}
       insight={props.data.insight}
       onClose={props.onClose}
     />

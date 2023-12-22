@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { Insights } from ".";
 import { InsightType } from "../../types";
+import { mockedBottleneckInsight } from "./BottleneckInsight/mockData";
 import { mockedEndpointNPlusOneInsight } from "./EndpointNPlusOneInsight/mockData";
 import {
   CodeObjectErrorsInsight,
@@ -366,6 +367,7 @@ export const Default: Story = {
                 unit: "sec",
                 raw: 2003535300
               },
+              criticality: 0,
               p50: {
                 fraction: 0,
                 maxDuration: {
@@ -639,7 +641,8 @@ export const Default: Story = {
           customStartTime: null,
           actualStartTime: "2023-06-20T00:00:00.000Z"
         },
-        mockedEndpointNPlusOneInsight
+        mockedEndpointNPlusOneInsight,
+        mockedBottleneckInsight
       ]
     }
   }
