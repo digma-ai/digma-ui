@@ -181,6 +181,15 @@ export const App = (props: AppProps) => {
       }
     };
 
+    const handleSetIsMicrometerProject = (data: unknown) => {
+      if (isObject(data) && isBoolean(data.isMicrometerProject)) {
+        setConfig((config) => ({
+          ...config,
+          isMicrometerProject: data.isMicrometerProject as boolean
+        }));
+      }
+    };
+
     dispatcher.addActionListener(actions.SET_THEME, handleSetTheme);
     dispatcher.addActionListener(actions.SET_MAIN_FONT, handleSetMainFont);
     dispatcher.addActionListener(actions.SET_CODE_FONT, handleSetCodeFont);
@@ -225,6 +234,10 @@ export const App = (props: AppProps) => {
     dispatcher.addActionListener(
       actions.SET_BACKEND_INFO,
       handleSetBackendInfo
+    );
+    dispatcher.addActionListener(
+      actions.SET_IS_MICROMETER_PROJECT,
+      handleSetIsMicrometerProject
     );
 
     return () => {
@@ -278,6 +291,10 @@ export const App = (props: AppProps) => {
       dispatcher.removeActionListener(
         actions.SET_BACKEND_INFO,
         handleSetBackendInfo
+      );
+      dispatcher.removeActionListener(
+        actions.SET_IS_MICROMETER_PROJECT,
+        handleSetIsMicrometerProject
       );
     };
   }, []);

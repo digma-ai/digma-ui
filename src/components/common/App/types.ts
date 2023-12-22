@@ -42,4 +42,5 @@ export interface ConfigContextData {
   userRegistrationEmail: string;
   environment: string;
   backendInfo: BackendInfo | undefined;
+  isMicrometerProject: boolean;
 }
