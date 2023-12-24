@@ -1,5 +1,4 @@
 import { InsightType } from "../../../types";
-import { roundTo } from "../../../utils/roundTo";
 import { Button } from "../../common/Button";
 import { Tag } from "../../common/Tag";
 import { Tooltip } from "../../common/Tooltip";
@@ -52,13 +51,6 @@ export const HighNumberOfQueriesInsight = (
               </s.KeyContainer>
               <Tag value={props.insight.typicalCount} />
             </s.Stat>
-            <s.Stat>
-              <s.Key>Median time</s.Key>
-              <Tag
-                type={"mediumSeverity"}
-                value={`${props.insight.medianDuration.value} ${props.insight.medianDuration.unit}`}
-              />
-            </s.Stat>
             {traceId && (
               <s.Stat>
                 <s.Key>Actions</s.Key>
@@ -80,9 +72,6 @@ export const HighNumberOfQueriesInsight = (
               </s.Stat>
             )}
           </s.Stats>
-          <Description>
-            % of Entire Request: {roundTo(props.insight.requestFraction, 2)}%
-          </Description>
         </s.ContentContainer>
       }
       onRecalculate={props.onRecalculate}
