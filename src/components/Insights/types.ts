@@ -162,6 +162,9 @@ export interface CodeObjectInsight extends Insight {
   actualStartTime: string | null;
   criticality: number;
   impact: number;
+  firstCommitId: string | null;
+  lastCommitId: string | null;
+  deactivatedCommitId: string | null;
 }
 
 export interface SpanInsight extends CodeObjectInsight {

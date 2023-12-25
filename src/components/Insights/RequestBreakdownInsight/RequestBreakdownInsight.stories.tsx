@@ -24,6 +24,9 @@ type Story = StoryObj<typeof meta>;
 
 const data: EndpointBreakdownInsight = {
   criticality: 0,
+  firstCommitId: null,
+  lastCommitId: null,
+  deactivatedCommitId: null,
   impact: 0,
   name: "Request Breakdown",
   type: InsightType.EndpointBreakdown,

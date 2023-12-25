@@ -21,6 +21,9 @@ export const Default: Story = {
   args: {
     insight: {
       criticality: 0,
+      firstCommitId: null,
+      lastCommitId: null,
+      deactivatedCommitId: null,
       impact: 0,
       name: "Scaling Issue Found",
       type: InsightType.SpanScalingBadly,

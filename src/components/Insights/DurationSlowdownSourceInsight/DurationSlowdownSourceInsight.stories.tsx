@@ -21,6 +21,9 @@ export const WithEvaluatingChange: Story = {
   args: {
     insight: {
       criticality: 0,
+      firstCommitId: null,
+      lastCommitId: null,
+      deactivatedCommitId: null,
       impact: 0,
       name: "Endpoint Duration Slowdown Source",
       type: InsightType.EndpointDurationSlowdown,

@@ -59,12 +59,19 @@ export const NPlusOneInsightTicket = (
     props.data.insight.endpoints.length > 0
       ? ["Affected endpoints:", endpointsDataString].join("\n")
       : "";
-
+  const commitsString =
+    (props.data.insight.firstCommitId
+      ? `First detected commit: ${props.data.insight.firstCommitId}\n`
+      : "") +
+    (props.data.insight.lastCommitId
+      ? `Last detected commit: ${props.data.insight.lastCommitId}\n`
+      : "");
   const description = [
     "N+1 Query Detected",
     queryString,
     codeLocationsString,
     affectedEndpointsString,
+    commitsString,
     "info by digma.ai"
   ]
     .filter(Boolean)

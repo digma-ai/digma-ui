@@ -7,6 +7,9 @@ import {
 
 export const mockedBottleneckInsight: SpanEndpointBottleneckInsight = {
   criticality: 0,
+  firstCommitId: null,
+  lastCommitId: null,
+  deactivatedCommitId: null,
   impact: 0,
   name: "Bottleneck",
   type: InsightType.SpanEndpointBottleneck,

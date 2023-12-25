@@ -22,6 +22,9 @@ export const Default: Story = {
   args: {
     data: {
       criticality: 0,
+      firstCommitId: null,
+      lastCommitId: null,
+      deactivatedCommitId: null,
       impact: 0,
       name: "Suspected N+1 Query",
       type: InsightType.EndpointSpanNPlusOne,
