@@ -20,8 +20,7 @@ export const EndpointNPlusOneInsightTicket = (
   const [isInitialLoading, setIsInitialLoading] = useState(false);
   const [codeLocations, setCodeLocations] = useState<string[]>([]);
   const config = useContext(ConfigContext);
-  const [endpoints, setEndpoints] =
-    useState<SpanNPlusOneInsight["endpoints"]>();
+  const [spanInsight, setSpanInsight] = useState<SpanNPlusOneInsight>();
 
   const span = props.data.insight.spans.find(
     (x) =>
@@ -33,7 +32,9 @@ export const EndpointNPlusOneInsightTicket = (
   const spanInfo = span?.internalSpan || span?.clientSpan;
 
   const services = [
-    ...new Set((endpoints || []).map((x) => x.endpointInfo.serviceName))
+    ...new Set(
+      (spanInsight?.endpoints || []).map((x) => x.endpointInfo.serviceName)
+    )
   ];
   const serviceString = services.length > 0 ? services.join(", ") : "";
 
@@ -52,7 +53,7 @@ export const EndpointNPlusOneInsightTicket = (
       ? ["Related code locations:", ...codeLocations].join("\n")
       : "";
 
-  const endpointsDataString = (endpoints || [])
+  const endpointsDataString = (spanInsight?.endpoints || [])
     .map((x) =>
       [
         `• ${x.endpointInfo.serviceName} ${trimEndpointScheme(
@@ -70,15 +71,24 @@ export const EndpointNPlusOneInsightTicket = (
     .join("\n\n");
 
   const affectedEndpointsString =
-    (endpoints || []).length > 0
+    (spanInsight?.endpoints || []).length > 0
       ? ["Affected endpoints:", endpointsDataString].join("\n")
       : "";
+
+  const commitsString =
+    (spanInsight?.firstCommitId
+      ? `First detected commit: ${spanInsight?.firstCommitId}\n`
+      : "") +
+    (spanInsight?.lastCommitId
+      ? `Last detected commit: ${spanInsight?.lastCommitId}\n`
+      : "");
 
   const description = [
     "N+1 Query Detected",
     queryString,
     codeLocationsString,
     affectedEndpointsString,
+    commitsString,
     "info by digma.ai"
   ]
     .filter(Boolean)
@@ -120,14 +130,8 @@ export const EndpointNPlusOneInsightTicket = (
 
     const handleSpanInsightData = (data: unknown) => {
       const insightData = data as { insight: GenericCodeObjectInsight | null };
-      if (insightData.insight) {
-        if (isSpanNPlusOneInsight(insightData.insight)) {
-          setEndpoints(insightData.insight.endpoints);
-        } else {
-          setEndpoints([]);
-        }
-      } else {
-        setEndpoints([]);
+      if (insightData.insight && isSpanNPlusOneInsight(insightData.insight)) {
+        setSpanInsight(insightData.insight);
       }
     };
 
@@ -153,10 +157,10 @@ export const EndpointNPlusOneInsightTicket = (
   }, []);
 
   useEffect(() => {
-    if (codeLocations && endpoints) {
+    if (codeLocations && spanInsight?.endpoints) {
       setIsInitialLoading(false);
     }
-  }, [codeLocations, endpoints]);
+  }, [codeLocations, spanInsight?.endpoints]);
 
   return (
     <JiraTicket
