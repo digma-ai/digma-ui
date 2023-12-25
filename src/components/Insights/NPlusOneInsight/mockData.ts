@@ -3,6 +3,9 @@ import { InsightCategory, InsightScope, SpanNPlusOneInsight } from "../types";
 
 export const mockedNPlusOneInsight: SpanNPlusOneInsight = {
   criticality: 0,
+  firstCommitId: "123",
+  lastCommitId: "456",
+  deactivatedCommitId: null,
   impact: 0,
   name: "N+1",
   type: InsightType.SpanNPlusOne,

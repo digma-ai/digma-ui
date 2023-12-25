@@ -21,6 +21,9 @@ export const LowTraffic: Story = {
   args: {
     insight: {
       criticality: 0,
+      firstCommitId: null,
+      lastCommitId: null,
+      deactivatedCommitId: null,
       impact: 0,
       name: "Low Usage",
       type: InsightType.LowUsage,
@@ -75,6 +78,9 @@ export const HighTraffic: Story = {
   args: {
     insight: {
       criticality: 0,
+      firstCommitId: null,
+      lastCommitId: null,
+      deactivatedCommitId: null,
       impact: 0,
       name: "High Usage",
       type: InsightType.HighUsage,

@@ -21,6 +21,9 @@ export const WithAverage: Story = {
   args: {
     insight: {
       criticality: 0,
+      firstCommitId: null,
+      lastCommitId: null,
+      deactivatedCommitId: null,
       impact: 0,
       name: "Performance Stats",
       type: InsightType.SpanDurations,
@@ -129,6 +132,9 @@ export const WithChange: Story = {
   args: {
     insight: {
       criticality: 0,
+      firstCommitId: null,
+      lastCommitId: null,
+      deactivatedCommitId: null,
       impact: 0,
       name: "Performance Stats",
       type: InsightType.SpanDurations,
@@ -227,6 +233,9 @@ export const WithEvaluatingChange: Story = {
   args: {
     insight: {
       criticality: 0,
+      firstCommitId: null,
+      lastCommitId: null,
+      deactivatedCommitId: null,
       impact: 0,
       name: "Performance Stats",
       type: InsightType.SpanDurations,
@@ -325,6 +334,9 @@ export const HistogramWithManyBars: Story = {
   args: {
     insight: {
       criticality: 0,
+      firstCommitId: null,
+      lastCommitId: null,
+      deactivatedCommitId: null,
       impact: 0,
       name: "Performance Stats",
       type: InsightType.SpanDurations,
@@ -4841,6 +4853,9 @@ export const HistogramWithGaps: Story = {
   args: {
     insight: {
       criticality: 0,
+      firstCommitId: null,
+      lastCommitId: null,
+      deactivatedCommitId: null,
       impact: 0,
       name: "Performance Stats",
       type: InsightType.SpanDurations,
@@ -5087,6 +5102,9 @@ export const HistogramWithAFewBars: Story = {
   args: {
     insight: {
       criticality: 0,
+      firstCommitId: null,
+      lastCommitId: null,
+      deactivatedCommitId: null,
       impact: 0,
       name: "Performance Stats",
       type: InsightType.SpanDurations,

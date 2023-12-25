@@ -51,6 +51,9 @@ export const Default: Story = {
       insights: [
         {
           criticality: 0.8,
+          firstCommitId: null,
+          lastCommitId: null,
+          deactivatedCommitId: null,
           impact: 0,
           name: "N+1",
           type: InsightType.SpanNPlusOne,
@@ -150,6 +153,9 @@ export const Default: Story = {
         },
         {
           criticality: 0,
+          firstCommitId: null,
+          lastCommitId: null,
+          deactivatedCommitId: null,
           impact: 0,
           name: "Request Breakdown",
           type: InsightType.EndpointBreakdown,
@@ -214,6 +220,9 @@ export const Default: Story = {
         },
         {
           criticality: 0,
+          firstCommitId: null,
+          lastCommitId: null,
+          deactivatedCommitId: null,
           impact: 0,
           name: "Errors",
           type: InsightType.Errors,
@@ -261,6 +270,9 @@ export const Default: Story = {
         },
         {
           criticality: 0,
+          firstCommitId: null,
+          lastCommitId: null,
+          deactivatedCommitId: null,
           impact: 0,
           name: "Errors Hotspot",
           type: InsightType.HotSpot,
@@ -294,6 +306,9 @@ export const Default: Story = {
         },
         {
           criticality: 0,
+          firstCommitId: null,
+          lastCommitId: null,
+          deactivatedCommitId: null,
           impact: 0,
           name: "Low Usage",
           type: InsightType.LowUsage,
@@ -343,6 +358,9 @@ export const Default: Story = {
         },
         {
           criticality: 0,
+          firstCommitId: null,
+          lastCommitId: null,
+          deactivatedCommitId: null,
           impact: 0,
           name: "Bottleneck Detected",
           type: InsightType.SlowestSpans,
@@ -431,6 +449,9 @@ export const Default: Story = {
         },
         {
           criticality: 0,
+          firstCommitId: null,
+          lastCommitId: null,
+          deactivatedCommitId: null,
           impact: 0,
           name: "Span Duration Breakdown",
           type: InsightType.SpanDurationBreakdown,
@@ -499,6 +520,9 @@ export const Default: Story = {
         },
         {
           criticality: 0,
+          firstCommitId: null,
+          lastCommitId: null,
+          deactivatedCommitId: null,
           impact: 0,
           name: "Performance Stats",
           type: InsightType.SpanDurations,
@@ -587,6 +611,9 @@ export const Default: Story = {
         },
         {
           criticality: 0,
+          firstCommitId: null,
+          lastCommitId: null,
+          deactivatedCommitId: null,
           impact: 0,
           name: "Scaling Insufficient Data",
           type: InsightType.SpanScalingInsufficientData,
@@ -722,6 +749,9 @@ export const NoObservability: Story = {
 
 const errorsInsight: CodeObjectErrorsInsight = {
   criticality: 0,
+  firstCommitId: null,
+  lastCommitId: null,
+  deactivatedCommitId: null,
   impact: 0,
   name: "Errors",
   type: InsightType.Errors,
