@@ -15,6 +15,7 @@ import { DurationSlowdownSourceInsight } from "../DurationSlowdownSourceInsight"
 import { EndpointNPlusOneInsight } from "../EndpointNPlusOneInsight";
 import { ErrorsInsight } from "../ErrorsInsight";
 import { ExcessiveAPICallsInsight } from "../ExcessiveAPICallsInsight";
+import { HighNumberOfQueriesInsight } from "../HighNumberOfQueriesInsight";
 import { InsightCard } from "../InsightCard";
 import { NPlusOneInsight } from "../NPlusOneInsight";
 import { NoObservabilityCard } from "../NoObservabilityCard";
@@ -35,6 +36,7 @@ import {
   isCodeObjectHotSpotInsight,
   isEndpointBreakdownInsight,
   isEndpointDurationSlowdownInsight,
+  isEndpointHighNumberOfQueriesInsight,
   isEndpointHighUsageInsight,
   isEndpointInsight,
   isEndpointLowUsageInsight,
@@ -541,6 +543,18 @@ const renderInsightCard = (
         key={insight.type}
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
+        onTraceButtonClick={handleTraceButtonClick}
+        onRecalculate={handleRecalculate}
+        onRefresh={handleRefresh}
+      />
+    );
+  }
+
+  if (isEndpointHighNumberOfQueriesInsight(insight)) {
+    return (
+      <HighNumberOfQueriesInsight
+        key={insight.type}
+        insight={insight}
         onTraceButtonClick={handleTraceButtonClick}
         onRecalculate={handleRecalculate}
         onRefresh={handleRefresh}

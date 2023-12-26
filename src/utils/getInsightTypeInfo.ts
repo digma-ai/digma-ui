@@ -51,7 +51,7 @@ export const getInsightTypeInfo = (
     },
     [InsightType.SlowestSpans]: {
       icon: BottleneckIcon,
-      label: "Span Bottleneck"
+      label: "Bottleneck"
     },
     [InsightType.EndpointSpanNPlusOne]: {
       icon: SQLDatabaseIcon,
@@ -104,6 +104,10 @@ export const getInsightTypeInfo = (
     [InsightType.EndpointChattyApi]: {
       icon: SQLDatabaseIcon,
       label: "Excessive API Calls Detected"
+    },
+    [InsightType.EndpointHighNumberOfQueries]: {
+      icon: SQLDatabaseIcon,
+      label: "High number of queries"
     }
   };
 

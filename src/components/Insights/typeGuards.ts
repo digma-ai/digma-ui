@@ -6,6 +6,7 @@ import {
   CodeObjectInsight,
   EndpointBreakdownInsight,
   EndpointDurationSlowdownInsight,
+  EndpointHighNumberOfQueriesInsight,
   EndpointHighUsageInsight,
   EndpointInsight,
   EndpointLowUsageInsight,
@@ -127,3 +128,8 @@ export const isChattyApiEndpointInsight = (
   insight: CodeObjectInsight
 ): insight is ChattyApiEndpointInsight =>
   insight.type === InsightType.EndpointChattyApi;
+
+export const isEndpointHighNumberOfQueriesInsight = (
+  insight: CodeObjectInsight
+): insight is EndpointHighNumberOfQueriesInsight =>
+  insight.type === InsightType.EndpointHighNumberOfQueries;
