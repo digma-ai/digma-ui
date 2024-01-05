@@ -10,6 +10,7 @@ export const mockedEndpointNPlusOneInsight: EndpointSuspectedNPlusOneInsight = {
   firstCommitId: null,
   lastCommitId: null,
   deactivatedCommitId: null,
+  reopenCount: 0,
   impact: 0,
   name: "Suspected N+1 Query",
   type: InsightType.EndpointSpanNPlusOne,

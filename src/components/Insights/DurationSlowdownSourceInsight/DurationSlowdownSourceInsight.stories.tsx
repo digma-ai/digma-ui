@@ -24,6 +24,7 @@ export const WithEvaluatingChange: Story = {
       firstCommitId: null,
       lastCommitId: null,
       deactivatedCommitId: null,
+      reopenCount: 0,
       impact: 0,
       name: "Endpoint Duration Slowdown Source",
       type: InsightType.EndpointDurationSlowdown,

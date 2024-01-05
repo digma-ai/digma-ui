@@ -24,6 +24,7 @@ export const Default: Story = {
       firstCommitId: null,
       lastCommitId: null,
       deactivatedCommitId: null,
+      reopenCount: 0,
       impact: 0,
       name: "Span Duration Breakdown",
       type: InsightType.SpanDurationBreakdown,
