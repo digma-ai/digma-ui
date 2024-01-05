@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { dispatcher } from "../../../../dispatcher";
+import { isString } from "../../../../typeGuards/isString";
 import { InsightType } from "../../../../types";
 import { getCriticalityLabel } from "../../../../utils/getCriticalityLabel";
 import { trimEndpointScheme } from "../../../../utils/trimEndpointScheme";
@@ -12,7 +13,12 @@ import {
   GenericCodeObjectInsight,
   SpanNPlusOneInsight
 } from "../../types";
-import { CodeLocationsData, InsightTicketProps } from "../types";
+import { getCommitsInfoString } from "../getCommitsInfoString";
+import {
+  CodeLocationsData,
+  CommitsInfoData,
+  InsightTicketProps
+} from "../types";
 
 export const EndpointNPlusOneInsightTicket = (
   props: InsightTicketProps<EndpointSuspectedNPlusOneInsight>
@@ -21,6 +27,7 @@ export const EndpointNPlusOneInsightTicket = (
   const [codeLocations, setCodeLocations] = useState<string[]>([]);
   const config = useContext(ConfigContext);
   const [spanInsight, setSpanInsight] = useState<SpanNPlusOneInsight>();
+  const [commitsInfo, setCommitsInfo] = useState<CommitsInfoData>();
 
   const span = props.data.insight.spans.find(
     (x) =>
@@ -59,7 +66,7 @@ export const EndpointNPlusOneInsightTicket = (
         `• ${x.endpointInfo.serviceName} ${trimEndpointScheme(
           x.endpointInfo.route
         )}`,
-        `Repeats: ${x.occurrences} ${
+        `Repeats: ${x.occurrences}${
           x.criticality > 0
             ? ` Criticality: ${getCriticalityLabel(x.criticality)}`
             : ""
@@ -75,13 +82,7 @@ export const EndpointNPlusOneInsightTicket = (
       ? ["Affected endpoints:", endpointsDataString].join("\n")
       : "";
 
-  const commitsString =
-    (spanInsight?.firstCommitId
-      ? `First detected commit: ${spanInsight?.firstCommitId}\n`
-      : "") +
-    (spanInsight?.lastCommitId
-      ? `Last detected commit: ${spanInsight?.lastCommitId}\n`
-      : "");
+  const commitsString = getCommitsInfoString(commitsInfo, spanInsight);
 
   const description = [
     "N+1 Query Detected",
@@ -106,6 +107,8 @@ export const EndpointNPlusOneInsightTicket = (
     const spanCodeObjectId = spanInfo?.spanCodeObjectId;
     const methodCodeObjectId = spanInfo?.methodCodeObjectId || undefined;
 
+    setIsInitialLoading(true);
+
     window.sendMessageToDigma({
       action: actions.GET_CODE_LOCATIONS,
       payload: {
@@ -113,6 +116,7 @@ export const EndpointNPlusOneInsightTicket = (
         methodCodeObjectId
       }
     });
+
     window.sendMessageToDigma({
       action: actions.GET_SPAN_INSIGHT,
       payload: {
@@ -120,8 +124,6 @@ export const EndpointNPlusOneInsightTicket = (
         insightType: InsightType.SpanNPlusOne
       }
     });
-
-    setIsInitialLoading(true);
 
     const handleCodeLocationsData = (data: unknown) => {
       const codeLocationsData = data as CodeLocationsData;
@@ -135,13 +137,24 @@ export const EndpointNPlusOneInsightTicket = (
       }
     };
 
+    const handleCommitsInfoData = (data: unknown) => {
+      const commitsInfoData = data as CommitsInfoData;
+      setCommitsInfo(commitsInfoData);
+    };
+
     dispatcher.addActionListener(
       actions.SET_CODE_LOCATIONS,
       handleCodeLocationsData
     );
+
     dispatcher.addActionListener(
       actions.SET_SPAN_INSIGHT,
       handleSpanInsightData
+    );
+
+    dispatcher.addActionListener(
+      actions.SET_COMMIT_INFO,
+      handleCommitsInfoData
     );
 
     return () => {
@@ -149,18 +162,40 @@ export const EndpointNPlusOneInsightTicket = (
         actions.SET_CODE_LOCATIONS,
         handleCodeLocationsData
       );
+
       dispatcher.removeActionListener(
         actions.SET_SPAN_INSIGHT,
         handleSpanInsightData
+      );
+
+      dispatcher.removeActionListener(
+        actions.SET_COMMIT_INFO,
+        handleCommitsInfoData
       );
     };
   }, []);
 
   useEffect(() => {
-    if (codeLocations && spanInsight?.endpoints) {
+    if (spanInsight) {
+      const commits = [
+        spanInsight.firstCommitId,
+        spanInsight.lastCommitId
+      ].filter(isString);
+
+      window.sendMessageToDigma({
+        action: actions.GET_COMMIT_INFO,
+        payload: {
+          commits
+        }
+      });
+    }
+  }, [spanInsight]);
+
+  useEffect(() => {
+    if (codeLocations && spanInsight && commitsInfo) {
       setIsInitialLoading(false);
     }
-  }, [codeLocations, spanInsight?.endpoints]);
+  }, [codeLocations, spanInsight, commitsInfo]);
 
   return (
     <JiraTicket

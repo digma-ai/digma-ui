@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { dispatcher } from "../../../../dispatcher";
+import { isString } from "../../../../typeGuards/isString";
 import { InsightType } from "../../../../types";
 import { getCriticalityLabel } from "../../../../utils/getCriticalityLabel";
 import { roundTo } from "../../../../utils/roundTo";
@@ -12,22 +13,30 @@ import {
   GenericCodeObjectInsight,
   SpanEndpointBottleneckInsight
 } from "../../types";
-import { CodeLocationsData, InsightTicketProps } from "../types";
+import { getCommitsInfoString } from "../getCommitsInfoString";
+import {
+  CodeLocationsData,
+  CommitsInfoData,
+  InsightTicketProps
+} from "../types";
 
 export const SpanBottleneckInsightTicket = (
   props: InsightTicketProps<EndpointSlowestSpansInsight>
 ) => {
   const [isInitialLoading, setIsInitialLoading] = useState(false);
   const [codeLocations, setCodeLocations] = useState<string[]>();
-  const [endpoints, setEndpoints] =
-    useState<SpanEndpointBottleneckInsight["slowEndpoints"]>();
+  const [spanInsight, setSpanInsight] =
+    useState<SpanEndpointBottleneckInsight>();
+  const [commitsInfo, setCommitsInfo] = useState<CommitsInfoData>();
 
   const span = props.data.insight.spans.find(
     (x) => x.spanInfo.spanCodeObjectId === props.data.spanCodeObjectId
   );
 
   const services = [
-    ...new Set((endpoints || []).map((x) => x.endpointInfo.serviceName))
+    ...new Set(
+      (spanInsight?.slowEndpoints || []).map((x) => x.endpointInfo.serviceName)
+    )
   ];
   const serviceString = services.length > 0 ? services.join(", ") : "";
 
@@ -44,7 +53,7 @@ export const SpanBottleneckInsightTicket = (
     span?.spanInfo.displayName || ""
   } is slowing down the following endpoints:`;
 
-  const endpointsDataString = (endpoints || [])
+  const endpointsDataString = (spanInsight?.slowEndpoints || [])
     .map((x) =>
       [
         `• ${x.endpointInfo.serviceName} ${trimEndpointScheme(
@@ -65,10 +74,13 @@ export const SpanBottleneckInsightTicket = (
       ? ["Related code locations:", ...codeLocations].join("\n")
       : "";
 
+  const commitsString = getCommitsInfoString(commitsInfo, spanInsight);
+
   const description = [
     spanString,
     endpointsDataString,
     codeLocationsString,
+    commitsString,
     "info by digma.ai"
   ]
     .filter(Boolean)
@@ -78,6 +90,8 @@ export const SpanBottleneckInsightTicket = (
     const spanCodeObjectId = span?.spanInfo.spanCodeObjectId;
     const methodCodeObjectId = span?.spanInfo.methodCodeObjectId || undefined;
 
+    setIsInitialLoading(true);
+
     window.sendMessageToDigma({
       action: actions.GET_CODE_LOCATIONS,
       payload: {
@@ -85,6 +99,7 @@ export const SpanBottleneckInsightTicket = (
         methodCodeObjectId
       }
     });
+
     window.sendMessageToDigma({
       action: actions.GET_SPAN_INSIGHT,
       payload: {
@@ -93,8 +108,6 @@ export const SpanBottleneckInsightTicket = (
       }
     });
 
-    setIsInitialLoading(true);
-
     const handleCodeLocationsData = (data: unknown) => {
       const codeLocationsData = data as CodeLocationsData;
       setCodeLocations(codeLocationsData.codeLocations);
@@ -102,24 +115,32 @@ export const SpanBottleneckInsightTicket = (
 
     const handleSpanInsightData = (data: unknown) => {
       const insightData = data as { insight: GenericCodeObjectInsight | null };
-      if (insightData.insight) {
-        if (isSpanEndpointBottleneckInsight(insightData.insight)) {
-          setEndpoints(insightData.insight.slowEndpoints);
-        } else {
-          setEndpoints([]);
-        }
-      } else {
-        setEndpoints([]);
+      if (
+        insightData.insight &&
+        isSpanEndpointBottleneckInsight(insightData.insight)
+      ) {
+        setSpanInsight(insightData.insight);
       }
+    };
+
+    const handleCommitsInfoData = (data: unknown) => {
+      const commitsInfoData = data as CommitsInfoData;
+      setCommitsInfo(commitsInfoData);
     };
 
     dispatcher.addActionListener(
       actions.SET_CODE_LOCATIONS,
       handleCodeLocationsData
     );
+
     dispatcher.addActionListener(
       actions.SET_SPAN_INSIGHT,
       handleSpanInsightData
+    );
+
+    dispatcher.addActionListener(
+      actions.SET_COMMIT_INFO,
+      handleCommitsInfoData
     );
 
     return () => {
@@ -127,18 +148,40 @@ export const SpanBottleneckInsightTicket = (
         actions.SET_CODE_LOCATIONS,
         handleCodeLocationsData
       );
+
       dispatcher.removeActionListener(
         actions.SET_SPAN_INSIGHT,
         handleSpanInsightData
+      );
+
+      dispatcher.removeActionListener(
+        actions.SET_COMMIT_INFO,
+        handleCommitsInfoData
       );
     };
   }, []);
 
   useEffect(() => {
-    if (codeLocations && endpoints) {
+    if (spanInsight) {
+      const commits = [
+        spanInsight.firstCommitId,
+        spanInsight.lastCommitId
+      ].filter(isString);
+
+      window.sendMessageToDigma({
+        action: actions.GET_COMMIT_INFO,
+        payload: {
+          commits
+        }
+      });
+    }
+  }, [spanInsight]);
+
+  useEffect(() => {
+    if (codeLocations && spanInsight && commitsInfo) {
       setIsInitialLoading(false);
     }
-  }, [codeLocations, endpoints]);
+  }, [codeLocations, spanInsight, commitsInfo]);
 
   return (
     <JiraTicket

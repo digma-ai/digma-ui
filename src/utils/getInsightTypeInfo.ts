@@ -4,6 +4,7 @@ import { BottleneckIcon } from "../components/common/icons/BottleneckIcon";
 import { ClockWithTicksIcon } from "../components/common/icons/ClockWithTicksIcon";
 import { MeterHighIcon } from "../components/common/icons/MeterHighIcon";
 import { MeterLowIcon } from "../components/common/icons/MeterLowIcon";
+import { MeterMediumIcon } from "../components/common/icons/MeterMediumIcon";
 import { PieChartIcon } from "../components/common/icons/PieChartIcon";
 import { SQLDatabaseIcon } from "../components/common/icons/SQLDatabaseIcon";
 import { ScalesIcon } from "../components/common/icons/ScalesIcon";
@@ -44,6 +45,10 @@ export const getInsightTypeInfo = (
     [InsightType.LowUsage]: {
       icon: MeterLowIcon,
       label: "Endpoint Low Traffic"
+    },
+    [InsightType.NormalUsage]: {
+      icon: MeterMediumIcon,
+      label: "Endpoint Normal Level of Traffic"
     },
     [InsightType.HighUsage]: {
       icon: MeterHighIcon,

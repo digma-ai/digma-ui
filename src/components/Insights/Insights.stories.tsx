@@ -51,9 +51,11 @@ export const Default: Story = {
       needsObservabilityFix: false,
       insights: [
         {
+          firstDetected: "2023-12-05T17:25:47.010Z",
+          lastDetected: "2024-01-05T13:14:47.010Z",
           criticality: 0.8,
-          firstCommitId: null,
-          lastCommitId: null,
+          firstCommitId: "b3f7b3f",
+          lastCommitId: "a1b2c3d",
           deactivatedCommitId: null,
           impact: 0,
           name: "N+1",
@@ -153,9 +155,11 @@ export const Default: Story = {
           actualStartTime: "2023-07-27T08:23:56.500827Z"
         },
         {
+          firstDetected: "2023-12-05T17:25:47.010Z",
+          lastDetected: "2024-01-05T13:14:47.010Z",
           criticality: 0,
-          firstCommitId: null,
-          lastCommitId: null,
+          firstCommitId: "b3f7b3f",
+          lastCommitId: "a1b2c3d",
           deactivatedCommitId: null,
           impact: 0,
           name: "Request Breakdown",
@@ -220,9 +224,11 @@ export const Default: Story = {
           actualStartTime: "2023-06-26T00:00:00.000Z"
         },
         {
+          firstDetected: "2023-12-05T17:25:47.010Z",
+          lastDetected: "2024-01-05T13:14:47.010Z",
           criticality: 0,
-          firstCommitId: null,
-          lastCommitId: null,
+          firstCommitId: "b3f7b3f",
+          lastCommitId: "a1b2c3d",
           deactivatedCommitId: null,
           impact: 0,
           name: "Errors",
@@ -270,9 +276,11 @@ export const Default: Story = {
           actualStartTime: "2023-06-26T13:53:53.645Z"
         },
         {
+          firstDetected: "2023-12-05T17:25:47.010Z",
+          lastDetected: "2024-01-05T13:14:47.010Z",
           criticality: 0,
-          firstCommitId: null,
-          lastCommitId: null,
+          firstCommitId: "b3f7b3f",
+          lastCommitId: "a1b2c3d",
           deactivatedCommitId: null,
           impact: 0,
           name: "Errors Hotspot",
@@ -306,9 +314,11 @@ export const Default: Story = {
           actualStartTime: "2023-06-26T13:53:57.956Z"
         },
         {
+          firstDetected: "2023-12-05T17:25:47.010Z",
+          lastDetected: "2024-01-05T13:14:47.010Z",
           criticality: 0,
-          firstCommitId: null,
-          lastCommitId: null,
+          firstCommitId: "b3f7b3f",
+          lastCommitId: "a1b2c3d",
           deactivatedCommitId: null,
           impact: 0,
           name: "Low Usage",
@@ -358,9 +368,11 @@ export const Default: Story = {
           actualStartTime: "2023-06-12T13:48:59.404Z"
         },
         {
+          firstDetected: "2023-12-05T17:25:47.010Z",
+          lastDetected: "2024-01-05T13:14:47.010Z",
           criticality: 0,
-          firstCommitId: null,
-          lastCommitId: null,
+          firstCommitId: "b3f7b3f",
+          lastCommitId: "a1b2c3d",
           deactivatedCommitId: null,
           impact: 0,
           name: "Bottleneck Detected",
@@ -449,9 +461,11 @@ export const Default: Story = {
           actualStartTime: "2023-06-12T13:49:08.186Z"
         },
         {
+          firstDetected: "2023-12-05T17:25:47.010Z",
+          lastDetected: "2024-01-05T13:14:47.010Z",
           criticality: 0,
-          firstCommitId: null,
-          lastCommitId: null,
+          firstCommitId: "b3f7b3f",
+          lastCommitId: "a1b2c3d",
           deactivatedCommitId: null,
           impact: 0,
           name: "Span Duration Breakdown",
@@ -520,9 +534,11 @@ export const Default: Story = {
           actualStartTime: "2023-06-12T13:49:03.486Z"
         },
         {
+          firstDetected: "2023-12-05T17:25:47.010Z",
+          lastDetected: "2024-01-05T13:14:47.010Z",
           criticality: 0,
-          firstCommitId: null,
-          lastCommitId: null,
+          firstCommitId: "b3f7b3f",
+          lastCommitId: "a1b2c3d",
           deactivatedCommitId: null,
           impact: 0,
           name: "Performance Stats",
@@ -611,9 +627,11 @@ export const Default: Story = {
           actualStartTime: "2023-06-13T00:00:00.000Z"
         },
         {
+          firstDetected: "2023-12-05T17:25:47.010Z",
+          lastDetected: "2024-01-05T13:14:47.010Z",
           criticality: 0,
-          firstCommitId: null,
-          lastCommitId: null,
+          firstCommitId: "b3f7b3f",
+          lastCommitId: "a1b2c3d",
           deactivatedCommitId: null,
           impact: 0,
           name: "Scaling Insufficient Data",
@@ -750,9 +768,11 @@ export const NoObservability: Story = {
 };
 
 const errorsInsight: CodeObjectErrorsInsight = {
+  firstDetected: "2023-12-05T17:25:47.010Z",
+  lastDetected: "2024-01-05T13:14:47.010Z",
   criticality: 0,
-  firstCommitId: null,
-  lastCommitId: null,
+  firstCommitId: "b3f7b3f",
+  lastCommitId: "a1b2c3d",
   deactivatedCommitId: null,
   impact: 0,
   name: "Errors",

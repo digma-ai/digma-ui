@@ -20,9 +20,11 @@ type Story = StoryObj<typeof meta>;
 export const WithAverage: Story = {
   args: {
     insight: {
+      firstDetected: "2023-12-05T17:25:47.010Z",
+      lastDetected: "2024-01-05T13:14:47.010Z",
       criticality: 0,
-      firstCommitId: null,
-      lastCommitId: null,
+      firstCommitId: "b3f7b3f",
+      lastCommitId: "a1b2c3d",
       deactivatedCommitId: null,
       impact: 0,
       name: "Performance Stats",
@@ -131,6 +133,8 @@ export const WithAverage: Story = {
 export const WithChange: Story = {
   args: {
     insight: {
+      firstDetected: null,
+      lastDetected: null,
       criticality: 0,
       firstCommitId: null,
       lastCommitId: null,
@@ -232,6 +236,8 @@ export const WithChange: Story = {
 export const WithEvaluatingChange: Story = {
   args: {
     insight: {
+      firstDetected: null,
+      lastDetected: null,
       criticality: 0,
       firstCommitId: null,
       lastCommitId: null,
@@ -333,6 +339,8 @@ export const WithEvaluatingChange: Story = {
 export const HistogramWithManyBars: Story = {
   args: {
     insight: {
+      firstDetected: null,
+      lastDetected: null,
       criticality: 0,
       firstCommitId: null,
       lastCommitId: null,
@@ -4852,6 +4860,8 @@ export const HistogramWithManyBars: Story = {
 export const HistogramWithGaps: Story = {
   args: {
     insight: {
+      firstDetected: null,
+      lastDetected: null,
       criticality: 0,
       firstCommitId: null,
       lastCommitId: null,
@@ -5101,6 +5111,8 @@ export const HistogramWithGaps: Story = {
 export const HistogramWithAFewBars: Story = {
   args: {
     insight: {
+      firstDetected: null,
+      lastDetected: null,
       criticality: 0,
       firstCommitId: null,
       lastCommitId: null,

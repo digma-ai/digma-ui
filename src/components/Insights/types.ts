@@ -166,6 +166,8 @@ export interface CodeObjectInsight extends Insight {
   firstCommitId: string | null;
   lastCommitId: string | null;
   deactivatedCommitId: string | null;
+  firstDetected: string | null;
+  lastDetected: string | null;
 }
 
 export interface SpanInsight extends CodeObjectInsight {

@@ -21,9 +21,11 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     data: {
+      firstDetected: "2023-12-05T17:25:47.010Z",
+      lastDetected: "2024-01-05T13:14:47.010Z",
       criticality: 0,
-      firstCommitId: null,
-      lastCommitId: null,
+      firstCommitId: "b3f7b3f",
+      lastCommitId: "a1b2c3d",
       deactivatedCommitId: null,
       impact: 0,
       name: "Suspected N+1 Query",
