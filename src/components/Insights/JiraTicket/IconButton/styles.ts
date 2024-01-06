@@ -5,7 +5,7 @@ export const Button = styled.button`
   border: none;
   margin: 0;
   padding: 4px;
-  cursor: pointer;
+  cursor: ${({ disabled }) => (disabled ? "auto" : "pointer")};
   display: flex;
   color: ${({ theme }) => theme.colors.field.icon};
 `;

@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { dispatcher } from "../../../../dispatcher";
 import { isString } from "../../../../typeGuards/isString";
 import { InsightType } from "../../../../types";
 import { getCriticalityLabel } from "../../../../utils/getCriticalityLabel";
-import { roundTo } from "../../../../utils/roundTo";
-import { trimEndpointScheme } from "../../../../utils/trimEndpointScheme";
+import { intersperse } from "../../../../utils/intersperse";
 import { JiraTicket } from "../../JiraTicket";
 import { actions } from "../../actions";
 import { isSpanEndpointBottleneckInsight } from "../../typeGuards";
@@ -13,10 +12,12 @@ import {
   GenericCodeObjectInsight,
   SpanEndpointBottleneckInsight
 } from "../../types";
-import { getCommitsInfoString } from "../getCommitsInfoString";
+import { BottleneckEndpoints } from "../common/BottleneckEndpoints";
+import { CodeLocations } from "../common/CodeLocations";
+import { CommitInfos } from "../common/CommitInfos";
 import {
   CodeLocationsData,
-  CommitsInfoData,
+  CommitInfosData,
   InsightTicketProps
 } from "../types";
 
@@ -26,8 +27,8 @@ export const SpanBottleneckInsightTicket = (
   const [isInitialLoading, setIsInitialLoading] = useState(false);
   const [codeLocations, setCodeLocations] = useState<string[]>();
   const [spanInsight, setSpanInsight] =
-    useState<SpanEndpointBottleneckInsight>();
-  const [commitsInfo, setCommitsInfo] = useState<CommitsInfoData>();
+    useState<SpanEndpointBottleneckInsight | null>();
+  const [commitInfos, setCommitInfos] = useState<CommitInfosData>();
 
   const span = props.data.insight.spans.find(
     (x) => x.spanInfo.spanCodeObjectId === props.data.spanCodeObjectId
@@ -49,42 +50,35 @@ export const SpanBottleneckInsightTicket = (
     .filter(Boolean)
     .join(" - ");
 
-  const spanString = `The span ${
-    span?.spanInfo.displayName || ""
-  } is slowing down the following endpoints:`;
+  const commits = [
+    spanInsight?.firstCommitId,
+    spanInsight?.lastCommitId
+  ].filter(isString);
 
-  const endpointsDataString = (spanInsight?.slowEndpoints || [])
-    .map((x) =>
-      [
-        `• ${x.endpointInfo.serviceName} ${trimEndpointScheme(
-          x.endpointInfo.route
-        )}`,
-        `Slowing ${roundTo(
-          x.probabilityOfBeingBottleneck * 100,
-          2
-        )}% of the requests (~${x.avgDurationWhenBeingBottleneck.value} ${
-          x.avgDurationWhenBeingBottleneck.unit
-        })`
-      ].join("\n")
-    )
-    .join("\n");
-
-  const codeLocationsString =
-    codeLocations && codeLocations.length > 0
-      ? ["Related code locations:", ...codeLocations].join("\n")
-      : "";
-
-  const commitsString = getCommitsInfoString(commitsInfo, spanInsight);
-
-  const description = [
-    spanString,
-    endpointsDataString,
-    codeLocationsString,
-    commitsString,
-    "info by digma.ai"
-  ]
-    .filter(Boolean)
-    .join("\n\n");
+  const renderDescription = () => (
+    <>
+      {intersperse<ReactElement, ReactElement>(
+        [
+          <BottleneckEndpoints
+            key="bottleneckEndpoints"
+            insight={spanInsight || undefined}
+          />,
+          <CodeLocations key="codeLocations" codeLocations={codeLocations} />,
+          <CommitInfos
+            key="commitInfos"
+            commitInfos={commitInfos}
+            insight={spanInsight || undefined}
+          />,
+          <div key="footer">
+            info by <a href="https://digma.ai">digma.ai</a>
+          </div>
+        ],
+        (i: number) => (
+          <br key={`separator-${i}`} />
+        )
+      )}
+    </>
+  );
 
   useEffect(() => {
     const spanCodeObjectId = span?.spanInfo.spanCodeObjectId;
@@ -120,12 +114,14 @@ export const SpanBottleneckInsightTicket = (
         isSpanEndpointBottleneckInsight(insightData.insight)
       ) {
         setSpanInsight(insightData.insight);
+      } else {
+        setSpanInsight(null);
       }
     };
 
-    const handleCommitsInfoData = (data: unknown) => {
-      const commitsInfoData = data as CommitsInfoData;
-      setCommitsInfo(commitsInfoData);
+    const handleCommitInfosData = (data: unknown) => {
+      const commitInfosData = data as CommitInfosData;
+      setCommitInfos(commitInfosData);
     };
 
     dispatcher.addActionListener(
@@ -140,7 +136,7 @@ export const SpanBottleneckInsightTicket = (
 
     dispatcher.addActionListener(
       actions.SET_COMMIT_INFO,
-      handleCommitsInfoData
+      handleCommitInfosData
     );
 
     return () => {
@@ -156,18 +152,13 @@ export const SpanBottleneckInsightTicket = (
 
       dispatcher.removeActionListener(
         actions.SET_COMMIT_INFO,
-        handleCommitsInfoData
+        handleCommitInfosData
       );
     };
   }, []);
 
   useEffect(() => {
-    if (spanInsight) {
-      const commits = [
-        spanInsight.firstCommitId,
-        spanInsight.lastCommitId
-      ].filter(isString);
-
+    if (spanInsight && commits.length > 0) {
       window.sendMessageToDigma({
         action: actions.GET_COMMIT_INFO,
         payload: {
@@ -175,18 +166,30 @@ export const SpanBottleneckInsightTicket = (
         }
       });
     }
-  }, [spanInsight]);
+  }, [spanInsight, commits]);
 
   useEffect(() => {
-    if (codeLocations && spanInsight && commitsInfo) {
+    if (codeLocations && spanInsight) {
+      if (commits.length > 0) {
+        if (commitInfos) {
+          setIsInitialLoading(false);
+        }
+      } else {
+        setIsInitialLoading(false);
+      }
       setIsInitialLoading(false);
     }
-  }, [codeLocations, spanInsight, commitsInfo]);
+  }, [codeLocations, spanInsight, commits, commitInfos]);
 
   return (
     <JiraTicket
       summary={summary}
-      description={{ text: description, isLoading: isInitialLoading }}
+      description={{
+        content: renderDescription(),
+        isLoading: isInitialLoading,
+        errorMessage:
+          spanInsight === null ? "Failed to get insight details" : undefined
+      }}
       insight={props.data.insight}
       onClose={props.onClose}
     />

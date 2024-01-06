@@ -1,16 +1,17 @@
-import { useEffect, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { dispatcher } from "../../../../dispatcher";
 import { isString } from "../../../../typeGuards/isString";
 import { getCriticalityLabel } from "../../../../utils/getCriticalityLabel";
-import { roundTo } from "../../../../utils/roundTo";
-import { trimEndpointScheme } from "../../../../utils/trimEndpointScheme";
+import { intersperse } from "../../../../utils/intersperse";
 import { JiraTicket } from "../../JiraTicket";
 import { actions } from "../../actions";
 import { SpanEndpointBottleneckInsight } from "../../types";
-import { getCommitsInfoString } from "../getCommitsInfoString";
+import { BottleneckEndpoints } from "../common/BottleneckEndpoints";
+import { CodeLocations } from "../common/CodeLocations";
+import { CommitInfos } from "../common/CommitInfos";
 import {
   CodeLocationsData,
-  CommitsInfoData,
+  CommitInfosData,
   InsightTicketProps
 } from "../types";
 
@@ -19,7 +20,7 @@ export const BottleneckInsightTicket = (
 ) => {
   const [isInitialLoading, setIsInitialLoading] = useState(false);
   const [codeLocations, setCodeLocations] = useState<string[]>([]);
-  const [commitsInfo, setCommitsInfo] = useState<CommitsInfoData>();
+  const [commitInfos, setCommitInfos] = useState<CommitInfosData>();
 
   const services = [
     ...new Set(
@@ -37,42 +38,35 @@ export const BottleneckInsightTicket = (
     .filter(Boolean)
     .join(" - ");
 
-  const spanString = `The span ${
-    props.data.insight.spanInfo?.displayName || ""
-  } is slowing down the following endpoints:`;
+  const commits = [
+    props.data.insight.firstCommitId,
+    props.data.insight.lastCommitId
+  ].filter(isString);
 
-  const endpointsDataString = props.data.insight.slowEndpoints
-    .map((x) =>
-      [
-        `• ${x.endpointInfo.serviceName} ${trimEndpointScheme(
-          x.endpointInfo.route
-        )}`,
-        `Slowing ${roundTo(
-          x.probabilityOfBeingBottleneck * 100,
-          2
-        )}% of the requests (~${x.avgDurationWhenBeingBottleneck.value} ${
-          x.avgDurationWhenBeingBottleneck.unit
-        })`
-      ].join("\n")
-    )
-    .join("\n");
-
-  const codeLocationsString =
-    codeLocations.length > 0
-      ? ["Related code locations:", ...codeLocations].join("\n")
-      : "";
-
-  const commitsString = getCommitsInfoString(commitsInfo, props.data.insight);
-
-  const description = [
-    spanString,
-    endpointsDataString,
-    codeLocationsString,
-    commitsString,
-    "info by digma.ai"
-  ]
-    .filter(Boolean)
-    .join("\n\n");
+  const renderDescription = () => (
+    <>
+      {intersperse<ReactElement, ReactElement>(
+        [
+          <BottleneckEndpoints
+            key="bottleneckEndpoints"
+            insight={props.data.insight}
+          />,
+          <CodeLocations key="codeLocations" codeLocations={codeLocations} />,
+          <CommitInfos
+            key="commitInfos"
+            commitInfos={commitInfos}
+            insight={props.data.insight}
+          />,
+          <div key="footer">
+            info by <a href="https://digma.ai">digma.ai</a>
+          </div>
+        ],
+        (i: number) => (
+          <br key={`separator-${i}`} />
+        )
+      )}
+    </>
+  );
 
   useEffect(() => {
     const spanCodeObjectId = props.data.insight.spanInfo?.spanCodeObjectId;
@@ -89,27 +83,14 @@ export const BottleneckInsightTicket = (
       }
     });
 
-    const commits = [
-      props.data.insight.firstCommitId,
-      props.data.insight.lastCommitId
-    ].filter(isString);
-
-    window.sendMessageToDigma({
-      action: actions.GET_COMMIT_INFO,
-      payload: {
-        commits
-      }
-    });
-
     const handleCodeLocationsData = (data: unknown) => {
       const codeLocationsData = data as CodeLocationsData;
       setCodeLocations(codeLocationsData.codeLocations);
-      setIsInitialLoading(false);
     };
 
-    const handleCommitsInfoData = (data: unknown) => {
-      const commitsInfoData = data as CommitsInfoData;
-      setCommitsInfo(commitsInfoData);
+    const handleCommitInfosData = (data: unknown) => {
+      const commitInfosData = data as CommitInfosData;
+      setCommitInfos(commitInfosData);
     };
 
     dispatcher.addActionListener(
@@ -119,7 +100,7 @@ export const BottleneckInsightTicket = (
 
     dispatcher.addActionListener(
       actions.SET_COMMIT_INFO,
-      handleCommitsInfoData
+      handleCommitInfosData
     );
 
     return () => {
@@ -130,15 +111,41 @@ export const BottleneckInsightTicket = (
 
       dispatcher.removeActionListener(
         actions.SET_COMMIT_INFO,
-        handleCommitsInfoData
+        handleCommitInfosData
       );
     };
   }, []);
 
+  useEffect(() => {
+    if (commits.length > 0) {
+      window.sendMessageToDigma({
+        action: actions.GET_COMMIT_INFO,
+        payload: {
+          commits
+        }
+      });
+    }
+  }, [commits]);
+
+  useEffect(() => {
+    if (codeLocations) {
+      if (commits.length > 0) {
+        if (commitInfos) {
+          setIsInitialLoading(false);
+        }
+      } else {
+        setIsInitialLoading(false);
+      }
+    }
+  }, [codeLocations, commits, commitInfos]);
+
   return (
     <JiraTicket
       summary={summary}
-      description={{ text: description, isLoading: isInitialLoading }}
+      description={{
+        content: renderDescription(),
+        isLoading: isInitialLoading
+      }}
       insight={props.data.insight}
       onClose={props.onClose}
     />

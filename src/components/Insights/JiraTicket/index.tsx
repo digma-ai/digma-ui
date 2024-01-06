@@ -1,5 +1,5 @@
 import copy from "copy-to-clipboard";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useTheme } from "styled-components";
 import { DefaultTheme } from "styled-components/dist/types";
 import { downloadFile } from "../../../utils/downloadFile";
@@ -40,6 +40,7 @@ const getCircleLoaderColors = (theme: DefaultTheme): CircleLoaderColors => {
 
 export const JiraTicket = (props: JiraTicketProps) => {
   const [downloadErrorMessage, setDownloadErrorMessage] = useState<string>();
+  const descriptionContentRef = useRef<HTMLDivElement>(null);
   const theme = useTheme();
 
   const handleCloseButtonClick = () => {
@@ -51,7 +52,8 @@ export const JiraTicket = (props: JiraTicketProps) => {
       insightType: props.insight.type,
       field
     });
-    copy(value);
+
+    copy(value, { format: "text/html" });
   };
 
   const handleDownloadButtonClick = () => {
@@ -106,22 +108,27 @@ export const JiraTicket = (props: JiraTicketProps) => {
         label={"Description"}
         multiline={true}
         content={
-          <>
+          <div ref={descriptionContentRef}>
             {props.description.isLoading ? (
               <s.LoaderContainer>
                 <CircleLoader size={32} colors={getCircleLoaderColors(theme)} />
               </s.LoaderContainer>
             ) : (
-              props.description.text
+              props.description.content
             )}
-          </>
+          </div>
         }
+        errorMessage={props.description.errorMessage}
         button={
           <IconButton
             icon={CopyIcon}
             title={"Copy"}
+            disabled={props.description.isLoading}
             onClick={() =>
-              copyToClipboard("description", props.description.text)
+              copyToClipboard(
+                "description",
+                descriptionContentRef.current?.innerHTML || ""
+              )
             }
           />
         }

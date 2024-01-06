@@ -1,9 +1,9 @@
-import { useContext, useEffect, useState } from "react";
+import { ReactElement, useContext, useEffect, useState } from "react";
 import { dispatcher } from "../../../../dispatcher";
 import { isString } from "../../../../typeGuards/isString";
 import { InsightType } from "../../../../types";
 import { getCriticalityLabel } from "../../../../utils/getCriticalityLabel";
-import { trimEndpointScheme } from "../../../../utils/trimEndpointScheme";
+import { intersperse } from "../../../../utils/intersperse";
 import { ConfigContext } from "../../../common/App/ConfigContext";
 import { JiraTicket } from "../../JiraTicket";
 import { actions } from "../../actions";
@@ -13,10 +13,12 @@ import {
   GenericCodeObjectInsight,
   SpanNPlusOneInsight
 } from "../../types";
-import { getCommitsInfoString } from "../getCommitsInfoString";
+import { CodeLocations } from "../common/CodeLocations";
+import { CommitInfos } from "../common/CommitInfos";
+import { NPlusOneAffectedEndpoints } from "../common/NPlusOneAffectedEndpoints";
 import {
   CodeLocationsData,
-  CommitsInfoData,
+  CommitInfosData,
   InsightTicketProps
 } from "../types";
 
@@ -26,8 +28,8 @@ export const EndpointNPlusOneInsightTicket = (
   const [isInitialLoading, setIsInitialLoading] = useState(false);
   const [codeLocations, setCodeLocations] = useState<string[]>([]);
   const config = useContext(ConfigContext);
-  const [spanInsight, setSpanInsight] = useState<SpanNPlusOneInsight>();
-  const [commitsInfo, setCommitsInfo] = useState<CommitsInfoData>();
+  const [spanInsight, setSpanInsight] = useState<SpanNPlusOneInsight | null>();
+  const [commitInfos, setCommitInfos] = useState<CommitInfosData>();
 
   const span = props.data.insight.spans.find(
     (x) =>
@@ -55,45 +57,37 @@ export const EndpointNPlusOneInsightTicket = (
 
   const queryString = spanInfo?.displayName || "";
 
-  const codeLocationsString =
-    codeLocations.length > 0
-      ? ["Related code locations:", ...codeLocations].join("\n")
-      : "";
+  const commits = [
+    spanInsight?.firstCommitId,
+    spanInsight?.lastCommitId
+  ].filter(isString);
 
-  const endpointsDataString = (spanInsight?.endpoints || [])
-    .map((x) =>
-      [
-        `• ${x.endpointInfo.serviceName} ${trimEndpointScheme(
-          x.endpointInfo.route
-        )}`,
-        `Repeats: ${x.occurrences}${
-          x.criticality > 0
-            ? ` Criticality: ${getCriticalityLabel(x.criticality)}`
-            : ""
-        }`
-      ]
-        .filter(Boolean)
-        .join("\n")
-    )
-    .join("\n\n");
-
-  const affectedEndpointsString =
-    (spanInsight?.endpoints || []).length > 0
-      ? ["Affected endpoints:", endpointsDataString].join("\n")
-      : "";
-
-  const commitsString = getCommitsInfoString(commitsInfo, spanInsight);
-
-  const description = [
-    "N+1 Query Detected",
-    queryString,
-    codeLocationsString,
-    affectedEndpointsString,
-    commitsString,
-    "info by digma.ai"
-  ]
-    .filter(Boolean)
-    .join("\n\n");
+  const renderDescription = () => (
+    <>
+      {intersperse<ReactElement, ReactElement>(
+        [
+          <div key="title">N+1 Query Detected</div>,
+          <div key="query">{queryString}</div>,
+          <CodeLocations key="codeLocations" codeLocations={codeLocations} />,
+          <NPlusOneAffectedEndpoints
+            key="affectedEndpoints"
+            insight={spanInsight || undefined}
+          />,
+          <CommitInfos
+            key="commitInfos"
+            commitInfos={commitInfos}
+            insight={spanInsight || undefined}
+          />,
+          <div key="footer">
+            info by <a href="https://digma.ai">digma.ai</a>
+          </div>
+        ],
+        (i: number) => (
+          <br key={`separator-${i}`} />
+        )
+      )}
+    </>
+  );
 
   const traceId = span?.traceId;
   const attachment = traceId
@@ -134,12 +128,14 @@ export const EndpointNPlusOneInsightTicket = (
       const insightData = data as { insight: GenericCodeObjectInsight | null };
       if (insightData.insight && isSpanNPlusOneInsight(insightData.insight)) {
         setSpanInsight(insightData.insight);
+      } else {
+        setSpanInsight(null);
       }
     };
 
-    const handleCommitsInfoData = (data: unknown) => {
-      const commitsInfoData = data as CommitsInfoData;
-      setCommitsInfo(commitsInfoData);
+    const handleCommitInfosData = (data: unknown) => {
+      const commitInfosData = data as CommitInfosData;
+      setCommitInfos(commitInfosData);
     };
 
     dispatcher.addActionListener(
@@ -154,7 +150,7 @@ export const EndpointNPlusOneInsightTicket = (
 
     dispatcher.addActionListener(
       actions.SET_COMMIT_INFO,
-      handleCommitsInfoData
+      handleCommitInfosData
     );
 
     return () => {
@@ -170,18 +166,13 @@ export const EndpointNPlusOneInsightTicket = (
 
       dispatcher.removeActionListener(
         actions.SET_COMMIT_INFO,
-        handleCommitsInfoData
+        handleCommitInfosData
       );
     };
   }, []);
 
   useEffect(() => {
-    if (spanInsight) {
-      const commits = [
-        spanInsight.firstCommitId,
-        spanInsight.lastCommitId
-      ].filter(isString);
-
+    if (spanInsight && commits.length > 0) {
       window.sendMessageToDigma({
         action: actions.GET_COMMIT_INFO,
         payload: {
@@ -189,18 +180,30 @@ export const EndpointNPlusOneInsightTicket = (
         }
       });
     }
-  }, [spanInsight]);
+  }, [spanInsight, commits]);
 
   useEffect(() => {
-    if (codeLocations && spanInsight && commitsInfo) {
+    if (codeLocations && spanInsight) {
+      if (commits.length > 0) {
+        if (commitInfos) {
+          setIsInitialLoading(false);
+        }
+      } else {
+        setIsInitialLoading(false);
+      }
       setIsInitialLoading(false);
     }
-  }, [codeLocations, spanInsight, commitsInfo]);
+  }, [codeLocations, spanInsight, commits, commitInfos]);
 
   return (
     <JiraTicket
       summary={summary}
-      description={{ text: description, isLoading: isInitialLoading }}
+      description={{
+        content: renderDescription(),
+        isLoading: isInitialLoading,
+        errorMessage:
+          spanInsight === null ? "Failed to get insight details" : undefined
+      }}
       attachment={attachment}
       insight={props.data.insight}
       onClose={props.onClose}

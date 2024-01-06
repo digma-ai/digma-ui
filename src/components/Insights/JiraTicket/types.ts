@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { GenericCodeObjectInsight } from "../types";
 
 export interface JiraTicketThemeColors {
@@ -12,7 +13,11 @@ export interface JiraTicketThemeColors {
 
 export interface JiraTicketProps {
   summary: string;
-  description: { text: string; isLoading?: boolean };
+  description: {
+    content: ReactNode;
+    isLoading?: boolean;
+    errorMessage?: string;
+  };
   attachment?: { url: string; fileName: string };
   insight: GenericCodeObjectInsight;
   onClose: () => void;
