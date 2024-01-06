@@ -1,6 +1,5 @@
 import { ReactElement, useEffect, useState } from "react";
 import { dispatcher } from "../../../../dispatcher";
-import { isString } from "../../../../typeGuards/isString";
 import { getCriticalityLabel } from "../../../../utils/getCriticalityLabel";
 import { intersperse } from "../../../../utils/intersperse";
 import { JiraTicket } from "../../JiraTicket";
@@ -10,6 +9,7 @@ import { BottleneckEndpoints } from "../common/BottleneckEndpoints";
 import { CodeLocations } from "../common/CodeLocations";
 import { CommitInfos } from "../common/CommitInfos";
 import { DigmaSignature } from "../common/DigmaSignature";
+import { getInsightCommits } from "../getInsightCommits";
 import {
   CodeLocationsData,
   CommitInfosData,
@@ -38,11 +38,6 @@ export const BottleneckInsightTicket = (
   const summary = ["Bottleneck found", serviceString, criticalityString]
     .filter(Boolean)
     .join(" - ");
-
-  const commits = [
-    props.data.insight.firstCommitId,
-    props.data.insight.lastCommitId
-  ].filter(isString);
 
   const renderDescription = () => (
     <>
@@ -82,6 +77,17 @@ export const BottleneckInsightTicket = (
       }
     });
 
+    const commits = getInsightCommits(props.data.insight);
+
+    if (commits.length > 0) {
+      window.sendMessageToDigma({
+        action: actions.GET_COMMIT_INFO,
+        payload: {
+          commits
+        }
+      });
+    }
+
     const handleCodeLocationsData = (data: unknown) => {
       const codeLocationsData = data as CodeLocationsData;
       setCodeLocations(codeLocationsData.codeLocations);
@@ -116,18 +122,8 @@ export const BottleneckInsightTicket = (
   }, []);
 
   useEffect(() => {
-    if (commits.length > 0) {
-      window.sendMessageToDigma({
-        action: actions.GET_COMMIT_INFO,
-        payload: {
-          commits
-        }
-      });
-    }
-  }, [commits]);
-
-  useEffect(() => {
     if (codeLocations) {
+      const commits = getInsightCommits(props.data.insight);
       if (commits.length > 0) {
         if (commitInfos) {
           setIsInitialLoading(false);
@@ -136,7 +132,7 @@ export const BottleneckInsightTicket = (
         setIsInitialLoading(false);
       }
     }
-  }, [codeLocations, commits, commitInfos]);
+  }, [codeLocations, props.data.insight, commitInfos]);
 
   return (
     <JiraTicket

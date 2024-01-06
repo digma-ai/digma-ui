@@ -1,6 +1,5 @@
 import { ReactElement, useContext, useEffect, useState } from "react";
 import { dispatcher } from "../../../../dispatcher";
-import { isString } from "../../../../typeGuards/isString";
 import { InsightType } from "../../../../types";
 import { getCriticalityLabel } from "../../../../utils/getCriticalityLabel";
 import { intersperse } from "../../../../utils/intersperse";
@@ -17,6 +16,7 @@ import { CodeLocations } from "../common/CodeLocations";
 import { CommitInfos } from "../common/CommitInfos";
 import { DigmaSignature } from "../common/DigmaSignature";
 import { NPlusOneAffectedEndpoints } from "../common/NPlusOneAffectedEndpoints";
+import { getInsightCommits } from "../getInsightCommits";
 import {
   CodeLocationsData,
   CommitInfosData,
@@ -57,11 +57,6 @@ export const EndpointNPlusOneInsightTicket = (
     .join(" - ");
 
   const queryString = spanInfo?.displayName || "";
-
-  const commits = [
-    spanInsight?.firstCommitId,
-    spanInsight?.lastCommitId
-  ].filter(isString);
 
   const renderDescription = () => (
     <>
@@ -171,6 +166,7 @@ export const EndpointNPlusOneInsightTicket = (
   }, []);
 
   useEffect(() => {
+    const commits = getInsightCommits(spanInsight);
     if (spanInsight && commits.length > 0) {
       window.sendMessageToDigma({
         action: actions.GET_COMMIT_INFO,
@@ -179,10 +175,11 @@ export const EndpointNPlusOneInsightTicket = (
         }
       });
     }
-  }, [spanInsight, commits]);
+  }, [spanInsight]);
 
   useEffect(() => {
     if (codeLocations && spanInsight) {
+      const commits = getInsightCommits(spanInsight);
       if (commits.length > 0) {
         if (commitInfos) {
           setIsInitialLoading(false);
@@ -192,7 +189,7 @@ export const EndpointNPlusOneInsightTicket = (
       }
       setIsInitialLoading(false);
     }
-  }, [codeLocations, spanInsight, commits, commitInfos]);
+  }, [codeLocations, spanInsight, commitInfos]);
 
   return (
     <JiraTicket

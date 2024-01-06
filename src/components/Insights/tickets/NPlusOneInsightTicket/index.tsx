@@ -1,6 +1,5 @@
 import { ReactElement, useContext, useEffect, useState } from "react";
 import { dispatcher } from "../../../../dispatcher";
-import { isString } from "../../../../typeGuards/isString";
 import { getCriticalityLabel } from "../../../../utils/getCriticalityLabel";
 import { intersperse } from "../../../../utils/intersperse";
 import { ConfigContext } from "../../../common/App/ConfigContext";
@@ -11,6 +10,7 @@ import { CodeLocations } from "../common/CodeLocations";
 import { CommitInfos } from "../common/CommitInfos";
 import { DigmaSignature } from "../common/DigmaSignature";
 import { NPlusOneAffectedEndpoints } from "../common/NPlusOneAffectedEndpoints";
+import { getInsightCommits } from "../getInsightCommits";
 import {
   CodeLocationsData,
   CommitInfosData,
@@ -42,11 +42,6 @@ export const NPlusOneInsightTicket = (
     .join(" - ");
 
   const queryString = props.data.insight.spanInfo?.displayName || "";
-
-  const commits = [
-    props.data.insight.firstCommitId,
-    props.data.insight.lastCommitId
-  ].filter(isString);
 
   const renderDescription = () => (
     <>
@@ -96,6 +91,17 @@ export const NPlusOneInsightTicket = (
       }
     });
 
+    const commits = getInsightCommits(props.data.insight);
+
+    if (commits.length > 0) {
+      window.sendMessageToDigma({
+        action: actions.GET_COMMIT_INFO,
+        payload: {
+          commits
+        }
+      });
+    }
+
     const handleCodeLocationsData = (data: unknown) => {
       const codeLocationsData = data as CodeLocationsData;
       setCodeLocations(codeLocationsData.codeLocations);
@@ -130,18 +136,8 @@ export const NPlusOneInsightTicket = (
   }, []);
 
   useEffect(() => {
-    if (commits.length > 0) {
-      window.sendMessageToDigma({
-        action: actions.GET_COMMIT_INFO,
-        payload: {
-          commits
-        }
-      });
-    }
-  }, [commits]);
-
-  useEffect(() => {
     if (codeLocations) {
+      const commits = getInsightCommits(props.data.insight);
       if (commits.length > 0) {
         if (commitInfos) {
           setIsInitialLoading(false);
@@ -150,7 +146,7 @@ export const NPlusOneInsightTicket = (
         setIsInitialLoading(false);
       }
     }
-  }, [codeLocations, commits, commitInfos]);
+  }, [codeLocations, props.data.insight, commitInfos]);
 
   return (
     <JiraTicket
