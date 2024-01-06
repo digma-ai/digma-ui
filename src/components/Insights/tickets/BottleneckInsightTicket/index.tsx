@@ -9,6 +9,7 @@ import { SpanEndpointBottleneckInsight } from "../../types";
 import { BottleneckEndpoints } from "../common/BottleneckEndpoints";
 import { CodeLocations } from "../common/CodeLocations";
 import { CommitInfos } from "../common/CommitInfos";
+import { DigmaSignature } from "../common/DigmaSignature";
 import {
   CodeLocationsData,
   CommitInfosData,
@@ -48,18 +49,16 @@ export const BottleneckInsightTicket = (
       {intersperse<ReactElement, ReactElement>(
         [
           <BottleneckEndpoints
-            key="bottleneckEndpoints"
+            key={"bottleneckEndpoints"}
             insight={props.data.insight}
           />,
-          <CodeLocations key="codeLocations" codeLocations={codeLocations} />,
+          <CodeLocations key={"codeLocations"} codeLocations={codeLocations} />,
           <CommitInfos
-            key="commitInfos"
+            key={"commitInfos"}
             commitInfos={commitInfos}
             insight={props.data.insight}
           />,
-          <div key="footer">
-            info by <a href="https://digma.ai">digma.ai</a>
-          </div>
+          <DigmaSignature key={"digmaSignature"} />
         ],
         (i: number) => (
           <br key={`separator-${i}`} />

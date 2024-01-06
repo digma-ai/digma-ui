@@ -9,6 +9,7 @@ import { actions } from "../../actions";
 import { SpanNPlusOneInsight } from "../../types";
 import { CodeLocations } from "../common/CodeLocations";
 import { CommitInfos } from "../common/CommitInfos";
+import { DigmaSignature } from "../common/DigmaSignature";
 import { NPlusOneAffectedEndpoints } from "../common/NPlusOneAffectedEndpoints";
 import {
   CodeLocationsData,
@@ -51,21 +52,19 @@ export const NPlusOneInsightTicket = (
     <>
       {intersperse<ReactElement, ReactElement>(
         [
-          <div key="title">N+1 Query Detected</div>,
-          <div key="query">{queryString}</div>,
-          <CodeLocations key="codeLocations" codeLocations={codeLocations} />,
+          <div key={"title"}>N+1 Query Detected</div>,
+          <div key={"query"}>{queryString}</div>,
+          <CodeLocations key={"codeLocations"} codeLocations={codeLocations} />,
           <NPlusOneAffectedEndpoints
-            key="affectedEndpoints"
+            key={"affectedEndpoints"}
             insight={props.data.insight}
           />,
           <CommitInfos
-            key="commitInfos"
+            key={"commitInfos"}
             commitInfos={commitInfos}
             insight={props.data.insight}
           />,
-          <div key="footer">
-            info by <a href="https://digma.ai">digma.ai</a>
-          </div>
+          <DigmaSignature key={"digmaSignature"} />
         ],
         (i: number) => (
           <br key={`separator-${i}`} />
