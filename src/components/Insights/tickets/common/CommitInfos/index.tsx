@@ -33,6 +33,8 @@ export const CommitInfos = (props: CommitInfosProps) => {
     }
   ].filter((x) => x.id || x.dateTime);
 
+  if (commits.length === 0) return null;
+
   return (
     <s.List>
       {intersperse(
