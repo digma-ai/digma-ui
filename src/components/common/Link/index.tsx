@@ -11,7 +11,7 @@ const LinkComponent = (
       if (!props.href) {
         e.preventDefault();
       }
-      props.onClick();
+      props.onClick(e);
     }
   };
 

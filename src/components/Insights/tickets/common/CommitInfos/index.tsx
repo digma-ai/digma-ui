@@ -1,5 +1,7 @@
 import { format } from "date-fns";
+import { MouseEvent } from "react";
 import { intersperse } from "../../../../../utils/intersperse";
+import { openURLInDefaultBrowser } from "../../../../../utils/openURLInDefaultBrowser";
 import { Link } from "../../../../common/Link";
 import { CommitInfosData } from "../../types";
 import * as s from "./styles";
@@ -11,7 +13,19 @@ const renderCommit = (
 ) => {
   if (commitInfos && commitId) {
     const url = commitInfos.commitInfos[commitId]?.url;
-    return url ? <Link href={url}>{url}</Link> : commitId;
+
+    if (!url) return commitId;
+
+    const handleLinkClick = (e: MouseEvent<HTMLAnchorElement>) => {
+      e.preventDefault();
+      openURLInDefaultBrowser(url);
+    };
+
+    return (
+      <Link href={url} onClick={handleLinkClick}>
+        {url}
+      </Link>
+    );
   }
 
   return commitId;

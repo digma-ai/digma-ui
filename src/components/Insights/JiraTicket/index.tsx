@@ -2,6 +2,7 @@ import copy from "copy-to-clipboard";
 import { useRef, useState } from "react";
 import { useTheme } from "styled-components";
 import { DefaultTheme } from "styled-components/dist/types";
+import { isString } from "../../../typeGuards/isString";
 import { downloadFile } from "../../../utils/downloadFile";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { CircleLoader } from "../../common/CircleLoader";
@@ -47,13 +48,31 @@ export const JiraTicket = (props: JiraTicketProps) => {
     props.onClose();
   };
 
-  const copyToClipboard = (field: string, value: string) => {
+  const copyToClipboard = (
+    field: string,
+    value: HTMLElement | null | string
+  ) => {
     sendTrackingEvent(trackingEvents.JIRA_TICKET_FIELD_COPY_BUTTON_CLICKED, {
       insightType: props.insight.type,
       field
     });
 
-    copy(value, { format: "text/html" });
+    if (value === null) {
+      return;
+    }
+
+    if (isString(value)) {
+      copy(value);
+      return;
+    }
+
+    if (value) {
+      const clipboardItem = new ClipboardItem({
+        "text/plain": new Blob([value.innerText], { type: "text/plain" }),
+        "text/html": new Blob([value.innerHTML], { type: "text/html" })
+      });
+      void navigator.clipboard.write([clipboardItem]);
+    }
   };
 
   const handleDownloadButtonClick = () => {
@@ -125,10 +144,7 @@ export const JiraTicket = (props: JiraTicketProps) => {
             title={"Copy"}
             disabled={props.description.isLoading}
             onClick={() =>
-              copyToClipboard(
-                "description",
-                descriptionContentRef.current?.innerHTML || ""
-              )
+              copyToClipboard("description", descriptionContentRef.current)
             }
           />
         }
