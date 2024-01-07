@@ -63,15 +63,8 @@ export const JiraTicket = (props: JiraTicketProps) => {
 
     if (isString(value)) {
       copy(value);
-      return;
-    }
-
-    if (value) {
-      const clipboardItem = new ClipboardItem({
-        "text/plain": new Blob([value.innerText], { type: "text/plain" }),
-        "text/html": new Blob([value.innerHTML], { type: "text/html" })
-      });
-      void navigator.clipboard.write([clipboardItem]);
+    } else {
+      copy(value.innerText);
     }
   };
 
