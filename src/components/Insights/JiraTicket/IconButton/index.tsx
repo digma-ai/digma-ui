@@ -4,7 +4,7 @@ import { IconButtonProps } from "./types";
 
 export const IconButton = (props: IconButtonProps) => (
   <Tooltip title={props.title}>
-    <s.Button onClick={props.onClick}>
+    <s.Button onClick={props.onClick} disabled={props.disabled}>
       <props.icon color={"currentColor"} />
     </s.Button>
   </Tooltip>

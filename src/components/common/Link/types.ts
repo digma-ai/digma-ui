@@ -1,10 +1,10 @@
-import { ReactNode } from "react";
+import { MouseEvent, ReactNode } from "react";
 
 export interface LinkProps {
   href?: string;
   target?: string;
   rel?: string;
-  onClick?: () => void;
+  onClick?: (e: MouseEvent<HTMLAnchorElement>) => void;
   disabled?: boolean;
   children: ReactNode;
   className?: string;

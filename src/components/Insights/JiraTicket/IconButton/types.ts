@@ -5,4 +5,5 @@ export interface IconButtonProps {
   icon: ComponentType<IconProps>;
   onClick: () => void;
   title: string;
+  disabled?: boolean;
 }

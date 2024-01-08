@@ -1,7 +1,8 @@
 import copy from "copy-to-clipboard";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useTheme } from "styled-components";
 import { DefaultTheme } from "styled-components/dist/types";
+import { isString } from "../../../typeGuards/isString";
 import { downloadFile } from "../../../utils/downloadFile";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { CircleLoader } from "../../common/CircleLoader";
@@ -40,18 +41,31 @@ const getCircleLoaderColors = (theme: DefaultTheme): CircleLoaderColors => {
 
 export const JiraTicket = (props: JiraTicketProps) => {
   const [downloadErrorMessage, setDownloadErrorMessage] = useState<string>();
+  const descriptionContentRef = useRef<HTMLDivElement>(null);
   const theme = useTheme();
 
   const handleCloseButtonClick = () => {
     props.onClose();
   };
 
-  const copyToClipboard = (field: string, value: string) => {
+  const copyToClipboard = (
+    field: string,
+    value: HTMLElement | null | string
+  ) => {
     sendTrackingEvent(trackingEvents.JIRA_TICKET_FIELD_COPY_BUTTON_CLICKED, {
       insightType: props.insight.type,
       field
     });
-    copy(value);
+
+    if (value === null) {
+      return;
+    }
+
+    if (isString(value)) {
+      copy(value);
+    } else {
+      copy(value.innerText);
+    }
   };
 
   const handleDownloadButtonClick = () => {
@@ -106,22 +120,24 @@ export const JiraTicket = (props: JiraTicketProps) => {
         label={"Description"}
         multiline={true}
         content={
-          <>
+          <div ref={descriptionContentRef}>
             {props.description.isLoading ? (
               <s.LoaderContainer>
                 <CircleLoader size={32} colors={getCircleLoaderColors(theme)} />
               </s.LoaderContainer>
             ) : (
-              props.description.text
+              props.description.content
             )}
-          </>
+          </div>
         }
+        errorMessage={props.description.errorMessage}
         button={
           <IconButton
             icon={CopyIcon}
             title={"Copy"}
+            disabled={props.description.isLoading}
             onClick={() =>
-              copyToClipboard("description", props.description.text)
+              copyToClipboard("description", descriptionContentRef.current)
             }
           />
         }

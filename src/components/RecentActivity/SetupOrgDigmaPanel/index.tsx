@@ -1,5 +1,4 @@
 import { ChangeEvent, useContext, useEffect, useState } from "react";
-import { actions as globalActions } from "../../../actions";
 import {
   INSTALL_DIGMA_IN_ORGANIZATION_DOCUMENTATION_URL,
   SETUP_PLUGIN_TO_ORGANIZATION_DIGMA_URL,
@@ -39,13 +38,10 @@ const SETTINGS_MISMATCH_ERROR_MESSAGE =
 
 const renderUpdatePluginSettingsMessage = () => {
   const handleLinkClick = () => {
-    window.sendMessageToDigma({
-      action: globalActions.OPEN_URL_IN_DEFAULT_BROWSER,
-      payload: {
-        url: SETUP_PLUGIN_TO_ORGANIZATION_DIGMA_URL,
-        title: "Installing Digma in your organization"
-      }
-    });
+    openURLInDefaultBrowser(
+      SETUP_PLUGIN_TO_ORGANIZATION_DIGMA_URL,
+      "Installing Digma in your organization"
+    );
   };
 
   return (
@@ -126,13 +122,10 @@ export const SetupOrgDigmaPanel = (props: SetupOrgDigmaPanelProps) => {
   }, []);
 
   const handleInstructionsLinkClick = () => {
-    window.sendMessageToDigma({
-      action: globalActions.OPEN_URL_IN_DEFAULT_BROWSER,
-      payload: {
-        url: INSTALL_DIGMA_IN_ORGANIZATION_DOCUMENTATION_URL,
-        title: "Installing Digma in your organization"
-      }
-    });
+    openURLInDefaultBrowser(
+      INSTALL_DIGMA_IN_ORGANIZATION_DOCUMENTATION_URL,
+      "Installing Digma in your organization"
+    );
   };
 
   // const handleCopyInstructionsLinkButtonClick = () => {

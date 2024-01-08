@@ -1,18 +1,28 @@
-import { useContext, useEffect, useState } from "react";
+import { ReactElement, useContext, useEffect, useState } from "react";
 import { dispatcher } from "../../../../dispatcher";
 import { getCriticalityLabel } from "../../../../utils/getCriticalityLabel";
-import { trimEndpointScheme } from "../../../../utils/trimEndpointScheme";
+import { intersperse } from "../../../../utils/intersperse";
 import { ConfigContext } from "../../../common/App/ConfigContext";
 import { JiraTicket } from "../../JiraTicket";
 import { actions } from "../../actions";
 import { SpanNPlusOneInsight } from "../../types";
-import { CodeLocationsData, InsightTicketProps } from "../types";
+import { CodeLocations } from "../common/CodeLocations";
+import { CommitInfos } from "../common/CommitInfos";
+import { DigmaSignature } from "../common/DigmaSignature";
+import { NPlusOneAffectedEndpoints } from "../common/NPlusOneAffectedEndpoints";
+import { getInsightCommits } from "../getInsightCommits";
+import {
+  CodeLocationsData,
+  CommitInfosData,
+  InsightTicketProps
+} from "../types";
 
 export const NPlusOneInsightTicket = (
   props: InsightTicketProps<SpanNPlusOneInsight>
 ) => {
   const [isInitialLoading, setIsInitialLoading] = useState(false);
   const [codeLocations, setCodeLocations] = useState<string[]>([]);
+  const [commitInfos, setCommitInfos] = useState<CommitInfosData>();
   const config = useContext(ConfigContext);
 
   const services = [
@@ -33,49 +43,30 @@ export const NPlusOneInsightTicket = (
 
   const queryString = props.data.insight.spanInfo?.displayName || "";
 
-  const codeLocationsString =
-    codeLocations.length > 0
-      ? ["Related code locations:", ...codeLocations].join("\n")
-      : "";
-
-  const endpointsDataString = props.data.insight.endpoints
-    .map((x) =>
-      [
-        `• ${x.endpointInfo.serviceName} ${trimEndpointScheme(
-          x.endpointInfo.route
-        )}`,
-        `Repeats: ${x.occurrences} ${
-          x.criticality > 0
-            ? `Criticality: ${getCriticalityLabel(x.criticality)}`
-            : ""
-        }`
-      ]
-        .filter(Boolean)
-        .join("\n")
-    )
-    .join("\n\n");
-
-  const affectedEndpointsString =
-    props.data.insight.endpoints.length > 0
-      ? ["Affected endpoints:", endpointsDataString].join("\n")
-      : "";
-  const commitsString =
-    (props.data.insight.firstCommitId
-      ? `First detected commit: ${props.data.insight.firstCommitId}\n`
-      : "") +
-    (props.data.insight.lastCommitId
-      ? `Last detected commit: ${props.data.insight.lastCommitId}\n`
-      : "");
-  const description = [
-    "N+1 Query Detected",
-    queryString,
-    codeLocationsString,
-    affectedEndpointsString,
-    commitsString,
-    "info by digma.ai"
-  ]
-    .filter(Boolean)
-    .join("\n\n");
+  const renderDescription = () => (
+    <>
+      {intersperse<ReactElement, ReactElement>(
+        [
+          <div key={"title"}>N+1 Query Detected</div>,
+          <div key={"query"}>{queryString}</div>,
+          <CodeLocations key={"codeLocations"} codeLocations={codeLocations} />,
+          <NPlusOneAffectedEndpoints
+            key={"affectedEndpoints"}
+            insight={props.data.insight}
+          />,
+          <CommitInfos
+            key={"commitInfos"}
+            commitInfos={commitInfos}
+            insight={props.data.insight}
+          />,
+          <DigmaSignature key={"digmaSignature"} />
+        ],
+        (i: number) => (
+          <br key={`separator-${i}`} />
+        )
+      )}
+    </>
+  );
 
   const traceId = props.data.insight.traceId;
   const attachment = traceId
@@ -90,6 +81,8 @@ export const NPlusOneInsightTicket = (
     const methodCodeObjectId =
       props.data.insight.spanInfo?.methodCodeObjectId || undefined;
 
+    setIsInitialLoading(true);
+
     window.sendMessageToDigma({
       action: actions.GET_CODE_LOCATIONS,
       payload: {
@@ -97,12 +90,26 @@ export const NPlusOneInsightTicket = (
         methodCodeObjectId
       }
     });
-    setIsInitialLoading(true);
+
+    const commits = getInsightCommits(props.data.insight);
+
+    if (commits.length > 0) {
+      window.sendMessageToDigma({
+        action: actions.GET_COMMIT_INFO,
+        payload: {
+          commits
+        }
+      });
+    }
 
     const handleCodeLocationsData = (data: unknown) => {
       const codeLocationsData = data as CodeLocationsData;
       setCodeLocations(codeLocationsData.codeLocations);
-      setIsInitialLoading(false);
+    };
+
+    const handleCommitInfosData = (data: unknown) => {
+      const commitInfosData = data as CommitInfosData;
+      setCommitInfos(commitInfosData);
     };
 
     dispatcher.addActionListener(
@@ -110,18 +117,44 @@ export const NPlusOneInsightTicket = (
       handleCodeLocationsData
     );
 
+    dispatcher.addActionListener(
+      actions.SET_COMMIT_INFO,
+      handleCommitInfosData
+    );
+
     return () => {
       dispatcher.removeActionListener(
         actions.SET_CODE_LOCATIONS,
         handleCodeLocationsData
       );
+
+      dispatcher.removeActionListener(
+        actions.SET_COMMIT_INFO,
+        handleCommitInfosData
+      );
     };
   }, []);
+
+  useEffect(() => {
+    if (codeLocations) {
+      const commits = getInsightCommits(props.data.insight);
+      if (commits.length > 0) {
+        if (commitInfos) {
+          setIsInitialLoading(false);
+        }
+      } else {
+        setIsInitialLoading(false);
+      }
+    }
+  }, [codeLocations, props.data.insight, commitInfos]);
 
   return (
     <JiraTicket
       summary={summary}
-      description={{ text: description, isLoading: isInitialLoading }}
+      description={{
+        content: renderDescription(),
+        isLoading: isInitialLoading
+      }}
       attachment={attachment}
       insight={props.data.insight}
       onClose={props.onClose}
