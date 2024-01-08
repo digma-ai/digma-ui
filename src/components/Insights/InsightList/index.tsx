@@ -579,7 +579,10 @@ export const InsightList = (props: InsightListProps) => {
     window.sendMessageToDigma({
       action: actions.MARK_INSIGHT_TYPES_AS_VIEWED,
       payload: {
-        insightTypes: props.insights.map((x) => x.type)
+        insightTypes: props.insights.map((x) => ({
+          type: x.type,
+          reopenCount: x.reopenCount
+        }))
       }
     });
   }, [props.insights, props.spans]);

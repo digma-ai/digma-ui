@@ -10,6 +10,7 @@ export const mockedBottleneckInsight: SpanEndpointBottleneckInsight = {
   firstCommitId: null,
   lastCommitId: null,
   deactivatedCommitId: null,
+  reopenCount: 0,
   impact: 0,
   name: "Bottleneck",
   type: InsightType.SpanEndpointBottleneck,

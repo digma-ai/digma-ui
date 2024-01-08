@@ -27,6 +27,7 @@ const data: EndpointBreakdownInsight = {
   firstCommitId: null,
   lastCommitId: null,
   deactivatedCommitId: null,
+  reopenCount: 0,
   impact: 0,
   name: "Request Breakdown",
   type: InsightType.EndpointBreakdown,
