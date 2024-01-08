@@ -234,6 +234,9 @@ const darkThemeColors: ThemeColors = {
     border: grayScale[700],
     icon: grayScale[200],
     text: grayScale[100]
+  },
+  panel: {
+    background: grayScale[1000]
   }
 };
 
@@ -415,7 +418,8 @@ const lightThemeColors: ThemeColors = {
     border: grayScale[300],
     icon: grayScale[800],
     text: grayScale[800]
-  }
+  },
+  panel: { background: grayScale[150] }
 };
 
 const getColors = (mode: Mode): ThemeColors => {

@@ -43,6 +43,9 @@ export const entries: AppEntries = {
       "recentActivityIsEnvironmentManagementEnabled"
     ]
   },
+  tests: {
+    entry: path.resolve(__dirname, "./src/containers/Tests/index.tsx")
+  },
   troubleshooting: {
     entry: path.resolve(__dirname, "./src/containers/Troubleshooting/index.tsx")
   }

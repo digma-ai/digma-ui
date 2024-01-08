@@ -31,6 +31,9 @@ export interface ThemeColors {
   attachmentTag: AttachmentTagThemeColors;
   jiraTicket: JiraTicketThemeColors;
   field: FieldThemeColors;
+  panel: {
+    background: string;
+  };
 }
 
 declare module "styled-components" {
