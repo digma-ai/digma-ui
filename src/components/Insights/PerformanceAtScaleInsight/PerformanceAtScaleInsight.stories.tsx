@@ -26,6 +26,7 @@ export const Default: Story = {
       firstCommitId: "b3f7b3f",
       lastCommitId: "a1b2c3d",
       deactivatedCommitId: null,
+      reopenCount: 0,
       impact: 0,
       name: "Scaling Insufficient Data",
       type: InsightType.SpanScalingInsufficientData,

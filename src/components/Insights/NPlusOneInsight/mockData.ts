@@ -8,6 +8,7 @@ export const mockedNPlusOneInsight: SpanNPlusOneInsight = {
   firstCommitId: "b3f7b3f",
   lastCommitId: "a1b2c3d",
   deactivatedCommitId: null,
+  reopenCount: 0,
   impact: 0,
   name: "N+1",
   type: InsightType.SpanNPlusOne,
