@@ -52,7 +52,7 @@ export const Tests = () => {
     window.sendMessageToDigma({
       action: actions.GET_SPAN_LATEST_DATA,
       payload: {
-        page: 0,
+        pageNumber: 0,
         pageSize: PAGE_SIZE
       }
     });
