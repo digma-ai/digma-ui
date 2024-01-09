@@ -44,7 +44,8 @@ export const entries: AppEntries = {
     ]
   },
   tests: {
-    entry: path.resolve(__dirname, "./src/containers/Tests/index.tsx")
+    entry: path.resolve(__dirname, "./src/containers/Tests/index.tsx"),
+    environmentVariables: ["testsRefreshInterval"]
   },
   troubleshooting: {
     entry: path.resolve(__dirname, "./src/containers/Troubleshooting/index.tsx")
