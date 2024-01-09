@@ -15,6 +15,7 @@ import { Toggle } from "../../common/Toggle";
 import { ToggleValue } from "../../common/Toggle/types";
 import { Tooltip } from "../../common/Tooltip";
 import { ChevronIcon } from "../../common/icons/ChevronIcon";
+import { OpenLinkIcon } from "../../common/icons/OpenLinkIcon";
 import { Direction } from "../../common/icons/types";
 import { Description, Link } from "../styles";
 import * as s from "./styles";
@@ -74,8 +75,8 @@ export const InsightCard = (props: InsightCardProps) => {
     const areStartTimesEqual =
       customStartTime &&
       new Date(actualStartTime).valueOf() -
-        new Date(customStartTime).valueOf() ===
-        0;
+      new Date(customStartTime).valueOf() ===
+      0;
 
     const title = new Date(actualStartTime).toString();
 
@@ -120,6 +121,9 @@ export const InsightCard = (props: InsightCardProps) => {
             {insightTypeInfo?.label || props.data.type}
           </s.Title>
           <s.Toolbar>
+            {props.isAsync && <Link href={props.data.ticketLink ?? undefined} target="_blank" rel="noopener noreferrer">
+              <OpenLinkIcon />
+            </Link>}
             {props.isAsync && <s.AsyncBadge>Async</s.AsyncBadge>}
             {props.stats && <s.Stats>{props.stats}</s.Stats>}
             {(props.menuItems || props.data.isRecalculateEnabled) && (
