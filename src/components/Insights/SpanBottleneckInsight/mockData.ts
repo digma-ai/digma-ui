@@ -13,6 +13,7 @@ export const mockedSpanBottleneckInsight: EndpointSlowestSpansInsight = {
   lastCommitId: "a1b2c3d",
   deactivatedCommitId: null,
   reopenCount: 0,
+  ticketLink: null,
   impact: 0,
   name: "Bottleneck Detected",
   type: InsightType.SlowestSpans,
