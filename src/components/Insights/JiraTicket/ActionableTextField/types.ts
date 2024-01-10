@@ -6,4 +6,5 @@ export interface TextFieldProps {
   buttons: ReactElement;
   value: string | null;
   label: string;
+  disabled: boolean;
 }

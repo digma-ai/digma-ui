@@ -97,11 +97,16 @@ export const JiraTicket = (props: JiraTicketProps) => {
   };
 
   const linkTicket = () => {
+    console.log('Enter ticket link');
+    console.log(ticketLink);
+    ticketLink && console.log(isValidHttpUrl(ticketLink));
     if (ticketLink && isValidHttpUrl(ticketLink)) {
+      console.log("before send");
+      sendTrackingEvent("test");
       window.sendMessageToDigma({
         action: actions.LINK_TICKET,
         payload: {
-          codeObjectId: props.insight.codeObjectId,
+          codeObjectId: props.insight.prefixedCodeObjectId,
           insightType: props.insight.type,
           ticketLink: ticketLink
         }
@@ -115,7 +120,7 @@ export const JiraTicket = (props: JiraTicketProps) => {
     window.sendMessageToDigma({
       action: actions.UNLINK_TICKET,
       payload: {
-        codeObjectId: props.insight.codeObjectId,
+        codeObjectId: props.insight.prefixedCodeObjectId,
         insightType: props.insight.type
       }
     });
@@ -126,6 +131,7 @@ export const JiraTicket = (props: JiraTicketProps) => {
 
     if (linkTicketResponse.success) {
       setinsightTicketLink(linkTicketResponse.ticketLink);
+      setTicketLink(linkTicketResponse.ticketLink);
     } else {
       console.log(linkTicketResponse.message);
       // TODO show errors message
@@ -213,9 +219,10 @@ export const JiraTicket = (props: JiraTicketProps) => {
       <ActionableTextField
         key="ticket-link"
         value={ticketLink}
-        placeholder={"Paste Ticket URL"}
+        placeholder={"Paste your ticket URL here to link it with this Digma insight"}
         label={"Ticket URL"}
         onChange={(event) => { setTicketLink(event.target.value) }}
+        disabled={!!insightTicketLink}
         buttons={
           insightTicketLink ?
             <Button

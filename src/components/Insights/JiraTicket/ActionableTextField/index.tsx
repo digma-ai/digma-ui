@@ -10,9 +10,11 @@ export const ActionableTextField = (props: TextFieldProps) => {
         placeholder={props.placeholder ?? ''}
         value={props.value ?? ''}
         onChange={props.onChange}
-        inputEndContent={<s.ButtonContainer>
-          {props.buttons}
-        </s.ButtonContainer>}
+        disabled={props.disabled}
+        inputEndContent={
+          <s.ButtonContainer>
+            {props.buttons}
+          </s.ButtonContainer>}
       />
     </s.TextFieldContainer>
   )
