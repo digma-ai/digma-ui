@@ -227,6 +227,7 @@ export const JiraTicket = (props: JiraTicketProps) => {
             <Button
               key={"link-ticket"}
               onClick={linkTicket}
+              disabled={!ticketLink}
             >
               Link
             </Button>
