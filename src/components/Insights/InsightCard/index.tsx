@@ -14,8 +14,8 @@ import { PopoverTrigger } from "../../common/Popover/PopoverTrigger";
 import { Toggle } from "../../common/Toggle";
 import { ToggleValue } from "../../common/Toggle/types";
 import { Tooltip } from "../../common/Tooltip";
+import { JiraLogoIcon } from "../../common/icons/16px/JiraLogoIcon";
 import { ChevronIcon } from "../../common/icons/ChevronIcon";
-import { OpenLinkIcon } from "../../common/icons/OpenLinkIcon";
 import { Direction } from "../../common/icons/types";
 import { Description, Link } from "../styles";
 import * as s from "./styles";
@@ -119,11 +119,16 @@ export const InsightCard = (props: InsightCardProps) => {
               )}
             </s.InsightIconContainer>
             {insightTypeInfo?.label || props.data.type}
+
+            {props.data.ticketLink &&
+              <s.TicketIconContainer title="Open ticket link">
+                <s.TicketIconLink href={props.data.ticketLink ?? undefined} target="_blank" rel="noopener noreferrer">
+                  <JiraLogoIcon size={16} />
+                </s.TicketIconLink>
+              </s.TicketIconContainer>
+            }
           </s.Title>
           <s.Toolbar>
-            {props.isAsync && <Link href={props.data.ticketLink ?? undefined} target="_blank" rel="noopener noreferrer">
-              <OpenLinkIcon />
-            </Link>}
             {props.isAsync && <s.AsyncBadge>Async</s.AsyncBadge>}
             {props.stats && <s.Stats>{props.stats}</s.Stats>}
             {(props.menuItems || props.data.isRecalculateEnabled) && (

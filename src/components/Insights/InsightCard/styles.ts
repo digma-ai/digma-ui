@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "../styles";
 
 export const Title = styled.div`
   display: flex;
@@ -23,6 +24,15 @@ export const InsightIconContainer = styled.div`
         return "#43454a";
     }
   }};
+`;
+
+export const TicketIconContainer = styled.div`
+  padding: 2px;
+`;
+
+export const TicketIconLink = styled(Link)`
+  display: flex;
+  margin-top: 3px;
 `;
 
 export const BadgeContainer = styled.div`

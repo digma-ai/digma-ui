@@ -16,6 +16,7 @@ export const ActionableTextField = (props: TextFieldProps) => {
             {props.buttons}
           </s.ButtonContainer>}
       />
+      <s.ErrorMessage>{props.errorMessage}</s.ErrorMessage>
     </s.TextFieldContainer>
   )
 }

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { redScale } from "../../../common/App/getTheme";
 import { TextField } from "../../../common/TextField";
 
 export const Label = styled.label`
@@ -31,4 +32,20 @@ export const ButtonContainer = styled.div`
   bottom: 0;
   margin: auto;
   height: fit-content;
+`;
+
+export const ErrorMessage = styled.span`
+  display: flex;
+  font-size: 13px;
+  height: 15px;
+  align-items: center;
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return redScale[500];
+      case "dark":
+      case "dark-jetbrains":
+        return redScale[300];
+    }
+  }};
 `;

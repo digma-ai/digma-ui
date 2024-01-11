@@ -48,6 +48,7 @@ export const JiraTicket = (props: JiraTicketProps) => {
   const [downloadErrorMessage, setDownloadErrorMessage] = useState<string>();
   const [ticketLink, setTicketLink] = useState<string | null>(props.insight.ticketLink);
   const [insightTicketLink, setinsightTicketLink] = useState<string | null>(props.insight.ticketLink);
+  const [errorMessage, setErrorMessage] = useState<string | null>();
   const descriptionContentRef = useRef<HTMLDivElement>(null);
   const theme = useTheme();
 
@@ -112,7 +113,7 @@ export const JiraTicket = (props: JiraTicketProps) => {
         }
       });
     } else {
-      // TODO show validation message
+      setErrorMessage('');
     }
   }
 
@@ -133,8 +134,7 @@ export const JiraTicket = (props: JiraTicketProps) => {
       setinsightTicketLink(linkTicketResponse.ticketLink);
       setTicketLink(linkTicketResponse.ticketLink);
     } else {
-      console.log(linkTicketResponse.message);
-      // TODO show errors message
+      setErrorMessage(linkTicketResponse.message)
     }
   };
 
@@ -142,6 +142,16 @@ export const JiraTicket = (props: JiraTicketProps) => {
     actions.SET_TICKET_LINK,
     handleinsightTicketLink
   );
+
+  const onTicketLinkChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    let ticketLink = event.target.value;
+    setTicketLink(ticketLink);
+    if (!ticketLink || isValidHttpUrl(ticketLink)) {
+      setErrorMessage('');
+    } else {
+      setErrorMessage("Please enter a URL.")
+    }
+  };
 
   return (
     <s.Container>
@@ -221,8 +231,9 @@ export const JiraTicket = (props: JiraTicketProps) => {
         value={ticketLink}
         placeholder={"Paste your ticket URL here to link it with this Digma insight"}
         label={"Ticket URL"}
-        onChange={(event) => { setTicketLink(event.target.value) }}
+        onChange={onTicketLinkChange}
         disabled={!!insightTicketLink}
+        errorMessage={errorMessage}
         buttons={
           insightTicketLink ?
             <Button
@@ -234,7 +245,7 @@ export const JiraTicket = (props: JiraTicketProps) => {
             <Button
               key={"link-ticket"}
               onClick={linkTicket}
-              disabled={!ticketLink}
+              disabled={!ticketLink || !!errorMessage}
             >
               Link
             </Button>
