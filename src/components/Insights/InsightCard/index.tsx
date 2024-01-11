@@ -4,6 +4,7 @@ import { PERCENTILES } from "../../../constants";
 import { formatTimeDistance } from "../../../utils/formatTimeDistance";
 import { getInsightImportanceColor } from "../../../utils/getInsightImportanceColor";
 import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
+import { openURLInDefaultBrowser } from "../../../utils/openURLInDefaultBrowser";
 import { Badge } from "../../common/Badge";
 import { Card } from "../../common/Card";
 import { KebabMenuButton } from "../../common/KebabMenuButton";
@@ -121,10 +122,8 @@ export const InsightCard = (props: InsightCardProps) => {
             {insightTypeInfo?.label || props.data.type}
 
             {props.data.ticketLink &&
-              <s.TicketIconContainer title="Open ticket link">
-                <s.TicketIconLink href={props.data.ticketLink ?? undefined} target="_blank" rel="noopener noreferrer">
-                  <JiraLogoIcon size={16} />
-                </s.TicketIconLink>
+              <s.TicketIconContainer title="Open ticket link" onClick={() => props.data.ticketLink && openURLInDefaultBrowser(props.data.ticketLink)}>
+                <JiraLogoIcon size={16} />
               </s.TicketIconContainer>
             }
           </s.Title>

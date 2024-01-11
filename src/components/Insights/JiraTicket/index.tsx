@@ -1,5 +1,5 @@
 import copy from "copy-to-clipboard";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTheme } from "styled-components";
 import { DefaultTheme } from "styled-components/dist/types";
 import { dispatcher } from "../../../dispatcher";
@@ -46,8 +46,8 @@ const getCircleLoaderColors = (theme: DefaultTheme): CircleLoaderColors => {
 
 export const JiraTicket = (props: JiraTicketProps) => {
   const [downloadErrorMessage, setDownloadErrorMessage] = useState<string>();
-  const [ticketLink, setTicketLink] = useState<string | null>(props.insight.ticketLink);
-  const [insightTicketLink, setinsightTicketLink] = useState<string | null>(props.insight.ticketLink);
+  const [ticketLink, setTicketLink] = useState<string | null>(props.relatedInsight?.ticketLink ?? props.insight.ticketLink);
+  const [insightTicketLink, setinsightTicketLink] = useState<string | null>(props.relatedInsight?.ticketLink ?? props.insight.ticketLink);
   const [errorMessage, setErrorMessage] = useState<string | null>();
   const descriptionContentRef = useRef<HTMLDivElement>(null);
   const theme = useTheme();
@@ -98,17 +98,13 @@ export const JiraTicket = (props: JiraTicketProps) => {
   };
 
   const linkTicket = () => {
-    console.log('Enter ticket link');
-    console.log(ticketLink);
     ticketLink && console.log(isValidHttpUrl(ticketLink));
     if (ticketLink && isValidHttpUrl(ticketLink)) {
-      console.log("before send");
-      sendTrackingEvent("test");
       window.sendMessageToDigma({
         action: actions.LINK_TICKET,
         payload: {
-          codeObjectId: props.insight.prefixedCodeObjectId,
-          insightType: props.insight.type,
+          codeObjectId: props.relatedInsight?.codeObjectId ?? props.insight.prefixedCodeObjectId,
+          insightType: props.relatedInsight?.type ?? props.insight.type,
           ticketLink: ticketLink
         }
       });
@@ -121,8 +117,8 @@ export const JiraTicket = (props: JiraTicketProps) => {
     window.sendMessageToDigma({
       action: actions.UNLINK_TICKET,
       payload: {
-        codeObjectId: props.insight.prefixedCodeObjectId,
-        insightType: props.insight.type
+        codeObjectId: props.relatedInsight?.codeObjectId ?? props.insight.prefixedCodeObjectId,
+        insightType: props.relatedInsight?.type ?? props.insight.type
       }
     });
   }
@@ -136,6 +132,12 @@ export const JiraTicket = (props: JiraTicketProps) => {
     } else {
       setErrorMessage(linkTicketResponse.message)
     }
+
+    window.sendMessageToDigma({
+      action: actions.GET_DATA
+    });
+
+    props.onReloadSpanInsight && props.onReloadSpanInsight();
   };
 
   dispatcher.addActionListener(
@@ -152,6 +154,14 @@ export const JiraTicket = (props: JiraTicketProps) => {
       setErrorMessage("Please enter a URL.")
     }
   };
+
+  useEffect(() => {
+    console.log("Related insight ticket link" + props.relatedInsight?.ticketLink);
+    if (props.relatedInsight) {
+      setTicketLink(props.relatedInsight.ticketLink)
+      setinsightTicketLink(props.relatedInsight.ticketLink)
+    }
+  }, [props.relatedInsight]);
 
   return (
     <s.Container>

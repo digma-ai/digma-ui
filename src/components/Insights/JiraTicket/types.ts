@@ -13,6 +13,7 @@ export interface JiraTicketThemeColors {
 
 export interface JiraTicketProps {
 
+
   summary: string;
   description: {
     content: ReactNode;
@@ -21,7 +22,9 @@ export interface JiraTicketProps {
   };
   attachment?: { url: string; fileName: string };
   insight: GenericCodeObjectInsight;
+  relatedInsight?: GenericCodeObjectInsight | null;
   onClose: () => void;
+  onReloadSpanInsight?: () => void;
 }
 
 export interface LinkTicketResponse {
