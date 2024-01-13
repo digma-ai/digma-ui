@@ -12,8 +12,6 @@ export interface JiraTicketThemeColors {
 }
 
 export interface JiraTicketProps {
-
-
   summary: string;
   description: {
     content: ReactNode;

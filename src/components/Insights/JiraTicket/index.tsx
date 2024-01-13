@@ -102,7 +102,6 @@ export const JiraTicket = (props: JiraTicketProps) => {
   };
 
   const linkTicket = () => {
-    ticketLink && console.log(isValidHttpUrl(ticketLink));
     if (ticketLink && isValidHttpUrl(ticketLink)) {
       window.sendMessageToDigma({
         action: actions.LINK_TICKET,

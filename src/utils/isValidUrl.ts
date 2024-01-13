@@ -1,11 +1,11 @@
 export const isValidHttpUrl = (urlString: string) => {
-    let url;
+  let url;
 
-    try {
-        url = new URL(urlString);
-    } catch (_) {
-        return false;
-    }
+  try {
+    url = new URL(urlString);
+  } catch (_) {
+    return false;
+  }
 
-    return url.protocol === "http:" || url.protocol === "https:";
-}
+  return ["http:", "https:"].includes(url.protocol);
+};

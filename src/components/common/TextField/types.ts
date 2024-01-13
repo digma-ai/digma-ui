@@ -6,7 +6,7 @@ export interface TextFieldProps {
   value: string;
   onChange: ChangeEventHandler<HTMLInputElement>;
   className?: string;
-  disabled?: boolean | undefined;
+  disabled?: boolean;
 }
 
 export interface ContainerProps {
