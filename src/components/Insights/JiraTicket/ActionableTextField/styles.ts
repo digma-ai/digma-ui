@@ -13,11 +13,11 @@ export const TextFieldContainer = styled.div`
   position: relative;
 `;
 
-export const ReleativeTextField = styled(TextField)`
+export const RelativeTextField = styled(TextField)`
   position: relative;
   background-color: transparent;
   border: 1px solid ${({ theme }) => theme.colors.field.border};
-  
+
   & > input {
     text-overflow: ellipsis;
     overflow: hidden;

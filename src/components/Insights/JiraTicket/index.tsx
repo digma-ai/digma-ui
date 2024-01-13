@@ -46,8 +46,12 @@ const getCircleLoaderColors = (theme: DefaultTheme): CircleLoaderColors => {
 
 export const JiraTicket = (props: JiraTicketProps) => {
   const [downloadErrorMessage, setDownloadErrorMessage] = useState<string>();
-  const [ticketLink, setTicketLink] = useState<string | null>(props.relatedInsight?.ticketLink ?? props.insight.ticketLink);
-  const [insightTicketLink, setinsightTicketLink] = useState<string | null>(props.relatedInsight?.ticketLink ?? props.insight.ticketLink);
+  const [ticketLink, setTicketLink] = useState<string | null>(
+    props.relatedInsight?.ticketLink ?? props.insight.ticketLink
+  );
+  const [insightTicketLink, setInsightTicketLink] = useState<string | null>(
+    props.relatedInsight?.ticketLink ?? props.insight.ticketLink
+  );
   const [errorMessage, setErrorMessage] = useState<string | null>();
   const descriptionContentRef = useRef<HTMLDivElement>(null);
   const theme = useTheme();
@@ -103,34 +107,38 @@ export const JiraTicket = (props: JiraTicketProps) => {
       window.sendMessageToDigma({
         action: actions.LINK_TICKET,
         payload: {
-          codeObjectId: props.relatedInsight?.codeObjectId ?? props.insight.prefixedCodeObjectId,
+          codeObjectId:
+            props.relatedInsight?.codeObjectId ??
+            props.insight.prefixedCodeObjectId,
           insightType: props.relatedInsight?.type ?? props.insight.type,
           ticketLink: ticketLink
         }
       });
     } else {
-      setErrorMessage('');
+      setErrorMessage("");
     }
-  }
+  };
 
   const unlinkTicket = () => {
     window.sendMessageToDigma({
       action: actions.UNLINK_TICKET,
       payload: {
-        codeObjectId: props.relatedInsight?.codeObjectId ?? props.insight.prefixedCodeObjectId,
+        codeObjectId:
+          props.relatedInsight?.codeObjectId ??
+          props.insight.prefixedCodeObjectId,
         insightType: props.relatedInsight?.type ?? props.insight.type
       }
     });
-  }
+  };
 
-  const handleinsightTicketLink = (data: unknown) => {
+  const handleInsightTicketLink = (data: unknown) => {
     const linkTicketResponse = data as LinkTicketResponse;
 
     if (linkTicketResponse.success) {
-      setinsightTicketLink(linkTicketResponse.ticketLink);
+      setInsightTicketLink(linkTicketResponse.ticketLink);
       setTicketLink(linkTicketResponse.ticketLink);
     } else {
-      setErrorMessage(linkTicketResponse.message)
+      setErrorMessage(linkTicketResponse.message);
     }
 
     window.sendMessageToDigma({
@@ -142,24 +150,23 @@ export const JiraTicket = (props: JiraTicketProps) => {
 
   dispatcher.addActionListener(
     actions.SET_TICKET_LINK,
-    handleinsightTicketLink
+    handleInsightTicketLink
   );
 
   const onTicketLinkChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    let ticketLink = event.target.value;
+    const ticketLink = event.target.value;
     setTicketLink(ticketLink);
     if (!ticketLink || isValidHttpUrl(ticketLink)) {
-      setErrorMessage('');
+      setErrorMessage("");
     } else {
-      setErrorMessage("Please enter a URL.")
+      setErrorMessage("Please enter a valid URL.");
     }
   };
 
   useEffect(() => {
-    console.log("Related insight ticket link" + props.relatedInsight?.ticketLink);
     if (props.relatedInsight) {
-      setTicketLink(props.relatedInsight.ticketLink)
-      setinsightTicketLink(props.relatedInsight.ticketLink)
+      setTicketLink(props.relatedInsight.ticketLink);
+      setInsightTicketLink(props.relatedInsight.ticketLink);
     }
   }, [props.relatedInsight]);
 
@@ -239,19 +246,19 @@ export const JiraTicket = (props: JiraTicketProps) => {
       <ActionableTextField
         key="ticket-link"
         value={ticketLink}
-        placeholder={"Paste your ticket URL here to link it with this Digma insight"}
+        placeholder={
+          "Paste your ticket URL here to link it with this Digma insight"
+        }
         label={"Ticket URL"}
         onChange={onTicketLinkChange}
         disabled={!!insightTicketLink}
         errorMessage={errorMessage}
         buttons={
-          insightTicketLink ?
-            <Button
-              key={"unlink-ticket"}
-              onClick={unlinkTicket}
-            >
+          insightTicketLink ? (
+            <Button key={"unlink-ticket"} onClick={unlinkTicket}>
               Unlink
-            </Button> :
+            </Button>
+          ) : (
             <Button
               key={"link-ticket"}
               onClick={linkTicket}
@@ -259,7 +266,9 @@ export const JiraTicket = (props: JiraTicketProps) => {
             >
               Link
             </Button>
-        } />
+          )
+        }
+      />
     </s.Container>
   );
 };
