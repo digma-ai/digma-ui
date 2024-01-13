@@ -1,7 +1,7 @@
 import * as s from "./styles";
-import { TextFieldProps } from "./types";
+import { TextFieldProps as ActionableTextFieldProps } from "./types";
 
-export const ActionableTextField = (props: TextFieldProps) => {
+export const ActionableTextField = (props: ActionableTextFieldProps) => {
   return (
     <s.TextFieldContainer>
       <s.Label>{props.label}</s.Label>

@@ -7,5 +7,5 @@ export interface TextFieldProps {
   value: string | null;
   label: string;
   disabled: boolean;
-  errorMessage: string | null | undefined;
+  errorMessage?: string | null;
 }
