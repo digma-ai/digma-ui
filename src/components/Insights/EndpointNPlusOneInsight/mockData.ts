@@ -43,7 +43,8 @@ export const mockedEndpointNPlusOneInsight: EndpointSuspectedNPlusOneInsight = {
       fraction: 0.08985711281727758,
       criticality: 0.3,
       impact: 0,
-      severity: 0
+      severity: 0,
+      ticketLink: "https://digma.ai/1"
     }
   ],
   scope: InsightScope.EntrySpan,

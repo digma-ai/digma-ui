@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { usePagination } from "../../../hooks/usePagination";
 import { InsightType } from "../../../types";
 import { getCriticalityLabel } from "../../../utils/getCriticalityLabel";
+import { openURLInDefaultBrowser } from "../../../utils/openURLInDefaultBrowser";
 import { roundTo } from "../../../utils/roundTo";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
@@ -11,6 +12,7 @@ import { ScoreIndicator } from "../../common/ScoreIndicator";
 import { Tooltip } from "../../common/Tooltip";
 import { JiraLogoIcon } from "../../common/icons/12px/JiraLogoIcon";
 import { CrosshairIcon } from "../../common/icons/CrosshairIcon";
+import { OpenLinkIcon } from "../../common/icons/OpenLinkIcon";
 import { InsightCard } from "../InsightCard";
 import { Description, Link } from "../styles";
 import { trackingEvents } from "../tracking";
@@ -110,6 +112,17 @@ export const EndpointNPlusOneInsight = (
                     </s.Stats>
                   </s.SpanDetails>
                   <s.ButtonsContainer>
+                    {span.ticketLink && (
+                      <Tooltip title={"Ticket Link"}>
+                        <Button
+                          icon={{ component: OpenLinkIcon }}
+                          onClick={() =>
+                            span.ticketLink &&
+                            openURLInDefaultBrowser(span.ticketLink)
+                          }
+                        />
+                      </Tooltip>
+                    )}
                     <Tooltip title={"Ticket Info"}>
                       <Button
                         icon={{ component: JiraLogoIcon }}

@@ -539,6 +539,7 @@ export interface EndpointSuspectedNPlusOneInsight extends EndpointInsight {
     criticality: number;
     impact: number;
     severity: number;
+    ticketLink: string | null;
   }[];
 }
 
