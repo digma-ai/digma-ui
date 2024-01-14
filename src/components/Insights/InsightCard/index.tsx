@@ -6,6 +6,7 @@ import { getInsightImportanceColor } from "../../../utils/getInsightImportanceCo
 import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
 import { openURLInDefaultBrowser } from "../../../utils/openURLInDefaultBrowser";
 import { Badge } from "../../common/Badge";
+import { Button } from "../../common/Button";
 import { Card } from "../../common/Card";
 import { KebabMenuButton } from "../../common/KebabMenuButton";
 import { Menu } from "../../common/Menu";
@@ -15,8 +16,8 @@ import { PopoverTrigger } from "../../common/Popover/PopoverTrigger";
 import { Toggle } from "../../common/Toggle";
 import { ToggleValue } from "../../common/Toggle/types";
 import { Tooltip } from "../../common/Tooltip";
-import { JiraLogoIcon } from "../../common/icons/16px/JiraLogoIcon";
 import { ChevronIcon } from "../../common/icons/ChevronIcon";
+import { OpenLinkIcon } from "../../common/icons/OpenLinkIcon";
 import { Direction } from "../../common/icons/types";
 import { Description, Link } from "../styles";
 import * as s from "./styles";
@@ -76,8 +77,8 @@ export const InsightCard = (props: InsightCardProps) => {
     const areStartTimesEqual =
       customStartTime &&
       new Date(actualStartTime).valueOf() -
-      new Date(customStartTime).valueOf() ===
-      0;
+        new Date(customStartTime).valueOf() ===
+        0;
 
     const title = new Date(actualStartTime).toString();
 
@@ -120,12 +121,6 @@ export const InsightCard = (props: InsightCardProps) => {
               )}
             </s.InsightIconContainer>
             {insightTypeInfo?.label || props.data.type}
-
-            {props.data.ticketLink &&
-              <s.TicketIconContainer title="Open ticket link" onClick={() => props.data.ticketLink && openURLInDefaultBrowser(props.data.ticketLink)}>
-                <JiraLogoIcon size={16} />
-              </s.TicketIconContainer>
-            }
           </s.Title>
           <s.Toolbar>
             {props.isAsync && <s.AsyncBadge>Async</s.AsyncBadge>}
@@ -199,7 +194,22 @@ export const InsightCard = (props: InsightCardProps) => {
           )}
         </>
       }
-      buttons={props.buttons}
+      buttons={
+        props.data.ticketLink
+          ? [
+              <Tooltip key="ticket-link" title={"Open ticket link"}>
+                <Button
+                  icon={{ component: OpenLinkIcon }}
+                  onClick={() =>
+                    props.data.ticketLink &&
+                    openURLInDefaultBrowser(props.data.ticketLink)
+                  }
+                />
+              </Tooltip>,
+              ...(props.buttons || [])
+            ]
+          : props.buttons
+      }
     />
   );
 };
