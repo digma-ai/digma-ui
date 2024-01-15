@@ -397,6 +397,7 @@ export interface EndpointSlowestSpansInsight extends EndpointInsight {
     probabilityOfBeingBottleneck: number;
     avgDurationWhenBeingBottleneck: Duration;
     criticality: number;
+    ticketLink: string | null;
 
     /**
      * @deprecated

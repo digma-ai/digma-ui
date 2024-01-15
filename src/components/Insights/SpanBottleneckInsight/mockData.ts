@@ -38,6 +38,7 @@ export const mockedSpanBottleneckInsight: EndpointSlowestSpansInsight = {
         raw: 2002883447.4474475
       },
       criticality: 0,
+      ticketLink: "https://digma.ai/1",
       p50: {
         fraction: 0,
         maxDuration: {
@@ -80,6 +81,7 @@ export const mockedSpanBottleneckInsight: EndpointSlowestSpansInsight = {
         raw: 4583302698.019802
       },
       criticality: 0,
+      ticketLink: "https://digma.ai/1",
       p50: {
         fraction: 0,
         maxDuration: {

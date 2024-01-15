@@ -1,8 +1,10 @@
+import { openURLInDefaultBrowser } from "../../../utils/openURLInDefaultBrowser";
 import { roundTo } from "../../../utils/roundTo";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { Button } from "../../common/Button";
 import { Tooltip } from "../../common/Tooltip";
 import { JiraLogoIcon } from "../../common/icons/12px/JiraLogoIcon";
+import { OpenLinkIcon } from "../../common/icons/OpenLinkIcon";
 import { InsightCard } from "../InsightCard";
 import { Description, Link } from "../styles";
 import { trackingEvents } from "../tracking";
@@ -56,14 +58,27 @@ export const SpanBottleneckInsight = (props: SpanBottleneckInsightProps) => {
                       } ${span.avgDurationWhenBeingBottleneck.unit})`}
                     </Description>
                   </s.SpanDetails>
-                  <Tooltip title={"Ticket Info"}>
-                    <Button
-                      icon={{ component: JiraLogoIcon }}
-                      onClick={() =>
-                        handleTicketInfoButtonClick(spanCodeObjectId)
-                      }
-                    />
-                  </Tooltip>
+                  <s.ButtonsContainer>
+                    {span.ticketLink && (
+                      <Tooltip title={"Ticket Link"}>
+                        <Button
+                          icon={{ component: OpenLinkIcon }}
+                          onClick={() =>
+                            span.ticketLink &&
+                            openURLInDefaultBrowser(span.ticketLink)
+                          }
+                        />
+                      </Tooltip>
+                    )}
+                    <Tooltip title={"Ticket Info"}>
+                      <Button
+                        icon={{ component: JiraLogoIcon }}
+                        onClick={() =>
+                          handleTicketInfoButtonClick(spanCodeObjectId)
+                        }
+                      />
+                    </Tooltip>
+                  </s.ButtonsContainer>
                 </s.Span>
               );
             })}
