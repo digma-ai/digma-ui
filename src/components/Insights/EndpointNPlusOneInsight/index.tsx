@@ -113,7 +113,7 @@ export const EndpointNPlusOneInsight = (
                   </s.SpanDetails>
                   <s.ButtonsContainer>
                     {span.ticketLink && (
-                      <Tooltip title={"Ticket Link"}>
+                      <Tooltip title={"Open ticket Link"}>
                         <Button
                           icon={{ component: OpenLinkIcon }}
                           onClick={() =>
