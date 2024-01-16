@@ -1,5 +1,6 @@
 import { isString } from "../../../typeGuards/isString";
 import { formatTimeDistance } from "../../../utils/formatTimeDistance";
+import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { NewButton } from "../../common/NewButton";
 import { Tag } from "../../common/Tag";
 import { Tooltip } from "../../common/Tooltip";
@@ -11,6 +12,7 @@ import { CrossCircleIcon } from "../../common/icons/CrossCircleIcon";
 import { GlobeIcon } from "../../common/icons/GlobeIcon";
 import { PlayIcon } from "../../common/icons/PlayIcon";
 import { actions } from "../actions";
+import { trackingEvents } from "../tracking";
 import { Test } from "../types";
 import * as s from "./styles";
 import { TestCardProps } from "./types";
@@ -54,6 +56,7 @@ const renderTestResultTag = (test: Test) => {
 
 export const TestCard = (props: TestCardProps) => {
   const handleTestNameClick = () => {
+    sendTrackingEvent(trackingEvents.TEST_NAME_LINK_CLICKED);
     window.sendMessageToDigma({
       action: actions.GO_TO_SPAN_OF_TEST,
       payload: {
@@ -65,10 +68,12 @@ export const TestCard = (props: TestCardProps) => {
   };
 
   const handleTicketButtonClick = () => {
+    sendTrackingEvent(trackingEvents.JIRA_TICKET_INFO_BUTTON_CLICKED);
     props.onTicketInfoOpen(props.test);
   };
 
   const handleTraceButtonClick = () => {
+    sendTrackingEvent(trackingEvents.GO_TO_TRACE_BUTTON_CLICKED);
     const spanContext = props.spanContexts.find((context) => {
       const id = props.test.contextsSpanCodeObjectIds.find(
         (x) => x === context.spanCodeObjectId
@@ -88,6 +93,7 @@ export const TestCard = (props: TestCardProps) => {
   };
 
   const handleRunButtonClick = () => {
+    sendTrackingEvent(trackingEvents.RUN_TEST_BUTTON_CLICKED);
     window.sendMessageToDigma({
       action: actions.RUN_TEST,
       payload: {

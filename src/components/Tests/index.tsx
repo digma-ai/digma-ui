@@ -3,10 +3,8 @@ import { actions as globalActions } from "../../actions";
 import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
 import { isNumber } from "../../typeGuards/isNumber";
-import { addPrefix } from "../../utils/addPrefix";
 import { sendTrackingEvent } from "../../utils/sendTrackingEvent";
 import { MenuItem } from "../Assets/FilterMenu/types";
-import { JiraTicket } from "../Insights/JiraTicket";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { NewCircleLoader } from "../common/NewCircleLoader";
 import { Pagination } from "../common/Pagination";
@@ -14,24 +12,16 @@ import { RegistrationDialog } from "../common/RegistrationDialog";
 import { RegistrationFormValues } from "../common/RegistrationDialog/types";
 import { EnvironmentFilter } from "./EnvironmentFilter";
 import { TestCard } from "./TestCard";
+import { TestTicket } from "./TestTicket";
 import { actions } from "./actions";
 import * as s from "./styles";
+import { trackingEvents } from "./tracking";
 import { SetSpanLatestDataPayload, Test, TestsProps } from "./types";
 
 const PAGE_SIZE = 10;
 const REFRESH_INTERVAL = isNumber(window.testsRefreshInterval)
   ? window.testsRefreshInterval
   : 10 * 1000; // in milliseconds
-
-const TRACKING_PREFIX = "tests";
-
-export const trackingEvents = addPrefix(
-  TRACKING_PREFIX,
-  {
-    PAGE_LOADED: "page loaded"
-  },
-  " "
-);
 
 export const Tests = (props: TestsProps) => {
   const [data, setData] = useState<SetSpanLatestDataPayload>();
@@ -282,23 +272,9 @@ export const Tests = (props: TestsProps) => {
         <s.Overlay>
           <s.PopupContainer>
             {config.userRegistrationEmail ? (
-              <JiraTicket
-                summary={`Test - ${testToOpenTicketPopup.name}`} // TODO: add summary
-                description={{
-                  content: `${JSON.stringify(
-                    testToOpenTicketPopup,
-                    null,
-                    2
-                  )}\nSpans:\n${JSON.stringify(
-                    (props.data?.data?.spanContexts || []).filter((x) =>
-                      testToOpenTicketPopup.contextsSpanCodeObjectIds.includes(
-                        x.spanCodeObjectId
-                      )
-                    ),
-                    null,
-                    2
-                  )}` // TODO: add description
-                }}
+              <TestTicket
+                test={testToOpenTicketPopup}
+                spanContexts={props.data?.data?.spanContexts || []}
                 onClose={closeJiraTicketPopup}
               />
             ) : (

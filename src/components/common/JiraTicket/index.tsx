@@ -3,6 +3,7 @@ import { useRef, useState } from "react";
 import { useTheme } from "styled-components";
 import { DefaultTheme } from "styled-components/dist/types";
 import { isString } from "../../../typeGuards/isString";
+import { addPrefix } from "../../../utils/addPrefix";
 import { downloadFile } from "../../../utils/downloadFile";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { CircleLoader } from "../../common/CircleLoader";
@@ -14,11 +15,11 @@ import { CrossIcon } from "../../common/icons/12px/CrossIcon";
 import { DownloadIcon } from "../../common/icons/12px/DownloadIcon";
 import { PaperclipIcon } from "../../common/icons/12px/PaperclipIcon";
 import { JiraLogoIcon } from "../../common/icons/16px/JiraLogoIcon";
-import { trackingEvents } from "../tracking";
 import { AttachmentTag } from "./AttachmentTag";
 import { Field } from "./Field";
 import { IconButton } from "./IconButton";
 import * as s from "./styles";
+import { trackingEvents } from "./tracking";
 import { JiraTicketProps } from "./types";
 
 const getCircleLoaderColors = (theme: DefaultTheme): CircleLoaderColors => {
@@ -44,6 +45,11 @@ export const JiraTicket = (props: JiraTicketProps) => {
   const descriptionContentRef = useRef<HTMLDivElement>(null);
   const theme = useTheme();
 
+  const prefixedTrackingEvents = addPrefix(
+    props.tracking?.prefix || "",
+    trackingEvents
+  );
+
   const handleCloseButtonClick = () => {
     props.onClose();
   };
@@ -52,10 +58,13 @@ export const JiraTicket = (props: JiraTicketProps) => {
     field: string,
     value: HTMLElement | null | string
   ) => {
-    sendTrackingEvent(trackingEvents.JIRA_TICKET_FIELD_COPY_BUTTON_CLICKED, {
-      insightType: props.insight.type,
-      field
-    });
+    sendTrackingEvent(
+      prefixedTrackingEvents.JIRA_TICKET_FIELD_COPY_BUTTON_CLICKED,
+      {
+        ...(props.tracking?.additionalInfo || {}),
+        field
+      }
+    );
 
     if (value === null) {
       return;
@@ -70,10 +79,8 @@ export const JiraTicket = (props: JiraTicketProps) => {
 
   const handleDownloadButtonClick = () => {
     sendTrackingEvent(
-      trackingEvents.JIRA_TICKET_ATTACHMENT_DOWNLOAD_BUTTON_CLICKED,
-      {
-        insightType: props.insight.type
-      }
+      prefixedTrackingEvents.JIRA_TICKET_ATTACHMENT_DOWNLOAD_BUTTON_CLICKED,
+      { ...(props.tracking?.additionalInfo || {}) }
     );
 
     if (props.attachment) {

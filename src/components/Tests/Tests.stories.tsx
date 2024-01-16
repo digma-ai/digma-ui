@@ -35,7 +35,7 @@ export const Default: Story = {
           }
         ],
         entries: [
-          { ...mockedTest, name: "Test 1" },
+          { ...mockedTest, name: "Test 1", result: "fail" },
           { ...mockedTest, name: "Test 2" },
           { ...mockedTest, name: "Test 3" },
           { ...mockedTest, name: "Test 4" },
