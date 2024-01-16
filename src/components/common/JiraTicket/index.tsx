@@ -47,7 +47,8 @@ export const JiraTicket = (props: JiraTicketProps) => {
 
   const prefixedTrackingEvents = addPrefix(
     props.tracking?.prefix || "",
-    trackingEvents
+    trackingEvents,
+    " "
   );
 
   const handleCloseButtonClick = () => {
