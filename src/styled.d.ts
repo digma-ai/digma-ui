@@ -12,7 +12,11 @@ import { TooltipThemeColors } from "./components/common/Tooltip/types";
 import { Mode } from "./globals";
 
 export interface ThemeColors {
-  icon: string;
+  icon: {
+    white: string;
+    primary: string;
+    disabledAlt: string;
+  };
   button: {
     primary: ButtonThemeColors;
     secondary: ButtonThemeColors;
@@ -33,6 +37,24 @@ export interface ThemeColors {
   field: FieldThemeColors;
   panel: {
     background: string;
+  };
+  text: {
+    base: string;
+    link: string;
+    subtext: string;
+    success: string;
+  };
+  surface: {
+    primaryLight: string;
+    highlight: string;
+    card: string;
+    brand: string;
+    secondary: string;
+  };
+  stroke: {
+    primary: string;
+    secondary: string;
+    brand: string;
   };
 }
 

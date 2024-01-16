@@ -28,6 +28,15 @@ export enum DeploymentType {
   DOCKER_EXTENSION = "DockerExtension"
 }
 
+export interface Environment {
+  originalName: string;
+  name: string;
+}
+
+export interface Scope {
+  type: string;
+}
+
 export interface ConfigContextData {
   digmaApiUrl: string;
   digmaStatus: DigmaStatus | undefined;
@@ -42,4 +51,6 @@ export interface ConfigContextData {
   userRegistrationEmail: string;
   environment: string;
   backendInfo: BackendInfo | undefined;
+  environments: Environment[] | undefined;
+  scope: Scope | undefined;
 }

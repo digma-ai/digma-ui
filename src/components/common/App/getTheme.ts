@@ -13,6 +13,7 @@ export const grayScale = {
   500: "#828599",
   600: "#565966",
   700: "#4c4e59",
+  750: "#37383F",
   800: "#2c2e33",
   850: "#37383f",
   900: "#2b2c33",
@@ -57,7 +58,11 @@ export const greenScale = {
 };
 
 const darkThemeColors: ThemeColors = {
-  icon: grayScale[200],
+  icon: {
+    white: grayScale[0],
+    primary: grayScale[100],
+    disabledAlt: grayScale[500]
+  },
   button: {
     primary: {
       background: {
@@ -237,11 +242,33 @@ const darkThemeColors: ThemeColors = {
   },
   panel: {
     background: grayScale[1000]
+  },
+  text: {
+    base: grayScale[0],
+    subtext: grayScale[400],
+    link: primaryScale[100],
+    success: greenScale[500]
+  },
+  surface: {
+    primaryLight: grayScale[800],
+    highlight: grayScale[750],
+    card: grayScale[1100],
+    brand: primaryScale[300],
+    secondary: grayScale[1100]
+  },
+  stroke: {
+    primary: grayScale[750],
+    secondary: grayScale[500],
+    brand: primaryScale[300]
   }
 };
 
 const lightThemeColors: ThemeColors = {
-  icon: grayScale[800],
+  icon: {
+    white: grayScale[0],
+    primary: grayScale[800],
+    disabledAlt: grayScale[500]
+  },
   button: {
     primary: {
       background: {
@@ -419,7 +446,25 @@ const lightThemeColors: ThemeColors = {
     icon: grayScale[800],
     text: grayScale[800]
   },
-  panel: { background: grayScale[150] }
+  panel: { background: grayScale[150] },
+  text: {
+    base: grayScale[900],
+    subtext: grayScale[600],
+    link: primaryScale[300],
+    success: grayScale[900]
+  },
+  surface: {
+    primaryLight: grayScale[50],
+    highlight: grayScale[150],
+    card: grayScale[0],
+    brand: primaryScale[300],
+    secondary: grayScale[50]
+  },
+  stroke: {
+    primary: grayScale[500],
+    secondary: grayScale[800],
+    brand: primaryScale[300]
+  }
 };
 
 const getColors = (mode: Mode): ThemeColors => {

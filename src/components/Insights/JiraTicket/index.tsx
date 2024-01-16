@@ -53,7 +53,7 @@ export const JiraTicket = (props: JiraTicketProps) => {
     value: HTMLElement | null | string
   ) => {
     sendTrackingEvent(trackingEvents.JIRA_TICKET_FIELD_COPY_BUTTON_CLICKED, {
-      insightType: props.insight.type,
+      ...(props.insight ? { insightType: props.insight.type } : {}),
       field
     });
 
@@ -72,7 +72,7 @@ export const JiraTicket = (props: JiraTicketProps) => {
     sendTrackingEvent(
       trackingEvents.JIRA_TICKET_ATTACHMENT_DOWNLOAD_BUTTON_CLICKED,
       {
-        insightType: props.insight.type
+        ...(props.insight ? { insightType: props.insight.type } : {})
       }
     );
 

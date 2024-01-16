@@ -19,6 +19,6 @@ export interface JiraTicketProps {
     errorMessage?: string;
   };
   attachment?: { url: string; fileName: string };
-  insight: GenericCodeObjectInsight;
+  insight?: GenericCodeObjectInsight;
   onClose: () => void;
 }

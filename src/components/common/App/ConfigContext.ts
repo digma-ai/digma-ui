@@ -17,5 +17,7 @@ export const ConfigContext = createContext<ConfigContextData>({
     ? window.userRegistrationEmail
     : "",
   environment: isString(window.environment) ? window.environment : "",
-  backendInfo: undefined
+  backendInfo: undefined,
+  environments: undefined,
+  scope: undefined
 });
