@@ -109,40 +109,44 @@ export const TestCard = (props: TestCardProps) => {
         </Tooltip>
       </s.Header>
       <s.Content>
-        <s.Stat>
-          <s.IconContainer>
-            <GlobeIcon />
-          </s.IconContainer>
-          <Tooltip title={props.test.environment}>
+        <Tooltip title={props.test.environment}>
+          <s.Stat>
+            <s.IconContainer>
+              <GlobeIcon />
+            </s.IconContainer>
             <s.StatValue>{props.test.environment}</s.StatValue>
-          </Tooltip>
-        </s.Stat>
-        <s.Stat>
-          <s.IconContainer>
-            <TimerIcon />
-          </s.IconContainer>
-          <Tooltip title={new Date(props.test.runAt).toString()}>
+          </s.Stat>
+        </Tooltip>
+        <Tooltip title={new Date(props.test.runAt).toString()}>
+          <s.Stat>
+            <s.IconContainer>
+              <TimerIcon size={16} />
+            </s.IconContainer>
             <s.StatValue>{formatTimeDistance(props.test.runAt)}</s.StatValue>
-          </Tooltip>
-        </s.Stat>
-        <s.Stat>
-          <span>Duration</span>
-          <Tooltip title={durationString}>
+          </s.Stat>
+        </Tooltip>
+        <Tooltip title={durationString}>
+          <s.Stat>
+            <span>Duration</span>
             <s.StatValue>{durationString}</s.StatValue>
-          </Tooltip>
-        </s.Stat>
+          </s.Stat>
+        </Tooltip>
         <s.ButtonsContainer>
-          <NewButton
-            onClick={handleTicketButtonClick}
-            icon={JiraLogoIcon}
-            buttonType={"tertiary"}
-            disabled={props.test.result === "success"}
-          />
-          <NewButton
-            onClick={handleTraceButtonClick}
-            icon={TraceIcon}
-            buttonType={"tertiary"}
-          />
+          <Tooltip title={"Open ticket info"}>
+            <NewButton
+              onClick={handleTicketButtonClick}
+              icon={JiraLogoIcon}
+              buttonType={"tertiary"}
+              disabled={props.test.result === "success"}
+            />
+          </Tooltip>
+          <Tooltip title={"Open trace"}>
+            <NewButton
+              onClick={handleTraceButtonClick}
+              icon={TraceIcon}
+              buttonType={"tertiary"}
+            />
+          </Tooltip>
           <NewButton
             label={"Run"}
             icon={PlayIcon}
