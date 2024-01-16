@@ -136,7 +136,7 @@ export const TestCard = (props: TestCardProps) => {
             onClick={handleTicketButtonClick}
             icon={JiraLogoIcon}
             buttonType={"tertiary"}
-            disabled={["fail", "error"].includes(props.test.result)}
+            disabled={props.test.result === "success"}
           />
           <NewButton
             onClick={handleTraceButtonClick}
