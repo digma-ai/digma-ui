@@ -21,3 +21,9 @@ export const Default: Story = {
     insight: mockedNPlusOneInsight
   }
 };
+
+export const LinkedJira: Story = {
+  args: {
+    insight: { ...mockedNPlusOneInsight, ticketLink: "https://digma.ai/1" }
+  }
+};

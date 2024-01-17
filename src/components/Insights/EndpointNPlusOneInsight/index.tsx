@@ -2,7 +2,6 @@ import { useContext } from "react";
 import { usePagination } from "../../../hooks/usePagination";
 import { InsightType } from "../../../types";
 import { getCriticalityLabel } from "../../../utils/getCriticalityLabel";
-import { openURLInDefaultBrowser } from "../../../utils/openURLInDefaultBrowser";
 import { roundTo } from "../../../utils/roundTo";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
@@ -10,10 +9,9 @@ import { Button } from "../../common/Button";
 import { Pagination } from "../../common/Pagination";
 import { ScoreIndicator } from "../../common/ScoreIndicator";
 import { Tooltip } from "../../common/Tooltip";
-import { JiraLogoIcon } from "../../common/icons/12px/JiraLogoIcon";
 import { CrosshairIcon } from "../../common/icons/CrosshairIcon";
-import { OpenLinkIcon } from "../../common/icons/OpenLinkIcon";
 import { InsightCard } from "../InsightCard";
+import { JiraButton } from "../common/JiraButton";
 import { Description, Link } from "../styles";
 import { trackingEvents } from "../tracking";
 import { Trace } from "../types";
@@ -112,25 +110,11 @@ export const EndpointNPlusOneInsight = (
                     </s.Stats>
                   </s.SpanDetails>
                   <s.ButtonsContainer>
-                    {span.ticketLink && (
-                      <Tooltip title={"Open ticket Link"}>
-                        <Button
-                          icon={{ component: OpenLinkIcon }}
-                          onClick={() =>
-                            span.ticketLink &&
-                            openURLInDefaultBrowser(span.ticketLink)
-                          }
-                        />
-                      </Tooltip>
-                    )}
-                    <Tooltip title={"Ticket Info"}>
-                      <Button
-                        icon={{ component: JiraLogoIcon }}
-                        onClick={() =>
-                          handleTicketInfoButtonClick(spanInfo.spanCodeObjectId)
-                        }
-                      />
-                    </Tooltip>
+                    <JiraButton
+                      handleTicketInfoButtonClick={handleTicketInfoButtonClick}
+                      spanCodeObjectId={spanInfo.spanCodeObjectId}
+                      ticketLink={span.ticketLink}
+                    />
                     {config.isJaegerEnabled && (
                       <Tooltip title={"Trace"}>
                         <Button

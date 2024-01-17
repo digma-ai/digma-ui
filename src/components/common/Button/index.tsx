@@ -30,6 +30,7 @@ export const ButtonComponent = (
           />
         )}
         {props.children && <span>{props.children}</span>}
+        {props.afterTextIcon && props.afterTextIcon}
       </s.ContentContainer>
     </s.Button>
   );

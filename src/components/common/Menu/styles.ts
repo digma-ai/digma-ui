@@ -30,11 +30,12 @@ export const Header = styled.div`
   }};
 `;
 
-export const List = styled.ul`
+export const List = styled.ul<{ width?: string }>`
   display: flex;
   flex-direction: column;
   margin: 0;
   padding: 0;
+  width: ${(props) => props.width || "auto"};
 `;
 
 export const ListItem = styled.li`
@@ -44,6 +45,8 @@ export const ListItem = styled.li`
   list-style-type: none;
   padding: 6px 8px;
   font-size: 14px;
+  display: flex;
+  gap: 6px;
   cursor: pointer;
   color: ${({ theme }) => {
     switch (theme.mode) {
@@ -86,5 +89,9 @@ export const ListItem = styled.li`
           return "#49494d";
       }
     }};
+  }
+
+  & svg {
+    padding-top: 3px;
   }
 `;

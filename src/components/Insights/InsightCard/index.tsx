@@ -4,9 +4,7 @@ import { PERCENTILES } from "../../../constants";
 import { formatTimeDistance } from "../../../utils/formatTimeDistance";
 import { getInsightImportanceColor } from "../../../utils/getInsightImportanceColor";
 import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
-import { openURLInDefaultBrowser } from "../../../utils/openURLInDefaultBrowser";
 import { Badge } from "../../common/Badge";
-import { Button } from "../../common/Button";
 import { Card } from "../../common/Card";
 import { KebabMenuButton } from "../../common/KebabMenuButton";
 import { Menu } from "../../common/Menu";
@@ -17,7 +15,6 @@ import { Toggle } from "../../common/Toggle";
 import { ToggleValue } from "../../common/Toggle/types";
 import { Tooltip } from "../../common/Tooltip";
 import { ChevronIcon } from "../../common/icons/ChevronIcon";
-import { OpenLinkIcon } from "../../common/icons/OpenLinkIcon";
 import { Direction } from "../../common/icons/types";
 import { Description, Link } from "../styles";
 import * as s from "./styles";
@@ -194,22 +191,7 @@ export const InsightCard = (props: InsightCardProps) => {
           )}
         </>
       }
-      buttons={
-        props.data.ticketLink
-          ? [
-              <Tooltip key="ticket-link" title={"Open ticket link"}>
-                <Button
-                  icon={{ component: OpenLinkIcon }}
-                  onClick={() =>
-                    props.data.ticketLink &&
-                    openURLInDefaultBrowser(props.data.ticketLink)
-                  }
-                />
-              </Tooltip>,
-              ...(props.buttons || [])
-            ]
-          : props.buttons
-      }
+      buttons={props.buttons}
     />
   );
 };

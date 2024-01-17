@@ -1,11 +1,8 @@
-import { openURLInDefaultBrowser } from "../../../utils/openURLInDefaultBrowser";
 import { roundTo } from "../../../utils/roundTo";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
-import { Button } from "../../common/Button";
 import { Tooltip } from "../../common/Tooltip";
-import { JiraLogoIcon } from "../../common/icons/12px/JiraLogoIcon";
-import { OpenLinkIcon } from "../../common/icons/OpenLinkIcon";
 import { InsightCard } from "../InsightCard";
+import { JiraButton } from "../common/JiraButton";
 import { Description, Link } from "../styles";
 import { trackingEvents } from "../tracking";
 import * as s from "./styles";
@@ -59,25 +56,11 @@ export const SpanBottleneckInsight = (props: SpanBottleneckInsightProps) => {
                     </Description>
                   </s.SpanDetails>
                   <s.ButtonsContainer>
-                    {span.ticketLink && (
-                      <Tooltip title={"Open ticket Link"}>
-                        <Button
-                          icon={{ component: OpenLinkIcon }}
-                          onClick={() =>
-                            span.ticketLink &&
-                            openURLInDefaultBrowser(span.ticketLink)
-                          }
-                        />
-                      </Tooltip>
-                    )}
-                    <Tooltip title={"Ticket Info"}>
-                      <Button
-                        icon={{ component: JiraLogoIcon }}
-                        onClick={() =>
-                          handleTicketInfoButtonClick(spanCodeObjectId)
-                        }
-                      />
-                    </Tooltip>
+                    <JiraButton
+                      handleTicketInfoButtonClick={handleTicketInfoButtonClick}
+                      spanCodeObjectId={spanCodeObjectId}
+                      ticketLink={span.ticketLink}
+                    />
                   </s.ButtonsContainer>
                 </s.Span>
               );
