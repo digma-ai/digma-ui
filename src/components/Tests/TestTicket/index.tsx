@@ -14,14 +14,14 @@ export const TestTicket = (props: TestTicketProps) => {
     .join("\n");
 
   const description = [
-    `${props.test.name}" test failed${
+    `"${props.test.name}" test failed${
       isString(props.test.errorOrFailMessage)
         ? ` with message: ${props.test.errorOrFailMessage}`
         : ""
     }`,
     `Last run at: ${new Date(props.test.runAt).toString()}`,
     `Duration: ${durationString}`,
-    relatedSpans.length > 0 ? `Related spans:\n"${relatedSpans}` : ""
+    relatedSpans.length > 0 ? `Related spans:\n${relatedSpans}` : ""
   ]
     .filter(Boolean)
     .join("\n\n");
