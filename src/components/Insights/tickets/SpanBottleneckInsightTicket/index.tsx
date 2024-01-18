@@ -74,6 +74,16 @@ export const SpanBottleneckInsightTicket = (
     </>
   );
 
+  const onReloadSpanInsight = () => {
+    spanInsight?.spanInfo?.spanCodeObjectId && window.sendMessageToDigma({
+      action: actions.GET_SPAN_INSIGHT,
+      payload: {
+        spanCodeObjectId: spanInsight?.spanInfo?.spanCodeObjectId,
+        insightType: InsightType.SpanEndpointBottleneck
+      }
+    });
+  }
+
   useEffect(() => {
     const spanCodeObjectId = span?.spanInfo.spanCodeObjectId;
     const methodCodeObjectId = span?.spanInfo.methodCodeObjectId || undefined;
@@ -187,6 +197,8 @@ export const SpanBottleneckInsightTicket = (
           spanInsight === null ? "Failed to get insight details" : undefined
       }}
       insight={props.data.insight}
+      relatedInsight={spanInsight}
+      onReloadSpanInsight={onReloadSpanInsight}
       onClose={props.onClose}
     />
   );

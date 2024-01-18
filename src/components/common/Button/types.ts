@@ -9,6 +9,7 @@ export interface ButtonProps {
     color?: string;
     size?: number;
   };
+  afterTextIcon?: ReactNode;
   children?: ReactNode;
   onClick?: MouseEventHandler<HTMLButtonElement>;
   disabled?: boolean;

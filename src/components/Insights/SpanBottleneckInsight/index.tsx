@@ -1,9 +1,8 @@
 import { roundTo } from "../../../utils/roundTo";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
-import { Button } from "../../common/Button";
 import { Tooltip } from "../../common/Tooltip";
-import { JiraLogoIcon } from "../../common/icons/12px/JiraLogoIcon";
 import { InsightCard } from "../InsightCard";
+import { JiraButton } from "../common/JiraButton";
 import { Description, Link } from "../styles";
 import { trackingEvents } from "../tracking";
 import * as s from "./styles";
@@ -56,14 +55,14 @@ export const SpanBottleneckInsight = (props: SpanBottleneckInsightProps) => {
                       } ${span.avgDurationWhenBeingBottleneck.unit})`}
                     </Description>
                   </s.SpanDetails>
-                  <Tooltip title={"Ticket Info"}>
-                    <Button
-                      icon={{ component: JiraLogoIcon }}
-                      onClick={() =>
-                        handleTicketInfoButtonClick(spanCodeObjectId)
-                      }
+                  <s.ButtonsContainer>
+                    <JiraButton
+                      onTicketInfoButtonClick={handleTicketInfoButtonClick}
+                      spanCodeObjectId={spanCodeObjectId}
+                      ticketLink={span.ticketLink}
+                      buttonType="small"
                     />
-                  </Tooltip>
+                  </s.ButtonsContainer>
                 </s.Span>
               );
             })}

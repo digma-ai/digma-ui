@@ -15,6 +15,7 @@ export const mockedHighNumberOfQueriesInsight: EndpointHighNumberOfQueriesInsigh
     lastCommitId: "a1b2c3d",
     deactivatedCommitId: null,
     reopenCount: 0,
+    ticketLink: null,
     name: "High number of queries",
     type: InsightType.EndpointHighNumberOfQueries,
     category: InsightCategory.Performance,

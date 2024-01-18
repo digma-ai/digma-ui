@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { ListProps } from "./types";
 
 export const Container = styled.div`
   display: flex;
@@ -30,11 +31,12 @@ export const Header = styled.div`
   }};
 `;
 
-export const List = styled.ul`
+export const List = styled.ul<ListProps>`
   display: flex;
   flex-direction: column;
   margin: 0;
   padding: 0;
+  width: ${(props) => props.width || "auto"};
 `;
 
 export const ListItem = styled.li`
@@ -44,6 +46,9 @@ export const ListItem = styled.li`
   list-style-type: none;
   padding: 6px 8px;
   font-size: 14px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
   cursor: pointer;
   color: ${({ theme }) => {
     switch (theme.mode) {
