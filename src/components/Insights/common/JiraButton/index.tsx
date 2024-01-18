@@ -19,6 +19,9 @@ export const JiraButton = (props: JiraButtonProps) => {
     setIsJiraPopoverOpen(!isJiraPopoverOpen);
   };
 
+  const menuWidth = props.buttonType == "large" ? "119px" : "70px";
+  const buttonText = props.buttonType == "large" ? "Ticket Info" : "";
+
   return (
     <>
       {!props.ticketLink && (
@@ -29,7 +32,7 @@ export const JiraButton = (props: JiraButtonProps) => {
               props.onTicketInfoButtonClick(props.spanCodeObjectId)
             }
           >
-            {props.buttonText}
+            {buttonText}
           </Button>
         </Tooltip>
       )}
@@ -37,7 +40,7 @@ export const JiraButton = (props: JiraButtonProps) => {
         <NewPopover
           content={
             <Menu
-              width={props.buttonText ? "119px" : "70px"}
+              width={menuWidth}
               items={[
                 {
                   icon: { component: OpenLinkIcon },
@@ -72,7 +75,7 @@ export const JiraButton = (props: JiraButtonProps) => {
               />
             }
           >
-            {props.buttonText}
+            {buttonText}
           </s.StyledButton>
         </NewPopover>
       )}

@@ -138,7 +138,7 @@ export const NPlusOneInsight = (props: NPlusOneInsightProps) => {
           onTicketInfoButtonClick={handleCreateJiraTicketButtonClick}
           spanCodeObjectId={props.insight.spanInfo?.spanCodeObjectId}
           ticketLink={props.insight.ticketLink}
-          buttonText="Ticket Info"
+          buttonType="large"
         />
       ]}
     />
