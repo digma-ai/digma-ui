@@ -1,12 +1,15 @@
 import copy from "copy-to-clipboard";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useTheme } from "styled-components";
 import { DefaultTheme } from "styled-components/dist/types";
 import { dispatcher } from "../../../dispatcher";
+import { getFeatureFlagValue } from "../../../featureFlags";
 import { isString } from "../../../typeGuards/isString";
+import { FeatureFlag } from "../../../types";
 import { downloadFile } from "../../../utils/downloadFile";
 import { isValidHttpUrl } from "../../../utils/isValidUrl";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
+import { ConfigContext } from "../../common/App/ConfigContext";
 import { Button } from "../../common/Button";
 import { CircleLoader } from "../../common/CircleLoader";
 import { CircleLoaderColors } from "../../common/CircleLoader/types";
@@ -55,6 +58,12 @@ export const JiraTicket = (props: JiraTicketProps) => {
   const [errorMessage, setErrorMessage] = useState<string | null>();
   const descriptionContentRef = useRef<HTMLDivElement>(null);
   const theme = useTheme();
+  const config = useContext(ConfigContext);
+
+  const isLinkUnlinkInputVisible = getFeatureFlagValue(
+    config,
+    FeatureFlag.IS_TICKET_LINK_UNLINK_INPUT_ENABLED
+  );
 
   const handleCloseButtonClick = () => {
     props.onClose();
@@ -242,32 +251,34 @@ export const JiraTicket = (props: JiraTicketProps) => {
           errorMessage={downloadErrorMessage}
         />
       )}
-      <ActionableTextField
-        key="ticket-link"
-        value={ticketLink}
-        placeholder={
-          "Paste your ticket URL here to link it with this Digma insight"
-        }
-        label={"Ticket URL"}
-        onChange={onTicketLinkChange}
-        disabled={!!insightTicketLink}
-        errorMessage={errorMessage}
-        buttons={
-          insightTicketLink ? (
-            <Button key={"unlink-ticket"} onClick={unlinkTicket}>
-              Unlink
-            </Button>
-          ) : (
-            <Button
-              key={"link-ticket"}
-              onClick={linkTicket}
-              disabled={!ticketLink || !!errorMessage}
-            >
-              Link
-            </Button>
-          )
-        }
-      />
+      {isLinkUnlinkInputVisible && (
+        <ActionableTextField
+          key="ticket-link"
+          value={ticketLink}
+          placeholder={
+            "Paste your ticket URL here to link it with this Digma insight"
+          }
+          label={"Ticket URL"}
+          onChange={onTicketLinkChange}
+          disabled={!!insightTicketLink}
+          errorMessage={errorMessage}
+          buttons={
+            insightTicketLink ? (
+              <Button key={"unlink-ticket"} onClick={unlinkTicket}>
+                Unlink
+              </Button>
+            ) : (
+              <Button
+                key={"link-ticket"}
+                onClick={linkTicket}
+                disabled={!ticketLink || !!errorMessage}
+              >
+                Link
+              </Button>
+            )
+          }
+        />
+      )}
     </s.Container>
   );
 };
