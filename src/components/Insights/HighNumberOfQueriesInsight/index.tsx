@@ -13,7 +13,9 @@ import { HighNumberOfQueriesInsightProps } from "./types";
 export const HighNumberOfQueriesInsight = (
   props: HighNumberOfQueriesInsightProps
 ) => {
-  const traceId = props.insight.traceId;
+  const { insight } = props; 
+  const traceId = insight.traceId;
+  
   const handleTraceButtonClick = (
     trace: Trace,
     insightType: InsightType,
@@ -24,10 +26,11 @@ export const HighNumberOfQueriesInsight = (
 
   return (
     <InsightCard
-      data={props.insight}
+      data={insight}
       content={
         <s.ContentContainer>
           <Description>
+            {insight.quantile && insight.quantile === 0.95 && "Affecting the slowest 5% of requests. " }
             Consider using joins or caching responses to reduce database round
             trips
           </Description>

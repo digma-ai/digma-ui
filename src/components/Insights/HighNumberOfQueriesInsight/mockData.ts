@@ -67,5 +67,6 @@ export const mockedHighNumberOfQueriesInsight: EndpointHighNumberOfQueriesInsigh
     prefixedCodeObjectId:
       "method:org.springframework.samples.petclinic.owner.PetController$_$processCreationForm",
     customStartTime: null,
-    actualStartTime: "2023-08-10T08:04:00Z"
+    actualStartTime: "2023-08-10T08:04:00Z",
+    quantile: 0.95,
   };
