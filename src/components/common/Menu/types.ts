@@ -16,3 +16,7 @@ export interface MenuProps {
   }[];
   onSelect: (value: string) => void;
 }
+
+export interface ListProps {
+  width?: string;
+}

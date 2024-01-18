@@ -67,7 +67,7 @@ export const BottleneckInsight = (props: BottleneckInsightProps) => {
       buttons={[
         <JiraButton
           key={"view-ticket-info"}
-          handleTicketInfoButtonClick={handleCreateJiraTicketButtonClick}
+          onTicketInfoButtonClick={handleCreateJiraTicketButtonClick}
           spanCodeObjectId={props.insight.spanInfo?.spanCodeObjectId}
           ticketLink={props.insight.ticketLink}
           buttonText="Ticket Info"

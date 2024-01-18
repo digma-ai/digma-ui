@@ -26,7 +26,7 @@ export const JiraButton = (props: JiraButtonProps) => {
           <Button
             icon={{ component: JiraLogoIcon }}
             onClick={() =>
-              props.handleTicketInfoButtonClick(props.spanCodeObjectId)
+              props.onTicketInfoButtonClick(props.spanCodeObjectId)
             }
           >
             {props.buttonText}
@@ -52,7 +52,7 @@ export const JiraButton = (props: JiraButtonProps) => {
                   label: "Edit",
                   value: props.spanCodeObjectId ?? "",
                   onClick: () =>
-                    props.handleTicketInfoButtonClick(props.spanCodeObjectId)
+                    props.onTicketInfoButtonClick(props.spanCodeObjectId)
                 }
               ]}
               onSelect={handleJiraButtonClick}

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { ListProps } from "./types";
 
 export const Container = styled.div`
   display: flex;
@@ -30,7 +31,7 @@ export const Header = styled.div`
   }};
 `;
 
-export const List = styled.ul<{ width?: string }>`
+export const List = styled.ul<ListProps>`
   display: flex;
   flex-direction: column;
   margin: 0;
@@ -47,6 +48,7 @@ export const ListItem = styled.li`
   font-size: 14px;
   display: flex;
   gap: 6px;
+  align-items: center;
   cursor: pointer;
   color: ${({ theme }) => {
     switch (theme.mode) {
@@ -89,9 +91,5 @@ export const ListItem = styled.li`
           return "#49494d";
       }
     }};
-  }
-
-  & svg {
-    padding-top: 3px;
   }
 `;

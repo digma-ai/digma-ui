@@ -111,7 +111,7 @@ export const EndpointNPlusOneInsight = (
                   </s.SpanDetails>
                   <s.ButtonsContainer>
                     <JiraButton
-                      handleTicketInfoButtonClick={handleTicketInfoButtonClick}
+                      onTicketInfoButtonClick={handleTicketInfoButtonClick}
                       spanCodeObjectId={spanInfo.spanCodeObjectId}
                       ticketLink={span.ticketLink}
                     />

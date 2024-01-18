@@ -1,5 +1,5 @@
 export interface JiraButtonProps {
-  handleTicketInfoButtonClick(spanCodeObjectId?: string): void;
+  onTicketInfoButtonClick(spanCodeObjectId?: string): void;
   ticketLink?: string | null;
   spanCodeObjectId?: string;
   buttonText?: string;

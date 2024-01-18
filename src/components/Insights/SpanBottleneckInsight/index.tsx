@@ -57,7 +57,7 @@ export const SpanBottleneckInsight = (props: SpanBottleneckInsightProps) => {
                   </s.SpanDetails>
                   <s.ButtonsContainer>
                     <JiraButton
-                      handleTicketInfoButtonClick={handleTicketInfoButtonClick}
+                      onTicketInfoButtonClick={handleTicketInfoButtonClick}
                       spanCodeObjectId={spanCodeObjectId}
                       ticketLink={span.ticketLink}
                     />
