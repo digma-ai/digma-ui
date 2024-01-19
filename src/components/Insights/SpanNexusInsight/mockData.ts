@@ -55,8 +55,8 @@ export const mockedSpanNexusInsight: SpanNexusInsight =
       "method:org.springframework.samples.petclinic.owner.PetController$_$processCreationForm",
     customStartTime: null,
     actualStartTime: "2023-08-10T08:04:00Z",
-    flowsCount :4,
-    servicesCount: 3,
+    flows :4,
+    services: 3,
     usage: 'High',
-    endpointsCount: 5,
+    endpoints: 5,
   };

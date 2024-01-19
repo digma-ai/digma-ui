@@ -685,9 +685,9 @@ export interface EndpointHighNumberOfQueriesInsight extends EndpointInsight {
 
 export interface SpanNexusInsight extends SpanInsight {
   type: InsightType.SpanNexus;
-  servicesCount: number;
-  endpointsCount: number;
-  flowsCount: number;
+  services: number;
+  endpoints: number;
+  flows: number;
   usage: string | null;
 }
 
