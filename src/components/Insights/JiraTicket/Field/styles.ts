@@ -23,6 +23,7 @@ export const ContentContainer = styled.div`
 export const Content = styled.div<ContentProps>`
   width: 100%;
   max-height: 200px;
+  min-height: 18px;
   padding: 6px 28px 6px 8px;
   overflow: ${({ $multiline }) => ($multiline ? "auto" : "hidden")};
   white-space: ${({ $multiline }) => ($multiline ? "pre-line" : "nowrap")};

@@ -25,6 +25,7 @@ export const TextFieldComponent = (
         placeholder={props.placeholder}
         onFocus={handleFocus}
         onBlur={handleBlur}
+        disabled={props.disabled}
         ref={ref}
       />
       {props.inputEndContent && <div>{props.inputEndContent}</div>}

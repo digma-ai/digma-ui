@@ -1,10 +1,9 @@
 import { roundTo } from "../../../utils/roundTo";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { trimEndpointScheme } from "../../../utils/trimEndpointScheme";
-import { Button } from "../../common/Button";
 import { Tooltip } from "../../common/Tooltip";
-import { JiraLogoIcon } from "../../common/icons/12px/JiraLogoIcon";
 import { InsightCard } from "../InsightCard";
+import { JiraButton } from "../common/JiraButton";
 import { Link } from "../styles";
 import { trackingEvents } from "../tracking";
 import * as s from "./styles";
@@ -66,13 +65,13 @@ export const BottleneckInsight = (props: BottleneckInsightProps) => {
       onRecalculate={props.onRecalculate}
       onRefresh={props.onRefresh}
       buttons={[
-        <Button
+        <JiraButton
           key={"view-ticket-info"}
-          onClick={handleCreateJiraTicketButtonClick}
-          icon={{ component: JiraLogoIcon }}
-        >
-          Ticket Info
-        </Button>
+          onTicketInfoButtonClick={handleCreateJiraTicketButtonClick}
+          spanCodeObjectId={props.insight.spanInfo?.spanCodeObjectId}
+          ticketLink={props.insight.ticketLink}
+          buttonType="large"
+        />
       ]}
     />
   );

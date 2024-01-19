@@ -9,9 +9,9 @@ import { Button } from "../../common/Button";
 import { Pagination } from "../../common/Pagination";
 import { ScoreIndicator } from "../../common/ScoreIndicator";
 import { Tooltip } from "../../common/Tooltip";
-import { JiraLogoIcon } from "../../common/icons/12px/JiraLogoIcon";
 import { CrosshairIcon } from "../../common/icons/CrosshairIcon";
 import { InsightCard } from "../InsightCard";
+import { JiraButton } from "../common/JiraButton";
 import { Description, Link } from "../styles";
 import { trackingEvents } from "../tracking";
 import { Trace } from "../types";
@@ -110,14 +110,12 @@ export const EndpointNPlusOneInsight = (
                     </s.Stats>
                   </s.SpanDetails>
                   <s.ButtonsContainer>
-                    <Tooltip title={"Ticket Info"}>
-                      <Button
-                        icon={{ component: JiraLogoIcon }}
-                        onClick={() =>
-                          handleTicketInfoButtonClick(spanInfo.spanCodeObjectId)
-                        }
-                      />
-                    </Tooltip>
+                    <JiraButton
+                      onTicketInfoButtonClick={handleTicketInfoButtonClick}
+                      spanCodeObjectId={spanInfo.spanCodeObjectId}
+                      ticketLink={span.ticketLink}
+                      buttonType="small"
+                    />
                     {config.isJaegerEnabled && (
                       <Tooltip title={"Trace"}>
                         <Button

@@ -13,6 +13,7 @@ export const mockedEndpointNPlusOneInsight: EndpointSuspectedNPlusOneInsight = {
   lastCommitId: "a1b2c3d",
   deactivatedCommitId: null,
   reopenCount: 0,
+  ticketLink: null,
   impact: 0,
   name: "Suspected N+1 Query",
   type: InsightType.EndpointSpanNPlusOne,
@@ -42,7 +43,8 @@ export const mockedEndpointNPlusOneInsight: EndpointSuspectedNPlusOneInsight = {
       fraction: 0.08985711281727758,
       criticality: 0.3,
       impact: 0,
-      severity: 0
+      severity: 0,
+      ticketLink: "https://digma.ai/1"
     }
   ],
   scope: InsightScope.EntrySpan,

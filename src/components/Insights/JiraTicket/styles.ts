@@ -47,3 +47,10 @@ export const LoaderContainer = styled.div`
   align-items: center;
   height: 200px;
 `;
+
+export const ButtonsContainer = styled.div`
+  margin-top: auto;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+`;

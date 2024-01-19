@@ -28,3 +28,8 @@ export const SpanName = styled.span`
   white-space: nowrap;
   max-width: fit-content;
 `;
+
+export const ButtonsContainer = styled.div`
+  display: flex;
+  gap: 8px;
+`;

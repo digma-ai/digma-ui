@@ -1,10 +1,16 @@
 import copy from "copy-to-clipboard";
-import { useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useTheme } from "styled-components";
 import { DefaultTheme } from "styled-components/dist/types";
+import { dispatcher } from "../../../dispatcher";
+import { getFeatureFlagValue } from "../../../featureFlags";
 import { isString } from "../../../typeGuards/isString";
+import { FeatureFlag } from "../../../types";
 import { downloadFile } from "../../../utils/downloadFile";
+import { isValidHttpUrl } from "../../../utils/isValidUrl";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
+import { ConfigContext } from "../../common/App/ConfigContext";
+import { Button } from "../../common/Button";
 import { CircleLoader } from "../../common/CircleLoader";
 import { CircleLoaderColors } from "../../common/CircleLoader/types";
 import { IconTag } from "../../common/IconTag";
@@ -14,12 +20,14 @@ import { CrossIcon } from "../../common/icons/12px/CrossIcon";
 import { DownloadIcon } from "../../common/icons/12px/DownloadIcon";
 import { PaperclipIcon } from "../../common/icons/12px/PaperclipIcon";
 import { JiraLogoIcon } from "../../common/icons/16px/JiraLogoIcon";
+import { actions } from "../actions";
 import { trackingEvents } from "../tracking";
+import { ActionableTextField } from "./ActionableTextField";
 import { AttachmentTag } from "./AttachmentTag";
 import { Field } from "./Field";
 import { IconButton } from "./IconButton";
 import * as s from "./styles";
-import { JiraTicketProps } from "./types";
+import { JiraTicketProps, LinkTicketResponse } from "./types";
 
 const getCircleLoaderColors = (theme: DefaultTheme): CircleLoaderColors => {
   switch (theme.mode) {
@@ -41,8 +49,21 @@ const getCircleLoaderColors = (theme: DefaultTheme): CircleLoaderColors => {
 
 export const JiraTicket = (props: JiraTicketProps) => {
   const [downloadErrorMessage, setDownloadErrorMessage] = useState<string>();
+  const [ticketLink, setTicketLink] = useState<string | null>(
+    props.relatedInsight?.ticketLink ?? props.insight.ticketLink
+  );
+  const [insightTicketLink, setInsightTicketLink] = useState<string | null>(
+    props.relatedInsight?.ticketLink ?? props.insight.ticketLink
+  );
+  const [errorMessage, setErrorMessage] = useState<string | null>();
   const descriptionContentRef = useRef<HTMLDivElement>(null);
   const theme = useTheme();
+  const config = useContext(ConfigContext);
+
+  const isLinkUnlinkInputVisible = getFeatureFlagValue(
+    config,
+    FeatureFlag.IS_TICKET_LINK_UNLINK_INPUT_ENABLED
+  );
 
   const handleCloseButtonClick = () => {
     props.onClose();
@@ -88,6 +109,74 @@ export const JiraTicket = (props: JiraTicketProps) => {
       );
     }
   };
+
+  const linkTicket = () => {
+    if (ticketLink && isValidHttpUrl(ticketLink)) {
+      window.sendMessageToDigma({
+        action: actions.LINK_TICKET,
+        payload: {
+          codeObjectId:
+            props.relatedInsight?.codeObjectId ??
+            props.insight.prefixedCodeObjectId,
+          insightType: props.relatedInsight?.type ?? props.insight.type,
+          ticketLink: ticketLink
+        }
+      });
+    } else {
+      setErrorMessage("");
+    }
+  };
+
+  const unlinkTicket = () => {
+    window.sendMessageToDigma({
+      action: actions.UNLINK_TICKET,
+      payload: {
+        codeObjectId:
+          props.relatedInsight?.codeObjectId ??
+          props.insight.prefixedCodeObjectId,
+        insightType: props.relatedInsight?.type ?? props.insight.type
+      }
+    });
+  };
+
+  const handleInsightTicketLink = (data: unknown) => {
+    const linkTicketResponse = data as LinkTicketResponse;
+
+    if (linkTicketResponse.success) {
+      setInsightTicketLink(linkTicketResponse.ticketLink);
+      setTicketLink(linkTicketResponse.ticketLink);
+    } else {
+      setErrorMessage(linkTicketResponse.message);
+    }
+
+    window.sendMessageToDigma({
+      action: actions.GET_DATA
+    });
+
+    props.onReloadSpanInsight && props.onReloadSpanInsight();
+  };
+
+  dispatcher.addActionListener(
+    actions.SET_TICKET_LINK,
+    handleInsightTicketLink
+  );
+
+  const onTicketLinkChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const ticketLink = event.target.value;
+    setTicketLink(ticketLink);
+    if (!ticketLink || isValidHttpUrl(ticketLink)) {
+      setErrorMessage("");
+    } else {
+      setErrorMessage("Please enter a valid URL.");
+    }
+  };
+
+  useEffect(() => {
+    if (props.relatedInsight) {
+      setTicketLink(props.relatedInsight.ticketLink);
+      setInsightTicketLink(props.relatedInsight.ticketLink);
+    }
+  }, [props.relatedInsight]);
 
   return (
     <s.Container>
@@ -160,6 +249,34 @@ export const JiraTicket = (props: JiraTicketProps) => {
             />
           }
           errorMessage={downloadErrorMessage}
+        />
+      )}
+      {isLinkUnlinkInputVisible && (
+        <ActionableTextField
+          key="ticket-link"
+          value={ticketLink}
+          placeholder={
+            "Paste your ticket URL here to link it with this Digma insight"
+          }
+          label={"Ticket URL"}
+          onChange={onTicketLinkChange}
+          disabled={!!insightTicketLink}
+          errorMessage={errorMessage}
+          buttons={
+            insightTicketLink ? (
+              <Button key={"unlink-ticket"} onClick={unlinkTicket}>
+                Unlink
+              </Button>
+            ) : (
+              <Button
+                key={"link-ticket"}
+                onClick={linkTicket}
+                disabled={!ticketLink || !!errorMessage}
+              >
+                Link
+              </Button>
+            )
+          }
         />
       )}
     </s.Container>

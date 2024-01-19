@@ -169,6 +169,7 @@ export interface CodeObjectInsight extends Insight {
   firstDetected: string | null;
   lastDetected: string | null;
   reopenCount: number;
+  ticketLink: string | null;
 }
 
 export interface SpanInsight extends CodeObjectInsight {
@@ -396,6 +397,7 @@ export interface EndpointSlowestSpansInsight extends EndpointInsight {
     probabilityOfBeingBottleneck: number;
     avgDurationWhenBeingBottleneck: Duration;
     criticality: number;
+    ticketLink: string | null;
 
     /**
      * @deprecated
@@ -538,6 +540,7 @@ export interface EndpointSuspectedNPlusOneInsight extends EndpointInsight {
     criticality: number;
     impact: number;
     severity: number;
+    ticketLink: string | null;
   }[];
 }
 
@@ -677,4 +680,5 @@ export interface EndpointHighNumberOfQueriesInsight extends EndpointInsight {
   medianDuration: Duration;
   traceId: string | null;
   requestFraction: number;
+  quantile?: number;
 }

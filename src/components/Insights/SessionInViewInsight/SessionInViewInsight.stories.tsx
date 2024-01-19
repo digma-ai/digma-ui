@@ -27,6 +27,7 @@ export const Default: Story = {
       lastCommitId: "a1b2c3d",
       deactivatedCommitId: null,
       reopenCount: 0,
+      ticketLink: null,
       impact: 0,
       name: "Session in View Query",
       type: InsightType.EndpointSessionInView,

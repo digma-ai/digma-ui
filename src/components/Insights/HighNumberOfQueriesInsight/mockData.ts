@@ -15,6 +15,7 @@ export const mockedHighNumberOfQueriesInsight: EndpointHighNumberOfQueriesInsigh
     lastCommitId: "a1b2c3d",
     deactivatedCommitId: null,
     reopenCount: 0,
+    ticketLink: null,
     name: "High number of queries",
     type: InsightType.EndpointHighNumberOfQueries,
     category: InsightCategory.Performance,
@@ -67,5 +68,6 @@ export const mockedHighNumberOfQueriesInsight: EndpointHighNumberOfQueriesInsigh
     prefixedCodeObjectId:
       "method:org.springframework.samples.petclinic.owner.PetController$_$processCreationForm",
     customStartTime: null,
-    actualStartTime: "2023-08-10T08:04:00Z"
+    actualStartTime: "2023-08-10T08:04:00Z",
+    quantile: 0.95,
   };
