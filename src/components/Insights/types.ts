@@ -680,4 +680,5 @@ export interface EndpointHighNumberOfQueriesInsight extends EndpointInsight {
   medianDuration: Duration;
   traceId: string | null;
   requestFraction: number;
+  quantile?: number;
 }
