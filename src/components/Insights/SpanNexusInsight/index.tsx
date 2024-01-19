@@ -2,10 +2,10 @@ import { Tag } from "../../common/Tag";
 import { InsightCard } from "../InsightCard";
 import { Description } from "../styles";
 import * as s from "./styles";
-import { CodeNexusInsightProps, } from "./types";
+import { SpanNexusInsightProps, } from "./types";
 
-export const CodeNexusInsight = (
-  props: CodeNexusInsightProps
+export const SpanNexusInsight = (
+  props: SpanNexusInsightProps
 ) => {
   const { insight } = props; 
   return (

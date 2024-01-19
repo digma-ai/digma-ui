@@ -114,7 +114,7 @@ export const getInsightTypeInfo = (
       icon: SQLDatabaseIcon,
       label: "High number of queries"
     },
-    [InsightType.CodeNexus]: {
+    [InsightType.SpanNexus]: {
       icon: BottleneckIcon, // todo changes 
       label: "Code Nexus Point"
     }

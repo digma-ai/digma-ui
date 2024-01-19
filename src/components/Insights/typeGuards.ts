@@ -1,7 +1,6 @@
 import { InsightType } from "../../types";
 import {
   ChattyApiEndpointInsight,
-  CodeNexusInsight,
   CodeObjectErrorsInsight,
   CodeObjectHotSpotInsight,
   CodeObjectInsight,
@@ -22,6 +21,7 @@ import {
   SpanEndpointBottleneckInsight,
   SpanInsight,
   SpanNPlusOneInsight,
+  SpanNexusInsight,
   SpanScalingBadlyInsight,
   SpanScalingInsufficientDataInsight,
   SpanScalingWellInsight,
@@ -135,7 +135,7 @@ export const isEndpointHighNumberOfQueriesInsight = (
 ): insight is EndpointHighNumberOfQueriesInsight =>
   insight.type === InsightType.EndpointHighNumberOfQueries;
 
-export const isCodeNexusInsight = (
+export const isSpanNexusInsight = (
     insight: CodeObjectInsight
-): insight is CodeNexusInsight =>
-    insight.type === InsightType.CodeNexus;
+): insight is SpanNexusInsight =>
+    insight.type === InsightType.SpanNexus;

@@ -1,11 +1,11 @@
 import { InsightType } from "../../../types";
 import {
-  CodeNexusInsight,
   InsightCategory,
-  InsightScope
+  InsightScope,
+  SpanNexusInsight
 } from "../types";
 
-export const mockedCodeNexusInsight: CodeNexusInsight =
+export const mockedSpanNexusInsight: SpanNexusInsight =
   {
     firstDetected: "2023-12-05T17:25:47.010Z",
     lastDetected: "2024-01-05T13:14:47.010Z",
@@ -17,7 +17,7 @@ export const mockedCodeNexusInsight: CodeNexusInsight =
     reopenCount: 0,
     ticketLink: null,
     name: "Code Nexus Point",
-    type: InsightType.CodeNexus,
+    type: InsightType.SpanNexus,
     category: InsightCategory.Usage,
     specifity: 2,
     importance: 3,
