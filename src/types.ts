@@ -31,7 +31,8 @@ export enum InsightType {
   SpanScalingInsufficientData = "SpanScalingInsufficientData",
   EndpointSessionInView = "EndpointSessionInView",
   EndpointChattyApi = "EndpointChattyApi",
-  EndpointHighNumberOfQueries = "EndpointHighNumberOfQueries"
+  EndpointHighNumberOfQueries = "EndpointHighNumberOfQueries",
+  CodeNexus = "CodeNexus",
 }
 
 export type PercentileKey = "p50" | "p95";

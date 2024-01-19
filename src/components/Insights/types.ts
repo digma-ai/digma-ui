@@ -682,3 +682,12 @@ export interface EndpointHighNumberOfQueriesInsight extends EndpointInsight {
   requestFraction: number;
   quantile?: number;
 }
+
+export interface CodeNexusInsight extends SpanInsight {
+  type: InsightType.CodeNexus;
+  servicesCount: number;
+  endpointsCount: number;
+  flowsCount: number;
+  usage: string | null;
+}
+
