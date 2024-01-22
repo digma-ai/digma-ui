@@ -15,7 +15,7 @@ export const SpanNexusInsight = (
       content={
         <s.ContentContainer>
           <Description>
-            Multiple code flows depned on this location
+            Multiple code flows depend on this location
           </Description>
           <s.Stats>
             <s.Stat>
