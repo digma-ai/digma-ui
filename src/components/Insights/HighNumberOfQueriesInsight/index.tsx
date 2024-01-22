@@ -13,9 +13,9 @@ import { HighNumberOfQueriesInsightProps } from "./types";
 export const HighNumberOfQueriesInsight = (
   props: HighNumberOfQueriesInsightProps
 ) => {
-  const { insight } = props; 
+  const { insight } = props;
   const traceId = insight.traceId;
-  
+
   const handleTraceButtonClick = (
     trace: Trace,
     insightType: InsightType,
@@ -30,14 +30,15 @@ export const HighNumberOfQueriesInsight = (
       content={
         <s.ContentContainer>
           <Description>
-            {insight.quantile && insight.quantile === 0.95 && "Affecting the slowest 5% of requests. " }
+            {insight.quantile === 0.95 &&
+              "Affecting the slowest 5% of requests. "}
             Consider using joins or caching responses to reduce database round
             trips
           </Description>
           <s.Stats>
             <s.Stat>
               <s.Key># of Queries</s.Key>
-              <Tag type={"mediumSeverity"} value={props.insight.queriesCount} />
+              <Tag type={"mediumSeverity"} value={insight.queriesCount} />
             </s.Stat>
             <s.Stat>
               <s.KeyContainer>
@@ -52,7 +53,7 @@ export const HighNumberOfQueriesInsight = (
                   </s.IconContainer>
                 </Tooltip>
               </s.KeyContainer>
-              <Tag value={props.insight.typicalCount} />
+              <Tag value={insight.typicalCount} />
             </s.Stat>
             {traceId && (
               <s.Stat>
@@ -64,10 +65,10 @@ export const HighNumberOfQueriesInsight = (
                       handleTraceButtonClick(
                         {
                           id: traceId,
-                          name: props.insight.spanInfo?.displayName
+                          name: insight.spanInfo?.displayName
                         },
-                        props.insight.type,
-                        props.insight.spanInfo?.spanCodeObjectId
+                        insight.type,
+                        insight.spanInfo?.spanCodeObjectId
                       )
                     }
                   />

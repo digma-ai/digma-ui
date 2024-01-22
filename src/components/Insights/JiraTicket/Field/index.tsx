@@ -20,7 +20,7 @@ export const Field = (props: FieldProps) => {
 
   const scrollbarOffset =
     contentRef.current &&
-      contentRef.current.scrollHeight > contentRef.current.clientHeight
+    contentRef.current.scrollHeight > contentRef.current.clientHeight
       ? scrollbar.width
       : 0;
 

@@ -27,15 +27,15 @@ export const InsightIconContainer = styled.div`
 `;
 
 export const TicketIconContainer = styled.button`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    padding: 2px;
-    position: relative;
-    background: none;
-    border: none;
-    cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 2px;
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
 `;
 
 export const TicketIconLink = styled(Link)`

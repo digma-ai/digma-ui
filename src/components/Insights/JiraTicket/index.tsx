@@ -62,7 +62,7 @@ export const JiraTicket = (props: JiraTicketProps) => {
 
   const isLinkUnlinkInputVisible = getFeatureFlagValue(
     config,
-    FeatureFlag.IS_TICKET_LINK_UNLINK_INPUT_ENABLED
+    FeatureFlag.IS_INSIGHT_TICKET_LINKAGE_ENABLED
   );
 
   const handleCloseButtonClick = () => {

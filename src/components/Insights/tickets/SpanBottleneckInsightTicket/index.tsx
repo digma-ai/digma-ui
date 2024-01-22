@@ -75,14 +75,15 @@ export const SpanBottleneckInsightTicket = (
   );
 
   const onReloadSpanInsight = () => {
-    spanInsight?.spanInfo?.spanCodeObjectId && window.sendMessageToDigma({
-      action: actions.GET_SPAN_INSIGHT,
-      payload: {
-        spanCodeObjectId: spanInsight?.spanInfo?.spanCodeObjectId,
-        insightType: InsightType.SpanEndpointBottleneck
-      }
-    });
-  }
+    spanInsight?.spanInfo?.spanCodeObjectId &&
+      window.sendMessageToDigma({
+        action: actions.GET_SPAN_INSIGHT,
+        payload: {
+          spanCodeObjectId: spanInsight?.spanInfo?.spanCodeObjectId,
+          insightType: InsightType.SpanEndpointBottleneck
+        }
+      });
+  };
 
   useEffect(() => {
     const spanCodeObjectId = span?.spanInfo.spanCodeObjectId;

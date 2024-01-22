@@ -84,21 +84,22 @@ export const EndpointNPlusOneInsightTicket = (
   );
 
   const onReloadSpanInsight = () => {
-    spanInfo?.spanCodeObjectId && window.sendMessageToDigma({
-      action: actions.GET_SPAN_INSIGHT,
-      payload: {
-        spanCodeObjectId: spanInfo?.spanCodeObjectId,
-        insightType: InsightType.SpanNPlusOne
-      }
-    });
-  }
+    spanInfo?.spanCodeObjectId &&
+      window.sendMessageToDigma({
+        action: actions.GET_SPAN_INSIGHT,
+        payload: {
+          spanCodeObjectId: spanInfo?.spanCodeObjectId,
+          insightType: InsightType.SpanNPlusOne
+        }
+      });
+  };
 
   const traceId = span?.traceId;
   const attachment = traceId
     ? {
-      url: `${config.jaegerURL}/api/traces/${traceId}?prettyPrint=true`,
-      fileName: `trace-${traceId}.json`
-    }
+        url: `${config.jaegerURL}/api/traces/${traceId}?prettyPrint=true`,
+        fileName: `trace-${traceId}.json`
+      }
     : undefined;
 
   useEffect(() => {
