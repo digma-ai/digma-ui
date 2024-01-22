@@ -20,7 +20,7 @@ export const SpanNexusInsight = (
           <s.Stats>
             <s.Stat>
               <s.Key>Services</s.Key>
-              <Tag type={"mediumSeverity"} value={services} />
+              <Tag value={services} />
             </s.Stat>
             <s.Stat>
               <s.Key>Edpoints</s.Key>
@@ -28,11 +28,11 @@ export const SpanNexusInsight = (
             </s.Stat>
             <s.Stat>
               <s.Key>Flows</s.Key>
-              <Tag type={"mediumSeverity"} value={flows} />
+              <Tag value={flows} />
             </s.Stat>
             <s.Stat>
               <s.Key>Usage</s.Key>
-              <Tag type={"mediumSeverity"} value={usage || 'High'} />
+              <Tag value={usage || 'High'} />
             </s.Stat>
           </s.Stats>
         </s.ContentContainer>
