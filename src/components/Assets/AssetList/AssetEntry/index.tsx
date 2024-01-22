@@ -185,6 +185,16 @@ export const AssetEntry = (props: AssetEntryProps) => {
             )}
           </s.StatsColumn>
         )}
+        {props.entry.instrumentationLibrary && (
+          <s.StatsColumn>
+            <s.Stats>
+              <span>Scope</span>
+              <s.ValueContainer>
+                {props.entry.instrumentationLibrary}
+              </s.ValueContainer>
+            </s.Stats>
+          </s.StatsColumn>
+        )}
       </s.StatsContainer>
     </s.Container>
   );

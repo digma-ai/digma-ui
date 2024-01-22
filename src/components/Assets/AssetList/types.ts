@@ -54,6 +54,7 @@ export interface AssetEntry {
   p50: Duration | null;
   p95: Duration | null;
   displayName: string;
+  instrumentationLibrary?: string;
   insights: Insight[];
   latestSpanTimestamp: string;
   impactScores?: ImpactScores;
