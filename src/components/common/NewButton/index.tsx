@@ -1,13 +1,18 @@
+import { ForwardedRef, forwardRef } from "react";
 import * as s from "./styles";
 import { NewButtonProps } from "./types";
 
-export const NewButton = (props: NewButtonProps) => {
+export const NewButtonComponent = (
+  props: NewButtonProps,
+  ref: ForwardedRef<HTMLButtonElement>
+) => {
   const buttonType = props.buttonType || "primary";
   const buttonSize = props.size || "small";
   const iconSize = buttonSize === "large" ? 16 : 13;
 
   return (
     <s.Button
+      ref={ref}
       disabled={props.disabled}
       title={props.title}
       onClick={props.onClick}
@@ -30,3 +35,5 @@ export const NewButton = (props: NewButtonProps) => {
     </s.Button>
   );
 };
+
+export const NewButton = forwardRef(NewButtonComponent);

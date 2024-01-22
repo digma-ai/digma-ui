@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { InsightType } from "../../../types";
 import { getCriticalityLabel } from "../../../utils/getCriticalityLabel";
+import { getDurationString } from "../../../utils/getDurationString";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { trimEndpointScheme } from "../../../utils/trimEndpointScheme";
 import { ConfigContext } from "../../common/App/ConfigContext";
@@ -85,9 +86,7 @@ export const NPlusOneInsight = (props: NPlusOneInsightProps) => {
             </s.Stat>
             <s.Stat>
               <Description>Duration</Description>
-              <span>
-                {props.insight.duration.value} {props.insight.duration.unit}
-              </span>
+              <span>{getDurationString(props.insight.duration)}</span>
             </s.Stat>
           </s.Stats>
           <Description>Affected endpoints:</Description>

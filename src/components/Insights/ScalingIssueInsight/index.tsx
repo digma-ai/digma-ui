@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { InsightType } from "../../../types";
+import { getDurationString } from "../../../utils/getDurationString";
 import { trimEndpointScheme } from "../../../utils/trimEndpointScheme";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Button } from "../../common/Button";
@@ -52,10 +53,8 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
             <s.Stat>
               <Description>Duration</Description>
               <span>
-                {props.insight.minDuration.value}{" "}
-                {props.insight.minDuration.unit} -{" "}
-                {props.insight.maxDuration.value}{" "}
-                {props.insight.maxDuration.unit}
+                {getDurationString(props.insight.minDuration)} -{" "}
+                {getDurationString(props.insight.maxDuration)}
               </span>
             </s.Stat>
           </s.Stats>

@@ -1,3 +1,4 @@
+import { getDurationString } from "../../../utils/getDurationString";
 import { roundTo } from "../../../utils/roundTo";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { trimEndpointScheme } from "../../../utils/trimEndpointScheme";
@@ -48,8 +49,7 @@ export const BottleneckInsight = (props: BottleneckInsightProps) => {
                     </s.EndpointName>
                   </Tooltip>
                   <s.Duration>
-                    {endpoint.avgDurationWhenBeingBottleneck.value}{" "}
-                    {endpoint.avgDurationWhenBeingBottleneck.unit}
+                    {getDurationString(endpoint.avgDurationWhenBeingBottleneck)}
                   </s.Duration>
                 </s.EndpointData>
                 <s.Description>

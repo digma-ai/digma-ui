@@ -10,7 +10,13 @@ import { isString } from "../../../typeGuards/isString";
 import { ConfigContext } from "./ConfigContext";
 import { getTheme } from "./getTheme";
 import { GlobalStyle } from "./styles";
-import { AppProps, BackendInfo, DigmaStatus } from "./types";
+import {
+  AppProps,
+  BackendInfo,
+  DigmaStatus,
+  Environment,
+  Scope
+} from "./types";
 
 export const THEMES = ["light", "dark", "dark-jetbrains"];
 
@@ -181,6 +187,24 @@ export const App = (props: AppProps) => {
       }
     };
 
+    const handleSetEnvironments = (data: unknown) => {
+      if (isObject(data) && Array.isArray(data.environments)) {
+        setConfig((config) => ({
+          ...config,
+          environments: data.environments as Environment[]
+        }));
+      }
+    };
+
+    const handleSetSelectedCodeScope = (data: unknown) => {
+      if (isObject(data) && isObject(data.scope) && isString(data.scope.type)) {
+        setConfig((config) => ({
+          ...config,
+          scope: data.scope as Scope
+        }));
+      }
+    };
+
     const handleSetIsMicrometerProject = (data: unknown) => {
       if (isObject(data) && isBoolean(data.isMicrometerProject)) {
         setConfig((config) => ({
@@ -234,6 +258,14 @@ export const App = (props: AppProps) => {
     dispatcher.addActionListener(
       actions.SET_BACKEND_INFO,
       handleSetBackendInfo
+    );
+    dispatcher.addActionListener(
+      actions.SET_ENVIRONMENTS,
+      handleSetEnvironments
+    );
+    dispatcher.addActionListener(
+      actions.SET_SELECTED_CODE_SCOPE,
+      handleSetSelectedCodeScope
     );
     dispatcher.addActionListener(
       actions.SET_IS_MICROMETER_PROJECT,
@@ -291,6 +323,14 @@ export const App = (props: AppProps) => {
       dispatcher.removeActionListener(
         actions.SET_BACKEND_INFO,
         handleSetBackendInfo
+      );
+      dispatcher.removeActionListener(
+        actions.SET_ENVIRONMENTS,
+        handleSetEnvironments
+      );
+      dispatcher.removeActionListener(
+        actions.SET_SELECTED_CODE_SCOPE,
+        handleSetSelectedCodeScope
       );
       dispatcher.removeActionListener(
         actions.SET_IS_MICROMETER_PROJECT,

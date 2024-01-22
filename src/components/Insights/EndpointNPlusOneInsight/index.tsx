@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { usePagination } from "../../../hooks/usePagination";
 import { InsightType } from "../../../types";
 import { getCriticalityLabel } from "../../../utils/getCriticalityLabel";
+import { getDurationString } from "../../../utils/getDurationString";
 import { roundTo } from "../../../utils/roundTo";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
@@ -103,9 +104,7 @@ export const EndpointNPlusOneInsight = (
                       </s.Stat>
                       <s.Stat>
                         <Description>Duration</Description>
-                        <span>
-                          {span.duration.value} {span.duration.unit}
-                        </span>
+                        <span>{getDurationString(span.duration)}</span>
                       </s.Stat>
                     </s.Stats>
                   </s.SpanDetails>

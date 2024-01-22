@@ -1,3 +1,4 @@
+import { getDurationString } from "../../../../../utils/getDurationString";
 import { roundTo } from "../../../../../utils/roundTo";
 import { trimEndpointScheme } from "../../../../../utils/trimEndpointScheme";
 import * as s from "./styles";
@@ -29,8 +30,7 @@ export const BottleneckEndpoints = (props: BottleneckEndpointsProps) => {
             </div>
             <div>
               Slowing {roundTo(x.probabilityOfBeingBottleneck * 100, 2)}% of the
-              requests (~{x.avgDurationWhenBeingBottleneck.value}{" "}
-              {x.avgDurationWhenBeingBottleneck.unit})
+              requests (~{getDurationString(x.avgDurationWhenBeingBottleneck)})
             </div>
           </li>
         ))}

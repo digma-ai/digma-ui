@@ -51,6 +51,7 @@ declare global {
     recentActivityExpirationLimit?: unknown;
     recentActivityDocumentationURL?: unknown;
     recentActivityIsEnvironmentManagementEnabled?: unknown;
+    testsRefreshInterval?: unknown;
     wizardSkipInstallationStep?: unknown;
     wizardFirstLaunch?: unknown;
   }

@@ -1,4 +1,5 @@
 import { format } from "date-fns";
+import { getDurationString } from "../../../../utils/getDurationString";
 import { TooltipContent } from "../TooltipContent";
 import * as s from "./styles";
 import { DotTooltipContentProps } from "./types";
@@ -16,7 +17,7 @@ export const DotTooltipContent = (
           <s.Divider />
           {format(date, "MM/dd/yyyy")}
         </s.Timestamp>
-        {props.data.duration.value} {props.data.duration.unit}
+        {getDurationString(props.data.duration)}
       </s.Container>
     </TooltipContent>
   );
