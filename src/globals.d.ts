@@ -38,6 +38,7 @@ declare global {
     isDigmaEngineRunning?: unknown;
     isDockerInstalled?: unknown;
     isDockerComposeInstalled?: unknown;
+    isMicrometerProject?: unknown;
     assetsRefreshInterval?: unknown;
     assetsSearch?: unknown;
     assetsSelectedServices?: unknown;

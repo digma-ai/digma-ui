@@ -18,6 +18,14 @@ import {
   EnvironmentInstructionsPanelProps
 } from "./types";
 
+const getEnvironmentVariableString = (
+  isMicrometerProject: boolean,
+  environmentName: string
+) =>
+  isMicrometerProject
+    ? `MANAGEMENT_OPENTELEMETRY_RESOURCE-ATTRIBUTES_digma_environment=${environmentName}`
+    : `OTEL_RESOURCE_ATTRIBUTES=digma.environment=${environmentName}`;
+
 export const EnvironmentInstructionsPanel = (
   props: EnvironmentInstructionsPanelProps
 ) => {
@@ -28,6 +36,10 @@ export const EnvironmentInstructionsPanel = (
   const config = useContext(ConfigContext);
   const hostname =
     getHostnameFromURL(config.digmaApiUrl) || "[DIGMA_BACKEND_URL]";
+  const environmentVariableString = getEnvironmentVariableString(
+    config.isMicrometerProject,
+    props.environment.originalName
+  );
 
   const handleOrgDigmaSetupGuideLinkClick = () => {
     setIsOrgDigmaSetupGuideVisible(true);
@@ -77,9 +89,7 @@ export const EnvironmentInstructionsPanel = (
               Set up the following environment variables when running your code
               to tag the observability data with this run config:
             </span>
-            <CodeSnippet
-              text={`OTEL_RESOURCE_ATTRIBUTES=digma.environment=${props.environment.originalName}`}
-            />
+            <CodeSnippet text={environmentVariableString} />
             <s.AddToConfigContainer>
               <s.Link onClick={handleAddToRunConfigLinkClick}>
                 Add to the active run config
