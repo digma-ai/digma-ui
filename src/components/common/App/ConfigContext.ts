@@ -19,5 +19,6 @@ export const ConfigContext = createContext<ConfigContextData>({
   environment: isString(window.environment) ? window.environment : "",
   backendInfo: undefined,
   environments: undefined,
-  scope: undefined
+  scope: undefined,
+  isMicrometerProject: window.isMicrometerProject === true
 });

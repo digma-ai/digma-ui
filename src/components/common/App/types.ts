@@ -53,4 +53,5 @@ export interface ConfigContextData {
   backendInfo: BackendInfo | undefined;
   environments: Environment[] | undefined;
   scope: Scope | undefined;
+  isMicrometerProject: boolean;
 }

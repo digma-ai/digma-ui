@@ -25,12 +25,13 @@
       window.isJaegerEnabled;
       window.userEmail;
       window.userRegistrationEmail;
+      window.environment;
       window.isObservabilityEnabled;
       window.isDigmaEngineInstalled;
       window.isDigmaEngineRunning;
       window.isDockerInstalled;
       window.isDockerComposeInstalled;
-      window.environment;
+      window.isMicrometerProject;
       <% for (var i = 0; i < environmentVariables.length; i++) { %>
       window.<%= environmentVariables[i] %>;<% } %>
     </script>
