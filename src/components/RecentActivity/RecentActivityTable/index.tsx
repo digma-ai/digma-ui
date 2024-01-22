@@ -8,6 +8,7 @@ import { useMemo } from "react";
 import { Duration } from "../../../globals";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { formatTimeDistance } from "../../../utils/formatTimeDistance";
+import { getDurationString } from "../../../utils/getDurationString";
 import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
 import { getInsightTypeOrderPriority } from "../../../utils/getInsightTypeOrderPriority";
 import { greenScale } from "../../common/App/getTheme";
@@ -62,7 +63,7 @@ const renderTimeDistance = (timestamp: string, viewMode: ViewMode) => {
 
 const renderDuration = (duration: Duration, viewMode: ViewMode) =>
   viewMode === "table" ? (
-    <Tag value={`${duration.value} ${duration.unit}`} />
+    <Tag value={getDurationString(duration)} />
   ) : (
     <span>
       {duration.value}

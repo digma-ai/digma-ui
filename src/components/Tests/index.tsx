@@ -274,7 +274,7 @@ export const Tests = (props: TestsProps) => {
             {config.userRegistrationEmail ? (
               <TestTicket
                 test={testToOpenTicketPopup}
-                spanContexts={props.data?.data?.spanContexts || []}
+                spanContexts={data?.data?.spanContexts || []}
                 onClose={closeJiraTicketPopup}
               />
             ) : (

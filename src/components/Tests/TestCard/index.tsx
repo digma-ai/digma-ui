@@ -1,5 +1,6 @@
 import { isString } from "../../../typeGuards/isString";
 import { formatTimeDistance } from "../../../utils/formatTimeDistance";
+import { getDurationString } from "../../../utils/getDurationString";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { NewButton } from "../../common/NewButton";
 import { Tag } from "../../common/Tag";
@@ -102,7 +103,7 @@ export const TestCard = (props: TestCardProps) => {
     });
   };
 
-  const durationString = `${props.test.duration.value} ${props.test.duration.unit}`;
+  const durationString = getDurationString(props.test.duration);
 
   return (
     <s.Container>

@@ -1,3 +1,4 @@
+import { getDurationString } from "../../../utils/getDurationString";
 import { roundTo } from "../../../utils/roundTo";
 import { InsightCard } from "../InsightCard";
 import { Description } from "../styles";
@@ -20,7 +21,7 @@ export const SlowEndpointInsight = (props: SlowEndpointInsightProps) => {
           )}%`}
         </Description>
       }
-      stats={`${props.insight.median.value} ${props.insight.median.unit}`}
+      stats={getDurationString(props.insight.median)}
       onRecalculate={props.onRecalculate}
       onRefresh={props.onRefresh}
     />

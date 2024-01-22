@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { usePagination } from "../../../hooks/usePagination";
+import { getDurationString } from "../../../utils/getDurationString";
 import { getPercentileLabel } from "../../../utils/getPercentileLabel";
 import { Pagination } from "../../common/Pagination";
 import { Tooltip } from "../../common/Tooltip";
@@ -31,9 +32,9 @@ const getDurationTitle = (breakdownEntry: SpanDurationBreakdownEntry) => {
   let title = "Percentage of time spent in span:";
 
   sortedPercentiles.forEach((percentile) => {
-    title += `\n${getPercentileLabel(percentile.percentile)}: ${
-      percentile.duration.value
-    } ${percentile.duration.unit}`;
+    title += `\n${getPercentileLabel(
+      percentile.percentile
+    )}: ${getDurationString(percentile.duration)}`;
   });
 
   return <s.DurationTitle>{title}</s.DurationTitle>;
@@ -97,7 +98,9 @@ export const DurationBreakdownInsight = (
                   </s.EntryName>
                 </Tooltip>
                 <Tooltip title={getDurationTitle(entry)}>
-                  <s.Duration>{`${percentile.duration.value} ${percentile.duration.unit}`}</s.Duration>
+                  <s.Duration>
+                    {getDurationString(percentile.duration)}
+                  </s.Duration>
                 </Tooltip>
               </s.Entry>
             ) : null;

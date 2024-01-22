@@ -1,3 +1,4 @@
+import { getDurationString } from "../../../../utils/getDurationString";
 import { getPercentileKey } from "../../../../utils/getPercentileKey";
 import { Tooltip } from "../../../common/Tooltip";
 import { SnailIcon } from "../../../common/icons/SnailIcon";
@@ -15,7 +16,7 @@ const renderSlowQueryEntry = (
   if (percentileViewMode) {
     const durationKey = getPercentileKey(percentileViewMode);
     const duration = durationKey ? item[durationKey] : undefined;
-    durationString = duration ? `${duration.value} ${duration.unit}` : "";
+    durationString = duration ? getDurationString(duration) : "";
   }
 
   const handleSpanClick = (spanCodeObjectId: string) => {

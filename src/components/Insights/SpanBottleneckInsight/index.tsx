@@ -1,3 +1,4 @@
+import { getDurationString } from "../../../utils/getDurationString";
 import { roundTo } from "../../../utils/roundTo";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { Tooltip } from "../../common/Tooltip";
@@ -50,9 +51,9 @@ export const SpanBottleneckInsight = (props: SpanBottleneckInsightProps) => {
                       {`Slowing ${roundTo(
                         span.probabilityOfBeingBottleneck * 100,
                         2
-                      )}% of the requests (~${
-                        span.avgDurationWhenBeingBottleneck.value
-                      } ${span.avgDurationWhenBeingBottleneck.unit})`}
+                      )}% of the requests (~${getDurationString(
+                        span.avgDurationWhenBeingBottleneck
+                      )})`}
                     </Description>
                   </s.SpanDetails>
                   <s.ButtonsContainer>

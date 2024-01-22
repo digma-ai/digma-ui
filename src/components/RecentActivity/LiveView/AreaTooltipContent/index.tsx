@@ -1,3 +1,4 @@
+import { getDurationString } from "../../../../utils/getDurationString";
 import { TooltipContent } from "../TooltipContent";
 import * as s from "./styles";
 import { AreaTooltipContentProps } from "./types";
@@ -10,9 +11,7 @@ export const AreaTooltipContent = (
       {[props.p95, props.p50].map((x) => (
         <s.Percentile key={x.percentile}>
           {x.label}
-          <s.Value>
-            {x.duration.value} {x.duration.unit}
-          </s.Value>
+          <s.Value>{getDurationString(x.duration)}</s.Value>
         </s.Percentile>
       ))}
     </s.Container>

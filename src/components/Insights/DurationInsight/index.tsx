@@ -13,6 +13,7 @@ import { Duration } from "../../../globals";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { convertToDuration } from "../../../utils/convertToDuration";
 import { formatTimeDistance } from "../../../utils/formatTimeDistance";
+import { getDurationString } from "../../../utils/getDurationString";
 import { getPercentileLabel } from "../../../utils/getPercentileLabel";
 import { Button } from "../../common/Button";
 import { Tooltip as CommonTooltip } from "../../common/Tooltip";
@@ -38,9 +39,6 @@ const MIN_X_AXIS_PADDING = 80;
 const MIN_CHART_CONTAINER_HEIGHT = 120;
 const CHART_Y_MARGIN = 20;
 const MIN_BAR_DISTANCE = 6; // minimum distance between the bars before moving the labels aside
-
-const getDurationString = (duration: Duration) =>
-  `${duration.value} ${duration.unit}`;
 
 const getBarColor = (value: Duration, p50?: Duration, p95?: Duration) => {
   const blueColor = "#4b46a2";
