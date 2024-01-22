@@ -21,6 +21,7 @@ import {
   SpanEndpointBottleneckInsight,
   SpanInsight,
   SpanNPlusOneInsight,
+  SpanNexusInsight,
   SpanScalingBadlyInsight,
   SpanScalingInsufficientDataInsight,
   SpanScalingWellInsight,
@@ -133,3 +134,8 @@ export const isEndpointHighNumberOfQueriesInsight = (
   insight: CodeObjectInsight
 ): insight is EndpointHighNumberOfQueriesInsight =>
   insight.type === InsightType.EndpointHighNumberOfQueries;
+
+export const isSpanNexusInsight = (
+    insight: CodeObjectInsight
+): insight is SpanNexusInsight =>
+    insight.type === InsightType.SpanNexus;

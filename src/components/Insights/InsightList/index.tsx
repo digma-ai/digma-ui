@@ -26,6 +26,7 @@ import { ScalingIssueInsight } from "../ScalingIssueInsight";
 import { SessionInViewInsight } from "../SessionInViewInsight";
 import { SlowEndpointInsight } from "../SlowEndpointInsight";
 import { SpanBottleneckInsight } from "../SpanBottleneckInsight";
+import { SpanNexusInsight } from "../SpanNexusInsight";
 import { TopUsageInsight } from "../TopUsageInsight";
 import { TrafficInsight } from "../TrafficInsight";
 import { actions } from "../actions";
@@ -50,6 +51,7 @@ import {
   isSpanEndpointBottleneckInsight,
   isSpanInsight,
   isSpanNPlusOneInsight,
+  isSpanNexusInsight,
   isSpanScalingBadlyInsight,
   isSpanScalingInsufficientDataInsight,
   isSpanScalingWellInsight,
@@ -556,6 +558,17 @@ const renderInsightCard = (
         key={insight.type}
         insight={insight}
         onTraceButtonClick={handleTraceButtonClick}
+        onRecalculate={handleRecalculate}
+        onRefresh={handleRefresh}
+      />
+    );
+  }
+
+  if (isSpanNexusInsight(insight)) {
+    return (
+      <SpanNexusInsight
+        key={insight.type}
+        insight={insight}
         onRecalculate={handleRecalculate}
         onRefresh={handleRefresh}
       />

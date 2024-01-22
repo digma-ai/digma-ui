@@ -4,6 +4,7 @@ import { InsightType } from "../../types";
 import { mockedBottleneckInsight } from "./BottleneckInsight/mockData";
 import { mockedEndpointNPlusOneInsight } from "./EndpointNPlusOneInsight/mockData";
 import { mockedHighNumberOfQueriesInsight } from "./HighNumberOfQueriesInsight/mockData";
+import { mockedSpanNexusInsight } from "./SpanNexusInsight/mockData";
 import {
   CodeObjectErrorsInsight,
   ComponentType,
@@ -707,7 +708,8 @@ export const Default: Story = {
         },
         mockedEndpointNPlusOneInsight,
         mockedBottleneckInsight,
-        mockedHighNumberOfQueriesInsight
+        mockedHighNumberOfQueriesInsight,
+        mockedSpanNexusInsight
       ]
     }
   }
