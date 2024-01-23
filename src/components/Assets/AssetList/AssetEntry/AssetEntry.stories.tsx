@@ -54,7 +54,8 @@ export const Default: Story = {
           importance: 6
         }
       ],
-      latestSpanTimestamp: "2023-02-20T14:36:03.480951Z"
+      latestSpanTimestamp: "2023-02-20T14:36:03.480951Z",
+      instrumentationLibrary: "Global"
     }
   }
 };
