@@ -60,6 +60,7 @@ export interface AssetEntry {
   service: string;
   services: string[];
   spanCodeObjectId: string;
+  firstDetected?: string;
 }
 
 export type AssetsData = {
