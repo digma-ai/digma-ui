@@ -33,6 +33,7 @@ export enum InsightType {
   EndpointChattyApi = "EndpointChattyApi",
   EndpointHighNumberOfQueries = "EndpointHighNumberOfQueries",
   SpanNexus = "SpanNexus",
+  SpanQueryOptimization = "SpanQueryOptimization"
 }
 
 export type PercentileKey = "p50" | "p95";
