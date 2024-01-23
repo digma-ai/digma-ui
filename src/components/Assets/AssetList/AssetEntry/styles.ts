@@ -53,7 +53,8 @@ export const Link = styled.a`
   overflow: hidden;
 `;
 
-export const InsightIconsContainer = styled.div`
+export const IndicatorsContainer = styled.div`
+  align-items: center;
   display: flex;
   gap: 2px;
   margin-left: auto;
