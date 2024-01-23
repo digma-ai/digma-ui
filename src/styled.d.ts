@@ -7,6 +7,7 @@ import { ToggleThemeColors } from "./components/RecentActivity/Toggle/types";
 import { RecentActivityThemeColors } from "./components/RecentActivity/types";
 import { IconTagThemeColors } from "./components/common/IconTag/types";
 import { ButtonThemeColors } from "./components/common/NewButton/types";
+import { SelectThemeColors } from "./components/common/Select/types";
 import { TagThemeColors } from "./components/common/Tag/types";
 import { TooltipThemeColors } from "./components/common/Tooltip/types";
 import { Mode } from "./globals";
@@ -35,6 +36,7 @@ export interface ThemeColors {
   attachmentTag: AttachmentTagThemeColors;
   jiraTicket: JiraTicketThemeColors;
   field: FieldThemeColors;
+  select: SelectThemeColors;
   panel: {
     background: string;
   };

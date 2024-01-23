@@ -9,4 +9,5 @@ export interface PopoverProps {
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
   boundary?: HTMLElement;
+  width?: number | string;
 }

@@ -113,6 +113,9 @@ export const NewPopover = (props: PopoverProps) => {
             ref={refs.setFloating}
             style={{
               ...floatingStyles,
+              width:
+                props.width ||
+                context.elements.reference?.getBoundingClientRect().width,
               zIndex: LAYERS.MODAL
             }}
             {...getFloatingProps()}

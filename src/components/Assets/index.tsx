@@ -19,6 +19,7 @@ import { Direction } from "../common/icons/types";
 import { AssetList } from "./AssetList";
 import { AssetTypeList } from "./AssetTypeList";
 import { FilterMenu } from "./FilterMenu";
+import { FiltersMenu } from "./FiltersMenu";
 import { actions } from "./actions";
 import * as s from "./styles";
 import { ServiceData } from "./types";
@@ -180,6 +181,7 @@ export const Assets = () => {
     <s.Container>
       <s.Header>
         Assets
+        <FiltersMenu />
         {isServiceFilterVisible && (
           <NewPopover
             content={

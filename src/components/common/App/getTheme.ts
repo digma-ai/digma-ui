@@ -243,6 +243,11 @@ const darkThemeColors: ThemeColors = {
   panel: {
     background: grayScale[1000]
   },
+  select: {
+    menu: {
+      background: grayScale[800]
+    }
+  },
   text: {
     base: grayScale[0],
     subtext: grayScale[400],
@@ -447,6 +452,11 @@ const lightThemeColors: ThemeColors = {
     text: grayScale[800]
   },
   panel: { background: grayScale[150] },
+  select: {
+    menu: {
+      background: grayScale[100]
+    }
+  },
   text: {
     base: grayScale[900],
     subtext: grayScale[600],
