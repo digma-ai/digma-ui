@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useTheme } from "styled-components";
 import { PERCENTILES } from "../../../constants";
+import { isString } from "../../../typeGuards/isString";
 import { formatTimeDistance } from "../../../utils/formatTimeDistance";
 import { getInsightImportanceColor } from "../../../utils/getInsightImportanceColor";
 import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
@@ -11,6 +12,7 @@ import { Menu } from "../../common/Menu";
 import { Popover } from "../../common/Popover";
 import { PopoverContent } from "../../common/Popover/PopoverContent";
 import { PopoverTrigger } from "../../common/Popover/PopoverTrigger";
+import { Tag } from "../../common/Tag";
 import { Toggle } from "../../common/Toggle";
 import { ToggleValue } from "../../common/Toggle/types";
 import { Tooltip } from "../../common/Tooltip";
@@ -22,6 +24,7 @@ import { InsightCardProps } from "./types";
 
 const RECALCULATE = "recalculate";
 const DEFAULT_PERCENTILE = 0.5;
+const IS_NEW_TIME_LIMIT = 1000 * 60 * 10; // in milliseconds
 
 export const InsightCard = (props: InsightCardProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -110,6 +113,11 @@ export const InsightCard = (props: InsightCardProps) => {
     return;
   };
 
+  const isNew = isString(props.data.firstDetected)
+    ? Date.now() - new Date(props.data.firstDetected).valueOf() <
+      IS_NEW_TIME_LIMIT
+    : false;
+
   return (
     <Card
       header={
@@ -128,6 +136,7 @@ export const InsightCard = (props: InsightCardProps) => {
             {insightTypeInfo?.label || props.data.type}
           </s.Title>
           <s.Toolbar>
+            {isNew && <Tag type={"success"} value={"New"} />}
             {props.isAsync && <s.AsyncBadge>Async</s.AsyncBadge>}
             {props.stats && <s.Stats>{props.stats}</s.Stats>}
             {(props.menuItems || props.data.isRecalculateEnabled) && (
