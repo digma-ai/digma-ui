@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
 import { getFeatureFlagValue } from "../../../../featureFlags";
+import { isString } from "../../../../typeGuards/isString";
 import { FeatureFlag, InsightType } from "../../../../types";
 import { formatTimeDistance } from "../../../../utils/formatTimeDistance";
 import { getInsightImportanceColor } from "../../../../utils/getInsightImportanceColor";
@@ -8,12 +9,15 @@ import { getInsightTypeInfo } from "../../../../utils/getInsightTypeInfo";
 import { getInsightTypeOrderPriority } from "../../../../utils/getInsightTypeOrderPriority";
 import { ConfigContext } from "../../../common/App/ConfigContext";
 import { ImpactScore } from "../../../common/ImpactScore";
+import { Tag } from "../../../common/Tag";
 import { Tooltip } from "../../../common/Tooltip";
 import { GlobeIcon } from "../../../common/icons/GlobeIcon";
 import { getAssetTypeInfo } from "../../utils";
 import { SORTING_CRITERION } from "../types";
 import * as s from "./styles";
 import { AssetEntryProps } from "./types";
+
+const IS_NEW_TIME_LIMIT = 1000 * 60 * 10; // in milliseconds
 
 const getServiceIconColor = (theme: DefaultTheme) => {
   switch (theme.mode) {
@@ -69,6 +73,11 @@ export const AssetEntry = (props: AssetEntryProps) => {
   }).replace(" ", "");
   const timeDistanceTitle = new Date(lastSeenDateTime).toString();
 
+  const isNew = isString(props.entry.firstDetected)
+    ? Date.now() - new Date(props.entry.firstDetected).valueOf() <
+      IS_NEW_TIME_LIMIT
+    : false;
+
   return (
     <s.Container>
       <s.Header>
@@ -80,7 +89,8 @@ export const AssetEntry = (props: AssetEntryProps) => {
         <Tooltip title={name}>
           <s.Link onClick={() => handleLinkClick()}>{name}</s.Link>
         </Tooltip>
-        <s.InsightIconsContainer>
+        <s.IndicatorsContainer>
+          {isNew && <Tag type={"success"} value={"New"} />}
           {sortedInsights.map((insight) => {
             const insightTypeInfo = getInsightTypeInfo(insight.type);
             const insightIconColor = getInsightImportanceColor(
@@ -101,7 +111,7 @@ export const AssetEntry = (props: AssetEntryProps) => {
               )
             );
           })}
-        </s.InsightIconsContainer>
+        </s.IndicatorsContainer>
       </s.Header>
       <s.StatsContainer>
         <s.StatsColumn>
