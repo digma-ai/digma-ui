@@ -117,6 +117,10 @@ export const getInsightTypeInfo = (
     [InsightType.SpanNexus]: {
       icon: BottleneckIcon, // todo changes
       label: "Code Nexus Point"
+    },
+    [InsightType.SpanQueryOptimization]: {
+      icon: SQLDatabaseIcon,
+      label: "Query Optimization Suggested"
     }
   };
 

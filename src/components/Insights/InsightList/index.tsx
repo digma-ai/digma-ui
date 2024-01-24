@@ -21,6 +21,7 @@ import { NPlusOneInsight } from "../NPlusOneInsight";
 import { NoObservabilityCard } from "../NoObservabilityCard";
 import { NoScalingIssueInsight } from "../NoScalingIssueInsight";
 import { PerformanceAtScaleInsight } from "../PerformanceAtScaleInsight";
+import { QueryOptimizationInsight } from "../QueryOptimizationInsight";
 import { RequestBreakdownInsight } from "../RequestBreakdownInsight";
 import { ScalingIssueInsight } from "../ScalingIssueInsight";
 import { SessionInViewInsight } from "../SessionInViewInsight";
@@ -52,6 +53,7 @@ import {
   isSpanInsight,
   isSpanNPlusOneInsight,
   isSpanNexusInsight,
+  isSpanQueryOptimizationInsight,
   isSpanScalingBadlyInsight,
   isSpanScalingInsufficientDataInsight,
   isSpanScalingWellInsight,
@@ -571,6 +573,20 @@ const renderInsightCard = (
         insight={insight}
         onRecalculate={handleRecalculate}
         onRefresh={handleRefresh}
+      />
+    );
+  }
+
+  if (isSpanQueryOptimizationInsight(insight)) {
+    return (
+      <QueryOptimizationInsight
+        key={insight.type}
+        insight={insight}
+        onAssetLinkClick={handleAssetLinkClick}
+        onTraceButtonClick={handleTraceButtonClick}
+        onRecalculate={handleRecalculate}
+        onRefresh={handleRefresh}
+        onJiraTicketCreate={onJiraTicketCreate}
       />
     );
   }

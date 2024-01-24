@@ -14,6 +14,7 @@ import {
   EndpointSlowestSpansInsight,
   EndpointSuspectedNPlusOneInsight,
   InsightScope,
+  QueryOptimizationInsight,
   SessionInViewEndpointInsight,
   SlowEndpointInsight,
   SpanDurationBreakdownInsight,
@@ -138,3 +139,8 @@ export const isEndpointHighNumberOfQueriesInsight = (
 export const isSpanNexusInsight = (
   insight: CodeObjectInsight
 ): insight is SpanNexusInsight => insight.type === InsightType.SpanNexus;
+
+export const isSpanQueryOptimizationInsight = (
+  insight: CodeObjectInsight
+): insight is QueryOptimizationInsight =>
+  insight.type === InsightType.SpanQueryOptimization;
