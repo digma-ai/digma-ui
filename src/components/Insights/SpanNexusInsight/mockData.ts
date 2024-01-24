@@ -53,5 +53,8 @@ export const mockedSpanNexusInsight: SpanNexusInsight = {
   flows: 4,
   services: 3,
   usage: "High",
-  entries: 5
+  entries: 5,
+  isEntriesHigh: false,
+  isFlowsHigh: true,
+  isServicesHigh: false
 };

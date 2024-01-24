@@ -5,7 +5,8 @@ export type TagType =
   | "highSeverity"
   | "mediumSeverity"
   | "lowSeverity"
-  | "success";
+  | "success"
+  | "default";
 
 export interface TagThemeColors {
   default: {
