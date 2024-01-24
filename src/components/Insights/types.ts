@@ -690,4 +690,3 @@ export interface SpanNexusInsight extends SpanInsight {
   flows: number;
   usage: string | null;
 }
-

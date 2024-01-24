@@ -1,8 +1,4 @@
-
-import {
-  InsightProps,
-  SpanNexusInsight,
-} from "../types";
+import { InsightProps, SpanNexusInsight } from "../types";
 
 export interface SpanNexusInsightProps extends InsightProps {
   insight: SpanNexusInsight;
