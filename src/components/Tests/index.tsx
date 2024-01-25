@@ -16,12 +16,43 @@ import { TestTicket } from "./TestTicket";
 import { actions } from "./actions";
 import * as s from "./styles";
 import { trackingEvents } from "./tracking";
-import { SetSpanLatestDataPayload, Test, TestsProps } from "./types";
+import { SetSpanLatestDataPayload, Test, TestsData, TestsProps } from "./types";
 
-const PAGE_SIZE = 10;
 const REFRESH_INTERVAL = isNumber(window.testsRefreshInterval)
   ? window.testsRefreshInterval
   : 10 * 1000; // in milliseconds
+
+const renderPagination = (
+  data: TestsData["paging"],
+  setPage: (pageNumber: number) => void
+) => {
+  const page = data.pageNumber - 1;
+  const pageStartItemNumber = page * data.pageSize + 1;
+  const pageEndItemNumber = Math.min(
+    pageStartItemNumber + data.pageSize - 1,
+    data.totalCount
+  );
+
+  return (
+    <s.PaginationContainer>
+      <s.ItemsCount>
+        Showing{" "}
+        <s.PageItemsCount>
+          {pageStartItemNumber} - {pageEndItemNumber}
+        </s.PageItemsCount>{" "}
+        of {data.totalCount}
+      </s.ItemsCount>
+      {
+        <Pagination
+          itemsCount={data.totalCount}
+          page={page}
+          pageSize={data.pageSize}
+          onPageChange={setPage}
+        />
+      }
+    </s.PaginationContainer>
+  );
+};
 
 export const Tests = (props: TestsProps) => {
   const [data, setData] = useState<SetSpanLatestDataPayload>();
@@ -44,13 +75,6 @@ export const Tests = (props: TestsProps) => {
   );
   const testsListRef = useRef<HTMLDivElement>(null);
 
-  const totalCount = data?.data?.paging.totalCount || 0;
-  const pageStartItemNumber = page * PAGE_SIZE + 1;
-  const pageEndItemNumber = Math.min(
-    pageStartItemNumber + PAGE_SIZE - 1,
-    totalCount
-  );
-
   const environmentMenuItems: MenuItem[] = (config.environments || []).map(
     (environment) => ({
       value: environment.originalName,
@@ -65,8 +89,7 @@ export const Tests = (props: TestsProps) => {
         selectedEnvironments.length > 0
           ? selectedEnvironments
           : (config.environments || []).map((x) => x.originalName),
-      pageNumber: page + 1,
-      pageSize: PAGE_SIZE
+      pageNumber: page + 1
     }),
     [page, selectedEnvironments, config.environments]
   );
@@ -236,21 +259,7 @@ export const Tests = (props: TestsProps) => {
             );
           })}
         </s.TestsList>
-        <s.Footer>
-          <s.ItemsCount>
-            Showing{" "}
-            <s.PageItemsCount>
-              {pageStartItemNumber} - {pageEndItemNumber}
-            </s.PageItemsCount>{" "}
-            of {totalCount}
-          </s.ItemsCount>
-          <Pagination
-            itemsCount={totalCount}
-            page={page}
-            pageSize={PAGE_SIZE}
-            onPageChange={setPage}
-          />
-        </s.Footer>
+        {data?.data?.paging && renderPagination(data.data.paging, setPage)}
       </s.ContentContainer>
     );
   };
