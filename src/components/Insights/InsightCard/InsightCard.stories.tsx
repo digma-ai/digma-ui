@@ -112,7 +112,7 @@ export const Default: Story = {
       <Button
         key={"button_label"}
         onClick={() => {
-          return;
+          return undefined;
         }}
       >
         Button label

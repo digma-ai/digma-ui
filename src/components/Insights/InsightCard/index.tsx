@@ -75,12 +75,14 @@ export const InsightCard = (props: InsightCardProps) => {
     customStartTime: string | null,
     isRecalculatingStarted: boolean
   ) => {
-    if (!props.data.customStartTime && !isRecalculatingStarted) return;
+    if (!props.data.customStartTime && !isRecalculatingStarted) {
+      return;
+    }
 
     if (
       isRecalculatingStarted ||
       (customStartTime && customStartTime > actualStartTime)
-    )
+    ) {
       return (
         <s.RefreshContainer>
           <Description>
@@ -91,6 +93,7 @@ export const InsightCard = (props: InsightCardProps) => {
           </span>
         </s.RefreshContainer>
       );
+    }
 
     const areStartTimesEqual =
       customStartTime &&
@@ -109,8 +112,6 @@ export const InsightCard = (props: InsightCardProps) => {
         </Description>
       );
     }
-
-    return;
   };
 
   const isNew = isString(props.data.firstDetected)

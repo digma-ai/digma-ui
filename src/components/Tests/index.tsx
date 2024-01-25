@@ -65,7 +65,8 @@ export const Tests = (props: TestsProps) => {
         selectedEnvironments.length > 0
           ? selectedEnvironments
           : (config.environments || []).map((x) => x.originalName),
-      pageNumber: page + 1
+      pageNumber: page + 1,
+      pageSize: PAGE_SIZE
     }),
     [page, selectedEnvironments, config.environments]
   );
@@ -73,10 +74,7 @@ export const Tests = (props: TestsProps) => {
 
   useEffect(() => {
     window.sendMessageToDigma({
-      action: actions.INITIALIZE,
-      payload: {
-        pageSize: PAGE_SIZE
-      }
+      action: actions.INITIALIZE
     });
 
     sendTrackingEvent(trackingEvents.PAGE_LOADED);

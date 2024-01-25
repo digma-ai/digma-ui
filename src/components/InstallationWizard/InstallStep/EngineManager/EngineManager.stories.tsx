@@ -22,7 +22,7 @@ export const Default: Story = {
   args: {
     engine: {
       startOperation: () => {
-        return;
+        return undefined;
       }
     }
   }
