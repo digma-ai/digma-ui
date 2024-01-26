@@ -1,17 +1,16 @@
 import { useContext } from "react";
 import { usePagination } from "../../../hooks/usePagination";
 import { InsightType } from "../../../types";
-import { getCriticalityLabel } from "../../../utils/getCriticalityLabel";
 import { getDurationString } from "../../../utils/getDurationString";
 import { roundTo } from "../../../utils/roundTo";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Button } from "../../common/Button";
 import { Pagination } from "../../common/Pagination";
-import { ScoreIndicator } from "../../common/ScoreIndicator";
 import { Tooltip } from "../../common/Tooltip";
 import { CrosshairIcon } from "../../common/icons/CrosshairIcon";
 import { InsightCard } from "../InsightCard";
+import { Criticality } from "../common/Criticality";
 import { JiraButton } from "../common/JiraButton";
 import { Description, Link } from "../styles";
 import { trackingEvents } from "../tracking";
@@ -84,15 +83,7 @@ export const EndpointNPlusOneInsight = (
                     </Tooltip>
                     <s.Stats>
                       <s.Stat>
-                        <Description>Criticality</Description>
-                        <Tooltip title={span.criticality}>
-                          <s.CriticalityValue>
-                            {span.criticality > 0 && (
-                              <ScoreIndicator score={span.criticality} />
-                            )}
-                            {getCriticalityLabel(span.criticality)}
-                          </s.CriticalityValue>
-                        </Tooltip>
+                        <Criticality value={span.criticality} />
                       </s.Stat>
                       <s.Stat>
                         <Description>Impact</Description>

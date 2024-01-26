@@ -72,6 +72,7 @@ export const SpanBottleneckInsight = (props: SpanBottleneckInsightProps) => {
       }
       onRecalculate={props.onRecalculate}
       onRefresh={props.onRefresh}
+      showCriticality
     />
   );
 };

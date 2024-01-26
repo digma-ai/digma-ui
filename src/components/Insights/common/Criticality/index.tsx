@@ -4,13 +4,13 @@ import { Tooltip } from "../../../common/Tooltip";
 import { Description } from "../../styles";
 import * as s from "./styles";
 
-export const Criticality = (criticality: number) => (
+export const Criticality = (props: { value: number }) => (
   <>
     <Description>Criticality</Description>
-    <Tooltip title={criticality}>
+    <Tooltip title={props.value}>
       <s.CriticalityValue>
-        {criticality > 0 && <ScoreIndicator score={criticality} />}
-        {getCriticalityLabel(criticality)}
+        {props.value > 0 && <ScoreIndicator score={props.value} />}
+        {getCriticalityLabel(props.value)}
       </s.CriticalityValue>
     </Tooltip>
   </>

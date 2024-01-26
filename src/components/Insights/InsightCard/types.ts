@@ -17,6 +17,7 @@ export interface InsightCardProps {
   isRecent?: boolean;
   onRefresh: (insightType: InsightType) => void;
   isAsync?: boolean;
+  showCriticality?: boolean;
 }
 
 export interface PercentileViewModeOptionProps {

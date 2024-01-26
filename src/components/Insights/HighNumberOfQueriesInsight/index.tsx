@@ -5,6 +5,7 @@ import { Tooltip } from "../../common/Tooltip";
 import { CrosshairIcon } from "../../common/icons/CrosshairIcon";
 import { InfoCircleIcon } from "../../common/icons/InfoCircleIcon";
 import { InsightCard } from "../InsightCard";
+import { Criticality } from "../common/Criticality";
 import { Description } from "../styles";
 import { Trace } from "../types";
 import * as s from "./styles";
@@ -35,6 +36,11 @@ export const HighNumberOfQueriesInsight = (
             Consider using joins or caching responses to reduce database round
             trips
           </Description>
+          <s.Stats>
+            <s.RowStat>
+              <Criticality value={insight.criticality} />
+            </s.RowStat>
+          </s.Stats>
           <s.Stats>
             <s.Stat>
               <s.Key># of Queries</s.Key>

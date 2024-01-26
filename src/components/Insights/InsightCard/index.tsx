@@ -18,6 +18,7 @@ import { ToggleValue } from "../../common/Toggle/types";
 import { Tooltip } from "../../common/Tooltip";
 import { ChevronIcon } from "../../common/icons/ChevronIcon";
 import { Direction } from "../../common/icons/types";
+import { Criticality } from "../common/Criticality";
 import { Description, Link } from "../styles";
 import * as s from "./styles";
 import { InsightCardProps } from "./types";
@@ -205,6 +206,11 @@ export const InsightCard = (props: InsightCardProps) => {
           )}
           {isExpanded && props.expandableContent && (
             <s.ContentContainer>{props.expandableContent}</s.ContentContainer>
+          )}
+          {props.showCriticality && (
+            <s.RowStat>
+              <Criticality value={props.data.criticality} />
+            </s.RowStat>
           )}
         </>
       }

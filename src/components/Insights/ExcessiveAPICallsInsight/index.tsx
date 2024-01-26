@@ -90,6 +90,7 @@ export const ExcessiveAPICallsInsight = (
       }
       onRecalculate={props.onRecalculate}
       onRefresh={props.onRefresh}
+      showCriticality
     />
   );
 };
