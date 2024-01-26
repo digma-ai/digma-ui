@@ -37,7 +37,3 @@ export const Key = styled.span`
 export const IconContainer = styled.span`
   display: flex;
 `;
-
-export const RowStat = styled(Stat)`
-  flex-direction: row;
-`;
