@@ -8,7 +8,7 @@ import {
 export const mockedSpanBottleneckInsight: EndpointSlowestSpansInsight = {
   firstDetected: "2023-12-05T17:25:47.010Z",
   lastDetected: "2024-01-05T13:14:47.010Z",
-  criticality: 0,
+  criticality: 0.7,
   firstCommitId: "b3f7b3f",
   lastCommitId: "a1b2c3d",
   deactivatedCommitId: null,

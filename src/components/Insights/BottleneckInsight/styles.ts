@@ -36,3 +36,16 @@ export const Duration = styled.span`
   display: flex;
   flex-shrink: 0;
 `;
+
+export const Container = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+  padding-top: 12px;
+`;
+
+export const Box = styled.div`
+  display: flex;
+  gap: 8px;
+`;
