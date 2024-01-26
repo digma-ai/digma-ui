@@ -37,9 +37,7 @@ export const HighNumberOfQueriesInsight = (
             trips
           </Description>
           <s.Stats>
-            <s.RowStat>
-              <Criticality value={insight.criticality} />
-            </s.RowStat>
+            <Criticality value={insight.criticality} />
           </s.Stats>
           <s.Stats>
             <s.Stat>

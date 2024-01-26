@@ -66,9 +66,7 @@ export const BottleneckInsight = (props: BottleneckInsightProps) => {
             })}
           </s.EndpointList>
           <s.Container>
-            <s.Box>
-              <Criticality value={props.insight.criticality} />
-            </s.Box>
+            <Criticality value={props.insight.criticality} />
             <s.Box>
               <JiraButton
                 key={"view-ticket-info"}

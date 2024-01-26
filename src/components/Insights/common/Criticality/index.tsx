@@ -5,7 +5,7 @@ import { Description } from "../../styles";
 import * as s from "./styles";
 
 export const Criticality = (props: { value: number }) => (
-  <>
+  <s.Container>
     <Description>Criticality</Description>
     <Tooltip title={props.value}>
       <s.CriticalityValue>
@@ -13,5 +13,5 @@ export const Criticality = (props: { value: number }) => (
         {getCriticalityLabel(props.value)}
       </s.CriticalityValue>
     </Tooltip>
-  </>
+  </s.Container>
 );
