@@ -30,12 +30,3 @@ export const SpanName = styled.span`
 export const Button = styled(CommonButton)`
   height: fit-content;
 `;
-
-export const RowStat = styled.div`
-  display: flex;
-  font-size: 14px;
-  flex-direction: row;
-  gap: 8px;
-  overflow: hidden;
-  padding-top: 12px;
-`;
