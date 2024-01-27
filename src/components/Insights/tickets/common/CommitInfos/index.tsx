@@ -14,7 +14,9 @@ const renderCommit = (
   if (commitInfos && commitId) {
     const url = commitInfos.commitInfos[commitId]?.url;
 
-    if (!url) return commitId;
+    if (!url) {
+      return commitId;
+    }
 
     const handleLinkClick = (e: MouseEvent<HTMLAnchorElement>) => {
       e.preventDefault();
@@ -32,7 +34,9 @@ const renderCommit = (
 };
 
 export const CommitInfos = (props: CommitInfosProps) => {
-  if (!props.insight) return null;
+  if (!props.insight) {
+    return null;
+  }
 
   const commits = [
     {
@@ -47,7 +51,9 @@ export const CommitInfos = (props: CommitInfosProps) => {
     }
   ].filter((x) => x.id || x.dateTime);
 
-  if (commits.length === 0) return null;
+  if (commits.length === 0) {
+    return null;
+  }
 
   return (
     <s.List>

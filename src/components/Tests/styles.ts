@@ -46,7 +46,7 @@ export const TestsList = styled.div`
   gap: 12px;
 `;
 
-export const Footer = styled.div`
+export const PaginationContainer = styled.div`
   display: flex;
   justify-content: space-between;
   font-size: 14px;
