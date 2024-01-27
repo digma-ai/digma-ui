@@ -688,6 +688,19 @@ export interface SpanNexusInsight extends SpanInsight {
   services: number;
   entries: number;
   flows: number;
-  usage: string | null;
+  usage?: string | null;
+  isEntriesHigh: boolean;
+  isFlowsHigh: boolean;
+  isServicesHigh: boolean;
 }
 
+export interface QueryOptimizationInsight extends SpanInsight {
+  type: InsightType.SpanQueryOptimization;
+  duration: Duration;
+  typicalDuration: Duration;
+  dbStatement: string;
+  traceId: string | null;
+  span: SpanInfo;
+  serviceName: string;
+  dbName: string;
+}

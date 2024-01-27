@@ -6,6 +6,7 @@ import { Pagination } from "../../common/Pagination";
 import { Tooltip } from "../../common/Tooltip";
 import { CrosshairIcon } from "../../common/icons/CrosshairIcon";
 import { InsightCard } from "../InsightCard";
+import { Criticality } from "../common/Criticality";
 import { Description, Link } from "../styles";
 import { Trace } from "../types";
 import * as s from "./styles";
@@ -86,6 +87,7 @@ export const ExcessiveAPICallsInsight = (
               onPageChange={setPage}
             />
           </s.List>
+          <Criticality value={props.insight.criticality} />
         </s.ContentContainer>
       }
       onRecalculate={props.onRecalculate}

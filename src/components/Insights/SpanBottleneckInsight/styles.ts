@@ -33,3 +33,9 @@ export const ButtonsContainer = styled.div`
   display: flex;
   gap: 8px;
 `;
+
+export const Container = styled.div`
+  gap: 12px;
+  display: flex;
+  flex-direction: column;
+`;

@@ -1,30 +1,46 @@
+import { useContext } from "react";
 import { isString } from "../../../typeGuards/isString";
 import { getDurationString } from "../../../utils/getDurationString";
+import { ConfigContext } from "../../common/App/ConfigContext";
 import { JiraTicket } from "../../common/JiraTicket";
 import { TestTicketProps } from "./types";
 
 export const TestTicket = (props: TestTicketProps) => {
-  const summary = `"${props.test.name}" test failed`;
+  const {
+    traceId,
+    name,
+    errorOrFailMessage,
+    runAt,
+    duration,
+    contextsSpanCodeObjectIds
+  } = props.test;
+  const summary = `"${name}" test failed`;
+  const config = useContext(ConfigContext);
 
   const relatedSpans = props.spanContexts
-    .filter((x) =>
-      props.test.contextsSpanCodeObjectIds.includes(x.spanCodeObjectId)
-    )
+    .filter((x) => contextsSpanCodeObjectIds.includes(x.spanCodeObjectId))
     .map((x) => x.displayName)
     .join("\n");
 
   const description = [
-    `"${props.test.name}" test failed${
-      isString(props.test.errorOrFailMessage)
-        ? ` with message:\n${props.test.errorOrFailMessage}`
+    `"${name}" test failed${
+      isString(errorOrFailMessage)
+        ? ` with message:\n${errorOrFailMessage}`
         : ""
     }`,
-    `Last run at: ${new Date(props.test.runAt).toString()}`,
-    `Duration: ${getDurationString(props.test.duration)}`,
+    `Last run at: ${new Date(runAt).toString()}`,
+    `Duration: ${getDurationString(duration)}`,
     relatedSpans.length > 0 ? `Related spans:\n${relatedSpans}` : ""
   ]
     .filter(Boolean)
     .join("\n\n");
+
+  const attachment = traceId
+    ? {
+        url: `${config.jaegerURL}/api/traces/${traceId}?prettyPrint=true`,
+        fileName: `trace-${traceId}.json`
+      }
+    : undefined;
 
   return (
     <JiraTicket
@@ -32,6 +48,7 @@ export const TestTicket = (props: TestTicketProps) => {
       description={{
         content: description
       }}
+      attachment={attachment}
       onClose={props.onClose}
       tracking={{ prefix: "tests" }}
     />

@@ -72,37 +72,45 @@ export const InsightCard = (props: InsightCardProps) => {
 
   const renderRecalculationBlock = (
     actualStartTime: string,
-    customStartTime: string | null
+    customStartTime: string | null,
+    isRecalculatingStarted: boolean
   ) => {
+    if (!props.data.customStartTime && !isRecalculatingStarted) return;
+
+    if (
+      isRecalculatingStarted ||
+      (customStartTime && customStartTime > actualStartTime)
+    )
+      return (
+        <s.RefreshContainer>
+          <Description>
+            Applying the new time filter. Wait a few minutes and then refresh.
+          </Description>
+          <span>
+            <Link onClick={handleRefreshLinkClick}>Refresh</Link>
+          </span>
+        </s.RefreshContainer>
+      );
+
     const areStartTimesEqual =
       customStartTime &&
       new Date(actualStartTime).valueOf() -
         new Date(customStartTime).valueOf() ===
         0;
 
-    const title = new Date(actualStartTime).toString();
+    if (areStartTimesEqual) {
+      const title = new Date(actualStartTime).toString();
+      return (
+        <Description>
+          Data from:{" "}
+          <Tooltip title={title}>
+            <span>{formatTimeDistance(actualStartTime)}</span>
+          </Tooltip>
+        </Description>
+      );
+    }
 
-    return (
-      <>
-        {areStartTimesEqual ? (
-          <Description>
-            Data from:{" "}
-            <Tooltip title={title}>
-              <span>{formatTimeDistance(actualStartTime)}</span>
-            </Tooltip>
-          </Description>
-        ) : (
-          <s.RefreshContainer>
-            <Description>
-              Applying the new time filter. Wait a few minutes and then refresh.
-            </Description>
-            <span>
-              <Link onClick={handleRefreshLinkClick}>Refresh</Link>
-            </span>
-          </s.RefreshContainer>
-        )}
-      </>
-    );
+    return;
   };
 
   const isNew = isString(props.data.firstDetected)
@@ -180,10 +188,10 @@ export const InsightCard = (props: InsightCardProps) => {
             />
           )}
           {props.data.actualStartTime &&
-            (props.data.customStartTime || isRecalculatingStarted) &&
             renderRecalculationBlock(
               props.data.actualStartTime,
-              props.data.customStartTime
+              props.data.customStartTime,
+              isRecalculatingStarted
             )}
           {props.content && (
             <s.ContentContainer>{props.content}</s.ContentContainer>
