@@ -28,6 +28,7 @@ module.exports = {
     curly: "error",
     "no-console": "warn",
     "no-useless-return": "error",
+    "react/jsx-boolean-value": ["error", "always"],
     "react/jsx-curly-brace-presence": ["error", "always"]
   },
   overrides: [
