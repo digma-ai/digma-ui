@@ -25,8 +25,21 @@ module.exports = {
   },
   plugins: ["react", "@typescript-eslint"],
   rules: {
-    "no-console": "warn"
+    curly: "error",
+    "no-console": "warn",
+    "no-useless-return": "error",
+    "react/jsx-boolean-value": ["error", "always"],
+    "react/jsx-curly-brace-presence": ["error", "always"]
   },
+  overrides: [
+    {
+      files: ["./**/*.tsx"],
+      excludedFiles: ["./src/common/icons/**/*Icon.tsx"],
+      rules: {
+        "react/jsx-curly-brace-presence": "off"
+      }
+    }
+  ],
   settings: {
     react: {
       version: "detect"

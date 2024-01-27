@@ -16,17 +16,47 @@ import { TestTicket } from "./TestTicket";
 import { actions } from "./actions";
 import * as s from "./styles";
 import { trackingEvents } from "./tracking";
-import { SetSpanLatestDataPayload, Test, TestsProps } from "./types";
+import { SetSpanLatestDataPayload, Test, TestsData, TestsProps } from "./types";
 
-const PAGE_SIZE = 10;
 const REFRESH_INTERVAL = isNumber(window.testsRefreshInterval)
   ? window.testsRefreshInterval
   : 10 * 1000; // in milliseconds
 
+const renderPagination = (
+  data: TestsData["paging"],
+  onPageChange: (page: number) => void
+) => {
+  const page = data.pageNumber - 1;
+  const pageStartItemNumber = page * data.pageSize + 1;
+  const pageEndItemNumber = Math.min(
+    pageStartItemNumber + data.pageSize - 1,
+    data.totalCount
+  );
+
+  return (
+    <s.PaginationContainer>
+      <s.ItemsCount>
+        Showing{" "}
+        <s.PageItemsCount>
+          {pageStartItemNumber} - {pageEndItemNumber}
+        </s.PageItemsCount>{" "}
+        of {data.totalCount}
+      </s.ItemsCount>
+      {
+        <Pagination
+          itemsCount={data.totalCount}
+          page={page}
+          pageSize={data.pageSize}
+          onPageChange={onPageChange}
+        />
+      }
+    </s.PaginationContainer>
+  );
+};
+
 export const Tests = (props: TestsProps) => {
   const [data, setData] = useState<SetSpanLatestDataPayload>();
   const previousData = usePrevious(data);
-  const [page, setPage] = useState(0);
   const refreshTimerId = useRef<number>();
   const [isInitialLoading, setIsInitialLoading] = useState(false);
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
@@ -44,13 +74,6 @@ export const Tests = (props: TestsProps) => {
   );
   const testsListRef = useRef<HTMLDivElement>(null);
 
-  const totalCount = data?.data?.paging.totalCount || 0;
-  const pageStartItemNumber = page * PAGE_SIZE + 1;
-  const pageEndItemNumber = Math.min(
-    pageStartItemNumber + PAGE_SIZE - 1,
-    totalCount
-  );
-
   const environmentMenuItems: MenuItem[] = (config.environments || []).map(
     (environment) => ({
       value: environment.originalName,
@@ -59,31 +82,30 @@ export const Tests = (props: TestsProps) => {
     })
   );
 
-  const payloadToSend = useMemo(
+  const environmentsToSend = useMemo(
     () => ({
       environments:
         selectedEnvironments.length > 0
           ? selectedEnvironments
-          : (config.environments || []).map((x) => x.originalName),
-      pageNumber: page + 1
+          : (config.environments || []).map((x) => x.originalName)
     }),
-    [page, selectedEnvironments, config.environments]
+    [selectedEnvironments, config.environments]
   );
-  const previousPayloadToSend = usePrevious(payloadToSend);
+  const previousEnvironmentsToSend = usePrevious(environmentsToSend);
 
   useEffect(() => {
     window.sendMessageToDigma({
-      action: actions.INITIALIZE,
-      payload: {
-        pageSize: PAGE_SIZE
-      }
+      action: actions.INITIALIZE
     });
 
     sendTrackingEvent(trackingEvents.PAGE_LOADED);
 
     window.sendMessageToDigma({
       action: actions.GET_SPAN_LATEST_DATA,
-      payload: payloadToSend
+      payload: {
+        ...environmentsToSend,
+        pageNumber: 1
+      }
     });
     setIsInitialLoading(true);
 
@@ -112,20 +134,34 @@ export const Tests = (props: TestsProps) => {
       refreshTimerId.current = window.setTimeout(() => {
         window.sendMessageToDigma({
           action: actions.GET_SPAN_LATEST_DATA,
-          payload: payloadToSend
+          payload: {
+            ...environmentsToSend,
+            pageNumber: data?.data?.paging.pageNumber || 1
+          }
         });
       }, REFRESH_INTERVAL);
     }
-  }, [previousLastSetDataTimeStamp, lastSetDataTimeStamp, payloadToSend]);
+  }, [
+    previousLastSetDataTimeStamp,
+    lastSetDataTimeStamp,
+    environmentsToSend,
+    data
+  ]);
 
   useEffect(() => {
-    if (previousPayloadToSend && previousPayloadToSend !== payloadToSend) {
+    if (
+      previousEnvironmentsToSend &&
+      previousEnvironmentsToSend !== environmentsToSend
+    ) {
       window.sendMessageToDigma({
         action: actions.GET_SPAN_LATEST_DATA,
-        payload: payloadToSend
+        payload: {
+          ...environmentsToSend,
+          pageNumber: 1
+        }
       });
     }
-  }, [previousPayloadToSend, payloadToSend]);
+  }, [previousEnvironmentsToSend, environmentsToSend]);
 
   useEffect(() => {
     if (
@@ -155,9 +191,8 @@ export const Tests = (props: TestsProps) => {
   }, [previousData, data]);
 
   useEffect(() => {
-    setPage(0);
     testsListRef.current?.scrollTo(0, 0);
-  }, [config.scope, selectedEnvironments]);
+  }, [data?.data?.paging.pageNumber, selectedEnvironments]);
 
   const openJiraTicketPopup = (test: Test) => {
     setTestToOpenTicketPopup(test);
@@ -199,6 +234,13 @@ export const Tests = (props: TestsProps) => {
     }
   };
 
+  const handlePageChange = (page: number) => {
+    window.sendMessageToDigma({
+      action: actions.GET_SPAN_LATEST_DATA,
+      payload: { ...environmentsToSend, pageNumber: page + 1 }
+    });
+  };
+
   const renderContent = () => {
     if (isInitialLoading) {
       return (
@@ -238,21 +280,8 @@ export const Tests = (props: TestsProps) => {
             );
           })}
         </s.TestsList>
-        <s.Footer>
-          <s.ItemsCount>
-            Showing{" "}
-            <s.PageItemsCount>
-              {pageStartItemNumber} - {pageEndItemNumber}
-            </s.PageItemsCount>{" "}
-            of {totalCount}
-          </s.ItemsCount>
-          <Pagination
-            itemsCount={totalCount}
-            page={page}
-            pageSize={PAGE_SIZE}
-            onPageChange={setPage}
-          />
-        </s.Footer>
+        {data?.data?.paging &&
+          renderPagination(data.data.paging, handlePageChange)}
       </s.ContentContainer>
     );
   };
