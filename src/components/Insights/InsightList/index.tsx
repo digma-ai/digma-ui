@@ -246,7 +246,7 @@ const renderInsightCard = (
     instrumentationLibrary: string,
     name: string,
     insightType: InsightType,
-    displayName?: string
+    displayName: string
   ) => {
     window.sendMessageToDigma({
       action: actions.OPEN_HISTOGRAM,
