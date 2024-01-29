@@ -28,7 +28,7 @@ export const Assets = () => {
   //   FeatureFlag.IS_ASSETS_COMPLEX_FILTER_ENABLED
   // );
 
-  const isComplexFilterVisible = false;
+  const isComplexFilterVisible = true;
 
   useLayoutEffect(() => {
     window.sendMessageToDigma({
