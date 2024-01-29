@@ -15,6 +15,7 @@ export interface ScalingIssueInsightProps extends InsightProps {
   onHistogramButtonClick: (
     instrumentationLibrary: string,
     name: string,
-    insightType: InsightType
+    insightType: InsightType,
+    displayName?: string
   ) => void;
 }

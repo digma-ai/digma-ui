@@ -6,6 +6,7 @@ export interface PerformanceAtScaleInsightProps extends InsightProps {
   onHistogramButtonClick: (
     instrumentationLibrary: string,
     name: string,
-    insightType: InsightType
+    insightType: InsightType,
+    displayName?: string
   ) => void;
 }
