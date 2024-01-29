@@ -10,6 +10,6 @@ export interface TopUsageInsightProps extends InsightProps {
   onTraceButtonClick: (
     trace: Trace,
     insightType: InsightType,
-    spanCodeObjectId: string
+    spanCodeObjectId?: string
   ) => void;
 }
