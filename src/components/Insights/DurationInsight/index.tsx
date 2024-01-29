@@ -149,7 +149,8 @@ export const DurationInsight = (props: DurationInsightProps) => {
       props.onHistogramButtonClick(
         props.insight.spanInfo.instrumentationLibrary,
         props.insight.spanInfo.name,
-        props.insight.type
+        props.insight.type,
+        props.insight.spanInfo.displayName
       );
   };
 

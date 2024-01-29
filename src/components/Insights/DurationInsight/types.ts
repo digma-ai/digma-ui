@@ -6,7 +6,8 @@ export interface DurationInsightProps extends InsightProps {
   onHistogramButtonClick: (
     instrumentationLibrary: string,
     name: string,
-    insightType: InsightType
+    insightType: InsightType,
+    displayName: string
   ) => void;
   onLiveButtonClick: (prefixedCodeObjectId: string) => void;
   onCompareButtonClick: (
