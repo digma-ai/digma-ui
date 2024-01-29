@@ -1,21 +1,17 @@
-import { ReactElement, useContext, useEffect, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 import { dispatcher } from "../../../../dispatcher";
 import { InsightType } from "../../../../types";
-import { getCriticalityLabel } from "../../../../utils/getCriticalityLabel";
 import { intersperse } from "../../../../utils/intersperse";
-import { ConfigContext } from "../../../common/App/ConfigContext";
 import { JiraTicket } from "../../JiraTicket";
 import { actions } from "../../actions";
-import { isSpanNPlusOneInsight } from "../../typeGuards";
+import { isEndpointHighNumberOfQueriesInsight } from "../../typeGuards";
 import {
-  EndpointSuspectedNPlusOneInsight,
-  GenericCodeObjectInsight,
-  SpanNPlusOneInsight
+  EndpointHighNumberOfQueriesInsight,
+  GenericCodeObjectInsight
 } from "../../types";
 import { CodeLocations } from "../common/CodeLocations";
 import { CommitInfos } from "../common/CommitInfos";
 import { DigmaSignature } from "../common/DigmaSignature";
-import { NPlusOneAffectedEndpoints } from "../common/NPlusOneAffectedEndpoints";
 import { getInsightCommits } from "../getInsightCommits";
 import {
   CodeLocationsData,
@@ -23,65 +19,57 @@ import {
   InsightTicketProps
 } from "../types";
 
-export const EndpointNPlusOneInsightTicket = (
-  props: InsightTicketProps<EndpointSuspectedNPlusOneInsight>
+export const HighNumberOfQueriesInsightTicket = (
+  props: InsightTicketProps<EndpointHighNumberOfQueriesInsight>
 ) => {
   const [isInitialLoading, setIsInitialLoading] = useState(false);
   const [codeLocations, setCodeLocations] = useState<string[]>([]);
-  const config = useContext(ConfigContext);
-  const [spanInsight, setSpanInsight] = useState<SpanNPlusOneInsight | null>();
+  const [spanInsight, setSpanInsight] =
+    useState<EndpointHighNumberOfQueriesInsight | null>();
   const [commitInfos, setCommitInfos] = useState<CommitInfosData>();
 
-  const span = props.data.insight.spans.find(
-    (x) =>
-      (x.internalSpan?.spanCodeObjectId &&
-        x.internalSpan.spanCodeObjectId === props.data.spanCodeObjectId) ||
-      x.clientSpan.spanCodeObjectId === props.data.spanCodeObjectId
-  );
+  const renderDescription = () => {
+    if (!spanInsight || !spanInsight.spanInfo) {
+      return null;
+    }
 
-  const spanInfo = span?.internalSpan || span?.clientSpan;
-
-  const services = [
-    ...new Set(
-      (spanInsight?.endpoints || []).map((x) => x.endpointInfo.serviceName)
-    )
-  ];
-  const serviceString = services.length > 0 ? services.join(", ") : "";
-
-  const criticalityString = `Criticality: ${getCriticalityLabel(
-    props.data.insight.criticality
-  )}`;
-
-  const summary = ["N+1 Issue found", serviceString, criticalityString]
-    .filter(Boolean)
-    .join(" - ");
-
-  const queryString = spanInfo?.displayName || "";
-
-  const renderDescription = () => (
-    <>
-      {intersperse<ReactElement, ReactElement>(
-        [
-          <div key={"title"}>N+1 Query Detected</div>,
-          <div key={"query"}>{queryString}</div>,
-          <CodeLocations key={"codeLocations"} codeLocations={codeLocations} />,
-          <NPlusOneAffectedEndpoints
-            key={"affectedEndpoints"}
-            insight={spanInsight || undefined}
-          />,
-          <CommitInfos
-            key={"commitInfos"}
-            commitInfos={commitInfos}
-            insight={spanInsight || undefined}
-          />,
-          <DigmaSignature key={"digmaSignature"} />
-        ],
-        (i: number) => (
-          <br key={`separator-${i}`} />
-        )
-      )}
-    </>
-  );
+    return (
+      <>
+        {intersperse<ReactElement, ReactElement>(
+          [
+            <div key={"title"}>Description</div>,
+            <span
+              key={"details"}
+            >{`The endpoint ${spanInsight.spanInfo.displayName} is triggering an abnormally high number of queries.`}</span>,
+            <span key={"text"}>
+              Consider using joins/caching to reduce the overhead of the db
+              roundtrip.
+            </span>,
+            <></>,
+            <span
+              key={"median"}
+            >{`Number of queries (median): ${spanInsight.medianDuration.value}`}</span>,
+            <span
+              key={"typical"}
+            >{`Typical for ${spanInsight.serviceName}: ${spanInsight.typicalCount}`}</span>,
+            <CodeLocations
+              key={"codeLocations"}
+              codeLocations={codeLocations}
+            />,
+            <CommitInfos
+              key={"commitInfos"}
+              commitInfos={commitInfos}
+              insight={spanInsight || undefined}
+            />,
+            <DigmaSignature key={"digmaSignature"} />
+          ],
+          (i: number) => (
+            <br key={`separator-${i}`} />
+          )
+        )}
+      </>
+    );
+  };
 
   const onReloadSpanInsight = () => {
     spanInfo?.spanCodeObjectId &&
@@ -94,15 +82,8 @@ export const EndpointNPlusOneInsightTicket = (
       });
   };
 
-  const traceId = span?.traceId;
-  const attachment = traceId
-    ? {
-        url: `${config.jaegerURL}/api/traces/${traceId}?prettyPrint=true`,
-        fileName: `trace-${traceId}.json`
-      }
-    : undefined;
-
   useEffect(() => {
+    const spanInfo = props.data.insight.spanInfo;
     const spanCodeObjectId = spanInfo?.spanCodeObjectId;
     const methodCodeObjectId = spanInfo?.methodCodeObjectId || undefined;
 
@@ -131,7 +112,10 @@ export const EndpointNPlusOneInsightTicket = (
 
     const handleSpanInsightData = (data: unknown) => {
       const insightData = data as { insight: GenericCodeObjectInsight | null };
-      if (insightData.insight && isSpanNPlusOneInsight(insightData.insight)) {
+      if (
+        insightData.insight &&
+        isEndpointHighNumberOfQueriesInsight(insightData.insight)
+      ) {
         setSpanInsight(insightData.insight);
       } else {
         setSpanInsight(null);
@@ -202,6 +186,14 @@ export const EndpointNPlusOneInsightTicket = (
     }
   }, [codeLocations, spanInsight, commitInfos]);
 
+  const summary = [
+    "High number of queries detected ",
+    spanInsight?.spanInfo?.displayName,
+    spanInsight?.serviceName
+  ]
+    .filter(Boolean)
+    .join(" - ");
+
   return (
     <JiraTicket
       summary={summary}
@@ -211,7 +203,6 @@ export const EndpointNPlusOneInsightTicket = (
         errorMessage:
           spanInsight === null ? "Failed to get insight details" : undefined
       }}
-      attachment={attachment}
       insight={props.data.insight}
       relatedInsight={spanInsight}
       onClose={props.onClose}

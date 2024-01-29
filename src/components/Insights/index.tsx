@@ -29,6 +29,7 @@ import { NPlusOneInsightTicket } from "./tickets/NPlusOneInsightTicket";
 import { QueryOptimizationInsightTicket } from "./tickets/QueryOptimizationInsightTicket";
 import { SpanBottleneckInsightTicket } from "./tickets/SpanBottleneckInsightTicket";
 import {
+  isEndpointHighNumberOfQueriesInsight,
   isEndpointSlowestSpansInsight,
   isEndpointSuspectedNPlusOneInsight,
   isSpanEndpointBottleneckInsight,
@@ -86,6 +87,17 @@ const renderInsightTicket = (
 
   if (isSpanQueryOptimizationInsight(data.insight) && data.spanCodeObjectId) {
     const ticketData = data as InsightTicketInfo<QueryOptimizationInsight>;
+    return (
+      <QueryOptimizationInsightTicket data={ticketData} onClose={onClose} />
+    );
+  }
+
+  if (
+    isEndpointHighNumberOfQueriesInsight(data.insight) &&
+    data.spanCodeObjectId
+  ) {
+    const ticketData =
+      data as InsightTicketInfo<EndpointHighNumberOfQueriesInsight>;
     return (
       <QueryOptimizationInsightTicket data={ticketData} onClose={onClose} />
     );
