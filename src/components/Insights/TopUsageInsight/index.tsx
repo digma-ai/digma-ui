@@ -30,7 +30,7 @@ export const TopUsageInsight = (props: TopUsageInsightProps) => {
   const handleTraceButtonClick = (
     trace: Trace,
     insightType: InsightType,
-    spanCodeObjectId: string
+    spanCodeObjectId?: string
   ) => {
     props.onTraceButtonClick(trace, insightType, spanCodeObjectId);
   };
@@ -94,7 +94,7 @@ export const TopUsageInsight = (props: TopUsageInsightProps) => {
                           id: traceId
                         },
                         props.insight.type,
-                        flow.firstService.spanCodeObjectId
+                        props.insight.spanInfo?.spanCodeObjectId
                       )
                     }
                   >
