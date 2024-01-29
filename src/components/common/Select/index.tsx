@@ -42,6 +42,7 @@ export const Select = (props: SelectProps) => {
 
   return (
     <NewPopover
+      sameWidth={true}
       content={
         <s.MenuContainer>
           <s.SearchInputContainer>

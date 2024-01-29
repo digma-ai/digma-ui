@@ -14,6 +14,7 @@ import {
 } from "@floating-ui/react";
 import { Children, cloneElement, useRef } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
+import { isUndefined } from "../../../typeGuards/isUndefined";
 import { LAYERS } from "../App/styles";
 import { PopoverProps } from "./types";
 
@@ -113,9 +114,11 @@ export const NewPopover = (props: PopoverProps) => {
             ref={refs.setFloating}
             style={{
               ...floatingStyles,
-              width:
-                props.width ||
-                context.elements.reference?.getBoundingClientRect().width,
+              width: props.sameWidth
+                ? context.elements.reference?.getBoundingClientRect().width
+                : isUndefined(props.width)
+                ? undefined
+                : props.width,
               zIndex: LAYERS.MODAL
             }}
             {...getFloatingProps()}

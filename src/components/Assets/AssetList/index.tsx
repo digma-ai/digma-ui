@@ -19,6 +19,7 @@ import { ChevronIcon } from "../../common/icons/ChevronIcon";
 import { MagnifierIcon } from "../../common/icons/MagnifierIcon";
 import { SortIcon } from "../../common/icons/SortIcon";
 import { Direction } from "../../common/icons/types";
+import { AssetFilterQuery } from "../AssetsFilter/types";
 import { actions } from "../actions";
 import { getAssetTypeInfo } from "../utils";
 import { AssetEntry as AssetEntryComponent } from "./AssetEntry";
@@ -126,6 +127,32 @@ const getSortingCriterionInfo = (
   return sortingCriterionInfoMap[sortingCriterion];
 };
 
+const getData = (
+  assetTypeId: string,
+  page: number,
+  sorting: Sorting,
+  debouncedSearchInputValue: string,
+  filters: AssetFilterQuery | undefined,
+  services: string[]
+) => {
+  window.sendMessageToDigma({
+    action: actions.GET_DATA,
+    payload: {
+      query: {
+        assetType: assetTypeId,
+        page,
+        pageSize: PAGE_SIZE,
+        sortBy: sorting.criterion,
+        sortOrder: sorting.order,
+        ...(debouncedSearchInputValue.length > 0
+          ? { displayName: debouncedSearchInputValue }
+          : {}),
+        ...(filters || { services })
+      }
+    }
+  });
+};
+
 export const AssetList = (props: AssetListProps) => {
   const [data, setData] = useState<AssetsData>();
   const previousData = usePrevious(data);
@@ -180,22 +207,14 @@ export const AssetList = (props: AssetListProps) => {
     : Object.values(SORTING_CRITERION);
 
   useEffect(() => {
-    window.sendMessageToDigma({
-      action: actions.GET_DATA,
-      payload: {
-        query: {
-          assetType: props.assetTypeId,
-          page,
-          pageSize: PAGE_SIZE,
-          sortBy: sorting.criterion,
-          sortOrder: sorting.order,
-          ...(debouncedSearchInputValue.length > 0
-            ? { displayName: debouncedSearchInputValue }
-            : {}),
-          ...(props.filters || { services: props.services })
-        }
-      }
-    });
+    getData(
+      props.assetTypeId,
+      page,
+      sorting,
+      debouncedSearchInputValue,
+      props.filters,
+      props.services
+    );
     setIsInitialLoading(true);
 
     const handleAssetsData = (data: unknown, timeStamp: number) => {
@@ -225,22 +244,14 @@ export const AssetList = (props: AssetListProps) => {
           previousServices !== props.services),
       previousFilters && previousFilters !== props.filters)
     ) {
-      window.sendMessageToDigma({
-        action: actions.GET_DATA,
-        payload: {
-          query: {
-            assetType: props.assetTypeId,
-            page,
-            pageSize: PAGE_SIZE,
-            sortBy: sorting.criterion,
-            sortOrder: sorting.order,
-            ...(debouncedSearchInputValue.length > 0
-              ? { displayName: debouncedSearchInputValue }
-              : {}),
-            ...(props.filters || { services: props.services })
-          }
-        }
-      });
+      getData(
+        props.assetTypeId,
+        page,
+        sorting,
+        debouncedSearchInputValue,
+        props.filters,
+        props.services
+      );
     }
   }, [
     props.assetTypeId,
@@ -263,22 +274,14 @@ export const AssetList = (props: AssetListProps) => {
     if (previousLastSetDataTimeStamp !== lastSetDataTimeStamp) {
       window.clearTimeout(refreshTimerId.current);
       refreshTimerId.current = window.setTimeout(() => {
-        window.sendMessageToDigma({
-          action: actions.GET_DATA,
-          payload: {
-            query: {
-              assetType: props.assetTypeId,
-              page,
-              pageSize: PAGE_SIZE,
-              sortBy: sorting.criterion,
-              sortOrder: sorting.order,
-              ...(debouncedSearchInputValue.length > 0
-                ? { displayName: debouncedSearchInputValue }
-                : {}),
-              ...(props.filters || { services: props.services })
-            }
-          }
-        });
+        getData(
+          props.assetTypeId,
+          page,
+          sorting,
+          debouncedSearchInputValue,
+          props.filters,
+          props.services
+        );
       }, REFRESH_INTERVAL);
     }
   }, [

@@ -1,4 +1,4 @@
-import { useContext, useLayoutEffect, useMemo, useState } from "react";
+import { useContext, useLayoutEffect, useState } from "react";
 import { getFeatureFlagValue } from "../../featureFlags";
 import { FeatureFlag } from "../../types";
 import { ConfigContext } from "../common/App/ConfigContext";
@@ -28,7 +28,7 @@ export const Assets = () => {
   //   FeatureFlag.IS_ASSETS_COMPLEX_FILTER_ENABLED
   // );
 
-  const isComplexFilterVisible = true;
+  const isComplexFilterVisible = false;
 
   useLayoutEffect(() => {
     window.sendMessageToDigma({
@@ -52,7 +52,7 @@ export const Assets = () => {
     setSelectedFilters(filters);
   };
 
-  const renderContent = useMemo((): JSX.Element => {
+  const renderContent = () => {
     if (!selectedAssetTypeId) {
       return (
         <AssetTypeList
@@ -71,7 +71,7 @@ export const Assets = () => {
         filters={selectedFilters}
       />
     );
-  }, [selectedFilters, selectedAssetTypeId, selectedServices]);
+  };
 
   return (
     <s.Container>
@@ -88,7 +88,7 @@ export const Assets = () => {
           )
         )}
       </s.Header>
-      {renderContent}
+      {renderContent()}
     </s.Container>
   );
 };

@@ -5,13 +5,10 @@ import { isNumber } from "../../../typeGuards/isNumber";
 import { isString } from "../../../typeGuards/isString";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { NewPopover } from "../../common/NewPopover";
-import { ChevronIcon } from "../../common/icons/ChevronIcon";
-import { FilterIcon } from "../../common/icons/FilterIcon";
-import { Direction } from "../../common/icons/types";
+import { FilterButton } from "../FilterButton";
 import { FilterMenu } from "../FilterMenu";
 import { actions } from "../actions";
 import { ServiceData } from "../types";
-import * as s from "./styles";
 import { ServicesFilterProps } from "./types";
 
 const REFRESH_INTERVAL = isNumber(window.assetsRefreshInterval)
@@ -38,21 +35,21 @@ export const ServicesFilter = (props: ServicesFilterProps) => {
       action: actions.GET_SERVICES
     });
     setAreServicesLoading(true);
+  }, []);
 
+  useEffect(() => {
     const handleServicesData = (data: unknown, timeStamp: number) => {
       const serviceData = data as ServiceData;
       setLastSetDataTimeStamp(timeStamp);
-      if (services === undefined) {
-        const oldSelectedServices = Array.isArray(props.selectedServices)
-          ? props.selectedServices
-          : preselectedServices;
+      const oldSelectedServices = Array.isArray(props.selectedServices)
+        ? props.selectedServices
+        : preselectedServices;
 
-        const newSelectedServices = serviceData.services.filter((x) =>
-          oldSelectedServices.includes(x)
-        );
+      const newSelectedServices = serviceData.services.filter((x) =>
+        oldSelectedServices.includes(x)
+      );
 
-        props.onChange(newSelectedServices);
-      }
+      props.onChange(newSelectedServices);
       setServices(serviceData.services);
       setAreServicesLoading(false);
     };
@@ -62,7 +59,7 @@ export const ServicesFilter = (props: ServicesFilterProps) => {
     return () => {
       dispatcher.removeActionListener(actions.SET_SERVICES, handleServicesData);
     };
-  }, []);
+  }, [props.selectedServices, props.onChange]);
 
   useEffect(() => {
     if (
@@ -138,33 +135,18 @@ export const ServicesFilter = (props: ServicesFilterProps) => {
           isLoading={areServicesLoading}
         />
       }
-      width={"max-content"}
       onOpenChange={setIsServiceMenuOpen}
       isOpen={isServiceMenuOpen}
       placement={"bottom-end"}
     >
-      <s.ServiceMenuButton>
-        <s.ServiceMenuButtonLabel>
-          <FilterIcon color={"currentColor"} size={14} />
-          <span>Services</span>
-          {props.selectedServices &&
-          props.selectedServices.length > 0 &&
-          !areServicesLoading ? (
-            <s.Number>{props.selectedServices.length}</s.Number>
-          ) : (
-            <s.SelectedServiceNumberPlaceholder>
-              All
-            </s.SelectedServiceNumberPlaceholder>
-          )}
-        </s.ServiceMenuButtonLabel>
-        <s.ServiceMenuChevronIconContainer>
-          <ChevronIcon
-            color={"currentColor"}
-            size={14}
-            direction={isServiceMenuOpen ? Direction.UP : Direction.DOWN}
-          />
-        </s.ServiceMenuChevronIconContainer>
-      </s.ServiceMenuButton>
+      <div>
+        <FilterButton
+          title={"Services"}
+          selectedCount={props.selectedServices?.length}
+          isMenuOpen={isServiceMenuOpen}
+          isLoading={areServicesLoading}
+        />
+      </div>
     </NewPopover>
   );
 };

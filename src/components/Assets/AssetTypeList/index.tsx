@@ -10,6 +10,7 @@ import { ConfigContext } from "../../common/App/ConfigContext";
 import { EmptyState } from "../../common/EmptyState";
 import { NewCircleLoader } from "../../common/NewCircleLoader";
 import { CardsIcon } from "../../common/icons/CardsIcon";
+import { AssetFilterQuery } from "../AssetsFilter/types";
 import { actions } from "../actions";
 import { getAssetTypeInfo } from "../utils";
 import { AssetTypeListItem } from "./AssetTypeListItem";
@@ -29,6 +30,17 @@ const ASSET_TYPE_IDS = [
   "Other"
 ];
 
+const getData = (filters: AssetFilterQuery | undefined, services: string[]) => {
+  window.sendMessageToDigma({
+    action: actions.GET_CATEGORIES_DATA,
+    payload: {
+      query: {
+        ...(filters || { services })
+      }
+    }
+  });
+};
+
 export const AssetTypeList = (props: AssetTypeListProps) => {
   const [data, setData] = useState<AssetCategoriesData>();
   const previousData = usePrevious(data);
@@ -42,12 +54,7 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
   const previousFilters = usePrevious(props.filters);
 
   useEffect(() => {
-    window.sendMessageToDigma({
-      action: actions.GET_CATEGORIES_DATA,
-      payload: {
-        ...(props.filters || { services: props.services })
-      }
-    });
+    getData(props.filters, props.services);
     setIsInitialLoading(true);
 
     const handleCategoriesData = (data: unknown, timeStamp: number) => {
@@ -77,12 +84,7 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
         previousServices !== props.services) ||
       (previousFilters && previousFilters !== props.filters)
     ) {
-      window.sendMessageToDigma({
-        action: actions.GET_CATEGORIES_DATA,
-        payload: {
-          ...(props.filters || { services: props.services })
-        }
-      });
+      getData(props.filters, props.services);
     }
   }, [
     previousEnvironment,
@@ -97,12 +99,7 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
     if (previousLastSetDataTimeStamp !== lastSetDataTimeStamp) {
       window.clearTimeout(refreshTimerId.current);
       refreshTimerId.current = window.setTimeout(() => {
-        window.sendMessageToDigma({
-          action: actions.GET_CATEGORIES_DATA,
-          payload: {
-            ...(props.filters || { services: props.services })
-          }
-        });
+        getData(props.filters, props.services);
       }, REFRESH_INTERVAL);
     }
   }, [

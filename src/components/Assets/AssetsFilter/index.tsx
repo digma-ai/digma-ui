@@ -1,14 +1,11 @@
 import { useEffect, useState } from "react";
 import { dispatcher } from "../../../dispatcher";
-import { usePrevious } from "../../../hooks/usePrevious";
-import { isBoolean } from "../../../typeGuards/isBoolean";
 import { InsightType } from "../../../types";
 import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
 import { NewButton } from "../../common/NewButton";
 import { NewPopover } from "../../common/NewPopover";
 import { Select } from "../../common/Select";
-import { ChevronIcon } from "../../common/icons/ChevronIcon";
-import { Direction } from "../../common/icons/types";
+import { FilterButton } from "../FilterButton";
 import { actions } from "../actions";
 import * as s from "./styles";
 import {
@@ -55,19 +52,73 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
   const [selectedConsumers, setSelectedConsumers] = useState<string[]>([]);
   const [selectedInternals, setSelectedInternals] = useState<string[]>([]);
   const [selectedInsights, setSelectedInsights] = useState<InsightType[]>([]);
-  const [areFiltersApplied, setAreFiltersApplied] = useState(true);
-  const previousAreFiltersApplied = usePrevious(areFiltersApplied);
 
-  useEffect(() => {
+  const getData = (
+    services: string[],
+    operations: string[],
+    insights: InsightType[]
+  ) => {
     window.sendMessageToDigma({
       action: actions.GET_ASSET_FILTERS_DATA,
-      payload: {}
+      payload: {
+        query: {
+          services,
+          operations,
+          insights
+        }
+      }
     });
+  };
+
+  useEffect(() => {
+    getData(
+      selectedServices,
+      [...selectedEndpoints, ...selectedConsumers, ...selectedInternals],
+      selectedInsights
+    );
 
     const handleData = (data: unknown) => {
       const filtersData = data as AssetsFiltersData;
       setData(filtersData);
-      setAreFiltersApplied(true);
+
+      setSelectedServices(
+        filtersData.categories
+          .find((x) => x.categoryName === "Services")
+          ?.entries?.filter((x) => x.selected)
+          .map((x) => x.name) || []
+      );
+
+      const operationsCategory = filtersData?.categories.find(
+        (x) => x.categoryName === "Operations"
+      );
+
+      setSelectedEndpoints(
+        operationsCategory?.categories
+          ?.find((x) => x.categoryName === "Endpoints")
+          ?.entries?.filter((x) => x.selected)
+          .map((x) => x.name) || []
+      );
+
+      setSelectedConsumers(
+        operationsCategory?.categories
+          ?.find((x) => x.categoryName === "Consumers")
+          ?.entries?.filter((x) => x.selected)
+          .map((x) => x.name) || []
+      );
+
+      setSelectedInternals(
+        operationsCategory?.categories
+          ?.find((x) => x.categoryName === "Internal")
+          ?.entries?.filter((x) => x.selected)
+          .map((x) => x.name) || []
+      );
+
+      setSelectedInsights(
+        (filtersData.categories
+          .find((x) => x.categoryName === "Insights")
+          ?.entries?.filter((x) => x.selected)
+          .map((x) => x.name) || []) as InsightType[]
+      );
     };
 
     dispatcher.addActionListener(actions.SET_ASSET_FILTERS_DATA, handleData);
@@ -86,36 +137,8 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
     }
   }, [props.data]);
 
-  useEffect(() => {
-    if (isBoolean(previousAreFiltersApplied) && !areFiltersApplied) {
-      window.sendMessageToDigma({
-        action: actions.GET_ASSET_FILTERS_DATA,
-        payload: {
-          services: selectedServices,
-          operations: [
-            ...selectedEndpoints,
-            ...selectedConsumers,
-            ...selectedInternals
-          ],
-          insights: selectedInsights
-        }
-      });
-    }
-  }, [
-    previousAreFiltersApplied,
-    areFiltersApplied,
-    selectedServices,
-    selectedEndpoints,
-    selectedConsumers,
-    selectedInternals,
-    selectedInsights
-  ]);
-
   const handleClearFiltersButtonClick = () => {
-    window.sendMessageToDigma({
-      action: actions.GET_ASSET_FILTERS_DATA,
-      payload: {}
-    });
+    getData([], [], []);
   };
 
   const handleApplyButtonClick = () => {
@@ -128,6 +151,7 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
       ],
       insights: selectedInsights
     });
+    setIsOpen(false);
   };
 
   const handleSelectedItemsChange = (
@@ -136,25 +160,31 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
   ) => {
     const newValue = Array.isArray(value) ? value : [value];
 
+    let services = selectedServices;
+    let endpoints = selectedEndpoints;
+    let consumers = selectedConsumers;
+    let internals = selectedInternals;
+    let insights = selectedInsights;
+
     switch (category) {
       case "Services":
-        setSelectedServices(newValue);
+        services = newValue;
         break;
       case "Endpoints":
-        setSelectedEndpoints(newValue);
+        endpoints = newValue;
         break;
       case "Consumers":
-        setSelectedConsumers(newValue);
+        consumers = newValue;
         break;
       case "Internal":
-        setSelectedInternals(newValue);
+        internals = newValue;
         break;
       case "Insights":
-        setSelectedInsights(newValue as InsightType[]);
+        insights = newValue as InsightType[];
         break;
     }
 
-    setAreFiltersApplied(false);
+    getData(services, [...endpoints, ...consumers, ...internals], insights);
   };
 
   const servicesCategory = data?.categories.find(
@@ -193,7 +223,7 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
     entries: []
   };
 
-  const isClearFiltersButtonDisabled = [
+  const areFiltersDefault = [
     selectedServices,
     selectedEndpoints,
     selectedConsumers,
@@ -203,6 +233,7 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
 
   return (
     <NewPopover
+      width={"calc(100% - 16px)"}
       content={
         <s.Container>
           <s.Header>Filters</s.Header>
@@ -245,14 +276,10 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
             <NewButton
               buttonType={"tertiary"}
               label={"Clear filters"}
-              disabled={isClearFiltersButtonDisabled}
+              disabled={areFiltersDefault}
               onClick={handleClearFiltersButtonClick}
             />
-            <NewButton
-              label={"Apply"}
-              onClick={handleApplyButtonClick}
-              disabled={areFiltersApplied}
-            />
+            <NewButton label={"Apply"} onClick={handleApplyButtonClick} />
           </s.Footer>
         </s.Container>
       }
@@ -260,16 +287,9 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
       isOpen={isOpen}
       placement={"bottom-end"}
     >
-      <s.MenuButton>
-        Filters
-        <s.MenuButtonChevronIconContainer>
-          <ChevronIcon
-            color={"currentColor"}
-            size={14}
-            direction={isOpen ? Direction.UP : Direction.DOWN}
-          />
-        </s.MenuButtonChevronIconContainer>
-      </s.MenuButton>
+      <div>
+        <FilterButton title={"Filters"} isMenuOpen={isOpen} />
+      </div>
     </NewPopover>
   );
 };
