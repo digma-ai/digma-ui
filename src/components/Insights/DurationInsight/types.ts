@@ -7,7 +7,7 @@ export interface DurationInsightProps extends InsightProps {
     instrumentationLibrary: string,
     name: string,
     insightType: InsightType,
-    displayName?: string
+    displayName: string
   ) => void;
   onLiveButtonClick: (prefixedCodeObjectId: string) => void;
   onCompareButtonClick: (
