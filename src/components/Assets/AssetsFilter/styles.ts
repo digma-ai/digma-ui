@@ -7,7 +7,7 @@ export const Container = styled.div`
   gap: 2px;
   padding: 4px 8px;
   border-radius: 4px;
-  background: ${"#2c2e33" /* TODO: use theme*/};
+  background: ${({ theme }) => theme.colors.select.menu.background};
   box-shadow: 0 2px 4px 0 rgba(0 0 0 / 29%);
   font-size: 14px;
   color: ${grayScale[400]};
@@ -15,16 +15,22 @@ export const Container = styled.div`
 
 export const Header = styled.div`
   font-size: 16px;
-  color: ${"#fff" /* TODO: use theme*/};
+  color: ${({ theme }) => theme.colors.select.menu.text.primary};
   padding: 0 4px;
   height: 24px;
   display: flex;
   align-items: center;
 `;
 
+export const FilterCategoryName = styled.div`
+  display: flex;
+  padding: 4px;
+  color: ${grayScale[400]};
+`;
+
 export const MenuButton = styled.button`
-  border: 1px solid ${"#A1B5FF" /* TODO: use theme*/};
-  background: ${"#1E1F22" /* TODO: use theme*/};
+  border: 1px solid ${({ theme }) => theme.colors.stroke.primary};
+  background: ${({ theme }) => theme.colors.surface.secondary};
   border-radius: 4px;
   padding: 4px 8px;
   display: flex;
@@ -34,7 +40,7 @@ export const MenuButton = styled.button`
 `;
 
 export const MenuButtonChevronIconContainer = styled.span`
-  color: ${"#D3D6E5" /* TODO: use theme*/};
+  color: ${({ theme }) => theme.colors.icon.primary};
 `;
 
 export const Footer = styled.div`

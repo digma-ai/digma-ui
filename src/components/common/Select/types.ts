@@ -1,23 +1,29 @@
 export interface SelectThemeColors {
   menu: {
+    text: {
+      primary: string;
+    };
     background: string;
   };
 }
 
+export interface SelectItem {
+  value: string;
+  label: string;
+  enabled?: boolean;
+  selected?: boolean;
+}
+
 export interface SelectProps {
-  items: {
-    value: string;
-    label: string;
-    selected?: boolean;
-  }[];
+  items: SelectItem[];
   multiselect?: boolean;
   searchable?: boolean;
-  title?: string;
-  onItemClick: (value: string) => void;
+  onChange: (value: string | string[]) => void;
   counts?: {
     total: number;
     filtered: number;
   };
+  placeholder?: string;
 }
 
 export interface ButtonProps {

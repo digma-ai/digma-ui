@@ -162,6 +162,7 @@ export const AssetList = (props: AssetListProps) => {
   const previousEnvironment = usePrevious(config.environment);
   const previousAssetTypeId = usePrevious(props.assetTypeId);
   const previousServices = usePrevious(props.services);
+  const previousFilters = usePrevious(props.filters);
 
   const entries = data?.data || [];
 
@@ -191,7 +192,7 @@ export const AssetList = (props: AssetListProps) => {
           ...(debouncedSearchInputValue.length > 0
             ? { displayName: debouncedSearchInputValue }
             : {}),
-          services: props.services
+          ...(props.filters || { services: props.services })
         }
       }
     });
@@ -212,15 +213,17 @@ export const AssetList = (props: AssetListProps) => {
 
   useEffect(() => {
     if (
-      (isNumber(previousPage) && previousPage !== page) ||
-      (isString(previousEnvironment) &&
-        previousEnvironment !== config.environment) ||
-      (previousSorting && previousSorting !== sorting) ||
-      (isString(previousDebouncedSearchInputValue) &&
-        previousDebouncedSearchInputValue !== debouncedSearchInputValue) ||
-      (isString(previousAssetTypeId) &&
-        previousAssetTypeId !== props.assetTypeId) ||
-      (Array.isArray(previousServices) && previousServices !== props.services)
+      ((isNumber(previousPage) && previousPage !== page) ||
+        (isString(previousEnvironment) &&
+          previousEnvironment !== config.environment) ||
+        (previousSorting && previousSorting !== sorting) ||
+        (isString(previousDebouncedSearchInputValue) &&
+          previousDebouncedSearchInputValue !== debouncedSearchInputValue) ||
+        (isString(previousAssetTypeId) &&
+          previousAssetTypeId !== props.assetTypeId) ||
+        (Array.isArray(previousServices) &&
+          previousServices !== props.services),
+      previousFilters && previousFilters !== props.filters)
     ) {
       window.sendMessageToDigma({
         action: actions.GET_DATA,
@@ -234,7 +237,7 @@ export const AssetList = (props: AssetListProps) => {
             ...(debouncedSearchInputValue.length > 0
               ? { displayName: debouncedSearchInputValue }
               : {}),
-            services: props.services
+            ...(props.filters || { services: props.services })
           }
         }
       });
@@ -251,7 +254,9 @@ export const AssetList = (props: AssetListProps) => {
     previousEnvironment,
     config.environment,
     props.services,
-    previousServices
+    previousServices,
+    props.filters,
+    previousFilters
   ]);
 
   useEffect(() => {
@@ -270,7 +275,7 @@ export const AssetList = (props: AssetListProps) => {
               ...(debouncedSearchInputValue.length > 0
                 ? { displayName: debouncedSearchInputValue }
                 : {}),
-              services: props.services
+              ...(props.filters || { services: props.services })
             }
           }
         });
@@ -284,7 +289,8 @@ export const AssetList = (props: AssetListProps) => {
     sorting,
     debouncedSearchInputValue,
     config.environment,
-    props.services
+    props.services,
+    props.filters
   ]);
 
   useEffect(() => {

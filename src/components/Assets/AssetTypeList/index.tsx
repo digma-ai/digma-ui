@@ -39,12 +39,13 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
   const previousEnvironment = usePrevious(config.environment);
   const refreshTimerId = useRef<number>();
   const previousServices = usePrevious(props.services);
+  const previousFilters = usePrevious(props.filters);
 
   useEffect(() => {
     window.sendMessageToDigma({
       action: actions.GET_CATEGORIES_DATA,
       payload: {
-        services: props.services
+        ...(props.filters || { services: props.services })
       }
     });
     setIsInitialLoading(true);
@@ -72,12 +73,14 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
     if (
       (isString(previousEnvironment) &&
         previousEnvironment !== config.environment) ||
-      (Array.isArray(previousServices) && previousServices !== props.services)
+      (Array.isArray(previousServices) &&
+        previousServices !== props.services) ||
+      (previousFilters && previousFilters !== props.filters)
     ) {
       window.sendMessageToDigma({
         action: actions.GET_CATEGORIES_DATA,
         payload: {
-          services: props.services
+          ...(props.filters || { services: props.services })
         }
       });
     }
@@ -85,7 +88,9 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
     previousEnvironment,
     config.environment,
     previousServices,
-    props.services
+    props.services,
+    previousFilters,
+    props.filters
   ]);
 
   useEffect(() => {
@@ -95,12 +100,17 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
         window.sendMessageToDigma({
           action: actions.GET_CATEGORIES_DATA,
           payload: {
-            services: props.services
+            ...(props.filters || { services: props.services })
           }
         });
       }, REFRESH_INTERVAL);
     }
-  }, [props.services, previousLastSetDataTimeStamp, lastSetDataTimeStamp]);
+  }, [
+    props.services,
+    previousLastSetDataTimeStamp,
+    lastSetDataTimeStamp,
+    props.filters
+  ]);
 
   useEffect(() => {
     if (props.data) {

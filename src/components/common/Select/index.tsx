@@ -6,7 +6,7 @@ import { ChevronIcon } from "../icons/ChevronIcon";
 import { MagnifierIcon } from "../icons/MagnifierIcon";
 import { Direction } from "../icons/types";
 import * as s from "./styles";
-import { SelectProps } from "./types";
+import { SelectItem, SelectProps } from "./types";
 
 export const Select = (props: SelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,6 +18,18 @@ export const Select = (props: SelectProps) => {
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
+  };
+
+  const handleItemClick = (item: SelectItem) => {
+    const otherSelectedItems = props.items
+      .filter((x) => x.selected && x.value !== item.value)
+      .map((x) => x.value);
+
+    const newValue = item.selected
+      ? otherSelectedItems
+      : [...otherSelectedItems, item.value];
+
+    props.onChange(props.multiselect ? newValue : item.value);
   };
 
   const selectedValues = props.items
@@ -44,22 +56,19 @@ export const Select = (props: SelectProps) => {
           </s.SearchInputContainer>
           <s.OptionList>
             {filteredItems.length > 0 ? (
-              filteredItems.map((x) => {
-                const handleClick = () => {
-                  props.onItemClick(x.value);
-                };
-
-                return (
-                  <s.OptionListItem key={x.value} onClick={handleClick}>
-                    <Checkbox
-                      value={Boolean(x.selected)}
-                      label={""}
-                      onChange={() => undefined}
-                    />
-                    {x.label}
-                  </s.OptionListItem>
-                );
-              })
+              filteredItems.map((x) => (
+                <s.OptionListItem
+                  key={x.value}
+                  onClick={() => handleItemClick(x)}
+                >
+                  <Checkbox
+                    value={Boolean(x.selected)}
+                    label={""}
+                    onChange={() => undefined}
+                  />
+                  {x.label}
+                </s.OptionListItem>
+              ))
             ) : (
               <s.NoResultsContainer>No results</s.NoResultsContainer>
             )}
@@ -71,14 +80,20 @@ export const Select = (props: SelectProps) => {
       placement={"bottom-start"}
     >
       <s.Button $isOpen={isOpen} onClick={handleButtonClick}>
-        {isString(props.title) && <s.ButtonLabel>{props.title}</s.ButtonLabel>}
+        {isString(props.placeholder) && (
+          <s.ButtonLabel>{props.placeholder}</s.ButtonLabel>
+        )}
         {selectedValues.length > 0 && (
           <s.Number>{selectedValues.length}</s.Number>
         )}
         {props.counts && (
           <s.Counts>
-            <s.FilteredCount>{props.counts.filtered}</s.FilteredCount>/
-            {props.counts.total}
+            {props.counts.filtered < props.counts.total ? (
+              <s.FilteredCount>{props.counts.filtered}</s.FilteredCount>
+            ) : (
+              props.counts.filtered
+            )}
+            /{props.counts.total}
           </s.Counts>
         )}
         <s.ChevronIconContainer>

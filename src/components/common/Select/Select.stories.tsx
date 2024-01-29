@@ -17,22 +17,13 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const Multiselect: Story = {
   render: (args) => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
-    const handleItemClick = (value: string) => {
-      const itemIndex = selectedItems.findIndex((x) => x === value);
-
-      if (itemIndex < 0) {
-        setSelectedItems([...selectedItems, value]);
-      } else {
-        setSelectedItems([
-          ...selectedItems.slice(0, itemIndex),
-          ...selectedItems.slice(itemIndex + 1)
-        ]);
-      }
+    const handleChange = (value: string | string[]) => {
+      setSelectedItems(Array.isArray(value) ? value : [value]);
     };
 
     const items = args.items.map((x) => ({
@@ -44,8 +35,9 @@ export const Default: Story = {
       <Select
         {...args}
         items={items}
-        title={"Items"}
-        onItemClick={handleItemClick}
+        placeholder={"Items"}
+        onChange={handleChange}
+        multiselect={true}
       />
     );
   },
