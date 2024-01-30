@@ -3,8 +3,9 @@ import { AssetFilterQuery } from "../AssetsFilter/types";
 export interface AssetTypeListProps {
   data?: AssetCategoriesData;
   onAssetTypeSelect: (assetTypeId: string) => void;
-  services: string[];
+  services?: string[];
   filters?: AssetFilterQuery;
+  searchQuery: string;
 }
 
 export interface AssetCategoriesData {

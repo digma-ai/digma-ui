@@ -115,7 +115,7 @@ export const getInsightTypeInfo = (
       label: "High number of queries"
     },
     [InsightType.SpanNexus]: {
-      icon: BottleneckIcon, // todo changes
+      icon: BottleneckIcon, // TODO: change icon
       label: "Code Nexus Point"
     },
     [InsightType.SpanQueryOptimization]: {

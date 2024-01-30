@@ -1,5 +1,6 @@
 export interface AssetsFilterProps {
   data?: AssetsFiltersData;
+  filters?: AssetFilterQuery;
   onApply: (filter: AssetFilterQuery) => void;
 }
 

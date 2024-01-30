@@ -92,34 +92,45 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
         (x) => x.categoryName === "Operations"
       );
 
-      setSelectedEndpoints(
+      const selectedEndpoints =
         operationsCategory?.categories
           ?.find((x) => x.categoryName === "Endpoints")
           ?.entries?.filter((x) => x.selected)
-          .map((x) => x.name) || []
-      );
+          .map((x) => x.name) || [];
+      setSelectedEndpoints(selectedEndpoints);
 
-      setSelectedConsumers(
+      const selectedConsumers =
         operationsCategory?.categories
           ?.find((x) => x.categoryName === "Consumers")
           ?.entries?.filter((x) => x.selected)
-          .map((x) => x.name) || []
-      );
+          .map((x) => x.name) || [];
+      setSelectedConsumers(selectedConsumers);
 
-      setSelectedInternals(
+      const selectedInternals =
         operationsCategory?.categories
           ?.find((x) => x.categoryName === "Internal")
           ?.entries?.filter((x) => x.selected)
-          .map((x) => x.name) || []
-      );
+          .map((x) => x.name) || [];
+      setSelectedInternals(selectedInternals);
 
-      setSelectedInsights(
-        (filtersData.categories
-          .find((x) => x.categoryName === "Insights")
-          ?.entries?.filter((x) => x.selected)
-          .map((x) => x.name) || []) as InsightType[]
-      );
+      const selectedInsights = (filtersData.categories
+        .find((x) => x.categoryName === "Insights")
+        ?.entries?.filter((x) => x.selected)
+        .map((x) => x.name) || []) as InsightType[];
+      setSelectedInsights(selectedInsights);
     };
+
+    if (!props.filters) {
+      props.onApply({
+        services: selectedServices,
+        operations: [
+          ...selectedEndpoints,
+          ...selectedConsumers,
+          ...selectedInternals
+        ],
+        insights: selectedInsights
+      });
+    }
 
     dispatcher.addActionListener(actions.SET_ASSET_FILTERS_DATA, handleData);
 

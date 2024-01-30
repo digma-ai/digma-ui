@@ -1,10 +1,12 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { actions as globalActions } from "../../../actions";
 import { dispatcher } from "../../../dispatcher";
+import { getFeatureFlagValue } from "../../../featureFlags";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { trackingEvents as globalTrackingEvents } from "../../../trackingEvents";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { isString } from "../../../typeGuards/isString";
+import { FeatureFlag } from "../../../types";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { EmptyState } from "../../common/EmptyState";
@@ -30,12 +32,20 @@ const ASSET_TYPE_IDS = [
   "Other"
 ];
 
-const getData = (filters: AssetFilterQuery | undefined, services: string[]) => {
+const getData = (
+  filters: AssetFilterQuery | undefined,
+  services: string[] | undefined,
+  searchQuery: string,
+  isComplexFilterEnabled: boolean
+) => {
   window.sendMessageToDigma({
     action: actions.GET_CATEGORIES_DATA,
     payload: {
       query: {
-        ...(filters || { services })
+        ...(isComplexFilterEnabled
+          ? filters || { services: [], operations: [], insights: [] }
+          : { services: services || [] }),
+        ...(searchQuery.length > 0 ? { displayName: searchQuery } : {})
       }
     }
   });
@@ -52,9 +62,26 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
   const refreshTimerId = useRef<number>();
   const previousServices = usePrevious(props.services);
   const previousFilters = usePrevious(props.filters);
+  const previousSearchQuery = usePrevious(props.searchQuery);
+
+  const isComplexFilterEnabled = useMemo(
+    () =>
+      Boolean(
+        getFeatureFlagValue(
+          config,
+          FeatureFlag.IS_ASSETS_COMPLEX_FILTER_ENABLED
+        )
+      ),
+    [config]
+  );
 
   useEffect(() => {
-    getData(props.filters, props.services);
+    getData(
+      props.filters,
+      props.services,
+      props.searchQuery,
+      isComplexFilterEnabled
+    );
     setIsInitialLoading(true);
 
     const handleCategoriesData = (data: unknown, timeStamp: number) => {
@@ -82,9 +109,16 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
         previousEnvironment !== config.environment) ||
       (Array.isArray(previousServices) &&
         previousServices !== props.services) ||
-      (previousFilters && previousFilters !== props.filters)
+      (previousFilters && previousFilters !== props.filters) ||
+      (isString(previousSearchQuery) &&
+        previousSearchQuery !== props.searchQuery)
     ) {
-      getData(props.filters, props.services);
+      getData(
+        props.filters,
+        props.services,
+        props.searchQuery,
+        isComplexFilterEnabled
+      );
     }
   }, [
     previousEnvironment,
@@ -92,21 +126,31 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
     previousServices,
     props.services,
     previousFilters,
-    props.filters
+    props.filters,
+    previousSearchQuery,
+    props.searchQuery,
+    isComplexFilterEnabled
   ]);
 
   useEffect(() => {
     if (previousLastSetDataTimeStamp !== lastSetDataTimeStamp) {
       window.clearTimeout(refreshTimerId.current);
       refreshTimerId.current = window.setTimeout(() => {
-        getData(props.filters, props.services);
+        getData(
+          props.filters,
+          props.services,
+          props.searchQuery,
+          isComplexFilterEnabled
+        );
       }, REFRESH_INTERVAL);
     }
   }, [
     props.services,
     previousLastSetDataTimeStamp,
     lastSetDataTimeStamp,
-    props.filters
+    props.filters,
+    props.searchQuery,
+    isComplexFilterEnabled
   ]);
 
   useEffect(() => {

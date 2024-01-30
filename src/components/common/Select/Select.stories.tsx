@@ -28,6 +28,7 @@ export const Multiselect: Story = {
 
     const items = args.items.map((x) => ({
       ...x,
+      enabled: true,
       selected: selectedItems.includes(x.value)
     }));
 

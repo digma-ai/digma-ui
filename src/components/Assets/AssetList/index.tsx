@@ -1,8 +1,7 @@
-import { ChangeEvent, useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
 import { dispatcher } from "../../../dispatcher";
 import { getFeatureFlagValue } from "../../../featureFlags";
-import { useDebounce } from "../../../hooks/useDebounce";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { isString } from "../../../typeGuards/isString";
@@ -16,7 +15,6 @@ import { Popover } from "../../common/Popover";
 import { PopoverContent } from "../../common/Popover/PopoverContent";
 import { PopoverTrigger } from "../../common/Popover/PopoverTrigger";
 import { ChevronIcon } from "../../common/icons/ChevronIcon";
-import { MagnifierIcon } from "../../common/icons/MagnifierIcon";
 import { SortIcon } from "../../common/icons/SortIcon";
 import { Direction } from "../../common/icons/types";
 import { AssetFilterQuery } from "../AssetsFilter/types";
@@ -131,9 +129,10 @@ const getData = (
   assetTypeId: string,
   page: number,
   sorting: Sorting,
-  debouncedSearchInputValue: string,
+  searchQuery: string,
   filters: AssetFilterQuery | undefined,
-  services: string[]
+  services: string[] | undefined,
+  isComplexFilterEnabled: boolean
 ) => {
   window.sendMessageToDigma({
     action: actions.GET_DATA,
@@ -144,10 +143,16 @@ const getData = (
         pageSize: PAGE_SIZE,
         sortBy: sorting.criterion,
         sortOrder: sorting.order,
-        ...(debouncedSearchInputValue.length > 0
-          ? { displayName: debouncedSearchInputValue }
+        ...(searchQuery && searchQuery.length > 0
+          ? { displayName: searchQuery }
           : {}),
-        ...(filters || { services })
+        ...(isComplexFilterEnabled
+          ? filters || {
+              services: [],
+              operations: [],
+              insights: []
+            }
+          : { services: services || [] })
       }
     }
   });
@@ -165,16 +170,11 @@ export const AssetList = (props: AssetListProps) => {
   });
   const previousSorting = usePrevious(sorting);
   const [isSortingMenuOpen, setIsSortingMenuOpen] = useState(false);
-  const [searchInputValue, setSearchInputValue] = useState("");
-  const debouncedSearchInputValue = useDebounce(searchInputValue, 1000);
-  const previousDebouncedSearchInputValue = usePrevious(
-    debouncedSearchInputValue
-  );
+  const previousSearchQuery = usePrevious(props.searchQuery);
   const theme = useTheme();
   const backIconColor = getBackIconColor(theme);
   const assetTypeIconColor = getAssetTypeIconColor(theme);
   const sortingMenuChevronColor = getSortingMenuChevronColor(theme);
-  const searchInputIconColor = sortingMenuChevronColor;
   const [page, setPage] = useState(0);
   const previousPage = usePrevious(page);
   const filteredCount = data?.filteredCount || 0;
@@ -200,6 +200,17 @@ export const AssetList = (props: AssetListProps) => {
     FeatureFlag.IS_ASSETS_OVERALL_IMPACT_HIDDEN
   );
 
+  const isComplexFilterEnabled = useMemo(
+    () =>
+      Boolean(
+        getFeatureFlagValue(
+          config,
+          FeatureFlag.IS_ASSETS_COMPLEX_FILTER_ENABLED
+        )
+      ),
+    [config]
+  );
+
   const sortingCriteria = isOverallImpactHidden
     ? Object.values(SORTING_CRITERION).filter(
         (x) => x !== SORTING_CRITERION.OVERALL_IMPACT
@@ -211,9 +222,10 @@ export const AssetList = (props: AssetListProps) => {
       props.assetTypeId,
       page,
       sorting,
-      debouncedSearchInputValue,
+      props.searchQuery,
       props.filters,
-      props.services
+      props.services,
+      isComplexFilterEnabled
     );
     setIsInitialLoading(true);
 
@@ -232,32 +244,33 @@ export const AssetList = (props: AssetListProps) => {
 
   useEffect(() => {
     if (
-      ((isNumber(previousPage) && previousPage !== page) ||
-        (isString(previousEnvironment) &&
-          previousEnvironment !== config.environment) ||
-        (previousSorting && previousSorting !== sorting) ||
-        (isString(previousDebouncedSearchInputValue) &&
-          previousDebouncedSearchInputValue !== debouncedSearchInputValue) ||
-        (isString(previousAssetTypeId) &&
-          previousAssetTypeId !== props.assetTypeId) ||
-        (Array.isArray(previousServices) &&
-          previousServices !== props.services),
-      previousFilters && previousFilters !== props.filters)
+      (isNumber(previousPage) && previousPage !== page) ||
+      (isString(previousEnvironment) &&
+        previousEnvironment !== config.environment) ||
+      (previousSorting && previousSorting !== sorting) ||
+      (isString(previousSearchQuery) &&
+        previousSearchQuery !== props.searchQuery) ||
+      (isString(previousAssetTypeId) &&
+        previousAssetTypeId !== props.assetTypeId) ||
+      (Array.isArray(previousServices) &&
+        previousServices !== props.services) ||
+      (previousFilters && previousFilters !== props.filters)
     ) {
       getData(
         props.assetTypeId,
         page,
         sorting,
-        debouncedSearchInputValue,
+        props.searchQuery,
         props.filters,
-        props.services
+        props.services,
+        isComplexFilterEnabled
       );
     }
   }, [
     props.assetTypeId,
     previousAssetTypeId,
-    previousDebouncedSearchInputValue,
-    debouncedSearchInputValue,
+    previousSearchQuery,
+    props.searchQuery,
     previousSorting,
     sorting,
     previousPage,
@@ -267,7 +280,8 @@ export const AssetList = (props: AssetListProps) => {
     props.services,
     previousServices,
     props.filters,
-    previousFilters
+    previousFilters,
+    isComplexFilterEnabled
   ]);
 
   useEffect(() => {
@@ -278,9 +292,10 @@ export const AssetList = (props: AssetListProps) => {
           props.assetTypeId,
           page,
           sorting,
-          debouncedSearchInputValue,
+          props.searchQuery,
           props.filters,
-          props.services
+          props.services,
+          isComplexFilterEnabled
         );
       }, REFRESH_INTERVAL);
     }
@@ -290,10 +305,11 @@ export const AssetList = (props: AssetListProps) => {
     props.assetTypeId,
     page,
     sorting,
-    debouncedSearchInputValue,
+    props.searchQuery,
     config.environment,
     props.services,
-    props.filters
+    props.filters,
+    isComplexFilterEnabled
   ]);
 
   useEffect(() => {
@@ -310,29 +326,14 @@ export const AssetList = (props: AssetListProps) => {
 
   useEffect(() => {
     setPage(0);
-  }, [
-    config.environment,
-    debouncedSearchInputValue,
-    sorting,
-    props.assetTypeId
-  ]);
+  }, [config.environment, props.searchQuery, sorting, props.assetTypeId]);
 
   useEffect(() => {
     listRef.current?.scrollTo(0, 0);
-  }, [
-    config.environment,
-    debouncedSearchInputValue,
-    sorting,
-    page,
-    props.assetTypeId
-  ]);
+  }, [config.environment, props.searchQuery, sorting, page, props.assetTypeId]);
 
   const handleBackButtonClick = () => {
     props.onBackButtonClick();
-  };
-
-  const handleSearchInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearchInputValue(e.target.value);
   };
 
   const handleSortingMenuToggle = () => {
@@ -434,17 +435,6 @@ export const AssetList = (props: AssetListProps) => {
         {data && <s.ItemsCount>{data.totalCount}</s.ItemsCount>}
       </s.Header>
       <s.Toolbar>
-        {window.assetsSearch === true && (
-          <s.SearchInputContainer>
-            <s.SearchInputIconContainer>
-              <MagnifierIcon color={searchInputIconColor} size={14} />
-            </s.SearchInputIconContainer>
-            <s.SearchInput
-              placeholder={"Search"}
-              onChange={handleSearchInputChange}
-            />
-          </s.SearchInputContainer>
-        )}
         <s.PopoverContainer>
           <Popover
             open={isSortingMenuOpen}
