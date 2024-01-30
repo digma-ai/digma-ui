@@ -207,9 +207,7 @@ export const EndpointNPlusOneInsightTicket = (
       summary={summary}
       description={{
         content: renderDescription(),
-        isLoading: isInitialLoading,
-        errorMessage:
-          spanInsight === null ? "Failed to get insight details" : undefined
+        isLoading: isInitialLoading
       }}
       attachment={attachment}
       insight={props.data.insight}

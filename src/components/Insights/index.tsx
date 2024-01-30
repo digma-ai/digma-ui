@@ -25,6 +25,7 @@ import { actions } from "./actions";
 import * as s from "./styles";
 import { BottleneckInsightTicket } from "./tickets/BottleneckInsightTicket";
 import { EndpointNPlusOneInsightTicket } from "./tickets/EndpointNPlusOneInsightTicket";
+import { HighNumberOfQueriesInsightTicket } from "./tickets/HighNumberOfQueriesInsightTicket";
 import { NPlusOneInsightTicket } from "./tickets/NPlusOneInsightTicket";
 import { QueryOptimizationInsightTicket } from "./tickets/QueryOptimizationInsightTicket";
 import { SpanBottleneckInsightTicket } from "./tickets/SpanBottleneckInsightTicket";
@@ -37,6 +38,7 @@ import {
   isSpanQueryOptimizationInsight
 } from "./typeGuards";
 import {
+  EndpointHighNumberOfQueriesInsight,
   EndpointSlowestSpansInsight,
   EndpointSuspectedNPlusOneInsight,
   GenericCodeObjectInsight,
@@ -92,6 +94,7 @@ const renderInsightTicket = (
     );
   }
 
+  debugger;
   if (
     isEndpointHighNumberOfQueriesInsight(data.insight) &&
     data.spanCodeObjectId
@@ -99,7 +102,7 @@ const renderInsightTicket = (
     const ticketData =
       data as InsightTicketInfo<EndpointHighNumberOfQueriesInsight>;
     return (
-      <QueryOptimizationInsightTicket data={ticketData} onClose={onClose} />
+      <HighNumberOfQueriesInsightTicket data={ticketData} onClose={onClose} />
     );
   }
 

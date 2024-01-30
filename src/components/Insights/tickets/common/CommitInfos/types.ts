@@ -3,5 +3,5 @@ import { CommitInfosData } from "../../types";
 
 export interface CommitInfosProps {
   insight: GenericCodeObjectInsight | undefined;
-  commitInfos: CommitInfosData | undefined;
+  commitInfos?: CommitInfosData | null;
 }

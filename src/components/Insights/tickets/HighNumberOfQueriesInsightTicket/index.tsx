@@ -1,32 +1,26 @@
-import { ReactElement, useEffect, useState } from "react";
-import { dispatcher } from "../../../../dispatcher";
+import { ReactElement } from "react";
 import { InsightType } from "../../../../types";
 import { intersperse } from "../../../../utils/intersperse";
 import { JiraTicket } from "../../JiraTicket";
 import { actions } from "../../actions";
-import { isEndpointHighNumberOfQueriesInsight } from "../../typeGuards";
-import {
-  EndpointHighNumberOfQueriesInsight,
-  GenericCodeObjectInsight
-} from "../../types";
-import { CodeLocations } from "../common/CodeLocations";
+import { EndpointHighNumberOfQueriesInsight } from "../../types";
 import { CommitInfos } from "../common/CommitInfos";
 import { DigmaSignature } from "../common/DigmaSignature";
-import { getInsightCommits } from "../getInsightCommits";
-import {
-  CodeLocationsData,
-  CommitInfosData,
-  InsightTicketProps
-} from "../types";
+import { useTicketDataSource } from "../common/useTicketDataSource";
+import { InsightTicketProps } from "../types";
 
 export const HighNumberOfQueriesInsightTicket = (
   props: InsightTicketProps<EndpointHighNumberOfQueriesInsight>
 ) => {
-  const [isInitialLoading, setIsInitialLoading] = useState(false);
-  const [codeLocations, setCodeLocations] = useState<string[]>([]);
-  const [spanInsight, setSpanInsight] =
-    useState<EndpointHighNumberOfQueriesInsight | null>();
-  const [commitInfos, setCommitInfos] = useState<CommitInfosData>();
+  const spanInfo = props.data.insight.spanInfo;
+  const {
+    commitInfos,
+    spanInsight,
+    isLoading: isInitialLoading
+  } = useTicketDataSource<EndpointHighNumberOfQueriesInsight>(
+    spanInfo,
+    InsightType.EndpointHighNumberOfQueries
+  );
 
   const renderDescription = () => {
     if (!spanInsight || !spanInsight.spanInfo) {
@@ -48,14 +42,10 @@ export const HighNumberOfQueriesInsightTicket = (
             <></>,
             <span
               key={"median"}
-            >{`Number of queries (median): ${spanInsight.medianDuration.value}`}</span>,
-            <span
+            >{`Number of queries (median): ${spanInsight.queriesCount}`}</span>,
+            <div
               key={"typical"}
-            >{`Typical for ${spanInsight.serviceName}: ${spanInsight.typicalCount}`}</span>,
-            <CodeLocations
-              key={"codeLocations"}
-              codeLocations={codeLocations}
-            />,
+            >{`Typical for ${spanInsight.serviceName}: ${spanInsight.typicalCount}`}</div>,
             <CommitInfos
               key={"commitInfos"}
               commitInfos={commitInfos}
@@ -77,114 +67,10 @@ export const HighNumberOfQueriesInsightTicket = (
         action: actions.GET_SPAN_INSIGHT,
         payload: {
           spanCodeObjectId: spanInfo?.spanCodeObjectId,
-          insightType: InsightType.SpanNPlusOne
+          insightType: InsightType.EndpointHighNumberOfQueries
         }
       });
   };
-
-  useEffect(() => {
-    const spanInfo = props.data.insight.spanInfo;
-    const spanCodeObjectId = spanInfo?.spanCodeObjectId;
-    const methodCodeObjectId = spanInfo?.methodCodeObjectId || undefined;
-
-    setIsInitialLoading(false);
-
-    window.sendMessageToDigma({
-      action: actions.GET_CODE_LOCATIONS,
-      payload: {
-        spanCodeObjectId,
-        methodCodeObjectId
-      }
-    });
-
-    window.sendMessageToDigma({
-      action: actions.GET_SPAN_INSIGHT,
-      payload: {
-        spanCodeObjectId,
-        insightType: InsightType.SpanNPlusOne
-      }
-    });
-
-    const handleCodeLocationsData = (data: unknown) => {
-      const codeLocationsData = data as CodeLocationsData;
-      setCodeLocations(codeLocationsData.codeLocations);
-    };
-
-    const handleSpanInsightData = (data: unknown) => {
-      const insightData = data as { insight: GenericCodeObjectInsight | null };
-      if (
-        insightData.insight &&
-        isEndpointHighNumberOfQueriesInsight(insightData.insight)
-      ) {
-        setSpanInsight(insightData.insight);
-      } else {
-        setSpanInsight(null);
-      }
-    };
-
-    const handleCommitInfosData = (data: unknown) => {
-      const commitInfosData = data as CommitInfosData;
-      setCommitInfos(commitInfosData);
-    };
-
-    dispatcher.addActionListener(
-      actions.SET_CODE_LOCATIONS,
-      handleCodeLocationsData
-    );
-
-    dispatcher.addActionListener(
-      actions.SET_SPAN_INSIGHT,
-      handleSpanInsightData
-    );
-
-    dispatcher.addActionListener(
-      actions.SET_COMMIT_INFO,
-      handleCommitInfosData
-    );
-
-    return () => {
-      dispatcher.removeActionListener(
-        actions.SET_CODE_LOCATIONS,
-        handleCodeLocationsData
-      );
-
-      dispatcher.removeActionListener(
-        actions.SET_SPAN_INSIGHT,
-        handleSpanInsightData
-      );
-
-      dispatcher.removeActionListener(
-        actions.SET_COMMIT_INFO,
-        handleCommitInfosData
-      );
-    };
-  }, []);
-
-  useEffect(() => {
-    const commits = getInsightCommits(spanInsight);
-    if (spanInsight && commits.length > 0) {
-      window.sendMessageToDigma({
-        action: actions.GET_COMMIT_INFO,
-        payload: {
-          commits
-        }
-      });
-    }
-  }, [spanInsight]);
-
-  useEffect(() => {
-    if (codeLocations && spanInsight) {
-      const commits = getInsightCommits(spanInsight);
-      if (commits.length > 0) {
-        if (commitInfos) {
-          setIsInitialLoading(false);
-        }
-      } else {
-        setIsInitialLoading(false);
-      }
-      setIsInitialLoading(false);
-    }
-  }, [codeLocations, spanInsight, commitInfos]);
 
   const summary = [
     "High number of queries detected ",

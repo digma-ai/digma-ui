@@ -3,22 +3,23 @@ import { dispatcher } from "../../../../dispatcher";
 import { InsightType, SpanInfo } from "../../../../types";
 import { actions } from "../../actions";
 import { GenericCodeObjectInsight } from "../../types";
+import { getInsightCommits } from "../getInsightCommits";
 import { CodeLocationsData, CommitInfosData } from "../types";
 
 export const useTicketDataSource = <TInsight extends GenericCodeObjectInsight>(
-  spanInfo: SpanInfo,
+  spanInfo: SpanInfo | null,
   insightType: InsightType
 ) => {
   const [isInitialLoading, setIsInitialLoading] = useState(false);
   const [codeLocations, setCodeLocations] = useState<string[]>([]);
-  const [spanInsight, setSpanInsight] = useState<TInsight | null>();
-  const [commitInfos, setCommitInfos] = useState<CommitInfosData>();
+  const [spanInsight, setSpanInsight] = useState<TInsight | null>(null);
+  const [commitInfos, setCommitInfos] = useState<CommitInfosData | null>(null);
 
   useEffect(() => {
     const spanCodeObjectId = spanInfo?.spanCodeObjectId;
     const methodCodeObjectId = spanInfo?.methodCodeObjectId || undefined;
 
-    setIsInitialLoading(false);
+    setIsInitialLoading(true);
 
     window.sendMessageToDigma({
       action: actions.GET_CODE_LOCATIONS,
@@ -43,7 +44,11 @@ export const useTicketDataSource = <TInsight extends GenericCodeObjectInsight>(
 
     const handleSpanInsightData = (data: unknown) => {
       const insightData = data as { insight: TInsight | null };
-      setSpanInsight(insightData.insight || null);
+      if (insightData.insight && insightData.insight.type === insightType) {
+        setSpanInsight(insightData.insight);
+      } else {
+        setSpanInsight(null);
+      }
     };
 
     const handleCommitInfosData = (data: unknown) => {
@@ -83,6 +88,32 @@ export const useTicketDataSource = <TInsight extends GenericCodeObjectInsight>(
       );
     };
   }, []);
+
+  useEffect(() => {
+    const commits = getInsightCommits(spanInsight);
+    if (spanInsight && commits.length > 0) {
+      window.sendMessageToDigma({
+        action: actions.GET_COMMIT_INFO,
+        payload: {
+          commits
+        }
+      });
+    }
+  }, [spanInsight]);
+
+  useEffect(() => {
+    if (codeLocations && spanInsight) {
+      const commits = getInsightCommits(spanInsight);
+      if (commits.length > 0) {
+        if (commitInfos) {
+          setIsInitialLoading(false);
+        }
+      } else {
+        setIsInitialLoading(false);
+      }
+      setIsInitialLoading(false);
+    }
+  }, [codeLocations, spanInsight, commitInfos]);
 
   return {
     isLoading: isInitialLoading,

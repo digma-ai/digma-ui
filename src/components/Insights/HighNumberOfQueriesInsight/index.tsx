@@ -30,9 +30,10 @@ export const HighNumberOfQueriesInsight = (
 
   const handleCreateJiraTicketButtonClick = () => {
     sendTrackingEvent(trackingEvents.JIRA_TICKET_INFO_BUTTON_CLICKED, {
-      insightType: props.insight.type
+      insightType: insight.type
     });
-    props.onJiraTicketCreate && props.onJiraTicketCreate(props.insight);
+    props.onJiraTicketCreate &&
+      props.onJiraTicketCreate(insight, insight.spanInfo?.spanCodeObjectId);
   };
 
   return (
@@ -74,7 +75,7 @@ export const HighNumberOfQueriesInsight = (
               <s.ActionsContainer>
                 <JiraButton
                   onTicketInfoButtonClick={handleCreateJiraTicketButtonClick}
-                  spanCodeObjectId={insight.spanCodeObjectId}
+                  spanCodeObjectId={insight.spanInfo?.spanCodeObjectId}
                   ticketLink={insight.ticketLink}
                   buttonType="small"
                 />
