@@ -2,7 +2,6 @@ import { ReactElement } from "react";
 import { InsightType } from "../../../../types";
 import { intersperse } from "../../../../utils/intersperse";
 import { JiraTicket } from "../../JiraTicket";
-import { actions } from "../../actions";
 import { EndpointHighNumberOfQueriesInsight } from "../../types";
 import { CommitInfos } from "../common/CommitInfos";
 import { DigmaSignature } from "../common/DigmaSignature";
@@ -13,10 +12,10 @@ export const EndpointHighNumberOfQueriesInsightTicket = (
   props: InsightTicketProps<EndpointHighNumberOfQueriesInsight>
 ) => {
   const spanInfo = props.data.insight.spanInfo;
-  const { commitInfos, spanInsight, isInitialLoading } =
+  const { commitInfos, spanInsight, isLoading, onReloadSpanInsight } =
     useTicketDataSource<EndpointHighNumberOfQueriesInsight>(
       spanInfo,
-      InsightType.EndpointHighNumberOfQueries
+      InsightType.EndpointSpanNPlusOne
     );
 
   const renderDescription = () => {
@@ -58,17 +57,6 @@ export const EndpointHighNumberOfQueriesInsightTicket = (
     );
   };
 
-  const onReloadSpanInsight = () => {
-    spanInfo?.spanCodeObjectId &&
-      window.sendMessageToDigma({
-        action: actions.GET_SPAN_INSIGHT,
-        payload: {
-          spanCodeObjectId: spanInfo?.spanCodeObjectId,
-          insightType: InsightType.EndpointHighNumberOfQueries
-        }
-      });
-  };
-
   const summary = [
     "High number of queries detected ",
     spanInsight?.spanInfo?.displayName,
@@ -82,7 +70,7 @@ export const EndpointHighNumberOfQueriesInsightTicket = (
       summary={summary}
       description={{
         content: renderDescription(),
-        isLoading: isInitialLoading
+        isLoading
       }}
       insight={props.data.insight}
       relatedInsight={spanInsight}

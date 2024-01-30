@@ -10,7 +10,7 @@ export const useTicketDataSource = <TInsight extends GenericCodeObjectInsight>(
   spanInfo: SpanInfo | null,
   insightType: InsightType
 ) => {
-  const [isInitialLoading, setIsInitialLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [codeLocations, setCodeLocations] = useState<string[]>([]);
   const [spanInsight, setSpanInsight] = useState<TInsight | null>(null);
   const [commitInfos, setCommitInfos] = useState<CommitInfosData | null>(null);
@@ -19,7 +19,7 @@ export const useTicketDataSource = <TInsight extends GenericCodeObjectInsight>(
     const spanCodeObjectId = spanInfo?.spanCodeObjectId;
     const methodCodeObjectId = spanInfo?.methodCodeObjectId || undefined;
 
-    setIsInitialLoading(true);
+    setIsLoading(true);
 
     window.sendMessageToDigma({
       action: actions.GET_CODE_LOCATIONS,
@@ -106,19 +106,35 @@ export const useTicketDataSource = <TInsight extends GenericCodeObjectInsight>(
       const commits = getInsightCommits(spanInsight);
       if (commits.length > 0) {
         if (commitInfos) {
-          setIsInitialLoading(false);
+          setIsLoading(false);
         }
       } else {
-        setIsInitialLoading(false);
+        setIsLoading(false);
       }
-      setIsInitialLoading(false);
+      setIsLoading(false);
     }
   }, [codeLocations, spanInsight, commitInfos]);
 
+  const onReloadSpanInsight = () => {
+    if (!spanInfo?.spanCodeObjectId) {
+      return;
+    }
+
+    setIsLoading(true);
+    window.sendMessageToDigma({
+      action: actions.GET_SPAN_INSIGHT,
+      payload: {
+        spanCodeObjectId: spanInfo?.spanCodeObjectId,
+        insightType: insightType
+      }
+    });
+  };
+
   return {
-    isInitialLoading,
+    isLoading,
     codeLocations,
     spanInsight,
-    commitInfos
+    commitInfos,
+    onReloadSpanInsight
   };
 };

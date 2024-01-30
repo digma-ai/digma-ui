@@ -14,7 +14,7 @@ import { InsightTicketProps } from "../types";
 export const BottleneckInsightTicket = (
   props: InsightTicketProps<SpanEndpointBottleneckInsight>
 ) => {
-  const { commitInfos, codeLocations, isInitialLoading, spanInsight } =
+  const { commitInfos, codeLocations, isLoading, spanInsight } =
     useTicketDataSource<SpanEndpointBottleneckInsight>(
       props.data.insight.spanInfo,
       InsightType.SpanEndpointBottleneck
@@ -71,7 +71,7 @@ export const BottleneckInsightTicket = (
       summary={summary}
       description={{
         content: renderDescription(),
-        isLoading: isInitialLoading
+        isLoading
       }}
       insight={props.data.insight}
       onClose={props.onClose}
