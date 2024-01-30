@@ -14,7 +14,7 @@ import { InsightTicketProps } from "../types";
 export const BottleneckInsightTicket = (
   props: InsightTicketProps<SpanEndpointBottleneckInsight>
 ) => {
-  const { commitInfos, codeLocations, isLoading, spanInsight } =
+  const { commitInfos, codeLocations, isLoading } =
     useTicketDataSource<SpanEndpointBottleneckInsight>(
       props.data.insight.spanInfo,
       InsightType.SpanEndpointBottleneck
@@ -36,36 +36,29 @@ export const BottleneckInsightTicket = (
     .filter(Boolean)
     .join(" - ");
 
-  const renderDescription = () => {
-    if (!spanInsight) {
-      return <></>;
-    }
-    return (
-      <>
-        {intersperse<ReactElement, ReactElement>(
-          [
-            <BottleneckEndpoints
-              key={"bottleneckEndpoints"}
-              insight={spanInsight}
-            />,
-            <CodeLocations
-              key={"codeLocations"}
-              codeLocations={codeLocations}
-            />,
-            <CommitInfos
-              key={"commitInfos"}
-              commitInfos={commitInfos}
-              insight={spanInsight}
-            />,
-            <DigmaSignature key={"digmaSignature"} />
-          ],
-          (i: number) => (
-            <br key={`separator-${i}`} />
-          )
-        )}
-      </>
-    );
-  };
+  const renderDescription = () => (
+    <>
+      {intersperse<ReactElement, ReactElement>(
+        [
+          <BottleneckEndpoints
+            key={"bottleneckEndpoints"}
+            insight={props.data.insight}
+          />,
+          <CodeLocations key={"codeLocations"} codeLocations={codeLocations} />,
+          <CommitInfos
+            key={"commitInfos"}
+            commitInfos={commitInfos}
+            insight={props.data.insight}
+          />,
+          <DigmaSignature key={"digmaSignature"} />
+        ],
+        (i: number) => (
+          <br key={`separator-${i}`} />
+        )
+      )}
+    </>
+  );
+
   return (
     <JiraTicket
       summary={summary}

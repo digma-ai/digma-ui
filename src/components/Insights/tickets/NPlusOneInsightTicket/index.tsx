@@ -15,9 +15,10 @@ import { InsightTicketProps } from "../types";
 export const NPlusOneInsightTicket = (
   props: InsightTicketProps<SpanNPlusOneInsight>
 ) => {
-  const { commitInfos, isLoading, codeLocations, spanInsight } =
+  const spanInsight = props.data.insight;
+  const { commitInfos, isLoading, codeLocations } =
     useTicketDataSource<SpanNPlusOneInsight>(
-      props.data.insight.spanInfo,
+      spanInsight.spanInfo,
       InsightType.SpanNPlusOne
     );
   const config = useContext(ConfigContext);
