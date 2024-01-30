@@ -26,6 +26,11 @@ export const Select = (props: SelectProps) => {
       return;
     }
 
+    if (!props.multiselect) {
+      props.onChange(item.value);
+      return;
+    }
+
     const otherSelectedItems = props.items
       .filter((x) => x.selected && x.value !== item.value)
       .map((x) => x.value);
@@ -34,7 +39,7 @@ export const Select = (props: SelectProps) => {
       ? otherSelectedItems
       : [...otherSelectedItems, item.value];
 
-    props.onChange(props.multiselect ? newValue : item.value);
+    props.onChange(newValue);
   };
 
   const selectedValues = props.items
@@ -50,16 +55,18 @@ export const Select = (props: SelectProps) => {
       sameWidth={true}
       content={
         <s.MenuContainer>
-          <s.SearchInputContainer>
-            <s.SearchInputIconContainer>
-              <MagnifierIcon />
-            </s.SearchInputIconContainer>
-            <s.SearchInput
-              type={"text"}
-              placeholder={"Search"}
-              onChange={handleSearchChange}
-            />
-          </s.SearchInputContainer>
+          {props.searchable && (
+            <s.SearchInputContainer>
+              <s.SearchInputIconContainer>
+                <MagnifierIcon />
+              </s.SearchInputIconContainer>
+              <s.SearchInput
+                type={"text"}
+                placeholder={"Search"}
+                onChange={handleSearchChange}
+              />
+            </s.SearchInputContainer>
+          )}
           <s.OptionList>
             {filteredItems.length > 0 ? (
               filteredItems.map((x) => (
@@ -69,12 +76,14 @@ export const Select = (props: SelectProps) => {
                   $enabled={x.enabled}
                   $selected={x.selected}
                 >
-                  <Checkbox
-                    value={Boolean(x.selected)}
-                    label={""}
-                    onChange={() => undefined}
-                    disabled={!x.enabled}
-                  />
+                  {props.multiselect && (
+                    <Checkbox
+                      value={Boolean(x.selected)}
+                      label={""}
+                      onChange={() => undefined}
+                      disabled={!x.enabled}
+                    />
+                  )}
                   <Tooltip title={x.label}>
                     <s.OptionListItemLabel>{x.label}</s.OptionListItemLabel>
                   </Tooltip>
