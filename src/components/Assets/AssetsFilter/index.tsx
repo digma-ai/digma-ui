@@ -1,5 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { dispatcher } from "../../../dispatcher";
+import { usePrevious } from "../../../hooks/usePrevious";
+import { isNumber } from "../../../typeGuards/isNumber";
 import { InsightType } from "../../../types";
 import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
 import { NewButton } from "../../common/NewButton";
@@ -13,6 +15,10 @@ import {
   AssetsFilterProps,
   AssetsFiltersData
 } from "./types";
+
+const REFRESH_INTERVAL = isNumber(window.assetsRefreshInterval)
+  ? window.assetsRefreshInterval
+  : 10 * 1000; // in milliseconds
 
 const renderFilterCategory = (
   category: AssetFilterCategory,
@@ -46,13 +52,16 @@ const renderFilterCategory = (
 };
 
 export const AssetsFilter = (props: AssetsFilterProps) => {
-  const [data, setData] = useState<AssetsFiltersData>();
+  const [data, setData] = useState<AssetsFiltersData | null>();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [selectedEndpoints, setSelectedEndpoints] = useState<string[]>([]);
   const [selectedConsumers, setSelectedConsumers] = useState<string[]>([]);
   const [selectedInternals, setSelectedInternals] = useState<string[]>([]);
   const [selectedInsights, setSelectedInsights] = useState<InsightType[]>([]);
+  const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
+  const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
+  const refreshTimerId = useRef<number>();
 
   const getData = (
     services: string[],
@@ -78,12 +87,13 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
       selectedInsights
     );
 
-    const handleData = (data: unknown) => {
-      const filtersData = data as AssetsFiltersData;
+    const handleData = (data: unknown, timeStamp: number) => {
+      const filtersData = data as AssetsFiltersData | null;
       setData(filtersData);
+      setLastSetDataTimeStamp(timeStamp);
 
       setSelectedServices(
-        filtersData.categories
+        filtersData?.categories
           .find((x) => x.categoryName === "Services")
           ?.entries?.filter((x) => x.selected)
           .map((x) => x.name) || []
@@ -114,7 +124,7 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
           .map((x) => x.name) || [];
       setSelectedInternals(selectedInternals);
 
-      const selectedInsights = (filtersData.categories
+      const selectedInsights = (filtersData?.categories
         .find((x) => x.categoryName === "Insights")
         ?.entries?.filter((x) => x.selected)
         .map((x) => x.name) || []) as InsightType[];
@@ -140,6 +150,7 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
         actions.SET_ASSET_FILTERS_DATA,
         handleData
       );
+      window.clearTimeout(refreshTimerId.current);
     };
   }, []);
 
@@ -148,6 +159,27 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
       setData(props.data);
     }
   }, [props.data]);
+
+  useEffect(() => {
+    if (previousLastSetDataTimeStamp !== lastSetDataTimeStamp) {
+      window.clearTimeout(refreshTimerId.current);
+      refreshTimerId.current = window.setTimeout(() => {
+        getData(
+          selectedServices,
+          [...selectedEndpoints, ...selectedConsumers, ...selectedInternals],
+          selectedInsights
+        );
+      }, REFRESH_INTERVAL);
+    }
+  }, [
+    lastSetDataTimeStamp,
+    previousLastSetDataTimeStamp,
+    selectedServices,
+    selectedEndpoints,
+    selectedConsumers,
+    selectedInternals,
+    selectedInsights
+  ]);
 
   const handleClearFiltersButtonClick = () => {
     getData([], [], []);

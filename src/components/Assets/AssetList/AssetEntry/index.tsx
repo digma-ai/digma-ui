@@ -199,9 +199,13 @@ export const AssetEntry = (props: AssetEntryProps) => {
           <s.StatsColumn>
             <s.Stats>
               <span>Scope</span>
-              <s.ValueContainer>
-                {props.entry.instrumentationLibrary}
-              </s.ValueContainer>
+              <Tooltip title={props.entry.instrumentationLibrary}>
+                <s.ValueContainer>
+                  <s.ScopeName>
+                    {props.entry.instrumentationLibrary}
+                  </s.ScopeName>
+                </s.ValueContainer>
+              </Tooltip>
             </s.Stats>
           </s.StatsColumn>
         )}
