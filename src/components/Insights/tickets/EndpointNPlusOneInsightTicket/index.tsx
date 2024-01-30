@@ -106,7 +106,7 @@ export const EndpointNPlusOneInsightTicket = (
     const spanCodeObjectId = spanInfo?.spanCodeObjectId;
     const methodCodeObjectId = spanInfo?.methodCodeObjectId || undefined;
 
-    setIsInitialLoading(false);
+    setIsInitialLoading(true);
 
     window.sendMessageToDigma({
       action: actions.GET_CODE_LOCATIONS,
@@ -207,7 +207,9 @@ export const EndpointNPlusOneInsightTicket = (
       summary={summary}
       description={{
         content: renderDescription(),
-        isLoading: isInitialLoading
+        isLoading: isInitialLoading,
+        errorMessage:
+          spanInsight === null ? "Failed to get insight details" : undefined
       }}
       attachment={attachment}
       insight={props.data.insight}

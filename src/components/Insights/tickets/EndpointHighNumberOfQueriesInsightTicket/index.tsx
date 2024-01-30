@@ -9,7 +9,7 @@ import { DigmaSignature } from "../common/DigmaSignature";
 import { useTicketDataSource } from "../common/useTicketDataSource";
 import { InsightTicketProps } from "../types";
 
-export const HighNumberOfQueriesInsightTicket = (
+export const EndpointHighNumberOfQueriesInsightTicket = (
   props: InsightTicketProps<EndpointHighNumberOfQueriesInsight>
 ) => {
   const spanInfo = props.data.insight.spanInfo;
@@ -85,9 +85,7 @@ export const HighNumberOfQueriesInsightTicket = (
       summary={summary}
       description={{
         content: renderDescription(),
-        isLoading: isInitialLoading,
-        errorMessage:
-          spanInsight === null ? "Failed to get insight details" : undefined
+        isLoading: isInitialLoading
       }}
       insight={props.data.insight}
       relatedInsight={spanInsight}
