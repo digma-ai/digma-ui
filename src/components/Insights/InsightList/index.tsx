@@ -245,14 +245,16 @@ const renderInsightCard = (
   const handleHistogramButtonClick = (
     instrumentationLibrary: string,
     name: string,
-    insightType: InsightType
+    insightType: InsightType,
+    displayName: string
   ) => {
     window.sendMessageToDigma({
       action: actions.OPEN_HISTOGRAM,
       payload: {
         instrumentationLibrary,
         name,
-        insightType
+        insightType,
+        displayName
       }
     });
   };
