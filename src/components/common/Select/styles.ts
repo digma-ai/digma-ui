@@ -1,14 +1,14 @@
 import styled from "styled-components";
 import { grayScale, primaryScale } from "../App/getTheme";
-import { ButtonProps } from "./types";
+import { ButtonLabelProps, ButtonProps, OptionListItemProps } from "./types";
 
 export const Button = styled.button<ButtonProps>`
   border: 1px solid
-    ${({ theme, $isOpen }) =>
-      $isOpen ? theme.colors.stroke.brand : theme.colors.stroke.primary};
+    ${({ theme, $isActive }) =>
+      $isActive ? theme.colors.stroke.brand : theme.colors.stroke.primary};
   background: ${({ theme }) => theme.colors.surface.secondary};
   border-radius: 4px;
-  padding: 4px 6px 4px 4px;
+  padding: 4px 8px;
   display: flex;
   gap: 6px;
   align-items: center;
@@ -26,13 +26,14 @@ export const Button = styled.button<ButtonProps>`
   }
 `;
 
-export const ButtonLabel = styled.span`
-  display: flex;
-  gap: 4px;
-  align-items: center;
-  font-size: 14px;
-  color: ${({ theme }) => theme.colors.text.base};
+export const ButtonLabel = styled.span<ButtonLabelProps>`
   margin-right: auto;
+  font-weight: 500;
+  color: ${({ theme, $isActive }) =>
+    $isActive ? primaryScale[100] : theme.colors.select.menu.text.primary};
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 `;
 
 export const Number = styled.span`
@@ -57,6 +58,7 @@ export const FilteredCount = styled.span`
 `;
 
 export const ChevronIconContainer = styled.span`
+  display: flex;
   color: ${({ theme }) => theme.colors.icon.primary};
 `;
 
@@ -89,7 +91,7 @@ export const SearchInput = styled.input`
   outline: none;
   font-size: 14px;
   padding: 0;
-  color: ${grayScale[0] /* TODO: use theme */};
+  color: ${grayScale[0]};
 
   &::placeholder {
     color: ${grayScale[500]};
@@ -107,17 +109,39 @@ export const OptionList = styled.ul`
   gap: 4px;
   padding: 0;
   margin: 0;
-  overflow-y: auto;
   font-size: 14px;
+  overflow: hidden;
+  overflow-y: auto;
 `;
 
-export const OptionListItem = styled.li`
+export const OptionListItem = styled.li<OptionListItemProps>`
   display: flex;
   padding: 4px 8px;
   align-items: center;
   gap: 6px;
   align-self: stretch;
-  cursor: pointer;
+  cursor: ${({ $enabled }) => ($enabled ? "pointer" : "default")};
+  color: ${({ theme, $selected, $enabled }) => {
+    if (!$enabled) {
+      switch (theme.mode) {
+        case "light":
+          return "#dadada";
+        case "dark":
+        case "dark-jetbrains":
+          return "#49494d";
+      }
+    }
+    if ($selected) {
+      return primaryScale[100];
+    }
+    return theme.colors.select.menu.text.primary;
+  }};
+`;
+
+export const OptionListItemLabel = styled.span`
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 `;
 
 export const NoResultsContainer = styled.div`

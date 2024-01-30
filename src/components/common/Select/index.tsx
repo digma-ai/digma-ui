@@ -2,6 +2,7 @@ import { useState } from "react";
 import { isString } from "../../../typeGuards/isString";
 import { Checkbox } from "../Checkbox";
 import { NewPopover } from "../NewPopover";
+import { Tooltip } from "../Tooltip";
 import { ChevronIcon } from "../icons/ChevronIcon";
 import { MagnifierIcon } from "../icons/MagnifierIcon";
 import { Direction } from "../icons/types";
@@ -21,6 +22,10 @@ export const Select = (props: SelectProps) => {
   };
 
   const handleItemClick = (item: SelectItem) => {
+    if (!item.enabled) {
+      return;
+    }
+
     const otherSelectedItems = props.items
       .filter((x) => x.selected && x.value !== item.value)
       .map((x) => x.value);
@@ -61,13 +66,18 @@ export const Select = (props: SelectProps) => {
                 <s.OptionListItem
                   key={x.value}
                   onClick={() => handleItemClick(x)}
+                  $enabled={x.enabled}
+                  $selected={x.selected}
                 >
                   <Checkbox
                     value={Boolean(x.selected)}
                     label={""}
                     onChange={() => undefined}
+                    disabled={!x.enabled}
                   />
-                  {x.label}
+                  <Tooltip title={x.label}>
+                    <s.OptionListItemLabel>{x.label}</s.OptionListItemLabel>
+                  </Tooltip>
                 </s.OptionListItem>
               ))
             ) : (
@@ -80,9 +90,9 @@ export const Select = (props: SelectProps) => {
       isOpen={isOpen}
       placement={"bottom-start"}
     >
-      <s.Button $isOpen={isOpen} onClick={handleButtonClick}>
+      <s.Button $isActive={isOpen} onClick={handleButtonClick}>
         {isString(props.placeholder) && (
-          <s.ButtonLabel>{props.placeholder}</s.ButtonLabel>
+          <s.ButtonLabel $isActive={isOpen}>{props.placeholder}</s.ButtonLabel>
         )}
         {selectedValues.length > 0 && (
           <s.Number>{selectedValues.length}</s.Number>

@@ -26,9 +26,9 @@ export const Multiselect: Story = {
       setSelectedItems(Array.isArray(value) ? value : [value]);
     };
 
-    const items = args.items.map((x) => ({
+    const items = args.items.map((x, i) => ({
       ...x,
-      enabled: true,
+      enabled: i !== 0,
       selected: selectedItems.includes(x.value)
     }));
 
@@ -49,7 +49,8 @@ export const Multiselect: Story = {
     },
     items: [
       {
-        label: "Item 1",
+        label:
+          "Very long long long long long long long long long long long name",
         value: "item_1"
       },
       {

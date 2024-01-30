@@ -27,5 +27,12 @@ export interface SelectProps {
 }
 
 export interface ButtonProps {
-  $isOpen: boolean;
+  $isActive: boolean;
+}
+
+export type ButtonLabelProps = ButtonProps;
+
+export interface OptionListItemProps {
+  $selected?: boolean;
+  $enabled?: boolean;
 }
