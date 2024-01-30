@@ -13,14 +13,11 @@ export const EndpointHighNumberOfQueriesInsightTicket = (
   props: InsightTicketProps<EndpointHighNumberOfQueriesInsight>
 ) => {
   const spanInfo = props.data.insight.spanInfo;
-  const {
-    commitInfos,
-    spanInsight,
-    isLoading: isInitialLoading
-  } = useTicketDataSource<EndpointHighNumberOfQueriesInsight>(
-    spanInfo,
-    InsightType.EndpointHighNumberOfQueries
-  );
+  const { commitInfos, spanInsight, isInitialLoading } =
+    useTicketDataSource<EndpointHighNumberOfQueriesInsight>(
+      spanInfo,
+      InsightType.EndpointHighNumberOfQueries
+    );
 
   const renderDescription = () => {
     if (!spanInsight || !spanInsight.spanInfo) {

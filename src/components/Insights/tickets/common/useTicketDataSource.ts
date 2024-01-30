@@ -116,7 +116,7 @@ export const useTicketDataSource = <TInsight extends GenericCodeObjectInsight>(
   }, [codeLocations, spanInsight, commitInfos]);
 
   return {
-    isLoading: isInitialLoading,
+    isInitialLoading,
     codeLocations,
     spanInsight,
     commitInfos

@@ -14,15 +14,11 @@ import { InsightTicketProps } from "../types";
 export const BottleneckInsightTicket = (
   props: InsightTicketProps<SpanEndpointBottleneckInsight>
 ) => {
-  const {
-    commitInfos,
-    codeLocations,
-    isLoading: isInitialLoading,
-    spanInsight
-  } = useTicketDataSource<SpanEndpointBottleneckInsight>(
-    props.data.insight.spanInfo,
-    InsightType.SpanEndpointBottleneck
-  );
+  const { commitInfos, codeLocations, isInitialLoading, spanInsight } =
+    useTicketDataSource<SpanEndpointBottleneckInsight>(
+      props.data.insight.spanInfo,
+      InsightType.SpanEndpointBottleneck
+    );
 
   const services = [
     ...new Set(
