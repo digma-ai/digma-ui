@@ -1,5 +1,4 @@
 import { ReactElement } from "react";
-import { InsightType } from "../../../../types";
 import { getCriticalityLabel } from "../../../../utils/getCriticalityLabel";
 import { intersperse } from "../../../../utils/intersperse";
 import { JiraTicket } from "../../JiraTicket";
@@ -8,16 +7,16 @@ import { BottleneckEndpoints } from "../common/BottleneckEndpoints";
 import { CodeLocations } from "../common/CodeLocations";
 import { CommitInfos } from "../common/CommitInfos";
 import { DigmaSignature } from "../common/DigmaSignature";
-import { useTicketDataSource } from "../common/useTicketDataSource";
+import { useSpanDataSource } from "../common/useTicketDataSource";
 import { InsightTicketProps } from "../types";
 
 export const BottleneckInsightTicket = (
   props: InsightTicketProps<SpanEndpointBottleneckInsight>
 ) => {
   const { commitInfos, codeLocations, isLoading } =
-    useTicketDataSource<SpanEndpointBottleneckInsight>(
+    useSpanDataSource<SpanEndpointBottleneckInsight>(
       props.data.insight.spanInfo,
-      InsightType.SpanEndpointBottleneck
+      props.data.insight
     );
 
   const services = [

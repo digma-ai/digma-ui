@@ -1,5 +1,4 @@
 import { ReactElement, useContext } from "react";
-import { InsightType } from "../../../../types";
 import { getCriticalityLabel } from "../../../../utils/getCriticalityLabel";
 import { intersperse } from "../../../../utils/intersperse";
 import { ConfigContext } from "../../../common/App/ConfigContext";
@@ -9,7 +8,7 @@ import { CodeLocations } from "../common/CodeLocations";
 import { CommitInfos } from "../common/CommitInfos";
 import { DigmaSignature } from "../common/DigmaSignature";
 import { NPlusOneAffectedEndpoints } from "../common/NPlusOneAffectedEndpoints";
-import { useTicketDataSource } from "../common/useTicketDataSource";
+import { useSpanDataSource } from "../common/useTicketDataSource";
 import { InsightTicketProps } from "../types";
 
 export const NPlusOneInsightTicket = (
@@ -17,9 +16,9 @@ export const NPlusOneInsightTicket = (
 ) => {
   const spanInsight = props.data.insight;
   const { commitInfos, isLoading, codeLocations } =
-    useTicketDataSource<SpanNPlusOneInsight>(
-      spanInsight.spanInfo,
-      InsightType.SpanNPlusOne
+    useSpanDataSource<SpanNPlusOneInsight>(
+      props.data.insight.spanInfo,
+      props.data.insight
     );
   const config = useContext(ConfigContext);
 

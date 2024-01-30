@@ -5,7 +5,7 @@ import { JiraTicket } from "../../JiraTicket";
 import { EndpointHighNumberOfQueriesInsight } from "../../types";
 import { CommitInfos } from "../common/CommitInfos";
 import { DigmaSignature } from "../common/DigmaSignature";
-import { useTicketDataSource } from "../common/useTicketDataSource";
+import { useEndpointDataSource } from "../common/useTicketDataSource";
 import { InsightTicketProps } from "../types";
 
 export const EndpointHighNumberOfQueriesInsightTicket = (
@@ -13,9 +13,9 @@ export const EndpointHighNumberOfQueriesInsightTicket = (
 ) => {
   const spanInfo = props.data.insight.spanInfo;
   const { commitInfos, spanInsight, isLoading, onReloadSpanInsight } =
-    useTicketDataSource<EndpointHighNumberOfQueriesInsight>(
+    useEndpointDataSource<EndpointHighNumberOfQueriesInsight>(
       spanInfo,
-      InsightType.EndpointSpanNPlusOne
+      InsightType.EndpointHighNumberOfQueries
     );
 
   const renderDescription = () => {

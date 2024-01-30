@@ -12,7 +12,7 @@ import { CodeLocations } from "../common/CodeLocations";
 import { CommitInfos } from "../common/CommitInfos";
 import { DigmaSignature } from "../common/DigmaSignature";
 import { NPlusOneAffectedEndpoints } from "../common/NPlusOneAffectedEndpoints";
-import { useTicketDataSource } from "../common/useTicketDataSource";
+import { useEndpointDataSource } from "../common/useTicketDataSource";
 import { InsightTicketProps } from "../types";
 
 export const EndpointNPlusOneInsightTicket = (
@@ -33,7 +33,7 @@ export const EndpointNPlusOneInsightTicket = (
     isLoading,
     codeLocations,
     onReloadSpanInsight
-  } = useTicketDataSource<SpanNPlusOneInsight>(
+  } = useEndpointDataSource<SpanNPlusOneInsight>(
     spanInfo,
     InsightType.SpanNPlusOne
   );
