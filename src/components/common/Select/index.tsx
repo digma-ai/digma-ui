@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useCallback, useRef, useState } from "react";
+import useDimensions from "react-cool-dimensions";
 import { isString } from "../../../typeGuards/isString";
 import { Checkbox } from "../Checkbox";
 import { NewPopover } from "../NewPopover";
@@ -9,9 +10,31 @@ import { Direction } from "../icons/types";
 import * as s from "./styles";
 import { SelectItem, SelectProps } from "./types";
 
+const sortItemsBySelectedState = (a: SelectItem, b: SelectItem) => {
+  if (a.selected && !b.selected) {
+    return -1;
+  }
+
+  if (!a.selected && b.selected) {
+    return 1;
+  }
+
+  return 0;
+};
+
 export const Select = (props: SelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
+  const optionListRef = useRef<HTMLUListElement | null>(null);
+  const { observe } = useDimensions();
+
+  const getOptionListRef = useCallback(
+    (el: HTMLUListElement | null) => {
+      observe(el);
+      optionListRef.current = el;
+    },
+    [observe]
+  );
 
   const handleButtonClick = () => {
     setIsOpen(!isOpen);
@@ -50,12 +73,21 @@ export const Select = (props: SelectProps) => {
     x.label.toLocaleLowerCase().includes(searchValue)
   );
 
+  const sortedItems = filteredItems.sort(sortItemsBySelectedState);
+
+  const optionListHasVerticalScrollbar = Boolean(
+    optionListRef?.current &&
+      optionListRef.current.scrollHeight > optionListRef.current.clientHeight
+  );
+
+  const disabled = props.disabled || props.items.length === 0;
+
   return (
     <NewPopover
       sameWidth={true}
       content={
         <s.MenuContainer>
-          {props.searchable && (
+          {props.searchable && optionListHasVerticalScrollbar && (
             <s.SearchInputContainer>
               <s.SearchInputIconContainer>
                 <MagnifierIcon />
@@ -67,9 +99,9 @@ export const Select = (props: SelectProps) => {
               />
             </s.SearchInputContainer>
           )}
-          <s.OptionList>
-            {filteredItems.length > 0 ? (
-              filteredItems.map((x) => (
+          <s.OptionList ref={getOptionListRef}>
+            {sortedItems.length > 0 ? (
+              sortedItems.map((x) => (
                 <s.OptionListItem
                   key={x.value}
                   onClick={() => handleItemClick(x)}
@@ -95,11 +127,15 @@ export const Select = (props: SelectProps) => {
           </s.OptionList>
         </s.MenuContainer>
       }
-      onOpenChange={setIsOpen}
-      isOpen={isOpen}
+      onOpenChange={disabled ? undefined : setIsOpen}
+      isOpen={disabled ? false : isOpen}
       placement={"bottom-start"}
     >
-      <s.Button $isActive={isOpen} onClick={handleButtonClick}>
+      <s.Button
+        $isActive={isOpen}
+        onClick={handleButtonClick}
+        disabled={disabled}
+      >
         {isString(props.placeholder) && (
           <s.ButtonLabel $isActive={isOpen}>{props.placeholder}</s.ButtonLabel>
         )}

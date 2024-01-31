@@ -63,6 +63,13 @@ export const Searchable: Story = {
   }
 };
 
+export const Empty: Story = {
+  args: {
+    searchable: true,
+    items: []
+  }
+};
+
 export const Multiselect: Story = {
   render: (args) => {
     // eslint-disable-next-line react-hooks/rules-of-hooks

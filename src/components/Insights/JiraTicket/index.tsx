@@ -253,7 +253,7 @@ export const JiraTicket = (props: JiraTicketProps) => {
       )}
       {isLinkUnlinkInputVisible && (
         <ActionableTextField
-          key="ticket-link"
+          key={"ticket-link"}
           value={ticketLink}
           placeholder={
             "Paste your ticket URL here to link it with this Digma insight"

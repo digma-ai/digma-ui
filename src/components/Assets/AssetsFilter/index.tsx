@@ -54,6 +54,7 @@ const renderFilterCategory = (
 export const AssetsFilter = (props: AssetsFilterProps) => {
   const [data, setData] = useState<AssetsFiltersData | null>();
   const [isOpen, setIsOpen] = useState(false);
+  const previousIsOpen = usePrevious(isOpen);
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [selectedEndpoints, setSelectedEndpoints] = useState<string[]>([]);
   const [selectedConsumers, setSelectedConsumers] = useState<string[]>([]);
@@ -181,21 +182,31 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
     selectedInsights
   ]);
 
+  useEffect(() => {
+    if (previousIsOpen && !isOpen) {
+      props.onApply({
+        services: selectedServices,
+        operations: [
+          ...selectedEndpoints,
+          ...selectedConsumers,
+          ...selectedInternals
+        ],
+        insights: selectedInsights
+      });
+    }
+  }, [
+    previousIsOpen,
+    isOpen,
+    props.onApply,
+    selectedConsumers,
+    selectedEndpoints,
+    selectedInsights,
+    selectedInternals,
+    selectedServices
+  ]);
+
   const handleClearFiltersButtonClick = () => {
     getData([], [], []);
-  };
-
-  const handleApplyButtonClick = () => {
-    props.onApply({
-      services: selectedServices,
-      operations: [
-        ...selectedEndpoints,
-        ...selectedConsumers,
-        ...selectedInternals
-      ],
-      insights: selectedInsights
-    });
-    setIsOpen(false);
   };
 
   const handleSelectedItemsChange = (
@@ -267,13 +278,13 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
     entries: []
   };
 
-  const areFiltersDefault = [
-    selectedServices,
-    selectedEndpoints,
-    selectedConsumers,
-    selectedInternals,
-    selectedInsights
-  ].every((x) => x.length === 0);
+  const selectedFilters = [
+    ...selectedServices,
+    ...selectedEndpoints,
+    ...selectedConsumers,
+    ...selectedInternals,
+    ...selectedInsights
+  ];
 
   return (
     <NewPopover
@@ -320,10 +331,9 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
             <NewButton
               buttonType={"tertiary"}
               label={"Clear filters"}
-              disabled={areFiltersDefault}
+              disabled={selectedFilters.length === 0}
               onClick={handleClearFiltersButtonClick}
             />
-            <NewButton label={"Apply"} onClick={handleApplyButtonClick} />
           </s.Footer>
         </s.Container>
       }
@@ -332,7 +342,12 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
       placement={"bottom-end"}
     >
       <div>
-        <FilterButton title={"Filters"} isMenuOpen={isOpen} />
+        <FilterButton
+          title={"Filters"}
+          isMenuOpen={isOpen}
+          showCount={true}
+          selectedCount={selectedFilters.length}
+        />
       </div>
     </NewPopover>
   );

@@ -133,7 +133,7 @@ export const Dashboard = () => {
             <s.OpenInBrowserLink onClick={handleOpenInBrowserLinkClick}>
               Open in browser
               <s.IconContainer>
-                <OpenLinkIcon color="currentColor" size={14} />
+                <OpenLinkIcon color={"currentColor"} size={14} />
               </s.IconContainer>
             </s.OpenInBrowserLink>
           )}

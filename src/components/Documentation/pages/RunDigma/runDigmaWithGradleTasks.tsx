@@ -17,7 +17,7 @@ export const runDigmaWithGradleTasks: PageContent = {
             To do so, simply add the environment variable{" "}
             <code>DIGMA_OBSERVABILITY=true</code>
           </span>
-          <img src="/images/observabilityEnvVariable.png" />
+          <img src={"/images/observabilityEnvVariable.png"} />
           <span>
             That&apos;s it! Digma will now collect information about your task.
           </span>

@@ -107,7 +107,7 @@ export const QueryOptimizationInsight = (
           onTicketInfoButtonClick={handleCreateJiraTicketButtonClick}
           spanCodeObjectId={props.insight.spanInfo?.spanCodeObjectId}
           ticketLink={props.insight.ticketLink}
-          buttonType="large"
+          buttonType={"large"}
         />
       ]}
     />

@@ -65,7 +65,7 @@ export const SpanBottleneckInsight = (props: SpanBottleneckInsightProps) => {
                         onTicketInfoButtonClick={handleTicketInfoButtonClick}
                         spanCodeObjectId={spanCodeObjectId}
                         ticketLink={span.ticketLink}
-                        buttonType="small"
+                        buttonType={"small"}
                       />
                     </s.ButtonsContainer>
                   </s.Span>
