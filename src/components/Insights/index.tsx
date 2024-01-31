@@ -24,11 +24,13 @@ import { Preview } from "./Preview";
 import { actions } from "./actions";
 import * as s from "./styles";
 import { BottleneckInsightTicket } from "./tickets/BottleneckInsightTicket";
+import { EndpointHighNumberOfQueriesInsightTicket } from "./tickets/EndpointHighNumberOfQueriesInsightTicket";
 import { EndpointNPlusOneInsightTicket } from "./tickets/EndpointNPlusOneInsightTicket";
 import { NPlusOneInsightTicket } from "./tickets/NPlusOneInsightTicket";
 import { QueryOptimizationInsightTicket } from "./tickets/QueryOptimizationInsightTicket";
 import { SpanBottleneckInsightTicket } from "./tickets/SpanBottleneckInsightTicket";
 import {
+  isEndpointHighNumberOfQueriesInsight,
   isEndpointSlowestSpansInsight,
   isEndpointSuspectedNPlusOneInsight,
   isSpanEndpointBottleneckInsight,
@@ -36,6 +38,7 @@ import {
   isSpanQueryOptimizationInsight
 } from "./typeGuards";
 import {
+  EndpointHighNumberOfQueriesInsight,
   EndpointSlowestSpansInsight,
   EndpointSuspectedNPlusOneInsight,
   GenericCodeObjectInsight,
@@ -88,6 +91,17 @@ const renderInsightTicket = (
     const ticketData = data as InsightTicketInfo<QueryOptimizationInsight>;
     return (
       <QueryOptimizationInsightTicket data={ticketData} onClose={onClose} />
+    );
+  }
+
+  if (isEndpointHighNumberOfQueriesInsight(data.insight)) {
+    const ticketData =
+      data as InsightTicketInfo<EndpointHighNumberOfQueriesInsight>;
+    return (
+      <EndpointHighNumberOfQueriesInsightTicket
+        data={ticketData}
+        onClose={onClose}
+      />
     );
   }
 
