@@ -17,6 +17,7 @@ import { Toggle } from "../../common/Toggle";
 import { ToggleValue } from "../../common/Toggle/types";
 import { Tooltip } from "../../common/Tooltip";
 import { ChevronIcon } from "../../common/icons/ChevronIcon";
+import { InfoCircleIcon } from "../../common/icons/InfoCircleIcon";
 import { Direction } from "../../common/icons/types";
 import { Description, Link } from "../styles";
 import * as s from "./styles";
@@ -135,6 +136,13 @@ export const InsightCard = (props: InsightCardProps) => {
               )}
             </s.InsightIconContainer>
             {insightTypeInfo?.label || props.data.type}
+            {insightTypeInfo?.description && (
+              <Tooltip title={insightTypeInfo.description}>
+                <span>
+                  <InfoCircleIcon color="currentColor" size={14} />
+                </span>
+              </Tooltip>
+            )}
           </s.Title>
           <s.Toolbar>
             {isNew && <Tag type={"success"} value={"New"} />}
