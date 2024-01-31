@@ -1,28 +1,25 @@
-import { ReactElement, useContext, useEffect, useState } from "react";
-import { dispatcher } from "../../../../dispatcher";
+import { ReactElement, useContext } from "react";
 import { getCriticalityLabel } from "../../../../utils/getCriticalityLabel";
 import { intersperse } from "../../../../utils/intersperse";
 import { ConfigContext } from "../../../common/App/ConfigContext";
 import { JiraTicket } from "../../JiraTicket";
-import { actions } from "../../actions";
 import { SpanNPlusOneInsight } from "../../types";
+import { useSpanDataSource } from "../common";
 import { CodeLocations } from "../common/CodeLocations";
 import { CommitInfos } from "../common/CommitInfos";
 import { DigmaSignature } from "../common/DigmaSignature";
 import { NPlusOneAffectedEndpoints } from "../common/NPlusOneAffectedEndpoints";
-import { getInsightCommits } from "../getInsightCommits";
-import {
-  CodeLocationsData,
-  CommitInfosData,
-  InsightTicketProps
-} from "../types";
+import { InsightTicketProps } from "../types";
 
 export const NPlusOneInsightTicket = (
   props: InsightTicketProps<SpanNPlusOneInsight>
 ) => {
-  const [isInitialLoading, setIsInitialLoading] = useState(false);
-  const [codeLocations, setCodeLocations] = useState<string[]>([]);
-  const [commitInfos, setCommitInfos] = useState<CommitInfosData>();
+  const spanInsight = props.data.insight;
+  const { commitInfos, isLoading, codeLocations } =
+    useSpanDataSource<SpanNPlusOneInsight>(
+      props.data.insight.spanInfo,
+      props.data.insight
+    );
   const config = useContext(ConfigContext);
 
   const services = [
@@ -52,12 +49,12 @@ export const NPlusOneInsightTicket = (
           <CodeLocations key={"codeLocations"} codeLocations={codeLocations} />,
           <NPlusOneAffectedEndpoints
             key={"affectedEndpoints"}
-            insight={props.data.insight}
+            insight={spanInsight}
           />,
           <CommitInfos
             key={"commitInfos"}
             commitInfos={commitInfos}
-            insight={props.data.insight}
+            insight={spanInsight}
           />,
           <DigmaSignature key={"digmaSignature"} />
         ],
@@ -76,84 +73,12 @@ export const NPlusOneInsightTicket = (
       }
     : undefined;
 
-  useEffect(() => {
-    const spanCodeObjectId = props.data.insight.spanInfo?.spanCodeObjectId;
-    const methodCodeObjectId =
-      props.data.insight.spanInfo?.methodCodeObjectId || undefined;
-
-    setIsInitialLoading(true);
-
-    window.sendMessageToDigma({
-      action: actions.GET_CODE_LOCATIONS,
-      payload: {
-        spanCodeObjectId,
-        methodCodeObjectId
-      }
-    });
-
-    const commits = getInsightCommits(props.data.insight);
-
-    if (commits.length > 0) {
-      window.sendMessageToDigma({
-        action: actions.GET_COMMIT_INFO,
-        payload: {
-          commits
-        }
-      });
-    }
-
-    const handleCodeLocationsData = (data: unknown) => {
-      const codeLocationsData = data as CodeLocationsData;
-      setCodeLocations(codeLocationsData.codeLocations);
-    };
-
-    const handleCommitInfosData = (data: unknown) => {
-      const commitInfosData = data as CommitInfosData;
-      setCommitInfos(commitInfosData);
-    };
-
-    dispatcher.addActionListener(
-      actions.SET_CODE_LOCATIONS,
-      handleCodeLocationsData
-    );
-
-    dispatcher.addActionListener(
-      actions.SET_COMMIT_INFO,
-      handleCommitInfosData
-    );
-
-    return () => {
-      dispatcher.removeActionListener(
-        actions.SET_CODE_LOCATIONS,
-        handleCodeLocationsData
-      );
-
-      dispatcher.removeActionListener(
-        actions.SET_COMMIT_INFO,
-        handleCommitInfosData
-      );
-    };
-  }, []);
-
-  useEffect(() => {
-    if (codeLocations) {
-      const commits = getInsightCommits(props.data.insight);
-      if (commits.length > 0) {
-        if (commitInfos) {
-          setIsInitialLoading(false);
-        }
-      } else {
-        setIsInitialLoading(false);
-      }
-    }
-  }, [codeLocations, props.data.insight, commitInfos]);
-
   return (
     <JiraTicket
       summary={summary}
       description={{
         content: renderDescription(),
-        isLoading: isInitialLoading
+        isLoading
       }}
       attachment={attachment}
       insight={props.data.insight}
