@@ -24,6 +24,7 @@ export interface SelectProps {
     filtered: number;
   };
   placeholder?: string;
+  disabled?: boolean;
 }
 
 export interface ButtonProps {

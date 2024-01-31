@@ -104,7 +104,7 @@ export const EndpointNPlusOneInsight = (
                       onTicketInfoButtonClick={handleTicketInfoButtonClick}
                       spanCodeObjectId={spanInfo.spanCodeObjectId}
                       ticketLink={span.ticketLink}
-                      buttonType="small"
+                      buttonType={"small"}
                     />
                     {config.isJaegerEnabled && (
                       <Tooltip title={"Trace"}>
