@@ -8,7 +8,7 @@ import * as s from "./styles";
 import { CommitInfosProps } from "./types";
 
 const renderCommit = (
-  commitInfos: CommitInfosData | undefined,
+  commitInfos: CommitInfosData | undefined | null,
   commitId: string | null
 ) => {
   if (commitInfos && commitId) {

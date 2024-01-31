@@ -37,3 +37,8 @@ export const Key = styled.span`
 export const IconContainer = styled.span`
   display: flex;
 `;
+
+export const ActionsContainer = styled.div`
+  display: flex;
+  gap: 8px;
+`;

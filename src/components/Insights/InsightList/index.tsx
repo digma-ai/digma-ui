@@ -564,6 +564,7 @@ const renderInsightCard = (
         onTraceButtonClick={handleTraceButtonClick}
         onRecalculate={handleRecalculate}
         onRefresh={handleRefresh}
+        onJiraTicketCreate={onJiraTicketCreate}
       />
     );
   }
