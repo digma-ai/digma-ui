@@ -108,6 +108,7 @@ export const QueryOptimizationInsight = (
           spanCodeObjectId={props.insight.spanInfo?.spanCodeObjectId}
           ticketLink={props.insight.ticketLink}
           buttonType={"large"}
+          showHint={props.isJiraHintEnabled}
         />
       ]}
     />

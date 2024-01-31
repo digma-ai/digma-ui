@@ -2,6 +2,7 @@ import { useState } from "react";
 import { openURLInDefaultBrowser } from "../../../../utils/openURLInDefaultBrowser";
 import { Button } from "../../../common/Button";
 import { Menu } from "../../../common/Menu";
+import { NewButton } from "../../../common/NewButton";
 import { NewPopover } from "../../../common/NewPopover";
 import { Tooltip } from "../../../common/Tooltip";
 import { PencilIcon } from "../../../common/icons/12px/PencilIcon";
@@ -65,18 +66,40 @@ export const JiraButton = (props: JiraButtonProps) => {
           onOpenChange={handleJiraButtonClick}
           placement={"bottom-start"}
         >
-          <s.StyledButton
-            icon={{ component: JiraLogoIcon }}
-            afterTextIcon={
-              <ChevronIcon
-                color={"currentColor"}
-                size={14}
-                direction={isJiraPopoverOpen ? Direction.UP : Direction.DOWN}
-              />
-            }
-          >
-            {buttonText}
-          </s.StyledButton>
+          <div>
+            <Tooltip
+              placement={"top-start"}
+              title={
+                <s.HintContainer>
+                  <s.HintHeader>
+                    <JiraLogoIcon size={16} color={"currentColor"} />
+                    <span>Get Ticket Info</span>
+                    <span>
+                      You can now easily create a ticket using information from
+                      Digma
+                    </span>
+                  </s.HintHeader>
+                  <NewButton buttonType={"secondary"} label={"Try now"} />
+                </s.HintContainer>
+              }
+              permanent={props.showHint}
+            >
+              <s.StyledButton
+                icon={{ component: JiraLogoIcon }}
+                afterTextIcon={
+                  <ChevronIcon
+                    color={"currentColor"}
+                    size={14}
+                    direction={
+                      isJiraPopoverOpen ? Direction.UP : Direction.DOWN
+                    }
+                  />
+                }
+              >
+                {buttonText}
+              </s.StyledButton>
+            </Tooltip>
+          </div>
         </NewPopover>
       )}
     </>

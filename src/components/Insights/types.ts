@@ -86,6 +86,7 @@ export interface InsightProps {
     insight: GenericCodeObjectInsight,
     spanCodeObjectId?: string
   ) => void;
+  isJiraHintEnabled?: boolean;
 }
 
 export interface InsightTicketInfo<T extends GenericCodeObjectInsight> {

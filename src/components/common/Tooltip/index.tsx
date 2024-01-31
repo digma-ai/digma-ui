@@ -51,7 +51,7 @@ const getArrowStyles = (placement: Placement) => {
 };
 
 export const Tooltip = (props: TooltipProps) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(props.permanent || false);
   const arrowRef = useRef(null);
 
   const theme = useTheme();
@@ -72,7 +72,10 @@ export const Tooltip = (props: TooltipProps) => {
     ]
   });
 
-  const hover = useHover(context, { delay: { open: 1000, close: 0 } });
+  const hover = useHover(context, {
+    delay: { open: 1000, close: 0 },
+    enabled: !props.permanent
+  });
 
   const { getReferenceProps, getFloatingProps } = useInteractions([hover]);
 
