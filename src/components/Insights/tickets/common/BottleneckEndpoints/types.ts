@@ -1,5 +1,5 @@
 import { SpanEndpointBottleneckInsight } from "../../../types";
 
 export interface BottleneckEndpointsProps {
-  insight: SpanEndpointBottleneckInsight | undefined;
+  insight: SpanEndpointBottleneckInsight | null;
 }
