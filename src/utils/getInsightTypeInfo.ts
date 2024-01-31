@@ -22,7 +22,7 @@ export const getInsightTypeInfo = (
   | {
       icon: MemoExoticComponent<(props: IconProps) => JSX.Element>;
       label: string;
-      description?: string;
+      description?: () => JSX.Element;
     }
   | undefined => {
   const insightTypeInfoMap: Record<
@@ -30,7 +30,7 @@ export const getInsightTypeInfo = (
     {
       icon: MemoExoticComponent<(props: IconProps) => JSX.Element>;
       label: string;
-      description?: string;
+      description?: () => JSX.Element;
     }
   > = {
     [InsightType.Errors]: {

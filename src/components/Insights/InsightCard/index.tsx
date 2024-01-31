@@ -137,10 +137,8 @@ export const InsightCard = (props: InsightCardProps) => {
             </s.InsightIconContainer>
             {insightTypeInfo?.label || props.data.type}
             {insightTypeInfo?.description && (
-              <Tooltip title={insightTypeInfo.description}>
-                <span>
-                  <InfoCircleIcon color="currentColor" size={14} />
-                </span>
+              <Tooltip title={<insightTypeInfo.description />}>
+                <InfoCircleIcon color="currentColor" size={16} />
               </Tooltip>
             )}
           </s.Title>
