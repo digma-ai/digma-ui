@@ -45,12 +45,15 @@ export interface ThemeColors {
     link: string;
     subtext: string;
     success: string;
+    disabledAlt: string;
   };
   surface: {
+    primary: string;
     primaryLight: string;
     highlight: string;
     card: string;
     brand: string;
+    brandDark: string;
     secondary: string;
   };
   stroke: {

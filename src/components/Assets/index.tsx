@@ -34,6 +34,12 @@ export const Assets = () => {
     FeatureFlag.IS_ASSETS_COMPLEX_FILTER_ENABLED
   );
 
+  // const isBackendUpgradeMessageHidden = getFeatureFlagValue(
+  //   config,
+  //   FeatureFlag.IS_BACKEND_UPDATE_MESSAGE_HIDDEN
+  // );
+  const isBackendUpgradeMessageHidden = true; // TODO: remove this line
+
   useLayoutEffect(() => {
     window.sendMessageToDigma({
       action: actions.INITIALIZE
@@ -61,6 +67,22 @@ export const Assets = () => {
   };
 
   const renderContent = () => {
+    if (!isBackendUpgradeMessageHidden) {
+      return (
+        <EmptyState
+          content={
+            <s.UpgradeMessage>
+              <span>We&apos;ve added some new features.</span>
+              <span>
+                Please update the Digma Engine to the latest version using the
+                action above to continue using Digma
+              </span>
+            </s.UpgradeMessage>
+          }
+        />
+      );
+    }
+
     if (!selectedFilters && !selectedServices) {
       return <EmptyState content={<NewCircleLoader size={32} />} />;
     }
@@ -103,7 +125,10 @@ export const Assets = () => {
           </s.SearchInputContainer>
         )}
         {isComplexFilterVisible ? (
-          <AssetsFilter onApply={handleApplyFilters} />
+          <AssetsFilter
+            onApply={handleApplyFilters}
+            filters={selectedFilters}
+          />
         ) : (
           isServiceFilterVisible && (
             <ServicesFilter

@@ -1,3 +1,6 @@
+import { ComponentType } from "react";
+import { IconProps } from "../icons/types";
+
 export interface SelectThemeColors {
   menu: {
     text: {
@@ -25,15 +28,18 @@ export interface SelectProps {
   };
   placeholder?: string;
   disabled?: boolean;
+  icon?: ComponentType<IconProps>;
 }
 
 export interface ButtonProps {
   $isActive: boolean;
 }
 
-export type ButtonLabelProps = ButtonProps;
-
 export interface OptionListItemProps {
   $selected?: boolean;
   $enabled?: boolean;
+}
+
+export interface ChevronIconContainerProps {
+  $disabled?: boolean;
 }

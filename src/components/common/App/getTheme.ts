@@ -255,13 +255,16 @@ const darkThemeColors: ThemeColors = {
     base: grayScale[0],
     subtext: grayScale[400],
     link: primaryScale[100],
-    success: greenScale[500]
+    success: greenScale[500],
+    disabledAlt: grayScale[500]
   },
   surface: {
+    primary: grayScale[1000],
     primaryLight: grayScale[800],
     highlight: grayScale[750],
     card: grayScale[1100],
     brand: primaryScale[300],
+    brandDark: primaryScale[700],
     secondary: grayScale[1100]
   },
   stroke: {
@@ -467,17 +470,20 @@ const lightThemeColors: ThemeColors = {
     base: grayScale[900],
     subtext: grayScale[600],
     link: primaryScale[300],
-    success: grayScale[900]
+    success: grayScale[900],
+    disabledAlt: grayScale[500]
   },
   surface: {
+    primary: grayScale[150],
     primaryLight: grayScale[50],
     highlight: grayScale[150],
     card: grayScale[0],
     brand: primaryScale[300],
+    brandDark: grayScale[50],
     secondary: grayScale[50]
   },
   stroke: {
-    primary: grayScale[500],
+    primary: grayScale[300],
     secondary: grayScale[800],
     brand: primaryScale[300]
   }

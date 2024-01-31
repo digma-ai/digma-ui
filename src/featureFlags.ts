@@ -8,7 +8,8 @@ const featureFlagMinBackendVersions: Record<FeatureFlag, string> = {
   [FeatureFlag.IS_ASSETS_SERVICE_FILTER_VISIBLE]: "v0.2.174",
   [FeatureFlag.IS_ASSETS_OVERALL_IMPACT_HIDDEN]: "v0.2.181-alpha.1",
   [FeatureFlag.IS_INSIGHT_TICKET_LINKAGE_ENABLED]: "v0.2.200",
-  [FeatureFlag.IS_ASSETS_COMPLEX_FILTER_ENABLED]: "v0.2.213"
+  [FeatureFlag.IS_ASSETS_COMPLEX_FILTER_ENABLED]: "v0.2.213",
+  [FeatureFlag.IS_BACKEND_UPDATE_MESSAGE_HIDDEN]: "v0.2.213"
 };
 
 export const getFeatureFlagValue = (

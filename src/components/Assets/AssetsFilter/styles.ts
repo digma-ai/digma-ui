@@ -4,20 +4,18 @@ import { grayScale } from "../../common/App/getTheme";
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  padding: 4px 8px;
+  gap: 8px;
+  padding: 8px;
   border-radius: 4px;
-  background: ${({ theme }) => theme.colors.select.menu.background};
+  background: ${({ theme }) => theme.colors.surface.primary};
   box-shadow: 0 2px 4px 0 rgba(0 0 0 / 29%);
   font-size: 14px;
   color: ${grayScale[400]};
 `;
 
 export const Header = styled.div`
-  font-size: 16px;
   color: ${({ theme }) => theme.colors.select.menu.text.primary};
   padding: 0 4px;
-  height: 24px;
   display: flex;
   align-items: center;
 `;

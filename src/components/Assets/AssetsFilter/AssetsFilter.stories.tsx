@@ -48,7 +48,7 @@ export const Default: Story = {
                   name: "HTTP GET /"
                 },
                 {
-                  enabled: true,
+                  enabled: false,
                   selected: false,
                   name: "HTTP GET /**"
                 },

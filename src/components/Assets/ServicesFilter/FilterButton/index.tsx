@@ -1,7 +1,7 @@
-import { isNumber } from "../../../typeGuards/isNumber";
-import { ChevronIcon } from "../../common/icons/ChevronIcon";
-import { FilterIcon } from "../../common/icons/FilterIcon";
-import { Direction } from "../../common/icons/types";
+import { isNumber } from "../../../../typeGuards/isNumber";
+import { ChevronIcon } from "../../../common/icons/ChevronIcon";
+import { FilterIcon } from "../../../common/icons/FilterIcon";
+import { Direction } from "../../../common/icons/types";
 import * as s from "./styles";
 import { FilterButtonProps } from "./types";
 

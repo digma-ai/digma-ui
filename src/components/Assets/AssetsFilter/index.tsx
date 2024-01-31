@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { ComponentType, useEffect, useRef, useState } from "react";
 import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { isNumber } from "../../../typeGuards/isNumber";
@@ -7,8 +7,12 @@ import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
 import { NewButton } from "../../common/NewButton";
 import { NewPopover } from "../../common/NewPopover";
 import { Select } from "../../common/Select";
-import { FilterButton } from "../FilterButton";
+import { WrenchIcon } from "../../common/icons/12px/WrenchIcon";
+import { EndpointIcon } from "../../common/icons/EndpointIcon";
+import { SparkleIcon } from "../../common/icons/SparkleIcon";
+import { IconProps } from "../../common/icons/types";
 import { actions } from "../actions";
+import { FilterButton } from "./FilterButton";
 import * as s from "./styles";
 import {
   AssetFilterCategory,
@@ -22,6 +26,7 @@ const REFRESH_INTERVAL = isNumber(window.assetsRefreshInterval)
 
 const renderFilterCategory = (
   category: AssetFilterCategory,
+  icon: ComponentType<IconProps>,
   placeholder: string,
   selectedValues: string[],
   onChange: (value: string | string[], categoryName?: string) => void,
@@ -43,16 +48,15 @@ const renderFilterCategory = (
       onChange={(value) => onChange(value, category.categoryName)}
       placeholder={placeholder}
       multiselect={true}
-      counts={{
-        total: items.length,
-        filtered: items.filter((x) => x.enabled).length
-      }}
+      icon={icon}
+      disabled={category.entries?.length === 0}
     />
   );
 };
 
 export const AssetsFilter = (props: AssetsFilterProps) => {
   const [data, setData] = useState<AssetsFiltersData | null>();
+  const previousData = usePrevious(data);
   const [isOpen, setIsOpen] = useState(false);
   const previousIsOpen = usePrevious(isOpen);
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
@@ -60,8 +64,6 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
   const [selectedConsumers, setSelectedConsumers] = useState<string[]>([]);
   const [selectedInternals, setSelectedInternals] = useState<string[]>([]);
   const [selectedInsights, setSelectedInsights] = useState<InsightType[]>([]);
-  const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
-  const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
   const refreshTimerId = useRef<number>();
 
   const getData = (
@@ -88,19 +90,38 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
       selectedInsights
     );
 
-    const handleData = (data: unknown, timeStamp: number) => {
+    const handleData = (data: unknown) => {
       const filtersData = data as AssetsFiltersData | null;
       setData(filtersData);
-      setLastSetDataTimeStamp(timeStamp);
+    };
 
+    dispatcher.addActionListener(actions.SET_ASSET_FILTERS_DATA, handleData);
+
+    return () => {
+      dispatcher.removeActionListener(
+        actions.SET_ASSET_FILTERS_DATA,
+        handleData
+      );
+      window.clearTimeout(refreshTimerId.current);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (props.data) {
+      setData(props.data);
+    }
+  }, [props.data]);
+
+  useEffect(() => {
+    if (previousData !== data) {
       setSelectedServices(
-        filtersData?.categories
+        data?.categories
           .find((x) => x.categoryName === "Services")
           ?.entries?.filter((x) => x.selected)
           .map((x) => x.name) || []
       );
 
-      const operationsCategory = filtersData?.categories.find(
+      const operationsCategory = data?.categories.find(
         (x) => x.categoryName === "Operations"
       );
 
@@ -125,44 +146,24 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
           .map((x) => x.name) || [];
       setSelectedInternals(selectedInternals);
 
-      const selectedInsights = (filtersData?.categories
+      const selectedInsights = (data?.categories
         .find((x) => x.categoryName === "Insights")
         ?.entries?.filter((x) => x.selected)
         .map((x) => x.name) || []) as InsightType[];
       setSelectedInsights(selectedInsights);
-    };
 
-    if (!props.filters) {
-      props.onApply({
-        services: selectedServices,
-        operations: [
-          ...selectedEndpoints,
-          ...selectedConsumers,
-          ...selectedInternals
-        ],
-        insights: selectedInsights
-      });
-    }
+      if (!props.filters) {
+        props.onApply({
+          services: selectedServices,
+          operations: [
+            ...selectedEndpoints,
+            ...selectedConsumers,
+            ...selectedInternals
+          ],
+          insights: selectedInsights
+        });
+      }
 
-    dispatcher.addActionListener(actions.SET_ASSET_FILTERS_DATA, handleData);
-
-    return () => {
-      dispatcher.removeActionListener(
-        actions.SET_ASSET_FILTERS_DATA,
-        handleData
-      );
-      window.clearTimeout(refreshTimerId.current);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (props.data) {
-      setData(props.data);
-    }
-  }, [props.data]);
-
-  useEffect(() => {
-    if (previousLastSetDataTimeStamp !== lastSetDataTimeStamp) {
       window.clearTimeout(refreshTimerId.current);
       refreshTimerId.current = window.setTimeout(() => {
         getData(
@@ -173,8 +174,10 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
       }, REFRESH_INTERVAL);
     }
   }, [
-    lastSetDataTimeStamp,
-    previousLastSetDataTimeStamp,
+    previousData,
+    data,
+    props.filters,
+    props.onApply,
     selectedServices,
     selectedEndpoints,
     selectedConsumers,
@@ -295,25 +298,29 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
           <s.FilterCategoryName>Services</s.FilterCategoryName>
           {renderFilterCategory(
             servicesCategory,
-            "All",
+            WrenchIcon,
+            selectedServices.length > 0 ? "Services" : "All",
             selectedServices,
             handleSelectedItemsChange
           )}
           <s.FilterCategoryName>Operations</s.FilterCategoryName>
           {renderFilterCategory(
             endpointsCategory,
+            EndpointIcon,
             "Endpoints",
             selectedEndpoints,
             handleSelectedItemsChange
           )}
           {renderFilterCategory(
             consumersCategory,
+            EndpointIcon,
             "Consumers",
             selectedConsumers,
             handleSelectedItemsChange
           )}
           {renderFilterCategory(
             internalsCategory,
+            EndpointIcon,
             "Internal",
             selectedInternals,
             handleSelectedItemsChange
@@ -322,6 +329,7 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
           {insightsCategory &&
             renderFilterCategory(
               insightsCategory,
+              SparkleIcon,
               "Insights",
               selectedInsights,
               handleSelectedItemsChange,
