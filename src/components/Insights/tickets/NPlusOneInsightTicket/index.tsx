@@ -4,11 +4,11 @@ import { intersperse } from "../../../../utils/intersperse";
 import { ConfigContext } from "../../../common/App/ConfigContext";
 import { JiraTicket } from "../../JiraTicket";
 import { SpanNPlusOneInsight } from "../../types";
+import { useSpanDataSource } from "../common";
 import { CodeLocations } from "../common/CodeLocations";
 import { CommitInfos } from "../common/CommitInfos";
 import { DigmaSignature } from "../common/DigmaSignature";
 import { NPlusOneAffectedEndpoints } from "../common/NPlusOneAffectedEndpoints";
-import { useSpanDataSource } from "../common/useTicketDataSource";
 import { InsightTicketProps } from "../types";
 
 export const NPlusOneInsightTicket = (

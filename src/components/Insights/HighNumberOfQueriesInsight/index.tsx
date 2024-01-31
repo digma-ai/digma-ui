@@ -32,8 +32,7 @@ export const HighNumberOfQueriesInsight = (
     sendTrackingEvent(trackingEvents.JIRA_TICKET_INFO_BUTTON_CLICKED, {
       insightType: insight.type
     });
-    props.onJiraTicketCreate &&
-      props.onJiraTicketCreate(insight, insight.spanInfo?.spanCodeObjectId);
+    props.onJiraTicketCreate && props.onJiraTicketCreate(insight);
   };
 
   return (

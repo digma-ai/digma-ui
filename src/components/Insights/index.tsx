@@ -94,10 +94,7 @@ const renderInsightTicket = (
     );
   }
 
-  if (
-    isEndpointHighNumberOfQueriesInsight(data.insight) &&
-    data.spanCodeObjectId
-  ) {
+  if (isEndpointHighNumberOfQueriesInsight(data.insight)) {
     const ticketData =
       data as InsightTicketInfo<EndpointHighNumberOfQueriesInsight>;
     return (

@@ -11,7 +11,7 @@ import { BottleneckEndpoints } from "../common/BottleneckEndpoints";
 import { CodeLocations } from "../common/CodeLocations";
 import { CommitInfos } from "../common/CommitInfos";
 import { DigmaSignature } from "../common/DigmaSignature";
-import { useEndpointDataSource } from "../common/useTicketDataSource";
+import { useEndpointDataSource } from "../common/useEndpointDataSource";
 import { InsightTicketProps } from "../types";
 
 export const SpanBottleneckInsightTicket = (
@@ -54,13 +54,13 @@ export const SpanBottleneckInsightTicket = (
         [
           <BottleneckEndpoints
             key={"bottleneckEndpoints"}
-            insight={spanInsight || undefined}
+            insight={spanInsight}
           />,
           <CodeLocations key={"codeLocations"} codeLocations={codeLocations} />,
           <CommitInfos
             key={"commitInfos"}
             commitInfos={commitInfos}
-            insight={spanInsight || undefined}
+            insight={spanInsight}
           />,
           <DigmaSignature key={"digmaSignature"} />
         ],

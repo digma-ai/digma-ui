@@ -8,11 +8,11 @@ import {
   EndpointSuspectedNPlusOneInsight,
   SpanNPlusOneInsight
 } from "../../types";
+import { useEndpointDataSource } from "../common";
 import { CodeLocations } from "../common/CodeLocations";
 import { CommitInfos } from "../common/CommitInfos";
 import { DigmaSignature } from "../common/DigmaSignature";
 import { NPlusOneAffectedEndpoints } from "../common/NPlusOneAffectedEndpoints";
-import { useEndpointDataSource } from "../common/useTicketDataSource";
 import { InsightTicketProps } from "../types";
 
 export const EndpointNPlusOneInsightTicket = (
@@ -64,12 +64,12 @@ export const EndpointNPlusOneInsightTicket = (
           <CodeLocations key={"codeLocations"} codeLocations={codeLocations} />,
           <NPlusOneAffectedEndpoints
             key={"affectedEndpoints"}
-            insight={spanInsight || undefined}
+            insight={spanInsight}
           />,
           <CommitInfos
             key={"commitInfos"}
             commitInfos={commitInfos}
-            insight={spanInsight || undefined}
+            insight={spanInsight}
           />,
           <DigmaSignature key={"digmaSignature"} />
         ],

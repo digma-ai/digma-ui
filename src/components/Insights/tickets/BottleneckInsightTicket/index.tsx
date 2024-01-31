@@ -3,11 +3,11 @@ import { getCriticalityLabel } from "../../../../utils/getCriticalityLabel";
 import { intersperse } from "../../../../utils/intersperse";
 import { JiraTicket } from "../../JiraTicket";
 import { SpanEndpointBottleneckInsight } from "../../types";
+import { useSpanDataSource } from "../common";
 import { BottleneckEndpoints } from "../common/BottleneckEndpoints";
 import { CodeLocations } from "../common/CodeLocations";
 import { CommitInfos } from "../common/CommitInfos";
 import { DigmaSignature } from "../common/DigmaSignature";
-import { useSpanDataSource } from "../common/useTicketDataSource";
 import { InsightTicketProps } from "../types";
 
 export const BottleneckInsightTicket = (

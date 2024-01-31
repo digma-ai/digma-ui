@@ -1,22 +1,18 @@
 import { ReactElement } from "react";
-import { InsightType } from "../../../../types";
 import { intersperse } from "../../../../utils/intersperse";
 import { JiraTicket } from "../../JiraTicket";
 import { EndpointHighNumberOfQueriesInsight } from "../../types";
+import { useCommitInfos } from "../common";
 import { CommitInfos } from "../common/CommitInfos";
 import { DigmaSignature } from "../common/DigmaSignature";
-import { useEndpointDataSource } from "../common/useTicketDataSource";
 import { InsightTicketProps } from "../types";
 
 export const EndpointHighNumberOfQueriesInsightTicket = (
   props: InsightTicketProps<EndpointHighNumberOfQueriesInsight>
 ) => {
-  const spanInfo = props.data.insight.spanInfo;
-  const { commitInfos, spanInsight, isLoading, onReloadSpanInsight } =
-    useEndpointDataSource<EndpointHighNumberOfQueriesInsight>(
-      spanInfo,
-      InsightType.EndpointHighNumberOfQueries
-    );
+  const spanInsight = props.data.insight;
+  const { commitInfos, isLoading } =
+    useCommitInfos<EndpointHighNumberOfQueriesInsight>(spanInsight);
 
   const renderDescription = () => {
     if (!spanInsight || !spanInsight.spanInfo) {
@@ -45,7 +41,7 @@ export const EndpointHighNumberOfQueriesInsightTicket = (
             <CommitInfos
               key={"commitInfos"}
               commitInfos={commitInfos}
-              insight={spanInsight || undefined}
+              insight={spanInsight}
             />,
             <DigmaSignature key={"digmaSignature"} />
           ],
@@ -73,9 +69,7 @@ export const EndpointHighNumberOfQueriesInsightTicket = (
         isLoading
       }}
       insight={props.data.insight}
-      relatedInsight={spanInsight}
       onClose={props.onClose}
-      onReloadSpanInsight={onReloadSpanInsight}
     />
   );
 };

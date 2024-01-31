@@ -2,6 +2,6 @@ import { GenericCodeObjectInsight } from "../../../types";
 import { CommitInfosData } from "../../types";
 
 export interface CommitInfosProps {
-  insight: GenericCodeObjectInsight | undefined | null;
+  insight: GenericCodeObjectInsight | null;
   commitInfos?: CommitInfosData | null;
 }
