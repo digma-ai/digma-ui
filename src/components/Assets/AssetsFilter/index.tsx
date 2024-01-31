@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { dispatcher } from "../../../dispatcher";
+import { usePersistence } from "../../../hooks/usePersistence";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { isNumber } from "../../../typeGuards/isNumber";
+import { isUndefined } from "../../../typeGuards/isUndefined";
 import { InsightType } from "../../../types";
 import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
 import { NewButton } from "../../common/NewButton";
@@ -12,6 +14,7 @@ import { actions } from "../actions";
 import * as s from "./styles";
 import {
   AssetFilterCategory,
+  AssetFilterQuery,
   AssetsFilterProps,
   AssetsFiltersData
 } from "./types";
@@ -54,6 +57,9 @@ const renderFilterCategory = (
 export const AssetsFilter = (props: AssetsFilterProps) => {
   const [data, setData] = useState<AssetsFiltersData | null>();
   const [isOpen, setIsOpen] = useState(false);
+  const [persistedFilters, setPersistedFilters] =
+    usePersistence<AssetFilterQuery>("assetsFilters", "project");
+  const previousPersistedFilters = usePrevious(persistedFilters);
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [selectedEndpoints, setSelectedEndpoints] = useState<string[]>([]);
   const [selectedConsumers, setSelectedConsumers] = useState<string[]>([]);
@@ -81,12 +87,31 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
   };
 
   useEffect(() => {
-    getData(
-      selectedServices,
-      [...selectedEndpoints, ...selectedConsumers, ...selectedInternals],
-      selectedInsights
-    );
+    if (
+      isUndefined(previousPersistedFilters) &&
+      previousPersistedFilters !== persistedFilters
+    ) {
+      getData(
+        persistedFilters?.services || selectedServices,
+        persistedFilters?.operations || [
+          ...selectedEndpoints,
+          ...selectedConsumers,
+          ...selectedInternals
+        ],
+        (persistedFilters?.insights as InsightType[]) || selectedInsights
+      );
+    }
+  }, [
+    previousPersistedFilters,
+    persistedFilters,
+    selectedServices,
+    selectedEndpoints,
+    selectedConsumers,
+    selectedInternals,
+    selectedInsights
+  ]);
 
+  useEffect(() => {
     const handleData = (data: unknown, timeStamp: number) => {
       const filtersData = data as AssetsFiltersData | null;
       setData(filtersData);
@@ -129,19 +154,22 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
         ?.entries?.filter((x) => x.selected)
         .map((x) => x.name) || []) as InsightType[];
       setSelectedInsights(selectedInsights);
-    };
 
-    if (!props.filters) {
-      props.onApply({
-        services: selectedServices,
-        operations: [
-          ...selectedEndpoints,
-          ...selectedConsumers,
-          ...selectedInternals
-        ],
-        insights: selectedInsights
-      });
-    }
+      if (!props.filters) {
+        const filtersQuery = {
+          services: selectedServices,
+          operations: [
+            ...selectedEndpoints,
+            ...selectedConsumers,
+            ...selectedInternals
+          ],
+          insights: selectedInsights
+        };
+
+        setPersistedFilters(filtersQuery);
+        props.onApply(filtersQuery);
+      }
+    };
 
     dispatcher.addActionListener(actions.SET_ASSET_FILTERS_DATA, handleData);
 
@@ -152,7 +180,16 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
       );
       window.clearTimeout(refreshTimerId.current);
     };
-  }, []);
+  }, [
+    props.filters,
+    props.onApply,
+    selectedConsumers,
+    selectedEndpoints,
+    selectedInsights,
+    selectedInternals,
+    selectedServices,
+    setPersistedFilters
+  ]);
 
   useEffect(() => {
     if (props.data) {
@@ -186,7 +223,7 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
   };
 
   const handleApplyButtonClick = () => {
-    props.onApply({
+    const filtersQuery = {
       services: selectedServices,
       operations: [
         ...selectedEndpoints,
@@ -194,7 +231,10 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
         ...selectedInternals
       ],
       insights: selectedInsights
-    });
+    };
+
+    props.onApply(filtersQuery);
+    setPersistedFilters(filtersQuery);
     setIsOpen(false);
   };
 

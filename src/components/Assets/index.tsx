@@ -103,7 +103,10 @@ export const Assets = () => {
           </s.SearchInputContainer>
         )}
         {isComplexFilterVisible ? (
-          <AssetsFilter onApply={handleApplyFilters} />
+          <AssetsFilter
+            onApply={handleApplyFilters}
+            filters={selectedFilters}
+          />
         ) : (
           isServiceFilterVisible && (
             <ServicesFilter
