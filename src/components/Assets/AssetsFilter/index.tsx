@@ -1,12 +1,14 @@
-import { ComponentType, useEffect, useRef, useState } from "react";
+import { ComponentType, useContext, useEffect, useRef, useState } from "react";
 import { dispatcher } from "../../../dispatcher";
 import { usePersistence } from "../../../hooks/usePersistence";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { isNumber } from "../../../typeGuards/isNumber";
+import { isString } from "../../../typeGuards/isString";
 import { isUndefined } from "../../../typeGuards/isUndefined";
 import { InsightType } from "../../../types";
 import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
+import { ConfigContext } from "../../common/App/ConfigContext";
 import { NewButton } from "../../common/NewButton";
 import { NewPopover } from "../../common/NewPopover";
 import { Select } from "../../common/Select";
@@ -73,6 +75,8 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
   const [selectedInternals, setSelectedInternals] = useState<string[]>([]);
   const [selectedInsights, setSelectedInsights] = useState<InsightType[]>([]);
   const refreshTimerId = useRef<number>();
+  const config = useContext(ConfigContext);
+  const previousEnvironment = usePrevious(config.environment);
 
   const getData = (
     services: string[],
@@ -132,6 +136,15 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
       window.clearTimeout(refreshTimerId.current);
     };
   }, []);
+
+  useEffect(() => {
+    if (
+      isString(previousEnvironment) &&
+      previousEnvironment !== config.environment
+    ) {
+      getData([], [], []);
+    }
+  }, [previousEnvironment, config.environment]);
 
   useEffect(() => {
     if (props.data) {
