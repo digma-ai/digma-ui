@@ -1,4 +1,5 @@
 import { MemoExoticComponent } from "react";
+import * as descriptionProvider from "../components/common/InsightsDescription";
 import { AlarmClockIcon } from "../components/common/icons/AlarmClockIcon";
 import { BottleneckIcon } from "../components/common/icons/BottleneckIcon";
 import { ClockWithTicksIcon } from "../components/common/icons/ClockWithTicksIcon";
@@ -14,7 +15,6 @@ import { SpotIcon } from "../components/common/icons/SpotIcon";
 import { WarningCircleIcon } from "../components/common/icons/WarningCircleIcon";
 import { IconProps } from "../components/common/icons/types";
 import { InsightType } from "../types";
-import * as descriptionProvider from "./insightsDescription";
 
 export const getInsightTypeInfo = (
   type: string
