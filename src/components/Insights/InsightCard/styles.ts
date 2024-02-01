@@ -102,3 +102,7 @@ export const AsyncBadge = styled.div`
     }
   }};
 `;
+
+export const InfoContainer = styled.div`
+  display: flex;
+`;
