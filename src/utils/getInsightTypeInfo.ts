@@ -1,4 +1,5 @@
 import { MemoExoticComponent } from "react";
+import * as descriptionProvider from "../components/common/InsightsDescription";
 import { AlarmClockIcon } from "../components/common/icons/AlarmClockIcon";
 import { BottleneckIcon } from "../components/common/icons/BottleneckIcon";
 import { ClockWithTicksIcon } from "../components/common/icons/ClockWithTicksIcon";
@@ -21,6 +22,7 @@ export const getInsightTypeInfo = (
   | {
       icon: MemoExoticComponent<(props: IconProps) => JSX.Element>;
       label: string;
+      description?: () => JSX.Element;
     }
   | undefined => {
   const insightTypeInfoMap: Record<
@@ -28,6 +30,7 @@ export const getInsightTypeInfo = (
     {
       icon: MemoExoticComponent<(props: IconProps) => JSX.Element>;
       label: string;
+      description?: () => JSX.Element;
     }
   > = {
     [InsightType.Errors]: {
@@ -36,7 +39,8 @@ export const getInsightTypeInfo = (
     },
     [InsightType.HotSpot]: {
       icon: SpotIcon,
-      label: "Error Hotspot"
+      label: "Error Hotspot",
+      description: descriptionProvider.HotSpotDescription
     },
     [InsightType.SlowEndpoint]: {
       icon: SnailIcon,
@@ -56,23 +60,28 @@ export const getInsightTypeInfo = (
     },
     [InsightType.SlowestSpans]: {
       icon: BottleneckIcon,
-      label: "Bottleneck"
+      label: "Bottleneck",
+      description: descriptionProvider.BottleneckDescription
     },
     [InsightType.EndpointSpanNPlusOne]: {
       icon: SQLDatabaseIcon,
-      label: "Suspected N-Plus-1"
+      label: "Suspected N-Plus-1",
+      description: descriptionProvider.NPlusOneDescription
     },
     [InsightType.SpanNPlusOne]: {
       icon: SQLDatabaseIcon,
-      label: "Suspected N-Plus-1"
+      label: "Suspected N-Plus-1",
+      description: descriptionProvider.NPlusOneDescription
     },
     [InsightType.SpanEndpointBottleneck]: {
       icon: BottleneckIcon,
-      label: "Bottleneck"
+      label: "Bottleneck",
+      description: descriptionProvider.BottleneckDescription
     },
     [InsightType.SpanScalingBadly]: {
       icon: ScalesIcon,
-      label: "Scaling Issue Found"
+      label: "Scaling Issue Found",
+      description: descriptionProvider.ScalingIssueDescription
     },
     [InsightType.SpanUsages]: {
       icon: SineIcon,
@@ -104,19 +113,23 @@ export const getInsightTypeInfo = (
     },
     [InsightType.EndpointSessionInView]: {
       icon: SQLDatabaseIcon,
-      label: "Session in View Query Detected"
+      label: "Session in View Query Detected",
+      description: descriptionProvider.SessionInViewDescription
     },
     [InsightType.EndpointChattyApi]: {
       icon: SQLDatabaseIcon,
-      label: "Excessive API Calls Detected"
+      label: "Excessive API Calls Detected",
+      description: descriptionProvider.ChattyApiDescription
     },
     [InsightType.EndpointHighNumberOfQueries]: {
       icon: SQLDatabaseIcon,
-      label: "High number of queries"
+      label: "High number of queries",
+      description: descriptionProvider.HighNumberOfQueriesDescription
     },
     [InsightType.SpanNexus]: {
       icon: BottleneckIcon, // todo changes
-      label: "Code Nexus Point"
+      label: "Code Nexus Point",
+      description: descriptionProvider.CodeNexusDescription
     },
     [InsightType.SpanQueryOptimization]: {
       icon: SQLDatabaseIcon,
