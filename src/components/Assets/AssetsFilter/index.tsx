@@ -1,7 +1,9 @@
 import { ComponentType, useEffect, useRef, useState } from "react";
 import { dispatcher } from "../../../dispatcher";
+import { usePersistence } from "../../../hooks/usePersistence";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { isNumber } from "../../../typeGuards/isNumber";
+import { isUndefined } from "../../../typeGuards/isUndefined";
 import { InsightType } from "../../../types";
 import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
@@ -18,6 +20,7 @@ import { FilterButton } from "./FilterButton";
 import * as s from "./styles";
 import {
   AssetFilterCategory,
+  AssetFilterQuery,
   AssetsFilterProps,
   AssetsFiltersData
 } from "./types";
@@ -61,6 +64,9 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
   const previousData = usePrevious(data);
   const [isOpen, setIsOpen] = useState(false);
   const previousIsOpen = usePrevious(isOpen);
+  const [persistedFilters, setPersistedFilters] =
+    usePersistence<AssetFilterQuery>("assetsFilters", "project");
+  const previousPersistedFilters = usePrevious(persistedFilters);
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [selectedEndpoints, setSelectedEndpoints] = useState<string[]>([]);
   const [selectedConsumers, setSelectedConsumers] = useState<string[]>([]);
@@ -86,12 +92,31 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
   };
 
   useEffect(() => {
-    getData(
-      selectedServices,
-      [...selectedEndpoints, ...selectedConsumers, ...selectedInternals],
-      selectedInsights
-    );
+    if (
+      isUndefined(previousPersistedFilters) &&
+      previousPersistedFilters !== persistedFilters
+    ) {
+      getData(
+        persistedFilters?.services || selectedServices,
+        persistedFilters?.operations || [
+          ...selectedEndpoints,
+          ...selectedConsumers,
+          ...selectedInternals
+        ],
+        (persistedFilters?.insights as InsightType[]) || selectedInsights
+      );
+    }
+  }, [
+    previousPersistedFilters,
+    persistedFilters,
+    selectedServices,
+    selectedEndpoints,
+    selectedConsumers,
+    selectedInternals,
+    selectedInsights
+  ]);
 
+  useEffect(() => {
     const handleData = (data: unknown) => {
       const filtersData = data as AssetsFiltersData | null;
       setData(filtersData);
@@ -155,7 +180,7 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
       setSelectedInsights(selectedInsights);
 
       if (!props.filters) {
-        props.onApply({
+        const filtersQuery = {
           services: selectedServices,
           operations: [
             ...selectedEndpoints,
@@ -163,7 +188,9 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
             ...selectedInternals
           ],
           insights: selectedInsights
-        });
+        };
+        setPersistedFilters(filtersQuery);
+        props.onApply(filtersQuery);
       }
 
       window.clearTimeout(refreshTimerId.current);
@@ -184,12 +211,13 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
     selectedEndpoints,
     selectedConsumers,
     selectedInternals,
-    selectedInsights
+    selectedInsights,
+    setPersistedFilters
   ]);
 
   useEffect(() => {
     if (previousIsOpen && !isOpen) {
-      props.onApply({
+      const filtersQuery = {
         services: selectedServices,
         operations: [
           ...selectedEndpoints,
@@ -197,7 +225,9 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
           ...selectedInternals
         ],
         insights: selectedInsights
-      });
+      };
+      props.onApply(filtersQuery);
+      setPersistedFilters(filtersQuery);
       sendTrackingEvent(trackingEvents.FILTER_APPLIED);
     }
   }, [
@@ -208,7 +238,8 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
     selectedEndpoints,
     selectedInsights,
     selectedInternals,
-    selectedServices
+    selectedServices,
+    setPersistedFilters
   ]);
 
   const handleClearFiltersButtonClick = () => {
