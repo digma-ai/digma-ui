@@ -8,6 +8,7 @@ const List = styled.ol`
 `;
 
 const Content = styled.div`
+  display: inline-block;
   word-break: keep-all;
 `;
 
