@@ -1,5 +1,15 @@
-import { ChangeEvent, useContext, useLayoutEffect, useState } from "react";
-import { getFeatureFlagValue } from "../../featureFlags";
+import {
+  ChangeEvent,
+  useContext,
+  useLayoutEffect,
+  useMemo,
+  useState
+} from "react";
+import { lt, valid } from "semver";
+import {
+  featureFlagMinBackendVersions,
+  getFeatureFlagValue
+} from "../../featureFlags";
 import { useDebounce } from "../../hooks/useDebounce";
 import { FeatureFlag } from "../../types";
 import { ConfigContext } from "../common/App/ConfigContext";
@@ -34,6 +44,21 @@ export const Assets = () => {
     FeatureFlag.IS_ASSETS_COMPLEX_FILTER_ENABLED
   );
 
+  const isBackendUpgradeMessageVisible = useMemo(() => {
+    const backendVersion = config.backendInfo?.applicationVersion;
+
+    return Boolean(
+      backendVersion &&
+        valid(backendVersion) &&
+        lt(
+          backendVersion,
+          featureFlagMinBackendVersions[
+            FeatureFlag.IS_ASSETS_COMPLEX_FILTER_ENABLED
+          ]
+        )
+    );
+  }, [config]);
+
   useLayoutEffect(() => {
     window.sendMessageToDigma({
       action: actions.INITIALIZE
@@ -61,7 +86,7 @@ export const Assets = () => {
   };
 
   const renderContent = () => {
-    if (!isComplexFilterEnabled) {
+    if (isBackendUpgradeMessageVisible) {
       return (
         <EmptyState
           content={

@@ -2,7 +2,7 @@ import { gte, valid } from "semver";
 import { ConfigContextData } from "./components/common/App/types";
 import { FeatureFlag } from "./types";
 
-const featureFlagMinBackendVersions: Record<FeatureFlag, string> = {
+export const featureFlagMinBackendVersions: Record<FeatureFlag, string> = {
   [FeatureFlag.IS_DASHBOARD_CLIENT_SPANS_OVERALL_IMPACT_ENABLED]:
     "v0.2.172-alpha.8",
   [FeatureFlag.IS_ASSETS_SERVICE_FILTER_VISIBLE]: "v0.2.174",
