@@ -29,16 +29,10 @@ export const Assets = () => {
     FeatureFlag.IS_ASSETS_SERVICE_FILTER_VISIBLE
   );
 
-  const isComplexFilterVisible = getFeatureFlagValue(
+  const isComplexFilterEnabled = getFeatureFlagValue(
     config,
     FeatureFlag.IS_ASSETS_COMPLEX_FILTER_ENABLED
   );
-
-  // const isBackendUpgradeMessageHidden = getFeatureFlagValue(
-  //   config,
-  //   FeatureFlag.IS_BACKEND_UPDATE_MESSAGE_HIDDEN
-  // );
-  const isBackendUpgradeMessageHidden = true; // TODO: remove this line
 
   useLayoutEffect(() => {
     window.sendMessageToDigma({
@@ -67,7 +61,7 @@ export const Assets = () => {
   };
 
   const renderContent = () => {
-    if (!isBackendUpgradeMessageHidden) {
+    if (!isComplexFilterEnabled) {
       return (
         <EmptyState
           content={
@@ -124,12 +118,13 @@ export const Assets = () => {
             />
           </s.SearchInputContainer>
         )}
-        {isComplexFilterVisible ? (
+        {isComplexFilterEnabled ? (
           <AssetsFilter
             onApply={handleApplyFilters}
             filters={selectedFilters}
           />
         ) : (
+          // TODO: Remove this clause when the feature flag is removed
           isServiceFilterVisible && (
             <ServicesFilter
               onChange={handleServicesChange}

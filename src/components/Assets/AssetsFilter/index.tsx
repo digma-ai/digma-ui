@@ -4,6 +4,7 @@ import { usePrevious } from "../../../hooks/usePrevious";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { InsightType } from "../../../types";
 import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
+import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { NewButton } from "../../common/NewButton";
 import { NewPopover } from "../../common/NewPopover";
 import { Select } from "../../common/Select";
@@ -12,6 +13,7 @@ import { EndpointIcon } from "../../common/icons/EndpointIcon";
 import { SparkleIcon } from "../../common/icons/SparkleIcon";
 import { IconProps } from "../../common/icons/types";
 import { actions } from "../actions";
+import { trackingEvents } from "../tracking";
 import { FilterButton } from "./FilterButton";
 import * as s from "./styles";
 import {
@@ -196,6 +198,7 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
         ],
         insights: selectedInsights
       });
+      sendTrackingEvent(trackingEvents.FILTER_APPLIED);
     }
   }, [
     previousIsOpen,

@@ -5,6 +5,7 @@ import { EndpointIcon } from "../common/icons/EndpointIcon";
 import { HTTPClientIcon } from "../common/icons/HTTPClientIcon";
 import { UserIcon } from "../common/icons/UserIcon";
 import { IconProps } from "../common/icons/types";
+import { AssetFilterQuery } from "./AssetsFilter/types";
 
 export const getAssetTypeInfo = (
   assetTypeId: string
@@ -48,3 +49,15 @@ export const getAssetTypeInfo = (
 
   return assetTypeInfoMap[assetTypeId];
 };
+
+export const checkIfAnyFiltersApplied = (
+  isComplexFilterEnabled: boolean,
+  filters: AssetFilterQuery | undefined,
+  services: string[] | undefined,
+  searchQuery: string
+) =>
+  (isComplexFilterEnabled
+    ? filters &&
+      [...filters.insights, ...filters.operations, ...filters.services].length >
+        0
+    : services && services.length > 0) || searchQuery.length > 0;

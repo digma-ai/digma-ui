@@ -19,7 +19,7 @@ import { SortIcon } from "../../common/icons/SortIcon";
 import { Direction } from "../../common/icons/types";
 import { AssetFilterQuery } from "../AssetsFilter/types";
 import { actions } from "../actions";
-import { getAssetTypeInfo } from "../utils";
+import { checkIfAnyFiltersApplied, getAssetTypeInfo } from "../utils";
 import { AssetEntry as AssetEntryComponent } from "./AssetEntry";
 import * as s from "./styles";
 import {
@@ -209,6 +209,13 @@ export const AssetList = (props: AssetListProps) => {
         )
       ),
     [config]
+  );
+
+  const areAnyFiltersApplied = checkIfAnyFiltersApplied(
+    isComplexFilterEnabled,
+    props.filters,
+    props.services,
+    props.searchQuery
   );
 
   const sortingCriteria = isOverallImpactHidden
@@ -412,8 +419,17 @@ export const AssetList = (props: AssetListProps) => {
       </>
     ) : (
       <s.NoDataText>
-        Not seeing your data here? Maybe you&apos;re missing some
-        instrumentation!
+        {areAnyFiltersApplied ? (
+          <>
+            It seems there are no assets matching your selected filters at the
+            moment
+          </>
+        ) : (
+          <>
+            Not seeing your data here? Maybe you&apos;re missing some
+            instrumentation!
+          </>
+        )}
       </s.NoDataText>
     );
   };
