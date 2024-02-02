@@ -123,11 +123,13 @@ export const JiraTicket = (props: JiraTicketProps) => {
             onClick={() => copyToClipboard("summary", props.summary)}
           />
         }
+        selectable={false}
       />
       <Field
         key={"description"}
         label={"Description"}
         multiline={true}
+        selectable={false}
         content={
           <div ref={descriptionContentRef}>
             {props.description.isLoading ? (

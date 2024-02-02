@@ -1,11 +1,12 @@
 import styled from "styled-components";
 import { redScale } from "../../../common/App/getTheme";
-import { ButtonContainerProps, ContentProps } from "./types";
+import { ButtonContainerProps, ContainerProps, ContentProps } from "./types";
 
-export const Container = styled.div`
+export const Container = styled.div<ContainerProps>`
   display: flex;
   flex-direction: column;
   gap: 6px;
+  ${({ $selectable }) => (!$selectable ? "user-select: none;" : "")}
 `;
 
 export const Label = styled.label`

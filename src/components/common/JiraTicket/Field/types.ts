@@ -14,6 +14,7 @@ export interface FieldProps {
   button: ReactNode;
   multiline?: boolean;
   errorMessage?: string;
+  selectable?: boolean;
 }
 
 export interface ButtonContainerProps {
@@ -23,4 +24,8 @@ export interface ButtonContainerProps {
 
 export interface ContentProps {
   $multiline?: boolean;
+}
+
+export interface ContainerProps {
+  $selectable?: boolean;
 }
