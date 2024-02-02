@@ -2,7 +2,7 @@ import { ReactElement } from "react";
 import { InsightType } from "../../../../types";
 import { getCriticalityLabel } from "../../../../utils/getCriticalityLabel";
 import { intersperse } from "../../../../utils/intersperse";
-import { JiraTicket } from "../../JiraTicket";
+import { InsightJiraTicket } from "../../InsightJiraTicket";
 import {
   EndpointSlowestSpansInsight,
   SpanEndpointBottleneckInsight
@@ -72,7 +72,7 @@ export const SpanBottleneckInsightTicket = (
   );
 
   return (
-    <JiraTicket
+    <InsightJiraTicket
       summary={summary}
       description={{
         content: renderDescription(),

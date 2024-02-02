@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { redScale } from "../../../common/App/getTheme";
-import { TextField } from "../../../common/TextField";
+import { redScale } from "../../App/getTheme";
+import { TextField } from "../../TextField";
 
 export const Label = styled.label`
   color: ${({ theme }) => theme.colors.jiraTicket.text.secondary};

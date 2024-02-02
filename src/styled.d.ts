@@ -1,11 +1,11 @@
 import "styled-components";
-import { AttachmentTagThemeColors } from "./components/Insights/JiraTicket/AttachmentTag/types";
-import { FieldThemeColors } from "./components/Insights/JiraTicket/Field/types";
-import { JiraTicketThemeColors } from "./components/Insights/JiraTicket/types";
 import { TabThemeColors } from "./components/RecentActivity/EnvironmentPanel/EnvironmentTab/types";
 import { ToggleThemeColors } from "./components/RecentActivity/Toggle/types";
 import { RecentActivityThemeColors } from "./components/RecentActivity/types";
 import { IconTagThemeColors } from "./components/common/IconTag/types";
+import { AttachmentTagThemeColors } from "./components/common/JiraTicket/AttachmentTag/types";
+import { FieldThemeColors } from "./components/common/JiraTicket/Field/types";
+import { JiraTicketThemeColors } from "./components/common/JiraTicket/types";
 import { ButtonThemeColors } from "./components/common/NewButton/types";
 import { SelectThemeColors } from "./components/common/Select/types";
 import { TagThemeColors } from "./components/common/Tag/types";
