@@ -14,12 +14,12 @@ import { useDebounce } from "../../hooks/useDebounce";
 import { FeatureFlag } from "../../types";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { EmptyState } from "../common/EmptyState";
-import { NewCircleLoader } from "../common/NewCircleLoader";
 import { MagnifierIcon } from "../common/icons/MagnifierIcon";
 import { AssetList } from "./AssetList";
 import { AssetTypeList } from "./AssetTypeList";
 import { AssetsFilter } from "./AssetsFilter";
 import { AssetFilterQuery } from "./AssetsFilter/types";
+import { NoDataMessage } from "./NoDataMessage";
 import { ServicesFilter } from "./ServicesFilter";
 import { actions } from "./actions";
 import * as s from "./styles";
@@ -103,7 +103,7 @@ export const Assets = () => {
     }
 
     if (!selectedFilters && !selectedServices) {
-      return <EmptyState content={<NewCircleLoader size={32} />} />;
+      return <NoDataMessage type={"noDataYet"} />;
     }
 
     if (!selectedAssetTypeId) {
