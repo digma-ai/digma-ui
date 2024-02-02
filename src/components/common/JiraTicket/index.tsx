@@ -100,77 +100,82 @@ export const JiraTicket = (props: JiraTicketProps) => {
 
   return (
     <s.Container>
-      <s.Header>
-        <IconTag icon={JiraLogoIcon} size={"large"} />
-        <s.TitleContainer>
-          <s.Title>Create Jira Ticket</s.Title>
-          Bug details
-        </s.TitleContainer>
-        <Tooltip title={"Close"}>
-          <s.CloseButton onClick={handleCloseButtonClick}>
-            <CrossIcon color={"currentColor"} />
-          </s.CloseButton>
-        </Tooltip>
-      </s.Header>
-      <Field
-        key={"summary"}
-        label={"Summary"}
-        content={props.summary}
-        button={
-          <IconButton
-            icon={CopyIcon}
-            title={"Copy"}
-            onClick={() => copyToClipboard("summary", props.summary)}
-          />
-        }
-      />
-      <Field
-        key={"description"}
-        label={"Description"}
-        multiline={true}
-        content={
-          <div ref={descriptionContentRef}>
-            {props.description.isLoading ? (
-              <s.LoaderContainer>
-                <CircleLoader size={32} colors={getCircleLoaderColors(theme)} />
-              </s.LoaderContainer>
-            ) : (
-              props.description.content
-            )}
-          </div>
-        }
-        errorMessage={props.description.errorMessage}
-        button={
-          <IconButton
-            icon={CopyIcon}
-            title={"Copy"}
-            disabled={props.description.isLoading}
-            onClick={() =>
-              copyToClipboard("description", descriptionContentRef.current)
-            }
-          />
-        }
-      />
-      {props.attachment && (
+      <s.TicketInfo>
+        <s.Header>
+          <IconTag icon={JiraLogoIcon} size={"large"} />
+          <s.TitleContainer>
+            <s.Title>Create Jira Ticket</s.Title>
+            Bug details
+          </s.TitleContainer>
+          <Tooltip title={"Close"}>
+            <s.CloseButton onClick={handleCloseButtonClick}>
+              <CrossIcon color={"currentColor"} />
+            </s.CloseButton>
+          </Tooltip>
+        </s.Header>
         <Field
-          key={"attachments"}
-          label={"Attachments"}
-          content={
-            <AttachmentTag
-              icon={PaperclipIcon}
-              text={props.attachment.fileName}
-            />
-          }
+          key={"summary"}
+          label={"Summary"}
+          content={props.summary}
           button={
             <IconButton
-              icon={DownloadIcon}
-              title={"Download"}
-              onClick={handleDownloadButtonClick}
+              icon={CopyIcon}
+              title={"Copy"}
+              onClick={() => copyToClipboard("summary", props.summary)}
             />
           }
-          errorMessage={downloadErrorMessage}
         />
-      )}
+        <Field
+          key={"description"}
+          label={"Description"}
+          multiline={true}
+          content={
+            <div ref={descriptionContentRef}>
+              {props.description.isLoading ? (
+                <s.LoaderContainer>
+                  <CircleLoader
+                    size={32}
+                    colors={getCircleLoaderColors(theme)}
+                  />
+                </s.LoaderContainer>
+              ) : (
+                props.description.content
+              )}
+            </div>
+          }
+          errorMessage={props.description.errorMessage}
+          button={
+            <IconButton
+              icon={CopyIcon}
+              title={"Copy"}
+              disabled={props.description.isLoading}
+              onClick={() =>
+                copyToClipboard("description", descriptionContentRef.current)
+              }
+            />
+          }
+        />
+        {props.attachment && (
+          <Field
+            key={"attachments"}
+            label={"Attachments"}
+            content={
+              <AttachmentTag
+                icon={PaperclipIcon}
+                text={props.attachment.fileName}
+              />
+            }
+            button={
+              <IconButton
+                icon={DownloadIcon}
+                title={"Download"}
+                onClick={handleDownloadButtonClick}
+              />
+            }
+            errorMessage={downloadErrorMessage}
+          />
+        )}
+      </s.TicketInfo>
       {props.showLinkButton && (
         <TicketLinkButton
           ticketLink={props.ticketLink}
