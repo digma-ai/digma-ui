@@ -4,7 +4,7 @@ import { getCriticalityLabel } from "../../../../utils/getCriticalityLabel";
 import { getDurationString } from "../../../../utils/getDurationString";
 import { intersperse } from "../../../../utils/intersperse";
 import { ConfigContext } from "../../../common/App/ConfigContext";
-import { JiraTicket } from "../../JiraTicket";
+import { InsightJiraTicket } from "../../JiraTicket";
 import { actions } from "../../actions";
 import { QueryOptimizationInsight } from "../../types";
 import { CommitInfos } from "../common/CommitInfos";
@@ -109,7 +109,7 @@ export const QueryOptimizationInsightTicket = (
   }, []);
 
   return (
-    <JiraTicket
+    <InsightJiraTicket
       summary={summary}
       description={{
         content: renderDescription(),

@@ -3,7 +3,7 @@ import { InsightType } from "../../../../types";
 import { getCriticalityLabel } from "../../../../utils/getCriticalityLabel";
 import { intersperse } from "../../../../utils/intersperse";
 import { ConfigContext } from "../../../common/App/ConfigContext";
-import { JiraTicket } from "../../JiraTicket";
+import { InsightJiraTicket } from "../../JiraTicket";
 import {
   EndpointSuspectedNPlusOneInsight,
   SpanNPlusOneInsight
@@ -89,7 +89,7 @@ export const EndpointNPlusOneInsightTicket = (
     : undefined;
 
   return (
-    <JiraTicket
+    <InsightJiraTicket
       summary={summary}
       description={{
         content: renderDescription(),

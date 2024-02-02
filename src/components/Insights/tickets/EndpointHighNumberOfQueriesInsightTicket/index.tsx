@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import { intersperse } from "../../../../utils/intersperse";
-import { JiraTicket } from "../../JiraTicket";
+import { InsightJiraTicket } from "../../JiraTicket";
 import { EndpointHighNumberOfQueriesInsight } from "../../types";
 import { useCommitInfos } from "../common";
 import { CommitInfos } from "../common/CommitInfos";
@@ -62,7 +62,7 @@ export const EndpointHighNumberOfQueriesInsightTicket = (
     .join(" - ");
 
   return (
-    <JiraTicket
+    <InsightJiraTicket
       summary={summary}
       description={{
         content: renderDescription(),
