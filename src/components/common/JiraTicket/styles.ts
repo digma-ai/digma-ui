@@ -12,6 +12,7 @@ export const Container = styled.div`
   font-size: 14px;
   width: 100%;
   box-sizing: border-box;
+  user-select: none;
 `;
 
 export const Header = styled.div`
