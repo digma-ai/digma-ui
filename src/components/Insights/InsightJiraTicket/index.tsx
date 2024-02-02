@@ -50,26 +50,35 @@ export const InsightJiraTicket = (props: InsightJiraTicketProps) => {
     });
   };
 
-  const handleInsightTicketLink = (data: unknown) => {
-    const linkTicketResponse = data as LinkTicketResponse;
+  useEffect(() => {
+    const handleInsightTicketLink = (data: unknown) => {
+      const linkTicketResponse = data as LinkTicketResponse;
 
-    if (linkTicketResponse.success) {
-      setTicketLink(linkTicketResponse.ticketLink);
-    } else {
-      setErrorMessage(linkTicketResponse.message);
-    }
+      if (linkTicketResponse.success) {
+        setTicketLink(linkTicketResponse.ticketLink);
+      } else {
+        setErrorMessage(linkTicketResponse.message);
+      }
 
-    window.sendMessageToDigma({
-      action: actions.GET_DATA
-    });
+      window.sendMessageToDigma({
+        action: actions.GET_DATA
+      });
 
-    props.onReloadSpanInsight && props.onReloadSpanInsight();
-  };
+      props.onReloadSpanInsight && props.onReloadSpanInsight();
+    };
 
-  dispatcher.addActionListener(
-    actions.SET_TICKET_LINK,
-    handleInsightTicketLink
-  );
+    dispatcher.addActionListener(
+      actions.SET_TICKET_LINK,
+      handleInsightTicketLink
+    );
+
+    return () => {
+      dispatcher.removeActionListener(
+        actions.SET_TICKET_LINK,
+        handleInsightTicketLink
+      );
+    };
+  }, []);
 
   useEffect(() => {
     if (props.relatedInsight) {
