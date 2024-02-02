@@ -23,4 +23,12 @@ export interface JiraTicketProps {
     prefix?: string;
     additionalInfo?: Record<string, unknown>;
   };
+  showLinkButton?: boolean;
+  ticketLink?: {
+    link?: string | null;
+    errorMessage?: string | null;
+  };
+  onTicketLinkChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  unlinkTicket?: () => void;
+  linkTicket?: (link: string) => void;
 }

@@ -1,6 +1,8 @@
-import { useContext } from "react";
+import { ReactElement, useContext } from "react";
 import { isString } from "../../../typeGuards/isString";
 import { getDurationString } from "../../../utils/getDurationString";
+import { intersperse } from "../../../utils/intersperse";
+import { DigmaSignature } from "../../Insights/tickets/common/DigmaSignature";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { JiraTicket } from "../../common/JiraTicket";
 import { TestTicketProps } from "./types";
@@ -22,18 +24,32 @@ export const TestTicket = (props: TestTicketProps) => {
     .map((x) => x.displayName)
     .join("\n");
 
-  const description = [
-    `"${name}" test failed${
-      isString(errorOrFailMessage)
-        ? ` with message:\n${errorOrFailMessage}`
-        : ""
-    }`,
-    `Last run at: ${new Date(runAt).toString()}`,
-    `Duration: ${getDurationString(duration)}`,
-    relatedSpans.length > 0 ? `Related spans:\n${relatedSpans}` : ""
-  ]
-    .filter(Boolean)
-    .join("\n\n");
+  const renderDescription = () => (
+    <>
+      {intersperse<ReactElement, ReactElement>(
+        [
+          <div key={"title"}>
+            {`"${name}" test failed${
+              isString(errorOrFailMessage)
+                ? ` with message:\n${errorOrFailMessage}`
+                : ""
+            }`}
+          </div>,
+          <div key={"date"}>Last run at: ${new Date(runAt).toString()}</div>,
+          <div key={"duration"}>Duration: ${getDurationString(duration)}</div>,
+          <>
+            {relatedSpans.length > 0 && (
+              <div key="spans">{`Related spans:\n${relatedSpans}`}</div>
+            )}
+          </>,
+          <DigmaSignature key={"digmaSignature"} />
+        ],
+        (i: number) => (
+          <br key={`separator-${i}`} />
+        )
+      )}
+    </>
+  );
 
   const attachment = traceId
     ? {
@@ -46,7 +62,7 @@ export const TestTicket = (props: TestTicketProps) => {
     <JiraTicket
       summary={summary}
       description={{
-        content: description
+        content: renderDescription()
       }}
       attachment={attachment}
       onClose={props.onClose}
