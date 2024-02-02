@@ -6,9 +6,9 @@ import { isValidHttpUrl } from "../../../utils/isValidUrl";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { JiraTicket } from "../../common/JiraTicket";
 import { actions } from "../actions";
-import { JiraTicketProps, LinkTicketResponse } from "./types";
+import { InsightJiraTicketProps, LinkTicketResponse } from "./types";
 
-export const InsightJiraTicket = (props: JiraTicketProps) => {
+export const InsightJiraTicket = (props: InsightJiraTicketProps) => {
   const [errorMessage, setErrorMessage] = useState<string | null>();
   const [ticketLink, setTicketLink] = useState<string | null>(
     props.relatedInsight?.ticketLink ?? props.insight.ticketLink

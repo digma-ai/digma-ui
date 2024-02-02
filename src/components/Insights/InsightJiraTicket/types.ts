@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { GenericCodeObjectInsight } from "../types";
 
-export interface JiraTicketProps {
+export interface InsightJiraTicketProps {
   summary: string;
   description: {
     content: ReactNode;
