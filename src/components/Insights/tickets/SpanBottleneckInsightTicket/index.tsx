@@ -2,7 +2,7 @@ import { ReactElement } from "react";
 import { InsightType } from "../../../../types";
 import { getCriticalityLabel } from "../../../../utils/getCriticalityLabel";
 import { intersperse } from "../../../../utils/intersperse";
-import { InsightJiraTicket } from "../../JiraTicket";
+import { InsightJiraTicket } from "../../InsightJiraTicket";
 import {
   EndpointSlowestSpansInsight,
   SpanEndpointBottleneckInsight

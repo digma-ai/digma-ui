@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import { intersperse } from "../../../../utils/intersperse";
-import { InsightJiraTicket } from "../../JiraTicket";
+import { InsightJiraTicket } from "../../InsightJiraTicket";
 import { EndpointHighNumberOfQueriesInsight } from "../../types";
 import { useCommitInfos } from "../common";
 import { CommitInfos } from "../common/CommitInfos";

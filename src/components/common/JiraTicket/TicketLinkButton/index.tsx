@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { isValidHttpUrl } from "../../../../utils/isValidUrl";
-import { ActionableTextField } from "../../../Insights/JiraTicket/ActionableTextField";
 import { Button } from "../../Button";
+import { ActionableTextField } from "../ActionableTextField";
 import { TicketLinkButtonProps } from "./types";
 
 export const TicketLinkButton = (props: TicketLinkButtonProps) => {

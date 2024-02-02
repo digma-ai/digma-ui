@@ -2,7 +2,7 @@ import { ReactElement, useContext } from "react";
 import { getCriticalityLabel } from "../../../../utils/getCriticalityLabel";
 import { intersperse } from "../../../../utils/intersperse";
 import { ConfigContext } from "../../../common/App/ConfigContext";
-import { InsightJiraTicket } from "../../JiraTicket";
+import { InsightJiraTicket } from "../../InsightJiraTicket";
 import { SpanNPlusOneInsight } from "../../types";
 import { useSpanDataSource } from "../common";
 import { CodeLocations } from "../common/CodeLocations";

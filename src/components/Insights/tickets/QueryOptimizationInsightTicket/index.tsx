@@ -4,7 +4,7 @@ import { getCriticalityLabel } from "../../../../utils/getCriticalityLabel";
 import { getDurationString } from "../../../../utils/getDurationString";
 import { intersperse } from "../../../../utils/intersperse";
 import { ConfigContext } from "../../../common/App/ConfigContext";
-import { InsightJiraTicket } from "../../JiraTicket";
+import { InsightJiraTicket } from "../../InsightJiraTicket";
 import { actions } from "../../actions";
 import { QueryOptimizationInsight } from "../../types";
 import { CommitInfos } from "../common/CommitInfos";
