@@ -7,6 +7,8 @@ export interface PopoverProps {
   placement?: Placement;
   arrow?: boolean;
   isOpen: boolean;
-  onOpenChange: (isOpen: boolean) => void;
+  onOpenChange?: (isOpen: boolean) => void;
   boundary?: HTMLElement;
+  width?: number | string;
+  sameWidth?: boolean;
 }

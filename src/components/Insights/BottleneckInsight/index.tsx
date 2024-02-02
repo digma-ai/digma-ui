@@ -69,11 +69,10 @@ export const BottleneckInsight = (props: BottleneckInsightProps) => {
             <Criticality value={props.insight.criticality} />
             <s.Box>
               <JiraButton
-                key={"view-ticket-info"}
                 onTicketInfoButtonClick={handleCreateJiraTicketButtonClick}
                 spanCodeObjectId={props.insight.spanInfo?.spanCodeObjectId}
                 ticketLink={props.insight.ticketLink}
-                buttonType="large"
+                buttonType={"large"}
               />
             </s.Box>
           </s.Container>

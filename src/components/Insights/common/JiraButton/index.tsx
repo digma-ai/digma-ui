@@ -25,7 +25,7 @@ export const JiraButton = (props: JiraButtonProps) => {
   return (
     <>
       {!props.ticketLink && (
-        <Tooltip title="Ticket Info">
+        <Tooltip title={"Ticket Info"}>
           <Button
             icon={{ component: JiraLogoIcon }}
             onClick={() =>
@@ -59,7 +59,7 @@ export const JiraButton = (props: JiraButtonProps) => {
                 }
               ]}
               onSelect={handleJiraButtonClick}
-            ></Menu>
+            />
           }
           isOpen={isJiraPopoverOpen}
           onOpenChange={handleJiraButtonClick}

@@ -134,7 +134,6 @@ export const ValueContainer = styled.div`
         return "#c6c6c6";
     }
   }};
-  width: fit-content;
 `;
 
 export const Suffix = styled.span`
@@ -163,4 +162,10 @@ export const ImpactScoreIndicator = styled.div<ImpactScoreIndicatorProps>`
   width: 10px;
   height: 10px;
   background: hsl(14deg 66% ${({ $score }) => 100 - 50 * $score}%);
+`;
+
+export const ScopeName = styled.span`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;

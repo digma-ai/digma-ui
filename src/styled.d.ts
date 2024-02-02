@@ -7,6 +7,7 @@ import { AttachmentTagThemeColors } from "./components/common/JiraTicket/Attachm
 import { FieldThemeColors } from "./components/common/JiraTicket/Field/types";
 import { JiraTicketThemeColors } from "./components/common/JiraTicket/types";
 import { ButtonThemeColors } from "./components/common/NewButton/types";
+import { SelectThemeColors } from "./components/common/Select/types";
 import { TagThemeColors } from "./components/common/Tag/types";
 import { TooltipThemeColors } from "./components/common/Tooltip/types";
 import { Mode } from "./globals";
@@ -35,6 +36,7 @@ export interface ThemeColors {
   attachmentTag: AttachmentTagThemeColors;
   jiraTicket: JiraTicketThemeColors;
   field: FieldThemeColors;
+  select: SelectThemeColors;
   panel: {
     background: string;
   };
@@ -43,12 +45,15 @@ export interface ThemeColors {
     link: string;
     subtext: string;
     success: string;
+    disabledAlt: string;
   };
   surface: {
+    primary: string;
     primaryLight: string;
     highlight: string;
     card: string;
     brand: string;
+    brandDark: string;
     secondary: string;
   };
   stroke: {

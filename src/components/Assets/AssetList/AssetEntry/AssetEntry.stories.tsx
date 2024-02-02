@@ -55,7 +55,7 @@ export const Default: Story = {
         }
       ],
       latestSpanTimestamp: "2023-02-20T14:36:03.480951Z",
-      instrumentationLibrary: "Global"
+      instrumentationLibrary: "Very long long long long long long name"
     }
   }
 };

@@ -127,7 +127,7 @@ export const getInsightTypeInfo = (
       description: descriptionProvider.HighNumberOfQueriesDescription
     },
     [InsightType.SpanNexus]: {
-      icon: BottleneckIcon, // todo changes
+      icon: BottleneckIcon,
       label: "Code Nexus Point",
       description: descriptionProvider.CodeNexusDescription
     },

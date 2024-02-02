@@ -1,10 +1,13 @@
 import { Duration } from "../../../globals";
+import { AssetFilterQuery } from "../AssetsFilter/types";
 
 export interface AssetListProps {
   data?: AssetsData;
   onBackButtonClick: () => void;
   assetTypeId: string;
-  services: string[];
+  services?: string[];
+  filters?: AssetFilterQuery;
+  searchQuery: string;
 }
 
 export enum SORTING_CRITERION {

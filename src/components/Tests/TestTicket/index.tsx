@@ -39,7 +39,7 @@ export const TestTicket = (props: TestTicketProps) => {
           <div key={"duration"}>Duration: ${getDurationString(duration)}</div>,
           <>
             {relatedSpans.length > 0 && (
-              <div key="spans">{`Related spans:\n${relatedSpans}`}</div>
+              <div key={"spans"}>{`Related spans:\n${relatedSpans}`}</div>
             )}
           </>,
           <DigmaSignature key={"digmaSignature"} />

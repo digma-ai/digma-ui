@@ -2,12 +2,13 @@ import { gte, valid } from "semver";
 import { ConfigContextData } from "./components/common/App/types";
 import { FeatureFlag } from "./types";
 
-const featureFlagMinBackendVersions: Record<FeatureFlag, string> = {
+export const featureFlagMinBackendVersions: Record<FeatureFlag, string> = {
   [FeatureFlag.IS_DASHBOARD_CLIENT_SPANS_OVERALL_IMPACT_ENABLED]:
     "v0.2.172-alpha.8",
   [FeatureFlag.IS_ASSETS_SERVICE_FILTER_VISIBLE]: "v0.2.174",
   [FeatureFlag.IS_ASSETS_OVERALL_IMPACT_HIDDEN]: "v0.2.181-alpha.1",
-  [FeatureFlag.IS_INSIGHT_TICKET_LINKAGE_ENABLED]: "v0.2.200"
+  [FeatureFlag.IS_INSIGHT_TICKET_LINKAGE_ENABLED]: "v0.2.200",
+  [FeatureFlag.IS_ASSETS_COMPLEX_FILTER_ENABLED]: "v0.2.215"
 };
 
 export const getFeatureFlagValue = (

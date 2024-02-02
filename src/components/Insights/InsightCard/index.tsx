@@ -139,7 +139,7 @@ export const InsightCard = (props: InsightCardProps) => {
             {insightTypeInfo?.description && (
               <Tooltip title={<insightTypeInfo.description />}>
                 <s.InfoContainer>
-                  <InfoCircleIcon color="currentColor" size={16} />
+                  <InfoCircleIcon color={"currentColor"} size={16} />
                 </s.InfoContainer>
               </Tooltip>
             )}

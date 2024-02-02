@@ -46,7 +46,7 @@ export const TicketLinkButton = (props: TicketLinkButtonProps) => {
 
   return (
     <ActionableTextField
-      key="ticket-link"
+      key={"ticket-link"}
       value={link}
       placeholder={
         "Paste your ticket URL here to link it with this Digma insight"
