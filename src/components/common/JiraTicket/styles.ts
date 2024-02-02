@@ -14,10 +14,6 @@ export const Container = styled.div`
   box-sizing: border-box;
 `;
 
-export const TicketInfo = styled.div`
-  user-select: none;
-`;
-
 export const Header = styled.div`
   display: flex;
   gap: 12px;
