@@ -4,7 +4,7 @@ import { mockedTest } from "../TestCard/mockData";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof TestTicket> = {
-  title: "Insights/tickets/TestTicket",
+  title: "Tests/TestTicket",
   component: TestTicket,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
