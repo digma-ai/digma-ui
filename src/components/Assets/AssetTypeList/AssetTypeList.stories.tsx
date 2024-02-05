@@ -51,3 +51,13 @@ export const Default: Story = {
     }
   }
 };
+
+export const Empty: Story = {
+  args: {
+    searchQuery: "",
+    services: [],
+    data: {
+      assetCategories: []
+    }
+  }
+};
