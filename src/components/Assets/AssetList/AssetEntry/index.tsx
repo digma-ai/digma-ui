@@ -49,13 +49,15 @@ export const AssetEntry = (props: AssetEntryProps) => {
   const lastSeenDateTime = props.entry.latestSpanTimestamp;
 
   // Do not show unimplemented insights
-  const filteredInsights = props.entry.insights.filter(
-    (x) =>
-      ![
-        InsightType.SpanScalingWell,
-        InsightType.SpanScalingInsufficientData
-      ].includes(x.type as InsightType)
-  );
+  const filteredInsights = props.entry.insights
+    .filter(
+      (x) =>
+        ![
+          InsightType.SpanScalingWell,
+          InsightType.SpanScalingInsufficientData
+        ].includes(x.type as InsightType)
+    )
+    .filter((x) => x.importance < 6); // show icon that has importance grater that Info
 
   const sortedInsights = [...filteredInsights].sort(
     (a, b) =>
