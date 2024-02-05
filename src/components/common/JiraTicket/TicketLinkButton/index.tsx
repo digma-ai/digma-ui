@@ -53,7 +53,7 @@ export const TicketLinkButton = (props: TicketLinkButtonProps) => {
       }
       label={"Ticket URL"}
       onChange={onTicketLinkChange}
-      disabled={!!props.ticketLink?.link}
+      disabled={Boolean(props.ticketLink?.link)}
       errorMessage={errorMessage}
       buttons={
         props.ticketLink?.link ? (
@@ -64,7 +64,7 @@ export const TicketLinkButton = (props: TicketLinkButtonProps) => {
           <Button
             key={"link-ticket"}
             onClick={onLink}
-            disabled={!link || !!errorMessage}
+            disabled={Boolean(!link || errorMessage)}
           >
             Link
           </Button>
