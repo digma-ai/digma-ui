@@ -5,10 +5,10 @@ import { isNumber } from "../../../typeGuards/isNumber";
 import { isString } from "../../../typeGuards/isString";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { NewPopover } from "../../common/NewPopover";
-import { FilterButton } from "../FilterButton";
 import { FilterMenu } from "../FilterMenu";
 import { actions } from "../actions";
 import { ServiceData } from "../types";
+import { FilterButton } from "./FilterButton";
 import { ServicesFilterProps } from "./types";
 
 const REFRESH_INTERVAL = isNumber(window.assetsRefreshInterval)

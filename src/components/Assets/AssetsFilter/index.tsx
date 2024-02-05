@@ -17,9 +17,9 @@ import { WrenchIcon } from "../../common/icons/12px/WrenchIcon";
 import { EndpointIcon } from "../../common/icons/EndpointIcon";
 import { SparkleIcon } from "../../common/icons/SparkleIcon";
 import { IconProps } from "../../common/icons/types";
-import { FilterButton } from "../FilterButton";
 import { actions } from "../actions";
 import { trackingEvents } from "../tracking";
+import { FilterButton } from "./FilterButton";
 import * as s from "./styles";
 import {
   AssetFilterCategory,
