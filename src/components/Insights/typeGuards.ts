@@ -11,6 +11,7 @@ import {
   EndpointInsight,
   EndpointLowUsageInsight,
   EndpointNormalUsageInsight,
+  EndpointQueryOptimizationInsight,
   EndpointSlowestSpansInsight,
   EndpointSuspectedNPlusOneInsight,
   InsightScope,
@@ -87,6 +88,11 @@ export const isEndpointSuspectedNPlusOneInsight = (
   insight: CodeObjectInsight
 ): insight is EndpointSuspectedNPlusOneInsight =>
   insight.type === InsightType.EndpointSpanNPlusOne;
+
+export const isEndpointQueryOptimizationInsight = (
+  insight: CodeObjectInsight
+): insight is EndpointQueryOptimizationInsight =>
+  insight.type === InsightType.EndpointQueryOptimization;
 
 export const isSpanScalingBadlyInsight = (
   insight: CodeObjectInsight

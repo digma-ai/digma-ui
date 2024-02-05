@@ -81,5 +81,16 @@ export const mockedQueryOptimizationInsight: QueryOptimizationInsight = {
   prefixedCodeObjectId:
     "method:org.springframework.samples.petclinic.domain.OwnerValidation$_$ValidateOwner",
   customStartTime: null,
-  actualStartTime: "2023-07-27T08:23:56.500827Z"
+  actualStartTime: "2023-07-27T08:23:56.500827Z",
+  endpoints: [
+    {
+      endpointInfo: {
+        route: "HTTP POST /owners/new",
+        instrumentationLibrary: "OwnerController",
+        spanCodeObjectId:
+          "span:io.opentelemetry.tomcat-10.0$_$HTTP POST /owners/new",
+        serviceName: "spring-petclinic"
+      }
+    }
+  ]
 };

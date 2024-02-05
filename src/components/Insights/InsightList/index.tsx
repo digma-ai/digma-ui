@@ -13,6 +13,7 @@ import { DurationBreakdownInsight } from "../DurationBreakdownInsight";
 import { DurationInsight } from "../DurationInsight";
 import { DurationSlowdownSourceInsight } from "../DurationSlowdownSourceInsight";
 import { EndpointNPlusOneInsight } from "../EndpointNPlusOneInsight";
+import { EndpointQueryOptimizationInsight } from "../EndpointQueryOptimizationInsight";
 import { ErrorsInsight } from "../ErrorsInsight";
 import { ExcessiveAPICallsInsight } from "../ExcessiveAPICallsInsight";
 import { HighNumberOfQueriesInsight } from "../HighNumberOfQueriesInsight";
@@ -43,6 +44,7 @@ import {
   isEndpointInsight,
   isEndpointLowUsageInsight,
   isEndpointNormalUsageInsight,
+  isEndpointQueryOptimizationInsight,
   isEndpointSlowestSpansInsight,
   isEndpointSuspectedNPlusOneInsight,
   isSessionInViewEndpointInsight,
@@ -87,6 +89,7 @@ export const getInsightTypeOrderPriority = (type: string): number => {
     [InsightType.EndpointSpanNPlusOne]: 55,
     [InsightType.EndpointSessionInView]: 56,
     [InsightType.EndpointChattyApi]: 57,
+    [InsightType.EndpointQueryOptimization]: 58,
 
     // Span insights
     [InsightType.SpanDurations]: 60,
@@ -583,6 +586,20 @@ const renderInsightCard = (
   if (isSpanQueryOptimizationInsight(insight)) {
     return (
       <QueryOptimizationInsight
+        key={insight.type}
+        insight={insight}
+        onAssetLinkClick={handleAssetLinkClick}
+        onTraceButtonClick={handleTraceButtonClick}
+        onRecalculate={handleRecalculate}
+        onRefresh={handleRefresh}
+        onJiraTicketCreate={onJiraTicketCreate}
+      />
+    );
+  }
+
+  if (isEndpointQueryOptimizationInsight(insight)) {
+    return (
+      <EndpointQueryOptimizationInsight
         key={insight.type}
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}

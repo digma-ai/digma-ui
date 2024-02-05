@@ -20,6 +20,7 @@ export const getInsightTypeOrderPriority = (type: string): number => {
     [InsightType.EndpointSessionInView]: 56,
     [InsightType.EndpointChattyApi]: 57,
     [InsightType.EndpointHighNumberOfQueries]: 58,
+    [InsightType.EndpointQueryOptimization]: 59,
     [InsightType.SlowestSpans]: 40,
     [InsightType.LowUsage]: 30,
     [InsightType.NormalUsage]: 50,

@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { InsightType } from "../../../types";
 import { getDurationString } from "../../../utils/getDurationString";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
+import { trimEndpointScheme } from "../../../utils/trimEndpointScheme";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Tooltip } from "../../common/Tooltip";
 import { CrosshairIcon } from "../../common/icons/CrosshairIcon";
@@ -97,6 +98,27 @@ export const QueryOptimizationInsight = (
               <span>{getDurationString(props.insight.typicalDuration)}</span>
             </s.Stat>
           </s.Stats>
+          <Description>Affected endpoints:</Description>
+          <s.EndpointList>
+            {props.insight.endpoints.map((x) => {
+              const spanCodeObjectId = x.endpointInfo.spanCodeObjectId;
+              const route = trimEndpointScheme(x.endpointInfo.route);
+
+              return (
+                <s.Endpoint key={spanCodeObjectId}>
+                  <Tooltip title={route}>
+                    <s.Name>
+                      <Link
+                        onClick={() => handleSpanLinkClick(spanCodeObjectId)}
+                      >
+                        {route}
+                      </Link>
+                    </s.Name>
+                  </Tooltip>
+                </s.Endpoint>
+              );
+            })}
+          </s.EndpointList>
         </s.ContentContainer>
       }
       onRecalculate={props.onRecalculate}
