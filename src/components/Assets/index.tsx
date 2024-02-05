@@ -1,5 +1,15 @@
-import { ChangeEvent, useContext, useLayoutEffect, useState } from "react";
-import { getFeatureFlagValue } from "../../featureFlags";
+import {
+  ChangeEvent,
+  useContext,
+  useLayoutEffect,
+  useMemo,
+  useState
+} from "react";
+import { lt, valid } from "semver";
+import {
+  featureFlagMinBackendVersions,
+  getFeatureFlagValue
+} from "../../featureFlags";
 import { useDebounce } from "../../hooks/useDebounce";
 import { FeatureFlag } from "../../types";
 import { ConfigContext } from "../common/App/ConfigContext";
@@ -29,10 +39,25 @@ export const Assets = () => {
     FeatureFlag.IS_ASSETS_SERVICE_FILTER_VISIBLE
   );
 
-  const isComplexFilterVisible = getFeatureFlagValue(
+  const isComplexFilterEnabled = getFeatureFlagValue(
     config,
     FeatureFlag.IS_ASSETS_COMPLEX_FILTER_ENABLED
   );
+
+  const isBackendUpgradeMessageVisible = useMemo(() => {
+    const backendVersion = config.backendInfo?.applicationVersion;
+
+    return Boolean(
+      backendVersion &&
+        valid(backendVersion) &&
+        lt(
+          backendVersion,
+          featureFlagMinBackendVersions[
+            FeatureFlag.IS_ASSETS_COMPLEX_FILTER_ENABLED
+          ]
+        )
+    );
+  }, [config]);
 
   useLayoutEffect(() => {
     window.sendMessageToDigma({
@@ -61,6 +86,22 @@ export const Assets = () => {
   };
 
   const renderContent = () => {
+    if (isBackendUpgradeMessageVisible) {
+      return (
+        <EmptyState
+          content={
+            <s.UpgradeMessage>
+              <span>We&apos;ve added some new features.</span>
+              <span>
+                Please update the Digma Engine to the latest version using the
+                action above to continue using Digma
+              </span>
+            </s.UpgradeMessage>
+          }
+        />
+      );
+    }
+
     if (!selectedFilters && !selectedServices) {
       return <EmptyState content={<NewCircleLoader size={32} />} />;
     }
@@ -102,12 +143,13 @@ export const Assets = () => {
             />
           </s.SearchInputContainer>
         )}
-        {isComplexFilterVisible ? (
+        {isComplexFilterEnabled ? (
           <AssetsFilter
             onApply={handleApplyFilters}
             filters={selectedFilters}
           />
         ) : (
+          // TODO: Remove this clause when the feature flag is removed
           isServiceFilterVisible && (
             <ServicesFilter
               onChange={handleServicesChange}

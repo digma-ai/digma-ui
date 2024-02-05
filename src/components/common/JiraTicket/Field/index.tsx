@@ -28,7 +28,7 @@ export const Field = (props: FieldProps) => {
     props.multiline === true ? "top" : "center";
 
   return (
-    <s.Container>
+    <s.Container $selectable={props.selectable}>
       <s.Label>{props.label}</s.Label>
       <s.ContentContainer>
         <s.Content ref={getContentRef} $multiline={props.multiline}>

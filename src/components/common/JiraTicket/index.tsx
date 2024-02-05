@@ -18,6 +18,7 @@ import { JiraLogoIcon } from "../../common/icons/16px/JiraLogoIcon";
 import { AttachmentTag } from "./AttachmentTag";
 import { Field } from "./Field";
 import { IconButton } from "./IconButton";
+import { TicketLinkButton } from "./TicketLinkButton";
 import * as s from "./styles";
 import { trackingEvents } from "./tracking";
 import { JiraTicketProps } from "./types";
@@ -122,11 +123,13 @@ export const JiraTicket = (props: JiraTicketProps) => {
             onClick={() => copyToClipboard("summary", props.summary)}
           />
         }
+        selectable={false}
       />
       <Field
         key={"description"}
         label={"Description"}
         multiline={true}
+        selectable={false}
         content={
           <div ref={descriptionContentRef}>
             {props.description.isLoading ? (
@@ -168,6 +171,13 @@ export const JiraTicket = (props: JiraTicketProps) => {
             />
           }
           errorMessage={downloadErrorMessage}
+        />
+      )}
+      {props.showLinkButton && (
+        <TicketLinkButton
+          ticketLink={props.ticketLink}
+          unlinkTicket={props.unlinkTicket}
+          linkTicket={props.linkTicket}
         />
       )}
     </s.Container>

@@ -76,7 +76,7 @@ export const HighNumberOfQueriesInsight = (
                   onTicketInfoButtonClick={handleCreateJiraTicketButtonClick}
                   spanCodeObjectId={insight.spanInfo?.spanCodeObjectId}
                   ticketLink={insight.ticketLink}
-                  buttonType="small"
+                  buttonType={"small"}
                 />
                 {traceId && (
                   <Tooltip title={"Trace"}>

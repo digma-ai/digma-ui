@@ -14,7 +14,7 @@ import { NewCircleLoader } from "../../common/NewCircleLoader";
 import { CardsIcon } from "../../common/icons/CardsIcon";
 import { AssetFilterQuery } from "../AssetsFilter/types";
 import { actions } from "../actions";
-import { getAssetTypeInfo } from "../utils";
+import { checkIfAnyFiltersApplied, getAssetTypeInfo } from "../utils";
 import { AssetTypeListItem } from "./AssetTypeListItem";
 import * as s from "./styles";
 import { AssetCategoriesData, AssetTypeListProps } from "./types";
@@ -73,6 +73,13 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
         )
       ),
     [config]
+  );
+
+  const areAnyFiltersApplied = checkIfAnyFiltersApplied(
+    isComplexFilterEnabled,
+    props.filters,
+    props.services,
+    props.searchQuery
   );
 
   useEffect(() => {
@@ -188,23 +195,32 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
   }
 
   if (data?.assetCategories.every((x) => x.count === 0)) {
+    let title = "No data yet";
+    let content = (
+      <>
+        <s.EmptyStateDescription>
+          Trigger actions that call this application to learn more about its
+          runtime behavior
+        </s.EmptyStateDescription>
+        <s.TroubleshootingLink onClick={handleTroubleshootingLinkClick}>
+          Not seeing your application data?
+        </s.TroubleshootingLink>
+      </>
+    );
+
+    if (areAnyFiltersApplied) {
+      title = "No results";
+      content = (
+        <s.EmptyStateDescription>
+          It seems there are no assets matching your selected filters at the
+          moment
+        </s.EmptyStateDescription>
+      );
+    }
+
     return (
       <s.NoDataContainer>
-        <EmptyState
-          icon={CardsIcon}
-          title={"No data yet"}
-          content={
-            <>
-              <s.EmptyStateDescription>
-                Trigger actions that call this application to learn more about
-                its runtime behavior
-              </s.EmptyStateDescription>
-              <s.TroubleshootingLink onClick={handleTroubleshootingLinkClick}>
-                Not seeing your application data?
-              </s.TroubleshootingLink>
-            </>
-          }
-        />
+        <EmptyState icon={CardsIcon} title={title} content={content} />
       </s.NoDataContainer>
     );
   }

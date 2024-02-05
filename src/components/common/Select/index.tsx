@@ -80,14 +80,16 @@ export const Select = (props: SelectProps) => {
       optionListRef.current.scrollHeight > optionListRef.current.clientHeight
   );
 
-  const disabled = props.disabled || props.items.length === 0;
+  const isSearchBarVisible =
+    props.searchable &&
+    (optionListHasVerticalScrollbar || searchValue.length > 0);
 
   return (
     <NewPopover
       sameWidth={true}
       content={
         <s.MenuContainer>
-          {props.searchable && optionListHasVerticalScrollbar && (
+          {isSearchBarVisible && (
             <s.SearchInputContainer>
               <s.SearchInputIconContainer>
                 <MagnifierIcon />
@@ -127,17 +129,18 @@ export const Select = (props: SelectProps) => {
           </s.OptionList>
         </s.MenuContainer>
       }
-      onOpenChange={disabled ? undefined : setIsOpen}
-      isOpen={disabled ? false : isOpen}
+      onOpenChange={props.disabled ? undefined : setIsOpen}
+      isOpen={props.disabled ? false : isOpen}
       placement={"bottom-start"}
     >
       <s.Button
         $isActive={isOpen}
         onClick={handleButtonClick}
-        disabled={disabled}
+        disabled={props.disabled}
       >
+        {props.icon && <props.icon color={"currentColor"} />}
         {isString(props.placeholder) && (
-          <s.ButtonLabel $isActive={isOpen}>{props.placeholder}</s.ButtonLabel>
+          <s.ButtonLabel>{props.placeholder}</s.ButtonLabel>
         )}
         {selectedValues.length > 0 && (
           <s.Number>{selectedValues.length}</s.Number>
@@ -152,7 +155,7 @@ export const Select = (props: SelectProps) => {
             /{props.counts.total}
           </s.Counts>
         )}
-        <s.ChevronIconContainer>
+        <s.ChevronIconContainer $disabled={props.disabled}>
           <ChevronIcon
             color={"currentColor"}
             size={14}

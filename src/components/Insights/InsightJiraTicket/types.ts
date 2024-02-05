@@ -1,17 +1,7 @@
 import { ReactNode } from "react";
 import { GenericCodeObjectInsight } from "../types";
 
-export interface JiraTicketThemeColors {
-  background: string;
-  border: string;
-  text: {
-    primary: string;
-    secondary: string;
-  };
-  icon: string;
-}
-
-export interface JiraTicketProps {
+export interface InsightJiraTicketProps {
   summary: string;
   description: {
     content: ReactNode;
