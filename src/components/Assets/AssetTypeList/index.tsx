@@ -1,18 +1,13 @@
 import { useContext, useEffect, useMemo, useRef, useState } from "react";
-import { actions as globalActions } from "../../../actions";
 import { dispatcher } from "../../../dispatcher";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import { usePrevious } from "../../../hooks/usePrevious";
-import { trackingEvents as globalTrackingEvents } from "../../../trackingEvents";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { isString } from "../../../typeGuards/isString";
 import { FeatureFlag } from "../../../types";
-import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
-import { EmptyState } from "../../common/EmptyState";
-import { NewCircleLoader } from "../../common/NewCircleLoader";
-import { CardsIcon } from "../../common/icons/CardsIcon";
 import { AssetFilterQuery } from "../AssetsFilter/types";
+import { NoDataMessage } from "../NoDataMessage";
 import { actions } from "../actions";
 import { checkIfAnyFiltersApplied, getAssetTypeInfo } from "../utils";
 import { AssetTypeListItem } from "./AssetTypeListItem";
@@ -176,53 +171,16 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
     props.onAssetTypeSelect(assetTypeId);
   };
 
-  const handleTroubleshootingLinkClick = () => {
-    sendTrackingEvent(globalTrackingEvents.TROUBLESHOOTING_LINK_CLICKED, {
-      origin: "assets"
-    });
-
-    window.sendMessageToDigma({
-      action: globalActions.OPEN_TROUBLESHOOTING_GUIDE
-    });
-  };
-
   if (isInitialLoading) {
-    return (
-      <s.NoDataContainer>
-        <EmptyState content={<NewCircleLoader size={32} />} />
-      </s.NoDataContainer>
-    );
+    return <NoDataMessage type={"loading"} />;
   }
 
   if (data?.assetCategories.every((x) => x.count === 0)) {
-    let title = "No data yet";
-    let content = (
-      <>
-        <s.EmptyStateDescription>
-          Trigger actions that call this application to learn more about its
-          runtime behavior
-        </s.EmptyStateDescription>
-        <s.TroubleshootingLink onClick={handleTroubleshootingLinkClick}>
-          Not seeing your application data?
-        </s.TroubleshootingLink>
-      </>
-    );
-
     if (areAnyFiltersApplied) {
-      title = "No results";
-      content = (
-        <s.EmptyStateDescription>
-          It seems there are no assets matching your selected filters at the
-          moment
-        </s.EmptyStateDescription>
-      );
+      return <NoDataMessage type={"noSearchResults"} />;
     }
 
-    return (
-      <s.NoDataContainer>
-        <EmptyState icon={CardsIcon} title={title} content={content} />
-      </s.NoDataContainer>
-    );
+    return <NoDataMessage type={"noDataYet"} />;
   }
 
   return (
