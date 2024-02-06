@@ -105,6 +105,7 @@ export const EndpointNPlusOneInsight = (
                       spanCodeObjectId={spanInfo.spanCodeObjectId}
                       ticketLink={span.ticketLink}
                       buttonType={"small"}
+                      isHintEnabled={props.isJiraHintEnabled}
                     />
                     {config.isJaegerEnabled && (
                       <Tooltip title={"Trace"}>

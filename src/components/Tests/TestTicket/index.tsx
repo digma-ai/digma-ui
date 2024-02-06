@@ -35,8 +35,8 @@ export const TestTicket = (props: TestTicketProps) => {
                 : ""
             }`}
           </div>,
-          <div key={"date"}>Last run at: ${new Date(runAt).toString()}</div>,
-          <div key={"duration"}>Duration: ${getDurationString(duration)}</div>,
+          <div key={"date"}>Last run at: {new Date(runAt).toString()}</div>,
+          <div key={"duration"}>Duration: {getDurationString(duration)}</div>,
           <>
             {relatedSpans.length > 0 && (
               <div key={"spans"}>{`Related spans:\n${relatedSpans}`}</div>

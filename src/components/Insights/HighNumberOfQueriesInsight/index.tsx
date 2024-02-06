@@ -77,6 +77,7 @@ export const HighNumberOfQueriesInsight = (
                   spanCodeObjectId={insight.spanInfo?.spanCodeObjectId}
                   ticketLink={insight.ticketLink}
                   buttonType={"small"}
+                  isHintEnabled={props.isJiraHintEnabled}
                 />
                 {traceId && (
                   <Tooltip title={"Trace"}>

@@ -33,10 +33,11 @@
     "build:troubleshooting:prod": "webpack --config webpack.prod.ts --env app=troubleshooting",
     "build:prod": "webpack --config webpack.prod.ts",
     "build:prod:web": "webpack --config webpack.prod.ts --env platform=Web",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "prepare": "husky"
   },
   "lint-staged": {
-    "*.{js,ts}": [
+    "*.{js,ts,tsx}": [
       "eslint --cache"
     ],
     "src/**/*.ts": [
@@ -83,7 +84,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-storybook": "^0.6.15",
     "html-webpack-plugin": "^5.5.0",
-    "husky": "^8.0.0",
+    "husky": "^9.0.10",
     "lint-staged": "^13.2.2",
     "postcss-styled-syntax": "^0.5.0",
     "prettier": "^2.8.3",

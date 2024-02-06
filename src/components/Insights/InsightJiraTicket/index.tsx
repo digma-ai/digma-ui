@@ -15,9 +15,8 @@ export const InsightJiraTicket = (props: InsightJiraTicketProps) => {
   );
   const config = useContext(ConfigContext);
 
-  const isLinkUnlinkInputVisible = getFeatureFlagValue(
-    config,
-    FeatureFlag.IS_INSIGHT_TICKET_LINKAGE_ENABLED
+  const isLinkUnlinkInputVisible = Boolean(
+    getFeatureFlagValue(config, FeatureFlag.IS_INSIGHT_TICKET_LINKAGE_ENABLED)
   );
 
   const linkTicket = (link: string) => {
@@ -95,7 +94,7 @@ export const InsightJiraTicket = (props: InsightJiraTicketProps) => {
       ticketLink={{ link: ticketLink, errorMessage }}
       unlinkTicket={unlinkTicket}
       linkTicket={linkTicket}
-      showLinkButton={!!isLinkUnlinkInputVisible}
+      showLinkButton={isLinkUnlinkInputVisible}
     />
   );
 };

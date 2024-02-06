@@ -14,3 +14,7 @@ export interface InsightListProps {
     spanCodeObjectId?: string
   ) => void;
 }
+
+export interface isInsightJiraTicketHintShownPayload {
+  value: boolean;
+}
