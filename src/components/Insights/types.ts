@@ -704,4 +704,30 @@ export interface QueryOptimizationInsight extends SpanInsight {
   span: SpanInfo;
   serviceName: string;
   dbName: string;
+  endpoints: {
+    endpointInfo: {
+      route: string;
+      instrumentationLibrary: string;
+      spanCodeObjectId: string;
+      serviceName: string;
+    };
+  }[];
+}
+
+export interface EndpointQueryOptimizationInsight extends EndpointInsight {
+  name: "Query Optimization";
+  type: InsightType.EndpointQueryOptimization;
+  category: InsightCategory.Performance;
+  specifity: InsightSpecificity.TargetAndReasonFound;
+  importance: InsightImportance.HighlyImportant;
+  isRecalculateEnabled: true;
+  spans: {
+    spanInfo: SpanInfo;
+    traceId: string;
+    duration: Duration;
+    criticality: number;
+    impact: number;
+    severity: number;
+    ticketLink: string | null;
+  }[];
 }

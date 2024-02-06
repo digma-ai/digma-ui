@@ -9,6 +9,7 @@ import { actions } from "../../actions";
 import { QueryOptimizationInsight } from "../../types";
 import { CommitInfos } from "../common/CommitInfos";
 import { DigmaSignature } from "../common/DigmaSignature";
+import { QueryOptimizationEndpoints } from "../common/QueryOptimizationEndpoints";
 import { getInsightCommits } from "../getInsightCommits";
 import { CommitInfosData, InsightTicketProps } from "../types";
 
@@ -26,11 +27,21 @@ export const QueryOptimizationInsightTicket = (
 
   const dbStatement = props.data.insight.dbStatement.toUpperCase();
 
+  const services = [
+    ...new Set(
+      (props.data.insight.endpoints || []).map(
+        (x) => x.endpointInfo.serviceName
+      )
+    )
+  ];
+  const serviceString = services.length > 0 ? services.join(", ") : "";
+  const dbName = props.data.insight.dbName
+    ? `[${props.data.insight.dbName}]`
+    : "";
+
   const summary = [
-    `Slow ${dbStatement} query found on db: [${
-      props.data.insight.dbName || ""
-    }]`,
-    props.data.insight.serviceName || "",
+    `Slow ${dbStatement} query found on db: ${dbName}`,
+    serviceString,
     criticalityString
   ]
     .filter(Boolean)
@@ -53,6 +64,10 @@ export const QueryOptimizationInsightTicket = (
             {"\n"}
             This query: {getDurationString(props.data.insight.duration)}
           </div>,
+          <QueryOptimizationEndpoints
+            key={"affectedEndpoints"}
+            insight={props.data.insight}
+          />,
           <CommitInfos
             key={"commitInfos"}
             commitInfos={commitInfos}
