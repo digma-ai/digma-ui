@@ -554,8 +554,7 @@ export const InstallStep = (props: InstallStepProps) => {
 
   const renderContent = () => {
     if (
-      isAutoInstallationFlow ||
-      config.isDigmaEngineInstalled ||
+      (isAutoInstallationFlow || config.isDigmaEngineInstalled) &&
       !isManualInstallationEnabled
     ) {
       return renderEngineManager();
