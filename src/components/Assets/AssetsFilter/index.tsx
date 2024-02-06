@@ -28,6 +28,8 @@ import {
   AssetsFiltersData
 } from "./types";
 
+const PERSISTENCE_KEY = "assetsFilters";
+
 const REFRESH_INTERVAL = isNumber(window.assetsRefreshInterval)
   ? window.assetsRefreshInterval
   : 10 * 1000; // in milliseconds
@@ -68,7 +70,7 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const previousIsOpen = usePrevious(isOpen);
   const [persistedFilters, setPersistedFilters] =
-    usePersistence<AssetFilterQuery>("assetsFilters", "project");
+    usePersistence<AssetFilterQuery>(PERSISTENCE_KEY, "project");
   const previousPersistedFilters = usePrevious(persistedFilters);
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [selectedEndpoints, setSelectedEndpoints] = useState<string[]>([]);

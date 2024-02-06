@@ -15,6 +15,6 @@ export interface InsightListProps {
   ) => void;
 }
 
-export interface IsJiraShownPayload {
+export interface isInsightJiraTicketHintShownPayload {
   value: boolean;
 }

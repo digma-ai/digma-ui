@@ -3,5 +3,5 @@ export interface JiraButtonProps {
   ticketLink?: string | null;
   spanCodeObjectId?: string;
   buttonType: "small" | "large";
-  showHint?: boolean;
+  isHintEnabled?: boolean;
 }

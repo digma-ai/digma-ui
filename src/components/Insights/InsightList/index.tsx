@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
-// import { usePersistence } from "../../../hooks/usePersistence";
+import { usePersistence } from "../../../hooks/usePersistence";
 import { trackingEvents as globalTrackingEvents } from "../../../trackingEvents";
 import { InsightType } from "../../../types";
 import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
@@ -69,7 +69,7 @@ import {
   Trace
 } from "../types";
 import * as s from "./styles";
-import { InsightListProps } from "./types";
+import { InsightListProps, isInsightJiraTicketHintShownPayload } from "./types";
 
 export const getInsightTypeOrderPriority = (type: string): number => {
   const insightOrderPriorityMap: Record<string, number> = {
@@ -112,7 +112,8 @@ const getInsightToShowJiraHint = (
     InsightType.SpanNPlusOne,
     InsightType.SpanEndpointBottleneck,
     InsightType.SlowestSpans,
-    InsightType.SpanQueryOptimization
+    InsightType.SpanQueryOptimization,
+    InsightType.EndpointHighNumberOfQueries
   ];
 
   let insightIndex = -1;
@@ -603,6 +604,7 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={handleRefresh}
         onJiraTicketCreate={onJiraTicketCreate}
+        isJiraHintEnabled={isJiraHintEnabled}
       />
     );
   }
@@ -634,13 +636,19 @@ const renderInsightCard = (
   }
 };
 
+const IS_INSIGHT_JIRA_TICKET_HINT_SHOWN_PERSISTENCE_KEY =
+  "isInsightJiraTicketHintShown";
+
 export const InsightList = (props: InsightListProps) => {
   const [insightGroups, setInsightGroups] = useState<InsightGroup[]>([]);
   const [isAutofixing, setIsAutofixing] = useState(false);
   const theme = useTheme();
   const insightGroupIconColor = getInsightGroupIconColor(theme);
-  // const [isJiraHintShown, setIsJiraHintShown] =
-  //   usePersistence<IsJiraShownPayload>("isJiraHintShown", "application");
+  const [isInsightJiraTicketHintShown, setIsInsightJiraTicketHintShown] =
+    usePersistence<isInsightJiraTicketHintShownPayload>(
+      IS_INSIGHT_JIRA_TICKET_HINT_SHOWN_PERSISTENCE_KEY,
+      "application"
+    );
 
   const insightWithJiraHint = getInsightToShowJiraHint(insightGroups);
 
@@ -683,6 +691,14 @@ export const InsightList = (props: InsightListProps) => {
     setIsAutofixing(true);
   };
 
+  const handleShowJiraTicket = (
+    insight: GenericCodeObjectInsight,
+    spanCodeObjectId?: string
+  ) => {
+    props.onJiraTicketCreate(insight, spanCodeObjectId);
+    setIsInsightJiraTicketHintShown({ value: true });
+  };
+
   return (
     <s.Container>
       {insightGroups.map((x, i) => (
@@ -700,11 +716,13 @@ export const InsightList = (props: InsightListProps) => {
           {x.insights.length > 0 ? (
             x.insights.map((insight, j) => {
               const isJiraHintEnabled =
+                !isInsightJiraTicketHintShown?.value &&
                 i === insightWithJiraHint?.groupIndex &&
                 j === insightWithJiraHint?.insightIndex;
+
               return renderInsightCard(
                 insight,
-                props.onJiraTicketCreate,
+                handleShowJiraTicket,
                 isJiraHintEnabled
               );
             })

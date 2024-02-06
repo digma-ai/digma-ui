@@ -3,6 +3,7 @@ import {
   FloatingPortal,
   Placement,
   arrow,
+  autoUpdate,
   flip,
   offset,
   shift,
@@ -12,6 +13,8 @@ import {
 } from "@floating-ui/react";
 import { Children, cloneElement, useRef, useState } from "react";
 import { useTheme } from "styled-components";
+import { isBoolean } from "../../../typeGuards/isBoolean";
+import { isString } from "../../../typeGuards/isString";
 import * as s from "./styles";
 import { TooltipProps } from "./types";
 
@@ -51,7 +54,9 @@ const getArrowStyles = (placement: Placement) => {
 };
 
 export const Tooltip = (props: TooltipProps) => {
-  const [isOpen, setIsOpen] = useState(props.permanent || false);
+  const [isOpen, setIsOpen] = useState(
+    isBoolean(props.isOpen) ? props.isOpen : false
+  );
   const arrowRef = useRef(null);
 
   const theme = useTheme();
@@ -59,6 +64,7 @@ export const Tooltip = (props: TooltipProps) => {
   const placement = props.placement || "top";
 
   const { refs, floatingStyles, context } = useFloating({
+    whileElementsMounted: autoUpdate,
     placement,
     open: isOpen,
     onOpenChange: setIsOpen,
@@ -74,7 +80,7 @@ export const Tooltip = (props: TooltipProps) => {
 
   const hover = useHover(context, {
     delay: { open: 1000, close: 0 },
-    enabled: !props.permanent
+    enabled: !isBoolean(props.isOpen)
   });
 
   const { getReferenceProps, getFloatingProps } = useInteractions([hover]);
@@ -92,14 +98,19 @@ export const Tooltip = (props: TooltipProps) => {
           <s.TooltipContainer
             ref={refs.setFloating}
             style={{
-              ...floatingStyles
+              ...floatingStyles,
+              ...props.style
             }}
             {...getFloatingProps()}
           >
             <FloatingArrow
               ref={arrowRef}
               context={context}
-              fill={theme.colors.tooltip.background}
+              fill={
+                isString(props.style?.background)
+                  ? props.style?.background
+                  : theme.colors.tooltip.background
+              }
               width={10}
               height={8}
               d={

@@ -10,5 +10,6 @@ export interface TooltipProps {
   children: ReactElement;
   title: ReactNode;
   placement?: Placement;
-  permanent?: boolean;
+  style?: React.CSSProperties;
+  isOpen?: boolean;
 }

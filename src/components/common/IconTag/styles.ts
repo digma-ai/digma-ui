@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { ContainerProps, IconTagSize } from "./types";
 
-const getDimensions = (size: IconTagSize) => (size === "large" ? 28 : 20); //in pixels
+const getDimensions = (size: IconTagSize) => (size === "large" ? 28 : 20); // in pixels
 
 export const Container = styled.div<ContainerProps>`
   display: flex;

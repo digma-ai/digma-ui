@@ -66,7 +66,7 @@ export const SpanBottleneckInsight = (props: SpanBottleneckInsightProps) => {
                         spanCodeObjectId={spanCodeObjectId}
                         ticketLink={span.ticketLink}
                         buttonType={"small"}
-                        showHint={props.isJiraHintEnabled}
+                        isHintEnabled={props.isJiraHintEnabled}
                       />
                     </s.ButtonsContainer>
                   </s.Span>
