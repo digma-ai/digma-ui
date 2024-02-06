@@ -84,7 +84,8 @@ const getInsightToShowJiraHint = (
     InsightType.SpanEndpointBottleneck,
     InsightType.SlowestSpans,
     InsightType.SpanQueryOptimization,
-    InsightType.EndpointHighNumberOfQueries
+    InsightType.EndpointHighNumberOfQueries,
+    InsightType.EndpointQueryOptimization
   ];
 
   let insightIndex = -1;

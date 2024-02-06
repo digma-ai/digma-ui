@@ -91,6 +91,7 @@ export const EndpointQueryOptimizationInsight = (
                       spanCodeObjectId={spanInfo.spanCodeObjectId}
                       ticketLink={span.ticketLink}
                       buttonType={"small"}
+                      isHintEnabled={props.isJiraHintEnabled}
                     />
                     {config.isJaegerEnabled && (
                       <Tooltip title={"Trace"}>
