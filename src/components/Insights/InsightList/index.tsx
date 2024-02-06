@@ -36,6 +36,7 @@ import { TopUsageInsight } from "../TopUsageInsight";
 import { TrafficInsight } from "../TrafficInsight";
 import { actions } from "../actions";
 import { Description } from "../styles";
+import { trackingEvents } from "../tracking";
 import {
   isChattyApiEndpointInsight,
   isCodeObjectErrorsInsight,
@@ -683,6 +684,7 @@ export const InsightList = (props: InsightListProps) => {
   ) => {
     props.onJiraTicketCreate(insight, spanCodeObjectId);
     setIsInsightJiraTicketHintShown({ value: true });
+    sendTrackingEvent(trackingEvents.JIRA_TICKET_HINT_CLOSED);
   };
 
   return (
