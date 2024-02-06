@@ -54,9 +54,7 @@ const getArrowStyles = (placement: Placement) => {
 };
 
 export const Tooltip = (props: TooltipProps) => {
-  const [isOpen, setIsOpen] = useState(
-    isBoolean(props.isOpen) ? props.isOpen : false
-  );
+  const [isOpen, setIsOpen] = useState(false);
   const arrowRef = useRef(null);
 
   const theme = useTheme();
@@ -66,8 +64,8 @@ export const Tooltip = (props: TooltipProps) => {
   const { refs, floatingStyles, context } = useFloating({
     whileElementsMounted: autoUpdate,
     placement,
-    open: isOpen,
-    onOpenChange: setIsOpen,
+    open: isBoolean(props.isOpen) ? props.isOpen : isOpen,
+    onOpenChange: isBoolean(props.isOpen) ? undefined : setIsOpen,
     middleware: [
       offset(ARROW_HEIGHT + GAP),
       flip(),
@@ -93,7 +91,7 @@ export const Tooltip = (props: TooltipProps) => {
           ...getReferenceProps()
         })
       )}
-      {isOpen && (
+      {(isBoolean(props.isOpen) ? props.isOpen : isOpen) && (
         <FloatingPortal>
           <s.TooltipContainer
             ref={refs.setFloating}

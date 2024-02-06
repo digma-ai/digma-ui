@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
 import { usePersistence } from "../../../hooks/usePersistence";
 import { trackingEvents as globalTrackingEvents } from "../../../trackingEvents";
+import { isUndefined } from "../../../typeGuards/isUndefined";
 import { InsightType } from "../../../types";
 import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
@@ -716,6 +717,7 @@ export const InsightList = (props: InsightListProps) => {
           {x.insights.length > 0 ? (
             x.insights.map((insight, j) => {
               const isJiraHintEnabled =
+                !isUndefined(isInsightJiraTicketHintShown) &&
                 !isInsightJiraTicketHintShown?.value &&
                 i === insightWithJiraHint?.groupIndex &&
                 j === insightWithJiraHint?.insightIndex;
