@@ -7,6 +7,7 @@ import { formatTimeDistance } from "../../../../utils/formatTimeDistance";
 import { getInsightImportanceColor } from "../../../../utils/getInsightImportanceColor";
 import { getInsightTypeInfo } from "../../../../utils/getInsightTypeInfo";
 import { getInsightTypeOrderPriority } from "../../../../utils/getInsightTypeOrderPriority";
+import { InsightImportance } from "../../../Insights/types";
 import { ConfigContext } from "../../../common/App/ConfigContext";
 import { ImpactScore } from "../../../common/ImpactScore";
 import { Tag } from "../../../common/Tag";
