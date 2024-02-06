@@ -7,6 +7,7 @@ import { formatTimeDistance } from "../../../../utils/formatTimeDistance";
 import { getInsightImportanceColor } from "../../../../utils/getInsightImportanceColor";
 import { getInsightTypeInfo } from "../../../../utils/getInsightTypeInfo";
 import { getInsightTypeOrderPriority } from "../../../../utils/getInsightTypeOrderPriority";
+import { InsightImportance } from "../../../Insights/types";
 import { ConfigContext } from "../../../common/App/ConfigContext";
 import { ImpactScore } from "../../../common/ImpactScore";
 import { Tag } from "../../../common/Tag";
@@ -49,13 +50,15 @@ export const AssetEntry = (props: AssetEntryProps) => {
   const lastSeenDateTime = props.entry.latestSpanTimestamp;
 
   // Do not show unimplemented insights
-  const filteredInsights = props.entry.insights.filter(
-    (x) =>
-      ![
-        InsightType.SpanScalingWell,
-        InsightType.SpanScalingInsufficientData
-      ].includes(x.type as InsightType)
-  );
+  const filteredInsights = props.entry.insights
+    .filter(
+      (x) =>
+        ![
+          InsightType.SpanScalingWell,
+          InsightType.SpanScalingInsufficientData
+        ].includes(x.type as InsightType)
+    )
+    .filter((x) => x.importance < InsightImportance.Info);
 
   const sortedInsights = [...filteredInsights].sort(
     (a, b) =>
