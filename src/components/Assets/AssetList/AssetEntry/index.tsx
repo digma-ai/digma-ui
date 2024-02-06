@@ -57,7 +57,7 @@ export const AssetEntry = (props: AssetEntryProps) => {
           InsightType.SpanScalingInsufficientData
         ].includes(x.type as InsightType)
     )
-    .filter((x) => x.importance < 6); // show icon that has importance grater that Info
+    .filter((x) => x.importance < InsightImportance.Info);
 
   const sortedInsights = [...filteredInsights].sort(
     (a, b) =>
