@@ -25,8 +25,8 @@ export const JiraButton = (props: JiraButtonProps) => {
     props.ticketLink && openURLInDefaultBrowser(props.ticketLink);
   };
 
-  const openTicketInfo = () => {
-    props.onTicketInfoButtonClick(props.spanCodeObjectId);
+  const openTicketInfo = (event: string) => {
+    props.onTicketInfoButtonClick(props.spanCodeObjectId, event);
   };
 
   const menuWidth = props.buttonType == "large" ? "119px" : "70px";
@@ -50,7 +50,7 @@ export const JiraButton = (props: JiraButtonProps) => {
                   icon: { component: PencilIcon },
                   label: "Edit",
                   value: props.spanCodeObjectId ?? "",
-                  onClick: openTicketInfo
+                  onClick: () => openTicketInfo("edit menu item click")
                 }
               ]}
               onSelect={handleJiraButtonClick}
@@ -77,9 +77,7 @@ export const JiraButton = (props: JiraButtonProps) => {
         <Tooltip title={"Ticket Info"}>
           <Button
             icon={{ component: JiraLogoIcon }}
-            onClick={() =>
-              props.onTicketInfoButtonClick(props.spanCodeObjectId)
-            }
+            onClick={() => openTicketInfo("jira button click")}
           >
             {buttonText}
           </Button>
@@ -109,7 +107,7 @@ export const JiraButton = (props: JiraButtonProps) => {
           <s.TryNowButton
             buttonType={"secondary"}
             label={"Try now"}
-            onClick={openTicketInfo}
+            onClick={() => openTicketInfo("try now button click")}
           />
         </s.HintContainer>
       }

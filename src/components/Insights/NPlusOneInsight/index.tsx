@@ -32,11 +32,12 @@ export const NPlusOneInsight = (props: NPlusOneInsightProps) => {
     props.onTraceButtonClick(trace, insightType, spanCodeObjectId);
   };
 
-  const handleCreateJiraTicketButtonClick = () => {
+  const handleCreateJiraTicketButtonClick = (event: string) => {
     sendTrackingEvent(trackingEvents.JIRA_TICKET_INFO_BUTTON_CLICKED, {
       insightType: props.insight.type
     });
-    props.onJiraTicketCreate && props.onJiraTicketCreate(props.insight);
+    props.onJiraTicketCreate &&
+      props.onJiraTicketCreate(props.insight, undefined, event);
   };
 
   const spanName = props.insight.clientSpanName || undefined;

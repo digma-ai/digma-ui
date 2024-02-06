@@ -228,7 +228,8 @@ const renderInsightCard = (
   insight: GenericCodeObjectInsight,
   onJiraTicketCreate: (
     insight: GenericCodeObjectInsight,
-    spanCodeObjectId?: string
+    spanCodeObjectId: string | undefined,
+    event?: string
   ) => void,
   isJiraHintEnabled: boolean
 ): JSX.Element | undefined => {
@@ -680,11 +681,14 @@ export const InsightList = (props: InsightListProps) => {
 
   const handleShowJiraTicket = (
     insight: GenericCodeObjectInsight,
-    spanCodeObjectId?: string
+    spanCodeObjectId: string | undefined,
+    event?: string
   ) => {
     props.onJiraTicketCreate(insight, spanCodeObjectId);
+    if (!isInsightJiraTicketHintShown?.value) {
+      sendTrackingEvent(trackingEvents.JIRA_TICKET_HINT_CLOSED, { event });
+    }
     setIsInsightJiraTicketHintShown({ value: true });
-    sendTrackingEvent(trackingEvents.JIRA_TICKET_HINT_CLOSED);
   };
 
   return (

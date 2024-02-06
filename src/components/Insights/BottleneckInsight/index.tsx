@@ -16,11 +16,12 @@ export const BottleneckInsight = (props: BottleneckInsightProps) => {
     props.onAssetLinkClick(spanCodeObjectId, props.insight.type);
   };
 
-  const handleCreateJiraTicketButtonClick = () => {
+  const handleCreateJiraTicketButtonClick = (event: string) => {
     sendTrackingEvent(trackingEvents.JIRA_TICKET_INFO_BUTTON_CLICKED, {
       insightType: props.insight.type
     });
-    props.onJiraTicketCreate && props.onJiraTicketCreate(props.insight);
+    props.onJiraTicketCreate &&
+      props.onJiraTicketCreate(props.insight, undefined, event);
   };
 
   return (
