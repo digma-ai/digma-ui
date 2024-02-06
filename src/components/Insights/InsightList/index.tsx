@@ -5,6 +5,7 @@ import { trackingEvents as globalTrackingEvents } from "../../../trackingEvents"
 import { isUndefined } from "../../../typeGuards/isUndefined";
 import { InsightType } from "../../../types";
 import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
+import { getInsightTypeOrderPriority } from "../../../utils/getInsightTypeOrderPriority";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { Card } from "../../common/Card";
 import { Tooltip } from "../../common/Tooltip";
@@ -73,40 +74,6 @@ import {
 } from "../types";
 import * as s from "./styles";
 import { InsightListProps, isInsightJiraTicketHintShownPayload } from "./types";
-
-export const getInsightTypeOrderPriority = (type: string): number => {
-  const insightOrderPriorityMap: Record<string, number> = {
-    [InsightType.HotSpot]: 1,
-    [InsightType.Errors]: 2,
-    [InsightType.TopErrorFlows]: 3,
-
-    // Endpoint insights
-    [InsightType.EndpointBreakdown]: 5,
-    [InsightType.HighUsage]: 10,
-    [InsightType.SlowEndpoint]: 20,
-    [InsightType.EndpointDurationSlowdown]: 25,
-    [InsightType.LowUsage]: 30,
-    [InsightType.SlowestSpans]: 40,
-    [InsightType.NormalUsage]: 50,
-    [InsightType.EndpointSpanNPlusOne]: 55,
-    [InsightType.EndpointSessionInView]: 56,
-    [InsightType.EndpointChattyApi]: 57,
-    [InsightType.EndpointQueryOptimization]: 58,
-
-    // Span insights
-    [InsightType.SpanDurations]: 60,
-    [InsightType.SpanUsages]: 61,
-    [InsightType.SpanScalingInsufficientData]: 62,
-    [InsightType.SpanScalingBadly]: 63,
-    [InsightType.SpanScalingWell]: 64,
-    [InsightType.SpanNPlusOne]: 65,
-    [InsightType.SpanDurationChange]: 66,
-    [InsightType.SpanEndpointBottleneck]: 67,
-    [InsightType.SpanDurationBreakdown]: 68
-  };
-
-  return insightOrderPriorityMap[type] || -Infinity;
-};
 
 const getInsightToShowJiraHint = (
   insightGroups: InsightGroup[]
