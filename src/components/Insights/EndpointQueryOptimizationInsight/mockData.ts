@@ -46,22 +46,22 @@ export const mockedEndpointQueryOptimizationInsight: EndpointQueryOptimizationIn
       }
     ],
     scope: InsightScope.EntrySpan,
-    endpointSpan: "HTTP GET /SampleInsights/NPlusOneWithoutInternalSpan",
+    endpointSpan: "HTTP GET /SampleInsights/QueryOptimization",
     spanCodeObjectId:
-      "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /SampleInsights/NPlusOneWithoutInternalSpan",
-    route: "epHTTP:HTTP GET /SampleInsights/NPlusOneWithoutInternalSpan",
+      "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /SampleInsights/QueryOptimization",
+    route: "epHTTP:HTTP GET /SampleInsights/QueryOptimization",
     serviceName: "PetClinic",
     spanInfo: {
-      name: "HTTP GET /SampleInsights/NPlusOneWithoutInternalSpan",
-      displayName: "HTTP GET /SampleInsights/NPlusOneWithoutInternalSpan",
+      name: "HTTP GET /SampleInsights/QueryOptimization",
+      displayName: "HTTP GET /SampleInsights/QueryOptimization",
       instrumentationLibrary: "io.opentelemetry.tomcat-10.0",
       spanCodeObjectId:
-        "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /SampleInsights/NPlusOneWithoutInternalSpan",
+        "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /SampleInsights/QueryOptimization",
       methodCodeObjectId:
-        "method:org.springframework.samples.petclinic.sample.SampleInsightsController$_$genNPlusOneWithoutInternalSpan",
+        "method:org.springframework.samples.petclinic.sample.SampleInsightsController$_$genQueryOptimization",
       kind: "Server",
       codeObjectId:
-        "org.springframework.samples.petclinic.sample.SampleInsightsController$_$genNPlusOneWithoutInternalSpan"
+        "org.springframework.samples.petclinic.sample.SampleInsightsController$_$genQueryOptimization"
     },
     shortDisplayInfo: {
       title: "",
@@ -70,18 +70,18 @@ export const mockedEndpointQueryOptimizationInsight: EndpointQueryOptimizationIn
       description: ""
     },
     codeObjectId:
-      "org.springframework.samples.petclinic.sample.SampleInsightsController$_$genNPlusOneWithoutInternalSpan",
+      "org.springframework.samples.petclinic.sample.SampleInsightsController$_$genQueryOptimization",
     decorators: [
       {
-        title: "N+1 Suspected",
-        description: "Supected NPlus One"
+        title: "Query Optimization Suggested",
+        description: "Query Optimization Suggested"
       }
     ],
     environment: "SAMPLE_ENV",
     severity: 0,
     isRecalculateEnabled: true,
     prefixedCodeObjectId:
-      "method:org.springframework.samples.petclinic.sample.SampleInsightsController$_$genNPlusOneWithoutInternalSpan",
+      "method:org.springframework.samples.petclinic.sample.SampleInsightsController$_$genQueryOptimization",
     customStartTime: null,
     actualStartTime: "2023-06-16T10:30:33.027Z"
   };
