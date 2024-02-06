@@ -28,6 +28,7 @@ export const usePersistence = <T>(
           scope
         }
       });
+      setValue(value); // TODO: handle error
     },
     [key, scope]
   );
