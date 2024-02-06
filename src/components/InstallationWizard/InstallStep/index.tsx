@@ -85,6 +85,8 @@ export const InstallStep = (props: InstallStepProps) => {
   const [isEngineOperationInProgress, setIsEngineOperationInProgress] =
     useState(false);
   const circleLoaderColors = getCircleLoaderColors(theme);
+  const [isManualInstallationEnabled, setIsManualInstallationEnabled] =
+    useState(false);
 
   const handleEngineOperationStart = () => {
     setIsEngineOperationInProgress(true);
@@ -223,6 +225,7 @@ export const InstallStep = (props: InstallStepProps) => {
   // };
 
   const handleEngineManualInstallSelect = () => {
+    setIsManualInstallationEnabled(true);
     const dockerComposeTabIndex = installTabs.findIndex(
       (x) => x.title === "Docker Compose"
     );
@@ -550,7 +553,11 @@ export const InstallStep = (props: InstallStepProps) => {
   );
 
   const renderContent = () => {
-    if (isAutoInstallationFlow || config.isDigmaEngineInstalled) {
+    if (
+      isAutoInstallationFlow ||
+      config.isDigmaEngineInstalled ||
+      !isManualInstallationEnabled
+    ) {
       return renderEngineManager();
     }
 
