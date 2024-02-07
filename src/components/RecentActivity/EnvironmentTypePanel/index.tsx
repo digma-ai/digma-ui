@@ -1,3 +1,4 @@
+import { openURLInDefaultBrowser } from "../../../utils/openURLInDefaultBrowser";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { IconTag } from "../../common/IconTag";
 import { NewButton } from "../../common/NewButton";
@@ -8,6 +9,8 @@ import { EnvironmentType } from "../types";
 import * as s from "./styles";
 import { EnvironmentTypeData, EnvironmentTypePanelProps } from "./types";
 
+const DIGMA_FOR_TEAMS_URL = "https://digma.ai/digma-for-teams/";
+
 export const EnvironmentTypePanel = (props: EnvironmentTypePanelProps) => {
   const handleEnvironmentTypeButtonClick = (type: EnvironmentType) => {
     const typeData = environmentTypes.find((x) => x.type === type);
@@ -16,6 +19,11 @@ export const EnvironmentTypePanel = (props: EnvironmentTypePanelProps) => {
       sendTrackingEvent(trackingEvents.ENVIRONMENT_TYPE_BUTTON_CLICKED, {
         type: typeData.title
       });
+    }
+
+    if (type === "shared") {
+      openURLInDefaultBrowser(DIGMA_FOR_TEAMS_URL);
+      return;
     }
 
     props.onEnvironmentTypeSelect(props.environment.originalName, type);
