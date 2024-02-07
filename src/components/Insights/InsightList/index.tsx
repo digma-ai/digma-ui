@@ -36,6 +36,7 @@ import { TopUsageInsight } from "../TopUsageInsight";
 import { TrafficInsight } from "../TrafficInsight";
 import { actions } from "../actions";
 import { Description } from "../styles";
+import { trackingEvents } from "../tracking";
 import {
   isChattyApiEndpointInsight,
   isCodeObjectErrorsInsight,
@@ -227,7 +228,8 @@ const renderInsightCard = (
   insight: GenericCodeObjectInsight,
   onJiraTicketCreate: (
     insight: GenericCodeObjectInsight,
-    spanCodeObjectId?: string
+    spanCodeObjectId: string | undefined,
+    event?: string
   ) => void,
   isJiraHintEnabled: boolean
 ): JSX.Element | undefined => {
@@ -679,9 +681,13 @@ export const InsightList = (props: InsightListProps) => {
 
   const handleShowJiraTicket = (
     insight: GenericCodeObjectInsight,
-    spanCodeObjectId?: string
+    spanCodeObjectId: string | undefined,
+    event?: string
   ) => {
     props.onJiraTicketCreate(insight, spanCodeObjectId);
+    if (!isInsightJiraTicketHintShown?.value) {
+      sendTrackingEvent(trackingEvents.JIRA_TICKET_HINT_CLOSED, { event });
+    }
     setIsInsightJiraTicketHintShown({ value: true });
   };
 

@@ -32,7 +32,7 @@ export const QueryOptimizationInsight = (
     props.onTraceButtonClick(trace, insightType, spanCodeObjectId);
   };
 
-  const handleCreateJiraTicketButtonClick = () => {
+  const handleCreateJiraTicketButtonClick = (event: string) => {
     sendTrackingEvent(trackingEvents.JIRA_TICKET_INFO_BUTTON_CLICKED, {
       insightType: props.insight.type
     });
@@ -40,7 +40,8 @@ export const QueryOptimizationInsight = (
     props.onJiraTicketCreate &&
       props.onJiraTicketCreate(
         props.insight,
-        props.insight.spanInfo?.spanCodeObjectId
+        props.insight.spanInfo?.spanCodeObjectId,
+        event
       );
   };
 

@@ -34,12 +34,15 @@ export const EndpointQueryOptimizationInsight = (
     props.onAssetLinkClick(spanCodeObjectId, props.insight.type);
   };
 
-  const handleTicketInfoButtonClick = (spanCodeObjectId: string) => {
+  const handleTicketInfoButtonClick = (
+    spanCodeObjectId: string,
+    event: string
+  ) => {
     sendTrackingEvent(trackingEvents.JIRA_TICKET_INFO_BUTTON_CLICKED, {
       insightType: props.insight.type
     });
     props.onJiraTicketCreate &&
-      props.onJiraTicketCreate(props.insight, spanCodeObjectId);
+      props.onJiraTicketCreate(props.insight, spanCodeObjectId, event);
   };
 
   const handleTraceButtonClick = (
