@@ -8,6 +8,7 @@ import { Tooltip } from "../../common/Tooltip";
 import { ChartIcon } from "../../common/icons/ChartIcon";
 import { CrosshairIcon } from "../../common/icons/CrosshairIcon";
 import { InsightCard } from "../InsightCard";
+import { Criticality } from "../common/Criticality";
 import { Description, Link } from "../styles";
 import { Trace } from "../types";
 import * as s from "./styles";
@@ -47,6 +48,9 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
             {props.insight.shortDisplayInfo.description}
           </Description>
           <s.Stats>
+            <s.Stat>
+              <Criticality value={props.insight.criticality} />
+            </s.Stat>
             <s.Stat>
               <Description>Tested concurrency</Description>
               <span>{props.insight.maxConcurrency}</span>
