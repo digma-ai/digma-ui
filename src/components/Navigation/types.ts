@@ -6,10 +6,18 @@ export enum View {
 }
 
 export interface TabData {
-  label: string;
+  title: string;
   id: View;
+  isSelected?: boolean;
 }
 
 export interface TabProps {
   $isSelected: boolean;
+}
+
+export interface SetViewPayload {
+  view: {
+    id: View;
+    title: string;
+  };
 }

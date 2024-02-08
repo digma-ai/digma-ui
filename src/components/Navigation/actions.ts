@@ -4,5 +4,6 @@ const ACTION_PREFIX = "NAVIGATION";
 
 export const actions = addPrefix(ACTION_PREFIX, {
   INITIALIZE: "INITIALIZE",
+  CHANGE_VIEW: "CHANGE_VIEW",
   SET_VIEW: "SET_VIEW"
 });

@@ -1,9 +1,9 @@
 import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
-  body {
+  /* body {
     background: ${({ theme }) => {
       // TODO: use color from theme
-      return "#fff";
-    }}}
+      return "#000";
+    }}} */
 `;
