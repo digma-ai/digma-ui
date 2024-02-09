@@ -168,7 +168,22 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
   }, [props.data]);
 
   useEffect(() => {
-    if (previousData !== data) {
+    const setupRefresh = (
+      services: string[],
+      operations: string[],
+      insights: InsightType[]
+    ) => {
+      if (!isOpen) {
+        return;
+      }
+
+      window.clearTimeout(refreshTimerId.current);
+      refreshTimerId.current = window.setTimeout(() => {
+        getData(services, operations, insights);
+      }, REFRESH_INTERVAL);
+    };
+
+    if (previousData !== data || (!previousIsOpen && isOpen)) {
       if (!isNull(data?.data)) {
         const servicesToSelect =
           data?.data?.categories
@@ -223,23 +238,17 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
           props.onApply(filtersQuery);
         }
 
-        window.clearTimeout(refreshTimerId.current);
-        refreshTimerId.current = window.setTimeout(() => {
-          getData(
-            servicesToSelect,
-            [...endpointsToSelect, ...consumersToSelect, ...internalsToSelect],
-            insightsToSelect
-          );
-        }, REFRESH_INTERVAL);
+        setupRefresh(
+          servicesToSelect,
+          [...endpointsToSelect, ...consumersToSelect, ...internalsToSelect],
+          insightsToSelect
+        );
       } else {
-        window.clearTimeout(refreshTimerId.current);
-        refreshTimerId.current = window.setTimeout(() => {
-          getData(
-            selectedServices,
-            [...selectedEndpoints, ...selectedConsumers, ...selectedInternals],
-            selectedInsights
-          );
-        }, REFRESH_INTERVAL);
+        setupRefresh(
+          selectedServices,
+          [...selectedEndpoints, ...selectedConsumers, ...selectedInternals],
+          selectedInsights
+        );
       }
     }
   }, [
@@ -252,7 +261,9 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
     selectedConsumers,
     selectedInternals,
     selectedInsights,
-    setPersistedFilters
+    setPersistedFilters,
+    isOpen,
+    previousIsOpen
   ]);
 
   useEffect(() => {
@@ -269,6 +280,7 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
       props.onApply(filtersQuery);
       setPersistedFilters(filtersQuery);
       sendTrackingEvent(trackingEvents.FILTER_APPLIED);
+      window.clearTimeout(refreshTimerId.current);
     }
   }, [
     previousIsOpen,
