@@ -162,6 +162,16 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
   ]);
 
   useEffect(() => {
+    if (isOpen && !previousIsOpen) {
+      getData(
+        selectedServices,
+        [...selectedEndpoints, ...selectedConsumers, ...selectedInternals],
+        selectedInsights
+      );
+    }
+  }, [isOpen, previousIsOpen]);
+
+  useEffect(() => {
     if (props.data) {
       setData({ data: props.data });
     }
@@ -182,8 +192,8 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
         getData(services, operations, insights);
       }, REFRESH_INTERVAL);
     };
-
-    if (previousData !== data || (!previousIsOpen && isOpen)) {
+    const popupIsOpen = !previousIsOpen && isOpen;
+    if (previousData !== data || popupIsOpen) {
       if (!isNull(data?.data)) {
         const servicesToSelect =
           data?.data?.categories
