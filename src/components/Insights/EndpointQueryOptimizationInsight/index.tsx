@@ -60,7 +60,7 @@ export const EndpointQueryOptimizationInsight = (
         <s.ContentContainer>
           <Description>Check the following locations:</Description>
           <s.SpanList>
-            {pageItems.map((span) => {
+            {pageItems.map((span, i) => {
               const spanInfo = span.spanInfo;
               const spanName = spanInfo?.displayName;
 
@@ -94,7 +94,7 @@ export const EndpointQueryOptimizationInsight = (
                       spanCodeObjectId={spanInfo.spanCodeObjectId}
                       ticketLink={span.ticketLink}
                       buttonType={"small"}
-                      isHintEnabled={props.isJiraHintEnabled}
+                      isHintEnabled={props.isJiraHintEnabled && i === 0}
                     />
                     {config.isJaegerEnabled && (
                       <Tooltip title={"Trace"}>
