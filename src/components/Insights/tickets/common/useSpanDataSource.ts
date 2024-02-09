@@ -10,7 +10,7 @@ export const useSpanDataSource = <TInsight extends GenericCodeObjectInsight>(
   spanInfo: SpanInfo | null,
   insight: TInsight | null
 ) => {
-  const { isLoading, setIsLoading } = useLoading(true);
+  const [isLoading, setIsLoading] = useLoading(true);
 
   const { commitInfos, isLoading: isCommitInfoLoading } =
     useCommitInfos(insight);

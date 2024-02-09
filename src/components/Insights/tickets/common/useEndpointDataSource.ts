@@ -12,15 +12,8 @@ export const useEndpointDataSource = <
   spanInfo: SpanInfo | null,
   insightType: InsightType
 ) => {
-  const { isLoading, setIsLoading } = useLoading(true);
+  const [isLoading, setIsLoading] = useLoading(true);
   const [spanInsight, setSpanInsight] = useState<TInsight | null>(null);
-
-  useEffect(() => {
-    const timerId = setTimeout(() => setIsLoading(false), 30 * 1000);
-    return () => {
-      clearTimeout(timerId);
-    };
-  }, []);
 
   const {
     isLoading: isInsightMetaIsLoading,

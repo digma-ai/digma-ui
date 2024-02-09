@@ -2,7 +2,6 @@ import { ComponentType, useContext, useEffect, useRef, useState } from "react";
 import { dispatcher } from "../../../dispatcher";
 import { usePersistence } from "../../../hooks/usePersistence";
 import { usePrevious } from "../../../hooks/usePrevious";
-import { isNull } from "../../../typeGuards/isNull";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { isString } from "../../../typeGuards/isString";
 import { isUndefined } from "../../../typeGuards/isUndefined";
@@ -178,87 +177,58 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
   }, [props.data]);
 
   useEffect(() => {
-    const setupRefresh = (
-      services: string[],
-      operations: string[],
-      insights: InsightType[]
-    ) => {
-      if (!isOpen) {
-        return;
-      }
-
-      window.clearTimeout(refreshTimerId.current);
-      refreshTimerId.current = window.setTimeout(() => {
-        getData(services, operations, insights);
-      }, REFRESH_INTERVAL);
-    };
-    const popupIsOpen = !previousIsOpen && isOpen;
-    if (previousData !== data || popupIsOpen) {
-      if (!isNull(data?.data)) {
-        const servicesToSelect =
-          data?.data?.categories
-            .find((x) => x.categoryName === "Services")
-            ?.entries?.filter((x) => x.selected)
-            .map((x) => x.name) || [];
-        setSelectedServices(servicesToSelect);
-
-        const operationsCategory = data?.data?.categories.find(
-          (x) => x.categoryName === "Operations"
-        );
-
-        const endpointsToSelect =
-          operationsCategory?.categories
-            ?.find((x) => x.categoryName === "Endpoints")
-            ?.entries?.filter((x) => x.selected)
-            .map((x) => x.name) || [];
-        setSelectedEndpoints(endpointsToSelect);
-
-        const consumersToSelect =
-          operationsCategory?.categories
-            ?.find((x) => x.categoryName === "Consumers")
-            ?.entries?.filter((x) => x.selected)
-            .map((x) => x.name) || [];
-        setSelectedConsumers(consumersToSelect);
-
-        const internalsToSelect =
-          operationsCategory?.categories
-            ?.find((x) => x.categoryName === "Internal")
-            ?.entries?.filter((x) => x.selected)
-            .map((x) => x.name) || [];
-        setSelectedInternals(internalsToSelect);
-
-        const insightsToSelect = (data?.data?.categories
-          .find((x) => x.categoryName === "Insights")
+    if (previousData !== data) {
+      const servicesToSelect =
+        data?.data?.categories
+          .find((x) => x.categoryName === "Services")
           ?.entries?.filter((x) => x.selected)
-          .map((x) => x.name) || []) as InsightType[];
-        setSelectedInsights(insightsToSelect);
+          .map((x) => x.name) || [];
+      setSelectedServices(servicesToSelect);
 
-        if (!props.filters) {
-          const filtersQuery = {
-            services: servicesToSelect,
-            operations: [
-              ...endpointsToSelect,
-              ...consumersToSelect,
-              ...internalsToSelect
-            ],
-            insights: insightsToSelect
-          };
+      const operationsCategory = data?.data?.categories.find(
+        (x) => x.categoryName === "Operations"
+      );
 
-          setPersistedFilters(filtersQuery);
-          props.onApply(filtersQuery);
-        }
+      const endpointsToSelect =
+        operationsCategory?.categories
+          ?.find((x) => x.categoryName === "Endpoints")
+          ?.entries?.filter((x) => x.selected)
+          .map((x) => x.name) || [];
+      setSelectedEndpoints(endpointsToSelect);
 
-        setupRefresh(
-          servicesToSelect,
-          [...endpointsToSelect, ...consumersToSelect, ...internalsToSelect],
-          insightsToSelect
-        );
-      } else {
-        setupRefresh(
-          selectedServices,
-          [...selectedEndpoints, ...selectedConsumers, ...selectedInternals],
-          selectedInsights
-        );
+      const consumersToSelect =
+        operationsCategory?.categories
+          ?.find((x) => x.categoryName === "Consumers")
+          ?.entries?.filter((x) => x.selected)
+          .map((x) => x.name) || [];
+      setSelectedConsumers(consumersToSelect);
+
+      const internalsToSelect =
+        operationsCategory?.categories
+          ?.find((x) => x.categoryName === "Internal")
+          ?.entries?.filter((x) => x.selected)
+          .map((x) => x.name) || [];
+      setSelectedInternals(internalsToSelect);
+
+      const insightsToSelect = (data?.data?.categories
+        .find((x) => x.categoryName === "Insights")
+        ?.entries?.filter((x) => x.selected)
+        .map((x) => x.name) || []) as InsightType[];
+      setSelectedInsights(insightsToSelect);
+
+      if (!props.filters) {
+        const filtersQuery = {
+          services: servicesToSelect,
+          operations: [
+            ...endpointsToSelect,
+            ...consumersToSelect,
+            ...internalsToSelect
+          ],
+          insights: insightsToSelect
+        };
+
+        setPersistedFilters(filtersQuery);
+        props.onApply(filtersQuery);
       }
     }
   }, [

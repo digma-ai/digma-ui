@@ -6,7 +6,7 @@ import { CodeLocationsData } from "../types";
 import { useLoading } from "./useLoading";
 
 export const useCodeLocations = (spanInfo: SpanInfo | null) => {
-  const { isLoading, setIsLoading } = useLoading(false);
+  const [isLoading, setIsLoading] = useLoading(false);
   const [codeLocations, setCodeLocations] = useState<string[]>([]);
 
   useEffect(() => {

@@ -9,7 +9,7 @@ import { useLoading } from "./useLoading";
 export const useCommitInfos = <TInsight extends GenericCodeObjectInsight>(
   insight: TInsight | null
 ) => {
-  const { isLoading, setIsLoading } = useLoading(false);
+  const [isLoading, setIsLoading] = useLoading(false);
   const [commitInfos, setCommitInfos] = useState<CommitInfosData | null>(null);
 
   useEffect(() => {

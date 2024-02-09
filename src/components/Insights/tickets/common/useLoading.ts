@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 
-export const useLoading = (defaultValue: boolean, cancelTimeoutSec = 30) => {
+export const useLoading = (
+  defaultValue: boolean,
+  cancelTimeoutMs = 30 * 1000
+): [boolean, (va: boolean) => void] => {
   const [isLoading, setIsLoading] = useState(defaultValue);
 
   useEffect(() => {
@@ -8,14 +11,11 @@ export const useLoading = (defaultValue: boolean, cancelTimeoutSec = 30) => {
       return;
     }
 
-    const timerId = setTimeout(
-      () => setIsLoading(false),
-      cancelTimeoutSec * 1000
-    );
+    const timerId = setTimeout(() => setIsLoading(false), cancelTimeoutMs);
     return () => {
       clearTimeout(timerId);
     };
   }, []);
 
-  return { isLoading, setIsLoading };
+  return [isLoading, setIsLoading];
 };
