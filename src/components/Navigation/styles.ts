@@ -6,13 +6,18 @@ export const Container = styled.div`
   height: 136px;
   display: flex;
   flex-direction: column;
+  gap: 8px;
 `;
 
-export const Placeholder = styled.div`
+export const Row = styled.div`
   display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-grow: 1;
+  gap: 8px;
+`;
+
+export const KebabMenu = styled.div`
+  margin-top: auto;
+  display: flex;
+  gap: 8px;
 `;
 
 export const Tabs = styled.div`
