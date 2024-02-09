@@ -1,22 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { SpanInfo } from "../../../../types";
 import { GenericCodeObjectInsight } from "../../types";
 import { getInsightCommits } from "../getInsightCommits";
 import { useCodeLocations } from "./useCodeLocations";
 import { useCommitInfos } from "./useCommitInfos";
+import { useLoading } from "./useLoading";
 
 export const useSpanDataSource = <TInsight extends GenericCodeObjectInsight>(
   spanInfo: SpanInfo | null,
   insight: TInsight | null
 ) => {
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const timerId = setTimeout(() => setIsLoading(false), 30 * 1000);
-    return () => {
-      clearTimeout(timerId);
-    };
-  }, []);
+  const { isLoading, setIsLoading } = useLoading(true);
 
   const { commitInfos, isLoading: isCommitInfoLoading } =
     useCommitInfos(insight);

@@ -3,6 +3,7 @@ import { dispatcher } from "../../../../dispatcher";
 import { InsightType, SpanInfo } from "../../../../types";
 import { actions } from "../../actions";
 import { GenericCodeObjectInsight } from "../../types";
+import { useLoading } from "./useLoading";
 import { useSpanDataSource } from "./useSpanDataSource";
 
 export const useEndpointDataSource = <
@@ -11,7 +12,7 @@ export const useEndpointDataSource = <
   spanInfo: SpanInfo | null,
   insightType: InsightType
 ) => {
-  const [isLoading, setIsLoading] = useState(true);
+  const { isLoading, setIsLoading } = useLoading(true);
   const [spanInsight, setSpanInsight] = useState<TInsight | null>(null);
 
   useEffect(() => {
