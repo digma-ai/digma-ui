@@ -4,11 +4,12 @@ import { actions } from "../../actions";
 import { GenericCodeObjectInsight } from "../../types";
 import { getInsightCommits } from "../getInsightCommits";
 import { CommitInfosData } from "../types";
+import { useLoading } from "./useLoading";
 
 export const useCommitInfos = <TInsight extends GenericCodeObjectInsight>(
   insight: TInsight | null
 ) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useLoading(false);
   const [commitInfos, setCommitInfos] = useState<CommitInfosData | null>(null);
 
   useEffect(() => {

@@ -55,12 +55,15 @@ export const SpanBottleneckInsight = (props: SpanBottleneckInsightProps) => {
                         </s.SpanName>
                       </Tooltip>
                       <Description>
-                        {`Slowing ${roundTo(
-                          span.probabilityOfBeingBottleneck * 100,
-                          2
-                        )}% of the requests (~${getDurationString(
-                          span.avgDurationWhenBeingBottleneck
-                        )})`}
+                        <Criticality value={span.criticality} />
+                        <span>
+                          {`Slowing ${roundTo(
+                            span.probabilityOfBeingBottleneck * 100,
+                            2
+                          )}% of the requests (~${getDurationString(
+                            span.avgDurationWhenBeingBottleneck
+                          )})`}
+                        </span>
                       </Description>
                     </s.SpanDetails>
                     <s.ButtonsContainer>
@@ -76,7 +79,6 @@ export const SpanBottleneckInsight = (props: SpanBottleneckInsightProps) => {
                 );
               })}
             </s.SpanList>
-            <Criticality value={props.insight.criticality} />
           </s.Container>
         </>
       }

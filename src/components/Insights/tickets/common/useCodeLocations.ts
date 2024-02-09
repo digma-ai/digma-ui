@@ -3,9 +3,10 @@ import { dispatcher } from "../../../../dispatcher";
 import { SpanInfo } from "../../../../types";
 import { actions } from "../../actions";
 import { CodeLocationsData } from "../types";
+import { useLoading } from "./useLoading";
 
 export const useCodeLocations = (spanInfo: SpanInfo | null) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useLoading(false);
   const [codeLocations, setCodeLocations] = useState<string[]>([]);
 
   useEffect(() => {
