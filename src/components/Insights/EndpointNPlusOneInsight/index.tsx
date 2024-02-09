@@ -62,7 +62,7 @@ export const EndpointNPlusOneInsight = (
         <s.ContentContainer>
           <Description>Check the following locations:</Description>
           <s.SpanList>
-            {pageItems.map((span) => {
+            {pageItems.map((span, i) => {
               const spanInfo = span.internalSpan || span.clientSpan;
               const spanName = spanInfo.displayName;
               const fraction =
@@ -108,7 +108,7 @@ export const EndpointNPlusOneInsight = (
                       spanCodeObjectId={spanInfo.spanCodeObjectId}
                       ticketLink={span.ticketLink}
                       buttonType={"small"}
-                      isHintEnabled={props.isJiraHintEnabled}
+                      isHintEnabled={props.isJiraHintEnabled && i === 0}
                     />
                     {config.isJaegerEnabled && (
                       <Tooltip title={"Trace"}>

@@ -36,7 +36,7 @@ export const SpanBottleneckInsight = (props: SpanBottleneckInsightProps) => {
           </Description>
           <s.Container>
             <s.SpanList>
-              {props.insight.spans.map((span) => {
+              {props.insight.spans.map((span, i) => {
                 const spanName = span.spanInfo.displayName;
                 const spanCodeObjectId = span.spanInfo.spanCodeObjectId;
 
@@ -72,7 +72,7 @@ export const SpanBottleneckInsight = (props: SpanBottleneckInsightProps) => {
                         spanCodeObjectId={spanCodeObjectId}
                         ticketLink={span.ticketLink}
                         buttonType={"small"}
-                        isHintEnabled={props.isJiraHintEnabled}
+                        isHintEnabled={props.isJiraHintEnabled && i === 0}
                       />
                     </s.ButtonsContainer>
                   </s.Span>
