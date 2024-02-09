@@ -11,8 +11,15 @@ export const useEndpointDataSource = <
   spanInfo: SpanInfo | null,
   insightType: InsightType
 ) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [spanInsight, setSpanInsight] = useState<TInsight | null>(null);
+
+  useEffect(() => {
+    const timerId = setTimeout(() => setIsLoading(false), 30 * 1000);
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, []);
 
   const {
     isLoading: isInsightMetaIsLoading,
@@ -48,6 +55,7 @@ export const useEndpointDataSource = <
   useEffect(() => {
     const spanCodeObjectId = spanInfo?.spanCodeObjectId;
     setIsLoading(true);
+
     window.sendMessageToDigma({
       action: actions.GET_SPAN_INSIGHT,
       payload: {
