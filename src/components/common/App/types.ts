@@ -49,7 +49,7 @@ export interface ConfigContextData {
   isDockerComposeInstalled: boolean;
   userEmail: string;
   userRegistrationEmail: string;
-  environment: string;
+  environment: Environment | undefined;
   backendInfo: BackendInfo | undefined;
   environments: Environment[] | undefined;
   scope: Scope | undefined;

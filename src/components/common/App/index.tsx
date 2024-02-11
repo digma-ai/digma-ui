@@ -4,6 +4,7 @@ import { actions } from "../../../actions";
 import { dispatcher } from "../../../dispatcher";
 import { Mode } from "../../../globals";
 import { isBoolean } from "../../../typeGuards/isBoolean";
+import { isEnvironment } from "../../../typeGuards/isEnvironment";
 import { isNull } from "../../../typeGuards/isNull";
 import { isObject } from "../../../typeGuards/isObject";
 import { isString } from "../../../typeGuards/isString";
@@ -161,10 +162,10 @@ export const App = (props: AppProps) => {
     };
 
     const handleSetEnvironment = (data: unknown) => {
-      if (isObject(data) && isString(data.environment)) {
+      if (isObject(data) && isEnvironment(data?.environment)) {
         setConfig((config) => ({
           ...config,
-          environment: data.environment as string
+          environment: data.environment as Environment
         }));
       }
     };

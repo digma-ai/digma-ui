@@ -77,14 +77,17 @@ export const Navigation = () => {
       config.environments.length > 0 &&
       !config.environment
     ) {
-      setSelectedEnvironment(config.environments[0].originalName);
+      setSelectedEnvironment(config.environments[0]);
       window.sendMessageToDigma({
-        action: actions.CHANGE_ENVIRONMENT
+        action: actions.CHANGE_ENVIRONMENT,
+        payload: {
+          environment: config.environments[0]
+        }
       });
     }
 
     if (config.environments && config.environments.length === 0) {
-      setSelectedEnvironment("");
+      setSelectedEnvironment(undefined);
     }
   }, [config]);
 
@@ -117,7 +120,10 @@ export const Navigation = () => {
   };
 
   const handleEnvironmentChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    setSelectedEnvironment(e.target.value);
+    const environment = environments.find(
+      (x) => x.originalName === e.target.value
+    );
+    setSelectedEnvironment(environment);
   };
 
   const handleObservabilityChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -189,7 +195,7 @@ export const Navigation = () => {
         <select
           disabled={environments.length === 0}
           onChange={handleEnvironmentChange}
-          value={selectedEnvironment}
+          value={selectedEnvironment?.originalName}
         >
           {environments.length > 0 ? (
             environments.map((x) => (

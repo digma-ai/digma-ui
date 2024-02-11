@@ -2,6 +2,7 @@ import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { dispatcher } from "../../../dispatcher";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import { usePrevious } from "../../../hooks/usePrevious";
+import { isEnvironment } from "../../../typeGuards/isEnvironment";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { isString } from "../../../typeGuards/isString";
 import { FeatureFlag } from "../../../types";
@@ -107,8 +108,9 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
 
   useEffect(() => {
     if (
-      (isString(previousEnvironment) &&
-        previousEnvironment !== config.environment) ||
+      (isEnvironment(previousEnvironment) &&
+        previousEnvironment.originalName !==
+          config.environment?.originalName) ||
       (Array.isArray(previousServices) &&
         previousServices !== props.services) ||
       (previousFilters && previousFilters !== props.filters) ||
