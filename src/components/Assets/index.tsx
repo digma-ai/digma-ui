@@ -19,6 +19,8 @@ import { AssetList } from "./AssetList";
 import { AssetTypeList } from "./AssetTypeList";
 import { AssetsFilter } from "./AssetsFilter";
 import { AssetFilterQuery } from "./AssetsFilter/types";
+import { AssetsViewScopeConfiguration } from "./AssetsViewScopeConfiguration";
+import { AssetScopeOption } from "./AssetsViewScopeConfiguration/types";
 import { NoDataMessage } from "./NoDataMessage";
 import { ServicesFilter } from "./ServicesFilter";
 import { actions } from "./actions";
@@ -31,6 +33,7 @@ export const Assets = () => {
   const [searchInputValue, setSearchInputValue] = useState("");
   const debouncedSearchInputValue = useDebounce(searchInputValue, 1000);
   const [selectedServices, setSelectedServices] = useState<string[]>();
+  const [assetScopeOption, setAssetScopeOption] = useState<AssetScopeOption>();
   const [selectedFilters, setSelectedFilters] = useState<AssetFilterQuery>();
   const config = useContext(ConfigContext);
 
@@ -113,6 +116,7 @@ export const Assets = () => {
           services={selectedServices}
           filters={selectedFilters}
           searchQuery={debouncedSearchInputValue}
+          scopeViewOptions={assetScopeOption}
         />
       );
     }
@@ -124,6 +128,7 @@ export const Assets = () => {
         services={selectedServices}
         filters={selectedFilters}
         searchQuery={debouncedSearchInputValue}
+        scopeViewOptions={assetScopeOption}
       />
     );
   };
@@ -158,6 +163,13 @@ export const Assets = () => {
           )
         )}
       </s.Header>
+      {config.scope && config.scope.span && (
+        <AssetsViewScopeConfiguration
+          onAssetViewChanged={(val) => {
+            setAssetScopeOption(val);
+          }}
+        />
+      )}
       {renderContent()}
     </s.Container>
   );

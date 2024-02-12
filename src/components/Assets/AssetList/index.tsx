@@ -18,7 +18,6 @@ import { ChevronIcon } from "../../common/icons/ChevronIcon";
 import { SortIcon } from "../../common/icons/SortIcon";
 import { Direction } from "../../common/icons/types";
 import { AssetFilterQuery } from "../AssetsFilter/types";
-import { AssetsViewConfiguration } from "../AssetsViewConfiguration";
 import { actions } from "../actions";
 import { checkIfAnyFiltersApplied, getAssetTypeInfo } from "../utils";
 import { AssetEntry as AssetEntryComponent } from "./AssetEntry";
@@ -134,7 +133,8 @@ const getData = (
   filters: AssetFilterQuery | undefined,
   services: string[] | undefined,
   isComplexFilterEnabled: boolean,
-  isDirect: boolean
+  isDirect?: boolean,
+  scopedSpanCodeObjectId?: string
 ) => {
   window.sendMessageToDigma({
     action: actions.GET_DATA,
@@ -146,6 +146,7 @@ const getData = (
         sortBy: sorting.criterion,
         sortOrder: sorting.order,
         directOnly: isDirect,
+        scopedSpanCodeObjectId,
         ...(searchQuery && searchQuery.length > 0
           ? { displayName: searchQuery }
           : {}),
@@ -167,8 +168,6 @@ export const AssetList = (props: AssetListProps) => {
   const [isInitialLoading, setIsInitialLoading] = useState(false);
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
-  const [isDirect, setIsDirect] = useState(false);
-  const previousIsDirect = usePrevious(isDirect);
   const [sorting, setSorting] = useState<Sorting>({
     criterion: SORTING_CRITERION.CRITICAL_INSIGHTS,
     order: SORTING_ORDER.DESC
@@ -190,12 +189,12 @@ export const AssetList = (props: AssetListProps) => {
   );
   const listRef = useRef<HTMLUListElement>(null);
   const config = useContext(ConfigContext);
-  previousIsDirect;
   const refreshTimerId = useRef<number>();
   const previousEnvironment = usePrevious(config.environment);
   const previousAssetTypeId = usePrevious(props.assetTypeId);
   const previousServices = usePrevious(props.services);
   const previousFilters = usePrevious(props.filters);
+  const previousViewScope = usePrevious(props.scopeViewOptions);
 
   const entries = data?.data || [];
 
@@ -239,7 +238,8 @@ export const AssetList = (props: AssetListProps) => {
       props.filters,
       props.services,
       isComplexFilterEnabled,
-      isDirect
+      props.scopeViewOptions?.isDirect,
+      props.scopeViewOptions?.scopedSpanCodeObjectId
     );
     setIsInitialLoading(true);
 
@@ -269,7 +269,7 @@ export const AssetList = (props: AssetListProps) => {
       (Array.isArray(previousServices) &&
         previousServices !== props.services) ||
       (previousFilters && previousFilters !== props.filters) ||
-      previousIsDirect !== isDirect
+      (previousViewScope && previousViewScope !== props.scopeViewOptions)
     ) {
       getData(
         props.assetTypeId,
@@ -279,7 +279,8 @@ export const AssetList = (props: AssetListProps) => {
         props.filters,
         props.services,
         isComplexFilterEnabled,
-        isDirect
+        props.scopeViewOptions?.isDirect,
+        props.scopeViewOptions?.scopedSpanCodeObjectId
       );
     }
   }, [
@@ -298,8 +299,8 @@ export const AssetList = (props: AssetListProps) => {
     props.filters,
     previousFilters,
     isComplexFilterEnabled,
-    isDirect,
-    previousIsDirect
+    previousViewScope,
+    props.scopeViewOptions
   ]);
 
   useEffect(() => {
@@ -314,7 +315,8 @@ export const AssetList = (props: AssetListProps) => {
           props.filters,
           props.services,
           isComplexFilterEnabled,
-          isDirect
+          props.scopeViewOptions?.isDirect,
+          props.scopeViewOptions?.scopedSpanCodeObjectId
         );
       }, REFRESH_INTERVAL);
     }
@@ -329,7 +331,7 @@ export const AssetList = (props: AssetListProps) => {
     props.services,
     props.filters,
     isComplexFilterEnabled,
-    isDirect
+    props.scopeViewOptions
   ]);
 
   useEffect(() => {
@@ -513,14 +515,6 @@ export const AssetList = (props: AssetListProps) => {
           })}
         </s.SortingOrderToggle>
       </s.Toolbar>
-      {config.scope && config.scope.span && (
-        <AssetsViewConfiguration
-          scope={config.scope.span}
-          onAssetViewChanged={(val: boolean) => {
-            setIsDirect(val);
-          }}
-        />
-      )}
       {renderContent()}
     </s.Container>
   );
