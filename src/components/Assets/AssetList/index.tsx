@@ -133,7 +133,8 @@ const getData = (
   searchQuery: string,
   filters: AssetFilterQuery | undefined,
   services: string[] | undefined,
-  isComplexFilterEnabled: boolean
+  isComplexFilterEnabled: boolean,
+  isDirect: boolean
 ) => {
   window.sendMessageToDigma({
     action: actions.GET_DATA,
@@ -144,6 +145,7 @@ const getData = (
         pageSize: PAGE_SIZE,
         sortBy: sorting.criterion,
         sortOrder: sorting.order,
+        directOnly: isDirect,
         ...(searchQuery && searchQuery.length > 0
           ? { displayName: searchQuery }
           : {}),
@@ -165,7 +167,8 @@ export const AssetList = (props: AssetListProps) => {
   const [isInitialLoading, setIsInitialLoading] = useState(false);
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
-  const [assetView, setAssetView] = useState<string>();
+  const [isDirect, setIsDirect] = useState(false);
+  const previousIsDirect = usePrevious(isDirect);
   const [sorting, setSorting] = useState<Sorting>({
     criterion: SORTING_CRITERION.CRITICAL_INSIGHTS,
     order: SORTING_ORDER.DESC
@@ -187,6 +190,7 @@ export const AssetList = (props: AssetListProps) => {
   );
   const listRef = useRef<HTMLUListElement>(null);
   const config = useContext(ConfigContext);
+  previousIsDirect;
   const refreshTimerId = useRef<number>();
   const previousEnvironment = usePrevious(config.environment);
   const previousAssetTypeId = usePrevious(props.assetTypeId);
@@ -234,7 +238,8 @@ export const AssetList = (props: AssetListProps) => {
       props.searchQuery,
       props.filters,
       props.services,
-      isComplexFilterEnabled
+      isComplexFilterEnabled,
+      isDirect
     );
     setIsInitialLoading(true);
 
@@ -263,7 +268,8 @@ export const AssetList = (props: AssetListProps) => {
         previousAssetTypeId !== props.assetTypeId) ||
       (Array.isArray(previousServices) &&
         previousServices !== props.services) ||
-      (previousFilters && previousFilters !== props.filters)
+      (previousFilters && previousFilters !== props.filters) ||
+      previousIsDirect !== isDirect
     ) {
       getData(
         props.assetTypeId,
@@ -272,7 +278,8 @@ export const AssetList = (props: AssetListProps) => {
         props.searchQuery,
         props.filters,
         props.services,
-        isComplexFilterEnabled
+        isComplexFilterEnabled,
+        isDirect
       );
     }
   }, [
@@ -290,7 +297,9 @@ export const AssetList = (props: AssetListProps) => {
     previousServices,
     props.filters,
     previousFilters,
-    isComplexFilterEnabled
+    isComplexFilterEnabled,
+    isDirect,
+    previousIsDirect
   ]);
 
   useEffect(() => {
@@ -304,7 +313,8 @@ export const AssetList = (props: AssetListProps) => {
           props.searchQuery,
           props.filters,
           props.services,
-          isComplexFilterEnabled
+          isComplexFilterEnabled,
+          isDirect
         );
       }, REFRESH_INTERVAL);
     }
@@ -318,7 +328,8 @@ export const AssetList = (props: AssetListProps) => {
     config.environment,
     props.services,
     props.filters,
-    isComplexFilterEnabled
+    isComplexFilterEnabled,
+    isDirect
   ]);
 
   useEffect(() => {
@@ -505,7 +516,9 @@ export const AssetList = (props: AssetListProps) => {
       {config.scope && config.scope.span && (
         <AssetsViewConfiguration
           scope={config.scope.span}
-          onAssetViewChanged={(val: string) => setAssetView(val)}
+          onAssetViewChanged={(val: boolean) => {
+            setIsDirect(val);
+          }}
         />
       )}
       {renderContent()}

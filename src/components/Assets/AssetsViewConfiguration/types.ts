@@ -1,6 +1,6 @@
 import { SpanInfo } from "../../../types";
 
 export interface AssetsViewConfigurationProps {
-  onAssetViewChanged: (val: string) => void;
+  onAssetViewChanged: (isDirect: boolean) => void;
   scope: SpanInfo | null;
 }
