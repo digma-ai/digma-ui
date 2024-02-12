@@ -46,12 +46,6 @@ export const Navigation = () => {
       !config.environment
     ) {
       setSelectedEnvironment(config.environments[0]);
-      window.sendMessageToDigma({
-        action: actions.CHANGE_ENVIRONMENT,
-        payload: {
-          environment: config.environments[0]
-        }
-      });
     }
 
     if (config.environments && config.environments.length === 0) {
@@ -91,6 +85,14 @@ export const Navigation = () => {
     const environment = environments.find(
       (x) => x.originalName === e.target.value
     );
+
+    window.sendMessageToDigma({
+      action: actions.CHANGE_ENVIRONMENT,
+      payload: {
+        environment
+      }
+    });
+
     setSelectedEnvironment(environment);
   };
 
