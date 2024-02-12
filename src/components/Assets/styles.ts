@@ -17,13 +17,9 @@ export const Container = styled.div`
 `;
 
 export const Header = styled.div`
-  padding: 8px;
-  display: flex;
-  gap: 8px;
   align-items: center;
   font-size: 16px;
-  flex-shrink: 0;
-  height: 36px;
+  padding: 8px;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -33,6 +29,14 @@ export const Header = styled.div`
         return "#dfe1e5";
     }
   }};
+`;
+
+export const HeaderItem = styled.div`
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-shrink: 0;
+  height: 36px;
 `;
 
 export const SearchInputContainer = styled.div`

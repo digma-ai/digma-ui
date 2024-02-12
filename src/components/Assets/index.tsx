@@ -136,40 +136,45 @@ export const Assets = () => {
   return (
     <s.Container>
       <s.Header>
-        Assets
-        {window.assetsSearch === true && (
-          <s.SearchInputContainer>
-            <s.SearchInputIconContainer>
-              <MagnifierIcon color={"currentColor"} size={14} />
-            </s.SearchInputIconContainer>
-            <s.SearchInput
-              placeholder={"Search"}
-              onChange={handleSearchInputChange}
+        <s.HeaderItem>
+          Assets
+          {window.assetsSearch === true && (
+            <s.SearchInputContainer>
+              <s.SearchInputIconContainer>
+                <MagnifierIcon color={"currentColor"} size={14} />
+              </s.SearchInputIconContainer>
+              <s.SearchInput
+                placeholder={"Search"}
+                onChange={handleSearchInputChange}
+              />
+            </s.SearchInputContainer>
+          )}
+          {isComplexFilterEnabled ? (
+            <AssetsFilter
+              onApply={handleApplyFilters}
+              filters={selectedFilters}
             />
-          </s.SearchInputContainer>
-        )}
-        {isComplexFilterEnabled ? (
-          <AssetsFilter
-            onApply={handleApplyFilters}
-            filters={selectedFilters}
-          />
-        ) : (
-          // TODO: Remove this clause when the feature flag is removed
-          isServiceFilterVisible && (
-            <ServicesFilter
-              onChange={handleServicesChange}
-              selectedServices={selectedServices}
+          ) : (
+            // TODO: Remove this clause when the feature flag is removed
+            isServiceFilterVisible && (
+              <ServicesFilter
+                onChange={handleServicesChange}
+                selectedServices={selectedServices}
+              />
+            )
+          )}
+        </s.HeaderItem>
+        {config.scope && config.scope.span && (
+          <s.HeaderItem>
+            <AssetsViewScopeConfiguration
+              onAssetViewChanged={(val) => {
+                setAssetScopeOption(val);
+              }}
             />
-          )
+          </s.HeaderItem>
         )}
       </s.Header>
-      {config.scope && config.scope.span && (
-        <AssetsViewScopeConfiguration
-          onAssetViewChanged={(val) => {
-            setAssetScopeOption(val);
-          }}
-        />
-      )}
+
       {renderContent()}
     </s.Container>
   );
