@@ -28,6 +28,8 @@ export const Tabs = styled.div`
 `;
 
 export const Tab = styled.div<TabProps>`
+  cursor: pointer;
   border: ${({ theme, $isSelected }) =>
     $isSelected ? `2px solid ${theme.colors.stroke.secondary}` : "none"};
+  opacity: ${({ $isDisabled }) => ($isDisabled ? 0.5 : 1)};
 `;

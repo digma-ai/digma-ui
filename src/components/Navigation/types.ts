@@ -1,23 +1,16 @@
-export enum View {
-  ASSETS = "assets",
-  INSIGHTS = "insights",
-  TESTS = "tests",
-  ERRORS = "errors"
-}
-
 export interface TabData {
   title: string;
-  id: View;
+  id: string;
   isSelected?: boolean;
+  isDisabled?: boolean;
+  hasNewData?: boolean;
 }
 
 export interface TabProps {
   $isSelected: boolean;
+  $isDisabled: boolean;
 }
 
-export interface SetViewPayload {
-  view: {
-    id: View;
-    title: string;
-  };
+export interface SetViewsPayload {
+  views: TabData[];
 }

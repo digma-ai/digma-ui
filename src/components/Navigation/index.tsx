@@ -1,4 +1,4 @@
-import { ChangeEvent, useContext, useEffect, useMemo, useState } from "react";
+import { ChangeEvent, useContext, useEffect, useState } from "react";
 import { actions as globalActions } from "../../actions";
 import { SLACK_WORKSPACE_URL } from "../../constants";
 import { dispatcher } from "../../dispatcher";
@@ -6,37 +6,10 @@ import { openURLInDefaultBrowser } from "../../utils/openURLInDefaultBrowser";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { actions } from "./actions";
 import * as s from "./styles";
-import { SetViewPayload, TabData, View } from "./types";
-
-const defaultTabs: TabData[] = [
-  {
-    title: "Insights",
-    id: View.INSIGHTS,
-    isSelected: true
-  },
-  {
-    title: "Assets",
-    id: View.ASSETS
-  },
-  {
-    title: "Errors",
-    id: View.ERRORS
-  },
-  {
-    title: "Tests",
-    id: View.TESTS
-  }
-];
-
-const updateTabs = (tabToSelect: TabData): TabData[] =>
-  defaultTabs.map((tab) => ({
-    ...tab,
-    title: tab.id === tabToSelect.id ? tabToSelect.title : tab.title,
-    isSelected: tab.id === tabToSelect.id
-  }));
+import { SetViewsPayload, TabData } from "./types";
 
 export const Navigation = () => {
-  const [tabs, setTabs] = useState<TabData[]>(defaultTabs);
+  const [tabs, setTabs] = useState<TabData[]>();
   const config = useContext(ConfigContext);
   const [selectedEnvironment, setSelectedEnvironment] = useState(
     config.environment
@@ -45,25 +18,20 @@ export const Navigation = () => {
   const environments = config.environments || [];
   const scope: { displayName: string; spanCodeObjectId: string } | null = null;
 
-  const selectedTab = useMemo(
-    () => tabs.find((tab) => tab.isSelected) || tabs[0],
-    [tabs]
-  );
-
   useEffect(() => {
     window.sendMessageToDigma({
       action: actions.INITIALIZE
     });
 
     const handleViewData = (data: unknown) => {
-      const payload = data as SetViewPayload;
-      setTabs(updateTabs(payload.view));
+      const payload = data as SetViewsPayload;
+      setTabs(payload.views);
     };
 
-    dispatcher.addActionListener(actions.SET_VIEW, handleViewData);
+    dispatcher.addActionListener(actions.SET_VIEWS, handleViewData);
 
     return () => {
-      dispatcher.removeActionListener(actions.SET_VIEW, handleViewData);
+      dispatcher.removeActionListener(actions.SET_VIEWS, handleViewData);
     };
   }, []);
 
@@ -160,13 +128,11 @@ export const Navigation = () => {
     openURLInDefaultBrowser(SLACK_WORKSPACE_URL);
   };
 
-  const handleTabClick = (tab: TabData) => {
-    setTabs(updateTabs(tab));
-
+  const handleTabClick = (tabId: string) => {
     window.sendMessageToDigma({
       action: actions.CHANGE_VIEW,
       payload: {
-        view: tab.id
+        view: tabId
       }
     });
   };
@@ -222,15 +188,18 @@ export const Navigation = () => {
         <button onClick={handleSlackLinkClick}>Digma channel</button>
       </s.Row>
       <s.Row>
-        {tabs.map((tab) => (
-          <s.Tab
-            key={tab.id}
-            $isSelected={tab.id === selectedTab.id}
-            onClick={() => handleTabClick(tab)}
-          >
-            {tab.title}
-          </s.Tab>
-        ))}
+        {tabs &&
+          tabs.map((tab) => (
+            <s.Tab
+              key={tab.id}
+              $isSelected={Boolean(tab.isSelected)}
+              $isDisabled={Boolean(tab.isDisabled)}
+              onClick={() => handleTabClick(tab.id)}
+            >
+              {tab.title}
+              {tab.hasNewData && " (new)"}
+            </s.Tab>
+          ))}
       </s.Row>
     </s.Container>
   );
