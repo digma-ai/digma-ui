@@ -18,6 +18,7 @@ import { ChevronIcon } from "../../common/icons/ChevronIcon";
 import { SortIcon } from "../../common/icons/SortIcon";
 import { Direction } from "../../common/icons/types";
 import { AssetFilterQuery } from "../AssetsFilter/types";
+import { AssetsViewConfiguration } from "../AssetsViewConfiguration";
 import { actions } from "../actions";
 import { checkIfAnyFiltersApplied, getAssetTypeInfo } from "../utils";
 import { AssetEntry as AssetEntryComponent } from "./AssetEntry";
@@ -164,6 +165,7 @@ export const AssetList = (props: AssetListProps) => {
   const [isInitialLoading, setIsInitialLoading] = useState(false);
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
+  const [assetView, setAssetView] = useState<string>();
   const [sorting, setSorting] = useState<Sorting>({
     criterion: SORTING_CRITERION.CRITICAL_INSIGHTS,
     order: SORTING_ORDER.DESC
@@ -500,6 +502,12 @@ export const AssetList = (props: AssetListProps) => {
           })}
         </s.SortingOrderToggle>
       </s.Toolbar>
+      {config.scope && config.scope.span && (
+        <AssetsViewConfiguration
+          scope={config.scope.span}
+          onAssetViewChanged={(val: string) => setAssetView(val)}
+        />
+      )}
       {renderContent()}
     </s.Container>
   );

@@ -46,6 +46,11 @@ export const Container = styled.div<ContainerProps>`
         return "#fff";
     }
   }};
+  ${({ $disabled }) => {
+    if ($disabled) {
+      return "pointer-events: none;";
+    }
+  }}
 `;
 
 export const SwitchContainer = styled.div<SwitchContainerProps>`

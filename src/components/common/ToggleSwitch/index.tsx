@@ -14,6 +14,7 @@ export const ToggleSwitch = (props: ToggleSwitchProps) => {
       onClick={handleContainerClick}
       className={props.className}
       $size={size}
+      $disabled={props.disabled}
     >
       {(!props.labelPosition || props.labelPosition === "start") && props.label}
       <s.SwitchContainer $isChecked={props.checked} $size={size}>
