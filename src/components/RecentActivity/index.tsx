@@ -209,7 +209,10 @@ export const RecentActivity = (props: RecentActivityProps) => {
       action: actions.GO_TO_TRACE,
       payload: {
         traceId,
-        span
+        span: {
+          scopeId: span.scopeId,
+          displayText: span.displayText
+        }
       }
     });
   };
