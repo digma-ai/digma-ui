@@ -28,8 +28,8 @@ export const AssetsViewScopeConfiguration = (
 
   return (
     <s.Container>
-      <s.Item $position="left">Show for selected assets</s.Item>
-      <s.Item $position="right">
+      <s.Item>Show for selected assets</s.Item>
+      <s.Item>
         <ToggleSwitch
           label={"Show direct only"}
           labelPosition={"start"}
