@@ -8,6 +8,8 @@ import { isUndefined } from "../../../typeGuards/isUndefined";
 import { InsightType } from "../../../types";
 import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
+import { actions } from "../../Assets/actions";
+import { trackingEvents } from "../../Assets/tracking";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { FilterButton } from "../../common/FilterButton";
 import { NewButton } from "../../common/NewButton";
@@ -17,8 +19,6 @@ import { WrenchIcon } from "../../common/icons/12px/WrenchIcon";
 import { EndpointIcon } from "../../common/icons/EndpointIcon";
 import { SparkleIcon } from "../../common/icons/SparkleIcon";
 import { IconProps } from "../../common/icons/types";
-import { actions } from "../actions";
-import { trackingEvents } from "../tracking";
 import * as s from "./styles";
 import {
   AssetFilterCategory,
@@ -59,7 +59,7 @@ const renderFilterCategory = (
   );
 };
 
-export const AssetsFilter = (props: AssetsFilterProps) => {
+export const InsightsFilter = (props: AssetsFilterProps) => {
   const [data, setData] = useState<{ data: AssetsFiltersData | null }>();
   const previousData = usePrevious(data);
   const [isOpen, setIsOpen] = useState(false);

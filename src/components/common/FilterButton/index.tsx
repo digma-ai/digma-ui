@@ -1,5 +1,5 @@
-import { isNumber } from "../../../../typeGuards/isNumber";
-import { FunnelIcon } from "../../../common/icons/FunnelIcon";
+import { isNumber } from "../../../typeGuards/isNumber";
+import { FunnelIcon } from "../icons/FunnelIcon";
 import * as s from "./styles";
 import { FilterButtonProps } from "./types";
 
