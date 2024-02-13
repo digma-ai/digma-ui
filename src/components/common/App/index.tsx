@@ -197,20 +197,20 @@ export const App = (props: AppProps) => {
       }
     };
 
-    const handleSetSelectedCodeScope = (data: unknown) => {
-      if (isObject(data) && isObject(data.scope) && isString(data.scope.type)) {
+    const handleSetIsMicrometerProject = (data: unknown) => {
+      if (isObject(data)) {
         setConfig((config) => ({
           ...config,
-          scope: data.scope as Scope
+          isMicrometerProject: data.isMicrometerProject as boolean
         }));
       }
     };
 
-    const handleSetIsMicrometerProject = (data: unknown) => {
-      if (isObject(data) && isBoolean(data.isMicrometerProject)) {
+    const handleSetScope = (data: unknown) => {
+      if (isObject(data)) {
         setConfig((config) => ({
           ...config,
-          isMicrometerProject: data.isMicrometerProject as boolean
+          scope: data.scope as Scope
         }));
       }
     };
@@ -265,13 +265,10 @@ export const App = (props: AppProps) => {
       handleSetEnvironments
     );
     dispatcher.addActionListener(
-      actions.SET_SELECTED_CODE_SCOPE,
-      handleSetSelectedCodeScope
-    );
-    dispatcher.addActionListener(
       actions.SET_IS_MICROMETER_PROJECT,
       handleSetIsMicrometerProject
     );
+    dispatcher.addActionListener(actions.SET_SCOPE, handleSetScope);
 
     return () => {
       dispatcher.removeActionListener(actions.SET_THEME, handleSetTheme);
@@ -330,13 +327,10 @@ export const App = (props: AppProps) => {
         handleSetEnvironments
       );
       dispatcher.removeActionListener(
-        actions.SET_SELECTED_CODE_SCOPE,
-        handleSetSelectedCodeScope
-      );
-      dispatcher.removeActionListener(
         actions.SET_IS_MICROMETER_PROJECT,
         handleSetIsMicrometerProject
       );
+      dispatcher.removeActionListener(actions.SET_SCOPE, handleSetScope);
     };
   }, []);
 

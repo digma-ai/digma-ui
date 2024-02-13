@@ -60,3 +60,7 @@ export interface SpanInstanceInfo {
   startTime: string;
   duration: Duration;
 }
+
+export interface SetObservabilityPayload {
+  isObservabilityEnabled: boolean;
+}

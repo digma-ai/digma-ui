@@ -33,8 +33,23 @@ export interface Environment {
   name: string;
 }
 
-export interface Scope {
+export interface CodeDetails {
+  displayName: string;
+  codeObjectId: string;
   type: string;
+}
+
+export interface Scope {
+  span: {
+    displayName: string;
+    spanCodeObjectId: string;
+    serviceName: string | null;
+  } | null;
+  code: {
+    relatedCodeDetailsList: CodeDetails[];
+    codeDetailsList: CodeDetails[];
+    isAlreadyAtCode: boolean;
+  };
 }
 
 export interface ConfigContextData {

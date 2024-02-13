@@ -33,3 +33,9 @@ export const Tab = styled.div<TabProps>`
     $isSelected ? `2px solid ${theme.colors.stroke.secondary}` : "none"};
   opacity: ${({ $isDisabled }) => ($isDisabled ? 0.5 : 1)};
 `;
+
+export const Menu = styled.div`
+  display: flex;
+  flex-direction: column;
+  border: ${({ theme }) => `2px solid ${theme.colors.stroke.secondary}`};
+`;

@@ -2,11 +2,67 @@ import { ChangeEvent, useContext, useEffect, useState } from "react";
 import { actions as globalActions } from "../../actions";
 import { SLACK_WORKSPACE_URL } from "../../constants";
 import { dispatcher } from "../../dispatcher";
+import { isNull } from "../../typeGuards/isNull";
+import { SetObservabilityPayload } from "../../types";
 import { openURLInDefaultBrowser } from "../../utils/openURLInDefaultBrowser";
 import { ConfigContext } from "../common/App/ConfigContext";
+import { CodeDetails, Scope } from "../common/App/types";
+import { CodeButtonMenu } from "./CodeButtonMenu";
+import { TargetButtonMenu } from "./TargetButtonMenu";
 import { actions } from "./actions";
 import * as s from "./styles";
-import { SetViewsPayload, TabData } from "./types";
+import {
+  AddAnnotationPayload,
+  AutofixMissingDependencyPayload,
+  ChangeEnvironmentPayload,
+  ChangeScopePayload,
+  ChangeViewPayload,
+  CodeContext,
+  GoToCodeLocationPayload,
+  OpenDashboardPayload,
+  OpenDocumentationPayload,
+  SetViewsPayload,
+  TabData
+} from "./types";
+
+const getCodeButtonState = (codeContext?: CodeContext): string => {
+  if (!codeContext || codeContext.methodId === null) {
+    return " (disabled)";
+  }
+
+  if (codeContext.isInstrumented === false) {
+    return " (no observability)";
+  }
+
+  if ([null, true].includes(codeContext.isInstrumented)) {
+    if (codeContext.spans.length === 0) {
+      return " (no data)";
+    } else {
+      return " (has data)";
+    }
+  }
+
+  return "";
+};
+
+const getTargetButtonTooltip = (scope?: Scope): string => {
+  if (!scope) {
+    return "";
+  }
+
+  if (scope.code.isAlreadyAtCode) {
+    return " (Already at code)";
+  }
+
+  if (
+    [...scope.code.codeDetailsList, scope.code.relatedCodeDetailsList]
+      .length === 0
+  ) {
+    return " (Code not found)";
+  } else {
+    return " (Navigate to code)";
+  }
+};
 
 export const Navigation = () => {
   const [tabs, setTabs] = useState<TabData[]>();
@@ -14,6 +70,11 @@ export const Navigation = () => {
   const [selectedEnvironment, setSelectedEnvironment] = useState(
     config.environment
   );
+  const [codeContext, setCodeContext] = useState<CodeContext>();
+  const [isCodeButtonMenuOpen, setIsCodeButtonMenuOpen] = useState(false);
+  const [isTargetButtonMenuOpen, setIsTargetButtonMenuOpen] = useState(false);
+  const [isAutofixing, setIsAutofixing] = useState(false);
+  const [isAnnotationAdding, setIsAnnotationAdding] = useState(false);
 
   const environments = config.environments || [];
   const scope: { displayName: string; spanCodeObjectId: string } | null = null;
@@ -28,10 +89,23 @@ export const Navigation = () => {
       setTabs(payload.views);
     };
 
+    const handleCodeContextData = (data: unknown) => {
+      const payload = data as CodeContext;
+      setCodeContext(payload);
+    };
+
     dispatcher.addActionListener(actions.SET_VIEWS, handleViewData);
+    dispatcher.addActionListener(
+      actions.SET_CODE_CONTEXT,
+      handleCodeContextData
+    );
 
     return () => {
       dispatcher.removeActionListener(actions.SET_VIEWS, handleViewData);
+      dispatcher.removeActionListener(
+        actions.SET_CODE_CONTEXT,
+        handleCodeContextData
+      );
     };
   }, []);
 
@@ -51,10 +125,24 @@ export const Navigation = () => {
     if (config.environments && config.environments.length === 0) {
       setSelectedEnvironment(undefined);
     }
-  }, [config]);
+  }, [config.environments, config.environment]);
+
+  useEffect(() => {
+    setSelectedEnvironment(config.environment);
+  }, [config.environment]);
+
+  useEffect(() => {
+    setIsAutofixing(false);
+    setIsAnnotationAdding(false);
+    setIsCodeButtonMenuOpen(false);
+  }, [codeContext?.methodId]);
+
+  useEffect(() => {
+    setIsTargetButtonMenuOpen(false);
+  }, [config.scope]);
 
   const handleDashboardButtonClick = () => {
-    window.sendMessageToDigma({
+    window.sendMessageToDigma<OpenDashboardPayload>({
       action: globalActions.OPEN_DASHBOARD,
       payload: {
         environment: selectedEnvironment
@@ -63,7 +151,7 @@ export const Navigation = () => {
   };
 
   const handleHomeButtonClick = () => {
-    window.sendMessageToDigma({
+    window.sendMessageToDigma<ChangeScopePayload>({
       action: actions.CHANGE_SCOPE,
       payload: {
         scope: {
@@ -74,11 +162,31 @@ export const Navigation = () => {
   };
 
   const handleTargetButtonClick = () => {
-    // TODO
+    setIsCodeButtonMenuOpen(false);
+
+    if (config.scope?.code.codeDetailsList.length === 1) {
+      handleGoToCodeLocation(config.scope.code.codeDetailsList[0]);
+    }
+
+    if (
+      config.scope &&
+      [
+        ...config.scope.code.codeDetailsList,
+        ...config.scope.code.relatedCodeDetailsList
+      ].length > 0
+    ) {
+      setIsTargetButtonMenuOpen(!isTargetButtonMenuOpen);
+    }
   };
 
   const handleCodeButtonClick = () => {
-    // TODO
+    if (codeContext?.spans.length === 1) {
+      const { spanCodeObjectId, serviceName } = codeContext.spans[0];
+      changeScope(spanCodeObjectId, serviceName);
+    } else {
+      setIsTargetButtonMenuOpen(false);
+      setIsCodeButtonMenuOpen(!isCodeButtonMenuOpen);
+    }
   };
 
   const handleEnvironmentChange = (e: ChangeEvent<HTMLSelectElement>) => {
@@ -86,7 +194,11 @@ export const Navigation = () => {
       (x) => x.originalName === e.target.value
     );
 
-    window.sendMessageToDigma({
+    if (!environment) {
+      return;
+    }
+
+    window.sendMessageToDigma<ChangeEnvironmentPayload>({
       action: actions.CHANGE_ENVIRONMENT,
       payload: {
         environment
@@ -97,7 +209,7 @@ export const Navigation = () => {
   };
 
   const handleObservabilityChange = (e: ChangeEvent<HTMLInputElement>) => {
-    window.sendMessageToDigma({
+    window.sendMessageToDigma<SetObservabilityPayload>({
       action: globalActions.SET_OBSERVABILITY,
       payload: {
         isObservabilityEnabled: e.target.checked
@@ -118,7 +230,7 @@ export const Navigation = () => {
   };
 
   const handleInsightsOverviewClick = () => {
-    window.sendMessageToDigma({
+    window.sendMessageToDigma<OpenDocumentationPayload>({
       action: globalActions.OPEN_DOCUMENTATION,
       payload: {
         page: "environment-types"
@@ -131,7 +243,7 @@ export const Navigation = () => {
   };
 
   const handleTabClick = (tabId: string) => {
-    window.sendMessageToDigma({
+    window.sendMessageToDigma<ChangeViewPayload>({
       action: actions.CHANGE_VIEW,
       payload: {
         view: tabId
@@ -139,24 +251,105 @@ export const Navigation = () => {
     });
   };
 
+  const handleObservabilityAdd = (methodId: string) => {
+    window.sendMessageToDigma<AddAnnotationPayload>({
+      action: actions.ADD_ANNOTATION,
+      payload: {
+        methodId
+      }
+    });
+    setIsAnnotationAdding(true);
+  };
+
+  const handleAutofix = (methodId: string) => {
+    window.sendMessageToDigma<AutofixMissingDependencyPayload>({
+      action: actions.AUTOFIX_MISSING_DEPENDENCY,
+      payload: {
+        methodId
+      }
+    });
+    setIsAutofixing(true);
+  };
+
+  const changeScope = (
+    spanCodeObjectId: string,
+    serviceName: string | null
+  ) => {
+    window.sendMessageToDigma<ChangeScopePayload>({
+      action: actions.CHANGE_SCOPE,
+      payload: {
+        scope: {
+          span: {
+            spanCodeObjectId,
+            serviceName
+          }
+        }
+      }
+    });
+    setIsCodeButtonMenuOpen(false);
+  };
+
+  const handleGoToCodeLocation = (codeDetails: CodeDetails) => {
+    window.sendMessageToDigma<GoToCodeLocationPayload>({
+      action: actions.GO_TO_CODE_LOCATION,
+      payload: {
+        codeDetails
+      }
+    });
+    setIsCodeButtonMenuOpen(false);
+  };
+
+  const codeButtonTooltip = getCodeButtonState(codeContext);
+
+  const targetButtonTooltip = getTargetButtonTooltip(config.scope);
+
+  const isTargetButtonEnabled = Boolean(
+    config.scope?.span &&
+      [
+        ...config.scope.code.codeDetailsList,
+        ...config.scope.code.relatedCodeDetailsList
+      ].length > 0 &&
+      !config.scope.code.isAlreadyAtCode
+  );
+
   return (
     <s.Container>
       <s.Row>
-        <button
-          disabled={!selectedEnvironment}
-          onClick={handleDashboardButtonClick}
-        >
-          Dashboard
-        </button>
         <button disabled={!scope} onClick={handleHomeButtonClick}>
           Home
         </button>
         <span>Scope:</span>
         <span>{scope ? scope : "Home"}</span>
-        <button disabled={!scope} onClick={handleTargetButtonClick}>
-          Target
+        <button
+          disabled={!isTargetButtonEnabled}
+          onClick={handleTargetButtonClick}
+        >
+          Target{targetButtonTooltip}
         </button>
-        <button onClick={handleCodeButtonClick}>Code</button>
+        <button
+          disabled={isNull(codeContext?.methodId)}
+          onClick={handleCodeButtonClick}
+        >
+          Code{codeButtonTooltip}
+        </button>
+      </s.Row>
+      <s.Row>
+        {codeContext && isCodeButtonMenuOpen && (
+          <CodeButtonMenu
+            codeContext={codeContext}
+            isAutofixing={isAutofixing}
+            isAnnotationAdding={isAnnotationAdding}
+            onAutofix={handleAutofix}
+            onObservabilityAdd={handleObservabilityAdd}
+            onScopeChange={changeScope}
+          />
+        )}
+        {config.scope && isTargetButtonMenuOpen && (
+          <TargetButtonMenu
+            scope={config.scope}
+            onGoToCodeLocation={handleGoToCodeLocation}
+          />
+        )}
       </s.Row>
       <s.Row>
         <span>Environments</span>
@@ -175,6 +368,12 @@ export const Navigation = () => {
             <option>No environments</option>
           )}
         </select>
+        <button
+          disabled={!selectedEnvironment}
+          onClick={handleDashboardButtonClick}
+        >
+          Dashboard
+        </button>
       </s.Row>
       <s.Row>
         <input
@@ -191,17 +390,19 @@ export const Navigation = () => {
       </s.Row>
       <s.Row>
         {tabs &&
-          tabs.map((tab) => (
-            <s.Tab
-              key={tab.id}
-              $isSelected={Boolean(tab.isSelected)}
-              $isDisabled={Boolean(tab.isDisabled)}
-              onClick={() => handleTabClick(tab.id)}
-            >
-              {tab.title}
-              {tab.hasNewData && " (new)"}
-            </s.Tab>
-          ))}
+          tabs
+            .filter((x) => !x.isHidden)
+            .map((tab) => (
+              <s.Tab
+                key={tab.id}
+                $isSelected={tab.isSelected}
+                $isDisabled={tab.isDisabled}
+                onClick={() => handleTabClick(tab.id)}
+              >
+                {tab.title}
+                {tab.hasNewData && " (*)"}
+              </s.Tab>
+            ))}
       </s.Row>
     </s.Container>
   );
