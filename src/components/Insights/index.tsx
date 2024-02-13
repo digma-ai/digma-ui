@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { actions as globalActions } from "../../actions";
 import { SLACK_WORKSPACE_URL } from "../../constants";
-import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
 import { trackingEvents as globalTrackingEvents } from "../../trackingEvents";
 import { isNumber } from "../../typeGuards/isNumber";
@@ -19,9 +18,11 @@ import { LightBulbSmallCrossedIcon } from "../common/icons/LightBulbSmallCrossed
 import { LightBulbSmallIcon } from "../common/icons/LightBulbSmallIcon";
 import { OpenTelemetryLogoCrossedSmallIcon } from "../common/icons/OpenTelemetryLogoCrossedSmallIcon";
 import { SlackLogoIcon } from "../common/icons/SlackLogoIcon";
-import { InsightList } from "./InsightList";
+import { InsightsCatalog } from "./InsightsCatalog";
+import { InsightsQuery } from "./InsightsCatalog/types";
 import { Preview } from "./Preview";
 import { actions } from "./actions";
+import { useInsightsData } from "./common/useInsightsData";
 import * as s from "./styles";
 import { BottleneckInsightTicket } from "./tickets/BottleneckInsightTicket";
 import { EndpointHighNumberOfQueriesInsightTicket } from "./tickets/EndpointHighNumberOfQueriesInsightTicket";
@@ -125,76 +126,31 @@ const renderInsightTicket = (
   return null;
 };
 
+const sendMessage = (action: string, data?: any) => {
+  return window.sendMessageToDigma({
+    action,
+    payload: {
+      ...data
+    }
+  });
+};
+
 export const Insights = (props: InsightsProps) => {
-  const [data, setData] = useState<InsightsData>();
-  const previousData = usePrevious(data);
-  const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
-  const [isInitialLoading, setIsInitialLoading] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [isAutofixing, setIsAutofixing] = useState(false);
+  const [query, setQuery] = useState<InsightsQuery>();
+  const { isLoading, isInitialLoading, data, previousData } = useInsightsData({
+    refreshInterval: REFRESH_INTERVAL,
+    data: props.data,
+    query
+  });
   const [infoToOpenJiraTicket, setInfoToOpenJiraTicket] =
     useState<InsightTicketInfo<GenericCodeObjectInsight>>();
   const config = useContext(ConfigContext);
   const previousUserRegistrationEmail = usePrevious(
     config.userRegistrationEmail
   );
-  useState(false);
   const [isRegistrationInProgress, setIsRegistrationInProgress] =
     useState(false);
-
-  useEffect(() => {
-    window.sendMessageToDigma({
-      action: actions.INITIALIZE
-    });
-
-    window.sendMessageToDigma({
-      action: actions.GET_DATA
-    });
-    setIsInitialLoading(true);
-
-    const handleInsightsData = (data: unknown, timeStamp: number) => {
-      const insightsData = data as InsightsData;
-
-      setIsLoading(insightsData.insightsStatus === InsightsStatus.LOADING);
-
-      if (insightsData.insightsStatus !== InsightsStatus.LOADING) {
-        setData(insightsData);
-      }
-      setLastSetDataTimeStamp(timeStamp);
-    };
-
-    dispatcher.addActionListener(actions.SET_DATA, handleInsightsData);
-
-    return () => {
-      dispatcher.removeActionListener(actions.SET_DATA, handleInsightsData);
-    };
-  }, []);
-
-  useEffect(() => {
-    const timerId = window.setTimeout(() => {
-      window.sendMessageToDigma({
-        action: actions.GET_DATA
-      });
-    }, REFRESH_INTERVAL);
-
-    return () => {
-      window.clearTimeout(timerId);
-    };
-  }, [lastSetDataTimeStamp]);
-
-  useEffect(() => {
-    if (!props.data) {
-      return;
-    }
-
-    setData(props.data);
-  }, [props.data]);
-
-  useEffect(() => {
-    if (!previousData && data) {
-      setIsInitialLoading(false);
-    }
-  }, [previousData, data]);
 
   useEffect(() => {
     if (previousData && data && previousData.assetId !== data.assetId) {
@@ -216,12 +172,7 @@ export const Insights = (props: InsightsProps) => {
   ]);
 
   const handleMethodSelect = (method: Method) => {
-    window.sendMessageToDigma({
-      action: actions.GO_TO_METHOD,
-      payload: {
-        ...method
-      }
-    });
+    sendMessage(actions.GO_TO_METHOD, method);
   };
 
   const handleSlackLinkClick = () => {
@@ -229,21 +180,15 @@ export const Insights = (props: InsightsProps) => {
   };
 
   const handleAddAnnotationButtonClick = () => {
-    window.sendMessageToDigma({
-      action: actions.ADD_ANNOTATION,
-      payload: {
-        methodId: data?.assetId
-      }
+    sendMessage(actions.ADD_ANNOTATION, {
+      methodId: data?.assetId
     });
   };
 
   const handleAutofixLinkClick = () => {
     if (!isAutofixing) {
-      window.sendMessageToDigma({
-        action: actions.AUTOFIX_MISSING_DEPENDENCY,
-        payload: {
-          methodId: data?.assetId
-        }
+      sendMessage(actions.AUTOFIX_MISSING_DEPENDENCY, {
+        methodId: data?.assetId
       });
       setIsAutofixing(true);
     }
@@ -254,9 +199,7 @@ export const Insights = (props: InsightsProps) => {
       origin: "insights"
     });
 
-    window.sendMessageToDigma({
-      action: globalActions.OPEN_TROUBLESHOOTING_GUIDE
-    });
+    sendMessage(globalActions.OPEN_TROUBLESHOOTING_GUIDE);
   };
 
   const handleJiraTicketPopupOpen = (
@@ -271,12 +214,9 @@ export const Insights = (props: InsightsProps) => {
   };
 
   const handleRegistrationSubmit = (formData: RegistrationFormValues) => {
-    window.sendMessageToDigma({
-      action: globalActions.REGISTER,
-      payload: {
-        ...formData,
-        scope: "insights view jira ticket info"
-      }
+    sendMessage(globalActions.REGISTER, {
+      ...formData,
+      scope: "insights view jira ticket info"
     });
 
     setIsRegistrationInProgress(true);
@@ -295,17 +235,12 @@ export const Insights = (props: InsightsProps) => {
 
     if (data?.viewMode === ViewMode.INSIGHTS && data.assetId) {
       return (
-        <InsightList
-          key={data.assetId}
-          insights={data.insights}
-          spans={data.spans}
-          environment={data.environment}
-          assetId={data.assetId}
-          serviceName={data.serviceName}
-          hasMissingDependency={data.hasMissingDependency}
-          canInstrumentMethod={data.canInstrumentMethod}
-          hasObservability={!data.needsObservabilityFix}
+        <InsightsCatalog
+          data={{ items: data, totalCount: 100 }}
           onJiraTicketCreate={handleJiraTicketPopupOpen}
+          loadData={(query) => {
+            setQuery(query);
+          }}
         />
       );
     }
