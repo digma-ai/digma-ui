@@ -1,12 +1,8 @@
 import { useContext, useEffect, useState } from "react";
-import { SpanInfo } from "../../../types";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { ToggleSwitch } from "../../common/ToggleSwitch";
 import * as s from "./styles";
 import { AssetsViewConfigurationProps as AssetsViewScopeConfigurationProps } from "./types";
-
-const isEntrySpan = (spanInfo?: SpanInfo) =>
-  !!(spanInfo?.kind && ["Server", "Consumer"].includes(spanInfo.kind));
 
 export const AssetsViewScopeConfiguration = (
   props: AssetsViewScopeConfigurationProps
@@ -16,7 +12,7 @@ export const AssetsViewScopeConfiguration = (
   const { scope } = useContext(ConfigContext);
 
   useEffect(() => {
-    const isEntryPoint = !scope || isEntrySpan(scope.span);
+    const isEntryPoint = !scope || scope.span?.role === "Entry";
 
     props.onAssetViewChanged({
       scopedSpanCodeObjectId: scope?.span?.spanCodeObjectId,

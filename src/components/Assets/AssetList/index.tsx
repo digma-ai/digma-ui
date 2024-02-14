@@ -353,7 +353,8 @@ export const AssetList = (props: AssetListProps) => {
     config.environment?.originalName,
     props.searchQuery,
     sorting,
-    props.assetTypeId
+    props.assetTypeId,
+    props.scopeViewOptions
   ]);
 
   useEffect(() => {
@@ -363,7 +364,8 @@ export const AssetList = (props: AssetListProps) => {
     props.searchQuery,
     sorting,
     page,
-    props.assetTypeId
+    props.assetTypeId,
+    props.scopeViewOptions
   ]);
 
   const handleBackButtonClick = () => {
