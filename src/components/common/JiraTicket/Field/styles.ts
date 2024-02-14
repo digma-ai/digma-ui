@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { redScale } from "../../../common/App/getTheme";
+import { redScale } from "../../../common/App/v2colors";
 import { ButtonContainerProps, ContainerProps, ContentProps } from "./types";
 
 export const Container = styled.div<ContainerProps>`

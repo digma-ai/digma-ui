@@ -18,8 +18,8 @@ export const initializeDigmaMessageListener = (
   });
 };
 
-export const sendMessage = (
-  message: DigmaOutgoingMessageData
+export const sendMessage = <T>(
+  message: DigmaOutgoingMessageData<T>
 ): string | undefined => {
   console.debug("Message to send:", message);
 

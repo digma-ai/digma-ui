@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { grayScale, primaryScale } from "../App/getTheme";
+import { grayScale, primaryScale } from "../App/v2colors";
 import {
   ButtonProps,
   ChevronIconContainerProps,

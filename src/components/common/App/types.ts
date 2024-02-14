@@ -33,8 +33,23 @@ export interface Environment {
   name: string;
 }
 
-export interface Scope {
+export interface CodeDetails {
+  displayName: string;
+  codeObjectId: string;
   type: string;
+}
+
+export interface Scope {
+  span: {
+    displayName: string;
+    spanCodeObjectId: string;
+    serviceName: string | null;
+  } | null;
+  code: {
+    relatedCodeDetailsList: CodeDetails[];
+    codeDetailsList: CodeDetails[];
+    isAlreadyAtCode: boolean;
+  };
 }
 
 export interface ConfigContextData {
@@ -49,7 +64,7 @@ export interface ConfigContextData {
   isDockerComposeInstalled: boolean;
   userEmail: string;
   userRegistrationEmail: string;
-  environment: string;
+  environment: Environment | undefined;
   backendInfo: BackendInfo | undefined;
   environments: Environment[] | undefined;
   scope: Scope | undefined;

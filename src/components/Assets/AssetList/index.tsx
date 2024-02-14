@@ -3,6 +3,7 @@ import { DefaultTheme, useTheme } from "styled-components";
 import { dispatcher } from "../../../dispatcher";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import { usePrevious } from "../../../hooks/usePrevious";
+import { isEnvironment } from "../../../typeGuards/isEnvironment";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { isString } from "../../../typeGuards/isString";
 import { FeatureFlag } from "../../../types";
@@ -252,8 +253,9 @@ export const AssetList = (props: AssetListProps) => {
   useEffect(() => {
     if (
       (isNumber(previousPage) && previousPage !== page) ||
-      (isString(previousEnvironment) &&
-        previousEnvironment !== config.environment) ||
+      (isEnvironment(previousEnvironment) &&
+        previousEnvironment.originalName !==
+          config.environment?.originalName) ||
       (previousSorting && previousSorting !== sorting) ||
       (isString(previousSearchQuery) &&
         previousSearchQuery !== props.searchQuery) ||
@@ -313,7 +315,6 @@ export const AssetList = (props: AssetListProps) => {
     page,
     sorting,
     props.searchQuery,
-    config.environment,
     props.services,
     props.filters,
     isComplexFilterEnabled
@@ -333,11 +334,22 @@ export const AssetList = (props: AssetListProps) => {
 
   useEffect(() => {
     setPage(0);
-  }, [config.environment, props.searchQuery, sorting, props.assetTypeId]);
+  }, [
+    config.environment?.originalName,
+    props.searchQuery,
+    sorting,
+    props.assetTypeId
+  ]);
 
   useEffect(() => {
     listRef.current?.scrollTo(0, 0);
-  }, [config.environment, props.searchQuery, sorting, page, props.assetTypeId]);
+  }, [
+    config.environment?.originalName,
+    props.searchQuery,
+    sorting,
+    page,
+    props.assetTypeId
+  ]);
 
   const handleBackButtonClick = () => {
     props.onBackButtonClick();

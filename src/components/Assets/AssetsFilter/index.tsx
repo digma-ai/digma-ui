@@ -2,8 +2,8 @@ import { ComponentType, useContext, useEffect, useState } from "react";
 import { dispatcher } from "../../../dispatcher";
 import { usePersistence } from "../../../hooks/usePersistence";
 import { usePrevious } from "../../../hooks/usePrevious";
+import { isEnvironment } from "../../../typeGuards/isEnvironment";
 import { isNull } from "../../../typeGuards/isNull";
-import { isString } from "../../../typeGuards/isString";
 import { isUndefined } from "../../../typeGuards/isUndefined";
 import { InsightType } from "../../../types";
 import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
@@ -135,8 +135,8 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
 
   useEffect(() => {
     if (
-      isString(previousEnvironment) &&
-      previousEnvironment !== config.environment
+      isEnvironment(previousEnvironment) &&
+      previousEnvironment.originalName !== config.environment?.originalName
     ) {
       const defaultFilters = {
         services: [],

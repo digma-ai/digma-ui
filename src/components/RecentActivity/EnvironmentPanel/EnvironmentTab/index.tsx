@@ -1,6 +1,6 @@
 import { useCallback, useContext, useRef, useState } from "react";
 import { ConfigContext } from "../../../common/App/ConfigContext";
-import { greenScale } from "../../../common/App/getTheme";
+import { greenScale } from "../../../common/App/v2colors";
 import { KebabMenuButton } from "../../../common/KebabMenuButton";
 import { NewPopover } from "../../../common/NewPopover";
 import { Tooltip } from "../../../common/Tooltip";
