@@ -207,12 +207,10 @@ export const App = (props: AppProps) => {
     };
 
     const handleSetScope = (data: unknown) => {
-      if (isObject(data)) {
-        setConfig((config) => ({
-          ...config,
-          scope: data.scope as Scope
-        }));
-      }
+      setConfig((config) => ({
+        ...config,
+        scope: data as Scope
+      }));
     };
 
     dispatcher.addActionListener(actions.SET_THEME, handleSetTheme);

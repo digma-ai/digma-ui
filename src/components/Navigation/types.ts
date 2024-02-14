@@ -24,12 +24,10 @@ export interface OpenDashboardPayload {
 }
 
 export interface ChangeScopePayload {
-  scope: {
-    span: {
-      spanCodeObjectId: string;
-      serviceName: string | null;
-    } | null;
-  };
+  span: {
+    spanCodeObjectId: string;
+    serviceName: string | null;
+  } | null;
 }
 
 export interface GoToCodeLocationPayload {

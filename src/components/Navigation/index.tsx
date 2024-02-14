@@ -196,9 +196,7 @@ export const Navigation = () => {
     window.sendMessageToDigma<ChangeScopePayload>({
       action: actions.CHANGE_SCOPE,
       payload: {
-        scope: {
-          span: null
-        }
+        span: null
       }
     });
   };
@@ -320,11 +318,9 @@ export const Navigation = () => {
     window.sendMessageToDigma<ChangeScopePayload>({
       action: actions.CHANGE_SCOPE,
       payload: {
-        scope: {
-          span: {
-            spanCodeObjectId,
-            serviceName
-          }
+        span: {
+          spanCodeObjectId,
+          serviceName
         }
       }
     });
