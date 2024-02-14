@@ -5,7 +5,7 @@ export interface InsightListProps {
   spans: MethodSpan[];
   environment: string;
   serviceName?: string;
-  assetId?: string;
+  assetId: string;
   hasObservability: boolean;
   hasMissingDependency: boolean;
   canInstrumentMethod: boolean;

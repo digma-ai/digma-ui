@@ -7,7 +7,6 @@ import { Pagination } from "../../common/Pagination";
 import { SearchInput } from "../../common/SearchInput";
 import { SortingSelector } from "../../common/SortingSelector";
 import { SORTING_ORDER, Sorting } from "../../common/SortingSelector/types";
-import { InsightsFilter } from "../InsightsFilter";
 import { InsightsPage } from "../InsightsPage";
 import * as s from "./styles";
 import { InsightsCatalogProps, SORTING_CRITERION } from "./types";
@@ -62,7 +61,6 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
   return (
     <>
       <s.Toolbar>
-        <InsightsFilter onApply={(filter) => {}} />
         <SearchInput
           onChange={(val: string) => {
             setSearchInputValue(val);
