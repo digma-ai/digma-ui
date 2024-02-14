@@ -88,6 +88,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
       </s.Toolbar>
       <InsightsPage
         insights={insights}
+        isFilteringEnabled={searchInputValue !== null}
         onJiraTicketCreate={onJiraTicketCreate}
       />
       <s.Footer>

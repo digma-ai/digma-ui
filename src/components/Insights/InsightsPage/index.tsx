@@ -528,6 +528,13 @@ export const InsightsPage = (props: InsightPageProps) => {
             j === insightIndexWithJiraHint
           );
         })
+      ) : props.isFilteringEnabled ? (
+        <Card
+          header={<>No data found</>}
+          content={
+            <Description>There are no insights for this criteria</Description>
+          }
+        />
       ) : (
         <Card
           header={<>No data yet</>}
