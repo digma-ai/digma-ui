@@ -133,7 +133,9 @@ const getData = (
   searchQuery: string,
   filters: AssetFilterQuery | undefined,
   services: string[] | undefined,
-  isComplexFilterEnabled: boolean
+  isComplexFilterEnabled: boolean,
+  isDirect?: boolean,
+  scopedSpanCodeObjectId?: string
 ) => {
   window.sendMessageToDigma({
     action: actions.GET_DATA,
@@ -144,6 +146,8 @@ const getData = (
         pageSize: PAGE_SIZE,
         sortBy: sorting.criterion,
         sortOrder: sorting.order,
+        directOnly: isDirect,
+        scopedSpanCodeObjectId,
         ...(searchQuery && searchQuery.length > 0
           ? { displayName: searchQuery }
           : {}),
@@ -191,6 +195,7 @@ export const AssetList = (props: AssetListProps) => {
   const previousAssetTypeId = usePrevious(props.assetTypeId);
   const previousServices = usePrevious(props.services);
   const previousFilters = usePrevious(props.filters);
+  const previousViewScope = usePrevious(props.scopeViewOptions);
 
   const entries = data?.data || [];
 
@@ -233,7 +238,9 @@ export const AssetList = (props: AssetListProps) => {
       props.searchQuery,
       props.filters,
       props.services,
-      isComplexFilterEnabled
+      isComplexFilterEnabled,
+      props.scopeViewOptions?.isDirect,
+      props.scopeViewOptions?.scopedSpanCodeObjectId
     );
     setIsInitialLoading(true);
 
@@ -263,7 +270,8 @@ export const AssetList = (props: AssetListProps) => {
         previousAssetTypeId !== props.assetTypeId) ||
       (Array.isArray(previousServices) &&
         previousServices !== props.services) ||
-      (previousFilters && previousFilters !== props.filters)
+      (previousFilters && previousFilters !== props.filters) ||
+      (previousViewScope && previousViewScope !== props.scopeViewOptions)
     ) {
       getData(
         props.assetTypeId,
@@ -272,7 +280,9 @@ export const AssetList = (props: AssetListProps) => {
         props.searchQuery,
         props.filters,
         props.services,
-        isComplexFilterEnabled
+        isComplexFilterEnabled,
+        props.scopeViewOptions?.isDirect,
+        props.scopeViewOptions?.scopedSpanCodeObjectId
       );
     }
   }, [
@@ -290,7 +300,9 @@ export const AssetList = (props: AssetListProps) => {
     previousServices,
     props.filters,
     previousFilters,
-    isComplexFilterEnabled
+    isComplexFilterEnabled,
+    previousViewScope,
+    props.scopeViewOptions
   ]);
 
   useEffect(() => {
@@ -304,7 +316,9 @@ export const AssetList = (props: AssetListProps) => {
           props.searchQuery,
           props.filters,
           props.services,
-          isComplexFilterEnabled
+          isComplexFilterEnabled,
+          props.scopeViewOptions?.isDirect,
+          props.scopeViewOptions?.scopedSpanCodeObjectId
         );
       }, REFRESH_INTERVAL);
     }
@@ -317,7 +331,8 @@ export const AssetList = (props: AssetListProps) => {
     props.searchQuery,
     props.services,
     props.filters,
-    isComplexFilterEnabled
+    isComplexFilterEnabled,
+    props.scopeViewOptions
   ]);
 
   useEffect(() => {
@@ -338,7 +353,8 @@ export const AssetList = (props: AssetListProps) => {
     config.environment?.originalName,
     props.searchQuery,
     sorting,
-    props.assetTypeId
+    props.assetTypeId,
+    props.scopeViewOptions
   ]);
 
   useEffect(() => {
@@ -348,7 +364,8 @@ export const AssetList = (props: AssetListProps) => {
     props.searchQuery,
     sorting,
     page,
-    props.assetTypeId
+    props.assetTypeId,
+    props.scopeViewOptions
   ]);
 
   const handleBackButtonClick = () => {

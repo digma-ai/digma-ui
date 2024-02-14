@@ -19,6 +19,8 @@ import { AssetList } from "./AssetList";
 import { AssetTypeList } from "./AssetTypeList";
 import { AssetsFilter } from "./AssetsFilter";
 import { AssetFilterQuery } from "./AssetsFilter/types";
+import { AssetsViewScopeConfiguration } from "./AssetsViewScopeConfiguration";
+import { AssetScopeOption } from "./AssetsViewScopeConfiguration/types";
 import { NoDataMessage } from "./NoDataMessage";
 import { ServicesFilter } from "./ServicesFilter";
 import { actions } from "./actions";
@@ -31,6 +33,7 @@ export const Assets = () => {
   const [searchInputValue, setSearchInputValue] = useState("");
   const debouncedSearchInputValue = useDebounce(searchInputValue, 1000);
   const [selectedServices, setSelectedServices] = useState<string[]>();
+  const [assetScopeOption, setAssetScopeOption] = useState<AssetScopeOption>();
   const [selectedFilters, setSelectedFilters] = useState<AssetFilterQuery>();
   const config = useContext(ConfigContext);
 
@@ -113,6 +116,7 @@ export const Assets = () => {
           services={selectedServices}
           filters={selectedFilters}
           searchQuery={debouncedSearchInputValue}
+          scopeViewOptions={assetScopeOption}
         />
       );
     }
@@ -124,6 +128,7 @@ export const Assets = () => {
         services={selectedServices}
         filters={selectedFilters}
         searchQuery={debouncedSearchInputValue}
+        scopeViewOptions={assetScopeOption}
       />
     );
   };
@@ -131,33 +136,45 @@ export const Assets = () => {
   return (
     <s.Container>
       <s.Header>
-        Assets
-        {window.assetsSearch === true && (
-          <s.SearchInputContainer>
-            <s.SearchInputIconContainer>
-              <MagnifierIcon color={"currentColor"} size={14} />
-            </s.SearchInputIconContainer>
-            <s.SearchInput
-              placeholder={"Search"}
-              onChange={handleSearchInputChange}
+        <s.HeaderItem>
+          Assets
+          {window.assetsSearch === true && (
+            <s.SearchInputContainer>
+              <s.SearchInputIconContainer>
+                <MagnifierIcon color={"currentColor"} size={14} />
+              </s.SearchInputIconContainer>
+              <s.SearchInput
+                placeholder={"Search"}
+                onChange={handleSearchInputChange}
+              />
+            </s.SearchInputContainer>
+          )}
+          {isComplexFilterEnabled ? (
+            <AssetsFilter
+              onApply={handleApplyFilters}
+              filters={selectedFilters}
             />
-          </s.SearchInputContainer>
-        )}
-        {isComplexFilterEnabled ? (
-          <AssetsFilter
-            onApply={handleApplyFilters}
-            filters={selectedFilters}
-          />
-        ) : (
-          // TODO: Remove this clause when the feature flag is removed
-          isServiceFilterVisible && (
-            <ServicesFilter
-              onChange={handleServicesChange}
-              selectedServices={selectedServices}
+          ) : (
+            // TODO: Remove this clause when the feature flag is removed
+            isServiceFilterVisible && (
+              <ServicesFilter
+                onChange={handleServicesChange}
+                selectedServices={selectedServices}
+              />
+            )
+          )}
+        </s.HeaderItem>
+        {config.scope && config.scope.span && (
+          <s.HeaderItem>
+            <AssetsViewScopeConfiguration
+              onAssetViewChanged={(val) => {
+                setAssetScopeOption(val);
+              }}
             />
-          )
+          </s.HeaderItem>
         )}
       </s.Header>
+
       {renderContent()}
     </s.Container>
   );

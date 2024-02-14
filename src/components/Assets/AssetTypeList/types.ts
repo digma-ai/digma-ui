@@ -1,4 +1,5 @@
 import { AssetFilterQuery } from "../AssetsFilter/types";
+import { AssetScopeOption } from "../AssetsViewScopeConfiguration/types";
 
 export interface AssetTypeListProps {
   data?: AssetCategoriesData;
@@ -6,6 +7,7 @@ export interface AssetTypeListProps {
   services?: string[];
   filters?: AssetFilterQuery;
   searchQuery: string;
+  scopeViewOptions?: AssetScopeOption;
 }
 
 export interface AssetCategoriesData {
