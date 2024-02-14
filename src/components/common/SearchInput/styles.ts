@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import { grayScale } from "../App/getTheme";
+import { grayScale } from "../App/v2colors";
+
 export const SearchInputContainer = styled.div`
   display: flex;
   position: relative;
