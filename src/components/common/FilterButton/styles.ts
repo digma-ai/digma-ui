@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { grayScale } from "../../../common/App/v2colors";
+import { grayScale } from "../App/v2colors";
 import { ButtonProps } from "./types";
 
 export const Button = styled.button<ButtonProps>`

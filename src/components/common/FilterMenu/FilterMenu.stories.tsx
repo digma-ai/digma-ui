@@ -5,7 +5,7 @@ import { FilterMenu } from ".";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof FilterMenu> = {
-  title: "Assets/FilterMenu",
+  title: "Common/FilterMenu",
   component: FilterMenu,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
