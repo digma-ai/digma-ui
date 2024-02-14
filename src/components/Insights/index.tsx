@@ -249,7 +249,8 @@ export const Insights = (props: InsightsProps) => {
 
     return (
       <InsightsCatalog
-        data={{ items: data, totalCount: 100 }}
+        insights={data.insights}
+        totalCount={100}
         onJiraTicketCreate={handleJiraTicketPopupOpen}
         onQueryChange={(query) => {
           setQuery(query);

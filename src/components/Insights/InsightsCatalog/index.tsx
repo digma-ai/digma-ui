@@ -7,15 +7,14 @@ import { Pagination } from "../../common/Pagination";
 import { SearchInput } from "../../common/SearchInput";
 import { SortingSelector } from "../../common/SortingSelector";
 import { SORTING_ORDER, Sorting } from "../../common/SortingSelector/types";
-import { InsightList } from "../InsightList";
 import { InsightsFilter } from "../InsightsFilter";
+import { InsightsPage } from "../InsightsPage";
 import * as s from "./styles";
 import { InsightsCatalogProps, SORTING_CRITERION } from "./types";
 
 const PAGE_SIZE = 10;
 export const InsightsCatalog = (props: InsightsCatalogProps) => {
-  const { data, onJiraTicketCreate, defaultQuery } = props;
-  const { items, totalCount } = data;
+  const { insights, onJiraTicketCreate, defaultQuery, totalCount } = props;
   const [page, setPage] = useState(0);
   const previousPage = usePrevious(page);
   const [searchInputValue, setSearchInputValue] = useState<string>(
@@ -89,16 +88,8 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
           default={defaultQuery.sorting}
         />
       </s.Toolbar>
-      <InsightList
-        key={items.assetId}
-        insights={items.insights}
-        spans={items.spans}
-        environment={items.environment}
-        assetId={items.assetId}
-        serviceName={items.serviceName}
-        hasMissingDependency={items.hasMissingDependency}
-        canInstrumentMethod={items.canInstrumentMethod}
-        hasObservability={!items.needsObservabilityFix}
+      <InsightsPage
+        insights={insights}
         onJiraTicketCreate={onJiraTicketCreate}
       />
       <s.Footer>

@@ -1,11 +1,8 @@
-import {
-  GenericCodeObjectInsight,
-  InsightsData,
-  InsightsQuery
-} from "../types";
+import { GenericCodeObjectInsight, InsightsQuery } from "../types";
 
 export interface InsightsCatalogProps {
-  data: PagedData<InsightsData>;
+  insights: GenericCodeObjectInsight[];
+  totalCount: number;
   onJiraTicketCreate: (
     insight: GenericCodeObjectInsight,
     spanCodeObjectId?: string
