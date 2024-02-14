@@ -34,7 +34,7 @@ export const Pagination = (props: PaginationProps) => {
   const pageCount = Math.ceil(props.itemsCount / props.pageSize);
 
   const isPrevDisabled = props.page === 0;
-  const isNextDisabled = props.page === pageCount - 1;
+  const isNextDisabled = props.page === pageCount - 1 || props.itemsCount === 0;
 
   const handleButtonClick = (page: number) => {
     props.onPageChange(page);
