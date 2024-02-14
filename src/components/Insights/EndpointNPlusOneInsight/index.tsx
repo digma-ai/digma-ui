@@ -36,12 +36,15 @@ export const EndpointNPlusOneInsight = (
     props.onAssetLinkClick(spanCodeObjectId, props.insight.type);
   };
 
-  const handleTicketInfoButtonClick = (spanCodeObjectId: string) => {
+  const handleTicketInfoButtonClick = (
+    spanCodeObjectId: string,
+    event: string
+  ) => {
     sendTrackingEvent(trackingEvents.JIRA_TICKET_INFO_BUTTON_CLICKED, {
       insightType: props.insight.type
     });
     props.onJiraTicketCreate &&
-      props.onJiraTicketCreate(props.insight, spanCodeObjectId);
+      props.onJiraTicketCreate(props.insight, spanCodeObjectId, event);
   };
 
   const handleTraceButtonClick = (
@@ -59,7 +62,7 @@ export const EndpointNPlusOneInsight = (
         <s.ContentContainer>
           <Description>Check the following locations:</Description>
           <s.SpanList>
-            {pageItems.map((span) => {
+            {pageItems.map((span, i) => {
               const spanInfo = span.internalSpan || span.clientSpan;
               const spanName = spanInfo.displayName;
               const fraction =
@@ -105,7 +108,7 @@ export const EndpointNPlusOneInsight = (
                       spanCodeObjectId={spanInfo.spanCodeObjectId}
                       ticketLink={span.ticketLink}
                       buttonType={"small"}
-                      isHintEnabled={props.isJiraHintEnabled}
+                      isHintEnabled={props.isJiraHintEnabled && i === 0}
                     />
                     {config.isJaegerEnabled && (
                       <Tooltip title={"Trace"}>

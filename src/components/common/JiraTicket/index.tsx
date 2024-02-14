@@ -98,6 +98,10 @@ export const JiraTicket = (props: JiraTicketProps) => {
     }
   };
 
+  const errorMessage = props.description.isLoading
+    ? ""
+    : props.description.errorMessage;
+
   return (
     <s.Container>
       <s.Header>
@@ -141,7 +145,7 @@ export const JiraTicket = (props: JiraTicketProps) => {
             )}
           </div>
         }
-        errorMessage={props.description.errorMessage}
+        errorMessage={errorMessage}
         button={
           <IconButton
             icon={CopyIcon}

@@ -34,7 +34,9 @@ export const StartupText = styled.span`
   text-align: center;
 `;
 
-export const Description = styled.span`
+export const Description = styled.div`
+  display: flex;
+  gap: 8px;
   font-size: 14px;
   color: ${({ theme }) => {
     switch (theme.mode) {

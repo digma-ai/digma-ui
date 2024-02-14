@@ -133,11 +133,13 @@ export const getInsightTypeInfo = (
     },
     [InsightType.SpanQueryOptimization]: {
       icon: SQLDatabaseIcon,
-      label: "Query Optimization Suggested"
+      label: "Query Optimization Suggested",
+      description: descriptionProvider.QueryOptimization
     },
     [InsightType.EndpointQueryOptimization]: {
       icon: SQLDatabaseIcon,
-      label: "Query Optimization Suggested"
+      label: "Query Optimization Suggested",
+      description: descriptionProvider.QueryOptimization
     }
   };
 

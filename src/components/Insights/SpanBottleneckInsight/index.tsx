@@ -15,12 +15,15 @@ export const SpanBottleneckInsight = (props: SpanBottleneckInsightProps) => {
     props.onAssetLinkClick(spanCodeObjectId, props.insight.type);
   };
 
-  const handleTicketInfoButtonClick = (spanCodeObjectId: string) => {
+  const handleTicketInfoButtonClick = (
+    spanCodeObjectId: string,
+    event: string
+  ) => {
     sendTrackingEvent(trackingEvents.JIRA_TICKET_INFO_BUTTON_CLICKED, {
       insightType: props.insight.type
     });
     props.onJiraTicketCreate &&
-      props.onJiraTicketCreate(props.insight, spanCodeObjectId);
+      props.onJiraTicketCreate(props.insight, spanCodeObjectId, event);
   };
 
   return (
@@ -33,7 +36,7 @@ export const SpanBottleneckInsight = (props: SpanBottleneckInsightProps) => {
           </Description>
           <s.Container>
             <s.SpanList>
-              {props.insight.spans.map((span) => {
+              {props.insight.spans.map((span, i) => {
                 const spanName = span.spanInfo.displayName;
                 const spanCodeObjectId = span.spanInfo.spanCodeObjectId;
 
@@ -52,12 +55,15 @@ export const SpanBottleneckInsight = (props: SpanBottleneckInsightProps) => {
                         </s.SpanName>
                       </Tooltip>
                       <Description>
-                        {`Slowing ${roundTo(
-                          span.probabilityOfBeingBottleneck * 100,
-                          2
-                        )}% of the requests (~${getDurationString(
-                          span.avgDurationWhenBeingBottleneck
-                        )})`}
+                        <Criticality value={span.criticality} />
+                        <span>
+                          {`Slowing ${roundTo(
+                            span.probabilityOfBeingBottleneck * 100,
+                            2
+                          )}% of the requests (~${getDurationString(
+                            span.avgDurationWhenBeingBottleneck
+                          )})`}
+                        </span>
                       </Description>
                     </s.SpanDetails>
                     <s.ButtonsContainer>
@@ -66,14 +72,13 @@ export const SpanBottleneckInsight = (props: SpanBottleneckInsightProps) => {
                         spanCodeObjectId={spanCodeObjectId}
                         ticketLink={span.ticketLink}
                         buttonType={"small"}
-                        isHintEnabled={props.isJiraHintEnabled}
+                        isHintEnabled={props.isJiraHintEnabled && i === 0}
                       />
                     </s.ButtonsContainer>
                   </s.Span>
                 );
               })}
             </s.SpanList>
-            <Criticality value={props.insight.criticality} />
           </s.Container>
         </>
       }

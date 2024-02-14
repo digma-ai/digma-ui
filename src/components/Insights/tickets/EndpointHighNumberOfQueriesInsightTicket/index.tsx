@@ -27,11 +27,10 @@ export const EndpointHighNumberOfQueriesInsightTicket = (
             <span
               key={"details"}
             >{`The endpoint ${spanInsight.spanInfo.displayName} is triggering an abnormally high number of queries.`}</span>,
-            <span key={"text"}>
+            <div key={"text"}>
               Consider using joins/caching to reduce the overhead of the db
               roundtrip.
-            </span>,
-            <></>,
+            </div>,
             <span
               key={"median"}
             >{`Number of queries (median): ${spanInsight.queriesCount}`}</span>,

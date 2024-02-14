@@ -84,7 +84,8 @@ export interface InsightProps {
   onRefresh: (insightType: InsightType) => void;
   onJiraTicketCreate?: (
     insight: GenericCodeObjectInsight,
-    spanCodeObjectId?: string
+    spanCodeObjectId: string | undefined,
+    event?: string
   ) => void;
   isJiraHintEnabled?: boolean;
 }

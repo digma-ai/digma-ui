@@ -1,10 +1,9 @@
-import { ComponentType, useContext, useEffect, useRef, useState } from "react";
+import { ComponentType, useContext, useEffect, useState } from "react";
 import { dispatcher } from "../../../dispatcher";
 import { usePersistence } from "../../../hooks/usePersistence";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { isEnvironment } from "../../../typeGuards/isEnvironment";
 import { isNull } from "../../../typeGuards/isNull";
-import { isNumber } from "../../../typeGuards/isNumber";
 import { isUndefined } from "../../../typeGuards/isUndefined";
 import { InsightType } from "../../../types";
 import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
@@ -29,10 +28,6 @@ import {
 } from "./types";
 
 const PERSISTENCE_KEY = "assetsFilters";
-
-const REFRESH_INTERVAL = isNumber(window.assetsRefreshInterval)
-  ? window.assetsRefreshInterval
-  : 10 * 1000; // in milliseconds
 
 const renderFilterCategory = (
   category: AssetFilterCategory,
@@ -77,7 +72,6 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
   const [selectedConsumers, setSelectedConsumers] = useState<string[]>([]);
   const [selectedInternals, setSelectedInternals] = useState<string[]>([]);
   const [selectedInsights, setSelectedInsights] = useState<InsightType[]>([]);
-  const refreshTimerId = useRef<number>();
   const config = useContext(ConfigContext);
   const previousEnvironment = usePrevious(config.environment);
 
@@ -136,7 +130,6 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
         actions.SET_ASSET_FILTERS_DATA,
         handleData
       );
-      window.clearTimeout(refreshTimerId.current);
     };
   }, []);
 
@@ -162,85 +155,77 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
   ]);
 
   useEffect(() => {
+    if (isOpen && !previousIsOpen) {
+      getData(
+        selectedServices,
+        [...selectedEndpoints, ...selectedConsumers, ...selectedInternals],
+        selectedInsights
+      );
+    }
+  }, [isOpen, previousIsOpen]);
+
+  useEffect(() => {
     if (props.data) {
       setData({ data: props.data });
     }
   }, [props.data]);
 
   useEffect(() => {
-    if (previousData !== data) {
-      if (!isNull(data?.data)) {
-        const servicesToSelect =
-          data?.data?.categories
-            .find((x) => x.categoryName === "Services")
-            ?.entries?.filter((x) => x.selected)
-            .map((x) => x.name) || [];
-        setSelectedServices(servicesToSelect);
+    if (previousData === data || isNull(data?.data)) {
+      return;
+    }
 
-        const operationsCategory = data?.data?.categories.find(
-          (x) => x.categoryName === "Operations"
-        );
+    const servicesToSelect =
+      data?.data?.categories
+        .find((x) => x.categoryName === "Services")
+        ?.entries?.filter((x) => x.selected)
+        .map((x) => x.name) || [];
+    setSelectedServices(servicesToSelect);
 
-        const endpointsToSelect =
-          operationsCategory?.categories
-            ?.find((x) => x.categoryName === "Endpoints")
-            ?.entries?.filter((x) => x.selected)
-            .map((x) => x.name) || [];
-        setSelectedEndpoints(endpointsToSelect);
+    const operationsCategory = data?.data?.categories.find(
+      (x) => x.categoryName === "Operations"
+    );
 
-        const consumersToSelect =
-          operationsCategory?.categories
-            ?.find((x) => x.categoryName === "Consumers")
-            ?.entries?.filter((x) => x.selected)
-            .map((x) => x.name) || [];
-        setSelectedConsumers(consumersToSelect);
+    const endpointsToSelect =
+      operationsCategory?.categories
+        ?.find((x) => x.categoryName === "Endpoints")
+        ?.entries?.filter((x) => x.selected)
+        .map((x) => x.name) || [];
+    setSelectedEndpoints(endpointsToSelect);
 
-        const internalsToSelect =
-          operationsCategory?.categories
-            ?.find((x) => x.categoryName === "Internal")
-            ?.entries?.filter((x) => x.selected)
-            .map((x) => x.name) || [];
-        setSelectedInternals(internalsToSelect);
+    const consumersToSelect =
+      operationsCategory?.categories
+        ?.find((x) => x.categoryName === "Consumers")
+        ?.entries?.filter((x) => x.selected)
+        .map((x) => x.name) || [];
+    setSelectedConsumers(consumersToSelect);
 
-        const insightsToSelect = (data?.data?.categories
-          .find((x) => x.categoryName === "Insights")
-          ?.entries?.filter((x) => x.selected)
-          .map((x) => x.name) || []) as InsightType[];
-        setSelectedInsights(insightsToSelect);
+    const internalsToSelect =
+      operationsCategory?.categories
+        ?.find((x) => x.categoryName === "Internal")
+        ?.entries?.filter((x) => x.selected)
+        .map((x) => x.name) || [];
+    setSelectedInternals(internalsToSelect);
 
-        if (!props.filters) {
-          const filtersQuery = {
-            services: servicesToSelect,
-            operations: [
-              ...endpointsToSelect,
-              ...consumersToSelect,
-              ...internalsToSelect
-            ],
-            insights: insightsToSelect
-          };
+    const insightsToSelect = (data?.data?.categories
+      .find((x) => x.categoryName === "Insights")
+      ?.entries?.filter((x) => x.selected)
+      .map((x) => x.name) || []) as InsightType[];
+    setSelectedInsights(insightsToSelect);
 
-          setPersistedFilters(filtersQuery);
-          props.onApply(filtersQuery);
-        }
+    if (!props.filters) {
+      const filtersQuery = {
+        services: servicesToSelect,
+        operations: [
+          ...endpointsToSelect,
+          ...consumersToSelect,
+          ...internalsToSelect
+        ],
+        insights: insightsToSelect
+      };
 
-        window.clearTimeout(refreshTimerId.current);
-        refreshTimerId.current = window.setTimeout(() => {
-          getData(
-            servicesToSelect,
-            [...endpointsToSelect, ...consumersToSelect, ...internalsToSelect],
-            insightsToSelect
-          );
-        }, REFRESH_INTERVAL);
-      } else {
-        window.clearTimeout(refreshTimerId.current);
-        refreshTimerId.current = window.setTimeout(() => {
-          getData(
-            selectedServices,
-            [...selectedEndpoints, ...selectedConsumers, ...selectedInternals],
-            selectedInsights
-          );
-        }, REFRESH_INTERVAL);
-      }
+      setPersistedFilters(filtersQuery);
+      props.onApply(filtersQuery);
     }
   }, [
     previousData,
