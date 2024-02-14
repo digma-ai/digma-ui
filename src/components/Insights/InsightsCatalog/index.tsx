@@ -16,8 +16,8 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
   const { insights, onJiraTicketCreate, defaultQuery, totalCount } = props;
   const [page, setPage] = useState(0);
   const previousPage = usePrevious(page);
-  const [searchInputValue, setSearchInputValue] = useState<string>(
-    defaultQuery.searchQuery || ""
+  const [searchInputValue, setSearchInputValue] = useState<string | null>(
+    defaultQuery.searchQuery
   );
   const [sorting, setSorting] = useState<Sorting>(defaultQuery.sorting);
   const previousSorting = usePrevious(sorting);

@@ -64,7 +64,7 @@ const DEFAULT_QUERY = {
     criterion: SORTING_CRITERION.CRITICAL_INSIGHTS,
     order: SORTING_ORDER.DESC
   },
-  searchQuery: ""
+  searchQuery: null
 };
 
 const renderInsightTicket = (
