@@ -1,5 +1,4 @@
 import { Mode } from "../../../globals";
-import { SpanInfo } from "../../../types";
 
 export interface AppProps {
   children: React.ReactNode;
@@ -38,7 +37,6 @@ export interface CodeDetails {
   displayName: string;
   codeObjectId: string;
   type: string;
-  span?: SpanInfo;
 }
 
 export interface Scope {
