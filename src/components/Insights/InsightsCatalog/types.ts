@@ -1,5 +1,8 @@
-import { Sorting } from "../../common/SortingSelector/types";
-import { GenericCodeObjectInsight, InsightsData } from "../types";
+import {
+  GenericCodeObjectInsight,
+  InsightsData,
+  InsightsQuery
+} from "../types";
 
 export interface InsightsCatalogProps {
   data: PagedData<InsightsData>;
@@ -7,18 +10,13 @@ export interface InsightsCatalogProps {
     insight: GenericCodeObjectInsight,
     spanCodeObjectId?: string
   ) => void;
-  loadData: (query: InsightsQuery) => void;
+  onQueryChange: (query: InsightsQuery) => void;
+  defaultQuery: InsightsQuery;
 }
 
 export enum SORTING_CRITERION {
   CRITICAL_INSIGHTS = "criticalinsights",
   LATEST = "latest"
-}
-
-export interface InsightsQuery {
-  page: number;
-  sorting: Sorting;
-  searchQuery: string | null;
 }
 
 export interface PagedData<TData> {

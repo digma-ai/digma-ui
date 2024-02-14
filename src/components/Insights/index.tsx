@@ -12,6 +12,7 @@ import { CircleLoader } from "../common/CircleLoader";
 import { EmptyState } from "../common/EmptyState";
 import { RegistrationDialog } from "../common/RegistrationDialog";
 import { RegistrationFormValues } from "../common/RegistrationDialog/types";
+import { SORTING_ORDER } from "../common/SortingSelector/types";
 import { CardsIcon } from "../common/icons/CardsIcon";
 import { DocumentWithMagnifierIcon } from "../common/icons/DocumentWithMagnifierIcon";
 import { LightBulbSmallCrossedIcon } from "../common/icons/LightBulbSmallCrossedIcon";
@@ -19,7 +20,7 @@ import { LightBulbSmallIcon } from "../common/icons/LightBulbSmallIcon";
 import { OpenTelemetryLogoCrossedSmallIcon } from "../common/icons/OpenTelemetryLogoCrossedSmallIcon";
 import { SlackLogoIcon } from "../common/icons/SlackLogoIcon";
 import { InsightsCatalog } from "./InsightsCatalog";
-import { InsightsQuery } from "./InsightsCatalog/types";
+import { SORTING_CRITERION } from "./InsightsCatalog/types";
 import { Preview } from "./Preview";
 import { actions } from "./actions";
 import { useInsightsData } from "./common/useInsightsData";
@@ -49,6 +50,7 @@ import {
   InsightTicketInfo,
   InsightsData,
   InsightsProps,
+  InsightsQuery,
   InsightsStatus,
   Method,
   QueryOptimizationInsight,
@@ -60,6 +62,15 @@ import {
 const REFRESH_INTERVAL = isNumber(window.insightsRefreshInterval)
   ? window.insightsRefreshInterval
   : 10 * 1000; // in milliseconds
+
+const DEFAULT_QUERY = {
+  page: 0,
+  sorting: {
+    criterion: SORTING_CRITERION.CRITICAL_INSIGHTS,
+    order: SORTING_ORDER.DESC
+  },
+  searchQuery: ""
+};
 
 const renderInsightTicket = (
   data: InsightTicketInfo<GenericCodeObjectInsight>,
@@ -137,7 +148,7 @@ const sendMessage = (action: string, data?: any) => {
 
 export const Insights = (props: InsightsProps) => {
   const [isAutofixing, setIsAutofixing] = useState(false);
-  const [query, setQuery] = useState<InsightsQuery>();
+  const [query, setQuery] = useState<InsightsQuery>(DEFAULT_QUERY);
   const { isLoading, isInitialLoading, data, previousData } = useInsightsData({
     refreshInterval: REFRESH_INTERVAL,
     data: props.data,
@@ -227,25 +238,25 @@ export const Insights = (props: InsightsProps) => {
   };
 
   const renderDefaultContent = (data?: InsightsData): JSX.Element => {
+    if (!data) {
+      return <></>;
+    }
     if (data?.viewMode === ViewMode.PREVIEW) {
       return (
         <Preview methods={data.methods} onMethodSelect={handleMethodSelect} />
       );
     }
 
-    if (data?.viewMode === ViewMode.INSIGHTS && data.assetId) {
-      return (
-        <InsightsCatalog
-          data={{ items: data, totalCount: 100 }}
-          onJiraTicketCreate={handleJiraTicketPopupOpen}
-          loadData={(query) => {
-            setQuery(query);
-          }}
-        />
-      );
-    }
-
-    return <></>;
+    return (
+      <InsightsCatalog
+        data={{ items: data, totalCount: 100 }}
+        onJiraTicketCreate={handleJiraTicketPopupOpen}
+        onQueryChange={(query) => {
+          setQuery(query);
+        }}
+        defaultQuery={DEFAULT_QUERY}
+      />
+    );
   };
 
   const renderContent = (

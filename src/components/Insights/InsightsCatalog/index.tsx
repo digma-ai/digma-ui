@@ -13,20 +13,15 @@ import * as s from "./styles";
 import { InsightsCatalogProps, SORTING_CRITERION } from "./types";
 
 const PAGE_SIZE = 10;
-const DEFAULT_SORTING = {
-  criterion: SORTING_CRITERION.CRITICAL_INSIGHTS,
-  order: SORTING_ORDER.DESC
-};
-const DEFAULT_SEARCH = "";
-
 export const InsightsCatalog = (props: InsightsCatalogProps) => {
-  const { data, onJiraTicketCreate } = props;
+  const { data, onJiraTicketCreate, defaultQuery } = props;
   const { items, totalCount } = data;
   const [page, setPage] = useState(0);
   const previousPage = usePrevious(page);
-  const [searchInputValue, setSearchInputValue] =
-    useState<string>(DEFAULT_SEARCH);
-  const [sorting, setSorting] = useState<Sorting>(DEFAULT_SORTING);
+  const [searchInputValue, setSearchInputValue] = useState<string>(
+    defaultQuery.searchQuery || ""
+  );
+  const [sorting, setSorting] = useState<Sorting>(defaultQuery.sorting);
   const previousSorting = usePrevious(sorting);
   const previousSearchQuery = usePrevious(searchInputValue);
   const pageStartItemNumber = page * PAGE_SIZE + 1;
@@ -36,7 +31,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
   );
 
   useEffect(() => {
-    props.loadData({
+    props.onQueryChange({
       page,
       sorting,
       searchQuery: searchInputValue
@@ -50,7 +45,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
       (isString(previousSearchQuery) &&
         previousSearchQuery !== searchInputValue)
     ) {
-      props.loadData({
+      props.onQueryChange({
         page,
         sorting,
         searchQuery: searchInputValue
@@ -65,10 +60,6 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
     previousSearchQuery
   ]);
 
-  if (!items.assetId) {
-    return <></>;
-  }
-
   return (
     <>
       <s.Toolbar>
@@ -77,7 +68,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
           onChange={(val: string) => {
             setSearchInputValue(val);
           }}
-          default={DEFAULT_SEARCH}
+          default={defaultQuery.searchQuery || ""}
         />
         <SortingSelector
           onChange={(val: Sorting) => {
@@ -95,7 +86,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
               defaultOrder: SORTING_ORDER.DESC
             }
           ]}
-          default={DEFAULT_SORTING}
+          default={defaultQuery.sorting}
         />
       </s.Toolbar>
       <InsightList

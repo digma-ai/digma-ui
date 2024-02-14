@@ -8,6 +8,8 @@ import {
 
 export const PopoverContainer = styled.div`
   margin-left: auto;
+  display: flex;
+  gap: 8px;
 `;
 
 export const SortingMenuButton = styled.button<SortingMenuButtonProps>`
@@ -17,6 +19,7 @@ export const SortingMenuButton = styled.button<SortingMenuButtonProps>`
   gap: 4px;
   font-weight: 500;
   font-size: 14px;
+  text-wrap: nowrap;
   align-items: center;
   border-radius: 4px;
   padding: 4px 8px;
@@ -64,21 +67,6 @@ export const SortingMenuButton = styled.button<SortingMenuButtonProps>`
         }
       }};
   }
-`;
-
-export const SortingLabel = styled.span`
-  font-weight: 500;
-  font-size: 14px;
-  text-transform: capitalize;
-  color: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#4d668a";
-      case "dark":
-      case "dark-jetbrains":
-        return "#dadada";
-    }
-  }};
 `;
 
 export const SortingOrderToggle = styled.div`

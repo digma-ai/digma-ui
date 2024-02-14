@@ -3,6 +3,7 @@ import { grayScale } from "../App/getTheme";
 export const SearchInputContainer = styled.div`
   display: flex;
   position: relative;
+  flex-grow: 1;
 `;
 
 export const SearchInputIconContainer = styled.div`

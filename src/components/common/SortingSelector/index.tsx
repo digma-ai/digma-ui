@@ -87,37 +87,33 @@ export const SortingSelector = (props: SortingSelectorProps) => {
   };
 
   return (
-    <>
-      <s.PopoverContainer>
-        <Popover
-          open={isSortingMenuOpen}
-          onOpenChange={setIsSortingMenuOpen}
-          placement={"bottom-start"}
-        >
-          <PopoverTrigger onClick={handleSortingMenuToggle}>
-            <s.SortingMenuButton $isOpen={isSortingMenuOpen}>
-              <span>Sort by</span>
-              <s.SortingLabel>
-                {getSortingCriterionInfo(sorting.criterion)?.label}
-              </s.SortingLabel>
-              <ChevronIcon
-                direction={isSortingMenuOpen ? Direction.UP : Direction.DOWN}
-                color={sortingMenuChevronColor}
-              />
-            </s.SortingMenuButton>
-          </PopoverTrigger>
-          <PopoverContent className={"Popover"}>
-            <Menu
-              title={"Sort by"}
-              items={props.options.map(({ value, label }) => ({
-                value,
-                label
-              }))}
-              onSelect={handleSortingMenuItemSelect}
+    <s.PopoverContainer>
+      <Popover
+        open={isSortingMenuOpen}
+        onOpenChange={setIsSortingMenuOpen}
+        placement={"bottom-start"}
+      >
+        <PopoverTrigger onClick={handleSortingMenuToggle}>
+          <s.SortingMenuButton $isOpen={isSortingMenuOpen}>
+            <span>Sort by</span>
+            <ChevronIcon
+              direction={isSortingMenuOpen ? Direction.UP : Direction.DOWN}
+              color={sortingMenuChevronColor}
             />
-          </PopoverContent>
-        </Popover>
-      </s.PopoverContainer>
+          </s.SortingMenuButton>
+        </PopoverTrigger>
+        <PopoverContent className={"Popover"}>
+          <Menu
+            title={"Sort by"}
+            items={props.options.map(({ value, label }) => ({
+              value,
+              label
+            }))}
+            onSelect={handleSortingMenuItemSelect}
+          />
+        </PopoverContent>
+      </Popover>
+
       <s.SortingOrderToggle>
         {[SORTING_ORDER.DESC, SORTING_ORDER.ASC].map((order) => {
           const isSelected = sorting.order === order;
@@ -136,6 +132,6 @@ export const SortingSelector = (props: SortingSelectorProps) => {
           );
         })}
       </s.SortingOrderToggle>
-    </>
+    </s.PopoverContainer>
   );
 };

@@ -22,7 +22,6 @@ import { ExcessiveAPICallsInsight } from "../ExcessiveAPICallsInsight";
 import { HighNumberOfQueriesInsight } from "../HighNumberOfQueriesInsight";
 import { InsightCard } from "../InsightCard";
 import { NPlusOneInsight } from "../NPlusOneInsight";
-import { NoObservabilityCard } from "../NoObservabilityCard";
 import { NoScalingIssueInsight } from "../NoScalingIssueInsight";
 import { PerformanceAtScaleInsight } from "../PerformanceAtScaleInsight";
 import { QueryOptimizationInsight } from "../QueryOptimizationInsight";
@@ -658,26 +657,26 @@ export const InsightList = (props: InsightListProps) => {
     });
   }, [props.insights, props.spans]);
 
-  const handleAddAnnotation = () => {
-    window.sendMessageToDigma({
-      action: actions.ADD_ANNOTATION,
-      payload: {
-        methodId: props.assetId
-      }
-    });
-  };
+  // const handleAddAnnotation = () => {
+  //   window.sendMessageToDigma({
+  //     action: actions.ADD_ANNOTATION,
+  //     payload: {
+  //       methodId: props.assetId
+  //     }
+  //   });
+  // };
 
-  const handleAutofix = () => {
-    if (!isAutofixing) {
-      window.sendMessageToDigma({
-        action: actions.AUTOFIX_MISSING_DEPENDENCY,
-        payload: {
-          methodId: props.assetId
-        }
-      });
-    }
-    setIsAutofixing(true);
-  };
+  // const handleAutofix = () => {
+  //   if (!isAutofixing) {
+  //     window.sendMessageToDigma({
+  //       action: actions.AUTOFIX_MISSING_DEPENDENCY,
+  //       payload: {
+  //         methodId: props.assetId
+  //       }
+  //     });
+  //   }
+  //   setIsAutofixing(true);
+  // };
 
   const handleShowJiraTicket = (
     insight: GenericCodeObjectInsight,
@@ -730,14 +729,14 @@ export const InsightList = (props: InsightListProps) => {
               }
             />
           )}
-          {!props.hasObservability && (
+          {/* {!props.hasObservability && (
             <NoObservabilityCard
               canInstrumentMethod={props.canInstrumentMethod}
               hasMissingDependency={props.hasMissingDependency}
               onAutofix={handleAutofix}
               onAddAnnotation={handleAddAnnotation}
             />
-          )}
+          )} */}
         </s.InsightGroup>
       ))}
     </s.Container>

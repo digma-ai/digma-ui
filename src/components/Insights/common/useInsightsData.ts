@@ -1,9 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
-import { InsightsQuery } from "../InsightsCatalog/types";
 import { actions } from "../actions";
-import { InsightsData, InsightsStatus } from "../types";
+import {
+  InsightsData,
+  InsightsQuery,
+  InsightsStatus,
+  ViewMode
+} from "../types";
 
 interface UseInsightDataProps {
   refreshInterval: number;
@@ -12,14 +16,15 @@ interface UseInsightDataProps {
 }
 
 const getData = (query?: InsightsQuery) => {
-  if (!query) {
-    return;
-  }
-
   window.sendMessageToDigma({
-    action: actions.GET_DATA,
+    action: actions.GET_DATA_LIST,
     payload: {
-      ...query
+      query: {
+        displayName: query?.searchQuery,
+        sortBy: query?.sorting.criterion,
+        sortOrder: query?.sorting.order,
+        page: query?.page
+      }
     }
   });
 };
@@ -39,19 +44,28 @@ export const useInsightsData = (props: UseInsightDataProps) => {
     setIsInitialLoading(true);
     const handleInsightsData = (data: unknown, timeStamp: number) => {
       const insightsData = data as InsightsData;
+      insightsData.insightsStatus = InsightsStatus.DEFAULT;
+      insightsData.viewMode = ViewMode.INSIGHTS;
+      insightsData.methods = [];
+      insightsData.spans = [];
 
-      setIsLoading(insightsData.insightsStatus === InsightsStatus.LOADING);
+      console.log(insightsData);
+      setIsLoading(false);
+      // setIsLoading(insightsData.insightsStatus === InsightsStatus.LOADING);
 
-      if (insightsData.insightsStatus !== InsightsStatus.LOADING) {
-        setData(insightsData);
-      }
+      // if (insightsData.insightsStatus !== InsightsStatus.LOADING) {
+      setData(insightsData);
+      //}
       setLastSetDataTimeStamp(timeStamp);
     };
 
-    dispatcher.addActionListener(actions.SET_DATA, handleInsightsData);
+    dispatcher.addActionListener(actions.SET_DATA_LIST, handleInsightsData);
 
     return () => {
-      dispatcher.removeActionListener(actions.SET_DATA, handleInsightsData);
+      dispatcher.removeActionListener(
+        actions.SET_DATA_LIST,
+        handleInsightsData
+      );
     };
   }, []);
 
