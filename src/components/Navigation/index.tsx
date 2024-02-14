@@ -2,9 +2,11 @@ import { ChangeEvent, useContext, useEffect, useState } from "react";
 import { actions as globalActions } from "../../actions";
 import { SLACK_WORKSPACE_URL } from "../../constants";
 import { dispatcher } from "../../dispatcher";
+import { usePrevious } from "../../hooks/usePrevious";
 import { isNull } from "../../typeGuards/isNull";
 import { SetObservabilityPayload } from "../../types";
 import { openURLInDefaultBrowser } from "../../utils/openURLInDefaultBrowser";
+import { AsyncActionResultData } from "../InstallationWizard/types";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { CodeDetails, Scope } from "../common/App/types";
 import { CodeButtonMenu } from "./CodeButtonMenu";
@@ -13,7 +15,7 @@ import { actions } from "./actions";
 import * as s from "./styles";
 import {
   AddAnnotationPayload,
-  AutofixMissingDependencyPayload,
+  AutoFixMissingDependencyPayload,
   ChangeEnvironmentPayload,
   ChangeScopePayload,
   ChangeViewPayload,
@@ -73,8 +75,9 @@ export const Navigation = () => {
   const [codeContext, setCodeContext] = useState<CodeContext>();
   const [isCodeButtonMenuOpen, setIsCodeButtonMenuOpen] = useState(false);
   const [isTargetButtonMenuOpen, setIsTargetButtonMenuOpen] = useState(false);
-  const [isAutofixing, setIsAutofixing] = useState(false);
+  const [isAutoFixing, setIsAutoFixing] = useState(false);
   const [isAnnotationAdding, setIsAnnotationAdding] = useState(false);
+  const previousCodeContext = usePrevious(codeContext);
 
   const environments = config.environments || [];
   const scope: { displayName: string; spanCodeObjectId: string } | null = null;
@@ -94,10 +97,32 @@ export const Navigation = () => {
       setCodeContext(payload);
     };
 
+    const handleAutoFixResult = (data: unknown) => {
+      const payload = data as AsyncActionResultData;
+      if (payload.result === "failure") {
+        setIsAutoFixing(false);
+      }
+    };
+
+    const handleAddAnnotationResult = (data: unknown) => {
+      const payload = data as AsyncActionResultData;
+      if (payload.result === "failure") {
+        setIsAnnotationAdding(false);
+      }
+    };
+
     dispatcher.addActionListener(actions.SET_VIEWS, handleViewData);
     dispatcher.addActionListener(
       actions.SET_CODE_CONTEXT,
       handleCodeContextData
+    );
+    dispatcher.addActionListener(
+      actions.SET_AUTOFIX_MISSING_DEPENDENCY_RESULT,
+      handleAutoFixResult
+    );
+    dispatcher.addActionListener(
+      actions.SET_ADD_ANNOTATION_RESULT,
+      handleAddAnnotationResult
     );
 
     return () => {
@@ -132,7 +157,7 @@ export const Navigation = () => {
   }, [config.environment]);
 
   useEffect(() => {
-    setIsAutofixing(false);
+    setIsAutoFixing(false);
     setIsAnnotationAdding(false);
     setIsCodeButtonMenuOpen(false);
   }, [codeContext?.methodId]);
@@ -140,6 +165,24 @@ export const Navigation = () => {
   useEffect(() => {
     setIsTargetButtonMenuOpen(false);
   }, [config.scope]);
+
+  useEffect(() => {
+    if (
+      previousCodeContext?.methodId === codeContext?.methodId &&
+      previousCodeContext?.hasMissingDependency &&
+      !codeContext?.hasMissingDependency
+    ) {
+      setIsAutoFixing(false);
+    }
+
+    if (
+      previousCodeContext?.methodId === codeContext?.methodId &&
+      !previousCodeContext?.isInstrumented &&
+      codeContext?.isInstrumented
+    ) {
+      setIsAnnotationAdding(false);
+    }
+  }, [codeContext, previousCodeContext]);
 
   const handleDashboardButtonClick = () => {
     window.sendMessageToDigma<OpenDashboardPayload>({
@@ -261,14 +304,14 @@ export const Navigation = () => {
     setIsAnnotationAdding(true);
   };
 
-  const handleAutofix = (methodId: string) => {
-    window.sendMessageToDigma<AutofixMissingDependencyPayload>({
+  const handleAutoFix = (methodId: string) => {
+    window.sendMessageToDigma<AutoFixMissingDependencyPayload>({
       action: actions.AUTOFIX_MISSING_DEPENDENCY,
       payload: {
         methodId
       }
     });
-    setIsAutofixing(true);
+    setIsAutoFixing(true);
   };
 
   const changeScope = (
@@ -337,9 +380,9 @@ export const Navigation = () => {
         {codeContext && isCodeButtonMenuOpen && (
           <CodeButtonMenu
             codeContext={codeContext}
-            isAutofixing={isAutofixing}
+            isAutoFixing={isAutoFixing}
             isAnnotationAdding={isAnnotationAdding}
-            onAutofix={handleAutofix}
+            onAutoFix={handleAutoFix}
             onObservabilityAdd={handleObservabilityAdd}
             onScopeChange={changeScope}
           />

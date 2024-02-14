@@ -10,9 +10,9 @@ export const CodeButtonMenu = (props: CodeButtonMenuProps) => {
       props.onObservabilityAdd(props.codeContext.methodId);
   };
 
-  const handleAutofixLinkClick = () => {
+  const handleAutoFixLinkClick = () => {
     isString(props.codeContext.methodId) &&
-      props.onAutofix(props.codeContext.methodId);
+      props.onAutoFix(props.codeContext.methodId);
   };
 
   const handleTroubleshootingLinkClick = (e: MouseEvent<HTMLAnchorElement>) => {
@@ -25,10 +25,10 @@ export const CodeButtonMenu = (props: CodeButtonMenuProps) => {
   const renderMissingDependency = () => (
     <div>
       <div>missing dependency: opentelemetry.annotation</div>
-      <button disabled={props.isAutofixing} onClick={handleAutofixLinkClick}>
+      <button disabled={props.isAutoFixing} onClick={handleAutoFixLinkClick}>
         Autofix
       </button>
-      {props.isAutofixing && <div>Autofixing...</div>}
+      {props.isAutoFixing && <div>Autofixing...</div>}
     </div>
   );
 

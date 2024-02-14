@@ -48,7 +48,7 @@ export interface SetViewsPayload {
   views: TabData[];
 }
 
-export interface AutofixMissingDependencyPayload {
+export interface AutoFixMissingDependencyPayload {
   methodId: string;
 }
 

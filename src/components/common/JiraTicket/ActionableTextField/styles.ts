@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { redScale } from "../../App/getTheme";
+import { redScale } from "../../App/v2colors";
 import { TextField } from "../../TextField";
 
 export const Label = styled.label`
