@@ -62,10 +62,10 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
     <>
       <s.Toolbar>
         <SearchInput
-          onChange={(val: string) => {
+          onChange={(val: string | null) => {
             setSearchInputValue(val);
           }}
-          default={defaultQuery.searchQuery || ""}
+          default={defaultQuery.searchQuery}
         />
         <SortingSelector
           onChange={(val: Sorting) => {

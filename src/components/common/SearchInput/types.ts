@@ -1,4 +1,4 @@
 export interface SearchInputProps {
-  onChange: (value: string) => void;
-  default: string;
+  onChange: (value: string | null) => void;
+  default: string | null;
 }
