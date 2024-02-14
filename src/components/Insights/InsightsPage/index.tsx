@@ -55,43 +55,25 @@ import {
   isSpanScalingWellInsight,
   isSpanUsagesInsight
 } from "../typeGuards";
-import { GenericCodeObjectInsight, Trace } from "../types";
+import { CodeObjectInsight, GenericCodeObjectInsight, Trace } from "../types";
 import * as s from "./styles";
 import { InsightPageProps, isInsightJiraTicketHintShownPayload } from "./types";
 
-// const getInsightToShowJiraHint = (
-//   insightGroups: InsightGroup[]
-// ): { groupIndex: number; insightIndex: number } | null => {
-//   const insightsWithJiraButton = [
-//     InsightType.EndpointSpanNPlusOne,
-//     InsightType.SpanNPlusOne,
-//     InsightType.SpanEndpointBottleneck,
-//     InsightType.SlowestSpans,
-//     InsightType.SpanQueryOptimization,
-//     InsightType.EndpointHighNumberOfQueries,
-//     InsightType.EndpointQueryOptimization
-//   ];
+const getInsightToShowJiraHint = (insights: CodeObjectInsight[]): number => {
+  const insightsWithJiraButton = [
+    InsightType.EndpointSpanNPlusOne,
+    InsightType.SpanNPlusOne,
+    InsightType.SpanEndpointBottleneck,
+    InsightType.SlowestSpans,
+    InsightType.SpanQueryOptimization,
+    InsightType.EndpointHighNumberOfQueries,
+    InsightType.EndpointQueryOptimization
+  ];
 
-//   let insightIndex = -1;
-//   const insightsWithJiraButtonIndex = insightGroups.findIndex((x) =>
-//     x.insights.some((insight, i) => {
-//       if (insightsWithJiraButton.includes(insight.type)) {
-//         insightIndex = i;
-//         return true;
-//       }
-//       return false;
-//     })
-//   );
-
-//   if ([insightsWithJiraButtonIndex, insightIndex].includes(-1)) {
-//     return null;
-//   }
-
-//   return {
-//     groupIndex: insightsWithJiraButtonIndex,
-//     insightIndex: insightIndex
-//   };
-// };
+  return insights.findIndex((insight) =>
+    insightsWithJiraButton.includes(insight.type)
+  );
+};
 
 const renderInsightCard = (
   insight: GenericCodeObjectInsight,
@@ -503,7 +485,7 @@ export const InsightsPage = (props: InsightPageProps) => {
       "application"
     );
 
-  // const insightWithJiraHint = getInsightToShowJiraHint(insightGroups);
+  const insightIndexWithJiraHint = getInsightToShowJiraHint(props.insights);
 
   useEffect(() => {
     window.sendMessageToDigma({
@@ -533,16 +515,10 @@ export const InsightsPage = (props: InsightPageProps) => {
     <s.Container>
       {props.insights.length > 0 ? (
         props.insights.map((insight, j) => {
-          // const isJiraHintEnabled =
-          //   !isUndefined(isInsightJiraTicketHintShown) &&
-          //   !isInsightJiraTicketHintShown?.value &&
-          //   i === insightWithJiraHint?.groupIndex &&
-          //   j === insightWithJiraHint?.insightIndex;
-
           return renderInsightCard(
             insight,
             handleShowJiraTicket,
-            false //isJiraHintEnabled
+            j === insightIndexWithJiraHint
           );
         })
       ) : (
