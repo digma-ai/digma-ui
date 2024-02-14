@@ -40,7 +40,7 @@ export const useInsightsData = (props: UseInsightDataProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
   const refreshTimerId = useRef<number>();
-  const { scope } = useContext(ConfigContext);
+  const { scope, environment } = useContext(ConfigContext);
 
   useEffect(() => {
     getData({
@@ -103,7 +103,13 @@ export const useInsightsData = (props: UseInsightDataProps) => {
     return () => {
       window.clearTimeout(refreshTimerId.current);
     };
-  }, [lastSetDataTimeStamp, previousLastSetDataTimeStamp, props.query, scope]);
+  }, [
+    lastSetDataTimeStamp,
+    previousLastSetDataTimeStamp,
+    props.query,
+    scope,
+    environment
+  ]);
 
   useEffect(() => {
     setIsLoading(true);
@@ -111,7 +117,7 @@ export const useInsightsData = (props: UseInsightDataProps) => {
       ...props.query,
       scopedSpanCodeObjectId: scope?.span?.spanCodeObjectId || null
     });
-  }, [props.query, scope]);
+  }, [props.query, scope, environment]);
   return {
     isInitialLoading,
     previousData,
