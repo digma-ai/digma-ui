@@ -1,29 +1,32 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
+import { ConfigContext } from "../../common/App/ConfigContext";
 import { actions } from "../actions";
 import {
   InsightsData,
   InsightsQuery,
   InsightsStatus,
+  ScopedInsightsQuery,
   ViewMode
 } from "../types";
 
 interface UseInsightDataProps {
   refreshInterval: number;
   data?: InsightsData;
-  query?: InsightsQuery;
+  query: InsightsQuery;
 }
 
-const getData = (query?: InsightsQuery) => {
+const getData = (query: ScopedInsightsQuery) => {
   window.sendMessageToDigma({
     action: actions.GET_DATA_LIST,
     payload: {
       query: {
-        displayName: query?.searchQuery,
-        sortBy: query?.sorting.criterion,
-        sortOrder: query?.sorting.order,
-        page: query?.page
+        displayName: query.searchQuery,
+        sortBy: query.sorting.criterion,
+        sortOrder: query.sorting.order,
+        page: query.page,
+        scopedSpanCodeObjectId: query.scopedSpanCodeObjectId
       }
     }
   });
@@ -37,9 +40,13 @@ export const useInsightsData = (props: UseInsightDataProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
   const refreshTimerId = useRef<number>();
+  const { scope } = useContext(ConfigContext);
 
   useEffect(() => {
-    getData(props.query);
+    getData({
+      ...props.query,
+      scopedSpanCodeObjectId: scope?.span?.spanCodeObjectId || null
+    });
 
     setIsInitialLoading(true);
     const handleInsightsData = (data: unknown, timeStamp: number) => {
@@ -49,13 +56,8 @@ export const useInsightsData = (props: UseInsightDataProps) => {
       insightsData.methods = [];
       insightsData.spans = [];
 
-      console.log(insightsData);
       setIsLoading(false);
-      // setIsLoading(insightsData.insightsStatus === InsightsStatus.LOADING);
-
-      // if (insightsData.insightsStatus !== InsightsStatus.LOADING) {
       setData(insightsData);
-      //}
       setLastSetDataTimeStamp(timeStamp);
     };
 
@@ -88,7 +90,10 @@ export const useInsightsData = (props: UseInsightDataProps) => {
       window.clearTimeout(refreshTimerId.current);
       refreshTimerId.current = window.setTimeout(
         () => {
-          getData(props.query);
+          getData({
+            ...props.query,
+            scopedSpanCodeObjectId: scope?.span?.spanCodeObjectId || null
+          });
         },
         props.refreshInterval,
         props.query
@@ -98,12 +103,15 @@ export const useInsightsData = (props: UseInsightDataProps) => {
     return () => {
       window.clearTimeout(refreshTimerId.current);
     };
-  }, [lastSetDataTimeStamp, previousLastSetDataTimeStamp, props.query]);
+  }, [lastSetDataTimeStamp, previousLastSetDataTimeStamp, props.query, scope]);
 
   useEffect(() => {
     setIsLoading(true);
-    getData(props.query);
-  }, [props.query]);
+    getData({
+      ...props.query,
+      scopedSpanCodeObjectId: scope?.span?.spanCodeObjectId || null
+    });
+  }, [props.query, scope]);
   return {
     isInitialLoading,
     previousData,

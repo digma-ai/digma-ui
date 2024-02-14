@@ -741,3 +741,7 @@ export interface InsightsQuery {
   sorting: Sorting;
   searchQuery: string | null;
 }
+
+export interface ScopedInsightsQuery extends InsightsQuery {
+  scopedSpanCodeObjectId: string | null;
+}
