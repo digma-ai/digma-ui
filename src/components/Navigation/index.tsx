@@ -80,7 +80,6 @@ export const Navigation = () => {
   const previousCodeContext = usePrevious(codeContext);
 
   const environments = config.environments || [];
-  const scope: { displayName: string; spanCodeObjectId: string } | null = null;
 
   useEffect(() => {
     window.sendMessageToDigma({
@@ -355,14 +354,23 @@ export const Navigation = () => {
       !config.scope.code.isAlreadyAtCode
   );
 
+  const scopeDisplayName = config.scope
+    ? config.scope.span
+      ? config.scope.span.displayName
+      : "Home"
+    : "";
+
   return (
     <s.Container>
       <s.Row>
-        <button disabled={!scope} onClick={handleHomeButtonClick}>
+        <button
+          disabled={isNull(config.scope?.span)}
+          onClick={handleHomeButtonClick}
+        >
           Home
         </button>
         <span>Scope:</span>
-        <span>{scope ? scope : "Home"}</span>
+        <span>{scopeDisplayName}</span>
         <button
           disabled={!isTargetButtonEnabled}
           onClick={handleTargetButtonClick}
@@ -370,11 +378,15 @@ export const Navigation = () => {
           Target{targetButtonTooltip}
         </button>
         <button
-          disabled={isNull(codeContext?.methodId)}
+          disabled={!codeContext || isNull(codeContext?.methodId)}
           onClick={handleCodeButtonClick}
         >
           Code{codeButtonTooltip}
         </button>
+        {/* <CodeButton
+          isDisabled={!codeContext || isNull(codeContext?.methodId)}
+          onClick={handleCodeButtonClick}
+        /> */}
       </s.Row>
       <s.Row>
         {codeContext && isCodeButtonMenuOpen && (
