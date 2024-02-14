@@ -7,7 +7,6 @@ import { isNumber } from "../../typeGuards/isNumber";
 import { openURLInDefaultBrowser } from "../../utils/openURLInDefaultBrowser";
 import { sendTrackingEvent } from "../../utils/sendTrackingEvent";
 import { ConfigContext } from "../common/App/ConfigContext";
-import { Button } from "../common/Button";
 import { CircleLoader } from "../common/CircleLoader";
 import { EmptyState } from "../common/EmptyState";
 import { RegistrationDialog } from "../common/RegistrationDialog";
@@ -21,8 +20,6 @@ import { OpenTelemetryLogoCrossedSmallIcon } from "../common/icons/OpenTelemetry
 import { SlackLogoIcon } from "../common/icons/SlackLogoIcon";
 import { InsightsCatalog } from "./InsightsCatalog";
 import { SORTING_CRITERION } from "./InsightsCatalog/types";
-import { Preview } from "./Preview";
-import { actions } from "./actions";
 import { useInsightsData } from "./common/useInsightsData";
 import * as s from "./styles";
 import { BottleneckInsightTicket } from "./tickets/BottleneckInsightTicket";
@@ -52,11 +49,9 @@ import {
   InsightsProps,
   InsightsQuery,
   InsightsStatus,
-  Method,
   QueryOptimizationInsight,
   SpanEndpointBottleneckInsight,
-  SpanNPlusOneInsight,
-  ViewMode
+  SpanNPlusOneInsight
 } from "./types";
 
 const REFRESH_INTERVAL = isNumber(window.insightsRefreshInterval)
@@ -163,11 +158,11 @@ export const Insights = (props: InsightsProps) => {
   const [isRegistrationInProgress, setIsRegistrationInProgress] =
     useState(false);
 
-  useEffect(() => {
-    if (previousData && data && previousData.assetId !== data.assetId) {
-      setIsAutofixing(false);
-    }
-  }, [previousData, data]);
+  // useEffect(() => {
+  //   if (previousData && data && previousData.assetId !== data.assetId) {
+  //     setIsAutofixing(false);
+  //   }
+  // }, [previousData, data]);
 
   useEffect(() => {
     if (
@@ -182,28 +177,28 @@ export const Insights = (props: InsightsProps) => {
     previousUserRegistrationEmail
   ]);
 
-  const handleMethodSelect = (method: Method) => {
-    sendMessage(actions.GO_TO_METHOD, method);
-  };
+  // const handleMethodSelect = (method: Method) => {
+  //   sendMessage(actions.GO_TO_METHOD, method);
+  // };
 
   const handleSlackLinkClick = () => {
     openURLInDefaultBrowser(SLACK_WORKSPACE_URL);
   };
 
-  const handleAddAnnotationButtonClick = () => {
-    sendMessage(actions.ADD_ANNOTATION, {
-      methodId: data?.assetId
-    });
-  };
+  // const handleAddAnnotationButtonClick = () => {
+  //   sendMessage(actions.ADD_ANNOTATION, {
+  //     methodId: data?.assetId
+  //   });
+  // };
 
-  const handleAutofixLinkClick = () => {
-    if (!isAutofixing) {
-      sendMessage(actions.AUTOFIX_MISSING_DEPENDENCY, {
-        methodId: data?.assetId
-      });
-      setIsAutofixing(true);
-    }
-  };
+  // const handleAutofixLinkClick = () => {
+  //   if (!isAutofixing) {
+  //     sendMessage(actions.AUTOFIX_MISSING_DEPENDENCY, {
+  //       methodId: data?.assetId
+  //     });
+  //     setIsAutofixing(true);
+  //   }
+  // };
 
   const handleTroubleshootingLinkClick = () => {
     sendTrackingEvent(globalTrackingEvents.TROUBLESHOOTING_LINK_CLICKED, {
@@ -237,20 +232,18 @@ export const Insights = (props: InsightsProps) => {
     setInfoToOpenJiraTicket(undefined);
   };
 
-  const renderDefaultContent = (data?: InsightsData): JSX.Element => {
-    if (!data) {
-      return <></>;
+  const renderDefaultContent = (data: InsightsData): JSX.Element => {
+    if (data.insights.length === 0 && !isLoading) {
+      const emptyMsg =
+        query.searchQuery?.length === 0
+          ? "No insights"
+          : "There are no insights for this criteria";
+      return <EmptyState icon={LightBulbSmallCrossedIcon} title={emptyMsg} />;
     }
-    if (data?.viewMode === ViewMode.PREVIEW) {
-      return (
-        <Preview methods={data.methods} onMethodSelect={handleMethodSelect} />
-      );
-    }
-
     return (
       <InsightsCatalog
         insights={data.insights}
-        totalCount={100}
+        totalCount={data.totalCount}
         onJiraTicketCreate={handleJiraTicketPopupOpen}
         onQueryChange={(query) => {
           setQuery(query);
@@ -261,7 +254,7 @@ export const Insights = (props: InsightsProps) => {
   };
 
   const renderContent = (
-    data: InsightsData | undefined,
+    data: InsightsData,
     isInitialLoading: boolean
   ): JSX.Element => {
     if (isInitialLoading) {
@@ -335,22 +328,22 @@ export const Insights = (props: InsightsProps) => {
                   Add an annotation to observe this method and collect data
                   about its runtime behavior
                 </s.EmptyStateDescription>
-                {data.hasMissingDependency && (
+                {/* {data.hasMissingDependency && (
                   <s.MissingDependencyContainer>
                     <s.MissingDependencyText>
                       missing dependency: opentelemetry.annotation
                     </s.MissingDependencyText>
                     <s.Link onClick={handleAutofixLinkClick}>Autofix</s.Link>
                   </s.MissingDependencyContainer>
-                )}
-                {data.canInstrumentMethod && (
+                )} */}
+                {/* {data.canInstrumentMethod && (
                   <Button
                     onClick={handleAddAnnotationButtonClick}
                     disabled={data.hasMissingDependency}
                   >
                     Add annotation
                   </Button>
-                )}
+                )} */}
               </>
             }
           />

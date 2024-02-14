@@ -33,7 +33,12 @@ const getData = (query: ScopedInsightsQuery) => {
 };
 
 export const useInsightsData = (props: UseInsightDataProps) => {
-  const [data, setData] = useState<InsightsData>();
+  const [data, setData] = useState<InsightsData>({
+    insightsStatus: InsightsStatus.LOADING,
+    insights: [],
+    viewMode: ViewMode.INSIGHTS,
+    totalCount: 0
+  });
   const previousData = usePrevious(data);
   const [isInitialLoading, setIsInitialLoading] = useState(false);
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
@@ -53,8 +58,8 @@ export const useInsightsData = (props: UseInsightDataProps) => {
       const insightsData = data as InsightsData;
       insightsData.insightsStatus = InsightsStatus.DEFAULT;
       insightsData.viewMode = ViewMode.INSIGHTS;
-      insightsData.methods = [];
-      insightsData.spans = [];
+      // insightsData.methods = [];
+      // insightsData.spans = [];
 
       setIsLoading(false);
       setData(insightsData);

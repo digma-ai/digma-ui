@@ -55,18 +55,18 @@ export interface Method {
 
 export interface InsightsData {
   insights: GenericCodeObjectInsight[];
-  assetId?: string; // remove
-  environment: string; // remove
+  totalCount: number;
   insightsStatus: InsightsStatus; // ??  default
   viewMode: ViewMode; // Insights
-  methods: Method[]; // empty
 
-  serviceName: string; //
-  spans: MethodSpan[]; // to add on plugin
-
-  hasMissingDependency: boolean; // remove
-  canInstrumentMethod: boolean; // remove
-  needsObservabilityFix: boolean; //remove
+  // methods: Method[]; // empty
+  // assetId?: string; // remove
+  // environment: string; // remove
+  // serviceName: string; //
+  // spans: MethodSpan[]; // to add on plugin
+  // hasMissingDependency: boolean; // remove
+  // canInstrumentMethod: boolean; // remove
+  // needsObservabilityFix: boolean; //remove
 }
 
 export interface InsightsProps {
