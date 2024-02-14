@@ -132,7 +132,7 @@ const renderInsightTicket = (
   return null;
 };
 
-const sendMessage = (action: string, data?: any) => {
+const sendMessage = (action: string, data?: object) => {
   return window.sendMessageToDigma({
     action,
     payload: {
@@ -233,19 +233,12 @@ export const Insights = (props: InsightsProps) => {
   };
 
   const renderDefaultContent = (data: InsightsData): JSX.Element => {
-    if (data.insights.length === 0 && !isLoading) {
-      const emptyMsg =
-        query.searchQuery?.length === 0
-          ? "No insights"
-          : "There are no insights for this criteria";
-      return <EmptyState icon={LightBulbSmallCrossedIcon} title={emptyMsg} />;
-    }
     return (
       <InsightsCatalog
         insights={data.insights}
         totalCount={data.totalCount}
         onJiraTicketCreate={handleJiraTicketPopupOpen}
-        onQueryChange={(query) => {
+        onQueryChange={(query: InsightsQuery) => {
           setQuery(query);
         }}
         defaultQuery={DEFAULT_QUERY}

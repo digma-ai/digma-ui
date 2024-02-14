@@ -54,6 +54,7 @@ export const useInsightsData = (props: UseInsightDataProps) => {
     });
 
     setIsInitialLoading(true);
+    setIsLoading(true);
     const handleInsightsData = (data: unknown, timeStamp: number) => {
       const insightsData = data as InsightsData;
       insightsData.insightsStatus = InsightsStatus.DEFAULT;
