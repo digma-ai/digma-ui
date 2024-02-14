@@ -4,6 +4,7 @@ import { actions } from "../../../actions";
 import { dispatcher } from "../../../dispatcher";
 import { Mode } from "../../../globals";
 import { isBoolean } from "../../../typeGuards/isBoolean";
+import { isEnvironment } from "../../../typeGuards/isEnvironment";
 import { isNull } from "../../../typeGuards/isNull";
 import { isObject } from "../../../typeGuards/isObject";
 import { isString } from "../../../typeGuards/isString";
@@ -161,10 +162,10 @@ export const App = (props: AppProps) => {
     };
 
     const handleSetEnvironment = (data: unknown) => {
-      if (isObject(data) && isString(data.environment)) {
+      if (isObject(data) && isEnvironment(data?.environment)) {
         setConfig((config) => ({
           ...config,
-          environment: data.environment as string
+          environment: data.environment as Environment
         }));
       }
     };
@@ -196,22 +197,20 @@ export const App = (props: AppProps) => {
       }
     };
 
-    const handleSetSelectedCodeScope = (data: unknown) => {
-      if (isObject(data) && isObject(data.scope) && isString(data.scope.type)) {
-        setConfig((config) => ({
-          ...config,
-          scope: data.scope as Scope
-        }));
-      }
-    };
-
     const handleSetIsMicrometerProject = (data: unknown) => {
-      if (isObject(data) && isBoolean(data.isMicrometerProject)) {
+      if (isObject(data)) {
         setConfig((config) => ({
           ...config,
           isMicrometerProject: data.isMicrometerProject as boolean
         }));
       }
+    };
+
+    const handleSetScope = (data: unknown) => {
+      setConfig((config) => ({
+        ...config,
+        scope: data as Scope
+      }));
     };
 
     dispatcher.addActionListener(actions.SET_THEME, handleSetTheme);
@@ -264,13 +263,10 @@ export const App = (props: AppProps) => {
       handleSetEnvironments
     );
     dispatcher.addActionListener(
-      actions.SET_SELECTED_CODE_SCOPE,
-      handleSetSelectedCodeScope
-    );
-    dispatcher.addActionListener(
       actions.SET_IS_MICROMETER_PROJECT,
       handleSetIsMicrometerProject
     );
+    dispatcher.addActionListener(actions.SET_SCOPE, handleSetScope);
 
     return () => {
       dispatcher.removeActionListener(actions.SET_THEME, handleSetTheme);
@@ -329,13 +325,10 @@ export const App = (props: AppProps) => {
         handleSetEnvironments
       );
       dispatcher.removeActionListener(
-        actions.SET_SELECTED_CODE_SCOPE,
-        handleSetSelectedCodeScope
-      );
-      dispatcher.removeActionListener(
         actions.SET_IS_MICROMETER_PROJECT,
         handleSetIsMicrometerProject
       );
+      dispatcher.removeActionListener(actions.SET_SCOPE, handleSetScope);
     };
   }, []);
 

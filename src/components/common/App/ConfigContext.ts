@@ -1,4 +1,5 @@
 import { createContext } from "react";
+import { isEnvironment } from "../../../typeGuards/isEnvironment";
 import { isString } from "../../../typeGuards/isString";
 import { ConfigContextData } from "./types";
 
@@ -16,7 +17,9 @@ export const ConfigContext = createContext<ConfigContextData>({
   userRegistrationEmail: isString(window.userRegistrationEmail)
     ? window.userRegistrationEmail
     : "",
-  environment: isString(window.environment) ? window.environment : "",
+  environment: isEnvironment(window.environment)
+    ? window.environment
+    : undefined,
   backendInfo: undefined,
   environments: undefined,
   scope: undefined,

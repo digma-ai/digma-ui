@@ -1,9 +1,9 @@
 import { ChangeEvent, useState } from "react";
-import { Checkbox } from "../../common/Checkbox";
-import { NewCircleLoader } from "../../common/NewCircleLoader";
-import { Tooltip } from "../../common/Tooltip";
-import { CrossIcon } from "../../common/icons/CrossIcon";
-import { MagnifierIcon } from "../../common/icons/MagnifierIcon";
+import { Checkbox } from "../Checkbox";
+import { NewCircleLoader } from "../NewCircleLoader";
+import { Tooltip } from "../Tooltip";
+import { CrossIcon } from "../icons/CrossIcon";
+import { MagnifierIcon } from "../icons/MagnifierIcon";
 import * as s from "./styles";
 import { FilterMenuProps } from "./types";
 

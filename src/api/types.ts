@@ -6,9 +6,9 @@ export interface DigmaIncomingMessageData {
   payload?: unknown;
 }
 
-export interface DigmaOutgoingMessageData {
+export interface DigmaOutgoingMessageData<T> {
   action: string;
-  payload?: unknown;
+  payload?: T;
 }
 
 export type DigmaMessageEvent = MessageEvent<DigmaIncomingMessageData>;

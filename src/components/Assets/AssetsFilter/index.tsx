@@ -2,13 +2,14 @@ import { ComponentType, useContext, useEffect, useState } from "react";
 import { dispatcher } from "../../../dispatcher";
 import { usePersistence } from "../../../hooks/usePersistence";
 import { usePrevious } from "../../../hooks/usePrevious";
+import { isEnvironment } from "../../../typeGuards/isEnvironment";
 import { isNull } from "../../../typeGuards/isNull";
-import { isString } from "../../../typeGuards/isString";
 import { isUndefined } from "../../../typeGuards/isUndefined";
 import { InsightType } from "../../../types";
 import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
+import { FilterButton } from "../../common/FilterButton";
 import { NewButton } from "../../common/NewButton";
 import { NewPopover } from "../../common/NewPopover";
 import { Select } from "../../common/Select";
@@ -18,7 +19,6 @@ import { SparkleIcon } from "../../common/icons/SparkleIcon";
 import { IconProps } from "../../common/icons/types";
 import { actions } from "../actions";
 import { trackingEvents } from "../tracking";
-import { FilterButton } from "./FilterButton";
 import * as s from "./styles";
 import {
   AssetFilterCategory,
@@ -135,8 +135,8 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
 
   useEffect(() => {
     if (
-      isString(previousEnvironment) &&
-      previousEnvironment !== config.environment
+      isEnvironment(previousEnvironment) &&
+      previousEnvironment.originalName !== config.environment?.originalName
     ) {
       const defaultFilters = {
         services: [],
