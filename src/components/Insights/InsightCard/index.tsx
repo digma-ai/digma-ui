@@ -126,7 +126,7 @@ export const InsightCard = (props: InsightCardProps) => {
   return (
     <>
       <Card
-        showTitle={!!props.title}
+        showTitle={!!(props.title && !scope?.span)}
         title={
           <s.Title>
             <s.TitleIcon>
