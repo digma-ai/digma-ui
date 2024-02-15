@@ -39,6 +39,7 @@ export const HighNumberOfQueriesInsight = (
   return (
     <InsightCard
       data={insight}
+      title={props.insight.spanInfo?.displayName}
       content={
         <s.ContentContainer>
           <Description>

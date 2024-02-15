@@ -53,6 +53,7 @@ export const QueryOptimizationInsight = (
   return (
     <InsightCard
       data={props.insight}
+      title={props.insight.spanInfo?.displayName}
       content={
         <s.ContentContainer>
           <Description>

@@ -37,6 +37,7 @@ export const SessionInViewInsight = (props: SessionInViewInsightProps) => {
   return (
     <InsightCard
       data={props.insight}
+      title={props.insight.spanInfo?.displayName}
       content={
         <s.ContentContainer>
           <Description>

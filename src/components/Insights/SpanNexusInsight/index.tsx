@@ -22,6 +22,7 @@ export const SpanNexusInsight = (props: SpanNexusInsightProps) => {
   return (
     <InsightCard
       data={insight}
+      title={props.insight.spanInfo?.displayName}
       content={
         <s.ContentContainer>
           <Description>Multiple code flows depend on this location</Description>
