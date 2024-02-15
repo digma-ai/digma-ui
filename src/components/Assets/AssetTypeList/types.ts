@@ -7,7 +7,7 @@ export interface AssetTypeListProps {
   services?: string[];
   filters?: AssetFilterQuery;
   searchQuery: string;
-  scopeViewOptions?: AssetScopeOption;
+  scopeViewOptions: AssetScopeOption | null;
 }
 
 export interface AssetCategoriesData {

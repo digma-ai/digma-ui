@@ -9,7 +9,7 @@ export interface AssetListProps {
   services?: string[];
   filters?: AssetFilterQuery;
   searchQuery: string;
-  scopeViewOptions?: AssetScopeOption;
+  scopeViewOptions: AssetScopeOption | null;
 }
 
 export enum SORTING_CRITERION {

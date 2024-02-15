@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { v4 as uuidv4 } from "uuid";
 import { usePersistence } from "../../../hooks/usePersistence";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { trackingEvents as globalTrackingEvents } from "../../../trackingEvents";
@@ -83,7 +84,8 @@ const renderInsightCard = (
     spanCodeObjectId: string | undefined,
     event?: string
   ) => void,
-  isJiraHintEnabled: boolean
+  isJiraHintEnabled: boolean,
+  onRefresh: () => void
 ): JSX.Element | undefined => {
   const handleErrorSelect = (errorId: string, insightType: InsightType) => {
     sendTrackingEvent(globalTrackingEvents.USER_ACTION, {
@@ -185,59 +187,50 @@ const renderInsightCard = (
     });
   };
 
-  const handleRefresh = (insightType: InsightType) => {
-    window.sendMessageToDigma({
-      action: actions.REFRESH_ALL,
-      payload: {
-        insightType
-      }
-    });
-  };
-
   if (isSpanDurationsInsight(insight)) {
     return (
       <DurationInsight
-        key={insight.type + insight.codeObjectId}
+        key={uuidv4()}
         insight={insight}
         onHistogramButtonClick={handleHistogramButtonClick}
         onLiveButtonClick={handleLiveButtonClick}
         onCompareButtonClick={handleCompareButtonClick}
         onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
+        onRefresh={onRefresh}
       />
     );
   }
   if (isSpanDurationBreakdownInsight(insight)) {
     return (
       <DurationBreakdownInsight
-        key={insight.type + insight.codeObjectId}
+        key={uuidv4()}
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
         onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
+        onRefresh={onRefresh}
       />
     );
   }
   if (isSpanUsagesInsight(insight)) {
     return (
       <TopUsageInsight
-        key={insight.type + insight.codeObjectId}
+        key={uuidv4()}
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
         onTraceButtonClick={handleTraceButtonClick}
         onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
+        onRefresh={onRefresh}
       />
     );
   }
   if (isSpanEndpointBottleneckInsight(insight)) {
     return (
       <BottleneckInsight
-        key={insight.type + insight.codeObjectId}
+        key={uuidv4()}
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
         onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
+        onRefresh={onRefresh}
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
       />
@@ -246,11 +239,11 @@ const renderInsightCard = (
   if (isEndpointSlowestSpansInsight(insight)) {
     return (
       <SpanBottleneckInsight
-        key={insight.type + insight.codeObjectId}
+        key={uuidv4()}
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
         onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
+        onRefresh={onRefresh}
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
       />
@@ -259,10 +252,10 @@ const renderInsightCard = (
   if (isSlowEndpointInsight(insight)) {
     return (
       <SlowEndpointInsight
-        key={insight.type + insight.codeObjectId}
+        key={uuidv4()}
         insight={insight}
         onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
+        onRefresh={onRefresh}
       />
     );
   }
@@ -273,34 +266,34 @@ const renderInsightCard = (
   ) {
     return (
       <TrafficInsight
-        key={insight.type + insight.codeObjectId}
+        key={uuidv4()}
         insight={insight}
         onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
+        onRefresh={onRefresh}
       />
     );
   }
   if (isCodeObjectErrorsInsight(insight)) {
     return (
       <ErrorsInsight
-        key={insight.type + insight.codeObjectId}
+        key={uuidv4()}
         insight={insight}
         onErrorSelect={handleErrorSelect}
         onExpandButtonClick={handleErrorsExpandButtonClick}
         onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
+        onRefresh={onRefresh}
       />
     );
   }
   if (isEndpointSuspectedNPlusOneInsight(insight)) {
     return (
       <EndpointNPlusOneInsight
-        key={insight.type + insight.codeObjectId}
+        key={uuidv4()}
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
         onTraceButtonClick={handleTraceButtonClick}
         onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
+        onRefresh={onRefresh}
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
       />
@@ -309,12 +302,12 @@ const renderInsightCard = (
   if (isSpanNPlusOneInsight(insight)) {
     return (
       <NPlusOneInsight
-        key={insight.type + insight.codeObjectId}
+        key={uuidv4()}
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
         onTraceButtonClick={handleTraceButtonClick}
         onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
+        onRefresh={onRefresh}
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
       />
@@ -323,13 +316,13 @@ const renderInsightCard = (
   if (isSpanScalingBadlyInsight(insight)) {
     return (
       <ScalingIssueInsight
-        key={insight.type + insight.codeObjectId}
+        key={uuidv4()}
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
         onTraceButtonClick={handleTraceButtonClick}
         onHistogramButtonClick={handleHistogramButtonClick}
         onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
+        onRefresh={onRefresh}
       />
     );
   }
@@ -343,18 +336,18 @@ const renderInsightCard = (
           </Description>
         }
         onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
+        onRefresh={onRefresh}
       />
     );
   }
   if (isEndpointDurationSlowdownInsight(insight)) {
     return (
       <DurationSlowdownSourceInsight
-        key={insight.type + insight.codeObjectId}
+        key={uuidv4()}
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
         onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
+        onRefresh={onRefresh}
       />
     );
   }
@@ -362,10 +355,10 @@ const renderInsightCard = (
   if (isEndpointBreakdownInsight(insight)) {
     return (
       <RequestBreakdownInsight
-        key={insight.type + insight.codeObjectId}
+        key={uuidv4()}
         insight={insight}
         onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
+        onRefresh={onRefresh}
       />
     );
   }
@@ -373,11 +366,11 @@ const renderInsightCard = (
   if (isSpanScalingWellInsight(insight)) {
     return (
       <NoScalingIssueInsight
-        key={insight.type + insight.codeObjectId}
+        key={uuidv4()}
         insight={insight}
         onHistogramButtonClick={handleHistogramButtonClick}
         onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
+        onRefresh={onRefresh}
       />
     );
   }
@@ -385,11 +378,11 @@ const renderInsightCard = (
   if (isSpanScalingInsufficientDataInsight(insight)) {
     return (
       <PerformanceAtScaleInsight
-        key={insight.type + insight.codeObjectId}
+        key={uuidv4()}
         insight={insight}
         onHistogramButtonClick={handleHistogramButtonClick}
         onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
+        onRefresh={onRefresh}
       />
     );
   }
@@ -397,12 +390,12 @@ const renderInsightCard = (
   if (isSessionInViewEndpointInsight(insight)) {
     return (
       <SessionInViewInsight
-        key={insight.type + insight.codeObjectId}
+        key={uuidv4()}
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
         onTraceButtonClick={handleTraceButtonClick}
         onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
+        onRefresh={onRefresh}
       />
     );
   }
@@ -410,12 +403,12 @@ const renderInsightCard = (
   if (isChattyApiEndpointInsight(insight)) {
     return (
       <ExcessiveAPICallsInsight
-        key={insight.type + insight.codeObjectId}
+        key={uuidv4()}
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
         onTraceButtonClick={handleTraceButtonClick}
         onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
+        onRefresh={onRefresh}
       />
     );
   }
@@ -423,11 +416,11 @@ const renderInsightCard = (
   if (isEndpointHighNumberOfQueriesInsight(insight)) {
     return (
       <HighNumberOfQueriesInsight
-        key={insight.type + insight.codeObjectId}
+        key={uuidv4()}
         insight={insight}
         onTraceButtonClick={handleTraceButtonClick}
         onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
+        onRefresh={onRefresh}
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
       />
@@ -437,10 +430,10 @@ const renderInsightCard = (
   if (isSpanNexusInsight(insight)) {
     return (
       <SpanNexusInsight
-        key={insight.type + insight.codeObjectId}
+        key={uuidv4()}
         insight={insight}
         onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
+        onRefresh={onRefresh}
       />
     );
   }
@@ -448,12 +441,12 @@ const renderInsightCard = (
   if (isSpanQueryOptimizationInsight(insight)) {
     return (
       <QueryOptimizationInsight
-        key={insight.type + insight.codeObjectId}
+        key={uuidv4()}
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
         onTraceButtonClick={handleTraceButtonClick}
         onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
+        onRefresh={onRefresh}
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
       />
@@ -463,12 +456,12 @@ const renderInsightCard = (
   if (isEndpointQueryOptimizationInsight(insight)) {
     return (
       <EndpointQueryOptimizationInsight
-        key={insight.type + insight.codeObjectId}
+        key={uuidv4()}
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
         onTraceButtonClick={handleTraceButtonClick}
         onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
+        onRefresh={onRefresh}
         onJiraTicketCreate={onJiraTicketCreate}
       />
     );
@@ -525,7 +518,8 @@ export const InsightsPage = (props: InsightPageProps) => {
           return renderInsightCard(
             insight,
             handleShowJiraTicket,
-            j === insightIndexWithJiraHint
+            j === insightIndexWithJiraHint,
+            props.onRefresh
           );
         })
       ) : props.isFilteringEnabled ? (

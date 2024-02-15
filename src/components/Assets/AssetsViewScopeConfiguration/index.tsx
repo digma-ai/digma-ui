@@ -1,5 +1,4 @@
-import { useContext, useEffect, useState } from "react";
-import { ConfigContext } from "../../common/App/ConfigContext";
+import { useEffect, useState } from "react";
 import { ToggleSwitch } from "../../common/ToggleSwitch";
 import * as s from "./styles";
 import { AssetsViewConfigurationProps as AssetsViewScopeConfigurationProps } from "./types";
@@ -9,11 +8,10 @@ export const AssetsViewScopeConfiguration = (
 ) => {
   const [isEntry, setIsEntry] = useState(false);
   const [isDirect, setIsDirect] = useState(false);
-  const { scope } = useContext(ConfigContext);
+  const scope = props.currentScope;
 
   useEffect(() => {
     const isEntryPoint = !scope || scope.span?.role === "Entry";
-
     props.onAssetViewChanged({
       scopedSpanCodeObjectId: scope?.span?.spanCodeObjectId,
       isDirect: !isEntryPoint

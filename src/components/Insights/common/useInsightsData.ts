@@ -46,12 +46,13 @@ export const useInsightsData = (props: UseInsightDataProps) => {
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
   const refreshTimerId = useRef<number>();
   const { scope, environment } = useContext(ConfigContext);
+  const query = {
+    ...props.query,
+    scopedSpanCodeObjectId: scope?.span?.spanCodeObjectId || null
+  };
 
   useEffect(() => {
-    getData({
-      ...props.query,
-      scopedSpanCodeObjectId: scope?.span?.spanCodeObjectId || null
-    });
+    getData(query);
 
     setIsInitialLoading(true);
     setIsLoading(true);
@@ -95,14 +96,11 @@ export const useInsightsData = (props: UseInsightDataProps) => {
     if (previousLastSetDataTimeStamp !== lastSetDataTimeStamp) {
       window.clearTimeout(refreshTimerId.current);
       refreshTimerId.current = window.setTimeout(
-        () => {
-          getData({
-            ...props.query,
-            scopedSpanCodeObjectId: scope?.span?.spanCodeObjectId || null
-          });
+        (insightsQuery: ScopedInsightsQuery) => {
+          getData(insightsQuery);
         },
         props.refreshInterval,
-        props.query
+        query
       );
     }
 
@@ -112,9 +110,9 @@ export const useInsightsData = (props: UseInsightDataProps) => {
   }, [
     lastSetDataTimeStamp,
     previousLastSetDataTimeStamp,
-    props.query,
-    scope,
-    environment
+    query,
+    environment,
+    props.refreshInterval
   ]);
 
   useEffect(() => {
@@ -124,10 +122,11 @@ export const useInsightsData = (props: UseInsightDataProps) => {
       scopedSpanCodeObjectId: scope?.span?.spanCodeObjectId || null
     });
   }, [props.query, scope, environment]);
+
   return {
     isInitialLoading,
-    previousData,
     data,
-    isLoading
+    isLoading,
+    refresh: () => getData(query)
   };
 };
