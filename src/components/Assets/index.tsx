@@ -12,6 +12,7 @@ import {
   getFeatureFlagValue
 } from "../../featureFlags";
 import { useDebounce } from "../../hooks/useDebounce";
+import { usePrevious } from "../../hooks/usePrevious";
 import { FeatureFlag } from "../../types";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { EmptyState } from "../common/EmptyState";
@@ -38,6 +39,7 @@ export const Assets = () => {
     useState<AssetScopeOption | null>(null);
   const [selectedFilters, setSelectedFilters] = useState<AssetFilterQuery>();
   const config = useContext(ConfigContext);
+  const previousScope = usePrevious(config.scope?.span);
 
   const isServiceFilterVisible = getFeatureFlagValue(
     config,
@@ -75,6 +77,12 @@ export const Assets = () => {
       setAssetScopeOption(null);
     }
   }, [config.scope]);
+
+  useEffect(() => {
+    if (previousScope !== config.scope?.span) {
+      setSelectedAssetTypeId(null);
+    }
+  }, [config.scope, previousScope]);
 
   const handleBackButtonClick = () => {
     setSelectedAssetTypeId(null);
