@@ -17,8 +17,16 @@ export const ToggleSwitch = (props: ToggleSwitchProps) => {
       $disabled={props.disabled}
     >
       {(!props.labelPosition || props.labelPosition === "start") && props.label}
-      <s.SwitchContainer $isChecked={props.checked} $size={size}>
-        <s.Circle $isChecked={props.checked} $size={size} />
+      <s.SwitchContainer
+        $disabled={props.disabled}
+        $isChecked={props.checked}
+        $size={size}
+      >
+        <s.Circle
+          $disabled={props.disabled}
+          $isChecked={props.checked}
+          $size={size}
+        />
       </s.SwitchContainer>
       {props.labelPosition === "end" && props.label}
     </s.Container>
