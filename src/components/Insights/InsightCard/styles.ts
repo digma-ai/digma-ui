@@ -1,7 +1,33 @@
 import styled from "styled-components";
 import { Link } from "../styles";
 
+export const TitleIcon = styled.div`
+  fill: #a1b5ff;
+  display: flex;
+`;
+
+export const TitleText = styled.div`
+  fill: #a1b5ff;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  display: block;
+`;
+
 export const Title = styled.div`
+  display: flex;
+  padding: 4px 12px;
+  align-items: center;
+  gap: 4px;
+  border-bottom: 1px solid #37383f;
+  background: #28293e;
+  color: #a1b5ff;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 400;
+`;
+
+export const Header = styled.div`
   display: flex;
   gap: 4px;
   align-items: center;

@@ -1,11 +1,14 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
+  border-radius: 4px;
+`;
+
+export const Content = styled.div`
   display: flex;
   flex-direction: column;
   padding: 8px;
   gap: 8px;
-  border-radius: 4px;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

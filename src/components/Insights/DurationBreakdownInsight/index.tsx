@@ -80,6 +80,7 @@ export const DurationBreakdownInsight = (
   return (
     <InsightCard
       data={props.insight}
+      title={props.insight.spanInfo?.displayName}
       content={
         <s.EntryList>
           {pageItems.map((entry) => {
