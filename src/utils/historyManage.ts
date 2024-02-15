@@ -20,7 +20,7 @@ interface Node<T> {
   value: T;
 }
 
-export class HistoryManage {
+export class HistoryManager {
   private head: Node<HistoryStep> | null = null;
   private tail: Node<HistoryStep> | null = null;
 
