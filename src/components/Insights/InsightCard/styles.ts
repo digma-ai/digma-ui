@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { Link } from "../styles";
 
 export const TitleIcon = styled.div`
-  fill: #a1b5ff;
   display: flex;
 `;
 
@@ -38,7 +37,7 @@ export const Title = styled.div`
         return "#a1b5ff;";
     }
   }};
-  font-size: 11px;
+  font-size: 14px;
   font-style: normal;
   font-weight: 400;
 `;

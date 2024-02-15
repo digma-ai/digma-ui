@@ -130,7 +130,7 @@ export const InsightCard = (props: InsightCardProps) => {
         title={
           <s.Title>
             <s.TitleIcon>
-              <OpenTelemetryLogoSmallIcon color="#6063F6" size={14} />
+              <OpenTelemetryLogoSmallIcon color="#6063F6" size={16} />
             </s.TitleIcon>
             <s.TitleText>{props.title}</s.TitleText>
           </s.Title>
