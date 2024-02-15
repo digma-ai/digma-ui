@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { v4 as uuidv4 } from "uuid";
 import { usePersistence } from "../../../hooks/usePersistence";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { trackingEvents as globalTrackingEvents } from "../../../trackingEvents";
@@ -189,6 +190,7 @@ const renderInsightCard = (
   if (isSpanDurationsInsight(insight)) {
     return (
       <DurationInsight
+        key={uuidv4()}
         insight={insight}
         onHistogramButtonClick={handleHistogramButtonClick}
         onLiveButtonClick={handleLiveButtonClick}
@@ -201,6 +203,7 @@ const renderInsightCard = (
   if (isSpanDurationBreakdownInsight(insight)) {
     return (
       <DurationBreakdownInsight
+        key={uuidv4()}
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
         onRecalculate={handleRecalculate}
@@ -211,6 +214,7 @@ const renderInsightCard = (
   if (isSpanUsagesInsight(insight)) {
     return (
       <TopUsageInsight
+        key={uuidv4()}
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
         onTraceButtonClick={handleTraceButtonClick}
@@ -222,6 +226,7 @@ const renderInsightCard = (
   if (isSpanEndpointBottleneckInsight(insight)) {
     return (
       <BottleneckInsight
+        key={uuidv4()}
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
         onRecalculate={handleRecalculate}
@@ -234,6 +239,7 @@ const renderInsightCard = (
   if (isEndpointSlowestSpansInsight(insight)) {
     return (
       <SpanBottleneckInsight
+        key={uuidv4()}
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
         onRecalculate={handleRecalculate}
@@ -246,6 +252,7 @@ const renderInsightCard = (
   if (isSlowEndpointInsight(insight)) {
     return (
       <SlowEndpointInsight
+        key={uuidv4()}
         insight={insight}
         onRecalculate={handleRecalculate}
         onRefresh={onRefresh}
@@ -259,6 +266,7 @@ const renderInsightCard = (
   ) {
     return (
       <TrafficInsight
+        key={uuidv4()}
         insight={insight}
         onRecalculate={handleRecalculate}
         onRefresh={onRefresh}
@@ -268,6 +276,7 @@ const renderInsightCard = (
   if (isCodeObjectErrorsInsight(insight)) {
     return (
       <ErrorsInsight
+        key={uuidv4()}
         insight={insight}
         onErrorSelect={handleErrorSelect}
         onExpandButtonClick={handleErrorsExpandButtonClick}
@@ -279,6 +288,7 @@ const renderInsightCard = (
   if (isEndpointSuspectedNPlusOneInsight(insight)) {
     return (
       <EndpointNPlusOneInsight
+        key={uuidv4()}
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
         onTraceButtonClick={handleTraceButtonClick}
@@ -292,6 +302,7 @@ const renderInsightCard = (
   if (isSpanNPlusOneInsight(insight)) {
     return (
       <NPlusOneInsight
+        key={uuidv4()}
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
         onTraceButtonClick={handleTraceButtonClick}
@@ -305,6 +316,7 @@ const renderInsightCard = (
   if (isSpanScalingBadlyInsight(insight)) {
     return (
       <ScalingIssueInsight
+        key={uuidv4()}
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
         onTraceButtonClick={handleTraceButtonClick}
@@ -331,6 +343,7 @@ const renderInsightCard = (
   if (isEndpointDurationSlowdownInsight(insight)) {
     return (
       <DurationSlowdownSourceInsight
+        key={uuidv4()}
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
         onRecalculate={handleRecalculate}
@@ -342,6 +355,7 @@ const renderInsightCard = (
   if (isEndpointBreakdownInsight(insight)) {
     return (
       <RequestBreakdownInsight
+        key={uuidv4()}
         insight={insight}
         onRecalculate={handleRecalculate}
         onRefresh={onRefresh}
@@ -352,6 +366,7 @@ const renderInsightCard = (
   if (isSpanScalingWellInsight(insight)) {
     return (
       <NoScalingIssueInsight
+        key={uuidv4()}
         insight={insight}
         onHistogramButtonClick={handleHistogramButtonClick}
         onRecalculate={handleRecalculate}
@@ -363,6 +378,7 @@ const renderInsightCard = (
   if (isSpanScalingInsufficientDataInsight(insight)) {
     return (
       <PerformanceAtScaleInsight
+        key={uuidv4()}
         insight={insight}
         onHistogramButtonClick={handleHistogramButtonClick}
         onRecalculate={handleRecalculate}
@@ -374,6 +390,7 @@ const renderInsightCard = (
   if (isSessionInViewEndpointInsight(insight)) {
     return (
       <SessionInViewInsight
+        key={uuidv4()}
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
         onTraceButtonClick={handleTraceButtonClick}
@@ -386,6 +403,7 @@ const renderInsightCard = (
   if (isChattyApiEndpointInsight(insight)) {
     return (
       <ExcessiveAPICallsInsight
+        key={uuidv4()}
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
         onTraceButtonClick={handleTraceButtonClick}
@@ -398,6 +416,7 @@ const renderInsightCard = (
   if (isEndpointHighNumberOfQueriesInsight(insight)) {
     return (
       <HighNumberOfQueriesInsight
+        key={uuidv4()}
         insight={insight}
         onTraceButtonClick={handleTraceButtonClick}
         onRecalculate={handleRecalculate}
@@ -411,6 +430,7 @@ const renderInsightCard = (
   if (isSpanNexusInsight(insight)) {
     return (
       <SpanNexusInsight
+        key={uuidv4()}
         insight={insight}
         onRecalculate={handleRecalculate}
         onRefresh={onRefresh}
@@ -421,6 +441,7 @@ const renderInsightCard = (
   if (isSpanQueryOptimizationInsight(insight)) {
     return (
       <QueryOptimizationInsight
+        key={uuidv4()}
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
         onTraceButtonClick={handleTraceButtonClick}
@@ -435,6 +456,7 @@ const renderInsightCard = (
   if (isEndpointQueryOptimizationInsight(insight)) {
     return (
       <EndpointQueryOptimizationInsight
+        key={uuidv4()}
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
         onTraceButtonClick={handleTraceButtonClick}

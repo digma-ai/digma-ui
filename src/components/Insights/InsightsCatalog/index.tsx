@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { usePrevious } from "../../../hooks/usePrevious";
 
 import { isNumber } from "../../../typeGuards/isNumber";
-import { isString } from "../../../typeGuards/isString";
 import { Pagination } from "../../common/Pagination";
 import { SearchInput } from "../../common/SearchInput";
 import { SortingSelector } from "../../common/SortingSelector";
@@ -40,8 +39,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
     if (
       (isNumber(previousPage) && previousPage !== page) ||
       (previousSorting && previousSorting !== sorting) ||
-      (isString(previousSearchQuery) &&
-        previousSearchQuery !== searchInputValue)
+      previousSearchQuery !== searchInputValue
     ) {
       props.onQueryChange({
         page,
@@ -92,22 +90,24 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
         onJiraTicketCreate={onJiraTicketCreate}
         onRefresh={props.onRefresh}
       />
-      <s.Footer>
-        <s.FooterItemsCount>
-          Showing{" "}
-          <s.FooterPageItemsCount>
-            {pageStartItemNumber} - {pageEndItemNumber}
-          </s.FooterPageItemsCount>{" "}
-          of {totalCount}
-        </s.FooterItemsCount>
-        <Pagination
-          itemsCount={totalCount}
-          page={page}
-          pageSize={PAGE_SIZE}
-          onPageChange={setPage}
-          extendedNavigation={true}
-        />
-      </s.Footer>
+      {totalCount > 0 && (
+        <s.Footer>
+          <s.FooterItemsCount>
+            Showing{" "}
+            <s.FooterPageItemsCount>
+              {pageStartItemNumber} - {pageEndItemNumber}
+            </s.FooterPageItemsCount>{" "}
+            of {totalCount}
+          </s.FooterItemsCount>
+          <Pagination
+            itemsCount={totalCount}
+            page={page}
+            pageSize={PAGE_SIZE}
+            onPageChange={setPage}
+            extendedNavigation={true}
+          />
+        </s.Footer>
+      )}
     </>
   );
 };
