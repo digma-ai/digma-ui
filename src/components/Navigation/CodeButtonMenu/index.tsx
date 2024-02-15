@@ -66,14 +66,14 @@ export const CodeButtonMenu = (props: CodeButtonMenuProps) => {
   const renderSpans = () => (
     <div>
       <span>Assets</span>
-      {props.codeContext.spans.map((span) => (
+      {props.codeContext.spans.assets.map((x) => (
         <div
-          key={span.spanCodeObjectId}
+          key={x.spanCodeObjectId}
           onClick={() => {
-            props.onScopeChange(span.spanCodeObjectId, span.serviceName);
+            props.onScopeChange(x.spanCodeObjectId);
           }}
         >
-          {span.displayName}
+          {x.displayName}
         </div>
       ))}
     </div>
@@ -84,7 +84,7 @@ export const CodeButtonMenu = (props: CodeButtonMenuProps) => {
       <span>{props.codeContext.displayName}</span>
       {props.codeContext.isInstrumented === false
         ? renderNoObservability()
-        : props.codeContext.spans.length > 0
+        : props.codeContext.spans.assets.length > 0
         ? renderSpans()
         : renderNoData()}
     </Menu>

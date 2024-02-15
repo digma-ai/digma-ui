@@ -26,7 +26,6 @@ export interface OpenDashboardPayload {
 export interface ChangeScopePayload {
   span: {
     spanCodeObjectId: string;
-    serviceName: string | null;
   } | null;
 }
 
@@ -56,10 +55,15 @@ export interface AddAnnotationPayload {
 
 export interface CodeContext {
   spans: {
-    spanCodeObjectId: string;
-    displayName: string;
-    serviceName: string | null;
-  }[];
+    assets: {
+      spanCodeObjectId: string;
+      displayName: string;
+    }[];
+    errorData: {
+      codeObjectId: string;
+      count: number;
+    };
+  };
   isInstrumented: boolean | null;
   methodId: string | null;
   displayName: string;

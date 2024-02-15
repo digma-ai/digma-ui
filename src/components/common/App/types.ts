@@ -44,7 +44,7 @@ export interface Scope {
     displayName: string;
     spanCodeObjectId: string;
     serviceName: string | null;
-    role: "Entry" | "Internal" | "Unknown";
+    role: "Entry" | "Internal" | "Unknown" | null;
   } | null;
   code: {
     relatedCodeDetailsList: CodeDetails[];

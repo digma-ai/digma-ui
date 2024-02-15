@@ -15,7 +15,7 @@ export const CodeButton = (props: CodeButtonProps) => {
     }
 
     if ([null, true].includes(codeContext.isInstrumented)) {
-      if (codeContext.spans.length === 0) {
+      if (codeContext.spans.assets.length === 0) {
         return " (no data)";
       } else {
         return " (has data)";

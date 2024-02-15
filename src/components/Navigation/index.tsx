@@ -37,7 +37,7 @@ const getCodeButtonState = (codeContext?: CodeContext): string => {
   }
 
   if ([null, true].includes(codeContext.isInstrumented)) {
-    if (codeContext.spans.length === 0) {
+    if (codeContext.spans.assets.length === 0) {
       return " (no data)";
     } else {
       return " (has data)";
@@ -92,6 +92,7 @@ export const Navigation = () => {
     };
 
     const handleCodeContextData = (data: unknown) => {
+      console.log(data);
       const payload = data as CodeContext;
       setCodeContext(payload);
     };
@@ -220,9 +221,9 @@ export const Navigation = () => {
   };
 
   const handleCodeButtonClick = () => {
-    if (codeContext?.spans.length === 1) {
-      const { spanCodeObjectId, serviceName } = codeContext.spans[0];
-      changeScope(spanCodeObjectId, serviceName);
+    if (codeContext?.spans.assets.length === 1) {
+      const { spanCodeObjectId } = codeContext.spans.assets[0];
+      changeScope(spanCodeObjectId);
     } else {
       setIsTargetButtonMenuOpen(false);
       setIsCodeButtonMenuOpen(!isCodeButtonMenuOpen);
@@ -311,16 +312,12 @@ export const Navigation = () => {
     setIsAutoFixing(true);
   };
 
-  const changeScope = (
-    spanCodeObjectId: string,
-    serviceName: string | null
-  ) => {
+  const changeScope = (spanCodeObjectId: string) => {
     window.sendMessageToDigma<ChangeScopePayload>({
       action: actions.CHANGE_SCOPE,
       payload: {
         span: {
-          spanCodeObjectId,
-          serviceName
+          spanCodeObjectId
         }
       }
     });
