@@ -96,6 +96,9 @@ export const SortingSelector = (props: SortingSelectorProps) => {
         <PopoverTrigger onClick={handleSortingMenuToggle}>
           <s.SortingMenuButton $isOpen={isSortingMenuOpen}>
             <span>Sort by</span>
+            <s.SortingLabel>
+              {getSortingCriterionInfo(sorting.criterion)?.label}
+            </s.SortingLabel>
             <ChevronIcon
               direction={isSortingMenuOpen ? Direction.UP : Direction.DOWN}
               color={sortingMenuChevronColor}

@@ -12,6 +12,21 @@ export const PopoverContainer = styled.div`
   gap: 8px;
 `;
 
+export const SortingLabel = styled.span`
+  font-weight: 500;
+  font-size: 14px;
+  text-transform: capitalize;
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#4d668a";
+      case "dark":
+      case "dark-jetbrains":
+        return "#dadada";
+    }
+  }};
+`;
+
 export const SortingMenuButton = styled.button<SortingMenuButtonProps>`
   background: none;
   cursor: pointer;
