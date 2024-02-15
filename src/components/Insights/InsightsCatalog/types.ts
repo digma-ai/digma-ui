@@ -9,6 +9,7 @@ export interface InsightsCatalogProps {
   ) => void;
   onQueryChange: (query: InsightsQuery) => void;
   defaultQuery: InsightsQuery;
+  onRefresh: () => void;
 }
 
 export enum SORTING_CRITERION {

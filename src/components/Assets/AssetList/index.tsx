@@ -271,7 +271,7 @@ export const AssetList = (props: AssetListProps) => {
       (Array.isArray(previousServices) &&
         previousServices !== props.services) ||
       (previousFilters && previousFilters !== props.filters) ||
-      (previousViewScope && previousViewScope !== props.scopeViewOptions)
+      previousViewScope !== props.scopeViewOptions
     ) {
       getData(
         props.assetTypeId,

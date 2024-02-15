@@ -83,7 +83,8 @@ const renderInsightCard = (
     spanCodeObjectId: string | undefined,
     event?: string
   ) => void,
-  isJiraHintEnabled: boolean
+  isJiraHintEnabled: boolean,
+  onRefresh: () => void
 ): JSX.Element | undefined => {
   const handleErrorSelect = (errorId: string, insightType: InsightType) => {
     sendTrackingEvent(globalTrackingEvents.USER_ACTION, {
@@ -185,15 +186,6 @@ const renderInsightCard = (
     });
   };
 
-  const handleRefresh = (insightType: InsightType) => {
-    window.sendMessageToDigma({
-      action: actions.REFRESH_ALL,
-      payload: {
-        insightType
-      }
-    });
-  };
-
   if (isSpanDurationsInsight(insight)) {
     return (
       <DurationInsight
@@ -202,7 +194,7 @@ const renderInsightCard = (
         onLiveButtonClick={handleLiveButtonClick}
         onCompareButtonClick={handleCompareButtonClick}
         onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
+        onRefresh={onRefresh}
       />
     );
   }
@@ -212,7 +204,7 @@ const renderInsightCard = (
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
         onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
+        onRefresh={onRefresh}
       />
     );
   }
@@ -223,7 +215,7 @@ const renderInsightCard = (
         onAssetLinkClick={handleAssetLinkClick}
         onTraceButtonClick={handleTraceButtonClick}
         onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
+        onRefresh={onRefresh}
       />
     );
   }
@@ -233,7 +225,7 @@ const renderInsightCard = (
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
         onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
+        onRefresh={onRefresh}
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
       />
@@ -245,7 +237,7 @@ const renderInsightCard = (
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
         onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
+        onRefresh={onRefresh}
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
       />
@@ -256,7 +248,7 @@ const renderInsightCard = (
       <SlowEndpointInsight
         insight={insight}
         onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
+        onRefresh={onRefresh}
       />
     );
   }
@@ -269,7 +261,7 @@ const renderInsightCard = (
       <TrafficInsight
         insight={insight}
         onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
+        onRefresh={onRefresh}
       />
     );
   }
@@ -280,7 +272,7 @@ const renderInsightCard = (
         onErrorSelect={handleErrorSelect}
         onExpandButtonClick={handleErrorsExpandButtonClick}
         onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
+        onRefresh={onRefresh}
       />
     );
   }
@@ -291,7 +283,7 @@ const renderInsightCard = (
         onAssetLinkClick={handleAssetLinkClick}
         onTraceButtonClick={handleTraceButtonClick}
         onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
+        onRefresh={onRefresh}
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
       />
@@ -304,7 +296,7 @@ const renderInsightCard = (
         onAssetLinkClick={handleAssetLinkClick}
         onTraceButtonClick={handleTraceButtonClick}
         onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
+        onRefresh={onRefresh}
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
       />
@@ -318,7 +310,7 @@ const renderInsightCard = (
         onTraceButtonClick={handleTraceButtonClick}
         onHistogramButtonClick={handleHistogramButtonClick}
         onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
+        onRefresh={onRefresh}
       />
     );
   }
@@ -332,7 +324,7 @@ const renderInsightCard = (
           </Description>
         }
         onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
+        onRefresh={onRefresh}
       />
     );
   }
@@ -342,7 +334,7 @@ const renderInsightCard = (
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
         onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
+        onRefresh={onRefresh}
       />
     );
   }
@@ -352,7 +344,7 @@ const renderInsightCard = (
       <RequestBreakdownInsight
         insight={insight}
         onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
+        onRefresh={onRefresh}
       />
     );
   }
@@ -363,7 +355,7 @@ const renderInsightCard = (
         insight={insight}
         onHistogramButtonClick={handleHistogramButtonClick}
         onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
+        onRefresh={onRefresh}
       />
     );
   }
@@ -374,7 +366,7 @@ const renderInsightCard = (
         insight={insight}
         onHistogramButtonClick={handleHistogramButtonClick}
         onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
+        onRefresh={onRefresh}
       />
     );
   }
@@ -386,7 +378,7 @@ const renderInsightCard = (
         onAssetLinkClick={handleAssetLinkClick}
         onTraceButtonClick={handleTraceButtonClick}
         onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
+        onRefresh={onRefresh}
       />
     );
   }
@@ -398,7 +390,7 @@ const renderInsightCard = (
         onAssetLinkClick={handleAssetLinkClick}
         onTraceButtonClick={handleTraceButtonClick}
         onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
+        onRefresh={onRefresh}
       />
     );
   }
@@ -409,7 +401,7 @@ const renderInsightCard = (
         insight={insight}
         onTraceButtonClick={handleTraceButtonClick}
         onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
+        onRefresh={onRefresh}
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
       />
@@ -421,7 +413,7 @@ const renderInsightCard = (
       <SpanNexusInsight
         insight={insight}
         onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
+        onRefresh={onRefresh}
       />
     );
   }
@@ -433,7 +425,7 @@ const renderInsightCard = (
         onAssetLinkClick={handleAssetLinkClick}
         onTraceButtonClick={handleTraceButtonClick}
         onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
+        onRefresh={onRefresh}
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
       />
@@ -447,7 +439,7 @@ const renderInsightCard = (
         onAssetLinkClick={handleAssetLinkClick}
         onTraceButtonClick={handleTraceButtonClick}
         onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
+        onRefresh={onRefresh}
         onJiraTicketCreate={onJiraTicketCreate}
       />
     );
@@ -504,7 +496,8 @@ export const InsightsPage = (props: InsightPageProps) => {
           return renderInsightCard(
             insight,
             handleShowJiraTicket,
-            j === insightIndexWithJiraHint
+            j === insightIndexWithJiraHint,
+            props.onRefresh
           );
         })
       ) : props.isFilteringEnabled ? (

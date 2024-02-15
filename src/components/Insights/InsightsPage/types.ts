@@ -7,6 +7,7 @@ export interface InsightPageProps {
     insight: GenericCodeObjectInsight,
     spanCodeObjectId?: string
   ) => void;
+  onRefresh: () => void;
 }
 
 export interface isInsightJiraTicketHintShownPayload {

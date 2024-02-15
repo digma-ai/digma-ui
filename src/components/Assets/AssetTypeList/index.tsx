@@ -123,7 +123,7 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
       (previousFilters && previousFilters !== props.filters) ||
       (isString(previousSearchQuery) &&
         previousSearchQuery !== props.searchQuery) ||
-      (previousViewScope && previousViewScope !== props.scopeViewOptions)
+      previousViewScope !== props.scopeViewOptions
     ) {
       getData(
         props.filters,
@@ -144,7 +144,8 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
     previousSearchQuery,
     props.searchQuery,
     isComplexFilterEnabled,
-    props.scopeViewOptions
+    props.scopeViewOptions,
+    previousViewScope
   ]);
 
   useEffect(() => {

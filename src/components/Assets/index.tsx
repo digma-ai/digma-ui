@@ -1,6 +1,7 @@
 import {
   ChangeEvent,
   useContext,
+  useEffect,
   useLayoutEffect,
   useMemo,
   useState
@@ -33,7 +34,8 @@ export const Assets = () => {
   const [searchInputValue, setSearchInputValue] = useState("");
   const debouncedSearchInputValue = useDebounce(searchInputValue, 1000);
   const [selectedServices, setSelectedServices] = useState<string[]>();
-  const [assetScopeOption, setAssetScopeOption] = useState<AssetScopeOption>();
+  const [assetScopeOption, setAssetScopeOption] =
+    useState<AssetScopeOption | null>(null);
   const [selectedFilters, setSelectedFilters] = useState<AssetFilterQuery>();
   const config = useContext(ConfigContext);
 
@@ -67,6 +69,12 @@ export const Assets = () => {
       action: actions.INITIALIZE
     });
   }, []);
+
+  useEffect(() => {
+    if (!config.scope?.span) {
+      setAssetScopeOption(null);
+    }
+  }, [config.scope]);
 
   const handleBackButtonClick = () => {
     setSelectedAssetTypeId(null);
@@ -167,6 +175,7 @@ export const Assets = () => {
         {config.scope && config.scope.span && (
           <s.HeaderItem>
             <AssetsViewScopeConfiguration
+              currentScope={config.scope}
               onAssetViewChanged={(val) => {
                 setAssetScopeOption(val);
               }}

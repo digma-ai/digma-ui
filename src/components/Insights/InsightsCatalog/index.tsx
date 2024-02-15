@@ -90,6 +90,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
         insights={insights}
         isFilteringEnabled={searchInputValue !== null}
         onJiraTicketCreate={onJiraTicketCreate}
+        onRefresh={props.onRefresh}
       />
       <s.Footer>
         <s.FooterItemsCount>

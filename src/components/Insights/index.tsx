@@ -144,7 +144,7 @@ const sendMessage = (action: string, data?: object) => {
 export const Insights = (props: InsightsProps) => {
   const [isAutofixing, setIsAutofixing] = useState(false);
   const [query, setQuery] = useState<InsightsQuery>(DEFAULT_QUERY);
-  const { isLoading, isInitialLoading, data, previousData } = useInsightsData({
+  const { isLoading, isInitialLoading, data, refresh } = useInsightsData({
     refreshInterval: REFRESH_INTERVAL,
     data: props.data,
     query
@@ -241,6 +241,7 @@ export const Insights = (props: InsightsProps) => {
         onQueryChange={(query: InsightsQuery) => {
           setQuery(query);
         }}
+        onRefresh={refresh}
         defaultQuery={DEFAULT_QUERY}
       />
     );
