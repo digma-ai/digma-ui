@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import { usePersistence } from "../../../hooks/usePersistence";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { trackingEvents as globalTrackingEvents } from "../../../trackingEvents";
+import { isUndefined } from "../../../typeGuards/isUndefined";
 import { InsightType } from "../../../types";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { Card } from "../../common/Card";
@@ -518,7 +519,9 @@ export const InsightsPage = (props: InsightPageProps) => {
           return renderInsightCard(
             insight,
             handleShowJiraTicket,
-            j === insightIndexWithJiraHint,
+            !isUndefined(isInsightJiraTicketHintShown) &&
+              !isInsightJiraTicketHintShown?.value &&
+              j === insightIndexWithJiraHint,
             props.onRefresh
           );
         })
