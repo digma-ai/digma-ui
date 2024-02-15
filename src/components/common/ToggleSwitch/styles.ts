@@ -62,7 +62,7 @@ const getSwitchContainerColor = (
   if (isDisabled) {
     switch (theme.mode) {
       case "light":
-        return isChecked ? "#28293E" : "#b9c0d4";
+        return isChecked ? "#E5E5FF" : "#E6E8F2";
       case "dark":
       case "dark-jetbrains":
         return isChecked ? "#28293E" : "#27282E";
@@ -71,7 +71,7 @@ const getSwitchContainerColor = (
 
   switch (theme.mode) {
     case "light":
-      return isChecked ? "#3538cd" : "#b9c0d4";
+      return isChecked ? "#4B4DB4" : "#D3D6E5";
     case "dark":
     case "dark-jetbrains":
       return isChecked ? "#3538cd" : "#37383F";
@@ -80,7 +80,7 @@ const getSwitchContainerColor = (
 
 export const SwitchContainer = styled.div<SwitchContainerProps>`
   border-radius: ${({ $size }) => 2 * getCircleRadius($size)}px;
-  width: ${({ $size }) => 6 * getCircleRadius($size)}px;
+  width: ${({ $size }) => 7 * getCircleRadius($size)}px;
   height: ${({ $size }) => 4 * getCircleRadius($size)}px;
   transition: background 300ms;
   display: flex;
@@ -95,7 +95,14 @@ const getCircleColor = (
   isDisabled?: boolean
 ) => {
   if (isDisabled) {
-    return "#2C2E33";
+    switch (theme.mode) {
+      case "light": {
+        return "#E6E8F2";
+      }
+      case "dark":
+      case "dark-jetbrains":
+        return "#2C2E33";
+    }
   }
 
   switch (theme.mode) {
@@ -113,6 +120,7 @@ export const Circle = styled.div<CircleProps>`
   width: ${({ $size }) => 2 * getCircleRadius($size)}px;
   height: ${({ $size }) => 2 * getCircleRadius($size)}px;
   border-radius: 50%;
+  box-shadow: 0 0 8.4px 0 rgba(0 0 0 / 12%);
   transition-property: background, margin-left;
   transition-duration: 300ms;
   margin-left: ${({ $isChecked, $size }) =>
