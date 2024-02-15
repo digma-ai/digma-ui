@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { DefaultTheme } from "styled-components/dist/types";
 import {
   CircleProps,
   ContainerProps,
@@ -53,23 +54,60 @@ export const Container = styled.div<ContainerProps>`
   }}
 `;
 
+const getSwitchContainerColor = (
+  theme: DefaultTheme,
+  isChecked: boolean,
+  isDisabled?: boolean
+) => {
+  if (isDisabled) {
+    switch (theme.mode) {
+      case "light":
+        return isChecked ? "#28293E" : "#b9c0d4";
+      case "dark":
+      case "dark-jetbrains":
+        return isChecked ? "#28293E" : "#27282E";
+    }
+  }
+
+  switch (theme.mode) {
+    case "light":
+      return isChecked ? "#3538cd" : "#b9c0d4";
+    case "dark":
+    case "dark-jetbrains":
+      return isChecked ? "#3538cd" : "#37383F";
+  }
+};
+
 export const SwitchContainer = styled.div<SwitchContainerProps>`
   border-radius: ${({ $size }) => 2 * getCircleRadius($size)}px;
-  width: ${({ $size }) => 7 * getCircleRadius($size)}px;
+  width: ${({ $size }) => 6 * getCircleRadius($size)}px;
   height: ${({ $size }) => 4 * getCircleRadius($size)}px;
   transition: background 300ms;
   display: flex;
   align-items: center;
-  background: ${({ $isChecked, theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return $isChecked ? "#3538cd" : "#b9c0d4";
-      case "dark":
-      case "dark-jetbrains":
-        return $isChecked ? "#3538cd" : "#7c7c94";
-    }
-  }};
+  background: ${({ $isChecked, theme, $disabled }) =>
+    getSwitchContainerColor(theme, $isChecked, $disabled)};
 `;
+
+const getCircleColor = (
+  theme: DefaultTheme,
+  isChecked: boolean,
+  isDisabled?: boolean
+) => {
+  if (isDisabled) {
+    return "#2C2E33";
+  }
+
+  switch (theme.mode) {
+    case "light": {
+      return isChecked ? "#fbfdff" : "#f1f5fa";
+    }
+    case "dark":
+    case "dark-jetbrains": {
+      return isChecked ? "#F0F1F7" : "#222326";
+    }
+  }
+};
 
 export const Circle = styled.div<CircleProps>`
   width: ${({ $size }) => 2 * getCircleRadius($size)}px;
@@ -81,13 +119,6 @@ export const Circle = styled.div<CircleProps>`
     $isChecked
       ? `${4 * getCircleRadius($size)}px`
       : `${getCircleRadius($size)}px`};
-  background: ${({ $isChecked, theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return $isChecked ? "#fbfdff" : "#f1f5fa";
-      case "dark":
-      case "dark-jetbrains":
-        return $isChecked ? "#fbfdff" : "#b9c0d4";
-    }
-  }};
+  background: ${({ $isChecked, theme, $disabled }) =>
+    getCircleColor(theme, $isChecked, $disabled)};
 `;

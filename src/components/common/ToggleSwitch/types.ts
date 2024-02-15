@@ -18,9 +18,11 @@ export interface ContainerProps {
 export interface SwitchContainerProps {
   $isChecked: boolean;
   $size: ToggleSwitchSize;
+  $disabled?: boolean;
 }
 
 export interface CircleProps {
   $isChecked: boolean;
   $size: ToggleSwitchSize;
+  $disabled?: boolean;
 }
