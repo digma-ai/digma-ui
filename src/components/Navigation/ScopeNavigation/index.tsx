@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { actions } from "../../../actions";
 import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
-import { HistoryManager, HistoryStep } from "../../../utils/historyManager";
+import { HistoryManager, HistoryStep } from "../../../utils/HistoryManager";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Scope } from "../../common/App/types";
 import { HistoryNavigationPanel } from "../HistoryNavigationPanel";
