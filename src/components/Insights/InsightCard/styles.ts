@@ -15,14 +15,6 @@ export const Link = styled.a`
   overflow: hidden;
 `;
 
-export const TitleText = styled.div`
-  fill: #a1b5ff;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  display: block;
-`;
-
 export const Title = styled.div`
   border-radius: 4px 4px 0 0;
   display: flex;

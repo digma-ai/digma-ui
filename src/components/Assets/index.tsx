@@ -81,7 +81,6 @@ export const Assets = () => {
     if (!previousScope || previousScope !== config.scope?.span) {
       setSelectedAssetTypeId(null);
       setSearchInputValue("");
-      setSelectedFilters({ insights: [], services: [], operations: [] });
       setSelectedServices([]);
     }
   }, [config.scope, previousScope]);

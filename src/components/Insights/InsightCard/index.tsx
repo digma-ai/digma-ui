@@ -125,12 +125,14 @@ export const InsightCard = (props: InsightCardProps) => {
     : false;
 
   const handleLinkClick = (spanCodeObjectId?: string) => {
-    window.sendMessageToDigma({
-      action: actions.CHANGE_SCOPE,
-      payload: {
-        span: spanCodeObjectId ? { spanCodeObjectId } : null
-      }
-    });
+    if (spanCodeObjectId) {
+      window.sendMessageToDigma({
+        action: actions.CHANGE_SCOPE,
+        payload: {
+          span: spanCodeObjectId ? { spanCodeObjectId } : null
+        }
+      });
+    }
   };
 
   return (
@@ -142,18 +144,11 @@ export const InsightCard = (props: InsightCardProps) => {
             <s.TitleIcon>
               <OpenTelemetryLogoSmallIcon color="#6063F6" size={16} />
             </s.TitleIcon>
-
-            {props.spanInfo?.spanCodeObjectId ? (
-              <s.Link
-                onClick={() =>
-                  handleLinkClick(props.spanInfo?.spanCodeObjectId)
-                }
-              >
-                {props.spanInfo?.displayName}
-              </s.Link>
-            ) : (
-              <s.TitleText>{props.spanInfo?.displayName}</s.TitleText>
-            )}
+            <s.Link
+              onClick={() => handleLinkClick(props.spanInfo?.spanCodeObjectId)}
+            >
+              {props.spanInfo?.displayName}
+            </s.Link>
           </s.Title>
         }
         header={
