@@ -30,6 +30,12 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
   );
 
   useEffect(() => {
+    if (previousPage !== page) {
+      window.scrollTo(0, 0);
+    }
+  }, [previousPage, page]);
+
+  useEffect(() => {
     props.onQueryChange({
       page,
       sorting,

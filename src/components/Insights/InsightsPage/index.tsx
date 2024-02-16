@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { usePersistence } from "../../../hooks/usePersistence";
-import { usePrevious } from "../../../hooks/usePrevious";
 import { trackingEvents as globalTrackingEvents } from "../../../trackingEvents";
 import { isUndefined } from "../../../typeGuards/isUndefined";
 import { InsightType } from "../../../types";
@@ -473,7 +472,6 @@ const IS_INSIGHT_JIRA_TICKET_HINT_SHOWN_PERSISTENCE_KEY =
   "isInsightJiraTicketHintShown";
 
 export const InsightsPage = (props: InsightPageProps) => {
-  const previousInsights = usePrevious(props.insights);
   const [isInsightJiraTicketHintShown, setIsInsightJiraTicketHintShown] =
     usePersistence<isInsightJiraTicketHintShownPayload>(
       IS_INSIGHT_JIRA_TICKET_HINT_SHOWN_PERSISTENCE_KEY,
@@ -481,12 +479,6 @@ export const InsightsPage = (props: InsightPageProps) => {
     );
 
   const insightIndexWithJiraHint = getInsightToShowJiraHint(props.insights);
-
-  useEffect(() => {
-    if (props.insights !== previousInsights) {
-      window.scrollTo(0, 0);
-    }
-  }, [props.insights, previousInsights]);
 
   useEffect(() => {
     window.sendMessageToDigma({
