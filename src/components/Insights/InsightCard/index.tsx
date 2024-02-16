@@ -129,7 +129,7 @@ export const InsightCard = (props: InsightCardProps) => {
       window.sendMessageToDigma({
         action: actions.CHANGE_SCOPE,
         payload: {
-          span: spanCodeObjectId ? { spanCodeObjectId } : null
+          span: spanCodeObjectId
         }
       });
     }
