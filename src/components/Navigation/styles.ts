@@ -7,7 +7,7 @@ export const Container = styled.div`
   background: ${({ theme }) => theme.colors.v3.surface.primary};
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
   padding: 8px 8px 0;
   border-bottom: 1px solid ${({ theme }) => theme.colors.v3.stroke.primary};
   box-sizing: border-box;
@@ -15,7 +15,7 @@ export const Container = styled.div`
 
 export const Row = styled.div`
   display: flex;
-  gap: 8px;
+  gap: 4px;
 `;
 
 export const KebabMenu = styled.div`
