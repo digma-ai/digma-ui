@@ -74,6 +74,7 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
   const [selectedInsights, setSelectedInsights] = useState<InsightType[]>([]);
   const config = useContext(ConfigContext);
   const previousEnvironment = usePrevious(config.environment);
+  const previousScope = usePrevious(config.scope);
 
   const getData = (
     services: string[],
@@ -135,8 +136,10 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
 
   useEffect(() => {
     if (
-      isEnvironment(previousEnvironment) &&
-      previousEnvironment.originalName !== config.environment?.originalName
+      (isEnvironment(previousEnvironment) &&
+        previousEnvironment.originalName !==
+          config.environment?.originalName) ||
+      (previousScope && previousScope !== config.scope)
     ) {
       const defaultFilters = {
         services: [],
@@ -151,7 +154,9 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
     previousEnvironment,
     config.environment,
     setPersistedFilters,
-    props.onApply
+    props.onApply,
+    previousScope,
+    config.scope
   ]);
 
   useEffect(() => {

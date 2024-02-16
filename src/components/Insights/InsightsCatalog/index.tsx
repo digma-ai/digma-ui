@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { usePrevious } from "../../../hooks/usePrevious";
 
+import { useDebounce } from "../../../hooks/useDebounce";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { Pagination } from "../../common/Pagination";
 import { SearchInput } from "../../common/SearchInput";
@@ -15,12 +16,13 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
   const { insights, onJiraTicketCreate, defaultQuery, totalCount } = props;
   const [page, setPage] = useState(0);
   const previousPage = usePrevious(page);
-  const [searchInputValue, setSearchInputValue] = useState<string | null>(
+  const [searchInputValue, setSearchInputValue] = useState(
     defaultQuery.searchQuery
   );
+  const debouncedSearchInputValue = useDebounce(searchInputValue, 1000);
   const [sorting, setSorting] = useState<Sorting>(defaultQuery.sorting);
   const previousSorting = usePrevious(sorting);
-  const previousSearchQuery = usePrevious(searchInputValue);
+  const previousSearchQuery = usePrevious(debouncedSearchInputValue);
   const pageStartItemNumber = page * PAGE_SIZE + 1;
   const pageEndItemNumber = Math.min(
     pageStartItemNumber + PAGE_SIZE - 1,
@@ -31,7 +33,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
     props.onQueryChange({
       page,
       sorting,
-      searchQuery: searchInputValue
+      searchQuery: debouncedSearchInputValue
     });
   }, []);
 
@@ -39,12 +41,12 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
     if (
       (isNumber(previousPage) && previousPage !== page) ||
       (previousSorting && previousSorting !== sorting) ||
-      previousSearchQuery !== searchInputValue
+      previousSearchQuery !== debouncedSearchInputValue
     ) {
       props.onQueryChange({
         page,
         sorting,
-        searchQuery: searchInputValue
+        searchQuery: debouncedSearchInputValue
       });
     }
   }, [
@@ -52,7 +54,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
     sorting,
     previousPage,
     page,
-    searchInputValue,
+    debouncedSearchInputValue,
     previousSearchQuery
   ]);
 
@@ -63,7 +65,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
           onChange={(val: string | null) => {
             setSearchInputValue(val);
           }}
-          default={defaultQuery.searchQuery}
+          value={searchInputValue}
         />
         <SortingSelector
           onChange={(val: Sorting) => {
@@ -86,7 +88,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
       </s.Toolbar>
       <InsightsPage
         insights={insights}
-        isFilteringEnabled={searchInputValue !== null}
+        isFilteringEnabled={debouncedSearchInputValue !== null}
         onJiraTicketCreate={onJiraTicketCreate}
         onRefresh={props.onRefresh}
       />

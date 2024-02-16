@@ -78,8 +78,11 @@ export const Assets = () => {
   }, [config.scope]);
 
   useEffect(() => {
-    if (previousScope !== config.scope?.span) {
+    if (!previousScope || previousScope !== config.scope?.span) {
       setSelectedAssetTypeId(null);
+      setSearchInputValue("");
+      setSelectedFilters({ insights: [], services: [], operations: [] });
+      setSelectedServices([]);
     }
   }, [config.scope, previousScope]);
 
@@ -154,7 +157,10 @@ export const Assets = () => {
         <s.HeaderItem>
           Assets
           {window.assetsSearch === true && (
-            <SearchInput onChange={handleSearchInputChange} default={""} />
+            <SearchInput
+              onChange={handleSearchInputChange}
+              value={searchInputValue}
+            />
           )}
           {isComplexFilterEnabled ? (
             <AssetsFilter
