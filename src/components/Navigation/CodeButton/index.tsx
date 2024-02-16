@@ -1,52 +1,43 @@
-import { Scope } from "../../common/App/types";
-import { CodeIcon } from "../../common/icons/CodeIcon";
-import { CodeContext } from "../types";
+import { CodeIcon } from "../../common/icons/16px/CodeIcon";
+import { CodeIconGradient } from "../../common/icons/16px/CodeIconGradient";
+import { IconButton } from "../IconButton";
 import * as s from "./styles";
 import { CodeButtonProps } from "./types";
 
+// const hasNoData = (codeContext: CodeContext): boolean =>
+//   [null, true].includes(codeContext.isInstrumented) &&
+//   codeContext.spans.assets.length === 0;
+
+// const hasData = (codeContext: CodeContext): boolean =>
+//   [null, true].includes(codeContext.isInstrumented) &&
+//   codeContext.spans.assets.length > 0;
+
+// const hasNoObservability = (codeContext: CodeContext): boolean =>
+//   codeContext.isInstrumented === false;
+
+// const isDisabled = (codeContext: CodeContext): boolean =>
+//   !codeContext || codeContext.methodId === null;
+
 export const CodeButton = (props: CodeButtonProps) => {
-  const getCodeButtonState = (codeContext?: CodeContext): string => {
-    if (!codeContext || codeContext.methodId === null) {
-      return " (disabled)";
-    }
+  const icon = props.hasObservability ? (
+    props.hasData ? (
+      <CodeIconGradient gradient={"purple"} size={16} />
+    ) : (
+      <CodeIconGradient gradient={"orange"} size={16} />
+    )
+  ) : (
+    <CodeIcon color={"currentColor"} size={16} />
+  );
 
-    if (codeContext.isInstrumented === false) {
-      return " (no observability)";
-    }
-
-    if ([null, true].includes(codeContext.isInstrumented)) {
-      if (codeContext.spans.assets.length === 0) {
-        return " (no data)";
-      } else {
-        return " (has data)";
-      }
-    }
-
-    return "";
-  };
-
-  const getTargetButtonTooltip = (scope?: Scope): string => {
-    if (!scope) {
-      return "";
-    }
-
-    if (scope.code.isAlreadyAtCode) {
-      return " (Already at code)";
-    }
-
-    if (
-      [...scope.code.codeDetailsList, scope.code.relatedCodeDetailsList]
-        .length === 0
-    ) {
-      return " (Code not found)";
-    } else {
-      return " (Navigate to code)";
-    }
-  };
-
-  return (
-    <s.Outline $isVisible={!props.isDisabled}>
-      <s.CodeButton icon={CodeIcon} isDisabled={props.isDisabled} />
+  return props.isDisabled ? (
+    <IconButton
+      icon={<CodeIcon color={"currentColor"} size={16} />}
+      isDisabled={props.isDisabled}
+      onClick={props.onClick}
+    />
+  ) : (
+    <s.Outline>
+      <s.CodeButton icon={icon} onClick={props.onClick} />
     </s.Outline>
   );
 };

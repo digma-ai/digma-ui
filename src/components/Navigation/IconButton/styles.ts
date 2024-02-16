@@ -11,21 +11,20 @@ export const Button = styled.button`
   padding: 6px;
   color: ${({ theme }) => theme.colors.v3.icon.tertiary};
   cursor: pointer;
-  height: 28px;
-  width: 28px;
   outline: none;
-
-  &:hover {
-    border: 1px solid ${({ theme }) => theme.colors.v3.stroke.primaryLight};
-  }
-
-  &:active {
-    color: ${({ theme }) => theme.colors.v3.icon.primary};
-    border: 1px solid ${({ theme }) => theme.colors.v3.stroke.primaryLight};
-    background: ${({ theme }) => theme.colors.v3.surface.primaryLight};
-  }
 
   &:disabled {
     color: ${({ theme }) => theme.colors.v3.icon.disabled};
+    cursor: initial;
+  }
+
+  &:hover:enabled {
+    border: 1px solid ${({ theme }) => theme.colors.v3.stroke.primaryLight};
+  }
+
+  &:active:enabled {
+    color: ${({ theme }) => theme.colors.v3.icon.primary};
+    border: 1px solid ${({ theme }) => theme.colors.v3.stroke.primaryLight};
+    background: ${({ theme }) => theme.colors.v3.surface.primaryLight};
   }
 `;

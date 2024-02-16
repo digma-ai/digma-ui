@@ -18,7 +18,24 @@ type Story = StoryObj<typeof meta>;
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 export const Default: Story = {
-  args: {}
+  args: {
+    hasObservability: true,
+    hasData: true
+  }
+};
+
+export const HasNoObservability: Story = {
+  args: {
+    hasObservability: false,
+    hasData: false
+  }
+};
+
+export const HasNoData: Story = {
+  args: {
+    hasObservability: true,
+    hasData: false
+  }
 };
 
 export const Disabled: Story = {

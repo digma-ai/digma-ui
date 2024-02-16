@@ -20,13 +20,13 @@ type Story = StoryObj<typeof meta>;
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 export const Default: Story = {
   args: {
-    icon: CodeIcon
+    icon: <CodeIcon size={16} color={"currentColor"} />
   }
 };
 
 export const Disabled: Story = {
   args: {
-    icon: CodeIcon,
+    icon: <CodeIcon size={16} color={"currentColor"} />,
     isDisabled: true
   }
 };

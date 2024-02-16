@@ -9,7 +9,15 @@ import { openURLInDefaultBrowser } from "../../utils/openURLInDefaultBrowser";
 import { AsyncActionResultData } from "../InstallationWizard/types";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { CodeDetails, Scope } from "../common/App/types";
+import { Tooltip } from "../common/Tooltip";
+import { HomeIcon } from "../common/icons/12px/HomeIcon";
+import { TargetIcon } from "../common/icons/12px/TargetIcon";
+import { FourSquaresIcon } from "../common/icons/FourSquaresIcon";
+import { ThreeDotsIcon } from "../common/icons/ThreeDotsIcon";
+import { CodeButton } from "./CodeButton";
 import { CodeButtonMenu } from "./CodeButtonMenu";
+import { IconButton } from "./IconButton";
+import { Tabs } from "./Tabs";
 import { TargetButtonMenu } from "./TargetButtonMenu";
 import { actions } from "./actions";
 import * as s from "./styles";
@@ -27,20 +35,30 @@ import {
   TabData
 } from "./types";
 
-const getCodeButtonState = (codeContext?: CodeContext): string => {
+const hasData = (codeContext?: CodeContext): boolean =>
+  Boolean(
+    codeContext &&
+      [null, true].includes(codeContext.isInstrumented) &&
+      codeContext.spans.assets.length > 0
+  );
+
+const hasObservability = (codeContext?: CodeContext): boolean =>
+  Boolean(codeContext && [null, true].includes(codeContext.isInstrumented));
+
+const getCodeButtonTooltip = (codeContext?: CodeContext): string => {
   if (!codeContext || codeContext.methodId === null) {
-    return " (disabled)";
+    return "No data";
   }
 
   if (codeContext.isInstrumented === false) {
-    return " (no observability)";
+    return "No observability";
   }
 
   if ([null, true].includes(codeContext.isInstrumented)) {
     if (codeContext.spans.assets.length === 0) {
-      return " (no data)";
+      return "No data";
     } else {
-      return " (has data)";
+      return "Assets";
     }
   }
 
@@ -53,16 +71,16 @@ const getTargetButtonTooltip = (scope?: Scope): string => {
   }
 
   if (scope.code.isAlreadyAtCode) {
-    return " (Already at code)";
+    return "Already at code";
   }
 
   if (
     [...scope.code.codeDetailsList, scope.code.relatedCodeDetailsList]
       .length === 0
   ) {
-    return " (Code not found)";
+    return "Code not found";
   } else {
-    return " (Navigate to code)";
+    return "Navigate to code";
   }
 };
 
@@ -75,6 +93,7 @@ export const Navigation = () => {
   const [codeContext, setCodeContext] = useState<CodeContext>();
   const [isCodeButtonMenuOpen, setIsCodeButtonMenuOpen] = useState(false);
   const [isTargetButtonMenuOpen, setIsTargetButtonMenuOpen] = useState(false);
+  const [isKebabButtonMenuOpen, setIsKebabButtonMenuOpen] = useState(false);
   const [isAutoFixing, setIsAutoFixing] = useState(false);
   const [isAnnotationAdding, setIsAnnotationAdding] = useState(false);
   const previousCodeContext = usePrevious(codeContext);
@@ -92,7 +111,6 @@ export const Navigation = () => {
     };
 
     const handleCodeContextData = (data: unknown) => {
-      console.log(data);
       const payload = data as CodeContext;
       setCodeContext(payload);
     };
@@ -193,6 +211,10 @@ export const Navigation = () => {
     });
   };
 
+  const handleKebabMenuButtonClick = () => {
+    setIsKebabButtonMenuOpen(!isKebabButtonMenuOpen);
+  };
+
   const handleHomeButtonClick = () => {
     window.sendMessageToDigma<ChangeScopePayload>({
       action: actions.CHANGE_SCOPE,
@@ -207,14 +229,12 @@ export const Navigation = () => {
 
     if (config.scope?.code.codeDetailsList.length === 1) {
       handleGoToCodeLocation(config.scope.code.codeDetailsList[0]);
-    }
-
-    if (
+    } else if (
       config.scope &&
       [
         ...config.scope.code.codeDetailsList,
         ...config.scope.code.relatedCodeDetailsList
-      ].length > 0
+      ].length > 1
     ) {
       setIsTargetButtonMenuOpen(!isTargetButtonMenuOpen);
     }
@@ -334,7 +354,7 @@ export const Navigation = () => {
     setIsCodeButtonMenuOpen(false);
   };
 
-  const codeButtonTooltip = getCodeButtonState(codeContext);
+  const codeButtonTooltip = getCodeButtonTooltip(codeContext);
 
   const targetButtonTooltip = getTargetButtonTooltip(config.scope);
 
@@ -356,30 +376,38 @@ export const Navigation = () => {
   return (
     <s.Container>
       <s.Row>
-        <button
-          disabled={isNull(config.scope?.span)}
-          onClick={handleHomeButtonClick}
-        >
-          Home
-        </button>
-        <span>Scope:</span>
-        <span>{scopeDisplayName}</span>
-        <button
-          disabled={!isTargetButtonEnabled}
-          onClick={handleTargetButtonClick}
-        >
-          Target{targetButtonTooltip}
-        </button>
-        <button
-          disabled={!codeContext || isNull(codeContext?.methodId)}
-          onClick={handleCodeButtonClick}
-        >
-          Code{codeButtonTooltip}
-        </button>
-        {/* <CodeButton
-          isDisabled={!codeContext || isNull(codeContext?.methodId)}
-          onClick={handleCodeButtonClick}
-        /> */}
+        <s.ScopeBar $isActive={Boolean(config.scope?.span)}>
+          <s.ScopeBarButton
+            disabled={isNull(config.scope?.span)}
+            onClick={handleHomeButtonClick}
+          >
+            <HomeIcon />
+          </s.ScopeBarButton>
+          <s.ScopeBarDivider />
+
+          <s.ScopeName>{scopeDisplayName}</s.ScopeName>
+          <s.ScopeBarDivider />
+          <Tooltip title={targetButtonTooltip}>
+            <div>
+              <s.ScopeBarButton
+                disabled={!isTargetButtonEnabled}
+                onClick={handleTargetButtonClick}
+              >
+                <TargetIcon />
+              </s.ScopeBarButton>
+            </div>
+          </Tooltip>
+        </s.ScopeBar>
+        <Tooltip title={codeButtonTooltip}>
+          <div>
+            <CodeButton
+              hasData={hasData(codeContext)}
+              hasObservability={hasObservability(codeContext)}
+              isDisabled={!codeContext || isNull(codeContext?.methodId)}
+              onClick={handleCodeButtonClick}
+            />
+          </div>
+        </Tooltip>
       </s.Row>
       <s.Row>
         {codeContext && isCodeButtonMenuOpen && (
@@ -400,8 +428,7 @@ export const Navigation = () => {
         )}
       </s.Row>
       <s.Row>
-        <span>Environments</span>
-        <select
+        <s.EnvironmentSelect
           disabled={environments.length === 0}
           onChange={handleEnvironmentChange}
           value={selectedEnvironment?.originalName}
@@ -415,43 +442,43 @@ export const Navigation = () => {
           ) : (
             <option>No environments</option>
           )}
-        </select>
-        <button
-          disabled={!selectedEnvironment}
-          onClick={handleDashboardButtonClick}
+        </s.EnvironmentSelect>
+        <Tooltip
+          title={!selectedEnvironment ? "No environment selected" : "Dashboard"}
         >
-          Dashboard
-        </button>
-      </s.Row>
-      <s.Row>
-        <input
-          type={"checkbox"}
-          id={"observability"}
-          checked={config.isObservabilityEnabled}
-          onChange={handleObservabilityChange}
+          <div>
+            <IconButton
+              isDisabled={!selectedEnvironment}
+              onClick={handleDashboardButtonClick}
+              icon={<FourSquaresIcon size={16} color={"currentColor"} />}
+            />
+          </div>
+        </Tooltip>
+        <IconButton
+          onClick={handleKebabMenuButtonClick}
+          icon={<ThreeDotsIcon size={16} color={"currentColor"} />}
         />
-        <label htmlFor={"observability"}>Observability</label>
-        <button onClick={handleOnboardingClick}>Onboarding Digma</button>
-        <button onClick={handleTroubleshootingClick}>Troubleshooting</button>
-        <button onClick={handleInsightsOverviewClick}>Insights overview</button>
-        <button onClick={handleSlackLinkClick}>Digma channel</button>
       </s.Row>
-      <s.Row>
-        {tabs &&
-          tabs
-            .filter((x) => !x.isHidden)
-            .map((tab) => (
-              <s.Tab
-                key={tab.id}
-                $isSelected={tab.isSelected}
-                $isDisabled={tab.isDisabled}
-                onClick={() => handleTabClick(tab.id)}
-              >
-                {tab.title}
-                {tab.hasNewData && " (*)"}
-              </s.Tab>
-            ))}
-      </s.Row>
+      {isKebabButtonMenuOpen && (
+        <s.Row>
+          <input
+            type={"checkbox"}
+            id={"observability"}
+            checked={config.isObservabilityEnabled}
+            onChange={handleObservabilityChange}
+          />
+          <label htmlFor={"observability"}>Observability</label>
+          <button onClick={handleOnboardingClick}>Onboarding Digma</button>
+          <button onClick={handleTroubleshootingClick}>Troubleshooting</button>
+          <button onClick={handleInsightsOverviewClick}>
+            Insights overview
+          </button>
+          <button onClick={handleSlackLinkClick}>Digma channel</button>
+        </s.Row>
+      )}
+      <s.TabsContainer>
+        <Tabs tabs={tabs || []} onSelect={handleTabClick} />
+      </s.TabsContainer>
     </s.Container>
   );
 };
