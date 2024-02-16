@@ -16,7 +16,6 @@ import { FourSquaresIcon } from "../common/icons/FourSquaresIcon";
 import { ThreeDotsIcon } from "../common/icons/ThreeDotsIcon";
 import { CodeButton } from "./CodeButton";
 import { CodeButtonMenu } from "./CodeButtonMenu";
-import { HistoryNavigationPanel } from "./HistoryNavigationPanel";
 import { IconButton } from "./IconButton";
 import { ScopeNavigation } from "./ScopeNavigation";
 import { Tabs } from "./Tabs";
@@ -405,14 +404,8 @@ export const Navigation = () => {
 
   return (
     <s.Container>
-      <ScopeNavigation currentTabId={currentTab || ""} />
       <s.Row>
-        <HistoryNavigationPanel
-          isBackDisabled={true}
-          isForwardDisabled={true}
-          onGoBack={handleGoBackInHistory}
-          onGoForward={handleGoForwardInHistory}
-        />
+        <ScopeNavigation currentTabId={currentTab || ""} />
         <s.ScopeBar $isActive={Boolean(config.scope?.span)}>
           <s.ScopeBarButton
             disabled={isNull(config.scope?.span)}

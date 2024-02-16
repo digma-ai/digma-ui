@@ -5,9 +5,9 @@ import { usePrevious } from "../../../hooks/usePrevious";
 import { HistoryManager, HistoryStep } from "../../../utils/historyManager";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Scope } from "../../common/App/types";
+import { HistoryNavigationPanel } from "../HistoryNavigationPanel";
 import { ChangeEnvironmentPayload, ChangeViewPayload } from "../types";
 import { actions as globalActions } from "./../actions";
-import * as s from "./styles";
 import { ScopeNavigationProps } from "./types";
 
 const sendMessage = (historyStep: HistoryStep) => {
@@ -99,19 +99,11 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
   };
 
   return (
-    <>
-      <s.NavigationButton
-        disabled={!historyManager.canMoveBack()}
-        onClick={handleBackClick}
-      >
-        {"<"}
-      </s.NavigationButton>
-      <s.NavigationButton
-        disabled={!historyManager.canMoveForward()}
-        onClick={handleNexClick}
-      >
-        {">"}
-      </s.NavigationButton>
-    </>
+    <HistoryNavigationPanel
+      isBackDisabled={!historyManager.canMoveBack()}
+      isForwardDisabled={!historyManager.canMoveForward()}
+      onGoBack={handleBackClick}
+      onGoForward={handleNexClick}
+    />
   );
 };
