@@ -1,22 +1,32 @@
 import { useContext, useEffect, useState } from "react";
 import { actions } from "../../../actions";
 import { dispatcher } from "../../../dispatcher";
-import { HistoryManager } from "../../../utils/historyManager";
+import { isEnvironment } from "../../../typeGuards/isEnvironment";
+import { isObject } from "../../../typeGuards/isObject";
+import { HistoryManager, HistoryStep } from "../../../utils/historyManager";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Scope } from "../../common/App/types";
+import {
+  ChangeEnvironmentPayload,
+  ChangeViewPayload,
+  SetViewsPayload
+} from "../types";
 import { actions as globalActions } from "./../actions";
 import * as s from "./styles";
+import { ScopeNavigationProps } from "./types";
 
-const sendMessage = (scope: Scope) => {
-  window.sendMessageToDigma({
-    action: globalActions.CHANGE_SCOPE,
-    payload: {
-      ...scope
-    }
-  });
+const sendMessage = (historyStep: HistoryStep) => {
+  if (historyStep.scope) {
+    window.sendMessageToDigma({
+      action: globalActions.CHANGE_SCOPE,
+      payload: {
+        ...historyStep.scope
+      }
+    });
+  }
 };
 
-export const ScopeNavigation = () => {
+export const ScopeNavigation = (props: ScopeNavigationProps) => {
   const [historyManager, setHistoryManager] = useState<HistoryManager>(
     new HistoryManager()
   );
@@ -35,26 +45,86 @@ export const ScopeNavigation = () => {
         historyManager.push({
           environment: environment || null,
           scope: newScope,
-          tab: null
+          tabId: props.currentTabId
         });
+      } else {
+        const historyStep = historyManager.getCurrent();
+        if (historyStep && historyStep.tabId === props.currentTabId) {
+          window.sendMessageToDigma<ChangeViewPayload>({
+            action: globalActions.CHANGE_VIEW,
+            payload: {
+              view: historyStep.tabId
+            }
+          });
+        }
+
+        if (
+          historyStep &&
+          historyStep.environment &&
+          historyStep.environment !== environment
+        ) {
+          window.sendMessageToDigma<ChangeEnvironmentPayload>({
+            action: globalActions.CHANGE_ENVIRONMENT,
+            payload: {
+              environment: historyStep.environment
+            }
+          });
+        }
       }
-      console.log("state " + JSON.stringify(historyManager.getHistoryData()));
     };
 
+    console.log("state " + JSON.stringify(historyManager.getHistoryData()));
     dispatcher.addActionListener(actions.SET_SCOPE, handleSetScope);
 
     return () => {
       dispatcher.removeActionListener(actions.SET_SCOPE, handleSetScope);
     };
-  }, []);
+  }, [environment, props.currentTabId, historyManager]);
+
+  useEffect(() => {
+    const handleViewChange = (data: unknown) => {
+      const viewsData = data as SetViewsPayload;
+      const selectedView = viewsData.views.find((x) => x.isSelected);
+
+      historyManager.updateCurrent({ tabId: selectedView?.id });
+    };
+
+    dispatcher.addActionListener(globalActions.SET_VIEWS, handleViewChange);
+
+    return () => {
+      dispatcher.removeActionListener(
+        globalActions.SET_VIEWS,
+        handleViewChange
+      );
+    };
+  });
+
+  useEffect(() => {
+    const handleSetEnvironment = (data: unknown) => {
+      if (isObject(data) && isEnvironment(data?.environment)) {
+        historyManager.updateCurrent({
+          environment: data.environment
+        });
+      }
+    };
+
+    dispatcher.addActionListener(actions.SET_ENVIRONMENT, handleSetEnvironment);
+
+    return () => {
+      dispatcher.removeActionListener(
+        actions.SET_ENVIRONMENT,
+        handleSetEnvironment
+      );
+    };
+  });
 
   const handleBackClick = () => {
     console.log("back " + JSON.stringify(historyManager.getHistoryData()));
 
     historyManager.back();
-    const nextScope = historyManager.getCurrent()?.scope;
-    if (nextScope) {
-      sendMessage(nextScope);
+    const currentStep = historyManager.getCurrent();
+    if (currentStep) {
+      sendMessage(currentStep);
     }
 
     console.log(
@@ -65,9 +135,9 @@ export const ScopeNavigation = () => {
   const handleFowradClick = () => {
     console.log("next " + JSON.stringify(historyManager.getHistoryData()));
     historyManager.forward();
-    const nextScope = historyManager.getCurrent()?.scope;
-    if (nextScope) {
-      sendMessage(nextScope);
+    const currentStep = historyManager.getCurrent();
+    if (currentStep) {
+      sendMessage(currentStep);
     }
 
     console.log(

@@ -1,4 +1,3 @@
-import { TabData } from "../components/Navigation/types";
 import { Environment, Scope } from "../components/common/App/types";
 
 const MAX_STEPS = 15;
@@ -6,13 +5,13 @@ const MAX_STEPS = 15;
 export interface HistoryStep {
   scope: Scope;
   environment?: Environment | null;
-  tab: TabData | null;
+  tabId: string;
 }
 
 export interface UpdateStepParams {
   scope?: Scope;
   environment?: Environment | null;
-  tab?: TabData | null;
+  tabId?: string;
 }
 
 export interface HistoryData {

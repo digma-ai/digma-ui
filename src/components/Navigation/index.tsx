@@ -79,6 +79,7 @@ export const Navigation = () => {
   const [isAutoFixing, setIsAutoFixing] = useState(false);
   const [isAnnotationAdding, setIsAnnotationAdding] = useState(false);
   const previousCodeContext = usePrevious(codeContext);
+  const [currentTab, setCurrentTab] = useState<TabData>();
 
   const environments = config.environments || [];
 
@@ -284,11 +285,12 @@ export const Navigation = () => {
     openURLInDefaultBrowser(SLACK_WORKSPACE_URL);
   };
 
-  const handleTabClick = (tabId: string) => {
+  const changeTab = (tab: TabData) => {
+    setCurrentTab(tab);
     window.sendMessageToDigma<ChangeViewPayload>({
       action: actions.CHANGE_VIEW,
       payload: {
-        view: tabId
+        view: tab.id
       }
     });
   };
@@ -357,7 +359,7 @@ export const Navigation = () => {
   return (
     <s.Container>
       <s.Row>
-        <ScopeNavigation />
+        <ScopeNavigation currentTabId={currentTab?.id || ""} />
         <button
           disabled={isNull(config.scope?.span)}
           onClick={handleHomeButtonClick}
@@ -447,7 +449,7 @@ export const Navigation = () => {
                 key={tab.id}
                 $isSelected={tab.isSelected}
                 $isDisabled={tab.isDisabled}
-                onClick={() => handleTabClick(tab.id)}
+                onClick={() => changeTab(tab)}
               >
                 {tab.title}
                 {tab.hasNewData && " (*)"}

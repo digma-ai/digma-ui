@@ -19,7 +19,7 @@ export const useHistoryManager = (
       historyManager.push({
         environment: environment || null,
         scope: data as Scope,
-        tab: null
+        tabId: ""
       });
     };
 
