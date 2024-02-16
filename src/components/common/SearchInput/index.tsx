@@ -1,17 +1,10 @@
-import { ChangeEvent, useEffect, useState } from "react";
-import { useDebounce } from "../../../hooks/useDebounce";
+import { ChangeEvent } from "react";
+import { CrossIcon } from "../icons/CrossIcon";
 import { MagnifierIcon } from "../icons/MagnifierIcon";
 import * as s from "./styles";
 import { SearchInputProps } from "./types";
 
 export const SearchInput = (props: SearchInputProps) => {
-  const [searchInputValue, setSearchInputValue] = useState(props.default);
-  const debouncedSearchInputValue = useDebounce(searchInputValue, 1000);
-
-  useEffect(() => {
-    props.onChange(debouncedSearchInputValue);
-  }, [debouncedSearchInputValue]);
-
   return (
     <s.SearchInputContainer>
       <s.SearchInputIconContainer>
@@ -20,9 +13,17 @@ export const SearchInput = (props: SearchInputProps) => {
       <s.SearchInput
         placeholder={"Search"}
         onChange={(e: ChangeEvent<HTMLInputElement>) =>
-          setSearchInputValue(e.target.value)
+          props.onChange(e.target.value)
         }
+        value={props.value || ""}
       />
+      <s.DeleteTagButton
+        onClick={() => {
+          props.onChange("");
+        }}
+      >
+        <CrossIcon color={"currentColor"} size={14} />
+      </s.DeleteTagButton>
     </s.SearchInputContainer>
   );
 };

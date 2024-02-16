@@ -67,7 +67,7 @@ export const PerformanceAtScaleInsight = (
     <InsightCard
       key={props.insight.type}
       data={props.insight}
-      title={props.insight.spanInfo?.displayName}
+      spanInfo={props.insight.spanInfo}
       content={
         <div>
           Run at{" "}

@@ -29,7 +29,7 @@ export const SpanBottleneckInsight = (props: SpanBottleneckInsightProps) => {
   return (
     <InsightCard
       data={props.insight}
-      title={props.insight.spanInfo?.displayName}
+      spanInfo={props.insight.spanInfo}
       content={
         <>
           <Description>

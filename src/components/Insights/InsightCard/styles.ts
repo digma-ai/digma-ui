@@ -1,16 +1,18 @@
 import styled from "styled-components";
-import { Link } from "../styles";
 
 export const TitleIcon = styled.div`
   display: flex;
 `;
 
-export const TitleText = styled.div`
-  fill: #a1b5ff;
+export const Link = styled.a`
+  color: #7891d0;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
   text-overflow: ellipsis;
-  overflow: hidden;
   white-space: nowrap;
-  display: block;
+  overflow: hidden;
 `;
 
 export const Title = styled.div`

@@ -44,7 +44,7 @@ export const TrafficInsight = (props: TrafficInsightProps) => {
 
   return (
     <InsightCard
-      title={props.insight.spanInfo?.displayName}
+      spanInfo={props.insight.spanInfo}
       data={props.insight}
       content={<Description>{getDescription(props.insight.type)}</Description>}
       stats={`${valueString}/min`}
