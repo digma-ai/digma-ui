@@ -1,5 +1,6 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { useDebounce } from "../../../hooks/useDebounce";
+import { CrossIcon } from "../icons/CrossIcon";
 import { MagnifierIcon } from "../icons/MagnifierIcon";
 import * as s from "./styles";
 import { SearchInputProps } from "./types";
@@ -22,7 +23,15 @@ export const SearchInput = (props: SearchInputProps) => {
         onChange={(e: ChangeEvent<HTMLInputElement>) =>
           setSearchInputValue(e.target.value)
         }
+        value={searchInputValue || ""}
       />
+      <s.DeleteTagButton
+        onClick={() => {
+          setSearchInputValue("");
+        }}
+      >
+        <CrossIcon color={"currentColor"} size={14} />
+      </s.DeleteTagButton>
     </s.SearchInputContainer>
   );
 };

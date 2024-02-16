@@ -1,5 +1,4 @@
 import {
-  ChangeEvent,
   useContext,
   useEffect,
   useLayoutEffect,
@@ -16,7 +15,7 @@ import { usePrevious } from "../../hooks/usePrevious";
 import { FeatureFlag } from "../../types";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { EmptyState } from "../common/EmptyState";
-import { MagnifierIcon } from "../common/icons/MagnifierIcon";
+import { SearchInput } from "../common/SearchInput";
 import { AssetList } from "./AssetList";
 import { AssetTypeList } from "./AssetTypeList";
 import { AssetsFilter } from "./AssetsFilter";
@@ -88,8 +87,8 @@ export const Assets = () => {
     setSelectedAssetTypeId(null);
   };
 
-  const handleSearchInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearchInputValue(e.target.value);
+  const handleSearchInputChange = (val: string | null) => {
+    setSearchInputValue(val || "");
   };
 
   const handleAssetTypeSelect = (assetTypeId: string) => {
@@ -155,15 +154,7 @@ export const Assets = () => {
         <s.HeaderItem>
           Assets
           {window.assetsSearch === true && (
-            <s.SearchInputContainer>
-              <s.SearchInputIconContainer>
-                <MagnifierIcon color={"currentColor"} size={14} />
-              </s.SearchInputIconContainer>
-              <s.SearchInput
-                placeholder={"Search"}
-                onChange={handleSearchInputChange}
-              />
-            </s.SearchInputContainer>
+            <SearchInput onChange={handleSearchInputChange} default={""} />
           )}
           {isComplexFilterEnabled ? (
             <AssetsFilter

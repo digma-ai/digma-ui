@@ -76,3 +76,19 @@ export const SearchInput = styled.input`
     color: transparent;
   }
 `;
+
+export const DeleteTagButton = styled.button`
+  padding: 0;
+  cursor: pointer;
+  background: none;
+  border: none;
+  height: 14px;
+  right: 4px;
+  display: flex;
+  align-items: center;
+  margin: auto;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  color: ${({ theme }) => theme.colors.icon.disabledAlt};
+`;
