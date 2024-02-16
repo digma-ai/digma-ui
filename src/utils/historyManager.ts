@@ -5,8 +5,14 @@ const MAX_STEPS = 15;
 
 export interface HistoryStep {
   scope: Scope;
-  environment: Environment;
-  tab: TabData;
+  environment?: Environment | null;
+  tab: TabData | null;
+}
+
+export interface UpdateStepParams {
+  scope?: Scope;
+  environment?: Environment | null;
+  tab?: TabData | null;
 }
 
 export interface HistoryData {
@@ -26,16 +32,18 @@ export class HistoryManager {
 
   private current: Node<HistoryStep> | null = null;
   private itemsCount = 0;
-  private currentIndex = 0;
+  private currentIndex = -1;
 
-  constructor(data: HistoryData) {
-    this.init(data.steps, data.currentStepIndex);
+  constructor(data?: HistoryData) {
+    if (data) {
+      this.init(data.steps, data.currentStepIndex);
+    }
   }
 
   push(step: HistoryStep) {
     const newNode: Node<HistoryStep> = {
       value: step,
-      previous: this.tail,
+      previous: null,
       next: null
     };
 
@@ -46,6 +54,7 @@ export class HistoryManager {
 
     if (this.tail) {
       this.tail.next = newNode;
+      newNode.previous = this.tail;
     }
 
     if (!this.head) {
@@ -63,6 +72,13 @@ export class HistoryManager {
     }
   }
 
+  canMoveBack() {
+    if (!this.current?.previous) {
+      return false;
+    }
+    return true;
+  }
+
   back() {
     if (!this.current?.previous) {
       return null;
@@ -71,6 +87,13 @@ export class HistoryManager {
     this.current = this.current.previous;
     this.currentIndex--;
     return this.getCurrent();
+  }
+
+  canMoveForward() {
+    if (!this.current?.next) {
+      return false;
+    }
+    return true;
   }
 
   forward() {
@@ -91,9 +114,9 @@ export class HistoryManager {
     return this.current?.value;
   }
 
-  updateCurrent(newValue: HistoryStep) {
+  updateCurrent(newValue: UpdateStepParams) {
     if (this.current) {
-      this.current.value = newValue;
+      this.current.value = { ...this.current.value, ...newValue };
     }
   }
 
@@ -101,7 +124,7 @@ export class HistoryManager {
     const steps = [];
     let step = this.head;
     while (step) {
-      steps.push(step);
+      steps.push(step.value);
       step = step.next;
     }
 

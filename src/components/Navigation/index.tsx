@@ -10,6 +10,7 @@ import { AsyncActionResultData } from "../InstallationWizard/types";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { CodeDetails, Scope } from "../common/App/types";
 import { CodeButtonMenu } from "./CodeButtonMenu";
+import { ScopeNavigation } from "./ScopeNavigation";
 import { TargetButtonMenu } from "./TargetButtonMenu";
 import { actions } from "./actions";
 import * as s from "./styles";
@@ -356,6 +357,7 @@ export const Navigation = () => {
   return (
     <s.Container>
       <s.Row>
+        <ScopeNavigation />
         <button
           disabled={isNull(config.scope?.span)}
           onClick={handleHomeButtonClick}
