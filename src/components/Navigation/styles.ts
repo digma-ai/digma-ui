@@ -80,7 +80,7 @@ export const ScopeBarButton = styled.button`
     cursor: initial;
   }
 
-  &:active,
+  &:active:enabled,
   &:hover:enabled {
     color: ${({ theme }) => theme.colors.v3.icon.primary};
   }

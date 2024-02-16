@@ -411,7 +411,7 @@ export const Navigation = () => {
             disabled={isNull(config.scope?.span)}
             onClick={handleHomeButtonClick}
           >
-            <HomeIcon />
+            <HomeIcon color={"currentColor"} />
           </s.ScopeBarButton>
           <s.ScopeBarDivider />
 
@@ -423,7 +423,7 @@ export const Navigation = () => {
                 disabled={!isTargetButtonEnabled}
                 onClick={handleTargetButtonClick}
               >
-                <TargetIcon />
+                <TargetIcon color={"currentColor"} />
               </s.ScopeBarButton>
             </div>
           </Tooltip>
