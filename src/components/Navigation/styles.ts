@@ -1,12 +1,17 @@
 import styled from "styled-components";
-import { TabProps } from "./types";
+import { ScopeBarProps } from "./types";
 
 export const Container = styled.div`
   width: 100%;
   height: 136px;
+  background: ${({ theme }) => theme.colors.v3.surface.primary};
   display: flex;
   flex-direction: column;
   gap: 8px;
+  padding: 8px 8px 0;
+  border-radius: 0 0 12px 12px;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.v3.stroke.primary};
+  box-sizing: border-box;
 `;
 
 export const Row = styled.div`
@@ -20,22 +25,70 @@ export const KebabMenu = styled.div`
   gap: 8px;
 `;
 
-export const Tabs = styled.div`
+export const TabsContainer = styled.div`
   margin-top: auto;
-  display: flex;
-  gap: 8px;
-  justify-content: space-between;
-`;
-
-export const Tab = styled.div<TabProps>`
-  cursor: pointer;
-  border: ${({ theme, $isSelected }) =>
-    $isSelected ? `2px solid ${theme.colors.stroke.secondary}` : "none"};
-  opacity: ${({ $isDisabled }) => ($isDisabled ? 0.5 : 1)};
 `;
 
 export const Menu = styled.div`
   display: flex;
   flex-direction: column;
-  border: ${({ theme }) => `2px solid ${theme.colors.stroke.secondary}`};
+  border: 2px solid ${({ theme }) => `${theme.colors.stroke.secondary}`};
+`;
+
+export const EnvironmentSelect = styled.select`
+  display: flex;
+  flex-grow: 1;
+`;
+
+export const ScopeBar = styled.div<ScopeBarProps>`
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  border-radius: 4px;
+  border: 1px solid ${({ theme }) => theme.colors.v3.stroke.primary};
+  background: ${({ theme, $isActive }) =>
+    $isActive
+      ? theme.colors.v3.surface.brandDark
+      : theme.colors.v3.surface.primary};
+  box-shadow: 0 0 4.9px 0 rgba(0 0 0 / 13%);
+  color: ${({ theme, $isActive }) =>
+    $isActive ? theme.colors.v3.text.link : theme.colors.v3.text.secondary};
+  font-size: 14px;
+  padding: 5px 2px;
+`;
+
+export const ScopeName = styled.span`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: flex;
+  flex-grow: 1;
+  padding: 0 4px;
+`;
+
+export const ScopeBarButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: ${({ theme }) => theme.colors.v3.icon.tertiary};
+  padding: 2px 4px;
+
+  &:disabled {
+    color: ${({ theme }) => theme.colors.v3.icon.disabled};
+    cursor: initial;
+  }
+
+  &:active,
+  &:hover:enabled {
+    color: ${({ theme }) => theme.colors.v3.icon.primary};
+  }
+`;
+
+export const ScopeBarDivider = styled.div`
+  width: 1px;
+  height: 100%;
+  background: ${({ theme }) => theme.colors.v3.stroke.primaryLight};
 `;

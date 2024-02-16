@@ -1,8 +1,8 @@
 import React from "react";
-import { IconProps } from "../../common/icons/types";
 
 export interface IconButtonProps {
-  icon: React.ComponentType<IconProps>;
+  icon: React.ReactNode;
   isDisabled?: boolean;
   className?: string;
+  onClick?: () => void;
 }

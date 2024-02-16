@@ -36,7 +36,6 @@ export interface Environment {
 export interface CodeDetails {
   displayName: string;
   codeObjectId: string;
-  type: string;
 }
 
 export interface Scope {

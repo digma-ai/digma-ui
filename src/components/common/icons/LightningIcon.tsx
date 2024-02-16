@@ -13,7 +13,7 @@ const LightningIconComponent = (props: IconProps) => {
       fill="none"
       viewBox="0 0 12 13"
     >
-      <g clipPath="url(#lightning-clip1)">
+      <g clipPath="url(#lightning-clip-1)">
         <path
           stroke={color}
           strokeLinecap="round"
@@ -22,7 +22,7 @@ const LightningIconComponent = (props: IconProps) => {
         />
       </g>
       <defs>
-        <clipPath id="lightning-clip1">
+        <clipPath id="lightning-clip-1">
           <path fill="#fff" d="M0 .5h12v12H0z" />
         </clipPath>
       </defs>

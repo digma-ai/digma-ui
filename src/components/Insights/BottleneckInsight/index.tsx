@@ -26,6 +26,7 @@ export const BottleneckInsight = (props: BottleneckInsightProps) => {
 
   return (
     <InsightCard
+      title={props.insight.spanInfo?.displayName}
       data={props.insight}
       content={
         <>

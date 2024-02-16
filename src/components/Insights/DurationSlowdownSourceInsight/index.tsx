@@ -53,6 +53,7 @@ export const DurationSlowdownSourceInsight = (
   return (
     <InsightCard
       data={props.insight}
+      title={props.insight.spanInfo?.displayName}
       content={
         <s.Container>
           <Description>Found spans slowing the endpoint</Description>

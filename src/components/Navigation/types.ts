@@ -10,11 +10,6 @@ export interface TabData {
   cardName: string;
 }
 
-export interface TabProps {
-  $isSelected: boolean;
-  $isDisabled: boolean;
-}
-
 export interface OpenDocumentationPayload {
   page: string;
 }
@@ -69,4 +64,8 @@ export interface CodeContext {
   displayName: string;
   hasMissingDependency: boolean | null;
   canInstrumentMethod: boolean | null;
+}
+
+export interface ScopeBarProps {
+  $isActive?: boolean;
 }

@@ -17,6 +17,7 @@ export const NoScalingIssueInsight = (props: NoScalingIssueInsightProps) => {
   return (
     <InsightCard
       key={props.insight.type}
+      title={props.insight.spanInfo?.displayName}
       data={props.insight}
       content={<div>This code is scaling well at concurrent executions</div>}
       buttons={[

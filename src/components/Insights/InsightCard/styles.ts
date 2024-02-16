@@ -1,7 +1,48 @@
 import styled from "styled-components";
 import { Link } from "../styles";
 
+export const TitleIcon = styled.div`
+  display: flex;
+`;
+
+export const TitleText = styled.div`
+  fill: #a1b5ff;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  display: block;
+`;
+
 export const Title = styled.div`
+  border-radius: 4px 4px 0 0;
+  display: flex;
+  padding: 4px 12px;
+  align-items: center;
+  gap: 4px;
+  background: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#B9C0D4";
+      case "dark":
+      case "dark-jetbrains":
+        return "#28293E";
+    }
+  }};
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#002D61";
+      case "dark":
+      case "dark-jetbrains":
+        return "#a1b5ff;";
+    }
+  }};
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+`;
+
+export const Header = styled.div`
   display: flex;
   gap: 4px;
   align-items: center;
