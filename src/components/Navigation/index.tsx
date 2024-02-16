@@ -16,8 +16,8 @@ import { FourSquaresIcon } from "../common/icons/FourSquaresIcon";
 import { ThreeDotsIcon } from "../common/icons/ThreeDotsIcon";
 import { CodeButton } from "./CodeButton";
 import { CodeButtonMenu } from "./CodeButtonMenu";
-import { HistoryNavigationPanel } from "./HistoryNavigationPanel";
 import { IconButton } from "./IconButton";
+import { ScopeNavigation } from "./ScopeNavigation";
 import { Tabs } from "./Tabs";
 import { TargetButtonMenu } from "./TargetButtonMenu";
 import { actions } from "./actions";
@@ -113,6 +113,7 @@ export const Navigation = () => {
   const [isAutoFixing, setIsAutoFixing] = useState(false);
   const [isAnnotationAdding, setIsAnnotationAdding] = useState(false);
   const previousCodeContext = usePrevious(codeContext);
+  const [currentTab, setCurrentTab] = useState<string>();
 
   const environments = config.environments || [];
 
@@ -124,6 +125,9 @@ export const Navigation = () => {
     const handleViewData = (data: unknown) => {
       const payload = data as SetViewsPayload;
       setTabs(payload.views);
+
+      const selected = payload.views.find((x) => x.isSelected);
+      selected && setCurrentTab(selected.id);
     };
 
     const handleCodeContextData = (data: unknown) => {
@@ -319,7 +323,8 @@ export const Navigation = () => {
     openURLInDefaultBrowser(SLACK_WORKSPACE_URL);
   };
 
-  const handleTabClick = (tabId: string) => {
+  const changeTab = (tabId: string) => {
+    setCurrentTab(tabId);
     window.sendMessageToDigma<ChangeViewPayload>({
       action: actions.CHANGE_VIEW,
       payload: {
@@ -400,12 +405,7 @@ export const Navigation = () => {
   return (
     <s.Container>
       <s.Row>
-        <HistoryNavigationPanel
-          isBackDisabled={true}
-          isForwardDisabled={true}
-          onGoBack={handleGoBackInHistory}
-          onGoForward={handleGoForwardInHistory}
-        />
+        <ScopeNavigation currentTabId={currentTab || ""} />
         <s.ScopeBar $isActive={Boolean(config.scope?.span)}>
           <s.ScopeBarButton
             disabled={isNull(config.scope?.span)}
@@ -507,7 +507,7 @@ export const Navigation = () => {
         </s.Row>
       )}
       <s.TabsContainer>
-        <Tabs tabs={tabs || []} onSelect={handleTabClick} />
+        <Tabs tabs={tabs || []} onSelect={changeTab} />
       </s.TabsContainer>
     </s.Container>
   );
