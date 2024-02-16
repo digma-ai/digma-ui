@@ -42,13 +42,13 @@ export interface Scope {
   span: {
     displayName: string;
     spanCodeObjectId: string;
+    methodId?: string;
     serviceName: string | null;
     role: "Entry" | "Internal" | "Unknown" | null;
   } | null;
   code: {
     relatedCodeDetailsList: CodeDetails[];
     codeDetailsList: CodeDetails[];
-    isAlreadyAtCode: boolean;
   };
 }
 

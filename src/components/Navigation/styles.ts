@@ -3,13 +3,12 @@ import { ScopeBarProps } from "./types";
 
 export const Container = styled.div`
   width: 100%;
-  height: 136px;
+  height: 100%;
   background: ${({ theme }) => theme.colors.v3.surface.primary};
   display: flex;
   flex-direction: column;
   gap: 8px;
   padding: 8px 8px 0;
-  border-radius: 0 0 12px 12px;
   border-bottom: 1px solid ${({ theme }) => theme.colors.v3.stroke.primary};
   box-sizing: border-box;
 `;
@@ -55,14 +54,14 @@ export const ScopeBar = styled.div<ScopeBarProps>`
     $isActive ? theme.colors.v3.text.link : theme.colors.v3.text.secondary};
   font-size: 14px;
   padding: 5px 2px;
+  overflow: hidden;
 `;
 
 export const ScopeName = styled.span`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  display: flex;
-  flex-grow: 1;
+  width: 100%;
   padding: 0 4px;
 `;
 
@@ -81,7 +80,7 @@ export const ScopeBarButton = styled.button`
     cursor: initial;
   }
 
-  &:active,
+  &:active:enabled,
   &:hover:enabled {
     color: ${({ theme }) => theme.colors.v3.icon.primary};
   }

@@ -16,6 +16,7 @@ import { FourSquaresIcon } from "../common/icons/FourSquaresIcon";
 import { ThreeDotsIcon } from "../common/icons/ThreeDotsIcon";
 import { CodeButton } from "./CodeButton";
 import { CodeButtonMenu } from "./CodeButtonMenu";
+import { HistoryNavigationPanel } from "./HistoryNavigationPanel";
 import { IconButton } from "./IconButton";
 import { ScopeNavigation } from "./ScopeNavigation";
 import { Tabs } from "./Tabs";
@@ -46,6 +47,18 @@ const hasData = (codeContext?: CodeContext): boolean =>
 const hasObservability = (codeContext?: CodeContext): boolean =>
   Boolean(codeContext && [null, true].includes(codeContext.isInstrumented));
 
+const isAlreadyAtCode = (codeContext?: CodeContext, scope?: Scope): boolean => {
+  if (!codeContext || !scope?.span) {
+    return false;
+  }
+
+  return Boolean(
+    codeContext.methodId &&
+      scope.span.methodId &&
+      codeContext.methodId === scope.span.methodId
+  );
+};
+
 const getCodeButtonTooltip = (codeContext?: CodeContext): string => {
   if (!codeContext || codeContext.methodId === null) {
     return "No data";
@@ -66,12 +79,15 @@ const getCodeButtonTooltip = (codeContext?: CodeContext): string => {
   return "";
 };
 
-const getTargetButtonTooltip = (scope?: Scope): string => {
+const getTargetButtonTooltip = (
+  codeContext?: CodeContext,
+  scope?: Scope
+): string => {
   if (!scope) {
     return "";
   }
 
-  if (scope.code.isAlreadyAtCode) {
+  if (isAlreadyAtCode(codeContext, scope)) {
     return "Already at code";
   }
 
@@ -362,7 +378,7 @@ export const Navigation = () => {
 
   const codeButtonTooltip = getCodeButtonTooltip(codeContext);
 
-  const targetButtonTooltip = getTargetButtonTooltip(config.scope);
+  const targetButtonTooltip = getTargetButtonTooltip(codeContext, config.scope);
 
   const isTargetButtonEnabled = Boolean(
     config.scope?.span &&
@@ -370,7 +386,7 @@ export const Navigation = () => {
         ...config.scope.code.codeDetailsList,
         ...config.scope.code.relatedCodeDetailsList
       ].length > 0 &&
-      !config.scope.code.isAlreadyAtCode
+      !isAlreadyAtCode(codeContext, config.scope)
   );
 
   const scopeDisplayName = config.scope
@@ -379,16 +395,30 @@ export const Navigation = () => {
       : "Home"
     : "";
 
+  const handleGoBackInHistory = () => {
+    // TODO:
+  };
+
+  const handleGoForwardInHistory = () => {
+    //TODO;
+  };
+
   return (
     <s.Container>
       <ScopeNavigation currentTabId={currentTab || ""} />
       <s.Row>
+        <HistoryNavigationPanel
+          isBackDisabled={true}
+          isForwardDisabled={true}
+          onGoBack={handleGoBackInHistory}
+          onGoForward={handleGoForwardInHistory}
+        />
         <s.ScopeBar $isActive={Boolean(config.scope?.span)}>
           <s.ScopeBarButton
             disabled={isNull(config.scope?.span)}
             onClick={handleHomeButtonClick}
           >
-            <HomeIcon />
+            <HomeIcon color={"currentColor"} />
           </s.ScopeBarButton>
           <s.ScopeBarDivider />
 
@@ -400,7 +430,7 @@ export const Navigation = () => {
                 disabled={!isTargetButtonEnabled}
                 onClick={handleTargetButtonClick}
               >
-                <TargetIcon />
+                <TargetIcon color={"currentColor"} />
               </s.ScopeBarButton>
             </div>
           </Tooltip>
