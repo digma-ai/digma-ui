@@ -55,14 +55,14 @@ export const ScopeBar = styled.div<ScopeBarProps>`
     $isActive ? theme.colors.v3.text.link : theme.colors.v3.text.secondary};
   font-size: 14px;
   padding: 5px 2px;
+  overflow: hidden;
 `;
 
 export const ScopeName = styled.span`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  display: flex;
-  flex-grow: 1;
+  width: 100%;
   padding: 0 4px;
 `;
 
