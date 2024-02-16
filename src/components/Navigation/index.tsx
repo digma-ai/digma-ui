@@ -17,6 +17,7 @@ import { ThreeDotsIcon } from "../common/icons/ThreeDotsIcon";
 import { CodeButton } from "./CodeButton";
 import { CodeButtonMenu } from "./CodeButtonMenu";
 import { IconButton } from "./IconButton";
+import { ScopeNavigation } from "./ScopeNavigation";
 import { Tabs } from "./Tabs";
 import { TargetButtonMenu } from "./TargetButtonMenu";
 import { actions } from "./actions";
@@ -377,6 +378,7 @@ export const Navigation = () => {
 
   return (
     <s.Container>
+      <ScopeNavigation currentTabId={currentTab || ""} />
       <s.Row>
         <s.ScopeBar $isActive={Boolean(config.scope?.span)}>
           <s.ScopeBarButton
