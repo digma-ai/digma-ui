@@ -42,7 +42,7 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
   return (
     <InsightCard
       data={props.insight}
-      title={props.insight.spanInfo?.displayName}
+      spanInfo={props.insight.spanInfo}
       content={
         <s.ContentContainer>
           <Description>

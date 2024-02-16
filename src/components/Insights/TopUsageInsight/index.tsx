@@ -38,7 +38,7 @@ export const TopUsageInsight = (props: TopUsageInsightProps) => {
   return (
     <InsightCard
       data={props.insight}
-      title={props.insight.spanInfo?.displayName}
+      spanInfo={props.insight.spanInfo}
       content={
         <s.FlowList>
           {pageItems.map((flow, i) => {

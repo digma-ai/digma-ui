@@ -58,7 +58,7 @@ export const EndpointNPlusOneInsight = (
   return (
     <InsightCard
       data={props.insight}
-      title={props.insight.spanInfo?.displayName}
+      spanInfo={props.insight.spanInfo}
       content={
         <s.ContentContainer>
           <Description>Check the following locations:</Description>

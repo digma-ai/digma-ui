@@ -193,7 +193,7 @@ export const RequestBreakdownInsight = (
   return (
     <InsightCard
       data={props.insight}
-      title={props.insight.spanInfo?.displayName}
+      spanInfo={props.insight.spanInfo}
       content={props.insight.hasAsyncSpans ? renderTable() : renderPieChart()}
       onRecalculate={props.onRecalculate}
       onRefresh={props.onRefresh}

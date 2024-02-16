@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
 import { useTheme } from "styled-components";
+import { actions } from "../../../actions";
 import { PERCENTILES } from "../../../constants";
 import { isString } from "../../../typeGuards/isString";
 import { formatTimeDistance } from "../../../utils/formatTimeDistance";
@@ -123,16 +124,36 @@ export const InsightCard = (props: InsightCardProps) => {
       IS_NEW_TIME_LIMIT
     : false;
 
+  const handleLinkClick = (spanCodeObjectId?: string) => {
+    window.sendMessageToDigma({
+      action: actions.CHANGE_SCOPE,
+      payload: {
+        span: spanCodeObjectId ? { spanCodeObjectId } : null
+      }
+    });
+  };
+
   return (
     <>
       <Card
-        showTitle={!!(props.title && !scope?.span)}
+        showTitle={!!(props.spanInfo?.displayName && !scope?.span)}
         title={
           <s.Title>
             <s.TitleIcon>
               <OpenTelemetryLogoSmallIcon color="#6063F6" size={16} />
             </s.TitleIcon>
-            <s.TitleText>{props.title}</s.TitleText>
+
+            {props.spanInfo?.spanCodeObjectId ? (
+              <s.Link
+                onClick={() =>
+                  handleLinkClick(props.spanInfo?.spanCodeObjectId)
+                }
+              >
+                {props.spanInfo?.displayName}
+              </s.Link>
+            ) : (
+              <s.TitleText>{props.spanInfo?.displayName}</s.TitleText>
+            )}
           </s.Title>
         }
         header={

@@ -13,7 +13,7 @@ export const SlowEndpointInsight = (props: SlowEndpointInsightProps) => {
   return (
     <InsightCard
       data={props.insight}
-      title={props.insight.spanInfo?.displayName}
+      spanInfo={props.insight.spanInfo}
       content={
         <Description>
           {`On average requests are slower than other endpoints by ${roundTo(
