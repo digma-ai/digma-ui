@@ -110,6 +110,9 @@ export const Navigation = () => {
     const handleViewData = (data: unknown) => {
       const payload = data as SetViewsPayload;
       setTabs(payload.views);
+
+      const selected = payload.views.find((x) => x.isSelected);
+      selected && setCurrentTab(selected.id);
     };
 
     const handleCodeContextData = (data: unknown) => {

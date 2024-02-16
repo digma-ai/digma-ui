@@ -1,16 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import { actions } from "../../../actions";
 import { dispatcher } from "../../../dispatcher";
-import { isEnvironment } from "../../../typeGuards/isEnvironment";
-import { isObject } from "../../../typeGuards/isObject";
+import { usePrevious } from "../../../hooks/usePrevious";
 import { HistoryManager, HistoryStep } from "../../../utils/historyManager";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Scope } from "../../common/App/types";
-import {
-  ChangeEnvironmentPayload,
-  ChangeViewPayload,
-  SetViewsPayload
-} from "../types";
+import { ChangeEnvironmentPayload, ChangeViewPayload } from "../types";
 import { actions as globalActions } from "./../actions";
 import * as s from "./styles";
 import { ScopeNavigationProps } from "./types";
@@ -31,11 +26,23 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
     new HistoryManager()
   );
   const { environment } = useContext(ConfigContext);
+  const previousTabId = usePrevious(props.currentTabId);
+  const previousSate = usePrevious(historyManager.getCurrent());
+
+  useEffect(() => {
+    const currentStep = historyManager.getCurrent();
+    if (
+      previousSate?.scope.span?.spanCodeObjectId ===
+      currentStep?.scope.span?.spanCodeObjectId
+    ) {
+      if (previousTabId !== props.currentTabId) {
+        historyManager.updateCurrent({ tabId: props.currentTabId });
+      }
+    }
+  }, [previousTabId, props.currentTabId, previousSate]);
 
   useEffect(() => {
     const handleSetScope = (data: unknown) => {
-      console.log("new scope recieved " + JSON.stringify(data));
-
       const newScope = data as Scope;
       const currentScope = historyManager.getCurrent()?.scope;
       if (
@@ -45,11 +52,12 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
         historyManager.push({
           environment: environment || null,
           scope: newScope,
-          tabId: props.currentTabId
+          tabId: null
         });
       } else {
         const historyStep = historyManager.getCurrent();
-        if (historyStep && historyStep.tabId === props.currentTabId) {
+
+        if (historyStep && historyStep.tabId) {
           window.sendMessageToDigma<ChangeViewPayload>({
             action: globalActions.CHANGE_VIEW,
             payload: {
@@ -58,11 +66,7 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
           });
         }
 
-        if (
-          historyStep &&
-          historyStep.environment &&
-          historyStep.environment !== environment
-        ) {
+        if (historyStep && historyStep.environment) {
           window.sendMessageToDigma<ChangeEnvironmentPayload>({
             action: globalActions.CHANGE_ENVIRONMENT,
             payload: {
@@ -73,7 +77,6 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
       }
     };
 
-    console.log("state " + JSON.stringify(historyManager.getHistoryData()));
     dispatcher.addActionListener(actions.SET_SCOPE, handleSetScope);
 
     return () => {
@@ -81,68 +84,18 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
     };
   }, [environment, props.currentTabId, historyManager]);
 
-  useEffect(() => {
-    const handleViewChange = (data: unknown) => {
-      const viewsData = data as SetViewsPayload;
-      const selectedView = viewsData.views.find((x) => x.isSelected);
-
-      historyManager.updateCurrent({ tabId: selectedView?.id });
-    };
-
-    dispatcher.addActionListener(globalActions.SET_VIEWS, handleViewChange);
-
-    return () => {
-      dispatcher.removeActionListener(
-        globalActions.SET_VIEWS,
-        handleViewChange
-      );
-    };
-  });
-
-  useEffect(() => {
-    const handleSetEnvironment = (data: unknown) => {
-      if (isObject(data) && isEnvironment(data?.environment)) {
-        historyManager.updateCurrent({
-          environment: data.environment
-        });
-      }
-    };
-
-    dispatcher.addActionListener(actions.SET_ENVIRONMENT, handleSetEnvironment);
-
-    return () => {
-      dispatcher.removeActionListener(
-        actions.SET_ENVIRONMENT,
-        handleSetEnvironment
-      );
-    };
-  });
-
   const handleBackClick = () => {
-    console.log("back " + JSON.stringify(historyManager.getHistoryData()));
-
-    historyManager.back();
-    const currentStep = historyManager.getCurrent();
+    const currentStep = historyManager.back();
     if (currentStep) {
       sendMessage(currentStep);
     }
-
-    console.log(
-      "after back " + JSON.stringify(historyManager.getHistoryData())
-    );
   };
 
-  const handleFowradClick = () => {
-    console.log("next " + JSON.stringify(historyManager.getHistoryData()));
-    historyManager.forward();
-    const currentStep = historyManager.getCurrent();
+  const handleNexClick = () => {
+    const currentStep = historyManager.forward();
     if (currentStep) {
       sendMessage(currentStep);
     }
-
-    console.log(
-      "next after " + JSON.stringify(historyManager.getHistoryData())
-    );
   };
 
   return (
@@ -155,7 +108,7 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
       </s.NavigationButton>
       <s.NavigationButton
         disabled={!historyManager.canMoveForward()}
-        onClick={handleFowradClick}
+        onClick={handleNexClick}
       >
         {">"}
       </s.NavigationButton>
