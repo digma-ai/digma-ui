@@ -3,13 +3,12 @@ import { ScopeBarProps } from "./types";
 
 export const Container = styled.div`
   width: 100%;
-  height: 136px;
+  height: 100%;
   background: ${({ theme }) => theme.colors.v3.surface.primary};
   display: flex;
   flex-direction: column;
   gap: 8px;
   padding: 8px 8px 0;
-  border-radius: 0 0 12px 12px;
   border-bottom: 1px solid ${({ theme }) => theme.colors.v3.stroke.primary};
   box-sizing: border-box;
 `;
