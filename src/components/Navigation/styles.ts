@@ -34,11 +34,6 @@ export const Menu = styled.div`
   border: 2px solid ${({ theme }) => `${theme.colors.stroke.secondary}`};
 `;
 
-export const EnvironmentSelect = styled.select`
-  display: flex;
-  flex-grow: 1;
-`;
-
 export const ScopeBar = styled.div<ScopeBarProps>`
   display: flex;
   flex-grow: 1;
@@ -63,6 +58,7 @@ export const ScopeName = styled.span`
   white-space: nowrap;
   width: 100%;
   padding: 0 4px;
+  user-select: none;
 `;
 
 export const ScopeBarButton = styled.button`

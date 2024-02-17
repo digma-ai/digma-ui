@@ -1,14 +1,12 @@
-import { ChangeEvent, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { actions as globalActions } from "../../actions";
-import { SLACK_WORKSPACE_URL } from "../../constants";
 import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
 import { isNull } from "../../typeGuards/isNull";
-import { SetObservabilityPayload } from "../../types";
-import { openURLInDefaultBrowser } from "../../utils/openURLInDefaultBrowser";
 import { AsyncActionResultData } from "../InstallationWizard/types";
 import { ConfigContext } from "../common/App/ConfigContext";
-import { CodeDetails, Scope } from "../common/App/types";
+import { CodeDetails, Environment, Scope } from "../common/App/types";
+import { NewPopover } from "../common/NewPopover";
 import { Tooltip } from "../common/Tooltip";
 import { HomeIcon } from "../common/icons/12px/HomeIcon";
 import { TargetIcon } from "../common/icons/12px/TargetIcon";
@@ -16,7 +14,10 @@ import { FourSquaresIcon } from "../common/icons/FourSquaresIcon";
 import { ThreeDotsIcon } from "../common/icons/ThreeDotsIcon";
 import { CodeButton } from "./CodeButton";
 import { CodeButtonMenu } from "./CodeButtonMenu";
+import { EnvironmentMenu } from "./EnvironmentMenu";
 import { IconButton } from "./IconButton";
+import { KebabMenu } from "./KebabMenu";
+import { Popup } from "./Popup";
 import { ScopeNavigation } from "./ScopeNavigation";
 import { Tabs } from "./Tabs";
 import { TargetButtonMenu } from "./TargetButtonMenu";
@@ -31,7 +32,6 @@ import {
   CodeContext,
   GoToCodeLocationPayload,
   OpenDashboardPayload,
-  OpenDocumentationPayload,
   SetViewsPayload,
   TabData
 } from "./types";
@@ -231,10 +231,6 @@ export const Navigation = () => {
     });
   };
 
-  const handleKebabMenuButtonClick = () => {
-    setIsKebabButtonMenuOpen(!isKebabButtonMenuOpen);
-  };
-
   const handleHomeButtonClick = () => {
     window.sendMessageToDigma<ChangeScopePayload>({
       action: actions.CHANGE_SCOPE,
@@ -245,82 +241,35 @@ export const Navigation = () => {
   };
 
   const handleTargetButtonClick = () => {
-    setIsCodeButtonMenuOpen(false);
-
-    if (config.scope?.code.codeDetailsList.length === 1) {
+    if (config.scope && config.scope.code.codeDetailsList.length === 1) {
       handleGoToCodeLocation(config.scope.code.codeDetailsList[0]);
-    } else if (
-      config.scope &&
-      [
-        ...config.scope.code.codeDetailsList,
-        ...config.scope.code.relatedCodeDetailsList
-      ].length > 1
-    ) {
-      setIsTargetButtonMenuOpen(!isTargetButtonMenuOpen);
     }
   };
 
   const handleCodeButtonClick = () => {
-    if (codeContext?.spans.assets.length === 1) {
+    if (codeContext && codeContext.spans.assets.length === 1) {
       const { spanCodeObjectId } = codeContext.spans.assets[0];
       changeScope(spanCodeObjectId);
-    } else {
-      setIsTargetButtonMenuOpen(false);
-      setIsCodeButtonMenuOpen(!isCodeButtonMenuOpen);
     }
   };
 
-  const handleEnvironmentChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const environment = environments.find(
-      (x) => x.originalName === e.target.value
+  const handleEnvironmentChange = (environment: Environment) => {
+    const environmentToChange = environments.find(
+      (x) => x.originalName === environment.originalName
     );
 
-    if (!environment) {
+    if (!environmentToChange) {
       return;
     }
 
     window.sendMessageToDigma<ChangeEnvironmentPayload>({
       action: actions.CHANGE_ENVIRONMENT,
       payload: {
-        environment
+        environment: environmentToChange
       }
     });
 
     setSelectedEnvironment(environment);
-  };
-
-  const handleObservabilityChange = (e: ChangeEvent<HTMLInputElement>) => {
-    window.sendMessageToDigma<SetObservabilityPayload>({
-      action: globalActions.SET_OBSERVABILITY,
-      payload: {
-        isObservabilityEnabled: e.target.checked
-      }
-    });
-  };
-
-  const handleOnboardingClick = () => {
-    window.sendMessageToDigma({
-      action: globalActions.OPEN_INSTALLATION_WIZARD
-    });
-  };
-
-  const handleTroubleshootingClick = () => {
-    window.sendMessageToDigma({
-      action: globalActions.OPEN_TROUBLESHOOTING_GUIDE
-    });
-  };
-
-  const handleInsightsOverviewClick = () => {
-    window.sendMessageToDigma<OpenDocumentationPayload>({
-      action: globalActions.OPEN_DOCUMENTATION,
-      payload: {
-        page: "environment-types"
-      }
-    });
-  };
-
-  const handleSlackLinkClick = () => {
-    openURLInDefaultBrowser(SLACK_WORKSPACE_URL);
   };
 
   const changeTab = (tabId: string) => {
@@ -394,12 +343,14 @@ export const Navigation = () => {
       : "Home"
     : "";
 
-  const handleGoBackInHistory = () => {
-    // TODO:
+  const isCodeButtonEnabled = codeContext && !isNull(codeContext?.methodId);
+
+  const handleKebabButtonMenuClose = () => {
+    setIsKebabButtonMenuOpen(false);
   };
 
-  const handleGoForwardInHistory = () => {
-    //TODO;
+  const handleCodeButtonMenuClose = () => {
+    setIsCodeButtonMenuOpen(false);
   };
 
   return (
@@ -414,98 +365,116 @@ export const Navigation = () => {
             <HomeIcon color={"currentColor"} />
           </s.ScopeBarButton>
           <s.ScopeBarDivider />
-
           <s.ScopeName>{scopeDisplayName}</s.ScopeName>
           <s.ScopeBarDivider />
-          <Tooltip title={targetButtonTooltip}>
-            <div>
+          {config.scope && config.scope.code.codeDetailsList.length === 1 ? (
+            <Tooltip title={targetButtonTooltip}>
               <s.ScopeBarButton
                 disabled={!isTargetButtonEnabled}
                 onClick={handleTargetButtonClick}
               >
                 <TargetIcon color={"currentColor"} />
               </s.ScopeBarButton>
-            </div>
-          </Tooltip>
+            </Tooltip>
+          ) : (
+            <NewPopover
+              content={
+                <Popup>
+                  {config.scope && (
+                    <TargetButtonMenu
+                      scope={config.scope}
+                      onGoToCodeLocation={handleGoToCodeLocation}
+                    />
+                  )}
+                </Popup>
+              }
+              onOpenChange={setIsTargetButtonMenuOpen}
+              isOpen={isTargetButtonMenuOpen}
+              placement={"bottom-end"}
+            >
+              <div>
+                <Tooltip title={targetButtonTooltip}>
+                  <s.ScopeBarButton
+                    disabled={!isTargetButtonEnabled}
+                    onClick={handleTargetButtonClick}
+                  >
+                    <TargetIcon color={"currentColor"} />
+                  </s.ScopeBarButton>
+                </Tooltip>
+              </div>
+            </NewPopover>
+          )}
         </s.ScopeBar>
-        <Tooltip title={codeButtonTooltip}>
-          <div>
+        {codeContext?.spans.assets.length === 1 ? (
+          <Tooltip title={codeButtonTooltip}>
             <CodeButton
               hasData={hasData(codeContext)}
               hasObservability={hasObservability(codeContext)}
-              isDisabled={!codeContext || isNull(codeContext?.methodId)}
+              isDisabled={!isCodeButtonEnabled}
               onClick={handleCodeButtonClick}
             />
-          </div>
-        </Tooltip>
+          </Tooltip>
+        ) : (
+          <Tooltip title={codeButtonTooltip}>
+            <div>
+              <NewPopover
+                content={
+                  <Popup>
+                    {codeContext && (
+                      <CodeButtonMenu
+                        codeContext={codeContext}
+                        isAutoFixing={isAutoFixing}
+                        isAnnotationAdding={isAnnotationAdding}
+                        onAutoFix={handleAutoFix}
+                        onObservabilityAdd={handleObservabilityAdd}
+                        onScopeChange={changeScope}
+                        onClose={handleCodeButtonMenuClose}
+                      />
+                    )}
+                  </Popup>
+                }
+                onOpenChange={setIsCodeButtonMenuOpen}
+                isOpen={isCodeButtonMenuOpen}
+                placement={"left-start"}
+              >
+                <CodeButton
+                  hasData={hasData(codeContext)}
+                  hasObservability={hasObservability(codeContext)}
+                  isDisabled={!isCodeButtonEnabled}
+                  onClick={handleCodeButtonClick}
+                />
+              </NewPopover>
+            </div>
+          </Tooltip>
+        )}
       </s.Row>
       <s.Row>
-        {codeContext && isCodeButtonMenuOpen && (
-          <CodeButtonMenu
-            codeContext={codeContext}
-            isAutoFixing={isAutoFixing}
-            isAnnotationAdding={isAnnotationAdding}
-            onAutoFix={handleAutoFix}
-            onObservabilityAdd={handleObservabilityAdd}
-            onScopeChange={changeScope}
-          />
-        )}
-        {config.scope && isTargetButtonMenuOpen && (
-          <TargetButtonMenu
-            scope={config.scope}
-            onGoToCodeLocation={handleGoToCodeLocation}
-          />
-        )}
-      </s.Row>
-      <s.Row>
-        <s.EnvironmentSelect
-          disabled={environments.length === 0}
-          onChange={handleEnvironmentChange}
-          value={selectedEnvironment?.originalName}
-        >
-          {environments.length > 0 ? (
-            environments.map((x) => (
-              <option key={x.originalName} value={x.originalName}>
-                {x.name}
-              </option>
-            ))
-          ) : (
-            <option>No environments</option>
-          )}
-        </s.EnvironmentSelect>
+        <EnvironmentMenu
+          environments={environments}
+          selectedEnvironment={selectedEnvironment}
+          onEnvironmentChange={handleEnvironmentChange}
+          isDisabled={environments.length === 0}
+        />
         <Tooltip
           title={!selectedEnvironment ? "No environment selected" : "Dashboard"}
         >
-          <div>
-            <IconButton
-              isDisabled={!selectedEnvironment}
-              onClick={handleDashboardButtonClick}
-              icon={<FourSquaresIcon size={16} color={"currentColor"} />}
-            />
-          </div>
-        </Tooltip>
-        <IconButton
-          onClick={handleKebabMenuButtonClick}
-          icon={<ThreeDotsIcon size={16} color={"currentColor"} />}
-        />
-      </s.Row>
-      {isKebabButtonMenuOpen && (
-        <s.Row>
-          <input
-            type={"checkbox"}
-            id={"observability"}
-            checked={config.isObservabilityEnabled}
-            onChange={handleObservabilityChange}
+          <IconButton
+            isDisabled={!selectedEnvironment}
+            onClick={handleDashboardButtonClick}
+            icon={<FourSquaresIcon size={16} color={"currentColor"} />}
           />
-          <label htmlFor={"observability"}>Observability</label>
-          <button onClick={handleOnboardingClick}>Onboarding Digma</button>
-          <button onClick={handleTroubleshootingClick}>Troubleshooting</button>
-          <button onClick={handleInsightsOverviewClick}>
-            Insights overview
-          </button>
-          <button onClick={handleSlackLinkClick}>Digma channel</button>
-        </s.Row>
-      )}
+        </Tooltip>
+        <NewPopover
+          content={<KebabMenu onClose={handleKebabButtonMenuClose} />}
+          onOpenChange={setIsKebabButtonMenuOpen}
+          isOpen={isKebabButtonMenuOpen}
+          placement={"left"}
+        >
+          <IconButton
+            icon={<ThreeDotsIcon size={16} color={"currentColor"} />}
+          />
+        </NewPopover>
+      </s.Row>
       <s.TabsContainer>
         <Tabs tabs={tabs || []} onSelect={changeTab} />
       </s.TabsContainer>

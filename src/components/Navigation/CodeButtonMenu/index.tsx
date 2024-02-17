@@ -1,7 +1,9 @@
 import { MouseEvent } from "react";
 import { actions } from "../../../actions";
 import { isString } from "../../../typeGuards/isString";
-import { Menu } from "../styles";
+import { CodeIcon } from "../../common/icons/16px/CodeIcon";
+import { MenuList } from "../MenuList";
+import * as s from "./styles";
 import { CodeButtonMenuProps } from "./types";
 
 export const CodeButtonMenu = (props: CodeButtonMenuProps) => {
@@ -10,7 +12,8 @@ export const CodeButtonMenu = (props: CodeButtonMenuProps) => {
       props.onObservabilityAdd(props.codeContext.methodId);
   };
 
-  const handleAutoFixLinkClick = () => {
+  const handleAutoFixLinkClick = (e: MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
     isString(props.codeContext.methodId) &&
       props.onAutoFix(props.codeContext.methodId);
   };
@@ -20,73 +23,79 @@ export const CodeButtonMenu = (props: CodeButtonMenuProps) => {
     window.sendMessageToDigma({
       action: actions.OPEN_TROUBLESHOOTING_GUIDE
     });
+    props.onClose();
   };
 
   const renderMissingDependency = () => (
-    <div>
-      <div>missing dependency: opentelemetry.annotation</div>
-      <button disabled={props.isAutoFixing} onClick={handleAutoFixLinkClick}>
+    <s.MissingDependencyFooter>
+      <s.MissingDependencyText>Missing dependency</s.MissingDependencyText>
+      <s.Link
+        href={"#"}
+        $isDisabled={props.isAutoFixing}
+        onClick={handleAutoFixLinkClick}
+      >
         Autofix
-      </button>
-      {props.isAutoFixing && <div>Autofixing...</div>}
-    </div>
+      </s.Link>
+    </s.MissingDependencyFooter>
   );
 
   const renderNoObservability = () => (
-    <div>
-      <div>No observability</div>
-      <div>Digma has not detected any information from this location</div>
-      {props.codeContext.hasMissingDependency && renderMissingDependency()}
-      <button
+    <s.EmptyStateContainer>
+      <s.Title>No observability</s.Title>
+      <s.Text>Digma has not detected any information from this location</s.Text>
+      <s.AddObservabilityButton
+        buttonType={"primary"}
         disabled={
           props.codeContext.hasMissingDependency ||
           !props.codeContext.canInstrumentMethod ||
           props.isAnnotationAdding
         }
         onClick={handleAddObservabilityClick}
-      >
-        Add observability
-      </button>
-      {props.isAnnotationAdding && <div>Adding the annotation...</div>}
-    </div>
+        label={"Add observability"}
+      />
+      {props.codeContext.hasMissingDependency && renderMissingDependency()}
+    </s.EmptyStateContainer>
   );
 
   const renderNoData = () => (
-    <div>
-      <div>
+    <s.EmptyStateContainer>
+      <s.Text>
         Trigger actions that call this application to learn more about its
         runtime behavior
-      </div>
-      <a href={"#"} onClick={handleTroubleshootingLinkClick}>
+      </s.Text>
+      <s.Link href={"#"} onClick={handleTroubleshootingLinkClick}>
         Not seeing your application data?
-      </a>
-    </div>
+      </s.Link>
+    </s.EmptyStateContainer>
   );
 
   const renderSpans = () => (
-    <div>
-      <span>Assets</span>
-      {props.codeContext.spans.assets.map((x) => (
-        <div
-          key={x.spanCodeObjectId}
-          onClick={() => {
-            props.onScopeChange(x.spanCodeObjectId);
-          }}
-        >
-          {x.displayName}
-        </div>
-      ))}
-    </div>
+    <MenuList
+      items={props.codeContext.spans.assets.map((x) => ({
+        id: x.spanCodeObjectId,
+        label: x.displayName,
+        onClick: () => props.onScopeChange(x.spanCodeObjectId),
+        disabled: false,
+        groupName: "Assets"
+      }))}
+    />
   );
 
   return (
-    <Menu>
-      <span>{props.codeContext.displayName}</span>
+    <s.Container>
+      <s.CodeLocation>
+        <s.CodeIconContainer>
+          <CodeIcon color={"currentColor"} />
+        </s.CodeIconContainer>
+        <s.CodeLocationName>
+          {props.codeContext.displayName}{" "}
+        </s.CodeLocationName>
+      </s.CodeLocation>
       {props.codeContext.isInstrumented === false
         ? renderNoObservability()
         : props.codeContext.spans.assets.length > 0
         ? renderSpans()
         : renderNoData()}
-    </Menu>
+    </s.Container>
   );
 };

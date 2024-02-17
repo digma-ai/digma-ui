@@ -7,4 +7,9 @@ export interface CodeButtonMenuProps {
   onAutoFix: (methodId: string) => void;
   onObservabilityAdd: (methodId: string) => void;
   onScopeChange: (spanCodeObjectId: string) => void;
+  onClose: () => void;
+}
+
+export interface LinkProps {
+  $isDisabled?: boolean;
 }

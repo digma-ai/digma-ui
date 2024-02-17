@@ -27,6 +27,7 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
   );
   const { environment } = useContext(ConfigContext);
   const previousTabId = usePrevious(props.currentTabId);
+  const previousEnvironment = usePrevious(environment);
   const previousSate = usePrevious(historyManager.getCurrent());
 
   useEffect(() => {
@@ -35,11 +36,24 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
       previousSate?.scope.span?.spanCodeObjectId ===
       currentStep?.scope.span?.spanCodeObjectId
     ) {
-      if (previousTabId !== props.currentTabId) {
-        historyManager.updateCurrent({ tabId: props.currentTabId });
+      if (
+        previousTabId !== props.currentTabId ||
+        previousEnvironment !== environment
+      ) {
+        historyManager.updateCurrent({
+          tabId: props.currentTabId,
+          environment
+        });
       }
     }
-  }, [previousTabId, props.currentTabId, previousSate]);
+  }, [
+    previousTabId,
+    props.currentTabId,
+    previousSate,
+    previousEnvironment,
+    environment,
+    historyManager
+  ]);
 
   useEffect(() => {
     const handleSetScope = (data: unknown) => {

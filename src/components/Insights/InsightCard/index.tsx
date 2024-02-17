@@ -138,7 +138,7 @@ export const InsightCard = (props: InsightCardProps) => {
   return (
     <>
       <Card
-        showTitle={!!(props.spanInfo?.displayName && !scope?.span)}
+        showTitle={Boolean(props.spanInfo?.displayName && !scope?.span)}
         title={
           <s.Title>
             <s.TitleIcon>

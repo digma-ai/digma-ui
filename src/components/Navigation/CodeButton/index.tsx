@@ -1,3 +1,4 @@
+import { ForwardedRef, forwardRef } from "react";
 import { CodeIcon } from "../../common/icons/16px/CodeIcon";
 import { CodeIconGradient } from "../../common/icons/16px/CodeIconGradient";
 import { IconButton } from "../IconButton";
@@ -18,7 +19,10 @@ import { CodeButtonProps } from "./types";
 // const isDisabled = (codeContext: CodeContext): boolean =>
 //   !codeContext || codeContext.methodId === null;
 
-export const CodeButton = (props: CodeButtonProps) => {
+const CodeButtonComponent = (
+  props: CodeButtonProps,
+  ref: ForwardedRef<HTMLDivElement>
+) => {
   const icon = props.hasObservability ? (
     props.hasData ? (
       <CodeIconGradient gradient={"purple"} size={16} />
@@ -29,15 +33,21 @@ export const CodeButton = (props: CodeButtonProps) => {
     <CodeIcon color={"currentColor"} size={16} />
   );
 
-  return props.isDisabled ? (
-    <IconButton
-      icon={<CodeIcon color={"currentColor"} size={16} />}
-      isDisabled={props.isDisabled}
-      onClick={props.onClick}
-    />
-  ) : (
-    <s.Outline>
-      <s.CodeButton icon={icon} onClick={props.onClick} />
-    </s.Outline>
+  return (
+    <div ref={ref}>
+      {props.isDisabled ? (
+        <IconButton
+          icon={<CodeIcon color={"currentColor"} size={16} />}
+          isDisabled={props.isDisabled}
+          onClick={props.onClick}
+        />
+      ) : (
+        <s.Outline>
+          <s.CodeButton icon={icon} onClick={props.onClick} />
+        </s.Outline>
+      )}
+    </div>
   );
 };
+
+export const CodeButton = forwardRef(CodeButtonComponent);
