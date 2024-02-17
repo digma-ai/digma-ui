@@ -8,9 +8,10 @@ export const GlobeIconContainer = styled.div`
 
 export const EnvironmentBar = styled.div<EnvironmentBarProps>`
   box-sizing: border-box;
+  overflow: hidden;
+  flex-grow: 1;
   user-select: none;
   padding: 6px;
-  width: 100%;
   font-size: 14px;
   gap: 4px;
   border-radius: 4px;
@@ -56,7 +57,6 @@ export const EnvironmentBar = styled.div<EnvironmentBarProps>`
 `;
 
 export const SelectedEnvironmentName = styled.span`
-  margin-left: auto;
   color: ${({ theme }) => theme.colors.v3.text.link};
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -64,6 +64,7 @@ export const SelectedEnvironmentName = styled.span`
 `;
 
 export const ChevronIconContainer = styled.div`
+  margin-left: auto;
   display: flex;
   color: ${({ theme }) => theme.colors.v3.icon.secondary};
 `;

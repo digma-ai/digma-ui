@@ -44,10 +44,13 @@ export const EnvironmentMenu = (props: EnvironmentMenuProps) => {
         <s.GlobeIconContainer>
           <GlobeIcon size={16} color={"currentColor"} />
         </s.GlobeIconContainer>
-        Environments
-        <s.SelectedEnvironmentName>
-          {props.selectedEnvironment?.originalName}
-        </s.SelectedEnvironmentName>
+        {props.selectedEnvironment ? (
+          <s.SelectedEnvironmentName>
+            {props.selectedEnvironment.name}
+          </s.SelectedEnvironmentName>
+        ) : (
+          "No environments"
+        )}
         <s.ChevronIconContainer>
           <ChevronIcon
             size={16}
