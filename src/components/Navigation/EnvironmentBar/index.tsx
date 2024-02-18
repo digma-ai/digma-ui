@@ -1,4 +1,5 @@
 import { EnvironmentIcon } from "../../common/EnvironmentIcon";
+import { Tooltip } from "../../common/Tooltip";
 import { ChevronIcon } from "../../common/icons/16px/ChevronIcon";
 import { GlobeIcon } from "../../common/icons/16px/GlobeIcon";
 import { Direction } from "../../common/icons/types";
@@ -24,9 +25,11 @@ export const EnvironmentBar = (props: EnvironmentBarProps) => {
         )}
       </s.EnvironmentIconContainer>
       {props.selectedEnvironment ? (
-        <s.SelectedEnvironmentName>
-          {props.selectedEnvironment.name}
-        </s.SelectedEnvironmentName>
+        <Tooltip title={props.selectedEnvironment.name}>
+          <s.SelectedEnvironmentName>
+            {props.selectedEnvironment.name}
+          </s.SelectedEnvironmentName>
+        </Tooltip>
       ) : (
         "No environments"
       )}

@@ -413,7 +413,10 @@ export const Navigation = () => {
           <s.ScopeBarDivider />
           <s.ScopeName>{scopeDisplayName}</s.ScopeName>
           <s.ScopeBarDivider />
-          <Tooltip title={targetButtonTooltip}>
+          <Tooltip
+            title={targetButtonTooltip}
+            isOpen={isTargetButtonMenuOpen ? false : undefined}
+          >
             <s.ScopeBarButton
               disabled={!isTargetButtonEnabled}
               onClick={handleTargetButtonClick}
@@ -438,7 +441,10 @@ export const Navigation = () => {
               placement={"bottom-end"}
             >
               <div>
-                <Tooltip title={targetButtonTooltip}>
+                <Tooltip
+                  title={targetButtonTooltip}
+                  isOpen={isTargetButtonMenuOpen ? false : undefined}
+                >
                   <s.ScopeBarButton
                     disabled={!isTargetButtonEnabled}
                     onClick={handleTargetButtonClick}
@@ -450,7 +456,11 @@ export const Navigation = () => {
             </NewPopover>
           )}
         </s.ScopeBar>
-        <Tooltip title={codeButtonTooltip} placement={"bottom-end"}>
+        <Tooltip
+          title={codeButtonTooltip}
+          isOpen={isCodeButtonMenuOpen ? false : undefined}
+          placement={"bottom-end"}
+        >
           {codeContext?.spans.assets.length === 1 ? (
             <CodeButton
               hasData={hasData(codeContext)}

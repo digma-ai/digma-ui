@@ -3,6 +3,7 @@ import { dispatcher } from "../../../dispatcher";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { isEnvironment } from "../../../typeGuards/isEnvironment";
+import { isNull } from "../../../typeGuards/isNull";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { isString } from "../../../typeGuards/isString";
 import { FeatureFlag } from "../../../types";
@@ -13,7 +14,11 @@ import { actions } from "../actions";
 import { checkIfAnyFiltersApplied, getAssetTypeInfo } from "../utils";
 import { AssetTypeListItem } from "./AssetTypeListItem";
 import * as s from "./styles";
-import { AssetCategoriesData, AssetTypeListProps } from "./types";
+import {
+  AssetCategoriesData,
+  AssetCategoryData,
+  AssetTypeListProps
+} from "./types";
 
 const REFRESH_INTERVAL = isNumber(window.assetsRefreshInterval)
   ? window.assetsRefreshInterval
@@ -200,26 +205,34 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
     return <NoDataMessage type={"noDataYet"} />;
   }
 
+  const assetTypeListItems = ASSET_TYPE_IDS.map((assetTypeId) => {
+    const assetTypeData = data?.assetCategories.find(
+      (x) => x.name === assetTypeId
+    );
+    const assetTypeInfo = getAssetTypeInfo(assetTypeId);
+
+    if (assetTypeData && assetTypeInfo) {
+      return {
+        ...assetTypeData,
+        ...assetTypeInfo
+      };
+    }
+
+    return null;
+  }).filter((x) => !isNull(x) && x.count > 0) as AssetCategoryData[];
+
   return (
     <s.List>
-      {ASSET_TYPE_IDS.map((assetTypeId) => {
-        const assetTypeData = data?.assetCategories.find(
-          (x) => x.name === assetTypeId
-        );
-        const assetTypeInfo = getAssetTypeInfo(assetTypeId);
-        const entryCount = assetTypeData?.count || 0;
-
-        return (
-          <AssetTypeListItem
-            id={assetTypeId}
-            key={assetTypeId}
-            icon={assetTypeInfo?.icon}
-            entryCount={entryCount}
-            label={assetTypeInfo?.label}
-            onAssetTypeClick={handleAssetTypeClick}
-          />
-        );
-      })}
+      {assetTypeListItems.map((x) => (
+        <AssetTypeListItem
+          id={x.name}
+          key={x.name}
+          icon={x?.icon}
+          entryCount={x.count}
+          label={x.label}
+          onAssetTypeClick={handleAssetTypeClick}
+        />
+      ))}
     </s.List>
   );
 };

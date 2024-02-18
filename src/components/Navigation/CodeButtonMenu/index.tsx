@@ -66,10 +66,8 @@ export const CodeButtonMenu = (props: CodeButtonMenuProps) => {
 
   const renderNoData = () => (
     <s.EmptyStateContainer>
-      <s.Text>
-        Trigger actions that call this application to learn more about its
-        runtime behavior
-      </s.Text>
+      <s.Title>No data yet</s.Title>
+      <s.Text>Trigger any action to analyze runtime data</s.Text>
       <s.Link href={"#"} onClick={handleTroubleshootingLinkClick}>
         Not seeing your application data?
       </s.Link>
