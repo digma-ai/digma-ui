@@ -1,8 +1,5 @@
 import styled from "styled-components";
-
-export const TitleIcon = styled.div`
-  display: flex;
-`;
+import { Link as CommonLink } from "../../common/Link";
 
 export const Link = styled.a`
   color: #7891d0;
@@ -21,27 +18,24 @@ export const Title = styled.div`
   padding: 4px 12px;
   align-items: center;
   gap: 4px;
-  background: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#B9C0D4";
-      case "dark":
-      case "dark-jetbrains":
-        return "#28293E";
-    }
-  }};
-  color: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#002D61";
-      case "dark":
-      case "dark-jetbrains":
-        return "#a1b5ff;";
-    }
-  }};
+  background: ${({ theme }) => theme.colors.v3.surface.sidePanelHeader};
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
+`;
+
+export const TitleIconContainer = styled.div`
+  display: flex;
+  color: ${({ theme }) => theme.colors.v3.icon.tertiary};
+`;
+
+export const TitleLink = styled(CommonLink)`
+  color: ${({ theme }) => theme.colors.v3.text.link};
+  display: block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  text-decoration: none;
 `;
 
 export const Header = styled.div`

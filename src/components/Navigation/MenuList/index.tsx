@@ -2,6 +2,7 @@ import { ReactElement } from "react";
 import { isBoolean } from "../../../typeGuards/isBoolean";
 import { groupBy } from "../../../utils/groupBy";
 import { intersperse } from "../../../utils/intersperse";
+import { Tooltip } from "../../common/Tooltip";
 import * as s from "./styles";
 import { MenuListProps } from "./types";
 
@@ -27,12 +28,14 @@ export const MenuList = (props: MenuListProps) => {
           item.customContent ? (
             <li key={item.id}>{item.customContent}</li>
           ) : (
-            <s.ListItem key={item.id} onClick={item.onClick}>
-              {item.icon && (
-                <s.ListItemIconContainer>{item.icon}</s.ListItemIconContainer>
-              )}
-              {item.label && <s.ListItemLabel>{item.label}</s.ListItemLabel>}
-            </s.ListItem>
+            <Tooltip title={item.label} key={item.id}>
+              <s.ListItem onClick={item.onClick}>
+                {item.icon && (
+                  <s.ListItemIconContainer>{item.icon}</s.ListItemIconContainer>
+                )}
+                {item.label && <s.ListItemLabel>{item.label}</s.ListItemLabel>}
+              </s.ListItem>
+            </Tooltip>
           )
         )}
       </s.ListGroup>

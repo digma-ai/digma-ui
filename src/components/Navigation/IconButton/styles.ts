@@ -12,6 +12,9 @@ export const Button = styled.button`
   color: ${({ theme }) => theme.colors.v3.icon.tertiary};
   cursor: pointer;
   outline: none;
+  width: 32px;
+  height: 32px;
+  box-sizing: border-box;
 
   &:disabled {
     color: ${({ theme }) => theme.colors.v3.icon.disabled};

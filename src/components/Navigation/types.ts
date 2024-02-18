@@ -8,6 +8,7 @@ export interface TabData {
   hasNewData: boolean;
   isHidden: boolean;
   cardName: string;
+  tooltipMessage?: string;
 }
 
 export interface OpenDocumentationPayload {
@@ -57,7 +58,7 @@ export interface CodeContext {
     errorData: {
       codeObjectId: string;
       count: number;
-    };
+    } | null;
   };
   isInstrumented: boolean | null;
   methodId: string | null;

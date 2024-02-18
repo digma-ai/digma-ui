@@ -10,7 +10,11 @@ export interface ListWidgetProps<T> {
   type: WidgetType;
   data?: ListWidgetData<T>;
   showPercentileToggleSwitch?: boolean;
-  renderListItem: (item: T, percentileViewMode?: number) => JSX.Element;
+  renderListItem: (
+    item: T,
+    environment: string,
+    percentileViewMode?: number
+  ) => JSX.Element;
 }
 
 export interface ListWidgetData<T> {

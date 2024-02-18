@@ -10,6 +10,7 @@ import { SlowQueriesProps, SlowQueryEntry } from "./types";
 
 const renderSlowQueryEntry = (
   item: SlowQueryEntry,
+  environment: string,
   percentileViewMode?: number
 ) => {
   let durationString = "";
@@ -24,6 +25,7 @@ const renderSlowQueryEntry = (
       action: actions.GO_TO_SPAN,
       payload: {
         spanCodeObjectId,
+        environment,
         type: WidgetType.SLOW_QUERIES
       }
     });

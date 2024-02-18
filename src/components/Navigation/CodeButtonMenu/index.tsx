@@ -1,8 +1,11 @@
 import { MouseEvent } from "react";
 import { actions } from "../../../actions";
 import { isString } from "../../../typeGuards/isString";
+import { NewButton } from "../../common/NewButton";
+import { Tooltip } from "../../common/Tooltip";
 import { CodeIcon } from "../../common/icons/16px/CodeIcon";
 import { MenuList } from "../MenuList";
+import { Spinner } from "./Spinner";
 import * as s from "./styles";
 import { CodeButtonMenuProps } from "./types";
 
@@ -36,6 +39,7 @@ export const CodeButtonMenu = (props: CodeButtonMenuProps) => {
       >
         Autofix
       </s.Link>
+      {props.isAutoFixing && <Spinner />}
     </s.MissingDependencyFooter>
   );
 
@@ -43,16 +47,19 @@ export const CodeButtonMenu = (props: CodeButtonMenuProps) => {
     <s.EmptyStateContainer>
       <s.Title>No observability</s.Title>
       <s.Text>Digma has not detected any information from this location</s.Text>
-      <s.AddObservabilityButton
-        buttonType={"primary"}
-        disabled={
-          props.codeContext.hasMissingDependency ||
-          !props.codeContext.canInstrumentMethod ||
-          props.isAnnotationAdding
-        }
-        onClick={handleAddObservabilityClick}
-        label={"Add observability"}
-      />
+      <s.AddObservabilityButtonContainer>
+        {props.isAnnotationAdding && <Spinner />}
+        <NewButton
+          buttonType={"primary"}
+          disabled={
+            props.codeContext.hasMissingDependency ||
+            !props.codeContext.canInstrumentMethod ||
+            props.isAnnotationAdding
+          }
+          onClick={handleAddObservabilityClick}
+          label={"Add observability"}
+        />
+      </s.AddObservabilityButtonContainer>
       {props.codeContext.hasMissingDependency && renderMissingDependency()}
     </s.EmptyStateContainer>
   );
@@ -87,9 +94,11 @@ export const CodeButtonMenu = (props: CodeButtonMenuProps) => {
         <s.CodeIconContainer>
           <CodeIcon color={"currentColor"} />
         </s.CodeIconContainer>
-        <s.CodeLocationName>
-          {props.codeContext.displayName}{" "}
-        </s.CodeLocationName>
+        <Tooltip title={props.codeContext.displayName}>
+          <s.CodeLocationName>
+            {props.codeContext.displayName}
+          </s.CodeLocationName>
+        </Tooltip>
       </s.CodeLocation>
       {props.codeContext.isInstrumented === false
         ? renderNoObservability()

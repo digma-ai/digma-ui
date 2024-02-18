@@ -1,50 +1,58 @@
 import { ForwardedRef, forwardRef } from "react";
-import { CodeIcon } from "../../common/icons/16px/CodeIcon";
-import { CodeIconGradient } from "../../common/icons/16px/CodeIconGradient";
-import { IconButton } from "../IconButton";
+import { ClockWithTicksIcon } from "../../common/icons/20px/ClockWithTicksIcon";
+import { CodeGradientIcon } from "../../common/icons/20px/CodeGradientIcon";
+import { CodeIcon } from "../../common/icons/20px/CodeIcon";
+import { OpenTelemetryLogoIcon } from "../../common/icons/20px/OpenTelemetryLogoIcon";
 import * as s from "./styles";
 import { CodeButtonProps } from "./types";
 
-// const hasNoData = (codeContext: CodeContext): boolean =>
-//   [null, true].includes(codeContext.isInstrumented) &&
-//   codeContext.spans.assets.length === 0;
+const getIcon = (
+  isDisabled: boolean,
+  isAlreadyAtCode: boolean,
+  hasObservability: boolean,
+  hasData: boolean
+) => {
+  if (!hasObservability) {
+    return <OpenTelemetryLogoIcon color={"currentColor"} size={20} />;
+  }
 
-// const hasData = (codeContext: CodeContext): boolean =>
-//   [null, true].includes(codeContext.isInstrumented) &&
-//   codeContext.spans.assets.length > 0;
+  if (isDisabled || isAlreadyAtCode) {
+    return <CodeIcon color={"currentColor"} size={20} />;
+  }
 
-// const hasNoObservability = (codeContext: CodeContext): boolean =>
-//   codeContext.isInstrumented === false;
-
-// const isDisabled = (codeContext: CodeContext): boolean =>
-//   !codeContext || codeContext.methodId === null;
+  if (hasData) {
+    return <CodeGradientIcon color={"currentColor"} size={20} />;
+  } else {
+    return <ClockWithTicksIcon color={"currentColor"} size={20} />;
+  }
+};
 
 const CodeButtonComponent = (
   props: CodeButtonProps,
   ref: ForwardedRef<HTMLDivElement>
 ) => {
-  const icon = props.hasObservability ? (
-    props.hasData ? (
-      <CodeIconGradient gradient={"purple"} size={16} />
-    ) : (
-      <CodeIconGradient gradient={"orange"} size={16} />
-    )
-  ) : (
-    <CodeIcon color={"currentColor"} size={16} />
+  const icon = getIcon(
+    Boolean(props.isDisabled),
+    props.isAlreadyAtScope,
+    props.hasObservability,
+    props.hasData
   );
 
   return (
     <div ref={ref}>
-      {props.isDisabled ? (
-        <IconButton
-          icon={<CodeIcon color={"currentColor"} size={16} />}
+      {props.isDisabled || props.isAlreadyAtScope ? (
+        <s.ExtendedIconButton
+          icon={<CodeIcon color={"currentColor"} size={20} />}
           isDisabled={props.isDisabled}
           onClick={props.onClick}
+          isActive={props.isAlreadyAtScope}
         />
       ) : (
-        <s.Outline>
-          <s.CodeButton icon={icon} onClick={props.onClick} />
-        </s.Outline>
+        <s.OutlineBackground $isAnimated={props.hasData}>
+          <s.Outline $isAnimated={props.hasData}>
+            <s.CodeButton icon={icon} onClick={props.onClick} />
+          </s.Outline>
+        </s.OutlineBackground>
       )}
     </div>
   );

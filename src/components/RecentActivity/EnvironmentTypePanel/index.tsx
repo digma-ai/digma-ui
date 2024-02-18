@@ -1,11 +1,11 @@
 import { openURLInDefaultBrowser } from "../../../utils/openURLInDefaultBrowser";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
+import { EnvironmentType } from "../../common/App/types";
 import { IconTag } from "../../common/IconTag";
 import { NewButton } from "../../common/NewButton";
 import { CodeIcon } from "../../common/icons/16px/CodeIcon";
 import { InfinityIcon } from "../../common/icons/InfinityIcon";
 import { trackingEvents } from "../tracking";
-import { EnvironmentType } from "../types";
 import * as s from "./styles";
 import { EnvironmentTypeData, EnvironmentTypePanelProps } from "./types";
 

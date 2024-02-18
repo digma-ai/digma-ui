@@ -11,6 +11,7 @@ export const Container = styled.div`
   padding: 8px 8px 0;
   border-bottom: 1px solid ${({ theme }) => theme.colors.v3.stroke.primary};
   box-sizing: border-box;
+  position: relative;
 `;
 
 export const Row = styled.div`
@@ -84,6 +85,19 @@ export const ScopeBarButton = styled.button`
 
 export const ScopeBarDivider = styled.div`
   width: 1px;
-  height: 100%;
+  height: 18px;
   background: ${({ theme }) => theme.colors.v3.stroke.primaryLight};
+`;
+
+export const Overlay = styled.div`
+  position: fixed;
+  inset: 0;
+`;
+
+export const EnvironmentMenuContainer = styled.div`
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  bottom: 8px;
+  width: 40%;
 `;

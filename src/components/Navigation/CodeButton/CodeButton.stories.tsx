@@ -20,7 +20,9 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     hasObservability: true,
-    hasData: true
+    hasData: true,
+    isDisabled: false,
+    isAlreadyAtScope: false
   }
 };
 
@@ -35,6 +37,15 @@ export const HasNoData: Story = {
   args: {
     hasObservability: true,
     hasData: false
+  }
+};
+
+export const AlreadyAtCode: Story = {
+  args: {
+    hasObservability: true,
+    hasData: true,
+    isDisabled: false,
+    isAlreadyAtScope: true
   }
 };
 

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { actions as globalActions } from "../../actions";
 import { SLACK_WORKSPACE_URL } from "../../constants";
 import { usePrevious } from "../../hooks/usePrevious";
@@ -20,6 +20,7 @@ import { OpenTelemetryLogoCrossedSmallIcon } from "../common/icons/OpenTelemetry
 import { SlackLogoIcon } from "../common/icons/SlackLogoIcon";
 import { InsightsCatalog } from "./InsightsCatalog";
 import { SORTING_CRITERION } from "./InsightsCatalog/types";
+import { actions } from "./actions";
 import { useInsightsData } from "./common/useInsightsData";
 import * as s from "./styles";
 import { BottleneckInsightTicket } from "./tickets/BottleneckInsightTicket";
@@ -157,6 +158,10 @@ export const Insights = (props: InsightsProps) => {
   );
   const [isRegistrationInProgress, setIsRegistrationInProgress] =
     useState(false);
+
+  useLayoutEffect(() => {
+    sendMessage(actions.INITIALIZE);
+  }, []);
 
   // useEffect(() => {
   //   if (previousData && data && previousData.assetId !== data.assetId) {
@@ -350,11 +355,6 @@ export const Insights = (props: InsightsProps) => {
 
   return (
     <s.Container>
-      {isLoading && (
-        <s.CircleLoaderContainer>
-          <CircleLoader size={14} />
-        </s.CircleLoaderContainer>
-      )}
       {renderContent(data, isInitialLoading)}
       {infoToOpenJiraTicket && (
         <s.Overlay>

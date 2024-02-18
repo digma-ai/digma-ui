@@ -5,9 +5,9 @@ import { Link as CommonLink } from "../common/Link";
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 8px;
+  padding: 8px 0;
   gap: 8px;
-  min-height: 100vh;
+  height: 100%;
   box-sizing: border-box;
   background: ${({ theme }) => {
     switch (theme.mode) {
@@ -19,12 +19,6 @@ export const Container = styled.div`
     }
   }};
   position: relative;
-`;
-
-export const CircleLoaderContainer = styled.div`
-  position: absolute;
-  top: 8px;
-  right: 8px;
 `;
 
 export const StartupText = styled.span`
@@ -125,6 +119,7 @@ export const PopupContainer = styled.div`
   justify-content: center;
   height: 100%;
   padding: 0 4%;
+  overflow: hidden;
 `;
 
 export const Footer = styled.div`

@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { NewButton } from "../../common/NewButton";
 import { LinkProps } from "./types";
 
 export const Container = styled.div`
@@ -10,7 +9,7 @@ export const Container = styled.div`
 
 export const CodeLocation = styled.div`
   display: flex;
-  padding: 3px 8px;
+  padding: 8px;
   color: ${({ theme }) => theme.colors.v3.text.secondary};
   gap: 4px;
   align-items: center;
@@ -33,6 +32,7 @@ export const EmptyStateContainer = styled.div`
   flex-direction: column;
   gap: 8px;
   font-size: 14px;
+  padding: 0 8px;
 `;
 
 export const Title = styled.div`
@@ -50,14 +50,18 @@ export const Link = styled.a<LinkProps>`
   cursor: ${({ $isDisabled }) => ($isDisabled ? "initial" : "pointer")};
 `;
 
-export const AddObservabilityButton = styled(NewButton)`
-  align-self: flex-end;
+export const AddObservabilityButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
 `;
 
 export const MissingDependencyFooter = styled.div`
   display: flex;
-  padding: 8px 12px;
-  gap: 4px;
+  align-items: center;
+  padding: 8px 16px;
+  gap: 8px;
   border-top: 1px solid ${({ theme }) => theme.colors.v3.stroke.primary};
   background: ${({ theme }) => theme.colors.v3.surface.brandDark};
 `;

@@ -8,10 +8,12 @@ export const Container = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.v3.stroke.primary};
   background: ${({ theme }) => theme.colors.v3.surface.primary};
   box-shadow: 0 0 5px 0 rgba(0 0 0 / 13%);
-  padding: 6px;
+  padding: 6px 8px;
   color: ${({ theme }) => theme.colors.v3.icon.tertiary};
   width: fit-content;
   gap: 4px;
+  height: 32px;
+  box-sizing: border-box;
 `;
 
 export const Button = styled.button`

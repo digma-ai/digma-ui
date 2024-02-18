@@ -1,11 +1,21 @@
 import { useEffect, useState } from "react";
 import useDimensions from "react-cool-dimensions";
 import { RECENT_ACTIVITY_CONTAINER_ID } from "..";
+import { actions as globalActions } from "../../../actions";
+import { SLACK_WORKSPACE_URL } from "../../../constants";
+import { openURLInDefaultBrowser } from "../../../utils/openURLInDefaultBrowser";
+import { MenuList } from "../../Navigation/MenuList";
+import { Popup } from "../../Navigation/Popup";
+import { OpenDocumentationPayload } from "../../Navigation/types";
 import { NewButton } from "../../common/NewButton";
 import { NewPopover } from "../../common/NewPopover";
 import { PlusIcon } from "../../common/icons/12px/PlusIcon";
+import { FourPointedStarIcon } from "../../common/icons/16px/FourPointedStar";
+import { HammerIcon } from "../../common/icons/16px/HammerIcon";
+import { SlackLogoIcon } from "../../common/icons/16px/SlackLogoIcon";
 import { ChevronIcon } from "../../common/icons/ChevronIcon";
 import { DigmaLogoIcon } from "../../common/icons/DigmaLogoIcon";
+import { ThreeDotsIcon } from "../../common/icons/ThreeDotsIcon";
 import { Direction } from "../../common/icons/types";
 import { AddEnvironmentDialog } from "../AddEnvironmentDialog";
 import { ExtendedEnvironment } from "../types";
@@ -24,6 +34,7 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
   const environmentListDimensions = useDimensions();
   const [isAddEnvironmentDialogOpen, setIsAddEnvironmentDialogOpen] =
     useState(false);
+  const [isKebabMenuOpen, setIsKebabMenuOpen] = useState(false);
 
   useEffect(() => {
     const entry = environmentListContainerDimensions.entry;
@@ -132,6 +143,72 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
     );
   };
 
+  const renderKebabMenuButton = () => {
+    const boundaryEl =
+      document.getElementById(RECENT_ACTIVITY_CONTAINER_ID) || undefined;
+
+    const handleTroubleshootingClick = () => {
+      window.sendMessageToDigma({
+        action: globalActions.OPEN_TROUBLESHOOTING_GUIDE
+      });
+      setIsKebabMenuOpen(false);
+    };
+
+    const handleInsightsOverviewClick = () => {
+      window.sendMessageToDigma<OpenDocumentationPayload>({
+        action: globalActions.OPEN_DOCUMENTATION,
+        payload: {
+          page: "environment-types"
+        }
+      });
+      setIsKebabMenuOpen(false);
+    };
+
+    const handleSlackLinkClick = () => {
+      openURLInDefaultBrowser(SLACK_WORKSPACE_URL);
+      setIsKebabMenuOpen(false);
+    };
+
+    return (
+      <NewPopover
+        boundary={boundaryEl}
+        placement={"bottom-end"}
+        onOpenChange={setIsKebabMenuOpen}
+        isOpen={isKebabMenuOpen}
+        content={
+          <Popup>
+            <MenuList
+              items={[
+                {
+                  id: "insightsOverview",
+                  label: "Insights Overview",
+                  icon: <FourPointedStarIcon size={16} color="currentColor" />,
+                  onClick: handleInsightsOverviewClick
+                },
+                {
+                  id: "troubleshooting",
+                  label: "Troubleshooting",
+                  icon: <HammerIcon size={16} color="currentColor" />,
+                  onClick: handleTroubleshootingClick
+                },
+                {
+                  id: "slack",
+                  label: "Digma Channel",
+                  icon: <SlackLogoIcon size={16} color="currentColor" />,
+                  onClick: handleSlackLinkClick
+                }
+              ]}
+            />
+          </Popup>
+        }
+      >
+        <div>
+          <NewButton buttonType={"tertiary"} icon={ThreeDotsIcon} />
+        </div>
+      </NewPopover>
+    );
+  };
+
   return (
     <s.Container>
       <s.LogoContainer>
@@ -178,6 +255,7 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
       </s.CarouselButtonContainer>
       <s.ButtonsContainer>
         {isAddButtonVisible && renderAddButton()}
+        {renderKebabMenuButton()}
       </s.ButtonsContainer>
     </s.Container>
   );

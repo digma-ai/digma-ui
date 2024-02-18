@@ -6,6 +6,7 @@ import { isString } from "../../../typeGuards/isString";
 import { formatTimeDistance } from "../../../utils/formatTimeDistance";
 import { getInsightImportanceColor } from "../../../utils/getInsightImportanceColor";
 import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
+import { ChangeScopePayload } from "../../Navigation/types";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Badge } from "../../common/Badge";
 import { Card } from "../../common/Card";
@@ -18,9 +19,9 @@ import { Tag } from "../../common/Tag";
 import { Toggle } from "../../common/Toggle";
 import { ToggleValue } from "../../common/Toggle/types";
 import { Tooltip } from "../../common/Tooltip";
+import { OpenTelemetryLogoIcon } from "../../common/icons/12px/OpenTelemetryLogoIcon";
 import { ChevronIcon } from "../../common/icons/ChevronIcon";
 import { InfoCircleIcon } from "../../common/icons/InfoCircleIcon";
-import { OpenTelemetryLogoSmallIcon } from "../../common/icons/OpenTelemetryLogoSmallIcon";
 import { Direction } from "../../common/icons/types";
 import { Description, Link } from "../styles";
 import * as s from "./styles";
@@ -124,12 +125,14 @@ export const InsightCard = (props: InsightCardProps) => {
       IS_NEW_TIME_LIMIT
     : false;
 
-  const handleLinkClick = (spanCodeObjectId?: string) => {
-    if (spanCodeObjectId) {
-      window.sendMessageToDigma({
+  const handleTitleLinkClick = () => {
+    if (props.spanInfo) {
+      window.sendMessageToDigma<ChangeScopePayload>({
         action: actions.CHANGE_SCOPE,
         payload: {
-          span: spanCodeObjectId
+          span: {
+            spanCodeObjectId: props.spanInfo.spanCodeObjectId
+          }
         }
       });
     }
@@ -138,17 +141,17 @@ export const InsightCard = (props: InsightCardProps) => {
   return (
     <>
       <Card
-        showTitle={Boolean(props.spanInfo?.displayName && !scope?.span)}
+        showTitle={Boolean(!scope?.span && props.spanInfo)}
         title={
           <s.Title>
-            <s.TitleIcon>
-              <OpenTelemetryLogoSmallIcon color="#6063F6" size={16} />
-            </s.TitleIcon>
-            <s.Link
-              onClick={() => handleLinkClick(props.spanInfo?.spanCodeObjectId)}
-            >
-              {props.spanInfo?.displayName}
-            </s.Link>
+            <s.TitleIconContainer>
+              <OpenTelemetryLogoIcon color={"currentColor"} />
+            </s.TitleIconContainer>
+            <Tooltip title={props.spanInfo?.displayName}>
+              <s.TitleLink onClick={() => handleTitleLinkClick()}>
+                {props.spanInfo?.displayName}
+              </s.TitleLink>
+            </Tooltip>
           </s.Title>
         }
         header={

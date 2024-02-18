@@ -17,12 +17,12 @@ const TrashBinIconComponent = (props: IconProps) => {
         stroke={color}
         strokeLinecap="round"
         strokeLinejoin="round"
-        clipPath="url(#a)"
+        clipPath="url(#trash-bin-clip-1)"
       >
         <path d="M10.125 2.625h-8.25m3 2.25v3m2.25-3v3m2.25-5.25V9.75a.375.375 0 0 1-.375.375H3a.375.375 0 0 1-.375-.375V2.625m5.25 0v-.75a.75.75 0 0 0-.75-.75h-2.25a.75.75 0 0 0-.75.75v.75" />
       </g>
       <defs>
-        <clipPath id="a">
+        <clipPath id="trash-bin-clip-1">
           <path fill="#fff" d="M0 0h12v12H0z" />
         </clipPath>
       </defs>

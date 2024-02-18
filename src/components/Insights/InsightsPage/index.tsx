@@ -1,11 +1,17 @@
-import { useEffect } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { actions as globalActions } from "../../../actions";
 import { usePersistence } from "../../../hooks/usePersistence";
+import { usePrevious } from "../../../hooks/usePrevious";
 import { trackingEvents as globalTrackingEvents } from "../../../trackingEvents";
+import { isNumber } from "../../../typeGuards/isNumber";
 import { isUndefined } from "../../../typeGuards/isUndefined";
 import { InsightType } from "../../../types";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
+import { ConfigContext } from "../../common/App/ConfigContext";
 import { Card } from "../../common/Card";
+import { EmptyState } from "../../common/EmptyState";
+import { CardsIcon } from "../../common/icons/CardsIcon";
 import { BottleneckInsight } from "../BottleneckInsight";
 import { DurationBreakdownInsight } from "../DurationBreakdownInsight";
 import { DurationInsight } from "../DurationInsight";
@@ -472,13 +478,29 @@ const IS_INSIGHT_JIRA_TICKET_HINT_SHOWN_PERSISTENCE_KEY =
   "isInsightJiraTicketHintShown";
 
 export const InsightsPage = (props: InsightPageProps) => {
+  const config = useContext(ConfigContext);
+  const previousConfig = usePrevious(config);
   const [isInsightJiraTicketHintShown, setIsInsightJiraTicketHintShown] =
     usePersistence<isInsightJiraTicketHintShownPayload>(
       IS_INSIGHT_JIRA_TICKET_HINT_SHOWN_PERSISTENCE_KEY,
       "application"
     );
+  const listRef = useRef<HTMLDivElement>(null);
+  const previousPage = usePrevious(props.page);
 
   const insightIndexWithJiraHint = getInsightToShowJiraHint(props.insights);
+
+  useEffect(() => {
+    if (
+      (isNumber(previousPage) && previousPage !== props.page) ||
+      (previousConfig &&
+        (previousConfig?.scope?.span !== config?.scope?.span ||
+          previousConfig?.environment?.originalName !==
+            config.environment?.originalName))
+    ) {
+      listRef.current?.scrollTo(0, 0);
+    }
+  }, [previousPage, props.page, config, previousConfig]);
 
   useEffect(() => {
     window.sendMessageToDigma({
@@ -504,8 +526,18 @@ export const InsightsPage = (props: InsightPageProps) => {
     setIsInsightJiraTicketHintShown({ value: true });
   };
 
+  const handleTroubleshootingLinkClick = () => {
+    sendTrackingEvent(globalTrackingEvents.TROUBLESHOOTING_LINK_CLICKED, {
+      origin: "insights"
+    });
+
+    window.sendMessageToDigma({
+      action: globalActions.OPEN_TROUBLESHOOTING_GUIDE
+    });
+  };
+
   return (
-    <s.Container>
+    <s.Container ref={listRef}>
       {props.insights.length > 0 ? (
         props.insights.map((insight, j) => {
           return renderInsightCard(
@@ -524,7 +556,7 @@ export const InsightsPage = (props: InsightPageProps) => {
             <Description>There are no insights for this criteria</Description>
           }
         />
-      ) : (
+      ) : config.scope?.span ? (
         <Card
           header={<>No data yet</>}
           content={
@@ -532,6 +564,22 @@ export const InsightsPage = (props: InsightPageProps) => {
               No data received yet for this span, please trigger some actions
               using this code to see more insights.
             </Description>
+          }
+        />
+      ) : (
+        <EmptyState
+          icon={CardsIcon}
+          title={"No data yet"}
+          content={
+            <>
+              <s.EmptyStateDescription>
+                Trigger actions that call this application to learn more about
+                its runtime behavior
+              </s.EmptyStateDescription>
+              <s.TroubleshootingLink onClick={handleTroubleshootingLinkClick}>
+                Not seeing your application data?
+              </s.TroubleshootingLink>
+            </>
           }
         />
       )}

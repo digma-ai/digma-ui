@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { usePrevious } from "../../../hooks/usePrevious";
 
 import { useDebounce } from "../../../hooks/useDebounce";
 import { isNumber } from "../../../typeGuards/isNumber";
+import { ConfigContext } from "../../common/App/ConfigContext";
 import { Pagination } from "../../common/Pagination";
 import { SearchInput } from "../../common/SearchInput";
 import { SortingSelector } from "../../common/SortingSelector";
@@ -28,12 +29,19 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
     pageStartItemNumber + PAGE_SIZE - 1,
     totalCount
   );
+  const config = useContext(ConfigContext);
+  const previousConfig = usePrevious(config);
 
   useEffect(() => {
-    if (previousPage !== page) {
-      window.scrollTo(0, 0);
+    if (
+      previousConfig &&
+      (previousConfig?.scope?.span !== config?.scope?.span ||
+        previousConfig?.environment?.originalName !==
+          config.environment?.originalName)
+    ) {
+      setPage(0);
     }
-  }, [previousPage, page]);
+  }, [previousConfig, config]);
 
   useEffect(() => {
     props.onQueryChange({
@@ -93,6 +101,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
         />
       </s.Toolbar>
       <InsightsPage
+        page={page}
         insights={insights}
         isFilteringEnabled={debouncedSearchInputValue !== null}
         onJiraTicketCreate={onJiraTicketCreate}

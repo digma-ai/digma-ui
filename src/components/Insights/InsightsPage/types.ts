@@ -8,6 +8,7 @@ export interface InsightPageProps {
     spanCodeObjectId?: string
   ) => void;
   onRefresh: () => void;
+  page: number;
 }
 
 export interface isInsightJiraTicketHintShownPayload {

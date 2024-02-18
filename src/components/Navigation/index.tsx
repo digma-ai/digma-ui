@@ -6,17 +6,19 @@ import { isNull } from "../../typeGuards/isNull";
 import { AsyncActionResultData } from "../InstallationWizard/types";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { CodeDetails, Environment, Scope } from "../common/App/types";
+import { EnvironmentIcon } from "../common/EnvironmentIcon";
 import { NewPopover } from "../common/NewPopover";
 import { Tooltip } from "../common/Tooltip";
-import { HomeIcon } from "../common/icons/12px/HomeIcon";
-import { TargetIcon } from "../common/icons/12px/TargetIcon";
+import { CrosshairIcon } from "../common/icons/16px/CrosshairIcon";
+import { HomeIcon } from "../common/icons/16px/HomeIcon";
 import { FourSquaresIcon } from "../common/icons/FourSquaresIcon";
 import { ThreeDotsIcon } from "../common/icons/ThreeDotsIcon";
 import { CodeButton } from "./CodeButton";
 import { CodeButtonMenu } from "./CodeButtonMenu";
-import { EnvironmentMenu } from "./EnvironmentMenu";
+import { EnvironmentBar } from "./EnvironmentBar";
 import { IconButton } from "./IconButton";
 import { KebabMenu } from "./KebabMenu";
+import { MenuList } from "./MenuList";
 import { Popup } from "./Popup";
 import { ScopeNavigation } from "./ScopeNavigation";
 import { Tabs } from "./Tabs";
@@ -58,24 +60,40 @@ const isAlreadyAtCode = (codeContext?: CodeContext, scope?: Scope): boolean => {
   );
 };
 
-const getCodeButtonTooltip = (codeContext?: CodeContext): string => {
+const isAlreadyAtScope = (
+  codeContext?: CodeContext,
+  scope?: Scope
+): boolean => {
+  if (!codeContext || !scope?.span) {
+    return false;
+  }
+
+  return codeContext.spans.assets
+    .map((x) => x.spanCodeObjectId)
+    .includes(scope.span.spanCodeObjectId);
+};
+
+const getCodeButtonTooltip = (
+  codeContext?: CodeContext,
+  scope?: Scope
+): string => {
   if (!codeContext || codeContext.methodId === null) {
-    return "No data";
+    return "No code selected";
   }
 
   if (codeContext.isInstrumented === false) {
-    return "No observability";
-  }
-
-  if ([null, true].includes(codeContext.isInstrumented)) {
+    return "Observe this code";
+  } else {
     if (codeContext.spans.assets.length === 0) {
-      return "No data";
+      return "Not yet reached. Trigger actions to observe this code";
     } else {
-      return "Assets";
+      if (isAlreadyAtScope(codeContext, scope)) {
+        return "Showing asset runtime data";
+      }
+
+      return "Runtime data available for this code. Click to view";
     }
   }
-
-  return "";
 };
 
 const getTargetButtonTooltip = (
@@ -107,6 +125,7 @@ export const Navigation = () => {
     config.environment
   );
   const [codeContext, setCodeContext] = useState<CodeContext>();
+  const [isEnvironmentMenuOpen, setIsEnvironmentMenuOpen] = useState(false);
   const [isCodeButtonMenuOpen, setIsCodeButtonMenuOpen] = useState(false);
   const [isTargetButtonMenuOpen, setIsTargetButtonMenuOpen] = useState(false);
   const [isKebabButtonMenuOpen, setIsKebabButtonMenuOpen] = useState(false);
@@ -116,6 +135,25 @@ export const Navigation = () => {
   const [currentTab, setCurrentTab] = useState<string>();
 
   const environments = config.environments || [];
+
+  const scopeDisplayName = config.scope
+    ? config.scope.span
+      ? config.scope.span.displayName
+      : "Home"
+    : "";
+
+  const codeButtonTooltip = getCodeButtonTooltip(codeContext, config.scope);
+  const isCodeButtonEnabled = codeContext && !isNull(codeContext?.methodId);
+
+  const targetButtonTooltip = getTargetButtonTooltip(codeContext, config.scope);
+  const isTargetButtonEnabled = Boolean(
+    config.scope?.span &&
+      [
+        ...config.scope.code.codeDetailsList,
+        ...config.scope.code.relatedCodeDetailsList
+      ].length > 0 &&
+      !isAlreadyAtCode(codeContext, config.scope)
+  );
 
   useEffect(() => {
     window.sendMessageToDigma({
@@ -254,6 +292,8 @@ export const Navigation = () => {
   };
 
   const handleEnvironmentChange = (environment: Environment) => {
+    setIsEnvironmentMenuOpen(false);
+
     const environmentToChange = environments.find(
       (x) => x.originalName === environment.originalName
     );
@@ -324,33 +364,39 @@ export const Navigation = () => {
     setIsCodeButtonMenuOpen(false);
   };
 
-  const codeButtonTooltip = getCodeButtonTooltip(codeContext);
-
-  const targetButtonTooltip = getTargetButtonTooltip(codeContext, config.scope);
-
-  const isTargetButtonEnabled = Boolean(
-    config.scope?.span &&
-      [
-        ...config.scope.code.codeDetailsList,
-        ...config.scope.code.relatedCodeDetailsList
-      ].length > 0 &&
-      !isAlreadyAtCode(codeContext, config.scope)
-  );
-
-  const scopeDisplayName = config.scope
-    ? config.scope.span
-      ? config.scope.span.displayName
-      : "Home"
-    : "";
-
-  const isCodeButtonEnabled = codeContext && !isNull(codeContext?.methodId);
-
   const handleKebabButtonMenuClose = () => {
     setIsKebabButtonMenuOpen(false);
   };
 
   const handleCodeButtonMenuClose = () => {
     setIsCodeButtonMenuOpen(false);
+  };
+
+  const renderEnvironmentMenu = () => {
+    const handleOverlayClick = () => {
+      setIsEnvironmentMenuOpen(false);
+    };
+
+    return (
+      <s.Overlay onClick={handleOverlayClick}>
+        <s.EnvironmentMenuContainer>
+          <Popup height={"78px"}>
+            <MenuList
+              items={environments.map((x) => ({
+                id: x.originalName,
+                label: x.name,
+                onClick: () => handleEnvironmentChange(x),
+                icon: <EnvironmentIcon environment={x} />
+              }))}
+            />
+          </Popup>
+        </s.EnvironmentMenuContainer>
+      </s.Overlay>
+    );
+  };
+
+  const handleEnvironmentBarClick = () => {
+    setIsEnvironmentMenuOpen(!isEnvironmentMenuOpen);
   };
 
   return (
@@ -362,24 +408,23 @@ export const Navigation = () => {
             disabled={isNull(config.scope?.span)}
             onClick={handleHomeButtonClick}
           >
-            <HomeIcon color={"currentColor"} />
+            <HomeIcon color={"currentColor"} size={16} />
           </s.ScopeBarButton>
           <s.ScopeBarDivider />
           <s.ScopeName>{scopeDisplayName}</s.ScopeName>
           <s.ScopeBarDivider />
-          {config.scope && config.scope.code.codeDetailsList.length === 1 ? (
-            <Tooltip title={targetButtonTooltip}>
-              <s.ScopeBarButton
-                disabled={!isTargetButtonEnabled}
-                onClick={handleTargetButtonClick}
-              >
-                <TargetIcon color={"currentColor"} />
-              </s.ScopeBarButton>
-            </Tooltip>
-          ) : (
+          <Tooltip title={targetButtonTooltip}>
+            <s.ScopeBarButton
+              disabled={!isTargetButtonEnabled}
+              onClick={handleTargetButtonClick}
+            >
+              <CrosshairIcon color={"currentColor"} size={16} />
+            </s.ScopeBarButton>
+          </Tooltip>
+          {config.scope && config.scope.code.codeDetailsList.length > 1 && (
             <NewPopover
               content={
-                <Popup>
+                <Popup height={"78px"}>
                   {config.scope && (
                     <TargetButtonMenu
                       scope={config.scope}
@@ -398,28 +443,27 @@ export const Navigation = () => {
                     disabled={!isTargetButtonEnabled}
                     onClick={handleTargetButtonClick}
                   >
-                    <TargetIcon color={"currentColor"} />
+                    <CrosshairIcon color={"currentColor"} size={16} />
                   </s.ScopeBarButton>
                 </Tooltip>
               </div>
             </NewPopover>
           )}
         </s.ScopeBar>
-        {codeContext?.spans.assets.length === 1 ? (
-          <Tooltip title={codeButtonTooltip}>
+        <Tooltip title={codeButtonTooltip} placement={"bottom-end"}>
+          {codeContext?.spans.assets.length === 1 ? (
             <CodeButton
               hasData={hasData(codeContext)}
               hasObservability={hasObservability(codeContext)}
               isDisabled={!isCodeButtonEnabled}
               onClick={handleCodeButtonClick}
+              isAlreadyAtScope={isAlreadyAtScope(codeContext, config.scope)}
             />
-          </Tooltip>
-        ) : (
-          <Tooltip title={codeButtonTooltip}>
+          ) : (
             <div>
               <NewPopover
                 content={
-                  <Popup>
+                  <Popup height={"78px"}>
                     {codeContext && (
                       <CodeButtonMenu
                         codeContext={codeContext}
@@ -442,18 +486,18 @@ export const Navigation = () => {
                   hasObservability={hasObservability(codeContext)}
                   isDisabled={!isCodeButtonEnabled}
                   onClick={handleCodeButtonClick}
+                  isAlreadyAtScope={isAlreadyAtScope(codeContext, config.scope)}
                 />
               </NewPopover>
             </div>
-          </Tooltip>
-        )}
+          )}
+        </Tooltip>
       </s.Row>
       <s.Row>
-        <EnvironmentMenu
-          environments={environments}
+        <EnvironmentBar
           selectedEnvironment={selectedEnvironment}
-          onEnvironmentChange={handleEnvironmentChange}
-          isDisabled={environments.length === 0}
+          onClick={handleEnvironmentBarClick}
+          isMenuOpen={isEnvironmentMenuOpen}
         />
         <Tooltip
           title={!selectedEnvironment ? "No environment selected" : "Dashboard"}
@@ -478,6 +522,7 @@ export const Navigation = () => {
       <s.TabsContainer>
         <Tabs tabs={tabs || []} onSelect={changeTab} />
       </s.TabsContainer>
+      {isEnvironmentMenuOpen && renderEnvironmentMenu()}
     </s.Container>
   );
 };

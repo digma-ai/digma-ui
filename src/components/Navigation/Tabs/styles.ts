@@ -17,8 +17,11 @@ export const Tab = styled.li<TabProps>`
   gap: 4px;
   padding: 0 4px;
   height: 32px;
+  box-sizing: border-box;
   flex-grow: 1;
   flex-basis: 0;
+  cursor: ${({ $isSelected, $isDisabled }) =>
+    $isSelected || $isDisabled ? "initial" : "pointer"};
   color: ${({ theme, $isSelected, $isDisabled }) => {
     if ($isDisabled) {
       return theme.colors.v3.text.disabled;

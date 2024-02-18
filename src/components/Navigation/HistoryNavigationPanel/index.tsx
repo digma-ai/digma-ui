@@ -1,4 +1,4 @@
-import { ChevronIcon } from "../../common/icons/ChevronIcon";
+import { ChevronIcon } from "../../common/icons/20px/ChevronIcon";
 import { Direction } from "../../common/icons/types";
 import * as s from "./styles";
 import { HistoryNavigationPanelProps } from "./types";
