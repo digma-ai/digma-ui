@@ -297,7 +297,7 @@ export const Navigation = () => {
     if (isOpen) {
       sendTrackingEvent(trackingEvents.TARGET_BUTTON_CLICKED);
     }
-    setIsKebabButtonMenuOpen(isOpen);
+    setIsTargetButtonMenuOpen(isOpen);
   };
 
   const handleTargetButtonClick = () => {
@@ -311,7 +311,7 @@ export const Navigation = () => {
     if (isOpen) {
       sendTrackingEvent(trackingEvents.CODE_BUTTON_CLICKED);
     }
-    setIsKebabButtonMenuOpen(isOpen);
+    setIsCodeButtonMenuOpen(isOpen);
   };
 
   const handleCodeButtonClick = () => {

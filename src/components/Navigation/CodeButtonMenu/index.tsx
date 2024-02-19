@@ -53,7 +53,7 @@ export const CodeButtonMenu = (props: CodeButtonMenuProps) => {
   const renderNoObservability = () => (
     <s.EmptyStateContainer>
       <s.Title>No observability</s.Title>
-      <s.Text>Digma has not detected any information from this location</s.Text>
+      <s.Text>Click to observe this code in runtime</s.Text>
       <s.AddObservabilityButtonContainer>
         {props.isAnnotationAdding && <Spinner />}
         <NewButton
@@ -67,7 +67,6 @@ export const CodeButtonMenu = (props: CodeButtonMenuProps) => {
           label={"Add observability"}
         />
       </s.AddObservabilityButtonContainer>
-      {props.codeContext.hasMissingDependency && renderMissingDependency()}
     </s.EmptyStateContainer>
   );
 
@@ -102,6 +101,7 @@ export const CodeButtonMenu = (props: CodeButtonMenuProps) => {
 
   return (
     <s.Container>
+      {props.codeContext.hasMissingDependency && renderMissingDependency()}
       <s.CodeLocation>
         <s.CodeIconContainer>
           <CodeIcon color={"currentColor"} />

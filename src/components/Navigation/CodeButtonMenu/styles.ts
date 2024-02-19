@@ -62,7 +62,7 @@ export const MissingDependencyFooter = styled.div`
   align-items: center;
   padding: 8px 16px;
   gap: 8px;
-  border-top: 1px solid ${({ theme }) => theme.colors.v3.stroke.primary};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.v3.stroke.primary};
   background: ${({ theme }) => theme.colors.v3.surface.brandDark};
 `;
 
