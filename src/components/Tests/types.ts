@@ -30,6 +30,12 @@ export interface TestsData {
   entries: Test[];
 }
 
+export interface GetSpanLatestDataPayload {
+  environments: string[];
+  pageNumber: number;
+  spanCodeObjectId: string | null;
+}
+
 export interface SetSpanLatestDataPayload {
   data: TestsData | null;
   error: {

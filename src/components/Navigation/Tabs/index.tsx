@@ -30,7 +30,7 @@ export const Tabs = (props: TabsProps) => {
   const config = useContext(ConfigContext);
 
   const handleTabClick = (tab: TabData) => {
-    if (!tab.isDisabled) {
+    if (!getIsTabDisabled(tab, config.scope)) {
       sendTrackingEvent(trackingEvents.TAB_CLICKED, {
         tabName: tab.id
       });

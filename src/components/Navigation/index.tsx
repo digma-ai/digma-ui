@@ -488,10 +488,12 @@ export const Navigation = () => {
             </NewPopover>
           )}
         </s.ScopeBar>
+      </s.Row>
+      <s.Row>
         <Tooltip
           title={codeButtonTooltip}
           isOpen={isCodeButtonMenuOpen ? false : undefined}
-          placement={"bottom-end"}
+          placement={"top-start"}
         >
           {codeContext?.spans.assets.length === 1 ? (
             <CodeButton
@@ -521,7 +523,7 @@ export const Navigation = () => {
                 }
                 onOpenChange={handleCodeMenuButtonOpenChange}
                 isOpen={isCodeButtonMenuOpen}
-                placement={"left-start"}
+                placement={"right"}
               >
                 <CodeButton
                   hasData={hasData(codeContext)}
@@ -534,8 +536,6 @@ export const Navigation = () => {
             </div>
           )}
         </Tooltip>
-      </s.Row>
-      <s.Row>
         <EnvironmentBar
           selectedEnvironment={selectedEnvironment}
           onClick={handleEnvironmentBarClick}
