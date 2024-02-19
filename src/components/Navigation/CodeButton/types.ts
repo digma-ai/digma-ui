@@ -1,4 +1,4 @@
-import { IconButtonProps } from "../IconButton/types";
+import { IconButtonProps } from "../common/IconButton/types";
 
 export interface ExtendedIconButtonProps extends IconButtonProps {
   isActive: boolean;

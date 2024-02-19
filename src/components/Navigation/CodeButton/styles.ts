@@ -1,5 +1,5 @@
 import styled, { css, keyframes } from "styled-components";
-import { IconButton as CommonIconButton } from "../IconButton";
+import { IconButton as CommonIconButton } from "../common/IconButton";
 import { ExtendedIconButtonProps, OutlineProps } from "./types";
 
 const rotateBackgroundAnimation = keyframes`

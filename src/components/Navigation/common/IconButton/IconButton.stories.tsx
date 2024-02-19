@@ -1,11 +1,12 @@
 import { Meta, StoryObj } from "@storybook/react";
 
-import { HistoryNavigationPanel } from ".";
+import { IconButton } from ".";
+import { CodeIcon } from "../../../common/icons/16px/CodeIcon";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
-const meta: Meta<typeof HistoryNavigationPanel> = {
-  title: "Navigation/HistoryNavigationPanel",
-  component: HistoryNavigationPanel,
+const meta: Meta<typeof IconButton> = {
+  title: "Navigation/common/IconButton",
+  component: IconButton,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
     layout: "fullscreen"
@@ -19,28 +20,13 @@ type Story = StoryObj<typeof meta>;
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 export const Default: Story = {
   args: {
-    isBackDisabled: false,
-    isForwardDisabled: false
-  }
-};
-
-export const Head: Story = {
-  args: {
-    isBackDisabled: true,
-    isForwardDisabled: false
-  }
-};
-
-export const Tail: Story = {
-  args: {
-    isBackDisabled: false,
-    isForwardDisabled: true
+    icon: <CodeIcon size={16} color={"currentColor"} />
   }
 };
 
 export const Disabled: Story = {
   args: {
-    isBackDisabled: false,
-    isForwardDisabled: false
+    icon: <CodeIcon size={16} color={"currentColor"} />,
+    isDisabled: true
   }
 };

@@ -5,9 +5,9 @@ import { usePrevious } from "../../../hooks/usePrevious";
 import { HistoryManager, HistoryStep } from "../../../utils/HistoryManager";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Scope } from "../../common/App/types";
-import { HistoryNavigationPanel } from "../HistoryNavigationPanel";
 import { ChangeEnvironmentPayload, ChangeViewPayload } from "../types";
 import { actions as globalActions } from "./../actions";
+import { HistoryNavigationPanel } from "./HistoryNavigationPanel";
 import { ScopeNavigationProps } from "./types";
 
 const sendMessage = (historyStep: HistoryStep) => {

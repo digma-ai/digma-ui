@@ -4,7 +4,7 @@ import { MenuList } from ".";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof MenuList> = {
-  title: "Navigation/MenuList",
+  title: "Navigation/common/MenuList",
   component: MenuList,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout

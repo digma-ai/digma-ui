@@ -1,7 +1,7 @@
-import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
-import { ChevronIcon } from "../../common/icons/20px/ChevronIcon";
-import { Direction } from "../../common/icons/types";
-import { trackingEvents } from "../tracking";
+import { sendTrackingEvent } from "../../../../utils/sendTrackingEvent";
+import { ChevronIcon } from "../../../common/icons/20px/ChevronIcon";
+import { Direction } from "../../../common/icons/types";
+import { trackingEvents } from "../../tracking";
 import * as s from "./styles";
 import { HistoryNavigationPanelProps } from "./types";
 

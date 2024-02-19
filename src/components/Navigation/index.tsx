@@ -6,25 +6,23 @@ import { isNull } from "../../typeGuards/isNull";
 import { sendTrackingEvent } from "../../utils/sendTrackingEvent";
 import { AsyncActionResultData } from "../InstallationWizard/types";
 import { ConfigContext } from "../common/App/ConfigContext";
-import { CodeDetails, Environment, Scope } from "../common/App/types";
+import { Environment, Scope } from "../common/App/types";
 import { EnvironmentIcon } from "../common/EnvironmentIcon";
 import { NewPopover } from "../common/NewPopover";
 import { Tooltip } from "../common/Tooltip";
-import { CrosshairIcon } from "../common/icons/16px/CrosshairIcon";
-import { HomeIcon } from "../common/icons/16px/HomeIcon";
 import { FourSquaresIcon } from "../common/icons/FourSquaresIcon";
 import { ThreeDotsIcon } from "../common/icons/ThreeDotsIcon";
 import { CodeButton } from "./CodeButton";
 import { CodeButtonMenu } from "./CodeButtonMenu";
 import { EnvironmentBar } from "./EnvironmentBar";
-import { IconButton } from "./IconButton";
 import { KebabMenu } from "./KebabMenu";
-import { MenuList } from "./MenuList";
-import { Popup } from "./Popup";
+import { ScopeBar } from "./ScopeBar";
 import { ScopeNavigation } from "./ScopeNavigation";
 import { Tabs } from "./Tabs";
-import { TargetButtonMenu } from "./TargetButtonMenu";
 import { actions } from "./actions";
+import { IconButton } from "./common/IconButton";
+import { MenuList } from "./common/MenuList";
+import { Popup } from "./common/Popup";
 import * as s from "./styles";
 import { trackingEvents } from "./tracking";
 import {
@@ -34,7 +32,6 @@ import {
   ChangeScopePayload,
   ChangeViewPayload,
   CodeContext,
-  GoToCodeLocationPayload,
   OpenDashboardPayload,
   SetViewsPayload,
   TabData
@@ -49,18 +46,6 @@ const hasData = (codeContext?: CodeContext): boolean =>
 
 const hasObservability = (codeContext?: CodeContext): boolean =>
   Boolean(codeContext && [null, true].includes(codeContext.isInstrumented));
-
-const isAlreadyAtCode = (codeContext?: CodeContext, scope?: Scope): boolean => {
-  if (!codeContext || !scope?.span) {
-    return false;
-  }
-
-  return Boolean(
-    codeContext.methodId &&
-      scope.span.methodId &&
-      codeContext.methodId === scope.span.methodId
-  );
-};
 
 const isAlreadyAtScope = (
   codeContext?: CodeContext,
@@ -98,28 +83,6 @@ const getCodeButtonTooltip = (
   }
 };
 
-const getTargetButtonTooltip = (
-  codeContext?: CodeContext,
-  scope?: Scope
-): string => {
-  if (!scope) {
-    return "";
-  }
-
-  if (isAlreadyAtCode(codeContext, scope)) {
-    return "Already at code";
-  }
-
-  if (
-    [...scope.code.codeDetailsList, scope.code.relatedCodeDetailsList]
-      .length === 0
-  ) {
-    return "Code not found";
-  } else {
-    return "Navigate to code";
-  }
-};
-
 export const Navigation = () => {
   const [tabs, setTabs] = useState<TabData[]>();
   const config = useContext(ConfigContext);
@@ -129,7 +92,6 @@ export const Navigation = () => {
   const [codeContext, setCodeContext] = useState<CodeContext>();
   const [isEnvironmentMenuOpen, setIsEnvironmentMenuOpen] = useState(false);
   const [isCodeButtonMenuOpen, setIsCodeButtonMenuOpen] = useState(false);
-  const [isTargetButtonMenuOpen, setIsTargetButtonMenuOpen] = useState(false);
   const [isKebabButtonMenuOpen, setIsKebabButtonMenuOpen] = useState(false);
   const [isAutoFixing, setIsAutoFixing] = useState(false);
   const [isAnnotationAdding, setIsAnnotationAdding] = useState(false);
@@ -138,30 +100,10 @@ export const Navigation = () => {
 
   const environments = config.environments || [];
 
-  const scopeDisplayName = config.scope
-    ? config.scope.span
-      ? config.scope.span.displayName
-      : "Home"
-    : "";
-
   const codeButtonTooltip = getCodeButtonTooltip(codeContext, config.scope);
   const isCodeButtonEnabled = codeContext && !isNull(codeContext.methodId);
   const isCodeButtonMenuEnabled =
     codeContext && codeContext.spans.assets.length !== 1;
-
-  const targetButtonTooltip = getTargetButtonTooltip(codeContext, config.scope);
-  const isTargetButtonEnabled = Boolean(
-    config.scope?.span &&
-      [
-        ...config.scope.code.codeDetailsList,
-        ...config.scope.code.relatedCodeDetailsList
-      ].length > 0 &&
-      !isAlreadyAtCode(codeContext, config.scope)
-  );
-  const isTargetButtonMenuEnabled =
-    config.scope &&
-    (config.scope.code.codeDetailsList.length > 1 ||
-      config.scope.code.relatedCodeDetailsList.length > 0);
 
   useEffect(() => {
     window.sendMessageToDigma({
@@ -247,10 +189,6 @@ export const Navigation = () => {
   }, [codeContext?.methodId]);
 
   useEffect(() => {
-    setIsTargetButtonMenuOpen(false);
-  }, [config.scope]);
-
-  useEffect(() => {
     if (
       previousCodeContext?.methodId === codeContext?.methodId &&
       previousCodeContext?.hasMissingDependency &&
@@ -278,16 +216,6 @@ export const Navigation = () => {
     });
   };
 
-  const handleHomeButtonClick = () => {
-    sendTrackingEvent(trackingEvents.HOME_BUTTON_CLICKED);
-    window.sendMessageToDigma<ChangeScopePayload>({
-      action: actions.CHANGE_SCOPE,
-      payload: {
-        span: null
-      }
-    });
-  };
-
   const handleKebabMenuOpenChange = (isOpen: boolean) => {
     if (isOpen) {
       sendTrackingEvent(trackingEvents.KEBAB_MENU_BUTTON_CLICKED);
@@ -297,20 +225,6 @@ export const Navigation = () => {
 
   const handleKebabButtonClick = () => {
     sendTrackingEvent(trackingEvents.KEBAB_MENU_BUTTON_CLICKED);
-  };
-
-  const handleTargetMenuButtonOpenChange = (isOpen: boolean) => {
-    if (isOpen) {
-      sendTrackingEvent(trackingEvents.TARGET_BUTTON_CLICKED);
-    }
-    setIsTargetButtonMenuOpen(isOpen);
-  };
-
-  const handleTargetButtonClick = () => {
-    sendTrackingEvent(trackingEvents.TARGET_BUTTON_CLICKED);
-    if (config.scope && config.scope.code.codeDetailsList.length === 1) {
-      handleGoToCodeLocation(config.scope.code.codeDetailsList[0]);
-    }
   };
 
   const handleCodeMenuButtonOpenChange = (isOpen: boolean) => {
@@ -392,16 +306,6 @@ export const Navigation = () => {
     setIsCodeButtonMenuOpen(false);
   };
 
-  const handleGoToCodeLocation = (codeDetails: CodeDetails) => {
-    window.sendMessageToDigma<GoToCodeLocationPayload>({
-      action: actions.GO_TO_CODE_LOCATION,
-      payload: {
-        codeDetails
-      }
-    });
-    setIsCodeButtonMenuOpen(false);
-  };
-
   const handleKebabButtonMenuClose = () => {
     setIsKebabButtonMenuOpen(false);
   };
@@ -441,60 +345,7 @@ export const Navigation = () => {
     <s.Container>
       <s.Row>
         <ScopeNavigation currentTabId={currentTab || ""} />
-        <s.ScopeBar $isActive={Boolean(config.scope?.span)}>
-          <s.ScopeBarButton
-            disabled={isNull(config.scope?.span)}
-            onClick={handleHomeButtonClick}
-          >
-            <HomeIcon color={"currentColor"} size={16} />
-          </s.ScopeBarButton>
-          <s.ScopeBarDivider />
-          <s.ScopeName>{scopeDisplayName}</s.ScopeName>
-          <s.ScopeBarDivider />
-          {isTargetButtonMenuEnabled ? (
-            <NewPopover
-              content={
-                <Popup height={"78px"}>
-                  {config.scope && (
-                    <TargetButtonMenu
-                      scope={config.scope}
-                      onGoToCodeLocation={handleGoToCodeLocation}
-                    />
-                  )}
-                </Popup>
-              }
-              onOpenChange={handleTargetMenuButtonOpenChange}
-              isOpen={isTargetButtonMenuOpen}
-              placement={"bottom-end"}
-            >
-              <div>
-                <Tooltip
-                  title={targetButtonTooltip}
-                  isOpen={isTargetButtonMenuOpen ? false : undefined}
-                >
-                  <s.ScopeBarButton
-                    disabled={!isTargetButtonEnabled}
-                    onClick={handleTargetButtonClick}
-                  >
-                    <CrosshairIcon color={"currentColor"} size={16} />
-                  </s.ScopeBarButton>
-                </Tooltip>
-              </div>
-            </NewPopover>
-          ) : (
-            <Tooltip
-              title={targetButtonTooltip}
-              isOpen={isTargetButtonMenuOpen ? false : undefined}
-            >
-              <s.ScopeBarButton
-                disabled={!isTargetButtonEnabled}
-                onClick={handleTargetButtonClick}
-              >
-                <CrosshairIcon color={"currentColor"} size={16} />
-              </s.ScopeBarButton>
-            </Tooltip>
-          )}
-        </s.ScopeBar>
+        <ScopeBar codeContext={codeContext} scope={config.scope} />
         <NewPopover
           content={<KebabMenu onClose={handleKebabButtonMenuClose} />}
           onOpenChange={handleKebabMenuOpenChange}
@@ -561,6 +412,7 @@ export const Navigation = () => {
         />
         <Tooltip
           title={!selectedEnvironment ? "No environment selected" : "Dashboard"}
+          placement={"top-end"}
         >
           <IconButton
             isDisabled={!selectedEnvironment}

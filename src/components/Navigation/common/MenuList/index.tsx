@@ -1,8 +1,8 @@
 import { ReactElement } from "react";
-import { isBoolean } from "../../../typeGuards/isBoolean";
-import { groupBy } from "../../../utils/groupBy";
-import { intersperse } from "../../../utils/intersperse";
-import { Tooltip } from "../../common/Tooltip";
+import { isBoolean } from "../../../../typeGuards/isBoolean";
+import { groupBy } from "../../../../utils/groupBy";
+import { intersperse } from "../../../../utils/intersperse";
+import { Tooltip } from "../../../common/Tooltip";
 import * as s from "./styles";
 import { MenuListProps } from "./types";
 

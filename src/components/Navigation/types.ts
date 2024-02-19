@@ -66,7 +66,3 @@ export interface CodeContext {
   hasMissingDependency: boolean | null;
   canInstrumentMethod: boolean | null;
 }
-
-export interface ScopeBarProps {
-  $isActive?: boolean;
-}
