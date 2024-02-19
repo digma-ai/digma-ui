@@ -54,6 +54,12 @@ export const SearchInput = styled.input`
     }
   }};
 
+  &:disabled {
+    border: 1px solid;
+    background: ${grayScale[700]};
+    pointer-events: none;
+  }
+
   &:focus,
   &:hover {
     border: 1px solid
@@ -91,4 +97,8 @@ export const DeleteTagButton = styled.button`
   top: 0;
   bottom: 0;
   color: ${({ theme }) => theme.colors.icon.disabledAlt};
+
+  &:disabled {
+    pointer-events: none;
+  }
 `;
