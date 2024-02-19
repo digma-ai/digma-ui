@@ -145,7 +145,9 @@ export const Navigation = () => {
     : "";
 
   const codeButtonTooltip = getCodeButtonTooltip(codeContext, config.scope);
-  const isCodeButtonEnabled = codeContext && !isNull(codeContext?.methodId);
+  const isCodeButtonEnabled = codeContext && !isNull(codeContext.methodId);
+  const isCodeButtonMenuEnabled =
+    codeContext && codeContext.spans.assets.length !== 1;
 
   const targetButtonTooltip = getTargetButtonTooltip(codeContext, config.scope);
   const isTargetButtonEnabled = Boolean(
@@ -156,6 +158,10 @@ export const Navigation = () => {
       ].length > 0 &&
       !isAlreadyAtCode(codeContext, config.scope)
   );
+  const isTargetButtonMenuEnabled =
+    config.scope &&
+    (config.scope.code.codeDetailsList.length > 1 ||
+      config.scope.code.relatedCodeDetailsList.length > 0);
 
   useEffect(() => {
     window.sendMessageToDigma({
@@ -445,18 +451,7 @@ export const Navigation = () => {
           <s.ScopeBarDivider />
           <s.ScopeName>{scopeDisplayName}</s.ScopeName>
           <s.ScopeBarDivider />
-          <Tooltip
-            title={targetButtonTooltip}
-            isOpen={isTargetButtonMenuOpen ? false : undefined}
-          >
-            <s.ScopeBarButton
-              disabled={!isTargetButtonEnabled}
-              onClick={handleTargetButtonClick}
-            >
-              <CrosshairIcon color={"currentColor"} size={16} />
-            </s.ScopeBarButton>
-          </Tooltip>
-          {config.scope && config.scope.code.codeDetailsList.length > 1 && (
+          {isTargetButtonMenuEnabled ? (
             <NewPopover
               content={
                 <Popup height={"78px"}>
@@ -486,6 +481,18 @@ export const Navigation = () => {
                 </Tooltip>
               </div>
             </NewPopover>
+          ) : (
+            <Tooltip
+              title={targetButtonTooltip}
+              isOpen={isTargetButtonMenuOpen ? false : undefined}
+            >
+              <s.ScopeBarButton
+                disabled={!isTargetButtonEnabled}
+                onClick={handleTargetButtonClick}
+              >
+                <CrosshairIcon color={"currentColor"} size={16} />
+              </s.ScopeBarButton>
+            </Tooltip>
           )}
         </s.ScopeBar>
         <NewPopover
@@ -506,15 +513,7 @@ export const Navigation = () => {
           isOpen={isCodeButtonMenuOpen ? false : undefined}
           placement={"top-start"}
         >
-          {codeContext?.spans.assets.length === 1 ? (
-            <CodeButton
-              hasData={hasData(codeContext)}
-              hasObservability={hasObservability(codeContext)}
-              isDisabled={!isCodeButtonEnabled}
-              onClick={handleCodeButtonClick}
-              isAlreadyAtScope={isAlreadyAtScope(codeContext, config.scope)}
-            />
-          ) : (
+          {isCodeButtonMenuEnabled ? (
             <div>
               <NewPopover
                 content={
@@ -545,6 +544,14 @@ export const Navigation = () => {
                 />
               </NewPopover>
             </div>
+          ) : (
+            <CodeButton
+              hasData={hasData(codeContext)}
+              hasObservability={hasObservability(codeContext)}
+              isDisabled={!isCodeButtonEnabled}
+              onClick={handleCodeButtonClick}
+              isAlreadyAtScope={isAlreadyAtScope(codeContext, config.scope)}
+            />
           )}
         </Tooltip>
         <EnvironmentBar
