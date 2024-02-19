@@ -3,6 +3,7 @@ import { actions as globalActions } from "../../actions";
 import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
 import { isNull } from "../../typeGuards/isNull";
+import { sendTrackingEvent } from "../../utils/sendTrackingEvent";
 import { AsyncActionResultData } from "../InstallationWizard/types";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { CodeDetails, Environment, Scope } from "../common/App/types";
@@ -25,6 +26,7 @@ import { Tabs } from "./Tabs";
 import { TargetButtonMenu } from "./TargetButtonMenu";
 import { actions } from "./actions";
 import * as s from "./styles";
+import { trackingEvents } from "./tracking";
 import {
   AddAnnotationPayload,
   AutoFixMissingDependencyPayload,
@@ -261,6 +263,7 @@ export const Navigation = () => {
   }, [codeContext, previousCodeContext]);
 
   const handleDashboardButtonClick = () => {
+    sendTrackingEvent(trackingEvents.DASHBOARD_BUTTON_CLICKED);
     window.sendMessageToDigma<OpenDashboardPayload>({
       action: globalActions.OPEN_DASHBOARD,
       payload: {
@@ -270,6 +273,7 @@ export const Navigation = () => {
   };
 
   const handleHomeButtonClick = () => {
+    sendTrackingEvent(trackingEvents.HOME_BUTTON_CLICKED);
     window.sendMessageToDigma<ChangeScopePayload>({
       action: actions.CHANGE_SCOPE,
       payload: {
@@ -278,13 +282,40 @@ export const Navigation = () => {
     });
   };
 
+  const handleKebabMenuOpenChange = (isOpen: boolean) => {
+    if (isOpen) {
+      sendTrackingEvent(trackingEvents.KEBAB_MENU_BUTTON_CLICKED);
+    }
+    setIsKebabButtonMenuOpen(isOpen);
+  };
+
+  const handleKebabButtonClick = () => {
+    sendTrackingEvent(trackingEvents.KEBAB_MENU_BUTTON_CLICKED);
+  };
+
+  const handleTargetMenuButtonOpenChange = (isOpen: boolean) => {
+    if (isOpen) {
+      sendTrackingEvent(trackingEvents.TARGET_BUTTON_CLICKED);
+    }
+    setIsKebabButtonMenuOpen(isOpen);
+  };
+
   const handleTargetButtonClick = () => {
+    sendTrackingEvent(trackingEvents.TARGET_BUTTON_CLICKED);
     if (config.scope && config.scope.code.codeDetailsList.length === 1) {
       handleGoToCodeLocation(config.scope.code.codeDetailsList[0]);
     }
   };
 
+  const handleCodeMenuButtonOpenChange = (isOpen: boolean) => {
+    if (isOpen) {
+      sendTrackingEvent(trackingEvents.CODE_BUTTON_CLICKED);
+    }
+    setIsKebabButtonMenuOpen(isOpen);
+  };
+
   const handleCodeButtonClick = () => {
+    sendTrackingEvent(trackingEvents.CODE_BUTTON_CLICKED);
     if (codeContext && codeContext.spans.assets.length === 1) {
       const { spanCodeObjectId } = codeContext.spans.assets[0];
       changeScope(spanCodeObjectId);
@@ -292,6 +323,7 @@ export const Navigation = () => {
   };
 
   const handleEnvironmentChange = (environment: Environment) => {
+    sendTrackingEvent(trackingEvents.ENVIRONMENT_SELECTED);
     setIsEnvironmentMenuOpen(false);
 
     const environmentToChange = environments.find(
@@ -436,7 +468,7 @@ export const Navigation = () => {
                   )}
                 </Popup>
               }
-              onOpenChange={setIsTargetButtonMenuOpen}
+              onOpenChange={handleTargetMenuButtonOpenChange}
               isOpen={isTargetButtonMenuOpen}
               placement={"bottom-end"}
             >
@@ -487,7 +519,7 @@ export const Navigation = () => {
                     )}
                   </Popup>
                 }
-                onOpenChange={setIsCodeButtonMenuOpen}
+                onOpenChange={handleCodeMenuButtonOpenChange}
                 isOpen={isCodeButtonMenuOpen}
                 placement={"left-start"}
               >
@@ -520,12 +552,13 @@ export const Navigation = () => {
         </Tooltip>
         <NewPopover
           content={<KebabMenu onClose={handleKebabButtonMenuClose} />}
-          onOpenChange={setIsKebabButtonMenuOpen}
+          onOpenChange={handleKebabMenuOpenChange}
           isOpen={isKebabButtonMenuOpen}
           placement={"left"}
         >
           <IconButton
             icon={<ThreeDotsIcon size={16} color={"currentColor"} />}
+            onClick={handleKebabButtonClick}
           />
         </NewPopover>
       </s.Row>

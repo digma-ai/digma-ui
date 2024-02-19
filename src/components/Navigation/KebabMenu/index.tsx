@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { actions as globalActions } from "../../../actions";
 import { SetObservabilityPayload } from "../../../types";
+import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { ToggleSwitch } from "../../common/ToggleSwitch";
 import { DigmaLogoFlatIcon } from "../../common/icons/16px/DigmaLogoFlatIcon";
@@ -8,6 +9,7 @@ import { OpenTelemetryLogoIcon } from "../../common/icons/16px/OpenTelemetryLogo
 import { MenuList } from "../MenuList";
 import { ListItemIconContainer } from "../MenuList/styles";
 import { Popup } from "../Popup";
+import { trackingEvents } from "../tracking";
 import * as s from "./styles";
 import { KebabMenuProps } from "./types";
 
@@ -15,6 +17,7 @@ export const KebabMenu = (props: KebabMenuProps) => {
   const config = useContext(ConfigContext);
 
   const handleObservabilityChange = (value: boolean) => {
+    sendTrackingEvent(trackingEvents.OBSERVABILITY_TOGGLE_SWITCHED, { value });
     window.sendMessageToDigma<SetObservabilityPayload>({
       action: globalActions.SET_OBSERVABILITY,
       payload: {
@@ -24,6 +27,7 @@ export const KebabMenu = (props: KebabMenuProps) => {
   };
 
   const handleOnboardingClick = () => {
+    sendTrackingEvent(trackingEvents.ONBOARDING_LINK_CLICKED);
     window.sendMessageToDigma({
       action: globalActions.OPEN_INSTALLATION_WIZARD
     });

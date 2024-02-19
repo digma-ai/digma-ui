@@ -1,27 +1,34 @@
 import { MouseEvent } from "react";
 import { actions } from "../../../actions";
 import { isString } from "../../../typeGuards/isString";
+import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { NewButton } from "../../common/NewButton";
 import { Tooltip } from "../../common/Tooltip";
 import { CodeIcon } from "../../common/icons/16px/CodeIcon";
 import { MenuList } from "../MenuList";
+import { trackingEvents } from "../tracking";
 import { Spinner } from "./Spinner";
 import * as s from "./styles";
 import { CodeButtonMenuProps } from "./types";
 
 export const CodeButtonMenu = (props: CodeButtonMenuProps) => {
   const handleAddObservabilityClick = () => {
-    isString(props.codeContext.methodId) &&
+    if (isString(props.codeContext.methodId)) {
+      sendTrackingEvent(trackingEvents.ADD_OBSERVABILITY_BUTTON_CLICKED);
       props.onObservabilityAdd(props.codeContext.methodId);
+    }
   };
 
   const handleAutoFixLinkClick = (e: MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    isString(props.codeContext.methodId) &&
+    if (isString(props.codeContext.methodId)) {
+      sendTrackingEvent(trackingEvents.AUTO_FIX_BUTTON_CLICKED);
       props.onAutoFix(props.codeContext.methodId);
+    }
   };
 
   const handleTroubleshootingLinkClick = (e: MouseEvent<HTMLAnchorElement>) => {
+    sendTrackingEvent(trackingEvents.TROUBLESHOOTING_LINK_CLICKED);
     e.preventDefault();
     window.sendMessageToDigma({
       action: actions.OPEN_TROUBLESHOOTING_GUIDE
@@ -74,17 +81,24 @@ export const CodeButtonMenu = (props: CodeButtonMenuProps) => {
     </s.EmptyStateContainer>
   );
 
-  const renderSpans = () => (
-    <MenuList
-      items={props.codeContext.spans.assets.map((x) => ({
-        id: x.spanCodeObjectId,
-        label: x.displayName,
-        onClick: () => props.onScopeChange(x.spanCodeObjectId),
-        disabled: false,
-        groupName: "Assets"
-      }))}
-    />
-  );
+  const renderSpans = () => {
+    const handleMenuItemClick = (spanCodeObjectId: string) => {
+      sendTrackingEvent(trackingEvents.ASSET_SELECTED);
+      props.onScopeChange(spanCodeObjectId);
+    };
+
+    return (
+      <MenuList
+        items={props.codeContext.spans.assets.map((x) => ({
+          id: x.spanCodeObjectId,
+          label: x.displayName,
+          onClick: () => handleMenuItemClick(x.spanCodeObjectId),
+          disabled: false,
+          groupName: "Assets"
+        }))}
+      />
+    );
+  };
 
   return (
     <s.Container>

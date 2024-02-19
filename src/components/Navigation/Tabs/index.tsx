@@ -1,7 +1,9 @@
 import { Fragment, useContext } from "react";
+import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Scope } from "../../common/App/types";
 import { Tooltip } from "../../common/Tooltip";
+import { trackingEvents } from "../tracking";
 import { TabData } from "../types";
 import * as s from "./styles";
 import { TabsProps } from "./types";
@@ -29,6 +31,9 @@ export const Tabs = (props: TabsProps) => {
 
   const handleTabClick = (tab: TabData) => {
     if (!tab.isDisabled) {
+      sendTrackingEvent(trackingEvents.TAB_CLICKED, {
+        tabName: tab.id
+      });
       props.onSelect(tab.id);
     }
   };
