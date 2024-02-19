@@ -80,8 +80,8 @@ export const Tests = (props: TestsProps) => {
     []
   );
   const testsListRef = useRef<HTMLDivElement>(null);
-  const spanCodeObjectId = config.scope?.span?.spanCodeObjectId || null;
-  const previousSpanCodeObjectId = usePrevious(spanCodeObjectId);
+  const scopeSpan = config.scope?.span || null;
+  const previousScopeSpan = usePrevious(scopeSpan);
 
   const environmentMenuItems: MenuItem[] = (config.environments || []).map(
     (environment) => ({
@@ -114,7 +114,7 @@ export const Tests = (props: TestsProps) => {
       payload: {
         ...environmentsToSend,
         pageNumber: 1,
-        spanCodeObjectId
+        scope: scopeSpan
       }
     });
     setIsInitialLoading(true);
@@ -147,7 +147,7 @@ export const Tests = (props: TestsProps) => {
           payload: {
             ...environmentsToSend,
             pageNumber: data?.data?.paging.pageNumber || 1,
-            spanCodeObjectId
+            scope: scopeSpan
           }
         });
       }, REFRESH_INTERVAL);
@@ -157,20 +157,20 @@ export const Tests = (props: TestsProps) => {
     lastSetDataTimeStamp,
     environmentsToSend,
     data,
-    spanCodeObjectId
+    scopeSpan
   ]);
 
   useEffect(() => {
     if (
       (previousEnvironmentsToSend &&
         previousEnvironmentsToSend !== environmentsToSend) ||
-      previousSpanCodeObjectId !== spanCodeObjectId
+      previousScopeSpan !== scopeSpan
     ) {
       window.sendMessageToDigma<GetSpanLatestDataPayload>({
         action: actions.GET_SPAN_LATEST_DATA,
         payload: {
           ...environmentsToSend,
-          spanCodeObjectId,
+          scope: scopeSpan,
           pageNumber: 1
         }
       });
@@ -178,8 +178,8 @@ export const Tests = (props: TestsProps) => {
   }, [
     previousEnvironmentsToSend,
     environmentsToSend,
-    previousSpanCodeObjectId,
-    spanCodeObjectId
+    previousScopeSpan,
+    scopeSpan
   ]);
 
   useEffect(() => {
@@ -211,7 +211,7 @@ export const Tests = (props: TestsProps) => {
 
   useEffect(() => {
     testsListRef.current?.scrollTo(0, 0);
-  }, [data?.data?.paging.pageNumber, selectedEnvironments, spanCodeObjectId]);
+  }, [data?.data?.paging.pageNumber, selectedEnvironments, scopeSpan]);
 
   const openJiraTicketPopup = (test: Test) => {
     setTestToOpenTicketPopup(test);
@@ -256,7 +256,11 @@ export const Tests = (props: TestsProps) => {
   const handlePageChange = (page: number) => {
     window.sendMessageToDigma<GetSpanLatestDataPayload>({
       action: actions.GET_SPAN_LATEST_DATA,
-      payload: { ...environmentsToSend, spanCodeObjectId, pageNumber: page + 1 }
+      payload: {
+        ...environmentsToSend,
+        scope: scopeSpan,
+        pageNumber: page + 1
+      }
     });
   };
 

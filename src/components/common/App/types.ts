@@ -53,6 +53,7 @@ export interface Scope {
     relatedCodeDetailsList: CodeDetails[];
     codeDetailsList: CodeDetails[];
   };
+  hasErrors: boolean;
 }
 
 export interface ConfigContextData {

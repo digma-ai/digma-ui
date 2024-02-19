@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { TabProps } from "./types";
+import { IndicatorProps, TabProps } from "./types";
 
 export const TabList = styled.ul`
   display: flex;
@@ -44,9 +44,18 @@ export const Tab = styled.li<TabProps>`
   }
 `;
 
-export const Indicator = styled.div`
+export const Indicator = styled.div<IndicatorProps>`
   border-radius: 50%;
   width: 4px;
   height: 4px;
-  background: ${({ theme }) => theme.colors.v3.status.success};
+  background: ${({ theme, type }) => {
+    switch (type) {
+      case "new":
+        return theme.colors.v3.status.success;
+      case "errors":
+        return theme.colors.v3.status.high;
+      default:
+        return "none";
+    }
+  }};
 `;

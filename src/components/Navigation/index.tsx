@@ -488,6 +488,17 @@ export const Navigation = () => {
             </NewPopover>
           )}
         </s.ScopeBar>
+        <NewPopover
+          content={<KebabMenu onClose={handleKebabButtonMenuClose} />}
+          onOpenChange={handleKebabMenuOpenChange}
+          isOpen={isKebabButtonMenuOpen}
+          placement={"left-start"}
+        >
+          <IconButton
+            icon={<ThreeDotsIcon size={16} color={"currentColor"} />}
+            onClick={handleKebabButtonClick}
+          />
+        </NewPopover>
       </s.Row>
       <s.Row>
         <Tooltip
@@ -550,17 +561,6 @@ export const Navigation = () => {
             icon={<FourSquaresIcon size={16} color={"currentColor"} />}
           />
         </Tooltip>
-        <NewPopover
-          content={<KebabMenu onClose={handleKebabButtonMenuClose} />}
-          onOpenChange={handleKebabMenuOpenChange}
-          isOpen={isKebabButtonMenuOpen}
-          placement={"left"}
-        >
-          <IconButton
-            icon={<ThreeDotsIcon size={16} color={"currentColor"} />}
-            onClick={handleKebabButtonClick}
-          />
-        </NewPopover>
       </s.Row>
       <s.TabsContainer>
         <Tabs tabs={tabs || []} onSelect={changeTab} />

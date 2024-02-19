@@ -1,4 +1,4 @@
-import { Fragment, useContext } from "react";
+import { useContext } from "react";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Scope } from "../../common/App/types";
@@ -47,29 +47,24 @@ export const Tabs = (props: TabsProps) => {
           const isDisabled = getIsTabDisabled(tab, config.scope);
 
           return (
-            <Fragment key={tab.id}>
-              {tooltipMessage ? (
-                <Tooltip title={tooltipMessage}>
-                  <s.Tab
-                    $isSelected={tab.isSelected}
-                    $isDisabled={isDisabled}
-                    onClick={() => handleTabClick(tab)}
-                  >
-                    {tab.title}
-                    {tab.hasNewData && <s.Indicator />}
-                  </s.Tab>
-                </Tooltip>
-              ) : (
-                <s.Tab
-                  $isSelected={tab.isSelected}
-                  $isDisabled={isDisabled}
-                  onClick={() => handleTabClick(tab)}
-                >
-                  {tab.title}
-                  {tab.hasNewData && <s.Indicator />}
-                </s.Tab>
-              )}
-            </Fragment>
+            <Tooltip
+              title={tooltipMessage}
+              key={tab.id}
+              isOpen={tooltipMessage ? undefined : false}
+            >
+              <s.Tab
+                $isSelected={tab.isSelected}
+                $isDisabled={isDisabled}
+                onClick={() => handleTabClick(tab)}
+              >
+                {tab.title}
+                {tab.hasNewData && <s.Indicator type={"new"} />}
+                {config.scope?.hasErrors &&
+                  ["errorsDetails", "errors"].includes(tab.id) && (
+                    <s.Indicator type={"errors"} />
+                  )}
+              </s.Tab>
+            </Tooltip>
           );
         })}
     </s.TabList>
