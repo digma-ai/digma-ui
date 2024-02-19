@@ -11,6 +11,7 @@ export const SearchInput = (props: SearchInputProps) => {
         <MagnifierIcon color={"currentColor"} size={14} />
       </s.SearchInputIconContainer>
       <s.SearchInput
+        disabled={props.disabled}
         placeholder={"Search"}
         onChange={(e: ChangeEvent<HTMLInputElement>) =>
           props.onChange(e.target.value)
@@ -18,6 +19,7 @@ export const SearchInput = (props: SearchInputProps) => {
         value={props.value || ""}
       />
       <s.DeleteTagButton
+        disabled={props.disabled}
         onClick={() => {
           props.onChange("");
         }}

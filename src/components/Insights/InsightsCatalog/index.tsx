@@ -31,6 +31,13 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
   );
   const config = useContext(ConfigContext);
   const previousConfig = usePrevious(config);
+  const previousScope = usePrevious(config.scope?.span);
+
+  useEffect(() => {
+    if (!previousScope || previousScope !== config.scope?.span) {
+      setSearchInputValue("");
+    }
+  }, [config.scope, previousScope]);
 
   useEffect(() => {
     if (
@@ -76,6 +83,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
     <>
       <s.Toolbar>
         <SearchInput
+          disabled={!!config.scope?.span}
           onChange={(val: string | null) => {
             setSearchInputValue(val);
           }}
