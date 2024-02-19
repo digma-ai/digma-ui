@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { ConfigContext } from "../../common/App/ConfigContext";
@@ -13,7 +13,6 @@ import {
 
 interface UseInsightDataProps {
   refreshInterval: number;
-  data?: InsightsData;
   query: InsightsQuery;
 }
 
@@ -46,10 +45,13 @@ export const useInsightsData = (props: UseInsightDataProps) => {
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
   const refreshTimerId = useRef<number>();
   const { scope, environment } = useContext(ConfigContext);
-  const query = {
-    ...props.query,
-    scopedSpanCodeObjectId: scope?.span?.spanCodeObjectId || null
-  };
+  const query = useMemo(
+    () => ({
+      ...props.query,
+      scopedSpanCodeObjectId: scope?.span?.spanCodeObjectId || null
+    }),
+    [props.query, scope]
+  );
 
   useEffect(() => {
     getData(query);
@@ -77,14 +79,6 @@ export const useInsightsData = (props: UseInsightDataProps) => {
       );
     };
   }, []);
-
-  useEffect(() => {
-    if (!props.data) {
-      return;
-    }
-
-    setData(props.data);
-  }, [data]);
 
   useEffect(() => {
     if (!previousData && data) {

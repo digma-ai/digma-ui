@@ -76,7 +76,8 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
     previousPage,
     page,
     debouncedSearchInputValue,
-    previousSearchQuery
+    previousSearchQuery,
+    props.onQueryChange
   ]);
 
   return (
@@ -111,7 +112,9 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
       <InsightsPage
         page={page}
         insights={insights}
-        isFilteringEnabled={debouncedSearchInputValue !== null}
+        isFilteringEnabled={
+          debouncedSearchInputValue !== null && debouncedSearchInputValue !== ""
+        }
         onJiraTicketCreate={onJiraTicketCreate}
         onRefresh={props.onRefresh}
       />

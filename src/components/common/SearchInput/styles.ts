@@ -55,13 +55,11 @@ export const SearchInput = styled.input`
   }};
 
   &:disabled {
-    border: 1px solid;
-    background: ${grayScale[700]};
-    pointer-events: none;
+    background: ${({ theme }) => theme.colors.v3.surface.gray};
   }
 
-  &:focus,
-  &:hover {
+  &:focus:enabled,
+  &:hover:enabled {
     border: 1px solid
       ${({ theme }) => {
         switch (theme.mode) {
