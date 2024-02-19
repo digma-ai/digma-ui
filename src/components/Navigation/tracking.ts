@@ -19,6 +19,7 @@ export const trackingEvents = addPrefix(
     ENVIRONMENT_SELECTED: "environment selected",
     DASHBOARD_BUTTON_CLICKED: "dashboard button clicked",
     KEBAB_MENU_BUTTON_CLICKED: "kebab menu button clicked",
+    LOCAL_ENGINE_LINK_CLICKED: "local engine link clicked",
     OBSERVABILITY_TOGGLE_SWITCHED: "observability toggle switched",
     ONBOARDING_LINK_CLICKED: "onboarding link clicked",
     TAB_CLICKED: "tab clicked"

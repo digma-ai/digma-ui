@@ -64,3 +64,7 @@ export interface SpanInstanceInfo {
 export interface SetObservabilityPayload {
   isObservabilityEnabled: boolean;
 }
+
+export interface OpenInstallationWizardPayload {
+  skipInstallationStep: boolean;
+}

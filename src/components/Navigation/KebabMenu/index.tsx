@@ -1,6 +1,9 @@
 import { useContext } from "react";
 import { actions as globalActions } from "../../../actions";
-import { SetObservabilityPayload } from "../../../types";
+import {
+  OpenInstallationWizardPayload,
+  SetObservabilityPayload
+} from "../../../types";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { ToggleSwitch } from "../../common/ToggleSwitch";
@@ -16,6 +19,17 @@ import { KebabMenuProps } from "./types";
 export const KebabMenu = (props: KebabMenuProps) => {
   const config = useContext(ConfigContext);
 
+  const handleLocalEngineClick = () => {
+    sendTrackingEvent(trackingEvents.LOCAL_ENGINE_LINK_CLICKED);
+    window.sendMessageToDigma<OpenInstallationWizardPayload>({
+      action: globalActions.OPEN_INSTALLATION_WIZARD,
+      payload: {
+        skipInstallationStep: false
+      }
+    });
+    props.onClose();
+  };
+
   const handleObservabilityChange = (value: boolean) => {
     sendTrackingEvent(trackingEvents.OBSERVABILITY_TOGGLE_SWITCHED, { value });
     window.sendMessageToDigma<SetObservabilityPayload>({
@@ -28,8 +42,11 @@ export const KebabMenu = (props: KebabMenuProps) => {
 
   const handleOnboardingClick = () => {
     sendTrackingEvent(trackingEvents.ONBOARDING_LINK_CLICKED);
-    window.sendMessageToDigma({
-      action: globalActions.OPEN_INSTALLATION_WIZARD
+    window.sendMessageToDigma<OpenInstallationWizardPayload>({
+      action: globalActions.OPEN_INSTALLATION_WIZARD,
+      payload: {
+        skipInstallationStep: true
+      }
     });
     props.onClose();
   };
@@ -37,9 +54,19 @@ export const KebabMenu = (props: KebabMenuProps) => {
   return (
     <Popup>
       <MenuList
+        showGroupNames={false}
+        showGroupDividers={true}
         items={[
           {
+            id: "localEngine",
+            groupName: "localEngine",
+            label: "Local Engine",
+            icon: <s.LocalEngineStatusBadge />,
+            onClick: handleLocalEngineClick
+          },
+          {
             id: "observability",
+            groupName: "settings",
             customContent: (
               <s.ObservabilityListItem>
                 <ListItemIconContainer>
@@ -58,6 +85,7 @@ export const KebabMenu = (props: KebabMenuProps) => {
           },
           {
             id: "onboarding",
+            groupName: "settings",
             label: "Digma Onboarding",
             icon: <DigmaLogoFlatIcon size={16} color={"currentColor"} />,
             onClick: handleOnboardingClick
