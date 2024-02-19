@@ -10,5 +10,10 @@ export const Container = styled.div<ContainerProps>`
   box-shadow: 1px 1px 4px 0 rgb(0 0 0 / 25%);
   max-height: ${({ $height }) => ($height ? $height : "100px")};
   overflow-y: auto;
+`;
+
+export const ContentContainer = styled.div`
   padding: 8px;
+  display: flex;
+  flex-direction: column;
 `;

@@ -18,6 +18,7 @@ import * as s from "./styles";
 import { trackingEvents } from "./tracking";
 import {
   GetSpanLatestDataPayload,
+  RegisterPayload,
   SetSpanLatestDataPayload,
   Test,
   TestsData,
@@ -221,7 +222,7 @@ export const Tests = (props: TestsProps) => {
   };
 
   const handleRegistrationSubmit = (formData: RegistrationFormValues) => {
-    window.sendMessageToDigma({
+    window.sendMessageToDigma<RegisterPayload>({
       action: globalActions.REGISTER,
       payload: {
         ...formData,

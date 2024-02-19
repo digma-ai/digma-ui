@@ -507,7 +507,7 @@ export const Navigation = () => {
             <div>
               <NewPopover
                 content={
-                  <Popup height={"78px"}>
+                  <>
                     {codeContext && (
                       <CodeButtonMenu
                         codeContext={codeContext}
@@ -519,7 +519,7 @@ export const Navigation = () => {
                         onClose={handleCodeButtonMenuClose}
                       />
                     )}
-                  </Popup>
+                  </>
                 }
                 onOpenChange={handleCodeMenuButtonOpenChange}
                 isOpen={isCodeButtonMenuOpen}

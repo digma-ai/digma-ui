@@ -6,6 +6,7 @@ import { NewButton } from "../../common/NewButton";
 import { Tooltip } from "../../common/Tooltip";
 import { CodeIcon } from "../../common/icons/16px/CodeIcon";
 import { MenuList } from "../MenuList";
+import { Popup } from "../Popup";
 import { trackingEvents } from "../tracking";
 import { Spinner } from "./Spinner";
 import * as s from "./styles";
@@ -37,7 +38,7 @@ export const CodeButtonMenu = (props: CodeButtonMenuProps) => {
   };
 
   const renderMissingDependency = () => (
-    <s.MissingDependencyFooter>
+    <s.MissingDependencyContainer>
       <s.MissingDependencyText>Missing dependency</s.MissingDependencyText>
       <s.Link
         href={"#"}
@@ -47,7 +48,7 @@ export const CodeButtonMenu = (props: CodeButtonMenuProps) => {
         Autofix
       </s.Link>
       {props.isAutoFixing && <Spinner />}
-    </s.MissingDependencyFooter>
+    </s.MissingDependencyContainer>
   );
 
   const renderNoObservability = () => (
@@ -100,23 +101,31 @@ export const CodeButtonMenu = (props: CodeButtonMenuProps) => {
   };
 
   return (
-    <s.Container>
-      {props.codeContext.hasMissingDependency && renderMissingDependency()}
-      <s.CodeLocation>
-        <s.CodeIconContainer>
-          <CodeIcon color={"currentColor"} />
-        </s.CodeIconContainer>
-        <Tooltip title={props.codeContext.displayName}>
-          <s.CodeLocationName>
-            {props.codeContext.displayName}
-          </s.CodeLocationName>
-        </Tooltip>
-      </s.CodeLocation>
-      {props.codeContext.isInstrumented === false
-        ? renderNoObservability()
-        : props.codeContext.spans.assets.length > 0
-        ? renderSpans()
-        : renderNoData()}
-    </s.Container>
+    <Popup
+      height={"78px"}
+      header={
+        props.codeContext.hasMissingDependency
+          ? renderMissingDependency()
+          : undefined
+      }
+    >
+      <s.Container>
+        <s.CodeLocation>
+          <s.CodeIconContainer>
+            <CodeIcon color={"currentColor"} />
+          </s.CodeIconContainer>
+          <Tooltip title={props.codeContext.displayName}>
+            <s.CodeLocationName>
+              {props.codeContext.displayName}
+            </s.CodeLocationName>
+          </Tooltip>
+        </s.CodeLocation>
+        {props.codeContext.isInstrumented === false
+          ? renderNoObservability()
+          : props.codeContext.spans.assets.length > 0
+          ? renderSpans()
+          : renderNoData()}
+      </s.Container>
+    </Popup>
   );
 };

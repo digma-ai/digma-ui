@@ -57,7 +57,8 @@ export const AddObservabilityButtonContainer = styled.div`
   gap: 8px;
 `;
 
-export const MissingDependencyFooter = styled.div`
+export const MissingDependencyContainer = styled.div`
+  font-size: 14px;
   display: flex;
   align-items: center;
   padding: 8px 16px;
