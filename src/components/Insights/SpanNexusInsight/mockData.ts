@@ -2,6 +2,7 @@ import { InsightType } from "../../../types";
 import { InsightCategory, InsightScope, SpanNexusInsight } from "../types";
 
 export const mockedSpanNexusInsight: SpanNexusInsight = {
+  id: "60b54792-8262-4c5d-9628-7cce7979ad6d",
   firstDetected: "2023-12-05T17:25:47.010Z",
   lastDetected: "2024-01-05T13:14:47.010Z",
   criticality: 0,
