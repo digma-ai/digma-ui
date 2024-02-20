@@ -18,19 +18,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    icon: BottleneckIcon
-  },
-  parameters: {
-    design: {
-      type: "figma"
-    }
-  }
-};
-
-export const HighlighNumber: Story = {
-  args: {
-    type: "highlight",
-    value: 30
+    content: <BottleneckIcon size={16} />
   },
   parameters: {
     design: {
@@ -42,7 +30,7 @@ export const HighlighNumber: Story = {
 export const HighlightString: Story = {
   args: {
     type: "highlight",
-    value: "~30ms"
+    content: <span>~30ms</span>
   },
   parameters: {
     design: {
@@ -54,7 +42,7 @@ export const HighlightString: Story = {
 export const HighSeverity: Story = {
   args: {
     type: "highSeverity",
-    value: "Input"
+    content: <span>input</span>
   },
   parameters: {
     design: {
@@ -66,7 +54,7 @@ export const HighSeverity: Story = {
 export const MediumSeverity: Story = {
   args: {
     type: "mediumSeverity",
-    value: "Input"
+    content: <span>input</span>
   },
   parameters: {
     design: {
@@ -78,7 +66,7 @@ export const MediumSeverity: Story = {
 export const LowSeverity: Story = {
   args: {
     type: "lowSeverity",
-    value: "Input"
+    content: <span>Input</span>
   },
   parameters: {
     design: {
@@ -90,7 +78,7 @@ export const LowSeverity: Story = {
 export const Success: Story = {
   args: {
     type: "success",
-    value: "100ms"
+    content: <span>10ms</span>
   },
   parameters: {
     design: {

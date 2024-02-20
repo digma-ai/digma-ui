@@ -1,5 +1,4 @@
-import { MemoExoticComponent } from "react";
-import { IconProps } from "../../icons/types";
+import React from "react";
 
 export type TagType =
   | "highSeverity"
@@ -10,10 +9,8 @@ export type TagType =
   | "default";
 
 export interface TagProps {
-  icon?: MemoExoticComponent<(props: IconProps) => JSX.Element>;
-  value?: string | number;
+  content: React.ReactNode;
   type?: TagType;
-  title?: string;
 }
 
 export interface ContainerProps {

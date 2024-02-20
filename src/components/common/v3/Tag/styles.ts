@@ -44,23 +44,19 @@ export const Container = styled.div<ContainerProps>`
   font-size: 14px;
   font-weight: normal;
   display: flex;
-  min-width: 24px;
-  padding: 4px 0;
   justify-content: center;
   align-items: center;
-  gap: 4px;
   border-radius: 4px;
+  min-width: 24px;
   max-width: fit-content;
   color: ${({ theme, $type }) => getTagTheme(theme, $type).text};
   background: ${({ theme, $type }) => getTagTheme(theme, $type).background};
 `;
 
 export const ValueContainer = styled.span`
+  display: flex;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
-`;
-
-export const TextContainer = styled.span`
-  padding: 0 4px;
+  padding: 4px;
 `;
