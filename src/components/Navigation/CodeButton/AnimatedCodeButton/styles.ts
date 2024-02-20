@@ -84,10 +84,16 @@ export const Background = styled(InnerSquare)`
 `;
 
 const MaskedSquare = styled(InnerSquare)`
+  /* stylelint-disable property-no-vendor-prefix */
+  -webkit-mask-image: url(${codeIcon20pxDataUri});
   mask-image: url(${codeIcon20pxDataUri});
+  -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
+  -webkit-mask-size: ${ICON_SIZE}px;
   mask-size: ${ICON_SIZE}px;
+  -webkit-mask-position: center;
   mask-position: center;
+  /* stylelint-enable property-no-vendor-prefix */
 `;
 
 export const EndMask = styled(MaskedSquare)`

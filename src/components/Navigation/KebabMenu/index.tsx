@@ -4,6 +4,7 @@ import {
   OpenInstallationWizardPayload,
   SetObservabilityPayload
 } from "../../../types";
+import { isDigmaEngineRunning } from "../../../utils/isDigmaEngineRunning";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { ToggleSwitch } from "../../common/ToggleSwitch";
@@ -57,7 +58,7 @@ export const KebabMenu = (props: KebabMenuProps) => {
         showGroupNames={false}
         showGroupDividers={true}
         items={[
-          ...(config.isDigmaEngineRunning
+          ...(isDigmaEngineRunning(config)
             ? [
                 {
                   id: "localEngine",

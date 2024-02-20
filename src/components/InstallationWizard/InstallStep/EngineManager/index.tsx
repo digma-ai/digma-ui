@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { useTheme } from "styled-components";
+import { isDigmaEngineRunning } from "../../../../utils/isDigmaEngineRunning";
 import { sendTrackingEvent } from "../../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../../common/App/ConfigContext";
 import { getThemeKind } from "../../../common/App/styles";
@@ -38,12 +39,7 @@ export const EngineManager = (props: EngineManagerProps) => {
   const theme = useTheme();
   const themeKind = getThemeKind(theme);
 
-  const isDigmaEngineRunning = Boolean(
-    config.digmaStatus?.connection.status &&
-      // config.digmaStatus.connection.type === "local" &&
-      config.digmaStatus.runningDigmaInstances.length === 1 &&
-      config.digmaStatus.runningDigmaInstances.includes("localEngine")
-  );
+  const isEngineRunning = isDigmaEngineRunning(config);
 
   // const isNotEngineDigmaInstanceRunning = Boolean(
   //   config.digmaStatus &&
@@ -125,7 +121,7 @@ export const EngineManager = (props: EngineManagerProps) => {
   const renderContent = () => {
     const loaderStatus = getLoaderStatus(
       config.isDigmaEngineInstalled,
-      isDigmaEngineRunning,
+      isEngineRunning,
       props.engine.currentOperation?.status,
       props.engine.failedOperation?.operation
     );
@@ -146,7 +142,7 @@ export const EngineManager = (props: EngineManagerProps) => {
       title += operationsInfo[lastOperation].titleSuffix;
     } else {
       title += config.isDigmaEngineInstalled
-        ? isDigmaEngineRunning
+        ? isEngineRunning
           ? "Running"
           : "Stopped"
         : "Not installed";
@@ -177,7 +173,7 @@ export const EngineManager = (props: EngineManagerProps) => {
       }
     } else {
       if (config.isDigmaEngineInstalled && !props.isAutoInstallationFlow) {
-        if (isDigmaEngineRunning) {
+        if (isEngineRunning) {
           buttons.push(renderOperationButton(Operation.STOP));
         }
 
@@ -203,7 +199,7 @@ export const EngineManager = (props: EngineManagerProps) => {
                     {props.engine.currentOperation?.status === "pending"
                       ? "This may take a few minutes..."
                       : `Click "${
-                          isDigmaEngineRunning ? "Configure" : "Start"
+                          isEngineRunning ? "Configure" : "Start"
                         }" to continue setup`}
                   </span>
                 )}
