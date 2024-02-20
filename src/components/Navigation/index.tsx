@@ -411,6 +411,7 @@ export const Navigation = () => {
           selectedEnvironment={selectedEnvironment}
           onClick={handleEnvironmentBarClick}
           isMenuOpen={isEnvironmentMenuOpen}
+          isDisabled={environments.length === 0}
         />
         <Tooltip
           title={!selectedEnvironment ? "No environment selected" : "Dashboard"}

@@ -10,13 +10,15 @@ import { EnvironmentBarProps } from "./types";
 
 export const EnvironmentBar = (props: EnvironmentBarProps) => {
   const handleEnvironmentBarClick = () => {
-    sendTrackingEvent(trackingEvents.ENVIRONMENT_BAR_CLICKED);
-    props.onClick();
+    if (!props.isDisabled) {
+      sendTrackingEvent(trackingEvents.ENVIRONMENT_BAR_CLICKED);
+      props.onClick();
+    }
   };
 
   return (
     <s.EnvironmentBar
-      $isDisabled={!props.selectedEnvironment}
+      $isDisabled={props.isDisabled}
       $isMenuOpen={props.isMenuOpen}
       onClick={handleEnvironmentBarClick}
     >
