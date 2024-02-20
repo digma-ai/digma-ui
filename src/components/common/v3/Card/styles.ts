@@ -34,15 +34,15 @@ export const Container = styled.div`
 `;
 
 export const Content = styled.div`
-  border: 1px solid ${({ theme }) => getStroke(theme)};
   padding: 8px;
 `;
 
 export const Header = styled.div`
-  border: 1px solid ${({ theme }) => getStroke(theme)};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.v3.stroke.primary};
   padding: 8px;
 `;
 
 export const Footer = styled.div`
+  border-top: 1px solid ${({ theme }) => theme.colors.v3.stroke.primary};
   padding: 8px;
 `;
