@@ -27,7 +27,6 @@ export const Container = styled.div`
         return darkTheme.v3.surface.secondary;
     }
   }};
-  font-size: 14px;
 
   &:last-child {
     border: none;
