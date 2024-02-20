@@ -175,6 +175,7 @@ export interface CodeObjectInsight extends Insight {
   lastDetected: string | null;
   reopenCount: number;
   ticketLink: string | null;
+  id: string;
 }
 
 export interface SpanInsight extends CodeObjectInsight {
