@@ -5,21 +5,22 @@ const codeIcon20pxDataUri =
 
 const boxShadowAnimation = keyframes`
     from {
-      box-shadow: 1px 1px 4px 0 rgb(0 0 0 /25%), 0 0 9.1px 0 rgb(96 99 246 / 30%);
+      box-shadow: none;
     }
   
     to {
-      box-shadow: none;
+      box-shadow: 1px 1px 4px 0 rgb(0 0 0 /25%), 0 0 9.1px 0 rgb(96 99 246 / 30%);
+
     }
   `;
 
 const opacityAnimation = keyframes`
   from {
-    opacity: 1;
+    opacity: 0;
   }
 
   to {
-    opacity: 0;
+    opacity: 1;
   }
 `;
 
@@ -52,7 +53,6 @@ export const Button = styled.button`
   background: none;
   border-radius: ${OUTER_BORDER_RADIUS}px;
   ${gradientBackground}
-  box-shadow: 1px 1px 4px 0 rgb(0 0 0 / 25%), 0 0 9.1px 0 rgb(96 99 246 / 30%);
   animation-name: ${boxShadowAnimation};
   ${animationParams}
 `;
@@ -62,6 +62,7 @@ export const BorderContainer = styled.div`
   width: 100%;
   height: 100%;
   background: ${({ theme }) => theme.colors.v3.surface.brandSecondary};
+  opacity: 0;
   animation-name: ${opacityAnimation};
   ${animationParams}
 `;
@@ -98,6 +99,7 @@ const MaskedSquare = styled(InnerSquare)`
 
 export const EndMask = styled(MaskedSquare)`
   background: ${({ theme }) => theme.colors.v3.surface.brandSecondary};
+  opacity: 0;
   animation-name: ${opacityAnimation};
   ${animationParams}
 `;
