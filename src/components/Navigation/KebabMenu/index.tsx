@@ -57,13 +57,17 @@ export const KebabMenu = (props: KebabMenuProps) => {
         showGroupNames={false}
         showGroupDividers={true}
         items={[
-          {
-            id: "localEngine",
-            groupName: "localEngine",
-            label: "Local Engine",
-            icon: <s.LocalEngineStatusBadge />,
-            onClick: handleLocalEngineClick
-          },
+          ...(config.isDigmaEngineRunning
+            ? [
+                {
+                  id: "localEngine",
+                  groupName: "localEngine",
+                  label: "Local Engine",
+                  icon: <s.LocalEngineStatusBadge />,
+                  onClick: handleLocalEngineClick
+                }
+              ]
+            : []),
           {
             id: "observability",
             groupName: "settings",

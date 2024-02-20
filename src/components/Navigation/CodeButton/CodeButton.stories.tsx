@@ -49,6 +49,12 @@ export const AlreadyAtCode: Story = {
   }
 };
 
+export const HasErrors: Story = {
+  args: {
+    hasErrors: true
+  }
+};
+
 export const Disabled: Story = {
   args: {
     isDisabled: true

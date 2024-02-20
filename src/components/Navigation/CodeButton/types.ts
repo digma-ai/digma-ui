@@ -10,8 +10,5 @@ export interface CodeButtonProps {
   hasObservability: boolean;
   hasData: boolean;
   isAlreadyAtScope: boolean;
-}
-
-export interface OutlineProps {
-  $isAnimated: boolean;
+  hasErrors: boolean;
 }

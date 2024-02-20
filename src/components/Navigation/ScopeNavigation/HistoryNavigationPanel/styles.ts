@@ -7,7 +7,7 @@ export const Container = styled.div`
   border-radius: 4px;
   border: 1px solid ${({ theme }) => theme.colors.v3.stroke.primary};
   background: ${({ theme }) => theme.colors.v3.surface.primary};
-  box-shadow: 0 0 5px 0 rgba(0 0 0 / 13%);
+  box-shadow: 0 0 5px 0 rgb(0 0 0 / 13%);
   padding: 6px 8px;
   color: ${({ theme }) => theme.colors.v3.icon.tertiary};
   width: fit-content;

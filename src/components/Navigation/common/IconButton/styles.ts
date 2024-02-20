@@ -7,8 +7,8 @@ export const Button = styled.button`
   border-radius: 4px;
   border: 1px solid ${({ theme }) => theme.colors.v3.stroke.primary};
   background: ${({ theme }) => theme.colors.v3.surface.primary};
-  box-shadow: 0 0 5px 0 rgba(0 0 0 / 13%);
-  padding: 6px;
+  box-shadow: 0 0 5px 0 rgb(0 0 0 / 13%);
+  padding: 0;
   color: ${({ theme }) => theme.colors.v3.icon.tertiary};
   cursor: pointer;
   outline: none;
@@ -18,15 +18,17 @@ export const Button = styled.button`
 
   &:disabled {
     color: ${({ theme }) => theme.colors.v3.icon.disabled};
+    border: 1px solid ${({ theme }) => theme.colors.v3.stroke.tertiary};
     cursor: initial;
   }
 
   &:hover:enabled {
+    color: ${({ theme }) => theme.colors.v3.icon.primary};
     border: 1px solid ${({ theme }) => theme.colors.v3.stroke.primaryLight};
   }
 
   &:active:enabled {
-    color: ${({ theme }) => theme.colors.v3.icon.primary};
+    color: ${({ theme }) => theme.colors.v3.icon.tertiary};
     border: 1px solid ${({ theme }) => theme.colors.v3.stroke.primaryLight};
     background: ${({ theme }) => theme.colors.v3.surface.primaryLight};
   }

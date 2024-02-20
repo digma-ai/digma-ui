@@ -392,6 +392,7 @@ export const Navigation = () => {
                   isDisabled={!isCodeButtonEnabled}
                   onClick={handleCodeButtonClick}
                   isAlreadyAtScope={isAlreadyAtScope(codeContext, config.scope)}
+                  hasErrors={false}
                 />
               </NewPopover>
             </div>
@@ -402,6 +403,7 @@ export const Navigation = () => {
               isDisabled={!isCodeButtonEnabled}
               onClick={handleCodeButtonClick}
               isAlreadyAtScope={isAlreadyAtScope(codeContext, config.scope)}
+              hasErrors={false}
             />
           )}
         </Tooltip>

@@ -73,7 +73,7 @@ export const SearchInput = styled.input`
         return grayScale[1000];
     }
   }};
-  box-shadow: 1px 1px 4px 0 rgba(0 0 0 / 25%);
+  box-shadow: 1px 1px 4px 0 rgb(0 0 0 / 25%);
   caret-color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

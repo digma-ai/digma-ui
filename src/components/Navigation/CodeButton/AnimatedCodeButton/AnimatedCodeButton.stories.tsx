@@ -1,12 +1,11 @@
 import { Meta, StoryObj } from "@storybook/react";
 
-import { IconButton } from ".";
-import { CodeIcon } from "../../../common/icons/16px/CodeIcon";
+import { AnimatedCodeButton } from ".";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
-const meta: Meta<typeof IconButton> = {
-  title: "Navigation/common/IconButton",
-  component: IconButton,
+const meta: Meta<typeof AnimatedCodeButton> = {
+  title: "Navigation/common/AnimatedCodeButton",
+  component: AnimatedCodeButton,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
     layout: "fullscreen"
@@ -19,14 +18,5 @@ type Story = StoryObj<typeof meta>;
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 export const Default: Story = {
-  args: {
-    icon: <CodeIcon size={20} color={"currentColor"} />
-  }
-};
-
-export const Disabled: Story = {
-  args: {
-    icon: <CodeIcon size={20} color={"currentColor"} />,
-    isDisabled: true
-  }
+  args: {}
 };

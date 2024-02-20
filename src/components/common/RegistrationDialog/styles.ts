@@ -25,10 +25,10 @@ export const Container = styled.div`
   box-shadow: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
-        return "0 1px 5px 0 rgba(0 0 0 / 12%)";
+        return "0 1px 5px 0 rgb(0 0 0 / 12%)";
       case "dark":
       case "dark-jetbrains":
-        return "0 1px 4px 0 rgba(0 0 0 / 45%)";
+        return "0 1px 4px 0 rgb(0 0 0 / 45%)";
     }
   }};
   background: ${({ theme }) => {

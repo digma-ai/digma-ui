@@ -11,7 +11,7 @@ export const ScopeBar = styled.div<ScopeBarElementProps>`
     $isActive
       ? theme.colors.v3.surface.brandDark
       : theme.colors.v3.surface.primary};
-  box-shadow: 0 0 4.9px 0 rgba(0 0 0 / 13%);
+  box-shadow: 0 0 4.9px 0 rgb(0 0 0 / 13%);
   color: ${({ theme, $isActive }) =>
     $isActive ? theme.colors.v3.text.link : theme.colors.v3.text.secondary};
   font-size: 14px;

@@ -22,7 +22,7 @@ export const Button = styled.button<ButtonProps>`
         return grayScale[1000];
     }
   }};
-  box-shadow: 1px 1px 4px 0 rgba(0 0 0 / 25%);
+  box-shadow: 1px 1px 4px 0 rgb(0 0 0 / 25%);
   color: ${({ theme }) => theme.colors.icon.primary};
   font-size: 14px;
   font-weight: 500;
