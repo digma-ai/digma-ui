@@ -5,11 +5,11 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 270px;
+  gap: 4px;
 `;
 
 export const CodeLocation = styled.div`
   display: flex;
-  padding: 8px;
   color: ${({ theme }) => theme.colors.v3.text.secondary};
   gap: 4px;
   align-items: center;
@@ -30,9 +30,8 @@ export const CodeIconContainer = styled.div`
 export const EmptyStateContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
   font-size: 14px;
-  padding: 0 8px;
 `;
 
 export const Title = styled.div`
