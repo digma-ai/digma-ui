@@ -62,7 +62,7 @@ export const KebabMenu = (props: KebabMenuProps) => {
             ? [
                 {
                   id: "localEngine",
-                  groupName: "localEngine",
+                  groupName: "settings",
                   label: "Local Engine",
                   icon: <s.LocalEngineStatusBadge />,
                   onClick: handleLocalEngineClick

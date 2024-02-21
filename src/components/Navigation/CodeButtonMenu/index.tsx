@@ -53,7 +53,6 @@ export const CodeButtonMenu = (props: CodeButtonMenuProps) => {
 
   const renderNoObservability = () => (
     <s.EmptyStateContainer>
-      <s.Title>No observability</s.Title>
       <s.Text>Click to observe this code in runtime</s.Text>
       <s.AddObservabilityButtonContainer>
         {props.isAnnotationAdding && <Spinner />}
@@ -73,11 +72,13 @@ export const CodeButtonMenu = (props: CodeButtonMenuProps) => {
 
   const renderNoData = () => (
     <s.EmptyStateContainer>
-      <s.Title>No data yet</s.Title>
+      <s.Title>
+        No data received yet,{" "}
+        <s.Link href={"#"} onClick={handleTroubleshootingLinkClick}>
+          need help?
+        </s.Link>
+      </s.Title>
       <s.Text>Trigger any action to analyze runtime data</s.Text>
-      <s.Link href={"#"} onClick={handleTroubleshootingLinkClick}>
-        Not seeing your application data?
-      </s.Link>
     </s.EmptyStateContainer>
   );
 
@@ -102,7 +103,7 @@ export const CodeButtonMenu = (props: CodeButtonMenuProps) => {
 
   return (
     <Popup
-      height={"78px"}
+      height={"86px"}
       header={
         props.codeContext.hasMissingDependency
           ? renderMissingDependency()

@@ -63,6 +63,24 @@ export const NotInstrumented: Story = {
   }
 };
 
+export const NotDataYet: Story = {
+  args: {
+    codeContext: {
+      spans: {
+        assets: [],
+        errorData: null
+      },
+      isInstrumented: true,
+      methodId: "method id",
+      displayName: "code location display name",
+      hasMissingDependency: false,
+      canInstrumentMethod: true
+    },
+    isAutoFixing: false,
+    isAnnotationAdding: false
+  }
+};
+
 export const AddingTheAnnotation: Story = {
   args: {
     codeContext: {

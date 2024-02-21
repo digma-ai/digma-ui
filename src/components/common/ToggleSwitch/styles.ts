@@ -62,10 +62,10 @@ const getSwitchContainerColor = (
   if (isDisabled) {
     switch (theme.mode) {
       case "light":
-        return isChecked ? "#E5E5FF" : "#E6E8F2";
+        return isChecked ? "#4B4DB4" : "#E6E8F2";
       case "dark":
       case "dark-jetbrains":
-        return isChecked ? "#28293E" : "#27282E";
+        return isChecked ? "#4B4DB4" : "#27282E";
     }
   }
 
@@ -97,11 +97,11 @@ const getCircleColor = (
   if (isDisabled) {
     switch (theme.mode) {
       case "light": {
-        return "#E6E8F2";
+        return isChecked ? "#7C90F8" : "#E6E8F2";
       }
       case "dark":
       case "dark-jetbrains":
-        return "#2C2E33";
+        return isChecked ? "#7C90F8" : "#2C2E33";
     }
   }
 
