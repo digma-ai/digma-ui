@@ -130,7 +130,7 @@ export const QueryOptimizationInsightTicket = (
         content: renderDescription(),
         isLoading: isInitialLoading
       }}
-      attachment={attachment}
+      attachments={[attachment]}
       insight={props.data.insight}
       onClose={props.onClose}
     />

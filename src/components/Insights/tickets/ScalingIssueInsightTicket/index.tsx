@@ -13,7 +13,6 @@ import { ScalingIssueAffectedEndpoints } from "../common/ScalingIssueAffectedEnd
 import { ScalingIssueRootCauses } from "../common/ScalingIssueRootCauses";
 import { getDurationString } from "../../../../utils/getDurationString";
 
-
 export const ScalingIssueInsightTicket = (
   props: InsightTicketProps<SpanScalingBadlyInsight>
 ) => {
@@ -37,7 +36,7 @@ export const ScalingIssueInsightTicket = (
               Tested concurrency: {insight.maxConcurrency}
             </div>,
             <div key={"durationRange"}>
-              Duration range: 
+              Duration range:
               <span>
                 {getDurationString(insight.minDuration)} -{" "}
                 {getDurationString(insight.maxDuration)}
@@ -70,7 +69,6 @@ export const ScalingIssueInsightTicket = (
     );
   };
 
-
   const criticalityString =
     props.data.insight.criticality > 0
       ? `Criticality: ${getCriticalityLabel(props.data.insight.criticality)}`
@@ -80,23 +78,35 @@ export const ScalingIssueInsightTicket = (
     .join(" - ");
 
   const traceId = props.data.insight.affectedEndpoints
-    ?.map(ep => ep.sampleTraceId)
-    ?.find(t => t);
-  const attachment = traceId
+    ?.map((ep) => ep.sampleTraceId)
+    ?.find((t) => t);
+  const attachmentTrace = traceId
     ? {
-      url: `${config.jaegerURL}/api/traces/${traceId}?prettyPrint=true`,
-      fileName: `trace-${traceId}.json`
-    }
+        url: `${config.jaegerURL}/api/traces/${traceId}?prettyPrint=true`,
+        fileName: `trace-${traceId}.json`
+      }
     : undefined;
+
+  const histogramUrlParams = new URLSearchParams({
+    env: insight.environment,
+    scoid: insight.spanInfo?.spanCodeObjectId || ""
+  });
+
+  const attachmentHistogram = {
+    url: `${
+      config.digmaApiUrl
+    }/Graphs/graphForSpanScaling?${histogramUrlParams.toString()}`,
+    fileName: `histogram.html`
+  };
 
   return (
     <InsightJiraTicket
       summary={summary}
       description={{
         content: renderDescription(),
-        isLoading: false
+        isLoading: true
       }}
-      attachment={attachment}
+      attachments={[attachmentHistogram, attachmentTrace]}
       insight={props.data.insight}
       onClose={props.onClose}
     />

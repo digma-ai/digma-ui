@@ -79,23 +79,25 @@ export const JiraTicket = (props: JiraTicketProps) => {
     }
   };
 
-  const handleDownloadButtonClick = () => {
+  const handleDownloadButtonClick = (attachment: {
+    url: string;
+    fileName: string;
+  }) => {
     sendTrackingEvent(
       prefixedTrackingEvents.JIRA_TICKET_ATTACHMENT_DOWNLOAD_BUTTON_CLICKED,
       { ...(props.tracking?.additionalInfo || {}) }
     );
 
-    if (props.attachment) {
-      downloadFile(props.attachment.url, props.attachment.fileName).catch(
-        (e) => {
-          const errorMessageString =
-            e instanceof Error ? `Error: ${e.message}` : "";
-          setDownloadErrorMessage(
-            `Failed to download file.\n${errorMessageString}`
-          );
-        }
-      );
-    }
+    downloadFile(attachment.url, attachment.fileName).catch(
+      // tmp
+      (e) => {
+        const errorMessageString =
+          e instanceof Error ? `Error: ${e.message}` : "";
+        setDownloadErrorMessage(
+          `Failed to download file.\n${errorMessageString}`
+        );
+      }
+    );
   };
 
   const errorMessage = props.description.isLoading
@@ -157,26 +159,32 @@ export const JiraTicket = (props: JiraTicketProps) => {
           />
         }
       />
-      {props.attachment && (
-        <Field
-          key={"attachments"}
-          label={"Attachments"}
-          content={
-            <AttachmentTag
-              icon={PaperclipIcon}
-              text={props.attachment.fileName}
+      {props.attachments &&
+        props.attachments.map((attachment, i) => {
+          const isFirst = i == 0;
+          const isLast = i == props.attachments!.length - 1;
+          return (
+            <Field
+              key={"attachments"}
+              label={isFirst ? "Attachments" : undefined}
+              content={
+                <AttachmentTag
+                  icon={PaperclipIcon}
+                  text={attachment.fileName}
+                />
+              }
+              button={
+                <IconButton
+                  icon={DownloadIcon}
+                  title={"Download"}
+                  size={16}
+                  onClick={() => handleDownloadButtonClick(attachment)}
+                />
+              }
+              errorMessage={isLast ? downloadErrorMessage : undefined}
             />
-          }
-          button={
-            <IconButton
-              icon={DownloadIcon}
-              title={"Download"}
-              onClick={handleDownloadButtonClick}
-            />
-          }
-          errorMessage={downloadErrorMessage}
-        />
-      )}
+          );
+        })}
       {props.showLinkButton && (
         <TicketLinkButton
           ticketLink={props.ticketLink}

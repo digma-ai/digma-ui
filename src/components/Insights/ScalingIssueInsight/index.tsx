@@ -13,6 +13,9 @@ import { Description, Link } from "../styles";
 import { Trace } from "../types";
 import * as s from "./styles";
 import { ScalingIssueInsightProps } from "./types";
+import { JiraButton } from "../common/JiraButton";
+import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
+import { trackingEvents } from "../tracking";
 
 export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
   const config = useContext(ConfigContext);
@@ -36,6 +39,19 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
         props.insight.spanInfo.name,
         props.insight.type,
         props.insight.spanInfo.displayName
+      );
+  };
+
+  const handleCreateJiraTicketButtonClick = (event: string) => {
+    sendTrackingEvent(trackingEvents.JIRA_TICKET_INFO_BUTTON_CLICKED, {
+      insightType: props.insight.type
+    });
+
+    props.onJiraTicketCreate &&
+      props.onJiraTicketCreate(
+        props.insight,
+        props.insight.spanInfo?.spanCodeObjectId,
+        event
       );
   };
 
@@ -135,7 +151,15 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
                 onClick={handleHistogramButtonClick}
               >
                 Histogram
-              </Button>
+              </Button>,
+              <JiraButton
+                key={"view-ticket-info"}
+                onTicketInfoButtonClick={handleCreateJiraTicketButtonClick}
+                spanCodeObjectId={props.insight.spanInfo?.spanCodeObjectId}
+                ticketLink={props.insight.ticketLink}
+                buttonType={"large"}
+                isHintEnabled={props.isJiraHintEnabled}
+              />
             ]
           : [])
       ]}

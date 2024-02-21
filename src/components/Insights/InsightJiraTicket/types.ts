@@ -8,7 +8,7 @@ export interface InsightJiraTicketProps {
     isLoading?: boolean;
     errorMessage?: string;
   };
-  attachment?: { url: string; fileName: string };
+  attachments?: ({ url: string; fileName: string } | undefined)[];
   insight: GenericCodeObjectInsight;
   relatedInsight?: GenericCodeObjectInsight | null;
   onClose: () => void;
