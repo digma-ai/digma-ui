@@ -104,7 +104,7 @@ export const ScalingIssueInsightTicket = (
       summary={summary}
       description={{
         content: renderDescription(),
-        isLoading: true
+        isLoading: isLoading
       }}
       attachments={[attachmentHistogram, attachmentTrace]}
       insight={props.data.insight}

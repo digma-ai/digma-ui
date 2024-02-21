@@ -165,7 +165,7 @@ export const JiraTicket = (props: JiraTicketProps) => {
           const isLast = i == props.attachments!.length - 1;
           return (
             <Field
-              key={"attachments"}
+              key={"attachment-" + i.toString()}
               label={isFirst ? "Attachments" : undefined}
               content={
                 <AttachmentTag
