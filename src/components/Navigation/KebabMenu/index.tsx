@@ -58,17 +58,6 @@ export const KebabMenu = (props: KebabMenuProps) => {
         showGroupNames={false}
         showGroupDividers={true}
         items={[
-          ...(isDigmaEngineRunning(config)
-            ? [
-                {
-                  id: "localEngine",
-                  groupName: "settings",
-                  label: "Local Engine",
-                  icon: <s.LocalEngineStatusBadge />,
-                  onClick: handleLocalEngineClick
-                }
-              ]
-            : []),
           {
             id: "observability",
             groupName: "settings",
@@ -94,7 +83,18 @@ export const KebabMenu = (props: KebabMenuProps) => {
             label: "Digma Onboarding",
             icon: <DigmaLogoFlatIcon size={16} color={"currentColor"} />,
             onClick: handleOnboardingClick
-          }
+          },
+          ...(isDigmaEngineRunning(config)
+            ? [
+                {
+                  id: "localEngine",
+                  groupName: "settings",
+                  label: "Local Engine",
+                  icon: <s.LocalEngineStatusBadge />,
+                  onClick: handleLocalEngineClick
+                }
+              ]
+            : [])
         ]}
       />
     </Popup>
