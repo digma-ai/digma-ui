@@ -1,9 +1,9 @@
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { EnvironmentIcon } from "../../common/EnvironmentIcon";
-import { Tooltip } from "../../common/Tooltip";
 import { ChevronIcon } from "../../common/icons/16px/ChevronIcon";
 import { GlobeIcon } from "../../common/icons/16px/GlobeIcon";
 import { Direction } from "../../common/icons/types";
+import { Tooltip } from "../../common/v3/Tooltip";
 import { trackingEvents } from "../tracking";
 import * as s from "./styles";
 import { EnvironmentBarProps } from "./types";

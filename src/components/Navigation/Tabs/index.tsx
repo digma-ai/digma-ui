@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Scope } from "../../common/App/types";
-import { Tooltip } from "../../common/Tooltip";
+import { Tooltip } from "../../common/v3/Tooltip";
 import { trackingEvents } from "../tracking";
 import { TabData } from "../types";
 import * as s from "./styles";

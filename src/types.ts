@@ -10,8 +10,6 @@ export enum FeatureFlag {
 
 export enum InsightType {
   TopErrorFlows = "TopErrorFlows",
-  SpanDurationChange = "SpanDurationChange",
-  SpanUsageStatus = "SpanUsageStatus",
   HotSpot = "HotSpot",
   Errors = "Errors",
   SlowEndpoint = "SlowEndpoint",

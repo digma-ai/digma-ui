@@ -323,7 +323,8 @@ export const Tests = (props: TestsProps) => {
       {testToOpenTicketPopup && (
         <s.Overlay>
           <s.PopupContainer>
-            {config.userRegistrationEmail ? (
+            {/* {config.userRegistrationEmail ? ( */}
+            {true ? ( // eslint-disable-line no-constant-condition
               <TestTicket
                 test={testToOpenTicketPopup}
                 spanContexts={data?.data?.spanContexts || []}

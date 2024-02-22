@@ -84,7 +84,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
     <>
       <s.Toolbar>
         <SearchInput
-          disabled={!!config.scope?.span}
+          disabled={Boolean(config.scope?.span)}
           onChange={(val: string | null) => {
             setSearchInputValue(val);
           }}
