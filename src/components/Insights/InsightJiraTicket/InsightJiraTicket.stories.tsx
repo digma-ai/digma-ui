@@ -64,6 +64,7 @@ export const Linked: Story = {
   args: {
     summary: "Summary text",
     description: { content: "Multiline\ndescription text", isLoading: false },
+    attachment: { url: "https://www.example.com", fileName: "attachment.ext" },
     insight: { ticketLink: "https://digma.ai/ticket/1", ...insight }
   }
 };
@@ -72,29 +73,7 @@ export const Unlinked: Story = {
   args: {
     summary: "",
     description: { content: "Multiline\ndescription text", isLoading: false },
-    insight: { ticketLink: null, ...insight }
-  }
-};
-
-export const SingleAttachment: Story = {
-  args: {
-    summary: "",
-    description: { content: "Description text", isLoading: false },
-    attachments: [
-      { url: "https://www.example.com", fileName: "attachment.ext" }
-    ],
-    insight: { ticketLink: null, ...insight }
-  }
-};
-
-export const MultiAttachments: Story = {
-  args: {
-    summary: "Summary text",
-    description: { content: "Description text", isLoading: false },
-    attachments: [
-      { url: "https://www.example.com", fileName: "attachment_1.ext" },
-      { url: "https://www.example.com", fileName: "attachment_2.ext" }
-    ],
+    attachment: { url: "https://www.example.com", fileName: "attachment.ext" },
     insight: { ticketLink: null, ...insight }
   }
 };

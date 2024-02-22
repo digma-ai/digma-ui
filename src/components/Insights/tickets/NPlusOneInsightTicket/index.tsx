@@ -80,7 +80,7 @@ export const NPlusOneInsightTicket = (
         content: renderDescription(),
         isLoading
       }}
-      attachments={[attachment]}
+      attachment={attachment}
       insight={props.data.insight}
       onClose={props.onClose}
     />

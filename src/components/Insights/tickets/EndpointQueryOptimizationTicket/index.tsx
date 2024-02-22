@@ -117,7 +117,7 @@ export const EndpointQueryOptimizationInsightTicket = (
         errorMessage:
           spanInsight === null ? "Failed to get insight details" : undefined
       }}
-      attachments={[attachment]}
+      attachment={attachment}
       insight={props.data.insight}
       relatedInsight={spanInsight}
       onClose={props.onClose}

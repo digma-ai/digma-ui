@@ -29,7 +29,7 @@ export const Field = (props: FieldProps) => {
 
   return (
     <s.Container $selectable={props.selectable}>
-      {props.label ? <s.Label>{props.label}</s.Label> : <></>}
+      <s.Label>{props.label}</s.Label>
       <s.ContentContainer>
         <s.Content ref={getContentRef} $multiline={props.multiline}>
           {props.content}

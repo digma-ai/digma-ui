@@ -10,7 +10,7 @@ export type ButtonPosition = "top" | "center";
 
 export interface FieldProps {
   content: ReactNode;
-  label?: string;
+  label: string;
   button: ReactNode;
   multiline?: boolean;
   errorMessage?: string;

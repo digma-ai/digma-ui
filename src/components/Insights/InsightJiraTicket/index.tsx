@@ -89,7 +89,7 @@ export const InsightJiraTicket = (props: InsightJiraTicketProps) => {
     <JiraTicket
       description={props.description}
       summary={props.summary}
-      attachments={props.attachments?.filter(Boolean).map((a) => a!)}
+      attachment={props.attachment}
       onClose={props.onClose}
       ticketLink={{ link: ticketLink, errorMessage }}
       unlinkTicket={unlinkTicket}

@@ -64,7 +64,7 @@ export const TestTicket = (props: TestTicketProps) => {
       description={{
         content: renderDescription()
       }}
-      attachments={[attachment]?.filter(Boolean).map((a) => a!)}
+      attachment={attachment}
       onClose={props.onClose}
       tracking={{ prefix: "tests" }}
     />

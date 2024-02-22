@@ -115,7 +115,7 @@ export const ScalingIssueInsightTicketByRootCause = (
         errorMessage:
           spanInsight === null ? "Failed to get insight details" : undefined
       }}
-      attachments={[attachmentHistogram, attachmentTrace]}
+      attachment={attachmentTrace}
       insight={props.data.insight}
       relatedInsight={spanInsight}
       onClose={props.onClose}

@@ -19,8 +19,6 @@ export const Default: Story = {
   args: {
     summary: "Summary text",
     description: { content: "Multiline\ndescription text", isLoading: false },
-    attachments: [
-      { url: "https://www.example.com", fileName: "attachment.ext" }
-    ]
+    attachment: { url: "https://www.example.com", fileName: "attachment.ext" }
   }
 };
