@@ -53,7 +53,7 @@ export const Container = styled.div<ContainerProps>`
   background: ${({ theme, $type }) => getTagTheme(theme, $type).background};
 `;
 
-export const ValueContainer = styled.span`
+export const ValueContainer = styled.div`
   display: flex;
   white-space: nowrap;
   text-overflow: ellipsis;
