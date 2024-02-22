@@ -7,12 +7,16 @@ import { CodeLocations } from "../common/CodeLocations";
 import { CommitInfos } from "../common/CommitInfos";
 import { DigmaSignature } from "../common/DigmaSignature";
 import { useEndpointDataSource } from "../common";
-import { getCriticalityLabel } from "../../../../utils/getCriticalityLabel";
 import { ConfigContext } from "../../../common/App/ConfigContext";
 import {
+  getHistogramAttachment,
+  getScalingIssueSummary,
+  getTraceAttachment,
   ScalingIssueAffectedEndpoints,
   ScalingIssueDuration,
-  ScalingIssueRootCauses
+  ScalingIssueMessage,
+  ScalingIssueRootCauses,
+  ScalingIssueTestedConcurrency
 } from "../common/ScalingIssueCommon";
 import { InsightType } from "../../../../types";
 
@@ -41,12 +45,11 @@ export const ScalingIssueInsightTicketByRootCause = (
       <>
         {intersperse<ReactElement, ReactElement>(
           [
-            <div key={"message"}>
-              {spanInsight?.shortDisplayInfo.description}
-            </div>,
-            <div key={"testedConcurrency"}>
-              Tested concurrency: {spanInsight?.maxConcurrency}
-            </div>,
+            <ScalingIssueMessage key={"message"} insight={spanInsight} />,
+            <ScalingIssueTestedConcurrency
+              key={"testedConcurrency"}
+              insight={spanInsight}
+            />,
             <ScalingIssueDuration
               key={"scalingIssueDuration"}
               insight={spanInsight}
@@ -78,33 +81,13 @@ export const ScalingIssueInsightTicketByRootCause = (
     );
   };
 
-  const criticalityString =
-    spanInsight && spanInsight.criticality > 0
-      ? `Criticality: ${getCriticalityLabel(spanInsight.criticality)}`
-      : "";
-  const summary = ["Scaling Issue", criticalityString]
-    .filter(Boolean)
-    .join(" - ");
+  const summary = getScalingIssueSummary(spanInsight);
 
-  const traceId = spanInfo?.sampleTraceId;
-  const attachmentTrace = traceId
-    ? {
-        url: `${config.jaegerURL}/api/traces/${traceId}?prettyPrint=true`,
-        fileName: `trace-${traceId}.json`
-      }
-    : undefined;
+  const attachmentTrace = getTraceAttachment(config, spanInfo?.sampleTraceId);
 
-  const histogramUrlParams = new URLSearchParams({
-    env: spanInsight?.environment || "",
-    scoid: spanInsight?.spanInfo?.spanCodeObjectId || ""
-  });
-
-  const attachmentHistogram = {
-    url: `${
-      config.digmaApiUrl
-    }/Graphs/graphForSpanScaling?${histogramUrlParams.toString()}`,
-    fileName: `histogram.html`
-  };
+  // Add it to the attachment(s) after we'll support more than one and
+  // know how to make https calls while ignoring ssl cert verification
+  const attachmentHistogram = getHistogramAttachment(config, spanInsight);
 
   return (
     <InsightJiraTicket
