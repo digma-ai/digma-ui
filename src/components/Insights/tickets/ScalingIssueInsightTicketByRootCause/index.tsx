@@ -1,4 +1,4 @@
-import { SpanScalingBadlyInsight } from "../../types";
+import { RootCauseSpanInfo, SpanScalingBadlyInsight } from "../../types";
 import { InsightTicketProps } from "../types";
 import { InsightJiraTicket } from "../../InsightJiraTicket";
 import { intersperse } from "../../../../utils/intersperse";
@@ -6,7 +6,7 @@ import { ReactElement, useContext } from "react";
 import { CodeLocations } from "../common/CodeLocations";
 import { CommitInfos } from "../common/CommitInfos";
 import { DigmaSignature } from "../common/DigmaSignature";
-import { useSpanDataSource } from "../common";
+import { useEndpointDataSource } from "../common";
 import { getCriticalityLabel } from "../../../../utils/getCriticalityLabel";
 import { ConfigContext } from "../../../common/App/ConfigContext";
 import {
@@ -14,40 +14,50 @@ import {
   ScalingIssueDuration,
   ScalingIssueRootCauses
 } from "../common/ScalingIssueCommon";
+import { InsightType } from "../../../../types";
 
-export const ScalingIssueInsightTicket = (
-  props: InsightTicketProps<SpanScalingBadlyInsight>
+export const ScalingIssueInsightTicketByRootCause = (
+  props: InsightTicketProps<SpanScalingBadlyInsight> & {
+    rootCauseSpanInfo: RootCauseSpanInfo;
+  }
 ) => {
   const config = useContext(ConfigContext);
 
-  const insight = props.data.insight;
+  const spanInfo = props.rootCauseSpanInfo;
 
-  const { commitInfos, isLoading, codeLocations } =
-    useSpanDataSource<SpanScalingBadlyInsight>(
-      props.data.insight.spanInfo,
-      props.data.insight
-    );
+  const {
+    commitInfos,
+    spanInsight,
+    isLoading,
+    codeLocations,
+    onReloadSpanInsight
+  } = useEndpointDataSource<SpanScalingBadlyInsight>(
+    spanInfo,
+    InsightType.SpanScalingBadly
+  );
 
   const renderDescription = () => {
     return (
       <>
         {intersperse<ReactElement, ReactElement>(
           [
-            <div key={"message"}>{insight.shortDisplayInfo.description}</div>,
+            <div key={"message"}>
+              {spanInsight?.shortDisplayInfo.description}
+            </div>,
             <div key={"testedConcurrency"}>
-              Tested concurrency: {insight.maxConcurrency}
+              Tested concurrency: {spanInsight?.maxConcurrency}
             </div>,
             <ScalingIssueDuration
               key={"scalingIssueDuration"}
-              insight={insight}
+              insight={spanInsight}
             />,
             <ScalingIssueRootCauses
               key={"scalingIssueRootCauses"}
-              insight={insight}
+              insight={spanInsight}
             />,
             <ScalingIssueAffectedEndpoints
               key={"scalingIssueEndpoints"}
-              insight={insight}
+              insight={spanInsight}
             />,
             <CodeLocations
               key={"codeLocations"}
@@ -56,7 +66,7 @@ export const ScalingIssueInsightTicket = (
             <CommitInfos
               key={"commitInfos"}
               commitInfos={commitInfos}
-              insight={insight}
+              insight={spanInsight}
             />,
             <DigmaSignature key={"digmaSignature"} />
           ],
@@ -69,16 +79,14 @@ export const ScalingIssueInsightTicket = (
   };
 
   const criticalityString =
-    props.data.insight.criticality > 0
-      ? `Criticality: ${getCriticalityLabel(props.data.insight.criticality)}`
+    spanInsight && spanInsight.criticality > 0
+      ? `Criticality: ${getCriticalityLabel(spanInsight.criticality)}`
       : "";
   const summary = ["Scaling Issue", criticalityString]
     .filter(Boolean)
     .join(" - ");
 
-  const traceId = props.data.insight.affectedEndpoints
-    ?.map((ep) => ep.sampleTraceId)
-    ?.find((t) => t);
+  const traceId = spanInfo?.sampleTraceId;
   const attachmentTrace = traceId
     ? {
         url: `${config.jaegerURL}/api/traces/${traceId}?prettyPrint=true`,
@@ -87,8 +95,8 @@ export const ScalingIssueInsightTicket = (
     : undefined;
 
   const histogramUrlParams = new URLSearchParams({
-    env: insight.environment,
-    scoid: insight.spanInfo?.spanCodeObjectId || ""
+    env: spanInsight?.environment || "",
+    scoid: spanInsight?.spanInfo?.spanCodeObjectId || ""
   });
 
   const attachmentHistogram = {
@@ -103,11 +111,15 @@ export const ScalingIssueInsightTicket = (
       summary={summary}
       description={{
         content: renderDescription(),
-        isLoading: isLoading
+        isLoading: isLoading,
+        errorMessage:
+          spanInsight === null ? "Failed to get insight details" : undefined
       }}
       attachments={[attachmentHistogram, attachmentTrace]}
       insight={props.data.insight}
+      relatedInsight={spanInsight}
       onClose={props.onClose}
+      onReloadSpanInsight={onReloadSpanInsight}
     />
   );
 };

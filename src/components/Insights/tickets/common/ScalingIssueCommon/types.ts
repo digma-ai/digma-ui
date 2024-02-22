@@ -1,5 +1,5 @@
 import { SpanScalingBadlyInsight } from "../../../types";
 
-export interface ScalingIssueEndpointsProps {
+export interface ScalingIssueCommonProps {
   insight: SpanScalingBadlyInsight | null;
 }
