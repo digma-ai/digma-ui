@@ -1,10 +1,11 @@
-import { trimEndpointScheme } from "../../../../../utils/trimEndpointScheme";
-import * as s from "./styles";
-import { ScalingIssueCommonProps } from "./types";
-import { getDurationString } from "../../../../../utils/getDurationString";
 import { getCriticalityLabel } from "../../../../../utils/getCriticalityLabel";
 import { SpanScalingBadlyInsight } from "../../../types";
 import { ConfigContextData } from "../../../../common/App/types";
+import { ScalingIssueAffectedEndpoints as ScalingIssueAffectedEndpoints_ } from "./ScalingIssueAffectedEndpoints";
+import { ScalingIssueRootCauses as ScalingIssueRootCauses_ } from "./ScalingIssueRootCauses";
+import { ScalingIssueDuration as ScalingIssueDuration_ } from "./ScalingIssueDuration";
+import { ScalingIssueTestedConcurrency as ScalingIssueTestedConcurrency_ } from "./ScalingIssueTestedConcurrency";
+import { ScalingIssueMessage as ScalingIssueMessage_ } from "./ScalingIssueMessage";
 
 export const getHistogramAttachment = (
   config: ConfigContextData,
@@ -55,94 +56,12 @@ export const getScalingIssueSummary = (
   return summary;
 };
 
-export const ScalingIssueMessage = (props: ScalingIssueCommonProps) => {
-  if (!props.insight) {
-    return null;
-  }
+export const ScalingIssueMessage = ScalingIssueMessage_;
 
-  return (
-    <div key={"message"}>{props.insight.shortDisplayInfo.description}</div>
-  );
-};
+export const ScalingIssueTestedConcurrency = ScalingIssueTestedConcurrency_;
 
-export const ScalingIssueTestedConcurrency = (
-  props: ScalingIssueCommonProps
-) => {
-  if (!props.insight) {
-    return null;
-  }
+export const ScalingIssueAffectedEndpoints = ScalingIssueAffectedEndpoints_;
 
-  return (
-    <div key={"testedConcurrency"}>
-      Tested concurrency: {props.insight.maxConcurrency}
-    </div>
-  );
-};
+export const ScalingIssueRootCauses = ScalingIssueRootCauses_;
 
-export const ScalingIssueAffectedEndpoints = (
-  props: ScalingIssueCommonProps
-) => {
-  if (!props.insight) {
-    return null;
-  }
-
-  const endpoints = props.insight.affectedEndpoints;
-
-  if (endpoints.length === 0) {
-    return null;
-  }
-
-  return (
-    <div>
-      <div>Affected endpoints:</div>
-      <s.List>
-        {endpoints.map((x) => (
-          <li key={x.route}>
-            <div>
-              {x.serviceName} {trimEndpointScheme(x.route)}
-            </div>
-          </li>
-        ))}
-      </s.List>
-    </div>
-  );
-};
-
-export const ScalingIssueRootCauses = (props: ScalingIssueCommonProps) => {
-  if (!props.insight) {
-    return null;
-  }
-
-  const rootCauses = props.insight.rootCauseSpans;
-
-  if (rootCauses.length === 0) {
-    return null;
-  }
-
-  return (
-    <div>
-      <div>Root causes:</div>
-      <s.List>
-        {rootCauses.map((x) => (
-          <li key={x.spanCodeObjectId}>{x.displayName}</li>
-        ))}
-      </s.List>
-    </div>
-  );
-};
-
-export const ScalingIssueDuration = (props: ScalingIssueCommonProps) => {
-  if (!props.insight) {
-    return null;
-  }
-
-  return (
-    <div key={"durationRange"}>
-      Duration range:
-      <span>
-        {getDurationString(props.insight.minDuration)} -{" "}
-        {getDurationString(props.insight.maxDuration)}
-      </span>
-    </div>
-  );
-};
+export const ScalingIssueDuration = ScalingIssueDuration_;
