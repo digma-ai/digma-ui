@@ -11,6 +11,7 @@ export type TagType =
 export interface TagProps {
   content: React.ReactNode;
   type?: TagType;
+  className?: string;
 }
 
 export interface ContainerProps {

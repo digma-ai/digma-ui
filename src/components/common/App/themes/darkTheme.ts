@@ -234,7 +234,8 @@ export const darkTheme: ThemeColors = {
       brandPrimary: v3colors.primary[500],
       brandSecondary: v3colors.primary[300],
       brandDark: v3colors.primary[900],
-      sidePanelHeader: v3colors.gray[1200]
+      sidePanelHeader: v3colors.gray[1200],
+      asyncTag: v3colors.blue[400]
     },
     text: {
       primary: v3colors.gray[0],
