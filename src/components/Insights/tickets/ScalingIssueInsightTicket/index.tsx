@@ -91,6 +91,8 @@ export const ScalingIssueInsightTicket = (
     scoid: insight.spanInfo?.spanCodeObjectId || ""
   });
 
+  // Add it to the attachment(s) after we'll support more than one and
+  // know how to make https calls while ignoring ssl cert verification
   const attachmentHistogram = {
     url: `${
       config.digmaApiUrl
