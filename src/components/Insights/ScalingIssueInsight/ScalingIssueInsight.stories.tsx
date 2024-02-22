@@ -1,6 +1,11 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { ScalingIssueInsight } from ".";
-import { MockedSpanScalingBadlyInsight } from "./mockData";
+import {
+  mockedSpanScalingInsight,
+  ofDbSpan,
+  withAffectedEndpoints,
+  withRootCause
+} from "./mockData";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof ScalingIssueInsight> = {
@@ -18,32 +23,36 @@ type Story = StoryObj<typeof meta>;
 
 export const Minimal: Story = {
   args: {
-    insight: new MockedSpanScalingBadlyInsight()
+    insight: mockedSpanScalingInsight
   }
 };
 
 export const Story2: Story = {
   name: "Endpoint + Root Cause",
   args: {
-    insight: new MockedSpanScalingBadlyInsight().withRootCause()
+    insight: { ...mockedSpanScalingInsight, ...withRootCause }
   }
 };
 
 export const Story3: Story = {
   name: "DB Span + Affected Endpoint",
   args: {
-    insight: new MockedSpanScalingBadlyInsight()
-      .ofDbSpan()
-      .withAffectedEndpoints()
+    insight: {
+      ...mockedSpanScalingInsight,
+      ...ofDbSpan,
+      ...withAffectedEndpoints
+    }
   }
 };
 
 export const Story4: Story = {
   name: "DB Span + Affected Endpoint + Root Cause",
   args: {
-    insight: new MockedSpanScalingBadlyInsight()
-      .ofDbSpan()
-      .withAffectedEndpoints()
-      .withRootCause()
+    insight: {
+      ...mockedSpanScalingInsight,
+      ...ofDbSpan,
+      ...withAffectedEndpoints,
+      ...withRootCause
+    }
   }
 };
