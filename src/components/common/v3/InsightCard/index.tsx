@@ -1,5 +1,6 @@
-import { Card } from "../../Card";
+import { Card } from "../Card";
 import { InsightHeader } from "../InsightHeader";
+import * as s from "./styles";
 import { InsightCardProps } from "./types";
 
 export const InsightCard = (props: InsightCardProps) => {
@@ -15,6 +16,12 @@ export const InsightCard = (props: InsightCardProps) => {
         />
       }
       content={props.content}
+      footer={
+        <s.InsightFooter>
+          <div>Dismiss</div>
+          <div></div>
+        </s.InsightFooter>
+      }
     />
   );
 };

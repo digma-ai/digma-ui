@@ -3,10 +3,8 @@ import styled from "styled-components";
 export const Container = styled.div`
   display: flex;
   flex-direction: row;
-  padding: 8px;
   align-items: center;
   gap: 8px;
-  border: 1px solid ${({ theme }) => theme.colors.v3.stroke.primary};
 `;
 
 export const InfoContainer = styled.div`
