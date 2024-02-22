@@ -5,7 +5,7 @@ import { Tag } from "../Tag";
 import { TagType } from "../Tag/types";
 import { Tooltip } from "../Tooltip";
 import * as s from "./styles";
-import { InsightsHeaderProps } from "./types";
+import { InsightHeaderProps } from "./types";
 
 export const getTagType = (importance: number): TagType => {
   if (importance === 0) {
@@ -20,7 +20,7 @@ export const getTagType = (importance: number): TagType => {
   return "lowSeverity";
 };
 
-export const InsightsHeader = (props: InsightsHeaderProps) => {
+export const InsightHeader = (props: InsightHeaderProps) => {
   const insightTypeInfo = getInsightTypeInfo(props.insightType);
   const tagType = getTagType(props.importance);
 

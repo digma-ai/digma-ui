@@ -1,4 +1,4 @@
-export interface InsightsHeaderProps {
+export interface InsightHeaderProps {
   insightType: string;
   isActive?: boolean;
   tags?: [];

@@ -1,10 +1,10 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { InsightsHeader } from ".";
+import { InsightHeader } from ".";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
-const meta: Meta<typeof InsightsHeader> = {
+const meta: Meta<typeof InsightHeader> = {
   title: "Common/v3/InsightsHeader",
-  component: InsightsHeader,
+  component: InsightHeader,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
     layout: "fullscreen"
