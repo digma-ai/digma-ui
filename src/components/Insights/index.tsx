@@ -358,7 +358,8 @@ export const Insights = (props: InsightsProps) => {
       {infoToOpenJiraTicket && (
         <s.Overlay>
           <s.PopupContainer>
-            {config.userRegistrationEmail ? (
+            {/* {config.userRegistrationEmail ? ( */}
+            {true ? ( // eslint-disable-line no-constant-condition
               renderInsightTicket(
                 infoToOpenJiraTicket,
                 handleJiraTicketPopupClose
