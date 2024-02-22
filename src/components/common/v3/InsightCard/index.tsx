@@ -8,7 +8,7 @@ export const InsightCard = (props: InsightCardProps) => {
     <Card
       header={
         <InsightHeader
-          isActive={true}
+          isActive={props.isActive}
           isNew={props.isNew}
           isAsync={props.isAsync}
           insightType={props.insight.type}
