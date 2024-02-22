@@ -82,7 +82,7 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
           {props.insight.rootCauseSpans.length > 0 && (
             <s.List>
               <Description>Caused by:</Description>
-              {props.insight.rootCauseSpans.map((span) => {
+              {props.insight.rootCauseSpans.map((span, i) => {
                 const spanName = span.displayName;
                 const traceId = span.sampleTraceId;
                 const spanCodeObjectId = span.spanCodeObjectId;
@@ -105,7 +105,7 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
                         spanCodeObjectId={spanCodeObjectId}
                         ticketLink={props.insight.ticketLink}
                         buttonType={"small"}
-                        isHintEnabled={props.isJiraHintEnabled}
+                        isHintEnabled={props.isJiraHintEnabled && i === 0}
                       />
                       {config.isJaegerEnabled && traceId && (
                         <s.Button
