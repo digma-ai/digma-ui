@@ -32,10 +32,16 @@ export const InsightCard = (props: InsightCardProps) => {
             buttonType="tertiary"
           />
           <s.Actions>
-            <NewButton buttonType="tertiary" icon={HistogramIcon} />
-            <NewButton buttonType="tertiary" icon={RecalculateIcon} />
-            <NewButton buttonType="tertiary" icon={JiraLogoIcon} />
-            <NewButton buttonType="tertiary" icon={PinIcon} />
+            {props.onOpenHistogram && (
+              <NewButton buttonType="tertiary" icon={HistogramIcon} />
+            )}
+            {props.onRecalculate && (
+              <NewButton buttonType="tertiary" icon={RecalculateIcon} />
+            )}
+            {props.onOpenJiraTicket && (
+              <NewButton buttonType="tertiary" icon={JiraLogoIcon} />
+            )}
+            {props.onPin && <NewButton buttonType="tertiary" icon={PinIcon} />}
             <s.MainActions>
               <NewButton icon={TraceIcon} label="Trace" />
               <NewButton icon={LiveIcon} label="Live" />

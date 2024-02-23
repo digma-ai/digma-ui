@@ -1,5 +1,5 @@
-import * as s from "./styles";
+import { Tag } from "../Tag";
 
 export const NewTag = () => {
-  return <s.NewTag type="success" content={"New"} />;
+  return <Tag type="success" content={"New"} />;
 };
