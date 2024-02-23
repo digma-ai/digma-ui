@@ -41,8 +41,6 @@ const getTagTheme = (
 };
 
 export const Container = styled.div<ContainerProps>`
-  font-size: 14px;
-  font-weight: normal;
   display: flex;
   justify-content: center;
   align-items: center;

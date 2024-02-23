@@ -27,6 +27,8 @@ export const Tags = styled.div`
   flex-direction: row;
   gap: 8px;
   height: 24px;
+  font-size: 12px;
+  line-height: 16px;
 `;
 
 export const Active = styled.div`

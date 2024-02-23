@@ -1,6 +1,7 @@
 import { getInsightTypeInfo } from "../../../../utils/getInsightTypeInfo";
 import { InfoCircleIcon } from "../../icons/InfoCircleIcon";
 import { AsyncTag } from "../AsyncTag";
+import { NewTag } from "../NewTag";
 import { Tag } from "../Tag";
 import { TagType } from "../Tag/types";
 import { Tooltip } from "../Tooltip";
@@ -44,7 +45,7 @@ export const InsightHeader = (props: InsightHeaderProps) => {
       </s.Label>
       <s.Tags>
         {props.isAsync && <AsyncTag />}
-        {props.isNew && <Tag type="success" content="New" />}
+        {props.isNew && <NewTag />}
         {props.isActive && (
           <s.Active>
             <s.Indicator />

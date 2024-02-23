@@ -1,10 +1,10 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { AsyncTag } from ".";
+import { NewTag } from ".";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
-const meta: Meta<typeof AsyncTag> = {
-  title: "common/v3/AsyncTag",
-  component: AsyncTag,
+const meta: Meta<typeof NewTag> = {
+  title: "common/v3/NewTag",
+  component: NewTag,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
     layout: "fullscreen"
