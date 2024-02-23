@@ -5,7 +5,6 @@ import { GenericCodeObjectInsight } from "../../../Insights/types";
 export interface InsightCardProps {
   insight: GenericCodeObjectInsight;
   content?: ReactNode;
-  isNew?: boolean;
   isAsync?: boolean;
   isActive?: boolean;
   onDismiss?: (insightId: string) => void;
