@@ -53,7 +53,6 @@ export const mockedSpanNexusInsight: SpanNexusInsight = {
   actualStartTime: "2023-08-10T08:04:00Z",
   flows: 4,
   services: 3,
-  usage: "High",
   entries: 5,
   isEntriesHigh: false,
   isFlowsHigh: true,

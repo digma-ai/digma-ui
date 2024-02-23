@@ -8,7 +8,7 @@ export interface InsightCardProps {
   isNew?: boolean;
   isAsync?: boolean;
   isActive?: boolean;
-  onDismiss: (insightId: string) => void;
+  onDismiss?: (insightId: string) => void;
   onOpenHistogram?: (
     insightType: InsightType,
     spanCodeObjectId: string
@@ -17,10 +17,12 @@ export interface InsightCardProps {
     prefixedCodeObjectId: string,
     insightType: InsightType
   ) => void;
-  onRefresh?: (insightType: InsightType, spanCodeObjectId: string) => void;
+  onRefresh?: (insightType: InsightType, spanCodeObjectId?: string) => void;
   onOpenJiraTicket?: (
     insight: GenericCodeObjectInsight,
     spanCodeObjectId?: string
   ) => void;
   onPin?: (insightId: string) => void;
+  onGoToLive?: () => void;
+  onGoToTrace?: () => void;
 }

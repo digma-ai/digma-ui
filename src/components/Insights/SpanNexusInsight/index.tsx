@@ -1,6 +1,6 @@
-import { Tag } from "../../common/Tag";
-import { InsightCard } from "../InsightCard";
-import { Description } from "../styles";
+import { InsightCard } from "../../../components/common/v3/InsightCard";
+import { Tag } from "../../../components/common/v3/Tag";
+import { KeyValue, KeyValueContainer } from "../../common/v3/KeyValueContainer";
 import * as s from "./styles";
 import { SpanNexusInsightProps } from "./types";
 
@@ -21,31 +21,29 @@ export const SpanNexusInsight = (props: SpanNexusInsightProps) => {
   } = insight;
   return (
     <InsightCard
-      data={insight}
-      spanInfo={props.insight.spanInfo}
+      insight={insight}
       content={
         <s.ContentContainer>
-          <Description>Multiple code flows depend on this location</Description>
-          <s.Stats>
-            <s.Stat>
-              <s.Key>Services</s.Key>
-              <Tag type={getTagType(isServicesHigh)} value={services} />
-            </s.Stat>
-            <s.Stat>
-              <s.Key>Endpoints</s.Key>
-              <Tag type={getTagType(isEntriesHigh)} value={entries} />
-            </s.Stat>
-            <s.Stat>
-              <s.Key>Flows</s.Key>
-              <Tag type={getTagType(isFlowsHigh)} value={flows} />
-            </s.Stat>
+          <s.Description>
+            Multiple code flows depend on this location
+          </s.Description>
+          <KeyValueContainer>
+            <KeyValue label="Services">
+              <Tag type={getTagType(isServicesHigh)} content={services} />
+            </KeyValue>
+            <KeyValue label="Endpoints">
+              {" "}
+              <Tag type={getTagType(isEntriesHigh)} content={entries} />
+            </KeyValue>
+            <KeyValue label="Flows">
+              <Tag type={getTagType(isFlowsHigh)} content={flows} />
+            </KeyValue>
             {usage && (
-              <s.Stat>
-                <s.Key>Usage</s.Key>
-                <Tag value={usage} />
-              </s.Stat>
+              <KeyValue label="Usage">
+                <Tag content={usage} />
+              </KeyValue>
             )}
-          </s.Stats>
+          </KeyValueContainer>
         </s.ContentContainer>
       }
       onRecalculate={props.onRecalculate}
