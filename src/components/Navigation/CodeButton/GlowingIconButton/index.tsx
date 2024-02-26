@@ -6,8 +6,14 @@ export const GlowingIconButtonComponent = (
   props: GlowingIconButtonProps,
   ref: ForwardedRef<HTMLDivElement>
 ) => (
-  <s.BorderContainer $type={props.type} ref={ref}>
-    <s.BorderlessIconButton icon={props.icon} onClick={props.onClick} />
+  <s.BorderContainer
+    $type={props.type}
+    ref={ref}
+    onClick={props.onClick}
+    onMouseEnter={props.onMouseEnter}
+    onMouseLeave={props.onMouseLeave}
+  >
+    <s.BorderlessIconButton icon={props.icon} />
   </s.BorderContainer>
 );
 

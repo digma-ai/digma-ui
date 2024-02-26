@@ -6,7 +6,12 @@ export const AnimatedCodeButtonComponent = (
   props: AnimatedCodeButtonProps,
   ref: ForwardedRef<HTMLButtonElement>
 ) => (
-  <s.Button onClick={props.onClick} ref={ref}>
+  <s.Button
+    onClick={props.onClick}
+    ref={ref}
+    onMouseEnter={props.onMouseEnter}
+    onMouseLeave={props.onMouseLeave}
+  >
     <s.BorderContainer />
     <s.Background>
       <s.InitialMask />

@@ -16,12 +16,12 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  render: () => {
-    return (
-      <KeyValueContainer>
+  args: {
+    children: (
+      <>
         <KeyValue label="Tested concurrency">31</KeyValue>
         <KeyValue label="Duration">5.01 sec - 223.42 sec</KeyValue>
-      </KeyValueContainer>
-    );
+      </>
+    )
   }
 };

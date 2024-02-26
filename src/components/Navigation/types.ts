@@ -49,6 +49,10 @@ export interface AddAnnotationPayload {
   methodId: string;
 }
 
+export interface HighlightMethodInEditorPayload {
+  methodId: string;
+}
+
 export interface CodeContext {
   spans: {
     assets: {

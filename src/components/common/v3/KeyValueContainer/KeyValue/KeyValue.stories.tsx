@@ -16,7 +16,8 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  render: () => {
-    return <KeyValue label="label"> Value</KeyValue>;
+  args: {
+    label: "label",
+    children: "Value"
   }
 };

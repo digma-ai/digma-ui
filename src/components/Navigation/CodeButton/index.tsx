@@ -19,6 +19,8 @@ const CodeButtonComponent = (
         isDisabled={props.isDisabled}
         onClick={props.onClick}
         isActive={props.isAlreadyAtScope}
+        onMouseEnter={props.onMouseEnter}
+        onMouseLeave={props.onMouseLeave}
       />
     );
   }
@@ -30,6 +32,8 @@ const CodeButtonComponent = (
         icon={<CodeIcon color={"currentColor"} size={20} />}
         onClick={props.onClick}
         type={"error"}
+        onMouseEnter={props.onMouseEnter}
+        onMouseLeave={props.onMouseLeave}
       />
     );
   }
@@ -40,6 +44,8 @@ const CodeButtonComponent = (
         ref={ref as ForwardedRef<HTMLDivElement>}
         icon={<OpenTelemetryLogoIcon color={"currentColor"} size={20} />}
         onClick={props.onClick}
+        onMouseEnter={props.onMouseEnter}
+        onMouseLeave={props.onMouseLeave}
       />
     );
   }
@@ -50,6 +56,8 @@ const CodeButtonComponent = (
         ref={ref as ForwardedRef<HTMLDivElement>}
         icon={<ClockWithTicksIcon color={"currentColor"} size={20} />}
         onClick={props.onClick}
+        onMouseEnter={props.onMouseEnter}
+        onMouseLeave={props.onMouseLeave}
       />
     );
   }
@@ -58,6 +66,8 @@ const CodeButtonComponent = (
     <AnimatedCodeButton
       ref={ref as ForwardedRef<HTMLButtonElement>}
       onClick={props.onClick}
+      onMouseEnter={props.onMouseEnter}
+      onMouseLeave={props.onMouseLeave}
     />
   );
 };
