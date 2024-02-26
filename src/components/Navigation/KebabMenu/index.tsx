@@ -10,6 +10,7 @@ import { ConfigContext } from "../../common/App/ConfigContext";
 import { ToggleSwitch } from "../../common/ToggleSwitch";
 import { DigmaLogoFlatIcon } from "../../common/icons/16px/DigmaLogoFlatIcon";
 import { OpenTelemetryLogoIcon } from "../../common/icons/16px/OpenTelemetryLogoIcon";
+import { LocalEngineIcon } from "../../common/icons/LocalEngineIcon";
 import { MenuList } from "../common/MenuList";
 import { ListItemIconContainer } from "../common/MenuList/styles";
 import { Popup } from "../common/Popup";
@@ -84,17 +85,13 @@ export const KebabMenu = (props: KebabMenuProps) => {
             icon: <DigmaLogoFlatIcon size={16} color={"currentColor"} />,
             onClick: handleOnboardingClick
           },
-          ...(isDigmaEngineRunning(config)
-            ? [
-                {
-                  id: "localEngine",
-                  groupName: "settings",
-                  label: "Local Engine",
-                  icon: <s.LocalEngineStatusBadge />,
-                  onClick: handleLocalEngineClick
-                }
-              ]
-            : [])
+          {
+            id: "localEngine",
+            groupName: "settings",
+            label: "Local Engine",
+            icon: <LocalEngineIcon isActive={isDigmaEngineRunning(config)} />,
+            onClick: handleLocalEngineClick
+          }
         ]}
       />
     </Popup>

@@ -328,6 +328,8 @@ const renderInsightCard = (
         onHistogramButtonClick={handleHistogramButtonClick}
         onRecalculate={handleRecalculate}
         onRefresh={onRefresh}
+        onJiraTicketCreate={onJiraTicketCreate}
+        isJiraHintEnabled={isJiraHintEnabled}
       />
     );
   }

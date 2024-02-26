@@ -48,3 +48,8 @@ export const Endpoint = styled.span`
 export const Button = styled(CommonButton)`
   height: fit-content;
 `;
+
+export const ButtonsContainer = styled.div`
+  display: flex;
+  gap: 8px;
+`;

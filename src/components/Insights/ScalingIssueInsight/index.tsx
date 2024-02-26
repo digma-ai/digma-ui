@@ -13,6 +13,10 @@ import { Description, Link } from "../styles";
 import { Trace } from "../types";
 import * as s from "./styles";
 import { ScalingIssueInsightProps } from "./types";
+import { JiraButton } from "../common/JiraButton";
+import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
+import { trackingEvents } from "../tracking";
+import { ButtonsContainer } from "./styles";
 
 export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
   const config = useContext(ConfigContext);
@@ -37,6 +41,18 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
         props.insight.type,
         props.insight.spanInfo.displayName
       );
+  };
+
+  const handleCreateJiraTicketButtonClick = (
+    spanCodeObjectId: string,
+    event: string
+  ) => {
+    sendTrackingEvent(trackingEvents.JIRA_TICKET_INFO_BUTTON_CLICKED, {
+      insightType: props.insight.type
+    });
+
+    props.onJiraTicketCreate &&
+      props.onJiraTicketCreate(props.insight, spanCodeObjectId, event);
   };
 
   return (
@@ -67,7 +83,7 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
           {props.insight.rootCauseSpans.length > 0 && (
             <s.List>
               <Description>Caused by:</Description>
-              {props.insight.rootCauseSpans.map((span) => {
+              {props.insight.rootCauseSpans.map((span, i) => {
                 const spanName = span.displayName;
                 const traceId = span.sampleTraceId;
                 const spanCodeObjectId = span.spanCodeObjectId;
@@ -81,23 +97,35 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
                         </Link>
                       </s.SpanName>
                     </Tooltip>
-                    {config.isJaegerEnabled && traceId && (
-                      <s.Button
-                        icon={{ component: CrosshairIcon }}
-                        onClick={() =>
-                          handleTraceButtonClick(
-                            {
-                              name: spanName,
-                              id: traceId
-                            },
-                            props.insight.type,
-                            spanCodeObjectId
-                          )
+                    <s.ButtonsContainer>
+                      <JiraButton
+                        key={"view-ticket-info"}
+                        onTicketInfoButtonClick={
+                          handleCreateJiraTicketButtonClick
                         }
-                      >
-                        Trace
-                      </s.Button>
-                    )}
+                        spanCodeObjectId={spanCodeObjectId}
+                        ticketLink={props.insight.ticketLink}
+                        buttonType={"small"}
+                        isHintEnabled={props.isJiraHintEnabled && i === 0}
+                      />
+                      {config.isJaegerEnabled && traceId && (
+                        <s.Button
+                          icon={{ component: CrosshairIcon }}
+                          onClick={() =>
+                            handleTraceButtonClick(
+                              {
+                                name: spanName,
+                                id: traceId
+                              },
+                              props.insight.type,
+                              spanCodeObjectId
+                            )
+                          }
+                        >
+                          Trace
+                        </s.Button>
+                      )}
+                    </s.ButtonsContainer>
                   </s.RootCause>
                 );
               })}
@@ -128,6 +156,18 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
         </s.ContentContainer>
       }
       buttons={[
+        ...(props.insight.rootCauseSpans.length == 0
+          ? [
+              <JiraButton
+                key={"view-ticket-info"}
+                onTicketInfoButtonClick={handleCreateJiraTicketButtonClick}
+                spanCodeObjectId={props.insight.spanInfo?.spanCodeObjectId}
+                ticketLink={props.insight.ticketLink}
+                buttonType={"large"}
+                isHintEnabled={props.isJiraHintEnabled}
+              />
+            ]
+          : []),
         ...(props.insight.spanInfo
           ? [
               <Button
