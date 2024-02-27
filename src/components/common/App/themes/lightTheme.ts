@@ -270,6 +270,13 @@ export const lightTheme: ThemeColors = {
       low: v3colors.blue[200],
       backgroundSuccess: v3colors.green[100],
       success: v3colors.green[200]
+    },
+    fontSize: {
+      body: "14px",
+      subscript: "13px",
+      footnote: "12px",
+      captionOne: "11px",
+      captionTwo: "10px"
     }
   }
 };

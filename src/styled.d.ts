@@ -110,6 +110,13 @@ export interface ThemeColors {
       backgroundSuccess: string;
       success: string;
     };
+    fontSize: {
+      body: string;
+      subscript: string;
+      footnote: string;
+      captionOne: string;
+      captionTwo: string;
+    };
   };
 }
 
