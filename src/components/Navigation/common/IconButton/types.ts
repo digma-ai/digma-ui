@@ -5,6 +5,4 @@ export interface IconButtonProps {
   isDisabled?: boolean;
   className?: string;
   onClick?: () => void;
-  onMouseEnter?: () => void;
-  onMouseLeave?: () => void;
 }

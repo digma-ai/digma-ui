@@ -11,8 +11,6 @@ export const IconButtonComponent = (
     className={props.className}
     onClick={props.onClick}
     disabled={props.isDisabled}
-    onMouseEnter={props.onMouseEnter}
-    onMouseLeave={props.onMouseLeave}
   >
     {props.icon}
   </s.Button>

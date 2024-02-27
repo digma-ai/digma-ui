@@ -22,5 +22,7 @@ export const Default: Story = {
 };
 
 export const Disabled: Story = {
-  args: {}
+  args: {
+    disabled: true
+  }
 };

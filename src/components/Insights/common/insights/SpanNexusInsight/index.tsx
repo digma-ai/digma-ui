@@ -31,17 +31,17 @@ export const SpanNexusInsight = (props: SpanNexusInsightProps) => {
             Multiple code flows depend on this location
           </s.Description>
           <KeyValueContainer>
-            <KeyValue label="Services">
+            <KeyValue label={"Services"}>
               <Tag type={getTagType(isServicesHigh)} content={services} />
             </KeyValue>
-            <KeyValue label="Endpoints">
+            <KeyValue label={"Endpoints"}>
               <Tag type={getTagType(isEntriesHigh)} content={entries} />
             </KeyValue>
-            <KeyValue label="Flows">
+            <KeyValue label={"Flows"}>
               <Tag type={getTagType(isFlowsHigh)} content={flows} />
             </KeyValue>
             {usage && (
-              <KeyValue label="Usage">
+              <KeyValue label={"Usage"}>
                 <Tag content={usage} />
               </KeyValue>
             )}

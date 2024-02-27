@@ -10,7 +10,7 @@ import { OpenDocumentationPayload } from "../../Navigation/types";
 import { NewButton } from "../../common/NewButton";
 import { NewPopover } from "../../common/NewPopover";
 import { PlusIcon } from "../../common/icons/12px/PlusIcon";
-import { FourPointedStarIcon } from "../../common/icons/16px/FourPointedStar";
+import { FourPointedStarIcon } from "../../common/icons/16px/FourPointedStarIcon";
 import { HammerIcon } from "../../common/icons/16px/HammerIcon";
 import { SlackLogoIcon } from "../../common/icons/16px/SlackLogoIcon";
 import { ChevronIcon } from "../../common/icons/ChevronIcon";
@@ -182,19 +182,21 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
                 {
                   id: "insightsOverview",
                   label: "Insights Overview",
-                  icon: <FourPointedStarIcon size={16} color="currentColor" />,
+                  icon: (
+                    <FourPointedStarIcon size={16} color={"currentColor"} />
+                  ),
                   onClick: handleInsightsOverviewClick
                 },
                 {
                   id: "troubleshooting",
                   label: "Troubleshooting",
-                  icon: <HammerIcon size={16} color="currentColor" />,
+                  icon: <HammerIcon size={16} color={"currentColor"} />,
                   onClick: handleTroubleshootingClick
                 },
                 {
                   id: "slack",
                   label: "Digma Channel",
-                  icon: <SlackLogoIcon size={16} color="currentColor" />,
+                  icon: <SlackLogoIcon size={16} color={"currentColor"} />,
                   onClick: handleSlackLinkClick
                 }
               ]}

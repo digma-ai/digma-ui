@@ -638,7 +638,6 @@ export const InsightList = (props: InsightListProps) => {
   const insightWithJiraHint = getInsightToShowJiraHint(insightGroups);
 
   useEffect(() => {
-    console.log(props.assetId, props.environment, props.serviceName);
     window.scrollTo(0, 0);
   }, [props.assetId, props.environment, props.serviceName]);
 

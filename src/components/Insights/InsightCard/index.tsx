@@ -148,7 +148,7 @@ export const InsightCard = (props: InsightCardProps) => {
               <OpenTelemetryLogoIcon color={"currentColor"} />
             </s.TitleIconContainer>
             <Tooltip title={props.spanInfo?.displayName}>
-              <s.TitleLink onClick={() => handleTitleLinkClick()}>
+              <s.TitleLink onClick={handleTitleLinkClick}>
                 {props.spanInfo?.displayName}
               </s.TitleLink>
             </Tooltip>

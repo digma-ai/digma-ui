@@ -74,7 +74,8 @@ const getInsightToShowJiraHint = (insights: CodeObjectInsight[]): number => {
     InsightType.SlowestSpans,
     InsightType.SpanQueryOptimization,
     InsightType.EndpointHighNumberOfQueries,
-    InsightType.EndpointQueryOptimization
+    InsightType.EndpointQueryOptimization,
+    InsightType.SpanScalingBadly
   ];
 
   return insights.findIndex((insight) =>
@@ -470,6 +471,7 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={onRefresh}
         onJiraTicketCreate={onJiraTicketCreate}
+        isJiraHintEnabled={isJiraHintEnabled}
       />
     );
   }

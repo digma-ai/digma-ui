@@ -19,8 +19,8 @@ export const Default: Story = {
   args: {
     children: (
       <>
-        <KeyValue label="Tested concurrency">31</KeyValue>
-        <KeyValue label="Duration">5.01 sec - 223.42 sec</KeyValue>
+        <KeyValue label={"Tested concurrency"}>31</KeyValue>
+        <KeyValue label={"Duration"}>5.01 sec - 223.42 sec</KeyValue>
       </>
     )
   }

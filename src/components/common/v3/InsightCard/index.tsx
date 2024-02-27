@@ -108,37 +108,39 @@ export const InsightCard = (props: InsightCardProps) => {
         <s.InsightFooter>
           <s.DismissButton
             icon={CrossIcon}
-            label="Dismiss"
-            buttonType="tertiary"
+            label={"Dismiss"}
+            buttonType={"tertiary"}
             disabled={true}
           />
           <s.Actions>
             {props.onOpenHistogram && (
-              <NewButton buttonType="tertiary" icon={HistogramIcon} />
+              <NewButton buttonType={"tertiary"} icon={HistogramIcon} />
             )}
             {props.onRecalculate && (
               <NewButton
-                buttonType="tertiary"
+                buttonType={"tertiary"}
                 icon={RecalculateIcon}
                 onClick={handleRecalculateClick}
               />
             )}
             {props.onOpenJiraTicket && (
-              <NewButton buttonType="tertiary" icon={JiraLogoIcon} />
+              <NewButton buttonType={"tertiary"} icon={JiraLogoIcon} />
             )}
-            {props.onPin && <NewButton buttonType="tertiary" icon={PinIcon} />}
+            {props.onPin && (
+              <NewButton buttonType={"tertiary"} icon={PinIcon} />
+            )}
             <s.MainActions>
               {props.onGoToTrace && (
                 <NewButton
                   icon={TraceIcon}
-                  label="Trace"
+                  label={"Trace"}
                   onClick={() => props.onGoToTrace && props.onGoToTrace()}
                 />
               )}
               {props.onGoToLive && (
                 <NewButton
                   icon={LiveIcon}
-                  label="Live"
+                  label={"Live"}
                   onClick={() => props.onGoToLive && props.onGoToLive()}
                 />
               )}
