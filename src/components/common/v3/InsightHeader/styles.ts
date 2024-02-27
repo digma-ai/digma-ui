@@ -2,7 +2,6 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   display: flex;
-  flex-direction: row;
   align-items: center;
   gap: 8px;
 `;
@@ -13,7 +12,6 @@ export const InfoContainer = styled.div`
 
 export const Label = styled.div`
   display: flex;
-  flex-direction: row;
   gap: 4px;
   line-height: 18px;
   align-items: center;
@@ -24,7 +22,6 @@ export const Label = styled.div`
 export const Tags = styled.div`
   margin-left: auto;
   display: flex;
-  flex-direction: row;
   gap: 8px;
   height: 24px;
   font-size: 12px;
@@ -33,7 +30,6 @@ export const Tags = styled.div`
 
 export const Active = styled.div`
   display: flex;
-  flex-direction: row;
   align-items: center;
   gap: 4px;
   color: ${({ theme }) => theme.colors.v3.text.secondary};

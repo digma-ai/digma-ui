@@ -1,13 +1,12 @@
-import { InsightCard } from "../../../components/common/v3/InsightCard";
-import { Tag } from "../../../components/common/v3/Tag";
-import { KeyValue, KeyValueContainer } from "../../common/v3/KeyValueContainer";
+import { Tag } from "../../common/Tag";
+import { InsightCard } from "../InsightCard";
+import { Description } from "../styles";
 import * as s from "./styles";
 import { SpanNexusInsightProps } from "./types";
 
 const getTagType = (isHigh: boolean) => {
   return isHigh ? "mediumSeverity" : "default";
 };
-
 export const SpanNexusInsight = (props: SpanNexusInsightProps) => {
   const { insight } = props;
   const {
@@ -21,29 +20,31 @@ export const SpanNexusInsight = (props: SpanNexusInsightProps) => {
   } = insight;
   return (
     <InsightCard
-      insight={insight}
+      data={insight}
+      spanInfo={props.insight.spanInfo}
       content={
         <s.ContentContainer>
-          <s.Description>
-            Multiple code flows depend on this location
-          </s.Description>
-          <KeyValueContainer>
-            <KeyValue label="Services">
-              <Tag type={getTagType(isServicesHigh)} content={services} />
-            </KeyValue>
-            <KeyValue label="Endpoints">
-              {" "}
-              <Tag type={getTagType(isEntriesHigh)} content={entries} />
-            </KeyValue>
-            <KeyValue label="Flows">
-              <Tag type={getTagType(isFlowsHigh)} content={flows} />
-            </KeyValue>
+          <Description>Multiple code flows depend on this location</Description>
+          <s.Stats>
+            <s.Stat>
+              <s.Key>Services</s.Key>
+              <Tag type={getTagType(isServicesHigh)} value={services} />
+            </s.Stat>
+            <s.Stat>
+              <s.Key>Endpoints</s.Key>
+              <Tag type={getTagType(isEntriesHigh)} value={entries} />
+            </s.Stat>
+            <s.Stat>
+              <s.Key>Flows</s.Key>
+              <Tag type={getTagType(isFlowsHigh)} value={flows} />
+            </s.Stat>
             {usage && (
-              <KeyValue label="Usage">
-                <Tag content={usage} />
-              </KeyValue>
+              <s.Stat>
+                <s.Key>Usage</s.Key>
+                <Tag value={usage} />
+              </s.Stat>
             )}
-          </KeyValueContainer>
+          </s.Stats>
         </s.ContentContainer>
       }
       onRecalculate={props.onRecalculate}

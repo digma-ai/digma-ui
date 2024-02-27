@@ -17,12 +17,12 @@ const PinIconComponent = (props: IconProps) => {
         stroke={color}
         strokeLinecap="round"
         strokeLinejoin="round"
-        clipPath="url(#a)"
+        clipPath="url(#pin-clip-1)"
       >
         <path d="M14.354 6.146a.5.5 0 0 0 0-.707l-3.791-3.793a.5.5 0 0 0-.707 0L6.274 5.238s-1.734-.867-3.586.628a.5.5 0 0 0-.041.744l6.744 6.743a.5.5 0 0 0 .75-.052c.524-.697 1.348-2.13.632-3.562l3.58-3.593ZM6.018 9.982 3 13.001" />
       </g>
       <defs>
-        <clipPath id="a">
+        <clipPath id="pin-clip-1">
           <path fill="#fff" d="M0 0h16v16H0z" />
         </clipPath>
       </defs>

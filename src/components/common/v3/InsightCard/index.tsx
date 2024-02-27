@@ -82,7 +82,6 @@ export const InsightCard = (props: InsightCardProps) => {
     ? Date.now() - new Date(props.insight.firstDetected).valueOf() <
       IS_NEW_TIME_LIMIT
     : false;
-
   return (
     <Card
       header={
