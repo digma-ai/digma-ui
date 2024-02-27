@@ -1,10 +1,11 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { KeyValue } from ".";
+import { IconButton } from ".";
+import { JiraLogoIcon } from "../../../../common/icons/16px/JiraLogoIcon";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
-const meta: Meta<typeof KeyValue> = {
-  title: "common/v3/KeyValue",
-  component: KeyValue,
+const meta: Meta<typeof IconButton> = {
+  title: "Insights/common/InsightCard/IconButton",
+  component: IconButton,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
     layout: "fullscreen"
@@ -17,7 +18,17 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    label: "label",
-    children: "Value"
+    icon: {
+      component: JiraLogoIcon
+    }
+  }
+};
+
+export const Disabled: Story = {
+  args: {
+    icon: {
+      component: JiraLogoIcon
+    },
+    isDisabled: true
   }
 };

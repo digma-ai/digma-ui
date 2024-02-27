@@ -11,4 +11,6 @@ export interface CodeButtonProps {
   hasData: boolean;
   isAlreadyAtScope: boolean;
   hasErrors: boolean;
+  onMouseEnter: () => void;
+  onMouseLeave: () => void;
 }

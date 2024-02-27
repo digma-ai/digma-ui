@@ -2,7 +2,7 @@ type GlowingIconButtonType = "default" | "error";
 
 export interface GlowingIconButtonProps {
   icon: React.ReactNode;
-  onClick: () => void;
+  onClick?: () => void;
   type?: GlowingIconButtonType;
 }
 

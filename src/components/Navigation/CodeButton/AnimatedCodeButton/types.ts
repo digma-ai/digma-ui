@@ -1,3 +1,3 @@
 export interface AnimatedCodeButtonProps {
-  onClick: () => void;
+  onClick?: () => void;
 }

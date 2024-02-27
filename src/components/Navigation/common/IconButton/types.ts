@@ -4,5 +4,7 @@ export interface IconButtonProps {
   icon: React.ReactNode;
   isDisabled?: boolean;
   className?: string;
-  onClick: () => void;
+  onClick?: () => void;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
 }

@@ -32,6 +32,7 @@ import {
   ChangeScopePayload,
   ChangeViewPayload,
   CodeContext,
+  HighlightMethodInEditorPayload,
   OpenDashboardPayload,
   SetViewsPayload,
   TabData
@@ -242,6 +243,23 @@ export const Navigation = () => {
     }
   };
 
+  const handleCodeButtonMouseEnter = () => {
+    if (codeContext && codeContext.methodId) {
+      window.sendMessageToDigma<HighlightMethodInEditorPayload>({
+        action: actions.HIGHLIGHT_METHOD_IN_EDITOR,
+        payload: {
+          methodId: codeContext.methodId
+        }
+      });
+    }
+  };
+
+  const handleCodeButtonMouseLeave = () => {
+    window.sendMessageToDigma({
+      action: actions.CLEAR_HIGHLIGHTS_IN_EDITOR
+    });
+  };
+
   const handleEnvironmentChange = (environment: Environment) => {
     sendTrackingEvent(trackingEvents.ENVIRONMENT_SELECTED);
     setIsEnvironmentMenuOpen(false);
@@ -393,6 +411,8 @@ export const Navigation = () => {
                   onClick={handleCodeButtonClick}
                   isAlreadyAtScope={isAlreadyAtScope(codeContext, config.scope)}
                   hasErrors={false}
+                  onMouseEnter={handleCodeButtonMouseEnter}
+                  onMouseLeave={handleCodeButtonMouseLeave}
                 />
               </NewPopover>
             </div>
@@ -404,6 +424,8 @@ export const Navigation = () => {
               onClick={handleCodeButtonClick}
               isAlreadyAtScope={isAlreadyAtScope(codeContext, config.scope)}
               hasErrors={false}
+              onMouseEnter={handleCodeButtonMouseEnter}
+              onMouseLeave={handleCodeButtonMouseLeave}
             />
           )}
         </Tooltip>

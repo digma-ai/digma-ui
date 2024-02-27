@@ -8,13 +8,14 @@ export const IconButtonComponent = (
 ) => (
   <s.Button
     ref={ref}
-    className={props.className}
-    onClick={props.onClick}
     disabled={props.isDisabled}
-    onMouseEnter={props.onMouseEnter}
-    onMouseLeave={props.onMouseLeave}
+    onClick={props.onClick}
+    className={props.className}
   >
-    {props.icon}
+    <props.icon.component
+      size={props.icon.size || 16}
+      color={props.icon.color || "currentColor"}
+    />
   </s.Button>
 );
 

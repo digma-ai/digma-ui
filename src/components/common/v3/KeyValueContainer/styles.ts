@@ -2,10 +2,8 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   display: flex;
-  align-items: flex-start;
   gap: 8px;
   justify-content: space-between;
-  align-self: stretch;
 `;
 
 export const Key = styled.div`

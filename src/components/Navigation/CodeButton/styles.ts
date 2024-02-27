@@ -2,6 +2,10 @@ import styled from "styled-components";
 import { IconButton } from "../common/IconButton";
 import { ExtendedIconButtonProps } from "./types";
 
+export const Container = styled.div`
+  display: flex;
+`;
+
 export const ExtendedIconButton = styled(IconButton)<ExtendedIconButtonProps>`
   color: ${({ theme, isActive }) =>
     isActive

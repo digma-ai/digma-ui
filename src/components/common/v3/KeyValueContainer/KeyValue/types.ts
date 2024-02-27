@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 
 export interface KeyValueProps {
-  label: ReactNode | string;
+  label: ReactNode;
   children: ReactNode;
 }
