@@ -14,7 +14,7 @@ import { JiraButtonProps } from "./types";
 export const JiraButton = (props: JiraButtonProps) => {
   const [isJiraPopoverOpen, setIsJiraPopoverOpen] = useState(false);
   const theme = useTheme();
-  const { ticketLink } = props;
+  const { ticketLink, isHintEnabled } = props;
 
   const handleJiraButtonClick = () => {
     setIsJiraPopoverOpen(!isJiraPopoverOpen);
@@ -25,7 +25,7 @@ export const JiraButton = (props: JiraButtonProps) => {
   };
 
   const openTicketInfo = (event: string) => {
-    props.onTicketInfoButtonClick(props.spanCodeObjectId, event);
+    props.onTicketInfoButtonClick(event);
   };
 
   const renderButton = () => (
@@ -45,7 +45,7 @@ export const JiraButton = (props: JiraButtonProps) => {
                 {
                   icon: { component: PencilIcon },
                   label: "Edit",
-                  value: props.spanCodeObjectId ?? "",
+                  value: "edit",
                   onClick: () => openTicketInfo("edit menu item click")
                 }
               ]}
@@ -104,7 +104,7 @@ export const JiraButton = (props: JiraButtonProps) => {
           </s.TryNowButton>
         </s.HintContainer>
       }
-      isOpen={props.isHintEnabled}
+      isOpen={isHintEnabled}
     >
       {renderButton()}
     </Tooltip>

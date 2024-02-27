@@ -21,3 +21,9 @@ export const Default: Story = {
     insight: mockedHighNumberOfQueriesInsight
   }
 };
+
+export const Normal: Story = {
+  args: {
+    insight: { ...mockedHighNumberOfQueriesInsight, quantile: 0 }
+  }
+};

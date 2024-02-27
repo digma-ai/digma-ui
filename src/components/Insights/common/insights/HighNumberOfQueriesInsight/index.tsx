@@ -40,12 +40,9 @@ export const HighNumberOfQueriesInsight = (
       insight={insight}
       content={
         <s.ContentContainer>
-          <Description>
-            {insight.quantile === 0.95 &&
-              "Affecting the slowest 5% of requests. "}
-            Consider using joins or caching responses to reduce database round
-            trips
-          </Description>
+          {insight.quantile === 0.95 && (
+            <Description>Affecting the slowest 5% of requests.</Description>
+          )}
           <KeyValueContainer>
             <KeyValue label={"# of Queries"}>
               <Tag type={"mediumSeverity"} content={insight.queriesCount} />
@@ -68,28 +65,20 @@ export const HighNumberOfQueriesInsight = (
             >
               <Tag content={insight.typicalCount} />
             </KeyValue>
-
             <KeyValue label={"Duration"}>
               {props.insight.medianDuration.value.toString() +
                 props.insight.medianDuration.unit}
             </KeyValue>
           </KeyValueContainer>
-          {/* <s.Stat>
-              <s.Key>Actions</s.Key>
-              <s.ActionsContainer>
-                <JiraButton
-                  onTicketInfoButtonClick={handleCreateJiraTicketButtonClick}
-                  spanCodeObjectId={insight.spanInfo?.spanCodeObjectId}
-                  ticketLink={insight.ticketLink}
-                  buttonType={"small"}
-                  isHintEnabled={props.isJiraHintEnabled}
-                />
-              </s.ActionsContainer>
-            </s.Stat> */}
         </s.ContentContainer>
       }
       onRecalculate={props.onRecalculate}
       onRefresh={props.onRefresh}
+      onJiraButtonClick={handleCreateJiraTicketButtonClick}
+      jiraTicketInfo={{
+        ticketLink: insight.ticketLink,
+        isHintEnabled: props.isJiraHintEnabled
+      }}
       onGoToTrace={
         traceId
           ? () =>
