@@ -2,7 +2,7 @@ import React from "react";
 import { useIconProps } from "../hooks";
 import { IconProps } from "../types";
 
-const JiraLogoIconComponent = (props: IconProps) => {
+const JiraLogoIconComponent = (props: IconProps & { isActive?: boolean }) => {
   const { size, color } = useIconProps(props);
 
   return (
@@ -10,7 +10,7 @@ const JiraLogoIconComponent = (props: IconProps) => {
       xmlns="http://www.w3.org/2000/svg"
       width={size}
       height={size}
-      fill="none"
+      fill={props.isActive ? color : "none"}
       viewBox="0 0 16 16"
     >
       <path
