@@ -31,7 +31,7 @@ export const InsightHeader = (props: InsightHeaderProps) => {
         <Tag
           type={tagType}
           content={<insightTypeInfo.icon color={"currentColor"} size={16} />}
-        ></Tag>
+        />
       )}
       <s.Label>
         {insightTypeInfo?.label}
