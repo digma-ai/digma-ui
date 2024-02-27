@@ -30,6 +30,7 @@ import { EndpointQueryOptimizationInsightTicket } from "./tickets/EndpointQueryO
 import { NPlusOneInsightTicket } from "./tickets/NPlusOneInsightTicket";
 import { QueryOptimizationInsightTicket } from "./tickets/QueryOptimizationInsightTicket";
 import { SpanBottleneckInsightTicket } from "./tickets/SpanBottleneckInsightTicket";
+import { ScalingIssueInsightTicket } from "./tickets/ScalingIssueInsightTicket";
 import {
   isEndpointHighNumberOfQueriesInsight,
   isEndpointQueryOptimizationInsight,
@@ -37,7 +38,8 @@ import {
   isEndpointSuspectedNPlusOneInsight,
   isSpanEndpointBottleneckInsight,
   isSpanNPlusOneInsight,
-  isSpanQueryOptimizationInsight
+  isSpanQueryOptimizationInsight,
+  isSpanScalingBadlyInsight
 } from "./typeGuards";
 import {
   EndpointHighNumberOfQueriesInsight,
@@ -52,8 +54,10 @@ import {
   InsightsStatus,
   QueryOptimizationInsight,
   SpanEndpointBottleneckInsight,
-  SpanNPlusOneInsight
+  SpanNPlusOneInsight,
+  SpanScalingBadlyInsight
 } from "./types";
+import { ScalingIssueInsightTicketByRootCause } from "./tickets/ScalingIssueInsightTicketByRootCause";
 
 const REFRESH_INTERVAL = isNumber(window.insightsRefreshInterval)
   ? window.insightsRefreshInterval
@@ -128,6 +132,24 @@ const renderInsightTicket = (
         onClose={onClose}
       />
     );
+  }
+
+  if (isSpanScalingBadlyInsight(data.insight)) {
+    const ticketData = data as InsightTicketInfo<SpanScalingBadlyInsight>;
+    const selectedRootCause = data.insight.rootCauseSpans.find(
+      (r) => r.spanCodeObjectId == data.spanCodeObjectId
+    );
+    if (selectedRootCause) {
+      return (
+        <ScalingIssueInsightTicketByRootCause
+          rootCauseSpanInfo={selectedRootCause}
+          data={ticketData}
+          onClose={onClose}
+        />
+      );
+    } else {
+      return <ScalingIssueInsightTicket data={ticketData} onClose={onClose} />;
+    }
   }
 
   return null;

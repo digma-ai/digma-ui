@@ -467,7 +467,7 @@ export interface RootCauseSpanInfo extends SpanInfo {
   flowHash: string;
 }
 
-interface AffectedEndpoint extends SpanInfo {
+export interface AffectedEndpoint extends SpanInfo {
   route: string;
   serviceName: string;
   sampleTraceId: string | null;
