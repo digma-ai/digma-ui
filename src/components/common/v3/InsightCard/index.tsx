@@ -126,14 +126,14 @@ export const InsightCard = (props: InsightCardProps) => {
               {props.onGoToTrace && (
                 <Button
                   icon={TraceIcon}
-                  label="Trace"
+                  label={"Trace"}
                   onClick={() => props.onGoToTrace && props.onGoToTrace()}
                 />
               )}
               {props.onGoToLive && (
                 <Button
                   icon={LiveIcon}
-                  label="Live"
+                  label={"Live"}
                   onClick={() => props.onGoToLive && props.onGoToLive()}
                 />
               )}

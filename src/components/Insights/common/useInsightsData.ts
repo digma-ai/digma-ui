@@ -62,8 +62,6 @@ export const useInsightsData = (props: UseInsightDataProps) => {
       const insightsData = data as InsightsData;
       insightsData.insightsStatus = InsightsStatus.DEFAULT;
       insightsData.viewMode = ViewMode.INSIGHTS;
-      // insightsData.methods = [];
-      // insightsData.spans = [];
 
       setIsLoading(false);
       setData(insightsData);

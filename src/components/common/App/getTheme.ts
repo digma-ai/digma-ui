@@ -3,6 +3,7 @@ import { Mode } from "../../../globals";
 import { ThemeColors } from "../../../styled";
 import { darkTheme } from "./themes/darkTheme";
 import { lightTheme } from "./themes/lightTheme";
+import { typographies } from "./typographies";
 
 const getColors = (mode: Mode): ThemeColors => {
   switch (mode) {
@@ -23,6 +24,7 @@ export const getTheme = (
     mode,
     mainFont,
     codeFont,
+    typographies,
     colors: getColors(mode)
   };
 };
