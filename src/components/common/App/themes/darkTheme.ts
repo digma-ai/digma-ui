@@ -272,13 +272,6 @@ export const darkTheme: ThemeColors = {
       low: v3colors.blue[300],
       backgroundSuccess: v3colors.green[400],
       success: v3colors.green[300]
-    },
-    fontSize: {
-      body: "14px",
-      subscript: "13px",
-      footnote: "12px",
-      captionOne: "11px",
-      captionTwo: "10px"
     }
   }
 };

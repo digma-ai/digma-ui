@@ -110,14 +110,29 @@ export interface ThemeColors {
       backgroundSuccess: string;
       success: string;
     };
-    fontSize: {
-      body: string;
-      subscript: string;
-      footnote: string;
-      captionOne: string;
-      captionTwo: string;
-    };
   };
+}
+
+interface FontWeights {
+  regular: number;
+  light: number;
+  medium: number;
+  semibold: number;
+  bold: number;
+}
+
+interface FontStyle {
+  lineHeight: string;
+  fontSize: string;
+  weight: FontWeights;
+}
+
+export interface Typographies {
+  captionOne: FontStyle;
+  captionTwo: FontStyle;
+  footNote: FontStyle;
+  subscript: FontStyle;
+  body: FontStyle;
 }
 
 declare module "styled-components" {
@@ -126,5 +141,6 @@ declare module "styled-components" {
     mainFont: string;
     codeFont: string;
     colors: ThemeColors;
+    typographies: Typographies;
   }
 }
