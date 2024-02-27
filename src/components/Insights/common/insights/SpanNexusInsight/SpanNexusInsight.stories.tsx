@@ -4,7 +4,7 @@ import { mockedSpanNexusInsight } from "./mockData";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof SpanNexusInsight> = {
-  title: "Insights/Common/Insights/SpanNexusInsight",
+  title: "Insights/common/insights/SpanNexusInsight",
   component: SpanNexusInsight,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
