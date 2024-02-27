@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { NewButton } from "../../NewButton";
 
 export const InsightFooter = styled.div`
   display: flex;
@@ -17,14 +16,6 @@ export const RefreshContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 4px;
-`;
-
-export const DismissButton = styled(NewButton)`
-  &:hover {
-    color: ${({ theme }) => theme.colors.v3.text.link};
-  }
-
-  font-size: 12px;
 `;
 
 export const Actions = styled.div`
