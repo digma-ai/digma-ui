@@ -1,17 +1,8 @@
-import { ForwardedRef, forwardRef } from "react";
 import * as s from "./styles";
 import { AnimatedCodeButtonProps } from "./types";
 
-export const AnimatedCodeButtonComponent = (
-  props: AnimatedCodeButtonProps,
-  ref: ForwardedRef<HTMLButtonElement>
-) => (
-  <s.Button
-    onClick={props.onClick}
-    ref={ref}
-    onMouseEnter={props.onMouseEnter}
-    onMouseLeave={props.onMouseLeave}
-  >
+export const AnimatedCodeButton = (props: AnimatedCodeButtonProps) => (
+  <s.Button onClick={props.onClick}>
     <s.BorderContainer />
     <s.Background>
       <s.InitialMask />
@@ -19,5 +10,3 @@ export const AnimatedCodeButtonComponent = (
     </s.Background>
   </s.Button>
 );
-
-export const AnimatedCodeButton = forwardRef(AnimatedCodeButtonComponent);

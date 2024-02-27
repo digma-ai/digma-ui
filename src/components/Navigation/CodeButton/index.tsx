@@ -1,4 +1,6 @@
-import { ForwardedRef, forwardRef } from "react";
+import { ForwardedRef, forwardRef, useEffect, useState } from "react";
+import { usePrevious } from "../../../hooks/usePrevious";
+import { isBoolean } from "../../../typeGuards/isBoolean";
 import { ClockWithTicksIcon } from "../../common/icons/20px/ClockWithTicksIcon";
 import { CodeIcon } from "../../common/icons/20px/CodeIcon";
 import { OpenTelemetryLogoIcon } from "../../common/icons/20px/OpenTelemetryLogoIcon";
@@ -8,67 +10,87 @@ import * as s from "./styles";
 import { CodeButtonProps } from "./types";
 
 const CodeButtonComponent = (
-  props: CodeButtonProps,
-  ref: ForwardedRef<HTMLDivElement | HTMLButtonElement>
+  {
+    hasData,
+    hasErrors,
+    hasObservability,
+    isDisabled,
+    isAlreadyAtScope,
+    onClick,
+    onMouseEnter,
+    onMouseLeave
+  }: CodeButtonProps,
+  ref: ForwardedRef<HTMLDivElement>
 ) => {
-  if (props.isDisabled || props.isAlreadyAtScope) {
-    return (
-      <s.ExtendedIconButton
-        ref={ref as ForwardedRef<HTMLButtonElement>}
-        icon={<CodeIcon color={"currentColor"} size={20} />}
-        isDisabled={props.isDisabled}
-        onClick={props.onClick}
-        isActive={props.isAlreadyAtScope}
-        onMouseEnter={props.onMouseEnter}
-        onMouseLeave={props.onMouseLeave}
-      />
-    );
-  }
+  const [isHovered, setIsHovered] = useState(false);
+  const previousIsHovered = usePrevious(isHovered);
 
-  if (props.hasErrors) {
-    return (
-      <GlowingIconButton
-        ref={ref as ForwardedRef<HTMLDivElement>}
-        icon={<CodeIcon color={"currentColor"} size={20} />}
-        onClick={props.onClick}
-        type={"error"}
-        onMouseEnter={props.onMouseEnter}
-        onMouseLeave={props.onMouseLeave}
-      />
-    );
-  }
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
 
-  if (!props.hasObservability) {
-    return (
-      <GlowingIconButton
-        ref={ref as ForwardedRef<HTMLDivElement>}
-        icon={<OpenTelemetryLogoIcon color={"currentColor"} size={20} />}
-        onClick={props.onClick}
-        onMouseEnter={props.onMouseEnter}
-        onMouseLeave={props.onMouseLeave}
-      />
-    );
-  }
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
 
-  if (!props.hasData) {
-    return (
-      <GlowingIconButton
-        ref={ref as ForwardedRef<HTMLDivElement>}
-        icon={<ClockWithTicksIcon color={"currentColor"} size={20} />}
-        onClick={props.onClick}
-        onMouseEnter={props.onMouseEnter}
-        onMouseLeave={props.onMouseLeave}
-      />
-    );
-  }
+  useEffect(() => {
+    if (isBoolean(previousIsHovered) && previousIsHovered !== isHovered) {
+      if (isHovered) {
+        onMouseEnter();
+      } else {
+        onMouseLeave();
+      }
+    }
+  }, [onMouseEnter, onMouseLeave, previousIsHovered, isHovered]);
+
+  const getButtonComponent = () => {
+    if (isDisabled || isAlreadyAtScope) {
+      return (
+        <s.ExtendedIconButton
+          icon={<CodeIcon color={"currentColor"} size={20} />}
+          isDisabled={isDisabled}
+          isActive={isAlreadyAtScope}
+        />
+      );
+    }
+
+    if (hasErrors) {
+      return (
+        <GlowingIconButton
+          icon={<CodeIcon color={"currentColor"} size={20} />}
+          type={"error"}
+        />
+      );
+    }
+
+    if (!hasObservability) {
+      return (
+        <GlowingIconButton
+          icon={<OpenTelemetryLogoIcon color={"currentColor"} size={20} />}
+        />
+      );
+    }
+
+    if (!hasData) {
+      return (
+        <GlowingIconButton
+          icon={<ClockWithTicksIcon color={"currentColor"} size={20} />}
+        />
+      );
+    }
+
+    return <AnimatedCodeButton />;
+  };
 
   return (
-    <AnimatedCodeButton
-      ref={ref as ForwardedRef<HTMLButtonElement>}
-      onClick={props.onClick}
-      onMouseEnter={props.onMouseEnter}
-      onMouseLeave={props.onMouseLeave}
-    />
+    <s.Container
+      ref={ref}
+      onClick={onClick}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      {getButtonComponent()}
+    </s.Container>
   );
 };
 
