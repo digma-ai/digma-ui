@@ -746,3 +746,5 @@ export interface InsightsQuery {
 export interface ScopedInsightsQuery extends InsightsQuery {
   scopedSpanCodeObjectId: string | null;
 }
+
+export { InsightType };

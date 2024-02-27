@@ -5,7 +5,7 @@ export const Container = styled.div`
   flex-direction: column;
   border-radius: 4px;
   border: 1px solid ${({ theme }) => theme.colors.v3.stroke.primary};
-  background: ${({ theme }) => theme.colors.v3.surface.primary};
+  background: ${({ theme }) => theme.colors.v3.surface.secondary};
 `;
 
 const Section = styled.div`

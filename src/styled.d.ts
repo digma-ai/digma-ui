@@ -72,6 +72,7 @@ export interface ThemeColors {
       brandSecondary: string;
       brandDark: string;
       sidePanelHeader: string;
+      asyncTag: string;
     };
     text: {
       primary: string;

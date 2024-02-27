@@ -1,5 +1,9 @@
-import { InsightType } from "../../../types";
-import { InsightCategory, InsightScope, SpanNexusInsight } from "../types";
+import { InsightType } from "../../../../../types";
+import {
+  InsightCategory,
+  InsightScope,
+  SpanNexusInsight
+} from "../../../types";
 
 export const mockedSpanNexusInsight: SpanNexusInsight = {
   id: "60b54792-8262-4c5d-9628-7cce7979ad6d",
@@ -13,7 +17,6 @@ export const mockedSpanNexusInsight: SpanNexusInsight = {
   reopenCount: 0,
   ticketLink: null,
   name: "Code Nexus Point",
-  type: InsightType.SpanNexus,
   category: InsightCategory.Usage,
   specifity: 2,
   importance: 3,
@@ -56,5 +59,6 @@ export const mockedSpanNexusInsight: SpanNexusInsight = {
   entries: 5,
   isEntriesHigh: false,
   isFlowsHigh: true,
-  isServicesHigh: false
+  isServicesHigh: false,
+  type: InsightType.SpanNexus
 };
