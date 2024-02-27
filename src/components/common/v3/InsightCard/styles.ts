@@ -29,7 +29,6 @@ export const DismissButton = styled(NewButton)`
 
 export const Actions = styled.div`
   display: flex;
-  flex-direction: row;
 `;
 
 export const MainActions = styled(Actions)`
