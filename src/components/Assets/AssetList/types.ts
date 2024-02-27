@@ -1,5 +1,6 @@
 import { Duration } from "../../../globals";
 import { AssetFilterQuery } from "../AssetsFilter/types";
+import { AssetScopeOption } from "../AssetsViewScopeConfiguration/types";
 
 export interface AssetListProps {
   data?: AssetsData;
@@ -8,6 +9,7 @@ export interface AssetListProps {
   services?: string[];
   filters?: AssetFilterQuery;
   searchQuery: string;
+  scopeViewOptions: AssetScopeOption | null;
 }
 
 export enum SORTING_CRITERION {

@@ -77,4 +77,5 @@ export const ButtonsContainer = styled.div`
   display: flex;
   flex-shrink: 0;
   gap: 4px;
+  align-items: center;
 `;

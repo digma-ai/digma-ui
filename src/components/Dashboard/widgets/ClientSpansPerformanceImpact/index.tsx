@@ -11,13 +11,15 @@ import {
 } from "./types";
 
 const renderClientSpanOverallImpactEntry = (
-  item: ClientSpanOverallImpactEntry
+  item: ClientSpanOverallImpactEntry,
+  environment: string
 ) => {
   const handleSpanClick = (spanCodeObjectId: string) => {
     window.sendMessageToDigma({
       action: actions.GO_TO_SPAN,
       payload: {
         spanCodeObjectId,
+        environment,
         type: WidgetType.CLIENT_SPANS_PERFORMANCE_IMPACT
       }
     });

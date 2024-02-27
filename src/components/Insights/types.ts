@@ -1,6 +1,7 @@
 import { MemoExoticComponent } from "react";
 import { Duration } from "../../globals";
 import { InsightType, SpanInfo, SpanInstanceInfo } from "../../types";
+import { Sorting } from "../common/SortingSelector/types";
 import { IconProps } from "../common/icons/types";
 
 export enum ViewMode {
@@ -54,16 +55,18 @@ export interface Method {
 
 export interface InsightsData {
   insights: GenericCodeObjectInsight[];
-  spans: MethodSpan[];
-  assetId?: string;
-  serviceName: string;
-  environment: string;
-  insightsStatus: InsightsStatus;
-  viewMode: ViewMode;
-  methods: Method[];
-  hasMissingDependency: boolean;
-  canInstrumentMethod: boolean;
-  needsObservabilityFix: boolean;
+  totalCount: number;
+  insightsStatus: InsightsStatus; // ??  default
+  viewMode: ViewMode; // Insights
+
+  // methods: Method[]; // empty
+  // assetId?: string; // remove
+  // environment: string; // remove
+  // serviceName: string; //
+  // spans: MethodSpan[]; // to add on plugin
+  // hasMissingDependency: boolean; // remove
+  // canInstrumentMethod: boolean; // remove
+  // needsObservabilityFix: boolean; //remove
 }
 
 export interface InsightsProps {
@@ -172,6 +175,7 @@ export interface CodeObjectInsight extends Insight {
   lastDetected: string | null;
   reopenCount: number;
   ticketLink: string | null;
+  id: string;
 }
 
 export interface SpanInsight extends CodeObjectInsight {
@@ -732,3 +736,15 @@ export interface EndpointQueryOptimizationInsight extends EndpointInsight {
     ticketLink: string | null;
   }[];
 }
+
+export interface InsightsQuery {
+  page: number;
+  sorting: Sorting;
+  searchQuery: string | null;
+}
+
+export interface ScopedInsightsQuery extends InsightsQuery {
+  scopedSpanCodeObjectId: string | null;
+}
+
+export { InsightType };

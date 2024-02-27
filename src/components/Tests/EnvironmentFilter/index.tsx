@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FilterMenu } from "../../Assets/FilterMenu";
+import { FilterMenu } from "../../common/FilterMenu";
 import { NewPopover } from "../../common/NewPopover";
 import { ChevronIcon } from "../../common/icons/ChevronIcon";
 import { GlobeIcon } from "../../common/icons/GlobeIcon";

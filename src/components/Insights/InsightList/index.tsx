@@ -138,11 +138,6 @@ const groupInsights = (
       continue;
     }
 
-    // Do not show Span Usage insight
-    if (insight.type === InsightType.SpanUsageStatus) {
-      continue;
-    }
-
     if (!isSpanInsight(insight) && !isEndpointInsight(insight)) {
       ungroupedInsights.push(insight);
       continue;

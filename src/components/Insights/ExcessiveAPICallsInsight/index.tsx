@@ -40,6 +40,7 @@ export const ExcessiveAPICallsInsight = (
   return (
     <InsightCard
       data={props.insight}
+      spanInfo={props.insight.spanInfo}
       content={
         <s.ContentContainer>
           <Description>

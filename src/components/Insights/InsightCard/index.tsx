@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useTheme } from "styled-components";
+import { actions } from "../../../actions";
 import { PERCENTILES } from "../../../constants";
 import { isString } from "../../../typeGuards/isString";
 import { formatTimeDistance } from "../../../utils/formatTimeDistance";
 import { getInsightImportanceColor } from "../../../utils/getInsightImportanceColor";
 import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
+import { ChangeScopePayload } from "../../Navigation/types";
+import { ConfigContext } from "../../common/App/ConfigContext";
 import { Badge } from "../../common/Badge";
 import { Card } from "../../common/Card";
 import { KebabMenuButton } from "../../common/KebabMenuButton";
@@ -16,6 +19,7 @@ import { Tag } from "../../common/Tag";
 import { Toggle } from "../../common/Toggle";
 import { ToggleValue } from "../../common/Toggle/types";
 import { Tooltip } from "../../common/Tooltip";
+import { OpenTelemetryLogoIcon } from "../../common/icons/12px/OpenTelemetryLogoIcon";
 import { ChevronIcon } from "../../common/icons/ChevronIcon";
 import { InfoCircleIcon } from "../../common/icons/InfoCircleIcon";
 import { Direction } from "../../common/icons/types";
@@ -33,6 +37,7 @@ export const InsightCard = (props: InsightCardProps) => {
   const [percentileViewMode, setPercentileViewMode] =
     useState<number>(DEFAULT_PERCENTILE);
   const [isRecalculatingStarted, setIsRecalculatingStarted] = useState(false);
+  const { scope } = useContext(ConfigContext);
 
   const theme = useTheme();
   const insightTypeInfo = getInsightTypeInfo(props.data.type);
@@ -120,104 +125,132 @@ export const InsightCard = (props: InsightCardProps) => {
       IS_NEW_TIME_LIMIT
     : false;
 
+  const handleTitleLinkClick = () => {
+    if (props.spanInfo) {
+      window.sendMessageToDigma<ChangeScopePayload>({
+        action: actions.CHANGE_SCOPE,
+        payload: {
+          span: {
+            spanCodeObjectId: props.spanInfo.spanCodeObjectId
+          }
+        }
+      });
+    }
+  };
+
   return (
-    <Card
-      header={
-        <>
+    <>
+      <Card
+        showTitle={Boolean(!scope?.span && props.spanInfo)}
+        title={
           <s.Title>
-            <s.InsightIconContainer>
-              {props.isRecent && (
-                <s.BadgeContainer>
-                  <Badge />
-                </s.BadgeContainer>
-              )}
-              {insightTypeInfo && (
-                <insightTypeInfo.icon color={insightIconColor} size={16} />
-              )}
-            </s.InsightIconContainer>
-            {insightTypeInfo?.label || props.data.type}
-            {insightTypeInfo?.description && (
-              <Tooltip title={<insightTypeInfo.description />}>
-                <s.InfoContainer>
-                  <InfoCircleIcon color={"currentColor"} size={16} />
-                </s.InfoContainer>
-              </Tooltip>
-            )}
+            <s.TitleIconContainer>
+              <OpenTelemetryLogoIcon color={"currentColor"} />
+            </s.TitleIconContainer>
+            <Tooltip title={props.spanInfo?.displayName}>
+              <s.TitleLink onClick={handleTitleLinkClick}>
+                {props.spanInfo?.displayName}
+              </s.TitleLink>
+            </Tooltip>
           </s.Title>
-          <s.Toolbar>
-            {isNew && <Tag type={"success"} value={"New"} />}
-            {props.isAsync && <s.AsyncBadge>Async</s.AsyncBadge>}
-            {props.stats && <s.Stats>{props.stats}</s.Stats>}
-            {(props.menuItems || props.data.isRecalculateEnabled) && (
-              <Popover
-                open={isKebabMenuOpen}
-                onOpenChange={setIsKebabMenuOpen}
-                placement={"bottom-start"}
-              >
-                <PopoverTrigger onClick={handleKebabMenuButtonToggle}>
-                  <KebabMenuButton />
-                </PopoverTrigger>
-                <PopoverContent className={"Popover"} width={"max-content"}>
-                  <Menu
-                    items={[
-                      ...(props.data.isRecalculateEnabled
-                        ? [{ value: RECALCULATE, label: "Recalculate" }]
-                        : []),
-                      ...(props.menuItems
-                        ? props.menuItems.map((x) => ({ value: x, label: x }))
-                        : [])
-                    ]}
-                    onSelect={handleKebabMenuItemSelect}
+        }
+        header={
+          <>
+            <s.Header>
+              <s.InsightIconContainer>
+                {props.isRecent && (
+                  <s.BadgeContainer>
+                    <Badge />
+                  </s.BadgeContainer>
+                )}
+                {insightTypeInfo && (
+                  <insightTypeInfo.icon color={insightIconColor} size={16} />
+                )}
+              </s.InsightIconContainer>
+              {insightTypeInfo?.label || props.data.type}
+              {insightTypeInfo?.description && (
+                <Tooltip title={<insightTypeInfo.description />}>
+                  <s.InfoContainer>
+                    <InfoCircleIcon color={"currentColor"} size={16} />
+                  </s.InfoContainer>
+                </Tooltip>
+              )}
+            </s.Header>
+            <s.Toolbar>
+              {isNew && <Tag type={"success"} value={"New"} />}
+              {props.isAsync && <s.AsyncBadge>Async</s.AsyncBadge>}
+              {props.stats && <s.Stats>{props.stats}</s.Stats>}
+              {(props.menuItems || props.data.isRecalculateEnabled) && (
+                <Popover
+                  open={isKebabMenuOpen}
+                  onOpenChange={setIsKebabMenuOpen}
+                  placement={"bottom-start"}
+                >
+                  <PopoverTrigger onClick={handleKebabMenuButtonToggle}>
+                    <KebabMenuButton />
+                  </PopoverTrigger>
+                  <PopoverContent className={"Popover"} width={"max-content"}>
+                    <Menu
+                      items={[
+                        ...(props.data.isRecalculateEnabled
+                          ? [{ value: RECALCULATE, label: "Recalculate" }]
+                          : []),
+                        ...(props.menuItems
+                          ? props.menuItems.map((x) => ({ value: x, label: x }))
+                          : [])
+                      ]}
+                      onSelect={handleKebabMenuItemSelect}
+                    />
+                  </PopoverContent>
+                </Popover>
+              )}
+              {props.expandableContent && (
+                <s.ExpandButton onClick={handleExpandButtonClick}>
+                  <ChevronIcon
+                    color={theme.mode === "light" ? "#828797" : "#b9c2eb"}
+                    direction={isExpanded ? Direction.UP : Direction.DOWN}
+                    size={14}
                   />
-                </PopoverContent>
-              </Popover>
+                </s.ExpandButton>
+              )}
+            </s.Toolbar>
+          </>
+        }
+        content={
+          <>
+            {props.onPercentileViewModeChange && (
+              <Toggle
+                options={PERCENTILES.map((percentile) => ({
+                  value: percentile.percentile,
+                  label: percentile.label
+                }))}
+                value={percentileViewMode}
+                onValueChange={handlePercentileToggleValueChange}
+              />
+            )}
+            {props.data.actualStartTime &&
+              renderRecalculationBlock(
+                props.data.actualStartTime,
+                props.data.customStartTime,
+                isRecalculatingStarted
+              )}
+            {props.content && (
+              <s.ContentContainer>{props.content}</s.ContentContainer>
             )}
             {props.expandableContent && (
-              <s.ExpandButton onClick={handleExpandButtonClick}>
-                <ChevronIcon
-                  color={theme.mode === "light" ? "#828797" : "#b9c2eb"}
-                  direction={isExpanded ? Direction.UP : Direction.DOWN}
-                  size={14}
-                />
-              </s.ExpandButton>
+              <span>
+                <Link onClick={handleExpandButtonClick}>
+                  Show {isExpanded ? "less" : "more"}
+                </Link>
+              </span>
             )}
-          </s.Toolbar>
-        </>
-      }
-      content={
-        <>
-          {props.onPercentileViewModeChange && (
-            <Toggle
-              options={PERCENTILES.map((percentile) => ({
-                value: percentile.percentile,
-                label: percentile.label
-              }))}
-              value={percentileViewMode}
-              onValueChange={handlePercentileToggleValueChange}
-            />
-          )}
-          {props.data.actualStartTime &&
-            renderRecalculationBlock(
-              props.data.actualStartTime,
-              props.data.customStartTime,
-              isRecalculatingStarted
+            {isExpanded && props.expandableContent && (
+              <s.ContentContainer>{props.expandableContent}</s.ContentContainer>
             )}
-          {props.content && (
-            <s.ContentContainer>{props.content}</s.ContentContainer>
-          )}
-          {props.expandableContent && (
-            <span>
-              <Link onClick={handleExpandButtonClick}>
-                Show {isExpanded ? "less" : "more"}
-              </Link>
-            </span>
-          )}
-          {isExpanded && props.expandableContent && (
-            <s.ContentContainer>{props.expandableContent}</s.ContentContainer>
-          )}
-        </>
-      }
-      buttons={props.buttons}
-    />
+          </>
+        }
+        buttons={props.buttons}
+      />
+    </>
   );
 };

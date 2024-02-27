@@ -1,4 +1,7 @@
+import { MemoExoticComponent } from "react";
+import { IconProps } from "../../common/icons/types";
 import { AssetFilterQuery } from "../AssetsFilter/types";
+import { AssetScopeOption } from "../AssetsViewScopeConfiguration/types";
 
 export interface AssetTypeListProps {
   data?: AssetCategoriesData;
@@ -6,6 +9,7 @@ export interface AssetTypeListProps {
   services?: string[];
   filters?: AssetFilterQuery;
   searchQuery: string;
+  scopeViewOptions: AssetScopeOption | null;
 }
 
 export interface AssetCategoriesData {
@@ -13,4 +17,11 @@ export interface AssetCategoriesData {
     name: string;
     count: number;
   }[];
+}
+
+export interface AssetCategoryData {
+  name: string;
+  count: number;
+  label?: string;
+  icon?: MemoExoticComponent<(props: IconProps) => JSX.Element>;
 }

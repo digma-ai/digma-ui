@@ -3,6 +3,7 @@ import { DefaultTheme, useTheme } from "styled-components";
 import { dispatcher } from "../../../dispatcher";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import { usePrevious } from "../../../hooks/usePrevious";
+import { isEnvironment } from "../../../typeGuards/isEnvironment";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { isString } from "../../../typeGuards/isString";
 import { FeatureFlag } from "../../../types";
@@ -132,7 +133,9 @@ const getData = (
   searchQuery: string,
   filters: AssetFilterQuery | undefined,
   services: string[] | undefined,
-  isComplexFilterEnabled: boolean
+  isComplexFilterEnabled: boolean,
+  isDirect?: boolean,
+  scopedSpanCodeObjectId?: string
 ) => {
   window.sendMessageToDigma({
     action: actions.GET_DATA,
@@ -143,6 +146,8 @@ const getData = (
         pageSize: PAGE_SIZE,
         sortBy: sorting.criterion,
         sortOrder: sorting.order,
+        directOnly: isDirect,
+        scopedSpanCodeObjectId,
         ...(searchQuery && searchQuery.length > 0
           ? { displayName: searchQuery }
           : {}),
@@ -190,6 +195,7 @@ export const AssetList = (props: AssetListProps) => {
   const previousAssetTypeId = usePrevious(props.assetTypeId);
   const previousServices = usePrevious(props.services);
   const previousFilters = usePrevious(props.filters);
+  const previousViewScope = usePrevious(props.scopeViewOptions);
 
   const entries = data?.data || [];
 
@@ -232,7 +238,9 @@ export const AssetList = (props: AssetListProps) => {
       props.searchQuery,
       props.filters,
       props.services,
-      isComplexFilterEnabled
+      isComplexFilterEnabled,
+      props.scopeViewOptions?.isDirect,
+      props.scopeViewOptions?.scopedSpanCodeObjectId
     );
     setIsInitialLoading(true);
 
@@ -252,8 +260,9 @@ export const AssetList = (props: AssetListProps) => {
   useEffect(() => {
     if (
       (isNumber(previousPage) && previousPage !== page) ||
-      (isString(previousEnvironment) &&
-        previousEnvironment !== config.environment) ||
+      (isEnvironment(previousEnvironment) &&
+        previousEnvironment.originalName !==
+          config.environment?.originalName) ||
       (previousSorting && previousSorting !== sorting) ||
       (isString(previousSearchQuery) &&
         previousSearchQuery !== props.searchQuery) ||
@@ -261,7 +270,8 @@ export const AssetList = (props: AssetListProps) => {
         previousAssetTypeId !== props.assetTypeId) ||
       (Array.isArray(previousServices) &&
         previousServices !== props.services) ||
-      (previousFilters && previousFilters !== props.filters)
+      (previousFilters && previousFilters !== props.filters) ||
+      previousViewScope !== props.scopeViewOptions
     ) {
       getData(
         props.assetTypeId,
@@ -270,7 +280,9 @@ export const AssetList = (props: AssetListProps) => {
         props.searchQuery,
         props.filters,
         props.services,
-        isComplexFilterEnabled
+        isComplexFilterEnabled,
+        props.scopeViewOptions?.isDirect,
+        props.scopeViewOptions?.scopedSpanCodeObjectId
       );
     }
   }, [
@@ -288,7 +300,9 @@ export const AssetList = (props: AssetListProps) => {
     previousServices,
     props.filters,
     previousFilters,
-    isComplexFilterEnabled
+    isComplexFilterEnabled,
+    previousViewScope,
+    props.scopeViewOptions
   ]);
 
   useEffect(() => {
@@ -302,7 +316,9 @@ export const AssetList = (props: AssetListProps) => {
           props.searchQuery,
           props.filters,
           props.services,
-          isComplexFilterEnabled
+          isComplexFilterEnabled,
+          props.scopeViewOptions?.isDirect,
+          props.scopeViewOptions?.scopedSpanCodeObjectId
         );
       }, REFRESH_INTERVAL);
     }
@@ -313,10 +329,10 @@ export const AssetList = (props: AssetListProps) => {
     page,
     sorting,
     props.searchQuery,
-    config.environment,
     props.services,
     props.filters,
-    isComplexFilterEnabled
+    isComplexFilterEnabled,
+    props.scopeViewOptions
   ]);
 
   useEffect(() => {
@@ -333,11 +349,24 @@ export const AssetList = (props: AssetListProps) => {
 
   useEffect(() => {
     setPage(0);
-  }, [config.environment, props.searchQuery, sorting, props.assetTypeId]);
+  }, [
+    config.environment?.originalName,
+    props.searchQuery,
+    sorting,
+    props.assetTypeId,
+    props.scopeViewOptions
+  ]);
 
   useEffect(() => {
     listRef.current?.scrollTo(0, 0);
-  }, [config.environment, props.searchQuery, sorting, page, props.assetTypeId]);
+  }, [
+    config.environment?.originalName,
+    props.searchQuery,
+    sorting,
+    page,
+    props.assetTypeId,
+    props.scopeViewOptions
+  ]);
 
   const handleBackButtonClick = () => {
     props.onBackButtonClick();

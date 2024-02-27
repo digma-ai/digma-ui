@@ -7,6 +7,7 @@ import {
 
 export const mockedEndpointQueryOptimizationInsight: EndpointQueryOptimizationInsight =
   {
+    id: "60b55792-8262-4c5d-9628-7cce7989ad6d",
     firstDetected: "2023-12-05T17:25:47.010Z",
     lastDetected: "2024-01-05T13:14:47.010Z",
     criticality: 0,

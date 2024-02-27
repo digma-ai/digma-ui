@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
 import { usePrevious } from "../../../hooks/usePrevious";
+import { isDigmaEngineRunning } from "../../../utils/isDigmaEngineRunning";
 import { openURLInDefaultBrowser } from "../../../utils/openURLInDefaultBrowser";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
@@ -507,17 +508,13 @@ export const InstallStep = (props: InstallStepProps) => {
   ];
 
   const renderEngineManager = () => {
-    const isDigmaEngineRunning = Boolean(
-      config.digmaStatus?.connection.status &&
-        config.digmaStatus.runningDigmaInstances.length === 1 &&
-        config.digmaStatus.runningDigmaInstances.includes("localEngine")
-    );
+    const isEngineRunning = isDigmaEngineRunning(config);
 
     const isConfigureButtonEnabled =
       (isFirstLaunch &&
         isAutoInstallationFinished &&
         config.isDigmaEngineInstalled &&
-        isDigmaEngineRunning) ||
+        isEngineRunning) ||
       !isEngineOperationInProgress;
 
     return (

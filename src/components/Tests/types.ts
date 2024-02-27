@@ -1,5 +1,6 @@
 import { Duration } from "../../globals";
 import { SpanInfo } from "../../types";
+import { Scope } from "../common/App/types";
 
 export interface Test {
   name: string;
@@ -30,6 +31,12 @@ export interface TestsData {
   entries: Test[];
 }
 
+export interface GetSpanLatestDataPayload {
+  environments: string[];
+  pageNumber: number;
+  scope: Scope["span"] | null;
+}
+
 export interface SetSpanLatestDataPayload {
   data: TestsData | null;
   error: {
@@ -39,4 +46,10 @@ export interface SetSpanLatestDataPayload {
 
 export interface TestsProps {
   data?: SetSpanLatestDataPayload;
+}
+
+export interface RegisterPayload {
+  email: string;
+  fullName: string;
+  scope: string;
 }

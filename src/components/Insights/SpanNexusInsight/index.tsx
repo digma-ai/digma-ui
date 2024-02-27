@@ -7,7 +7,6 @@ import { SpanNexusInsightProps } from "./types";
 const getTagType = (isHigh: boolean) => {
   return isHigh ? "mediumSeverity" : "default";
 };
-
 export const SpanNexusInsight = (props: SpanNexusInsightProps) => {
   const { insight } = props;
   const {
@@ -22,6 +21,7 @@ export const SpanNexusInsight = (props: SpanNexusInsightProps) => {
   return (
     <InsightCard
       data={insight}
+      spanInfo={props.insight.spanInfo}
       content={
         <s.ContentContainer>
           <Description>Multiple code flows depend on this location</Description>

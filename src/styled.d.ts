@@ -61,6 +61,56 @@ export interface ThemeColors {
     secondary: string;
     brand: string;
   };
+  v3: {
+    surface: {
+      primary: string;
+      primaryLight: string;
+      highlight: string;
+      gray: string;
+      secondary: string;
+      brandPrimary: string;
+      brandSecondary: string;
+      brandDark: string;
+      sidePanelHeader: string;
+      asyncTag: string;
+    };
+    text: {
+      primary: string;
+      secondary: string;
+      tertiary: string;
+      disabled: string;
+      white: string;
+      link: string;
+    };
+    stroke: {
+      primary: string;
+      primaryLight: string;
+      secondary: string;
+      tertiary: string;
+      dark: string;
+      brandPrimary: string;
+      brandSecondary: string;
+    };
+    icon: {
+      primary: string;
+      secondary: string;
+      tertiary: string;
+      disabled: string;
+      brandPrimary: string;
+      brandSecondary: string;
+      brandTertiary: string;
+    };
+    status: {
+      backgroundHigh: string;
+      high: string;
+      backgroundMedium: string;
+      medium: string;
+      backgroundLow: string;
+      low: string;
+      backgroundSuccess: string;
+      success: string;
+    };
+  };
 }
 
 declare module "styled-components" {

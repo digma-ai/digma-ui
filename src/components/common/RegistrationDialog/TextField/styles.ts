@@ -4,7 +4,7 @@ import {
   greenScale,
   primaryScale,
   redScale
-} from "../../App/getTheme";
+} from "../../App/v2colors";
 import { ContainerProps, IconContainerProps, InputProps } from "./types";
 
 export const Container = styled.div<ContainerProps>`

@@ -1,6 +1,7 @@
 import { ComponentType, ReactNode } from "react";
+import { EnvironmentType } from "../../common/App/types";
 import { IconProps } from "../../common/icons/types";
-import { EnvironmentType, ExtendedEnvironment } from "../types";
+import { ExtendedEnvironment } from "../types";
 
 export interface EnvironmentTypePanelProps {
   environment: ExtendedEnvironment;

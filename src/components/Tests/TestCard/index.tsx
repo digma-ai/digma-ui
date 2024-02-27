@@ -16,7 +16,12 @@ import { actions } from "../actions";
 import { trackingEvents } from "../tracking";
 import { Test } from "../types";
 import * as s from "./styles";
-import { TestCardProps } from "./types";
+import {
+  GoToSpanOfTestPayload,
+  GoToTracePayload,
+  RunTestPayload,
+  TestCardProps
+} from "./types";
 
 const renderTestResultTag = (test: Test) => {
   switch (test.result) {
@@ -58,7 +63,7 @@ const renderTestResultTag = (test: Test) => {
 export const TestCard = (props: TestCardProps) => {
   const handleTestNameClick = () => {
     sendTrackingEvent(trackingEvents.TEST_NAME_LINK_CLICKED);
-    window.sendMessageToDigma({
+    window.sendMessageToDigma<GoToSpanOfTestPayload>({
       action: actions.GO_TO_SPAN_OF_TEST,
       payload: {
         environment: props.test.environmentId,
@@ -83,7 +88,7 @@ export const TestCard = (props: TestCardProps) => {
       return context.spanCodeObjectId === id;
     });
 
-    window.sendMessageToDigma({
+    window.sendMessageToDigma<GoToTracePayload>({
       action: actions.GO_TO_TRACE,
       payload: {
         traceId: props.test.traceId,
@@ -94,13 +99,15 @@ export const TestCard = (props: TestCardProps) => {
   };
 
   const handleRunButtonClick = () => {
-    sendTrackingEvent(trackingEvents.RUN_TEST_BUTTON_CLICKED);
-    window.sendMessageToDigma({
-      action: actions.RUN_TEST,
-      payload: {
-        methodCodeObjectId: props.test.spanInfo.methodCodeObjectId
-      }
-    });
+    if (props.test.spanInfo.methodCodeObjectId) {
+      sendTrackingEvent(trackingEvents.RUN_TEST_BUTTON_CLICKED);
+      window.sendMessageToDigma<RunTestPayload>({
+        action: actions.RUN_TEST,
+        payload: {
+          methodCodeObjectId: props.test.spanInfo.methodCodeObjectId
+        }
+      });
+    }
   };
 
   const durationString = getDurationString(props.test.duration);
@@ -160,6 +167,7 @@ export const TestCard = (props: TestCardProps) => {
             buttonType={"secondary"}
             onClick={handleRunButtonClick}
             size={"large"}
+            disabled={!props.test.spanInfo.methodCodeObjectId}
           />
         </s.ButtonsContainer>
       </s.Content>

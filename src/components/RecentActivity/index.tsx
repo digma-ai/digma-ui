@@ -9,6 +9,7 @@ import { trackingEvents as globalTrackingEvents } from "../../trackingEvents";
 import { groupBy } from "../../utils/groupBy";
 import { sendTrackingEvent } from "../../utils/sendTrackingEvent";
 import { ConfigContext } from "../common/App/ConfigContext";
+import { EnvironmentType } from "../common/App/types";
 import { CursorFollower } from "../common/CursorFollower";
 import { RegistrationDialog } from "../common/RegistrationDialog";
 import { RegistrationFormValues } from "../common/RegistrationDialog/types";
@@ -30,7 +31,6 @@ import { actions } from "./actions";
 import * as s from "./styles";
 import {
   EntrySpan,
-  EnvironmentType,
   ExtendedEnvironment,
   RecentActivityData,
   RecentActivityProps,

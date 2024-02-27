@@ -18,8 +18,8 @@ declare global {
       onFailure: (error_code, error_message) => void;
     }) => string;
     cefQueryCancel?: (request_id: string) => void;
-    sendMessageToDigma: (
-      message: DigmaOutgoingMessageData
+    sendMessageToDigma: <T>(
+      message: DigmaOutgoingMessageData<T>
     ) => string | undefined;
     cancelMessageToDigma: (request_id: string) => void;
     digmaApiUrl?: unknown;

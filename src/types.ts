@@ -10,8 +10,6 @@ export enum FeatureFlag {
 
 export enum InsightType {
   TopErrorFlows = "TopErrorFlows",
-  SpanDurationChange = "SpanDurationChange",
-  SpanUsageStatus = "SpanUsageStatus",
   HotSpot = "HotSpot",
   Errors = "Errors",
   SlowEndpoint = "SlowEndpoint",
@@ -59,4 +57,12 @@ export interface SpanInstanceInfo {
   spanId: string;
   startTime: string;
   duration: Duration;
+}
+
+export interface SetObservabilityPayload {
+  isObservabilityEnabled: boolean;
+}
+
+export interface OpenInstallationWizardPayload {
+  skipInstallationStep: boolean;
 }

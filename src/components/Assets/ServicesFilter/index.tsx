@@ -1,11 +1,12 @@
 import { useContext, useEffect, useState } from "react";
 import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
+import { isEnvironment } from "../../../typeGuards/isEnvironment";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { isString } from "../../../typeGuards/isString";
 import { ConfigContext } from "../../common/App/ConfigContext";
+import { FilterMenu } from "../../common/FilterMenu";
 import { NewPopover } from "../../common/NewPopover";
-import { FilterMenu } from "../FilterMenu";
 import { actions } from "../actions";
 import { ServiceData } from "../types";
 import { FilterButton } from "./FilterButton";
@@ -63,8 +64,8 @@ export const ServicesFilter = (props: ServicesFilterProps) => {
 
   useEffect(() => {
     if (
-      isString(previousEnvironment) &&
-      previousEnvironment !== config.environment
+      isEnvironment(previousEnvironment) &&
+      previousEnvironment.originalName !== config.environment?.originalName
     ) {
       setServices(undefined);
       window.sendMessageToDigma({

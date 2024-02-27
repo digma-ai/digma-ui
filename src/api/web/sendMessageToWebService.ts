@@ -5,7 +5,9 @@ import { getAboutInfo } from "./services/about";
 import { GetDashboardParams, getDashboard } from "./services/dashboard";
 import { GetEnvironmentParams, getEnvironment } from "./services/environments";
 
-export const sendMessageToWebService = (message: DigmaOutgoingMessageData) => {
+export const sendMessageToWebService = <T>(
+  message: DigmaOutgoingMessageData<T>
+) => {
   switch (message.action) {
     case dashboardActions.GET_DATA:
       void getDashboard(

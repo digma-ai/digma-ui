@@ -1,6 +1,6 @@
 import {
-  ChangeEvent,
   useContext,
+  useEffect,
   useLayoutEffect,
   useMemo,
   useState
@@ -11,14 +11,17 @@ import {
   getFeatureFlagValue
 } from "../../featureFlags";
 import { useDebounce } from "../../hooks/useDebounce";
+import { usePrevious } from "../../hooks/usePrevious";
 import { FeatureFlag } from "../../types";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { EmptyState } from "../common/EmptyState";
-import { MagnifierIcon } from "../common/icons/MagnifierIcon";
+import { SearchInput } from "../common/SearchInput";
 import { AssetList } from "./AssetList";
 import { AssetTypeList } from "./AssetTypeList";
 import { AssetsFilter } from "./AssetsFilter";
 import { AssetFilterQuery } from "./AssetsFilter/types";
+import { AssetsViewScopeConfiguration } from "./AssetsViewScopeConfiguration";
+import { AssetScopeOption } from "./AssetsViewScopeConfiguration/types";
 import { NoDataMessage } from "./NoDataMessage";
 import { ServicesFilter } from "./ServicesFilter";
 import { actions } from "./actions";
@@ -31,8 +34,11 @@ export const Assets = () => {
   const [searchInputValue, setSearchInputValue] = useState("");
   const debouncedSearchInputValue = useDebounce(searchInputValue, 1000);
   const [selectedServices, setSelectedServices] = useState<string[]>();
+  const [assetScopeOption, setAssetScopeOption] =
+    useState<AssetScopeOption | null>(null);
   const [selectedFilters, setSelectedFilters] = useState<AssetFilterQuery>();
   const config = useContext(ConfigContext);
+  const previousScope = usePrevious(config.scope?.span);
 
   const isServiceFilterVisible = getFeatureFlagValue(
     config,
@@ -65,12 +71,26 @@ export const Assets = () => {
     });
   }, []);
 
+  useEffect(() => {
+    if (!config.scope?.span) {
+      setAssetScopeOption(null);
+    }
+  }, [config.scope]);
+
+  useEffect(() => {
+    if (!previousScope || previousScope !== config.scope?.span) {
+      setSelectedAssetTypeId(null);
+      setSearchInputValue("");
+      setSelectedServices([]);
+    }
+  }, [config.scope, previousScope]);
+
   const handleBackButtonClick = () => {
     setSelectedAssetTypeId(null);
   };
 
-  const handleSearchInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearchInputValue(e.target.value);
+  const handleSearchInputChange = (val: string | null) => {
+    setSearchInputValue(val || "");
   };
 
   const handleAssetTypeSelect = (assetTypeId: string) => {
@@ -113,6 +133,7 @@ export const Assets = () => {
           services={selectedServices}
           filters={selectedFilters}
           searchQuery={debouncedSearchInputValue}
+          scopeViewOptions={assetScopeOption}
         />
       );
     }
@@ -124,6 +145,7 @@ export const Assets = () => {
         services={selectedServices}
         filters={selectedFilters}
         searchQuery={debouncedSearchInputValue}
+        scopeViewOptions={assetScopeOption}
       />
     );
   };
@@ -131,33 +153,41 @@ export const Assets = () => {
   return (
     <s.Container>
       <s.Header>
-        Assets
-        {window.assetsSearch === true && (
-          <s.SearchInputContainer>
-            <s.SearchInputIconContainer>
-              <MagnifierIcon color={"currentColor"} size={14} />
-            </s.SearchInputIconContainer>
-            <s.SearchInput
-              placeholder={"Search"}
+        <s.HeaderItem>
+          Assets
+          {window.assetsSearch === true && (
+            <SearchInput
               onChange={handleSearchInputChange}
+              value={searchInputValue}
             />
-          </s.SearchInputContainer>
-        )}
-        {isComplexFilterEnabled ? (
-          <AssetsFilter
-            onApply={handleApplyFilters}
-            filters={selectedFilters}
-          />
-        ) : (
-          // TODO: Remove this clause when the feature flag is removed
-          isServiceFilterVisible && (
-            <ServicesFilter
-              onChange={handleServicesChange}
-              selectedServices={selectedServices}
+          )}
+          {isComplexFilterEnabled ? (
+            <AssetsFilter
+              onApply={handleApplyFilters}
+              filters={selectedFilters}
             />
-          )
+          ) : (
+            // TODO: Remove this clause when the feature flag is removed
+            isServiceFilterVisible && (
+              <ServicesFilter
+                onChange={handleServicesChange}
+                selectedServices={selectedServices}
+              />
+            )
+          )}
+        </s.HeaderItem>
+        {config.scope && config.scope.span && (
+          <s.HeaderItem>
+            <AssetsViewScopeConfiguration
+              currentScope={config.scope}
+              onAssetViewChanged={(val) => {
+                setAssetScopeOption(val);
+              }}
+            />
+          </s.HeaderItem>
         )}
       </s.Header>
+
       {renderContent()}
     </s.Container>
   );

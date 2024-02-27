@@ -1,7 +1,44 @@
 import styled from "styled-components";
-import { Link } from "../styles";
+import { Link as CommonLink } from "../../common/Link";
+
+export const Link = styled.a`
+  color: #7891d0;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+`;
 
 export const Title = styled.div`
+  border-radius: 4px 4px 0 0;
+  display: flex;
+  padding: 4px 12px;
+  align-items: center;
+  gap: 4px;
+  background: ${({ theme }) => theme.colors.v3.surface.sidePanelHeader};
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+`;
+
+export const TitleIconContainer = styled.div`
+  display: flex;
+  color: ${({ theme }) => theme.colors.v3.icon.tertiary};
+`;
+
+export const TitleLink = styled(CommonLink)`
+  color: ${({ theme }) => theme.colors.v3.text.link};
+  display: block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  text-decoration: none;
+`;
+
+export const Header = styled.div`
   display: flex;
   gap: 4px;
   align-items: center;

@@ -5,4 +5,6 @@ export interface CardProps {
   content: ReactNode;
   buttons?: ReactNode[];
   className?: string;
+  title?: ReactNode;
+  showTitle?: boolean;
 }

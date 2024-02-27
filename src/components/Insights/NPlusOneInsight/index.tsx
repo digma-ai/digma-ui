@@ -47,6 +47,7 @@ export const NPlusOneInsight = (props: NPlusOneInsightProps) => {
   return (
     <InsightCard
       data={props.insight}
+      spanInfo={props.insight.spanInfo}
       content={
         <s.ContentContainer>
           <Description>Check the following SELECT statement:</Description>

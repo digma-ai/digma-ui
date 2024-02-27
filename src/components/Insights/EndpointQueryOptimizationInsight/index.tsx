@@ -56,6 +56,7 @@ export const EndpointQueryOptimizationInsight = (
   return (
     <InsightCard
       data={props.insight}
+      spanInfo={props.insight.spanInfo}
       content={
         <s.ContentContainer>
           <Description>Check the following locations:</Description>
