@@ -7,10 +7,8 @@ import { Description } from "../../../styles";
 import { trackingEvents } from "../../../tracking";
 import { InsightType, Trace } from "../../../types";
 import { InsightCard } from "../../InsightCard";
-import {
-  KeyValue,
-  KeyValueContainer
-} from "../../InsightCard/KeyValueContainer";
+import { ColumnsContainer } from "../../InsightCard/ColumnsContainer";
+import { KeyValue } from "../../InsightCard/KeyValue";
 import * as s from "./styles";
 import { HighNumberOfQueriesInsightProps } from "./types";
 
@@ -44,7 +42,7 @@ export const HighNumberOfQueriesInsight = (
           {insight.quantile === 0.95 && (
             <Description>Affecting the slowest 5% of requests.</Description>
           )}
-          <KeyValueContainer>
+          <ColumnsContainer>
             <KeyValue label={"# of Queries"}>
               <Tag type={"mediumSeverity"} content={insight.queriesCount} />
             </KeyValue>
@@ -69,7 +67,7 @@ export const HighNumberOfQueriesInsight = (
             <KeyValue label={"Duration"}>
               {getDurationString(props.insight.medianDuration)}
             </KeyValue>
-          </KeyValueContainer>
+          </ColumnsContainer>
         </s.ContentContainer>
       }
       onRecalculate={props.onRecalculate}

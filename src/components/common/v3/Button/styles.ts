@@ -13,7 +13,7 @@ export const Button = styled.button<ButtonElementProps>`
   width: fit-content;
   padding: 4px 8px;
   border: none;
-  color: ${({ theme }) => theme.colors.v3.icon.primary};
+  color: ${({ theme }) => theme.colors.v3.icon.white};
   background: ${({ theme, $type }) => {
     switch ($type) {
       case "tertiary":

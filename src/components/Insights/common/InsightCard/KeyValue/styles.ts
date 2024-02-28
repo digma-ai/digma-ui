@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { caption1RegularTypography } from "../../../../../common/App/typographies";
+import { caption1RegularTypography } from "../../../../common/App/typographies";
 
 export const Container = styled.div`
   display: flex;

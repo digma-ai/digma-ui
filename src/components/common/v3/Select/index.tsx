@@ -26,7 +26,7 @@ export const Select = (props: SelectProps) => {
           <MenuList
             items={props.options.map((x) => ({
               id: x.value,
-              label: x.label,
+              customContent: x.label,
               onClick: () => handleOptionClick(x)
             }))}
           />

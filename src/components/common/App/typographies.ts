@@ -88,3 +88,9 @@ export const bodyRegularTypography = css`
   font-weight: ${typographies.body.fontWeight.regular};
   line-height: ${typographies.body.lineHeight}px;
 `;
+
+export const bodyMediumTypography = css`
+  font-size: ${typographies.body.fontSize}px;
+  font-weight: ${typographies.body.fontWeight.medium};
+  line-height: ${typographies.body.lineHeight}px;
+`;
