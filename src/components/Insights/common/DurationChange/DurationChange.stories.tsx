@@ -15,7 +15,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const Degradation: Story = {
   args: {
     previousDuration: {
       value: 455.16,
@@ -31,7 +31,7 @@ export const Default: Story = {
   }
 };
 
-export const Degradation: Story = {
+export const Improved: Story = {
   args: {
     previousDuration: {
       value: 3.22,
