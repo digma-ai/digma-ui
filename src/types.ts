@@ -19,6 +19,7 @@ export enum InsightType {
   SlowestSpans = "SlowestSpans",
   EndpointBottleneck = "EndpointBottleneck",
   EndpointSpanNPlusOne = "EndpointSpaNPlusOne",
+  EndpointSpanNPlusOneV2 = "EndpointSpanNPlusOne",
   SpanUsages = "SpanUsages",
   SpanNPlusOne = "SpaNPlusOne",
   SpanEndpointBottleneck = "SpanEndpointBottleneck",

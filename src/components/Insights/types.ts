@@ -581,6 +581,27 @@ export interface EndpointSuspectedNPlusOneInsight extends EndpointInsight {
   }[];
 }
 
+export interface EndpointSpanNPlusOneInsight extends EndpointInsight {
+  name: "Suspected N+1 Query";
+  type: InsightType.EndpointSpanNPlusOneV2;
+  category: InsightCategory.Performance;
+  specifity: InsightSpecificity.TargetAndReasonFound;
+  importance: InsightImportance.HighlyImportant;
+  isRecalculateEnabled: true;
+  spans: {
+    occurrences: number;
+    internalSpan: SpanInfo | null;
+    clientSpan: SpanInfo;
+    traceId: string;
+    duration: Duration;
+    fraction: number;
+    criticality: number;
+    impact: number;
+    severity: number;
+    ticketLink: string | null;
+  };
+}
+
 export interface CodeObjectHotSpotInsight extends CodeObjectInsight {
   name: "Errors Hotspot";
   type: InsightType.HotSpot;
