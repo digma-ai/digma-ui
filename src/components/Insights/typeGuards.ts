@@ -12,6 +12,7 @@ import {
   EndpointLowUsageInsight,
   EndpointNormalUsageInsight,
   EndpointQueryOptimizationInsight,
+  EndpointSlowdownSourceInsight,
   EndpointSlowestSpansInsight,
   EndpointSuspectedNPlusOneInsight,
   InsightScope,
@@ -107,6 +108,12 @@ export const isCodeObjectHotSpotInsight = (
   insight: CodeObjectInsight
 ): insight is CodeObjectHotSpotInsight => insight.type === InsightType.HotSpot;
 
+export const isEndpointSlowdownSourceInsight = (
+  insight: CodeObjectInsight
+): insight is EndpointSlowdownSourceInsight =>
+  insight.type === InsightType.EndpointSlowdownSource;
+
+// obsolete
 export const isEndpointDurationSlowdownInsight = (
   insight: CodeObjectInsight
 ): insight is EndpointDurationSlowdownInsight =>

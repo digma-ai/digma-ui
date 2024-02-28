@@ -33,7 +33,8 @@ export enum InsightType {
   EndpointHighNumberOfQueries = "EndpointHighNumberOfQueries",
   SpanNexus = "SpanNexus",
   SpanQueryOptimization = "SpanQueryOptimization",
-  EndpointQueryOptimization = "EndpointQueryOptimization"
+  EndpointQueryOptimization = "EndpointQueryOptimization",
+  EndpointSlowdownSource = "EndpointSlowdownSource"
 }
 
 export type PercentileKey = "p50" | "p95";

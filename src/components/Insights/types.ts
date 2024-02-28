@@ -36,6 +36,7 @@ export type GenericCodeObjectInsight =
   | CodeObjectHotSpotInsight
   | CodeObjectErrorsInsight
   | EndpointDurationSlowdownInsight
+  | EndpointSlowdownSourceInsight
   | EndpointBreakdownInsight
   | SpanScalingWellInsight
   | SpanScalingInsufficientDataInsight
@@ -579,6 +580,7 @@ export interface CodeObjectErrorsInsight extends CodeObjectInsight {
   }[];
 }
 
+// obsolete
 export interface DurationSlowdownSource {
   percentile: string;
   spanInfo: SpanInfo;
@@ -589,6 +591,17 @@ export interface DurationSlowdownSource {
   changeVerified: boolean;
 }
 
+export interface EndpointSlowdownSources {
+  percentile: string;
+  spanInfo: SpanInfo;
+  level: number;
+  previousDuration: Duration;
+  currentDuration: Duration;
+  changeTime: string;
+  changeVerified: boolean;
+}
+
+// obsolete
 export interface EndpointDurationSlowdownInsight extends EndpointInsight {
   name: "Endpoint Duration Slowdown Source";
   type: InsightType.EndpointDurationSlowdown;
@@ -596,6 +609,16 @@ export interface EndpointDurationSlowdownInsight extends EndpointInsight {
   specifity: InsightSpecificity.OwnInsight;
   importance: InsightImportance.Critical;
   durationSlowdownSources: DurationSlowdownSource[];
+  decorators: CodeObjectDecorator[];
+}
+
+export interface EndpointSlowdownSourceInsight extends EndpointInsight {
+  name: "Endpoint Duration Slowdown Source";
+  type: InsightType.EndpointSlowdownSource;
+  category: InsightCategory.Performance;
+  specifity: InsightSpecificity.OwnInsight;
+  importance: InsightImportance.Critical;
+  endpointSlowdownSources: EndpointSlowdownSources[];
   decorators: CodeObjectDecorator[];
 }
 
