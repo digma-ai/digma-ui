@@ -1,22 +1,32 @@
 import styled from "styled-components";
+import { bodyRegularTypography } from "../../../../common/App/typographies";
 import { SelectBarProps } from "./types";
 
-export const ChevronIconContainer = styled.div`
-  margin-left: auto;
+export const ExpandButton = styled.button`
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
   display: flex;
+  cursor: pointer;
+
+  &:disabled {
+    cursor: initial;
+  }
 `;
 
 export const SelectBar = styled.div<SelectBarProps>`
+  ${bodyRegularTypography}
+
   overflow: hidden;
   flex-grow: 1;
   user-select: none;
-  padding: 5px 8px;
-  font-size: 14px;
+  padding: 4px 6px;
   gap: 4px;
   border-radius: 4px;
   display: flex;
   align-items: center;
-  box-shadow: 0 0 5px 0 rgb(0 0 0 / 13%);
+  box-shadow: 1 1 4px 0 rgb(0 0 0 / 25%);
   border: 1px solid
     ${({ theme, $isOpen }) =>
       $isOpen
@@ -27,16 +37,17 @@ export const SelectBar = styled.div<SelectBarProps>`
       ? theme.colors.surface.primary
       : $isOpen
       ? theme.colors.v3.surface.primaryLight
-      : theme.colors.v3.surface.brandDark};
+      : theme.colors.v3.surface.primary};
   color: ${({ theme, $isDisabled }) =>
-    $isDisabled ? theme.colors.v3.text.secondary : theme.colors.v3.text.link};
-  cursor: ${({ $isDisabled }) => ($isDisabled ? "initial" : "pointer")};
+    $isDisabled
+      ? theme.colors.v3.text.disabled
+      : theme.colors.v3.text.secondary};
 
-  & ${ChevronIconContainer} {
+  & ${ExpandButton} {
     color: ${({ theme, $isDisabled }) =>
       $isDisabled
         ? theme.colors.v3.icon.disabled
-        : theme.colors.v3.icon.tertiary};
+        : theme.colors.v3.icon.secondary};
   }
 
   &:hover {
@@ -52,4 +63,11 @@ export const SelectedValue = styled.span`
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+`;
+
+export const Divider = styled.div`
+  width: 1px;
+  height: 18px;
+  background: ${({ theme }) => theme.colors.v3.stroke.primary};
+  margin-left: auto;
 `;

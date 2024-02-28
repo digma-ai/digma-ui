@@ -53,7 +53,8 @@ export const CodeNexusDescription = () => (
 export const HotSpotDescription = () => (
   <s.Content>
     Error hotspots are places in the code where errors are significant. There
-    are several factors that make a place in the code an “error hotspot”:
+    are several factors that make a place in the code an &quot;error
+    hotspot&quot;:
     <s.List>
       <li>Is the error handled.</li>
       <li>Is the error escalating (we’re seeing more and more of it).</li>
@@ -76,7 +77,7 @@ export const ScalingIssueDescription = () => (
     Scaling issues are performance problems that emerge when the code is run
     concurrently. Digma analyzes the correlation between concurrency and
     performance and can detect when the degradation becomes problematic. To see
-    a detailed analysis click on the “Histogram button.
+    a detailed analysis click on the &quot;Histogram&quot; button.
   </s.Content>
 );
 

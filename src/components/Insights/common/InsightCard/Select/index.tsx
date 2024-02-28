@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { MenuList } from "../../../Navigation/common/MenuList";
-import { Popup } from "../../../Navigation/common/Popup";
-import { NewPopover } from "../../NewPopover";
-import { ChevronIcon } from "../../icons/16px/ChevronIcon";
-import { Direction } from "../../icons/types";
-import { Tooltip } from "../Tooltip";
+import { MenuList } from "../../../../Navigation/common/MenuList";
+import { Popup } from "../../../../Navigation/common/Popup";
+import { NewPopover } from "../../../../common/NewPopover";
+import { ChevronIcon } from "../../../../common/icons/16px/ChevronIcon";
+import { Direction } from "../../../../common/icons/types";
+import { Tooltip } from "../../../../common/v3/Tooltip";
 import * as s from "./styles";
 import { SelectOption, SelectProps } from "./types";
 
@@ -18,6 +18,10 @@ export const Select = (props: SelectProps) => {
     props.onChange(option.value);
   };
 
+  const handleExpandButtonClick = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
     <NewPopover
       sameWidth={true}
@@ -26,31 +30,36 @@ export const Select = (props: SelectProps) => {
           <MenuList
             items={props.options.map((x) => ({
               id: x.value,
-              customContent: x.label,
+              label: x.label,
               onClick: () => handleOptionClick(x)
             }))}
           />
         </Popup>
       }
-      onOpenChange={props.isDisabled ? undefined : setIsOpen}
+      onOpenChange={props.isDisabled || !isOpen ? undefined : setIsOpen}
       isOpen={props.isDisabled ? false : isOpen}
       placement={"bottom-start"}
     >
       <s.SelectBar $isDisabled={props.isDisabled} $isOpen={isOpen}>
         {selectedOption ? (
           <Tooltip title={selectedOption.label}>
-            <s.SelectedValue>{selectedOption.label}</s.SelectedValue>
+            {selectedOption.customContent ? (
+              <>{selectedOption.customContent}</>
+            ) : (
+              <s.SelectedValue>{selectedOption.label}</s.SelectedValue>
+            )}
           </Tooltip>
         ) : (
           props.placeholder
         )}
-        <s.ChevronIconContainer>
+        <s.Divider />
+        <s.ExpandButton onClick={handleExpandButtonClick}>
           <ChevronIcon
             size={16}
             color={"currentColor"}
             direction={isOpen ? Direction.UP : Direction.DOWN}
           />
-        </s.ChevronIconContainer>
+        </s.ExpandButton>
       </s.SelectBar>
     </NewPopover>
   );
