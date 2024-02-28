@@ -4,7 +4,7 @@ import { Select } from ".";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof Select> = {
-  title: "Common/v3/Select",
+  title: "Insights/common/InsightCard/Select",
   component: Select,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
@@ -59,9 +59,24 @@ export const Empty: Story = {
   }
 };
 
+export const ItemWithCustomContent: Story = {
+  args: {
+    options: [
+      ...mockedData.options,
+      {
+        value: "item_with_custom_content",
+        label: "Item with custom content",
+        customContent: <a href={"#"}>Custom content</a>
+      }
+    ],
+    value: "item_with_custom_content"
+  }
+};
+
 export const Disabled: Story = {
   args: {
     options: mockedData.options,
+    placeholder: "No items",
     isDisabled: true
   }
 };

@@ -22,9 +22,3 @@ export const Default: Story = {
     insight: mockedEndpointNPlusOneInsight
   }
 };
-
-export const OnlyContent: Story = {
-  args: {
-    content: <div>Hover me</div>
-  }
-};

@@ -1,7 +1,8 @@
 import { ReactNode } from "react";
 
 export interface SelectOption {
-  label: ReactNode;
+  label: string;
+  customContent?: ReactNode;
   value: string;
 }
 
