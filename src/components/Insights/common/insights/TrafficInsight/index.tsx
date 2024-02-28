@@ -3,10 +3,8 @@ import { Tag } from "../../../../common/v3/Tag";
 import { TrafficInsightProps } from "../../../TrafficInsight/types";
 import { InsightType } from "../../../types";
 import { InsightCard } from "../../InsightCard";
-import {
-  KeyValue,
-  KeyValueContainer
-} from "../../InsightCard/KeyValueContainer";
+import { ColumnsContainer } from "../../InsightCard/ColumnsContainer";
+import { KeyValue } from "../../InsightCard/KeyValue";
 import * as s from "./styles";
 
 const suffixes = [
@@ -52,12 +50,12 @@ export const TrafficInsight = (props: TrafficInsightProps) => {
       insight={props.insight}
       content={
         <s.ContentContainer>
-          <s.Description>{getDescription(props.insight.type)}</s.Description>
-          <KeyValueContainer>
+          <ColumnsContainer>
+            <s.Description>{getDescription(props.insight.type)}</s.Description>
             <KeyValue label={"Duration"}>
               <Tag content={`${valueString}/min`} />
             </KeyValue>
-          </KeyValueContainer>
+          </ColumnsContainer>
         </s.ContentContainer>
       }
       onRecalculate={props.onRecalculate}
