@@ -2,12 +2,13 @@ import { useState } from "react";
 import { useTheme } from "styled-components";
 import { openURLInDefaultBrowser } from "../../../../utils/openURLInDefaultBrowser";
 import { IconButton } from "../../../Insights/common/InsightCard/IconButton";
-import { Menu } from "../../../common/Menu";
-import { NewPopover } from "../../../common/NewPopover";
+import { MenuList } from "../../../Navigation/common/MenuList";
+import { Popup } from "../../../Navigation/common/Popup";
 import { PencilIcon } from "../../../common/icons/12px/PencilIcon";
 import { JiraLogoIcon } from "../../../common/icons/16px/JiraLogoIcon";
 import { OpenLinkIcon } from "../../../common/icons/OpenLinkIcon";
 import { Tooltip } from "../../../common/v3/Tooltip";
+import { NewPopover } from "../../NewPopover";
 import * as s from "./styles";
 import { JiraButtonProps } from "./types";
 
@@ -21,10 +22,12 @@ export const JiraButton = (props: JiraButtonProps) => {
   };
 
   const handleViewButtonClick = () => {
+    handleJiraButtonClick();
     ticketLink && openURLInDefaultBrowser(ticketLink);
   };
 
   const openTicketInfo = (event: string) => {
+    handleJiraButtonClick();
     props.onTicketInfoButtonClick(event);
   };
 
@@ -33,24 +36,24 @@ export const JiraButton = (props: JiraButtonProps) => {
       {ticketLink ? (
         <NewPopover
           content={
-            <Menu
-              width={"70px"}
-              items={[
-                {
-                  icon: { component: OpenLinkIcon },
-                  label: "View",
-                  value: ticketLink,
-                  onClick: handleViewButtonClick
-                },
-                {
-                  icon: { component: PencilIcon },
-                  label: "Edit",
-                  value: "edit",
-                  onClick: () => openTicketInfo("edit menu item click")
-                }
-              ]}
-              onSelect={handleJiraButtonClick}
-            />
+            <Popup>
+              <MenuList
+                items={[
+                  {
+                    icon: <OpenLinkIcon />,
+                    label: "View",
+                    id: ticketLink,
+                    onClick: handleViewButtonClick
+                  },
+                  {
+                    icon: <PencilIcon />,
+                    label: "Edit",
+                    id: "edit",
+                    onClick: () => openTicketInfo("edit menu item click")
+                  }
+                ]}
+              />
+            </Popup>
           }
           isOpen={isJiraPopoverOpen}
           onOpenChange={handleJiraButtonClick}
@@ -80,10 +83,6 @@ export const JiraButton = (props: JiraButtonProps) => {
 
   return (
     <Tooltip
-      style={{
-        background: theme.colors.surface.secondary,
-        boxShadow: "0 1px 12px 0 rgb(0 0 0 / 26%)"
-      }}
       placement={"top-start"}
       title={
         <s.HintContainer>
