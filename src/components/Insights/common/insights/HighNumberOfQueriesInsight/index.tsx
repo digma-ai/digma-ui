@@ -1,3 +1,4 @@
+import { getDurationString } from "../../../../../utils/getDurationString";
 import { sendTrackingEvent } from "../../../../../utils/sendTrackingEvent";
 import { InfoCircleIcon } from "../../../../common/icons/InfoCircleIcon";
 import { InsightCard } from "../../../../common/v3/InsightCard";
@@ -66,8 +67,7 @@ export const HighNumberOfQueriesInsight = (
               <Tag content={insight.typicalCount} />
             </KeyValue>
             <KeyValue label={"Duration"}>
-              {props.insight.medianDuration.value.toString() +
-                props.insight.medianDuration.unit}
+              {getDurationString(props.insight.medianDuration)}
             </KeyValue>
           </KeyValueContainer>
         </s.ContentContainer>
