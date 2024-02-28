@@ -1,10 +1,10 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { KeyValue, KeyValueContainer } from ".";
+import { KeyValue } from ".";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
-const meta: Meta<typeof KeyValueContainer> = {
-  title: "common/v3/KeyValueContainer",
-  component: KeyValueContainer,
+const meta: Meta<typeof KeyValue> = {
+  title: "Insights/common/InsightCard/KeyValueContainer/KeyValue",
+  component: KeyValue,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
     layout: "fullscreen"
@@ -17,11 +17,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    children: (
-      <>
-        <KeyValue label={"Tested concurrency"}>31</KeyValue>
-        <KeyValue label={"Duration"}>5.01 sec - 223.42 sec</KeyValue>
-      </>
-    )
+    label: "label",
+    children: "Value"
   }
 };
