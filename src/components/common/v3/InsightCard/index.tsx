@@ -1,17 +1,18 @@
 import { useState } from "react";
 import { isString } from "../../../../typeGuards/isString";
 import { formatTimeDistance } from "../../../../utils/formatTimeDistance";
+import { IconButton } from "../../../Insights/common/InsightCard/IconButton";
 import { Link } from "../../Link";
-import { NewButton } from "../../NewButton";
 import { TraceIcon } from "../../icons/12px/TraceIcon";
 import { HistogramIcon } from "../../icons/16px/HistogramIcon";
-import { JiraLogoIcon } from "../../icons/16px/JiraLogoIcon";
 import { LiveIcon } from "../../icons/16px/LiveIcon";
 import { PinIcon } from "../../icons/16px/PinIcon";
 import { RecalculateIcon } from "../../icons/16px/RecalculateIcon";
 import { CrossIcon } from "../../icons/CrossIcon";
+import { Button } from "../Button";
 import { Card } from "../Card";
 import { InsightHeader } from "../InsightHeader";
+import { JiraButton } from "../JiraButton";
 import { Tooltip } from "../Tooltip";
 import * as s from "./styles";
 import { InsightCardProps } from "./types";
@@ -106,39 +107,35 @@ export const InsightCard = (props: InsightCardProps) => {
       }
       footer={
         <s.InsightFooter>
-          <s.DismissButton
-            icon={CrossIcon}
-            label={"Dismiss"}
-            buttonType={"tertiary"}
-            disabled={true}
-          />
+          <Button icon={CrossIcon} label="Dismiss" buttonType="tertiary" />
           <s.Actions>
             {props.onOpenHistogram && (
-              <NewButton buttonType={"tertiary"} icon={HistogramIcon} />
+              <IconButton icon={{ component: HistogramIcon }} />
             )}
             {props.onRecalculate && (
-              <NewButton
-                buttonType={"tertiary"}
-                icon={RecalculateIcon}
+              <IconButton
+                icon={{ component: RecalculateIcon }}
                 onClick={handleRecalculateClick}
               />
             )}
-            {props.onOpenJiraTicket && (
-              <NewButton buttonType={"tertiary"} icon={JiraLogoIcon} />
+            {props.onJiraButtonClick && (
+              <JiraButton
+                onTicketInfoButtonClick={props.onJiraButtonClick}
+                ticketLink={props.jiraTicketInfo?.ticketLink}
+                isHintEnabled={props.jiraTicketInfo?.isHintEnabled}
+              />
             )}
-            {props.onPin && (
-              <NewButton buttonType={"tertiary"} icon={PinIcon} />
-            )}
+            {props.onPin && <IconButton icon={{ component: PinIcon }} />}
             <s.MainActions>
               {props.onGoToTrace && (
-                <NewButton
+                <Button
                   icon={TraceIcon}
                   label={"Trace"}
                   onClick={() => props.onGoToTrace && props.onGoToTrace()}
                 />
               )}
               {props.onGoToLive && (
-                <NewButton
+                <Button
                   icon={LiveIcon}
                   label={"Live"}
                   onClick={() => props.onGoToLive && props.onGoToLive()}

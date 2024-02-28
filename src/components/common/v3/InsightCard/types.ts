@@ -17,11 +17,12 @@ export interface InsightCardProps {
     insightType: InsightType
   ) => void;
   onRefresh?: (insightType: InsightType, spanCodeObjectId?: string) => void;
-  onOpenJiraTicket?: (
-    insight: GenericCodeObjectInsight,
-    spanCodeObjectId?: string
-  ) => void;
   onPin?: (insightId: string) => void;
   onGoToLive?: () => void;
   onGoToTrace?: () => void;
+  jiraTicketInfo?: {
+    ticketLink?: string | null;
+    isHintEnabled?: boolean;
+  };
+  onJiraButtonClick?: (event: string) => void;
 }
