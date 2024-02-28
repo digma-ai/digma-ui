@@ -613,7 +613,7 @@ export interface EndpointDurationSlowdownInsight extends EndpointInsight {
 }
 
 export interface EndpointSlowdownSourceInsight extends EndpointInsight {
-  name: "Endpoint Duration Slowdown Source";
+  name: "Endpoint Slowdown Source";
   type: InsightType.EndpointSlowdownSource;
   category: InsightCategory.Performance;
   specifity: InsightSpecificity.OwnInsight;
