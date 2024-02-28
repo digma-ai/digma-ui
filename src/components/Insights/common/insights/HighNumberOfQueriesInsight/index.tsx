@@ -1,16 +1,16 @@
 import { getDurationString } from "../../../../../utils/getDurationString";
 import { sendTrackingEvent } from "../../../../../utils/sendTrackingEvent";
 import { InfoCircleIcon } from "../../../../common/icons/InfoCircleIcon";
-import { InsightCard } from "../../../../common/v3/InsightCard";
-import {
-  KeyValue,
-  KeyValueContainer
-} from "../../../../common/v3/KeyValueContainer";
 import { Tag } from "../../../../common/v3/Tag";
 import { Tooltip } from "../../../../common/v3/Tooltip";
 import { Description } from "../../../styles";
 import { trackingEvents } from "../../../tracking";
 import { InsightType, Trace } from "../../../types";
+import { InsightCard } from "../../InsightCard";
+import {
+  KeyValue,
+  KeyValueContainer
+} from "../../InsightCard/KeyValueContainer";
 import * as s from "./styles";
 import { HighNumberOfQueriesInsightProps } from "./types";
 

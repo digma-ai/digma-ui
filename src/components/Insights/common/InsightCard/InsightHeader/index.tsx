@@ -1,10 +1,10 @@
-import { getInsightTypeInfo } from "../../../../utils/getInsightTypeInfo";
-import { InfoCircleIcon } from "../../icons/InfoCircleIcon";
-import { AsyncTag } from "../AsyncTag";
-import { NewTag } from "../NewTag";
-import { Tag } from "../Tag";
-import { TagType } from "../Tag/types";
-import { Tooltip } from "../Tooltip";
+import { getInsightTypeInfo } from "../../../../../utils/getInsightTypeInfo";
+import { InfoCircleIcon } from "../../../../common/icons/InfoCircleIcon";
+import { NewTag } from "../../../../common/v3/NewTag";
+import { Tag } from "../../../../common/v3/Tag";
+import { TagType } from "../../../../common/v3/Tag/types";
+import { Tooltip } from "../../../../common/v3/Tooltip";
+import { AsyncTag } from "./AsyncTag";
 import * as s from "./styles";
 import { InsightHeaderProps } from "./types";
 

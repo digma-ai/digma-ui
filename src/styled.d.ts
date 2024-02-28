@@ -72,7 +72,6 @@ export interface ThemeColors {
       brandSecondary: string;
       brandDark: string;
       sidePanelHeader: string;
-      asyncTag: string;
     };
     text: {
       primary: string;
@@ -122,9 +121,9 @@ interface FontWeights {
 }
 
 interface FontStyle {
-  lineHeight: string;
-  fontSize: string;
-  weight: FontWeights;
+  lineHeight: number;
+  fontSize: number;
+  fontWeight: FontWeights;
 }
 
 export interface Typographies {

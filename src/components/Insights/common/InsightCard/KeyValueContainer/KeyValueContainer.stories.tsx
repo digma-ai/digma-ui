@@ -1,10 +1,10 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { InsightHeader } from ".";
+import { KeyValue, KeyValueContainer } from ".";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
-const meta: Meta<typeof InsightHeader> = {
-  title: "Common/v3/InsightsHeader",
-  component: InsightHeader,
+const meta: Meta<typeof KeyValueContainer> = {
+  title: "Insights/common/InsightCard/KeyValueContainer",
+  component: KeyValueContainer,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
     layout: "fullscreen"
@@ -17,10 +17,11 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    importance: 3,
-    insightType: "HotSpot",
-    isNew: true,
-    isAsync: true,
-    isActive: true
+    children: (
+      <>
+        <KeyValue label={"Tested concurrency"}>31</KeyValue>
+        <KeyValue label={"Duration"}>5.01 sec - 223.42 sec</KeyValue>
+      </>
+    )
   }
 };
