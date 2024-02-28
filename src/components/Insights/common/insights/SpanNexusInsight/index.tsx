@@ -1,9 +1,9 @@
-import { InsightCard } from "../../../../common/v3/InsightCard";
+import { Tag } from "../../../../common/v3/Tag";
+import { InsightCard } from "../../InsightCard";
 import {
   KeyValue,
   KeyValueContainer
-} from "../../../../common/v3/KeyValueContainer";
-import { Tag } from "../../../../common/v3/Tag";
+} from "../../InsightCard/KeyValueContainer";
 import * as s from "./styles";
 import { SpanNexusInsightProps } from "./types";
 

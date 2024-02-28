@@ -111,7 +111,7 @@ export const Tooltip = (props: TooltipProps) => {
       fill={
         isString(props.style?.background)
           ? props.style?.background
-          : theme.colors.v3.surface.secondary
+          : theme.colors.v3.stroke.tertiary
       }
       width={ARROW_WIDTH}
       height={ARROW_HEIGHT}
