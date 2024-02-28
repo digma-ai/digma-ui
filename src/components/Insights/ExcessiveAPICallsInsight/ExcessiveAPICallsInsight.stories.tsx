@@ -49,6 +49,20 @@ export const Default: Story = {
             codeObjectId: null
           },
           traceId: "00E4D714D4FAD0A00F9D8A39C8A49E8A"
+        },
+        {
+          repeats: 29,
+          clientSpan: {
+            name: "HTTP GET mockapi.io",
+            displayName: "HTTP GET mockapi.io",
+            instrumentationLibrary: "io.opentelemetry.okhttp-3.0",
+            spanCodeObjectId:
+              "span:io.opentelemetry.okhttp-3.0$_$HTTP GET mockapi.io",
+            methodCodeObjectId: null,
+            kind: "Client",
+            codeObjectId: null
+          },
+          traceId: "00E4D714D4FAD0A00F9D8A39C8A49E8A"
         }
       ],
       scope: InsightScope.EntrySpan,
