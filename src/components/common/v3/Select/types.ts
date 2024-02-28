@@ -1,5 +1,7 @@
+import { ReactNode } from "react";
+
 export interface SelectOption {
-  label: string;
+  label: ReactNode;
   value: string;
 }
 

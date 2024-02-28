@@ -91,6 +91,7 @@ export interface ThemeColors {
       brandSecondary: string;
     };
     icon: {
+      white: string;
       primary: string;
       secondary: string;
       tertiary: string;

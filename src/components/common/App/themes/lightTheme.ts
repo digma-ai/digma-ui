@@ -258,7 +258,8 @@ export const lightTheme: ThemeColors = {
       disabled: v3colors.gray[500],
       brandPrimary: v3colors.primary[400],
       brandSecondary: v3colors.primary[300],
-      brandTertiary: v3colors.primary[200]
+      brandTertiary: v3colors.primary[200],
+      white: v3colors.gray[0]
     },
     status: {
       backgroundHigh: v3colors.red[100],
