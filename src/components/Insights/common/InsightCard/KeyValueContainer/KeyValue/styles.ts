@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { caption1RegularTypography } from "../../../../../common/App/typographies";
 
 export const Container = styled.div`
   display: flex;
@@ -8,7 +9,7 @@ export const Container = styled.div`
 
 export const Key = styled.div`
   color: ${({ theme }) => theme.colors.v3.text.secondary};
-  font-size: 11px;
+  ${caption1RegularTypography}
 `;
 
 export const Value = styled.div`
