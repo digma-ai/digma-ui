@@ -1,12 +1,11 @@
 import { getDurationString } from "../../../../../utils/getDurationString";
 import { roundTo } from "../../../../../utils/roundTo";
-import { InsightCard } from "../../../../common/v3/InsightCard";
+import { Tag } from "../../../../common/v3/Tag";
+import { InsightCard } from "../../InsightCard";
 import {
   KeyValue,
   KeyValueContainer
-} from "../../../../common/v3/KeyValueContainer";
-import { Tag } from "../../../../common/v3/Tag";
-import { Description } from "../../../styles";
+} from "../../InsightCard/KeyValueContainer";
 import * as s from "./styles";
 import { SlowEndpointInsightProps } from "./types";
 
@@ -21,12 +20,12 @@ export const SlowEndpointInsight = (props: SlowEndpointInsightProps) => {
       insight={props.insight}
       content={
         <s.ContentContainer>
-          <Description>
+          <s.Description>
             {`On average requests are slower than other endpoints by ${roundTo(
               diff,
               2
             )}%`}
-          </Description>
+          </s.Description>
           <KeyValueContainer>
             <KeyValue label={"Slower by"}>
               <Tag content={getDurationString(props.insight.median)} />
