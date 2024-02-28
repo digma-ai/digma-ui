@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
 
-export interface KeyValueContainerProps {
+export interface ColumnsContainerProps {
   children: ReactNode;
 }

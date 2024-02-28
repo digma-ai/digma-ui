@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { bodyMediumTypography } from "../../../../common/App/typographies";
 
 export const Container = styled.div`
   display: flex;
@@ -11,12 +12,11 @@ export const InfoContainer = styled.div`
 `;
 
 export const Label = styled.div`
+  ${bodyMediumTypography}
+
   display: flex;
   gap: 4px;
-  line-height: 18px;
   align-items: center;
-  font-size: 14px;
-  font-weight: 600;
 `;
 
 export const Tags = styled.div`

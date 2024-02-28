@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { DefaultTheme } from "styled-components/dist/types";
+import { subscriptRegularTypography } from "../../App/typographies";
 import { ContainerProps, TagType } from "./types";
 
 const getTagTheme = (
@@ -41,6 +42,8 @@ const getTagTheme = (
 };
 
 export const Container = styled.div<ContainerProps>`
+  ${subscriptRegularTypography}
+
   display: flex;
   justify-content: center;
   align-items: center;

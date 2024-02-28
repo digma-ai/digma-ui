@@ -1,10 +1,11 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { KeyValue, KeyValueContainer } from ".";
+import { ColumnsContainer } from ".";
+import { KeyValue } from "../KeyValue";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
-const meta: Meta<typeof KeyValueContainer> = {
-  title: "Insights/common/InsightCard/KeyValueContainer",
-  component: KeyValueContainer,
+const meta: Meta<typeof ColumnsContainer> = {
+  title: "Insights/common/InsightCard/ColumnsContainer",
+  component: ColumnsContainer,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
     layout: "fullscreen"
