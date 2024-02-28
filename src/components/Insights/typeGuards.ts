@@ -4,6 +4,7 @@ import {
   CodeObjectErrorsInsight,
   CodeObjectHotSpotInsight,
   CodeObjectInsight,
+  EndpointBottleneckInsight,
   EndpointBreakdownInsight,
   EndpointDurationSlowdownInsight,
   EndpointHighNumberOfQueriesInsight,
@@ -72,10 +73,16 @@ export const isEndpointHighUsageInsight = (
 ): insight is EndpointHighUsageInsight =>
   insight.type === InsightType.HighUsage;
 
+// obsolete
 export const isEndpointSlowestSpansInsight = (
   insight: CodeObjectInsight
 ): insight is EndpointSlowestSpansInsight =>
   insight.type === InsightType.SlowestSpans;
+
+export const isEndpointBottleneckInsight = (
+  insight: CodeObjectInsight
+): insight is EndpointBottleneckInsight =>
+  insight.type === InsightType.EndpointBottleneck;
 
 export const isSlowEndpointInsight = (
   insight: CodeObjectInsight

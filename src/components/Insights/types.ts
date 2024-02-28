@@ -392,6 +392,7 @@ export interface EndpointHighUsageInsight extends EndpointInsight {
   maxCallsIn1Min: number;
 }
 
+// obsolete
 export interface EndpointSlowestSpansInsight extends EndpointInsight {
   name: "Bottleneck Detected";
   type: InsightType.SlowestSpans;
@@ -419,6 +420,35 @@ export interface EndpointSlowestSpansInsight extends EndpointInsight {
      */
     p99: Percentile;
   }[];
+}
+
+export interface EndpointBottleneckInsight extends EndpointInsight {
+  name: "Bottleneck Detected";
+  type: InsightType.EndpointBottleneck;
+  category: InsightCategory.Performance;
+  specifity: InsightSpecificity.TargetFound;
+  importance: InsightImportance.Critical;
+  isRecalculateEnabled: true;
+  spans: {
+    spanInfo: SpanInfo;
+    probabilityOfBeingBottleneck: number;
+    avgDurationWhenBeingBottleneck: Duration;
+    criticality: number;
+    ticketLink: string | null;
+
+    /**
+     * @deprecated
+     */
+    p50: Percentile;
+    /**
+     * @deprecated
+     */
+    p95: Percentile;
+    /**
+     * @deprecated
+     */
+    p99: Percentile;
+  };
 }
 
 export interface SlowEndpointInsight extends EndpointInsight {
