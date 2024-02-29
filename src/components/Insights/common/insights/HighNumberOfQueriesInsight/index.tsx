@@ -2,12 +2,12 @@ import { sendTrackingEvent } from "../../../../../utils/sendTrackingEvent";
 import { InfoCircleIcon } from "../../../../common/icons/InfoCircleIcon";
 import { Tag } from "../../../../common/v3/Tag";
 import { Tooltip } from "../../../../common/v3/Tooltip";
-import { Description } from "../../../styles";
 import { trackingEvents } from "../../../tracking";
 import { InsightType, Trace } from "../../../types";
 import { InsightCard } from "../../InsightCard";
 import { ColumnsContainer } from "../../InsightCard/ColumnsContainer";
 import { KeyValue } from "../../InsightCard/KeyValue";
+import { ContentContainer, Description } from "../styles";
 import * as s from "./styles";
 import { HighNumberOfQueriesInsightProps } from "./types";
 
@@ -37,7 +37,7 @@ export const HighNumberOfQueriesInsight = (
     <InsightCard
       insight={insight}
       content={
-        <s.ContentContainer>
+        <ContentContainer>
           {insight.quantile === 0.95 && (
             <Description>Affecting the slowest 5% of requests.</Description>
           )}
@@ -64,7 +64,7 @@ export const HighNumberOfQueriesInsight = (
               <Tag content={insight.typicalCount} />
             </KeyValue>
           </ColumnsContainer>
-        </s.ContentContainer>
+        </ContentContainer>
       }
       onRecalculate={props.onRecalculate}
       onRefresh={props.onRefresh}

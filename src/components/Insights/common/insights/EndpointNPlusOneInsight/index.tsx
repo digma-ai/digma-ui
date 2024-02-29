@@ -9,6 +9,7 @@ import { InsightType, Trace } from "../../../types";
 import { InsightCard } from "../../InsightCard";
 import { ColumnsContainer } from "../../InsightCard/ColumnsContainer";
 import { KeyValue } from "../../InsightCard/KeyValue";
+import { ContentContainer, Description, Details } from "../styles";
 import * as s from "./styles";
 import { EndpointNPlusOneInsightProps } from "./types";
 
@@ -67,15 +68,15 @@ export const EndpointNPlusOneInsight = (
         spanCodeObjectId: spanInfo.spanCodeObjectId
       }}
       content={
-        <s.ContentContainer>
-          <s.SpanDetails>
-            <s.Description>Assets</s.Description>
+        <ContentContainer>
+          <Details>
+            <Description>Assets</Description>
             <s.SpanListItem
               name={spanName}
               key={spanName}
               onClick={() => handleSpanLinkClick(spanInfo.spanCodeObjectId)}
             />
-          </s.SpanDetails>
+          </Details>
           <ColumnsContainer>
             <KeyValue label={"Repeats"}>{span.occurrences}</KeyValue>
             <KeyValue
@@ -96,7 +97,7 @@ export const EndpointNPlusOneInsight = (
               {getDurationString(span.duration)}
             </KeyValue>
           </ColumnsContainer>
-        </s.ContentContainer>
+        </ContentContainer>
       }
       onRecalculate={props.onRecalculate}
       onRefresh={props.onRefresh}

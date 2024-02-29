@@ -12,6 +12,7 @@ import { ColumnsContainer } from "../../InsightCard/ColumnsContainer";
 import { KeyValue } from "../../InsightCard/KeyValue";
 import { ListItem } from "../../InsightCard/ListItem";
 import { Select } from "../../InsightCard/Select";
+import { ContentContainer, Description, Details } from "../styles";
 import * as s from "./styles";
 import { SpanNPlusOneInsightProps } from "./types";
 
@@ -66,9 +67,9 @@ export const SpanNPlusOneInsight = (props: SpanNPlusOneInsightProps) => {
           : undefined
       }
       content={
-        <s.ContentContainer>
-          <s.Description>
-            Effected Endpoints ({endpoints.length})
+        <ContentContainer>
+          <Details>
+            <Description>Effected Endpoints ({endpoints.length})</Description>
             <Select
               value={selectedEndpoint?.endpointInfo.entrySpanCodeObjectId}
               onChange={(selectedOption) => {
@@ -98,7 +99,8 @@ export const SpanNPlusOneInsight = (props: SpanNPlusOneInsightProps) => {
                 };
               })}
             />
-          </s.Description>
+          </Details>
+
           {selectedEndpoint && (
             <ColumnsContainer>
               <KeyValue label={"Repeats"}>
@@ -123,7 +125,7 @@ export const SpanNPlusOneInsight = (props: SpanNPlusOneInsightProps) => {
               </KeyValue>
             </ColumnsContainer>
           )}
-        </s.ContentContainer>
+        </ContentContainer>
       }
       onRecalculate={props.onRecalculate}
       onRefresh={props.onRefresh}
