@@ -13,33 +13,41 @@ import { EmptyState } from "../../common/EmptyState";
 import { CardsIcon } from "../../common/icons/CardsIcon";
 import { DurationBreakdownInsight } from "../DurationBreakdownInsight";
 import { EndpointQueryOptimizationInsight } from "../EndpointQueryOptimizationInsight";
-import { NPlusOneInsight } from "../NPlusOneInsight";
 import { QueryOptimizationInsight } from "../QueryOptimizationInsight";
-import { RequestBreakdownInsight } from "../RequestBreakdownInsight";
 import { ScalingIssueInsight } from "../ScalingIssueInsight";
 import { SessionInViewInsight } from "../SessionInViewInsight";
 import { TopUsageInsight } from "../TopUsageInsight";
 import { actions } from "../actions";
 import { DurationInsight } from "../common/insights/DurationInsight";
+import { EndpointBottleneckInsight } from "../common/insights/EndpointBottleneckInsight";
+import { EndpointNPlusOneInsight } from "../common/insights/EndpointNPlusOneInsight";
+import { EndpointSlowdownSourceInsight } from "../common/insights/EndpointSlowdownSourceInsight";
 import { ExcessiveAPICallsInsight } from "../common/insights/ExcessiveAPICallsInsight";
 import { HighNumberOfQueriesInsight } from "../common/insights/HighNumberOfQueriesInsight";
+import { RequestBreakdownInsight } from "../common/insights/RequestBreakdownInsight";
 import { SlowEndpointInsight } from "../common/insights/SlowEndpointInsight";
+import { SpanEndpointBottleneckInsight } from "../common/insights/SpanEndpointBottleneckInsight";
+import { SpanNPlusOneInsight } from "../common/insights/SpanNPlusOneInsight";
 import { SpanNexusInsight } from "../common/insights/SpanNexusInsight";
 import { TrafficInsight } from "../common/insights/TrafficInsight";
 import { Description } from "../styles";
 import { trackingEvents } from "../tracking";
 import {
   isChattyApiEndpointInsight,
+  isEndpointBottleneckInsight,
   isEndpointBreakdownInsight,
   isEndpointHighNumberOfQueriesInsight,
   isEndpointHighUsageInsight,
   isEndpointLowUsageInsight,
   isEndpointNormalUsageInsight,
   isEndpointQueryOptimizationInsight,
+  isEndpointSlowdownSourceInsight,
+  isEndpointSpanNPlusOneInsight,
   isSessionInViewEndpointInsight,
   isSlowEndpointInsight,
   isSpanDurationBreakdownInsight,
   isSpanDurationsInsight,
+  isSpanEndpointBottleneckInsight,
   isSpanNPlusOneInsight,
   isSpanNexusInsight,
   isSpanQueryOptimizationInsight,
@@ -220,33 +228,33 @@ const renderInsightCard = (
     );
   }
 
-  // if (isSpanEndpointBottleneckInsight(insight)) {
-  //   return (
-  //     <BottleneckInsight
-  //       key={insight.id}
-  //       insight={insight}
-  //       onAssetLinkClick={handleAssetLinkClick}
-  //       onRecalculate={handleRecalculate}
-  //       onRefresh={onRefresh}
-  //       onJiraTicketCreate={onJiraTicketCreate}
-  //       isJiraHintEnabled={isJiraHintEnabled}
-  //     />
-  //   );
-  // }
+  if (isEndpointBottleneckInsight(insight)) {
+    return (
+      <EndpointBottleneckInsight
+        key={insight.id}
+        insight={insight}
+        onAssetLinkClick={handleAssetLinkClick}
+        onRecalculate={handleRecalculate}
+        onRefresh={onRefresh}
+        onJiraTicketCreate={onJiraTicketCreate}
+        isJiraHintEnabled={isJiraHintEnabled}
+      />
+    );
+  }
 
-  // if (isEndpointSlowestSpansInsight(insight)) {
-  //   return (
-  //     <SpanBottleneckInsight
-  //       key={insight.id}
-  //       insight={insight}
-  //       onAssetLinkClick={handleAssetLinkClick}
-  //       onRecalculate={handleRecalculate}
-  //       onRefresh={onRefresh}
-  //       onJiraTicketCreate={onJiraTicketCreate}
-  //       isJiraHintEnabled={isJiraHintEnabled}
-  //     />
-  //   );
-  // }
+  if (isSpanEndpointBottleneckInsight(insight)) {
+    return (
+      <SpanEndpointBottleneckInsight
+        key={insight.id}
+        insight={insight}
+        onAssetLinkClick={handleAssetLinkClick}
+        onRecalculate={handleRecalculate}
+        onRefresh={onRefresh}
+        onJiraTicketCreate={onJiraTicketCreate}
+        isJiraHintEnabled={isJiraHintEnabled}
+      />
+    );
+  }
 
   if (isSlowEndpointInsight(insight)) {
     return (
@@ -274,24 +282,24 @@ const renderInsightCard = (
     );
   }
 
-  // if (isEndpointSuspectedNPlusOneInsight(insight)) {
-  //   return (
-  //     <EndpointNPlusOneInsight
-  //       key={insight.id}
-  //       insight={insight}
-  //       onAssetLinkClick={handleAssetLinkClick}
-  //       onTraceButtonClick={handleTraceButtonClick}
-  //       onRecalculate={handleRecalculate}
-  //       onRefresh={onRefresh}
-  //       onJiraTicketCreate={onJiraTicketCreate}
-  //       isJiraHintEnabled={isJiraHintEnabled}
-  //     />
-  //   );
-  // }
+  if (isEndpointSpanNPlusOneInsight(insight)) {
+    return (
+      <EndpointNPlusOneInsight
+        key={insight.id}
+        insight={insight}
+        onAssetLinkClick={handleAssetLinkClick}
+        onTraceButtonClick={handleTraceButtonClick}
+        onRecalculate={handleRecalculate}
+        onRefresh={onRefresh}
+        onJiraTicketCreate={onJiraTicketCreate}
+        isJiraHintEnabled={isJiraHintEnabled}
+      />
+    );
+  }
 
   if (isSpanNPlusOneInsight(insight)) {
     return (
-      <NPlusOneInsight
+      <SpanNPlusOneInsight
         key={insight.id}
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
@@ -320,17 +328,17 @@ const renderInsightCard = (
     );
   }
 
-  // if (isEndpointDurationSlowdownInsight(insight)) {
-  //   return (
-  //     <DurationSlowdownSourceInsight
-  //       key={insight.id}
-  //       insight={insight}
-  //       onAssetLinkClick={handleAssetLinkClick}
-  //       onRecalculate={handleRecalculate}
-  //       onRefresh={onRefresh}
-  //     />
-  //   );
-  // }
+  if (isEndpointSlowdownSourceInsight(insight)) {
+    return (
+      <EndpointSlowdownSourceInsight
+        key={insight.id}
+        insight={insight}
+        onAssetLinkClick={handleAssetLinkClick}
+        onRecalculate={handleRecalculate}
+        onRefresh={onRefresh}
+      />
+    );
+  }
 
   if (isEndpointBreakdownInsight(insight)) {
     return (

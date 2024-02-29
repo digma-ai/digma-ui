@@ -13,7 +13,7 @@ import { ListItem } from "../../InsightCard/ListItem";
 import { Select } from "../../InsightCard/Select";
 import { ContentContainer, Description, Details } from "../styles";
 import * as s from "./styles";
-import { SpanEndpointBottleneckEndpointsProps } from "./types";
+import { SpanEndpointBottleneckInsightProps } from "./types";
 
 const renderOptions = (
   endpoints: BottleneckEndpointInfo[],
@@ -38,8 +38,8 @@ const renderOptions = (
   });
 };
 
-export const SpanBottleneckEndpoints = (
-  props: SpanEndpointBottleneckEndpointsProps
+export const SpanEndpointBottleneckInsight = (
+  props: SpanEndpointBottleneckInsightProps
 ) => {
   const [selectedEndpoint, setSelectedEndpoint] = useState(
     props.insight?.slowEndpoints.length ? props.insight.slowEndpoints[0] : null
