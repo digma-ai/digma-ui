@@ -8,7 +8,7 @@ export const Button = styled.button`
   padding: 4px;
   border: none;
   background: none;
-  color: ${({ theme }) => theme.colors.v3.icon.disabled};
+  color: ${({ theme }) => theme.colors.v3.icon.tertiary};
 
   &:disabled {
     cursor: initial;

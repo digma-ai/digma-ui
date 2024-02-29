@@ -104,6 +104,7 @@ export const InsightCard = (props: InsightCardProps) => {
           isAsync={props.isAsync}
           insightType={props.insight.type}
           importance={props.insight.importance}
+          criticality={props.insight.criticality}
         />
       }
       content={

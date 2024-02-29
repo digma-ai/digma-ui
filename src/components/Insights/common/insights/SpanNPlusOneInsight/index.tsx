@@ -118,8 +118,8 @@ export const SpanNPlusOneInsight = (props: SpanNPlusOneInsightProps) => {
               <KeyValue
                 label={
                   <Info
-                    text="The amount of requests affected by this issue."
-                    name="Requests"
+                    text={"The amount of requests affected by this issue."}
+                    name={"Requests"}
                   />
                 }
               >

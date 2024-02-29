@@ -19,6 +19,6 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     isAsync: true,
-    insight: mockedEndpointNPlusOneInsight
+    insight: { ...mockedEndpointNPlusOneInsight, criticality: 0.9 }
   }
 };

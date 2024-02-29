@@ -1,5 +1,8 @@
 import styled from "styled-components";
-import { bodyMediumTypography } from "../../../../common/App/typographies";
+import {
+  bodyMediumTypography,
+  footnoteRegularTypography
+} from "../../../../common/App/typographies";
 
 export const Container = styled.div`
   display: flex;
@@ -19,16 +22,22 @@ export const Label = styled.div`
   align-items: center;
 `;
 
-export const Tags = styled.div`
+export const BadgeContainer = styled.div`
   margin-left: auto;
   display: flex;
+  align-items: center;
   gap: 8px;
   height: 24px;
-  font-size: 12px;
-  line-height: 16px;
+`;
+
+export const WarningTriangleContainer = styled.div`
+  display: flex;
+  color: ${({ theme }) => theme.colors.v3.status.high};
 `;
 
 export const Active = styled.div`
+  ${footnoteRegularTypography}
+
   display: flex;
   align-items: center;
   gap: 4px;

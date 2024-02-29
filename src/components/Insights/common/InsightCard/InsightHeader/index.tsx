@@ -1,5 +1,6 @@
 import { getInsightTypeInfo } from "../../../../../utils/getInsightTypeInfo";
 import { InfoCircleIcon } from "../../../../common/icons/InfoCircleIcon";
+import { WarningTriangleIcon } from "../../../../common/icons/WarningTriangleIcon";
 import { NewTag } from "../../../../common/v3/NewTag";
 import { Tag } from "../../../../common/v3/Tag";
 import { TagType } from "../../../../common/v3/Tag/types";
@@ -43,7 +44,14 @@ export const InsightHeader = (props: InsightHeaderProps) => {
           </Tooltip>
         )}
       </s.Label>
-      <s.Tags>
+      <s.BadgeContainer>
+        {props.criticality > 0.8 && (
+          <Tooltip title={"Critical"}>
+            <s.WarningTriangleContainer>
+              <WarningTriangleIcon color={"currentColor"} size={12} />
+            </s.WarningTriangleContainer>
+          </Tooltip>
+        )}
         {props.isAsync && <AsyncTag />}
         {props.isNew && <NewTag />}
         {props.isActive && (
@@ -52,7 +60,7 @@ export const InsightHeader = (props: InsightHeaderProps) => {
             Active
           </s.Active>
         )}
-      </s.Tags>
+      </s.BadgeContainer>
     </s.Container>
   );
 };

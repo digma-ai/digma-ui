@@ -93,7 +93,7 @@ export const DurationChange = (props: DurationChangeProps) => {
               <s.ArrowContainer>
                 <ArrowIcon
                   direction={direction}
-                  color="currentColor"
+                  color={"currentColor"}
                   size={12}
                 />
 

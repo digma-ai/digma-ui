@@ -5,4 +5,5 @@ export interface InsightHeaderProps {
   importance: number;
   isAsync?: boolean;
   isNew?: boolean;
+  criticality: number;
 }
