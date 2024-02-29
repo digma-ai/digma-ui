@@ -1,25 +1,23 @@
-import { useContext } from "react";
 import { getDurationString } from "../../../../../utils/getDurationString";
+import { roundTo } from "../../../../../utils/roundTo";
 import { sendTrackingEvent } from "../../../../../utils/sendTrackingEvent";
-import { ConfigContext } from "../../../../common/App/ConfigContext";
 import { trackingEvents } from "../../../tracking";
-import { InsightType, Trace } from "../../../types";
 import { Info } from "../../Info";
 import { InsightCard } from "../../InsightCard";
 import { ColumnsContainer } from "../../InsightCard/ColumnsContainer";
 import { KeyValue } from "../../InsightCard/KeyValue";
 import { ContentContainer, Description, Details } from "../styles";
 import * as s from "./styles";
-import { EndpointNPlusOneInsightProps } from "./types";
+import { EndpointBottleneckInsightProps } from "./types";
 
-export const EndpointNPlusOneInsight = (
-  props: EndpointNPlusOneInsightProps
+export const EndpointBottleneckInsight = (
+  props: EndpointBottleneckInsightProps
 ) => {
-  const config = useContext(ConfigContext);
-  const { span } = props.insight;
+  const { insight } = props;
+  const { span, ticketLink } = insight;
 
   const handleSpanLinkClick = (spanCodeObjectId: string) => {
-    props.onAssetLinkClick(spanCodeObjectId, props.insight.type);
+    props.onAssetLinkClick(spanCodeObjectId, insight.type);
   };
 
   const handleTicketInfoButtonClick = (
@@ -27,57 +25,37 @@ export const EndpointNPlusOneInsight = (
     event: string
   ) => {
     sendTrackingEvent(trackingEvents.JIRA_TICKET_INFO_BUTTON_CLICKED, {
-      insightType: props.insight.type
+      insightType: insight.type
     });
     props.onJiraTicketCreate &&
-      props.onJiraTicketCreate(props.insight, spanCodeObjectId, event);
+      props.onJiraTicketCreate(insight, spanCodeObjectId, event);
   };
 
-  const handleTraceButtonClick = (
-    trace: Trace,
-    insightType: InsightType,
-    spanCodeObjectId: string
-  ) => {
-    props.onTraceButtonClick(trace, insightType, spanCodeObjectId);
-  };
-
-  const spanInfo = span.internalSpan || span.clientSpan;
-  const spanName = spanInfo.displayName;
+  const spanName = span.spanInfo.displayName;
+  const spanCodeObjectId = span.spanInfo.spanCodeObjectId;
 
   return (
     <InsightCard
-      insight={props.insight}
-      onJiraButtonClick={handleTicketInfoButtonClick}
-      onGoToTrace={
-        config.isJaegerEnabled
-          ? () =>
-              handleTraceButtonClick(
-                {
-                  name: spanName,
-                  id: span.traceId
-                },
-                props.insight.type,
-                spanInfo.spanCodeObjectId
-              )
-          : undefined
-      }
+      insight={insight}
       jiraTicketInfo={{
-        ticketLink: span.ticketLink,
         isHintEnabled: props.isJiraHintEnabled,
-        spanCodeObjectId: spanInfo.spanCodeObjectId
+        spanCodeObjectId: props.insight.spanInfo?.spanCodeObjectId,
+        ticketLink
       }}
       content={
         <ContentContainer>
           <Details>
-            <Description>Assets</Description>
+            <Description>Asset</Description>
             <s.SpanListItem
               name={spanName}
               key={spanName}
-              onClick={() => handleSpanLinkClick(spanInfo.spanCodeObjectId)}
+              onClick={() => handleSpanLinkClick(spanCodeObjectId)}
             />
           </Details>
           <ColumnsContainer>
-            <KeyValue label={"Repeats"}>{span.occurrences}</KeyValue>
+            <KeyValue label={"% of Duration"}>
+              {roundTo(span.probabilityOfBeingBottleneck * 100, 2)}%
+            </KeyValue>
             <KeyValue
               label={
                 <Info
@@ -89,13 +67,14 @@ export const EndpointNPlusOneInsight = (
               {span.requestPercentage}%
             </KeyValue>
             <KeyValue label={"Duration"}>
-              {getDurationString(span.duration)}
+              {getDurationString(span.avgDurationWhenBeingBottleneck)}
             </KeyValue>
           </ColumnsContainer>
         </ContentContainer>
       }
       onRecalculate={props.onRecalculate}
       onRefresh={props.onRefresh}
+      onJiraButtonClick={handleTicketInfoButtonClick}
     />
   );
 };

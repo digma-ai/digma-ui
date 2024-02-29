@@ -1,10 +1,10 @@
-import { ReactNode, useContext, useState } from "react";
+import { ReactNode, useState } from "react";
 import { getDurationString } from "../../../../../utils/getDurationString";
+import { roundTo } from "../../../../../utils/roundTo";
 import { sendTrackingEvent } from "../../../../../utils/sendTrackingEvent";
 import { trimEndpointScheme } from "../../../../../utils/trimEndpointScheme";
-import { ConfigContext } from "../../../../common/App/ConfigContext";
 import { trackingEvents } from "../../../tracking";
-import { InsightType, NPlusOneEndpointInfo, Trace } from "../../../types";
+import { BottleneckEndpointInfo } from "../../../types";
 import { Info } from "../../Info";
 import { InsightCard } from "../../InsightCard";
 import { ColumnsContainer } from "../../InsightCard/ColumnsContainer";
@@ -13,14 +13,14 @@ import { ListItem } from "../../InsightCard/ListItem";
 import { Select } from "../../InsightCard/Select";
 import { ContentContainer, Description, Details } from "../styles";
 import * as s from "./styles";
-import { SpanNPlusOneInsightProps } from "./types";
+import { SpanEndpointBottleneckEndpointsProps } from "./types";
 
 const renderOptions = (
-  endpoints: NPlusOneEndpointInfo[],
+  endpoints: BottleneckEndpointInfo[],
   handleLinkClick: (spanCodeObjectId?: string) => void
 ): { label: string; customContent: ReactNode; value: string }[] => {
   return endpoints.map((x) => {
-    const spanCodeObjectId = x.endpointInfo.entrySpanCodeObjectId;
+    const spanCodeObjectId = x.endpointInfo.spanCodeObjectId;
     const route = trimEndpointScheme(x.endpointInfo.route);
     return {
       label: route,
@@ -38,82 +38,69 @@ const renderOptions = (
   });
 };
 
-export const SpanNPlusOneInsight = (props: SpanNPlusOneInsightProps) => {
-  const {
-    insight: { type, endpoints, ticketLink }
-  } = props;
-
-  const config = useContext(ConfigContext);
+export const SpanBottleneckEndpoints = (
+  props: SpanEndpointBottleneckEndpointsProps
+) => {
   const [selectedEndpoint, setSelectedEndpoint] = useState(
-    props.insight.endpoints.length ? props.insight.endpoints[0] : null
+    props.insight?.slowEndpoints.length ? props.insight.slowEndpoints[0] : null
   );
 
   const handleSpanLinkClick = (spanCodeObjectId?: string) => {
-    spanCodeObjectId && props.onAssetLinkClick(spanCodeObjectId, type);
-  };
-
-  const handleTraceButtonClick = (
-    trace: Trace,
-    insightType: InsightType,
-    spanCodeObjectId?: string
-  ) => {
-    props.onTraceButtonClick(trace, insightType, spanCodeObjectId);
+    spanCodeObjectId &&
+      props.onAssetLinkClick(spanCodeObjectId, props?.insight.type);
   };
 
   const handleCreateJiraTicketButtonClick = (event: string) => {
     sendTrackingEvent(trackingEvents.JIRA_TICKET_INFO_BUTTON_CLICKED, {
-      insightType: type
+      insightType: props.insight.type
     });
     props.onJiraTicketCreate &&
       props.onJiraTicketCreate(props.insight, undefined, event);
   };
 
-  const spanName = props.insight.clientSpanName || undefined;
-  const spanCodeObjectId = props.insight.clientSpanCodeObjectId || undefined;
-  const traceId = props.insight.traceId;
+  const endpoints = props.insight.slowEndpoints;
+
+  if (endpoints.length === 0) {
+    return null;
+  }
 
   return (
     <InsightCard
       insight={props.insight}
-      onGoToTrace={
-        config.isJaegerEnabled && traceId
-          ? () =>
-              handleTraceButtonClick(
-                {
-                  name: spanName,
-                  id: traceId
-                },
-                props.insight.type,
-                spanCodeObjectId
-              )
-          : undefined
-      }
+      onJiraButtonClick={handleCreateJiraTicketButtonClick}
+      jiraTicketInfo={{
+        spanCodeObjectId: selectedEndpoint?.endpointInfo.spanCodeObjectId,
+        ticketLink: props.insight.ticketLink,
+        isHintEnabled: props.isJiraHintEnabled
+      }}
       content={
         <ContentContainer>
           <Details>
-            <Description>Effected Endpoints ({endpoints.length})</Description>
+            <Description>Affected Endpoints ({endpoints.length})</Description>
             <Select
-              value={selectedEndpoint?.endpointInfo.entrySpanCodeObjectId}
+              value={selectedEndpoint?.endpointInfo.spanCodeObjectId}
               onChange={(selectedOption) => {
                 const selected =
                   endpoints.find(
-                    (x) =>
-                      x.endpointInfo.entrySpanCodeObjectId === selectedOption
+                    (x) => x.endpointInfo.spanCodeObjectId === selectedOption
                   ) || null;
 
                 setSelectedEndpoint(selected);
               }}
               options={renderOptions(
-                props.insight.endpoints,
+                props.insight.slowEndpoints,
                 handleSpanLinkClick
               )}
             />
           </Details>
-
           {selectedEndpoint && (
             <ColumnsContainer>
-              <KeyValue label={"Repeats"}>
-                {selectedEndpoint.occurrences}
+              <KeyValue label={"% of Duration"}>
+                {roundTo(
+                  selectedEndpoint.probabilityOfBeingBottleneck * 100,
+                  2
+                )}
+                %
               </KeyValue>
               <KeyValue
                 label={
@@ -126,20 +113,14 @@ export const SpanNPlusOneInsight = (props: SpanNPlusOneInsightProps) => {
                 {selectedEndpoint.requestPercentage}%
               </KeyValue>
               <KeyValue label={"Duration"}>
-                {getDurationString(selectedEndpoint.duration)}
+                {getDurationString(
+                  selectedEndpoint.avgDurationWhenBeingBottleneck
+                )}
               </KeyValue>
             </ColumnsContainer>
           )}
         </ContentContainer>
       }
-      onRecalculate={props.onRecalculate}
-      onRefresh={props.onRefresh}
-      onJiraButtonClick={handleCreateJiraTicketButtonClick}
-      jiraTicketInfo={{
-        ticketLink,
-        isHintEnabled: props.isJiraHintEnabled,
-        spanCodeObjectId: props.insight.spanInfo?.spanCodeObjectId
-      }}
     />
   );
 };

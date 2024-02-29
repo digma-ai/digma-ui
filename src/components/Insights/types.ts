@@ -268,41 +268,43 @@ interface Percentile {
   maxDuration: Duration;
 }
 
+export interface BottleneckEndpointInfo {
+  endpointInfo: {
+    route: string;
+    instrumentationLibrary: string;
+    serviceName: string;
+    codeObjectId: string;
+    spanCodeObjectId: string;
+    spanName: string;
+  };
+  probabilityOfBeingBottleneck: number;
+  avgDurationWhenBeingBottleneck: Duration;
+  impact: number;
+  severity: number;
+  criticality: number;
+  requestPercentage: number;
+
+  /**
+   * @deprecated
+   */
+  p50: Percentile;
+  /**
+   * @deprecated
+   */
+  p95: Percentile;
+  /**
+   * @deprecated
+   */
+  p99: Percentile;
+}
+
 export interface SpanEndpointBottleneckInsight extends SpanInsight {
   name: "Bottleneck";
   type: InsightType.SpanEndpointBottleneck;
   category: InsightCategory.Performance;
   specifity: InsightSpecificity.TargetFound;
   importance: InsightImportance.Critical;
-  slowEndpoints: {
-    endpointInfo: {
-      route: string;
-      instrumentationLibrary: string;
-      serviceName: string;
-      codeObjectId: string;
-      spanCodeObjectId: string;
-      spanName: string;
-    };
-    probabilityOfBeingBottleneck: number;
-    avgDurationWhenBeingBottleneck: Duration;
-    impact: number;
-    severity: number;
-    criticality: number;
-    requestPercentage: number;
-
-    /**
-     * @deprecated
-     */
-    p50: Percentile;
-    /**
-     * @deprecated
-     */
-    p95: Percentile;
-    /**
-     * @deprecated
-     */
-    p99: Percentile;
-  }[];
+  slowEndpoints: BottleneckEndpointInfo[];
 
   /**
    * @deprecated
@@ -444,6 +446,7 @@ export interface EndpointBottleneckInsight extends EndpointInsight {
     avgDurationWhenBeingBottleneck: Duration;
     criticality: number;
     ticketLink: string | null;
+    requestPercentage: number;
 
     /**
      * @deprecated
@@ -538,6 +541,24 @@ export interface SpanScalingBadlyInsight extends SpanInsight {
   spanInstrumentationLibrary: string;
 }
 
+export interface NPlusOneEndpointInfo {
+  endpointInfo: {
+    route: string;
+    instrumentationLibrary: string;
+    spanCodeObjectId: string;
+    entrySpanCodeObjectId: string;
+    serviceName: string;
+  };
+  occurrences: number;
+  criticality: number;
+  impact: number;
+  severity: number;
+  traceId: string;
+  duration: Duration;
+  commitId: string;
+  requestPercentage: number;
+}
+
 export interface SpanNPlusOneInsight extends SpanInsight {
   name: "N+1";
   type: InsightType.SpanNPlusOne;
@@ -549,23 +570,7 @@ export interface SpanNPlusOneInsight extends SpanInsight {
   clientSpanName: string | null;
   clientSpanCodeObjectId: string | null;
   duration: Duration;
-  endpoints: {
-    endpointInfo: {
-      route: string;
-      instrumentationLibrary: string;
-      spanCodeObjectId: string;
-      entrySpanCodeObjectId: string;
-      serviceName: string;
-    };
-    occurrences: number;
-    criticality: number;
-    impact: number;
-    severity: number;
-    traceId: string;
-    duration: Duration;
-    commitId: string;
-    requestPercentage: number;
-  }[];
+  endpoints: NPlusOneEndpointInfo[];
 
   /**
    * @deprecated
