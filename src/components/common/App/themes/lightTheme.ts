@@ -231,7 +231,9 @@ export const lightTheme: ThemeColors = {
       secondary: v3colors.gray[0],
       brandPrimary: v3colors.primary[500],
       brandSecondary: v3colors.primary[300],
+      brandTertiary: v3colors.primary[400],
       brandDark: v3colors.primary[150],
+      brandDarkest: v3colors.primary[100],
       sidePanelHeader: v3colors.gray[300]
     },
     text: {

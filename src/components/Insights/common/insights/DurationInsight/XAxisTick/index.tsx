@@ -1,21 +1,10 @@
 import { Text } from "recharts";
-import { DefaultTheme, useTheme } from "styled-components";
+import { useTheme } from "styled-components";
 import { DIVIDER, LABEL_HEIGHT } from "../constants";
 import { XAxisTickProps } from "./types";
 
-const getTickLabelColor = (theme: DefaultTheme) => {
-  switch (theme.mode) {
-    case "light":
-      return "#4d668a";
-    case "dark":
-    case "dark-jetbrains":
-      return "#dfe1e5";
-  }
-};
-
 export const XAxisTick = (props: XAxisTickProps) => {
   const theme = useTheme();
-  const tickLabelColor = getTickLabelColor(theme);
 
   const tick = props.ticks[props.payload.value];
   const textAnchor = tick.textAnchor || props.textAnchor;
@@ -29,7 +18,8 @@ export const XAxisTick = (props: XAxisTickProps) => {
         <Text
           {...props}
           key={text}
-          fill={tickLabelColor}
+          fill={theme.colors.v3.stroke.secondary}
+          fontSize={theme.typographies.captionOne.fontSize}
           textAnchor={textAnchor}
           y={props.y + i * LABEL_HEIGHT}
           className={"recharts-cartesian-axis-tick-value"}

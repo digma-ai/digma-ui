@@ -122,40 +122,50 @@ export const InsightCard = (props: InsightCardProps) => {
           {/* <Button icon={CrossIcon} label={"Dismiss"} buttonType={"tertiary"} /> */}
           <s.Actions>
             {props.onOpenHistogram && (
-              <IconButton
-                icon={{ component: HistogramIcon }}
-                onClick={handleHistogramButtonClick}
-              />
+              <Tooltip title={"Open histogram"}>
+                <IconButton
+                  icon={{ component: HistogramIcon }}
+                  onClick={handleHistogramButtonClick}
+                />
+              </Tooltip>
             )}
             {props.onRecalculate && (
-              <IconButton
-                icon={{ component: RecalculateIcon }}
-                onClick={handleRecalculateClick}
-              />
+              <Tooltip title={"Recalculate"}>
+                <IconButton
+                  icon={{ component: RecalculateIcon }}
+                  onClick={handleRecalculateClick}
+                />
+              </Tooltip>
             )}
             {props.onJiraButtonClick && (
-              <JiraButton
-                onTicketInfoButtonClick={props.onJiraButtonClick}
-                ticketLink={props.jiraTicketInfo?.ticketLink}
-                isHintEnabled={props.jiraTicketInfo?.isHintEnabled}
-                spanCodeObjectId={props.jiraTicketInfo?.spanCodeObjectId}
-              />
+              <Tooltip title={"Jira ticket info"}>
+                <JiraButton
+                  onTicketInfoButtonClick={props.onJiraButtonClick}
+                  ticketLink={props.jiraTicketInfo?.ticketLink}
+                  isHintEnabled={props.jiraTicketInfo?.isHintEnabled}
+                  spanCodeObjectId={props.jiraTicketInfo?.spanCodeObjectId}
+                />
+              </Tooltip>
             )}
             {props.onPin && <IconButton icon={{ component: PinIcon }} />}
             <s.MainActions>
               {props.onGoToTrace && (
-                <Button
-                  icon={TraceIcon}
-                  label={"Trace"}
-                  onClick={() => props.onGoToTrace && props.onGoToTrace()}
-                />
+                <Tooltip title={"Open trace"}>
+                  <Button
+                    icon={TraceIcon}
+                    label={"Trace"}
+                    onClick={() => props.onGoToTrace && props.onGoToTrace()}
+                  />
+                </Tooltip>
               )}
               {props.onGoToLive && (
-                <Button
-                  icon={LiveIcon}
-                  label={"Live"}
-                  onClick={() => props.onGoToLive && props.onGoToLive()}
-                />
+                <Tooltip title={"Open live view"}>
+                  <Button
+                    icon={LiveIcon}
+                    label={"Live"}
+                    onClick={() => props.onGoToLive && props.onGoToLive()}
+                  />
+                </Tooltip>
               )}
             </s.MainActions>
           </s.Actions>
