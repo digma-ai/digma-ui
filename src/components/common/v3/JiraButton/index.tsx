@@ -42,13 +42,13 @@ export const JiraButton = (props: JiraButtonProps) => {
                   {
                     icon: <OpenLinkIcon />,
                     label: "View",
-                    id: ticketLink,
+                    id: "view",
                     onClick: handleViewButtonClick
                   },
                   {
                     icon: <PencilIcon />,
                     label: "Edit",
-                    id: props.spanCodeObjectId ?? "",
+                    id: "edit",
                     onClick: () => openTicketInfo("edit menu item click")
                   }
                 ]}
