@@ -83,6 +83,7 @@ export const SessionInViewInsight = (props: SessionInViewInsightProps) => {
               page={page}
               pageSize={PAGE_SIZE}
               onPageChange={setPage}
+              withDescription={true}
             />
           </s.List>
         </ContentContainer>
