@@ -36,6 +36,7 @@ export type GenericCodeObjectInsight =
   | CodeObjectHotSpotInsight
   | CodeObjectErrorsInsight
   | EndpointDurationSlowdownInsight
+  | EndpointSlowdownSourceInsight
   | EndpointBreakdownInsight
   | SpanScalingWellInsight
   | SpanScalingInsufficientDataInsight
@@ -391,6 +392,7 @@ export interface EndpointHighUsageInsight extends EndpointInsight {
   maxCallsIn1Min: number;
 }
 
+// obsolete
 export interface EndpointSlowestSpansInsight extends EndpointInsight {
   name: "Bottleneck Detected";
   type: InsightType.SlowestSpans;
@@ -418,6 +420,35 @@ export interface EndpointSlowestSpansInsight extends EndpointInsight {
      */
     p99: Percentile;
   }[];
+}
+
+export interface EndpointBottleneckInsight extends EndpointInsight {
+  name: "Bottleneck Detected";
+  type: InsightType.EndpointBottleneck;
+  category: InsightCategory.Performance;
+  specifity: InsightSpecificity.TargetFound;
+  importance: InsightImportance.Critical;
+  isRecalculateEnabled: true;
+  spans: {
+    spanInfo: SpanInfo;
+    probabilityOfBeingBottleneck: number;
+    avgDurationWhenBeingBottleneck: Duration;
+    criticality: number;
+    ticketLink: string | null;
+
+    /**
+     * @deprecated
+     */
+    p50: Percentile;
+    /**
+     * @deprecated
+     */
+    p95: Percentile;
+    /**
+     * @deprecated
+     */
+    p99: Percentile;
+  };
 }
 
 export interface SlowEndpointInsight extends EndpointInsight {
@@ -550,6 +581,27 @@ export interface EndpointSuspectedNPlusOneInsight extends EndpointInsight {
   }[];
 }
 
+export interface EndpointSpanNPlusOneInsight extends EndpointInsight {
+  name: "Suspected N+1 Query";
+  type: InsightType.EndpointSpanNPlusOneV2;
+  category: InsightCategory.Performance;
+  specifity: InsightSpecificity.TargetAndReasonFound;
+  importance: InsightImportance.HighlyImportant;
+  isRecalculateEnabled: true;
+  spans: {
+    occurrences: number;
+    internalSpan: SpanInfo | null;
+    clientSpan: SpanInfo;
+    traceId: string;
+    duration: Duration;
+    fraction: number;
+    criticality: number;
+    impact: number;
+    severity: number;
+    ticketLink: string | null;
+  };
+}
+
 export interface CodeObjectHotSpotInsight extends CodeObjectInsight {
   name: "Errors Hotspot";
   type: InsightType.HotSpot;
@@ -579,6 +631,7 @@ export interface CodeObjectErrorsInsight extends CodeObjectInsight {
   }[];
 }
 
+// obsolete
 export interface DurationSlowdownSource {
   percentile: string;
   spanInfo: SpanInfo;
@@ -589,6 +642,17 @@ export interface DurationSlowdownSource {
   changeVerified: boolean;
 }
 
+export interface EndpointSlowdownSources {
+  percentile: string;
+  spanInfo: SpanInfo;
+  level: number;
+  previousDuration: Duration;
+  currentDuration: Duration;
+  changeTime: string;
+  changeVerified: boolean;
+}
+
+// obsolete
 export interface EndpointDurationSlowdownInsight extends EndpointInsight {
   name: "Endpoint Duration Slowdown Source";
   type: InsightType.EndpointDurationSlowdown;
@@ -596,6 +660,16 @@ export interface EndpointDurationSlowdownInsight extends EndpointInsight {
   specifity: InsightSpecificity.OwnInsight;
   importance: InsightImportance.Critical;
   durationSlowdownSources: DurationSlowdownSource[];
+  decorators: CodeObjectDecorator[];
+}
+
+export interface EndpointSlowdownSourceInsight extends EndpointInsight {
+  name: "Endpoint Slowdown Source";
+  type: InsightType.EndpointSlowdownSource;
+  category: InsightCategory.Performance;
+  specifity: InsightSpecificity.OwnInsight;
+  importance: InsightImportance.Critical;
+  endpointSlowdownSources: EndpointSlowdownSources[];
   decorators: CodeObjectDecorator[];
 }
 

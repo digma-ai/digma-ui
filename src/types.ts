@@ -17,7 +17,9 @@ export enum InsightType {
   NormalUsage = "NormalUsage",
   HighUsage = "HighUsage",
   SlowestSpans = "SlowestSpans",
+  EndpointBottleneck = "EndpointBottleneck",
   EndpointSpanNPlusOne = "EndpointSpaNPlusOne",
+  EndpointSpanNPlusOneV2 = "EndpointSpanNPlusOne",
   SpanUsages = "SpanUsages",
   SpanNPlusOne = "SpaNPlusOne",
   SpanEndpointBottleneck = "SpanEndpointBottleneck",
@@ -33,7 +35,8 @@ export enum InsightType {
   EndpointHighNumberOfQueries = "EndpointHighNumberOfQueries",
   SpanNexus = "SpanNexus",
   SpanQueryOptimization = "SpanQueryOptimization",
-  EndpointQueryOptimization = "EndpointQueryOptimization"
+  EndpointQueryOptimization = "EndpointQueryOptimization",
+  EndpointSlowdownSource = "EndpointSlowdownSource"
 }
 
 export type PercentileKey = "p50" | "p95";
