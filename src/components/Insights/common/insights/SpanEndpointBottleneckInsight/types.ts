@@ -1,6 +1,10 @@
-import { InsightType, SpanEndpointBottleneckInsight } from "../../../types";
+import {
+  InsightProps,
+  InsightType,
+  SpanEndpointBottleneckInsight
+} from "../../../types";
 
-export interface SpanEndpointBottleneckEndpointsProps {
+export interface SpanEndpointBottleneckEndpointsProps extends InsightProps {
   insight: SpanEndpointBottleneckInsight;
 
   onAssetLinkClick: (

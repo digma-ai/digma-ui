@@ -14,7 +14,7 @@ export const EndpointBottleneckInsight = (
   props: EndpointBottleneckInsightProps
 ) => {
   const { insight } = props;
-  const { span } = insight;
+  const { span, ticketLink } = insight;
 
   const handleSpanLinkClick = (spanCodeObjectId: string) => {
     props.onAssetLinkClick(spanCodeObjectId, insight.type);
@@ -37,6 +37,10 @@ export const EndpointBottleneckInsight = (
   return (
     <InsightCard
       insight={insight}
+      jiraTicketInfo={{
+        isHintEnabled: props.isJiraHintEnabled,
+        spanCodeObjectId: props.insight.spanInfo?.spanCodeObjectId
+      }}
       content={
         <ContentContainer>
           <Details>

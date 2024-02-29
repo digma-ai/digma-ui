@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { getDurationString } from "../../../../../utils/getDurationString";
 import { roundTo } from "../../../../../utils/roundTo";
+import { sendTrackingEvent } from "../../../../../utils/sendTrackingEvent";
 import { trimEndpointScheme } from "../../../../../utils/trimEndpointScheme";
+import { trackingEvents } from "../../../tracking";
 import { Info } from "../../Info";
 import { InsightCard } from "../../InsightCard";
 import { ColumnsContainer } from "../../InsightCard/ColumnsContainer";
@@ -24,6 +26,14 @@ export const SpanBottleneckEndpoints = (
       props.onAssetLinkClick(spanCodeObjectId, props?.insight.type);
   };
 
+  const handleCreateJiraTicketButtonClick = (event: string) => {
+    sendTrackingEvent(trackingEvents.JIRA_TICKET_INFO_BUTTON_CLICKED, {
+      insightType: props.insight.type
+    });
+    props.onJiraTicketCreate &&
+      props.onJiraTicketCreate(props.insight, undefined, event);
+  };
+
   const endpoints = props.insight.slowEndpoints;
 
   if (endpoints.length === 0) {
@@ -33,6 +43,12 @@ export const SpanBottleneckEndpoints = (
   return (
     <InsightCard
       insight={props.insight}
+      onJiraButtonClick={handleCreateJiraTicketButtonClick}
+      jiraTicketInfo={{
+        spanCodeObjectId: selectedEndpoint?.endpointInfo.spanCodeObjectId,
+        ticketLink: props.insight.ticketLink,
+        isHintEnabled: props.isJiraHintEnabled
+      }}
       content={
         <ContentContainer>
           <Details>
