@@ -2,12 +2,13 @@ import { useContext } from "react";
 import { getDurationString } from "../../../../../utils/getDurationString";
 import { sendTrackingEvent } from "../../../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../../../common/App/ConfigContext";
+import { InfoCircleIcon } from "../../../../common/icons/InfoCircleIcon";
+import { Tooltip } from "../../../../common/v3/Tooltip";
 import { trackingEvents } from "../../../tracking";
 import { InsightType, Trace } from "../../../types";
 import { InsightCard } from "../../InsightCard";
 import { ColumnsContainer } from "../../InsightCard/ColumnsContainer";
 import { KeyValue } from "../../InsightCard/KeyValue";
-import { ListItem } from "../../InsightCard/ListItem";
 import * as s from "./styles";
 import { EndpointNPlusOneInsightProps } from "./types";
 
@@ -67,17 +68,30 @@ export const EndpointNPlusOneInsight = (
       }}
       content={
         <s.ContentContainer>
-          <s.SpanList>
+          <s.SpanDetails>
             <s.Description>Assets</s.Description>
-            <ListItem
+            <s.SpanListItem
               name={spanName}
               key={spanName}
               onClick={() => handleSpanLinkClick(spanInfo.spanCodeObjectId)}
             />
-          </s.SpanList>
+          </s.SpanDetails>
           <ColumnsContainer>
             <KeyValue label={"Repeats"}>{span.occurrences}</KeyValue>
-            <KeyValue label={"Requests"}>{span.requestPercentage}</KeyValue>
+            <KeyValue
+              label={
+                <Tooltip
+                  title={"The amount of requests affected by this issue."}
+                >
+                  <s.InfoContainer>
+                    <div>Requests</div>
+                    <InfoCircleIcon color={"currentColor"} size={12} />
+                  </s.InfoContainer>
+                </Tooltip>
+              }
+            >
+              {span.requestPercentage}%
+            </KeyValue>
             <KeyValue label={"Duration"}>
               {getDurationString(span.duration)}
             </KeyValue>
