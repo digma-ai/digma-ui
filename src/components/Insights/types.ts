@@ -444,6 +444,7 @@ export interface EndpointBottleneckInsight extends EndpointInsight {
     avgDurationWhenBeingBottleneck: Duration;
     criticality: number;
     ticketLink: string | null;
+    requestPercentage: number;
 
     /**
      * @deprecated

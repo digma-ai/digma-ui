@@ -2,10 +2,9 @@ import { useContext } from "react";
 import { getDurationString } from "../../../../../utils/getDurationString";
 import { sendTrackingEvent } from "../../../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../../../common/App/ConfigContext";
-import { InfoCircleIcon } from "../../../../common/icons/InfoCircleIcon";
-import { Tooltip } from "../../../../common/v3/Tooltip";
 import { trackingEvents } from "../../../tracking";
 import { InsightType, Trace } from "../../../types";
+import { Info } from "../../Info";
 import { InsightCard } from "../../InsightCard";
 import { ColumnsContainer } from "../../InsightCard/ColumnsContainer";
 import { KeyValue } from "../../InsightCard/KeyValue";
@@ -81,14 +80,10 @@ export const EndpointNPlusOneInsight = (
             <KeyValue label={"Repeats"}>{span.occurrences}</KeyValue>
             <KeyValue
               label={
-                <Tooltip
-                  title={"The amount of requests affected by this issue."}
-                >
-                  <s.InfoContainer>
-                    <div>Requests</div>
-                    <InfoCircleIcon color={"currentColor"} size={12} />
-                  </s.InfoContainer>
-                </Tooltip>
+                <Info
+                  text="The amount of requests affected by this issue."
+                  name="Requests"
+                />
               }
             >
               {span.requestPercentage}%
