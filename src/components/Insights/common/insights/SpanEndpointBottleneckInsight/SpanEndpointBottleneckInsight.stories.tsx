@@ -1,11 +1,11 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { SpanBottleneckEndpoints } from ".";
+import { SpanEndpointBottleneckInsight } from ".";
 import { mockedBottleneckInsight } from "../../../BottleneckInsight/mockData";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
-const meta: Meta<typeof SpanBottleneckEndpoints> = {
-  title: "Insights/common/insights/SpanBottleneckEndpoints",
-  component: SpanBottleneckEndpoints,
+const meta: Meta<typeof SpanEndpointBottleneckInsight> = {
+  title: "Insights/common/insights/SpanEndpointBottleneckInsight",
+  component: SpanEndpointBottleneckInsight,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
     layout: "fullscreen"
