@@ -6,6 +6,7 @@ import { Button } from "../../../../common/v3/Button";
 import { Pagination } from "../../../../common/v3/Pagination";
 import { InsightType, Trace } from "../../../types";
 import { InsightCard } from "../../InsightCard";
+import { ContentContainer, Description, ListContainer } from "../styles";
 import * as s from "./styles";
 import { ExcessiveAPICallsInsightProps } from "./types";
 
@@ -38,11 +39,11 @@ export const ExcessiveAPICallsInsight = (
     <InsightCard
       insight={props.insight}
       content={
-        <s.ContentContainer>
-          <s.Description>
+        <ContentContainer>
+          <Description>
             Excessive API calls to specific endpoint found
-          </s.Description>
-          <s.List>
+          </Description>
+          <ListContainer>
             {pageItems.map((span) => {
               const spanName = span.clientSpan.displayName;
               const traceId = span.traceId;
@@ -81,8 +82,8 @@ export const ExcessiveAPICallsInsight = (
               onPageChange={setPage}
               withDescription={true}
             />
-          </s.List>
-        </s.ContentContainer>
+          </ListContainer>
+        </ContentContainer>
       }
       onRecalculate={props.onRecalculate}
       onRefresh={props.onRefresh}

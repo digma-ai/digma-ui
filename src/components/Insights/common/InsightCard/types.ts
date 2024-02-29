@@ -25,6 +25,7 @@ export interface InsightCardProps {
   jiraTicketInfo?: {
     ticketLink?: string | null;
     isHintEnabled?: boolean;
+    spanCodeObjectId?: string;
   };
-  onJiraButtonClick?: (event: string) => void;
+  onJiraButtonClick?: (spanCodeObjectId: string, event: string) => void;
 }

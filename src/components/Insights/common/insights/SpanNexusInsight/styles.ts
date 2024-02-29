@@ -1,11 +1,5 @@
 import styled from "styled-components";
 
-export const ContentContainer = styled.div`
-  gap: 8px;
-  display: flex;
-  flex-direction: column;
-`;
-
 export const Description = styled.div`
   display: flex;
   gap: 8px;
