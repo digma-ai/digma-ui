@@ -14,7 +14,6 @@ import { CardsIcon } from "../../common/icons/CardsIcon";
 import { DurationBreakdownInsight } from "../DurationBreakdownInsight";
 import { EndpointQueryOptimizationInsight } from "../EndpointQueryOptimizationInsight";
 import { QueryOptimizationInsight } from "../QueryOptimizationInsight";
-import { ScalingIssueInsight } from "../ScalingIssueInsight";
 import { TopUsageInsight } from "../TopUsageInsight";
 import { actions } from "../actions";
 import { DurationInsight } from "../common/insights/DurationInsight";
@@ -24,6 +23,7 @@ import { EndpointSlowdownSourceInsight } from "../common/insights/EndpointSlowdo
 import { ExcessiveAPICallsInsight } from "../common/insights/ExcessiveAPICallsInsight";
 import { HighNumberOfQueriesInsight } from "../common/insights/HighNumberOfQueriesInsight";
 import { RequestBreakdownInsight } from "../common/insights/RequestBreakdownInsight";
+import { ScalingIssueInsight } from "../common/insights/ScalingIssueInsight";
 import { SessionInViewInsight } from "../common/insights/SessionInViewInsight";
 import { SlowEndpointInsight } from "../common/insights/SlowEndpointInsight";
 import { SpanEndpointBottleneckInsight } from "../common/insights/SpanEndpointBottleneckInsight";
