@@ -70,7 +70,9 @@ export interface ThemeColors {
       secondary: string;
       brandPrimary: string;
       brandSecondary: string;
+      brandTertiary: string;
       brandDark: string;
+      brandDarkest: string;
       sidePanelHeader: string;
     };
     text: {
@@ -91,7 +93,6 @@ export interface ThemeColors {
       brandSecondary: string;
     };
     icon: {
-      white: string;
       primary: string;
       secondary: string;
       tertiary: string;
@@ -99,6 +100,7 @@ export interface ThemeColors {
       brandPrimary: string;
       brandSecondary: string;
       brandTertiary: string;
+      white: string;
     };
     status: {
       backgroundHigh: string;
@@ -110,11 +112,6 @@ export interface ThemeColors {
       backgroundSuccess: string;
       success: string;
     };
-    barChart: {
-      pink: string;
-      purple: string;
-      blue: string;
-    };
     pieChart: {
       pinkFill: string;
       pinkStroke: string;
@@ -124,6 +121,11 @@ export interface ThemeColors {
       azureStroke: string;
       brightOrangeFill: string;
       brightOrangeStroke: string;
+    };
+    barChart: {
+      pink: string;
+      purple: string;
+      blue: string;
     };
   };
 }

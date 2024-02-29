@@ -1,5 +1,4 @@
 import styled, { css } from "styled-components";
-import { v3colors } from "../../App/v3colors";
 import { ButtonElementProps } from "./types";
 
 export const Button = styled.button<ButtonElementProps>`
@@ -22,7 +21,7 @@ export const Button = styled.button<ButtonElementProps>`
         return theme.colors.v3.surface.primary;
       case "primary":
       default:
-        return v3colors.primary[400];
+        return theme.colors.v3.surface.brandTertiary;
     }
   }};
 
@@ -96,7 +95,7 @@ export const Button = styled.button<ButtonElementProps>`
           return theme.colors.v3.surface.brandDark;
         case "primary":
         default:
-          return v3colors.primary[300];
+          return theme.colors.v3.surface.secondary;
       }
     }};
     border: 1px solid
@@ -108,7 +107,7 @@ export const Button = styled.button<ButtonElementProps>`
             return theme.colors.v3.stroke.primary;
           case "primary":
           default:
-            return v3colors.primary[300];
+            return theme.colors.v3.surface.secondary;
         }
       }};
 
@@ -139,7 +138,7 @@ export const Button = styled.button<ButtonElementProps>`
           return theme.colors.v3.surface.primary;
         case "primary":
         default:
-          return v3colors.primary[500];
+          return theme.colors.v3.surface.primary;
       }
     }};
     border: 1px solid
@@ -151,7 +150,7 @@ export const Button = styled.button<ButtonElementProps>`
             return theme.colors.v3.stroke.primary;
           case "primary":
           default:
-            return v3colors.primary[300];
+            return theme.colors.v3.surface.secondary;
         }
       }};
 

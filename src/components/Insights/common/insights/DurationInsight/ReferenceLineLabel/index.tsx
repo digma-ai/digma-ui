@@ -1,9 +1,12 @@
 import { Text } from "recharts";
 import { CartesianViewBox } from "recharts/types/util/types";
+import { useTheme } from "styled-components";
 import { isNumber } from "../../../../../../typeGuards/isNumber";
 import { isString } from "../../../../../../typeGuards/isString";
 import { DIVIDER, LABEL_HEIGHT } from "../constants";
 import { ReferenceLineLabelProps } from "./types";
+
+const LABEL_GAP = 4; // in pixels
 
 const isTextAnchor = (
   value?: string
@@ -11,6 +14,7 @@ const isTextAnchor = (
   ["start", "middle", "end", "inherit", undefined].includes(value);
 
 export const ReferenceLineLabel = (props: ReferenceLineLabelProps) => {
+  const theme = useTheme();
   const labels = isString(props.value)
     ? props.value.split(DIVIDER)
     : isNumber(props.value)
@@ -36,8 +40,15 @@ export const ReferenceLineLabel = (props: ReferenceLineLabelProps) => {
           key={text}
           x={x}
           textAnchor={textAnchor || "middle"}
-          y={y + i * LABEL_HEIGHT}
-          dy={labels.length > 1 ? -LABEL_HEIGHT : undefined}
+          y={y + i * LABEL_HEIGHT - LABEL_GAP}
+          dy={
+            labels.length > 1
+              ? -((labels.length - 1) * LABEL_HEIGHT)
+              : undefined
+          }
+          fill={theme.colors.v3.stroke.secondary}
+          fontSize={theme.typographies.captionOne.fontSize}
+          lineHeight={LABEL_HEIGHT}
         >
           {text}
         </Text>
