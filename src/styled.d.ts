@@ -110,6 +110,21 @@ export interface ThemeColors {
       backgroundSuccess: string;
       success: string;
     };
+    barChart: {
+      pink: string;
+      purple: string;
+      blue: string;
+    };
+    pieChart: {
+      pinkFill: string;
+      pinkStroke: string;
+      brightPurpleFill: string;
+      brightPurpleStroke: string;
+      azureFill: string;
+      azureStroke: string;
+      brightOrangeFill: string;
+      brightOrangeStroke: string;
+    };
   };
 }
 
