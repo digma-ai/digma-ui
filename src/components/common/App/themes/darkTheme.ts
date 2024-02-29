@@ -272,6 +272,21 @@ export const darkTheme: ThemeColors = {
       low: v3colors.blue[300],
       backgroundSuccess: v3colors.green[400],
       success: v3colors.green[300]
+    },
+    barChart: {
+      blue: "#4b46a3",
+      purple: "#6f46a2",
+      pink: "#a24565"
+    },
+    pieChart: {
+      pinkFill: v3colors.pink[200],
+      pinkStroke: v3colors.pink[300],
+      brightPurpleFill: v3colors.brightPurple[200],
+      brightPurpleStroke: v3colors.brightPurple[300],
+      azureFill: v3colors.azure[200],
+      azureStroke: v3colors.azure[300],
+      brightOrangeFill: v3colors.brightOrange[200],
+      brightOrangeStroke: v3colors.brightOrange[300]
     }
   }
 };

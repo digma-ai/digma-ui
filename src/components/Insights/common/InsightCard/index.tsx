@@ -7,11 +7,11 @@ import { HistogramIcon } from "../../../common/icons/16px/HistogramIcon";
 import { LiveIcon } from "../../../common/icons/16px/LiveIcon";
 import { PinIcon } from "../../../common/icons/16px/PinIcon";
 import { RecalculateIcon } from "../../../common/icons/16px/RecalculateIcon";
-import { CrossIcon } from "../../../common/icons/CrossIcon";
 import { Button } from "../../../common/v3/Button";
 import { Card } from "../../../common/v3/Card";
 import { JiraButton } from "../../../common/v3/JiraButton";
 import { Tooltip } from "../../../common/v3/Tooltip";
+import { isSpanInsight } from "../../typeGuards";
 import { IconButton } from "./IconButton";
 import { InsightHeader } from "./InsightHeader";
 import * as s from "./styles";
@@ -33,6 +33,18 @@ export const InsightCard = (props: InsightCardProps) => {
         props.insight.type
       );
     setIsRecalculatingStarted(true);
+  };
+
+  const handleHistogramButtonClick = () => {
+    isSpanInsight(props.insight) &&
+      props.insight.spanInfo &&
+      props.onOpenHistogram &&
+      props.onOpenHistogram(
+        props.insight.spanInfo.instrumentationLibrary,
+        props.insight.spanInfo.name,
+        props.insight.type,
+        props.insight.spanInfo.displayName
+      );
   };
 
   const renderRecalculationBlock = (
@@ -107,10 +119,13 @@ export const InsightCard = (props: InsightCardProps) => {
       }
       footer={
         <s.InsightFooter>
-          <Button icon={CrossIcon} label="Dismiss" buttonType="tertiary" />
+          {/* <Button icon={CrossIcon} label={"Dismiss"} buttonType={"tertiary"} /> */}
           <s.Actions>
             {props.onOpenHistogram && (
-              <IconButton icon={{ component: HistogramIcon }} />
+              <IconButton
+                icon={{ component: HistogramIcon }}
+                onClick={handleHistogramButtonClick}
+              />
             )}
             {props.onRecalculate && (
               <IconButton

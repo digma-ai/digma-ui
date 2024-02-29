@@ -270,6 +270,21 @@ export const lightTheme: ThemeColors = {
       low: v3colors.blue[200],
       backgroundSuccess: v3colors.green[100],
       success: v3colors.green[200]
+    },
+    barChart: {
+      blue: "#7d76ee",
+      purple: "#ab78e8",
+      pink: "#e4799e"
+    },
+    pieChart: {
+      pinkFill: v3colors.pink[200],
+      pinkStroke: v3colors.pink[100],
+      brightPurpleFill: v3colors.brightPurple[200],
+      brightPurpleStroke: v3colors.brightPurple[100],
+      azureFill: v3colors.azure[200],
+      azureStroke: v3colors.azure[100],
+      brightOrangeFill: v3colors.brightOrange[200],
+      brightOrangeStroke: v3colors.brightOrange[100]
     }
   }
 };

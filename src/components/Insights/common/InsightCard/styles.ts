@@ -19,6 +19,7 @@ export const RefreshContainer = styled.div`
 `;
 
 export const Actions = styled.div`
+  margin-left: auto;
   display: flex;
 `;
 
