@@ -39,7 +39,8 @@ export const EndpointBottleneckInsight = (
       insight={insight}
       jiraTicketInfo={{
         isHintEnabled: props.isJiraHintEnabled,
-        spanCodeObjectId: props.insight.spanInfo?.spanCodeObjectId
+        spanCodeObjectId: props.insight.spanInfo?.spanCodeObjectId,
+        ticketLink
       }}
       content={
         <ContentContainer>

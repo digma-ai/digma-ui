@@ -1,10 +1,10 @@
-import { useContext, useState } from "react";
+import { ReactNode, useContext, useState } from "react";
 import { getDurationString } from "../../../../../utils/getDurationString";
 import { sendTrackingEvent } from "../../../../../utils/sendTrackingEvent";
 import { trimEndpointScheme } from "../../../../../utils/trimEndpointScheme";
 import { ConfigContext } from "../../../../common/App/ConfigContext";
 import { trackingEvents } from "../../../tracking";
-import { InsightType, Trace } from "../../../types";
+import { InsightType, NPlusOneEndpointInfo, Trace } from "../../../types";
 import { Info } from "../../Info";
 import { InsightCard } from "../../InsightCard";
 import { ColumnsContainer } from "../../InsightCard/ColumnsContainer";
@@ -14,6 +14,29 @@ import { Select } from "../../InsightCard/Select";
 import { ContentContainer, Description, Details } from "../styles";
 import * as s from "./styles";
 import { SpanNPlusOneInsightProps } from "./types";
+
+const renderOptions = (
+  endpoints: NPlusOneEndpointInfo[],
+  handleLinkClick: (spanCodeObjectId?: string) => void
+): { label: string; customContent: ReactNode; value: string }[] => {
+  return endpoints.map((x) => {
+    const spanCodeObjectId = x.endpointInfo.entrySpanCodeObjectId;
+    const route = trimEndpointScheme(x.endpointInfo.route);
+    return {
+      label: route,
+      customContent: (
+        <s.SelectedItem>
+          {x.endpointInfo.serviceName}
+          <ListItem
+            name={route}
+            onClick={() => handleLinkClick(spanCodeObjectId)}
+          />
+        </s.SelectedItem>
+      ),
+      value: spanCodeObjectId
+    };
+  });
+};
 
 export const SpanNPlusOneInsight = (props: SpanNPlusOneInsightProps) => {
   const {
@@ -80,23 +103,10 @@ export const SpanNPlusOneInsight = (props: SpanNPlusOneInsightProps) => {
 
                 setSelectedEndpoint(selected);
               }}
-              options={props.insight.endpoints.map((x) => {
-                const spanCodeObjectId = x.endpointInfo.entrySpanCodeObjectId;
-                const route = trimEndpointScheme(x.endpointInfo.route);
-                return {
-                  label: route,
-                  customContent: (
-                    <s.SelectedItem>
-                      {x.endpointInfo.serviceName}
-                      <ListItem
-                        name={route}
-                        onClick={() => handleSpanLinkClick(spanCodeObjectId)}
-                      />
-                    </s.SelectedItem>
-                  ),
-                  value: spanCodeObjectId
-                };
-              })}
+              options={renderOptions(
+                props.insight.endpoints,
+                handleSpanLinkClick
+              )}
             />
           </Details>
 

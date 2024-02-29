@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import { getDurationString } from "../../../../../utils/getDurationString";
 import { roundTo } from "../../../../../utils/roundTo";
 import { sendTrackingEvent } from "../../../../../utils/sendTrackingEvent";
 import { trimEndpointScheme } from "../../../../../utils/trimEndpointScheme";
 import { trackingEvents } from "../../../tracking";
+import { BottleneckEndpointInfo } from "../../../types";
 import { Info } from "../../Info";
 import { InsightCard } from "../../InsightCard";
 import { ColumnsContainer } from "../../InsightCard/ColumnsContainer";
@@ -13,6 +14,29 @@ import { Select } from "../../InsightCard/Select";
 import { ContentContainer, Description, Details } from "../styles";
 import * as s from "./styles";
 import { SpanEndpointBottleneckEndpointsProps } from "./types";
+
+const renderOptions = (
+  endpoints: BottleneckEndpointInfo[],
+  handleLinkClick: (spanCodeObjectId?: string) => void
+): { label: string; customContent: ReactNode; value: string }[] => {
+  return endpoints.map((x) => {
+    const spanCodeObjectId = x.endpointInfo.spanCodeObjectId;
+    const route = trimEndpointScheme(x.endpointInfo.route);
+    return {
+      label: route,
+      customContent: (
+        <s.SelectedItem>
+          {x.endpointInfo.serviceName}
+          <ListItem
+            name={route}
+            onClick={() => handleLinkClick(spanCodeObjectId)}
+          />
+        </s.SelectedItem>
+      ),
+      value: spanCodeObjectId
+    };
+  });
+};
 
 export const SpanBottleneckEndpoints = (
   props: SpanEndpointBottleneckEndpointsProps
@@ -63,23 +87,10 @@ export const SpanBottleneckEndpoints = (
 
                 setSelectedEndpoint(selected);
               }}
-              options={props.insight.slowEndpoints.map((x) => {
-                const spanCodeObjectId = x.endpointInfo.spanCodeObjectId;
-                const route = trimEndpointScheme(x.endpointInfo.route);
-                return {
-                  label: route,
-                  customContent: (
-                    <s.SelectedItem>
-                      {x.endpointInfo.serviceName}
-                      <ListItem
-                        name={route}
-                        onClick={() => handleSpanLinkClick(spanCodeObjectId)}
-                      />
-                    </s.SelectedItem>
-                  ),
-                  value: spanCodeObjectId
-                };
-              })}
+              options={renderOptions(
+                props.insight.slowEndpoints,
+                handleSpanLinkClick
+              )}
             />
           </Details>
           {selectedEndpoint && (
