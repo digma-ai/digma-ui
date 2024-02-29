@@ -6,6 +6,7 @@ import {
 } from "../types";
 
 export const mockedQueryOptimizationInsight: QueryOptimizationInsight = {
+  sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
   id: "60b55792-8262-4c8d-9628-7cce7979ad6d",
   firstDetected: "2023-12-05T17:25:47.010Z",
   lastDetected: "2024-01-05T13:14:47.010Z",

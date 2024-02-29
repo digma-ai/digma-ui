@@ -2,6 +2,7 @@ import { InsightType } from "../../../types";
 import { InsightCategory, InsightScope, SpanNPlusOneInsight } from "../types";
 
 export const mockedNPlusOneInsight: SpanNPlusOneInsight = {
+  sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
   id: "60b55792-8262-4c5d-9628-8cce7979ad6d",
   firstDetected: "2023-12-05T17:25:47.010Z",
   lastDetected: "2024-01-05T13:14:47.010Z",
@@ -54,7 +55,15 @@ export const mockedNPlusOneInsight: SpanNPlusOneInsight = {
       occurrences: 100,
       criticality: 0.8,
       impact: 0,
-      severity: 0
+      severity: 0,
+      requestPercentage: 50,
+      traceId: "00D37A4E7208E0F6E89AA7E2E37446A6",
+      commitId: "a1b2c3d",
+      duration: {
+        value: 1.64,
+        unit: "sec",
+        raw: 1636050588.0
+      }
     }
   ],
   scope: InsightScope.Span,

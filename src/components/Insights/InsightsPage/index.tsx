@@ -11,60 +11,48 @@ import { ConfigContext } from "../../common/App/ConfigContext";
 import { Card } from "../../common/Card";
 import { EmptyState } from "../../common/EmptyState";
 import { CardsIcon } from "../../common/icons/CardsIcon";
-import { BottleneckInsight } from "../BottleneckInsight";
 import { DurationBreakdownInsight } from "../DurationBreakdownInsight";
-import { DurationInsight } from "../DurationInsight";
-import { DurationSlowdownSourceInsight } from "../DurationSlowdownSourceInsight";
-import { EndpointNPlusOneInsight } from "../EndpointNPlusOneInsight";
 import { EndpointQueryOptimizationInsight } from "../EndpointQueryOptimizationInsight";
-import { ErrorsInsight } from "../ErrorsInsight";
-import { ExcessiveAPICallsInsight } from "../ExcessiveAPICallsInsight";
-import { HighNumberOfQueriesInsight } from "../HighNumberOfQueriesInsight";
-import { InsightCard } from "../InsightCard";
 import { NPlusOneInsight } from "../NPlusOneInsight";
-import { NoScalingIssueInsight } from "../NoScalingIssueInsight";
-import { PerformanceAtScaleInsight } from "../PerformanceAtScaleInsight";
 import { QueryOptimizationInsight } from "../QueryOptimizationInsight";
 import { RequestBreakdownInsight } from "../RequestBreakdownInsight";
 import { ScalingIssueInsight } from "../ScalingIssueInsight";
 import { SessionInViewInsight } from "../SessionInViewInsight";
-import { SlowEndpointInsight } from "../SlowEndpointInsight";
-import { SpanBottleneckInsight } from "../SpanBottleneckInsight";
-import { SpanNexusInsight } from "../SpanNexusInsight";
 import { TopUsageInsight } from "../TopUsageInsight";
-import { TrafficInsight } from "../TrafficInsight";
 import { actions } from "../actions";
+import { DurationInsight } from "../common/insights/DurationInsight";
+import { ExcessiveAPICallsInsight } from "../common/insights/ExcessiveAPICallsInsight";
+import { HighNumberOfQueriesInsight } from "../common/insights/HighNumberOfQueriesInsight";
+import { SlowEndpointInsight } from "../common/insights/SlowEndpointInsight";
+import { SpanNexusInsight } from "../common/insights/SpanNexusInsight";
+import { TrafficInsight } from "../common/insights/TrafficInsight";
 import { Description } from "../styles";
 import { trackingEvents } from "../tracking";
 import {
   isChattyApiEndpointInsight,
-  isCodeObjectErrorsInsight,
-  isCodeObjectHotSpotInsight,
   isEndpointBreakdownInsight,
-  isEndpointDurationSlowdownInsight,
   isEndpointHighNumberOfQueriesInsight,
   isEndpointHighUsageInsight,
   isEndpointLowUsageInsight,
   isEndpointNormalUsageInsight,
   isEndpointQueryOptimizationInsight,
-  isEndpointSlowestSpansInsight,
-  isEndpointSuspectedNPlusOneInsight,
   isSessionInViewEndpointInsight,
   isSlowEndpointInsight,
   isSpanDurationBreakdownInsight,
   isSpanDurationsInsight,
-  isSpanEndpointBottleneckInsight,
   isSpanNPlusOneInsight,
   isSpanNexusInsight,
   isSpanQueryOptimizationInsight,
   isSpanScalingBadlyInsight,
-  isSpanScalingInsufficientDataInsight,
-  isSpanScalingWellInsight,
   isSpanUsagesInsight
 } from "../typeGuards";
 import { CodeObjectInsight, GenericCodeObjectInsight, Trace } from "../types";
 import * as s from "./styles";
-import { InsightPageProps, isInsightJiraTicketHintShownPayload } from "./types";
+import {
+  InsightPageProps,
+  MarkInsightTypesAsViewedPayload,
+  isInsightJiraTicketHintShownPayload
+} from "./types";
 
 const getInsightToShowJiraHint = (insights: CodeObjectInsight[]): number => {
   const insightsWithJiraButton = [
@@ -93,23 +81,23 @@ const renderInsightCard = (
   isJiraHintEnabled: boolean,
   onRefresh: () => void
 ): JSX.Element | undefined => {
-  const handleErrorSelect = (errorId: string, insightType: InsightType) => {
-    sendTrackingEvent(globalTrackingEvents.USER_ACTION, {
-      action: `Follow ${insightType} link`
-    });
-    window.sendMessageToDigma({
-      action: actions.GO_TO_ERROR,
-      payload: {
-        errorId
-      }
-    });
-  };
+  // const handleErrorSelect = (errorId: string, insightType: InsightType) => {
+  //   sendTrackingEvent(globalTrackingEvents.USER_ACTION, {
+  //     action: `Follow ${insightType} link`
+  //   });
+  //   window.sendMessageToDigma({
+  //     action: actions.GO_TO_ERROR,
+  //     payload: {
+  //       errorId
+  //     }
+  //   });
+  // };
 
-  const handleErrorsExpandButtonClick = () => {
-    window.sendMessageToDigma({
-      action: actions.GO_TO_ERRORS
-    });
-  };
+  // const handleErrorsExpandButtonClick = () => {
+  //   window.sendMessageToDigma({
+  //     action: actions.GO_TO_ERRORS
+  //   });
+  // };
 
   const handleHistogramButtonClick = (
     instrumentationLibrary: string,
@@ -206,6 +194,7 @@ const renderInsightCard = (
       />
     );
   }
+
   if (isSpanDurationBreakdownInsight(insight)) {
     return (
       <DurationBreakdownInsight
@@ -217,6 +206,7 @@ const renderInsightCard = (
       />
     );
   }
+
   if (isSpanUsagesInsight(insight)) {
     return (
       <TopUsageInsight
@@ -229,32 +219,35 @@ const renderInsightCard = (
       />
     );
   }
-  if (isSpanEndpointBottleneckInsight(insight)) {
-    return (
-      <BottleneckInsight
-        key={insight.id}
-        insight={insight}
-        onAssetLinkClick={handleAssetLinkClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={onRefresh}
-        onJiraTicketCreate={onJiraTicketCreate}
-        isJiraHintEnabled={isJiraHintEnabled}
-      />
-    );
-  }
-  if (isEndpointSlowestSpansInsight(insight)) {
-    return (
-      <SpanBottleneckInsight
-        key={insight.id}
-        insight={insight}
-        onAssetLinkClick={handleAssetLinkClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={onRefresh}
-        onJiraTicketCreate={onJiraTicketCreate}
-        isJiraHintEnabled={isJiraHintEnabled}
-      />
-    );
-  }
+
+  // if (isSpanEndpointBottleneckInsight(insight)) {
+  //   return (
+  //     <BottleneckInsight
+  //       key={insight.id}
+  //       insight={insight}
+  //       onAssetLinkClick={handleAssetLinkClick}
+  //       onRecalculate={handleRecalculate}
+  //       onRefresh={onRefresh}
+  //       onJiraTicketCreate={onJiraTicketCreate}
+  //       isJiraHintEnabled={isJiraHintEnabled}
+  //     />
+  //   );
+  // }
+
+  // if (isEndpointSlowestSpansInsight(insight)) {
+  //   return (
+  //     <SpanBottleneckInsight
+  //       key={insight.id}
+  //       insight={insight}
+  //       onAssetLinkClick={handleAssetLinkClick}
+  //       onRecalculate={handleRecalculate}
+  //       onRefresh={onRefresh}
+  //       onJiraTicketCreate={onJiraTicketCreate}
+  //       isJiraHintEnabled={isJiraHintEnabled}
+  //     />
+  //   );
+  // }
+
   if (isSlowEndpointInsight(insight)) {
     return (
       <SlowEndpointInsight
@@ -265,6 +258,7 @@ const renderInsightCard = (
       />
     );
   }
+
   if (
     isEndpointLowUsageInsight(insight) ||
     isEndpointNormalUsageInsight(insight) ||
@@ -279,32 +273,22 @@ const renderInsightCard = (
       />
     );
   }
-  if (isCodeObjectErrorsInsight(insight)) {
-    return (
-      <ErrorsInsight
-        key={insight.id}
-        insight={insight}
-        onErrorSelect={handleErrorSelect}
-        onExpandButtonClick={handleErrorsExpandButtonClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={onRefresh}
-      />
-    );
-  }
-  if (isEndpointSuspectedNPlusOneInsight(insight)) {
-    return (
-      <EndpointNPlusOneInsight
-        key={insight.id}
-        insight={insight}
-        onAssetLinkClick={handleAssetLinkClick}
-        onTraceButtonClick={handleTraceButtonClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={onRefresh}
-        onJiraTicketCreate={onJiraTicketCreate}
-        isJiraHintEnabled={isJiraHintEnabled}
-      />
-    );
-  }
+
+  // if (isEndpointSuspectedNPlusOneInsight(insight)) {
+  //   return (
+  //     <EndpointNPlusOneInsight
+  //       key={insight.id}
+  //       insight={insight}
+  //       onAssetLinkClick={handleAssetLinkClick}
+  //       onTraceButtonClick={handleTraceButtonClick}
+  //       onRecalculate={handleRecalculate}
+  //       onRefresh={onRefresh}
+  //       onJiraTicketCreate={onJiraTicketCreate}
+  //       isJiraHintEnabled={isJiraHintEnabled}
+  //     />
+  //   );
+  // }
+
   if (isSpanNPlusOneInsight(insight)) {
     return (
       <NPlusOneInsight
@@ -319,6 +303,7 @@ const renderInsightCard = (
       />
     );
   }
+
   if (isSpanScalingBadlyInsight(insight)) {
     return (
       <ScalingIssueInsight
@@ -334,61 +319,24 @@ const renderInsightCard = (
       />
     );
   }
-  if (isCodeObjectHotSpotInsight(insight)) {
-    return (
-      <InsightCard
-        data={insight}
-        content={
-          <Description>
-            Major errors occur or propagate through this function
-          </Description>
-        }
-        onRecalculate={handleRecalculate}
-        onRefresh={onRefresh}
-      />
-    );
-  }
-  if (isEndpointDurationSlowdownInsight(insight)) {
-    return (
-      <DurationSlowdownSourceInsight
-        key={insight.id}
-        insight={insight}
-        onAssetLinkClick={handleAssetLinkClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={onRefresh}
-      />
-    );
-  }
+
+  // if (isEndpointDurationSlowdownInsight(insight)) {
+  //   return (
+  //     <DurationSlowdownSourceInsight
+  //       key={insight.id}
+  //       insight={insight}
+  //       onAssetLinkClick={handleAssetLinkClick}
+  //       onRecalculate={handleRecalculate}
+  //       onRefresh={onRefresh}
+  //     />
+  //   );
+  // }
 
   if (isEndpointBreakdownInsight(insight)) {
     return (
       <RequestBreakdownInsight
         key={insight.id}
         insight={insight}
-        onRecalculate={handleRecalculate}
-        onRefresh={onRefresh}
-      />
-    );
-  }
-
-  if (isSpanScalingWellInsight(insight)) {
-    return (
-      <NoScalingIssueInsight
-        key={insight.id}
-        insight={insight}
-        onHistogramButtonClick={handleHistogramButtonClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={onRefresh}
-      />
-    );
-  }
-
-  if (isSpanScalingInsufficientDataInsight(insight)) {
-    return (
-      <PerformanceAtScaleInsight
-        key={insight.id}
-        insight={insight}
-        onHistogramButtonClick={handleHistogramButtonClick}
         onRecalculate={handleRecalculate}
         onRefresh={onRefresh}
       />
@@ -506,7 +454,7 @@ export const InsightsPage = (props: InsightPageProps) => {
   }, [previousPage, props.page, config, previousConfig]);
 
   useEffect(() => {
-    window.sendMessageToDigma({
+    window.sendMessageToDigma<MarkInsightTypesAsViewedPayload>({
       action: actions.MARK_INSIGHT_TYPES_AS_VIEWED,
       payload: {
         insightTypes: props.insights.map((x) => ({

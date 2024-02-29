@@ -29,10 +29,12 @@ export type GenericCodeObjectInsight =
   | EndpointNormalUsageInsight
   | EndpointHighUsageInsight
   | EndpointSlowestSpansInsight
+  | EndpointBottleneckInsight
   | SlowEndpointInsight
   | SpanScalingBadlyInsight
   | SpanNPlusOneInsight
   | EndpointSuspectedNPlusOneInsight
+  | EndpointSpanNPlusOneInsight
   | CodeObjectHotSpotInsight
   | CodeObjectErrorsInsight
   | EndpointDurationSlowdownInsight
@@ -177,6 +179,7 @@ export interface CodeObjectInsight extends Insight {
   reopenCount: number;
   ticketLink: string | null;
   id: string;
+  sourceSpanCodeObjectInsight: string;
 }
 
 export interface SpanInsight extends CodeObjectInsight {
@@ -282,6 +285,10 @@ export interface SpanEndpointBottleneckInsight extends SpanInsight {
     };
     probabilityOfBeingBottleneck: number;
     avgDurationWhenBeingBottleneck: Duration;
+    impact: number;
+    severity: number;
+    criticality: number;
+    requestPercentage: number;
 
     /**
      * @deprecated
@@ -392,7 +399,9 @@ export interface EndpointHighUsageInsight extends EndpointInsight {
   maxCallsIn1Min: number;
 }
 
-// obsolete
+/**
+ * @deprecated
+ */
 export interface EndpointSlowestSpansInsight extends EndpointInsight {
   name: "Bottleneck Detected";
   type: InsightType.SlowestSpans;
@@ -429,7 +438,7 @@ export interface EndpointBottleneckInsight extends EndpointInsight {
   specifity: InsightSpecificity.TargetFound;
   importance: InsightImportance.Critical;
   isRecalculateEnabled: true;
-  spans: {
+  span: {
     spanInfo: SpanInfo;
     probabilityOfBeingBottleneck: number;
     avgDurationWhenBeingBottleneck: Duration;
@@ -552,6 +561,10 @@ export interface SpanNPlusOneInsight extends SpanInsight {
     criticality: number;
     impact: number;
     severity: number;
+    traceId: string;
+    duration: Duration;
+    commitId: string;
+    requestPercentage: number;
   }[];
 
   /**
@@ -560,6 +573,9 @@ export interface SpanNPlusOneInsight extends SpanInsight {
   span: SpanInfo;
 }
 
+/**
+ * @deprecated
+ */
 export interface EndpointSuspectedNPlusOneInsight extends EndpointInsight {
   name: "Suspected N+1 Query";
   type: InsightType.EndpointSpanNPlusOne;
@@ -588,7 +604,7 @@ export interface EndpointSpanNPlusOneInsight extends EndpointInsight {
   specifity: InsightSpecificity.TargetAndReasonFound;
   importance: InsightImportance.HighlyImportant;
   isRecalculateEnabled: true;
-  spans: {
+  span: {
     occurrences: number;
     internalSpan: SpanInfo | null;
     clientSpan: SpanInfo;
@@ -631,8 +647,7 @@ export interface CodeObjectErrorsInsight extends CodeObjectInsight {
   }[];
 }
 
-// obsolete
-export interface DurationSlowdownSource {
+export interface EndpointSlowdownSource {
   percentile: string;
   spanInfo: SpanInfo;
   level: number;
@@ -642,17 +657,14 @@ export interface DurationSlowdownSource {
   changeVerified: boolean;
 }
 
-export interface EndpointSlowdownSources {
-  percentile: string;
-  spanInfo: SpanInfo;
-  level: number;
-  previousDuration: Duration;
-  currentDuration: Duration;
-  changeTime: string;
-  changeVerified: boolean;
-}
+/**
+ * @deprecated
+ */
+export type DurationSlowdownSource = EndpointSlowdownSource;
 
-// obsolete
+/**
+ * @deprecated
+ */
 export interface EndpointDurationSlowdownInsight extends EndpointInsight {
   name: "Endpoint Duration Slowdown Source";
   type: InsightType.EndpointDurationSlowdown;
@@ -669,7 +681,7 @@ export interface EndpointSlowdownSourceInsight extends EndpointInsight {
   category: InsightCategory.Performance;
   specifity: InsightSpecificity.OwnInsight;
   importance: InsightImportance.Critical;
-  endpointSlowdownSources: EndpointSlowdownSources[];
+  endpointSlowdownSources: EndpointSlowdownSource[] | null;
   decorators: CodeObjectDecorator[];
 }
 
@@ -701,6 +713,9 @@ export interface EndpointBreakdownInsight extends EndpointInsight {
 
 export type SpanUsageStatusInsight = SpanInsight;
 
+/**
+ * @deprecated
+ */
 export interface SpanScalingWellInsight extends SpanInsight {
   name: "Scaling Well";
   type: InsightType.SpanScalingWell;
@@ -713,11 +728,17 @@ export interface SpanScalingWellInsight extends SpanInsight {
   flowHash: string | null;
 }
 
+/**
+ * @deprecated
+ */
 export interface Concurrency {
   calls: number;
   meanDuration: Duration;
 }
 
+/**
+ * @deprecated
+ */
 export interface SpanScalingInsufficientDataInsight extends SpanInsight {
   name: "Scaling Insufficient Data";
   type: InsightType.SpanScalingInsufficientData;
@@ -757,9 +778,7 @@ export interface EndpointHighNumberOfQueriesInsight extends EndpointInsight {
   type: InsightType.EndpointHighNumberOfQueries;
   queriesCount: number;
   typicalCount: number;
-  medianDuration: Duration;
   traceId: string | null;
-  requestFraction: number;
   quantile?: number;
 }
 

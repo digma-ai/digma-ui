@@ -20,6 +20,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     insight: {
+      sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
       id: "60b55792-8262-4c3d-9628-7cce7979ad6d",
       firstDetected: "2023-12-05T17:25:47.010Z",
       lastDetected: "2024-01-05T13:14:47.010Z",

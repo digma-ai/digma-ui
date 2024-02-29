@@ -11,6 +11,7 @@ import {
   InsightCategory,
   InsightScope,
   InsightsStatus,
+  SpanNPlusOneInsight,
   ViewMode
 } from "./types";
 
@@ -53,6 +54,7 @@ export const Default: Story = {
       // needsObservabilityFix: false,
       insights: [
         {
+          sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
           id: "60b55792-8362-4c5d-9628-7cce7979ad6d",
           firstDetected: "2023-12-05T17:25:47.010Z",
           lastDetected: "2024-01-05T13:14:47.010Z",
@@ -158,8 +160,9 @@ export const Default: Story = {
             "method:org.springframework.samples.petclinic.domain.OwnerValidation$_$ValidateOwner",
           customStartTime: null,
           actualStartTime: "2023-07-27T08:23:56.500827Z"
-        },
+        } as SpanNPlusOneInsight,
         {
+          sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
           id: "62b55792-8262-4c5d-9628-7cce7979ad6d",
           firstDetected: "2023-12-05T17:25:47.010Z",
           lastDetected: "2024-01-05T13:14:47.010Z",
@@ -232,6 +235,7 @@ export const Default: Story = {
           actualStartTime: "2023-06-26T00:00:00.000Z"
         },
         {
+          sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
           id: "60b55792-3262-4c5d-9628-7cce7979ad6d",
           firstDetected: "2023-12-05T17:25:47.010Z",
           lastDetected: "2024-01-05T13:14:47.010Z",
@@ -287,6 +291,7 @@ export const Default: Story = {
           actualStartTime: "2023-06-26T13:53:53.645Z"
         },
         {
+          sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
           id: "60b55792-4262-4c5d-9628-7cce7979ad6d",
           firstDetected: "2023-12-05T17:25:47.010Z",
           lastDetected: "2024-01-05T13:14:47.010Z",
@@ -328,6 +333,7 @@ export const Default: Story = {
           actualStartTime: "2023-06-26T13:53:57.956Z"
         },
         {
+          sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
           id: "60b55792-8252-4c5d-9628-7cce7979ad6d",
           firstDetected: "2023-12-05T17:25:47.010Z",
           lastDetected: "2024-01-05T13:14:47.010Z",
@@ -385,6 +391,7 @@ export const Default: Story = {
           actualStartTime: "2023-06-12T13:48:59.404Z"
         },
         {
+          sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
           id: "60b55792-8262-4c5d-5628-7cce7979ad6d",
           firstDetected: "2023-12-05T17:25:47.010Z",
           lastDetected: "2024-01-05T13:14:47.010Z",
@@ -481,6 +488,7 @@ export const Default: Story = {
           actualStartTime: "2023-06-12T13:49:08.186Z"
         },
         {
+          sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
           id: "60b55792-8262-4c5d-9628-6cce7979ad6d",
           firstDetected: "2023-12-05T17:25:47.010Z",
           lastDetected: "2024-01-05T13:14:47.010Z",
@@ -557,6 +565,7 @@ export const Default: Story = {
           actualStartTime: "2023-06-12T13:49:03.486Z"
         },
         {
+          sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
           id: "60b55792-8262-4c5d-9628-7cce8979ad6d",
           firstDetected: "2023-12-05T17:25:47.010Z",
           lastDetected: "2024-01-05T13:14:47.010Z",
@@ -653,6 +662,7 @@ export const Default: Story = {
           actualStartTime: "2023-06-13T00:00:00.000Z"
         },
         {
+          sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
           id: "60b55792-8262-4c5d-9628-7cce9979ad6d",
           firstDetected: "2023-12-05T17:25:47.010Z",
           lastDetected: "2024-01-05T13:14:47.010Z",
@@ -806,6 +816,7 @@ export const NoObservability: Story = {
 };
 
 const errorsInsight: CodeObjectErrorsInsight = {
+  sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
   id: "60b55792-8262-4c5d-9628-7cce7979ad1d",
   firstDetected: "2023-12-05T17:25:47.010Z",
   lastDetected: "2024-01-05T13:14:47.010Z",

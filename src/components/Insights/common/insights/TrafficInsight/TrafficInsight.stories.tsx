@@ -23,6 +23,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const BaseTrafficInsight = {
+  sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
   id: "60b55792-8262-3c5d-9628-7cce7979ad6d",
   firstDetected: "2023-12-05T17:25:47.010Z",
   lastDetected: "2024-01-05T13:14:47.010Z",
