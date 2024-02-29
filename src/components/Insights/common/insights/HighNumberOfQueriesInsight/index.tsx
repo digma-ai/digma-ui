@@ -71,7 +71,8 @@ export const HighNumberOfQueriesInsight = (
       onJiraButtonClick={handleCreateJiraTicketButtonClick}
       jiraTicketInfo={{
         ticketLink: insight.ticketLink,
-        isHintEnabled: props.isJiraHintEnabled
+        isHintEnabled: props.isJiraHintEnabled,
+        spanCodeObjectId: props.insight.spanInfo?.spanCodeObjectId
       }}
       onGoToTrace={
         traceId

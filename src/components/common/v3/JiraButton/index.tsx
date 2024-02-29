@@ -28,7 +28,7 @@ export const JiraButton = (props: JiraButtonProps) => {
 
   const openTicketInfo = (event: string) => {
     handleJiraButtonClick();
-    props.onTicketInfoButtonClick(event);
+    props.onTicketInfoButtonClick(props.spanCodeObjectId, event);
   };
 
   const renderButton = () => (
@@ -48,7 +48,7 @@ export const JiraButton = (props: JiraButtonProps) => {
                   {
                     icon: <PencilIcon />,
                     label: "Edit",
-                    id: "edit",
+                    id: props.spanCodeObjectId ?? "",
                     onClick: () => openTicketInfo("edit menu item click")
                   }
                 ]}
@@ -64,6 +64,7 @@ export const JiraButton = (props: JiraButtonProps) => {
               component: () => (
                 <JiraLogoIcon
                   isActive={true}
+                  size={16}
                   color={theme.colors.v3.icon.brandPrimary}
                 />
               )

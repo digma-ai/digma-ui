@@ -138,6 +138,7 @@ export const InsightCard = (props: InsightCardProps) => {
                 onTicketInfoButtonClick={props.onJiraButtonClick}
                 ticketLink={props.jiraTicketInfo?.ticketLink}
                 isHintEnabled={props.jiraTicketInfo?.isHintEnabled}
+                spanCodeObjectId={props.jiraTicketInfo?.spanCodeObjectId}
               />
             )}
             {props.onPin && <IconButton icon={{ component: PinIcon }} />}

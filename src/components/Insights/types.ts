@@ -615,6 +615,7 @@ export interface EndpointSpanNPlusOneInsight extends EndpointInsight {
     impact: number;
     severity: number;
     ticketLink: string | null;
+    requestPercentage: number;
   };
 }
 
