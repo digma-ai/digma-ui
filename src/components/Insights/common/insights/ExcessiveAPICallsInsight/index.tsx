@@ -1,0 +1,91 @@
+import { useContext } from "react";
+import { usePagination } from "../../../../../hooks/usePagination";
+import { ConfigContext } from "../../../../common/App/ConfigContext";
+import { TargetIcon } from "../../../../common/icons/12px/TargetIcon";
+import { Button } from "../../../../common/v3/Button";
+import { Pagination } from "../../../../common/v3/Pagination";
+import { InsightType, Trace } from "../../../types";
+import { InsightCard } from "../../InsightCard";
+import * as s from "./styles";
+import { ExcessiveAPICallsInsightProps } from "./types";
+
+const PAGE_SIZE = 3;
+
+export const ExcessiveAPICallsInsight = (
+  props: ExcessiveAPICallsInsightProps
+) => {
+  const config = useContext(ConfigContext);
+
+  const [pageItems, page, setPage] = usePagination(
+    props.insight.spans,
+    PAGE_SIZE,
+    props.insight.codeObjectId
+  );
+
+  const handleLinkClick = (spanCodeObjectId: string) => {
+    props.onAssetLinkClick(spanCodeObjectId, props.insight.type);
+  };
+
+  const handleTraceButtonClick = (
+    trace: Trace,
+    insightType: InsightType,
+    spanCodeObjectId: string
+  ) => {
+    props.onTraceButtonClick(trace, insightType, spanCodeObjectId);
+  };
+
+  return (
+    <InsightCard
+      insight={props.insight}
+      content={
+        <s.ContentContainer>
+          <s.Description>
+            Excessive API calls to specific endpoint found
+          </s.Description>
+          <s.List>
+            {pageItems.map((span) => {
+              const spanName = span.clientSpan.displayName;
+              const traceId = span.traceId;
+              const spanCodeObjectId = span.clientSpan.spanCodeObjectId;
+
+              return (
+                <s.SpanListItem
+                  key={spanCodeObjectId}
+                  name={spanName}
+                  onClick={() => handleLinkClick(spanCodeObjectId)}
+                  buttons={[
+                    config.isJaegerEnabled && traceId && (
+                      <Button
+                        key={spanCodeObjectId + "trace"}
+                        icon={TargetIcon}
+                        onClick={() =>
+                          handleTraceButtonClick(
+                            {
+                              name: spanName,
+                              id: traceId
+                            },
+                            props.insight.type,
+                            spanCodeObjectId
+                          )
+                        }
+                      />
+                    )
+                  ]}
+                />
+              );
+            })}
+            <Pagination
+              itemsCount={props.insight.spans.length}
+              page={page}
+              pageSize={PAGE_SIZE}
+              onPageChange={setPage}
+              withDescription={true}
+            />
+          </s.List>
+        </s.ContentContainer>
+      }
+      onRecalculate={props.onRecalculate}
+      onRefresh={props.onRefresh}
+    />
+  );
+};
