@@ -57,11 +57,11 @@ export interface Scope {
 }
 
 export interface InsightsQuery {
-      displayName: string;
-      sortBy: string;
-      sortOrder: string;
-      page: number;
-      scopedSpanCodeObjectId?: string;
+  displayName: string | null;
+  sortBy: string;
+  sortOrder: string;
+  page: number;
+  scopedSpanCodeObjectId?: string | null;
 }
 
 export interface GlobalState {

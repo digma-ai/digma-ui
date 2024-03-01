@@ -3,7 +3,11 @@ import { actions as globalActions } from "../../../actions";
 import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { ConfigContext } from "../../common/App/ConfigContext";
-import { ConfigContextData } from "../../common/App/types";
+import {
+  ConfigContextData,
+  GlobalState,
+  InsightsQuery as InsightsDataQuery
+} from "../../common/App/types";
 import { actions } from "../actions";
 import {
   InsightsData,
@@ -19,7 +23,7 @@ interface UseInsightDataProps {
 }
 
 const getData = (query: ScopedInsightsQuery, context: ConfigContextData) => {
-  const getDataQuery: InsightsQuery = {
+  const getDataQuery: InsightsDataQuery = {
     displayName: query.searchQuery,
     sortBy: query.sorting.criterion,
     sortOrder: query.sorting.order,
@@ -27,7 +31,7 @@ const getData = (query: ScopedInsightsQuery, context: ConfigContextData) => {
     scopedSpanCodeObjectId: query.scopedSpanCodeObjectId
   };
 
-  window.sendMessageToDigma<InsightsQuery>({
+  window.sendMessageToDigma({
     action: actions.GET_DATA_LIST,
     payload: {
       query: getDataQuery
