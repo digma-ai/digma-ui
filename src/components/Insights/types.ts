@@ -818,6 +818,16 @@ export interface QueryOptimizationInsight extends SpanInsight {
   }[];
 }
 
+export interface EndpointQueryOptimizationSpan {
+  spanInfo: SpanInfo;
+  traceId: string;
+  duration: Duration;
+  criticality: number;
+  impact: number;
+  severity: number;
+  ticketLink: string | null;
+}
+
 export interface EndpointQueryOptimizationInsight extends EndpointInsight {
   name: "Query Optimization";
   type: InsightType.EndpointQueryOptimization;
@@ -825,15 +835,7 @@ export interface EndpointQueryOptimizationInsight extends EndpointInsight {
   specifity: InsightSpecificity.TargetAndReasonFound;
   importance: InsightImportance.HighlyImportant;
   isRecalculateEnabled: true;
-  spans: {
-    spanInfo: SpanInfo;
-    traceId: string;
-    duration: Duration;
-    criticality: number;
-    impact: number;
-    severity: number;
-    ticketLink: string | null;
-  }[];
+  spans: EndpointQueryOptimizationSpan[];
 }
 
 export interface InsightsQuery {
