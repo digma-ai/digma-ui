@@ -59,7 +59,7 @@ export const InsightJiraTicket = (props: InsightJiraTicketProps) => {
         setErrorMessage(linkTicketResponse.message);
       }
 
-      config.state &&
+      config.state.insights.query
         window.sendMessageToDigma({
           action: actions.GET_DATA_LIST,
           payload: { query: config.state.insights.query }
