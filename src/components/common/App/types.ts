@@ -56,15 +56,17 @@ export interface Scope {
   hasErrors: boolean;
 }
 
-export interface GlobalState {
-  insights: {
-    query: {
+export interface InsightsQuery {
       displayName: string;
       sortBy: string;
       sortOrder: string;
       page: number;
       scopedSpanCodeObjectId?: string;
-    };
+}
+
+export interface GlobalState {
+  insights?: {
+    query?: InsightsQuery;
   };
 }
 
