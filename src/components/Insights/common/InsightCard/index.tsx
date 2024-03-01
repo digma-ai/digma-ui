@@ -97,27 +97,14 @@ export const InsightCard = (props: InsightCardProps) => {
       button: React.ComponentType<BaseButtonProps>;
     }[] = [];
 
-    props.onGoToTrace &&
+    props.onOpenHistogram &&
       buttonsToRender.push({
-        tooltip: "Open Trace",
+        tooltip: "Open Histogram",
         button: (btnProps) => (
           <Button
-            icon={TraceIcon}
-            label={"Trace"}
-            onClick={() => props.onGoToTrace && props.onGoToTrace()}
-            {...btnProps}
-          />
-        )
-      });
-
-    props.onGoToLive &&
-      buttonsToRender.push({
-        tooltip: "Open live view",
-        button: (btnProps) => (
-          <Button
-            icon={LiveIcon}
-            label={"Live"}
-            onClick={() => props.onGoToLive && props.onGoToLive()}
+            icon={HistogramIcon}
+            label="Histogram"
+            onClick={handleHistogramButtonClick}
             {...btnProps}
           />
         )
@@ -151,14 +138,27 @@ export const InsightCard = (props: InsightCardProps) => {
         )
       });
 
-    props.onOpenHistogram &&
+    props.onGoToTrace &&
       buttonsToRender.push({
-        tooltip: "Open Histogram",
+        tooltip: "Open Trace",
         button: (btnProps) => (
           <Button
-            icon={HistogramIcon}
-            label="Histogram"
-            onClick={handleHistogramButtonClick}
+            icon={TraceIcon}
+            label={"Trace"}
+            onClick={() => props.onGoToTrace && props.onGoToTrace()}
+            {...btnProps}
+          />
+        )
+      });
+
+    props.onGoToLive &&
+      buttonsToRender.push({
+        tooltip: "Open live view",
+        button: (btnProps) => (
+          <Button
+            icon={LiveIcon}
+            label={"Live"}
+            onClick={() => props.onGoToLive && props.onGoToLive()}
             {...btnProps}
           />
         )

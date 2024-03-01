@@ -9,22 +9,19 @@ import { AsyncTag } from "./AsyncTag";
 import * as s from "./styles";
 import { InsightHeaderProps } from "./types";
 
-export const getTagType = (importance: number): TagType => {
-  if (importance === 0) {
-    return "default";
+export const getTagType = (criticality: number): TagType => {
+  if (criticality < 0.2) {
+    return "lowSeverity";
   }
-  if (importance < 3) {
-    return "highSeverity";
-  }
-  if (importance < 7) {
+  if (criticality < 0.6) {
     return "mediumSeverity";
   }
-  return "lowSeverity";
+  return "highSeverity";
 };
 
 export const InsightHeader = (props: InsightHeaderProps) => {
   const insightTypeInfo = getInsightTypeInfo(props.insightType);
-  const tagType = getTagType(props.importance);
+  const tagType = getTagType(props.criticality);
 
   return (
     <s.Container>
