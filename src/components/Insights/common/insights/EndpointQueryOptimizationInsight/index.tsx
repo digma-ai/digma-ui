@@ -2,6 +2,8 @@ import { ReactNode, useContext, useState } from "react";
 import { getDurationString } from "../../../../../utils/getDurationString";
 import { sendTrackingEvent } from "../../../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../../../common/App/ConfigContext";
+import { Link } from "../../../../common/v3/Link";
+import { Tooltip } from "../../../../common/v3/Tooltip";
 import { trackingEvents } from "../../../tracking";
 import {
   EndpointQueryOptimizationSpan,
@@ -11,7 +13,6 @@ import {
 import { InsightCard } from "../../InsightCard";
 import { ColumnsContainer } from "../../InsightCard/ColumnsContainer";
 import { KeyValue } from "../../InsightCard/KeyValue";
-import { ListItem } from "../../InsightCard/ListItem";
 import { Select } from "../../InsightCard/Select";
 import { ContentContainer, Description, Details } from "../styles";
 import * as s from "./styles";
@@ -20,23 +21,25 @@ import { EndpointQueryOptimizationInsightProps } from "./types";
 const renderOptions = (
   spans: EndpointQueryOptimizationSpan[],
   handleLinkClick: (spanCodeObjectId: string) => void
-): { label: string; customContent: ReactNode; value: string }[] => {
-  return spans.map((x) => {
+): { label: string; customContent: ReactNode; value: string }[] =>
+  spans.map((x) => {
     const spanCodeObjectId = x.spanInfo.spanCodeObjectId;
+    const name = x.spanInfo.displayName;
+
     return {
-      label: x.spanInfo.displayName,
+      label: name,
       customContent: (
         <s.SelectedItem>
-          <ListItem
-            name={x.spanInfo.displayName}
-            onClick={() => handleLinkClick(spanCodeObjectId)}
-          />
+          <Tooltip title={name}>
+            <Link onClick={() => handleLinkClick(spanCodeObjectId)}>
+              {name}
+            </Link>
+          </Tooltip>
         </s.SelectedItem>
       ),
       value: spanCodeObjectId
     };
   });
-};
 
 export const EndpointQueryOptimizationInsight = (
   props: EndpointQueryOptimizationInsightProps

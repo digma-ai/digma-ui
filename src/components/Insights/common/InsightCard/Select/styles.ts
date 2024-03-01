@@ -8,11 +8,7 @@ export const ExpandButton = styled.button`
   padding: 0;
   margin: 0;
   display: flex;
-  cursor: pointer;
-
-  &:disabled {
-    cursor: initial;
-  }
+  cursor: inherit;
 `;
 
 export const SelectBar = styled.div<SelectBarProps>`
@@ -27,6 +23,7 @@ export const SelectBar = styled.div<SelectBarProps>`
   display: flex;
   align-items: center;
   box-shadow: 1 1 4px 0 rgb(0 0 0 / 25%);
+  cursor: ${({ $isDisabled }) => ($isDisabled ? "initial" : "pointer")};
   border: 1px solid
     ${({ theme, $isOpen }) =>
       $isOpen

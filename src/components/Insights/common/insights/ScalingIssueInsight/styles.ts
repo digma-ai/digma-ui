@@ -18,6 +18,10 @@ export const RootCause = styled.div`
   gap: 4px;
 `;
 
+export const RootCauseListItem = styled(ListItem)`
+  height: 32px;
+`;
+
 export const EndpointListItem = styled(ListItem)`
-  padding: 4px 0;
+  height: 32px;
 `;

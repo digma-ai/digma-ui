@@ -1,4 +1,5 @@
 import { ForwardedRef, MouseEvent, forwardRef } from "react";
+import { Link } from "../../../../common/v3/Link";
 import { Tooltip } from "../../../../common/v3/Tooltip";
 import * as s from "./styles";
 import { ListItemProps } from "./types";
@@ -13,11 +14,9 @@ const ListItemComponent = (
   };
 
   return (
-    <s.Container ref={ref}>
+    <s.Container ref={ref} className={className}>
       <Tooltip title={name}>
-        <s.Link className={className} href={"#"} onClick={handleClick}>
-          {name}
-        </s.Link>
+        <Link onClick={handleClick}>{name}</Link>
       </Tooltip>
       {buttons && <s.ButtonsContainer>{buttons}</s.ButtonsContainer>}
     </s.Container>
