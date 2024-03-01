@@ -1,6 +1,4 @@
-import { BaseButtonProps } from "../Button/types";
-
-export interface JiraButtonProps extends BaseButtonProps {
+export interface JiraButtonProps {
   onTicketInfoButtonClick(
     spanCodeObjectId: string | undefined,
     event: string

@@ -1,6 +1,7 @@
 import { ForwardedRef, forwardRef, useState } from "react";
 import { useTheme } from "styled-components";
 import { openURLInDefaultBrowser } from "../../../../utils/openURLInDefaultBrowser";
+import { IconButton } from "../../../Insights/common/InsightCard/IconButton";
 import { MenuList } from "../../../Navigation/common/MenuList";
 import { Popup } from "../../../Navigation/common/Popup";
 import { PencilIcon } from "../../../common/icons/12px/PencilIcon";
@@ -8,7 +9,6 @@ import { JiraLogoIcon } from "../../../common/icons/16px/JiraLogoIcon";
 import { OpenLinkIcon } from "../../../common/icons/OpenLinkIcon";
 import { Tooltip } from "../../../common/v3/Tooltip";
 import { NewPopover } from "../../NewPopover";
-import { Button } from "../Button";
 import * as s from "./styles";
 import { JiraButtonProps } from "./types";
 
@@ -17,9 +17,7 @@ export const JiraButtonComponent = (
     ticketLink,
     isHintEnabled,
     onTicketInfoButtonClick,
-    spanCodeObjectId,
-    buttonType,
-    label
+    spanCodeObjectId
   }: JiraButtonProps,
   ref: ForwardedRef<HTMLDivElement>
 ) => {
@@ -68,23 +66,21 @@ export const JiraButtonComponent = (
           onOpenChange={handleJiraButtonClick}
           placement={"bottom-start"}
         >
-          <Button
-            buttonType={buttonType}
-            label={label}
-            icon={() => (
-              <JiraLogoIcon
-                isActive={true}
-                size={16}
-                color={theme.colors.v3.icon.brandPrimary}
-              />
-            )}
+          <IconButton
+            icon={{
+              component: () => (
+                <JiraLogoIcon
+                  isActive={true}
+                  size={16}
+                  color={theme.colors.v3.icon.brandPrimary}
+                />
+              )
+            }}
           />
         </NewPopover>
       ) : (
-        <Button
-          buttonType={buttonType}
-          label={label}
-          icon={JiraLogoIcon}
+        <IconButton
+          icon={{ component: JiraLogoIcon }}
           onClick={() => openTicketInfo("jira button click")}
         />
       )}
