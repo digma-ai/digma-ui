@@ -5,7 +5,6 @@ import { sendTrackingEvent } from "../../../../../utils/sendTrackingEvent";
 import { trimEndpointScheme } from "../../../../../utils/trimEndpointScheme";
 import { ConfigContext } from "../../../../common/App/ConfigContext";
 import { Pagination } from "../../../../common/v3/Pagination";
-import { Tooltip } from "../../../../common/v3/Tooltip";
 import { trackingEvents } from "../../../tracking";
 import { InsightType, Trace } from "../../../types";
 import { InsightCard } from "../../InsightCard";
@@ -69,14 +68,10 @@ export const SpanQueryOptimizationInsight = (
                 Query is slow compared to other{" "}
                 {props.insight.dbStatement.toUpperCase()} requests.
               </Description>
-              <Tooltip title={spanName}>
-                <s.Name>
-                  <ListItem
-                    name={spanName || ""}
-                    onClick={() => handleSpanLinkClick(spanCodeObjectId)}
-                  />
-                </s.Name>
-              </Tooltip>
+              <ListItem
+                name={spanName || ""}
+                onClick={() => handleSpanLinkClick(spanCodeObjectId)}
+              />
             </Details>
           )}
           <ColumnsContainer>
@@ -95,12 +90,11 @@ export const SpanQueryOptimizationInsight = (
               const spanCodeObjectId = x.endpointInfo.spanCodeObjectId;
               const route = trimEndpointScheme(x.endpointInfo.route);
               return (
-                <Tooltip key={route} title={route}>
-                  <ListItem
-                    name={route}
-                    onClick={() => handleSpanLinkClick(spanCodeObjectId)}
-                  />
-                </Tooltip>
+                <ListItem
+                  name={route}
+                  key={route}
+                  onClick={() => handleSpanLinkClick(spanCodeObjectId)}
+                />
               );
             })}
             <Pagination

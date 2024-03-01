@@ -1,4 +1,3 @@
-import { Tooltip } from "../../../../common/v3/Tooltip";
 import { EndpointSlowdownSource } from "../../../types";
 import { DurationChange } from "../../DurationChange";
 import { InsightCard } from "../../InsightCard";
@@ -29,22 +28,19 @@ export const EndpointSlowdownSourceInsight = (
         const spanCodeObjectId = x.spanInfo.spanCodeObjectId;
 
         return (
-          <s.Source key={spanCodeObjectId}>
-            <Tooltip title={spanName}>
-              <ListItem
-                onClick={() => handleSpanLinkClick(spanCodeObjectId)}
-                name={spanName}
-                buttons={[
-                  <DurationChange
-                    key={"duration"}
-                    currentDuration={x.currentDuration}
-                    previousDuration={x.previousDuration}
-                    changeTime={x.changeTime}
-                  />
-                ]}
+          <ListItem
+            key={spanCodeObjectId}
+            onClick={() => handleSpanLinkClick(spanCodeObjectId)}
+            name={spanName}
+            buttons={[
+              <DurationChange
+                key={"duration"}
+                currentDuration={x.currentDuration}
+                previousDuration={x.previousDuration}
+                changeTime={x.changeTime}
               />
-            </Tooltip>
-          </s.Source>
+            ]}
+          />
         );
       })}
     </s.SourceList>

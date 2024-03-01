@@ -70,13 +70,12 @@ export const SessionInViewInsight = (props: SessionInViewInsightProps) => {
                   : [];
 
               return (
-                <Tooltip key={spanCodeObjectId} title={spanName}>
-                  <ListItem
-                    onClick={() => handleLinkClick(spanCodeObjectId)}
-                    name={spanName}
-                    buttons={buttons}
-                  />
-                </Tooltip>
+                <ListItem
+                  key={spanCodeObjectId}
+                  onClick={() => handleLinkClick(spanCodeObjectId)}
+                  name={spanName}
+                  buttons={buttons}
+                />
               );
             })}
             <Pagination

@@ -7,10 +7,6 @@ export const SourceList = styled.div`
   gap: 4px;
 `;
 
-export const Source = styled.span`
-  gap: 8px;
-`;
-
 export const InsightDescription = styled.span`
   padding-bottom: 8px;
   ${subscriptRegularTypography}
