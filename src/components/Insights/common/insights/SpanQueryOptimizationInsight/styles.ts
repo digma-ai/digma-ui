@@ -1,15 +1,5 @@
 import styled from "styled-components";
 
-export const Stats = styled.span`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 24px;
-`;
-
-export const Stat = styled.span`
-  display: flex;
-  gap: 4px;
-`;
 
 export const ContentContainer = styled.div`
   display: flex;
