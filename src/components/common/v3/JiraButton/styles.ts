@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import { Button } from "../../Button";
+import { subscriptSemiboldTypography } from "../../App/typographies";
+import { Button } from "../../v3/Button";
 
 export const HintContainer = styled.div`
   display: flex;
@@ -7,21 +8,22 @@ export const HintContainer = styled.div`
   gap: 4px;
   padding: 4px;
   width: 235px;
-  color: ${({ theme }) => theme.colors.text.subtext};
+  color: ${({ theme }) => theme.colors.v3.text.secondary};
   word-break: keep-all;
 `;
 
 export const HintHeader = styled.div`
+  ${subscriptSemiboldTypography}
+
   display: flex;
   gap: 4px;
   align-items: center;
-  font-weight: 500;
-  color: ${({ theme }) => theme.colors.text.base};
+  color: ${({ theme }) => theme.colors.v3.text.primary};
 `;
 
 export const HintIconContainer = styled.div`
   display: flex;
-  color: ${({ theme }) => theme.colors.icon.primary};
+  color: ${({ theme }) => theme.colors.v3.icon.primary};
 `;
 
 export const TryNowButton = styled(Button)`

@@ -8,13 +8,11 @@ import { TraceIcon } from "../../../../common/icons/12px/TraceIcon";
 import { Button } from "../../../../common/v3/Button";
 import { JiraButton } from "../../../../common/v3/JiraButton";
 import { Pagination } from "../../../../common/v3/Pagination";
-import { Tooltip } from "../../../../common/v3/Tooltip";
 import { trackingEvents } from "../../../tracking";
 import { InsightType, RootCauseSpanInfo, Trace } from "../../../types";
 import { InsightCard } from "../../InsightCard";
 import { ColumnsContainer } from "../../InsightCard/ColumnsContainer";
 import { KeyValue } from "../../InsightCard/KeyValue";
-import { ListItem } from "../../InsightCard/ListItem";
 import { ContentContainer, Description } from "../styles";
 import * as s from "./styles";
 import { ScalingIssueInsightProps } from "./types";
@@ -87,19 +85,16 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
                       spanCodeObjectId
                     )
                   }
-                ></Button>
+                />
               );
             }
             return (
-              <s.RootCause key={spanCodeObjectId}>
-                <Tooltip title={spanName}>
-                  <ListItem
-                    name={spanName}
-                    onClick={() => handleLinkClick(spanCodeObjectId)}
-                    buttons={buttons}
-                  />
-                </Tooltip>
-              </s.RootCause>
+              <s.RootCauseListItem
+                key={spanCodeObjectId}
+                name={spanName}
+                onClick={() => handleLinkClick(spanCodeObjectId)}
+                buttons={buttons}
+              />
             );
           })}
         </s.List>
@@ -132,15 +127,11 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
                 pageItems.map((endpoint) => {
                   const endpointRoute = trimEndpointScheme(endpoint.route);
                   return (
-                    <Tooltip title={endpointRoute} key={endpoint.route}>
-                      <s.EndpointListItem
-                        key={endpoint.spanCodeObjectId}
-                        onClick={() =>
-                          handleLinkClick(endpoint.spanCodeObjectId)
-                        }
-                        name={endpointRoute}
-                      />
-                    </Tooltip>
+                    <s.EndpointListItem
+                      key={endpoint.route}
+                      onClick={() => handleLinkClick(endpoint.spanCodeObjectId)}
+                      name={endpointRoute}
+                    />
                   );
                 })}
               <Pagination

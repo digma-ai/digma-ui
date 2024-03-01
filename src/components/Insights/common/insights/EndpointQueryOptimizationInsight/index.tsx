@@ -2,6 +2,7 @@ import { ReactNode, useContext, useState } from "react";
 import { getDurationString } from "../../../../../utils/getDurationString";
 import { sendTrackingEvent } from "../../../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../../../common/App/ConfigContext";
+import { Link } from "../../../../common/v3/Link";
 import { trackingEvents } from "../../../tracking";
 import {
   EndpointQueryOptimizationSpan,
@@ -11,7 +12,6 @@ import {
 import { InsightCard } from "../../InsightCard";
 import { ColumnsContainer } from "../../InsightCard/ColumnsContainer";
 import { KeyValue } from "../../InsightCard/KeyValue";
-import { ListItem } from "../../InsightCard/ListItem";
 import { Select } from "../../InsightCard/Select";
 import { ContentContainer, Description, Details } from "../styles";
 import * as s from "./styles";
@@ -27,10 +27,9 @@ const renderOptions = (
       label: x.spanInfo.displayName,
       customContent: (
         <s.SelectedItem>
-          <ListItem
-            name={x.spanInfo.displayName}
-            onClick={() => handleLinkClick(spanCodeObjectId)}
-          />
+          <Link onClick={() => handleLinkClick(spanCodeObjectId)}>
+            {x.spanInfo.displayName}
+          </Link>
         </s.SelectedItem>
       ),
       value: spanCodeObjectId

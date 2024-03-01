@@ -3,13 +3,13 @@ import { getDurationString } from "../../../../../utils/getDurationString";
 import { roundTo } from "../../../../../utils/roundTo";
 import { sendTrackingEvent } from "../../../../../utils/sendTrackingEvent";
 import { trimEndpointScheme } from "../../../../../utils/trimEndpointScheme";
+import { Link } from "../../../../common/v3/Link";
 import { trackingEvents } from "../../../tracking";
 import { BottleneckEndpointInfo } from "../../../types";
 import { Info } from "../../Info";
 import { InsightCard } from "../../InsightCard";
 import { ColumnsContainer } from "../../InsightCard/ColumnsContainer";
 import { KeyValue } from "../../InsightCard/KeyValue";
-import { ListItem } from "../../InsightCard/ListItem";
 import { Select } from "../../InsightCard/Select";
 import { ContentContainer, Description, Details } from "../styles";
 import * as s from "./styles";
@@ -27,10 +27,7 @@ const renderOptions = (
       customContent: (
         <s.SelectedItem>
           {x.endpointInfo.serviceName}
-          <ListItem
-            name={route}
-            onClick={() => handleLinkClick(spanCodeObjectId)}
-          />
+          <Link onClick={() => handleLinkClick(spanCodeObjectId)}>{route}</Link>
         </s.SelectedItem>
       ),
       value: spanCodeObjectId

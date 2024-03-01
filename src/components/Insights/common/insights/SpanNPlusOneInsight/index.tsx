@@ -3,13 +3,13 @@ import { getDurationString } from "../../../../../utils/getDurationString";
 import { sendTrackingEvent } from "../../../../../utils/sendTrackingEvent";
 import { trimEndpointScheme } from "../../../../../utils/trimEndpointScheme";
 import { ConfigContext } from "../../../../common/App/ConfigContext";
+import { Link } from "../../../../common/v3/Link";
 import { trackingEvents } from "../../../tracking";
 import { InsightType, NPlusOneEndpointInfo, Trace } from "../../../types";
 import { Info } from "../../Info";
 import { InsightCard } from "../../InsightCard";
 import { ColumnsContainer } from "../../InsightCard/ColumnsContainer";
 import { KeyValue } from "../../InsightCard/KeyValue";
-import { ListItem } from "../../InsightCard/ListItem";
 import { Select } from "../../InsightCard/Select";
 import { ContentContainer, Description, Details } from "../styles";
 import * as s from "./styles";
@@ -18,8 +18,8 @@ import { SpanNPlusOneInsightProps } from "./types";
 const renderOptions = (
   endpoints: NPlusOneEndpointInfo[],
   handleLinkClick: (spanCodeObjectId?: string) => void
-): { label: string; customContent: ReactNode; value: string }[] => {
-  return endpoints.map((x) => {
+): { label: string; customContent: ReactNode; value: string }[] =>
+  endpoints.map((x) => {
     const spanCodeObjectId = x.endpointInfo.entrySpanCodeObjectId;
     const route = trimEndpointScheme(x.endpointInfo.route);
     return {
@@ -27,16 +27,12 @@ const renderOptions = (
       customContent: (
         <s.SelectedItem>
           {x.endpointInfo.serviceName}
-          <ListItem
-            name={route}
-            onClick={() => handleLinkClick(spanCodeObjectId)}
-          />
+          <Link onClick={() => handleLinkClick(spanCodeObjectId)}>{route}</Link>
         </s.SelectedItem>
       ),
       value: spanCodeObjectId
     };
   });
-};
 
 export const SpanNPlusOneInsight = (props: SpanNPlusOneInsightProps) => {
   const {
