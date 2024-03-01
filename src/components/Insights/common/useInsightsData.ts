@@ -34,7 +34,7 @@ const getData = (query: ScopedInsightsQuery, context: ConfigContextData) => {
     }
   });
 
-  window.sendMessageToDigma({
+  window.sendMessageToDigma<GlobalState>({
     action: globalActions.UPDATE_STATE,
     payload: {
       ...context.state,
