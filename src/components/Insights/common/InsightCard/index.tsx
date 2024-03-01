@@ -138,7 +138,7 @@ export const InsightCard = (props: InsightCardProps) => {
 
     props.onJiraButtonClick &&
       buttonsToRender.push({
-        tooltip: "Open ticketInfo",
+        tooltip: "Open ticket info",
         button: (btnProps) => (
           <JiraButton
             ticketLink={props.jiraTicketInfo?.ticketLink}
