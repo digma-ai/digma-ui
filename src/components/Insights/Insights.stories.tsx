@@ -8,6 +8,7 @@ import { mockedSpanNexusInsight } from "./SpanNexusInsight/mockData";
 import {
   CodeObjectErrorsInsight,
   ComponentType,
+  EndpointSlowestSpansInsight,
   InsightCategory,
   InsightScope,
   InsightsStatus,
@@ -162,6 +163,7 @@ export const Default: Story = {
           actualStartTime: "2023-07-27T08:23:56.500827Z"
         } as SpanNPlusOneInsight,
         {
+          hasAsyncSpans: false,
           sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
           id: "62b55792-8262-4c5d-9628-7cce7979ad6d",
           firstDetected: "2023-12-05T17:25:47.010Z",
@@ -481,12 +483,12 @@ export const Default: Story = {
           decorators: null,
           environment: "BOB-LAPTOP[LOCAL]",
           severity: 0,
-          isRecalculateEnabled: false,
+          isRecalculateEnabled: true,
           prefixedCodeObjectId:
             "method:Sample.MoneyTransfer.API.Controllers.TransferController$_$TransferFunds(TransferRequest)",
           customStartTime: null,
           actualStartTime: "2023-06-12T13:49:08.186Z"
-        },
+        } as EndpointSlowestSpansInsight,
         {
           sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
           id: "60b55792-8262-4c5d-9628-6cce7979ad6d",
@@ -659,7 +661,8 @@ export const Default: Story = {
           prefixedCodeObjectId:
             "method:Sample.MoneyTransfer.API.Controllers.TransferController$_$TransferFunds(TransferRequest)",
           customStartTime: null,
-          actualStartTime: "2023-06-13T00:00:00.000Z"
+          actualStartTime: "2023-06-13T00:00:00.000Z",
+          isAsync: false
         },
         {
           sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",

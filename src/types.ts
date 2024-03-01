@@ -16,9 +16,9 @@ export enum InsightType {
   LowUsage = "LowUsage",
   NormalUsage = "NormalUsage",
   HighUsage = "HighUsage",
-  SlowestSpans = "SlowestSpans",
+  SlowestSpans = "SlowestSpans", // deprecated
   EndpointBottleneck = "EndpointBottleneck",
-  EndpointSpanNPlusOne = "EndpointSpaNPlusOne",
+  EndpointSpanNPlusOne = "EndpointSpaNPlusOne", // deprecated
   EndpointSpanNPlusOneV2 = "EndpointSpanNPlusOne",
   SpanUsages = "SpanUsages",
   SpanNPlusOne = "SpaNPlusOne",
@@ -26,10 +26,10 @@ export enum InsightType {
   SpanDurations = "SpanDurations",
   SpanScalingBadly = "SpanScaling",
   SpanDurationBreakdown = "SpanDurationBreakdown",
-  EndpointDurationSlowdown = "EndpointDurationSlowdown",
+  EndpointDurationSlowdown = "EndpointDurationSlowdown", // deprecated
   EndpointBreakdown = "EndpointBreakdown",
-  SpanScalingWell = "SpanScalingWell",
-  SpanScalingInsufficientData = "SpanScalingInsufficientData",
+  SpanScalingWell = "SpanScalingWell", // deprecated
+  SpanScalingInsufficientData = "SpanScalingInsufficientData", // deprecated
   EndpointSessionInView = "EndpointSessionInView",
   EndpointChattyApi = "EndpointChattyApi",
   EndpointHighNumberOfQueries = "EndpointHighNumberOfQueries",

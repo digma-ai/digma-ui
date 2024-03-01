@@ -51,6 +51,7 @@ import {
   isEndpointQueryOptimizationInsight,
   isEndpointSlowestSpansInsight,
   isEndpointSuspectedNPlusOneInsight,
+  isFunctionInsight,
   isSessionInViewEndpointInsight,
   isSlowEndpointInsight,
   isSpanDurationBreakdownInsight,
@@ -66,11 +67,11 @@ import {
   isSpanUsagesInsight
 } from "../typeGuards";
 import {
-  EndpointInsight,
   GenericCodeObjectInsight,
+  GenericEndpointInsight,
+  GenericSpanInsight,
   InsightGroup,
   MethodSpan,
-  SpanInsight,
   Trace
 } from "../types";
 import * as s from "./styles";
@@ -126,9 +127,9 @@ const groupInsights = (
   };
 
   const ungroupedInsights: GenericCodeObjectInsight[] = [];
-  const spanInsightGroups: { [key: string]: SpanInsight[] } = {};
+  const spanInsightGroups: { [key: string]: GenericSpanInsight[] } = {};
   const endpointInsightGroups: {
-    [key: string]: (EndpointInsight | SpanInsight)[];
+    [key: string]: (GenericEndpointInsight | GenericSpanInsight)[];
   } = {};
 
   for (const insight of sortedInsights) {
@@ -145,7 +146,7 @@ const groupInsights = (
 
     const displayName = insight.spanInfo?.displayName;
 
-    if (!displayName) {
+    if (isFunctionInsight(insight) || !displayName) {
       ungroupedInsights.push(insight);
       continue;
     }

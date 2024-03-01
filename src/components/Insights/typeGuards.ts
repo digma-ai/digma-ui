@@ -17,6 +17,7 @@ import {
   EndpointSlowestSpansInsight,
   EndpointSpanNPlusOneInsight,
   EndpointSuspectedNPlusOneInsight,
+  GenericFunctionInsight,
   InsightScope,
   QueryOptimizationInsight,
   SessionInViewEndpointInsight,
@@ -32,6 +33,10 @@ import {
   SpanScalingWellInsight,
   SpanUsagesInsight
 } from "./types";
+
+export const isFunctionInsight = (
+  insight: CodeObjectInsight
+): insight is GenericFunctionInsight => insight.scope === InsightScope.Function;
 
 export const isSpanInsight = (
   insight: CodeObjectInsight

@@ -20,31 +20,42 @@ export enum InsightsStatus {
 }
 
 export type GenericCodeObjectInsight =
-  | SpanUsageStatusInsight
-  | SpanDurationsInsight
-  | SpanUsagesInsight
-  | SpanEndpointBottleneckInsight
-  | SpanDurationBreakdownInsight
+  | GenericFunctionInsight
+  | GenericEndpointInsight
+  | GenericSpanInsight;
+
+export type GenericFunctionInsight =
+  | CodeObjectHotSpotInsight
+  | CodeObjectErrorsInsight;
+
+export type GenericEndpointInsight =
   | EndpointLowUsageInsight
   | EndpointNormalUsageInsight
   | EndpointHighUsageInsight
   | EndpointSlowestSpansInsight
   | EndpointBottleneckInsight
   | SlowEndpointInsight
-  | SpanScalingBadlyInsight
-  | SpanNPlusOneInsight
   | EndpointSuspectedNPlusOneInsight
   | EndpointSpanNPlusOneInsight
-  | CodeObjectHotSpotInsight
-  | CodeObjectErrorsInsight
   | EndpointDurationSlowdownInsight
   | EndpointSlowdownSourceInsight
   | EndpointBreakdownInsight
-  | SpanScalingWellInsight
-  | SpanScalingInsufficientDataInsight
   | SessionInViewEndpointInsight
   | ChattyApiEndpointInsight
-  | EndpointHighNumberOfQueriesInsight;
+  | EndpointHighNumberOfQueriesInsight
+  | EndpointQueryOptimizationInsight;
+
+export type GenericSpanInsight =
+  | SpanDurationsInsight
+  | SpanUsagesInsight
+  | SpanEndpointBottleneckInsight
+  | SpanDurationBreakdownInsight
+  | SpanScalingBadlyInsight
+  | SpanNPlusOneInsight
+  | SpanScalingWellInsight
+  | SpanScalingInsufficientDataInsight
+  | SpanNexusInsight
+  | QueryOptimizationInsight;
 
 export interface MethodSpan {
   spanCodeObjectId: string;
@@ -716,8 +727,6 @@ export interface EndpointBreakdownInsight extends EndpointInsight {
   p95Components: Component[] | null;
   hasAsyncSpans: boolean;
 }
-
-export type SpanUsageStatusInsight = SpanInsight;
 
 /**
  * @deprecated
