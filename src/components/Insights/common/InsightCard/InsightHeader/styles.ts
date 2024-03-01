@@ -10,6 +10,10 @@ export const Container = styled.div`
   gap: 8px;
 `;
 
+export const TagTitle = styled.span`
+  white-space: pre;
+`;
+
 export const InfoContainer = styled.div`
   display: flex;
 `;

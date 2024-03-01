@@ -116,7 +116,7 @@ export const InsightCard = (props: InsightCardProps) => {
         button: (btnProps) => (
           <Button
             icon={RecalculateIcon}
-            label={"Recalculate"}
+            label={"Recalc"}
             onClick={handleRecalculateClick}
             {...btnProps}
           />
@@ -131,7 +131,7 @@ export const InsightCard = (props: InsightCardProps) => {
             ticketLink={props.jiraTicketInfo?.ticketLink}
             isHintEnabled={props.jiraTicketInfo?.isHintEnabled}
             spanCodeObjectId={props.jiraTicketInfo?.spanCodeObjectId}
-            label={"Ticket info"}
+            label={"Ticket"}
             onTicketInfoButtonClick={props.onJiraButtonClick!}
             {...btnProps}
           />

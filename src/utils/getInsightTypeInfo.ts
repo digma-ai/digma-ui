@@ -16,15 +16,15 @@ import { WarningCircleIcon } from "../components/common/icons/WarningCircleIcon"
 import { IconProps } from "../components/common/icons/types";
 import { InsightType } from "../types";
 
+export interface InsightTypeInfo {
+  icon: MemoExoticComponent<(props: IconProps) => JSX.Element>;
+  label: string;
+  description?: () => JSX.Element;
+}
+
 export const getInsightTypeInfo = (
   type: string
-):
-  | {
-      icon: MemoExoticComponent<(props: IconProps) => JSX.Element>;
-      label: string;
-      description?: () => JSX.Element;
-    }
-  | undefined => {
+): InsightTypeInfo | undefined => {
   const insightTypeInfoMap: Record<
     string,
     {
