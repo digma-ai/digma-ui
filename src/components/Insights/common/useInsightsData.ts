@@ -1,7 +1,9 @@
 import { useContext, useEffect, useMemo, useRef, useState } from "react";
+import { actions as globalActions } from "../../../actions";
 import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { ConfigContext } from "../../common/App/ConfigContext";
+import { ConfigContextData } from "../../common/App/types";
 import { actions } from "../actions";
 import {
   InsightsData,
@@ -16,16 +18,29 @@ interface UseInsightDataProps {
   query: InsightsQuery;
 }
 
-const getData = (query: ScopedInsightsQuery) => {
+const getData = (query: ScopedInsightsQuery, context: ConfigContextData) => {
+  const getDataQuery = {
+    dispayName: query.searchQuery,
+    sortBy: query.sorting.criterion,
+    sortOrder: query.sorting.order,
+    page: query.page,
+    scopedSpanCodeObjectId: query.scopedSpanCodeObjectId
+  };
+
   window.sendMessageToDigma({
     action: actions.GET_DATA_LIST,
     payload: {
-      query: {
-        displayName: query.searchQuery,
-        sortBy: query.sorting.criterion,
-        sortOrder: query.sorting.order,
-        page: query.page,
-        scopedSpanCodeObjectId: query.scopedSpanCodeObjectId
+      query: getDataQuery
+    }
+  });
+
+  window.sendMessageToDigma({
+    action: globalActions.UPDATE_STATE,
+    payload: {
+      ...context.state,
+      insights: {
+        ...context.state?.insights,
+        query: getDataQuery
       }
     }
   });
@@ -44,7 +59,8 @@ export const useInsightsData = (props: UseInsightDataProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
   const refreshTimerId = useRef<number>();
-  const { scope, environment } = useContext(ConfigContext);
+  const ctx = useContext(ConfigContext);
+  const { scope, environment } = ctx;
   const query = useMemo(
     () => ({
       ...props.query,
@@ -54,7 +70,7 @@ export const useInsightsData = (props: UseInsightDataProps) => {
   );
 
   useEffect(() => {
-    getData(query);
+    getData(query, ctx);
 
     setIsInitialLoading(true);
     setIsLoading(true);
@@ -89,7 +105,7 @@ export const useInsightsData = (props: UseInsightDataProps) => {
       window.clearTimeout(refreshTimerId.current);
       refreshTimerId.current = window.setTimeout(
         (insightsQuery: ScopedInsightsQuery) => {
-          getData(insightsQuery);
+          getData(insightsQuery, ctx);
         },
         props.refreshInterval,
         query
@@ -109,16 +125,19 @@ export const useInsightsData = (props: UseInsightDataProps) => {
 
   useEffect(() => {
     setIsLoading(true);
-    getData({
-      ...props.query,
-      scopedSpanCodeObjectId: scope?.span?.spanCodeObjectId || null
-    });
+    getData(
+      {
+        ...props.query,
+        scopedSpanCodeObjectId: scope?.span?.spanCodeObjectId || null
+      },
+      ctx
+    );
   }, [props.query, scope, environment]);
 
   return {
     isInitialLoading,
     data,
     isLoading,
-    refresh: () => getData(query)
+    refresh: () => getData(query, ctx)
   };
 };

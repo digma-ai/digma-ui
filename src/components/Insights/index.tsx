@@ -29,8 +29,9 @@ import { EndpointNPlusOneInsightTicket } from "./tickets/EndpointNPlusOneInsight
 import { EndpointQueryOptimizationInsightTicket } from "./tickets/EndpointQueryOptimizationTicket";
 import { NPlusOneInsightTicket } from "./tickets/NPlusOneInsightTicket";
 import { QueryOptimizationInsightTicket } from "./tickets/QueryOptimizationInsightTicket";
-import { SpanBottleneckInsightTicket } from "./tickets/SpanBottleneckInsightTicket";
 import { ScalingIssueInsightTicket } from "./tickets/ScalingIssueInsightTicket";
+import { ScalingIssueInsightTicketByRootCause } from "./tickets/ScalingIssueInsightTicketByRootCause";
+import { SpanBottleneckInsightTicket } from "./tickets/SpanBottleneckInsightTicket";
 import {
   isEndpointHighNumberOfQueriesInsight,
   isEndpointQueryOptimizationInsight,
@@ -57,7 +58,6 @@ import {
   SpanNPlusOneInsight,
   SpanScalingBadlyInsight
 } from "./types";
-import { ScalingIssueInsightTicketByRootCause } from "./tickets/ScalingIssueInsightTicketByRootCause";
 
 const REFRESH_INTERVAL = isNumber(window.insightsRefreshInterval)
   ? window.insightsRefreshInterval
@@ -182,6 +182,7 @@ export const Insights = (props: InsightsProps) => {
 
   useLayoutEffect(() => {
     sendMessage(actions.INITIALIZE);
+    sendMessage(globalActions.GET_STATE);
   }, []);
 
   // useEffect(() => {

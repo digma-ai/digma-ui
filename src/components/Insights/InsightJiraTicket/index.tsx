@@ -59,9 +59,11 @@ export const InsightJiraTicket = (props: InsightJiraTicketProps) => {
         setErrorMessage(linkTicketResponse.message);
       }
 
-      window.sendMessageToDigma({
-        action: actions.GET_DATA
-      });
+      config.state &&
+        window.sendMessageToDigma({
+          action: actions.GET_DATA_LIST,
+          payload: { query: config.state.insights.query }
+        });
 
       props.onReloadSpanInsight && props.onReloadSpanInsight();
     };
@@ -77,7 +79,7 @@ export const InsightJiraTicket = (props: InsightJiraTicketProps) => {
         handleInsightTicketLink
       );
     };
-  }, []);
+  }, [config.state]);
 
   useEffect(() => {
     if (props.relatedInsight) {

@@ -56,6 +56,18 @@ export interface Scope {
   hasErrors: boolean;
 }
 
+export interface GlobalState {
+  insights: {
+    query: {
+      displayName: string;
+      sortBy: string;
+      sortOrder: string;
+      page: number;
+      scopedSpanCodeObjectId?: string;
+    };
+  };
+}
+
 export interface ConfigContextData {
   digmaApiUrl: string;
   digmaStatus: DigmaStatus | undefined;
@@ -73,4 +85,5 @@ export interface ConfigContextData {
   environments: Environment[] | undefined;
   scope: Scope | undefined;
   isMicrometerProject: boolean;
+  state?: GlobalState;
 }
