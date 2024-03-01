@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { footnoteRegularTypography } from "../../../../common/App/typographies";
 
 export const Container = styled.div`
   display: flex;
@@ -9,18 +8,8 @@ export const Container = styled.div`
   padding: 4px;
   border-radius: 4px;
   background: ${({ theme }) => theme.colors.v3.surface.primary};
-`;
-
-export const Link = styled.a`
-  ${footnoteRegularTypography}
-
-  cursor: pointer;
-  color: ${({ theme }) => theme.colors.v3.text.link};
-  text-decoration: none;
-  display: block;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
+  height: 28px;
+  box-sizing: border-box;
 `;
 
 export const ButtonsContainer = styled.div`

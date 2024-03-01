@@ -108,11 +108,9 @@ export const JiraButtonComponent = (
               You can now easily create a ticket using information from Digma
             </span>
             <s.TryNowButton
-              buttonType={"secondary"}
               onClick={() => openTicketInfo("try now button click")}
-            >
-              Try now
-            </s.TryNowButton>
+              label={"Try now"}
+            />
           </s.HintContainer>
         }
         isOpen={Boolean(isHintEnabled)}

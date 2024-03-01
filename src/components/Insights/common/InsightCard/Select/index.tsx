@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { MouseEvent, useState } from "react";
 import { MenuList } from "../../../../Navigation/common/MenuList";
 import { Popup } from "../../../../Navigation/common/Popup";
 import { NewPopover } from "../../../../common/NewPopover";
@@ -18,7 +18,12 @@ export const Select = (props: SelectProps) => {
     props.onChange(option.value);
   };
 
-  const handleExpandButtonClick = () => {
+  const handleSelectBarClick = (e: MouseEvent<HTMLElement>) => {
+    // Prevent the dropdown from opening when clicking on a link inside the selected item
+    if ((e.target as HTMLElement).tagName === "A") {
+      return;
+    }
+
     setIsOpen(!isOpen);
   };
 
@@ -36,11 +41,16 @@ export const Select = (props: SelectProps) => {
           />
         </Popup>
       }
-      onOpenChange={props.isDisabled || !isOpen ? undefined : setIsOpen}
+      onOpenChange={props.isDisabled ? undefined : setIsOpen}
+      useClickInteraction={false}
       isOpen={props.isDisabled ? false : isOpen}
       placement={"bottom-start"}
     >
-      <s.SelectBar $isDisabled={props.isDisabled} $isOpen={isOpen}>
+      <s.SelectBar
+        $isDisabled={props.isDisabled}
+        $isOpen={isOpen}
+        onClick={handleSelectBarClick}
+      >
         {selectedOption ? (
           <Tooltip title={selectedOption.label}>
             {selectedOption.customContent ? (
@@ -53,7 +63,7 @@ export const Select = (props: SelectProps) => {
           props.placeholder
         )}
         <s.Divider />
-        <s.ExpandButton onClick={handleExpandButtonClick}>
+        <s.ExpandButton>
           <ChevronIcon
             size={16}
             color={"currentColor"}

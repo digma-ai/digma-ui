@@ -1,5 +1,8 @@
 import styled from "styled-components";
-import { caption1RegularTypography } from "../../../../common/App/typographies";
+import {
+  footnoteRegularTypography,
+  subscriptRegularTypography
+} from "../../../../common/App/typographies";
 
 export const Container = styled.div`
   display: flex;
@@ -8,10 +11,13 @@ export const Container = styled.div`
 `;
 
 export const Key = styled.div`
+  ${footnoteRegularTypography}
+
   color: ${({ theme }) => theme.colors.v3.text.secondary};
-  ${caption1RegularTypography}
 `;
 
 export const Value = styled.div`
+  ${subscriptRegularTypography}
+
   color: ${({ theme }) => theme.colors.v3.text.primary};
 `;
