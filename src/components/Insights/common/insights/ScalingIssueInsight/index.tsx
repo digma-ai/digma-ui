@@ -76,7 +76,7 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
             if (config.isJaegerEnabled && traceId) {
               buttons.push(
                 <Button
-                  icon={CrosshairIcon}
+                  icon={TraceIcon}
                   onClick={() =>
                     handleTraceButtonClick(
                       {
