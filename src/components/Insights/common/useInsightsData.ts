@@ -27,7 +27,7 @@ const getData = (query: ScopedInsightsQuery, context: ConfigContextData) => {
     scopedSpanCodeObjectId: query.scopedSpanCodeObjectId
   };
 
-  window.sendMessageToDigma({
+  window.sendMessageToDigma<InsightsQuery>({
     action: actions.GET_DATA_LIST,
     payload: {
       query: getDataQuery
