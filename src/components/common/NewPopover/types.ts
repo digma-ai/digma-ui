@@ -11,4 +11,5 @@ export interface PopoverProps {
   boundary?: HTMLElement;
   width?: number | string;
   sameWidth?: boolean;
+  useClickInteraction?: boolean;
 }

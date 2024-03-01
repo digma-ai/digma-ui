@@ -41,7 +41,8 @@ export const Select = (props: SelectProps) => {
           />
         </Popup>
       }
-      onOpenChange={props.isDisabled || !isOpen ? undefined : setIsOpen}
+      onOpenChange={props.isDisabled ? undefined : setIsOpen}
+      useClickInteraction={false}
       isOpen={props.isDisabled ? false : isOpen}
       placement={"bottom-start"}
     >
