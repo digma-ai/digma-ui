@@ -16,6 +16,7 @@ import {
   BackendInfo,
   DigmaStatus,
   Environment,
+  GlobalState,
   Scope
 } from "./types";
 
@@ -213,10 +214,18 @@ export const App = (props: AppProps) => {
       }));
     };
 
+    const handleSetState = (data: unknown) => {
+      setConfig((config) => ({
+        ...config,
+        state: data as GlobalState
+      }));
+    };
+
     dispatcher.addActionListener(actions.SET_THEME, handleSetTheme);
     dispatcher.addActionListener(actions.SET_MAIN_FONT, handleSetMainFont);
     dispatcher.addActionListener(actions.SET_CODE_FONT, handleSetCodeFont);
     dispatcher.addActionListener(actions.SET_JAEGER_URL, handleSetJaegerURL);
+    dispatcher.addActionListener(actions.SET_STATE, handleSetState);
     dispatcher.addActionListener(
       actions.SET_IS_JAEGER_ENABLED,
       handleSetIsJaegerEnabled
@@ -272,6 +281,7 @@ export const App = (props: AppProps) => {
       dispatcher.removeActionListener(actions.SET_THEME, handleSetTheme);
       dispatcher.removeActionListener(actions.SET_MAIN_FONT, handleSetMainFont);
       dispatcher.removeActionListener(actions.SET_CODE_FONT, handleSetCodeFont);
+      dispatcher.removeActionListener(actions.SET_STATE, handleSetState);
       dispatcher.removeActionListener(
         actions.SET_JAEGER_URL,
         handleSetJaegerURL
