@@ -4,7 +4,7 @@ import { getDurationString } from "../../../../../utils/getDurationString";
 import { sendTrackingEvent } from "../../../../../utils/sendTrackingEvent";
 import { trimEndpointScheme } from "../../../../../utils/trimEndpointScheme";
 import { ConfigContext } from "../../../../common/App/ConfigContext";
-import { CrosshairIcon } from "../../../../common/icons/CrosshairIcon";
+import { TraceIcon } from "../../../../common/icons/12px/TraceIcon";
 import { Button } from "../../../../common/v3/Button";
 import { JiraButton } from "../../../../common/v3/JiraButton";
 import { Pagination } from "../../../../common/v3/Pagination";
@@ -39,7 +39,6 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
   ) => {
     props.onTraceButtonClick(trace, insightType, spanCodeObjectId);
   };
-
 
   const handleCreateJiraTicketButtonClick = (
     spanCodeObjectId: string,
@@ -76,6 +75,7 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
             if (config.isJaegerEnabled && traceId) {
               buttons.push(
                 <Button
+                  key={"trace"}
                   icon={TraceIcon}
                   onClick={() =>
                     handleTraceButtonClick(
@@ -134,6 +134,7 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
                   return (
                     <Tooltip title={endpointRoute} key={endpoint.route}>
                       <s.EndpointListItem
+                        key={endpoint.spanCodeObjectId}
                         onClick={() =>
                           handleLinkClick(endpoint.spanCodeObjectId)
                         }
@@ -164,7 +165,7 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
           : undefined
       }
       onOpenHistogram={
-        props.insight.spanInfo ? handleHistogramButtonClick : undefined
+        props.insight.spanInfo ? props.onHistogramButtonClick : undefined
       }
       onRecalculate={props.onRecalculate}
       onRefresh={props.onRefresh}
