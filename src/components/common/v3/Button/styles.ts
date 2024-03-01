@@ -11,7 +11,7 @@ export const Button = styled.button<ButtonElementProps>`
   cursor: pointer;
   width: fit-content;
   padding: 4px 8px;
-  border: none;
+  border: 1px solid transparent;
   color: ${({ theme }) => theme.colors.v3.icon.white};
   background: ${({ theme, $type }) => {
     switch ($type) {
