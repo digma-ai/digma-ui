@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { usePagination } from "../../../../../hooks/usePagination";
 import { ConfigContext } from "../../../../common/App/ConfigContext";
-import { CrosshairIcon } from "../../../../common/icons/CrosshairIcon";
+import { TraceIcon } from "../../../../common/icons/12px/TraceIcon";
 import { Button } from "../../../../common/v3/Button";
 import { Pagination } from "../../../../common/v3/Pagination";
 import { Tooltip } from "../../../../common/v3/Tooltip";
@@ -51,20 +51,21 @@ export const SessionInViewInsight = (props: SessionInViewInsightProps) => {
               const buttons =
                 traceId && config.isJaegerEnabled
                   ? [
-                      <Button
-                        key={traceId}
-                        icon={CrosshairIcon}
-                        onClick={() =>
-                          handleTraceButtonClick(
-                            {
-                              name: spanName,
-                              id: traceId
-                            },
-                            props.insight.type,
-                            spanCodeObjectId
-                          )
-                        }
-                      />
+                      <Tooltip title={"Open trace"} key={"trace"}>
+                        <Button
+                          icon={TraceIcon}
+                          onClick={() =>
+                            handleTraceButtonClick(
+                              {
+                                name: spanName,
+                                id: traceId
+                              },
+                              props.insight.type,
+                              spanCodeObjectId
+                            )
+                          }
+                        />
+                      </Tooltip>
                     ]
                   : [];
 

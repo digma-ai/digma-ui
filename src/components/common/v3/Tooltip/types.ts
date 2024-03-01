@@ -12,4 +12,9 @@ export interface TooltipProps {
   placement?: Placement;
   style?: React.CSSProperties;
   isOpen?: boolean;
+  fullWidth?: boolean;
+}
+
+export interface TooltipComponentProps {
+  $fullWidth?: boolean;
 }

@@ -139,7 +139,7 @@ export const InsightCard = (props: InsightCardProps) => {
               </Tooltip>
             )}
             {props.onJiraButtonClick && (
-              <Tooltip title={"Jira ticket info"}>
+              <Tooltip title={"Ticket info"}>
                 <JiraButton
                   onTicketInfoButtonClick={props.onJiraButtonClick}
                   ticketLink={props.jiraTicketInfo?.ticketLink}

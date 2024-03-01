@@ -44,7 +44,7 @@ export const TableHeaderCell = styled.th`
   padding: 0;
 
   &:last-child {
-    text-align: right;
+    text-align: end;
   }
 `;
 
@@ -57,11 +57,11 @@ export const TableBodyCell = styled.td`
   padding: 0;
 
   &:first-child {
-    text-align: left;
+    text-align: start;
   }
 
   &:last-child {
-    text-align: right;
+    text-align: end;
   }
 `;
 

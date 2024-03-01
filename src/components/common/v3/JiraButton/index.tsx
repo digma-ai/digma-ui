@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ForwardedRef, forwardRef, useState } from "react";
 import { useTheme } from "styled-components";
 import { openURLInDefaultBrowser } from "../../../../utils/openURLInDefaultBrowser";
 import { IconButton } from "../../../Insights/common/InsightCard/IconButton";
@@ -12,10 +12,17 @@ import { NewPopover } from "../../NewPopover";
 import * as s from "./styles";
 import { JiraButtonProps } from "./types";
 
-export const JiraButton = (props: JiraButtonProps) => {
+export const JiraButtonComponent = (
+  {
+    ticketLink,
+    isHintEnabled,
+    onTicketInfoButtonClick,
+    spanCodeObjectId
+  }: JiraButtonProps,
+  ref: ForwardedRef<HTMLDivElement>
+) => {
   const [isJiraPopoverOpen, setIsJiraPopoverOpen] = useState(false);
   const theme = useTheme();
-  const { ticketLink, isHintEnabled } = props;
 
   const handleJiraButtonClick = () => {
     setIsJiraPopoverOpen(!isJiraPopoverOpen);
@@ -28,7 +35,7 @@ export const JiraButton = (props: JiraButtonProps) => {
 
   const openTicketInfo = (event: string) => {
     handleJiraButtonClick();
-    props.onTicketInfoButtonClick(props.spanCodeObjectId, event);
+    onTicketInfoButtonClick(spanCodeObjectId, event);
   };
 
   const renderButton = () => (
@@ -72,41 +79,44 @@ export const JiraButton = (props: JiraButtonProps) => {
           />
         </NewPopover>
       ) : (
-        <Tooltip title={"Ticket Info"}>
-          <IconButton
-            icon={{ component: JiraLogoIcon }}
-            onClick={() => openTicketInfo("jira button click")}
-          />
-        </Tooltip>
+        <IconButton
+          icon={{ component: JiraLogoIcon }}
+          onClick={() => openTicketInfo("jira button click")}
+        />
       )}
     </div>
   );
 
   return (
-    <Tooltip
-      placement={"top-start"}
-      title={
-        <s.HintContainer>
-          <s.HintHeader>
-            <s.HintIconContainer>
-              <JiraLogoIcon size={16} color={"currentColor"} />
-            </s.HintIconContainer>
-            <span>Get Ticket Info</span>
-          </s.HintHeader>
-          <span>
-            You can now easily create a ticket using information from Digma
-          </span>
-          <s.TryNowButton
-            buttonType={"secondary"}
-            onClick={() => openTicketInfo("try now button click")}
-          >
-            Try now
-          </s.TryNowButton>
-        </s.HintContainer>
-      }
-      isOpen={isHintEnabled}
-    >
-      {renderButton()}
-    </Tooltip>
+    <div ref={ref}>
+      <Tooltip
+        fullWidth={true}
+        placement={"top-start"}
+        title={
+          <s.HintContainer>
+            <s.HintHeader>
+              <s.HintIconContainer>
+                <JiraLogoIcon size={16} color={"currentColor"} />
+              </s.HintIconContainer>
+              <span>Get Ticket Info</span>
+            </s.HintHeader>
+            <span>
+              You can now easily create a ticket using information from Digma
+            </span>
+            <s.TryNowButton
+              buttonType={"secondary"}
+              onClick={() => openTicketInfo("try now button click")}
+            >
+              Try now
+            </s.TryNowButton>
+          </s.HintContainer>
+        }
+        isOpen={Boolean(isHintEnabled)}
+      >
+        {renderButton()}
+      </Tooltip>
+    </div>
   );
 };
+
+export const JiraButton = forwardRef(JiraButtonComponent);
