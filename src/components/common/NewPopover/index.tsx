@@ -7,7 +7,6 @@ import {
   flip,
   offset,
   shift,
-  useClick,
   useDismiss,
   useFloating,
   useInteractions
@@ -92,11 +91,11 @@ export const NewPopover = (props: PopoverProps) => {
     whileElementsMounted: autoUpdate
   });
 
-  const click = useClick(context);
+  // const click = useClick(context);
   const dismiss = useDismiss(context);
 
   const { getReferenceProps, getFloatingProps } = useInteractions([
-    click,
+    // click,
     dismiss
   ]);
 

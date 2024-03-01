@@ -4,6 +4,7 @@ import { roundTo } from "../../../../../utils/roundTo";
 import { sendTrackingEvent } from "../../../../../utils/sendTrackingEvent";
 import { trimEndpointScheme } from "../../../../../utils/trimEndpointScheme";
 import { Link } from "../../../../common/v3/Link";
+import { Tooltip } from "../../../../common/v3/Tooltip";
 import { trackingEvents } from "../../../tracking";
 import { BottleneckEndpointInfo } from "../../../types";
 import { Info } from "../../Info";
@@ -18,8 +19,8 @@ import { SpanEndpointBottleneckInsightProps } from "./types";
 const renderOptions = (
   endpoints: BottleneckEndpointInfo[],
   handleLinkClick: (spanCodeObjectId?: string) => void
-): { label: string; customContent: ReactNode; value: string }[] => {
-  return endpoints.map((x) => {
+): { label: string; customContent: ReactNode; value: string }[] =>
+  endpoints.map((x) => {
     const spanCodeObjectId = x.endpointInfo.spanCodeObjectId;
     const route = trimEndpointScheme(x.endpointInfo.route);
     return {
@@ -27,14 +28,16 @@ const renderOptions = (
       customContent: (
         <s.SelectedItem>
           {x.endpointInfo.serviceName}
-          <Link onClick={() => handleLinkClick(spanCodeObjectId)}>{route}</Link>
+          <Tooltip title={route}>
+            <Link onClick={() => handleLinkClick(spanCodeObjectId)}>
+              {route}
+            </Link>
+          </Tooltip>
         </s.SelectedItem>
       ),
       value: spanCodeObjectId
     };
   });
-};
-
 export const SpanEndpointBottleneckInsight = (
   props: SpanEndpointBottleneckInsightProps
 ) => {

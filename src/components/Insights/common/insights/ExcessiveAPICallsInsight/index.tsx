@@ -4,6 +4,7 @@ import { ConfigContext } from "../../../../common/App/ConfigContext";
 import { TargetIcon } from "../../../../common/icons/12px/TargetIcon";
 import { Button } from "../../../../common/v3/Button";
 import { Pagination } from "../../../../common/v3/Pagination";
+import { Tooltip } from "../../../../common/v3/Tooltip";
 import { InsightType, Trace } from "../../../types";
 import { InsightCard } from "../../InsightCard";
 import { ContentContainer, Description, ListContainer } from "../styles";
@@ -56,20 +57,22 @@ export const ExcessiveAPICallsInsight = (
                   onClick={() => handleLinkClick(spanCodeObjectId)}
                   buttons={[
                     config.isJaegerEnabled && traceId && (
-                      <Button
-                        key={spanCodeObjectId + "trace"}
-                        icon={TargetIcon}
-                        onClick={() =>
-                          handleTraceButtonClick(
-                            {
-                              name: spanName,
-                              id: traceId
-                            },
-                            props.insight.type,
-                            spanCodeObjectId
-                          )
-                        }
-                      />
+                      <Tooltip title={"Open trace"}>
+                        <Button
+                          key={spanCodeObjectId + "trace"}
+                          icon={TargetIcon}
+                          onClick={() =>
+                            handleTraceButtonClick(
+                              {
+                                name: spanName,
+                                id: traceId
+                              },
+                              props.insight.type,
+                              spanCodeObjectId
+                            )
+                          }
+                        />
+                      </Tooltip>
                     )
                   ]}
                 />

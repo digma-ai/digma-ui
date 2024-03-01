@@ -4,6 +4,7 @@ import { sendTrackingEvent } from "../../../../../utils/sendTrackingEvent";
 import { trimEndpointScheme } from "../../../../../utils/trimEndpointScheme";
 import { ConfigContext } from "../../../../common/App/ConfigContext";
 import { Link } from "../../../../common/v3/Link";
+import { Tooltip } from "../../../../common/v3/Tooltip";
 import { trackingEvents } from "../../../tracking";
 import { InsightType, NPlusOneEndpointInfo, Trace } from "../../../types";
 import { Info } from "../../Info";
@@ -27,7 +28,11 @@ const renderOptions = (
       customContent: (
         <s.SelectedItem>
           {x.endpointInfo.serviceName}
-          <Link onClick={() => handleLinkClick(spanCodeObjectId)}>{route}</Link>
+          <Tooltip title={route}>
+            <Link onClick={() => handleLinkClick(spanCodeObjectId)}>
+              {route}
+            </Link>
+          </Tooltip>
         </s.SelectedItem>
       ),
       value: spanCodeObjectId
