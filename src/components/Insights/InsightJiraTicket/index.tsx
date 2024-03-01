@@ -60,7 +60,7 @@ export const InsightJiraTicket = (props: InsightJiraTicketProps) => {
       }
 
       config.state.insights.query
-        window.sendMessageToDigma({
+        window.sendMessageToDigma<InsightsQuery>({
           action: actions.GET_DATA_LIST,
           payload: { query: config.state.insights.query }
         });
