@@ -17,7 +17,7 @@ import * as s from "./styles";
 import { QueryOptimizationInsightProps } from "./types";
 
 const PAGE_SIZE = 3;
-export const QueryOptimizationInsight = (
+export const SpanQueryOptimizationInsight = (
   props: QueryOptimizationInsightProps
 ) => {
   const config = useContext(ConfigContext);

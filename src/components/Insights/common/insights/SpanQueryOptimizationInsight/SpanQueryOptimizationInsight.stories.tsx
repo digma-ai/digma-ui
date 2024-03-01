@@ -1,11 +1,11 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { QueryOptimizationInsight } from ".";
+import { SpanQueryOptimizationInsight } from ".";
 import { mockedQueryOptimizationInsight } from "./mockData";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
-const meta: Meta<typeof QueryOptimizationInsight> = {
-  title: "Insights/common/insights/QueryOptimizationInsight",
-  component: QueryOptimizationInsight,
+const meta: Meta<typeof SpanQueryOptimizationInsight> = {
+  title: "Insights/common/insights/SpanQueryOptimizationInsight",
+  component: SpanQueryOptimizationInsight,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
     layout: "fullscreen"
