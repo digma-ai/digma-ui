@@ -121,6 +121,8 @@ export const SpanEndpointBottleneckInsight = (
           )}
         </ContentContainer>
       }
+      onRecalculate={props.onRecalculate}
+      onRefresh={props.onRefresh}
     />
   );
 };

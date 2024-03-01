@@ -22,7 +22,7 @@ const IS_NEW_TIME_LIMIT = 1000 * 60 * 10; // in milliseconds
 export const InsightCard = (props: InsightCardProps) => {
   const [isRecalculatingStarted, setIsRecalculatingStarted] = useState(false);
   const handleRefreshLinkClick = () => {
-    props.onRefresh && props.onRefresh(props.insight.type);
+    props.onRefresh(props.insight.type);
   };
 
   const handleRecalculateClick = () => {
@@ -123,7 +123,7 @@ export const InsightCard = (props: InsightCardProps) => {
         )
       });
 
-    props.onRecalculate &&
+    props.insight.isRecalculateEnabled &&
       buttonsToRender.push({
         tooltip: "Recalculate",
         button: (btnProps) => (

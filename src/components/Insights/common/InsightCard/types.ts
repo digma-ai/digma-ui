@@ -14,11 +14,11 @@ export interface InsightCardProps {
     insightType: InsightType,
     displayName: string
   ) => void;
-  onRecalculate?: (
+  onRecalculate: (
     prefixedCodeObjectId: string,
     insightType: InsightType
   ) => void;
-  onRefresh?: (insightType: InsightType, spanCodeObjectId?: string) => void;
+  onRefresh: (insightType: InsightType, spanCodeObjectId?: string) => void;
   onPin?: (insightId: string) => void;
   onGoToLive?: () => void;
   onGoToTrace?: () => void;
