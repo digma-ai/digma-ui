@@ -51,7 +51,9 @@ export const TrafficInsight = (props: TrafficInsightProps) => {
       content={
         <s.ContentContainer>
           <ColumnsContainer>
-            <s.Description>{getDescription(props.insight.type)}</s.Description>
+            <s.DescriptionColumn label="Description">
+              {getDescription(props.insight.type)}
+            </s.DescriptionColumn>
             <KeyValue label={"Duration"}>
               <Tag content={`${valueString}/min`} />
             </KeyValue>

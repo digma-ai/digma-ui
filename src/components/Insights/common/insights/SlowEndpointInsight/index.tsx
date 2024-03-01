@@ -4,7 +4,6 @@ import { Tag } from "../../../../common/v3/Tag";
 import { InsightCard } from "../../InsightCard";
 import { ColumnsContainer } from "../../InsightCard/ColumnsContainer";
 import { KeyValue } from "../../InsightCard/KeyValue";
-import { Description } from "../styles";
 import * as s from "./styles";
 import { SlowEndpointInsightProps } from "./types";
 
@@ -20,12 +19,12 @@ export const SlowEndpointInsight = (props: SlowEndpointInsightProps) => {
       content={
         <s.ContentContainer>
           <ColumnsContainer>
-            <Description>
+            <s.DescriptionColumn label="Description">
               {`On average requests are slower than other endpoints by ${roundTo(
                 diff,
                 2
               )}%`}
-            </Description>
+            </s.DescriptionColumn>
             <KeyValue label={"Slower by"}>
               <Tag content={getDurationString(props.insight.median)} />
             </KeyValue>

@@ -102,10 +102,10 @@ export const InsightCard = (props: InsightCardProps) => {
         tooltip: "Open Trace",
         button: (btnProps) => (
           <Button
-            {...btnProps}
             icon={TraceIcon}
             label={"Trace"}
             onClick={() => props.onGoToTrace && props.onGoToTrace()}
+            {...btnProps}
           />
         )
       });
@@ -184,7 +184,7 @@ export const InsightCard = (props: InsightCardProps) => {
         {secondary.map((Secondary) => {
           return (
             <Tooltip key={Secondary.tooltip} title={Secondary.tooltip}>
-                <Secondary.button buttonType="tertiary" label={undefined} />
+              <Secondary.button buttonType="tertiary" label={undefined} />
             </Tooltip>
           );
         })}
