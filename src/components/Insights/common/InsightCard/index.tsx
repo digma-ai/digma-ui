@@ -184,9 +184,7 @@ export const InsightCard = (props: InsightCardProps) => {
         {secondary.map((Secondary) => {
           return (
             <Tooltip key={Secondary.tooltip} title={Secondary.tooltip}>
-              <>
                 <Secondary.button buttonType="tertiary" label={undefined} />
-              </>
             </Tooltip>
           );
         })}
