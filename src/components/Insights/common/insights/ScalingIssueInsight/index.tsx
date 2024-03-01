@@ -40,15 +40,6 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
     props.onTraceButtonClick(trace, insightType, spanCodeObjectId);
   };
 
-  const handleHistogramButtonClick = () => {
-    props.insight.spanInfo &&
-      props.onHistogramButtonClick(
-        props.insight.spanInfo.instrumentationLibrary,
-        props.insight.spanInfo.name,
-        props.insight.type,
-        props.insight.spanInfo.displayName
-      );
-  };
 
   const handleCreateJiraTicketButtonClick = (
     spanCodeObjectId: string,
