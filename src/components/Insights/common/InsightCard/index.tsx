@@ -103,7 +103,7 @@ export const InsightCard = (props: InsightCardProps) => {
         button: (btnProps) => (
           <Button
             icon={HistogramIcon}
-            label="Histogram"
+            label={"Histogram"}
             onClick={handleHistogramButtonClick}
             {...btnProps}
           />
@@ -116,7 +116,7 @@ export const InsightCard = (props: InsightCardProps) => {
         button: (btnProps) => (
           <Button
             icon={RecalculateIcon}
-            label="Recalculate"
+            label={"Recalculate"}
             onClick={handleRecalculateClick}
             {...btnProps}
           />
@@ -131,7 +131,7 @@ export const InsightCard = (props: InsightCardProps) => {
             ticketLink={props.jiraTicketInfo?.ticketLink}
             isHintEnabled={props.jiraTicketInfo?.isHintEnabled}
             spanCodeObjectId={props.jiraTicketInfo?.spanCodeObjectId}
-            label="Ticket info"
+            label={"Ticket info"}
             onTicketInfoButtonClick={props.onJiraButtonClick!}
             {...btnProps}
           />
@@ -168,28 +168,26 @@ export const InsightCard = (props: InsightCardProps) => {
       buttonsToRender.push({
         tooltip: "Pin",
         button: (btnProps) => (
-          <Button icon={PinIcon} label="Pin" {...btnProps} />
+          <Button icon={PinIcon} label={"Pin"} {...btnProps} />
         )
       });
 
-    if (buttonsToRender.length <= 0) {
+    if (buttonsToRender.length === 0) {
       return;
     }
 
-    const Main = buttonsToRender[0];
-    const secondary = buttonsToRender.slice(1);
+    const toolbarActions = buttonsToRender.slice(0, -1);
+    const mainAction = buttonsToRender[buttonsToRender.length - 1];
 
     return (
       <s.Actions>
-        {secondary.map((Secondary) => {
-          return (
-            <Tooltip key={Secondary.tooltip} title={Secondary.tooltip}>
-              <Secondary.button buttonType="tertiary" label={undefined} />
-            </Tooltip>
-          );
-        })}
+        {toolbarActions.map((toolbarAction) => (
+          <Tooltip key={toolbarAction.tooltip} title={toolbarAction.tooltip}>
+            <toolbarAction.button buttonType={"tertiary"} label={undefined} />
+          </Tooltip>
+        ))}
         <s.MainActions>
-          <Main.button buttonType="primary" />
+          <mainAction.button buttonType={"primary"} />
         </s.MainActions>
       </s.Actions>
     );

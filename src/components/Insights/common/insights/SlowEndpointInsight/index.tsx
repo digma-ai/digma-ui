@@ -19,7 +19,7 @@ export const SlowEndpointInsight = (props: SlowEndpointInsightProps) => {
       content={
         <s.ContentContainer>
           <ColumnsContainer>
-            <s.DescriptionColumn label="Description">
+            <s.DescriptionColumn label={"Description"}>
               {`On average requests are slower than other endpoints by ${roundTo(
                 diff,
                 2
