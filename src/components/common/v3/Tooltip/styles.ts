@@ -1,12 +1,13 @@
 import styled from "styled-components";
 import { LAYERS } from "../../App/styles";
 import { footnoteRegularTypography } from "../../App/typographies";
+import { TooltipComponentProps } from "./types";
 
 export const TooltipContainer = styled.div`
   z-index: ${LAYERS.TOOLTIP};
 `;
 
-export const Tooltip = styled.div`
+export const Tooltip = styled.div<TooltipComponentProps>`
   ${footnoteRegularTypography}
 
   padding: 4px;
@@ -16,5 +17,5 @@ export const Tooltip = styled.div`
   color: ${({ theme }) => theme.colors.v3.text.primary};
   background: ${({ theme }) => theme.colors.v3.surface.primary};
   border: 1px solid ${({ theme }) => theme.colors.v3.stroke.tertiary};
-  max-width: 200px;
+  ${({ $fullWidth }) => ($fullWidth ? "" : "max-width: 200px;")}
 `;

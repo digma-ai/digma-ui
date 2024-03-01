@@ -145,7 +145,7 @@ export const Tooltip = (props: TooltipProps) => {
           >
             {renderArrow(true)}
             {renderArrow(false)}
-            <s.Tooltip>{props.title}</s.Tooltip>
+            <s.Tooltip $fullWidth={props.fullWidth}>{props.title}</s.Tooltip>
           </s.TooltipContainer>
         </FloatingPortal>
       )}

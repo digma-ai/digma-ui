@@ -74,12 +74,12 @@ export const TableHeaderCell = styled.th`
   ${caption1RegularTypography}
 
   &:first-child {
-    text-align: left;
+    text-align: start;
     padding-left: 8px;
   }
 
   &:last-child {
-    text-align: right;
+    text-align: end;
     padding-right: 8px;
   }
 `;

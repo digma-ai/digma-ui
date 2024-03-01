@@ -95,7 +95,7 @@ export const Button = styled.button<ButtonElementProps>`
           return theme.colors.v3.surface.brandDark;
         case "primary":
         default:
-          return theme.colors.v3.surface.secondary;
+          return theme.colors.v3.surface.brandSecondary;
       }
     }};
     border: 1px solid
@@ -107,7 +107,7 @@ export const Button = styled.button<ButtonElementProps>`
             return theme.colors.v3.stroke.primary;
           case "primary":
           default:
-            return theme.colors.v3.surface.secondary;
+            return theme.colors.v3.surface.brandSecondary;
         }
       }};
 
@@ -138,7 +138,7 @@ export const Button = styled.button<ButtonElementProps>`
           return theme.colors.v3.surface.primary;
         case "primary":
         default:
-          return theme.colors.v3.surface.primary;
+          return theme.colors.v3.surface.brandPrimary;
       }
     }};
     border: 1px solid
@@ -150,7 +150,7 @@ export const Button = styled.button<ButtonElementProps>`
             return theme.colors.v3.stroke.primary;
           case "primary":
           default:
-            return theme.colors.v3.surface.secondary;
+            return theme.colors.v3.surface.brandSecondary;
         }
       }};
 
