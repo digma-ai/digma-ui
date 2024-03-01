@@ -13,7 +13,6 @@ import { EmptyState } from "../../common/EmptyState";
 import { CardsIcon } from "../../common/icons/CardsIcon";
 import { DurationBreakdownInsight } from "../DurationBreakdownInsight";
 import { EndpointQueryOptimizationInsight } from "../EndpointQueryOptimizationInsight";
-import { QueryOptimizationInsight } from "../QueryOptimizationInsight";
 import { actions } from "../actions";
 import { DurationInsight } from "../common/insights/DurationInsight";
 import { EndpointBottleneckInsight } from "../common/insights/EndpointBottleneckInsight";
@@ -28,6 +27,7 @@ import { SlowEndpointInsight } from "../common/insights/SlowEndpointInsight";
 import { SpanEndpointBottleneckInsight } from "../common/insights/SpanEndpointBottleneckInsight";
 import { SpanNPlusOneInsight } from "../common/insights/SpanNPlusOneInsight";
 import { SpanNexusInsight } from "../common/insights/SpanNexusInsight";
+import { SpanQueryOptimizationInsight } from "../common/insights/SpanQueryOptimizationInsight";
 import { TopUsageInsight } from "../common/insights/TopUsageInsight";
 import { TrafficInsight } from "../common/insights/TrafficInsight";
 import { Description } from "../styles";
@@ -404,7 +404,7 @@ const renderInsightCard = (
 
   if (isSpanQueryOptimizationInsight(insight)) {
     return (
-      <QueryOptimizationInsight
+      <SpanQueryOptimizationInsight
         key={insight.id}
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
