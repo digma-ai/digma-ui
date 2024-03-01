@@ -91,7 +91,7 @@ export const SpanNPlusOneInsight = (props: SpanNPlusOneInsightProps) => {
       content={
         <ContentContainer>
           <Details>
-            <Description>Effected Endpoints ({endpoints.length})</Description>
+            <Description>Affected Endpoints ({endpoints.length})</Description>
             <Select
               value={selectedEndpoint?.endpointInfo.entrySpanCodeObjectId}
               onChange={(selectedOption) => {
