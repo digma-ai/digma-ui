@@ -19,8 +19,8 @@ interface UseInsightDataProps {
 }
 
 const getData = (query: ScopedInsightsQuery, context: ConfigContextData) => {
-  const getDataQuery = {
-    dispayName: query.searchQuery,
+  const getDataQuery: InsightsQuery = {
+    displayName: query.searchQuery,
     sortBy: query.sorting.criterion,
     sortOrder: query.sorting.order,
     page: query.page,
