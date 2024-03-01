@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { isString } from "../../../../typeGuards/isString";
 import { formatTimeDistance } from "../../../../utils/formatTimeDistance";
 import { Link } from "../../../common/Link";
@@ -8,11 +8,11 @@ import { LiveIcon } from "../../../common/icons/16px/LiveIcon";
 import { PinIcon } from "../../../common/icons/16px/PinIcon";
 import { RecalculateIcon } from "../../../common/icons/16px/RecalculateIcon";
 import { Button } from "../../../common/v3/Button";
+import { BaseButtonProps } from "../../../common/v3/Button/types";
 import { Card } from "../../../common/v3/Card";
 import { JiraButton } from "../../../common/v3/JiraButton";
 import { Tooltip } from "../../../common/v3/Tooltip";
 import { isSpanInsight } from "../../typeGuards";
-import { IconButton } from "./IconButton";
 import { InsightHeader } from "./InsightHeader";
 import * as s from "./styles";
 import { InsightCardProps } from "./types";
@@ -91,6 +91,112 @@ export const InsightCard = (props: InsightCardProps) => {
     }
   };
 
+  const renderActions = () => {
+    const buttonsToRender: {
+      tooltip: string;
+      button: React.ComponentType<BaseButtonProps>;
+    }[] = [];
+
+    props.onGoToTrace &&
+      buttonsToRender.push({
+        tooltip: "Open Trace",
+        button: (btnProps) => (
+          <Button
+            {...btnProps}
+            icon={TraceIcon}
+            label={"Trace"}
+            onClick={() => props.onGoToTrace && props.onGoToTrace()}
+          />
+        )
+      });
+
+    props.onGoToLive &&
+      buttonsToRender.push({
+        tooltip: "Open live view",
+        button: (btnProps) => (
+          <Button
+            icon={LiveIcon}
+            label={"Live"}
+            onClick={() => props.onGoToLive && props.onGoToLive()}
+            {...btnProps}
+          />
+        )
+      });
+
+    props.onRecalculate &&
+      buttonsToRender.push({
+        tooltip: "Recalculate",
+        button: (btnProps) => (
+          <Button
+            icon={RecalculateIcon}
+            label="Recalculate"
+            onClick={handleRecalculateClick}
+            {...btnProps}
+          />
+        )
+      });
+
+    props.onJiraButtonClick &&
+      buttonsToRender.push({
+        tooltip: "Open ticketInfo",
+        button: (btnProps) => (
+          <JiraButton
+            ticketLink={props.jiraTicketInfo?.ticketLink}
+            isHintEnabled={props.jiraTicketInfo?.isHintEnabled}
+            spanCodeObjectId={props.jiraTicketInfo?.spanCodeObjectId}
+            label="Ticket info"
+            onTicketInfoButtonClick={props.onJiraButtonClick!}
+            {...btnProps}
+          />
+        )
+      });
+
+    props.onOpenHistogram &&
+      buttonsToRender.push({
+        tooltip: "Open Histogram",
+        button: (btnProps) => (
+          <Button
+            icon={HistogramIcon}
+            label="Histogram"
+            onClick={handleHistogramButtonClick}
+            {...btnProps}
+          />
+        )
+      });
+
+    props.onPin &&
+      buttonsToRender.push({
+        tooltip: "Pin",
+        button: (btnProps) => (
+          <Button icon={PinIcon} label="Pin" {...btnProps} />
+        )
+      });
+
+    if (buttonsToRender.length <= 0) {
+      return;
+    }
+
+    const Main = buttonsToRender[0];
+    const secondary = buttonsToRender.slice(1);
+
+    return (
+      <s.Actions>
+        {secondary.map((Secondary) => {
+          return (
+            <Tooltip key={Secondary.tooltip} title={Secondary.tooltip}>
+              <>
+                <Secondary.button buttonType="tertiary" label={undefined} />
+              </>
+            </Tooltip>
+          );
+        })}
+        <s.MainActions>
+          <Main.button buttonType="primary" />
+        </s.MainActions>
+      </s.Actions>
+    );
+  };
+
   const isNew = isString(props.insight.firstDetected)
     ? Date.now() - new Date(props.insight.firstDetected).valueOf() <
       IS_NEW_TIME_LIMIT
@@ -121,55 +227,7 @@ export const InsightCard = (props: InsightCardProps) => {
       footer={
         <s.InsightFooter>
           {/* <Button icon={CrossIcon} label={"Dismiss"} buttonType={"tertiary"} /> */}
-          <s.Actions>
-            {props.onOpenHistogram && (
-              <Tooltip title={"Open histogram"}>
-                <IconButton
-                  icon={{ component: HistogramIcon }}
-                  onClick={handleHistogramButtonClick}
-                />
-              </Tooltip>
-            )}
-            {props.onRecalculate && (
-              <Tooltip title={"Recalculate"}>
-                <IconButton
-                  icon={{ component: RecalculateIcon }}
-                  onClick={handleRecalculateClick}
-                />
-              </Tooltip>
-            )}
-            {props.onJiraButtonClick && (
-              <Tooltip title={"Ticket info"}>
-                <JiraButton
-                  onTicketInfoButtonClick={props.onJiraButtonClick}
-                  ticketLink={props.jiraTicketInfo?.ticketLink}
-                  isHintEnabled={props.jiraTicketInfo?.isHintEnabled}
-                  spanCodeObjectId={props.jiraTicketInfo?.spanCodeObjectId}
-                />
-              </Tooltip>
-            )}
-            {props.onPin && <IconButton icon={{ component: PinIcon }} />}
-            <s.MainActions>
-              {props.onGoToTrace && (
-                <Tooltip title={"Open trace"}>
-                  <Button
-                    icon={TraceIcon}
-                    label={"Trace"}
-                    onClick={() => props.onGoToTrace && props.onGoToTrace()}
-                  />
-                </Tooltip>
-              )}
-              {props.onGoToLive && (
-                <Tooltip title={"Open live view"}>
-                  <Button
-                    icon={LiveIcon}
-                    label={"Live"}
-                    onClick={() => props.onGoToLive && props.onGoToLive()}
-                  />
-                </Tooltip>
-              )}
-            </s.MainActions>
-          </s.Actions>
+          {renderActions()}
         </s.InsightFooter>
       }
     />
