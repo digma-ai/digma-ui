@@ -1,7 +1,7 @@
 import { Environment } from "../../common/App/types";
 
 export interface EnvironmentBarProps {
-  selectedEnvironment?: Environment;
+  selectedEnvironment?: Environment | null;
   isMenuOpen?: boolean;
   onClick: () => void;
   isDisabled?: boolean;

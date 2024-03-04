@@ -195,6 +195,13 @@ export const App = (props: AppProps) => {
           ...config,
           environments: data.environments as Environment[]
         }));
+
+        if (!data.environments.length) {
+          setConfig((config) => ({
+            ...config,
+            environment: null
+          }));
+        }
       }
     };
 
