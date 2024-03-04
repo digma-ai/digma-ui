@@ -113,7 +113,7 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
   const handleBackClick = () => {
     const currentStep = historyManager.back();
     if (currentStep && currentStep.scope) {
-      sendMessage(currentStep.scope);
+      changeScope(currentStep.scope);
     }
   };
 
