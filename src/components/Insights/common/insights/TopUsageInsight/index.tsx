@@ -4,8 +4,10 @@ import {
   getCoreRowModel,
   useReactTable
 } from "@tanstack/react-table";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { usePagination } from "../../../../../hooks/usePagination";
+import { usePrevious } from "../../../../../hooks/usePrevious";
+import { isNumber } from "../../../../../typeGuards/isNumber";
 import { InsightType } from "../../../../../types";
 import { roundTo } from "../../../../../utils/roundTo";
 import { ConfigContext } from "../../../../common/App/ConfigContext";
@@ -25,12 +27,26 @@ const PAGE_SIZE = 3;
 
 export const TopUsageInsight = (props: TopUsageInsightProps) => {
   const config = useContext(ConfigContext);
-
+  const [data, setData] = useState({
+    pageItems: props.insight.flows.slice(0, PAGE_SIZE)
+  });
   const [pageItems, page, setPage] = usePagination(
     props.insight.flows,
     PAGE_SIZE,
     props.insight.codeObjectId
   );
+  const previousPage = usePrevious(page);
+  const previousCodeObjectId = usePrevious(props.insight.codeObjectId);
+
+  useEffect(() => {
+    if (
+      (previousCodeObjectId &&
+        previousCodeObjectId !== props.insight.codeObjectId) ||
+      (isNumber(previousPage) && previousPage !== page)
+    ) {
+      setData({ pageItems });
+    }
+  }, [previousCodeObjectId, props.insight, previousPage, page, pageItems]);
 
   const handleServiceLinkClick = (spanCodeObjectId?: string) => {
     spanCodeObjectId &&
@@ -177,7 +193,7 @@ export const TopUsageInsight = (props: TopUsageInsightProps) => {
   ];
 
   const table = useReactTable({
-    data: pageItems,
+    data: data.pageItems,
     columns,
     getCoreRowModel: getCoreRowModel()
   });

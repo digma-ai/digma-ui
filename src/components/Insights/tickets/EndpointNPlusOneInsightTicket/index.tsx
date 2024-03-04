@@ -4,10 +4,7 @@ import { getCriticalityLabel } from "../../../../utils/getCriticalityLabel";
 import { intersperse } from "../../../../utils/intersperse";
 import { ConfigContext } from "../../../common/App/ConfigContext";
 import { InsightJiraTicket } from "../../InsightJiraTicket";
-import {
-  EndpointSuspectedNPlusOneInsight,
-  SpanNPlusOneInsight
-} from "../../types";
+import { EndpointSpanNPlusOneInsight, SpanNPlusOneInsight } from "../../types";
 import { useEndpointDataSource } from "../common";
 import { CodeLocations } from "../common/CodeLocations";
 import { CommitInfos } from "../common/CommitInfos";
@@ -16,15 +13,10 @@ import { NPlusOneAffectedEndpoints } from "../common/NPlusOneAffectedEndpoints";
 import { InsightTicketProps } from "../types";
 
 export const EndpointNPlusOneInsightTicket = (
-  props: InsightTicketProps<EndpointSuspectedNPlusOneInsight>
+  props: InsightTicketProps<EndpointSpanNPlusOneInsight>
 ) => {
   const config = useContext(ConfigContext);
-  const span = props.data.insight.spans.find(
-    (x) =>
-      (x.internalSpan?.spanCodeObjectId &&
-        x.internalSpan.spanCodeObjectId === props.data.spanCodeObjectId) ||
-      x.clientSpan.spanCodeObjectId === props.data.spanCodeObjectId
-  );
+  const span = props.data.insight.span;
   const spanInfo = span?.internalSpan || span?.clientSpan || null;
 
   const {
