@@ -1,6 +1,5 @@
 import { ReactNode, useState } from "react";
 import { getDurationString } from "../../../../../utils/getDurationString";
-import { roundTo } from "../../../../../utils/roundTo";
 import { sendTrackingEvent } from "../../../../../utils/sendTrackingEvent";
 import { trimEndpointScheme } from "../../../../../utils/trimEndpointScheme";
 import { Link } from "../../../../common/v3/Link";
@@ -96,11 +95,7 @@ export const SpanEndpointBottleneckInsight = (
           {selectedEndpoint && (
             <ColumnsContainer>
               <KeyValue label={"% of Duration"}>
-                {roundTo(
-                  selectedEndpoint.avgFractionWhenBeingBottleneck * 100,
-                  2
-                )}
-                %
+                {selectedEndpoint.avgFractionWhenBeingBottleneck}%
               </KeyValue>
               <KeyValue
                 label={
