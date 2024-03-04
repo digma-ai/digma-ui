@@ -90,6 +90,7 @@ export const TableBodyRow = styled.div`
 
 export const TableBodyCell = styled.div`
   display: flex;
+  align-items: flex-start;
   overflow: hidden;
 
   &:first-child {
@@ -98,5 +99,6 @@ export const TableBodyCell = styled.div`
 
   &:last-child {
     padding-right: 8px;
+    justify-content: flex-end;
   }
 `;
