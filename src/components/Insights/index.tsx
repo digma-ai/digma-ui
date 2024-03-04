@@ -33,20 +33,20 @@ import { ScalingIssueInsightTicket } from "./tickets/ScalingIssueInsightTicket";
 import { ScalingIssueInsightTicketByRootCause } from "./tickets/ScalingIssueInsightTicketByRootCause";
 import { SpanBottleneckInsightTicket } from "./tickets/SpanBottleneckInsightTicket";
 import {
+  isEndpointBottleneckInsight,
   isEndpointHighNumberOfQueriesInsight,
   isEndpointQueryOptimizationInsight,
-  isEndpointSlowestSpansInsight,
-  isEndpointSuspectedNPlusOneInsight,
+  isEndpointSpanNPlusOneInsight,
   isSpanEndpointBottleneckInsight,
   isSpanNPlusOneInsight,
   isSpanQueryOptimizationInsight,
   isSpanScalingBadlyInsight
 } from "./typeGuards";
 import {
+  EndpointBottleneckInsight,
   EndpointHighNumberOfQueriesInsight,
   EndpointQueryOptimizationInsight,
-  EndpointSlowestSpansInsight,
-  EndpointSuspectedNPlusOneInsight,
+  EndpointSpanNPlusOneInsight,
   GenericCodeObjectInsight,
   InsightTicketInfo,
   InsightsData,
@@ -81,12 +81,8 @@ const renderInsightTicket = (
     return <NPlusOneInsightTicket data={ticketData} onClose={onClose} />;
   }
 
-  if (
-    isEndpointSuspectedNPlusOneInsight(data.insight) &&
-    data.spanCodeObjectId
-  ) {
-    const ticketData =
-      data as InsightTicketInfo<EndpointSuspectedNPlusOneInsight>;
+  if (isEndpointSpanNPlusOneInsight(data.insight) && data.spanCodeObjectId) {
+    const ticketData = data as InsightTicketInfo<EndpointSpanNPlusOneInsight>;
     return (
       <EndpointNPlusOneInsightTicket data={ticketData} onClose={onClose} />
     );
@@ -97,8 +93,8 @@ const renderInsightTicket = (
     return <BottleneckInsightTicket data={ticketData} onClose={onClose} />;
   }
 
-  if (isEndpointSlowestSpansInsight(data.insight) && data.spanCodeObjectId) {
-    const ticketData = data as InsightTicketInfo<EndpointSlowestSpansInsight>;
+  if (isEndpointBottleneckInsight(data.insight) && data.spanCodeObjectId) {
+    const ticketData = data as InsightTicketInfo<EndpointBottleneckInsight>;
     return <SpanBottleneckInsightTicket data={ticketData} onClose={onClose} />;
   }
 
