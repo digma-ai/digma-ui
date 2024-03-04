@@ -7,6 +7,7 @@ import {
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 4px;
 `;
 
 export const TitleRow = styled.div`
@@ -17,7 +18,7 @@ export const TitleRow = styled.div`
 
 export const SpanInfoRow = styled.div`
   display: flex;
-  padding-left: 32px;
+  padding: 0 32px;
 `;
 
 export const TagTitle = styled.span`
