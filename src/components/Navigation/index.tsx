@@ -183,10 +183,6 @@ export const Navigation = () => {
   }, [config.environments, config.environment]);
 
   useEffect(() => {
-    setSelectedEnvironment(config.environment);
-  }, [config.environment]);
-
-  useEffect(() => {
     setIsAutoFixing(false);
     setIsAnnotationAdding(false);
     setIsCodeButtonMenuOpen(false);
