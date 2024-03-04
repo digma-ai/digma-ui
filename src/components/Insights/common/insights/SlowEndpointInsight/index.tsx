@@ -20,10 +20,8 @@ export const SlowEndpointInsight = (props: SlowEndpointInsightProps) => {
         <s.ContentContainer>
           <ColumnsContainer>
             <s.DescriptionColumn label={"Description"}>
-              {`On average requests are slower than other endpoints by ${roundTo(
-                diff,
-                2
-              )}%`}
+              On average requests are slower than other endpoints by{" "}
+              {roundTo(diff, 2)}%
             </s.DescriptionColumn>
             <KeyValue label={"Slower by"}>
               <Tag content={getDurationString(props.insight.median)} />

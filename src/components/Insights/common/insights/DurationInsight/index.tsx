@@ -265,6 +265,11 @@ export const DurationInsight = (props: DurationInsightProps) => {
       content={
         <s.Container>
           <ColumnsContainer>
+            {!props.insight.histogramPlot && (
+              <s.DescriptionColumn label={"Description"}>
+                Trigger more actions to see the full duration analysis
+              </s.DescriptionColumn>
+            )}
             {spanLastCall && (
               <KeyValue label={"Last call"}>
                 <CommonTooltip
