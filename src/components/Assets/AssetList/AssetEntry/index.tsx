@@ -4,7 +4,7 @@ import { getFeatureFlagValue } from "../../../../featureFlags";
 import { isString } from "../../../../typeGuards/isString";
 import { FeatureFlag, InsightType } from "../../../../types";
 import { formatTimeDistance } from "../../../../utils/formatTimeDistance";
-import { getInsightImportanceColor } from "../../../../utils/getInsightImportanceColor";
+import { getInsightCriticalityColor } from "../../../../utils/getInsightCriticalityColor";
 import { getInsightTypeInfo } from "../../../../utils/getInsightTypeInfo";
 import { getInsightTypeOrderPriority } from "../../../../utils/getInsightTypeOrderPriority";
 import { InsightImportance } from "../../../Insights/types";
@@ -62,7 +62,7 @@ export const AssetEntry = (props: AssetEntryProps) => {
 
   const sortedInsights = [...filteredInsights].sort(
     (a, b) =>
-      a.importance - b.importance ||
+      a.criticality - b.criticality ||
       getInsightTypeOrderPriority(a.type) - getInsightTypeOrderPriority(b.type)
   );
 
@@ -96,8 +96,8 @@ export const AssetEntry = (props: AssetEntryProps) => {
           {isNew && <Tag type={"success"} value={"New"} />}
           {sortedInsights.map((insight) => {
             const insightTypeInfo = getInsightTypeInfo(insight.type);
-            const insightIconColor = getInsightImportanceColor(
-              insight.importance,
+            const insightIconColor = getInsightCriticalityColor(
+              insight.criticality,
               theme
             );
 
