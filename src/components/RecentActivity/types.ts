@@ -46,6 +46,7 @@ export interface SlimInsight {
   type: string;
   codeObjectIds: string[];
   importance: number;
+  criticality: number;
 }
 
 export interface ActivityEntry {

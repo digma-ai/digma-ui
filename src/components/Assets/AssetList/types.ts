@@ -47,6 +47,7 @@ export interface SortingOrderIconContainerProps {
 export interface Insight {
   type: string;
   importance: number;
+  criticality: number;
 }
 
 export interface ImpactScores {

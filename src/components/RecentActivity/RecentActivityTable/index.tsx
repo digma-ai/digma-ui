@@ -74,7 +74,7 @@ const renderDuration = (duration: Duration, viewMode: ViewMode) =>
 const renderInsights = (insights: SlimInsight[]) => {
   const sortedInsights = [...insights].sort(
     (a, b) =>
-      a.importance - b.importance ||
+      b.criticality - a.criticality ||
       getInsightTypeOrderPriority(a.type) - getInsightTypeOrderPriority(b.type)
   );
 
@@ -83,7 +83,7 @@ const renderInsights = (insights: SlimInsight[]) => {
       {sortedInsights
         .map((x) => {
           const insightTypeInfo = getInsightTypeInfo(x.type);
-          const tagType = getTagType(x.importance);
+          const tagType = getTagType(x.criticality);
 
           return insightTypeInfo ? (
             <Tag
