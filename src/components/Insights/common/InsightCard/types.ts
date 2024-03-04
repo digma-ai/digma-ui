@@ -25,4 +25,5 @@ export interface InsightCardProps {
     spanCodeObjectId?: string;
   };
   onJiraButtonClick?: (spanCodeObjectId: string, event: string) => void;
+  onGoToSpan: (spanCodeObjectId: string) => void;
 }

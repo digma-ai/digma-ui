@@ -101,6 +101,7 @@ export interface InsightProps {
     spanCodeObjectId: string | undefined,
     event?: string
   ) => void;
+  onGoToSpan: (spanCodeObjectId: string) => void;
   isJiraHintEnabled?: boolean;
 }
 

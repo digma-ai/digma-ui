@@ -6,8 +6,18 @@ import {
 
 export const Container = styled.div`
   display: flex;
+  flex-direction: column;
+`;
+
+export const TitleRow = styled.div`
+  display: flex;
   align-items: center;
   gap: 8px;
+`;
+
+export const SpanInfoRow = styled.div`
+  display: flex;
+  padding-left: 32px;
 `;
 
 export const TagTitle = styled.span`

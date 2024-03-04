@@ -49,6 +49,7 @@ export const SpanNexusInsight = (props: SpanNexusInsightProps) => {
       }
       onRecalculate={props.onRecalculate}
       onRefresh={props.onRefresh}
+      onGoToSpan={props.onGoToSpan}
     />
   );
 };

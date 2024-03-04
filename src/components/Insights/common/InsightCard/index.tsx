@@ -44,6 +44,12 @@ export const InsightCard = (props: InsightCardProps) => {
       );
   };
 
+  const handleSpanLinkClick = () => {
+    if (isSpanInsight(props.insight) && props.insight.spanInfo) {
+      props.onGoToSpan(props.insight.spanInfo.spanCodeObjectId);
+    }
+  };
+
   const renderRecalculationBlock = (
     actualStartTime: string,
     customStartTime: string | null,
@@ -180,7 +186,9 @@ export const InsightCard = (props: InsightCardProps) => {
       <s.Actions>
         {toolbarActions.map((toolbarAction) => (
           <Tooltip key={toolbarAction.tooltip} title={toolbarAction.tooltip}>
-            <toolbarAction.button buttonType={"tertiary"} label={undefined} />
+            <div>
+              <toolbarAction.button buttonType={"tertiary"} label={undefined} />
+            </div>
           </Tooltip>
         ))}
         <s.MainActions>
@@ -198,12 +206,16 @@ export const InsightCard = (props: InsightCardProps) => {
     <Card
       header={
         <InsightHeader
+          spanInfo={
+            isSpanInsight(props.insight) ? props.insight.spanInfo : undefined
+          }
           isActive={props.isActive}
           isNew={isNew}
           isAsync={props.isAsync}
           insightType={props.insight.type}
           importance={props.insight.importance}
           criticality={props.insight.criticality}
+          onSpanLinkClick={handleSpanLinkClick}
         />
       }
       content={

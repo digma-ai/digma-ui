@@ -235,6 +235,7 @@ export const RequestBreakdownInsight = (
       onRecalculate={props.onRecalculate}
       onRefresh={props.onRefresh}
       isAsync={props.insight.hasAsyncSpans}
+      onGoToSpan={props.onGoToSpan}
     />
   );
 };
