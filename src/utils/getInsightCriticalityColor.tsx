@@ -3,7 +3,7 @@ import { DefaultTheme } from "styled-components";
 export const getInsightCriticalityColor = (
   criticality: number,
   theme: DefaultTheme
-): string | undefined => {
+): string => {
   if (criticality < 0.2) {
     return theme.colors.v3.status.low;
   }
