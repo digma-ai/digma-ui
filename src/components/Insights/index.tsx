@@ -155,6 +155,34 @@ const renderInsightTicket = (
   return null;
 };
 
+const NoDataYet = () => {
+  const handleTroubleshootingLinkClick = () => {
+    sendTrackingEvent(globalTrackingEvents.TROUBLESHOOTING_LINK_CLICKED, {
+      origin: "insights"
+    });
+
+    sendMessage(globalActions.OPEN_TROUBLESHOOTING_GUIDE);
+  };
+
+  return (
+    <EmptyState
+      icon={CardsIcon}
+      title={"No data yet"}
+      content={
+        <>
+          <s.EmptyStateDescription>
+            Trigger actions that call this application to learn more about its
+            runtime behavior
+          </s.EmptyStateDescription>
+          <s.TroubleshootingLink onClick={handleTroubleshootingLinkClick}>
+            Not seeing your application data?
+          </s.TroubleshootingLink>
+        </>
+      }
+    />
+  );
+};
+
 const sendMessage = (action: string, data?: object) => {
   return window.sendMessageToDigma({
     action,
@@ -282,6 +310,10 @@ export const Insights = (props: InsightsProps) => {
       return <EmptyState content={<CircleLoader size={32} />} />;
     }
 
+    if (!config.environments?.length) {
+      return <NoDataYet />;
+    }
+
     switch (data?.insightsStatus) {
       case InsightsStatus.STARTUP:
         return (
@@ -321,23 +353,7 @@ export const Insights = (props: InsightsProps) => {
           />
         );
       case InsightsStatus.NO_SPANS_DATA:
-        return (
-          <EmptyState
-            icon={CardsIcon}
-            title={"No data yet"}
-            content={
-              <>
-                <s.EmptyStateDescription>
-                  Trigger actions that call this application to learn more about
-                  its runtime behavior
-                </s.EmptyStateDescription>
-                <s.TroubleshootingLink onClick={handleTroubleshootingLinkClick}>
-                  Not seeing your application data?
-                </s.TroubleshootingLink>
-              </>
-            }
-          />
-        );
+        return <NoDataYet />;
       case InsightsStatus.NO_OBSERVABILITY:
         return (
           <EmptyState

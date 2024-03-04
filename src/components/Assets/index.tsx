@@ -122,7 +122,10 @@ export const Assets = () => {
       );
     }
 
-    if (!selectedFilters && !selectedServices) {
+    if (
+      !config.environments?.length ||
+      (!selectedFilters && !selectedServices)
+    ) {
       return <NoDataMessage type={"noDataYet"} />;
     }
 
