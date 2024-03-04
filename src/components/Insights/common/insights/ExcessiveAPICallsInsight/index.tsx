@@ -57,9 +57,8 @@ export const ExcessiveAPICallsInsight = (
                   onClick={() => handleLinkClick(spanCodeObjectId)}
                   buttons={[
                     config.isJaegerEnabled && traceId && (
-                      <Tooltip title={"Open trace"}>
+                      <Tooltip title={"Open trace"} key={"open-trace"}>
                         <Button
-                          key={"trace"}
                           icon={TargetIcon}
                           onClick={() =>
                             handleTraceButtonClick(
