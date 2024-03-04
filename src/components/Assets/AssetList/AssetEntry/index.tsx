@@ -62,7 +62,7 @@ export const AssetEntry = (props: AssetEntryProps) => {
 
   const sortedInsights = [...filteredInsights].sort(
     (a, b) =>
-      a.criticality - b.criticality ||
+      b.criticality - a.criticality ||
       getInsightTypeOrderPriority(a.type) - getInsightTypeOrderPriority(b.type)
   );
 

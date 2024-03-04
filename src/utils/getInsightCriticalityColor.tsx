@@ -5,30 +5,12 @@ export const getInsightCriticalityColor = (
   theme: DefaultTheme
 ): string | undefined => {
   if (criticality < 0.2) {
-    switch (theme.mode) {
-      case "light":
-        return "#1dc693";
-      case "dark":
-      case "dark-jetbrains":
-        return "#67d28b";
-    }
+    return theme.colors.v3.status.low;
   }
 
   if (criticality < 0.6) {
-    switch (theme.mode) {
-      case "light":
-        return "#e8b500";
-      case "dark":
-      case "dark-jetbrains":
-        return "#ffcb14";
-    }
+    return theme.colors.v3.status.medium;
   }
 
-  switch (theme.mode) {
-    case "light":
-      return "#e00036";
-    case "dark":
-    case "dark-jetbrains":
-      return "#f93967";
-  }
+  return theme.colors.v3.status.high;
 };
