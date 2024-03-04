@@ -425,6 +425,7 @@ export const DurationInsight = (props: DurationInsightProps) => {
       onOpenHistogram={
         props.insight.spanInfo ? props.onHistogramButtonClick : undefined
       }
+      onGoToSpan={props.onGoToSpan}
     />
   );
 };

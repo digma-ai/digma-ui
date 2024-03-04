@@ -74,6 +74,7 @@ export const EndpointBottleneckInsight = (
       onRecalculate={props.onRecalculate}
       onRefresh={props.onRefresh}
       onJiraButtonClick={handleTicketInfoButtonClick}
+      onGoToSpan={props.onGoToSpan}
     />
   );
 };

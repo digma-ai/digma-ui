@@ -123,6 +123,7 @@ export const EndpointQueryOptimizationInsight = (
         spanCodeObjectId: selectedSpan?.spanInfo.spanCodeObjectId,
         isHintEnabled: props.isJiraHintEnabled
       }}
+      onGoToSpan={props.onGoToSpan}
     />
   );
 };

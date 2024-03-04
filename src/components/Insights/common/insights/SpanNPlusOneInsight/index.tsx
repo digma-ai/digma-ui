@@ -141,6 +141,7 @@ export const SpanNPlusOneInsight = (props: SpanNPlusOneInsightProps) => {
         isHintEnabled: props.isJiraHintEnabled,
         spanCodeObjectId: props.insight.spanInfo?.spanCodeObjectId
       }}
+      onGoToSpan={props.onGoToSpan}
     />
   );
 };
