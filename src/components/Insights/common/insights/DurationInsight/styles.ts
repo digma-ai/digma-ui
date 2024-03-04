@@ -1,11 +1,16 @@
 import styled from "styled-components";
 import { footnoteRegularTypography } from "../../../../common/App/typographies";
+import { KeyValue } from "../../InsightCard/KeyValue";
 import { ChartContainerProps } from "./types";
 
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
+`;
+
+export const DescriptionColumn = styled(KeyValue)`
+  flex-grow: 2;
 `;
 
 export const ChartContainer = styled.div<ChartContainerProps>`
