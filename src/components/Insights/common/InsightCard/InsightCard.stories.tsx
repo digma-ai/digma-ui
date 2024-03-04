@@ -22,3 +22,32 @@ export const Default: Story = {
     insight: { ...mockedEndpointNPlusOneInsight, criticality: 0.9 }
   }
 };
+
+export const JiraButtonIsPrimary: Story = {
+  args: {
+    isAsync: true,
+    insight: { ...mockedEndpointNPlusOneInsight, criticality: 0.9 },
+    onGoToLive: undefined,
+    onDismiss: undefined,
+    onPin: undefined,
+    onGoToTrace: undefined,
+    onOpenHistogram: undefined
+  }
+};
+
+export const LinkedJiraTicket: Story = {
+  args: {
+    isAsync: true,
+    insight: { ...mockedEndpointNPlusOneInsight, criticality: 0.9 },
+    jiraTicketInfo: {
+      ticketLink: "some",
+      spanCodeObjectId: "test",
+      isHintEnabled: false
+    },
+    onGoToLive: undefined,
+    onDismiss: undefined,
+    onPin: undefined,
+    onGoToTrace: undefined,
+    onOpenHistogram: undefined
+  }
+};

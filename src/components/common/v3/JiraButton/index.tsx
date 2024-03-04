@@ -75,11 +75,7 @@ export const JiraButtonComponent = (
               <JiraLogoIcon
                 isActive={true}
                 size={16}
-                color={
-                  buttonType === "primary"
-                    ? "currentColor"
-                    : theme.colors.v3.icon.brandPrimary
-                }
+                color={theme.colors.v3.icon.brandSecondary}
               />
             )}
           />
