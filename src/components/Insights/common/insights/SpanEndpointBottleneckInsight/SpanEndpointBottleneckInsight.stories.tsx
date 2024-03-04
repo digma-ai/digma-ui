@@ -38,8 +38,6 @@ export const Default: Story = {
   }
 };
 
-export const WithoutInsight: Story = {};
-
 export const WithNoSlowEndpoints: Story = {
   args: {
     insight: {
