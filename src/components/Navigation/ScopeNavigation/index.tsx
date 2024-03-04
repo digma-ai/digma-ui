@@ -14,7 +14,7 @@ import { actions as globalActions } from "./../actions";
 import { HistoryNavigationPanel } from "./HistoryNavigationPanel";
 import { ScopeNavigationProps } from "./types";
 
-const sendMessage = (scope: Scope | null) => {
+const changeScope = (scope: Scope | null) => {
   window.sendMessageToDigma<ChangeScopePayload>({
     action: globalActions.CHANGE_SCOPE,
     payload: {
