@@ -44,6 +44,7 @@ export const mockedBottleneckInsight: SpanEndpointBottleneckInsight = {
         spanName: "HTTP GET SampleInsights/lock/{milisec}"
       },
       probabilityOfBeingBottleneck: 0.36877828054298645,
+      avgFractionWhenBeingBottleneck: 0.5,
       avgDurationWhenBeingBottleneck: {
         value: 3.89,
         unit: "sec",

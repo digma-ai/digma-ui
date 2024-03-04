@@ -54,13 +54,13 @@ export const EndpointBottleneckInsight = (
           </Details>
           <ColumnsContainer>
             <KeyValue label={"% of Duration"}>
-              {roundTo(span.probabilityOfBeingBottleneck * 100, 2)}%
+              {roundTo(span.avgFractionWhenBeingBottleneck * 100, 2)}%
             </KeyValue>
             <KeyValue
               label={
                 <Info
-                  text={"The amount of requests affected by this issue."}
-                  name={"Requests"}
+                  text={"Percentage of request consumed by the bottleneck span"}
+                  name={"% of Request"}
                 />
               }
             >
