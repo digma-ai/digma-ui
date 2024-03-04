@@ -120,7 +120,7 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
   const handleNexClick = () => {
     const currentStep = historyManager.forward();
     if (currentStep && currentStep.scope) {
-      sendMessage(currentStep.scope);
+      changeScope(currentStep.scope);
     }
   };
 
