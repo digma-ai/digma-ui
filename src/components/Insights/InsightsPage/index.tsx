@@ -59,6 +59,7 @@ import * as s from "./styles";
 import {
   InsightPageProps,
   MarkInsightTypesAsViewedPayload,
+  RecalculatePayload,
   isInsightJiraTicketHintShownPayload
 } from "./types";
 
@@ -176,15 +177,11 @@ const renderInsightCard = (
     });
   };
 
-  const handleRecalculate = (
-    prefixedCodeObjectId: string,
-    insightType: InsightType
-  ) => {
-    window.sendMessageToDigma({
+  const handleRecalculate = (insightId: string) => {
+    window.sendMessageToDigma<RecalculatePayload>({
       action: actions.RECALCULATE,
       payload: {
-        prefixedCodeObjectId,
-        insightType
+        id: insightId
       }
     });
   };

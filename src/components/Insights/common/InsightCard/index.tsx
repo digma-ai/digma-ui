@@ -28,10 +28,7 @@ export const InsightCard = (props: InsightCardProps) => {
   const handleRecalculateClick = () => {
     props.insight.prefixedCodeObjectId &&
       props.onRecalculate &&
-      props.onRecalculate(
-        props.insight.prefixedCodeObjectId,
-        props.insight.type
-      );
+      props.onRecalculate(props.insight.id);
     setIsRecalculatingStarted(true);
   };
 

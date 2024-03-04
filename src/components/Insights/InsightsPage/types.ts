@@ -21,3 +21,7 @@ export interface MarkInsightTypesAsViewedPayload {
     reopenCount: number;
   }[];
 }
+
+export interface RecalculatePayload {
+  id: string;
+}
