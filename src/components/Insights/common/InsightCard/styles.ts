@@ -3,6 +3,8 @@ import styled from "styled-components";
 export const InsightFooter = styled.div`
   display: flex;
   justify-content: space-between;
+  ${"" /* TODO: remove when Dismiss functionality is implemented */}
+  min-height: 26px;
 `;
 
 export const Description = styled.div`

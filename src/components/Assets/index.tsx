@@ -154,7 +154,6 @@ export const Assets = () => {
     <s.Container>
       <s.Header>
         <s.HeaderItem>
-          Assets
           {window.assetsSearch === true && (
             <SearchInput
               onChange={handleSearchInputChange}

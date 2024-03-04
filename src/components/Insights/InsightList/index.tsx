@@ -75,7 +75,11 @@ import {
   Trace
 } from "../types";
 import * as s from "./styles";
-import { InsightListProps, isInsightJiraTicketHintShownPayload } from "./types";
+import {
+  InsightListProps,
+  RecalculatePayload,
+  isInsightJiraTicketHintShownPayload
+} from "./types";
 
 const getInsightToShowJiraHint = (
   insightGroups: InsightGroup[]
@@ -316,15 +320,11 @@ const renderInsightCard = (
     });
   };
 
-  const handleRecalculate = (
-    prefixedCodeObjectId: string,
-    insightType: InsightType
-  ) => {
-    window.sendMessageToDigma({
+  const handleRecalculate = (insightId: string) => {
+    window.sendMessageToDigma<RecalculatePayload>({
       action: actions.RECALCULATE,
       payload: {
-        prefixedCodeObjectId,
-        insightType
+        id: insightId
       }
     });
   };

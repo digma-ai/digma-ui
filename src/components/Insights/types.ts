@@ -94,10 +94,7 @@ export interface InsightGroup {
 }
 
 export interface InsightProps {
-  onRecalculate: (
-    prefixedCodeObjectId: string,
-    insightType: InsightType
-  ) => void;
+  onRecalculate: (insightId: string) => void;
   onRefresh: (insightType: InsightType) => void;
   onJiraTicketCreate?: (
     insight: GenericCodeObjectInsight,

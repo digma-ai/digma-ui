@@ -14,10 +14,7 @@ export interface InsightCardProps {
     insightType: InsightType,
     displayName: string
   ) => void;
-  onRecalculate: (
-    prefixedCodeObjectId: string,
-    insightType: InsightType
-  ) => void;
+  onRecalculate: (insightId: string) => void;
   onRefresh: (insightType: InsightType, spanCodeObjectId?: string) => void;
   onPin?: (insightId: string) => void;
   onGoToLive?: () => void;
