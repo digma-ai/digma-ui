@@ -113,7 +113,7 @@ export const InsightCard = (props: InsightCardProps) => {
         button: (btnProps) => (
           <Button
             icon={RecalculateIcon}
-            label={"Recalc"}
+            label={"Recalculate"}
             onClick={handleRecalculateClick}
             {...btnProps}
           />

@@ -4,6 +4,5 @@
     "source.organizeImports": "explicit"
   },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "stylelint.validate": ["typescript"],
-  "cSpell.words": ["Recalc"]
+  "stylelint.validate": ["typescript"]
 }
