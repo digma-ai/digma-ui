@@ -37,7 +37,7 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
       !environment ||
       !environments?.find((x) => x.originalName == environment?.originalName)
     ) {
-      sendMessage(null);
+      сhangeScope(null);
       setHistoryManager(new HistoryManager());
     }
   }, [environment, environments]);
