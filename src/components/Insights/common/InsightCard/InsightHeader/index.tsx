@@ -93,8 +93,7 @@ export const InsightHeader = (props: InsightHeaderProps) => {
           )}
         </s.BadgeContainer>
       </s.TitleRow>
-      {/* {config.scope?.span && props.spanInfo && ( */}
-      {props.spanInfo && (
+      {config.scope?.span && props.spanInfo && (
         <s.SpanInfoRow>
           <Tooltip title={props.spanInfo.displayName}>
             <Link onClick={handleSpanLinkClick}>
