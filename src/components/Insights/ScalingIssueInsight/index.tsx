@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { InsightType } from "../../../types";
 import { getDurationString } from "../../../utils/getDurationString";
+import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { trimEndpointScheme } from "../../../utils/trimEndpointScheme";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Button } from "../../common/Button";
@@ -9,14 +10,12 @@ import { ChartIcon } from "../../common/icons/ChartIcon";
 import { CrosshairIcon } from "../../common/icons/CrosshairIcon";
 import { InsightCard } from "../InsightCard";
 import { Criticality } from "../common/Criticality";
+import { JiraButton } from "../common/JiraButton";
 import { Description, Link } from "../styles";
+import { trackingEvents } from "../tracking";
 import { Trace } from "../types";
 import * as s from "./styles";
 import { ScalingIssueInsightProps } from "./types";
-import { JiraButton } from "../common/JiraButton";
-import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
-import { trackingEvents } from "../tracking";
-import { ButtonsContainer } from "./styles";
 
 export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
   const config = useContext(ConfigContext);
@@ -54,6 +53,8 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
     props.onJiraTicketCreate &&
       props.onJiraTicketCreate(props.insight, spanCodeObjectId, event);
   };
+
+  const affectedEndpoints = props.insight.affectedEndpoints || [];
 
   return (
     <InsightCard
@@ -131,10 +132,10 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
               })}
             </s.List>
           )}
-          {props.insight.affectedEndpoints.length > 0 && (
+          {affectedEndpoints.length > 0 && (
             <s.List>
               <Description>Affected endpoints:</Description>
-              {props.insight.affectedEndpoints.map((endpoint) => {
+              {affectedEndpoints.map((endpoint) => {
                 const endpointRoute = trimEndpointScheme(endpoint.route);
 
                 return (

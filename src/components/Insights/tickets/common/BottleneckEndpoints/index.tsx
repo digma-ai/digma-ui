@@ -9,7 +9,7 @@ export const BottleneckEndpoints = (props: BottleneckEndpointsProps) => {
     return null;
   }
 
-  const endpoints = props.insight.slowEndpoints;
+  const endpoints = props.insight.slowEndpoints || [];
 
   if (endpoints.length === 0) {
     return null;

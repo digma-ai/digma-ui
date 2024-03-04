@@ -44,6 +44,8 @@ export const NPlusOneInsight = (props: NPlusOneInsightProps) => {
   const spanCodeObjectId = props.insight.clientSpanCodeObjectId || undefined;
   const traceId = props.insight.traceId;
 
+  const endpoints = props.insight.endpoints || [];
+
   return (
     <InsightCard
       data={props.insight}
@@ -93,7 +95,7 @@ export const NPlusOneInsight = (props: NPlusOneInsightProps) => {
           </s.Stats>
           <Description>Affected endpoints:</Description>
           <s.EndpointList>
-            {props.insight.endpoints.map((x) => {
+            {endpoints.map((x) => {
               const spanCodeObjectId = x.endpointInfo.entrySpanCodeObjectId;
               const route = trimEndpointScheme(x.endpointInfo.route);
 

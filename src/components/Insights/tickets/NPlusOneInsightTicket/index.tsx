@@ -22,10 +22,10 @@ export const NPlusOneInsightTicket = (
     );
   const config = useContext(ConfigContext);
 
+  const endpoints = props.data.insight.endpoints || [];
+
   const services = [
-    ...new Set(
-      props.data.insight.endpoints.map((x) => x.endpointInfo.serviceName)
-    )
+    ...new Set(endpoints.map((x) => x.endpointInfo.serviceName))
   ];
   const serviceString = services.length > 0 ? services.join(", ") : "";
 
