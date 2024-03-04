@@ -14,7 +14,7 @@ import { actions as globalActions } from "./../actions";
 import { HistoryNavigationPanel } from "./HistoryNavigationPanel";
 import { ScopeNavigationProps } from "./types";
 
-const sendMessage = (scope: Scope | null) => {
+const changeScope = (scope: Scope | null) => {
   window.sendMessageToDigma<ChangeScopePayload>({
     action: globalActions.CHANGE_SCOPE,
     payload: {
@@ -37,7 +37,7 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
       !environment ||
       !environments?.find((x) => x.originalName == environment?.originalName)
     ) {
-      sendMessage(null);
+      сhangeScope(null);
       setHistoryManager(new HistoryManager());
     }
   }, [environment, environments]);
@@ -113,14 +113,14 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
   const handleBackClick = () => {
     const currentStep = historyManager.back();
     if (currentStep && currentStep.scope) {
-      sendMessage(currentStep.scope);
+      changeScope(currentStep.scope);
     }
   };
 
   const handleNexClick = () => {
     const currentStep = historyManager.forward();
     if (currentStep && currentStep.scope) {
-      sendMessage(currentStep.scope);
+      changeScope(currentStep.scope);
     }
   };
 
