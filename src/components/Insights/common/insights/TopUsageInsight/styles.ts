@@ -90,7 +90,6 @@ export const TableBodyRow = styled.div`
 
 export const TableBodyCell = styled.div`
   display: flex;
-  align-items: start;
   overflow: hidden;
 
   &:first-child {
