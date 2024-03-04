@@ -20,8 +20,9 @@ export const SpanQueryOptimizationInsight = (
   props: QueryOptimizationInsightProps
 ) => {
   const config = useContext(ConfigContext);
+  const endpoints = props.insight.endpoints || [];
   const [pageItems, page, setPage] = usePagination(
-    props.insight.endpoints,
+    endpoints,
     PAGE_SIZE,
     props.insight.codeObjectId
   );
@@ -83,7 +84,7 @@ export const SpanQueryOptimizationInsight = (
             </KeyValue>
             <KeyValue label={"Database"}>{props.insight.dbName}</KeyValue>
           </ColumnsContainer>
-          {props.insight.endpoints.length > 0 && (
+          {endpoints.length > 0 && (
             <>
               <Description>Affected endpoints:</Description>
               <s.EndpointList>
@@ -99,7 +100,7 @@ export const SpanQueryOptimizationInsight = (
                   );
                 })}
                 <Pagination
-                  itemsCount={props.insight.endpoints.length}
+                  itemsCount={endpoints.length}
                   page={page}
                   pageSize={PAGE_SIZE}
                   onPageChange={setPage}

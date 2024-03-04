@@ -20,8 +20,9 @@ import { ScalingIssueInsightProps } from "./types";
 const PAGE_SIZE = 3;
 export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
   const config = useContext(ConfigContext);
+  const affectedEndpoints = props.insight.affectedEndpoints || [];
   const [pageItems, page, setPage] = usePagination(
-    props.insight.affectedEndpoints,
+    affectedEndpoints,
     PAGE_SIZE,
     props.insight.codeObjectId
   );
@@ -120,22 +121,21 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
             </KeyValue>
           </ColumnsContainer>
           {renderRootCause(props.insight.rootCauseSpans)}
-          {props.insight.affectedEndpoints.length > 0 && (
+          {affectedEndpoints.length > 0 && (
             <s.List>
               <Description>Affected endpoints:</Description>
-              {props.insight.affectedEndpoints.length > 0 &&
-                pageItems.map((endpoint) => {
-                  const endpointRoute = trimEndpointScheme(endpoint.route);
-                  return (
-                    <s.EndpointListItem
-                      key={endpoint.route}
-                      onClick={() => handleLinkClick(endpoint.spanCodeObjectId)}
-                      name={endpointRoute}
-                    />
-                  );
-                })}
+              {pageItems.map((endpoint) => {
+                const endpointRoute = trimEndpointScheme(endpoint.route);
+                return (
+                  <s.EndpointListItem
+                    key={endpoint.route}
+                    onClick={() => handleLinkClick(endpoint.spanCodeObjectId)}
+                    name={endpointRoute}
+                  />
+                );
+              })}
               <Pagination
-                itemsCount={props.insight.affectedEndpoints.length}
+                itemsCount={affectedEndpoints.length}
                 page={page}
                 pageSize={PAGE_SIZE}
                 onPageChange={setPage}

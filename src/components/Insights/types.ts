@@ -314,7 +314,7 @@ export interface SpanEndpointBottleneckInsight extends SpanInsight {
   category: InsightCategory.Performance;
   specifity: InsightSpecificity.TargetFound;
   importance: InsightImportance.Critical;
-  slowEndpoints: BottleneckEndpointInfo[];
+  slowEndpoints: BottleneckEndpointInfo[] | null;
 
   /**
    * @deprecated
@@ -539,7 +539,7 @@ export interface SpanScalingBadlyInsight extends SpanInsight {
   minDuration: Duration;
   maxDuration: Duration;
   rootCauseSpans: RootCauseSpanInfo[];
-  affectedEndpoints: AffectedEndpoint[];
+  affectedEndpoints: AffectedEndpoint[] | null;
   flowHash: string | null;
 
   /**
@@ -581,7 +581,7 @@ export interface SpanNPlusOneInsight extends SpanInsight {
   clientSpanName: string | null;
   clientSpanCodeObjectId: string | null;
   duration: Duration;
-  endpoints: NPlusOneEndpointInfo[];
+  endpoints: NPlusOneEndpointInfo[] | null;
 
   /**
    * @deprecated
@@ -817,14 +817,16 @@ export interface QueryOptimizationInsight extends SpanInsight {
   span: SpanInfo;
   serviceName: string;
   dbName: string;
-  endpoints: {
-    endpointInfo: {
-      route: string;
-      instrumentationLibrary: string;
-      spanCodeObjectId: string;
-      serviceName: string;
-    };
-  }[];
+  endpoints:
+    | {
+        endpointInfo: {
+          route: string;
+          instrumentationLibrary: string;
+          spanCodeObjectId: string;
+          serviceName: string;
+        };
+      }[]
+    | null;
 }
 
 export interface EndpointQueryOptimizationSpan {

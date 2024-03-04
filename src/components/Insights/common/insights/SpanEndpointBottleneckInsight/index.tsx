@@ -40,8 +40,9 @@ const renderOptions = (
 export const SpanEndpointBottleneckInsight = (
   props: SpanEndpointBottleneckInsightProps
 ) => {
+  const slowEndpoints = props.insight.slowEndpoints || [];
   const [selectedEndpoint, setSelectedEndpoint] = useState(
-    props.insight?.slowEndpoints.length ? props.insight.slowEndpoints[0] : null
+    slowEndpoints.length > 0 ? slowEndpoints[0] : null
   );
 
   const handleSpanLinkClick = (spanCodeObjectId?: string) => {
@@ -57,9 +58,7 @@ export const SpanEndpointBottleneckInsight = (
       props.onJiraTicketCreate(props.insight, undefined, event);
   };
 
-  const endpoints = props.insight.slowEndpoints;
-
-  if (endpoints.length === 0) {
+  if (slowEndpoints.length === 0) {
     return null;
   }
 
@@ -75,21 +74,20 @@ export const SpanEndpointBottleneckInsight = (
       content={
         <ContentContainer>
           <Details>
-            <Description>Affected Endpoints ({endpoints.length})</Description>
+            <Description>
+              Affected Endpoints ({slowEndpoints.length})
+            </Description>
             <Select
               value={selectedEndpoint?.endpointInfo.spanCodeObjectId}
               onChange={(selectedOption) => {
                 const selected =
-                  endpoints.find(
+                  slowEndpoints.find(
                     (x) => x.endpointInfo.spanCodeObjectId === selectedOption
                   ) || null;
 
                 setSelectedEndpoint(selected);
               }}
-              options={renderOptions(
-                props.insight.slowEndpoints,
-                handleSpanLinkClick
-              )}
+              options={renderOptions(slowEndpoints, handleSpanLinkClick)}
             />
           </Details>
           {selectedEndpoint && (

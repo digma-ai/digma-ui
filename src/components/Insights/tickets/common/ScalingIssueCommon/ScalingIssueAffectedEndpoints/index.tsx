@@ -1,6 +1,6 @@
+import { trimEndpointScheme } from "../../../../../../utils/trimEndpointScheme";
 import * as s from "../styles";
 import { ScalingIssueCommonProps } from "../types";
-import { trimEndpointScheme } from "../../../../../../utils/trimEndpointScheme";
 
 export const ScalingIssueAffectedEndpoints = (
   props: ScalingIssueCommonProps
@@ -9,7 +9,7 @@ export const ScalingIssueAffectedEndpoints = (
     return null;
   }
 
-  const endpoints = props.insight.affectedEndpoints;
+  const endpoints = props.insight.affectedEndpoints || [];
 
   if (endpoints.length === 0) {
     return null;

@@ -16,17 +16,19 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
+const mockedEndpoints = mockedQueryOptimizationInsight.endpoints || [];
+
 export const Default: Story = {
   args: {
     insight: {
       ...mockedQueryOptimizationInsight,
       endpoints: [
-        ...mockedQueryOptimizationInsight.endpoints,
+        ...mockedEndpoints,
         {
-          ...mockedQueryOptimizationInsight.endpoints[0],
+          ...mockedEndpoints[0],
           endpointInfo: {
-            ...mockedQueryOptimizationInsight.endpoints[0].endpointInfo,
-            route: `${mockedQueryOptimizationInsight.endpoints[0].endpointInfo.route}1`
+            ...mockedEndpoints[0].endpointInfo,
+            route: `${mockedEndpoints[0].endpointInfo.route}1`
           }
         }
       ]

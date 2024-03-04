@@ -10,7 +10,7 @@ export const NPlusOneAffectedEndpoints = (
     return null;
   }
 
-  const endpoints = props.insight.endpoints;
+  const endpoints = props.insight.endpoints || [];
 
   if (endpoints.length === 0) {
     return null;

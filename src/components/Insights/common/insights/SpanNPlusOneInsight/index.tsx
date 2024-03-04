@@ -40,17 +40,15 @@ const renderOptions = (
   });
 
 export const SpanNPlusOneInsight = (props: SpanNPlusOneInsightProps) => {
-  const {
-    insight: { type, endpoints, ticketLink }
-  } = props;
-
+  const endpoints = props.insight.endpoints || [];
   const config = useContext(ConfigContext);
   const [selectedEndpoint, setSelectedEndpoint] = useState(
-    props.insight.endpoints.length ? props.insight.endpoints[0] : null
+    endpoints.length ? endpoints[0] : null
   );
 
   const handleSpanLinkClick = (spanCodeObjectId?: string) => {
-    spanCodeObjectId && props.onAssetLinkClick(spanCodeObjectId, type);
+    spanCodeObjectId &&
+      props.onAssetLinkClick(spanCodeObjectId, props.insight.type);
   };
 
   const handleTraceButtonClick = (
@@ -63,7 +61,7 @@ export const SpanNPlusOneInsight = (props: SpanNPlusOneInsightProps) => {
 
   const handleCreateJiraTicketButtonClick = (event: string) => {
     sendTrackingEvent(trackingEvents.JIRA_TICKET_INFO_BUTTON_CLICKED, {
-      insightType: type
+      insightType: props.insight.type
     });
     props.onJiraTicketCreate &&
       props.onJiraTicketCreate(props.insight, undefined, event);
@@ -104,10 +102,7 @@ export const SpanNPlusOneInsight = (props: SpanNPlusOneInsightProps) => {
 
                 setSelectedEndpoint(selected);
               }}
-              options={renderOptions(
-                props.insight.endpoints,
-                handleSpanLinkClick
-              )}
+              options={renderOptions(endpoints, handleSpanLinkClick)}
             />
           </Details>
 
@@ -137,7 +132,7 @@ export const SpanNPlusOneInsight = (props: SpanNPlusOneInsightProps) => {
       onRefresh={props.onRefresh}
       onJiraButtonClick={handleCreateJiraTicketButtonClick}
       jiraTicketInfo={{
-        ticketLink,
+        ticketLink: props.insight.ticketLink,
         isHintEnabled: props.isJiraHintEnabled,
         spanCodeObjectId: props.insight.spanInfo?.spanCodeObjectId
       }}
