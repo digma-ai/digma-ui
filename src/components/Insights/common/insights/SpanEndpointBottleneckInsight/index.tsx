@@ -1,6 +1,5 @@
 import { ReactNode, useState } from "react";
 import { getDurationString } from "../../../../../utils/getDurationString";
-import { roundTo } from "../../../../../utils/roundTo";
 import { sendTrackingEvent } from "../../../../../utils/sendTrackingEvent";
 import { trimEndpointScheme } from "../../../../../utils/trimEndpointScheme";
 import { Link } from "../../../../common/v3/Link";
@@ -96,17 +95,15 @@ export const SpanEndpointBottleneckInsight = (
           {selectedEndpoint && (
             <ColumnsContainer>
               <KeyValue label={"% of Duration"}>
-                {roundTo(
-                  selectedEndpoint.probabilityOfBeingBottleneck * 100,
-                  2
-                )}
-                %
+                {selectedEndpoint.avgFractionWhenBeingBottleneck}%
               </KeyValue>
               <KeyValue
                 label={
                   <Info
-                    text={"The amount of requests affected by this issue."}
-                    name={"Requests"}
+                    text={
+                      "Percentage of request consumed by the bottleneck span"
+                    }
+                    name={"% of Request"}
                   />
                 }
               >

@@ -287,6 +287,7 @@ export interface BottleneckEndpointInfo {
   };
   probabilityOfBeingBottleneck: number;
   avgDurationWhenBeingBottleneck: Duration;
+  avgFractionWhenBeingBottleneck: number;
   impact: number;
   severity: number;
   criticality: number;
@@ -452,6 +453,7 @@ export interface EndpointBottleneckInsight extends EndpointInsight {
     spanInfo: SpanInfo;
     probabilityOfBeingBottleneck: number;
     avgDurationWhenBeingBottleneck: Duration;
+    avgFractionWhenBeingBottleneck: number;
     criticality: number;
     ticketLink: string | null;
     requestPercentage: number;

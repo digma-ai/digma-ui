@@ -1,5 +1,4 @@
 import { getDurationString } from "../../../../../utils/getDurationString";
-import { roundTo } from "../../../../../utils/roundTo";
 import { sendTrackingEvent } from "../../../../../utils/sendTrackingEvent";
 import { trackingEvents } from "../../../tracking";
 import { Info } from "../../Info";
@@ -54,13 +53,13 @@ export const EndpointBottleneckInsight = (
           </Details>
           <ColumnsContainer>
             <KeyValue label={"% of Duration"}>
-              {roundTo(span.probabilityOfBeingBottleneck * 100, 2)}%
+              {span.avgFractionWhenBeingBottleneck}%
             </KeyValue>
             <KeyValue
               label={
                 <Info
-                  text={"The amount of requests affected by this issue."}
-                  name={"Requests"}
+                  text={"Percentage of request consumed by the bottleneck span"}
+                  name={"% of Request"}
                 />
               }
             >

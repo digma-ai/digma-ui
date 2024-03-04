@@ -33,6 +33,7 @@ export const mockedSpanBottleneckInsight: EndpointBottleneckInsight = {
       codeObjectId: null
     },
     probabilityOfBeingBottleneck: 0.6923076923076923,
+    avgFractionWhenBeingBottleneck: 50,
     avgDurationWhenBeingBottleneck: {
       value: 2,
       unit: "sec",
