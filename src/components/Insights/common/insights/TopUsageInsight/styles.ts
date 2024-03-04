@@ -4,7 +4,6 @@ import {
   footnoteRegularTypography
 } from "../../../../common/App/typographies";
 import { Link as CommonLink } from "../../../../common/Link";
-import { Button as CommonButton } from "../../../../common/v3/Button";
 
 export const Container = styled.div`
   display: flex;
@@ -32,10 +31,6 @@ export const SpanNamePart = styled.span`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-`;
-
-export const Button = styled(CommonButton)`
-  margin-right: 10px;
 `;
 
 export const Link = styled(CommonLink)`
@@ -95,7 +90,7 @@ export const TableBodyRow = styled.div`
 
 export const TableBodyCell = styled.div`
   display: flex;
-  align-items: center;
+  align-items: start;
   overflow: hidden;
 
   &:first-child {

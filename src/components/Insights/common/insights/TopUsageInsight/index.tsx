@@ -12,6 +12,7 @@ import { ConfigContext } from "../../../../common/App/ConfigContext";
 import { TraceIcon } from "../../../../common/icons/12px/TraceIcon";
 import { ArrowDashedLineIcon } from "../../../../common/icons/ArrowDashedLineIcon";
 import { Direction } from "../../../../common/icons/types";
+import { Button } from "../../../../common/v3/Button";
 import { Pagination } from "../../../../common/v3/Pagination";
 import { Tag } from "../../../../common/v3/Tag";
 import { Tooltip } from "../../../../common/v3/Tooltip";
@@ -153,8 +154,8 @@ export const TopUsageInsight = (props: TopUsageInsightProps) => {
           <>
             {config.isJaegerEnabled && traceId && (
               <Tooltip title={"Open trace"}>
-                <s.Button
-                  buttonType={"tertiary"}
+                <Button
+                  buttonType={"primary"}
                   icon={TraceIcon}
                   onClick={() =>
                     handleTraceButtonClick(
