@@ -83,28 +83,31 @@ export const SpanQueryOptimizationInsight = (
             </KeyValue>
             <KeyValue label={"Database"}>{props.insight.dbName}</KeyValue>
           </ColumnsContainer>
-
-          <Description>Affected endpoints:</Description>
-          <s.EndpointList>
-            {pageItems.map((x) => {
-              const spanCodeObjectId = x.endpointInfo.spanCodeObjectId;
-              const route = trimEndpointScheme(x.endpointInfo.route);
-              return (
-                <ListItem
-                  name={route}
-                  key={route}
-                  onClick={() => handleSpanLinkClick(spanCodeObjectId)}
+          {props.insight.endpoints.length > 0 && (
+            <>
+              <Description>Affected endpoints:</Description>
+              <s.EndpointList>
+                {pageItems.map((x) => {
+                  const spanCodeObjectId = x.endpointInfo.spanCodeObjectId;
+                  const route = trimEndpointScheme(x.endpointInfo.route);
+                  return (
+                    <ListItem
+                      name={route}
+                      key={route}
+                      onClick={() => handleSpanLinkClick(spanCodeObjectId)}
+                    />
+                  );
+                })}
+                <Pagination
+                  itemsCount={props.insight.endpoints.length}
+                  page={page}
+                  pageSize={PAGE_SIZE}
+                  onPageChange={setPage}
+                  withDescription={true}
                 />
-              );
-            })}
-            <Pagination
-              itemsCount={props.insight.endpoints.length}
-              page={page}
-              pageSize={PAGE_SIZE}
-              onPageChange={setPage}
-              withDescription={true}
-            />
-          </s.EndpointList>
+              </s.EndpointList>
+            </>
+          )}
         </ContentContainer>
       }
       onRecalculate={props.onRecalculate}
