@@ -2,33 +2,45 @@ import { useContext, useEffect, useState } from "react";
 import { actions } from "../../../actions";
 import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
-import { HistoryManager, HistoryStep } from "../../../utils/HistoryManager";
+import { HistoryManager } from "../../../utils/HistoryManager";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Scope } from "../../common/App/types";
-import { ChangeEnvironmentPayload, ChangeViewPayload } from "../types";
+import {
+  ChangeEnvironmentPayload,
+  ChangeScopePayload,
+  ChangeViewPayload
+} from "../types";
 import { actions as globalActions } from "./../actions";
 import { HistoryNavigationPanel } from "./HistoryNavigationPanel";
 import { ScopeNavigationProps } from "./types";
 
-const sendMessage = (historyStep: HistoryStep) => {
-  if (historyStep.scope) {
-    window.sendMessageToDigma({
-      action: globalActions.CHANGE_SCOPE,
-      payload: {
-        ...historyStep.scope
-      }
-    });
-  }
+const sendMessage = (scope: Scope | null) => {
+  window.sendMessageToDigma<ChangeScopePayload>({
+    action: globalActions.CHANGE_SCOPE,
+    payload: {
+      span: scope?.span || null
+    }
+  });
 };
 
 export const ScopeNavigation = (props: ScopeNavigationProps) => {
   const [historyManager, setHistoryManager] = useState<HistoryManager>(
     new HistoryManager()
   );
-  const { environment } = useContext(ConfigContext);
+  const { environment, environments } = useContext(ConfigContext);
   const previousTabId = usePrevious(props.currentTabId);
   const previousEnvironment = usePrevious(environment);
   const previousSate = usePrevious(historyManager.getCurrent());
+
+  useEffect(() => {
+    if (
+      !environment ||
+      !environments?.find((x) => x.originalName == environment?.originalName)
+    ) {
+      sendMessage(null);
+      setHistoryManager(new HistoryManager());
+    }
+  }, [environment, environments]);
 
   useEffect(() => {
     const currentStep = historyManager.getCurrent();
@@ -100,15 +112,15 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
 
   const handleBackClick = () => {
     const currentStep = historyManager.back();
-    if (currentStep) {
-      sendMessage(currentStep);
+    if (currentStep && currentStep.scope) {
+      sendMessage(currentStep.scope);
     }
   };
 
   const handleNexClick = () => {
     const currentStep = historyManager.forward();
-    if (currentStep) {
-      sendMessage(currentStep);
+    if (currentStep && currentStep.scope) {
+      sendMessage(currentStep.scope);
     }
   };
 

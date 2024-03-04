@@ -169,9 +169,12 @@ export const Navigation = () => {
     if (
       config.environments &&
       config.environments.length > 0 &&
-      !config.environment
+      (!config.environment ||
+        !config.environments.find(
+          (x) => x.originalName == config.environment?.originalName
+        ))
     ) {
-      setSelectedEnvironment(config.environments[0]);
+      handleEnvironmentChange(config.environments[0]);
     }
 
     if (config.environments && config.environments.length === 0) {
