@@ -48,20 +48,20 @@ curl --create-dirs -O -L --output-dir ./otel https://github.com/digma-ai/otel-ja
       content: (
         <CodeSnippet
           text={`#docker-compose.override.otel.yml
-          version: '3'
-          
-          services:
-          #[your-service]:
-            volumes:
-              - "./otel/opentelemetry-javaagent.jar:/otel/opentelemetry-javaagent.jar"
-              - "./otel/digma-otel-agent-extension.jar:/otel/digma-otel-agent-extension.jar"
-            environment:
-              - JAVA_TOOL_OPTIONS=-javaagent:/otel/opentelemetry-javaagent.jar -Dotel.exporter.otlp.endpoint=http://host.docker.internal:5050 -Dotel.javaagent.extensions=/otel/digma-otel-agent-extension.jar -Dotel.metrics.exporter=none -Dotel.logs.exporter=none -Dotel.exporter.otlp.protocol=grpc
-              - OTEL_SERVICE_NAME=#[your-service]
-              - OTEL_RESOURCE_ATTRIBUTES=digma.environment=DOCKER_LOCAL
-              - OTEL_METRICS_EXPORTER=none
-            extra_hosts:
-                - "host.docker.internal:host-gateway"`}
+  version: '3'
+  
+  services:
+  #[your-service]:
+    volumes:
+      - "./otel/opentelemetry-javaagent.jar:/otel/opentelemetry-javaagent.jar"
+      - "./otel/digma-otel-agent-extension.jar:/otel/digma-otel-agent-extension.jar"
+    environment:
+      - JAVA_TOOL_OPTIONS=-javaagent:/otel/opentelemetry-javaagent.jar -Dotel.exporter.otlp.endpoint=http://host.docker.internal:5050 -Dotel.javaagent.extensions=/otel/digma-otel-agent-extension.jar -Dotel.metrics.exporter=none -Dotel.logs.exporter=none -Dotel.exporter.otlp.protocol=grpc
+      - OTEL_SERVICE_NAME=#[your-service]
+      - OTEL_RESOURCE_ATTRIBUTES=digma.environment=DOCKER_LOCAL
+      - OTEL_METRICS_EXPORTER=none
+    extra_hosts:
+        - "host.docker.internal:host-gateway"`}
           language={"yaml"}
         />
       )
