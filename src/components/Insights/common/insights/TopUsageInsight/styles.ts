@@ -21,6 +21,19 @@ export const FlowData = styled.div`
   overflow: hidden;
 `;
 
+export const SubsequentSpan = styled.div`
+  display: flex;
+  gap: 8px;
+`;
+
+export const ArrowIconContainer = styled.div`
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 export const FullSpanName = styled.span`
   display: flex;
   flex-wrap: wrap;

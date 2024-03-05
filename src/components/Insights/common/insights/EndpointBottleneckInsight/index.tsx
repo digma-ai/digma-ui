@@ -30,6 +30,16 @@ export const EndpointBottleneckInsight = (
       props.onJiraTicketCreate(insight, spanCodeObjectId, event);
   };
 
+  const handleTraceButtonClick = () => {
+    if (span.traceId) {
+      props.onTraceButtonClick(
+        { id: span.traceId, name: span.spanInfo.name },
+        insight.type,
+        insight.span.spanInfo.spanCodeObjectId
+      );
+    }
+  };
+
   const spanName = span.spanInfo.displayName;
   const spanCodeObjectId = span.spanInfo.spanCodeObjectId;
 
@@ -75,6 +85,7 @@ export const EndpointBottleneckInsight = (
       onRefresh={props.onRefresh}
       onJiraButtonClick={handleTicketInfoButtonClick}
       onGoToSpan={props.onGoToSpan}
+      onGoToTrace={span.traceId ? handleTraceButtonClick : undefined}
     />
   );
 };

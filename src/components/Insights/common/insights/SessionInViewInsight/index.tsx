@@ -51,7 +51,7 @@ export const SessionInViewInsight = (props: SessionInViewInsightProps) => {
               const buttons =
                 traceId && config.isJaegerEnabled
                   ? [
-                      <Tooltip title={"Open trace"} key={"trace"}>
+                      <Tooltip title={"Open Trace"} key={"openTrace"}>
                         <Button
                           icon={TraceIcon}
                           onClick={() =>

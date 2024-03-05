@@ -25,6 +25,12 @@ import { ColumnMeta, TopUsageInsightProps } from "./types";
 
 const PAGE_SIZE = 3;
 
+const FlowArrow = (
+  <s.ArrowIconContainer>
+    <ArrowDashedLineIcon direction={Direction.RIGHT} color={"currentColor"} />
+  </s.ArrowIconContainer>
+);
+
 export const TopUsageInsight = (props: TopUsageInsightProps) => {
   const config = useContext(ConfigContext);
   const [data, setData] = useState({
@@ -38,6 +44,8 @@ export const TopUsageInsight = (props: TopUsageInsightProps) => {
   const previousPage = usePrevious(page);
   const previousCodeObjectId = usePrevious(props.insight.codeObjectId);
 
+  // Keep pageItems in state to avoid table infinite re-rendering
+  // More info: https://github.com/TanStack/table/issues/4614
   useEffect(() => {
     if (
       (previousCodeObjectId &&
@@ -102,24 +110,18 @@ export const TopUsageInsight = (props: TopUsageInsightProps) => {
               </s.FullSpanName>
             </Tooltip>
             {flow.intermediateSpan && (
-              <>
-                <ArrowDashedLineIcon
-                  direction={Direction.DOWN}
-                  color={"currentColor"}
-                />
+              <s.SubsequentSpan>
+                {FlowArrow}
                 <Tooltip title={flow.intermediateSpan}>
                   <s.FullSpanName>
                     <s.SpanNamePart>{flow.intermediateSpan}</s.SpanNamePart>
                   </s.FullSpanName>
                 </Tooltip>
-              </>
+              </s.SubsequentSpan>
             )}
             {flow.lastService && (
-              <>
-                <ArrowDashedLineIcon
-                  direction={Direction.DOWN}
-                  color={"currentColor"}
-                />
+              <s.SubsequentSpan>
+                {FlowArrow}
                 <Tooltip
                   title={`${flow.lastService.service} ${flow.lastService.span}`}
                 >
@@ -136,20 +138,17 @@ export const TopUsageInsight = (props: TopUsageInsightProps) => {
                     </s.Link>
                   </s.FullSpanName>
                 </Tooltip>
-              </>
+              </s.SubsequentSpan>
             )}
             {flow.lastServiceSpan && (
-              <>
-                <ArrowDashedLineIcon
-                  direction={Direction.DOWN}
-                  color={"currentColor"}
-                />
+              <s.SubsequentSpan>
+                {FlowArrow}
                 <Tooltip title={flow.lastServiceSpan}>
                   <s.FullSpanName>
                     <s.SpanNamePart>{flow.lastServiceSpan}</s.SpanNamePart>
                   </s.FullSpanName>
                 </Tooltip>
-              </>
+              </s.SubsequentSpan>
             )}
           </s.FlowData>
         );
@@ -169,7 +168,7 @@ export const TopUsageInsight = (props: TopUsageInsightProps) => {
         return (
           <>
             {config.isJaegerEnabled && traceId && (
-              <Tooltip title={"Open trace"}>
+              <Tooltip title={"Open Trace"}>
                 <Button
                   buttonType={"primary"}
                   icon={TraceIcon}

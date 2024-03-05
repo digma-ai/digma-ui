@@ -293,6 +293,7 @@ export interface BottleneckEndpointInfo {
   severity: number;
   criticality: number;
   requestPercentage: number;
+  traceId: string | null;
 
   /**
    * @deprecated
@@ -458,6 +459,7 @@ export interface EndpointBottleneckInsight extends EndpointInsight {
     criticality: number;
     ticketLink: string | null;
     requestPercentage: number;
+    traceId: string | null;
 
     /**
      * @deprecated

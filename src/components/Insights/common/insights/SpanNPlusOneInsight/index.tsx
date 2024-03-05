@@ -3,6 +3,8 @@ import { getDurationString } from "../../../../../utils/getDurationString";
 import { sendTrackingEvent } from "../../../../../utils/sendTrackingEvent";
 import { trimEndpointScheme } from "../../../../../utils/trimEndpointScheme";
 import { ConfigContext } from "../../../../common/App/ConfigContext";
+import { TraceIcon } from "../../../../common/icons/12px/TraceIcon";
+import { Button } from "../../../../common/v3/Button";
 import { Link } from "../../../../common/v3/Link";
 import { Tooltip } from "../../../../common/v3/Tooltip";
 import { trackingEvents } from "../../../tracking";
@@ -67,43 +69,45 @@ export const SpanNPlusOneInsight = (props: SpanNPlusOneInsightProps) => {
       props.onJiraTicketCreate(props.insight, undefined, event);
   };
 
-  const spanName = props.insight.clientSpanName || undefined;
-  const spanCodeObjectId = props.insight.clientSpanCodeObjectId || undefined;
-  const traceId = props.insight.traceId;
-
   return (
     <InsightCard
       insight={props.insight}
-      onGoToTrace={
-        config.isJaegerEnabled && traceId
-          ? () =>
-              handleTraceButtonClick(
-                {
-                  name: spanName,
-                  id: traceId
-                },
-                props.insight.type,
-                spanCodeObjectId
-              )
-          : undefined
-      }
       content={
         <ContentContainer>
           <Details>
             <Description>Affected Endpoints ({endpoints.length})</Description>
-            <Select
-              value={selectedEndpoint?.endpointInfo.entrySpanCodeObjectId}
-              onChange={(selectedOption) => {
-                const selected =
-                  endpoints.find(
-                    (x) =>
-                      x.endpointInfo.entrySpanCodeObjectId === selectedOption
-                  ) || null;
+            <s.SelectContainer>
+              <Select
+                value={selectedEndpoint?.endpointInfo.entrySpanCodeObjectId}
+                onChange={(selectedOption) => {
+                  const selected =
+                    endpoints.find(
+                      (x) =>
+                        x.endpointInfo.entrySpanCodeObjectId === selectedOption
+                    ) || null;
 
-                setSelectedEndpoint(selected);
-              }}
-              options={renderOptions(endpoints, handleSpanLinkClick)}
-            />
+                  setSelectedEndpoint(selected);
+                }}
+                options={renderOptions(endpoints, handleSpanLinkClick)}
+              />
+              {config.isJaegerEnabled && selectedEndpoint && (
+                <Tooltip title={"Open Trace"}>
+                  <Button
+                    icon={TraceIcon}
+                    onClick={() =>
+                      handleTraceButtonClick(
+                        {
+                          name: selectedEndpoint.endpointInfo.route,
+                          id: selectedEndpoint.traceId
+                        },
+                        props.insight.type,
+                        selectedEndpoint.endpointInfo.spanCodeObjectId
+                      )
+                    }
+                  />
+                </Tooltip>
+              )}
+            </s.SelectContainer>
           </Details>
 
           {selectedEndpoint && (

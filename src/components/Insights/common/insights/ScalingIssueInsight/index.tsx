@@ -18,6 +18,7 @@ import * as s from "./styles";
 import { ScalingIssueInsightProps } from "./types";
 
 const PAGE_SIZE = 3;
+
 export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
   const config = useContext(ConfigContext);
   const affectedEndpoints = props.insight.affectedEndpoints || [];

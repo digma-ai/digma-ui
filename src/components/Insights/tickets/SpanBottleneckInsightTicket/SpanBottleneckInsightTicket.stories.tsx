@@ -26,7 +26,8 @@ export const Default: Story = {
         span: {
           ...mockedSpanBottleneckInsight.spans[0],
           requestPercentage: 0.4,
-          avgFractionWhenBeingBottleneck: 0.3
+          avgFractionWhenBeingBottleneck: 0.3,
+          traceId: "traceId"
         }
       },
       spanCodeObjectId:

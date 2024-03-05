@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { LAYERS } from "../../App/styles";
 import { footnoteRegularTypography } from "../../App/typographies";
 import { TooltipComponentProps } from "./types";
@@ -17,5 +17,10 @@ export const Tooltip = styled.div<TooltipComponentProps>`
   color: ${({ theme }) => theme.colors.v3.text.primary};
   background: ${({ theme }) => theme.colors.v3.surface.primary};
   border: 1px solid ${({ theme }) => theme.colors.v3.stroke.tertiary};
-  ${({ $fullWidth }) => ($fullWidth ? "" : "max-width: 200px;")}
+  ${({ $fullWidth }) =>
+    $fullWidth
+      ? ""
+      : css`
+          max-width: 200px;
+        `}
 `;

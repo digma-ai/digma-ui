@@ -13,6 +13,7 @@ import * as s from "./styles";
 import { InsightsCatalogProps, SORTING_CRITERION } from "./types";
 
 const PAGE_SIZE = 10;
+
 export const InsightsCatalog = (props: InsightsCatalogProps) => {
   const { insights, onJiraTicketCreate, defaultQuery, totalCount } = props;
   const [page, setPage] = useState(0);

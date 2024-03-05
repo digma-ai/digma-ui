@@ -43,6 +43,7 @@ export const mockedBottleneckInsight: SpanEndpointBottleneckInsight = {
           "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP GET SampleInsights/lock/{milisec}",
         spanName: "HTTP GET SampleInsights/lock/{milisec}"
       },
+      traceId: "traceId",
       probabilityOfBeingBottleneck: 0.36877828054298645,
       avgFractionWhenBeingBottleneck: 50,
       avgDurationWhenBeingBottleneck: {

@@ -16,6 +16,7 @@ import * as s from "./styles";
 import { QueryOptimizationInsightProps } from "./types";
 
 const PAGE_SIZE = 3;
+
 export const SpanQueryOptimizationInsight = (
   props: QueryOptimizationInsightProps
 ) => {
