@@ -89,7 +89,8 @@ const renderInsightCard = (
     event?: string
   ) => void,
   isJiraHintEnabled: boolean,
-  onRefresh: () => void
+  onRefresh: () => void,
+  onDismiss: (insightId: string) => void
 ): JSX.Element | undefined => {
   // const handleErrorSelect = (errorId: string, insightType: InsightType) => {
   //   sendTrackingEvent(globalTrackingEvents.USER_ACTION, {
@@ -236,6 +237,7 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={onRefresh}
         onGoToSpan={handleGoToSpan}
+        onDismiss={onDismiss}
       />
     );
   }
@@ -251,6 +253,7 @@ const renderInsightCard = (
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
+        onDismiss={onDismiss}
       />
     );
   }
@@ -266,6 +269,7 @@ const renderInsightCard = (
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
+        onDismiss={onDismiss}
       />
     );
   }
@@ -278,6 +282,7 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={onRefresh}
         onGoToSpan={handleGoToSpan}
+        onDismiss={onDismiss}
       />
     );
   }
@@ -294,6 +299,7 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={onRefresh}
         onGoToSpan={handleGoToSpan}
+        onDismiss={onDismiss}
       />
     );
   }
@@ -310,6 +316,7 @@ const renderInsightCard = (
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
+        onDismiss={onDismiss}
       />
     );
   }
@@ -326,6 +333,7 @@ const renderInsightCard = (
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
+        onDismiss={onDismiss}
       />
     );
   }
@@ -343,6 +351,7 @@ const renderInsightCard = (
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
+        onDismiss={onDismiss}
       />
     );
   }
@@ -356,6 +365,7 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={onRefresh}
         onGoToSpan={handleGoToSpan}
+        onDismiss={onDismiss}
       />
     );
   }
@@ -382,6 +392,7 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={onRefresh}
         onGoToSpan={handleGoToSpan}
+        onDismiss={onDismiss}
       />
     );
   }
@@ -396,6 +407,7 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={onRefresh}
         onGoToSpan={handleGoToSpan}
+        onDismiss={onDismiss}
       />
     );
   }
@@ -411,6 +423,7 @@ const renderInsightCard = (
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
+        onDismiss={onDismiss}
       />
     );
   }
@@ -439,6 +452,7 @@ const renderInsightCard = (
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
+        onDismiss={onDismiss}
       />
     );
   }
@@ -455,6 +469,7 @@ const renderInsightCard = (
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
+        onDismiss={onDismiss}
       />
     );
   }

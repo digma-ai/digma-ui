@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { subscriptRegularTypography } from "../../common/App/typographies";
 
 export const Footer = styled.div`
   display: flex;
@@ -37,4 +38,14 @@ export const Toolbar = styled.div`
   justify-content: space-between;
   padding: 8px;
   gap: 8px;
+`;
+
+export const DismissedDescription = styled.div`
+  ${subscriptRegularTypography}
+
+  color: ${({ theme }) => theme.colors.v3.text.disabled};
+`;
+
+export const DismissedCount = styled.span`
+  color: ${({ theme }) => theme.colors.v3.text.primary};
 `;

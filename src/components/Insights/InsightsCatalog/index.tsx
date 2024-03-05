@@ -8,11 +8,20 @@ import { Pagination } from "../../common/Pagination";
 import { SearchInput } from "../../common/SearchInput";
 import { SortingSelector } from "../../common/SortingSelector";
 import { SORTING_ORDER, Sorting } from "../../common/SortingSelector/types";
+import { ChevronIcon } from "../../common/icons/16px/ChevronIcon";
+import { Direction } from "../../common/icons/types";
+import { Button } from "../../common/v3/Button";
 import { InsightsPage } from "../InsightsPage";
+import { actions } from "../actions";
 import * as s from "./styles";
 import { InsightsCatalogProps, SORTING_CRITERION } from "./types";
 
 const PAGE_SIZE = 10;
+enum ViewMode {
+  All,
+  Hidden
+}
+
 export const InsightsCatalog = (props: InsightsCatalogProps) => {
   const { insights, onJiraTicketCreate, defaultQuery, totalCount } = props;
   const [page, setPage] = useState(0);
@@ -32,6 +41,14 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
   const config = useContext(ConfigContext);
   const previousConfig = usePrevious(config);
   const previousScope = usePrevious(config.scope?.span);
+  const [mode, setMode] = useState<ViewMode>(ViewMode.All);
+
+  const handleDismissal = (insightId: string) => {
+    window.sendMessageToDigma({
+      action: actions.DISMISS,
+      payload: insightId
+    });
+  };
 
   useEffect(() => {
     if (!previousScope || previousScope !== config.scope?.span) {
@@ -109,6 +126,22 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
           default={defaultQuery.sorting}
         />
       </s.Toolbar>
+      {mode === ViewMode.Hidden && (
+        <s.Toolbar>
+          <Button
+            buttonType="tertiary"
+            label="Back to All Insights"
+            icon={(props) => (
+              <ChevronIcon {...props} direction={Direction.RIGHT} />
+            )}
+            onClick={() => setMode(ViewMode.All)}
+          />
+          <s.DismissedDescription>
+            <s.DismissedCount>{insights.length}</s.DismissedCount>
+            dismissed insights
+          </s.DismissedDescription>
+        </s.Toolbar>
+      )}
       <InsightsPage
         page={page}
         insights={insights}
@@ -117,6 +150,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
         }
         onJiraTicketCreate={onJiraTicketCreate}
         onRefresh={props.onRefresh}
+        onDismiss={handleDismissal}
       />
       {totalCount > 0 && (
         <s.Footer>

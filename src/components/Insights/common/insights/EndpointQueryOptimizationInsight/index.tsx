@@ -124,6 +124,7 @@ export const EndpointQueryOptimizationInsight = (
         isHintEnabled: props.isJiraHintEnabled
       }}
       onGoToSpan={props.onGoToSpan}
+      onDismiss={props.onDismiss}
     />
   );
 };

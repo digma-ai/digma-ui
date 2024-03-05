@@ -161,6 +161,7 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
       onRecalculate={props.onRecalculate}
       onRefresh={props.onRefresh}
       onGoToSpan={props.onGoToSpan}
+      onDismiss={props.onDismiss}
     />
   );
 };

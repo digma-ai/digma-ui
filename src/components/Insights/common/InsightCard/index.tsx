@@ -7,6 +7,7 @@ import { HistogramIcon } from "../../../common/icons/16px/HistogramIcon";
 import { LiveIcon } from "../../../common/icons/16px/LiveIcon";
 import { PinIcon } from "../../../common/icons/16px/PinIcon";
 import { RecalculateIcon } from "../../../common/icons/16px/RecalculateIcon";
+import { CrossIcon } from "../../../common/icons/CrossIcon";
 import { Button } from "../../../common/v3/Button";
 import { BaseButtonProps } from "../../../common/v3/Button/types";
 import { Card } from "../../../common/v3/Card";
@@ -231,7 +232,16 @@ export const InsightCard = (props: InsightCardProps) => {
       }
       footer={
         <s.InsightFooter>
-          {/* <Button icon={CrossIcon} label={"Dismiss"} buttonType={"tertiary"} /> */}
+          {props.onDismiss && (
+            <Button
+              icon={CrossIcon}
+              label={"Dismiss"}
+              buttonType={"tertiary"}
+              onClick={() =>
+                props.onDismiss && props.onDismiss(props.insight.id)
+              }
+            />
+          )}
           {renderActions()}
         </s.InsightFooter>
       }
