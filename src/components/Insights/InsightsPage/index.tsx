@@ -509,7 +509,6 @@ export const InsightsPage = (props: InsightPageProps) => {
     if (!isInsightJiraTicketHintShown?.value) {
       sendTrackingEvent(trackingEvents.JIRA_TICKET_HINT_CLOSED, { event });
     }
-
     setIsInsightJiraTicketHintShown({ value: true });
   };
 
