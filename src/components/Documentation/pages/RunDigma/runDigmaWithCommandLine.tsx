@@ -117,7 +117,7 @@ export JAVA_TOOL_OPTIONS="-javaagent:/otel/javaagent.jar -Dotel.exporter.otlp.en
 export OTEL_SERVICE_NAME={--ENTER YOUR SERVICE NAME HERE--}
 export OTEL_RESOURCE_ATTRIBUTES=digma.environment=LOCAL
 
-java app.jarr`}
+java app.jar`}
             language={"bash"}
           />
         </>
