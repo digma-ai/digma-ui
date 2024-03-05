@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Button } from "../../common/v3/Button";
 
 export const Footer = styled.div`
   display: flex;
@@ -37,4 +38,14 @@ export const Toolbar = styled.div`
   justify-content: space-between;
   padding: 8px;
   gap: 8px;
+`;
+
+export const RefreshButton = styled(Button)`
+  border: 1px solid ${({ theme }) => theme.colors.v3.stroke.dark};
+  color: ${({ theme }) => theme.colors.v3.icon.tertiary};
+
+  &:hover:enabled {
+    color: ${({ theme }) => theme.colors.v3.icon.white};
+    background: none;
+  }
 `;

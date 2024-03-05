@@ -8,8 +8,7 @@ import { Pagination } from "../../common/Pagination";
 import { SearchInput } from "../../common/SearchInput";
 import { SortingSelector } from "../../common/SortingSelector";
 import { SORTING_ORDER, Sorting } from "../../common/SortingSelector/types";
-import { ArrowsClockwiseIcon } from "../../common/icons/16px/ArrowsClockwiseIcon";
-import { Button } from "../../common/v3/Button";
+import { RefreshIcon } from "../../common/icons/16px/RefreshIcon";
 import { Tooltip } from "../../common/v3/Tooltip";
 import { InsightsPage } from "../InsightsPage";
 import * as s from "./styles";
@@ -114,9 +113,9 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
           default={defaultQuery.sorting}
         />
         <Tooltip title="Refresh">
-          <Button
+          <s.RefreshButton
             buttonType="tertiary"
-            icon={ArrowsClockwiseIcon}
+            icon={RefreshIcon}
             onClick={() => refreshData()}
           />
         </Tooltip>
