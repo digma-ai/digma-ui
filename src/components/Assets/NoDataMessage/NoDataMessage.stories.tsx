@@ -34,3 +34,9 @@ export const NoSearchResults: Story = {
     type: "noSearchResults"
   }
 };
+
+export const NoDataForAssetResults: Story = {
+  args: {
+    type: "noDataForAsset"
+  }
+};

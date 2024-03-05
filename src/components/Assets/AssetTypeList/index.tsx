@@ -202,6 +202,10 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
       return <NoDataMessage type={"noSearchResults"} />;
     }
 
+    if (config.scope !== null) {
+      return <NoDataMessage type={"noDataForAsset"} />;
+    }
+
     return <NoDataMessage type={"noDataYet"} />;
   }
 
