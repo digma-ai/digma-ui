@@ -43,6 +43,22 @@ export const NoDataMessage = (props: NoDataMessageProps) => {
         />
       );
       break;
+    case "noDataForAsset":
+      content = (
+        <EmptyState
+          icon={CardsIcon}
+          title={"No Assets"}
+          content={
+            <>
+              <s.EmptyStateDescription>
+                No child assets found for the current scope. Add more
+                observability to track internal functions not currently tracked.
+              </s.EmptyStateDescription>
+            </>
+          }
+        />
+      );
+      break;
     case "noSearchResults":
       content = (
         <EmptyState

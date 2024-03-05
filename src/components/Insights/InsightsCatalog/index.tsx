@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { usePrevious } from "../../../hooks/usePrevious";
 
 import { useDebounce } from "../../../hooks/useDebounce";
@@ -8,6 +8,8 @@ import { Pagination } from "../../common/Pagination";
 import { SearchInput } from "../../common/SearchInput";
 import { SortingSelector } from "../../common/SortingSelector";
 import { SORTING_ORDER, Sorting } from "../../common/SortingSelector/types";
+import { RefreshIcon } from "../../common/icons/16px/RefreshIcon";
+import { Tooltip } from "../../common/v3/Tooltip";
 import { InsightsPage } from "../InsightsPage";
 import * as s from "./styles";
 import { InsightsCatalogProps, SORTING_CRITERION } from "./types";
@@ -32,6 +34,15 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
   const config = useContext(ConfigContext);
   const previousConfig = usePrevious(config);
   const previousScope = usePrevious(config.scope?.span);
+  const refreshData = useCallback(
+    () =>
+      props.onQueryChange({
+        page,
+        sorting,
+        searchQuery: debouncedSearchInputValue
+      }),
+    [page, sorting, debouncedSearchInputValue, props]
+  );
 
   useEffect(() => {
     if (!previousScope || previousScope !== config.scope?.span) {
@@ -51,11 +62,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
   }, [previousConfig, config]);
 
   useEffect(() => {
-    props.onQueryChange({
-      page,
-      sorting,
-      searchQuery: debouncedSearchInputValue
-    });
+    refreshData();
   }, []);
 
   useEffect(() => {
@@ -64,11 +71,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
       (previousSorting && previousSorting !== sorting) ||
       previousSearchQuery !== debouncedSearchInputValue
     ) {
-      props.onQueryChange({
-        page,
-        sorting,
-        searchQuery: debouncedSearchInputValue
-      });
+      refreshData();
     }
   }, [
     previousSorting,
@@ -77,7 +80,8 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
     page,
     debouncedSearchInputValue,
     previousSearchQuery,
-    props.onQueryChange
+    props.onQueryChange,
+    refreshData
   ]);
 
   return (
@@ -108,6 +112,13 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
           ]}
           default={defaultQuery.sorting}
         />
+        <Tooltip title="Refresh">
+          <s.RefreshButton
+            buttonType="tertiary"
+            icon={RefreshIcon}
+            onClick={() => refreshData()}
+          />
+        </Tooltip>
       </s.Toolbar>
       <InsightsPage
         page={page}

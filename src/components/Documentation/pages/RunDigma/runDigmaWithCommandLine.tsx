@@ -29,7 +29,9 @@ export const runDigmaWithCommandLine: PageContent = {
             <otel.exporter.otlp.traces.endpoint>http://localhost:5050</otel.exporter.otlp.traces.endpoint>
             <otel.traces.exporter>otlp</otel.traces.exporter>
             <otel.metrics.exporter>none</otel.metrics.exporter>
+            <otel.logs.exporter>none</otel.metrics.exporter>
             <otel.service.name>\${pom.artifactId}</otel.service.name>
+             <otel.exporter.otlp.protocol>grpc</<otel.exporter.otlp.protocol>>
             <otel.javaagent.extensions>\${env.TMPDIR}/temp-digma-otel-jars/digma-otel-agent-extension.jar</otel.javaagent.extensions>
           </systemPropertyVariables>
         </configuration>
@@ -65,6 +67,8 @@ export const runDigmaWithCommandLine: PageContent = {
     systemProperty 'otel.exporter.otlp.traces.endpoint', 'http://localhost:5050'
     systemProperty 'otel.traces.exporter', 'otlp'
     systemProperty 'otel.metrics.exporter', 'none'
+    systemProperty 'otel.logs.exporter', 'none'
+    systemProperty 'otel.exporter.otlp.protocol', 'grpc'
     systemProperty 'otel.service.name', "\${project.name}"
     systemProperty 'otel.javaagent.extensions', "\${tempDir}/temp-digma-otel-jars/digma-otel-agent-extension.jar"
   }
@@ -83,6 +87,8 @@ export const runDigmaWithCommandLine: PageContent = {
     systemProperty("otel.exporter.otlp.traces.endpoint", "http://localhost:5050")
     systemProperty("otel.traces.exporter", "otlp")
     systemProperty("otel.metrics.exporter", "none")
+    systemProperty("otel.logs.exporter", "none")
+    systemProperty("otel.exporter.otlp.protocol", "grpc")
     systemProperty("otel.service.name", project.name)
     systemProperty("otel.javaagent.extensions", "\${tempDir}/temp-digma-otel-jars/digma-otel-agent-extension.jar")
   }
@@ -102,15 +108,16 @@ export const runDigmaWithCommandLine: PageContent = {
             application name:
           </span>
           <CodeSnippet
-            text={`curl --create-dirs -O -L --output-dir ./otel https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v1.29.0/opentelemetry-javaagent.jar
+            text={`curl --create-dirs -O -L --output-dir ./otel https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v2.1.0/opentelemetry-javaagent.jar
 
 curl --create-dirs -O -L --output-dir ./otel https://github.com/digma-ai/otel-java-instrumentation/releases/latest/download/digma-otel-agent-extension.jar
 
-export JAVA_TOOL_OPTIONS="-javaagent:/otel/javaagent.jar -Dotel.exporter.otlp.endpoint=http://localhost:5050 -Dotel.javaagent.extensions=/otel/digma-otel-agent-extension.jar"
+export JAVA_TOOL_OPTIONS="-javaagent:/otel/javaagent.jar -Dotel.exporter.otlp.endpoint=http://localhost:5050 -Dotel.javaagent.extensions=/otel/digma-otel-agent-extension.jar -Dotel.metrics.exporter=none -Dotel.logs.exporter=none -Dotel.exporter.otlp.protocol=grpc"
+
 export OTEL_SERVICE_NAME={--ENTER YOUR SERVICE NAME HERE--}
 export OTEL_RESOURCE_ATTRIBUTES=digma.environment=LOCAL
 
-java app.jar`}
+java app.jarr`}
             language={"bash"}
           />
         </>
