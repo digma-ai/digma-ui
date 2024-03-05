@@ -44,7 +44,6 @@ export const Default: Story = {
         {
           type: "Errors",
           importance: 5,
-
           criticality: 0.9
         },
         {
