@@ -1,2 +1,4 @@
-export const LABEL_HEIGHT = 14; // in pixels ("caption1" Typography line height)
+import { typographies } from "../../../../common/App/typographies";
+
+export const LABEL_HEIGHT = typographies.captionOne.lineHeight;
 export const DIVIDER = " | ";

@@ -27,14 +27,14 @@ export const Minimal: Story = {
   }
 };
 
-export const Story2: Story = {
+export const WithEndpointAndRootCause: Story = {
   name: "Endpoint + Root Cause",
   args: {
     insight: { ...mockedSpanScalingInsight, ...withRootCause }
   }
 };
 
-export const Story3: Story = {
+export const WithDBSpanAndAffectedEndpoint: Story = {
   name: "DB Span + Affected Endpoint",
   args: {
     insight: {
@@ -45,7 +45,7 @@ export const Story3: Story = {
   }
 };
 
-export const Story4: Story = {
+export const WithDBSpanAndAffectedEndpointAndRootCause: Story = {
   name: "DB Span + Affected Endpoint + Root Cause",
   args: {
     insight: {

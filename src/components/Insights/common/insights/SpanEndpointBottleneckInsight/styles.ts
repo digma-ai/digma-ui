@@ -8,3 +8,9 @@ export const SelectedItem = styled.div`
   gap: 4px;
   align-items: center;
 `;
+
+export const SelectContainer = styled.div`
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+`;

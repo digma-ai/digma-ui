@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { subscriptRegularTypography } from "../../../common/App/typographies";
 
 export const InsightFooter = styled.div`
   display: flex;
@@ -8,9 +9,10 @@ export const InsightFooter = styled.div`
 `;
 
 export const Description = styled.div`
+  ${subscriptRegularTypography}
+
   display: flex;
   gap: 8px;
-  font-size: 13px;
   color: ${({ theme }) => theme.colors.v3.text.secondary};
 `;
 

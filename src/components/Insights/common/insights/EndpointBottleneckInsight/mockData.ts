@@ -23,6 +23,7 @@ export const mockedSpanBottleneckInsight: EndpointBottleneckInsight = {
   specifity: 3,
   importance: 2,
   span: {
+    traceId: "traceId",
     spanInfo: {
       name: "DelayAsync",
       displayName: "DelayAsync",

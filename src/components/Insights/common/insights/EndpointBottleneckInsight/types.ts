@@ -1,7 +1,8 @@
 import {
   EndpointBottleneckInsight,
   InsightProps,
-  InsightType
+  InsightType,
+  Trace
 } from "../../../types";
 
 export interface EndpointBottleneckInsightProps extends InsightProps {
@@ -9,5 +10,10 @@ export interface EndpointBottleneckInsightProps extends InsightProps {
   onAssetLinkClick: (
     spanCodeObjectId: string,
     insightType: InsightType
+  ) => void;
+  onTraceButtonClick: (
+    trace: Trace,
+    insightType: InsightType,
+    spanCodeObjectId?: string
   ) => void;
 }

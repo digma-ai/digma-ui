@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { isString } from "../../../../typeGuards/isString";
 import { formatTimeDistance } from "../../../../utils/formatTimeDistance";
-import { Link } from "../../../common/Link";
 import { TraceIcon } from "../../../common/icons/12px/TraceIcon";
 import { HistogramIcon } from "../../../common/icons/16px/HistogramIcon";
 import { LiveIcon } from "../../../common/icons/16px/LiveIcon";
@@ -11,6 +10,7 @@ import { Button } from "../../../common/v3/Button";
 import { BaseButtonProps } from "../../../common/v3/Button/types";
 import { Card } from "../../../common/v3/Card";
 import { JiraButton } from "../../../common/v3/JiraButton";
+import { Link } from "../../../common/v3/Link";
 import { Tooltip } from "../../../common/v3/Tooltip";
 import { isSpanInsight } from "../../typeGuards";
 import { InsightHeader } from "./InsightHeader";

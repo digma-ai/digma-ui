@@ -62,7 +62,7 @@ export const ExcessiveAPICallsInsight = (
                     </s.SpanName>
                   </Tooltip>
                   {config.isJaegerEnabled && traceId && (
-                    <Tooltip title={"Open trace"}>
+                    <Tooltip title={"Open Trace"}>
                       <s.Button
                         icon={{ component: CrosshairIcon }}
                         onClick={() =>
