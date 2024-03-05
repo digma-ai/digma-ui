@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { InsightsQuery } from "../../common/App/types";
 import { GenericCodeObjectInsight } from "../types";
 
 export interface InsightJiraTicketProps {
@@ -21,4 +22,8 @@ export interface LinkTicketResponse {
   message: string | null;
   codeObjectId: string;
   insightType: string;
+}
+
+export interface InsightsGetDataListQuery {
+  query: InsightsQuery;
 }

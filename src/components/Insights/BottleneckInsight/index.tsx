@@ -24,6 +24,8 @@ export const BottleneckInsight = (props: BottleneckInsightProps) => {
       props.onJiraTicketCreate(props.insight, undefined, event);
   };
 
+  const slowEndpoints = props.insight.slowEndpoints || [];
+
   return (
     <InsightCard
       spanInfo={props.insight.spanInfo}
@@ -31,7 +33,7 @@ export const BottleneckInsight = (props: BottleneckInsightProps) => {
       content={
         <>
           <s.EndpointList>
-            {props.insight.slowEndpoints.map((endpoint, i) => {
+            {slowEndpoints.map((endpoint, i) => {
               const endpointName = `${
                 endpoint.endpointInfo.serviceName
               }:${trimEndpointScheme(endpoint.endpointInfo.route)}`;

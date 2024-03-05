@@ -43,15 +43,18 @@ export const Default: Story = {
       insights: [
         {
           type: "Errors",
-          importance: 5
+          importance: 5,
+          criticality: 0.9
         },
         {
           type: "HotSpot",
-          importance: 2
+          importance: 2,
+          criticality: 0.5
         },
         {
           type: "LowUsage",
-          importance: 6
+          importance: 6,
+          criticality: 0.1
         }
       ],
       latestSpanTimestamp: "2023-02-20T14:36:03.480951Z",

@@ -16,17 +16,19 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
+const mockedSlowEndpoints = mockedBottleneckInsight.slowEndpoints || [];
+
 export const Default: Story = {
   args: {
     insight: {
       ...mockedBottleneckInsight,
       slowEndpoints: [
-        ...mockedBottleneckInsight.slowEndpoints,
+        ...mockedSlowEndpoints,
         {
-          ...mockedBottleneckInsight.slowEndpoints[0],
+          ...mockedSlowEndpoints[0],
           endpointInfo: {
-            ...mockedBottleneckInsight.slowEndpoints[0].endpointInfo,
-            route: `${mockedBottleneckInsight.slowEndpoints[0].endpointInfo.route}1`
+            ...mockedSlowEndpoints[0].endpointInfo,
+            route: `${mockedSlowEndpoints[0].endpointInfo.route}1`
           }
         }
       ]

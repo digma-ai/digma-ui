@@ -16,15 +16,15 @@ import { WarningCircleIcon } from "../components/common/icons/WarningCircleIcon"
 import { IconProps } from "../components/common/icons/types";
 import { InsightType } from "../types";
 
+export interface InsightTypeInfo {
+  icon: MemoExoticComponent<(props: IconProps) => JSX.Element>;
+  label: string;
+  description?: () => JSX.Element;
+}
+
 export const getInsightTypeInfo = (
   type: string
-):
-  | {
-      icon: MemoExoticComponent<(props: IconProps) => JSX.Element>;
-      label: string;
-      description?: () => JSX.Element;
-    }
-  | undefined => {
+): InsightTypeInfo | undefined => {
   const insightTypeInfoMap: Record<
     string,
     {
@@ -58,12 +58,24 @@ export const getInsightTypeInfo = (
       icon: MeterHighIcon,
       label: "Endpoint High Traffic"
     },
+    // deprecated
     [InsightType.SlowestSpans]: {
       icon: BottleneckIcon,
       label: "Bottleneck",
       description: descriptionProvider.BottleneckDescription
     },
+    [InsightType.EndpointBottleneck]: {
+      icon: BottleneckIcon,
+      label: "Bottleneck",
+      description: descriptionProvider.BottleneckDescription
+    },
+    // deprecated
     [InsightType.EndpointSpanNPlusOne]: {
+      icon: SQLDatabaseIcon,
+      label: "Suspected N-Plus-1",
+      description: descriptionProvider.NPlusOneDescription
+    },
+    [InsightType.EndpointSpanNPlusOneV2]: {
       icon: SQLDatabaseIcon,
       label: "Suspected N-Plus-1",
       description: descriptionProvider.NPlusOneDescription
@@ -95,7 +107,12 @@ export const getInsightTypeInfo = (
       icon: ClockWithTicksIcon,
       label: "Duration Breakdown"
     },
+    // deprecated
     [InsightType.EndpointDurationSlowdown]: {
+      icon: SnailIcon,
+      label: "Duration Slowdown Source Detected"
+    },
+    [InsightType.EndpointSlowdownSource]: {
       icon: SnailIcon,
       label: "Duration Slowdown Source Detected"
     },
@@ -103,10 +120,12 @@ export const getInsightTypeInfo = (
       icon: PieChartIcon,
       label: "Request Breakdown"
     },
+    // deprecated
     [InsightType.SpanScalingWell]: {
       icon: ScalesIcon,
       label: "No Scaling Issue Detected"
     },
+    // deprecated
     [InsightType.SpanScalingInsufficientData]: {
       icon: ScalesIcon,
       label: "Performance at Scale"

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { isString } from "../../../../typeGuards/isString";
 import { formatTimeDistance } from "../../../../utils/formatTimeDistance";
 import { Link } from "../../../common/Link";
@@ -8,11 +8,11 @@ import { LiveIcon } from "../../../common/icons/16px/LiveIcon";
 import { PinIcon } from "../../../common/icons/16px/PinIcon";
 import { RecalculateIcon } from "../../../common/icons/16px/RecalculateIcon";
 import { Button } from "../../../common/v3/Button";
+import { BaseButtonProps } from "../../../common/v3/Button/types";
 import { Card } from "../../../common/v3/Card";
 import { JiraButton } from "../../../common/v3/JiraButton";
 import { Tooltip } from "../../../common/v3/Tooltip";
 import { isSpanInsight } from "../../typeGuards";
-import { IconButton } from "./IconButton";
 import { InsightHeader } from "./InsightHeader";
 import * as s from "./styles";
 import { InsightCardProps } from "./types";
@@ -22,16 +22,13 @@ const IS_NEW_TIME_LIMIT = 1000 * 60 * 10; // in milliseconds
 export const InsightCard = (props: InsightCardProps) => {
   const [isRecalculatingStarted, setIsRecalculatingStarted] = useState(false);
   const handleRefreshLinkClick = () => {
-    props.onRefresh && props.onRefresh(props.insight.type);
+    props.onRefresh(props.insight.type);
   };
 
   const handleRecalculateClick = () => {
     props.insight.prefixedCodeObjectId &&
       props.onRecalculate &&
-      props.onRecalculate(
-        props.insight.prefixedCodeObjectId,
-        props.insight.type
-      );
+      props.onRecalculate(props.insight.id);
     setIsRecalculatingStarted(true);
   };
 
@@ -45,6 +42,12 @@ export const InsightCard = (props: InsightCardProps) => {
         props.insight.type,
         props.insight.spanInfo.displayName
       );
+  };
+
+  const handleSpanLinkClick = () => {
+    if (isSpanInsight(props.insight) && props.insight.spanInfo) {
+      props.onGoToSpan(props.insight.spanInfo.spanCodeObjectId);
+    }
   };
 
   const renderRecalculationBlock = (
@@ -91,6 +94,110 @@ export const InsightCard = (props: InsightCardProps) => {
     }
   };
 
+  const renderActions = () => {
+    const buttonsToRender: {
+      tooltip: string;
+      button: React.ComponentType<BaseButtonProps>;
+    }[] = [];
+
+    props.onOpenHistogram &&
+      buttonsToRender.push({
+        tooltip: "Open Histogram",
+        button: (btnProps) => (
+          <Button
+            icon={HistogramIcon}
+            label={"Histogram"}
+            onClick={handleHistogramButtonClick}
+            {...btnProps}
+          />
+        )
+      });
+
+    props.insight.isRecalculateEnabled &&
+      buttonsToRender.push({
+        tooltip: "Recalculate",
+        button: (btnProps) => (
+          <Button
+            icon={RecalculateIcon}
+            label={"Recalculate"}
+            onClick={handleRecalculateClick}
+            {...btnProps}
+          />
+        )
+      });
+
+    props.onJiraButtonClick &&
+      buttonsToRender.push({
+        tooltip: "Open ticket info",
+        button: (btnProps) => (
+          <JiraButton
+            ticketLink={props.jiraTicketInfo?.ticketLink}
+            isHintEnabled={props.jiraTicketInfo?.isHintEnabled}
+            spanCodeObjectId={props.jiraTicketInfo?.spanCodeObjectId}
+            label={"Ticket"}
+            onTicketInfoButtonClick={props.onJiraButtonClick!}
+            {...btnProps}
+          />
+        )
+      });
+
+    props.onGoToTrace &&
+      buttonsToRender.push({
+        tooltip: "Open Trace",
+        button: (btnProps) => (
+          <Button
+            icon={TraceIcon}
+            label={"Trace"}
+            onClick={() => props.onGoToTrace && props.onGoToTrace()}
+            {...btnProps}
+          />
+        )
+      });
+
+    props.onGoToLive &&
+      buttonsToRender.push({
+        tooltip: "Open live view",
+        button: (btnProps) => (
+          <Button
+            icon={LiveIcon}
+            label={"Live"}
+            onClick={() => props.onGoToLive && props.onGoToLive()}
+            {...btnProps}
+          />
+        )
+      });
+
+    props.onPin &&
+      buttonsToRender.push({
+        tooltip: "Pin",
+        button: (btnProps) => (
+          <Button icon={PinIcon} label={"Pin"} {...btnProps} />
+        )
+      });
+
+    if (buttonsToRender.length === 0) {
+      return;
+    }
+
+    const toolbarActions = buttonsToRender.slice(0, -1);
+    const mainAction = buttonsToRender[buttonsToRender.length - 1];
+
+    return (
+      <s.Actions>
+        {toolbarActions.map((toolbarAction) => (
+          <Tooltip key={toolbarAction.tooltip} title={toolbarAction.tooltip}>
+            <div>
+              <toolbarAction.button buttonType={"tertiary"} label={undefined} />
+            </div>
+          </Tooltip>
+        ))}
+        <s.MainActions>
+          <mainAction.button buttonType={"primary"} />
+        </s.MainActions>
+      </s.Actions>
+    );
+  };
+
   const isNew = isString(props.insight.firstDetected)
     ? Date.now() - new Date(props.insight.firstDetected).valueOf() <
       IS_NEW_TIME_LIMIT
@@ -99,11 +206,16 @@ export const InsightCard = (props: InsightCardProps) => {
     <Card
       header={
         <InsightHeader
+          spanInfo={
+            isSpanInsight(props.insight) ? props.insight.spanInfo : undefined
+          }
           isActive={props.isActive}
           isNew={isNew}
           isAsync={props.isAsync}
           insightType={props.insight.type}
           importance={props.insight.importance}
+          criticality={props.insight.criticality}
+          onSpanLinkClick={handleSpanLinkClick}
         />
       }
       content={
@@ -120,44 +232,7 @@ export const InsightCard = (props: InsightCardProps) => {
       footer={
         <s.InsightFooter>
           {/* <Button icon={CrossIcon} label={"Dismiss"} buttonType={"tertiary"} /> */}
-          <s.Actions>
-            {props.onOpenHistogram && (
-              <IconButton
-                icon={{ component: HistogramIcon }}
-                onClick={handleHistogramButtonClick}
-              />
-            )}
-            {props.onRecalculate && (
-              <IconButton
-                icon={{ component: RecalculateIcon }}
-                onClick={handleRecalculateClick}
-              />
-            )}
-            {props.onJiraButtonClick && (
-              <JiraButton
-                onTicketInfoButtonClick={props.onJiraButtonClick}
-                ticketLink={props.jiraTicketInfo?.ticketLink}
-                isHintEnabled={props.jiraTicketInfo?.isHintEnabled}
-              />
-            )}
-            {props.onPin && <IconButton icon={{ component: PinIcon }} />}
-            <s.MainActions>
-              {props.onGoToTrace && (
-                <Button
-                  icon={TraceIcon}
-                  label={"Trace"}
-                  onClick={() => props.onGoToTrace && props.onGoToTrace()}
-                />
-              )}
-              {props.onGoToLive && (
-                <Button
-                  icon={LiveIcon}
-                  label={"Live"}
-                  onClick={() => props.onGoToLive && props.onGoToLive()}
-                />
-              )}
-            </s.MainActions>
-          </s.Actions>
+          {renderActions()}
         </s.InsightFooter>
       }
     />

@@ -1,11 +1,11 @@
 import styled from "styled-components";
-import { caption1RegularTypography } from "../../../../common/App/typographies";
+import { KeyValue } from "../../InsightCard/KeyValue";
 
 export const ContentContainer = styled.div`
   padding: 8px 0;
+  display: flex;
 `;
 
-export const Description = styled.div`
-  color: ${({ theme }) => theme.colors.v3.text.secondary};
-  ${caption1RegularTypography}
+export const DescriptionColumn = styled(KeyValue)`
+  flex-grow: 2;
 `;

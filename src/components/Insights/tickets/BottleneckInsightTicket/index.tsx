@@ -19,10 +19,9 @@ export const BottleneckInsightTicket = (
       props.data.insight
     );
 
+  const slowEndpoints = props.data.insight.slowEndpoints || [];
   const services = [
-    ...new Set(
-      props.data.insight.slowEndpoints.map((x) => x.endpointInfo.serviceName)
-    )
+    ...new Set(slowEndpoints.map((x) => x.endpointInfo.serviceName))
   ];
   const serviceString = services.length > 0 ? services.join(", ") : "";
 

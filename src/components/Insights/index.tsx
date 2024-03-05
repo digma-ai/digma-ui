@@ -29,23 +29,24 @@ import { EndpointNPlusOneInsightTicket } from "./tickets/EndpointNPlusOneInsight
 import { EndpointQueryOptimizationInsightTicket } from "./tickets/EndpointQueryOptimizationTicket";
 import { NPlusOneInsightTicket } from "./tickets/NPlusOneInsightTicket";
 import { QueryOptimizationInsightTicket } from "./tickets/QueryOptimizationInsightTicket";
-import { SpanBottleneckInsightTicket } from "./tickets/SpanBottleneckInsightTicket";
 import { ScalingIssueInsightTicket } from "./tickets/ScalingIssueInsightTicket";
+import { ScalingIssueInsightTicketByRootCause } from "./tickets/ScalingIssueInsightTicketByRootCause";
+import { SpanBottleneckInsightTicket } from "./tickets/SpanBottleneckInsightTicket";
 import {
+  isEndpointBottleneckInsight,
   isEndpointHighNumberOfQueriesInsight,
   isEndpointQueryOptimizationInsight,
-  isEndpointSlowestSpansInsight,
-  isEndpointSuspectedNPlusOneInsight,
+  isEndpointSpanNPlusOneInsight,
   isSpanEndpointBottleneckInsight,
   isSpanNPlusOneInsight,
   isSpanQueryOptimizationInsight,
   isSpanScalingBadlyInsight
 } from "./typeGuards";
 import {
+  EndpointBottleneckInsight,
   EndpointHighNumberOfQueriesInsight,
   EndpointQueryOptimizationInsight,
-  EndpointSlowestSpansInsight,
-  EndpointSuspectedNPlusOneInsight,
+  EndpointSpanNPlusOneInsight,
   GenericCodeObjectInsight,
   InsightTicketInfo,
   InsightsData,
@@ -57,7 +58,6 @@ import {
   SpanNPlusOneInsight,
   SpanScalingBadlyInsight
 } from "./types";
-import { ScalingIssueInsightTicketByRootCause } from "./tickets/ScalingIssueInsightTicketByRootCause";
 
 const REFRESH_INTERVAL = isNumber(window.insightsRefreshInterval)
   ? window.insightsRefreshInterval
@@ -81,12 +81,8 @@ const renderInsightTicket = (
     return <NPlusOneInsightTicket data={ticketData} onClose={onClose} />;
   }
 
-  if (
-    isEndpointSuspectedNPlusOneInsight(data.insight) &&
-    data.spanCodeObjectId
-  ) {
-    const ticketData =
-      data as InsightTicketInfo<EndpointSuspectedNPlusOneInsight>;
+  if (isEndpointSpanNPlusOneInsight(data.insight) && data.spanCodeObjectId) {
+    const ticketData = data as InsightTicketInfo<EndpointSpanNPlusOneInsight>;
     return (
       <EndpointNPlusOneInsightTicket data={ticketData} onClose={onClose} />
     );
@@ -97,8 +93,8 @@ const renderInsightTicket = (
     return <BottleneckInsightTicket data={ticketData} onClose={onClose} />;
   }
 
-  if (isEndpointSlowestSpansInsight(data.insight) && data.spanCodeObjectId) {
-    const ticketData = data as InsightTicketInfo<EndpointSlowestSpansInsight>;
+  if (isEndpointBottleneckInsight(data.insight) && data.spanCodeObjectId) {
+    const ticketData = data as InsightTicketInfo<EndpointBottleneckInsight>;
     return <SpanBottleneckInsightTicket data={ticketData} onClose={onClose} />;
   }
 
@@ -155,6 +151,34 @@ const renderInsightTicket = (
   return null;
 };
 
+const NoDataYet = () => {
+  const handleTroubleshootingLinkClick = () => {
+    sendTrackingEvent(globalTrackingEvents.TROUBLESHOOTING_LINK_CLICKED, {
+      origin: "insights"
+    });
+
+    sendMessage(globalActions.OPEN_TROUBLESHOOTING_GUIDE);
+  };
+
+  return (
+    <EmptyState
+      icon={CardsIcon}
+      title={"No data yet"}
+      content={
+        <>
+          <s.EmptyStateDescription>
+            Trigger actions that call this application to learn more about its
+            runtime behavior
+          </s.EmptyStateDescription>
+          <s.TroubleshootingLink onClick={handleTroubleshootingLinkClick}>
+            Not seeing your application data?
+          </s.TroubleshootingLink>
+        </>
+      }
+    />
+  );
+};
+
 const sendMessage = (action: string, data?: object) => {
   return window.sendMessageToDigma({
     action,
@@ -182,6 +206,7 @@ export const Insights = (props: InsightsProps) => {
 
   useLayoutEffect(() => {
     sendMessage(actions.INITIALIZE);
+    sendMessage(globalActions.GET_STATE);
   }, []);
 
   // useEffect(() => {
@@ -281,6 +306,10 @@ export const Insights = (props: InsightsProps) => {
       return <EmptyState content={<CircleLoader size={32} />} />;
     }
 
+    if (!config.environments?.length) {
+      return <NoDataYet />;
+    }
+
     switch (data?.insightsStatus) {
       case InsightsStatus.STARTUP:
         return (
@@ -320,23 +349,7 @@ export const Insights = (props: InsightsProps) => {
           />
         );
       case InsightsStatus.NO_SPANS_DATA:
-        return (
-          <EmptyState
-            icon={CardsIcon}
-            title={"No data yet"}
-            content={
-              <>
-                <s.EmptyStateDescription>
-                  Trigger actions that call this application to learn more about
-                  its runtime behavior
-                </s.EmptyStateDescription>
-                <s.TroubleshootingLink onClick={handleTroubleshootingLinkClick}>
-                  Not seeing your application data?
-                </s.TroubleshootingLink>
-              </>
-            }
-          />
-        );
+        return <NoDataYet />;
       case InsightsStatus.NO_OBSERVABILITY:
         return (
           <EmptyState

@@ -122,7 +122,10 @@ export const Assets = () => {
       );
     }
 
-    if (!selectedFilters && !selectedServices) {
+    if (
+      !config.environments?.length ||
+      (!selectedFilters && !selectedServices)
+    ) {
       return <NoDataMessage type={"noDataYet"} />;
     }
 
@@ -154,7 +157,6 @@ export const Assets = () => {
     <s.Container>
       <s.Header>
         <s.HeaderItem>
-          Assets
           {window.assetsSearch === true && (
             <SearchInput
               onChange={handleSearchInputChange}

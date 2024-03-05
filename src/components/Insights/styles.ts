@@ -9,15 +9,7 @@ export const Container = styled.div`
   gap: 8px;
   height: 100%;
   box-sizing: border-box;
-  background: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#fbfdff";
-      case "dark":
-      case "dark-jetbrains":
-        return "#2b2d30";
-    }
-  }};
+  background: ${({ theme }) => theme.colors.v3.surface.primary};
   position: relative;
 `;
 

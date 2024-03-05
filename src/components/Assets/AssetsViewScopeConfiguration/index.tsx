@@ -22,7 +22,7 @@ export const AssetsViewScopeConfiguration = (
 
   return (
     <s.Container>
-      <s.Item>Show for selected assets</s.Item>
+      <s.Item>Assets filtered to current scope</s.Item>
       <s.Item>
         <ToggleSwitch
           label={"Show direct only"}

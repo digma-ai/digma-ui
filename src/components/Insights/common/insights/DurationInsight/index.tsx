@@ -29,7 +29,7 @@ import { ColumnsContainer } from "../../InsightCard/ColumnsContainer";
 import { KeyValue } from "../../InsightCard/KeyValue";
 import { ReferenceLineLabel } from "./ReferenceLineLabel";
 import { XAxisTick } from "./XAxisTick";
-import { DIVIDER } from "./constants";
+import { DIVIDER, LABEL_HEIGHT } from "./constants";
 import * as s from "./styles";
 import { DurationInsightProps, TickData } from "./types";
 
@@ -39,10 +39,10 @@ const LAST_CALL_TIME_DISTANCE_LIMIT = 60 * 1000; // in milliseconds
 const MIN_BAR_HEIGHT = 5;
 const MAX_BAR_HEIGHT = 80;
 const BAR_WIDTH = 6;
-const MIN_X_AXIS_PADDING = 80;
+const MIN_X_AXIS_PADDING = 50;
 const MIN_CHART_CONTAINER_HEIGHT = 135;
-const CHART_Y_MARGIN = 20;
-const MIN_BAR_DISTANCE = 6; // minimum distance between the bars before moving the labels aside
+const CHART_Y_MARGIN = LABEL_HEIGHT;
+const MIN_BAR_DISTANCE = 5; // minimum distance between the bars before moving the labels aside
 
 const getBarColor = (
   theme: DefaultTheme,
@@ -128,9 +128,7 @@ const calculateBars = (
 };
 
 export const DurationInsight = (props: DurationInsightProps) => {
-  // const config = useContext(ConfigContext);
   const theme = useTheme();
-  const tickColor = theme.colors.v3.stroke.secondary;
   const { observe, width } = useDimensions();
 
   const sortedPercentiles = [...props.insight.percentiles].sort(
@@ -267,6 +265,11 @@ export const DurationInsight = (props: DurationInsightProps) => {
       content={
         <s.Container>
           <ColumnsContainer>
+            {!props.insight.histogramPlot && (
+              <s.DescriptionColumn label={"Description"}>
+                Trigger more actions to see the full duration analysis
+              </s.DescriptionColumn>
+            )}
             {spanLastCall && (
               <KeyValue label={"Last call"}>
                 <CommonTooltip
@@ -390,7 +393,7 @@ export const DurationInsight = (props: DurationInsightProps) => {
                   />
                   <XAxis
                     padding={{ left: XAxisPadding, right: XAxisPadding }}
-                    stroke={tickColor}
+                    stroke={theme.colors.v3.stroke.primary}
                     tick={(props) => <XAxisTick {...props} ticks={ticks} />}
                     interval={0}
                     ticks={Object.keys(ticks).map((x) => Number(x))}
@@ -403,12 +406,10 @@ export const DurationInsight = (props: DurationInsightProps) => {
                       <ReferenceLine
                         key={tickData.label}
                         x={Number(barIndex)}
-                        stroke={tickColor}
+                        stroke={theme.colors.v3.stroke.secondary}
                         strokeDasharray={"5 5"}
                         label={{
-                          position: "top",
                           value: tickData.label,
-                          fill: tickColor,
                           textAnchor: tickData.textAnchor,
                           content: ReferenceLineLabel
                         }}
@@ -429,6 +430,7 @@ export const DurationInsight = (props: DurationInsightProps) => {
       onOpenHistogram={
         props.insight.spanInfo ? props.onHistogramButtonClick : undefined
       }
+      onGoToSpan={props.onGoToSpan}
     />
   );
 };

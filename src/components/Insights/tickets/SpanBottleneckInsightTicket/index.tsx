@@ -4,7 +4,7 @@ import { getCriticalityLabel } from "../../../../utils/getCriticalityLabel";
 import { intersperse } from "../../../../utils/intersperse";
 import { InsightJiraTicket } from "../../InsightJiraTicket";
 import {
-  EndpointSlowestSpansInsight,
+  EndpointBottleneckInsight,
   SpanEndpointBottleneckInsight
 } from "../../types";
 import { BottleneckEndpoints } from "../common/BottleneckEndpoints";
@@ -15,11 +15,9 @@ import { useEndpointDataSource } from "../common/useEndpointDataSource";
 import { InsightTicketProps } from "../types";
 
 export const SpanBottleneckInsightTicket = (
-  props: InsightTicketProps<EndpointSlowestSpansInsight>
+  props: InsightTicketProps<EndpointBottleneckInsight>
 ) => {
-  const span = props.data.insight.spans.find(
-    (x) => x.spanInfo.spanCodeObjectId === props.data.spanCodeObjectId
-  );
+  const span = props.data.insight.span;
 
   const {
     commitInfos,

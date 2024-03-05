@@ -7,48 +7,43 @@ import { isNumber } from "../../../typeGuards/isNumber";
 import { isUndefined } from "../../../typeGuards/isUndefined";
 import { InsightType } from "../../../types";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
+import { ChangeScopePayload } from "../../Navigation/types";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Card } from "../../common/Card";
 import { EmptyState } from "../../common/EmptyState";
 import { CardsIcon } from "../../common/icons/CardsIcon";
-import { BottleneckInsight } from "../BottleneckInsight";
-import { DurationBreakdownInsight } from "../DurationBreakdownInsight";
-import { DurationInsight } from "../DurationInsight";
-import { DurationSlowdownSourceInsight } from "../DurationSlowdownSourceInsight";
-import { EndpointNPlusOneInsight } from "../EndpointNPlusOneInsight";
-import { EndpointQueryOptimizationInsight } from "../EndpointQueryOptimizationInsight";
-import { ErrorsInsight } from "../ErrorsInsight";
-import { ExcessiveAPICallsInsight } from "../ExcessiveAPICallsInsight";
-import { HighNumberOfQueriesInsight } from "../HighNumberOfQueriesInsight";
-import { InsightCard } from "../InsightCard";
-import { NPlusOneInsight } from "../NPlusOneInsight";
-import { NoScalingIssueInsight } from "../NoScalingIssueInsight";
-import { PerformanceAtScaleInsight } from "../PerformanceAtScaleInsight";
-import { QueryOptimizationInsight } from "../QueryOptimizationInsight";
-import { RequestBreakdownInsight } from "../RequestBreakdownInsight";
-import { ScalingIssueInsight } from "../ScalingIssueInsight";
-import { SessionInViewInsight } from "../SessionInViewInsight";
-import { SlowEndpointInsight } from "../SlowEndpointInsight";
-import { SpanBottleneckInsight } from "../SpanBottleneckInsight";
-import { SpanNexusInsight } from "../SpanNexusInsight";
-import { TopUsageInsight } from "../TopUsageInsight";
-import { TrafficInsight } from "../TrafficInsight";
 import { actions } from "../actions";
+import { DurationBreakdownInsight } from "../common/insights/DurationBreakdownInsight";
+import { DurationInsight } from "../common/insights/DurationInsight";
+import { EndpointBottleneckInsight } from "../common/insights/EndpointBottleneckInsight";
+import { EndpointNPlusOneInsight } from "../common/insights/EndpointNPlusOneInsight";
+import { EndpointQueryOptimizationInsight } from "../common/insights/EndpointQueryOptimizationInsight";
+import { EndpointSlowdownSourceInsight } from "../common/insights/EndpointSlowdownSourceInsight";
+import { ExcessiveAPICallsInsight } from "../common/insights/ExcessiveAPICallsInsight";
+import { HighNumberOfQueriesInsight } from "../common/insights/HighNumberOfQueriesInsight";
+import { RequestBreakdownInsight } from "../common/insights/RequestBreakdownInsight";
+import { ScalingIssueInsight } from "../common/insights/ScalingIssueInsight";
+import { SessionInViewInsight } from "../common/insights/SessionInViewInsight";
+import { SlowEndpointInsight } from "../common/insights/SlowEndpointInsight";
+import { SpanEndpointBottleneckInsight } from "../common/insights/SpanEndpointBottleneckInsight";
+import { SpanNPlusOneInsight } from "../common/insights/SpanNPlusOneInsight";
+import { SpanNexusInsight } from "../common/insights/SpanNexusInsight";
+import { SpanQueryOptimizationInsight } from "../common/insights/SpanQueryOptimizationInsight";
+import { TopUsageInsight } from "../common/insights/TopUsageInsight";
+import { TrafficInsight } from "../common/insights/TrafficInsight";
 import { Description } from "../styles";
 import { trackingEvents } from "../tracking";
 import {
   isChattyApiEndpointInsight,
-  isCodeObjectErrorsInsight,
-  isCodeObjectHotSpotInsight,
+  isEndpointBottleneckInsight,
   isEndpointBreakdownInsight,
-  isEndpointDurationSlowdownInsight,
   isEndpointHighNumberOfQueriesInsight,
   isEndpointHighUsageInsight,
   isEndpointLowUsageInsight,
   isEndpointNormalUsageInsight,
   isEndpointQueryOptimizationInsight,
-  isEndpointSlowestSpansInsight,
-  isEndpointSuspectedNPlusOneInsight,
+  isEndpointSlowdownSourceInsight,
+  isEndpointSpanNPlusOneInsight,
   isSessionInViewEndpointInsight,
   isSlowEndpointInsight,
   isSpanDurationBreakdownInsight,
@@ -58,13 +53,16 @@ import {
   isSpanNexusInsight,
   isSpanQueryOptimizationInsight,
   isSpanScalingBadlyInsight,
-  isSpanScalingInsufficientDataInsight,
-  isSpanScalingWellInsight,
   isSpanUsagesInsight
 } from "../typeGuards";
 import { CodeObjectInsight, GenericCodeObjectInsight, Trace } from "../types";
 import * as s from "./styles";
-import { InsightPageProps, isInsightJiraTicketHintShownPayload } from "./types";
+import {
+  InsightPageProps,
+  MarkInsightTypesAsViewedPayload,
+  RecalculatePayload,
+  isInsightJiraTicketHintShownPayload
+} from "./types";
 
 const getInsightToShowJiraHint = (insights: CodeObjectInsight[]): number => {
   const insightsWithJiraButton = [
@@ -93,23 +91,23 @@ const renderInsightCard = (
   isJiraHintEnabled: boolean,
   onRefresh: () => void
 ): JSX.Element | undefined => {
-  const handleErrorSelect = (errorId: string, insightType: InsightType) => {
-    sendTrackingEvent(globalTrackingEvents.USER_ACTION, {
-      action: `Follow ${insightType} link`
-    });
-    window.sendMessageToDigma({
-      action: actions.GO_TO_ERROR,
-      payload: {
-        errorId
-      }
-    });
-  };
+  // const handleErrorSelect = (errorId: string, insightType: InsightType) => {
+  //   sendTrackingEvent(globalTrackingEvents.USER_ACTION, {
+  //     action: `Follow ${insightType} link`
+  //   });
+  //   window.sendMessageToDigma({
+  //     action: actions.GO_TO_ERROR,
+  //     payload: {
+  //       errorId
+  //     }
+  //   });
+  // };
 
-  const handleErrorsExpandButtonClick = () => {
-    window.sendMessageToDigma({
-      action: actions.GO_TO_ERRORS
-    });
-  };
+  // const handleErrorsExpandButtonClick = () => {
+  //   window.sendMessageToDigma({
+  //     action: actions.GO_TO_ERRORS
+  //   });
+  // };
 
   const handleHistogramButtonClick = (
     instrumentationLibrary: string,
@@ -180,15 +178,22 @@ const renderInsightCard = (
     });
   };
 
-  const handleRecalculate = (
-    prefixedCodeObjectId: string,
-    insightType: InsightType
-  ) => {
-    window.sendMessageToDigma({
+  const handleRecalculate = (insightId: string) => {
+    window.sendMessageToDigma<RecalculatePayload>({
       action: actions.RECALCULATE,
       payload: {
-        prefixedCodeObjectId,
-        insightType
+        id: insightId
+      }
+    });
+  };
+
+  const handleGoToSpan = (spanCodeObjectId: string) => {
+    window.sendMessageToDigma<ChangeScopePayload>({
+      action: globalActions.CHANGE_SCOPE,
+      payload: {
+        span: {
+          spanCodeObjectId
+        }
       }
     });
   };
@@ -203,9 +208,11 @@ const renderInsightCard = (
         onCompareButtonClick={handleCompareButtonClick}
         onRecalculate={handleRecalculate}
         onRefresh={onRefresh}
+        onGoToSpan={handleGoToSpan}
       />
     );
   }
+
   if (isSpanDurationBreakdownInsight(insight)) {
     return (
       <DurationBreakdownInsight
@@ -214,9 +221,11 @@ const renderInsightCard = (
         onAssetLinkClick={handleAssetLinkClick}
         onRecalculate={handleRecalculate}
         onRefresh={onRefresh}
+        onGoToSpan={handleGoToSpan}
       />
     );
   }
+
   if (isSpanUsagesInsight(insight)) {
     return (
       <TopUsageInsight
@@ -226,12 +235,29 @@ const renderInsightCard = (
         onTraceButtonClick={handleTraceButtonClick}
         onRecalculate={handleRecalculate}
         onRefresh={onRefresh}
+        onGoToSpan={handleGoToSpan}
       />
     );
   }
+
+  if (isEndpointBottleneckInsight(insight)) {
+    return (
+      <EndpointBottleneckInsight
+        key={insight.id}
+        insight={insight}
+        onAssetLinkClick={handleAssetLinkClick}
+        onRecalculate={handleRecalculate}
+        onRefresh={onRefresh}
+        onJiraTicketCreate={onJiraTicketCreate}
+        isJiraHintEnabled={isJiraHintEnabled}
+        onGoToSpan={handleGoToSpan}
+      />
+    );
+  }
+
   if (isSpanEndpointBottleneckInsight(insight)) {
     return (
-      <BottleneckInsight
+      <SpanEndpointBottleneckInsight
         key={insight.id}
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
@@ -239,22 +265,11 @@ const renderInsightCard = (
         onRefresh={onRefresh}
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
+        onGoToSpan={handleGoToSpan}
       />
     );
   }
-  if (isEndpointSlowestSpansInsight(insight)) {
-    return (
-      <SpanBottleneckInsight
-        key={insight.id}
-        insight={insight}
-        onAssetLinkClick={handleAssetLinkClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={onRefresh}
-        onJiraTicketCreate={onJiraTicketCreate}
-        isJiraHintEnabled={isJiraHintEnabled}
-      />
-    );
-  }
+
   if (isSlowEndpointInsight(insight)) {
     return (
       <SlowEndpointInsight
@@ -262,9 +277,11 @@ const renderInsightCard = (
         insight={insight}
         onRecalculate={handleRecalculate}
         onRefresh={onRefresh}
+        onGoToSpan={handleGoToSpan}
       />
     );
   }
+
   if (
     isEndpointLowUsageInsight(insight) ||
     isEndpointNormalUsageInsight(insight) ||
@@ -276,22 +293,12 @@ const renderInsightCard = (
         insight={insight}
         onRecalculate={handleRecalculate}
         onRefresh={onRefresh}
+        onGoToSpan={handleGoToSpan}
       />
     );
   }
-  if (isCodeObjectErrorsInsight(insight)) {
-    return (
-      <ErrorsInsight
-        key={insight.id}
-        insight={insight}
-        onErrorSelect={handleErrorSelect}
-        onExpandButtonClick={handleErrorsExpandButtonClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={onRefresh}
-      />
-    );
-  }
-  if (isEndpointSuspectedNPlusOneInsight(insight)) {
+
+  if (isEndpointSpanNPlusOneInsight(insight)) {
     return (
       <EndpointNPlusOneInsight
         key={insight.id}
@@ -302,12 +309,14 @@ const renderInsightCard = (
         onRefresh={onRefresh}
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
+        onGoToSpan={handleGoToSpan}
       />
     );
   }
+
   if (isSpanNPlusOneInsight(insight)) {
     return (
-      <NPlusOneInsight
+      <SpanNPlusOneInsight
         key={insight.id}
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
@@ -316,9 +325,11 @@ const renderInsightCard = (
         onRefresh={onRefresh}
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
+        onGoToSpan={handleGoToSpan}
       />
     );
   }
+
   if (isSpanScalingBadlyInsight(insight)) {
     return (
       <ScalingIssueInsight
@@ -331,31 +342,20 @@ const renderInsightCard = (
         onRefresh={onRefresh}
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
+        onGoToSpan={handleGoToSpan}
       />
     );
   }
-  if (isCodeObjectHotSpotInsight(insight)) {
+
+  if (isEndpointSlowdownSourceInsight(insight)) {
     return (
-      <InsightCard
-        data={insight}
-        content={
-          <Description>
-            Major errors occur or propagate through this function
-          </Description>
-        }
-        onRecalculate={handleRecalculate}
-        onRefresh={onRefresh}
-      />
-    );
-  }
-  if (isEndpointDurationSlowdownInsight(insight)) {
-    return (
-      <DurationSlowdownSourceInsight
+      <EndpointSlowdownSourceInsight
         key={insight.id}
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
         onRecalculate={handleRecalculate}
         onRefresh={onRefresh}
+        onGoToSpan={handleGoToSpan}
       />
     );
   }
@@ -367,30 +367,7 @@ const renderInsightCard = (
         insight={insight}
         onRecalculate={handleRecalculate}
         onRefresh={onRefresh}
-      />
-    );
-  }
-
-  if (isSpanScalingWellInsight(insight)) {
-    return (
-      <NoScalingIssueInsight
-        key={insight.id}
-        insight={insight}
-        onHistogramButtonClick={handleHistogramButtonClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={onRefresh}
-      />
-    );
-  }
-
-  if (isSpanScalingInsufficientDataInsight(insight)) {
-    return (
-      <PerformanceAtScaleInsight
-        key={insight.id}
-        insight={insight}
-        onHistogramButtonClick={handleHistogramButtonClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={onRefresh}
+        onGoToSpan={handleGoToSpan}
       />
     );
   }
@@ -404,6 +381,7 @@ const renderInsightCard = (
         onTraceButtonClick={handleTraceButtonClick}
         onRecalculate={handleRecalculate}
         onRefresh={onRefresh}
+        onGoToSpan={handleGoToSpan}
       />
     );
   }
@@ -417,6 +395,7 @@ const renderInsightCard = (
         onTraceButtonClick={handleTraceButtonClick}
         onRecalculate={handleRecalculate}
         onRefresh={onRefresh}
+        onGoToSpan={handleGoToSpan}
       />
     );
   }
@@ -431,6 +410,7 @@ const renderInsightCard = (
         onRefresh={onRefresh}
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
+        onGoToSpan={handleGoToSpan}
       />
     );
   }
@@ -442,13 +422,14 @@ const renderInsightCard = (
         insight={insight}
         onRecalculate={handleRecalculate}
         onRefresh={onRefresh}
+        onGoToSpan={handleGoToSpan}
       />
     );
   }
 
   if (isSpanQueryOptimizationInsight(insight)) {
     return (
-      <QueryOptimizationInsight
+      <SpanQueryOptimizationInsight
         key={insight.id}
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
@@ -457,6 +438,7 @@ const renderInsightCard = (
         onRefresh={onRefresh}
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
+        onGoToSpan={handleGoToSpan}
       />
     );
   }
@@ -472,6 +454,7 @@ const renderInsightCard = (
         onRefresh={onRefresh}
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
+        onGoToSpan={handleGoToSpan}
       />
     );
   }
@@ -506,7 +489,7 @@ export const InsightsPage = (props: InsightPageProps) => {
   }, [previousPage, props.page, config, previousConfig]);
 
   useEffect(() => {
-    window.sendMessageToDigma({
+    window.sendMessageToDigma<MarkInsightTypesAsViewedPayload>({
       action: actions.MARK_INSIGHT_TYPES_AS_VIEWED,
       payload: {
         insightTypes: props.insights.map((x) => ({

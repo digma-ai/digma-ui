@@ -20,6 +20,7 @@ type Story = StoryObj<typeof meta>;
 export const WithAverage: Story = {
   args: {
     insight: {
+      sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
       id: "60b55792-8262-4c5d-9628-7cce7979ad6d",
       firstDetected: "2023-12-05T17:25:47.010Z",
       lastDetected: "2024-01-05T13:14:47.010Z",
@@ -136,6 +137,7 @@ export const WithAverage: Story = {
 export const WithChange: Story = {
   args: {
     insight: {
+      sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
       id: "60b55792-8262-4c5d-9628-7cce7979ad6d",
       firstDetected: null,
       lastDetected: null,
@@ -242,6 +244,7 @@ export const WithChange: Story = {
 export const WithEvaluatingChange: Story = {
   args: {
     insight: {
+      sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
       id: "60b55792-8262-4c5d-9628-7cce7979ad6d",
       firstDetected: null,
       lastDetected: null,
@@ -348,6 +351,7 @@ export const WithEvaluatingChange: Story = {
 export const HistogramWithManyBars: Story = {
   args: {
     insight: {
+      sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
       id: "60b55792-8262-4c5d-9628-7cce7979ad6d",
       firstDetected: null,
       lastDetected: null,
@@ -4872,6 +4876,7 @@ export const HistogramWithManyBars: Story = {
 export const HistogramWithGaps: Story = {
   args: {
     insight: {
+      sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
       id: "60b55792-8262-4c5d-9628-7cce7979ad6d",
       firstDetected: null,
       lastDetected: null,
@@ -5126,6 +5131,7 @@ export const HistogramWithGaps: Story = {
 export const HistogramWithAFewBars: Story = {
   args: {
     insight: {
+      sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
       id: "60b55792-8262-4c5d-9628-7cce7979ad6d",
       firstDetected: null,
       lastDetected: null,
@@ -5280,6 +5286,7 @@ export const HistogramWithAFewBars: Story = {
 export const EmptyStateBug: Story = {
   args: {
     insight: {
+      sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
       id: "60b55792-8262-4c5d-9628-7cce7979ad6d",
       name: "Performance Stats",
       type: InsightType.SpanDurations,

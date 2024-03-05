@@ -16,7 +16,7 @@ export interface OpenDocumentationPayload {
 }
 
 export interface OpenDashboardPayload {
-  environment?: Environment;
+  environment?: Environment | null;
 }
 
 export interface ChangeScopePayload {

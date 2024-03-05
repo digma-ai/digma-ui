@@ -4,8 +4,10 @@ import { ConfigContext } from "../../../../common/App/ConfigContext";
 import { TargetIcon } from "../../../../common/icons/12px/TargetIcon";
 import { Button } from "../../../../common/v3/Button";
 import { Pagination } from "../../../../common/v3/Pagination";
+import { Tooltip } from "../../../../common/v3/Tooltip";
 import { InsightType, Trace } from "../../../types";
 import { InsightCard } from "../../InsightCard";
+import { ContentContainer, Description, ListContainer } from "../styles";
 import * as s from "./styles";
 import { ExcessiveAPICallsInsightProps } from "./types";
 
@@ -38,11 +40,11 @@ export const ExcessiveAPICallsInsight = (
     <InsightCard
       insight={props.insight}
       content={
-        <s.ContentContainer>
-          <s.Description>
+        <ContentContainer>
+          <Description>
             Excessive API calls to specific endpoint found
-          </s.Description>
-          <s.List>
+          </Description>
+          <ListContainer>
             {pageItems.map((span) => {
               const spanName = span.clientSpan.displayName;
               const traceId = span.traceId;
@@ -55,20 +57,21 @@ export const ExcessiveAPICallsInsight = (
                   onClick={() => handleLinkClick(spanCodeObjectId)}
                   buttons={[
                     config.isJaegerEnabled && traceId && (
-                      <Button
-                        key={spanCodeObjectId + "trace"}
-                        icon={TargetIcon}
-                        onClick={() =>
-                          handleTraceButtonClick(
-                            {
-                              name: spanName,
-                              id: traceId
-                            },
-                            props.insight.type,
-                            spanCodeObjectId
-                          )
-                        }
-                      />
+                      <Tooltip title={"Open trace"} key={"open-trace"}>
+                        <Button
+                          icon={TargetIcon}
+                          onClick={() =>
+                            handleTraceButtonClick(
+                              {
+                                name: spanName,
+                                id: traceId
+                              },
+                              props.insight.type,
+                              spanCodeObjectId
+                            )
+                          }
+                        />
+                      </Tooltip>
                     )
                   ]}
                 />
@@ -81,11 +84,12 @@ export const ExcessiveAPICallsInsight = (
               onPageChange={setPage}
               withDescription={true}
             />
-          </s.List>
-        </s.ContentContainer>
+          </ListContainer>
+        </ContentContainer>
       }
       onRecalculate={props.onRecalculate}
       onRefresh={props.onRefresh}
+      onGoToSpan={props.onGoToSpan}
     />
   );
 };

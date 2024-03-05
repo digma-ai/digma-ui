@@ -14,17 +14,16 @@ export interface InsightCardProps {
     insightType: InsightType,
     displayName: string
   ) => void;
-  onRecalculate?: (
-    prefixedCodeObjectId: string,
-    insightType: InsightType
-  ) => void;
-  onRefresh?: (insightType: InsightType, spanCodeObjectId?: string) => void;
+  onRecalculate: (insightId: string) => void;
+  onRefresh: (insightType: InsightType, spanCodeObjectId?: string) => void;
   onPin?: (insightId: string) => void;
   onGoToLive?: () => void;
   onGoToTrace?: () => void;
   jiraTicketInfo?: {
     ticketLink?: string | null;
     isHintEnabled?: boolean;
+    spanCodeObjectId?: string;
   };
-  onJiraButtonClick?: (event: string) => void;
+  onJiraButtonClick?: (spanCodeObjectId: string, event: string) => void;
+  onGoToSpan: (spanCodeObjectId: string) => void;
 }

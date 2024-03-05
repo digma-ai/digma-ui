@@ -1,4 +1,4 @@
-import { GenericCodeObjectInsight } from "../types";
+import { GenericCodeObjectInsight, InsightType } from "../types";
 
 export interface InsightPageProps {
   insights: GenericCodeObjectInsight[];
@@ -13,4 +13,15 @@ export interface InsightPageProps {
 
 export interface isInsightJiraTicketHintShownPayload {
   value: boolean;
+}
+
+export interface MarkInsightTypesAsViewedPayload {
+  insightTypes: {
+    type: InsightType;
+    reopenCount: number;
+  }[];
+}
+
+export interface RecalculatePayload {
+  id: string;
 }

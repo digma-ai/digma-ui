@@ -18,3 +18,7 @@ export interface InsightListProps {
 export interface isInsightJiraTicketHintShownPayload {
   value: boolean;
 }
+
+export interface RecalculatePayload {
+  id: string;
+}

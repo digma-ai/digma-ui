@@ -1,27 +1,26 @@
-import { MouseEvent } from "react";
+import { ForwardedRef, MouseEvent, forwardRef } from "react";
+import { Link } from "../../../../common/v3/Link";
 import { Tooltip } from "../../../../common/v3/Tooltip";
 import * as s from "./styles";
 import { ListItemProps } from "./types";
 
-export const ListItem = ({
-  name,
-  onClick,
-  className,
-  buttons
-}: ListItemProps) => {
+const ListItemComponent = (
+  { name, onClick, className, buttons }: ListItemProps,
+  ref: ForwardedRef<HTMLDivElement>
+) => {
   const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     onClick();
   };
 
   return (
-    <s.Container>
+    <s.Container ref={ref} className={className}>
       <Tooltip title={name}>
-        <s.Link className={className} href={"#"} onClick={handleClick}>
-          {name}
-        </s.Link>
+        <Link onClick={handleClick}>{name}</Link>
       </Tooltip>
       {buttons && <s.ButtonsContainer>{buttons}</s.ButtonsContainer>}
     </s.Container>
   );
 };
+
+export const ListItem = forwardRef(ListItemComponent);

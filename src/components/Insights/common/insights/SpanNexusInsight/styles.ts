@@ -1,14 +1,9 @@
 import styled from "styled-components";
-
-export const ContentContainer = styled.div`
-  gap: 8px;
-  display: flex;
-  flex-direction: column;
-`;
+import { subscriptRegularTypography } from "../../../../common/App/typographies";
 
 export const Description = styled.div`
   display: flex;
   gap: 8px;
-  font-size: 13px;
+  ${subscriptRegularTypography}
   color: ${({ theme }) => theme.colors.v3.text.primary};
 `;

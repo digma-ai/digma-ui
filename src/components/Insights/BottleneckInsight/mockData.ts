@@ -6,6 +6,7 @@ import {
 } from "../types";
 
 export const mockedBottleneckInsight: SpanEndpointBottleneckInsight = {
+  sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
   id: "60b55792-8262-4c5d-9628-1cce7979ac6d",
   firstDetected: "2023-12-05T17:25:47.010Z",
   lastDetected: "2024-01-05T13:14:47.010Z",
@@ -43,11 +44,16 @@ export const mockedBottleneckInsight: SpanEndpointBottleneckInsight = {
         spanName: "HTTP GET SampleInsights/lock/{milisec}"
       },
       probabilityOfBeingBottleneck: 0.36877828054298645,
+      avgFractionWhenBeingBottleneck: 50,
       avgDurationWhenBeingBottleneck: {
         value: 3.89,
         unit: "sec",
         raw: 3887134558.2822084
       },
+      impact: 0.14877828054298645,
+      severity: 0.2877828054298645,
+      criticality: 0.5687782805429865,
+      requestPercentage: 35,
       p50: {
         fraction: 0,
         maxDuration: {

@@ -2,6 +2,7 @@ import { Tag } from "../../../../common/v3/Tag";
 import { InsightCard } from "../../InsightCard";
 import { ColumnsContainer } from "../../InsightCard/ColumnsContainer";
 import { KeyValue } from "../../InsightCard/KeyValue";
+import { ContentContainer } from "../styles";
 import * as s from "./styles";
 import { SpanNexusInsightProps } from "./types";
 
@@ -24,7 +25,7 @@ export const SpanNexusInsight = (props: SpanNexusInsightProps) => {
     <InsightCard
       insight={insight}
       content={
-        <s.ContentContainer>
+        <ContentContainer>
           <s.Description>
             Multiple code flows depend on this location
           </s.Description>
@@ -44,10 +45,11 @@ export const SpanNexusInsight = (props: SpanNexusInsightProps) => {
               </KeyValue>
             )}
           </ColumnsContainer>
-        </s.ContentContainer>
+        </ContentContainer>
       }
       onRecalculate={props.onRecalculate}
       onRefresh={props.onRefresh}
+      onGoToSpan={props.onGoToSpan}
     />
   );
 };

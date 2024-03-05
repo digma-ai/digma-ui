@@ -96,7 +96,7 @@ export const NewPopover = (props: PopoverProps) => {
   const dismiss = useDismiss(context);
 
   const { getReferenceProps, getFloatingProps } = useInteractions([
-    click,
+    ...(props.useClickInteraction === false ? [] : [click]),
     dismiss
   ]);
 
