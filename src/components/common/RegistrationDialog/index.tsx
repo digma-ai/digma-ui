@@ -52,11 +52,11 @@ export const RegistrationDialog = (props: RegistrationDialogProps) => {
   }, [setFocus]);
 
   const onSubmit = (data: RegistrationFormValues) => {
-    sendTrackingEvent("registration dialog submit button clicked");
     props.onSubmit({
       fullName: data.fullName.trim(),
       email: data.email
     });
+    sendTrackingEvent("registration dialog form submitted");
   };
 
   const handleCloseButtonClick = () => {
@@ -66,9 +66,6 @@ export const RegistrationDialog = (props: RegistrationDialogProps) => {
 
   const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "Enter" && isValid) {
-      sendTrackingEvent(
-        "registration dialog Enter key pressed and form data is valid"
-      );
       onSubmit(values);
     }
   };
