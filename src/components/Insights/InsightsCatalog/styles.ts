@@ -3,6 +3,7 @@ import {
   caption1RegularTypography,
   subscriptRegularTypography
 } from "../../common/App/typographies";
+import { Button } from "../../common/v3/Button";
 
 export const Footer = styled.div`
   display: flex;
@@ -58,4 +59,14 @@ export const DismissedCount = styled.span`
 
 export const InsightsViewModeToolbar = styled(Toolbar)`
   padding: 0 8px;
+`;
+
+export const RefreshButton = styled(Button)`
+  border: 1px solid ${({ theme }) => theme.colors.v3.stroke.dark};
+  color: ${({ theme }) => theme.colors.v3.icon.tertiary};
+
+  &:hover:enabled {
+    color: ${({ theme }) => theme.colors.v3.icon.white};
+    background: none;
+  }
 `;

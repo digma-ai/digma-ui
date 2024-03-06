@@ -1,4 +1,11 @@
-import { useContext, useEffect, useMemo, useRef, useState } from "react";
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from "react";
 import { DefaultTheme, useTheme } from "styled-components";
 import { dispatcher } from "../../../dispatcher";
 import { getFeatureFlagValue } from "../../../featureFlags";
@@ -196,16 +203,6 @@ export const AssetList = (props: AssetListProps) => {
   const previousServices = usePrevious(props.services);
   const previousFilters = usePrevious(props.filters);
   const previousViewScope = usePrevious(props.scopeViewOptions);
-
-  const entries = data?.data || [];
-
-  const assetTypeInfo = getAssetTypeInfo(props.assetTypeId);
-
-  const isOverallImpactHidden = getFeatureFlagValue(
-    config,
-    FeatureFlag.IS_ASSETS_OVERALL_IMPACT_HIDDEN
-  );
-
   const isComplexFilterEnabled = useMemo(
     () =>
       Boolean(
@@ -215,6 +212,39 @@ export const AssetList = (props: AssetListProps) => {
         )
       ),
     [config]
+  );
+
+  const refreshData = useCallback(() => {
+    getData(
+      props.assetTypeId,
+      page,
+      sorting,
+      props.searchQuery,
+      props.filters,
+      props.services,
+      isComplexFilterEnabled,
+      props.scopeViewOptions?.isDirect,
+      props.scopeViewOptions?.scopedSpanCodeObjectId
+    );
+  }, [
+    isComplexFilterEnabled,
+    page,
+    props.assetTypeId,
+    props.filters,
+    props.scopeViewOptions?.isDirect,
+    props.scopeViewOptions?.scopedSpanCodeObjectId,
+    props.searchQuery,
+    props.services,
+    sorting
+  ]);
+
+  const entries = data?.data || [];
+
+  const assetTypeInfo = getAssetTypeInfo(props.assetTypeId);
+
+  const isOverallImpactHidden = getFeatureFlagValue(
+    config,
+    FeatureFlag.IS_ASSETS_OVERALL_IMPACT_HIDDEN
   );
 
   const areAnyFiltersApplied = checkIfAnyFiltersApplied(
@@ -231,17 +261,11 @@ export const AssetList = (props: AssetListProps) => {
     : Object.values(SORTING_CRITERION);
 
   useEffect(() => {
-    getData(
-      props.assetTypeId,
-      page,
-      sorting,
-      props.searchQuery,
-      props.filters,
-      props.services,
-      isComplexFilterEnabled,
-      props.scopeViewOptions?.isDirect,
-      props.scopeViewOptions?.scopedSpanCodeObjectId
-    );
+    props.setRefresher(refreshData);
+  }, [refreshData]);
+
+  useEffect(() => {
+    refreshData();
     setIsInitialLoading(true);
 
     const handleAssetsData = (data: unknown, timeStamp: number) => {
@@ -273,67 +297,36 @@ export const AssetList = (props: AssetListProps) => {
       (previousFilters && previousFilters !== props.filters) ||
       previousViewScope !== props.scopeViewOptions
     ) {
-      getData(
-        props.assetTypeId,
-        page,
-        sorting,
-        props.searchQuery,
-        props.filters,
-        props.services,
-        isComplexFilterEnabled,
-        props.scopeViewOptions?.isDirect,
-        props.scopeViewOptions?.scopedSpanCodeObjectId
-      );
+      refreshData();
     }
   }, [
-    props.assetTypeId,
-    previousAssetTypeId,
-    previousSearchQuery,
-    props.searchQuery,
-    previousSorting,
-    sorting,
-    previousPage,
+    config.environment?.originalName,
     page,
+    previousAssetTypeId,
     previousEnvironment,
-    config.environment,
-    props.services,
-    previousServices,
-    props.filters,
     previousFilters,
-    isComplexFilterEnabled,
+    previousPage,
+    previousSearchQuery,
+    previousServices,
+    previousSorting,
     previousViewScope,
-    props.scopeViewOptions
+    props.assetTypeId,
+    props.filters,
+    props.scopeViewOptions,
+    props.searchQuery,
+    props.services,
+    refreshData,
+    sorting
   ]);
 
   useEffect(() => {
     if (previousLastSetDataTimeStamp !== lastSetDataTimeStamp) {
       window.clearTimeout(refreshTimerId.current);
       refreshTimerId.current = window.setTimeout(() => {
-        getData(
-          props.assetTypeId,
-          page,
-          sorting,
-          props.searchQuery,
-          props.filters,
-          props.services,
-          isComplexFilterEnabled,
-          props.scopeViewOptions?.isDirect,
-          props.scopeViewOptions?.scopedSpanCodeObjectId
-        );
+        refreshData();
       }, REFRESH_INTERVAL);
     }
-  }, [
-    lastSetDataTimeStamp,
-    previousLastSetDataTimeStamp,
-    props.assetTypeId,
-    page,
-    sorting,
-    props.searchQuery,
-    props.services,
-    props.filters,
-    isComplexFilterEnabled,
-    props.scopeViewOptions
-  ]);
+  }, [lastSetDataTimeStamp, previousLastSetDataTimeStamp, refreshData]);
 
   useEffect(() => {
     if (props.data) {

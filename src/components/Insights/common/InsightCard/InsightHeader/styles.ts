@@ -1,8 +1,5 @@
 import styled from "styled-components";
-import {
-  bodyMediumTypography,
-  footnoteRegularTypography
-} from "../../../../common/App/typographies";
+import { bodyMediumTypography } from "../../../../common/App/typographies";
 
 export const Container = styled.div`
   display: flex;
@@ -48,21 +45,4 @@ export const BadgeContainer = styled.div`
 export const WarningTriangleContainer = styled.div`
   display: flex;
   color: ${({ theme }) => theme.colors.v3.status.high};
-`;
-
-export const Active = styled.div`
-  ${footnoteRegularTypography}
-
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  color: ${({ theme }) => theme.colors.v3.text.secondary};
-  padding: 4px;
-`;
-
-export const Indicator = styled.div`
-  border-radius: 50%;
-  width: 6px;
-  height: 6px;
-  background: ${({ theme }) => theme.colors.v3.status.success};
 `;

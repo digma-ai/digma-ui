@@ -10,6 +10,7 @@ export interface AssetListProps {
   filters?: AssetFilterQuery;
   searchQuery: string;
   scopeViewOptions: AssetScopeOption | null;
+  setRefresher: (refresher: () => void) => void;
 }
 
 export enum SORTING_CRITERION {

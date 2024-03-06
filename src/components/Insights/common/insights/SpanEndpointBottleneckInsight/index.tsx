@@ -1,11 +1,15 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useContext, useState } from "react";
+import { isNull } from "../../../../../typeGuards/isNull";
 import { getDurationString } from "../../../../../utils/getDurationString";
 import { sendTrackingEvent } from "../../../../../utils/sendTrackingEvent";
 import { trimEndpointScheme } from "../../../../../utils/trimEndpointScheme";
+import { ConfigContext } from "../../../../common/App/ConfigContext";
+import { TraceIcon } from "../../../../common/icons/12px/TraceIcon";
+import { Button } from "../../../../common/v3/Button";
 import { Link } from "../../../../common/v3/Link";
 import { Tooltip } from "../../../../common/v3/Tooltip";
 import { trackingEvents } from "../../../tracking";
-import { BottleneckEndpointInfo } from "../../../types";
+import { BottleneckEndpointInfo, InsightType, Trace } from "../../../types";
 import { Info } from "../../Info";
 import { InsightCard } from "../../InsightCard";
 import { ColumnsContainer } from "../../InsightCard/ColumnsContainer";
@@ -37,9 +41,11 @@ const renderOptions = (
       value: spanCodeObjectId
     };
   });
+
 export const SpanEndpointBottleneckInsight = (
   props: SpanEndpointBottleneckInsightProps
 ) => {
+  const config = useContext(ConfigContext);
   const slowEndpoints = props.insight.slowEndpoints || [];
   const [selectedEndpoint, setSelectedEndpoint] = useState(
     slowEndpoints.length > 0 ? slowEndpoints[0] : null
@@ -58,9 +64,13 @@ export const SpanEndpointBottleneckInsight = (
       props.onJiraTicketCreate(props.insight, undefined, event);
   };
 
-  if (slowEndpoints.length === 0) {
-    return null;
-  }
+  const handleTraceButtonClick = (
+    trace: Trace,
+    insightType: InsightType,
+    spanCodeObjectId?: string
+  ) => {
+    props.onTraceButtonClick(trace, insightType, spanCodeObjectId);
+  };
 
   return (
     <InsightCard
@@ -77,18 +87,43 @@ export const SpanEndpointBottleneckInsight = (
             <Description>
               Affected Endpoints ({slowEndpoints.length})
             </Description>
-            <Select
-              value={selectedEndpoint?.endpointInfo.spanCodeObjectId}
-              onChange={(selectedOption) => {
-                const selected =
-                  slowEndpoints.find(
-                    (x) => x.endpointInfo.spanCodeObjectId === selectedOption
-                  ) || null;
+            <s.SelectContainer>
+              <Select
+                value={selectedEndpoint?.endpointInfo.spanCodeObjectId}
+                onChange={(selectedOption) => {
+                  const selected =
+                    slowEndpoints.find(
+                      (x) => x.endpointInfo.spanCodeObjectId === selectedOption
+                    ) || null;
 
-                setSelectedEndpoint(selected);
-              }}
-              options={renderOptions(slowEndpoints, handleSpanLinkClick)}
-            />
+                  setSelectedEndpoint(selected);
+                }}
+                options={renderOptions(slowEndpoints, handleSpanLinkClick)}
+              />
+              {config.isJaegerEnabled &&
+                selectedEndpoint &&
+                selectedEndpoint.traceId && (
+                  <Tooltip title={"Open Trace"}>
+                    <Button
+                      icon={TraceIcon}
+                      onClick={() => {
+                        if (isNull(selectedEndpoint.traceId)) {
+                          return;
+                        }
+
+                        handleTraceButtonClick(
+                          {
+                            name: selectedEndpoint.endpointInfo.route,
+                            id: selectedEndpoint.traceId
+                          },
+                          props.insight.type,
+                          selectedEndpoint.endpointInfo.spanCodeObjectId
+                        );
+                      }}
+                    />
+                  </Tooltip>
+                )}
+            </s.SelectContainer>
           </Details>
           {selectedEndpoint && (
             <ColumnsContainer>

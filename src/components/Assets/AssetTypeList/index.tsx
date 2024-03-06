@@ -1,4 +1,11 @@
-import { useContext, useEffect, useMemo, useRef, useState } from "react";
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from "react";
 import { dispatcher } from "../../../dispatcher";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import { usePrevious } from "../../../hooks/usePrevious";
@@ -69,7 +76,6 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
   const previousFilters = usePrevious(props.filters);
   const previousSearchQuery = usePrevious(props.searchQuery);
   const previousViewScope = usePrevious(props.scopeViewOptions);
-
   const isComplexFilterEnabled = useMemo(
     () =>
       Boolean(
@@ -81,6 +87,30 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
     [config]
   );
 
+  const refreshData = useCallback(
+    () =>
+      getData(
+        props.filters,
+        props.services,
+        props.searchQuery,
+        isComplexFilterEnabled,
+        props.scopeViewOptions?.isDirect,
+        props.scopeViewOptions?.scopedSpanCodeObjectId
+      ),
+    [
+      isComplexFilterEnabled,
+      props.filters,
+      props.scopeViewOptions?.isDirect,
+      props.scopeViewOptions?.scopedSpanCodeObjectId,
+      props.searchQuery,
+      props.services
+    ]
+  );
+
+  useEffect(() => {
+    props.setRefresher(refreshData);
+  }, [refreshData]);
+
   const areAnyFiltersApplied = checkIfAnyFiltersApplied(
     isComplexFilterEnabled,
     props.filters,
@@ -89,14 +119,7 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
   );
 
   useEffect(() => {
-    getData(
-      props.filters,
-      props.services,
-      props.searchQuery,
-      isComplexFilterEnabled,
-      props.scopeViewOptions?.isDirect,
-      props.scopeViewOptions?.scopedSpanCodeObjectId
-    );
+    refreshData();
     setIsInitialLoading(true);
 
     const handleCategoriesData = (data: unknown, timeStamp: number) => {
@@ -130,52 +153,30 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
         previousSearchQuery !== props.searchQuery) ||
       previousViewScope !== props.scopeViewOptions
     ) {
-      getData(
-        props.filters,
-        props.services,
-        props.searchQuery,
-        isComplexFilterEnabled,
-        props.scopeViewOptions?.isDirect,
-        props.scopeViewOptions?.scopedSpanCodeObjectId
-      );
+      refreshData();
     }
   }, [
+    config.environment?.originalName,
     previousEnvironment,
-    config.environment,
-    previousServices,
-    props.services,
     previousFilters,
-    props.filters,
     previousSearchQuery,
-    props.searchQuery,
-    isComplexFilterEnabled,
+    previousServices,
+    previousViewScope,
+    props.filters,
     props.scopeViewOptions,
-    previousViewScope
+    props.searchQuery,
+    props.services,
+    refreshData
   ]);
 
   useEffect(() => {
     if (previousLastSetDataTimeStamp !== lastSetDataTimeStamp) {
       window.clearTimeout(refreshTimerId.current);
       refreshTimerId.current = window.setTimeout(() => {
-        getData(
-          props.filters,
-          props.services,
-          props.searchQuery,
-          isComplexFilterEnabled,
-          props.scopeViewOptions?.isDirect,
-          props.scopeViewOptions?.scopedSpanCodeObjectId
-        );
+        refreshData();
       }, REFRESH_INTERVAL);
     }
-  }, [
-    props.services,
-    previousLastSetDataTimeStamp,
-    lastSetDataTimeStamp,
-    props.filters,
-    props.searchQuery,
-    isComplexFilterEnabled,
-    props.scopeViewOptions
-  ]);
+  }, [lastSetDataTimeStamp, previousLastSetDataTimeStamp, refreshData]);
 
   useEffect(() => {
     if (props.data) {
@@ -200,6 +201,10 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
   if (data?.assetCategories.every((x) => x.count === 0)) {
     if (areAnyFiltersApplied) {
       return <NoDataMessage type={"noSearchResults"} />;
+    }
+
+    if (config.scope !== null) {
+      return <NoDataMessage type={"noDataForAsset"} />;
     }
 
     return <NoDataMessage type={"noDataYet"} />;

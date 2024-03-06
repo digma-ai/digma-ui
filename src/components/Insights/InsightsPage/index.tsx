@@ -251,6 +251,7 @@ const renderInsightCard = (
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
+        onTraceButtonClick={handleTraceButtonClick}
       />
     );
   }
@@ -266,6 +267,7 @@ const renderInsightCard = (
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
+        onTraceButtonClick={handleTraceButtonClick}
       />
     );
   }

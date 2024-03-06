@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { isString } from "../../../../typeGuards/isString";
 import { formatTimeDistance } from "../../../../utils/formatTimeDistance";
-import { Link } from "../../../common/Link";
 import { TraceIcon } from "../../../common/icons/12px/TraceIcon";
 import { HistogramIcon } from "../../../common/icons/16px/HistogramIcon";
 import { LiveIcon } from "../../../common/icons/16px/LiveIcon";
@@ -11,6 +10,7 @@ import { CrossIcon } from "../../../common/icons/CrossIcon";
 import { Button } from "../../../common/v3/Button";
 import { BaseButtonProps } from "../../../common/v3/Button/types";
 import { JiraButton } from "../../../common/v3/JiraButton";
+import { Link } from "../../../common/v3/Link";
 import { Tooltip } from "../../../common/v3/Tooltip";
 import { isSpanInsight } from "../../typeGuards";
 import { InsightHeader } from "./InsightHeader";
@@ -138,11 +138,11 @@ export const InsightCard = (props: InsightCardProps) => {
 
     props.insight.isRecalculateEnabled &&
       buttonsToRender.push({
-        tooltip: "Recalculate",
+        tooltip: "Recheck",
         button: (btnProps) => (
           <Button
             icon={RecalculateIcon}
-            label={"Recalculate"}
+            label={"Recheck"}
             onClick={handleRecalculateClick}
             {...btnProps}
           />
@@ -233,7 +233,7 @@ export const InsightCard = (props: InsightCardProps) => {
           spanInfo={
             isSpanInsight(props.insight) ? props.insight.spanInfo : undefined
           }
-          isActive={props.isActive}
+          status={props.insight.status}
           isNew={isNew}
           isAsync={props.isAsync}
           insightType={props.insight.type}

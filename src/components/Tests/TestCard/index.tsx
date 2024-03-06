@@ -154,7 +154,7 @@ export const TestCard = (props: TestCardProps) => {
               disabled={props.test.result === "success"}
             />
           </Tooltip>
-          <Tooltip title={"Open trace"}>
+          <Tooltip title={"Open Trace"}>
             <NewButton
               onClick={handleTraceButtonClick}
               icon={TraceIcon}

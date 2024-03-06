@@ -25,6 +25,7 @@ export const mockedSpanBottleneckInsight: EndpointBottleneckInsight = {
   isDismissed: false,
   isDismissible: true,
   span: {
+    traceId: "traceId",
     spanInfo: {
       name: "DelayAsync",
       displayName: "DelayAsync",

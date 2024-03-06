@@ -160,6 +160,13 @@ export interface CodeObjectDecorator {
   title: string;
 }
 
+export enum InsightStatus {
+  Active = "Active",
+  InEvaluation = "InEvaluation",
+  PossiblyFixed = "PossiblyFixed",
+  Regression = "Regression"
+}
+
 export interface CodeObjectInsight extends Insight {
   shortDisplayInfo: {
     title: string;
@@ -191,6 +198,7 @@ export interface CodeObjectInsight extends Insight {
   sourceSpanCodeObjectInsight: string;
   isDismissed: boolean;
   isDismissible: boolean;
+  status?: InsightStatus;
 }
 
 export interface SpanInsight extends CodeObjectInsight {
@@ -295,6 +303,7 @@ export interface BottleneckEndpointInfo {
   severity: number;
   criticality: number;
   requestPercentage: number;
+  traceId: string | null;
 
   /**
    * @deprecated
@@ -460,6 +469,7 @@ export interface EndpointBottleneckInsight extends EndpointInsight {
     criticality: number;
     ticketLink: string | null;
     requestPercentage: number;
+    traceId: string | null;
 
     /**
      * @deprecated

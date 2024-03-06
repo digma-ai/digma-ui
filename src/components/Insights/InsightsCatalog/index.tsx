@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { usePrevious } from "../../../hooks/usePrevious";
 
 import { useTheme } from "styled-components";
@@ -11,8 +11,10 @@ import { SortingSelector } from "../../common/SortingSelector";
 import { SORTING_ORDER, Sorting } from "../../common/SortingSelector/types";
 import { ChevronIcon } from "../../common/icons/16px/ChevronIcon";
 import { GroupIcon } from "../../common/icons/16px/GroupIcon";
+import { RefreshIcon } from "../../common/icons/16px/RefreshIcon";
 import { Direction } from "../../common/icons/types";
 import { Button } from "../../common/v3/Button";
+import { Tooltip } from "../../common/v3/Tooltip";
 import { InsightsPage } from "../InsightsPage";
 import { actions } from "../actions";
 import * as s from "./styles";
@@ -47,6 +49,17 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
   const previousMode = usePrevious(mode);
   const theme = useTheme();
 
+  const refreshData = useCallback(
+    () =>
+      props.onQueryChange({
+        page,
+        sorting,
+        searchQuery: debouncedSearchInputValue,
+        showDismissed: mode === ViewMode.OnlyHidden
+      }),
+    [page, sorting, debouncedSearchInputValue, props]
+  );
+
   const handleDismissal = (insightId: string) => {
     window.sendMessageToDigma({
       action: actions.DISMISS,
@@ -77,12 +90,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
   }, [previousConfig, config]);
 
   useEffect(() => {
-    props.onQueryChange({
-      page,
-      sorting,
-      searchQuery: debouncedSearchInputValue,
-      showDismissed: mode === ViewMode.OnlyHidden
-    });
+    refreshData();
   }, []);
 
   useEffect(() => {
@@ -92,12 +100,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
       previousSearchQuery !== debouncedSearchInputValue ||
       previousMode !== mode
     ) {
-      props.onQueryChange({
-        page,
-        sorting,
-        searchQuery: debouncedSearchInputValue,
-        showDismissed: mode === ViewMode.OnlyHidden
-      });
+      refreshData();
     }
   }, [
     previousSorting,
@@ -107,6 +110,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
     debouncedSearchInputValue,
     previousSearchQuery,
     props.onQueryChange,
+    refreshData,
     mode,
     previousMode
   ]);
@@ -139,6 +143,13 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
           ]}
           default={defaultQuery.sorting}
         />
+        <Tooltip title="Refresh">
+          <s.RefreshButton
+            buttonType="tertiary"
+            icon={RefreshIcon}
+            onClick={() => refreshData()}
+          />
+        </Tooltip>
       </s.Toolbar>
       {mode === ViewMode.OnlyHidden && (
         <s.InsightsViewModeToolbar>
