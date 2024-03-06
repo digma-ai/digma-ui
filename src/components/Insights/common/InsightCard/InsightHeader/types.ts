@@ -1,8 +1,8 @@
 import { SpanInfo } from "../../../../../types";
+import { InsightStatus } from "../../../types";
 
 export interface InsightHeaderProps {
   insightType: string;
-  isActive?: boolean;
   tags?: [];
   importance: number;
   isAsync?: boolean;
@@ -10,4 +10,5 @@ export interface InsightHeaderProps {
   criticality: number;
   spanInfo?: SpanInfo | null;
   onSpanLinkClick: (spanCodeObjectId: string) => void;
+  status?: InsightStatus;
 }

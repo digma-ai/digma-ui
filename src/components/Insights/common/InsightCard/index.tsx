@@ -209,7 +209,7 @@ export const InsightCard = (props: InsightCardProps) => {
           spanInfo={
             isSpanInsight(props.insight) ? props.insight.spanInfo : undefined
           }
-          isActive={props.isActive}
+          status={props.insight.status}
           isNew={isNew}
           isAsync={props.isAsync}
           insightType={props.insight.type}

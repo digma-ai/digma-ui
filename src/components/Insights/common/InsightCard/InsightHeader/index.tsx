@@ -13,8 +13,11 @@ import { Tag } from "../../../../common/v3/Tag";
 import { TagType } from "../../../../common/v3/Tag/types";
 import { Tooltip } from "../../../../common/v3/Tooltip";
 import { AsyncTag } from "./AsyncTag";
+import { InsightStatusBadge } from "./InsightStatusBadge";
 import * as s from "./styles";
 import { InsightHeaderProps } from "./types";
+
+const HIGH_CRITICALITY_THRESHOLD = 0.8;
 
 const getTagType = (criticality: number): TagType => {
   if (criticality < 0.2) {
@@ -76,7 +79,7 @@ export const InsightHeader = (props: InsightHeaderProps) => {
           )}
         </s.Label>
         <s.BadgeContainer>
-          {props.criticality > 0.8 && (
+          {props.criticality > HIGH_CRITICALITY_THRESHOLD && (
             <Tooltip title={"Critical"}>
               <s.WarningTriangleContainer>
                 <WarningTriangleIcon color={"currentColor"} size={12} />
@@ -85,12 +88,7 @@ export const InsightHeader = (props: InsightHeaderProps) => {
           )}
           {props.isAsync && <AsyncTag />}
           {props.isNew && <NewTag />}
-          {props.isActive && (
-            <s.Active>
-              <s.Indicator />
-              Active
-            </s.Active>
-          )}
+          {props.status && <InsightStatusBadge status={props.status} />}
         </s.BadgeContainer>
       </s.TitleRow>
       {!config.scope?.span && props.spanInfo && (
