@@ -16,6 +16,8 @@ import { FeatureFlag } from "../../types";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { EmptyState } from "../common/EmptyState";
 import { SearchInput } from "../common/SearchInput";
+import { RefreshIcon } from "../common/icons/16px/RefreshIcon";
+import { Tooltip } from "../common/v3/Tooltip";
 import { AssetList } from "./AssetList";
 import { AssetTypeList } from "./AssetTypeList";
 import { AssetsFilter } from "./AssetsFilter";
@@ -26,6 +28,7 @@ import { NoDataMessage } from "./NoDataMessage";
 import { ServicesFilter } from "./ServicesFilter";
 import { actions } from "./actions";
 import * as s from "./styles";
+import { DataRefresher } from "./types";
 
 export const Assets = () => {
   const [selectedAssetTypeId, setSelectedAssetTypeId] = useState<string | null>(
@@ -39,6 +42,10 @@ export const Assets = () => {
   const [selectedFilters, setSelectedFilters] = useState<AssetFilterQuery>();
   const config = useContext(ConfigContext);
   const previousScope = usePrevious(config.scope?.span);
+  const [assetTypeListDataRefresher, setAssetTypeListRefresher] =
+    useState<DataRefresher | null>(null);
+  const [assetListDataRefresher, setAssetListRefresher] =
+    useState<DataRefresher | null>(null);
 
   const isServiceFilterVisible = getFeatureFlagValue(
     config,
@@ -105,6 +112,14 @@ export const Assets = () => {
     setSelectedFilters(filters);
   };
 
+  const handleRefresh = () => {
+    const currentRefresher = !selectedAssetTypeId
+      ? assetTypeListDataRefresher
+      : assetListDataRefresher;
+
+    currentRefresher && currentRefresher.refresh();
+  };
+
   const renderContent = () => {
     if (isBackendUpgradeMessageVisible) {
       return (
@@ -137,6 +152,9 @@ export const Assets = () => {
           filters={selectedFilters}
           searchQuery={debouncedSearchInputValue}
           scopeViewOptions={assetScopeOption}
+          setRefresher={(refresher) => {
+            setAssetTypeListRefresher({ refresh: refresher });
+          }}
         />
       );
     }
@@ -149,6 +167,9 @@ export const Assets = () => {
         filters={selectedFilters}
         searchQuery={debouncedSearchInputValue}
         scopeViewOptions={assetScopeOption}
+        setRefresher={(refresher) => {
+          setAssetListRefresher({ refresh: refresher });
+        }}
       />
     );
   };
@@ -177,6 +198,13 @@ export const Assets = () => {
               />
             )
           )}
+          <Tooltip title="Refresh">
+            <s.RefreshButton
+              buttonType="tertiary"
+              icon={RefreshIcon}
+              onClick={() => handleRefresh()}
+            />
+          </Tooltip>
         </s.HeaderItem>
         {config.scope && config.scope.span && (
           <s.HeaderItem>
@@ -189,7 +217,6 @@ export const Assets = () => {
           </s.HeaderItem>
         )}
       </s.Header>
-
       {renderContent()}
     </s.Container>
   );

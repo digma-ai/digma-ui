@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { grayScale } from "../common/App/v2colors";
+import { Button } from "../common/v3/Button";
 
 export const Container = styled.div`
   height: 100%;
@@ -121,4 +122,23 @@ export const UpgradeMessage = styled.div`
   flex-direction: column;
   text-align: center;
   gap: 8px;
+`;
+
+export const RefreshButton = styled(Button)`
+  color: ${({ theme }) => theme.colors.v3.icon.tertiary};
+  border: 1px solid ${({ theme }) => theme.colors.stroke.primary};
+  background: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return grayScale[50];
+      case "dark":
+      case "dark-jetbrains":
+        return grayScale[1000];
+    }
+  }};
+
+  &:hover:enabled {
+    color: ${({ theme }) => theme.colors.v3.icon.white};
+    background: none;
+  }
 `;
