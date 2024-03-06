@@ -1,20 +1,31 @@
 import { useCallback, useContext, useEffect, useState } from "react";
 import { usePrevious } from "../../../hooks/usePrevious";
 
+import { useTheme } from "styled-components";
 import { useDebounce } from "../../../hooks/useDebounce";
 import { isNumber } from "../../../typeGuards/isNumber";
+import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Pagination } from "../../common/Pagination";
 import { SearchInput } from "../../common/SearchInput";
 import { SortingSelector } from "../../common/SortingSelector";
 import { SORTING_ORDER, Sorting } from "../../common/SortingSelector/types";
+import { ChevronIcon } from "../../common/icons/16px/ChevronIcon";
+import { GroupIcon } from "../../common/icons/16px/GroupIcon";
 import { RefreshIcon } from "../../common/icons/16px/RefreshIcon";
+import { Direction } from "../../common/icons/types";
+import { Button } from "../../common/v3/Button";
 import { Tooltip } from "../../common/v3/Tooltip";
 import { InsightsPage } from "../InsightsPage";
+import { trackingEvents } from "../tracking";
 import * as s from "./styles";
 import { InsightsCatalogProps, SORTING_CRITERION } from "./types";
 
 const PAGE_SIZE = 10;
+enum ViewMode {
+  All,
+  OnlyDismissed
+}
 
 export const InsightsCatalog = (props: InsightsCatalogProps) => {
   const { insights, onJiraTicketCreate, defaultQuery, totalCount } = props;
@@ -35,15 +46,33 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
   const config = useContext(ConfigContext);
   const previousConfig = usePrevious(config);
   const previousScope = usePrevious(config.scope?.span);
+  const [mode, setMode] = useState<ViewMode>(ViewMode.All);
+  const previousMode = usePrevious(mode);
+  const theme = useTheme();
+
   const refreshData = useCallback(
     () =>
       props.onQueryChange({
         page,
         sorting,
-        searchQuery: debouncedSearchInputValue
+        searchQuery: debouncedSearchInputValue,
+        showDismissed: mode === ViewMode.OnlyDismissed
       }),
-    [page, sorting, debouncedSearchInputValue, props]
+    [page, sorting, debouncedSearchInputValue, props, mode]
   );
+
+  const handleRefreshButtonClick = () => {
+    sendTrackingEvent(trackingEvents.REFRESH_BUTTON_CLICKED, {
+      viewMode: mode
+    });
+
+    refreshData();
+  };
+  const handleViewModeChange = () => {
+    const newMode =
+      mode === ViewMode.All ? ViewMode.OnlyDismissed : ViewMode.All;
+    setMode(newMode);
+  };
 
   useEffect(() => {
     if (!previousScope || previousScope !== config.scope?.span) {
@@ -70,7 +99,8 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
     if (
       (isNumber(previousPage) && previousPage !== page) ||
       (previousSorting && previousSorting !== sorting) ||
-      previousSearchQuery !== debouncedSearchInputValue
+      previousSearchQuery !== debouncedSearchInputValue ||
+      previousMode !== mode
     ) {
       refreshData();
     }
@@ -82,7 +112,9 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
     debouncedSearchInputValue,
     previousSearchQuery,
     props.onQueryChange,
-    refreshData
+    refreshData,
+    mode,
+    previousMode
   ]);
 
   return (
@@ -117,10 +149,26 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
           <s.RefreshButton
             buttonType="tertiary"
             icon={RefreshIcon}
-            onClick={() => refreshData()}
+            onClick={handleRefreshButtonClick}
           />
         </Tooltip>
       </s.Toolbar>
+      {mode === ViewMode.OnlyDismissed && (
+        <s.InsightsViewModeToolbar>
+          <Button
+            buttonType="tertiary"
+            label="Back to All Insights"
+            icon={(props) => (
+              <ChevronIcon {...props} direction={Direction.LEFT} />
+            )}
+            onClick={() => setMode(ViewMode.All)}
+          />
+          <s.DismissedDescription>
+            <s.DismissedCount>{insights.length}</s.DismissedCount>
+            dismissed insights
+          </s.DismissedDescription>
+        </s.InsightsViewModeToolbar>
+      )}
       <InsightsPage
         page={page}
         insights={insights}
@@ -130,24 +178,41 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
         onJiraTicketCreate={onJiraTicketCreate}
         onRefresh={props.onRefresh}
       />
-      {totalCount > 0 && (
-        <s.Footer>
-          <s.FooterItemsCount>
-            Showing{" "}
-            <s.FooterPageItemsCount>
-              {pageStartItemNumber} - {pageEndItemNumber}
-            </s.FooterPageItemsCount>{" "}
-            of {totalCount}
-          </s.FooterItemsCount>
-          <Pagination
-            itemsCount={totalCount}
-            page={page}
-            pageSize={PAGE_SIZE}
-            onPageChange={setPage}
-            extendedNavigation={true}
-          />
-        </s.Footer>
-      )}
+      <s.Footer>
+        {totalCount > 0 && (
+          <>
+            <Pagination
+              itemsCount={totalCount}
+              page={page}
+              pageSize={PAGE_SIZE}
+              onPageChange={setPage}
+              extendedNavigation={true}
+            />
+            <s.FooterItemsCount>
+              Showing{" "}
+              <s.FooterPageItemsCount>
+                {pageStartItemNumber} - {pageEndItemNumber}
+              </s.FooterPageItemsCount>{" "}
+              of {totalCount}
+            </s.FooterItemsCount>
+          </>
+        )}
+        <Button
+          buttonType="tertiary"
+          icon={(props) => (
+            <GroupIcon
+              {...props}
+              crossOut={mode !== ViewMode.OnlyDismissed}
+              color={
+                mode === ViewMode.OnlyDismissed
+                  ? theme.colors.v3.icon.brandSecondary
+                  : props.color
+              }
+            />
+          )}
+          onClick={handleViewModeChange}
+        />
+      </s.Footer>
     </>
   );
 };

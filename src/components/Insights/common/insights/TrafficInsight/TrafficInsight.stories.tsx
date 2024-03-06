@@ -70,7 +70,9 @@ const BaseTrafficInsight = {
   actualStartTime: "2023-06-16T11:10:22.773Z",
   decorators: null,
   category: "",
-  importance: InsightImportance.NotInteresting
+  importance: InsightImportance.NotInteresting,
+  isDismissed: false,
+  isDismissible: true
 };
 
 export const NormalTraffic: Story = {

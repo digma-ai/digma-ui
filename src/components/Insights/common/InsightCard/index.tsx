@@ -6,9 +6,9 @@ import { HistogramIcon } from "../../../common/icons/16px/HistogramIcon";
 import { LiveIcon } from "../../../common/icons/16px/LiveIcon";
 import { PinIcon } from "../../../common/icons/16px/PinIcon";
 import { RecalculateIcon } from "../../../common/icons/16px/RecalculateIcon";
+import { CrossIcon } from "../../../common/icons/CrossIcon";
 import { Button } from "../../../common/v3/Button";
 import { BaseButtonProps } from "../../../common/v3/Button/types";
-import { Card } from "../../../common/v3/Card";
 import { JiraButton } from "../../../common/v3/JiraButton";
 import { Link } from "../../../common/v3/Link";
 import { Tooltip } from "../../../common/v3/Tooltip";
@@ -16,6 +16,11 @@ import { isSpanInsight } from "../../typeGuards";
 import { InsightHeader } from "./InsightHeader";
 import * as s from "./styles";
 import { InsightCardProps } from "./types";
+
+import { sendTrackingEvent } from "../../../../utils/sendTrackingEvent";
+import { actions } from "../../actions";
+import { trackingEvents } from "../../tracking";
+import { DismissInsightPayload, UndismissInsightPayload } from "../../types";
 
 const IS_NEW_TIME_LIMIT = 1000 * 60 * 10; // in milliseconds
 
@@ -92,6 +97,34 @@ export const InsightCard = (props: InsightCardProps) => {
         </s.Description>
       );
     }
+  };
+
+  const handleDismissClick = () => {
+    sendTrackingEvent(trackingEvents.DISMISS_BUTTON_CLICKED, {
+      insightType: props.insight.type
+    });
+
+    window.sendMessageToDigma<DismissInsightPayload>({
+      action: actions.DISMISS,
+      payload: {
+        insightId: props.insight.id
+      }
+    });
+    props.onRefresh(props.insight.type);
+  };
+
+  const handleShowClick = () => {
+    sendTrackingEvent(trackingEvents.UNDISMISS_BUTTON_CLICKED, {
+      insightType: props.insight.type
+    });
+
+    window.sendMessageToDigma<UndismissInsightPayload>({
+      action: actions.UNDISMISS,
+      payload: {
+        insightId: props.insight.id
+      }
+    });
+    props.onRefresh(props.insight.type);
   };
 
   const renderActions = () => {
@@ -203,7 +236,8 @@ export const InsightCard = (props: InsightCardProps) => {
       IS_NEW_TIME_LIMIT
     : false;
   return (
-    <Card
+    <s.StyledInsightCard
+      $isDismissed={props.insight.isDismissed}
       header={
         <InsightHeader
           spanInfo={
@@ -231,7 +265,21 @@ export const InsightCard = (props: InsightCardProps) => {
       }
       footer={
         <s.InsightFooter>
-          {/* <Button icon={CrossIcon} label={"Dismiss"} buttonType={"tertiary"} /> */}
+          {props.insight.isDismissible &&
+            (props.insight.isDismissed ? (
+              <s.DismissButton
+                label={"Show"}
+                buttonType={"tertiary"}
+                onClick={handleShowClick}
+              />
+            ) : (
+              <s.DismissButton
+                icon={CrossIcon}
+                label={"Dismiss"}
+                buttonType={"tertiary"}
+                onClick={handleDismissClick}
+              />
+            ))}
           {renderActions()}
         </s.InsightFooter>
       }

@@ -41,6 +41,8 @@ const data: EndpointBreakdownInsight = {
   importance: 6,
   isRecalculateEnabled: true,
   hasAsyncSpans: false,
+  isDismissed: false,
+  isDismissible: true,
   components: [
     {
       type: ComponentType.Internal,

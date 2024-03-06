@@ -196,6 +196,8 @@ export interface CodeObjectInsight extends Insight {
   ticketLink: string | null;
   id: string;
   sourceSpanCodeObjectInsight: string;
+  isDismissed: boolean;
+  isDismissible: boolean;
   status?: InsightStatus;
 }
 
@@ -863,6 +865,7 @@ export interface InsightsQuery {
   page: number;
   sorting: Sorting;
   searchQuery: string | null;
+  showDismissed: boolean;
 }
 
 export interface ScopedInsightsQuery extends InsightsQuery {
@@ -870,3 +873,11 @@ export interface ScopedInsightsQuery extends InsightsQuery {
 }
 
 export { InsightType };
+
+export interface DismissInsightPayload {
+  insightId: string;
+}
+
+export interface UndismissInsightPayload {
+  insightId: string;
+}

@@ -38,6 +38,8 @@ const insight: SpanUsagesInsight = {
   sampleTrace: null,
   flows: [],
   scope: InsightScope.Span,
+  isDismissed: false,
+  isDismissible: true,
   spanInfo: {
     name: "DelayAsync",
     displayName: "DelayAsync",

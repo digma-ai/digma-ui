@@ -34,6 +34,8 @@ export const Default: Story = {
       category: InsightCategory.Performance,
       specifity: 5,
       importance: 2,
+      isDismissed: false,
+      isDismissible: true,
       decorators: [
         {
           title: "Slow Endpoint",

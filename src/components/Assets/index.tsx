@@ -13,6 +13,7 @@ import {
 import { useDebounce } from "../../hooks/useDebounce";
 import { usePrevious } from "../../hooks/usePrevious";
 import { FeatureFlag } from "../../types";
+import { sendTrackingEvent } from "../../utils/sendTrackingEvent";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { EmptyState } from "../common/EmptyState";
 import { SearchInput } from "../common/SearchInput";
@@ -28,6 +29,7 @@ import { NoDataMessage } from "./NoDataMessage";
 import { ServicesFilter } from "./ServicesFilter";
 import { actions } from "./actions";
 import * as s from "./styles";
+import { trackingEvents } from "./tracking";
 import { DataRefresher } from "./types";
 
 export const Assets = () => {
@@ -113,6 +115,10 @@ export const Assets = () => {
   };
 
   const handleRefresh = () => {
+    sendTrackingEvent(trackingEvents.REFRESH_BUTTON_CLICKED, {
+      view: !selectedAssetTypeId ? "asset categories" : "assets"
+    });
+
     const currentRefresher = !selectedAssetTypeId
       ? assetTypeListDataRefresher
       : assetListDataRefresher;

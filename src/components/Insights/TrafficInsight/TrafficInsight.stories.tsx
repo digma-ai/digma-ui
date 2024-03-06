@@ -34,6 +34,8 @@ export const LowTraffic: Story = {
       name: "Low Usage",
       type: InsightType.LowUsage,
       category: InsightCategory.Usage,
+      isDismissed: false,
+      isDismissible: true,
       specifity: 4,
       importance: 6,
       decorators: [
@@ -97,6 +99,8 @@ export const HighTraffic: Story = {
       name: "High Usage",
       type: InsightType.HighUsage,
       category: InsightCategory.Usage,
+      isDismissed: false,
+      isDismissible: true,
       specifity: 4,
       importance: 5,
       decorators: [

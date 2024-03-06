@@ -1,11 +1,16 @@
 import styled from "styled-components";
+import {
+  caption1RegularTypography,
+  subscriptRegularTypography
+} from "../../common/App/typographies";
 import { Button } from "../../common/v3/Button";
 
 export const Footer = styled.div`
   display: flex;
-  justify-content: space-between;
+  align-items: center;
   padding: 8px;
-  font-size: 14px;
+  gap: 8px;
+  ${caption1RegularTypography}
 `;
 
 export const FooterItemsCount = styled.span`
@@ -38,6 +43,22 @@ export const Toolbar = styled.div`
   justify-content: space-between;
   padding: 8px;
   gap: 8px;
+`;
+
+export const DismissedDescription = styled.div`
+  ${subscriptRegularTypography}
+  display: flex;
+  align-items: center;
+  color: ${({ theme }) => theme.colors.v3.text.disabled};
+`;
+
+export const DismissedCount = styled.span`
+  color: ${({ theme }) => theme.colors.v3.text.primary};
+  padding-right: 4px;
+`;
+
+export const InsightsViewModeToolbar = styled(Toolbar)`
+  padding: 0 8px;
 `;
 
 export const RefreshButton = styled(Button)`

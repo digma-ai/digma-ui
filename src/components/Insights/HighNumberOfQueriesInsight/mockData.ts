@@ -24,6 +24,8 @@ export const mockedHighNumberOfQueriesInsight: EndpointHighNumberOfQueriesInsigh
     specifity: 2,
     importance: 3,
     queriesCount: 250,
+    isDismissed: false,
+    isDismissible: true,
     typicalCount: 4,
     traceId: "00D37A4E7208E0F6E89AA7E2E37446A6",
     scope: InsightScope.EntrySpan,

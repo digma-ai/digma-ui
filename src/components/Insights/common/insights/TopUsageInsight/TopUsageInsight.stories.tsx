@@ -38,6 +38,8 @@ export const Default: Story = {
       importance: 5,
       span: "DelayAsync",
       sampleTrace: null,
+      isDismissed: false,
+      isDismissible: true,
       flows: [
         {
           sampleTraceIds: ["3E41E4197B696CA9BF1157AEB254DFE0"],

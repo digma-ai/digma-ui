@@ -35,6 +35,8 @@ export const Default: Story = {
       category: InsightCategory.Performance,
       specifity: 4,
       isRecalculateEnabled: true,
+      isDismissed: false,
+      isDismissible: true,
       importance: 6,
       spanName: "ClientTester.generateInsightData",
       spanCodeObjectId:

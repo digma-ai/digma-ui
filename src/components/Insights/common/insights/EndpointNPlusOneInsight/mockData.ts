@@ -21,6 +21,8 @@ export const mockedEndpointNPlusOneInsight: EndpointSpanNPlusOneInsight = {
   category: InsightCategory.Performance,
   specifity: 2,
   importance: 3,
+  isDismissed: false,
+  isDismissible: true,
   span: {
     occurrences: 200,
     internalSpan: null,

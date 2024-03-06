@@ -22,6 +22,8 @@ export const mockedNPlusOneInsight: SpanNPlusOneInsight = {
   category: InsightCategory.Performance,
   specifity: 2,
   importance: 2,
+  isDismissed: false,
+  isDismissible: true,
   span: {
     name: "OwnerValidation.ValidateOwner",
     displayName: "OwnerValidation.ValidateOwner",

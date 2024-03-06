@@ -36,6 +36,8 @@ export const Default: Story = {
       category: InsightCategory.Performance,
       specifity: 4,
       importance: 5,
+      isDismissed: false,
+      isDismissible: true,
       maxConcurrency: 24,
       minDuration: {
         value: 100.67,

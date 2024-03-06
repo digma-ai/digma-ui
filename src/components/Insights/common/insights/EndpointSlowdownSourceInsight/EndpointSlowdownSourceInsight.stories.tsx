@@ -35,6 +35,8 @@ export const WithEvaluatingChange: Story = {
       category: InsightCategory.Performance,
       specifity: 4,
       importance: 2,
+      isDismissed: false,
+      isDismissible: true,
       endpointSlowdownSources: [
         {
           percentile: "0.5",

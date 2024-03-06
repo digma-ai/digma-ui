@@ -26,6 +26,8 @@ export const mockedSpanScalingInsight: SpanScalingBadlyInsight = {
   spanInstrumentationLibrary: "SampleInsightsController",
   turningPointConcurrency: 17,
   maxConcurrency: 24,
+  isDismissed: false,
+  isDismissible: true,
   minDuration: {
     value: 100.67,
     unit: "ms",

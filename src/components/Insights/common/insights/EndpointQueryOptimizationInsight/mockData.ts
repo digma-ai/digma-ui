@@ -23,6 +23,8 @@ export const mockedEndpointQueryOptimizationInsight: EndpointQueryOptimizationIn
     category: InsightCategory.Performance,
     specifity: 2,
     importance: 3,
+    isDismissed: false,
+    isDismissible: true,
     spans: [
       {
         spanInfo: {

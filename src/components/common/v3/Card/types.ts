@@ -4,4 +4,5 @@ export interface CardProps {
   header?: ReactNode;
   content: ReactNode;
   footer?: ReactNode;
+  className?: string;
 }

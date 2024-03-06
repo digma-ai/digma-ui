@@ -21,6 +21,8 @@ export const mockedEndpointQueryOptimizationInsight: EndpointQueryOptimizationIn
     name: "Query Optimization",
     type: InsightType.EndpointQueryOptimization,
     category: InsightCategory.Performance,
+    isDismissed: false,
+    isDismissible: true,
     specifity: 2,
     importance: 3,
     spans: [

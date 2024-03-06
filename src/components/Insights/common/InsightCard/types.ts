@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { InsightType } from "../../../../types";
+import { CardProps } from "../../../common/Card/types";
 import { GenericCodeObjectInsight } from "../../types";
 
 export interface InsightCardProps {
@@ -7,7 +8,6 @@ export interface InsightCardProps {
   content?: ReactNode;
   isAsync?: boolean;
   isActive?: boolean;
-  onDismiss?: (insightId: string) => void;
   onOpenHistogram?: (
     instrumentationLibrary: string,
     name: string,
@@ -26,4 +26,8 @@ export interface InsightCardProps {
   };
   onJiraButtonClick?: (spanCodeObjectId: string, event: string) => void;
   onGoToSpan: (spanCodeObjectId: string) => void;
+}
+
+export interface StyledInsightCardProps extends CardProps {
+  $isDismissed: boolean;
 }

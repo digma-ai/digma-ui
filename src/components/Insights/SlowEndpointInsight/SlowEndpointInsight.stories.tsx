@@ -30,6 +30,8 @@ export const Default: Story = {
       deactivatedCommitId: null,
       reopenCount: 0,
       ticketLink: null,
+      isDismissible: true,
+      isDismissed: false,
       impact: 0,
       name: "Slow Endpoint",
       type: InsightType.SlowEndpoint,

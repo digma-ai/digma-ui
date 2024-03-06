@@ -234,7 +234,9 @@ export const Default: Story = {
           prefixedCodeObjectId:
             "method:Sample.MoneyTransfer.API.Controllers.TransferController$_$TransferFunds(TransferRequest)",
           customStartTime: null,
-          actualStartTime: "2023-06-26T00:00:00.000Z"
+          actualStartTime: "2023-06-26T00:00:00.000Z",
+          isDismissed: false,
+          isDismissible: true
         },
         {
           sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
@@ -290,7 +292,9 @@ export const Default: Story = {
           prefixedCodeObjectId:
             "method:Sample.MoneyTransfer.API.Controllers.TransferController$_$TransferFunds(TransferRequest)",
           customStartTime: null,
-          actualStartTime: "2023-06-26T13:53:53.645Z"
+          actualStartTime: "2023-06-26T13:53:53.645Z",
+          isDismissed: false,
+          isDismissible: true
         },
         {
           sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
@@ -332,7 +336,9 @@ export const Default: Story = {
           prefixedCodeObjectId:
             "method:Sample.MoneyTransfer.API.Controllers.TransferController$_$TransferFunds(TransferRequest)",
           customStartTime: null,
-          actualStartTime: "2023-06-26T13:53:57.956Z"
+          actualStartTime: "2023-06-26T13:53:57.956Z",
+          isDismissed: false,
+          isDismissible: true
         },
         {
           sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
@@ -351,6 +357,8 @@ export const Default: Story = {
           category: InsightCategory.Usage,
           specifity: 4,
           importance: 6,
+          isDismissed: false,
+          isDismissible: true,
           decorators: [
             {
               title: "Low Usage",
@@ -564,7 +572,9 @@ export const Default: Story = {
           prefixedCodeObjectId:
             "method:Sample.MoneyTransfer.API.Controllers.TransferController$_$TransferFunds(TransferRequest)",
           customStartTime: null,
-          actualStartTime: "2023-06-12T13:49:03.486Z"
+          actualStartTime: "2023-06-12T13:49:03.486Z",
+          isDismissed: false,
+          isDismissible: true
         },
         {
           sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
@@ -583,6 +593,8 @@ export const Default: Story = {
           category: InsightCategory.Performance,
           specifity: 4,
           isRecalculateEnabled: true,
+          isDismissed: false,
+          isDismissible: true,
           spanCodeObjectId:
             "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP POST Transfer/TransferFunds",
           span: {
@@ -727,7 +739,9 @@ export const Default: Story = {
           prefixedCodeObjectId:
             "method:Sample.MoneyTransfer.API.Controllers.TransferController$_$TransferFunds(TransferRequest)",
           customStartTime: null,
-          actualStartTime: "2023-06-20T00:00:00.000Z"
+          actualStartTime: "2023-06-20T00:00:00.000Z",
+          isDismissed: false,
+          isDismissible: true
         },
         mockedEndpointNPlusOneInsight,
         mockedBottleneckInsight,
@@ -872,7 +886,9 @@ const errorsInsight: CodeObjectErrorsInsight = {
   prefixedCodeObjectId:
     "method:Sample.MoneyTransfer.API.Controllers.TransferController$_$TransferFunds(TransferRequest)",
   customStartTime: null,
-  actualStartTime: "2023-06-26T13:53:53.645Z"
+  actualStartTime: "2023-06-26T13:53:53.645Z",
+  isDismissed: false,
+  isDismissible: true
 };
 
 export const NoObservabilityWithInsights: Story = {

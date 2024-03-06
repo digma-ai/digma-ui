@@ -19,6 +19,8 @@ export const mockedSpanNexusInsight: SpanNexusInsight = {
   specifity: 2,
   importance: 3,
   scope: InsightScope.Span,
+  isDismissed: false,
+  isDismissible: true,
   spanInfo: {
     name: "HTTP POST /owners/{ownerId}/pets/new",
     displayName: "HTTP POST /owners/{ownerId}/pets/new",

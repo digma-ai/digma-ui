@@ -28,7 +28,6 @@ export const JiraButtonIsPrimary: Story = {
     isAsync: true,
     insight: { ...mockedEndpointNPlusOneInsight, criticality: 0.9 },
     onGoToLive: undefined,
-    onDismiss: undefined,
     onPin: undefined,
     onGoToTrace: undefined,
     onOpenHistogram: undefined
@@ -45,7 +44,6 @@ export const LinkedJiraTicket: Story = {
       isHintEnabled: false
     },
     onGoToLive: undefined,
-    onDismiss: undefined,
     onPin: undefined,
     onGoToTrace: undefined,
     onOpenHistogram: undefined

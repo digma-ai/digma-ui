@@ -35,6 +35,8 @@ export const Default: Story = {
       category: InsightCategory.Performance,
       specifity: 2,
       importance: 3,
+      isDismissed: false,
+      isDismissible: true,
       spans: [
         {
           renderSpan: {
