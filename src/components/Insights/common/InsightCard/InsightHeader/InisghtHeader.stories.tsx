@@ -20,7 +20,6 @@ export const Default: Story = {
     importance: 3,
     insightType: "HotSpot",
     isNew: true,
-    isAsync: true,
-    isActive: true
+    isAsync: true
   }
 };

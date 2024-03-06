@@ -2,7 +2,8 @@ import { InsightType } from "../../../types";
 import {
   EndpointSuspectedNPlusOneInsight,
   InsightCategory,
-  InsightScope
+  InsightScope,
+  InsightStatus
 } from "../types";
 
 export const mockedEndpointNPlusOneInsight: EndpointSuspectedNPlusOneInsight = {
@@ -87,5 +88,6 @@ export const mockedEndpointNPlusOneInsight: EndpointSuspectedNPlusOneInsight = {
   prefixedCodeObjectId:
     "method:org.springframework.samples.petclinic.sample.SampleInsightsController$_$genNPlusOneWithoutInternalSpan",
   customStartTime: null,
-  actualStartTime: "2023-06-16T10:30:33.027Z"
+  actualStartTime: "2023-06-16T10:30:33.027Z",
+  status: InsightStatus.Active
 };

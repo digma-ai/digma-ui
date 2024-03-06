@@ -160,6 +160,13 @@ export interface CodeObjectDecorator {
   title: string;
 }
 
+export enum InsightStatus {
+  Active = "Active",
+  InEvaluation = "InEvaluation",
+  PossiblyFixed = "PossiblyFixed",
+  Regression = "Regression"
+}
+
 export interface CodeObjectInsight extends Insight {
   shortDisplayInfo: {
     title: string;
@@ -189,6 +196,7 @@ export interface CodeObjectInsight extends Insight {
   ticketLink: string | null;
   id: string;
   sourceSpanCodeObjectInsight: string;
+  status?: InsightStatus;
 }
 
 export interface SpanInsight extends CodeObjectInsight {

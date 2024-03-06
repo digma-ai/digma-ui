@@ -115,11 +115,11 @@ export const InsightCard = (props: InsightCardProps) => {
 
     props.insight.isRecalculateEnabled &&
       buttonsToRender.push({
-        tooltip: "Recalculate",
+        tooltip: "Recheck",
         button: (btnProps) => (
           <Button
             icon={RecalculateIcon}
-            label={"Recalculate"}
+            label={"Recheck"}
             onClick={handleRecalculateClick}
             {...btnProps}
           />
@@ -209,7 +209,7 @@ export const InsightCard = (props: InsightCardProps) => {
           spanInfo={
             isSpanInsight(props.insight) ? props.insight.spanInfo : undefined
           }
-          isActive={props.isActive}
+          status={props.insight.status}
           isNew={isNew}
           isAsync={props.isAsync}
           insightType={props.insight.type}
