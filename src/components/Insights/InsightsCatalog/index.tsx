@@ -145,9 +145,9 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
           ]}
           default={defaultQuery.sorting}
         />
-        <Tooltip title="Refresh">
+        <Tooltip title={"Refresh"}>
           <s.RefreshButton
-            buttonType="tertiary"
+            buttonType={"tertiary"}
             icon={RefreshIcon}
             onClick={handleRefreshButtonClick}
           />
@@ -156,8 +156,8 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
       {mode === ViewMode.OnlyDismissed && (
         <s.InsightsViewModeToolbar>
           <Button
-            buttonType="tertiary"
-            label="Back to All Insights"
+            buttonType={"tertiary"}
+            label={"Back to All Insights"}
             icon={(props) => (
               <ChevronIcon {...props} direction={Direction.LEFT} />
             )}
@@ -198,7 +198,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
           </>
         )}
         <Button
-          buttonType="tertiary"
+          buttonType={"tertiary"}
           icon={(props) => (
             <GroupIcon
               {...props}
