@@ -202,7 +202,7 @@ export const Assets = () => {
             <s.RefreshButton
               buttonType="tertiary"
               icon={RefreshIcon}
-              onClick={() => handleRefresh()}
+              onClick={handleRefresh}
             />
           </Tooltip>
         </s.HeaderItem>
