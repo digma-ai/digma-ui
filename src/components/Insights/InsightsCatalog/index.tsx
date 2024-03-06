@@ -99,7 +99,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
       (isNumber(previousPage) && previousPage !== page) ||
       (previousSorting && previousSorting !== sorting) ||
       previousSearchQuery !== debouncedSearchInputValue ||
-      (previousMode && previousMode !== mode)
+      previousMode !== mode
     ) {
       refreshData();
     }
