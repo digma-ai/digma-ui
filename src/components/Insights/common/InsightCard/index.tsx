@@ -17,7 +17,9 @@ import { InsightHeader } from "./InsightHeader";
 import * as s from "./styles";
 import { InsightCardProps } from "./types";
 
+import { sendTrackingEvent } from "../../../../utils/sendTrackingEvent";
 import { actions } from "../../actions";
+import { trackingEvents } from "../../tracking";
 import { DismissInsightPayload, UndismissInsightPayload } from "../../types";
 
 const IS_NEW_TIME_LIMIT = 1000 * 60 * 10; // in milliseconds
@@ -98,6 +100,10 @@ export const InsightCard = (props: InsightCardProps) => {
   };
 
   const handleDismissClick = () => {
+    sendTrackingEvent(trackingEvents.DISMISS, {
+      insightType: props.insight.type
+    });
+
     window.sendMessageToDigma<DismissInsightPayload>({
       action: actions.DISMISS,
       payload: {
@@ -108,6 +114,10 @@ export const InsightCard = (props: InsightCardProps) => {
   };
 
   const handleShowClick = () => {
+    sendTrackingEvent(trackingEvents.UNDISMISS, {
+      insightType: props.insight.type
+    });
+
     window.sendMessageToDigma<UndismissInsightPayload>({
       action: actions.UNDISMISS,
       payload: {

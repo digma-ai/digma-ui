@@ -4,6 +4,7 @@ import { usePrevious } from "../../../hooks/usePrevious";
 import { useTheme } from "styled-components";
 import { useDebounce } from "../../../hooks/useDebounce";
 import { isNumber } from "../../../typeGuards/isNumber";
+import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Pagination } from "../../common/Pagination";
 import { SearchInput } from "../../common/SearchInput";
@@ -16,7 +17,7 @@ import { Direction } from "../../common/icons/types";
 import { Button } from "../../common/v3/Button";
 import { Tooltip } from "../../common/v3/Tooltip";
 import { InsightsPage } from "../InsightsPage";
-import { actions } from "../actions";
+import { trackingEvents } from "../tracking";
 import * as s from "./styles";
 import { InsightsCatalogProps, SORTING_CRITERION } from "./types";
 
@@ -60,13 +61,13 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
     [page, sorting, debouncedSearchInputValue, props]
   );
 
-  const handleDismissal = (insightId: string) => {
-    window.sendMessageToDigma({
-      action: actions.DISMISS,
-      payload: insightId
+  const handleRefreshButtonClick = () => {
+    sendTrackingEvent(trackingEvents.REFRESH_LIST, {
+      viewMode: mode
     });
-  };
 
+    refreshData();
+  };
   const handleViewModeChange = () => {
     const newMode = mode === ViewMode.All ? ViewMode.OnlyHidden : ViewMode.All;
     setMode(newMode);
@@ -147,7 +148,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
           <s.RefreshButton
             buttonType="tertiary"
             icon={RefreshIcon}
-            onClick={() => refreshData()}
+            onClick={handleRefreshButtonClick}
           />
         </Tooltip>
       </s.Toolbar>
@@ -175,7 +176,6 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
         }
         onJiraTicketCreate={onJiraTicketCreate}
         onRefresh={props.onRefresh}
-        onDismiss={handleDismissal}
       />
       <s.Footer>
         {totalCount > 0 && (

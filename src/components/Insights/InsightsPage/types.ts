@@ -9,7 +9,6 @@ export interface InsightPageProps {
   ) => void;
   onRefresh: () => void;
   page: number;
-  onDismiss: (insightId: string) => void;
 }
 
 export interface isInsightJiraTicketHintShownPayload {
