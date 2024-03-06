@@ -116,7 +116,7 @@ export const Assets = () => {
 
   const handleRefresh = () => {
     sendTrackingEvent(trackingEvents.REFRESH_BUTTON_CLICKED, {
-      listType: !selectedAssetTypeId ? "Asset type list" : "Asset list"
+      view: !selectedAssetTypeId ? "asset categories" : "assets"
     });
 
     const currentRefresher = !selectedAssetTypeId
