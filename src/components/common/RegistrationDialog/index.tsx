@@ -1,6 +1,7 @@
 import { KeyboardEvent, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { isValidEmailFormat } from "../../../utils/isValidEmailFormat";
+import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { NewCircleLoader } from "../NewCircleLoader";
 import { EnvelopeIcon } from "../icons/16px/EnvelopeIcon";
 import { CrossIcon } from "../icons/CrossIcon";
@@ -51,6 +52,7 @@ export const RegistrationDialog = (props: RegistrationDialogProps) => {
   }, [setFocus]);
 
   const onSubmit = (data: RegistrationFormValues) => {
+    sendTrackingEvent("registration dialog submit button clicked");
     props.onSubmit({
       fullName: data.fullName.trim(),
       email: data.email
@@ -58,11 +60,15 @@ export const RegistrationDialog = (props: RegistrationDialogProps) => {
   };
 
   const handleCloseButtonClick = () => {
+    sendTrackingEvent("registration dialog close button clicked");
     props.onClose();
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "Enter" && isValid) {
+      sendTrackingEvent(
+        "registration dialog Enter key pressed and form data is valid"
+      );
       onSubmit(values);
     }
   };

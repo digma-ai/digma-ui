@@ -141,13 +141,26 @@ export const RecentActivity = (props: RecentActivityProps) => {
       setLiveData(data as LiveData);
     };
 
+    const handleOpenRegistrationDialog = () => {
+      setIsRegistrationPopupVisible(true);
+    };
+
     dispatcher.addActionListener(actions.SET_DATA, handleRecentActivityData);
     dispatcher.addActionListener(actions.SET_LIVE_DATA, handleLiveData);
+    dispatcher.addActionListener(
+      actions.OPEN_REGISTRATION_DIALOG,
+      handleOpenRegistrationDialog
+    );
 
     return () => {
       dispatcher.removeActionListener(
         actions.SET_DATA,
         handleRecentActivityData
+      );
+      dispatcher.removeActionListener(actions.SET_LIVE_DATA, handleLiveData);
+      dispatcher.removeActionListener(
+        actions.OPEN_REGISTRATION_DIALOG,
+        handleOpenRegistrationDialog
       );
     };
   }, []);
@@ -339,8 +352,14 @@ export const RecentActivity = (props: RecentActivityProps) => {
       action: globalActions.REGISTER,
       payload: {
         ...formData,
-        scope: "recent activity add environment",
-        selectedEnvironmentType: environmentToSetType?.type
+        ...(environmentToSetType
+          ? {
+              scope: "recent activity add environment",
+              selectedEnvironmentType: environmentToSetType.type
+            }
+          : {
+              scope: "recent activity"
+            })
       }
     });
 
