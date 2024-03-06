@@ -58,7 +58,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
         searchQuery: debouncedSearchInputValue,
         showDismissed: mode === ViewMode.OnlyHidden
       }),
-    [page, sorting, debouncedSearchInputValue, props]
+    [page, sorting, debouncedSearchInputValue, props, mode]
   );
 
   const handleRefreshButtonClick = () => {
@@ -99,7 +99,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
       (isNumber(previousPage) && previousPage !== page) ||
       (previousSorting && previousSorting !== sorting) ||
       previousSearchQuery !== debouncedSearchInputValue ||
-      previousMode !== mode
+      (previousMode && previousMode !== mode)
     ) {
       refreshData();
     }
