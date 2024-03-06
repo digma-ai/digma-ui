@@ -2,8 +2,10 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import { usePrevious } from "../../../hooks/usePrevious";
 
 import { useTheme } from "styled-components";
+import { getFeatureFlagValue } from "../../../featureFlags";
 import { useDebounce } from "../../../hooks/useDebounce";
 import { isNumber } from "../../../typeGuards/isNumber";
+import { FeatureFlag } from "../../../types";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Pagination } from "../../common/Pagination";
@@ -49,6 +51,11 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
   const [mode, setMode] = useState<ViewMode>(ViewMode.All);
   const previousMode = usePrevious(mode);
   const theme = useTheme();
+
+  const isViewModeButtonVisible = getFeatureFlagValue(
+    config,
+    FeatureFlag.IS_INSIGHT_DISMISSAL_ENABLED
+  );
 
   const refreshData = useCallback(
     () =>
@@ -197,21 +204,23 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
             </s.FooterItemsCount>
           </>
         )}
-        <Button
-          buttonType={"tertiary"}
-          icon={(props) => (
-            <GroupIcon
-              {...props}
-              crossOut={mode !== ViewMode.OnlyDismissed}
-              color={
-                mode === ViewMode.OnlyDismissed
-                  ? theme.colors.v3.icon.brandSecondary
-                  : props.color
-              }
-            />
-          )}
-          onClick={handleViewModeChange}
-        />
+        {isViewModeButtonVisible && (
+          <Button
+            buttonType={"tertiary"}
+            icon={(props) => (
+              <GroupIcon
+                {...props}
+                crossOut={mode !== ViewMode.OnlyDismissed}
+                color={
+                  mode === ViewMode.OnlyDismissed
+                    ? theme.colors.v3.icon.brandSecondary
+                    : props.color
+                }
+              />
+            )}
+            onClick={handleViewModeChange}
+          />
+        )}
       </s.Footer>
     </>
   );
