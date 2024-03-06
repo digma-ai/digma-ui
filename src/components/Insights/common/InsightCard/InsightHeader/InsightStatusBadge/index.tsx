@@ -8,14 +8,14 @@ export const InsightStatusBadge = (props: InsightStatusBadgeProps) => {
 
   const statusInfo = getInsightStatusInfo(props.status, theme);
 
-  if (statusInfo) {
-    return (
-      <s.Container>
-        <s.Indicator $status={props.status} />
-        {statusInfo.label}
-      </s.Container>
-    );
+  if (!statusInfo) {
+    return null;
   }
 
-  return null;
+  return (
+    <s.Container>
+      <s.Indicator $status={props.status} />
+      {statusInfo.label}
+    </s.Container>
+  );
 };
