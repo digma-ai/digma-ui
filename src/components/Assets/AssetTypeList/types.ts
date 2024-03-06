@@ -10,6 +10,7 @@ export interface AssetTypeListProps {
   filters?: AssetFilterQuery;
   searchQuery: string;
   scopeViewOptions: AssetScopeOption | null;
+  setRefresher: (refresher: () => void) => void;
 }
 
 export interface AssetCategoriesData {
