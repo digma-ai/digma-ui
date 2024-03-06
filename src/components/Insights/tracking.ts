@@ -12,7 +12,7 @@ export const trackingEvents = addPrefix(
       "jira ticket attachment download button clicked",
     JIRA_TICKET_HINT_CLOSED: "jira ticket hint closed",
     DISMISS_BUTTON_CLICKED: "insight dismiss button clicked",
-    UNDISMISS_BUTTON_CLICKED: "insight show button clicked",
+    SHOW_BUTTON_CLICKED: "insight show button clicked",
     REFRESH_BUTTON_CLICKED: "refresh button clicked"
   },
   " "

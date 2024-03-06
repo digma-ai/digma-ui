@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { subscriptRegularTypography } from "../../../common/App/typographies";
 import { Button } from "../../../common/v3/Button";
 import { Card } from "../../../common/v3/Card";
@@ -40,11 +40,12 @@ export const ContentContainer = styled.div`
 `;
 
 export const StyledInsightCard = styled(Card)<StyledInsightCardProps>`
-  ${({ $isDismissed, theme }) => {
-    if ($isDismissed) {
-      return `background: ${theme.colors.v3.surface.sidePanelHeader}`;
-    }
-  }}
+  ${({ $isDismissed, theme }) =>
+    $isDismissed
+      ? css`
+          background: ${theme.colors.v3.surface.sidePanelHeader};
+        `
+      : ""}
 `;
 
 export const DismissButton = styled(Button)`

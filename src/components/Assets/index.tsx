@@ -204,9 +204,9 @@ export const Assets = () => {
               />
             )
           )}
-          <Tooltip title="Refresh">
+          <Tooltip title={"Refresh"}>
             <s.RefreshButton
-              buttonType="tertiary"
+              buttonType={"tertiary"}
               icon={RefreshIcon}
               onClick={handleRefresh}
             />

@@ -114,7 +114,7 @@ export const InsightCard = (props: InsightCardProps) => {
   };
 
   const handleShowClick = () => {
-    sendTrackingEvent(trackingEvents.UNDISMISS_BUTTON_CLICKED, {
+    sendTrackingEvent(trackingEvents.SHOW_BUTTON_CLICKED, {
       insightType: props.insight.type
     });
 

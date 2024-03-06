@@ -164,7 +164,8 @@ export enum InsightStatus {
   Active = "Active",
   InEvaluation = "InEvaluation",
   PossiblyFixed = "PossiblyFixed",
-  Regression = "Regression"
+  Regression = "Regression",
+  Inactive = "Inactive"
 }
 
 export interface CodeObjectInsight extends Insight {
@@ -196,8 +197,8 @@ export interface CodeObjectInsight extends Insight {
   ticketLink: string | null;
   id: string;
   sourceSpanCodeObjectInsight: string;
-  isDismissed: boolean;
-  isDismissible: boolean;
+  isDismissed?: boolean;
+  isDismissible?: boolean;
   status?: InsightStatus;
 }
 
