@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { usePrevious } from "../../../hooks/usePrevious";
 
+import { useTheme } from "styled-components";
 import { useDebounce } from "../../../hooks/useDebounce";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { ConfigContext } from "../../common/App/ConfigContext";
@@ -9,6 +10,7 @@ import { SearchInput } from "../../common/SearchInput";
 import { SortingSelector } from "../../common/SortingSelector";
 import { SORTING_ORDER, Sorting } from "../../common/SortingSelector/types";
 import { ChevronIcon } from "../../common/icons/16px/ChevronIcon";
+import { GroupIcon } from "../../common/icons/16px/GroupIcon";
 import { Direction } from "../../common/icons/types";
 import { Button } from "../../common/v3/Button";
 import { InsightsPage } from "../InsightsPage";
@@ -19,7 +21,7 @@ import { InsightsCatalogProps, SORTING_CRITERION } from "./types";
 const PAGE_SIZE = 10;
 enum ViewMode {
   All,
-  Hidden
+  OnlyHidden
 }
 
 export const InsightsCatalog = (props: InsightsCatalogProps) => {
@@ -42,12 +44,19 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
   const previousConfig = usePrevious(config);
   const previousScope = usePrevious(config.scope?.span);
   const [mode, setMode] = useState<ViewMode>(ViewMode.All);
+  const previousMode = usePrevious(mode);
+  const theme = useTheme();
 
   const handleDismissal = (insightId: string) => {
     window.sendMessageToDigma({
       action: actions.DISMISS,
       payload: insightId
     });
+  };
+
+  const handleViewModeChange = () => {
+    const newMode = mode === ViewMode.All ? ViewMode.OnlyHidden : ViewMode.All;
+    setMode(newMode);
   };
 
   useEffect(() => {
@@ -71,7 +80,8 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
     props.onQueryChange({
       page,
       sorting,
-      searchQuery: debouncedSearchInputValue
+      searchQuery: debouncedSearchInputValue,
+      showDismissed: mode === ViewMode.OnlyHidden
     });
   }, []);
 
@@ -79,12 +89,14 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
     if (
       (isNumber(previousPage) && previousPage !== page) ||
       (previousSorting && previousSorting !== sorting) ||
-      previousSearchQuery !== debouncedSearchInputValue
+      previousSearchQuery !== debouncedSearchInputValue ||
+      previousMode !== mode
     ) {
       props.onQueryChange({
         page,
         sorting,
-        searchQuery: debouncedSearchInputValue
+        searchQuery: debouncedSearchInputValue,
+        showDismissed: mode === ViewMode.OnlyHidden
       });
     }
   }, [
@@ -94,7 +106,9 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
     page,
     debouncedSearchInputValue,
     previousSearchQuery,
-    props.onQueryChange
+    props.onQueryChange,
+    mode,
+    previousMode
   ]);
 
   return (
@@ -126,13 +140,13 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
           default={defaultQuery.sorting}
         />
       </s.Toolbar>
-      {mode === ViewMode.Hidden && (
-        <s.Toolbar>
+      {mode === ViewMode.OnlyHidden && (
+        <s.InsightsViewModeToolbar>
           <Button
             buttonType="tertiary"
             label="Back to All Insights"
             icon={(props) => (
-              <ChevronIcon {...props} direction={Direction.RIGHT} />
+              <ChevronIcon {...props} direction={Direction.LEFT} />
             )}
             onClick={() => setMode(ViewMode.All)}
           />
@@ -140,7 +154,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
             <s.DismissedCount>{insights.length}</s.DismissedCount>
             dismissed insights
           </s.DismissedDescription>
-        </s.Toolbar>
+        </s.InsightsViewModeToolbar>
       )}
       <InsightsPage
         page={page}
@@ -152,24 +166,41 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
         onRefresh={props.onRefresh}
         onDismiss={handleDismissal}
       />
-      {totalCount > 0 && (
-        <s.Footer>
-          <s.FooterItemsCount>
-            Showing{" "}
-            <s.FooterPageItemsCount>
-              {pageStartItemNumber} - {pageEndItemNumber}
-            </s.FooterPageItemsCount>{" "}
-            of {totalCount}
-          </s.FooterItemsCount>
-          <Pagination
-            itemsCount={totalCount}
-            page={page}
-            pageSize={PAGE_SIZE}
-            onPageChange={setPage}
-            extendedNavigation={true}
-          />
-        </s.Footer>
-      )}
+      <s.Footer>
+        {totalCount > 0 && (
+          <>
+            <Pagination
+              itemsCount={totalCount}
+              page={page}
+              pageSize={PAGE_SIZE}
+              onPageChange={setPage}
+              extendedNavigation={true}
+            />
+            <s.FooterItemsCount>
+              Showing{" "}
+              <s.FooterPageItemsCount>
+                {pageStartItemNumber} - {pageEndItemNumber}
+              </s.FooterPageItemsCount>{" "}
+              of {totalCount}
+            </s.FooterItemsCount>
+          </>
+        )}
+        <Button
+          buttonType="tertiary"
+          icon={(props) => (
+            <GroupIcon
+              {...props}
+              crossOut={mode !== ViewMode.OnlyHidden}
+              color={
+                mode === ViewMode.OnlyHidden
+                  ? theme.colors.v3.icon.brandSecondary
+                  : props.color
+              }
+            />
+          )}
+          onClick={handleViewModeChange}
+        />
+      </s.Footer>
     </>
   );
 };

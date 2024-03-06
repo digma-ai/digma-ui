@@ -28,7 +28,8 @@ const getData = (query: ScopedInsightsQuery, context: ConfigContextData) => {
     sortBy: query.sorting.criterion,
     sortOrder: query.sorting.order,
     page: query.page,
-    scopedSpanCodeObjectId: query.scopedSpanCodeObjectId
+    scopedSpanCodeObjectId: query.scopedSpanCodeObjectId,
+    showDismissed: query.showDismissed
   };
 
   window.sendMessageToDigma({

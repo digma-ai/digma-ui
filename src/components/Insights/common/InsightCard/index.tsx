@@ -10,7 +10,6 @@ import { RecalculateIcon } from "../../../common/icons/16px/RecalculateIcon";
 import { CrossIcon } from "../../../common/icons/CrossIcon";
 import { Button } from "../../../common/v3/Button";
 import { BaseButtonProps } from "../../../common/v3/Button/types";
-import { Card } from "../../../common/v3/Card";
 import { JiraButton } from "../../../common/v3/JiraButton";
 import { Tooltip } from "../../../common/v3/Tooltip";
 import { isSpanInsight } from "../../typeGuards";
@@ -105,6 +104,7 @@ export const InsightCard = (props: InsightCardProps) => {
         insightId: props.insight.id
       }
     });
+    props.onRefresh(props.insight.type);
   };
 
   const handleShowClick = () => {
@@ -114,6 +114,7 @@ export const InsightCard = (props: InsightCardProps) => {
         insightId: props.insight.id
       }
     });
+    props.onRefresh(props.insight.type);
   };
 
   const renderActions = () => {
@@ -225,7 +226,8 @@ export const InsightCard = (props: InsightCardProps) => {
       IS_NEW_TIME_LIMIT
     : false;
   return (
-    <Card
+    <s.InsightCard
+      $isHidden={props.insight.isDismissed}
       header={
         <InsightHeader
           spanInfo={
@@ -255,13 +257,13 @@ export const InsightCard = (props: InsightCardProps) => {
         <s.InsightFooter>
           {props.insight.isDismissible &&
             (props.insight.isDismissed ? (
-              <Button
+              <s.DismissButton
                 label={"Show"}
                 buttonType={"tertiary"}
                 onClick={handleShowClick}
               />
             ) : (
-              <Button
+              <s.DismissButton
                 icon={CrossIcon}
                 label={"Dismiss"}
                 buttonType={"tertiary"}

@@ -62,6 +62,7 @@ export interface InsightsQuery {
   sortOrder: string;
   page: number;
   scopedSpanCodeObjectId?: string | null;
+  showDismissed: boolean;
 }
 
 export interface GlobalState {

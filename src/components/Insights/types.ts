@@ -855,6 +855,7 @@ export interface InsightsQuery {
   page: number;
   sorting: Sorting;
   searchQuery: string | null;
+  showDismissed: boolean;
 }
 
 export interface ScopedInsightsQuery extends InsightsQuery {

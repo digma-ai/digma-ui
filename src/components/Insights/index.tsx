@@ -69,7 +69,8 @@ const DEFAULT_QUERY = {
     criterion: SORTING_CRITERION.LATEST,
     order: SORTING_ORDER.DESC
   },
-  searchQuery: null
+  searchQuery: null,
+  showDismissed: false
 };
 
 const renderInsightTicket = (
