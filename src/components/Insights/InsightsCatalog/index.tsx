@@ -24,7 +24,7 @@ import { InsightsCatalogProps, SORTING_CRITERION } from "./types";
 const PAGE_SIZE = 10;
 enum ViewMode {
   All,
-  OnlyHidden
+  OnlyDismissed
 }
 
 export const InsightsCatalog = (props: InsightsCatalogProps) => {
@@ -56,20 +56,21 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
         page,
         sorting,
         searchQuery: debouncedSearchInputValue,
-        showDismissed: mode === ViewMode.OnlyHidden
+        showDismissed: mode === ViewMode.OnlyDismissed
       }),
     [page, sorting, debouncedSearchInputValue, props, mode]
   );
 
   const handleRefreshButtonClick = () => {
-    sendTrackingEvent(trackingEvents.REFRESH_LIST, {
+    sendTrackingEvent(trackingEvents.REFRESH_BUTTON_CLICKED, {
       viewMode: mode
     });
 
     refreshData();
   };
   const handleViewModeChange = () => {
-    const newMode = mode === ViewMode.All ? ViewMode.OnlyHidden : ViewMode.All;
+    const newMode =
+      mode === ViewMode.All ? ViewMode.OnlyDismissed : ViewMode.All;
     setMode(newMode);
   };
 
@@ -99,7 +100,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
       (isNumber(previousPage) && previousPage !== page) ||
       (previousSorting && previousSorting !== sorting) ||
       previousSearchQuery !== debouncedSearchInputValue ||
-      previousMode !== mode
+      (previousMode && previousMode !== mode)
     ) {
       refreshData();
     }
@@ -152,7 +153,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
           />
         </Tooltip>
       </s.Toolbar>
-      {mode === ViewMode.OnlyHidden && (
+      {mode === ViewMode.OnlyDismissed && (
         <s.InsightsViewModeToolbar>
           <Button
             buttonType="tertiary"
@@ -201,9 +202,9 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
           icon={(props) => (
             <GroupIcon
               {...props}
-              crossOut={mode !== ViewMode.OnlyHidden}
+              crossOut={mode !== ViewMode.OnlyDismissed}
               color={
-                mode === ViewMode.OnlyHidden
+                mode === ViewMode.OnlyDismissed
                   ? theme.colors.v3.icon.brandSecondary
                   : props.color
               }

@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { subscriptRegularTypography } from "../../../common/App/typographies";
 import { Button } from "../../../common/v3/Button";
 import { Card } from "../../../common/v3/Card";
-import { CardProps } from "../../../common/v3/Card/types";
+import { StyledInsightCardProps } from "./types";
 
 export const InsightFooter = styled.div`
   display: flex;
@@ -39,9 +39,9 @@ export const ContentContainer = styled.div`
   gap: 8px;
 `;
 
-export const InsightCard = styled(Card)<CardProps & { $isHidden: boolean }>`
-  ${({ $isHidden, theme }) => {
-    if ($isHidden) {
+export const StyledInsightCard = styled(Card)<StyledInsightCardProps>`
+  ${({ $isDismissed, theme }) => {
+    if ($isDismissed) {
       return `background: ${theme.colors.v3.surface.sidePanelHeader}`;
     }
   }}

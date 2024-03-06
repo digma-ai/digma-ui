@@ -100,7 +100,7 @@ export const InsightCard = (props: InsightCardProps) => {
   };
 
   const handleDismissClick = () => {
-    sendTrackingEvent(trackingEvents.DISMISS, {
+    sendTrackingEvent(trackingEvents.DISMISS_BUTTON_CLICKED, {
       insightType: props.insight.type
     });
 
@@ -114,7 +114,7 @@ export const InsightCard = (props: InsightCardProps) => {
   };
 
   const handleShowClick = () => {
-    sendTrackingEvent(trackingEvents.UNDISMISS, {
+    sendTrackingEvent(trackingEvents.UNDISMISS_BUTTON_CLICKED, {
       insightType: props.insight.type
     });
 
@@ -236,8 +236,8 @@ export const InsightCard = (props: InsightCardProps) => {
       IS_NEW_TIME_LIMIT
     : false;
   return (
-    <s.InsightCard
-      $isHidden={props.insight.isDismissed}
+    <s.StyledInsightCard
+      $isDismissed={props.insight.isDismissed}
       header={
         <InsightHeader
           spanInfo={

@@ -115,7 +115,7 @@ export const Assets = () => {
   };
 
   const handleRefresh = () => {
-    sendTrackingEvent(trackingEvents.REFRESH_LIST, {
+    sendTrackingEvent(trackingEvents.REFRESH_BUTTON_CLICKED, {
       listType: !selectedAssetTypeId ? "Asset type list" : "Asset list"
     });
 

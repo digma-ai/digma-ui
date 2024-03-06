@@ -6,7 +6,7 @@ export const trackingEvents = addPrefix(
   TRACKING_PREFIX,
   {
     FILTER_APPLIED: "filter applied",
-    REFRESH_LIST: "refresh assets list"
+    REFRESH_BUTTON_CLICKED: "refresh button clicked"
   },
   " "
 );
