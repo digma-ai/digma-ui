@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { RecentActivity } from ".";
 import { mockData as liveData } from "./LiveView/mockData";
+import { actions } from "./actions";
 import { RecentActivityData } from "./types";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
@@ -661,5 +662,14 @@ export const WithNoLiveData: Story = {
       ...liveData,
       liveDataRecords: []
     }
+  }
+};
+
+export const OpenRegistrationDialog: Story = {
+  play: () => {
+    window.postMessage({
+      type: "digma",
+      action: actions.OPEN_REGISTRATION_DIALOG
+    });
   }
 };
