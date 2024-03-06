@@ -22,6 +22,8 @@ export const mockedBottleneckInsight: SpanEndpointBottleneckInsight = {
   category: InsightCategory.Performance,
   specifity: 3,
   importance: 2,
+  isDismissed: false,
+  isDismissible: true,
   span: {
     name: "WaitForLock",
     displayName: "WaitForLock",

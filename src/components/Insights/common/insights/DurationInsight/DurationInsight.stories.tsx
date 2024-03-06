@@ -36,6 +36,8 @@ export const WithAverage: Story = {
       specifity: 4,
       isRecalculateEnabled: true,
       spanCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
+      isDismissed: false,
+      isDismissible: true,
       span: {
         name: "DelayAsync",
         displayName: "DelayAsync",
@@ -262,6 +264,8 @@ export const WithEvaluatingChange: Story = {
       specifity: 4,
       isRecalculateEnabled: true,
       spanCodeObjectId: "span:SampleInsightsController$_$WaitForLock",
+      isDismissed: false,
+      isDismissible: true,
       span: {
         name: "WaitForLock",
         displayName: "WaitForLock",
@@ -368,6 +372,8 @@ export const HistogramWithManyBars: Story = {
       category: InsightCategory.Performance,
       specifity: 4,
       isRecalculateEnabled: true,
+      isDismissed: false,
+      isDismissible: true,
       spanCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
       span: {
         name: "DelayAsync",
@@ -5151,6 +5157,8 @@ export const HistogramWithAFewBars: Story = {
       specifity: 4,
       isRecalculateEnabled: true,
       spanCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
+      isDismissed: false,
+      isDismissible: true,
       span: {
         name: "DelayAsync",
         displayName: "DelayAsync",

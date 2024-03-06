@@ -22,6 +22,8 @@ export const mockedSpanBottleneckInsight: EndpointSlowestSpansInsight = {
   category: InsightCategory.Performance,
   specifity: 3,
   importance: 2,
+  isDismissed: false,
+  isDismissible: true,
   spans: [
     {
       spanInfo: {

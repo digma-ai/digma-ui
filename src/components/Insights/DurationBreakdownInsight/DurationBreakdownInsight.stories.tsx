@@ -28,6 +28,8 @@ export const Default: Story = {
       firstCommitId: "b3f7b3f",
       lastCommitId: "a1b2c3d",
       deactivatedCommitId: null,
+      isDismissed: false,
+      isDismissible: true,
       reopenCount: 0,
       ticketLink: null,
       impact: 0,

@@ -40,6 +40,8 @@ export const Default: Story = {
       errorCount: 2,
       unhandledCount: 0,
       unexpectedCount: 0,
+      isDismissed: false,
+      isDismissible: true,
       topErrors: [
         {
           uid: "c4436bfe-1736-11ee-9651-0242ac1a0004",

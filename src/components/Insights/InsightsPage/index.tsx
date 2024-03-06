@@ -89,8 +89,7 @@ const renderInsightCard = (
     event?: string
   ) => void,
   isJiraHintEnabled: boolean,
-  onRefresh: () => void,
-  onDismiss: (insightId: string) => void
+  onRefresh: () => void
 ): JSX.Element | undefined => {
   // const handleErrorSelect = (errorId: string, insightType: InsightType) => {
   //   sendTrackingEvent(globalTrackingEvents.USER_ACTION, {

@@ -108,7 +108,9 @@ export const Default: Story = {
       severity: 0,
       prefixedCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
       customStartTime: null,
-      actualStartTime: "2023-06-17T00:00:00.000Z"
+      actualStartTime: "2023-06-17T00:00:00.000Z",
+      isDismissed: false,
+      isDismissible: true
     }
   }
 };
