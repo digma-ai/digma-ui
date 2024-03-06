@@ -61,5 +61,7 @@ export const mockedSpanNexusInsight: SpanNexusInsight = {
   isEntriesHigh: false,
   isFlowsHigh: true,
   isServicesHigh: false,
-  type: InsightType.SpanNexus
+  type: InsightType.SpanNexus,
+  isDismissed: false,
+  isDismissible: true
 };

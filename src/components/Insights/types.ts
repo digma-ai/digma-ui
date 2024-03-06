@@ -103,7 +103,6 @@ export interface InsightProps {
   ) => void;
   onGoToSpan: (spanCodeObjectId: string) => void;
   isJiraHintEnabled?: boolean;
-  onDismiss?: (insightId: string) => void;
 }
 
 export interface InsightTicketInfo<T extends GenericCodeObjectInsight> {
@@ -190,6 +189,8 @@ export interface CodeObjectInsight extends Insight {
   ticketLink: string | null;
   id: string;
   sourceSpanCodeObjectInsight: string;
+  isDismissed: boolean;
+  isDismissible: boolean;
 }
 
 export interface SpanInsight extends CodeObjectInsight {
@@ -861,3 +862,11 @@ export interface ScopedInsightsQuery extends InsightsQuery {
 }
 
 export { InsightType };
+
+export interface DismissInsightPayload {
+  insightId: string;
+}
+
+export interface UndismissInsightPayload {
+  insightId: string;
+}

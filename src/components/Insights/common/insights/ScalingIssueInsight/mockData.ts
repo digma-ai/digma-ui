@@ -68,7 +68,9 @@ export const mockedSpanScalingInsight: SpanScalingBadlyInsight = {
   prefixedCodeObjectId: "span:SampleInsightsController$_$WaitForLock",
   customStartTime: null,
   actualStartTime: "2023-06-24T00:00:00.000Z",
-  flowHash: null
+  flowHash: null,
+  isDismissed: false,
+  isDismissible: true
 };
 
 export const ofEndpoint = {

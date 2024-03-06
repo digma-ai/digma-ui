@@ -63,7 +63,6 @@ export const TrafficInsight = (props: TrafficInsightProps) => {
       onRecalculate={props.onRecalculate}
       onRefresh={props.onRefresh}
       onGoToSpan={props.onGoToSpan}
-      onDismiss={props.onDismiss}
     />
   );
 };

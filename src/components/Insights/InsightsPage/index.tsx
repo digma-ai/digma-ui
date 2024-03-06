@@ -237,7 +237,6 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={onRefresh}
         onGoToSpan={handleGoToSpan}
-        onDismiss={onDismiss}
       />
     );
   }
@@ -253,7 +252,6 @@ const renderInsightCard = (
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
-        onDismiss={onDismiss}
       />
     );
   }
@@ -269,7 +267,6 @@ const renderInsightCard = (
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
-        onDismiss={onDismiss}
       />
     );
   }
@@ -282,7 +279,6 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={onRefresh}
         onGoToSpan={handleGoToSpan}
-        onDismiss={onDismiss}
       />
     );
   }
@@ -299,7 +295,6 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={onRefresh}
         onGoToSpan={handleGoToSpan}
-        onDismiss={onDismiss}
       />
     );
   }
@@ -316,7 +311,6 @@ const renderInsightCard = (
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
-        onDismiss={onDismiss}
       />
     );
   }
@@ -333,7 +327,6 @@ const renderInsightCard = (
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
-        onDismiss={onDismiss}
       />
     );
   }
@@ -351,7 +344,6 @@ const renderInsightCard = (
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
-        onDismiss={onDismiss}
       />
     );
   }
@@ -365,7 +357,6 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={onRefresh}
         onGoToSpan={handleGoToSpan}
-        onDismiss={onDismiss}
       />
     );
   }
@@ -392,7 +383,6 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={onRefresh}
         onGoToSpan={handleGoToSpan}
-        onDismiss={onDismiss}
       />
     );
   }
@@ -407,7 +397,6 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={onRefresh}
         onGoToSpan={handleGoToSpan}
-        onDismiss={onDismiss}
       />
     );
   }
@@ -423,7 +412,6 @@ const renderInsightCard = (
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
-        onDismiss={onDismiss}
       />
     );
   }
@@ -452,7 +440,6 @@ const renderInsightCard = (
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
-        onDismiss={onDismiss}
       />
     );
   }
@@ -469,7 +456,6 @@ const renderInsightCard = (
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
-        onDismiss={onDismiss}
       />
     );
   }

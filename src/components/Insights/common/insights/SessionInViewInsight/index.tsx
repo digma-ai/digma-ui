@@ -91,7 +91,6 @@ export const SessionInViewInsight = (props: SessionInViewInsightProps) => {
       onRecalculate={props.onRecalculate}
       onRefresh={props.onRefresh}
       onGoToSpan={props.onGoToSpan}
-      onDismiss={props.onDismiss}
     />
   );
 };

@@ -18,6 +18,9 @@ import { InsightHeader } from "./InsightHeader";
 import * as s from "./styles";
 import { InsightCardProps } from "./types";
 
+import { actions } from "../../actions";
+import { DismissInsightPayload, UndismissInsightPayload } from "../../types";
+
 const IS_NEW_TIME_LIMIT = 1000 * 60 * 10; // in milliseconds
 
 export const InsightCard = (props: InsightCardProps) => {
@@ -93,6 +96,24 @@ export const InsightCard = (props: InsightCardProps) => {
         </s.Description>
       );
     }
+  };
+
+  const handleDismissClick = () => {
+    window.sendMessageToDigma<DismissInsightPayload>({
+      action: actions.DISMISS,
+      payload: {
+        insightId: props.insight.id
+      }
+    });
+  };
+
+  const handleShowClick = () => {
+    window.sendMessageToDigma<UndismissInsightPayload>({
+      action: actions.UNDISMISS,
+      payload: {
+        insightId: props.insight.id
+      }
+    });
   };
 
   const renderActions = () => {
@@ -232,16 +253,21 @@ export const InsightCard = (props: InsightCardProps) => {
       }
       footer={
         <s.InsightFooter>
-          {props.onDismiss && (
-            <Button
-              icon={CrossIcon}
-              label={"Dismiss"}
-              buttonType={"tertiary"}
-              onClick={() =>
-                props.onDismiss && props.onDismiss(props.insight.id)
-              }
-            />
-          )}
+          {props.insight.isDismissible &&
+            (props.insight.isDismissed ? (
+              <Button
+                label={"Show"}
+                buttonType={"tertiary"}
+                onClick={handleShowClick}
+              />
+            ) : (
+              <Button
+                icon={CrossIcon}
+                label={"Dismiss"}
+                buttonType={"tertiary"}
+                onClick={handleDismissClick}
+              />
+            ))}
           {renderActions()}
         </s.InsightFooter>
       }

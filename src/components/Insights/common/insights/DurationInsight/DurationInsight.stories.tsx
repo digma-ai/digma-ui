@@ -144,6 +144,8 @@ export const WithChange: Story = {
       firstCommitId: null,
       lastCommitId: null,
       deactivatedCommitId: null,
+      isDismissed: false,
+      isDismissible: true,
       reopenCount: 0,
       ticketLink: null,
       impact: 0,
@@ -4891,6 +4893,8 @@ export const HistogramWithGaps: Story = {
       category: InsightCategory.Performance,
       specifity: 4,
       isRecalculateEnabled: true,
+      isDismissed: false,
+      isDismissible: true,
       spanCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
       span: {
         name: "DelayAsync",
@@ -5292,6 +5296,8 @@ export const EmptyStateBug: Story = {
       category: InsightCategory.Performance,
       specifity: 4,
       isRecalculateEnabled: true,
+      isDismissed: false,
+      isDismissible: true,
       spanCodeObjectId:
         "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP GET SampleInsights/HttpCall",
       span: {

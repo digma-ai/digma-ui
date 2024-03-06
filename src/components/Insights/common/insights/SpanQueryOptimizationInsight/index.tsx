@@ -133,7 +133,6 @@ export const SpanQueryOptimizationInsight = (
           : undefined
       }
       onGoToSpan={props.onGoToSpan}
-      onDismiss={props.onDismiss}
     />
   );
 };

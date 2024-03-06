@@ -137,7 +137,6 @@ export const SpanNPlusOneInsight = (props: SpanNPlusOneInsightProps) => {
         spanCodeObjectId: props.insight.spanInfo?.spanCodeObjectId
       }}
       onGoToSpan={props.onGoToSpan}
-      onDismiss={props.onDismiss}
     />
   );
 };

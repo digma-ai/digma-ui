@@ -7,7 +7,6 @@ export interface InsightCardProps {
   content?: ReactNode;
   isAsync?: boolean;
   isActive?: boolean;
-  onDismiss?: (insightId: string) => void;
   onOpenHistogram?: (
     instrumentationLibrary: string,
     name: string,
