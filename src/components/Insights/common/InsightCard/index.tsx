@@ -115,11 +115,11 @@ export const InsightCard = (props: InsightCardProps) => {
 
     props.insight.isRecalculateEnabled &&
       buttonsToRender.push({
-        tooltip: "Recalculate",
+        tooltip: "Recheck",
         button: (btnProps) => (
           <Button
             icon={RecalculateIcon}
-            label={"Recalculate"}
+            label={"Recheck"}
             onClick={handleRecalculateClick}
             {...btnProps}
           />
