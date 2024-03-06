@@ -141,8 +141,18 @@ export const RecentActivity = (props: RecentActivityProps) => {
       setLiveData(data as LiveData);
     };
 
+    const handleOpenRegistrationPopup = (data: unknown) => {
+      if (!config.userRegistrationEmail) {
+        setIsRegistrationPopupVisible(true);
+      }
+    };
+
     dispatcher.addActionListener(actions.SET_DATA, handleRecentActivityData);
     dispatcher.addActionListener(actions.SET_LIVE_DATA, handleLiveData);
+    dispatcher.addActionListener(
+      actions.OPEN_REGISTRATION_DIALOG,
+      handleOpenRegistrationPopup
+    );
 
     return () => {
       dispatcher.removeActionListener(
