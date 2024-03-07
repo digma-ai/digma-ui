@@ -6,7 +6,6 @@ import {
 import { roundTo } from "../../../../../utils/roundTo";
 import { ConfigContext } from "../../../../common/App/ConfigContext";
 import { InfoCircleIcon } from "../../../../common/icons/InfoCircleIcon";
-import { WarningTriangleIcon } from "../../../../common/icons/WarningTriangleIcon";
 import { Link } from "../../../../common/v3/Link";
 import { NewTag } from "../../../../common/v3/NewTag";
 import { Tag } from "../../../../common/v3/Tag";
@@ -16,8 +15,6 @@ import { AsyncTag } from "./AsyncTag";
 import { InsightStatusBadge } from "./InsightStatusBadge";
 import * as s from "./styles";
 import { InsightHeaderProps } from "./types";
-
-const HIGH_CRITICALITY_THRESHOLD = 0.8;
 
 const getTagType = (criticality: number): TagType => {
   if (criticality < 0.2) {
@@ -79,13 +76,6 @@ export const InsightHeader = (props: InsightHeaderProps) => {
           )}
         </s.Label>
         <s.BadgeContainer>
-          {props.criticality > HIGH_CRITICALITY_THRESHOLD && (
-            <Tooltip title={"Critical"}>
-              <s.WarningTriangleContainer>
-                <WarningTriangleIcon color={"currentColor"} size={12} />
-              </s.WarningTriangleContainer>
-            </Tooltip>
-          )}
           {props.isAsync && <AsyncTag />}
           {props.isNew && <NewTag />}
           {props.status && <InsightStatusBadge status={props.status} />}

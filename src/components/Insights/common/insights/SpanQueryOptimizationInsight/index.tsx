@@ -1,11 +1,9 @@
 import { useContext } from "react";
 import { usePagination } from "../../../../../hooks/usePagination";
 import { getDurationString } from "../../../../../utils/getDurationString";
-import { sendTrackingEvent } from "../../../../../utils/sendTrackingEvent";
 import { trimEndpointScheme } from "../../../../../utils/trimEndpointScheme";
 import { ConfigContext } from "../../../../common/App/ConfigContext";
 import { Pagination } from "../../../../common/v3/Pagination";
-import { trackingEvents } from "../../../tracking";
 import { InsightType, Trace } from "../../../types";
 import { InsightCard } from "../../InsightCard";
 import { ColumnsContainer } from "../../InsightCard/ColumnsContainer";
@@ -41,11 +39,10 @@ export const SpanQueryOptimizationInsight = (
     props.onTraceButtonClick(trace, insightType, spanCodeObjectId);
   };
 
-  const handleCreateJiraTicketButtonClick = (event: string) => {
-    sendTrackingEvent(trackingEvents.JIRA_TICKET_INFO_BUTTON_CLICKED, {
-      insightType: props.insight.type
-    });
-
+  const handleCreateJiraTicketButtonClick = (
+    spanCodeObjectId: string | undefined,
+    event: string
+  ) => {
     props.onJiraTicketCreate &&
       props.onJiraTicketCreate(
         props.insight,

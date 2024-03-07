@@ -286,7 +286,8 @@ export const lightTheme: ThemeColors = {
       azureFill: v3colors.azure[200],
       azureStroke: v3colors.azure[100],
       brightOrangeFill: v3colors.brightOrange[200],
-      brightOrangeStroke: v3colors.brightOrange[100]
+      brightOrangeStroke: v3colors.brightOrange[100],
+      darkRed: v3colors.red[600]
     }
   }
 };

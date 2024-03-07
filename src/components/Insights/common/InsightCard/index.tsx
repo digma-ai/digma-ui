@@ -21,16 +21,21 @@ import { sendTrackingEvent } from "../../../../utils/sendTrackingEvent";
 import { actions } from "../../actions";
 import { trackingEvents } from "../../tracking";
 import { DismissInsightPayload, UndismissInsightPayload } from "../../types";
+import { ProductionAffectionBar } from "./ProductionAffectionBar";
 
 const IS_NEW_TIME_LIMIT = 1000 * 60 * 10; // in milliseconds
+const HIGH_CRITICALITY_THRESHOLD = 0.8;
 
 export const InsightCard = (props: InsightCardProps) => {
   const [isRecalculatingStarted, setIsRecalculatingStarted] = useState(false);
+
+  const isCritical = props.insight.criticality > HIGH_CRITICALITY_THRESHOLD;
+
   const handleRefreshLinkClick = () => {
     props.onRefresh(props.insight.type);
   };
 
-  const handleRecalculateClick = () => {
+  const handleRecheckButtonClick = () => {
     props.insight.prefixedCodeObjectId &&
       props.onRecalculate &&
       props.onRecalculate(props.insight.id);
@@ -100,7 +105,7 @@ export const InsightCard = (props: InsightCardProps) => {
   };
 
   const handleDismissClick = () => {
-    sendTrackingEvent(trackingEvents.DISMISS_BUTTON_CLICKED, {
+    sendTrackingEvent(trackingEvents.INSIGHT_DISMISS_BUTTON_CLICKED, {
       insightType: props.insight.type
     });
 
@@ -114,7 +119,7 @@ export const InsightCard = (props: InsightCardProps) => {
   };
 
   const handleShowClick = () => {
-    sendTrackingEvent(trackingEvents.SHOW_BUTTON_CLICKED, {
+    sendTrackingEvent(trackingEvents.INSIGHT_SHOW_BUTTON_CLICKED, {
       insightType: props.insight.type
     });
 
@@ -125,6 +130,25 @@ export const InsightCard = (props: InsightCardProps) => {
       }
     });
     props.onRefresh(props.insight.type);
+  };
+
+  const openTicketInfo = (
+    spanCodeObjectId: string | undefined,
+    event: string
+  ) => {
+    if (props.onJiraButtonClick) {
+      props.onJiraButtonClick(spanCodeObjectId, event);
+    }
+  };
+
+  const handleCreateTicketLinkClick = () => {
+    sendTrackingEvent(trackingEvents.INSIGHT_CREATE_TICKET_LINK_CLICKED, {
+      insightType: props.insight.type
+    });
+    openTicketInfo(
+      props.jiraTicketInfo?.spanCodeObjectId,
+      "create ticket link clicked"
+    );
   };
 
   const renderActions = () => {
@@ -153,7 +177,7 @@ export const InsightCard = (props: InsightCardProps) => {
           <Button
             icon={RecalculateIcon}
             label={"Recheck"}
-            onClick={handleRecalculateClick}
+            onClick={handleRecheckButtonClick}
             {...btnProps}
           />
         )
@@ -168,7 +192,8 @@ export const InsightCard = (props: InsightCardProps) => {
             isHintEnabled={props.jiraTicketInfo?.isHintEnabled}
             spanCodeObjectId={props.jiraTicketInfo?.spanCodeObjectId}
             label={"Ticket"}
-            onTicketInfoButtonClick={props.onJiraButtonClick!}
+            onTicketInfoOpen={openTicketInfo}
+            insightType={props.insight.type}
             {...btnProps}
           />
         )
@@ -254,6 +279,12 @@ export const InsightCard = (props: InsightCardProps) => {
       }
       content={
         <s.ContentContainer>
+          {isCritical && (
+            <ProductionAffectionBar
+              isTicketCreated={isString(props.insight.ticketLink)}
+              onCreateTicket={handleCreateTicketLinkClick}
+            />
+          )}
           {props.insight.actualStartTime &&
             renderRecalculationBlock(
               props.insight.actualStartTime,

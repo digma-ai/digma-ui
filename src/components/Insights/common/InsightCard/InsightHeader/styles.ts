@@ -41,8 +41,3 @@ export const BadgeContainer = styled.div`
   gap: 8px;
   height: 24px;
 `;
-
-export const WarningTriangleContainer = styled.div`
-  display: flex;
-  color: ${({ theme }) => theme.colors.v3.status.high};
-`;

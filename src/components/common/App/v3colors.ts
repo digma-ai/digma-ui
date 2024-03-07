@@ -46,7 +46,9 @@ export const v3colors = {
     100: "#ffdfdf",
     200: "#ff7e7e",
     300: "#da2d5f",
-    400: "#3d2327"
+    400: "#3d2327",
+    500: "#241e21",
+    600: "#ffeeee"
   },
   orange: {
     100: "#ffe0ce",

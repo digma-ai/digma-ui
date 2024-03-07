@@ -121,6 +121,7 @@ export interface ThemeColors {
       azureStroke: string;
       brightOrangeFill: string;
       brightOrangeStroke: string;
+      darkRed: string;
     };
     barChart: {
       pink: string;

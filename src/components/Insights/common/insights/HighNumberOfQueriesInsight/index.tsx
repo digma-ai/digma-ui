@@ -1,8 +1,6 @@
-import { sendTrackingEvent } from "../../../../../utils/sendTrackingEvent";
 import { InfoCircleIcon } from "../../../../common/icons/InfoCircleIcon";
 import { Tag } from "../../../../common/v3/Tag";
 import { Tooltip } from "../../../../common/v3/Tooltip";
-import { trackingEvents } from "../../../tracking";
 import { InsightType, Trace } from "../../../types";
 import { InsightCard } from "../../InsightCard";
 import { ColumnsContainer } from "../../InsightCard/ColumnsContainer";
@@ -25,10 +23,10 @@ export const HighNumberOfQueriesInsight = (
     props.onTraceButtonClick(trace, insightType, spanCodeObjectId);
   };
 
-  const handleCreateJiraTicketButtonClick = (event: string) => {
-    sendTrackingEvent(trackingEvents.JIRA_TICKET_INFO_BUTTON_CLICKED, {
-      insightType: insight.type
-    });
+  const handleCreateJiraTicketButtonClick = (
+    spanCodeObjectId: string | undefined,
+    event: string
+  ) => {
     props.onJiraTicketCreate &&
       props.onJiraTicketCreate(insight, undefined, event);
   };

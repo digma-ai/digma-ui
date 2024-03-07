@@ -1,14 +1,12 @@
 import { useContext } from "react";
 import { usePagination } from "../../../../../hooks/usePagination";
 import { getDurationString } from "../../../../../utils/getDurationString";
-import { sendTrackingEvent } from "../../../../../utils/sendTrackingEvent";
 import { trimEndpointScheme } from "../../../../../utils/trimEndpointScheme";
 import { ConfigContext } from "../../../../common/App/ConfigContext";
 import { TraceIcon } from "../../../../common/icons/12px/TraceIcon";
 import { Button } from "../../../../common/v3/Button";
 import { JiraButton } from "../../../../common/v3/JiraButton";
 import { Pagination } from "../../../../common/v3/Pagination";
-import { trackingEvents } from "../../../tracking";
 import { InsightType, RootCauseSpanInfo, Trace } from "../../../types";
 import { InsightCard } from "../../InsightCard";
 import { ColumnsContainer } from "../../InsightCard/ColumnsContainer";
@@ -41,13 +39,9 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
   };
 
   const handleCreateJiraTicketButtonClick = (
-    spanCodeObjectId: string,
+    spanCodeObjectId: string | undefined,
     event: string
   ) => {
-    sendTrackingEvent(trackingEvents.JIRA_TICKET_INFO_BUTTON_CLICKED, {
-      insightType: props.insight.type
-    });
-
     props.onJiraTicketCreate &&
       props.onJiraTicketCreate(props.insight, spanCodeObjectId, event);
   };
@@ -65,10 +59,11 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
             const buttons = [
               <JiraButton
                 key={"view-ticket-info"}
-                onTicketInfoButtonClick={handleCreateJiraTicketButtonClick}
+                onTicketInfoOpen={handleCreateJiraTicketButtonClick}
                 spanCodeObjectId={spanCodeObjectId}
                 ticketLink={props.insight.ticketLink}
                 isHintEnabled={props.isJiraHintEnabled && i === 0}
+                insightType={props.insight.type}
               />
             ];
 
