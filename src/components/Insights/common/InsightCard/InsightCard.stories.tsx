@@ -49,3 +49,23 @@ export const LinkedJiraTicket: Story = {
     onOpenHistogram: undefined
   }
 };
+
+export const Dismissed: Story = {
+  args: {
+    isAsync: true,
+    insight: {
+      ...mockedEndpointNPlusOneInsight,
+      criticality: 0.9,
+      isDismissed: true
+    },
+    jiraTicketInfo: {
+      ticketLink: "some",
+      spanCodeObjectId: "test",
+      isHintEnabled: false
+    },
+    onGoToLive: undefined,
+    onPin: undefined,
+    onGoToTrace: undefined,
+    onOpenHistogram: undefined
+  }
+};
