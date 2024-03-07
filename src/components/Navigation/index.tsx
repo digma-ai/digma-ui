@@ -379,7 +379,7 @@ export const Navigation = () => {
         <Tooltip
           title={codeButtonTooltip}
           isOpen={isCodeButtonMenuOpen ? false : undefined}
-          placement={"top-start"}
+          placement={"right"}
         >
           {isCodeButtonMenuEnabled ? (
             <div>
