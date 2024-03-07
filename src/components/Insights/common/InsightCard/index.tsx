@@ -105,7 +105,7 @@ export const InsightCard = (props: InsightCardProps) => {
   };
 
   const handleDismissClick = () => {
-    sendTrackingEvent(trackingEvents.INSIGHT_DISMISS_BUTTON_CLICKED, {
+    sendTrackingEvent(trackingEvents.INSIGHT_CARD_DISMISS_BUTTON_CLICKED, {
       insightType: props.insight.type
     });
 
@@ -119,7 +119,7 @@ export const InsightCard = (props: InsightCardProps) => {
   };
 
   const handleShowClick = () => {
-    sendTrackingEvent(trackingEvents.INSIGHT_SHOW_BUTTON_CLICKED, {
+    sendTrackingEvent(trackingEvents.INSIGHT_CARD_SHOW_BUTTON_CLICKED, {
       insightType: props.insight.type
     });
 
@@ -142,7 +142,7 @@ export const InsightCard = (props: InsightCardProps) => {
   };
 
   const handleCreateTicketLinkClick = () => {
-    sendTrackingEvent(trackingEvents.INSIGHT_CREATE_TICKET_LINK_CLICKED, {
+    sendTrackingEvent(trackingEvents.INSIGHT_CARD_CREATE_TICKET_LINK_CLICKED, {
       insightType: props.insight.type
     });
     openTicketInfo(
