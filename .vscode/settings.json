@@ -4,5 +4,6 @@
     "source.organizeImports": "explicit"
   },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "stylelint.validate": ["typescript"]
+  "stylelint.validate": ["typescript"],
+  "cSpell.words": ["Digma", "UNDISMISS"]
 }

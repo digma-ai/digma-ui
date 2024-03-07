@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { isString } from "../../../../typeGuards/isString";
 import { formatTimeDistance } from "../../../../utils/formatTimeDistance";
 import { TraceIcon } from "../../../common/icons/12px/TraceIcon";
@@ -17,19 +17,30 @@ import { InsightHeader } from "./InsightHeader";
 import * as s from "./styles";
 import { InsightCardProps } from "./types";
 
+import { usePrevious } from "../../../../hooks/usePrevious";
 import { sendTrackingEvent } from "../../../../utils/sendTrackingEvent";
-import { actions } from "../../actions";
+import { Spinner } from "../../../Navigation/CodeButtonMenu/Spinner";
 import { trackingEvents } from "../../tracking";
-import { DismissInsightPayload, UndismissInsightPayload } from "../../types";
 import { ProductionAffectionBar } from "./ProductionAffectionBar";
+import { useDismissalHandler } from "./useDismissalHandler";
 
 const IS_NEW_TIME_LIMIT = 1000 * 60 * 10; // in milliseconds
 const HIGH_CRITICALITY_THRESHOLD = 0.8;
 
 export const InsightCard = (props: InsightCardProps) => {
   const [isRecalculatingStarted, setIsRecalculatingStarted] = useState(false);
+  const [isDismissConfirmationOpened, setDismissConfirmationOpened] =
+    useState(false);
+  const { isLoading, dismiss, show } = useDismissalHandler(props.insight.id);
+  const previousLoading = usePrevious(isLoading);
 
   const isCritical = props.insight.criticality > HIGH_CRITICALITY_THRESHOLD;
+
+  useEffect(() => {
+    if (previousLoading && !isLoading) {
+      props.onRefresh(props.insight.type);
+    }
+  }, [isLoading, previousLoading, props.onRefresh]);
 
   const handleRefreshLinkClick = () => {
     props.onRefresh(props.insight.type);
@@ -108,28 +119,15 @@ export const InsightCard = (props: InsightCardProps) => {
     sendTrackingEvent(trackingEvents.INSIGHT_CARD_DISMISS_BUTTON_CLICKED, {
       insightType: props.insight.type
     });
-
-    window.sendMessageToDigma<DismissInsightPayload>({
-      action: actions.DISMISS,
-      payload: {
-        insightId: props.insight.id
-      }
-    });
-    props.onRefresh(props.insight.type);
+    dismiss();
+    setDismissConfirmationOpened(false);
   };
 
   const handleShowClick = () => {
     sendTrackingEvent(trackingEvents.INSIGHT_CARD_SHOW_BUTTON_CLICKED, {
       insightType: props.insight.type
     });
-
-    window.sendMessageToDigma<UndismissInsightPayload>({
-      action: actions.UNDISMISS,
-      payload: {
-        insightId: props.insight.id
-      }
-    });
-    props.onRefresh(props.insight.type);
+    show();
   };
 
   const openTicketInfo = (
@@ -295,24 +293,50 @@ export const InsightCard = (props: InsightCardProps) => {
         </s.ContentContainer>
       }
       footer={
-        <s.InsightFooter>
-          {props.insight.isDismissible &&
-            (props.insight.isDismissed ? (
-              <s.DismissButton
-                label={"Show"}
-                buttonType={"tertiary"}
-                onClick={handleShowClick}
-              />
-            ) : (
-              <s.DismissButton
-                icon={CrossIcon}
-                label={"Dismiss"}
-                buttonType={"tertiary"}
-                onClick={handleDismissClick}
-              />
-            ))}
-          {renderActions()}
-        </s.InsightFooter>
+        <>
+          {!isDismissConfirmationOpened ? (
+            <s.InsightFooter>
+              {props.insight.isDismissible && (
+                <s.ButtonContainer>
+                  {props.insight.isDismissed ? (
+                    <s.DismissButton
+                      label={isLoading ? "Showing" : "Show"}
+                      buttonType={"tertiary"}
+                      isDisabled={isLoading}
+                      onClick={handleShowClick}
+                    />
+                  ) : (
+                    <s.DismissButton
+                      icon={CrossIcon}
+                      isDisabled={isLoading}
+                      label={isLoading ? "Dismissing" : "Dismiss"}
+                      buttonType={"tertiary"}
+                      onClick={() => setDismissConfirmationOpened(true)}
+                    />
+                  )}
+                  {isLoading && <Spinner />}
+                </s.ButtonContainer>
+              )}
+              {renderActions()}
+            </s.InsightFooter>
+          ) : (
+            <s.DismissDialog>
+              Dismiss insight?
+              <s.DismissDialogActions>
+                <Button
+                  label="No"
+                  buttonType="primary"
+                  onClick={() => setDismissConfirmationOpened(false)}
+                />
+                <Button
+                  label="Yes, dismiss"
+                  buttonType="secondary"
+                  onClick={handleDismissClick}
+                />
+              </s.DismissDialogActions>
+            </s.DismissDialog>
+          )}
+        </>
       }
     />
   );
