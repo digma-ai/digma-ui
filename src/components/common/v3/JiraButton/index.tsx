@@ -36,6 +36,10 @@ export const JiraButtonComponent = (
     setIsMenuOpen(isOpen);
   };
 
+  const openTicketInfo = (event: string) => {
+    onTicketInfoOpen(spanCodeObjectId, event);
+  };
+
   const handleViewMenuItemClick = () => {
     setIsMenuOpen(false);
     ticketLink && openURLInDefaultBrowser(ticketLink);
@@ -44,10 +48,6 @@ export const JiraButtonComponent = (
   const handleEditMenuItemClick = () => {
     setIsMenuOpen(false);
     openTicketInfo("edit menu item click");
-  };
-
-  const openTicketInfo = (event: string) => {
-    onTicketInfoOpen(spanCodeObjectId, event);
   };
 
   const handleJiraButtonClick = () => {
