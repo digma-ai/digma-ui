@@ -59,6 +59,8 @@ export const DismissDialog = styled.div`
   align-items: center;
   margin: -8px;
   background: ${({ theme }) => theme.colors.v3.surface.sidePanelHeader};
+
+  ${subscriptRegularTypography}
 `;
 
 export const DismissDialogActions = styled.div`
