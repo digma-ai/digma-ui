@@ -14,10 +14,13 @@ export const useDismissalHandler = (insightId: string) => {
       }
     };
 
-    dispatcher.addActionListener(actions.DISMISSED, handleDismissed);
+    dispatcher.addActionListener(actions.SET_DISMISS_RESPONSE, handleDismissed);
 
     return () => {
-      dispatcher.removeActionListener(actions.DISMISSED, handleDismissed);
+      dispatcher.removeActionListener(
+        actions.SET_DISMISS_RESPONSE,
+        handleDismissed
+      );
     };
   }, []);
 
@@ -28,10 +31,16 @@ export const useDismissalHandler = (insightId: string) => {
       }
     };
 
-    dispatcher.addActionListener(actions.UNDISMISSED, handleUndismissed);
+    dispatcher.addActionListener(
+      actions.SET_UNDISMISS_RESPONSE,
+      handleUndismissed
+    );
 
     return () => {
-      dispatcher.removeActionListener(actions.UNDISMISSED, handleUndismissed);
+      dispatcher.removeActionListener(
+        actions.SET_UNDISMISS_RESPONSE,
+        handleUndismissed
+      );
     };
   }, []);
 

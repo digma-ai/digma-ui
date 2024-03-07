@@ -34,8 +34,12 @@ export interface StyledInsightCardProps extends CardProps {
 
 export interface DismissedPayload {
   insightId: string;
+  status: "success" | "failure";
+  error?: string;
 }
 
 export interface UndismissedPayload {
   insightId: string;
+  status: "success" | "failure";
+  error?: string;
 }
