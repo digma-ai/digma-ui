@@ -119,7 +119,7 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
           {renderRootCause(props.insight.rootCauseSpans)}
           {affectedEndpoints.length > 0 && (
             <s.List>
-              <Description>Affected endpoints:</Description>
+              <Description>Affected endpoints</Description>
               {pageItems.map((endpoint) => {
                 const endpointRoute = trimEndpointScheme(endpoint.route);
                 return (

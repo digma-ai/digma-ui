@@ -65,7 +65,7 @@ export const InsightHeader = (props: InsightHeaderProps) => {
             />
           </Tooltip>
         )}
-        <s.Label>
+        <s.Title>
           {insightTypeInfo?.label}
           {insightTypeInfo?.description && (
             <Tooltip title={<insightTypeInfo.description />}>
@@ -74,7 +74,7 @@ export const InsightHeader = (props: InsightHeaderProps) => {
               </s.InfoContainer>
             </Tooltip>
           )}
-        </s.Label>
+        </s.Title>
         <s.BadgeContainer>
           {props.isAsync && <AsyncTag />}
           {props.isNew && <NewTag />}

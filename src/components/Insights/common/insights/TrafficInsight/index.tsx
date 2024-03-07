@@ -54,7 +54,7 @@ export const TrafficInsight = (props: TrafficInsightProps) => {
             <s.DescriptionColumn label={"Description"}>
               {getDescription(props.insight.type)}
             </s.DescriptionColumn>
-            <KeyValue label={"Duration"}>
+            <KeyValue label={"Throughput"}>
               <Tag content={`${valueString}/min`} />
             </KeyValue>
           </ColumnsContainer>

@@ -65,7 +65,7 @@ export const SpanQueryOptimizationInsight = (
             <Details>
               <Description>
                 Query is slow compared to other{" "}
-                {props.insight.dbStatement.toUpperCase()} requests.
+                {props.insight.dbStatement.toUpperCase()} requests
               </Description>
               <ListItem
                 name={spanName || ""}
@@ -84,7 +84,7 @@ export const SpanQueryOptimizationInsight = (
           </ColumnsContainer>
           {endpoints.length > 0 && (
             <>
-              <Description>Affected endpoints:</Description>
+              <Description>Affected endpoints</Description>
               <s.EndpointList>
                 {pageItems.map((x) => {
                   const spanCodeObjectId = x.endpointInfo.spanCodeObjectId;
