@@ -32,13 +32,13 @@ export interface StyledInsightCardProps extends CardProps {
   $isDismissed?: boolean;
 }
 
-export interface DismissedPayload {
+export interface DismissResponsePayload {
   insightId: string;
   status: "success" | "failure";
   error?: string;
 }
 
-export interface UndismissedPayload {
+export interface UndismissResponsePayload {
   insightId: string;
   status: "success" | "failure";
   error?: string;

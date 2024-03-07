@@ -2,14 +2,14 @@ import { useEffect, useState } from "react";
 import { dispatcher } from "../../../../dispatcher";
 import { actions } from "../../actions";
 import { DismissInsightPayload, UndismissInsightPayload } from "../../types";
-import { DismissedPayload, UndismissedPayload } from "./types";
+import { DismissResponsePayload, UndismissResponsePayload } from "./types";
 
 export const useDismissalHandler = (insightId: string) => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const handleDismissed = (data: any) => {
-      if (insightId === (data as DismissedPayload).insightId) {
+      if (insightId === (data as DismissResponsePayload).insightId) {
         setIsLoading(false);
       }
     };
@@ -26,7 +26,7 @@ export const useDismissalHandler = (insightId: string) => {
 
   useEffect(() => {
     const handleUndismissed = (data: any) => {
-      if (insightId === (data as UndismissedPayload).insightId) {
+      if (insightId === (data as UndismissResponsePayload).insightId) {
         setIsLoading(false);
       }
     };
