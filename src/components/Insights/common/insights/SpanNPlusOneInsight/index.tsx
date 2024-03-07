@@ -1,13 +1,11 @@
 import { ReactNode, useContext, useState } from "react";
 import { getDurationString } from "../../../../../utils/getDurationString";
-import { sendTrackingEvent } from "../../../../../utils/sendTrackingEvent";
 import { trimEndpointScheme } from "../../../../../utils/trimEndpointScheme";
 import { ConfigContext } from "../../../../common/App/ConfigContext";
 import { TraceIcon } from "../../../../common/icons/12px/TraceIcon";
 import { Button } from "../../../../common/v3/Button";
 import { Link } from "../../../../common/v3/Link";
 import { Tooltip } from "../../../../common/v3/Tooltip";
-import { trackingEvents } from "../../../tracking";
 import { InsightType, NPlusOneEndpointInfo, Trace } from "../../../types";
 import { Info } from "../../Info";
 import { InsightCard } from "../../InsightCard";
@@ -61,10 +59,10 @@ export const SpanNPlusOneInsight = (props: SpanNPlusOneInsightProps) => {
     props.onTraceButtonClick(trace, insightType, spanCodeObjectId);
   };
 
-  const handleCreateJiraTicketButtonClick = (event: string) => {
-    sendTrackingEvent(trackingEvents.JIRA_TICKET_INFO_BUTTON_CLICKED, {
-      insightType: props.insight.type
-    });
+  const handleCreateJiraTicketButtonClick = (
+    spanCodeObjectId: string | undefined,
+    event: string
+  ) => {
     props.onJiraTicketCreate &&
       props.onJiraTicketCreate(props.insight, undefined, event);
   };

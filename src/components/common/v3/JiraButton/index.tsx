@@ -1,6 +1,8 @@
 import { ForwardedRef, forwardRef, useState } from "react";
 import { useTheme } from "styled-components";
 import { openURLInDefaultBrowser } from "../../../../utils/openURLInDefaultBrowser";
+import { sendTrackingEvent } from "../../../../utils/sendTrackingEvent";
+import { trackingEvents } from "../../../Insights/tracking";
 import { MenuList } from "../../../Navigation/common/MenuList";
 import { Popup } from "../../../Navigation/common/Popup";
 import { PencilIcon } from "../../../common/icons/12px/PencilIcon";
@@ -16,28 +18,47 @@ export const JiraButtonComponent = (
   {
     ticketLink,
     isHintEnabled,
-    onTicketInfoButtonClick,
+    onTicketInfoOpen,
     spanCodeObjectId,
     buttonType,
-    label
+    label,
+    insightType
   }: JiraButtonProps,
   ref: ForwardedRef<HTMLDivElement>
 ) => {
-  const [isJiraPopoverOpen, setIsJiraPopoverOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const theme = useTheme();
 
-  const handleJiraButtonClick = () => {
-    setIsJiraPopoverOpen(!isJiraPopoverOpen);
-  };
-
-  const handleViewButtonClick = () => {
-    handleJiraButtonClick();
-    ticketLink && openURLInDefaultBrowser(ticketLink);
+  const handleMenuOpenChange = (isOpen: boolean) => {
+    sendTrackingEvent(trackingEvents.JIRA_TICKET_INFO_BUTTON_CLICKED, {
+      insightType
+    });
+    setIsMenuOpen(isOpen);
   };
 
   const openTicketInfo = (event: string) => {
-    handleJiraButtonClick();
-    onTicketInfoButtonClick(spanCodeObjectId, event);
+    onTicketInfoOpen(spanCodeObjectId, event);
+  };
+
+  const handleViewMenuItemClick = () => {
+    setIsMenuOpen(false);
+    ticketLink && openURLInDefaultBrowser(ticketLink);
+  };
+
+  const handleEditMenuItemClick = () => {
+    setIsMenuOpen(false);
+    openTicketInfo("edit menu item click");
+  };
+
+  const handleJiraButtonClick = () => {
+    sendTrackingEvent(trackingEvents.JIRA_TICKET_INFO_BUTTON_CLICKED, {
+      insightType
+    });
+    openTicketInfo("jira button click");
+  };
+
+  const handleTryButtonClick = () => {
+    openTicketInfo("try now button click");
   };
 
   const renderButton = () => (
@@ -52,20 +73,20 @@ export const JiraButtonComponent = (
                     icon: <OpenLinkIcon />,
                     label: "View",
                     id: "view",
-                    onClick: handleViewButtonClick
+                    onClick: handleViewMenuItemClick
                   },
                   {
                     icon: <PencilIcon />,
                     label: "Edit",
                     id: "edit",
-                    onClick: () => openTicketInfo("edit menu item click")
+                    onClick: handleEditMenuItemClick
                   }
                 ]}
               />
             </Popup>
           }
-          isOpen={isJiraPopoverOpen}
-          onOpenChange={handleJiraButtonClick}
+          isOpen={isMenuOpen}
+          onOpenChange={handleMenuOpenChange}
           placement={"bottom-start"}
         >
           <Button
@@ -85,7 +106,7 @@ export const JiraButtonComponent = (
           buttonType={buttonType}
           label={label}
           icon={JiraLogoIcon}
-          onClick={() => openTicketInfo("jira button click")}
+          onClick={handleJiraButtonClick}
         />
       )}
     </div>
@@ -107,10 +128,7 @@ export const JiraButtonComponent = (
             <span>
               You can now easily create a ticket using information from Digma
             </span>
-            <s.TryNowButton
-              onClick={() => openTicketInfo("try now button click")}
-              label={"Try now"}
-            />
+            <s.TryNowButton onClick={handleTryButtonClick} label={"Try now"} />
           </s.HintContainer>
         }
         isOpen={Boolean(isHintEnabled)}

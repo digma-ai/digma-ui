@@ -24,7 +24,10 @@ export interface InsightCardProps {
     isHintEnabled?: boolean;
     spanCodeObjectId?: string;
   };
-  onJiraButtonClick?: (spanCodeObjectId: string, event: string) => void;
+  onJiraButtonClick?: (
+    spanCodeObjectId: string | undefined,
+    event: string
+  ) => void;
   onGoToSpan: (spanCodeObjectId: string) => void;
 }
 

@@ -1,8 +1,6 @@
 import { useContext } from "react";
 import { getDurationString } from "../../../../../utils/getDurationString";
-import { sendTrackingEvent } from "../../../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../../../common/App/ConfigContext";
-import { trackingEvents } from "../../../tracking";
 import { InsightType, Trace } from "../../../types";
 import { Info } from "../../Info";
 import { InsightCard } from "../../InsightCard";
@@ -23,12 +21,9 @@ export const EndpointNPlusOneInsight = (
   };
 
   const handleTicketInfoButtonClick = (
-    spanCodeObjectId: string,
+    spanCodeObjectId: string | undefined,
     event: string
   ) => {
-    sendTrackingEvent(trackingEvents.JIRA_TICKET_INFO_BUTTON_CLICKED, {
-      insightType: props.insight.type
-    });
     props.onJiraTicketCreate &&
       props.onJiraTicketCreate(props.insight, spanCodeObjectId, event);
   };

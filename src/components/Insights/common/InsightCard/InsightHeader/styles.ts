@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { bodyMediumTypography } from "../../../../common/App/typographies";
+import { bodySemiboldTypography } from "../../../../common/App/typographies";
 
 export const Container = styled.div`
   display: flex;
@@ -26,8 +26,8 @@ export const InfoContainer = styled.div`
   display: flex;
 `;
 
-export const Label = styled.div`
-  ${bodyMediumTypography}
+export const Title = styled.div`
+  ${bodySemiboldTypography}
 
   display: flex;
   gap: 4px;
@@ -40,9 +40,4 @@ export const BadgeContainer = styled.div`
   align-items: center;
   gap: 8px;
   height: 24px;
-`;
-
-export const WarningTriangleContainer = styled.div`
-  display: flex;
-  color: ${({ theme }) => theme.colors.v3.status.high};
 `;

@@ -1,6 +1,4 @@
 import { getDurationString } from "../../../../../utils/getDurationString";
-import { sendTrackingEvent } from "../../../../../utils/sendTrackingEvent";
-import { trackingEvents } from "../../../tracking";
 import { Info } from "../../Info";
 import { InsightCard } from "../../InsightCard";
 import { ColumnsContainer } from "../../InsightCard/ColumnsContainer";
@@ -20,12 +18,9 @@ export const EndpointBottleneckInsight = (
   };
 
   const handleTicketInfoButtonClick = (
-    spanCodeObjectId: string,
+    spanCodeObjectId: string | undefined,
     event: string
   ) => {
-    sendTrackingEvent(trackingEvents.JIRA_TICKET_INFO_BUTTON_CLICKED, {
-      insightType: insight.type
-    });
     props.onJiraTicketCreate &&
       props.onJiraTicketCreate(insight, spanCodeObjectId, event);
   };
