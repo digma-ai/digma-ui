@@ -31,3 +31,11 @@ export interface InsightCardProps {
 export interface StyledInsightCardProps extends CardProps {
   $isDismissed?: boolean;
 }
+
+export interface DismissedPayload {
+  insightId: string;
+}
+
+export interface UndismissedPayload {
+  insightId: string;
+}

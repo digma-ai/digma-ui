@@ -51,3 +51,22 @@ export const StyledInsightCard = styled(Card)<StyledInsightCardProps>`
 export const DismissButton = styled(Button)`
   color: ${({ theme }) => theme.colors.v3.icon.tertiary};
 `;
+
+export const DismissDialog = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 8px;
+  align-items: center;
+  margin: -8px;
+  background: ${({ theme }) => theme.colors.v3.surface.sidePanelHeader};
+`;
+
+export const DismissDialogActions = styled.div`
+  display: flex;
+  gap: 8px;
+`;
+
+export const ButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
