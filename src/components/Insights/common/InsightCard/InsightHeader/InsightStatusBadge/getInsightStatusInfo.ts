@@ -29,7 +29,7 @@ export const getInsightStatusInfo = (
     case InsightStatus.Regression:
       return {
         label: "Regression",
-        color: theme.colors.v3.status.backgroundLow
+        color: theme.colors.v3.status.high
       };
   }
 };

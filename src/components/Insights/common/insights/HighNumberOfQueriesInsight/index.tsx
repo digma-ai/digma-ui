@@ -28,7 +28,7 @@ export const HighNumberOfQueriesInsight = (
     event: string
   ) => {
     props.onJiraTicketCreate &&
-      props.onJiraTicketCreate(insight, undefined, event);
+      props.onJiraTicketCreate(insight, spanCodeObjectId, event);
   };
 
   return (
@@ -69,8 +69,7 @@ export const HighNumberOfQueriesInsight = (
       onJiraButtonClick={handleCreateJiraTicketButtonClick}
       jiraTicketInfo={{
         ticketLink: insight.ticketLink,
-        isHintEnabled: props.isJiraHintEnabled,
-        spanCodeObjectId: props.insight.spanInfo?.spanCodeObjectId
+        isHintEnabled: props.isJiraHintEnabled
       }}
       onGoToTrace={
         traceId

@@ -143,8 +143,7 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
       }
       jiraTicketInfo={{
         ticketLink: props.insight.ticketLink,
-        isHintEnabled: props.isJiraHintEnabled,
-        spanCodeObjectId: props.insight.spanInfo?.spanCodeObjectId
+        isHintEnabled: props.isJiraHintEnabled
       }}
       onJiraButtonClick={
         props.insight.rootCauseSpans.length == 0
