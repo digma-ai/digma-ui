@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { InsightType } from "../../../types";
 import { getDurationString } from "../../../utils/getDurationString";
+import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { trimEndpointScheme } from "../../../utils/trimEndpointScheme";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Button } from "../../common/Button";
@@ -9,13 +10,12 @@ import { ChartIcon } from "../../common/icons/ChartIcon";
 import { CrosshairIcon } from "../../common/icons/CrosshairIcon";
 import { InsightCard } from "../InsightCard";
 import { Criticality } from "../common/Criticality";
+import { JiraButton } from "../common/JiraButton";
 import { Description, Link } from "../styles";
+import { trackingEvents } from "../tracking";
 import { Trace } from "../types";
 import * as s from "./styles";
 import { ScalingIssueInsightProps } from "./types";
-import { JiraButton } from "../common/JiraButton";
-import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
-import { trackingEvents } from "../tracking";
 
 export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
   const config = useContext(ConfigContext);
@@ -42,22 +42,24 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
       );
   };
 
-  const handleCreateJiraTicketButtonClick = (event: string) => {
+  const handleCreateJiraTicketButtonClick = (
+    spanCodeObjectId: string,
+    event: string
+  ) => {
     sendTrackingEvent(trackingEvents.JIRA_TICKET_INFO_BUTTON_CLICKED, {
       insightType: props.insight.type
     });
 
     props.onJiraTicketCreate &&
-      props.onJiraTicketCreate(
-        props.insight,
-        props.insight.spanInfo?.spanCodeObjectId,
-        event
-      );
+      props.onJiraTicketCreate(props.insight, spanCodeObjectId, event);
   };
+
+  const affectedEndpoints = props.insight.affectedEndpoints || [];
 
   return (
     <InsightCard
       data={props.insight}
+      spanInfo={props.insight.spanInfo}
       content={
         <s.ContentContainer>
           <Description>
@@ -82,7 +84,7 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
           {props.insight.rootCauseSpans.length > 0 && (
             <s.List>
               <Description>Caused by:</Description>
-              {props.insight.rootCauseSpans.map((span) => {
+              {props.insight.rootCauseSpans.map((span, i) => {
                 const spanName = span.displayName;
                 const traceId = span.sampleTraceId;
                 const spanCodeObjectId = span.spanCodeObjectId;
@@ -96,32 +98,44 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
                         </Link>
                       </s.SpanName>
                     </Tooltip>
-                    {config.isJaegerEnabled && traceId && (
-                      <s.Button
-                        icon={{ component: CrosshairIcon }}
-                        onClick={() =>
-                          handleTraceButtonClick(
-                            {
-                              name: spanName,
-                              id: traceId
-                            },
-                            props.insight.type,
-                            spanCodeObjectId
-                          )
+                    <s.ButtonsContainer>
+                      <JiraButton
+                        key={"view-ticket-info"}
+                        onTicketInfoButtonClick={
+                          handleCreateJiraTicketButtonClick
                         }
-                      >
-                        Trace
-                      </s.Button>
-                    )}
+                        spanCodeObjectId={spanCodeObjectId}
+                        ticketLink={props.insight.ticketLink}
+                        buttonType={"small"}
+                        isHintEnabled={props.isJiraHintEnabled && i === 0}
+                      />
+                      {config.isJaegerEnabled && traceId && (
+                        <s.Button
+                          icon={{ component: CrosshairIcon }}
+                          onClick={() =>
+                            handleTraceButtonClick(
+                              {
+                                name: spanName,
+                                id: traceId
+                              },
+                              props.insight.type,
+                              spanCodeObjectId
+                            )
+                          }
+                        >
+                          Trace
+                        </s.Button>
+                      )}
+                    </s.ButtonsContainer>
                   </s.RootCause>
                 );
               })}
             </s.List>
           )}
-          {props.insight.affectedEndpoints.length > 0 && (
+          {affectedEndpoints.length > 0 && (
             <s.List>
               <Description>Affected endpoints:</Description>
-              {props.insight.affectedEndpoints.map((endpoint) => {
+              {affectedEndpoints.map((endpoint) => {
                 const endpointRoute = trimEndpointScheme(endpoint.route);
 
                 return (
@@ -143,15 +157,8 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
         </s.ContentContainer>
       }
       buttons={[
-        ...(props.insight.spanInfo
+        ...(props.insight.rootCauseSpans.length == 0
           ? [
-              <Button
-                icon={{ component: ChartIcon }}
-                key={"histogram"}
-                onClick={handleHistogramButtonClick}
-              >
-                Histogram
-              </Button>,
               <JiraButton
                 key={"view-ticket-info"}
                 onTicketInfoButtonClick={handleCreateJiraTicketButtonClick}
@@ -160,6 +167,17 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
                 buttonType={"large"}
                 isHintEnabled={props.isJiraHintEnabled}
               />
+            ]
+          : []),
+        ...(props.insight.spanInfo
+          ? [
+              <Button
+                icon={{ component: ChartIcon }}
+                key={"histogram"}
+                onClick={handleHistogramButtonClick}
+              >
+                Histogram
+              </Button>
             ]
           : [])
       ]}

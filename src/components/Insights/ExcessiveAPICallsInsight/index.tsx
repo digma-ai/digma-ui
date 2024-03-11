@@ -40,6 +40,7 @@ export const ExcessiveAPICallsInsight = (
   return (
     <InsightCard
       data={props.insight}
+      spanInfo={props.insight.spanInfo}
       content={
         <s.ContentContainer>
           <Description>
@@ -61,21 +62,23 @@ export const ExcessiveAPICallsInsight = (
                     </s.SpanName>
                   </Tooltip>
                   {config.isJaegerEnabled && traceId && (
-                    <s.Button
-                      icon={{ component: CrosshairIcon }}
-                      onClick={() =>
-                        handleTraceButtonClick(
-                          {
-                            name: spanName,
-                            id: traceId
-                          },
-                          props.insight.type,
-                          spanCodeObjectId
-                        )
-                      }
-                    >
-                      Trace
-                    </s.Button>
+                    <Tooltip title={"Open Trace"}>
+                      <s.Button
+                        icon={{ component: CrosshairIcon }}
+                        onClick={() =>
+                          handleTraceButtonClick(
+                            {
+                              name: spanName,
+                              id: traceId
+                            },
+                            props.insight.type,
+                            spanCodeObjectId
+                          )
+                        }
+                      >
+                        Trace
+                      </s.Button>
+                    </Tooltip>
                   )}
                 </s.Span>
               );

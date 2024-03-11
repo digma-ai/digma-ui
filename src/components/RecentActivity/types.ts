@@ -1,5 +1,6 @@
 import { ComponentType } from "react";
 import { Duration } from "../../globals";
+import { EnvironmentType } from "../common/App/types";
 import { IconProps } from "../common/icons/types";
 import { ViewMode } from "./EnvironmentPanel/types";
 import { LiveData } from "./LiveView/types";
@@ -45,6 +46,7 @@ export interface SlimInsight {
   type: string;
   codeObjectIds: string[];
   importance: number;
+  criticality: number;
 }
 
 export interface ActivityEntry {
@@ -57,8 +59,6 @@ export interface ActivityEntry {
   latestTraceDuration: Duration;
   slimAggregatedInsights: SlimInsight[];
 }
-
-export type EnvironmentType = "local" | "shared";
 
 export interface Environment {
   name: string;

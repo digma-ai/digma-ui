@@ -4,6 +4,7 @@ import {
   CodeObjectErrorsInsight,
   CodeObjectHotSpotInsight,
   CodeObjectInsight,
+  EndpointBottleneckInsight,
   EndpointBreakdownInsight,
   EndpointDurationSlowdownInsight,
   EndpointHighNumberOfQueriesInsight,
@@ -12,8 +13,11 @@ import {
   EndpointLowUsageInsight,
   EndpointNormalUsageInsight,
   EndpointQueryOptimizationInsight,
+  EndpointSlowdownSourceInsight,
   EndpointSlowestSpansInsight,
+  EndpointSpanNPlusOneInsight,
   EndpointSuspectedNPlusOneInsight,
+  GenericFunctionInsight,
   InsightScope,
   QueryOptimizationInsight,
   SessionInViewEndpointInsight,
@@ -29,6 +33,10 @@ import {
   SpanScalingWellInsight,
   SpanUsagesInsight
 } from "./types";
+
+export const isFunctionInsight = (
+  insight: CodeObjectInsight
+): insight is GenericFunctionInsight => insight.scope === InsightScope.Function;
 
 export const isSpanInsight = (
   insight: CodeObjectInsight
@@ -71,10 +79,16 @@ export const isEndpointHighUsageInsight = (
 ): insight is EndpointHighUsageInsight =>
   insight.type === InsightType.HighUsage;
 
+// obsolete
 export const isEndpointSlowestSpansInsight = (
   insight: CodeObjectInsight
 ): insight is EndpointSlowestSpansInsight =>
   insight.type === InsightType.SlowestSpans;
+
+export const isEndpointBottleneckInsight = (
+  insight: CodeObjectInsight
+): insight is EndpointBottleneckInsight =>
+  insight.type === InsightType.EndpointBottleneck;
 
 export const isSlowEndpointInsight = (
   insight: CodeObjectInsight
@@ -84,10 +98,16 @@ export const isSpanNPlusOneInsight = (
   insight: CodeObjectInsight
 ): insight is SpanNPlusOneInsight => insight.type === InsightType.SpanNPlusOne;
 
+// obsolete
 export const isEndpointSuspectedNPlusOneInsight = (
   insight: CodeObjectInsight
 ): insight is EndpointSuspectedNPlusOneInsight =>
   insight.type === InsightType.EndpointSpanNPlusOne;
+
+export const isEndpointSpanNPlusOneInsight = (
+  insight: CodeObjectInsight
+): insight is EndpointSpanNPlusOneInsight =>
+  insight.type === InsightType.EndpointSpanNPlusOneV2;
 
 export const isEndpointQueryOptimizationInsight = (
   insight: CodeObjectInsight
@@ -107,6 +127,12 @@ export const isCodeObjectHotSpotInsight = (
   insight: CodeObjectInsight
 ): insight is CodeObjectHotSpotInsight => insight.type === InsightType.HotSpot;
 
+export const isEndpointSlowdownSourceInsight = (
+  insight: CodeObjectInsight
+): insight is EndpointSlowdownSourceInsight =>
+  insight.type === InsightType.EndpointSlowdownSource;
+
+// obsolete
 export const isEndpointDurationSlowdownInsight = (
   insight: CodeObjectInsight
 ): insight is EndpointDurationSlowdownInsight =>

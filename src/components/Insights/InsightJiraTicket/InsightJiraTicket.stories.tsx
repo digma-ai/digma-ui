@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { InsightJiraTicket } from ".";
 import { InsightType } from "../../../types";
-import { InsightCategory, InsightScope } from "../types";
+import { InsightCategory, InsightScope, SpanUsagesInsight } from "../types";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof InsightJiraTicket> = {
@@ -17,7 +17,9 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-const insight = {
+const insight: SpanUsagesInsight = {
+  sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
+  id: "60b55792-8262-4d5d-9628-7cce7979ad6d",
   firstDetected: "2023-12-05T17:25:47.010Z",
   lastDetected: "2024-01-05T13:14:47.010Z",
   criticality: 0,
@@ -36,6 +38,8 @@ const insight = {
   sampleTrace: null,
   flows: [],
   scope: InsightScope.Span,
+  isDismissed: false,
+  isDismissible: true,
   spanInfo: {
     name: "DelayAsync",
     displayName: "DelayAsync",
@@ -57,14 +61,18 @@ const insight = {
   severity: 0,
   prefixedCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
   customStartTime: null,
-  actualStartTime: "2023-06-17T00:00:00.000Z"
+  actualStartTime: "2023-06-17T00:00:00.000Z",
+  ticketLink: null
 };
 
 export const Linked: Story = {
   args: {
     summary: "Summary text",
     description: { content: "Multiline\ndescription text", isLoading: false },
-    insight: { ticketLink: "https://digma.ai/ticket/1", ...insight }
+    attachments: [
+      { url: "https://www.example.com", fileName: "attachment.ext" }
+    ],
+    insight: { ...insight, ticketLink: "https://digma.ai/ticket/1" }
   }
 };
 
@@ -72,7 +80,10 @@ export const Unlinked: Story = {
   args: {
     summary: "",
     description: { content: "Multiline\ndescription text", isLoading: false },
-    insight: { ticketLink: null, ...insight }
+    attachments: [
+      { url: "https://www.example.com", fileName: "attachment.ext" }
+    ],
+    insight: { ...insight, ticketLink: "https://digma.ai/ticket/1" }
   }
 };
 
@@ -83,7 +94,7 @@ export const SingleAttachment: Story = {
     attachments: [
       { url: "https://www.example.com", fileName: "attachment.ext" }
     ],
-    insight: { ticketLink: null, ...insight }
+    insight: { ...insight, ticketLink: "https://digma.ai/ticket/1" }
   }
 };
 
@@ -95,6 +106,6 @@ export const MultiAttachments: Story = {
       { url: "https://www.example.com", fileName: "attachment_1.ext" },
       { url: "https://www.example.com", fileName: "attachment_2.ext" }
     ],
-    insight: { ticketLink: null, ...insight }
+    insight: { ...insight, ticketLink: "https://digma.ai/ticket/1" }
   }
 };

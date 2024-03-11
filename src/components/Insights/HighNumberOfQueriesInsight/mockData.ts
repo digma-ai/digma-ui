@@ -7,6 +7,8 @@ import {
 
 export const mockedHighNumberOfQueriesInsight: EndpointHighNumberOfQueriesInsight =
   {
+    sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
+    id: "60b55792-8262-4c5d-9623-7cce7979ad6d",
     firstDetected: "2023-12-05T17:25:47.010Z",
     lastDetected: "2024-01-05T13:14:47.010Z",
     criticality: 0.5,
@@ -22,13 +24,9 @@ export const mockedHighNumberOfQueriesInsight: EndpointHighNumberOfQueriesInsigh
     specifity: 2,
     importance: 3,
     queriesCount: 250,
+    isDismissed: false,
+    isDismissible: true,
     typicalCount: 4,
-    medianDuration: {
-      value: 150,
-      unit: "ms",
-      raw: 150000000.0
-    },
-    requestFraction: 0.3,
     traceId: "00D37A4E7208E0F6E89AA7E2E37446A6",
     scope: InsightScope.EntrySpan,
     endpointSpan: "HTTP POST /owners/{ownerId}/pets/new",

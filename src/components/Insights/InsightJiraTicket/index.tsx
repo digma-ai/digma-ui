@@ -6,7 +6,11 @@ import { isValidHttpUrl } from "../../../utils/isValidUrl";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { JiraTicket } from "../../common/JiraTicket";
 import { actions } from "../actions";
-import { InsightJiraTicketProps, LinkTicketResponse } from "./types";
+import {
+  InsightJiraTicketProps,
+  InsightsGetDataListQuery,
+  LinkTicketResponse
+} from "./types";
 
 export const InsightJiraTicket = (props: InsightJiraTicketProps) => {
   const [errorMessage, setErrorMessage] = useState<string | null>();
@@ -59,9 +63,11 @@ export const InsightJiraTicket = (props: InsightJiraTicketProps) => {
         setErrorMessage(linkTicketResponse.message);
       }
 
-      window.sendMessageToDigma({
-        action: actions.GET_DATA
-      });
+      config.state?.insights?.query &&
+        window.sendMessageToDigma<InsightsGetDataListQuery>({
+          action: actions.GET_DATA_LIST,
+          payload: { query: config.state.insights.query }
+        });
 
       props.onReloadSpanInsight && props.onReloadSpanInsight();
     };
@@ -77,7 +83,7 @@ export const InsightJiraTicket = (props: InsightJiraTicketProps) => {
         handleInsightTicketLink
       );
     };
-  }, []);
+  }, [config.state?.insights?.query]);
 
   useEffect(() => {
     if (props.relatedInsight) {

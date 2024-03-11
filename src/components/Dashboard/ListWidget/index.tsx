@@ -222,7 +222,11 @@ export const ListWidget = <T extends object>(props: ListWidgetProps<T>) => {
               <s.ContentContainer>
                 <s.EntryList>
                   {entries.map((x) =>
-                    props.renderListItem(x, percentileViewMode)
+                    props.renderListItem(
+                      x,
+                      props.environment,
+                      percentileViewMode
+                    )
                   )}
                 </s.EntryList>
               </s.ContentContainer>

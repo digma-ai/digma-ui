@@ -1,11 +1,10 @@
 import { useCallback, useContext, useRef, useState } from "react";
 import { ConfigContext } from "../../../common/App/ConfigContext";
-import { greenScale } from "../../../common/App/getTheme";
+import { greenScale } from "../../../common/App/v2colors";
+import { EnvironmentIcon } from "../../../common/EnvironmentIcon";
 import { KebabMenuButton } from "../../../common/KebabMenuButton";
 import { NewPopover } from "../../../common/NewPopover";
 import { Tooltip } from "../../../common/Tooltip";
-import { DesktopIcon } from "../../../common/icons/DesktopIcon";
-import { InfinityIcon } from "../../../common/icons/InfinityIcon";
 import { TrashBinIcon } from "../../../common/icons/TrashBinIcon";
 import { Badge } from "../../Badge";
 import { EnvironmentMenu } from "../../EnvironmentMenu";
@@ -59,18 +58,6 @@ export const EnvironmentTab = (props: EnvironmentTabProps) => {
 
   const menuItems = [{ label: "Delete", value: "delete", icon: TrashBinIcon }];
 
-  const renderIcon = () => {
-    if (!props.environment.type) {
-      return null;
-    }
-
-    return props.environment.name === props.environment.originalName ? (
-      <InfinityIcon size={16} color={"currentColor"} />
-    ) : (
-      <DesktopIcon size={16} color={"currentColor"} />
-    );
-  };
-
   return (
     <s.Container
       ref={containerRef}
@@ -82,7 +69,7 @@ export const EnvironmentTab = (props: EnvironmentTabProps) => {
       onBlur={handleBlur}
       onClick={handleClick}
     >
-      {renderIcon()}
+      <EnvironmentIcon environment={props.environment} />
       <Tooltip title={props.environment.name}>
         <s.LabelContainer>
           <s.Label>{props.environment.name}</s.Label>

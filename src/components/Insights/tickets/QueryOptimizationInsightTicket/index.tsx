@@ -1,23 +1,20 @@
-import { ReactElement, useContext, useEffect, useState } from "react";
-import { dispatcher } from "../../../../dispatcher";
+import { ReactElement, useContext } from "react";
 import { getCriticalityLabel } from "../../../../utils/getCriticalityLabel";
 import { getDurationString } from "../../../../utils/getDurationString";
 import { intersperse } from "../../../../utils/intersperse";
 import { ConfigContext } from "../../../common/App/ConfigContext";
 import { InsightJiraTicket } from "../../InsightJiraTicket";
-import { actions } from "../../actions";
 import { QueryOptimizationInsight } from "../../types";
+import { useCommitInfos } from "../common";
 import { CommitInfos } from "../common/CommitInfos";
 import { DigmaSignature } from "../common/DigmaSignature";
 import { QueryOptimizationEndpoints } from "../common/QueryOptimizationEndpoints";
-import { getInsightCommits } from "../getInsightCommits";
-import { CommitInfosData, InsightTicketProps } from "../types";
+import { InsightTicketProps } from "../types";
 
 export const QueryOptimizationInsightTicket = (
   props: InsightTicketProps<QueryOptimizationInsight>
 ) => {
-  const [isInitialLoading, setIsInitialLoading] = useState(false);
-  const [commitInfos, setCommitInfos] = useState<CommitInfosData>();
+  const { isLoading, commitInfos } = useCommitInfos(props.data.insight);
   const config = useContext(ConfigContext);
 
   const criticalityString =
@@ -90,45 +87,12 @@ export const QueryOptimizationInsightTicket = (
       }
     : undefined;
 
-  useEffect(() => {
-    setIsInitialLoading(true);
-
-    const commits = getInsightCommits(props.data.insight);
-
-    if (commits.length > 0) {
-      window.sendMessageToDigma({
-        action: actions.GET_COMMIT_INFO,
-        payload: {
-          commits
-        }
-      });
-    }
-
-    const handleCommitInfosData = (data: unknown) => {
-      const commitInfosData = data as CommitInfosData;
-      setCommitInfos(commitInfosData);
-      setIsInitialLoading(false);
-    };
-
-    dispatcher.addActionListener(
-      actions.SET_COMMIT_INFO,
-      handleCommitInfosData
-    );
-
-    return () => {
-      dispatcher.removeActionListener(
-        actions.SET_COMMIT_INFO,
-        handleCommitInfosData
-      );
-    };
-  }, []);
-
   return (
     <InsightJiraTicket
       summary={summary}
       description={{
         content: renderDescription(),
-        isLoading: isInitialLoading
+        isLoading
       }}
       attachments={[attachment]}
       insight={props.data.insight}

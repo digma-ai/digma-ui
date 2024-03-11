@@ -20,6 +20,8 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     insight: {
+      sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
+      id: "60b55492-8262-4c5d-9628-7cce7979ad6d",
       firstDetected: "2023-12-05T17:25:47.010Z",
       lastDetected: "2024-01-05T13:14:47.010Z",
       criticality: 0,
@@ -34,6 +36,8 @@ export const Default: Story = {
       category: InsightCategory.Performance,
       specifity: 4,
       importance: 5,
+      isDismissed: false,
+      isDismissible: true,
       concurrencies: [
         {
           calls: 1,

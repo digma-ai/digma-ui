@@ -1,7 +1,16 @@
-import { useContext, useEffect, useMemo, useRef, useState } from "react";
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from "react";
 import { dispatcher } from "../../../dispatcher";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import { usePrevious } from "../../../hooks/usePrevious";
+import { isEnvironment } from "../../../typeGuards/isEnvironment";
+import { isNull } from "../../../typeGuards/isNull";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { isString } from "../../../typeGuards/isString";
 import { FeatureFlag } from "../../../types";
@@ -12,7 +21,11 @@ import { actions } from "../actions";
 import { checkIfAnyFiltersApplied, getAssetTypeInfo } from "../utils";
 import { AssetTypeListItem } from "./AssetTypeListItem";
 import * as s from "./styles";
-import { AssetCategoriesData, AssetTypeListProps } from "./types";
+import {
+  AssetCategoriesData,
+  AssetCategoryData,
+  AssetTypeListProps
+} from "./types";
 
 const REFRESH_INTERVAL = isNumber(window.assetsRefreshInterval)
   ? window.assetsRefreshInterval
@@ -31,12 +44,16 @@ const getData = (
   filters: AssetFilterQuery | undefined,
   services: string[] | undefined,
   searchQuery: string,
-  isComplexFilterEnabled: boolean
+  isComplexFilterEnabled: boolean,
+  isDirect?: boolean,
+  scopedSpanCodeObjectId?: string
 ) => {
   window.sendMessageToDigma({
     action: actions.GET_CATEGORIES_DATA,
     payload: {
       query: {
+        directOnly: isDirect,
+        scopedSpanCodeObjectId,
         ...(isComplexFilterEnabled
           ? filters || { services: [], operations: [], insights: [] }
           : { services: services || [] }),
@@ -58,7 +75,7 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
   const previousServices = usePrevious(props.services);
   const previousFilters = usePrevious(props.filters);
   const previousSearchQuery = usePrevious(props.searchQuery);
-
+  const previousViewScope = usePrevious(props.scopeViewOptions);
   const isComplexFilterEnabled = useMemo(
     () =>
       Boolean(
@@ -70,6 +87,30 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
     [config]
   );
 
+  const refreshData = useCallback(
+    () =>
+      getData(
+        props.filters,
+        props.services,
+        props.searchQuery,
+        isComplexFilterEnabled,
+        props.scopeViewOptions?.isDirect,
+        props.scopeViewOptions?.scopedSpanCodeObjectId
+      ),
+    [
+      isComplexFilterEnabled,
+      props.filters,
+      props.scopeViewOptions?.isDirect,
+      props.scopeViewOptions?.scopedSpanCodeObjectId,
+      props.searchQuery,
+      props.services
+    ]
+  );
+
+  useEffect(() => {
+    props.setRefresher(refreshData);
+  }, [refreshData]);
+
   const areAnyFiltersApplied = checkIfAnyFiltersApplied(
     isComplexFilterEnabled,
     props.filters,
@@ -78,12 +119,7 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
   );
 
   useEffect(() => {
-    getData(
-      props.filters,
-      props.services,
-      props.searchQuery,
-      isComplexFilterEnabled
-    );
+    refreshData();
     setIsInitialLoading(true);
 
     const handleCategoriesData = (data: unknown, timeStamp: number) => {
@@ -107,53 +143,40 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
 
   useEffect(() => {
     if (
-      (isString(previousEnvironment) &&
-        previousEnvironment !== config.environment) ||
+      (isEnvironment(previousEnvironment) &&
+        previousEnvironment.originalName !==
+          config.environment?.originalName) ||
       (Array.isArray(previousServices) &&
         previousServices !== props.services) ||
       (previousFilters && previousFilters !== props.filters) ||
       (isString(previousSearchQuery) &&
-        previousSearchQuery !== props.searchQuery)
+        previousSearchQuery !== props.searchQuery) ||
+      previousViewScope !== props.scopeViewOptions
     ) {
-      getData(
-        props.filters,
-        props.services,
-        props.searchQuery,
-        isComplexFilterEnabled
-      );
+      refreshData();
     }
   }, [
+    config.environment?.originalName,
     previousEnvironment,
-    config.environment,
-    previousServices,
-    props.services,
     previousFilters,
-    props.filters,
     previousSearchQuery,
+    previousServices,
+    previousViewScope,
+    props.filters,
+    props.scopeViewOptions,
     props.searchQuery,
-    isComplexFilterEnabled
+    props.services,
+    refreshData
   ]);
 
   useEffect(() => {
     if (previousLastSetDataTimeStamp !== lastSetDataTimeStamp) {
       window.clearTimeout(refreshTimerId.current);
       refreshTimerId.current = window.setTimeout(() => {
-        getData(
-          props.filters,
-          props.services,
-          props.searchQuery,
-          isComplexFilterEnabled
-        );
+        refreshData();
       }, REFRESH_INTERVAL);
     }
-  }, [
-    props.services,
-    previousLastSetDataTimeStamp,
-    lastSetDataTimeStamp,
-    props.filters,
-    props.searchQuery,
-    isComplexFilterEnabled
-  ]);
+  }, [lastSetDataTimeStamp, previousLastSetDataTimeStamp, refreshData]);
 
   useEffect(() => {
     if (props.data) {
@@ -180,29 +203,41 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
       return <NoDataMessage type={"noSearchResults"} />;
     }
 
+    if (config.scope !== null) {
+      return <NoDataMessage type={"noDataForAsset"} />;
+    }
+
     return <NoDataMessage type={"noDataYet"} />;
   }
 
+  const assetTypeListItems = ASSET_TYPE_IDS.map((assetTypeId) => {
+    const assetTypeData = data?.assetCategories.find(
+      (x) => x.name === assetTypeId
+    );
+    const assetTypeInfo = getAssetTypeInfo(assetTypeId);
+
+    if (assetTypeData && assetTypeInfo) {
+      return {
+        ...assetTypeData,
+        ...assetTypeInfo
+      };
+    }
+
+    return null;
+  }).filter((x) => !isNull(x) && x.count > 0) as AssetCategoryData[];
+
   return (
     <s.List>
-      {ASSET_TYPE_IDS.map((assetTypeId) => {
-        const assetTypeData = data?.assetCategories.find(
-          (x) => x.name === assetTypeId
-        );
-        const assetTypeInfo = getAssetTypeInfo(assetTypeId);
-        const entryCount = assetTypeData?.count || 0;
-
-        return (
-          <AssetTypeListItem
-            id={assetTypeId}
-            key={assetTypeId}
-            icon={assetTypeInfo?.icon}
-            entryCount={entryCount}
-            label={assetTypeInfo?.label}
-            onAssetTypeClick={handleAssetTypeClick}
-          />
-        );
-      })}
+      {assetTypeListItems.map((x) => (
+        <AssetTypeListItem
+          id={x.name}
+          key={x.name}
+          icon={x?.icon}
+          entryCount={x.count}
+          label={x.label}
+          onAssetTypeClick={handleAssetTypeClick}
+        />
+      ))}
     </s.List>
   );
 };

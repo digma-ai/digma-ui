@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { grayScale } from "../../common/App/getTheme";
+import { grayScale } from "../../common/App/v2colors";
 import { BadgeElementProps, BadgeSize } from "./types";
 
 const getDimensions = (size: BadgeSize) => {

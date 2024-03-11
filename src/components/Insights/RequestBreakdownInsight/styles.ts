@@ -97,7 +97,7 @@ export const TableHead = styled.thead`
 `;
 
 export const TableHeaderCell = styled.th`
-  text-align: left;
+  text-align: start;
   font-weight: 400;
   padding-left: 4px;
   padding-bottom: 8px;
@@ -128,7 +128,7 @@ export const TableBodyCell = styled.td`
 
   &:last-child {
     padding: 4px 4px 4px 22px;
-    text-align: right;
+    text-align: end;
   }
 `;
 

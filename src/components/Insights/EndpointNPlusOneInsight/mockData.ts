@@ -2,10 +2,13 @@ import { InsightType } from "../../../types";
 import {
   EndpointSuspectedNPlusOneInsight,
   InsightCategory,
-  InsightScope
+  InsightScope,
+  InsightStatus
 } from "../types";
 
 export const mockedEndpointNPlusOneInsight: EndpointSuspectedNPlusOneInsight = {
+  sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
+  id: "60b55792-8262-4c5d-9628-7cce7919ad6d",
   firstDetected: "2023-12-05T17:25:47.010Z",
   lastDetected: "2024-01-05T13:14:47.010Z",
   criticality: 0,
@@ -20,6 +23,8 @@ export const mockedEndpointNPlusOneInsight: EndpointSuspectedNPlusOneInsight = {
   category: InsightCategory.Performance,
   specifity: 2,
   importance: 3,
+  isDismissed: false,
+  isDismissible: true,
   spans: [
     {
       occurrences: 200,
@@ -85,5 +90,6 @@ export const mockedEndpointNPlusOneInsight: EndpointSuspectedNPlusOneInsight = {
   prefixedCodeObjectId:
     "method:org.springframework.samples.petclinic.sample.SampleInsightsController$_$genNPlusOneWithoutInternalSpan",
   customStartTime: null,
-  actualStartTime: "2023-06-16T10:30:33.027Z"
+  actualStartTime: "2023-06-16T10:30:33.027Z",
+  status: InsightStatus.Active
 };

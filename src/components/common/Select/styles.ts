@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { grayScale, primaryScale } from "../App/getTheme";
+import { grayScale, primaryScale } from "../App/v2colors";
 import {
   ButtonProps,
   ChevronIconContainerProps,
@@ -87,7 +87,7 @@ export const MenuContainer = styled.div`
   padding: 4px;
   border-radius: 4px;
   border: 1px solid ${({ theme }) => theme.colors.stroke.primary};
-  box-shadow: 0 2px 4px 0 rgba(0 0 0 / 2%);
+  box-shadow: 0 2px 4px 0 rgb(0 0 0 / 2%);
   gap: 4px;
   display: flex;
   flex-direction: column;

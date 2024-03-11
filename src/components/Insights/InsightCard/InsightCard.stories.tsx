@@ -2,7 +2,11 @@ import { Meta, StoryObj } from "@storybook/react";
 import { InsightCard } from ".";
 import { InsightType } from "../../../types";
 import { Button } from "../../common/Button";
-import { InsightCategory, InsightScope } from "../types";
+import {
+  EndpointSuspectedNPlusOneInsight,
+  InsightCategory,
+  InsightScope
+} from "../types";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof InsightCard> = {
@@ -21,6 +25,8 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     data: {
+      sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
+      id: "60b55792-8262-4c5d-9638-7cce7979ad6d",
       firstDetected: "2023-12-05T17:25:47.010Z",
       lastDetected: "2024-01-05T13:14:47.010Z",
       criticality: 0,
@@ -92,12 +98,12 @@ export const Default: Story = {
       ],
       environment: "SAMPLE_ENV",
       severity: 0,
-      isRecalculateEnabled: false,
+      isRecalculateEnabled: true,
       prefixedCodeObjectId:
         "method:org.springframework.samples.petclinic.sample.SampleInsightsController$_$genNPlusOneWithoutInternalSpan",
       customStartTime: null,
       actualStartTime: "2023-06-16T10:30:33.027Z"
-    },
+    } as EndpointSuspectedNPlusOneInsight,
     stats: "Some stats",
     isAsync: true,
     content: (

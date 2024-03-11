@@ -1,8 +1,16 @@
-import { useContext, useEffect, useMemo, useRef, useState } from "react";
+import {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from "react";
 import { DefaultTheme, useTheme } from "styled-components";
 import { dispatcher } from "../../../dispatcher";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import { usePrevious } from "../../../hooks/usePrevious";
+import { isEnvironment } from "../../../typeGuards/isEnvironment";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { isString } from "../../../typeGuards/isString";
 import { FeatureFlag } from "../../../types";
@@ -132,7 +140,9 @@ const getData = (
   searchQuery: string,
   filters: AssetFilterQuery | undefined,
   services: string[] | undefined,
-  isComplexFilterEnabled: boolean
+  isComplexFilterEnabled: boolean,
+  isDirect?: boolean,
+  scopedSpanCodeObjectId?: string
 ) => {
   window.sendMessageToDigma({
     action: actions.GET_DATA,
@@ -143,6 +153,8 @@ const getData = (
         pageSize: PAGE_SIZE,
         sortBy: sorting.criterion,
         sortOrder: sorting.order,
+        directOnly: isDirect,
+        scopedSpanCodeObjectId,
         ...(searchQuery && searchQuery.length > 0
           ? { displayName: searchQuery }
           : {}),
@@ -190,16 +202,7 @@ export const AssetList = (props: AssetListProps) => {
   const previousAssetTypeId = usePrevious(props.assetTypeId);
   const previousServices = usePrevious(props.services);
   const previousFilters = usePrevious(props.filters);
-
-  const entries = data?.data || [];
-
-  const assetTypeInfo = getAssetTypeInfo(props.assetTypeId);
-
-  const isOverallImpactHidden = getFeatureFlagValue(
-    config,
-    FeatureFlag.IS_ASSETS_OVERALL_IMPACT_HIDDEN
-  );
-
+  const previousViewScope = usePrevious(props.scopeViewOptions);
   const isComplexFilterEnabled = useMemo(
     () =>
       Boolean(
@@ -209,6 +212,39 @@ export const AssetList = (props: AssetListProps) => {
         )
       ),
     [config]
+  );
+
+  const refreshData = useCallback(() => {
+    getData(
+      props.assetTypeId,
+      page,
+      sorting,
+      props.searchQuery,
+      props.filters,
+      props.services,
+      isComplexFilterEnabled,
+      props.scopeViewOptions?.isDirect,
+      props.scopeViewOptions?.scopedSpanCodeObjectId
+    );
+  }, [
+    isComplexFilterEnabled,
+    page,
+    props.assetTypeId,
+    props.filters,
+    props.scopeViewOptions?.isDirect,
+    props.scopeViewOptions?.scopedSpanCodeObjectId,
+    props.searchQuery,
+    props.services,
+    sorting
+  ]);
+
+  const entries = data?.data || [];
+
+  const assetTypeInfo = getAssetTypeInfo(props.assetTypeId);
+
+  const isOverallImpactHidden = getFeatureFlagValue(
+    config,
+    FeatureFlag.IS_ASSETS_OVERALL_IMPACT_HIDDEN
   );
 
   const areAnyFiltersApplied = checkIfAnyFiltersApplied(
@@ -225,15 +261,11 @@ export const AssetList = (props: AssetListProps) => {
     : Object.values(SORTING_CRITERION);
 
   useEffect(() => {
-    getData(
-      props.assetTypeId,
-      page,
-      sorting,
-      props.searchQuery,
-      props.filters,
-      props.services,
-      isComplexFilterEnabled
-    );
+    props.setRefresher(refreshData);
+  }, [refreshData]);
+
+  useEffect(() => {
+    refreshData();
     setIsInitialLoading(true);
 
     const handleAssetsData = (data: unknown, timeStamp: number) => {
@@ -252,8 +284,9 @@ export const AssetList = (props: AssetListProps) => {
   useEffect(() => {
     if (
       (isNumber(previousPage) && previousPage !== page) ||
-      (isString(previousEnvironment) &&
-        previousEnvironment !== config.environment) ||
+      (isEnvironment(previousEnvironment) &&
+        previousEnvironment.originalName !==
+          config.environment?.originalName) ||
       (previousSorting && previousSorting !== sorting) ||
       (isString(previousSearchQuery) &&
         previousSearchQuery !== props.searchQuery) ||
@@ -261,63 +294,39 @@ export const AssetList = (props: AssetListProps) => {
         previousAssetTypeId !== props.assetTypeId) ||
       (Array.isArray(previousServices) &&
         previousServices !== props.services) ||
-      (previousFilters && previousFilters !== props.filters)
+      (previousFilters && previousFilters !== props.filters) ||
+      previousViewScope !== props.scopeViewOptions
     ) {
-      getData(
-        props.assetTypeId,
-        page,
-        sorting,
-        props.searchQuery,
-        props.filters,
-        props.services,
-        isComplexFilterEnabled
-      );
+      refreshData();
     }
   }, [
-    props.assetTypeId,
-    previousAssetTypeId,
-    previousSearchQuery,
-    props.searchQuery,
-    previousSorting,
-    sorting,
-    previousPage,
+    config.environment?.originalName,
     page,
+    previousAssetTypeId,
     previousEnvironment,
-    config.environment,
-    props.services,
-    previousServices,
-    props.filters,
     previousFilters,
-    isComplexFilterEnabled
+    previousPage,
+    previousSearchQuery,
+    previousServices,
+    previousSorting,
+    previousViewScope,
+    props.assetTypeId,
+    props.filters,
+    props.scopeViewOptions,
+    props.searchQuery,
+    props.services,
+    refreshData,
+    sorting
   ]);
 
   useEffect(() => {
     if (previousLastSetDataTimeStamp !== lastSetDataTimeStamp) {
       window.clearTimeout(refreshTimerId.current);
       refreshTimerId.current = window.setTimeout(() => {
-        getData(
-          props.assetTypeId,
-          page,
-          sorting,
-          props.searchQuery,
-          props.filters,
-          props.services,
-          isComplexFilterEnabled
-        );
+        refreshData();
       }, REFRESH_INTERVAL);
     }
-  }, [
-    lastSetDataTimeStamp,
-    previousLastSetDataTimeStamp,
-    props.assetTypeId,
-    page,
-    sorting,
-    props.searchQuery,
-    config.environment,
-    props.services,
-    props.filters,
-    isComplexFilterEnabled
-  ]);
+  }, [lastSetDataTimeStamp, previousLastSetDataTimeStamp, refreshData]);
 
   useEffect(() => {
     if (props.data) {
@@ -333,11 +342,24 @@ export const AssetList = (props: AssetListProps) => {
 
   useEffect(() => {
     setPage(0);
-  }, [config.environment, props.searchQuery, sorting, props.assetTypeId]);
+  }, [
+    config.environment?.originalName,
+    props.searchQuery,
+    sorting,
+    props.assetTypeId,
+    props.scopeViewOptions
+  ]);
 
   useEffect(() => {
     listRef.current?.scrollTo(0, 0);
-  }, [config.environment, props.searchQuery, sorting, page, props.assetTypeId]);
+  }, [
+    config.environment?.originalName,
+    props.searchQuery,
+    sorting,
+    page,
+    props.assetTypeId,
+    props.scopeViewOptions
+  ]);
 
   const handleBackButtonClick = () => {
     props.onBackButtonClick();

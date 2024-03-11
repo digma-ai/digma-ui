@@ -1,27 +1,27 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { actions as globalActions } from "../../actions";
 import { SLACK_WORKSPACE_URL } from "../../constants";
-import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
 import { trackingEvents as globalTrackingEvents } from "../../trackingEvents";
 import { isNumber } from "../../typeGuards/isNumber";
 import { openURLInDefaultBrowser } from "../../utils/openURLInDefaultBrowser";
 import { sendTrackingEvent } from "../../utils/sendTrackingEvent";
 import { ConfigContext } from "../common/App/ConfigContext";
-import { Button } from "../common/Button";
 import { CircleLoader } from "../common/CircleLoader";
 import { EmptyState } from "../common/EmptyState";
 import { RegistrationDialog } from "../common/RegistrationDialog";
 import { RegistrationFormValues } from "../common/RegistrationDialog/types";
+import { SORTING_ORDER } from "../common/SortingSelector/types";
 import { CardsIcon } from "../common/icons/CardsIcon";
 import { DocumentWithMagnifierIcon } from "../common/icons/DocumentWithMagnifierIcon";
 import { LightBulbSmallCrossedIcon } from "../common/icons/LightBulbSmallCrossedIcon";
 import { LightBulbSmallIcon } from "../common/icons/LightBulbSmallIcon";
 import { OpenTelemetryLogoCrossedSmallIcon } from "../common/icons/OpenTelemetryLogoCrossedSmallIcon";
 import { SlackLogoIcon } from "../common/icons/SlackLogoIcon";
-import { InsightList } from "./InsightList";
-import { Preview } from "./Preview";
+import { InsightsCatalog } from "./InsightsCatalog";
+import { SORTING_CRITERION } from "./InsightsCatalog/types";
 import { actions } from "./actions";
+import { useInsightsData } from "./common/useInsightsData";
 import * as s from "./styles";
 import { BottleneckInsightTicket } from "./tickets/BottleneckInsightTicket";
 import { EndpointHighNumberOfQueriesInsightTicket } from "./tickets/EndpointHighNumberOfQueriesInsightTicket";
@@ -29,38 +29,49 @@ import { EndpointNPlusOneInsightTicket } from "./tickets/EndpointNPlusOneInsight
 import { EndpointQueryOptimizationInsightTicket } from "./tickets/EndpointQueryOptimizationTicket";
 import { NPlusOneInsightTicket } from "./tickets/NPlusOneInsightTicket";
 import { QueryOptimizationInsightTicket } from "./tickets/QueryOptimizationInsightTicket";
-import { SpanBottleneckInsightTicket } from "./tickets/SpanBottleneckInsightTicket";
 import { ScalingIssueInsightTicket } from "./tickets/ScalingIssueInsightTicket";
+import { ScalingIssueInsightTicketByRootCause } from "./tickets/ScalingIssueInsightTicketByRootCause";
+import { SpanBottleneckInsightTicket } from "./tickets/SpanBottleneckInsightTicket";
 import {
+  isEndpointBottleneckInsight,
   isEndpointHighNumberOfQueriesInsight,
   isEndpointQueryOptimizationInsight,
-  isEndpointSlowestSpansInsight,
-  isEndpointSuspectedNPlusOneInsight,
+  isEndpointSpanNPlusOneInsight,
   isSpanEndpointBottleneckInsight,
   isSpanNPlusOneInsight,
-  isSpanQueryOptimizationInsight, 
+  isSpanQueryOptimizationInsight,
   isSpanScalingBadlyInsight
 } from "./typeGuards";
 import {
+  EndpointBottleneckInsight,
   EndpointHighNumberOfQueriesInsight,
   EndpointQueryOptimizationInsight,
-  EndpointSlowestSpansInsight,
-  EndpointSuspectedNPlusOneInsight,
+  EndpointSpanNPlusOneInsight,
   GenericCodeObjectInsight,
   InsightTicketInfo,
   InsightsData,
   InsightsProps,
+  InsightsQuery,
   InsightsStatus,
-  Method,
   QueryOptimizationInsight,
   SpanEndpointBottleneckInsight,
   SpanNPlusOneInsight,
-  ViewMode, SpanScalingBadlyInsight
+  SpanScalingBadlyInsight
 } from "./types";
 
 const REFRESH_INTERVAL = isNumber(window.insightsRefreshInterval)
   ? window.insightsRefreshInterval
   : 10 * 1000; // in milliseconds
+
+const DEFAULT_QUERY = {
+  page: 0,
+  sorting: {
+    criterion: SORTING_CRITERION.LATEST,
+    order: SORTING_ORDER.DESC
+  },
+  searchQuery: null,
+  showDismissed: false
+};
 
 const renderInsightTicket = (
   data: InsightTicketInfo<GenericCodeObjectInsight>,
@@ -71,12 +82,8 @@ const renderInsightTicket = (
     return <NPlusOneInsightTicket data={ticketData} onClose={onClose} />;
   }
 
-  if (
-    isEndpointSuspectedNPlusOneInsight(data.insight) &&
-    data.spanCodeObjectId
-  ) {
-    const ticketData =
-      data as InsightTicketInfo<EndpointSuspectedNPlusOneInsight>;
+  if (isEndpointSpanNPlusOneInsight(data.insight) && data.spanCodeObjectId) {
+    const ticketData = data as InsightTicketInfo<EndpointSpanNPlusOneInsight>;
     return (
       <EndpointNPlusOneInsightTicket data={ticketData} onClose={onClose} />
     );
@@ -87,8 +94,8 @@ const renderInsightTicket = (
     return <BottleneckInsightTicket data={ticketData} onClose={onClose} />;
   }
 
-  if (isEndpointSlowestSpansInsight(data.insight) && data.spanCodeObjectId) {
-    const ticketData = data as InsightTicketInfo<EndpointSlowestSpansInsight>;
+  if (isEndpointBottleneckInsight(data.insight) && data.spanCodeObjectId) {
+    const ticketData = data as InsightTicketInfo<EndpointBottleneckInsight>;
     return <SpanBottleneckInsightTicket data={ticketData} onClose={onClose} />;
   }
 
@@ -113,7 +120,10 @@ const renderInsightTicket = (
     );
   }
 
-  if (isEndpointHighNumberOfQueriesInsight(data.insight)) {
+  if (
+    isEndpointHighNumberOfQueriesInsight(data.insight) &&
+    data.spanCodeObjectId
+  ) {
     const ticketData =
       data as InsightTicketInfo<EndpointHighNumberOfQueriesInsight>;
     return (
@@ -125,95 +135,89 @@ const renderInsightTicket = (
   }
 
   if (isSpanScalingBadlyInsight(data.insight)) {
-    const ticketData =
-      data as InsightTicketInfo<SpanScalingBadlyInsight>;
-    return (
-      <ScalingIssueInsightTicket
-        data={ticketData}
-        onClose={onClose}
-      />
+    const ticketData = data as InsightTicketInfo<SpanScalingBadlyInsight>;
+    const selectedRootCause = data.insight.rootCauseSpans.find(
+      (r) => r.spanCodeObjectId == data.spanCodeObjectId
     );
+    if (selectedRootCause) {
+      return (
+        <ScalingIssueInsightTicketByRootCause
+          rootCauseSpanInfo={selectedRootCause}
+          data={ticketData}
+          onClose={onClose}
+        />
+      );
+    } else {
+      return <ScalingIssueInsightTicket data={ticketData} onClose={onClose} />;
+    }
   }
 
   return null;
 };
 
+const NoDataYet = () => {
+  const handleTroubleshootingLinkClick = () => {
+    sendTrackingEvent(globalTrackingEvents.TROUBLESHOOTING_LINK_CLICKED, {
+      origin: "insights"
+    });
+
+    sendMessage(globalActions.OPEN_TROUBLESHOOTING_GUIDE);
+  };
+
+  return (
+    <EmptyState
+      icon={CardsIcon}
+      title={"No data yet"}
+      content={
+        <>
+          <s.EmptyStateDescription>
+            Trigger actions that call this application to learn more about its
+            runtime behavior
+          </s.EmptyStateDescription>
+          <s.TroubleshootingLink onClick={handleTroubleshootingLinkClick}>
+            Not seeing your application data?
+          </s.TroubleshootingLink>
+        </>
+      }
+    />
+  );
+};
+
+const sendMessage = (action: string, data?: object) => {
+  return window.sendMessageToDigma({
+    action,
+    payload: {
+      ...data
+    }
+  });
+};
+
 export const Insights = (props: InsightsProps) => {
-  const [data, setData] = useState<InsightsData>();
-  const previousData = usePrevious(data);
-  const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
-  const [isInitialLoading, setIsInitialLoading] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isAutofixing, setIsAutofixing] = useState(false);
+  // const [isAutofixing, setIsAutofixing] = useState(false);
+  const [query, setQuery] = useState<InsightsQuery>(DEFAULT_QUERY);
+  const { isInitialLoading, data, refresh } = useInsightsData({
+    refreshInterval: REFRESH_INTERVAL,
+    query
+  });
   const [infoToOpenJiraTicket, setInfoToOpenJiraTicket] =
     useState<InsightTicketInfo<GenericCodeObjectInsight>>();
   const config = useContext(ConfigContext);
   const previousUserRegistrationEmail = usePrevious(
     config.userRegistrationEmail
   );
-  useState(false);
   const [isRegistrationInProgress, setIsRegistrationInProgress] =
     useState(false);
 
-  useEffect(() => {
-    window.sendMessageToDigma({
-      action: actions.INITIALIZE
-    });
-
-    window.sendMessageToDigma({
-      action: actions.GET_DATA
-    });
-    setIsInitialLoading(true);
-
-    const handleInsightsData = (data: unknown, timeStamp: number) => {
-      const insightsData = data as InsightsData;
-
-      setIsLoading(insightsData.insightsStatus === InsightsStatus.LOADING);
-
-      if (insightsData.insightsStatus !== InsightsStatus.LOADING) {
-        setData(insightsData);
-      }
-      setLastSetDataTimeStamp(timeStamp);
-    };
-
-    dispatcher.addActionListener(actions.SET_DATA, handleInsightsData);
-
-    return () => {
-      dispatcher.removeActionListener(actions.SET_DATA, handleInsightsData);
-    };
+  useLayoutEffect(() => {
+    sendMessage(actions.INITIALIZE);
+    sendMessage(globalActions.GET_STATE);
   }, []);
 
-  useEffect(() => {
-    const timerId = window.setTimeout(() => {
-      window.sendMessageToDigma({
-        action: actions.GET_DATA
-      });
-    }, REFRESH_INTERVAL);
-
-    return () => {
-      window.clearTimeout(timerId);
-    };
-  }, [lastSetDataTimeStamp]);
-
-  useEffect(() => {
-    if (!props.data) {
-      return;
-    }
-
-    setData(props.data);
-  }, [props.data]);
-
-  useEffect(() => {
-    if (!previousData && data) {
-      setIsInitialLoading(false);
-    }
-  }, [previousData, data]);
-
-  useEffect(() => {
-    if (previousData && data && previousData.assetId !== data.assetId) {
-      setIsAutofixing(false);
-    }
-  }, [previousData, data]);
+  // useEffect(() => {
+  //   if (previousData && data && previousData.assetId !== data.assetId) {
+  //     setIsAutofixing(false);
+  //   }
+  // }, [previousData, data]);
 
   useEffect(() => {
     if (
@@ -228,48 +232,35 @@ export const Insights = (props: InsightsProps) => {
     previousUserRegistrationEmail
   ]);
 
-  const handleMethodSelect = (method: Method) => {
-    window.sendMessageToDigma({
-      action: actions.GO_TO_METHOD,
-      payload: {
-        ...method
-      }
-    });
-  };
+  // const handleMethodSelect = (method: Method) => {
+  //   sendMessage(actions.GO_TO_METHOD, method);
+  // };
 
   const handleSlackLinkClick = () => {
     openURLInDefaultBrowser(SLACK_WORKSPACE_URL);
   };
 
-  const handleAddAnnotationButtonClick = () => {
-    window.sendMessageToDigma({
-      action: actions.ADD_ANNOTATION,
-      payload: {
-        methodId: data?.assetId
-      }
-    });
-  };
+  // const handleAddAnnotationButtonClick = () => {
+  //   sendMessage(actions.ADD_ANNOTATION, {
+  //     methodId: data?.assetId
+  //   });
+  // };
 
-  const handleAutofixLinkClick = () => {
-    if (!isAutofixing) {
-      window.sendMessageToDigma({
-        action: actions.AUTOFIX_MISSING_DEPENDENCY,
-        payload: {
-          methodId: data?.assetId
-        }
-      });
-      setIsAutofixing(true);
-    }
-  };
+  // const handleAutofixLinkClick = () => {
+  //   if (!isAutofixing) {
+  //     sendMessage(actions.AUTOFIX_MISSING_DEPENDENCY, {
+  //       methodId: data?.assetId
+  //     });
+  //     setIsAutofixing(true);
+  //   }
+  // };
 
   const handleTroubleshootingLinkClick = () => {
     sendTrackingEvent(globalTrackingEvents.TROUBLESHOOTING_LINK_CLICKED, {
       origin: "insights"
     });
 
-    window.sendMessageToDigma({
-      action: globalActions.OPEN_TROUBLESHOOTING_GUIDE
-    });
+    sendMessage(globalActions.OPEN_TROUBLESHOOTING_GUIDE);
   };
 
   const handleJiraTicketPopupOpen = (
@@ -284,12 +275,9 @@ export const Insights = (props: InsightsProps) => {
   };
 
   const handleRegistrationSubmit = (formData: RegistrationFormValues) => {
-    window.sendMessageToDigma({
-      action: globalActions.REGISTER,
-      payload: {
-        ...formData,
-        scope: "insights view jira ticket info"
-      }
+    sendMessage(globalActions.REGISTER, {
+      ...formData,
+      scope: "insights view jira ticket info"
     });
 
     setIsRegistrationInProgress(true);
@@ -299,39 +287,31 @@ export const Insights = (props: InsightsProps) => {
     setInfoToOpenJiraTicket(undefined);
   };
 
-  const renderDefaultContent = (data?: InsightsData): JSX.Element => {
-    if (data?.viewMode === ViewMode.PREVIEW) {
-      return (
-        <Preview methods={data.methods} onMethodSelect={handleMethodSelect} />
-      );
-    }
-
-    if (data?.viewMode === ViewMode.INSIGHTS && data.assetId) {
-      return (
-        <InsightList
-          key={data.assetId}
-          insights={data.insights}
-          spans={data.spans}
-          environment={data.environment}
-          assetId={data.assetId}
-          serviceName={data.serviceName}
-          hasMissingDependency={data.hasMissingDependency}
-          canInstrumentMethod={data.canInstrumentMethod}
-          hasObservability={!data.needsObservabilityFix}
-          onJiraTicketCreate={handleJiraTicketPopupOpen}
-        />
-      );
-    }
-
-    return <></>;
+  const renderDefaultContent = (data: InsightsData): JSX.Element => {
+    return (
+      <InsightsCatalog
+        insights={data.insights}
+        totalCount={data.totalCount}
+        onJiraTicketCreate={handleJiraTicketPopupOpen}
+        onQueryChange={(query: InsightsQuery) => {
+          setQuery(query);
+        }}
+        onRefresh={refresh}
+        defaultQuery={DEFAULT_QUERY}
+      />
+    );
   };
 
   const renderContent = (
-    data: InsightsData | undefined,
+    data: InsightsData,
     isInitialLoading: boolean
   ): JSX.Element => {
     if (isInitialLoading) {
       return <EmptyState content={<CircleLoader size={32} />} />;
+    }
+
+    if (!config.environments?.length) {
+      return <NoDataYet />;
     }
 
     switch (data?.insightsStatus) {
@@ -373,23 +353,7 @@ export const Insights = (props: InsightsProps) => {
           />
         );
       case InsightsStatus.NO_SPANS_DATA:
-        return (
-          <EmptyState
-            icon={CardsIcon}
-            title={"No data yet"}
-            content={
-              <>
-                <s.EmptyStateDescription>
-                  Trigger actions that call this application to learn more about
-                  its runtime behavior
-                </s.EmptyStateDescription>
-                <s.TroubleshootingLink onClick={handleTroubleshootingLinkClick}>
-                  Not seeing your application data?
-                </s.TroubleshootingLink>
-              </>
-            }
-          />
-        );
+        return <NoDataYet />;
       case InsightsStatus.NO_OBSERVABILITY:
         return (
           <EmptyState
@@ -401,22 +365,22 @@ export const Insights = (props: InsightsProps) => {
                   Add an annotation to observe this method and collect data
                   about its runtime behavior
                 </s.EmptyStateDescription>
-                {data.hasMissingDependency && (
+                {/* {data.hasMissingDependency && (
                   <s.MissingDependencyContainer>
                     <s.MissingDependencyText>
                       missing dependency: opentelemetry.annotation
                     </s.MissingDependencyText>
                     <s.Link onClick={handleAutofixLinkClick}>Autofix</s.Link>
                   </s.MissingDependencyContainer>
-                )}
-                {data.canInstrumentMethod && (
+                )} */}
+                {/* {data.canInstrumentMethod && (
                   <Button
                     onClick={handleAddAnnotationButtonClick}
                     disabled={data.hasMissingDependency}
                   >
                     Add annotation
                   </Button>
-                )}
+                )} */}
               </>
             }
           />
@@ -429,16 +393,12 @@ export const Insights = (props: InsightsProps) => {
 
   return (
     <s.Container>
-      {isLoading && (
-        <s.CircleLoaderContainer>
-          <CircleLoader size={14} />
-        </s.CircleLoaderContainer>
-      )}
       {renderContent(data, isInitialLoading)}
       {infoToOpenJiraTicket && (
         <s.Overlay>
           <s.PopupContainer>
-            {config.userRegistrationEmail ? (
+            {/* {config.userRegistrationEmail ? ( */}
+            {true ? ( // eslint-disable-line no-constant-condition
               renderInsightTicket(
                 infoToOpenJiraTicket,
                 handleJiraTicketPopupClose

@@ -20,6 +20,8 @@ type Story = StoryObj<typeof meta>;
 export const WithAverage: Story = {
   args: {
     insight: {
+      sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
+      id: "60b55792-8262-4c5d-9628-7cce7979ad6d",
       firstDetected: "2023-12-05T17:25:47.010Z",
       lastDetected: "2024-01-05T13:14:47.010Z",
       criticality: 0,
@@ -32,6 +34,8 @@ export const WithAverage: Story = {
       name: "Performance Stats",
       type: InsightType.SpanDurations,
       category: InsightCategory.Performance,
+      isDismissed: false,
+      isDismissible: true,
       specifity: 4,
       isRecalculateEnabled: true,
       spanCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
@@ -135,6 +139,8 @@ export const WithAverage: Story = {
 export const WithChange: Story = {
   args: {
     insight: {
+      sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
+      id: "60b55792-8262-4c5d-9628-7cce7979ad6d",
       firstDetected: null,
       lastDetected: null,
       criticality: 0,
@@ -147,6 +153,8 @@ export const WithChange: Story = {
       name: "Performance Stats",
       type: InsightType.SpanDurations,
       category: InsightCategory.Performance,
+      isDismissed: false,
+      isDismissible: true,
       specifity: 4,
       isRecalculateEnabled: true,
       spanCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
@@ -240,6 +248,8 @@ export const WithChange: Story = {
 export const WithEvaluatingChange: Story = {
   args: {
     insight: {
+      sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
+      id: "60b55792-8262-4c5d-9628-7cce7979ad6d",
       firstDetected: null,
       lastDetected: null,
       criticality: 0,
@@ -248,6 +258,8 @@ export const WithEvaluatingChange: Story = {
       deactivatedCommitId: null,
       reopenCount: 0,
       ticketLink: null,
+      isDismissed: false,
+      isDismissible: true,
       impact: 0,
       name: "Performance Stats",
       type: InsightType.SpanDurations,
@@ -345,6 +357,8 @@ export const WithEvaluatingChange: Story = {
 export const HistogramWithManyBars: Story = {
   args: {
     insight: {
+      sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
+      id: "60b55792-8262-4c5d-9628-7cce7979ad6d",
       firstDetected: null,
       lastDetected: null,
       criticality: 0,
@@ -360,6 +374,8 @@ export const HistogramWithManyBars: Story = {
       specifity: 4,
       isRecalculateEnabled: true,
       spanCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
+      isDismissed: false,
+      isDismissible: true,
       span: {
         name: "DelayAsync",
         displayName: "DelayAsync",
@@ -4868,6 +4884,8 @@ export const HistogramWithManyBars: Story = {
 export const HistogramWithGaps: Story = {
   args: {
     insight: {
+      sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
+      id: "60b55792-8262-4c5d-9628-7cce7979ad6d",
       firstDetected: null,
       lastDetected: null,
       criticality: 0,
@@ -4883,6 +4901,8 @@ export const HistogramWithGaps: Story = {
       specifity: 4,
       isRecalculateEnabled: true,
       spanCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
+      isDismissed: false,
+      isDismissible: true,
       span: {
         name: "DelayAsync",
         displayName: "DelayAsync",
@@ -5121,6 +5141,8 @@ export const HistogramWithGaps: Story = {
 export const HistogramWithAFewBars: Story = {
   args: {
     insight: {
+      sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
+      id: "60b55792-8262-4c5d-9628-7cce7979ad6d",
       firstDetected: null,
       lastDetected: null,
       criticality: 0,
@@ -5129,6 +5151,8 @@ export const HistogramWithAFewBars: Story = {
       deactivatedCommitId: null,
       reopenCount: 0,
       ticketLink: null,
+      isDismissed: false,
+      isDismissible: true,
       impact: 0,
       name: "Performance Stats",
       type: InsightType.SpanDurations,
@@ -5266,6 +5290,115 @@ export const HistogramWithAFewBars: Story = {
         ],
         quantiles: []
       }
+    }
+  }
+};
+
+// TODO: fix this case
+export const EmptyStateBug: Story = {
+  args: {
+    insight: {
+      sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
+      id: "60b55792-8262-4c5d-9628-7cce7979ad6d",
+      name: "Performance Stats",
+      type: InsightType.SpanDurations,
+      category: InsightCategory.Performance,
+      specifity: 4,
+      isRecalculateEnabled: true,
+      isDismissed: false,
+      isDismissible: true,
+      spanCodeObjectId:
+        "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP GET SampleInsights/HttpCall",
+      span: {
+        name: "HTTP GET SampleInsights/HttpCall",
+        displayName: "HTTP GET SampleInsights/HttpCall",
+        instrumentationLibrary: "OpenTelemetry.Instrumentation.AspNetCore",
+        spanCodeObjectId:
+          "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP GET SampleInsights/HttpCall",
+        methodCodeObjectId:
+          "method:Sample.MoneyTransfer.API.Controllers.SampleInsightsController$_$HttpCall",
+        kind: "Server",
+        codeObjectId:
+          "Sample.MoneyTransfer.API.Controllers.SampleInsightsController$_$HttpCall"
+      },
+      percentiles: [
+        {
+          percentile: 0.5,
+          currentDuration: {
+            value: 426.62,
+            unit: "ms",
+            raw: 426615000
+          },
+          previousDuration: null,
+          changeTime: null,
+          changeVerified: null,
+          traceIds: []
+        },
+        {
+          percentile: 0.95,
+          currentDuration: {
+            value: 426.62,
+            unit: "ms",
+            raw: 426615000
+          },
+          previousDuration: null,
+          changeTime: null,
+          changeVerified: null,
+          traceIds: []
+        }
+      ],
+      lastSpanInstanceInfo: null,
+      histogramPlot: null,
+      average: {
+        value: 0,
+        unit: "ns",
+        raw: 0
+      },
+      standardDeviation: {
+        value: 0,
+        unit: "ns",
+        raw: 0
+      },
+      isAsync: false,
+      scope: InsightScope.Span,
+      spanInfo: {
+        name: "HTTP GET SampleInsights/HttpCall",
+        displayName: "HTTP GET SampleInsights/HttpCall",
+        instrumentationLibrary: "OpenTelemetry.Instrumentation.AspNetCore",
+        spanCodeObjectId:
+          "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP GET SampleInsights/HttpCall",
+        methodCodeObjectId:
+          "method:Sample.MoneyTransfer.API.Controllers.SampleInsightsController$_$HttpCall",
+        kind: "Server",
+        codeObjectId:
+          "Sample.MoneyTransfer.API.Controllers.SampleInsightsController$_$HttpCall"
+      },
+      shortDisplayInfo: {
+        title: "",
+        targetDisplayName: "",
+        subtitle: "",
+        description: ""
+      },
+      codeObjectId:
+        "Sample.MoneyTransfer.API.Controllers.SampleInsightsController$_$HttpCall",
+      decorators: [],
+      environment: "DOTNET#ID#1",
+      importance: 5,
+      severity: 0,
+      impact: 0,
+      criticality: 0,
+      reopenCount: 0,
+      ticketLink: null,
+      prefixedCodeObjectId:
+        "method:Sample.MoneyTransfer.API.Controllers.SampleInsightsController$_$HttpCall",
+      customStartTime: null,
+      actualStartTime: "0001-01-01T00:00:00",
+      firstCommitId: null,
+      lastCommitId: null,
+      deactivatedCommitId: null,
+      firstDetected: "2024-02-15T12:37:29.929835Z",
+      lastDetected: "2024-02-15T12:37:29.929835Z"
+      // flags: []
     }
   }
 };

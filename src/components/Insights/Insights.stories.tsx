@@ -8,9 +8,11 @@ import { mockedSpanNexusInsight } from "./SpanNexusInsight/mockData";
 import {
   CodeObjectErrorsInsight,
   ComponentType,
+  EndpointSlowestSpansInsight,
   InsightCategory,
   InsightScope,
   InsightsStatus,
+  SpanNPlusOneInsight,
   ViewMode
 } from "./types";
 
@@ -31,27 +33,30 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     data: {
-      spans: [
-        {
-          spanCodeObjectId: "empty_span1_id",
-          spanDisplayName: "empty_span1"
-        },
-        {
-          spanCodeObjectId: "empty_span2_id",
-          spanDisplayName: "empty_span2"
-        }
-      ],
-      assetId: "string",
-      serviceName: "string",
-      environment: "string",
+      totalCount: 100,
+      // spans: [
+      //   {
+      //     spanCodeObjectId: "empty_span1_id",
+      //     spanDisplayName: "empty_span1"
+      //   },
+      //   {
+      //     spanCodeObjectId: "empty_span2_id",
+      //     spanDisplayName: "empty_span2"
+      //   }
+      // ],
+      // assetId: "string",
+      // serviceName: "string",
+      // environment: "string",
       viewMode: ViewMode.INSIGHTS,
-      hasMissingDependency: false,
+      // hasMissingDependency: false,
       insightsStatus: InsightsStatus.DEFAULT,
-      methods: [],
-      canInstrumentMethod: false,
-      needsObservabilityFix: false,
+      // methods: [],
+      // canInstrumentMethod: false,
+      // needsObservabilityFix: false,
       insights: [
         {
+          sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
+          id: "60b55792-8362-4c5d-9628-7cce7979ad6d",
           firstDetected: "2023-12-05T17:25:47.010Z",
           lastDetected: "2024-01-05T13:14:47.010Z",
           criticality: 0.8,
@@ -156,8 +161,11 @@ export const Default: Story = {
             "method:org.springframework.samples.petclinic.domain.OwnerValidation$_$ValidateOwner",
           customStartTime: null,
           actualStartTime: "2023-07-27T08:23:56.500827Z"
-        },
+        } as SpanNPlusOneInsight,
         {
+          hasAsyncSpans: false,
+          sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
+          id: "62b55792-8262-4c5d-9628-7cce7979ad6d",
           firstDetected: "2023-12-05T17:25:47.010Z",
           lastDetected: "2024-01-05T13:14:47.010Z",
           criticality: 0,
@@ -226,9 +234,13 @@ export const Default: Story = {
           prefixedCodeObjectId:
             "method:Sample.MoneyTransfer.API.Controllers.TransferController$_$TransferFunds(TransferRequest)",
           customStartTime: null,
-          actualStartTime: "2023-06-26T00:00:00.000Z"
+          actualStartTime: "2023-06-26T00:00:00.000Z",
+          isDismissed: false,
+          isDismissible: true
         },
         {
+          sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
+          id: "60b55792-3262-4c5d-9628-7cce7979ad6d",
           firstDetected: "2023-12-05T17:25:47.010Z",
           lastDetected: "2024-01-05T13:14:47.010Z",
           criticality: 0,
@@ -280,9 +292,13 @@ export const Default: Story = {
           prefixedCodeObjectId:
             "method:Sample.MoneyTransfer.API.Controllers.TransferController$_$TransferFunds(TransferRequest)",
           customStartTime: null,
-          actualStartTime: "2023-06-26T13:53:53.645Z"
+          actualStartTime: "2023-06-26T13:53:53.645Z",
+          isDismissed: false,
+          isDismissible: true
         },
         {
+          sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
+          id: "60b55792-4262-4c5d-9628-7cce7979ad6d",
           firstDetected: "2023-12-05T17:25:47.010Z",
           lastDetected: "2024-01-05T13:14:47.010Z",
           criticality: 0,
@@ -320,9 +336,13 @@ export const Default: Story = {
           prefixedCodeObjectId:
             "method:Sample.MoneyTransfer.API.Controllers.TransferController$_$TransferFunds(TransferRequest)",
           customStartTime: null,
-          actualStartTime: "2023-06-26T13:53:57.956Z"
+          actualStartTime: "2023-06-26T13:53:57.956Z",
+          isDismissed: false,
+          isDismissible: true
         },
         {
+          sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
+          id: "60b55792-8252-4c5d-9628-7cce7979ad6d",
           firstDetected: "2023-12-05T17:25:47.010Z",
           lastDetected: "2024-01-05T13:14:47.010Z",
           criticality: 0,
@@ -337,6 +357,8 @@ export const Default: Story = {
           category: InsightCategory.Usage,
           specifity: 4,
           importance: 6,
+          isDismissed: false,
+          isDismissible: true,
           decorators: [
             {
               title: "Low Usage",
@@ -379,6 +401,8 @@ export const Default: Story = {
           actualStartTime: "2023-06-12T13:48:59.404Z"
         },
         {
+          sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
+          id: "60b55792-8262-4c5d-5628-7cce7979ad6d",
           firstDetected: "2023-12-05T17:25:47.010Z",
           lastDetected: "2024-01-05T13:14:47.010Z",
           criticality: 0,
@@ -393,57 +417,57 @@ export const Default: Story = {
           category: InsightCategory.Performance,
           specifity: 3,
           importance: 2,
-          spans: [
-            {
-              spanInfo: {
-                name: "Validating account funds",
-                displayName: "Validating account funds",
-                instrumentationLibrary: "MoneyTransferDomainService",
-                spanCodeObjectId:
-                  "span:MoneyTransferDomainService$_$Validating account funds",
-                methodCodeObjectId: null,
-                kind: "Internal",
-                codeObjectId: null
-              },
-              probabilityOfBeingBottleneck: 0.2564102564102564,
-              avgDurationWhenBeingBottleneck: {
-                value: 2,
-                unit: "sec",
-                raw: 2003535300
-              },
-              criticality: 0,
-              p50: {
-                fraction: 0,
-                maxDuration: {
-                  value: 0,
-                  unit: "ns",
-                  raw: 0
-                }
-              },
-              p95: {
-                fraction: 0,
-                maxDuration: {
-                  value: 0,
-                  unit: "ns",
-                  raw: 0
-                }
-              },
-              p99: {
-                fraction: 0,
-                maxDuration: {
-                  value: 0,
-                  unit: "ns",
-                  raw: 0
-                }
-              }
-            }
-          ],
+          // spans: [
+          //   {
+          //     spanInfo: {
+          //       name: "Validating account funds",
+          //       displayName: "Validating account funds",
+          //       instrumentationLibrary: "MoneyTransferDomainService",
+          //       spanCodeObjectId:
+          //         "span:MoneyTransferDomainService$_$Validating account funds",
+          //       methodCodeObjectId: null,
+          //       kind: "Internal",
+          //       codeObjectId: null
+          //     },
+          //     probabilityOfBeingBottleneck: 0.2564102564102564,
+          //     avgDurationWhenBeingBottleneck: {
+          //       value: 2,
+          //       unit: "sec",
+          //       raw: 2003535300
+          //     },
+          //     criticality: 0,
+          //     p50: {
+          //       fraction: 0,
+          //       maxDuration: {
+          //         value: 0,
+          //         unit: "ns",
+          //         raw: 0
+          //       }
+          //     },
+          //     p95: {
+          //       fraction: 0,
+          //       maxDuration: {
+          //         value: 0,
+          //         unit: "ns",
+          //         raw: 0
+          //       }
+          //     },
+          //     p99: {
+          //       fraction: 0,
+          //       maxDuration: {
+          //         value: 0,
+          //         unit: "ns",
+          //         raw: 0
+          //       }
+          //     }
+          //   }
+          // ],
           scope: InsightScope.EntrySpan,
-          endpointSpan: "HTTP POST Transfer/TransferFunds",
-          spanCodeObjectId:
-            "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP POST Transfer/TransferFunds",
-          route: "epHTTP:HTTP POST Transfer/TransferFunds",
-          serviceName: "Sample.MoneyTransfer.API",
+          // endpointSpan: "HTTP POST Transfer/TransferFunds",
+          // spanCodeObjectId:
+          //   "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP POST Transfer/TransferFunds",
+          // route: "epHTTP:HTTP POST Transfer/TransferFunds",
+          // serviceName: "Sample.MoneyTransfer.API",
           spanInfo: {
             name: "HTTP POST Transfer/TransferFunds",
             displayName: "HTTP POST Transfer/TransferFunds",
@@ -467,13 +491,15 @@ export const Default: Story = {
           decorators: null,
           environment: "BOB-LAPTOP[LOCAL]",
           severity: 0,
-          isRecalculateEnabled: false,
+          isRecalculateEnabled: true,
           prefixedCodeObjectId:
             "method:Sample.MoneyTransfer.API.Controllers.TransferController$_$TransferFunds(TransferRequest)",
           customStartTime: null,
           actualStartTime: "2023-06-12T13:49:08.186Z"
-        },
+        } as EndpointSlowestSpansInsight,
         {
+          sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
+          id: "60b55792-8262-4c5d-9628-6cce7979ad6d",
           firstDetected: "2023-12-05T17:25:47.010Z",
           lastDetected: "2024-01-05T13:14:47.010Z",
           criticality: 0,
@@ -546,9 +572,13 @@ export const Default: Story = {
           prefixedCodeObjectId:
             "method:Sample.MoneyTransfer.API.Controllers.TransferController$_$TransferFunds(TransferRequest)",
           customStartTime: null,
-          actualStartTime: "2023-06-12T13:49:03.486Z"
+          actualStartTime: "2023-06-12T13:49:03.486Z",
+          isDismissed: false,
+          isDismissible: true
         },
         {
+          sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
+          id: "60b55792-8262-4c5d-9628-7cce8979ad6d",
           firstDetected: "2023-12-05T17:25:47.010Z",
           lastDetected: "2024-01-05T13:14:47.010Z",
           criticality: 0,
@@ -563,6 +593,8 @@ export const Default: Story = {
           category: InsightCategory.Performance,
           specifity: 4,
           isRecalculateEnabled: true,
+          isDismissed: false,
+          isDismissible: true,
           spanCodeObjectId:
             "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP POST Transfer/TransferFunds",
           span: {
@@ -641,9 +673,12 @@ export const Default: Story = {
           prefixedCodeObjectId:
             "method:Sample.MoneyTransfer.API.Controllers.TransferController$_$TransferFunds(TransferRequest)",
           customStartTime: null,
-          actualStartTime: "2023-06-13T00:00:00.000Z"
+          actualStartTime: "2023-06-13T00:00:00.000Z",
+          isAsync: false
         },
         {
+          sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
+          id: "60b55792-8262-4c5d-9628-7cce9979ad6d",
           firstDetected: "2023-12-05T17:25:47.010Z",
           lastDetected: "2024-01-05T13:14:47.010Z",
           criticality: 0,
@@ -704,7 +739,9 @@ export const Default: Story = {
           prefixedCodeObjectId:
             "method:Sample.MoneyTransfer.API.Controllers.TransferController$_$TransferFunds(TransferRequest)",
           customStartTime: null,
-          actualStartTime: "2023-06-20T00:00:00.000Z"
+          actualStartTime: "2023-06-20T00:00:00.000Z",
+          isDismissed: false,
+          isDismissible: true
         },
         mockedEndpointNPlusOneInsight,
         mockedBottleneckInsight,
@@ -718,17 +755,19 @@ export const Default: Story = {
 export const NoInsights: Story = {
   args: {
     data: {
-      spans: [],
-      assetId: "string",
-      serviceName: "string",
-      environment: "string",
+      // spans: [],
+      // assetId: "string",
+      // serviceName: "string",
+      // environment: "string",
+      // canInstrumentMethod: false,
+      // needsObservabilityFix: false,
+      // hasMissingDependency: false,
+      // methods: [],
+
       viewMode: ViewMode.INSIGHTS,
-      hasMissingDependency: false,
       insightsStatus: InsightsStatus.NO_INSIGHTS,
-      methods: [],
       insights: [],
-      canInstrumentMethod: false,
-      needsObservabilityFix: false
+      totalCount: 0
     }
   }
 };
@@ -736,17 +775,19 @@ export const NoInsights: Story = {
 export const NoDataYet: Story = {
   args: {
     data: {
-      spans: [],
-      assetId: "string",
-      serviceName: "string",
-      environment: "string",
+      // spans: [],
+      // assetId: "string",
+      // serviceName: "string",
+      // environment: "string",
+      // canInstrumentMethod: false,
+      // needsObservabilityFix: false,
+      // hasMissingDependency: false,
+      // methods: [],
+
       viewMode: ViewMode.INSIGHTS,
-      hasMissingDependency: false,
       insightsStatus: InsightsStatus.NO_SPANS_DATA,
-      methods: [],
       insights: [],
-      canInstrumentMethod: false,
-      needsObservabilityFix: false
+      totalCount: 0
     }
   }
 };
@@ -754,17 +795,19 @@ export const NoDataYet: Story = {
 export const ProcessingInsights: Story = {
   args: {
     data: {
-      spans: [],
-      assetId: "string",
-      serviceName: "string",
-      environment: "string",
+      // spans: [],
+      // assetId: "string",
+      // serviceName: "string",
+      // environment: "string",
+      // hasMissingDependency: false,
+      // methods: [],
+      // canInstrumentMethod: false,
+      // needsObservabilityFix: false,
+
       viewMode: ViewMode.INSIGHTS,
-      hasMissingDependency: false,
       insightsStatus: InsightsStatus.INSIGHT_PENDING,
-      methods: [],
       insights: [],
-      canInstrumentMethod: false,
-      needsObservabilityFix: false
+      totalCount: 0
     }
   }
 };
@@ -772,22 +815,26 @@ export const ProcessingInsights: Story = {
 export const NoObservability: Story = {
   args: {
     data: {
-      spans: [],
-      assetId: "string",
-      serviceName: "string",
-      environment: "string",
+      // spans: [],
+      // assetId: "string",
+      // serviceName: "string",
+      // environment: "string",
+      // hasMissingDependency: false,
+      // methods: [],
+      // canInstrumentMethod: true,
+      // needsObservabilityFix: true
+
       viewMode: ViewMode.INSIGHTS,
-      hasMissingDependency: false,
       insightsStatus: InsightsStatus.NO_OBSERVABILITY,
-      methods: [],
       insights: [],
-      canInstrumentMethod: true,
-      needsObservabilityFix: true
+      totalCount: 0
     }
   }
 };
 
 const errorsInsight: CodeObjectErrorsInsight = {
+  sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
+  id: "60b55792-8262-4c5d-9628-7cce7979ad1d",
   firstDetected: "2023-12-05T17:25:47.010Z",
   lastDetected: "2024-01-05T13:14:47.010Z",
   criticality: 0,
@@ -839,23 +886,27 @@ const errorsInsight: CodeObjectErrorsInsight = {
   prefixedCodeObjectId:
     "method:Sample.MoneyTransfer.API.Controllers.TransferController$_$TransferFunds(TransferRequest)",
   customStartTime: null,
-  actualStartTime: "2023-06-26T13:53:53.645Z"
+  actualStartTime: "2023-06-26T13:53:53.645Z",
+  isDismissed: false,
+  isDismissible: true
 };
 
 export const NoObservabilityWithInsights: Story = {
   args: {
     data: {
-      spans: [],
-      assetId: "string",
-      serviceName: "string",
-      environment: "string",
       viewMode: ViewMode.INSIGHTS,
-      hasMissingDependency: false,
       insightsStatus: InsightsStatus.DEFAULT,
-      methods: [],
       insights: [errorsInsight],
-      canInstrumentMethod: true,
-      needsObservabilityFix: true
+      totalCount: 0
+
+      // spans: [],
+      // assetId: "string",
+      // serviceName: "string",
+      // environment: "string",
+      // hasMissingDependency: false,
+      // methods: [],
+      // canInstrumentMethod: true,
+      // needsObservabilityFix: true
     }
   }
 };
@@ -863,17 +914,18 @@ export const NoObservabilityWithInsights: Story = {
 export const HasMissingDependency: Story = {
   args: {
     data: {
-      spans: [],
-      assetId: "string",
-      serviceName: "string",
-      environment: "string",
+      // spans: [],
+      // assetId: "string",
+      // serviceName: "string",
+      // environment: "string",
+      // hasMissingDependency: true,
+      // methods: [],
+      // canInstrumentMethod: true,
+      // needsObservabilityFix: true
       viewMode: ViewMode.INSIGHTS,
-      hasMissingDependency: true,
+      totalCount: 0,
       insightsStatus: InsightsStatus.NO_OBSERVABILITY,
-      methods: [],
-      insights: [],
-      canInstrumentMethod: true,
-      needsObservabilityFix: true
+      insights: []
     }
   }
 };
@@ -881,17 +933,19 @@ export const HasMissingDependency: Story = {
 export const HasMissingDependencyWithInsights: Story = {
   args: {
     data: {
-      spans: [],
-      assetId: "string",
-      serviceName: "string",
-      environment: "string",
+      // spans: [],
+      // assetId: "string",
+      // serviceName: "string",
+      // environment: "string",
+      // hasMissingDependency: true,
+      // methods: [],
+      // canInstrumentMethod: true,
+      // needsObservabilityFix: true,
+
       viewMode: ViewMode.INSIGHTS,
-      hasMissingDependency: true,
       insightsStatus: InsightsStatus.DEFAULT,
-      methods: [],
       insights: [errorsInsight],
-      canInstrumentMethod: true,
-      needsObservabilityFix: true
+      totalCount: 0
     }
   }
 };
@@ -899,16 +953,17 @@ export const HasMissingDependencyWithInsights: Story = {
 export const Startup: Story = {
   args: {
     data: {
-      spans: [],
-      serviceName: "string",
-      environment: "string",
       viewMode: ViewMode.INSIGHTS,
-      hasMissingDependency: false,
-      insightsStatus: InsightsStatus.STARTUP,
-      methods: [],
       insights: [],
-      canInstrumentMethod: false,
-      needsObservabilityFix: false
+      insightsStatus: InsightsStatus.STARTUP,
+      totalCount: 0
+      // spans: [],
+      // serviceName: "string",
+      // environment: "string",
+      // methods: [],
+      // canInstrumentMethod: false,
+      // needsObservabilityFix: false
+      // hasMissingDependency: false,
     }
   }
 };
@@ -916,29 +971,30 @@ export const Startup: Story = {
 export const Preview: Story = {
   args: {
     data: {
-      spans: [],
-      serviceName: "string",
-      environment: "string",
       viewMode: ViewMode.PREVIEW,
-      hasMissingDependency: false,
+      totalCount: 0,
       insightsStatus: InsightsStatus.DEFAULT,
-      canInstrumentMethod: false,
-      methods: [
-        {
-          id: "method1",
-          name: "method1"
-        },
-        {
-          id: "method2",
-          name: "method2"
-        },
-        {
-          id: "method3",
-          name: "method3"
-        }
-      ],
-      insights: [],
-      needsObservabilityFix: false
+      // spans: [],
+      // serviceName: "string",
+      // environment: "string",
+      // hasMissingDependency: false,
+      // canInstrumentMethod: false,
+      // methods: [
+      //   {
+      //     id: "method1",
+      //     name: "method1"
+      //   },
+      //   {
+      //     id: "method2",
+      //     name: "method2"
+      //   },
+      //   {
+      //     id: "method3",
+      //     name: "method3"
+      //   }
+      // ],
+      insights: []
+      // needsObservabilityFix: false
     }
   }
 };

@@ -49,10 +49,12 @@ export const QueryOptimizationInsight = (
   const spanCodeObjectId =
     props.insight.spanInfo?.spanCodeObjectId || undefined;
   const traceId = props.insight.traceId;
+  const endpoints = props.insight.endpoints || [];
 
   return (
     <InsightCard
       data={props.insight}
+      spanInfo={props.insight.spanInfo}
       content={
         <s.ContentContainer>
           <Description>
@@ -101,7 +103,7 @@ export const QueryOptimizationInsight = (
           </s.Stats>
           <Description>Affected endpoints:</Description>
           <s.EndpointList>
-            {props.insight.endpoints.map((x) => {
+            {endpoints.map((x) => {
               const spanCodeObjectId = x.endpointInfo.spanCodeObjectId;
               const route = trimEndpointScheme(x.endpointInfo.route);
 

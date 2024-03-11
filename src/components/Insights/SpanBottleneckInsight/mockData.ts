@@ -6,6 +6,8 @@ import {
 } from "../types";
 
 export const mockedSpanBottleneckInsight: EndpointSlowestSpansInsight = {
+  sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
+  id: "60b55792-8262-4c5d-9628-7dce7979ad6d",
   firstDetected: "2023-12-05T17:25:47.010Z",
   lastDetected: "2024-01-05T13:14:47.010Z",
   criticality: 0.7,
@@ -20,6 +22,8 @@ export const mockedSpanBottleneckInsight: EndpointSlowestSpansInsight = {
   category: InsightCategory.Performance,
   specifity: 3,
   importance: 2,
+  isDismissed: false,
+  isDismissible: true,
   spans: [
     {
       spanInfo: {

@@ -16,17 +16,19 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
+const mockedEndpoints = mockedNPlusOneInsight.endpoints || [];
+
 export const Default: Story = {
   args: {
     insight: {
       ...mockedNPlusOneInsight,
       endpoints: [
-        ...mockedNPlusOneInsight.endpoints,
+        ...mockedEndpoints,
         {
-          ...mockedNPlusOneInsight.endpoints[0],
+          ...mockedEndpoints[0],
           endpointInfo: {
-            ...mockedNPlusOneInsight.endpoints[0].endpointInfo,
-            route: `${mockedNPlusOneInsight.endpoints[0].endpointInfo.route}1`
+            ...mockedEndpoints[0].endpointInfo,
+            route: `${mockedEndpoints[0].endpointInfo.route}1`
           }
         }
       ]

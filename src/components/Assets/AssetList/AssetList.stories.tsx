@@ -45,23 +45,28 @@ export const Default: Story = {
           insights: [
             {
               type: "SlowestSpans",
-              importance: 2
+              importance: 2,
+              criticality: 0.5
             },
             {
               type: "SlowEndpoint",
-              importance: 2
+              importance: 2,
+              criticality: 0.5
             },
             {
               type: "SpanScalingInsufficientData",
-              importance: 5
+              importance: 5,
+              criticality: 0.5
             },
             {
               type: "EndpointBreakdown",
-              importance: 6
+              importance: 6,
+              criticality: 0.5
             },
             {
               type: "LowUsage",
-              importance: 6
+              importance: 6,
+              criticality: 0.5
             }
           ],
           impactScores: {
@@ -90,23 +95,28 @@ export const Default: Story = {
           insights: [
             {
               type: "HotSpot",
-              importance: 2
+              importance: 2,
+              criticality: 0.5
             },
             {
               type: "SpanScalingInsufficientData",
-              importance: 5
+              importance: 5,
+              criticality: 0.5
             },
             {
               type: "HighUsage",
-              importance: 5
+              importance: 5,
+              criticality: 0.5
             },
             {
               type: "Errors",
-              importance: 5
+              importance: 5,
+              criticality: 0.5
             },
             {
               type: "EndpointBreakdown",
-              importance: 6
+              importance: 6,
+              criticality: 0.5
             }
           ],
           impactScores: {
@@ -135,23 +145,28 @@ export const Default: Story = {
           insights: [
             {
               type: "HotSpot",
-              importance: 2
+              importance: 2,
+              criticality: 0.5
             },
             {
               type: "SpanScalingInsufficientData",
-              importance: 5
+              importance: 5,
+              criticality: 0.5
             },
             {
               type: "Errors",
-              importance: 5
+              importance: 5,
+              criticality: 0.5
             },
             {
               type: "LowUsage",
-              importance: 6
+              importance: 6,
+              criticality: 0.5
             },
             {
               type: "EndpointBreakdown",
-              importance: 6
+              importance: 6,
+              criticality: 0.5
             }
           ],
           impactScores: {
@@ -180,23 +195,28 @@ export const Default: Story = {
           insights: [
             {
               type: "HotSpot",
-              importance: 2
+              importance: 2,
+              criticality: 0.5
             },
             {
               type: "SpanScalingInsufficientData",
-              importance: 5
+              importance: 5,
+              criticality: 0.5
             },
             {
               type: "Errors",
-              importance: 5
+              importance: 5,
+              criticality: 0.5
             },
             {
               type: "LowUsage",
-              importance: 6
+              importance: 6,
+              criticality: 0.5
             },
             {
               type: "EndpointBreakdown",
-              importance: 6
+              importance: 6,
+              criticality: 0.5
             }
           ],
           impactScores: {
@@ -225,23 +245,28 @@ export const Default: Story = {
           insights: [
             {
               type: "HotSpot",
-              importance: 2
+              importance: 2,
+              criticality: 0.5
             },
             {
               type: "SpanScalingInsufficientData",
-              importance: 5
+              importance: 5,
+              criticality: 0.5
             },
             {
               type: "Errors",
-              importance: 5
+              importance: 5,
+              criticality: 0.5
             },
             {
               type: "LowUsage",
-              importance: 6
+              importance: 6,
+              criticality: 0.5
             },
             {
               type: "EndpointBreakdown",
-              importance: 6
+              importance: 6,
+              criticality: 0.5
             }
           ],
           impactScores: {
@@ -270,19 +295,23 @@ export const Default: Story = {
           insights: [
             {
               type: "SlowestSpans",
-              importance: 2
+              importance: 2,
+              criticality: 0.5
             },
             {
               type: "SpanScalingInsufficientData",
-              importance: 5
+              importance: 5,
+              criticality: 0.5
             },
             {
               type: "EndpointBreakdown",
-              importance: 6
+              importance: 6,
+              criticality: 0.5
             },
             {
               type: "LowUsage",
-              importance: 6
+              importance: 6,
+              criticality: 0.5
             }
           ],
           impactScores: {
@@ -311,19 +340,23 @@ export const Default: Story = {
           insights: [
             {
               type: "SlowestSpans",
-              importance: 2
+              importance: 2,
+              criticality: 0.5
             },
             {
               type: "SpanScalingInsufficientData",
-              importance: 5
+              importance: 5,
+              criticality: 0.5
             },
             {
               type: "LowUsage",
-              importance: 6
+              importance: 6,
+              criticality: 0.5
             },
             {
               type: "EndpointBreakdown",
-              importance: 6
+              importance: 6,
+              criticality: 0.5
             }
           ],
           impactScores: {
@@ -352,19 +385,23 @@ export const Default: Story = {
           insights: [
             {
               type: "EndpointSpaNPlusOne",
-              importance: 3
+              importance: 3,
+              criticality: 0.5
             },
             {
               type: "SpanScalingInsufficientData",
-              importance: 5
+              importance: 5,
+              criticality: 0.5
             },
             {
               type: "LowUsage",
-              importance: 6
+              importance: 6,
+              criticality: 0.5
             },
             {
               type: "EndpointBreakdown",
-              importance: 6
+              importance: 6,
+              criticality: 0.5
             }
           ],
           impactScores: {
@@ -393,19 +430,23 @@ export const Default: Story = {
           insights: [
             {
               type: "EndpointSpaNPlusOne",
-              importance: 3
+              importance: 3,
+              criticality: 0.5
             },
             {
               type: "SpanScalingInsufficientData",
-              importance: 5
+              importance: 5,
+              criticality: 0.5
             },
             {
               type: "LowUsage",
-              importance: 6
+              importance: 6,
+              criticality: 0.5
             },
             {
               type: "EndpointBreakdown",
-              importance: 6
+              importance: 6,
+              criticality: 0.5
             }
           ],
           impactScores: {
@@ -434,19 +475,23 @@ export const Default: Story = {
           insights: [
             {
               type: "SpanScalingInsufficientData",
-              importance: 5
+              importance: 5,
+              criticality: 0.5
             },
             {
               type: "Errors",
-              importance: 5
+              importance: 5,
+              criticality: 0.5
             },
             {
               type: "LowUsage",
-              importance: 6
+              importance: 6,
+              criticality: 0.5
             },
             {
               type: "EndpointBreakdown",
-              importance: 6
+              importance: 6,
+              criticality: 0.5
             }
           ],
           impactScores: {
@@ -476,19 +521,23 @@ export const Default: Story = {
           insights: [
             {
               type: "SpanScalingInsufficientData",
-              importance: 5
+              importance: 5,
+              criticality: 0.5
             },
             {
               type: "Errors",
-              importance: 5
+              importance: 5,
+              criticality: 0.5
             },
             {
               type: "LowUsage",
-              importance: 6
+              importance: 6,
+              criticality: 0.5
             },
             {
               type: "EndpointBreakdown",
-              importance: 6
+              importance: 6,
+              criticality: 0.5
             }
           ],
           impactScores: {
@@ -516,15 +565,18 @@ export const Default: Story = {
           insights: [
             {
               type: "SpanScalingInsufficientData",
-              importance: 5
+              importance: 5,
+              criticality: 0.5
             },
             {
               type: "EndpointBreakdown",
-              importance: 6
+              importance: 6,
+              criticality: 0.5
             },
             {
               type: "LowUsage",
-              importance: 6
+              importance: 6,
+              criticality: 0.5
             }
           ],
           impactScores: {
@@ -552,15 +604,18 @@ export const Default: Story = {
           insights: [
             {
               type: "SpanScalingInsufficientData",
-              importance: 5
+              importance: 5,
+              criticality: 0.5
             },
             {
               type: "EndpointBreakdown",
-              importance: 6
+              importance: 6,
+              criticality: 0.5
             },
             {
               type: "LowUsage",
-              importance: 6
+              importance: 6,
+              criticality: 0.5
             }
           ],
           impactScores: {
@@ -589,15 +644,18 @@ export const Default: Story = {
           insights: [
             {
               type: "SpanScalingInsufficientData",
-              importance: 5
+              importance: 5,
+              criticality: 0.5
             },
             {
               type: "EndpointBreakdown",
-              importance: 6
+              importance: 6,
+              criticality: 0.5
             },
             {
               type: "LowUsage",
-              importance: 6
+              importance: 6,
+              criticality: 0.5
             }
           ],
           impactScores: {
@@ -626,15 +684,18 @@ export const Default: Story = {
           insights: [
             {
               type: "SpanScalingInsufficientData",
-              importance: 5
+              importance: 5,
+              criticality: 0.5
             },
             {
               type: "EndpointBreakdown",
-              importance: 6
+              importance: 6,
+              criticality: 0.5
             },
             {
               type: "LowUsage",
-              importance: 6
+              importance: 6,
+              criticality: 0.5
             }
           ],
           impactScores: {
@@ -663,15 +724,18 @@ export const Default: Story = {
           insights: [
             {
               type: "SpanScalingInsufficientData",
-              importance: 5
+              importance: 5,
+              criticality: 0.5
             },
             {
               type: "LowUsage",
-              importance: 6
+              importance: 6,
+              criticality: 0.5
             },
             {
               type: "EndpointBreakdown",
-              importance: 6
+              importance: 6,
+              criticality: 0.5
             }
           ],
           impactScores: {
@@ -700,15 +764,18 @@ export const Default: Story = {
           insights: [
             {
               type: "SpanScalingInsufficientData",
-              importance: 5
+              importance: 5,
+              criticality: 0.5
             },
             {
               type: "LowUsage",
-              importance: 6
+              importance: 6,
+              criticality: 0.5
             },
             {
               type: "EndpointBreakdown",
-              importance: 6
+              importance: 6,
+              criticality: 0.5
             }
           ],
           impactScores: {
@@ -737,15 +804,18 @@ export const Default: Story = {
           insights: [
             {
               type: "SpanScalingInsufficientData",
-              importance: 5
+              importance: 5,
+              criticality: 0.5
             },
             {
               type: "EndpointBreakdown",
-              importance: 6
+              importance: 6,
+              criticality: 0.5
             },
             {
               type: "LowUsage",
-              importance: 6
+              importance: 6,
+              criticality: 0.5
             }
           ],
           impactScores: {
@@ -774,15 +844,18 @@ export const Default: Story = {
           insights: [
             {
               type: "SpanScalingInsufficientData",
-              importance: 5
+              importance: 5,
+              criticality: 0.5
             },
             {
               type: "LowUsage",
-              importance: 6
+              importance: 6,
+              criticality: 0.5
             },
             {
               type: "EndpointBreakdown",
-              importance: 6
+              importance: 6,
+              criticality: 0.5
             }
           ],
           impactScores: {
@@ -811,15 +884,18 @@ export const Default: Story = {
           insights: [
             {
               type: "SpanScalingInsufficientData",
-              importance: 5
+              importance: 5,
+              criticality: 0.5
             },
             {
               type: "EndpointBreakdown",
-              importance: 6
+              importance: 6,
+              criticality: 0.5
             },
             {
               type: "LowUsage",
-              importance: 6
+              importance: 6,
+              criticality: 0.5
             }
           ],
           impactScores: {

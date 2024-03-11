@@ -4,8 +4,8 @@ import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
 import { isNumber } from "../../typeGuards/isNumber";
 import { sendTrackingEvent } from "../../utils/sendTrackingEvent";
-import { MenuItem } from "../Assets/FilterMenu/types";
 import { ConfigContext } from "../common/App/ConfigContext";
+import { MenuItem } from "../common/FilterMenu/types";
 import { NewCircleLoader } from "../common/NewCircleLoader";
 import { Pagination } from "../common/Pagination";
 import { RegistrationDialog } from "../common/RegistrationDialog";
@@ -16,7 +16,14 @@ import { TestTicket } from "./TestTicket";
 import { actions } from "./actions";
 import * as s from "./styles";
 import { trackingEvents } from "./tracking";
-import { SetSpanLatestDataPayload, Test, TestsData, TestsProps } from "./types";
+import {
+  GetSpanLatestDataPayload,
+  RegisterPayload,
+  SetSpanLatestDataPayload,
+  Test,
+  TestsData,
+  TestsProps
+} from "./types";
 
 const REFRESH_INTERVAL = isNumber(window.testsRefreshInterval)
   ? window.testsRefreshInterval
@@ -73,6 +80,8 @@ export const Tests = (props: TestsProps) => {
     []
   );
   const testsListRef = useRef<HTMLDivElement>(null);
+  const scopeSpan = config.scope?.span || null;
+  const previousScopeSpan = usePrevious(scopeSpan);
 
   const environmentMenuItems: MenuItem[] = (config.environments || []).map(
     (environment) => ({
@@ -100,11 +109,12 @@ export const Tests = (props: TestsProps) => {
 
     sendTrackingEvent(trackingEvents.PAGE_LOADED);
 
-    window.sendMessageToDigma({
+    window.sendMessageToDigma<GetSpanLatestDataPayload>({
       action: actions.GET_SPAN_LATEST_DATA,
       payload: {
         ...environmentsToSend,
-        pageNumber: 1
+        pageNumber: 1,
+        scope: scopeSpan
       }
     });
     setIsInitialLoading(true);
@@ -132,11 +142,12 @@ export const Tests = (props: TestsProps) => {
     if (previousLastSetDataTimeStamp !== lastSetDataTimeStamp) {
       window.clearTimeout(refreshTimerId.current);
       refreshTimerId.current = window.setTimeout(() => {
-        window.sendMessageToDigma({
+        window.sendMessageToDigma<GetSpanLatestDataPayload>({
           action: actions.GET_SPAN_LATEST_DATA,
           payload: {
             ...environmentsToSend,
-            pageNumber: data?.data?.paging.pageNumber || 1
+            pageNumber: data?.data?.paging.pageNumber || 1,
+            scope: scopeSpan
           }
         });
       }, REFRESH_INTERVAL);
@@ -145,23 +156,31 @@ export const Tests = (props: TestsProps) => {
     previousLastSetDataTimeStamp,
     lastSetDataTimeStamp,
     environmentsToSend,
-    data
+    data,
+    scopeSpan
   ]);
 
   useEffect(() => {
     if (
-      previousEnvironmentsToSend &&
-      previousEnvironmentsToSend !== environmentsToSend
+      (previousEnvironmentsToSend &&
+        previousEnvironmentsToSend !== environmentsToSend) ||
+      previousScopeSpan !== scopeSpan
     ) {
-      window.sendMessageToDigma({
+      window.sendMessageToDigma<GetSpanLatestDataPayload>({
         action: actions.GET_SPAN_LATEST_DATA,
         payload: {
           ...environmentsToSend,
+          scope: scopeSpan,
           pageNumber: 1
         }
       });
     }
-  }, [previousEnvironmentsToSend, environmentsToSend]);
+  }, [
+    previousEnvironmentsToSend,
+    environmentsToSend,
+    previousScopeSpan,
+    scopeSpan
+  ]);
 
   useEffect(() => {
     if (
@@ -192,7 +211,7 @@ export const Tests = (props: TestsProps) => {
 
   useEffect(() => {
     testsListRef.current?.scrollTo(0, 0);
-  }, [data?.data?.paging.pageNumber, selectedEnvironments]);
+  }, [data?.data?.paging.pageNumber, selectedEnvironments, scopeSpan]);
 
   const openJiraTicketPopup = (test: Test) => {
     setTestToOpenTicketPopup(test);
@@ -203,7 +222,7 @@ export const Tests = (props: TestsProps) => {
   };
 
   const handleRegistrationSubmit = (formData: RegistrationFormValues) => {
-    window.sendMessageToDigma({
+    window.sendMessageToDigma<RegisterPayload>({
       action: globalActions.REGISTER,
       payload: {
         ...formData,
@@ -235,9 +254,13 @@ export const Tests = (props: TestsProps) => {
   };
 
   const handlePageChange = (page: number) => {
-    window.sendMessageToDigma({
+    window.sendMessageToDigma<GetSpanLatestDataPayload>({
       action: actions.GET_SPAN_LATEST_DATA,
-      payload: { ...environmentsToSend, pageNumber: page + 1 }
+      payload: {
+        ...environmentsToSend,
+        scope: scopeSpan,
+        pageNumber: page + 1
+      }
     });
   };
 
@@ -300,7 +323,8 @@ export const Tests = (props: TestsProps) => {
       {testToOpenTicketPopup && (
         <s.Overlay>
           <s.PopupContainer>
-            {config.userRegistrationEmail ? (
+            {/* {config.userRegistrationEmail ? ( */}
+            {true ? ( // eslint-disable-line no-constant-condition
               <TestTicket
                 test={testToOpenTicketPopup}
                 spanContexts={data?.data?.spanContexts || []}

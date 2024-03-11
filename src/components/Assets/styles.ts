@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import { grayScale } from "../common/App/getTheme";
+import { grayScale } from "../common/App/v2colors";
+import { Button } from "../common/v3/Button";
 
 export const Container = styled.div`
   height: 100%;
@@ -17,13 +18,9 @@ export const Container = styled.div`
 `;
 
 export const Header = styled.div`
-  padding: 8px;
-  display: flex;
-  gap: 8px;
   align-items: center;
   font-size: 16px;
-  flex-shrink: 0;
-  height: 36px;
+  padding: 8px;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -33,6 +30,14 @@ export const Header = styled.div`
         return "#dfe1e5";
     }
   }};
+`;
+
+export const HeaderItem = styled.div`
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-shrink: 0;
+  height: 36px;
 `;
 
 export const SearchInputContainer = styled.div`
@@ -69,7 +74,7 @@ export const SearchInput = styled.input`
         return grayScale[1000];
     }
   }};
-  box-shadow: 1px 1px 4px 0 rgba(0 0 0 / 25%);
+  box-shadow: 1px 1px 4px 0 rgb(0 0 0 / 25%);
   caret-color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
@@ -117,4 +122,23 @@ export const UpgradeMessage = styled.div`
   flex-direction: column;
   text-align: center;
   gap: 8px;
+`;
+
+export const RefreshButton = styled(Button)`
+  color: ${({ theme }) => theme.colors.v3.icon.tertiary};
+  border: 1px solid ${({ theme }) => theme.colors.stroke.primary};
+  background: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return grayScale[50];
+      case "dark":
+      case "dark-jetbrains":
+        return grayScale[1000];
+    }
+  }};
+
+  &:hover:enabled {
+    color: ${({ theme }) => theme.colors.v3.icon.white};
+    background: none;
+  }
 `;

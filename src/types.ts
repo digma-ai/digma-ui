@@ -5,37 +5,39 @@ export enum FeatureFlag {
   IS_ASSETS_SERVICE_FILTER_VISIBLE,
   IS_ASSETS_OVERALL_IMPACT_HIDDEN,
   IS_INSIGHT_TICKET_LINKAGE_ENABLED,
-  IS_ASSETS_COMPLEX_FILTER_ENABLED
+  IS_ASSETS_COMPLEX_FILTER_ENABLED,
+  IS_INSIGHT_DISMISSAL_ENABLED
 }
 
 export enum InsightType {
   TopErrorFlows = "TopErrorFlows",
-  SpanDurationChange = "SpanDurationChange",
-  SpanUsageStatus = "SpanUsageStatus",
   HotSpot = "HotSpot",
   Errors = "Errors",
   SlowEndpoint = "SlowEndpoint",
   LowUsage = "LowUsage",
   NormalUsage = "NormalUsage",
   HighUsage = "HighUsage",
-  SlowestSpans = "SlowestSpans",
-  EndpointSpanNPlusOne = "EndpointSpaNPlusOne",
+  SlowestSpans = "SlowestSpans", // deprecated
+  EndpointBottleneck = "EndpointBottleneck",
+  EndpointSpanNPlusOne = "EndpointSpaNPlusOne", // deprecated
+  EndpointSpanNPlusOneV2 = "EndpointSpanNPlusOne",
   SpanUsages = "SpanUsages",
   SpanNPlusOne = "SpaNPlusOne",
   SpanEndpointBottleneck = "SpanEndpointBottleneck",
   SpanDurations = "SpanDurations",
   SpanScalingBadly = "SpanScaling",
   SpanDurationBreakdown = "SpanDurationBreakdown",
-  EndpointDurationSlowdown = "EndpointDurationSlowdown",
+  EndpointDurationSlowdown = "EndpointDurationSlowdown", // deprecated
   EndpointBreakdown = "EndpointBreakdown",
-  SpanScalingWell = "SpanScalingWell",
-  SpanScalingInsufficientData = "SpanScalingInsufficientData",
+  SpanScalingWell = "SpanScalingWell", // deprecated
+  SpanScalingInsufficientData = "SpanScalingInsufficientData", // deprecated
   EndpointSessionInView = "EndpointSessionInView",
   EndpointChattyApi = "EndpointChattyApi",
   EndpointHighNumberOfQueries = "EndpointHighNumberOfQueries",
   SpanNexus = "SpanNexus",
   SpanQueryOptimization = "SpanQueryOptimization",
-  EndpointQueryOptimization = "EndpointQueryOptimization"
+  EndpointQueryOptimization = "EndpointQueryOptimization",
+  EndpointSlowdownSource = "EndpointSlowdownSource"
 }
 
 export type PercentileKey = "p50" | "p95";
@@ -59,4 +61,12 @@ export interface SpanInstanceInfo {
   spanId: string;
   startTime: string;
   duration: Duration;
+}
+
+export interface SetObservabilityPayload {
+  isObservabilityEnabled: boolean;
+}
+
+export interface OpenInstallationWizardPayload {
+  skipInstallationStep: boolean;
 }

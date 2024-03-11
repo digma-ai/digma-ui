@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { InsightType } from "../../../types";
+import { InsightType, SpanInfo } from "../../../types";
 import { GenericCodeObjectInsight } from "../types";
 
 export interface InsightCardProps {
@@ -17,6 +17,7 @@ export interface InsightCardProps {
   isRecent?: boolean;
   onRefresh: (insightType: InsightType) => void;
   isAsync?: boolean;
+  spanInfo?: SpanInfo | null;
 }
 
 export interface PercentileViewModeOptionProps {

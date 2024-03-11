@@ -20,6 +20,8 @@ type Story = StoryObj<typeof meta>;
 export const LowTraffic: Story = {
   args: {
     insight: {
+      sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
+      id: "60b55792-8262-3c5d-9628-7cce7979ad6d",
       firstDetected: "2023-12-05T17:25:47.010Z",
       lastDetected: "2024-01-05T13:14:47.010Z",
       criticality: 0,
@@ -32,6 +34,8 @@ export const LowTraffic: Story = {
       name: "Low Usage",
       type: InsightType.LowUsage,
       category: InsightCategory.Usage,
+      isDismissed: false,
+      isDismissible: true,
       specifity: 4,
       importance: 6,
       decorators: [
@@ -81,6 +85,8 @@ export const LowTraffic: Story = {
 export const HighTraffic: Story = {
   args: {
     insight: {
+      sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
+      id: "60b55792-8262-3c5d-9628-7cce7979ad6d",
       firstDetected: "2023-12-05T17:25:47.010Z",
       lastDetected: "2024-01-05T13:14:47.010Z",
       criticality: 0,
@@ -93,6 +99,8 @@ export const HighTraffic: Story = {
       name: "High Usage",
       type: InsightType.HighUsage,
       category: InsightCategory.Usage,
+      isDismissed: false,
+      isDismissible: true,
       specifity: 4,
       importance: 5,
       decorators: [

@@ -9,6 +9,7 @@ import { trackingEvents as globalTrackingEvents } from "../../trackingEvents";
 import { groupBy } from "../../utils/groupBy";
 import { sendTrackingEvent } from "../../utils/sendTrackingEvent";
 import { ConfigContext } from "../common/App/ConfigContext";
+import { EnvironmentType } from "../common/App/types";
 import { CursorFollower } from "../common/CursorFollower";
 import { RegistrationDialog } from "../common/RegistrationDialog";
 import { RegistrationFormValues } from "../common/RegistrationDialog/types";
@@ -30,7 +31,6 @@ import { actions } from "./actions";
 import * as s from "./styles";
 import {
   EntrySpan,
-  EnvironmentType,
   ExtendedEnvironment,
   RecentActivityData,
   RecentActivityProps,
@@ -141,13 +141,26 @@ export const RecentActivity = (props: RecentActivityProps) => {
       setLiveData(data as LiveData);
     };
 
+    const handleOpenRegistrationDialog = () => {
+      setIsRegistrationPopupVisible(true);
+    };
+
     dispatcher.addActionListener(actions.SET_DATA, handleRecentActivityData);
     dispatcher.addActionListener(actions.SET_LIVE_DATA, handleLiveData);
+    dispatcher.addActionListener(
+      actions.OPEN_REGISTRATION_DIALOG,
+      handleOpenRegistrationDialog
+    );
 
     return () => {
       dispatcher.removeActionListener(
         actions.SET_DATA,
         handleRecentActivityData
+      );
+      dispatcher.removeActionListener(actions.SET_LIVE_DATA, handleLiveData);
+      dispatcher.removeActionListener(
+        actions.OPEN_REGISTRATION_DIALOG,
+        handleOpenRegistrationDialog
       );
     };
   }, []);
@@ -339,8 +352,14 @@ export const RecentActivity = (props: RecentActivityProps) => {
       action: globalActions.REGISTER,
       payload: {
         ...formData,
-        scope: "recent activity add environment",
-        selectedEnvironmentType: environmentToSetType?.type
+        ...(environmentToSetType
+          ? {
+              scope: "recent activity add environment",
+              selectedEnvironmentType: environmentToSetType.type
+            }
+          : {
+              scope: "recent activity"
+            })
       }
     });
 

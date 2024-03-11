@@ -28,13 +28,47 @@ export enum DeploymentType {
   DOCKER_EXTENSION = "DockerExtension"
 }
 
+export type EnvironmentType = "local" | "shared";
+
 export interface Environment {
   originalName: string;
   name: string;
+  type: EnvironmentType | null;
+}
+
+export interface CodeDetails {
+  displayName: string;
+  codeObjectId: string;
 }
 
 export interface Scope {
-  type: string;
+  span: {
+    displayName: string;
+    spanCodeObjectId: string;
+    methodId?: string;
+    serviceName: string | null;
+    role: "Entry" | "Internal" | "Unknown" | null;
+  } | null;
+  code: {
+    relatedCodeDetailsList: CodeDetails[];
+    codeDetailsList: CodeDetails[];
+  };
+  hasErrors: boolean;
+}
+
+export interface InsightsQuery {
+  displayName: string | null;
+  sortBy: string;
+  sortOrder: string;
+  page: number;
+  scopedSpanCodeObjectId?: string | null;
+  showDismissed: boolean;
+}
+
+export interface GlobalState {
+  insights?: {
+    query?: InsightsQuery;
+  };
 }
 
 export interface ConfigContextData {
@@ -49,9 +83,10 @@ export interface ConfigContextData {
   isDockerComposeInstalled: boolean;
   userEmail: string;
   userRegistrationEmail: string;
-  environment: string;
+  environment?: Environment | null;
   backendInfo: BackendInfo | undefined;
   environments: Environment[] | undefined;
   scope: Scope | undefined;
   isMicrometerProject: boolean;
+  state?: GlobalState;
 }

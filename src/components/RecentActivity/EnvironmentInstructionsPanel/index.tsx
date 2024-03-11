@@ -4,6 +4,7 @@ import { actions as globalActions } from "../../../actions";
 import { getHostnameFromURL } from "../../../utils/getHostNameFromURL";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { getThemeKind } from "../../common/App/styles";
+import { EnvironmentType } from "../../common/App/types";
 import { CodeSnippet } from "../../common/CodeSnippet";
 import { Link } from "../../common/Link";
 import { DesktopIcon } from "../../common/icons/DesktopIcon";
@@ -11,7 +12,6 @@ import { InfinityIcon } from "../../common/icons/InfinityIcon";
 import { PlayButtonWithCursorIcon } from "../../common/icons/PlayButtonWithCursorIcon";
 import { SetupOrgDigmaPanel } from "../SetupOrgDigmaPanel";
 import { Overlay } from "../styles";
-import { EnvironmentType } from "../types";
 import * as s from "./styles";
 import {
   EnvironmentInstructionsPanelContent,

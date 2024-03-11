@@ -1,6 +1,7 @@
 import { MemoExoticComponent } from "react";
 import { Duration } from "../../globals";
 import { InsightType, SpanInfo, SpanInstanceInfo } from "../../types";
+import { Sorting } from "../common/SortingSelector/types";
 import { IconProps } from "../common/icons/types";
 
 export enum ViewMode {
@@ -19,28 +20,42 @@ export enum InsightsStatus {
 }
 
 export type GenericCodeObjectInsight =
-  | SpanUsageStatusInsight
-  | SpanDurationsInsight
-  | SpanUsagesInsight
-  | SpanEndpointBottleneckInsight
-  | SpanDurationBreakdownInsight
+  | GenericFunctionInsight
+  | GenericEndpointInsight
+  | GenericSpanInsight;
+
+export type GenericFunctionInsight =
+  | CodeObjectHotSpotInsight
+  | CodeObjectErrorsInsight;
+
+export type GenericEndpointInsight =
   | EndpointLowUsageInsight
   | EndpointNormalUsageInsight
   | EndpointHighUsageInsight
   | EndpointSlowestSpansInsight
+  | EndpointBottleneckInsight
   | SlowEndpointInsight
-  | SpanScalingBadlyInsight
-  | SpanNPlusOneInsight
   | EndpointSuspectedNPlusOneInsight
-  | CodeObjectHotSpotInsight
-  | CodeObjectErrorsInsight
+  | EndpointSpanNPlusOneInsight
   | EndpointDurationSlowdownInsight
+  | EndpointSlowdownSourceInsight
   | EndpointBreakdownInsight
-  | SpanScalingWellInsight
-  | SpanScalingInsufficientDataInsight
   | SessionInViewEndpointInsight
   | ChattyApiEndpointInsight
-  | EndpointHighNumberOfQueriesInsight;
+  | EndpointHighNumberOfQueriesInsight
+  | EndpointQueryOptimizationInsight;
+
+export type GenericSpanInsight =
+  | SpanDurationsInsight
+  | SpanUsagesInsight
+  | SpanEndpointBottleneckInsight
+  | SpanDurationBreakdownInsight
+  | SpanScalingBadlyInsight
+  | SpanNPlusOneInsight
+  | SpanScalingWellInsight
+  | SpanScalingInsufficientDataInsight
+  | SpanNexusInsight
+  | QueryOptimizationInsight;
 
 export interface MethodSpan {
   spanCodeObjectId: string;
@@ -54,16 +69,18 @@ export interface Method {
 
 export interface InsightsData {
   insights: GenericCodeObjectInsight[];
-  spans: MethodSpan[];
-  assetId?: string;
-  serviceName: string;
-  environment: string;
-  insightsStatus: InsightsStatus;
-  viewMode: ViewMode;
-  methods: Method[];
-  hasMissingDependency: boolean;
-  canInstrumentMethod: boolean;
-  needsObservabilityFix: boolean;
+  totalCount: number;
+  insightsStatus: InsightsStatus; // ??  default
+  viewMode: ViewMode; // Insights
+
+  // methods: Method[]; // empty
+  // assetId?: string; // remove
+  // environment: string; // remove
+  // serviceName: string; //
+  // spans: MethodSpan[]; // to add on plugin
+  // hasMissingDependency: boolean; // remove
+  // canInstrumentMethod: boolean; // remove
+  // needsObservabilityFix: boolean; //remove
 }
 
 export interface InsightsProps {
@@ -77,16 +94,14 @@ export interface InsightGroup {
 }
 
 export interface InsightProps {
-  onRecalculate: (
-    prefixedCodeObjectId: string,
-    insightType: InsightType
-  ) => void;
+  onRecalculate: (insightId: string) => void;
   onRefresh: (insightType: InsightType) => void;
   onJiraTicketCreate?: (
     insight: GenericCodeObjectInsight,
     spanCodeObjectId: string | undefined,
     event?: string
   ) => void;
+  onGoToSpan: (spanCodeObjectId: string) => void;
   isJiraHintEnabled?: boolean;
 }
 
@@ -145,6 +160,14 @@ export interface CodeObjectDecorator {
   title: string;
 }
 
+export enum InsightStatus {
+  Active = "Active",
+  InEvaluation = "InEvaluation",
+  PossiblyFixed = "PossiblyFixed",
+  Regression = "Regression",
+  Inactive = "Inactive"
+}
+
 export interface CodeObjectInsight extends Insight {
   shortDisplayInfo: {
     title: string;
@@ -172,6 +195,11 @@ export interface CodeObjectInsight extends Insight {
   lastDetected: string | null;
   reopenCount: number;
   ticketLink: string | null;
+  id: string;
+  sourceSpanCodeObjectInsight: string;
+  isDismissed?: boolean;
+  isDismissible?: boolean;
+  status?: InsightStatus;
 }
 
 export interface SpanInsight extends CodeObjectInsight {
@@ -260,37 +288,45 @@ interface Percentile {
   maxDuration: Duration;
 }
 
+export interface BottleneckEndpointInfo {
+  endpointInfo: {
+    route: string;
+    instrumentationLibrary: string;
+    serviceName: string;
+    codeObjectId: string;
+    spanCodeObjectId: string;
+    spanName: string;
+  };
+  probabilityOfBeingBottleneck: number;
+  avgDurationWhenBeingBottleneck: Duration;
+  avgFractionWhenBeingBottleneck: number;
+  impact: number;
+  severity: number;
+  criticality: number;
+  requestPercentage: number;
+  traceId: string | null;
+
+  /**
+   * @deprecated
+   */
+  p50: Percentile;
+  /**
+   * @deprecated
+   */
+  p95: Percentile;
+  /**
+   * @deprecated
+   */
+  p99: Percentile;
+}
+
 export interface SpanEndpointBottleneckInsight extends SpanInsight {
   name: "Bottleneck";
   type: InsightType.SpanEndpointBottleneck;
   category: InsightCategory.Performance;
   specifity: InsightSpecificity.TargetFound;
   importance: InsightImportance.Critical;
-  slowEndpoints: {
-    endpointInfo: {
-      route: string;
-      instrumentationLibrary: string;
-      serviceName: string;
-      codeObjectId: string;
-      spanCodeObjectId: string;
-      spanName: string;
-    };
-    probabilityOfBeingBottleneck: number;
-    avgDurationWhenBeingBottleneck: Duration;
-
-    /**
-     * @deprecated
-     */
-    p50: Percentile;
-    /**
-     * @deprecated
-     */
-    p95: Percentile;
-    /**
-     * @deprecated
-     */
-    p99: Percentile;
-  }[];
+  slowEndpoints: BottleneckEndpointInfo[] | null;
 
   /**
    * @deprecated
@@ -387,6 +423,9 @@ export interface EndpointHighUsageInsight extends EndpointInsight {
   maxCallsIn1Min: number;
 }
 
+/**
+ * @deprecated
+ */
 export interface EndpointSlowestSpansInsight extends EndpointInsight {
   name: "Bottleneck Detected";
   type: InsightType.SlowestSpans;
@@ -414,6 +453,38 @@ export interface EndpointSlowestSpansInsight extends EndpointInsight {
      */
     p99: Percentile;
   }[];
+}
+
+export interface EndpointBottleneckInsight extends EndpointInsight {
+  name: "Bottleneck Detected";
+  type: InsightType.EndpointBottleneck;
+  category: InsightCategory.Performance;
+  specifity: InsightSpecificity.TargetFound;
+  importance: InsightImportance.Critical;
+  isRecalculateEnabled: true;
+  span: {
+    spanInfo: SpanInfo;
+    probabilityOfBeingBottleneck: number;
+    avgDurationWhenBeingBottleneck: Duration;
+    avgFractionWhenBeingBottleneck: number;
+    criticality: number;
+    ticketLink: string | null;
+    requestPercentage: number;
+    traceId: string | null;
+
+    /**
+     * @deprecated
+     */
+    p50: Percentile;
+    /**
+     * @deprecated
+     */
+    p95: Percentile;
+    /**
+     * @deprecated
+     */
+    p99: Percentile;
+  };
 }
 
 export interface SlowEndpointInsight extends EndpointInsight {
@@ -463,7 +534,7 @@ export interface RootCauseSpanInfo extends SpanInfo {
   flowHash: string;
 }
 
-interface AffectedEndpoint extends SpanInfo {
+export interface AffectedEndpoint extends SpanInfo {
   route: string;
   serviceName: string;
   sampleTraceId: string | null;
@@ -481,7 +552,7 @@ export interface SpanScalingBadlyInsight extends SpanInsight {
   minDuration: Duration;
   maxDuration: Duration;
   rootCauseSpans: RootCauseSpanInfo[];
-  affectedEndpoints: AffectedEndpoint[];
+  affectedEndpoints: AffectedEndpoint[] | null;
   flowHash: string | null;
 
   /**
@@ -492,6 +563,24 @@ export interface SpanScalingBadlyInsight extends SpanInsight {
    * @deprecated
    */
   spanInstrumentationLibrary: string;
+}
+
+export interface NPlusOneEndpointInfo {
+  endpointInfo: {
+    route: string;
+    instrumentationLibrary: string;
+    spanCodeObjectId: string;
+    entrySpanCodeObjectId: string;
+    serviceName: string;
+  };
+  occurrences: number;
+  criticality: number;
+  impact: number;
+  severity: number;
+  traceId: string;
+  duration: Duration;
+  commitId: string;
+  requestPercentage: number;
 }
 
 export interface SpanNPlusOneInsight extends SpanInsight {
@@ -505,19 +594,7 @@ export interface SpanNPlusOneInsight extends SpanInsight {
   clientSpanName: string | null;
   clientSpanCodeObjectId: string | null;
   duration: Duration;
-  endpoints: {
-    endpointInfo: {
-      route: string;
-      instrumentationLibrary: string;
-      spanCodeObjectId: string;
-      entrySpanCodeObjectId: string;
-      serviceName: string;
-    };
-    occurrences: number;
-    criticality: number;
-    impact: number;
-    severity: number;
-  }[];
+  endpoints: NPlusOneEndpointInfo[] | null;
 
   /**
    * @deprecated
@@ -525,6 +602,9 @@ export interface SpanNPlusOneInsight extends SpanInsight {
   span: SpanInfo;
 }
 
+/**
+ * @deprecated
+ */
 export interface EndpointSuspectedNPlusOneInsight extends EndpointInsight {
   name: "Suspected N+1 Query";
   type: InsightType.EndpointSpanNPlusOne;
@@ -544,6 +624,28 @@ export interface EndpointSuspectedNPlusOneInsight extends EndpointInsight {
     severity: number;
     ticketLink: string | null;
   }[];
+}
+
+export interface EndpointSpanNPlusOneInsight extends EndpointInsight {
+  name: "Suspected N+1 Query";
+  type: InsightType.EndpointSpanNPlusOneV2;
+  category: InsightCategory.Performance;
+  specifity: InsightSpecificity.TargetAndReasonFound;
+  importance: InsightImportance.HighlyImportant;
+  isRecalculateEnabled: true;
+  span: {
+    occurrences: number;
+    internalSpan: SpanInfo | null;
+    clientSpan: SpanInfo;
+    traceId: string;
+    duration: Duration;
+    fraction: number;
+    criticality: number;
+    impact: number;
+    severity: number;
+    ticketLink: string | null;
+    requestPercentage: number;
+  };
 }
 
 export interface CodeObjectHotSpotInsight extends CodeObjectInsight {
@@ -575,7 +677,7 @@ export interface CodeObjectErrorsInsight extends CodeObjectInsight {
   }[];
 }
 
-export interface DurationSlowdownSource {
+export interface EndpointSlowdownSource {
   percentile: string;
   spanInfo: SpanInfo;
   level: number;
@@ -585,6 +687,14 @@ export interface DurationSlowdownSource {
   changeVerified: boolean;
 }
 
+/**
+ * @deprecated
+ */
+export type DurationSlowdownSource = EndpointSlowdownSource;
+
+/**
+ * @deprecated
+ */
 export interface EndpointDurationSlowdownInsight extends EndpointInsight {
   name: "Endpoint Duration Slowdown Source";
   type: InsightType.EndpointDurationSlowdown;
@@ -592,6 +702,16 @@ export interface EndpointDurationSlowdownInsight extends EndpointInsight {
   specifity: InsightSpecificity.OwnInsight;
   importance: InsightImportance.Critical;
   durationSlowdownSources: DurationSlowdownSource[];
+  decorators: CodeObjectDecorator[];
+}
+
+export interface EndpointSlowdownSourceInsight extends EndpointInsight {
+  name: "Endpoint Slowdown Source";
+  type: InsightType.EndpointSlowdownSource;
+  category: InsightCategory.Performance;
+  specifity: InsightSpecificity.OwnInsight;
+  importance: InsightImportance.Critical;
+  endpointSlowdownSources: EndpointSlowdownSource[] | null;
   decorators: CodeObjectDecorator[];
 }
 
@@ -621,8 +741,9 @@ export interface EndpointBreakdownInsight extends EndpointInsight {
   hasAsyncSpans: boolean;
 }
 
-export type SpanUsageStatusInsight = SpanInsight;
-
+/**
+ * @deprecated
+ */
 export interface SpanScalingWellInsight extends SpanInsight {
   name: "Scaling Well";
   type: InsightType.SpanScalingWell;
@@ -635,11 +756,17 @@ export interface SpanScalingWellInsight extends SpanInsight {
   flowHash: string | null;
 }
 
+/**
+ * @deprecated
+ */
 export interface Concurrency {
   calls: number;
   meanDuration: Duration;
 }
 
+/**
+ * @deprecated
+ */
 export interface SpanScalingInsufficientDataInsight extends SpanInsight {
   name: "Scaling Insufficient Data";
   type: InsightType.SpanScalingInsufficientData;
@@ -679,9 +806,7 @@ export interface EndpointHighNumberOfQueriesInsight extends EndpointInsight {
   type: InsightType.EndpointHighNumberOfQueries;
   queriesCount: number;
   typicalCount: number;
-  medianDuration: Duration;
   traceId: string | null;
-  requestFraction: number;
   quantile?: number;
 }
 
@@ -705,14 +830,26 @@ export interface QueryOptimizationInsight extends SpanInsight {
   span: SpanInfo;
   serviceName: string;
   dbName: string;
-  endpoints: {
-    endpointInfo: {
-      route: string;
-      instrumentationLibrary: string;
-      spanCodeObjectId: string;
-      serviceName: string;
-    };
-  }[];
+  endpoints:
+    | {
+        endpointInfo: {
+          route: string;
+          instrumentationLibrary: string;
+          spanCodeObjectId: string;
+          serviceName: string;
+        };
+      }[]
+    | null;
+}
+
+export interface EndpointQueryOptimizationSpan {
+  spanInfo: SpanInfo;
+  traceId: string;
+  duration: Duration;
+  criticality: number;
+  impact: number;
+  severity: number;
+  ticketLink: string | null;
 }
 
 export interface EndpointQueryOptimizationInsight extends EndpointInsight {
@@ -722,13 +859,26 @@ export interface EndpointQueryOptimizationInsight extends EndpointInsight {
   specifity: InsightSpecificity.TargetAndReasonFound;
   importance: InsightImportance.HighlyImportant;
   isRecalculateEnabled: true;
-  spans: {
-    spanInfo: SpanInfo;
-    traceId: string;
-    duration: Duration;
-    criticality: number;
-    impact: number;
-    severity: number;
-    ticketLink: string | null;
-  }[];
+  spans: EndpointQueryOptimizationSpan[];
+}
+
+export interface InsightsQuery {
+  page: number;
+  sorting: Sorting;
+  searchQuery: string | null;
+  showDismissed: boolean;
+}
+
+export interface ScopedInsightsQuery extends InsightsQuery {
+  scopedSpanCodeObjectId: string | null;
+}
+
+export { InsightType };
+
+export interface DismissInsightPayload {
+  insightId: string;
+}
+
+export interface UndismissInsightPayload {
+  insightId: string;
 }

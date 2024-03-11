@@ -7,11 +7,17 @@ import { CodeLocations } from "../common/CodeLocations";
 import { CommitInfos } from "../common/CommitInfos";
 import { DigmaSignature } from "../common/DigmaSignature";
 import { useSpanDataSource } from "../common";
-import { getCriticalityLabel } from "../../../../utils/getCriticalityLabel";
 import { ConfigContext } from "../../../common/App/ConfigContext";
-import { ScalingIssueAffectedEndpoints } from "../common/ScalingIssueAffectedEndpoints";
-import { ScalingIssueRootCauses } from "../common/ScalingIssueRootCauses";
-import { getDurationString } from "../../../../utils/getDurationString";
+import {
+  getHistogramAttachment,
+  getScalingIssueSummary,
+  getTraceAttachment,
+  ScalingIssueAffectedEndpoints,
+  ScalingIssueDuration,
+  ScalingIssueMessage,
+  ScalingIssueRootCauses,
+  ScalingIssueTestedConcurrency
+} from "../common/ScalingIssueCommon";
 
 export const ScalingIssueInsightTicket = (
   props: InsightTicketProps<SpanScalingBadlyInsight>
@@ -31,17 +37,15 @@ export const ScalingIssueInsightTicket = (
       <>
         {intersperse<ReactElement, ReactElement>(
           [
-            <div key={"message"}>{insight.shortDisplayInfo.description}</div>,
-            <div key={"testedConcurrency"}>
-              Tested concurrency: {insight.maxConcurrency}
-            </div>,
-            <div key={"durationRange"}>
-              Duration range:
-              <span>
-                {getDurationString(insight.minDuration)} -{" "}
-                {getDurationString(insight.maxDuration)}
-              </span>
-            </div>,
+            <ScalingIssueMessage key={"message"} insight={insight} />,
+            <ScalingIssueTestedConcurrency
+              key={"testedConcurrency"}
+              insight={insight}
+            />,
+            <ScalingIssueDuration
+              key={"scalingIssueDuration"}
+              insight={insight}
+            />,
             <ScalingIssueRootCauses
               key={"scalingIssueRootCauses"}
               insight={insight}
@@ -69,42 +73,21 @@ export const ScalingIssueInsightTicket = (
     );
   };
 
-  const criticalityString =
-    props.data.insight.criticality > 0
-      ? `Criticality: ${getCriticalityLabel(props.data.insight.criticality)}`
-      : "";
-  const summary = ["Scaling Issue", criticalityString]
-    .filter(Boolean)
-    .join(" - ");
+  const summary = getScalingIssueSummary(props.data.insight);
 
   const traceId = props.data.insight.affectedEndpoints
     ?.map((ep) => ep.sampleTraceId)
     ?.find((t) => t);
-  const attachmentTrace = traceId
-    ? {
-        url: `${config.jaegerURL}/api/traces/${traceId}?prettyPrint=true`,
-        fileName: `trace-${traceId}.json`
-      }
-    : undefined;
+  const attachmentTrace = getTraceAttachment(config, traceId);
 
-  const histogramUrlParams = new URLSearchParams({
-    env: insight.environment,
-    scoid: insight.spanInfo?.spanCodeObjectId || ""
-  });
-
-  const attachmentHistogram = {
-    url: `${
-      config.digmaApiUrl
-    }/Graphs/graphForSpanScaling?${histogramUrlParams.toString()}`,
-    fileName: `histogram.html`
-  };
+  const attachmentHistogram = getHistogramAttachment(config, insight);
 
   return (
     <InsightJiraTicket
       summary={summary}
       description={{
         content: renderDescription(),
-        isLoading: true
+        isLoading: isLoading
       }}
       attachments={[attachmentHistogram, attachmentTrace]}
       insight={props.data.insight}

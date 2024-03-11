@@ -4,6 +4,7 @@ import { actions } from "../../../actions";
 import { dispatcher } from "../../../dispatcher";
 import { Mode } from "../../../globals";
 import { isBoolean } from "../../../typeGuards/isBoolean";
+import { isEnvironment } from "../../../typeGuards/isEnvironment";
 import { isNull } from "../../../typeGuards/isNull";
 import { isObject } from "../../../typeGuards/isObject";
 import { isString } from "../../../typeGuards/isString";
@@ -15,6 +16,7 @@ import {
   BackendInfo,
   DigmaStatus,
   Environment,
+  GlobalState,
   Scope
 } from "./types";
 
@@ -161,10 +163,10 @@ export const App = (props: AppProps) => {
     };
 
     const handleSetEnvironment = (data: unknown) => {
-      if (isObject(data) && isString(data.environment)) {
+      if (isObject(data) && isEnvironment(data?.environment)) {
         setConfig((config) => ({
           ...config,
-          environment: data.environment as string
+          environment: data.environment as Environment
         }));
       }
     };
@@ -193,20 +195,18 @@ export const App = (props: AppProps) => {
           ...config,
           environments: data.environments as Environment[]
         }));
-      }
-    };
 
-    const handleSetSelectedCodeScope = (data: unknown) => {
-      if (isObject(data) && isObject(data.scope) && isString(data.scope.type)) {
-        setConfig((config) => ({
-          ...config,
-          scope: data.scope as Scope
-        }));
+        if (!data.environments.length) {
+          setConfig((config) => ({
+            ...config,
+            environment: null
+          }));
+        }
       }
     };
 
     const handleSetIsMicrometerProject = (data: unknown) => {
-      if (isObject(data) && isBoolean(data.isMicrometerProject)) {
+      if (isObject(data)) {
         setConfig((config) => ({
           ...config,
           isMicrometerProject: data.isMicrometerProject as boolean
@@ -214,10 +214,25 @@ export const App = (props: AppProps) => {
       }
     };
 
+    const handleSetScope = (data: unknown) => {
+      setConfig((config) => ({
+        ...config,
+        scope: data as Scope
+      }));
+    };
+
+    const handleSetState = (data: unknown) => {
+      setConfig((config) => ({
+        ...config,
+        state: data as GlobalState
+      }));
+    };
+
     dispatcher.addActionListener(actions.SET_THEME, handleSetTheme);
     dispatcher.addActionListener(actions.SET_MAIN_FONT, handleSetMainFont);
     dispatcher.addActionListener(actions.SET_CODE_FONT, handleSetCodeFont);
     dispatcher.addActionListener(actions.SET_JAEGER_URL, handleSetJaegerURL);
+    dispatcher.addActionListener(actions.SET_STATE, handleSetState);
     dispatcher.addActionListener(
       actions.SET_IS_JAEGER_ENABLED,
       handleSetIsJaegerEnabled
@@ -264,18 +279,16 @@ export const App = (props: AppProps) => {
       handleSetEnvironments
     );
     dispatcher.addActionListener(
-      actions.SET_SELECTED_CODE_SCOPE,
-      handleSetSelectedCodeScope
-    );
-    dispatcher.addActionListener(
       actions.SET_IS_MICROMETER_PROJECT,
       handleSetIsMicrometerProject
     );
+    dispatcher.addActionListener(actions.SET_SCOPE, handleSetScope);
 
     return () => {
       dispatcher.removeActionListener(actions.SET_THEME, handleSetTheme);
       dispatcher.removeActionListener(actions.SET_MAIN_FONT, handleSetMainFont);
       dispatcher.removeActionListener(actions.SET_CODE_FONT, handleSetCodeFont);
+      dispatcher.removeActionListener(actions.SET_STATE, handleSetState);
       dispatcher.removeActionListener(
         actions.SET_JAEGER_URL,
         handleSetJaegerURL
@@ -329,13 +342,10 @@ export const App = (props: AppProps) => {
         handleSetEnvironments
       );
       dispatcher.removeActionListener(
-        actions.SET_SELECTED_CODE_SCOPE,
-        handleSetSelectedCodeScope
-      );
-      dispatcher.removeActionListener(
         actions.SET_IS_MICROMETER_PROJECT,
         handleSetIsMicrometerProject
       );
+      dispatcher.removeActionListener(actions.SET_SCOPE, handleSetScope);
     };
   }, []);
 
