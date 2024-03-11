@@ -22,7 +22,7 @@ export const getHistogramAttachment = (
 
   return {
     url: `${
-      config.digmaApiUrl
+      config.digmaApiProxyPrefix
     }/Graphs/graphForSpanScaling?${histogramUrlParams.toString()}`,
     fileName: `histogram.html`
   };

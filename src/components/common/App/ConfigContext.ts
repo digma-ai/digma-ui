@@ -5,6 +5,9 @@ import { ConfigContextData } from "./types";
 
 export const ConfigContext = createContext<ConfigContextData>({
   digmaApiUrl: isString(window.digmaApiUrl) ? window.digmaApiUrl : "",
+  digmaApiProxyPrefix: isString(window.digmaApiProxyPrefix)
+    ? window.digmaApiProxyPrefix
+    : "",
   digmaStatus: undefined,
   isObservabilityEnabled: window.isObservabilityEnabled === true,
   jaegerURL: isString(window.jaegerURL) ? window.jaegerURL : "",

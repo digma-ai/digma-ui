@@ -80,8 +80,6 @@ export const ScalingIssueInsightTicket = (
     ?.find((t) => t);
   const attachmentTrace = getTraceAttachment(config, traceId);
 
-  // Add it to the attachment(s) after we'll support more than one and
-  // know how to make https calls while ignoring ssl cert verification
   const attachmentHistogram = getHistogramAttachment(config, insight);
 
   return (
@@ -91,7 +89,7 @@ export const ScalingIssueInsightTicket = (
         content: renderDescription(),
         isLoading: isLoading
       }}
-      attachments={[attachmentTrace]}
+      attachments={[attachmentTrace, attachmentHistogram]}
       insight={props.data.insight}
       onClose={props.onClose}
     />
