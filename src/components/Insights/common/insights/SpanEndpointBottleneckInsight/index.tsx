@@ -59,7 +59,7 @@ export const SpanEndpointBottleneckInsight = (
     event: string
   ) => {
     props.onJiraTicketCreate &&
-      props.onJiraTicketCreate(props.insight, undefined, event);
+      props.onJiraTicketCreate(props.insight, spanCodeObjectId, event);
   };
 
   const handleTraceButtonClick = (
@@ -75,7 +75,6 @@ export const SpanEndpointBottleneckInsight = (
       insight={props.insight}
       onJiraButtonClick={handleCreateJiraTicketButtonClick}
       jiraTicketInfo={{
-        spanCodeObjectId: selectedEndpoint?.endpointInfo.spanCodeObjectId,
         ticketLink: props.insight.ticketLink,
         isHintEnabled: props.isJiraHintEnabled
       }}

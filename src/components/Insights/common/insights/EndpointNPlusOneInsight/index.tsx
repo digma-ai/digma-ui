@@ -58,8 +58,7 @@ export const EndpointNPlusOneInsight = (
       }
       jiraTicketInfo={{
         ticketLink: span.ticketLink,
-        isHintEnabled: props.isJiraHintEnabled,
-        spanCodeObjectId: spanInfo.spanCodeObjectId
+        isHintEnabled: props.isJiraHintEnabled
       }}
       content={
         <ContentContainer>

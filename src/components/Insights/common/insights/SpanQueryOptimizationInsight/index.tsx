@@ -44,11 +44,7 @@ export const SpanQueryOptimizationInsight = (
     event: string
   ) => {
     props.onJiraTicketCreate &&
-      props.onJiraTicketCreate(
-        props.insight,
-        props.insight.spanInfo?.spanCodeObjectId,
-        event
-      );
+      props.onJiraTicketCreate(props.insight, spanCodeObjectId, event);
   };
 
   const spanName = props.insight.spanInfo?.displayName || undefined;
@@ -114,8 +110,7 @@ export const SpanQueryOptimizationInsight = (
       onJiraButtonClick={handleCreateJiraTicketButtonClick}
       jiraTicketInfo={{
         ticketLink: props.insight.ticketLink,
-        isHintEnabled: props.isJiraHintEnabled,
-        spanCodeObjectId: props.insight.spanInfo?.spanCodeObjectId
+        isHintEnabled: props.isJiraHintEnabled
       }}
       onGoToTrace={
         config.isJaegerEnabled && traceId

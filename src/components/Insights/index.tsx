@@ -82,7 +82,7 @@ const renderInsightTicket = (
     return <NPlusOneInsightTicket data={ticketData} onClose={onClose} />;
   }
 
-  if (isEndpointSpanNPlusOneInsight(data.insight) && data.spanCodeObjectId) {
+  if (isEndpointSpanNPlusOneInsight(data.insight)) {
     const ticketData = data as InsightTicketInfo<EndpointSpanNPlusOneInsight>;
     return (
       <EndpointNPlusOneInsightTicket data={ticketData} onClose={onClose} />
@@ -94,12 +94,12 @@ const renderInsightTicket = (
     return <BottleneckInsightTicket data={ticketData} onClose={onClose} />;
   }
 
-  if (isEndpointBottleneckInsight(data.insight) && data.spanCodeObjectId) {
+  if (isEndpointBottleneckInsight(data.insight)) {
     const ticketData = data as InsightTicketInfo<EndpointBottleneckInsight>;
     return <SpanBottleneckInsightTicket data={ticketData} onClose={onClose} />;
   }
 
-  if (isSpanQueryOptimizationInsight(data.insight) && data.spanCodeObjectId) {
+  if (isSpanQueryOptimizationInsight(data.insight)) {
     const ticketData = data as InsightTicketInfo<QueryOptimizationInsight>;
     return (
       <QueryOptimizationInsightTicket data={ticketData} onClose={onClose} />
@@ -120,10 +120,7 @@ const renderInsightTicket = (
     );
   }
 
-  if (
-    isEndpointHighNumberOfQueriesInsight(data.insight) &&
-    data.spanCodeObjectId
-  ) {
+  if (isEndpointHighNumberOfQueriesInsight(data.insight)) {
     const ticketData =
       data as InsightTicketInfo<EndpointHighNumberOfQueriesInsight>;
     return (

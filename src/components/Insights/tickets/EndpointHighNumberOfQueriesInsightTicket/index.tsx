@@ -7,15 +7,15 @@ import { CommitInfos } from "../common/CommitInfos";
 import { DigmaSignature } from "../common/DigmaSignature";
 import { InsightTicketProps } from "../types";
 
-export const EndpointHighNumberOfQueriesInsightTicket = (
-  props: InsightTicketProps<EndpointHighNumberOfQueriesInsight>
-) => {
-  const spanInsight = props.data.insight;
+export const EndpointHighNumberOfQueriesInsightTicket = ({
+  data,
+  onClose
+}: InsightTicketProps<EndpointHighNumberOfQueriesInsight>) => {
   const { commitInfos, isLoading } =
-    useCommitInfos<EndpointHighNumberOfQueriesInsight>(spanInsight);
+    useCommitInfos<EndpointHighNumberOfQueriesInsight>(data.insight);
 
   const renderDescription = () => {
-    if (!spanInsight || !spanInsight.spanInfo) {
+    if (!data.insight || !data.insight.spanInfo) {
       return null;
     }
 
@@ -26,21 +26,21 @@ export const EndpointHighNumberOfQueriesInsightTicket = (
             <div key={"title"}>Description</div>,
             <span
               key={"details"}
-            >{`The endpoint ${spanInsight.spanInfo.displayName} is triggering an abnormally high number of queries.`}</span>,
+            >{`The endpoint ${data.insight.spanInfo.displayName} is triggering an abnormally high number of queries.`}</span>,
             <div key={"text"}>
               Consider using joins/caching to reduce the overhead of the db
               roundtrip.
             </div>,
             <span
               key={"median"}
-            >{`Number of queries (median): ${spanInsight.queriesCount}`}</span>,
+            >{`Number of queries (median): ${data.insight.queriesCount}`}</span>,
             <div
               key={"typical"}
-            >{`Typical for ${spanInsight.serviceName}: ${spanInsight.typicalCount}`}</div>,
+            >{`Typical for ${data.insight.serviceName}: ${data.insight.typicalCount}`}</div>,
             <CommitInfos
               key={"commitInfos"}
               commitInfos={commitInfos}
-              insight={spanInsight}
+              insight={data.insight}
             />,
             <DigmaSignature key={"digmaSignature"} />
           ],
@@ -54,8 +54,8 @@ export const EndpointHighNumberOfQueriesInsightTicket = (
 
   const summary = [
     "High number of queries detected ",
-    spanInsight?.spanInfo?.displayName,
-    spanInsight?.serviceName
+    data.insight?.spanInfo?.displayName,
+    data.insight?.serviceName
   ]
     .filter(Boolean)
     .join(" - ");
@@ -67,8 +67,8 @@ export const EndpointHighNumberOfQueriesInsightTicket = (
         content: renderDescription(),
         isLoading
       }}
-      insight={props.data.insight}
-      onClose={props.onClose}
+      insight={data.insight}
+      onClose={onClose}
     />
   );
 };
