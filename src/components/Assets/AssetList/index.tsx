@@ -15,6 +15,7 @@ import { isNumber } from "../../../typeGuards/isNumber";
 import { isString } from "../../../typeGuards/isString";
 import { FeatureFlag } from "../../../types";
 import { ConfigContext } from "../../common/App/ConfigContext";
+import { DeploymentType } from "../../common/App/types";
 import { EmptyState } from "../../common/EmptyState";
 import { Menu } from "../../common/Menu";
 import { NewCircleLoader } from "../../common/NewCircleLoader";
@@ -133,6 +134,22 @@ const getSortingCriterionInfo = (
   return sortingCriterionInfoMap[sortingCriterion];
 };
 
+const getSortingCriteria = (
+  isImpactHidden: boolean,
+  isOverallImpactHidden: boolean
+) =>
+  Object.values(SORTING_CRITERION).filter(
+    (x) =>
+      !(
+        (isImpactHidden &&
+          [
+            SORTING_CRITERION.PERFORMANCE_IMPACT,
+            SORTING_CRITERION.OVERALL_IMPACT
+          ].includes(x)) ||
+        (isOverallImpactHidden && x === SORTING_CRITERION.OVERALL_IMPACT)
+      )
+  );
+
 const getData = (
   assetTypeId: string,
   page: number,
@@ -242,9 +259,22 @@ export const AssetList = (props: AssetListProps) => {
 
   const assetTypeInfo = getAssetTypeInfo(props.assetTypeId);
 
-  const isOverallImpactHidden = getFeatureFlagValue(
-    config,
-    FeatureFlag.IS_ASSETS_OVERALL_IMPACT_HIDDEN
+  const isImpactHidden = useMemo(
+    () =>
+      Boolean(
+        config.backendInfo?.deploymentType === DeploymentType.HELM &&
+          config.environment?.type === "shared"
+      ),
+    [config.backendInfo?.deploymentType, config.environment?.type]
+  );
+
+  const isOverallImpactHidden = Boolean(
+    getFeatureFlagValue(config, FeatureFlag.IS_ASSETS_OVERALL_IMPACT_HIDDEN)
+  );
+
+  const sortingCriteria = getSortingCriteria(
+    isImpactHidden,
+    isOverallImpactHidden
   );
 
   const areAnyFiltersApplied = checkIfAnyFiltersApplied(
@@ -253,16 +283,6 @@ export const AssetList = (props: AssetListProps) => {
     props.services,
     props.searchQuery
   );
-
-  const sortingCriteria = isOverallImpactHidden
-    ? Object.values(SORTING_CRITERION).filter(
-        (x) => x !== SORTING_CRITERION.OVERALL_IMPACT
-      )
-    : Object.values(SORTING_CRITERION);
-
-  useEffect(() => {
-    props.setRefresher(refreshData);
-  }, [refreshData]);
 
   useEffect(() => {
     refreshData();
@@ -280,6 +300,10 @@ export const AssetList = (props: AssetListProps) => {
       window.clearTimeout(refreshTimerId.current);
     };
   }, []);
+
+  useEffect(() => {
+    props.setRefresher(refreshData);
+  }, [refreshData, props.setRefresher]);
 
   useEffect(() => {
     if (
@@ -339,6 +363,21 @@ export const AssetList = (props: AssetListProps) => {
       setIsInitialLoading(false);
     }
   }, [previousData, data]);
+
+  useEffect(() => {
+    if (
+      isImpactHidden &&
+      [
+        SORTING_CRITERION.PERFORMANCE_IMPACT,
+        SORTING_CRITERION.OVERALL_IMPACT
+      ].includes(sorting.criterion)
+    ) {
+      setSorting({
+        criterion: SORTING_CRITERION.CRITICAL_INSIGHTS,
+        order: SORTING_ORDER.DESC
+      });
+    }
+  }, [isImpactHidden, sorting]);
 
   useEffect(() => {
     setPage(0);
@@ -418,6 +457,8 @@ export const AssetList = (props: AssetListProps) => {
                 entry={entry}
                 onAssetLinkClick={handleAssetLinkClick}
                 sortingCriterion={sorting.criterion}
+                isImpactHidden={isImpactHidden}
+                isOverallImpactHidden={isOverallImpactHidden}
               />
             );
           })}

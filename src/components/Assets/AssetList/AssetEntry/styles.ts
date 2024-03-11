@@ -1,10 +1,12 @@
 import styled from "styled-components";
+import { caption2RegularTypography } from "../../../common/App/typographies";
+import { grayScale } from "../../../common/App/v2colors";
 import { ImpactScoreIndicatorProps } from "./types";
 
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
   padding: 8px;
   border-radius: 4px;
   color: ${({ theme }) => {
@@ -28,6 +30,12 @@ export const Container = styled.div`
 `;
 
 export const Header = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`;
+
+export const TitleRow = styled.div`
   display: flex;
   gap: 2px;
   height: 20px;
@@ -164,8 +172,13 @@ export const ImpactScoreIndicator = styled.div<ImpactScoreIndicatorProps>`
   background: hsl(14deg 66% ${({ $score }) => 100 - 50 * $score}%);
 `;
 
-export const ScopeName = styled.span`
+export const ScopeName = styled.div`
+  ${caption2RegularTypography}
+
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  color: ${grayScale[500]};
+  opacity: 0.87;
+  max-width: fit-content;
 `;
