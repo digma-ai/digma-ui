@@ -3,6 +3,7 @@ import { GenericCodeObjectInsight, InsightsQuery } from "../types";
 export interface InsightsCatalogProps {
   insights: GenericCodeObjectInsight[];
   totalCount: number;
+  dismissedCount?: number;
   onJiraTicketCreate: (
     insight: GenericCodeObjectInsight,
     spanCodeObjectId?: string
