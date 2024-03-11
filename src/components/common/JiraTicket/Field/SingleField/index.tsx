@@ -1,11 +1,11 @@
 import { useCallback, useRef } from "react";
 import useDimensions from "react-cool-dimensions";
 import useScrollbarSize from "react-scrollbar-size";
-import { isString } from "../../../../typeGuards/isString";
-import * as s from "./styles";
-import { ButtonPosition, FieldProps } from "./types";
+import { isString } from "../../../../../typeGuards/isString";
+import * as s from "../styles";
+import { ButtonPosition, SingleFieldProps } from "../types";
 
-export const Field = (props: FieldProps) => {
+export const SingleField = (props: SingleFieldProps) => {
   const scrollbar = useScrollbarSize();
   const contentRef = useRef<HTMLDivElement | null>(null);
   const { observe } = useDimensions();

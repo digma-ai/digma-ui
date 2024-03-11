@@ -16,7 +16,8 @@ import { DownloadIcon } from "../../common/icons/12px/DownloadIcon";
 import { PaperclipIcon } from "../../common/icons/12px/PaperclipIcon";
 import { JiraLogoIcon } from "../../common/icons/16px/JiraLogoIcon";
 import { AttachmentTag } from "./AttachmentTag";
-import { Field } from "./Field";
+import { SingleField } from "./Field/SingleField";
+import { MultiField } from "./Field/MultiField";
 import { IconButton } from "./IconButton";
 import { TicketLinkButton } from "./TicketLinkButton";
 import * as s from "./styles";
@@ -118,7 +119,7 @@ export const JiraTicket = (props: JiraTicketProps) => {
           </s.CloseButton>
         </Tooltip>
       </s.Header>
-      <Field
+      <SingleField
         key={"summary"}
         label={"Summary"}
         content={props.summary}
@@ -131,7 +132,7 @@ export const JiraTicket = (props: JiraTicketProps) => {
         }
         selectable={false}
       />
-      <Field
+      <SingleField
         key={"description"}
         label={"Description"}
         multiline={true}
@@ -159,32 +160,52 @@ export const JiraTicket = (props: JiraTicketProps) => {
           />
         }
       />
-      {props.attachments &&
-        props.attachments.map((attachment, i) => {
-          const isFirst = i == 0;
-          const isLast = i == props.attachments!.length - 1;
-          return (
-            <Field
-              key={"attachments" + i.toString()}
-              label={isFirst ? "Attachments" : undefined}
-              content={
+      {props.attachments && props.attachments.length == 1 && (
+        <SingleField
+          key="attachment"
+          label="Attachment"
+          content={
+            <AttachmentTag
+              icon={PaperclipIcon}
+              text={props.attachments[0].fileName}
+            />
+          }
+          button={
+            <IconButton
+              icon={DownloadIcon}
+              title={"Download"}
+              size={16}
+              onClick={() => handleDownloadButtonClick(props.attachments![0])}
+            />
+          }
+          errorMessage={downloadErrorMessage}
+        />
+      )}
+      {props.attachments && props.attachments.length > 1 && (
+        <MultiField
+          key="attachments"
+          label="Attachments"
+          contents={props.attachments.map((attachment) => {
+            return {
+              content: (
                 <AttachmentTag
                   icon={PaperclipIcon}
                   text={attachment.fileName}
                 />
-              }
-              button={
+              ),
+              button: (
                 <IconButton
                   icon={DownloadIcon}
                   title={"Download"}
                   size={16}
                   onClick={() => handleDownloadButtonClick(attachment)}
                 />
-              }
-              errorMessage={isLast ? downloadErrorMessage : undefined}
-            />
-          );
-        })}
+              )
+            };
+          })}
+          errorMessage={downloadErrorMessage}
+        />
+      )}
       {props.showLinkButton && (
         <TicketLinkButton
           ticketLink={props.ticketLink}

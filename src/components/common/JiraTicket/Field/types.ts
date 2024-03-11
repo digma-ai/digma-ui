@@ -8,7 +8,7 @@ export interface FieldThemeColors {
 
 export type ButtonPosition = "top" | "center";
 
-export interface FieldProps {
+export interface SingleFieldProps {
   content: ReactNode;
   label?: string;
   button: ReactNode;
