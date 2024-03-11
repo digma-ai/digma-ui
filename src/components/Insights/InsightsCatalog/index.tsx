@@ -52,9 +52,9 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
   const previousMode = usePrevious(mode);
   const theme = useTheme();
 
-  const isViewModeButtonVisible = getFeatureFlagValue(
-    config,
-    FeatureFlag.IS_INSIGHT_DISMISSAL_ENABLED
+  const isViewModeButtonVisible = Boolean(
+    getFeatureFlagValue(config, FeatureFlag.IS_INSIGHT_DISMISSAL_ENABLED) &&
+      props.dismissedCount
   );
 
   const refreshData = useCallback(

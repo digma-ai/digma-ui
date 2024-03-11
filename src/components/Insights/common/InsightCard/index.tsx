@@ -12,7 +12,7 @@ import { BaseButtonProps } from "../../../common/v3/Button/types";
 import { JiraButton } from "../../../common/v3/JiraButton";
 import { Link } from "../../../common/v3/Link";
 import { Tooltip } from "../../../common/v3/Tooltip";
-import { isSpanInsight } from "../../typeGuards";
+import { isEndpointInsight, isSpanInsight } from "../../typeGuards";
 import { InsightHeader } from "./InsightHeader";
 import * as s from "./styles";
 import { InsightCardProps } from "./types";
@@ -66,7 +66,10 @@ export const InsightCard = (props: InsightCardProps) => {
   };
 
   const handleSpanLinkClick = () => {
-    if (isSpanInsight(props.insight) && props.insight.spanInfo) {
+    if (
+      (isSpanInsight(props.insight) || isEndpointInsight(props.insight)) &&
+      props.insight.spanInfo
+    ) {
       props.onGoToSpan(props.insight.spanInfo.spanCodeObjectId);
     }
   };
@@ -264,7 +267,9 @@ export const InsightCard = (props: InsightCardProps) => {
       header={
         <InsightHeader
           spanInfo={
-            isSpanInsight(props.insight) ? props.insight.spanInfo : undefined
+            isSpanInsight(props.insight) || isEndpointInsight(props.insight)
+              ? props.insight.spanInfo
+              : undefined
           }
           status={props.insight.status}
           isNew={isNew}
