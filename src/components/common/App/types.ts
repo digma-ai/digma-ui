@@ -24,6 +24,7 @@ export interface BackendInfo {
 }
 
 export enum DeploymentType {
+  HELM = "Helm",
   DOCKER_COMPOSE = "DockerCompose",
   DOCKER_EXTENSION = "DockerExtension"
 }

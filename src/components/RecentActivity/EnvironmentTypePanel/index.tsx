@@ -1,5 +1,7 @@
+import { useContext } from "react";
 import { openURLInDefaultBrowser } from "../../../utils/openURLInDefaultBrowser";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
+import { ConfigContext } from "../../common/App/ConfigContext";
 import { EnvironmentType } from "../../common/App/types";
 import { IconTag } from "../../common/IconTag";
 import { NewButton } from "../../common/NewButton";
@@ -12,6 +14,9 @@ import { EnvironmentTypeData, EnvironmentTypePanelProps } from "./types";
 const DIGMA_FOR_TEAMS_URL = "https://digma.ai/digma-for-teams/";
 
 export const EnvironmentTypePanel = (props: EnvironmentTypePanelProps) => {
+  const config = useContext(ConfigContext);
+  const isHelmDeployment = config.backendInfo?.deploymentType === "Helm";
+
   const handleEnvironmentTypeButtonClick = (type: EnvironmentType) => {
     const typeData = environmentTypes.find((x) => x.type === type);
 
@@ -21,7 +26,7 @@ export const EnvironmentTypePanel = (props: EnvironmentTypePanelProps) => {
       });
     }
 
-    if (type === "shared") {
+    if (type === "shared" && !isHelmDeployment) {
       openURLInDefaultBrowser(DIGMA_FOR_TEAMS_URL);
       return;
     }
@@ -54,7 +59,7 @@ export const EnvironmentTypePanel = (props: EnvironmentTypePanelProps) => {
       button: (
         <NewButton
           onClick={() => handleEnvironmentTypeButtonClick("shared")}
-          label={"Learn more"}
+          label={isHelmDeployment ? "Add" : "Learn more"}
           buttonType={"secondary"}
           size={"large"}
         />
