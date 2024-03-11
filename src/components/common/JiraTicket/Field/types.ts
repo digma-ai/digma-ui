@@ -8,13 +8,10 @@ export interface FieldThemeColors {
 
 export type ButtonPosition = "top" | "center";
 
-export interface SingleFieldProps {
-  content: ReactNode;
-  label?: string;
+export interface FieldProps {
+  children: ReactNode;
   button: ReactNode;
   multiline?: boolean;
-  errorMessage?: string;
-  selectable?: boolean;
 }
 
 export interface ButtonContainerProps {
@@ -24,8 +21,4 @@ export interface ButtonContainerProps {
 
 export interface ContentProps {
   $multiline?: boolean;
-}
-
-export interface ContainerProps {
-  $selectable?: boolean;
 }

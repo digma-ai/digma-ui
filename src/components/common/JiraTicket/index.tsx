@@ -16,8 +16,8 @@ import { DownloadIcon } from "../../common/icons/12px/DownloadIcon";
 import { PaperclipIcon } from "../../common/icons/12px/PaperclipIcon";
 import { JiraLogoIcon } from "../../common/icons/16px/JiraLogoIcon";
 import { AttachmentTag } from "./AttachmentTag";
-import { SingleField } from "./Field/SingleField";
-import { MultiField } from "./Field/MultiField";
+import { Field } from "./Field";
+import { Section } from "./Section";
 import { IconButton } from "./IconButton";
 import { TicketLinkButton } from "./TicketLinkButton";
 import * as s from "./styles";
@@ -119,25 +119,38 @@ export const JiraTicket = (props: JiraTicketProps) => {
           </s.CloseButton>
         </Tooltip>
       </s.Header>
-      <SingleField
-        key={"summary"}
-        label={"Summary"}
-        content={props.summary}
-        button={
-          <IconButton
-            icon={CopyIcon}
-            title={"Copy"}
-            onClick={() => copyToClipboard("summary", props.summary)}
-          />
-        }
-        selectable={false}
-      />
-      <SingleField
+      <Section key={"summary"} title={"Summary"} selectable={false}>
+        <Field
+          button={
+            <IconButton
+              icon={CopyIcon}
+              title={"Copy"}
+              onClick={() => copyToClipboard("summary", props.summary)}
+            />
+          }
+        >
+          {props.summary}
+        </Field>
+      </Section>
+      <Section
         key={"description"}
-        label={"Description"}
-        multiline={true}
+        title={"Description"}
         selectable={false}
-        content={
+        errorMessage={errorMessage}
+      >
+        <Field
+          multiline={true}
+          button={
+            <IconButton
+              icon={CopyIcon}
+              title={"Copy"}
+              disabled={props.description.isLoading}
+              onClick={() =>
+                copyToClipboard("description", descriptionContentRef.current)
+              }
+            />
+          }
+        >
           <div ref={descriptionContentRef}>
             {props.description.isLoading ? (
               <s.LoaderContainer>
@@ -147,64 +160,35 @@ export const JiraTicket = (props: JiraTicketProps) => {
               props.description.content
             )}
           </div>
-        }
-        errorMessage={errorMessage}
-        button={
-          <IconButton
-            icon={CopyIcon}
-            title={"Copy"}
-            disabled={props.description.isLoading}
-            onClick={() =>
-              copyToClipboard("description", descriptionContentRef.current)
-            }
-          />
-        }
-      />
-      {props.attachments && props.attachments.length == 1 && (
-        <SingleField
-          key="attachment"
-          label="Attachment"
-          content={
-            <AttachmentTag
-              icon={PaperclipIcon}
-              text={props.attachments[0].fileName}
-            />
-          }
-          button={
-            <IconButton
-              icon={DownloadIcon}
-              title={"Download"}
-              size={16}
-              onClick={() => handleDownloadButtonClick(props.attachments![0])}
-            />
-          }
+        </Field>
+      </Section>
+      {props.attachments && (
+        <Section
+          key={"attachments"}
+          title={"Attachments"}
           errorMessage={downloadErrorMessage}
-        />
-      )}
-      {props.attachments && props.attachments.length > 1 && (
-        <MultiField
-          key="attachments"
-          label="Attachments"
-          contents={props.attachments.map((attachment) => {
-            return {
-              content: (
+        >
+          {props.attachments.map((attachment, i) => {
+            return (
+              <Field
+                key={"attachment-" + i.toString()}
+                button={
+                  <IconButton
+                    icon={DownloadIcon}
+                    title={"Download"}
+                    size={16}
+                    onClick={() => handleDownloadButtonClick(attachment)}
+                  />
+                }
+              >
                 <AttachmentTag
                   icon={PaperclipIcon}
                   text={attachment.fileName}
                 />
-              ),
-              button: (
-                <IconButton
-                  icon={DownloadIcon}
-                  title={"Download"}
-                  size={16}
-                  onClick={() => handleDownloadButtonClick(attachment)}
-                />
-              )
-            };
+              </Field>
+            );
           })}
-          errorMessage={downloadErrorMessage}
-        />
+        </Section>
       )}
       {props.showLinkButton && (
         <TicketLinkButton
