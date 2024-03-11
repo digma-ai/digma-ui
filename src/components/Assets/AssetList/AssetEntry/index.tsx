@@ -1,14 +1,11 @@
-import { useContext } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
-import { getFeatureFlagValue } from "../../../../featureFlags";
 import { isString } from "../../../../typeGuards/isString";
-import { FeatureFlag, InsightType } from "../../../../types";
+import { InsightType } from "../../../../types";
 import { formatTimeDistance } from "../../../../utils/formatTimeDistance";
 import { getInsightCriticalityColor } from "../../../../utils/getInsightCriticalityColor";
 import { getInsightTypeInfo } from "../../../../utils/getInsightTypeInfo";
 import { getInsightTypeOrderPriority } from "../../../../utils/getInsightTypeOrderPriority";
 import { InsightImportance } from "../../../Insights/types";
-import { ConfigContext } from "../../../common/App/ConfigContext";
 import { ImpactScore } from "../../../common/ImpactScore";
 import { Tag } from "../../../common/Tag";
 import { Tooltip } from "../../../common/Tooltip";
@@ -33,11 +30,6 @@ const getServiceIconColor = (theme: DefaultTheme) => {
 export const AssetEntry = (props: AssetEntryProps) => {
   const theme = useTheme();
   const serviceIconColor = getServiceIconColor(theme);
-  const config = useContext(ConfigContext);
-  const isOverallImpactHidden = getFeatureFlagValue(
-    config,
-    FeatureFlag.IS_ASSETS_OVERALL_IMPACT_HIDDEN
-  );
 
   const handleLinkClick = () => {
     props.onAssetLinkClick(props.entry);
@@ -84,37 +76,47 @@ export const AssetEntry = (props: AssetEntryProps) => {
   return (
     <s.Container>
       <s.Header>
-        {assetTypeInfo?.icon && (
-          <s.AssetTypeIconContainer>
-            <assetTypeInfo.icon color={"#7891d0"} size={16} />
-          </s.AssetTypeIconContainer>
-        )}
-        <Tooltip title={name}>
-          <s.Link onClick={() => handleLinkClick()}>{name}</s.Link>
-        </Tooltip>
-        <s.IndicatorsContainer>
-          {isNew && <Tag type={"success"} value={"New"} />}
-          {sortedInsights.map((insight) => {
-            const insightTypeInfo = getInsightTypeInfo(insight.type);
-            const insightIconColor = getInsightCriticalityColor(
-              insight.criticality,
-              theme
-            );
+        <s.TitleRow>
+          {assetTypeInfo?.icon && (
+            <s.AssetTypeIconContainer>
+              <assetTypeInfo.icon color={"#7891d0"} size={16} />
+            </s.AssetTypeIconContainer>
+          )}
+          <Tooltip title={name}>
+            <s.Link onClick={() => handleLinkClick()}>{name}</s.Link>
+          </Tooltip>
+          <s.IndicatorsContainer>
+            {isNew && <Tag type={"success"} value={"New"} />}
+            {sortedInsights.map((insight) => {
+              const insightTypeInfo = getInsightTypeInfo(insight.type);
+              const insightIconColor = getInsightCriticalityColor(
+                insight.criticality,
+                theme
+              );
 
-            return (
-              insightTypeInfo && (
-                <Tooltip
-                  key={insight.type}
-                  title={insightTypeInfo?.label || insight.type}
-                >
-                  <s.InsightIconContainer>
-                    <insightTypeInfo.icon color={insightIconColor} size={20} />
-                  </s.InsightIconContainer>
-                </Tooltip>
-              )
-            );
-          })}
-        </s.IndicatorsContainer>
+              return (
+                insightTypeInfo && (
+                  <Tooltip
+                    key={insight.type}
+                    title={insightTypeInfo?.label || insight.type}
+                  >
+                    <s.InsightIconContainer>
+                      <insightTypeInfo.icon
+                        color={insightIconColor}
+                        size={20}
+                      />
+                    </s.InsightIconContainer>
+                  </Tooltip>
+                )
+              );
+            })}
+          </s.IndicatorsContainer>
+        </s.TitleRow>
+        {props.entry.instrumentationLibrary && (
+          <Tooltip title={props.entry.instrumentationLibrary}>
+            <s.ScopeName>{props.entry.instrumentationLibrary}</s.ScopeName>
+          </Tooltip>
+        )}
       </s.Header>
       <s.StatsContainer>
         <s.StatsColumn>
@@ -164,7 +166,7 @@ export const AssetEntry = (props: AssetEntryProps) => {
             </s.ValueContainer>
           </s.Stats>
         </s.StatsColumn>
-        {props.entry.impactScores && (
+        {!props.isImpactHidden && props.entry.impactScores && (
           <s.StatsColumn>
             <s.Stats>
               <span>Performance impact</span>
@@ -180,7 +182,7 @@ export const AssetEntry = (props: AssetEntryProps) => {
                 </s.ValueContainer>
               </Tooltip>
             </s.Stats>
-            {!isOverallImpactHidden && (
+            {!props.isOverallImpactHidden && (
               <s.Stats>
                 <span>Overall impact</span>
                 <Tooltip title={props.entry.impactScores.ScoreExp1000}>
@@ -196,20 +198,6 @@ export const AssetEntry = (props: AssetEntryProps) => {
                 </Tooltip>
               </s.Stats>
             )}
-          </s.StatsColumn>
-        )}
-        {props.entry.instrumentationLibrary && (
-          <s.StatsColumn>
-            <s.Stats>
-              <span>Scope</span>
-              <Tooltip title={props.entry.instrumentationLibrary}>
-                <s.ValueContainer>
-                  <s.ScopeName>
-                    {props.entry.instrumentationLibrary}
-                  </s.ScopeName>
-                </s.ValueContainer>
-              </Tooltip>
-            </s.Stats>
           </s.StatsColumn>
         )}
       </s.StatsContainer>

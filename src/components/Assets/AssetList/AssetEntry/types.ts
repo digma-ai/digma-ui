@@ -4,6 +4,8 @@ export interface AssetEntryProps {
   entry: AssetEntry;
   onAssetLinkClick: (entry: AssetEntry) => void;
   sortingCriterion: SORTING_CRITERION;
+  isImpactHidden: boolean;
+  isOverallImpactHidden: boolean;
 }
 
 export interface ImpactScoreIndicatorProps {
