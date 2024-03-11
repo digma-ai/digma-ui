@@ -295,6 +295,7 @@ export const Insights = (props: InsightsProps) => {
         }}
         onRefresh={refresh}
         defaultQuery={DEFAULT_QUERY}
+        dismissedCount={data.dismissedCount}
       />
     );
   };

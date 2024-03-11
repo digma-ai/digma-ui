@@ -5,6 +5,7 @@ import { useTheme } from "styled-components";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import { useDebounce } from "../../../hooks/useDebounce";
 import { isNumber } from "../../../typeGuards/isNumber";
+import { isUndefined } from "../../../typeGuards/isUndefined";
 import { FeatureFlag } from "../../../types";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
@@ -52,9 +53,9 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
   const previousMode = usePrevious(mode);
   const theme = useTheme();
 
-  const isViewModeButtonVisible = getFeatureFlagValue(
-    config,
-    FeatureFlag.IS_INSIGHT_DISMISSAL_ENABLED
+  const isViewModeButtonVisible = Boolean(
+    getFeatureFlagValue(config, FeatureFlag.IS_INSIGHT_DISMISSAL_ENABLED) &&
+      (isUndefined(props.dismissedCount) || props.dismissedCount > 0) // isUndefined - check for backward compatibility, always show when BE does not return this counter
   );
 
   const refreshData = useCallback(

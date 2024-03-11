@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { openURLInDefaultBrowser } from "../../../utils/openURLInDefaultBrowser";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
-import { EnvironmentType } from "../../common/App/types";
+import { DeploymentType, EnvironmentType } from "../../common/App/types";
 import { IconTag } from "../../common/IconTag";
 import { NewButton } from "../../common/NewButton";
 import { CodeIcon } from "../../common/icons/16px/CodeIcon";
@@ -15,7 +15,8 @@ const DIGMA_FOR_TEAMS_URL = "https://digma.ai/digma-for-teams/";
 
 export const EnvironmentTypePanel = (props: EnvironmentTypePanelProps) => {
   const config = useContext(ConfigContext);
-  const isHelmDeployment = config.backendInfo?.deploymentType === "Helm";
+  const isHelmDeployment =
+    config.backendInfo?.deploymentType === DeploymentType.HELM;
 
   const handleEnvironmentTypeButtonClick = (type: EnvironmentType) => {
     const typeData = environmentTypes.find((x) => x.type === type);

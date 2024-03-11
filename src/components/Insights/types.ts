@@ -72,6 +72,7 @@ export interface InsightsData {
   totalCount: number;
   insightsStatus: InsightsStatus; // ??  default
   viewMode: ViewMode; // Insights
+  dismissedCount?: number;
 
   // methods: Method[]; // empty
   // assetId?: string; // remove
