@@ -17,7 +17,7 @@ export interface JiraTicketProps {
     isLoading?: boolean;
     errorMessage?: string;
   };
-  attachments?: { url: string; fileName: string }[];
+  attachments?: Attachment[];
   onClose: () => void;
   tracking?: {
     prefix?: string;
@@ -31,4 +31,9 @@ export interface JiraTicketProps {
   onTicketLinkChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   unlinkTicket?: () => void;
   linkTicket?: (link: string) => void;
+}
+
+export interface Attachment {
+  url: string;
+  fileName: string;
 }
