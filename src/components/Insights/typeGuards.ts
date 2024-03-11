@@ -176,8 +176,3 @@ export const isSpanQueryOptimizationInsight = (
   insight: CodeObjectInsight
 ): insight is QueryOptimizationInsight =>
   insight.type === InsightType.SpanQueryOptimization;
-
-export const isInsightHeaderNavigationEnabled = (
-  insight: CodeObjectInsight
-): insight is SpanInsight =>
-  isSpanInsight(insight) || isEndpointHighNumberOfQueriesInsight(insight);

@@ -12,10 +12,7 @@ import { BaseButtonProps } from "../../../common/v3/Button/types";
 import { JiraButton } from "../../../common/v3/JiraButton";
 import { Link } from "../../../common/v3/Link";
 import { Tooltip } from "../../../common/v3/Tooltip";
-import {
-  isInsightHeaderNavigationEnabled,
-  isSpanInsight
-} from "../../typeGuards";
+import { isEndpointInsight, isSpanInsight } from "../../typeGuards";
 import { InsightHeader } from "./InsightHeader";
 import * as s from "./styles";
 import { InsightCardProps } from "./types";
@@ -70,7 +67,7 @@ export const InsightCard = (props: InsightCardProps) => {
 
   const handleSpanLinkClick = () => {
     if (
-      isInsightHeaderNavigationEnabled(props.insight) &&
+      (isSpanInsight(props.insight) || isEndpointInsight(props.insight)) &&
       props.insight.spanInfo
     ) {
       props.onGoToSpan(props.insight.spanInfo.spanCodeObjectId);
@@ -270,7 +267,7 @@ export const InsightCard = (props: InsightCardProps) => {
       header={
         <InsightHeader
           spanInfo={
-            isInsightHeaderNavigationEnabled(props.insight)
+            isSpanInsight(props.insight) || isEndpointInsight(props.insight)
               ? props.insight.spanInfo
               : undefined
           }
