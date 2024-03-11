@@ -85,6 +85,8 @@ export const ScalingIssueInsightTicketByRootCause = (
 
   const attachmentTrace = getTraceAttachment(config, spanInfo?.sampleTraceId);
 
+  // Add it to the attachment(s) after we'll support more than one and
+  // know how to make https calls while ignoring ssl cert verification
   const attachmentHistogram = getHistogramAttachment(config, spanInsight);
 
   return (
@@ -96,7 +98,7 @@ export const ScalingIssueInsightTicketByRootCause = (
         errorMessage:
           spanInsight === null ? "Failed to get insight details" : undefined
       }}
-      attachments={[attachmentTrace, attachmentHistogram]}
+      attachments={[attachmentTrace]}
       insight={props.data.insight}
       relatedInsight={spanInsight}
       onClose={props.onClose}
