@@ -5,7 +5,7 @@ import { AttachmentTagProps } from "./types";
 export const AttachmentTag = (props: AttachmentTagProps) => (
   <s.Container>
     <s.IconContainer>
-      <props.icon color={"currentColor"} />
+      <props.icon color={"currentColor"} size={16} />
     </s.IconContainer>
     <Tooltip title={props.text}>
       <s.TextContainer>{props.text}</s.TextContainer>

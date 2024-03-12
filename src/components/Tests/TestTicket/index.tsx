@@ -6,6 +6,7 @@ import { DigmaSignature } from "../../Insights/tickets/common/DigmaSignature";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { JiraTicket } from "../../common/JiraTicket";
 import { TestTicketProps } from "./types";
+import { Attachment } from "../../common/JiraTicket/types";
 
 export const TestTicket = (props: TestTicketProps) => {
   const {
@@ -51,12 +52,16 @@ export const TestTicket = (props: TestTicketProps) => {
     </>
   );
 
-  const attachment = traceId
-    ? {
-        url: `${config.jaegerURL}/api/traces/${traceId}?prettyPrint=true`,
-        fileName: `trace-${traceId}.json`
-      }
-    : undefined;
+  const attachments = [
+    ...(traceId
+      ? [
+          {
+            url: `${config.jaegerURL}/api/traces/${traceId}?prettyPrint=true`,
+            fileName: `trace-${traceId}.json`
+          }
+        ]
+      : [])
+  ];
 
   return (
     <JiraTicket
@@ -64,7 +69,7 @@ export const TestTicket = (props: TestTicketProps) => {
       description={{
         content: renderDescription()
       }}
-      attachment={attachment}
+      attachments={attachments}
       onClose={props.onClose}
       tracking={{ prefix: "tests" }}
     />

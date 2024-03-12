@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { InsightsQuery } from "../../common/App/types";
 import { GenericCodeObjectInsight } from "../types";
+import { Attachment } from "../../common/JiraTicket/types";
 
 export interface InsightJiraTicketProps {
   summary: string;
@@ -9,7 +10,7 @@ export interface InsightJiraTicketProps {
     isLoading?: boolean;
     errorMessage?: string;
   };
-  attachment?: { url: string; fileName: string };
+  attachments?: Attachment[];
   insight: GenericCodeObjectInsight;
   relatedInsight?: GenericCodeObjectInsight | null;
   onClose: () => void;

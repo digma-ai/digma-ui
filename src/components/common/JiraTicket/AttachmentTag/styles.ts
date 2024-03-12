@@ -2,11 +2,8 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   display: flex;
-  padding: 4px 6px 4px 4px;
+  padding: 2px 0;
   gap: 8px;
-  border-radius: 4px;
-  border: 1px solid ${({ theme }) => theme.colors.attachmentTag.border};
-  background: ${({ theme }) => theme.colors.attachmentTag.background};
   color: ${({ theme }) => theme.colors.attachmentTag.text};
   align-items: center;
   max-width: fit-content;
