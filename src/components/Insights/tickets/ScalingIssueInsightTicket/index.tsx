@@ -79,8 +79,11 @@ export const ScalingIssueInsightTicket = (
     ?.map((ep) => ep.sampleTraceId)
     ?.find((t) => t);
   const attachmentTrace = getTraceAttachment(config, traceId);
-
   const attachmentHistogram = getHistogramAttachment(config, insight);
+  const attachments = [
+    ...(attachmentTrace ? [attachmentTrace] : []),
+    ...(attachmentHistogram ? [attachmentHistogram] : [])
+  ];
 
   return (
     <InsightJiraTicket
@@ -89,7 +92,7 @@ export const ScalingIssueInsightTicket = (
         content: renderDescription(),
         isLoading: isLoading
       }}
-      attachments={[attachmentTrace, attachmentHistogram]}
+      attachments={attachments}
       insight={props.data.insight}
       onClose={props.onClose}
     />

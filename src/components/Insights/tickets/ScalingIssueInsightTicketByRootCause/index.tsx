@@ -84,8 +84,11 @@ export const ScalingIssueInsightTicketByRootCause = (
   const summary = getScalingIssueSummary(spanInsight);
 
   const attachmentTrace = getTraceAttachment(config, spanInfo?.sampleTraceId);
-
   const attachmentHistogram = getHistogramAttachment(config, spanInsight);
+  const attachments = [
+    ...(attachmentTrace ? [attachmentTrace] : []),
+    ...(attachmentHistogram ? [attachmentHistogram] : [])
+  ];
 
   return (
     <InsightJiraTicket
@@ -96,7 +99,7 @@ export const ScalingIssueInsightTicketByRootCause = (
         errorMessage:
           spanInsight === null ? "Failed to get insight details" : undefined
       }}
-      attachments={[attachmentTrace, attachmentHistogram]}
+      attachments={attachments}
       insight={props.data.insight}
       relatedInsight={spanInsight}
       onClose={props.onClose}

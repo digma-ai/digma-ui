@@ -52,12 +52,16 @@ export const TestTicket = (props: TestTicketProps) => {
     </>
   );
 
-  const attachment = traceId
-    ? {
-        url: `${config.jaegerURL}/api/traces/${traceId}?prettyPrint=true`,
-        fileName: `trace-${traceId}.json`
-      }
-    : undefined;
+  const attachments = [
+    ...(traceId
+      ? [
+          {
+            url: `${config.jaegerURL}/api/traces/${traceId}?prettyPrint=true`,
+            fileName: `trace-${traceId}.json`
+          }
+        ]
+      : [])
+  ];
 
   return (
     <JiraTicket
@@ -65,7 +69,7 @@ export const TestTicket = (props: TestTicketProps) => {
       description={{
         content: renderDescription()
       }}
-      attachments={[attachment]?.filter((item): item is Attachment => !!item)}
+      attachments={attachments}
       onClose={props.onClose}
       tracking={{ prefix: "tests" }}
     />

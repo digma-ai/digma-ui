@@ -17,7 +17,7 @@ export interface JiraTicketProps {
     isLoading?: boolean;
     errorMessage?: string;
   };
-  attachments?: Attachment[];
+  attachments: Attachment[];
   onClose: () => void;
   tracking?: {
     prefix?: string;

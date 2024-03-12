@@ -101,12 +101,16 @@ export const EndpointQueryOptimizationInsightTicket = (
   );
 
   const traceId = span?.traceId;
-  const attachment = traceId
-    ? {
-        url: `${config.jaegerURL}/api/traces/${traceId}?prettyPrint=true`,
-        fileName: `trace-${traceId}.json`
-      }
-    : undefined;
+  const attachments = [
+    ...(traceId
+      ? [
+          {
+            url: `${config.jaegerURL}/api/traces/${traceId}?prettyPrint=true`,
+            fileName: `trace-${traceId}.json`
+          }
+        ]
+      : [])
+  ];
 
   return (
     <InsightJiraTicket
@@ -117,7 +121,7 @@ export const EndpointQueryOptimizationInsightTicket = (
         errorMessage:
           spanInsight === null ? "Failed to get insight details" : undefined
       }}
-      attachments={[attachment]}
+      attachments={attachments}
       insight={props.data.insight}
       relatedInsight={spanInsight}
       onClose={props.onClose}

@@ -11,6 +11,7 @@ import {
   InsightsGetDataListQuery,
   LinkTicketResponse
 } from "./types";
+import { Attachment } from "../../common/JiraTicket/types";
 
 export const InsightJiraTicket = (props: InsightJiraTicketProps) => {
   const [errorMessage, setErrorMessage] = useState<string | null>();
@@ -95,7 +96,7 @@ export const InsightJiraTicket = (props: InsightJiraTicketProps) => {
     <JiraTicket
       description={props.description}
       summary={props.summary}
-      attachments={props.attachments?.filter(Boolean).map((a) => a!)}
+      attachments={props.attachments || []}
       onClose={props.onClose}
       ticketLink={{ link: ticketLink, errorMessage }}
       unlinkTicket={unlinkTicket}

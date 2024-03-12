@@ -80,12 +80,16 @@ export const QueryOptimizationInsightTicket = (
   );
 
   const traceId = props.data.insight.traceId;
-  const attachment = traceId
-    ? {
-        url: `${config.jaegerURL}/api/traces/${traceId}?prettyPrint=true`,
-        fileName: `trace-${traceId}.json`
-      }
-    : undefined;
+  const attachments = [
+    ...(traceId
+      ? [
+          {
+            url: `${config.jaegerURL}/api/traces/${traceId}?prettyPrint=true`,
+            fileName: `trace-${traceId}.json`
+          }
+        ]
+      : [])
+  ];
 
   return (
     <InsightJiraTicket
@@ -94,7 +98,7 @@ export const QueryOptimizationInsightTicket = (
         content: renderDescription(),
         isLoading
       }}
-      attachments={[attachment]}
+      attachments={attachments}
       insight={props.data.insight}
       onClose={props.onClose}
     />
