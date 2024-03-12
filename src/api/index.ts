@@ -21,11 +21,13 @@ export const initializeDigmaMessageListener = (
 export const sendMessage = <T>(
   message: DigmaOutgoingMessageData<T>
 ): string | undefined => {
+  const extendedMessage = { ...message, id: `${message.action}-${Date.now()}` };
+
   console.debug("Message to send:", message);
 
   switch (platform) {
     case "Web":
-      sendMessageToWebService(message);
+      sendMessageToWebService(extendedMessage);
       break;
     case "VS Code":
       if (window.sendMessageToVSCode) {
