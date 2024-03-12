@@ -162,7 +162,7 @@ export const JiraTicket = (props: JiraTicketProps) => {
           </div>
         </Field>
       </Section>
-      {props.attachments && (
+      {props.attachments.length > 0 && (
         <Section
           key={"attachments"}
           title={"Attachments"}
