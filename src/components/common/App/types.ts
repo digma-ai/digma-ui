@@ -74,6 +74,7 @@ export interface GlobalState {
 
 export interface ConfigContextData {
   digmaApiUrl: string;
+  digmaApiProxyPrefix: string;
   digmaStatus: DigmaStatus | undefined;
   isObservabilityEnabled: boolean;
   jaegerURL: string;
