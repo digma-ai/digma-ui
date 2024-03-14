@@ -4,10 +4,9 @@ import {
   initializeDigmaMessageListener,
   sendMessage
 } from "../../api";
-import { Insights } from "../../components/Insights";
+import { Main } from "../../components/Main";
 import { App } from "../../components/common/App";
 import { dispatcher } from "../../dispatcher";
-import { GlobalStyle } from "./styles";
 
 initializeDigmaMessageListener(dispatcher);
 
@@ -20,8 +19,7 @@ if (rootElement) {
   const root = createRoot(rootElement);
   root.render(
     <App>
-      <GlobalStyle />
-      <Insights insightViewType={"Issues"} />
+      <Main />
     </App>
   );
 }

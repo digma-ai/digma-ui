@@ -4,6 +4,7 @@ import { getCriticalityLabel } from "../../../../utils/getCriticalityLabel";
 import { getDurationString } from "../../../../utils/getDurationString";
 import { intersperse } from "../../../../utils/intersperse";
 import { ConfigContext } from "../../../common/App/ConfigContext";
+import { Attachment } from "../../../common/JiraTicket/types";
 import { InsightJiraTicket } from "../../InsightJiraTicket";
 import {
   EndpointQueryOptimizationInsight,
@@ -101,7 +102,7 @@ export const EndpointQueryOptimizationInsightTicket = (
   );
 
   const traceId = span?.traceId;
-  const attachments = [
+  const attachments: Attachment[] = [
     ...(traceId
       ? [
           {

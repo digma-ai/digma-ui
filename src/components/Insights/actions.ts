@@ -3,7 +3,6 @@ import { addPrefix } from "../../utils/addPrefix";
 const ACTION_PREFIX = "INSIGHTS";
 
 export const actions = addPrefix(ACTION_PREFIX, {
-  INITIALIZE: "INITIALIZE",
   GET_DATA: "GET_DATA",
   SET_DATA: "SET_DATA",
   GO_TO_ERRORS: "GO_TO_ERRORS",

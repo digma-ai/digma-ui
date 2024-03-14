@@ -5,8 +5,8 @@ import { intersperse } from "../../../utils/intersperse";
 import { DigmaSignature } from "../../Insights/tickets/common/DigmaSignature";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { JiraTicket } from "../../common/JiraTicket";
-import { TestTicketProps } from "./types";
 import { Attachment } from "../../common/JiraTicket/types";
+import { TestTicketProps } from "./types";
 
 export const TestTicket = (props: TestTicketProps) => {
   const {
@@ -52,7 +52,7 @@ export const TestTicket = (props: TestTicketProps) => {
     </>
   );
 
-  const attachments = [
+  const attachments: Attachment[] = [
     ...(traceId
       ? [
           {

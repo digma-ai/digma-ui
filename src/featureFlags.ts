@@ -10,7 +10,8 @@ export const featureFlagMinBackendVersions: Record<FeatureFlag, string> = {
   [FeatureFlag.IS_INSIGHT_TICKET_LINKAGE_ENABLED]: "v0.2.200",
   [FeatureFlag.IS_ASSETS_COMPLEX_FILTER_ENABLED]: "v0.2.215",
   [FeatureFlag.IS_INSIGHT_DISMISSAL_ENABLED]: "v0.2.238",
-  [FeatureFlag.IS_RECALCULATE_BUBBLE_ENABLED]: "v0.2.244"
+  [FeatureFlag.IS_RECALCULATE_BUBBLE_ENABLED]: "v0.2.244",
+  [FeatureFlag.IS_ANALYTICS_TAB_VISIBLE]: "v0.2.244"
 };
 
 export const getFeatureFlagValue = (

@@ -11,7 +11,6 @@ import {
   InsightsGetDataListQuery,
   LinkTicketResponse
 } from "./types";
-import { Attachment } from "../../common/JiraTicket/types";
 
 export const InsightJiraTicket = (props: InsightJiraTicketProps) => {
   const [errorMessage, setErrorMessage] = useState<string | null>();
