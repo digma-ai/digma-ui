@@ -2,6 +2,7 @@ import { ReactElement, useContext } from "react";
 import { getCriticalityLabel } from "../../../../utils/getCriticalityLabel";
 import { intersperse } from "../../../../utils/intersperse";
 import { ConfigContext } from "../../../common/App/ConfigContext";
+import { Attachment } from "../../../common/JiraTicket/types";
 import { InsightJiraTicket } from "../../InsightJiraTicket";
 import { SpanNPlusOneInsight } from "../../types";
 import { useSpanDataSource } from "../common";
@@ -66,7 +67,7 @@ export const NPlusOneInsightTicket = (
   );
 
   const traceId = props.data.insight.traceId;
-  const attachments = [
+  const attachments: Attachment[] = [
     ...(traceId
       ? [
           {

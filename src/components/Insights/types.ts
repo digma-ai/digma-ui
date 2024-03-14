@@ -84,8 +84,11 @@ export interface InsightsData {
   // needsObservabilityFix: boolean; //remove
 }
 
+export type InsightViewType = "Issues" | "Analytics";
+
 export interface InsightsProps {
   data?: InsightsData;
+  insightViewType: InsightViewType;
 }
 
 export interface InsightGroup {
@@ -868,6 +871,7 @@ export interface InsightsQuery {
   sorting: Sorting;
   searchQuery: string | null;
   showDismissed: boolean;
+  insightViewType: InsightViewType;
 }
 
 export interface ScopedInsightsQuery extends InsightsQuery {

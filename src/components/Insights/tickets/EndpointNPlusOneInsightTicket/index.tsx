@@ -3,6 +3,7 @@ import { InsightType } from "../../../../types";
 import { getCriticalityLabel } from "../../../../utils/getCriticalityLabel";
 import { intersperse } from "../../../../utils/intersperse";
 import { ConfigContext } from "../../../common/App/ConfigContext";
+import { Attachment } from "../../../common/JiraTicket/types";
 import { InsightJiraTicket } from "../../InsightJiraTicket";
 import { EndpointSpanNPlusOneInsight, SpanNPlusOneInsight } from "../../types";
 import { useEndpointDataSource } from "../common";
@@ -73,7 +74,7 @@ export const EndpointNPlusOneInsightTicket = (
   );
 
   const traceId = span?.traceId;
-  const attachments = [
+  const attachments: Attachment[] = [
     ...(traceId
       ? [
           {

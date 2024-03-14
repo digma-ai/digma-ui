@@ -3,6 +3,7 @@ import { getCriticalityLabel } from "../../../../utils/getCriticalityLabel";
 import { getDurationString } from "../../../../utils/getDurationString";
 import { intersperse } from "../../../../utils/intersperse";
 import { ConfigContext } from "../../../common/App/ConfigContext";
+import { Attachment } from "../../../common/JiraTicket/types";
 import { InsightJiraTicket } from "../../InsightJiraTicket";
 import { QueryOptimizationInsight } from "../../types";
 import { useCommitInfos } from "../common";
@@ -80,7 +81,7 @@ export const QueryOptimizationInsightTicket = (
   );
 
   const traceId = props.data.insight.traceId;
-  const attachments = [
+  const attachments: Attachment[] = [
     ...(traceId
       ? [
           {

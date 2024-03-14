@@ -1,9 +1,11 @@
 import { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { actions as globalActions } from "../../actions";
 import { SLACK_WORKSPACE_URL } from "../../constants";
+import { getFeatureFlagValue } from "../../featureFlags";
 import { usePrevious } from "../../hooks/usePrevious";
 import { trackingEvents as globalTrackingEvents } from "../../trackingEvents";
 import { isNumber } from "../../typeGuards/isNumber";
+import { FeatureFlag } from "../../types";
 import { openURLInDefaultBrowser } from "../../utils/openURLInDefaultBrowser";
 import { sendTrackingEvent } from "../../utils/sendTrackingEvent";
 import { ConfigContext } from "../common/App/ConfigContext";
@@ -20,7 +22,6 @@ import { OpenTelemetryLogoCrossedSmallIcon } from "../common/icons/OpenTelemetry
 import { SlackLogoIcon } from "../common/icons/SlackLogoIcon";
 import { InsightsCatalog } from "./InsightsCatalog";
 import { SORTING_CRITERION } from "./InsightsCatalog/types";
-import { actions } from "./actions";
 import { useInsightsData } from "./common/useInsightsData";
 import * as s from "./styles";
 import { BottleneckInsightTicket } from "./tickets/BottleneckInsightTicket";
@@ -62,16 +63,6 @@ import {
 const REFRESH_INTERVAL = isNumber(window.insightsRefreshInterval)
   ? window.insightsRefreshInterval
   : 10 * 1000; // in milliseconds
-
-const DEFAULT_QUERY = {
-  page: 0,
-  sorting: {
-    criterion: SORTING_CRITERION.LATEST,
-    order: SORTING_ORDER.DESC
-  },
-  searchQuery: null,
-  showDismissed: false
-};
 
 const renderInsightTicket = (
   data: InsightTicketInfo<GenericCodeObjectInsight>,
@@ -190,6 +181,16 @@ const sendMessage = (action: string, data?: object) => {
 };
 
 export const Insights = (props: InsightsProps) => {
+  const DEFAULT_QUERY: InsightsQuery = {
+    page: 0,
+    sorting: {
+      criterion: SORTING_CRITERION.LATEST,
+      order: SORTING_ORDER.DESC
+    },
+    searchQuery: null,
+    showDismissed: false,
+    insightViewType: props.insightViewType
+  };
   // const [isAutofixing, setIsAutofixing] = useState(false);
   const [query, setQuery] = useState<InsightsQuery>(DEFAULT_QUERY);
   const { isInitialLoading, data, refresh } = useInsightsData({
@@ -205,8 +206,12 @@ export const Insights = (props: InsightsProps) => {
   const [isRegistrationInProgress, setIsRegistrationInProgress] =
     useState(false);
 
+  const isDismissalEnabled = Boolean(
+    getFeatureFlagValue(config, FeatureFlag.IS_INSIGHT_DISMISSAL_ENABLED) &&
+      props.insightViewType === "Issues"
+  );
+
   useLayoutEffect(() => {
-    sendMessage(actions.INITIALIZE);
     sendMessage(globalActions.GET_STATE);
   }, []);
 
@@ -296,6 +301,7 @@ export const Insights = (props: InsightsProps) => {
         onRefresh={refresh}
         defaultQuery={DEFAULT_QUERY}
         dismissedCount={data.dismissedCount}
+        isDismissalEnabled={isDismissalEnabled}
       />
     );
   };

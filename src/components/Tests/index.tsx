@@ -103,10 +103,6 @@ export const Tests = (props: TestsProps) => {
   const previousEnvironmentsToSend = usePrevious(environmentsToSend);
 
   useEffect(() => {
-    window.sendMessageToDigma({
-      action: actions.INITIALIZE
-    });
-
     sendTrackingEvent(trackingEvents.PAGE_LOADED);
 
     window.sendMessageToDigma<GetSpanLatestDataPayload>({
