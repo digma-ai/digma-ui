@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid";
 import { platform } from "../platform";
 import { isObject } from "../typeGuards/isObject";
 import { ActionDispatcher } from "./ActionDispatcher";
@@ -21,9 +22,9 @@ export const initializeDigmaMessageListener = (
 export const sendMessage = <T>(
   message: DigmaOutgoingMessageData<T>
 ): string | undefined => {
-  const extendedMessage = { ...message, id: `${message.action}-${Date.now()}` };
+  const extendedMessage = { ...message, id: uuidv4() };
 
-  console.debug("Message to send:", message);
+  console.debug("Message to send:", extendedMessage);
 
   switch (platform) {
     case "Web":
@@ -31,14 +32,14 @@ export const sendMessage = <T>(
       break;
     case "VS Code":
       if (window.sendMessageToVSCode) {
-        window.sendMessageToVSCode(message);
-        console.debug("Message has been sent to VS Code: ", message);
+        window.sendMessageToVSCode(extendedMessage);
+        console.debug("Message has been sent to VS Code: ", extendedMessage);
       }
       break;
     case "JetBrains":
       if (window.cefQuery) {
         return window.cefQuery({
-          request: JSON.stringify(message),
+          request: JSON.stringify(extendedMessage),
           onSuccess: function (response) {
             console.debug("cefQuery has been successfully sent: %s", response);
           },
