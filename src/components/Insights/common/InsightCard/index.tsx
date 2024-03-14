@@ -56,6 +56,7 @@ export const InsightCard = (props: InsightCardProps) => {
       props.onRecalculate &&
       props.onRecalculate(props.insight.id);
     setIsRecalculatingStarted(true);
+    // TODO: handle Recheck response and refresh the insight data
     setInsightStatus(InsightStatus.InEvaluation);
   };
 
