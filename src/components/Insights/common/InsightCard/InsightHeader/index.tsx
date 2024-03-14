@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import { formatTimeDistance } from "../../../../../utils/formatTimeDistance";
 import {
   InsightTypeInfo,
   getInsightTypeInfo
@@ -73,6 +74,14 @@ export const InsightHeader = (props: InsightHeaderProps) => {
                 <InfoCircleIcon color={"currentColor"} size={12} />
               </s.InfoContainer>
             </Tooltip>
+          )}
+          {props.lastUpdateTimer && (
+            <s.Description>
+              Updated:
+              <Tooltip title={new Date(props.lastUpdateTimer).toString()}>
+                <span>{formatTimeDistance(props.lastUpdateTimer)}</span>
+              </Tooltip>
+            </s.Description>
           )}
         </s.Title>
         <s.BadgeContainer>

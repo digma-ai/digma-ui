@@ -1,5 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { InsightCard } from ".";
+import { ConfigContext, InitialData } from "../../../common/App/ConfigContext";
+import { DeploymentType } from "../../../common/App/types";
 import { mockedEndpointNPlusOneInsight } from "../../EndpointNPlusOneInsight/mockData";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
@@ -67,5 +69,27 @@ export const Dismissed: Story = {
     onPin: undefined,
     onGoToTrace: undefined,
     onOpenHistogram: undefined
+  }
+};
+
+export const WithNewVersion: Story = {
+  decorators: [
+    (Story) => (
+      <ConfigContext.Provider
+        value={{
+          ...InitialData,
+          backendInfo: {
+            applicationVersion: "v0.2.243",
+            deploymentType: DeploymentType.DOCKER_COMPOSE
+          }
+        }}
+      >
+        <Story />
+      </ConfigContext.Provider>
+    )
+  ],
+  args: {
+    isAsync: true,
+    insight: { ...mockedEndpointNPlusOneInsight, criticality: 0.9 }
   }
 };

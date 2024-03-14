@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { isString } from "../../../../typeGuards/isString";
-import { formatTimeDistance } from "../../../../utils/formatTimeDistance";
 import { TraceIcon } from "../../../common/icons/12px/TraceIcon";
 import { HistogramIcon } from "../../../common/icons/16px/HistogramIcon";
 import { LiveIcon } from "../../../common/icons/16px/LiveIcon";
@@ -10,18 +9,22 @@ import { CrossIcon } from "../../../common/icons/CrossIcon";
 import { Button } from "../../../common/v3/Button";
 import { BaseButtonProps } from "../../../common/v3/Button/types";
 import { JiraButton } from "../../../common/v3/JiraButton";
-import { Link } from "../../../common/v3/Link";
 import { Tooltip } from "../../../common/v3/Tooltip";
 import { isEndpointInsight, isSpanInsight } from "../../typeGuards";
 import { InsightHeader } from "./InsightHeader";
 import * as s from "./styles";
 import { InsightCardProps } from "./types";
 
+import { getFeatureFlagValue } from "../../../../featureFlags";
 import { usePrevious } from "../../../../hooks/usePrevious";
+import { FeatureFlag } from "../../../../types";
 import { sendTrackingEvent } from "../../../../utils/sendTrackingEvent";
 import { Spinner } from "../../../Navigation/CodeButtonMenu/Spinner";
+import { ConfigContext } from "../../../common/App/ConfigContext";
 import { trackingEvents } from "../../tracking";
+import { InsightStatus } from "../../types";
 import { ProductionAffectionBar } from "./ProductionAffectionBar";
+import { RecalculateBar } from "./RecalculateBar";
 import { useDismissalHandler } from "./useDismissalHandler";
 
 const IS_NEW_TIME_LIMIT = 1000 * 60 * 10; // in milliseconds
@@ -33,8 +36,14 @@ export const InsightCard = (props: InsightCardProps) => {
     useState(false);
   const { isLoading, dismiss, show } = useDismissalHandler(props.insight.id);
   const previousLoading = usePrevious(isLoading);
+  const config = useContext(ConfigContext);
+  const [insightStatus, setInsightStatus] = useState(props.insight.status);
 
   const isCritical = props.insight.criticality > HIGH_CRITICALITY_THRESHOLD;
+  // TODO: remove and refresh the insight data
+  useEffect(() => {
+    setInsightStatus(props.insight.status);
+  }, [props.insight.status]);
 
   useEffect(() => {
     if (previousLoading && !isLoading) {
@@ -42,15 +51,13 @@ export const InsightCard = (props: InsightCardProps) => {
     }
   }, [isLoading, previousLoading, props.onRefresh]);
 
-  const handleRefreshLinkClick = () => {
-    props.onRefresh(props.insight.type);
-  };
-
   const handleRecheckButtonClick = () => {
     props.insight.prefixedCodeObjectId &&
       props.onRecalculate &&
       props.onRecalculate(props.insight.id);
     setIsRecalculatingStarted(true);
+    // TODO: handle Recheck response and refresh the insight data
+    setInsightStatus(InsightStatus.InEvaluation);
   };
 
   const handleHistogramButtonClick = () => {
@@ -65,56 +72,38 @@ export const InsightCard = (props: InsightCardProps) => {
       );
   };
 
+  const getRecalculateVisibilityParams = () => {
+    const areStartTimesEqual =
+      props.insight.customStartTime &&
+      props.insight.actualStartTime &&
+      new Date(props.insight.actualStartTime).valueOf() -
+        new Date(props.insight.customStartTime).valueOf() ===
+        0;
+
+    if (
+      getFeatureFlagValue(config, FeatureFlag.IS_RECALCULATE_BUBBLE_ENABLED)
+    ) {
+      return {
+        showTimer: areStartTimesEqual,
+        showBanner: insightStatus === InsightStatus.InEvaluation
+      };
+    }
+
+    return {
+      showTimer: areStartTimesEqual,
+      showBanner:
+        !areStartTimesEqual &&
+        props.insight.actualStartTime &&
+        (props.insight.customStartTime || isRecalculatingStarted)
+    };
+  };
+
   const handleSpanLinkClick = () => {
     if (
       (isSpanInsight(props.insight) || isEndpointInsight(props.insight)) &&
       props.insight.spanInfo
     ) {
       props.onGoToSpan(props.insight.spanInfo.spanCodeObjectId);
-    }
-  };
-
-  const renderRecalculationBlock = (
-    actualStartTime: string,
-    customStartTime: string | null,
-    isRecalculatingStarted: boolean
-  ) => {
-    if (!props.insight.customStartTime && !isRecalculatingStarted) {
-      return;
-    }
-
-    if (
-      isRecalculatingStarted ||
-      (customStartTime && customStartTime > actualStartTime)
-    ) {
-      return (
-        <s.RefreshContainer>
-          <s.Description>
-            Applying the new time filter. Wait a few minutes and then refresh.
-          </s.Description>
-          <span>
-            <Link onClick={handleRefreshLinkClick}>Refresh</Link>
-          </span>
-        </s.RefreshContainer>
-      );
-    }
-
-    const areStartTimesEqual =
-      customStartTime &&
-      new Date(actualStartTime).valueOf() -
-        new Date(customStartTime).valueOf() ===
-        0;
-
-    if (areStartTimesEqual) {
-      const title = new Date(actualStartTime).toString();
-      return (
-        <s.Description>
-          Data from:{" "}
-          <Tooltip title={title}>
-            <span>{formatTimeDistance(actualStartTime)}</span>
-          </Tooltip>
-        </s.Description>
-      );
     }
   };
 
@@ -257,6 +246,8 @@ export const InsightCard = (props: InsightCardProps) => {
     );
   };
 
+  const { showBanner, showTimer } = getRecalculateVisibilityParams();
+
   const isNew = isString(props.insight.firstDetected)
     ? Date.now() - new Date(props.insight.firstDetected).valueOf() <
       IS_NEW_TIME_LIMIT
@@ -271,13 +262,14 @@ export const InsightCard = (props: InsightCardProps) => {
               ? props.insight.spanInfo
               : undefined
           }
-          status={props.insight.status}
+          status={insightStatus}
           isNew={isNew}
           isAsync={props.isAsync}
           insightType={props.insight.type}
           importance={props.insight.importance}
           criticality={props.insight.criticality}
           onSpanLinkClick={handleSpanLinkClick}
+          lastUpdateTimer={showTimer ? props.insight.actualStartTime : null}
         />
       }
       content={
@@ -288,12 +280,7 @@ export const InsightCard = (props: InsightCardProps) => {
               onCreateTicket={handleCreateTicketLinkClick}
             />
           )}
-          {props.insight.actualStartTime &&
-            renderRecalculationBlock(
-              props.insight.actualStartTime,
-              props.insight.customStartTime,
-              isRecalculatingStarted
-            )}
+          {showBanner && <RecalculateBar />}
           {props.content}
         </s.ContentContainer>
       }

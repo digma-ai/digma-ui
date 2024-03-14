@@ -3,7 +3,7 @@ import { isEnvironment } from "../../../typeGuards/isEnvironment";
 import { isString } from "../../../typeGuards/isString";
 import { ConfigContextData } from "./types";
 
-export const ConfigContext = createContext<ConfigContextData>({
+export const InitialData = {
   digmaApiUrl: isString(window.digmaApiUrl) ? window.digmaApiUrl : "",
   digmaApiProxyPrefix: isString(window.digmaApiProxyPrefix)
     ? window.digmaApiProxyPrefix
@@ -28,4 +28,6 @@ export const ConfigContext = createContext<ConfigContextData>({
   scope: undefined,
   isMicrometerProject: window.isMicrometerProject === true,
   state: undefined
-});
+};
+
+export const ConfigContext = createContext<ConfigContextData>(InitialData);
