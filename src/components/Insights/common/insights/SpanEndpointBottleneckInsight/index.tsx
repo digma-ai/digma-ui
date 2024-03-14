@@ -124,16 +124,25 @@ export const SpanEndpointBottleneckInsight = (
           </Details>
           {selectedEndpoint && (
             <ColumnsContainer>
-              <KeyValue label={"% of Duration"}>
+              <KeyValue
+                label={
+                  <Info
+                    text={
+                      "The percentage of the overall request time taken up by this bottleneck asset"
+                    }
+                    name={"% of Duration"}
+                  />
+                }
+              >
                 {selectedEndpoint.avgFractionWhenBeingBottleneck}%
               </KeyValue>
               <KeyValue
                 label={
                   <Info
                     text={
-                      "Percentage of request consumed by the bottleneck span"
+                      "The percentage of requests for the selected endpoint experiencing this bottleneck"
                     }
-                    name={"% of Request"}
+                    name={"% of Requests"}
                   />
                 }
               >
