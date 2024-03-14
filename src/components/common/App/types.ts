@@ -1,4 +1,5 @@
 import { Mode } from "../../../globals";
+import { InsightViewType } from "../../Insights/types";
 
 export interface AppProps {
   children: React.ReactNode;
@@ -64,10 +65,14 @@ export interface InsightsQuery {
   page: number;
   scopedSpanCodeObjectId?: string | null;
   showDismissed: boolean;
+  insightViewType: InsightViewType;
 }
 
 export interface GlobalState {
   insights?: {
+    query?: InsightsQuery;
+  };
+  analytics?: {
     query?: InsightsQuery;
   };
 }

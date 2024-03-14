@@ -45,11 +45,10 @@ export const Tabs = (props: TabsProps) => {
 
   const tabs = props.tabs.filter(
     (x) =>
-      !x.isHidden &&
-      !(
+      !x.isHidden ||
+      (!x.isHidden &&
         x.id === "analytics" &&
-        !getFeatureFlagValue(config, FeatureFlag.IS_ANALYTICS_TAB_VISIBLE)
-      )
+        getFeatureFlagValue(config, FeatureFlag.IS_ANALYTICS_TAB_VISIBLE))
   );
 
   return (

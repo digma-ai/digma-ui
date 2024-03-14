@@ -1,24 +1,25 @@
-import { RootCauseSpanInfo, SpanScalingBadlyInsight } from "../../types";
-import { InsightTicketProps } from "../types";
-import { InsightJiraTicket } from "../../InsightJiraTicket";
-import { intersperse } from "../../../../utils/intersperse";
 import { ReactElement, useContext } from "react";
+import { InsightType } from "../../../../types";
+import { intersperse } from "../../../../utils/intersperse";
+import { ConfigContext } from "../../../common/App/ConfigContext";
+import { Attachment } from "../../../common/JiraTicket/types";
+import { InsightJiraTicket } from "../../InsightJiraTicket";
+import { RootCauseSpanInfo, SpanScalingBadlyInsight } from "../../types";
+import { useEndpointDataSource } from "../common";
 import { CodeLocations } from "../common/CodeLocations";
 import { CommitInfos } from "../common/CommitInfos";
 import { DigmaSignature } from "../common/DigmaSignature";
-import { useEndpointDataSource } from "../common";
-import { ConfigContext } from "../../../common/App/ConfigContext";
 import {
-  getHistogramAttachment,
-  getScalingIssueSummary,
-  getTraceAttachment,
   ScalingIssueAffectedEndpoints,
   ScalingIssueDuration,
   ScalingIssueMessage,
   ScalingIssueRootCauses,
-  ScalingIssueTestedConcurrency
+  ScalingIssueTestedConcurrency,
+  getHistogramAttachment,
+  getScalingIssueSummary,
+  getTraceAttachment
 } from "../common/ScalingIssueCommon";
-import { InsightType } from "../../../../types";
+import { InsightTicketProps } from "../types";
 
 export const ScalingIssueInsightTicketByRootCause = (
   props: InsightTicketProps<SpanScalingBadlyInsight> & {
@@ -85,7 +86,7 @@ export const ScalingIssueInsightTicketByRootCause = (
 
   const attachmentTrace = getTraceAttachment(config, spanInfo?.sampleTraceId);
   const attachmentHistogram = getHistogramAttachment(config, spanInsight);
-  const attachments = [
+  const attachments: Attachment[] = [
     ...(attachmentTrace ? [attachmentTrace] : []),
     ...(attachmentHistogram ? [attachmentHistogram] : [])
   ];
