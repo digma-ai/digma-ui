@@ -5,5 +5,5 @@
   },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "stylelint.validate": ["typescript"],
-  "cSpell.words": ["Digma", "UNDISMISS", "uuidv"]
+  "cSpell.words": ["Digma", "UNDISMISS"]
 }

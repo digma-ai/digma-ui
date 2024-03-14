@@ -1,12 +1,12 @@
 import { actions as globalActions } from "../../actions";
 import { actions as dashboardActions } from "../../components/Dashboard/actions";
-import { ExtendedDigmaOutgoingMessageData } from "../types";
+import { DigmaOutgoingMessageData } from "../types";
 import { getAboutInfo } from "./services/about";
 import { GetDashboardParams, getDashboard } from "./services/dashboard";
 import { GetEnvironmentParams, getEnvironment } from "./services/environments";
 
 export const sendMessageToWebService = <T>(
-  message: ExtendedDigmaOutgoingMessageData<T>
+  message: DigmaOutgoingMessageData<T>
 ) => {
   switch (message.action) {
     case dashboardActions.GET_DATA:

@@ -67,12 +67,6 @@ export const Assets = () => {
     );
   }, [config]);
 
-  // useLayoutEffect(() => {
-  //   window.sendMessageToDigma({
-  //     action: actions.INITIALIZE
-  //   });
-  // }, []);
-
   useEffect(() => {
     if (!config.scope?.span) {
       setAssetScopeOption(null);

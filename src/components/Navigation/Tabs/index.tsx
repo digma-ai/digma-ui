@@ -1,4 +1,6 @@
 import { useContext } from "react";
+import { getFeatureFlagValue } from "../../../featureFlags";
+import { FeatureFlag } from "../../../types";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Scope } from "../../common/App/types";
@@ -41,35 +43,42 @@ export const Tabs = (props: TabsProps) => {
     }
   };
 
+  const tabs = props.tabs.filter(
+    (x) =>
+      !x.isHidden &&
+      !(
+        x.id === "analytics" &&
+        !getFeatureFlagValue(config, FeatureFlag.IS_ANALYTICS_TAB_VISIBLE)
+      )
+  );
+
   return (
     <s.TabList>
-      {props.tabs
-        .filter((x) => !x.isHidden)
-        .map((tab) => {
-          const tooltipMessage = getTabTooltipMessage(tab, config.scope);
-          const isDisabled = getIsTabDisabled(tab, config.scope);
+      {tabs.map((tab) => {
+        const tooltipMessage = getTabTooltipMessage(tab, config.scope);
+        const isDisabled = getIsTabDisabled(tab, config.scope);
 
-          return (
-            <Tooltip
-              title={tooltipMessage}
-              key={tab.id}
-              isOpen={tooltipMessage ? undefined : false}
+        return (
+          <Tooltip
+            title={tooltipMessage}
+            key={tab.id}
+            isOpen={tooltipMessage ? undefined : false}
+          >
+            <s.Tab
+              $isSelected={tab.isSelected}
+              $isDisabled={isDisabled}
+              onClick={() => handleTabClick(tab)}
             >
-              <s.Tab
-                $isSelected={tab.isSelected}
-                $isDisabled={isDisabled}
-                onClick={() => handleTabClick(tab)}
-              >
-                {tab.title}
-                {tab.hasNewData && <s.Indicator type={"new"} />}
-                {config.scope?.hasErrors &&
-                  ["errorsDetails", "errors"].includes(tab.id) && (
-                    <s.Indicator type={"errors"} />
-                  )}
-              </s.Tab>
-            </Tooltip>
-          );
-        })}
+              {tab.title}
+              {tab.hasNewData && <s.Indicator type={"new"} />}
+              {config.scope?.hasErrors &&
+                ["errorsDetails", "errors"].includes(tab.id) && (
+                  <s.Indicator type={"errors"} />
+                )}
+            </s.Tab>
+          </Tooltip>
+        );
+      })}
     </s.TabList>
   );
 };
