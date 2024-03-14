@@ -11,5 +11,5 @@ export interface InsightHeaderProps {
   spanInfo?: SpanInfo | null;
   onSpanLinkClick: (spanCodeObjectId: string) => void;
   status?: InsightStatus;
-  latUpdateTimer?: string | null;
+  lastUpdateTimer?: string | null;
 }

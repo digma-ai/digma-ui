@@ -268,7 +268,7 @@ export const InsightCard = (props: InsightCardProps) => {
           importance={props.insight.importance}
           criticality={props.insight.criticality}
           onSpanLinkClick={handleSpanLinkClick}
-          latUpdateTimer={showTimer ? props.insight.actualStartTime : null}
+          lastUpdateTimer={showTimer ? props.insight.actualStartTime : null}
         />
       }
       content={

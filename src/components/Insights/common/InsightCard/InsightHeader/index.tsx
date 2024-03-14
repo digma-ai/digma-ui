@@ -75,11 +75,11 @@ export const InsightHeader = (props: InsightHeaderProps) => {
               </s.InfoContainer>
             </Tooltip>
           )}
-          {props.latUpdateTimer && (
+          {props.lastUpdateTimer && (
             <s.Description>
               Updated:
-              <Tooltip title={new Date(props.latUpdateTimer).toString()}>
-                <span>{formatTimeDistance(props.latUpdateTimer)}</span>
+              <Tooltip title={new Date(props.lastUpdateTimer).toString()}>
+                <span>{formatTimeDistance(props.lastUpdateTimer)}</span>
               </Tooltip>
             </s.Description>
           )}
