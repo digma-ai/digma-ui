@@ -21,7 +21,7 @@ if (rootElement) {
   root.render(
     <App>
       <GlobalStyle />
-      <Insights />
+      <Insights insightViewType={"Issues"} />
     </App>
   );
 }

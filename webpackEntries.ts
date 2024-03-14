@@ -29,7 +29,14 @@ export const entries: AppEntries = {
     environmentVariables: ["wizardFirstLaunch", "wizardSkipInstallationStep"]
   },
   main: {
-    entry: path.resolve(__dirname, "./src/containers/Main/index.tsx")
+    entry: path.resolve(__dirname, "./src/containers/Main/index.tsx"),
+    environmentVariables: [
+      "assetsRefreshInterval",
+      "assetsSearch",
+      "assetsSelectedServices",
+      "insightsRefreshInterval",
+      "testsRefreshInterval"
+    ]
   },
   navigation: {
     entry: path.resolve(__dirname, "./src/containers/Navigation/index.tsx")

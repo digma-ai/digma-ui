@@ -2,11 +2,9 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import { usePrevious } from "../../../hooks/usePrevious";
 
 import { useTheme } from "styled-components";
-import { getFeatureFlagValue } from "../../../featureFlags";
 import { useDebounce } from "../../../hooks/useDebounce";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { isUndefined } from "../../../typeGuards/isUndefined";
-import { FeatureFlag } from "../../../types";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Pagination } from "../../common/Pagination";
@@ -53,20 +51,27 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
   const previousMode = usePrevious(mode);
   const theme = useTheme();
 
-  const isViewModeButtonVisible = Boolean(
-    getFeatureFlagValue(config, FeatureFlag.IS_INSIGHT_DISMISSAL_ENABLED) &&
-      (isUndefined(props.dismissedCount) || props.dismissedCount > 0) // isUndefined - check for backward compatibility, always show when BE does not return this counter
-  );
+  const isViewModeButtonVisible =
+    props.isDismissalEnabled &&
+    (isUndefined(props.dismissedCount) || props.dismissedCount > 0); // isUndefined - check for backward compatibility, always show when BE does not return this counter
 
   const refreshData = useCallback(
     () =>
       props.onQueryChange({
+        ...props.defaultQuery,
         page,
         sorting,
         searchQuery: debouncedSearchInputValue,
         showDismissed: mode === ViewMode.OnlyDismissed
       }),
-    [page, sorting, debouncedSearchInputValue, props, mode]
+    [
+      page,
+      sorting,
+      debouncedSearchInputValue,
+      props.onQueryChange,
+      props.defaultQuery,
+      mode
+    ]
   );
 
   const handleRefreshButtonClick = () => {
@@ -119,7 +124,6 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
     page,
     debouncedSearchInputValue,
     previousSearchQuery,
-    props.onQueryChange,
     refreshData,
     mode,
     previousMode

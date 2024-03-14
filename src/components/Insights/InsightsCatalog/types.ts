@@ -11,6 +11,7 @@ export interface InsightsCatalogProps {
   onQueryChange: (query: InsightsQuery) => void;
   defaultQuery: InsightsQuery;
   onRefresh: () => void;
+  isDismissalEnabled: boolean;
 }
 
 export enum SORTING_CRITERION {

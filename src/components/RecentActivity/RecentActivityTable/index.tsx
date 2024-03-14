@@ -74,7 +74,7 @@ const renderDuration = (duration: Duration, viewMode: ViewMode) =>
 const renderInsights = (insights: SlimInsight[]) => {
   const sortedInsights = [...insights].sort(
     (a, b) =>
-      b.criticality - a.criticality ||
+      (b.criticality || 0) - (a.criticality || 0) ||
       getInsightTypeOrderPriority(a.type) - getInsightTypeOrderPriority(b.type)
   );
 

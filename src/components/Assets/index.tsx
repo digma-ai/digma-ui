@@ -1,10 +1,4 @@
-import {
-  useContext,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useState
-} from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { lt, valid } from "semver";
 import {
   featureFlagMinBackendVersions,
@@ -27,7 +21,6 @@ import { AssetsViewScopeConfiguration } from "./AssetsViewScopeConfiguration";
 import { AssetScopeOption } from "./AssetsViewScopeConfiguration/types";
 import { NoDataMessage } from "./NoDataMessage";
 import { ServicesFilter } from "./ServicesFilter";
-import { actions } from "./actions";
 import * as s from "./styles";
 import { trackingEvents } from "./tracking";
 import { DataRefresher } from "./types";
@@ -74,11 +67,11 @@ export const Assets = () => {
     );
   }, [config]);
 
-  useLayoutEffect(() => {
-    window.sendMessageToDigma({
-      action: actions.INITIALIZE
-    });
-  }, []);
+  // useLayoutEffect(() => {
+  //   window.sendMessageToDigma({
+  //     action: actions.INITIALIZE
+  //   });
+  // }, []);
 
   useEffect(() => {
     if (!config.scope?.span) {

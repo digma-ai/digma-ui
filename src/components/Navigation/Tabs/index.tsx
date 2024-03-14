@@ -19,7 +19,10 @@ const getTabTooltipMessage = (tab: TabData, scope?: Scope) => {
 
 // TODO: remove after implementing this logic on the plugin's side
 const getIsTabDisabled = (tab: TabData, scope?: Scope) => {
-  if (!scope?.span && ["errors", "errorsDetails", "tests"].includes(tab.id)) {
+  if (
+    !scope?.span &&
+    ["analytics", "errors", "errorsDetails", "tests"].includes(tab.id)
+  ) {
     return true;
   }
 

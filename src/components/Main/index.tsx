@@ -33,9 +33,11 @@ export const Main = () => {
 
   switch (view) {
     case "insights":
-      return <Insights />;
+      return <Insights insightViewType={"Issues"} />;
     case "assets":
       return <Assets />;
+    case "analytics":
+      return <Insights insightViewType={"Analytics"} />;
     case "tests":
       return <Tests />;
   }
