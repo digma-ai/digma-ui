@@ -13,7 +13,7 @@ export const Container = styled.div<ContainerProps>`
       : theme.colors.v3.pieChart.darkRed};
   display: flex;
   align-items: center;
-  padding: 6px 8px;
+  padding: 4px 8px;
   gap: 4px;
 `;
 

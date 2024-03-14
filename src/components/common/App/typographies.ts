@@ -100,3 +100,9 @@ export const bodySemiboldTypography = css`
   font-weight: ${typographies.body.fontWeight.medium};
   line-height: ${typographies.body.lineHeight}px;
 `;
+
+export const footnoteBoldTypography = css`
+  font-size: ${typographies.footNote.fontSize}px;
+  font-weight: ${typographies.footNote.fontWeight.bold};
+  line-height: ${typographies.footNote.lineHeight}px;
+`;

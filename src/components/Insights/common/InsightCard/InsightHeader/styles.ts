@@ -1,5 +1,8 @@
 import styled from "styled-components";
-import { bodySemiboldTypography } from "../../../../common/App/typographies";
+import {
+  bodySemiboldTypography,
+  footnoteRegularTypography
+} from "../../../../common/App/typographies";
 
 export const Container = styled.div`
   display: flex;
@@ -40,4 +43,11 @@ export const BadgeContainer = styled.div`
   align-items: center;
   gap: 8px;
   height: 24px;
+`;
+
+export const Description = styled.div`
+  ${footnoteRegularTypography}
+  gap:4px;
+  display: flex;
+  color: ${({ theme }) => theme.colors.v3.text.secondary};
 `;
