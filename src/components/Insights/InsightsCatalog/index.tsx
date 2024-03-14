@@ -144,11 +144,15 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
             setSorting(val);
           }}
           options={[
-            {
-              value: SORTING_CRITERION.CRITICAL_INSIGHTS,
-              label: "Critical insights",
-              defaultOrder: SORTING_ORDER.DESC
-            },
+            ...(defaultQuery.insightViewType === "Issues"
+              ? [
+                  {
+                    value: SORTING_CRITERION.CRITICAL_INSIGHTS,
+                    label: "Critical insights",
+                    defaultOrder: SORTING_ORDER.DESC
+                  }
+                ]
+              : []),
             {
               value: SORTING_CRITERION.LATEST,
               label: "Latest",
