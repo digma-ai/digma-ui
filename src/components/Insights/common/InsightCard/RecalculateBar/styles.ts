@@ -12,7 +12,7 @@ export const Container = styled.div`
   background: ${({ theme }) => theme.colors.v3.status.backgroundLow};
   display: flex;
   align-items: center;
-  padding: 4px 8px;
+  padding: 6px 8px;
   gap: 4px;
 `;
 

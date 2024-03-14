@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { isString } from "../../../../typeGuards/isString";
 import { TraceIcon } from "../../../common/icons/12px/TraceIcon";
 import { HistogramIcon } from "../../../common/icons/16px/HistogramIcon";
@@ -15,10 +15,14 @@ import { InsightHeader } from "./InsightHeader";
 import * as s from "./styles";
 import { InsightCardProps } from "./types";
 
+import { getFeatureFlagValue } from "../../../../featureFlags";
 import { usePrevious } from "../../../../hooks/usePrevious";
+import { FeatureFlag } from "../../../../types";
 import { sendTrackingEvent } from "../../../../utils/sendTrackingEvent";
 import { Spinner } from "../../../Navigation/CodeButtonMenu/Spinner";
+import { ConfigContext } from "../../../common/App/ConfigContext";
 import { trackingEvents } from "../../tracking";
+import { InsightStatus } from "../../types";
 import { ProductionAffectionBar } from "./ProductionAffectionBar";
 import { RecalculateBar } from "./RecalculateBar";
 import { useDismissalHandler } from "./useDismissalHandler";
@@ -32,8 +36,14 @@ export const InsightCard = (props: InsightCardProps) => {
     useState(false);
   const { isLoading, dismiss, show } = useDismissalHandler(props.insight.id);
   const previousLoading = usePrevious(isLoading);
+  const config = useContext(ConfigContext);
+  const [insightStatus, setInsightStatus] = useState(props.insight.status);
 
   const isCritical = props.insight.criticality > HIGH_CRITICALITY_THRESHOLD;
+
+  useEffect(() => {
+    setInsightStatus(props.insight.status);
+  }, [props.insight.status]);
 
   useEffect(() => {
     if (previousLoading && !isLoading) {
@@ -41,15 +51,12 @@ export const InsightCard = (props: InsightCardProps) => {
     }
   }, [isLoading, previousLoading, props.onRefresh]);
 
-  const handleRefreshLinkClick = () => {
-    props.onRefresh(props.insight.type);
-  };
-
   const handleRecheckButtonClick = () => {
     props.insight.prefixedCodeObjectId &&
       props.onRecalculate &&
       props.onRecalculate(props.insight.id);
     setIsRecalculatingStarted(true);
+    setInsightStatus(InsightStatus.InEvaluation);
   };
 
   const handleHistogramButtonClick = () => {
@@ -62,6 +69,32 @@ export const InsightCard = (props: InsightCardProps) => {
         props.insight.type,
         props.insight.spanInfo.displayName
       );
+  };
+
+  const getRecalculateVisibilityParams = () => {
+    const areStartTimesEqual =
+      props.insight.customStartTime &&
+      props.insight.actualStartTime &&
+      new Date(props.insight.actualStartTime).valueOf() -
+        new Date(props.insight.customStartTime).valueOf() ===
+        0;
+
+    if (
+      getFeatureFlagValue(config, FeatureFlag.IS_RECALCULATE_BUBBLE_ENABLED)
+    ) {
+      return {
+        showTimer: areStartTimesEqual,
+        showBanner: insightStatus === InsightStatus.InEvaluation
+      };
+    }
+
+    return {
+      showTimer: areStartTimesEqual,
+      showBanner:
+        !areStartTimesEqual &&
+        props.insight.actualStartTime &&
+        (props.insight.customStartTime || isRecalculatingStarted)
+    };
   };
 
   const handleSpanLinkClick = () => {
@@ -212,16 +245,7 @@ export const InsightCard = (props: InsightCardProps) => {
     );
   };
 
-  const hideRecalculateStatus =
-    (!props.insight.customStartTime && !isRecalculatingStarted) ||
-    !props.insight.actualStartTime;
-
-  const areStartTimesEqual =
-    props.insight.customStartTime &&
-    props.insight.actualStartTime &&
-    new Date(props.insight.actualStartTime).valueOf() -
-      new Date(props.insight.customStartTime).valueOf() ===
-      0;
+  const { showBanner, showTimer } = getRecalculateVisibilityParams();
 
   const isNew = isString(props.insight.firstDetected)
     ? Date.now() - new Date(props.insight.firstDetected).valueOf() <
@@ -237,18 +261,14 @@ export const InsightCard = (props: InsightCardProps) => {
               ? props.insight.spanInfo
               : undefined
           }
-          status={props.insight.status}
+          status={insightStatus}
           isNew={isNew}
           isAsync={props.isAsync}
           insightType={props.insight.type}
           importance={props.insight.importance}
           criticality={props.insight.criticality}
           onSpanLinkClick={handleSpanLinkClick}
-          latUpdateTimer={
-            areStartTimesEqual && !hideRecalculateStatus
-              ? props.insight.actualStartTime
-              : null
-          }
+          latUpdateTimer={showTimer ? props.insight.actualStartTime : null}
         />
       }
       content={
@@ -259,7 +279,7 @@ export const InsightCard = (props: InsightCardProps) => {
               onCreateTicket={handleCreateTicketLinkClick}
             />
           )}
-          {!hideRecalculateStatus && !areStartTimesEqual && <RecalculateBar />}
+          {showBanner && <RecalculateBar />}
           {props.content}
         </s.ContentContainer>
       }
