@@ -56,7 +56,7 @@ export const SelectBar = styled.div<SelectBarProps>`
   }
 `;
 
-export const SelectedValue = styled.span`
+export const SelectedValue = styled.div`
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;

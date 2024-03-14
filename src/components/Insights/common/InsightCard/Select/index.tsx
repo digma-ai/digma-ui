@@ -53,11 +53,11 @@ export const Select = (props: SelectProps) => {
       >
         {selectedOption ? (
           <Tooltip title={selectedOption.label}>
-            {selectedOption.customContent ? (
-              <>{selectedOption.customContent}</>
-            ) : (
-              <s.SelectedValue>{selectedOption.label}</s.SelectedValue>
-            )}
+            <s.SelectedValue>
+              {selectedOption.customContent
+                ? selectedOption.customContent
+                : selectedOption.label}
+            </s.SelectedValue>
           </Tooltip>
         ) : (
           props.placeholder
