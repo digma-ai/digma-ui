@@ -40,7 +40,7 @@ export const InsightCard = (props: InsightCardProps) => {
   const [insightStatus, setInsightStatus] = useState(props.insight.status);
 
   const isCritical = props.insight.criticality > HIGH_CRITICALITY_THRESHOLD;
-
+  // TODO: remove and refresh the insight data
   useEffect(() => {
     setInsightStatus(props.insight.status);
   }, [props.insight.status]);
@@ -56,6 +56,7 @@ export const InsightCard = (props: InsightCardProps) => {
       props.onRecalculate &&
       props.onRecalculate(props.insight.id);
     setIsRecalculatingStarted(true);
+    // TODO: handle Recheck response and refresh the insight data
     setInsightStatus(InsightStatus.InEvaluation);
   };
 

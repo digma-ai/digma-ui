@@ -47,7 +47,7 @@ export const BadgeContainer = styled.div`
 
 export const Description = styled.div`
   ${footnoteRegularTypography}
-  gap:4px;
+  gap: 4px;
   display: flex;
   color: ${({ theme }) => theme.colors.v3.text.secondary};
 `;
