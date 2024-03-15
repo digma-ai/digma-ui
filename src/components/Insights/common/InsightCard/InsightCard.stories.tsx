@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { InsightCard } from ".";
-import { ConfigContext, InitialData } from "../../../common/App/ConfigContext";
+import { ConfigContext, initialState } from "../../../common/App/ConfigContext";
 import { DeploymentType } from "../../../common/App/types";
 import { mockedEndpointNPlusOneInsight } from "../../EndpointNPlusOneInsight/mockData";
 
@@ -77,7 +77,7 @@ export const WithNewVersion: Story = {
     (Story) => (
       <ConfigContext.Provider
         value={{
-          ...InitialData,
+          ...initialState,
           backendInfo: {
             applicationVersion: "v0.2.243",
             deploymentType: DeploymentType.DOCKER_COMPOSE

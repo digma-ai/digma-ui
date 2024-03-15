@@ -38,7 +38,9 @@ const mockedScope: Scope = {
     ],
     relatedCodeDetailsList: []
   },
-  hasErrors: false
+  hasErrors: false,
+  issuesInsightsCount: 0,
+  analyticsInsightsCount: 0
 };
 
 const mockedCodeContext: CodeContext = {

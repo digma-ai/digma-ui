@@ -316,13 +316,13 @@ export const InsightCard = (props: InsightCardProps) => {
               Dismiss insight?
               <s.DismissDialogActions>
                 <Button
-                  label="No"
-                  buttonType="primary"
+                  label={"No"}
+                  buttonType={"primary"}
                   onClick={() => setDismissConfirmationOpened(false)}
                 />
                 <Button
-                  label="Yes, dismiss"
-                  buttonType="secondary"
+                  label={"Yes, dismiss"}
+                  buttonType={"secondary"}
                   onClick={handleDismissClick}
                 />
               </s.DismissDialogActions>
