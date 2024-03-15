@@ -7,7 +7,6 @@ import { isNumber } from "../../../typeGuards/isNumber";
 import { isUndefined } from "../../../typeGuards/isUndefined";
 import { InsightType } from "../../../types";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
-import { actions as navigationActions } from "../../Navigation/actions";
 import { ChangeScopePayload, ChangeViewPayload } from "../../Navigation/types";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { EmptyState } from "../../common/EmptyState";
@@ -525,7 +524,7 @@ export const InsightsPage = (props: InsightsPageProps) => {
 
   const handleAnalyticsTabLinkClick = () => {
     window.sendMessageToDigma<ChangeViewPayload>({
-      action: navigationActions.CHANGE_VIEW,
+      action: globalActions.CHANGE_VIEW,
       payload: {
         view: "analytics"
       }
