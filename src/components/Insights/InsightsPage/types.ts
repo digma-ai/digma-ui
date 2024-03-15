@@ -1,6 +1,6 @@
 import { GenericCodeObjectInsight, InsightType } from "../types";
 
-export interface InsightPageProps {
+export interface InsightsPageProps {
   insights: GenericCodeObjectInsight[];
   isFilteringEnabled: boolean;
   onJiraTicketCreate: (

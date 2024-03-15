@@ -3,7 +3,7 @@ import { isEnvironment } from "../../../typeGuards/isEnvironment";
 import { isString } from "../../../typeGuards/isString";
 import { ConfigContextData } from "./types";
 
-export const InitialData = {
+export const initialState = {
   digmaApiUrl: isString(window.digmaApiUrl) ? window.digmaApiUrl : "",
   digmaApiProxyPrefix: isString(window.digmaApiProxyPrefix)
     ? window.digmaApiProxyPrefix
@@ -30,4 +30,4 @@ export const InitialData = {
   state: undefined
 };
 
-export const ConfigContext = createContext<ConfigContextData>(InitialData);
+export const ConfigContext = createContext<ConfigContextData>(initialState);

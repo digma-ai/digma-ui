@@ -56,6 +56,8 @@ export interface Scope {
     codeDetailsList: CodeDetails[];
   };
   hasErrors: boolean;
+  issuesInsightsCount: number;
+  analyticsInsightsCount: number;
 }
 
 export interface InsightsQuery {

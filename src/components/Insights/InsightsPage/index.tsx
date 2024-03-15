@@ -7,9 +7,9 @@ import { isNumber } from "../../../typeGuards/isNumber";
 import { isUndefined } from "../../../typeGuards/isUndefined";
 import { InsightType } from "../../../types";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
-import { ChangeScopePayload } from "../../Navigation/types";
+import { actions as navigationActions } from "../../Navigation/actions";
+import { ChangeScopePayload, ChangeViewPayload } from "../../Navigation/types";
 import { ConfigContext } from "../../common/App/ConfigContext";
-import { Card } from "../../common/Card";
 import { EmptyState } from "../../common/EmptyState";
 import { CardsIcon } from "../../common/icons/CardsIcon";
 import { actions } from "../actions";
@@ -31,7 +31,6 @@ import { SpanNexusInsight } from "../common/insights/SpanNexusInsight";
 import { SpanQueryOptimizationInsight } from "../common/insights/SpanQueryOptimizationInsight";
 import { TopUsageInsight } from "../common/insights/TopUsageInsight";
 import { TrafficInsight } from "../common/insights/TrafficInsight";
-import { Description } from "../styles";
 import { trackingEvents } from "../tracking";
 import {
   isChattyApiEndpointInsight,
@@ -58,7 +57,7 @@ import {
 import { CodeObjectInsight, GenericCodeObjectInsight, Trace } from "../types";
 import * as s from "./styles";
 import {
-  InsightPageProps,
+  InsightsPageProps,
   MarkInsightTypesAsViewedPayload,
   RecalculatePayload,
   isInsightJiraTicketHintShownPayload
@@ -465,7 +464,7 @@ const renderInsightCard = (
 const IS_INSIGHT_JIRA_TICKET_HINT_SHOWN_PERSISTENCE_KEY =
   "isInsightJiraTicketHintShown";
 
-export const InsightsPage = (props: InsightPageProps) => {
+export const InsightsPage = (props: InsightsPageProps) => {
   const config = useContext(ConfigContext);
   const previousConfig = usePrevious(config);
   const [isInsightJiraTicketHintShown, setIsInsightJiraTicketHintShown] =
@@ -524,6 +523,15 @@ export const InsightsPage = (props: InsightPageProps) => {
     });
   };
 
+  const handleAnalyticsTabLinkClick = () => {
+    window.sendMessageToDigma<ChangeViewPayload>({
+      action: navigationActions.CHANGE_VIEW,
+      payload: {
+        view: "analytics"
+      }
+    });
+  };
+
   return (
     <s.Container ref={listRef}>
       {props.insights.length > 0 ? (
@@ -538,20 +546,41 @@ export const InsightsPage = (props: InsightPageProps) => {
           );
         })
       ) : props.isFilteringEnabled ? (
-        <Card
-          header={<>No data found</>}
+        <EmptyState
+          icon={CardsIcon}
+          title={"No data found"}
           content={
-            <Description>There are no insights for this criteria</Description>
+            <s.EmptyStateDescription>
+              There are no insights for this criteria
+            </s.EmptyStateDescription>
+          }
+        />
+      ) : config.scope &&
+        isNumber(config.scope.analyticsInsightsCount) &&
+        config.scope.analyticsInsightsCount > 0 ? (
+        <EmptyState
+          icon={CardsIcon}
+          title={"No insights yet"}
+          content={
+            <s.EmptyStateDescription>
+              Performing more actions that trigger this asset will increase the
+              chance of identifying insights. You can also check out the{" "}
+              <s.TroubleshootingLink onClick={handleAnalyticsTabLinkClick}>
+                analytics
+              </s.TroubleshootingLink>{" "}
+              tab
+            </s.EmptyStateDescription>
           }
         />
       ) : config.scope?.span ? (
-        <Card
-          header={<>No data yet</>}
+        <EmptyState
+          icon={CardsIcon}
+          title={"No data yet"}
           content={
-            <Description>
+            <s.EmptyStateDescription>
               No data received yet for this span, please trigger some actions
               using this code to see more insights.
-            </Description>
+            </s.EmptyStateDescription>
           }
         />
       ) : (
