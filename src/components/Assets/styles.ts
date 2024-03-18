@@ -1,20 +1,11 @@
 import styled from "styled-components";
-import { grayScale } from "../common/App/v2colors";
 import { Button } from "../common/v3/Button";
 
 export const Container = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#fbfdff";
-      case "dark":
-      case "dark-jetbrains":
-        return "#2b2d30";
-    }
-  }};
+  background: ${({ theme }) => theme.colors.v3.surface.primary};
 `;
 
 export const Header = styled.div`
@@ -64,16 +55,8 @@ export const SearchInput = styled.input`
   padding: 4px 4px 4px 20px;
   border-radius: 4px;
   outline: none;
-  border: 1px solid ${({ theme }) => theme.colors.stroke.primary};
-  background: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return grayScale[50];
-      case "dark":
-      case "dark-jetbrains":
-        return grayScale[1000];
-    }
-  }};
+  border: 1px solid ${({ theme }) => theme.colors.v3.stroke.dark};
+  background: ${({ theme }) => theme.colors.v3.surface.primary};
   box-shadow: 1px 1px 4px 0 rgb(0 0 0 / 25%);
   caret-color: ${({ theme }) => {
     switch (theme.mode) {
@@ -126,16 +109,8 @@ export const UpgradeMessage = styled.div`
 
 export const RefreshButton = styled(Button)`
   color: ${({ theme }) => theme.colors.v3.icon.tertiary};
-  border: 1px solid ${({ theme }) => theme.colors.stroke.primary};
-  background: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return grayScale[50];
-      case "dark":
-      case "dark-jetbrains":
-        return grayScale[1000];
-    }
-  }};
+  border: 1px solid ${({ theme }) => theme.colors.v3.stroke.dark};
+  background: ${({ theme }) => theme.colors.v3.surface.primary};
 
   &:hover:enabled {
     color: ${({ theme }) => theme.colors.v3.icon.white};

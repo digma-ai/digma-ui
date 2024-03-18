@@ -1,44 +1,71 @@
 import { useEffect, useState } from "react";
-import { ToggleSwitch } from "../../common/ToggleSwitch";
+import { isNumber } from "../../../typeGuards/isNumber";
+import { ArrowIcon } from "../../common/icons/12px/ArrowIcon";
+import { TreeNodesIcon } from "../../common/icons/12px/TreeNodesIcon";
+import { Toggle } from "../../common/v3/Toggle";
+import { ToggleOption } from "../../common/v3/Toggle/types";
 import * as s from "./styles";
 import { AssetsViewConfigurationProps as AssetsViewScopeConfigurationProps } from "./types";
 
-export const AssetsViewScopeConfiguration = (
-  props: AssetsViewScopeConfigurationProps
-) => {
-  const [isEntry, setIsEntry] = useState(false);
-  const [isDirect, setIsDirect] = useState(false);
-  const scope = props.currentScope;
+type ViewMode = "descendants" | "children";
+
+export const AssetsViewScopeConfiguration = ({
+  currentScope,
+  onAssetViewChange,
+  assetsCount
+}: AssetsViewScopeConfigurationProps) => {
+  const [viewMode, setViewMode] = useState<ViewMode>("descendants");
 
   useEffect(() => {
-    const isEntryPoint = !scope || scope.span?.role === "Entry";
-    props.onAssetViewChanged({
-      scopedSpanCodeObjectId: scope?.span?.spanCodeObjectId,
+    const isEntryPoint = !currentScope || currentScope.span?.role === "Entry";
+
+    setViewMode(isEntryPoint ? "children" : "descendants");
+
+    onAssetViewChange({
+      scopedSpanCodeObjectId: currentScope?.span?.spanCodeObjectId,
       isDirect: !isEntryPoint
     });
-    setIsEntry(isEntryPoint);
-    setIsDirect(!isEntryPoint);
-  }, [scope]);
+  }, [currentScope, onAssetViewChange]);
+
+  const handleToggleOptionChange = (value: ViewMode) => {
+    setViewMode(value);
+
+    onAssetViewChange &&
+      onAssetViewChange({
+        isDirect: value === "children",
+        scopedSpanCodeObjectId: currentScope?.span?.spanCodeObjectId
+      });
+  };
+
+  const toggleOptions: ToggleOption<ViewMode>[] = [
+    {
+      value: "descendants",
+      icon: TreeNodesIcon
+    },
+    {
+      value: "children",
+      icon: ArrowIcon
+    }
+  ];
+
+  const assetTypeDescription =
+    viewMode === "descendants" ? "descendant" : "child";
 
   return (
     <s.Container>
-      <s.Item>Assets filtered to current scope</s.Item>
-      <s.Item>
-        <ToggleSwitch
-          label={"Show direct only"}
-          labelPosition={"start"}
-          onChange={(val) => {
-            setIsDirect(val);
-            props.onAssetViewChanged &&
-              props.onAssetViewChanged({
-                isDirect: val,
-                scopedSpanCodeObjectId: scope?.span?.spanCodeObjectId
-              });
-          }}
-          checked={isDirect}
-          disabled={!isEntry}
-        />
-      </s.Item>
+      <Toggle
+        value={viewMode}
+        onValueChange={handleToggleOptionChange}
+        options={toggleOptions}
+        size={"small"}
+      />
+      <s.Label>
+        Showing
+        <s.AssetsCount>
+          {isNumber(assetsCount) ? ` ${assetsCount} ` : " "}
+        </s.AssetsCount>
+        {assetTypeDescription} asset{assetsCount === 1 ? "" : "s"}
+      </s.Label>
     </s.Container>
   );
 };

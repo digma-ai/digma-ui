@@ -1,8 +1,9 @@
 import { Scope } from "../../common/App/types";
 
 export interface AssetsViewConfigurationProps {
-  onAssetViewChanged: (assetViewScope: AssetScopeOption) => void;
+  onAssetViewChange: (assetViewScope: AssetScopeOption) => void;
   currentScope: Scope;
+  assetsCount?: number;
 }
 
 export interface AssetScopeOption {

@@ -11,6 +11,7 @@ export interface AssetListProps {
   searchQuery: string;
   scopeViewOptions: AssetScopeOption | null;
   setRefresher: (refresher: () => void) => void;
+  onAssetCountChange: (count: number) => void;
 }
 
 export enum SORTING_CRITERION {
