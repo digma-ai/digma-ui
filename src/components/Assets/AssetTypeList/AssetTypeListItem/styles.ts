@@ -10,26 +10,11 @@ export const ListItem = styled.li`
   letter-spacing: -0.1px;
   user-select: none;
   border-radius: 4px;
-  background: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#f1f5fa";
-      case "dark":
-      case "dark-jetbrains":
-        return "#383838";
-    }
-  }};
+  border: 1px solid ${({ theme }) => theme.colors.v3.stroke.tertiary};
+  background: ${({ theme }) => theme.colors.v3.surface.secondary};
+  color: ${({ theme }) => theme.colors.v3.text.primary};
 `;
 
 export const EntryCount = styled.span`
   margin-left: auto;
-  color: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#828797";
-      case "dark":
-      case "dark-jetbrains":
-        return "#9b9b9b";
-    }
-  }};
 `;

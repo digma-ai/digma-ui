@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { lt, valid } from "semver";
 import {
   featureFlagMinBackendVersions,
@@ -26,6 +26,7 @@ import { trackingEvents } from "./tracking";
 import { DataRefresher } from "./types";
 
 export const Assets = () => {
+  const [assetsCount, setAssetsCount] = useState<number>();
   const [selectedAssetTypeId, setSelectedAssetTypeId] = useState<string | null>(
     null
   );
@@ -113,6 +114,18 @@ export const Assets = () => {
     currentRefresher && currentRefresher.refresh();
   };
 
+  const handleAssetCountChange = useCallback((count: number) => {
+    setAssetsCount(count);
+  }, []);
+
+  const handleAssetViewModeChange = useCallback((val: AssetScopeOption) => {
+    setAssetScopeOption(val);
+  }, []);
+
+  const handleRefresherChange = useCallback((refresher: () => void) => {
+    setAssetTypeListRefresher({ refresh: refresher });
+  }, []);
+
   const renderContent = () => {
     if (isBackendUpgradeMessageVisible) {
       return (
@@ -145,9 +158,8 @@ export const Assets = () => {
           filters={selectedFilters}
           searchQuery={debouncedSearchInputValue}
           scopeViewOptions={assetScopeOption}
-          setRefresher={(refresher) => {
-            setAssetTypeListRefresher({ refresh: refresher });
-          }}
+          setRefresher={handleRefresherChange}
+          onAssetCountChange={handleAssetCountChange}
         />
       );
     }
@@ -160,9 +172,8 @@ export const Assets = () => {
         filters={selectedFilters}
         searchQuery={debouncedSearchInputValue}
         scopeViewOptions={assetScopeOption}
-        setRefresher={(refresher) => {
-          setAssetListRefresher({ refresh: refresher });
-        }}
+        setRefresher={handleRefresherChange}
+        onAssetCountChange={handleAssetCountChange}
       />
     );
   };
@@ -170,6 +181,15 @@ export const Assets = () => {
   return (
     <s.Container>
       <s.Header>
+        {config.scope && config.scope.span && (
+          <s.HeaderItem>
+            <AssetsViewScopeConfiguration
+              assetsCount={assetsCount}
+              currentScope={config.scope}
+              onAssetViewChange={handleAssetViewModeChange}
+            />
+          </s.HeaderItem>
+        )}
         <s.HeaderItem>
           {window.assetsSearch === true && (
             <SearchInput
@@ -200,14 +220,7 @@ export const Assets = () => {
           </Tooltip>
         </s.HeaderItem>
         {config.scope && config.scope.span && (
-          <s.HeaderItem>
-            <AssetsViewScopeConfiguration
-              currentScope={config.scope}
-              onAssetViewChanged={(val) => {
-                setAssetScopeOption(val);
-              }}
-            />
-          </s.HeaderItem>
+          <s.HeaderItem>Assets filtered to current scope</s.HeaderItem>
         )}
       </s.Header>
       {renderContent()}

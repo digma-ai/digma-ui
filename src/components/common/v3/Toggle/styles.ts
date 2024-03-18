@@ -15,13 +15,14 @@ export const Container = styled.div`
 export const OptionButton = styled.button<OptionButtonProps>`
   ${footnoteRegularTypography}
 
+  display: flex;
   font-family: inherit;
   border: none;
   outline: none;
-  border-radius: 4px;
-  padding: 2px 4px;
   cursor: pointer;
   user-select: none;
+  border-radius: ${({ $size }) => ($size === "small" ? "2px" : " 4px")};
+  padding: ${({ $size }) => ($size === "small" ? "2px" : "2px 4px")};
   color: ${({ theme, $selected }) =>
     $selected ? theme.colors.v3.text.white : theme.colors.v3.text.primary};
   background: ${({ theme, $selected }) =>

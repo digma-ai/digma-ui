@@ -35,15 +35,6 @@ export const Header = styled.div`
   font-weight: 400;
   font-size: 14px;
   padding: 8px 12px 8px 8px;
-  background: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#f1f5fa";
-      case "dark":
-      case "dark-jetbrains":
-        return "#383838";
-    }
-  }};
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":

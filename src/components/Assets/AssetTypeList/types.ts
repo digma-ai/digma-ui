@@ -11,6 +11,7 @@ export interface AssetTypeListProps {
   searchQuery: string;
   scopeViewOptions: AssetScopeOption | null;
   setRefresher: (refresher: () => void) => void;
+  onAssetCountChange: (count: number) => void;
 }
 
 export interface AssetCategoriesData {

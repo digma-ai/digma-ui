@@ -63,6 +63,9 @@ const getData = (
   });
 };
 
+const getAssetCount = (assetCategoriesData: AssetCategoriesData) =>
+  assetCategoriesData.assetCategories.reduce((acc, cur) => acc + cur.count, 0);
+
 export const AssetTypeList = (props: AssetTypeListProps) => {
   const [data, setData] = useState<AssetCategoriesData>();
   const previousData = usePrevious(data);
@@ -109,7 +112,7 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
 
   useEffect(() => {
     props.setRefresher(refreshData);
-  }, [refreshData]);
+  }, [refreshData, props.setRefresher]);
 
   const areAnyFiltersApplied = checkIfAnyFiltersApplied(
     isComplexFilterEnabled,
@@ -140,6 +143,12 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
       window.clearTimeout(refreshTimerId.current);
     };
   }, []);
+
+  useEffect(() => {
+    if (previousData !== data && data) {
+      props.onAssetCountChange(getAssetCount(data));
+    }
+  }, [previousData, data, props.onAssetCountChange]);
 
   useEffect(() => {
     if (

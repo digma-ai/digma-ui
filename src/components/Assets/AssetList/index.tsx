@@ -302,6 +302,12 @@ export const AssetList = (props: AssetListProps) => {
   }, []);
 
   useEffect(() => {
+    if (previousData?.filteredCount !== data?.filteredCount && data) {
+      props.onAssetCountChange(data.filteredCount);
+    }
+  }, [previousData, data, props.onAssetCountChange]);
+
+  useEffect(() => {
     props.setRefresher(refreshData);
   }, [refreshData, props.setRefresher]);
 
