@@ -145,7 +145,7 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
   }, []);
 
   useEffect(() => {
-    if (previousData !== data && data) {
+    if (data && previousData !== data) {
       props.onAssetCountChange(getAssetCount(data));
     }
   }, [previousData, data, props.onAssetCountChange]);

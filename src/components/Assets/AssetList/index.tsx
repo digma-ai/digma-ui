@@ -302,7 +302,7 @@ export const AssetList = (props: AssetListProps) => {
   }, []);
 
   useEffect(() => {
-    if (previousData?.filteredCount !== data?.filteredCount && data) {
+    if (data && previousData?.filteredCount !== data?.filteredCount) {
       props.onAssetCountChange(data.filteredCount);
     }
   }, [previousData, data, props.onAssetCountChange]);
