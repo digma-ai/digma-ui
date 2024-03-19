@@ -148,7 +148,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
               ? [
                   {
                     value: SORTING_CRITERION.CRITICAL_INSIGHTS,
-                    label: "Critical insights",
+                    label: "Critical issues",
                     defaultOrder: SORTING_ORDER.DESC
                   }
                 ]

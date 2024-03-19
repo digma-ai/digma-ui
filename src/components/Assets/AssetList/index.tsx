@@ -102,7 +102,7 @@ const getSortingCriterionInfo = (
 } => {
   const sortingCriterionInfoMap = {
     [SORTING_CRITERION.CRITICAL_INSIGHTS]: {
-      label: "Critical insights",
+      label: "Critical issues",
       defaultOrder: SORTING_ORDER.DESC
     },
     [SORTING_CRITERION.PERFORMANCE]: {
@@ -261,9 +261,9 @@ export const AssetList = (props: AssetListProps) => {
 
   const isImpactHidden = useMemo(
     () =>
-      Boolean(
+      !(
         config.backendInfo?.deploymentType === DeploymentType.HELM &&
-          config.environment?.type === "shared"
+        config.environment?.type === "shared"
       ),
     [config.backendInfo?.deploymentType, config.environment?.type]
   );
