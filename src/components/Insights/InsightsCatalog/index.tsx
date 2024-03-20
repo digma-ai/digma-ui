@@ -228,7 +228,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
             <s.ViewModeToolbarRow>
               <s.InsightCountDescription>
                 <s.InsightCount>{props.unreadCount}</s.InsightCount>
-                unread insight{insights.length === 1 ? "" : "s"}
+                unread issue{props.unreadCount === 1 ? "" : "s"}
               </s.InsightCountDescription>
               <s.MarkingAsReadToolbarActionsContainer>
                 <s.MarkingAsReadToolbarActionLink
@@ -257,12 +257,12 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
                   color={"currentColor"}
                 />
               </s.BackToAllInsightsButtonIconContainer>
-              Back to All Insights
+              Back to All Issues
             </s.BackToAllInsightsButton>
             {mode === ViewMode.OnlyDismissed && (
               <s.InsightCountDescription>
                 <s.InsightCount>{props.dismissedCount}</s.InsightCount>
-                dismissed insight{insights.length === 1 ? "" : "s"}
+                dismissed issue{props.dismissedCount === 1 ? "" : "s"}
               </s.InsightCountDescription>
             )}
             {mode === ViewMode.OnlyUnread && isMarkingAsReadToolbarVisible && (
