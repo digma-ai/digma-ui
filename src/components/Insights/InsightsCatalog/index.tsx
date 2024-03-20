@@ -147,10 +147,8 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
   }, []);
 
   useEffect(() => {
-    if (previousMode && previousMode !== mode) {
-      setPage(0);
-    }
-  }, [previousMode, mode]);
+    setPage(0);
+  }, [mode]);
 
   useEffect(() => {
     if (
@@ -158,7 +156,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
       (previousSorting && previousSorting !== sorting) ||
       (isString(previousSearchQuery) &&
         previousSearchQuery !== debouncedSearchInputValue) ||
-      (previousMode && previousMode !== mode)
+      previousMode !== mode
     ) {
       refreshData();
     }
