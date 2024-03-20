@@ -1,3 +1,4 @@
+import { useLayoutEffect } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
 import { ChevronIcon } from "../icons/ChevronIcon";
 import { DoubleChevronIcon } from "../icons/DoubleChevronIcon";
@@ -39,6 +40,12 @@ export const Pagination = (props: PaginationProps) => {
   const handleButtonClick = (page: number) => {
     props.onPageChange(page);
   };
+
+  useLayoutEffect(() => {
+    if (props.page >= pageCount) {
+      props.onPageChange(pageCount - 1);
+    }
+  }, [props.page, pageCount]);
 
   return (
     <>

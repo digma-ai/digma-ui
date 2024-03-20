@@ -79,3 +79,14 @@ export const ButtonsContainer = styled.div`
   gap: 4px;
   align-items: center;
 `;
+
+export const ObservabilityListItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+`;
+
+export const ObservabilityToggleSwitchContainer = styled.div`
+  margin-left: auto;
+`;

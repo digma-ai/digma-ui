@@ -1,4 +1,10 @@
-import { useContext, useEffect, useLayoutEffect, useState } from "react";
+import {
+  KeyboardEvent,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useState
+} from "react";
 import { actions as globalActions } from "../../actions";
 import { SLACK_WORKSPACE_URL } from "../../constants";
 import { getFeatureFlagValue } from "../../featureFlags";
@@ -301,6 +307,12 @@ export const Insights = (props: InsightsProps) => {
     setQuery(query);
   };
 
+  const handleOverlayKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Escape") {
+      setInfoToOpenJiraTicket(undefined);
+    }
+  };
+
   const renderDefaultContent = (data: InsightsData): JSX.Element => {
     return (
       <InsightsCatalog
@@ -411,7 +423,7 @@ export const Insights = (props: InsightsProps) => {
     <s.Container>
       {renderContent(data, isInitialLoading)}
       {infoToOpenJiraTicket && (
-        <s.Overlay>
+        <s.Overlay onKeyDown={handleOverlayKeyDown} tabIndex={-1}>
           <s.PopupContainer>
             {/* {config.userRegistrationEmail ? ( */}
             {true ? ( // eslint-disable-line no-constant-condition

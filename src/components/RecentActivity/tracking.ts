@@ -9,7 +9,8 @@ export const trackingEvents = addPrefix(
       "navigated to newly created pending environment",
     ENVIRONMENT_TYPE_BUTTON_CLICKED: "environment type button clicked",
     CHECK_CONNECTION_RESULT_RECEIVED: "check connection result received",
-    FINISH_BUTTON_CLICKED: "finish button clicked"
+    FINISH_BUTTON_CLICKED: "finish button clicked",
+    OBSERVABILITY_TOGGLE_SWITCHED: "observability toggle switched"
   },
   " "
 );
