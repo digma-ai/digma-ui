@@ -7,7 +7,7 @@ export const mockedViewsData: SetViewsPayload = {
       isSelected: true,
       hasNewData: false,
       isHidden: false,
-      title: "Insights",
+      title: "Issues",
       id: "insights",
       cardName: "insights"
     },

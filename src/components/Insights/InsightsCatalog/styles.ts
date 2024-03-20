@@ -4,6 +4,7 @@ import {
   subscriptRegularTypography
 } from "../../common/App/typographies";
 import { Button } from "../../common/v3/Button";
+import { Link } from "../../common/v3/Link";
 
 export const Footer = styled.div`
   display: flex;
@@ -40,21 +41,66 @@ export const FooterPageItemsCount = styled.span`
 
 export const Toolbar = styled.div`
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   padding: 8px;
   gap: 8px;
 `;
 
-export const DismissedDescription = styled.div`
+export const ToolbarRow = styled.div`
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const ViewModeToolbarRow = styled(ToolbarRow)`
+  padding: 4px 0;
+`;
+
+export const BackToAllInsightsButtonIconContainer = styled.div`
+  display: flex;
+  color: ${({ theme }) => theme.colors.v3.icon.disabled};
+`;
+
+export const BackToAllInsightsButton = styled.button`
+  ${subscriptRegularTypography}
+
+  font-family: inherit;
+  padding: 0;
+  margin: 0;
+  background: none;
+  border: none;
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  color: ${({ theme }) => theme.colors.v3.text.primary};
+`;
+
+export const MarkingAsReadToolbarActionsContainer = styled.div`
+  ${subscriptRegularTypography}
+
+  display: flex;
+  gap: 8px;
+  color: ${({ theme }) => theme.colors.v3.text.tertiary};
+  align-items: center;
+`;
+
+export const MarkingAsReadToolbarActionLink = styled(Link)`
+  ${subscriptRegularTypography}
+
+  text-decoration: underline;
+`;
+
+export const InsightCountDescription = styled.div`
   ${subscriptRegularTypography}
   display: flex;
   align-items: center;
-  color: ${({ theme }) => theme.colors.v3.text.disabled};
+  color: ${({ theme }) => theme.colors.v3.text.tertiary};
+  gap: 5px;
 `;
 
-export const DismissedCount = styled.span`
+export const InsightCount = styled.span`
   color: ${({ theme }) => theme.colors.v3.text.primary};
-  padding-right: 4px;
 `;
 
 export const InsightsViewModeToolbar = styled(Toolbar)`

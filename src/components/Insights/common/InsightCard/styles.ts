@@ -46,6 +46,18 @@ export const StyledInsightCard = styled(Card)<StyledInsightCardProps>`
           background: ${theme.colors.v3.surface.sidePanelHeader};
         `
       : ""}
+  ${({ $isRead, $isReadable, theme }) =>
+    $isReadable && $isRead === false
+      ? css`
+          background: ${theme.colors.v3.surface.brandDarkest};
+          border: 1px solid ${theme.colors.v3.stroke.primary};
+
+          &:hover {
+            background: ${theme.colors.v3.surface.brandDark};
+            border: 1px solid ${theme.colors.v3.stroke.primaryLight};
+          }
+        `
+      : ""}
 `;
 
 export const DismissButton = styled(Button)`

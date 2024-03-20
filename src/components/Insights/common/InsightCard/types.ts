@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { InsightType } from "../../../../types";
+import { ScopeSpan } from "../../../common/App/types";
 import { CardProps } from "../../../common/Card/types";
 import { GenericCodeObjectInsight } from "../../types";
 
@@ -33,6 +34,8 @@ export interface InsightCardProps {
 
 export interface StyledInsightCardProps extends CardProps {
   $isDismissed?: boolean;
+  $isRead?: boolean;
+  $isReadable?: boolean;
 }
 
 export interface DismissResponsePayload {
@@ -43,6 +46,26 @@ export interface DismissResponsePayload {
 
 export interface UndismissResponsePayload {
   insightId: string;
+  status: "success" | "failure";
+  error?: string;
+}
+
+export interface MarkAsReadPayload {
+  insightIds: string[];
+}
+
+export interface MarkAllAsReadPayload {
+  scope: ScopeSpan | null;
+}
+
+export interface SetMarkAsReadResponsePayload {
+  insightIds: string[];
+  status: "success" | "failure";
+  error?: string;
+}
+
+export interface SetMarkAllAsReadResponsePayload {
+  scope: ScopeSpan | null;
   status: "success" | "failure";
   error?: string;
 }

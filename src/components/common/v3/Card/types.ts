@@ -5,4 +5,5 @@ export interface CardProps {
   content: ReactNode;
   footer?: ReactNode;
   className?: string;
+  onClick?: () => void;
 }

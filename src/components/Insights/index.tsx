@@ -189,7 +189,8 @@ export const Insights = (props: InsightsProps) => {
     },
     searchQuery: null,
     showDismissed: false,
-    insightViewType: props.insightViewType
+    insightViewType: props.insightViewType,
+    showUnreadOnly: false
   };
   // const [isAutofixing, setIsAutofixing] = useState(false);
   const [query, setQuery] = useState<InsightsQuery>(DEFAULT_QUERY);
@@ -209,6 +210,13 @@ export const Insights = (props: InsightsProps) => {
   const isDismissalEnabled = Boolean(
     getFeatureFlagValue(config, FeatureFlag.IS_INSIGHT_DISMISSAL_ENABLED) &&
       props.insightViewType === "Issues"
+  );
+
+  const isMarkingAsReadEnabled = Boolean(
+    getFeatureFlagValue(
+      config,
+      FeatureFlag.IS_INSIGHT_MARKING_AS_READ_ENABLED
+    ) && props.insightViewType === "Issues"
   );
 
   useLayoutEffect(() => {
@@ -289,19 +297,23 @@ export const Insights = (props: InsightsProps) => {
     setInfoToOpenJiraTicket(undefined);
   };
 
+  const handleQueryChange = (query: InsightsQuery) => {
+    setQuery(query);
+  };
+
   const renderDefaultContent = (data: InsightsData): JSX.Element => {
     return (
       <InsightsCatalog
         insights={data.insights}
         totalCount={data.totalCount}
         onJiraTicketCreate={handleJiraTicketPopupOpen}
-        onQueryChange={(query: InsightsQuery) => {
-          setQuery(query);
-        }}
+        onQueryChange={handleQueryChange}
         onRefresh={refresh}
         defaultQuery={DEFAULT_QUERY}
         dismissedCount={data.dismissedCount}
         isDismissalEnabled={isDismissalEnabled}
+        unreadCount={data.unreadCount}
+        isMarkingAsReadEnabled={isMarkingAsReadEnabled}
       />
     );
   };

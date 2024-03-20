@@ -43,14 +43,16 @@ export interface CodeDetails {
   codeObjectId: string;
 }
 
+export interface ScopeSpan {
+  displayName: string;
+  spanCodeObjectId: string;
+  methodId?: string;
+  serviceName: string | null;
+  role: "Entry" | "Internal" | "Unknown" | null;
+}
+
 export interface Scope {
-  span: {
-    displayName: string;
-    spanCodeObjectId: string;
-    methodId?: string;
-    serviceName: string | null;
-    role: "Entry" | "Internal" | "Unknown" | null;
-  } | null;
+  span: ScopeSpan | null;
   code: {
     relatedCodeDetailsList: CodeDetails[];
     codeDetailsList: CodeDetails[];

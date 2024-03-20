@@ -25,7 +25,8 @@ import { trackingEvents } from "../../tracking";
 import { InsightStatus } from "../../types";
 import { ProductionAffectionBar } from "./ProductionAffectionBar";
 import { RecalculateBar } from "./RecalculateBar";
-import { useDismissalHandler } from "./useDismissalHandler";
+import { useDismissal } from "./hooks/useDismissal";
+import { useMarkingAsRead } from "./hooks/useMarkingAsRead";
 
 const IS_NEW_TIME_LIMIT = 1000 * 60 * 10; // in milliseconds
 const HIGH_CRITICALITY_THRESHOLD = 0.8;
@@ -34,22 +35,35 @@ export const InsightCard = (props: InsightCardProps) => {
   const [isRecalculatingStarted, setIsRecalculatingStarted] = useState(false);
   const [isDismissConfirmationOpened, setDismissConfirmationOpened] =
     useState(false);
-  const { isLoading, dismiss, show } = useDismissalHandler(props.insight.id);
-  const previousLoading = usePrevious(isLoading);
+  const { isDismissalChangeInProgress, dismiss, show } = useDismissal(
+    props.insight.id
+  );
+  const { isMarkingAsReadInProgress, markAsRead } = useMarkingAsRead(
+    props.insight.id
+  );
+  const isOperationInProgress =
+    isDismissalChangeInProgress || isMarkingAsReadInProgress;
+  const previousIsOperationInProgress = usePrevious(isOperationInProgress);
   const config = useContext(ConfigContext);
   const [insightStatus, setInsightStatus] = useState(props.insight.status);
 
   const isCritical = props.insight.criticality > HIGH_CRITICALITY_THRESHOLD;
+
   // TODO: remove and refresh the insight data
   useEffect(() => {
     setInsightStatus(props.insight.status);
   }, [props.insight.status]);
 
   useEffect(() => {
-    if (previousLoading && !isLoading) {
+    if (previousIsOperationInProgress && !isOperationInProgress) {
       props.onRefresh(props.insight.type);
     }
-  }, [isLoading, previousLoading, props.onRefresh]);
+  }, [
+    previousIsOperationInProgress,
+    isOperationInProgress,
+    props.onRefresh,
+    props.insight.type
+  ]);
 
   const handleRecheckButtonClick = () => {
     props.insight.prefixedCodeObjectId &&
@@ -139,6 +153,12 @@ export const InsightCard = (props: InsightCardProps) => {
       props.jiraTicketInfo?.spanCodeObjectId,
       "create ticket link clicked"
     );
+  };
+
+  const handleClick = () => {
+    if (props.insight.isReadable && props.insight.isRead === false) {
+      markAsRead();
+    }
   };
 
   const renderActions = () => {
@@ -252,9 +272,13 @@ export const InsightCard = (props: InsightCardProps) => {
     ? Date.now() - new Date(props.insight.firstDetected).valueOf() <
       IS_NEW_TIME_LIMIT
     : false;
+
   return (
     <s.StyledInsightCard
       $isDismissed={props.insight.isDismissed}
+      $isRead={props.insight.isRead}
+      $isReadable={props.insight.isReadable}
+      onClick={handleClick}
       header={
         <InsightHeader
           spanInfo={
@@ -292,21 +316,23 @@ export const InsightCard = (props: InsightCardProps) => {
                 <s.ButtonContainer>
                   {props.insight.isDismissed ? (
                     <s.DismissButton
-                      label={isLoading ? "Showing" : "Show"}
+                      label={isDismissalChangeInProgress ? "Showing" : "Show"}
                       buttonType={"tertiary"}
-                      isDisabled={isLoading}
+                      isDisabled={isDismissalChangeInProgress}
                       onClick={handleShowClick}
                     />
                   ) : (
                     <s.DismissButton
                       icon={CrossIcon}
-                      isDisabled={isLoading}
-                      label={isLoading ? "Dismissing" : "Dismiss"}
+                      isDisabled={isDismissalChangeInProgress}
+                      label={
+                        isDismissalChangeInProgress ? "Dismissing" : "Dismiss"
+                      }
                       buttonType={"tertiary"}
                       onClick={() => setDismissConfirmationOpened(true)}
                     />
                   )}
-                  {isLoading && <Spinner />}
+                  {isDismissalChangeInProgress && <Spinner />}
                 </s.ButtonContainer>
               )}
               {renderActions()}

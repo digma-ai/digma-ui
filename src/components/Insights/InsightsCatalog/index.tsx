@@ -4,6 +4,7 @@ import { usePrevious } from "../../../hooks/usePrevious";
 import { useTheme } from "styled-components";
 import { useDebounce } from "../../../hooks/useDebounce";
 import { isNumber } from "../../../typeGuards/isNumber";
+import { isString } from "../../../typeGuards/isString";
 import { isUndefined } from "../../../typeGuards/isUndefined";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
@@ -21,11 +22,13 @@ import { InsightsPage } from "../InsightsPage";
 import { trackingEvents } from "../tracking";
 import * as s from "./styles";
 import { InsightsCatalogProps, SORTING_CRITERION } from "./types";
+import { useMarkingAllAsRead } from "./useMarkingAllAsRead";
 
 const PAGE_SIZE = 10;
 enum ViewMode {
   All,
-  OnlyDismissed
+  OnlyDismissed,
+  OnlyUnread
 }
 
 export const InsightsCatalog = (props: InsightsCatalogProps) => {
@@ -50,10 +53,21 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
   const [mode, setMode] = useState<ViewMode>(ViewMode.All);
   const previousMode = usePrevious(mode);
   const theme = useTheme();
+  const { isMarkingAllAsReadInProgress, markAllAsRead } = useMarkingAllAsRead(
+    config.scope?.span || null
+  );
+  const previousIsMarkingAllAsReadInProgress = usePrevious(
+    isMarkingAllAsReadInProgress
+  );
 
-  const isViewModeButtonVisible =
+  const isDismissalViewModeButtonVisible =
     props.isDismissalEnabled &&
     (isUndefined(props.dismissedCount) || props.dismissedCount > 0); // isUndefined - check for backward compatibility, always show when BE does not return this counter
+
+  const isMarkingAsReadToolbarVisible =
+    props.isMarkingAsReadEnabled &&
+    isNumber(props.unreadCount) &&
+    props.unreadCount > 0;
 
   const refreshData = useCallback(
     () =>
@@ -62,7 +76,8 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
         page,
         sorting,
         searchQuery: debouncedSearchInputValue,
-        showDismissed: mode === ViewMode.OnlyDismissed
+        showDismissed: mode === ViewMode.OnlyDismissed,
+        showUnreadOnly: mode === ViewMode.OnlyUnread
       }),
     [
       page,
@@ -81,11 +96,34 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
 
     refreshData();
   };
-  const handleViewModeChange = () => {
+
+  const handleDismissalViewModeButtonClick = () => {
     const newMode =
       mode === ViewMode.All ? ViewMode.OnlyDismissed : ViewMode.All;
     setMode(newMode);
   };
+
+  const handleUnreadOnlyLinkClick = () => {
+    setMode(ViewMode.OnlyUnread);
+  };
+
+  const handleReadAllLinkClick = () => {
+    markAllAsRead();
+  };
+
+  const handleBackToAllInsightsButtonClick = () => {
+    setMode(ViewMode.All);
+  };
+
+  useEffect(() => {
+    if (previousIsMarkingAllAsReadInProgress && !isMarkingAllAsReadInProgress) {
+      refreshData();
+    }
+  }, [
+    isMarkingAllAsReadInProgress,
+    previousIsMarkingAllAsReadInProgress,
+    refreshData
+  ]);
 
   useEffect(() => {
     if (!previousScope || previousScope !== config.scope?.span) {
@@ -109,11 +147,18 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
   }, []);
 
   useEffect(() => {
+    if (previousMode && previousMode !== mode) {
+      setPage(0);
+    }
+  }, [previousMode, mode]);
+
+  useEffect(() => {
     if (
       (isNumber(previousPage) && previousPage !== page) ||
       (previousSorting && previousSorting !== sorting) ||
-      previousSearchQuery !== debouncedSearchInputValue ||
-      previousMode !== mode
+      (isString(previousSearchQuery) &&
+        previousSearchQuery !== debouncedSearchInputValue) ||
+      (previousMode && previousMode !== mode)
     ) {
       refreshData();
     }
@@ -132,59 +177,96 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
   return (
     <>
       <s.Toolbar>
-        <SearchInput
-          disabled={Boolean(config.scope?.span)}
-          onChange={(val: string | null) => {
-            setSearchInputValue(val);
-          }}
-          value={searchInputValue}
-        />
-        <SortingSelector
-          onChange={(val: Sorting) => {
-            setSorting(val);
-          }}
-          options={[
-            ...(defaultQuery.insightViewType === "Issues"
-              ? [
-                  {
-                    value: SORTING_CRITERION.CRITICAL_INSIGHTS,
-                    label: "Critical issues",
-                    defaultOrder: SORTING_ORDER.DESC
-                  }
-                ]
-              : []),
-            {
-              value: SORTING_CRITERION.LATEST,
-              label: "Latest",
-              defaultOrder: SORTING_ORDER.DESC
-            }
-          ]}
-          default={defaultQuery.sorting}
-        />
-        <Tooltip title={"Refresh"}>
-          <s.RefreshButton
-            buttonType={"tertiary"}
-            icon={RefreshIcon}
-            onClick={handleRefreshButtonClick}
+        <s.ToolbarRow>
+          <SearchInput
+            disabled={Boolean(config.scope?.span)}
+            onChange={(val: string | null) => {
+              setSearchInputValue(val);
+            }}
+            value={searchInputValue}
           />
-        </Tooltip>
-      </s.Toolbar>
-      {mode === ViewMode.OnlyDismissed && (
-        <s.InsightsViewModeToolbar>
-          <Button
-            buttonType={"tertiary"}
-            label={"Back to All Insights"}
-            icon={(props) => (
-              <ChevronIcon {...props} direction={Direction.LEFT} />
+          <SortingSelector
+            onChange={(val: Sorting) => {
+              setSorting(val);
+            }}
+            options={[
+              ...(defaultQuery.insightViewType === "Issues"
+                ? [
+                    {
+                      value: SORTING_CRITERION.CRITICAL_INSIGHTS,
+                      label: "Critical issues",
+                      defaultOrder: SORTING_ORDER.DESC
+                    }
+                  ]
+                : []),
+              {
+                value: SORTING_CRITERION.LATEST,
+                label: "Latest",
+                defaultOrder: SORTING_ORDER.DESC
+              }
+            ]}
+            default={defaultQuery.sorting}
+          />
+          <Tooltip title={"Refresh"}>
+            <s.RefreshButton
+              buttonType={"tertiary"}
+              icon={RefreshIcon}
+              onClick={handleRefreshButtonClick}
+            />
+          </Tooltip>
+        </s.ToolbarRow>
+        {mode === ViewMode.All ? (
+          isMarkingAsReadToolbarVisible && (
+            <s.ViewModeToolbarRow>
+              <s.InsightCountDescription>
+                <s.InsightCount>{props.unreadCount}</s.InsightCount>
+                unread insight{insights.length === 1 ? "" : "s"}
+              </s.InsightCountDescription>
+              <s.MarkingAsReadToolbarActionsContainer>
+                <s.MarkingAsReadToolbarActionLink
+                  onClick={handleUnreadOnlyLinkClick}
+                >
+                  Unread only
+                </s.MarkingAsReadToolbarActionLink>
+                /
+                <s.MarkingAsReadToolbarActionLink
+                  onClick={handleReadAllLinkClick}
+                >
+                  Read all
+                </s.MarkingAsReadToolbarActionLink>
+              </s.MarkingAsReadToolbarActionsContainer>
+            </s.ViewModeToolbarRow>
+          )
+        ) : (
+          <s.ViewModeToolbarRow>
+            <s.BackToAllInsightsButton
+              onClick={handleBackToAllInsightsButtonClick}
+            >
+              <s.BackToAllInsightsButtonIconContainer>
+                <ChevronIcon
+                  direction={Direction.LEFT}
+                  size={16}
+                  color={"currentColor"}
+                />
+              </s.BackToAllInsightsButtonIconContainer>
+              Back to All Insights
+            </s.BackToAllInsightsButton>
+            {mode === ViewMode.OnlyDismissed && (
+              <s.InsightCountDescription>
+                <s.InsightCount>{props.dismissedCount}</s.InsightCount>
+                dismissed insight{insights.length === 1 ? "" : "s"}
+              </s.InsightCountDescription>
             )}
-            onClick={() => setMode(ViewMode.All)}
-          />
-          <s.DismissedDescription>
-            <s.DismissedCount>{insights.length}</s.DismissedCount>
-            dismissed insights
-          </s.DismissedDescription>
-        </s.InsightsViewModeToolbar>
-      )}
+            {mode === ViewMode.OnlyUnread && isMarkingAsReadToolbarVisible && (
+              <s.MarkingAsReadToolbarActionLink
+                onClick={handleReadAllLinkClick}
+              >
+                Read all
+              </s.MarkingAsReadToolbarActionLink>
+            )}
+          </s.ViewModeToolbarRow>
+        )}
+      </s.Toolbar>
       <InsightsPage
         page={page}
         insights={insights}
@@ -213,7 +295,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
             </s.FooterItemsCount>
           </>
         )}
-        {isViewModeButtonVisible && (
+        {isDismissalViewModeButtonVisible && (
           <Button
             buttonType={"tertiary"}
             icon={(props) => (
@@ -227,7 +309,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
                 }
               />
             )}
-            onClick={handleViewModeChange}
+            onClick={handleDismissalViewModeButtonClick}
           />
         )}
       </s.Footer>

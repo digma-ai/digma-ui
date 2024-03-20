@@ -73,6 +73,7 @@ export interface InsightsData {
   insightsStatus: InsightsStatus; // ??  default
   viewMode: ViewMode; // Insights
   dismissedCount?: number;
+  unreadCount?: number;
 
   // methods: Method[]; // empty
   // assetId?: string; // remove
@@ -204,6 +205,8 @@ export interface CodeObjectInsight extends Insight {
   isDismissed?: boolean;
   isDismissible?: boolean;
   status?: InsightStatus;
+  isRead?: boolean;
+  isReadable?: boolean;
 }
 
 export interface SpanInsight extends CodeObjectInsight {
@@ -871,6 +874,7 @@ export interface InsightsQuery {
   sorting: Sorting;
   searchQuery: string | null;
   showDismissed: boolean;
+  showUnreadOnly: boolean;
   insightViewType: InsightViewType;
 }
 
