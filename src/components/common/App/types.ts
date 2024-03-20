@@ -70,6 +70,7 @@ export interface InsightsQuery {
   scopedSpanCodeObjectId?: string | null;
   showDismissed: boolean;
   insightViewType: InsightViewType;
+  showUnreadOnly: boolean;
 }
 
 export interface GlobalState {

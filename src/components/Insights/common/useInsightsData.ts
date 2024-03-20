@@ -29,7 +29,8 @@ const getData = (query: ScopedInsightsQuery, state?: GlobalState) => {
     page: query.page,
     scopedSpanCodeObjectId: query.scopedSpanCodeObjectId,
     showDismissed: query.showDismissed,
-    insightViewType: query.insightViewType
+    insightViewType: query.insightViewType,
+    showUnreadOnly: query.showUnreadOnly
   };
 
   window.sendMessageToDigma({
