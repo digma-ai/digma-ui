@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { getFeatureFlagValue } from "../../../featureFlags";
+import { isNumber } from "../../../typeGuards/isNumber";
 import { FeatureFlag } from "../../../types";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
@@ -56,6 +57,12 @@ export const Tabs = (props: TabsProps) => {
       {tabs.map((tab) => {
         const tooltipMessage = getTabTooltipMessage(tab, config.scope);
         const isDisabled = getIsTabDisabled(tab, config.scope);
+        const isNewIndicatorVisible =
+          tab.hasNewData ||
+          (tab.id === "insights" &&
+            config.scope &&
+            isNumber(config.scope.unreadInsightsCount) &&
+            config.scope.unreadInsightsCount > 0);
 
         return (
           <Tooltip
@@ -69,7 +76,7 @@ export const Tabs = (props: TabsProps) => {
               onClick={() => handleTabClick(tab)}
             >
               {tab.title}
-              {tab.hasNewData && <s.Indicator type={"new"} />}
+              {isNewIndicatorVisible && <s.Indicator type={"new"} />}
               {config.scope?.hasErrors &&
                 ["errorsDetails", "errors"].includes(tab.id) && (
                   <s.Indicator type={"errors"} />

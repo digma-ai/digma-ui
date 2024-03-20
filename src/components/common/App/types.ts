@@ -60,6 +60,7 @@ export interface Scope {
   hasErrors: boolean;
   issuesInsightsCount: number;
   analyticsInsightsCount: number;
+  unreadInsightsCount: number;
 }
 
 export interface InsightsQuery {

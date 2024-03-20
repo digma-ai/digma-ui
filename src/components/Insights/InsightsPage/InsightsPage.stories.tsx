@@ -27,7 +27,8 @@ const scope: Scope = {
   },
   hasErrors: false,
   issuesInsightsCount: 0,
-  analyticsInsightsCount: 0
+  analyticsInsightsCount: 0,
+  unreadInsightsCount: 0
 };
 
 const props: InsightsPageProps = {
