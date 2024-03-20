@@ -16,6 +16,12 @@ export interface InsightsCatalogProps {
   isMarkingAsReadEnabled: boolean;
 }
 
+export enum ViewMode {
+  All,
+  OnlyDismissed,
+  OnlyUnread
+}
+
 export enum SORTING_CRITERION {
   CRITICAL_INSIGHTS = "criticalinsights",
   LATEST = "latest"

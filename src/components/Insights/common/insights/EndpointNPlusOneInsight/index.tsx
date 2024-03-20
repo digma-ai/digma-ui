@@ -91,6 +91,7 @@ export const EndpointNPlusOneInsight = (
       onRecalculate={props.onRecalculate}
       onRefresh={props.onRefresh}
       onGoToSpan={props.onGoToSpan}
+      isMarkAsReadButtonEnabled={props.isMarkAsReadButtonEnabled}
     />
   );
 };

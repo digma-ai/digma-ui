@@ -2,6 +2,7 @@ import { Meta, StoryObj } from "@storybook/react";
 import { InsightsPage } from ".";
 import { ConfigContext, initialState } from "../../common/App/ConfigContext";
 import { Scope } from "../../common/App/types";
+import { ViewMode } from "../InsightsCatalog/types";
 import { mockedSpanBottleneckInsight } from "../common/insights/EndpointBottleneckInsight/mockData";
 import { InsightsPageProps } from "./types";
 
@@ -40,7 +41,8 @@ const props: InsightsPageProps = {
   onRefresh: () => {
     return undefined;
   },
-  page: 0
+  page: 0,
+  viewMode: ViewMode.All
 };
 
 export const WithInsights: Story = {

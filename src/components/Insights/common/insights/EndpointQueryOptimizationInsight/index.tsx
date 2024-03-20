@@ -119,6 +119,7 @@ export const EndpointQueryOptimizationInsight = (
         isHintEnabled: props.isJiraHintEnabled
       }}
       onGoToSpan={props.onGoToSpan}
+      isMarkAsReadButtonEnabled={props.isMarkAsReadButtonEnabled}
     />
   );
 };

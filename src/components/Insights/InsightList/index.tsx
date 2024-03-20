@@ -23,6 +23,7 @@ import { ErrorsInsight } from "../ErrorsInsight";
 import { ExcessiveAPICallsInsight } from "../ExcessiveAPICallsInsight";
 import { HighNumberOfQueriesInsight } from "../HighNumberOfQueriesInsight";
 import { InsightCard } from "../InsightCard";
+import { ViewMode } from "../InsightsCatalog/types";
 import { NPlusOneInsight } from "../NPlusOneInsight";
 import { NoObservabilityCard } from "../NoObservabilityCard";
 import { NoScalingIssueInsight } from "../NoScalingIssueInsight";
@@ -233,8 +234,11 @@ const renderInsightCard = (
     spanCodeObjectId: string | undefined,
     event?: string
   ) => void,
-  isJiraHintEnabled: boolean
+  isJiraHintEnabled: boolean,
+  viewMode: ViewMode
 ): JSX.Element | undefined => {
+  const isMarkAsReadButtonEnabled = viewMode === ViewMode.OnlyUnread;
+
   const handleErrorSelect = (errorId: string, insightType: InsightType) => {
     sendTrackingEvent(globalTrackingEvents.USER_ACTION, {
       action: `Follow ${insightType} link`
@@ -362,6 +366,7 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={handleRefresh}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -374,6 +379,7 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={handleRefresh}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -387,6 +393,7 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={handleRefresh}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -401,6 +408,7 @@ const renderInsightCard = (
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -415,6 +423,7 @@ const renderInsightCard = (
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -426,6 +435,7 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={handleRefresh}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -441,6 +451,7 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={handleRefresh}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -454,6 +465,7 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={handleRefresh}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -469,6 +481,7 @@ const renderInsightCard = (
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -484,6 +497,7 @@ const renderInsightCard = (
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -500,6 +514,7 @@ const renderInsightCard = (
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -527,6 +542,7 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={handleRefresh}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -539,6 +555,7 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={handleRefresh}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -552,6 +569,7 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={handleRefresh}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -565,6 +583,7 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={handleRefresh}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -579,6 +598,7 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={handleRefresh}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -593,6 +613,7 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={handleRefresh}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -608,6 +629,7 @@ const renderInsightCard = (
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -620,6 +642,7 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={handleRefresh}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -636,6 +659,7 @@ const renderInsightCard = (
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -651,6 +675,7 @@ const renderInsightCard = (
         onRefresh={handleRefresh}
         onJiraTicketCreate={onJiraTicketCreate}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -748,7 +773,8 @@ export const InsightList = (props: InsightListProps) => {
               return renderInsightCard(
                 insight,
                 handleShowJiraTicket,
-                isJiraHintEnabled
+                isJiraHintEnabled,
+                props.viewMode
               );
             })
           ) : (

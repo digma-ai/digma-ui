@@ -1,3 +1,4 @@
+import { ViewMode } from "../InsightsCatalog/types";
 import { GenericCodeObjectInsight, InsightType } from "../types";
 
 export interface InsightsPageProps {
@@ -9,6 +10,7 @@ export interface InsightsPageProps {
   ) => void;
   onRefresh: () => void;
   page: number;
+  viewMode: ViewMode;
 }
 
 export interface isInsightJiraTicketHintShownPayload {

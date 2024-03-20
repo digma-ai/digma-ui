@@ -30,6 +30,7 @@ export interface InsightCardProps {
     event: string
   ) => void;
   onGoToSpan: (spanCodeObjectId: string) => void;
+  isMarkAsReadButtonEnabled: boolean;
 }
 
 export interface StyledInsightCardProps extends CardProps {

@@ -21,6 +21,7 @@ import { FeatureFlag } from "../../../../types";
 import { sendTrackingEvent } from "../../../../utils/sendTrackingEvent";
 import { Spinner } from "../../../Navigation/CodeButtonMenu/Spinner";
 import { ConfigContext } from "../../../common/App/ConfigContext";
+import { CheckmarkCircleIcon } from "../../../common/icons/12px/CheckmarkCircleIcon";
 import { trackingEvents } from "../../tracking";
 import { InsightStatus } from "../../types";
 import { ProductionAffectionBar } from "./ProductionAffectionBar";
@@ -156,7 +157,11 @@ export const InsightCard = (props: InsightCardProps) => {
   };
 
   const handleClick = () => {
-    if (props.insight.isReadable && props.insight.isRead === false) {
+    if (
+      !props.isMarkAsReadButtonEnabled &&
+      props.insight.isReadable &&
+      props.insight.isRead === false
+    ) {
       markAsRead();
     }
   };
@@ -166,6 +171,25 @@ export const InsightCard = (props: InsightCardProps) => {
       tooltip: string;
       button: React.ComponentType<BaseButtonProps>;
     }[] = [];
+
+    if (
+      props.isMarkAsReadButtonEnabled &&
+      props.insight.isReadable &&
+      props.insight.isRead === false
+    ) {
+      buttonsToRender.push({
+        tooltip: "Mark as read",
+        button: (btnProps) => (
+          <Button
+            icon={CheckmarkCircleIcon}
+            label={"Mark as read"}
+            onClick={markAsRead}
+            isDisabled={isMarkingAsReadInProgress}
+            {...btnProps}
+          />
+        )
+      });
+    }
 
     props.onOpenHistogram &&
       buttonsToRender.push({

@@ -21,15 +21,10 @@ import { Tooltip } from "../../common/v3/Tooltip";
 import { InsightsPage } from "../InsightsPage";
 import { trackingEvents } from "../tracking";
 import * as s from "./styles";
-import { InsightsCatalogProps, SORTING_CRITERION } from "./types";
+import { InsightsCatalogProps, SORTING_CRITERION, ViewMode } from "./types";
 import { useMarkingAllAsRead } from "./useMarkingAllAsRead";
 
 const PAGE_SIZE = 10;
-enum ViewMode {
-  All,
-  OnlyDismissed,
-  OnlyUnread
-}
 
 export const InsightsCatalog = (props: InsightsCatalogProps) => {
   const { insights, onJiraTicketCreate, defaultQuery, totalCount } = props;
@@ -273,6 +268,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
         }
         onJiraTicketCreate={onJiraTicketCreate}
         onRefresh={props.onRefresh}
+        viewMode={mode}
       />
       <s.Footer>
         {totalCount > 0 && (

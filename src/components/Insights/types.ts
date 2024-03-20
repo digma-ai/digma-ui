@@ -108,6 +108,7 @@ export interface InsightProps {
   ) => void;
   onGoToSpan: (spanCodeObjectId: string) => void;
   isJiraHintEnabled?: boolean;
+  isMarkAsReadButtonEnabled: boolean;
 }
 
 export interface InsightTicketInfo<T extends GenericCodeObjectInsight> {
