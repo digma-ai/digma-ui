@@ -1,5 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
+import { actions as globalActions } from "../../../../actions";
+import { getFeatureFlagValue } from "../../../../featureFlags";
+import { usePrevious } from "../../../../hooks/usePrevious";
 import { isString } from "../../../../typeGuards/isString";
+import { FeatureFlag } from "../../../../types";
+import { sendTrackingEvent } from "../../../../utils/sendTrackingEvent";
+import { Spinner } from "../../../Navigation/CodeButtonMenu/Spinner";
+import { ChangeScopePayload } from "../../../Navigation/types";
+import { ConfigContext } from "../../../common/App/ConfigContext";
+import { CheckmarkCircleIcon } from "../../../common/icons/12px/CheckmarkCircleIcon";
 import { TraceIcon } from "../../../common/icons/12px/TraceIcon";
 import { HistogramIcon } from "../../../common/icons/16px/HistogramIcon";
 import { LiveIcon } from "../../../common/icons/16px/LiveIcon";
@@ -10,24 +19,16 @@ import { Button } from "../../../common/v3/Button";
 import { BaseButtonProps } from "../../../common/v3/Button/types";
 import { JiraButton } from "../../../common/v3/JiraButton";
 import { Tooltip } from "../../../common/v3/Tooltip";
-import { isEndpointInsight, isSpanInsight } from "../../typeGuards";
-import { InsightHeader } from "./InsightHeader";
-import * as s from "./styles";
-import { InsightCardProps } from "./types";
-
-import { getFeatureFlagValue } from "../../../../featureFlags";
-import { usePrevious } from "../../../../hooks/usePrevious";
-import { FeatureFlag } from "../../../../types";
-import { sendTrackingEvent } from "../../../../utils/sendTrackingEvent";
-import { Spinner } from "../../../Navigation/CodeButtonMenu/Spinner";
-import { ConfigContext } from "../../../common/App/ConfigContext";
-import { CheckmarkCircleIcon } from "../../../common/icons/12px/CheckmarkCircleIcon";
 import { trackingEvents } from "../../tracking";
+import { isEndpointInsight, isSpanInsight } from "../../typeGuards";
 import { InsightStatus } from "../../types";
+import { InsightHeader } from "./InsightHeader";
 import { ProductionAffectionBar } from "./ProductionAffectionBar";
 import { RecalculateBar } from "./RecalculateBar";
 import { useDismissal } from "./hooks/useDismissal";
 import { useMarkingAsRead } from "./hooks/useMarkingAsRead";
+import * as s from "./styles";
+import { InsightCardProps } from "./types";
 
 const IS_NEW_TIME_LIMIT = 1000 * 60 * 10; // in milliseconds
 const HIGH_CRITICALITY_THRESHOLD = 0.8;
@@ -58,12 +59,25 @@ export const InsightCard = (props: InsightCardProps) => {
   useEffect(() => {
     if (previousIsOperationInProgress && !isOperationInProgress) {
       props.onRefresh(props.insight.type);
+
+      // Trigger SET_SCOPE response message from the plugin with actual unread insights count
+      window.sendMessageToDigma<ChangeScopePayload>({
+        action: globalActions.CHANGE_SCOPE,
+        payload: {
+          span: config.scope?.span
+            ? {
+                spanCodeObjectId: config.scope.span.spanCodeObjectId
+              }
+            : null
+        }
+      });
     }
   }, [
     previousIsOperationInProgress,
     isOperationInProgress,
     props.onRefresh,
-    props.insight.type
+    props.insight.type,
+    config.scope
   ]);
 
   const handleRecheckButtonClick = () => {

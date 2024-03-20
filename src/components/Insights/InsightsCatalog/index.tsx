@@ -2,11 +2,13 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import { usePrevious } from "../../../hooks/usePrevious";
 
 import { useTheme } from "styled-components";
+import { actions as globalActions } from "../../../actions";
 import { useDebounce } from "../../../hooks/useDebounce";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { isString } from "../../../typeGuards/isString";
 import { isUndefined } from "../../../typeGuards/isUndefined";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
+import { ChangeScopePayload } from "../../Navigation/types";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Pagination } from "../../common/Pagination";
 import { SearchInput } from "../../common/SearchInput";
@@ -113,11 +115,24 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
   useEffect(() => {
     if (previousIsMarkingAllAsReadInProgress && !isMarkingAllAsReadInProgress) {
       refreshData();
+
+      // Trigger SET_SCOPE response message from the plugin with actual unread insights count
+      window.sendMessageToDigma<ChangeScopePayload>({
+        action: globalActions.CHANGE_SCOPE,
+        payload: {
+          span: config.scope?.span
+            ? {
+                spanCodeObjectId: config.scope.span.spanCodeObjectId
+              }
+            : null
+        }
+      });
     }
   }, [
     isMarkingAllAsReadInProgress,
     previousIsMarkingAllAsReadInProgress,
-    refreshData
+    refreshData,
+    config.scope
   ]);
 
   useEffect(() => {
