@@ -479,7 +479,6 @@ const renderInsightCard = (
     );
   }
 
-  // deprecated
   if (isEndpointQueryOptimizationV2Insight(insight)) {
     return (
       <EndpointQueryOptimizationV2Insight
