@@ -1,6 +1,5 @@
-import { ReactNode, useContext, useState } from "react";
+import { ReactNode, useState } from "react";
 import { getDurationString } from "../../../../../utils/getDurationString";
-import { ConfigContext } from "../../../../common/App/ConfigContext";
 import { Link } from "../../../../common/v3/Link";
 import { Tooltip } from "../../../../common/v3/Tooltip";
 import {
@@ -42,8 +41,6 @@ const renderOptions = (
 export const EndpointQueryOptimizationInsight = (
   props: EndpointQueryOptimizationInsightProps
 ) => {
-  const config = useContext(ConfigContext);
-
   const [selectedSpan, setSelectedSpan] = useState(
     props.insight.spans ? props.insight.spans[0] : null
   );
@@ -100,7 +97,7 @@ export const EndpointQueryOptimizationInsight = (
       onRecalculate={props.onRecalculate}
       onRefresh={props.onRefresh}
       onGoToTrace={
-        config.isJaegerEnabled && selectedSpan?.traceId
+        selectedSpan?.traceId
           ? () =>
               handleTraceButtonClick(
                 {

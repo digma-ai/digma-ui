@@ -5,7 +5,7 @@ import { InsightType, Trace } from "../../../types";
 import { InsightCard } from "../../InsightCard";
 import { ColumnsContainer } from "../../InsightCard/ColumnsContainer";
 import { KeyValue } from "../../InsightCard/KeyValue";
-import { ContentContainer, Description, Details } from "../styles";
+import { ContentContainer, Details } from "../styles";
 import * as s from "./styles";
 import { EndpointQueryOptimizationV2InsightProps } from "./types";
 
@@ -40,7 +40,8 @@ export const EndpointQueryOptimizationV2Insight = ({
     onTraceButtonClick(trace, insightType, spanCodeObjectId);
   };
 
-  const name = insight.span.spanInfo.displayName;
+  const spanName = insight.span.spanInfo.displayName;
+  const spanCodeObjectId = insight.span.spanInfo.spanCodeObjectId;
 
   return (
     <InsightCard
@@ -48,13 +49,10 @@ export const EndpointQueryOptimizationV2Insight = ({
       content={
         <ContentContainer>
           <Details>
-            <Description>Check the following location:</Description>
             <s.SpanListItem
-              name={name}
-              onClick={() =>
-                handleSpanLinkClick(insight.span.spanInfo.spanCodeObjectId)
-              }
-            ></s.SpanListItem>
+              name={spanName}
+              onClick={() => handleSpanLinkClick(spanCodeObjectId)}
+            />
           </Details>
           <ColumnsContainer>
             <KeyValue label={"Duration"}>
@@ -65,23 +63,20 @@ export const EndpointQueryOptimizationV2Insight = ({
       }
       onRecalculate={onRecalculate}
       onRefresh={onRefresh}
-      onGoToTrace={
-        config.isJaegerEnabled && insight.span.traceId
-          ? () =>
-              handleTraceButtonClick(
-                {
-                  name: insight.span.spanInfo.displayName,
-                  id: insight.span.traceId
-                },
-                insight.type,
-                insight.span.spanInfo.spanCodeObjectId
-              )
-          : undefined
+      onGoToTrace={() =>
+        handleTraceButtonClick(
+          {
+            name: spanName,
+            id: insight.span.traceId
+          },
+          insight.type,
+          spanCodeObjectId
+        )
       }
       onJiraButtonClick={handleTicketInfoButtonClick}
       jiraTicketInfo={{
         ticketLink: insight.span.ticketLink,
-        spanCodeObjectId: insight.span.spanInfo.spanCodeObjectId,
+        spanCodeObjectId,
         isHintEnabled: isJiraHintEnabled
       }}
       onGoToSpan={onGoToSpan}

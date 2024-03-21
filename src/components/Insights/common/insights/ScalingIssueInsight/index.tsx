@@ -50,7 +50,7 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
     if (rootCauseSpans.length > 0) {
       return (
         <s.List>
-          <Description>Caused by:</Description>
+          <Description>Caused by</Description>
           {rootCauseSpans.map((span, i) => {
             const spanName = span.displayName;
             const traceId = span.sampleTraceId;
@@ -119,7 +119,7 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
           {renderRootCause(props.insight.rootCauseSpans)}
           {affectedEndpoints.length > 0 && (
             <s.List>
-              <Description>Affected endpoints</Description>
+              <Description>Affected Endpoints</Description>
               {pageItems.map((endpoint) => {
                 const endpointRoute = trimEndpointScheme(endpoint.route);
                 return (

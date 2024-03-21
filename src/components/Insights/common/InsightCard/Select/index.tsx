@@ -52,13 +52,15 @@ export const Select = (props: SelectProps) => {
         onClick={handleSelectBarClick}
       >
         {selectedOption ? (
-          <Tooltip title={selectedOption.label}>
-            <s.SelectedValue>
-              {selectedOption.customContent
-                ? selectedOption.customContent
-                : selectedOption.label}
-            </s.SelectedValue>
-          </Tooltip>
+          <s.SelectedValue>
+            {selectedOption.customContent ? (
+              selectedOption.customContent
+            ) : (
+              <Tooltip title={selectedOption.label}>
+                <span>{selectedOption.label}</span>
+              </Tooltip>
+            )}
+          </s.SelectedValue>
         ) : (
           props.placeholder
         )}

@@ -1,11 +1,6 @@
-import { useContext } from "react";
-import { ConfigContext } from "../../../../common/App/ConfigContext";
-import { TargetIcon } from "../../../../common/icons/12px/TargetIcon";
-import { Button } from "../../../../common/v3/Button";
-import { Tooltip } from "../../../../common/v3/Tooltip";
 import { InsightType, Trace } from "../../../types";
 import { InsightCard } from "../../InsightCard";
-import { ContentContainer, Description } from "../styles";
+import { Description } from "../styles";
 import * as s from "./styles";
 import { EndpointChattyApiV2InsightProps } from "./types";
 
@@ -17,8 +12,6 @@ export const EndpointChattyApiV2Insight = ({
   onRefresh,
   onGoToSpan
 }: EndpointChattyApiV2InsightProps) => {
-  const config = useContext(ConfigContext);
-
   const handleSpanLinkClick = (spanCodeObjectId: string) => {
     onAssetLinkClick(spanCodeObjectId, insight.type);
   };
@@ -39,38 +32,32 @@ export const EndpointChattyApiV2Insight = ({
     <InsightCard
       insight={insight}
       content={
-        <ContentContainer>
+        <s.Container>
           <Description>
             Excessive API calls to specific endpoint found
           </Description>
           <s.SpanListItem
             name={spanName}
             onClick={() => handleSpanLinkClick(spanCodeObjectId)}
-            buttons={[
-              config.isJaegerEnabled && traceId && (
-                <Tooltip title={"Open Trace"} key={"openTrace"}>
-                  <Button
-                    icon={TargetIcon}
-                    onClick={() =>
-                      handleTraceButtonClick(
-                        {
-                          name: spanName,
-                          id: traceId
-                        },
-                        insight.type,
-                        spanCodeObjectId
-                      )
-                    }
-                  />
-                </Tooltip>
-              )
-            ]}
           />
-        </ContentContainer>
+        </s.Container>
       }
       onRecalculate={onRecalculate}
       onRefresh={onRefresh}
       onGoToSpan={onGoToSpan}
+      onGoToTrace={
+        traceId
+          ? () =>
+              handleTraceButtonClick(
+                {
+                  name: spanName,
+                  id: traceId
+                },
+                insight.type,
+                spanCodeObjectId
+              )
+          : undefined
+      }
     />
   );
 };
