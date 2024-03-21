@@ -6,6 +6,7 @@ import {
   CodeObjectInsight,
   EndpointBottleneckInsight,
   EndpointBreakdownInsight,
+  EndpointChattyApiV2Insight,
   EndpointDurationSlowdownInsight,
   EndpointHighNumberOfQueriesInsight,
   EndpointHighUsageInsight,
@@ -13,6 +14,7 @@ import {
   EndpointLowUsageInsight,
   EndpointNormalUsageInsight,
   EndpointQueryOptimizationInsight,
+  EndpointQueryOptimizationV2Insight,
   EndpointSlowdownSourceInsight,
   EndpointSlowestSpansInsight,
   EndpointSpanNPlusOneInsight,
@@ -109,10 +111,16 @@ export const isEndpointSpanNPlusOneInsight = (
 ): insight is EndpointSpanNPlusOneInsight =>
   insight.type === InsightType.EndpointSpanNPlusOneV2;
 
+// obsolete
 export const isEndpointQueryOptimizationInsight = (
   insight: CodeObjectInsight
 ): insight is EndpointQueryOptimizationInsight =>
   insight.type === InsightType.EndpointQueryOptimization;
+
+export const isEndpointQueryOptimizationV2Insight = (
+  insight: CodeObjectInsight
+): insight is EndpointQueryOptimizationV2Insight =>
+  insight.type === InsightType.EndpointQueryOptimizationV2;
 
 export const isSpanScalingBadlyInsight = (
   insight: CodeObjectInsight
@@ -143,11 +151,13 @@ export const isEndpointBreakdownInsight = (
 ): insight is EndpointBreakdownInsight =>
   insight.type === InsightType.EndpointBreakdown;
 
+// obsolete
 export const isSpanScalingWellInsight = (
   insight: CodeObjectInsight
 ): insight is SpanScalingWellInsight =>
   insight.type === InsightType.SpanScalingWell;
 
+// obsolete
 export const isSpanScalingInsufficientDataInsight = (
   insight: CodeObjectInsight
 ): insight is SpanScalingInsufficientDataInsight =>
@@ -158,10 +168,16 @@ export const isSessionInViewEndpointInsight = (
 ): insight is SessionInViewEndpointInsight =>
   insight.type === InsightType.EndpointSessionInView;
 
+// obsolete
 export const isChattyApiEndpointInsight = (
   insight: CodeObjectInsight
 ): insight is ChattyApiEndpointInsight =>
   insight.type === InsightType.EndpointChattyApi;
+
+export const isEndpointChattyApiV2Insight = (
+  insight: CodeObjectInsight
+): insight is EndpointChattyApiV2Insight =>
+  insight.type === InsightType.EndpointChattyApiV2;
 
 export const isEndpointHighNumberOfQueriesInsight = (
   insight: CodeObjectInsight

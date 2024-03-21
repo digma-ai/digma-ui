@@ -135,7 +135,13 @@ export const getInsightTypeInfo = (
       label: "Session in View Query Detected",
       description: descriptionProvider.SessionInViewDescription
     },
+    // deprecated
     [InsightType.EndpointChattyApi]: {
+      icon: SQLDatabaseIcon,
+      label: "Excessive API Calls Detected",
+      description: descriptionProvider.ChattyApiDescription
+    },
+    [InsightType.EndpointChattyApiV2]: {
       icon: SQLDatabaseIcon,
       label: "Excessive API Calls Detected",
       description: descriptionProvider.ChattyApiDescription
@@ -155,7 +161,13 @@ export const getInsightTypeInfo = (
       label: "Query Optimization Suggested",
       description: descriptionProvider.QueryOptimization
     },
+    // deprecated
     [InsightType.EndpointQueryOptimization]: {
+      icon: SQLDatabaseIcon,
+      label: "Query Optimization Suggested",
+      description: descriptionProvider.QueryOptimization
+    },
+    [InsightType.EndpointQueryOptimizationV2]: {
       icon: SQLDatabaseIcon,
       label: "Query Optimization Suggested",
       description: descriptionProvider.QueryOptimization

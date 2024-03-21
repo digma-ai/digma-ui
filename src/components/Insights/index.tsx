@@ -28,6 +28,7 @@ import { BottleneckInsightTicket } from "./tickets/BottleneckInsightTicket";
 import { EndpointHighNumberOfQueriesInsightTicket } from "./tickets/EndpointHighNumberOfQueriesInsightTicket";
 import { EndpointNPlusOneInsightTicket } from "./tickets/EndpointNPlusOneInsightTicket";
 import { EndpointQueryOptimizationInsightTicket } from "./tickets/EndpointQueryOptimizationTicket";
+import { EndpointQueryOptimizationV2InsightTicket } from "./tickets/EndpointQueryOptimizationV2InsightTicket";
 import { NPlusOneInsightTicket } from "./tickets/NPlusOneInsightTicket";
 import { QueryOptimizationInsightTicket } from "./tickets/QueryOptimizationInsightTicket";
 import { ScalingIssueInsightTicket } from "./tickets/ScalingIssueInsightTicket";
@@ -37,6 +38,7 @@ import {
   isEndpointBottleneckInsight,
   isEndpointHighNumberOfQueriesInsight,
   isEndpointQueryOptimizationInsight,
+  isEndpointQueryOptimizationV2Insight,
   isEndpointSpanNPlusOneInsight,
   isSpanEndpointBottleneckInsight,
   isSpanNPlusOneInsight,
@@ -47,6 +49,7 @@ import {
   EndpointBottleneckInsight,
   EndpointHighNumberOfQueriesInsight,
   EndpointQueryOptimizationInsight,
+  EndpointQueryOptimizationV2Insight,
   EndpointSpanNPlusOneInsight,
   GenericCodeObjectInsight,
   InsightTicketInfo,
@@ -97,6 +100,7 @@ const renderInsightTicket = (
     );
   }
 
+  // deprecated
   if (
     isEndpointQueryOptimizationInsight(data.insight) &&
     data.spanCodeObjectId
@@ -105,6 +109,17 @@ const renderInsightTicket = (
       data as InsightTicketInfo<EndpointQueryOptimizationInsight>;
     return (
       <EndpointQueryOptimizationInsightTicket
+        data={ticketData}
+        onClose={onClose}
+      />
+    );
+  }
+
+  if (isEndpointQueryOptimizationV2Insight(data.insight)) {
+    const ticketData =
+      data as InsightTicketInfo<EndpointQueryOptimizationV2Insight>;
+    return (
+      <EndpointQueryOptimizationV2InsightTicket
         data={ticketData}
         onClose={onClose}
       />

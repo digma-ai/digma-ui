@@ -63,7 +63,7 @@ export const EndpointNPlusOneInsight = (
       content={
         <ContentContainer>
           <Details>
-            <Description>Assets</Description>
+            <Description>Asset</Description>
             <s.SpanListItem
               name={spanName}
               key={spanName}

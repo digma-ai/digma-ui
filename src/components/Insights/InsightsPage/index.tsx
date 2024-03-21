@@ -15,8 +15,10 @@ import { actions } from "../actions";
 import { DurationBreakdownInsight } from "../common/insights/DurationBreakdownInsight";
 import { DurationInsight } from "../common/insights/DurationInsight";
 import { EndpointBottleneckInsight } from "../common/insights/EndpointBottleneckInsight";
+import { EndpointChattyApiV2Insight } from "../common/insights/EndpointChattyApiV2Insight";
 import { EndpointNPlusOneInsight } from "../common/insights/EndpointNPlusOneInsight";
 import { EndpointQueryOptimizationInsight } from "../common/insights/EndpointQueryOptimizationInsight";
+import { EndpointQueryOptimizationV2Insight } from "../common/insights/EndpointQueryOptimizationV2Insight";
 import { EndpointSlowdownSourceInsight } from "../common/insights/EndpointSlowdownSourceInsight";
 import { ExcessiveAPICallsInsight } from "../common/insights/ExcessiveAPICallsInsight";
 import { HighNumberOfQueriesInsight } from "../common/insights/HighNumberOfQueriesInsight";
@@ -35,11 +37,13 @@ import {
   isChattyApiEndpointInsight,
   isEndpointBottleneckInsight,
   isEndpointBreakdownInsight,
+  isEndpointChattyApiV2Insight,
   isEndpointHighNumberOfQueriesInsight,
   isEndpointHighUsageInsight,
   isEndpointLowUsageInsight,
   isEndpointNormalUsageInsight,
   isEndpointQueryOptimizationInsight,
+  isEndpointQueryOptimizationV2Insight,
   isEndpointSlowdownSourceInsight,
   isEndpointSpanNPlusOneInsight,
   isSessionInViewEndpointInsight,
@@ -386,9 +390,24 @@ const renderInsightCard = (
     );
   }
 
+  // deprecated
   if (isChattyApiEndpointInsight(insight)) {
     return (
       <ExcessiveAPICallsInsight
+        key={insight.id}
+        insight={insight}
+        onAssetLinkClick={handleAssetLinkClick}
+        onTraceButtonClick={handleTraceButtonClick}
+        onRecalculate={handleRecalculate}
+        onRefresh={onRefresh}
+        onGoToSpan={handleGoToSpan}
+      />
+    );
+  }
+
+  if (isEndpointChattyApiV2Insight(insight)) {
+    return (
+      <EndpointChattyApiV2Insight
         key={insight.id}
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
@@ -443,9 +462,27 @@ const renderInsightCard = (
     );
   }
 
+  // deprecated
   if (isEndpointQueryOptimizationInsight(insight)) {
     return (
       <EndpointQueryOptimizationInsight
+        key={insight.id}
+        insight={insight}
+        onAssetLinkClick={handleAssetLinkClick}
+        onTraceButtonClick={handleTraceButtonClick}
+        onRecalculate={handleRecalculate}
+        onRefresh={onRefresh}
+        onJiraTicketCreate={onJiraTicketCreate}
+        isJiraHintEnabled={isJiraHintEnabled}
+        onGoToSpan={handleGoToSpan}
+      />
+    );
+  }
+
+  // deprecated
+  if (isEndpointQueryOptimizationV2Insight(insight)) {
+    return (
+      <EndpointQueryOptimizationV2Insight
         key={insight.id}
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}
