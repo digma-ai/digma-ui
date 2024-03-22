@@ -28,7 +28,6 @@ import { OpenTelemetryLogoCrossedSmallIcon } from "../common/icons/OpenTelemetry
 import { SlackLogoIcon } from "../common/icons/SlackLogoIcon";
 import { InsightsCatalog } from "./InsightsCatalog";
 import { SORTING_CRITERION } from "./InsightsCatalog/types";
-import { useInsightsData } from "./common/useInsightsData";
 import * as s from "./styles";
 import { BottleneckInsightTicket } from "./tickets/BottleneckInsightTicket";
 import { EndpointHighNumberOfQueriesInsightTicket } from "./tickets/EndpointHighNumberOfQueriesInsightTicket";
@@ -68,6 +67,7 @@ import {
   SpanNPlusOneInsight,
   SpanScalingBadlyInsight
 } from "./types";
+import { useInsightsData } from "./useInsightsData";
 
 const REFRESH_INTERVAL = isNumber(window.insightsRefreshInterval)
   ? window.insightsRefreshInterval

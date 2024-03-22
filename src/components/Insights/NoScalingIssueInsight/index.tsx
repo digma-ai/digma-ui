@@ -3,6 +3,9 @@ import { ChartIcon } from "../../common/icons/ChartIcon";
 import { InsightCard } from "../InsightCard";
 import { NoScalingIssueInsightProps } from "./types";
 
+/**
+ * @deprecated
+ */
 export const NoScalingIssueInsight = (props: NoScalingIssueInsightProps) => {
   const handleHistogramButtonClick = () => {
     props.insight.spanInfo &&

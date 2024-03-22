@@ -1,6 +1,4 @@
-import { useContext } from "react";
 import { getDurationString } from "../../../../../utils/getDurationString";
-import { ConfigContext } from "../../../../common/App/ConfigContext";
 import { InsightType, Trace } from "../../../types";
 import { InsightCard } from "../../InsightCard";
 import { ColumnsContainer } from "../../InsightCard/ColumnsContainer";
@@ -17,10 +15,9 @@ export const EndpointQueryOptimizationV2Insight = ({
   isJiraHintEnabled,
   onRecalculate,
   onRefresh,
-  onGoToSpan
+  onGoToSpan,
+  isMarkAsReadButtonEnabled
 }: EndpointQueryOptimizationV2InsightProps) => {
-  const config = useContext(ConfigContext);
-
   const handleSpanLinkClick = (spanCodeObjectId: string) => {
     onAssetLinkClick(spanCodeObjectId, insight.type);
   };
@@ -80,6 +77,7 @@ export const EndpointQueryOptimizationV2Insight = ({
         isHintEnabled: isJiraHintEnabled
       }}
       onGoToSpan={onGoToSpan}
+      isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
     />
   );
 };

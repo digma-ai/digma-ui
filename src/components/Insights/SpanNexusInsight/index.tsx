@@ -7,6 +7,10 @@ import { SpanNexusInsightProps } from "./types";
 const getTagType = (isHigh: boolean) => {
   return isHigh ? "mediumSeverity" : "default";
 };
+
+/**
+ * @deprecated
+ */
 export const SpanNexusInsight = (props: SpanNexusInsightProps) => {
   const { insight } = props;
   const {

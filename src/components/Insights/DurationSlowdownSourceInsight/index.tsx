@@ -6,6 +6,9 @@ import { DurationSlowdownSource } from "../types";
 import * as s from "./styles";
 import { DurationSlowdownSourceInsightProps } from "./types";
 
+/**
+ * @deprecated
+ */
 export const DurationSlowdownSourceInsight = (
   props: DurationSlowdownSourceInsightProps
 ) => {

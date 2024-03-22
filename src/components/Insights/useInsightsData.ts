@@ -1,20 +1,20 @@
 import { useContext, useEffect, useMemo, useRef, useState } from "react";
-import { actions as globalActions } from "../../../actions";
-import { dispatcher } from "../../../dispatcher";
-import { usePrevious } from "../../../hooks/usePrevious";
-import { ConfigContext } from "../../common/App/ConfigContext";
+import { actions as globalActions } from "../../actions";
+import { dispatcher } from "../../dispatcher";
+import { usePrevious } from "../../hooks/usePrevious";
+import { ConfigContext } from "../common/App/ConfigContext";
 import {
   GlobalState,
   InsightsQuery as InsightsDataQuery
-} from "../../common/App/types";
-import { actions } from "../actions";
+} from "../common/App/types";
+import { actions } from "./actions";
 import {
   InsightsData,
   InsightsQuery,
   InsightsStatus,
   ScopedInsightsQuery,
   ViewMode
-} from "../types";
+} from "./types";
 
 interface UseInsightDataProps {
   refreshInterval: number;

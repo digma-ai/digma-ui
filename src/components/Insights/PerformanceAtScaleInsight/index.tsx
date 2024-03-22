@@ -15,6 +15,9 @@ import * as s from "./styles";
 
 const MIN_CONCURRENCY_STATES_TO_EVALUATE_SCALE = 4;
 
+/**
+ * @deprecated
+ */
 export const PerformanceAtScaleInsight = (
   props: PerformanceAtScaleInsightProps
 ) => {

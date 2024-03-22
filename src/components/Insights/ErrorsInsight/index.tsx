@@ -4,6 +4,9 @@ import { Description, Link } from "../styles";
 import * as s from "./styles";
 import { ErrorsInsightProps } from "./types";
 
+/**
+ * @deprecated
+ */
 export const ErrorsInsight = (props: ErrorsInsightProps) => {
   const handleErrorLinkClick = (errorId: string) => {
     props.onErrorSelect(errorId, props.insight.type);

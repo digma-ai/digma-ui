@@ -43,6 +43,9 @@ const sortByType = (a: Component, b: Component) =>
 
 const columnHelper = createColumnHelper<Component>();
 
+/**
+ * @deprecated
+ */
 export const RequestBreakdownInsight = (
   props: RequestBreakdownInsightProps
 ) => {

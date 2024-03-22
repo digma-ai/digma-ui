@@ -14,6 +14,9 @@ import { Trace } from "../types";
 import * as s from "./styles";
 import { QueryOptimizationInsightProps } from "./types";
 
+/**
+ * @deprecated
+ */
 export const QueryOptimizationInsight = (
   props: QueryOptimizationInsightProps
 ) => {

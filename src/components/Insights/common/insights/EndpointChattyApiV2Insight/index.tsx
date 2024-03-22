@@ -10,7 +10,8 @@ export const EndpointChattyApiV2Insight = ({
   onTraceButtonClick,
   onRecalculate,
   onRefresh,
-  onGoToSpan
+  onGoToSpan,
+  isMarkAsReadButtonEnabled
 }: EndpointChattyApiV2InsightProps) => {
   const handleSpanLinkClick = (spanCodeObjectId: string) => {
     onAssetLinkClick(spanCodeObjectId, insight.type);
@@ -58,6 +59,7 @@ export const EndpointChattyApiV2Insight = ({
               )
           : undefined
       }
+      isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
     />
   );
 };

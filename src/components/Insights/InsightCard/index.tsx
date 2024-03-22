@@ -31,6 +31,9 @@ const RECALCULATE = "recalculate";
 const DEFAULT_PERCENTILE = 0.5;
 const IS_NEW_TIME_LIMIT = 1000 * 60 * 10; // in milliseconds
 
+/**
+ * @deprecated
+ */
 export const InsightCard = (props: InsightCardProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isKebabMenuOpen, setIsKebabMenuOpen] = useState(false);

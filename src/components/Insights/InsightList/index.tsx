@@ -684,6 +684,9 @@ const renderInsightCard = (
 const IS_INSIGHT_JIRA_TICKET_HINT_SHOWN_PERSISTENCE_KEY =
   "isInsightJiraTicketHintShown";
 
+/**
+ * @deprecated
+ */
 export const InsightList = (props: InsightListProps) => {
   const [insightGroups, setInsightGroups] = useState<InsightGroup[]>([]);
   const [isAutofixing, setIsAutofixing] = useState(false);
