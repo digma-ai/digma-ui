@@ -13,6 +13,9 @@ import { SessionInViewInsightProps } from "./types";
 
 const PAGE_SIZE = 3;
 
+/**
+ * @deprecated
+ */
 export const SessionInViewInsight = (props: SessionInViewInsightProps) => {
   const config = useContext(ConfigContext);
 

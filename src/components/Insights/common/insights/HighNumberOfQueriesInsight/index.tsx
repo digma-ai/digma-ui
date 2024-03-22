@@ -85,6 +85,7 @@ export const HighNumberOfQueriesInsight = (
           : undefined
       }
       onGoToSpan={props.onGoToSpan}
+      isMarkAsReadButtonEnabled={props.isMarkAsReadButtonEnabled}
     />
   );
 };

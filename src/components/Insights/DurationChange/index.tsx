@@ -99,6 +99,9 @@ const renderArrowIcon = (
   );
 };
 
+/**
+ * @deprecated
+ */
 export const DurationChange = (props: DurationChangeProps) => {
   const theme = useTheme();
 

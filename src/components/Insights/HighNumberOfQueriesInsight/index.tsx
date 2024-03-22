@@ -14,6 +14,9 @@ import { Trace } from "../types";
 import * as s from "./styles";
 import { HighNumberOfQueriesInsightProps } from "./types";
 
+/**
+ * @deprecated
+ */
 export const HighNumberOfQueriesInsight = (
   props: HighNumberOfQueriesInsightProps
 ) => {

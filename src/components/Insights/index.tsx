@@ -1,4 +1,10 @@
-import { useContext, useEffect, useLayoutEffect, useState } from "react";
+import {
+  KeyboardEvent,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useState
+} from "react";
 import { actions as globalActions } from "../../actions";
 import { SLACK_WORKSPACE_URL } from "../../constants";
 import { getFeatureFlagValue } from "../../featureFlags";
@@ -22,7 +28,6 @@ import { OpenTelemetryLogoCrossedSmallIcon } from "../common/icons/OpenTelemetry
 import { SlackLogoIcon } from "../common/icons/SlackLogoIcon";
 import { InsightsCatalog } from "./InsightsCatalog";
 import { SORTING_CRITERION } from "./InsightsCatalog/types";
-import { useInsightsData } from "./common/useInsightsData";
 import * as s from "./styles";
 import { BottleneckInsightTicket } from "./tickets/BottleneckInsightTicket";
 import { EndpointHighNumberOfQueriesInsightTicket } from "./tickets/EndpointHighNumberOfQueriesInsightTicket";
@@ -62,6 +67,7 @@ import {
   SpanNPlusOneInsight,
   SpanScalingBadlyInsight
 } from "./types";
+import { useInsightsData } from "./useInsightsData";
 
 const REFRESH_INTERVAL = isNumber(window.insightsRefreshInterval)
   ? window.insightsRefreshInterval
@@ -204,7 +210,8 @@ export const Insights = (props: InsightsProps) => {
     },
     searchQuery: null,
     showDismissed: false,
-    insightViewType: props.insightViewType
+    insightViewType: props.insightViewType,
+    showUnreadOnly: false
   };
   // const [isAutofixing, setIsAutofixing] = useState(false);
   const [query, setQuery] = useState<InsightsQuery>(DEFAULT_QUERY);
@@ -224,6 +231,13 @@ export const Insights = (props: InsightsProps) => {
   const isDismissalEnabled = Boolean(
     getFeatureFlagValue(config, FeatureFlag.IS_INSIGHT_DISMISSAL_ENABLED) &&
       props.insightViewType === "Issues"
+  );
+
+  const isMarkingAsReadEnabled = Boolean(
+    getFeatureFlagValue(
+      config,
+      FeatureFlag.IS_INSIGHT_MARKING_AS_READ_ENABLED
+    ) && props.insightViewType === "Issues"
   );
 
   useLayoutEffect(() => {
@@ -304,19 +318,29 @@ export const Insights = (props: InsightsProps) => {
     setInfoToOpenJiraTicket(undefined);
   };
 
+  const handleQueryChange = (query: InsightsQuery) => {
+    setQuery(query);
+  };
+
+  const handleOverlayKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Escape") {
+      setInfoToOpenJiraTicket(undefined);
+    }
+  };
+
   const renderDefaultContent = (data: InsightsData): JSX.Element => {
     return (
       <InsightsCatalog
         insights={data.insights}
         totalCount={data.totalCount}
         onJiraTicketCreate={handleJiraTicketPopupOpen}
-        onQueryChange={(query: InsightsQuery) => {
-          setQuery(query);
-        }}
+        onQueryChange={handleQueryChange}
         onRefresh={refresh}
         defaultQuery={DEFAULT_QUERY}
         dismissedCount={data.dismissedCount}
         isDismissalEnabled={isDismissalEnabled}
+        unreadCount={data.unreadCount}
+        isMarkingAsReadEnabled={isMarkingAsReadEnabled}
       />
     );
   };
@@ -414,7 +438,7 @@ export const Insights = (props: InsightsProps) => {
     <s.Container>
       {renderContent(data, isInitialLoading)}
       {infoToOpenJiraTicket && (
-        <s.Overlay>
+        <s.Overlay onKeyDown={handleOverlayKeyDown} tabIndex={-1}>
           <s.PopupContainer>
             {/* {config.userRegistrationEmail ? ( */}
             {true ? ( // eslint-disable-line no-constant-condition

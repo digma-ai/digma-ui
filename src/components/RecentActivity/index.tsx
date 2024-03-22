@@ -474,7 +474,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
         </Allotment.Pane>
       </Allotment>
       {environmentToDelete && (
-        <s.Overlay onKeyDown={handleOverlayKeyDown}>
+        <s.Overlay onKeyDown={handleOverlayKeyDown} tabIndex={-1}>
           <DeleteEnvironmentConfirmation
             onClose={handleCloseDeleteConfirmation}
             onDelete={handleConfirmEnvironmentDeletion}
@@ -482,7 +482,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
         </s.Overlay>
       )}
       {isRegistrationPopupVisible && (
-        <s.Overlay onKeyDown={handleOverlayKeyDown}>
+        <s.Overlay onKeyDown={handleOverlayKeyDown} tabIndex={-1}>
           <RegistrationDialog
             onSubmit={handleRegistrationSubmit}
             onClose={handleRegistrationDialogClose}

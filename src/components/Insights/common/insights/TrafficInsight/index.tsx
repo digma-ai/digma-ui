@@ -63,6 +63,7 @@ export const TrafficInsight = (props: TrafficInsightProps) => {
       onRecalculate={props.onRecalculate}
       onRefresh={props.onRefresh}
       onGoToSpan={props.onGoToSpan}
+      isMarkAsReadButtonEnabled={props.isMarkAsReadButtonEnabled}
     />
   );
 };

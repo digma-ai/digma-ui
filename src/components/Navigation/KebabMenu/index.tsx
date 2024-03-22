@@ -1,46 +1,20 @@
 import { useContext } from "react";
 import { actions as globalActions } from "../../../actions";
-import {
-  OpenInstallationWizardPayload,
-  SetObservabilityPayload
-} from "../../../types";
+import { OpenInstallationWizardPayload } from "../../../types";
 import { isDigmaEngineRunning } from "../../../utils/isDigmaEngineRunning";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
-import { ToggleSwitch } from "../../common/ToggleSwitch";
 import { DigmaLogoFlatIcon } from "../../common/icons/16px/DigmaLogoFlatIcon";
-import { OpenTelemetryLogoIcon } from "../../common/icons/16px/OpenTelemetryLogoIcon";
+import { FourPointedStarIcon } from "../../common/icons/16px/FourPointedStarIcon";
 import { LocalEngineIcon } from "../../common/icons/LocalEngineIcon";
 import { MenuList } from "../common/MenuList";
-import { ListItemIconContainer } from "../common/MenuList/styles";
 import { Popup } from "../common/Popup";
 import { trackingEvents } from "../tracking";
-import * as s from "./styles";
+import { OpenDocumentationPayload } from "../types";
 import { KebabMenuProps } from "./types";
 
 export const KebabMenu = (props: KebabMenuProps) => {
   const config = useContext(ConfigContext);
-
-  const handleLocalEngineClick = () => {
-    sendTrackingEvent(trackingEvents.LOCAL_ENGINE_LINK_CLICKED);
-    window.sendMessageToDigma<OpenInstallationWizardPayload>({
-      action: globalActions.OPEN_INSTALLATION_WIZARD,
-      payload: {
-        skipInstallationStep: false
-      }
-    });
-    props.onClose();
-  };
-
-  const handleObservabilityChange = (value: boolean) => {
-    sendTrackingEvent(trackingEvents.OBSERVABILITY_TOGGLE_SWITCHED, { value });
-    window.sendMessageToDigma<SetObservabilityPayload>({
-      action: globalActions.SET_OBSERVABILITY,
-      payload: {
-        isObservabilityEnabled: value
-      }
-    });
-  };
 
   const handleOnboardingClick = () => {
     sendTrackingEvent(trackingEvents.ONBOARDING_LINK_CLICKED);
@@ -53,6 +27,27 @@ export const KebabMenu = (props: KebabMenuProps) => {
     props.onClose();
   };
 
+  const handleLocalEngineClick = () => {
+    sendTrackingEvent(trackingEvents.LOCAL_ENGINE_LINK_CLICKED);
+    window.sendMessageToDigma<OpenInstallationWizardPayload>({
+      action: globalActions.OPEN_INSTALLATION_WIZARD,
+      payload: {
+        skipInstallationStep: false
+      }
+    });
+    props.onClose();
+  };
+
+  const handleInsightsOverviewClick = () => {
+    window.sendMessageToDigma<OpenDocumentationPayload>({
+      action: globalActions.OPEN_DOCUMENTATION,
+      payload: {
+        page: "environment-types"
+      }
+    });
+    props.onClose();
+  };
+
   return (
     <Popup>
       <MenuList
@@ -60,37 +55,27 @@ export const KebabMenu = (props: KebabMenuProps) => {
         showGroupDividers={true}
         items={[
           {
-            id: "observability",
-            groupName: "settings",
-            customContent: (
-              <s.ObservabilityListItem>
-                <ListItemIconContainer>
-                  <OpenTelemetryLogoIcon size={16} color={"currentColor"} />
-                </ListItemIconContainer>
-                Observability
-                <s.ObservabilityToggleSwitchContainer>
-                  <ToggleSwitch
-                    label={""}
-                    onChange={handleObservabilityChange}
-                    checked={config.isObservabilityEnabled}
-                  />
-                </s.ObservabilityToggleSwitchContainer>
-              </s.ObservabilityListItem>
-            )
-          },
-          {
             id: "onboarding",
-            groupName: "settings",
             label: "Digma Onboarding",
             icon: <DigmaLogoFlatIcon size={16} color={"currentColor"} />,
             onClick: handleOnboardingClick
           },
           {
             id: "localEngine",
-            groupName: "settings",
             label: "Local Engine",
-            icon: <LocalEngineIcon isActive={isDigmaEngineRunning(config)} />,
+            icon: (
+              <LocalEngineIcon
+                size={16}
+                isActive={isDigmaEngineRunning(config)}
+              />
+            ),
             onClick: handleLocalEngineClick
+          },
+          {
+            id: "insightsOverview",
+            label: "Insights Overview",
+            icon: <FourPointedStarIcon size={16} color={"currentColor"} />,
+            onClick: handleInsightsOverviewClick
           }
         ]}
       />

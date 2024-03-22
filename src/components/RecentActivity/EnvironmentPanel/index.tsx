@@ -1,23 +1,28 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import useDimensions from "react-cool-dimensions";
 import { RECENT_ACTIVITY_CONTAINER_ID } from "..";
 import { actions as globalActions } from "../../../actions";
 import { SLACK_WORKSPACE_URL } from "../../../constants";
+import { SetObservabilityPayload } from "../../../types";
 import { openURLInDefaultBrowser } from "../../../utils/openURLInDefaultBrowser";
+import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { MenuList } from "../../Navigation/common/MenuList";
+import { ListItemIconContainer } from "../../Navigation/common/MenuList/styles";
 import { Popup } from "../../Navigation/common/Popup";
-import { OpenDocumentationPayload } from "../../Navigation/types";
+import { ConfigContext } from "../../common/App/ConfigContext";
 import { NewButton } from "../../common/NewButton";
 import { NewPopover } from "../../common/NewPopover";
+import { ToggleSwitch } from "../../common/ToggleSwitch";
 import { PlusIcon } from "../../common/icons/12px/PlusIcon";
-import { FourPointedStarIcon } from "../../common/icons/16px/FourPointedStarIcon";
 import { HammerIcon } from "../../common/icons/16px/HammerIcon";
+import { OpenTelemetryLogoIcon } from "../../common/icons/16px/OpenTelemetryLogoIcon";
 import { SlackLogoIcon } from "../../common/icons/16px/SlackLogoIcon";
 import { ChevronIcon } from "../../common/icons/ChevronIcon";
 import { DigmaLogoIcon } from "../../common/icons/DigmaLogoIcon";
 import { ThreeDotsIcon } from "../../common/icons/ThreeDotsIcon";
 import { Direction } from "../../common/icons/types";
 import { AddEnvironmentDialog } from "../AddEnvironmentDialog";
+import { trackingEvents } from "../tracking";
 import { ExtendedEnvironment } from "../types";
 import { EnvironmentTab } from "./EnvironmentTab";
 import * as s from "./styles";
@@ -35,6 +40,7 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
   const [isAddEnvironmentDialogOpen, setIsAddEnvironmentDialogOpen] =
     useState(false);
   const [isKebabMenuOpen, setIsKebabMenuOpen] = useState(false);
+  const config = useContext(ConfigContext);
 
   useEffect(() => {
     const entry = environmentListContainerDimensions.entry;
@@ -147,19 +153,22 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
     const boundaryEl =
       document.getElementById(RECENT_ACTIVITY_CONTAINER_ID) || undefined;
 
-    const handleTroubleshootingClick = () => {
-      window.sendMessageToDigma({
-        action: globalActions.OPEN_TROUBLESHOOTING_GUIDE
+    const handleObservabilityChange = (value: boolean) => {
+      sendTrackingEvent(trackingEvents.OBSERVABILITY_TOGGLE_SWITCHED, {
+        value
+      });
+      window.sendMessageToDigma<SetObservabilityPayload>({
+        action: globalActions.SET_OBSERVABILITY,
+        payload: {
+          isObservabilityEnabled: value
+        }
       });
       setIsKebabMenuOpen(false);
     };
 
-    const handleInsightsOverviewClick = () => {
-      window.sendMessageToDigma<OpenDocumentationPayload>({
-        action: globalActions.OPEN_DOCUMENTATION,
-        payload: {
-          page: "environment-types"
-        }
+    const handleTroubleshootingClick = () => {
+      window.sendMessageToDigma({
+        action: globalActions.OPEN_TROUBLESHOOTING_GUIDE
       });
       setIsKebabMenuOpen(false);
     };
@@ -180,12 +189,25 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
             <MenuList
               items={[
                 {
-                  id: "insightsOverview",
-                  label: "Insights Overview",
-                  icon: (
-                    <FourPointedStarIcon size={16} color={"currentColor"} />
-                  ),
-                  onClick: handleInsightsOverviewClick
+                  id: "observability",
+                  customContent: (
+                    <s.ObservabilityListItem>
+                      <ListItemIconContainer>
+                        <OpenTelemetryLogoIcon
+                          size={16}
+                          color={"currentColor"}
+                        />
+                      </ListItemIconContainer>
+                      Observability
+                      <s.ObservabilityToggleSwitchContainer>
+                        <ToggleSwitch
+                          label={""}
+                          onChange={handleObservabilityChange}
+                          checked={config.isObservabilityEnabled}
+                        />
+                      </s.ObservabilityToggleSwitchContainer>
+                    </s.ObservabilityListItem>
+                  )
                 },
                 {
                   id: "troubleshooting",

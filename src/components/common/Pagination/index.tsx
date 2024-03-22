@@ -1,3 +1,4 @@
+import { useLayoutEffect } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
 import { ChevronIcon } from "../icons/ChevronIcon";
 import { DoubleChevronIcon } from "../icons/DoubleChevronIcon";
@@ -28,24 +29,36 @@ const getPaginationButtonIconColor = (
   }
 };
 
-export const Pagination = (props: PaginationProps) => {
+export const Pagination = ({
+  page,
+  pageSize,
+  itemsCount,
+  onPageChange,
+  extendedNavigation
+}: PaginationProps) => {
   const theme = useTheme();
 
-  const pageCount = Math.ceil(props.itemsCount / props.pageSize);
+  const pageCount = Math.ceil(itemsCount / pageSize);
 
-  const isPrevDisabled = props.page === 0;
-  const isNextDisabled = props.page === pageCount - 1;
+  const isPrevDisabled = page === 0 || pageCount === 0;
+  const isNextDisabled = page === pageCount - 1 || pageCount === 0;
 
   const handleButtonClick = (page: number) => {
-    props.onPageChange(page);
+    onPageChange(page);
   };
+
+  useLayoutEffect(() => {
+    if (page > pageCount - 1) {
+      onPageChange(Math.max(pageCount - 1, 0));
+    }
+  }, [page, pageCount, onPageChange]);
 
   return (
     <>
-      {(pageCount > 1 || props.extendedNavigation) && (
+      {(pageCount > 1 || extendedNavigation) && (
         <s.Container>
           <s.ButtonGroup>
-            {props.extendedNavigation && (
+            {extendedNavigation && (
               <s.Button
                 disabled={isPrevDisabled}
                 onClick={() => handleButtonClick(0)}
@@ -59,7 +72,7 @@ export const Pagination = (props: PaginationProps) => {
             )}
             <s.Button
               disabled={isPrevDisabled}
-              onClick={() => handleButtonClick(props.page - 1)}
+              onClick={() => handleButtonClick(page - 1)}
             >
               <ChevronIcon
                 direction={Direction.LEFT}
@@ -69,12 +82,12 @@ export const Pagination = (props: PaginationProps) => {
             </s.Button>
           </s.ButtonGroup>
           <s.PageCounter>
-            <s.CurrentPage>{props.page + 1}</s.CurrentPage> / {pageCount}
+            <s.CurrentPage>{page + 1}</s.CurrentPage> / {pageCount}
           </s.PageCounter>
           <s.ButtonGroup>
             <s.Button
               disabled={isNextDisabled}
-              onClick={() => handleButtonClick(props.page + 1)}
+              onClick={() => handleButtonClick(page + 1)}
             >
               <ChevronIcon
                 direction={Direction.RIGHT}
@@ -82,7 +95,7 @@ export const Pagination = (props: PaginationProps) => {
                 size={14}
               />
             </s.Button>
-            {props.extendedNavigation && (
+            {extendedNavigation && (
               <s.Button
                 disabled={isNextDisabled}
                 onClick={() => handleButtonClick(pageCount - 1)}

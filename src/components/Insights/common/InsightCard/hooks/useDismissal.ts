@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react";
-import { dispatcher } from "../../../../dispatcher";
-import { actions } from "../../actions";
-import { DismissInsightPayload, UndismissInsightPayload } from "../../types";
-import { DismissResponsePayload, UndismissResponsePayload } from "./types";
+import { dispatcher } from "../../../../../dispatcher";
+import { actions } from "../../../actions";
+import { DismissInsightPayload, UndismissInsightPayload } from "../../../types";
+import { DismissResponsePayload, UndismissResponsePayload } from "../types";
 
-export const useDismissalHandler = (insightId: string) => {
-  const [isLoading, setIsLoading] = useState(false);
+export const useDismissal = (insightId: string) => {
+  const [isDismissalChangeInProgress, setIsDismissalChangeInProgress] =
+    useState(false);
 
   useEffect(() => {
     const handleDismissed = (data: any) => {
       if (insightId === (data as DismissResponsePayload).insightId) {
-        setIsLoading(false);
+        setIsDismissalChangeInProgress(false);
       }
     };
 
@@ -27,7 +28,7 @@ export const useDismissalHandler = (insightId: string) => {
   useEffect(() => {
     const handleUndismissed = (data: any) => {
       if (insightId === (data as UndismissResponsePayload).insightId) {
-        setIsLoading(false);
+        setIsDismissalChangeInProgress(false);
       }
     };
 
@@ -42,10 +43,10 @@ export const useDismissalHandler = (insightId: string) => {
         handleUndismissed
       );
     };
-  }, []);
+  }, [insightId]);
 
   return {
-    isLoading,
+    isDismissalChangeInProgress,
     dismiss: () => {
       window.sendMessageToDigma<DismissInsightPayload>({
         action: actions.DISMISS,
@@ -53,7 +54,7 @@ export const useDismissalHandler = (insightId: string) => {
           insightId
         }
       });
-      setIsLoading(true);
+      setIsDismissalChangeInProgress(true);
     },
     show: () => {
       window.sendMessageToDigma<UndismissInsightPayload>({
@@ -62,7 +63,7 @@ export const useDismissalHandler = (insightId: string) => {
           insightId: insightId
         }
       });
-      setIsLoading(true);
+      setIsDismissalChangeInProgress(true);
     }
   };
 };

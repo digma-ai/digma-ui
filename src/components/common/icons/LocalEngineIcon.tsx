@@ -2,17 +2,19 @@ import React from "react";
 import { useIconProps } from "./hooks";
 import { IconProps } from "./types";
 
-const LocalEngineIconComponent = (
-  props: IconProps & { isActive?: boolean }
-) => {
-  const { size, color } = useIconProps(props);
+interface LocalEngineIconProps extends IconProps {
+  width?: number;
+  isActive?: boolean;
+}
+
+const LocalEngineIconComponent = (props: LocalEngineIconProps) => {
+  const { color } = useIconProps(props);
   const status = props.isActive ? "#6EBD9C" : undefined;
 
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={size}
-      height={size}
+      width={props.width || 16}
       viewBox="0 0 16 14"
       fill={color}
     >

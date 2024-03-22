@@ -40,7 +40,8 @@ const mockedScope: Scope = {
   },
   hasErrors: false,
   issuesInsightsCount: 0,
-  analyticsInsightsCount: 0
+  analyticsInsightsCount: 0,
+  unreadInsightsCount: 0
 };
 
 const mockedCodeContext: CodeContext = {

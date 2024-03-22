@@ -19,6 +19,9 @@ import { EndpointQueryOptimizationInsightProps } from "./types";
 
 const PAGE_SIZE = 3;
 
+/**
+ * @deprecated
+ */
 export const EndpointQueryOptimizationInsight = (
   props: EndpointQueryOptimizationInsightProps
 ) => {

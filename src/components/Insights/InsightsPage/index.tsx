@@ -11,6 +11,7 @@ import { ChangeScopePayload, ChangeViewPayload } from "../../Navigation/types";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { EmptyState } from "../../common/EmptyState";
 import { CardsIcon } from "../../common/icons/CardsIcon";
+import { ViewMode } from "../InsightsCatalog/types";
 import { actions } from "../actions";
 import { DurationBreakdownInsight } from "../common/insights/DurationBreakdownInsight";
 import { DurationInsight } from "../common/insights/DurationInsight";
@@ -91,8 +92,10 @@ const renderInsightCard = (
     event?: string
   ) => void,
   isJiraHintEnabled: boolean,
-  onRefresh: () => void
+  onRefresh: () => void,
+  viewMode: ViewMode
 ): JSX.Element | undefined => {
+  const isMarkAsReadButtonEnabled = viewMode === ViewMode.OnlyUnread;
   // const handleErrorSelect = (errorId: string, insightType: InsightType) => {
   //   sendTrackingEvent(globalTrackingEvents.USER_ACTION, {
   //     action: `Follow ${insightType} link`
@@ -211,6 +214,7 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={onRefresh}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -224,6 +228,7 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={onRefresh}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -238,6 +243,7 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={onRefresh}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -254,6 +260,7 @@ const renderInsightCard = (
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
         onTraceButtonClick={handleTraceButtonClick}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -270,6 +277,7 @@ const renderInsightCard = (
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
         onTraceButtonClick={handleTraceButtonClick}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -282,6 +290,7 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={onRefresh}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -298,6 +307,7 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={onRefresh}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -314,6 +324,7 @@ const renderInsightCard = (
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -330,6 +341,7 @@ const renderInsightCard = (
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -347,6 +359,7 @@ const renderInsightCard = (
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -360,6 +373,7 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={onRefresh}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -372,6 +386,7 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={onRefresh}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -386,6 +401,7 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={onRefresh}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -401,6 +417,7 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={onRefresh}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -415,6 +432,7 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={onRefresh}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -430,6 +448,7 @@ const renderInsightCard = (
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -442,6 +461,7 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={onRefresh}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -458,6 +478,7 @@ const renderInsightCard = (
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -475,6 +496,7 @@ const renderInsightCard = (
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -491,6 +513,7 @@ const renderInsightCard = (
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -577,7 +600,8 @@ export const InsightsPage = (props: InsightsPageProps) => {
             !isUndefined(isInsightJiraTicketHintShown) &&
               !isInsightJiraTicketHintShown?.value &&
               j === insightIndexWithJiraHint,
-            props.onRefresh
+            props.onRefresh,
+            props.viewMode
           );
         })
       ) : props.isFilteringEnabled ? (

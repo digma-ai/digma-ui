@@ -43,14 +43,16 @@ export interface CodeDetails {
   codeObjectId: string;
 }
 
+export interface ScopeSpan {
+  displayName: string;
+  spanCodeObjectId: string;
+  methodId?: string;
+  serviceName: string | null;
+  role: "Entry" | "Internal" | "Unknown" | null;
+}
+
 export interface Scope {
-  span: {
-    displayName: string;
-    spanCodeObjectId: string;
-    methodId?: string;
-    serviceName: string | null;
-    role: "Entry" | "Internal" | "Unknown" | null;
-  } | null;
+  span: ScopeSpan | null;
   code: {
     relatedCodeDetailsList: CodeDetails[];
     codeDetailsList: CodeDetails[];
@@ -58,6 +60,7 @@ export interface Scope {
   hasErrors: boolean;
   issuesInsightsCount: number;
   analyticsInsightsCount: number;
+  unreadInsightsCount: number;
 }
 
 export interface InsightsQuery {
@@ -68,6 +71,7 @@ export interface InsightsQuery {
   scopedSpanCodeObjectId?: string | null;
   showDismissed: boolean;
   insightViewType: InsightViewType;
+  showUnreadOnly: boolean;
 }
 
 export interface GlobalState {

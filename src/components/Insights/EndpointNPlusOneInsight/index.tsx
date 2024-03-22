@@ -21,6 +21,9 @@ import { EndpointNPlusOneInsightProps } from "./types";
 const FRACTION_MIN_LIMIT = 0.01;
 const PAGE_SIZE = 3;
 
+/**
+ * @deprecated
+ */
 export const EndpointNPlusOneInsight = (
   props: EndpointNPlusOneInsightProps
 ) => {

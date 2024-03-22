@@ -123,6 +123,7 @@ export const SpanQueryOptimizationInsight = (
           : undefined
       }
       onGoToSpan={props.onGoToSpan}
+      isMarkAsReadButtonEnabled={props.isMarkAsReadButtonEnabled}
     />
   );
 };

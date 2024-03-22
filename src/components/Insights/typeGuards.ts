@@ -81,7 +81,9 @@ export const isEndpointHighUsageInsight = (
 ): insight is EndpointHighUsageInsight =>
   insight.type === InsightType.HighUsage;
 
-// obsolete
+/**
+ * @deprecated
+ */
 export const isEndpointSlowestSpansInsight = (
   insight: CodeObjectInsight
 ): insight is EndpointSlowestSpansInsight =>
@@ -100,7 +102,9 @@ export const isSpanNPlusOneInsight = (
   insight: CodeObjectInsight
 ): insight is SpanNPlusOneInsight => insight.type === InsightType.SpanNPlusOne;
 
-// obsolete
+/**
+ * @deprecated
+ */
 export const isEndpointSuspectedNPlusOneInsight = (
   insight: CodeObjectInsight
 ): insight is EndpointSuspectedNPlusOneInsight =>
@@ -111,7 +115,9 @@ export const isEndpointSpanNPlusOneInsight = (
 ): insight is EndpointSpanNPlusOneInsight =>
   insight.type === InsightType.EndpointSpanNPlusOneV2;
 
-// obsolete
+/**
+ * @deprecated
+ */
 export const isEndpointQueryOptimizationInsight = (
   insight: CodeObjectInsight
 ): insight is EndpointQueryOptimizationInsight =>
@@ -140,7 +146,9 @@ export const isEndpointSlowdownSourceInsight = (
 ): insight is EndpointSlowdownSourceInsight =>
   insight.type === InsightType.EndpointSlowdownSource;
 
-// obsolete
+/**
+ * @deprecated
+ */
 export const isEndpointDurationSlowdownInsight = (
   insight: CodeObjectInsight
 ): insight is EndpointDurationSlowdownInsight =>
@@ -151,13 +159,17 @@ export const isEndpointBreakdownInsight = (
 ): insight is EndpointBreakdownInsight =>
   insight.type === InsightType.EndpointBreakdown;
 
-// obsolete
+/**
+ * @deprecated
+ */
 export const isSpanScalingWellInsight = (
   insight: CodeObjectInsight
 ): insight is SpanScalingWellInsight =>
   insight.type === InsightType.SpanScalingWell;
 
-// obsolete
+/**
+ * @deprecated
+ */
 export const isSpanScalingInsufficientDataInsight = (
   insight: CodeObjectInsight
 ): insight is SpanScalingInsufficientDataInsight =>
@@ -168,7 +180,9 @@ export const isSessionInViewEndpointInsight = (
 ): insight is SessionInViewEndpointInsight =>
   insight.type === InsightType.EndpointSessionInView;
 
-// obsolete
+/**
+ * @deprecated
+ */
 export const isChattyApiEndpointInsight = (
   insight: CodeObjectInsight
 ): insight is ChattyApiEndpointInsight =>

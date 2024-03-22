@@ -17,6 +17,9 @@ import { DigmaSignature } from "../common/DigmaSignature";
 import { QueryOptimizationEndpoints } from "../common/QueryOptimizationEndpoints";
 import { InsightTicketProps } from "../types";
 
+/**
+ * @deprecated
+ */
 export const EndpointQueryOptimizationInsightTicket = (
   props: InsightTicketProps<EndpointQueryOptimizationInsight>
 ) => {

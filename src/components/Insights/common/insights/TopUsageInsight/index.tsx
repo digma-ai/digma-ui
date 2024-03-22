@@ -267,6 +267,7 @@ export const TopUsageInsight = (props: TopUsageInsightProps) => {
       onRecalculate={props.onRecalculate}
       onRefresh={props.onRefresh}
       onGoToSpan={props.onGoToSpan}
+      isMarkAsReadButtonEnabled={props.isMarkAsReadButtonEnabled}
     />
   );
 };
