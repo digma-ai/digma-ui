@@ -72,17 +72,17 @@ export const getInsightTypeInfo = (
     // deprecated
     [InsightType.EndpointSpanNPlusOne]: {
       icon: SQLDatabaseIcon,
-      label: "Suspected N-Plus-1",
+      label: "Suspected N+1",
       description: descriptionProvider.NPlusOneDescription
     },
     [InsightType.EndpointSpanNPlusOneV2]: {
       icon: SQLDatabaseIcon,
-      label: "Suspected N-Plus-1",
+      label: "Suspected N+1",
       description: descriptionProvider.NPlusOneDescription
     },
     [InsightType.SpanNPlusOne]: {
       icon: SQLDatabaseIcon,
-      label: "Suspected N-Plus-1",
+      label: "Suspected N+1",
       description: descriptionProvider.NPlusOneDescription
     },
     [InsightType.SpanEndpointBottleneck]: {
@@ -135,7 +135,13 @@ export const getInsightTypeInfo = (
       label: "Session in View Query Detected",
       description: descriptionProvider.SessionInViewDescription
     },
+    // deprecated
     [InsightType.EndpointChattyApi]: {
+      icon: SQLDatabaseIcon,
+      label: "Excessive API Calls Detected",
+      description: descriptionProvider.ChattyApiDescription
+    },
+    [InsightType.EndpointChattyApiV2]: {
       icon: SQLDatabaseIcon,
       label: "Excessive API Calls Detected",
       description: descriptionProvider.ChattyApiDescription
@@ -152,12 +158,18 @@ export const getInsightTypeInfo = (
     },
     [InsightType.SpanQueryOptimization]: {
       icon: SQLDatabaseIcon,
-      label: "Query Optimization Suggested",
+      label: "Inefficient Query",
       description: descriptionProvider.QueryOptimization
     },
+    // deprecated
     [InsightType.EndpointQueryOptimization]: {
       icon: SQLDatabaseIcon,
-      label: "Query Optimization Suggested",
+      label: "Inefficient Query",
+      description: descriptionProvider.QueryOptimization
+    },
+    [InsightType.EndpointQueryOptimizationV2]: {
+      icon: SQLDatabaseIcon,
+      label: "Inefficient Query",
       description: descriptionProvider.QueryOptimization
     }
   };

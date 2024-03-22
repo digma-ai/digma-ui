@@ -1,6 +1,4 @@
-import { useContext } from "react";
 import { getDurationString } from "../../../../../utils/getDurationString";
-import { ConfigContext } from "../../../../common/App/ConfigContext";
 import { InsightType, Trace } from "../../../types";
 import { Info } from "../../Info";
 import { InsightCard } from "../../InsightCard";
@@ -13,7 +11,6 @@ import { EndpointNPlusOneInsightProps } from "./types";
 export const EndpointNPlusOneInsight = (
   props: EndpointNPlusOneInsightProps
 ) => {
-  const config = useContext(ConfigContext);
   const { span } = props.insight;
 
   const handleSpanLinkClick = (spanCodeObjectId: string) => {
@@ -43,18 +40,15 @@ export const EndpointNPlusOneInsight = (
     <InsightCard
       insight={props.insight}
       onJiraButtonClick={handleTicketInfoButtonClick}
-      onGoToTrace={
-        config.isJaegerEnabled
-          ? () =>
-              handleTraceButtonClick(
-                {
-                  name: spanName,
-                  id: span.traceId
-                },
-                props.insight.type,
-                spanInfo.spanCodeObjectId
-              )
-          : undefined
+      onGoToTrace={() =>
+        handleTraceButtonClick(
+          {
+            name: spanName,
+            id: span.traceId
+          },
+          props.insight.type,
+          spanInfo.spanCodeObjectId
+        )
       }
       jiraTicketInfo={{
         ticketLink: span.ticketLink,
@@ -63,7 +57,7 @@ export const EndpointNPlusOneInsight = (
       content={
         <ContentContainer>
           <Details>
-            <Description>Assets</Description>
+            <Description>Asset</Description>
             <s.SpanListItem
               name={spanName}
               key={spanName}

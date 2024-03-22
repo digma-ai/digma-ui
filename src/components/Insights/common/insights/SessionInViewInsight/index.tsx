@@ -41,7 +41,7 @@ export const SessionInViewInsight = (props: SessionInViewInsightProps) => {
       content={
         <ContentContainer>
           <Description>
-            Query execution was detected during the view rendering.
+            Query execution was detected during the view rendering
           </Description>
           <s.List>
             {pageItems.map((span) => {
@@ -49,7 +49,7 @@ export const SessionInViewInsight = (props: SessionInViewInsightProps) => {
               const traceId = span.traceId;
               const spanCodeObjectId = span.renderSpan.spanCodeObjectId;
               const buttons =
-                traceId && config.isJaegerEnabled
+                config.isJaegerEnabled && traceId
                   ? [
                       <Tooltip title={"Open Trace"} key={"openTrace"}>
                         <Button
