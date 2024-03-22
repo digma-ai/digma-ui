@@ -8,6 +8,7 @@ import { isNumber } from "../../../typeGuards/isNumber";
 import { isString } from "../../../typeGuards/isString";
 import { isUndefined } from "../../../typeGuards/isUndefined";
 import { GetInsightStatsPayload } from "../../../types";
+import { formatUnit } from "../../../utils/formatUnit";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { ChangeScopePayload } from "../../Navigation/types";
 import { ConfigContext } from "../../common/App/ConfigContext";
@@ -243,7 +244,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
             <s.ViewModeToolbarRow>
               <s.InsightCountDescription>
                 <s.InsightCount>{props.unreadCount}</s.InsightCount>
-                unread issue{props.unreadCount === 1 ? "" : "s"}
+                unread {formatUnit(props.unreadCount || 0, "issue")}
               </s.InsightCountDescription>
               <s.MarkingAsReadToolbarActionsContainer>
                 <s.MarkingAsReadToolbarActionLink
@@ -277,7 +278,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
             {mode === ViewMode.OnlyDismissed && (
               <s.InsightCountDescription>
                 <s.InsightCount>{props.dismissedCount}</s.InsightCount>
-                dismissed issue{props.dismissedCount === 1 ? "" : "s"}
+                dismissed {formatUnit(props.dismissedCount || 0, "issue")}
               </s.InsightCountDescription>
             )}
             {mode === ViewMode.OnlyUnread && isMarkingAsReadToolbarVisible && (

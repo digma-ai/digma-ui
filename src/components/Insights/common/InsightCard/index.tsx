@@ -60,7 +60,7 @@ export const InsightCard = (props: InsightCardProps) => {
     if (previousIsOperationInProgress && !isOperationInProgress) {
       props.onRefresh(props.insight.type);
 
-      // TODO: remove after implementing the GLOBAL/SET_INSIGHT_STATs message on the plugin's side
+      // TODO: remove after implementing the GLOBAL/SET_INSIGHT_STATS message on the plugin's side
       // Trigger GLOBAL/SET_SCOPE response message from the plugin with actual unread insights count
       window.sendMessageToDigma<ChangeScopePayload>({
         action: globalActions.CHANGE_SCOPE,

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { isNumber } from "../../../typeGuards/isNumber";
+import { formatUnit } from "../../../utils/formatUnit";
 import { ArrowIcon } from "../../common/icons/12px/ArrowIcon";
 import { TreeNodesIcon } from "../../common/icons/12px/TreeNodesIcon";
 import { Toggle } from "../../common/v3/Toggle";
@@ -64,7 +65,7 @@ export const AssetsViewScopeConfiguration = ({
         <s.AssetsCount>
           {isNumber(assetsCount) ? ` ${assetsCount} ` : " "}
         </s.AssetsCount>
-        {assetTypeDescription} asset{assetsCount === 1 ? "" : "s"}
+        {assetTypeDescription} {formatUnit(assetsCount || 0, "asset")}
       </s.Label>
     </s.Container>
   );
