@@ -28,14 +28,14 @@ export const Pending: Story = {
   args: {
     index: 1,
     name: "Environment Name",
-    state: "pending"
+    state: "not-completed"
   }
 };
 
-export const Cnofirmed: Story = {
+export const Confirmed: Story = {
   args: {
     index: 1,
     name: "Environment Name",
-    state: "confirmed"
+    state: "completed"
   }
 };

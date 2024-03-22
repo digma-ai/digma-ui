@@ -1,10 +1,10 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { CreateEnvironmentPanel } from ".";
+import { EnvironmentNameStep } from ".";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
-const meta: Meta<typeof CreateEnvironmentPanel> = {
-  title: "Recent Activity/CreateEnvironmentPanel",
-  component: CreateEnvironmentPanel,
+const meta: Meta<typeof EnvironmentNameStep> = {
+  title: "Recent Activity/CreateEnvironmentPanel/EnvironmentNameStep",
+  component: EnvironmentNameStep,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
     layout: "fullscreen"
@@ -16,12 +16,6 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
-export const Local: Story = {
-  args: {
-    tabs: [
-      { index: 1, name: "Environment Name", state: "completed" },
-      { index: 2, name: "Register", state: "active" },
-      { index: 3, name: "Environment Type", state: "not-completed" }
-    ]
-  }
+export const Default: Story = {
+  args: {}
 };

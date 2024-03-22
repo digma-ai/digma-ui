@@ -1,12 +1,13 @@
+import { StepStatus } from "../../../../InstallationWizard/Step/types";
+
 export interface TabProps {
   index: number;
   name: string;
-  state: TabState;
+  state: StepStatus;
 }
-export type TabState = "active" | "confirmed" | "pending";
 
 export interface IndexProps {
-  $state: TabState;
+  $state: StepStatus;
 }
 
 export interface NameProps {

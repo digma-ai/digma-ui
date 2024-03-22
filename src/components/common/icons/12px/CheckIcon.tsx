@@ -1,8 +1,8 @@
 import React from "react";
 import { useIconProps } from "../hooks";
-import { RotatableIconProps } from "../types";
+import { IconProps } from "../types";
 
-const CheckIconComponent = (props: RotatableIconProps) => {
+const CheckIconComponent = (props: IconProps) => {
   const { size, color } = useIconProps(props);
 
   return (

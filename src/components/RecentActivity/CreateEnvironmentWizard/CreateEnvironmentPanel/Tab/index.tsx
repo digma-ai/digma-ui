@@ -8,7 +8,7 @@ export const Tab = ({ index, name, state }: TabProps) => {
   return (
     <s.Container>
       <s.Index $state={state}>
-        {state === "confirmed" ? (
+        {state === "completed" ? (
           <CheckIcon color={theme.colors.v3.status.success} />
         ) : (
           index

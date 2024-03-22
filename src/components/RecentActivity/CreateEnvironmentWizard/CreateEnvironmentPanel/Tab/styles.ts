@@ -22,9 +22,9 @@ export const Index = styled.div<IndexProps>`
     switch ($state) {
       case "active":
         return `background: ${theme.colors.v3.surface.brandPrimary};`;
-      case "pending":
+      case "not-completed":
         return `border: 1px solid ${theme.colors.v3.surface.highlight};`;
-      case "confirmed":
+      case "completed":
         return `border: 1px solid ${theme.colors.v3.status.success};`;
       default:
         return "";
