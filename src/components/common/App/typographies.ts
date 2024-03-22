@@ -71,6 +71,12 @@ export const caption2RegularTypography = css`
   line-height: ${typographies.captionTwo.lineHeight}px;
 `;
 
+export const caption2BoldTypography = css`
+  font-size: ${typographies.captionTwo.fontSize}px;
+  font-weight: ${typographies.captionTwo.fontWeight.bold};
+  line-height: ${typographies.captionTwo.lineHeight}px;
+`;
+
 export const footnoteRegularTypography = css`
   font-size: ${typographies.footNote.fontSize}px;
   font-weight: ${typographies.footNote.fontWeight.regular};
