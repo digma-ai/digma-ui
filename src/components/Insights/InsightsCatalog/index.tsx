@@ -260,12 +260,13 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
               </s.BackToAllInsightsButtonIconContainer>
               Back to All Issues
             </s.BackToAllInsightsButton>
-            {mode === ViewMode.OnlyDismissed && (
-              <s.InsightCountDescription>
-                <s.InsightCount>{props.dismissedCount}</s.InsightCount>
-                dismissed {formatUnit(props.dismissedCount || 0, "issue")}
-              </s.InsightCountDescription>
-            )}
+            {mode === ViewMode.OnlyDismissed &&
+              isNumber(props.dismissedCount) && (
+                <s.InsightCountDescription>
+                  <s.InsightCount>{props.dismissedCount}</s.InsightCount>
+                  dismissed {formatUnit(props.dismissedCount || 0, "issue")}
+                </s.InsightCountDescription>
+              )}
             {mode === ViewMode.OnlyUnread && isMarkingAsReadToolbarVisible && (
               <s.MarkingAsReadToolbarActionLink
                 onClick={handleReadAllLinkClick}
