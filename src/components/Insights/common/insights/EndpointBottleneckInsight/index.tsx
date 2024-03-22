@@ -51,7 +51,6 @@ export const EndpointBottleneckInsight = (
             <Description>Asset</Description>
             <s.SpanListItem
               name={spanName}
-              key={spanName}
               onClick={() => handleSpanLinkClick(spanCodeObjectId)}
             />
           </Details>

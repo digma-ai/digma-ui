@@ -42,8 +42,10 @@ export type GenericEndpointInsight =
   | EndpointBreakdownInsight
   | SessionInViewEndpointInsight
   | ChattyApiEndpointInsight
+  | EndpointChattyApiV2Insight
   | EndpointHighNumberOfQueriesInsight
-  | EndpointQueryOptimizationInsight;
+  | EndpointQueryOptimizationInsight
+  | EndpointQueryOptimizationV2Insight;
 
 export type GenericSpanInsight =
   | SpanDurationsInsight
@@ -797,6 +799,9 @@ export interface SessionInViewEndpointInsight extends EndpointInsight {
   }[];
 }
 
+/**
+ * @deprecated
+ */
 export interface ChattyApiEndpointInsight extends EndpointInsight {
   name: "HTTP Chatter";
   type: InsightType.EndpointChattyApi;
@@ -808,6 +813,19 @@ export interface ChattyApiEndpointInsight extends EndpointInsight {
     clientSpan: SpanInfo;
     traceId?: string;
   }[];
+}
+
+export interface EndpointChattyApiV2Insight extends EndpointInsight {
+  name: "HTTP Chatter";
+  type: InsightType.EndpointChattyApiV2;
+  category: InsightCategory.Performance;
+  specifity: InsightSpecificity.TargetAndReasonFound;
+  importance: InsightImportance.HighlyImportant;
+  span: {
+    repeats: number;
+    clientSpan: SpanInfo;
+    traceId?: string;
+  };
 }
 
 export interface EndpointHighNumberOfQueriesInsight extends EndpointInsight {
@@ -860,6 +878,9 @@ export interface EndpointQueryOptimizationSpan {
   ticketLink: string | null;
 }
 
+/**
+ * @deprecated
+ */
 export interface EndpointQueryOptimizationInsight extends EndpointInsight {
   name: "Query Optimization";
   type: InsightType.EndpointQueryOptimization;
@@ -868,6 +889,16 @@ export interface EndpointQueryOptimizationInsight extends EndpointInsight {
   importance: InsightImportance.HighlyImportant;
   isRecalculateEnabled: true;
   spans: EndpointQueryOptimizationSpan[];
+}
+
+export interface EndpointQueryOptimizationV2Insight extends EndpointInsight {
+  name: "Query Optimization";
+  type: InsightType.EndpointQueryOptimizationV2;
+  category: InsightCategory.Performance;
+  specifity: InsightSpecificity.TargetAndReasonFound;
+  importance: InsightImportance.HighlyImportant;
+  isRecalculateEnabled: true;
+  span: EndpointQueryOptimizationSpan;
 }
 
 export interface InsightsQuery {

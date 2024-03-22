@@ -35,11 +35,13 @@ export enum InsightType {
   SpanScalingWell = "SpanScalingWell", // deprecated
   SpanScalingInsufficientData = "SpanScalingInsufficientData", // deprecated
   EndpointSessionInView = "EndpointSessionInView",
-  EndpointChattyApi = "EndpointChattyApi",
+  EndpointChattyApi = "EndpointChattyApi", // deprecated
+  EndpointChattyApiV2 = "EndpointChattyApiV2",
   EndpointHighNumberOfQueries = "EndpointHighNumberOfQueries",
   SpanNexus = "SpanNexus",
   SpanQueryOptimization = "SpanQueryOptimization",
-  EndpointQueryOptimization = "EndpointQueryOptimization",
+  EndpointQueryOptimization = "EndpointQueryOptimization", // deprecated
+  EndpointQueryOptimizationV2 = "EndpointQueryOptimizationV2",
   EndpointSlowdownSource = "EndpointSlowdownSource"
 }
 

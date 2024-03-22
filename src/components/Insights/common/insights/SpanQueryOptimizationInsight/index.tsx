@@ -1,8 +1,6 @@
-import { useContext } from "react";
 import { usePagination } from "../../../../../hooks/usePagination";
 import { getDurationString } from "../../../../../utils/getDurationString";
 import { trimEndpointScheme } from "../../../../../utils/trimEndpointScheme";
-import { ConfigContext } from "../../../../common/App/ConfigContext";
 import { Pagination } from "../../../../common/v3/Pagination";
 import { InsightType, Trace } from "../../../types";
 import { InsightCard } from "../../InsightCard";
@@ -18,7 +16,6 @@ const PAGE_SIZE = 3;
 export const SpanQueryOptimizationInsight = (
   props: QueryOptimizationInsightProps
 ) => {
-  const config = useContext(ConfigContext);
   const endpoints = props.insight.endpoints || [];
   const [pageItems, page, setPage] = usePagination(
     endpoints,
@@ -80,7 +77,7 @@ export const SpanQueryOptimizationInsight = (
           </ColumnsContainer>
           {endpoints.length > 0 && (
             <>
-              <Description>Affected endpoints</Description>
+              <Description>Affected Endpoints ({endpoints.length})</Description>
               <s.EndpointList>
                 {pageItems.map((x) => {
                   const spanCodeObjectId = x.endpointInfo.spanCodeObjectId;
@@ -113,7 +110,7 @@ export const SpanQueryOptimizationInsight = (
         isHintEnabled: props.isJiraHintEnabled
       }}
       onGoToTrace={
-        config.isJaegerEnabled && traceId
+        traceId
           ? () =>
               handleTraceButtonClick(
                 {

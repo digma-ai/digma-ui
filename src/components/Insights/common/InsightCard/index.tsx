@@ -247,7 +247,8 @@ export const InsightCard = (props: InsightCardProps) => {
         )
       });
 
-    props.onGoToTrace &&
+    config.isJaegerEnabled &&
+      props.onGoToTrace &&
       buttonsToRender.push({
         tooltip: "Open Trace",
         button: (btnProps) => (

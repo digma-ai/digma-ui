@@ -8,5 +8,7 @@ export const InfoContainer = styled.div`
 `;
 
 export const SpanListItem = styled(ListItem)`
-  height: 32px;
+  height: 28px;
+  padding: 4px 0;
+  background: none;
 `;
