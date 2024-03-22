@@ -75,3 +75,11 @@ export interface SetObservabilityPayload {
 export interface OpenInstallationWizardPayload {
   skipInstallationStep: boolean;
 }
+
+export interface GetInsightStatsPayload {
+  scope: {
+    span: {
+      spanCodeObjectId: string;
+    };
+  } | null;
+}

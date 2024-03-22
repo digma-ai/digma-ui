@@ -60,9 +60,13 @@ export const Tabs = (props: TabsProps) => {
         const isNewIndicatorVisible =
           tab.hasNewData ||
           (tab.id === "insights" &&
-            config.scope &&
-            isNumber(config.scope.unreadInsightsCount) &&
-            config.scope.unreadInsightsCount > 0);
+          config.insightStats &&
+          config.scope?.span?.spanCodeObjectId ===
+            config.insightStats.scope?.span.spanCodeObjectId
+            ? config.insightStats && config.insightStats.unreadInsightsCount > 0
+            : config.scope &&
+              isNumber(config.scope.unreadInsightsCount) &&
+              config.scope.unreadInsightsCount > 0);
 
         return (
           <Tooltip
