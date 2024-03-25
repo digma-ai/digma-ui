@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { openURLInDefaultBrowser } from "../../../utils/openURLInDefaultBrowser";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
-import { DeploymentType, EnvironmentType } from "../../common/App/types";
+import { EnvironmentType } from "../../common/App/types";
 import { IconTag } from "../../common/IconTag";
 import { CodeIcon } from "../../common/icons/16px/CodeIcon";
 import { InfinityIcon } from "../../common/icons/InfinityIcon";
@@ -15,8 +15,6 @@ const DIGMA_FOR_TEAMS_URL = "https://digma.ai/digma-for-teams/";
 
 export const EnvironmentTypePanel = (props: EnvironmentTypePanelProps) => {
   const config = useContext(ConfigContext);
-  const isHelmDeployment =
-    config.backendInfo?.deploymentType === DeploymentType.HELM;
 
   const handleEnvironmentTypeButtonClick = (type: EnvironmentType) => {
     const typeData = environmentTypes.find((x) => x.type === type);
@@ -27,7 +25,7 @@ export const EnvironmentTypePanel = (props: EnvironmentTypePanelProps) => {
       });
     }
 
-    if (type === "shared" && !isHelmDeployment) {
+    if (type === "shared" && !config.backendInfo?.isCentralized) {
       openURLInDefaultBrowser(DIGMA_FOR_TEAMS_URL);
       return;
     }
@@ -59,7 +57,7 @@ export const EnvironmentTypePanel = (props: EnvironmentTypePanelProps) => {
       button: (
         <Button
           onClick={() => handleEnvironmentTypeButtonClick("shared")}
-          label={isHelmDeployment ? "Add" : "Learn more"}
+          label={config.backendInfo?.isCentralized ? "Add" : "Learn more"}
           buttonType={"secondary"}
         />
       )
