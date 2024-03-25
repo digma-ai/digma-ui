@@ -6,7 +6,6 @@ import { isString } from "../../../../typeGuards/isString";
 import { FeatureFlag, GetInsightStatsPayload } from "../../../../types";
 import { sendTrackingEvent } from "../../../../utils/sendTrackingEvent";
 import { Spinner } from "../../../Navigation/CodeButtonMenu/Spinner";
-import { ChangeScopePayload } from "../../../Navigation/types";
 import { ConfigContext } from "../../../common/App/ConfigContext";
 import { CheckmarkCircleIcon } from "../../../common/icons/12px/CheckmarkCircleIcon";
 import { TraceIcon } from "../../../common/icons/12px/TraceIcon";
@@ -59,19 +58,6 @@ export const InsightCard = (props: InsightCardProps) => {
   useEffect(() => {
     if (previousIsOperationInProgress && !isOperationInProgress) {
       props.onRefresh(props.insight.type);
-
-      // TODO: remove after implementing the GLOBAL/SET_INSIGHT_STATS message on the plugin's side
-      // Trigger GLOBAL/SET_SCOPE response message from the plugin with actual unread insights count
-      window.sendMessageToDigma<ChangeScopePayload>({
-        action: globalActions.CHANGE_SCOPE,
-        payload: {
-          span: config.scope?.span
-            ? {
-                spanCodeObjectId: config.scope.span.spanCodeObjectId
-              }
-            : null
-        }
-      });
 
       window.sendMessageToDigma<GetInsightStatsPayload>({
         action: globalActions.GET_INSIGHT_STATS,

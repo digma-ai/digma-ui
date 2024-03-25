@@ -10,7 +10,6 @@ import { isUndefined } from "../../../typeGuards/isUndefined";
 import { GetInsightStatsPayload } from "../../../types";
 import { formatUnit } from "../../../utils/formatUnit";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
-import { ChangeScopePayload } from "../../Navigation/types";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Pagination } from "../../common/Pagination";
 import { SearchInput } from "../../common/SearchInput";
@@ -117,19 +116,6 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
   useEffect(() => {
     if (previousIsMarkingAllAsReadInProgress && !isMarkingAllAsReadInProgress) {
       refreshData();
-
-      // TODO: remove after implementing the GLOBAL/SET_INSIGHT_STATS message on the plugin's side
-      // Trigger GLOBAL/SET_SCOPE response message from the plugin with actual unread insights count
-      window.sendMessageToDigma<ChangeScopePayload>({
-        action: globalActions.CHANGE_SCOPE,
-        payload: {
-          span: config.scope?.span
-            ? {
-                spanCodeObjectId: config.scope.span.spanCodeObjectId
-              }
-            : null
-        }
-      });
 
       window.sendMessageToDigma<GetInsightStatsPayload>({
         action: globalActions.GET_INSIGHT_STATS,
