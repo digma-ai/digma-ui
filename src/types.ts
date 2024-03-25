@@ -1,3 +1,4 @@
+import { Environment } from "./components/common/App/types";
 import { Duration } from "./globals";
 
 export enum FeatureFlag {
@@ -74,4 +75,18 @@ export interface SetObservabilityPayload {
 
 export interface OpenInstallationWizardPayload {
   skipInstallationStep: boolean;
+}
+
+export interface ChangeEnvironmentPayload {
+  environment: Environment;
+}
+
+export interface ChangeScopePayload {
+  span: {
+    spanCodeObjectId: string;
+  } | null;
+}
+
+export interface ChangeViewPayload {
+  view: string;
 }

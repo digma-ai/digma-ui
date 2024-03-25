@@ -3,6 +3,11 @@ import { actions as globalActions } from "../../actions";
 import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
 import { isNull } from "../../typeGuards/isNull";
+import {
+  ChangeEnvironmentPayload,
+  ChangeScopePayload,
+  ChangeViewPayload
+} from "../../types";
 import { sendTrackingEvent } from "../../utils/sendTrackingEvent";
 import { AsyncActionResultData } from "../InstallationWizard/types";
 import { ConfigContext } from "../common/App/ConfigContext";
@@ -28,9 +33,6 @@ import { trackingEvents } from "./tracking";
 import {
   AddAnnotationPayload,
   AutoFixMissingDependencyPayload,
-  ChangeEnvironmentPayload,
-  ChangeScopePayload,
-  ChangeViewPayload,
   CodeContext,
   HighlightMethodInEditorPayload,
   OpenDashboardPayload,
@@ -272,7 +274,7 @@ export const Navigation = () => {
     }
 
     window.sendMessageToDigma<ChangeEnvironmentPayload>({
-      action: actions.CHANGE_ENVIRONMENT,
+      action: globalActions.CHANGE_ENVIRONMENT,
       payload: {
         environment: environmentToChange
       }
@@ -284,7 +286,7 @@ export const Navigation = () => {
   const changeTab = (tabId: string) => {
     setCurrentTab(tabId);
     window.sendMessageToDigma<ChangeViewPayload>({
-      action: actions.CHANGE_VIEW,
+      action: globalActions.CHANGE_VIEW,
       payload: {
         view: tabId
       }
@@ -313,7 +315,7 @@ export const Navigation = () => {
 
   const changeScope = (spanCodeObjectId: string) => {
     window.sendMessageToDigma<ChangeScopePayload>({
-      action: actions.CHANGE_SCOPE,
+      action: globalActions.CHANGE_SCOPE,
       payload: {
         span: {
           spanCodeObjectId
