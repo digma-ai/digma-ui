@@ -6,6 +6,7 @@ import { actions as globalActions } from "../../actions";
 import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
 import { trackingEvents as globalTrackingEvents } from "../../trackingEvents";
+import { ChangeEnvironmentPayload } from "../../types";
 import { groupBy } from "../../utils/groupBy";
 import { sendTrackingEvent } from "../../utils/sendTrackingEvent";
 import { ConfigContext } from "../common/App/ConfigContext";
@@ -94,6 +95,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
   const previousUserRegistrationEmail = usePrevious(
     config.userRegistrationEmail
   );
+  const previousEnvironment = usePrevious(config.environment);
   const { observe, entry } = useDimensions();
 
   const environmentActivities = useMemo(
@@ -201,8 +203,35 @@ export const RecentActivity = (props: RecentActivityProps) => {
     previousUserRegistrationEmail
   ]);
 
+  useEffect(() => {
+    const environmentToSelect = environments.find(
+      (x) => x.originalName === config.environment?.originalName
+    );
+
+    if (
+      config.environment &&
+      previousEnvironment?.originalName !== config.environment.originalName &&
+      environmentToSelect
+    ) {
+      setSelectedEnvironment(environmentToSelect);
+    }
+  }, [config.environment, previousEnvironment, environments]);
+
   const handleEnvironmentSelect = (environment: ExtendedEnvironment) => {
     setSelectedEnvironment(environment);
+
+    const environmentToSelect = config.environments?.find(
+      (x) => x.originalName === environment.originalName
+    );
+
+    if (environmentToSelect) {
+      window.sendMessageToDigma<ChangeEnvironmentPayload>({
+        action: globalActions.CHANGE_ENVIRONMENT,
+        payload: {
+          environment: environmentToSelect
+        }
+      });
+    }
   };
 
   const handleSpanLinkClick = (span: EntrySpan) => {

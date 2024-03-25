@@ -19,22 +19,8 @@ export interface OpenDashboardPayload {
   environment?: Environment | null;
 }
 
-export interface ChangeScopePayload {
-  span: {
-    spanCodeObjectId: string;
-  } | null;
-}
-
 export interface GoToCodeLocationPayload {
   codeDetails: CodeDetails;
-}
-
-export interface ChangeEnvironmentPayload {
-  environment: Environment;
-}
-
-export interface ChangeViewPayload {
-  view: string;
 }
 
 export interface SetViewsPayload {
