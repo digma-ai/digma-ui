@@ -1,7 +1,9 @@
 import { useContext, useState } from "react";
 import { useTheme } from "styled-components";
 import { actions as globalActions } from "../../../actions";
+import { CENTRAL_ON_PREM_INSTALLATION_GUIDE_URL } from "../../../constants";
 import { getHostnameFromURL } from "../../../utils/getHostNameFromURL";
+import { openURLInDefaultBrowser } from "../../../utils/openURLInDefaultBrowser";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { getThemeKind } from "../../common/App/styles";
 import { EnvironmentType } from "../../common/App/types";
@@ -42,7 +44,8 @@ export const EnvironmentInstructionsPanel = (
   );
 
   const handleOrgDigmaSetupGuideLinkClick = () => {
-    setIsOrgDigmaSetupGuideVisible(true);
+    // setIsOrgDigmaSetupGuideVisible(true);
+    openURLInDefaultBrowser(CENTRAL_ON_PREM_INSTALLATION_GUIDE_URL);
   };
 
   const handleAddToRunConfigLinkClick = () => {
