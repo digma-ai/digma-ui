@@ -3,21 +3,24 @@ import styled from "styled-components";
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 12px;
   border-top: 1px solid ${({ theme }) => theme.colors.v3.stroke.dark};
   background: ${({ theme }) => theme.colors.v3.surface.primary};
 `;
 
-export const EnvironmentStep = styled.div`
-  margin-top: 12px;
+export const Step = styled.div`
   display: flex;
   gap: 4px;
   flex-direction: column;
-  align-items: center;
   font-size: 14px;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  margin-bottom: 16px;
 `;
 
 export const StepContainer = styled.div`
   display: flex;
-  align-items: center;
+  min-height: 210px;
+  flex-direction: column;
+  padding: 12px;
 `;

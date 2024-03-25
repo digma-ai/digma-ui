@@ -1,13 +1,13 @@
 import { useState } from "react";
-import { Step } from "../../InstallationWizard/Step";
 import { StepData, StepStatus } from "../../InstallationWizard/Step/types";
 import { ChevronIcon } from "../../common/icons/16px/ChevronIcon";
 import { Direction } from "../../common/icons/types";
 import { Button } from "../../common/v3/Button";
+import { EnvironmentV2 } from "../types";
 import { CreateEnvironmentPanel } from "./CreateEnvironmentPanel";
+import { EnvironmentNameStep } from "./EnvironmentNameStep";
+import { EnvironmentTypeStep } from "./EnvironmentTypeStep";
 import * as s from "./styles";
-
-const firstStep = window.wizardSkipInstallationStep === true ? 1 : 0;
 
 const getStepStatus = (index: number, currentStep: number): StepStatus => {
   if (index < currentStep) {
@@ -22,11 +22,15 @@ const getStepStatus = (index: number, currentStep: number): StepStatus => {
 };
 
 export const CreateEnvironmentWizard = () => {
-  const [currentStep, setCurrentStep] = useState<number>(firstStep);
+  const [currentStep, setCurrentStep] = useState<number>(0);
+  const [environment, setEnvironment] = useState<EnvironmentV2>({
+    name: "",
+    type: null
+  });
 
-  // const goToNextStep = () => {
-  //   setCurrentStep(currentStep + 1);
-  // };
+  const goToNextStep = () => {
+    setCurrentStep(currentStep + 1);
+  };
 
   const handleGoToStep = (stepIndex: number) => {
     if (stepIndex < currentStep) {
@@ -38,7 +42,26 @@ export const CreateEnvironmentWizard = () => {
     {
       key: "environment name",
       title: "Environment Name",
-      content: <s.EnvironmentStep></s.EnvironmentStep>
+      content: (
+        <EnvironmentNameStep
+          onNext={goToNextStep}
+          onNameChange={(value) =>
+            setEnvironment({ ...environment, name: value })
+          }
+        />
+      )
+    },
+    {
+      key: "environment type",
+      title: "Environment Type",
+      content: (
+        <EnvironmentTypeStep
+          environment={environment}
+          handleEnvironmentTypeSelect={(type) =>
+            setEnvironment({ ...environment, type: type })
+          }
+        />
+      )
     }
   ];
 
@@ -49,27 +72,25 @@ export const CreateEnvironmentWizard = () => {
           // console.log("test");
         }}
         tabs={steps.map((step, index) => ({
-          index,
+          index: index + 1,
           name: step.title,
           state: getStepStatus(index, currentStep)
         }))}
       />
-      <Button
-        buttonType={"tertiary"}
-        label={"Back"}
-        icon={(props) => <ChevronIcon {...props} direction={Direction.LEFT} />}
-      />
-      <>
-        {steps.map((step, i) => (
-          <Step
-            key={step.key}
-            onGoToStep={handleGoToStep}
-            data={step}
-            stepIndex={i}
-            status={getStepStatus(i, currentStep)}
-          />
-        ))}
-      </>
+      <s.StepContainer>
+        <Button
+          buttonType={"tertiary"}
+          label={"Back"}
+          isDisabled={currentStep === 0}
+          onClick={() => {
+            handleGoToStep(currentStep - 1);
+          }}
+          icon={(props) => (
+            <ChevronIcon {...props} direction={Direction.LEFT} />
+          )}
+        />
+        <s.Step>{steps[currentStep].content}</s.Step>
+      </s.StepContainer>
     </s.Container>
   );
 };

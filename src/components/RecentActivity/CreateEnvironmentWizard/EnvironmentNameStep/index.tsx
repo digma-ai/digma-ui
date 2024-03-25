@@ -58,7 +58,7 @@ export const EnvironmentNameStep = ({
         <Button
           buttonType="primary"
           onClick={onNext}
-          isDisabled={!isValid}
+          isDisabled={!isValid || name === null}
           label="Next"
         />
       </s.InputContainer>

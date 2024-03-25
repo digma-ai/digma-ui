@@ -92,3 +92,8 @@ export interface SetIsJaegerData {
 export interface ViewModeOptionProps {
   $selected: boolean;
 }
+
+export interface EnvironmentV2 {
+  name: string;
+  type: EnvironmentType | null;
+}

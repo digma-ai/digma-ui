@@ -4,9 +4,9 @@ import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { DeploymentType, EnvironmentType } from "../../common/App/types";
 import { IconTag } from "../../common/IconTag";
-import { NewButton } from "../../common/NewButton";
 import { CodeIcon } from "../../common/icons/16px/CodeIcon";
 import { InfinityIcon } from "../../common/icons/InfinityIcon";
+import { Button } from "../../common/v3/Button";
 import { trackingEvents } from "../tracking";
 import * as s from "./styles";
 import { EnvironmentTypeData, EnvironmentTypePanelProps } from "./types";
@@ -32,7 +32,7 @@ export const EnvironmentTypePanel = (props: EnvironmentTypePanelProps) => {
       return;
     }
 
-    props.onEnvironmentTypeSelect(props.environment.originalName, type);
+    props.onEnvironmentTypeSelect(type);
   };
 
   const environmentTypes: EnvironmentTypeData[] = [
@@ -43,11 +43,10 @@ export const EnvironmentTypePanel = (props: EnvironmentTypePanelProps) => {
         "Define an environment for specific branches, types of tests or other criteria",
       icon: CodeIcon,
       button: (
-        <NewButton
+        <s.AddButton
           onClick={() => handleEnvironmentTypeButtonClick("local")}
           label={"Add"}
           buttonType={"primary"}
-          size={"large"}
         />
       )
     },
@@ -58,11 +57,10 @@ export const EnvironmentTypePanel = (props: EnvironmentTypePanelProps) => {
         "Connect to centralized org systems such as CI builds, production servers etc.",
       icon: InfinityIcon,
       button: (
-        <NewButton
+        <Button
           onClick={() => handleEnvironmentTypeButtonClick("shared")}
           label={isHelmDeployment ? "Add" : "Learn more"}
           buttonType={"secondary"}
-          size={"large"}
         />
       )
     }
@@ -70,7 +68,6 @@ export const EnvironmentTypePanel = (props: EnvironmentTypePanelProps) => {
 
   return (
     <s.Container>
-      <s.Title>Choose environment type</s.Title>
       <s.Subtitle>
         Choose which environment type you would like to create
       </s.Subtitle>
