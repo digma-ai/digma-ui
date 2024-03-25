@@ -1,10 +1,10 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { CreateEnvironmentWizard } from ".";
+import { EnvironmentCreated } from ".";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
-const meta: Meta<typeof CreateEnvironmentWizard> = {
-  title: "Recent Activity/CreateEnvironmentWizard",
-  component: CreateEnvironmentWizard,
+const meta: Meta<typeof EnvironmentCreated> = {
+  title: "Recent Activity/CreateEnvironmentPanel/EnvironmentCreated",
+  component: EnvironmentCreated,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
     layout: "fullscreen"
@@ -17,9 +17,5 @@ type Story = StoryObj<typeof meta>;
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 export const Default: Story = {
-  args: {
-    onClose: () => {
-      // close
-    }
-  }
+  args: {}
 };

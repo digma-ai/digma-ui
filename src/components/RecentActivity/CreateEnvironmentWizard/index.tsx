@@ -5,9 +5,11 @@ import { Direction } from "../../common/icons/types";
 import { Button } from "../../common/v3/Button";
 import { EnvironmentV2 } from "../types";
 import { CreateEnvironmentPanel } from "./CreateEnvironmentPanel";
+import { EnvironmentCreated } from "./EnvironmentCreated";
 import { EnvironmentNameStep } from "./EnvironmentNameStep";
 import { EnvironmentTypeStep } from "./EnvironmentTypeStep";
 import * as s from "./styles";
+import { CreateEnvironmentWizardProps } from "./types";
 
 const getStepStatus = (index: number, currentStep: number): StepStatus => {
   if (index < currentStep) {
@@ -21,14 +23,20 @@ const getStepStatus = (index: number, currentStep: number): StepStatus => {
   return "not-completed";
 };
 
-export const CreateEnvironmentWizard = () => {
+export const CreateEnvironmentWizard = ({
+  onClose
+}: CreateEnvironmentWizardProps) => {
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [environment, setEnvironment] = useState<EnvironmentV2>({
     name: "",
     type: null
   });
+  const [completed, setCompleted] = useState(false);
 
   const goToNextStep = () => {
+    if (currentStep === steps.length - 1) {
+      setCompleted(true);
+    }
     setCurrentStep(currentStep + 1);
   };
 
@@ -60,6 +68,7 @@ export const CreateEnvironmentWizard = () => {
           handleEnvironmentTypeSelect={(type) =>
             setEnvironment({ ...environment, type: type })
           }
+          onNext={goToNextStep}
         />
       )
     }
@@ -69,7 +78,7 @@ export const CreateEnvironmentWizard = () => {
     <s.Container>
       <CreateEnvironmentPanel
         onCancel={() => {
-          // console.log("test");
+          onClose(null);
         }}
         tabs={steps.map((step, index) => ({
           index: index + 1,
@@ -78,18 +87,30 @@ export const CreateEnvironmentWizard = () => {
         }))}
       />
       <s.StepContainer>
-        <Button
-          buttonType={"tertiary"}
-          label={"Back"}
-          isDisabled={currentStep === 0}
-          onClick={() => {
-            handleGoToStep(currentStep - 1);
-          }}
-          icon={(props) => (
-            <ChevronIcon {...props} direction={Direction.LEFT} />
-          )}
-        />
-        <s.Step>{steps[currentStep].content}</s.Step>
+        {!completed ? (
+          <>
+            <Button
+              buttonType={"tertiary"}
+              label={"Back"}
+              isDisabled={currentStep === 0}
+              onClick={() => {
+                handleGoToStep(currentStep - 1);
+              }}
+              icon={(props) => (
+                <ChevronIcon {...props} direction={Direction.LEFT} />
+              )}
+            />
+            <s.Step>{steps[currentStep].content}</s.Step>
+          </>
+        ) : (
+          <s.Step>
+            <EnvironmentCreated
+              goToEnvironment={() => {
+                onClose(environment.name);
+              }}
+            />
+          </s.Step>
+        )}
       </s.StepContainer>
     </s.Container>
   );
