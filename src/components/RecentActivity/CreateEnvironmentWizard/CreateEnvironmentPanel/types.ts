@@ -2,6 +2,9 @@ import { StepStatus } from "../../../InstallationWizard/Step/types";
 
 export interface CreateEnvironmentPanelProps {
   onCancel: () => void;
+  onBack: () => void;
+  backDisabled: boolean;
+  cancelDisabled: boolean;
   tabs: {
     index: number;
     name: string;

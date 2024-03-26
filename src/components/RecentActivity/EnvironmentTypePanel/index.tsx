@@ -6,7 +6,6 @@ import { EnvironmentType } from "../../common/App/types";
 import { IconTag } from "../../common/IconTag";
 import { CodeIcon } from "../../common/icons/16px/CodeIcon";
 import { InfinityIcon } from "../../common/icons/InfinityIcon";
-import { Button } from "../../common/v3/Button";
 import { trackingEvents } from "../tracking";
 import * as s from "./styles";
 import { EnvironmentTypeData, EnvironmentTypePanelProps } from "./types";
@@ -55,7 +54,7 @@ export const EnvironmentTypePanel = (props: EnvironmentTypePanelProps) => {
         "Connect to centralized org systems such as CI builds, production servers etc.",
       icon: InfinityIcon,
       button: (
-        <Button
+        <s.AddButton
           onClick={() => handleEnvironmentTypeButtonClick("shared")}
           label={config.backendInfo?.isCentralized ? "Add" : "Learn more"}
           buttonType={"secondary"}

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { StepProps } from "./types";
 
 export const Container = styled.div`
   display: flex;
@@ -7,8 +8,8 @@ export const Container = styled.div`
   background: ${({ theme }) => theme.colors.v3.surface.primary};
 `;
 
-export const Step = styled.div`
-  display: flex;
+export const Step = styled.div<StepProps>`
+  display: ${({ $isVisible }) => ($isVisible ? "flex" : "none")};
   gap: 4px;
   flex-direction: column;
   font-size: 14px;

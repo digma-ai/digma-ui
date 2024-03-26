@@ -1,8 +1,5 @@
-import { useState } from "react";
-import { StepData, StepStatus } from "../../InstallationWizard/Step/types";
-import { ChevronIcon } from "../../common/icons/16px/ChevronIcon";
-import { Direction } from "../../common/icons/types";
-import { Button } from "../../common/v3/Button";
+import { useContext, useState } from "react";
+import { ConfigContext } from "../../common/App/ConfigContext";
 import { EnvironmentV2 } from "../types";
 import { CreateEnvironmentPanel } from "./CreateEnvironmentPanel";
 import { EnvironmentCreated } from "./EnvironmentCreated";
@@ -10,46 +7,63 @@ import { EnvironmentNameStep } from "./EnvironmentNameStep";
 import { EnvironmentTypeStep } from "./EnvironmentTypeStep";
 import { RegisterStep } from "./RegisterStep";
 import * as s from "./styles";
-import { CreateEnvironmentWizardProps } from "./types";
+import { CreateEnvironmentWizardProps, StepDefinitions } from "./types";
 
-const getStepStatus = (index: number, currentStep: number): StepStatus => {
-  if (index < currentStep) {
-    return "completed";
-  }
-
-  if (index === currentStep) {
-    return "active";
-  }
-
-  return "not-completed";
-};
+const ENVIRONMENT_NAME_STEP = "environment name";
+const ENVIRONMENT_TYPE_STEP = "environment type";
+const REGISTER_STEP = "register";
 
 export const CreateEnvironmentWizard = ({
   onClose
 }: CreateEnvironmentWizardProps) => {
+  const config = useContext(ConfigContext);
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [environment, setEnvironment] = useState<EnvironmentV2>({
     name: "",
     type: null
   });
   const [completed, setCompleted] = useState(false);
-  const [stepsCompleted, setStepsCompleted] = useState<number[]>([]);
-  const [stepsHistory, setStepsHistory] = useState<{
-    [index: number]: { status: StepStatus; canBack: boolean };
-  }>({});
+  const [stepsStatus, setStepsStatus] = useState<StepDefinitions[]>([
+    {
+      key: ENVIRONMENT_NAME_STEP,
+      name: "Environment Name",
+      status: "not-completed"
+    },
+    {
+      key: REGISTER_STEP,
+      name: "Register",
+      status: "not-completed",
+      isHidden: !!config.userRegistrationEmail
+    },
+    {
+      key: ENVIRONMENT_TYPE_STEP,
+      name: "Environment Type",
+      status: "not-completed"
+    }
+  ]);
+
+  const getSteps = () => stepsStatus.filter((x) => !x.isHidden);
 
   const goToNextStep = (isFinished?: boolean) => {
-    if (currentStep === steps.length - 1) {
+    if (currentStep === getSteps().length - 1) {
       setCompleted(true);
     }
 
-    if (isFinished) {
-      stepsCompleted.push(currentStep);
-      setStepsCompleted(stepsCompleted);
+    const step = getSteps()[currentStep];
+    step.status = "completed";
+    step.isFinished = isFinished;
+    setStepsStatus(stepsStatus);
+
+    let nextStep = currentStep + 1;
+    while (nextStep <= stepsStatus.length) {
+      if (!stepsStatus[nextStep]?.isFinished) {
+        break;
+      }
+
+      nextStep += 1;
     }
 
-    setStepsHistory(stepsHistory);
-    setCurrentStep(currentStep + 1);
+    setCurrentStep(nextStep);
   };
 
   const handleGoToStep = (stepIndex: number) => {
@@ -61,7 +75,7 @@ export const CreateEnvironmentWizard = ({
   const getBackStep = () => {
     let nextStep = currentStep - 1;
     while (nextStep >= 0) {
-      if (!stepsCompleted.includes(nextStep)) {
+      if (!stepsStatus[nextStep]?.isFinished) {
         return nextStep;
       }
 
@@ -70,73 +84,72 @@ export const CreateEnvironmentWizard = ({
     return nextStep;
   };
 
-  const steps: StepData[] = [
-    {
-      key: "environment name",
-      title: "Environment Name",
-      content: (
-        <EnvironmentNameStep
-          onNext={goToNextStep}
-          onNameChange={(value) =>
-            setEnvironment({ ...environment, name: value })
-          }
-        />
-      )
-    },
-    {
-      key: "register",
-      title: "Register",
-      content: <RegisterStep onNext={goToNextStep} />
-    },
-    {
-      key: "environment type",
-      title: "Environment Type",
-      content: (
-        <EnvironmentTypeStep
-          environment={environment}
-          handleEnvironmentTypeSelect={(type) =>
-            setEnvironment({ ...environment, type: type })
-          }
-          onNext={goToNextStep}
-        />
-      )
+  const getStepVisibility = (key: string) => {
+    const stepIndex = getSteps().findIndex((x) => x.key == key);
+
+    if (stepIndex === currentStep) {
+      return true;
     }
-  ];
+
+    return false;
+  };
 
   return (
     <s.Container>
       <CreateEnvironmentPanel
+        backDisabled={currentStep === 0 || getBackStep() === -1 || completed}
+        onBack={() => {
+          const nextStep = getBackStep();
+          if (nextStep === -1) {
+            return;
+          }
+          handleGoToStep(nextStep);
+        }}
         onCancel={() => {
           onClose(null);
         }}
-        tabs={steps.map((step, index) => ({
+        cancelDisabled={completed}
+        tabs={getSteps().map((step, index) => ({
+          ...step,
           index: index + 1,
-          name: step.title,
-          state: getStepStatus(index, currentStep)
+          state: index === currentStep ? "active" : step.status
         }))}
       />
       <s.StepContainer>
         {!completed ? (
           <>
-            <Button
-              buttonType={"tertiary"}
-              label={"Back"}
-              isDisabled={currentStep === 0 || getBackStep() === -1}
-              onClick={() => {
-                const nextStep = getBackStep();
-                if (nextStep === -1) {
-                  return;
+            <s.Step
+              key={ENVIRONMENT_NAME_STEP}
+              $isVisible={getStepVisibility(ENVIRONMENT_NAME_STEP)}
+            >
+              <EnvironmentNameStep
+                onNext={goToNextStep}
+                onNameChange={(value) =>
+                  setEnvironment({ ...environment, name: value })
                 }
-                handleGoToStep(nextStep);
-              }}
-              icon={(props) => (
-                <ChevronIcon {...props} direction={Direction.LEFT} />
-              )}
-            />
-            <s.Step>{steps[currentStep].content}</s.Step>
+              />
+            </s.Step>
+            <s.Step
+              key={REGISTER_STEP}
+              $isVisible={getStepVisibility(REGISTER_STEP)}
+            >
+              <RegisterStep onNext={goToNextStep} />
+            </s.Step>
+            <s.Step
+              key={ENVIRONMENT_TYPE_STEP}
+              $isVisible={getStepVisibility(ENVIRONMENT_TYPE_STEP)}
+            >
+              <EnvironmentTypeStep
+                environment={environment}
+                handleEnvironmentTypeSelect={(type) =>
+                  setEnvironment({ ...environment, type: type })
+                }
+                onNext={goToNextStep}
+              />
+            </s.Step>
           </>
         ) : (
-          <s.Step>
+          <s.Step key="finish" $isVisible={completed}>
             <EnvironmentCreated
               goToEnvironment={() => {
                 onClose(environment.name);

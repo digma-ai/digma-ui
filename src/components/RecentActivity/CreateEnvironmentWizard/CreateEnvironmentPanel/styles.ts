@@ -49,3 +49,7 @@ export const TabPanel = styled.div`
 export const CancelButton = styled(Button)`
   border: 1px solid ${({ theme }) => theme.colors.v3.stroke.dark};
 `;
+
+export const BackButton = styled(Button)`
+  padding: 0;
+`;

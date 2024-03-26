@@ -1,5 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { CreateEnvironmentWizard } from ".";
+import { ConfigContext, initialState } from "../../common/App/ConfigContext";
+import { DeploymentType } from "../../common/App/types";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof CreateEnvironmentWizard> = {
@@ -22,4 +24,53 @@ export const Default: Story = {
       // close
     }
   }
+};
+
+export const WithoutRegisteredUser: Story = {
+  args: {
+    onClose: () => {
+      // close
+    }
+  },
+  decorators: [
+    (Story) => (
+      <ConfigContext.Provider
+        value={{
+          ...initialState,
+          backendInfo: {
+            applicationVersion: "v0.2.243",
+            deploymentType: DeploymentType.DOCKER_COMPOSE,
+            isCentralized: false
+          },
+          userRegistrationEmail: ""
+        }}
+      >
+        <Story />
+      </ConfigContext.Provider>
+    )
+  ]
+};
+
+export const IsCentralized: Story = {
+  args: {
+    onClose: () => {
+      // close
+    }
+  },
+  decorators: [
+    (Story) => (
+      <ConfigContext.Provider
+        value={{
+          ...initialState,
+          backendInfo: {
+            applicationVersion: "v0.2.243",
+            deploymentType: DeploymentType.DOCKER_COMPOSE,
+            isCentralized: true
+          }
+        }}
+      >
+        <Story />
+      </ConfigContext.Provider>
+    )
+  ]
 };
