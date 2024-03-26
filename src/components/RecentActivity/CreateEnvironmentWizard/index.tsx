@@ -121,7 +121,7 @@ export const CreateEnvironmentWizard = ({
             <Button
               buttonType={"tertiary"}
               label={"Back"}
-              isDisabled={currentStep === 0 || getBackStep() !== -1}
+              isDisabled={currentStep === 0 || getBackStep() === -1}
               onClick={() => {
                 const nextStep = getBackStep();
                 if (nextStep === -1) {

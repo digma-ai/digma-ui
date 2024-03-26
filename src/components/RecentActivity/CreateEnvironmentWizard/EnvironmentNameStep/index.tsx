@@ -16,6 +16,10 @@ export const EnvironmentNameStep = ({
   const [name, setName] = useState<string | null>(null);
   const [isValid, setIsValid] = useState(true);
 
+  const handleNext = () => {
+    onNext(false);
+  };
+
   const changeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.toUpperCase();
     setName(value);
@@ -57,7 +61,7 @@ export const EnvironmentNameStep = ({
         />
         <Button
           buttonType="primary"
-          onClick={onNext}
+          onClick={handleNext}
           isDisabled={!isValid || name === null}
           label="Next"
         />

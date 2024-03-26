@@ -6,7 +6,7 @@ export const Container = styled.div<ContainerProps>`
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 8px;
+  padding: 4px 6px;
   border-radius: 4px;
   border: 1px solid
     ${({ theme, $focused, $isInValid }) => {

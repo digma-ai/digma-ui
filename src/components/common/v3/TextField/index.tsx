@@ -23,23 +23,21 @@ const TextFieldComponent = (
         $isInValid={props.isInValid}
         className={props.className}
       >
-        <s.IconContainer>
-          <s.IconContainer $isInValid={props.isInValid}>
-            {props.icon && <props.icon size={16} color={"currentColor"} />}
-          </s.IconContainer>
-          <s.Input
-            type={"text"}
-            value={props.value}
-            onChange={props.onChange}
-            placeholder={props.placeholder}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
-            disabled={props.disabled}
-            $isInValid={props.isInValid}
-            ref={ref}
-          />
-          {props.inputEndContent && <div>{props.inputEndContent}</div>}
+        <s.IconContainer $isInValid={props.isInValid}>
+          {props.icon && <props.icon size={16} color={"currentColor"} />}
         </s.IconContainer>
+        <s.Input
+          type={"text"}
+          value={props.value}
+          onChange={props.onChange}
+          placeholder={props.placeholder}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          disabled={props.disabled}
+          $isInValid={props.isInValid}
+          ref={ref}
+        />
+        {props.inputEndContent}
       </s.Container>
       {props.error && <s.ErrorMessage>{props.error}</s.ErrorMessage>}
     </s.TextInputControl>
