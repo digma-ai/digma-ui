@@ -8,6 +8,7 @@ import { CreateEnvironmentPanel } from "./CreateEnvironmentPanel";
 import { EnvironmentCreated } from "./EnvironmentCreated";
 import { EnvironmentNameStep } from "./EnvironmentNameStep";
 import { EnvironmentTypeStep } from "./EnvironmentTypeStep";
+import { RegisterStep } from "./RegisterStep";
 import * as s from "./styles";
 import { CreateEnvironmentWizardProps } from "./types";
 
@@ -32,11 +33,22 @@ export const CreateEnvironmentWizard = ({
     type: null
   });
   const [completed, setCompleted] = useState(false);
+  const [stepsCompleted, setStepsCompleted] = useState<number[]>([]);
+  const [stepsHistory, setStepsHistory] = useState<{
+    [index: number]: { status: StepStatus; canBack: boolean };
+  }>({});
 
-  const goToNextStep = () => {
+  const goToNextStep = (isFinished?: boolean) => {
     if (currentStep === steps.length - 1) {
       setCompleted(true);
     }
+
+    if (isFinished) {
+      stepsCompleted.push(currentStep);
+      setStepsCompleted(stepsCompleted);
+    }
+
+    setStepsHistory(stepsHistory);
     setCurrentStep(currentStep + 1);
   };
 
@@ -44,6 +56,18 @@ export const CreateEnvironmentWizard = ({
     if (stepIndex < currentStep) {
       setCurrentStep(stepIndex);
     }
+  };
+
+  const getBackStep = () => {
+    let nextStep = currentStep - 1;
+    while (nextStep >= 0) {
+      if (!stepsCompleted.includes(nextStep)) {
+        return nextStep;
+      }
+
+      nextStep -= 1;
+    }
+    return nextStep;
   };
 
   const steps: StepData[] = [
@@ -58,6 +82,11 @@ export const CreateEnvironmentWizard = ({
           }
         />
       )
+    },
+    {
+      key: "register",
+      title: "Register",
+      content: <RegisterStep onNext={goToNextStep} />
     },
     {
       key: "environment type",
@@ -92,9 +121,13 @@ export const CreateEnvironmentWizard = ({
             <Button
               buttonType={"tertiary"}
               label={"Back"}
-              isDisabled={currentStep === 0}
+              isDisabled={currentStep === 0 || getBackStep() !== -1}
               onClick={() => {
-                handleGoToStep(currentStep - 1);
+                const nextStep = getBackStep();
+                if (nextStep === -1) {
+                  return;
+                }
+                handleGoToStep(nextStep);
               }}
               icon={(props) => (
                 <ChevronIcon {...props} direction={Direction.LEFT} />

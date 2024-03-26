@@ -4,7 +4,6 @@ import {
   subscriptRegularTypography
 } from "../../../common/App/typographies";
 import { TextField } from "../../../common/v3/TextField";
-import { TextInputProps } from "./types";
 
 export const Container = styled.div`
   display: flex;
@@ -36,16 +35,6 @@ export const InputContainer = styled.div`
   height: 28px;
 `;
 
-export const NameInput = styled(TextField)<TextInputProps>`
+export const NameInput = styled(TextField)`
   width: 220px;
-  ${({ theme, $isValid }) => {
-    if ($isValid) {
-      return;
-    }
-
-    return {
-      background: theme.colors.v3.status.backgroundHigh,
-      border: `1px solid ${theme.colors.v3.status.high}`
-    };
-  }};
 `;

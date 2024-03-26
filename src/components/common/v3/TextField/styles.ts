@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import { ContainerProps } from "./types";
+import { caption2RegularTypography } from "../../App/typographies";
+import { ContainerProps, IconContainerProps, InputProps } from "./types";
 
 export const Container = styled.div<ContainerProps>`
   display: flex;
@@ -8,15 +9,29 @@ export const Container = styled.div<ContainerProps>`
   padding: 8px;
   border-radius: 4px;
   border: 1px solid
-    ${({ theme, $focused }) => {
+    ${({ theme, $focused, $isInValid }) => {
+      if ($isInValid) {
+        return theme.colors.v3.status.high;
+      }
+
       if ($focused) {
         return theme.colors.v3.stroke.brandPrimary;
       }
       return theme.colors.v3.stroke.dark;
     }};
+
+  ${({ theme, $isInValid }) => {
+    if (!$isInValid) {
+      return;
+    }
+
+    return {
+      background: theme.colors.v3.status.backgroundHigh
+    };
+  }};
 `;
 
-export const Input = styled.input`
+export const Input = styled.input<InputProps>`
   border: none;
   background: none;
   outline: none;
@@ -24,4 +39,33 @@ export const Input = styled.input`
   flex-grow: 1;
   font-size: 14px;
   color: ${({ theme }) => theme.colors.v3.text.primary};
+
+  &::placeholder {
+    ${({ theme, $isInValid }) => {
+      if ($isInValid) {
+        return `color:${theme.colors.v3.status.high}`;
+      }
+    }};
+  }
+`;
+
+export const IconContainer = styled.div<IconContainerProps>`
+  display: flex;
+  align-items: center;
+  ${({ theme, $isInValid }) => {
+    if ($isInValid) {
+      return `color:${theme.colors.v3.status.high}`;
+    }
+  }};
+`;
+
+export const TextInputControl = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+export const ErrorMessage = styled.div`
+  color: ${({ theme }) => theme.colors.v3.status.high};
+  ${caption2RegularTypography}
 `;

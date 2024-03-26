@@ -53,7 +53,7 @@ export const EnvironmentNameStep = ({
         <s.NameInput
           onChange={changeHandler}
           inputEndContent={getInputState()}
-          $isValid={isValid}
+          isInValid={!isValid}
         />
         <Button
           buttonType="primary"
