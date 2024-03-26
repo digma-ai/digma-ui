@@ -2,14 +2,8 @@ import { Allotment } from "allotment";
 import "allotment/dist/style.css";
 import { KeyboardEvent, useContext, useEffect, useMemo, useState } from "react";
 import useDimensions from "react-cool-dimensions";
-import { actions as globalActions } from "../../actions";
-import { dispatcher } from "../../dispatcher";
-import { usePrevious } from "../../hooks/usePrevious";
 import { groupBy } from "../../utils/groupBy";
 import { ConfigContext } from "../common/App/ConfigContext";
-import { EnvironmentType } from "../common/App/types";
-import { RegistrationDialog } from "../common/RegistrationDialog";
-import { RegistrationFormValues } from "../common/RegistrationDialog/types";
 import { ListIcon } from "../common/icons/ListIcon";
 import { TableIcon } from "../common/icons/TableIcon";
 import { CreateEnvironmentWizard } from "./CreateEnvironmentWizard";
@@ -51,10 +45,6 @@ export const RecentActivity = (props: RecentActivityProps) => {
     useState<ExtendedEnvironment>();
   const [showCreationWizard, setShowCreationWizard] = useState(false);
   const [environmentToDelete, setEnvironmentToDelete] = useState<string>();
-  const [environmentToSetType, setEnvironmentToSetType] = useState<{
-    environment: string;
-    type: EnvironmentType;
-  }>();
   const { recentActivityData: data } = useRecentActivityData({
     data: props.data
   });
@@ -62,14 +52,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
   const { liveData, closeLiveSession } = useLiveData({
     liveData: props.liveData
   });
-  const [isRegistrationPopupVisible, setIsRegistrationPopupVisible] =
-    useState(false);
-  const [isRegistrationInProgress, setIsRegistrationInProgress] =
-    useState(false);
   const config = useContext(ConfigContext);
-  const previousUserRegistrationEmail = usePrevious(
-    config.userRegistrationEmail
-  );
   const { observe, entry } = useDimensions();
 
   const environmentActivities = useMemo(
@@ -104,51 +87,27 @@ export const RecentActivity = (props: RecentActivityProps) => {
     });
   }, [environments]);
 
-  useEffect(() => {
-    window.sendMessageToDigma({
-      action: actions.INITIALIZE
-    });
+  // useEffect(() => {
+  //   window.sendMessageToDigma({
+  //     action: actions.INITIALIZE
+  //   });
 
-    const handleOpenRegistrationDialog = () => {
-      setIsRegistrationPopupVisible(true);
-    };
+  //   const handleOpenRegistrationDialog = () => {
+  //     setIsRegistrationPopupVisible(true);
+  //   };
 
-    dispatcher.addActionListener(
-      actions.OPEN_REGISTRATION_DIALOG,
-      handleOpenRegistrationDialog
-    );
+  //   dispatcher.addActionListener(
+  //     actions.OPEN_REGISTRATION_DIALOG,
+  //     handleOpenRegistrationDialog
+  //   );
 
-    return () => {
-      dispatcher.removeActionListener(
-        actions.OPEN_REGISTRATION_DIALOG,
-        handleOpenRegistrationDialog
-      );
-    };
-  }, []);
-
-  useEffect(() => {
-    if (
-      previousUserRegistrationEmail !== config.userRegistrationEmail &&
-      isRegistrationInProgress
-    ) {
-      setIsRegistrationPopupVisible(false);
-      setIsRegistrationInProgress(false);
-
-      if (environmentToSetType) {
-        setEnvironmentType(
-          environmentToSetType.environment,
-          environmentToSetType.type
-        );
-
-        setEnvironmentToSetType(undefined);
-      }
-    }
-  }, [
-    config.userRegistrationEmail,
-    isRegistrationInProgress,
-    environmentToSetType,
-    previousUserRegistrationEmail
-  ]);
+  //   return () => {
+  //     dispatcher.removeActionListener(
+  //       actions.OPEN_REGISTRATION_DIALOG,
+  //       handleOpenRegistrationDialog
+  //     );
+  //   };
+  // }, []);
 
   const handleEnvironmentSelect = (environment: ExtendedEnvironment) => {
     setSelectedEnvironment(environment);
@@ -187,16 +146,6 @@ export const RecentActivity = (props: RecentActivityProps) => {
     setShowCreationWizard(true);
   };
 
-  const setEnvironmentType = (environment: string, type: EnvironmentType) => {
-    window.sendMessageToDigma({
-      action: actions.SET_ENVIRONMENT_TYPE,
-      payload: {
-        environment: environment,
-        type
-      }
-    });
-  };
-
   const handleEnvironmentDelete = (environment: string) => {
     setEnvironmentToDelete(environment);
   };
@@ -224,33 +173,9 @@ export const RecentActivity = (props: RecentActivityProps) => {
     });
   };
 
-  const handleRegistrationSubmit = (formData: RegistrationFormValues) => {
-    window.sendMessageToDigma({
-      action: globalActions.REGISTER,
-      payload: {
-        ...formData,
-        ...(environmentToSetType
-          ? {
-              scope: "recent activity add environment",
-              selectedEnvironmentType: environmentToSetType.type
-            }
-          : {
-              scope: "recent activity"
-            })
-      }
-    });
-
-    setIsRegistrationInProgress(true);
-  };
-
-  const handleRegistrationDialogClose = () => {
-    setIsRegistrationPopupVisible(false);
-  };
-
   const handleOverlayKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "Escape") {
       setEnvironmentToDelete(undefined);
-      setIsRegistrationPopupVisible(false);
     }
   };
 
@@ -339,15 +264,6 @@ export const RecentActivity = (props: RecentActivityProps) => {
           <DeleteEnvironmentConfirmation
             onClose={handleCloseDeleteConfirmation}
             onDelete={handleConfirmEnvironmentDeletion}
-          />
-        </s.Overlay>
-      )}
-      {isRegistrationPopupVisible && (
-        <s.Overlay onKeyDown={handleOverlayKeyDown}>
-          <RegistrationDialog
-            onSubmit={handleRegistrationSubmit}
-            onClose={handleRegistrationDialogClose}
-            isRegistrationInProgress={isRegistrationInProgress}
           />
         </s.Overlay>
       )}

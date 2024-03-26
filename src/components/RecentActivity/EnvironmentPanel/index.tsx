@@ -17,7 +17,6 @@ import { ChevronIcon } from "../../common/icons/ChevronIcon";
 import { DigmaLogoIcon } from "../../common/icons/DigmaLogoIcon";
 import { ThreeDotsIcon } from "../../common/icons/ThreeDotsIcon";
 import { Direction } from "../../common/icons/types";
-import { AddEnvironmentDialog } from "../AddEnvironmentDialog";
 import { ExtendedEnvironment } from "../types";
 import { EnvironmentTab } from "./EnvironmentTab";
 import * as s from "./styles";
@@ -32,8 +31,6 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
   const [scrollLeft, setScrollLeft] = useState(0);
   const environmentListContainerDimensions = useDimensions();
   const environmentListDimensions = useDimensions();
-  const [isAddEnvironmentDialogOpen, setIsAddEnvironmentDialogOpen] =
-    useState(false);
   const [isKebabMenuOpen, setIsKebabMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -48,14 +45,6 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
 
   const handleEnvironmentTabClick = (environment: ExtendedEnvironment) => {
     props.onEnvironmentSelect(environment);
-  };
-
-  const handleCloseAddEnvironmentDialog = () => {
-    setIsAddEnvironmentDialogOpen(false);
-  };
-
-  const handleEnvironmentAdd = (environmentName: string) => {
-    props.onEnvironmentAdd(environmentName);
   };
 
   const handleEnvironmentDelete = (environment: string) => {
@@ -119,27 +108,13 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
     FONT_WIDTH_TRANSITION_THRESHOLD;
 
   const renderAddButton = () => {
-    const boundaryEl =
-      document.getElementById(RECENT_ACTIVITY_CONTAINER_ID) || undefined;
-
     return (
-      <NewPopover
-        boundary={boundaryEl}
-        placement={"bottom-end"}
-        onOpenChange={setIsAddEnvironmentDialogOpen}
-        isOpen={isAddEnvironmentDialogOpen}
-        content={
-          <AddEnvironmentDialog
-            onClose={handleCloseAddEnvironmentDialog}
-            onEnvironmentAdd={handleEnvironmentAdd}
-            environments={props.environments}
-          />
-        }
-      >
-        <div>
-          <NewButton label={"Add Environment"} size={"small"} icon={PlusIcon} />
-        </div>
-      </NewPopover>
+      <NewButton
+        label={"Add Environment"}
+        size={"small"}
+        icon={PlusIcon}
+        onClick={props.onEnvironmentAdd}
+      />
     );
   };
 
