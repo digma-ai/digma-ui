@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { actions as globalActions } from "../../../../actions";
 import { getFeatureFlagValue } from "../../../../featureFlags";
 import { usePrevious } from "../../../../hooks/usePrevious";
+import { trackingEvents as globalTrackingEvents } from "../../../../trackingEvents";
 import { isString } from "../../../../typeGuards/isString";
 import { FeatureFlag, GetInsightStatsPayload } from "../../../../types";
 import { sendTrackingEvent } from "../../../../utils/sendTrackingEvent";
@@ -151,6 +152,14 @@ export const InsightCard = (props: InsightCardProps) => {
     show();
   };
 
+  const handleMarkAsReadButtonClick = () => {
+    sendTrackingEvent(globalTrackingEvents.USER_ACTION, {
+      action: trackingEvents.INSIGHT_CARD_MARK_AS_READ_BUTTON_CLICKED,
+      insightType: props.insight.type
+    });
+    markAsRead();
+  };
+
   const openTicketInfo = (
     spanCodeObjectId: string | undefined,
     event: string
@@ -197,7 +206,7 @@ export const InsightCard = (props: InsightCardProps) => {
           <Button
             icon={CheckmarkCircleIcon}
             label={"Mark as read"}
-            onClick={markAsRead}
+            onClick={handleMarkAsReadButtonClick}
             isDisabled={isMarkingAsReadInProgress}
             {...btnProps}
           />
