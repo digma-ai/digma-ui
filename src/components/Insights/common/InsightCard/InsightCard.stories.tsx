@@ -80,7 +80,8 @@ export const WithNewVersion: Story = {
           ...initialState,
           backendInfo: {
             applicationVersion: "v0.2.243",
-            deploymentType: DeploymentType.DOCKER_COMPOSE
+            deploymentType: DeploymentType.DOCKER_COMPOSE,
+            isCentralized: false
           }
         }}
       >
