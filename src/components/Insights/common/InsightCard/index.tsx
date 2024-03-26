@@ -3,10 +3,9 @@ import { actions as globalActions } from "../../../../actions";
 import { getFeatureFlagValue } from "../../../../featureFlags";
 import { usePrevious } from "../../../../hooks/usePrevious";
 import { isString } from "../../../../typeGuards/isString";
-import { FeatureFlag } from "../../../../types";
+import { FeatureFlag, GetInsightStatsPayload } from "../../../../types";
 import { sendTrackingEvent } from "../../../../utils/sendTrackingEvent";
 import { Spinner } from "../../../Navigation/CodeButtonMenu/Spinner";
-import { ChangeScopePayload } from "../../../Navigation/types";
 import { ConfigContext } from "../../../common/App/ConfigContext";
 import { CheckmarkCircleIcon } from "../../../common/icons/12px/CheckmarkCircleIcon";
 import { TraceIcon } from "../../../common/icons/12px/TraceIcon";
@@ -60,13 +59,14 @@ export const InsightCard = (props: InsightCardProps) => {
     if (previousIsOperationInProgress && !isOperationInProgress) {
       props.onRefresh(props.insight.type);
 
-      // Trigger SET_SCOPE response message from the plugin with actual unread insights count
-      window.sendMessageToDigma<ChangeScopePayload>({
-        action: globalActions.CHANGE_SCOPE,
+      window.sendMessageToDigma<GetInsightStatsPayload>({
+        action: globalActions.GET_INSIGHT_STATS,
         payload: {
-          span: config.scope?.span
+          scope: config.scope?.span
             ? {
-                spanCodeObjectId: config.scope.span.spanCodeObjectId
+                span: {
+                  spanCodeObjectId: config.scope.span.spanCodeObjectId
+                }
               }
             : null
         }

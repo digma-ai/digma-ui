@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { actions as globalActions } from "../../../actions";
+import { ChangeScopePayload } from "../../../types";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { CodeDetails, Scope } from "../../common/App/types";
 import { NewPopover } from "../../common/NewPopover";
@@ -8,11 +10,7 @@ import { Tooltip } from "../../common/v3/Tooltip";
 import { actions } from "../actions";
 import { Popup } from "../common/Popup";
 import { trackingEvents } from "../tracking";
-import {
-  ChangeScopePayload,
-  CodeContext,
-  GoToCodeLocationPayload
-} from "../types";
+import { CodeContext, GoToCodeLocationPayload } from "../types";
 import { TargetButtonMenu } from "./TargetButtonMenu";
 import * as s from "./styles";
 import { ScopeBarProps } from "./types";
@@ -90,7 +88,7 @@ export const ScopeBar = (props: ScopeBarProps) => {
   const handleHomeButtonClick = () => {
     sendTrackingEvent(trackingEvents.HOME_BUTTON_CLICKED);
     window.sendMessageToDigma<ChangeScopePayload>({
-      action: actions.CHANGE_SCOPE,
+      action: globalActions.CHANGE_SCOPE,
       payload: {
         span: null
       }

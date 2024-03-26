@@ -17,6 +17,7 @@ import {
   DigmaStatus,
   Environment,
   GlobalState,
+  InsightStats,
   Scope
 } from "./types";
 
@@ -221,6 +222,13 @@ export const App = (props: AppProps) => {
       }));
     };
 
+    const handleSetInsightStats = (data: unknown) => {
+      setConfig((config) => ({
+        ...config,
+        insightStats: data as InsightStats
+      }));
+    };
+
     const handleSetState = (data: unknown) => {
       setConfig((config) => ({
         ...config,
@@ -283,6 +291,10 @@ export const App = (props: AppProps) => {
       handleSetIsMicrometerProject
     );
     dispatcher.addActionListener(actions.SET_SCOPE, handleSetScope);
+    dispatcher.addActionListener(
+      actions.SET_INSIGHT_STATS,
+      handleSetInsightStats
+    );
 
     return () => {
       dispatcher.removeActionListener(actions.SET_THEME, handleSetTheme);
@@ -346,6 +358,10 @@ export const App = (props: AppProps) => {
         handleSetIsMicrometerProject
       );
       dispatcher.removeActionListener(actions.SET_SCOPE, handleSetScope);
+      dispatcher.removeActionListener(
+        actions.SET_INSIGHT_STATS,
+        handleSetInsightStats
+      );
     };
   }, []);
 

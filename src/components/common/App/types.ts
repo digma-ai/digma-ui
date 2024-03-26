@@ -86,7 +86,7 @@ export interface GlobalState {
 export interface ConfigContextData {
   digmaApiUrl: string;
   digmaApiProxyPrefix: string;
-  digmaStatus: DigmaStatus | undefined;
+  digmaStatus?: DigmaStatus;
   isObservabilityEnabled: boolean;
   jaegerURL: string;
   isJaegerEnabled: boolean;
@@ -97,9 +97,21 @@ export interface ConfigContextData {
   userEmail: string;
   userRegistrationEmail: string;
   environment?: Environment | null;
-  backendInfo: BackendInfo | undefined;
-  environments: Environment[] | undefined;
-  scope: Scope | undefined;
+  backendInfo?: BackendInfo;
+  environments?: Environment[];
+  scope?: Scope;
   isMicrometerProject: boolean;
   state?: GlobalState;
+  insightStats?: InsightStats;
+}
+
+export interface InsightStats {
+  scope: {
+    span: {
+      spanCodeObjectId: string;
+    };
+  } | null;
+  issuesInsightsCount: number;
+  analyticsInsightsCount: number;
+  unreadInsightsCount: number;
 }

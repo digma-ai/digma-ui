@@ -5,9 +5,12 @@ import { usePrevious } from "../../../hooks/usePrevious";
 import { trackingEvents as globalTrackingEvents } from "../../../trackingEvents";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { isUndefined } from "../../../typeGuards/isUndefined";
-import { InsightType } from "../../../types";
+import {
+  ChangeScopePayload,
+  ChangeViewPayload,
+  InsightType
+} from "../../../types";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
-import { ChangeScopePayload, ChangeViewPayload } from "../../Navigation/types";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { EmptyState } from "../../common/EmptyState";
 import { CardsIcon } from "../../common/icons/CardsIcon";

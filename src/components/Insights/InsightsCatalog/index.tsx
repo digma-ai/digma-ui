@@ -7,9 +7,9 @@ import { useDebounce } from "../../../hooks/useDebounce";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { isString } from "../../../typeGuards/isString";
 import { isUndefined } from "../../../typeGuards/isUndefined";
+import { GetInsightStatsPayload } from "../../../types";
 import { formatUnit } from "../../../utils/formatUnit";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
-import { ChangeScopePayload } from "../../Navigation/types";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Pagination } from "../../common/Pagination";
 import { SearchInput } from "../../common/SearchInput";
@@ -117,13 +117,14 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
     if (previousIsMarkingAllAsReadInProgress && !isMarkingAllAsReadInProgress) {
       refreshData();
 
-      // Trigger SET_SCOPE response message from the plugin with actual unread insights count
-      window.sendMessageToDigma<ChangeScopePayload>({
-        action: globalActions.CHANGE_SCOPE,
+      window.sendMessageToDigma<GetInsightStatsPayload>({
+        action: globalActions.GET_INSIGHT_STATS,
         payload: {
-          span: config.scope?.span
+          scope: config.scope?.span
             ? {
-                spanCodeObjectId: config.scope.span.spanCodeObjectId
+                span: {
+                  spanCodeObjectId: config.scope.span.spanCodeObjectId
+                }
               }
             : null
         }
