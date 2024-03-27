@@ -87,27 +87,27 @@ export const RecentActivity = (props: RecentActivityProps) => {
     });
   }, [environments]);
 
-  // useEffect(() => {
-  //   window.sendMessageToDigma({
-  //     action: actions.INITIALIZE
-  //   });
+  useEffect(() => {
+    window.sendMessageToDigma({
+      action: actions.INITIALIZE
+    });
 
-  //   const handleOpenRegistrationDialog = () => {
-  //     setIsRegistrationPopupVisible(true);
-  //   };
+    // const handleOpenRegistrationDialog = () => {
+    //   setIsRegistrationPopupVisible(true);
+    // };
 
-  //   dispatcher.addActionListener(
-  //     actions.OPEN_REGISTRATION_DIALOG,
-  //     handleOpenRegistrationDialog
-  //   );
+    // dispatcher.addActionListener(
+    //   actions.OPEN_REGISTRATION_DIALOG,
+    //   handleOpenRegistrationDialog
+    // );
 
-  //   return () => {
-  //     dispatcher.removeActionListener(
-  //       actions.OPEN_REGISTRATION_DIALOG,
-  //       handleOpenRegistrationDialog
-  //     );
-  //   };
-  // }, []);
+    // return () => {
+    //   dispatcher.removeActionListener(
+    //     actions.OPEN_REGISTRATION_DIALOG,
+    //     handleOpenRegistrationDialog
+    //   );
+    // };
+  }, []);
 
   const handleEnvironmentSelect = (environment: ExtendedEnvironment) => {
     setSelectedEnvironment(environment);
@@ -185,26 +185,43 @@ export const RecentActivity = (props: RecentActivityProps) => {
     }
 
     if (
-      environmentActivities[selectedEnvironment.originalName] &&
+      !environmentActivities[selectedEnvironment.originalName] ||
       !environmentActivities[selectedEnvironment.originalName].length
     ) {
-      <EnvironmentInstructionsPanel
-        environment={selectedEnvironment}
-        onAddEnvironmentToRunConfig={handleAddEnvironmentToRunConfig}
-      />;
+      return (
+        <EnvironmentInstructionsPanel
+          environment={selectedEnvironment}
+          onAddEnvironmentToRunConfig={handleAddEnvironmentToRunConfig}
+        />
+      );
     }
 
     const headerHeight = entry?.target.clientHeight || 0;
 
     return (
-      <RecentActivityTable
-        viewMode={viewMode}
-        data={environmentActivities[selectedEnvironment.originalName]}
-        onSpanLinkClick={handleSpanLinkClick}
-        onTraceButtonClick={handleTraceButtonClick}
-        isTraceButtonVisible={config.isJaegerEnabled}
-        headerHeight={headerHeight}
-      />
+      <>
+        <s.RecentActivityToolbarContainer>
+          {!selectedEnvironment?.isPending && (
+            <s.RecentActivityToolbar>
+              <span>Recent Activity</span>
+              <Toggle
+                value={viewMode}
+                options={viewModeOptions}
+                onChange={handleViewModeChange}
+              />
+            </s.RecentActivityToolbar>
+          )}
+          {!config.isObservabilityEnabled && <ObservabilityStatusBadge />}
+        </s.RecentActivityToolbarContainer>
+        <RecentActivityTable
+          viewMode={viewMode}
+          data={environmentActivities[selectedEnvironment.originalName]}
+          onSpanLinkClick={handleSpanLinkClick}
+          onTraceButtonClick={handleTraceButtonClick}
+          isTraceButtonVisible={config.isJaegerEnabled}
+          headerHeight={headerHeight}
+        />
+      </>
     );
   };
 
@@ -233,19 +250,6 @@ export const RecentActivity = (props: RecentActivityProps) => {
               onEnvironmentAdd={handleEnvironmentAdd}
               onEnvironmentDelete={handleEnvironmentDelete}
             />
-            <s.RecentActivityToolbarContainer>
-              {!selectedEnvironment?.isPending && (
-                <s.RecentActivityToolbar>
-                  <span>Recent Activity</span>
-                  <Toggle
-                    value={viewMode}
-                    options={viewModeOptions}
-                    onChange={handleViewModeChange}
-                  />
-                </s.RecentActivityToolbar>
-              )}
-              {!config.isObservabilityEnabled && <ObservabilityStatusBadge />}
-            </s.RecentActivityToolbarContainer>
           </s.RecentActivityHeader>
           <s.RecentActivityContentContainer>
             {renderContent()}

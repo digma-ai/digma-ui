@@ -263,7 +263,7 @@ export const AssetList = (props: AssetListProps) => {
     () =>
       !(
         config.backendInfo?.deploymentType === DeploymentType.HELM &&
-        config.environment?.type === "shared"
+        config.environment?.type === "public"
       ),
     [config.backendInfo?.deploymentType, config.environment?.type]
   );

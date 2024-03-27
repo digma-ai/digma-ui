@@ -1,43 +1,24 @@
 import styled from "styled-components";
+import {
+  bodyMediumTypography,
+  subscriptRegularTypography
+} from "../../common/App/typographies";
 import { Link as CommonLink } from "../../common/Link";
 
 export const Container = styled.div`
   margin-top: 12px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  font-size: 14px;
-  color: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#818594";
-      case "dark":
-      case "dark-jetbrains":
-        return "#b4b8bf";
-    }
-  }};
+  gap: 16px;
 `;
 
 export const Header = styled.div`
   display: flex;
   gap: 8px;
   align-items: center;
-  font-size: 16px;
-  font-weight: 600;
-  color: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#494b57";
-      case "dark":
-      case "dark-jetbrains":
-        return "#dfe1e5";
-    }
-  }};
-`;
-
-export const IconContainer = styled.div`
-  display: flex;
-  align-self: center;
+  justify-content: center;
+  color: ${({ theme }) => theme.colors.v3.text.primary};
+  ${bodyMediumTypography}
 `;
 
 export const ContentContainer = styled.div`
@@ -48,30 +29,22 @@ export const ContentContainer = styled.div`
 export const Section = styled.div`
   display: flex;
   flex: 1 1 0;
-  padding: 12px;
+  padding: 16px 12px;
   flex-direction: column;
-  gap: 4px;
-  border-radius: 4px;
-  font-size: 14px;
-  color: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#818594";
-      case "dark":
-      case "dark-jetbrains":
-        return "#b4b8bf";
-    }
-  }};
-  background: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#ebecf0";
-      case "dark":
-      case "dark-jetbrains":
-        return "#393b40";
-    }
-  }};
+  gap: 8px;
+  border-radius: 8px;
+  background: ${({ theme }) => theme.colors.v3.surface.secondary};
   height: fit-content;
+  border: 1px solid ${({ theme }) => theme.colors.v3.stroke.primary};
+  box-shadow: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "0 1px 5px 0 rgb(0 0 0 / 12%)";
+      case "dark":
+      case "dark-jetbrains":
+        return "0 1px 4px 0 rgb(0 0 0 / 45%)";
+    }
+  }};
 `;
 
 export const SectionHeader = styled.div`
@@ -96,22 +69,16 @@ export const SectionNumber = styled.span`
 `;
 
 export const SectionTitle = styled.span`
-  font-weight: 600;
-  color: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#494b57";
-      case "dark":
-      case "dark-jetbrains":
-        return "#dfe1e5";
-    }
-  }};
+  ${bodyMediumTypography}
+  color: ${({ theme }) => theme.colors.v3.text.primary};
 `;
 
 export const SectionContentContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
+  color: ${({ theme }) => theme.colors.v3.text.secondary};
+  ${subscriptRegularTypography}
 `;
 
 export const Link = styled(CommonLink)`

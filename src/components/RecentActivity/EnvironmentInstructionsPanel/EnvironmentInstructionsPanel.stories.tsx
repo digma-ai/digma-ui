@@ -24,7 +24,7 @@ export const Local: Story = {
       isPending: true,
       hasRecentActivity: false,
       additionToConfigResult: null,
-      type: "local",
+      type: "public",
       token: null,
       serverApiUrl: null,
       isOrgDigmaSetupFinished: false
@@ -40,7 +40,7 @@ export const Shared: Story = {
       isPending: true,
       hasRecentActivity: false,
       additionToConfigResult: null,
-      type: "shared",
+      type: "public",
       token: "token_string",
       serverApiUrl: "https://example.com:80",
       isOrgDigmaSetupFinished: false

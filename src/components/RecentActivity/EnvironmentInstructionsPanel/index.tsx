@@ -78,7 +78,7 @@ export const EnvironmentInstructionsPanel = (
     EnvironmentType,
     EnvironmentInstructionsPanelContent
   > = {
-    local: {
+    private: {
       icon: DesktopIcon,
       title: "How to setup your Digma Environment",
       instrumentation: {
@@ -125,7 +125,7 @@ export const EnvironmentInstructionsPanel = (
         )
       }
     },
-    shared: {
+    public: {
       icon: InfinityIcon,
       title: "Connecting your CI/Prod Environment",
       instrumentation: {
@@ -177,13 +177,8 @@ export OTEL_RESOURCE_ATTRIBUTES=digma.environment=${props.environment.originalNa
 
   return (
     <s.Container>
-      <s.Header>
-        <s.IconContainer>
-          <content.icon size={16} color={"currentColor"} />
-        </s.IconContainer>
-        {content.title}
-      </s.Header>
-      {props.environment.type === "shared" && (
+      <s.Header>{content.title}</s.Header>
+      {props.environment.type === "public" && (
         <span>
           CI/Prod environments require Digma to be installed in your
           organization. Follow{" "}

@@ -1,7 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { RecentActivity } from ".";
 import { mockData as liveData } from "./LiveView/mockData";
-import { actions } from "./actions";
 import { RecentActivityData } from "./types";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
@@ -28,7 +27,7 @@ const data: RecentActivityData = {
       originalName: "ENV_RENDER",
       isPending: false,
       additionToConfigResult: null,
-      type: "local",
+      type: "public",
       token: null,
       serverApiUrl: null,
       isOrgDigmaSetupFinished: false
@@ -38,7 +37,7 @@ const data: RecentActivityData = {
       originalName: "ENV_RENDER1",
       isPending: false,
       additionToConfigResult: null,
-      type: "local",
+      type: "public",
       token: null,
       serverApiUrl: null,
       isOrgDigmaSetupFinished: false
@@ -48,7 +47,7 @@ const data: RecentActivityData = {
       originalName: "UNSET_ENV",
       isPending: false,
       additionToConfigResult: null,
-      type: "shared",
+      type: "public",
       token: null,
       serverApiUrl: null,
       isOrgDigmaSetupFinished: false
@@ -68,7 +67,7 @@ const data: RecentActivityData = {
       originalName: "PENDING_LOCAL",
       isPending: true,
       additionToConfigResult: null,
-      type: "local",
+      type: "private",
       token: null,
       serverApiUrl: null,
       isOrgDigmaSetupFinished: false
@@ -78,7 +77,7 @@ const data: RecentActivityData = {
       originalName: "PENDING_SHARED",
       isPending: true,
       additionToConfigResult: null,
-      type: "shared",
+      type: "public",
       token: null,
       serverApiUrl: null,
       isOrgDigmaSetupFinished: false
@@ -88,7 +87,7 @@ const data: RecentActivityData = {
       originalName: "PENDING_SHARED_LOCALHOST",
       isPending: true,
       additionToConfigResult: null,
-      type: "shared",
+      type: "public",
       token: null,
       serverApiUrl: "https://localhost:5051",
       isOrgDigmaSetupFinished: false
@@ -98,7 +97,7 @@ const data: RecentActivityData = {
       originalName: "PENDING_SHARED_CUSTOM_DOMAIN",
       isPending: true,
       additionToConfigResult: null,
-      type: "shared",
+      type: "public",
       token: "token_string",
       serverApiUrl: "https://example.com",
       isOrgDigmaSetupFinished: false
@@ -109,7 +108,7 @@ const data: RecentActivityData = {
         "VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-LONG-NAME",
       isPending: false,
       additionToConfigResult: null,
-      type: "local",
+      type: "private",
       token: null,
       serverApiUrl: null,
       isOrgDigmaSetupFinished: false
@@ -648,6 +647,26 @@ export const WithData: Story = {
   }
 };
 
+export const WithEmptyEnv: Story = {
+  args: {
+    data: {
+      environments: [
+        {
+          name: "ENV_RENDER",
+          originalName: "ENV_RENDER",
+          isPending: false,
+          additionToConfigResult: null,
+          type: "private",
+          token: null,
+          serverApiUrl: null,
+          isOrgDigmaSetupFinished: false
+        }
+      ],
+      entries: []
+    }
+  }
+};
+
 export const WithLiveData: Story = {
   args: {
     data,
@@ -662,14 +681,5 @@ export const WithNoLiveData: Story = {
       ...liveData,
       liveDataRecords: []
     }
-  }
-};
-
-export const OpenRegistrationDialog: Story = {
-  play: () => {
-    window.postMessage({
-      type: "digma",
-      action: actions.OPEN_REGISTRATION_DIALOG
-    });
   }
 };

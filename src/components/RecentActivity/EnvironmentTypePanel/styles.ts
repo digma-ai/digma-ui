@@ -60,6 +60,6 @@ export const EnvironmentTypeTitle = styled.span`
 `;
 
 export const AddButton = styled(Button)`
-  width: 60px;
+  min-width: 60px;
   justify-content: center;
 `;
