@@ -113,7 +113,7 @@ export const TopIssues = () => {
       action: actions.GET_HIGHLIGHTS_TOP_ISSUES_DATA,
       payload: {
         query: {
-          spanCodeObjectId: config.scope?.span?.spanCodeObjectId || null
+          scopedCodeObjectId: config.scope?.span?.spanCodeObjectId || null
         }
       }
     });
