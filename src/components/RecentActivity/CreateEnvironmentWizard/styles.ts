@@ -4,6 +4,7 @@ import { StepProps } from "./types";
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
+  height: 100%;
   border-top: 1px solid ${({ theme }) => theme.colors.v3.stroke.dark};
   background: ${({ theme }) => theme.colors.v3.surface.primary};
 `;

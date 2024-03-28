@@ -17,17 +17,5 @@ type Story = StoryObj<typeof meta>;
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 export const Default: Story = {
-  args: {
-    environment: {
-      originalName: "environmentName",
-      hasRecentActivity: false,
-      name: "environmentName",
-      isPending: true,
-      additionToConfigResult: null,
-      type: null,
-      token: null,
-      serverApiUrl: null,
-      isOrgDigmaSetupFinished: false
-    }
-  }
+  args: {}
 };

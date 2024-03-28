@@ -1,6 +1,8 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { dispatcher } from "../../../dispatcher";
 import { ConfigContext } from "../../common/App/ConfigContext";
-import { EnvironmentV2 } from "../types";
+import { actions } from "../actions";
+import { CreateEnvironmentPayload, EnvironmentCreatedData } from "../types";
 import { CreateEnvironmentPanel } from "./CreateEnvironmentPanel";
 import { EnvironmentCreated } from "./EnvironmentCreated";
 import { EnvironmentNameStep } from "./EnvironmentNameStep";
@@ -18,10 +20,11 @@ export const CreateEnvironmentWizard = ({
 }: CreateEnvironmentWizardProps) => {
   const config = useContext(ConfigContext);
   const [currentStep, setCurrentStep] = useState<number>(0);
-  const [environment, setEnvironment] = useState<EnvironmentV2>({
-    name: "",
-    type: null
-  });
+  const [newEnvironment, setNewEnvironment] =
+    useState<CreateEnvironmentPayload>({
+      environment: "",
+      type: null
+    });
   const [completed, setCompleted] = useState(false);
   const [stepsStatus, setStepsStatus] = useState<StepDefinitions[]>([
     {
@@ -42,24 +45,49 @@ export const CreateEnvironmentWizard = ({
     }
   ]);
 
+  useEffect(() => {
+    const handleEnvironmentCreated = (data: unknown) => {
+      const result = data as EnvironmentCreatedData;
+      if (!result.errorCode) {
+        setCompleted(true);
+      }
+    };
+
+    dispatcher.addActionListener(
+      actions.ENVIRONMENT_CREATED,
+      handleEnvironmentCreated
+    );
+
+    return () => {
+      dispatcher.removeActionListener(
+        actions.ENVIRONMENT_CREATED,
+        handleEnvironmentCreated
+      );
+    };
+  }, []);
+
   const getSteps = () => stepsStatus.filter((x) => !x.isHidden);
 
   const goToNextStep = (isFinished?: boolean) => {
-    if (currentStep === getSteps().length - 1) {
-      setCompleted(true);
-    }
-
     const step = getSteps()[currentStep];
     step.status = "completed";
     step.isFinished = isFinished;
     setStepsStatus(stepsStatus);
+
+    if (currentStep === getSteps().length - 1) {
+      window.sendMessageToDigma<CreateEnvironmentPayload>({
+        action: actions.CREATE_ENVIRONMENT,
+        payload: newEnvironment
+      });
+
+      return;
+    }
 
     let nextStep = currentStep + 1;
     while (nextStep <= stepsStatus.length) {
       if (!stepsStatus[nextStep]?.isFinished) {
         break;
       }
-
       nextStep += 1;
     }
 
@@ -125,7 +153,7 @@ export const CreateEnvironmentWizard = ({
               <EnvironmentNameStep
                 onNext={goToNextStep}
                 onNameChange={(value) =>
-                  setEnvironment({ ...environment, name: value })
+                  setNewEnvironment({ ...newEnvironment, environment: value })
                 }
               />
             </s.Step>
@@ -140,10 +168,10 @@ export const CreateEnvironmentWizard = ({
               $isVisible={getStepVisibility(ENVIRONMENT_TYPE_STEP)}
             >
               <EnvironmentTypeStep
-                environment={environment}
-                handleEnvironmentTypeSelect={(type) =>
-                  setEnvironment({ ...environment, type: type })
-                }
+                handleEnvironmentTypeSelect={(type) => {
+                  newEnvironment.type = type;
+                  setNewEnvironment(newEnvironment);
+                }}
                 onNext={goToNextStep}
               />
             </s.Step>
@@ -152,7 +180,7 @@ export const CreateEnvironmentWizard = ({
           <s.Step key="finish" $isVisible={completed}>
             <EnvironmentCreated
               goToEnvironment={() => {
-                onClose(environment.name);
+                onClose(newEnvironment.environment);
               }}
             />
           </s.Step>

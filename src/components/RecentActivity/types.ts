@@ -93,7 +93,13 @@ export interface ViewModeOptionProps {
   $selected: boolean;
 }
 
-export interface EnvironmentV2 {
-  name: string;
+export interface CreateEnvironmentPayload {
+  environment: string;
   type: EnvironmentType | null;
+}
+
+export interface EnvironmentCreatedData {
+  errorCode: string;
+  errorDescription: string;
+  id: string;
 }
