@@ -1,4 +1,4 @@
-import { CodeDetails, Environment } from "../common/App/types";
+import { CodeDetails } from "../common/App/types";
 
 export interface TabData {
   title: string;
@@ -16,7 +16,7 @@ export interface OpenDocumentationPayload {
 }
 
 export interface OpenDashboardPayload {
-  environment?: Environment | null;
+  environment?: string | null;
 }
 
 export interface ChangeScopePayload {
@@ -30,7 +30,7 @@ export interface GoToCodeLocationPayload {
 }
 
 export interface ChangeEnvironmentPayload {
-  environment: Environment;
+  environment: string;
 }
 
 export interface ChangeViewPayload {

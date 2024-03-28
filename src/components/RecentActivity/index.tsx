@@ -65,8 +65,8 @@ export const RecentActivity = (props: RecentActivityProps) => {
       data
         ? data.environments.map((environment) => ({
             ...environment,
-            hasRecentActivity: environmentActivities[environment.originalName]
-              ? environmentActivities[environment.originalName].some(isRecent)
+            hasRecentActivity: environmentActivities[environment.id]
+              ? environmentActivities[environment.id].some(isRecent)
               : false
           }))
         : [],
@@ -76,7 +76,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
   useEffect(() => {
     setSelectedEnvironment((selectedEnvironment) => {
       const environmentToSelect = environments.find(
-        (x) => x.originalName === selectedEnvironment?.originalName
+        (x) => x.id === selectedEnvironment?.id
       );
 
       if (environmentToSelect) {
@@ -91,22 +91,6 @@ export const RecentActivity = (props: RecentActivityProps) => {
     window.sendMessageToDigma({
       action: actions.INITIALIZE
     });
-
-    // const handleOpenRegistrationDialog = () => {
-    //   setIsRegistrationPopupVisible(true);
-    // };
-
-    // dispatcher.addActionListener(
-    //   actions.OPEN_REGISTRATION_DIALOG,
-    //   handleOpenRegistrationDialog
-    // );
-
-    // return () => {
-    //   dispatcher.removeActionListener(
-    //     actions.OPEN_REGISTRATION_DIALOG,
-    //     handleOpenRegistrationDialog
-    //   );
-    // };
   }, []);
 
   const handleEnvironmentSelect = (environment: ExtendedEnvironment) => {
@@ -119,7 +103,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
         action: actions.GO_TO_SPAN,
         payload: {
           span,
-          environment: selectedEnvironment.originalName
+          environment: selectedEnvironment.id
         }
       });
     }
@@ -185,8 +169,8 @@ export const RecentActivity = (props: RecentActivityProps) => {
     }
 
     if (
-      !environmentActivities[selectedEnvironment.originalName] ||
-      !environmentActivities[selectedEnvironment.originalName].length
+      !environmentActivities[selectedEnvironment.id] ||
+      !environmentActivities[selectedEnvironment.id].length
     ) {
       return (
         <EnvironmentInstructionsPanel
@@ -215,7 +199,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
         </s.RecentActivityToolbarContainer>
         <RecentActivityTable
           viewMode={viewMode}
-          data={environmentActivities[selectedEnvironment.originalName]}
+          data={environmentActivities[selectedEnvironment.id]}
           onSpanLinkClick={handleSpanLinkClick}
           onTraceButtonClick={handleTraceButtonClick}
           isTraceButtonVisible={config.isJaegerEnabled}
@@ -227,9 +211,9 @@ export const RecentActivity = (props: RecentActivityProps) => {
 
   return showCreationWizard ? (
     <CreateEnvironmentWizard
-      onClose={(newEnvName) => {
-        if (newEnvName) {
-          const newEnv = environments.find((x) => x.name == newEnvName);
+      onClose={(newEnvId) => {
+        if (newEnvId) {
+          const newEnv = environments.find((x) => x.id == newEnvId);
           newEnv && setSelectedEnvironment(newEnv);
         }
         setShowCreationWizard(false);

@@ -170,9 +170,7 @@ export const Navigation = () => {
       config.environments &&
       config.environments.length > 0 &&
       (!config.environment ||
-        !config.environments.find(
-          (x) => x.originalName == config.environment?.originalName
-        ))
+        !config.environments.find((x) => x.id == config.environment?.id))
     ) {
       handleEnvironmentChange(config.environments[0]);
     }
@@ -211,7 +209,7 @@ export const Navigation = () => {
     window.sendMessageToDigma<OpenDashboardPayload>({
       action: globalActions.OPEN_DASHBOARD,
       payload: {
-        environment: selectedEnvironment
+        environment: selectedEnvironment?.id
       }
     });
   };
@@ -264,7 +262,7 @@ export const Navigation = () => {
     setIsEnvironmentMenuOpen(false);
 
     const environmentToChange = environments.find(
-      (x) => x.originalName === environment.originalName
+      (x) => x.id === environment.id
     );
 
     if (!environmentToChange) {
@@ -274,7 +272,7 @@ export const Navigation = () => {
     window.sendMessageToDigma<ChangeEnvironmentPayload>({
       action: actions.CHANGE_ENVIRONMENT,
       payload: {
-        environment: environmentToChange
+        environment: environmentToChange.id
       }
     });
 
@@ -342,7 +340,7 @@ export const Navigation = () => {
           <Popup height={"78px"}>
             <MenuList
               items={environments.map((x) => ({
-                id: x.originalName,
+                id: x.id,
                 label: x.name,
                 onClick: () => handleEnvironmentChange(x),
                 icon: <EnvironmentIcon environment={x} />

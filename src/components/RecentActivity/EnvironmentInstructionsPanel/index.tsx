@@ -38,7 +38,7 @@ export const EnvironmentInstructionsPanel = (
     getHostnameFromURL(config.digmaApiUrl) || "[DIGMA_BACKEND_URL]";
   const environmentVariableString = getEnvironmentVariableString(
     config.isMicrometerProject,
-    props.environment.originalName
+    props.environment.id
   );
 
   const handleOrgDigmaSetupGuideLinkClick = () => {
@@ -47,7 +47,7 @@ export const EnvironmentInstructionsPanel = (
 
   const handleAddToRunConfigLinkClick = () => {
     if (props.onAddEnvironmentToRunConfig) {
-      props.onAddEnvironmentToRunConfig(props.environment.originalName);
+      props.onAddEnvironmentToRunConfig(props.environment.id);
     }
   };
 
@@ -144,7 +144,7 @@ curl --create-dirs -O -L --output-dir ./otel https://github.com/digma-ai/otel-ja
 export JAVA_TOOL_OPTIONS="-javaagent:/otel/opentelemetry-javaagent.jar -Dotel.exporter.otlp.endpoint=http://${hostname}:5050 -Dotel.javaagent.extensions=/otel/digma-otel-agent-extension.jar -Dotel.metrics.exporter=none -Dotel.logs.exporter=none -Dotel.exporter.otlp.protocol=grpc"
 
 export OTEL_SERVICE_NAME={--ENTER YOUR SERVICE NAME HERE--}
-export OTEL_RESOURCE_ATTRIBUTES=digma.environment=${props.environment.originalName}`}
+export OTEL_RESOURCE_ATTRIBUTES=digma.environment=${props.environment.id}`}
               language={"bash"}
             />
           </>

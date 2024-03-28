@@ -97,8 +97,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
     if (
       previousConfig &&
       (previousConfig?.scope?.span !== config?.scope?.span ||
-        previousConfig?.environment?.originalName !==
-          config.environment?.originalName)
+        previousConfig?.environment?.id !== config.environment?.id)
     ) {
       setPage(0);
     }

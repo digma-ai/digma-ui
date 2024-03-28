@@ -34,7 +34,7 @@ export enum DeploymentType {
 export type EnvironmentType = "public" | "private";
 
 export interface Environment {
-  originalName: string;
+  id: string;
   name: string;
   type: EnvironmentType | null;
 }

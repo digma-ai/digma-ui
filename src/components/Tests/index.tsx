@@ -85,9 +85,9 @@ export const Tests = (props: TestsProps) => {
 
   const environmentMenuItems: MenuItem[] = (config.environments || []).map(
     (environment) => ({
-      value: environment.originalName,
+      value: environment.id,
       label: environment.name,
-      selected: selectedEnvironments.includes(environment.originalName)
+      selected: selectedEnvironments.includes(environment.id)
     })
   );
 
@@ -96,7 +96,7 @@ export const Tests = (props: TestsProps) => {
       environments:
         selectedEnvironments.length > 0
           ? selectedEnvironments
-          : (config.environments || []).map((x) => x.originalName)
+          : (config.environments || []).map((x) => x.id)
     }),
     [selectedEnvironments, config.environments]
   );

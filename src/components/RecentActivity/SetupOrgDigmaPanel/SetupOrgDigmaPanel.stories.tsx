@@ -20,7 +20,7 @@ export const Default: Story = {
   args: {
     environment: {
       name: "MY_ENV",
-      originalName: "MY_ENV",
+      id: "MY_ENV",
       isPending: true,
       hasRecentActivity: false,
       additionToConfigResult: null,

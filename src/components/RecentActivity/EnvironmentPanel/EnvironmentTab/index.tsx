@@ -49,7 +49,7 @@ export const EnvironmentTab = (props: EnvironmentTabProps) => {
   const handleMenuItemSelect = (value: string) => {
     switch (value) {
       case "delete":
-        props.onEnvironmentDelete(props.environment.originalName);
+        props.onEnvironmentDelete(props.environment.id);
         break;
     }
 

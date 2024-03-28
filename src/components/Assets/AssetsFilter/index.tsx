@@ -137,8 +137,7 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
   useEffect(() => {
     if (
       (isEnvironment(previousEnvironment) &&
-        previousEnvironment.originalName !==
-          config.environment?.originalName) ||
+        previousEnvironment.id !== config.environment?.id) ||
       (previousScope && previousScope !== config.scope)
     ) {
       const defaultFilters = {

@@ -24,7 +24,7 @@ const data: RecentActivityData = {
   environments: [
     {
       name: "ENV_RENDER",
-      originalName: "ENV_RENDER",
+      id: "ENV_RENDER",
       isPending: false,
       additionToConfigResult: null,
       type: "public",
@@ -34,7 +34,7 @@ const data: RecentActivityData = {
     },
     {
       name: "ENV_RENDER",
-      originalName: "ENV_RENDER1",
+      id: "ENV_RENDER1",
       isPending: false,
       additionToConfigResult: null,
       type: "public",
@@ -44,7 +44,7 @@ const data: RecentActivityData = {
     },
     {
       name: "UNSET_ENV",
-      originalName: "UNSET_ENV",
+      id: "UNSET_ENV",
       isPending: false,
       additionToConfigResult: null,
       type: "public",
@@ -54,7 +54,7 @@ const data: RecentActivityData = {
     },
     {
       name: "PENDING_NO_TYPE",
-      originalName: "PENDING_NO_TYPE",
+      id: "PENDING_NO_TYPE",
       isPending: true,
       additionToConfigResult: null,
       type: null,
@@ -64,7 +64,7 @@ const data: RecentActivityData = {
     },
     {
       name: "PENDING_LOCAL",
-      originalName: "PENDING_LOCAL",
+      id: "PENDING_LOCAL",
       isPending: true,
       additionToConfigResult: null,
       type: "private",
@@ -74,7 +74,7 @@ const data: RecentActivityData = {
     },
     {
       name: "PENDING_SHARED",
-      originalName: "PENDING_SHARED",
+      id: "PENDING_SHARED",
       isPending: true,
       additionToConfigResult: null,
       type: "public",
@@ -84,7 +84,7 @@ const data: RecentActivityData = {
     },
     {
       name: "PENDING_SHARED_LOCALHOST",
-      originalName: "PENDING_SHARED_LOCALHOST",
+      id: "PENDING_SHARED_LOCALHOST",
       isPending: true,
       additionToConfigResult: null,
       type: "public",
@@ -94,7 +94,7 @@ const data: RecentActivityData = {
     },
     {
       name: "PENDING_SHARED_CUSTOM_DOMAIN",
-      originalName: "PENDING_SHARED_CUSTOM_DOMAIN",
+      id: "PENDING_SHARED_CUSTOM_DOMAIN",
       isPending: true,
       additionToConfigResult: null,
       type: "public",
@@ -104,8 +104,7 @@ const data: RecentActivityData = {
     },
     {
       name: "VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-LONG-NAME",
-      originalName:
-        "VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-LONG-NAME",
+      id: "VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-LONG-NAME",
       isPending: false,
       additionToConfigResult: null,
       type: "private",
@@ -653,7 +652,7 @@ export const WithEmptyEnv: Story = {
       environments: [
         {
           name: "ENV_RENDER",
-          originalName: "ENV_RENDER",
+          id: "ENV_RENDER",
           isPending: false,
           additionToConfigResult: null,
           type: "private",

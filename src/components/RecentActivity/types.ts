@@ -62,7 +62,7 @@ export interface ActivityEntry {
 
 export interface Environment {
   name: string;
-  originalName: string;
+  id: string;
   isPending: boolean;
   additionToConfigResult: "success" | "failure" | null;
   type: EnvironmentType | null;

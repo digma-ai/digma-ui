@@ -7,7 +7,7 @@ export const EnvironmentIcon = (props: EnvironmentIconProps) => {
     return null;
   }
 
-  return props.environment.name === props.environment.originalName ? (
+  return props.environment.id === props.environment.id ? (
     <InfinityIcon size={16} color={"currentColor"} />
   ) : (
     <DesktopIcon size={16} color={"currentColor"} />

@@ -144,18 +144,18 @@ export const SetupOrgDigmaPanel = (props: SetupOrgDigmaPanelProps) => {
   };
 
   const handleCloseButtonClick = () => {
-    props.onCancel(props.environment.originalName);
+    props.onCancel(props.environment.id);
   };
 
   const handleCancelButtonClick = () => {
-    props.onCancel(props.environment.originalName);
+    props.onCancel(props.environment.id);
   };
 
   const handleTestConnectionButtonClick = () => {
     window.sendMessageToDigma({
       action: actions.CHECK_REMOTE_ENVIRONMENT_CONNECTION,
       payload: {
-        environment: props.environment.originalName,
+        environment: props.environment.id,
         token: apiToken,
         serverAddress: serverApiUrl
       }
@@ -183,7 +183,7 @@ export const SetupOrgDigmaPanel = (props: SetupOrgDigmaPanelProps) => {
     });
 
     if (areSettingsMatch) {
-      props.onFinish(props.environment.originalName);
+      props.onFinish(props.environment.id);
     } else {
       setIsSettingsMessageVisible(true);
     }
@@ -194,7 +194,7 @@ export const SetupOrgDigmaPanel = (props: SetupOrgDigmaPanelProps) => {
   };
 
   if (skipOrgDigmaSetupGuide) {
-    props.onFinish(props.environment.originalName);
+    props.onFinish(props.environment.id);
     return null;
   }
 

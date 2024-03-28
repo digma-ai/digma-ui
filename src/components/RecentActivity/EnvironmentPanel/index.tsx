@@ -208,12 +208,9 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
         <s.EnvironmentList ref={environmentListDimensions.observe}>
           {props.environments.map((environment) => (
             <EnvironmentTab
-              key={environment.originalName}
+              key={environment.id}
               environment={environment}
-              isSelected={
-                props.selectedEnvironment?.originalName ===
-                environment.originalName
-              }
+              isSelected={props.selectedEnvironment?.id === environment.id}
               onClick={handleEnvironmentTabClick}
               onEnvironmentDelete={handleEnvironmentDelete}
             />
