@@ -7,6 +7,8 @@ import { CreateEnvironmentPanel } from "./CreateEnvironmentPanel";
 import { EnvironmentCreated } from "./EnvironmentCreated";
 import { EnvironmentNameStep } from "./EnvironmentNameStep";
 import { EnvironmentTypeStep } from "./EnvironmentTypeStep";
+import { ErrorsPanel } from "./ErrorsPanel";
+import { ErrorData } from "./ErrorsPanel/types";
 import { RegisterStep } from "./RegisterStep";
 import * as s from "./styles";
 import { CreateEnvironmentWizardProps, StepDefinitions } from "./types";
@@ -26,6 +28,9 @@ export const CreateEnvironmentWizard = ({
       type: null
     });
   const [completed, setCompleted] = useState(false);
+  const [errors, setErrors] = useState<ErrorData[]>([
+    { description: "blabla", title: "again" }
+  ]);
   const [stepsStatus, setStepsStatus] = useState<StepDefinitions[]>([
     {
       key: ENVIRONMENT_NAME_STEP,
@@ -50,7 +55,14 @@ export const CreateEnvironmentWizard = ({
       const result = data as EnvironmentCreatedData;
       if (!result.errorCode) {
         setCompleted(true);
+        return;
       }
+
+      errors.push({
+        title: result.errorCode,
+        description: result.errorDescription
+      });
+      setErrors(errors);
     };
 
     dispatcher.addActionListener(
@@ -185,6 +197,7 @@ export const CreateEnvironmentWizard = ({
             />
           </s.Step>
         )}
+        {!!errors.length && <ErrorsPanel errors={errors} />}
       </s.StepContainer>
     </s.Container>
   );
