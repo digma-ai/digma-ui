@@ -20,7 +20,7 @@ export const SessionInViewInsight = (props: SessionInViewInsightProps) => {
   const [pageItems, page, setPage] = usePagination(
     props.insight.spans,
     PAGE_SIZE,
-    props.insight.codeObjectId
+    props.insight.id
   );
 
   const handleLinkClick = (spanCodeObjectId: string) => {

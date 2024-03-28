@@ -20,7 +20,7 @@ export const SpanQueryOptimizationInsight = (
   const [pageItems, page, setPage] = usePagination(
     endpoints,
     PAGE_SIZE,
-    props.insight.codeObjectId
+    props.insight.id
   );
 
   const handleSpanLinkClick = (spanCodeObjectId?: string) => {

@@ -1,4 +1,5 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+import { isNumber } from "../../../typeGuards/isNumber";
 import { IndicatorProps, TabProps } from "./types";
 
 export const TabList = styled.ul`
@@ -20,6 +21,13 @@ export const Tab = styled.li<TabProps>`
   box-sizing: border-box;
   flex-grow: 1;
   flex-basis: 0;
+  ${({ $width }) =>
+    isNumber($width)
+      ? css`
+          width: ${$width}px;
+          flex: none;
+        `
+      : ""}
   cursor: ${({ $isSelected, $isDisabled }) =>
     $isSelected || $isDisabled ? "initial" : "pointer"};
   color: ${({ theme, $isSelected, $isDisabled }) => {

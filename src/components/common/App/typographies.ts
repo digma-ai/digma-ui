@@ -83,6 +83,12 @@ export const subscriptRegularTypography = css`
   line-height: ${typographies.subscript.lineHeight}px;
 `;
 
+export const subscriptMediumTypography = css`
+  font-size: ${typographies.subscript.fontSize}px;
+  font-weight: ${typographies.subscript.fontWeight.medium};
+  line-height: ${typographies.subscript.lineHeight}px;
+`;
+
 export const subscriptSemiboldTypography = css`
   font-size: ${typographies.subscript.fontSize}px;
   font-weight: ${typographies.subscript.fontWeight.semibold};

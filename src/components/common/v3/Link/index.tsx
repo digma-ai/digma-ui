@@ -23,6 +23,7 @@ const LinkComponent = (
       target={props.target}
       rel={props.rel}
       onClick={handleClick}
+      $disabled={props.disabled}
     >
       {props.children}
     </s.Link>

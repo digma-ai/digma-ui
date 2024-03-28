@@ -8,6 +8,7 @@ export interface TabsProps {
 export interface TabProps {
   $isSelected: boolean;
   $isDisabled: boolean;
+  $width?: number;
 }
 
 export interface IndicatorProps {

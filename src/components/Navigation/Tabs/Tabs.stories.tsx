@@ -21,18 +21,18 @@ export const Default: Story = {
   args: {
     tabs: [
       {
-        title: "Highlights",
+        title: "",
         id: "highlights",
-        isSelected: false,
+        isSelected: true,
         isDisabled: false,
         hasNewData: false,
-        isHidden: true,
+        isHidden: false,
         cardName: "highlights"
       },
       {
         title: "Insights",
         id: "insights",
-        isSelected: true,
+        isSelected: false,
         isDisabled: false,
         hasNewData: false,
         isHidden: false,
