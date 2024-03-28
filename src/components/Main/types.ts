@@ -1,1 +1,1 @@
-export type View = "insights" | "assets" | "analytics" | "tests";
+export type View = "highlights" | "insights" | "assets" | "analytics" | "tests";
