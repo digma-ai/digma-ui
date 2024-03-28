@@ -5,6 +5,7 @@ import { trackingEvents as globalTrackingEvents } from "../../../trackingEvents"
 import { ChangeViewPayload } from "../../../types";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { actions } from "../../Main/actions";
+import { GetHighlightsTopIssuesDataPayload } from "../../Main/types";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Link } from "../../common/v3/Link";
 import { EmptyStateCard } from "../EmptyStateCard";
@@ -108,10 +109,12 @@ export const TopIssues = () => {
   };
 
   useEffect(() => {
-    window.sendMessageToDigma({
+    window.sendMessageToDigma<GetHighlightsTopIssuesDataPayload>({
       action: actions.GET_HIGHLIGHTS_TOP_ISSUES_DATA,
       payload: {
-        spanCodeObjectId: config.scope?.span?.spanCodeObjectId || null
+        query: {
+          spanCodeObjectId: config.scope?.span?.spanCodeObjectId || null
+        }
       }
     });
     setIsLoading(true);
@@ -136,11 +139,15 @@ export const TopIssues = () => {
     };
   }, []);
 
+  const isViewAllLinkDisabled = (data?.topInsights || []).length === 0;
+
   return (
     <s.Container>
       <SectionHeader>
         Top Issues
-        <Link onClick={handleViewAllLinkClick}>View all</Link>
+        <Link onClick={handleViewAllLinkClick} disabled={isViewAllLinkDisabled}>
+          View all
+        </Link>
       </SectionHeader>
       {data && data.topInsights.length > 0 ? (
         data.topInsights.map((x) => (
