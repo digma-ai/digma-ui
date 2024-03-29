@@ -22,15 +22,13 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   play: () => {
-    setTimeout(() => {
-      window.setTimeout(() => {
-        window.postMessage({
-          type: "digma",
-          action: actions.SET_HIGHLIGHTS_TOP_ISSUES_DATA,
-          payload: mockedTopIssuesData
-        });
+    window.setTimeout(() => {
+      window.postMessage({
+        type: "digma",
+        action: actions.SET_HIGHLIGHTS_TOP_ISSUES_DATA,
+        payload: mockedTopIssuesData
       });
-    }, 0);
+    });
   }
 };
 
@@ -38,14 +36,12 @@ export const Loading: Story = {};
 
 export const Empty: Story = {
   play: () => {
-    setTimeout(() => {
-      window.setTimeout(() => {
-        window.postMessage({
-          type: "digma",
-          action: actions.SET_HIGHLIGHTS_TOP_ISSUES_DATA,
-          payload: { topInsights: [] }
-        });
+    window.setTimeout(() => {
+      window.postMessage({
+        type: "digma",
+        action: actions.SET_HIGHLIGHTS_TOP_ISSUES_DATA,
+        payload: { topInsights: [] }
       });
-    }, 0);
+    });
   }
 };
