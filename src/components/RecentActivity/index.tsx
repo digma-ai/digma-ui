@@ -3,7 +3,6 @@ import "allotment/dist/style.css";
 import { KeyboardEvent, useContext, useEffect, useMemo, useState } from "react";
 import useDimensions from "react-cool-dimensions";
 import { actions as globalActions } from "../../actions";
-import { usePrevious } from "../../hooks/usePrevious";
 import { ChangeEnvironmentPayload } from "../../types";
 import { groupBy } from "../../utils/groupBy";
 import { ConfigContext } from "../common/App/ConfigContext";
@@ -56,14 +55,12 @@ export const RecentActivity = (props: RecentActivityProps) => {
     liveData: props.liveData
   });
   const config = useContext(ConfigContext);
-  const previousEnvironment = usePrevious(config.environment);
   const { observe, entry } = useDimensions();
 
   const environmentActivities = useMemo(
     () => (data ? groupBy(data.entries, (x) => x.environmentId) : {}),
     [data]
   );
-
   const environments: ExtendedEnvironment[] = useMemo(
     () =>
       data
@@ -108,7 +105,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
       window.sendMessageToDigma<ChangeEnvironmentPayload>({
         action: globalActions.CHANGE_ENVIRONMENT,
         payload: {
-          environment: environmentToSelect
+          environment: environmentToSelect.id
         }
       });
     }

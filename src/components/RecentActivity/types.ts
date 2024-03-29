@@ -100,8 +100,12 @@ export interface CreateEnvironmentPayload {
   type: EnvironmentType | null;
 }
 
-export interface EnvironmentCreatedData {
+export interface ErrorResponseData {
   errorCode: string;
   errorDescription: string;
+}
+
+export interface EnvironmentCreatedData {
+  errors?: ErrorResponseData[];
   id: string;
 }

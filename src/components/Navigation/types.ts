@@ -16,7 +16,7 @@ export interface OpenDocumentationPayload {
 }
 
 export interface OpenDashboardPayload {
-  environment?: Environment | null;
+  environment?: string | null;
 }
 
 export interface GoToCodeLocationPayload {

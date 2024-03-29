@@ -1,4 +1,4 @@
-import { StepStatus } from "../../../InstallationWizard/Step/types";
+import { StepStatus } from "../types";
 
 export interface CreateEnvironmentPanelProps {
   onCancel: () => void;

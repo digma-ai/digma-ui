@@ -1,4 +1,3 @@
-import { Environment } from "./components/common/App/types";
 import { Duration } from "./globals";
 
 export enum FeatureFlag {
@@ -86,7 +85,7 @@ export interface GetInsightStatsPayload {
 }
 
 export interface ChangeEnvironmentPayload {
-  environment: Environment;
+  environment: string;
 }
 
 export interface ChangeScopePayload {

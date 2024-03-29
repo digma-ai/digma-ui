@@ -1,8 +1,13 @@
 import { useContext, useEffect, useState } from "react";
 import { dispatcher } from "../../../dispatcher";
 import { ConfigContext } from "../../common/App/ConfigContext";
+import { Environment } from "../../common/App/types";
 import { actions } from "../actions";
-import { CreateEnvironmentPayload, EnvironmentCreatedData } from "../types";
+import {
+  CreateEnvironmentPayload,
+  EnvironmentCreatedData,
+  ErrorResponseData
+} from "../types";
 import { CreateEnvironmentPanel } from "./CreateEnvironmentPanel";
 import { EnvironmentCreated } from "./EnvironmentCreated";
 import { EnvironmentNameStep } from "./EnvironmentNameStep";
@@ -11,7 +16,11 @@ import { ErrorsPanel } from "./ErrorsPanel";
 import { ErrorData } from "./ErrorsPanel/types";
 import { RegisterStep } from "./RegisterStep";
 import * as s from "./styles";
-import { CreateEnvironmentWizardProps, StepDefinitions } from "./types";
+import {
+  CreateEnvironmentWizardProps,
+  ErrorDefinitions,
+  StepDefinitions
+} from "./types";
 
 const ENVIRONMENT_NAME_STEP = "environment name";
 const ENVIRONMENT_TYPE_STEP = "environment type";
@@ -22,11 +31,11 @@ export const CreateEnvironmentWizard = ({
 }: CreateEnvironmentWizardProps) => {
   const config = useContext(ConfigContext);
   const [currentStep, setCurrentStep] = useState<number>(0);
-  const [newEnvironment, setNewEnvironment] =
-    useState<CreateEnvironmentPayload>({
-      environment: "",
-      type: null
-    });
+  const [newEnvironment, setNewEnvironment] = useState<Environment>({
+    name: "",
+    type: null,
+    id: ""
+  });
   const [completed, setCompleted] = useState(false);
   const [errors, setErrors] = useState<ErrorData[]>([]);
   const [stepsStatus, setStepsStatus] = useState<StepDefinitions[]>([
@@ -34,36 +43,67 @@ export const CreateEnvironmentWizard = ({
       key: ENVIRONMENT_NAME_STEP,
       name: "Environment Name",
       status: "not-completed",
-      errors: []
+      errors: {
+        ExistingEnvironmentName: "Incorrect name"
+      }
     },
     {
       key: REGISTER_STEP,
       name: "Register",
       status: "not-completed",
-      errors: [],
+      errors: {},
       isHidden: !!config.userRegistrationEmail
     },
     {
       key: ENVIRONMENT_TYPE_STEP,
       name: "Environment Type",
       status: "not-completed",
-      errors: []
+      errors: {}
     }
   ]);
 
   useEffect(() => {
+    const getFailedSteps = (result: EnvironmentCreatedData) => {
+      return stepsStatus.filter((x) =>
+        result.errors?.find((e) => x.errors && x.errors[e.errorCode])
+      );
+    };
+
+    const markFailedSteps = (steps: StepDefinitions[]) => {
+      steps.forEach((step) => (step.status = "error"));
+      setStepsStatus(stepsStatus);
+    };
+
+    const showErrors = (
+      steps: StepDefinitions[],
+      errors: ErrorResponseData[]
+    ) => {
+      const errorsDetails: ErrorDefinitions = steps.reduce(
+        (errorsMap, step) => {
+          return { ...errorsMap, ...step.errors };
+        },
+        {}
+      );
+
+      setErrors(
+        errors.map((x) => ({
+          title: errorsDetails[x.errorCode] || x.errorCode,
+          description: x.errorDescription
+        }))
+      );
+    };
+
     const handleEnvironmentCreated = (data: unknown) => {
       const result = data as EnvironmentCreatedData;
-      if (!result.errorCode) {
+      if (!result.errors) {
         setCompleted(true);
+        setNewEnvironment({ ...newEnvironment, id: result.id });
         return;
       }
 
-      errors.push({
-        title: result.errorCode,
-        description: result.errorDescription
-      });
-      setErrors(errors);
+      const failedSteps = getFailedSteps(result);
+      markFailedSteps(failedSteps);
+      showErrors(failedSteps, result.errors);
     };
 
     dispatcher.addActionListener(
@@ -77,7 +117,7 @@ export const CreateEnvironmentWizard = ({
         handleEnvironmentCreated
       );
     };
-  }, [errors]);
+  }, [stepsStatus, newEnvironment]);
 
   const getSteps = () => stepsStatus.filter((x) => !x.isHidden);
 
@@ -88,9 +128,13 @@ export const CreateEnvironmentWizard = ({
     setStepsStatus(stepsStatus);
 
     if (currentStep === getSteps().length - 1) {
+      setErrors([]);
       window.sendMessageToDigma<CreateEnvironmentPayload>({
         action: actions.CREATE_ENVIRONMENT,
-        payload: newEnvironment
+        payload: {
+          environment: newEnvironment.name,
+          type: newEnvironment.type
+        }
       });
 
       return;
@@ -151,7 +195,7 @@ export const CreateEnvironmentWizard = ({
         }}
         cancelDisabled={completed}
         tabs={getSteps().map((step, index) => ({
-          ...step,
+          name: step.name,
           index: index + 1,
           state: index === currentStep ? "active" : step.status
         }))}
@@ -165,8 +209,12 @@ export const CreateEnvironmentWizard = ({
             >
               <EnvironmentNameStep
                 onNext={goToNextStep}
+                isInvalid={
+                  stepsStatus.find((x) => x.key === ENVIRONMENT_NAME_STEP)
+                    ?.status === "error"
+                }
                 onNameChange={(value) =>
-                  setNewEnvironment({ ...newEnvironment, environment: value })
+                  setNewEnvironment({ ...newEnvironment, name: value })
                 }
               />
             </s.Step>
@@ -193,7 +241,7 @@ export const CreateEnvironmentWizard = ({
           <s.Step key="finish" $isVisible={completed}>
             <EnvironmentCreated
               goToEnvironment={() => {
-                onClose(newEnvironment.environment);
+                onClose(newEnvironment.id);
               }}
             />
           </s.Step>

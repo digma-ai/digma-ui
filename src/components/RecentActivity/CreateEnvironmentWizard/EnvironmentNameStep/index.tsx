@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useTheme } from "styled-components";
 import { CheckCircleIcon } from "../../../common/icons/12px/CheckCircleIcon";
 import { ErrorIcon } from "../../../common/icons/12px/ErrorIcon";
@@ -10,11 +10,16 @@ const ENVIRONMENT_NAME_REGEX = /^[A-Z0-9_.-]{1,50}$/;
 
 export const EnvironmentNameStep = ({
   onNameChange,
-  onNext
+  onNext,
+  isInvalid
 }: EnvironmentNameStepProps) => {
   const theme = useTheme();
   const [name, setName] = useState<string | null>(null);
-  const [isValid, setIsValid] = useState(true);
+  const [isValid, setIsValid] = useState(!isInvalid);
+
+  useEffect(() => {
+    setIsValid(!isInvalid);
+  }, [isInvalid]);
 
   const handleNext = () => {
     onNext(false);

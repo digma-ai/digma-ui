@@ -6,7 +6,7 @@ export interface StepProps {
   $isVisible: boolean;
 }
 
-export type StepStatus = "completed" | "active" | "not-completed";
+export type StepStatus = "completed" | "active" | "not-completed" | "error";
 
 export interface StepDefinitions {
   key: string;
@@ -14,5 +14,9 @@ export interface StepDefinitions {
   name: string;
   isFinished?: boolean;
   isHidden?: boolean;
-  errors?: [];
+  errors?: ErrorDefinitions;
+}
+
+export interface ErrorDefinitions {
+  [key: string]: string;
 }

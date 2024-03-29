@@ -39,3 +39,11 @@ export const Confirmed: Story = {
     state: "completed"
   }
 };
+
+export const Error: Story = {
+  args: {
+    index: 1,
+    name: "Environment Name",
+    state: "error"
+  }
+};
