@@ -28,25 +28,26 @@ export const CreateEnvironmentWizard = ({
       type: null
     });
   const [completed, setCompleted] = useState(false);
-  const [errors, setErrors] = useState<ErrorData[]>([
-    { description: "blabla", title: "again" }
-  ]);
+  const [errors, setErrors] = useState<ErrorData[]>([]);
   const [stepsStatus, setStepsStatus] = useState<StepDefinitions[]>([
     {
       key: ENVIRONMENT_NAME_STEP,
       name: "Environment Name",
-      status: "not-completed"
+      status: "not-completed",
+      errors: []
     },
     {
       key: REGISTER_STEP,
       name: "Register",
       status: "not-completed",
+      errors: [],
       isHidden: !!config.userRegistrationEmail
     },
     {
       key: ENVIRONMENT_TYPE_STEP,
       name: "Environment Type",
-      status: "not-completed"
+      status: "not-completed",
+      errors: []
     }
   ]);
 
@@ -76,7 +77,7 @@ export const CreateEnvironmentWizard = ({
         handleEnvironmentCreated
       );
     };
-  }, []);
+  }, [errors]);
 
   const getSteps = () => stepsStatus.filter((x) => !x.isHidden);
 

@@ -111,3 +111,7 @@ export const Overlay = styled.div`
   overflow: auto;
   z-index: ${LAYERS.OVERLAY};
 `;
+
+export const NoDataContainer = styled.div`
+  padding: 16px 12px 20px;
+`;

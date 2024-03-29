@@ -51,6 +51,7 @@ export interface SlimInsight {
 
 export interface ActivityEntry {
   environment: string;
+  environmentId: string;
   traceFlowDisplayName: string;
   firstEntrySpan: EntrySpan;
   lastEntrySpan: EntrySpan | null;
@@ -73,6 +74,7 @@ export interface Environment {
 
 export interface ExtendedEnvironment extends Environment {
   hasRecentActivity: boolean;
+  isNew?: boolean;
 }
 
 export interface RecentActivityData {

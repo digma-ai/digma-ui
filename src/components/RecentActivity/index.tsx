@@ -56,7 +56,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
   const { observe, entry } = useDimensions();
 
   const environmentActivities = useMemo(
-    () => (data ? groupBy(data.entries, (x) => x.environment) : {}),
+    () => (data ? groupBy(data.entries, (x) => x.environmentId) : {}),
     [data]
   );
 
@@ -164,13 +164,20 @@ export const RecentActivity = (props: RecentActivityProps) => {
   };
 
   const renderContent = () => {
-    if (!selectedEnvironment) {
-      return <NoData />;
+    if (
+      !selectedEnvironment ||
+      !environmentActivities[selectedEnvironment.id]
+    ) {
+      return (
+        <s.NoDataContainer>
+          <NoData />
+        </s.NoDataContainer>
+      );
     }
 
     if (
-      !environmentActivities[selectedEnvironment.id] ||
-      !environmentActivities[selectedEnvironment.id].length
+      !environmentActivities[selectedEnvironment.id].length &&
+      selectedEnvironment.isNew
     ) {
       return (
         <EnvironmentInstructionsPanel
@@ -214,7 +221,10 @@ export const RecentActivity = (props: RecentActivityProps) => {
       onClose={(newEnvId) => {
         if (newEnvId) {
           const newEnv = environments.find((x) => x.id == newEnvId);
-          newEnv && setSelectedEnvironment(newEnv);
+          if (newEnv) {
+            newEnv.isNew = true;
+            setSelectedEnvironment(newEnv);
+          }
         }
         setShowCreationWizard(false);
       }}

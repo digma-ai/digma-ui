@@ -14,4 +14,5 @@ export interface StepDefinitions {
   name: string;
   isFinished?: boolean;
   isHidden?: boolean;
+  errors?: [];
 }

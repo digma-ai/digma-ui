@@ -116,6 +116,7 @@ const data: RecentActivityData = {
   entries: [
     {
       environment: "ENV_RENDER",
+      environmentId: "ENV_RENDER#ID#1",
       traceFlowDisplayName: "PetClinicWithAgent:HTTP GET /webjars/**",
       firstEntrySpan: {
         displayText: "PetClinicWithAgent:HTTP GET /webjars/**",
@@ -144,6 +145,7 @@ const data: RecentActivityData = {
     },
     {
       environment: "ENV_RENDER",
+      environmentId: "ENV_RENDER#ID#1",
       traceFlowDisplayName: "PetClinicWithAgent:HTTP GET /webjars/**",
       firstEntrySpan: {
         displayText: "PetClinicWithAgent:HTTP GET /webjars/**",
@@ -165,6 +167,7 @@ const data: RecentActivityData = {
     },
     {
       environment: "ENV_RENDER",
+      environmentId: "ENV_RENDER#ID#1",
       traceFlowDisplayName: "PetClinicWithAgent:HTTP GET /owners/{ownerId}",
       firstEntrySpan: {
         displayText: "PetClinicWithAgent:HTTP GET /owners/{ownerId}",
@@ -196,6 +199,7 @@ const data: RecentActivityData = {
     },
     {
       environment: "ENV_RENDER",
+      environmentId: "ENV_RENDER#ID#1",
       traceFlowDisplayName: "PetClinicWithAgent:HTTP GET /owners",
       firstEntrySpan: {
         displayText: "PetClinicWithAgent:HTTP GET /owners",
@@ -235,6 +239,7 @@ const data: RecentActivityData = {
     },
     {
       environment: "ENV_RENDER",
+      environmentId: "ENV_RENDER#ID#1",
       traceFlowDisplayName: "PetClinicWithAgent:HTTP GET /owners/find",
       firstEntrySpan: {
         displayText: "PetClinicWithAgent:HTTP GET /owners/find",
@@ -257,6 +262,7 @@ const data: RecentActivityData = {
     },
     {
       environment: "ENV_RENDER",
+      environmentId: "ENV_RENDER#ID#1",
       traceFlowDisplayName: "PetClinicWithAgent:HTTP GET /",
       firstEntrySpan: {
         displayText: "PetClinicWithAgent:HTTP GET /",
@@ -278,6 +284,7 @@ const data: RecentActivityData = {
     },
     {
       environment: "ENV_RENDER",
+      environmentId: "ENV_RENDER#ID#1",
       traceFlowDisplayName: "PetClinicWithAgent:HTTP GET /vets.html",
       firstEntrySpan: {
         displayText: "PetClinicWithAgent:HTTP GET /vets.html",
@@ -317,6 +324,7 @@ const data: RecentActivityData = {
     },
     {
       environment: "ENV_RENDER",
+      environmentId: "ENV_RENDER#ID#1",
       traceFlowDisplayName:
         "PetClinicWithAgent:HTTP POST /owners/{ownerId}/pets/new",
       firstEntrySpan: {
@@ -349,6 +357,7 @@ const data: RecentActivityData = {
     },
     {
       environment: "ENV_RENDER",
+      environmentId: "ENV_RENDER#ID#1",
       traceFlowDisplayName:
         "PetClinicWithAgent:HTTP GET /owners/{ownerId}/pets/new",
       firstEntrySpan: {
@@ -372,6 +381,7 @@ const data: RecentActivityData = {
     },
     {
       environment: "ENV_RENDER",
+      environmentId: "ENV_RENDER#ID#1",
       traceFlowDisplayName:
         "PetClinicWithAgent:HTTP POST /owners/{ownerId}/edit",
       firstEntrySpan: {
@@ -412,6 +422,7 @@ const data: RecentActivityData = {
     },
     {
       environment: "ENV_RENDER",
+      environmentId: "ENV_RENDER#ID#1",
       traceFlowDisplayName:
         "PetClinicWithAgent:HTTP GET /owners/{ownerId}/edit",
       firstEntrySpan: {
@@ -435,6 +446,7 @@ const data: RecentActivityData = {
     },
     {
       environment: "UNSET_ENV",
+      environmentId: "UNSET_ENV#ID#1",
       traceFlowDisplayName: "my-first-mn-app:HTTP GET /whiskey/get/{name}",
       firstEntrySpan: {
         displayText: "na:na",
@@ -455,6 +467,7 @@ const data: RecentActivityData = {
     },
     {
       environment: "UNSET_ENV",
+      environmentId: "UNSET_ENV#ID#1",
       traceFlowDisplayName: "my-first-mn-app:HTTP GET /book/get/{id}",
       firstEntrySpan: {
         displayText: "na:na",
@@ -475,6 +488,7 @@ const data: RecentActivityData = {
     },
     {
       environment: "UNSET_ENV",
+      environmentId: "UNSET_ENV#ID#1",
       traceFlowDisplayName: "my-first-mn-app:HTTP GET /book/id/{id}",
       firstEntrySpan: {
         displayText: "na:na",
@@ -495,6 +509,7 @@ const data: RecentActivityData = {
     },
     {
       environment: "UNSET_ENV",
+      environmentId: "UNSET_ENV#ID#1",
       traceFlowDisplayName: "my-first-mn-app:HTTP GET GET - /",
       firstEntrySpan: {
         displayText: "na:na",
@@ -515,6 +530,7 @@ const data: RecentActivityData = {
     },
     {
       environment: "UNSET_ENV",
+      environmentId: "UNSET_ENV#ID#1",
       traceFlowDisplayName: "my-first-mn-app:HTTP GET /users/get/{username}",
       firstEntrySpan: {
         displayText: "na:na",
@@ -535,6 +551,7 @@ const data: RecentActivityData = {
     },
     {
       environment: "UNSET_ENV",
+      environmentId: "UNSET_ENV#ID#1",
       traceFlowDisplayName: "my-first-mn-app:HTTP GET /book",
       firstEntrySpan: {
         displayText: "na:na",
@@ -555,6 +572,7 @@ const data: RecentActivityData = {
     },
     {
       environment: "UNSET_ENV",
+      environmentId: "UNSET_ENV#ID#1",
       traceFlowDisplayName:
         "PetClinicWithAgent:HTTP GET /SampleInsights/HighUsage",
       firstEntrySpan: {
@@ -576,6 +594,7 @@ const data: RecentActivityData = {
     },
     {
       environment: "UNSET_ENV",
+      environmentId: "UNSET_ENV#ID#1",
       traceFlowDisplayName:
         "PetClinicWithAgent:HTTP GET /SampleInsights/ErrorHotspot",
       firstEntrySpan: {
@@ -597,6 +616,7 @@ const data: RecentActivityData = {
     },
     {
       environment: "UNSET_ENV",
+      environmentId: "UNSET_ENV#ID#1",
       traceFlowDisplayName:
         "PetClinicWithAgent:HTTP GET /SampleInsights/SpanBottleneck",
       firstEntrySpan: {
@@ -618,6 +638,7 @@ const data: RecentActivityData = {
     },
     {
       environment: "UNSET_ENV",
+      environmentId: "UNSET_ENV#ID#1",
       traceFlowDisplayName:
         "PetClinicWithAgent:HTTP GET /SampleInsights/SlowEndpoint",
       firstEntrySpan: {
