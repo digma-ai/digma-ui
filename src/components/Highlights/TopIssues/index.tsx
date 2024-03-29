@@ -1,12 +1,9 @@
-import { Fragment, useContext, useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { actions as globalActions } from "../../../actions";
-import { dispatcher } from "../../../dispatcher";
+import { usePrevious } from "../../../hooks/usePrevious";
 import { trackingEvents as globalTrackingEvents } from "../../../trackingEvents";
 import { ChangeViewPayload } from "../../../types";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
-import { actions } from "../../Main/actions";
-import { GetHighlightsTopIssuesDataPayload } from "../../Main/types";
-import { ConfigContext } from "../../common/App/ConfigContext";
 import { Link } from "../../common/v3/Link";
 import { EmptyStateCard } from "../EmptyStateCard";
 import { SectionHeader } from "../styles";
@@ -38,7 +35,8 @@ import {
   isSpanQueryOptimizationHighlight,
   isSpanScalingHighlight
 } from "./typeGuards";
-import { GenericMetrics, HighlightData, TopIssuesData } from "./types";
+import { GenericMetrics, HighlightData } from "./types";
+import { useTopIssuesData } from "./useTopIssuesData";
 
 const renderHighlightCard = (highlight: HighlightData<GenericMetrics>) => {
   if (isEndpointBottleneckHighlight(highlight)) {
@@ -91,9 +89,9 @@ const renderHighlightCard = (highlight: HighlightData<GenericMetrics>) => {
 };
 
 export const TopIssues = () => {
-  const [data, setData] = useState<TopIssuesData>();
-  const [isLoading, setIsLoading] = useState(false);
-  const config = useContext(ConfigContext);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const { data, getData } = useTopIssuesData();
+  const previousData = usePrevious(data);
 
   const handleViewAllLinkClick = () => {
     sendTrackingEvent(globalTrackingEvents.USER_ACTION, {
@@ -109,35 +107,14 @@ export const TopIssues = () => {
   };
 
   useEffect(() => {
-    window.sendMessageToDigma<GetHighlightsTopIssuesDataPayload>({
-      action: actions.GET_HIGHLIGHTS_TOP_ISSUES_DATA,
-      payload: {
-        query: {
-          scopedCodeObjectId: config.scope?.span?.spanCodeObjectId || null
-        }
-      }
-    });
-    setIsLoading(true);
-  }, [config.scope?.span?.spanCodeObjectId]);
+    getData();
+  }, []);
 
   useEffect(() => {
-    const handleTopIssuesData = (data: any) => {
-      setData(data as TopIssuesData);
-      setIsLoading(false);
-    };
-
-    dispatcher.addActionListener(
-      actions.SET_HIGHLIGHTS_TOP_ISSUES_DATA,
-      handleTopIssuesData
-    );
-
-    return () => {
-      dispatcher.removeActionListener(
-        actions.SET_HIGHLIGHTS_TOP_ISSUES_DATA,
-        handleTopIssuesData
-      );
-    };
-  }, []);
+    if (!previousData && data) {
+      setIsInitialLoading(false);
+    }
+  }, [previousData, data]);
 
   const isViewAllLinkDisabled = (data?.topInsights || []).length === 0;
 
@@ -154,7 +131,7 @@ export const TopIssues = () => {
           <Fragment key={x.insightType}>{renderHighlightCard(x)}</Fragment>
         ))
       ) : (
-        <EmptyStateCard isLoading={isLoading} />
+        <EmptyStateCard isLoading={isInitialLoading} />
       )}
     </s.Container>
   );
