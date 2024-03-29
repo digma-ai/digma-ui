@@ -24,7 +24,7 @@ export const EnvironmentTypePanel = (props: EnvironmentTypePanelProps) => {
       });
     }
 
-    if (type === "public" && !config.backendInfo?.isCentralized) {
+    if (type === "Public" && !config.backendInfo?.isCentralized) {
       openURLInDefaultBrowser(DIGMA_FOR_TEAMS_URL);
       return;
     }
@@ -34,28 +34,28 @@ export const EnvironmentTypePanel = (props: EnvironmentTypePanelProps) => {
 
   const environmentTypes: EnvironmentTypeData[] = [
     {
-      type: "private",
+      type: "Private",
       title: "Local environment",
       description:
         "Define an environment for specific branches, types of tests or other criteria",
       icon: CodeIcon,
       button: (
         <s.AddButton
-          onClick={() => handleEnvironmentTypeButtonClick("private")}
+          onClick={() => handleEnvironmentTypeButtonClick("Private")}
           label={"Add"}
           buttonType={"primary"}
         />
       )
     },
     {
-      type: "public",
+      type: "Public",
       title: "CI/Prod environment",
       description:
         "Connect to centralized org systems such as CI builds, production servers etc.",
       icon: InfinityIcon,
       button: (
         <s.AddButton
-          onClick={() => handleEnvironmentTypeButtonClick("public")}
+          onClick={() => handleEnvironmentTypeButtonClick("Public")}
           label={config.backendInfo?.isCentralized ? "Add" : "Learn more"}
           buttonType={"secondary"}
         />

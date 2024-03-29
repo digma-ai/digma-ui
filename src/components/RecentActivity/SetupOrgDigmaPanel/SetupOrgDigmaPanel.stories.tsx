@@ -24,7 +24,7 @@ export const Default: Story = {
       isPending: true,
       hasRecentActivity: false,
       additionToConfigResult: null,
-      type: "public",
+      type: "Public",
       token: "token_string",
       serverApiUrl: "https://example.com:80",
       isOrgDigmaSetupFinished: false

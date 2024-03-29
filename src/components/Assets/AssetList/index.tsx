@@ -263,7 +263,7 @@ export const AssetList = (props: AssetListProps) => {
     () =>
       !(
         config.backendInfo?.deploymentType === DeploymentType.HELM &&
-        config.environment?.type === "public"
+        config.environment?.type === "Public"
       ),
     [config.backendInfo?.deploymentType, config.environment?.type]
   );

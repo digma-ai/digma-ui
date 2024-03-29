@@ -27,7 +27,7 @@ const data: RecentActivityData = {
       id: "ENV_RENDER",
       isPending: false,
       additionToConfigResult: null,
-      type: "public",
+      type: "Public",
       token: null,
       serverApiUrl: null,
       isOrgDigmaSetupFinished: false
@@ -37,7 +37,7 @@ const data: RecentActivityData = {
       id: "ENV_RENDER1",
       isPending: false,
       additionToConfigResult: null,
-      type: "public",
+      type: "Public",
       token: null,
       serverApiUrl: null,
       isOrgDigmaSetupFinished: false
@@ -47,7 +47,7 @@ const data: RecentActivityData = {
       id: "UNSET_ENV",
       isPending: false,
       additionToConfigResult: null,
-      type: "public",
+      type: "Public",
       token: null,
       serverApiUrl: null,
       isOrgDigmaSetupFinished: false
@@ -67,7 +67,7 @@ const data: RecentActivityData = {
       id: "PENDING_LOCAL",
       isPending: true,
       additionToConfigResult: null,
-      type: "private",
+      type: "Private",
       token: null,
       serverApiUrl: null,
       isOrgDigmaSetupFinished: false
@@ -77,7 +77,7 @@ const data: RecentActivityData = {
       id: "PENDING_SHARED",
       isPending: true,
       additionToConfigResult: null,
-      type: "public",
+      type: "Public",
       token: null,
       serverApiUrl: null,
       isOrgDigmaSetupFinished: false
@@ -87,7 +87,7 @@ const data: RecentActivityData = {
       id: "PENDING_SHARED_LOCALHOST",
       isPending: true,
       additionToConfigResult: null,
-      type: "public",
+      type: "Public",
       token: null,
       serverApiUrl: "https://localhost:5051",
       isOrgDigmaSetupFinished: false
@@ -97,7 +97,7 @@ const data: RecentActivityData = {
       id: "PENDING_SHARED_CUSTOM_DOMAIN",
       isPending: true,
       additionToConfigResult: null,
-      type: "public",
+      type: "Public",
       token: "token_string",
       serverApiUrl: "https://example.com",
       isOrgDigmaSetupFinished: false
@@ -107,7 +107,7 @@ const data: RecentActivityData = {
       id: "VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-LONG-NAME",
       isPending: false,
       additionToConfigResult: null,
-      type: "private",
+      type: "Private",
       token: null,
       serverApiUrl: null,
       isOrgDigmaSetupFinished: false
@@ -676,7 +676,7 @@ export const WithEmptyEnv: Story = {
           id: "ENV_RENDER",
           isPending: false,
           additionToConfigResult: null,
-          type: "private",
+          type: "Private",
           token: null,
           serverApiUrl: null,
           isOrgDigmaSetupFinished: false

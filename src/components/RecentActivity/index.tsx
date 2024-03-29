@@ -81,6 +81,9 @@ export const RecentActivity = (props: RecentActivityProps) => {
       );
 
       if (environmentToSelect) {
+        environmentToSelect.isNew = environmentToSelect?.hasRecentActivity
+          ? false
+          : selectedEnvironment?.isNew;
         return environmentToSelect;
       }
 
@@ -179,8 +182,9 @@ export const RecentActivity = (props: RecentActivityProps) => {
 
   const renderContent = () => {
     if (
-      !selectedEnvironment ||
-      !environmentActivities[selectedEnvironment.id]
+      (!selectedEnvironment ||
+        !environmentActivities[selectedEnvironment.id]) &&
+      !selectedEnvironment?.isNew
     ) {
       return (
         <s.NoDataContainer>
@@ -190,7 +194,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
     }
 
     if (
-      !environmentActivities[selectedEnvironment.id].length &&
+      !environmentActivities[selectedEnvironment.id]?.length ||
       selectedEnvironment.isNew
     ) {
       return (

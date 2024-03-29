@@ -31,7 +31,7 @@ export enum DeploymentType {
   DOCKER_EXTENSION = "DockerExtension"
 }
 
-export type EnvironmentType = "public" | "private";
+export type EnvironmentType = "Public" | "Private";
 
 export interface Environment {
   id: string;

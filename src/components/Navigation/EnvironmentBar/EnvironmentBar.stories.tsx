@@ -22,7 +22,7 @@ export const Default: Story = {
     selectedEnvironment: {
       id: "DEV",
       name: "DEV",
-      type: "private"
+      type: "Private"
     }
   }
 };
