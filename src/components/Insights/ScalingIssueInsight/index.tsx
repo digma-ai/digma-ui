@@ -17,6 +17,9 @@ import { Trace } from "../types";
 import * as s from "./styles";
 import { ScalingIssueInsightProps } from "./types";
 
+/**
+ * @deprecated
+ */
 export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
   const config = useContext(ConfigContext);
 

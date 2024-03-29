@@ -431,6 +431,7 @@ export const DurationInsight = (props: DurationInsightProps) => {
         props.insight.spanInfo ? props.onHistogramButtonClick : undefined
       }
       onGoToSpan={props.onGoToSpan}
+      isMarkAsReadButtonEnabled={props.isMarkAsReadButtonEnabled}
     />
   );
 };

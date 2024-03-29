@@ -1,3 +1,4 @@
+import { Environment } from "./components/common/App/types";
 import { Duration } from "./globals";
 
 export enum FeatureFlag {
@@ -8,7 +9,8 @@ export enum FeatureFlag {
   IS_ASSETS_COMPLEX_FILTER_ENABLED,
   IS_INSIGHT_DISMISSAL_ENABLED,
   IS_RECALCULATE_BUBBLE_ENABLED,
-  IS_ANALYTICS_TAB_VISIBLE
+  IS_ANALYTICS_TAB_VISIBLE,
+  IS_INSIGHT_MARKING_AS_READ_ENABLED
 }
 
 export enum InsightType {
@@ -73,4 +75,26 @@ export interface SetObservabilityPayload {
 
 export interface OpenInstallationWizardPayload {
   skipInstallationStep: boolean;
+}
+
+export interface GetInsightStatsPayload {
+  scope: {
+    span: {
+      spanCodeObjectId: string;
+    };
+  } | null;
+}
+
+export interface ChangeEnvironmentPayload {
+  environment: Environment;
+}
+
+export interface ChangeScopePayload {
+  span: {
+    spanCodeObjectId: string;
+  } | null;
+}
+
+export interface ChangeViewPayload {
+  view: string;
 }

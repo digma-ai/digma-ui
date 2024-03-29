@@ -40,6 +40,9 @@ const getDurationTitle = (breakdownEntry: SpanDurationBreakdownEntry) => {
   return <s.DurationTitle>{title}</s.DurationTitle>;
 };
 
+/**
+ * @deprecated
+ */
 export const DurationBreakdownInsight = (
   props: DurationBreakdownInsightProps
 ) => {

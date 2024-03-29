@@ -3,10 +3,10 @@ import { useTheme } from "styled-components";
 import { actions } from "../../../actions";
 import { PERCENTILES } from "../../../constants";
 import { isString } from "../../../typeGuards/isString";
+import { ChangeScopePayload } from "../../../types";
 import { formatTimeDistance } from "../../../utils/formatTimeDistance";
 import { getInsightImportanceColor } from "../../../utils/getInsightImportanceColor";
 import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
-import { ChangeScopePayload } from "../../Navigation/types";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Badge } from "../../common/Badge";
 import { Card } from "../../common/Card";
@@ -31,6 +31,9 @@ const RECALCULATE = "recalculate";
 const DEFAULT_PERCENTILE = 0.5;
 const IS_NEW_TIME_LIMIT = 1000 * 60 * 10; // in milliseconds
 
+/**
+ * @deprecated
+ */
 export const InsightCard = (props: InsightCardProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isKebabMenuOpen, setIsKebabMenuOpen] = useState(false);

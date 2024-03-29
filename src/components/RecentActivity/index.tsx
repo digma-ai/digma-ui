@@ -2,6 +2,9 @@ import { Allotment } from "allotment";
 import "allotment/dist/style.css";
 import { KeyboardEvent, useContext, useEffect, useMemo, useState } from "react";
 import useDimensions from "react-cool-dimensions";
+import { actions as globalActions } from "../../actions";
+import { usePrevious } from "../../hooks/usePrevious";
+import { ChangeEnvironmentPayload } from "../../types";
 import { groupBy } from "../../utils/groupBy";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { ListIcon } from "../common/icons/ListIcon";
@@ -53,6 +56,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
     liveData: props.liveData
   });
   const config = useContext(ConfigContext);
+  const previousEnvironment = usePrevious(config.environment);
   const { observe, entry } = useDimensions();
 
   const environmentActivities = useMemo(
@@ -95,6 +99,19 @@ export const RecentActivity = (props: RecentActivityProps) => {
 
   const handleEnvironmentSelect = (environment: ExtendedEnvironment) => {
     setSelectedEnvironment(environment);
+
+    const environmentToSelect = config.environments?.find(
+      (x) => x.id === environment.id
+    );
+
+    if (environmentToSelect) {
+      window.sendMessageToDigma<ChangeEnvironmentPayload>({
+        action: globalActions.CHANGE_ENVIRONMENT,
+        payload: {
+          environment: environmentToSelect
+        }
+      });
+    }
   };
 
   const handleSpanLinkClick = (span: EntrySpan) => {
@@ -258,7 +275,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
         </Allotment.Pane>
       </Allotment>
       {environmentToDelete && (
-        <s.Overlay onKeyDown={handleOverlayKeyDown}>
+        <s.Overlay onKeyDown={handleOverlayKeyDown} tabIndex={-1}>
           <DeleteEnvironmentConfirmation
             onClose={handleCloseDeleteConfirmation}
             onDelete={handleConfirmEnvironmentDeletion}

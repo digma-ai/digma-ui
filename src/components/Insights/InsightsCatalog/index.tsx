@@ -2,9 +2,13 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import { usePrevious } from "../../../hooks/usePrevious";
 
 import { useTheme } from "styled-components";
+import { actions as globalActions } from "../../../actions";
 import { useDebounce } from "../../../hooks/useDebounce";
 import { isNumber } from "../../../typeGuards/isNumber";
+import { isString } from "../../../typeGuards/isString";
 import { isUndefined } from "../../../typeGuards/isUndefined";
+import { GetInsightStatsPayload } from "../../../types";
+import { formatUnit } from "../../../utils/formatUnit";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Pagination } from "../../common/Pagination";
@@ -20,13 +24,10 @@ import { Tooltip } from "../../common/v3/Tooltip";
 import { InsightsPage } from "../InsightsPage";
 import { trackingEvents } from "../tracking";
 import * as s from "./styles";
-import { InsightsCatalogProps, SORTING_CRITERION } from "./types";
+import { InsightsCatalogProps, SORTING_CRITERION, ViewMode } from "./types";
+import { useMarkingAllAsRead } from "./useMarkingAllAsRead";
 
 const PAGE_SIZE = 10;
-enum ViewMode {
-  All,
-  OnlyDismissed
-}
 
 export const InsightsCatalog = (props: InsightsCatalogProps) => {
   const { insights, onJiraTicketCreate, defaultQuery, totalCount } = props;
@@ -50,10 +51,21 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
   const [mode, setMode] = useState<ViewMode>(ViewMode.All);
   const previousMode = usePrevious(mode);
   const theme = useTheme();
+  const { isMarkingAllAsReadInProgress, markAllAsRead } = useMarkingAllAsRead(
+    config.scope?.span || null
+  );
+  const previousIsMarkingAllAsReadInProgress = usePrevious(
+    isMarkingAllAsReadInProgress
+  );
 
-  const isViewModeButtonVisible =
+  const isDismissalViewModeButtonVisible =
     props.isDismissalEnabled &&
     (isUndefined(props.dismissedCount) || props.dismissedCount > 0); // isUndefined - check for backward compatibility, always show when BE does not return this counter
+
+  const isMarkingAsReadToolbarVisible =
+    props.isMarkingAsReadEnabled &&
+    isNumber(props.unreadCount) &&
+    props.unreadCount > 0;
 
   const refreshData = useCallback(
     () =>
@@ -62,7 +74,8 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
         page,
         sorting,
         searchQuery: debouncedSearchInputValue,
-        showDismissed: mode === ViewMode.OnlyDismissed
+        showDismissed: mode === ViewMode.OnlyDismissed,
+        showUnreadOnly: mode === ViewMode.OnlyUnread
       }),
     [
       page,
@@ -81,11 +94,48 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
 
     refreshData();
   };
-  const handleViewModeChange = () => {
+
+  const handleDismissalViewModeButtonClick = () => {
     const newMode =
       mode === ViewMode.All ? ViewMode.OnlyDismissed : ViewMode.All;
     setMode(newMode);
   };
+
+  const handleUnreadOnlyLinkClick = () => {
+    setMode(ViewMode.OnlyUnread);
+  };
+
+  const handleReadAllLinkClick = () => {
+    markAllAsRead();
+  };
+
+  const handleBackToAllInsightsButtonClick = () => {
+    setMode(ViewMode.All);
+  };
+
+  useEffect(() => {
+    if (previousIsMarkingAllAsReadInProgress && !isMarkingAllAsReadInProgress) {
+      refreshData();
+
+      window.sendMessageToDigma<GetInsightStatsPayload>({
+        action: globalActions.GET_INSIGHT_STATS,
+        payload: {
+          scope: config.scope?.span
+            ? {
+                span: {
+                  spanCodeObjectId: config.scope.span.spanCodeObjectId
+                }
+              }
+            : null
+        }
+      });
+    }
+  }, [
+    isMarkingAllAsReadInProgress,
+    previousIsMarkingAllAsReadInProgress,
+    refreshData,
+    config.scope
+  ]);
 
   useEffect(() => {
     if (!previousScope || previousScope !== config.scope?.span) {
@@ -108,10 +158,15 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
   }, []);
 
   useEffect(() => {
+    setPage(0);
+  }, [mode]);
+
+  useEffect(() => {
     if (
       (isNumber(previousPage) && previousPage !== page) ||
       (previousSorting && previousSorting !== sorting) ||
-      previousSearchQuery !== debouncedSearchInputValue ||
+      (isString(previousSearchQuery) &&
+        previousSearchQuery !== debouncedSearchInputValue) ||
       previousMode !== mode
     ) {
       refreshData();
@@ -131,59 +186,97 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
   return (
     <>
       <s.Toolbar>
-        <SearchInput
-          disabled={Boolean(config.scope?.span)}
-          onChange={(val: string | null) => {
-            setSearchInputValue(val);
-          }}
-          value={searchInputValue}
-        />
-        <SortingSelector
-          onChange={(val: Sorting) => {
-            setSorting(val);
-          }}
-          options={[
-            ...(defaultQuery.insightViewType === "Issues"
-              ? [
-                  {
-                    value: SORTING_CRITERION.CRITICAL_INSIGHTS,
-                    label: "Critical issues",
-                    defaultOrder: SORTING_ORDER.DESC
-                  }
-                ]
-              : []),
-            {
-              value: SORTING_CRITERION.LATEST,
-              label: "Latest",
-              defaultOrder: SORTING_ORDER.DESC
-            }
-          ]}
-          default={defaultQuery.sorting}
-        />
-        <Tooltip title={"Refresh"}>
-          <s.RefreshButton
-            buttonType={"tertiary"}
-            icon={RefreshIcon}
-            onClick={handleRefreshButtonClick}
+        <s.ToolbarRow>
+          <SearchInput
+            disabled={Boolean(config.scope?.span)}
+            onChange={(val: string | null) => {
+              setSearchInputValue(val);
+            }}
+            value={searchInputValue}
           />
-        </Tooltip>
-      </s.Toolbar>
-      {mode === ViewMode.OnlyDismissed && (
-        <s.InsightsViewModeToolbar>
-          <Button
-            buttonType={"tertiary"}
-            label={"Back to All Insights"}
-            icon={(props) => (
-              <ChevronIcon {...props} direction={Direction.LEFT} />
+          <SortingSelector
+            onChange={(val: Sorting) => {
+              setSorting(val);
+            }}
+            options={[
+              ...(defaultQuery.insightViewType === "Issues"
+                ? [
+                    {
+                      value: SORTING_CRITERION.CRITICAL_INSIGHTS,
+                      label: "Critical issues",
+                      defaultOrder: SORTING_ORDER.DESC
+                    }
+                  ]
+                : []),
+              {
+                value: SORTING_CRITERION.LATEST,
+                label: "Latest",
+                defaultOrder: SORTING_ORDER.DESC
+              }
+            ]}
+            default={defaultQuery.sorting}
+          />
+          <Tooltip title={"Refresh"}>
+            <s.RefreshButton
+              buttonType={"tertiary"}
+              icon={RefreshIcon}
+              onClick={handleRefreshButtonClick}
+            />
+          </Tooltip>
+        </s.ToolbarRow>
+        {mode === ViewMode.All ? (
+          isMarkingAsReadToolbarVisible && (
+            <s.ViewModeToolbarRow>
+              <s.InsightCountDescription>
+                <s.InsightCount>{props.unreadCount}</s.InsightCount>
+                unread {formatUnit(props.unreadCount || 0, "issue")}
+              </s.InsightCountDescription>
+              <s.MarkingAsReadToolbarActionsContainer>
+                <s.MarkingAsReadToolbarActionLink
+                  onClick={handleUnreadOnlyLinkClick}
+                >
+                  Unread only
+                </s.MarkingAsReadToolbarActionLink>
+                /
+                <s.MarkingAsReadToolbarActionLink
+                  onClick={handleReadAllLinkClick}
+                >
+                  Read all
+                </s.MarkingAsReadToolbarActionLink>
+              </s.MarkingAsReadToolbarActionsContainer>
+            </s.ViewModeToolbarRow>
+          )
+        ) : (
+          <s.ViewModeToolbarRow>
+            <s.BackToAllInsightsButton
+              onClick={handleBackToAllInsightsButtonClick}
+            >
+              <s.BackToAllInsightsButtonIconContainer>
+                <ChevronIcon
+                  direction={Direction.LEFT}
+                  size={16}
+                  color={"currentColor"}
+                />
+              </s.BackToAllInsightsButtonIconContainer>
+              Back to All Issues
+            </s.BackToAllInsightsButton>
+            {mode === ViewMode.OnlyDismissed &&
+              isNumber(props.dismissedCount) && (
+                <s.InsightCountDescription>
+                  <s.InsightCount>{props.dismissedCount}</s.InsightCount>
+                  dismissed {formatUnit(props.dismissedCount || 0, "issue")}
+                </s.InsightCountDescription>
+              )}
+            {mode === ViewMode.OnlyUnread && isMarkingAsReadToolbarVisible && (
+              <s.MarkingAsReadToolbarActionLink
+                onClick={handleReadAllLinkClick}
+              >
+                Read all
+              </s.MarkingAsReadToolbarActionLink>
             )}
-            onClick={() => setMode(ViewMode.All)}
-          />
-          <s.DismissedDescription>
-            <s.DismissedCount>{insights.length}</s.DismissedCount>
-            dismissed insights
-          </s.DismissedDescription>
-        </s.InsightsViewModeToolbar>
-      )}
+          </s.ViewModeToolbarRow>
+        )}
+      </s.Toolbar>
       <InsightsPage
         page={page}
         insights={insights}
@@ -192,6 +285,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
         }
         onJiraTicketCreate={onJiraTicketCreate}
         onRefresh={props.onRefresh}
+        viewMode={mode}
       />
       <s.Footer>
         {totalCount > 0 && (
@@ -212,7 +306,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
             </s.FooterItemsCount>
           </>
         )}
-        {isViewModeButtonVisible && (
+        {isDismissalViewModeButtonVisible && (
           <Button
             buttonType={"tertiary"}
             icon={(props) => (
@@ -226,7 +320,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
                 }
               />
             )}
-            onClick={handleViewModeChange}
+            onClick={handleDismissalViewModeButtonClick}
           />
         )}
       </s.Footer>

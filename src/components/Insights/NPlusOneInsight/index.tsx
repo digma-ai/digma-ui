@@ -16,6 +16,9 @@ import { Trace } from "../types";
 import * as s from "./styles";
 import { NPlusOneInsightProps } from "./types";
 
+/**
+ * @deprecated
+ */
 export const NPlusOneInsight = (props: NPlusOneInsightProps) => {
   const config = useContext(ConfigContext);
 

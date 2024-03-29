@@ -10,6 +10,9 @@ import { trackingEvents } from "../tracking";
 import * as s from "./styles";
 import { SpanBottleneckInsightProps } from "./types";
 
+/**
+ * @deprecated
+ */
 export const SpanBottleneckInsight = (props: SpanBottleneckInsightProps) => {
   const handleSpanLinkClick = (spanCodeObjectId: string) => {
     props.onAssetLinkClick(spanCodeObjectId, props.insight.type);

@@ -1,12 +1,11 @@
 import { useContext, useEffect, useState } from "react";
-import { actions } from "../../../actions";
+import { actions as globalActions } from "../../../actions";
 import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
+import { ChangeScopePayload, ChangeViewPayload } from "../../../types";
 import { HistoryManager } from "../../../utils/HistoryManager";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Scope } from "../../common/App/types";
-import { ChangeScopePayload, ChangeViewPayload } from "../types";
-import { actions as globalActions } from "./../actions";
 import { HistoryNavigationPanel } from "./HistoryNavigationPanel";
 import { ScopeNavigationProps } from "./types";
 
@@ -87,10 +86,10 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
       }
     };
 
-    dispatcher.addActionListener(actions.SET_SCOPE, handleSetScope);
+    dispatcher.addActionListener(globalActions.SET_SCOPE, handleSetScope);
 
     return () => {
-      dispatcher.removeActionListener(actions.SET_SCOPE, handleSetScope);
+      dispatcher.removeActionListener(globalActions.SET_SCOPE, handleSetScope);
     };
   }, [environment, props.currentTabId, historyManager]);
 

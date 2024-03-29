@@ -4,11 +4,10 @@ import { actions as globalActions } from "../../../actions";
 import { usePersistence } from "../../../hooks/usePersistence";
 import { trackingEvents as globalTrackingEvents } from "../../../trackingEvents";
 import { isUndefined } from "../../../typeGuards/isUndefined";
-import { InsightType } from "../../../types";
+import { ChangeScopePayload, InsightType } from "../../../types";
 import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
 import { getInsightTypeOrderPriority } from "../../../utils/getInsightTypeOrderPriority";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
-import { ChangeScopePayload } from "../../Navigation/types";
 import { Card } from "../../common/Card";
 import { Tooltip } from "../../common/Tooltip";
 import { EndpointIcon } from "../../common/icons/EndpointIcon";
@@ -23,6 +22,7 @@ import { ErrorsInsight } from "../ErrorsInsight";
 import { ExcessiveAPICallsInsight } from "../ExcessiveAPICallsInsight";
 import { HighNumberOfQueriesInsight } from "../HighNumberOfQueriesInsight";
 import { InsightCard } from "../InsightCard";
+import { ViewMode } from "../InsightsCatalog/types";
 import { NPlusOneInsight } from "../NPlusOneInsight";
 import { NoObservabilityCard } from "../NoObservabilityCard";
 import { NoScalingIssueInsight } from "../NoScalingIssueInsight";
@@ -233,8 +233,11 @@ const renderInsightCard = (
     spanCodeObjectId: string | undefined,
     event?: string
   ) => void,
-  isJiraHintEnabled: boolean
+  isJiraHintEnabled: boolean,
+  viewMode: ViewMode
 ): JSX.Element | undefined => {
+  const isMarkAsReadButtonEnabled = viewMode === ViewMode.OnlyUnread;
+
   const handleErrorSelect = (errorId: string, insightType: InsightType) => {
     sendTrackingEvent(globalTrackingEvents.USER_ACTION, {
       action: `Follow ${insightType} link`
@@ -362,6 +365,7 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={handleRefresh}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -374,6 +378,7 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={handleRefresh}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -387,6 +392,7 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={handleRefresh}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -401,6 +407,7 @@ const renderInsightCard = (
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -415,6 +422,7 @@ const renderInsightCard = (
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -426,6 +434,7 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={handleRefresh}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -441,6 +450,7 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={handleRefresh}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -454,6 +464,7 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={handleRefresh}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -469,6 +480,7 @@ const renderInsightCard = (
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -484,6 +496,7 @@ const renderInsightCard = (
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -500,6 +513,7 @@ const renderInsightCard = (
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -527,6 +541,7 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={handleRefresh}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -539,6 +554,7 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={handleRefresh}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -552,6 +568,7 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={handleRefresh}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -565,6 +582,7 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={handleRefresh}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -579,6 +597,7 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={handleRefresh}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -593,6 +612,7 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={handleRefresh}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -608,6 +628,7 @@ const renderInsightCard = (
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -620,6 +641,7 @@ const renderInsightCard = (
         onRecalculate={handleRecalculate}
         onRefresh={handleRefresh}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -636,6 +658,7 @@ const renderInsightCard = (
         onJiraTicketCreate={onJiraTicketCreate}
         isJiraHintEnabled={isJiraHintEnabled}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -651,6 +674,7 @@ const renderInsightCard = (
         onRefresh={handleRefresh}
         onJiraTicketCreate={onJiraTicketCreate}
         onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -659,6 +683,9 @@ const renderInsightCard = (
 const IS_INSIGHT_JIRA_TICKET_HINT_SHOWN_PERSISTENCE_KEY =
   "isInsightJiraTicketHintShown";
 
+/**
+ * @deprecated
+ */
 export const InsightList = (props: InsightListProps) => {
   const [insightGroups, setInsightGroups] = useState<InsightGroup[]>([]);
   const [isAutofixing, setIsAutofixing] = useState(false);
@@ -748,7 +775,8 @@ export const InsightList = (props: InsightListProps) => {
               return renderInsightCard(
                 insight,
                 handleShowJiraTicket,
-                isJiraHintEnabled
+                isJiraHintEnabled,
+                props.viewMode
               );
             })
           ) : (

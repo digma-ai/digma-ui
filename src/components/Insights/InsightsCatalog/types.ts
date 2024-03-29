@@ -12,6 +12,14 @@ export interface InsightsCatalogProps {
   defaultQuery: InsightsQuery;
   onRefresh: () => void;
   isDismissalEnabled: boolean;
+  unreadCount?: number;
+  isMarkingAsReadEnabled: boolean;
+}
+
+export enum ViewMode {
+  All,
+  OnlyDismissed,
+  OnlyUnread
 }
 
 export enum SORTING_CRITERION {

@@ -16,13 +16,7 @@ export interface OpenDocumentationPayload {
 }
 
 export interface OpenDashboardPayload {
-  environment?: string | null;
-}
-
-export interface ChangeScopePayload {
-  span: {
-    spanCodeObjectId: string;
-  } | null;
+  environment?: Environment | null;
 }
 
 export interface GoToCodeLocationPayload {

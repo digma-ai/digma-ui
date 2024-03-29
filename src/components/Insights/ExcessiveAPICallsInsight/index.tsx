@@ -14,6 +14,9 @@ import { ExcessiveAPICallsInsightProps } from "./types";
 
 const PAGE_SIZE = 3;
 
+/**
+ * @deprecated
+ */
 export const ExcessiveAPICallsInsight = (
   props: ExcessiveAPICallsInsightProps
 ) => {

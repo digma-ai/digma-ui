@@ -1,5 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
+import { actions as globalActions } from "../../../../actions";
+import { getFeatureFlagValue } from "../../../../featureFlags";
+import { usePrevious } from "../../../../hooks/usePrevious";
+import { trackingEvents as globalTrackingEvents } from "../../../../trackingEvents";
 import { isString } from "../../../../typeGuards/isString";
+import { FeatureFlag, GetInsightStatsPayload } from "../../../../types";
+import { sendTrackingEvent } from "../../../../utils/sendTrackingEvent";
+import { Spinner } from "../../../Navigation/CodeButtonMenu/Spinner";
+import { ConfigContext } from "../../../common/App/ConfigContext";
+import { CheckmarkCircleIcon } from "../../../common/icons/12px/CheckmarkCircleIcon";
 import { TraceIcon } from "../../../common/icons/12px/TraceIcon";
 import { HistogramIcon } from "../../../common/icons/16px/HistogramIcon";
 import { LiveIcon } from "../../../common/icons/16px/LiveIcon";
@@ -10,22 +19,16 @@ import { Button } from "../../../common/v3/Button";
 import { BaseButtonProps } from "../../../common/v3/Button/types";
 import { JiraButton } from "../../../common/v3/JiraButton";
 import { Tooltip } from "../../../common/v3/Tooltip";
-import { isEndpointInsight, isSpanInsight } from "../../typeGuards";
-import { InsightHeader } from "./InsightHeader";
-import * as s from "./styles";
-import { InsightCardProps } from "./types";
-
-import { getFeatureFlagValue } from "../../../../featureFlags";
-import { usePrevious } from "../../../../hooks/usePrevious";
-import { FeatureFlag } from "../../../../types";
-import { sendTrackingEvent } from "../../../../utils/sendTrackingEvent";
-import { Spinner } from "../../../Navigation/CodeButtonMenu/Spinner";
-import { ConfigContext } from "../../../common/App/ConfigContext";
 import { trackingEvents } from "../../tracking";
+import { isEndpointInsight, isSpanInsight } from "../../typeGuards";
 import { InsightStatus } from "../../types";
+import { InsightHeader } from "./InsightHeader";
 import { ProductionAffectionBar } from "./ProductionAffectionBar";
 import { RecalculateBar } from "./RecalculateBar";
-import { useDismissalHandler } from "./useDismissalHandler";
+import { useDismissal } from "./hooks/useDismissal";
+import { useMarkingAsRead } from "./hooks/useMarkingAsRead";
+import * as s from "./styles";
+import { InsightCardProps } from "./types";
 
 const IS_NEW_TIME_LIMIT = 1000 * 60 * 10; // in milliseconds
 const HIGH_CRITICALITY_THRESHOLD = 0.8;
@@ -34,22 +37,49 @@ export const InsightCard = (props: InsightCardProps) => {
   const [isRecalculatingStarted, setIsRecalculatingStarted] = useState(false);
   const [isDismissConfirmationOpened, setDismissConfirmationOpened] =
     useState(false);
-  const { isLoading, dismiss, show } = useDismissalHandler(props.insight.id);
-  const previousLoading = usePrevious(isLoading);
+  const { isDismissalChangeInProgress, dismiss, show } = useDismissal(
+    props.insight.id
+  );
+  const { isMarkingAsReadInProgress, markAsRead } = useMarkingAsRead(
+    props.insight.id
+  );
+  const isOperationInProgress =
+    isDismissalChangeInProgress || isMarkingAsReadInProgress;
+  const previousIsOperationInProgress = usePrevious(isOperationInProgress);
   const config = useContext(ConfigContext);
   const [insightStatus, setInsightStatus] = useState(props.insight.status);
 
   const isCritical = props.insight.criticality > HIGH_CRITICALITY_THRESHOLD;
+
   // TODO: remove and refresh the insight data
   useEffect(() => {
     setInsightStatus(props.insight.status);
   }, [props.insight.status]);
 
   useEffect(() => {
-    if (previousLoading && !isLoading) {
+    if (previousIsOperationInProgress && !isOperationInProgress) {
       props.onRefresh(props.insight.type);
+
+      window.sendMessageToDigma<GetInsightStatsPayload>({
+        action: globalActions.GET_INSIGHT_STATS,
+        payload: {
+          scope: config.scope?.span
+            ? {
+                span: {
+                  spanCodeObjectId: config.scope.span.spanCodeObjectId
+                }
+              }
+            : null
+        }
+      });
     }
-  }, [isLoading, previousLoading, props.onRefresh]);
+  }, [
+    previousIsOperationInProgress,
+    isOperationInProgress,
+    props.onRefresh,
+    props.insight.type,
+    config.scope
+  ]);
 
   const handleRecheckButtonClick = () => {
     props.insight.prefixedCodeObjectId &&
@@ -122,6 +152,14 @@ export const InsightCard = (props: InsightCardProps) => {
     show();
   };
 
+  const handleMarkAsReadButtonClick = () => {
+    sendTrackingEvent(globalTrackingEvents.USER_ACTION, {
+      action: trackingEvents.INSIGHT_CARD_MARK_AS_READ_BUTTON_CLICKED,
+      insightType: props.insight.type
+    });
+    markAsRead();
+  };
+
   const openTicketInfo = (
     spanCodeObjectId: string | undefined,
     event: string
@@ -141,11 +179,40 @@ export const InsightCard = (props: InsightCardProps) => {
     );
   };
 
+  const handleClick = () => {
+    if (
+      !props.isMarkAsReadButtonEnabled &&
+      props.insight.isReadable &&
+      props.insight.isRead === false
+    ) {
+      markAsRead();
+    }
+  };
+
   const renderActions = () => {
     const buttonsToRender: {
       tooltip: string;
       button: React.ComponentType<BaseButtonProps>;
     }[] = [];
+
+    if (
+      props.isMarkAsReadButtonEnabled &&
+      props.insight.isReadable &&
+      props.insight.isRead === false
+    ) {
+      buttonsToRender.push({
+        tooltip: "Mark as read",
+        button: (btnProps) => (
+          <Button
+            icon={CheckmarkCircleIcon}
+            label={"Mark as read"}
+            onClick={handleMarkAsReadButtonClick}
+            isDisabled={isMarkingAsReadInProgress}
+            {...btnProps}
+          />
+        )
+      });
+    }
 
     props.onOpenHistogram &&
       buttonsToRender.push({
@@ -253,9 +320,13 @@ export const InsightCard = (props: InsightCardProps) => {
     ? Date.now() - new Date(props.insight.firstDetected).valueOf() <
       IS_NEW_TIME_LIMIT
     : false;
+
   return (
     <s.StyledInsightCard
       $isDismissed={props.insight.isDismissed}
+      $isRead={props.insight.isRead}
+      $isReadable={props.insight.isReadable}
+      onClick={handleClick}
       header={
         <InsightHeader
           spanInfo={
@@ -293,21 +364,23 @@ export const InsightCard = (props: InsightCardProps) => {
                 <s.ButtonContainer>
                   {props.insight.isDismissed ? (
                     <s.DismissButton
-                      label={isLoading ? "Showing" : "Show"}
+                      label={isDismissalChangeInProgress ? "Showing" : "Show"}
                       buttonType={"tertiary"}
-                      isDisabled={isLoading}
+                      isDisabled={isDismissalChangeInProgress}
                       onClick={handleShowClick}
                     />
                   ) : (
                     <s.DismissButton
                       icon={CrossIcon}
-                      isDisabled={isLoading}
-                      label={isLoading ? "Dismissing" : "Dismiss"}
+                      isDisabled={isDismissalChangeInProgress}
+                      label={
+                        isDismissalChangeInProgress ? "Dismissing" : "Dismiss"
+                      }
                       buttonType={"tertiary"}
                       onClick={() => setDismissConfirmationOpened(true)}
                     />
                   )}
-                  {isLoading && <Spinner />}
+                  {isDismissalChangeInProgress && <Spinner />}
                 </s.ButtonContainer>
               )}
               {renderActions()}

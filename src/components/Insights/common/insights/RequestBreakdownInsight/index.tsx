@@ -236,6 +236,7 @@ export const RequestBreakdownInsight = (
       onRefresh={props.onRefresh}
       isAsync={props.insight.hasAsyncSpans}
       onGoToSpan={props.onGoToSpan}
+      isMarkAsReadButtonEnabled={props.isMarkAsReadButtonEnabled}
     />
   );
 };

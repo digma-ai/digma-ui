@@ -132,6 +132,9 @@ const calculateBars = (
   return newBars;
 };
 
+/**
+ * @deprecated
+ */
 export const DurationInsight = (props: DurationInsightProps) => {
   // const config = useContext(ConfigContext);
   const theme = useTheme();

@@ -138,6 +138,7 @@ export const SpanNPlusOneInsight = (props: SpanNPlusOneInsightProps) => {
         isHintEnabled: props.isJiraHintEnabled
       }}
       onGoToSpan={props.onGoToSpan}
+      isMarkAsReadButtonEnabled={props.isMarkAsReadButtonEnabled}
     />
   );
 };

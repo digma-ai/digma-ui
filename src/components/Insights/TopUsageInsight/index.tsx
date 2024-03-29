@@ -13,6 +13,9 @@ import { TopUsageInsightProps } from "./types";
 
 const PAGE_SIZE = 3;
 
+/**
+ * @deprecated
+ */
 export const TopUsageInsight = (props: TopUsageInsightProps) => {
   const config = useContext(ConfigContext);
 

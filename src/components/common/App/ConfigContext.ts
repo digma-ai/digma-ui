@@ -27,7 +27,8 @@ export const initialState = {
   environments: undefined,
   scope: undefined,
   isMicrometerProject: window.isMicrometerProject === true,
-  state: undefined
+  state: undefined,
+  insightStats: undefined
 };
 
 export const ConfigContext = createContext<ConfigContextData>(initialState);

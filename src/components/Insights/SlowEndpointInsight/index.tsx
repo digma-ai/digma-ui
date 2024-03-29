@@ -4,6 +4,9 @@ import { InsightCard } from "../InsightCard";
 import { Description } from "../styles";
 import { SlowEndpointInsightProps } from "./types";
 
+/**
+ * @deprecated
+ */
 export const SlowEndpointInsight = (props: SlowEndpointInsightProps) => {
   const diff =
     (props.insight.median.raw / props.insight.endpointsMedianOfMedians.raw -

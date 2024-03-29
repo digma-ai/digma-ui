@@ -12,6 +12,9 @@ export const INSTALL_DIGMA_IN_ORGANIZATION_DOCUMENTATION_URL =
 export const SETUP_PLUGIN_TO_ORGANIZATION_DIGMA_URL =
   "https://digma.ai/installing-digma-in-your-organization/#Connecting";
 
+export const CENTRAL_ON_PREM_INSTALLATION_GUIDE_URL =
+  "https://docs.digma.ai/digma-developer-guide/installation/central-on-prem-install";
+
 export const PERCENTILES: {
   label: string;
   percentile: number;

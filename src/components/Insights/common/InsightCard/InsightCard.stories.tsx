@@ -21,14 +21,20 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     isAsync: true,
-    insight: { ...mockedEndpointNPlusOneInsight, criticality: 0.9 }
+    insight: {
+      ...mockedEndpointNPlusOneInsight,
+      isRead: true
+    }
   }
 };
 
 export const JiraButtonIsPrimary: Story = {
   args: {
     isAsync: true,
-    insight: { ...mockedEndpointNPlusOneInsight, criticality: 0.9 },
+    insight: {
+      ...mockedEndpointNPlusOneInsight,
+      isRead: true
+    },
     onGoToLive: undefined,
     onPin: undefined,
     onGoToTrace: undefined,
@@ -39,7 +45,10 @@ export const JiraButtonIsPrimary: Story = {
 export const LinkedJiraTicket: Story = {
   args: {
     isAsync: true,
-    insight: { ...mockedEndpointNPlusOneInsight, criticality: 0.9 },
+    insight: {
+      ...mockedEndpointNPlusOneInsight,
+      isRead: true
+    },
     jiraTicketInfo: {
       ticketLink: "some",
       spanCodeObjectId: "test",
@@ -57,8 +66,8 @@ export const Dismissed: Story = {
     isAsync: true,
     insight: {
       ...mockedEndpointNPlusOneInsight,
-      criticality: 0.9,
-      isDismissed: true
+      isDismissed: true,
+      isRead: true
     },
     jiraTicketInfo: {
       ticketLink: "some",
@@ -72,7 +81,7 @@ export const Dismissed: Story = {
   }
 };
 
-export const WithNewVersion: Story = {
+export const WithDisabledDismissed: Story = {
   decorators: [
     (Story) => (
       <ConfigContext.Provider
@@ -91,6 +100,28 @@ export const WithNewVersion: Story = {
   ],
   args: {
     isAsync: true,
-    insight: { ...mockedEndpointNPlusOneInsight, criticality: 0.9 }
+    insight: {
+      ...mockedEndpointNPlusOneInsight,
+      isRead: true
+    }
+  }
+};
+
+export const Critical: Story = {
+  args: {
+    insight: {
+      ...mockedEndpointNPlusOneInsight,
+      criticality: 0.9,
+      isRead: true
+    }
+  }
+};
+
+export const Unread: Story = {
+  args: {
+    insight: {
+      ...mockedEndpointNPlusOneInsight,
+      isRead: false
+    }
   }
 };

@@ -90,6 +90,7 @@ export const EndpointBottleneckInsight = (
       onJiraButtonClick={handleTicketInfoButtonClick}
       onGoToSpan={props.onGoToSpan}
       onGoToTrace={span.traceId ? handleTraceButtonClick : undefined}
+      isMarkAsReadButtonEnabled={props.isMarkAsReadButtonEnabled}
     />
   );
 };

@@ -44,14 +44,16 @@ export interface CodeDetails {
   codeObjectId: string;
 }
 
+export interface ScopeSpan {
+  displayName: string;
+  spanCodeObjectId: string;
+  methodId?: string;
+  serviceName: string | null;
+  role: "Entry" | "Internal" | "Unknown" | null;
+}
+
 export interface Scope {
-  span: {
-    displayName: string;
-    spanCodeObjectId: string;
-    methodId?: string;
-    serviceName: string | null;
-    role: "Entry" | "Internal" | "Unknown" | null;
-  } | null;
+  span: ScopeSpan | null;
   code: {
     relatedCodeDetailsList: CodeDetails[];
     codeDetailsList: CodeDetails[];
@@ -59,6 +61,7 @@ export interface Scope {
   hasErrors: boolean;
   issuesInsightsCount: number;
   analyticsInsightsCount: number;
+  unreadInsightsCount: number;
 }
 
 export interface InsightsQuery {
@@ -69,6 +72,7 @@ export interface InsightsQuery {
   scopedSpanCodeObjectId?: string | null;
   showDismissed: boolean;
   insightViewType: InsightViewType;
+  showUnreadOnly: boolean;
 }
 
 export interface GlobalState {
@@ -83,7 +87,7 @@ export interface GlobalState {
 export interface ConfigContextData {
   digmaApiUrl: string;
   digmaApiProxyPrefix: string;
-  digmaStatus: DigmaStatus | undefined;
+  digmaStatus?: DigmaStatus;
   isObservabilityEnabled: boolean;
   jaegerURL: string;
   isJaegerEnabled: boolean;
@@ -94,9 +98,21 @@ export interface ConfigContextData {
   userEmail: string;
   userRegistrationEmail: string;
   environment?: Environment | null;
-  backendInfo: BackendInfo | undefined;
-  environments: Environment[] | undefined;
-  scope: Scope | undefined;
+  backendInfo?: BackendInfo;
+  environments?: Environment[];
+  scope?: Scope;
   isMicrometerProject: boolean;
   state?: GlobalState;
+  insightStats?: InsightStats;
+}
+
+export interface InsightStats {
+  scope: {
+    span: {
+      spanCodeObjectId: string;
+    };
+  } | null;
+  issuesInsightsCount: number;
+  analyticsInsightsCount: number;
+  unreadInsightsCount: number;
 }

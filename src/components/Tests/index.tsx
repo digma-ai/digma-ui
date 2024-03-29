@@ -1,4 +1,11 @@
-import { useContext, useEffect, useMemo, useRef, useState } from "react";
+import {
+  KeyboardEvent,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from "react";
 import { actions as globalActions } from "../../actions";
 import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
@@ -260,6 +267,12 @@ export const Tests = (props: TestsProps) => {
     });
   };
 
+  const handleOverlayKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Escape") {
+      setTestToOpenTicketPopup(undefined);
+    }
+  };
+
   const renderContent = () => {
     if (isInitialLoading) {
       return (
@@ -317,7 +330,7 @@ export const Tests = (props: TestsProps) => {
       </s.EnvironmentFilterContainer>
       {renderContent()}
       {testToOpenTicketPopup && (
-        <s.Overlay>
+        <s.Overlay onKeyDown={handleOverlayKeyDown} tabIndex={-1}>
           <s.PopupContainer>
             {/* {config.userRegistrationEmail ? ( */}
             {true ? ( // eslint-disable-line no-constant-condition
