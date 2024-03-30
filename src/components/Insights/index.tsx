@@ -28,17 +28,17 @@ import { OpenTelemetryLogoCrossedSmallIcon } from "../common/icons/OpenTelemetry
 import { SlackLogoIcon } from "../common/icons/SlackLogoIcon";
 import { InsightsCatalog } from "./InsightsCatalog";
 import { SORTING_CRITERION } from "./InsightsCatalog/types";
+import { EndpointBottleneckInsightTicket } from "./insightTickets/EndpointBottleneckInsightTicket";
+import { EndpointHighNumberOfQueriesInsightTicket } from "./insightTickets/EndpointHighNumberOfQueriesInsightTicket";
+import { EndpointQueryOptimizationInsightTicket } from "./insightTickets/EndpointQueryOptimizationTicket";
+import { EndpointQueryOptimizationV2InsightTicket } from "./insightTickets/EndpointQueryOptimizationV2InsightTicket";
+import { EndpointSpanNPlusOneInsightTicket } from "./insightTickets/EndpointSpanNPlusOneInsightTicket";
+import { SpaNPlusOneInsightTicket } from "./insightTickets/SpaNPlusOneInsightTicket";
+import { SpanEndpointBottleneckInsightTicket } from "./insightTickets/SpanEndpointBottleneckInsightTicket";
+import { SpanQueryOptimizationInsightTicket } from "./insightTickets/SpanQueryOptimizationInsightTicket";
+import { SpanScalingByRootCauseInsightTicket } from "./insightTickets/SpanScalingByRootCauseInsightTicket";
+import { SpanScalingInsightTicket } from "./insightTickets/SpanScalingInsightTicket";
 import * as s from "./styles";
-import { BottleneckInsightTicket } from "./tickets/BottleneckInsightTicket";
-import { EndpointHighNumberOfQueriesInsightTicket } from "./tickets/EndpointHighNumberOfQueriesInsightTicket";
-import { EndpointNPlusOneInsightTicket } from "./tickets/EndpointNPlusOneInsightTicket";
-import { EndpointQueryOptimizationInsightTicket } from "./tickets/EndpointQueryOptimizationTicket";
-import { EndpointQueryOptimizationV2InsightTicket } from "./tickets/EndpointQueryOptimizationV2InsightTicket";
-import { NPlusOneInsightTicket } from "./tickets/NPlusOneInsightTicket";
-import { QueryOptimizationInsightTicket } from "./tickets/QueryOptimizationInsightTicket";
-import { ScalingIssueInsightTicket } from "./tickets/ScalingIssueInsightTicket";
-import { ScalingIssueInsightTicketByRootCause } from "./tickets/ScalingIssueInsightTicketByRootCause";
-import { SpanBottleneckInsightTicket } from "./tickets/SpanBottleneckInsightTicket";
 import {
   isEndpointBottleneckInsight,
   isEndpointHighNumberOfQueriesInsight,
@@ -62,10 +62,10 @@ import {
   InsightsProps,
   InsightsQuery,
   InsightsStatus,
-  QueryOptimizationInsight,
+  SpaNPlusOneInsight,
   SpanEndpointBottleneckInsight,
-  SpanNPlusOneInsight,
-  SpanScalingBadlyInsight
+  SpanQueryOptimizationInsight,
+  SpanScalingInsight
 } from "./types";
 import { useInsightsData } from "./useInsightsData";
 
@@ -78,31 +78,38 @@ const renderInsightTicket = (
   onClose: () => void
 ) => {
   if (isSpanNPlusOneInsight(data.insight)) {
-    const ticketData = data as InsightTicketInfo<SpanNPlusOneInsight>;
-    return <NPlusOneInsightTicket data={ticketData} onClose={onClose} />;
+    const ticketData = data as InsightTicketInfo<SpaNPlusOneInsight>;
+    return <SpaNPlusOneInsightTicket data={ticketData} onClose={onClose} />;
   }
 
   if (isEndpointSpanNPlusOneInsight(data.insight)) {
     const ticketData = data as InsightTicketInfo<EndpointSpanNPlusOneInsight>;
     return (
-      <EndpointNPlusOneInsightTicket data={ticketData} onClose={onClose} />
+      <EndpointSpanNPlusOneInsightTicket data={ticketData} onClose={onClose} />
     );
   }
 
   if (isSpanEndpointBottleneckInsight(data.insight)) {
     const ticketData = data as InsightTicketInfo<SpanEndpointBottleneckInsight>;
-    return <BottleneckInsightTicket data={ticketData} onClose={onClose} />;
+    return (
+      <SpanEndpointBottleneckInsightTicket
+        data={ticketData}
+        onClose={onClose}
+      />
+    );
   }
 
   if (isEndpointBottleneckInsight(data.insight)) {
     const ticketData = data as InsightTicketInfo<EndpointBottleneckInsight>;
-    return <SpanBottleneckInsightTicket data={ticketData} onClose={onClose} />;
+    return (
+      <EndpointBottleneckInsightTicket data={ticketData} onClose={onClose} />
+    );
   }
 
   if (isSpanQueryOptimizationInsight(data.insight)) {
-    const ticketData = data as InsightTicketInfo<QueryOptimizationInsight>;
+    const ticketData = data as InsightTicketInfo<SpanQueryOptimizationInsight>;
     return (
-      <QueryOptimizationInsightTicket data={ticketData} onClose={onClose} />
+      <SpanQueryOptimizationInsightTicket data={ticketData} onClose={onClose} />
     );
   }
 
@@ -144,20 +151,20 @@ const renderInsightTicket = (
   }
 
   if (isSpanScalingBadlyInsight(data.insight)) {
-    const ticketData = data as InsightTicketInfo<SpanScalingBadlyInsight>;
+    const ticketData = data as InsightTicketInfo<SpanScalingInsight>;
     const selectedRootCause = data.insight.rootCauseSpans.find(
       (r) => r.spanCodeObjectId == data.spanCodeObjectId
     );
     if (selectedRootCause) {
       return (
-        <ScalingIssueInsightTicketByRootCause
+        <SpanScalingByRootCauseInsightTicket
           rootCauseSpanInfo={selectedRootCause}
           data={ticketData}
           onClose={onClose}
         />
       );
     } else {
-      return <ScalingIssueInsightTicket data={ticketData} onClose={onClose} />;
+      return <SpanScalingInsightTicket data={ticketData} onClose={onClose} />;
     }
   }
 

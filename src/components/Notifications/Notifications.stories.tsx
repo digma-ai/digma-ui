@@ -47,7 +47,7 @@ const notifications: Notification[] = [
     message: "Lorem ipsum dolor sit, amet consectetur adipisicing elit.",
     type: "NewInsight",
     data: {
-      insightType: InsightType.EndpointSpanNPlusOne,
+      insightType: InsightType.EndpointSpaNPlusOne,
       scope: InsightScope.EntrySpan,
       spanInfo: {
         name: "HTTP GET /SampleInsights/NPlusOneWithoutInternalSpan",

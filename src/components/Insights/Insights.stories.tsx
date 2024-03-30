@@ -1,10 +1,10 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { Insights } from ".";
 import { InsightType } from "../../types";
-import { mockedBottleneckInsight } from "./BottleneckInsight/mockData";
-import { mockedEndpointNPlusOneInsight } from "./EndpointNPlusOneInsight/mockData";
-import { mockedHighNumberOfQueriesInsight } from "./HighNumberOfQueriesInsight/mockData";
-import { mockedSpanNexusInsight } from "./SpanNexusInsight/mockData";
+import { mockedBottleneckInsight } from "./deprecated/InsightList/insightCards/BottleneckInsight/mockData";
+import { mockedEndpointNPlusOneInsight } from "./deprecated/InsightList/insightCards/EndpointNPlusOneInsight/mockData";
+import { mockedHighNumberOfQueriesInsight } from "./deprecated/InsightList/insightCards/HighNumberOfQueriesInsight/mockData";
+import { mockedSpanNexusInsight } from "./deprecated/InsightList/insightCards/SpanNexusInsight/mockData";
 import {
   CodeObjectErrorsInsight,
   ComponentType,
@@ -12,7 +12,7 @@ import {
   InsightCategory,
   InsightScope,
   InsightsStatus,
-  SpanNPlusOneInsight,
+  SpaNPlusOneInsight,
   ViewMode
 } from "./types";
 
@@ -67,7 +67,7 @@ export const Default: Story = {
           ticketLink: null,
           impact: 0,
           name: "N+1",
-          type: InsightType.SpanNPlusOne,
+          type: InsightType.SpaNPlusOne,
           category: InsightCategory.Performance,
           specifity: 2,
           importance: 2,
@@ -161,7 +161,7 @@ export const Default: Story = {
             "method:org.springframework.samples.petclinic.domain.OwnerValidation$_$ValidateOwner",
           customStartTime: null,
           actualStartTime: "2023-07-27T08:23:56.500827Z"
-        } as SpanNPlusOneInsight,
+        } as SpaNPlusOneInsight,
         {
           hasAsyncSpans: false,
           sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",

@@ -14,7 +14,7 @@ export const getInsightTypeOrderPriority = (type: string): number => {
     [InsightType.LowUsage]: 30,
     [InsightType.EndpointBottleneck]: 40,
     [InsightType.NormalUsage]: 50,
-    [InsightType.EndpointSpanNPlusOneV2]: 55,
+    [InsightType.EndpointSpanNPlusOne]: 55,
     [InsightType.EndpointSessionInView]: 56,
     [InsightType.EndpointChattyApi]: 57, // deprecated
     [InsightType.EndpointChattyApiV2]: 57,
@@ -25,8 +25,8 @@ export const getInsightTypeOrderPriority = (type: string): number => {
     // Span insights
     [InsightType.SpanDurations]: 60,
     [InsightType.SpanUsages]: 61,
-    [InsightType.SpanScalingBadly]: 63,
-    [InsightType.SpanNPlusOne]: 65,
+    [InsightType.SpanScaling]: 63,
+    [InsightType.SpaNPlusOne]: 65,
     [InsightType.SpanEndpointBottleneck]: 67,
     [InsightType.SpanDurationBreakdown]: 68,
     [InsightType.SpanNexus]: 69,

@@ -23,13 +23,13 @@ export enum InsightType {
   HighUsage = "HighUsage",
   SlowestSpans = "SlowestSpans", // deprecated
   EndpointBottleneck = "EndpointBottleneck",
-  EndpointSpanNPlusOne = "EndpointSpaNPlusOne", // deprecated
-  EndpointSpanNPlusOneV2 = "EndpointSpanNPlusOne",
+  EndpointSpaNPlusOne = "EndpointSpaNPlusOne", // deprecated
+  EndpointSpanNPlusOne = "EndpointSpanNPlusOne",
   SpanUsages = "SpanUsages",
-  SpanNPlusOne = "SpaNPlusOne",
+  SpaNPlusOne = "SpaNPlusOne",
   SpanEndpointBottleneck = "SpanEndpointBottleneck",
   SpanDurations = "SpanDurations",
-  SpanScalingBadly = "SpanScaling",
+  SpanScaling = "SpanScaling",
   SpanDurationBreakdown = "SpanDurationBreakdown",
   EndpointDurationSlowdown = "EndpointDurationSlowdown", // deprecated
   EndpointBreakdown = "EndpointBreakdown",
