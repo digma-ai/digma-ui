@@ -9,3 +9,7 @@ export interface LinkProps {
   children: ReactNode;
   className?: string;
 }
+
+export interface LinkElementProps {
+  $disabled?: boolean;
+}

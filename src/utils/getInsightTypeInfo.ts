@@ -70,17 +70,17 @@ export const getInsightTypeInfo = (
       description: descriptionProvider.BottleneckDescription
     },
     // deprecated
+    [InsightType.EndpointSpaNPlusOne]: {
+      icon: SQLDatabaseIcon,
+      label: "Suspected N+1",
+      description: descriptionProvider.NPlusOneDescription
+    },
     [InsightType.EndpointSpanNPlusOne]: {
       icon: SQLDatabaseIcon,
       label: "Suspected N+1",
       description: descriptionProvider.NPlusOneDescription
     },
-    [InsightType.EndpointSpanNPlusOneV2]: {
-      icon: SQLDatabaseIcon,
-      label: "Suspected N+1",
-      description: descriptionProvider.NPlusOneDescription
-    },
-    [InsightType.SpanNPlusOne]: {
+    [InsightType.SpaNPlusOne]: {
       icon: SQLDatabaseIcon,
       label: "Suspected N+1",
       description: descriptionProvider.NPlusOneDescription
@@ -90,7 +90,7 @@ export const getInsightTypeInfo = (
       label: "Bottleneck",
       description: descriptionProvider.BottleneckDescription
     },
-    [InsightType.SpanScalingBadly]: {
+    [InsightType.SpanScaling]: {
       icon: ScalesIcon,
       label: "Scaling Issue Found",
       description: descriptionProvider.ScalingIssueDescription

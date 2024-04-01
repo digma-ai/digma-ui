@@ -9,7 +9,8 @@ export enum FeatureFlag {
   IS_INSIGHT_DISMISSAL_ENABLED,
   IS_RECALCULATE_BUBBLE_ENABLED,
   IS_ANALYTICS_TAB_VISIBLE,
-  IS_INSIGHT_MARKING_AS_READ_ENABLED
+  IS_INSIGHT_MARKING_AS_READ_ENABLED,
+  IS_HIGHLIGHTS_TAB_VISIBLE
 }
 
 export enum InsightType {
@@ -22,13 +23,13 @@ export enum InsightType {
   HighUsage = "HighUsage",
   SlowestSpans = "SlowestSpans", // deprecated
   EndpointBottleneck = "EndpointBottleneck",
-  EndpointSpanNPlusOne = "EndpointSpaNPlusOne", // deprecated
-  EndpointSpanNPlusOneV2 = "EndpointSpanNPlusOne",
+  EndpointSpaNPlusOne = "EndpointSpaNPlusOne", // deprecated
+  EndpointSpanNPlusOne = "EndpointSpanNPlusOne",
   SpanUsages = "SpanUsages",
-  SpanNPlusOne = "SpaNPlusOne",
+  SpaNPlusOne = "SpaNPlusOne",
   SpanEndpointBottleneck = "SpanEndpointBottleneck",
   SpanDurations = "SpanDurations",
-  SpanScalingBadly = "SpanScaling",
+  SpanScaling = "SpanScaling",
   SpanDurationBreakdown = "SpanDurationBreakdown",
   EndpointDurationSlowdown = "EndpointDurationSlowdown", // deprecated
   EndpointBreakdown = "EndpointBreakdown",

@@ -10,6 +10,7 @@ export const Container = styled.div`
 
 const Section = styled.div`
   padding: 8px;
+  height: 100%;
 `;
 
 export const Content = Section;

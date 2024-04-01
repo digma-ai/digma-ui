@@ -1,11 +1,11 @@
 import { InsightType } from "../../types";
 import {
-  ChattyApiEndpointInsight,
   CodeObjectErrorsInsight,
   CodeObjectHotSpotInsight,
   CodeObjectInsight,
   EndpointBottleneckInsight,
   EndpointBreakdownInsight,
+  EndpointChattyApiInsight,
   EndpointChattyApiV2Insight,
   EndpointDurationSlowdownInsight,
   EndpointHighNumberOfQueriesInsight,
@@ -15,22 +15,22 @@ import {
   EndpointNormalUsageInsight,
   EndpointQueryOptimizationInsight,
   EndpointQueryOptimizationV2Insight,
+  EndpointSessionInViewInsight,
   EndpointSlowdownSourceInsight,
   EndpointSlowestSpansInsight,
   EndpointSpanNPlusOneInsight,
   EndpointSuspectedNPlusOneInsight,
   GenericFunctionInsight,
   InsightScope,
-  QueryOptimizationInsight,
-  SessionInViewEndpointInsight,
   SlowEndpointInsight,
+  SpaNPlusOneInsight,
   SpanDurationBreakdownInsight,
   SpanDurationsInsight,
   SpanEndpointBottleneckInsight,
   SpanInsight,
-  SpanNPlusOneInsight,
   SpanNexusInsight,
-  SpanScalingBadlyInsight,
+  SpanQueryOptimizationInsight,
+  SpanScalingInsight,
   SpanScalingInsufficientDataInsight,
   SpanScalingWellInsight,
   SpanUsagesInsight
@@ -100,7 +100,7 @@ export const isSlowEndpointInsight = (
 
 export const isSpanNPlusOneInsight = (
   insight: CodeObjectInsight
-): insight is SpanNPlusOneInsight => insight.type === InsightType.SpanNPlusOne;
+): insight is SpaNPlusOneInsight => insight.type === InsightType.SpaNPlusOne;
 
 /**
  * @deprecated
@@ -108,12 +108,12 @@ export const isSpanNPlusOneInsight = (
 export const isEndpointSuspectedNPlusOneInsight = (
   insight: CodeObjectInsight
 ): insight is EndpointSuspectedNPlusOneInsight =>
-  insight.type === InsightType.EndpointSpanNPlusOne;
+  insight.type === InsightType.EndpointSpaNPlusOne;
 
 export const isEndpointSpanNPlusOneInsight = (
   insight: CodeObjectInsight
 ): insight is EndpointSpanNPlusOneInsight =>
-  insight.type === InsightType.EndpointSpanNPlusOneV2;
+  insight.type === InsightType.EndpointSpanNPlusOne;
 
 /**
  * @deprecated
@@ -130,8 +130,7 @@ export const isEndpointQueryOptimizationV2Insight = (
 
 export const isSpanScalingBadlyInsight = (
   insight: CodeObjectInsight
-): insight is SpanScalingBadlyInsight =>
-  insight.type === InsightType.SpanScalingBadly;
+): insight is SpanScalingInsight => insight.type === InsightType.SpanScaling;
 
 export const isCodeObjectErrorsInsight = (
   insight: CodeObjectInsight
@@ -177,7 +176,7 @@ export const isSpanScalingInsufficientDataInsight = (
 
 export const isSessionInViewEndpointInsight = (
   insight: CodeObjectInsight
-): insight is SessionInViewEndpointInsight =>
+): insight is EndpointSessionInViewInsight =>
   insight.type === InsightType.EndpointSessionInView;
 
 /**
@@ -185,7 +184,7 @@ export const isSessionInViewEndpointInsight = (
  */
 export const isChattyApiEndpointInsight = (
   insight: CodeObjectInsight
-): insight is ChattyApiEndpointInsight =>
+): insight is EndpointChattyApiInsight =>
   insight.type === InsightType.EndpointChattyApi;
 
 export const isEndpointChattyApiV2Insight = (
@@ -204,5 +203,5 @@ export const isSpanNexusInsight = (
 
 export const isSpanQueryOptimizationInsight = (
   insight: CodeObjectInsight
-): insight is QueryOptimizationInsight =>
+): insight is SpanQueryOptimizationInsight =>
   insight.type === InsightType.SpanQueryOptimization;
