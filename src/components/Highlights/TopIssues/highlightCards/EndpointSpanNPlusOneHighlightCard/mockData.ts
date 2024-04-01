@@ -19,7 +19,7 @@ export const mockedEndpointSpanNPlusOneMetrics: EndpointSpanNPlusOneMetrics = [
 
 export const mockedEndpointSpanNPlusOneHighlightData: HighlightData<EndpointSpanNPlusOneMetrics> =
   {
-    insightType: InsightType.EndpointSpanNPlusOneV2,
+    insightType: InsightType.EndpointSpanNPlusOne,
     asset: {
       name: "spanName",
       displayName: "displayName",

@@ -10,7 +10,7 @@ export const mockedSpanScalingMetrics: SpanScalingMetrics = [
 
 export const mockedSpanScalingHighlightData: HighlightData<SpanScalingMetrics> =
   {
-    insightType: InsightType.SpanScalingBadly,
+    insightType: InsightType.SpanScaling,
     asset: {
       name: "spanName",
       displayName: "displayName",

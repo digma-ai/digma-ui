@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { InsightsCatalog } from ".";
 import { SORTING_ORDER } from "../../common/SortingSelector/types";
-import { mockedSpanBottleneckInsight } from "../common/insights/EndpointBottleneckInsight/mockData";
+import { mockedEndpointBottleneckInsight } from "./InsightsPage/insightCards/EndpointBottleneckInsightCard/mockData";
 import { SORTING_CRITERION } from "./types";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
@@ -20,7 +20,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    insights: [{ ...mockedSpanBottleneckInsight, isRead: false }],
+    insights: [{ ...mockedEndpointBottleneckInsight, isRead: false }],
     totalCount: 1,
     dismissedCount: 1,
     defaultQuery: {

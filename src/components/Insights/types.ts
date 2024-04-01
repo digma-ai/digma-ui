@@ -40,8 +40,8 @@ export type GenericEndpointInsight =
   | EndpointDurationSlowdownInsight
   | EndpointSlowdownSourceInsight
   | EndpointBreakdownInsight
-  | SessionInViewEndpointInsight
-  | ChattyApiEndpointInsight
+  | EndpointSessionInViewInsight
+  | EndpointChattyApiInsight
   | EndpointChattyApiV2Insight
   | EndpointHighNumberOfQueriesInsight
   | EndpointQueryOptimizationInsight
@@ -52,12 +52,12 @@ export type GenericSpanInsight =
   | SpanUsagesInsight
   | SpanEndpointBottleneckInsight
   | SpanDurationBreakdownInsight
-  | SpanScalingBadlyInsight
-  | SpanNPlusOneInsight
+  | SpanScalingInsight
+  | SpaNPlusOneInsight
   | SpanScalingWellInsight
   | SpanScalingInsufficientDataInsight
   | SpanNexusInsight
-  | QueryOptimizationInsight;
+  | SpanQueryOptimizationInsight;
 
 export interface MethodSpan {
   spanCodeObjectId: string;
@@ -98,19 +98,6 @@ export interface InsightGroup {
   insights: GenericCodeObjectInsight[];
   name?: string;
   icon?: MemoExoticComponent<(props: IconProps) => JSX.Element>;
-}
-
-export interface InsightProps {
-  onRecalculate: (insightId: string) => void;
-  onRefresh: (insightType: InsightType) => void;
-  onJiraTicketCreate?: (
-    insight: GenericCodeObjectInsight,
-    spanCodeObjectId: string | undefined,
-    event?: string
-  ) => void;
-  onGoToSpan: (spanCodeObjectId: string) => void;
-  isJiraHintEnabled?: boolean;
-  isMarkAsReadButtonEnabled: boolean;
 }
 
 export interface InsightTicketInfo<T extends GenericCodeObjectInsight> {
@@ -551,9 +538,9 @@ export interface AffectedEndpoint extends SpanInfo {
   flowHash: string;
 }
 
-export interface SpanScalingBadlyInsight extends SpanInsight {
+export interface SpanScalingInsight extends SpanInsight {
   name: "Scaling Issue Found";
-  type: InsightType.SpanScalingBadly;
+  type: InsightType.SpanScaling;
   category: InsightCategory.Performance;
   specifity: InsightSpecificity.OwnInsight;
   importance: InsightImportance.Critical;
@@ -593,9 +580,9 @@ export interface NPlusOneEndpointInfo {
   requestPercentage: number;
 }
 
-export interface SpanNPlusOneInsight extends SpanInsight {
+export interface SpaNPlusOneInsight extends SpanInsight {
   name: "N+1";
-  type: InsightType.SpanNPlusOne;
+  type: InsightType.SpaNPlusOne;
   category: InsightCategory.Performance;
   specifity: InsightSpecificity.TargetAndReasonFound;
   importance: InsightImportance.Critical;
@@ -617,7 +604,7 @@ export interface SpanNPlusOneInsight extends SpanInsight {
  */
 export interface EndpointSuspectedNPlusOneInsight extends EndpointInsight {
   name: "Suspected N+1 Query";
-  type: InsightType.EndpointSpanNPlusOne;
+  type: InsightType.EndpointSpaNPlusOne;
   category: InsightCategory.Performance;
   specifity: InsightSpecificity.TargetAndReasonFound;
   importance: InsightImportance.HighlyImportant;
@@ -638,7 +625,7 @@ export interface EndpointSuspectedNPlusOneInsight extends EndpointInsight {
 
 export interface EndpointSpanNPlusOneInsight extends EndpointInsight {
   name: "Suspected N+1 Query";
-  type: InsightType.EndpointSpanNPlusOneV2;
+  type: InsightType.EndpointSpanNPlusOne;
   category: InsightCategory.Performance;
   specifity: InsightSpecificity.TargetAndReasonFound;
   importance: InsightImportance.HighlyImportant;
@@ -786,7 +773,7 @@ export interface SpanScalingInsufficientDataInsight extends SpanInsight {
   concurrencies: Concurrency[];
 }
 
-export interface SessionInViewEndpointInsight extends EndpointInsight {
+export interface EndpointSessionInViewInsight extends EndpointInsight {
   name: "Session in View Query";
   type: InsightType.EndpointSessionInView;
   category: InsightCategory.Performance;
@@ -802,7 +789,7 @@ export interface SessionInViewEndpointInsight extends EndpointInsight {
 /**
  * @deprecated
  */
-export interface ChattyApiEndpointInsight extends EndpointInsight {
+export interface EndpointChattyApiInsight extends EndpointInsight {
   name: "HTTP Chatter";
   type: InsightType.EndpointChattyApi;
   category: InsightCategory.Performance;
@@ -847,7 +834,7 @@ export interface SpanNexusInsight extends SpanInsight {
   isServicesHigh: boolean;
 }
 
-export interface QueryOptimizationInsight extends SpanInsight {
+export interface SpanQueryOptimizationInsight extends SpanInsight {
   type: InsightType.SpanQueryOptimization;
   duration: Duration;
   typicalDuration: Duration;

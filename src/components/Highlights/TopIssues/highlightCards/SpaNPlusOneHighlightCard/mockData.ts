@@ -20,7 +20,7 @@ export const mockedSpaNPlusOneInsights: SpaNPlusOneMetrics = [
 
 export const mockedSpaNPlusOneHighlightData: HighlightData<SpaNPlusOneMetrics> =
   {
-    insightType: InsightType.SpanNPlusOne,
+    insightType: InsightType.SpaNPlusOne,
     asset: {
       name: "spanName",
       displayName: "displayName",

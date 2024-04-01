@@ -64,7 +64,7 @@ export const isEndpointSpanNPlusOneHighlight = (
 export const isSpaNPlusOneHighlight = (
   highlight: HighlightData<GenericMetrics>
 ): highlight is HighlightData<SpaNPlusOneMetrics> =>
-  highlight.insightType === InsightType.SpanNPlusOne;
+  highlight.insightType === InsightType.SpaNPlusOne;
 
 export const isHotSpotHighlight = (
   highlight: HighlightData<GenericMetrics>
@@ -74,4 +74,4 @@ export const isHotSpotHighlight = (
 export const isSpanScalingHighlight = (
   highlight: HighlightData<GenericMetrics>
 ): highlight is HighlightData<SpanScalingMetrics> =>
-  highlight.insightType === InsightType.SpanScalingBadly;
+  highlight.insightType === InsightType.SpanScaling;

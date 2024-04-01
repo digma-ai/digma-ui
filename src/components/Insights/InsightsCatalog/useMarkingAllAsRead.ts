@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { dispatcher } from "../../../dispatcher";
 import { ScopeSpan } from "../../common/App/types";
 import { actions } from "../actions";
-import { MarkAllAsReadPayload } from "../common/InsightCard/types";
+import { MarkAllAsReadPayload } from "./InsightsPage/insightCards/common/InsightCard/types";
 
 export const useMarkingAllAsRead = (scope: ScopeSpan | null) => {
   const [isMarkingAllAsReadInProgress, setIsMarkingAllAsReadInProgress] =
