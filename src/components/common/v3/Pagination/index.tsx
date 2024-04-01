@@ -1,3 +1,5 @@
+import { trackingEvents as globalTrackingEvents } from "../../../../trackingEvents";
+import { sendTrackingEvent } from "../../../../utils/sendTrackingEvent";
 import { ChevronIcon } from "../../icons/12px/ChevronIcon";
 import { DoubleChevronIcon } from "../../icons/DoubleChevronIcon";
 import { Direction } from "../../icons/types";
@@ -10,7 +12,8 @@ export const Pagination = ({
   page,
   onPageChange,
   extendedNavigation,
-  withDescription
+  withDescription,
+  trackingEventPrefix
 }: PaginationProps) => {
   const pageCount = Math.ceil(itemsCount / pageSize);
 
@@ -18,6 +21,14 @@ export const Pagination = ({
   const isNextDisabled = page === pageCount - 1;
 
   const handleButtonClick = (page: number) => {
+    sendTrackingEvent(globalTrackingEvents.USER_ACTION, {
+      action: [
+        trackingEventPrefix || "",
+        globalTrackingEvents.PAGINATION_BUTTON_CLICKED
+      ]
+        .join(" ")
+        .trim()
+    });
     onPageChange(page);
   };
 

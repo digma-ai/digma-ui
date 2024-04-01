@@ -68,7 +68,7 @@ export const DurationBreakdownInsight = (
   const [pageItems, page, setPage] = usePagination(
     sortedEntries,
     PAGE_SIZE,
-    props.insight.codeObjectId
+    props.insight.id
   );
 
   const handleSpanLinkClick = (spanCodeObjectId: string) => {

@@ -4,14 +4,14 @@ import { isNumber } from "../../../typeGuards/isNumber";
 import { FeatureFlag } from "../../../types";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
-import { Scope } from "../../common/App/types";
+import { ConfigContextData, Scope } from "../../common/App/types";
+import { MagicWandIcon } from "../../common/icons/16px/MagicWandIcon";
 import { Tooltip } from "../../common/v3/Tooltip";
 import { trackingEvents } from "../tracking";
 import { TabData } from "../types";
 import * as s from "./styles";
 import { TabsProps } from "./types";
 
-// TODO: remove after implementing this logic on the plugin's side
 const getTabTooltipMessage = (tab: TabData, scope?: Scope) => {
   if (!scope?.span && ["errors", "errorsDetails", "tests"].includes(tab.id)) {
     return "Global errors and tests is COMING SOON";
@@ -20,16 +20,45 @@ const getTabTooltipMessage = (tab: TabData, scope?: Scope) => {
   return tab.tooltipMessage;
 };
 
-// TODO: remove after implementing this logic on the plugin's side
 const getIsTabDisabled = (tab: TabData, scope?: Scope) => {
   if (
     !scope?.span &&
-    ["analytics", "errors", "errorsDetails", "tests"].includes(tab.id)
+    ["highlights", "analytics", "errors", "errorsDetails", "tests"].includes(
+      tab.id
+    )
   ) {
     return true;
   }
 
   return tab.isDisabled;
+};
+
+const getTabIcon = (tab: TabData) => {
+  if (tab.id === "highlights") {
+    return <MagicWandIcon color={"currentColor"} size={16} />;
+  }
+
+  return null;
+};
+
+const getIsNewIndicatorVisible = (tab: TabData, config: ConfigContextData) =>
+  tab.hasNewData ||
+  (tab.id === "insights"
+    ? config.insightStats &&
+      config.scope?.span?.spanCodeObjectId ===
+        config.insightStats.scope?.span.spanCodeObjectId
+      ? config.insightStats && config.insightStats.unreadInsightsCount > 0
+      : config.scope &&
+        isNumber(config.scope.unreadInsightsCount) &&
+        config.scope.unreadInsightsCount > 0
+    : false);
+
+const getTabWidth = (tab: TabData) => {
+  if (tab.id === "highlights") {
+    return 40;
+  }
+
+  return undefined;
 };
 
 export const Tabs = (props: TabsProps) => {
@@ -44,31 +73,26 @@ export const Tabs = (props: TabsProps) => {
     }
   };
 
-  const tabs = props.tabs.filter(
-    (x) =>
-      !x.isHidden ||
-      (!x.isHidden &&
-        x.id === "analytics" &&
-        getFeatureFlagValue(config, FeatureFlag.IS_ANALYTICS_TAB_VISIBLE))
-  );
+  const tabs = props.tabs.filter((x) => {
+    if (x.id === "highlights" && !x.isHidden) {
+      return getFeatureFlagValue(config, FeatureFlag.IS_HIGHLIGHTS_TAB_VISIBLE);
+    }
+
+    if (x.id === "analytics" && !x.isHidden) {
+      return getFeatureFlagValue(config, FeatureFlag.IS_ANALYTICS_TAB_VISIBLE);
+    }
+
+    return !x.isHidden;
+  });
 
   return (
     <s.TabList>
       {tabs.map((tab) => {
         const tooltipMessage = getTabTooltipMessage(tab, config.scope);
         const isDisabled = getIsTabDisabled(tab, config.scope);
-        const isNewIndicatorVisible =
-          tab.hasNewData ||
-          (tab.id === "insights"
-            ? config.insightStats &&
-              config.scope?.span?.spanCodeObjectId ===
-                config.insightStats.scope?.span.spanCodeObjectId
-              ? config.insightStats &&
-                config.insightStats.unreadInsightsCount > 0
-              : config.scope &&
-                isNumber(config.scope.unreadInsightsCount) &&
-                config.scope.unreadInsightsCount > 0
-            : false);
+        const isNewIndicatorVisible = getIsNewIndicatorVisible(tab, config);
+        const icon = getTabIcon(tab);
+        const width = getTabWidth(tab);
 
         return (
           <Tooltip
@@ -77,10 +101,12 @@ export const Tabs = (props: TabsProps) => {
             isOpen={tooltipMessage ? undefined : false}
           >
             <s.Tab
+              $width={width}
               $isSelected={tab.isSelected}
               $isDisabled={isDisabled}
               onClick={() => handleTabClick(tab)}
             >
+              {icon}
               {tab.title}
               {isNewIndicatorVisible && <s.Indicator type={"new"} />}
               {config.scope?.hasErrors &&

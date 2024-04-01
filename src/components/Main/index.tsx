@@ -1,6 +1,7 @@
 import { useLayoutEffect, useState } from "react";
 import { dispatcher } from "../../dispatcher";
 import { Assets } from "../Assets";
+import { Highlights } from "../Highlights";
 import { Insights } from "../Insights";
 import { SetViewsPayload } from "../Navigation/types";
 import { Tests } from "../Tests";
@@ -32,6 +33,8 @@ export const Main = () => {
   }, []);
 
   switch (view) {
+    case "highlights":
+      return <Highlights />;
     case "insights":
       return <Insights insightViewType={"Issues"} key={"insights"} />;
     case "assets":

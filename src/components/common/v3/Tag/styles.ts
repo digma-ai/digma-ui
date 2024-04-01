@@ -55,7 +55,6 @@ export const Container = styled.div<ContainerProps>`
 `;
 
 export const ValueContainer = styled.div`
-  display: flex;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
