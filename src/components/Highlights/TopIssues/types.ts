@@ -115,7 +115,7 @@ export type EndpointSpanNPlusOneMetrics = [
   }
 ];
 
-export type SpanNPlusOneMetrics = [
+export type SpaNPlusOneMetrics = [
   {
     id: "AffectedEndpoints";
     value: number;
@@ -158,7 +158,7 @@ export type GenericMetrics =
   | EndpointSessionInViewMetrics
   | EndpointSlowdownSourceMetrics
   | EndpointSpanNPlusOneMetrics
-  | SpanNPlusOneMetrics
+  | SpaNPlusOneMetrics
   | HotSpotMetrics
   | SpanScalingMetrics;
 

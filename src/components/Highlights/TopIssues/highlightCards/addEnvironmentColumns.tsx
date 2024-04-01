@@ -1,6 +1,6 @@
 import { ColumnDef, ColumnHelper } from "@tanstack/react-table";
-import { InsightStatusBadge } from "../../../Insights/common/InsightCard/InsightHeader/InsightStatusBadge";
-import { EnvironmentName } from "../../EnvironmentName";
+import { EnvironmentName } from "../../common/EnvironmentName";
+import { TableInsightStatusBadge } from "../../common/TableInsightStatusBadge";
 import { EnvironmentData } from "../types";
 
 export const addEnvironmentColumns = <
@@ -12,10 +12,6 @@ export const addEnvironmentColumns = <
   return [
     columnHelper.accessor((x) => x, {
       header: "Env",
-      meta: {
-        width: "20%",
-        minWidth: 60
-      },
       cell: (info) => {
         const environmentData = info.getValue();
         return <EnvironmentName data={environmentData} />;
@@ -24,13 +20,9 @@ export const addEnvironmentColumns = <
     ...columns,
     columnHelper.accessor((x) => x.insightStatus, {
       header: "Status",
-      meta: {
-        width: "20%",
-        minWidth: 60
-      },
       cell: (info) => {
         const status = info.getValue();
-        return <InsightStatusBadge status={status} />;
+        return <TableInsightStatusBadge status={status} />;
       }
     })
   ];

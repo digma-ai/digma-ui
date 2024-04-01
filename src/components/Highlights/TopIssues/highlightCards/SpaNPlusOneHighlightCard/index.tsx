@@ -2,27 +2,23 @@ import { createColumnHelper } from "@tanstack/react-table";
 import { Duration } from "../../../../../globals";
 import { getDurationString } from "../../../../../utils/getDurationString";
 import { Tag } from "../../../../common/v3/Tag";
-import { Table } from "../../../Table";
-import { HighlightCard } from "../../HighlightCard";
-import { EnvironmentData, SpanNPlusOneMetrics } from "../../types";
+import { Table } from "../../../common/Table";
+import { HighlightCard } from "../../common/HighlightCard";
+import { EnvironmentData, SpaNPlusOneMetrics } from "../../types";
 import { addEnvironmentColumns } from "../addEnvironmentColumns";
-import { SpanNPlusOneHighlightCardProps } from "./types";
+import { SpaNPlusOneHighlightCardProps } from "./types";
 
-export const SpanNPlusOneHighlightCard = ({
+export const SpaNPlusOneHighlightCard = ({
   data
-}: SpanNPlusOneHighlightCardProps) => {
+}: SpaNPlusOneHighlightCardProps) => {
   const columnHelper =
-    createColumnHelper<EnvironmentData<SpanNPlusOneMetrics>>();
+    createColumnHelper<EnvironmentData<SpaNPlusOneMetrics>>();
 
   const metricsColumns = [
     columnHelper.accessor(
       (x) => x.metrics.find((x) => x.id === "AffectedEndpoints"),
       {
         header: "Affected endpoints",
-        meta: {
-          width: "20%",
-          minWidth: 60
-        },
         cell: (info) => {
           const metric = info.getValue();
           return metric ? metric.value : null;
@@ -31,10 +27,6 @@ export const SpanNPlusOneHighlightCard = ({
     ),
     columnHelper.accessor((x) => x.metrics.find((x) => x.id === "Repeats"), {
       header: "Max Repeats",
-      meta: {
-        width: "20%",
-        minWidth: 60
-      },
       cell: (info) => {
         const metric = info.getValue();
         return metric ? metric.value : null;
@@ -44,10 +36,6 @@ export const SpanNPlusOneHighlightCard = ({
       (x) => x.metrics.find((x) => x.id === "RequestPercentage"),
       {
         header: "Max Requests",
-        meta: {
-          width: "20%",
-          minWidth: 60
-        },
         cell: (info) => {
           const metric = info.getValue();
           return metric ? `${metric.value as number}%` : null;
@@ -75,7 +63,7 @@ export const SpanNPlusOneHighlightCard = ({
     <HighlightCard
       highlight={data}
       content={
-        <Table<EnvironmentData<SpanNPlusOneMetrics>>
+        <Table<EnvironmentData<SpaNPlusOneMetrics>>
           columns={columns}
           data={data.environment}
         />

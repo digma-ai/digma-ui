@@ -2,10 +2,12 @@ import { createColumnHelper } from "@tanstack/react-table";
 import { Duration } from "../../../../../globals";
 import { getDurationString } from "../../../../../utils/getDurationString";
 import { Tag } from "../../../../common/v3/Tag";
-import { Table } from "../../../Table";
-import { HighlightCard } from "../../HighlightCard";
+import { Table } from "../../../common/Table";
+import { AssetLink } from "../../common/AssetLink";
+import { HighlightCard } from "../../common/HighlightCard";
 import { EnvironmentData, SpanQueryOptimizationMetrics } from "../../types";
 import { addEnvironmentColumns } from "../addEnvironmentColumns";
+import { DescriptionContainer } from "../styles";
 import { SpanQueryOptimizationHighlightCardProps } from "./types";
 
 export const SpanQueryOptimizationHighlightCard = ({
@@ -19,10 +21,6 @@ export const SpanQueryOptimizationHighlightCard = ({
       (x) => x.metrics.find((x) => x.id === "AffectedEndpoints"),
       {
         header: "Affected endpoints",
-        meta: {
-          width: "20%",
-          minWidth: 60
-        },
         cell: (info) => {
           const metric = info.getValue();
           return metric ? metric.value : null;
@@ -31,10 +29,6 @@ export const SpanQueryOptimizationHighlightCard = ({
     ),
     columnHelper.accessor((x) => x.metrics.find((x) => x.id === "Duration"), {
       header: "Duration",
-      meta: {
-        width: "20%",
-        minWidth: 60
-      },
       cell: (info) => {
         const metric = info.getValue();
         return metric ? (
@@ -46,10 +40,6 @@ export const SpanQueryOptimizationHighlightCard = ({
       (x) => x.metrics.find((x) => x.id === "TypicalDuration"),
       {
         header: "Typical Duration",
-        meta: {
-          width: "20%",
-          minWidth: 60
-        },
         cell: (info) => {
           const metric = info.getValue();
           return metric ? (
@@ -60,10 +50,6 @@ export const SpanQueryOptimizationHighlightCard = ({
     ),
     columnHelper.accessor((x) => x.metrics.find((x) => x.id === "Database"), {
       header: "Database",
-      meta: {
-        width: "20%",
-        minWidth: 60
-      },
       cell: (info) => {
         const metric = info.getValue();
         return metric ? metric.value : null;
@@ -77,10 +63,16 @@ export const SpanQueryOptimizationHighlightCard = ({
     <HighlightCard
       highlight={data}
       content={
-        <Table<EnvironmentData<SpanQueryOptimizationMetrics>>
-          columns={columns}
-          data={data.environment}
-        />
+        <>
+          <DescriptionContainer>
+            Query is slow compared to other SELECT statements
+            <AssetLink asset={data.asset} />
+          </DescriptionContainer>
+          <Table<EnvironmentData<SpanQueryOptimizationMetrics>>
+            columns={columns}
+            data={data.environment}
+          />
+        </>
       }
     />
   );

@@ -1,8 +1,5 @@
 import styled from "styled-components";
-import {
-  bodySemiboldTypography,
-  caption1RegularTypography
-} from "../../../common/App/typographies";
+import { bodySemiboldTypography } from "../../../../common/App/typographies";
 
 export const Header = styled.div`
   ${bodySemiboldTypography}
@@ -21,13 +18,4 @@ export const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
-`;
-
-export const AssetNameContainer = styled.div`
-  ${caption1RegularTypography}
-
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  color: ${({ theme }) => theme.colors.v3.text.tertiary};
 `;

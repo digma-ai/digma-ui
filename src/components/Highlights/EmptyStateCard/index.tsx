@@ -1,5 +1,5 @@
+import { CrossCircleIcon } from "../../common/icons/16px/CrossCircleIcon";
 import { RefreshIcon } from "../../common/icons/16px/RefreshIcon";
-import { CrossCircleIcon } from "../../common/icons/CrossCircleIcon";
 import * as s from "./styles";
 import { EmptyStateCardProps } from "./types";
 

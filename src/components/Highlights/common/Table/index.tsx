@@ -4,10 +4,10 @@ import {
   useReactTable
 } from "@tanstack/react-table";
 import { useEffect, useState } from "react";
-import { usePagination } from "../../../hooks/usePagination";
-import { usePrevious } from "../../../hooks/usePrevious";
-import { isNumber } from "../../../typeGuards/isNumber";
-import { Pagination } from "../../common/v3/Pagination";
+import { usePagination } from "../../../../hooks/usePagination";
+import { usePrevious } from "../../../../hooks/usePrevious";
+import { isNumber } from "../../../../typeGuards/isNumber";
+import { Pagination } from "../../../common/v3/Pagination";
 import * as s from "./styles";
 import { TableProps } from "./types";
 

@@ -1,12 +1,12 @@
 import { Meta, StoryObj } from "@storybook/react";
 
-import { SpanNPlusOneHighlightCard } from ".";
-import { mockedSpanNPlusOneHighlightData } from "./mockData";
+import { SpaNPlusOneHighlightCard } from ".";
+import { mockedSpaNPlusOneHighlightData } from "./mockData";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
-const meta: Meta<typeof SpanNPlusOneHighlightCard> = {
-  title: "Highlights/TopIssues/highlightCards/SpanNPlusOneHighlightCard",
-  component: SpanNPlusOneHighlightCard,
+const meta: Meta<typeof SpaNPlusOneHighlightCard> = {
+  title: "Highlights/TopIssues/highlightCards/SpaNPlusOneHighlightCard",
+  component: SpaNPlusOneHighlightCard,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
     layout: "fullscreen"
@@ -21,6 +21,6 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    data: mockedSpanNPlusOneHighlightData
+    data: mockedSpaNPlusOneHighlightData
   }
 };

@@ -16,8 +16,8 @@ import { EndpointSessionInViewHighlightCard } from "./highlightCards/EndpointSes
 import { EndpointSlowdownSourceHighlightCard } from "./highlightCards/EndpointSlowdownSourceHighlightCard";
 import { EndpointSpanNPlusOneHighlightCard } from "./highlightCards/EndpointSpanNPlusOneHighlightCard";
 import { HotSpotHighlightCard } from "./highlightCards/HotSpotHighlightCard";
+import { SpaNPlusOneHighlightCard } from "./highlightCards/SpaNPlusOneHighlightCard";
 import { SpanEndpointBottleneckHighlightCard } from "./highlightCards/SpanEndpointBottleneckHighlightCard";
-import { SpanNPlusOneHighlightCard } from "./highlightCards/SpanNPlusOneHighlightCard";
 import { SpanQueryOptimizationHighlightCard } from "./highlightCards/SpanQueryOptimizationHighlightCard";
 import { SpanScalingHighlightCard } from "./highlightCards/SpanScalingHighlightCard";
 import * as s from "./styles";
@@ -30,8 +30,8 @@ import {
   isEndpointSlowdownSourceHighlight,
   isEndpointSpanNPlusOneHighlight,
   isHotSpotHighlight,
+  isSpaNPlusOneHighlight,
   isSpanEndpointBottleneckHighlight,
-  isSpanNPlusOneHighlight,
   isSpanQueryOptimizationHighlight,
   isSpanScalingHighlight
 } from "./typeGuards";
@@ -75,8 +75,8 @@ const renderHighlightCard = (highlight: HighlightData<GenericMetrics>) => {
     return <SpanEndpointBottleneckHighlightCard data={highlight} />;
   }
 
-  if (isSpanNPlusOneHighlight(highlight)) {
-    return <SpanNPlusOneHighlightCard data={highlight} />;
+  if (isSpaNPlusOneHighlight(highlight)) {
+    return <SpaNPlusOneHighlightCard data={highlight} />;
   }
 
   if (isSpanQueryOptimizationHighlight(highlight)) {

@@ -1,7 +1,7 @@
 import { InsightStatus, InsightType } from "../../../../Insights/types";
-import { HighlightData, SpanNPlusOneMetrics } from "../../types";
+import { HighlightData, SpaNPlusOneMetrics } from "../../types";
 
-export const mockedSpanNPlusOneInsights: SpanNPlusOneMetrics = [
+export const mockedSpaNPlusOneInsights: SpaNPlusOneMetrics = [
   { id: "AffectedEndpoints", value: 50 },
   {
     id: "Repeats",
@@ -18,7 +18,7 @@ export const mockedSpanNPlusOneInsights: SpanNPlusOneMetrics = [
   }
 ];
 
-export const mockedSpanNPlusOneHighlightData: HighlightData<SpanNPlusOneMetrics> =
+export const mockedSpaNPlusOneHighlightData: HighlightData<SpaNPlusOneMetrics> =
   {
     insightType: InsightType.SpanNPlusOne,
     asset: {
@@ -35,37 +35,37 @@ export const mockedSpanNPlusOneHighlightData: HighlightData<SpanNPlusOneMetrics>
         environmentName: "Dev",
         insightStatus: InsightStatus.Active,
         criticality: 0.8,
-        metrics: mockedSpanNPlusOneInsights
+        metrics: mockedSpaNPlusOneInsights
       },
       {
         environmentName: "Staging",
         insightStatus: InsightStatus.Active,
         criticality: 0.8,
-        metrics: mockedSpanNPlusOneInsights
+        metrics: mockedSpaNPlusOneInsights
       },
       {
         environmentName: "Production",
         insightStatus: InsightStatus.Active,
         criticality: 0.8,
-        metrics: mockedSpanNPlusOneInsights
+        metrics: mockedSpaNPlusOneInsights
       },
       {
         environmentName: "Env1",
         insightStatus: InsightStatus.Active,
         criticality: 0.8,
-        metrics: mockedSpanNPlusOneInsights
+        metrics: mockedSpaNPlusOneInsights
       },
       {
         environmentName: "Env2",
         insightStatus: InsightStatus.Active,
         criticality: 0.8,
-        metrics: mockedSpanNPlusOneInsights
+        metrics: mockedSpaNPlusOneInsights
       },
       {
         environmentName: "Env3",
         insightStatus: InsightStatus.Active,
         criticality: 0.8,
-        metrics: mockedSpanNPlusOneInsights
+        metrics: mockedSpaNPlusOneInsights
       }
     ]
   };

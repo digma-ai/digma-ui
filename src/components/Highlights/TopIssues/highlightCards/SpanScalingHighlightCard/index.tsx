@@ -1,6 +1,6 @@
 import { createColumnHelper } from "@tanstack/react-table";
-import { Table } from "../../../Table";
-import { HighlightCard } from "../../HighlightCard";
+import { Table } from "../../../common/Table";
+import { HighlightCard } from "../../common/HighlightCard";
 import { EnvironmentData, SpanScalingMetrics } from "../../types";
 import { addEnvironmentColumns } from "../addEnvironmentColumns";
 import { SpanScalingHighlightCardProps } from "./types";

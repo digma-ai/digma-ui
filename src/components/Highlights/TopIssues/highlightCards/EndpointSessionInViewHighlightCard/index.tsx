@@ -1,8 +1,10 @@
 import { createColumnHelper } from "@tanstack/react-table";
-import { Table } from "../../../Table";
-import { HighlightCard } from "../../HighlightCard";
+import { Table } from "../../../common/Table";
+import { AssetLink } from "../../common/AssetLink";
+import { HighlightCard } from "../../common/HighlightCard";
 import { EndpointSessionInViewMetrics, EnvironmentData } from "../../types";
 import { addEnvironmentColumns } from "../addEnvironmentColumns";
+import { DescriptionContainer } from "../styles";
 import { EndpointSessionInViewHighlightCardProps } from "./types";
 
 export const EndpointSessionInViewHighlightCard = ({
@@ -17,10 +19,16 @@ export const EndpointSessionInViewHighlightCard = ({
     <HighlightCard
       highlight={data}
       content={
-        <Table<EnvironmentData<EndpointSessionInViewMetrics>>
-          columns={columns}
-          data={data.environment}
-        />
+        <>
+          <DescriptionContainer>
+            Query execution was detected during the view rendering
+            <AssetLink asset={data.asset} />
+          </DescriptionContainer>
+          <Table<EnvironmentData<EndpointSessionInViewMetrics>>
+            columns={columns}
+            data={data.environment}
+          />
+        </>
       }
     />
   );
