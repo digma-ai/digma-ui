@@ -1,4 +1,5 @@
 import { isString } from "../../../typeGuards/isString";
+import { formatEnvironmentName } from "../../../utils/formatEnvironmentName";
 import { formatTimeDistance } from "../../../utils/formatTimeDistance";
 import { getDurationString } from "../../../utils/getDurationString";
 import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
@@ -111,6 +112,7 @@ export const TestCard = (props: TestCardProps) => {
   };
 
   const durationString = getDurationString(props.test.duration);
+  const environmentName = formatEnvironmentName(props.test.environment);
 
   return (
     <s.Container>
@@ -123,12 +125,12 @@ export const TestCard = (props: TestCardProps) => {
         </Tooltip>
       </s.Header>
       <s.Content>
-        <Tooltip title={props.test.environment}>
+        <Tooltip title={environmentName}>
           <s.Stat>
             <s.IconContainer>
               <GlobeIcon />
             </s.IconContainer>
-            <s.StatValue>{props.test.environment}</s.StatValue>
+            <s.StatValue>{environmentName}</s.StatValue>
           </s.Stat>
         </Tooltip>
         <Tooltip title={new Date(props.test.runAt).toString()}>

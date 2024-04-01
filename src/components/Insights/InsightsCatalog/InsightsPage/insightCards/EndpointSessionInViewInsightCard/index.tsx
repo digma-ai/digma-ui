@@ -28,7 +28,7 @@ export const EndpointSessionInViewInsightCard = ({
   const [pageItems, page, setPage] = usePagination(
     insight.spans,
     PAGE_SIZE,
-    insight.codeObjectId
+    insight.id
   );
 
   const handleLinkClick = (spanCodeObjectId: string) => {

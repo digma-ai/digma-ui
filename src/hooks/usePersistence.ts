@@ -60,7 +60,7 @@ export const usePersistence = <T>(
         handlePersistedData
       );
     };
-  }, []);
+  }, [key, scope]);
 
   return [value, saveToPersistence];
 };

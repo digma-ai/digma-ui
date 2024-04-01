@@ -78,7 +78,7 @@ export const Assets = () => {
     if (!previousScope || previousScope !== config.scope?.span) {
       setSelectedAssetTypeId(null);
       setSearchInputValue("");
-      setSelectedServices([]);
+      setSelectedServices(undefined);
     }
   }, [config.scope, previousScope]);
 
@@ -143,11 +143,12 @@ export const Assets = () => {
       );
     }
 
-    if (
-      !config.environments?.length ||
-      (!selectedFilters && !selectedServices)
-    ) {
+    if (!config.environments?.length) {
       return <NoDataMessage type={"noDataYet"} />;
+    }
+
+    if (!selectedFilters && !selectedServices) {
+      return <NoDataMessage type={"loading"} />;
     }
 
     if (!selectedAssetTypeId) {

@@ -27,3 +27,9 @@ export const Indicator = styled.div<IndicatorProps>`
       : "";
   }}
 `;
+
+export const Status = styled.span`
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+`;

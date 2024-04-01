@@ -59,13 +59,13 @@ export const EndpointSlowdownSourceInsightCard = ({
           <s.InsightDescription>
             Found spans slowing the endpoint
           </s.InsightDescription>
-          {p50Sources?.length && (
+          {p50Sources && p50Sources.length > 0 && (
             <>
               <Description>Affecting most requests:</Description>
               {renderSourceList(p50Sources)}
             </>
           )}
-          {p95Sources?.length && (
+          {p95Sources && p95Sources.length > 0 && (
             <>
               <Description>Affecting ~5% of requests:</Description>
               {renderSourceList(p95Sources)}

@@ -34,7 +34,7 @@ export const SpanScalingInsightCard = ({
   const [pageItems, page, setPage] = usePagination(
     affectedEndpoints,
     PAGE_SIZE,
-    insight.codeObjectId
+    insight.id
   );
 
   const handleLinkClick = (spanCodeObjectId: string) => {

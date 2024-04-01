@@ -3,8 +3,17 @@ import { SetViewsPayload } from "./types";
 export const mockedViewsData: SetViewsPayload = {
   views: [
     {
-      isDisabled: false,
+      title: "",
+      id: "highlights",
       isSelected: true,
+      isDisabled: false,
+      hasNewData: false,
+      isHidden: false,
+      cardName: "highlights"
+    },
+    {
+      isDisabled: false,
+      isSelected: false,
       hasNewData: false,
       isHidden: false,
       title: "Issues",

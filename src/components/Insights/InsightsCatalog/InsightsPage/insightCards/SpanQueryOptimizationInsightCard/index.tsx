@@ -28,7 +28,7 @@ export const SpanQueryOptimizationInsightCard = ({
   const [pageItems, page, setPage] = usePagination(
     endpoints,
     PAGE_SIZE,
-    insight.codeObjectId
+    insight.id
   );
 
   const handleSpanLinkClick = (spanCodeObjectId?: string) => {

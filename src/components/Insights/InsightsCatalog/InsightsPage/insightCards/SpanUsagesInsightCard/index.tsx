@@ -47,21 +47,21 @@ export const SpanUsagesInsightCard = ({
   const [pageItems, page, setPage] = usePagination(
     insight.flows,
     PAGE_SIZE,
-    insight.codeObjectId
+    insight.id
   );
   const previousPage = usePrevious(page);
-  const previousCodeObjectId = usePrevious(insight.codeObjectId);
+  const previousInsightId = usePrevious(insight.id);
 
   // Keep pageItems in state to avoid table infinite re-rendering
   // More info: https://github.com/TanStack/table/issues/4614
   useEffect(() => {
     if (
-      (previousCodeObjectId && previousCodeObjectId !== insight.codeObjectId) ||
+      (previousInsightId && previousInsightId !== insight.id) ||
       (isNumber(previousPage) && previousPage !== page)
     ) {
       setData({ pageItems });
     }
-  }, [previousCodeObjectId, insight, previousPage, page, pageItems]);
+  }, [previousInsightId, insight, previousPage, page, pageItems]);
 
   const handleServiceLinkClick = (spanCodeObjectId?: string) => {
     spanCodeObjectId && onAssetLinkClick(spanCodeObjectId, insight.type);

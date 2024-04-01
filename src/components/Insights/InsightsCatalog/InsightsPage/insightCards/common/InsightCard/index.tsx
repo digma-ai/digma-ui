@@ -13,8 +13,8 @@ import { Spinner } from "../../../../../../Navigation/CodeButtonMenu/Spinner";
 import { ConfigContext } from "../../../../../../common/App/ConfigContext";
 import { CheckmarkCircleIcon } from "../../../../../../common/icons/12px/CheckmarkCircleIcon";
 import { TraceIcon } from "../../../../../../common/icons/12px/TraceIcon";
+import { DoubleCircleIcon } from "../../../../../../common/icons/16px/DoubleCircleIcon";
 import { HistogramIcon } from "../../../../../../common/icons/16px/HistogramIcon";
-import { LiveIcon } from "../../../../../../common/icons/16px/LiveIcon";
 import { PinIcon } from "../../../../../../common/icons/16px/PinIcon";
 import { RecalculateIcon } from "../../../../../../common/icons/16px/RecalculateIcon";
 import { CrossIcon } from "../../../../../../common/icons/CrossIcon";
@@ -278,7 +278,7 @@ export const InsightCard = (props: InsightCardProps) => {
         tooltip: "Open live view",
         button: (btnProps) => (
           <Button
-            icon={LiveIcon}
+            icon={DoubleCircleIcon}
             label={"Live"}
             onClick={() => props.onGoToLive && props.onGoToLive()}
             {...btnProps}

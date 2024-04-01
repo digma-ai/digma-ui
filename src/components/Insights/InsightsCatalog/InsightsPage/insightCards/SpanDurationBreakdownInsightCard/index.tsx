@@ -76,7 +76,7 @@ export const SpanDurationBreakdownInsightCard = ({
   const [pageItems, page, setPage] = usePagination(
     sortedEntries,
     PAGE_SIZE,
-    insight.codeObjectId
+    insight.id
   );
 
   const handleSpanLinkClick = (spanCodeObjectId: string) => {
