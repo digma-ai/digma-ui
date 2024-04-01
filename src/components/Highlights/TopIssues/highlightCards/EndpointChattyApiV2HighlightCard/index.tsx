@@ -1,5 +1,6 @@
 import { createColumnHelper } from "@tanstack/react-table";
 import { Table } from "../../../common/Table";
+import { TableText } from "../../../common/TableText";
 import { AssetLink } from "../../common/AssetLink";
 import { HighlightCard } from "../../common/HighlightCard";
 import { EndpointChattyApiV2Metrics, EnvironmentData } from "../../types";
@@ -18,7 +19,8 @@ export const EndpointChattyApiV2HighlightCard = ({
       header: "Repeats",
       cell: (info) => {
         const metric = info.getValue();
-        return metric ? metric.value : null;
+        const value = metric ? String(metric.value) : "";
+        return metric ? <TableText title={value}>{value}</TableText> : null;
       }
     })
   ];

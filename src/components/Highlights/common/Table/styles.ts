@@ -7,6 +7,7 @@ import {
 export const Table = styled.table`
   width: 100%;
   table-layout: fixed;
+  border-spacing: 4px;
 `;
 
 export const TableHead = styled.thead`

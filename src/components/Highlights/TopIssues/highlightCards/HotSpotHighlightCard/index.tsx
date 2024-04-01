@@ -1,5 +1,6 @@
 import { createColumnHelper } from "@tanstack/react-table";
 import { Table } from "../../../common/Table";
+import { TableText } from "../../../common/TableText";
 import { HighlightCard } from "../../common/HighlightCard";
 import { EnvironmentData, HotSpotMetrics } from "../../types";
 import { addEnvironmentColumns } from "../addEnvironmentColumns";
@@ -13,7 +14,8 @@ export const HotSpotHighlightCard = ({ data }: HotSpotHighlightCardProps) => {
       header: "Score",
       cell: (info) => {
         const metric = info.getValue();
-        return metric ? metric.value : null;
+        const value = metric ? String(metric.value) : "";
+        return metric ? <TableText title={value}>{value}</TableText> : null;
       }
     })
   ];

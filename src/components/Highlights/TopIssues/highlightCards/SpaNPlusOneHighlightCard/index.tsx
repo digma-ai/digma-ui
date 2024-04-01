@@ -1,8 +1,9 @@
 import { createColumnHelper } from "@tanstack/react-table";
 import { Duration } from "../../../../../globals";
 import { getDurationString } from "../../../../../utils/getDurationString";
-import { Tag } from "../../../../common/v3/Tag";
 import { Table } from "../../../common/Table";
+import { TableTag } from "../../../common/TableTag";
+import { TableText } from "../../../common/TableText";
 import { HighlightCard } from "../../common/HighlightCard";
 import { EnvironmentData, SpaNPlusOneMetrics } from "../../types";
 import { addEnvironmentColumns } from "../addEnvironmentColumns";
@@ -21,7 +22,8 @@ export const SpaNPlusOneHighlightCard = ({
         header: "Affected endpoints",
         cell: (info) => {
           const metric = info.getValue();
-          return metric ? metric.value : null;
+          const value = metric ? String(metric.value) : "";
+          return metric ? <TableText title={value}>{value}</TableText> : null;
         }
       }
     ),
@@ -29,7 +31,8 @@ export const SpaNPlusOneHighlightCard = ({
       header: "Max Repeats",
       cell: (info) => {
         const metric = info.getValue();
-        return metric ? metric.value : null;
+        const value = metric ? String(metric.value) : "";
+        return metric ? <TableText title={value}>{value}</TableText> : null;
       }
     }),
     columnHelper.accessor(
@@ -38,21 +41,17 @@ export const SpaNPlusOneHighlightCard = ({
         header: "Max Requests",
         cell: (info) => {
           const metric = info.getValue();
-          return metric ? `${metric.value as number}%` : null;
+          const value = metric ? `${String(metric.value)}%` : "";
+          return metric ? <TableText title={value}>{value}</TableText> : null;
         }
       }
     ),
     columnHelper.accessor((x) => x.metrics.find((x) => x.id === "Duration"), {
       header: "Max Duration",
-      meta: {
-        width: "20%",
-        minWidth: 60
-      },
       cell: (info) => {
         const metric = info.getValue();
-        return metric ? (
-          <Tag content={getDurationString(metric.value as Duration)} />
-        ) : null;
+        const value = metric ? getDurationString(metric.value as Duration) : "";
+        return metric ? <TableTag title={value} content={value} /> : null;
       }
     })
   ];

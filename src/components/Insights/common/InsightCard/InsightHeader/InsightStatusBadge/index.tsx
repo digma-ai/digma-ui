@@ -19,7 +19,7 @@ export const InsightStatusBadgeComponent = (
   return (
     <s.Container className={props.className} ref={ref}>
       <s.Indicator $status={props.status} />
-      {statusInfo.label}
+      <s.Status>{statusInfo.label}</s.Status>
     </s.Container>
   );
 };

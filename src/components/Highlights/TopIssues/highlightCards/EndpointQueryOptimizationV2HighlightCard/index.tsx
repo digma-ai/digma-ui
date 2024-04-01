@@ -1,7 +1,7 @@
 import { createColumnHelper } from "@tanstack/react-table";
 import { getDurationString } from "../../../../../utils/getDurationString";
-import { Tag } from "../../../../common/v3/Tag";
 import { Table } from "../../../common/Table";
+import { TableTag } from "../../../common/TableTag";
 import { AssetLink } from "../../common/AssetLink";
 import { HighlightCard } from "../../common/HighlightCard";
 import {
@@ -23,9 +23,8 @@ export const EndpointQueryOptimizationV2HighlightCard = ({
       header: "Duration",
       cell: (info) => {
         const metric = info.getValue();
-        return metric ? (
-          <Tag content={getDurationString(metric.value)} />
-        ) : null;
+        const value = metric ? getDurationString(metric.value) : "";
+        return metric ? <TableTag title={value} content={value} /> : null;
       }
     })
   ];

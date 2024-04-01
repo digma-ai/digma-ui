@@ -1,8 +1,9 @@
 import { createColumnHelper } from "@tanstack/react-table";
 import { Duration } from "../../../../../globals";
 import { getDurationString } from "../../../../../utils/getDurationString";
-import { Tag } from "../../../../common/v3/Tag";
 import { Table } from "../../../common/Table";
+import { TableTag } from "../../../common/TableTag";
+import { TableText } from "../../../common/TableText";
 import { AssetLink } from "../../common/AssetLink";
 import { HighlightCard } from "../../common/HighlightCard";
 import { EndpointSlowdownSourceMetrics, EnvironmentData } from "../../types";
@@ -23,9 +24,10 @@ export const EndpointSlowdownSourceHighlightCard = ({
         header: "Slower by",
         cell: (info) => {
           const metric = info.getValue();
-          return metric ? (
-            <Tag content={getDurationString(metric.value as Duration)} />
-          ) : null;
+          const value = metric
+            ? getDurationString(metric.value as Duration)
+            : "";
+          return metric ? <TableTag title={value} content={value} /> : null;
         }
       }
     ),
@@ -35,7 +37,8 @@ export const EndpointSlowdownSourceHighlightCard = ({
         header: "% Slower",
         cell: (info) => {
           const metric = info.getValue();
-          return metric ? `${metric.value as number}%` : null;
+          const value = metric ? `${String(metric.value)}%` : "";
+          return metric ? <TableText title={value}>{value}</TableText> : null;
         }
       }
     )
