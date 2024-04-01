@@ -2,7 +2,7 @@ import React from "react";
 import { useIconProps } from "../hooks";
 import { IconProps } from "../types";
 
-const LiveIconComponent = (props: IconProps) => {
+const CrossCircleIconComponent = (props: IconProps) => {
   const { size, color } = useIconProps(props);
 
   return (
@@ -17,13 +17,12 @@ const LiveIconComponent = (props: IconProps) => {
         stroke={color}
         strokeLinecap="round"
         strokeLinejoin="round"
-        clipPath="url(#live-clip-1)"
+        clipPath="url(#cross-circle-clip-1)"
       >
-        <path d="M8 14A6 6 0 1 0 8 2a6 6 0 0 0 0 12Z" />
-        <path d="M8 11.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z" />
+        <path d="m10 6-4 4m0-4 4 4m-2 4A6 6 0 1 0 8 2a6 6 0 0 0 0 12Z" />
       </g>
       <defs>
-        <clipPath id="live-clip-1">
+        <clipPath id="cross-circle-clip-1">
           <path fill="#fff" d="M0 0h16v16H0z" />
         </clipPath>
       </defs>
@@ -31,4 +30,4 @@ const LiveIconComponent = (props: IconProps) => {
   );
 };
 
-export const LiveIcon = React.memo(LiveIconComponent);
+export const CrossCircleIcon = React.memo(CrossCircleIconComponent);

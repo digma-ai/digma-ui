@@ -1,7 +1,8 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { footnoteRegularTypography } from "../../App/typographies";
+import { LinkElementProps } from "./types";
 
-export const Link = styled.a`
+export const Link = styled.a<LinkElementProps>`
   ${footnoteRegularTypography}
 
   cursor: pointer;
@@ -38,15 +39,19 @@ export const Link = styled.a`
     }};
   }
 
-  &:disabled {
-    color: ${({ theme }) => {
-      switch (theme.mode) {
-        case "light":
-          return "#b9c0d4";
-        case "dark":
-        case "dark-jetbrains":
-          return "#49494d";
-      }
-    }};
-  }
+  ${({ $disabled }) =>
+    $disabled
+      ? css`
+          color: ${({ theme }) => {
+            switch (theme.mode) {
+              case "light":
+                return "#b9c0d4";
+              case "dark":
+              case "dark-jetbrains":
+                return "#49494d";
+            }
+          }};
+          pointer-events: none;
+        `
+      : ""}
 `;

@@ -39,22 +39,21 @@ export const TopUsageInsight = (props: TopUsageInsightProps) => {
   const [pageItems, page, setPage] = usePagination(
     props.insight.flows,
     PAGE_SIZE,
-    props.insight.codeObjectId
+    props.insight.id
   );
   const previousPage = usePrevious(page);
-  const previousCodeObjectId = usePrevious(props.insight.codeObjectId);
+  const previousInsightId = usePrevious(props.insight.id);
 
   // Keep pageItems in state to avoid table infinite re-rendering
   // More info: https://github.com/TanStack/table/issues/4614
   useEffect(() => {
     if (
-      (previousCodeObjectId &&
-        previousCodeObjectId !== props.insight.codeObjectId) ||
+      (previousInsightId && previousInsightId !== props.insight.id) ||
       (isNumber(previousPage) && previousPage !== page)
     ) {
       setData({ pageItems });
     }
-  }, [previousCodeObjectId, props.insight, previousPage, page, pageItems]);
+  }, [previousInsightId, props.insight, previousPage, page, pageItems]);
 
   const handleServiceLinkClick = (spanCodeObjectId?: string) => {
     spanCodeObjectId &&

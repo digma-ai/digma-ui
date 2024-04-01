@@ -23,7 +23,7 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
   const [pageItems, page, setPage] = usePagination(
     affectedEndpoints,
     PAGE_SIZE,
-    props.insight.codeObjectId
+    props.insight.id
   );
 
   const handleLinkClick = (spanCodeObjectId: string) => {

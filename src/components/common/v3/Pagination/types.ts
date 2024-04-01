@@ -5,4 +5,5 @@ export interface PaginationProps {
   pageSize: number;
   extendedNavigation?: boolean;
   withDescription?: boolean;
+  trackingEventPrefix?: string;
 }
