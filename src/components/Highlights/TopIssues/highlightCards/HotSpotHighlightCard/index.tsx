@@ -26,7 +26,7 @@ export const HotSpotHighlightCard = ({ data }: HotSpotHighlightCardProps) => {
       content={
         <Table<EnvironmentData<HotSpotMetrics>>
           columns={columns}
-          data={data.environment}
+          data={data.environments}
         />
       }
     />

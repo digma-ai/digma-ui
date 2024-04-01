@@ -39,11 +39,11 @@ export const EndpointQueryOptimizationV2HighlightCard = ({
         <>
           <DescriptionContainer>
             Query is slow compared to other SELECT statements
-            <AssetLink asset={data.asset} />
+            {data.asset && <AssetLink asset={data.asset} />}
           </DescriptionContainer>
           <Table<EnvironmentData<EndpointQueryOptimizationV2Metrics>>
             columns={columns}
-            data={data.environment}
+            data={data.environments}
           />
         </>
       }

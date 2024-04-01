@@ -30,7 +30,7 @@ export const mockedSpanEndpointBottleneckHighlightData: HighlightData<SpanEndpoi
       kind: "kind",
       codeObjectId: null
     },
-    environment: [
+    environments: [
       {
         environmentName: "Dev",
         insightStatus: InsightStatus.Active,

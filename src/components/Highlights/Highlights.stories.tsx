@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 
 import { Highlights } from ".";
-import { actions } from "../Main/actions";
+import { actions as mainActions } from "../Main/actions";
 import { mockedTopIssuesData } from "./TopIssues/mockData";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
@@ -25,7 +25,7 @@ export const Default: Story = {
       window.setTimeout(() => {
         window.postMessage({
           type: "digma",
-          action: actions.SET_HIGHLIGHTS_TOP_ISSUES_DATA,
+          action: mainActions.SET_HIGHLIGHTS_TOP_ISSUES_DATA,
           payload: mockedTopIssuesData
         });
       });

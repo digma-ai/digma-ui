@@ -20,7 +20,7 @@ export const mockedSpanScalingHighlightData: HighlightData<SpanScalingMetrics> =
       kind: "kind",
       codeObjectId: null
     },
-    environment: [
+    environments: [
       {
         environmentName: "Dev",
         insightStatus: InsightStatus.Active,

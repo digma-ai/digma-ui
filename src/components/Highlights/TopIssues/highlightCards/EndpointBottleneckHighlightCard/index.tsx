@@ -58,13 +58,15 @@ export const EndpointBottleneckHighlightCard = ({
       highlight={data}
       content={
         <>
-          <DescriptionContainer>
-            Asset
-            <AssetLink asset={data.asset} />
-          </DescriptionContainer>
+          {data.asset && (
+            <DescriptionContainer>
+              Asset
+              <AssetLink asset={data.asset} />
+            </DescriptionContainer>
+          )}
           <Table<EnvironmentData<EndpointBottleneckMetrics>>
             columns={columns}
-            data={data.environment}
+            data={data.environments}
           />
         </>
       }

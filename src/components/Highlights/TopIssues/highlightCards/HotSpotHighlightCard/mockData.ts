@@ -19,7 +19,7 @@ export const mockedHotSpotHighlightData: HighlightData<HotSpotMetrics> = {
     kind: "kind",
     codeObjectId: null
   },
-  environment: [
+  environments: [
     {
       environmentName: "Dev",
       insightStatus: InsightStatus.Active,

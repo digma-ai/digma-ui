@@ -36,7 +36,7 @@ export const SpanScalingHighlightCard = ({
       content={
         <Table<EnvironmentData<SpanScalingMetrics>>
           columns={columns}
-          data={data.environment}
+          data={data.environments}
         />
       }
     />

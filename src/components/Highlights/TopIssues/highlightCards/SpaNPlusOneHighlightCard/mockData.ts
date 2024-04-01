@@ -30,7 +30,7 @@ export const mockedSpaNPlusOneHighlightData: HighlightData<SpaNPlusOneMetrics> =
       kind: "kind",
       codeObjectId: null
     },
-    environment: [
+    environments: [
       {
         environmentName: "Dev",
         insightStatus: InsightStatus.Active,

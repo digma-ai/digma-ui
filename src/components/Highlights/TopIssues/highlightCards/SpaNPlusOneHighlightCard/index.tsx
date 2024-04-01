@@ -65,7 +65,7 @@ export const SpaNPlusOneHighlightCard = ({
       content={
         <Table<EnvironmentData<SpaNPlusOneMetrics>>
           columns={columns}
-          data={data.environment}
+          data={data.environments}
         />
       }
     />

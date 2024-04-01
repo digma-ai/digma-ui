@@ -66,11 +66,11 @@ export const SpanQueryOptimizationHighlightCard = ({
         <>
           <DescriptionContainer>
             Query is slow compared to other SELECT statements
-            <AssetLink asset={data.asset} />
+            {data.asset && <AssetLink asset={data.asset} />}
           </DescriptionContainer>
           <Table<EnvironmentData<SpanQueryOptimizationMetrics>>
             columns={columns}
-            data={data.environment}
+            data={data.environments}
           />
         </>
       }

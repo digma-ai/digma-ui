@@ -50,11 +50,11 @@ export const EndpointSlowdownSourceHighlightCard = ({
         <>
           <DescriptionContainer>
             Found spans slowing the endpoint
-            <AssetLink asset={data.asset} />
+            {data.asset && <AssetLink asset={data.asset} />}
           </DescriptionContainer>
           <Table<EnvironmentData<EndpointSlowdownSourceMetrics>>
             columns={columns}
-            data={data.environment}
+            data={data.environments}
           />
         </>
       }

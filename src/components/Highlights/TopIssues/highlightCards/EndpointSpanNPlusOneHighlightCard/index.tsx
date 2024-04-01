@@ -60,13 +60,15 @@ export const EndpointSpanNPlusOneHighlightCard = ({
       highlight={data}
       content={
         <>
-          <DescriptionContainer>
-            Asset
-            <AssetLink asset={data.asset} />
-          </DescriptionContainer>
+          {data.asset && (
+            <DescriptionContainer>
+              Asset
+              <AssetLink asset={data.asset} />
+            </DescriptionContainer>
+          )}
           <Table<EnvironmentData<EndpointSpanNPlusOneMetrics>>
             columns={columns}
-            data={data.environment}
+            data={data.environments}
           />
         </>
       }

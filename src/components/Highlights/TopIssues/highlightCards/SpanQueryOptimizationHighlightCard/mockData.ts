@@ -38,7 +38,7 @@ export const mockedSpanQueryOptimizationHighlightData: HighlightData<SpanQueryOp
       kind: "kind",
       codeObjectId: null
     },
-    environment: [
+    environments: [
       {
         environmentName: "Dev",
         insightStatus: InsightStatus.Active,

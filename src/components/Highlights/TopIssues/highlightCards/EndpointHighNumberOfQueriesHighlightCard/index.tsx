@@ -66,13 +66,15 @@ export const EndpointHighNumberOfQueriesHighlightCard = ({
       highlight={data}
       content={
         <>
-          <DescriptionContainer>
-            Asset
-            <AssetLink asset={data.asset} />
-          </DescriptionContainer>
+          {data.asset && (
+            <DescriptionContainer>
+              Asset
+              <AssetLink asset={data.asset} />
+            </DescriptionContainer>
+          )}
           <Table<EnvironmentData<EndpointHighNumberOfQueriesMetrics>>
             columns={columns}
-            data={data.environment}
+            data={data.environments}
           />
         </>
       }

@@ -32,11 +32,11 @@ export const EndpointChattyApiV2HighlightCard = ({
         <>
           <DescriptionContainer>
             Excessive API calls to specific endpoint found
-            <AssetLink asset={data.asset} />
+            {data.asset && <AssetLink asset={data.asset} />}
           </DescriptionContainer>
           <Table<EnvironmentData<EndpointChattyApiV2Metrics>>
             columns={columns}
-            data={data.environment}
+            data={data.environments}
           />
         </>
       }

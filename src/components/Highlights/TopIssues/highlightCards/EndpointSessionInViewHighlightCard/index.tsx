@@ -22,11 +22,11 @@ export const EndpointSessionInViewHighlightCard = ({
         <>
           <DescriptionContainer>
             Query execution was detected during the view rendering
-            <AssetLink asset={data.asset} />
+            {data.asset && <AssetLink asset={data.asset} />}
           </DescriptionContainer>
           <Table<EnvironmentData<EndpointSessionInViewMetrics>>
             columns={columns}
-            data={data.environment}
+            data={data.environments}
           />
         </>
       }

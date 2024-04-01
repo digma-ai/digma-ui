@@ -20,7 +20,7 @@ export const mockedEndpointChattyApiV2HighlightData: HighlightData<EndpointChatt
       kind: "kind",
       codeObjectId: null
     },
-    environment: [
+    environments: [
       {
         environmentName: "Dev",
         insightStatus: InsightStatus.Active,

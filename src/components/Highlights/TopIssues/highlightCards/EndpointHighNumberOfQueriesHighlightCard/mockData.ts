@@ -33,7 +33,7 @@ export const mockedEndpointHighNumberOfQueriesHighlightData: HighlightData<Endpo
       kind: "kind",
       codeObjectId: null
     },
-    environment: [
+    environments: [
       {
         environmentName: "Dev",
         insightStatus: InsightStatus.Active,

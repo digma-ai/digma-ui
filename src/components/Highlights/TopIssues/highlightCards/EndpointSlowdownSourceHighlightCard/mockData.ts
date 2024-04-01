@@ -29,7 +29,7 @@ export const mockedEndpointSlowdownSourceHighlightData: HighlightData<EndpointSl
       kind: "kind",
       codeObjectId: null
     },
-    environment: [
+    environments: [
       {
         environmentName: "Dev",
         insightStatus: InsightStatus.Active,

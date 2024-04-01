@@ -65,7 +65,7 @@ export const SpanEndpointBottleneckHighlightCard = ({
       content={
         <Table<EnvironmentData<SpanEndpointBottleneckMetrics>>
           columns={columns}
-          data={data.environment}
+          data={data.environments}
         />
       }
     />

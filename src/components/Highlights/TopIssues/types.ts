@@ -11,8 +11,8 @@ export interface EnvironmentData<T> {
 
 export interface HighlightData<T> {
   insightType: InsightType;
-  asset: SpanInfo;
-  environment: EnvironmentData<T>[];
+  asset: SpanInfo | null;
+  environments: EnvironmentData<T>[];
 }
 
 export type EndpointBottleneckMetrics = [
