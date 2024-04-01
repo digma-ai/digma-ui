@@ -201,6 +201,8 @@ export const CreateEnvironmentWizard = ({
         }))}
       />
       <s.StepContainer>
+        <s.StepBackground />
+        <s.RecentActivityContainerBackgroundGradient />
         {!completed ? (
           <>
             <s.Step

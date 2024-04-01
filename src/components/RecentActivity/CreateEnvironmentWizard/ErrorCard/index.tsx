@@ -1,10 +1,14 @@
 import { useEffect, useRef, useState } from "react";
+import { CSSTransition } from "react-transition-group";
 import { CrossIcon } from "../../../common/icons/12px/CrossIcon";
 import { ErrorIcon } from "../../../common/icons/16px/ErrorIcon";
 import * as s from "./styles";
 import { ErrorCardProps } from "./types";
 
 const HIDE_INTERVAL = 4000;
+
+const TRANSITION_CLASS_NAME = "error-container";
+const DEFAULT_TRANSITION_DURATION = 500; // in milliseconds
 
 export const ErrorCard = ({ title, description }: ErrorCardProps) => {
   const [isVisible, setIsVisible] = useState(true);
@@ -21,26 +25,34 @@ export const ErrorCard = ({ title, description }: ErrorCardProps) => {
   }, []);
 
   return (
-    <s.Container
-      $isVisible={isVisible}
-      onMouseEnter={() => {
-        window.clearTimeout(hideTimerId.current);
-      }}
-      onMouseLeave={() => {
-        startTimer();
-      }}
+    <CSSTransition
+      in={isVisible}
+      timeout={DEFAULT_TRANSITION_DURATION}
+      classNames={TRANSITION_CLASS_NAME}
+      unmountOnExit={true}
     >
-      <ErrorIcon size={16} color={"#fff"} />
-      <s.ContentContainer>
-        <s.Title>{title}</s.Title>
-        <s.Description>{description}</s.Description>
-      </s.ContentContainer>
+      <s.Container
+        $transitionClassName={TRANSITION_CLASS_NAME}
+        $transitionDuration={DEFAULT_TRANSITION_DURATION}
+        onMouseEnter={() => {
+          window.clearTimeout(hideTimerId.current);
+        }}
+        onMouseLeave={() => {
+          startTimer();
+        }}
+      >
+        <ErrorIcon size={16} color={"#fff"} />
+        <s.ContentContainer>
+          <s.Title>{title}</s.Title>
+          <s.Description>{description}</s.Description>
+        </s.ContentContainer>
 
-      <s.CrossButton
-        buttonType="tertiary"
-        icon={() => <CrossIcon />}
-        onClick={() => setIsVisible(false)}
-      />
-    </s.Container>
+        <s.CrossButton
+          buttonType="tertiary"
+          icon={() => <CrossIcon />}
+          onClick={() => setIsVisible(false)}
+        />
+      </s.Container>
+    </CSSTransition>
   );
 };

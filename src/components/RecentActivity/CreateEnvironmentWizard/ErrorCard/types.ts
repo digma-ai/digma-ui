@@ -4,5 +4,6 @@ export interface ErrorCardProps {
 }
 
 export interface ContainerProps {
-  $isVisible: boolean;
+  $transitionClassName: string;
+  $transitionDuration: number;
 }

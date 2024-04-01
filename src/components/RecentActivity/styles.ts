@@ -38,30 +38,6 @@ export const RecentActivityContainer = styled.div`
   box-sizing: border-box;
 `;
 
-// export const RecentActivityContainerBackground = styled.div`
-//   position: absolute;
-//   inset: 0;
-//   overflow: hidden;
-// `;
-
-// export const RecentActivityContainerBackgroundGradient = styled.div`
-//   position: absolute;
-//   left: 0;
-//   right: 0;
-//   margin: auto;
-//   top: 16.8%;
-//   height: 413%;
-//   width: 80.4%;
-//   border-radius: 413px;
-//   opacity: 0.7;
-//   background: radial-gradient(
-//     50% 50% at 50% 50%,
-//     rgb(79 93 163 / 60%) 0%,
-//     rgb(79 93 163 / 0%) 100%
-//   );
-//   filter: blur(5px);
-// `;
-
 export const RecentActivityHeader = styled.div`
   box-sizing: border-box;
   z-index: 1;
