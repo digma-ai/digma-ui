@@ -29,6 +29,20 @@ export const Default: Story = {
           payload: mockedTopIssuesData
         });
       });
-    }, 0);
+    }, 1000);
+  }
+};
+
+export const Empty: Story = {
+  play: () => {
+    setTimeout(() => {
+      window.setTimeout(() => {
+        window.postMessage({
+          type: "digma",
+          action: mainActions.SET_HIGHLIGHTS_TOP_ISSUES_DATA,
+          payload: { topInsights: [] }
+        });
+      });
+    }, 1000);
   }
 };

@@ -7,6 +7,7 @@ import { getFeatureFlagValue } from "../../featureFlags";
 import { platform } from "../../platform";
 import { isString } from "../../typeGuards/isString";
 import { FeatureFlag } from "../../types";
+import { formatEnvironmentName } from "../../utils/formatEnvironmentName";
 import { openURLInDefaultBrowser } from "../../utils/openURLInDefaultBrowser";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { getThemeKind } from "../common/App/styles";
@@ -21,18 +22,6 @@ import { ClientSpansPerformanceImpact } from "./widgets/ClientSpansPerformanceIm
 import { SlowQueries } from "./widgets/SlowQueries";
 
 const DIGMA_UI_DEFAULT_PORT = 5280;
-
-const formatEnvironmentName = (environment: string) => {
-  const suffixes = ["LOCAL", "LOCAL-TESTS"];
-
-  for (const suffix of suffixes) {
-    if (environment.endsWith(`[${suffix}]`)) {
-      return suffix;
-    }
-  }
-
-  return environment;
-};
 
 const environment = isString(window.dashboardEnvironment)
   ? window.dashboardEnvironment

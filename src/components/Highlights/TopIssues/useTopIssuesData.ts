@@ -19,11 +19,13 @@ export const useTopIssuesData = () => {
       action: mainActions.GET_HIGHLIGHTS_TOP_ISSUES_DATA,
       payload: {
         query: {
-          scopedCodeObjectId: config.scope?.span?.spanCodeObjectId || null
+          scopedCodeObjectId: config.scope?.span?.spanCodeObjectId || null,
+          environments:
+            config.environments?.map((env) => env.originalName) || []
         }
       }
     });
-  }, [config.scope?.span?.spanCodeObjectId]);
+  }, [config.scope?.span?.spanCodeObjectId, config.environments]);
 
   const previousGetData = usePrevious(getData);
 
