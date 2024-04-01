@@ -19,3 +19,13 @@ export interface EnvironmentInstructionsPanelContent {
     content: JSX.Element;
   };
 }
+
+export interface AddToConfigResult {
+  environment: string;
+  result: AddToRunConfigState | null;
+}
+
+export enum AddToRunConfigState {
+  success = "success",
+  failure = "failure"
+}

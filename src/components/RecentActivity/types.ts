@@ -51,7 +51,6 @@ export interface SlimInsight {
 
 export interface ActivityEntry {
   environment: string;
-  environmentId: string;
   traceFlowDisplayName: string;
   firstEntrySpan: EntrySpan;
   lastEntrySpan: EntrySpan | null;
@@ -65,7 +64,6 @@ export interface Environment {
   name: string;
   id: string;
   isPending: boolean;
-  additionToConfigResult: "success" | "failure" | null;
   type: EnvironmentType | null;
   token: string | null;
   serverApiUrl: string | null;

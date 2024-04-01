@@ -26,7 +26,6 @@ const data: RecentActivityData = {
       name: "ENV_RENDER",
       id: "ENV_RENDER",
       isPending: false,
-      additionToConfigResult: null,
       type: "Public",
       token: null,
       serverApiUrl: null,
@@ -36,7 +35,6 @@ const data: RecentActivityData = {
       name: "ENV_RENDER",
       id: "ENV_RENDER1",
       isPending: false,
-      additionToConfigResult: null,
       type: "Public",
       token: null,
       serverApiUrl: null,
@@ -46,7 +44,6 @@ const data: RecentActivityData = {
       name: "UNSET_ENV",
       id: "UNSET_ENV",
       isPending: false,
-      additionToConfigResult: null,
       type: "Public",
       token: null,
       serverApiUrl: null,
@@ -56,7 +53,6 @@ const data: RecentActivityData = {
       name: "PENDING_NO_TYPE",
       id: "PENDING_NO_TYPE",
       isPending: true,
-      additionToConfigResult: null,
       type: null,
       token: null,
       serverApiUrl: null,
@@ -66,7 +62,6 @@ const data: RecentActivityData = {
       name: "PENDING_LOCAL",
       id: "PENDING_LOCAL",
       isPending: true,
-      additionToConfigResult: null,
       type: "Private",
       token: null,
       serverApiUrl: null,
@@ -76,7 +71,6 @@ const data: RecentActivityData = {
       name: "PENDING_SHARED",
       id: "PENDING_SHARED",
       isPending: true,
-      additionToConfigResult: null,
       type: "Public",
       token: null,
       serverApiUrl: null,
@@ -86,7 +80,6 @@ const data: RecentActivityData = {
       name: "PENDING_SHARED_LOCALHOST",
       id: "PENDING_SHARED_LOCALHOST",
       isPending: true,
-      additionToConfigResult: null,
       type: "Public",
       token: null,
       serverApiUrl: "https://localhost:5051",
@@ -96,7 +89,6 @@ const data: RecentActivityData = {
       name: "PENDING_SHARED_CUSTOM_DOMAIN",
       id: "PENDING_SHARED_CUSTOM_DOMAIN",
       isPending: true,
-      additionToConfigResult: null,
       type: "Public",
       token: "token_string",
       serverApiUrl: "https://example.com",
@@ -106,7 +98,6 @@ const data: RecentActivityData = {
       name: "VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-LONG-NAME",
       id: "VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-LONG-NAME",
       isPending: false,
-      additionToConfigResult: null,
       type: "Private",
       token: null,
       serverApiUrl: null,
@@ -115,8 +106,7 @@ const data: RecentActivityData = {
   ],
   entries: [
     {
-      environment: "ENV_RENDER",
-      environmentId: "ENV_RENDER#ID#1",
+      environment: "ENV_RENDER#ID#1",
       traceFlowDisplayName: "PetClinicWithAgent:HTTP GET /webjars/**",
       firstEntrySpan: {
         displayText: "PetClinicWithAgent:HTTP GET /webjars/**",
@@ -144,8 +134,7 @@ const data: RecentActivityData = {
       slimAggregatedInsights: []
     },
     {
-      environment: "ENV_RENDER",
-      environmentId: "ENV_RENDER#ID#1",
+      environment: "ENV_RENDER#ID#1",
       traceFlowDisplayName: "PetClinicWithAgent:HTTP GET /webjars/**",
       firstEntrySpan: {
         displayText: "PetClinicWithAgent:HTTP GET /webjars/**",
@@ -166,8 +155,7 @@ const data: RecentActivityData = {
       slimAggregatedInsights: []
     },
     {
-      environment: "ENV_RENDER",
-      environmentId: "ENV_RENDER#ID#1",
+      environment: "ENV_RENDER#ID#1",
       traceFlowDisplayName: "PetClinicWithAgent:HTTP GET /owners/{ownerId}",
       firstEntrySpan: {
         displayText: "PetClinicWithAgent:HTTP GET /owners/{ownerId}",
@@ -198,8 +186,7 @@ const data: RecentActivityData = {
       ]
     },
     {
-      environment: "ENV_RENDER",
-      environmentId: "ENV_RENDER#ID#1",
+      environment: "ENV_RENDER#ID#1",
       traceFlowDisplayName: "PetClinicWithAgent:HTTP GET /owners",
       firstEntrySpan: {
         displayText: "PetClinicWithAgent:HTTP GET /owners",
@@ -238,8 +225,7 @@ const data: RecentActivityData = {
       ]
     },
     {
-      environment: "ENV_RENDER",
-      environmentId: "ENV_RENDER#ID#1",
+      environment: "ENV_RENDER#ID#1",
       traceFlowDisplayName: "PetClinicWithAgent:HTTP GET /owners/find",
       firstEntrySpan: {
         displayText: "PetClinicWithAgent:HTTP GET /owners/find",
@@ -261,8 +247,7 @@ const data: RecentActivityData = {
       slimAggregatedInsights: []
     },
     {
-      environment: "ENV_RENDER",
-      environmentId: "ENV_RENDER#ID#1",
+      environment: "ENV_RENDER#ID#1",
       traceFlowDisplayName: "PetClinicWithAgent:HTTP GET /",
       firstEntrySpan: {
         displayText: "PetClinicWithAgent:HTTP GET /",
@@ -283,8 +268,7 @@ const data: RecentActivityData = {
       slimAggregatedInsights: []
     },
     {
-      environment: "ENV_RENDER",
-      environmentId: "ENV_RENDER#ID#1",
+      environment: "ENV_RENDER#ID#1",
       traceFlowDisplayName: "PetClinicWithAgent:HTTP GET /vets.html",
       firstEntrySpan: {
         displayText: "PetClinicWithAgent:HTTP GET /vets.html",
@@ -323,8 +307,7 @@ const data: RecentActivityData = {
       ]
     },
     {
-      environment: "ENV_RENDER",
-      environmentId: "ENV_RENDER#ID#1",
+      environment: "ENV_RENDER#ID#1",
       traceFlowDisplayName:
         "PetClinicWithAgent:HTTP POST /owners/{ownerId}/pets/new",
       firstEntrySpan: {
@@ -356,8 +339,7 @@ const data: RecentActivityData = {
       ]
     },
     {
-      environment: "ENV_RENDER",
-      environmentId: "ENV_RENDER#ID#1",
+      environment: "ENV_RENDER#ID#1",
       traceFlowDisplayName:
         "PetClinicWithAgent:HTTP GET /owners/{ownerId}/pets/new",
       firstEntrySpan: {
@@ -380,8 +362,7 @@ const data: RecentActivityData = {
       slimAggregatedInsights: []
     },
     {
-      environment: "ENV_RENDER",
-      environmentId: "ENV_RENDER#ID#1",
+      environment: "ENV_RENDER#ID#1",
       traceFlowDisplayName:
         "PetClinicWithAgent:HTTP POST /owners/{ownerId}/edit",
       firstEntrySpan: {
@@ -421,8 +402,7 @@ const data: RecentActivityData = {
       ]
     },
     {
-      environment: "ENV_RENDER",
-      environmentId: "ENV_RENDER#ID#1",
+      environment: "ENV_RENDER#ID#1",
       traceFlowDisplayName:
         "PetClinicWithAgent:HTTP GET /owners/{ownerId}/edit",
       firstEntrySpan: {
@@ -445,8 +425,7 @@ const data: RecentActivityData = {
       slimAggregatedInsights: []
     },
     {
-      environment: "UNSET_ENV",
-      environmentId: "UNSET_ENV#ID#1",
+      environment: "UNSET_ENV#ID#1",
       traceFlowDisplayName: "my-first-mn-app:HTTP GET /whiskey/get/{name}",
       firstEntrySpan: {
         displayText: "na:na",
@@ -466,8 +445,7 @@ const data: RecentActivityData = {
       slimAggregatedInsights: []
     },
     {
-      environment: "UNSET_ENV",
-      environmentId: "UNSET_ENV#ID#1",
+      environment: "UNSET_ENV#ID#1",
       traceFlowDisplayName: "my-first-mn-app:HTTP GET /book/get/{id}",
       firstEntrySpan: {
         displayText: "na:na",
@@ -487,8 +465,7 @@ const data: RecentActivityData = {
       slimAggregatedInsights: []
     },
     {
-      environment: "UNSET_ENV",
-      environmentId: "UNSET_ENV#ID#1",
+      environment: "UNSET_ENV#ID#1",
       traceFlowDisplayName: "my-first-mn-app:HTTP GET /book/id/{id}",
       firstEntrySpan: {
         displayText: "na:na",
@@ -508,8 +485,7 @@ const data: RecentActivityData = {
       slimAggregatedInsights: []
     },
     {
-      environment: "UNSET_ENV",
-      environmentId: "UNSET_ENV#ID#1",
+      environment: "UNSET_ENV#ID#1",
       traceFlowDisplayName: "my-first-mn-app:HTTP GET GET - /",
       firstEntrySpan: {
         displayText: "na:na",
@@ -529,8 +505,7 @@ const data: RecentActivityData = {
       slimAggregatedInsights: []
     },
     {
-      environment: "UNSET_ENV",
-      environmentId: "UNSET_ENV#ID#1",
+      environment: "UNSET_ENV#ID#1",
       traceFlowDisplayName: "my-first-mn-app:HTTP GET /users/get/{username}",
       firstEntrySpan: {
         displayText: "na:na",
@@ -550,8 +525,7 @@ const data: RecentActivityData = {
       slimAggregatedInsights: []
     },
     {
-      environment: "UNSET_ENV",
-      environmentId: "UNSET_ENV#ID#1",
+      environment: "UNSET_ENV#ID#1",
       traceFlowDisplayName: "my-first-mn-app:HTTP GET /book",
       firstEntrySpan: {
         displayText: "na:na",
@@ -571,8 +545,7 @@ const data: RecentActivityData = {
       slimAggregatedInsights: []
     },
     {
-      environment: "UNSET_ENV",
-      environmentId: "UNSET_ENV#ID#1",
+      environment: "UNSET_ENV#ID#1",
       traceFlowDisplayName:
         "PetClinicWithAgent:HTTP GET /SampleInsights/HighUsage",
       firstEntrySpan: {
@@ -593,8 +566,7 @@ const data: RecentActivityData = {
       slimAggregatedInsights: []
     },
     {
-      environment: "UNSET_ENV",
-      environmentId: "UNSET_ENV#ID#1",
+      environment: "UNSET_ENV#ID#1",
       traceFlowDisplayName:
         "PetClinicWithAgent:HTTP GET /SampleInsights/ErrorHotspot",
       firstEntrySpan: {
@@ -615,8 +587,7 @@ const data: RecentActivityData = {
       slimAggregatedInsights: []
     },
     {
-      environment: "UNSET_ENV",
-      environmentId: "UNSET_ENV#ID#1",
+      environment: "UNSET_ENV#ID#1",
       traceFlowDisplayName:
         "PetClinicWithAgent:HTTP GET /SampleInsights/SpanBottleneck",
       firstEntrySpan: {
@@ -637,8 +608,7 @@ const data: RecentActivityData = {
       slimAggregatedInsights: []
     },
     {
-      environment: "UNSET_ENV",
-      environmentId: "UNSET_ENV#ID#1",
+      environment: "UNSET_ENV#ID#1",
       traceFlowDisplayName:
         "PetClinicWithAgent:HTTP GET /SampleInsights/SlowEndpoint",
       firstEntrySpan: {
@@ -675,7 +645,7 @@ export const WithEmptyEnv: Story = {
           name: "ENV_RENDER",
           id: "ENV_RENDER",
           isPending: false,
-          additionToConfigResult: null,
+
           type: "Private",
           token: null,
           serverApiUrl: null,

@@ -58,7 +58,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
   const { observe, entry } = useDimensions();
 
   const environmentActivities = useMemo(
-    () => (data ? groupBy(data.entries, (x) => x.environmentId) : {}),
+    () => (data ? groupBy(data.entries, (x) => x.environment) : {}),
     [data]
   );
   const environments: ExtendedEnvironment[] = useMemo(
@@ -165,15 +165,6 @@ export const RecentActivity = (props: RecentActivityProps) => {
     setEnvironmentToDelete(undefined);
   };
 
-  const handleAddEnvironmentToRunConfig = (environment: string) => {
-    window.sendMessageToDigma({
-      action: actions.ADD_ENVIRONMENT_TO_RUN_CONFIG,
-      payload: {
-        environment
-      }
-    });
-  };
-
   const handleOverlayKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "Escape") {
       setEnvironmentToDelete(undefined);
@@ -197,12 +188,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
       !environmentActivities[selectedEnvironment.id]?.length ||
       selectedEnvironment.isNew
     ) {
-      return (
-        <EnvironmentInstructionsPanel
-          environment={selectedEnvironment}
-          onAddEnvironmentToRunConfig={handleAddEnvironmentToRunConfig}
-        />
-      );
+      return <EnvironmentInstructionsPanel environment={selectedEnvironment} />;
     }
 
     const headerHeight = entry?.target.clientHeight || 0;

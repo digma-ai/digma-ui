@@ -16,17 +16,19 @@ import { SetupOrgDigmaPanel } from "../SetupOrgDigmaPanel";
 import { Overlay } from "../styles";
 import * as s from "./styles";
 import {
+  AddToRunConfigState,
   EnvironmentInstructionsPanelContent,
   EnvironmentInstructionsPanelProps
 } from "./types";
+import { useAddToRunConfig } from "./useAddToRunConfig";
 
 const getEnvironmentVariableString = (
   isMicrometerProject: boolean,
-  environmentName: string
+  environmentId: string
 ) =>
   isMicrometerProject
-    ? `MANAGEMENT_OPENTELEMETRY_RESOURCE-ATTRIBUTES_digma_environment=${environmentName}`
-    : `OTEL_RESOURCE_ATTRIBUTES=digma.environment=${environmentName}`;
+    ? `MANAGEMENT_OPENTELEMETRY_RESOURCE-ATTRIBUTES_digma_environment=${environmentId}`
+    : `OTEL_RESOURCE_ATTRIBUTES=digma.environment.id=${environmentId}`;
 
 export const EnvironmentInstructionsPanel = (
   props: EnvironmentInstructionsPanelProps
@@ -43,15 +45,15 @@ export const EnvironmentInstructionsPanel = (
     props.environment.id
   );
 
+  const { addToRunConfig, state } = useAddToRunConfig(props.environment.id);
+
   const handleOrgDigmaSetupGuideLinkClick = () => {
     // setIsOrgDigmaSetupGuideVisible(true);
     openURLInDefaultBrowser(CENTRAL_ON_PREM_INSTALLATION_GUIDE_URL);
   };
 
   const handleAddToRunConfigLinkClick = () => {
-    if (props.onAddEnvironmentToRunConfig) {
-      props.onAddEnvironmentToRunConfig(props.environment.id);
-    }
+    addToRunConfig();
   };
 
   const handleTroubleshootLinkClick = () => {
@@ -98,12 +100,12 @@ export const EnvironmentInstructionsPanel = (
                 Add to the active run config
               </s.Link>
 
-              {props.environment.additionToConfigResult === "success" && (
+              {state === AddToRunConfigState.success && (
                 <s.AddToConfigSuccessMessage>
                   Successfully added
                 </s.AddToConfigSuccessMessage>
               )}
-              {props.environment.additionToConfigResult === "failure" && (
+              {state === AddToRunConfigState.failure && (
                 <s.AddToConfigFailureMessage>
                   Failed to add
                 </s.AddToConfigFailureMessage>
