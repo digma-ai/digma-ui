@@ -320,7 +320,7 @@ const renderInsightCard = (
     sendUserActionTrackingEvent(
       trackingEvents.INSIGHT_CARD_ASSET_LINK_CLICKED,
       {
-        insightType: insightType
+        insightType
       }
     );
     window.sendMessageToDigma({
