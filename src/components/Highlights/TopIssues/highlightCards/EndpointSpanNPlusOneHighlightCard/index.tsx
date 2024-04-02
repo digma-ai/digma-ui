@@ -30,10 +30,6 @@ export const EndpointSpanNPlusOneHighlightCard = ({
       (x) => x.metrics.find((x) => x.id === "RequestPercentage"),
       {
         header: "Requests",
-        meta: {
-          width: "20%",
-          minWidth: 60
-        },
         cell: (info) => {
           const metric = info.getValue();
           const value = metric ? `${String(metric.value)}%` : "";
@@ -43,10 +39,6 @@ export const EndpointSpanNPlusOneHighlightCard = ({
     ),
     columnHelper.accessor((x) => x.metrics.find((x) => x.id === "Duration"), {
       header: "Duration",
-      meta: {
-        width: "20%",
-        minWidth: 60
-      },
       cell: (info) => {
         const metric = info.getValue();
         const value = metric ? getDurationString(metric.value as Duration) : "";

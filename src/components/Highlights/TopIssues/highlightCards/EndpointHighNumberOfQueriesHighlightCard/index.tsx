@@ -33,10 +33,6 @@ export const EndpointHighNumberOfQueriesHighlightCard = ({
       (x) => x.metrics.find((x) => x.id === "TypicalQueriesCount"),
       {
         header: "Typical",
-        meta: {
-          width: "20%",
-          minWidth: 60
-        },
         cell: (info) => {
           const metric = info.getValue();
           const value = metric ? String(metric.value) : "";
