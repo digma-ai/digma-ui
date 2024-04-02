@@ -7,8 +7,8 @@ export const sendTrackingEvent = (
   window.sendMessageToDigma({
     action: actions.SEND_TRACKING_EVENT,
     payload: {
-      eventName,
-      ...(data ? { data } : {})
+      ...(data ? { data } : {}),
+      eventName
     }
   });
 };
