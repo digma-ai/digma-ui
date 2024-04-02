@@ -1,7 +1,7 @@
 import { DefaultTheme, useTheme } from "styled-components";
 import { GETTING_STARTED_VIDEO_URL } from "../../../constants";
-import { openURLInDefaultBrowser } from "../../../utils/openURLInDefaultBrowser";
-import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
+import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
+import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { getThemeKind } from "../../common/App/styles";
 import { CircleLoader } from "../../common/CircleLoader";
 import { Link } from "../../common/Link";
@@ -44,7 +44,9 @@ export const FinishStep = (props: FinishStepProps) => {
   const themeKind = getThemeKind(theme);
 
   const handleGettingStartedVideoLinkClick = () => {
-    sendTrackingEvent(trackingEvents.GETTING_STARTED_VIDEO_LINK_CLICKED);
+    sendUserActionTrackingEvent(
+      trackingEvents.GETTING_STARTED_VIDEO_LINK_CLICKED
+    );
     openURLInDefaultBrowser(GETTING_STARTED_VIDEO_URL);
   };
 

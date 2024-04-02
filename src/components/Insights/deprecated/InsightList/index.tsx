@@ -2,12 +2,11 @@ import { useEffect, useState } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
 import { actions as globalActions } from "../../../../actions";
 import { usePersistence } from "../../../../hooks/usePersistence";
-import { trackingEvents as globalTrackingEvents } from "../../../../trackingEvents";
 import { isUndefined } from "../../../../typeGuards/isUndefined";
 import { ChangeScopePayload, InsightType } from "../../../../types";
+import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { getInsightTypeInfo } from "../../../../utils/getInsightTypeInfo";
 import { getInsightTypeOrderPriority } from "../../../../utils/getInsightTypeOrderPriority";
-import { sendTrackingEvent } from "../../../../utils/sendTrackingEvent";
 import { Card } from "../../../common/Card";
 import { Tooltip } from "../../../common/Tooltip";
 import { EndpointIcon } from "../../../common/icons/EndpointIcon";
@@ -239,9 +238,13 @@ const renderInsightCard = (
   const isMarkAsReadButtonEnabled = viewMode === ViewMode.OnlyUnread;
 
   const handleErrorSelect = (errorId: string, insightType: InsightType) => {
-    sendTrackingEvent(globalTrackingEvents.USER_ACTION, {
-      action: `Follow ${insightType} link`
-    });
+    sendUserActionTrackingEvent(
+      trackingEvents.INSIGHT_CARD_ASSET_LINK_CLICKED,
+      {
+        insightType
+      }
+    );
+
     window.sendMessageToDigma({
       action: actions.GO_TO_ERROR,
       payload: {
@@ -314,9 +317,12 @@ const renderInsightCard = (
     spanCodeObjectId: string,
     insightType: InsightType
   ) => {
-    sendTrackingEvent(globalTrackingEvents.USER_ACTION, {
-      action: `Follow ${insightType} link`
-    });
+    sendUserActionTrackingEvent(
+      trackingEvents.INSIGHT_CARD_ASSET_LINK_CLICKED,
+      {
+        insightType
+      }
+    );
     window.sendMessageToDigma({
       action: actions.GO_TO_ASSET,
       payload: {
@@ -745,7 +751,9 @@ export const InsightList = (props: InsightListProps) => {
   ) => {
     props.onJiraTicketCreate(insight, spanCodeObjectId);
     if (!isInsightJiraTicketHintShown?.value) {
-      sendTrackingEvent(trackingEvents.JIRA_TICKET_HINT_CLOSED, { event });
+      sendUserActionTrackingEvent(trackingEvents.JIRA_TICKET_HINT_CLOSED, {
+        event
+      });
     }
     setIsInsightJiraTicketHintShown({ value: true });
   };

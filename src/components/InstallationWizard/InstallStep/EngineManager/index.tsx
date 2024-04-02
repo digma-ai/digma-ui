@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { useTheme } from "styled-components";
+import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { isDigmaEngineRunning } from "../../../../utils/isDigmaEngineRunning";
-import { sendTrackingEvent } from "../../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../../common/App/ConfigContext";
 import { getThemeKind } from "../../../common/App/styles";
 import { Loader } from "../../../common/Loader";
@@ -72,7 +72,7 @@ export const EngineManager = (props: EngineManagerProps) => {
   };
 
   const sendActionButtonTrackingEvent = (buttonName: string) => {
-    sendTrackingEvent(trackingEvents.ENGINE_ACTION_BUTTON_CLICKED, {
+    sendUserActionTrackingEvent(trackingEvents.ENGINE_ACTION_BUTTON_CLICKED, {
       buttonName
     });
   };

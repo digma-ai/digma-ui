@@ -54,7 +54,7 @@ export const useEndpointDataSource = <
       action: actions.GET_SPAN_INSIGHT,
       payload: {
         spanCodeObjectId,
-        insightType: insightType
+        insightType
       }
     });
   }, [insightType, spanInfo]);
@@ -69,7 +69,7 @@ export const useEndpointDataSource = <
       action: actions.GET_SPAN_INSIGHT,
       payload: {
         spanCodeObjectId: spanInfo?.spanCodeObjectId,
-        insightType: insightType
+        insightType
       }
     });
   };

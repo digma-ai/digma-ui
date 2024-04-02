@@ -1,5 +1,4 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import { useTheme } from "styled-components";
 import { isNull } from "../../../../typeGuards/isNull";
 import { CheckCircleIcon } from "../../../common/icons/12px/CheckCircleIcon";
 import { ErrorIcon } from "../../../common/icons/12px/ErrorIcon";
@@ -14,7 +13,6 @@ export const EnvironmentNameStep = ({
   onNext,
   isInvalid
 }: EnvironmentNameStepProps) => {
-  const theme = useTheme();
   const [name, setName] = useState<string | null>(null);
   const [isValid, setIsValid] = useState(!isInvalid);
 

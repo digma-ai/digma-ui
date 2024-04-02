@@ -1,14 +1,17 @@
 import { actions as globalActions } from "../../../actions";
 import { trackingEvents as globalTrackingEvents } from "../../../trackingEvents";
-import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
+import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { CursorFollower } from "../../common/CursorFollower";
 import { DigmaLogoFlatIcon } from "../../common/icons/DigmaLogoFlatIcon";
 import * as s from "./styles";
 
 const handleTroubleshootButtonClick = () => {
-  sendTrackingEvent(globalTrackingEvents.TROUBLESHOOTING_LINK_CLICKED, {
-    origin: "recent activity"
-  });
+  sendUserActionTrackingEvent(
+    globalTrackingEvents.TROUBLESHOOTING_LINK_CLICKED,
+    {
+      origin: "recent activity"
+    }
+  );
 
   window.sendMessageToDigma({
     action: globalActions.OPEN_TROUBLESHOOTING_GUIDE

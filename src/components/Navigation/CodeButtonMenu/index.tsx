@@ -1,7 +1,7 @@
 import { MouseEvent } from "react";
 import { actions } from "../../../actions";
 import { isString } from "../../../typeGuards/isString";
-import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
+import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { NewButton } from "../../common/NewButton";
 import { CodeIcon } from "../../common/icons/16px/CodeIcon";
 import { Tooltip } from "../../common/v3/Tooltip";
@@ -15,7 +15,9 @@ import { CodeButtonMenuProps } from "./types";
 export const CodeButtonMenu = (props: CodeButtonMenuProps) => {
   const handleAddObservabilityClick = () => {
     if (isString(props.codeContext.methodId)) {
-      sendTrackingEvent(trackingEvents.ADD_OBSERVABILITY_BUTTON_CLICKED);
+      sendUserActionTrackingEvent(
+        trackingEvents.ADD_OBSERVABILITY_BUTTON_CLICKED
+      );
       props.onObservabilityAdd(props.codeContext.methodId);
     }
   };
@@ -23,13 +25,13 @@ export const CodeButtonMenu = (props: CodeButtonMenuProps) => {
   const handleAutoFixLinkClick = (e: MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     if (isString(props.codeContext.methodId)) {
-      sendTrackingEvent(trackingEvents.AUTO_FIX_BUTTON_CLICKED);
+      sendUserActionTrackingEvent(trackingEvents.AUTO_FIX_BUTTON_CLICKED);
       props.onAutoFix(props.codeContext.methodId);
     }
   };
 
   const handleTroubleshootingLinkClick = (e: MouseEvent<HTMLAnchorElement>) => {
-    sendTrackingEvent(trackingEvents.TROUBLESHOOTING_LINK_CLICKED);
+    sendUserActionTrackingEvent(trackingEvents.TROUBLESHOOTING_LINK_CLICKED);
     e.preventDefault();
     window.sendMessageToDigma({
       action: actions.OPEN_TROUBLESHOOTING_GUIDE
@@ -84,7 +86,7 @@ export const CodeButtonMenu = (props: CodeButtonMenuProps) => {
 
   const renderSpans = () => {
     const handleMenuItemClick = (spanCodeObjectId: string) => {
-      sendTrackingEvent(trackingEvents.ASSET_SELECTED);
+      sendUserActionTrackingEvent(trackingEvents.ASSET_SELECTED);
       props.onScopeChange(spanCodeObjectId);
     };
 

@@ -1,7 +1,7 @@
 import { KeyboardEvent, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { isValidEmailFormat } from "../../../utils/isValidEmailFormat";
-import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { NewCircleLoader } from "../NewCircleLoader";
 import { EnvelopeIcon } from "../icons/16px/EnvelopeIcon";
 import { CrossIcon } from "../icons/CrossIcon";
@@ -56,11 +56,11 @@ export const RegistrationDialog = (props: RegistrationDialogProps) => {
       fullName: data.fullName.trim(),
       email: data.email
     });
-    sendTrackingEvent("registration dialog form submitted");
+    sendUserActionTrackingEvent("registration dialog form submitted");
   };
 
   const handleCloseButtonClick = () => {
-    sendTrackingEvent("registration dialog close button clicked");
+    sendUserActionTrackingEvent("registration dialog close button clicked");
     props.onClose();
   };
 

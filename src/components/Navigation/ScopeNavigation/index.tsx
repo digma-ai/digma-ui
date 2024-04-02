@@ -2,11 +2,14 @@ import { useContext, useEffect, useState } from "react";
 import { actions as globalActions } from "../../../actions";
 import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
-import { ChangeScopePayload, ChangeViewPayload } from "../../../types";
-import { HistoryManager } from "../../../utils/HistoryManager";
+import {
+  ChangeEnvironmentPayload,
+  ChangeScopePayload,
+  ChangeViewPayload
+} from "../../../types";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Scope } from "../../common/App/types";
-import { ChangeEnvironmentPayload } from "../types";
+import { HistoryManager } from "./HistoryManager";
 import { HistoryNavigationPanel } from "./HistoryNavigationPanel";
 import { ScopeNavigationProps } from "./types";
 

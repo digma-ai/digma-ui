@@ -10,7 +10,7 @@ import { actions as globalActions } from "../../actions";
 import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
 import { isNumber } from "../../typeGuards/isNumber";
-import { sendTrackingEvent } from "../../utils/sendTrackingEvent";
+import { sendTrackingEvent } from "../../utils/actions/sendTrackingEvent";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { MenuItem } from "../common/FilterMenu/types";
 import { NewCircleLoader } from "../common/NewCircleLoader";

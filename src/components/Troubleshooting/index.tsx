@@ -2,9 +2,10 @@ import { useEffect } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
 import { actions as globalActions } from "../../actions";
 import { SLACK_WORKSPACE_URL } from "../../constants";
+import { openURLInDefaultBrowser } from "../../utils/actions/openURLInDefaultBrowser";
+import { sendTrackingEvent } from "../../utils/actions/sendTrackingEvent";
+import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 import { addPrefix } from "../../utils/addPrefix";
-import { openURLInDefaultBrowser } from "../../utils/openURLInDefaultBrowser";
-import { sendTrackingEvent } from "../../utils/sendTrackingEvent";
 import { getThemeKind } from "../common/App/styles";
 import { CrossIcon } from "../common/icons/CrossIcon";
 import { DockerLogoIcon } from "../common/icons/DockerLogoIcon";
@@ -86,7 +87,7 @@ export const Troubleshooting = () => {
   ];
 
   const handleCloseButtonClick = () => {
-    sendTrackingEvent(trackingEvents.CLOSE_BUTTON_CLICKED);
+    sendUserActionTrackingEvent(trackingEvents.CLOSE_BUTTON_CLICKED);
 
     window.sendMessageToDigma({
       action: actions.CLOSE
@@ -94,7 +95,7 @@ export const Troubleshooting = () => {
   };
 
   const handleRunOptionButtonClick = (key: string) => {
-    sendTrackingEvent(trackingEvents.RUN_OPTION_BUTTON_CLICKED, {
+    sendUserActionTrackingEvent(trackingEvents.RUN_OPTION_BUTTON_CLICKED, {
       buttonId: key
     });
 
@@ -107,7 +108,7 @@ export const Troubleshooting = () => {
   };
 
   const handleSlackLinkClick = () => {
-    sendTrackingEvent(trackingEvents.SLACK_LINK_CLICKED);
+    sendUserActionTrackingEvent(trackingEvents.SLACK_LINK_CLICKED);
     openURLInDefaultBrowser(SLACK_WORKSPACE_URL);
   };
 

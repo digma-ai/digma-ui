@@ -16,11 +16,7 @@ export const SpanScalingHighlightCard = ({
     columnHelper.accessor(
       (x) => x.metrics.find((x) => x.id === "IncreasePercentage"),
       {
-        header: "Duration",
-        meta: {
-          width: "20%",
-          minWidth: 60
-        },
+        header: "Increased by",
         cell: (info) => {
           const metric = info.getValue();
           const value = metric ? `${String(metric.value)}%` : "";

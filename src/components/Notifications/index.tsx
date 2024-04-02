@@ -3,8 +3,9 @@ import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
 import { isBoolean } from "../../typeGuards/isBoolean";
 import { isNumber } from "../../typeGuards/isNumber";
+import { sendTrackingEvent } from "../../utils/actions/sendTrackingEvent";
+import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 import { addPrefix } from "../../utils/addPrefix";
-import { sendTrackingEvent } from "../../utils/sendTrackingEvent";
 import { FullView } from "./FullView";
 import { RecentView } from "./RecentView";
 import * as s from "./styles";
@@ -36,6 +37,7 @@ const TRACKING_PREFIX = "notifications";
 export const trackingEvents = addPrefix(
   TRACKING_PREFIX,
   {
+    PAGE_LOADED: "page loaded",
     LINK_CLICKED: "link clicked",
     VIEW_ALL_LINK_CLICKED: "view all link clicked"
   },
@@ -64,6 +66,8 @@ export const Notifications = (props: NotificationsProps) => {
     window.sendMessageToDigma({
       action: actions.INITIALIZE
     });
+
+    sendTrackingEvent(trackingEvents.PAGE_LOADED);
 
     window.sendMessageToDigma({
       action: actions.GET_DATA,
@@ -165,7 +169,7 @@ export const Notifications = (props: NotificationsProps) => {
   };
 
   const handleGoToNotifications = () => {
-    sendTrackingEvent(trackingEvents.VIEW_ALL_LINK_CLICKED);
+    sendUserActionTrackingEvent(trackingEvents.VIEW_ALL_LINK_CLICKED);
     window.sendMessageToDigma({
       action: actions.GO_TO_NOTIFICATIONS
     });
@@ -176,7 +180,7 @@ export const Notifications = (props: NotificationsProps) => {
   };
 
   const handleLinkClick = (codeObjectData: GoToInsightsPayload) => {
-    sendTrackingEvent(trackingEvents.LINK_CLICKED);
+    sendUserActionTrackingEvent(trackingEvents.LINK_CLICKED);
     window.sendMessageToDigma({
       action: actions.GO_TO_INSIGHTS,
       payload: { ...codeObjectData }

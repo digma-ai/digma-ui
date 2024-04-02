@@ -4,9 +4,10 @@ import { SLACK_WORKSPACE_URL } from "../../constants";
 import { IDE } from "../../globals";
 import { useDebounce } from "../../hooks/useDebounce";
 import { ide } from "../../platform";
+import { openURLInDefaultBrowser } from "../../utils/actions/openURLInDefaultBrowser";
+import { sendTrackingEvent } from "../../utils/actions/sendTrackingEvent";
+import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 import { isValidEmailFormat } from "../../utils/isValidEmailFormat";
-import { openURLInDefaultBrowser } from "../../utils/openURLInDefaultBrowser";
-import { sendTrackingEvent } from "../../utils/sendTrackingEvent";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { CrossIcon } from "../common/icons/CrossIcon";
 import { DesktopIcon } from "../common/icons/DesktopIcon";
@@ -95,6 +96,8 @@ export const InstallationWizard = () => {
       action: actions.INITIALIZE
     });
 
+    sendTrackingEvent(trackingEvents.PAGE_LOADED);
+
     if (firstStep === 1) {
       sendTrackingEvent(trackingEvents.INSTALL_STEP_AUTOMATICALLY_PASSED);
     }
@@ -161,12 +164,14 @@ export const InstallationWizard = () => {
   // };
 
   const handleGetDigmaDockerDesktopButtonClick = () => {
-    sendTrackingEvent(trackingEvents.GET_DIGMA_DOCKER_EXTENSION_BUTTON_CLICKED);
+    sendUserActionTrackingEvent(
+      trackingEvents.GET_DIGMA_DOCKER_EXTENSION_BUTTON_CLICKED
+    );
     openURLInDefaultBrowser(DIGMA_DOCKER_EXTENSION_URL);
   };
 
   const handleInstallTabSelect = (tabName: string) => {
-    sendTrackingEvent(trackingEvents.TAB_CLICKED, {
+    sendUserActionTrackingEvent(trackingEvents.TAB_CLICKED, {
       tabName
     });
   };
@@ -176,7 +181,7 @@ export const InstallationWizard = () => {
   // };
 
   // const handleObservabilityChange = (value: boolean) => {
-  //   sendTrackingEvent(trackingEvents.OBSERVABILITY_BUTTON_CLICKED);
+  //   sendUserActionTrackingEvent(trackingEvents.OBSERVABILITY_BUTTON_CLICKED);
   //   setIsObservabilityEnabled(value);
   //   window.sendMessageToDigma({
   //     action: actions.SET_OBSERVABILITY,
@@ -197,7 +202,7 @@ export const InstallationWizard = () => {
       }
 
       if (!isAutomatic) {
-        sendTrackingEvent(trackingEvents.INSTALL_STEP_PASSED);
+        sendUserActionTrackingEvent(trackingEvents.INSTALL_STEP_PASSED);
       }
     }
   };
@@ -211,7 +216,7 @@ export const InstallationWizard = () => {
   // const handleInstallationTypeButtonClick = (
   //   installationType: InstallationType
   // ) => {
-  //   sendTrackingEvent(trackingEvents.INSTALLATION_TYPE_BUTTON_CLICKED, {
+  //   sendUserActionTrackingEvent(trackingEvents.INSTALLATION_TYPE_BUTTON_CLICKED, {
   //     installationType
   //   });
   //   setInstallationType(installationType);
@@ -257,7 +262,7 @@ export const InstallationWizard = () => {
   // const handleEmailAddButton = () => {
   //   if (userEmail.length > 0) {
   //     setIsUserEmailCaptured(true);
-  //     sendTrackingEvent(
+  //     sendUserActionTrackingEvent(
   //       trackingEvents.DIGMA_CLOUD_AVAILABILITY_NOTIFICATION_EMAIL_ADDRESS_CAPTURED,
   //       {
   //         email: userEmail

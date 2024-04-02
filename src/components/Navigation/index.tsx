@@ -8,7 +8,7 @@ import {
   ChangeScopePayload,
   ChangeViewPayload
 } from "../../types";
-import { sendTrackingEvent } from "../../utils/sendTrackingEvent";
+import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 import { AsyncActionResultData } from "../InstallationWizard/types";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { Environment, Scope } from "../common/App/types";
@@ -207,7 +207,7 @@ export const Navigation = () => {
   }, [codeContext, previousCodeContext]);
 
   const handleDashboardButtonClick = () => {
-    sendTrackingEvent(trackingEvents.DASHBOARD_BUTTON_CLICKED);
+    sendUserActionTrackingEvent(trackingEvents.DASHBOARD_BUTTON_CLICKED);
     window.sendMessageToDigma<OpenDashboardPayload>({
       action: globalActions.OPEN_DASHBOARD,
       payload: {
@@ -218,24 +218,24 @@ export const Navigation = () => {
 
   const handleKebabMenuOpenChange = (isOpen: boolean) => {
     if (isOpen) {
-      sendTrackingEvent(trackingEvents.KEBAB_MENU_BUTTON_CLICKED);
+      sendUserActionTrackingEvent(trackingEvents.KEBAB_MENU_BUTTON_CLICKED);
     }
     setIsKebabButtonMenuOpen(isOpen);
   };
 
   const handleKebabButtonClick = () => {
-    sendTrackingEvent(trackingEvents.KEBAB_MENU_BUTTON_CLICKED);
+    sendUserActionTrackingEvent(trackingEvents.KEBAB_MENU_BUTTON_CLICKED);
   };
 
   const handleCodeMenuButtonOpenChange = (isOpen: boolean) => {
     if (isOpen) {
-      sendTrackingEvent(trackingEvents.CODE_BUTTON_CLICKED);
+      sendUserActionTrackingEvent(trackingEvents.CODE_BUTTON_CLICKED);
     }
     setIsCodeButtonMenuOpen(isOpen);
   };
 
   const handleCodeButtonClick = () => {
-    sendTrackingEvent(trackingEvents.CODE_BUTTON_CLICKED);
+    sendUserActionTrackingEvent(trackingEvents.CODE_BUTTON_CLICKED);
     if (codeContext && codeContext.spans.assets.length === 1) {
       const { spanCodeObjectId } = codeContext.spans.assets[0];
       changeScope(spanCodeObjectId);
@@ -260,7 +260,7 @@ export const Navigation = () => {
   };
 
   const handleEnvironmentChange = (environment: Environment) => {
-    sendTrackingEvent(trackingEvents.ENVIRONMENT_SELECTED);
+    sendUserActionTrackingEvent(trackingEvents.ENVIRONMENT_SELECTED);
     setIsEnvironmentMenuOpen(false);
 
     const environmentToChange = environments.find(

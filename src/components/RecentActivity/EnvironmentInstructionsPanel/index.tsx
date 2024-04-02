@@ -2,8 +2,9 @@ import { useContext, useState } from "react";
 import { useTheme } from "styled-components";
 import { actions as globalActions } from "../../../actions";
 import { CENTRAL_ON_PREM_INSTALLATION_GUIDE_URL } from "../../../constants";
+import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
+import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { getHostnameFromURL } from "../../../utils/getHostNameFromURL";
-import { openURLInDefaultBrowser } from "../../../utils/openURLInDefaultBrowser";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { getThemeKind } from "../../common/App/styles";
 import { EnvironmentType } from "../../common/App/types";
@@ -14,7 +15,7 @@ import { InfinityIcon } from "../../common/icons/InfinityIcon";
 import { PlayButtonWithCursorIcon } from "../../common/icons/PlayButtonWithCursorIcon";
 import { SetupOrgDigmaPanel } from "../SetupOrgDigmaPanel";
 import { Overlay } from "../styles";
-import { sendUserActionEvent, trackingEvents } from "../tracking";
+import { trackingEvents } from "../tracking";
 import * as s from "./styles";
 import {
   AddToRunConfigState,
@@ -54,7 +55,7 @@ export const EnvironmentInstructionsPanel = (
   };
 
   const handleAddToRunConfigLinkClick = () => {
-    sendUserActionEvent(trackingEvents.ADD_TO_RUN_CONFIG_CLICKED);
+    sendUserActionTrackingEvent(trackingEvents.ADD_TO_RUN_CONFIG_CLICKED);
     addToRunConfig();
   };
 

@@ -10,7 +10,7 @@ import {
   ChangeViewPayload,
   InsightType
 } from "../../../../types";
-import { sendTrackingEvent } from "../../../../utils/sendTrackingEvent";
+import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { ConfigContext } from "../../../common/App/ConfigContext";
 import { EmptyState } from "../../../common/EmptyState";
 import { CardsIcon } from "../../../common/icons/CardsIcon";
@@ -104,15 +104,12 @@ const renderInsightCard = (
 ): JSX.Element | undefined => {
   const isMarkAsReadButtonEnabled = viewMode === ViewMode.OnlyUnread;
   // const handleErrorSelect = (errorId: string, insightType: InsightType) => {
-  //   sendTrackingEvent(globalTrackingEvents.USER_ACTION, {
-  //     action: `Follow ${insightType} link`
-  //   });
-  //   window.sendMessageToDigma({
-  //     action: actions.GO_TO_ERROR,
-  //     payload: {
-  //       errorId
+  //   sendUserActionTrackingEvent(
+  //     trackingEvents.INSIGHT_CARD_ASSET_LINK_CLICKED,
+  //     {
+  //       insightType
   //     }
-  //   });
+  //   );
   // };
 
   // const handleErrorsExpandButtonClick = () => {
@@ -179,9 +176,13 @@ const renderInsightCard = (
     spanCodeObjectId: string,
     insightType: InsightType
   ) => {
-    sendTrackingEvent(globalTrackingEvents.USER_ACTION, {
-      action: `Follow ${insightType} link`
-    });
+    sendUserActionTrackingEvent(
+      trackingEvents.INSIGHT_CARD_ASSET_LINK_CLICKED,
+      {
+        insightType
+      }
+    );
+
     window.sendMessageToDigma({
       action: actions.GO_TO_ASSET,
       payload: {
@@ -572,15 +573,20 @@ export const InsightsPage = (props: InsightsPageProps) => {
   ) => {
     props.onJiraTicketCreate(insight, spanCodeObjectId);
     if (!isInsightJiraTicketHintShown?.value) {
-      sendTrackingEvent(trackingEvents.JIRA_TICKET_HINT_CLOSED, { event });
+      sendUserActionTrackingEvent(trackingEvents.JIRA_TICKET_HINT_CLOSED, {
+        event
+      });
     }
     setIsInsightJiraTicketHintShown({ value: true });
   };
 
   const handleTroubleshootingLinkClick = () => {
-    sendTrackingEvent(globalTrackingEvents.TROUBLESHOOTING_LINK_CLICKED, {
-      origin: "insights"
-    });
+    sendUserActionTrackingEvent(
+      globalTrackingEvents.TROUBLESHOOTING_LINK_CLICKED,
+      {
+        origin: "insights"
+      }
+    );
 
     window.sendMessageToDigma({
       action: globalActions.OPEN_TROUBLESHOOTING_GUIDE

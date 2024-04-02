@@ -7,7 +7,7 @@ import {
 import { useDebounce } from "../../hooks/useDebounce";
 import { usePrevious } from "../../hooks/usePrevious";
 import { FeatureFlag } from "../../types";
-import { sendTrackingEvent } from "../../utils/sendTrackingEvent";
+import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { EmptyState } from "../common/EmptyState";
 import { SearchInput } from "../common/SearchInput";
@@ -103,7 +103,7 @@ export const Assets = () => {
   };
 
   const handleRefresh = () => {
-    sendTrackingEvent(trackingEvents.REFRESH_BUTTON_CLICKED, {
+    sendUserActionTrackingEvent(trackingEvents.REFRESH_BUTTON_CLICKED, {
       view: !selectedAssetTypeId ? "asset categories" : "assets"
     });
 

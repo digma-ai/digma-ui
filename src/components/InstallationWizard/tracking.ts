@@ -5,6 +5,7 @@ const TRACKING_PREFIX = "installation wizard";
 export const trackingEvents = addPrefix(
   TRACKING_PREFIX,
   {
+    PAGE_LOADED: "page loaded",
     INSTALL_STEP_PASSED: "install step passed",
     INSTALL_STEP_AUTOMATICALLY_PASSED: "install step automatically passed",
     GET_DIGMA_DOCKER_EXTENSION_BUTTON_CLICKED:

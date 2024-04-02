@@ -8,8 +8,8 @@ import { isNumber } from "../../../typeGuards/isNumber";
 import { isString } from "../../../typeGuards/isString";
 import { isUndefined } from "../../../typeGuards/isUndefined";
 import { GetInsightStatsPayload } from "../../../types";
+import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { formatUnit } from "../../../utils/formatUnit";
-import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Pagination } from "../../common/Pagination";
 import { SearchInput } from "../../common/SearchInput";
@@ -88,7 +88,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
   );
 
   const handleRefreshButtonClick = () => {
-    sendTrackingEvent(trackingEvents.REFRESH_BUTTON_CLICKED, {
+    sendUserActionTrackingEvent(trackingEvents.REFRESH_BUTTON_CLICKED, {
       viewMode: mode
     });
 

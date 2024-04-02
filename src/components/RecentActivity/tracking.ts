@@ -1,6 +1,4 @@
-import { trackingEvents as globalTrackingEvents } from "../../trackingEvents";
 import { addPrefix } from "../../utils/addPrefix";
-import { sendTrackingEvent } from "../../utils/sendTrackingEvent";
 
 const TRACKING_PREFIX = "recent activity";
 
@@ -25,10 +23,3 @@ export const trackingEvents = addPrefix(
   },
   " "
 );
-
-export const sendUserActionEvent = (action: string, payload?: object) => {
-  sendTrackingEvent(globalTrackingEvents.USER_ACTION, {
-    action: action,
-    ...payload
-  });
-};

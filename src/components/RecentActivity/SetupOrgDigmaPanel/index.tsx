@@ -6,9 +6,10 @@ import {
 } from "../../../constants";
 import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
+import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
+import { sendTrackingEvent } from "../../../utils/actions/sendTrackingEvent";
+import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { getHostnameFromURL } from "../../../utils/getHostNameFromURL";
-import { openURLInDefaultBrowser } from "../../../utils/openURLInDefaultBrowser";
-import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { AsyncActionResultData } from "../../InstallationWizard/types";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { ConfigContextData } from "../../common/App/types";
@@ -177,7 +178,7 @@ export const SetupOrgDigmaPanel = (props: SetupOrgDigmaPanelProps) => {
   const handleFinishButtonClick = () => {
     const areSettingsMatch = config.digmaApiUrl === serverApiUrl;
 
-    sendTrackingEvent(trackingEvents.FINISH_BUTTON_CLICKED, {
+    sendUserActionTrackingEvent(trackingEvents.FINISH_BUTTON_CLICKED, {
       result: areSettingsMatch ? "success" : "failure",
       ...(areSettingsMatch ? [] : [{ error: SETTINGS_MISMATCH_ERROR_MESSAGE }])
     });

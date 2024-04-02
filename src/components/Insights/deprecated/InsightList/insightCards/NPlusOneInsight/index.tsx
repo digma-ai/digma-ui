@@ -1,8 +1,8 @@
 import { useContext } from "react";
 import { InsightType } from "../../../../../../types";
+import { sendUserActionTrackingEvent } from "../../../../../../utils/actions/sendUserActionTrackingEvent";
 import { getCriticalityLabel } from "../../../../../../utils/getCriticalityLabel";
 import { getDurationString } from "../../../../../../utils/getDurationString";
-import { sendTrackingEvent } from "../../../../../../utils/sendTrackingEvent";
 import { trimEndpointScheme } from "../../../../../../utils/trimEndpointScheme";
 import { ConfigContext } from "../../../../../common/App/ConfigContext";
 import { ScoreIndicator } from "../../../../../common/ScoreIndicator";
@@ -36,9 +36,12 @@ export const NPlusOneInsight = (props: NPlusOneInsightProps) => {
   };
 
   const handleCreateJiraTicketButtonClick = (event: string) => {
-    sendTrackingEvent(trackingEvents.JIRA_TICKET_INFO_BUTTON_CLICKED, {
-      insightType: props.insight.type
-    });
+    sendUserActionTrackingEvent(
+      trackingEvents.JIRA_TICKET_INFO_BUTTON_CLICKED,
+      {
+        insightType: props.insight.type
+      }
+    );
     props.onJiraTicketCreate &&
       props.onJiraTicketCreate(props.insight, undefined, event);
   };

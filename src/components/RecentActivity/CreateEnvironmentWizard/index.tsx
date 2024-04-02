@@ -1,10 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import { dispatcher } from "../../../dispatcher";
-import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
+import { sendTrackingEvent } from "../../../utils/actions/sendTrackingEvent";
+import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Environment } from "../../common/App/types";
 import { actions } from "../actions";
-import { sendUserActionEvent, trackingEvents } from "../tracking";
+import { trackingEvents } from "../tracking";
 import {
   CreateEnvironmentPayload,
   EnvironmentCreatedData,
@@ -72,8 +73,14 @@ export const CreateEnvironmentWizard = ({
     };
 
     const markFailedSteps = (steps: StepDefinitions[]) => {
-      steps.map((step) => ({ ...step, status: "error" }));
-      setStepsStatus(stepsStatus);
+      setStepsStatus(
+        stepsStatus.map((step) => {
+          if (steps.find((x) => x.key === step.key)) {
+            return { ...step, status: "error" };
+          }
+          return { ...step };
+        })
+      );
     };
 
     const showErrors = (
@@ -106,6 +113,7 @@ export const CreateEnvironmentWizard = ({
       sendTrackingEvent(trackingEvents.FAILED_TO_CREATE_ENVIRONMENT, {
         errors: result.errors
       });
+
       const failedSteps = getFailedSteps(result);
       markFailedSteps(failedSteps);
       showErrors(failedSteps, result.errors);
@@ -192,7 +200,7 @@ export const CreateEnvironmentWizard = ({
           handleGoToStep(nextStep);
         }}
         onCancel={() => {
-          sendUserActionEvent(
+          sendUserActionTrackingEvent(
             trackingEvents.CANCEL_BUTTON_CLICKED_ON_ENVIRONMENT_CREATION_WIZARD
           );
           onClose(null);
@@ -238,7 +246,7 @@ export const CreateEnvironmentWizard = ({
                 handleEnvironmentTypeSelect={(type) => {
                   newEnvironment.type = type;
                   setNewEnvironment(newEnvironment);
-                  sendUserActionEvent(
+                  sendUserActionTrackingEvent(
                     trackingEvents.ENVIRONMENT_TYPE_BUTTON_CLICKED,
                     { type }
                   );

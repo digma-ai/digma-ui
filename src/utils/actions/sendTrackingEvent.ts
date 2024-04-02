@@ -1,4 +1,4 @@
-import { actions } from "../actions";
+import { actions } from "../../actions";
 
 export const sendTrackingEvent = (
   eventName: string,
@@ -7,8 +7,8 @@ export const sendTrackingEvent = (
   window.sendMessageToDigma({
     action: actions.SEND_TRACKING_EVENT,
     payload: {
-      eventName,
-      ...(data ? { data } : {})
+      ...(data ? { data } : {}),
+      eventName
     }
   });
 };

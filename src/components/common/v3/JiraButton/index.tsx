@@ -1,7 +1,7 @@
 import { ForwardedRef, forwardRef, useState } from "react";
 import { useTheme } from "styled-components";
-import { openURLInDefaultBrowser } from "../../../../utils/openURLInDefaultBrowser";
-import { sendTrackingEvent } from "../../../../utils/sendTrackingEvent";
+import { openURLInDefaultBrowser } from "../../../../utils/actions/openURLInDefaultBrowser";
+import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { trackingEvents } from "../../../Insights/tracking";
 import { MenuList } from "../../../Navigation/common/MenuList";
 import { Popup } from "../../../Navigation/common/Popup";
@@ -30,9 +30,12 @@ export const JiraButtonComponent = (
   const theme = useTheme();
 
   const handleMenuOpenChange = (isOpen: boolean) => {
-    sendTrackingEvent(trackingEvents.JIRA_TICKET_INFO_BUTTON_CLICKED, {
-      insightType
-    });
+    sendUserActionTrackingEvent(
+      trackingEvents.JIRA_TICKET_INFO_BUTTON_CLICKED,
+      {
+        insightType
+      }
+    );
     setIsMenuOpen(isOpen);
   };
 
@@ -51,9 +54,12 @@ export const JiraButtonComponent = (
   };
 
   const handleJiraButtonClick = () => {
-    sendTrackingEvent(trackingEvents.JIRA_TICKET_INFO_BUTTON_CLICKED, {
-      insightType
-    });
+    sendUserActionTrackingEvent(
+      trackingEvents.JIRA_TICKET_INFO_BUTTON_CLICKED,
+      {
+        insightType
+      }
+    );
     openTicketInfo("jira button click");
   };
 
