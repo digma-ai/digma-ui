@@ -7,6 +7,7 @@ import { sendTrackingEvent } from "../../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../../common/App/ConfigContext";
 import { EnvelopeIcon } from "../../../common/icons/16px/EnvelopeIcon";
 import { UserIcon } from "../../../common/icons/UserIcon";
+import { trackingEvents } from "../../tracking";
 import { isWorkEmail } from "./isWorkEmail";
 import * as s from "./styles";
 import { RegisterStepProps, RegistrationFormValues } from "./types";
@@ -71,7 +72,7 @@ export const RegisterStep = (props: RegisterStepProps) => {
   }, [setFocus]);
 
   const onSubmit = (data: RegistrationFormValues) => {
-    sendTrackingEvent("registration dialog form submitted");
+    sendTrackingEvent(trackingEvents.REGISTRATION_FORM_SUBMITTED);
     window.sendMessageToDigma({
       action: globalActions.REGISTER,
       payload: {

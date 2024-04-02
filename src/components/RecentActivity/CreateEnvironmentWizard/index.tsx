@@ -1,8 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import { dispatcher } from "../../../dispatcher";
+import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Environment } from "../../common/App/types";
 import { actions } from "../actions";
+import { sendUserActionEvent, trackingEvents } from "../tracking";
 import {
   CreateEnvironmentPayload,
   EnvironmentCreatedData,
@@ -101,6 +103,9 @@ export const CreateEnvironmentWizard = ({
         return;
       }
 
+      sendTrackingEvent(trackingEvents.FAILED_TO_CREATE_ENVIRONMENT, {
+        errors: result.errors
+      });
       const failedSteps = getFailedSteps(result);
       markFailedSteps(failedSteps);
       showErrors(failedSteps, result.errors);
@@ -137,6 +142,7 @@ export const CreateEnvironmentWizard = ({
         }
       });
 
+      sendTrackingEvent(trackingEvents.CREATE_NEW_ENVIRONMENT_FORM_SUBMITTED);
       return;
     }
 
@@ -191,6 +197,9 @@ export const CreateEnvironmentWizard = ({
           handleGoToStep(nextStep);
         }}
         onCancel={() => {
+          sendUserActionEvent(
+            trackingEvents.CANCEL_BUTTON_CLICKED_ON_ENVIRONMENT_CREATION_WIZARD
+          );
           onClose(null);
         }}
         cancelDisabled={completed}

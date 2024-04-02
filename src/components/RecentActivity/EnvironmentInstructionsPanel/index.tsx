@@ -14,6 +14,7 @@ import { InfinityIcon } from "../../common/icons/InfinityIcon";
 import { PlayButtonWithCursorIcon } from "../../common/icons/PlayButtonWithCursorIcon";
 import { SetupOrgDigmaPanel } from "../SetupOrgDigmaPanel";
 import { Overlay } from "../styles";
+import { sendUserActionEvent, trackingEvents } from "../tracking";
 import * as s from "./styles";
 import {
   AddToRunConfigState,
@@ -53,6 +54,7 @@ export const EnvironmentInstructionsPanel = (
   };
 
   const handleAddToRunConfigLinkClick = () => {
+    sendUserActionEvent(trackingEvents.ADD_TO_RUN_CONFIG_CLICKED);
     addToRunConfig();
   };
 
