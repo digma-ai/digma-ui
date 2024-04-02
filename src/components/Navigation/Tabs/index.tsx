@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { FeatureFlag } from "../../../types";
-import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
+import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { ConfigContextData, Scope } from "../../common/App/types";
 import { MagicWandIcon } from "../../common/icons/16px/MagicWandIcon";
@@ -66,7 +66,7 @@ export const Tabs = (props: TabsProps) => {
 
   const handleTabClick = (tab: TabData) => {
     if (!getIsTabDisabled(tab, config.scope)) {
-      sendTrackingEvent(trackingEvents.TAB_CLICKED, {
+      sendUserActionTrackingEvent(trackingEvents.TAB_CLICKED, {
         tabName: tab.id
       });
       props.onSelect(tab.id);

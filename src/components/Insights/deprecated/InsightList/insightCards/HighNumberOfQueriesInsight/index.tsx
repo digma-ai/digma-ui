@@ -1,5 +1,5 @@
 import { InsightType } from "../../../../../../types";
-import { sendTrackingEvent } from "../../../../../../utils/sendTrackingEvent";
+import { sendUserActionTrackingEvent } from "../../../../../../utils/actions/sendUserActionTrackingEvent";
 import { Button } from "../../../../../common/Button";
 import { Tag } from "../../../../../common/Tag";
 import { Tooltip } from "../../../../../common/Tooltip";
@@ -32,9 +32,12 @@ export const HighNumberOfQueriesInsight = (
   };
 
   const handleCreateJiraTicketButtonClick = (event: string) => {
-    sendTrackingEvent(trackingEvents.JIRA_TICKET_INFO_BUTTON_CLICKED, {
-      insightType: insight.type
-    });
+    sendUserActionTrackingEvent(
+      trackingEvents.JIRA_TICKET_INFO_BUTTON_CLICKED,
+      {
+        insightType: insight.type
+      }
+    );
     props.onJiraTicketCreate &&
       props.onJiraTicketCreate(insight, undefined, event);
   };

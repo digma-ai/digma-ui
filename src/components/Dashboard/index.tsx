@@ -7,8 +7,9 @@ import { getFeatureFlagValue } from "../../featureFlags";
 import { platform } from "../../platform";
 import { isString } from "../../typeGuards/isString";
 import { FeatureFlag } from "../../types";
+import { openURLInDefaultBrowser } from "../../utils/actions/openURLInDefaultBrowser";
+import { sendTrackingEvent } from "../../utils/actions/sendTrackingEvent";
 import { formatEnvironmentName } from "../../utils/formatEnvironmentName";
-import { openURLInDefaultBrowser } from "../../utils/openURLInDefaultBrowser";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { getThemeKind } from "../common/App/styles";
 import { DeploymentType } from "../common/App/types";
@@ -17,6 +18,7 @@ import { DigmaLogoIcon } from "../common/icons/DigmaLogoIcon";
 import { OpenLinkIcon } from "../common/icons/OpenLinkIcon";
 import { actions } from "./actions";
 import * as s from "./styles";
+import { trackingEvents } from "./tracking";
 import { EnvironmentInfoData } from "./types";
 import { ClientSpansPerformanceImpact } from "./widgets/ClientSpansPerformanceImpact";
 import { SlowQueries } from "./widgets/SlowQueries";
@@ -84,6 +86,10 @@ export const Dashboard = () => {
         handleSetEnvironmentInfoData
       );
     };
+  }, []);
+
+  useEffect(() => {
+    sendTrackingEvent(trackingEvents.PAGE_LOADED);
   }, []);
 
   useEffect(() => {

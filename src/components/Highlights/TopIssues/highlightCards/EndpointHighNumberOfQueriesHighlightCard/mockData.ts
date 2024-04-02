@@ -10,14 +10,6 @@ export const mockedEndpointHighNumberOfQueriesMetrics: EndpointHighNumberOfQueri
     {
       id: "TypicalQueriesCount",
       value: 10
-    },
-    {
-      id: "Duration",
-      value: {
-        value: 22.71,
-        unit: "ms",
-        raw: 22705900.0
-      }
     }
   ];
 

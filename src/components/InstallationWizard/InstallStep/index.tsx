@@ -1,9 +1,10 @@
 import { useContext, useEffect, useState } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
 import { usePrevious } from "../../../hooks/usePrevious";
+import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
+import { sendTrackingEvent } from "../../../utils/actions/sendTrackingEvent";
+import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { isDigmaEngineRunning } from "../../../utils/isDigmaEngineRunning";
-import { openURLInDefaultBrowser } from "../../../utils/openURLInDefaultBrowser";
-import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { ConfigContextData } from "../../common/App/types";
 import { CircleLoader } from "../../common/CircleLoader";
@@ -206,7 +207,7 @@ export const InstallStep = (props: InstallStepProps) => {
   };
 
   const handleSlackLinkClick = () => {
-    sendTrackingEvent(trackingEvents.NO_DOCKER_SLACK_LINK_CLICKED);
+    sendUserActionTrackingEvent(trackingEvents.NO_DOCKER_SLACK_LINK_CLICKED);
     props.onSlackLinkClick();
   };
 

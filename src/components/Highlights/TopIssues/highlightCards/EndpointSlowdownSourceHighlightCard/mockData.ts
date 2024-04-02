@@ -10,10 +10,6 @@ export const mockedEndpointSlowdownSourceHighlight: EndpointSlowdownSourceMetric
         unit: "ms",
         raw: 22705900.0
       }
-    },
-    {
-      id: "DifferencePercentage",
-      value: 50
     }
   ];
 

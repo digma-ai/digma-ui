@@ -4,8 +4,8 @@ import { RECENT_ACTIVITY_CONTAINER_ID } from "..";
 import { actions as globalActions } from "../../../actions";
 import { SLACK_WORKSPACE_URL } from "../../../constants";
 import { SetObservabilityPayload } from "../../../types";
-import { openURLInDefaultBrowser } from "../../../utils/openURLInDefaultBrowser";
-import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
+import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
+import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { MenuList } from "../../Navigation/common/MenuList";
 import { ListItemIconContainer } from "../../Navigation/common/MenuList/styles";
 import { Popup } from "../../Navigation/common/Popup";
@@ -154,9 +154,12 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
       document.getElementById(RECENT_ACTIVITY_CONTAINER_ID) || undefined;
 
     const handleObservabilityChange = (value: boolean) => {
-      sendTrackingEvent(trackingEvents.OBSERVABILITY_TOGGLE_SWITCHED, {
-        value
-      });
+      sendUserActionTrackingEvent(
+        trackingEvents.OBSERVABILITY_TOGGLE_SWITCHED,
+        {
+          value
+        }
+      );
       window.sendMessageToDigma<SetObservabilityPayload>({
         action: globalActions.SET_OBSERVABILITY,
         payload: {

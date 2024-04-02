@@ -1,11 +1,13 @@
 import { useEffect } from "react";
 import { isString } from "../../typeGuards/isString";
+import { sendTrackingEvent } from "../../utils/actions/sendTrackingEvent";
 import { addPrefix } from "../../utils/addPrefix";
 import { EnvironmentTypes } from "./pages/EnvironmentTypes";
 import { Page } from "./pages/RunDigma/Page";
 import { runDigmaWithCommandLine } from "./pages/RunDigma/runDigmaWithCommandLine";
 import { runDigmaWithDocker } from "./pages/RunDigma/runDigmaWithDocker";
 import { runDigmaWithGradleTasks } from "./pages/RunDigma/runDigmaWithGradleTasks";
+import { trackingEvents } from "./tracking";
 import { DocumentationProps } from "./types";
 
 const ACTION_PREFIX = "DOCUMENTATION";
@@ -33,6 +35,8 @@ export const Documentation = (props: DocumentationProps) => {
     window.sendMessageToDigma({
       action: actions.INITIALIZE
     });
+
+    sendTrackingEvent(trackingEvents.PAGE_LOADED, { page });
   }, []);
 
   return <>{pageContent}</>;

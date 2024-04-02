@@ -54,10 +54,6 @@ export type EndpointHighNumberOfQueriesMetrics = [
   {
     id: "TypicalQueriesCount";
     value: number;
-  },
-  {
-    id: "Duration";
-    value: Duration;
   }
 ];
 
@@ -93,10 +89,6 @@ export type EndpointSlowdownSourceMetrics = [
   {
     id: "DifferenceDelta";
     value: Duration;
-  },
-  {
-    id: "DifferencePercentage";
-    value: number;
   }
 ];
 

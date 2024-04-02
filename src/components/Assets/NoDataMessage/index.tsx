@@ -1,6 +1,6 @@
 import { actions as globalActions } from "../../../actions";
 import { trackingEvents as globalTrackingEvents } from "../../../trackingEvents";
-import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
+import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { EmptyState } from "../../common/EmptyState";
 import { NewCircleLoader } from "../../common/NewCircleLoader";
 import { CardsIcon } from "../../common/icons/CardsIcon";
@@ -9,9 +9,12 @@ import { NoDataMessageProps } from "./types";
 
 export const NoDataMessage = (props: NoDataMessageProps) => {
   const handleTroubleshootingLinkClick = () => {
-    sendTrackingEvent(globalTrackingEvents.TROUBLESHOOTING_LINK_CLICKED, {
-      origin: "assets"
-    });
+    sendUserActionTrackingEvent(
+      globalTrackingEvents.TROUBLESHOOTING_LINK_CLICKED,
+      {
+        origin: "assets"
+      }
+    );
 
     window.sendMessageToDigma({
       action: globalActions.OPEN_TROUBLESHOOTING_GUIDE

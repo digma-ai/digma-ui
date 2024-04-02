@@ -13,7 +13,8 @@ export const trackingEvents = addPrefix(
       "insight card create ticket link clicked",
     INSIGHT_CARD_MARK_AS_READ_BUTTON_CLICKED:
       "insight card mark as read button clicked",
-    REFRESH_BUTTON_CLICKED: "refresh button clicked"
+    REFRESH_BUTTON_CLICKED: "refresh button clicked",
+    INSIGHT_CARD_ASSET_LINK_CLICKED: "insight card asset link clicked"
   },
   " "
 );

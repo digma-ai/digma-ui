@@ -16,14 +16,14 @@ export const ChattyApiDescription = () => (
     responses or using the API more efficiently.
   </s.Content>
 );
-export const SessionInViewDescription = () => (
+export const EndpointSessionInViewDescription = () => (
   <s.Content>
     Open Session in View is an anti-pattern in which the view rendering stage
     triggers DB calls because of lazy properties initialization. It is
     recommended to pass DTOs to the view and avoid hitting the DB.
   </s.Content>
 );
-export const HighNumberOfQueriesDescription = () => (
+export const EndpointHighNumberOfQueriesDescription = () => (
   <s.Content>
     The high number of queries insight indicates that the current
     endpoint/consumer is triggering an abnormal number of DB queries. This can
@@ -72,7 +72,7 @@ export const BottleneckDescription = () => (
   </s.Content>
 );
 
-export const ScalingIssueDescription = () => (
+export const SpanScalingDescription = () => (
   <s.Content>
     Scaling issues are performance problems that emerge when the code is run
     concurrently. Digma analyzes the correlation between concurrency and
@@ -81,7 +81,7 @@ export const ScalingIssueDescription = () => (
   </s.Content>
 );
 
-export const QueryOptimization = () => (
+export const QueryOptimizationDescription = () => (
   <s.Content>
     This query has been found to be especially slow compared to other queries of
     the same type running against the same DB. Consider optimizing this query or

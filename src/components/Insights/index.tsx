@@ -12,8 +12,8 @@ import { usePrevious } from "../../hooks/usePrevious";
 import { trackingEvents as globalTrackingEvents } from "../../trackingEvents";
 import { isNumber } from "../../typeGuards/isNumber";
 import { FeatureFlag } from "../../types";
-import { openURLInDefaultBrowser } from "../../utils/openURLInDefaultBrowser";
-import { sendTrackingEvent } from "../../utils/sendTrackingEvent";
+import { openURLInDefaultBrowser } from "../../utils/actions/openURLInDefaultBrowser";
+import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { CircleLoader } from "../common/CircleLoader";
 import { EmptyState } from "../common/EmptyState";
@@ -173,9 +173,12 @@ const renderInsightTicket = (
 
 const NoDataYet = () => {
   const handleTroubleshootingLinkClick = () => {
-    sendTrackingEvent(globalTrackingEvents.TROUBLESHOOTING_LINK_CLICKED, {
-      origin: "insights"
-    });
+    sendUserActionTrackingEvent(
+      globalTrackingEvents.TROUBLESHOOTING_LINK_CLICKED,
+      {
+        origin: "insights"
+      }
+    );
 
     sendMessage(globalActions.OPEN_TROUBLESHOOTING_GUIDE);
   };
@@ -294,9 +297,12 @@ export const Insights = (props: InsightsProps) => {
   // };
 
   const handleTroubleshootingLinkClick = () => {
-    sendTrackingEvent(globalTrackingEvents.TROUBLESHOOTING_LINK_CLICKED, {
-      origin: "insights"
-    });
+    sendUserActionTrackingEvent(
+      globalTrackingEvents.TROUBLESHOOTING_LINK_CLICKED,
+      {
+        origin: "insights"
+      }
+    );
 
     sendMessage(globalActions.OPEN_TROUBLESHOOTING_GUIDE);
   };

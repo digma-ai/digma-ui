@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { dispatcher } from "../../../dispatcher";
-import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
+import { sendTrackingEvent } from "../../../utils/actions/sendTrackingEvent";
 import { actions } from "../actions";
 import { trackingEvents } from "../tracking";
 import { AsyncActionResultData } from "../types";

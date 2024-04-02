@@ -2,13 +2,12 @@ import React, { useContext, useEffect, useState } from "react";
 import { actions as globalActions } from "../../../../../../../actions";
 import { getFeatureFlagValue } from "../../../../../../../featureFlags";
 import { usePrevious } from "../../../../../../../hooks/usePrevious";
-import { trackingEvents as globalTrackingEvents } from "../../../../../../../trackingEvents";
 import { isString } from "../../../../../../../typeGuards/isString";
 import {
   FeatureFlag,
   GetInsightStatsPayload
 } from "../../../../../../../types";
-import { sendTrackingEvent } from "../../../../../../../utils/sendTrackingEvent";
+import { sendUserActionTrackingEvent } from "../../../../../../../utils/actions/sendUserActionTrackingEvent";
 import { Spinner } from "../../../../../../Navigation/CodeButtonMenu/Spinner";
 import { ConfigContext } from "../../../../../../common/App/ConfigContext";
 import { CheckmarkCircleIcon } from "../../../../../../common/icons/12px/CheckmarkCircleIcon";
@@ -141,25 +140,33 @@ export const InsightCard = (props: InsightCardProps) => {
   };
 
   const handleDismissClick = () => {
-    sendTrackingEvent(trackingEvents.INSIGHT_CARD_DISMISS_BUTTON_CLICKED, {
-      insightType: props.insight.type
-    });
+    sendUserActionTrackingEvent(
+      trackingEvents.INSIGHT_CARD_DISMISS_BUTTON_CLICKED,
+      {
+        insightType: props.insight.type
+      }
+    );
     dismiss();
     setDismissConfirmationOpened(false);
   };
 
   const handleShowClick = () => {
-    sendTrackingEvent(trackingEvents.INSIGHT_CARD_SHOW_BUTTON_CLICKED, {
-      insightType: props.insight.type
-    });
+    sendUserActionTrackingEvent(
+      trackingEvents.INSIGHT_CARD_SHOW_BUTTON_CLICKED,
+      {
+        insightType: props.insight.type
+      }
+    );
     show();
   };
 
   const handleMarkAsReadButtonClick = () => {
-    sendTrackingEvent(globalTrackingEvents.USER_ACTION, {
-      action: trackingEvents.INSIGHT_CARD_MARK_AS_READ_BUTTON_CLICKED,
-      insightType: props.insight.type
-    });
+    sendUserActionTrackingEvent(
+      trackingEvents.INSIGHT_CARD_MARK_AS_READ_BUTTON_CLICKED,
+      {
+        insightType: props.insight.type
+      }
+    );
     markAsRead();
   };
 
@@ -173,9 +180,12 @@ export const InsightCard = (props: InsightCardProps) => {
   };
 
   const handleCreateTicketLinkClick = () => {
-    sendTrackingEvent(trackingEvents.INSIGHT_CARD_CREATE_TICKET_LINK_CLICKED, {
-      insightType: props.insight.type
-    });
+    sendUserActionTrackingEvent(
+      trackingEvents.INSIGHT_CARD_CREATE_TICKET_LINK_CLICKED,
+      {
+        insightType: props.insight.type
+      }
+    );
     openTicketInfo(
       props.jiraTicketInfo?.spanCodeObjectId,
       "create ticket link clicked"

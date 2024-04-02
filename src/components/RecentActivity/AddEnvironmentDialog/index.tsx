@@ -7,7 +7,7 @@ import {
   useState
 } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
-import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
+import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { Button } from "../../common/Button";
 import { TextField } from "../../common/TextField";
 import { CrossIcon } from "../../common/icons/CrossIcon";
@@ -91,7 +91,7 @@ export const AddEnvironmentDialog = (props: AddEnvironmentDialogProps) => {
   };
 
   const handleNextButtonClick = () => {
-    sendTrackingEvent(
+    sendUserActionTrackingEvent(
       trackingEvents.NAVIGATED_TO_THE_NEWLY_CREATED_PENDING_ENVIRONMENT
     );
     props.onEnvironmentAdd(textFieldValue);

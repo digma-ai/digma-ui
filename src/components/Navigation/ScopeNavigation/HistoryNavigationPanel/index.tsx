@@ -1,4 +1,4 @@
-import { sendTrackingEvent } from "../../../../utils/sendTrackingEvent";
+import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { ChevronIcon } from "../../../common/icons/20px/ChevronIcon";
 import { Direction } from "../../../common/icons/types";
 import { trackingEvents } from "../../tracking";
@@ -7,12 +7,12 @@ import { HistoryNavigationPanelProps } from "./types";
 
 export const HistoryNavigationPanel = (props: HistoryNavigationPanelProps) => {
   const handleBackButtonClick = () => {
-    sendTrackingEvent(trackingEvents.BACK_BUTTON_CLICKED);
+    sendUserActionTrackingEvent(trackingEvents.BACK_BUTTON_CLICKED);
     props.onGoBack();
   };
 
   const handleForwardButtonClick = () => {
-    sendTrackingEvent(trackingEvents.FORWARD_BUTTON_CLICKED);
+    sendUserActionTrackingEvent(trackingEvents.FORWARD_BUTTON_CLICKED);
     props.onGoForward();
   };
 
