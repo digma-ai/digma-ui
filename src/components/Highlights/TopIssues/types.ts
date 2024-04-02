@@ -89,10 +89,6 @@ export type EndpointSlowdownSourceMetrics = [
   {
     id: "DifferenceDelta";
     value: Duration;
-  },
-  {
-    id: "DifferencePercentage";
-    value: number;
   }
 ];
 
