@@ -1,9 +1,8 @@
 import { Fragment, useEffect, useState } from "react";
 import { actions as globalActions } from "../../../actions";
 import { usePrevious } from "../../../hooks/usePrevious";
-import { trackingEvents as globalTrackingEvents } from "../../../trackingEvents";
 import { ChangeViewPayload } from "../../../types";
-import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
+import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { Link } from "../../common/v3/Link";
 import { EmptyStateCard } from "../EmptyStateCard";
 import { SectionHeader } from "../styles";
@@ -94,9 +93,7 @@ export const TopIssues = () => {
   const previousData = usePrevious(data);
 
   const handleViewAllLinkClick = () => {
-    sendTrackingEvent(globalTrackingEvents.USER_ACTION, {
-      actions: trackingEvents.VIEW_ALL_LINK_CLICKED
-    });
+    sendUserActionTrackingEvent(trackingEvents.VIEW_ALL_LINK_CLICKED);
 
     window.sendMessageToDigma<ChangeViewPayload>({
       action: globalActions.CHANGE_VIEW,

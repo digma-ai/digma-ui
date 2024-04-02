@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useTheme } from "styled-components";
-import { openURLInDefaultBrowser } from "../../../../../../../utils/openURLInDefaultBrowser";
+import { openURLInDefaultBrowser } from "../../../../../../../utils/actions/openURLInDefaultBrowser";
 import { Button } from "../../../../../../common/Button";
 import { Menu } from "../../../../../../common/Menu";
 import { NewPopover } from "../../../../../../common/NewPopover";

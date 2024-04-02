@@ -1,5 +1,5 @@
 import { MouseEvent } from "react";
-import { openURLInDefaultBrowser } from "../../../utils/openURLInDefaultBrowser";
+import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
 import { Link } from "../Link";
 
 const DIGMA_URL = "https://digma.ai";

@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 import { MouseEvent } from "react";
+import { openURLInDefaultBrowser } from "../../../../../utils/actions/openURLInDefaultBrowser";
 import { intersperse } from "../../../../../utils/intersperse";
-import { openURLInDefaultBrowser } from "../../../../../utils/openURLInDefaultBrowser";
 import { Link } from "../../../../common/Link";
 import { CommitInfosData } from "../../types";
 import * as s from "./styles";

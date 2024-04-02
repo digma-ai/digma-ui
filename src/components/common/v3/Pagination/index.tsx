@@ -1,5 +1,6 @@
 import { trackingEvents as globalTrackingEvents } from "../../../../trackingEvents";
-import { sendTrackingEvent } from "../../../../utils/sendTrackingEvent";
+import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
+import { addPrefix } from "../../../../utils/addPrefix";
 import { ChevronIcon } from "../../icons/12px/ChevronIcon";
 import { DoubleChevronIcon } from "../../icons/DoubleChevronIcon";
 import { Direction } from "../../icons/types";
@@ -15,20 +16,20 @@ export const Pagination = ({
   withDescription,
   trackingEventPrefix
 }: PaginationProps) => {
+  const prefixedGlobalTrackingEvents = addPrefix(
+    trackingEventPrefix || "",
+    globalTrackingEvents,
+    ""
+  );
   const pageCount = Math.ceil(itemsCount / pageSize);
 
   const isPrevDisabled = page === 0;
   const isNextDisabled = page === pageCount - 1;
 
   const handleButtonClick = (page: number) => {
-    sendTrackingEvent(globalTrackingEvents.USER_ACTION, {
-      action: [
-        trackingEventPrefix || "",
-        globalTrackingEvents.PAGINATION_BUTTON_CLICKED
-      ]
-        .join(" ")
-        .trim()
-    });
+    sendUserActionTrackingEvent(
+      prefixedGlobalTrackingEvents.PAGINATION_BUTTON_CLICKED
+    );
     onPageChange(page);
   };
 

@@ -1,5 +1,5 @@
-import { actions } from "../actions";
-import { isString } from "../typeGuards/isString";
+import { actions } from "../../actions";
+import { isString } from "../../typeGuards/isString";
 
 export const openURLInDefaultBrowser = (url: string, title?: string) => {
   window.sendMessageToDigma({

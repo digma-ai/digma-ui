@@ -1,5 +1,5 @@
 import { SLACK_WORKSPACE_URL } from "../../../constants";
-import { openURLInDefaultBrowser } from "../../../utils/openURLInDefaultBrowser";
+import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
 import { SlackLogoIcon } from "../../common/icons/SlackLogoIcon";
 import { EmptyState } from "../EmptyState";
 import * as s from "./styles";

@@ -3,9 +3,9 @@ import { useRef, useState } from "react";
 import { useTheme } from "styled-components";
 import { DefaultTheme } from "styled-components/dist/types";
 import { isString } from "../../../typeGuards/isString";
+import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { addPrefix } from "../../../utils/addPrefix";
 import { downloadFile } from "../../../utils/downloadFile";
-import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { CircleLoader } from "../../common/CircleLoader";
 import { CircleLoaderColors } from "../../common/CircleLoader/types";
 import { IconTag } from "../../common/IconTag";
@@ -17,8 +17,8 @@ import { PaperclipIcon } from "../../common/icons/12px/PaperclipIcon";
 import { JiraLogoIcon } from "../../common/icons/16px/JiraLogoIcon";
 import { AttachmentTag } from "./AttachmentTag";
 import { Field } from "./Field";
-import { Section } from "./Section";
 import { IconButton } from "./IconButton";
+import { Section } from "./Section";
 import { TicketLinkButton } from "./TicketLinkButton";
 import * as s from "./styles";
 import { trackingEvents } from "./tracking";
@@ -50,7 +50,7 @@ export const JiraTicket = (props: JiraTicketProps) => {
   const prefixedTrackingEvents = addPrefix(
     props.tracking?.prefix || "",
     trackingEvents,
-    " "
+    ""
   );
 
   const handleCloseButtonClick = () => {
@@ -61,7 +61,7 @@ export const JiraTicket = (props: JiraTicketProps) => {
     field: string,
     value: HTMLElement | null | string
   ) => {
-    sendTrackingEvent(
+    sendUserActionTrackingEvent(
       prefixedTrackingEvents.JIRA_TICKET_FIELD_COPY_BUTTON_CLICKED,
       {
         ...(props.tracking?.additionalInfo || {}),
@@ -84,7 +84,7 @@ export const JiraTicket = (props: JiraTicketProps) => {
     url: string;
     fileName: string;
   }) => {
-    sendTrackingEvent(
+    sendUserActionTrackingEvent(
       prefixedTrackingEvents.JIRA_TICKET_ATTACHMENT_DOWNLOAD_BUTTON_CLICKED,
       { ...(props.tracking?.additionalInfo || {}) }
     );

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { actions as globalActions } from "../../../actions";
 import { ChangeScopePayload } from "../../../types";
-import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
+import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { CodeDetails, Scope } from "../../common/App/types";
 import { NewPopover } from "../../common/NewPopover";
 import { CrosshairIcon } from "../../common/icons/16px/CrosshairIcon";
@@ -86,7 +86,7 @@ export const ScopeBar = (props: ScopeBarProps) => {
   }, [props.scope]);
 
   const handleHomeButtonClick = () => {
-    sendTrackingEvent(trackingEvents.HOME_BUTTON_CLICKED);
+    sendUserActionTrackingEvent(trackingEvents.HOME_BUTTON_CLICKED);
     window.sendMessageToDigma<ChangeScopePayload>({
       action: globalActions.CHANGE_SCOPE,
       payload: {
@@ -106,7 +106,7 @@ export const ScopeBar = (props: ScopeBarProps) => {
   };
 
   const handleTargetButtonClick = () => {
-    sendTrackingEvent(trackingEvents.TARGET_BUTTON_CLICKED);
+    sendUserActionTrackingEvent(trackingEvents.TARGET_BUTTON_CLICKED);
     if (props.scope && props.scope.code.codeDetailsList.length === 1) {
       handleGoToCodeLocation(props.scope.code.codeDetailsList[0]);
     }

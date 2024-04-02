@@ -7,9 +7,9 @@ import {
   ChangeScopePayload,
   ChangeViewPayload
 } from "../../../types";
-import { HistoryManager } from "../../../utils/HistoryManager";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Scope } from "../../common/App/types";
+import { HistoryManager } from "./HistoryManager";
 import { HistoryNavigationPanel } from "./HistoryNavigationPanel";
 import { ScopeNavigationProps } from "./types";
 

@@ -54,10 +54,6 @@ export type EndpointHighNumberOfQueriesMetrics = [
   {
     id: "TypicalQueriesCount";
     value: number;
-  },
-  {
-    id: "Duration";
-    value: Duration;
   }
 ];
 

@@ -1,8 +1,8 @@
 import { useContext } from "react";
 import { actions as globalActions } from "../../../actions";
 import { OpenInstallationWizardPayload } from "../../../types";
+import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { isDigmaEngineRunning } from "../../../utils/isDigmaEngineRunning";
-import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { DigmaLogoFlatIcon } from "../../common/icons/16px/DigmaLogoFlatIcon";
 import { FourPointedStarIcon } from "../../common/icons/16px/FourPointedStarIcon";
@@ -17,7 +17,7 @@ export const KebabMenu = (props: KebabMenuProps) => {
   const config = useContext(ConfigContext);
 
   const handleOnboardingClick = () => {
-    sendTrackingEvent(trackingEvents.ONBOARDING_LINK_CLICKED);
+    sendUserActionTrackingEvent(trackingEvents.ONBOARDING_LINK_CLICKED);
     window.sendMessageToDigma<OpenInstallationWizardPayload>({
       action: globalActions.OPEN_INSTALLATION_WIZARD,
       payload: {
@@ -28,7 +28,7 @@ export const KebabMenu = (props: KebabMenuProps) => {
   };
 
   const handleLocalEngineClick = () => {
-    sendTrackingEvent(trackingEvents.LOCAL_ENGINE_LINK_CLICKED);
+    sendUserActionTrackingEvent(trackingEvents.LOCAL_ENGINE_LINK_CLICKED);
     window.sendMessageToDigma<OpenInstallationWizardPayload>({
       action: globalActions.OPEN_INSTALLATION_WIZARD,
       payload: {

@@ -3,4 +3,5 @@ import { Link as CommonLink } from "../../../../common/v3/Link";
 
 export const Link = styled(CommonLink)`
   padding: 6px 0;
+  max-width: 100%;
 `;

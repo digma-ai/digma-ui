@@ -1,6 +1,6 @@
+import { sendUserActionTrackingEvent } from "../../../../../../utils/actions/sendUserActionTrackingEvent";
 import { getDurationString } from "../../../../../../utils/getDurationString";
 import { roundTo } from "../../../../../../utils/roundTo";
-import { sendTrackingEvent } from "../../../../../../utils/sendTrackingEvent";
 import { trimEndpointScheme } from "../../../../../../utils/trimEndpointScheme";
 import { Tooltip } from "../../../../../common/Tooltip";
 import { Link } from "../../../../styles";
@@ -17,9 +17,12 @@ export const BottleneckInsight = (props: BottleneckInsightProps) => {
   };
 
   const handleCreateJiraTicketButtonClick = (event: string) => {
-    sendTrackingEvent(trackingEvents.JIRA_TICKET_INFO_BUTTON_CLICKED, {
-      insightType: props.insight.type
-    });
+    sendUserActionTrackingEvent(
+      trackingEvents.JIRA_TICKET_INFO_BUTTON_CLICKED,
+      {
+        insightType: props.insight.type
+      }
+    );
     props.onJiraTicketCreate &&
       props.onJiraTicketCreate(props.insight, undefined, event);
   };

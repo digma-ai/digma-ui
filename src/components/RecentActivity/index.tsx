@@ -7,8 +7,8 @@ import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
 import { trackingEvents as globalTrackingEvents } from "../../trackingEvents";
 import { ChangeEnvironmentPayload } from "../../types";
+import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 import { groupBy } from "../../utils/groupBy";
-import { sendTrackingEvent } from "../../utils/sendTrackingEvent";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { EnvironmentType } from "../common/App/types";
 import { CursorFollower } from "../common/CursorFollower";
@@ -52,9 +52,12 @@ const viewModeOptions: ViewModeOption[] = [
 ];
 
 const handleTroubleshootButtonClick = () => {
-  sendTrackingEvent(globalTrackingEvents.TROUBLESHOOTING_LINK_CLICKED, {
-    origin: "recent activity"
-  });
+  sendUserActionTrackingEvent(
+    globalTrackingEvents.TROUBLESHOOTING_LINK_CLICKED,
+    {
+      origin: "recent activity"
+    }
+  );
 
   window.sendMessageToDigma({
     action: globalActions.OPEN_TROUBLESHOOTING_GUIDE

@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import { openURLInDefaultBrowser } from "../../../utils/openURLInDefaultBrowser";
-import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
+import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
+import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { DeploymentType, EnvironmentType } from "../../common/App/types";
 import { IconTag } from "../../common/IconTag";
@@ -22,9 +22,12 @@ export const EnvironmentTypePanel = (props: EnvironmentTypePanelProps) => {
     const typeData = environmentTypes.find((x) => x.type === type);
 
     if (typeData) {
-      sendTrackingEvent(trackingEvents.ENVIRONMENT_TYPE_BUTTON_CLICKED, {
-        type: typeData.title
-      });
+      sendUserActionTrackingEvent(
+        trackingEvents.ENVIRONMENT_TYPE_BUTTON_CLICKED,
+        {
+          type: typeData.title
+        }
+      );
     }
 
     if (type === "shared" && !isHelmDeployment) {

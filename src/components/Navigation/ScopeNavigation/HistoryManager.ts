@@ -1,4 +1,4 @@
-import { Environment, Scope } from "../components/common/App/types";
+import { Environment, Scope } from "../../common/App/types";
 
 const MAX_STEPS = 15;
 

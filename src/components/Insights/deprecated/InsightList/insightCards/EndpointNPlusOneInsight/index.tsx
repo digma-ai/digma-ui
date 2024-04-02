@@ -1,9 +1,9 @@
 import { useContext } from "react";
 import { usePagination } from "../../../../../../hooks/usePagination";
 import { InsightType } from "../../../../../../types";
+import { sendUserActionTrackingEvent } from "../../../../../../utils/actions/sendUserActionTrackingEvent";
 import { getDurationString } from "../../../../../../utils/getDurationString";
 import { roundTo } from "../../../../../../utils/roundTo";
-import { sendTrackingEvent } from "../../../../../../utils/sendTrackingEvent";
 import { ConfigContext } from "../../../../../common/App/ConfigContext";
 import { Button } from "../../../../../common/Button";
 import { Pagination } from "../../../../../common/Pagination";
@@ -43,9 +43,12 @@ export const EndpointNPlusOneInsight = (
     spanCodeObjectId: string,
     event: string
   ) => {
-    sendTrackingEvent(trackingEvents.JIRA_TICKET_INFO_BUTTON_CLICKED, {
-      insightType: props.insight.type
-    });
+    sendUserActionTrackingEvent(
+      trackingEvents.JIRA_TICKET_INFO_BUTTON_CLICKED,
+      {
+        insightType: props.insight.type
+      }
+    );
     props.onJiraTicketCreate &&
       props.onJiraTicketCreate(props.insight, spanCodeObjectId, event);
   };

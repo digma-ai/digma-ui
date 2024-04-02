@@ -1,4 +1,4 @@
-import { sendTrackingEvent } from "../../../../utils/sendTrackingEvent";
+import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { CodeDetails } from "../../../common/App/types";
 import { MenuList } from "../../common/MenuList";
 import { trackingEvents } from "../../tracking";
@@ -7,7 +7,7 @@ import { TargetButtonMenuProps } from "./types";
 
 export const TargetButtonMenu = (props: TargetButtonMenuProps) => {
   const handleMenuItemClick = (codeDetails: CodeDetails) => {
-    sendTrackingEvent(trackingEvents.CODE_LOCATION_SELECTED);
+    sendUserActionTrackingEvent(trackingEvents.CODE_LOCATION_SELECTED);
     props.onGoToCodeLocation(codeDetails);
   };
 

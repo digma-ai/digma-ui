@@ -1,4 +1,4 @@
-import { sendTrackingEvent } from "../../../utils/sendTrackingEvent";
+import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { EnvironmentIcon } from "../../common/EnvironmentIcon";
 import { ChevronIcon } from "../../common/icons/16px/ChevronIcon";
 import { GlobeIcon } from "../../common/icons/16px/GlobeIcon";
@@ -11,7 +11,7 @@ import { EnvironmentBarProps } from "./types";
 export const EnvironmentBar = (props: EnvironmentBarProps) => {
   const handleEnvironmentBarClick = () => {
     if (!props.isDisabled) {
-      sendTrackingEvent(trackingEvents.ENVIRONMENT_BAR_CLICKED);
+      sendUserActionTrackingEvent(trackingEvents.ENVIRONMENT_BAR_CLICKED);
       props.onClick();
     }
   };
