@@ -17,7 +17,7 @@ export const Container = styled.div<ContainerProps>`
       if ($focused) {
         return theme.colors.v3.stroke.brandPrimary;
       }
-      return theme.colors.v3.stroke.dark;
+      return theme.colors.v3.stroke.secondary;
     }};
 
   ${({ theme, $isInvalid }) => {
