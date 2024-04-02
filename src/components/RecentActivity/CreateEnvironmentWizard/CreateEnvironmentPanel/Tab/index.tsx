@@ -9,7 +9,11 @@ import { TabProps } from "./types";
 const getState = (index: number, theme: DefaultTheme, state: StepStatus) => {
   switch (state) {
     case "completed":
-      return <CheckIcon color={theme.colors.v3.status.success} />;
+      return (
+        <s.CompletedIcon>
+          <CheckIcon color={"currentColor"} />
+        </s.CompletedIcon>
+      );
     case "error":
       return <ErrorIcon size={20} color={theme.colors.v3.status.high} />;
     default:

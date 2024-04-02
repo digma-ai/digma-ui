@@ -20,10 +20,10 @@ const TextFieldComponent = (
     <s.TextInputControl>
       <s.Container
         $focused={isFocused}
-        $isInValid={props.isInValid}
+        $isInvalid={props.isInvalid}
         className={props.className}
       >
-        <s.IconContainer $isInValid={props.isInValid}>
+        <s.IconContainer $isInvalid={props.isInvalid}>
           {props.icon && <props.icon size={16} color={"currentColor"} />}
         </s.IconContainer>
         <s.Input
@@ -34,7 +34,7 @@ const TextFieldComponent = (
           onFocus={handleFocus}
           onBlur={handleBlur}
           disabled={props.disabled}
-          $isInValid={props.isInValid}
+          $isInvalid={props.isInvalid}
           ref={ref}
         />
         {props.inputEndContent}

@@ -9,8 +9,8 @@ export const Container = styled.div<ContainerProps>`
   padding: 4px 6px;
   border-radius: 4px;
   border: 1px solid
-    ${({ theme, $focused, $isInValid }) => {
-      if ($isInValid) {
+    ${({ theme, $focused, $isInvalid }) => {
+      if ($isInvalid) {
         return theme.colors.v3.status.high;
       }
 
@@ -20,8 +20,8 @@ export const Container = styled.div<ContainerProps>`
       return theme.colors.v3.stroke.dark;
     }};
 
-  ${({ theme, $isInValid }) => {
-    if (!$isInValid) {
+  ${({ theme, $isInvalid }) => {
+    if (!$isInvalid) {
       return;
     }
 
@@ -41,7 +41,7 @@ export const Input = styled.input<InputProps>`
   color: ${({ theme }) => theme.colors.v3.text.primary};
 
   &::placeholder {
-    ${({ theme, $isInValid }) => {
+    ${({ theme, $isInvalid: $isInValid }) => {
       if ($isInValid) {
         return `color:${theme.colors.v3.status.high}`;
       }
@@ -52,8 +52,8 @@ export const Input = styled.input<InputProps>`
 export const IconContainer = styled.div<IconContainerProps>`
   display: flex;
   align-items: center;
-  ${({ theme, $isInValid }) => {
-    if ($isInValid) {
+  ${({ theme, $isInvalid }) => {
+    if ($isInvalid) {
       return `color:${theme.colors.v3.status.high}`;
     }
   }};

@@ -8,20 +8,20 @@ export interface TextFieldProps {
   onChange: ChangeEventHandler<HTMLInputElement>;
   className?: string;
   disabled?: boolean;
-  isInValid?: boolean;
+  isInvalid?: boolean;
   error?: string;
   icon?: React.ComponentType<IconProps>;
 }
 
 export interface ContainerProps {
   $focused: boolean;
-  $isInValid?: boolean;
+  $isInvalid?: boolean;
 }
 
 export interface IconContainerProps {
-  $isInValid?: boolean;
+  $isInvalid?: boolean;
 }
 
 export interface InputProps {
-  $isInValid?: boolean;
+  $isInvalid?: boolean;
 }

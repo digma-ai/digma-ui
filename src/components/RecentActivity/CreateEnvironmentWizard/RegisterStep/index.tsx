@@ -113,7 +113,7 @@ export const RegisterStep = (props: RegisterStepProps) => {
             <s.TextInput
               icon={UserIcon}
               placeholder={"Enter your full name"}
-              isInValid={!!errors.fullName}
+              isInvalid={!!errors.fullName}
               error={errors.fullName?.message}
               {...field}
             />
@@ -128,7 +128,7 @@ export const RegisterStep = (props: RegisterStepProps) => {
             <s.TextInput
               icon={EnvelopeIcon}
               placeholder={"Enter your email"}
-              isInValid={!!errors.email}
+              isInvalid={!!errors.email}
               error={errors.email?.message}
               {...field}
             />

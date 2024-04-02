@@ -1,5 +1,6 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { useTheme } from "styled-components";
+import { isNull } from "../../../../typeGuards/isNull";
 import { CheckCircleIcon } from "../../../common/icons/12px/CheckCircleIcon";
 import { ErrorIcon } from "../../../common/icons/12px/ErrorIcon";
 import { Button } from "../../../common/v3/Button";
@@ -38,7 +39,7 @@ export const EnvironmentNameStep = ({
   };
 
   const getInputState = () => {
-    if (name === null) {
+    if (isNull(name)) {
       return <></>;
     }
 
@@ -62,12 +63,12 @@ export const EnvironmentNameStep = ({
         <s.NameInput
           onChange={changeHandler}
           inputEndContent={getInputState()}
-          isInValid={!isValid}
+          isInvalid={!isValid}
         />
         <Button
           buttonType="primary"
           onClick={handleNext}
-          isDisabled={!isValid || name === null}
+          isDisabled={!isValid || isNull(name)}
           label="Next"
         />
       </s.InputContainer>

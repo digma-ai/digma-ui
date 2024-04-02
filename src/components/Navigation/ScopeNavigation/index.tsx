@@ -6,6 +6,7 @@ import { ChangeScopePayload, ChangeViewPayload } from "../../../types";
 import { HistoryManager } from "../../../utils/HistoryManager";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Scope } from "../../common/App/types";
+import { ChangeEnvironmentPayload } from "../types";
 import { HistoryNavigationPanel } from "./HistoryNavigationPanel";
 import { ScopeNavigationProps } from "./types";
 
@@ -80,6 +81,15 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
             action: globalActions.CHANGE_VIEW,
             payload: {
               view: historyStep.tabId
+            }
+          });
+        }
+
+        if (historyStep && historyStep.environment) {
+          window.sendMessageToDigma<ChangeEnvironmentPayload>({
+            action: globalActions.CHANGE_ENVIRONMENT,
+            payload: {
+              environment: historyStep.environment.id
             }
           });
         }
