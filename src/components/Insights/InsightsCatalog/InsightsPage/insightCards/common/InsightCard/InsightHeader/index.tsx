@@ -127,6 +127,7 @@ export const InsightHeader = ({
               title={statusTooltipContent}
               isDisabled={!statusTooltipContent}
               placement={"bottom-end"}
+              fullWidth={true}
             >
               <InsightStatusBadge status={insight.status} />
             </Tooltip>
