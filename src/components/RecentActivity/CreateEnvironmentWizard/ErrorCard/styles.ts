@@ -18,13 +18,19 @@ export const Container = styled.div<ContainerProps>`
 
   ${({ $transitionClassName, $transitionDuration }) => {
     return `
-    &.${$transitionClassName}-exit {
-      opacity: 1;
+    &.${$transitionClassName}-enter {
+      transform: translateX(-100%);
     }
-    
+    &.${$transitionClassName}-enter-active {
+      transform: translateX(0);
+      transition:all ${$transitionDuration}ms ease;
+    }
+    &.${$transitionClassName}-exit {
+      transform: translateX(0);
+    }
     &.${$transitionClassName}-exit-active {
-      opacity: 0;
-      transition: opacity ${$transitionDuration}ms ease-out;
+      transform: translateX(100%);
+      transition:all ${$transitionDuration}ms ease;
     }`;
   }}
 `;
@@ -47,4 +53,9 @@ export const Description = styled.div`
 
 export const CrossButton = styled(Button)`
   padding: 0;
+`;
+
+export const ErrorIconContainer = styled.div`
+  display: flex;
+  color: ${({ theme }) => theme.colors.v3.icon.white};
 `;

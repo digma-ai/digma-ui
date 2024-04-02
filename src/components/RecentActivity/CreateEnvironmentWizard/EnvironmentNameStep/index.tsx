@@ -44,9 +44,13 @@ export const EnvironmentNameStep = ({
     }
 
     return isValid ? (
-      <CheckCircleIcon color={theme.colors.v3.status.success} />
+      <s.CheckIconContainer>
+        <CheckCircleIcon color={"currentColor"} />
+      </s.CheckIconContainer>
     ) : (
-      <ErrorIcon color={theme.colors.v3.status.high} />
+      <s.ErrorIconContainer>
+        <ErrorIcon color={"currentColor"} />
+      </s.ErrorIconContainer>
     );
   };
 

@@ -2,6 +2,7 @@ import { Meta, StoryObj } from "@storybook/react";
 import { CreateEnvironmentWizard } from ".";
 import { ConfigContext, initialState } from "../../common/App/ConfigContext";
 import { DeploymentType } from "../../common/App/types";
+import { actions } from "../actions";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof CreateEnvironmentWizard> = {
@@ -23,6 +24,32 @@ export const Default: Story = {
     onClose: () => {
       // close
     }
+  }
+};
+
+export const Errored: Story = {
+  args: {
+    onClose: () => {
+      // close
+    }
+  },
+  play: () => {
+    setTimeout(() => {
+      window.setTimeout(() => {
+        window.postMessage({
+          type: "digma",
+          action: actions.ENVIRONMENT_CREATED,
+          payload: {
+            errors: [
+              {
+                errorCode: "ExistingEnvironmentName",
+                errorDescription: "some errororroro"
+              }
+            ]
+          }
+        });
+      });
+    }, 1000);
   }
 };
 

@@ -38,3 +38,13 @@ export const InputContainer = styled.div`
 export const NameInput = styled(TextField)`
   width: 220px;
 `;
+
+export const CheckIconContainer = styled.div`
+  display: flex;
+  color: ${({ theme }) => theme.colors.v3.status.success};
+`;
+
+export const ErrorIconContainer = styled.div`
+  display: flex;
+  color: ${({ theme }) => theme.colors.v3.status.high};
+`;

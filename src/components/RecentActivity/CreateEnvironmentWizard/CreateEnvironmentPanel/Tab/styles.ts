@@ -40,7 +40,12 @@ export const Name = styled.div<NameProps>`
   opacity: ${({ $isActive }) => (!$isActive ? 0.5 : 1)};
 `;
 
-export const CompletedIcon = styled.div`
+export const CheckIconContainer = styled.div`
   display: flex;
   color: ${({ theme }) => theme.colors.v3.status.success};
+`;
+
+export const ErrorIconContainer = styled.div`
+  display: flex;
+  color: ${({ theme }) => theme.colors.v3.status.high};
 `;

@@ -22,6 +22,9 @@ export const ErrorCard = ({ title, description }: ErrorCardProps) => {
 
   useEffect(() => {
     startTimer();
+    return () => {
+      window.clearTimeout(hideTimerId.current);
+    };
   }, []);
 
   return (
@@ -41,7 +44,9 @@ export const ErrorCard = ({ title, description }: ErrorCardProps) => {
           startTimer();
         }}
       >
-        <ErrorIcon size={16} color={"#fff"} />
+        <s.ErrorIconContainer>
+          <ErrorIcon size={16} color={"currentColor"} />
+        </s.ErrorIconContainer>
         <s.ContentContainer>
           <s.Title>{title}</s.Title>
           <s.Description>{description}</s.Description>
@@ -49,7 +54,7 @@ export const ErrorCard = ({ title, description }: ErrorCardProps) => {
 
         <s.CrossButton
           buttonType="tertiary"
-          icon={() => <CrossIcon />}
+          icon={CrossIcon}
           onClick={() => setIsVisible(false)}
         />
       </s.Container>

@@ -19,7 +19,9 @@ export const trackingEvents = addPrefix(
       "create new environment form submitted",
     CANCEL_BUTTON_CLICKED_ON_ENVIRONMENT_CREATION_WIZARD:
       "cancel button clicked environment creation wizard",
-    FAILED_TO_CREATE_ENVIRONMENT: "failed to create environment"
+    FAILED_TO_CREATE_ENVIRONMENT: "failed to create environment",
+    CREATE_ENVIRONMENT_WIZARD_ENV_TYPE_SELECTED:
+      "create environment wizard env type selected"
   },
   " "
 );

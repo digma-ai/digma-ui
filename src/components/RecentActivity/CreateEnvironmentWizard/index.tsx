@@ -72,7 +72,7 @@ export const CreateEnvironmentWizard = ({
     };
 
     const markFailedSteps = (steps: StepDefinitions[]) => {
-      steps.forEach((step) => (step.status = "error"));
+      steps.map((step) => ({ ...step, status: "error" }));
       setStepsStatus(stepsStatus);
     };
 
@@ -177,12 +177,7 @@ export const CreateEnvironmentWizard = ({
 
   const getStepVisibility = (key: string) => {
     const stepIndex = getSteps().findIndex((x) => x.key == key);
-
-    if (stepIndex === currentStep) {
-      return true;
-    }
-
-    return false;
+    return stepIndex === currentStep;
   };
 
   return (
@@ -243,6 +238,10 @@ export const CreateEnvironmentWizard = ({
                 handleEnvironmentTypeSelect={(type) => {
                   newEnvironment.type = type;
                   setNewEnvironment(newEnvironment);
+                  sendUserActionEvent(
+                    trackingEvents.ENVIRONMENT_TYPE_BUTTON_CLICKED,
+                    { type }
+                  );
                 }}
                 onNext={goToNextStep}
               />
@@ -257,7 +256,7 @@ export const CreateEnvironmentWizard = ({
             />
           </s.Step>
         )}
-        {!!errors.length && <ErrorsPanel errors={errors} />}
+        {errors.length > 0 && <ErrorsPanel errors={errors} />}
       </s.StepContainer>
     </s.Container>
   );
