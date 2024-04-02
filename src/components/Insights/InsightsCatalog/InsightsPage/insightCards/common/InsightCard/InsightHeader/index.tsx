@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import { isString } from "../../../../../../../../typeGuards/isString";
 import { formatTimeDistance } from "../../../../../../../../utils/formatTimeDistance";
 import {
   InsightTypeInfo,
@@ -12,10 +13,18 @@ import { NewTag } from "../../../../../../../common/v3/NewTag";
 import { Tag } from "../../../../../../../common/v3/Tag";
 import { TagType } from "../../../../../../../common/v3/Tag/types";
 import { Tooltip } from "../../../../../../../common/v3/Tooltip";
+import { isEndpointInsight, isSpanInsight } from "../../../../../../typeGuards";
+import {
+  GenericCodeObjectInsight,
+  InsightStatus
+} from "../../../../../../types";
 import { AsyncTag } from "./AsyncTag";
 import { InsightStatusBadge } from "./InsightStatusBadge";
+import { InsightStatusTooltipContent } from "./InsightStatusTooltipContent";
 import * as s from "./styles";
 import { InsightHeaderProps } from "./types";
+
+const IS_NEW_TIME_LIMIT = 1000 * 60 * 10; // in milliseconds
 
 const getTagType = (criticality: number): TagType => {
   if (criticality < 0.2) {
@@ -40,21 +49,38 @@ const getTagTitle = (
   return <s.TagTitle>{title}</s.TagTitle>;
 };
 
+const renderInsightStatusTooltipContent = (
+  insight: GenericCodeObjectInsight
+) => {
+  switch (insight.status) {
+    case InsightStatus.Active:
+    case InsightStatus.PossiblyFixed:
+    case InsightStatus.Regression:
+      return <InsightStatusTooltipContent insight={insight} />;
+  }
+
+  return null;
+};
+
 export const InsightHeader = ({
-  insightType,
-  criticality,
-  spanInfo,
+  insight,
   onSpanLinkClick,
   lastUpdateTimer,
-  isAsync,
-  isNew,
-  status
+  isAsync
 }: InsightHeaderProps) => {
   const config = useContext(ConfigContext);
 
-  const insightTypeInfo = getInsightTypeInfo(insightType);
-  const tagType = getTagType(criticality);
-  const tagTitle = getTagTitle(insightTypeInfo, criticality);
+  const insightTypeInfo = getInsightTypeInfo(insight.type);
+  const tagType = getTagType(insight.criticality);
+  const tagTitle = getTagTitle(insightTypeInfo, insight.criticality);
+  const statusTooltipContent = renderInsightStatusTooltipContent(insight);
+  const isNew = isString(insight.firstDetected)
+    ? Date.now() - new Date(insight.firstDetected).valueOf() < IS_NEW_TIME_LIMIT
+    : false;
+  const spanInfo =
+    isSpanInsight(insight) || isEndpointInsight(insight)
+      ? insight.spanInfo
+      : undefined;
 
   const handleSpanLinkClick = () => {
     if (spanInfo) {
@@ -96,7 +122,15 @@ export const InsightHeader = ({
         <s.BadgeContainer>
           {isAsync && <AsyncTag />}
           {isNew && <NewTag />}
-          {status && <InsightStatusBadge status={status} />}
+          {insight.status && (
+            <Tooltip
+              title={statusTooltipContent}
+              isDisabled={!statusTooltipContent}
+              placement={"bottom-end"}
+            >
+              <InsightStatusBadge status={insight.status} />
+            </Tooltip>
+          )}
         </s.BadgeContainer>
       </s.TitleRow>
       {!config.scope?.span && spanInfo && (

@@ -2,6 +2,7 @@ import {
   EndpointSpanNPlusOneInsight,
   InsightCategory,
   InsightScope,
+  InsightStatus,
   InsightType
 } from "../../../../types";
 
@@ -88,5 +89,9 @@ export const mockedEndpointSpanNPlusOneInsight: EndpointSpanNPlusOneInsight = {
     "method:org.springframework.samples.petclinic.sample.SampleInsightsController$_$genNPlusOneWithoutInternalSpan",
   customStartTime: null,
   actualStartTime: "2023-06-16T10:30:33.027Z",
-  sourceSpanCodeObjectInsight: ""
+  sourceSpanCodeObjectInsight: "",
+  status: InsightStatus.Active,
+  lastDeactivated: "2023-06-16T10:30:33.027Z",
+  lastReopen: "2023-06-16T10:30:33.027Z",
+  firstFixed: "2023-06-16T10:30:33.027Z"
 };
