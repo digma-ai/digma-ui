@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { caption2RegularTypography } from "../../App/typographies";
+import { footnoteRegularTypography } from "../../App/typographies";
 import { ContainerProps, IconContainerProps, InputProps } from "./types";
 
 export const Container = styled.div<ContainerProps>`
@@ -67,5 +67,5 @@ export const TextInputControl = styled.div`
 
 export const ErrorMessage = styled.div`
   color: ${({ theme }) => theme.colors.v3.status.high};
-  ${caption2RegularTypography}
+  ${footnoteRegularTypography}
 `;

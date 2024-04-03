@@ -20,6 +20,7 @@ export const Default: Story = {
   args: {
     errors: [
       {
+        id: "test",
         title: "Incorrect name",
         description: "Please use a valid name for your environment."
       }

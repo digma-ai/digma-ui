@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import { dispatcher } from "../../../dispatcher";
 import { sendTrackingEvent } from "../../../utils/actions/sendTrackingEvent";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
@@ -96,6 +97,7 @@ export const CreateEnvironmentWizard = ({
 
       setErrors(
         errors.map((x) => ({
+          id: uuidv4(),
           title: errorsDetails[x.errorCode] || x.errorCode,
           description: x.errorDescription
         }))
