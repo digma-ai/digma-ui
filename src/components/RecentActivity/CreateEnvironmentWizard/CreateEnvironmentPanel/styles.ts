@@ -52,4 +52,21 @@ export const CancelButton = styled(Button)`
 
 export const BackButton = styled(Button)`
   padding: 0;
+  color: ${({ theme }) => theme.colors.v3.text.tertiary};
+
+  span {
+    color: ${({ theme }) => theme.colors.v3.text.tertiary};
+
+    &:hover {
+      color: ${({ theme }) => theme.colors.v3.text.white};
+    }
+  }
+
+  &:hover:enabled {
+    color: ${({ theme }) => theme.colors.v3.text.white};
+
+    span {
+      color: ${({ theme }) => theme.colors.v3.text.white};
+    }
+  }
 `;

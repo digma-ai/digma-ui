@@ -14,7 +14,7 @@ import { DesktopIcon } from "../../common/icons/DesktopIcon";
 import { InfinityIcon } from "../../common/icons/InfinityIcon";
 import { PlayButtonWithCursorIcon } from "../../common/icons/PlayButtonWithCursorIcon";
 import { SetupOrgDigmaPanel } from "../SetupOrgDigmaPanel";
-import { Overlay } from "../styles";
+import { Overlay } from "../common/Overlay";
 import { trackingEvents } from "../tracking";
 import * as s from "./styles";
 import {

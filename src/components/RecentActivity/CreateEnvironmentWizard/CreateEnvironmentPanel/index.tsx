@@ -1,5 +1,8 @@
+import { useState } from "react";
 import { ChevronIcon } from "../../../common/icons/16px/ChevronIcon";
 import { Direction } from "../../../common/icons/types";
+import { Overlay } from "../../common/Overlay";
+import { CancelConfirmation } from "../CancelConfirmation";
 import { Tab } from "./Tab";
 import * as s from "./styles";
 import { CreateEnvironmentPanelProps } from "./types";
@@ -11,6 +14,7 @@ export const CreateEnvironmentPanel = ({
   backDisabled,
   cancelDisabled
 }: CreateEnvironmentPanelProps) => {
+  const [showCancelConfirmation, setShowCancelConfirmation] = useState(false);
   return (
     <s.Container>
       <s.BackButton
@@ -39,10 +43,23 @@ export const CreateEnvironmentPanel = ({
         <s.CancelButton
           buttonType="secondary"
           label={"Cancel"}
-          onClick={onCancel}
+          onClick={() => setShowCancelConfirmation(true)}
           isDisabled={cancelDisabled}
         />
       </s.ContentContainer>
+      {showCancelConfirmation && (
+        <Overlay onClose={() => setShowCancelConfirmation(false)} tabIndex={-1}>
+          <CancelConfirmation
+            onClose={() => {
+              setShowCancelConfirmation(false);
+            }}
+            onCancel={() => {
+              setShowCancelConfirmation(false);
+              onCancel();
+            }}
+          />
+        </Overlay>
+      )}
     </s.Container>
   );
 };

@@ -18,8 +18,7 @@ export const EnvironmentTab = (props: EnvironmentTabProps) => {
   const config = useContext(ConfigContext);
   const isMenuVisible =
     window.recentActivityIsEnvironmentManagementEnabled === true &&
-    ((config.digmaStatus?.connection.status && !props.environment.isPending) ||
-      props.environment.isPending);
+    config.digmaStatus?.connection.status;
 
   const containerRef = useRef<HTMLLIElement>(null);
 

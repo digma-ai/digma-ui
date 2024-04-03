@@ -1,6 +1,6 @@
 import { Allotment } from "allotment";
 import "allotment/dist/style.css";
-import { KeyboardEvent, useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import useDimensions from "react-cool-dimensions";
 import { actions as globalActions } from "../../actions";
 import { ChangeEnvironmentPayload } from "../../types";
@@ -19,6 +19,7 @@ import { ObservabilityStatusBadge } from "./ObservabilityStatusBadge";
 import { RecentActivityTable, isRecent } from "./RecentActivityTable";
 import { Toggle } from "./Toggle";
 import { actions } from "./actions";
+import { Overlay } from "./common/Overlay";
 import * as s from "./styles";
 import {
   EntrySpan,
@@ -165,12 +166,6 @@ export const RecentActivity = (props: RecentActivityProps) => {
     setEnvironmentToDelete(undefined);
   };
 
-  const handleOverlayKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === "Escape") {
-      setEnvironmentToDelete(undefined);
-    }
-  };
-
   const renderContent = () => {
     if (
       (!selectedEnvironment ||
@@ -262,12 +257,15 @@ export const RecentActivity = (props: RecentActivityProps) => {
         </Allotment.Pane>
       </Allotment>
       {environmentToDelete && (
-        <s.Overlay onKeyDown={handleOverlayKeyDown} tabIndex={-1}>
+        <Overlay
+          onClose={() => setEnvironmentToDelete(undefined)}
+          tabIndex={-1}
+        >
           <DeleteEnvironmentConfirmation
             onClose={handleCloseDeleteConfirmation}
             onDelete={handleConfirmEnvironmentDeletion}
           />
-        </s.Overlay>
+        </Overlay>
       )}
     </s.Container>
   );

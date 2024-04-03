@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { LAYERS } from "../common/App/styles";
 
 const RECENT_ACTIVITY_MIN_WIDTH = 550; // in pixels
 
@@ -75,17 +74,6 @@ export const LiveViewContainer = styled.div`
   padding-left: 24px;
   height: 100%;
   box-sizing: border-box;
-`;
-
-export const Overlay = styled.div`
-  position: absolute;
-  inset: 0;
-  background: rgb(18 18 21 / 70%);
-  display: flex;
-  justify-content: center;
-  padding: 80px 0;
-  overflow: auto;
-  z-index: ${LAYERS.OVERLAY};
 `;
 
 export const NoDataContainer = styled.div`
