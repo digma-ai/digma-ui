@@ -1,3 +1,4 @@
+import { View } from "./components/Main/types";
 import { Environment } from "./components/common/App/types";
 import { Duration } from "./globals";
 
@@ -97,5 +98,5 @@ export interface ChangeScopePayload {
 }
 
 export interface ChangeViewPayload {
-  view: string;
+  view: View;
 }

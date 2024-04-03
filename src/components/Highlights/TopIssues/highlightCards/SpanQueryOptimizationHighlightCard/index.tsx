@@ -1,6 +1,8 @@
-import { createColumnHelper } from "@tanstack/react-table";
+import { Row, createColumnHelper } from "@tanstack/react-table";
+import { useContext } from "react";
 import { Duration } from "../../../../../globals";
 import { getDurationString } from "../../../../../utils/getDurationString";
+import { ConfigContext } from "../../../../common/App/ConfigContext";
 import { Table } from "../../../common/Table";
 import { TableTag } from "../../../common/TableTag";
 import { TableText } from "../../../common/TableText";
@@ -8,12 +10,15 @@ import { AssetLink } from "../../common/AssetLink";
 import { HighlightCard } from "../../common/HighlightCard";
 import { EnvironmentData, SpanQueryOptimizationMetrics } from "../../types";
 import { addEnvironmentColumns } from "../addEnvironmentColumns";
+import { goToEnvironmentIssues } from "../goToEnvironmentIssues";
 import { DescriptionContainer } from "../styles";
 import { SpanQueryOptimizationHighlightCardProps } from "./types";
 
 export const SpanQueryOptimizationHighlightCard = ({
   data
 }: SpanQueryOptimizationHighlightCardProps) => {
+  const config = useContext(ConfigContext);
+
   const columnHelper =
     createColumnHelper<EnvironmentData<SpanQueryOptimizationMetrics>>();
 
@@ -62,6 +67,16 @@ export const SpanQueryOptimizationHighlightCard = ({
 
   const columns = addEnvironmentColumns(columnHelper, metricsColumns);
 
+  const handleTableRowClick = (
+    row: Row<EnvironmentData<SpanQueryOptimizationMetrics>>
+  ) => {
+    goToEnvironmentIssues(
+      config.environments,
+      row.original.environmentName,
+      data.insightType
+    );
+  };
+
   return (
     <HighlightCard
       highlight={data}
@@ -74,6 +89,7 @@ export const SpanQueryOptimizationHighlightCard = ({
           <Table<EnvironmentData<SpanQueryOptimizationMetrics>>
             columns={columns}
             data={data.environments}
+            onRowClick={handleTableRowClick}
           />
         </>
       }

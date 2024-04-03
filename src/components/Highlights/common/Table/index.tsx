@@ -1,4 +1,5 @@
 import {
+  Row,
   flexRender,
   getCoreRowModel,
   useReactTable
@@ -13,7 +14,7 @@ import { TableProps } from "./types";
 
 const PAGE_SIZE = 5;
 
-export const Table = <T,>({ columns, data, id }: TableProps<T>) => {
+export const Table = <T,>({ columns, data, id, onRowClick }: TableProps<T>) => {
   const [tableData, setTableData] = useState({
     pageItems: data.slice(0, PAGE_SIZE)
   });
@@ -38,6 +39,12 @@ export const Table = <T,>({ columns, data, id }: TableProps<T>) => {
     getCoreRowModel: getCoreRowModel()
   });
 
+  const handleTableBodyRowClick = (row: Row<T>) => {
+    if (onRowClick) {
+      onRowClick(row);
+    }
+  };
+
   return (
     <>
       <s.Table>
@@ -59,7 +66,10 @@ export const Table = <T,>({ columns, data, id }: TableProps<T>) => {
         </s.TableHead>
         <tbody>
           {table.getRowModel().rows.map((row) => (
-            <s.TableBodyRow key={row.id}>
+            <s.TableBodyRow
+              key={row.id}
+              onClick={() => handleTableBodyRowClick(row)}
+            >
               {row.getVisibleCells().map((cell) => (
                 <s.TableBodyCell key={cell.id}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}

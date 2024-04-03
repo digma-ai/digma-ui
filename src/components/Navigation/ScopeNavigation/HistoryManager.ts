@@ -1,3 +1,4 @@
+import { View } from "../../Main/types";
 import { Environment, Scope } from "../../common/App/types";
 
 const MAX_STEPS = 15;
@@ -5,13 +6,13 @@ const MAX_STEPS = 15;
 export interface HistoryStep {
   scope: Scope;
   environment?: Environment | null;
-  tabId: string | null;
+  tabId: View | null;
 }
 
 export interface UpdateStepParams {
   scope?: Scope;
   environment?: Environment | null;
-  tabId?: string;
+  tabId?: View;
 }
 
 export interface HistoryData {
