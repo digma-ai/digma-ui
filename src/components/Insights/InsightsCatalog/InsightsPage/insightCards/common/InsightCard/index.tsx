@@ -32,7 +32,6 @@ import { useMarkingAsRead } from "./hooks/useMarkingAsRead";
 import * as s from "./styles";
 import { InsightCardProps } from "./types";
 
-const IS_NEW_TIME_LIMIT = 1000 * 60 * 10; // in milliseconds
 const HIGH_CRITICALITY_THRESHOLD = 0.8;
 
 export const InsightCard = (props: InsightCardProps) => {
@@ -329,11 +328,6 @@ export const InsightCard = (props: InsightCardProps) => {
 
   const { showBanner, showTimer } = getRecalculateVisibilityParams();
 
-  const isNew = isString(props.insight.firstDetected)
-    ? Date.now() - new Date(props.insight.firstDetected).valueOf() <
-      IS_NEW_TIME_LIMIT
-    : false;
-
   return (
     <s.StyledInsightCard
       $isDismissed={props.insight.isDismissed}
@@ -342,17 +336,8 @@ export const InsightCard = (props: InsightCardProps) => {
       onClick={handleClick}
       header={
         <InsightHeader
-          spanInfo={
-            isSpanInsight(props.insight) || isEndpointInsight(props.insight)
-              ? props.insight.spanInfo
-              : undefined
-          }
-          status={insightStatus}
-          isNew={isNew}
+          insight={props.insight}
           isAsync={props.isAsync}
-          insightType={props.insight.type}
-          importance={props.insight.importance}
-          criticality={props.insight.criticality}
           onSpanLinkClick={handleSpanLinkClick}
           lastUpdateTimer={showTimer ? props.insight.actualStartTime : null}
         />

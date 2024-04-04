@@ -43,5 +43,7 @@ export const Main = () => {
       return <Insights insightViewType={"Analytics"} key={"analytics"} />;
     case "tests":
       return <Tests />;
+    default:
+      return null;
   }
 };

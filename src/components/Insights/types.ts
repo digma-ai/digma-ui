@@ -188,6 +188,9 @@ export interface CodeObjectInsight extends Insight {
   deactivatedCommitId: string | null;
   firstDetected: string | null;
   lastDetected: string | null;
+  lastDeactivated?: string | null;
+  lastReopen?: string | null;
+  firstFixed?: string | null;
   reopenCount: number;
   ticketLink: string | null;
   id: string;
@@ -197,6 +200,7 @@ export interface CodeObjectInsight extends Insight {
   status?: InsightStatus;
   isRead?: boolean;
   isReadable?: boolean;
+  flags?: string[];
 }
 
 export interface SpanInsight extends CodeObjectInsight {

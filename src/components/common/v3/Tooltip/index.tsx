@@ -132,23 +132,24 @@ export const Tooltip = (props: TooltipProps) => {
           ...getReferenceProps()
         })
       )}
-      {(isBoolean(props.isOpen) ? props.isOpen && isMounted : isMounted) && (
-        <FloatingPortal>
-          <s.TooltipContainer
-            ref={refs.setFloating}
-            style={{
-              ...floatingStyles,
-              ...transitionStyles,
-              ...props.style
-            }}
-            {...getFloatingProps()}
-          >
-            {renderArrow(true)}
-            {renderArrow(false)}
-            <s.Tooltip $fullWidth={props.fullWidth}>{props.title}</s.Tooltip>
-          </s.TooltipContainer>
-        </FloatingPortal>
-      )}
+      {!props.isDisabled &&
+        (isBoolean(props.isOpen) ? props.isOpen && isMounted : isMounted) && (
+          <FloatingPortal>
+            <s.TooltipContainer
+              ref={refs.setFloating}
+              style={{
+                ...floatingStyles,
+                ...transitionStyles,
+                ...props.style
+              }}
+              {...getFloatingProps()}
+            >
+              {renderArrow(true)}
+              {renderArrow(false)}
+              <s.Tooltip $fullWidth={props.fullWidth}>{props.title}</s.Tooltip>
+            </s.TooltipContainer>
+          </FloatingPortal>
+        )}
     </>
   );
 };

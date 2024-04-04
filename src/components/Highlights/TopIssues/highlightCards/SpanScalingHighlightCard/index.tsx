@@ -1,14 +1,19 @@
-import { createColumnHelper } from "@tanstack/react-table";
+import { Row, createColumnHelper } from "@tanstack/react-table";
+import { useContext } from "react";
+import { ConfigContext } from "../../../../common/App/ConfigContext";
 import { Table } from "../../../common/Table";
 import { TableText } from "../../../common/TableText";
 import { HighlightCard } from "../../common/HighlightCard";
 import { EnvironmentData, SpanScalingMetrics } from "../../types";
 import { addEnvironmentColumns } from "../addEnvironmentColumns";
+import { goToEnvironmentIssues } from "../goToEnvironmentIssues";
 import { SpanScalingHighlightCardProps } from "./types";
 
 export const SpanScalingHighlightCard = ({
   data
 }: SpanScalingHighlightCardProps) => {
+  const config = useContext(ConfigContext);
+
   const columnHelper =
     createColumnHelper<EnvironmentData<SpanScalingMetrics>>();
 
@@ -28,6 +33,16 @@ export const SpanScalingHighlightCard = ({
 
   const columns = addEnvironmentColumns(columnHelper, metricsColumns);
 
+  const handleTableRowClick = (
+    row: Row<EnvironmentData<SpanScalingMetrics>>
+  ) => {
+    goToEnvironmentIssues(
+      config.environments,
+      row.original.environmentName,
+      data.insightType
+    );
+  };
+
   return (
     <HighlightCard
       highlight={data}
@@ -35,6 +50,7 @@ export const SpanScalingHighlightCard = ({
         <Table<EnvironmentData<SpanScalingMetrics>>
           columns={columns}
           data={data.environments}
+          onRowClick={handleTableRowClick}
         />
       }
     />

@@ -1,3 +1,4 @@
+import { View } from "./components/Main/types";
 import { Duration } from "./globals";
 
 export enum FeatureFlag {
@@ -96,5 +97,5 @@ export interface ChangeScopePayload {
 }
 
 export interface ChangeViewPayload {
-  view: string;
+  view: View;
 }

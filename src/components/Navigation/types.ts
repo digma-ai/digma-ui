@@ -1,8 +1,9 @@
+import { View } from "../Main/types";
 import { CodeDetails } from "../common/App/types";
 
 export interface TabData {
   title: string;
-  id: string;
+  id: View;
   isSelected: boolean;
   isDisabled: boolean;
   hasNewData: boolean;

@@ -1,4 +1,11 @@
-export type View = "highlights" | "insights" | "assets" | "analytics" | "tests";
+export type View =
+  | "highlights"
+  | "insights"
+  | "assets"
+  | "analytics"
+  | "errors"
+  | "errorsDetails"
+  | "tests";
 
 export interface GetHighlightsTopIssuesDataPayload {
   query: {

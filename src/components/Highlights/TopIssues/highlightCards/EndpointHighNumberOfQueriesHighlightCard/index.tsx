@@ -1,4 +1,6 @@
-import { createColumnHelper } from "@tanstack/react-table";
+import { Row, createColumnHelper } from "@tanstack/react-table";
+import { useContext } from "react";
+import { ConfigContext } from "../../../../common/App/ConfigContext";
 import { Table } from "../../../common/Table";
 import { TableText } from "../../../common/TableText";
 import { AssetLink } from "../../common/AssetLink";
@@ -8,12 +10,15 @@ import {
   EnvironmentData
 } from "../../types";
 import { addEnvironmentColumns } from "../addEnvironmentColumns";
+import { goToEnvironmentIssues } from "../goToEnvironmentIssues";
 import { DescriptionContainer } from "../styles";
 import { EndpointHighNumberOfQueriesHighlightCardProps } from "./types";
 
 export const EndpointHighNumberOfQueriesHighlightCard = ({
   data
 }: EndpointHighNumberOfQueriesHighlightCardProps) => {
+  const config = useContext(ConfigContext);
+
   const columnHelper =
     createColumnHelper<EnvironmentData<EndpointHighNumberOfQueriesMetrics>>();
 
@@ -44,6 +49,16 @@ export const EndpointHighNumberOfQueriesHighlightCard = ({
 
   const columns = addEnvironmentColumns(columnHelper, metricsColumns);
 
+  const handleTableRowClick = (
+    row: Row<EnvironmentData<EndpointHighNumberOfQueriesMetrics>>
+  ) => {
+    goToEnvironmentIssues(
+      config.environments,
+      row.original.environmentName,
+      data.insightType
+    );
+  };
+
   return (
     <HighlightCard
       highlight={data}
@@ -58,6 +73,7 @@ export const EndpointHighNumberOfQueriesHighlightCard = ({
           <Table<EnvironmentData<EndpointHighNumberOfQueriesMetrics>>
             columns={columns}
             data={data.environments}
+            onRowClick={handleTableRowClick}
           />
         </>
       }

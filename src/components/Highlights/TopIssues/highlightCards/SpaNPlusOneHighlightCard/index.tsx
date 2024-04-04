@@ -1,17 +1,22 @@
-import { createColumnHelper } from "@tanstack/react-table";
+import { Row, createColumnHelper } from "@tanstack/react-table";
+import { useContext } from "react";
 import { Duration } from "../../../../../globals";
 import { getDurationString } from "../../../../../utils/getDurationString";
+import { ConfigContext } from "../../../../common/App/ConfigContext";
 import { Table } from "../../../common/Table";
 import { TableTag } from "../../../common/TableTag";
 import { TableText } from "../../../common/TableText";
 import { HighlightCard } from "../../common/HighlightCard";
 import { EnvironmentData, SpaNPlusOneMetrics } from "../../types";
 import { addEnvironmentColumns } from "../addEnvironmentColumns";
+import { goToEnvironmentIssues } from "../goToEnvironmentIssues";
 import { SpaNPlusOneHighlightCardProps } from "./types";
 
 export const SpaNPlusOneHighlightCard = ({
   data
 }: SpaNPlusOneHighlightCardProps) => {
+  const config = useContext(ConfigContext);
+
   const columnHelper =
     createColumnHelper<EnvironmentData<SpaNPlusOneMetrics>>();
 
@@ -58,6 +63,16 @@ export const SpaNPlusOneHighlightCard = ({
 
   const columns = addEnvironmentColumns(columnHelper, metricsColumns);
 
+  const handleTableRowClick = (
+    row: Row<EnvironmentData<SpaNPlusOneMetrics>>
+  ) => {
+    goToEnvironmentIssues(
+      config.environments,
+      row.original.environmentName,
+      data.insightType
+    );
+  };
+
   return (
     <HighlightCard
       highlight={data}
@@ -65,6 +80,7 @@ export const SpaNPlusOneHighlightCard = ({
         <Table<EnvironmentData<SpaNPlusOneMetrics>>
           columns={columns}
           data={data.environments}
+          onRowClick={handleTableRowClick}
         />
       }
     />
