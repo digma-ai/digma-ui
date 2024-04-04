@@ -1,12 +1,12 @@
 import { useContext } from "react";
-import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
-import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
-import { ConfigContext } from "../../common/App/ConfigContext";
-import { EnvironmentType } from "../../common/App/types";
-import { IconTag } from "../../common/IconTag";
-import { CodeIcon } from "../../common/icons/16px/CodeIcon";
-import { InfinityIcon } from "../../common/icons/InfinityIcon";
-import { trackingEvents } from "../tracking";
+import { openURLInDefaultBrowser } from "../../../../utils/actions/openURLInDefaultBrowser";
+import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
+import { ConfigContext } from "../../../common/App/ConfigContext";
+import { EnvironmentType } from "../../../common/App/types";
+import { IconTag } from "../../../common/IconTag";
+import { CodeIcon } from "../../../common/icons/16px/CodeIcon";
+import { InfinityIcon } from "../../../common/icons/InfinityIcon";
+import { trackingEvents } from "../../tracking";
 import * as s from "./styles";
 import { EnvironmentTypeData, EnvironmentTypePanelProps } from "./types";
 
@@ -17,7 +17,6 @@ export const EnvironmentTypePanel = (props: EnvironmentTypePanelProps) => {
 
   const handleEnvironmentTypeButtonClick = (type: EnvironmentType) => {
     const typeData = environmentTypes.find((x) => x.type === type);
-
     if (typeData) {
       sendUserActionTrackingEvent(
         trackingEvents.ENVIRONMENT_TYPE_BUTTON_CLICKED,
@@ -27,7 +26,7 @@ export const EnvironmentTypePanel = (props: EnvironmentTypePanelProps) => {
       );
     }
 
-    if (type === "Public" && !config.backendInfo?.isCentralized) {
+    if (type === "Public" && !config.backendInfo?.centralize) {
       openURLInDefaultBrowser(DIGMA_FOR_TEAMS_URL);
       return;
     }
@@ -56,10 +55,16 @@ export const EnvironmentTypePanel = (props: EnvironmentTypePanelProps) => {
       description:
         "Connect to centralized org systems such as CI builds, production servers etc.",
       icon: InfinityIcon,
-      button: (
+      button: config.backendInfo?.centralize ? (
+        <s.LearnMoreButton
+          onClick={() => handleEnvironmentTypeButtonClick("Public")}
+          label={"Add"}
+          buttonType={"primary"}
+        />
+      ) : (
         <s.AddButton
           onClick={() => handleEnvironmentTypeButtonClick("Public")}
-          label={config.backendInfo?.isCentralized ? "Add" : "Learn more"}
+          label={"Learn more"}
           buttonType={"secondary"}
         />
       )

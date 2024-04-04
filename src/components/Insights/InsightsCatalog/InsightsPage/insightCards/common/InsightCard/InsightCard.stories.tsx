@@ -94,7 +94,7 @@ export const WithDisabledDismissed: Story = {
           backendInfo: {
             applicationVersion: "v0.2.243",
             deploymentType: DeploymentType.DOCKER_COMPOSE,
-            isCentralized: false
+            centralize: false
           }
         }}
       >

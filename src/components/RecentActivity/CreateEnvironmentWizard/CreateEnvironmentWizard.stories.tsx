@@ -67,7 +67,7 @@ export const WithoutRegisteredUser: Story = {
           backendInfo: {
             applicationVersion: "v0.2.243",
             deploymentType: DeploymentType.DOCKER_COMPOSE,
-            isCentralized: false
+            centralize: false
           },
           userRegistrationEmail: ""
         }}
@@ -92,7 +92,7 @@ export const IsCentralized: Story = {
           backendInfo: {
             applicationVersion: "v0.2.243",
             deploymentType: DeploymentType.DOCKER_COMPOSE,
-            isCentralized: true
+            centralize: true
           }
         }}
       >

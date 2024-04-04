@@ -2,8 +2,8 @@ import styled from "styled-components";
 import {
   bodyBoldTypography,
   subscriptRegularTypography
-} from "../../common/App/typographies";
-import { Button } from "../../common/v3/Button";
+} from "../../../common/App/typographies";
+import { Button } from "../../../common/v3/Button";
 
 export const Container = styled.div`
   display: flex;
@@ -62,4 +62,8 @@ export const EnvironmentTypeTitle = styled.span`
 export const AddButton = styled(Button)`
   min-width: 60px;
   justify-content: center;
+`;
+
+export const LearnMoreButton = styled(Button)`
+  border: 1px solid ${({ theme }) => theme.colors.v3.stroke.dark};
 `;

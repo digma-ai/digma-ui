@@ -22,7 +22,7 @@ export type DigmaStatus = {
 export interface BackendInfo {
   applicationVersion: string;
   deploymentType: DeploymentType;
-  isCentralized: boolean;
+  centralize: boolean;
 }
 
 export enum DeploymentType {

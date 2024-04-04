@@ -1,6 +1,6 @@
 import { ComponentType, ReactNode } from "react";
-import { EnvironmentType } from "../../common/App/types";
-import { IconProps } from "../../common/icons/types";
+import { EnvironmentType } from "../../../common/App/types";
+import { IconProps } from "../../../common/icons/types";
 
 export interface EnvironmentTypePanelProps {
   onEnvironmentTypeSelect: (type: EnvironmentType) => void;
