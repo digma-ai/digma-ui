@@ -25,13 +25,11 @@ export const EnvironmentTypePanel = (props: EnvironmentTypePanelProps) => {
         }
       );
     }
-
-    if (type === "Public" && !config.backendInfo?.centralize) {
-      openURLInDefaultBrowser(DIGMA_FOR_TEAMS_URL);
-      return;
-    }
-
     props.onEnvironmentTypeSelect(type);
+  };
+
+  const handleLearnMoreClick = () => {
+    openURLInDefaultBrowser(DIGMA_FOR_TEAMS_URL);
   };
 
   const environmentTypes: EnvironmentTypeData[] = [
@@ -56,14 +54,14 @@ export const EnvironmentTypePanel = (props: EnvironmentTypePanelProps) => {
         "Connect to centralized org systems such as CI builds, production servers etc.",
       icon: InfinityIcon,
       button: config.backendInfo?.centralize ? (
-        <s.LearnMoreButton
+        <s.AddButton
           onClick={() => handleEnvironmentTypeButtonClick("Public")}
           label={"Add"}
           buttonType={"primary"}
         />
       ) : (
-        <s.AddButton
-          onClick={() => handleEnvironmentTypeButtonClick("Public")}
+        <s.LearnMoreButton
+          onClick={handleLearnMoreClick}
           label={"Learn more"}
           buttonType={"secondary"}
         />

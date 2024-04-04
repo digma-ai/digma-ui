@@ -57,7 +57,7 @@ export const BackButton = styled(Button)`
   span {
     color: ${({ theme }) => theme.colors.v3.text.tertiary};
 
-    &:hover {
+    &:hover:enabled {
       color: ${({ theme }) => theme.colors.v3.text.white};
     }
   }

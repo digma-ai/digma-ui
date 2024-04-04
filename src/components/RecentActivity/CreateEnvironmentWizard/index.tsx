@@ -108,6 +108,7 @@ export const CreateEnvironmentWizard = ({
       const result = data as EnvironmentCreatedData;
       if (!result.errors) {
         setCompleted(true);
+        setCurrentStep(-1);
         setNewEnvironment({ ...newEnvironment, id: result.id });
         return;
       }
