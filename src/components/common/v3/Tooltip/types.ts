@@ -13,6 +13,7 @@ export interface TooltipProps {
   style?: React.CSSProperties;
   isOpen?: boolean;
   fullWidth?: boolean;
+  isDisabled?: boolean;
 }
 
 export interface TooltipComponentProps {

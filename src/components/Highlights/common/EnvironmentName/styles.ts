@@ -5,6 +5,7 @@ export const Container = styled.div`
   align-items: center;
   gap: 4px;
   color: ${({ theme }) => theme.colors.v3.text.secondary};
+  padding: 4px;
 `;
 
 export const IconContainer = styled.div`

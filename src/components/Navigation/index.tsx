@@ -10,6 +10,7 @@ import {
 } from "../../types";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 import { AsyncActionResultData } from "../InstallationWizard/types";
+import { View } from "../Main/types";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { Environment, Scope } from "../common/App/types";
 import { EnvironmentIcon } from "../common/EnvironmentIcon";
@@ -99,7 +100,7 @@ export const Navigation = () => {
   const [isAutoFixing, setIsAutoFixing] = useState(false);
   const [isAnnotationAdding, setIsAnnotationAdding] = useState(false);
   const previousCodeContext = usePrevious(codeContext);
-  const [currentTab, setCurrentTab] = useState<string>();
+  const [currentTab, setCurrentTab] = useState<View>("insights");
 
   const environments = config.environments || [];
 
@@ -283,7 +284,7 @@ export const Navigation = () => {
     setSelectedEnvironment(environment);
   };
 
-  const changeTab = (tabId: string) => {
+  const changeTab = (tabId: View) => {
     setCurrentTab(tabId);
     window.sendMessageToDigma<ChangeViewPayload>({
       action: globalActions.CHANGE_VIEW,
@@ -363,7 +364,7 @@ export const Navigation = () => {
   return (
     <s.Container>
       <s.Row>
-        <ScopeNavigation currentTabId={currentTab || ""} />
+        <ScopeNavigation currentTabId={currentTab} />
         <ScopeBar codeContext={codeContext} scope={config.scope} />
         <NewPopover
           content={<KebabMenu onClose={handleKebabButtonMenuClose} />}

@@ -9,7 +9,7 @@ import { AssetLinkProps } from "./types";
 export const AssetLink = ({ asset }: AssetLinkProps) => {
   const handleAssetLinkClick = () => {
     sendUserActionTrackingEvent(
-      trackingEvents.TOP_ISSUE_CARD_ASSET_LINK_CLICKED
+      trackingEvents.TOP_ISSUES_CARD_ASSET_LINK_CLICKED
     );
 
     window.sendMessageToDigma<ChangeScopePayload>({

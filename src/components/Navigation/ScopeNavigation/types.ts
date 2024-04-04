@@ -1,3 +1,5 @@
+import { View } from "../../Main/types";
+
 export interface ScopeNavigationProps {
-  currentTabId: string;
+  currentTabId: View;
 }
