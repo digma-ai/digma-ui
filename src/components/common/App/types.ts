@@ -104,6 +104,7 @@ export interface ConfigContextData {
   isMicrometerProject: boolean;
   state?: GlobalState;
   insightStats?: InsightStats;
+  userInfo?: UserInfo;
 }
 
 export interface InsightStats {
@@ -115,4 +116,8 @@ export interface InsightStats {
   issuesInsightsCount: number;
   analyticsInsightsCount: number;
   unreadInsightsCount: number;
+}
+
+export interface UserInfo {
+  id?: string;
 }
