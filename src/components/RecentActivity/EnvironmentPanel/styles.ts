@@ -6,7 +6,7 @@ export const Container = styled.div`
   width: 100%;
   gap: 4px;
   padding: 0 12px;
-  height: 36px;
+  height: 44px;
   box-sizing: border-box;
   background: ${({ theme }) => theme.colors.tabPanel.background};
   box-shadow: ${({ theme }) => {
