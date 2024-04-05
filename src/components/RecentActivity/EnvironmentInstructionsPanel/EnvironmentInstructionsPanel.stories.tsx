@@ -23,7 +23,7 @@ export const Local: Story = {
       id: "MY_ENV",
       isPending: true,
       hasRecentActivity: false,
-      type: "Public",
+      type: "Private",
       token: null,
       serverApiUrl: null,
       isOrgDigmaSetupFinished: false

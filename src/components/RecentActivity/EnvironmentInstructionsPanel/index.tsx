@@ -8,7 +8,6 @@ import { getHostnameFromURL } from "../../../utils/getHostNameFromURL";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { getThemeKind } from "../../common/App/styles";
 import { EnvironmentType } from "../../common/App/types";
-import { CodeSnippet } from "../../common/CodeSnippet";
 import { Link } from "../../common/Link";
 import { DesktopIcon } from "../../common/icons/DesktopIcon";
 import { InfinityIcon } from "../../common/icons/InfinityIcon";
@@ -97,24 +96,28 @@ export const EnvironmentInstructionsPanel = (
               Set up the following environment variables when running your code
               to tag the observability data with this run config:
             </span>
-            <CodeSnippet text={environmentVariableString} />
-            <s.AddToConfigContainer>
-              <s.Link onClick={handleAddToRunConfigLinkClick}>
-                Add to the active run config
-              </s.Link>
+            <s.CodeSection text={environmentVariableString} />
+            <s.ActionContainer>
+              <s.AddToConfigContainer>
+                <s.Link onClick={handleAddToRunConfigLinkClick}>
+                  Add to the active run config
+                </s.Link>
 
-              {state === AddToRunConfigState.success && (
-                <s.AddToConfigSuccessMessage>
-                  Successfully added
-                </s.AddToConfigSuccessMessage>
-              )}
-              {state === AddToRunConfigState.failure && (
-                <s.AddToConfigFailureMessage>
-                  Failed to add
-                </s.AddToConfigFailureMessage>
-              )}
-            </s.AddToConfigContainer>
-            <s.Link onClick={handleTroubleshootLinkClick}>Troubleshoot</s.Link>
+                {state === AddToRunConfigState.success && (
+                  <s.AddToConfigSuccessMessage>
+                    Successfully added
+                  </s.AddToConfigSuccessMessage>
+                )}
+                {state === AddToRunConfigState.failure && (
+                  <s.AddToConfigFailureMessage>
+                    Failed to add
+                  </s.AddToConfigFailureMessage>
+                )}
+              </s.AddToConfigContainer>
+              <s.Link onClick={handleTroubleshootLinkClick}>
+                Troubleshoot
+              </s.Link>
+            </s.ActionContainer>
           </>
         )
       },
@@ -144,7 +147,7 @@ export const EnvironmentInstructionsPanel = (
               Add the following to your build/prod deployment scripts,
               don&apos;t forget to set the <code>SERVICE_NAME</code> variable
             </span>
-            <CodeSnippet
+            <s.CodeSection
               text={`curl --create-dirs -O -L --output-dir ./otel https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v2.1.0/opentelemetry-javaagent.jar
 
 curl --create-dirs -O -L --output-dir ./otel https://github.com/digma-ai/otel-java-instrumentation/releases/latest/download/digma-otel-agent-extension.jar

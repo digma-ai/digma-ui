@@ -3,6 +3,7 @@ import {
   bodyMediumTypography,
   subscriptRegularTypography
 } from "../../common/App/typographies";
+import { CodeSnippet } from "../../common/CodeSnippet";
 import { Link as CommonLink } from "../../common/Link";
 
 export const Container = styled.div`
@@ -34,7 +35,6 @@ export const Section = styled.div`
   gap: 8px;
   border-radius: 8px;
   background: ${({ theme }) => theme.colors.v3.surface.secondary};
-  height: fit-content;
   border: 1px solid ${({ theme }) => theme.colors.v3.stroke.primary};
   box-shadow: ${({ theme }) => {
     switch (theme.mode) {
@@ -77,6 +77,7 @@ export const SectionContentContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
+  height: 100%;
   color: ${({ theme }) => theme.colors.v3.text.secondary};
   ${subscriptRegularTypography}
 `;
@@ -86,33 +87,22 @@ export const Link = styled(CommonLink)`
   max-width: fit-content;
 `;
 
+export const ActionContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
 export const AddToConfigContainer = styled.div`
   display: flex;
   gap: 8px;
 `;
 
 export const AddToConfigSuccessMessage = styled.span`
-  color: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#00c108";
-      case "dark":
-      case "dark-jetbrains":
-        return "#67d28b";
-    }
-  }};
+  color: ${({ theme }) => theme.colors.v3.status.success};
 `;
 
 export const AddToConfigFailureMessage = styled.span`
-  color: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#e00036";
-      case "dark":
-      case "dark-jetbrains":
-        return "#f93967";
-    }
-  }};
+  color: ${({ theme }) => theme.colors.v3.status.high};
 `;
 
 export const IllustrationContainer = styled.div`
@@ -120,6 +110,7 @@ export const IllustrationContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 100%;
 `;
 
 export const RunOrDebugIllustration = styled.img`
@@ -127,4 +118,9 @@ export const RunOrDebugIllustration = styled.img`
   height: 52px;
   border-radius: 4px;
   object-fit: cover;
+`;
+
+export const CodeSection = styled(CodeSnippet)`
+  background: none;
+  border: 1px solid ${({ theme }) => theme.colors.v3.surface.gray};
 `;
