@@ -673,3 +673,12 @@ export const OpenRegistrationDialog: Story = {
     });
   }
 };
+
+export const OpenCongratulationsDigmathonView: Story = {
+  play: () => {
+    window.postMessage({
+      type: "digma",
+      action: actions.OPEN_DIGMATHON_CONGRATULATIONS_VIEW
+    });
+  }
+};

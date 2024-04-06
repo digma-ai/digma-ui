@@ -8,7 +8,7 @@ import { AssetLink } from "../../common/AssetLink";
 import { HighlightCard } from "../../common/HighlightCard";
 import { EndpointSlowdownSourceMetrics, EnvironmentData } from "../../types";
 import { addEnvironmentColumns } from "../addEnvironmentColumns";
-import { goToEnvironmentIssues } from "../goToEnvironmentIssues";
+import { handleEnvironmentTableRowClick } from "../goToEnvironmentIssues";
 import { DescriptionContainer } from "../styles";
 import { EndpointSlowdownSourceHighlightCardProps } from "./types";
 
@@ -39,7 +39,7 @@ export const EndpointSlowdownSourceHighlightCard = ({
   const handleTableRowClick = (
     row: Row<EnvironmentData<EndpointSlowdownSourceMetrics>>
   ) => {
-    goToEnvironmentIssues(
+    handleEnvironmentTableRowClick(
       config.environments,
       row.original.environmentName,
       data.insightType

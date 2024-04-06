@@ -103,6 +103,8 @@ export interface ConfigContextData {
   isMicrometerProject: boolean;
   state?: GlobalState;
   insightStats?: InsightStats;
+  digmathonProductKey: string;
+  isDigmathonModeEnabled: boolean;
 }
 
 export interface InsightStats {

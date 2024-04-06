@@ -10,7 +10,12 @@ export const trackingEvents = addPrefix(
     ENVIRONMENT_TYPE_BUTTON_CLICKED: "environment type button clicked",
     CHECK_CONNECTION_RESULT_RECEIVED: "check connection result received",
     FINISH_BUTTON_CLICKED: "finish button clicked",
-    OBSERVABILITY_TOGGLE_SWITCHED: "observability toggle switched"
+    OBSERVABILITY_TOGGLE_SWITCHED: "observability toggle switched",
+    KEBAB_MENU_ITEM_CLICKED: "kebab menu item clicked",
+    DIGMATHON_VIEW_BACK_BUTTON_CLICKED: "digmathon view back button clicked",
+    DIGMATHON_VIEW_CONTACT_LINK_CLICKED: "digmathon view contact link clicked",
+    DIGMATHON_PROGRESS_VIEWED: "digmathon progress viewed",
+    DIGMATHON_CONGRATULATIONS_VIEWED: "digmathon congratulations viewed"
   },
   " "
 );

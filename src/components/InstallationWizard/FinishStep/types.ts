@@ -7,4 +7,6 @@ export interface FinishStepProps {
   email: string;
   isEmailValid?: boolean;
   isEmailValidating: boolean;
+  productKey: string;
+  onProductKeyInputChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }

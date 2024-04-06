@@ -57,14 +57,14 @@ export const RunOrDebugIllustration = styled.img`
   margin: 7% 17%;
 `;
 
-export const EmailField = styled.div`
+export const TextField = styled.div`
   display: flex;
   flex-direction: column;
   gap: 4px;
   position: relative;
 `;
 
-export const EmailInput = styled.input`
+export const TextInput = styled.input`
   font-size: 14px;
   padding: 8px 10px;
   border-radius: 4px;

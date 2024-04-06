@@ -170,6 +170,9 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
     };
 
     const handleTroubleshootingClick = () => {
+      sendUserActionTrackingEvent(trackingEvents.KEBAB_MENU_ITEM_CLICKED, {
+        item: "Troubleshooting"
+      });
       window.sendMessageToDigma({
         action: globalActions.OPEN_TROUBLESHOOTING_GUIDE
       });
@@ -177,8 +180,18 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
     };
 
     const handleSlackLinkClick = () => {
+      sendUserActionTrackingEvent(trackingEvents.KEBAB_MENU_ITEM_CLICKED, {
+        item: "Digma Channel"
+      });
       openURLInDefaultBrowser(SLACK_WORKSPACE_URL);
       setIsKebabMenuOpen(false);
+    };
+
+    const handleDigmathonModeMenuItemClick = () => {
+      sendUserActionTrackingEvent(trackingEvents.KEBAB_MENU_ITEM_CLICKED, {
+        item: "Digmathon mode"
+      });
+      props.onDigmathonModeButtonClick();
     };
 
     return (
@@ -188,7 +201,7 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
         onOpenChange={setIsKebabMenuOpen}
         isOpen={isKebabMenuOpen}
         content={
-          <Popup>
+          <Popup height={"auto"}>
             <MenuList
               items={[
                 {
@@ -223,7 +236,17 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
                   label: "Digma Channel",
                   icon: <SlackLogoIcon size={16} color={"currentColor"} />,
                   onClick: handleSlackLinkClick
-                }
+                },
+                ...(config.isDigmathonModeEnabled
+                  ? [
+                      {
+                        id: "digmathon",
+                        label: "Digmathon mode",
+                        icon: <DigmaLogoIcon size={16} />,
+                        onClick: handleDigmathonModeMenuItemClick
+                      }
+                    ]
+                  : [])
               ]}
             />
           </Popup>

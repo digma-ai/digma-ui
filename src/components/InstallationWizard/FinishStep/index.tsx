@@ -1,10 +1,13 @@
+import { useContext } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
 import { GETTING_STARTED_VIDEO_URL } from "../../../constants";
 import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
+import { ConfigContext } from "../../common/App/ConfigContext";
 import { getThemeKind } from "../../common/App/styles";
 import { CircleLoader } from "../../common/CircleLoader";
 import { Link } from "../../common/Link";
+import { KeyIcon } from "../../common/icons/16px/KeyIcon";
 import { ChatIcon } from "../../common/icons/ChatIcon";
 import { CheckmarkCircleInvertedIcon } from "../../common/icons/CheckmarkCircleInvertedIcon";
 import { GearIcon } from "../../common/icons/GearIcon";
@@ -42,6 +45,7 @@ const getErrorIconColor = (theme: DefaultTheme) => {
 export const FinishStep = (props: FinishStepProps) => {
   const theme = useTheme();
   const themeKind = getThemeKind(theme);
+  const config = useContext(ConfigContext);
 
   const handleGettingStartedVideoLinkClick = () => {
     sendUserActionTrackingEvent(
@@ -68,6 +72,24 @@ export const FinishStep = (props: FinishStepProps) => {
           </SectionDescription>
         </s.Section>
       )}
+      {config.isDigmathonModeEnabled && (
+        <s.Section>
+          <s.SectionTitle icon={KeyIcon}>
+            Code product key<s.SectionTitleNote>(optional)</s.SectionTitleNote>
+          </s.SectionTitle>
+          <SectionDescription>
+            If you’ve received a product key, please enter it here
+          </SectionDescription>
+          <s.TextField>
+            <s.TextInput
+              type={"text"}
+              placeholder={"Product key"}
+              value={props.productKey}
+              onChange={props.onProductKeyInputChange}
+            />
+          </s.TextField>
+        </s.Section>
+      )}
       <s.Section>
         <s.SectionTitle icon={RingingBellIcon}>
           Stay up to date<s.SectionTitleNote>(optional)</s.SectionTitleNote>
@@ -75,8 +97,8 @@ export const FinishStep = (props: FinishStepProps) => {
         <SectionDescription>
           Enter your E-mail address to be the first to get Digma updates
         </SectionDescription>
-        <s.EmailField>
-          <s.EmailInput
+        <s.TextField>
+          <s.TextInput
             type={"text"}
             placeholder={"Enter E-mail"}
             value={props.email}
@@ -105,7 +127,7 @@ export const FinishStep = (props: FinishStepProps) => {
               />
             </s.EmailInputIconContainer>
           )}
-        </s.EmailField>
+        </s.TextField>
       </s.Section>
       <s.Section>
         <s.SectionTitle icon={PlayIcon}>

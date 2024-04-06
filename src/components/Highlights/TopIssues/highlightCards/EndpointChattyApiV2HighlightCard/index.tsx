@@ -7,7 +7,7 @@ import { AssetLink } from "../../common/AssetLink";
 import { HighlightCard } from "../../common/HighlightCard";
 import { EndpointChattyApiV2Metrics, EnvironmentData } from "../../types";
 import { addEnvironmentColumns } from "../addEnvironmentColumns";
-import { goToEnvironmentIssues } from "../goToEnvironmentIssues";
+import { handleEnvironmentTableRowClick } from "../goToEnvironmentIssues";
 import { DescriptionContainer } from "../styles";
 import { EndpointChattyApiV2HighlightCardProps } from "./types";
 
@@ -35,7 +35,7 @@ export const EndpointChattyApiV2HighlightCard = ({
   const handleTableRowClick = (
     row: Row<EnvironmentData<EndpointChattyApiV2Metrics>>
   ) => {
-    goToEnvironmentIssues(
+    handleEnvironmentTableRowClick(
       config.environments,
       row.original.environmentName,
       data.insightType

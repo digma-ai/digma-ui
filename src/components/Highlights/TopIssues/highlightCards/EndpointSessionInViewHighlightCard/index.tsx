@@ -6,7 +6,7 @@ import { AssetLink } from "../../common/AssetLink";
 import { HighlightCard } from "../../common/HighlightCard";
 import { EndpointSessionInViewMetrics, EnvironmentData } from "../../types";
 import { addEnvironmentColumns } from "../addEnvironmentColumns";
-import { goToEnvironmentIssues } from "../goToEnvironmentIssues";
+import { handleEnvironmentTableRowClick } from "../goToEnvironmentIssues";
 import { DescriptionContainer } from "../styles";
 import { EndpointSessionInViewHighlightCardProps } from "./types";
 
@@ -23,7 +23,7 @@ export const EndpointSessionInViewHighlightCard = ({
   const handleTableRowClick = (
     row: Row<EnvironmentData<EndpointSessionInViewMetrics>>
   ) => {
-    goToEnvironmentIssues(
+    handleEnvironmentTableRowClick(
       config.environments,
       row.original.environmentName,
       data.insightType

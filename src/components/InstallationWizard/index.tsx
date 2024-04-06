@@ -86,6 +86,7 @@ export const InstallationWizard = () => {
   );
   const [isEmailValidating, setIsEmailValidating] = useState(false);
   const debouncedEmail = useDebounce(email, 1000);
+  const [productKey, setProductKey] = useState(config.digmathonProductKey);
   // const [
   //   isDigmaCloudNotificationCheckboxChecked,
   //   setIsDigmaCloudNotificationCheckboxChecked
@@ -232,6 +233,14 @@ export const InstallationWizard = () => {
     }
   };
 
+  const handleProductKeyInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.trim();
+
+    if (productKey !== value) {
+      setProductKey(value);
+    }
+  };
+
   const handleCloseButtonClick = () => {
     window.sendMessageToDigma({
       action: actions.CLOSE
@@ -242,7 +251,8 @@ export const InstallationWizard = () => {
     window.sendMessageToDigma({
       action: actions.FINISH,
       payload: {
-        ...(debouncedEmail.length > 0 ? { email: debouncedEmail } : {})
+        ...(debouncedEmail.length > 0 ? { email: debouncedEmail } : {}),
+        ...(productKey.length > 0 ? { productKey } : {})
       }
     });
   };
@@ -319,6 +329,8 @@ export const InstallationWizard = () => {
           onEmailInputChange={handleEmailInputChange}
           isEmailValid={isEmailValid}
           isEmailValidating={isEmailValidating}
+          productKey={productKey}
+          onProductKeyInputChange={handleProductKeyInputChange}
         />
       )
     }
