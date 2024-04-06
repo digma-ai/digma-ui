@@ -86,7 +86,7 @@ export const InstallationWizard = () => {
   );
   const [isEmailValidating, setIsEmailValidating] = useState(false);
   const debouncedEmail = useDebounce(email, 1000);
-  const [productKey, setProductKey] = useState(config.digmathonProductKey);
+  const [productKey, setProductKey] = useState(config.productKey);
   // const [
   //   isDigmaCloudNotificationCheckboxChecked,
   //   setIsDigmaCloudNotificationCheckboxChecked

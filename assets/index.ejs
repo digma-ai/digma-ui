@@ -32,6 +32,9 @@
       window.isDockerInstalled;
       window.isDockerComposeInstalled;
       window.isMicrometerProject;
+      window.productKey;
+      window.userId;
+      window.isDigmathonModeEnabled;
       <% for (var i = 0; i < environmentVariables.length; i++) { %>
       window.<%= environmentVariables[i] %>;<% } %>
     </script>

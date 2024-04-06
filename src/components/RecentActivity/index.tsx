@@ -503,7 +503,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
 
   return (
     <s.Container>
-      {config.isDigmathonModeEnabled && isDigmathonMode ? (
+      {isDigmathonMode ? (
         <Digmathon
           onGoBack={handleDigmathonGoBack}
           isCongratulationsView={isDigmathonCongratulationsViewVisible}

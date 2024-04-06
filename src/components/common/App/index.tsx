@@ -236,6 +236,33 @@ export const App = (props: AppProps) => {
       }));
     };
 
+    const handleSetIsDigmathonModeEnabled = (data: unknown) => {
+      if (isObject(data) && isBoolean(data.isDigmathonModeEnabled)) {
+        setConfig((config) => ({
+          ...config,
+          isDigmathonModeEnabled: data.isDigmathonModeEnabled as boolean
+        }));
+      }
+    };
+
+    const handleSetProductKey = (data: unknown) => {
+      if (isObject(data) && isString(data.productKey)) {
+        setConfig((config) => ({
+          ...config,
+          productKey: data.productKey as string
+        }));
+      }
+    };
+
+    const handleSetUserId = (data: unknown) => {
+      if (isObject(data) && isString(data.userId)) {
+        setConfig((config) => ({
+          ...config,
+          userId: data.userId as string
+        }));
+      }
+    };
+
     dispatcher.addActionListener(actions.SET_THEME, handleSetTheme);
     dispatcher.addActionListener(actions.SET_MAIN_FONT, handleSetMainFont);
     dispatcher.addActionListener(actions.SET_CODE_FONT, handleSetCodeFont);
@@ -295,6 +322,12 @@ export const App = (props: AppProps) => {
       actions.SET_INSIGHT_STATS,
       handleSetInsightStats
     );
+    dispatcher.addActionListener(
+      actions.SET_DIGMATHON_MODE,
+      handleSetIsDigmathonModeEnabled
+    );
+    dispatcher.addActionListener(actions.SET_PRODUCT_KEY, handleSetProductKey);
+    dispatcher.addActionListener(actions.SET_USER_ID, handleSetUserId);
 
     return () => {
       dispatcher.removeActionListener(actions.SET_THEME, handleSetTheme);
@@ -362,6 +395,15 @@ export const App = (props: AppProps) => {
         actions.SET_INSIGHT_STATS,
         handleSetInsightStats
       );
+      dispatcher.removeActionListener(
+        actions.SET_DIGMATHON_MODE,
+        handleSetIsDigmathonModeEnabled
+      );
+      dispatcher.removeActionListener(
+        actions.SET_PRODUCT_KEY,
+        handleSetProductKey
+      );
+      dispatcher.removeActionListener(actions.SET_USER_ID, handleSetUserId);
     };
   }, []);
 
