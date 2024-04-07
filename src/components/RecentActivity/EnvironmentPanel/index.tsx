@@ -237,7 +237,7 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
                   icon: <SlackLogoIcon size={16} color={"currentColor"} />,
                   onClick: handleSlackLinkClick
                 },
-                ...(config.productKey
+                ...(config.isDigmathonModeEnabled && config.productKey
                   ? [
                       {
                         id: "digmathon",
