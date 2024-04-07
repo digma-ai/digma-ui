@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { RecentActivity } from ".";
+import { actions as globalActions } from "../../actions";
 import { mockData as liveData } from "./LiveView/mockData";
 import { actions } from "./actions";
 import { RecentActivityData } from "./types";
@@ -679,6 +680,25 @@ export const OpenCongratulationsDigmathonView: Story = {
     window.postMessage({
       type: "digma",
       action: actions.OPEN_DIGMATHON_CONGRATULATIONS_VIEW
+    });
+  }
+};
+
+export const EnableDigmathonMode: Story = {
+  play: () => {
+    window.postMessage({
+      type: "digma",
+      action: globalActions.SET_DIGMATHON_MODE,
+      payload: {
+        isDigmathonModeEnabled: true
+      }
+    });
+    window.postMessage({
+      type: "digma",
+      action: globalActions.SET_PRODUCT_KEY,
+      payload: {
+        productKey: "digmathon"
+      }
     });
   }
 };
