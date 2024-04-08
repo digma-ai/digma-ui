@@ -10,12 +10,18 @@ const isDigmaMessageEvent = (e: MessageEvent): e is DigmaMessageEvent =>
 export const initializeDigmaMessageListener = (
   dispatcher: ActionDispatcher
 ) => {
-  window.addEventListener("message", (e) => {
+  const handleDigmaMessage = (e: MessageEvent) => {
     if (isDigmaMessageEvent(e)) {
       console.debug("Digma message received: ", e);
       dispatcher.dispatch(e.timeStamp, e.data.action, e.data.payload);
     }
-  });
+  };
+
+  window.addEventListener("message", handleDigmaMessage);
+
+  return () => {
+    window.removeEventListener("message", handleDigmaMessage);
+  };
 };
 
 export const sendMessage = <T>(

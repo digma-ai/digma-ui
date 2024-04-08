@@ -692,6 +692,13 @@ export const EnableDigmathonMode: Story = {
         productKey: "digmathon"
       }
     });
+    window.postMessage({
+      type: "digma",
+      action: actions.SET_DIGMATHON_PROGRESS_DATA,
+      payload: {
+        insights: []
+      }
+    });
   }
 };
 

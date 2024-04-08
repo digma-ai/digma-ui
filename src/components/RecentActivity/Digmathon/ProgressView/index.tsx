@@ -10,6 +10,23 @@ export const ProgressView = ({ data, foundIssuesCount }: ProgressViewProps) => {
     sendTrackingEvent(trackingEvents.DIGMATHON_PROGRESS_VIEWED);
   }, []);
 
+  if (foundIssuesCount === 0) {
+    return (
+      <s.EmptyStateContainer>
+        <s.EmptyStateContentContainer>
+          <img src="images/DigmoWithAmazonGiftCard.svg" />
+          <s.EmptyStateTextContainer>
+            <s.EmptyStateTitle>Start Digmathon</s.EmptyStateTitle>
+            <span>
+              To get started run your code with Digma and begin unlocking
+              issues. Check back here to see your progress!
+            </span>
+          </s.EmptyStateTextContainer>
+        </s.EmptyStateContentContainer>
+      </s.EmptyStateContainer>
+    );
+  }
+
   return (
     <>
       <s.Header>
