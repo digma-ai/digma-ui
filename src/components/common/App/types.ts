@@ -106,6 +106,7 @@ export interface ConfigContextData {
   productKey: string;
   isDigmathonModeEnabled: boolean;
   userId: string;
+  isDigmathonGameFinished: boolean;
 }
 
 export interface InsightStats {

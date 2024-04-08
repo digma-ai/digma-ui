@@ -1,5 +1,5 @@
-import { DigmathonInsightData } from "../types";
+import { DigmathonInsightData } from "../../types";
 
 export interface CongratulationsViewProps {
-  insights: DigmathonInsightData[];
+  data: DigmathonInsightData[];
 }

@@ -1,6 +1,6 @@
-import { DigmathonInsightData } from "../types";
+import { DigmathonInsightData } from "../../types";
 
 export interface ProgressViewProps {
-  insights: DigmathonInsightData[];
+  data: DigmathonInsightData[];
   foundIssuesCount: number;
 }

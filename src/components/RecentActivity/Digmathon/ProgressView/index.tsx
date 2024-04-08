@@ -5,10 +5,7 @@ import { DigmathonInsightCard } from "../DigmathonInsightCard";
 import * as s from "./styles";
 import { ProgressViewProps } from "./types";
 
-export const ProgressView = ({
-  insights,
-  foundIssuesCount
-}: ProgressViewProps) => {
+export const ProgressView = ({ data, foundIssuesCount }: ProgressViewProps) => {
   useEffect(() => {
     sendTrackingEvent(trackingEvents.DIGMATHON_PROGRESS_VIEWED);
   }, []);
@@ -22,11 +19,11 @@ export const ProgressView = ({
         </s.HeaderDescription>
         <s.IssuesCounter>
           <s.FoundIssuesNumber>{foundIssuesCount}</s.FoundIssuesNumber> out of{" "}
-          {insights.length} issues found
+          {data.length} issues found
         </s.IssuesCounter>
       </s.Header>
       <s.CardsContainer>
-        {insights.map((x, i) =>
+        {data.map((x, i) =>
           x.data ? (
             <DigmathonInsightCard
               number={i + 1}

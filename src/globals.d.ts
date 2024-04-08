@@ -58,6 +58,7 @@ declare global {
     productKey?: unknown;
     isDigmathonModeEnabled?: unknown;
     userId?: unknown;
+    isDigmathonGameFinished?: unknown;
   }
 }
 

@@ -697,21 +697,11 @@ export const EnableDigmathonMode: Story = {
 
 export const OpenCongratulationsDigmathonView: Story = {
   play: () => {
-    window.postMessage({
-      type: "digma",
-      action: actions.OPEN_DIGMATHON_CONGRATULATIONS_VIEW
-    });
-
     setTimeout(() => {
       window.postMessage({
         type: "digma",
         action: actions.SET_DIGMATHON_PROGRESS_DATA,
-        payload: {
-          insights: mockedDigmathonProgressData.insights.map((x) => ({
-            ...x,
-            isFound: true
-          }))
-        }
+        payload: mockedDigmathonProgressData
       });
     }, 0);
   }

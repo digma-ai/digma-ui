@@ -6,6 +6,7 @@ import { actions as globalActions } from "../../actions";
 import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
 import { trackingEvents as globalTrackingEvents } from "../../trackingEvents";
+import { isBoolean } from "../../typeGuards/isBoolean";
 import { ChangeEnvironmentPayload } from "../../types";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 import { groupBy } from "../../utils/groupBy";
@@ -38,6 +39,7 @@ import {
   RecentActivityProps,
   ViewModeOption
 } from "./types";
+import { useDigmathonProgressData } from "./useDigmathonProgressData";
 
 export const RECENT_ACTIVITY_CONTAINER_ID = "recent-activity";
 
@@ -101,11 +103,14 @@ export const RecentActivity = (props: RecentActivityProps) => {
   );
   const previousEnvironment = usePrevious(config.environment);
   const [isDigmathonMode, setIsDigmathonMode] = useState(false);
-  const [
-    isDigmathonCongratulationsViewVisible,
-    setIsDigmathonCongratulationsViewVisible
-  ] = useState(false);
   const { observe, entry } = useDimensions();
+  const {
+    data: digmathonProgressData,
+    getData: getDigmathonProgressData,
+    foundIssuesCount,
+    isDigmathonCompleted
+  } = useDigmathonProgressData();
+  const previousIsDigmathonCompleted = usePrevious(isDigmathonCompleted);
 
   const environmentActivities = useMemo(
     () => (data ? groupBy(data.entries, (x) => x.environment) : {}),
@@ -156,20 +161,11 @@ export const RecentActivity = (props: RecentActivityProps) => {
       setIsRegistrationPopupVisible(true);
     };
 
-    const handleOpenCongratulationsDigmathonView = () => {
-      setIsDigmathonMode(true);
-      setIsDigmathonCongratulationsViewVisible(true);
-    };
-
     dispatcher.addActionListener(actions.SET_DATA, handleRecentActivityData);
     dispatcher.addActionListener(actions.SET_LIVE_DATA, handleLiveData);
     dispatcher.addActionListener(
       actions.OPEN_REGISTRATION_DIALOG,
       handleOpenRegistrationDialog
-    );
-    dispatcher.addActionListener(
-      actions.OPEN_DIGMATHON_CONGRATULATIONS_VIEW,
-      handleOpenCongratulationsDigmathonView
     );
 
     return () => {
@@ -181,10 +177,6 @@ export const RecentActivity = (props: RecentActivityProps) => {
       dispatcher.removeActionListener(
         actions.OPEN_REGISTRATION_DIALOG,
         handleOpenRegistrationDialog
-      );
-      dispatcher.removeActionListener(
-        actions.OPEN_DIGMATHON_CONGRATULATIONS_VIEW,
-        handleOpenCongratulationsDigmathonView
       );
     };
   }, []);
@@ -200,6 +192,16 @@ export const RecentActivity = (props: RecentActivityProps) => {
       setLiveData(props.liveData);
     }
   }, [props.liveData]);
+
+  useEffect(() => {
+    if (
+      isBoolean(previousIsDigmathonCompleted) &&
+      previousIsDigmathonCompleted !== isDigmathonCompleted &&
+      isDigmathonCompleted
+    ) {
+      setIsDigmathonMode(true);
+    }
+  }, [previousIsDigmathonCompleted, isDigmathonCompleted]);
 
   useEffect(() => {
     if (
@@ -434,7 +436,6 @@ export const RecentActivity = (props: RecentActivityProps) => {
 
   const handleDigmathonGoBack = () => {
     setIsDigmathonMode(false);
-    setIsDigmathonCongratulationsViewVisible(false);
   };
 
   const renderContent = () => {
@@ -496,8 +497,11 @@ export const RecentActivity = (props: RecentActivityProps) => {
     <s.Container>
       {isDigmathonMode ? (
         <Digmathon
+          data={digmathonProgressData}
+          getData={getDigmathonProgressData}
+          foundIssuesCount={foundIssuesCount}
+          isDigmathonCompleted={isDigmathonCompleted}
           onGoBack={handleDigmathonGoBack}
-          isCongratulationsView={isDigmathonCongratulationsViewVisible}
         />
       ) : (
         <Allotment defaultSizes={[70, 30]}>

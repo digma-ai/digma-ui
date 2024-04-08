@@ -39,13 +39,7 @@ export const Congratulations: Story = {
         window.postMessage({
           type: "digma",
           action: actions.SET_DIGMATHON_PROGRESS_DATA,
-          payload: {
-            ...mockedDigmathonProgressData,
-            insights: mockedDigmathonProgressData.insights.map((x) => ({
-              ...x,
-              isFound: true
-            }))
-          }
+          payload: mockedDigmathonProgressData
         });
       });
     }, 0);

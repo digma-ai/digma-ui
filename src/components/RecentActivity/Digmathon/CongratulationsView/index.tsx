@@ -10,7 +10,7 @@ import { CongratulationsViewProps } from "./types";
 
 const EMAIL_ADDRESS = "digmathon@digma.ai";
 
-export const CongratulationsView = ({ insights }: CongratulationsViewProps) => {
+export const CongratulationsView = ({ data }: CongratulationsViewProps) => {
   const config = useContext(ConfigContext);
 
   const handleContactLinkClick = () => {
@@ -21,7 +21,7 @@ export const CongratulationsView = ({ insights }: CongratulationsViewProps) => {
     const userId = config.userId || config.userRegistrationEmail || "";
     const subject = `Digmathon Challenge Completed! [${userId}]`;
 
-    const foundInsights = insights
+    const foundInsights = data
       .filter((x) => x.isFound)
       .map((x) => x.data?.title || x.type)
       .join(", ");

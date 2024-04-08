@@ -254,11 +254,11 @@ export const App = (props: AppProps) => {
       }
     };
 
-    const handleSetUserId = (data: unknown) => {
-      if (isObject(data) && isString(data.userId)) {
+    const handleIsDigmathonGameFinished = (data: unknown) => {
+      if (isObject(data) && isBoolean(data.isDigmathonGameFinished)) {
         setConfig((config) => ({
           ...config,
-          userId: data.userId as string
+          isDigmathonGameFinished: data.isDigmathonGameFinished as boolean
         }));
       }
     };
@@ -327,7 +327,10 @@ export const App = (props: AppProps) => {
       handleSetIsDigmathonModeEnabled
     );
     dispatcher.addActionListener(actions.SET_PRODUCT_KEY, handleSetProductKey);
-    dispatcher.addActionListener(actions.SET_USER_ID, handleSetUserId);
+    dispatcher.addActionListener(
+      actions.SET_IS_DIGMATHON_GAME_FINISHED,
+      handleIsDigmathonGameFinished
+    );
 
     return () => {
       dispatcher.removeActionListener(actions.SET_THEME, handleSetTheme);
@@ -403,7 +406,10 @@ export const App = (props: AppProps) => {
         actions.SET_PRODUCT_KEY,
         handleSetProductKey
       );
-      dispatcher.removeActionListener(actions.SET_USER_ID, handleSetUserId);
+      dispatcher.removeActionListener(
+        actions.SET_IS_DIGMATHON_GAME_FINISHED,
+        handleIsDigmathonGameFinished
+      );
     };
   }, []);
 

@@ -31,7 +31,8 @@ export const initialState = {
   insightStats: undefined,
   productKey: isString(window.productKey) ? window.productKey : "",
   isDigmathonModeEnabled: window.isDigmathonModeEnabled === true,
-  userId: isString(window.userId) ? window.userId : ""
+  userId: isString(window.userId) ? window.userId : "",
+  isDigmathonGameFinished: window.isDigmathonGameFinished === true
 };
 
 export const ConfigContext = createContext<ConfigContextData>(initialState);
