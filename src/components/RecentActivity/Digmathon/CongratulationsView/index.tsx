@@ -1,5 +1,4 @@
 import { useContext, useEffect } from "react";
-import { openURLInDefaultBrowser } from "../../../../utils/actions/openURLInDefaultBrowser";
 import { sendTrackingEvent } from "../../../../utils/actions/sendTrackingEvent";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { ConfigContext } from "../../../common/App/ConfigContext";
@@ -40,9 +39,6 @@ export const CongratulationsView = ({ data }: CongratulationsViewProps) => {
     sendUserActionTrackingEvent(
       trackingEvents.DIGMATHON_VIEW_CONTACT_LINK_CLICKED
     );
-
-    const url = getEmailURL(data, config);
-    openURLInDefaultBrowser(url);
   };
 
   useEffect(() => {
@@ -60,11 +56,8 @@ export const CongratulationsView = ({ data }: CongratulationsViewProps) => {
         the link below to send us an email and claim your reward. Feel free to
         keep using Digma locally for free, forever!
       </s.TextContainer>
-      <s.ContactLink onClick={handleContactLinkClick}>
-        {EMAIL_ADDRESS} (send JCEF message)
-      </s.ContactLink>
-      <s.ContactLink href={emailURL}>
-        {EMAIL_ADDRESS} (HTML anchor with href attribute)
+      <s.ContactLink onClick={handleContactLinkClick} href={emailURL}>
+        {EMAIL_ADDRESS}
       </s.ContactLink>
     </s.Container>
   );

@@ -241,7 +241,7 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
                   ? [
                       {
                         id: "digmathon",
-                        label: "Digmathon mode",
+                        label: "Digmathon!",
                         icon: <DigmaLogoIcon size={16} />,
                         onClick: handleDigmathonModeMenuItemClick
                       }
