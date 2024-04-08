@@ -107,6 +107,12 @@ export const FinishStep = (props: FinishStepProps) => {
             value={props.email}
             onChange={props.onEmailInputChange}
           />
+          {props.errors.email && (
+            <s.ErrorMessage>
+              <WarningCircleLargeIcon color={getErrorIconColor(theme)} />
+              {props.errors.email}
+            </s.ErrorMessage>
+          )}
           {props.isEmailValid === false && (
             <s.ErrorMessage>
               <WarningCircleLargeIcon color={getErrorIconColor(theme)} />

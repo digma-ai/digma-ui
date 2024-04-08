@@ -17,3 +17,12 @@ export interface FinishStepFooterContentProps {
   $transitionClassName: string;
   $transitionDuration: number;
 }
+
+export interface FieldValidationResult {
+  isValid?: boolean;
+  error?: string;
+}
+
+export interface FieldsErrors {
+  [key: string]: string | undefined;
+}
