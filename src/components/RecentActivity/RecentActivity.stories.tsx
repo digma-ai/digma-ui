@@ -676,6 +676,25 @@ export const OpenRegistrationDialog: Story = {
   }
 };
 
+export const EnableDigmathonMode: Story = {
+  play: () => {
+    window.postMessage({
+      type: "digma",
+      action: globalActions.SET_DIGMATHON_MODE,
+      payload: {
+        isDigmathonModeEnabled: true
+      }
+    });
+    window.postMessage({
+      type: "digma",
+      action: globalActions.SET_PRODUCT_KEY,
+      payload: {
+        productKey: "digmathon"
+      }
+    });
+  }
+};
+
 export const OpenCongratulationsDigmathonView: Story = {
   play: () => {
     window.postMessage({
@@ -695,24 +714,5 @@ export const OpenCongratulationsDigmathonView: Story = {
         }
       });
     }, 0);
-  }
-};
-
-export const EnableDigmathonMode: Story = {
-  play: () => {
-    window.postMessage({
-      type: "digma",
-      action: globalActions.SET_DIGMATHON_MODE,
-      payload: {
-        isDigmathonModeEnabled: true
-      }
-    });
-    window.postMessage({
-      type: "digma",
-      action: globalActions.SET_PRODUCT_KEY,
-      payload: {
-        productKey: "digmathon"
-      }
-    });
   }
 };

@@ -157,9 +157,6 @@ export const RecentActivity = (props: RecentActivityProps) => {
     };
 
     const handleOpenCongratulationsDigmathonView = () => {
-      if (!config.userRegistrationEmail) {
-        setIsRegistrationPopupVisible(true);
-      }
       setIsDigmathonMode(true);
       setIsDigmathonCongratulationsViewVisible(true);
     };
@@ -422,9 +419,6 @@ export const RecentActivity = (props: RecentActivityProps) => {
 
   const handleRegistrationDialogClose = () => {
     setIsRegistrationPopupVisible(false);
-    if (isDigmathonMode) {
-      setIsDigmathonMode(false);
-    }
   };
 
   const handleOverlayKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
@@ -435,9 +429,6 @@ export const RecentActivity = (props: RecentActivityProps) => {
   };
 
   const handleDigmathonModeButtonClick = () => {
-    if (!config.userRegistrationEmail) {
-      setIsRegistrationPopupVisible(true);
-    }
     setIsDigmathonMode(true);
   };
 

@@ -490,7 +490,11 @@ export const InstallationWizard = () => {
             </s.BackToInstallMethodButton>
             <s.MainButton
               onClick={handleFinishButtonClick}
-              disabled={isEmailValid === false || isEmailValidating}
+              disabled={
+                isEmailValid === false ||
+                isEmailValidating ||
+                Boolean(productKey && !email)
+              }
             >
               Finish
             </s.MainButton>

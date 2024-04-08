@@ -6,7 +6,6 @@ const RECENT_ACTIVITY_MIN_WIDTH = 550; // in pixels
 
 export const Container = styled.div`
   height: 100%;
-  overflow: hidden;
   position: relative;
   background: ${({ theme }) => theme.colors.recentActivity.background};
 

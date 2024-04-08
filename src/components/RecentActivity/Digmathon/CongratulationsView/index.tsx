@@ -46,9 +46,9 @@ export const CongratulationsView = ({ insights }: CongratulationsViewProps) => {
       </s.IconContainer>
       <s.TextContainer>
         <s.Title>Congratulations!</s.Title>
-        You&apos;ve successfully found all the issues. To claim your prize,
-        please send us an email with your name and &quot;Digmathon&quot; as the
-        subject line.
+        You&apos;ve successfully reached the Digma insights goal. Please click
+        the link below to send us an email and claim your reward. Feel free to
+        keep using Digma locally for free, forever!
       </s.TextContainer>
       <s.ContactLink onClick={handleContactLinkClick}>
         {EMAIL_ADDRESS}

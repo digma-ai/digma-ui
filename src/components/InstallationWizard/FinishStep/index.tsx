@@ -75,10 +75,10 @@ export const FinishStep = (props: FinishStepProps) => {
       {config.isDigmathonModeEnabled && (
         <s.Section>
           <s.SectionTitle icon={KeyIcon}>
-            Code product key<s.SectionTitleNote>(optional)</s.SectionTitleNote>
+            Product key<s.SectionTitleNote>(optional)</s.SectionTitleNote>
           </s.SectionTitle>
           <SectionDescription>
-            If you’ve received a product key, please enter it here
+            If you&apos;ve received a product key, please enter it here
           </SectionDescription>
           <s.TextField>
             <s.TextInput
@@ -92,7 +92,10 @@ export const FinishStep = (props: FinishStepProps) => {
       )}
       <s.Section>
         <s.SectionTitle icon={RingingBellIcon}>
-          Stay up to date<s.SectionTitleNote>(optional)</s.SectionTitleNote>
+          Stay up to date
+          {!props.productKey && (
+            <s.SectionTitleNote>(optional)</s.SectionTitleNote>
+          )}
         </s.SectionTitle>
         <SectionDescription>
           Enter your E-mail address to be the first to get Digma updates
