@@ -105,6 +105,7 @@ export interface ConfigContextData {
   insightStats?: InsightStats;
   productKey: string;
   isDigmathonModeEnabled: boolean;
+  userId: string;
 }
 
 export interface InsightStats {

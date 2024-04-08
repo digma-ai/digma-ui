@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { RecentActivity } from ".";
 import { actions as globalActions } from "../../actions";
+import { mockedDigmathonProgressData } from "./Digmathon/mockData";
 import { mockData as liveData } from "./LiveView/mockData";
 import { actions } from "./actions";
 import { RecentActivityData } from "./types";
@@ -681,6 +682,19 @@ export const OpenCongratulationsDigmathonView: Story = {
       type: "digma",
       action: actions.OPEN_DIGMATHON_CONGRATULATIONS_VIEW
     });
+
+    setTimeout(() => {
+      window.postMessage({
+        type: "digma",
+        action: actions.SET_DIGMATHON_PROGRESS_DATA,
+        payload: {
+          insights: mockedDigmathonProgressData.insights.map((x) => ({
+            ...x,
+            isFound: true
+          }))
+        }
+      });
+    }, 0);
   }
 };
 

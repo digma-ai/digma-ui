@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { dispatcher } from "../../../dispatcher";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { InsightType } from "../../Insights/types";
+import { NewCircleLoader } from "../../common/NewCircleLoader";
 import { ChevronIcon } from "../../common/icons/16px/ChevronIcon";
 import { Direction } from "../../common/icons/types";
 import { actions } from "../actions";
@@ -159,6 +160,14 @@ export const Digmathon = ({
 
   const foundIssuesCount = insights.filter((x) => x.isFound).length;
 
+  const renderContent = () =>
+    foundIssuesCount >= REQUIRED_COUNT_OF_FOUND_ISSUES ||
+    isCongratulationsView ? (
+      <CongratulationsView insights={insights} />
+    ) : (
+      <ProgressView insights={insights} foundIssuesCount={foundIssuesCount} />
+    );
+
   return (
     <s.Container>
       <s.Header>
@@ -173,11 +182,12 @@ export const Digmathon = ({
         <s.Divider />
         Digmathon
       </s.Header>
-      {foundIssuesCount >= REQUIRED_COUNT_OF_FOUND_ISSUES ||
-      isCongratulationsView ? (
-        <CongratulationsView />
+      {data ? (
+        renderContent()
       ) : (
-        <ProgressView insights={insights} foundIssuesCount={foundIssuesCount} />
+        <s.LoaderContainer>
+          <NewCircleLoader size={32} />
+        </s.LoaderContainer>
       )}
     </s.Container>
   );

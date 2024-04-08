@@ -57,3 +57,10 @@ export const ContentContainer = styled.div`
   overflow: auto;
   height: 100%;
 `;
+
+export const LoaderContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+`;
