@@ -65,8 +65,6 @@ export const useDigmathonProgressData = () => {
   const previousIsDigmathonCompleted = usePrevious(isDigmathonCompleted);
 
   useEffect(() => {
-    getData();
-
     const handleSetDigmaProgressData = (data: unknown) => {
       const payload = data as DigmathonProgressData;
       const insights: DigmathonInsightData[] = [
