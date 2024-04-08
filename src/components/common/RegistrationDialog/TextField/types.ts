@@ -9,6 +9,7 @@ export interface TextFieldProps {
   className?: string;
   isValid?: boolean;
   onBlur?: FocusEventHandler<HTMLInputElement>;
+  type?: "text" | "password";
 }
 
 export interface ContainerProps {

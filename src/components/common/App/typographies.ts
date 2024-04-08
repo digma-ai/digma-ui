@@ -101,6 +101,12 @@ export const bodyRegularTypography = css`
   line-height: ${typographies.body.lineHeight}px;
 `;
 
+export const bodyMediumTypography = css`
+  font-size: ${typographies.body.fontSize}px;
+  font-weight: ${typographies.body.fontWeight.medium};
+  line-height: ${typographies.body.lineHeight}px;
+`;
+
 export const bodySemiboldTypography = css`
   font-size: ${typographies.body.fontSize}px;
   font-weight: ${typographies.body.fontWeight.medium};
