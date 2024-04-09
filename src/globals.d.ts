@@ -55,6 +55,10 @@ declare global {
     testsRefreshInterval?: unknown;
     wizardSkipInstallationStep?: unknown;
     wizardFirstLaunch?: unknown;
+    productKey?: unknown;
+    isDigmathonModeEnabled?: unknown;
+    userId?: unknown;
+    isDigmathonGameFinished?: unknown;
   }
 }
 

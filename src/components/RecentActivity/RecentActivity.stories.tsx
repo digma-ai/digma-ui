@@ -1,5 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { RecentActivity } from ".";
+import { actions as globalActions } from "../../actions";
+import { mockedDigmathonProgressData } from "./Digmathon/mockData";
 import { mockData as liveData } from "./LiveView/mockData";
 import { actions } from "./actions";
 import { RecentActivityData } from "./types";
@@ -671,5 +673,43 @@ export const OpenRegistrationDialog: Story = {
       type: "digma",
       action: actions.OPEN_REGISTRATION_DIALOG
     });
+  }
+};
+
+export const EnableDigmathonMode: Story = {
+  play: () => {
+    window.postMessage({
+      type: "digma",
+      action: globalActions.SET_DIGMATHON_MODE,
+      payload: {
+        isDigmathonModeEnabled: true
+      }
+    });
+    window.postMessage({
+      type: "digma",
+      action: globalActions.SET_PRODUCT_KEY,
+      payload: {
+        productKey: "digmathon"
+      }
+    });
+    window.postMessage({
+      type: "digma",
+      action: actions.SET_DIGMATHON_PROGRESS_DATA,
+      payload: {
+        insights: []
+      }
+    });
+  }
+};
+
+export const OpenCongratulationsDigmathonView: Story = {
+  play: () => {
+    setTimeout(() => {
+      window.postMessage({
+        type: "digma",
+        action: actions.SET_DIGMATHON_PROGRESS_DATA,
+        payload: mockedDigmathonProgressData
+      });
+    }, 0);
   }
 };

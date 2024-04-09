@@ -6,7 +6,7 @@ import { TableText } from "../../../common/TableText";
 import { HighlightCard } from "../../common/HighlightCard";
 import { EnvironmentData, HotSpotMetrics } from "../../types";
 import { addEnvironmentColumns } from "../addEnvironmentColumns";
-import { goToEnvironmentIssues } from "../goToEnvironmentIssues";
+import { handleEnvironmentTableRowClick } from "../goToEnvironmentIssues";
 import { HotSpotHighlightCardProps } from "./types";
 
 export const HotSpotHighlightCard = ({ data }: HotSpotHighlightCardProps) => {
@@ -28,7 +28,7 @@ export const HotSpotHighlightCard = ({ data }: HotSpotHighlightCardProps) => {
   const columns = addEnvironmentColumns(columnHelper, metricsColumns);
 
   const handleTableRowClick = (row: Row<EnvironmentData<HotSpotMetrics>>) => {
-    goToEnvironmentIssues(
+    handleEnvironmentTableRowClick(
       config.environments,
       row.original.environmentName,
       data.insightType

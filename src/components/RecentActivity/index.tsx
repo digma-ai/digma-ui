@@ -6,6 +6,7 @@ import { actions as globalActions } from "../../actions";
 import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
 import { trackingEvents as globalTrackingEvents } from "../../trackingEvents";
+import { isBoolean } from "../../typeGuards/isBoolean";
 import { ChangeEnvironmentPayload } from "../../types";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 import { groupBy } from "../../utils/groupBy";
@@ -18,6 +19,7 @@ import { DigmaLogoFlatIcon } from "../common/icons/DigmaLogoFlatIcon";
 import { ListIcon } from "../common/icons/ListIcon";
 import { TableIcon } from "../common/icons/TableIcon";
 import { DeleteEnvironmentConfirmation } from "./DeleteEnvironmentConfirmation";
+import { Digmathon } from "./Digmathon";
 import { EnvironmentInstructionsPanel } from "./EnvironmentInstructionsPanel";
 import { EnvironmentPanel } from "./EnvironmentPanel";
 import { ViewMode } from "./EnvironmentPanel/types";
@@ -37,6 +39,7 @@ import {
   RecentActivityProps,
   ViewModeOption
 } from "./types";
+import { useDigmathonProgressData } from "./useDigmathonProgressData";
 
 export const RECENT_ACTIVITY_CONTAINER_ID = "recent-activity";
 
@@ -99,7 +102,15 @@ export const RecentActivity = (props: RecentActivityProps) => {
     config.userRegistrationEmail
   );
   const previousEnvironment = usePrevious(config.environment);
+  const [isDigmathonMode, setIsDigmathonMode] = useState(false);
   const { observe, entry } = useDimensions();
+  const {
+    data: digmathonProgressData,
+    getData: getDigmathonProgressData,
+    foundIssuesCount,
+    isDigmathonCompleted
+  } = useDigmathonProgressData();
+  const previousIsDigmathonCompleted = usePrevious(isDigmathonCompleted);
 
   const environmentActivities = useMemo(
     () => (data ? groupBy(data.entries, (x) => x.environment) : {}),
@@ -181,6 +192,16 @@ export const RecentActivity = (props: RecentActivityProps) => {
       setLiveData(props.liveData);
     }
   }, [props.liveData]);
+
+  useEffect(() => {
+    if (
+      isBoolean(previousIsDigmathonCompleted) &&
+      previousIsDigmathonCompleted !== isDigmathonCompleted &&
+      isDigmathonCompleted
+    ) {
+      setIsDigmathonMode(true);
+    }
+  }, [previousIsDigmathonCompleted, isDigmathonCompleted]);
 
   useEffect(() => {
     if (
@@ -409,6 +430,14 @@ export const RecentActivity = (props: RecentActivityProps) => {
     }
   };
 
+  const handleDigmathonModeButtonClick = () => {
+    setIsDigmathonMode(true);
+  };
+
+  const handleDigmathonGoBack = () => {
+    setIsDigmathonMode(false);
+  };
+
   const renderContent = () => {
     if (selectedEnvironment?.isPending) {
       switch (selectedEnvironment.type) {
@@ -466,45 +495,56 @@ export const RecentActivity = (props: RecentActivityProps) => {
 
   return (
     <s.Container>
-      <Allotment defaultSizes={[70, 30]}>
-        <s.RecentActivityContainer id={RECENT_ACTIVITY_CONTAINER_ID}>
-          {/* <s.RecentActivityContainerBackground>
+      {isDigmathonMode ? (
+        <Digmathon
+          data={digmathonProgressData}
+          getData={getDigmathonProgressData}
+          foundIssuesCount={foundIssuesCount}
+          isDigmathonCompleted={isDigmathonCompleted}
+          onGoBack={handleDigmathonGoBack}
+        />
+      ) : (
+        <Allotment defaultSizes={[70, 30]}>
+          <s.RecentActivityContainer id={RECENT_ACTIVITY_CONTAINER_ID}>
+            {/* <s.RecentActivityContainerBackground>
             <s.RecentActivityContainerBackgroundGradient />
           </s.RecentActivityContainerBackground> */}
-          <s.RecentActivityHeader ref={observe}>
-            <EnvironmentPanel
-              environments={environments}
-              selectedEnvironment={selectedEnvironment}
-              onEnvironmentSelect={handleEnvironmentSelect}
-              onEnvironmentAdd={handleEnvironmentAdd}
-              onEnvironmentDelete={handleEnvironmentDelete}
-            />
-            <s.RecentActivityToolbarContainer>
-              {!selectedEnvironment?.isPending && (
-                <s.RecentActivityToolbar>
-                  <span>Recent Activity</span>
-                  <Toggle
-                    value={viewMode}
-                    options={viewModeOptions}
-                    onChange={handleViewModeChange}
-                  />
-                </s.RecentActivityToolbar>
-              )}
-              {!config.isObservabilityEnabled && <ObservabilityStatusBadge />}
-            </s.RecentActivityToolbarContainer>
-          </s.RecentActivityHeader>
-          <s.RecentActivityContentContainer>
-            {renderContent()}
-          </s.RecentActivityContentContainer>
-        </s.RecentActivityContainer>
-        <Allotment.Pane visible={Boolean(liveData)} minSize={450}>
-          {liveData && (
-            <s.LiveViewContainer>
-              <LiveView data={liveData} onClose={handleCloseLiveView} />
-            </s.LiveViewContainer>
-          )}
-        </Allotment.Pane>
-      </Allotment>
+            <s.RecentActivityHeader ref={observe}>
+              <EnvironmentPanel
+                environments={environments}
+                selectedEnvironment={selectedEnvironment}
+                onEnvironmentSelect={handleEnvironmentSelect}
+                onEnvironmentAdd={handleEnvironmentAdd}
+                onEnvironmentDelete={handleEnvironmentDelete}
+                onDigmathonModeButtonClick={handleDigmathonModeButtonClick}
+              />
+              <s.RecentActivityToolbarContainer>
+                {!selectedEnvironment?.isPending && (
+                  <s.RecentActivityToolbar>
+                    <span>Recent Activity</span>
+                    <Toggle
+                      value={viewMode}
+                      options={viewModeOptions}
+                      onChange={handleViewModeChange}
+                    />
+                  </s.RecentActivityToolbar>
+                )}
+                {!config.isObservabilityEnabled && <ObservabilityStatusBadge />}
+              </s.RecentActivityToolbarContainer>
+            </s.RecentActivityHeader>
+            <s.RecentActivityContentContainer>
+              {renderContent()}
+            </s.RecentActivityContentContainer>
+          </s.RecentActivityContainer>
+          <Allotment.Pane visible={Boolean(liveData)} minSize={450}>
+            {liveData && (
+              <s.LiveViewContainer>
+                <LiveView data={liveData} onClose={handleCloseLiveView} />
+              </s.LiveViewContainer>
+            )}
+          </Allotment.Pane>
+        </Allotment>
+      )}
       {environmentToDelete && (
         <s.Overlay onKeyDown={handleOverlayKeyDown} tabIndex={-1}>
           <DeleteEnvironmentConfirmation

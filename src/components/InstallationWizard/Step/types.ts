@@ -37,5 +37,5 @@ export interface NumberContainerProps {
 }
 
 export interface NumberProps extends TransitionProps {
-  status: StepStatus;
+  $status: StepStatus;
 }

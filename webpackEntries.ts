@@ -1,6 +1,7 @@
 import path from "path";
 
 export const entries: AppEntries = {
+  // deprecated
   assets: {
     entry: path.resolve(__dirname, "./src/containers/Assets/index.tsx"),
     environmentVariables: [
@@ -17,6 +18,7 @@ export const entries: AppEntries = {
     entry: path.resolve(__dirname, "./src/containers/Documentation/index.tsx"),
     environmentVariables: ["documentationPage"]
   },
+  // deprecated
   insights: {
     entry: path.resolve(__dirname, "./src/containers/Insights/index.tsx"),
     environmentVariables: ["insightsRefreshInterval"]
@@ -41,6 +43,7 @@ export const entries: AppEntries = {
   navigation: {
     entry: path.resolve(__dirname, "./src/containers/Navigation/index.tsx")
   },
+  // deprecated
   notifications: {
     entry: path.resolve(__dirname, "./src/containers/Notifications/index.tsx"),
     environmentVariables: [
@@ -56,6 +59,7 @@ export const entries: AppEntries = {
       "recentActivityIsEnvironmentManagementEnabled"
     ]
   },
+  // deprecated
   tests: {
     entry: path.resolve(__dirname, "./src/containers/Tests/index.tsx"),
     environmentVariables: ["testsRefreshInterval"]

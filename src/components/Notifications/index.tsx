@@ -44,6 +44,9 @@ export const trackingEvents = addPrefix(
   " "
 );
 
+/**
+ * @deprecated
+ */
 export const Notifications = (props: NotificationsProps) => {
   const [data, setData] = useState<NotificationsSetDataPayload>();
   const previousData = usePrevious(data);

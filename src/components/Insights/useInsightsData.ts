@@ -21,16 +21,16 @@ interface UseInsightDataProps {
   query: InsightsQuery;
 }
 
-const getData = (query: ScopedInsightsQuery, state?: GlobalState) => {
+const getData = (scopedQuery: ScopedInsightsQuery, state?: GlobalState) => {
   const getDataQuery: InsightsDataQuery = {
-    displayName: query.searchQuery,
-    sortBy: query.sorting.criterion,
-    sortOrder: query.sorting.order,
-    page: query.page,
-    scopedSpanCodeObjectId: query.scopedSpanCodeObjectId,
-    showDismissed: query.showDismissed,
-    insightViewType: query.insightViewType,
-    showUnreadOnly: query.showUnreadOnly
+    displayName: scopedQuery.searchQuery,
+    sortBy: scopedQuery.sorting.criterion,
+    sortOrder: scopedQuery.sorting.order,
+    page: scopedQuery.page,
+    scopedSpanCodeObjectId: scopedQuery.scopedSpanCodeObjectId,
+    showDismissed: scopedQuery.showDismissed,
+    insightViewType: scopedQuery.insightViewType,
+    showUnreadOnly: scopedQuery.showUnreadOnly
   };
 
   window.sendMessageToDigma({
@@ -41,7 +41,7 @@ const getData = (query: ScopedInsightsQuery, state?: GlobalState) => {
   });
 
   const globalStateSlice =
-    query.insightViewType === "Analytics" ? "analytics" : "insights";
+    scopedQuery.insightViewType === "Analytics" ? "analytics" : "insights";
 
   window.sendMessageToDigma<GlobalState>({
     action: globalActions.UPDATE_STATE,
@@ -55,7 +55,10 @@ const getData = (query: ScopedInsightsQuery, state?: GlobalState) => {
   });
 };
 
-export const useInsightsData = (props: UseInsightDataProps) => {
+export const useInsightsData = ({
+  refreshInterval,
+  query
+}: UseInsightDataProps) => {
   const [data, setData] = useState<InsightsData>({
     insightsStatus: InsightsStatus.LOADING,
     insights: [],
@@ -71,16 +74,16 @@ export const useInsightsData = (props: UseInsightDataProps) => {
   const config = useContext(ConfigContext);
   const { scope, environment, state } = config;
 
-  const query = useMemo(
+  const scopedQuery = useMemo(
     () => ({
-      ...props.query,
+      ...query,
       scopedSpanCodeObjectId: scope?.span?.spanCodeObjectId || null
     }),
-    [props.query, scope]
+    [query, scope]
   );
 
   useEffect(() => {
-    getData(query, state);
+    getData(scopedQuery, state);
 
     setIsInitialLoading(true);
     setIsLoading(true);
@@ -113,13 +116,9 @@ export const useInsightsData = (props: UseInsightDataProps) => {
   useEffect(() => {
     if (previousLastSetDataTimeStamp !== lastSetDataTimeStamp) {
       window.clearTimeout(refreshTimerId.current);
-      refreshTimerId.current = window.setTimeout(
-        (insightsQuery: ScopedInsightsQuery) => {
-          getData(insightsQuery, state);
-        },
-        props.refreshInterval,
-        query
-      );
+      refreshTimerId.current = window.setTimeout(() => {
+        getData(scopedQuery, state);
+      }, refreshInterval);
     }
 
     return () => {
@@ -128,26 +127,20 @@ export const useInsightsData = (props: UseInsightDataProps) => {
   }, [
     lastSetDataTimeStamp,
     previousLastSetDataTimeStamp,
-    query,
     environment,
-    props.refreshInterval
+    scopedQuery,
+    refreshInterval
   ]);
 
   useEffect(() => {
+    getData(scopedQuery, state);
     setIsLoading(true);
-    getData(
-      {
-        ...props.query,
-        scopedSpanCodeObjectId: scope?.span?.spanCodeObjectId || null
-      },
-      state
-    );
-  }, [props.query, scope, environment]);
+  }, [scopedQuery, scope?.span?.spanCodeObjectId, environment?.originalName]);
 
   return {
     isInitialLoading,
     data,
     isLoading,
-    refresh: () => getData(query, state)
+    refresh: () => getData(scopedQuery, state)
   };
 };

@@ -11,7 +11,7 @@ import {
   EnvironmentData
 } from "../../types";
 import { addEnvironmentColumns } from "../addEnvironmentColumns";
-import { goToEnvironmentIssues } from "../goToEnvironmentIssues";
+import { handleEnvironmentTableRowClick } from "../goToEnvironmentIssues";
 import { DescriptionContainer } from "../styles";
 import { EndpointQueryOptimizationV2HighlightCardProps } from "./types";
 
@@ -39,7 +39,7 @@ export const EndpointQueryOptimizationV2HighlightCard = ({
   const handleTableRowClick = (
     row: Row<EnvironmentData<EndpointQueryOptimizationV2Metrics>>
   ) => {
-    goToEnvironmentIssues(
+    handleEnvironmentTableRowClick(
       config.environments,
       row.original.environmentName,
       data.insightType
