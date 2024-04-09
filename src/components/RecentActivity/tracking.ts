@@ -13,6 +13,7 @@ export const trackingEvents = addPrefix(
     OBSERVABILITY_TOGGLE_SWITCHED: "observability toggle switched",
     KEBAB_MENU_ITEM_CLICKED: "kebab menu item clicked",
     DIGMATHON_VIEW_BACK_BUTTON_CLICKED: "digmathon view back button clicked",
+    DIGMATHON_VIEW_EXIT_BUTTON_CLICKED: "digmathon view exit button clicked",
     DIGMATHON_VIEW_CONTACT_LINK_CLICKED: "digmathon view contact link clicked",
     DIGMATHON_PROGRESS_VIEWED: "digmathon progress viewed",
     DIGMATHON_CONGRATULATIONS_VIEWED: "digmathon congratulations viewed"

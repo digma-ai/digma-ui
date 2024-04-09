@@ -14,6 +14,7 @@ import { NewButton } from "../../common/NewButton";
 import { NewPopover } from "../../common/NewPopover";
 import { ToggleSwitch } from "../../common/ToggleSwitch";
 import { PlusIcon } from "../../common/icons/12px/PlusIcon";
+import { ConfettiIcon } from "../../common/icons/16px/ConfettiIcon";
 import { HammerIcon } from "../../common/icons/16px/HammerIcon";
 import { OpenTelemetryLogoIcon } from "../../common/icons/16px/OpenTelemetryLogoIcon";
 import { SlackLogoIcon } from "../../common/icons/16px/SlackLogoIcon";
@@ -242,7 +243,7 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
                       {
                         id: "digmathon",
                         label: "Digmathon!",
-                        icon: <DigmaLogoIcon size={16} />,
+                        icon: <ConfettiIcon size={16} color={"currentColor"} />,
                         onClick: handleDigmathonModeMenuItemClick
                       }
                     ]

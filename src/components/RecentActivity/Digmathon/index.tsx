@@ -28,6 +28,13 @@ export const Digmathon = ({
     onGoBack();
   };
 
+  const handleExitButtonClick = () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.DIGMATHON_VIEW_EXIT_BUTTON_CLICKED
+    );
+    onGoBack();
+  };
+
   const renderContent = (data: DigmathonInsightData[]) =>
     isDigmathonCompleted ? (
       <CongratulationsView data={data} />
@@ -48,6 +55,11 @@ export const Digmathon = ({
         </s.BackButton>
         <s.Divider />
         Digmathon
+        <s.ExitButton
+          buttonType={"secondary"}
+          label={"Exit"}
+          onClick={handleExitButtonClick}
+        />
       </s.Header>
       {data ? (
         renderContent(data)

@@ -3,6 +3,7 @@ import {
   subscriptRegularTypography,
   subscriptSemiboldTypography
 } from "../../common/App/typographies";
+import { Button } from "../../common/v3/Button";
 
 export const Container = styled.div`
   display: flex;
@@ -49,6 +50,10 @@ export const HeaderTitle = styled.span`
 
   padding-left: 4px;
   color: ${({ theme }) => theme.colors.v3.text.primary};
+`;
+
+export const ExitButton = styled(Button)`
+  margin-left: auto;
 `;
 
 export const ContentContainer = styled.div`
