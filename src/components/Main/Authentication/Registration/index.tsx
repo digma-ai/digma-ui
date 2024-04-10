@@ -7,6 +7,7 @@ import { LockIcon } from "../../../common/icons/12px/LockIcon";
 import { EnvelopeIcon } from "../../../common/icons/16px/EnvelopeIcon";
 import * as s from "./../styles";
 import { RegisterFormValues } from "./types";
+import { useRegistration } from "./useRegistration";
 
 const validateEmail = (email: string): string | boolean => {
   const emailMessage = "Please enter a valid email address";
@@ -33,6 +34,9 @@ export const Registration = () => {
     handleSubmit,
     control,
     getValues,
+    watch,
+    setError,
+    clearErrors,
     formState: { errors, isValid },
     setFocus
   } = useForm<RegisterFormValues>({
@@ -40,12 +44,29 @@ export const Registration = () => {
     defaultValues: formDefaultValues
   });
   const values = getValues();
+  const { isLoading, register, errors: resultErrors } = useRegistration();
+
+  useEffect(() => {
+    if (resultErrors?.length > 0) {
+      setError("root", {
+        type: "validate",
+        message: resultErrors.map((x) => x.description).join("\r\n")
+      });
+    }
+  }, [setError, resultErrors]);
 
   useEffect(() => {
     setFocus("email");
   }, [setFocus]);
 
+  useEffect(() => {
+    watch(() => {
+      clearErrors();
+    });
+  }, [clearErrors, watch]);
+
   const onSubmit = (data: RegisterFormValues) => {
+    register({ email: data.email, password: data.password });
     sendUserActionTrackingEvent("registration dialog form submitted");
   };
 

@@ -90,6 +90,7 @@ export const ErrorMessage = styled.span`
   font-size: 13px;
   height: 15px;
   align-items: center;
+  align-self: flex-start;
   color: ${({ theme }) => theme.colors.v3.status.high};
 `;
 

@@ -14,6 +14,7 @@ import {
   SubmitButton
 } from "../styles";
 import { LoginFormValues } from "./types";
+import { useLogin } from "./useLogin";
 
 const validateEmail = (email: string): string | boolean => {
   const emailMessage = "Please enter a valid work email address";
@@ -39,6 +40,9 @@ export const Login = () => {
     handleSubmit,
     control,
     getValues,
+    clearErrors,
+    watch,
+    setError,
     formState: { errors, isValid },
     setFocus
   } = useForm<LoginFormValues>({
@@ -46,12 +50,29 @@ export const Login = () => {
     defaultValues: formDefaultValues
   });
   const values = getValues();
+  const { isLoading, login, errors: resultErrors } = useLogin();
 
   useEffect(() => {
     setFocus("email");
   }, [setFocus]);
 
+  useEffect(() => {
+    if (resultErrors?.length > 0) {
+      setError("root", {
+        type: "validate",
+        message: resultErrors.map((x) => x.description).join("\r\n")
+      });
+    }
+  }, [setError, resultErrors]);
+
+  useEffect(() => {
+    watch(() => {
+      clearErrors();
+    });
+  }, [clearErrors, watch]);
+
   const onSubmit = (data: LoginFormValues) => {
+    login({ email: data.email, password: data.password });
     sendUserActionTrackingEvent("registration dialog form submitted");
   };
 

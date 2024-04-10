@@ -13,3 +13,26 @@ export interface GetHighlightsTopIssuesDataPayload {
     environments: string[];
   };
 }
+
+export interface LoginPayload {
+  email: string;
+  password: string;
+}
+
+export interface ErrorData {
+  errorCode: string;
+  description: string;
+}
+
+export interface LoginResult {
+  errors?: ErrorData[];
+}
+
+export interface RegisterPayload {
+  email: string;
+  password: string;
+}
+
+export interface RegisterResult {
+  errors?: ErrorData[];
+}
