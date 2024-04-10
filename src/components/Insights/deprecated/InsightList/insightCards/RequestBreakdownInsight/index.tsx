@@ -31,14 +31,14 @@ const DEFAULT_PERCENTILE = 0.5;
 const getComponents = (
   insight: EndpointBreakdownInsight,
   percentile: number
-): Component[] | undefined => {
+): Component[] => {
   switch (percentile) {
     case 0.5:
-      return insight.p50Components || undefined;
+      return insight.p50Components;
     case 0.95:
-      return insight.p95Components || undefined;
+      return insight.p95Components;
     default:
-      return undefined;
+      return [];
   }
 };
 
@@ -57,9 +57,7 @@ export const RequestBreakdownInsight = (
     useState<number>(DEFAULT_PERCENTILE);
 
   const data = useMemo(() => {
-    const components =
-      getComponents(props.insight, percentileViewMode) ||
-      props.insight.components;
+    const components = getComponents(props.insight, percentileViewMode);
 
     const sortedComponents = props.insight.hasAsyncSpans
       ? [...components].sort((a, b) =>

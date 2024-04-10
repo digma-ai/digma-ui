@@ -64,45 +64,7 @@ export const Default: Story = {
         unit: "sec",
         raw: 5007013000
       },
-      endpointsMedianOfP75: {
-        value: 0,
-        unit: "ns",
-        raw: 0
-      },
-      min: {
-        value: 0,
-        unit: "ns",
-        raw: 0
-      },
-      max: {
-        value: 0,
-        unit: "ns",
-        raw: 0
-      },
-      mean: {
-        value: 0,
-        unit: "ns",
-        raw: 0
-      },
-      p75: {
-        value: 0,
-        unit: "ns",
-        raw: 0
-      },
-      p95: {
-        value: 0,
-        unit: "ns",
-        raw: 0
-      },
-      p99: {
-        value: 0,
-        unit: "ns",
-        raw: 0
-      },
       scope: InsightScope.EntrySpan,
-      endpointSpan: "HTTP GET SampleInsights/SlowEndpoint",
-      spanCodeObjectId:
-        "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP GET SampleInsights/SlowEndpoint",
       route: "epHTTP:HTTP GET SampleInsights/SlowEndpoint",
       serviceName: "Sample.MoneyTransfer.API",
       spanInfo: {
@@ -113,9 +75,7 @@ export const Default: Story = {
           "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP GET SampleInsights/SlowEndpoint",
         methodCodeObjectId:
           "method:Sample.MoneyTransfer.API.Controllers.SampleInsightsController$_$SlowEndpoint(Int32)",
-        kind: "Server",
-        codeObjectId:
-          "Sample.MoneyTransfer.API.Controllers.SampleInsightsController$_$SlowEndpoint(Int32)"
+        kind: "Server"
       },
       shortDisplayInfo: {
         title: "",
@@ -128,8 +88,6 @@ export const Default: Story = {
       environment: "BOB-LAPTOP[LOCAL]",
       severity: 0,
       isRecalculateEnabled: false,
-      prefixedCodeObjectId:
-        "method:Sample.MoneyTransfer.API.Controllers.SampleInsightsController$_$SlowEndpoint(Int32)",
       customStartTime: null,
       actualStartTime: "2023-06-16T11:10:29.277Z"
     }

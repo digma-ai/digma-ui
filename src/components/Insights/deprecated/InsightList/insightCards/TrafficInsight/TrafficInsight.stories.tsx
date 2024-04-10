@@ -46,9 +46,6 @@ export const LowTraffic: Story = {
       ],
       maxCallsIn1Min: 4,
       scope: InsightScope.EntrySpan,
-      endpointSpan: "HTTP GET /owners/new",
-      spanCodeObjectId:
-        "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /owners/new",
       route: "epHTTP:HTTP GET /owners/new",
       serviceName: "PetClinic",
       spanInfo: {
@@ -59,9 +56,7 @@ export const LowTraffic: Story = {
           "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /owners/new",
         methodCodeObjectId:
           "method:org.springframework.samples.petclinic.owner.OwnerController$_$initCreationForm",
-        kind: "Server",
-        codeObjectId:
-          "org.springframework.samples.petclinic.owner.OwnerController$_$initCreationForm"
+        kind: "Server"
       },
       shortDisplayInfo: {
         title: "",
@@ -74,8 +69,6 @@ export const LowTraffic: Story = {
       environment: "SAMPLE_ENV",
       severity: 0,
       isRecalculateEnabled: false,
-      prefixedCodeObjectId:
-        "method:org.springframework.samples.petclinic.owner.OwnerController$_$initCreationForm",
       customStartTime: null,
       actualStartTime: "2023-06-16T10:30:22.776Z"
     }
@@ -111,9 +104,6 @@ export const HighTraffic: Story = {
       ],
       maxCallsIn1Min: 433,
       scope: InsightScope.EntrySpan,
-      endpointSpan: "HTTP GET SampleInsights/lock/{milisec}",
-      spanCodeObjectId:
-        "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP GET SampleInsights/lock/{milisec}",
       route: "epHTTP:HTTP GET SampleInsights/lock/{milisec}",
       serviceName: "Sample.MoneyTransfer.API",
       spanInfo: {
@@ -124,9 +114,7 @@ export const HighTraffic: Story = {
           "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP GET SampleInsights/lock/{milisec}",
         methodCodeObjectId:
           "method:Sample.MoneyTransfer.API.Controllers.SampleInsightsController$_$Lock(Double)",
-        kind: "Server",
-        codeObjectId:
-          "Sample.MoneyTransfer.API.Controllers.SampleInsightsController$_$Lock(Double)"
+        kind: "Server"
       },
       shortDisplayInfo: {
         title: "",
@@ -139,8 +127,6 @@ export const HighTraffic: Story = {
       environment: "BOB-LAPTOP[LOCAL]",
       severity: 0,
       isRecalculateEnabled: false,
-      prefixedCodeObjectId:
-        "method:Sample.MoneyTransfer.API.Controllers.SampleInsightsController$_$Lock(Double)",
       customStartTime: null,
       actualStartTime: "2023-06-16T11:10:22.773Z"
     }

@@ -55,8 +55,7 @@ export const InsightCard = (props: InsightCardProps) => {
 
   const handleKebabMenuItemSelect = (value: string) => {
     if (value === RECALCULATE) {
-      props.data.prefixedCodeObjectId &&
-        props.onRecalculate(props.data.prefixedCodeObjectId, props.data.type);
+      props.onRecalculate(props.data.id, props.data.type);
       setIsRecalculatingStarted(true);
     }
 

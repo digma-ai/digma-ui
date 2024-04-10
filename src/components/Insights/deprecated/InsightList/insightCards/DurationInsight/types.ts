@@ -5,12 +5,11 @@ import { SpanDurationsInsight, Trace } from "../../../../types";
 export interface DurationInsightProps extends InsightCardCommonProps {
   insight: SpanDurationsInsight;
   onHistogramButtonClick: (
-    instrumentationLibrary: string,
-    name: string,
+    spanCodeObjectId: string,
     insightType: InsightType,
     displayName: string
   ) => void;
-  onLiveButtonClick: (prefixedCodeObjectId: string) => void;
+  onLiveButtonClick: (codeObjectId: string) => void;
   onCompareButtonClick: (
     traces: [Trace, Trace],
     insightType: InsightType

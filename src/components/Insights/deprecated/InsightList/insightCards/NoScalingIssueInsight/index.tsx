@@ -10,8 +10,7 @@ export const NoScalingIssueInsight = (props: NoScalingIssueInsightProps) => {
   const handleHistogramButtonClick = () => {
     props.insight.spanInfo &&
       props.onHistogramButtonClick(
-        props.insight.spanInfo.instrumentationLibrary,
-        props.insight.spanInfo.name,
+        props.insight.spanInfo.spanCodeObjectId,
         props.insight.type,
         props.insight.spanInfo.displayName
       );

@@ -9,7 +9,9 @@ import { actions } from "../../../actions";
 import {
   InsightJiraTicketProps,
   InsightsGetDataListQuery,
-  LinkTicketResponse
+  LinkTicketPayload,
+  LinkTicketResponse,
+  UnlinkTicketPayload
 } from "./types";
 
 export const InsightJiraTicket = ({
@@ -34,12 +36,11 @@ export const InsightJiraTicket = ({
   const linkTicket = (link: string) => {
     setTicketLink(link);
     if (link && isValidHttpUrl(link)) {
-      window.sendMessageToDigma({
+      window.sendMessageToDigma<LinkTicketPayload>({
         action: actions.LINK_TICKET,
         payload: {
-          codeObjectId:
-            relatedInsight?.codeObjectId ?? insight.prefixedCodeObjectId,
-          insightType: relatedInsight?.type ?? insight.type,
+          insightId: relatedInsight?.id || insight.id,
+          insightType: relatedInsight?.type || insight.type,
           ticketLink: link
         }
       });
@@ -49,12 +50,11 @@ export const InsightJiraTicket = ({
   };
 
   const unlinkTicket = () => {
-    window.sendMessageToDigma({
+    window.sendMessageToDigma<UnlinkTicketPayload>({
       action: actions.UNLINK_TICKET,
       payload: {
-        codeObjectId:
-          relatedInsight?.codeObjectId ?? insight.prefixedCodeObjectId,
-        insightType: relatedInsight?.type ?? insight.type
+        insightId: relatedInsight?.id || insight.id,
+        insightType: relatedInsight?.type || insight.type
       }
     });
   };

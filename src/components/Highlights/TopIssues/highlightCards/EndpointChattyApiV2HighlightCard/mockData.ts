@@ -17,8 +17,7 @@ export const mockedEndpointChattyApiV2HighlightData: HighlightData<EndpointChatt
       instrumentationLibrary: "instrumentationLibrary",
       spanCodeObjectId: "spanCodeObjectId",
       methodCodeObjectId: "methodCodeObjectId",
-      kind: "kind",
-      codeObjectId: null
+      kind: "kind"
     },
     environments: [
       {

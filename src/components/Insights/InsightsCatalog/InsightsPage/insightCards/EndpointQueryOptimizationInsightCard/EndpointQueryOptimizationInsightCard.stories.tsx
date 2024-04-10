@@ -36,8 +36,7 @@ export const WithMultipleSpans: Story = {
             spanCodeObjectId:
               "span:SampleInsightsController$_$1D138649EB4FFA92C0E3C8103404F2",
             methodCodeObjectId: null,
-            kind: "Client",
-            codeObjectId: null
+            kind: "Client"
           },
           traceId: "9C510BC1E1CD59DD7E820BC3E8DFD4C4",
           duration: {
@@ -58,8 +57,7 @@ export const WithMultipleSpans: Story = {
             spanCodeObjectId:
               "span:SampleInsightsController$_$1D138649EB4FFA92C0E3C8103404F23",
             methodCodeObjectId: null,
-            kind: "Client",
-            codeObjectId: null
+            kind: "Client"
           },
           traceId: "9C510BC1E1CD59DD7E820BC3E8DFD4C43",
           duration: {

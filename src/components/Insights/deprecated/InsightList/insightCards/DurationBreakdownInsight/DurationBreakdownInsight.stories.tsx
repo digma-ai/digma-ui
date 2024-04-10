@@ -40,9 +40,6 @@ export const Default: Story = {
       specifity: 4,
       isRecalculateEnabled: true,
       importance: 6,
-      spanName: "ClientTester.generateInsightData",
-      spanCodeObjectId:
-        "span:io.opentelemetry.opentelemetry-instrumentation-annotations-1.16$_$ClientTester.generateInsightData",
       breakdownEntries: [
         {
           spanName: "GET PetClinic /SampleInsights/ErrorHotspot",
@@ -348,8 +345,7 @@ export const Default: Story = {
           "span:io.opentelemetry.opentelemetry-instrumentation-annotations-1.16$_$ClientTester.generateInsightData",
         methodCodeObjectId:
           "method:petclinic.client.ClientTester$_$generateInsightData",
-        kind: "Internal",
-        codeObjectId: "petclinic.client.ClientTester$_$generateInsightData"
+        kind: "Internal"
       },
       shortDisplayInfo: {
         title: "",
@@ -361,8 +357,6 @@ export const Default: Story = {
       decorators: null,
       environment: "SAMPLE_ENV",
       severity: 0,
-      prefixedCodeObjectId:
-        "method:petclinic.client.ClientTester$_$generateInsightData",
       customStartTime: null,
       actualStartTime: "2023-06-16T10:30:31.848Z"
     }

@@ -70,6 +70,8 @@ import * as s from "./styles";
 import {
   InsightsPageProps,
   MarkInsightTypesAsViewedPayload,
+  OpenHistogramPayload,
+  OpenLiveViewPayload,
   RecalculatePayload,
   isInsightJiraTicketHintShownPayload
 } from "./types";
@@ -119,27 +121,25 @@ const renderInsightCard = (
   // };
 
   const handleHistogramButtonClick = (
-    instrumentationLibrary: string,
-    name: string,
+    spanCodeObjectId: string,
     insightType: InsightType,
     displayName: string
   ) => {
-    window.sendMessageToDigma({
+    window.sendMessageToDigma<OpenHistogramPayload>({
       action: actions.OPEN_HISTOGRAM,
       payload: {
-        instrumentationLibrary,
-        name,
+        spanCodeObjectId,
         insightType,
         displayName
       }
     });
   };
 
-  const handleLiveButtonClick = (prefixedCodeObjectId: string) => {
-    window.sendMessageToDigma({
+  const handleLiveButtonClick = (codeObjectId: string) => {
+    window.sendMessageToDigma<OpenLiveViewPayload>({
       action: actions.OPEN_LIVE_VIEW,
       payload: {
-        prefixedCodeObjectId
+        codeObjectId
       }
     });
   };

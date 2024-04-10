@@ -57,11 +57,6 @@ export interface SpanInfo {
   spanCodeObjectId: string;
   methodCodeObjectId: string | null;
   kind: string | null;
-
-  /**
-   * @deprecated
-   */
-  codeObjectId: string | null;
 }
 
 export interface SpanInstanceInfo {

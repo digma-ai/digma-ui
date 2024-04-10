@@ -5,8 +5,7 @@ import { SpanScalingInsufficientDataInsight } from "../../../../types";
 export interface PerformanceAtScaleInsightProps extends InsightCardCommonProps {
   insight: SpanScalingInsufficientDataInsight;
   onHistogramButtonClick: (
-    instrumentationLibrary: string,
-    name: string,
+    spanCodeObjectId: string,
     insightType: InsightType,
     displayName: string
   ) => void;

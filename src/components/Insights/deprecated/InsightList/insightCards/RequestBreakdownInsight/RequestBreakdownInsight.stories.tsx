@@ -43,18 +43,6 @@ const data: EndpointBreakdownInsight = {
   hasAsyncSpans: false,
   isDismissed: false,
   isDismissible: true,
-  components: [
-    {
-      type: ComponentType.Internal,
-      fraction: 0.996539483729232,
-      duration: null
-    },
-    {
-      type: ComponentType.Rendering,
-      fraction: 0.0034605162707679665,
-      duration: null
-    }
-  ],
   p50Components: [
     {
       type: ComponentType.Internal,
@@ -80,8 +68,6 @@ const data: EndpointBreakdownInsight = {
     }
   ],
   scope: InsightScope.EntrySpan,
-  endpointSpan: "HTTP GET /owners/new",
-  spanCodeObjectId: "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /owners/new",
   route: "epHTTP:HTTP GET /owners/new",
   serviceName: "PetClinic",
   spanInfo: {
@@ -92,9 +78,7 @@ const data: EndpointBreakdownInsight = {
       "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /owners/new",
     methodCodeObjectId:
       "method:org.springframework.samples.petclinic.owner.OwnerController$_$initCreationForm",
-    kind: "Server",
-    codeObjectId:
-      "org.springframework.samples.petclinic.owner.OwnerController$_$initCreationForm"
+    kind: "Server"
   },
   shortDisplayInfo: {
     title: "Request Breakdown",
@@ -107,8 +91,6 @@ const data: EndpointBreakdownInsight = {
   decorators: null,
   environment: "SAMPLE_ENV",
   severity: 0,
-  prefixedCodeObjectId:
-    "method:org.springframework.samples.petclinic.owner.OwnerController$_$initCreationForm",
   customStartTime: null,
   actualStartTime: "2023-06-30T00:00:00.000Z"
 };
@@ -123,26 +105,6 @@ export const Async: Story = {
   args: {
     insight: {
       ...data,
-      components: [
-        {
-          type: ComponentType.Internal,
-          fraction: 0.996539483729232,
-          duration: {
-            value: 2.06,
-            unit: "ms",
-            raw: 2063332.9999999993
-          }
-        },
-        {
-          type: ComponentType.Rendering,
-          fraction: 0.0034605162707679665,
-          duration: {
-            value: 1.03,
-            unit: "ms",
-            raw: 1031666.4999999995
-          }
-        }
-      ],
       p50Components: [
         {
           type: ComponentType.Internal,

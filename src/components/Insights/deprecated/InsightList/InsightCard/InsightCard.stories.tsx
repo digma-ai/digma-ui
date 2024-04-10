@@ -52,8 +52,7 @@ export const Default: Story = {
             spanCodeObjectId:
               "span:SampleInsightsController$_$1D138649EB4FFA92C0E3C8103404F2",
             methodCodeObjectId: null,
-            kind: "Client",
-            codeObjectId: null
+            kind: "Client"
           },
           traceId: "9C510BC1E1CD59DD7E820BC3E8DFD4C4",
           duration: {
@@ -65,9 +64,6 @@ export const Default: Story = {
         }
       ],
       scope: InsightScope.EntrySpan,
-      endpointSpan: "HTTP GET /SampleInsights/NPlusOneWithoutInternalSpan",
-      spanCodeObjectId:
-        "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /SampleInsights/NPlusOneWithoutInternalSpan",
       route: "epHTTP:HTTP GET /SampleInsights/NPlusOneWithoutInternalSpan",
       serviceName: "PetClinic",
       spanInfo: {
@@ -78,9 +74,7 @@ export const Default: Story = {
           "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /SampleInsights/NPlusOneWithoutInternalSpan",
         methodCodeObjectId:
           "method:org.springframework.samples.petclinic.sample.SampleInsightsController$_$genNPlusOneWithoutInternalSpan",
-        kind: "Server",
-        codeObjectId:
-          "org.springframework.samples.petclinic.sample.SampleInsightsController$_$genNPlusOneWithoutInternalSpan"
+        kind: "Server"
       },
       shortDisplayInfo: {
         title: "",
@@ -99,8 +93,6 @@ export const Default: Story = {
       environment: "SAMPLE_ENV",
       severity: 0,
       isRecalculateEnabled: true,
-      prefixedCodeObjectId:
-        "method:org.springframework.samples.petclinic.sample.SampleInsightsController$_$genNPlusOneWithoutInternalSpan",
       customStartTime: null,
       actualStartTime: "2023-06-16T10:30:33.027Z"
     } as EndpointSuspectedNPlusOneInsight,

@@ -42,8 +42,6 @@ export const mockedHotSpotInsight: CodeObjectHotSpotInsight = {
   environment: "BOB-LAPTOP[LOCAL]",
   severity: 0,
   isRecalculateEnabled: false,
-  prefixedCodeObjectId:
-    "method:Sample.MoneyTransfer.API.Controllers.TransferController$_$TransferFunds(TransferRequest)",
   customStartTime: null,
   actualStartTime: "2023-06-26T13:53:57.956Z",
   isDismissed: false,

@@ -27,8 +27,7 @@ export const mockedSpaNPlusOneHighlightData: HighlightData<SpaNPlusOneMetrics> =
       instrumentationLibrary: "instrumentationLibrary",
       spanCodeObjectId: "spanCodeObjectId",
       methodCodeObjectId: "methodCodeObjectId",
-      kind: "kind",
-      codeObjectId: null
+      kind: "kind"
     },
     environments: [
       {

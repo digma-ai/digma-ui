@@ -27,28 +27,6 @@ export const mockedEndpointBreakdownInsight: EndpointBreakdownInsight = {
   hasAsyncSpans: false,
   isDismissed: false,
   isDismissible: true,
-  components: [
-    {
-      type: ComponentType.Internal,
-      fraction: 0.396539483729232,
-      duration: null
-    },
-    {
-      type: ComponentType.Rendering,
-      fraction: 0.396539483729232,
-      duration: null
-    },
-    {
-      type: ComponentType.HttpClients,
-      fraction: 0.103460516270768,
-      duration: null
-    },
-    {
-      type: ComponentType.DbQueries,
-      fraction: 0.103460516270768,
-      duration: null
-    }
-  ],
   p50Components: [
     {
       type: ComponentType.Internal,
@@ -94,8 +72,6 @@ export const mockedEndpointBreakdownInsight: EndpointBreakdownInsight = {
     }
   ],
   scope: InsightScope.EntrySpan,
-  endpointSpan: "HTTP GET /owners/new",
-  spanCodeObjectId: "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /owners/new",
   route: "epHTTP:HTTP GET /owners/new",
   serviceName: "PetClinic",
   spanInfo: {
@@ -106,9 +82,7 @@ export const mockedEndpointBreakdownInsight: EndpointBreakdownInsight = {
       "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /owners/new",
     methodCodeObjectId:
       "method:org.springframework.samples.petclinic.owner.OwnerController$_$initCreationForm",
-    kind: "Server",
-    codeObjectId:
-      "org.springframework.samples.petclinic.owner.OwnerController$_$initCreationForm"
+    kind: "Server"
   },
   shortDisplayInfo: {
     title: "Request Breakdown",
@@ -121,8 +95,6 @@ export const mockedEndpointBreakdownInsight: EndpointBreakdownInsight = {
   decorators: null,
   environment: "SAMPLE_ENV",
   severity: 0,
-  prefixedCodeObjectId:
-    "method:org.springframework.samples.petclinic.owner.OwnerController$_$initCreationForm",
   customStartTime: null,
   actualStartTime: "2023-06-30T00:00:00.000Z"
 };

@@ -260,27 +260,25 @@ const renderInsightCard = (
   };
 
   const handleHistogramButtonClick = (
-    instrumentationLibrary: string,
-    name: string,
+    spanCodeObjectId: string,
     insightType: InsightType,
     displayName: string
   ) => {
     window.sendMessageToDigma({
       action: actions.OPEN_HISTOGRAM,
       payload: {
-        instrumentationLibrary,
-        name,
+        spanCodeObjectId,
         insightType,
         displayName
       }
     });
   };
 
-  const handleLiveButtonClick = (prefixedCodeObjectId: string) => {
+  const handleLiveButtonClick = (insightId: string) => {
     window.sendMessageToDigma({
       action: actions.OPEN_LIVE_VIEW,
       payload: {
-        prefixedCodeObjectId
+        insightId
       }
     });
   };

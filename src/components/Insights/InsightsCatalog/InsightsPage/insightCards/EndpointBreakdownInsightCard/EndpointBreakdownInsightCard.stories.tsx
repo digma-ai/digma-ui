@@ -28,26 +28,6 @@ export const Async: Story = {
   args: {
     insight: {
       ...mockedEndpointBreakdownInsight,
-      components: [
-        {
-          type: ComponentType.Internal,
-          fraction: 0.996539483729232,
-          duration: {
-            value: 2.06,
-            unit: "ms",
-            raw: 2063332.9999999993
-          }
-        },
-        {
-          type: ComponentType.Rendering,
-          fraction: 0.0034605162707679665,
-          duration: {
-            value: 1.03,
-            unit: "ms",
-            raw: 1031666.4999999995
-          }
-        }
-      ],
       p50Components: [
         {
           type: ComponentType.Internal,

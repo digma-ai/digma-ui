@@ -154,16 +154,14 @@ export const DurationInsight = (props: DurationInsightProps) => {
   const handleHistogramButtonClick = () => {
     props.insight.spanInfo &&
       props.onHistogramButtonClick(
-        props.insight.spanInfo.instrumentationLibrary,
-        props.insight.spanInfo.name,
+        props.insight.spanInfo.spanCodeObjectId,
         props.insight.type,
         props.insight.spanInfo.displayName
       );
   };
 
   const handleLiveButtonClick = () => {
-    props.insight.prefixedCodeObjectId &&
-      props.onLiveButtonClick(props.insight.prefixedCodeObjectId);
+    props.onLiveButtonClick(props.insight.codeObjectId);
   };
 
   // const handleCompareButtonClick = (traces: [Trace, Trace]) => {
@@ -472,18 +470,14 @@ export const DurationInsight = (props: DurationInsightProps) => {
         //       </Button>
         //     ]
         //   : []),
-        ...(props.insight.prefixedCodeObjectId
-          ? [
-              <Button
-                icon={{ component: DoubleCircleIcon }}
-                key={"live"}
-                buttonType={"secondary"}
-                onClick={handleLiveButtonClick}
-              >
-                Live
-              </Button>
-            ]
-          : [])
+        <Button
+          icon={{ component: DoubleCircleIcon }}
+          key={"live"}
+          buttonType={"secondary"}
+          onClick={handleLiveButtonClick}
+        >
+          Live
+        </Button>
       ]}
     />
   );

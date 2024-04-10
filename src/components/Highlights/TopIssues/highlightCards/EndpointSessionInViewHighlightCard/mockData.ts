@@ -13,8 +13,7 @@ export const mockedEndpointSessionInViewHighlightData: HighlightData<EndpointSes
       instrumentationLibrary: "instrumentationLibrary",
       spanCodeObjectId: "spanCodeObjectId",
       methodCodeObjectId: "methodCodeObjectId",
-      kind: "kind",
-      codeObjectId: null
+      kind: "kind"
     },
     environments: [
       {

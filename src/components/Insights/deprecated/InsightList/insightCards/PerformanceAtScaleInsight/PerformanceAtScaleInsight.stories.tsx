@@ -66,9 +66,7 @@ export const Default: Story = {
           "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP POST Transfer/TransferFunds",
         methodCodeObjectId:
           "method:Sample.MoneyTransfer.API.Controllers.TransferController$_$TransferFunds(TransferRequest)",
-        kind: "Server",
-        codeObjectId:
-          "Sample.MoneyTransfer.API.Controllers.TransferController$_$TransferFunds(TransferRequest)"
+        kind: "Server"
       },
       shortDisplayInfo: {
         title: "Scaling Data",
@@ -82,8 +80,6 @@ export const Default: Story = {
       environment: "BOB-LAPTOP[LOCAL]",
       severity: 0,
       isRecalculateEnabled: false,
-      prefixedCodeObjectId:
-        "method:Sample.MoneyTransfer.API.Controllers.TransferController$_$TransferFunds(TransferRequest)",
       customStartTime: null,
       actualStartTime: "2023-06-24T00:00:00.000Z"
     }

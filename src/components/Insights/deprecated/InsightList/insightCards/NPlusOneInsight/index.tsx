@@ -7,7 +7,6 @@ import { trimEndpointScheme } from "../../../../../../utils/trimEndpointScheme";
 import { ConfigContext } from "../../../../../common/App/ConfigContext";
 import { ScoreIndicator } from "../../../../../common/ScoreIndicator";
 import { Tooltip } from "../../../../../common/Tooltip";
-import { CrosshairIcon } from "../../../../../common/icons/CrosshairIcon";
 import { Description, Link } from "../../../../styles";
 import { trackingEvents } from "../../../../tracking";
 import { Trace } from "../../../../types";
@@ -46,8 +45,8 @@ export const NPlusOneInsight = (props: NPlusOneInsightProps) => {
       props.onJiraTicketCreate(props.insight, undefined, event);
   };
 
-  const spanName = props.insight.clientSpanName || undefined;
-  const spanCodeObjectId = props.insight.clientSpanCodeObjectId || undefined;
+  // const spanName = props.insight.clientSpanName || undefined;
+  // const spanCodeObjectId = props.insight.clientSpanCodeObjectId || undefined;
   const traceId = props.insight.traceId;
 
   const endpoints = props.insight.endpoints || [];
@@ -60,7 +59,7 @@ export const NPlusOneInsight = (props: NPlusOneInsightProps) => {
         <s.ContentContainer>
           <Description>Check the following SELECT statement:</Description>
           <s.SpanContainer>
-            <Tooltip title={spanName}>
+            {/* <Tooltip title={spanName}>
               <s.Name>
                 {spanCodeObjectId ? (
                   <Link onClick={() => handleSpanLinkClick(spanCodeObjectId)}>
@@ -87,13 +86,13 @@ export const NPlusOneInsight = (props: NPlusOneInsightProps) => {
               >
                 Trace
               </s.Button>
-            )}
+            )} */}
           </s.SpanContainer>
           <s.Stats>
-            <s.Stat>
+            {/* <s.Stat>
               <Description>Repeats</Description>
               <span>{props.insight.occurrences} (median)</span>
-            </s.Stat>
+            </s.Stat> */}
             <s.Stat>
               <Description>Duration</Description>
               <span>{getDurationString(props.insight.duration)}</span>
