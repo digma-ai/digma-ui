@@ -10,6 +10,7 @@ export const Container = styled.div`
 
 export const IconContainer = styled.div`
   display: flex;
+  color: ${({ theme }) => theme.colors.v3.icon.disabled};
 `;
 
 export const Name = styled.span`

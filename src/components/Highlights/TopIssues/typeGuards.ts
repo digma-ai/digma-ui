@@ -10,8 +10,8 @@ import {
   GenericMetrics,
   HighlightData,
   HotSpotMetrics,
-  SpanEndpointBottleneckMetrics,
   SpaNPlusOneMetrics,
+  SpanEndpointBottleneckMetrics,
   SpanQueryOptimizationMetrics,
   SpanScalingMetrics
 } from "./types";

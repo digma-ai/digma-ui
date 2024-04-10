@@ -11,12 +11,12 @@ import { trackingEvents } from "../../tracking";
 export const handleEnvironmentTableRowClick = (
   environments: Environment[] | undefined,
   environmentNameToSelect: string,
-  insightType: InsightType
+  insightType?: InsightType
 ) => {
   sendUserActionTrackingEvent(
     trackingEvents.TOP_ISSUES_CARD_TABLE_ROW_CLICKED,
     {
-      insightType
+      ...(insightType ? { insightType } : {})
     }
   );
 

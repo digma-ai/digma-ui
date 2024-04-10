@@ -218,20 +218,30 @@ export interface NormalizedHistogramBarData extends HistogramBarData {
   normalizedCount: number;
 }
 
+export interface PercentileDurations {
+  percentile: number;
+  currentDuration: Duration;
+  previousDuration: Duration | null;
+  changeTime: string | null;
+  changeVerified: boolean | null;
+  traceIds: string[];
+}
+
+export interface Plot {
+  bars: HistogramBarData[];
+  quantiles: {
+    timestamp: Duration;
+    quantileValue: number;
+  }[];
+}
+
 export interface SpanDurationsInsight extends SpanInsight {
   name: "Performance Stats";
   type: InsightType.SpanDurations;
   category: InsightCategory.Performance;
   specifity: InsightSpecificity.OwnInsight;
   isRecalculateEnabled: true;
-  percentiles: {
-    percentile: number;
-    currentDuration: Duration;
-    previousDuration: Duration | null;
-    changeTime: string | null;
-    changeVerified: boolean | null;
-    traceIds: string[];
-  }[];
+  percentiles: PercentileDurations[];
   lastSpanInstanceInfo: SpanInstanceInfo | null;
   isAsync: boolean;
 
@@ -243,13 +253,7 @@ export interface SpanDurationsInsight extends SpanInsight {
    * @deprecated
    */
   span: SpanInfo;
-  histogramPlot?: {
-    bars: HistogramBarData[];
-    quantiles: {
-      timestamp: Duration;
-      quantileValue: number;
-    }[];
-  } | null;
+  histogramPlot?: Plot | null;
   average?: Duration;
   standardDeviation?: Duration;
 }

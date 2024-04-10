@@ -14,7 +14,12 @@ export const addEnvironmentColumns = <
       header: "Env",
       cell: (info) => {
         const environmentData = info.getValue();
-        return <EnvironmentName data={environmentData} />;
+        return (
+          <EnvironmentName
+            name={environmentData.environmentName}
+            criticality={environmentData.criticality}
+          />
+        );
       }
     }),
     ...columns,

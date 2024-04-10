@@ -16,7 +16,8 @@ export const trackingEvents = addPrefix(
     DIGMATHON_VIEW_EXIT_BUTTON_CLICKED: "digmathon view exit button clicked",
     DIGMATHON_VIEW_CONTACT_LINK_CLICKED: "digmathon view contact link clicked",
     DIGMATHON_PROGRESS_VIEWED: "digmathon progress viewed",
-    DIGMATHON_CONGRATULATIONS_VIEWED: "digmathon congratulations viewed"
+    DIGMATHON_CONGRATULATIONS_VIEWED: "digmathon congratulations viewed",
+    LIVE_VIEW_CLOSE_BUTTON_CLICKED: "live view close button clicked"
   },
   " "
 );
