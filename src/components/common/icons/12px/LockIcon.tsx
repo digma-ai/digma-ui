@@ -10,22 +10,16 @@ const LockIconComponent = (props: IconProps) => {
       xmlns="http://www.w3.org/2000/svg"
       width={size}
       height={size}
+      viewBox="0 0 10 12 "
       fill="none"
     >
       <path
         stroke={color}
         strokeLinecap="round"
         strokeLinejoin="round"
-        d="M2.952 6.394V4.056c0-.826.321-1.62.893-2.204A3.014 3.014 0 0 1 6 .94c.808 0 1.583.329 2.155.913.572.585.893 1.378.893 2.204v2.338"
+        d="M2.714 5V3.286a2.286 2.286 0 1 1 4.572 0V5"
       />
-      <rect
-        width="10.667"
-        height="7.792"
-        x=".667"
-        y="6.394"
-        stroke={color}
-        rx="2"
-      />
+      <rect width="8" height="5.714" x="1" y="5" stroke={color} rx="2" />
     </svg>
   );
 };

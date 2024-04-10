@@ -32,10 +32,7 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
   const previousSate = usePrevious(historyManager.getCurrent());
 
   useEffect(() => {
-    if (
-      !environment ||
-      !environments?.find((x) => x.originalName == environment?.originalName)
-    ) {
+    if (!environment || !environments?.find((x) => x.id == environment?.id)) {
       changeScope(null);
       setHistoryManager(new HistoryManager());
     }
@@ -95,7 +92,7 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
           window.sendMessageToDigma<ChangeEnvironmentPayload>({
             action: globalActions.CHANGE_ENVIRONMENT,
             payload: {
-              environment: historyStep.environment
+              environment: historyStep.environment.id
             }
           });
         }

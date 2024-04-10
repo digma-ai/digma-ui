@@ -21,14 +21,14 @@ export const goToEnvironmentIssues = (
   );
 
   const environmentChangeTo = environments?.find(
-    (x) => x.originalName === environmentNameToSelect
+    (x) => x.id === environmentNameToSelect
   );
 
   if (environmentChangeTo) {
     window.sendMessageToDigma<ChangeEnvironmentPayload>({
       action: globalActions.CHANGE_ENVIRONMENT,
       payload: {
-        environment: environmentChangeTo
+        environment: environmentChangeTo.id
       }
     });
 

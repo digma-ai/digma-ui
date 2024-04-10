@@ -548,8 +548,7 @@ export const InsightsPage = (props: InsightsPageProps) => {
       (isNumber(previousPage) && previousPage !== props.page) ||
       (previousConfig &&
         (previousConfig?.scope?.span !== config?.scope?.span ||
-          previousConfig?.environment?.originalName !==
-            config.environment?.originalName))
+          previousConfig?.environment?.id !== config.environment?.id))
     ) {
       listRef.current?.scrollTo(0, 0);
     }

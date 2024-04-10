@@ -93,7 +93,8 @@ export const WithDisabledDismissed: Story = {
           ...initialState,
           backendInfo: {
             applicationVersion: "v0.2.243",
-            deploymentType: DeploymentType.DOCKER_COMPOSE
+            deploymentType: DeploymentType.DOCKER_COMPOSE,
+            centralize: false
           }
         }}
       >

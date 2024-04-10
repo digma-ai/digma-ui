@@ -1,7 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { RecentActivity } from ".";
 import { mockData as liveData } from "./LiveView/mockData";
-import { actions } from "./actions";
 import { RecentActivityData } from "./types";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
@@ -25,39 +24,35 @@ const data: RecentActivityData = {
   environments: [
     {
       name: "ENV_RENDER",
-      originalName: "ENV_RENDER",
+      id: "ENV_RENDER",
       isPending: false,
-      additionToConfigResult: null,
-      type: "local",
+      type: "Public",
       token: null,
       serverApiUrl: null,
       isOrgDigmaSetupFinished: false
     },
     {
       name: "ENV_RENDER",
-      originalName: "ENV_RENDER1",
+      id: "ENV_RENDER1",
       isPending: false,
-      additionToConfigResult: null,
-      type: "local",
+      type: "Public",
       token: null,
       serverApiUrl: null,
       isOrgDigmaSetupFinished: false
     },
     {
       name: "UNSET_ENV",
-      originalName: "UNSET_ENV",
+      id: "UNSET_ENV",
       isPending: false,
-      additionToConfigResult: null,
-      type: "shared",
+      type: "Public",
       token: null,
       serverApiUrl: null,
       isOrgDigmaSetupFinished: false
     },
     {
       name: "PENDING_NO_TYPE",
-      originalName: "PENDING_NO_TYPE",
+      id: "PENDING_NO_TYPE",
       isPending: true,
-      additionToConfigResult: null,
       type: null,
       token: null,
       serverApiUrl: null,
@@ -65,51 +60,45 @@ const data: RecentActivityData = {
     },
     {
       name: "PENDING_LOCAL",
-      originalName: "PENDING_LOCAL",
+      id: "PENDING_LOCAL",
       isPending: true,
-      additionToConfigResult: null,
-      type: "local",
+      type: "Private",
       token: null,
       serverApiUrl: null,
       isOrgDigmaSetupFinished: false
     },
     {
       name: "PENDING_SHARED",
-      originalName: "PENDING_SHARED",
+      id: "PENDING_SHARED",
       isPending: true,
-      additionToConfigResult: null,
-      type: "shared",
+      type: "Public",
       token: null,
       serverApiUrl: null,
       isOrgDigmaSetupFinished: false
     },
     {
       name: "PENDING_SHARED_LOCALHOST",
-      originalName: "PENDING_SHARED_LOCALHOST",
+      id: "PENDING_SHARED_LOCALHOST",
       isPending: true,
-      additionToConfigResult: null,
-      type: "shared",
+      type: "Public",
       token: null,
       serverApiUrl: "https://localhost:5051",
       isOrgDigmaSetupFinished: false
     },
     {
       name: "PENDING_SHARED_CUSTOM_DOMAIN",
-      originalName: "PENDING_SHARED_CUSTOM_DOMAIN",
+      id: "PENDING_SHARED_CUSTOM_DOMAIN",
       isPending: true,
-      additionToConfigResult: null,
-      type: "shared",
+      type: "Public",
       token: "token_string",
       serverApiUrl: "https://example.com",
       isOrgDigmaSetupFinished: false
     },
     {
       name: "VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-LONG-NAME",
-      originalName:
-        "VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-LONG-NAME",
+      id: "VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-VERY-LONG-NAME",
       isPending: false,
-      additionToConfigResult: null,
-      type: "local",
+      type: "Private",
       token: null,
       serverApiUrl: null,
       isOrgDigmaSetupFinished: false
@@ -117,7 +106,7 @@ const data: RecentActivityData = {
   ],
   entries: [
     {
-      environment: "ENV_RENDER",
+      environment: "ENV_RENDER#ID#1",
       traceFlowDisplayName: "PetClinicWithAgent:HTTP GET /webjars/**",
       firstEntrySpan: {
         displayText: "PetClinicWithAgent:HTTP GET /webjars/**",
@@ -145,7 +134,7 @@ const data: RecentActivityData = {
       slimAggregatedInsights: []
     },
     {
-      environment: "ENV_RENDER",
+      environment: "ENV_RENDER#ID#1",
       traceFlowDisplayName: "PetClinicWithAgent:HTTP GET /webjars/**",
       firstEntrySpan: {
         displayText: "PetClinicWithAgent:HTTP GET /webjars/**",
@@ -166,7 +155,7 @@ const data: RecentActivityData = {
       slimAggregatedInsights: []
     },
     {
-      environment: "ENV_RENDER",
+      environment: "ENV_RENDER#ID#1",
       traceFlowDisplayName: "PetClinicWithAgent:HTTP GET /owners/{ownerId}",
       firstEntrySpan: {
         displayText: "PetClinicWithAgent:HTTP GET /owners/{ownerId}",
@@ -197,7 +186,7 @@ const data: RecentActivityData = {
       ]
     },
     {
-      environment: "ENV_RENDER",
+      environment: "ENV_RENDER#ID#1",
       traceFlowDisplayName: "PetClinicWithAgent:HTTP GET /owners",
       firstEntrySpan: {
         displayText: "PetClinicWithAgent:HTTP GET /owners",
@@ -236,7 +225,7 @@ const data: RecentActivityData = {
       ]
     },
     {
-      environment: "ENV_RENDER",
+      environment: "ENV_RENDER#ID#1",
       traceFlowDisplayName: "PetClinicWithAgent:HTTP GET /owners/find",
       firstEntrySpan: {
         displayText: "PetClinicWithAgent:HTTP GET /owners/find",
@@ -258,7 +247,7 @@ const data: RecentActivityData = {
       slimAggregatedInsights: []
     },
     {
-      environment: "ENV_RENDER",
+      environment: "ENV_RENDER#ID#1",
       traceFlowDisplayName: "PetClinicWithAgent:HTTP GET /",
       firstEntrySpan: {
         displayText: "PetClinicWithAgent:HTTP GET /",
@@ -279,7 +268,7 @@ const data: RecentActivityData = {
       slimAggregatedInsights: []
     },
     {
-      environment: "ENV_RENDER",
+      environment: "ENV_RENDER#ID#1",
       traceFlowDisplayName: "PetClinicWithAgent:HTTP GET /vets.html",
       firstEntrySpan: {
         displayText: "PetClinicWithAgent:HTTP GET /vets.html",
@@ -318,7 +307,7 @@ const data: RecentActivityData = {
       ]
     },
     {
-      environment: "ENV_RENDER",
+      environment: "ENV_RENDER#ID#1",
       traceFlowDisplayName:
         "PetClinicWithAgent:HTTP POST /owners/{ownerId}/pets/new",
       firstEntrySpan: {
@@ -350,7 +339,7 @@ const data: RecentActivityData = {
       ]
     },
     {
-      environment: "ENV_RENDER",
+      environment: "ENV_RENDER#ID#1",
       traceFlowDisplayName:
         "PetClinicWithAgent:HTTP GET /owners/{ownerId}/pets/new",
       firstEntrySpan: {
@@ -373,7 +362,7 @@ const data: RecentActivityData = {
       slimAggregatedInsights: []
     },
     {
-      environment: "ENV_RENDER",
+      environment: "ENV_RENDER#ID#1",
       traceFlowDisplayName:
         "PetClinicWithAgent:HTTP POST /owners/{ownerId}/edit",
       firstEntrySpan: {
@@ -413,7 +402,7 @@ const data: RecentActivityData = {
       ]
     },
     {
-      environment: "ENV_RENDER",
+      environment: "ENV_RENDER#ID#1",
       traceFlowDisplayName:
         "PetClinicWithAgent:HTTP GET /owners/{ownerId}/edit",
       firstEntrySpan: {
@@ -436,7 +425,7 @@ const data: RecentActivityData = {
       slimAggregatedInsights: []
     },
     {
-      environment: "UNSET_ENV",
+      environment: "UNSET_ENV#ID#1",
       traceFlowDisplayName: "my-first-mn-app:HTTP GET /whiskey/get/{name}",
       firstEntrySpan: {
         displayText: "na:na",
@@ -456,7 +445,7 @@ const data: RecentActivityData = {
       slimAggregatedInsights: []
     },
     {
-      environment: "UNSET_ENV",
+      environment: "UNSET_ENV#ID#1",
       traceFlowDisplayName: "my-first-mn-app:HTTP GET /book/get/{id}",
       firstEntrySpan: {
         displayText: "na:na",
@@ -476,7 +465,7 @@ const data: RecentActivityData = {
       slimAggregatedInsights: []
     },
     {
-      environment: "UNSET_ENV",
+      environment: "UNSET_ENV#ID#1",
       traceFlowDisplayName: "my-first-mn-app:HTTP GET /book/id/{id}",
       firstEntrySpan: {
         displayText: "na:na",
@@ -496,7 +485,7 @@ const data: RecentActivityData = {
       slimAggregatedInsights: []
     },
     {
-      environment: "UNSET_ENV",
+      environment: "UNSET_ENV#ID#1",
       traceFlowDisplayName: "my-first-mn-app:HTTP GET GET - /",
       firstEntrySpan: {
         displayText: "na:na",
@@ -516,7 +505,7 @@ const data: RecentActivityData = {
       slimAggregatedInsights: []
     },
     {
-      environment: "UNSET_ENV",
+      environment: "UNSET_ENV#ID#1",
       traceFlowDisplayName: "my-first-mn-app:HTTP GET /users/get/{username}",
       firstEntrySpan: {
         displayText: "na:na",
@@ -536,7 +525,7 @@ const data: RecentActivityData = {
       slimAggregatedInsights: []
     },
     {
-      environment: "UNSET_ENV",
+      environment: "UNSET_ENV#ID#1",
       traceFlowDisplayName: "my-first-mn-app:HTTP GET /book",
       firstEntrySpan: {
         displayText: "na:na",
@@ -556,7 +545,7 @@ const data: RecentActivityData = {
       slimAggregatedInsights: []
     },
     {
-      environment: "UNSET_ENV",
+      environment: "UNSET_ENV#ID#1",
       traceFlowDisplayName:
         "PetClinicWithAgent:HTTP GET /SampleInsights/HighUsage",
       firstEntrySpan: {
@@ -577,7 +566,7 @@ const data: RecentActivityData = {
       slimAggregatedInsights: []
     },
     {
-      environment: "UNSET_ENV",
+      environment: "UNSET_ENV#ID#1",
       traceFlowDisplayName:
         "PetClinicWithAgent:HTTP GET /SampleInsights/ErrorHotspot",
       firstEntrySpan: {
@@ -598,7 +587,7 @@ const data: RecentActivityData = {
       slimAggregatedInsights: []
     },
     {
-      environment: "UNSET_ENV",
+      environment: "UNSET_ENV#ID#1",
       traceFlowDisplayName:
         "PetClinicWithAgent:HTTP GET /SampleInsights/SpanBottleneck",
       firstEntrySpan: {
@@ -619,7 +608,7 @@ const data: RecentActivityData = {
       slimAggregatedInsights: []
     },
     {
-      environment: "UNSET_ENV",
+      environment: "UNSET_ENV#ID#1",
       traceFlowDisplayName:
         "PetClinicWithAgent:HTTP GET /SampleInsights/SlowEndpoint",
       firstEntrySpan: {
@@ -648,6 +637,26 @@ export const WithData: Story = {
   }
 };
 
+export const WithEmptyEnv: Story = {
+  args: {
+    data: {
+      environments: [
+        {
+          name: "ENV_RENDER",
+          id: "ENV_RENDER",
+          isPending: false,
+
+          type: "Private",
+          token: null,
+          serverApiUrl: null,
+          isOrgDigmaSetupFinished: false
+        }
+      ],
+      entries: []
+    }
+  }
+};
+
 export const WithLiveData: Story = {
   args: {
     data,
@@ -662,14 +671,5 @@ export const WithNoLiveData: Story = {
       ...liveData,
       liveDataRecords: []
     }
-  }
-};
-
-export const OpenRegistrationDialog: Story = {
-  play: () => {
-    window.postMessage({
-      type: "digma",
-      action: actions.OPEN_REGISTRATION_DIALOG
-    });
   }
 };
