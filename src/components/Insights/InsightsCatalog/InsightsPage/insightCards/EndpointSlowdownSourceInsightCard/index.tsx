@@ -1,5 +1,5 @@
+import { DurationChange } from "../../../../../common/DurationChange";
 import { EndpointSlowdownSource } from "../../../../types";
-import { DurationChange } from "../common/DurationChange";
 import { InsightCard } from "../common/InsightCard";
 import { ListItem } from "../common/InsightCard/ListItem";
 import { ContentContainer, Description } from "../styles";

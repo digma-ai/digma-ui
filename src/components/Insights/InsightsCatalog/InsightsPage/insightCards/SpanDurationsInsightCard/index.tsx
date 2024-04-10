@@ -16,6 +16,10 @@ import { convertToDuration } from "../../../../../../utils/convertToDuration";
 import { formatTimeDistance } from "../../../../../../utils/formatTimeDistance";
 import { getDurationString } from "../../../../../../utils/getDurationString";
 import { getPercentileLabel } from "../../../../../../utils/getPercentileLabel";
+import {
+  DurationChange,
+  isChangeMeaningfulEnough
+} from "../../../../../common/DurationChange";
 import { Tooltip as CommonTooltip } from "../../../../../common/Tooltip";
 import { Tag } from "../../../../../common/v3/Tag";
 import {
@@ -23,10 +27,6 @@ import {
   NormalizedHistogramBarData,
   Trace
 } from "../../../../types";
-import {
-  DurationChange,
-  isChangeMeaningfulEnough
-} from "../common/DurationChange";
 import { InsightCard } from "../common/InsightCard";
 import { ColumnsContainer } from "../common/InsightCard/ColumnsContainer";
 import { KeyValue } from "../common/InsightCard/KeyValue";

@@ -1,12 +1,13 @@
 import { formatDuration, intervalToDuration } from "date-fns";
-import { Duration } from "../../../../../../../globals";
-import { formatTimeDistance } from "../../../../../../../utils/formatTimeDistance";
-import { roundTo } from "../../../../../../../utils/roundTo";
-import { ArrowIcon } from "../../../../../../common/icons/ArrowIcon";
-import { Direction } from "../../../../../../common/icons/types";
-import { Tag } from "../../../../../../common/v3/Tag";
-import { TagType } from "../../../../../../common/v3/Tag/types";
-import { Tooltip } from "../../../../../../common/v3/Tooltip";
+import { Duration } from "../../../globals";
+import { isBoolean } from "../../../typeGuards/isBoolean";
+import { formatTimeDistance } from "../../../utils/formatTimeDistance";
+import { roundTo } from "../../../utils/roundTo";
+import { ArrowIcon } from "../icons/ArrowIcon";
+import { Direction } from "../icons/types";
+import { Tag } from "../v3/Tag";
+import { TagType } from "../v3/Tag/types";
+import { Tooltip } from "../v3/Tooltip";
 import * as s from "./styles";
 import { DurationChangeProps } from "./types";
 
@@ -77,11 +78,26 @@ export const DurationChange = (props: DurationChangeProps) => {
     props.changeTime
   );
 
+  const isArrowVisible = isBoolean(props.showArrow) ? props.showArrow : true;
+
   const direction =
     props.previousDuration &&
     props.previousDuration.raw > props.currentDuration.raw
       ? Direction.DOWN
       : Direction.UP;
+
+  const timeDistanceString = props.changeTime
+    ? formatTimeDistance(props.changeTime)
+    : "";
+
+  const durationDifferenceString = props.previousDuration
+    ? getDurationDifferenceString(props.previousDuration, props.currentDuration)
+    : "";
+
+  const tooltip =
+    props.tooltipType === "timeDistance"
+      ? timeDistanceString
+      : durationDifferenceString;
 
   return (
     <>
@@ -89,19 +105,20 @@ export const DurationChange = (props: DurationChangeProps) => {
         <Tag
           type={getTagType(direction)}
           content={
-            <Tooltip title={formatTimeDistance(props.changeTime)}>
-              <s.ArrowContainer>
-                <ArrowIcon
-                  direction={direction}
-                  color={"currentColor"}
-                  size={12}
-                />
+            <Tooltip title={tooltip}>
+              {isArrowVisible ? (
+                <s.ArrowContainer>
+                  <ArrowIcon
+                    direction={direction}
+                    color={"currentColor"}
+                    size={12}
+                  />
 
-                {getDurationDifferenceString(
-                  props.previousDuration,
-                  props.currentDuration
-                )}
-              </s.ArrowContainer>
+                  {durationDifferenceString}
+                </s.ArrowContainer>
+              ) : (
+                <span>{durationDifferenceString}</span>
+              )}
             </Tooltip>
           }
         />
