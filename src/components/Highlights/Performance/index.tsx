@@ -1,6 +1,7 @@
 import { Row, createColumnHelper } from "@tanstack/react-table";
 import { useContext, useEffect, useState } from "react";
 import { usePrevious } from "../../../hooks/usePrevious";
+import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { formatEnvironmentName } from "../../../utils/formatEnvironmentName";
 import { formatTimeDistance } from "../../../utils/formatTimeDistance";
 import { getDurationString } from "../../../utils/getDurationString";
@@ -12,11 +13,12 @@ import {
 } from "../../common/DurationChange";
 import { Card } from "../../common/v3/Card";
 import { EmptyStateCard } from "../EmptyStateCard";
-import { handleEnvironmentTableRowClick } from "../TopIssues/highlightCards/goToEnvironmentIssues";
 import { EnvironmentName } from "../common/EnvironmentName";
 import { Section } from "../common/Section";
 import { Table } from "../common/Table";
 import { TableTag } from "../common/TableTag";
+import { handleEnvironmentTableRowClick } from "../handleEnvironmentTableRowClick";
+import { trackingEvents } from "../tracking";
 import * as s from "./styles";
 import { EnvironmentPerformanceData } from "./types";
 import { usePerformanceData } from "./usePerformanceData";
@@ -118,6 +120,9 @@ export const Performance = () => {
     ];
 
     const handleTableRowClick = (row: Row<EnvironmentPerformanceData>) => {
+      sendUserActionTrackingEvent(
+        trackingEvents.PERFORMANCE_CARD_TABLE_ROW_CLICKED
+      );
       handleEnvironmentTableRowClick(
         config.environments,
         row.original.environment

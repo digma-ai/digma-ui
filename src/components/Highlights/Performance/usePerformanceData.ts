@@ -18,7 +18,7 @@ export const usePerformanceData = () => {
       action: mainActions.GET_HIGHLIGHTS_PERFORMANCE_DATA,
       payload: {
         query: {
-          scopedCodeObjectId: config.scope?.span?.spanCodeObjectId || null,
+          scopedSpanCodeObjectId: config.scope?.span?.spanCodeObjectId || null,
           environments:
             config.environments?.map((env) => env.originalName) || []
         }

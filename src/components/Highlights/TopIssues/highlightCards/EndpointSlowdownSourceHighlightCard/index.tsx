@@ -1,14 +1,16 @@
 import { Row, createColumnHelper } from "@tanstack/react-table";
 import { useContext } from "react";
+import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { getDurationString } from "../../../../../utils/getDurationString";
 import { ConfigContext } from "../../../../common/App/ConfigContext";
 import { Table } from "../../../common/Table";
 import { TableTag } from "../../../common/TableTag";
+import { handleEnvironmentTableRowClick } from "../../../handleEnvironmentTableRowClick";
+import { trackingEvents } from "../../../tracking";
 import { AssetLink } from "../../common/AssetLink";
 import { HighlightCard } from "../../common/HighlightCard";
 import { EndpointSlowdownSourceMetrics, EnvironmentData } from "../../types";
 import { addEnvironmentColumns } from "../addEnvironmentColumns";
-import { handleEnvironmentTableRowClick } from "../goToEnvironmentIssues";
 import { DescriptionContainer } from "../styles";
 import { EndpointSlowdownSourceHighlightCardProps } from "./types";
 
@@ -39,10 +41,15 @@ export const EndpointSlowdownSourceHighlightCard = ({
   const handleTableRowClick = (
     row: Row<EnvironmentData<EndpointSlowdownSourceMetrics>>
   ) => {
+    sendUserActionTrackingEvent(
+      trackingEvents.TOP_ISSUES_CARD_TABLE_ROW_CLICKED,
+      {
+        insightType: data.insightType
+      }
+    );
     handleEnvironmentTableRowClick(
       config.environments,
-      row.original.environmentName,
-      data.insightType
+      row.original.environmentName
     );
   };
 

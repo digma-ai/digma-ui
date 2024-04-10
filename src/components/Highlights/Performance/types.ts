@@ -12,7 +12,7 @@ export type PerformanceData = EnvironmentPerformanceData[];
 
 export interface GetHighlightsPerformanceDataPayload {
   query: {
-    scopedCodeObjectId: string | null;
+    scopedSpanCodeObjectId: string | null;
     environments: string[];
   };
 }

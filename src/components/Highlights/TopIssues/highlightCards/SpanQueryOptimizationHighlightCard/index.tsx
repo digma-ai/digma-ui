@@ -1,16 +1,18 @@
 import { Row, createColumnHelper } from "@tanstack/react-table";
 import { useContext } from "react";
 import { Duration } from "../../../../../globals";
+import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { getDurationString } from "../../../../../utils/getDurationString";
 import { ConfigContext } from "../../../../common/App/ConfigContext";
 import { Table } from "../../../common/Table";
 import { TableTag } from "../../../common/TableTag";
 import { TableText } from "../../../common/TableText";
+import { handleEnvironmentTableRowClick } from "../../../handleEnvironmentTableRowClick";
+import { trackingEvents } from "../../../tracking";
 import { AssetLink } from "../../common/AssetLink";
 import { HighlightCard } from "../../common/HighlightCard";
 import { EnvironmentData, SpanQueryOptimizationMetrics } from "../../types";
 import { addEnvironmentColumns } from "../addEnvironmentColumns";
-import { handleEnvironmentTableRowClick } from "../goToEnvironmentIssues";
 import { DescriptionContainer } from "../styles";
 import { SpanQueryOptimizationHighlightCardProps } from "./types";
 
@@ -70,10 +72,15 @@ export const SpanQueryOptimizationHighlightCard = ({
   const handleTableRowClick = (
     row: Row<EnvironmentData<SpanQueryOptimizationMetrics>>
   ) => {
+    sendUserActionTrackingEvent(
+      trackingEvents.TOP_ISSUES_CARD_TABLE_ROW_CLICKED,
+      {
+        insightType: data.insightType
+      }
+    );
     handleEnvironmentTableRowClick(
       config.environments,
-      row.original.environmentName,
-      data.insightType
+      row.original.environmentName
     );
   };
 
