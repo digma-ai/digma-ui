@@ -125,12 +125,6 @@ export const bodySemiboldTypography = css`
   line-height: ${typographies.body.lineHeight}px;
 `;
 
-export const bodyMediumTypography = css`
-  font-size: ${typographies.body.fontSize}px;
-  font-weight: ${typographies.body.fontWeight.medium};
-  line-height: ${typographies.body.lineHeight}px;
-`;
-
 export const footnoteBoldTypography = css`
   font-size: ${typographies.footNote.fontSize}px;
   font-weight: ${typographies.footNote.fontWeight.bold};
