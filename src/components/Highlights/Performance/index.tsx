@@ -5,12 +5,7 @@ import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActi
 import { formatEnvironmentName } from "../../../utils/formatEnvironmentName";
 import { formatTimeDistance } from "../../../utils/formatTimeDistance";
 import { getDurationString } from "../../../utils/getDurationString";
-import { PercentileDurations } from "../../Insights/types";
 import { ConfigContext } from "../../common/App/ConfigContext";
-import {
-  DurationChange,
-  isChangeMeaningfulEnough
-} from "../../common/DurationChange";
 import { Card } from "../../common/v3/Card";
 import { EmptyStateCard } from "../EmptyStateCard";
 import { EnvironmentName } from "../common/EnvironmentName";
@@ -22,35 +17,6 @@ import { trackingEvents } from "../tracking";
 import * as s from "./styles";
 import { EnvironmentPerformanceData } from "./types";
 import { usePerformanceData } from "./usePerformanceData";
-
-const renderTableDurationChange = (data?: PercentileDurations) => {
-  if (!data) {
-    return null;
-  }
-
-  if (
-    data.previousDuration &&
-    data.changeTime &&
-    isChangeMeaningfulEnough(
-      data.currentDuration,
-      data.previousDuration,
-      data.changeTime
-    )
-  ) {
-    return (
-      <DurationChange
-        currentDuration={data.currentDuration}
-        previousDuration={data.previousDuration}
-        changeTime={data.changeTime}
-        showArrow={false}
-        tooltipType={"durationDifference"}
-      />
-    );
-  }
-
-  const durationString = getDurationString(data.currentDuration);
-  return <TableTag title={durationString} content={durationString} />;
-};
 
 export const Performance = () => {
   const [isInitialLoading, setIsInitialLoading] = useState(true);
@@ -87,7 +53,12 @@ export const Performance = () => {
           cell: (info) => {
             const value = info.getValue();
 
-            return renderTableDurationChange(value);
+            if (!value) {
+              return null;
+            }
+
+            const durationString = getDurationString(value.currentDuration);
+            return <TableTag title={durationString} content={durationString} />;
           }
         }
       ),
@@ -98,7 +69,12 @@ export const Performance = () => {
           cell: (info) => {
             const value = info.getValue();
 
-            return renderTableDurationChange(value);
+            if (!value) {
+              return null;
+            }
+
+            const durationString = getDurationString(value.currentDuration);
+            return <TableTag title={durationString} content={durationString} />;
           }
         }
       ),
@@ -106,15 +82,19 @@ export const Performance = () => {
         header: "Last",
         cell: (info) => {
           const lastSpanInstanceInfo = info.getValue();
-          const value = lastSpanInstanceInfo
-            ? formatTimeDistance(lastSpanInstanceInfo?.startTime, {
-                format: "short",
-                withDescriptiveWords: false
-              }).replace(" ", "")
-            : "";
-          return value ? (
-            <s.LastCallTableText title={value}>{value}</s.LastCallTableText>
-          ) : null;
+
+          if (!lastSpanInstanceInfo) {
+            return null;
+          }
+          const value = formatTimeDistance(lastSpanInstanceInfo.startTime, {
+            format: "short",
+            withDescriptiveWords: false
+          }).replace(" ", "");
+          const title = new Date(lastSpanInstanceInfo.startTime).toString();
+
+          return (
+            <s.LastCallTableText title={title}>{value}</s.LastCallTableText>
+          );
         }
       })
     ];
