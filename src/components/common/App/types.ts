@@ -104,6 +104,10 @@ export interface ConfigContextData {
   isMicrometerProject: boolean;
   state?: GlobalState;
   insightStats?: InsightStats;
+  productKey: string;
+  isDigmathonModeEnabled: boolean;
+  userId: string;
+  isDigmathonGameFinished: boolean;
   userInfo?: UserInfo;
 }
 

@@ -10,7 +10,7 @@ import {
   EnvironmentData
 } from "../../types";
 import { addEnvironmentColumns } from "../addEnvironmentColumns";
-import { goToEnvironmentIssues } from "../goToEnvironmentIssues";
+import { handleEnvironmentTableRowClick } from "../goToEnvironmentIssues";
 import { DescriptionContainer } from "../styles";
 import { EndpointHighNumberOfQueriesHighlightCardProps } from "./types";
 
@@ -52,7 +52,7 @@ export const EndpointHighNumberOfQueriesHighlightCard = ({
   const handleTableRowClick = (
     row: Row<EnvironmentData<EndpointHighNumberOfQueriesMetrics>>
   ) => {
-    goToEnvironmentIssues(
+    handleEnvironmentTableRowClick(
       config.environments,
       row.original.environmentName,
       data.insightType

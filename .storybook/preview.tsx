@@ -1,6 +1,6 @@
 import type { Preview } from "@storybook/react";
 import { StoryFn } from "@storybook/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   cancelMessage,
   initializeDigmaMessageListener,
@@ -13,17 +13,28 @@ import { Mode } from "../src/globals";
 const preview: Preview = {
   decorators: [
     (Story: StoryFn, context): JSX.Element => {
+      const [isInitialized, setIsInitialized] = useState(false);
       // TODO: Fix types
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       const theme = context.globals.theme as Mode;
-      initializeDigmaMessageListener(dispatcher);
-      window.sendMessageToDigma = sendMessage;
-      window.cancelMessageToDigma = cancelMessage;
 
-      return (
+      useEffect(() => {
+        const removeDigmaMessageListener =
+          initializeDigmaMessageListener(dispatcher);
+        window.sendMessageToDigma = sendMessage;
+        window.cancelMessageToDigma = cancelMessage;
+        setIsInitialized(true);
+
+        return () => {
+          removeDigmaMessageListener();
+        };
+      }, []);
+
+      return isInitialized ? (
         <App theme={theme}>
           <Story />
         </App>
+      ) : (
+        <>Initializing...</>
       );
     }
   ],

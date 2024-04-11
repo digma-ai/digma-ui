@@ -244,6 +244,33 @@ export const App = (props: AppProps) => {
       }));
     };
 
+    const handleSetIsDigmathonModeEnabled = (data: unknown) => {
+      if (isObject(data) && isBoolean(data.isDigmathonModeEnabled)) {
+        setConfig((config) => ({
+          ...config,
+          isDigmathonModeEnabled: data.isDigmathonModeEnabled as boolean
+        }));
+      }
+    };
+
+    const handleSetProductKey = (data: unknown) => {
+      if (isObject(data) && isString(data.productKey)) {
+        setConfig((config) => ({
+          ...config,
+          productKey: data.productKey as string
+        }));
+      }
+    };
+
+    const handleIsDigmathonGameFinished = (data: unknown) => {
+      if (isObject(data) && isBoolean(data.isDigmathonGameFinished)) {
+        setConfig((config) => ({
+          ...config,
+          isDigmathonGameFinished: data.isDigmathonGameFinished as boolean
+        }));
+      }
+    };
+
     dispatcher.addActionListener(actions.SET_THEME, handleSetTheme);
     dispatcher.addActionListener(actions.SET_MAIN_FONT, handleSetMainFont);
     dispatcher.addActionListener(actions.SET_CODE_FONT, handleSetCodeFont);
@@ -303,6 +330,15 @@ export const App = (props: AppProps) => {
     dispatcher.addActionListener(
       actions.SET_INSIGHT_STATS,
       handleSetInsightStats
+    );
+    dispatcher.addActionListener(
+      actions.SET_DIGMATHON_MODE,
+      handleSetIsDigmathonModeEnabled
+    );
+    dispatcher.addActionListener(actions.SET_PRODUCT_KEY, handleSetProductKey);
+    dispatcher.addActionListener(
+      actions.SET_IS_DIGMATHON_GAME_FINISHED,
+      handleIsDigmathonGameFinished
     );
 
     return () => {
@@ -371,6 +407,18 @@ export const App = (props: AppProps) => {
       dispatcher.removeActionListener(
         actions.SET_INSIGHT_STATS,
         handleSetInsightStats
+      );
+      dispatcher.removeActionListener(
+        actions.SET_DIGMATHON_MODE,
+        handleSetIsDigmathonModeEnabled
+      );
+      dispatcher.removeActionListener(
+        actions.SET_PRODUCT_KEY,
+        handleSetProductKey
+      );
+      dispatcher.removeActionListener(
+        actions.SET_IS_DIGMATHON_GAME_FINISHED,
+        handleIsDigmathonGameFinished
       );
     };
   }, []);

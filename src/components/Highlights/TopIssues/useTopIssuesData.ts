@@ -25,26 +25,26 @@ export const useTopIssuesData = () => {
       }
     });
   }, [config.scope?.span?.spanCodeObjectId, config.environments]);
-
   const previousGetData = usePrevious(getData);
 
   useEffect(() => {
-    if (
-      (previousGetData && previousGetData !== getData) ||
-      (previousLastSetDataTimeStamp &&
-        previousLastSetDataTimeStamp !== lastSetDataTimeStamp)
-    ) {
+    if (previousGetData && previousGetData !== getData) {
       window.clearTimeout(refreshTimerId.current);
+
+      getData();
+    }
+  }, [previousGetData, getData]);
+
+  useEffect(() => {
+    if (
+      previousLastSetDataTimeStamp &&
+      previousLastSetDataTimeStamp !== lastSetDataTimeStamp
+    ) {
       refreshTimerId.current = window.setTimeout(() => {
         getData();
       }, REFRESH_INTERVAL);
     }
-  }, [
-    previousLastSetDataTimeStamp,
-    lastSetDataTimeStamp,
-    getData,
-    previousGetData
-  ]);
+  }, [previousLastSetDataTimeStamp, lastSetDataTimeStamp, getData]);
 
   useEffect(() => {
     const handleTopIssuesData = (data: any, timeStamp: number) => {

@@ -8,7 +8,7 @@ import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserA
 import { Environment } from "../../../common/App/types";
 import { trackingEvents } from "../../tracking";
 
-export const goToEnvironmentIssues = (
+export const handleEnvironmentTableRowClick = (
   environments: Environment[] | undefined,
   environmentNameToSelect: string,
   insightType: InsightType

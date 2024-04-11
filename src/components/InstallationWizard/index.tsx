@@ -19,6 +19,7 @@ import { StepData, StepStatus } from "./Step/types";
 import { actions } from "./actions";
 import * as s from "./styles";
 import { trackingEvents } from "./tracking";
+import { FieldsErrors } from "./types";
 
 const DIGMA_DOCKER_EXTENSION_URL =
   "https://open.docker.com/extensions/marketplace?extensionId=digmaai/digma-docker-extension";
@@ -53,6 +54,14 @@ const getStepStatus = (index: number, currentStep: number): StepStatus => {
   return "not-completed";
 };
 
+const getFieldsErrors = (productKey: string, email: string): FieldsErrors => {
+  if (productKey.length > 0 && email.length === 0) {
+    return { email: "Please enter your email" };
+  }
+
+  return {};
+};
+
 export const InstallationWizard = () => {
   const config = useContext(ConfigContext);
   const [currentStep, setCurrentStep] = useState<number>(firstStep);
@@ -81,11 +90,13 @@ export const InstallationWizard = () => {
   // const theme = useTheme();
   // const themeKind = getThemeKind(theme);
   const [email, setEmail] = useState(config.userEmail);
+  const [productKey, setProductKey] = useState(config.productKey);
   const [isEmailValid, setIsEmailValid] = useState(
     email.length > 0 ? isValidEmailFormat(email) : undefined
   );
   const [isEmailValidating, setIsEmailValidating] = useState(false);
   const debouncedEmail = useDebounce(email, 1000);
+  const [errors, setErrors] = useState<FieldsErrors>({});
   // const [
   //   isDigmaCloudNotificationCheckboxChecked,
   //   setIsDigmaCloudNotificationCheckboxChecked
@@ -226,9 +237,18 @@ export const InstallationWizard = () => {
     const value = e.target.value.trim();
 
     if (email !== value) {
+      setErrors({});
       setIsEmailValid(undefined);
       setIsEmailValidating(true);
       setEmail(value);
+    }
+  };
+
+  const handleProductKeyInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.trim();
+
+    if (productKey !== value) {
+      setProductKey(value);
     }
   };
 
@@ -239,12 +259,19 @@ export const InstallationWizard = () => {
   };
 
   const handleFinishButtonClick = () => {
-    window.sendMessageToDigma({
-      action: actions.FINISH,
-      payload: {
-        ...(debouncedEmail.length > 0 ? { email: debouncedEmail } : {})
-      }
-    });
+    const errors = getFieldsErrors(productKey, email);
+
+    setErrors(errors);
+
+    if (Object.keys(errors).length === 0) {
+      window.sendMessageToDigma({
+        action: actions.FINISH,
+        payload: {
+          ...(debouncedEmail.length > 0 ? { email: debouncedEmail } : {}),
+          ...(productKey.length > 0 ? { productKey } : {})
+        }
+      });
+    }
   };
 
   const handleSlackLinkClick = () => {
@@ -319,6 +346,9 @@ export const InstallationWizard = () => {
           onEmailInputChange={handleEmailInputChange}
           isEmailValid={isEmailValid}
           isEmailValidating={isEmailValidating}
+          productKey={productKey}
+          errors={errors}
+          onProductKeyInputChange={handleProductKeyInputChange}
         />
       )
     }
