@@ -35,4 +35,5 @@ export interface RegisterPayload {
 
 export interface RegisterResult {
   errors?: ErrorData[];
+  success: string;
 }

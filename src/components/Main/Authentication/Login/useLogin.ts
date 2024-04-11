@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
+import { actions } from "../../../../actions";
 import { dispatcher } from "../../../../dispatcher";
 import { useLoading } from "../../../Insights/insightTickets/common";
-import { actions } from "../../actions";
 import { ErrorData, LoginPayload, LoginResult } from "../../types";
 
 export const useLogin = () => {

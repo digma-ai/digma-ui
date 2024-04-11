@@ -85,13 +85,20 @@ export const ButtonsContainer = styled.div`
   width: 100%;
 `;
 
-export const ErrorMessage = styled.span`
+const StatusMessage = styled.span`
   display: flex;
   font-size: 13px;
   height: 15px;
   align-items: center;
   align-self: flex-start;
+`;
+
+export const ErrorMessage = styled(StatusMessage)`
   color: ${({ theme }) => theme.colors.v3.status.high};
+`;
+
+export const SuccessMessage = styled(StatusMessage)`
+  color: ${({ theme }) => theme.colors.v3.status.success};
 `;
 
 export const SubmitButton = styled(Button)`

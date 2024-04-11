@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { Registration } from ".";
-import { actions } from "../../actions";
+import { actions } from "../../../../actions";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof Registration> = {
@@ -27,7 +27,7 @@ export const Failed: Story = {
       () =>
         window.postMessage({
           type: "digma",
-          action: actions.REGISTER_RESULT,
+          action: actions.REGISTRATION_RESULT,
           payload: {
             errors: [
               {

@@ -1,7 +1,6 @@
 import { KeyboardEvent, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
-import { isValidEmailFormat } from "../../../../utils/isValidEmailFormat";
 import { TextField } from "../../../common/RegistrationDialog/TextField";
 import { LockIcon } from "../../../common/icons/12px/LockIcon";
 import { EnvelopeIcon } from "../../../common/icons/16px/EnvelopeIcon";
@@ -13,10 +12,6 @@ const validateEmail = (email: string): string | boolean => {
   const emailMessage = "Please enter a valid email address";
 
   if (email.length === 0) {
-    return emailMessage;
-  }
-
-  if (!isValidEmailFormat(email)) {
     return emailMessage;
   }
 
@@ -44,7 +39,12 @@ export const Registration = () => {
     defaultValues: formDefaultValues
   });
   const values = getValues();
-  const { isLoading, register, errors: resultErrors } = useRegistration();
+  const {
+    isLoading,
+    isSucceed,
+    register,
+    errors: resultErrors
+  } = useRegistration();
 
   useEffect(() => {
     if (resultErrors?.length > 0) {
@@ -146,6 +146,9 @@ export const Registration = () => {
         />
       </s.Form>
       {errorMessage && <s.ErrorMessage>{errorMessage}</s.ErrorMessage>}
+      {isSucceed && (
+        <s.SuccessMessage>User created successfully!</s.SuccessMessage>
+      )}
       <s.ButtonsContainer>
         <s.SubmitButton
           isDisabled={!isValid}

@@ -1,16 +1,19 @@
-import { useLayoutEffect, useState } from "react";
+import { useContext, useLayoutEffect, useState } from "react";
 import { dispatcher } from "../../dispatcher";
 import { Assets } from "../Assets";
 import { Highlights } from "../Highlights";
 import { Insights } from "../Insights";
 import { SetViewsPayload } from "../Navigation/types";
 import { Tests } from "../Tests";
+import { ConfigContext } from "../common/App/ConfigContext";
+import { Authentication } from "./Authentication";
 import { actions } from "./actions";
 import { isView } from "./typeGuards";
 import { View } from "./types";
 
 export const Main = () => {
   const [view, setView] = useState<View>("insights");
+  const config = useContext(ConfigContext);
 
   useLayoutEffect(() => {
     window.sendMessageToDigma({
@@ -31,6 +34,10 @@ export const Main = () => {
       dispatcher.removeActionListener(actions.SET_VIEWS, handleSetViewsData);
     };
   }, []);
+
+  if (!config.userInfo?.id) {
+    return <Authentication />;
+  }
 
   switch (view) {
     case "highlights":
