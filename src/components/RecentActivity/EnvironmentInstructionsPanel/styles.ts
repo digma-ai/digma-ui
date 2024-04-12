@@ -84,7 +84,6 @@ export const SectionContentContainer = styled.div`
 
 export const Link = styled(CommonLink)`
   text-transform: capitalize;
-  max-width: fit-content;
 `;
 
 export const ActionContainer = styled.div`

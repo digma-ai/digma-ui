@@ -16,6 +16,7 @@ export const useRegistration = () => {
         setErrors(result.errors);
         setIsSucceed(false);
       } else {
+        setErrors([]);
         setIsSucceed(true);
       }
 

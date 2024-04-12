@@ -45,7 +45,7 @@ export const Login = () => {
     if (error) {
       setError("root", {
         type: "validate",
-        message: error
+        message: error.description
       });
     }
   }, [setError, error]);

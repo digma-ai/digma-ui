@@ -6,13 +6,13 @@ import { LoginPayload, LoginResult } from "../../types";
 
 export const useLogin = () => {
   const [isLoading, setIsLoading] = useLoading(false);
-  const [error, setError] = useState<string>();
+  const [error, setError] = useState<{ description: string }>();
 
   useEffect(() => {
     const handleLogin = (data: unknown) => {
       const result = data as LoginResult;
       if (result.error) {
-        setError(result.error);
+        setError({ description: result.error });
       }
       setIsLoading(false);
     };
