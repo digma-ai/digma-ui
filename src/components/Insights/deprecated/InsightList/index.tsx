@@ -689,6 +689,7 @@ const IS_INSIGHT_JIRA_TICKET_HINT_SHOWN_PERSISTENCE_KEY =
 
 /**
  * @deprecated
+ * safe to delete after the migration Errors and Navigation to the Main app
  */
 export const InsightList = (props: InsightListProps) => {
   const [insightGroups, setInsightGroups] = useState<InsightGroup[]>([]);

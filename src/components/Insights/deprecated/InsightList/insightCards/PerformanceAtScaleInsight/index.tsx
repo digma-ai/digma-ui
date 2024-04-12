@@ -17,6 +17,7 @@ const MIN_CONCURRENCY_STATES_TO_EVALUATE_SCALE = 4;
 
 /**
  * @deprecated
+ * safe to delete after implementation to the new version of the insight card
  */
 export const PerformanceAtScaleInsight = (
   props: PerformanceAtScaleInsightProps

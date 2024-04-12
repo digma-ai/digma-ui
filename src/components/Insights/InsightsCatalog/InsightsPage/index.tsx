@@ -17,7 +17,6 @@ import { CardsIcon } from "../../../common/icons/CardsIcon";
 import { actions } from "../../actions";
 import { trackingEvents } from "../../tracking";
 import {
-  isChattyApiEndpointInsight,
   isEndpointBottleneckInsight,
   isEndpointBreakdownInsight,
   isEndpointChattyApiV2Insight,
@@ -25,7 +24,6 @@ import {
   isEndpointHighUsageInsight,
   isEndpointLowUsageInsight,
   isEndpointNormalUsageInsight,
-  isEndpointQueryOptimizationInsight,
   isEndpointQueryOptimizationV2Insight,
   isEndpointSlowdownSourceInsight,
   isEndpointSpanNPlusOneInsight,
@@ -48,10 +46,8 @@ import {
 import { ViewMode } from "../types";
 import { EndpointBottleneckInsightCard } from "./insightCards/EndpointBottleneckInsightCard";
 import { EndpointBreakdownInsightCard } from "./insightCards/EndpointBreakdownInsightCard";
-import { EndpointChattyApiInsightCard } from "./insightCards/EndpointChattyApiInsightCard";
 import { EndpointChattyApiV2InsightCard } from "./insightCards/EndpointChattyApiV2InsightCard";
 import { EndpointHighNumberOfQueriesInsightCard } from "./insightCards/EndpointHighNumberOfQueriesInsightCard";
-import { EndpointQueryOptimizationInsightCard } from "./insightCards/EndpointQueryOptimizationInsightCard";
 import { EndpointQueryOptimizationV2InsightCard } from "./insightCards/EndpointQueryOptimizationV2InsightCard";
 import { EndpointSessionInViewInsightCard } from "./insightCards/EndpointSessionInViewInsightCard";
 import { EndpointSlowdownSourceInsightCard } from "./insightCards/EndpointSlowdownSourceInsightCard";
@@ -414,22 +410,6 @@ const renderInsightCard = (
     );
   }
 
-  // deprecated
-  if (isChattyApiEndpointInsight(insight)) {
-    return (
-      <EndpointChattyApiInsightCard
-        key={insight.id}
-        insight={insight}
-        onAssetLinkClick={handleAssetLinkClick}
-        onTraceButtonClick={handleTraceButtonClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={onRefresh}
-        onGoToSpan={handleGoToSpan}
-        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
-      />
-    );
-  }
-
   if (isEndpointChattyApiV2Insight(insight)) {
     return (
       <EndpointChattyApiV2InsightCard
@@ -477,24 +457,6 @@ const renderInsightCard = (
   if (isSpanQueryOptimizationInsight(insight)) {
     return (
       <SpanQueryOptimizationInsightCard
-        key={insight.id}
-        insight={insight}
-        onAssetLinkClick={handleAssetLinkClick}
-        onTraceButtonClick={handleTraceButtonClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={onRefresh}
-        onJiraTicketCreate={onJiraTicketCreate}
-        isJiraHintEnabled={isJiraHintEnabled}
-        onGoToSpan={handleGoToSpan}
-        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
-      />
-    );
-  }
-
-  // deprecated
-  if (isEndpointQueryOptimizationInsight(insight)) {
-    return (
-      <EndpointQueryOptimizationInsightCard
         key={insight.id}
         insight={insight}
         onAssetLinkClick={handleAssetLinkClick}

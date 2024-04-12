@@ -5,6 +5,7 @@ import { NoScalingIssueInsightProps } from "./types";
 
 /**
  * @deprecated
+ * safe to delete after the implementation of the version with new UI
  */
 export const NoScalingIssueInsight = (props: NoScalingIssueInsightProps) => {
   const handleHistogramButtonClick = () => {

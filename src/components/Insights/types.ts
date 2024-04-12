@@ -367,9 +367,9 @@ export interface EndpointHighUsageInsight extends EndpointInsight {
   maxCallsIn1Min: number;
 }
 
-// SAFE TO REMOVE
 /**
  * @deprecated
+ * safe to delete after 2024-06-05
  */
 export interface EndpointSlowestSpansInsight extends EndpointInsight {
   name: "Bottleneck Detected";
@@ -475,9 +475,9 @@ export interface SpaNPlusOneInsight extends SpanInsight {
   endpoints: NPlusOneEndpointInfo[] | null;
 }
 
-// SAFE TO REMOVE
 /**
  * @deprecated
+ * safe to delete after 2024-06-05
  */
 export interface EndpointSuspectedNPlusOneInsight extends EndpointInsight {
   name: "Suspected N+1 Query";
@@ -561,15 +561,15 @@ export interface EndpointSlowdownSource {
   changeVerified: boolean;
 }
 
-// SAFE TO REMOVE
 /**
  * @deprecated
+ * safe to delete after 2024-06-05
  */
 export type DurationSlowdownSource = EndpointSlowdownSource;
 
-// SAFE TO REMOVE
 /**
  * @deprecated
+ * safe to delete after 2024-06-05
  */
 export interface EndpointDurationSlowdownInsight extends EndpointInsight {
   name: "Endpoint Duration Slowdown Source";
@@ -655,9 +655,9 @@ export interface EndpointSessionInViewInsight extends EndpointInsight {
   }[];
 }
 
-// SAFE TO REMOVE
 /**
  * @deprecated
+ * safe to delete after 2024-06-05
  */
 export interface EndpointChattyApiInsight extends EndpointInsight {
   name: "HTTP Chatter";
@@ -735,9 +735,9 @@ export interface EndpointQueryOptimizationSpan {
   ticketLink: string | null;
 }
 
-// SAFE TO REMOVE
 /**
  * @deprecated
+ * safe to delete after 2024-06-05
  */
 export interface EndpointQueryOptimizationInsight extends EndpointInsight {
   name: "Query Optimization";

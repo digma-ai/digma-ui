@@ -138,6 +138,7 @@ const calculateBars = (
 
 /**
  * @deprecated
+ * safe to delete after 2024-06-05
  */
 export const DurationInsight = (props: DurationInsightProps) => {
   // const config = useContext(ConfigContext);

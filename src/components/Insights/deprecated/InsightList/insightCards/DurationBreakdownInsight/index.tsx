@@ -45,6 +45,7 @@ const getDurationTitle = (breakdownEntry: SpanDurationBreakdownEntry) => {
 
 /**
  * @deprecated
+ * safe to delete after 2024-06-05
  */
 export const DurationBreakdownInsight = (
   props: DurationBreakdownInsightProps

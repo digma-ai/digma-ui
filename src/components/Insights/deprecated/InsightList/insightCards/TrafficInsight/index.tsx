@@ -41,6 +41,7 @@ const getDescription = (insightType: InsightType): string => {
 
 /**
  * @deprecated
+ * safe to delete after 2024-06-05
  */
 export const TrafficInsight = (props: TrafficInsightProps) => {
   const valueString = getValueString(props.insight.maxCallsIn1Min);

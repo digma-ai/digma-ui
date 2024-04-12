@@ -30,7 +30,6 @@ import { InsightsCatalog } from "./InsightsCatalog";
 import { SORTING_CRITERION } from "./InsightsCatalog/types";
 import { EndpointBottleneckInsightTicket } from "./insightTickets/EndpointBottleneckInsightTicket";
 import { EndpointHighNumberOfQueriesInsightTicket } from "./insightTickets/EndpointHighNumberOfQueriesInsightTicket";
-import { EndpointQueryOptimizationInsightTicket } from "./insightTickets/EndpointQueryOptimizationTicket";
 import { EndpointQueryOptimizationV2InsightTicket } from "./insightTickets/EndpointQueryOptimizationV2InsightTicket";
 import { EndpointSpanNPlusOneInsightTicket } from "./insightTickets/EndpointSpanNPlusOneInsightTicket";
 import { SpaNPlusOneInsightTicket } from "./insightTickets/SpaNPlusOneInsightTicket";
@@ -42,7 +41,6 @@ import * as s from "./styles";
 import {
   isEndpointBottleneckInsight,
   isEndpointHighNumberOfQueriesInsight,
-  isEndpointQueryOptimizationInsight,
   isEndpointQueryOptimizationV2Insight,
   isEndpointSpanNPlusOneInsight,
   isSpanEndpointBottleneckInsight,
@@ -53,7 +51,6 @@ import {
 import {
   EndpointBottleneckInsight,
   EndpointHighNumberOfQueriesInsight,
-  EndpointQueryOptimizationInsight,
   EndpointQueryOptimizationV2Insight,
   EndpointSpanNPlusOneInsight,
   GenericCodeObjectInsight,
@@ -110,21 +107,6 @@ const renderInsightTicket = (
     const ticketData = data as InsightTicketInfo<SpanQueryOptimizationInsight>;
     return (
       <SpanQueryOptimizationInsightTicket data={ticketData} onClose={onClose} />
-    );
-  }
-
-  // deprecated
-  if (
-    isEndpointQueryOptimizationInsight(data.insight) &&
-    data.spanCodeObjectId
-  ) {
-    const ticketData =
-      data as InsightTicketInfo<EndpointQueryOptimizationInsight>;
-    return (
-      <EndpointQueryOptimizationInsightTicket
-        data={ticketData}
-        onClose={onClose}
-      />
     );
   }
 

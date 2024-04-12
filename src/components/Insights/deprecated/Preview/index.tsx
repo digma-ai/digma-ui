@@ -4,6 +4,10 @@ import { Method } from "../../types";
 import * as s from "./styles";
 import { PreviewProps } from "./types";
 
+/**
+ * @deprecated
+ * safe to delete after the implementation of the version with new UI
+ */
 export const Preview = (props: PreviewProps) => {
   const handleMethodLinkClick = (method: Method) => {
     props.onMethodSelect(method);

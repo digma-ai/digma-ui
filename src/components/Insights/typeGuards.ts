@@ -83,6 +83,7 @@ export const isEndpointHighUsageInsight = (
 
 /**
  * @deprecated
+ * safe to delete after 2024-06-05
  */
 export const isEndpointSlowestSpansInsight = (
   insight: CodeObjectInsight
@@ -104,6 +105,7 @@ export const isSpanNPlusOneInsight = (
 
 /**
  * @deprecated
+ * safe to delete after 2024-06-05
  */
 export const isEndpointSuspectedNPlusOneInsight = (
   insight: CodeObjectInsight
@@ -117,6 +119,7 @@ export const isEndpointSpanNPlusOneInsight = (
 
 /**
  * @deprecated
+ * safe to delete after 2024-06-05
  */
 export const isEndpointQueryOptimizationInsight = (
   insight: CodeObjectInsight
@@ -147,6 +150,7 @@ export const isEndpointSlowdownSourceInsight = (
 
 /**
  * @deprecated
+ * safe to delete after 2024-06-05
  */
 export const isEndpointDurationSlowdownInsight = (
   insight: CodeObjectInsight
@@ -158,17 +162,11 @@ export const isEndpointBreakdownInsight = (
 ): insight is EndpointBreakdownInsight =>
   insight.type === InsightType.EndpointBreakdown;
 
-/**
- * @deprecated
- */
 export const isSpanScalingWellInsight = (
   insight: CodeObjectInsight
 ): insight is SpanScalingWellInsight =>
   insight.type === InsightType.SpanScalingWell;
 
-/**
- * @deprecated
- */
 export const isSpanScalingInsufficientDataInsight = (
   insight: CodeObjectInsight
 ): insight is SpanScalingInsufficientDataInsight =>
@@ -181,6 +179,7 @@ export const isSessionInViewEndpointInsight = (
 
 /**
  * @deprecated
+ * safe to delete after 2024-06-05
  */
 export const isChattyApiEndpointInsight = (
   insight: CodeObjectInsight
