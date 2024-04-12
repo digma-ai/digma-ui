@@ -6,7 +6,7 @@ import { ErrorsInsightProps } from "./types";
 
 /**
  * @deprecated
- * safe to delete after 2024-06-05
+ * safe to delete after the implementation of the version with new UI
  */
 export const ErrorsInsight = (props: ErrorsInsightProps) => {
   const handleErrorLinkClick = (errorId: string) => {
