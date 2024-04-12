@@ -51,3 +51,7 @@ export const Description = styled.div`
   display: flex;
   color: ${({ theme }) => theme.colors.v3.text.secondary};
 `;
+
+export const InsightIconContainer = styled.div`
+  display: flex;
+`;

@@ -10,7 +10,7 @@ import { AssetLink } from "../../common/AssetLink";
 import { HighlightCard } from "../../common/HighlightCard";
 import { EndpointSpanNPlusOneMetrics, EnvironmentData } from "../../types";
 import { addEnvironmentColumns } from "../addEnvironmentColumns";
-import { goToEnvironmentIssues } from "../goToEnvironmentIssues";
+import { handleEnvironmentTableRowClick } from "../goToEnvironmentIssues";
 import { DescriptionContainer } from "../styles";
 import { EndpointSpanNPlusOneHighlightCardProps } from "./types";
 
@@ -57,7 +57,7 @@ export const EndpointSpanNPlusOneHighlightCard = ({
   const handleTableRowClick = (
     row: Row<EnvironmentData<EndpointSpanNPlusOneMetrics>>
   ) => {
-    goToEnvironmentIssues(
+    handleEnvironmentTableRowClick(
       config.environments,
       row.original.environmentName,
       data.insightType

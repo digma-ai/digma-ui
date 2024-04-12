@@ -6,6 +6,7 @@ export interface EnvironmentPanelProps {
   onEnvironmentSelect: (environment: ExtendedEnvironment) => void;
   onEnvironmentAdd: () => void;
   onEnvironmentDelete: (environment: string) => void;
+  onDigmathonModeButtonClick: () => void;
 }
 
 export type ViewMode = "table" | "list";

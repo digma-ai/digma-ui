@@ -127,8 +127,8 @@ export const Number = styled.span<NumberProps>`
   align-items: center;
   justify-content: center;
   position: absolute;
-  background: ${({ theme, status }) =>
-    status === "completed" ? "none" : getNumberBackgroundColor(theme)};
+  background: ${({ theme, $status }) =>
+    $status === "completed" ? "none" : getNumberBackgroundColor(theme)};
 
   ${({ theme, $transitionClassName, $transitionDuration }) => {
     return `

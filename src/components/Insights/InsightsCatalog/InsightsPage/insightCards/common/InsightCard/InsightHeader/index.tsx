@@ -96,7 +96,9 @@ export const InsightHeader = ({
             <Tag
               type={tagType}
               content={
-                <insightTypeInfo.icon color={"currentColor"} size={16} />
+                <s.InsightIconContainer>
+                  <insightTypeInfo.icon color={"currentColor"} size={16} />
+                </s.InsightIconContainer>
               }
             />
           </Tooltip>

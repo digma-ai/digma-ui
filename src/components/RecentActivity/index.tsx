@@ -3,6 +3,8 @@ import "allotment/dist/style.css";
 import { useContext, useEffect, useMemo, useState } from "react";
 import useDimensions from "react-cool-dimensions";
 import { actions as globalActions } from "../../actions";
+import { usePrevious } from "../../hooks/usePrevious";
+import { isBoolean } from "../../typeGuards/isBoolean";
 import { ChangeEnvironmentPayload } from "../../types";
 import { groupBy } from "../../utils/groupBy";
 import { ConfigContext } from "../common/App/ConfigContext";
@@ -10,6 +12,7 @@ import { ListIcon } from "../common/icons/ListIcon";
 import { TableIcon } from "../common/icons/TableIcon";
 import { CreateEnvironmentWizard } from "./CreateEnvironmentWizard";
 import { DeleteEnvironmentConfirmation } from "./DeleteEnvironmentConfirmation";
+import { Digmathon } from "./Digmathon";
 import { EnvironmentInstructionsPanel } from "./EnvironmentInstructionsPanel";
 import { EnvironmentPanel } from "./EnvironmentPanel";
 import { ViewMode } from "./EnvironmentPanel/types";
@@ -28,6 +31,7 @@ import {
   RecentActivityProps,
   ViewModeOption
 } from "./types";
+import { useDigmathonProgressData } from "./useDigmathonProgressData";
 import { useLiveData } from "./useLiveData";
 import { useRecentActivityData } from "./useRecentActivityData";
 
@@ -57,7 +61,15 @@ export const RecentActivity = (props: RecentActivityProps) => {
     liveData: props.liveData
   });
   const config = useContext(ConfigContext);
+  const [isDigmathonMode, setIsDigmathonMode] = useState(false);
   const { observe, entry } = useDimensions();
+  const {
+    data: digmathonProgressData,
+    getData: getDigmathonProgressData,
+    foundIssuesCount,
+    isDigmathonCompleted
+  } = useDigmathonProgressData();
+  const previousIsDigmathonCompleted = usePrevious(isDigmathonCompleted);
 
   const environmentActivities = useMemo(
     () => (data ? groupBy(data.entries, (x) => x.environment) : {}),
@@ -98,6 +110,16 @@ export const RecentActivity = (props: RecentActivityProps) => {
       action: actions.INITIALIZE
     });
   }, [config.userInfo?.id]);
+
+  useEffect(() => {
+    if (
+      isBoolean(previousIsDigmathonCompleted) &&
+      previousIsDigmathonCompleted !== isDigmathonCompleted &&
+      isDigmathonCompleted
+    ) {
+      setIsDigmathonMode(true);
+    }
+  }, [previousIsDigmathonCompleted, isDigmathonCompleted]);
 
   const handleEnvironmentSelect = (environment: ExtendedEnvironment) => {
     setSelectedEnvironment(environment);
@@ -165,6 +187,14 @@ export const RecentActivity = (props: RecentActivityProps) => {
 
   const handleCloseDeleteConfirmation = () => {
     setEnvironmentToDelete(undefined);
+  };
+
+  const handleDigmathonModeButtonClick = () => {
+    setIsDigmathonMode(true);
+  };
+
+  const handleDigmathonGoBack = () => {
+    setIsDigmathonMode(false);
   };
 
   const renderContent = () => {
@@ -235,32 +265,56 @@ export const RecentActivity = (props: RecentActivityProps) => {
     />
   ) : (
     <s.Container>
-      <Allotment defaultSizes={[70, 30]}>
-        <s.RecentActivityContainer id={RECENT_ACTIVITY_CONTAINER_ID}>
-          {/* <s.RecentActivityContainerBackground>
+      {isDigmathonMode ? (
+        <Digmathon
+          data={digmathonProgressData}
+          getData={getDigmathonProgressData}
+          foundIssuesCount={foundIssuesCount}
+          isDigmathonCompleted={isDigmathonCompleted}
+          onGoBack={handleDigmathonGoBack}
+        />
+      ) : (
+        <Allotment defaultSizes={[70, 30]}>
+          <s.RecentActivityContainer id={RECENT_ACTIVITY_CONTAINER_ID}>
+            {/* <s.RecentActivityContainerBackground>
             <s.RecentActivityContainerBackgroundGradient />
           </s.RecentActivityContainerBackground> */}
-          <s.RecentActivityHeader ref={observe}>
-            <EnvironmentPanel
-              environments={environments}
-              selectedEnvironment={selectedEnvironment}
-              onEnvironmentSelect={handleEnvironmentSelect}
-              onEnvironmentAdd={handleEnvironmentAdd}
-              onEnvironmentDelete={handleEnvironmentDelete}
-            />
-          </s.RecentActivityHeader>
-          <s.RecentActivityContentContainer>
-            {renderContent()}
-          </s.RecentActivityContentContainer>
-        </s.RecentActivityContainer>
-        <Allotment.Pane visible={Boolean(liveData)} minSize={450}>
-          {liveData && (
-            <s.LiveViewContainer>
-              <LiveView data={liveData} onClose={closeLiveSession} />
-            </s.LiveViewContainer>
-          )}
-        </Allotment.Pane>
-      </Allotment>
+            <s.RecentActivityHeader ref={observe}>
+              <EnvironmentPanel
+                environments={environments}
+                selectedEnvironment={selectedEnvironment}
+                onEnvironmentSelect={handleEnvironmentSelect}
+                onEnvironmentAdd={handleEnvironmentAdd}
+                onEnvironmentDelete={handleEnvironmentDelete}
+                onDigmathonModeButtonClick={handleDigmathonModeButtonClick}
+              />
+              <s.RecentActivityToolbarContainer>
+                {!selectedEnvironment?.isPending && (
+                  <s.RecentActivityToolbar>
+                    <span>Recent Activity</span>
+                    <Toggle
+                      value={viewMode}
+                      options={viewModeOptions}
+                      onChange={handleViewModeChange}
+                    />
+                  </s.RecentActivityToolbar>
+                )}
+                {!config.isObservabilityEnabled && <ObservabilityStatusBadge />}
+              </s.RecentActivityToolbarContainer>
+            </s.RecentActivityHeader>
+            <s.RecentActivityContentContainer>
+              {renderContent()}
+            </s.RecentActivityContentContainer>
+          </s.RecentActivityContainer>
+          <Allotment.Pane visible={Boolean(liveData)} minSize={450}>
+            {liveData && (
+              <s.LiveViewContainer>
+                <LiveView data={liveData} onClose={closeLiveSession} />
+              </s.LiveViewContainer>
+            )}
+          </Allotment.Pane>
+        </Allotment>
+      )}
       {environmentToDelete && (
         <Overlay
           onClose={() => setEnvironmentToDelete(undefined)}

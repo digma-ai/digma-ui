@@ -65,6 +65,12 @@ export const caption1RegularTypography = css`
   line-height: ${typographies.captionOne.lineHeight}px;
 `;
 
+export const caption1BoldTypography = css`
+  font-size: ${typographies.captionOne.fontSize}px;
+  font-weight: ${typographies.captionOne.fontWeight.bold};
+  line-height: ${typographies.captionOne.lineHeight}px;
+`;
+
 export const caption2RegularTypography = css`
   font-size: ${typographies.captionTwo.fontSize}px;
   font-weight: ${typographies.captionTwo.fontWeight.regular};
@@ -80,6 +86,18 @@ export const caption2BoldTypography = css`
 export const footnoteRegularTypography = css`
   font-size: ${typographies.footNote.fontSize}px;
   font-weight: ${typographies.footNote.fontWeight.regular};
+  line-height: ${typographies.footNote.lineHeight}px;
+`;
+
+export const footnoteMediumTypography = css`
+  font-size: ${typographies.footNote.fontSize}px;
+  font-weight: ${typographies.footNote.fontWeight.medium};
+  line-height: ${typographies.footNote.lineHeight}px;
+`;
+
+export const footnoteBoldTypography = css`
+  font-size: ${typographies.footNote.fontSize}px;
+  font-weight: ${typographies.footNote.fontWeight.bold};
   line-height: ${typographies.footNote.lineHeight}px;
 `;
 
@@ -123,10 +141,4 @@ export const bodySemiboldTypography = css`
   font-size: ${typographies.body.fontSize}px;
   font-weight: ${typographies.body.fontWeight.semibold};
   line-height: ${typographies.body.lineHeight}px;
-`;
-
-export const footnoteBoldTypography = css`
-  font-size: ${typographies.footNote.fontSize}px;
-  font-weight: ${typographies.footNote.fontWeight.bold};
-  line-height: ${typographies.footNote.lineHeight}px;
 `;

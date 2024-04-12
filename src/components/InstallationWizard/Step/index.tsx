@@ -69,7 +69,7 @@ export const Step = (props: StepProps) => {
               >
                 <s.Number
                   ref={numberRef}
-                  status={props.status}
+                  $status={props.status}
                   $transitionClassName={NUMBER_TRANSITION_CLASS_NAME}
                   $transitionDuration={transitionDuration}
                 >

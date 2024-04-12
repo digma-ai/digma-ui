@@ -10,7 +10,7 @@ import { AssetLink } from "../../common/AssetLink";
 import { HighlightCard } from "../../common/HighlightCard";
 import { EnvironmentData, SpanQueryOptimizationMetrics } from "../../types";
 import { addEnvironmentColumns } from "../addEnvironmentColumns";
-import { goToEnvironmentIssues } from "../goToEnvironmentIssues";
+import { handleEnvironmentTableRowClick } from "../goToEnvironmentIssues";
 import { DescriptionContainer } from "../styles";
 import { SpanQueryOptimizationHighlightCardProps } from "./types";
 
@@ -70,7 +70,7 @@ export const SpanQueryOptimizationHighlightCard = ({
   const handleTableRowClick = (
     row: Row<EnvironmentData<SpanQueryOptimizationMetrics>>
   ) => {
-    goToEnvironmentIssues(
+    handleEnvironmentTableRowClick(
       config.environments,
       row.original.environmentName,
       data.insightType

@@ -6,7 +6,7 @@ import { TableText } from "../../../common/TableText";
 import { HighlightCard } from "../../common/HighlightCard";
 import { EnvironmentData, SpanScalingMetrics } from "../../types";
 import { addEnvironmentColumns } from "../addEnvironmentColumns";
-import { goToEnvironmentIssues } from "../goToEnvironmentIssues";
+import { handleEnvironmentTableRowClick } from "../goToEnvironmentIssues";
 import { SpanScalingHighlightCardProps } from "./types";
 
 export const SpanScalingHighlightCard = ({
@@ -36,7 +36,7 @@ export const SpanScalingHighlightCard = ({
   const handleTableRowClick = (
     row: Row<EnvironmentData<SpanScalingMetrics>>
   ) => {
-    goToEnvironmentIssues(
+    handleEnvironmentTableRowClick(
       config.environments,
       row.original.environmentName,
       data.insightType

@@ -9,7 +9,7 @@ import { TableText } from "../../../common/TableText";
 import { HighlightCard } from "../../common/HighlightCard";
 import { EnvironmentData, SpaNPlusOneMetrics } from "../../types";
 import { addEnvironmentColumns } from "../addEnvironmentColumns";
-import { goToEnvironmentIssues } from "../goToEnvironmentIssues";
+import { handleEnvironmentTableRowClick } from "../goToEnvironmentIssues";
 import { SpaNPlusOneHighlightCardProps } from "./types";
 
 export const SpaNPlusOneHighlightCard = ({
@@ -66,7 +66,7 @@ export const SpaNPlusOneHighlightCard = ({
   const handleTableRowClick = (
     row: Row<EnvironmentData<SpaNPlusOneMetrics>>
   ) => {
-    goToEnvironmentIssues(
+    handleEnvironmentTableRowClick(
       config.environments,
       row.original.environmentName,
       data.insightType

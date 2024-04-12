@@ -1,5 +1,6 @@
 import { ComponentType } from "react";
 import { Duration } from "../../globals";
+import { InsightType } from "../Insights/types";
 import { EnvironmentType } from "../common/App/types";
 import { IconProps } from "../common/icons/types";
 import { ViewMode } from "./EnvironmentPanel/types";
@@ -91,6 +92,22 @@ export interface SetIsJaegerData {
 
 export interface ViewModeOptionProps {
   $selected: boolean;
+}
+
+export interface DigmathonProgressData {
+  insights: InsightType[];
+}
+
+export interface DigmathonInsightCardData {
+  title: string;
+  description: string;
+  illustration: JSX.Element;
+}
+
+export interface DigmathonInsightData {
+  type: InsightType;
+  data: DigmathonInsightCardData | undefined;
+  isFound: boolean;
 }
 
 export interface CreateEnvironmentPayload {

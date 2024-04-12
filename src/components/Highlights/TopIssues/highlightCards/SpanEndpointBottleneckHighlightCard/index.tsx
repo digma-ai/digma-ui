@@ -9,7 +9,7 @@ import { TableText } from "../../../common/TableText";
 import { HighlightCard } from "../../common/HighlightCard";
 import { EnvironmentData, SpanEndpointBottleneckMetrics } from "../../types";
 import { addEnvironmentColumns } from "../addEnvironmentColumns";
-import { goToEnvironmentIssues } from "../goToEnvironmentIssues";
+import { handleEnvironmentTableRowClick } from "../goToEnvironmentIssues";
 import { SpanEndpointBottleneckHighlightCardProps } from "./types";
 
 export const SpanEndpointBottleneckHighlightCard = ({
@@ -63,7 +63,7 @@ export const SpanEndpointBottleneckHighlightCard = ({
   const handleTableRowClick = (
     row: Row<EnvironmentData<SpanEndpointBottleneckMetrics>>
   ) => {
-    goToEnvironmentIssues(
+    handleEnvironmentTableRowClick(
       config.environments,
       row.original.environmentName,
       data.insightType
