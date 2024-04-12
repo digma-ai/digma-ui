@@ -25,7 +25,7 @@ export interface ErrorData {
 }
 
 export interface LoginResult {
-  errors?: ErrorData[];
+  error: string;
 }
 
 export interface RegisterPayload {

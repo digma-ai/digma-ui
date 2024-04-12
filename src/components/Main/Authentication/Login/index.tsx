@@ -1,7 +1,6 @@
 import { KeyboardEvent, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
-import { isValidEmailFormat } from "../../../../utils/isValidEmailFormat";
 import { TextField } from "../../../common/RegistrationDialog/TextField"; // TODO: change when new env will be merged
 import { LockIcon } from "../../../common/icons/12px/LockIcon";
 import { EnvelopeIcon } from "../../../common/icons/16px/EnvelopeIcon";
@@ -15,20 +14,6 @@ import {
 } from "../styles";
 import { LoginFormValues } from "./types";
 import { useLogin } from "./useLogin";
-
-const validateEmail = (email: string): string | boolean => {
-  const emailMessage = "Please enter a valid work email address";
-
-  if (email.length === 0) {
-    return emailMessage;
-  }
-
-  if (!isValidEmailFormat(email)) {
-    return emailMessage;
-  }
-
-  return true;
-};
 
 const formDefaultValues: LoginFormValues = {
   password: "",
@@ -50,20 +35,20 @@ export const Login = () => {
     defaultValues: formDefaultValues
   });
   const values = getValues();
-  const { isLoading, login, errors: resultErrors } = useLogin();
+  const { isLoading, login, error } = useLogin();
 
   useEffect(() => {
     setFocus("email");
   }, [setFocus]);
 
   useEffect(() => {
-    if (resultErrors?.length > 0) {
+    if (error) {
       setError("root", {
         type: "validate",
-        message: resultErrors.map((x) => x.description).join("\r\n")
+        message: error
       });
     }
-  }, [setError, resultErrors]);
+  }, [setError, error]);
 
   useEffect(() => {
     watch(() => {
@@ -96,7 +81,7 @@ export const Login = () => {
         <Controller
           name={"email"}
           control={control}
-          rules={{ required: "Email is required", validate: validateEmail }}
+          rules={{ required: "Email is required" }}
           defaultValue={formDefaultValues.email}
           render={({ field }) => (
             <TextField

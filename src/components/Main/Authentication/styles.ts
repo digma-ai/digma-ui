@@ -15,6 +15,7 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+  background: ${({ theme }) => theme.colors.v3.surface.secondary};
 `;
 
 export const Header = styled.div`
@@ -63,7 +64,7 @@ export const FormContainer = styled.div`
 `;
 
 export const ContentContainer = styled(FormContainer)`
-  margin-top: 50%;
+  margin-top: 10%;
 `;
 
 export const Inputs = styled.div`

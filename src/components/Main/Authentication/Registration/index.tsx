@@ -1,6 +1,8 @@
 import { KeyboardEvent, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
+import { isValidPasswordFormat } from "../../../../utils/isPasswordFormatValid";
+import { isValidEmailFormat } from "../../../../utils/isValidEmailFormat";
 import { TextField } from "../../../common/RegistrationDialog/TextField";
 import { LockIcon } from "../../../common/icons/12px/LockIcon";
 import { EnvelopeIcon } from "../../../common/icons/16px/EnvelopeIcon";
@@ -13,6 +15,22 @@ const validateEmail = (email: string): string | boolean => {
 
   if (email.length === 0) {
     return emailMessage;
+  }
+
+  if (!isValidEmailFormat(email)) {
+    return emailMessage;
+  }
+
+  return true;
+};
+
+const validatePassword = (password: string): string | boolean => {
+  if (password.length < 6) {
+    return "Password must be at least 6.";
+  }
+
+  if (!isValidPasswordFormat(password)) {
+    return "Password must contain one special character";
   }
 
   return true;
@@ -105,7 +123,10 @@ export const Registration = () => {
           name={"password"}
           control={control}
           defaultValue={""}
-          rules={{ required: "Password is required" }}
+          rules={{
+            required: "Password is required",
+            validate: validatePassword
+          }}
           render={({ field }) => (
             <TextField
               icon={LockIcon}

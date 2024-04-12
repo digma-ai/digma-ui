@@ -2,17 +2,17 @@ import { useEffect, useState } from "react";
 import { actions } from "../../../../actions";
 import { dispatcher } from "../../../../dispatcher";
 import { useLoading } from "../../../Insights/insightTickets/common";
-import { ErrorData, LoginPayload, LoginResult } from "../../types";
+import { LoginPayload, LoginResult } from "../../types";
 
 export const useLogin = () => {
   const [isLoading, setIsLoading] = useLoading(false);
-  const [errors, setErrors] = useState<ErrorData[]>([]);
+  const [error, setError] = useState<string>();
 
   useEffect(() => {
     const handleLogin = (data: unknown) => {
       const result = data as LoginResult;
-      if (result.errors) {
-        setErrors(result.errors);
+      if (result.error) {
+        setError(result.error);
       }
       setIsLoading(false);
     };
@@ -35,6 +35,6 @@ export const useLogin = () => {
       });
     },
     isLoading,
-    errors
+    error
   };
 };

@@ -33,9 +33,9 @@ export const Main = () => {
     return () => {
       dispatcher.removeActionListener(actions.SET_VIEWS, handleSetViewsData);
     };
-  }, []);
+  }, [config.userInfo?.id]);
 
-  if (!config.userInfo?.id) {
+  if (!config.userInfo?.id && config.backendInfo?.centralize) {
     return <Authentication />;
   }
 

@@ -15,6 +15,7 @@ import { EnvironmentPanel } from "./EnvironmentPanel";
 import { ViewMode } from "./EnvironmentPanel/types";
 import { LiveView } from "./LiveView";
 import { NoData } from "./NoData";
+import { NoUser } from "./NoUser";
 import { ObservabilityStatusBadge } from "./ObservabilityStatusBadge";
 import { RecentActivityTable, isRecent } from "./RecentActivityTable";
 import { Toggle } from "./Toggle";
@@ -96,7 +97,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
     window.sendMessageToDigma({
       action: actions.INITIALIZE
     });
-  }, []);
+  }, [config.userInfo?.id]);
 
   const handleEnvironmentSelect = (environment: ExtendedEnvironment) => {
     setSelectedEnvironment(environment);
@@ -214,6 +215,10 @@ export const RecentActivity = (props: RecentActivityProps) => {
       </>
     );
   };
+
+  if (!config.userInfo?.id && config.backendInfo?.centralize) {
+    return <NoUser />;
+  }
 
   return showCreationWizard ? (
     <CreateEnvironmentWizard
