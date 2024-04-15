@@ -1,5 +1,4 @@
 import { View } from "./components/Main/types";
-import { Environment } from "./components/common/App/types";
 import { Duration } from "./globals";
 
 export enum FeatureFlag {
@@ -23,9 +22,9 @@ export enum InsightType {
   LowUsage = "LowUsage",
   NormalUsage = "NormalUsage",
   HighUsage = "HighUsage",
-  SlowestSpans = "SlowestSpans", // deprecated
+  SlowestSpans = "SlowestSpans", // deprecated - safe to delete after 2024-06-05
   EndpointBottleneck = "EndpointBottleneck",
-  EndpointSpaNPlusOne = "EndpointSpaNPlusOne", // deprecated
+  EndpointSpaNPlusOne = "EndpointSpaNPlusOne", // deprecated - safe to delete after 2024-06-05
   EndpointSpanNPlusOne = "EndpointSpanNPlusOne",
   SpanUsages = "SpanUsages",
   SpaNPlusOne = "SpaNPlusOne",
@@ -33,17 +32,17 @@ export enum InsightType {
   SpanDurations = "SpanDurations",
   SpanScaling = "SpanScaling",
   SpanDurationBreakdown = "SpanDurationBreakdown",
-  EndpointDurationSlowdown = "EndpointDurationSlowdown", // deprecated
+  EndpointDurationSlowdown = "EndpointDurationSlowdown", // deprecated - safe to delete after 2024-06-05
   EndpointBreakdown = "EndpointBreakdown",
-  SpanScalingWell = "SpanScalingWell", // deprecated
-  SpanScalingInsufficientData = "SpanScalingInsufficientData", // deprecated
+  SpanScalingWell = "SpanScalingWell",
+  SpanScalingInsufficientData = "SpanScalingInsufficientData",
   EndpointSessionInView = "EndpointSessionInView",
-  EndpointChattyApi = "EndpointChattyApi", // deprecated
+  EndpointChattyApi = "EndpointChattyApi", // deprecated - safe to delete after 2024-06-05
   EndpointChattyApiV2 = "EndpointChattyApiV2",
   EndpointHighNumberOfQueries = "EndpointHighNumberOfQueries",
   SpanNexus = "SpanNexus",
   SpanQueryOptimization = "SpanQueryOptimization",
-  EndpointQueryOptimization = "EndpointQueryOptimization", // deprecated
+  EndpointQueryOptimization = "EndpointQueryOptimization", // deprecated to delete after 2024-06-05
   EndpointQueryOptimizationV2 = "EndpointQueryOptimizationV2",
   EndpointSlowdownSource = "EndpointSlowdownSource"
 }
@@ -57,11 +56,6 @@ export interface SpanInfo {
   spanCodeObjectId: string;
   methodCodeObjectId: string | null;
   kind: string | null;
-
-  /**
-   * @deprecated
-   */
-  codeObjectId: string | null;
 }
 
 export interface SpanInstanceInfo {
@@ -88,7 +82,7 @@ export interface GetInsightStatsPayload {
 }
 
 export interface ChangeEnvironmentPayload {
-  environment: Environment;
+  environment: string;
 }
 
 export interface ChangeScopePayload {

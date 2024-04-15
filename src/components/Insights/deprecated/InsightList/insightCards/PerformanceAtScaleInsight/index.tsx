@@ -17,6 +17,7 @@ const MIN_CONCURRENCY_STATES_TO_EVALUATE_SCALE = 4;
 
 /**
  * @deprecated
+ * safe to delete after the implementation of the version with new UI
  */
 export const PerformanceAtScaleInsight = (
   props: PerformanceAtScaleInsightProps
@@ -59,8 +60,7 @@ export const PerformanceAtScaleInsight = (
   const handleHistogramButtonClick = () => {
     props.insight.spanInfo &&
       props.onHistogramButtonClick(
-        props.insight.spanInfo.instrumentationLibrary,
-        props.insight.spanInfo.name,
+        props.insight.spanInfo.spanCodeObjectId,
         props.insight.type,
         props.insight.spanInfo.displayName
       );

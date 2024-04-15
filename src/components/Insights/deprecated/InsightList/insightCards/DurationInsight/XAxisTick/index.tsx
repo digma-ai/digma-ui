@@ -13,6 +13,10 @@ const getTickLabelColor = (theme: DefaultTheme) => {
   }
 };
 
+/**
+ * @deprecated
+ * safe to delete after 2024-06-05
+ */
 export const XAxisTick = (props: XAxisTickProps) => {
   const theme = useTheme();
   const tickLabelColor = getTickLabelColor(theme);

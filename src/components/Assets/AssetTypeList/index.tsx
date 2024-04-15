@@ -153,8 +153,7 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
   useEffect(() => {
     if (
       (isEnvironment(previousEnvironment) &&
-        previousEnvironment.originalName !==
-          config.environment?.originalName) ||
+        previousEnvironment.id !== config.environment?.id) ||
       (Array.isArray(previousServices) &&
         previousServices !== props.services) ||
       (previousFilters && previousFilters !== props.filters) ||
@@ -165,7 +164,7 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
       refreshData();
     }
   }, [
-    config.environment?.originalName,
+    config.environment?.id,
     previousEnvironment,
     previousFilters,
     previousSearchQuery,

@@ -21,6 +21,7 @@ const PAGE_SIZE = 3;
 
 /**
  * @deprecated
+ * safe to delete after 2024-06-05
  */
 export const EndpointQueryOptimizationInsight = (
   props: EndpointQueryOptimizationInsightProps

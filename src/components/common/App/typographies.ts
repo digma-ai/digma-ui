@@ -77,6 +77,12 @@ export const caption2RegularTypography = css`
   line-height: ${typographies.captionTwo.lineHeight}px;
 `;
 
+export const caption2BoldTypography = css`
+  font-size: ${typographies.captionTwo.fontSize}px;
+  font-weight: ${typographies.captionTwo.fontWeight.bold};
+  line-height: ${typographies.captionTwo.lineHeight}px;
+`;
+
 export const footnoteRegularTypography = css`
   font-size: ${typographies.footNote.fontSize}px;
   font-weight: ${typographies.footNote.fontWeight.regular};
@@ -119,9 +125,9 @@ export const bodyRegularTypography = css`
   line-height: ${typographies.body.lineHeight}px;
 `;
 
-export const bodyMediumTypography = css`
+export const bodyBoldTypography = css`
   font-size: ${typographies.body.fontSize}px;
-  font-weight: ${typographies.body.fontWeight.medium};
+  font-weight: ${typographies.body.fontWeight.bold};
   line-height: ${typographies.body.lineHeight}px;
 `;
 
@@ -131,8 +137,8 @@ export const bodySemiboldTypography = css`
   line-height: ${typographies.body.lineHeight}px;
 `;
 
-export const bodyBoldTypography = css`
+export const bodyMediumTypography = css`
   font-size: ${typographies.body.fontSize}px;
-  font-weight: ${typographies.body.fontWeight.bold};
+  font-weight: ${typographies.body.fontWeight.medium};
   line-height: ${typographies.body.lineHeight}px;
 `;

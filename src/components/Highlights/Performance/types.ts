@@ -1,4 +1,5 @@
 import { Duration } from "../../../globals";
+import { EnvironmentType } from "../../common/App/types";
 
 interface PerformancePercentileData {
   duration: Duration;
@@ -9,7 +10,7 @@ export type EnvironmentPerformanceData = {
   environment: {
     name: string;
     id: string;
-    type: "Public" | "Private";
+    type: EnvironmentType;
   };
   p50: PerformancePercentileData;
   p95: PerformancePercentileData;

@@ -160,8 +160,7 @@ ${getDurationString(insight.average)}${
     : "";
 
   const handleGoToLive = () => {
-    insight.prefixedCodeObjectId &&
-      onLiveButtonClick(insight.prefixedCodeObjectId);
+    onLiveButtonClick(insight.codeObjectId);
   };
 
   const traces: Trace[] = [];
@@ -438,7 +437,7 @@ ${getDurationString(insight.average)}${
       onRecalculate={onRecalculate}
       onRefresh={onRefresh}
       isAsync={insight.isAsync}
-      onGoToLive={insight.prefixedCodeObjectId ? handleGoToLive : undefined}
+      onGoToLive={handleGoToLive}
       onOpenHistogram={insight.spanInfo ? onHistogramButtonClick : undefined}
       onGoToSpan={onGoToSpan}
       isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}

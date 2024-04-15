@@ -16,10 +16,8 @@ export const getInsightTypeOrderPriority = (type: string): number => {
     [InsightType.NormalUsage]: 50,
     [InsightType.EndpointSpanNPlusOne]: 55,
     [InsightType.EndpointSessionInView]: 56,
-    [InsightType.EndpointChattyApi]: 57, // deprecated
     [InsightType.EndpointChattyApiV2]: 57,
     [InsightType.EndpointHighNumberOfQueries]: 58,
-    [InsightType.EndpointQueryOptimization]: 59, // deprecated
     [InsightType.EndpointQueryOptimizationV2]: 59,
 
     // Span insights

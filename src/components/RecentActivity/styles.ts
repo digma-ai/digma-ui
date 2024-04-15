@@ -1,6 +1,4 @@
 import styled from "styled-components";
-import { LAYERS } from "../common/App/styles";
-import { Button } from "../common/Button";
 
 const RECENT_ACTIVITY_MIN_WIDTH = 550; // in pixels
 
@@ -39,30 +37,6 @@ export const RecentActivityContainer = styled.div`
   box-sizing: border-box;
 `;
 
-// export const RecentActivityContainerBackground = styled.div`
-//   position: absolute;
-//   inset: 0;
-//   overflow: hidden;
-// `;
-
-// export const RecentActivityContainerBackgroundGradient = styled.div`
-//   position: absolute;
-//   left: 0;
-//   right: 0;
-//   margin: auto;
-//   top: 16.8%;
-//   height: 413%;
-//   width: 80.4%;
-//   border-radius: 413px;
-//   opacity: 0.7;
-//   background: radial-gradient(
-//     50% 50% at 50% 50%,
-//     rgb(79 93 163 / 60%) 0%,
-//     rgb(79 93 163 / 0%) 100%
-//   );
-//   filter: blur(5px);
-// `;
-
 export const RecentActivityHeader = styled.div`
   box-sizing: border-box;
   z-index: 1;
@@ -95,57 +69,6 @@ export const RecentActivityContentContainer = styled.div`
   min-width: ${RECENT_ACTIVITY_MIN_WIDTH}px;
 `;
 
-export const NoDataContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 12px 0 18px;
-  border-radius: 12px;
-  gap: 4px;
-  background: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#ebecf0";
-      case "dark":
-        return "#1e1e1e";
-      case "dark-jetbrains":
-        return "#393b40";
-    }
-  }};
-`;
-
-export const NoDataTitle = styled.span`
-  font-weight: 600;
-  font-size: 16px;
-  color: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#002d61";
-      case "dark":
-      case "dark-jetbrains":
-        return "#b9c2eb";
-    }
-  }};
-`;
-
-export const NoDataText = styled.span`
-  font-weight: 400;
-  font-size: 14px;
-  color: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#828797";
-      case "dark":
-      case "dark-jetbrains":
-        return "#7c7c94";
-    }
-  }};
-`;
-
-export const TroubleshootButton = styled(Button)`
-  margin-top: 8px;
-`;
-
 export const LiveViewContainer = styled.div`
   padding: 12px;
   padding-left: 24px;
@@ -153,13 +76,6 @@ export const LiveViewContainer = styled.div`
   box-sizing: border-box;
 `;
 
-export const Overlay = styled.div`
-  position: absolute;
-  inset: 0;
-  background: rgb(18 18 21 / 70%);
-  display: flex;
-  justify-content: center;
-  padding: 80px 0;
-  overflow: auto;
-  z-index: ${LAYERS.OVERLAY};
+export const NoDataContainer = styled.div`
+  padding: 16px 12px 20px;
 `;

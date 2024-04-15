@@ -29,9 +29,6 @@ export const mockedHighNumberOfQueriesInsight: EndpointHighNumberOfQueriesInsigh
     typicalCount: 4,
     traceId: "00D37A4E7208E0F6E89AA7E2E37446A6",
     scope: InsightScope.EntrySpan,
-    endpointSpan: "HTTP POST /owners/{ownerId}/pets/new",
-    spanCodeObjectId:
-      "span:io.opentelemetry.tomcat-10.0$_$HTTP POST /owners/{ownerId}/pets/new",
     route: "epHTTP:HTTP POST /owners/{ownerId}/pets/new",
     serviceName: "spring-petclinic",
     spanInfo: {
@@ -42,9 +39,7 @@ export const mockedHighNumberOfQueriesInsight: EndpointHighNumberOfQueriesInsigh
         "span:io.opentelemetry.tomcat-10.0$_$HTTP POST /owners/{ownerId}/pets/new",
       methodCodeObjectId:
         "method:org.springframework.samples.petclinic.owner.PetController$_$processCreationForm",
-      kind: "Server",
-      codeObjectId:
-        "org.springframework.samples.petclinic.owner.PetController$_$processCreationForm"
+      kind: "Server"
     },
     shortDisplayInfo: {
       title: "",
@@ -63,8 +58,6 @@ export const mockedHighNumberOfQueriesInsight: EndpointHighNumberOfQueriesInsigh
     environment: "BOB-LAPTOP[LOCAL]",
     severity: 0.0,
     isRecalculateEnabled: false,
-    prefixedCodeObjectId:
-      "method:org.springframework.samples.petclinic.owner.PetController$_$processCreationForm",
     customStartTime: null,
     actualStartTime: "2023-08-10T08:04:00Z",
     quantile: 0.95

@@ -263,7 +263,7 @@ export const AssetList = (props: AssetListProps) => {
     () =>
       !(
         config.backendInfo?.deploymentType === DeploymentType.HELM &&
-        config.environment?.type === "shared"
+        config.environment?.type === "Public"
       ),
     [config.backendInfo?.deploymentType, config.environment?.type]
   );
@@ -315,8 +315,7 @@ export const AssetList = (props: AssetListProps) => {
     if (
       (isNumber(previousPage) && previousPage !== page) ||
       (isEnvironment(previousEnvironment) &&
-        previousEnvironment.originalName !==
-          config.environment?.originalName) ||
+        previousEnvironment.id !== config.environment?.id) ||
       (previousSorting && previousSorting !== sorting) ||
       (isString(previousSearchQuery) &&
         previousSearchQuery !== props.searchQuery) ||
@@ -330,7 +329,7 @@ export const AssetList = (props: AssetListProps) => {
       refreshData();
     }
   }, [
-    config.environment?.originalName,
+    config.environment?.id,
     page,
     previousAssetTypeId,
     previousEnvironment,
@@ -388,7 +387,7 @@ export const AssetList = (props: AssetListProps) => {
   useEffect(() => {
     setPage(0);
   }, [
-    config.environment?.originalName,
+    config.environment?.id,
     props.searchQuery,
     sorting,
     props.assetTypeId,
@@ -398,7 +397,7 @@ export const AssetList = (props: AssetListProps) => {
   useEffect(() => {
     listRef.current?.scrollTo(0, 0);
   }, [
-    config.environment?.originalName,
+    config.environment?.id,
     props.searchQuery,
     sorting,
     page,

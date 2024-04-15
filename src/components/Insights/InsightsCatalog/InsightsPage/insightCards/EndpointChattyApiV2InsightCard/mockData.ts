@@ -33,16 +33,12 @@ export const mockedEndpointChattyApiV2Insight: EndpointChattyApiV2Insight = {
       spanCodeObjectId:
         "span:io.opentelemetry.okhttp-3.0$_$HTTP GET mockapi.io",
       methodCodeObjectId: null,
-      kind: "Client",
-      codeObjectId: null
+      kind: "Client"
     },
     traceId: "00E4D714D4FAD0A00F9D8A39C8A49E8A"
   },
 
   scope: InsightScope.EntrySpan,
-  endpointSpan: "HTTP POST /owners/{ownerId}/pets/new",
-  spanCodeObjectId:
-    "span:io.opentelemetry.tomcat-10.0$_$HTTP POST /owners/{ownerId}/pets/new",
   route: "epHTTP:HTTP POST /owners/{ownerId}/pets/new",
   serviceName: "spring-petclinic",
   spanInfo: {
@@ -53,9 +49,7 @@ export const mockedEndpointChattyApiV2Insight: EndpointChattyApiV2Insight = {
       "span:io.opentelemetry.tomcat-10.0$_$HTTP POST /owners/{ownerId}/pets/new",
     methodCodeObjectId:
       "method:org.springframework.samples.petclinic.owner.PetController$_$processCreationForm",
-    kind: "Server",
-    codeObjectId:
-      "org.springframework.samples.petclinic.owner.PetController$_$processCreationForm"
+    kind: "Server"
   },
   shortDisplayInfo: {
     title: "",
@@ -74,8 +68,6 @@ export const mockedEndpointChattyApiV2Insight: EndpointChattyApiV2Insight = {
   environment: "BOB-LAPTOP[LOCAL]",
   severity: 0.0,
   isRecalculateEnabled: false,
-  prefixedCodeObjectId:
-    "method:org.springframework.samples.petclinic.owner.PetController$_$processCreationForm",
   customStartTime: null,
   actualStartTime: "2023-08-10T08:04:00Z"
 };

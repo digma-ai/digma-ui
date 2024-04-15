@@ -37,7 +37,6 @@ export const Default: Story = {
       specifity: 4,
       isRecalculateEnabled: true,
       importance: 5,
-      span: "DelayAsync",
       sampleTrace: null,
       flows: [
         {
@@ -93,8 +92,7 @@ export const Default: Story = {
         instrumentationLibrary: "SampleInsightsController",
         spanCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
         methodCodeObjectId: null,
-        kind: "Internal",
-        codeObjectId: null
+        kind: "Internal"
       },
       shortDisplayInfo: {
         title: "",
@@ -106,7 +104,6 @@ export const Default: Story = {
       decorators: null,
       environment: "BOB-LAPTOP[LOCAL]",
       severity: 0,
-      prefixedCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
       customStartTime: null,
       actualStartTime: "2023-06-17T00:00:00.000Z",
       isDismissed: false,

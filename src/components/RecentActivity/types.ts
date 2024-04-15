@@ -63,9 +63,8 @@ export interface ActivityEntry {
 
 export interface Environment {
   name: string;
-  originalName: string;
+  id: string;
   isPending: boolean;
-  additionToConfigResult: "success" | "failure" | null;
   type: EnvironmentType | null;
   token: string | null;
   serverApiUrl: string | null;
@@ -74,6 +73,7 @@ export interface Environment {
 
 export interface ExtendedEnvironment extends Environment {
   hasRecentActivity: boolean;
+  isNew?: boolean;
 }
 
 export interface RecentActivityData {
@@ -108,4 +108,19 @@ export interface DigmathonInsightData {
   type: InsightType;
   data: DigmathonInsightCardData | undefined;
   isFound: boolean;
+}
+
+export interface CreateEnvironmentPayload {
+  environment: string;
+  type: EnvironmentType | null;
+}
+
+export interface ErrorResponseData {
+  errorCode: string;
+  errorDescription: string;
+}
+
+export interface EnvironmentCreatedData {
+  errors?: ErrorResponseData[];
+  id: string;
 }

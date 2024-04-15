@@ -65,7 +65,7 @@ export const ServicesFilter = (props: ServicesFilterProps) => {
   useEffect(() => {
     if (
       isEnvironment(previousEnvironment) &&
-      previousEnvironment.originalName !== config.environment?.originalName
+      previousEnvironment.id !== config.environment?.id
     ) {
       setServices(undefined);
       window.sendMessageToDigma({

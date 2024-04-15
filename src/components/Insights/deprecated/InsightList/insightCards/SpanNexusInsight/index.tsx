@@ -10,6 +10,7 @@ const getTagType = (isHigh: boolean) => {
 
 /**
  * @deprecated
+ * safe to delete after 2024-06-05
  */
 export const SpanNexusInsight = (props: SpanNexusInsightProps) => {
   const { insight } = props;

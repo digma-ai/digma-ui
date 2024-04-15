@@ -1,4 +1,5 @@
 import copy from "copy-to-clipboard";
+import { ForwardedRef, forwardRef } from "react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import {
   atomOneDark,
@@ -19,7 +20,10 @@ const getHighlighterTheme = (theme: DefaultTheme): HighlighterTheme => {
   }
 };
 
-export const CodeSnippet = (props: CodeSnippetProps) => {
+const CodeSnippetComponent = (
+  props: CodeSnippetProps,
+  ref: ForwardedRef<HTMLDivElement>
+) => {
   const theme = useTheme();
   const highlighterTheme = getHighlighterTheme(theme);
 
@@ -28,7 +32,7 @@ export const CodeSnippet = (props: CodeSnippetProps) => {
   };
 
   return (
-    <s.Container>
+    <s.Container className={props.className} ref={ref}>
       {props.language ? (
         <SyntaxHighlighter
           language={props.language}
@@ -56,3 +60,5 @@ export const CodeSnippet = (props: CodeSnippetProps) => {
     </s.Container>
   );
 };
+
+export const CodeSnippet = forwardRef(CodeSnippetComponent);

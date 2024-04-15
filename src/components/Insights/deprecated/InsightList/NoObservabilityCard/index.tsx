@@ -15,7 +15,10 @@ const getIconColor = (theme: DefaultTheme) => {
       return "#dadada";
   }
 };
-
+/**
+ * @deprecated
+ * safe to delete after the implementation of the version with new UI
+ */
 export const NoObservabilityCard = (props: NoObservabilityCardProps) => {
   const theme = useTheme();
   const iconColor = getIconColor(theme);

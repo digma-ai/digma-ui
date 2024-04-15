@@ -22,18 +22,8 @@ export const mockedSpanDurationsInsight: SpanDurationsInsight = {
   category: InsightCategory.Performance,
   specifity: 4,
   isRecalculateEnabled: true,
-  spanCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
   isDismissed: false,
   isDismissible: true,
-  span: {
-    name: "DelayAsync",
-    displayName: "DelayAsync",
-    instrumentationLibrary: "SampleInsightsController",
-    spanCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
-    methodCodeObjectId: null,
-    kind: "Internal",
-    codeObjectId: null
-  },
   percentiles: [
     {
       percentile: 0.5,
@@ -85,8 +75,7 @@ export const mockedSpanDurationsInsight: SpanDurationsInsight = {
     instrumentationLibrary: "SampleInsightsController",
     spanCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
     methodCodeObjectId: null,
-    kind: "Internal",
-    codeObjectId: null
+    kind: "Internal"
   },
   shortDisplayInfo: {
     title: "",
@@ -104,7 +93,6 @@ export const mockedSpanDurationsInsight: SpanDurationsInsight = {
   environment: "BOB-LAPTOP[LOCAL]",
   importance: 2,
   severity: 0,
-  prefixedCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
   customStartTime: null,
   actualStartTime: "2023-06-17T00:00:00.000Z",
   isAsync: false

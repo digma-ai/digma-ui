@@ -135,7 +135,7 @@ export const useInsightsData = ({
   useEffect(() => {
     getData(scopedQuery, state);
     setIsLoading(true);
-  }, [scopedQuery, scope?.span?.spanCodeObjectId, environment?.originalName]);
+  }, [scopedQuery, scope?.span?.spanCodeObjectId, environment?.id]);
 
   return {
     isInitialLoading,

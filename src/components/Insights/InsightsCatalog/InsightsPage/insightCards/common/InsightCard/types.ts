@@ -9,8 +9,7 @@ export interface InsightCardProps {
   isAsync?: boolean;
   isActive?: boolean;
   onOpenHistogram?: (
-    instrumentationLibrary: string,
-    name: string,
+    spanCodeObjectId: string,
     insightType: InsightType,
     displayName: string
   ) => void;

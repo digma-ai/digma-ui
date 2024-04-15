@@ -13,6 +13,10 @@ import { Direction } from "../../../../../../common/icons/types";
 import * as s from "./styles";
 import { JiraButtonProps } from "./types";
 
+/**
+ * @deprecated
+ * safe to delete after 2024-06-05
+ */
 export const JiraButton = (props: JiraButtonProps) => {
   const [isJiraPopoverOpen, setIsJiraPopoverOpen] = useState(false);
   const theme = useTheme();

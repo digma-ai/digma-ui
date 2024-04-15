@@ -33,6 +33,7 @@ const IS_NEW_TIME_LIMIT = 1000 * 60 * 10; // in milliseconds
 
 /**
  * @deprecated
+ * safe to delete after the implementation of all the insights with new UI
  */
 export const InsightCard = (props: InsightCardProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -55,8 +56,7 @@ export const InsightCard = (props: InsightCardProps) => {
 
   const handleKebabMenuItemSelect = (value: string) => {
     if (value === RECALCULATE) {
-      props.data.prefixedCodeObjectId &&
-        props.onRecalculate(props.data.prefixedCodeObjectId, props.data.type);
+      props.onRecalculate(props.data.id, props.data.type);
       setIsRecalculatingStarted(true);
     }
 

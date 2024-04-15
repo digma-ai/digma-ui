@@ -34,8 +34,7 @@ export const mockedEndpointQueryOptimizationInsight: EndpointQueryOptimizationIn
           spanCodeObjectId:
             "span:SampleInsightsController$_$1D138649EB4FFA92C0E3C8103404F2",
           methodCodeObjectId: null,
-          kind: "Client",
-          codeObjectId: null
+          kind: "Client"
         },
         traceId: "9C510BC1E1CD59DD7E820BC3E8DFD4C4",
         duration: {
@@ -50,9 +49,6 @@ export const mockedEndpointQueryOptimizationInsight: EndpointQueryOptimizationIn
       }
     ],
     scope: InsightScope.EntrySpan,
-    endpointSpan: "HTTP GET /SampleInsights/QueryOptimization",
-    spanCodeObjectId:
-      "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /SampleInsights/QueryOptimization",
     route: "epHTTP:HTTP GET /SampleInsights/QueryOptimization",
     serviceName: "PetClinic",
     spanInfo: {
@@ -63,9 +59,7 @@ export const mockedEndpointQueryOptimizationInsight: EndpointQueryOptimizationIn
         "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /SampleInsights/QueryOptimization",
       methodCodeObjectId:
         "method:org.springframework.samples.petclinic.sample.SampleInsightsController$_$genQueryOptimization",
-      kind: "Server",
-      codeObjectId:
-        "org.springframework.samples.petclinic.sample.SampleInsightsController$_$genQueryOptimization"
+      kind: "Server"
     },
     shortDisplayInfo: {
       title: "",
@@ -84,8 +78,6 @@ export const mockedEndpointQueryOptimizationInsight: EndpointQueryOptimizationIn
     environment: "SAMPLE_ENV",
     severity: 0,
     isRecalculateEnabled: true,
-    prefixedCodeObjectId:
-      "method:org.springframework.samples.petclinic.sample.SampleInsightsController$_$genQueryOptimization",
     customStartTime: null,
     actualStartTime: "2023-06-16T10:30:33.027Z"
   };

@@ -1,4 +1,4 @@
-import { DesktopIcon } from "../icons/DesktopIcon";
+import { LockIcon } from "../icons/12px/LockIcon";
 import { InfinityIcon } from "../icons/InfinityIcon";
 import { EnvironmentIconProps } from "./types";
 
@@ -7,9 +7,9 @@ export const EnvironmentIcon = (props: EnvironmentIconProps) => {
     return null;
   }
 
-  return props.environment.name === props.environment.originalName ? (
-    <InfinityIcon size={16} color={"currentColor"} />
+  return props.environment.type === "Public" ? (
+    <InfinityIcon size={12} color={"currentColor"} />
   ) : (
-    <DesktopIcon size={16} color={"currentColor"} />
+    <LockIcon size={12} color={"currentColor"} />
   );
 };

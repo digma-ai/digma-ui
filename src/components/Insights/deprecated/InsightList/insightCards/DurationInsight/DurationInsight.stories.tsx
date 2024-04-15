@@ -38,16 +38,6 @@ export const WithAverage: Story = {
       isDismissible: true,
       specifity: 4,
       isRecalculateEnabled: true,
-      spanCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
-      span: {
-        name: "DelayAsync",
-        displayName: "DelayAsync",
-        instrumentationLibrary: "SampleInsightsController",
-        spanCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
-        methodCodeObjectId: null,
-        kind: "Internal",
-        codeObjectId: null
-      },
       percentiles: [
         {
           percentile: 0.5,
@@ -99,8 +89,7 @@ export const WithAverage: Story = {
         instrumentationLibrary: "SampleInsightsController",
         spanCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
         methodCodeObjectId: null,
-        kind: "Internal",
-        codeObjectId: null
+        kind: "Internal"
       },
       shortDisplayInfo: {
         title: "",
@@ -118,7 +107,6 @@ export const WithAverage: Story = {
       environment: "BOB-LAPTOP[LOCAL]",
       importance: 2,
       severity: 0,
-      prefixedCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
       customStartTime: null,
       actualStartTime: "2023-06-17T00:00:00.000Z",
       isAsync: false,
@@ -157,16 +145,6 @@ export const WithChange: Story = {
       isDismissible: true,
       specifity: 4,
       isRecalculateEnabled: true,
-      spanCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
-      span: {
-        name: "DelayAsync",
-        displayName: "DelayAsync",
-        instrumentationLibrary: "SampleInsightsController",
-        spanCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
-        methodCodeObjectId: null,
-        kind: "Internal",
-        codeObjectId: null
-      },
       percentiles: [
         {
           percentile: 0.5,
@@ -218,8 +196,7 @@ export const WithChange: Story = {
         instrumentationLibrary: "SampleInsightsController",
         spanCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
         methodCodeObjectId: null,
-        kind: "Internal",
-        codeObjectId: null
+        kind: "Internal"
       },
       shortDisplayInfo: {
         title: "",
@@ -237,7 +214,6 @@ export const WithChange: Story = {
       environment: "BOB-LAPTOP[LOCAL]",
       importance: 2,
       severity: 0,
-      prefixedCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
       customStartTime: null,
       actualStartTime: "2023-06-17T00:00:00.000Z",
       isAsync: false
@@ -266,16 +242,6 @@ export const WithEvaluatingChange: Story = {
       category: InsightCategory.Performance,
       specifity: 4,
       isRecalculateEnabled: true,
-      spanCodeObjectId: "span:SampleInsightsController$_$WaitForLock",
-      span: {
-        name: "WaitForLock",
-        displayName: "WaitForLock",
-        instrumentationLibrary: "SampleInsightsController",
-        spanCodeObjectId: "span:SampleInsightsController$_$WaitForLock",
-        methodCodeObjectId: null,
-        kind: "Internal",
-        codeObjectId: null
-      },
       percentiles: [
         {
           percentile: 0.5,
@@ -327,8 +293,7 @@ export const WithEvaluatingChange: Story = {
         instrumentationLibrary: "SampleInsightsController",
         spanCodeObjectId: "span:SampleInsightsController$_$WaitForLock",
         methodCodeObjectId: null,
-        kind: "Internal",
-        codeObjectId: null
+        kind: "Internal"
       },
       shortDisplayInfo: {
         title: "",
@@ -346,7 +311,6 @@ export const WithEvaluatingChange: Story = {
       environment: "BOB-LAPTOP[LOCAL]",
       importance: 2,
       severity: 0,
-      prefixedCodeObjectId: "span:SampleInsightsController$_$WaitForLock",
       customStartTime: null,
       actualStartTime: "2023-06-17T00:00:00.000Z",
       isAsync: false
@@ -373,18 +337,8 @@ export const HistogramWithManyBars: Story = {
       category: InsightCategory.Performance,
       specifity: 4,
       isRecalculateEnabled: true,
-      spanCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
       isDismissed: false,
       isDismissible: true,
-      span: {
-        name: "DelayAsync",
-        displayName: "DelayAsync",
-        instrumentationLibrary: "SampleInsightsController",
-        spanCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
-        methodCodeObjectId: null,
-        kind: "Internal",
-        codeObjectId: null
-      },
       percentiles: [
         {
           percentile: 0.5,
@@ -436,8 +390,7 @@ export const HistogramWithManyBars: Story = {
         instrumentationLibrary: "SampleInsightsController",
         spanCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
         methodCodeObjectId: null,
-        kind: "Internal",
-        codeObjectId: null
+        kind: "Internal"
       },
       shortDisplayInfo: {
         title: "",
@@ -455,7 +408,6 @@ export const HistogramWithManyBars: Story = {
       environment: "BOB-LAPTOP[LOCAL]",
       importance: 2,
       severity: 0,
-      prefixedCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
       customStartTime: null,
       actualStartTime: "2023-06-17T00:00:00.000Z",
       isAsync: false,
@@ -4900,18 +4852,8 @@ export const HistogramWithGaps: Story = {
       category: InsightCategory.Performance,
       specifity: 4,
       isRecalculateEnabled: true,
-      spanCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
       isDismissed: false,
       isDismissible: true,
-      span: {
-        name: "DelayAsync",
-        displayName: "DelayAsync",
-        instrumentationLibrary: "SampleInsightsController",
-        spanCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
-        methodCodeObjectId: null,
-        kind: "Internal",
-        codeObjectId: null
-      },
       percentiles: [
         {
           percentile: 0.5,
@@ -4963,8 +4905,7 @@ export const HistogramWithGaps: Story = {
         instrumentationLibrary: "SampleInsightsController",
         spanCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
         methodCodeObjectId: null,
-        kind: "Internal",
-        codeObjectId: null
+        kind: "Internal"
       },
       shortDisplayInfo: {
         title: "",
@@ -4982,7 +4923,6 @@ export const HistogramWithGaps: Story = {
       environment: "BOB-LAPTOP[LOCAL]",
       importance: 2,
       severity: 0,
-      prefixedCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
       customStartTime: null,
       actualStartTime: "2023-06-17T00:00:00.000Z",
       isAsync: false,
@@ -5159,16 +5099,6 @@ export const HistogramWithAFewBars: Story = {
       category: InsightCategory.Performance,
       specifity: 4,
       isRecalculateEnabled: true,
-      spanCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
-      span: {
-        name: "DelayAsync",
-        displayName: "DelayAsync",
-        instrumentationLibrary: "SampleInsightsController",
-        spanCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
-        methodCodeObjectId: null,
-        kind: "Internal",
-        codeObjectId: null
-      },
       percentiles: [
         {
           percentile: 0.5,
@@ -5220,8 +5150,7 @@ export const HistogramWithAFewBars: Story = {
         instrumentationLibrary: "SampleInsightsController",
         spanCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
         methodCodeObjectId: null,
-        kind: "Internal",
-        codeObjectId: null
+        kind: "Internal"
       },
       shortDisplayInfo: {
         title: "",
@@ -5239,7 +5168,6 @@ export const HistogramWithAFewBars: Story = {
       environment: "BOB-LAPTOP[LOCAL]",
       importance: 2,
       severity: 0,
-      prefixedCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
       customStartTime: null,
       actualStartTime: "2023-06-17T00:00:00.000Z",
       isAsync: false,
@@ -5307,20 +5235,6 @@ export const EmptyStateBug: Story = {
       isRecalculateEnabled: true,
       isDismissed: false,
       isDismissible: true,
-      spanCodeObjectId:
-        "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP GET SampleInsights/HttpCall",
-      span: {
-        name: "HTTP GET SampleInsights/HttpCall",
-        displayName: "HTTP GET SampleInsights/HttpCall",
-        instrumentationLibrary: "OpenTelemetry.Instrumentation.AspNetCore",
-        spanCodeObjectId:
-          "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP GET SampleInsights/HttpCall",
-        methodCodeObjectId:
-          "method:Sample.MoneyTransfer.API.Controllers.SampleInsightsController$_$HttpCall",
-        kind: "Server",
-        codeObjectId:
-          "Sample.MoneyTransfer.API.Controllers.SampleInsightsController$_$HttpCall"
-      },
       percentiles: [
         {
           percentile: 0.5,
@@ -5369,9 +5283,7 @@ export const EmptyStateBug: Story = {
           "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP GET SampleInsights/HttpCall",
         methodCodeObjectId:
           "method:Sample.MoneyTransfer.API.Controllers.SampleInsightsController$_$HttpCall",
-        kind: "Server",
-        codeObjectId:
-          "Sample.MoneyTransfer.API.Controllers.SampleInsightsController$_$HttpCall"
+        kind: "Server"
       },
       shortDisplayInfo: {
         title: "",
@@ -5389,8 +5301,6 @@ export const EmptyStateBug: Story = {
       criticality: 0,
       reopenCount: 0,
       ticketLink: null,
-      prefixedCodeObjectId:
-        "method:Sample.MoneyTransfer.API.Controllers.SampleInsightsController$_$HttpCall",
       customStartTime: null,
       actualStartTime: "0001-01-01T00:00:00",
       firstCommitId: null,

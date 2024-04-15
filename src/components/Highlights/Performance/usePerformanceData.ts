@@ -19,8 +19,7 @@ export const usePerformanceData = () => {
       payload: {
         query: {
           scopedSpanCodeObjectId: config.scope?.span?.spanCodeObjectId || null,
-          environments:
-            config.environments?.map((env) => env.originalName) || []
+          environments: config.environments?.map((x) => x.id) || []
         }
       }
     });

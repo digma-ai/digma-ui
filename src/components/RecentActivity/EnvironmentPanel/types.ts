@@ -4,7 +4,7 @@ export interface EnvironmentPanelProps {
   environments: ExtendedEnvironment[];
   selectedEnvironment?: ExtendedEnvironment;
   onEnvironmentSelect: (environment: ExtendedEnvironment) => void;
-  onEnvironmentAdd: (environment: string) => void;
+  onEnvironmentAdd: () => void;
   onEnvironmentDelete: (environment: string) => void;
   onDigmathonModeButtonClick: () => void;
 }

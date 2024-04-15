@@ -29,9 +29,9 @@ export const runDigmaWithCommandLine: PageContent = {
             <otel.exporter.otlp.traces.endpoint>http://localhost:5050</otel.exporter.otlp.traces.endpoint>
             <otel.traces.exporter>otlp</otel.traces.exporter>
             <otel.metrics.exporter>none</otel.metrics.exporter>
-            <otel.logs.exporter>none</otel.metrics.exporter>
+            <otel.logs.exporter>none</otel.logs.exporter>
             <otel.service.name>\${pom.artifactId}</otel.service.name>
-             <otel.exporter.otlp.protocol>grpc</<otel.exporter.otlp.protocol>>
+            <otel.exporter.otlp.protocol>grpc</otel.exporter.otlp.protocol>
             <otel.javaagent.extensions>\${env.TMPDIR}/temp-digma-otel-jars/digma-otel-agent-extension.jar</otel.javaagent.extensions>
           </systemPropertyVariables>
         </configuration>

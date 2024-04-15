@@ -32,8 +32,7 @@ export const mockedEndpointBottleneckInsight: EndpointBottleneckInsight = {
       instrumentationLibrary: "SampleInsightsController",
       spanCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
       methodCodeObjectId: null,
-      kind: "Internal",
-      codeObjectId: null
+      kind: "Internal"
     },
     probabilityOfBeingBottleneck: 0.6923076923076923,
     avgFractionWhenBeingBottleneck: 50,
@@ -44,36 +43,9 @@ export const mockedEndpointBottleneckInsight: EndpointBottleneckInsight = {
     },
     criticality: 0,
     ticketLink: "https://digma.ai/1",
-    requestPercentage: 90,
-    p50: {
-      fraction: 0,
-      maxDuration: {
-        value: 0,
-        unit: "ns",
-        raw: 0
-      }
-    },
-    p95: {
-      fraction: 0,
-      maxDuration: {
-        value: 0,
-        unit: "ns",
-        raw: 0
-      }
-    },
-    p99: {
-      fraction: 0,
-      maxDuration: {
-        value: 0,
-        unit: "ns",
-        raw: 0
-      }
-    }
+    requestPercentage: 90
   },
   scope: InsightScope.EntrySpan,
-  endpointSpan: "HTTP GET SampleInsights/lock/{milisec}",
-  spanCodeObjectId:
-    "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP GET SampleInsights/lock/{milisec}",
   route: "epHTTP:HTTP GET SampleInsights/lock/{milisec}",
   serviceName: "Sample.MoneyTransfer.API",
   spanInfo: {
@@ -84,9 +56,7 @@ export const mockedEndpointBottleneckInsight: EndpointBottleneckInsight = {
       "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP GET SampleInsights/lock/{milisec}",
     methodCodeObjectId:
       "method:Sample.MoneyTransfer.API.Controllers.SampleInsightsController$_$Lock(Double)",
-    kind: "Server",
-    codeObjectId:
-      "Sample.MoneyTransfer.API.Controllers.SampleInsightsController$_$Lock(Double)"
+    kind: "Server"
   },
   shortDisplayInfo: {
     title: "",
@@ -100,8 +70,6 @@ export const mockedEndpointBottleneckInsight: EndpointBottleneckInsight = {
   environment: "BOB-LAPTOP[LOCAL]",
   severity: 0,
   isRecalculateEnabled: true,
-  prefixedCodeObjectId:
-    "method:Sample.MoneyTransfer.API.Controllers.SampleInsightsController$_$Lock(Double)",
   customStartTime: null,
   actualStartTime: "2023-06-16T11:10:30.349Z"
 };

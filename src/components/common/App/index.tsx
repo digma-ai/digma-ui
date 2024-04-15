@@ -18,7 +18,8 @@ import {
   Environment,
   GlobalState,
   InsightStats,
-  Scope
+  Scope,
+  UserInfo
 } from "./types";
 
 export const THEMES = ["light", "dark", "dark-jetbrains"];
@@ -222,6 +223,13 @@ export const App = (props: AppProps) => {
       }));
     };
 
+    const handleSetUserInfo = (data: unknown) => {
+      setConfig((config) => ({
+        ...config,
+        userInfo: data as UserInfo
+      }));
+    };
+
     const handleSetInsightStats = (data: unknown) => {
       setConfig((config) => ({
         ...config,
@@ -268,6 +276,7 @@ export const App = (props: AppProps) => {
     dispatcher.addActionListener(actions.SET_CODE_FONT, handleSetCodeFont);
     dispatcher.addActionListener(actions.SET_JAEGER_URL, handleSetJaegerURL);
     dispatcher.addActionListener(actions.SET_STATE, handleSetState);
+    dispatcher.addActionListener(actions.SET_USER_INFO, handleSetUserInfo);
     dispatcher.addActionListener(
       actions.SET_IS_JAEGER_ENABLED,
       handleSetIsJaegerEnabled
@@ -337,6 +346,7 @@ export const App = (props: AppProps) => {
       dispatcher.removeActionListener(actions.SET_MAIN_FONT, handleSetMainFont);
       dispatcher.removeActionListener(actions.SET_CODE_FONT, handleSetCodeFont);
       dispatcher.removeActionListener(actions.SET_STATE, handleSetState);
+      dispatcher.removeActionListener(actions.SET_USER_INFO, handleSetUserInfo);
       dispatcher.removeActionListener(
         actions.SET_JAEGER_URL,
         handleSetJaegerURL

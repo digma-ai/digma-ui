@@ -38,7 +38,6 @@ const insight: SpanUsagesInsight = {
   specifity: 4,
   isRecalculateEnabled: true,
   importance: 5,
-  span: "DelayAsync",
   sampleTrace: null,
   flows: [],
   scope: InsightScope.Span,
@@ -50,8 +49,7 @@ const insight: SpanUsagesInsight = {
     instrumentationLibrary: "SampleInsightsController",
     spanCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
     methodCodeObjectId: null,
-    kind: "Internal",
-    codeObjectId: null
+    kind: "Internal"
   },
   shortDisplayInfo: {
     title: "",
@@ -63,7 +61,6 @@ const insight: SpanUsagesInsight = {
   decorators: null,
   environment: "BOB-LAPTOP[LOCAL]",
   severity: 0,
-  prefixedCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
   customStartTime: null,
   actualStartTime: "2023-06-17T00:00:00.000Z",
   ticketLink: null
