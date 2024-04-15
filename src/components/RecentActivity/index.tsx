@@ -18,10 +18,10 @@ import { EnvironmentPanel } from "./EnvironmentPanel";
 import { ViewMode } from "./EnvironmentPanel/types";
 import { LiveView } from "./LiveView";
 import { NoData } from "./NoData";
-import { NoUser } from "./NoUser";
 import { ObservabilityStatusBadge } from "./ObservabilityStatusBadge";
 import { RecentActivityTable, isRecent } from "./RecentActivityTable";
 import { Toggle } from "./Toggle";
+import { WelcomeScreen } from "./WelcomeScreen";
 import { actions } from "./actions";
 import { Overlay } from "./common/Overlay";
 import * as s from "./styles";
@@ -247,7 +247,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
   };
 
   if (!config.userInfo?.id && config.backendInfo?.centralize) {
-    return <NoUser />;
+    return <WelcomeScreen />;
   }
 
   return showCreationWizard ? (

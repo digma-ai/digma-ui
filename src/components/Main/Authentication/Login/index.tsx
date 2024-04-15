@@ -108,7 +108,7 @@ export const Login = () => {
               {...field}
             />
           )}
-        />{" "}
+        />
       </Form>
       {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
       <ButtonsContainer>

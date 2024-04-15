@@ -27,7 +27,7 @@ export const Failed: Story = {
       () =>
         window.postMessage({
           type: "digma",
-          action: actions.REGISTRATION_RESULT,
+          action: actions.SET_REGISTRATION_RESULT,
           payload: {
             errors: [
               {

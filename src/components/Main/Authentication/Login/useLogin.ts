@@ -17,10 +17,10 @@ export const useLogin = () => {
       setIsLoading(false);
     };
 
-    dispatcher.addActionListener(actions.LOGIN_RESULT, handleLogin);
+    dispatcher.addActionListener(actions.SET_LOGIN_RESULT, handleLogin);
 
     return () => {
-      dispatcher.removeActionListener(actions.LOGIN_RESULT, handleLogin);
+      dispatcher.removeActionListener(actions.SET_LOGIN_RESULT, handleLogin);
     };
   }, []);
 

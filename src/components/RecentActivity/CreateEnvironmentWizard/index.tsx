@@ -58,7 +58,7 @@ export const CreateEnvironmentWizard = ({
       status: "not-completed",
       errors: {},
       isHidden:
-        !!config.userRegistrationEmail && !config.backendInfo?.centralize
+        Boolean(config.userRegistrationEmail) && !config.backendInfo?.centralize
     },
     {
       key: ENVIRONMENT_TYPE_STEP,

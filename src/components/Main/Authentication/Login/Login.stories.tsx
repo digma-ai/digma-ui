@@ -27,7 +27,7 @@ export const Failed: Story = {
       () =>
         window.postMessage({
           type: "digma",
-          action: actions.LOGIN_RESULT,
+          action: actions.SET_LOGIN_RESULT,
           payload: {
             errors: [
               {

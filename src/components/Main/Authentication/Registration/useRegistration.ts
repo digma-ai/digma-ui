@@ -23,11 +23,14 @@ export const useRegistration = () => {
       setIsLoading(false);
     };
 
-    dispatcher.addActionListener(actions.REGISTRATION_RESULT, handleRegister);
+    dispatcher.addActionListener(
+      actions.SET_REGISTRATION_RESULT,
+      handleRegister
+    );
 
     return () => {
       dispatcher.removeActionListener(
-        actions.REGISTRATION_RESULT,
+        actions.SET_REGISTRATION_RESULT,
         handleRegister
       );
     };

@@ -2,7 +2,7 @@ import { DigmaLoginLogo } from "../../common/icons/DigmaLoginLogo";
 import { RecentActivityContainerBackgroundGradient } from "../styles";
 import * as s from "./styles";
 
-export const NoUser = () => {
+export const WelcomeScreen = () => {
   return (
     <s.NoUserContainer>
       <s.Background />

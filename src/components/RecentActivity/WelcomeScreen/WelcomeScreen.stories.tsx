@@ -1,9 +1,9 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { NoUser } from ".";
+import { WelcomeScreen } from ".";
 
-const meta: Meta<typeof NoUser> = {
-  title: "Recent Activity/NoUser",
-  component: NoUser,
+const meta: Meta<typeof WelcomeScreen> = {
+  title: "Recent Activity/WelcomeScreen",
+  component: WelcomeScreen,
   parameters: {
     layout: "fullscreen"
   }
