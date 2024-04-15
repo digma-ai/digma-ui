@@ -59,6 +59,7 @@ export const getInsightTypeInfo = (
       label: "Endpoint High Traffic"
     },
     // deprecated
+    // safe to delete after 2024-06-05
     [InsightType.SlowestSpans]: {
       icon: BottleneckIcon,
       label: "Bottleneck",
@@ -70,6 +71,7 @@ export const getInsightTypeInfo = (
       description: descriptionProvider.BottleneckDescription
     },
     // deprecated
+    // safe to delete after 2024-06-05
     [InsightType.EndpointSpaNPlusOne]: {
       icon: SQLDatabaseIcon,
       label: "Suspected N+1",
@@ -108,6 +110,7 @@ export const getInsightTypeInfo = (
       label: "Duration Breakdown"
     },
     // deprecated
+    // safe to delete after 2024-06-05
     [InsightType.EndpointDurationSlowdown]: {
       icon: SnailIcon,
       label: "Duration Slowdown Source Detected"
@@ -120,12 +123,10 @@ export const getInsightTypeInfo = (
       icon: PieChartIcon,
       label: "Request Breakdown"
     },
-    // deprecated
     [InsightType.SpanScalingWell]: {
       icon: ScalesIcon,
       label: "No Scaling Issue Detected"
     },
-    // deprecated
     [InsightType.SpanScalingInsufficientData]: {
       icon: ScalesIcon,
       label: "Performance at Scale"
@@ -136,6 +137,7 @@ export const getInsightTypeInfo = (
       description: descriptionProvider.EndpointSessionInViewDescription
     },
     // deprecated
+    // safe to delete after 2024-06-05
     [InsightType.EndpointChattyApi]: {
       icon: SQLDatabaseIcon,
       label: "Excessive API Calls Detected",
@@ -162,6 +164,7 @@ export const getInsightTypeInfo = (
       description: descriptionProvider.QueryOptimizationDescription
     },
     // deprecated
+    // safe to delete after 2024-06-05
     [InsightType.EndpointQueryOptimization]: {
       icon: SQLDatabaseIcon,
       label: "Inefficient Query",

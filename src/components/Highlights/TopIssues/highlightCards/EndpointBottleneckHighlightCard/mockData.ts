@@ -26,8 +26,7 @@ export const mockedEndpointBottleneckHighlightData: HighlightData<EndpointBottle
       instrumentationLibrary: "instrumentationLibrary",
       spanCodeObjectId: "spanCodeObjectId",
       methodCodeObjectId: "methodCodeObjectId",
-      kind: "kind",
-      codeObjectId: null
+      kind: "kind"
     },
     environments: [
       {

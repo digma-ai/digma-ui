@@ -10,6 +10,10 @@ const isTextAnchor = (
 ): value is "start" | "end" | "middle" | "inherit" | undefined =>
   ["start", "middle", "end", "inherit", undefined].includes(value);
 
+/**
+ * @deprecated
+ * safe to delete after 2024-06-05
+ */
 export const ReferenceLineLabel = (props: ReferenceLineLabelProps) => {
   const labels = isString(props.value)
     ? props.value.split(DIVIDER)

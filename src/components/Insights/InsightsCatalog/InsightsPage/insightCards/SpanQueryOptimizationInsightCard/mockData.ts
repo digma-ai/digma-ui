@@ -34,9 +34,7 @@ export const mockedSpanQueryOptimizationInsight: SpanQueryOptimizationInsight =
         "span:io.opentelemetry.opentelemetry-instrumentation-annotations-1.16$_$OwnerValidation.ValidateOwner",
       methodCodeObjectId:
         "org.springframework.samples.petclinic.domain.OwnerValidation$_$ValidateOwner",
-      kind: "Internal",
-      codeObjectId:
-        "org.springframework.samples.petclinic.domain.OwnerValidation$_$ValidateOwner"
+      kind: "Internal"
     },
     traceId: "00D37A4E7208E0F6E89AA7E2E37446A6",
     duration: {
@@ -62,9 +60,7 @@ export const mockedSpanQueryOptimizationInsight: SpanQueryOptimizationInsight =
         "span:io.opentelemetry.opentelemetry-instrumentation-annotations-1.16$_$OwnerValidation.ValidateOwner",
       methodCodeObjectId:
         "org.springframework.samples.petclinic.domain.OwnerValidation$_$ValidateOwner",
-      kind: "Internal",
-      codeObjectId:
-        "org.springframework.samples.petclinic.domain.OwnerValidation$_$ValidateOwner"
+      kind: "Internal"
     },
     shortDisplayInfo: {
       title: "",
@@ -83,8 +79,6 @@ export const mockedSpanQueryOptimizationInsight: SpanQueryOptimizationInsight =
     environment: "BOB-LAPTOP[LOCAL]",
     severity: 0.0,
     isRecalculateEnabled: false,
-    prefixedCodeObjectId:
-      "method:org.springframework.samples.petclinic.domain.OwnerValidation$_$ValidateOwner",
     customStartTime: null,
     actualStartTime: "2023-07-27T08:23:56.500827Z",
     endpoints: [

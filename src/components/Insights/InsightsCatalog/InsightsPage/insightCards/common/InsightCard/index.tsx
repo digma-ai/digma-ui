@@ -83,9 +83,7 @@ export const InsightCard = (props: InsightCardProps) => {
   ]);
 
   const handleRecheckButtonClick = () => {
-    props.insight.prefixedCodeObjectId &&
-      props.onRecalculate &&
-      props.onRecalculate(props.insight.id);
+    props.onRecalculate && props.onRecalculate(props.insight.id);
     setIsRecalculatingStarted(true);
     // TODO: handle Recheck response and refresh the insight data
     setInsightStatus(InsightStatus.InEvaluation);
@@ -96,8 +94,7 @@ export const InsightCard = (props: InsightCardProps) => {
       props.insight.spanInfo &&
       props.onOpenHistogram &&
       props.onOpenHistogram(
-        props.insight.spanInfo.instrumentationLibrary,
-        props.insight.spanInfo.name,
+        props.insight.spanInfo.spanCodeObjectId,
         props.insight.type,
         props.insight.spanInfo.displayName
       );

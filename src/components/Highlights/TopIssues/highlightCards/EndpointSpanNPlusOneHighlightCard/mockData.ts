@@ -26,8 +26,7 @@ export const mockedEndpointSpanNPlusOneHighlightData: HighlightData<EndpointSpan
       instrumentationLibrary: "instrumentationLibrary",
       spanCodeObjectId: "spanCodeObjectId",
       methodCodeObjectId: "methodCodeObjectId",
-      kind: "kind",
-      codeObjectId: null
+      kind: "kind"
     },
     environments: [
       {

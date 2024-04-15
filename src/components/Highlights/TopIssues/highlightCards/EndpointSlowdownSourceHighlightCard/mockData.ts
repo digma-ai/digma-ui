@@ -22,8 +22,7 @@ export const mockedEndpointSlowdownSourceHighlightData: HighlightData<EndpointSl
       instrumentationLibrary: "instrumentationLibrary",
       spanCodeObjectId: "spanCodeObjectId",
       methodCodeObjectId: "methodCodeObjectId",
-      kind: "kind",
-      codeObjectId: null
+      kind: "kind"
     },
     environments: [
       {

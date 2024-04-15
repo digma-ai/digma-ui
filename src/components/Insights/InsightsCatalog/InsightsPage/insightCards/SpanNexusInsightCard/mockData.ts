@@ -30,9 +30,7 @@ export const mockedSpanNexusInsight: SpanNexusInsight = {
       "span:io.opentelemetry.tomcat-10.0$_$HTTP POST /owners/{ownerId}/pets/new",
     methodCodeObjectId:
       "method:org.springframework.samples.petclinic.owner.PetController$_$processCreationForm",
-    kind: "Server",
-    codeObjectId:
-      "org.springframework.samples.petclinic.owner.PetController$_$processCreationForm"
+    kind: "Server"
   },
   shortDisplayInfo: {
     title: "",
@@ -51,8 +49,6 @@ export const mockedSpanNexusInsight: SpanNexusInsight = {
   environment: "BOB-LAPTOP[LOCAL]",
   severity: 0.0,
   isRecalculateEnabled: false,
-  prefixedCodeObjectId:
-    "method:org.springframework.samples.petclinic.owner.PetController$_$processCreationForm",
   customStartTime: null,
   actualStartTime: "2023-08-10T08:04:00Z",
   flows: 4,

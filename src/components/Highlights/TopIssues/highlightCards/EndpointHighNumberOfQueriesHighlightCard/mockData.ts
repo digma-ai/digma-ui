@@ -22,8 +22,7 @@ export const mockedEndpointHighNumberOfQueriesHighlightData: HighlightData<Endpo
       instrumentationLibrary: "instrumentationLibrary",
       spanCodeObjectId: "spanCodeObjectId",
       methodCodeObjectId: "methodCodeObjectId",
-      kind: "kind",
-      codeObjectId: null
+      kind: "kind"
     },
     environments: [
       {

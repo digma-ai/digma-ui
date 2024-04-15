@@ -22,8 +22,6 @@ export const mockedSpanScalingInsight: SpanScalingInsight = {
   category: InsightCategory.Performance,
   specifity: 4,
   importance: 2,
-  spanName: "WaitForLock",
-  spanInstrumentationLibrary: "SampleInsightsController",
   turningPointConcurrency: 17,
   maxConcurrency: 24,
   isDismissed: false,
@@ -47,8 +45,7 @@ export const mockedSpanScalingInsight: SpanScalingInsight = {
     instrumentationLibrary: "SampleInsightsController",
     spanCodeObjectId: "span:SampleInsightsController$_$WaitForLock",
     methodCodeObjectId: null,
-    kind: "Internal",
-    codeObjectId: null
+    kind: "Internal"
   },
   shortDisplayInfo: {
     title: "Scaling Issue Found",
@@ -67,7 +64,6 @@ export const mockedSpanScalingInsight: SpanScalingInsight = {
   environment: "BOB-LAPTOP[LOCAL]",
   severity: 0,
   isRecalculateEnabled: false,
-  prefixedCodeObjectId: "span:SampleInsightsController$_$WaitForLock",
   customStartTime: null,
   actualStartTime: "2023-06-24T00:00:00.000Z",
   flowHash: null

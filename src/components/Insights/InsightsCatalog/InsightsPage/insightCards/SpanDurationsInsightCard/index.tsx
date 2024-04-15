@@ -149,8 +149,7 @@ export const SpanDurationsInsightCard = ({
   const spanLastCall = insight.lastSpanInstanceInfo;
 
   const handleGoToLive = () => {
-    insight.prefixedCodeObjectId &&
-      onLiveButtonClick(insight.prefixedCodeObjectId);
+    onLiveButtonClick(insight.codeObjectId);
   };
 
   const traces: Trace[] = [];
@@ -433,7 +432,7 @@ export const SpanDurationsInsightCard = ({
       onRecalculate={onRecalculate}
       onRefresh={onRefresh}
       isAsync={insight.isAsync}
-      onGoToLive={insight.prefixedCodeObjectId ? handleGoToLive : undefined}
+      onGoToLive={handleGoToLive}
       onOpenHistogram={insight.spanInfo ? onHistogramButtonClick : undefined}
       onGoToSpan={onGoToSpan}
       isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}

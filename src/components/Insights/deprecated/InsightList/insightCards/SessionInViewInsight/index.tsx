@@ -15,6 +15,7 @@ const PAGE_SIZE = 3;
 
 /**
  * @deprecated
+ * safe to delete after 2024-06-05
  */
 export const SessionInViewInsight = (props: SessionInViewInsightProps) => {
   const config = useContext(ConfigContext);

@@ -17,8 +17,7 @@ export const mockedSpanScalingHighlightData: HighlightData<SpanScalingMetrics> =
       instrumentationLibrary: "instrumentationLibrary",
       spanCodeObjectId: "spanCodeObjectId",
       methodCodeObjectId: "methodCodeObjectId",
-      kind: "kind",
-      codeObjectId: null
+      kind: "kind"
     },
     environments: [
       {

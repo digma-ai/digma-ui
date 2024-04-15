@@ -34,8 +34,7 @@ export const mockedEndpointSlowdownSourceInsight: EndpointSlowdownSourceInsight 
           instrumentationLibrary: "SampleInsightsController",
           spanCodeObjectId: "span:SampleInsightsController$_$WaitForLock",
           methodCodeObjectId: null,
-          kind: "Internal",
-          codeObjectId: null
+          kind: "Internal"
         },
         level: 0,
         previousDuration: {
@@ -59,8 +58,7 @@ export const mockedEndpointSlowdownSourceInsight: EndpointSlowdownSourceInsight 
           instrumentationLibrary: "SampleInsightsController",
           spanCodeObjectId: "span:SampleInsightsController$_$WaitForLock",
           methodCodeObjectId: null,
-          kind: "Internal",
-          codeObjectId: null
+          kind: "Internal"
         },
         level: 0,
         previousDuration: {
@@ -84,9 +82,6 @@ export const mockedEndpointSlowdownSourceInsight: EndpointSlowdownSourceInsight 
       }
     ],
     scope: InsightScope.EntrySpan,
-    endpointSpan: "HTTP GET SampleInsights/lock/{milisec}",
-    spanCodeObjectId:
-      "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP GET SampleInsights/lock/{milisec}",
     route: "epHTTP:HTTP GET SampleInsights/lock/{milisec}",
     serviceName: "Sample.MoneyTransfer.API",
     spanInfo: {
@@ -97,9 +92,7 @@ export const mockedEndpointSlowdownSourceInsight: EndpointSlowdownSourceInsight 
         "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP GET SampleInsights/lock/{milisec}",
       methodCodeObjectId:
         "method:Sample.MoneyTransfer.API.Controllers.SampleInsightsController$_$Lock(Double)",
-      kind: "Server",
-      codeObjectId:
-        "Sample.MoneyTransfer.API.Controllers.SampleInsightsController$_$Lock(Double)"
+      kind: "Server"
     },
     shortDisplayInfo: {
       title: "",
@@ -112,8 +105,6 @@ export const mockedEndpointSlowdownSourceInsight: EndpointSlowdownSourceInsight 
     environment: "BOB-LAPTOP[LOCAL]",
     severity: 0,
     isRecalculateEnabled: false,
-    prefixedCodeObjectId:
-      "method:Sample.MoneyTransfer.API.Controllers.SampleInsightsController$_$Lock(Double)",
     customStartTime: null,
     actualStartTime: "2023-06-16T11:10:21.334Z"
   };

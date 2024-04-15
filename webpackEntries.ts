@@ -1,15 +1,6 @@
 import path from "path";
 
 export const entries: AppEntries = {
-  // deprecated
-  assets: {
-    entry: path.resolve(__dirname, "./src/containers/Assets/index.tsx"),
-    environmentVariables: [
-      "assetsRefreshInterval",
-      "assetsSearch",
-      "assetsSelectedServices"
-    ]
-  },
   dashboard: {
     entry: path.resolve(__dirname, "./src/containers/Dashboard/index.tsx"),
     environmentVariables: ["dashboardRefreshInterval", "dashboardEnvironment"]
@@ -17,11 +8,6 @@ export const entries: AppEntries = {
   documentation: {
     entry: path.resolve(__dirname, "./src/containers/Documentation/index.tsx"),
     environmentVariables: ["documentationPage"]
-  },
-  // deprecated
-  insights: {
-    entry: path.resolve(__dirname, "./src/containers/Insights/index.tsx"),
-    environmentVariables: ["insightsRefreshInterval"]
   },
   installationWizard: {
     entry: path.resolve(
@@ -43,14 +29,13 @@ export const entries: AppEntries = {
   navigation: {
     entry: path.resolve(__dirname, "./src/containers/Navigation/index.tsx")
   },
-  // deprecated
-  notifications: {
-    entry: path.resolve(__dirname, "./src/containers/Notifications/index.tsx"),
-    environmentVariables: [
-      "notificationsRefreshInterval",
-      "notificationsViewMode"
-    ]
-  },
+  // notifications: {
+  //   entry: path.resolve(__dirname, "./src/containers/Notifications/index.tsx"),
+  //   environmentVariables: [
+  //     "notificationsRefreshInterval",
+  //     "notificationsViewMode"
+  //   ]
+  // },
   recentActivity: {
     entry: path.resolve(__dirname, "./src/containers/RecentActivity/index.tsx"),
     environmentVariables: [
@@ -58,11 +43,6 @@ export const entries: AppEntries = {
       "recentActivityDocumentationURL",
       "recentActivityIsEnvironmentManagementEnabled"
     ]
-  },
-  // deprecated
-  tests: {
-    entry: path.resolve(__dirname, "./src/containers/Tests/index.tsx"),
-    environmentVariables: ["testsRefreshInterval"]
   },
   troubleshooting: {
     entry: path.resolve(__dirname, "./src/containers/Troubleshooting/index.tsx")

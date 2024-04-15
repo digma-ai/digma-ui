@@ -260,27 +260,25 @@ const renderInsightCard = (
   };
 
   const handleHistogramButtonClick = (
-    instrumentationLibrary: string,
-    name: string,
+    spanCodeObjectId: string,
     insightType: InsightType,
     displayName: string
   ) => {
     window.sendMessageToDigma({
       action: actions.OPEN_HISTOGRAM,
       payload: {
-        instrumentationLibrary,
-        name,
+        spanCodeObjectId,
         insightType,
         displayName
       }
     });
   };
 
-  const handleLiveButtonClick = (prefixedCodeObjectId: string) => {
+  const handleLiveButtonClick = (insightId: string) => {
     window.sendMessageToDigma({
       action: actions.OPEN_LIVE_VIEW,
       payload: {
-        prefixedCodeObjectId
+        insightId
       }
     });
   };
@@ -691,6 +689,7 @@ const IS_INSIGHT_JIRA_TICKET_HINT_SHOWN_PERSISTENCE_KEY =
 
 /**
  * @deprecated
+ * safe to delete after the migration Errors and Navigation to the Main app
  */
 export const InsightList = (props: InsightListProps) => {
   const [insightGroups, setInsightGroups] = useState<InsightGroup[]>([]);

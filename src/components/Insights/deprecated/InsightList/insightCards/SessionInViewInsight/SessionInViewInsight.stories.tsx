@@ -47,8 +47,7 @@ export const Default: Story = {
             spanCodeObjectId:
               "span:io.opentelemetry.spring-webmvc-6.0$_$Render owners/ownerDetails",
             methodCodeObjectId: "",
-            kind: "Internal",
-            codeObjectId: ""
+            kind: "Internal"
           },
           clientSpan: {
             name: "6AFAE587D3FEC813CD353F4CC91076",
@@ -58,16 +57,12 @@ export const Default: Story = {
             spanCodeObjectId:
               "span:io.opentelemetry.jdbc$_$6AFAE587D3FEC813CD353F4CC91076",
             methodCodeObjectId: "",
-            kind: "Client",
-            codeObjectId: ""
+            kind: "Client"
           },
           traceId: "937BDA41E6AAEAF9B140E3A7FD02D4B0"
         }
       ],
       scope: InsightScope.EntrySpan,
-      endpointSpan: "HTTP GET /owners/{ownerId}",
-      spanCodeObjectId:
-        "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /owners/{ownerId}",
       route: "epHTTP:HTTP GET /owners/{ownerId}",
       serviceName: "spring-petclinic",
       spanInfo: {
@@ -78,9 +73,7 @@ export const Default: Story = {
           "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /owners/{ownerId}",
         methodCodeObjectId:
           "method:org.springframework.samples.petclinic.owner.OwnerController$_$showOwner",
-        kind: "Server",
-        codeObjectId:
-          "org.springframework.samples.petclinic.owner.OwnerController$_$showOwner"
+        kind: "Server"
       },
       shortDisplayInfo: {
         title: "",
@@ -99,8 +92,6 @@ export const Default: Story = {
       environment: "BOB-LAPTOP[LOCAL]",
       severity: 0.0,
       isRecalculateEnabled: false,
-      prefixedCodeObjectId:
-        "method:org.springframework.samples.petclinic.owner.OwnerController$_$showOwner",
       customStartTime: null,
       actualStartTime: "2023-08-10T08:59:14.093073Z"
     }

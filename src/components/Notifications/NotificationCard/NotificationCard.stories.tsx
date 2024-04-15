@@ -35,8 +35,7 @@ export const Default: Story = {
           instrumentationLibrary: "SampleInsightsController",
           spanCodeObjectId: "span:SampleInsightsController$_$WaitForLock",
           methodCodeObjectId: null,
-          kind: null,
-          codeObjectId: null
+          kind: null
         },
         codeObjectId: "SampleInsightsController$_$WaitForLock"
       },

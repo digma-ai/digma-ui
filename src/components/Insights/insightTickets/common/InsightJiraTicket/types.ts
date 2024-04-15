@@ -21,10 +21,19 @@ export interface LinkTicketResponse {
   ticketLink: string | null;
   success: boolean;
   message: string | null;
-  codeObjectId: string;
-  insightType: string;
 }
 
 export interface InsightsGetDataListQuery {
   query: InsightsQuery;
+}
+
+export interface LinkTicketPayload {
+  insightId: string;
+  ticketLink: string;
+  insightType: string;
+}
+
+export interface UnlinkTicketPayload {
+  insightId: string;
+  insightType: string;
 }

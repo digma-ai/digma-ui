@@ -24,15 +24,6 @@ export const mockedBottleneckInsight: SpanEndpointBottleneckInsight = {
   importance: 2,
   isDismissed: false,
   isDismissible: true,
-  span: {
-    name: "WaitForLock",
-    displayName: "WaitForLock",
-    instrumentationLibrary: "SampleInsightsController",
-    spanCodeObjectId: "span:SampleInsightsController$_$WaitForLock",
-    methodCodeObjectId: null,
-    kind: null,
-    codeObjectId: null
-  },
   slowEndpoints: [
     {
       endpointInfo: {
@@ -56,57 +47,9 @@ export const mockedBottleneckInsight: SpanEndpointBottleneckInsight = {
       impact: 0.14877828054298645,
       severity: 0.2877828054298645,
       criticality: 0.5687782805429865,
-      requestPercentage: 35,
-      p50: {
-        fraction: 0,
-        maxDuration: {
-          value: 0,
-          unit: "ns",
-          raw: 0
-        }
-      },
-      p95: {
-        fraction: 0,
-        maxDuration: {
-          value: 0,
-          unit: "ns",
-          raw: 0
-        }
-      },
-      p99: {
-        fraction: 0,
-        maxDuration: {
-          value: 0,
-          unit: "ns",
-          raw: 0
-        }
-      }
+      requestPercentage: 35
     }
   ],
-  p50: {
-    fraction: 0,
-    maxDuration: {
-      value: 0,
-      unit: "ns",
-      raw: 0
-    }
-  },
-  p95: {
-    fraction: 0,
-    maxDuration: {
-      value: 0,
-      unit: "ns",
-      raw: 0
-    }
-  },
-  p99: {
-    fraction: 0,
-    maxDuration: {
-      value: 0,
-      unit: "ns",
-      raw: 0
-    }
-  },
   scope: InsightScope.Span,
   spanInfo: {
     name: "WaitForLock",
@@ -114,8 +57,7 @@ export const mockedBottleneckInsight: SpanEndpointBottleneckInsight = {
     instrumentationLibrary: "SampleInsightsController",
     spanCodeObjectId: "span:SampleInsightsController$_$WaitForLock",
     methodCodeObjectId: null,
-    kind: null,
-    codeObjectId: null
+    kind: null
   },
   shortDisplayInfo: {
     title: "",
@@ -133,7 +75,6 @@ export const mockedBottleneckInsight: SpanEndpointBottleneckInsight = {
   environment: "BOB-LAPTOP[LOCAL]",
   severity: 0,
   isRecalculateEnabled: false,
-  prefixedCodeObjectId: "span:SampleInsightsController$_$WaitForLock",
   customStartTime: null,
   actualStartTime: "2023-06-16T11:10:20.088Z"
 };

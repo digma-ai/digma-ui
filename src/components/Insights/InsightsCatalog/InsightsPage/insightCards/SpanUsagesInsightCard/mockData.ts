@@ -23,7 +23,6 @@ export const mockedSpanUsagesInsight: SpanUsagesInsight = {
   specifity: 4,
   isRecalculateEnabled: true,
   importance: 5,
-  span: "DelayAsync",
   sampleTrace: null,
   isDismissed: false,
   isDismissible: true,
@@ -81,8 +80,7 @@ export const mockedSpanUsagesInsight: SpanUsagesInsight = {
     instrumentationLibrary: "SampleInsightsController",
     spanCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
     methodCodeObjectId: null,
-    kind: "Internal",
-    codeObjectId: null
+    kind: "Internal"
   },
   shortDisplayInfo: {
     title: "",
@@ -94,7 +92,6 @@ export const mockedSpanUsagesInsight: SpanUsagesInsight = {
   decorators: null,
   environment: "BOB-LAPTOP[LOCAL]",
   severity: 0,
-  prefixedCodeObjectId: "span:SampleInsightsController$_$DelayAsync",
   customStartTime: null,
   actualStartTime: "2023-06-17T00:00:00.000Z"
 };
