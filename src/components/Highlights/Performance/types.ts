@@ -9,7 +9,7 @@ export type EnvironmentPerformanceData = {
   environment: {
     name: string;
     id: string;
-    type: string;
+    type: "Public" | "Private";
   };
   p50: PerformancePercentileData;
   p95: PerformancePercentileData;
