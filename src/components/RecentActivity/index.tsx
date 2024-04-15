@@ -283,19 +283,6 @@ export const RecentActivity = (props: RecentActivityProps) => {
                 onEnvironmentDelete={handleEnvironmentDelete}
                 onDigmathonModeButtonClick={handleDigmathonModeButtonClick}
               />
-              <s.RecentActivityToolbarContainer>
-                {!selectedEnvironment?.isPending && (
-                  <s.RecentActivityToolbar>
-                    <span>Recent Activity</span>
-                    <Toggle
-                      value={viewMode}
-                      options={viewModeOptions}
-                      onChange={handleViewModeChange}
-                    />
-                  </s.RecentActivityToolbar>
-                )}
-                {!config.isObservabilityEnabled && <ObservabilityStatusBadge />}
-              </s.RecentActivityToolbarContainer>
             </s.RecentActivityHeader>
             <s.RecentActivityContentContainer>
               {renderContent()}
