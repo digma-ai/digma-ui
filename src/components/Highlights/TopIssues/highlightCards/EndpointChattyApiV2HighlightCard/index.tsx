@@ -45,7 +45,8 @@ export const EndpointChattyApiV2HighlightCard = ({
     );
     handleEnvironmentTableRowClick(
       config.environments,
-      row.original.environmentName
+      row.original.environmentName,
+      "insights"
     );
   };
 

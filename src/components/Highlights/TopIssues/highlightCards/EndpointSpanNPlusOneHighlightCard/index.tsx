@@ -4,8 +4,8 @@ import { Duration } from "../../../../../globals";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { getDurationString } from "../../../../../utils/getDurationString";
 import { ConfigContext } from "../../../../common/App/ConfigContext";
+import { Tag } from "../../../../common/v3/Tag";
 import { Table } from "../../../common/Table";
-import { TableTag } from "../../../common/TableTag";
 import { TableText } from "../../../common/TableText";
 import { handleEnvironmentTableRowClick } from "../../../handleEnvironmentTableRowClick";
 import { trackingEvents } from "../../../tracking";
@@ -49,7 +49,7 @@ export const EndpointSpanNPlusOneHighlightCard = ({
       cell: (info) => {
         const metric = info.getValue();
         const value = metric ? getDurationString(metric.value as Duration) : "";
-        return metric ? <TableTag title={value} content={value} /> : null;
+        return metric ? <Tag title={value} content={value} /> : null;
       }
     })
   ];
@@ -67,7 +67,8 @@ export const EndpointSpanNPlusOneHighlightCard = ({
     );
     handleEnvironmentTableRowClick(
       config.environments,
-      row.original.environmentName
+      row.original.environmentName,
+      "insights"
     );
   };
 

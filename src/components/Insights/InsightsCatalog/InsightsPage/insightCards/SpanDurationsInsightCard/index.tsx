@@ -16,8 +16,8 @@ import { convertToDuration } from "../../../../../../utils/convertToDuration";
 import { formatTimeDistance } from "../../../../../../utils/formatTimeDistance";
 import { getDurationString } from "../../../../../../utils/getDurationString";
 import { getPercentileLabel } from "../../../../../../utils/getPercentileLabel";
-import { Tooltip as CommonTooltip } from "../../../../../common/Tooltip";
 import { Tag } from "../../../../../common/v3/Tag";
+import { Tooltip as CommonTooltip } from "../../../../../common/v3/Tooltip";
 import {
   HistogramBarData,
   NormalizedHistogramBarData,
@@ -147,6 +147,17 @@ export const SpanDurationsInsightCard = ({
   );
 
   const spanLastCall = insight.lastSpanInstanceInfo;
+  const lastCallDurationString = spanLastCall
+    ? getDurationString(spanLastCall.duration)
+    : "";
+  const averageDurationString = insight.average
+    ? `
+${getDurationString(insight.average)}${
+        insight.standardDeviation && insight.standardDeviation.raw > 0
+          ? ` ± ${getDurationString(insight.standardDeviation)}`
+          : ""
+      }`
+    : "";
 
   const handleGoToLive = () => {
     insight.prefixedCodeObjectId &&
@@ -292,7 +303,8 @@ export const SpanDurationsInsightCard = ({
                 >
                   <Tag
                     type={"default"}
-                    content={getDurationString(spanLastCall.duration)}
+                    content={lastCallDurationString}
+                    title={lastCallDurationString}
                   />
                 </CommonTooltip>
               </KeyValue>
@@ -331,22 +343,15 @@ export const SpanDurationsInsightCard = ({
                 })}
               </>
             ) : (
-              // TODO: add hourglass icon
               <span>Waiting for more data...</span>
             )}
             {!insight.histogramPlot &&
               insight.average &&
-              insight.average.raw > 0 &&
-              insight.standardDeviation && (
+              insight.average.raw > 0 && (
                 <KeyValue label={"Average"}>
                   <Tag
-                    content={
-                      <>
-                        {getDurationString(insight.average)}
-                        {insight.standardDeviation.raw > 0 &&
-                          ` ± ${getDurationString(insight.standardDeviation)}`}
-                      </>
-                    }
+                    content={averageDurationString}
+                    title={averageDurationString}
                     type={"default"}
                   />
                 </KeyValue>

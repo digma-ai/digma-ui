@@ -17,6 +17,8 @@ export const SlowEndpointInsightCard = ({
   const diff =
     (insight.median.raw / insight.endpointsMedianOfMedians.raw - 1) * 100;
 
+  const durationString = getDurationString(insight.median);
+
   return (
     <InsightCard
       insight={insight}
@@ -28,7 +30,7 @@ export const SlowEndpointInsightCard = ({
               {roundTo(diff, 2)}%
             </s.DescriptionColumn>
             <KeyValue label={"Slower by"}>
-              <Tag content={getDurationString(insight.median)} />
+              <Tag content={durationString} title={durationString} />
             </KeyValue>
           </ColumnsContainer>
         </s.ContentContainer>

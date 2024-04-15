@@ -2,6 +2,7 @@ import { Meta, StoryObj } from "@storybook/react";
 import { InsightsCatalog } from ".";
 import { SORTING_ORDER } from "../../common/SortingSelector/types";
 import { mockedEndpointBottleneckInsight } from "./InsightsPage/insightCards/EndpointBottleneckInsightCard/mockData";
+import { mockedSpanDurationsInsight } from "./InsightsPage/insightCards/SpanDurationsInsightCard/mockData";
 import { SORTING_CRITERION } from "./types";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
@@ -20,7 +21,22 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    insights: [{ ...mockedEndpointBottleneckInsight, isRead: false }],
+    insights: [
+      { ...mockedEndpointBottleneckInsight, isRead: false },
+      {
+        ...mockedSpanDurationsInsight,
+        average: {
+          value: 110.74,
+          unit: "ms",
+          raw: 110735000
+        },
+        standardDeviation: {
+          value: 12.55,
+          unit: "ms",
+          raw: 12548500
+        }
+      }
+    ],
     totalCount: 1,
     dismissedCount: 1,
     defaultQuery: {

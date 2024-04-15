@@ -1,14 +1,22 @@
-import { SpanInstanceInfo } from "../../../types";
-import { PercentileDurations, Plot } from "../../Insights/types";
+import { Duration } from "../../../globals";
+
+interface PerformancePercentileData {
+  duration: Duration;
+  isCritical?: boolean;
+}
 
 export type EnvironmentPerformanceData = {
-  environment: string;
-  percentiles: PercentileDurations[];
-  lastSpanInstanceInfo: SpanInstanceInfo | null;
-  histogramPlot: Plot | null;
+  environment: {
+    name: string;
+    id: string;
+    type: string;
+  };
+  p50: PerformancePercentileData;
+  p95: PerformancePercentileData;
+  lastCallTimeStamp: string | null;
 };
 
-export type PerformanceData = EnvironmentPerformanceData[];
+export type PerformanceData = { performance: EnvironmentPerformanceData[] };
 
 export interface GetHighlightsPerformanceDataPayload {
   query: {

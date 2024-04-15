@@ -1,4 +1,4 @@
-import React from "react";
+import { ReactNode } from "react";
 
 export type TagType =
   | "highSeverity"
@@ -9,9 +9,10 @@ export type TagType =
   | "default";
 
 export interface TagProps {
-  content: React.ReactNode;
+  content: ReactNode;
   type?: TagType;
   className?: string;
+  title?: ReactNode;
 }
 
 export interface ContainerProps {

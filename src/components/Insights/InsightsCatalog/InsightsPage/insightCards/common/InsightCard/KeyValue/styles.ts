@@ -8,12 +8,22 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
+  overflow: hidden;
+`;
+
+export const KeyContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: ${({ theme }) => theme.colors.v3.text.secondary};
 `;
 
 export const Key = styled.div`
   ${footnoteRegularTypography}
 
-  color: ${({ theme }) => theme.colors.v3.text.secondary};
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 `;
 
 export const Value = styled.div`

@@ -1,10 +1,12 @@
 import { actions as globalActions } from "../../actions";
 import { ChangeEnvironmentPayload, ChangeViewPayload } from "../../types";
+import { View } from "../Main/types";
 import { Environment } from "../common/App/types";
 
 export const handleEnvironmentTableRowClick = (
   environments: Environment[] | undefined,
-  environmentNameToSelect: string
+  environmentNameToSelect: string,
+  viewToSelect: View
 ) => {
   const environmentChangeTo = environments?.find(
     (x) => x.originalName === environmentNameToSelect
@@ -21,7 +23,7 @@ export const handleEnvironmentTableRowClick = (
     window.sendMessageToDigma<ChangeViewPayload>({
       action: globalActions.CHANGE_VIEW,
       payload: {
-        view: "insights"
+        view: viewToSelect
       }
     });
   }

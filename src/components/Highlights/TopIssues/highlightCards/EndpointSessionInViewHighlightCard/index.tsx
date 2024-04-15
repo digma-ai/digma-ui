@@ -33,7 +33,8 @@ export const EndpointSessionInViewHighlightCard = ({
     );
     handleEnvironmentTableRowClick(
       config.environments,
-      row.original.environmentName
+      row.original.environmentName,
+      "insights"
     );
   };
 

@@ -7,7 +7,6 @@ import { Button } from "../../../../../common/v3/Button";
 import { Link } from "../../../../../common/v3/Link";
 import { Tooltip } from "../../../../../common/v3/Tooltip";
 import { InsightType, NPlusOneEndpointInfo, Trace } from "../../../../types";
-import { Info } from "../common/Info";
 import { InsightCard } from "../common/InsightCard";
 import { ColumnsContainer } from "../common/InsightCard/ColumnsContainer";
 import { KeyValue } from "../common/InsightCard/KeyValue";
@@ -122,12 +121,8 @@ export const SpaNPlusOneInsightCard = ({
                 {selectedEndpoint.occurrences}
               </KeyValue>
               <KeyValue
-                label={
-                  <Info
-                    text={"The amount of requests affected by this issue."}
-                    name={"Requests"}
-                  />
-                }
+                label={"Requests"}
+                info={"The amount of requests affected by this issue."}
               >
                 {selectedEndpoint.requestPercentage}%
               </KeyValue>

@@ -1,17 +1,17 @@
 import { Row, createColumnHelper } from "@tanstack/react-table";
 import { useContext, useEffect, useState } from "react";
 import { usePrevious } from "../../../hooks/usePrevious";
+import { isBoolean } from "../../../typeGuards/isBoolean";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
-import { formatEnvironmentName } from "../../../utils/formatEnvironmentName";
 import { formatTimeDistance } from "../../../utils/formatTimeDistance";
 import { getDurationString } from "../../../utils/getDurationString";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Card } from "../../common/v3/Card";
+import { Tag } from "../../common/v3/Tag";
 import { EmptyStateCard } from "../EmptyStateCard";
 import { EnvironmentName } from "../common/EnvironmentName";
 import { Section } from "../common/Section";
 import { Table } from "../common/Table";
-import { TableTag } from "../common/TableTag";
 import { handleEnvironmentTableRowClick } from "../handleEnvironmentTableRowClick";
 import { trackingEvents } from "../tracking";
 import * as s from "./styles";
@@ -38,59 +38,69 @@ export const Performance = () => {
     const columnHelper = createColumnHelper<EnvironmentPerformanceData>();
 
     const columns = [
-      columnHelper.accessor((x) => x.environment, {
+      columnHelper.accessor("environment", {
         header: "Env",
         cell: (info) => {
           const environment = info.getValue();
-          const formattedName = formatEnvironmentName(environment);
-          return <EnvironmentName name={formattedName} />;
+          return <EnvironmentName name={environment.name} />;
         }
       }),
-      columnHelper.accessor(
-        (x) => x.percentiles.find((x) => x.percentile === 0.5),
-        {
-          header: "Median",
-          cell: (info) => {
-            const value = info.getValue();
+      columnHelper.accessor((x) => x, {
+        header: "Median",
+        cell: (info) => {
+          const value = info.getValue();
+          const percentileData = value.p50;
+          const durationString = getDurationString(percentileData.duration);
+          const tagType = isBoolean(percentileData.isCritical)
+            ? percentileData.isCritical
+              ? "highSeverity"
+              : "success"
+            : undefined;
 
-            if (!value) {
-              return null;
-            }
-
-            const durationString = getDurationString(value.currentDuration);
-            return <TableTag title={durationString} content={durationString} />;
-          }
+          return (
+            <Tag
+              title={durationString}
+              content={durationString}
+              type={tagType}
+            />
+          );
         }
-      ),
-      columnHelper.accessor(
-        (x) => x.percentiles.find((x) => x.percentile === 0.95),
-        {
-          header: "Slowest 5%",
-          cell: (info) => {
-            const value = info.getValue();
+      }),
+      columnHelper.accessor((x) => x, {
+        header: "Slowest 5%",
+        cell: (info) => {
+          const value = info.getValue();
+          const percentileData = value.p95;
+          const durationString = getDurationString(percentileData.duration);
+          const tagType = isBoolean(percentileData.isCritical)
+            ? percentileData.isCritical
+              ? "highSeverity"
+              : "success"
+            : undefined;
 
-            if (!value) {
-              return null;
-            }
-
-            const durationString = getDurationString(value.currentDuration);
-            return <TableTag title={durationString} content={durationString} />;
-          }
+          return (
+            <Tag
+              title={durationString}
+              content={durationString}
+              type={tagType}
+            />
+          );
         }
-      ),
-      columnHelper.accessor((x) => x.lastSpanInstanceInfo, {
+      }),
+      columnHelper.accessor("lastCallTimeStamp", {
         header: "Last",
         cell: (info) => {
-          const lastSpanInstanceInfo = info.getValue();
+          const lastCallDateTime = info.getValue();
 
-          if (!lastSpanInstanceInfo) {
+          if (!lastCallDateTime) {
             return null;
           }
-          const value = formatTimeDistance(lastSpanInstanceInfo.startTime, {
+
+          const value = formatTimeDistance(lastCallDateTime, {
             format: "short",
             withDescriptiveWords: false
           }).replace(" ", "");
-          const title = new Date(lastSpanInstanceInfo.startTime).toString();
+          const title = new Date(lastCallDateTime).toString();
 
           return (
             <s.LastCallTableText title={title}>{value}</s.LastCallTableText>
@@ -105,7 +115,8 @@ export const Performance = () => {
       );
       handleEnvironmentTableRowClick(
         config.environments,
-        row.original.environment
+        row.original.environment.id,
+        "analytics"
       );
     };
 
@@ -125,8 +136,8 @@ export const Performance = () => {
 
   return (
     <Section title={"Performance"}>
-      {data && data.length > 0 ? (
-        renderPerformanceCard(data)
+      {data && data.performance.length > 0 ? (
+        renderPerformanceCard(data.performance)
       ) : (
         <EmptyStateCard
           type={isInitialLoading ? "loading" : "noData"}

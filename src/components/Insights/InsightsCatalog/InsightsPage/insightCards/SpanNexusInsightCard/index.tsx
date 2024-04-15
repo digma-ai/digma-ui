@@ -36,17 +36,29 @@ export const SpanNexusInsightCard = ({
           </s.Description>
           <ColumnsContainer>
             <KeyValue label={"Services"}>
-              <Tag type={getTagType(isServicesHigh)} content={services} />
+              <Tag
+                type={getTagType(isServicesHigh)}
+                content={services}
+                title={services}
+              />
             </KeyValue>
             <KeyValue label={"Endpoints"}>
-              <Tag type={getTagType(isEntriesHigh)} content={entries} />
+              <Tag
+                type={getTagType(isEntriesHigh)}
+                content={entries}
+                title={entries}
+              />
             </KeyValue>
             <KeyValue label={"Flows"}>
-              <Tag type={getTagType(isFlowsHigh)} content={flows} />
+              <Tag
+                type={getTagType(isFlowsHigh)}
+                content={flows}
+                title={flows}
+              />
             </KeyValue>
             {usage && (
               <KeyValue label={"Usage"}>
-                <Tag content={usage} />
+                <Tag content={usage} title={usage} />
               </KeyValue>
             )}
           </ColumnsContainer>

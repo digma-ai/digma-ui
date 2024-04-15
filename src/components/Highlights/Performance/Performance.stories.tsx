@@ -2,7 +2,7 @@ import { Meta, StoryObj } from "@storybook/react";
 
 import { Performance } from ".";
 import { actions } from "../../Main/actions";
-import { mockPerformanceData } from "./mockData";
+import { mockedPerformanceData } from "./mockData";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof Performance> = {
@@ -26,7 +26,7 @@ export const Default: Story = {
       window.postMessage({
         type: "digma",
         action: actions.SET_HIGHLIGHTS_PERFORMANCE_DATA,
-        payload: mockPerformanceData
+        payload: mockedPerformanceData
       });
     });
   }
@@ -40,7 +40,7 @@ export const Empty: Story = {
       window.postMessage({
         type: "digma",
         action: actions.SET_HIGHLIGHTS_PERFORMANCE_DATA,
-        payload: []
+        payload: { performance: [] }
       });
     });
   }
