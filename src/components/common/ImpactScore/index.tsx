@@ -1,27 +1,11 @@
-import { useContext } from "react";
-import { getFeatureFlagValue } from "../../../featureFlags";
-import { FeatureFlag } from "../../../types";
-import { ConfigContext } from "../App/ConfigContext";
-import { ConfigContextData } from "../App/types";
 import { ScoreIndicator } from "../ScoreIndicator";
 import { Tooltip } from "../Tooltip";
 import * as s from "./styles";
 import { ImpactScoreProps } from "./types";
 
-const getImpactScoreLabel = (score: number, config: ConfigContextData) => {
-  const isWaitingForDataLabel = getFeatureFlagValue(
-    config,
-    FeatureFlag.IS_ASSETS_OVERALL_IMPACT_HIDDEN
-  );
-
-  if (isWaitingForDataLabel) {
-    if (score <= 0) {
-      return "Waiting for data";
-    }
-  } else {
-    if (score < 0) {
-      return "No data";
-    }
+const getImpactScoreLabel = (score: number) => {
+  if (score <= 0) {
+    return "Waiting for data";
   }
 
   if (score < 0.4) {
@@ -36,7 +20,6 @@ const getImpactScoreLabel = (score: number, config: ConfigContextData) => {
 };
 
 export const ImpactScore = (props: ImpactScoreProps) => {
-  const config = useContext(ConfigContext);
   let indicatorPosition: "start" | "end" | undefined;
 
   if (props.score > 0 && props.showIndicator) {
@@ -53,7 +36,7 @@ export const ImpactScore = (props: ImpactScoreProps) => {
         {indicatorPosition === "start" && (
           <ScoreIndicator score={props.score} />
         )}
-        {getImpactScoreLabel(props.score, config)}
+        {getImpactScoreLabel(props.score)}
         {indicatorPosition === "end" && <ScoreIndicator score={props.score} />}
       </s.Container>
     </Tooltip>

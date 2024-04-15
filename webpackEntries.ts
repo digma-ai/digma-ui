@@ -20,8 +20,6 @@ export const entries: AppEntries = {
     entry: path.resolve(__dirname, "./src/containers/Main/index.tsx"),
     environmentVariables: [
       "assetsRefreshInterval",
-      "assetsSearch",
-      "assetsSelectedServices",
       "insightsRefreshInterval",
       "testsRefreshInterval"
     ]
@@ -40,8 +38,7 @@ export const entries: AppEntries = {
     entry: path.resolve(__dirname, "./src/containers/RecentActivity/index.tsx"),
     environmentVariables: [
       "recentActivityExpirationLimit",
-      "recentActivityDocumentationURL",
-      "recentActivityIsEnvironmentManagementEnabled"
+      "recentActivityDocumentationURL"
     ]
   },
   troubleshooting: {

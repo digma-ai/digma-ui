@@ -30,9 +30,6 @@ import { EnvironmentPanelProps, ScrollDirection } from "./types";
 
 const FONT_WIDTH_TRANSITION_THRESHOLD = 5; // in pixels
 
-const isAddButtonVisible =
-  window.recentActivityIsEnvironmentManagementEnabled === true;
-
 export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
   const [scrollLeft, setScrollLeft] = useState(0);
   const environmentListContainerDimensions = useDimensions();
@@ -277,7 +274,7 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
         )}
       </s.CarouselButtonContainer>
       <s.ButtonsContainer>
-        {isAddButtonVisible && renderAddButton()}
+        {renderAddButton()}
         {renderKebabMenuButton()}
       </s.ButtonsContainer>
     </s.Container>

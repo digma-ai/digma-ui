@@ -6,7 +6,6 @@ export interface AssetListProps {
   data?: AssetsData;
   onBackButtonClick: () => void;
   assetTypeId: string;
-  services?: string[];
   filters?: AssetFilterQuery;
   searchQuery: string;
   scopeViewOptions: AssetScopeOption | null;
@@ -20,8 +19,7 @@ export enum SORTING_CRITERION {
   SLOWEST_FIVE_PERCENT = "p95",
   LATEST = "latest",
   NAME = "displayname",
-  PERFORMANCE_IMPACT = "performanceimpact",
-  OVERALL_IMPACT = "overallimpact"
+  PERFORMANCE_IMPACT = "performanceimpact"
 }
 
 export enum SORTING_ORDER {

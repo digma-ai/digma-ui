@@ -23,7 +23,6 @@ export interface JiraTicketProps {
     prefix?: string;
     additionalInfo?: Record<string, unknown>;
   };
-  showLinkButton?: boolean;
   ticketLink?: {
     link?: string | null;
     errorMessage?: string | null;

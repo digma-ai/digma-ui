@@ -51,13 +51,10 @@ export const getAssetTypeInfo = (
 };
 
 export const checkIfAnyFiltersApplied = (
-  isComplexFilterEnabled: boolean,
   filters: AssetFilterQuery | undefined,
-  services: string[] | undefined,
   searchQuery: string
 ) =>
-  (isComplexFilterEnabled
-    ? filters &&
-      [...filters.insights, ...filters.operations, ...filters.services].length >
-        0
-    : services && services.length > 0) || searchQuery.length > 0;
+  (filters &&
+    [...filters.insights, ...filters.operations, ...filters.services].length >
+      0) ||
+  searchQuery.length > 0;

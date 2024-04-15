@@ -182,22 +182,6 @@ export const AssetEntry = (props: AssetEntryProps) => {
                 </s.ValueContainer>
               </Tooltip>
             </s.Stats>
-            {!props.isOverallImpactHidden && (
-              <s.Stats>
-                <span>Overall impact</span>
-                <Tooltip title={props.entry.impactScores.ScoreExp1000}>
-                  <s.ValueContainer>
-                    <ImpactScore
-                      score={props.entry.impactScores.ScoreExp1000}
-                      showIndicator={
-                        props.sortingCriterion ===
-                        SORTING_CRITERION.OVERALL_IMPACT
-                      }
-                    />
-                  </s.ValueContainer>
-                </Tooltip>
-              </s.Stats>
-            )}
           </s.StatsColumn>
         )}
       </s.StatsContainer>

@@ -1,12 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { actions as globalActions } from "../../../../../../../actions";
-import { getFeatureFlagValue } from "../../../../../../../featureFlags";
 import { usePrevious } from "../../../../../../../hooks/usePrevious";
 import { isString } from "../../../../../../../typeGuards/isString";
-import {
-  FeatureFlag,
-  GetInsightStatsPayload
-} from "../../../../../../../types";
+import { GetInsightStatsPayload } from "../../../../../../../types";
 import { sendUserActionTrackingEvent } from "../../../../../../../utils/actions/sendUserActionTrackingEvent";
 import { Spinner } from "../../../../../../Navigation/CodeButtonMenu/Spinner";
 import { ConfigContext } from "../../../../../../common/App/ConfigContext";
@@ -108,21 +104,9 @@ export const InsightCard = (props: InsightCardProps) => {
         new Date(props.insight.customStartTime).valueOf() ===
         0;
 
-    if (
-      getFeatureFlagValue(config, FeatureFlag.IS_RECALCULATE_BUBBLE_ENABLED)
-    ) {
-      return {
-        showTimer: areStartTimesEqual,
-        showBanner: insightStatus === InsightStatus.InEvaluation
-      };
-    }
-
     return {
       showTimer: areStartTimesEqual,
-      showBanner:
-        !areStartTimesEqual &&
-        props.insight.actualStartTime &&
-        (props.insight.customStartTime || isRecalculatingStarted)
+      showBanner: insightStatus === InsightStatus.InEvaluation
     };
   };
 
