@@ -21,6 +21,7 @@ import { NoData } from "./NoData";
 import { ObservabilityStatusBadge } from "./ObservabilityStatusBadge";
 import { RecentActivityTable, isRecent } from "./RecentActivityTable";
 import { Toggle } from "./Toggle";
+import { WelcomeScreen } from "./WelcomeScreen";
 import { actions } from "./actions";
 import { Overlay } from "./common/Overlay";
 import * as s from "./styles";
@@ -108,7 +109,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
     window.sendMessageToDigma({
       action: actions.INITIALIZE
     });
-  }, []);
+  }, [config.userInfo?.id]);
 
   useEffect(() => {
     if (
@@ -244,6 +245,10 @@ export const RecentActivity = (props: RecentActivityProps) => {
       </>
     );
   };
+
+  if (!config.userInfo?.id && config.backendInfo?.centralize) {
+    return <WelcomeScreen />;
+  }
 
   return showCreationWizard ? (
     <CreateEnvironmentWizard

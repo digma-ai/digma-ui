@@ -46,3 +46,8 @@ export const EnvironmentMenuContainer = styled.div`
   bottom: 8px;
   width: 40%;
 `;
+
+export const Background = styled.div`
+  background: ${({ theme }) => theme.colors.v3.surface.secondary};
+  height: 100%;
+`;

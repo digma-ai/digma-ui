@@ -162,7 +162,7 @@ export const Navigation = () => {
         handleCodeContextData
       );
     };
-  }, []);
+  }, [config.userInfo?.id]);
 
   useEffect(() => {
     setSelectedEnvironment(config.environment);
@@ -358,6 +358,10 @@ export const Navigation = () => {
   const handleEnvironmentBarClick = () => {
     setIsEnvironmentMenuOpen(!isEnvironmentMenuOpen);
   };
+
+  if (!config.userInfo?.id && config.backendInfo?.centralize) {
+    return <s.Background />;
+  }
 
   return (
     <s.Container>
