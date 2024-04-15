@@ -130,3 +130,11 @@ export const SlackLink = styled(Link)`
   text-decoration: underline;
   padding: 15px;
 `;
+
+export const Loader = styled.div`
+  display: flex;
+  align-items: center;
+  ${caption1RegularTypography}
+  gap: 4px;
+  color: ${({ theme }) => theme.colors.v3.text.primary};
+`;

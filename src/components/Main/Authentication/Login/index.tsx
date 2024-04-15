@@ -4,12 +4,14 @@ import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserA
 import { TextField } from "../../../common/RegistrationDialog/TextField"; // TODO: change when new env will be merged
 import { LockIcon } from "../../../common/icons/12px/LockIcon";
 import { EnvelopeIcon } from "../../../common/icons/16px/EnvelopeIcon";
+import { Spinner } from "../../../common/v3/Spinner";
 import {
   ButtonsContainer,
   ErrorMessage,
   Form,
   FormContainer,
   InfoMessage,
+  Loader,
   SubmitButton
 } from "../styles";
 import { LoginFormValues } from "./types";
@@ -118,6 +120,12 @@ export const Login = () => {
         />
       </ButtonsContainer>
       <InfoMessage>Forgot password? Contact the Digma admin</InfoMessage>
+      {isLoading && (
+        <Loader>
+          <Spinner size={16} />
+          Loading...
+        </Loader>
+      )}
     </FormContainer>
   );
 };

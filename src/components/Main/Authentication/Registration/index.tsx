@@ -6,7 +6,9 @@ import { isValidEmailFormat } from "../../../../utils/isValidEmailFormat";
 import { TextField } from "../../../common/RegistrationDialog/TextField";
 import { LockIcon } from "../../../common/icons/12px/LockIcon";
 import { EnvelopeIcon } from "../../../common/icons/16px/EnvelopeIcon";
+import { Spinner } from "../../../common/v3/Spinner";
 import * as s from "./../styles";
+import { Loader } from "./../styles";
 import { RegisterFormValues } from "./types";
 import { useRegistration } from "./useRegistration";
 
@@ -178,6 +180,12 @@ export const Registration = () => {
           form={"registrationForm"}
         />
       </s.ButtonsContainer>
+      {isLoading && (
+        <Loader>
+          <Spinner size={16} />
+          Loading...
+        </Loader>
+      )}
     </s.FormContainer>
   );
 };
