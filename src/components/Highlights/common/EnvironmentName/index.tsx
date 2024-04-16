@@ -1,5 +1,4 @@
 import { useTheme } from "styled-components";
-import { formatEnvironmentName } from "../../../../utils/formatEnvironmentName";
 import { getInsightCriticalityColor } from "../../../../utils/getInsightCriticalityColor";
 import { GlobeIcon } from "../../../common/icons/16px/GlobeIcon";
 import { Tooltip } from "../../../common/v3/Tooltip";
@@ -14,15 +13,14 @@ export const EnvironmentName = ({
   const iconColor = criticality
     ? getInsightCriticalityColor(criticality, theme)
     : undefined;
-  const formattedName = formatEnvironmentName(name);
 
   return (
-    <Tooltip title={formattedName}>
+    <Tooltip title={name}>
       <s.Container>
         <s.IconContainer>
           <GlobeIcon color={iconColor || "currentColor"} size={16} />
         </s.IconContainer>
-        <s.Name>{formattedName}</s.Name>
+        <s.Name>{name}</s.Name>
       </s.Container>
     </Tooltip>
   );
