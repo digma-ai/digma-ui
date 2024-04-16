@@ -1,25 +1,13 @@
-import { actions as globalActions } from "../../../../actions";
-import {
-  ChangeEnvironmentPayload,
-  ChangeViewPayload,
-  InsightType
-} from "../../../../types";
-import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
-import { Environment } from "../../../common/App/types";
-import { trackingEvents } from "../../tracking";
+import { actions as globalActions } from "../../actions";
+import { ChangeEnvironmentPayload, ChangeViewPayload } from "../../types";
+import { View } from "../Main/types";
+import { Environment } from "../common/App/types";
 
 export const handleEnvironmentTableRowClick = (
   environments: Environment[] | undefined,
   environmentNameToSelect: string,
-  insightType: InsightType
+  viewToSelect: View
 ) => {
-  sendUserActionTrackingEvent(
-    trackingEvents.TOP_ISSUES_CARD_TABLE_ROW_CLICKED,
-    {
-      insightType
-    }
-  );
-
   const environmentChangeTo = environments?.find(
     (x) => x.id === environmentNameToSelect
   );
@@ -35,7 +23,7 @@ export const handleEnvironmentTableRowClick = (
     window.sendMessageToDigma<ChangeViewPayload>({
       action: globalActions.CHANGE_VIEW,
       payload: {
-        view: "insights"
+        view: viewToSelect
       }
     });
   }

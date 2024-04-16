@@ -41,8 +41,6 @@ declare global {
     isDockerComposeInstalled?: unknown;
     isMicrometerProject?: unknown;
     assetsRefreshInterval?: unknown;
-    assetsSearch?: unknown;
-    assetsSelectedServices?: unknown;
     dashboardEnvironment?: unknown;
     dashboardRefreshInterval?: unknown;
     documentationPage?: unknown;
@@ -51,7 +49,6 @@ declare global {
     notificationsViewMode?: unknown;
     recentActivityExpirationLimit?: unknown;
     recentActivityDocumentationURL?: unknown;
-    recentActivityIsEnvironmentManagementEnabled?: unknown;
     testsRefreshInterval?: unknown;
     wizardSkipInstallationStep?: unknown;
     wizardFirstLaunch?: unknown;

@@ -8,7 +8,6 @@ import { Button } from "../../../../../common/v3/Button";
 import { Link } from "../../../../../common/v3/Link";
 import { Tooltip } from "../../../../../common/v3/Tooltip";
 import { BottleneckEndpointInfo, InsightType, Trace } from "../../../../types";
-import { Info } from "../common/Info";
 import { InsightCard } from "../common/InsightCard";
 import { ColumnsContainer } from "../common/InsightCard/ColumnsContainer";
 import { KeyValue } from "../common/InsightCard/KeyValue";
@@ -131,25 +130,17 @@ export const SpanEndpointBottleneckInsightCard = ({
           {selectedEndpoint && (
             <ColumnsContainer>
               <KeyValue
-                label={
-                  <Info
-                    text={
-                      "The percentage of the overall request time taken up by this bottleneck asset"
-                    }
-                    name={"% of Duration"}
-                  />
+                label={"% of Duration"}
+                info={
+                  "The percentage of the overall request time taken up by this bottleneck asset"
                 }
               >
                 {selectedEndpoint.avgFractionWhenBeingBottleneck}%
               </KeyValue>
               <KeyValue
-                label={
-                  <Info
-                    text={
-                      "The percentage of requests for the selected endpoint experiencing this bottleneck"
-                    }
-                    name={"% of Requests"}
-                  />
+                label={"% of Requests"}
+                info={
+                  "The percentage of requests for the selected endpoint experiencing this bottleneck"
                 }
               >
                 {selectedEndpoint.requestPercentage}%

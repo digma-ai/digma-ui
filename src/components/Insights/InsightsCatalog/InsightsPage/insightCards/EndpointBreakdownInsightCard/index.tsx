@@ -11,7 +11,6 @@ import { DefaultTheme } from "styled-components/dist/types";
 import { getDurationString } from "../../../../../../utils/getDurationString";
 import { roundTo } from "../../../../../../utils/roundTo";
 import { Tag } from "../../../../../common/v3/Tag";
-import { Tooltip } from "../../../../../common/v3/Tooltip";
 import {
   Component,
   ComponentType,
@@ -168,9 +167,11 @@ export const EndpointBreakdownInsightCard = (
               <s.FractionProgressBarValue $value={value} />
             </s.FractionProgressBar>
             {duration && (
-              <Tooltip title={durationString}>
-                <Tag type={"highlight"} content={durationString} />
-              </Tooltip>
+              <Tag
+                title={durationString}
+                type={"highlight"}
+                content={durationString}
+              />
             )}
           </s.RequestTimeContainer>
         );

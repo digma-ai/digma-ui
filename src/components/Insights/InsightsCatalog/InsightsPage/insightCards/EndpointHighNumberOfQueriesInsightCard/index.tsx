@@ -1,12 +1,9 @@
-import { InfoCircleIcon } from "../../../../../common/icons/InfoCircleIcon";
 import { Tag } from "../../../../../common/v3/Tag";
-import { Tooltip } from "../../../../../common/v3/Tooltip";
 import { InsightType, Trace } from "../../../../types";
 import { InsightCard } from "../common/InsightCard";
 import { ColumnsContainer } from "../common/InsightCard/ColumnsContainer";
 import { KeyValue } from "../common/InsightCard/KeyValue";
 import { ContentContainer, Description } from "../styles";
-import * as s from "./styles";
 import { EndpointHighNumberOfQueriesInsightCardProps } from "./types";
 
 export const EndpointHighNumberOfQueriesInsightCard = ({
@@ -46,25 +43,20 @@ export const EndpointHighNumberOfQueriesInsightCard = ({
           )}
           <ColumnsContainer>
             <KeyValue label={"# of Queries"}>
-              <Tag type={"mediumSeverity"} content={insight.queriesCount} />
+              <Tag
+                type={"mediumSeverity"}
+                content={insight.queriesCount}
+                title={insight.queriesCount}
+              />
             </KeyValue>
             <KeyValue
-              label={
-                <s.TypicalLabel>
-                  <span>Typical</span>
-                  <Tooltip
-                    title={
-                      "Typical number of queries for endpoints in this service"
-                    }
-                  >
-                    <s.IconContainer>
-                      <InfoCircleIcon color={"currentColor"} />
-                    </s.IconContainer>
-                  </Tooltip>
-                </s.TypicalLabel>
-              }
+              label={"Typical"}
+              info={"Typical number of queries for endpoints in this service"}
             >
-              <Tag content={insight.typicalCount} />
+              <Tag
+                content={insight.typicalCount}
+                title={insight.typicalCount}
+              />
             </KeyValue>
           </ColumnsContainer>
         </ContentContainer>

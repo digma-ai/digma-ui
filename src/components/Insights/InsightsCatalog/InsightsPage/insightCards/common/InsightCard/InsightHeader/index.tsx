@@ -7,7 +7,7 @@ import {
 } from "../../../../../../../../utils/getInsightTypeInfo";
 import { roundTo } from "../../../../../../../../utils/roundTo";
 import { ConfigContext } from "../../../../../../../common/App/ConfigContext";
-import { InfoCircleIcon } from "../../../../../../../common/icons/InfoCircleIcon";
+import { Info } from "../../../../../../../common/v3/Info";
 import { Link } from "../../../../../../../common/v3/Link";
 import { NewTag } from "../../../../../../../common/v3/NewTag";
 import { Tag } from "../../../../../../../common/v3/Tag";
@@ -92,25 +92,20 @@ export const InsightHeader = ({
     <s.Container>
       <s.TitleRow>
         {insightTypeInfo && (
-          <Tooltip title={tagTitle}>
-            <Tag
-              type={tagType}
-              content={
-                <s.InsightIconContainer>
-                  <insightTypeInfo.icon color={"currentColor"} size={16} />
-                </s.InsightIconContainer>
-              }
-            />
-          </Tooltip>
+          <Tag
+            title={tagTitle}
+            type={tagType}
+            content={
+              <s.InsightIconContainer>
+                <insightTypeInfo.icon color={"currentColor"} size={16} />
+              </s.InsightIconContainer>
+            }
+          />
         )}
         <s.Title>
           {insightTypeInfo?.label}
           {insightTypeInfo?.description && (
-            <Tooltip title={<insightTypeInfo.description />}>
-              <s.InfoContainer>
-                <InfoCircleIcon color={"currentColor"} size={12} />
-              </s.InfoContainer>
-            </Tooltip>
+            <Info title={<insightTypeInfo.description />} />
           )}
           {lastUpdateTimer && (
             <s.Description>

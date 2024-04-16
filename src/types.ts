@@ -1,18 +1,7 @@
 import { View } from "./components/Main/types";
 import { Duration } from "./globals";
 
-export enum FeatureFlag {
-  IS_DASHBOARD_CLIENT_SPANS_OVERALL_IMPACT_ENABLED,
-  IS_ASSETS_SERVICE_FILTER_VISIBLE,
-  IS_ASSETS_OVERALL_IMPACT_HIDDEN,
-  IS_INSIGHT_TICKET_LINKAGE_ENABLED,
-  IS_ASSETS_COMPLEX_FILTER_ENABLED,
-  IS_INSIGHT_DISMISSAL_ENABLED,
-  IS_RECALCULATE_BUBBLE_ENABLED,
-  IS_ANALYTICS_TAB_VISIBLE,
-  IS_INSIGHT_MARKING_AS_READ_ENABLED,
-  IS_HIGHLIGHTS_TAB_VISIBLE
-}
+export enum FeatureFlag {}
 
 export enum InsightType {
   TopErrorFlows = "TopErrorFlows",

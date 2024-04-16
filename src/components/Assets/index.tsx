@@ -1,12 +1,6 @@
-import { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { lt, valid } from "semver";
-import {
-  featureFlagMinBackendVersions,
-  getFeatureFlagValue
-} from "../../featureFlags";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { useDebounce } from "../../hooks/useDebounce";
 import { usePrevious } from "../../hooks/usePrevious";
-import { FeatureFlag } from "../../types";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { EmptyState } from "../common/EmptyState";
@@ -20,7 +14,6 @@ import { AssetFilterQuery } from "./AssetsFilter/types";
 import { AssetsViewScopeConfiguration } from "./AssetsViewScopeConfiguration";
 import { AssetScopeOption } from "./AssetsViewScopeConfiguration/types";
 import { NoDataMessage } from "./NoDataMessage";
-import { ServicesFilter } from "./ServicesFilter";
 import * as s from "./styles";
 import { trackingEvents } from "./tracking";
 import { DataRefresher } from "./types";
@@ -32,7 +25,6 @@ export const Assets = () => {
   );
   const [searchInputValue, setSearchInputValue] = useState("");
   const debouncedSearchInputValue = useDebounce(searchInputValue, 1000);
-  const [selectedServices, setSelectedServices] = useState<string[]>();
   const [assetScopeOption, setAssetScopeOption] =
     useState<AssetScopeOption | null>(null);
   const [selectedFilters, setSelectedFilters] = useState<AssetFilterQuery>();
@@ -43,30 +35,7 @@ export const Assets = () => {
   const [assetListDataRefresher, setAssetListRefresher] =
     useState<DataRefresher | null>(null);
 
-  const isServiceFilterVisible = getFeatureFlagValue(
-    config,
-    FeatureFlag.IS_ASSETS_SERVICE_FILTER_VISIBLE
-  );
-
-  const isComplexFilterEnabled = getFeatureFlagValue(
-    config,
-    FeatureFlag.IS_ASSETS_COMPLEX_FILTER_ENABLED
-  );
-
-  const isBackendUpgradeMessageVisible = useMemo(() => {
-    const backendVersion = config.backendInfo?.applicationVersion;
-
-    return Boolean(
-      backendVersion &&
-        valid(backendVersion) &&
-        lt(
-          backendVersion,
-          featureFlagMinBackendVersions[
-            FeatureFlag.IS_ASSETS_COMPLEX_FILTER_ENABLED
-          ]
-        )
-    );
-  }, [config]);
+  const isBackendUpgradeMessageVisible = false;
 
   useEffect(() => {
     if (!config.scope?.span) {
@@ -78,7 +47,6 @@ export const Assets = () => {
     if (!previousScope || previousScope !== config.scope?.span) {
       setSelectedAssetTypeId(null);
       setSearchInputValue("");
-      setSelectedServices(undefined);
     }
   }, [config.scope, previousScope]);
 
@@ -92,10 +60,6 @@ export const Assets = () => {
 
   const handleAssetTypeSelect = (assetTypeId: string) => {
     setSelectedAssetTypeId(assetTypeId);
-  };
-
-  const handleServicesChange = (services: string[]) => {
-    setSelectedServices(services);
   };
 
   const handleApplyFilters = (filters: AssetFilterQuery) => {
@@ -147,7 +111,7 @@ export const Assets = () => {
       return <NoDataMessage type={"noDataYet"} />;
     }
 
-    if (!selectedFilters && !selectedServices) {
+    if (!selectedFilters) {
       return <NoDataMessage type={"loading"} />;
     }
 
@@ -155,7 +119,6 @@ export const Assets = () => {
       return (
         <AssetTypeList
           onAssetTypeSelect={handleAssetTypeSelect}
-          services={selectedServices}
           filters={selectedFilters}
           searchQuery={debouncedSearchInputValue}
           scopeViewOptions={assetScopeOption}
@@ -169,7 +132,6 @@ export const Assets = () => {
       <AssetList
         onBackButtonClick={handleBackButtonClick}
         assetTypeId={selectedAssetTypeId}
-        services={selectedServices}
         filters={selectedFilters}
         searchQuery={debouncedSearchInputValue}
         scopeViewOptions={assetScopeOption}
@@ -192,26 +154,14 @@ export const Assets = () => {
           </s.HeaderItem>
         )}
         <s.HeaderItem>
-          {window.assetsSearch === true && (
-            <SearchInput
-              onChange={handleSearchInputChange}
-              value={searchInputValue}
-            />
-          )}
-          {isComplexFilterEnabled ? (
-            <AssetsFilter
-              onApply={handleApplyFilters}
-              filters={selectedFilters}
-            />
-          ) : (
-            // TODO: Remove this clause when the feature flag is removed
-            isServiceFilterVisible && (
-              <ServicesFilter
-                onChange={handleServicesChange}
-                selectedServices={selectedServices}
-              />
-            )
-          )}
+          <SearchInput
+            onChange={handleSearchInputChange}
+            value={searchInputValue}
+          />
+          <AssetsFilter
+            onApply={handleApplyFilters}
+            filters={selectedFilters}
+          />
           <Tooltip title={"Refresh"}>
             <s.RefreshButton
               buttonType={"tertiary"}

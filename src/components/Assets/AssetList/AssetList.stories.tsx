@@ -21,7 +21,6 @@ export const Default: Story = {
   args: {
     searchQuery: "",
     assetTypeId: "Endpoint",
-    services: [],
     data: {
       data: [
         {

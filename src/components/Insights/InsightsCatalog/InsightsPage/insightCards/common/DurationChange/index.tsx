@@ -6,7 +6,6 @@ import { ArrowIcon } from "../../../../../../common/icons/ArrowIcon";
 import { Direction } from "../../../../../../common/icons/types";
 import { Tag } from "../../../../../../common/v3/Tag";
 import { TagType } from "../../../../../../common/v3/Tag/types";
-import { Tooltip } from "../../../../../../common/v3/Tooltip";
 import * as s from "./styles";
 import { DurationChangeProps } from "./types";
 
@@ -88,21 +87,23 @@ export const DurationChange = (props: DurationChangeProps) => {
       {props.previousDuration && props.changeTime && isChangeMeaningful && (
         <Tag
           type={getTagType(direction)}
+          title={formatTimeDistance(props.changeTime)}
           content={
-            <Tooltip title={formatTimeDistance(props.changeTime)}>
+            <s.Container>
               <s.ArrowContainer>
                 <ArrowIcon
                   direction={direction}
                   color={"currentColor"}
                   size={12}
                 />
-
+              </s.ArrowContainer>
+              <s.Text>
                 {getDurationDifferenceString(
                   props.previousDuration,
                   props.currentDuration
                 )}
-              </s.ArrowContainer>
-            </Tooltip>
+              </s.Text>
+            </s.Container>
           }
         />
       )}

@@ -190,13 +190,11 @@ export const JiraTicket = (props: JiraTicketProps) => {
           })}
         </Section>
       )}
-      {props.showLinkButton && (
-        <TicketLinkButton
-          ticketLink={props.ticketLink}
-          unlinkTicket={props.unlinkTicket}
-          linkTicket={props.linkTicket}
-        />
-      )}
+      <TicketLinkButton
+        ticketLink={props.ticketLink}
+        unlinkTicket={props.unlinkTicket}
+        linkTicket={props.linkTicket}
+      />
     </s.Container>
   );
 };

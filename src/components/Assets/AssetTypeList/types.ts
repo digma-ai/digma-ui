@@ -6,7 +6,6 @@ import { AssetScopeOption } from "../AssetsViewScopeConfiguration/types";
 export interface AssetTypeListProps {
   data?: AssetCategoriesData;
   onAssetTypeSelect: (assetTypeId: string) => void;
-  services?: string[];
   filters?: AssetFilterQuery;
   searchQuery: string;
   scopeViewOptions: AssetScopeOption | null;

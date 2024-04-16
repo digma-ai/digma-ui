@@ -1,7 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import { dispatcher } from "../../../../../dispatcher";
-import { getFeatureFlagValue } from "../../../../../featureFlags";
-import { FeatureFlag } from "../../../../../types";
 import { isValidHttpUrl } from "../../../../../utils/isValidUrl";
 import { ConfigContext } from "../../../../common/App/ConfigContext";
 import { JiraTicket } from "../../../../common/JiraTicket";
@@ -28,10 +26,6 @@ export const InsightJiraTicket = ({
     relatedInsight?.ticketLink ?? insight.ticketLink
   );
   const config = useContext(ConfigContext);
-
-  const isLinkUnlinkInputVisible = Boolean(
-    getFeatureFlagValue(config, FeatureFlag.IS_INSIGHT_TICKET_LINKAGE_ENABLED)
-  );
 
   const linkTicket = (link: string) => {
     setTicketLink(link);
@@ -106,7 +100,6 @@ export const InsightJiraTicket = ({
       ticketLink={{ link: ticketLink, errorMessage }}
       unlinkTicket={unlinkTicket}
       linkTicket={linkTicket}
-      showLinkButton={isLinkUnlinkInputVisible}
     />
   );
 };

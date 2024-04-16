@@ -5,7 +5,7 @@ import { ChangeViewPayload } from "../../../types";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { Link } from "../../common/v3/Link";
 import { EmptyStateCard } from "../EmptyStateCard";
-import { SectionHeader } from "../styles";
+import { Section } from "../common/Section";
 import { trackingEvents } from "../tracking";
 import { EndpointBottleneckHighlightCard } from "./highlightCards/EndpointBottleneckHighlightCard";
 import { EndpointChattyApiV2HighlightCard } from "./highlightCards/EndpointChattyApiV2HighlightCard";
@@ -19,7 +19,6 @@ import { SpaNPlusOneHighlightCard } from "./highlightCards/SpaNPlusOneHighlightC
 import { SpanEndpointBottleneckHighlightCard } from "./highlightCards/SpanEndpointBottleneckHighlightCard";
 import { SpanQueryOptimizationHighlightCard } from "./highlightCards/SpanQueryOptimizationHighlightCard";
 import { SpanScalingHighlightCard } from "./highlightCards/SpanScalingHighlightCard";
-import * as s from "./styles";
 import {
   isEndpointBottleneckHighlight,
   isEndpointChattyApiV2Highlight,
@@ -116,20 +115,28 @@ export const TopIssues = () => {
   const isViewAllLinkDisabled = (data?.topInsights || []).length === 0;
 
   return (
-    <s.Container>
-      <SectionHeader>
-        Top Issues
+    <Section
+      title={"Top Issues"}
+      toolbarContent={
         <Link onClick={handleViewAllLinkClick} disabled={isViewAllLinkDisabled}>
           View all
         </Link>
-      </SectionHeader>
+      }
+    >
       {data && data.topInsights.length > 0 ? (
         data.topInsights.map((x) => (
           <Fragment key={x.insightType}>{renderHighlightCard(x)}</Fragment>
         ))
       ) : (
-        <EmptyStateCard isLoading={isInitialLoading} />
+        <EmptyStateCard
+          type={isInitialLoading ? "loading" : "noData"}
+          text={
+            isInitialLoading
+              ? "Detected issues will appear here"
+              : "No Issues available at the moment"
+          }
+        />
       )}
-    </s.Container>
+    </Section>
   );
 };

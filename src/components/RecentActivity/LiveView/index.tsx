@@ -25,6 +25,7 @@ import { ChartOffset } from "recharts/types/util/types";
 import { DefaultTheme, useTheme } from "styled-components";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { isNumber } from "../../../typeGuards/isNumber";
+import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { convertToDurationUnit } from "../../../utils/convertToDurationUnit";
 import { roundTo } from "../../../utils/roundTo";
 import { roundToNonZeroDecimals } from "../../../utils/roundToNonZeroDecimals";
@@ -39,6 +40,7 @@ import { EndpointIcon } from "../../common/icons/EndpointIcon";
 import { MinusIcon } from "../../common/icons/MinusIcon";
 import { PlusIcon } from "../../common/icons/PlusIcon";
 import { Direction } from "../../common/icons/types";
+import { trackingEvents } from "../tracking";
 import { AreaTooltipContent } from "./AreaTooltipContent";
 import { ChangeStatus } from "./ChangeStatus";
 import { DotTooltipContent } from "./DotTooltipContent";
@@ -237,6 +239,7 @@ export const LiveView = (props: LiveViewProps) => {
   };
 
   const handleCloseButtonClick = () => {
+    sendUserActionTrackingEvent(trackingEvents.LIVE_VIEW_CLOSE_BUTTON_CLICKED);
     props.onClose(props.data.durationData.codeObjectId);
   };
 
