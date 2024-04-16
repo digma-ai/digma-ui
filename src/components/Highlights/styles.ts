@@ -5,7 +5,7 @@ export const Container = styled.div`
   flex-direction: column;
   gap: 16px;
   padding: 16px 8px;
-  height: 100%;
+  min-height: 100%;
   box-sizing: border-box;
   background: ${({ theme }) => theme.colors.v3.surface.primary};
 `;
