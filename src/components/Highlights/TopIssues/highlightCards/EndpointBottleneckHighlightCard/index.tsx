@@ -75,7 +75,7 @@ export const EndpointBottleneckHighlightCard = ({
     );
     handleEnvironmentTableRowClick(
       config.environments,
-      row.original.environmentName,
+      row.original.environmentId,
       "insights"
     );
   };

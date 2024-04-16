@@ -3,6 +3,7 @@ import { SpanInfo } from "../../../types";
 import { InsightStatus, InsightType } from "../../Insights/types";
 
 export interface EnvironmentData<T> {
+  environmentId: string;
   environmentName: string;
   insightStatus: InsightStatus;
   criticality: number;

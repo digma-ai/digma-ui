@@ -5,11 +5,11 @@ import { Environment } from "../common/App/types";
 
 export const handleEnvironmentTableRowClick = (
   environments: Environment[] | undefined,
-  environmentNameToSelect: string,
+  environmentIdToSelect: string,
   viewToSelect: View
 ) => {
   const environmentChangeTo = environments?.find(
-    (x) => x.id === environmentNameToSelect
+    (x) => x.id === environmentIdToSelect
   );
 
   if (environmentChangeTo) {
