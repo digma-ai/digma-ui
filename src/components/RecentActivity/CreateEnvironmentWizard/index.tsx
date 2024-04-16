@@ -6,6 +6,7 @@ import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActi
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Environment } from "../../common/App/types";
 import { actions } from "../actions";
+import { RecentActivityContainerBackgroundGradient } from "../styles";
 import { trackingEvents } from "../tracking";
 import {
   CreateEnvironmentPayload,
@@ -56,7 +57,8 @@ export const CreateEnvironmentWizard = ({
       name: "Register",
       status: "not-completed",
       errors: {},
-      isHidden: !!config.userRegistrationEmail
+      isHidden:
+        Boolean(config.userRegistrationEmail) && !config.backendInfo?.centralize
     },
     {
       key: ENVIRONMENT_TYPE_STEP,
@@ -217,7 +219,7 @@ export const CreateEnvironmentWizard = ({
       />
       <s.StepContainer>
         <s.StepBackground />
-        <s.RecentActivityContainerBackgroundGradient />
+        <RecentActivityContainerBackgroundGradient />
         {!completed ? (
           <>
             <s.Step

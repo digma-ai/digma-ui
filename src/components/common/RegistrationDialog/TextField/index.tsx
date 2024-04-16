@@ -34,7 +34,7 @@ export const TextFieldComponent = (
       )}
       <s.Input
         $isValid={props.isValid}
-        type={"text"}
+        type={props.type || "text"}
         value={props.value}
         onChange={props.onChange}
         placeholder={props.placeholder}

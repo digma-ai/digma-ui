@@ -30,31 +30,6 @@ export const StepContainer = styled.div`
   overflow: hidden;
 `;
 
-export const RecentActivityContainerBackground = styled.div`
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-`;
-
-export const RecentActivityContainerBackgroundGradient = styled.div`
-  z-index: -1;
-  position: absolute;
-  left: 0;
-  right: 0;
-  margin: auto;
-  top: 0;
-  height: 383.6%;
-  width: 82.1%;
-  border-radius: 100%;
-  opacity: 0.7;
-  background: radial-gradient(
-    50% 50% at 50% 50%,
-    rgb(79 93 163 / 60%) 0%,
-    rgb(79 93 163 / 0%) 100%
-  );
-  filter: blur(5px);
-`;
-
 export const StepBackground = styled.div`
   z-index: -1;
   position: absolute;
