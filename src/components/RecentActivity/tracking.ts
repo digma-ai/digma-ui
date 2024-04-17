@@ -19,7 +19,7 @@ export const trackingEvents = addPrefix(
     LIVE_VIEW_CLOSE_BUTTON_CLICKED: "live view close button clicked",
     OBSERVABILITY_TOGGLE_SWITCHED: "observability toggle switched",
     ADD_TO_RUN_CONFIG_CLICKED: "add to run config clicked",
-    REGISTRATION_FORM_SUBMITTED: "registration form submitted",
+    LOCAL_REGISTRATION_FORM_SUBMITTED: "local registration form submitted",
     CREATE_NEW_ENVIRONMENT_FORM_SUBMITTED:
       "create new environment form submitted",
     CANCEL_BUTTON_CLICKED_ON_ENVIRONMENT_CREATION_WIZARD:

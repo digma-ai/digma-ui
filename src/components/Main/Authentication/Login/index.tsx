@@ -60,7 +60,7 @@ export const Login = () => {
 
   const onSubmit = (data: LoginFormValues) => {
     login({ email: data.email, password: data.password });
-    sendUserActionTrackingEvent("registration form submitted");
+    sendUserActionTrackingEvent("login form submitted");
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {

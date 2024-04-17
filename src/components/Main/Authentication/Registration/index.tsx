@@ -87,7 +87,7 @@ export const Registration = () => {
 
   const onSubmit = (data: RegisterFormValues) => {
     register({ email: data.email, password: data.password });
-    sendUserActionTrackingEvent("registration dialog form submitted");
+    sendUserActionTrackingEvent("registration form submitted");
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
