@@ -9,7 +9,7 @@ import { EnvelopeIcon } from "../../../common/icons/16px/EnvelopeIcon";
 import { Spinner } from "../../../common/v3/Spinner";
 import * as s from "./../styles";
 import { Loader } from "./../styles";
-import { RegisterFormValues } from "./types";
+import { RegisterFormValues, RegistrationProps } from "./types";
 import { useRegistration } from "./useRegistration";
 
 const validateEmail = (email: string): string | boolean => {
@@ -44,7 +44,9 @@ const formDefaultValues: RegisterFormValues = {
   confirmPassword: ""
 };
 
-export const Registration = () => {
+export const Registration = ({
+  onSuccessfulRegistration
+}: RegistrationProps) => {
   const {
     handleSubmit,
     control,
@@ -84,6 +86,12 @@ export const Registration = () => {
       setResponseStatus(undefined);
     });
   }, [clearErrors, watch, setResponseStatus]);
+
+  useEffect(() => {
+    if (isSucceed) {
+      onSuccessfulRegistration();
+    }
+  }, [isSucceed, onSuccessfulRegistration]);
 
   const onSubmit = (data: RegisterFormValues) => {
     register({ email: data.email, password: data.password });
@@ -177,9 +185,6 @@ export const Registration = () => {
       </s.Form>
       {errorMessage && <s.ErrorMessage>{errorMessage}</s.ErrorMessage>}
       {responseStatus && <s.ErrorMessage>{responseStatus}</s.ErrorMessage>}
-      {isSucceed && (
-        <s.SuccessMessage>User created successfully!</s.SuccessMessage>
-      )}
       <s.ButtonsContainer>
         <s.SubmitButton
           isDisabled={!isValid || isLoading}

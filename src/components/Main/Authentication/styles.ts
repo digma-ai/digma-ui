@@ -10,7 +10,7 @@ import { Link } from "../../common/v3/Link";
 
 export const Container = styled.div`
   padding: 10px;
-  height: 100%;
+  min-height: 100%;
   gap: 16px;
   display: flex;
   flex-direction: column;
@@ -100,6 +100,7 @@ export const ErrorMessage = styled(StatusMessage)`
 
 export const SuccessMessage = styled(StatusMessage)`
   color: ${({ theme }) => theme.colors.v3.status.success};
+  text-align: center;
 `;
 
 export const SubmitButton = styled(Button)`

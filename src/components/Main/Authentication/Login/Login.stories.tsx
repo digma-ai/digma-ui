@@ -20,6 +20,12 @@ export const Default: Story = {
   args: {}
 };
 
+export const WithSuccessMessage: Story = {
+  args: {
+    successMessage: "Message"
+  }
+};
+
 export const Failed: Story = {
   args: {},
   play: () => {

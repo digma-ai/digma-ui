@@ -72,14 +72,10 @@ export const EnvironmentInstructionsPanel = (
     setIsOrgDigmaSetupGuideVisible(false);
   };
 
-  const close = () => {
+  const handleCloseButtonClick = () => {
     if (props.onClose) {
       props.onClose();
     }
-  };
-
-  const handleCloseButtonClick = () => {
-    close();
   };
 
   if (isOrgDigmaSetupGuideVisible) {
@@ -118,14 +114,38 @@ export const EnvironmentInstructionsPanel = (
             </Tooltip>
           </s.EnvironmentIdContainer>
         </s.HeaderContentContainer>
-        <s.CloseButton
-          onClick={handleCloseButtonClick}
-          buttonType={"secondary"}
-          label={"Close"}
-        />
+        {props.onClose && (
+          <s.CloseButton
+            onClick={handleCloseButtonClick}
+            buttonType={"secondary"}
+            label={"Close"}
+          />
+        )}
       </>
     );
   };
+
+  const renderActions = () => (
+    <s.ActionContainer>
+      <s.AddToConfigContainer>
+        <s.Link onClick={handleAddToRunConfigLinkClick}>
+          Add to the active run config
+        </s.Link>
+        {state === AddToRunConfigState.success && (
+          <s.AddToConfigSuccessMessage>
+            Successfully added
+          </s.AddToConfigSuccessMessage>
+        )}
+        {state === AddToRunConfigState.failure && (
+          <s.AddToConfigFailureMessage>
+            Failed to add
+          </s.AddToConfigFailureMessage>
+        )}
+      </s.AddToConfigContainer>
+      <s.Link onClick={handleTroubleshootLinkClick}>Troubleshoot</s.Link>
+    </s.ActionContainer>
+  );
+
   const environmentTypesContent: Record<
     EnvironmentType,
     EnvironmentInstructionsPanelContent
@@ -142,26 +162,7 @@ export const EnvironmentInstructionsPanel = (
               to tag the observability data with this run config:
             </span>
             <s.CodeSection text={environmentVariableString} />
-            <s.ActionContainer>
-              <s.AddToConfigContainer>
-                <s.Link onClick={handleAddToRunConfigLinkClick}>
-                  Add to the active run config
-                </s.Link>
-                {state === AddToRunConfigState.success && (
-                  <s.AddToConfigSuccessMessage>
-                    Successfully added
-                  </s.AddToConfigSuccessMessage>
-                )}
-                {state === AddToRunConfigState.failure && (
-                  <s.AddToConfigFailureMessage>
-                    Failed to add
-                  </s.AddToConfigFailureMessage>
-                )}
-              </s.AddToConfigContainer>
-              <s.Link onClick={handleTroubleshootLinkClick}>
-                Troubleshoot
-              </s.Link>
-            </s.ActionContainer>
+            {renderActions()}
           </>
         )
       },
@@ -202,6 +203,7 @@ export OTEL_SERVICE_NAME={--ENTER YOUR SERVICE NAME HERE--}
 export OTEL_RESOURCE_ATTRIBUTES=digma.environment.id="${props.environment.id}"`}
               language={"bash"}
             />
+            {renderActions()}
           </>
         )
       },

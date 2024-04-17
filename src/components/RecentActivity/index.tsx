@@ -74,6 +74,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
     areEnvironmentInstructionsVisible,
     setAreEnvironmentInstructionsVisible
   ] = useState(false);
+  const previousEnvironment = usePrevious(config.environment);
 
   const environmentActivities = useMemo(
     () => (data ? groupBy(data.entries, (x) => x.environment) : {}),
@@ -128,6 +129,19 @@ export const RecentActivity = (props: RecentActivityProps) => {
       setIsDigmathonMode(true);
     }
   }, [previousIsDigmathonCompleted, isDigmathonCompleted]);
+
+  useEffect(() => {
+    const environmentToSelect = environments.find(
+      (x) => x.id === config.environment?.id
+    );
+
+    if (
+      environmentToSelect &&
+      previousEnvironment?.id == environmentToSelect.id
+    ) {
+      setSelectedEnvironment(environmentToSelect);
+    }
+  }, [config.environment?.id, previousEnvironment?.id, environments]);
 
   const handleEnvironmentSelect = (environment: ExtendedEnvironment) => {
     setSelectedEnvironment(environment);

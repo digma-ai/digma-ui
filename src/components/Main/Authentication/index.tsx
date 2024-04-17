@@ -10,9 +10,24 @@ import * as s from "./styles";
 
 const AuthenticationComponent = () => {
   const [option, setOption] = useState<"login" | "register">("login");
+  const [loginSuccessMessage, setLoginSuccessMessage] = useState<string>("");
+
+  const handleSuccessfulRegistration = () => {
+    setOption("login");
+    setLoginSuccessMessage("Account registered successfully! Please login");
+  };
+
+  const handleLogin = () => {
+    setLoginSuccessMessage("");
+  };
 
   const handleSlackLinkClick = () => {
     openURLInDefaultBrowser(SLACK_WORKSPACE_URL);
+  };
+
+  const handleToggleValueChange = (option: "login" | "register") => {
+    setOption(option);
+    setLoginSuccessMessage("");
   };
 
   return (
@@ -42,9 +57,15 @@ const AuthenticationComponent = () => {
               }
             ]}
             value={option}
-            onValueChange={(option) => setOption(option)}
+            onValueChange={handleToggleValueChange}
           />
-          {option === "login" ? <Login /> : <Registration />}
+          {option === "login" ? (
+            <Login successMessage={loginSuccessMessage} onLogin={handleLogin} />
+          ) : (
+            <Registration
+              onSuccessfulRegistration={handleSuccessfulRegistration}
+            />
+          )}
         </s.InputForm>
       </s.ContentContainer>
       <s.Footer>

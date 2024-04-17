@@ -8,6 +8,7 @@ import { TrashBinIcon } from "../../../common/icons/16px/TrashBinIcon";
 import { WrenchIcon } from "../../../common/icons/16px/WrenchIcon";
 import { Badge } from "../../Badge";
 import { EnvironmentMenu } from "../../EnvironmentMenu";
+import { EnvironmentMenuItem } from "../../EnvironmentMenu/types";
 import * as s from "./styles";
 import { EnvironmentTabProps } from "./types";
 
@@ -54,7 +55,7 @@ export const EnvironmentTab = (props: EnvironmentTabProps) => {
     setIsMenuOpen(false);
   };
 
-  const menuItems = [
+  const menuItems: EnvironmentMenuItem[] = [
     { label: "How to setup", value: "setup-instructions", icon: WrenchIcon },
     { label: "Delete", value: "delete", icon: TrashBinIcon }
   ];
