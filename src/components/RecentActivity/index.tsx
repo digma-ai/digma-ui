@@ -111,7 +111,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
 
   useEffect(() => {
     setAreEnvironmentInstructionsVisible(false);
-  }, [selectedEnvironment]);
+  }, [selectedEnvironment?.id]);
 
   useEffect(() => {
     window.sendMessageToDigma({
