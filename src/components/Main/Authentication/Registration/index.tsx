@@ -1,4 +1,4 @@
-import { KeyboardEvent, useEffect } from "react";
+import { KeyboardEvent, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { isValidPasswordFormat } from "../../../../utils/isPasswordFormatValid";
@@ -32,7 +32,7 @@ const validatePassword = (password: string): string | boolean => {
   }
 
   if (!isValidPasswordFormat(password)) {
-    return "Password must contain one special character";
+    return "Password must contain one special character !@#$%^&*-";
   }
 
   return true;
@@ -52,7 +52,8 @@ export const Registration = () => {
     watch,
     setError,
     clearErrors,
-    formState: { errors, isValid },
+    trigger,
+    formState: { errors, isValid, touchedFields },
     setFocus
   } = useForm<RegisterFormValues>({
     mode: "onChange",
@@ -66,12 +67,11 @@ export const Registration = () => {
     errors: resultErrors
   } = useRegistration();
 
+  const [responseStatus, setResponseStatus] = useState<string>();
+
   useEffect(() => {
     if (resultErrors?.length > 0) {
-      setError("root", {
-        type: "validate",
-        message: resultErrors.map((x) => x.description).join("\r\n")
-      });
+      setResponseStatus(resultErrors.map((x) => x.description).join("\n"));
     }
   }, [setError, resultErrors]);
 
@@ -81,7 +81,7 @@ export const Registration = () => {
 
   useEffect(() => {
     watch(() => {
-      clearErrors();
+      setResponseStatus(undefined);
     });
   }, [clearErrors, watch]);
 
@@ -95,6 +95,7 @@ export const Registration = () => {
       onSubmit(values);
     }
   };
+
   const errorMessage =
     Object.values(errors).length > 0 ? Object.values(errors)[0].message : "";
 
@@ -127,7 +128,13 @@ export const Registration = () => {
           defaultValue={""}
           rules={{
             required: "Password is required",
-            validate: validatePassword
+            validate: (pass) => {
+              if (touchedFields.confirmPassword) {
+                // eslint-disable-next-line @typescript-eslint/no-floating-promises
+                trigger("confirmPassword");
+              }
+              return validatePassword(pass);
+            }
           }}
           render={({ field }) => (
             <TextField
@@ -169,6 +176,7 @@ export const Registration = () => {
         />
       </s.Form>
       {errorMessage && <s.ErrorMessage>{errorMessage}</s.ErrorMessage>}
+      {responseStatus && <s.ErrorMessage>{responseStatus}</s.ErrorMessage>}
       {isSucceed && (
         <s.SuccessMessage>User created successfully!</s.SuccessMessage>
       )}

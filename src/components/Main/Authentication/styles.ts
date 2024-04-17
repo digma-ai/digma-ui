@@ -114,6 +114,7 @@ export const InputForm = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
+  max-width: 250px;
 `;
 
 export const InfoMessage = styled.div`
