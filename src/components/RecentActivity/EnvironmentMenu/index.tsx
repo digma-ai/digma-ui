@@ -14,7 +14,11 @@ export const EnvironmentMenu = (props: EnvironmentMenuProps) => {
             key={item.value}
             onClick={() => handleMenuItemClick(item.value)}
           >
-            {item.icon && <item.icon color={"currentColor"} />}
+            {item.icon && (
+              <s.IconContainer>
+                <item.icon color={"currentColor"} size={16} />
+              </s.IconContainer>
+            )}
             {item.label}
           </s.ListItem>
         ))}

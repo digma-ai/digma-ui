@@ -1,3 +1,4 @@
+import copy from "copy-to-clipboard";
 import { useContext, useState } from "react";
 import { useTheme } from "styled-components";
 import { actions as globalActions } from "../../../actions";
@@ -9,9 +10,11 @@ import { ConfigContext } from "../../common/App/ConfigContext";
 import { getThemeKind } from "../../common/App/styles";
 import { EnvironmentType } from "../../common/App/types";
 import { Link } from "../../common/Link";
+import { CopyIcon } from "../../common/icons/12px/CopyIcon";
 import { DesktopIcon } from "../../common/icons/DesktopIcon";
 import { InfinityIcon } from "../../common/icons/InfinityIcon";
 import { PlayButtonWithCursorIcon } from "../../common/icons/PlayButtonWithCursorIcon";
+import { Tooltip } from "../../common/v3/Tooltip";
 import { SetupOrgDigmaPanel } from "../SetupOrgDigmaPanel";
 import { Overlay } from "../common/Overlay";
 import { trackingEvents } from "../tracking";
@@ -69,6 +72,16 @@ export const EnvironmentInstructionsPanel = (
     setIsOrgDigmaSetupGuideVisible(false);
   };
 
+  const close = () => {
+    if (props.onClose) {
+      props.onClose();
+    }
+  };
+
+  const handleCloseButtonClick = () => {
+    close();
+  };
+
   if (isOrgDigmaSetupGuideVisible) {
     return (
       <Overlay>
@@ -81,6 +94,38 @@ export const EnvironmentInstructionsPanel = (
     );
   }
 
+  const renderHeaderContent = (title: string) => {
+    const environmentId = props.environment.id;
+
+    const handleCopyButtonClick = () => {
+      copy(environmentId);
+    };
+
+    return (
+      <>
+        <s.HeaderContentContainer>
+          {title}
+          <s.Divider />
+          <s.EnvironmentIdLabel>Environment ID</s.EnvironmentIdLabel>
+          <s.EnvironmentIdContainer>
+            <Tooltip title={environmentId}>
+              <s.EnvironmentId>{environmentId}</s.EnvironmentId>
+            </Tooltip>
+            <Tooltip title={"Copy"}>
+              <s.CopyButton onClick={handleCopyButtonClick}>
+                <CopyIcon />
+              </s.CopyButton>
+            </Tooltip>
+          </s.EnvironmentIdContainer>
+        </s.HeaderContentContainer>
+        <s.CloseButton
+          onClick={handleCloseButtonClick}
+          buttonType={"secondary"}
+          label={"Close"}
+        />
+      </>
+    );
+  };
   const environmentTypesContent: Record<
     EnvironmentType,
     EnvironmentInstructionsPanelContent
@@ -102,7 +147,6 @@ export const EnvironmentInstructionsPanel = (
                 <s.Link onClick={handleAddToRunConfigLinkClick}>
                   Add to the active run config
                 </s.Link>
-
                 {state === AddToRunConfigState.success && (
                   <s.AddToConfigSuccessMessage>
                     Successfully added
@@ -155,8 +199,7 @@ curl --create-dirs -O -L --output-dir ./otel https://github.com/digma-ai/otel-ja
 export JAVA_TOOL_OPTIONS="-javaagent:/otel/opentelemetry-javaagent.jar -Dotel.exporter.otlp.endpoint=http://${hostname}:5050 -Dotel.javaagent.extensions=/otel/digma-otel-agent-extension.jar -Dotel.metrics.exporter=none -Dotel.logs.exporter=none -Dotel.exporter.otlp.protocol=grpc"
 
 export OTEL_SERVICE_NAME={--ENTER YOUR SERVICE NAME HERE--}
-export OTEL_RESOURCE_ATTRIBUTES=digma.environment.id=${props.environment.id}
-export OTEL_RESOURCE_ATTRIBUTES=digma.user.id=${config.userInfo?.id || ""}`}
+export OTEL_RESOURCE_ATTRIBUTES=digma.environment.id="${props.environment.id}"`}
               language={"bash"}
             />
           </>
@@ -189,7 +232,7 @@ export OTEL_RESOURCE_ATTRIBUTES=digma.user.id=${config.userInfo?.id || ""}`}
 
   return (
     <s.Container>
-      <s.Header>{content.title}</s.Header>
+      <s.Header>{renderHeaderContent(content.title)}</s.Header>
       {props.environment.type === "Public" && (
         <span>
           CI/Prod environments require Digma to be installed in your

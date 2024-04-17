@@ -23,7 +23,8 @@ export interface EnvironmentTabProps {
   environment: ExtendedEnvironment;
   isSelected: boolean;
   onClick: (environment: ExtendedEnvironment) => void;
-  onEnvironmentDelete: (environment: string) => void;
+  onEnvironmentSetupInstructionsShow: (environmentId: string) => void;
+  onEnvironmentDelete: (environmentId: string) => void;
 }
 
 export interface ContainerProps {
