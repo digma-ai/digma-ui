@@ -32,7 +32,7 @@ const validatePassword = (password: string): string | boolean => {
   }
 
   if (!isValidPasswordFormat(password)) {
-    return "Password must contain one special character !@#$%^&*-_";
+    return "Password must contain one special character !@#$%^&*-";
   }
 
   return true;
