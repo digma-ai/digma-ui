@@ -1,7 +1,7 @@
 import { KeyboardEvent, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
-import { isValidPasswordFormat } from "../../../../utils/isPasswordFormatValid";
+import { isAlphanumeric } from "../../../../utils/isAlphanumeric";
 import { isValidEmailFormat } from "../../../../utils/isValidEmailFormat";
 import { TextField } from "../../../common/RegistrationDialog/TextField";
 import { LockIcon } from "../../../common/icons/12px/LockIcon";
@@ -31,8 +31,8 @@ const validatePassword = (password: string): string | boolean => {
     return "Password must be at least 6.";
   }
 
-  if (!isValidPasswordFormat(password)) {
-    return "Password must contain one special character !@#$%^&*-";
+  if (isAlphanumeric(password)) {
+    return "Password must contain one special character";
   }
 
   return true;
