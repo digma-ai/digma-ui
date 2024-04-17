@@ -21,23 +21,24 @@ export const Container = styled.div`
   }
 `;
 
-export const Column = styled.div`
+export const Section = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 8px;
 `;
 
-export const TitleColumn = styled(Column)`
+export const TitleSection = styled(Section)`
   padding: 16px 0 24px;
   font-size: 16px;
   font-weight: 700;
 `;
 
-export const Step = styled.div`
+export const SectionContent = styled.div`
   ${footnoteRegularTypography}
 
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
 `;
 
 export const Term = styled.span`
