@@ -71,7 +71,7 @@ export const Registration = () => {
 
   useEffect(() => {
     if (resultErrors?.length > 0) {
-      setResponseStatus(resultErrors.map((x) => x.description).join("\r\n"));
+      setResponseStatus(resultErrors.map((x) => x.description).join("\n"));
     }
   }, [setError, resultErrors]);
 
