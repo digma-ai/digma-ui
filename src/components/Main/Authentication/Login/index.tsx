@@ -113,7 +113,7 @@ export const Login = () => {
       {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
       <ButtonsContainer>
         <SubmitButton
-          isDisabled={!isValid}
+          isDisabled={!isValid || isLoading}
           label={"Sign In"}
           type={"submit"}
           form={"loginForm"}

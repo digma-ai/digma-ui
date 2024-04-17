@@ -52,7 +52,7 @@ export const Registration = () => {
     watch,
     setError,
     clearErrors,
-    trigger,
+    resetField,
     formState: { errors, isValid, touchedFields },
     setFocus
   } = useForm<RegisterFormValues>({
@@ -83,7 +83,7 @@ export const Registration = () => {
     watch(() => {
       setResponseStatus(undefined);
     });
-  }, [clearErrors, watch]);
+  }, [clearErrors, watch, setResponseStatus]);
 
   const onSubmit = (data: RegisterFormValues) => {
     register({ email: data.email, password: data.password });
@@ -128,13 +128,7 @@ export const Registration = () => {
           defaultValue={""}
           rules={{
             required: "Password is required",
-            validate: (pass) => {
-              if (touchedFields.confirmPassword) {
-                // eslint-disable-next-line @typescript-eslint/no-floating-promises
-                trigger("confirmPassword");
-              }
-              return validatePassword(pass);
-            }
+            validate: validatePassword
           }}
           render={({ field }) => (
             <TextField
@@ -143,6 +137,12 @@ export const Registration = () => {
               placeholder={"Enter password"}
               isValid={errors.password ? !errors.password : undefined}
               {...field}
+              onChange={(args) => {
+                if (touchedFields.confirmPassword) {
+                  resetField("confirmPassword");
+                }
+                field.onChange && field.onChange(args);
+              }}
             />
           )}
         />
@@ -182,7 +182,7 @@ export const Registration = () => {
       )}
       <s.ButtonsContainer>
         <s.SubmitButton
-          isDisabled={!isValid}
+          isDisabled={!isValid || isLoading}
           label={"Sign Up"}
           type={"submit"}
           form={"registrationForm"}
