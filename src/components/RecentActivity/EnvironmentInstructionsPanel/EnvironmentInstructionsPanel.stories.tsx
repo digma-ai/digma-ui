@@ -20,7 +20,7 @@ export const Local: Story = {
   args: {
     environment: {
       name: "MY_ENV",
-      id: "MY_ENV",
+      id: "MY_ENV#ID#1",
       isPending: true,
       hasRecentActivity: false,
       type: "Private",
@@ -35,7 +35,7 @@ export const Shared: Story = {
   args: {
     environment: {
       name: "MY_ENV",
-      id: "MY_ENV",
+      id: "MY_ENV#ID#1",
       isPending: true,
       hasRecentActivity: false,
       type: "Public",

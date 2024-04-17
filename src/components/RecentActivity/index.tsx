@@ -70,6 +70,10 @@ export const RecentActivity = (props: RecentActivityProps) => {
     isDigmathonCompleted
   } = useDigmathonProgressData();
   const previousIsDigmathonCompleted = usePrevious(isDigmathonCompleted);
+  const [
+    areEnvironmentInstructionsVisible,
+    setAreEnvironmentInstructionsVisible
+  ] = useState(false);
 
   const environmentActivities = useMemo(
     () => (data ? groupBy(data.entries, (x) => x.environment) : {}),
@@ -104,6 +108,10 @@ export const RecentActivity = (props: RecentActivityProps) => {
       return environments[0];
     });
   }, [environments]);
+
+  useEffect(() => {
+    setAreEnvironmentInstructionsVisible(false);
+  }, [selectedEnvironment]);
 
   useEffect(() => {
     window.sendMessageToDigma({
@@ -189,6 +197,14 @@ export const RecentActivity = (props: RecentActivityProps) => {
     setEnvironmentToDelete(undefined);
   };
 
+  const handleEnvironmentSetupInstructionsShow = () => {
+    setAreEnvironmentInstructionsVisible(true);
+  };
+
+  const handleEnvironmentSetupInstructionsClose = () => {
+    setAreEnvironmentInstructionsVisible(false);
+  };
+
   const handleDigmathonModeButtonClick = () => {
     setIsDigmathonMode(true);
   };
@@ -199,22 +215,30 @@ export const RecentActivity = (props: RecentActivityProps) => {
 
   const renderContent = () => {
     if (
-      (!selectedEnvironment ||
-        !environmentActivities[selectedEnvironment.id]) &&
-      !selectedEnvironment?.isNew
+      selectedEnvironment &&
+      (selectedEnvironment.isNew || areEnvironmentInstructionsVisible)
+    ) {
+      return (
+        <EnvironmentInstructionsPanel
+          environment={selectedEnvironment}
+          onClose={
+            areEnvironmentInstructionsVisible
+              ? handleEnvironmentSetupInstructionsClose
+              : undefined
+          }
+        />
+      );
+    }
+
+    if (
+      !selectedEnvironment ||
+      !environmentActivities[selectedEnvironment.id]
     ) {
       return (
         <s.NoDataContainer>
           <NoData />
         </s.NoDataContainer>
       );
-    }
-
-    if (
-      !environmentActivities[selectedEnvironment.id]?.length ||
-      selectedEnvironment.isNew
-    ) {
-      return <EnvironmentInstructionsPanel environment={selectedEnvironment} />;
     }
 
     const headerHeight = entry?.target.clientHeight || 0;
@@ -287,6 +311,9 @@ export const RecentActivity = (props: RecentActivityProps) => {
                 onEnvironmentAdd={handleEnvironmentAdd}
                 onEnvironmentDelete={handleEnvironmentDelete}
                 onDigmathonModeButtonClick={handleDigmathonModeButtonClick}
+                onEnvironmentSetupInstructionsShow={
+                  handleEnvironmentSetupInstructionsShow
+                }
               />
             </s.RecentActivityHeader>
             <s.RecentActivityContentContainer>

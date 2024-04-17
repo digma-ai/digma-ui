@@ -1,10 +1,12 @@
 import styled from "styled-components";
 import {
   bodyMediumTypography,
+  footnoteRegularTypography,
   subscriptRegularTypography
 } from "../../common/App/typographies";
 import { CodeSnippet } from "../../common/CodeSnippet";
 import { Link as CommonLink } from "../../common/Link";
+import { Button } from "../../common/v3/Button";
 
 export const Container = styled.div`
   margin-top: 12px;
@@ -17,7 +19,7 @@ export const Header = styled.div`
   display: flex;
   gap: 8px;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   color: ${({ theme }) => theme.colors.v3.text.primary};
   ${bodyMediumTypography}
 `;
@@ -122,4 +124,55 @@ export const RunOrDebugIllustration = styled.img`
 export const CodeSection = styled(CodeSnippet)`
   background: none;
   border: 1px solid ${({ theme }) => theme.colors.v3.surface.gray};
+`;
+
+export const HeaderContentContainer = styled.div`
+  display: flex;
+  gap: 12px;
+  align-items: center;
+`;
+
+export const Divider = styled.div`
+  border-radius: 1px;
+  width: 1px;
+  height: 13px;
+  background: ${({ theme }) => theme.colors.v3.stroke.primary};
+`;
+
+export const EnvironmentIdLabel = styled.span`
+  ${subscriptRegularTypography}
+
+  color: ${({ theme }) => theme.colors.v3.text.tertiary};
+`;
+
+export const EnvironmentIdContainer = styled.div`
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 6px 8px;
+  border-radius: 4px;
+  border: 1px solid ${({ theme }) => theme.colors.v3.surface.gray};
+  max-width: 299px;
+`;
+
+export const EnvironmentId = styled.span`
+  ${footnoteRegularTypography}
+
+  color: ${({ theme }) => theme.colors.v3.text.link};
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+`;
+
+export const CopyButton = styled.button`
+  color: ${({ theme }) => theme.colors.v3.icon.secondary};
+  border: none;
+  background: none;
+  padding: 0;
+  display: flex;
+  cursor: pointer;
+`;
+
+export const CloseButton = styled(Button)`
+  margin-left: auto;
 `;

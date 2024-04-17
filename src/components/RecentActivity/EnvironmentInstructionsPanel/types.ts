@@ -5,6 +5,7 @@ import { ExtendedEnvironment } from "../types";
 export interface EnvironmentInstructionsPanelProps {
   environment: ExtendedEnvironment;
   onAddEnvironmentToRunConfig?: (environment: string) => void;
+  onClose?: () => void;
 }
 
 export interface EnvironmentInstructionsPanelContent {
