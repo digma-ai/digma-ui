@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 import { greenScale } from "../../../common/App/v2colors";
 import { EnvironmentIcon } from "../../../common/EnvironmentIcon";
 import { KebabMenuButton } from "../../../common/KebabMenuButton";
@@ -9,6 +9,7 @@ import { WrenchIcon } from "../../../common/icons/16px/WrenchIcon";
 import { Badge } from "../../Badge";
 import { EnvironmentMenu } from "../../EnvironmentMenu";
 import { EnvironmentMenuItem } from "../../EnvironmentMenu/types";
+import { getEnvironmentTabId } from "./getEnvironmentTabIdPrefix";
 import * as s from "./styles";
 import { EnvironmentTabProps } from "./types";
 
@@ -16,8 +17,6 @@ export const EnvironmentTab = (props: EnvironmentTabProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const containerRef = useRef<HTMLLIElement>(null);
 
   const handleMouseEnter = useCallback(() => {
     setIsHovered(true);
@@ -35,10 +34,6 @@ export const EnvironmentTab = (props: EnvironmentTabProps) => {
   }, []);
 
   const handleClick = () => {
-    if (containerRef.current) {
-      containerRef.current.scrollIntoView(false);
-    }
-
     props.onClick(props.environment);
   };
 
@@ -60,9 +55,11 @@ export const EnvironmentTab = (props: EnvironmentTabProps) => {
     { label: "Delete", value: "delete", icon: TrashBinIcon }
   ];
 
+  const environmentTabId = getEnvironmentTabId(props.environment.id);
+
   return (
     <s.Container
-      ref={containerRef}
+      id={environmentTabId}
       $isSelected={props.isSelected}
       $isPending={props.environment.isPending}
       onMouseEnter={handleMouseEnter}
