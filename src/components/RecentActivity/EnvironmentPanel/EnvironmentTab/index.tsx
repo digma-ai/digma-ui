@@ -1,11 +1,11 @@
-import { useCallback, useContext, useRef, useState } from "react";
-import { ConfigContext } from "../../../common/App/ConfigContext";
+import { useCallback, useRef, useState } from "react";
 import { greenScale } from "../../../common/App/v2colors";
 import { EnvironmentIcon } from "../../../common/EnvironmentIcon";
 import { KebabMenuButton } from "../../../common/KebabMenuButton";
 import { NewPopover } from "../../../common/NewPopover";
 import { Tooltip } from "../../../common/Tooltip";
-import { TrashBinIcon } from "../../../common/icons/TrashBinIcon";
+import { TrashBinIcon } from "../../../common/icons/16px/TrashBinIcon";
+import { WrenchIcon } from "../../../common/icons/16px/WrenchIcon";
 import { Badge } from "../../Badge";
 import { EnvironmentMenu } from "../../EnvironmentMenu";
 import * as s from "./styles";
@@ -15,8 +15,6 @@ export const EnvironmentTab = (props: EnvironmentTabProps) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const config = useContext(ConfigContext);
-  const isMenuVisible = config.digmaStatus?.connection.status;
 
   const containerRef = useRef<HTMLLIElement>(null);
 
@@ -45,6 +43,9 @@ export const EnvironmentTab = (props: EnvironmentTabProps) => {
 
   const handleMenuItemSelect = (value: string) => {
     switch (value) {
+      case "setup-instructions":
+        props.onEnvironmentSetupInstructionsShow(props.environment.id);
+        break;
       case "delete":
         props.onEnvironmentDelete(props.environment.id);
         break;
@@ -53,7 +54,10 @@ export const EnvironmentTab = (props: EnvironmentTabProps) => {
     setIsMenuOpen(false);
   };
 
-  const menuItems = [{ label: "Delete", value: "delete", icon: TrashBinIcon }];
+  const menuItems = [
+    { label: "How to setup", value: "setup-instructions", icon: WrenchIcon },
+    { label: "Delete", value: "delete", icon: TrashBinIcon }
+  ];
 
   return (
     <s.Container
@@ -78,25 +82,23 @@ export const EnvironmentTab = (props: EnvironmentTabProps) => {
           )}
         </s.LabelContainer>
       </Tooltip>
-      {isMenuVisible &&
-        menuItems.length > 0 &&
-        (isHovered || isFocused || isMenuOpen) && (
-          <NewPopover
-            content={
-              <EnvironmentMenu
-                items={menuItems}
-                onSelect={handleMenuItemSelect}
-              />
-            }
-            onOpenChange={setIsMenuOpen}
-            isOpen={isMenuOpen}
-            placement={"bottom-start"}
-          >
-            <span>
-              <KebabMenuButton />
-            </span>
-          </NewPopover>
-        )}
+      {menuItems.length > 0 && (isHovered || isFocused || isMenuOpen) && (
+        <NewPopover
+          content={
+            <EnvironmentMenu
+              items={menuItems}
+              onSelect={handleMenuItemSelect}
+            />
+          }
+          onOpenChange={setIsMenuOpen}
+          isOpen={isMenuOpen}
+          placement={"bottom-start"}
+        >
+          <span>
+            <KebabMenuButton />
+          </span>
+        </NewPopover>
+      )}
     </s.Container>
   );
 };

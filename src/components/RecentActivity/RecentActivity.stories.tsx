@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { RecentActivity } from ".";
 import { actions as globalActions } from "../../actions";
+import { ConfigContext, initialState } from "../common/App/ConfigContext";
 import { mockedDigmathonProgressData } from "./Digmathon/mockData";
 import { mockData as liveData } from "./LiveView/mockData";
 import { actions } from "./actions";
@@ -637,7 +638,25 @@ const data: RecentActivityData = {
 export const WithData: Story = {
   args: {
     data
-  }
+  },
+  decorators: [
+    (Story) => (
+      <ConfigContext.Provider
+        value={{
+          ...initialState,
+          digmaStatus: {
+            connection: {
+              status: true,
+              type: "local"
+            },
+            runningDigmaInstances: ["localEngine"]
+          }
+        }}
+      >
+        <Story />
+      </ConfigContext.Provider>
+    )
+  ]
 };
 
 export const WithEmptyEnv: Story = {

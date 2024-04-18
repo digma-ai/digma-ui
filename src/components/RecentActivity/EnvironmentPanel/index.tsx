@@ -51,8 +51,12 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
     props.onEnvironmentSelect(environment);
   };
 
-  const handleEnvironmentDelete = (environment: string) => {
-    props.onEnvironmentDelete(environment);
+  const handleEnvironmentDelete = (environmentId: string) => {
+    props.onEnvironmentDelete(environmentId);
+  };
+
+  const handleEnvironmentSetupInstructionsShow = (environmentId: string) => {
+    props.onEnvironmentSetupInstructionsShow(environmentId);
   };
 
   const handleCarouselButtonClick = (direction: ScrollDirection) => {
@@ -259,6 +263,9 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
               isSelected={props.selectedEnvironment?.id === environment.id}
               onClick={handleEnvironmentTabClick}
               onEnvironmentDelete={handleEnvironmentDelete}
+              onEnvironmentSetupInstructionsShow={
+                handleEnvironmentSetupInstructionsShow
+              }
             />
           ))}
         </s.EnvironmentList>
