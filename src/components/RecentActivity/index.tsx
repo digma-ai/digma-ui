@@ -96,7 +96,6 @@ export const RecentActivity = (props: RecentActivityProps) => {
     isOpen: false,
     keepOpen: false
   });
-  const previousEnvironment = usePrevious(config.environment);
 
   const environmentActivities = useMemo(
     () => (data ? groupBy(data.entries, (x) => x.environment) : {}),
@@ -114,20 +113,6 @@ export const RecentActivity = (props: RecentActivityProps) => {
         : [],
     [data, environmentActivities]
   );
-
-  useEffect(() => {
-    setSelectedEnvironment((selectedEnvironment) => {
-      const environmentToSelect = environments.find(
-        (x) => x.id === selectedEnvironment?.id
-      );
-
-      if (environmentToSelect) {
-        return environmentToSelect;
-      }
-
-      return environments[0];
-    });
-  }, [environments, environmentActivities]);
 
   useEffect(() => {
     if (selectedEnvironment?.id) {
@@ -165,17 +150,14 @@ export const RecentActivity = (props: RecentActivityProps) => {
       (x) => x.id === config.environment?.id
     );
 
-    if (
-      environmentToSelect &&
-      previousEnvironment?.id == environmentToSelect.id
-    ) {
+    if (environmentToSelect) {
       setSelectedEnvironment(environmentToSelect);
+    } else {
+      setSelectedEnvironment(environments[0]);
     }
-  }, [config.environment?.id, previousEnvironment?.id, environments]);
+  }, [config.environment?.id, environments]);
 
   const handleEnvironmentSelect = (environment: ExtendedEnvironment) => {
-    setSelectedEnvironment(environment);
-
     changeSelectedEnvironment(config.environments, environment.id);
   };
 
@@ -316,13 +298,12 @@ export const RecentActivity = (props: RecentActivityProps) => {
         if (newEnvId) {
           const newEnv = environments.find((x) => x.id == newEnvId);
           if (newEnv) {
-            setSelectedEnvironment(newEnv);
+            changeSelectedEnvironment(config.environments, newEnv.id);
             setEnvironmentInstructionsVisibility({
               isOpen: true,
               newlyCreatedEnvironmentId: newEnv.id,
               keepOpen: false
             });
-            changeSelectedEnvironment(config.environments, newEnv.id);
           }
         }
         setShowCreationWizard(false);

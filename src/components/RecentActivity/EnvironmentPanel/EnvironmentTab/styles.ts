@@ -1,47 +1,51 @@
-import styled from "styled-components";
-import { ContainerProps } from "./types";
+import styled, { css } from "styled-components";
+import { subscriptRegularTypography } from "../../../common/App/typographies";
+import { KebabMenuButton } from "../../../common/KebabMenuButton";
+import {
+  ContainerProps,
+  LabelProps,
+  StyledKebabMenuButtonProps
+} from "./types";
+
+export const StyledKebabMenuButton = styled(
+  KebabMenuButton
+)<StyledKebabMenuButtonProps>`
+  color: ${({ theme, $isMenuOpen }) =>
+    $isMenuOpen ? theme.colors.v3.icon.primary : theme.colors.v3.icon.tertiary};
+
+  &:hover,
+  &:focus,
+  &:active {
+    color: ${({ theme, $isSelected, $isMenuOpen }) =>
+      $isSelected || $isMenuOpen
+        ? theme.colors.v3.icon.primary
+        : theme.colors.v3.icon.tertiary};
+  }
+`;
 
 export const Container = styled.li<ContainerProps>`
+  ${subscriptRegularTypography}
+
   display: flex;
   cursor: pointer;
-  font-size: 13px;
   padding: 0 4px;
   user-select: none;
   align-items: center;
   gap: 4px;
   box-sizing: border-box;
-  color: ${({ theme, $isPending, $isSelected }) => {
-    if ($isPending) {
-      return theme.colors.tab.text.disabled;
-    }
+  color: ${({ theme, $isSelected }) =>
+    $isSelected
+      ? theme.colors.v3.icon.primary
+      : theme.colors.v3.icon.secondary};
 
-    if ($isSelected) {
-      return theme.colors.tab.text.focus;
-    }
-
-    return theme.colors.tab.text.default;
-  }};
-  background: ${({ theme }) => theme.colors.tab.background.default};
-  border-bottom: ${({ theme, $isSelected }) =>
-    $isSelected ? `1px solid ${theme.colors.tab.borderBottom.focus}` : "none"};
-
-  &:hover,
-  &:focus {
-    color: ${({ theme, $isPending, $isSelected }) => {
-      if ($isPending) {
-        return theme.colors.tab.text.disabled;
-      }
-
-      if ($isSelected) {
-        return theme.colors.tab.text.focus;
-      }
-
-      return theme.colors.tab.text.hover;
-    }};
-    background: ${({ theme }) => theme.colors.tab.background.hover};
-    border-bottom: ${({ theme }) =>
-      `1px solid ${theme.colors.tab.borderBottom.hover}`};
-  }
+  ${({ $isSelected }) =>
+    $isSelected
+      ? css`
+          background: ${({ theme }) => theme.colors.v3.surface.primaryLight};
+          border-bottom: 1px solid
+            ${({ theme }) => theme.colors.v3.stroke.brandPrimary};
+        `
+      : ""}
 `;
 
 export const LabelContainer = styled.div`
@@ -50,9 +54,13 @@ export const LabelContainer = styled.div`
   gap: 8px;
 `;
 
-export const Label = styled.span`
+export const Label = styled.span<LabelProps>`
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
   max-width: 110px;
+  color: ${({ theme, $isSelected }) =>
+    $isSelected
+      ? theme.colors.v3.text.primary
+      : theme.colors.v3.text.secondary};
 `;
