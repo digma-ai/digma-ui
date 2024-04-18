@@ -31,7 +31,7 @@ const getEnvironmentVariableString = (
   environmentId: string
 ) =>
   isMicrometerProject
-    ? `MANAGEMENT_OPENTELEMETRY_RESOURCE-ATTRIBUTES_digma_environment=${environmentId}`
+    ? `MANAGEMENT_OPENTELEMETRY_RESOURCE-ATTRIBUTES_digma_environment_id=${environmentId}`
     : `OTEL_RESOURCE_ATTRIBUTES=digma.environment.id=${environmentId}`;
 
 export const EnvironmentInstructionsPanel = (
