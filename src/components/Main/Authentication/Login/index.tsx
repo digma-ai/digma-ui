@@ -1,10 +1,10 @@
 import { KeyboardEvent, useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
-import { TextField } from "../../../common/RegistrationDialog/TextField"; // TODO: change when new env will be merged
 import { LockIcon } from "../../../common/icons/12px/LockIcon";
 import { EnvelopeIcon } from "../../../common/icons/16px/EnvelopeIcon";
 import { Spinner } from "../../../common/v3/Spinner";
+import { TextField } from "../../../common/v3/TextField";
 import {
   ButtonsContainer,
   ErrorMessage,
@@ -89,7 +89,7 @@ export const Login = () => {
             <TextField
               icon={EnvelopeIcon}
               placeholder={"Enter your email"}
-              isValid={errors.email ? !errors.email : undefined}
+              isInvalid={Boolean(errors.email)}
               {...field}
             />
           )}
@@ -104,7 +104,7 @@ export const Login = () => {
               icon={LockIcon}
               type="password"
               placeholder={"Enter password"}
-              isValid={errors.password ? !errors.password : undefined}
+              isInvalid={Boolean(errors.password)}
               {...field}
             />
           )}
