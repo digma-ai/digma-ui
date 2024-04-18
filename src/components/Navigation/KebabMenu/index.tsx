@@ -8,10 +8,11 @@ import { DigmaLogoFlatIcon } from "../../common/icons/16px/DigmaLogoFlatIcon";
 import { FourPointedStarIcon } from "../../common/icons/16px/FourPointedStarIcon";
 import { LocalEngineIcon } from "../../common/icons/LocalEngineIcon";
 import { MenuList } from "../common/MenuList";
+import { MenuItem } from "../common/MenuList/types";
 import { Popup } from "../common/Popup";
 import { trackingEvents } from "../tracking";
 import { OpenDocumentationPayload } from "../types";
-import { KebabMenuProps, MenuItem } from "./types";
+import { KebabMenuProps } from "./types";
 
 export const KebabMenu = (props: KebabMenuProps) => {
   const config = useContext(ConfigContext);
@@ -49,6 +50,7 @@ export const KebabMenu = (props: KebabMenuProps) => {
   };
 
   const handleLogoutClick = () => {
+    sendUserActionTrackingEvent(trackingEvents.LOGOUT_CLICKED);
     window.sendMessageToDigma({
       action: globalActions.LOGOUT
     });

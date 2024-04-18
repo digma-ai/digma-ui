@@ -26,7 +26,13 @@ export const trackingEvents = addPrefix(
       "cancel button clicked environment creation wizard",
     FAILED_TO_CREATE_ENVIRONMENT: "failed to create environment",
     CREATE_ENVIRONMENT_WIZARD_ENV_TYPE_SELECTED:
-      "create environment wizard env type selected"
+      "create environment wizard env type selected",
+    CREATE_ENVIRONMENT_CANCEL_CONFIRMATION_CONFIRM_CLICKED:
+      "create environment cancel confirmation confirm clicked",
+    CREATE_ENVIRONMENT_CANCEL_CONFIRMATION_CANCEL_CLICKED:
+      "create environment cancel confirmation cancel clicked",
+    CREATE_ENVIRONMENT_CANCEL_CONFIRMATION_CLOSE_CLICKED:
+      "create environment cancel confirmation close clicked"
   },
   " "
 );
