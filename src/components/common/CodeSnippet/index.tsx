@@ -6,7 +6,9 @@ import {
   atomOneLight
 } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import { DefaultTheme, useTheme } from "styled-components";
-import { CopyIcon } from "../icons/CopyIcon";
+import { CopyIcon } from "../icons/12px/CopyIcon";
+import { IconButton } from "../v3/IconButton";
+import { Tooltip } from "../v3/Tooltip";
 import * as s from "./styles";
 import { CodeSnippetProps, HighlighterTheme } from "./types";
 
@@ -51,12 +53,14 @@ const CodeSnippetComponent = (
       ) : (
         <s.Code>{props.text}</s.Code>
       )}
-      <s.CopyButton
-        onClick={handleCopyButtonClick}
-        icon={{
-          component: CopyIcon
-        }}
-      />
+      <Tooltip title={"Copy"}>
+        <IconButton
+          onClick={handleCopyButtonClick}
+          icon={{
+            component: CopyIcon
+          }}
+        />
+      </Tooltip>
     </s.Container>
   );
 };

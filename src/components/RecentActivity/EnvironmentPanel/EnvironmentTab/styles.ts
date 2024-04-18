@@ -28,7 +28,7 @@ export const Container = styled.li<ContainerProps>`
 
   display: flex;
   cursor: pointer;
-  padding: 0 4px;
+  padding: 0 8px;
   user-select: none;
   align-items: center;
   gap: 4px;

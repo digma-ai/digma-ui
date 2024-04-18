@@ -36,7 +36,6 @@ export const EnvironmentListContainer = styled.div`
 
 export const EnvironmentList = styled.ul`
   display: flex;
-  gap: 12px;
   margin: 0;
   padding: 0;
 `;

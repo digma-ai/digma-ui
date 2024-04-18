@@ -1,12 +1,11 @@
 import styled from "styled-components";
 import { getCodeFont } from "../App/styles";
-import { FloatingIconButton } from "../FloatingIconButton";
 
 export const Container = styled.div`
-  padding: 4px 4px 4px 8px;
+  padding: 6px 8px;
   border-radius: 4px;
   display: flex;
-  gap: 27px;
+  gap: 8px;
   align-items: flex-start;
   justify-content: space-between;
   background: ${({ theme }) => {
@@ -38,8 +37,4 @@ export const Code = styled.code`
         return "#dfe1e5";
     }
   }};
-`;
-
-export const CopyButton = styled(FloatingIconButton)`
-  padding: 3px;
 `;
