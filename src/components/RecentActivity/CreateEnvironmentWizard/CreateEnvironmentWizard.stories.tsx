@@ -19,26 +19,15 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
-export const Default: Story = {
-  args: {
-    onClose: () => {
-      // close
-    }
-  }
-};
+export const Default: Story = {};
 
 export const Errored: Story = {
-  args: {
-    onClose: () => {
-      // close
-    }
-  },
   play: () => {
     setTimeout(() => {
       window.setTimeout(() => {
         window.postMessage({
           type: "digma",
-          action: actions.ENVIRONMENT_CREATED,
+          action: actions.SET_CREATE_ENVIRONMENT_RESULT,
           payload: {
             errors: [
               {
@@ -54,11 +43,6 @@ export const Errored: Story = {
 };
 
 export const WithoutRegisteredUser: Story = {
-  args: {
-    onClose: () => {
-      // close
-    }
-  },
   decorators: [
     (Story) => (
       <ConfigContext.Provider
@@ -79,11 +63,6 @@ export const WithoutRegisteredUser: Story = {
 };
 
 export const IsCentralized: Story = {
-  args: {
-    onClose: () => {
-      // close
-    }
-  },
   decorators: [
     (Story) => (
       <ConfigContext.Provider
