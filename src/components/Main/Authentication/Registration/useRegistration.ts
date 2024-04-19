@@ -43,7 +43,7 @@ export const useRegistration = () => {
     register: (payload: RegisterPayload) => {
       setIsLoading(true);
       window.sendMessageToDigma<RegisterPayload>({
-        action: actions.REGISTRATION,
+        action: actions.REGISTER,
         payload: {
           ...payload
         }

@@ -74,7 +74,7 @@ export const RegisterStep = (props: RegisterStepProps) => {
   const onSubmit = (data: RegistrationFormValues) => {
     sendTrackingEvent(trackingEvents.LOCAL_REGISTRATION_FORM_SUBMITTED);
     window.sendMessageToDigma({
-      action: globalActions.PERSONALIZE_REGISTRATION,
+      action: globalActions.PERSONALIZE_REGISTER,
       payload: {
         ...data,
         ...{

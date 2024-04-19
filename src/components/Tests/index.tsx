@@ -226,7 +226,7 @@ export const Tests = (props: TestsProps) => {
 
   const handleRegistrationSubmit = (formData: RegistrationFormValues) => {
     window.sendMessageToDigma<RegisterPayload>({
-      action: globalActions.PERSONALIZE_REGISTRATION,
+      action: globalActions.PERSONALIZE_REGISTER,
       payload: {
         ...formData,
         scope: "insights view jira ticket info"
