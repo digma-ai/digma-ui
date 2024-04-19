@@ -7,32 +7,42 @@ export const GetEnvironmentIdInstruction = () => {
   const theme = useTheme();
   const themeKind = getThemeKind(theme);
 
+  const steps = [
+    {
+      id: "how-to-setup-menu-item",
+      description: (
+        <span>
+          Click on the environment options menu in the observability panel and
+          select How to setup
+        </span>
+      ),
+      image: (
+        <img src={`/images/howToSetupEnvironmentMenuItem_${themeKind}.svg`} />
+      )
+    },
+    {
+      id: "copy-environment-id",
+      description: (
+        <span>Copy the Environment ID value from the instructions page</span>
+      ),
+      image: <img src={`/images/environmentId_${themeKind}.svg`} />
+    }
+  ];
+
   return (
     <s.Container>
       <s.TitleSection>
         <span>Follow the steps to get your Environment ID</span>
-        <s.Arrow src={"/images/longArrow.svg"} />
       </s.TitleSection>
-      <s.Section>
-        <SectionNumber>1</SectionNumber>
-        <s.SectionContent>
-          <span>
-            Click on hamburger menu next to your Environment in the
-            Observability panel, and choose <s.Term>How to setup</s.Term>
-          </span>
-          <img src={`/images/howToSetupEnvironmentMenuItem_${themeKind}.svg`} />
-        </s.SectionContent>
-      </s.Section>
-      <s.Section>
-        <s.SectionContent>
-          <SectionNumber>2</SectionNumber>
-          <span>
-            On the <s.Term>How to setup your Digma Environment</s.Term> screen
-            you can find your Environment ID
-          </span>
-          <img src={`/images/environmentId_${themeKind}.svg`} />
-        </s.SectionContent>
-      </s.Section>
+      {steps.map((x, i) => (
+        <s.Section key={x.id}>
+          <SectionNumber>{i + 1}</SectionNumber>
+          <s.SectionContent>
+            {x.description}
+            {x.image}
+          </s.SectionContent>
+        </s.Section>
+      ))}
     </s.Container>
   );
 };

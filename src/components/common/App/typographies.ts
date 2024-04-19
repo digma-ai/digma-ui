@@ -2,6 +2,26 @@ import { css } from "styled-components";
 import { Typographies } from "../../../styled";
 
 export const typographies: Typographies = {
+  code: {
+    fontSize: 14,
+    fontWeight: {
+      light: 300,
+      regular: 400,
+      medium: 500,
+      semibold: 600,
+      bold: 700
+    }
+  },
+  subheading: {
+    fontSize: 16,
+    fontWeight: {
+      light: 300,
+      regular: 400,
+      medium: 500,
+      semibold: 600,
+      bold: 700
+    }
+  },
   body: {
     fontSize: 14,
     fontWeight: {
@@ -141,4 +161,14 @@ export const bodySemiboldTypography = css`
   font-size: ${typographies.body.fontSize}px;
   font-weight: ${typographies.body.fontWeight.semibold};
   line-height: ${typographies.body.lineHeight}px;
+`;
+
+export const subheadingBoldTypography = css`
+  font-size: ${typographies.subheading.fontSize}px;
+  font-weight: ${typographies.subheading.fontWeight.bold};
+`;
+
+export const codeRegularTypography = css`
+  font-size: ${typographies.code.fontSize}px;
+  font-weight: ${typographies.code.fontWeight.regular};
 `;

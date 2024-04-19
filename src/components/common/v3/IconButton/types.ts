@@ -1,7 +1,7 @@
 import { ComponentType, MouseEventHandler } from "react";
-import { IconProps } from "../icons/types";
+import { IconProps } from "../../icons/types";
 
-export interface FloatingIconButtonProps {
+export interface IconButtonProps {
   icon: {
     component: ComponentType<IconProps>;
     color?: string;

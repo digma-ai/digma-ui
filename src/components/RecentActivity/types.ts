@@ -73,7 +73,6 @@ export interface Environment {
 
 export interface ExtendedEnvironment extends Environment {
   hasRecentActivity: boolean;
-  isNew?: boolean;
 }
 
 export interface RecentActivityData {
@@ -123,4 +122,10 @@ export interface ErrorResponseData {
 export interface EnvironmentCreatedData {
   errors?: ErrorResponseData[];
   id: string;
+}
+
+export interface EnvironmentInstructionsVisibility {
+  isOpen: boolean;
+  newlyCreatedEnvironmentId?: string;
+  keepOpen: boolean;
 }

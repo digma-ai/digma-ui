@@ -14,7 +14,8 @@ import {
   Loader,
   SubmitButton
 } from "../styles";
-import { LoginFormValues } from "./types";
+import * as s from "./../styles";
+import { LoginFormValues, LoginProps } from "./types";
 import { useLogin } from "./useLogin";
 
 const formDefaultValues: LoginFormValues = {
@@ -22,7 +23,7 @@ const formDefaultValues: LoginFormValues = {
   email: ""
 };
 
-export const Login = () => {
+export const Login = ({ successMessage, onLogin }: LoginProps) => {
   const {
     handleSubmit,
     control,
@@ -59,6 +60,7 @@ export const Login = () => {
   }, [clearErrors, watch]);
 
   const onSubmit = (data: LoginFormValues) => {
+    onLogin();
     login({ email: data.email, password: data.password });
     sendUserActionTrackingEvent("login form submitted");
   };
@@ -119,6 +121,7 @@ export const Login = () => {
           form={"loginForm"}
         />
       </ButtonsContainer>
+      {successMessage && <s.SuccessMessage>{successMessage}</s.SuccessMessage>}
       <InfoMessage>Forgot password? Contact the Digma admin</InfoMessage>
       {isLoading && (
         <Loader>

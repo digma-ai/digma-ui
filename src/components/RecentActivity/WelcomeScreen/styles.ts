@@ -4,7 +4,7 @@ import {
   subscriptRegularTypography
 } from "../../common/App/typographies";
 
-export const NoUserContainer = styled.div`
+export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -14,9 +14,11 @@ export const NoUserContainer = styled.div`
   gap: 12px;
   color: ${({ theme }) => theme.colors.v3.text.primary};
   height: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
 `;
 
-export const Container = styled.div`
+export const TextContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;

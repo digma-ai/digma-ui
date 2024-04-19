@@ -16,9 +16,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const WithoutTicket: Story = {
-  args: {}
-};
+export const WithoutTicket: Story = {};
 
 export const WithTicket: Story = {
   args: {

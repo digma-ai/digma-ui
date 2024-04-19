@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { getCodeFont } from "../../common/App/styles";
 import {
   bodyMediumTypography,
   footnoteRegularTypography,
@@ -146,10 +147,11 @@ export const EnvironmentIdLabel = styled.span`
 `;
 
 export const EnvironmentIdContainer = styled.div`
+  ${({ theme }) => getCodeFont(theme.codeFont)}
+
   display: flex;
-  gap: 8px;
   align-items: center;
-  padding: 6px 8px;
+  padding-left: 8px;
   border-radius: 4px;
   border: 1px solid ${({ theme }) => theme.colors.v3.surface.gray};
   max-width: 299px;
@@ -162,15 +164,6 @@ export const EnvironmentId = styled.span`
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-`;
-
-export const CopyButton = styled.button`
-  color: ${({ theme }) => theme.colors.v3.icon.secondary};
-  border: none;
-  background: none;
-  padding: 0;
-  display: flex;
-  cursor: pointer;
 `;
 
 export const CloseButton = styled(Button)`

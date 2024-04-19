@@ -9,6 +9,7 @@ import { isBoolean } from "../../typeGuards/isBoolean";
 import { ChangeEnvironmentPayload } from "../../types";
 import { groupBy } from "../../utils/groupBy";
 import { ConfigContext } from "../common/App/ConfigContext";
+import { Environment } from "../common/App/types";
 import { RegistrationDialog } from "../common/RegistrationDialog";
 import { RegistrationFormValues } from "../common/RegistrationDialog/types";
 import { ListIcon } from "../common/icons/ListIcon";
@@ -18,6 +19,7 @@ import { DeleteEnvironmentConfirmation } from "./DeleteEnvironmentConfirmation";
 import { Digmathon } from "./Digmathon";
 import { EnvironmentInstructionsPanel } from "./EnvironmentInstructionsPanel";
 import { EnvironmentPanel } from "./EnvironmentPanel";
+import { getEnvironmentTabId } from "./EnvironmentPanel/EnvironmentTab/getEnvironmentTabIdPrefix";
 import { ViewMode } from "./EnvironmentPanel/types";
 import { LiveView } from "./LiveView";
 import { NoData } from "./NoData";
@@ -30,6 +32,7 @@ import { Overlay } from "./common/Overlay";
 import * as s from "./styles";
 import {
   EntrySpan,
+  EnvironmentInstructionsVisibility,
   ExtendedEnvironment,
   RecentActivityProps,
   ViewModeOption
@@ -50,6 +53,22 @@ const viewModeOptions: ViewModeOption[] = [
     icon: ListIcon
   }
 ];
+
+const changeSelectedEnvironment = (
+  environments: Environment[] | undefined,
+  environmentId: string
+) => {
+  const environmentToSelect = environments?.find((x) => x.id === environmentId);
+
+  if (environmentToSelect) {
+    window.sendMessageToDigma<ChangeEnvironmentPayload>({
+      action: globalActions.CHANGE_ENVIRONMENT,
+      payload: {
+        environment: environmentToSelect.id
+      }
+    });
+  }
+};
 
 export const RecentActivity = (props: RecentActivityProps) => {
   const [selectedEnvironment, setSelectedEnvironment] =
@@ -84,9 +103,12 @@ export const RecentActivity = (props: RecentActivityProps) => {
   } = useDigmathonProgressData();
   const previousIsDigmathonCompleted = usePrevious(isDigmathonCompleted);
   const [
-    areEnvironmentInstructionsVisible,
-    setAreEnvironmentInstructionsVisible
-  ] = useState(false);
+    environmentInstructionsVisibility,
+    setEnvironmentInstructionsVisibility
+  ] = useState<EnvironmentInstructionsVisibility>({
+    isOpen: false,
+    keepOpen: false
+  });
 
   const environmentActivities = useMemo(
     () => (data ? groupBy(data.entries, (x) => x.environment) : {}),
@@ -106,24 +128,18 @@ export const RecentActivity = (props: RecentActivityProps) => {
   );
 
   useEffect(() => {
-    setSelectedEnvironment((selectedEnvironment) => {
-      const environmentToSelect = environments.find(
-        (x) => x.id === selectedEnvironment?.id
-      );
+    if (selectedEnvironment?.id) {
+      setEnvironmentInstructionsVisibility((state) => ({
+        isOpen: selectedEnvironment.id === state.newlyCreatedEnvironmentId,
+        keepOpen: false
+      }));
 
-      if (environmentToSelect) {
-        environmentToSelect.isNew = environmentToSelect?.hasRecentActivity
-          ? false
-          : selectedEnvironment?.isNew;
-        return environmentToSelect;
+      const environmentTabId = getEnvironmentTabId(selectedEnvironment.id);
+      const environmentTabElement = document.getElementById(environmentTabId);
+      if (environmentTabElement) {
+        environmentTabElement.scrollIntoView(false);
       }
-
-      return environments[0];
-    });
-  }, [environments]);
-
-  useEffect(() => {
-    setAreEnvironmentInstructionsVisible(false);
+    }
   }, [selectedEnvironment?.id]);
 
   useEffect(() => {
@@ -161,6 +177,18 @@ export const RecentActivity = (props: RecentActivityProps) => {
   }, [previousIsDigmathonCompleted, isDigmathonCompleted]);
 
   useEffect(() => {
+    const environmentToSelect = environments.find(
+      (x) => x.id === config.environment?.id
+    );
+
+    if (environmentToSelect) {
+      setSelectedEnvironment(environmentToSelect);
+    } else {
+      setSelectedEnvironment(environments[0]);
+    }
+  }, [config.environment?.id, environments]);
+
+  useEffect(() => {
     if (
       previousUserRegistrationEmail !== config.userRegistrationEmail &&
       isRegistrationInProgress
@@ -175,20 +203,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
   ]);
 
   const handleEnvironmentSelect = (environment: ExtendedEnvironment) => {
-    setSelectedEnvironment(environment);
-
-    const environmentToSelect = config.environments?.find(
-      (x) => x.id === environment.id
-    );
-
-    if (environmentToSelect) {
-      window.sendMessageToDigma<ChangeEnvironmentPayload>({
-        action: globalActions.CHANGE_ENVIRONMENT,
-        payload: {
-          environment: environmentToSelect.id
-        }
-      });
-    }
+    changeSelectedEnvironment(config.environments, environment.id);
   };
 
   const handleSpanLinkClick = (span: EntrySpan) => {
@@ -243,11 +258,17 @@ export const RecentActivity = (props: RecentActivityProps) => {
   };
 
   const handleEnvironmentSetupInstructionsShow = () => {
-    setAreEnvironmentInstructionsVisible(true);
+    setEnvironmentInstructionsVisibility({
+      isOpen: true,
+      keepOpen: true
+    });
   };
 
   const handleEnvironmentSetupInstructionsClose = () => {
-    setAreEnvironmentInstructionsVisible(false);
+    setEnvironmentInstructionsVisibility({
+      isOpen: false,
+      keepOpen: false
+    });
   };
 
   const handleDigmathonModeButtonClick = () => {
@@ -282,15 +303,12 @@ export const RecentActivity = (props: RecentActivityProps) => {
   };
 
   const renderContent = () => {
-    if (
-      selectedEnvironment &&
-      (selectedEnvironment.isNew || areEnvironmentInstructionsVisible)
-    ) {
+    if (selectedEnvironment && environmentInstructionsVisibility.isOpen) {
       return (
         <EnvironmentInstructionsPanel
           environment={selectedEnvironment}
           onClose={
-            areEnvironmentInstructionsVisible
+            environmentInstructionsVisibility.keepOpen
               ? handleEnvironmentSetupInstructionsClose
               : undefined
           }
@@ -348,8 +366,12 @@ export const RecentActivity = (props: RecentActivityProps) => {
         if (newEnvId) {
           const newEnv = environments.find((x) => x.id == newEnvId);
           if (newEnv) {
-            newEnv.isNew = true;
-            setSelectedEnvironment(newEnv);
+            changeSelectedEnvironment(config.environments, newEnv.id);
+            setEnvironmentInstructionsVisibility({
+              isOpen: true,
+              newlyCreatedEnvironmentId: newEnv.id,
+              keepOpen: false
+            });
           }
         }
         setShowCreationWizard(false);

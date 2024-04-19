@@ -2,18 +2,19 @@ import copy from "copy-to-clipboard";
 import { useContext, useState } from "react";
 import { useTheme } from "styled-components";
 import { actions as globalActions } from "../../../actions";
-import { CENTRAL_ON_PREM_INSTALLATION_GUIDE_URL } from "../../../constants";
+import { INSTRUMENTATION_DOCUMENTATION_URL } from "../../../constants";
 import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
-import { getHostnameFromURL } from "../../../utils/getHostNameFromURL";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { getThemeKind } from "../../common/App/styles";
 import { EnvironmentType } from "../../common/App/types";
+import { CodeSnippet } from "../../common/CodeSnippet";
 import { Link } from "../../common/Link";
-import { CopyIcon } from "../../common/icons/12px/CopyIcon";
+import { CopyIcon } from "../../common/icons/16px/CopyIcon";
 import { DesktopIcon } from "../../common/icons/DesktopIcon";
 import { InfinityIcon } from "../../common/icons/InfinityIcon";
 import { PlayButtonWithCursorIcon } from "../../common/icons/PlayButtonWithCursorIcon";
+import { IconButton } from "../../common/v3/IconButton";
 import { Tooltip } from "../../common/v3/Tooltip";
 import { SetupOrgDigmaPanel } from "../SetupOrgDigmaPanel";
 import { Overlay } from "../common/Overlay";
@@ -31,7 +32,7 @@ const getEnvironmentVariableString = (
   environmentId: string
 ) =>
   isMicrometerProject
-    ? `MANAGEMENT_OPENTELEMETRY_RESOURCE-ATTRIBUTES_digma_environment=${environmentId}`
+    ? `MANAGEMENT_OPENTELEMETRY_RESOURCE-ATTRIBUTES_digma_environment_id=${environmentId}`
     : `OTEL_RESOURCE_ATTRIBUTES=digma.environment.id=${environmentId}`;
 
 export const EnvironmentInstructionsPanel = (
@@ -42,8 +43,6 @@ export const EnvironmentInstructionsPanel = (
   const theme = useTheme();
   const themeKind = getThemeKind(theme);
   const config = useContext(ConfigContext);
-  const hostname =
-    getHostnameFromURL(config.digmaApiUrl) || "[DIGMA_BACKEND_URL]";
   const environmentVariableString = getEnvironmentVariableString(
     config.isMicrometerProject,
     props.environment.id
@@ -51,9 +50,8 @@ export const EnvironmentInstructionsPanel = (
 
   const { addToRunConfig, state } = useAddToRunConfig(props.environment.id);
 
-  const handleOrgDigmaSetupGuideLinkClick = () => {
-    // setIsOrgDigmaSetupGuideVisible(true);
-    openURLInDefaultBrowser(CENTRAL_ON_PREM_INSTALLATION_GUIDE_URL);
+  const handleDocumentationLinkClick = () => {
+    openURLInDefaultBrowser(INSTRUMENTATION_DOCUMENTATION_URL);
   };
 
   const handleAddToRunConfigLinkClick = () => {
@@ -72,14 +70,10 @@ export const EnvironmentInstructionsPanel = (
     setIsOrgDigmaSetupGuideVisible(false);
   };
 
-  const close = () => {
+  const handleCloseButtonClick = () => {
     if (props.onClose) {
       props.onClose();
     }
-  };
-
-  const handleCloseButtonClick = () => {
-    close();
   };
 
   if (isOrgDigmaSetupGuideVisible) {
@@ -112,20 +106,48 @@ export const EnvironmentInstructionsPanel = (
               <s.EnvironmentId>{environmentId}</s.EnvironmentId>
             </Tooltip>
             <Tooltip title={"Copy"}>
-              <s.CopyButton onClick={handleCopyButtonClick}>
-                <CopyIcon />
-              </s.CopyButton>
+              <IconButton
+                onClick={handleCopyButtonClick}
+                icon={{
+                  component: CopyIcon,
+                  size: 16
+                }}
+              />
             </Tooltip>
           </s.EnvironmentIdContainer>
         </s.HeaderContentContainer>
-        <s.CloseButton
-          onClick={handleCloseButtonClick}
-          buttonType={"secondary"}
-          label={"Close"}
-        />
+        {props.onClose && (
+          <s.CloseButton
+            onClick={handleCloseButtonClick}
+            buttonType={"secondary"}
+            label={"Close"}
+          />
+        )}
       </>
     );
   };
+
+  const renderActions = () => (
+    <s.ActionContainer>
+      <s.AddToConfigContainer>
+        <s.Link onClick={handleAddToRunConfigLinkClick}>
+          Add to the active run config
+        </s.Link>
+        {state === AddToRunConfigState.success && (
+          <s.AddToConfigSuccessMessage>
+            Successfully added
+          </s.AddToConfigSuccessMessage>
+        )}
+        {state === AddToRunConfigState.failure && (
+          <s.AddToConfigFailureMessage>
+            Failed to add
+          </s.AddToConfigFailureMessage>
+        )}
+      </s.AddToConfigContainer>
+      <s.Link onClick={handleTroubleshootLinkClick}>Troubleshoot</s.Link>
+    </s.ActionContainer>
+  );
+
   const environmentTypesContent: Record<
     EnvironmentType,
     EnvironmentInstructionsPanelContent
@@ -141,27 +163,8 @@ export const EnvironmentInstructionsPanel = (
               Set up the following environment variables when running your code
               to tag the observability data with this run config:
             </span>
-            <s.CodeSection text={environmentVariableString} />
-            <s.ActionContainer>
-              <s.AddToConfigContainer>
-                <s.Link onClick={handleAddToRunConfigLinkClick}>
-                  Add to the active run config
-                </s.Link>
-                {state === AddToRunConfigState.success && (
-                  <s.AddToConfigSuccessMessage>
-                    Successfully added
-                  </s.AddToConfigSuccessMessage>
-                )}
-                {state === AddToRunConfigState.failure && (
-                  <s.AddToConfigFailureMessage>
-                    Failed to add
-                  </s.AddToConfigFailureMessage>
-                )}
-              </s.AddToConfigContainer>
-              <s.Link onClick={handleTroubleshootLinkClick}>
-                Troubleshoot
-              </s.Link>
-            </s.ActionContainer>
+            <CodeSnippet text={environmentVariableString} />
+            {renderActions()}
           </>
         )
       },
@@ -188,20 +191,13 @@ export const EnvironmentInstructionsPanel = (
         content: (
           <>
             <span>
-              Add the following to your build/prod deployment scripts,
-              don&apos;t forget to set the <code>SERVICE_NAME</code> variable
+              Please see our{" "}
+              <Link onClick={handleDocumentationLinkClick}>
+                Digma Developer Guide
+              </Link>{" "}
+              for the best way to instrument your application and send data to
+              Digma. Use the following environment ID: {props.environment.id}
             </span>
-            <s.CodeSection
-              text={`curl --create-dirs -O -L --output-dir ./otel https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v2.1.0/opentelemetry-javaagent.jar
-
-curl --create-dirs -O -L --output-dir ./otel https://github.com/digma-ai/otel-java-instrumentation/releases/latest/download/digma-otel-agent-extension.jar
-
-export JAVA_TOOL_OPTIONS="-javaagent:/otel/opentelemetry-javaagent.jar -Dotel.exporter.otlp.endpoint=http://${hostname}:5050 -Dotel.javaagent.extensions=/otel/digma-otel-agent-extension.jar -Dotel.metrics.exporter=none -Dotel.logs.exporter=none -Dotel.exporter.otlp.protocol=grpc"
-
-export OTEL_SERVICE_NAME={--ENTER YOUR SERVICE NAME HERE--}
-export OTEL_RESOURCE_ATTRIBUTES=digma.environment.id="${props.environment.id}"`}
-              language={"bash"}
-            />
           </>
         )
       },
@@ -233,14 +229,6 @@ export OTEL_RESOURCE_ATTRIBUTES=digma.environment.id="${props.environment.id}"`}
   return (
     <s.Container>
       <s.Header>{renderHeaderContent(content.title)}</s.Header>
-      {props.environment.type === "Public" && (
-        <span>
-          CI/Prod environments require Digma to be installed in your
-          organization. Follow{" "}
-          <Link onClick={handleOrgDigmaSetupGuideLinkClick}>these steps</Link>{" "}
-          to set that up.
-        </span>
-      )}
       <s.ContentContainer>
         <s.Section>
           <s.SectionHeader>

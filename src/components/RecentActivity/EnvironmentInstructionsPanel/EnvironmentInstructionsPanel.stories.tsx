@@ -16,7 +16,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
-export const Local: Story = {
+export const Private: Story = {
   args: {
     environment: {
       name: "MY_ENV",
@@ -31,7 +31,7 @@ export const Local: Story = {
   }
 };
 
-export const Shared: Story = {
+export const Public: Story = {
   args: {
     environment: {
       name: "MY_ENV",
