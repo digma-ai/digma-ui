@@ -8,7 +8,7 @@ export const RecalculateBar = () => {
         <RecalculateStartedIcon size={16} color={"currentColor"} />
       </s.IconContainer>
       <s.Title>Rechecking insight</s.Title>
-      <s.Info>Check here for updates</s.Info>
+      <s.Info>Trigger new actions for this asset</s.Info>
     </s.Container>
   );
 };

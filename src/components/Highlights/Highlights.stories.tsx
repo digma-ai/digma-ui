@@ -2,6 +2,7 @@ import { Meta, StoryObj } from "@storybook/react";
 
 import { Highlights } from ".";
 import { actions as mainActions } from "../Main/actions";
+import { mockedPerformanceData } from "./Performance/mockData";
 import { mockedTopIssuesData } from "./TopIssues/mockData";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
@@ -28,8 +29,13 @@ export const Default: Story = {
           action: mainActions.SET_HIGHLIGHTS_TOP_ISSUES_DATA,
           payload: mockedTopIssuesData
         });
-      });
-    }, 1000);
+        window.postMessage({
+          type: "digma",
+          action: mainActions.SET_HIGHLIGHTS_PERFORMANCE_DATA,
+          payload: mockedPerformanceData
+        });
+      }, 1000);
+    });
   }
 };
 
@@ -42,7 +48,12 @@ export const Empty: Story = {
           action: mainActions.SET_HIGHLIGHTS_TOP_ISSUES_DATA,
           payload: { topInsights: [] }
         });
-      });
-    }, 1000);
+        window.postMessage({
+          type: "digma",
+          action: mainActions.SET_HIGHLIGHTS_PERFORMANCE_DATA,
+          payload: { performance: [] }
+        });
+      }, 1000);
+    });
   }
 };

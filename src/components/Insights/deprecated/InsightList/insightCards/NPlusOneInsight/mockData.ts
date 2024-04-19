@@ -24,24 +24,7 @@ export const mockedNPlusOneInsight: SpaNPlusOneInsight = {
   isDismissed: false,
   isDismissible: true,
   importance: 2,
-  span: {
-    name: "OwnerValidation.ValidateOwner",
-    displayName: "OwnerValidation.ValidateOwner",
-    instrumentationLibrary:
-      "io.opentelemetry.opentelemetry-instrumentation-annotations-1.16",
-    spanCodeObjectId:
-      "span:io.opentelemetry.opentelemetry-instrumentation-annotations-1.16$_$OwnerValidation.ValidateOwner",
-    methodCodeObjectId:
-      "org.springframework.samples.petclinic.domain.OwnerValidation$_$ValidateOwner",
-    kind: "Internal",
-    codeObjectId:
-      "org.springframework.samples.petclinic.domain.OwnerValidation$_$ValidateOwner"
-  },
-  occurrences: 100,
   traceId: "00D37A4E7208E0F6E89AA7E2E37446A6",
-  clientSpanName: "select * from users where id = :id",
-  clientSpanCodeObjectId:
-    "span:OwnerController$_$1D138649EB4FFA92C0E3C8103404F2",
   duration: {
     value: 1.64,
     unit: "sec",
@@ -82,9 +65,7 @@ export const mockedNPlusOneInsight: SpaNPlusOneInsight = {
       "span:io.opentelemetry.opentelemetry-instrumentation-annotations-1.16$_$OwnerValidation.ValidateOwner",
     methodCodeObjectId:
       "org.springframework.samples.petclinic.domain.OwnerValidation$_$ValidateOwner",
-    kind: "Internal",
-    codeObjectId:
-      "org.springframework.samples.petclinic.domain.OwnerValidation$_$ValidateOwner"
+    kind: "Internal"
   },
   shortDisplayInfo: {
     title: "",
@@ -103,8 +84,6 @@ export const mockedNPlusOneInsight: SpaNPlusOneInsight = {
   environment: "BOB-LAPTOP[LOCAL]",
   severity: 0.0,
   isRecalculateEnabled: false,
-  prefixedCodeObjectId:
-    "method:org.springframework.samples.petclinic.domain.OwnerValidation$_$ValidateOwner",
   customStartTime: null,
   actualStartTime: "2023-07-27T08:23:56.500827Z"
 };

@@ -20,13 +20,11 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     selectedEnvironment: {
-      originalName: "DEV",
+      id: "DEV",
       name: "DEV",
-      type: "local"
+      type: "Private"
     }
   }
 };
 
-export const Disabled: Story = {
-  args: {}
-};
+export const Disabled: Story = {};

@@ -8,6 +8,7 @@ import { DigmaLogoFlatIcon } from "../../common/icons/16px/DigmaLogoFlatIcon";
 import { FourPointedStarIcon } from "../../common/icons/16px/FourPointedStarIcon";
 import { LocalEngineIcon } from "../../common/icons/LocalEngineIcon";
 import { MenuList } from "../common/MenuList";
+import { MenuItem } from "../common/MenuList/types";
 import { Popup } from "../common/Popup";
 import { trackingEvents } from "../tracking";
 import { OpenDocumentationPayload } from "../types";
@@ -48,37 +49,48 @@ export const KebabMenu = (props: KebabMenuProps) => {
     props.onClose();
   };
 
+  const handleLogoutClick = () => {
+    sendUserActionTrackingEvent(trackingEvents.LOGOUT_CLICKED);
+    window.sendMessageToDigma({
+      action: globalActions.LOGOUT
+    });
+    props.onClose();
+  };
+
+  const items: Array<MenuItem> = [
+    {
+      id: "onboarding",
+      label: "Digma Onboarding",
+      icon: <DigmaLogoFlatIcon size={16} color={"currentColor"} />,
+      onClick: handleOnboardingClick
+    },
+    {
+      id: "localEngine",
+      label: "Local Engine",
+      icon: (
+        <LocalEngineIcon size={16} isActive={isDigmaEngineRunning(config)} />
+      ),
+      onClick: handleLocalEngineClick
+    },
+    {
+      id: "insightsOverview",
+      label: "Insights Overview",
+      icon: <FourPointedStarIcon size={16} color={"currentColor"} />,
+      onClick: handleInsightsOverviewClick
+    }
+  ];
+
+  if (config.backendInfo?.centralize) {
+    items.push({
+      id: "logout",
+      label: "Logout",
+      onClick: handleLogoutClick
+    });
+  }
+
   return (
     <Popup>
-      <MenuList
-        showGroupNames={false}
-        showGroupDividers={true}
-        items={[
-          {
-            id: "onboarding",
-            label: "Digma Onboarding",
-            icon: <DigmaLogoFlatIcon size={16} color={"currentColor"} />,
-            onClick: handleOnboardingClick
-          },
-          {
-            id: "localEngine",
-            label: "Local Engine",
-            icon: (
-              <LocalEngineIcon
-                size={16}
-                isActive={isDigmaEngineRunning(config)}
-              />
-            ),
-            onClick: handleLocalEngineClick
-          },
-          {
-            id: "insightsOverview",
-            label: "Insights Overview",
-            icon: <FourPointedStarIcon size={16} color={"currentColor"} />,
-            onClick: handleInsightsOverviewClick
-          }
-        ]}
-      />
+      <MenuList showGroupNames={false} showGroupDividers={true} items={items} />
     </Popup>
   );
 };

@@ -1,32 +1,39 @@
+import copy from "copy-to-clipboard";
 import { useContext, useState } from "react";
 import { useTheme } from "styled-components";
 import { actions as globalActions } from "../../../actions";
-import { CENTRAL_ON_PREM_INSTALLATION_GUIDE_URL } from "../../../constants";
+import { INSTRUMENTATION_DOCUMENTATION_URL } from "../../../constants";
 import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
-import { getHostnameFromURL } from "../../../utils/getHostNameFromURL";
+import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { getThemeKind } from "../../common/App/styles";
 import { EnvironmentType } from "../../common/App/types";
 import { CodeSnippet } from "../../common/CodeSnippet";
 import { Link } from "../../common/Link";
+import { CopyIcon } from "../../common/icons/16px/CopyIcon";
 import { DesktopIcon } from "../../common/icons/DesktopIcon";
 import { InfinityIcon } from "../../common/icons/InfinityIcon";
 import { PlayButtonWithCursorIcon } from "../../common/icons/PlayButtonWithCursorIcon";
+import { IconButton } from "../../common/v3/IconButton";
+import { Tooltip } from "../../common/v3/Tooltip";
 import { SetupOrgDigmaPanel } from "../SetupOrgDigmaPanel";
-import { Overlay } from "../styles";
+import { Overlay } from "../common/Overlay";
+import { trackingEvents } from "../tracking";
 import * as s from "./styles";
 import {
+  AddToRunConfigState,
   EnvironmentInstructionsPanelContent,
   EnvironmentInstructionsPanelProps
 } from "./types";
+import { useAddToRunConfig } from "./useAddToRunConfig";
 
 const getEnvironmentVariableString = (
   isMicrometerProject: boolean,
-  environmentName: string
+  environmentId: string
 ) =>
   isMicrometerProject
-    ? `MANAGEMENT_OPENTELEMETRY_RESOURCE-ATTRIBUTES_digma_environment=${environmentName}`
-    : `OTEL_RESOURCE_ATTRIBUTES=digma.environment=${environmentName}`;
+    ? `MANAGEMENT_OPENTELEMETRY_RESOURCE-ATTRIBUTES_digma_environment_id=${environmentId}`
+    : `OTEL_RESOURCE_ATTRIBUTES=digma.environment.id=${environmentId}`;
 
 export const EnvironmentInstructionsPanel = (
   props: EnvironmentInstructionsPanelProps
@@ -36,22 +43,20 @@ export const EnvironmentInstructionsPanel = (
   const theme = useTheme();
   const themeKind = getThemeKind(theme);
   const config = useContext(ConfigContext);
-  const hostname =
-    getHostnameFromURL(config.digmaApiUrl) || "[DIGMA_BACKEND_URL]";
   const environmentVariableString = getEnvironmentVariableString(
     config.isMicrometerProject,
-    props.environment.originalName
+    props.environment.id
   );
 
-  const handleOrgDigmaSetupGuideLinkClick = () => {
-    // setIsOrgDigmaSetupGuideVisible(true);
-    openURLInDefaultBrowser(CENTRAL_ON_PREM_INSTALLATION_GUIDE_URL);
+  const { addToRunConfig, state } = useAddToRunConfig(props.environment.id);
+
+  const handleDocumentationLinkClick = () => {
+    openURLInDefaultBrowser(INSTRUMENTATION_DOCUMENTATION_URL);
   };
 
   const handleAddToRunConfigLinkClick = () => {
-    if (props.onAddEnvironmentToRunConfig) {
-      props.onAddEnvironmentToRunConfig(props.environment.originalName);
-    }
+    sendUserActionTrackingEvent(trackingEvents.ADD_TO_RUN_CONFIG_CLICKED);
+    addToRunConfig();
   };
 
   const handleTroubleshootLinkClick = () => {
@@ -63,6 +68,12 @@ export const EnvironmentInstructionsPanel = (
 
   const handleOrgDigmaSetupClose = () => {
     setIsOrgDigmaSetupGuideVisible(false);
+  };
+
+  const handleCloseButtonClick = () => {
+    if (props.onClose) {
+      props.onClose();
+    }
   };
 
   if (isOrgDigmaSetupGuideVisible) {
@@ -77,11 +88,71 @@ export const EnvironmentInstructionsPanel = (
     );
   }
 
+  const renderHeaderContent = (title: string) => {
+    const environmentId = props.environment.id;
+
+    const handleCopyButtonClick = () => {
+      copy(environmentId);
+    };
+
+    return (
+      <>
+        <s.HeaderContentContainer>
+          {title}
+          <s.Divider />
+          <s.EnvironmentIdLabel>Environment ID</s.EnvironmentIdLabel>
+          <s.EnvironmentIdContainer>
+            <Tooltip title={environmentId}>
+              <s.EnvironmentId>{environmentId}</s.EnvironmentId>
+            </Tooltip>
+            <Tooltip title={"Copy"}>
+              <IconButton
+                onClick={handleCopyButtonClick}
+                icon={{
+                  component: CopyIcon,
+                  size: 16
+                }}
+              />
+            </Tooltip>
+          </s.EnvironmentIdContainer>
+        </s.HeaderContentContainer>
+        {props.onClose && (
+          <s.CloseButton
+            onClick={handleCloseButtonClick}
+            buttonType={"secondary"}
+            label={"Close"}
+          />
+        )}
+      </>
+    );
+  };
+
+  const renderActions = () => (
+    <s.ActionContainer>
+      <s.AddToConfigContainer>
+        <s.Link onClick={handleAddToRunConfigLinkClick}>
+          Add to the active run config
+        </s.Link>
+        {state === AddToRunConfigState.success && (
+          <s.AddToConfigSuccessMessage>
+            Successfully added
+          </s.AddToConfigSuccessMessage>
+        )}
+        {state === AddToRunConfigState.failure && (
+          <s.AddToConfigFailureMessage>
+            Failed to add
+          </s.AddToConfigFailureMessage>
+        )}
+      </s.AddToConfigContainer>
+      <s.Link onClick={handleTroubleshootLinkClick}>Troubleshoot</s.Link>
+    </s.ActionContainer>
+  );
+
   const environmentTypesContent: Record<
     EnvironmentType,
     EnvironmentInstructionsPanelContent
   > = {
-    local: {
+    Private: {
       icon: DesktopIcon,
       title: "How to setup your Digma Environment",
       instrumentation: {
@@ -93,23 +164,7 @@ export const EnvironmentInstructionsPanel = (
               to tag the observability data with this run config:
             </span>
             <CodeSnippet text={environmentVariableString} />
-            <s.AddToConfigContainer>
-              <s.Link onClick={handleAddToRunConfigLinkClick}>
-                Add to the active run config
-              </s.Link>
-
-              {props.environment.additionToConfigResult === "success" && (
-                <s.AddToConfigSuccessMessage>
-                  Successfully added
-                </s.AddToConfigSuccessMessage>
-              )}
-              {props.environment.additionToConfigResult === "failure" && (
-                <s.AddToConfigFailureMessage>
-                  Failed to add
-                </s.AddToConfigFailureMessage>
-              )}
-            </s.AddToConfigContainer>
-            <s.Link onClick={handleTroubleshootLinkClick}>Troubleshoot</s.Link>
+            {renderActions()}
           </>
         )
       },
@@ -128,7 +183,7 @@ export const EnvironmentInstructionsPanel = (
         )
       }
     },
-    shared: {
+    Public: {
       icon: InfinityIcon,
       title: "Connecting your CI/Prod Environment",
       instrumentation: {
@@ -136,20 +191,13 @@ export const EnvironmentInstructionsPanel = (
         content: (
           <>
             <span>
-              Add the following to your build/prod deployment scripts,
-              don&apos;t forget to set the <code>SERVICE_NAME</code> variable
+              Please see our{" "}
+              <Link onClick={handleDocumentationLinkClick}>
+                Digma Developer Guide
+              </Link>{" "}
+              for the best way to instrument your application and send data to
+              Digma. Use the following environment ID: {props.environment.id}
             </span>
-            <CodeSnippet
-              text={`curl --create-dirs -O -L --output-dir ./otel https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v2.1.0/opentelemetry-javaagent.jar
-
-curl --create-dirs -O -L --output-dir ./otel https://github.com/digma-ai/otel-java-instrumentation/releases/latest/download/digma-otel-agent-extension.jar
-
-export JAVA_TOOL_OPTIONS="-javaagent:/otel/opentelemetry-javaagent.jar -Dotel.exporter.otlp.endpoint=http://${hostname}:5050 -Dotel.javaagent.extensions=/otel/digma-otel-agent-extension.jar -Dotel.metrics.exporter=none -Dotel.logs.exporter=none -Dotel.exporter.otlp.protocol=grpc"
-
-export OTEL_SERVICE_NAME={--ENTER YOUR SERVICE NAME HERE--}
-export OTEL_RESOURCE_ATTRIBUTES=digma.environment=${props.environment.originalName}`}
-              language={"bash"}
-            />
           </>
         )
       },
@@ -180,20 +228,7 @@ export OTEL_RESOURCE_ATTRIBUTES=digma.environment=${props.environment.originalNa
 
   return (
     <s.Container>
-      <s.Header>
-        <s.IconContainer>
-          <content.icon size={16} color={"currentColor"} />
-        </s.IconContainer>
-        {content.title}
-      </s.Header>
-      {props.environment.type === "shared" && (
-        <span>
-          CI/Prod environments require Digma to be installed in your
-          organization. Follow{" "}
-          <Link onClick={handleOrgDigmaSetupGuideLinkClick}>these steps</Link>{" "}
-          to set that up.
-        </span>
-      )}
+      <s.Header>{renderHeaderContent(content.title)}</s.Header>
       <s.ContentContainer>
         <s.Section>
           <s.SectionHeader>

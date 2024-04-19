@@ -56,8 +56,6 @@ export const mockedErrorsInsight: CodeObjectErrorsInsight = {
   environment: "BOB-LAPTOP[LOCAL]",
   severity: 0,
   isRecalculateEnabled: false,
-  prefixedCodeObjectId:
-    "method:Sample.MoneyTransfer.API.Controllers.TransferController$_$TransferFunds(TransferRequest)",
   customStartTime: null,
   actualStartTime: "2023-06-26T13:53:53.645Z",
   isDismissed: false,

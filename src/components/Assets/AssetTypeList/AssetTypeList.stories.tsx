@@ -20,7 +20,6 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     searchQuery: "",
-    services: [],
     data: {
       assetCategories: [
         {
@@ -55,7 +54,6 @@ export const Default: Story = {
 export const Empty: Story = {
   args: {
     searchQuery: "",
-    services: [],
     data: {
       assetCategories: []
     }

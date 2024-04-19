@@ -20,12 +20,14 @@ type Story = StoryObj<typeof meta>;
 
 export const WaitingForData: Story = {
   args: {
-    isLoading: true
+    type: "loading",
+    text: "Detected issues will appear here"
   }
 };
 
 export const NoData: Story = {
   args: {
-    isLoading: false
+    type: "noData",
+    text: "No Issues available at the moment"
   }
 };

@@ -20,8 +20,7 @@ export const useTopIssuesData = () => {
       payload: {
         query: {
           scopedCodeObjectId: config.scope?.span?.spanCodeObjectId || null,
-          environments:
-            config.environments?.map((env) => env.originalName) || []
+          environments: config.environments?.map((env) => env.id) || []
         }
       }
     });

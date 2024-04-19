@@ -3,10 +3,8 @@ import { Helmet } from "react-helmet";
 import { useTheme } from "styled-components";
 import { actions as globalActions } from "../../actions";
 import { dispatcher } from "../../dispatcher";
-import { getFeatureFlagValue } from "../../featureFlags";
 import { platform } from "../../platform";
 import { isString } from "../../typeGuards/isString";
-import { FeatureFlag } from "../../types";
 import { openURLInDefaultBrowser } from "../../utils/actions/openURLInDefaultBrowser";
 import { sendTrackingEvent } from "../../utils/actions/sendTrackingEvent";
 import { formatEnvironmentName } from "../../utils/formatEnvironmentName";
@@ -36,11 +34,6 @@ export const Dashboard = () => {
   const themeKind = getThemeKind(theme);
   const [environmentName, setEnvironmentName] = useState(
     platform === "Web" ? "" : formatEnvironmentName(environment)
-  );
-
-  const isClientSpansOverallImpactEnabled = getFeatureFlagValue(
-    config,
-    FeatureFlag.IS_DASHBOARD_CLIENT_SPANS_OVERALL_IMPACT_ENABLED
   );
 
   const handleOpenInBrowserLinkClick = () => {
@@ -141,9 +134,7 @@ export const Dashboard = () => {
         ) : (
           <>
             <SlowQueries environment={environment} />
-            {isClientSpansOverallImpactEnabled && (
-              <ClientSpansPerformanceImpact environment={environment} />
-            )}
+            <ClientSpansPerformanceImpact environment={environment} />
           </>
         )}
       </s.ContentContainer>

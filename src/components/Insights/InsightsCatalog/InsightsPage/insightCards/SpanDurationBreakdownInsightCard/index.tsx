@@ -4,7 +4,6 @@ import { getDurationString } from "../../../../../../utils/getDurationString";
 import { getPercentileLabel } from "../../../../../../utils/getPercentileLabel";
 import { Pagination } from "../../../../../common/v3/Pagination";
 import { Tag } from "../../../../../common/v3/Tag";
-import { Tooltip } from "../../../../../common/v3/Tooltip";
 import {
   DurationPercentile,
   SpanDurationBreakdownEntry
@@ -106,6 +105,7 @@ export const SpanDurationBreakdownInsightCard = ({
 
               const name = entry.spanDisplayName;
               const spanCodeObjectId = entry.spanCodeObjectId;
+              const title = getDurationTitle(entry);
 
               return percentile ? (
                 <ListItem
@@ -113,12 +113,12 @@ export const SpanDurationBreakdownInsightCard = ({
                   name={name}
                   onClick={() => handleSpanLinkClick(spanCodeObjectId)}
                   buttons={[
-                    <Tooltip title={getDurationTitle(entry)} key={"duration"}>
-                      <Tag
-                        type={"highlight"}
-                        content={getDurationString(percentile.duration)}
-                      />
-                    </Tooltip>
+                    <Tag
+                      key={"duration"}
+                      title={title}
+                      type={"highlight"}
+                      content={getDurationString(percentile.duration)}
+                    />
                   ]}
                 />
               ) : null;

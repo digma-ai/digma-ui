@@ -1,7 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import { dispatcher } from "../../../../../dispatcher";
-import { getFeatureFlagValue } from "../../../../../featureFlags";
-import { FeatureFlag } from "../../../../../types";
 import { isValidHttpUrl } from "../../../../../utils/isValidUrl";
 import { ConfigContext } from "../../../../common/App/ConfigContext";
 import { JiraTicket } from "../../../../common/JiraTicket";
@@ -9,7 +7,9 @@ import { actions } from "../../../actions";
 import {
   InsightJiraTicketProps,
   InsightsGetDataListQuery,
-  LinkTicketResponse
+  LinkTicketPayload,
+  LinkTicketResponse,
+  UnlinkTicketPayload
 } from "./types";
 
 export const InsightJiraTicket = ({
@@ -27,19 +27,14 @@ export const InsightJiraTicket = ({
   );
   const config = useContext(ConfigContext);
 
-  const isLinkUnlinkInputVisible = Boolean(
-    getFeatureFlagValue(config, FeatureFlag.IS_INSIGHT_TICKET_LINKAGE_ENABLED)
-  );
-
   const linkTicket = (link: string) => {
     setTicketLink(link);
     if (link && isValidHttpUrl(link)) {
-      window.sendMessageToDigma({
+      window.sendMessageToDigma<LinkTicketPayload>({
         action: actions.LINK_TICKET,
         payload: {
-          codeObjectId:
-            relatedInsight?.codeObjectId ?? insight.prefixedCodeObjectId,
-          insightType: relatedInsight?.type ?? insight.type,
+          insightId: relatedInsight?.id || insight.id,
+          insightType: relatedInsight?.type || insight.type,
           ticketLink: link
         }
       });
@@ -49,12 +44,11 @@ export const InsightJiraTicket = ({
   };
 
   const unlinkTicket = () => {
-    window.sendMessageToDigma({
+    window.sendMessageToDigma<UnlinkTicketPayload>({
       action: actions.UNLINK_TICKET,
       payload: {
-        codeObjectId:
-          relatedInsight?.codeObjectId ?? insight.prefixedCodeObjectId,
-        insightType: relatedInsight?.type ?? insight.type
+        insightId: relatedInsight?.id || insight.id,
+        insightType: relatedInsight?.type || insight.type
       }
     });
   };
@@ -106,7 +100,6 @@ export const InsightJiraTicket = ({
       ticketLink={{ link: ticketLink, errorMessage }}
       unlinkTicket={unlinkTicket}
       linkTicket={linkTicket}
-      showLinkButton={isLinkUnlinkInputVisible}
     />
   );
 };

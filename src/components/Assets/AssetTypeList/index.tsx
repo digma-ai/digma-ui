@@ -1,19 +1,10 @@
-import {
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState
-} from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { dispatcher } from "../../../dispatcher";
-import { getFeatureFlagValue } from "../../../featureFlags";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { isEnvironment } from "../../../typeGuards/isEnvironment";
 import { isNull } from "../../../typeGuards/isNull";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { isString } from "../../../typeGuards/isString";
-import { FeatureFlag } from "../../../types";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { AssetFilterQuery } from "../AssetsFilter/types";
 import { NoDataMessage } from "../NoDataMessage";
@@ -42,9 +33,7 @@ const ASSET_TYPE_IDS = [
 
 const getData = (
   filters: AssetFilterQuery | undefined,
-  services: string[] | undefined,
   searchQuery: string,
-  isComplexFilterEnabled: boolean,
   isDirect?: boolean,
   scopedSpanCodeObjectId?: string
 ) => {
@@ -54,9 +43,7 @@ const getData = (
       query: {
         directOnly: isDirect,
         scopedSpanCodeObjectId,
-        ...(isComplexFilterEnabled
-          ? filters || { services: [], operations: [], insights: [] }
-          : { services: services || [] }),
+        ...(filters || { services: [], operations: [], insights: [] }),
         ...(searchQuery.length > 0 ? { displayName: searchQuery } : {})
       }
     }
@@ -75,38 +62,23 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
   const config = useContext(ConfigContext);
   const previousEnvironment = usePrevious(config.environment);
   const refreshTimerId = useRef<number>();
-  const previousServices = usePrevious(props.services);
   const previousFilters = usePrevious(props.filters);
   const previousSearchQuery = usePrevious(props.searchQuery);
   const previousViewScope = usePrevious(props.scopeViewOptions);
-  const isComplexFilterEnabled = useMemo(
-    () =>
-      Boolean(
-        getFeatureFlagValue(
-          config,
-          FeatureFlag.IS_ASSETS_COMPLEX_FILTER_ENABLED
-        )
-      ),
-    [config]
-  );
 
   const refreshData = useCallback(
     () =>
       getData(
         props.filters,
-        props.services,
         props.searchQuery,
-        isComplexFilterEnabled,
         props.scopeViewOptions?.isDirect,
         props.scopeViewOptions?.scopedSpanCodeObjectId
       ),
     [
-      isComplexFilterEnabled,
       props.filters,
       props.scopeViewOptions?.isDirect,
       props.scopeViewOptions?.scopedSpanCodeObjectId,
-      props.searchQuery,
-      props.services
+      props.searchQuery
     ]
   );
 
@@ -115,9 +87,7 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
   }, [refreshData, props.setRefresher]);
 
   const areAnyFiltersApplied = checkIfAnyFiltersApplied(
-    isComplexFilterEnabled,
     props.filters,
-    props.services,
     props.searchQuery
   );
 
@@ -153,10 +123,7 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
   useEffect(() => {
     if (
       (isEnvironment(previousEnvironment) &&
-        previousEnvironment.originalName !==
-          config.environment?.originalName) ||
-      (Array.isArray(previousServices) &&
-        previousServices !== props.services) ||
+        previousEnvironment.id !== config.environment?.id) ||
       (previousFilters && previousFilters !== props.filters) ||
       (isString(previousSearchQuery) &&
         previousSearchQuery !== props.searchQuery) ||
@@ -165,16 +132,14 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
       refreshData();
     }
   }, [
-    config.environment?.originalName,
+    config.environment?.id,
     previousEnvironment,
     previousFilters,
     previousSearchQuery,
-    previousServices,
     previousViewScope,
     props.filters,
     props.scopeViewOptions,
     props.searchQuery,
-    props.services,
     refreshData
   ]);
 

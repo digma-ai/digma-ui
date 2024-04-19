@@ -4,6 +4,10 @@ import { Tooltip } from "../../../../../../common/Tooltip";
 import { Description } from "../../../../../styles";
 import * as s from "./styles";
 
+/**
+ * @deprecated
+ * safe to delete after 2024-06-05
+ */
 export const Criticality = (props: { value: number }) => (
   <s.Container>
     <Description>Criticality</Description>

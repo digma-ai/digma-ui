@@ -1,12 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { actions as globalActions } from "../../../../../../../actions";
-import { getFeatureFlagValue } from "../../../../../../../featureFlags";
 import { usePrevious } from "../../../../../../../hooks/usePrevious";
 import { isString } from "../../../../../../../typeGuards/isString";
-import {
-  FeatureFlag,
-  GetInsightStatsPayload
-} from "../../../../../../../types";
+import { GetInsightStatsPayload } from "../../../../../../../types";
 import { sendUserActionTrackingEvent } from "../../../../../../../utils/actions/sendUserActionTrackingEvent";
 import { Spinner } from "../../../../../../Navigation/CodeButtonMenu/Spinner";
 import { ConfigContext } from "../../../../../../common/App/ConfigContext";
@@ -83,9 +79,7 @@ export const InsightCard = (props: InsightCardProps) => {
   ]);
 
   const handleRecheckButtonClick = () => {
-    props.insight.prefixedCodeObjectId &&
-      props.onRecalculate &&
-      props.onRecalculate(props.insight.id);
+    props.onRecalculate && props.onRecalculate(props.insight.id);
     setIsRecalculatingStarted(true);
     // TODO: handle Recheck response and refresh the insight data
     setInsightStatus(InsightStatus.InEvaluation);
@@ -96,8 +90,7 @@ export const InsightCard = (props: InsightCardProps) => {
       props.insight.spanInfo &&
       props.onOpenHistogram &&
       props.onOpenHistogram(
-        props.insight.spanInfo.instrumentationLibrary,
-        props.insight.spanInfo.name,
+        props.insight.spanInfo.spanCodeObjectId,
         props.insight.type,
         props.insight.spanInfo.displayName
       );
@@ -111,21 +104,9 @@ export const InsightCard = (props: InsightCardProps) => {
         new Date(props.insight.customStartTime).valueOf() ===
         0;
 
-    if (
-      getFeatureFlagValue(config, FeatureFlag.IS_RECALCULATE_BUBBLE_ENABLED)
-    ) {
-      return {
-        showTimer: areStartTimesEqual,
-        showBanner: insightStatus === InsightStatus.InEvaluation
-      };
-    }
-
     return {
       showTimer: areStartTimesEqual,
-      showBanner:
-        !areStartTimesEqual &&
-        props.insight.actualStartTime &&
-        (props.insight.customStartTime || isRecalculatingStarted)
+      showBanner: insightStatus === InsightStatus.InEvaluation
     };
   };
 

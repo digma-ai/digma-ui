@@ -11,6 +11,10 @@ import { JiraButton } from "../common/JiraButton";
 import * as s from "./styles";
 import { BottleneckInsightProps } from "./types";
 
+/**
+ * @deprecated
+ * safe to delete after 2024-06-05
+ */
 export const BottleneckInsight = (props: BottleneckInsightProps) => {
   const handleEndpointLinkClick = (spanCodeObjectId: string) => {
     props.onAssetLinkClick(spanCodeObjectId, props.insight.type);

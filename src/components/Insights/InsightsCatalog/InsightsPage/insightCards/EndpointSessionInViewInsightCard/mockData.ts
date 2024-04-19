@@ -34,8 +34,7 @@ export const mockedEndpointSessionInViewInsight: EndpointSessionInViewInsight =
           spanCodeObjectId:
             "span:io.opentelemetry.spring-webmvc-6.0$_$Render owners/ownerDetails",
           methodCodeObjectId: "",
-          kind: "Internal",
-          codeObjectId: ""
+          kind: "Internal"
         },
         clientSpan: {
           name: "6AFAE587D3FEC813CD353F4CC91076",
@@ -45,8 +44,7 @@ export const mockedEndpointSessionInViewInsight: EndpointSessionInViewInsight =
           spanCodeObjectId:
             "span:io.opentelemetry.jdbc$_$6AFAE587D3FEC813CD353F4CC91076",
           methodCodeObjectId: "",
-          kind: "Client",
-          codeObjectId: ""
+          kind: "Client"
         },
         traceId: "937BDA41E6AAEAF9B140E3A7FD02D4B0"
       },
@@ -58,8 +56,7 @@ export const mockedEndpointSessionInViewInsight: EndpointSessionInViewInsight =
           spanCodeObjectId:
             "span:io.opentelemetry.spring-webmvc-6.0$_$Render owners/ownerDetails 2",
           methodCodeObjectId: "",
-          kind: "Internal",
-          codeObjectId: ""
+          kind: "Internal"
         },
         clientSpan: {
           name: "6AFAE587D3FEC813CD353F4CC910762",
@@ -69,8 +66,7 @@ export const mockedEndpointSessionInViewInsight: EndpointSessionInViewInsight =
           spanCodeObjectId:
             "span:io.opentelemetry.jdbc$_$6AFAE587D3FEC813CD353F4CC910762",
           methodCodeObjectId: "",
-          kind: "Client",
-          codeObjectId: ""
+          kind: "Client"
         },
         traceId: "937BDA41E6AAEAF9B140E3A7FD02D4B02"
       },
@@ -82,8 +78,7 @@ export const mockedEndpointSessionInViewInsight: EndpointSessionInViewInsight =
           spanCodeObjectId:
             "span:io.opentelemetry.spring-webmvc-6.0$_$Render owners/ownerDetails 3",
           methodCodeObjectId: "",
-          kind: "Internal",
-          codeObjectId: ""
+          kind: "Internal"
         },
         clientSpan: {
           name: "6AFAE587D3FEC813CD353F4CC910763",
@@ -93,8 +88,7 @@ export const mockedEndpointSessionInViewInsight: EndpointSessionInViewInsight =
           spanCodeObjectId:
             "span:io.opentelemetry.jdbc$_$6AFAE587D3FEC813CD353F4CC910763",
           methodCodeObjectId: "",
-          kind: "Client",
-          codeObjectId: ""
+          kind: "Client"
         },
         traceId: "937BDA41E6AAEAF9B140E3A7FD02D4B03"
       },
@@ -106,8 +100,7 @@ export const mockedEndpointSessionInViewInsight: EndpointSessionInViewInsight =
           spanCodeObjectId:
             "span:io.opentelemetry.spring-webmvc-6.0$_$Render owners/ownerDetails 4",
           methodCodeObjectId: "",
-          kind: "Internal",
-          codeObjectId: ""
+          kind: "Internal"
         },
         clientSpan: {
           name: "6AFAE587D3FEC813CD353F4CC910764",
@@ -117,16 +110,12 @@ export const mockedEndpointSessionInViewInsight: EndpointSessionInViewInsight =
           spanCodeObjectId:
             "span:io.opentelemetry.jdbc$_$6AFAE587D3FEC813CD353F4CC910764",
           methodCodeObjectId: "",
-          kind: "Client",
-          codeObjectId: ""
+          kind: "Client"
         },
         traceId: "937BDA41E6AAEAF9B140E3A7FD02D4B04"
       }
     ],
     scope: InsightScope.EntrySpan,
-    endpointSpan: "HTTP GET /owners/{ownerId}",
-    spanCodeObjectId:
-      "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /owners/{ownerId}",
     route: "epHTTP:HTTP GET /owners/{ownerId}",
     serviceName: "spring-petclinic",
     spanInfo: {
@@ -137,9 +126,7 @@ export const mockedEndpointSessionInViewInsight: EndpointSessionInViewInsight =
         "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /owners/{ownerId}",
       methodCodeObjectId:
         "method:org.springframework.samples.petclinic.owner.OwnerController$_$showOwner",
-      kind: "Server",
-      codeObjectId:
-        "org.springframework.samples.petclinic.owner.OwnerController$_$showOwner"
+      kind: "Server"
     },
     shortDisplayInfo: {
       title: "",
@@ -158,8 +145,6 @@ export const mockedEndpointSessionInViewInsight: EndpointSessionInViewInsight =
     environment: "BOB-LAPTOP[LOCAL]",
     severity: 0.0,
     isRecalculateEnabled: false,
-    prefixedCodeObjectId:
-      "method:org.springframework.samples.petclinic.owner.OwnerController$_$showOwner",
     customStartTime: null,
     actualStartTime: "2023-08-10T08:59:14.093073Z"
   };

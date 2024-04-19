@@ -1,4 +1,5 @@
 import { CodeSnippet } from "../../../common/CodeSnippet";
+import { GetEnvironmentIdInstruction } from "./GetEnvironmentIdInstruction.tsx";
 import { PageContent } from "./Page/types";
 
 export const runDigmaWithCommandLine: PageContent = {
@@ -40,7 +41,7 @@ export const runDigmaWithCommandLine: PageContent = {
   </build>
 </profile>`}
             language={"xml"}
-          ></CodeSnippet>
+          />
           <span>
             To collect data with Digma when you run your application from
             command line you should now run:
@@ -114,13 +115,16 @@ curl --create-dirs -O -L --output-dir ./otel https://github.com/digma-ai/otel-ja
 
 export JAVA_TOOL_OPTIONS="-javaagent:/otel/opentelemetry-javaagent.jar -Dotel.exporter.otlp.endpoint=http://localhost:5050 -Dotel.javaagent.extensions=/otel/digma-otel-agent-extension.jar -Dotel.metrics.exporter=none -Dotel.logs.exporter=none -Dotel.exporter.otlp.protocol=grpc"
 export OTEL_SERVICE_NAME={--ENTER YOUR SERVICE NAME HERE--}
-export OTEL_RESOURCE_ATTRIBUTES=digma.environment=LOCAL
+export OTEL_RESOURCE_ATTRIBUTES=digma.environment.id={--ENTER YOUR ENVIRONMENT ID HERE--}
 
 java app.jar`}
             language={"bash"}
           />
         </>
       )
+    },
+    {
+      content: <GetEnvironmentIdInstruction />
     }
   ]
 };

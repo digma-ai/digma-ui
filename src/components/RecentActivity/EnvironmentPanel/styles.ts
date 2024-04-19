@@ -6,7 +6,7 @@ export const Container = styled.div`
   width: 100%;
   gap: 4px;
   padding: 0 12px;
-  height: 36px;
+  height: 44px;
   box-sizing: border-box;
   background: ${({ theme }) => theme.colors.tabPanel.background};
   box-shadow: ${({ theme }) => {
@@ -23,15 +23,19 @@ export const Container = styled.div`
 export const EnvironmentListContainer = styled.div`
   display: flex;
   flex-grow: 1;
-  overflow: hidden;
+  overflow-x: auto;
   scroll-behavior: smooth;
   gap: 12px;
   height: 100%;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export const EnvironmentList = styled.ul`
   display: flex;
-  gap: 12px;
   margin: 0;
   padding: 0;
 `;

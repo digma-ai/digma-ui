@@ -1,4 +1,5 @@
 import { CodeSnippet } from "../../../common/CodeSnippet";
+import { GetEnvironmentIdInstruction } from "./GetEnvironmentIdInstruction.tsx";
 import { PageContent } from "./Page/types";
 
 export const runDigmaWithDocker: PageContent = {
@@ -58,7 +59,7 @@ curl --create-dirs -O -L --output-dir ./otel https://github.com/digma-ai/otel-ja
     environment:
       - JAVA_TOOL_OPTIONS=-javaagent:/otel/opentelemetry-javaagent.jar -Dotel.exporter.otlp.endpoint=http://host.docker.internal:5050 -Dotel.javaagent.extensions=/otel/digma-otel-agent-extension.jar -Dotel.metrics.exporter=none -Dotel.logs.exporter=none -Dotel.exporter.otlp.protocol=grpc
       - OTEL_SERVICE_NAME=#[your-service]
-      - OTEL_RESOURCE_ATTRIBUTES=digma.environment=DOCKER_LOCAL
+      - OTEL_RESOURCE_ATTRIBUTES=digma.environment.id=[ENVIRONMENT_ID]
       - OTEL_METRICS_EXPORTER=none
     extra_hosts:
         - "host.docker.internal:host-gateway"`}
@@ -79,6 +80,9 @@ curl --create-dirs -O -L --output-dir ./otel https://github.com/digma-ai/otel-ja
           language={"bash"}
         />
       )
+    },
+    {
+      content: <GetEnvironmentIdInstruction />
     }
   ]
 };

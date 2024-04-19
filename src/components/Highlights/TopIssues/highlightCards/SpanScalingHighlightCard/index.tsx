@@ -1,12 +1,14 @@
 import { Row, createColumnHelper } from "@tanstack/react-table";
 import { useContext } from "react";
+import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { ConfigContext } from "../../../../common/App/ConfigContext";
 import { Table } from "../../../common/Table";
 import { TableText } from "../../../common/TableText";
+import { handleEnvironmentTableRowClick } from "../../../handleEnvironmentTableRowClick";
+import { trackingEvents } from "../../../tracking";
 import { HighlightCard } from "../../common/HighlightCard";
 import { EnvironmentData, SpanScalingMetrics } from "../../types";
 import { addEnvironmentColumns } from "../addEnvironmentColumns";
-import { handleEnvironmentTableRowClick } from "../goToEnvironmentIssues";
 import { SpanScalingHighlightCardProps } from "./types";
 
 export const SpanScalingHighlightCard = ({
@@ -36,10 +38,16 @@ export const SpanScalingHighlightCard = ({
   const handleTableRowClick = (
     row: Row<EnvironmentData<SpanScalingMetrics>>
   ) => {
+    sendUserActionTrackingEvent(
+      trackingEvents.TOP_ISSUES_CARD_TABLE_ROW_CLICKED,
+      {
+        insightType: data.insightType
+      }
+    );
     handleEnvironmentTableRowClick(
       config.environments,
-      row.original.environmentName,
-      data.insightType
+      row.original.environmentId,
+      "insights"
     );
   };
 

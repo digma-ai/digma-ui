@@ -27,3 +27,13 @@ export interface MarkInsightTypesAsViewedPayload {
 export interface RecalculatePayload {
   id: string;
 }
+
+export interface OpenLiveViewPayload {
+  codeObjectId: string;
+}
+
+export interface OpenHistogramPayload {
+  spanCodeObjectId: string;
+  insightType: InsightType;
+  displayName: string;
+}

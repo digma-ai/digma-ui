@@ -57,9 +57,7 @@ const notifications: Notification[] = [
           "span:io.opentelemetry.tomcat-10.0$_$HTTP GET /SampleInsights/NPlusOneWithoutInternalSpan",
         methodCodeObjectId:
           "method:org.springframework.samples.petclinic.sample.SampleInsightsController$_$genNPlusOneWithoutInternalSpan",
-        kind: "Server",
-        codeObjectId:
-          "org.springframework.samples.petclinic.sample.SampleInsightsController$_$genNPlusOneWithoutInternalSpan"
+        kind: "Server"
       },
       codeObjectId:
         "org.springframework.samples.petclinic.sample.SampleInsightsController$_$genNPlusOneWithoutInternalSpan"
@@ -83,8 +81,7 @@ const notifications: Notification[] = [
         instrumentationLibrary: "SampleInsightsController",
         spanCodeObjectId: "span:SampleInsightsController$_$WaitForLock",
         methodCodeObjectId: null,
-        kind: null,
-        codeObjectId: null
+        kind: null
       },
       codeObjectId: "SampleInsightsController$_$WaitForLock"
     },
@@ -107,8 +104,7 @@ const notifications: Notification[] = [
         instrumentationLibrary: "SampleInsightsController",
         spanCodeObjectId: "span:SampleInsightsController$_$WaitForLock",
         methodCodeObjectId: null,
-        kind: null,
-        codeObjectId: null
+        kind: null
       },
       codeObjectId: "SampleInsightsController$_$WaitForLock"
     },
@@ -131,8 +127,7 @@ const notifications: Notification[] = [
         instrumentationLibrary: "SampleInsightsController",
         spanCodeObjectId: "span:SampleInsightsController$_$WaitForLock",
         methodCodeObjectId: null,
-        kind: null,
-        codeObjectId: null
+        kind: null
       },
       codeObjectId: "SampleInsightsController$_$WaitForLock"
     },
@@ -155,8 +150,7 @@ const notifications: Notification[] = [
         instrumentationLibrary: "SampleInsightsController",
         spanCodeObjectId: "span:SampleInsightsController$_$WaitForLock",
         methodCodeObjectId: null,
-        kind: null,
-        codeObjectId: null
+        kind: null
       },
       codeObjectId: "SampleInsightsController$_$WaitForLock"
     },
@@ -179,8 +173,7 @@ const notifications: Notification[] = [
         instrumentationLibrary: "SampleInsightsController",
         spanCodeObjectId: "span:SampleInsightsController$_$WaitForLock",
         methodCodeObjectId: null,
-        kind: null,
-        codeObjectId: null
+        kind: null
       },
       codeObjectId: "SampleInsightsController$_$WaitForLock"
     },
@@ -203,8 +196,7 @@ const notifications: Notification[] = [
         instrumentationLibrary: "SampleInsightsController",
         spanCodeObjectId: "span:SampleInsightsController$_$WaitForLock",
         methodCodeObjectId: null,
-        kind: null,
-        codeObjectId: null
+        kind: null
       },
       codeObjectId: "SampleInsightsController$_$WaitForLock"
     },
@@ -227,8 +219,7 @@ const notifications: Notification[] = [
         instrumentationLibrary: "SampleInsightsController",
         spanCodeObjectId: "span:SampleInsightsController$_$WaitForLock",
         methodCodeObjectId: null,
-        kind: null,
-        codeObjectId: null
+        kind: null
       },
       codeObjectId: "SampleInsightsController$_$WaitForLock"
     },
@@ -251,8 +242,7 @@ const notifications: Notification[] = [
         instrumentationLibrary: "SampleInsightsController",
         spanCodeObjectId: "span:SampleInsightsController$_$WaitForLock",
         methodCodeObjectId: null,
-        kind: null,
-        codeObjectId: null
+        kind: null
       },
       codeObjectId: "SampleInsightsController$_$WaitForLock"
     },
@@ -275,8 +265,7 @@ const notifications: Notification[] = [
         instrumentationLibrary: "SampleInsightsController",
         spanCodeObjectId: "span:SampleInsightsController$_$WaitForLock",
         methodCodeObjectId: null,
-        kind: null,
-        codeObjectId: null
+        kind: null
       },
       codeObjectId: "SampleInsightsController$_$WaitForLock"
     },

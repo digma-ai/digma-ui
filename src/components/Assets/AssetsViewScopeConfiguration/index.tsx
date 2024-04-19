@@ -20,7 +20,7 @@ export const AssetsViewScopeConfiguration = ({
   useEffect(() => {
     const isEntryPoint = !currentScope || currentScope.span?.role === "Entry";
 
-    setViewMode(isEntryPoint ? "children" : "descendants");
+    setViewMode(isEntryPoint ? "descendants" : "children");
 
     onAssetViewChange({
       scopedSpanCodeObjectId: currentScope?.span?.spanCodeObjectId,

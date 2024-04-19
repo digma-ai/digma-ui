@@ -1,7 +1,7 @@
 import { PercentileKey } from "./types";
 
 export const SLACK_WORKSPACE_URL =
-  "https://join.slack.com/t/continuous-feedback/shared_invite/zt-1hk5rbjow-yXOIxyyYOLSXpCZ4RXstgA";
+  "https://join.slack.com/t/continuous-feedback/shared_invite/zt-2gsif7wdy-6Jf17HIJESc2tknT5gybtw";
 
 export const GETTING_STARTED_VIDEO_URL =
   "https://www.youtube.com/watch?v=iXUeazxCVvU";
@@ -14,6 +14,9 @@ export const SETUP_PLUGIN_TO_ORGANIZATION_DIGMA_URL =
 
 export const CENTRAL_ON_PREM_INSTALLATION_GUIDE_URL =
   "https://docs.digma.ai/digma-developer-guide/installation/central-on-prem-install";
+
+export const INSTRUMENTATION_DOCUMENTATION_URL =
+  "https://docs.digma.ai/digma-developer-guide/instrumentation";
 
 export const PERCENTILES: {
   label: string;

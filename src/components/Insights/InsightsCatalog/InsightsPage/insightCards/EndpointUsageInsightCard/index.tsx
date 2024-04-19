@@ -49,7 +49,7 @@ export const EndpointUsageInsightCard = ({
   onGoToSpan,
   isMarkAsReadButtonEnabled
 }: EndpointUsageInsightCardProps) => {
-  const valueString = getValueString(insight.maxCallsIn1Min);
+  const valueString = `${getValueString(insight.maxCallsIn1Min)}/min`;
 
   return (
     <InsightCard
@@ -61,7 +61,7 @@ export const EndpointUsageInsightCard = ({
               {getDescription(insight.type)}
             </s.DescriptionColumn>
             <KeyValue label={"Throughput"}>
-              <Tag content={`${valueString}/min`} />
+              <Tag content={valueString} title={valueString} />
             </KeyValue>
           </ColumnsContainer>
         </s.ContentContainer>

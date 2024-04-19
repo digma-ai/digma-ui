@@ -27,41 +27,46 @@ export const mockedSpaNPlusOneHighlightData: HighlightData<SpaNPlusOneMetrics> =
       instrumentationLibrary: "instrumentationLibrary",
       spanCodeObjectId: "spanCodeObjectId",
       methodCodeObjectId: "methodCodeObjectId",
-      kind: "kind",
-      codeObjectId: null
+      kind: "kind"
     },
     environments: [
       {
+        environmentId: "1",
         environmentName: "Dev",
         insightStatus: InsightStatus.Active,
         criticality: 0.8,
         metrics: mockedSpaNPlusOneInsights
       },
       {
+        environmentId: "2",
         environmentName: "Staging",
         insightStatus: InsightStatus.Active,
         criticality: 0.8,
         metrics: mockedSpaNPlusOneInsights
       },
       {
+        environmentId: "3",
         environmentName: "Production",
         insightStatus: InsightStatus.Active,
         criticality: 0.8,
         metrics: mockedSpaNPlusOneInsights
       },
       {
+        environmentId: "4",
         environmentName: "Env1",
         insightStatus: InsightStatus.Active,
         criticality: 0.8,
         metrics: mockedSpaNPlusOneInsights
       },
       {
+        environmentId: "5",
         environmentName: "Env2",
         insightStatus: InsightStatus.Active,
         criticality: 0.8,
         metrics: mockedSpaNPlusOneInsights
       },
       {
+        environmentId: "6",
         environmentName: "Env3",
         insightStatus: InsightStatus.Active,
         criticality: 0.8,

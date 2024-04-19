@@ -8,12 +8,10 @@ import {
 } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
 import { dispatcher } from "../../../dispatcher";
-import { getFeatureFlagValue } from "../../../featureFlags";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { isEnvironment } from "../../../typeGuards/isEnvironment";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { isString } from "../../../typeGuards/isString";
-import { FeatureFlag } from "../../../types";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { DeploymentType } from "../../common/App/types";
 import { EmptyState } from "../../common/EmptyState";
@@ -124,30 +122,15 @@ const getSortingCriterionInfo = (
     [SORTING_CRITERION.PERFORMANCE_IMPACT]: {
       label: "Performance impact",
       defaultOrder: SORTING_ORDER.DESC
-    },
-    [SORTING_CRITERION.OVERALL_IMPACT]: {
-      label: "Overall impact",
-      defaultOrder: SORTING_ORDER.DESC
     }
   };
 
   return sortingCriterionInfoMap[sortingCriterion];
 };
 
-const getSortingCriteria = (
-  isImpactHidden: boolean,
-  isOverallImpactHidden: boolean
-) =>
+const getSortingCriteria = (isImpactHidden: boolean) =>
   Object.values(SORTING_CRITERION).filter(
-    (x) =>
-      !(
-        (isImpactHidden &&
-          [
-            SORTING_CRITERION.PERFORMANCE_IMPACT,
-            SORTING_CRITERION.OVERALL_IMPACT
-          ].includes(x)) ||
-        (isOverallImpactHidden && x === SORTING_CRITERION.OVERALL_IMPACT)
-      )
+    (x) => !(isImpactHidden && x === SORTING_CRITERION.PERFORMANCE_IMPACT)
   );
 
 const getData = (
@@ -156,8 +139,6 @@ const getData = (
   sorting: Sorting,
   searchQuery: string,
   filters: AssetFilterQuery | undefined,
-  services: string[] | undefined,
-  isComplexFilterEnabled: boolean,
   isDirect?: boolean,
   scopedSpanCodeObjectId?: string
 ) => {
@@ -175,13 +156,11 @@ const getData = (
         ...(searchQuery && searchQuery.length > 0
           ? { displayName: searchQuery }
           : {}),
-        ...(isComplexFilterEnabled
-          ? filters || {
-              services: [],
-              operations: [],
-              insights: []
-            }
-          : { services: services || [] })
+        ...(filters || {
+          services: [],
+          operations: [],
+          insights: []
+        })
       }
     }
   });
@@ -217,19 +196,8 @@ export const AssetList = (props: AssetListProps) => {
   const refreshTimerId = useRef<number>();
   const previousEnvironment = usePrevious(config.environment);
   const previousAssetTypeId = usePrevious(props.assetTypeId);
-  const previousServices = usePrevious(props.services);
   const previousFilters = usePrevious(props.filters);
   const previousViewScope = usePrevious(props.scopeViewOptions);
-  const isComplexFilterEnabled = useMemo(
-    () =>
-      Boolean(
-        getFeatureFlagValue(
-          config,
-          FeatureFlag.IS_ASSETS_COMPLEX_FILTER_ENABLED
-        )
-      ),
-    [config]
-  );
 
   const refreshData = useCallback(() => {
     getData(
@@ -238,20 +206,16 @@ export const AssetList = (props: AssetListProps) => {
       sorting,
       props.searchQuery,
       props.filters,
-      props.services,
-      isComplexFilterEnabled,
       props.scopeViewOptions?.isDirect,
       props.scopeViewOptions?.scopedSpanCodeObjectId
     );
   }, [
-    isComplexFilterEnabled,
     page,
     props.assetTypeId,
     props.filters,
     props.scopeViewOptions?.isDirect,
     props.scopeViewOptions?.scopedSpanCodeObjectId,
     props.searchQuery,
-    props.services,
     sorting
   ]);
 
@@ -263,24 +227,15 @@ export const AssetList = (props: AssetListProps) => {
     () =>
       !(
         config.backendInfo?.deploymentType === DeploymentType.HELM &&
-        config.environment?.type === "shared"
+        config.environment?.type === "Public"
       ),
     [config.backendInfo?.deploymentType, config.environment?.type]
   );
 
-  const isOverallImpactHidden = Boolean(
-    getFeatureFlagValue(config, FeatureFlag.IS_ASSETS_OVERALL_IMPACT_HIDDEN)
-  );
-
-  const sortingCriteria = getSortingCriteria(
-    isImpactHidden,
-    isOverallImpactHidden
-  );
+  const sortingCriteria = getSortingCriteria(isImpactHidden);
 
   const areAnyFiltersApplied = checkIfAnyFiltersApplied(
-    isComplexFilterEnabled,
     props.filters,
-    props.services,
     props.searchQuery
   );
 
@@ -315,36 +270,31 @@ export const AssetList = (props: AssetListProps) => {
     if (
       (isNumber(previousPage) && previousPage !== page) ||
       (isEnvironment(previousEnvironment) &&
-        previousEnvironment.originalName !==
-          config.environment?.originalName) ||
+        previousEnvironment.id !== config.environment?.id) ||
       (previousSorting && previousSorting !== sorting) ||
       (isString(previousSearchQuery) &&
         previousSearchQuery !== props.searchQuery) ||
       (isString(previousAssetTypeId) &&
         previousAssetTypeId !== props.assetTypeId) ||
-      (Array.isArray(previousServices) &&
-        previousServices !== props.services) ||
       (previousFilters && previousFilters !== props.filters) ||
       previousViewScope !== props.scopeViewOptions
     ) {
       refreshData();
     }
   }, [
-    config.environment?.originalName,
+    config.environment?.id,
     page,
     previousAssetTypeId,
     previousEnvironment,
     previousFilters,
     previousPage,
     previousSearchQuery,
-    previousServices,
     previousSorting,
     previousViewScope,
     props.assetTypeId,
     props.filters,
     props.scopeViewOptions,
     props.searchQuery,
-    props.services,
     refreshData,
     sorting
   ]);
@@ -373,10 +323,7 @@ export const AssetList = (props: AssetListProps) => {
   useEffect(() => {
     if (
       isImpactHidden &&
-      [
-        SORTING_CRITERION.PERFORMANCE_IMPACT,
-        SORTING_CRITERION.OVERALL_IMPACT
-      ].includes(sorting.criterion)
+      sorting.criterion === SORTING_CRITERION.PERFORMANCE_IMPACT
     ) {
       setSorting({
         criterion: SORTING_CRITERION.CRITICAL_INSIGHTS,
@@ -388,7 +335,7 @@ export const AssetList = (props: AssetListProps) => {
   useEffect(() => {
     setPage(0);
   }, [
-    config.environment?.originalName,
+    config.environment?.id,
     props.searchQuery,
     sorting,
     props.assetTypeId,
@@ -398,7 +345,7 @@ export const AssetList = (props: AssetListProps) => {
   useEffect(() => {
     listRef.current?.scrollTo(0, 0);
   }, [
-    config.environment?.originalName,
+    config.environment?.id,
     props.searchQuery,
     sorting,
     page,
@@ -464,7 +411,6 @@ export const AssetList = (props: AssetListProps) => {
                 onAssetLinkClick={handleAssetLinkClick}
                 sortingCriterion={sorting.criterion}
                 isImpactHidden={isImpactHidden}
-                isOverallImpactHidden={isOverallImpactHidden}
               />
             );
           })}

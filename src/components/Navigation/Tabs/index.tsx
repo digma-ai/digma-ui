@@ -1,7 +1,5 @@
 import { useContext } from "react";
-import { getFeatureFlagValue } from "../../../featureFlags";
 import { isNumber } from "../../../typeGuards/isNumber";
-import { FeatureFlag } from "../../../types";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { ConfigContextData, Scope } from "../../common/App/types";
@@ -73,17 +71,7 @@ export const Tabs = (props: TabsProps) => {
     }
   };
 
-  const tabs = props.tabs.filter((x) => {
-    if (x.id === "highlights" && !x.isHidden) {
-      return getFeatureFlagValue(config, FeatureFlag.IS_HIGHLIGHTS_TAB_VISIBLE);
-    }
-
-    if (x.id === "analytics" && !x.isHidden) {
-      return getFeatureFlagValue(config, FeatureFlag.IS_ANALYTICS_TAB_VISIBLE);
-    }
-
-    return !x.isHidden;
-  });
+  const tabs = props.tabs.filter((x) => !x.isHidden);
 
   return (
     <s.TabList>

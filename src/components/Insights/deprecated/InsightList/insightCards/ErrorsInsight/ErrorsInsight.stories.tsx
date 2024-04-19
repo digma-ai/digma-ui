@@ -72,8 +72,6 @@ export const Default: Story = {
       environment: "BOB-LAPTOP[LOCAL]",
       severity: 0,
       isRecalculateEnabled: false,
-      prefixedCodeObjectId:
-        "method:Sample.MoneyTransfer.API.Domain.Services.MoneyTransferDomainService$_$TransferFunds(Int64,Int64,Int32)",
       customStartTime: null,
       actualStartTime: "2023-07-03T04:26:43.430Z"
     }

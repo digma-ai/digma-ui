@@ -1,3 +1,4 @@
+import { KebabMenuButtonProps } from "../../../common/KebabMenuButton/types";
 import { ExtendedEnvironment } from "../../types";
 
 export interface TabThemeColors {
@@ -23,10 +24,17 @@ export interface EnvironmentTabProps {
   environment: ExtendedEnvironment;
   isSelected: boolean;
   onClick: (environment: ExtendedEnvironment) => void;
-  onEnvironmentDelete: (environment: string) => void;
+  onEnvironmentSetupInstructionsShow: (environmentId: string) => void;
+  onEnvironmentDelete: (environmentId: string) => void;
 }
 
 export interface ContainerProps {
   $isSelected: boolean;
-  $isPending?: boolean;
 }
+
+export type LabelProps = ContainerProps;
+
+export type StyledKebabMenuButtonProps = ContainerProps &
+  KebabMenuButtonProps & {
+    $isMenuOpen: boolean;
+  };

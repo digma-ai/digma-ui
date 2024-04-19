@@ -22,6 +22,7 @@ export type DigmaStatus = {
 export interface BackendInfo {
   applicationVersion: string;
   deploymentType: DeploymentType;
+  centralize: boolean;
 }
 
 export enum DeploymentType {
@@ -30,10 +31,10 @@ export enum DeploymentType {
   DOCKER_EXTENSION = "DockerExtension"
 }
 
-export type EnvironmentType = "local" | "shared";
+export type EnvironmentType = "Public" | "Private";
 
 export interface Environment {
-  originalName: string;
+  id: string;
   name: string;
   type: EnvironmentType | null;
 }
@@ -107,6 +108,7 @@ export interface ConfigContextData {
   isDigmathonModeEnabled: boolean;
   userId: string;
   isDigmathonGameFinished: boolean;
+  userInfo?: UserInfo;
 }
 
 export interface InsightStats {
@@ -118,4 +120,8 @@ export interface InsightStats {
   issuesInsightsCount: number;
   analyticsInsightsCount: number;
   unreadInsightsCount: number;
+}
+
+export interface UserInfo {
+  id?: string;
 }

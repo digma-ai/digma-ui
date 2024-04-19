@@ -1,13 +1,17 @@
 import { ForwardedRef, forwardRef } from "react";
+import { Tooltip } from "../Tooltip";
 import * as s from "./styles";
 import { TagProps } from "./types";
 
-const TagComponent = (props: TagProps, ref: ForwardedRef<HTMLDivElement>) => {
-  return (
-    <s.Container className={props.className} $type={props.type} ref={ref}>
-      <s.ValueContainer>{props.content}</s.ValueContainer>
-    </s.Container>
-  );
-};
+const TagComponent = (
+  { className, type, content, title }: TagProps,
+  ref: ForwardedRef<HTMLDivElement>
+) => (
+  <s.Container className={className} $type={type} ref={ref}>
+    <Tooltip title={title} isDisabled={!title}>
+      <s.ValueContainer>{content}</s.ValueContainer>
+    </Tooltip>
+  </s.Container>
+);
 
 export const Tag = forwardRef(TagComponent);

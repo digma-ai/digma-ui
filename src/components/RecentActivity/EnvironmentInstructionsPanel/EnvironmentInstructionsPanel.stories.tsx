@@ -16,15 +16,14 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
-export const Local: Story = {
+export const Private: Story = {
   args: {
     environment: {
       name: "MY_ENV",
-      originalName: "MY_ENV",
+      id: "MY_ENV#ID#1",
       isPending: true,
       hasRecentActivity: false,
-      additionToConfigResult: null,
-      type: "local",
+      type: "Private",
       token: null,
       serverApiUrl: null,
       isOrgDigmaSetupFinished: false
@@ -32,15 +31,14 @@ export const Local: Story = {
   }
 };
 
-export const Shared: Story = {
+export const Public: Story = {
   args: {
     environment: {
       name: "MY_ENV",
-      originalName: "MY_ENV",
+      id: "MY_ENV#ID#1",
       isPending: true,
       hasRecentActivity: false,
-      additionToConfigResult: null,
-      type: "shared",
+      type: "Public",
       token: "token_string",
       serverApiUrl: "https://example.com:80",
       isOrgDigmaSetupFinished: false

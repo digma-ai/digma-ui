@@ -22,7 +22,6 @@ import { ChevronIcon } from "../../common/icons/ChevronIcon";
 import { DigmaLogoIcon } from "../../common/icons/DigmaLogoIcon";
 import { ThreeDotsIcon } from "../../common/icons/ThreeDotsIcon";
 import { Direction } from "../../common/icons/types";
-import { AddEnvironmentDialog } from "../AddEnvironmentDialog";
 import { trackingEvents } from "../tracking";
 import { ExtendedEnvironment } from "../types";
 import { EnvironmentTab } from "./EnvironmentTab";
@@ -31,15 +30,10 @@ import { EnvironmentPanelProps, ScrollDirection } from "./types";
 
 const FONT_WIDTH_TRANSITION_THRESHOLD = 5; // in pixels
 
-const isAddButtonVisible =
-  window.recentActivityIsEnvironmentManagementEnabled === true;
-
 export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
   const [scrollLeft, setScrollLeft] = useState(0);
   const environmentListContainerDimensions = useDimensions();
   const environmentListDimensions = useDimensions();
-  const [isAddEnvironmentDialogOpen, setIsAddEnvironmentDialogOpen] =
-    useState(false);
   const [isKebabMenuOpen, setIsKebabMenuOpen] = useState(false);
   const config = useContext(ConfigContext);
 
@@ -57,16 +51,12 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
     props.onEnvironmentSelect(environment);
   };
 
-  const handleCloseAddEnvironmentDialog = () => {
-    setIsAddEnvironmentDialogOpen(false);
+  const handleEnvironmentDelete = (environmentId: string) => {
+    props.onEnvironmentDelete(environmentId);
   };
 
-  const handleEnvironmentAdd = (environmentName: string) => {
-    props.onEnvironmentAdd(environmentName);
-  };
-
-  const handleEnvironmentDelete = (environment: string) => {
-    props.onEnvironmentDelete(environment);
+  const handleEnvironmentSetupInstructionsShow = (environmentId: string) => {
+    props.onEnvironmentSetupInstructionsShow(environmentId);
   };
 
   const handleCarouselButtonClick = (direction: ScrollDirection) => {
@@ -126,27 +116,13 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
     FONT_WIDTH_TRANSITION_THRESHOLD;
 
   const renderAddButton = () => {
-    const boundaryEl =
-      document.getElementById(RECENT_ACTIVITY_CONTAINER_ID) || undefined;
-
     return (
-      <NewPopover
-        boundary={boundaryEl}
-        placement={"bottom-end"}
-        onOpenChange={setIsAddEnvironmentDialogOpen}
-        isOpen={isAddEnvironmentDialogOpen}
-        content={
-          <AddEnvironmentDialog
-            onClose={handleCloseAddEnvironmentDialog}
-            onEnvironmentAdd={handleEnvironmentAdd}
-            environments={props.environments}
-          />
-        }
-      >
-        <div>
-          <NewButton label={"Add Environment"} size={"small"} icon={PlusIcon} />
-        </div>
-      </NewPopover>
+      <NewButton
+        label={"Add Environment"}
+        size={"small"}
+        icon={PlusIcon}
+        onClick={props.onEnvironmentAdd}
+      />
     );
   };
 
@@ -282,14 +258,14 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
         <s.EnvironmentList ref={environmentListDimensions.observe}>
           {props.environments.map((environment) => (
             <EnvironmentTab
-              key={environment.originalName}
+              key={environment.id}
               environment={environment}
-              isSelected={
-                props.selectedEnvironment?.originalName ===
-                environment.originalName
-              }
+              isSelected={props.selectedEnvironment?.id === environment.id}
               onClick={handleEnvironmentTabClick}
               onEnvironmentDelete={handleEnvironmentDelete}
+              onEnvironmentSetupInstructionsShow={
+                handleEnvironmentSetupInstructionsShow
+              }
             />
           ))}
         </s.EnvironmentList>
@@ -305,7 +281,7 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
         )}
       </s.CarouselButtonContainer>
       <s.ButtonsContainer>
-        {isAddButtonVisible && renderAddButton()}
+        {renderAddButton()}
         {renderKebabMenuButton()}
       </s.ButtonsContainer>
     </s.Container>

@@ -2,6 +2,26 @@ import { css } from "styled-components";
 import { Typographies } from "../../../styled";
 
 export const typographies: Typographies = {
+  code: {
+    fontSize: 14,
+    fontWeight: {
+      light: 300,
+      regular: 400,
+      medium: 500,
+      semibold: 600,
+      bold: 700
+    }
+  },
+  subheading: {
+    fontSize: 16,
+    fontWeight: {
+      light: 300,
+      regular: 400,
+      medium: 500,
+      semibold: 600,
+      bold: 700
+    }
+  },
   body: {
     fontSize: 14,
     fontWeight: {
@@ -77,6 +97,12 @@ export const caption2RegularTypography = css`
   line-height: ${typographies.captionTwo.lineHeight}px;
 `;
 
+export const caption2BoldTypography = css`
+  font-size: ${typographies.captionTwo.fontSize}px;
+  font-weight: ${typographies.captionTwo.fontWeight.bold};
+  line-height: ${typographies.captionTwo.lineHeight}px;
+`;
+
 export const footnoteRegularTypography = css`
   font-size: ${typographies.footNote.fontSize}px;
   font-weight: ${typographies.footNote.fontWeight.regular};
@@ -119,6 +145,12 @@ export const bodyRegularTypography = css`
   line-height: ${typographies.body.lineHeight}px;
 `;
 
+export const bodyBoldTypography = css`
+  font-size: ${typographies.body.fontSize}px;
+  font-weight: ${typographies.body.fontWeight.bold};
+  line-height: ${typographies.body.lineHeight}px;
+`;
+
 export const bodyMediumTypography = css`
   font-size: ${typographies.body.fontSize}px;
   font-weight: ${typographies.body.fontWeight.medium};
@@ -131,8 +163,12 @@ export const bodySemiboldTypography = css`
   line-height: ${typographies.body.lineHeight}px;
 `;
 
-export const bodyBoldTypography = css`
-  font-size: ${typographies.body.fontSize}px;
-  font-weight: ${typographies.body.fontWeight.bold};
-  line-height: ${typographies.body.lineHeight}px;
+export const subheadingBoldTypography = css`
+  font-size: ${typographies.subheading.fontSize}px;
+  font-weight: ${typographies.subheading.fontWeight.bold};
+`;
+
+export const codeRegularTypography = css`
+  font-size: ${typographies.code.fontSize}px;
+  font-weight: ${typographies.code.fontWeight.regular};
 `;

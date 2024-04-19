@@ -10,9 +10,7 @@ export const mockedTest: Test = {
       "span:com.digma.junit$_$GET /owners/{ownerId}/pets/{petId}/visits/new",
     methodCodeObjectId:
       "org.springframework.samples.petclinic.owner.VisitController$_$initNewVisitForm",
-    kind: "Internal",
-    codeObjectId:
-      "org.springframework.samples.petclinic.owner.VisitController$_$initNewVisitForm"
+    kind: "Internal"
   },
   result: "success",
   runAt: "2024-01-04T16:06:46.568728Z",

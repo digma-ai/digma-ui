@@ -86,8 +86,13 @@ export const SpanUsagesInsightCard = ({
       },
       cell: (info) => {
         const percentage = info.getValue();
+        const percentageString = `${roundTo(percentage, 2)}%`;
         return (
-          <Tag type={"highlight"} content={`${roundTo(percentage, 2)}%`} />
+          <Tag
+            type={"highlight"}
+            content={percentageString}
+            title={percentageString}
+          />
         );
       }
     }),

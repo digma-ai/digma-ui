@@ -1,3 +1,4 @@
 export interface EmptyStateCardProps {
-  isLoading: boolean;
+  type: "loading" | "noData";
+  text: string;
 }

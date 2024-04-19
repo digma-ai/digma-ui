@@ -1,6 +1,5 @@
 import { getDurationString } from "../../../../../../utils/getDurationString";
 import { InsightType, Trace } from "../../../../types";
-import { Info } from "../common/Info";
 import { InsightCard } from "../common/InsightCard";
 import { ColumnsContainer } from "../common/InsightCard/ColumnsContainer";
 import { KeyValue } from "../common/InsightCard/KeyValue";
@@ -74,12 +73,8 @@ export const EndpointSpanNPlusOneInsightCard = ({
           <ColumnsContainer>
             <KeyValue label={"Repeats"}>{span.occurrences}</KeyValue>
             <KeyValue
-              label={
-                <Info
-                  text={"The amount of requests affected by this issue."}
-                  name={"Requests"}
-                />
-              }
+              label={"Requests"}
+              info={"The amount of requests affected by this issue."}
             >
               {span.requestPercentage}%
             </KeyValue>

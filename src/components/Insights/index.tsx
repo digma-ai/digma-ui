@@ -7,11 +7,9 @@ import {
 } from "react";
 import { actions as globalActions } from "../../actions";
 import { SLACK_WORKSPACE_URL } from "../../constants";
-import { getFeatureFlagValue } from "../../featureFlags";
 import { usePrevious } from "../../hooks/usePrevious";
 import { trackingEvents as globalTrackingEvents } from "../../trackingEvents";
 import { isNumber } from "../../typeGuards/isNumber";
-import { FeatureFlag } from "../../types";
 import { openURLInDefaultBrowser } from "../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 import { ConfigContext } from "../common/App/ConfigContext";
@@ -30,7 +28,6 @@ import { InsightsCatalog } from "./InsightsCatalog";
 import { SORTING_CRITERION } from "./InsightsCatalog/types";
 import { EndpointBottleneckInsightTicket } from "./insightTickets/EndpointBottleneckInsightTicket";
 import { EndpointHighNumberOfQueriesInsightTicket } from "./insightTickets/EndpointHighNumberOfQueriesInsightTicket";
-import { EndpointQueryOptimizationInsightTicket } from "./insightTickets/EndpointQueryOptimizationTicket";
 import { EndpointQueryOptimizationV2InsightTicket } from "./insightTickets/EndpointQueryOptimizationV2InsightTicket";
 import { EndpointSpanNPlusOneInsightTicket } from "./insightTickets/EndpointSpanNPlusOneInsightTicket";
 import { SpaNPlusOneInsightTicket } from "./insightTickets/SpaNPlusOneInsightTicket";
@@ -42,7 +39,6 @@ import * as s from "./styles";
 import {
   isEndpointBottleneckInsight,
   isEndpointHighNumberOfQueriesInsight,
-  isEndpointQueryOptimizationInsight,
   isEndpointQueryOptimizationV2Insight,
   isEndpointSpanNPlusOneInsight,
   isSpanEndpointBottleneckInsight,
@@ -53,7 +49,6 @@ import {
 import {
   EndpointBottleneckInsight,
   EndpointHighNumberOfQueriesInsight,
-  EndpointQueryOptimizationInsight,
   EndpointQueryOptimizationV2Insight,
   EndpointSpanNPlusOneInsight,
   GenericCodeObjectInsight,
@@ -110,21 +105,6 @@ const renderInsightTicket = (
     const ticketData = data as InsightTicketInfo<SpanQueryOptimizationInsight>;
     return (
       <SpanQueryOptimizationInsightTicket data={ticketData} onClose={onClose} />
-    );
-  }
-
-  // deprecated
-  if (
-    isEndpointQueryOptimizationInsight(data.insight) &&
-    data.spanCodeObjectId
-  ) {
-    const ticketData =
-      data as InsightTicketInfo<EndpointQueryOptimizationInsight>;
-    return (
-      <EndpointQueryOptimizationInsightTicket
-        data={ticketData}
-        onClose={onClose}
-      />
     );
   }
 
@@ -238,17 +218,9 @@ export const Insights = (props: InsightsProps) => {
   const [isRegistrationInProgress, setIsRegistrationInProgress] =
     useState(false);
 
-  const isDismissalEnabled = Boolean(
-    getFeatureFlagValue(config, FeatureFlag.IS_INSIGHT_DISMISSAL_ENABLED) &&
-      props.insightViewType === "Issues"
-  );
+  const isDismissalEnabled = props.insightViewType === "Issues";
 
-  const isMarkingAsReadEnabled = Boolean(
-    getFeatureFlagValue(
-      config,
-      FeatureFlag.IS_INSIGHT_MARKING_AS_READ_ENABLED
-    ) && props.insightViewType === "Issues"
-  );
+  const isMarkingAsReadEnabled = props.insightViewType === "Issues";
 
   useLayoutEffect(() => {
     sendMessage(globalActions.GET_STATE);
@@ -319,7 +291,7 @@ export const Insights = (props: InsightsProps) => {
   };
 
   const handleRegistrationSubmit = (formData: RegistrationFormValues) => {
-    sendMessage(globalActions.REGISTER, {
+    sendMessage(globalActions.PERSONALIZE_REGISTER, {
       ...formData,
       scope: "insights view jira ticket info"
     });

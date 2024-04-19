@@ -140,7 +140,7 @@ interface FontWeights {
 }
 
 interface FontStyle {
-  lineHeight: number;
+  lineHeight?: number;
   fontSize: number;
   fontWeight: FontWeights;
 }
@@ -151,6 +151,8 @@ export interface Typographies {
   footNote: FontStyle;
   subscript: FontStyle;
   body: FontStyle;
+  subheading: FontStyle;
+  code: FontStyle;
 }
 
 declare module "styled-components" {

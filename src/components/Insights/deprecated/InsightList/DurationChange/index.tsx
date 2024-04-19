@@ -101,6 +101,7 @@ const renderArrowIcon = (
 
 /**
  * @deprecated
+ * safe to delete after 2024-06-05
  */
 export const DurationChange = (props: DurationChangeProps) => {
   const theme = useTheme();
