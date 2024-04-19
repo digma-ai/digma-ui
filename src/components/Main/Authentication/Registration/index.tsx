@@ -44,9 +44,7 @@ const formDefaultValues: RegisterFormValues = {
   confirmPassword: ""
 };
 
-export const Registration = ({
-  onSuccessfulRegistration
-}: RegistrationProps) => {
+export const Registration = ({ onRegister }: RegistrationProps) => {
   const {
     handleSubmit,
     control,
@@ -89,9 +87,9 @@ export const Registration = ({
 
   useEffect(() => {
     if (isSucceed) {
-      onSuccessfulRegistration();
+      onRegister();
     }
-  }, [isSucceed, onSuccessfulRegistration]);
+  }, [isSucceed, onRegister]);
 
   const onSubmit = (data: RegisterFormValues) => {
     register({ email: data.email, password: data.password });

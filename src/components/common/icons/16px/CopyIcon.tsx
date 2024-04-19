@@ -11,7 +11,7 @@ const CopyIconComponent = (props: IconProps) => {
       width={size}
       height={size}
       fill="none"
-      viewBox="0 0 12 12"
+      viewBox="0 0 16 16"
     >
       <g
         stroke={color}

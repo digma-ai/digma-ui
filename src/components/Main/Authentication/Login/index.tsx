@@ -121,11 +121,7 @@ export const Login = ({ successMessage, onLogin }: LoginProps) => {
           form={"loginForm"}
         />
       </ButtonsContainer>
-      {successMessage && (
-        <s.SuccessMessage>
-          Account registered successfully. Please login
-        </s.SuccessMessage>
-      )}
+      {successMessage && <s.SuccessMessage>{successMessage}</s.SuccessMessage>}
       <InfoMessage>Forgot password? Contact the Digma admin</InfoMessage>
       {isLoading && (
         <Loader>

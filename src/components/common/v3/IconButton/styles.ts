@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const Button = styled.button`
-  padding: 0;
+  padding: 6px;
   cursor: pointer;
   display: flex;
   flex-shrink: 0;

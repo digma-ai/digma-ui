@@ -41,7 +41,7 @@ export const runDigmaWithCommandLine: PageContent = {
   </build>
 </profile>`}
             language={"xml"}
-          ></CodeSnippet>
+          />
           <span>
             To collect data with Digma when you run your application from
             command line you should now run:

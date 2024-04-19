@@ -10,9 +10,9 @@ import * as s from "./styles";
 
 const AuthenticationComponent = () => {
   const [option, setOption] = useState<"login" | "register">("login");
-  const [loginSuccessMessage, setLoginSuccessMessage] = useState<string>("");
+  const [loginSuccessMessage, setLoginSuccessMessage] = useState<string>();
 
-  const handleSuccessfulRegistration = () => {
+  const handleRegister = () => {
     setOption("login");
     setLoginSuccessMessage("Account registered successfully! Please login");
   };
@@ -62,9 +62,7 @@ const AuthenticationComponent = () => {
           {option === "login" ? (
             <Login successMessage={loginSuccessMessage} onLogin={handleLogin} />
           ) : (
-            <Registration
-              onSuccessfulRegistration={handleSuccessfulRegistration}
-            />
+            <Registration onRegister={handleRegister} />
           )}
         </s.InputForm>
       </s.ContentContainer>

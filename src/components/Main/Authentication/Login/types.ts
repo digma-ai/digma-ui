@@ -1,5 +1,5 @@
 export interface LoginProps {
-  successMessage: string;
+  successMessage?: string;
   onLogin: () => void;
 }
 
