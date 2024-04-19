@@ -285,7 +285,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
 
   const handleRegistrationSubmit = (formData: RegistrationFormValues) => {
     window.sendMessageToDigma({
-      action: globalActions.PERSONALIZE_REGISTRATION,
+      action: globalActions.PERSONALIZE_REGISTER,
       payload: {
         ...formData,
         ...(selectedEnvironment
