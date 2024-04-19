@@ -35,4 +35,6 @@ export const SectionContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
+  flex-grow: 1;
+  justify-content: space-between;
 `;
