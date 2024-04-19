@@ -88,6 +88,4 @@ export const Error: Story = {
   }
 };
 
-export const Loading: Story = {
-  args: {}
-};
+export const Loading: Story = {};

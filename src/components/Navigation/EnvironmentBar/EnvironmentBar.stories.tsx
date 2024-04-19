@@ -27,6 +27,4 @@ export const Default: Story = {
   }
 };
 
-export const Disabled: Story = {
-  args: {}
-};
+export const Disabled: Story = {};

@@ -16,9 +16,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-  args: {}
-};
+export const Default: Story = {};
 
 export const WithSuccessMessage: Story = {
   args: {
@@ -27,7 +25,6 @@ export const WithSuccessMessage: Story = {
 };
 
 export const Failed: Story = {
-  args: {},
   play: () => {
     setTimeout(
       () =>
