@@ -10,7 +10,7 @@ const LockIconComponent = (props: IconProps) => {
       xmlns="http://www.w3.org/2000/svg"
       width={size}
       height={size}
-      viewBox="0 0 10 12 "
+      viewBox="0 0 10 12"
       fill="none"
     >
       <path

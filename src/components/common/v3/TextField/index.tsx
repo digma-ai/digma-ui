@@ -27,7 +27,7 @@ const TextFieldComponent = (
           {props.icon && <props.icon size={16} color={"currentColor"} />}
         </s.IconContainer>
         <s.Input
-          type={"text"}
+          type={props.type || "text"}
           value={props.value}
           onChange={props.onChange}
           placeholder={props.placeholder}

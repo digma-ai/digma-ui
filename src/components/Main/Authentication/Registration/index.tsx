@@ -3,10 +3,10 @@ import { Controller, useForm } from "react-hook-form";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { isAlphanumeric } from "../../../../utils/isAlphanumeric";
 import { isValidEmailFormat } from "../../../../utils/isValidEmailFormat";
-import { TextField } from "../../../common/RegistrationDialog/TextField";
 import { LockIcon } from "../../../common/icons/12px/LockIcon";
 import { EnvelopeIcon } from "../../../common/icons/16px/EnvelopeIcon";
 import { Spinner } from "../../../common/v3/Spinner";
+import { TextField } from "../../../common/v3/TextField";
 import * as s from "./../styles";
 import { Loader } from "./../styles";
 import { RegisterFormValues, RegistrationProps } from "./types";
@@ -93,7 +93,7 @@ export const Registration = ({ onRegister }: RegistrationProps) => {
 
   const onSubmit = (data: RegisterFormValues) => {
     register({ email: data.email, password: data.password });
-    sendUserActionTrackingEvent("registration dialog form submitted");
+    sendUserActionTrackingEvent("registration form submitted");
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
@@ -123,7 +123,7 @@ export const Registration = ({ onRegister }: RegistrationProps) => {
             <TextField
               icon={EnvelopeIcon}
               placeholder={"Enter your email"}
-              isValid={errors.email ? !errors.email : undefined}
+              isInvalid={Boolean(errors.email)}
               {...field}
             />
           )}
@@ -141,7 +141,7 @@ export const Registration = ({ onRegister }: RegistrationProps) => {
               icon={LockIcon}
               type="password"
               placeholder={"Enter password"}
-              isValid={errors.password ? !errors.password : undefined}
+              isInvalid={Boolean(errors.password)}
               {...field}
               onChange={(args) => {
                 if (touchedFields.confirmPassword) {
@@ -173,9 +173,7 @@ export const Registration = ({ onRegister }: RegistrationProps) => {
               icon={LockIcon}
               type="password"
               placeholder={"Repeat your password"}
-              isValid={
-                errors.confirmPassword ? !errors.confirmPassword : undefined
-              }
+              isInvalid={Boolean(errors.confirmPassword)}
               {...field}
             />
           )}

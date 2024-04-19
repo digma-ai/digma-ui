@@ -291,7 +291,7 @@ export const Insights = (props: InsightsProps) => {
   };
 
   const handleRegistrationSubmit = (formData: RegistrationFormValues) => {
-    sendMessage(globalActions.REGISTER, {
+    sendMessage(globalActions.PERSONALIZE_REGISTRATION, {
       ...formData,
       scope: "insights view jira ticket info"
     });

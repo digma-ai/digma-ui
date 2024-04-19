@@ -32,7 +32,7 @@ export const CreateEnvironmentPanel = ({
           {tabs.map((tab) => {
             return (
               <Tab
-                key={tab.index}
+                key={tab.name}
                 index={tab.index}
                 name={tab.name}
                 state={tab.state}

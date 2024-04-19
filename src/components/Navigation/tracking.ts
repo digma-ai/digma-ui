@@ -22,7 +22,8 @@ export const trackingEvents = addPrefix(
     LOCAL_ENGINE_LINK_CLICKED: "local engine link clicked",
     OBSERVABILITY_TOGGLE_SWITCHED: "observability toggle switched",
     ONBOARDING_LINK_CLICKED: "onboarding link clicked",
-    TAB_CLICKED: "tab clicked"
+    TAB_CLICKED: "tab clicked",
+    LOGOUT_CLICKED: "logout clicked"
   },
   " "
 );

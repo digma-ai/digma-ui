@@ -125,13 +125,13 @@ export const CreateEnvironmentWizard = ({
     };
 
     dispatcher.addActionListener(
-      actions.ENVIRONMENT_CREATED,
+      actions.SET_CREATE_ENVIRONMENT_RESULT,
       handleEnvironmentCreated
     );
 
     return () => {
       dispatcher.removeActionListener(
-        actions.ENVIRONMENT_CREATED,
+        actions.SET_CREATE_ENVIRONMENT_RESULT,
         handleEnvironmentCreated
       );
     };

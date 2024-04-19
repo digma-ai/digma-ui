@@ -1,20 +1,31 @@
+import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { CrossIcon } from "../../../common/icons/12px/CrossIcon";
 import { Button } from "../../../common/v3/Button";
+import { trackingEvents } from "../../tracking";
 import * as s from "./styles";
 import { DeleteEnvironmentConfirmationProps } from "./types";
 
 export const CancelConfirmation = (
   props: DeleteEnvironmentConfirmationProps
 ) => {
-  const handleDeleteButtonClick = () => {
+  const handleConfirmButtonClick = () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.CREATE_ENVIRONMENT_CANCEL_CONFIRMATION_CONFIRM_CLICKED
+    );
     props.onCancel();
   };
 
   const handleCancelButtonClick = () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.CREATE_ENVIRONMENT_CANCEL_CONFIRMATION_CANCEL_CLICKED
+    );
     props.onClose();
   };
 
   const handleCloseButtonClick = () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.CREATE_ENVIRONMENT_CANCEL_CONFIRMATION_CLOSE_CLICKED
+    );
     props.onClose();
   };
 
@@ -38,7 +49,7 @@ export const CancelConfirmation = (
         <s.CancelButton
           buttonType="secondary"
           label="Yes, cancel"
-          onClick={handleDeleteButtonClick}
+          onClick={handleConfirmButtonClick}
         />
       </s.ButtonsContainer>
     </s.Container>
