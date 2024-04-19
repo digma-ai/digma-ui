@@ -3,11 +3,14 @@ import "allotment/dist/style.css";
 import { useContext, useEffect, useMemo, useState } from "react";
 import useDimensions from "react-cool-dimensions";
 import { actions as globalActions } from "../../actions";
+import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
 import { isBoolean } from "../../typeGuards/isBoolean";
 import { ChangeEnvironmentPayload } from "../../types";
 import { groupBy } from "../../utils/groupBy";
 import { ConfigContext } from "../common/App/ConfigContext";
+import { RegistrationDialog } from "../common/RegistrationDialog";
+import { RegistrationFormValues } from "../common/RegistrationDialog/types";
 import { ListIcon } from "../common/icons/ListIcon";
 import { TableIcon } from "../common/icons/TableIcon";
 import { CreateEnvironmentWizard } from "./CreateEnvironmentWizard";
@@ -52,15 +55,25 @@ export const RecentActivity = (props: RecentActivityProps) => {
   const [selectedEnvironment, setSelectedEnvironment] =
     useState<ExtendedEnvironment>();
   const [showCreationWizard, setShowCreationWizard] = useState(false);
+  const [isRegistrationPopupVisible, setIsRegistrationPopupVisible] =
+    useState(false);
+  const [isRegistrationInProgress, setIsRegistrationInProgress] =
+    useState(false);
   const [environmentToDelete, setEnvironmentToDelete] = useState<string>();
   const { recentActivityData: data } = useRecentActivityData({
     data: props.data
   });
+
+  const config = useContext(ConfigContext);
+  const previousUserRegistrationEmail = usePrevious(
+    config.userRegistrationEmail
+  );
+
   const [viewMode, setViewMode] = useState<ViewMode>("table");
   const { liveData, closeLiveSession } = useLiveData({
     liveData: props.liveData
   });
-  const config = useContext(ConfigContext);
+
   const [isDigmathonMode, setIsDigmathonMode] = useState(false);
   const { observe, entry } = useDimensions();
   const {
@@ -120,6 +133,24 @@ export const RecentActivity = (props: RecentActivityProps) => {
   }, [config.userInfo?.id]);
 
   useEffect(() => {
+    const handleOpenRegistrationDialog = () => {
+      setIsRegistrationPopupVisible(true);
+    };
+
+    dispatcher.addActionListener(
+      actions.OPEN_REGISTRATION_DIALOG,
+      handleOpenRegistrationDialog
+    );
+
+    return () => {
+      dispatcher.removeActionListener(
+        actions.OPEN_REGISTRATION_DIALOG,
+        handleOpenRegistrationDialog
+      );
+    };
+  }, []);
+
+  useEffect(() => {
     if (
       isBoolean(previousIsDigmathonCompleted) &&
       previousIsDigmathonCompleted !== isDigmathonCompleted &&
@@ -128,6 +159,20 @@ export const RecentActivity = (props: RecentActivityProps) => {
       setIsDigmathonMode(true);
     }
   }, [previousIsDigmathonCompleted, isDigmathonCompleted]);
+
+  useEffect(() => {
+    if (
+      previousUserRegistrationEmail !== config.userRegistrationEmail &&
+      isRegistrationInProgress
+    ) {
+      setIsRegistrationPopupVisible(false);
+      setIsRegistrationInProgress(false);
+    }
+  }, [
+    config.userRegistrationEmail,
+    isRegistrationInProgress,
+    previousUserRegistrationEmail
+  ]);
 
   const handleEnvironmentSelect = (environment: ExtendedEnvironment) => {
     setSelectedEnvironment(environment);
@@ -211,6 +256,29 @@ export const RecentActivity = (props: RecentActivityProps) => {
 
   const handleDigmathonGoBack = () => {
     setIsDigmathonMode(false);
+  };
+
+  const handleRegistrationDialogClose = () => {
+    setIsRegistrationPopupVisible(false);
+  };
+
+  const handleRegistrationSubmit = (formData: RegistrationFormValues) => {
+    window.sendMessageToDigma({
+      action: globalActions.PERSONALIZE_REGISTRATION,
+      payload: {
+        ...formData,
+        ...(selectedEnvironment
+          ? {
+              scope: "recent activity add environment",
+              selectedEnvironmentType: selectedEnvironment?.type
+            }
+          : {
+              scope: "recent activity"
+            })
+      }
+    });
+
+    setIsRegistrationInProgress(true);
   };
 
   const renderContent = () => {
@@ -337,6 +405,15 @@ export const RecentActivity = (props: RecentActivityProps) => {
           <DeleteEnvironmentConfirmation
             onClose={handleCloseDeleteConfirmation}
             onDelete={handleConfirmEnvironmentDeletion}
+          />
+        </Overlay>
+      )}
+      {isRegistrationPopupVisible && (
+        <Overlay tabIndex={-1}>
+          <RegistrationDialog
+            onSubmit={handleRegistrationSubmit}
+            onClose={handleRegistrationDialogClose}
+            isRegistrationInProgress={isRegistrationInProgress}
           />
         </Overlay>
       )}
