@@ -16,7 +16,7 @@ export const CENTRAL_ON_PREM_INSTALLATION_GUIDE_URL =
   "https://docs.digma.ai/digma-developer-guide/installation/central-on-prem-install";
 
 export const INSTRUMENTATION_DOCUMENTATION_URL =
-  "https://docs.digma.ai/digma-developer-guide/instrumentation";
+  "https://docs.digma.ai/digma-developer-guide/instrumentation/spring-spring-boot-dropwizard-and-default/instrumenting-your-code-in-ci-staging-or-the-terminal";
 
 export const PERCENTILES: {
   label: string;

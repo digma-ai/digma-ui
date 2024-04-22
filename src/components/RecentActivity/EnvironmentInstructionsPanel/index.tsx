@@ -1,4 +1,3 @@
-import copy from "copy-to-clipboard";
 import { useContext, useState } from "react";
 import { useTheme } from "styled-components";
 import { actions as globalActions } from "../../../actions";
@@ -10,12 +9,9 @@ import { getThemeKind } from "../../common/App/styles";
 import { EnvironmentType } from "../../common/App/types";
 import { CodeSnippet } from "../../common/CodeSnippet";
 import { Link } from "../../common/Link";
-import { CopyIcon } from "../../common/icons/16px/CopyIcon";
 import { DesktopIcon } from "../../common/icons/DesktopIcon";
 import { InfinityIcon } from "../../common/icons/InfinityIcon";
 import { PlayButtonWithCursorIcon } from "../../common/icons/PlayButtonWithCursorIcon";
-import { IconButton } from "../../common/v3/IconButton";
-import { Tooltip } from "../../common/v3/Tooltip";
 import { SetupOrgDigmaPanel } from "../SetupOrgDigmaPanel";
 import { Overlay } from "../common/Overlay";
 import { trackingEvents } from "../tracking";
@@ -27,13 +23,21 @@ import {
 } from "./types";
 import { useAddToRunConfig } from "./useAddToRunConfig";
 
-const getEnvironmentVariableString = (
+const renderEnvironmentVariableCode = (
   isMicrometerProject: boolean,
   environmentId: string
 ) =>
-  isMicrometerProject
-    ? `MANAGEMENT_OPENTELEMETRY_RESOURCE-ATTRIBUTES_digma_environment_id=${environmentId}`
-    : `OTEL_RESOURCE_ATTRIBUTES=digma.environment.id=${environmentId}`;
+  isMicrometerProject ? (
+    <span>
+      MANAGEMENT_OPENTELEMETRY_RESOURCE-ATTRIBUTES_digma_environment_id=
+      <s.HighlightedCode>{environmentId}</s.HighlightedCode>
+    </span>
+  ) : (
+    <span>
+      OTEL_RESOURCE_ATTRIBUTES=digma.environment.id=
+      <s.HighlightedCode>{environmentId}</s.HighlightedCode>
+    </span>
+  );
 
 export const EnvironmentInstructionsPanel = (
   props: EnvironmentInstructionsPanelProps
@@ -43,7 +47,7 @@ export const EnvironmentInstructionsPanel = (
   const theme = useTheme();
   const themeKind = getThemeKind(theme);
   const config = useContext(ConfigContext);
-  const environmentVariableString = getEnvironmentVariableString(
+  const environmentVariableCode = renderEnvironmentVariableCode(
     config.isMicrometerProject,
     props.environment.id
   );
@@ -88,44 +92,18 @@ export const EnvironmentInstructionsPanel = (
     );
   }
 
-  const renderHeaderContent = (title: string) => {
-    const environmentId = props.environment.id;
-
-    const handleCopyButtonClick = () => {
-      copy(environmentId);
-    };
-
-    return (
-      <>
-        <s.HeaderContentContainer>
-          {title}
-          <s.Divider />
-          <s.EnvironmentIdLabel>Environment ID</s.EnvironmentIdLabel>
-          <s.EnvironmentIdContainer>
-            <Tooltip title={environmentId}>
-              <s.EnvironmentId>{environmentId}</s.EnvironmentId>
-            </Tooltip>
-            <Tooltip title={"Copy"}>
-              <IconButton
-                onClick={handleCopyButtonClick}
-                icon={{
-                  component: CopyIcon,
-                  size: 16
-                }}
-              />
-            </Tooltip>
-          </s.EnvironmentIdContainer>
-        </s.HeaderContentContainer>
-        {props.onClose && (
-          <s.CloseButton
-            onClick={handleCloseButtonClick}
-            buttonType={"secondary"}
-            label={"Close"}
-          />
-        )}
-      </>
-    );
-  };
+  const renderHeaderContent = (title: string) => (
+    <>
+      <s.HeaderContentContainer>{title}</s.HeaderContentContainer>
+      {props.onClose && (
+        <s.CloseButton
+          onClick={handleCloseButtonClick}
+          buttonType={"secondary"}
+          label={"Close"}
+        />
+      )}
+    </>
+  );
 
   const renderActions = () => (
     <s.ActionContainer>
@@ -163,7 +141,7 @@ export const EnvironmentInstructionsPanel = (
               Set up the following environment variables when running your code
               to tag the observability data with this run config:
             </span>
-            <CodeSnippet text={environmentVariableString} />
+            <s.EnvironmentVariableCodeSnippet text={environmentVariableCode} />
             {renderActions()}
           </>
         )
@@ -176,9 +154,11 @@ export const EnvironmentInstructionsPanel = (
               Running your app will integrate your environment and Digma can
               start showing you info!
             </span>
-            <s.RunOrDebugIllustration
-              src={`/images/runOrDebug_${themeKind}.gif`}
-            />
+            <s.IllustrationContainer>
+              <s.RunOrDebugIllustration
+                src={`/images/runOrDebug_${themeKind}.gif`}
+              />
+            </s.IllustrationContainer>
           </>
         )
       }
@@ -196,8 +176,13 @@ export const EnvironmentInstructionsPanel = (
                 Digma Developer Guide
               </Link>{" "}
               for the best way to instrument your application and send data to
-              Digma. Use the following environment ID: {props.environment.id}
+              Digma. Use the following environment ID:
             </span>
+            <CodeSnippet
+              text={
+                <s.HighlightedCode>{props.environment.id}</s.HighlightedCode>
+              }
+            />
           </>
         )
       },
@@ -210,7 +195,7 @@ export const EnvironmentInstructionsPanel = (
               start showing you info!
             </span>
             <s.IllustrationContainer>
-              <PlayButtonWithCursorIcon size={100} themeKind={themeKind} />
+              <PlayButtonWithCursorIcon size={80} themeKind={themeKind} />
             </s.IllustrationContainer>
           </>
         )

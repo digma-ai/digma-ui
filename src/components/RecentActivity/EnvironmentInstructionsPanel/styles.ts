@@ -1,8 +1,6 @@
 import styled from "styled-components";
-import { getCodeFont } from "../../common/App/styles";
 import {
   bodyMediumTypography,
-  footnoteRegularTypography,
   subscriptRegularTypography
 } from "../../common/App/typographies";
 import { CodeSnippet } from "../../common/CodeSnippet";
@@ -116,15 +114,11 @@ export const IllustrationContainer = styled.div`
 `;
 
 export const RunOrDebugIllustration = styled.img`
-  width: 206px;
-  height: 52px;
-  border-radius: 4px;
+  width: 153px;
+  height: 38px;
+  margin: 24px 0;
+  border-radius: 8px;
   object-fit: cover;
-`;
-
-export const CodeSection = styled(CodeSnippet)`
-  background: none;
-  border: 1px solid ${({ theme }) => theme.colors.v3.surface.gray};
 `;
 
 export const HeaderContentContainer = styled.div`
@@ -133,39 +127,14 @@ export const HeaderContentContainer = styled.div`
   align-items: center;
 `;
 
-export const Divider = styled.div`
-  border-radius: 1px;
-  width: 1px;
-  height: 13px;
-  background: ${({ theme }) => theme.colors.v3.stroke.primary};
-`;
-
-export const EnvironmentIdLabel = styled.span`
-  ${subscriptRegularTypography}
-
-  color: ${({ theme }) => theme.colors.v3.text.tertiary};
-`;
-
-export const EnvironmentIdContainer = styled.div`
-  ${({ theme }) => getCodeFont(theme.codeFont)}
-
-  display: flex;
-  align-items: center;
-  padding-left: 8px;
-  border-radius: 4px;
-  border: 1px solid ${({ theme }) => theme.colors.v3.surface.gray};
-  max-width: 299px;
-`;
-
-export const EnvironmentId = styled.span`
-  ${footnoteRegularTypography}
-
-  color: ${({ theme }) => theme.colors.v3.text.link};
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-`;
-
 export const CloseButton = styled(Button)`
   margin-left: auto;
+`;
+
+export const EnvironmentVariableCodeSnippet = styled(CodeSnippet)`
+  flex-grow: 1;
+`;
+
+export const HighlightedCode = styled.span`
+  color: ${({ theme }) => theme.colors.v3.text.link};
 `;

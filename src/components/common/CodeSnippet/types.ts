@@ -1,5 +1,7 @@
+import { ReactNode } from "react";
+
 export interface CodeSnippetProps {
-  text: string;
+  text: ReactNode;
   language?: string;
   className?: string;
 }

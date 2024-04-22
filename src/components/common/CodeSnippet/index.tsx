@@ -1,11 +1,12 @@
 import copy from "copy-to-clipboard";
-import { ForwardedRef, forwardRef } from "react";
+import { ForwardedRef, forwardRef, useRef } from "react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import {
   atomOneDark,
   atomOneLight
 } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import { DefaultTheme, useTheme } from "styled-components";
+import { isString } from "../../../typeGuards/isString";
 import { CopyIcon } from "../icons/16px/CopyIcon";
 import { IconButton } from "../v3/IconButton";
 import { Tooltip } from "../v3/Tooltip";
@@ -28,14 +29,19 @@ const CodeSnippetComponent = (
 ) => {
   const theme = useTheme();
   const highlighterTheme = getHighlighterTheme(theme);
+  const codeRef = useRef<HTMLElement>(null);
 
   const handleCopyButtonClick = () => {
-    copy(props.text);
+    if (isString(props.text)) {
+      copy(props.text);
+    } else if (codeRef.current) {
+      copy(codeRef.current.innerText);
+    }
   };
 
   return (
     <s.Container className={props.className} ref={ref}>
-      {props.language ? (
+      {props.language && isString(props.text) ? (
         <SyntaxHighlighter
           language={props.language}
           style={highlighterTheme}
@@ -51,7 +57,7 @@ const CodeSnippetComponent = (
           {props.text}
         </SyntaxHighlighter>
       ) : (
-        <s.Code>{props.text}</s.Code>
+        <s.Code ref={codeRef}>{props.text}</s.Code>
       )}
       <Tooltip title={"Copy"}>
         <IconButton
