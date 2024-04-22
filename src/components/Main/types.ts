@@ -2,9 +2,10 @@ export type View =
   | "highlights"
   | "insights"
   | "assets"
+  | "/assets/category/{categoryType}"
   | "analytics"
   | "errors"
-  | "errorsDetails"
+  | "/errors/details"
   | "tests";
 
 export interface GetHighlightsTopIssuesDataPayload {

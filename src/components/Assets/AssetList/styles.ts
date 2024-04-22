@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { subscriptMediumTypography } from "../../common/App/typographies";
 import {
   SORTING_ORDER,
   SortingMenuButtonProps,
@@ -32,18 +33,17 @@ export const Header = styled.div`
   display: flex;
   align-items: center;
   gap: 4px;
-  font-weight: 400;
-  font-size: 14px;
+  ${subscriptMediumTypography}
   padding: 8px 12px 8px 8px;
-  color: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#788ca9";
-      case "dark":
-      case "dark-jetbrains":
-        return "#dadada";
-    }
-  }};
+  justify-content: space-between;
+  color: ${({ theme }) => theme.colors.v3.text.secondary};
+`;
+
+export const TypeHeader = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 400;
 `;
 
 export const PopoverContainer = styled.div`

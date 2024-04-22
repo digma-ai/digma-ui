@@ -24,6 +24,7 @@ import { PopoverTrigger } from "../../common/Popover/PopoverTrigger";
 import { ChevronIcon } from "../../common/icons/ChevronIcon";
 import { SortIcon } from "../../common/icons/SortIcon";
 import { Direction } from "../../common/icons/types";
+import { Link } from "../../common/v3/Link";
 import { AssetFilterQuery } from "../AssetsFilter/types";
 import { actions } from "../actions";
 import { checkIfAnyFiltersApplied, getAssetTypeInfo } from "../utils";
@@ -452,18 +453,13 @@ export const AssetList = (props: AssetListProps) => {
   return (
     <s.Container>
       <s.Header>
-        <s.BackButton onClick={handleBackButtonClick}>
-          <ChevronIcon
-            direction={Direction.LEFT}
-            color={backIconColor}
-            size={14}
-          />
-        </s.BackButton>
-        {assetTypeInfo?.icon && (
-          <assetTypeInfo.icon color={assetTypeIconColor} size={14} />
-        )}
-        <span>{assetTypeInfo?.label || props.assetTypeId}</span>
-        {data && <s.ItemsCount>{data.totalCount}</s.ItemsCount>}
+        <s.TypeHeader>
+          {assetTypeInfo?.icon && (
+            <assetTypeInfo.icon color={assetTypeIconColor} size={14} />
+          )}
+          {assetTypeInfo?.label || props.assetTypeId}
+        </s.TypeHeader>
+        <Link onClick={handleBackButtonClick}>All Assets</Link>
       </s.Header>
       <s.Toolbar>
         <s.PopoverContainer>
