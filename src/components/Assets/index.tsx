@@ -86,9 +86,19 @@ export const Assets = () => {
     setAssetScopeOption(val);
   }, []);
 
-  const handleRefresherChange = useCallback((refresher: () => void) => {
-    setAssetTypeListRefresher({ refresh: refresher });
-  }, []);
+  const handleAssetTypeListRefresherChange = useCallback(
+    (refresher: () => void) => {
+      setAssetTypeListRefresher({ refresh: refresher });
+    },
+    []
+  );
+
+  const handleAssetListRefresherChange = useCallback(
+    (refresher: () => void) => {
+      setAssetListRefresher({ refresh: refresher });
+    },
+    []
+  );
 
   const renderContent = () => {
     if (isBackendUpgradeMessageVisible) {
@@ -122,7 +132,7 @@ export const Assets = () => {
           filters={selectedFilters}
           searchQuery={debouncedSearchInputValue}
           scopeViewOptions={assetScopeOption}
-          setRefresher={handleRefresherChange}
+          setRefresher={handleAssetTypeListRefresherChange}
           onAssetCountChange={handleAssetCountChange}
         />
       );
@@ -135,7 +145,7 @@ export const Assets = () => {
         filters={selectedFilters}
         searchQuery={debouncedSearchInputValue}
         scopeViewOptions={assetScopeOption}
-        setRefresher={handleRefresherChange}
+        setRefresher={handleAssetListRefresherChange}
         onAssetCountChange={handleAssetCountChange}
       />
     );
