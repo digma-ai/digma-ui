@@ -15,6 +15,7 @@ import { PlayButtonWithCursorIcon } from "../../common/icons/PlayButtonWithCurso
 import { SetupOrgDigmaPanel } from "../SetupOrgDigmaPanel";
 import { Overlay } from "../common/Overlay";
 import { trackingEvents } from "../tracking";
+import { EnvironmentVariableCode } from "./EnvironmentVariableCode";
 import * as s from "./styles";
 import {
   AddToRunConfigState,
@@ -22,22 +23,6 @@ import {
   EnvironmentInstructionsPanelProps
 } from "./types";
 import { useAddToRunConfig } from "./useAddToRunConfig";
-
-const renderEnvironmentVariableCode = (
-  isMicrometerProject: boolean,
-  environmentId: string
-) =>
-  isMicrometerProject ? (
-    <span>
-      MANAGEMENT_OPENTELEMETRY_RESOURCE-ATTRIBUTES_digma_environment_id=
-      <s.HighlightedCode>{environmentId}</s.HighlightedCode>
-    </span>
-  ) : (
-    <span>
-      OTEL_RESOURCE_ATTRIBUTES=digma.environment.id=
-      <s.HighlightedCode>{environmentId}</s.HighlightedCode>
-    </span>
-  );
 
 export const EnvironmentInstructionsPanel = (
   props: EnvironmentInstructionsPanelProps
@@ -47,10 +32,6 @@ export const EnvironmentInstructionsPanel = (
   const theme = useTheme();
   const themeKind = getThemeKind(theme);
   const config = useContext(ConfigContext);
-  const environmentVariableCode = renderEnvironmentVariableCode(
-    config.isMicrometerProject,
-    props.environment.id
-  );
 
   const { addToRunConfig, state } = useAddToRunConfig(props.environment.id);
 
@@ -92,40 +73,6 @@ export const EnvironmentInstructionsPanel = (
     );
   }
 
-  const renderHeaderContent = (title: string) => (
-    <>
-      <s.HeaderContentContainer>{title}</s.HeaderContentContainer>
-      {props.onClose && (
-        <s.CloseButton
-          onClick={handleCloseButtonClick}
-          buttonType={"secondary"}
-          label={"Close"}
-        />
-      )}
-    </>
-  );
-
-  const renderActions = () => (
-    <s.ActionContainer>
-      <s.AddToConfigContainer>
-        <s.Link onClick={handleAddToRunConfigLinkClick}>
-          Add to the active run config
-        </s.Link>
-        {state === AddToRunConfigState.success && (
-          <s.AddToConfigSuccessMessage>
-            Successfully added
-          </s.AddToConfigSuccessMessage>
-        )}
-        {state === AddToRunConfigState.failure && (
-          <s.AddToConfigFailureMessage>
-            Failed to add
-          </s.AddToConfigFailureMessage>
-        )}
-      </s.AddToConfigContainer>
-      <s.Link onClick={handleTroubleshootLinkClick}>Troubleshoot</s.Link>
-    </s.ActionContainer>
-  );
-
   const environmentTypesContent: Record<
     EnvironmentType,
     EnvironmentInstructionsPanelContent
@@ -141,8 +88,34 @@ export const EnvironmentInstructionsPanel = (
               Set up the following environment variables when running your code
               to tag the observability data with this run config:
             </span>
-            <s.EnvironmentVariableCodeSnippet text={environmentVariableCode} />
-            {renderActions()}
+            <s.EnvironmentVariableCodeSnippet
+              text={
+                <EnvironmentVariableCode
+                  isMicrometerProject={config.isMicrometerProject}
+                  environmentId={props.environment.id}
+                />
+              }
+            />
+            <s.ActionContainer>
+              <s.AddToConfigContainer>
+                <s.Link onClick={handleAddToRunConfigLinkClick}>
+                  Add to the active run config
+                </s.Link>
+                {state === AddToRunConfigState.success && (
+                  <s.AddToConfigSuccessMessage>
+                    Successfully added
+                  </s.AddToConfigSuccessMessage>
+                )}
+                {state === AddToRunConfigState.failure && (
+                  <s.AddToConfigFailureMessage>
+                    Failed to add
+                  </s.AddToConfigFailureMessage>
+                )}
+              </s.AddToConfigContainer>
+              <s.Link onClick={handleTroubleshootLinkClick}>
+                Troubleshoot
+              </s.Link>
+            </s.ActionContainer>
           </>
         )
       },
@@ -213,7 +186,16 @@ export const EnvironmentInstructionsPanel = (
 
   return (
     <s.Container>
-      <s.Header>{renderHeaderContent(content.title)}</s.Header>
+      <s.Header>
+        {content.title}
+        {props.onClose && (
+          <s.CloseButton
+            onClick={handleCloseButtonClick}
+            buttonType={"secondary"}
+            label={"Close"}
+          />
+        )}
+      </s.Header>
       <s.ContentContainer>
         <s.Section>
           <s.SectionHeader>

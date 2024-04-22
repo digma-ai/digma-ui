@@ -121,12 +121,6 @@ export const RunOrDebugIllustration = styled.img`
   object-fit: cover;
 `;
 
-export const HeaderContentContainer = styled.div`
-  display: flex;
-  gap: 12px;
-  align-items: center;
-`;
-
 export const CloseButton = styled(Button)`
   margin-left: auto;
 `;
