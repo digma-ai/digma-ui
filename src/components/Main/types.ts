@@ -1,12 +1,12 @@
 export type View =
-  | "highlights"
-  | "insights"
-  | "assets"
-  | "/assets/category/{categoryType}"
-  | "analytics"
-  | "errors"
+  | "/highlights"
+  | "/insights"
+  | "/assets"
+  | "/analytics"
+  | "/errors"
   | "/errors/details"
-  | "tests";
+  | "/tests";
+// | "/assets/category/{categoryType}" supported path for category
 
 export interface GetHighlightsTopIssuesDataPayload {
   query: {

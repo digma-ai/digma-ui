@@ -100,7 +100,7 @@ export const Navigation = () => {
   const [isAutoFixing, setIsAutoFixing] = useState(false);
   const [isAnnotationAdding, setIsAnnotationAdding] = useState(false);
   const previousCodeContext = usePrevious(codeContext);
-  const [currentTab, setCurrentTab] = useState<View>("insights");
+  const [currentTab, setCurrentTab] = useState<View>("/insights");
 
   const environments = config.environments || [];
 

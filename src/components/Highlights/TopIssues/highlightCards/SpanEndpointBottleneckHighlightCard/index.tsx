@@ -74,7 +74,7 @@ export const SpanEndpointBottleneckHighlightCard = ({
     handleEnvironmentTableRowClick(
       config.environments,
       row.original.environmentId,
-      "insights"
+      "/insights"
     );
   };
 

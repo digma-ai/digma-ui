@@ -116,7 +116,7 @@ export const Performance = () => {
       handleEnvironmentTableRowClick(
         config.environments,
         row.original.environment.id,
-        "analytics"
+        "/analytics"
       );
     };
 

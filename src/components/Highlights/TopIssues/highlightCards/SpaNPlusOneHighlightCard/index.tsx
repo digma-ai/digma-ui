@@ -77,7 +77,7 @@ export const SpaNPlusOneHighlightCard = ({
     handleEnvironmentTableRowClick(
       config.environments,
       row.original.environmentId,
-      "insights"
+      "/insights"
     );
   };
 

@@ -50,7 +50,7 @@ export const EndpointSlowdownSourceHighlightCard = ({
     handleEnvironmentTableRowClick(
       config.environments,
       row.original.environmentId,
-      "insights"
+      "/insights"
     );
   };
 

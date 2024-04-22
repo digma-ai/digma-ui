@@ -1,12 +1,14 @@
 import { useCallback, useContext, useEffect, useState } from "react";
 import { useDebounce } from "../../hooks/useDebounce";
 import { usePrevious } from "../../hooks/usePrevious";
+import { ChangeViewPayload } from "../../types";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { EmptyState } from "../common/EmptyState";
 import { SearchInput } from "../common/SearchInput";
 import { RefreshIcon } from "../common/icons/16px/RefreshIcon";
 import { Tooltip } from "../common/v3/Tooltip";
+import { actions as globalActions } from "./../../actions";
 import { AssetList } from "./AssetList";
 import { AssetTypeList } from "./AssetTypeList";
 import { AssetsFilter } from "./AssetsFilter";
@@ -16,12 +18,12 @@ import { AssetScopeOption } from "./AssetsViewScopeConfiguration/types";
 import { NoDataMessage } from "./NoDataMessage";
 import * as s from "./styles";
 import { trackingEvents } from "./tracking";
-import { DataRefresher } from "./types";
+import { AssetsProps, DataRefresher } from "./types";
 
-export const Assets = () => {
+export const Assets = ({ selectedTypeId }: AssetsProps) => {
   const [assetsCount, setAssetsCount] = useState<number>();
   const [selectedAssetTypeId, setSelectedAssetTypeId] = useState<string | null>(
-    null
+    selectedTypeId || null
   );
   const [searchInputValue, setSearchInputValue] = useState("");
   const debouncedSearchInputValue = useDebounce(searchInputValue, 1000);
@@ -43,15 +45,26 @@ export const Assets = () => {
     }
   }, [config.scope]);
 
+  const changeView = (path: string) => {
+    window.sendMessageToDigma<ChangeViewPayload>({
+      action: globalActions.CHANGE_VIEW,
+      payload: {
+        view: path
+      }
+    });
+  };
+
   useEffect(() => {
     if (!previousScope || previousScope !== config.scope?.span) {
       setSelectedAssetTypeId(null);
+      changeView("/assets");
       setSearchInputValue("");
     }
   }, [config.scope, previousScope]);
 
   const handleBackButtonClick = () => {
     setSelectedAssetTypeId(null);
+    changeView("/assets");
   };
 
   const handleSearchInputChange = (val: string | null) => {
@@ -60,6 +73,7 @@ export const Assets = () => {
 
   const handleAssetTypeSelect = (assetTypeId: string) => {
     setSelectedAssetTypeId(assetTypeId);
+    changeView(`/assets/category/${assetTypeId}`);
   };
 
   const handleApplyFilters = (filters: AssetFilterQuery) => {
