@@ -68,7 +68,7 @@ export const EndpointSpanNPlusOneHighlightCard = ({
     handleEnvironmentTableRowClick(
       config.environments,
       row.original.environmentId,
-      "insights"
+      "/insights"
     );
   };
 

@@ -4,7 +4,7 @@ export const mockedViewsData: SetViewsPayload = {
   views: [
     {
       title: "",
-      id: "highlights",
+      id: "/highlights",
       isSelected: true,
       isDisabled: false,
       hasNewData: false,
@@ -17,7 +17,7 @@ export const mockedViewsData: SetViewsPayload = {
       hasNewData: false,
       isHidden: false,
       title: "Issues",
-      id: "insights",
+      id: "/insights",
       cardName: "insights"
     },
     {
@@ -26,7 +26,7 @@ export const mockedViewsData: SetViewsPayload = {
       hasNewData: false,
       isHidden: false,
       title: "Assets",
-      id: "assets",
+      id: "/assets",
       cardName: "assets"
     },
     {
@@ -35,7 +35,7 @@ export const mockedViewsData: SetViewsPayload = {
       hasNewData: false,
       isHidden: false,
       title: "Analytics",
-      id: "analytics",
+      id: "/analytics",
       cardName: "analytics"
     },
     {
@@ -44,7 +44,7 @@ export const mockedViewsData: SetViewsPayload = {
       hasNewData: false,
       isHidden: false,
       title: "Errors",
-      id: "errors",
+      id: "/errors",
       cardName: "errors"
     },
     {
@@ -53,7 +53,7 @@ export const mockedViewsData: SetViewsPayload = {
       hasNewData: false,
       isHidden: true,
       title: "Error Details",
-      id: "errorsDetails",
+      id: "/errors/details",
       cardName: "errors"
     },
     {
@@ -62,9 +62,9 @@ export const mockedViewsData: SetViewsPayload = {
       hasNewData: false,
       isHidden: false,
       title: "Tests",
-      id: "tests",
+      id: "/tests",
       cardName: "tests"
     }
   ],
-  isTriggeredByJcef: false
+  triggeredByJcef: false
 };

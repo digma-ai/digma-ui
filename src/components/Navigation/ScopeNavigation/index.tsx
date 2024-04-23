@@ -9,6 +9,8 @@ import {
 } from "../../../types";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Scope } from "../../common/App/types";
+import { actions } from "../actions";
+import { SetViewsPayload } from "../types";
 import { HistoryManager } from "./HistoryManager";
 import { HistoryNavigationPanel } from "./HistoryNavigationPanel";
 import { ScopeNavigationProps } from "./types";
@@ -27,9 +29,8 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
     new HistoryManager()
   );
   const { environment, environments } = useContext(ConfigContext);
-  const previousTabId = usePrevious(props.currentTabId);
   const previousEnvironment = usePrevious(environment);
-  const previousSate = usePrevious(historyManager.getCurrent());
+  const previousState = usePrevious(historyManager.getCurrent());
 
   useEffect(() => {
     if (!environment || !environments?.find((x) => x.id == environment?.id)) {
@@ -41,27 +42,16 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
   useEffect(() => {
     const currentStep = historyManager.getCurrent();
     if (
-      previousSate?.scope.span?.spanCodeObjectId ===
+      previousState?.scope.span?.spanCodeObjectId ===
       currentStep?.scope.span?.spanCodeObjectId
     ) {
-      if (
-        previousTabId !== props.currentTabId ||
-        previousEnvironment !== environment
-      ) {
+      if (previousEnvironment !== environment) {
         historyManager.updateCurrent({
-          tabId: props.currentTabId,
           environment
         });
       }
     }
-  }, [
-    previousTabId,
-    props.currentTabId,
-    previousSate,
-    previousEnvironment,
-    environment,
-    historyManager
-  ]);
+  }, [previousState, previousEnvironment, environment, historyManager]);
 
   useEffect(() => {
     const handleSetScope = (data: unknown) => {
@@ -74,7 +64,7 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
         historyManager.push({
           environment: environment || null,
           scope: newScope,
-          tabId: null
+          tabId: props.currentTabId
         });
       } else {
         const historyStep = historyManager.getCurrent();
@@ -83,7 +73,8 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
           window.sendMessageToDigma<ChangeViewPayload>({
             action: globalActions.CHANGE_VIEW,
             payload: {
-              view: historyStep.tabId
+              view: historyStep.tabId,
+              isUserAction: false
             }
           });
         }
@@ -99,10 +90,30 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
       }
     };
 
+    const handleViewChange = (data: unknown) => {
+      const payload = data as SetViewsPayload;
+      const currentStep = historyManager.getCurrent();
+      if (!payload.triggeredByJcef) {
+        return;
+      }
+
+      const view = payload.views.find((x) => x.isSelected);
+      const viewId = [view?.id, view?.path].filter((x) => Boolean(x)).join("/");
+      if (view && currentStep && currentStep?.tabId !== viewId) {
+        historyManager.push({
+          environment: environment,
+          scope: currentStep.scope,
+          tabId: viewId
+        });
+      }
+    };
+
     dispatcher.addActionListener(globalActions.SET_SCOPE, handleSetScope);
+    dispatcher.addActionListener(actions.SET_VIEWS, handleViewChange);
 
     return () => {
       dispatcher.removeActionListener(globalActions.SET_SCOPE, handleSetScope);
+      dispatcher.removeActionListener(actions.SET_VIEWS, handleViewChange);
     };
   }, [environment, props.currentTabId, historyManager]);
 

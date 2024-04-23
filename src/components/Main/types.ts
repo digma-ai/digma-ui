@@ -1,11 +1,12 @@
 export type View =
-  | "highlights"
-  | "insights"
-  | "assets"
-  | "analytics"
-  | "errors"
-  | "errorsDetails"
-  | "tests";
+  | "/highlights"
+  | "/insights"
+  | "/assets"
+  | "/analytics"
+  | "/errors"
+  | "/errors/details"
+  | "/tests";
+// | "/assets/{categoryType}" supported path for category
 
 export interface GetHighlightsTopIssuesDataPayload {
   query: {
@@ -36,4 +37,9 @@ export interface RegisterPayload {
 export interface RegisterResult {
   errors?: ErrorData[];
   success: string;
+}
+
+export interface ViewData {
+  id: string;
+  path?: string;
 }

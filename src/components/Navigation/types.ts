@@ -10,6 +10,7 @@ export interface TabData {
   isHidden: boolean;
   cardName: string;
   tooltipMessage?: string;
+  path?: string;
 }
 
 export interface OpenDocumentationPayload {
@@ -34,7 +35,7 @@ export interface ChangeViewPayload {
 
 export interface SetViewsPayload {
   views: TabData[];
-  isTriggeredByJcef: boolean;
+  triggeredByJcef: boolean;
 }
 
 export interface AutoFixMissingDependencyPayload {

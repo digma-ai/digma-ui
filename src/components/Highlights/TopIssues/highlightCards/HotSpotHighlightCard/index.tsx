@@ -39,7 +39,7 @@ export const HotSpotHighlightCard = ({ data }: HotSpotHighlightCardProps) => {
     handleEnvironmentTableRowClick(
       config.environments,
       row.original.environmentId,
-      "insights"
+      "/insights"
     );
   };
 

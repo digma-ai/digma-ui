@@ -32,7 +32,7 @@ const getIsTabDisabled = (tab: TabData, scope?: Scope) => {
 };
 
 const getTabIcon = (tab: TabData) => {
-  if (tab.id === "highlights") {
+  if (tab.id === "/highlights") {
     return <MagicWandIcon color={"currentColor"} size={16} />;
   }
 
@@ -41,7 +41,7 @@ const getTabIcon = (tab: TabData) => {
 
 const getIsNewIndicatorVisible = (tab: TabData, config: ConfigContextData) =>
   tab.hasNewData ||
-  (tab.id === "insights"
+  (tab.id === "/insights"
     ? config.insightStats &&
       config.scope?.span?.spanCodeObjectId ===
         config.insightStats.scope?.span.spanCodeObjectId
@@ -52,7 +52,7 @@ const getIsNewIndicatorVisible = (tab: TabData, config: ConfigContextData) =>
     : false);
 
 const getTabWidth = (tab: TabData) => {
-  if (tab.id === "highlights") {
+  if (tab.id === "/highlights") {
     return 40;
   }
 

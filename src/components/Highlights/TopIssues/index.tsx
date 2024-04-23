@@ -97,7 +97,7 @@ export const TopIssues = () => {
     window.sendMessageToDigma<ChangeViewPayload>({
       action: globalActions.CHANGE_VIEW,
       payload: {
-        view: "insights"
+        view: "/insights"
       }
     });
   };

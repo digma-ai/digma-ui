@@ -81,7 +81,7 @@ export const SpanQueryOptimizationHighlightCard = ({
     handleEnvironmentTableRowClick(
       config.environments,
       row.original.environmentId,
-      "insights"
+      "/insights"
     );
   };
 

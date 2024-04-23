@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { actions as globalActions } from "../../actions";
 import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
@@ -6,7 +6,8 @@ import { isNull } from "../../typeGuards/isNull";
 import {
   ChangeEnvironmentPayload,
   ChangeScopePayload,
-  ChangeViewPayload
+  ChangeViewPayload,
+  GetInsightStatsPayload
 } from "../../types";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 import { AsyncActionResultData } from "../InstallationWizard/types";
@@ -100,9 +101,8 @@ export const Navigation = () => {
   const [isAutoFixing, setIsAutoFixing] = useState(false);
   const [isAnnotationAdding, setIsAnnotationAdding] = useState(false);
   const previousCodeContext = usePrevious(codeContext);
-  const [currentTab, setCurrentTab] = useState<View>("insights");
-
-  const environments = config.environments || [];
+  const previousEnv = usePrevious(config.environment);
+  const [currentTab, setCurrentTab] = useState<View>("/insights");
 
   const codeButtonTooltip = getCodeButtonTooltip(codeContext, config.scope);
   const isCodeButtonEnabled = codeContext && !isNull(codeContext.methodId);
@@ -165,8 +165,36 @@ export const Navigation = () => {
   }, [config.userInfo?.id]);
 
   useEffect(() => {
-    setSelectedEnvironment(config.environment);
-  }, [config.environment]);
+    if (config.environment?.id !== previousEnv?.id) {
+      setSelectedEnvironment(config.environment);
+      window.sendMessageToDigma<GetInsightStatsPayload>({
+        action: globalActions.GET_INSIGHT_STATS,
+        payload: {
+          scope: config.scope?.span
+            ? {
+                span: {
+                  spanCodeObjectId: config.scope.span.spanCodeObjectId
+                }
+              }
+            : null
+        }
+      });
+    }
+  }, [config.environment, config.scope, previousEnv?.id]);
+
+  const handleEnvironmentChange = useCallback((environment: Environment) => {
+    sendUserActionTrackingEvent(trackingEvents.ENVIRONMENT_SELECTED);
+    setIsEnvironmentMenuOpen(false);
+
+    window.sendMessageToDigma<ChangeEnvironmentPayload>({
+      action: globalActions.CHANGE_ENVIRONMENT,
+      payload: {
+        environment: environment.id
+      }
+    });
+
+    setSelectedEnvironment(environment);
+  }, []);
 
   useEffect(() => {
     if (
@@ -181,7 +209,7 @@ export const Navigation = () => {
     if (config.environments && config.environments.length === 0) {
       setSelectedEnvironment(undefined);
     }
-  }, [config.environments, config.environment]);
+  }, [config.environments, config.environment, handleEnvironmentChange]);
 
   useEffect(() => {
     setIsAutoFixing(false);
@@ -260,28 +288,6 @@ export const Navigation = () => {
     });
   };
 
-  const handleEnvironmentChange = (environment: Environment) => {
-    sendUserActionTrackingEvent(trackingEvents.ENVIRONMENT_SELECTED);
-    setIsEnvironmentMenuOpen(false);
-
-    const environmentToChange = environments.find(
-      (x) => x.id === environment.id
-    );
-
-    if (!environmentToChange) {
-      return;
-    }
-
-    window.sendMessageToDigma<ChangeEnvironmentPayload>({
-      action: globalActions.CHANGE_ENVIRONMENT,
-      payload: {
-        environment: environmentToChange.id
-      }
-    });
-
-    setSelectedEnvironment(environment);
-  };
-
   const changeTab = (tabId: View) => {
     setCurrentTab(tabId);
     window.sendMessageToDigma<ChangeViewPayload>({
@@ -332,6 +338,7 @@ export const Navigation = () => {
     setIsCodeButtonMenuOpen(false);
   };
 
+  const environments = config.environments || [];
   const renderEnvironmentMenu = () => {
     const handleOverlayClick = () => {
       setIsEnvironmentMenuOpen(false);

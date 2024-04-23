@@ -63,7 +63,7 @@ export const EndpointHighNumberOfQueriesHighlightCard = ({
     handleEnvironmentTableRowClick(
       config.environments,
       row.original.environmentId,
-      "insights"
+      "/insights"
     );
   };
 

@@ -20,6 +20,9 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     searchQuery: "",
+    setRefresher: () => {
+      // empty
+    },
     assetTypeId: "Endpoint",
     data: {
       data: [

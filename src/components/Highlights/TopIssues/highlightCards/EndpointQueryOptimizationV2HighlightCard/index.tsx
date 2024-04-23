@@ -50,7 +50,7 @@ export const EndpointQueryOptimizationV2HighlightCard = ({
     handleEnvironmentTableRowClick(
       config.environments,
       row.original.environmentId,
-      "insights"
+      "/insights"
     );
   };
 

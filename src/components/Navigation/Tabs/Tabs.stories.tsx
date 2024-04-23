@@ -22,7 +22,7 @@ export const Default: Story = {
     tabs: [
       {
         title: "",
-        id: "highlights",
+        id: "/highlights",
         isSelected: true,
         isDisabled: false,
         hasNewData: false,
@@ -31,7 +31,7 @@ export const Default: Story = {
       },
       {
         title: "Insights",
-        id: "insights",
+        id: "/insights",
         isSelected: false,
         isDisabled: false,
         hasNewData: false,
@@ -40,7 +40,7 @@ export const Default: Story = {
       },
       {
         title: "Assets",
-        id: "assets",
+        id: "/assets",
         isSelected: false,
         isDisabled: false,
         hasNewData: true,
@@ -49,7 +49,7 @@ export const Default: Story = {
       },
       {
         title: "Errors",
-        id: "errors",
+        id: "/errors",
         isSelected: false,
         isDisabled: false,
         hasNewData: false,
@@ -58,7 +58,7 @@ export const Default: Story = {
       },
       {
         title: "Tests",
-        id: "tests",
+        id: "/tests",
         isSelected: false,
         isDisabled: true,
         hasNewData: false,

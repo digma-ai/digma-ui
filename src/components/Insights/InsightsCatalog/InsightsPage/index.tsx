@@ -559,7 +559,7 @@ export const InsightsPage = (props: InsightsPageProps) => {
     window.sendMessageToDigma<ChangeViewPayload>({
       action: globalActions.CHANGE_VIEW,
       payload: {
-        view: "analytics"
+        view: "/analytics"
       }
     });
   };
