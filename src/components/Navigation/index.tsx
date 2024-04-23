@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { actions as globalActions } from "../../actions";
 import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
@@ -182,34 +182,19 @@ export const Navigation = () => {
     }
   }, [config.environment, config.scope, previousEnv?.id]);
 
-  const environments = useMemo(
-    () => config.environments || [],
-    [config.environments]
-  );
-  const handleEnvironmentChange = useCallback(
-    (environment: Environment) => {
-      sendUserActionTrackingEvent(trackingEvents.ENVIRONMENT_SELECTED);
-      setIsEnvironmentMenuOpen(false);
+  const handleEnvironmentChange = useCallback((environment: Environment) => {
+    sendUserActionTrackingEvent(trackingEvents.ENVIRONMENT_SELECTED);
+    setIsEnvironmentMenuOpen(false);
 
-      const environmentToChange = environments.find(
-        (x) => x.id === environment.id
-      );
-
-      if (!environmentToChange) {
-        return;
+    window.sendMessageToDigma<ChangeEnvironmentPayload>({
+      action: globalActions.CHANGE_ENVIRONMENT,
+      payload: {
+        environment: environment.id
       }
+    });
 
-      window.sendMessageToDigma<ChangeEnvironmentPayload>({
-        action: globalActions.CHANGE_ENVIRONMENT,
-        payload: {
-          environment: environmentToChange.id
-        }
-      });
-
-      setSelectedEnvironment(environment);
-    },
-    [environments]
-  );
+    setSelectedEnvironment(environment);
+  }, []);
 
   useEffect(() => {
     if (
@@ -353,6 +338,7 @@ export const Navigation = () => {
     setIsCodeButtonMenuOpen(false);
   };
 
+  const environments = config.environments || [];
   const renderEnvironmentMenu = () => {
     const handleOverlayClick = () => {
       setIsEnvironmentMenuOpen(false);
