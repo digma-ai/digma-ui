@@ -143,6 +143,24 @@ export const RecentActivity = (props: RecentActivityProps) => {
   }, [selectedEnvironment?.id]);
 
   useEffect(() => {
+    if (
+      selectedEnvironment &&
+      environmentActivities[selectedEnvironment?.id] &&
+      environmentInstructionsVisibility.isOpen &&
+      !environmentInstructionsVisibility.keepOpen
+    ) {
+      setEnvironmentInstructionsVisibility({
+        isOpen: false,
+        keepOpen: false
+      });
+    }
+  }, [
+    environmentActivities,
+    environmentInstructionsVisibility,
+    selectedEnvironment
+  ]);
+
+  useEffect(() => {
     window.sendMessageToDigma({
       action: actions.INITIALIZE
     });
