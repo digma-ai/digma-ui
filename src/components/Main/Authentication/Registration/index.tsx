@@ -7,8 +7,7 @@ import { LockIcon } from "../../../common/icons/12px/LockIcon";
 import { EnvelopeIcon } from "../../../common/icons/16px/EnvelopeIcon";
 import { Spinner } from "../../../common/v3/Spinner";
 import { TextField } from "../../../common/v3/TextField";
-import * as s from "./../styles";
-import { Loader } from "./../styles";
+import * as s from "../styles";
 import { RegisterFormValues, RegistrationProps } from "./types";
 import { useRegistration } from "./useRegistration";
 
@@ -190,10 +189,10 @@ export const Registration = ({ onRegister }: RegistrationProps) => {
         />
       </s.ButtonsContainer>
       {isLoading && (
-        <Loader>
+        <s.Loader>
           <Spinner size={16} />
           Loading...
-        </Loader>
+        </s.Loader>
       )}
     </s.FormContainer>
   );

@@ -1,6 +1,7 @@
 import { actions as globalActions } from "../../../../../actions";
 import { ChangeScopePayload } from "../../../../../types";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
+import { Link } from "../../../../common/v3/Link";
 import { Tooltip } from "../../../../common/v3/Tooltip";
 import { trackingEvents } from "../../../tracking";
 import * as s from "./styles";
@@ -26,7 +27,10 @@ export const AssetLink = ({ asset }: AssetLinkProps) => {
 
   return (
     <Tooltip title={assetName}>
-      <s.Link onClick={handleAssetLinkClick}>{assetName}</s.Link>
+      <s.Container>
+        <Link onClick={handleAssetLinkClick}>{assetName}</Link>
+        <s.StyledCopyButton text={assetName} />
+      </s.Container>
     </Tooltip>
   );
 };

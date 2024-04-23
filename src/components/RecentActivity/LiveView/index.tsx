@@ -31,7 +31,6 @@ import { roundTo } from "../../../utils/roundTo";
 import { roundToNonZeroDecimals } from "../../../utils/roundToNonZeroDecimals";
 import { getThemeKind } from "../../common/App/styles";
 import { ToggleSwitch } from "../../common/ToggleSwitch";
-import { Tooltip as CommonTooltip } from "../../common/Tooltip";
 import { ArrowSmallIcon } from "../../common/icons/ArrowSmallIcon";
 import { ChartCircleIcon } from "../../common/icons/ChartCircleIcon";
 import { CrossIcon } from "../../common/icons/CrossIcon";
@@ -40,6 +39,7 @@ import { EndpointIcon } from "../../common/icons/EndpointIcon";
 import { MinusIcon } from "../../common/icons/MinusIcon";
 import { PlusIcon } from "../../common/icons/PlusIcon";
 import { Direction } from "../../common/icons/types";
+import { Tooltip as CommonTooltip } from "../../common/v3/Tooltip";
 import { trackingEvents } from "../tracking";
 import { AreaTooltipContent } from "./AreaTooltipContent";
 import { ChangeStatus } from "./ChangeStatus";
@@ -439,6 +439,7 @@ export const LiveView = (props: LiveViewProps) => {
           <CommonTooltip title={spanName}>
             <s.SpanName>{spanName}</s.SpanName>
           </CommonTooltip>
+          <s.StyledCopyButton text={spanName} />
         </s.Title>
         <s.LiveBadge>
           <DoubleCircleIcon color={getLiveIconColor(theme)} size={14} />

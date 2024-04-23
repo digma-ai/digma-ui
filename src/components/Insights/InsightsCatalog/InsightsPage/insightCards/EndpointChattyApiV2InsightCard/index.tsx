@@ -1,5 +1,6 @@
 import { InsightType, Trace } from "../../../../types";
 import { InsightCard } from "../common/InsightCard";
+import { AssetLink } from "../common/InsightCard/AssetLink";
 import { Description } from "../styles";
 import * as s from "./styles";
 import { EndpointChattyApiV2InsightCardProps } from "./types";
@@ -37,8 +38,8 @@ export const EndpointChattyApiV2InsightCard = ({
           <Description>
             Excessive API calls to specific endpoint found
           </Description>
-          <s.SpanListItem
-            name={spanName}
+          <AssetLink
+            text={spanName}
             onClick={() => handleSpanLinkClick(spanCodeObjectId)}
           />
         </s.Container>

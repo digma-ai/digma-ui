@@ -1,4 +1,5 @@
 import { useCallback, useContext, useEffect, useState } from "react";
+import { actions as globalActions } from "../../actions";
 import { useDebounce } from "../../hooks/useDebounce";
 import { usePrevious } from "../../hooks/usePrevious";
 import { ChangeViewPayload } from "../../types";
@@ -8,7 +9,6 @@ import { EmptyState } from "../common/EmptyState";
 import { SearchInput } from "../common/SearchInput";
 import { RefreshIcon } from "../common/icons/16px/RefreshIcon";
 import { Tooltip } from "../common/v3/Tooltip";
-import { actions as globalActions } from "./../../actions";
 import { AssetList } from "./AssetList";
 import { AssetTypeList } from "./AssetTypeList";
 import { AssetsFilter } from "./AssetsFilter";
@@ -61,7 +61,7 @@ export const Assets = ({ selectedTypeId }: AssetsProps) => {
     }
   }, [config.scope, previousScope, selectedTypeId]);
 
-  const handleAllAssetsClick = () => {
+  const handleGoToAllAssets = () => {
     setSelectedAssetTypeId(null);
     changeView("/assets");
   };
@@ -153,7 +153,7 @@ export const Assets = ({ selectedTypeId }: AssetsProps) => {
 
     return (
       <AssetList
-        onBackButtonClick={handleAllAssetsClick}
+        onGoToAllAssets={handleGoToAllAssets}
         assetTypeId={selectedAssetTypeId}
         filters={selectedFilters}
         searchQuery={debouncedSearchInputValue}

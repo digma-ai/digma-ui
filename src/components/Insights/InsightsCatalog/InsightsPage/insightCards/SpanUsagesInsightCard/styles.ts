@@ -4,6 +4,7 @@ import {
   footnoteRegularTypography
 } from "../../../../../common/App/typographies";
 import { Link as CommonLink } from "../../../../../common/Link";
+import { CopyButton } from "../../../../../common/v3/CopyButton";
 
 export const Container = styled.div`
   display: flex;
@@ -21,10 +22,21 @@ export const FlowData = styled.div`
   overflow: hidden;
 `;
 
-export const SubsequentSpan = styled.div`
+export const StyledCopyButton = styled(CopyButton)`
+  padding: 0;
+  display: none;
+`;
+
+export const Span = styled.div`
   display: flex;
   gap: 8px;
   align-items: center;
+
+  &:hover {
+    ${StyledCopyButton} {
+      display: flex;
+    }
+  }
 `;
 
 export const ArrowIconContainer = styled.div`

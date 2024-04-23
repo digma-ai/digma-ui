@@ -3,6 +3,6 @@ import { ReactNode } from "react";
 export interface ListItemProps {
   onClick: () => void;
   className?: string;
-  buttons?: ReactNode[];
+  endContent?: ReactNode | ReactNode[];
   name: string;
 }

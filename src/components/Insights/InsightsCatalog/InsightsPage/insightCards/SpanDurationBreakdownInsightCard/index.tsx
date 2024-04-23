@@ -112,14 +112,14 @@ export const SpanDurationBreakdownInsightCard = ({
                   key={spanCodeObjectId}
                   name={name}
                   onClick={() => handleSpanLinkClick(spanCodeObjectId)}
-                  buttons={[
+                  endContent={
                     <Tag
                       key={"duration"}
                       title={title}
                       type={"highlight"}
                       content={getDurationString(percentile.duration)}
                     />
-                  ]}
+                  }
                 />
               ) : null;
             })}

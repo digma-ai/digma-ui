@@ -132,7 +132,10 @@ export const ScopeBar = (props: ScopeBarProps) => {
         <HomeIcon color={"currentColor"} size={16} />
       </s.ScopeBarButton>
       <s.ScopeBarDivider />
-      <s.ScopeName>{scopeDisplayName}</s.ScopeName>
+      <s.ScopeNameContainer>
+        <s.ScopeName>{scopeDisplayName}</s.ScopeName>
+        <s.StyledCopyButton text={scopeDisplayName} />
+      </s.ScopeNameContainer>
       <s.ScopeBarDivider />
       {isTargetButtonMenuEnabled ? (
         <NewPopover

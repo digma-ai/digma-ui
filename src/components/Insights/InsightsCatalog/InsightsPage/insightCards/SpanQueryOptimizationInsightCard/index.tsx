@@ -4,6 +4,7 @@ import { trimEndpointScheme } from "../../../../../../utils/trimEndpointScheme";
 import { Pagination } from "../../../../../common/v3/Pagination";
 import { InsightType, Trace } from "../../../../types";
 import { InsightCard } from "../common/InsightCard";
+import { AssetLink } from "../common/InsightCard/AssetLink";
 import { ColumnsContainer } from "../common/InsightCard/ColumnsContainer";
 import { KeyValue } from "../common/InsightCard/KeyValue";
 import { ListItem } from "../common/InsightCard/ListItem";
@@ -31,7 +32,7 @@ export const SpanQueryOptimizationInsightCard = ({
     insight.id
   );
 
-  const handleSpanLinkClick = (spanCodeObjectId?: string) => {
+  const handleAssetLinkClick = (spanCodeObjectId?: string) => {
     spanCodeObjectId && onAssetLinkClick(spanCodeObjectId, insight.type);
   };
 
@@ -65,9 +66,9 @@ export const SpanQueryOptimizationInsightCard = ({
                 Query is slow compared to other{" "}
                 {insight.dbStatement.toUpperCase()} requests
               </Description>
-              <ListItem
-                name={spanName || ""}
-                onClick={() => handleSpanLinkClick(spanCodeObjectId)}
+              <AssetLink
+                text={spanName || ""}
+                onClick={() => handleAssetLinkClick(spanCodeObjectId)}
               />
             </Details>
           )}
@@ -91,7 +92,7 @@ export const SpanQueryOptimizationInsightCard = ({
                     <ListItem
                       name={route}
                       key={route}
-                      onClick={() => handleSpanLinkClick(spanCodeObjectId)}
+                      onClick={() => handleAssetLinkClick(spanCodeObjectId)}
                     />
                   );
                 })}

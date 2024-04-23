@@ -19,6 +19,9 @@ type Story = StoryObj<typeof meta>;
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 export const Default: Story = {
   args: {
+    setRefresher: () => {
+      return undefined;
+    },
     searchQuery: "",
     data: {
       assetCategories: [
@@ -54,6 +57,9 @@ export const Default: Story = {
 export const Empty: Story = {
   args: {
     searchQuery: "",
+    setRefresher: () => {
+      return undefined;
+    },
     data: {
       assetCategories: []
     }

@@ -85,6 +85,7 @@ export const AssetEntry = (props: AssetEntryProps) => {
           <Tooltip title={name}>
             <s.Link onClick={() => handleLinkClick()}>{name}</s.Link>
           </Tooltip>
+          <s.StyledCopyButton text={name} />
           <s.IndicatorsContainer>
             {isNew && <Tag type={"success"} value={"New"} />}
             {sortedInsights.map((insight) => {

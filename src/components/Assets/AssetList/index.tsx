@@ -354,8 +354,8 @@ export const AssetList = (props: AssetListProps) => {
     props.scopeViewOptions
   ]);
 
-  const handleBackButtonClick = () => {
-    props.onBackButtonClick();
+  const handleAllAssetsLinkClick = () => {
+    props.onGoToAllAssets();
   };
 
   const handleSortingMenuToggle = () => {
@@ -459,7 +459,7 @@ export const AssetList = (props: AssetListProps) => {
           )}
           {assetTypeInfo?.label || props.assetTypeId}
         </s.TypeHeader>
-        <Link onClick={handleBackButtonClick}>All Assets</Link>
+        <Link onClick={handleAllAssetsLinkClick}>All Assets</Link>
       </s.Header>
       <s.Toolbar>
         <s.PopoverContainer>

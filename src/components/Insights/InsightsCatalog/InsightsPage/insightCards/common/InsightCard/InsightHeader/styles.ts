@@ -3,6 +3,8 @@ import {
   bodySemiboldTypography,
   footnoteRegularTypography
 } from "../../../../../../../common/App/typographies";
+import { CopyButton } from "../../../../../../../common/v3/CopyButton";
+import { Info } from "../../../../../../../common/v3/Info";
 
 export const Container = styled.div`
   display: flex;
@@ -16,9 +18,22 @@ export const TitleRow = styled.div`
   gap: 8px;
 `;
 
+export const StyledCopyButton = styled(CopyButton)`
+  padding: 0 6px;
+  display: none;
+`;
+
 export const SpanInfoRow = styled.div`
   display: flex;
   padding: 0 32px;
+  gap: 4px;
+  align-items: center;
+
+  &:hover {
+    ${StyledCopyButton} {
+      display: flex;
+    }
+  }
 `;
 
 export const TagTitle = styled.span`
@@ -35,6 +50,10 @@ export const Title = styled.div`
   display: flex;
   gap: 4px;
   align-items: center;
+`;
+
+export const TitleInfo = styled(Info)`
+  color: ${({ theme }) => theme.colors.v3.icon.tertiary};
 `;
 
 export const BadgeContainer = styled.div`

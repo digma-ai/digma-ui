@@ -4,7 +4,7 @@ import { AssetScopeOption } from "../AssetsViewScopeConfiguration/types";
 
 export interface AssetListProps {
   data?: AssetsData;
-  onBackButtonClick: () => void;
+  onGoToAllAssets: () => void;
   assetTypeId: string;
   filters?: AssetFilterQuery;
   searchQuery: string;

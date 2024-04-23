@@ -21,22 +21,20 @@ type Story = StoryObj<typeof meta>;
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 export const Default: Story = {};
 
-export const Errored: Story = {
+export const WithError: Story = {
   play: () => {
-    setTimeout(() => {
-      window.setTimeout(() => {
-        window.postMessage({
-          type: "digma",
-          action: actions.SET_CREATE_ENVIRONMENT_RESULT,
-          payload: {
-            errors: [
-              {
-                errorCode: "ExistingEnvironmentName",
-                errorDescription: "some errororroro"
-              }
-            ]
-          }
-        });
+    window.setTimeout(() => {
+      window.postMessage({
+        type: "digma",
+        action: actions.SET_CREATE_ENVIRONMENT_RESULT,
+        payload: {
+          errors: [
+            {
+              errorCode: "ExistingEnvironmentName",
+              errorDescription: "some error message"
+            }
+          ]
+        }
       });
     }, 1000);
   }

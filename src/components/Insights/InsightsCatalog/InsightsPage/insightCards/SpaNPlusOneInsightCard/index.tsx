@@ -4,11 +4,11 @@ import { trimEndpointScheme } from "../../../../../../utils/trimEndpointScheme";
 import { ConfigContext } from "../../../../../common/App/ConfigContext";
 import { TraceIcon } from "../../../../../common/icons/12px/TraceIcon";
 import { Button } from "../../../../../common/v3/Button";
-import { Link } from "../../../../../common/v3/Link";
 import { Tooltip } from "../../../../../common/v3/Tooltip";
 import { InsightType, NPlusOneEndpointInfo, Trace } from "../../../../types";
 import { InsightCard } from "../common/InsightCard";
 import { ColumnsContainer } from "../common/InsightCard/ColumnsContainer";
+import { EndpointSelectSelectedOption } from "../common/InsightCard/EndpointSelectSelectedOption";
 import { KeyValue } from "../common/InsightCard/KeyValue";
 import { Select } from "../common/InsightCard/Select";
 import { ContentContainer, Description, Details } from "../styles";
@@ -25,14 +25,12 @@ const renderOptions = (
     return {
       label: route,
       customContent: (
-        <s.SelectedItem>
-          {x.endpointInfo.serviceName}
-          <Tooltip title={route}>
-            <Link onClick={() => handleLinkClick(spanCodeObjectId)}>
-              {route}
-            </Link>
-          </Tooltip>
-        </s.SelectedItem>
+        <EndpointSelectSelectedOption
+          serviceName={x.endpointInfo.serviceName}
+          route={route}
+          spanCodeObjectId={spanCodeObjectId}
+          onClick={handleLinkClick}
+        />
       ),
       value: spanCodeObjectId
     };

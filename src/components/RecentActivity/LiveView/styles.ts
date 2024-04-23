@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { CopyButton } from "../../common/v3/CopyButton";
 import {
   AreaLegendIllustrationProps,
   AxisChartContainerProps,
@@ -72,11 +73,22 @@ export const Header = styled.div`
   }};
 `;
 
+export const StyledCopyButton = styled(CopyButton)`
+  display: none;
+  padding: 0;
+`;
+
 export const Title = styled.span`
   display: flex;
   align-items: center;
   gap: 4px;
   overflow: hidden;
+
+  &:hover {
+    ${StyledCopyButton} {
+      display: flex;
+    }
+  }
 `;
 
 export const SpanIconContainer = styled.span`

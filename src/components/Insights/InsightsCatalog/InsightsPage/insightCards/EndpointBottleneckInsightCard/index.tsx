@@ -1,9 +1,9 @@
 import { getDurationString } from "../../../../../../utils/getDurationString";
 import { InsightCard } from "../common/InsightCard";
+import { AssetLink } from "../common/InsightCard/AssetLink";
 import { ColumnsContainer } from "../common/InsightCard/ColumnsContainer";
 import { KeyValue } from "../common/InsightCard/KeyValue";
 import { ContentContainer, Description, Details } from "../styles";
-import * as s from "./styles";
 import { EndpointBottleneckInsightCardProps } from "./types";
 
 export const EndpointBottleneckInsightCard = ({
@@ -54,8 +54,8 @@ export const EndpointBottleneckInsightCard = ({
         <ContentContainer>
           <Details>
             <Description>Asset</Description>
-            <s.SpanListItem
-              name={spanName}
+            <AssetLink
+              text={spanName}
               onClick={() => handleSpanLinkClick(spanCodeObjectId)}
             />
           </Details>

@@ -7,7 +7,6 @@ import {
 } from "../../../../../../../../utils/getInsightTypeInfo";
 import { roundTo } from "../../../../../../../../utils/roundTo";
 import { ConfigContext } from "../../../../../../../common/App/ConfigContext";
-import { Info } from "../../../../../../../common/v3/Info";
 import { Link } from "../../../../../../../common/v3/Link";
 import { NewTag } from "../../../../../../../common/v3/NewTag";
 import { Tag } from "../../../../../../../common/v3/Tag";
@@ -105,7 +104,7 @@ export const InsightHeader = ({
         <s.Title>
           {insightTypeInfo?.label}
           {insightTypeInfo?.description && (
-            <Info title={<insightTypeInfo.description />} />
+            <s.TitleInfo title={<insightTypeInfo.description />} />
           )}
           {lastUpdateTimer && (
             <s.Description>
@@ -136,6 +135,7 @@ export const InsightHeader = ({
           <Tooltip title={spanInfo.displayName}>
             <Link onClick={handleSpanLinkClick}>{spanInfo.displayName}</Link>
           </Tooltip>
+          <s.StyledCopyButton text={spanInfo.displayName} />
         </s.SpanInfoRow>
       )}
     </s.Container>
