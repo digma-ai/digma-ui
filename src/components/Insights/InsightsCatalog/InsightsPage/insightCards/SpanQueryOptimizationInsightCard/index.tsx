@@ -4,11 +4,10 @@ import { trimEndpointScheme } from "../../../../../../utils/trimEndpointScheme";
 import { Pagination } from "../../../../../common/v3/Pagination";
 import { InsightType, Trace } from "../../../../types";
 import { InsightCard } from "../common/InsightCard";
-import { AssetLink } from "../common/InsightCard/AssetLink";
 import { ColumnsContainer } from "../common/InsightCard/ColumnsContainer";
 import { KeyValue } from "../common/InsightCard/KeyValue";
 import { ListItem } from "../common/InsightCard/ListItem";
-import { ContentContainer, Description, Details } from "../styles";
+import { AssetLink, ContentContainer, Description, Details } from "../styles";
 import * as s from "./styles";
 import { SpanQueryOptimizationInsightCardProps } from "./types";
 
@@ -67,7 +66,7 @@ export const SpanQueryOptimizationInsightCard = ({
                 {insight.dbStatement.toUpperCase()} requests
               </Description>
               <AssetLink
-                text={spanName || ""}
+                name={spanName || ""}
                 onClick={() => handleAssetLinkClick(spanCodeObjectId)}
               />
             </Details>

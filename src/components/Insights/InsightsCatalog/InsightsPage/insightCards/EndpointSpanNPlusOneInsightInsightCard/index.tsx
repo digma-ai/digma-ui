@@ -1,10 +1,9 @@
 import { getDurationString } from "../../../../../../utils/getDurationString";
 import { InsightType, Trace } from "../../../../types";
 import { InsightCard } from "../common/InsightCard";
-import { AssetLink } from "../common/InsightCard/AssetLink";
 import { ColumnsContainer } from "../common/InsightCard/ColumnsContainer";
 import { KeyValue } from "../common/InsightCard/KeyValue";
-import { ContentContainer, Description, Details } from "../styles";
+import { AssetLink, ContentContainer, Description, Details } from "../styles";
 import { EndpointSpanNPlusOneInsightCardProps } from "./types";
 
 export const EndpointSpanNPlusOneInsightCard = ({
@@ -65,7 +64,7 @@ export const EndpointSpanNPlusOneInsightCard = ({
           <Details>
             <Description>Asset</Description>
             <AssetLink
-              text={spanName}
+              name={spanName}
               onClick={() => handleSpanLinkClick(spanInfo.spanCodeObjectId)}
             />
           </Details>
