@@ -61,7 +61,7 @@ export const Assets = ({ selectedTypeId }: AssetsProps) => {
     }
   }, [config.scope, previousScope, selectedTypeId]);
 
-  const handleBackButtonClick = () => {
+  const handleAllAssetsClick = () => {
     setSelectedAssetTypeId(null);
     changeView("/assets");
   };
@@ -143,7 +143,7 @@ export const Assets = ({ selectedTypeId }: AssetsProps) => {
 
     return (
       <AssetList
-        onBackButtonClick={handleBackButtonClick}
+        onBackButtonClick={handleAllAssetsClick}
         assetTypeId={selectedAssetTypeId}
         filters={selectedFilters}
         searchQuery={debouncedSearchInputValue}

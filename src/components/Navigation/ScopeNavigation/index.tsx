@@ -30,7 +30,7 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
   );
   const { environment, environments } = useContext(ConfigContext);
   const previousEnvironment = usePrevious(environment);
-  const previousSate = usePrevious(historyManager.getCurrent());
+  const previousState = usePrevious(historyManager.getCurrent());
 
   useEffect(() => {
     if (!environment || !environments?.find((x) => x.id == environment?.id)) {
@@ -42,7 +42,7 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
   useEffect(() => {
     const currentStep = historyManager.getCurrent();
     if (
-      previousSate?.scope.span?.spanCodeObjectId ===
+      previousState?.scope.span?.spanCodeObjectId ===
       currentStep?.scope.span?.spanCodeObjectId
     ) {
       if (previousEnvironment !== environment) {
@@ -51,7 +51,7 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
         });
       }
     }
-  }, [previousSate, previousEnvironment, environment, historyManager]);
+  }, [previousState, previousEnvironment, environment, historyManager]);
 
   useEffect(() => {
     const handleSetScope = (data: unknown) => {

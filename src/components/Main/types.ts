@@ -6,7 +6,7 @@ export type View =
   | "/errors"
   | "/errors/details"
   | "/tests";
-// | "/assets/category/{categoryType}" supported path for category
+// | "/assets/{categoryType}" supported path for category
 
 export interface GetHighlightsTopIssuesDataPayload {
   query: {
