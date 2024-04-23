@@ -29,7 +29,6 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
     new HistoryManager()
   );
   const { environment, environments } = useContext(ConfigContext);
-  const previousTabId = usePrevious(props.currentTabId);
   const previousEnvironment = usePrevious(environment);
   const previousSate = usePrevious(historyManager.getCurrent());
 
@@ -74,7 +73,8 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
           window.sendMessageToDigma<ChangeViewPayload>({
             action: globalActions.CHANGE_VIEW,
             payload: {
-              view: historyStep.tabId
+              view: historyStep.tabId,
+              isUserAction: false
             }
           });
         }
@@ -98,11 +98,12 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
       }
 
       const view = payload.views.find((x) => x.isSelected);
-      if (view && currentStep && currentStep?.tabId !== view.id) {
+      const viewId = [view?.id, view?.path].filter((x) => Boolean(x)).join("/");
+      if (view && currentStep && currentStep?.tabId !== viewId) {
         historyManager.push({
           environment: environment,
           scope: currentStep.scope,
-          tabId: view.id
+          tabId: viewId
         });
       }
     };

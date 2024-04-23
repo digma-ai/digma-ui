@@ -6,7 +6,7 @@ const MAX_STEPS = 15;
 export interface HistoryStep {
   scope: Scope;
   environment?: Environment | null;
-  tabId: View | null;
+  tabId: View | string | null;
 }
 
 export interface UpdateStepParams {

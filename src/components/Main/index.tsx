@@ -8,10 +8,10 @@ import { Tests } from "../Tests";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { Authentication } from "./Authentication";
 import { actions } from "./actions";
-import { View } from "./types";
+import { ViewData } from "./types";
 
 export const Main = () => {
-  const [view, setView] = useState<View>("/insights");
+  const [view, setView] = useState<ViewData>({ id: "/insights" });
   const config = useContext(ConfigContext);
 
   useLayoutEffect(() => {
@@ -23,7 +23,7 @@ export const Main = () => {
       const payload = data as SetViewsPayload;
       const view = payload.views.find((x) => x.isSelected);
       if (view) {
-        setView(view.id);
+        setView({ id: view.id, path: view.path });
       }
     };
 
@@ -38,19 +38,13 @@ export const Main = () => {
     return <Authentication />;
   }
 
-  if (view.startsWith("/assets")) {
-    const segments = view.split("/");
-    if (segments[2] === "category" && segments[3]) {
-      return <Assets selectedTypeId={segments[3]} />;
-    }
-    return <Assets />;
-  }
-
-  switch (view) {
+  switch (view.id) {
     case "/highlights":
       return <Highlights />;
     case "/insights":
       return <Insights insightViewType={"Issues"} key={"/insights"} />;
+    case "/assets":
+      return <Assets selectedTypeId={view.path} />;
     case "/analytics":
       return <Insights insightViewType={"Analytics"} key={"/analytics"} />;
     case "/tests":

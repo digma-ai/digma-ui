@@ -38,3 +38,8 @@ export interface RegisterResult {
   errors?: ErrorData[];
   success: string;
 }
+
+export interface ViewData {
+  id: string;
+  path?: string;
+}

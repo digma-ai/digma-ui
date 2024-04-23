@@ -10,6 +10,7 @@ export interface TabData {
   isHidden: boolean;
   cardName: string;
   tooltipMessage?: string;
+  path?: string;
 }
 
 export interface OpenDocumentationPayload {

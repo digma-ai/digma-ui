@@ -56,11 +56,10 @@ export const Assets = ({ selectedTypeId }: AssetsProps) => {
 
   useEffect(() => {
     if (!previousScope || previousScope !== config.scope?.span) {
-      setSelectedAssetTypeId(null);
-      changeView("/assets");
       setSearchInputValue("");
+      setSelectedAssetTypeId(selectedTypeId || null);
     }
-  }, [config.scope, previousScope]);
+  }, [config.scope, previousScope, selectedTypeId]);
 
   const handleBackButtonClick = () => {
     setSelectedAssetTypeId(null);
@@ -73,7 +72,7 @@ export const Assets = ({ selectedTypeId }: AssetsProps) => {
 
   const handleAssetTypeSelect = (assetTypeId: string) => {
     setSelectedAssetTypeId(assetTypeId);
-    changeView(`/assets/category/${assetTypeId}`);
+    changeView(`/assets/${assetTypeId}`);
   };
 
   const handleApplyFilters = (filters: AssetFilterQuery) => {

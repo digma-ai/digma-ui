@@ -82,4 +82,5 @@ export interface ChangeScopePayload {
 
 export interface ChangeViewPayload {
   view: View | string;
+  isUserAction?: boolean;
 }
