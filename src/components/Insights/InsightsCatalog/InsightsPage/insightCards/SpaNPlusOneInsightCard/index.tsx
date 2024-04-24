@@ -8,7 +8,7 @@ import { Tooltip } from "../../../../../common/v3/Tooltip";
 import { InsightType, NPlusOneEndpointInfo, Trace } from "../../../../types";
 import { InsightCard } from "../common/InsightCard";
 import { ColumnsContainer } from "../common/InsightCard/ColumnsContainer";
-import { EndpointSelectSelectedOption } from "../common/InsightCard/EndpointSelectSelectedOption";
+import { EndpointSelectedOption } from "../common/InsightCard/EndpointSelectedOption";
 import { KeyValue } from "../common/InsightCard/KeyValue";
 import { Select } from "../common/InsightCard/Select";
 import { ContentContainer, Description, Details } from "../styles";
@@ -25,7 +25,7 @@ const renderOptions = (
     return {
       label: route,
       customContent: (
-        <EndpointSelectSelectedOption
+        <EndpointSelectedOption
           serviceName={x.endpointInfo.serviceName}
           route={route}
           spanCodeObjectId={spanCodeObjectId}
