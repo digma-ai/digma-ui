@@ -1,14 +1,14 @@
 import { Link } from "../../../../../../../common/v3/Link";
 import { Tooltip } from "../../../../../../../common/v3/Tooltip";
 import * as s from "./styles";
-import { EndpointSelectSelectedOptionProps } from "./types";
+import { EndpointSelectedOptionProps } from "./types";
 
-export const EndpointSelectSelectedOption = ({
+export const EndpointSelectedOption = ({
   serviceName,
   route,
   spanCodeObjectId,
   onClick
-}: EndpointSelectSelectedOptionProps) => {
+}: EndpointSelectedOptionProps) => {
   const title = `${serviceName} ${route}`;
 
   return (

@@ -1,4 +1,4 @@
-export interface EndpointSelectSelectedOptionProps {
+export interface EndpointSelectedOptionProps {
   serviceName: string;
   route: string;
   spanCodeObjectId: string;
