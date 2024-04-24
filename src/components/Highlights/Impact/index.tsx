@@ -1,5 +1,6 @@
 import { Row, createColumnHelper } from "@tanstack/react-table";
 import { useContext, useEffect, useState } from "react";
+import { CENTRAL_ON_PREM_INSTALLATION_GUIDE_URL } from "../../../constants";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
@@ -123,7 +124,7 @@ export const Impact = () => {
     sendUserActionTrackingEvent(
       trackingEvents.IMPACT_CARD_LEARN_MORE_BUTTON_CLICKED
     );
-    openURLInDefaultBrowser("#");
+    openURLInDefaultBrowser(CENTRAL_ON_PREM_INSTALLATION_GUIDE_URL);
   };
 
   if (!config.backendInfo?.centralize) {

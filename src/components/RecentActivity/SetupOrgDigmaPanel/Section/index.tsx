@@ -5,6 +5,10 @@ import { Direction } from "../../../common/icons/types";
 import * as s from "./styles";
 import { SectionProps } from "./types";
 
+/**
+ * @deprecated
+ * safe to delete after 2024-07-22
+ */
 export const Section = (props: SectionProps) => {
   const theme = useTheme();
   const [isExpanded, setIsExpanded] = useState(props.isExpanded);
