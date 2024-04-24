@@ -82,7 +82,7 @@ export const EndpointSessionInViewInsightCard = ({
                   key={spanCodeObjectId}
                   onClick={() => handleLinkClick(spanCodeObjectId)}
                   name={spanName}
-                  buttons={buttons}
+                  endContent={buttons}
                 />
               );
             })}

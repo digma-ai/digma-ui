@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { caption1RegularTypography } from "../../../../common/App/typographies";
+import { ListItem } from "./common/InsightCard/ListItem";
 
 export const Description = styled.div`
   color: ${({ theme }) => theme.colors.v3.text.secondary};
@@ -23,4 +24,10 @@ export const ListContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 4px;
+`;
+
+export const AssetLink = styled(ListItem)`
+  height: 28px;
+  padding: 4px 0;
+  background: none;
 `;

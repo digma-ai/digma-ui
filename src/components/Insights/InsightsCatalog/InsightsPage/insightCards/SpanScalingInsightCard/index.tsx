@@ -96,11 +96,11 @@ export const SpanScalingInsightCard = ({
               );
             }
             return (
-              <s.RootCauseListItem
+              <s.StyledListItem
                 key={spanCodeObjectId}
                 name={spanName}
                 onClick={() => handleLinkClick(spanCodeObjectId)}
-                buttons={buttons}
+                endContent={buttons}
               />
             );
           })}
@@ -133,7 +133,7 @@ export const SpanScalingInsightCard = ({
               {pageItems.map((endpoint) => {
                 const endpointRoute = trimEndpointScheme(endpoint.route);
                 return (
-                  <s.EndpointListItem
+                  <s.StyledListItem
                     key={endpoint.route}
                     onClick={() => handleLinkClick(endpoint.spanCodeObjectId)}
                     name={endpointRoute}

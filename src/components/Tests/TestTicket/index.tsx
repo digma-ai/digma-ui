@@ -25,30 +25,27 @@ export const TestTicket = (props: TestTicketProps) => {
     .map((x) => x.displayName)
     .join("\n");
 
+  const description = [
+    <div key={"title"}>
+      {`"${name}" test failed${
+        isString(errorOrFailMessage)
+          ? ` with message:\n${errorOrFailMessage}`
+          : ""
+      }`}
+    </div>,
+    <div key={"date"}>Last run at: {new Date(runAt).toString()}</div>,
+    <div key={"duration"}>Duration: {getDurationString(duration)}</div>,
+    relatedSpans.length > 0 ? (
+      <div key={"spans"}>{`Related spans:\n${relatedSpans}`}</div>
+    ) : null,
+    <DigmaSignature key={"digmaSignature"} />
+  ].filter(Boolean) as ReactElement[];
+
   const renderDescription = () => (
     <>
-      {intersperse<ReactElement, ReactElement>(
-        [
-          <div key={"title"}>
-            {`"${name}" test failed${
-              isString(errorOrFailMessage)
-                ? ` with message:\n${errorOrFailMessage}`
-                : ""
-            }`}
-          </div>,
-          <div key={"date"}>Last run at: {new Date(runAt).toString()}</div>,
-          <div key={"duration"}>Duration: {getDurationString(duration)}</div>,
-          <>
-            {relatedSpans.length > 0 && (
-              <div key={"spans"}>{`Related spans:\n${relatedSpans}`}</div>
-            )}
-          </>,
-          <DigmaSignature key={"digmaSignature"} />
-        ],
-        (i: number) => (
-          <br key={`separator-${i}`} />
-        )
-      )}
+      {intersperse<ReactElement, ReactElement>(description, (i: number) => (
+        <br key={`separator-${i}`} />
+      ))}
     </>
   );
 

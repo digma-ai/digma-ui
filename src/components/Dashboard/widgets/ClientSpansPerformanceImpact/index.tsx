@@ -32,6 +32,7 @@ const renderClientSpanOverallImpactEntry = (
           {item.displayName}
         </s.SpanLink>
       </Tooltip>
+      <s.StyledCopyButton text={item.displayName} />
       <s.ImpactScoreContainer>
         <ImpactScore
           score={item.overallImpact}

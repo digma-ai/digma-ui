@@ -19,28 +19,34 @@ type Story = StoryObj<typeof meta>;
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 export const Default: Story = {
+  args: {
+    getData: () => {
+      return undefined;
+    }
+  },
   play: () => {
-    setTimeout(() => {
-      window.setTimeout(() => {
-        window.postMessage({
-          type: "digma",
-          action: actions.SET_DIGMATHON_PROGRESS_DATA,
-          payload: mockedDigmathonProgressData
-        });
+    window.setTimeout(() => {
+      window.postMessage({
+        type: "digma",
+        action: actions.SET_DIGMATHON_PROGRESS_DATA,
+        payload: mockedDigmathonProgressData
       });
     }, 0);
   }
 };
 
 export const Congratulations: Story = {
+  args: {
+    getData: () => {
+      return undefined;
+    }
+  },
   play: () => {
-    setTimeout(() => {
-      window.setTimeout(() => {
-        window.postMessage({
-          type: "digma",
-          action: actions.SET_DIGMATHON_PROGRESS_DATA,
-          payload: mockedDigmathonProgressData
-        });
+    window.setTimeout(() => {
+      window.postMessage({
+        type: "digma",
+        action: actions.SET_DIGMATHON_PROGRESS_DATA,
+        payload: mockedDigmathonProgressData
       });
     }, 0);
   }

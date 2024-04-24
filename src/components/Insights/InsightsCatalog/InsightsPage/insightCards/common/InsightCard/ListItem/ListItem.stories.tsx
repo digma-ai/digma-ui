@@ -28,9 +28,11 @@ export const Default: Story = {
 export const WithButtons: Story = {
   args: {
     name: "Very very very very very very very very long text",
-    buttons: [
-      <Button key={"jira"} icon={{ component: TargetIcon }} />,
-      <Button key={"target"} icon={{ component: JiraLogoIcon }} />
-    ]
+    endContent: (
+      <>
+        <Button key={"jira"} icon={{ component: TargetIcon }} />
+        <Button key={"target"} icon={{ component: JiraLogoIcon }} />
+      </>
+    )
   }
 };

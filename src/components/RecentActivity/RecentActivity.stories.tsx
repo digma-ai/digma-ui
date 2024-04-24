@@ -28,7 +28,7 @@ const data: RecentActivityData = {
   environments: [
     {
       name: "ENV_RENDER",
-      id: "ENV_RENDER",
+      id: "ENV_RENDER#ID#1",
       isPending: false,
       type: "Public",
       token: null,
@@ -46,7 +46,7 @@ const data: RecentActivityData = {
     },
     {
       name: "UNSET_ENV",
-      id: "UNSET_ENV",
+      id: "UNSET_ENV#ID#1",
       isPending: false,
       type: "Public",
       token: null,
@@ -733,7 +733,7 @@ export const EnableDigmathonMode: Story = {
 
 export const OpenCongratulationsDigmathonView: Story = {
   play: () => {
-    setTimeout(() => {
+    window.setTimeout(() => {
       window.postMessage({
         type: "digma",
         action: actions.SET_DIGMATHON_PROGRESS_DATA,

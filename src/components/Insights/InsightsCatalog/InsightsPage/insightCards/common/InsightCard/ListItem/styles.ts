@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { CopyButton } from "../../../../../../../common/v3/CopyButton";
 
 export const Container = styled.div`
   display: flex;
@@ -12,7 +13,23 @@ export const Container = styled.div`
   box-sizing: border-box;
 `;
 
-export const ButtonsContainer = styled.div`
+export const StyledCopyButton = styled(CopyButton)`
+  display: none;
+`;
+
+export const LinkContainer = styled.div`
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+
+  &:hover {
+    ${StyledCopyButton} {
+      display: flex;
+    }
+  }
+`;
+
+export const EndContentContainer = styled.div`
   display: flex;
   gap: 8px;
 `;

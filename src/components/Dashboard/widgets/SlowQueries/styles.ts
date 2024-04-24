@@ -1,10 +1,21 @@
 import styled from "styled-components";
 import { Link } from "../../../common/Link";
+import { CopyButton } from "../../../common/v3/CopyButton";
+
+export const StyledCopyButton = styled(CopyButton)`
+  display: none;
+  padding: 0;
+`;
 
 export const Entry = styled.div`
   display: flex;
-  justify-content: space-between;
   gap: 4px;
+
+  &:hover {
+    ${StyledCopyButton} {
+      display: flex;
+    }
+  }
 `;
 
 export const SpanLink = styled(Link)`
@@ -14,6 +25,7 @@ export const SpanLink = styled(Link)`
 `;
 
 export const Duration = styled.span`
+  margin-left: auto;
   flex-shrink: 0;
   font-size: 14px;
   font-weight: 500;

@@ -26,7 +26,7 @@ export const WithSuccessMessage: Story = {
 
 export const Failed: Story = {
   play: () => {
-    setTimeout(
+    window.setTimeout(
       () =>
         window.postMessage({
           type: "digma",

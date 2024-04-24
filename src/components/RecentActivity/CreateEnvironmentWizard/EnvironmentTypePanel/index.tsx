@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import { CENTRAL_ON_PREM_INSTALLATION_GUIDE_URL } from "../../../../constants";
 import { openURLInDefaultBrowser } from "../../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { ConfigContext } from "../../../common/App/ConfigContext";
@@ -9,8 +10,6 @@ import { InfinityIcon } from "../../../common/icons/InfinityIcon";
 import { trackingEvents } from "../../tracking";
 import * as s from "./styles";
 import { EnvironmentTypeData, EnvironmentTypePanelProps } from "./types";
-
-const DIGMA_FOR_TEAMS_URL = "https://digma.ai/digma-for-teams/";
 
 export const EnvironmentTypePanel = (props: EnvironmentTypePanelProps) => {
   const config = useContext(ConfigContext);
@@ -29,7 +28,7 @@ export const EnvironmentTypePanel = (props: EnvironmentTypePanelProps) => {
   };
 
   const handleLearnMoreClick = () => {
-    openURLInDefaultBrowser(DIGMA_FOR_TEAMS_URL);
+    openURLInDefaultBrowser(CENTRAL_ON_PREM_INSTALLATION_GUIDE_URL);
   };
 
   const environmentTypes: EnvironmentTypeData[] = [
