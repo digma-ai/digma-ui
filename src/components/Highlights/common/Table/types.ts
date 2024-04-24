@@ -1,5 +1,4 @@
 import { ColumnDef, Row } from "@tanstack/react-table";
-import { CSSProperties } from "styled-components";
 
 export interface TableProps<T> {
   data: T[];
@@ -8,7 +7,13 @@ export interface TableProps<T> {
   onRowClick?: (row: Row<T>) => void;
 }
 
+export type ContentAlignment = "left" | "center" | "right";
+
 export interface ColumnMeta {
-  headerCellStyle?: CSSProperties;
-  bodyCellStyle?: CSSProperties;
+  contentAlign?: ContentAlignment;
+  info?: string;
+}
+
+export interface TableCellContentProps {
+  $align?: ContentAlignment;
 }

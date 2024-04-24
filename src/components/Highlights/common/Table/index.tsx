@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { usePagination } from "../../../../hooks/usePagination";
 import { usePrevious } from "../../../../hooks/usePrevious";
 import { isNumber } from "../../../../typeGuards/isNumber";
+import { Info } from "../../../common/v3/Info";
 import { Pagination } from "../../../common/v3/Pagination";
 import * as s from "./styles";
 import { ColumnMeta, TableProps } from "./types";
@@ -57,16 +58,16 @@ export const Table = <T,>({ columns, data, id, onRowClick }: TableProps<T>) => {
                   | undefined;
 
                 return (
-                  <s.TableHeaderCell
-                    key={header.id}
-                    style={meta?.headerCellStyle}
-                  >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                  <s.TableHeaderCell key={header.id}>
+                    <s.TableHeaderCellContent $align={meta?.contentAlign}>
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                      {meta?.info && <Info title={meta.info} />}
+                    </s.TableHeaderCellContent>
                   </s.TableHeaderCell>
                 );
               })}
@@ -85,8 +86,13 @@ export const Table = <T,>({ columns, data, id, onRowClick }: TableProps<T>) => {
                   | undefined;
 
                 return (
-                  <s.TableBodyCell key={cell.id} style={meta?.bodyCellStyle}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  <s.TableBodyCell key={cell.id}>
+                    <s.TableCellContent $align={meta?.contentAlign}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </s.TableCellContent>
                   </s.TableBodyCell>
                 );
               })}

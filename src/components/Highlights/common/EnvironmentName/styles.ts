@@ -6,6 +6,7 @@ export const Container = styled.div`
   gap: 4px;
   color: ${({ theme }) => theme.colors.v3.text.secondary};
   padding: 4px;
+  overflow: hidden;
 `;
 
 export const IconContainer = styled.div`

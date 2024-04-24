@@ -18,6 +18,9 @@ export const CENTRAL_ON_PREM_INSTALLATION_GUIDE_URL =
 export const INSTRUMENTATION_DOCUMENTATION_URL =
   "https://docs.digma.ai/digma-developer-guide/instrumentation/spring-spring-boot-dropwizard-and-default/instrumenting-your-code-in-ci-staging-or-the-terminal";
 
+export const PERFORMANCE_IMPACT_DOCUMENTATION_URL =
+  "https://docs.digma.ai/digma-developer-guide/use-cases-wip/prioritize-technical-debt#asset-performance-impact";
+
 export const PERCENTILES: {
   label: string;
   percentile: number;

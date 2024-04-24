@@ -3,6 +3,7 @@ import {
   footnoteRegularTypography,
   subscriptRegularTypography
 } from "../../../common/App/typographies";
+import { TableCellContentProps } from "./types";
 
 export const Table = styled.table`
   width: 100%;
@@ -19,7 +20,6 @@ export const TableHeaderCell = styled.th`
   ${footnoteRegularTypography}
 
   padding: 0 2px;
-  text-align: start;
   vertical-align: top;
 
   &:first-child {
@@ -29,6 +29,28 @@ export const TableHeaderCell = styled.th`
   &:last-child {
     padding-right: 0;
   }
+`;
+
+export const TableCellContent = styled.div<TableCellContentProps>`
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  text-align: ${({ $align }) => $align || "left"};
+  justify-content: ${({ $align }) => {
+    switch ($align) {
+      case "right":
+        return "flex-end";
+      case "center":
+        return "center";
+      case "left":
+      default:
+        return "flex-start";
+    }
+  }};
+`;
+
+export const TableHeaderCellContent = styled(TableCellContent)`
+  ${footnoteRegularTypography}
 `;
 
 export const TableBodyRow = styled.tr`
@@ -44,9 +66,6 @@ export const TableBodyRow = styled.tr`
 
 export const TableBodyCell = styled.td`
   padding: 0 2px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 
   &:first-child {
     padding-left: 0;

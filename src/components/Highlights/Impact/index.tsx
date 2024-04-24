@@ -1,6 +1,6 @@
 import { Row, createColumnHelper } from "@tanstack/react-table";
 import { useContext, useEffect, useState } from "react";
-import { CENTRAL_ON_PREM_INSTALLATION_GUIDE_URL } from "../../../constants";
+import { PERFORMANCE_IMPACT_DOCUMENTATION_URL } from "../../../constants";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
@@ -68,12 +68,8 @@ export const Impact = () => {
           return <TableText title={impactLabel}>{impactLabel}</TableText>;
         },
         meta: {
-          headerCellStyle: {
-            textAlign: "center"
-          },
-          bodyCellStyle: {
-            textAlign: "center"
-          }
+          contentAlign: "center",
+          info: "The asset impact level represents how much it affects overall system performance"
         }
       }),
       columnHelper.accessor((x) => x, {
@@ -86,13 +82,8 @@ export const Impact = () => {
           return <Tag title={rank} content={rank} type={tagType} />;
         },
         meta: {
-          headerCellStyle: {
-            textAlign: "center"
-          },
-          bodyCellStyle: {
-            display: "flex",
-            justifyContent: "center"
-          }
+          contentAlign: "center",
+          info: "The asset rank score indicates how high its impact is relative to other assets of the same category"
         }
       })
     ];
@@ -124,7 +115,7 @@ export const Impact = () => {
     sendUserActionTrackingEvent(
       trackingEvents.IMPACT_CARD_LEARN_MORE_BUTTON_CLICKED
     );
-    openURLInDefaultBrowser(CENTRAL_ON_PREM_INSTALLATION_GUIDE_URL);
+    openURLInDefaultBrowser(PERFORMANCE_IMPACT_DOCUMENTATION_URL);
   };
 
   if (!config.backendInfo?.centralize) {
