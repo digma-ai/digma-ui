@@ -10,7 +10,7 @@ import { usePrevious } from "../../../../hooks/usePrevious";
 import { isNumber } from "../../../../typeGuards/isNumber";
 import { Pagination } from "../../../common/v3/Pagination";
 import * as s from "./styles";
-import { TableProps } from "./types";
+import { ColumnMeta, TableProps } from "./types";
 
 const PAGE_SIZE = 5;
 
@@ -51,16 +51,25 @@ export const Table = <T,>({ columns, data, id, onRowClick }: TableProps<T>) => {
         <s.TableHead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <s.TableHeaderCell key={header.id}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                </s.TableHeaderCell>
-              ))}
+              {headerGroup.headers.map((header) => {
+                const meta = header.column.columnDef.meta as
+                  | ColumnMeta
+                  | undefined;
+
+                return (
+                  <s.TableHeaderCell
+                    key={header.id}
+                    style={meta?.headerCellStyle}
+                  >
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </s.TableHeaderCell>
+                );
+              })}
             </tr>
           ))}
         </s.TableHead>
@@ -70,11 +79,17 @@ export const Table = <T,>({ columns, data, id, onRowClick }: TableProps<T>) => {
               key={row.id}
               onClick={() => handleTableBodyRowClick(row)}
             >
-              {row.getVisibleCells().map((cell) => (
-                <s.TableBodyCell key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </s.TableBodyCell>
-              ))}
+              {row.getVisibleCells().map((cell) => {
+                const meta = cell.column.columnDef.meta as
+                  | ColumnMeta
+                  | undefined;
+
+                return (
+                  <s.TableBodyCell key={cell.id} style={meta?.bodyCellStyle}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </s.TableBodyCell>
+                );
+              })}
             </s.TableBodyRow>
           ))}
         </tbody>

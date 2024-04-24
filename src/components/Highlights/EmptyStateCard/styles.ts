@@ -30,7 +30,7 @@ export const IconContainer = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.v3.stroke.primaryLight};
 `;
 
-export const NoDataIconContainer = styled(IconContainer)`
+export const InactiveIconContainer = styled(IconContainer)`
   background: ${({ theme }) => theme.colors.v3.surface.primaryLight};
   color: ${({ theme }) => theme.colors.v3.text.tertiary};
 `;

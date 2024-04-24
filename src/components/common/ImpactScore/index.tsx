@@ -3,7 +3,7 @@ import { Tooltip } from "../Tooltip";
 import * as s from "./styles";
 import { ImpactScoreProps } from "./types";
 
-const getImpactScoreLabel = (score: number) => {
+export const getImpactScoreLabel = (score: number) => {
   if (score <= 0) {
     return "Waiting for data";
   }

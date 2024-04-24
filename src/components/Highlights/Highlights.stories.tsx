@@ -2,6 +2,7 @@ import { Meta, StoryObj } from "@storybook/react";
 
 import { Highlights } from ".";
 import { actions as mainActions } from "../Main/actions";
+import { mockedImpactData } from "./Impact/mockData";
 import { mockedPerformanceData } from "./Performance/mockData";
 import { mockedTopIssuesData } from "./TopIssues/mockData";
 
@@ -33,6 +34,11 @@ export const Default: Story = {
         action: mainActions.SET_HIGHLIGHTS_PERFORMANCE_DATA,
         payload: mockedPerformanceData
       });
+      window.postMessage({
+        type: "digma",
+        action: mainActions.SET_HIGHLIGHTS_IMPACT_DATA,
+        payload: mockedImpactData
+      });
     }, 1000);
   }
 };
@@ -49,6 +55,11 @@ export const Empty: Story = {
         type: "digma",
         action: mainActions.SET_HIGHLIGHTS_PERFORMANCE_DATA,
         payload: { performance: [] }
+      });
+      window.postMessage({
+        type: "digma",
+        action: mainActions.SET_HIGHLIGHTS_IMPACT_DATA,
+        payload: { impactHighlights: [] }
       });
     }, 1000);
   }
