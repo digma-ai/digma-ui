@@ -123,6 +123,8 @@ export const ScopeBar = (props: ScopeBarProps) => {
     </Tooltip>
   );
 
+  const isActive = Boolean(props.scope?.span);
+
   return (
     <s.ScopeBar $isActive={Boolean(props.scope?.span)}>
       <s.ScopeBarButton
@@ -134,7 +136,7 @@ export const ScopeBar = (props: ScopeBarProps) => {
       <s.ScopeBarDivider />
       <s.ScopeNameContainer>
         <s.ScopeName>{scopeDisplayName}</s.ScopeName>
-        <s.StyledCopyButton text={scopeDisplayName} />
+        {isActive && <s.StyledCopyButton text={scopeDisplayName} />}
       </s.ScopeNameContainer>
       <s.ScopeBarDivider />
       {isTargetButtonMenuEnabled ? (
