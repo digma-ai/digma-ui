@@ -13,8 +13,8 @@ export const mockedImpactData: ImpactData = {
       environmentName: "Staging",
       environmentId: "2",
       rank: 2,
-      rankCriticality: 0.4,
-      impact: 0.4
+      rankCriticality: 0.6,
+      impact: 0.6
     },
     {
       environmentName: "Development",

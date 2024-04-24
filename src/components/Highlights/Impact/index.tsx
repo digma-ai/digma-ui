@@ -25,7 +25,7 @@ const getRankTagType = (rankCriticality: number) => {
     return "highSeverity";
   }
 
-  if (rankCriticality >= 0.2) {
+  if (rankCriticality >= 0.5) {
     return "mediumSeverity";
   }
 
