@@ -42,6 +42,10 @@ export const getAssetTypeInfo = (
       label: "Code locations",
       icon: CodeMarkerPinIcon
     },
+    Cache: {
+      label: "Cache",
+      icon: DatabaseIcon
+    },
     Other: {
       label: "Other"
     }

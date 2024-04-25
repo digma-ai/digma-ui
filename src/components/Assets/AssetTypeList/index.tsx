@@ -28,6 +28,7 @@ const ASSET_TYPE_IDS = [
   "DatabaseQueries",
   "CodeLocation",
   "EndpointClient",
+  "Cache",
   "Other"
 ];
 
