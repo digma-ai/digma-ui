@@ -1,9 +1,8 @@
-import { View } from "../../Main/types";
 import { TabData } from "../types";
 
 export interface TabsProps {
   tabs: TabData[];
-  onSelect: (tabId: View) => void;
+  onSelect: (tabId: string) => void;
 }
 
 export interface TabProps {

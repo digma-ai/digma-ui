@@ -1,5 +1,6 @@
 import { Row, createColumnHelper } from "@tanstack/react-table";
 import { useContext, useEffect, useState } from "react";
+import { ROUTES } from "../../../constants";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { isBoolean } from "../../../typeGuards/isBoolean";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
@@ -116,7 +117,7 @@ export const Performance = () => {
       handleEnvironmentTableRowClick(
         config.environments,
         row.original.environment.id,
-        "/analytics"
+        ROUTES.ANALYTICS
       );
     };
 

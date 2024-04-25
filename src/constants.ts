@@ -26,3 +26,13 @@ export const PERCENTILES: {
   { label: "Median", percentile: 0.5, key: "p50" },
   { label: "Slowest 5%", percentile: 0.95, key: "p95" }
 ];
+
+export const ROUTES = {
+  HIGHLIGHTS: "/highlights",
+  INSIGHTS: "/insights",
+  ASSETS: "/assets",
+  ANALYTICS: "/analytics",
+  ERRORS: "/errors",
+  ERROR_DETAILS: "/errors/details",
+  TESTS: "/tests"
+};

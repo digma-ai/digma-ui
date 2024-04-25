@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 
 import { Main } from ".";
+import { ROUTES } from "../../constants";
 import { mockedViewsData } from "../Navigation/mockData";
 import { SetViewsPayload } from "../Navigation/types";
 import { actions } from "./actions";
@@ -34,12 +35,22 @@ const updateSelectedView = (
 };
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
+export const Highlights: Story = {
+  play: () => {
+    window.postMessage({
+      type: "digma",
+      action: actions.SET_VIEWS,
+      payload: updateSelectedView(mockedViewsData, ROUTES.HIGHLIGHTS)
+    });
+  }
+};
+
 export const Insights: Story = {
   play: () => {
     window.postMessage({
       type: "digma",
       action: actions.SET_VIEWS,
-      payload: updateSelectedView(mockedViewsData, "insights")
+      payload: updateSelectedView(mockedViewsData, ROUTES.INSIGHTS)
     });
   }
 };
@@ -49,7 +60,17 @@ export const Assets: Story = {
     window.postMessage({
       type: "digma",
       action: actions.SET_VIEWS,
-      payload: updateSelectedView(mockedViewsData, "assets")
+      payload: updateSelectedView(mockedViewsData, ROUTES.ASSETS)
+    });
+  }
+};
+
+export const Analytics: Story = {
+  play: () => {
+    window.postMessage({
+      type: "digma",
+      action: actions.SET_VIEWS,
+      payload: updateSelectedView(mockedViewsData, ROUTES.ANALYTICS)
     });
   }
 };
@@ -59,7 +80,7 @@ export const Tests: Story = {
     window.postMessage({
       type: "digma",
       action: actions.SET_VIEWS,
-      payload: updateSelectedView(mockedViewsData, "tests")
+      payload: updateSelectedView(mockedViewsData, ROUTES.TESTS)
     });
   }
 };

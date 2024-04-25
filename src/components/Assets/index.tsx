@@ -1,5 +1,6 @@
 import { useCallback, useContext, useEffect, useState } from "react";
 import { actions as globalActions } from "../../actions";
+import { ROUTES } from "../../constants";
 import { useDebounce } from "../../hooks/useDebounce";
 import { usePrevious } from "../../hooks/usePrevious";
 import { ChangeViewPayload } from "../../types";
@@ -63,7 +64,7 @@ export const Assets = ({ selectedTypeId }: AssetsProps) => {
 
   const handleGoToAllAssets = () => {
     setSelectedAssetTypeId(null);
-    changeView("/assets");
+    changeView(ROUTES.ASSETS);
   };
 
   const handleSearchInputChange = (val: string | null) => {
@@ -72,7 +73,7 @@ export const Assets = ({ selectedTypeId }: AssetsProps) => {
 
   const handleAssetTypeSelect = (assetTypeId: string) => {
     setSelectedAssetTypeId(assetTypeId);
-    changeView(`/assets/${assetTypeId}`);
+    changeView(`${ROUTES.ASSETS}/${assetTypeId}`);
   };
 
   const handleApplyFilters = (filters: AssetFilterQuery) => {
