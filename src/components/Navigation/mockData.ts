@@ -1,10 +1,11 @@
+import { ROUTES } from "../../constants";
 import { SetViewsPayload } from "./types";
 
 export const mockedViewsData: SetViewsPayload = {
   views: [
     {
       title: "",
-      id: "/highlights",
+      id: ROUTES.HIGHLIGHTS,
       isSelected: true,
       isDisabled: false,
       hasNewData: false,
@@ -17,7 +18,7 @@ export const mockedViewsData: SetViewsPayload = {
       hasNewData: false,
       isHidden: false,
       title: "Issues",
-      id: "/insights",
+      id: ROUTES.INSIGHTS,
       cardName: "insights"
     },
     {
@@ -26,7 +27,7 @@ export const mockedViewsData: SetViewsPayload = {
       hasNewData: false,
       isHidden: false,
       title: "Assets",
-      id: "/assets",
+      id: ROUTES.ASSETS,
       cardName: "assets"
     },
     {
@@ -35,7 +36,7 @@ export const mockedViewsData: SetViewsPayload = {
       hasNewData: false,
       isHidden: false,
       title: "Analytics",
-      id: "/analytics",
+      id: ROUTES.ANALYTICS,
       cardName: "analytics"
     },
     {
@@ -44,7 +45,7 @@ export const mockedViewsData: SetViewsPayload = {
       hasNewData: false,
       isHidden: false,
       title: "Errors",
-      id: "/errors",
+      id: ROUTES.ERRORS,
       cardName: "errors"
     },
     {
@@ -53,7 +54,7 @@ export const mockedViewsData: SetViewsPayload = {
       hasNewData: false,
       isHidden: true,
       title: "Error Details",
-      id: "/errors/details",
+      id: ROUTES.ERROR_DETAILS,
       cardName: "errors"
     },
     {
@@ -62,7 +63,7 @@ export const mockedViewsData: SetViewsPayload = {
       hasNewData: false,
       isHidden: false,
       title: "Tests",
-      id: "/tests",
+      id: ROUTES.TESTS,
       cardName: "tests"
     }
   ],

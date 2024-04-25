@@ -1,5 +1,6 @@
 import { Row, createColumnHelper } from "@tanstack/react-table";
 import { useContext } from "react";
+import { ROUTES } from "../../../../../constants";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { ConfigContext } from "../../../../common/App/ConfigContext";
 import { Table } from "../../../common/Table";
@@ -46,7 +47,7 @@ export const EndpointChattyApiV2HighlightCard = ({
     handleEnvironmentTableRowClick(
       config.environments,
       row.original.environmentId,
-      "/insights"
+      ROUTES.INSIGHTS
     );
   };
 

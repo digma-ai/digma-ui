@@ -1,4 +1,5 @@
 import { useContext, useLayoutEffect, useState } from "react";
+import { ROUTES } from "../../constants";
 import { dispatcher } from "../../dispatcher";
 import { Assets } from "../Assets";
 import { Highlights } from "../Highlights";
@@ -11,7 +12,7 @@ import { actions } from "./actions";
 import { ViewData } from "./types";
 
 export const Main = () => {
-  const [view, setView] = useState<ViewData>({ id: "/insights" });
+  const [view, setView] = useState<ViewData>({ id: ROUTES.INSIGHTS });
   const config = useContext(ConfigContext);
 
   useLayoutEffect(() => {
@@ -39,15 +40,15 @@ export const Main = () => {
   }
 
   switch (view.id) {
-    case "/highlights":
+    case ROUTES.HIGHLIGHTS:
       return <Highlights />;
-    case "/insights":
-      return <Insights insightViewType={"Issues"} key={"/insights"} />;
-    case "/assets":
+    case ROUTES.INSIGHTS:
+      return <Insights insightViewType={"Issues"} key={"insights"} />;
+    case ROUTES.ASSETS:
       return <Assets selectedTypeId={view.path} />;
-    case "/analytics":
-      return <Insights insightViewType={"Analytics"} key={"/analytics"} />;
-    case "/tests":
+    case ROUTES.ANALYTICS:
+      return <Insights insightViewType={"Analytics"} key={"analytics"} />;
+    case ROUTES.TESTS:
       return <Tests />;
     default:
       return null;

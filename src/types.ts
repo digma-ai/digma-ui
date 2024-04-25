@@ -1,4 +1,3 @@
-import { View } from "./components/Main/types";
 import { Duration } from "./globals";
 
 export enum FeatureFlag {}
@@ -81,6 +80,6 @@ export interface ChangeScopePayload {
 }
 
 export interface ChangeViewPayload {
-  view: View | string;
+  view: string;
   isUserAction?: boolean;
 }
