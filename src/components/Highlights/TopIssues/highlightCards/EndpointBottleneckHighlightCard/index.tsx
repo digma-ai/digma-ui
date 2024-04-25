@@ -1,5 +1,6 @@
 import { Row, createColumnHelper } from "@tanstack/react-table";
 import { useContext } from "react";
+import { ROUTES } from "../../../../../constants";
 import { Duration } from "../../../../../globals";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { getDurationString } from "../../../../../utils/getDurationString";
@@ -76,7 +77,7 @@ export const EndpointBottleneckHighlightCard = ({
     handleEnvironmentTableRowClick(
       config.environments,
       row.original.environmentId,
-      "/insights"
+      ROUTES.INSIGHTS
     );
   };
 

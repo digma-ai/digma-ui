@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useState } from "react";
 import { actions as globalActions } from "../../../actions";
+import { ROUTES } from "../../../constants";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { ChangeViewPayload } from "../../../types";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
@@ -97,7 +98,7 @@ export const TopIssues = () => {
     window.sendMessageToDigma<ChangeViewPayload>({
       action: globalActions.CHANGE_VIEW,
       payload: {
-        view: "/insights"
+        view: ROUTES.INSIGHTS
       }
     });
   };

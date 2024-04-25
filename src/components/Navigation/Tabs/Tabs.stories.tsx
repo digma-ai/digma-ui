@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 
 import { Tabs } from ".";
+import { ROUTES } from "../../../constants";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof Tabs> = {
@@ -22,7 +23,7 @@ export const Default: Story = {
     tabs: [
       {
         title: "",
-        id: "/highlights",
+        id: ROUTES.HIGHLIGHTS,
         isSelected: true,
         isDisabled: false,
         hasNewData: false,
@@ -30,8 +31,8 @@ export const Default: Story = {
         cardName: "highlights"
       },
       {
-        title: "Insights",
-        id: "/insights",
+        title: "Issues",
+        id: ROUTES.INSIGHTS,
         isSelected: false,
         isDisabled: false,
         hasNewData: false,
@@ -40,7 +41,7 @@ export const Default: Story = {
       },
       {
         title: "Assets",
-        id: "/assets",
+        id: ROUTES.ASSETS,
         isSelected: false,
         isDisabled: false,
         hasNewData: true,
@@ -48,8 +49,17 @@ export const Default: Story = {
         cardName: "assets"
       },
       {
+        title: "Analytics",
+        id: ROUTES.ANALYTICS,
+        isSelected: false,
+        isDisabled: false,
+        hasNewData: false,
+        isHidden: false,
+        cardName: "insights"
+      },
+      {
         title: "Errors",
-        id: "/errors",
+        id: ROUTES.ERRORS,
         isSelected: false,
         isDisabled: false,
         hasNewData: false,
@@ -58,7 +68,7 @@ export const Default: Story = {
       },
       {
         title: "Tests",
-        id: "/tests",
+        id: ROUTES.TESTS,
         isSelected: false,
         isDisabled: true,
         hasNewData: false,
