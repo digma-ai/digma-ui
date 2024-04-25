@@ -48,7 +48,8 @@ export const Default: Story = {
       searchQuery: null,
       showDismissed: false,
       insightViewType: "Issues",
-      showUnreadOnly: false
+      showUnreadOnly: false,
+      filters: []
     },
     isDismissalEnabled: true,
     unreadCount: 1,

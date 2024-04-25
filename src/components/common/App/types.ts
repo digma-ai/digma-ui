@@ -120,6 +120,7 @@ export interface InsightStats {
   issuesInsightsCount: number;
   analyticsInsightsCount: number;
   unreadInsightsCount: number;
+  criticalInsightsCount: number;
 }
 
 export interface UserInfo {

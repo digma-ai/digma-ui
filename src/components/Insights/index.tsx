@@ -201,7 +201,8 @@ export const Insights = (props: InsightsProps) => {
     searchQuery: null,
     showDismissed: false,
     insightViewType: props.insightViewType,
-    showUnreadOnly: false
+    showUnreadOnly: false,
+    filters: []
   };
   // const [isAutofixing, setIsAutofixing] = useState(false);
   const [query, setQuery] = useState<InsightsQuery>(DEFAULT_QUERY);

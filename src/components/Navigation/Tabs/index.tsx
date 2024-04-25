@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import { isNumber } from "../../../typeGuards/isNumber";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
+import { getUnreadInsightsCount } from "../../../utils/getUnreadInsightsCount";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { ConfigContextData, Scope } from "../../common/App/types";
 import { MagicWandIcon } from "../../common/icons/16px/MagicWandIcon";
@@ -41,15 +41,7 @@ const getTabIcon = (tab: TabData) => {
 
 const getIsNewIndicatorVisible = (tab: TabData, config: ConfigContextData) =>
   tab.hasNewData ||
-  (tab.id === "/insights"
-    ? config.insightStats &&
-      config.scope?.span?.spanCodeObjectId ===
-        config.insightStats.scope?.span.spanCodeObjectId
-      ? config.insightStats && config.insightStats.unreadInsightsCount > 0
-      : config.scope &&
-        isNumber(config.scope.unreadInsightsCount) &&
-        config.scope.unreadInsightsCount > 0
-    : false);
+  (tab.id === "/insights" ? getUnreadInsightsCount(config) > 0 : false);
 
 const getTabWidth = (tab: TabData) => {
   if (tab.id === "/highlights") {

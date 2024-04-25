@@ -31,3 +31,5 @@ export interface PagedData<TData> {
   items: TData;
   totalCount: number;
 }
+
+export type InsightFilterType = "criticality" | "unread" | null;

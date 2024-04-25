@@ -10,6 +10,7 @@ import { isUndefined } from "../../../typeGuards/isUndefined";
 import { GetInsightStatsPayload } from "../../../types";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { formatUnit } from "../../../utils/formatUnit";
+import { getUnreadInsightsCount } from "../../../utils/getUnreadInsightsCount";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Pagination } from "../../common/Pagination";
 import { SearchInput } from "../../common/SearchInput";
@@ -23,8 +24,14 @@ import { Button } from "../../common/v3/Button";
 import { Tooltip } from "../../common/v3/Tooltip";
 import { trackingEvents } from "../tracking";
 import { InsightsPage } from "./InsightsPage";
+import { InsightStats } from "./InsightsStats";
 import * as s from "./styles";
-import { InsightsCatalogProps, SORTING_CRITERION, ViewMode } from "./types";
+import {
+  InsightFilterType,
+  InsightsCatalogProps,
+  SORTING_CRITERION,
+  ViewMode
+} from "./types";
 import { useMarkingAllAsRead } from "./useMarkingAllAsRead";
 
 const PAGE_SIZE = 10;
@@ -36,9 +43,14 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
   const [searchInputValue, setSearchInputValue] = useState(
     defaultQuery.searchQuery
   );
+
+  const [selectedFilters, setSelectedFilters] = useState<InsightFilterType[]>(
+    []
+  );
   const debouncedSearchInputValue = useDebounce(searchInputValue, 1000);
   const [sorting, setSorting] = useState<Sorting>(defaultQuery.sorting);
   const previousSorting = usePrevious(sorting);
+  const previousFilters = usePrevious(selectedFilters);
   const previousSearchQuery = usePrevious(debouncedSearchInputValue);
   const pageStartItemNumber = page * PAGE_SIZE + 1;
   const pageEndItemNumber = Math.min(
@@ -75,7 +87,8 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
         sorting,
         searchQuery: debouncedSearchInputValue,
         showDismissed: mode === ViewMode.OnlyDismissed,
-        showUnreadOnly: mode === ViewMode.OnlyUnread
+        showUnreadOnly: mode === ViewMode.OnlyUnread,
+        filters: selectedFilters
       }),
     [
       page,
@@ -83,7 +96,8 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
       debouncedSearchInputValue,
       props.onQueryChange,
       props.defaultQuery,
-      mode
+      mode,
+      selectedFilters
     ]
   );
 
@@ -111,6 +125,10 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
 
   const handleBackToAllInsightsButtonClick = () => {
     setMode(ViewMode.All);
+  };
+
+  const handleFilterSelectionChange = (selectedFilter: InsightFilterType[]) => {
+    setSelectedFilters(selectedFilter);
   };
 
   useEffect(() => {
@@ -167,7 +185,8 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
       (previousSorting && previousSorting !== sorting) ||
       (isString(previousSearchQuery) &&
         previousSearchQuery !== debouncedSearchInputValue) ||
-      previousMode !== mode
+      previousMode !== mode ||
+      previousFilters !== selectedFilters
     ) {
       refreshData();
     }
@@ -180,7 +199,9 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
     previousSearchQuery,
     refreshData,
     mode,
-    previousMode
+    previousMode,
+    previousFilters,
+    selectedFilters
   ]);
 
   return (
@@ -224,6 +245,12 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
             />
           </Tooltip>
         </s.ToolbarRow>
+        <InsightStats
+          criticalCount={config.insightStats?.criticalInsightsCount || 0}
+          totalCount={totalCount}
+          unreadCount={getUnreadInsightsCount(config)}
+          onChange={handleFilterSelectionChange}
+        />
         {mode === ViewMode.All ? (
           isMarkingAsReadToolbarVisible && (
             <s.ViewModeToolbarRow>
