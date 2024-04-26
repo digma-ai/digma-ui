@@ -1,6 +1,9 @@
 import { Row, createColumnHelper } from "@tanstack/react-table";
 import { useContext, useEffect, useState } from "react";
-import { PERFORMANCE_IMPACT_DOCUMENTATION_URL } from "../../../constants";
+import {
+  PERFORMANCE_IMPACT_DOCUMENTATION_URL,
+  ROUTES
+} from "../../../constants";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
@@ -96,7 +99,7 @@ export const Impact = () => {
       handleEnvironmentTableRowClick(
         config.environments,
         row.original.environmentId,
-        "/analytics"
+        ROUTES.ANALYTICS
       );
     };
 
