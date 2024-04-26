@@ -26,6 +26,8 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
+// More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
+
 const mockedConfig = {
   ...initialState,
   backendInfo: {
@@ -36,7 +38,6 @@ const mockedConfig = {
   }
 };
 
-// More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 export const Default: Story = {
   decorators: [
     (Story) => (
@@ -109,7 +110,7 @@ export const Empty: Story = {
       window.postMessage({
         type: "digma",
         action: mainActions.SET_HIGHLIGHTS_TESTS_DATA,
-        payload: { ...mockedTestsData, totalCount: 0, failedCount: 0 }
+        payload: { tests: { totalCount: 0, failedCount: 0 } }
       });
     }, 1000);
   }
