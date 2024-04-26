@@ -143,7 +143,7 @@ export const Performance = () => {
         <EmptyStateCard
           icon={RefreshIcon}
           type={"lowSeverity"}
-          title={"Waiting for more data"}
+          title={"Waiting for data"}
           text={"Digma is collecting performance data"}
         />
       );

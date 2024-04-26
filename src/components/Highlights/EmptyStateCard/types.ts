@@ -7,7 +7,7 @@ export interface EmptyStateCardProps {
   type?: EmptyStateType;
   icon: ComponentType<IconProps>;
   title?: string;
-  text: string;
+  text?: string;
   customContent?: React.ReactNode;
 }
 
