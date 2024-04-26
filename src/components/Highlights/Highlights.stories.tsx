@@ -9,6 +9,7 @@ import { DeploymentType } from "../common/App/types";
 import { mockedImpactData } from "./Impact/mockData";
 import { mockedPerformanceData } from "./Performance/mockData";
 import { mockedScalingData } from "./Scaling/mockData";
+import { mockedTestsData } from "./Tests/mockData";
 import { mockedTopIssuesData } from "./TopIssues/mockData";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
@@ -29,7 +30,7 @@ const mockedConfig = {
   ...initialState,
   backendInfo: {
     applicationVersion:
-      featureFlagMinBackendVersions[FeatureFlag.ARE_SCALING_HIGHLIGHTS_ENABLED],
+      featureFlagMinBackendVersions[FeatureFlag.ARE_TESTS_HIGHLIGHTS_ENABLED],
     deploymentType: DeploymentType.HELM,
     centralize: true
   }
@@ -66,6 +67,11 @@ export const Default: Story = {
         action: mainActions.SET_HIGHLIGHTS_SCALING_DATA,
         payload: mockedScalingData
       });
+      window.postMessage({
+        type: "digma",
+        action: mainActions.SET_HIGHLIGHTS_TESTS_DATA,
+        payload: mockedTestsData
+      });
     }, 1000);
   }
 };
@@ -99,6 +105,11 @@ export const Empty: Story = {
         type: "digma",
         action: mainActions.SET_HIGHLIGHTS_SCALING_DATA,
         payload: { scaling: [] }
+      });
+      window.postMessage({
+        type: "digma",
+        action: mainActions.SET_HIGHLIGHTS_TESTS_DATA,
+        payload: { ...mockedTestsData, totalCount: 0, failedCount: 0 }
       });
     }, 1000);
   }
