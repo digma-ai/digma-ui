@@ -9,8 +9,8 @@ import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActi
 import { getDurationString } from "../../../utils/getDurationString";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { CrossCircleIcon } from "../../common/icons/16px/CrossCircleIcon";
+import { RefreshIcon } from "../../common/icons/16px/RefreshIcon";
 import { CheckCircleIcon } from "../../common/icons/20px/CheckCircleIcon";
-import { InfinityIcon } from "../../common/icons/InfinityIcon";
 import { Button } from "../../common/v3/Button";
 import { Card } from "../../common/v3/Card";
 import { EmptyStateCard } from "../EmptyStateCard";
@@ -144,7 +144,7 @@ export const Scaling = () => {
       return (
         <EmptyStateCard
           type={"lowSeverity"}
-          icon={InfinityIcon}
+          icon={RefreshIcon}
           title={"Waiting for data"}
         />
       );
