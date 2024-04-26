@@ -6,6 +6,9 @@ import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefault
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { getImpactScoreLabel } from "../../common/ImpactScore";
+import { CrossCircleIcon } from "../../common/icons/16px/CrossCircleIcon";
+import { InfinityIcon } from "../../common/icons/16px/InfinityIcon";
+import { RefreshIcon } from "../../common/icons/16px/RefreshIcon";
 import { Button } from "../../common/v3/Button";
 import { Card } from "../../common/v3/Card";
 import { Tag } from "../../common/v3/Tag";
@@ -111,44 +114,52 @@ export const Impact = () => {
     );
   };
 
-  const handleLearnMoreButtonClick = () => {
-    sendUserActionTrackingEvent(
-      trackingEvents.IMPACT_CARD_LEARN_MORE_BUTTON_CLICKED
-    );
-    openURLInDefaultBrowser(PERFORMANCE_IMPACT_DOCUMENTATION_URL);
-  };
+  const renderCard = () => {
+    const handleLearnMoreButtonClick = () => {
+      sendUserActionTrackingEvent(
+        trackingEvents.IMPACT_CARD_LEARN_MORE_BUTTON_CLICKED
+      );
+      openURLInDefaultBrowser(PERFORMANCE_IMPACT_DOCUMENTATION_URL);
+    };
 
-  if (!config.backendInfo?.centralize) {
-    return (
-      <EmptyStateCard
-        type={"unlock"}
-        title={"Unlock Impact Analysis"}
-        text={"Connect a CI environment to measure performance impact"}
-        customContent={
-          <Button
-            buttonType={"secondary"}
-            onClick={handleLearnMoreButtonClick}
-            label={"Learn more"}
-          />
-        }
-      />
-    );
-  }
-
-  return (
-    <Section title={"Impact"}>
-      {data && data.impactHighlights.length > 0 ? (
-        renderImpactCard(data.impactHighlights)
-      ) : (
+    if (!config.backendInfo?.centralize) {
+      return (
         <EmptyStateCard
-          type={isInitialLoading ? "loading" : "noData"}
-          text={
-            isInitialLoading
-              ? "Impact analysis is in progress"
-              : "No impact data available"
+          icon={InfinityIcon}
+          title={"Unlock Impact Analysis"}
+          text={"Connect a CI environment to measure performance impact"}
+          customContent={
+            <Button
+              buttonType={"secondary"}
+              onClick={handleLearnMoreButtonClick}
+              label={"Learn more"}
+            />
           }
         />
-      )}
-    </Section>
-  );
+      );
+    }
+
+    if (isInitialLoading) {
+      return (
+        <EmptyStateCard
+          type={"lowSeverity"}
+          icon={RefreshIcon}
+          text={"Impact analysis is in progress"}
+        />
+      );
+    }
+
+    if (!data || data.impactHighlights.length === 0) {
+      return (
+        <EmptyStateCard
+          icon={CrossCircleIcon}
+          text={"No impact data available"}
+        />
+      );
+    }
+
+    return renderImpactCard(data.impactHighlights);
+  };
+
+  return <Section title={"Impact"}>{renderCard()}</Section>;
 };

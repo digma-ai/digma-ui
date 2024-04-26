@@ -3,9 +3,7 @@ import { EnvironmentName } from "../../common/EnvironmentName";
 import { TableInsightStatusBadge } from "../../common/TableInsightStatusBadge";
 import { EnvironmentData } from "../types";
 
-export const addEnvironmentColumns = <
-  T extends { id: string; value: unknown }[]
->(
+export const addEnvironmentColumns = <T,>(
   columnHelper: ColumnHelper<EnvironmentData<T>>,
   columns: ColumnDef<EnvironmentData<T>, any>[]
 ) => {

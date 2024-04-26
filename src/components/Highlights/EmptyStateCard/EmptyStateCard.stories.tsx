@@ -1,6 +1,8 @@
 import { Meta, StoryObj } from "@storybook/react";
 
 import { EmptyStateCard } from ".";
+import { CrossCircleIcon } from "../../common/icons/16px/CrossCircleIcon";
+import { RefreshIcon } from "../../common/icons/16px/RefreshIcon";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof EmptyStateCard> = {
@@ -20,14 +22,15 @@ type Story = StoryObj<typeof meta>;
 
 export const WaitingForData: Story = {
   args: {
-    type: "loading",
+    type: "lowSeverity",
+    icon: RefreshIcon,
     text: "Detected issues will appear here"
   }
 };
 
 export const NoData: Story = {
   args: {
-    type: "noData",
+    icon: CrossCircleIcon,
     text: "No Issues available at the moment"
   }
 };

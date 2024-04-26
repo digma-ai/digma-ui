@@ -4,6 +4,7 @@ import {
   subscriptRegularTypography
 } from "../../common/App/typographies";
 import { Card as CommonCard } from "../../common/v3/Card";
+import { IconContainerProps } from "./types";
 
 export const Card = styled(CommonCard)`
   box-sizing: border-box;
@@ -20,7 +21,7 @@ export const ContentContainer = styled.div`
   height: 100%;
 `;
 
-export const IconContainer = styled.div`
+export const IconContainer = styled.div<IconContainerProps>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -28,16 +29,27 @@ export const IconContainer = styled.div`
   height: 28px;
   border-radius: 4px;
   border: 1px solid ${({ theme }) => theme.colors.v3.stroke.primaryLight};
-`;
 
-export const InactiveIconContainer = styled(IconContainer)`
-  background: ${({ theme }) => theme.colors.v3.surface.primaryLight};
-  color: ${({ theme }) => theme.colors.v3.text.tertiary};
-`;
-
-export const LoadingDataIconContainer = styled(IconContainer)`
-  background: ${({ theme }) => theme.colors.v3.status.backgroundLow};
-  color: ${({ theme }) => theme.colors.v3.status.low};
+  ${({ $type, theme }) => {
+    switch ($type) {
+      case "success":
+        return `
+          background: ${theme.colors.v3.status.backgroundSuccess};
+          color: ${theme.colors.v3.status.success};
+        `;
+      case "lowSeverity":
+        return `
+          background: ${theme.colors.v3.status.backgroundLow};
+          color: ${theme.colors.v3.status.low};
+        `;
+      case "default":
+      default:
+        return `
+          background: ${theme.colors.v3.surface.primaryLight};
+          color: ${theme.colors.v3.text.tertiary};
+        `;
+    }
+  }}
 `;
 
 export const TextContainer = styled.div`
