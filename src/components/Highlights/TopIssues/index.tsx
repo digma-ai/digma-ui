@@ -123,7 +123,7 @@ export const TopIssues = () => {
         <EmptyStateCard
           icon={RefreshIcon}
           type={"lowSeverity"}
-          title={"Waiting for more data"}
+          title={"Waiting for data"}
           text={"Detected issues will appear here"}
         />
       );
@@ -134,7 +134,7 @@ export const TopIssues = () => {
         <EmptyStateCard
           icon={CrossCircleIcon}
           title={"No data"}
-          text={"No Issues available at the moment"}
+          text={"No issues available at the moment"}
         />
       );
     }

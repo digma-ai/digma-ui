@@ -53,7 +53,15 @@ export const Default: Story = {
   }
 };
 
-export const Loading: Story = {};
+export const Loading: Story = {
+  decorators: [
+    (Story) => (
+      <ConfigContext.Provider value={mockedConfig}>
+        <Story />
+      </ConfigContext.Provider>
+    )
+  ]
+};
 
 export const Empty: Story = {
   decorators: [
@@ -89,14 +97,5 @@ export const Disabled: Story = {
         <Story />
       </ConfigContext.Provider>
     )
-  ],
-  play: () => {
-    window.setTimeout(() => {
-      window.postMessage({
-        type: "digma",
-        action: actions.SET_HIGHLIGHTS_IMPACT_DATA,
-        payload: { impactHighlights: [] }
-      });
-    });
-  }
+  ]
 };

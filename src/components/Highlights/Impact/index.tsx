@@ -144,6 +144,7 @@ export const Impact = () => {
         <EmptyStateCard
           type={"lowSeverity"}
           icon={RefreshIcon}
+          title={"Waiting for more data"}
           text={"Impact analysis is in progress"}
         />
       );
@@ -153,6 +154,7 @@ export const Impact = () => {
       return (
         <EmptyStateCard
           icon={CrossCircleIcon}
+          title={"No data"}
           text={"No impact data available"}
         />
       );
