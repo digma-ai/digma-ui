@@ -145,7 +145,7 @@ export const Scaling = () => {
         <EmptyStateCard
           type={"lowSeverity"}
           icon={InfinityIcon}
-          text={"Waiting for data"}
+          title={"Waiting for data"}
         />
       );
     }
