@@ -4,4 +4,5 @@ import { InsightStatusBadge } from "../../../Insights/InsightsCatalog/InsightsPa
 export const Badge = styled(InsightStatusBadge)`
   font-size: inherit;
   color: inherit;
+  overflow: hidden;
 `;

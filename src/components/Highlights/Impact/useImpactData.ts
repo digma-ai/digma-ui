@@ -3,20 +3,20 @@ import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { actions as mainActions } from "../../Main/actions";
 import { ConfigContext } from "../../common/App/ConfigContext";
-import { GetHighlightsPerformanceDataPayload, PerformanceData } from "./types";
+import { GetHighlightsImpactDataPayload, ImpactData } from "./types";
 
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 
-export const usePerformanceData = () => {
-  const [data, setData] = useState<PerformanceData>();
+export const useImpactData = () => {
+  const [data, setData] = useState<ImpactData>();
   const config = useContext(ConfigContext);
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
   const refreshTimerId = useRef<number>();
 
   const getData = useCallback(() => {
-    window.sendMessageToDigma<GetHighlightsPerformanceDataPayload>({
-      action: mainActions.GET_HIGHLIGHTS_PERFORMANCE_DATA,
+    window.sendMessageToDigma<GetHighlightsImpactDataPayload>({
+      action: mainActions.GET_HIGHLIGHTS_IMPACT_DATA,
       payload: {
         query: {
           scopedSpanCodeObjectId: config.scope?.span?.spanCodeObjectId || null,
@@ -47,20 +47,20 @@ export const usePerformanceData = () => {
   }, [previousLastSetDataTimeStamp, lastSetDataTimeStamp, getData]);
 
   useEffect(() => {
-    const handlePerformanceData = (data: any, timeStamp: number) => {
-      setData(data as PerformanceData);
+    const handleImpactData = (data: any, timeStamp: number) => {
+      setData(data as ImpactData);
       setLastSetDataTimeStamp(timeStamp);
     };
 
     dispatcher.addActionListener(
-      mainActions.SET_HIGHLIGHTS_PERFORMANCE_DATA,
-      handlePerformanceData
+      mainActions.SET_HIGHLIGHTS_IMPACT_DATA,
+      handleImpactData
     );
 
     return () => {
       dispatcher.removeActionListener(
-        mainActions.SET_HIGHLIGHTS_PERFORMANCE_DATA,
-        handlePerformanceData
+        mainActions.SET_HIGHLIGHTS_IMPACT_DATA,
+        handleImpactData
       );
     };
   }, []);
