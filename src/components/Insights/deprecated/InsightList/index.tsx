@@ -11,7 +11,6 @@ import { Card } from "../../../common/Card";
 import { Tooltip } from "../../../common/Tooltip";
 import { EndpointIcon } from "../../../common/icons/EndpointIcon";
 import { OpenTelemetryLogoIcon } from "../../../common/icons/OpenTelemetryLogoIcon";
-import { ViewMode } from "../../InsightsCatalog/types";
 import { actions } from "../../actions";
 import { Description } from "../../styles";
 import { trackingEvents } from "../../tracking";
@@ -233,10 +232,8 @@ const renderInsightCard = (
     event?: string
   ) => void,
   isJiraHintEnabled: boolean,
-  viewMode: ViewMode
+  isMarkAsReadButtonEnabled: boolean
 ): JSX.Element | undefined => {
-  const isMarkAsReadButtonEnabled = viewMode === ViewMode.OnlyUnread;
-
   const handleErrorSelect = (errorId: string, insightType: InsightType) => {
     sendUserActionTrackingEvent(
       trackingEvents.INSIGHT_CARD_ASSET_LINK_CLICKED,
@@ -783,7 +780,7 @@ export const InsightList = (props: InsightListProps) => {
                 insight,
                 handleShowJiraTicket,
                 isJiraHintEnabled,
-                props.viewMode
+                props.isMarkAsReadButtonEnabled
               );
             })
           ) : (

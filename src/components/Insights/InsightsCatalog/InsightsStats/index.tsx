@@ -6,7 +6,7 @@ import { InsightStatsProps } from "./types";
 export const InsightStats = ({
   onChange,
   criticalCount,
-  totalCount,
+  allIssuesCount,
   unreadCount
 }: InsightStatsProps) => {
   const [selectedFilters, setSelectedFilters] = useState<InsightFilterType[]>(
@@ -29,7 +29,9 @@ export const InsightStats = ({
   return (
     <s.Stats>
       <s.CriticalStat
-        disabled={criticalCount === 0}
+        disabled={
+          criticalCount === 0 && !selectedFilters.includes("criticality")
+        }
         $selected={selectedFilters.includes("criticality")}
         onClick={() => handleSelectionChange("criticality")}
       >
@@ -37,7 +39,7 @@ export const InsightStats = ({
         <s.StatDescription>Critical issues</s.StatDescription>
       </s.CriticalStat>
       <s.UnreadStat
-        disabled={unreadCount === 0}
+        disabled={unreadCount === 0 && !selectedFilters.includes("unread")}
         $selected={selectedFilters.includes("unread")}
         onClick={() => handleSelectionChange("unread")}
       >
@@ -45,7 +47,7 @@ export const InsightStats = ({
         <s.StatDescription>Unread issues</s.StatDescription>
       </s.UnreadStat>
       <s.Stat>
-        <s.StatCounter>{totalCount}</s.StatCounter>
+        <s.StatCounter>{allIssuesCount}</s.StatCounter>
         <s.StatDescription>All issues</s.StatDescription>
       </s.Stat>
     </s.Stats>

@@ -17,7 +17,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    totalCount: 100,
+    allIssuesCount: 100,
     criticalCount: 101,
     unreadCount: 12
   }

@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import {
   caption1RegularTypography,
+  subscriptMediumTypography,
   subscriptRegularTypography
 } from "../../common/App/typographies";
 import { Button } from "../../common/v3/Button";
@@ -79,6 +80,8 @@ export const BackToAllInsightsButton = styled.button`
 export const MarkingAsReadToolbarActionsContainer = styled.div`
   ${subscriptRegularTypography}
 
+  flex: 1;
+  justify-content: end;
   display: flex;
   gap: 8px;
   color: ${({ theme }) => theme.colors.v3.text.tertiary};
@@ -91,8 +94,8 @@ export const MarkingAsReadToolbarActionLink = styled(Link)`
   text-decoration: underline;
 `;
 
-export const InsightCountDescription = styled.div`
-  ${subscriptRegularTypography}
+export const InsightsDescription = styled.div`
+  ${subscriptMediumTypography}
   display: flex;
   align-items: center;
   color: ${({ theme }) => theme.colors.v3.text.tertiary};

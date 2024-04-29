@@ -10,7 +10,6 @@ import { isUndefined } from "../../../typeGuards/isUndefined";
 import { GetInsightStatsPayload } from "../../../types";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { formatUnit } from "../../../utils/formatUnit";
-import { getUnreadInsightsCount } from "../../../utils/getUnreadInsightsCount";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Pagination } from "../../common/Pagination";
 import { SearchInput } from "../../common/SearchInput";
@@ -35,6 +34,9 @@ import {
 import { useMarkingAllAsRead } from "./useMarkingAllAsRead";
 
 const PAGE_SIZE = 10;
+
+const isShowUnreadOnly = (filters: InsightFilterType[]) =>
+  filters.length === 1 && filters[0] === "unread";
 
 export const InsightsCatalog = (props: InsightsCatalogProps) => {
   const { insights, onJiraTicketCreate, defaultQuery, totalCount } = props;
@@ -74,32 +76,45 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
     props.isDismissalEnabled &&
     (isUndefined(props.dismissedCount) || props.dismissedCount > 0); // isUndefined - check for backward compatibility, always show when BE does not return this counter
 
-  const isMarkingAsReadToolbarVisible =
+  const isMarkingAsReadOptionsEnabled =
     props.isMarkingAsReadEnabled &&
     isNumber(props.unreadCount) &&
+    selectedFilters.length === 1 &&
+    selectedFilters[0] === "unread" &&
     props.unreadCount > 0;
 
-  const refreshData = useCallback(
-    () =>
-      props.onQueryChange({
-        ...props.defaultQuery,
-        page,
-        sorting,
-        searchQuery: debouncedSearchInputValue,
-        showDismissed: mode === ViewMode.OnlyDismissed,
-        showUnreadOnly: mode === ViewMode.OnlyUnread,
-        filters: selectedFilters
-      }),
-    [
+  const refreshData = useCallback(() => {
+    window.sendMessageToDigma<GetInsightStatsPayload>({
+      action: globalActions.GET_INSIGHT_STATS,
+      payload: {
+        scope: config.scope?.span
+          ? {
+              span: {
+                spanCodeObjectId: config.scope.span.spanCodeObjectId
+              }
+            }
+          : null
+      }
+    });
+
+    props.onQueryChange({
+      ...props.defaultQuery,
       page,
       sorting,
-      debouncedSearchInputValue,
-      props.onQueryChange,
-      props.defaultQuery,
-      mode,
-      selectedFilters
-    ]
-  );
+      searchQuery: debouncedSearchInputValue,
+      showDismissed: mode === ViewMode.OnlyDismissed,
+      showUnreadOnly: isShowUnreadOnly(selectedFilters),
+      filters: selectedFilters
+    });
+  }, [
+    page,
+    sorting,
+    debouncedSearchInputValue,
+    props.onQueryChange,
+    props.defaultQuery,
+    mode,
+    selectedFilters
+  ]);
 
   const handleRefreshButtonClick = () => {
     sendUserActionTrackingEvent(trackingEvents.REFRESH_BUTTON_CLICKED, {
@@ -113,10 +128,6 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
     const newMode =
       mode === ViewMode.All ? ViewMode.OnlyDismissed : ViewMode.All;
     setMode(newMode);
-  };
-
-  const handleUnreadOnlyLinkClick = () => {
-    setMode(ViewMode.OnlyUnread);
   };
 
   const handleReadAllLinkClick = () => {
@@ -134,19 +145,6 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
   useEffect(() => {
     if (previousIsMarkingAllAsReadInProgress && !isMarkingAllAsReadInProgress) {
       refreshData();
-
-      window.sendMessageToDigma<GetInsightStatsPayload>({
-        action: globalActions.GET_INSIGHT_STATS,
-        payload: {
-          scope: config.scope?.span
-            ? {
-                span: {
-                  spanCodeObjectId: config.scope.span.spanCodeObjectId
-                }
-              }
-            : null
-        }
-      });
     }
   }, [
     isMarkingAllAsReadInProgress,
@@ -245,34 +243,37 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
             />
           </Tooltip>
         </s.ToolbarRow>
-        <InsightStats
-          criticalCount={config.insightStats?.criticalInsightsCount || 0}
-          totalCount={totalCount}
-          unreadCount={getUnreadInsightsCount(config)}
-          onChange={handleFilterSelectionChange}
-        />
+
         {mode === ViewMode.All ? (
-          isMarkingAsReadToolbarVisible && (
-            <s.ViewModeToolbarRow>
-              <s.InsightCountDescription>
-                <s.InsightCount>{props.unreadCount}</s.InsightCount>
-                unread {formatUnit(props.unreadCount || 0, "issue")}
-              </s.InsightCountDescription>
-              <s.MarkingAsReadToolbarActionsContainer>
-                <s.MarkingAsReadToolbarActionLink
-                  onClick={handleUnreadOnlyLinkClick}
-                >
-                  Unread only
-                </s.MarkingAsReadToolbarActionLink>
-                /
-                <s.MarkingAsReadToolbarActionLink
-                  onClick={handleReadAllLinkClick}
-                >
-                  Read all
-                </s.MarkingAsReadToolbarActionLink>
-              </s.MarkingAsReadToolbarActionsContainer>
-            </s.ViewModeToolbarRow>
-          )
+          <>
+            {!searchInputValue &&
+              (insights.length > 0 || selectedFilters.length !== 0) && (
+                <InsightStats
+                  criticalCount={
+                    config.insightStats?.criticalInsightsCount || 0
+                  }
+                  allIssuesCount={config.insightStats?.allIssuesCount || 0}
+                  unreadCount={config.insightStats?.unreadInsightsCount || 0}
+                  onChange={handleFilterSelectionChange}
+                />
+              )}
+            {selectedFilters.length === 1 && (
+              <s.ViewModeToolbarRow>
+                <s.InsightsDescription>
+                  {isShowUnreadOnly(selectedFilters) ? "Unread" : "Critical"}
+                </s.InsightsDescription>
+                {isMarkingAsReadOptionsEnabled && (
+                  <s.MarkingAsReadToolbarActionsContainer>
+                    <s.MarkingAsReadToolbarActionLink
+                      onClick={handleReadAllLinkClick}
+                    >
+                      Read all
+                    </s.MarkingAsReadToolbarActionLink>
+                  </s.MarkingAsReadToolbarActionsContainer>
+                )}
+              </s.ViewModeToolbarRow>
+            )}
+          </>
         ) : (
           <s.ViewModeToolbarRow>
             <s.BackToAllInsightsButton
@@ -289,18 +290,11 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
             </s.BackToAllInsightsButton>
             {mode === ViewMode.OnlyDismissed &&
               isNumber(props.dismissedCount) && (
-                <s.InsightCountDescription>
+                <s.InsightsDescription>
                   <s.InsightCount>{props.dismissedCount}</s.InsightCount>
                   dismissed {formatUnit(props.dismissedCount || 0, "issue")}
-                </s.InsightCountDescription>
+                </s.InsightsDescription>
               )}
-            {mode === ViewMode.OnlyUnread && isMarkingAsReadToolbarVisible && (
-              <s.MarkingAsReadToolbarActionLink
-                onClick={handleReadAllLinkClick}
-              >
-                Read all
-              </s.MarkingAsReadToolbarActionLink>
-            )}
           </s.ViewModeToolbarRow>
         )}
       </s.Toolbar>
@@ -312,7 +306,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
         }
         onJiraTicketCreate={onJiraTicketCreate}
         onRefresh={props.onRefresh}
-        viewMode={mode}
+        isMarkAsReadButtonEnabled={isShowUnreadOnly(selectedFilters)}
       />
       <s.Footer>
         {totalCount > 0 && (

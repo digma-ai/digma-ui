@@ -2,6 +2,7 @@ import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { actions as globalActions } from "../../actions";
 import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
+import { GetInsightStatsPayload } from "../../types";
 import { ConfigContext } from "../common/App/ConfigContext";
 import {
   GlobalState,
@@ -30,7 +31,8 @@ const getData = (scopedQuery: ScopedInsightsQuery, state?: GlobalState) => {
     scopedSpanCodeObjectId: scopedQuery.scopedSpanCodeObjectId,
     showDismissed: scopedQuery.showDismissed,
     insightViewType: scopedQuery.insightViewType,
-    showUnreadOnly: scopedQuery.showUnreadOnly
+    showUnreadOnly: scopedQuery.showUnreadOnly,
+    filters: scopedQuery.filters
   };
 
   window.sendMessageToDigma({
@@ -51,6 +53,21 @@ const getData = (scopedQuery: ScopedInsightsQuery, state?: GlobalState) => {
         ...state?.[globalStateSlice],
         query: getDataQuery
       }
+    }
+  });
+};
+
+const getStats = (spanCodeObjectId: string | null) => {
+  window.sendMessageToDigma<GetInsightStatsPayload>({
+    action: globalActions.GET_INSIGHT_STATS,
+    payload: {
+      scope: spanCodeObjectId
+        ? {
+            span: {
+              spanCodeObjectId: spanCodeObjectId
+            }
+          }
+        : null
     }
   });
 };
@@ -118,6 +135,7 @@ export const useInsightsData = ({
       window.clearTimeout(refreshTimerId.current);
       refreshTimerId.current = window.setTimeout(() => {
         getData(scopedQuery, state);
+        getStats(scopedQuery.scopedSpanCodeObjectId);
       }, refreshInterval);
     }
 
@@ -134,6 +152,7 @@ export const useInsightsData = ({
 
   useEffect(() => {
     getData(scopedQuery, state);
+    getStats(scopedQuery.scopedSpanCodeObjectId);
     setIsLoading(true);
   }, [scopedQuery, scope?.span?.spanCodeObjectId, environment?.id]);
 
@@ -141,6 +160,9 @@ export const useInsightsData = ({
     isInitialLoading,
     data,
     isLoading,
-    refresh: () => getData(scopedQuery, state)
+    refresh: () => {
+      getData(scopedQuery, state);
+      getStats(scopedQuery.scopedSpanCodeObjectId);
+    }
   };
 };

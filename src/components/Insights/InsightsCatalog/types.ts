@@ -18,8 +18,7 @@ export interface InsightsCatalogProps {
 
 export enum ViewMode {
   All,
-  OnlyDismissed,
-  OnlyUnread
+  OnlyDismissed
 }
 
 export enum SORTING_CRITERION {

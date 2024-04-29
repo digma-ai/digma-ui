@@ -1,4 +1,3 @@
-import { ViewMode } from "../../InsightsCatalog/types";
 import { GenericCodeObjectInsight, MethodSpan } from "../../types";
 
 export interface InsightListProps {
@@ -14,7 +13,7 @@ export interface InsightListProps {
     insight: GenericCodeObjectInsight,
     spanCodeObjectId?: string
   ) => void;
-  viewMode: ViewMode;
+  isMarkAsReadButtonEnabled: boolean;
 }
 
 export interface isInsightJiraTicketHintShownPayload {
