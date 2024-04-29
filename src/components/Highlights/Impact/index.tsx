@@ -1,11 +1,17 @@
 import { Row, createColumnHelper } from "@tanstack/react-table";
 import { useContext, useEffect, useState } from "react";
-import { PERFORMANCE_IMPACT_DOCUMENTATION_URL } from "../../../constants";
+import {
+  PERFORMANCE_IMPACT_DOCUMENTATION_URL,
+  ROUTES
+} from "../../../constants";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { getImpactScoreLabel } from "../../common/ImpactScore";
+import { CrossCircleIcon } from "../../common/icons/16px/CrossCircleIcon";
+import { InfinityIcon } from "../../common/icons/16px/InfinityIcon";
+import { RefreshIcon } from "../../common/icons/16px/RefreshIcon";
 import { Button } from "../../common/v3/Button";
 import { Card } from "../../common/v3/Card";
 import { Tag } from "../../common/v3/Tag";
@@ -20,12 +26,12 @@ import * as s from "./styles";
 import { EnvironmentImpactData } from "./types";
 import { useImpactData } from "./useImpactData";
 
-const getRankTagType = (rankCriticality: number) => {
-  if (rankCriticality >= 0.9) {
+const getRankTagType = (normalizedRank: number) => {
+  if (normalizedRank >= 0.9) {
     return "highSeverity";
   }
 
-  if (rankCriticality >= 0.5) {
+  if (normalizedRank >= 0.5) {
     return "mediumSeverity";
   }
 
@@ -77,7 +83,7 @@ export const Impact = () => {
         cell: (info) => {
           const value = info.getValue();
           const rank = value.rank;
-          const tagType = getRankTagType(value.rankCriticality);
+          const tagType = getRankTagType(value.rankNormalized);
 
           return <Tag title={rank} content={rank} type={tagType} />;
         },
@@ -93,7 +99,7 @@ export const Impact = () => {
       handleEnvironmentTableRowClick(
         config.environments,
         row.original.environmentId,
-        "/analytics"
+        ROUTES.ANALYTICS
       );
     };
 
@@ -111,44 +117,54 @@ export const Impact = () => {
     );
   };
 
-  const handleLearnMoreButtonClick = () => {
-    sendUserActionTrackingEvent(
-      trackingEvents.IMPACT_CARD_LEARN_MORE_BUTTON_CLICKED
-    );
-    openURLInDefaultBrowser(PERFORMANCE_IMPACT_DOCUMENTATION_URL);
-  };
+  const renderCard = () => {
+    const handleLearnMoreButtonClick = () => {
+      sendUserActionTrackingEvent(
+        trackingEvents.IMPACT_CARD_LEARN_MORE_BUTTON_CLICKED
+      );
+      openURLInDefaultBrowser(PERFORMANCE_IMPACT_DOCUMENTATION_URL);
+    };
 
-  if (!config.backendInfo?.centralize) {
-    return (
-      <EmptyStateCard
-        type={"unlock"}
-        title={"Unlock Impact Analysis"}
-        text={"Connect a CI environment to measure performance impact"}
-        customContent={
-          <Button
-            buttonType={"secondary"}
-            onClick={handleLearnMoreButtonClick}
-            label={"Learn more"}
-          />
-        }
-      />
-    );
-  }
-
-  return (
-    <Section title={"Impact"}>
-      {data && data.impactHighlights.length > 0 ? (
-        renderImpactCard(data.impactHighlights)
-      ) : (
+    if (!config.backendInfo?.centralize) {
+      return (
         <EmptyStateCard
-          type={isInitialLoading ? "loading" : "noData"}
-          text={
-            isInitialLoading
-              ? "Impact analysis is in progress"
-              : "No impact data available"
+          icon={InfinityIcon}
+          title={"Unlock Impact Analysis"}
+          text={"Connect a CI environment to measure performance impact"}
+          customContent={
+            <Button
+              buttonType={"secondary"}
+              onClick={handleLearnMoreButtonClick}
+              label={"Learn more"}
+            />
           }
         />
-      )}
-    </Section>
-  );
+      );
+    }
+
+    if (isInitialLoading) {
+      return (
+        <EmptyStateCard
+          type={"lowSeverity"}
+          icon={RefreshIcon}
+          title={"Waiting for more data"}
+          text={"Impact analysis is in progress"}
+        />
+      );
+    }
+
+    if (!data || data.impactHighlights.length === 0) {
+      return (
+        <EmptyStateCard
+          icon={CrossCircleIcon}
+          title={"No data"}
+          text={"No impact data available"}
+        />
+      );
+    }
+
+    return renderImpactCard(data.impactHighlights);
+  };
+
+  return <Section title={"Impact"}>{renderCard()}</Section>;
 };

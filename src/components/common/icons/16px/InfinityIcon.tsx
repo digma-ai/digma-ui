@@ -2,7 +2,7 @@ import React from "react";
 import { useIconProps } from "../hooks";
 import { IconProps } from "../types";
 
-const CodeIconComponent = (props: IconProps) => {
+const InfinityIconComponent = (props: IconProps) => {
   const { size, color } = useIconProps(props);
 
   return (
@@ -30,4 +30,4 @@ const CodeIconComponent = (props: IconProps) => {
   );
 };
 
-export const CodeIcon = React.memo(CodeIconComponent);
+export const InfinityIcon = React.memo(InfinityIconComponent);

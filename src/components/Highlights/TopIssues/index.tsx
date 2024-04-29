@@ -4,6 +4,8 @@ import { ROUTES } from "../../../constants";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { ChangeViewPayload } from "../../../types";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
+import { CrossCircleIcon } from "../../common/icons/16px/CrossCircleIcon";
+import { RefreshIcon } from "../../common/icons/16px/RefreshIcon";
 import { Link } from "../../common/v3/Link";
 import { EmptyStateCard } from "../EmptyStateCard";
 import { Section } from "../common/Section";
@@ -115,6 +117,33 @@ export const TopIssues = () => {
 
   const isViewAllLinkDisabled = (data?.topInsights || []).length === 0;
 
+  const renderContent = () => {
+    if (isInitialLoading) {
+      return (
+        <EmptyStateCard
+          icon={RefreshIcon}
+          type={"lowSeverity"}
+          title={"Waiting for data"}
+          text={"Detected issues will appear here"}
+        />
+      );
+    }
+
+    if (!data || data.topInsights.length === 0) {
+      return (
+        <EmptyStateCard
+          icon={CrossCircleIcon}
+          title={"No data"}
+          text={"No issues available at the moment"}
+        />
+      );
+    }
+
+    return data.topInsights.map((x) => (
+      <Fragment key={x.insightType}>{renderHighlightCard(x)}</Fragment>
+    ));
+  };
+
   return (
     <Section
       title={"Top Issues"}
@@ -124,20 +153,7 @@ export const TopIssues = () => {
         </Link>
       }
     >
-      {data && data.topInsights.length > 0 ? (
-        data.topInsights.map((x) => (
-          <Fragment key={x.insightType}>{renderHighlightCard(x)}</Fragment>
-        ))
-      ) : (
-        <EmptyStateCard
-          type={isInitialLoading ? "loading" : "noData"}
-          text={
-            isInitialLoading
-              ? "Detected issues will appear here"
-              : "No Issues available at the moment"
-          }
-        />
-      )}
+      {renderContent()}
     </Section>
   );
 };

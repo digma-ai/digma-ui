@@ -7,6 +7,8 @@ import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActi
 import { formatTimeDistance } from "../../../utils/formatTimeDistance";
 import { getDurationString } from "../../../utils/getDurationString";
 import { ConfigContext } from "../../common/App/ConfigContext";
+import { CrossCircleIcon } from "../../common/icons/16px/CrossCircleIcon";
+import { RefreshIcon } from "../../common/icons/16px/RefreshIcon";
 import { Card } from "../../common/v3/Card";
 import { Tag } from "../../common/v3/Tag";
 import { EmptyStateCard } from "../EmptyStateCard";
@@ -135,20 +137,32 @@ export const Performance = () => {
     );
   };
 
-  return (
-    <Section title={"Performance"}>
-      {data && data.performance.length > 0 ? (
-        renderPerformanceCard(data.performance)
-      ) : (
+  const renderCard = () => {
+    if (isInitialLoading) {
+      return (
         <EmptyStateCard
-          type={isInitialLoading ? "loading" : "noData"}
-          text={
-            isInitialLoading
-              ? "Digma is collecting performance data"
-              : "No performance data available"
-          }
+          icon={RefreshIcon}
+          type={"lowSeverity"}
+          title={"Waiting for data"}
+          text={"Digma is collecting performance data"}
         />
-      )}
-    </Section>
-  );
+      );
+    }
+
+    if (!data || data.performance.length === 0) {
+      return (
+        <EmptyStateCard
+          icon={CrossCircleIcon}
+          title={"No data"}
+          text={"No performance data available"}
+        />
+      );
+    }
+
+    if (data && data.performance.length > 0) {
+      return renderPerformanceCard(data.performance);
+    }
+  };
+
+  return <Section title={"Performance"}>{renderCard()}</Section>;
 };
