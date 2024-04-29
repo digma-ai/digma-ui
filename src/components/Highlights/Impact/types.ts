@@ -2,7 +2,7 @@ export type EnvironmentImpactData = {
   environmentName: string;
   environmentId: string;
   rank: number;
-  rankCriticality: number;
+  rankNormalized: number;
   impact: number;
 };
 

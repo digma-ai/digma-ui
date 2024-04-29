@@ -26,12 +26,12 @@ import * as s from "./styles";
 import { EnvironmentImpactData } from "./types";
 import { useImpactData } from "./useImpactData";
 
-const getRankTagType = (rankCriticality: number) => {
-  if (rankCriticality >= 0.9) {
+const getRankTagType = (normalizedRank: number) => {
+  if (normalizedRank >= 0.9) {
     return "highSeverity";
   }
 
-  if (rankCriticality >= 0.5) {
+  if (normalizedRank >= 0.5) {
     return "mediumSeverity";
   }
 
@@ -83,7 +83,7 @@ export const Impact = () => {
         cell: (info) => {
           const value = info.getValue();
           const rank = value.rank;
-          const tagType = getRankTagType(value.rankCriticality);
+          const tagType = getRankTagType(value.rankNormalized);
 
           return <Tag title={rank} content={rank} type={tagType} />;
         },
