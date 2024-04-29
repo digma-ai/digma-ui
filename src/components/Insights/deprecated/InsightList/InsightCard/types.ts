@@ -15,6 +15,7 @@ export interface InsightCardProps {
   onRefresh: (insightType: InsightType) => void;
   isAsync?: boolean;
   spanInfo?: SpanInfo | null;
+  onRead?: () => void;
 }
 
 export interface PercentileViewModeOptionProps {
