@@ -30,7 +30,7 @@ export const Default: Story = {
         codeDetailsList: []
       },
       hasErrors: false,
-      issuesInsightsCount: 0,
+      totalQueryResultCount: 0,
       analyticsInsightsCount: 0,
       unreadInsightsCount: 0
     },
