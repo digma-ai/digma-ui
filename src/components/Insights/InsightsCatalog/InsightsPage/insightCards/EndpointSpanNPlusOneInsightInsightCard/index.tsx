@@ -3,8 +3,7 @@ import { InsightType, Trace } from "../../../../types";
 import { InsightCard } from "../common/InsightCard";
 import { ColumnsContainer } from "../common/InsightCard/ColumnsContainer";
 import { KeyValue } from "../common/InsightCard/KeyValue";
-import { ContentContainer, Description, Details } from "../styles";
-import * as s from "./styles";
+import { AssetLink, ContentContainer, Description, Details } from "../styles";
 import { EndpointSpanNPlusOneInsightCardProps } from "./types";
 
 export const EndpointSpanNPlusOneInsightCard = ({
@@ -64,9 +63,8 @@ export const EndpointSpanNPlusOneInsightCard = ({
         <ContentContainer>
           <Details>
             <Description>Asset</Description>
-            <s.SpanListItem
+            <AssetLink
               name={spanName}
-              key={spanName}
               onClick={() => handleSpanLinkClick(spanInfo.spanCodeObjectId)}
             />
           </Details>

@@ -1,13 +1,3 @@
-export type View =
-  | "/highlights"
-  | "/insights"
-  | "/assets"
-  | "/analytics"
-  | "/errors"
-  | "/errors/details"
-  | "/tests";
-// | "/assets/{categoryType}" supported path for category
-
 export interface GetHighlightsTopIssuesDataPayload {
   query: {
     scopedCodeObjectId: string | null;

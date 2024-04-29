@@ -7,7 +7,7 @@ import { InsightCard } from "../common/InsightCard";
 import { ColumnsContainer } from "../common/InsightCard/ColumnsContainer";
 import { KeyValue } from "../common/InsightCard/KeyValue";
 import { ListItem } from "../common/InsightCard/ListItem";
-import { ContentContainer, Description, Details } from "../styles";
+import { AssetLink, ContentContainer, Description, Details } from "../styles";
 import * as s from "./styles";
 import { SpanQueryOptimizationInsightCardProps } from "./types";
 
@@ -31,7 +31,7 @@ export const SpanQueryOptimizationInsightCard = ({
     insight.id
   );
 
-  const handleSpanLinkClick = (spanCodeObjectId?: string) => {
+  const handleAssetLinkClick = (spanCodeObjectId?: string) => {
     spanCodeObjectId && onAssetLinkClick(spanCodeObjectId, insight.type);
   };
 
@@ -65,9 +65,9 @@ export const SpanQueryOptimizationInsightCard = ({
                 Query is slow compared to other{" "}
                 {insight.dbStatement.toUpperCase()} requests
               </Description>
-              <ListItem
+              <AssetLink
                 name={spanName || ""}
-                onClick={() => handleSpanLinkClick(spanCodeObjectId)}
+                onClick={() => handleAssetLinkClick(spanCodeObjectId)}
               />
             </Details>
           )}
@@ -91,7 +91,7 @@ export const SpanQueryOptimizationInsightCard = ({
                     <ListItem
                       name={route}
                       key={route}
-                      onClick={() => handleSpanLinkClick(spanCodeObjectId)}
+                      onClick={() => handleAssetLinkClick(spanCodeObjectId)}
                     />
                   );
                 })}

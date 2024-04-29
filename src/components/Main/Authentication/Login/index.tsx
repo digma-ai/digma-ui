@@ -5,6 +5,7 @@ import { LockIcon } from "../../../common/icons/12px/LockIcon";
 import { EnvelopeIcon } from "../../../common/icons/16px/EnvelopeIcon";
 import { Spinner } from "../../../common/v3/Spinner";
 import { TextField } from "../../../common/v3/TextField";
+import * as s from "../styles";
 import {
   ButtonsContainer,
   ErrorMessage,
@@ -14,7 +15,6 @@ import {
   Loader,
   SubmitButton
 } from "../styles";
-import * as s from "./../styles";
 import { LoginFormValues, LoginProps } from "./types";
 import { useLogin } from "./useLogin";
 

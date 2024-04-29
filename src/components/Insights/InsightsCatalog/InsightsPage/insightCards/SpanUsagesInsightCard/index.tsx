@@ -104,38 +104,42 @@ export const SpanUsagesInsightCard = ({
       },
       cell: (info) => {
         const flow = info.getValue();
+        const firstServiceSpanName = `${flow.firstService.service} ${flow.firstService.span}`;
+        const lastServiceSpanName = flow.lastService
+          ? `${flow.lastService.service} ${flow.lastService.span}`
+          : "";
         return (
           <s.FlowData>
-            <Tooltip
-              title={`${flow.firstService.service} ${flow.firstService.span}`}
-            >
-              <s.FullSpanName>
-                <s.SpanNamePart>{flow.firstService.service}</s.SpanNamePart>
-                <s.Link
-                  onClick={() =>
-                    handleServiceLinkClick(flow.firstService.spanCodeObjectId)
-                  }
-                >
-                  {flow.firstService.span}
-                </s.Link>
-              </s.FullSpanName>
-            </Tooltip>
+            <s.Span>
+              <Tooltip title={firstServiceSpanName}>
+                <s.FullSpanName>
+                  <s.SpanNamePart>{flow.firstService.service}</s.SpanNamePart>
+                  <s.Link
+                    onClick={() =>
+                      handleServiceLinkClick(flow.firstService.spanCodeObjectId)
+                    }
+                  >
+                    {flow.firstService.span}
+                  </s.Link>
+                </s.FullSpanName>
+              </Tooltip>
+              <s.StyledCopyButton text={firstServiceSpanName} />
+            </s.Span>
             {flow.intermediateSpan && (
-              <s.SubsequentSpan>
+              <s.Span>
                 {FlowArrow}
                 <Tooltip title={flow.intermediateSpan}>
                   <s.FullSpanName>
                     <s.SpanNamePart>{flow.intermediateSpan}</s.SpanNamePart>
                   </s.FullSpanName>
                 </Tooltip>
-              </s.SubsequentSpan>
+                <s.StyledCopyButton text={flow.intermediateSpan} />
+              </s.Span>
             )}
             {flow.lastService && (
-              <s.SubsequentSpan>
+              <s.Span>
                 {FlowArrow}
-                <Tooltip
-                  title={`${flow.lastService.service} ${flow.lastService.span}`}
-                >
+                <Tooltip title={lastServiceSpanName}>
                   <s.FullSpanName>
                     <s.SpanNamePart>{flow.lastService.service}</s.SpanNamePart>
                     <s.Link
@@ -149,17 +153,19 @@ export const SpanUsagesInsightCard = ({
                     </s.Link>
                   </s.FullSpanName>
                 </Tooltip>
-              </s.SubsequentSpan>
+                <s.StyledCopyButton text={lastServiceSpanName} />
+              </s.Span>
             )}
             {flow.lastServiceSpan && (
-              <s.SubsequentSpan>
+              <s.Span>
                 {FlowArrow}
                 <Tooltip title={flow.lastServiceSpan}>
                   <s.FullSpanName>
                     <s.SpanNamePart>{flow.lastServiceSpan}</s.SpanNamePart>
                   </s.FullSpanName>
                 </Tooltip>
-              </s.SubsequentSpan>
+                <s.StyledCopyButton text={flow.lastServiceSpan} />
+              </s.Span>
             )}
           </s.FlowData>
         );

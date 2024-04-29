@@ -109,16 +109,18 @@ export const RecentActivityTable = (props: RecentActivityTableProps) => {
   };
 
   const renderSpanLink = (span: EntrySpan) => (
-    <Tooltip title={span.displayText}>
-      <s.SpanLink
-        key={span.spanCodeObjectId}
-        onClick={() => {
-          handleSpanLinkClick(span);
-        }}
-      >
-        {span.displayText}
-      </s.SpanLink>
-    </Tooltip>
+    <s.SpanLinkContainer>
+      <Tooltip title={span.displayText}>
+        <s.SpanLink
+          onClick={() => {
+            handleSpanLinkClick(span);
+          }}
+        >
+          {span.displayText}
+        </s.SpanLink>
+      </Tooltip>
+      <s.StyledCopyButton text={span.displayText} />
+    </s.SpanLinkContainer>
   );
 
   const renderSpanLinks = (entry: ActivityEntry) => (

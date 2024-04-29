@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Link } from "../../common/Link";
+import { CopyButton } from "../../common/v3/CopyButton";
 import { ListItemProps, TableBodyRowProps, TableHeadProps } from "./types";
 
 export const Table = styled.div`
@@ -194,6 +195,23 @@ export const SpanLinksContainer = styled.span`
   overflow: hidden;
   display: flex;
   gap: 4px;
+`;
+
+export const StyledCopyButton = styled(CopyButton)`
+  padding: 0 6px;
+  display: none;
+`;
+
+export const SpanLinkContainer = styled.span`
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+
+  &:hover {
+    ${StyledCopyButton} {
+      display: flex;
+    }
+  }
 `;
 
 export const SpanLink = styled(Link)`

@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { caption2RegularTypography } from "../../../common/App/typographies";
 import { grayScale } from "../../../common/App/v2colors";
+import { CopyButton } from "../../../common/v3/CopyButton";
 import { ImpactScoreIndicatorProps } from "./types";
 
 export const Container = styled.div`
@@ -35,11 +36,22 @@ export const Header = styled.div`
   gap: 4px;
 `;
 
+export const StyledCopyButton = styled(CopyButton)`
+  padding: 0;
+  display: none;
+`;
+
 export const TitleRow = styled.div`
   display: flex;
   gap: 2px;
   height: 20px;
   align-items: center;
+
+  &:hover {
+    ${StyledCopyButton} {
+      display: flex;
+    }
+  }
 `;
 
 export const AssetTypeIconContainer = styled.div`

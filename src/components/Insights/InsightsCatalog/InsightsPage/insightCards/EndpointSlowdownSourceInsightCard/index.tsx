@@ -37,14 +37,14 @@ export const EndpointSlowdownSourceInsightCard = ({
             key={spanCodeObjectId}
             onClick={() => handleSpanLinkClick(spanCodeObjectId)}
             name={spanName}
-            buttons={[
+            endContent={
               <DurationChange
                 key={"duration"}
                 currentDuration={x.currentDuration}
                 previousDuration={x.previousDuration}
                 changeTime={x.changeTime}
               />
-            ]}
+            }
           />
         );
       })}

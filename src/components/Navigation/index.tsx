@@ -1,5 +1,6 @@
 import { useCallback, useContext, useEffect, useState } from "react";
 import { actions as globalActions } from "../../actions";
+import { ROUTES } from "../../constants";
 import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
 import { isNull } from "../../typeGuards/isNull";
@@ -11,7 +12,6 @@ import {
 } from "../../types";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 import { AsyncActionResultData } from "../InstallationWizard/types";
-import { View } from "../Main/types";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { Environment, Scope } from "../common/App/types";
 import { EnvironmentIcon } from "../common/EnvironmentIcon";
@@ -102,7 +102,7 @@ export const Navigation = () => {
   const [isAnnotationAdding, setIsAnnotationAdding] = useState(false);
   const previousCodeContext = usePrevious(codeContext);
   const previousEnv = usePrevious(config.environment);
-  const [currentTab, setCurrentTab] = useState<View>("/insights");
+  const [currentTab, setCurrentTab] = useState<string>(ROUTES.INSIGHTS);
 
   const codeButtonTooltip = getCodeButtonTooltip(codeContext, config.scope);
   const isCodeButtonEnabled = codeContext && !isNull(codeContext.methodId);
@@ -288,7 +288,7 @@ export const Navigation = () => {
     });
   };
 
-  const changeTab = (tabId: View) => {
+  const changeTab = (tabId: string) => {
     setCurrentTab(tabId);
     window.sendMessageToDigma<ChangeViewPayload>({
       action: globalActions.CHANGE_VIEW,

@@ -5,7 +5,7 @@ import * as s from "./styles";
 import { ListItemProps } from "./types";
 
 const ListItemComponent = (
-  { name, onClick, className, buttons }: ListItemProps,
+  { name, onClick, className, endContent }: ListItemProps,
   ref: ForwardedRef<HTMLDivElement>
 ) => {
   const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
@@ -15,10 +15,15 @@ const ListItemComponent = (
 
   return (
     <s.Container ref={ref} className={className}>
-      <Tooltip title={name}>
-        <Link onClick={handleClick}>{name}</Link>
-      </Tooltip>
-      {buttons && <s.ButtonsContainer>{buttons}</s.ButtonsContainer>}
+      <s.LinkContainer>
+        <Tooltip title={name}>
+          <Link onClick={handleClick}>{name}</Link>
+        </Tooltip>
+        <s.StyledCopyButton text={name} />
+      </s.LinkContainer>
+      {endContent && (
+        <s.EndContentContainer>{endContent}</s.EndContentContainer>
+      )}
     </s.Container>
   );
 };

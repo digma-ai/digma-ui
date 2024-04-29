@@ -2,7 +2,9 @@ import { gte, valid } from "semver";
 import { ConfigContextData } from "./components/common/App/types";
 import { FeatureFlag } from "./types";
 
-export const featureFlagMinBackendVersions: Record<FeatureFlag, string> = {};
+export const featureFlagMinBackendVersions: Record<FeatureFlag, string> = {
+  [FeatureFlag.ARE_IMPACT_HIGHLIGHTS_ENABLED]: "0.3.4"
+};
 
 export const getFeatureFlagValue = (
   config: ConfigContextData,

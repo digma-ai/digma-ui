@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { CopyButton } from "../../common/v3/CopyButton";
 import { ScopeBarElementProps } from "./types";
 
 export const ScopeBar = styled.div<ScopeBarElementProps>`
@@ -19,13 +20,36 @@ export const ScopeBar = styled.div<ScopeBarElementProps>`
   overflow: hidden;
 `;
 
+export const StyledCopyButton = styled(CopyButton)`
+  display: none;
+  padding: 2px 4px;
+`;
+
+export const ScopeNameContainer = styled.div`
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  width: 100%;
+
+  &:hover {
+    ${StyledCopyButton} {
+      display: flex;
+    }
+  }
+`;
+
 export const ScopeName = styled.span`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  width: 100%;
   padding: 0 4px;
   user-select: none;
+`;
+
+export const ScopeBarDivider = styled.div`
+  width: 1px;
+  height: 18px;
+  background: ${({ theme }) => theme.colors.v3.stroke.primaryLight};
 `;
 
 export const ScopeBarButton = styled.button`
@@ -47,10 +71,4 @@ export const ScopeBarButton = styled.button`
   &:hover:enabled {
     color: ${({ theme }) => theme.colors.v3.icon.primary};
   }
-`;
-
-export const ScopeBarDivider = styled.div`
-  width: 1px;
-  height: 18px;
-  background: ${({ theme }) => theme.colors.v3.stroke.primaryLight};
 `;

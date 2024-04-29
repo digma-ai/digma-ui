@@ -4,6 +4,7 @@ import { usePrevious } from "../../../hooks/usePrevious";
 import { actions as mainActions } from "../../Main/actions";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { GetHighlightsPerformanceDataPayload, PerformanceData } from "./types";
+
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 
 export const usePerformanceData = () => {

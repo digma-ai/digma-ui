@@ -21,7 +21,7 @@ export const Default: Story = {
   args: {
     searchQuery: "",
     setRefresher: () => {
-      // empty
+      return undefined;
     },
     assetTypeId: "Endpoint",
     data: {

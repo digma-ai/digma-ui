@@ -38,6 +38,7 @@ const renderSlowQueryEntry = (
           {item.displayName}
         </s.SpanLink>
       </Tooltip>
+      <s.StyledCopyButton text={item.displayName} />
       {durationString && <s.Duration>{durationString}</s.Duration>}
     </s.Entry>
   );

@@ -1,7 +1,8 @@
-import { View } from "./components/Main/types";
 import { Duration } from "./globals";
 
-export enum FeatureFlag {}
+export enum FeatureFlag {
+  ARE_IMPACT_HIGHLIGHTS_ENABLED
+}
 
 export enum InsightType {
   TopErrorFlows = "TopErrorFlows",
@@ -81,6 +82,6 @@ export interface ChangeScopePayload {
 }
 
 export interface ChangeViewPayload {
-  view: View | string;
+  view: string;
   isUserAction?: boolean;
 }

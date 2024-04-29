@@ -1,6 +1,7 @@
 import { useContext } from "react";
+import { ROUTES } from "../../../constants";
+import { isNumber } from "../../../typeGuards/isNumber";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
-import { getUnreadInsightsCount } from "../../../utils/getUnreadInsightsCount";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { ConfigContextData, Scope } from "../../common/App/types";
 import { MagicWandIcon } from "../../common/icons/16px/MagicWandIcon";
@@ -11,7 +12,10 @@ import * as s from "./styles";
 import { TabsProps } from "./types";
 
 const getTabTooltipMessage = (tab: TabData, scope?: Scope) => {
-  if (!scope?.span && ["errors", "errorsDetails", "tests"].includes(tab.id)) {
+  if (
+    !scope?.span &&
+    [ROUTES.ERRORS, ROUTES.ERROR_DETAILS, ROUTES.TESTS].includes(tab.id)
+  ) {
     return "Global errors and tests is COMING SOON";
   }
 
@@ -21,9 +25,13 @@ const getTabTooltipMessage = (tab: TabData, scope?: Scope) => {
 const getIsTabDisabled = (tab: TabData, scope?: Scope) => {
   if (
     !scope?.span &&
-    ["highlights", "analytics", "errors", "errorsDetails", "tests"].includes(
-      tab.id
-    )
+    [
+      ROUTES.HIGHLIGHTS,
+      ROUTES.ANALYTICS,
+      ROUTES.ERRORS,
+      ROUTES.ERROR_DETAILS,
+      ROUTES.TESTS
+    ].includes(tab.id)
   ) {
     return true;
   }
@@ -32,7 +40,7 @@ const getIsTabDisabled = (tab: TabData, scope?: Scope) => {
 };
 
 const getTabIcon = (tab: TabData) => {
-  if (tab.id === "/highlights") {
+  if (tab.id === ROUTES.HIGHLIGHTS) {
     return <MagicWandIcon color={"currentColor"} size={16} />;
   }
 
@@ -41,10 +49,18 @@ const getTabIcon = (tab: TabData) => {
 
 const getIsNewIndicatorVisible = (tab: TabData, config: ConfigContextData) =>
   tab.hasNewData ||
-  (tab.id === "/insights" ? getUnreadInsightsCount(config) > 0 : false);
+  (tab.id === ROUTES.INSIGHTS
+    ? config.insightStats &&
+      config.scope?.span?.spanCodeObjectId ===
+        config.insightStats.scope?.span.spanCodeObjectId
+      ? config.insightStats && config.insightStats.unreadInsightsCount > 0
+      : config.scope &&
+        isNumber(config.scope.unreadInsightsCount) &&
+        config.scope.unreadInsightsCount > 0
+    : false);
 
 const getTabWidth = (tab: TabData) => {
-  if (tab.id === "/highlights") {
+  if (tab.id === ROUTES.HIGHLIGHTS) {
     return 40;
   }
 
@@ -90,7 +106,7 @@ export const Tabs = (props: TabsProps) => {
               {tab.title}
               {isNewIndicatorVisible && <s.Indicator type={"new"} />}
               {config.scope?.hasErrors &&
-                ["errorsDetails", "errors"].includes(tab.id) && (
+                [ROUTES.ERRORS, ROUTES.ERROR_DETAILS].includes(tab.id) && (
                   <s.Indicator type={"errors"} />
                 )}
             </s.Tab>
