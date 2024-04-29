@@ -247,7 +247,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
         {mode === ViewMode.All ? (
           <>
             {!searchInputValue &&
-              (insights.length > 0 || selectedFilters.length !== 0) && (
+              (insights.length > 0 || selectedFilters.length > 0) && (
                 <InsightStats
                   criticalCount={
                     config.insightStats?.criticalInsightsCount || 0
