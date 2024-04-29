@@ -15,6 +15,7 @@ export const Stats = styled.div`
 `;
 
 export const Stat = styled.button<StatsProps>`
+  font-family: inherit;
   display: flex;
   padding: 8px 16px;
   flex-direction: column;
