@@ -249,10 +249,8 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
             {!searchInputValue &&
               (insights.length > 0 || selectedFilters.length > 0) && (
                 <InsightStats
-                  criticalCount={
-                    config.insightStats?.criticalInsightsCount || 0
-                  }
-                  allIssuesCount={config.insightStats?.allIssuesCount || 0}
+                  criticalCount={config.insightStats?.criticalInsightsCount}
+                  allIssuesCount={config.insightStats?.allIssuesCount}
                   unreadCount={config.insightStats?.unreadInsightsCount || 0}
                   onChange={handleFilterSelectionChange}
                 />

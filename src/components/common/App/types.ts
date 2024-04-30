@@ -60,7 +60,7 @@ export interface Scope {
     codeDetailsList: CodeDetails[];
   };
   hasErrors: boolean;
-  totalQueryResultCount: number;
+  issuesInsightsCount: number;
   analyticsInsightsCount: number;
   unreadInsightsCount: number;
 }
@@ -119,11 +119,11 @@ export interface InsightStats {
       spanCodeObjectId: string;
     };
   } | null;
-  totalQueryResultCount: number;
+  issuesInsightsCount: number;
   analyticsInsightsCount: number;
   unreadInsightsCount: number;
-  criticalInsightsCount: number;
-  allIssuesCount: number;
+  criticalInsightsCount?: number;
+  allIssuesCount?: number;
 }
 
 export interface UserInfo {

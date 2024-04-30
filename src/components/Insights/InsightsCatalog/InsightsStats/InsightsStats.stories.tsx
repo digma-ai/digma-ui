@@ -22,3 +22,9 @@ export const Default: Story = {
     unreadCount: 12
   }
 };
+
+export const Old: Story = {
+  args: {
+    unreadCount: 12
+  }
+};
