@@ -4,8 +4,8 @@ import { FeatureFlag } from "./types";
 
 export const featureFlagMinBackendVersions: Record<FeatureFlag, string> = {
   [FeatureFlag.ARE_IMPACT_HIGHLIGHTS_ENABLED]: "0.3.7",
-  [FeatureFlag.ARE_SCALING_HIGHLIGHTS_ENABLED]: "0.3.7",
-  [FeatureFlag.ARE_TESTS_HIGHLIGHTS_ENABLED]: "0.3.7"
+  [FeatureFlag.ARE_SCALING_HIGHLIGHTS_ENABLED]: "0.3.9",
+  [FeatureFlag.ARE_TESTS_HIGHLIGHTS_ENABLED]: "0.3.9"
 };
 
 export const getFeatureFlagValue = (
