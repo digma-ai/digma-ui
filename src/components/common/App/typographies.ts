@@ -91,6 +91,12 @@ export const caption1BoldTypography = css`
   line-height: ${typographies.captionOne.lineHeight}px;
 `;
 
+export const caption1MediumTypography = css`
+  font-size: ${typographies.captionOne.fontSize}px;
+  font-weight: ${typographies.captionOne.fontWeight.medium};
+  line-height: ${typographies.captionOne.lineHeight}px;
+`;
+
 export const caption2RegularTypography = css`
   font-size: ${typographies.captionTwo.fontSize}px;
   font-weight: ${typographies.captionTwo.fontWeight.regular};

@@ -18,8 +18,7 @@ export interface InsightsCatalogProps {
 
 export enum ViewMode {
   All,
-  OnlyDismissed,
-  OnlyUnread
+  OnlyDismissed
 }
 
 export enum SORTING_CRITERION {
@@ -31,3 +30,5 @@ export interface PagedData<TData> {
   items: TData;
   totalCount: number;
 }
+
+export type InsightFilterType = "criticality" | "unread" | null;

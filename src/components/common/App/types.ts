@@ -1,4 +1,5 @@
 import { Mode } from "../../../globals";
+import { InsightFilterType } from "../../Insights/InsightsCatalog/types";
 import { InsightViewType } from "../../Insights/types";
 
 export interface AppProps {
@@ -59,7 +60,7 @@ export interface Scope {
     codeDetailsList: CodeDetails[];
   };
   hasErrors: boolean;
-  issuesInsightsCount: number;
+  totalQueryResultCount: number;
   analyticsInsightsCount: number;
   unreadInsightsCount: number;
 }
@@ -73,6 +74,7 @@ export interface InsightsQuery {
   showDismissed: boolean;
   insightViewType: InsightViewType;
   showUnreadOnly: boolean;
+  filters: InsightFilterType[];
 }
 
 export interface GlobalState {
@@ -117,9 +119,11 @@ export interface InsightStats {
       spanCodeObjectId: string;
     };
   } | null;
-  issuesInsightsCount: number;
+  totalQueryResultCount: number;
   analyticsInsightsCount: number;
   unreadInsightsCount: number;
+  criticalInsightsCount: number;
+  allIssuesCount: number;
 }
 
 export interface UserInfo {

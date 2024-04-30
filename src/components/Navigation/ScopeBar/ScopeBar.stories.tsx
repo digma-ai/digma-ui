@@ -39,7 +39,7 @@ const mockedScope: Scope = {
     relatedCodeDetailsList: []
   },
   hasErrors: false,
-  issuesInsightsCount: 0,
+  totalQueryResultCount: 0,
   analyticsInsightsCount: 0,
   unreadInsightsCount: 0
 };
