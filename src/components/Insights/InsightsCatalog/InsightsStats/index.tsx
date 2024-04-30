@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Tooltip } from "../../../common/v3/Tooltip";
 import { InsightFilterType } from "../types";
 import * as s from "./styles";
 import { InsightStatsProps } from "./types";
@@ -29,17 +30,19 @@ export const InsightStats = ({
   return (
     <s.Stats>
       <s.CriticalStat
-        disabled={
-          criticalCount === 0 && !selectedFilters.includes("criticality")
-        }
+        disabled={!criticalCount && !selectedFilters.includes("criticality")}
         $selected={selectedFilters.includes("criticality")}
         onClick={() => handleSelectionChange("criticality")}
       >
-        <s.StatCounter>{criticalCount}</s.StatCounter>
+        {criticalCount ? (
+          <s.StatCounter>{criticalCount}</s.StatCounter>
+        ) : (
+          <NotAssignedValue />
+        )}
         <s.StatDescription>Critical issues</s.StatDescription>
       </s.CriticalStat>
       <s.UnreadStat
-        disabled={unreadCount === 0 && !selectedFilters.includes("unread")}
+        disabled={!unreadCount && !selectedFilters.includes("unread")}
         $selected={selectedFilters.includes("unread")}
         onClick={() => handleSelectionChange("unread")}
       >
@@ -47,9 +50,19 @@ export const InsightStats = ({
         <s.StatDescription>Unread issues</s.StatDescription>
       </s.UnreadStat>
       <s.Stat>
-        <s.StatCounter>{allIssuesCount}</s.StatCounter>
+        {allIssuesCount ? (
+          <s.StatCounter>{allIssuesCount}</s.StatCounter>
+        ) : (
+          <NotAssignedValue />
+        )}
         <s.StatDescription>All issues</s.StatDescription>
       </s.Stat>
     </s.Stats>
   );
 };
+
+const NotAssignedValue = () => (
+  <Tooltip title="To see more statistics, please update digma backend to the latest version">
+    <s.StatCounter>N/A</s.StatCounter>
+  </Tooltip>
+);

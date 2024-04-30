@@ -2,9 +2,9 @@ import { InsightFilterType } from "../types";
 
 export interface InsightStatsProps {
   onChange: (selected: InsightFilterType[]) => void;
-  allIssuesCount: number;
+  allIssuesCount?: number;
   unreadCount: number;
-  criticalCount: number;
+  criticalCount?: number;
 }
 
 export interface StatsProps {

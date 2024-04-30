@@ -26,7 +26,7 @@ const scope: Scope = {
     codeDetailsList: []
   },
   hasErrors: false,
-  totalQueryResultCount: 0,
+  issuesInsightsCount: 0,
   analyticsInsightsCount: 0,
   unreadInsightsCount: 0
 };
@@ -52,7 +52,7 @@ export const WithInsights: Story = {
           ...initialState,
           scope: {
             ...scope,
-            totalQueryResultCount: 1
+            issuesInsightsCount: 1
           }
         }}
       >
