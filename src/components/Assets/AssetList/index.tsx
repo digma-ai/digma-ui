@@ -13,7 +13,6 @@ import { isEnvironment } from "../../../typeGuards/isEnvironment";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { isString } from "../../../typeGuards/isString";
 import { ConfigContext } from "../../common/App/ConfigContext";
-import { DeploymentType } from "../../common/App/types";
 import { EmptyState } from "../../common/EmptyState";
 import { Menu } from "../../common/Menu";
 import { NewCircleLoader } from "../../common/NewCircleLoader";
@@ -227,8 +226,7 @@ export const AssetList = (props: AssetListProps) => {
   const isImpactHidden = useMemo(
     () =>
       !(
-        config.backendInfo?.deploymentType === DeploymentType.HELM &&
-        config.environment?.type === "Public"
+        config.backendInfo?.centralize && config.environment?.type === "Public"
       ),
     [config.backendInfo?.deploymentType, config.environment?.type]
   );
