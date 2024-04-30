@@ -3,6 +3,7 @@ import { Duration } from "../../globals";
 import { InsightType, SpanInfo, SpanInstanceInfo } from "../../types";
 import { Sorting } from "../common/SortingSelector/types";
 import { IconProps } from "../common/icons/types";
+import { InsightFilterType } from "./InsightsCatalog/types";
 
 export enum ViewMode {
   PREVIEW = "PREVIEW",
@@ -766,6 +767,7 @@ export interface InsightsQuery {
   showDismissed: boolean;
   showUnreadOnly: boolean;
   insightViewType: InsightViewType;
+  filters: InsightFilterType[];
 }
 
 export interface ScopedInsightsQuery extends InsightsQuery {

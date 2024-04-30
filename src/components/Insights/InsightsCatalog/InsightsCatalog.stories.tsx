@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { InsightsCatalog } from ".";
+import { ConfigContext, initialState } from "../../common/App/ConfigContext";
 import { SORTING_ORDER } from "../../common/SortingSelector/types";
 import { mockedEndpointBottleneckInsight } from "./InsightsPage/insightCards/EndpointBottleneckInsightCard/mockData";
 import { mockedSpanDurationsInsight } from "./InsightsPage/insightCards/SpanDurationsInsightCard/mockData";
@@ -48,10 +49,34 @@ export const Default: Story = {
       searchQuery: null,
       showDismissed: false,
       insightViewType: "Issues",
-      showUnreadOnly: false
+      showUnreadOnly: false,
+      filters: []
     },
     isDismissalEnabled: true,
     unreadCount: 1,
     isMarkingAsReadEnabled: true
   }
+};
+
+export const WithStats = {
+  ...Default,
+  decorators: [
+    (Story: any) => (
+      <ConfigContext.Provider
+        value={{
+          ...initialState,
+          insightStats: {
+            allIssuesCount: 100,
+            criticalInsightsCount: 5,
+            totalQueryResultCount: 14,
+            unreadInsightsCount: 20,
+            analyticsInsightsCount: 10,
+            scope: null
+          }
+        }}
+      >
+        <Story />
+      </ConfigContext.Provider>
+    )
+  ]
 };

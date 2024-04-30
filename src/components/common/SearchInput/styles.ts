@@ -55,7 +55,9 @@ export const SearchInput = styled.input`
   }};
 
   &:disabled {
-    background: ${({ theme }) => theme.colors.v3.surface.gray};
+    background: ${({ theme }) => theme.colors.v3.surface.primary};
+    color: ${({ theme }) => theme.colors.v3.text.disabled};
+    border: 1px solid ${({ theme }) => theme.colors.v3.stroke.dark};
   }
 
   &:focus:enabled,

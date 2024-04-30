@@ -1,8 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
-import { actions as globalActions } from "../../../../../../../actions";
 import { usePrevious } from "../../../../../../../hooks/usePrevious";
 import { isString } from "../../../../../../../typeGuards/isString";
-import { GetInsightStatsPayload } from "../../../../../../../types";
 import { sendUserActionTrackingEvent } from "../../../../../../../utils/actions/sendUserActionTrackingEvent";
 import { Spinner } from "../../../../../../Navigation/CodeButtonMenu/Spinner";
 import { ConfigContext } from "../../../../../../common/App/ConfigContext";
@@ -56,26 +54,12 @@ export const InsightCard = (props: InsightCardProps) => {
   useEffect(() => {
     if (previousIsOperationInProgress && !isOperationInProgress) {
       props.onRefresh(props.insight.type);
-
-      window.sendMessageToDigma<GetInsightStatsPayload>({
-        action: globalActions.GET_INSIGHT_STATS,
-        payload: {
-          scope: config.scope?.span
-            ? {
-                span: {
-                  spanCodeObjectId: config.scope.span.spanCodeObjectId
-                }
-              }
-            : null
-        }
-      });
     }
   }, [
     previousIsOperationInProgress,
     isOperationInProgress,
     props.onRefresh,
-    props.insight.type,
-    config.scope
+    props.insight.type
   ]);
 
   const handleRecheckButtonClick = () => {

@@ -43,7 +43,6 @@ import {
   GenericCodeObjectInsight,
   Trace
 } from "../../types";
-import { ViewMode } from "../types";
 import { EndpointBottleneckInsightCard } from "./insightCards/EndpointBottleneckInsightCard";
 import { EndpointBreakdownInsightCard } from "./insightCards/EndpointBreakdownInsightCard";
 import { EndpointChattyApiV2InsightCard } from "./insightCards/EndpointChattyApiV2InsightCard";
@@ -98,9 +97,8 @@ const renderInsightCard = (
   ) => void,
   isJiraHintEnabled: boolean,
   onRefresh: () => void,
-  viewMode: ViewMode
+  isMarkAsReadButtonEnabled: boolean
 ): JSX.Element | undefined => {
-  const isMarkAsReadButtonEnabled = viewMode === ViewMode.OnlyUnread;
   // const handleErrorSelect = (errorId: string, insightType: InsightType) => {
   //   sendUserActionTrackingEvent(
   //     trackingEvents.INSIGHT_CARD_ASSET_LINK_CLICKED,
@@ -575,7 +573,7 @@ export const InsightsPage = (props: InsightsPageProps) => {
               !isInsightJiraTicketHintShown?.value &&
               j === insightIndexWithJiraHint,
             props.onRefresh,
-            props.viewMode
+            props.isMarkAsReadButtonEnabled
           );
         })
       ) : props.isFilteringEnabled ? (

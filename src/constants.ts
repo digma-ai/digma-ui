@@ -21,6 +21,12 @@ export const INSTRUMENTATION_DOCUMENTATION_URL =
 export const PERFORMANCE_IMPACT_DOCUMENTATION_URL =
   "https://docs.digma.ai/digma-developer-guide/use-cases-wip/prioritize-technical-debt#asset-performance-impact";
 
+export const SCALING_ISSUE_DOCUMENTATION_URL =
+  "https://docs.digma.ai/digma-developer-guide/digma-features/insights/scaling-issue";
+
+export const TEST_OBSERVABILITY_DOCUMENTATION_URL =
+  "https://docs.digma.ai/digma-developer-guide/digma-features/test-observability";
+
 export const PERCENTILES: {
   label: string;
   percentile: number;
