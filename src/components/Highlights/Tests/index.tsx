@@ -1,6 +1,9 @@
 import { useContext, useEffect, useState } from "react";
 import { actions as globalActions } from "../../../actions";
-import { ROUTES } from "../../../constants";
+import {
+  ROUTES,
+  TEST_OBSERVABILITY_DOCUMENTATION_URL
+} from "../../../constants";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { ChangeViewPayload } from "../../../types";
 import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
@@ -39,8 +42,7 @@ export const Tests = () => {
         trackingEvents.TESTS_CARD_LEARN_MORE_BUTTON_CLICKED
       );
 
-      // TODO: provide the correct URL
-      openURLInDefaultBrowser("#");
+      openURLInDefaultBrowser(TEST_OBSERVABILITY_DOCUMENTATION_URL);
     };
 
     const handleViewTestsButtonClick = () => {
