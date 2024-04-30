@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { Tooltip } from "../../../common/v3/Tooltip";
 import { InsightFilterType } from "../types";
 import * as s from "./styles";
@@ -23,6 +24,8 @@ export const InsightStats = ({
     } else {
       selection.push(selectedFilter);
     }
+
+    sendUserActionTrackingEvent(`issues filter changed`, { selection });
     setSelectedFilters(selection);
     onChange(selection);
   };
