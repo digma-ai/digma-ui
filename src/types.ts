@@ -1,7 +1,9 @@
 import { Duration } from "./globals";
 
 export enum FeatureFlag {
-  ARE_IMPACT_HIGHLIGHTS_ENABLED
+  ARE_IMPACT_HIGHLIGHTS_ENABLED,
+  ARE_SCALING_HIGHLIGHTS_ENABLED,
+  ARE_TESTS_HIGHLIGHTS_ENABLED
 }
 
 export enum InsightType {

@@ -11,7 +11,15 @@ export const trackingEvents = addPrefix(
     PERFORMANCE_CARD_TABLE_ROW_CLICKED: "performance card table row clicked",
     IMPACT_CARD_TABLE_ROW_CLICKED: "impact card table row clicked",
     IMPACT_CARD_LEARN_MORE_BUTTON_CLICKED:
-      "impact card learn more button clicked"
+      "impact card learn more button clicked",
+    SCALING_CARD_TABLE_ROW_CLICKED: "scaling card table row clicked",
+    SCALING_CARD_LEARN_MORE_BUTTON_CLICKED:
+      "scaling card learn more button clicked",
+    SCALING_CARD_VIEW_ANALYTICS_BUTTON_CLICKED:
+      "scaling card view analytics button clicked",
+    TESTS_CARD_LEARN_MORE_BUTTON_CLICKED:
+      "tests card learn more button clicked",
+    TESTS_CARD_VIEW_TESTS_BUTTON_CLICKED: "tests card view tests button clicked"
   },
   " "
 );
