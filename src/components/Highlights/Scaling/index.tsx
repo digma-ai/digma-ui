@@ -1,7 +1,7 @@
 import { Row, createColumnHelper } from "@tanstack/react-table";
 import { useContext, useEffect, useState } from "react";
 import { actions as globalActions } from "../../../actions";
-import { ROUTES } from "../../../constants";
+import { ROUTES, SCALING_ISSUE_DOCUMENTATION_URL } from "../../../constants";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { ChangeViewPayload } from "../../../types";
 import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
@@ -105,8 +105,7 @@ export const Scaling = () => {
         trackingEvents.SCALING_CARD_LEARN_MORE_BUTTON_CLICKED
       );
 
-      // TODO: provide the correct URL
-      openURLInDefaultBrowser("#");
+      openURLInDefaultBrowser(SCALING_ISSUE_DOCUMENTATION_URL);
     };
 
     const handleViewAnalyticsButtonClick = () => {
@@ -123,7 +122,6 @@ export const Scaling = () => {
     };
 
     if (!config.backendInfo?.centralize) {
-      // TODO: refactor to unlock empty state card
       return (
         <EmptyStateCard
           icon={CrossCircleIcon}
