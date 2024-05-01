@@ -1,15 +1,13 @@
 import { Row, createColumnHelper } from "@tanstack/react-table";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import {
   PERFORMANCE_IMPACT_DOCUMENTATION_URL,
   ROUTES
 } from "../../../constants";
-import { usePrevious } from "../../../hooks/usePrevious";
 import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { getImpactScoreLabel } from "../../common/ImpactScore";
-import { CrossCircleIcon } from "../../common/icons/16px/CrossCircleIcon";
 import { InfinityIcon } from "../../common/icons/16px/InfinityIcon";
 import { RefreshIcon } from "../../common/icons/16px/RefreshIcon";
 import { Button } from "../../common/v3/Button";
@@ -39,20 +37,12 @@ const getRankTagType = (normalizedRank: number) => {
 };
 
 export const Impact = () => {
-  const [isInitialLoading, setIsInitialLoading] = useState(true);
   const { data, getData } = useImpactData();
-  const previousData = usePrevious(data);
   const config = useContext(ConfigContext);
 
   useEffect(() => {
     getData();
   }, []);
-
-  useEffect(() => {
-    if (!previousData && data) {
-      setIsInitialLoading(false);
-    }
-  }, [previousData, data]);
 
   const renderImpactCard = (data: EnvironmentImpactData[]) => {
     const columnHelper = createColumnHelper<EnvironmentImpactData>();
@@ -142,23 +132,13 @@ export const Impact = () => {
       );
     }
 
-    if (isInitialLoading) {
+    if (!data || data.impactHighlights.length === 0) {
       return (
         <EmptyStateCard
           type={"lowSeverity"}
           icon={RefreshIcon}
           title={"Waiting for more data"}
           text={"Impact analysis is in progress"}
-        />
-      );
-    }
-
-    if (!data || data.impactHighlights.length === 0) {
-      return (
-        <EmptyStateCard
-          icon={CrossCircleIcon}
-          title={"No data"}
-          text={"No impact data available"}
         />
       );
     }
