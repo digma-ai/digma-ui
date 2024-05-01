@@ -327,6 +327,7 @@ export const Insights = (props: InsightsProps) => {
         isDismissalEnabled={isDismissalEnabled}
         unreadCount={data.unreadCount}
         isMarkingAsReadEnabled={isMarkingAsReadEnabled}
+        hideInsightsStats={props.insightViewType === "Analytics"}
       />
     );
   };
