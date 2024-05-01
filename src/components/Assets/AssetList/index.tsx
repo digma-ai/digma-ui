@@ -43,16 +43,6 @@ const REFRESH_INTERVAL = isNumber(window.assetsRefreshInterval)
   ? window.assetsRefreshInterval
   : 10 * 1000; // in milliseconds
 
-const getBackIconColor = (theme: DefaultTheme) => {
-  switch (theme.mode) {
-    case "light":
-      return "#4D668A";
-    case "dark":
-    case "dark-jetbrains":
-      return "#dadada";
-  }
-};
-
 const getAssetTypeIconColor = (theme: DefaultTheme) => {
   switch (theme.mode) {
     case "light":
