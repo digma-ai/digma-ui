@@ -180,7 +180,6 @@ export const AssetList = (props: AssetListProps) => {
   const [isSortingMenuOpen, setIsSortingMenuOpen] = useState(false);
   const previousSearchQuery = usePrevious(props.searchQuery);
   const theme = useTheme();
-  const backIconColor = getBackIconColor(theme);
   const assetTypeIconColor = getAssetTypeIconColor(theme);
   const sortingMenuChevronColor = getSortingMenuChevronColor(theme);
   const [page, setPage] = useState(0);
@@ -228,7 +227,7 @@ export const AssetList = (props: AssetListProps) => {
       !(
         config.backendInfo?.centralize && config.environment?.type === "Public"
       ),
-    [config.backendInfo?.deploymentType, config.environment?.type]
+    [config.backendInfo?.centralize, config.environment?.type]
   );
 
   const sortingCriteria = getSortingCriteria(isImpactHidden);
