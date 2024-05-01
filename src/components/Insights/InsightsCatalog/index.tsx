@@ -3,11 +3,12 @@ import { usePrevious } from "../../../hooks/usePrevious";
 
 import { useTheme } from "styled-components";
 import { actions as globalActions } from "../../../actions";
+import { getFeatureFlagValue } from "../../../featureFlags";
 import { useDebounce } from "../../../hooks/useDebounce";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { isString } from "../../../typeGuards/isString";
 import { isUndefined } from "../../../typeGuards/isUndefined";
-import { GetInsightStatsPayload } from "../../../types";
+import { FeatureFlag, GetInsightStatsPayload } from "../../../types";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { formatUnit } from "../../../utils/formatUnit";
 import { ConfigContext } from "../../common/App/ConfigContext";
@@ -202,6 +203,11 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
     selectedFilters
   ]);
 
+  const areInsightStatsSupported = getFeatureFlagValue(
+    config,
+    FeatureFlag.ARE_INSIGHT_STATS_SUPPORTED
+  );
+
   return (
     <>
       <s.Toolbar>
@@ -247,11 +253,16 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
         {mode === ViewMode.All ? (
           <>
             {!searchInputValue &&
+              !props.hideInsightsStats &&
               (insights.length > 0 || selectedFilters.length > 0) && (
                 <InsightStats
                   criticalCount={config.insightStats?.criticalInsightsCount}
                   allIssuesCount={config.insightStats?.allIssuesCount}
-                  unreadCount={config.insightStats?.unreadInsightsCount || 0}
+                  unreadCount={
+                    areInsightStatsSupported
+                      ? config.insightStats?.unreadInsightsCount || 0
+                      : props.unreadCount || 0
+                  }
                   onChange={handleFilterSelectionChange}
                 />
               )}
