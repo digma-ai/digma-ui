@@ -139,9 +139,12 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
     setMode(ViewMode.All);
   };
 
-  const handleFilterSelectionChange = (selectedFilter: InsightFilterType[]) => {
-    setSelectedFilters(selectedFilter);
-  };
+  const handleFilterSelectionChange = useCallback(
+    (selectedFilter: InsightFilterType[]) => {
+      setSelectedFilters(selectedFilter);
+    },
+    [setSelectedFilters]
+  );
 
   useEffect(() => {
     if (previousIsMarkingAllAsReadInProgress && !isMarkingAllAsReadInProgress) {

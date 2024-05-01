@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { isUndefined } from "../../../../typeGuards/isUndefined";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
+import { ConfigContext } from "../../../common/App/ConfigContext";
 import { Tooltip } from "../../../common/v3/Tooltip";
 import { InsightFilterType } from "../types";
 import * as s from "./styles";
@@ -14,6 +16,18 @@ export const InsightStats = ({
   const [selectedFilters, setSelectedFilters] = useState<InsightFilterType[]>(
     []
   );
+
+  const config = useContext(ConfigContext);
+
+  useEffect(() => {
+    setSelectedFilters([]);
+    onChange([]);
+  }, [
+    config.environment?.id,
+    config.scope?.span?.spanCodeObjectId,
+    setSelectedFilters,
+    onChange
+  ]);
 
   const handleSelectionChange = (selectedFilter: InsightFilterType) => {
     const selection = [...selectedFilters];
@@ -37,7 +51,7 @@ export const InsightStats = ({
         $selected={selectedFilters.includes("criticality")}
         onClick={() => handleSelectionChange("criticality")}
       >
-        {criticalCount ? (
+        {!isUndefined(criticalCount) ? (
           <s.StatCounter>{criticalCount}</s.StatCounter>
         ) : (
           <NotAssignedValue />
@@ -53,7 +67,7 @@ export const InsightStats = ({
         <s.StatDescription>Unread issues</s.StatDescription>
       </s.UnreadStat>
       <s.Stat>
-        {allIssuesCount ? (
+        {!isUndefined(allIssuesCount) ? (
           <s.StatCounter>{allIssuesCount}</s.StatCounter>
         ) : (
           <NotAssignedValue />
