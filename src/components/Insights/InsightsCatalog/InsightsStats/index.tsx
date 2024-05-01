@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { isUndefined } from "../../../../typeGuards/isUndefined";
+import { isNumber } from "../../../../typeGuards/isNumber";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { ConfigContext } from "../../../common/App/ConfigContext";
 import { Tooltip } from "../../../common/v3/Tooltip";
@@ -22,12 +22,7 @@ export const InsightStats = ({
   useEffect(() => {
     setSelectedFilters([]);
     onChange([]);
-  }, [
-    config.environment?.id,
-    config.scope?.span?.spanCodeObjectId,
-    setSelectedFilters,
-    onChange
-  ]);
+  }, [config.environment?.id, config.scope?.span?.spanCodeObjectId, onChange]);
 
   const handleSelectionChange = (selectedFilter: InsightFilterType) => {
     const selection = [...selectedFilters];
@@ -51,7 +46,7 @@ export const InsightStats = ({
         $selected={selectedFilters.includes("criticality")}
         onClick={() => handleSelectionChange("criticality")}
       >
-        {!isUndefined(criticalCount) ? (
+        {isNumber(criticalCount) ? (
           <s.StatCounter>{criticalCount}</s.StatCounter>
         ) : (
           <NotAssignedValue />
@@ -67,7 +62,7 @@ export const InsightStats = ({
         <s.StatDescription>Unread issues</s.StatDescription>
       </s.UnreadStat>
       <s.Stat>
-        {!isUndefined(allIssuesCount) ? (
+        {isNumber(allIssuesCount) ? (
           <s.StatCounter>{allIssuesCount}</s.StatCounter>
         ) : (
           <NotAssignedValue />

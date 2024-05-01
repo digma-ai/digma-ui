@@ -143,7 +143,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
     (selectedFilter: InsightFilterType[]) => {
       setSelectedFilters(selectedFilter);
     },
-    [setSelectedFilters]
+    []
   );
 
   useEffect(() => {
