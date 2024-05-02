@@ -13,8 +13,6 @@ export const trackingEvents = addPrefix(
     IMPACT_CARD_LEARN_MORE_BUTTON_CLICKED:
       "impact card learn more button clicked",
     SCALING_CARD_TABLE_ROW_CLICKED: "scaling card table row clicked",
-    SCALING_CARD_LEARN_MORE_BUTTON_CLICKED:
-      "scaling card learn more button clicked",
     SCALING_CARD_VIEW_ANALYTICS_BUTTON_CLICKED:
       "scaling card view analytics button clicked"
   },
