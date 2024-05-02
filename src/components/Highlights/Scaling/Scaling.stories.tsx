@@ -34,7 +34,64 @@ const mockedConfig = {
   }
 };
 
-export const Default: Story = {
+export const NoData: Story = {
+  decorators: [
+    (Story) => (
+      <ConfigContext.Provider value={mockedConfig}>
+        <Story />
+      </ConfigContext.Provider>
+    )
+  ],
+  play: () => {
+    window.setTimeout(() => {
+      window.postMessage({
+        type: "digma",
+        action: actions.SET_HIGHLIGHTS_SCALING_DATA,
+        payload: { ...mockedScalingData, dataState: "noData" }
+      });
+    });
+  }
+};
+
+export const PartialData: Story = {
+  decorators: [
+    (Story) => (
+      <ConfigContext.Provider value={mockedConfig}>
+        <Story />
+      </ConfigContext.Provider>
+    )
+  ],
+  play: () => {
+    window.setTimeout(() => {
+      window.postMessage({
+        type: "digma",
+        action: actions.SET_HIGHLIGHTS_SCALING_DATA,
+        payload: { ...mockedScalingData, dataState: "partial" }
+      });
+    });
+  }
+};
+
+export const ScalingWell: Story = {
+  decorators: [
+    (Story) => (
+      <ConfigContext.Provider value={mockedConfig}>
+        <Story />
+      </ConfigContext.Provider>
+    )
+  ],
+  play: () => {
+    window.setTimeout(() => {
+      window.postMessage({
+        type: "digma",
+        action: actions.SET_HIGHLIGHTS_SCALING_DATA,
+        payload: { ...mockedScalingData, dataState: "scalingWell" }
+      });
+    });
+  }
+};
+
+export const ScalingBadly: Story = {
   decorators: [
     (Story) => (
       <ConfigContext.Provider value={mockedConfig}>
@@ -51,51 +108,4 @@ export const Default: Story = {
       });
     });
   }
-};
-
-export const Loading: Story = {
-  decorators: [
-    (Story) => (
-      <ConfigContext.Provider value={mockedConfig}>
-        <Story />
-      </ConfigContext.Provider>
-    )
-  ]
-};
-
-export const Empty: Story = {
-  decorators: [
-    (Story) => (
-      <ConfigContext.Provider value={mockedConfig}>
-        <Story />
-      </ConfigContext.Provider>
-    )
-  ],
-  play: () => {
-    window.setTimeout(() => {
-      window.postMessage({
-        type: "digma",
-        action: actions.SET_HIGHLIGHTS_SCALING_DATA,
-        payload: { scaling: [] }
-      });
-    });
-  }
-};
-
-export const Disabled: Story = {
-  decorators: [
-    (Story) => (
-      <ConfigContext.Provider
-        value={{
-          ...mockedConfig,
-          backendInfo: {
-            ...mockedConfig.backendInfo,
-            centralize: false
-          }
-        }}
-      >
-        <Story />
-      </ConfigContext.Provider>
-    )
-  ]
 };

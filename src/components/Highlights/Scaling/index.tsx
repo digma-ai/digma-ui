@@ -1,11 +1,14 @@
 import { Row, createColumnHelper } from "@tanstack/react-table";
 import { useContext, useEffect } from "react";
 import { actions as globalActions } from "../../../actions";
-import { ROUTES } from "../../../constants";
+import { ROUTES, SCALING_ISSUE_DOCUMENTATION_URL } from "../../../constants";
 import { ChangeViewPayload } from "../../../types";
+import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { getDurationString } from "../../../utils/getDurationString";
 import { ConfigContext } from "../../common/App/ConfigContext";
+import { CrossCircleIcon } from "../../common/icons/16px/CrossCircleIcon";
+import { RefreshIcon } from "../../common/icons/16px/RefreshIcon";
 import { CheckCircleIcon } from "../../common/icons/20px/CheckCircleIcon";
 import { Button } from "../../common/v3/Button";
 import { Card } from "../../common/v3/Card";
@@ -88,6 +91,14 @@ export const Scaling = () => {
   };
 
   const renderCard = () => {
+    const handleLearnMoreButtonClick = () => {
+      sendUserActionTrackingEvent(
+        trackingEvents.SCALING_CARD_LEARN_MORE_BUTTON_CLICKED
+      );
+
+      openURLInDefaultBrowser(SCALING_ISSUE_DOCUMENTATION_URL);
+    };
+
     const handleViewAnalyticsButtonClick = () => {
       sendUserActionTrackingEvent(
         trackingEvents.SCALING_CARD_VIEW_ANALYTICS_BUTTON_CLICKED
@@ -101,20 +112,39 @@ export const Scaling = () => {
       });
     };
 
-    // TODO: show the card for partial data
-    // if (false) {
-    //   return (
-    //     <EmptyStateCard
-    //       type={"lowSeverity"}
-    //       icon={RefreshIcon}
-    //       title={"Collecting data"}
-    //       text={"Trigger more concurrent actions to test scaling"}
-    //     />
-    //   );
-    // }
+    if (!data) {
+      return null;
+    }
 
-    // TODO: change the condition
-    if (!data || data.scaling.length === 0) {
+    if (data?.dataState === "noData") {
+      return (
+        <EmptyStateCard
+          icon={CrossCircleIcon}
+          title={"Unlock Scaling Issues"}
+          text={"Connect a CI/Prod environment to run code at scale"}
+          customContent={
+            <Button
+              buttonType={"secondary"}
+              onClick={handleLearnMoreButtonClick}
+              label={"Learn more"}
+            />
+          }
+        />
+      );
+    }
+
+    if (data?.dataState === "partial") {
+      return (
+        <EmptyStateCard
+          type={"lowSeverity"}
+          icon={RefreshIcon}
+          title={"Collecting data"}
+          text={"Trigger more concurrent actions to test scaling"}
+        />
+      );
+    }
+
+    if (data?.dataState === "scalingWell") {
       return (
         <EmptyStateCard
           type={"success"}

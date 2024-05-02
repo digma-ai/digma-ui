@@ -82,7 +82,7 @@ export const Empty: Story = {
   }
 };
 
-export const Disabled: Story = {
+export const Locked: Story = {
   decorators: [
     (Story) => (
       <ConfigContext.Provider
