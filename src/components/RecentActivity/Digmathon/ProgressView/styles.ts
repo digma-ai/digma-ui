@@ -1,21 +1,22 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import {
   bodyMediumTypography,
   footnoteMediumTypography,
   footnoteRegularTypography,
+  footnoteSemiboldTypography,
   subscriptRegularTypography
 } from "../../../common/App/typographies";
+import { FoundIssuesNumberProps } from "./types";
 
 export const Header = styled.div`
   ${footnoteRegularTypography}
 
   display: flex;
   gap: 8px;
-  height: 32px;
   flex-shrink: 0;
   align-items: center;
   color: ${({ theme }) => theme.colors.v3.text.primary};
-  padding: 0 12px;
+  padding: 8px 12px;
 `;
 
 export const HeaderTitle = styled.span`
@@ -27,11 +28,26 @@ export const HeaderDescription = styled.span`
 `;
 
 export const IssuesCounter = styled.span`
-  margin-left: auto;
+  margin-right: auto;
 `;
 
-export const FoundIssuesNumber = styled.span`
-  color: ${({ theme }) => theme.colors.v3.icon.brandSecondary};
+export const FoundIssuesNumber = styled.span<FoundIssuesNumberProps>`
+  ${({ theme, $isNew }) =>
+    $isNew
+      ? css`
+          ${footnoteSemiboldTypography}
+
+          color: ${theme.colors.v3.text.link};
+        `
+      : ""}
+`;
+
+export const NewIssuesFoundMessage = styled.div`
+  ${footnoteSemiboldTypography}
+
+  color: ${({ theme }) => theme.colors.v3.text.link};
+  display: flex;
+  align-items: center;
 `;
 
 export const CardsContainer = styled.div`
@@ -53,6 +69,7 @@ export const EmptyStateContentContainer = styled.div`
   width: 290px;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 12px;
 `;
 

@@ -2,12 +2,18 @@ import { useEffect, useState } from "react";
 import { actions as globalActions } from "../../actions";
 import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
+import { isString } from "../../typeGuards/isString";
 import { InsightType } from "../Insights/types";
 import { getDigmathonInsightCardData } from "./Digmathon/getDigmathonInsightData";
 import { actions } from "./actions";
-import { DigmathonInsightData, DigmathonProgressData } from "./types";
+import {
+  DigmathonInsightData,
+  DigmathonProgressData,
+  DigmathonProgressInsightData,
+  SetDigmathonProgressDataPayload
+} from "./types";
 
-const REQUIRED_COUNT_OF_FOUND_ISSUES = 3;
+// const REQUIRED_COUNT_OF_FOUND_ISSUES = 3;
 
 const getData = () => {
   window.sendMessageToDigma({
@@ -15,109 +21,136 @@ const getData = () => {
   });
 };
 
-const getIsFound = (
-  data: DigmathonProgressData | undefined,
+const getMinFoundDate = (insights: DigmathonProgressInsightData[]) =>
+  insights.reduce((minDate, cur) => {
+    if (
+      isString(minDate) &&
+      new Date(cur.foundAt).valueOf() < new Date(minDate).valueOf()
+    ) {
+      return cur.foundAt;
+    }
+
+    return minDate;
+  }, null as string | null);
+
+const getFoundAt = (
+  insights: DigmathonProgressInsightData[],
   type: InsightType
 ) => {
-  if (!data) {
-    return false;
-  }
-
   switch (type) {
     case InsightType.EndpointQueryOptimizationV2:
     case InsightType.EndpointQueryOptimization:
-    case InsightType.SpanQueryOptimization:
-      return data.insights.some((x) =>
+    case InsightType.SpanQueryOptimization: {
+      const filteredInsights = insights.filter((x) =>
         [
           InsightType.EndpointQueryOptimizationV2,
           InsightType.EndpointQueryOptimization,
           InsightType.SpanQueryOptimization
-        ].includes(x)
+        ].includes(x.type)
       );
+      return getMinFoundDate(filteredInsights);
+    }
     case InsightType.EndpointSpanNPlusOne:
     case InsightType.EndpointSpaNPlusOne:
-    case InsightType.SpaNPlusOne:
-      return data.insights.some((x) =>
+    case InsightType.SpaNPlusOne: {
+      const filteredInsights = insights.filter((x) =>
         [
           InsightType.EndpointSpanNPlusOne,
           InsightType.EndpointSpaNPlusOne,
           InsightType.SpaNPlusOne
-        ].includes(x)
+        ].includes(x.type)
       );
+      return getMinFoundDate(filteredInsights);
+    }
     case InsightType.EndpointBottleneck:
-    case InsightType.SpanEndpointBottleneck:
-      return data.insights.some((x) =>
+    case InsightType.SpanEndpointBottleneck: {
+      const filteredInsights = insights.filter((x) =>
         [
           InsightType.EndpointBottleneck,
           InsightType.SpanEndpointBottleneck
-        ].includes(x)
+        ].includes(x.type)
       );
+      return getMinFoundDate(filteredInsights);
+    }
     default:
-      return data.insights.includes(type);
+      return insights.find((x) => x.type === type)?.foundAt || null;
   }
 };
 
 export const useDigmathonProgressData = () => {
-  const [data, setData] = useState<DigmathonInsightData[]>();
-  const foundIssuesCount = data?.filter((x) => x.isFound).length || 0;
-  const isDigmathonCompleted =
-    foundIssuesCount >= REQUIRED_COUNT_OF_FOUND_ISSUES;
+  const [data, setData] = useState<DigmathonProgressData>();
+  const foundIssuesCount =
+    data?.insights.filter((x) => isString(x.foundAt)).length || 0;
+  const isDigmathonCompleted = false;
+  //   foundIssuesCount >= REQUIRED_COUNT_OF_FOUND_ISSUES;
   const previousIsDigmathonCompleted = usePrevious(isDigmathonCompleted);
-
   useEffect(() => {
     const handleSetDigmaProgressData = (data: unknown) => {
-      const payload = data as DigmathonProgressData;
+      const payload = data as SetDigmathonProgressDataPayload;
+
       const insights: DigmathonInsightData[] = [
         {
           type: InsightType.SpanScaling,
           data: getDigmathonInsightCardData(InsightType.SpanScaling),
-          isFound: getIsFound(payload, InsightType.SpanScaling)
+          foundAt: getFoundAt(payload.insights, InsightType.SpanScaling)
         },
         {
           type: InsightType.SpanNexus,
           data: getDigmathonInsightCardData(InsightType.SpanNexus),
-          isFound: getIsFound(payload, InsightType.SpanNexus)
+          foundAt: getFoundAt(payload.insights, InsightType.SpanNexus)
         },
         {
           type: InsightType.SpanQueryOptimization,
           data: getDigmathonInsightCardData(InsightType.SpanQueryOptimization),
-          isFound: getIsFound(payload, InsightType.SpanQueryOptimization)
+          foundAt: getFoundAt(
+            payload.insights,
+            InsightType.SpanQueryOptimization
+          )
         },
         {
           type: InsightType.HotSpot,
           data: getDigmathonInsightCardData(InsightType.HotSpot),
-          isFound: getIsFound(payload, InsightType.HotSpot)
+          foundAt: getFoundAt(payload.insights, InsightType.HotSpot)
         },
         {
           type: InsightType.SpaNPlusOne,
           data: getDigmathonInsightCardData(InsightType.SpaNPlusOne),
-          isFound: getIsFound(payload, InsightType.SpaNPlusOne)
+          foundAt: getFoundAt(payload.insights, InsightType.SpaNPlusOne)
         },
         {
           type: InsightType.EndpointSessionInView,
           data: getDigmathonInsightCardData(InsightType.EndpointSessionInView),
-          isFound: getIsFound(payload, InsightType.EndpointSessionInView)
+          foundAt: getFoundAt(
+            payload.insights,
+            InsightType.EndpointSessionInView
+          )
         },
         {
           type: InsightType.SpanUsages,
           data: getDigmathonInsightCardData(InsightType.SpanUsages),
-          isFound: getIsFound(payload, InsightType.SpanUsages)
+          foundAt: getFoundAt(payload.insights, InsightType.SpanUsages)
         },
         {
           type: InsightType.EndpointHighNumberOfQueries,
           data: getDigmathonInsightCardData(
             InsightType.EndpointHighNumberOfQueries
           ),
-          isFound: getIsFound(payload, InsightType.EndpointHighNumberOfQueries)
+          foundAt: getFoundAt(
+            payload.insights,
+            InsightType.EndpointHighNumberOfQueries
+          )
         },
         {
           type: InsightType.EndpointBottleneck,
           data: getDigmathonInsightCardData(InsightType.EndpointBottleneck),
-          isFound: getIsFound(payload, InsightType.EndpointBottleneck)
+          foundAt: getFoundAt(payload.insights, InsightType.EndpointBottleneck)
         }
       ];
 
-      setData(insights);
+      setData({
+        insights,
+        lastUpdatedByUserAt: payload.lastUpdatedByUserAt
+      });
     };
 
     dispatcher.addActionListener(

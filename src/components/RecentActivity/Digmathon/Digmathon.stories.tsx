@@ -1,7 +1,5 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { Digmathon } from ".";
-import { actions } from "../actions";
-import { mockedDigmathonProgressData } from "./mockData";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof Digmathon> = {
@@ -23,15 +21,6 @@ export const Default: Story = {
     getData: () => {
       return undefined;
     }
-  },
-  play: () => {
-    window.setTimeout(() => {
-      window.postMessage({
-        type: "digma",
-        action: actions.SET_DIGMATHON_PROGRESS_DATA,
-        payload: mockedDigmathonProgressData
-      });
-    }, 0);
   }
 };
 
@@ -40,14 +29,5 @@ export const Congratulations: Story = {
     getData: () => {
       return undefined;
     }
-  },
-  play: () => {
-    window.setTimeout(() => {
-      window.postMessage({
-        type: "digma",
-        action: actions.SET_DIGMATHON_PROGRESS_DATA,
-        payload: mockedDigmathonProgressData
-      });
-    }, 0);
   }
 };
