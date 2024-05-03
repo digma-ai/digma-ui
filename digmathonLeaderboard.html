@@ -27,6 +27,8 @@
           border-collapse: collapse;
           margin-top: 34px;
           color: inherit;
+          table-layout: fixed;
+          width: 80%;
         "
       >
         <thead
@@ -41,13 +43,13 @@
           "
         >
           <tr>
-            <th colspan="2" style="padding-left: 28px; text-align: left">
+            <th style="padding-left: 28px; text-align: left; width: 40%">
               Contestant Email
             </th>
             <th>Issues found</th>
-            <th></th>
+            <th style="width: 50px"></th>
             <th>Last issue</th>
-            <th></th>
+            <th style="width: 50px"></th>
             <th style="padding-right: 28px; text-align: right">Last update</th>
           </tr>
         </thead>
@@ -55,23 +57,24 @@
           <!-- Example row 1 (with the highlighted rank position for the first place) -->
           <tr style="text-align: center; height: 64px">
             <td style="padding-left: 24px">
-              <div
-                style="
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                  border-radius: 50%;
-                  font-size: 14px;
-                  background: #6063f6;
-                  width: 24px;
-                  height: 24px;
-                "
-              >
-                1
+              <div style="display: flex; align-items: center; gap: 16px">
+                <div
+                  style="
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 50%;
+                    font-size: 14px;
+                    background: #6063f6;
+                    width: 24px;
+                    height: 24px;
+                    flex-shrink: 0;
+                  "
+                >
+                  1
+                </div>
+                example1@email.com
               </div>
-            </td>
-            <td style="text-align: left; padding-left: 16px">
-              example1@email.com
             </td>
             <td style="color: #a1b5ff">26</td>
             <td style="color: #fff; opacity: 0.35; padding: 0 24px">•</td>
@@ -90,24 +93,25 @@
             "
           >
             <td style="padding-left: 24px">
-              <div
-                style="
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                  border-radius: 50%;
-                  font-size: 14px;
-                  color: #000;
-                  background: #fff;
-                  width: 24px;
-                  height: 24px;
-                "
-              >
-                2
+              <div style="display: flex; align-items: center; gap: 16px">
+                <div
+                  style="
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 50%;
+                    font-size: 14px;
+                    color: #000;
+                    background: #fff;
+                    width: 24px;
+                    height: 24px;
+                    flex-shrink: 0;
+                  "
+                >
+                  2
+                </div>
+                example2@email.com
               </div>
-            </td>
-            <td style="text-align: left; padding-left: 16px">
-              example2@email.com
             </td>
             <td style="color: #a1b5ff">20</td>
             <td style="color: #fff; opacity: 0.35; padding: 0 24px">•</td>
@@ -120,24 +124,25 @@
           <!-- Example row 3 -->
           <tr style="text-align: center; height: 64px">
             <td style="padding-left: 24px">
-              <div
-                style="
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                  border-radius: 50%;
-                  font-size: 14px;
-                  color: #000;
-                  background: #fff;
-                  width: 24px;
-                  height: 24px;
-                "
-              >
-                3
+              <div style="display: flex; align-items: center; gap: 16px">
+                <div
+                  style="
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 50%;
+                    font-size: 14px;
+                    color: #000;
+                    background: #fff;
+                    width: 24px;
+                    height: 24px;
+                    flex-shrink: 0;
+                  "
+                >
+                  3
+                </div>
+                example3@email.com
               </div>
-            </td>
-            <td style="text-align: left; padding-left: 16px">
-              example3@email.com
             </td>
             <td style="color: #a1b5ff">16</td>
             <td style="color: #fff; opacity: 0.35; padding: 0 24px">•</td>
