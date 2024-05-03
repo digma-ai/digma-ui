@@ -62,7 +62,7 @@ export const NewIssuesFoundMessage = styled.div<NewIssuesFoundMessageProps>`
     return `
     &.${$transitionClassName}-enter {
       opacity: 0;
-      transform: translateX(100%);
+      transform: translateX(100px);
     }
     &.${$transitionClassName}-enter-active {
       opacity: 1;
@@ -75,7 +75,7 @@ export const NewIssuesFoundMessage = styled.div<NewIssuesFoundMessageProps>`
     }
     &.${$transitionClassName}-exit-active {
       opacity: 0;
-      transform: translateX(100%);
+      transform: translateX(100px);
       transition: all ${$transitionDuration}ms;
     }`;
   }}
@@ -110,7 +110,7 @@ export const UpdateProgressButton = styled(Button)<UpdateProgressButtonProps>`
     background: linear-gradient(
       100deg,
       rgb(255 255 255 / 0%) 30%,
-      rgb(255 255 255 / 50%),
+      rgb(255 255 255 / 35%),
       rgb(255 255 255 / 0%) 70%
     );
 
