@@ -1,4 +1,5 @@
 import { useContext, useEffect } from "react";
+import { CSSTransition } from "react-transition-group";
 import { isString } from "../../../../typeGuards/isString";
 import { openURLInDefaultBrowser } from "../../../../utils/actions/openURLInDefaultBrowser";
 import { sendTrackingEvent } from "../../../../utils/actions/sendTrackingEvent";
@@ -95,22 +96,37 @@ export const ProgressView = ({ data }: ProgressViewProps) => {
           </s.FoundIssuesNumber>{" "}
           issues found
         </s.IssuesCounter>
-        {isNewProgressDataAvailable && (
-          <s.NewIssuesFoundMessage>
+        <CSSTransition
+          in={isNewProgressDataAvailable}
+          timeout={s.NEW_ISSUES_FOUND_MESSAGE_TRANSITION_DURATION}
+          classNames={s.NEW_ISSUES_FOUND_MESSAGE_ANIMATION_CLASS_NAME}
+          unmountOnExit={true}
+          mountOnEnter={true}
+        >
+          <s.NewIssuesFoundMessage
+            $transitionClassName={
+              s.NEW_ISSUES_FOUND_MESSAGE_ANIMATION_CLASS_NAME
+            }
+            $transitionDuration={s.NEW_ISSUES_FOUND_MESSAGE_TRANSITION_DURATION}
+          >
             New issues found, please update the progress
             <ChevronIcon direction={Direction.RIGHT} color={"currentColor"} />
           </s.NewIssuesFoundMessage>
-        )}
-        <Button
-          label={"Update progress"}
-          onClick={handleUpdateProgressButtonClick}
-          // TODO: add glance effect instead of disabling the button
-        />
-        <Button
-          buttonType={"secondary"}
-          label={"Leaderboard"}
-          onClick={handleDigmathonLeaderboard}
-        />
+        </CSSTransition>
+        <s.ButtonsContainer>
+          <s.UpdateProgressButtonContainer>
+            <s.UpdateProgressButton
+              $isShining={isNewProgressDataAvailable}
+              label={"Update progress"}
+              onClick={handleUpdateProgressButtonClick}
+            />
+          </s.UpdateProgressButtonContainer>
+          <Button
+            buttonType={"secondary"}
+            label={"Leaderboard"}
+            onClick={handleDigmathonLeaderboard}
+          />
+        </s.ButtonsContainer>
       </s.Header>
       <s.CardsContainer>
         {data.insights.map((x, i) =>

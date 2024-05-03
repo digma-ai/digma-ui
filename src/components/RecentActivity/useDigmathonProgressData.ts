@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { actions as globalActions } from "../../actions";
 import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
+import { isNull } from "../../typeGuards/isNull";
 import { isString } from "../../typeGuards/isString";
 import { InsightType } from "../Insights/types";
 import { getDigmathonInsightCardData } from "./Digmathon/getDigmathonInsightData";
@@ -24,7 +25,7 @@ const getData = () => {
 const getMinFoundDate = (insights: DigmathonProgressInsightData[]) =>
   insights.reduce((minDate, cur) => {
     if (
-      isString(minDate) &&
+      isNull(minDate) ||
       new Date(cur.foundAt).valueOf() < new Date(minDate).valueOf()
     ) {
       return cur.foundAt;

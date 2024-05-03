@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import {
   bodyMediumTypography,
   footnoteMediumTypography,
@@ -6,7 +6,16 @@ import {
   footnoteSemiboldTypography,
   subscriptRegularTypography
 } from "../../../common/App/typographies";
-import { FoundIssuesNumberProps } from "./types";
+import { Button } from "../../../common/v3/Button";
+import {
+  FoundIssuesNumberProps,
+  NewIssuesFoundMessageProps,
+  UpdateProgressButtonProps
+} from "./types";
+
+export const NEW_ISSUES_FOUND_MESSAGE_TRANSITION_DURATION = 500; //in milliseconds
+export const NEW_ISSUES_FOUND_MESSAGE_ANIMATION_CLASS_NAME =
+  "new-issues-found-message";
 
 export const Header = styled.div`
   ${footnoteRegularTypography}
@@ -42,12 +51,76 @@ export const FoundIssuesNumber = styled.span<FoundIssuesNumberProps>`
       : ""}
 `;
 
-export const NewIssuesFoundMessage = styled.div`
+export const NewIssuesFoundMessage = styled.div<NewIssuesFoundMessageProps>`
   ${footnoteSemiboldTypography}
 
   color: ${({ theme }) => theme.colors.v3.text.link};
   display: flex;
   align-items: center;
+
+  ${({ $transitionClassName, $transitionDuration }) => {
+    return `
+    &.${$transitionClassName}-enter {
+      opacity: 0;
+      transform: translateX(100%);
+    }
+    &.${$transitionClassName}-enter-active {
+      opacity: 1;
+      transform: translateX(0);
+      transition: all ${$transitionDuration}ms;
+    }
+    &.${$transitionClassName}-exit {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    &.${$transitionClassName}-exit-active {
+      opacity: 0;
+      transform: translateX(100%);
+      transition: all ${$transitionDuration}ms;
+    }`;
+  }}
+`;
+
+export const ButtonsContainer = styled.div`
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  z-index: 1;
+`;
+
+const shineAnimation = keyframes`
+  0% { left: -100%; }
+  25% { left: 100%; }
+  100% { left: 100%; }
+`;
+
+export const UpdateProgressButtonContainer = styled.div`
+  position: relative;
+  overflow: hidden;
+`;
+
+export const UpdateProgressButton = styled(Button)<UpdateProgressButtonProps>`
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      100deg,
+      rgb(255 255 255 / 0%) 30%,
+      rgb(255 255 255 / 50%),
+      rgb(255 255 255 / 0%) 70%
+    );
+
+    ${({ $isShining }) =>
+      $isShining
+        ? css`
+            animation: ${shineAnimation} 3s infinite linear;
+          `
+        : ""};
+  }
 `;
 
 export const CardsContainer = styled.div`
