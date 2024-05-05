@@ -17,6 +17,7 @@ import * as s from "./styles";
 import { ProgressViewProps } from "./types";
 
 const DIGMATHON_URL = "https://www.digma.ai/digmathon";
+const DIGMATHON_LEADERBOARD_URL = "https://www.digma.ai/digmathon/#leaderboard";
 
 export const ProgressView = ({ data }: ProgressViewProps) => {
   const config = useContext(ConfigContext);
@@ -49,7 +50,7 @@ export const ProgressView = ({ data }: ProgressViewProps) => {
     sendUserActionTrackingEvent(
       trackingEvents.DIGMATHON_LEADERBOARD_BUTTON_CLICKED
     );
-    openURLInDefaultBrowser(DIGMATHON_URL);
+    openURLInDefaultBrowser(DIGMATHON_LEADERBOARD_URL);
   };
 
   const foundIssuesCount = data.insights.filter((x) =>
