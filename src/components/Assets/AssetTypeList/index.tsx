@@ -22,7 +22,7 @@ const REFRESH_INTERVAL = isNumber(window.assetsRefreshInterval)
   ? window.assetsRefreshInterval
   : 10 * 1000; // in milliseconds
 
-const ASSET_TYPE_IDS = [
+export const ASSET_TYPE_IDS = [
   "Endpoint",
   "Consumer",
   "DatabaseQueries",

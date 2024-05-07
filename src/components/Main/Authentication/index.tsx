@@ -45,7 +45,7 @@ const AuthenticationComponent = () => {
         </s.Header>
         <s.InputForm>
           <Toggle
-            size="large"
+            size={"large"}
             options={[
               {
                 label: <s.ToggleOptions>Sign In</s.ToggleOptions>,

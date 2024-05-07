@@ -3,8 +3,9 @@ import { ConfigContextData } from "./components/common/App/types";
 import { FeatureFlag } from "./types";
 
 export const featureFlagMinBackendVersions: Record<FeatureFlag, string> = {
-  [FeatureFlag.ARE_IMPACT_HIGHLIGHTS_ENABLED]: "0.3.7",
-  [FeatureFlag.ARE_INSIGHT_STATS_SUPPORTED]: "0.3.7"
+  [FeatureFlag.ARE_HIGHLIGHTS_IMPACT_ENABLED]: "0.3.7",
+  [FeatureFlag.ARE_INSIGHT_STATS_ENABLED]: "0.3.7",
+  [FeatureFlag.IS_HIGHLIGHTS_SPAN_INFO_ENABLED]: "0.3.14"
 };
 
 export const getFeatureFlagValue = (
