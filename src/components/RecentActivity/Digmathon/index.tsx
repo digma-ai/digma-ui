@@ -4,7 +4,7 @@ import { NewCircleLoader } from "../../common/NewCircleLoader";
 import { ChevronIcon } from "../../common/icons/16px/ChevronIcon";
 import { Direction } from "../../common/icons/types";
 import { trackingEvents } from "../tracking";
-import { DigmathonInsightData } from "../types";
+import { DigmathonProgressData } from "../types";
 import { CongratulationsView } from "./CongratulationsView";
 import { ProgressView } from "./ProgressView";
 import * as s from "./styles";
@@ -13,7 +13,6 @@ import { DigmathonProgressProps } from "./types";
 export const Digmathon = ({
   data,
   getData,
-  foundIssuesCount,
   isDigmathonCompleted,
   onGoBack
 }: DigmathonProgressProps) => {
@@ -35,11 +34,11 @@ export const Digmathon = ({
     onGoBack();
   };
 
-  const renderContent = (data: DigmathonInsightData[]) =>
+  const renderContent = (data: DigmathonProgressData) =>
     isDigmathonCompleted ? (
-      <CongratulationsView data={data} />
+      <CongratulationsView data={data.insights} />
     ) : (
-      <ProgressView data={data} foundIssuesCount={foundIssuesCount} />
+      <ProgressView data={data} />
     );
 
   return (

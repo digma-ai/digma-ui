@@ -93,8 +93,14 @@ export interface ViewModeOptionProps {
   $selected: boolean;
 }
 
-export interface DigmathonProgressData {
-  insights: InsightType[];
+export interface DigmathonProgressInsightData {
+  type: InsightType;
+  foundAt: string;
+}
+
+export interface SetDigmathonProgressDataPayload {
+  insights: DigmathonProgressInsightData[];
+  lastUpdatedByUserAt: string | null;
 }
 
 export interface DigmathonInsightCardData {
@@ -106,7 +112,12 @@ export interface DigmathonInsightCardData {
 export interface DigmathonInsightData {
   type: InsightType;
   data: DigmathonInsightCardData | undefined;
-  isFound: boolean;
+  foundAt: string | null;
+}
+
+export interface DigmathonProgressData {
+  insights: DigmathonInsightData[];
+  lastUpdatedByUserAt: string | null;
 }
 
 export interface CreateEnvironmentPayload {

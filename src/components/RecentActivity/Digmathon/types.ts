@@ -1,7 +1,7 @@
-import { DigmathonInsightData } from "../types";
+import { DigmathonProgressData } from "../types";
 
 export interface DigmathonProgressProps {
-  data?: DigmathonInsightData[];
+  data?: DigmathonProgressData;
   getData: () => void;
   foundIssuesCount: number;
   isDigmathonCompleted: boolean;

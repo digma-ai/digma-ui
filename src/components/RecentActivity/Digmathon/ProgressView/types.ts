@@ -1,6 +1,17 @@
-import { DigmathonInsightData } from "../../types";
+import { DigmathonProgressData } from "../../types";
 
 export interface ProgressViewProps {
-  data: DigmathonInsightData[];
-  foundIssuesCount: number;
+  data: DigmathonProgressData;
+}
+export interface FoundIssuesNumberProps {
+  $isNew: boolean;
+}
+
+export interface NewIssuesFoundMessageProps {
+  $transitionClassName: string;
+  $transitionDuration: number;
+}
+
+export interface UpdateProgressButtonProps {
+  $isShining: boolean;
 }

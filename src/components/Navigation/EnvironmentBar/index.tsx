@@ -16,6 +16,10 @@ export const EnvironmentBar = (props: EnvironmentBarProps) => {
     }
   };
 
+  const environmentName = props.selectedEnvironment
+    ? props.selectedEnvironment.name
+    : "No environments";
+
   return (
     <s.EnvironmentBar
       $isDisabled={props.isDisabled}
@@ -29,15 +33,9 @@ export const EnvironmentBar = (props: EnvironmentBarProps) => {
           <GlobeIcon size={16} color={"currentColor"} />
         )}
       </s.EnvironmentIconContainer>
-      {props.selectedEnvironment ? (
-        <Tooltip title={props.selectedEnvironment.name}>
-          <s.SelectedEnvironmentName>
-            {props.selectedEnvironment.name}
-          </s.SelectedEnvironmentName>
-        </Tooltip>
-      ) : (
-        "No environments"
-      )}
+      <Tooltip title={environmentName}>
+        <s.SelectedEnvironmentName>{environmentName}</s.SelectedEnvironmentName>
+      </Tooltip>
       <s.ChevronIconContainer>
         <ChevronIcon
           size={16}

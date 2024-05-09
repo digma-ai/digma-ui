@@ -725,7 +725,8 @@ export const EnableDigmathonMode: Story = {
       type: "digma",
       action: actions.SET_DIGMATHON_PROGRESS_DATA,
       payload: {
-        insights: []
+        ...mockedDigmathonProgressData,
+        insights: mockedDigmathonProgressData.insights.slice(0, 4)
       }
     });
   }

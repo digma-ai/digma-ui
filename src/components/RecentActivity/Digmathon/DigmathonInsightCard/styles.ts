@@ -25,6 +25,7 @@ export const Container = styled.div<ContainerProps>`
   box-sizing: border-box;
   overflow: hidden;
   position: relative;
+  transition-duration: 500ms;
 `;
 
 export const NumberContainer = styled.div`

@@ -146,5 +146,5 @@ export const Impact = () => {
     return renderImpactCard(data.impactHighlights);
   };
 
-  return <Section title={"Impact"}>{renderCard()}</Section>;
+  return <Section>{renderCard()}</Section>;
 };
