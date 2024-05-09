@@ -7,7 +7,7 @@ export type EnvironmentScalingData = {
 };
 
 export type ScalingData = {
-  dataState: "noData" | "partial" | "scalingWell" | "scalingBadly";
+  dataState: "NoData" | "Partial" | "ScalingWell" | "ScalingBadly";
   scaling: EnvironmentData<EnvironmentScalingData>[];
 };
 

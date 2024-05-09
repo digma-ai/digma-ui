@@ -116,7 +116,7 @@ export const Scaling = () => {
       return null;
     }
 
-    if (data?.dataState === "noData") {
+    if (data?.dataState === "NoData") {
       return (
         <EmptyStateCard
           icon={CrossCircleIcon}
@@ -133,7 +133,7 @@ export const Scaling = () => {
       );
     }
 
-    if (data?.dataState === "partial") {
+    if (data?.dataState === "Partial") {
       return (
         <EmptyStateCard
           type={"lowSeverity"}
@@ -144,7 +144,7 @@ export const Scaling = () => {
       );
     }
 
-    if (data?.dataState === "scalingWell") {
+    if (data?.dataState === "ScalingWell") {
       return (
         <EmptyStateCard
           type={"success"}

@@ -2,7 +2,7 @@ import { InsightStatus } from "../../Insights/types";
 import { ScalingData } from "./types";
 
 export const mockedScalingData: ScalingData = {
-  dataState: "scalingBadly",
+  dataState: "ScalingBadly",
   scaling: [
     {
       environmentId: "1",
