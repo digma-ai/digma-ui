@@ -13,16 +13,6 @@ import { mockedTopIssuesData } from "./TopIssues/mockData";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 
-const mockedConfig = {
-  ...initialState,
-  backendInfo: {
-    applicationVersion:
-      featureFlagMinBackendVersions[FeatureFlag.ARE_IMPACT_HIGHLIGHTS_ENABLED],
-    deploymentType: DeploymentType.HELM,
-    centralize: true
-  }
-};
-
 const meta: Meta<typeof Highlights> = {
   title: "Highlights/Highlights",
   component: Highlights,
