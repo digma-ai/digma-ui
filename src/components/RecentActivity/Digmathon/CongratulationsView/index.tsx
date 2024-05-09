@@ -1,4 +1,5 @@
 import { useContext, useEffect } from "react";
+import { isString } from "../../../../typeGuards/isString";
 import { sendTrackingEvent } from "../../../../utils/actions/sendTrackingEvent";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { ConfigContext } from "../../../common/App/ConfigContext";
@@ -19,7 +20,7 @@ const getEmailURL = (
   const subject = `Digmathon Challenge Completed! [${userId}]`;
 
   const foundInsights = data
-    .filter((x) => x.isFound)
+    .filter((x) => isString(x.foundAt))
     .map((x) => x.data?.title || x.type)
     .join(", ");
   const body = [

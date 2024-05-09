@@ -15,6 +15,7 @@ export const Button = styled.button`
   width: 32px;
   height: 32px;
   box-sizing: border-box;
+  flex-shrink: 0;
 
   &:disabled {
     color: ${({ theme }) => theme.colors.v3.icon.disabled};

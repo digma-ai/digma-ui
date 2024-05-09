@@ -125,7 +125,7 @@ export const Performance = () => {
 
     return (
       <Card
-        header={<s.CardTitle>Performance</s.CardTitle>}
+        header={<s.CardTitle>Duration</s.CardTitle>}
         content={
           <Table<EnvironmentPerformanceData>
             columns={columns}

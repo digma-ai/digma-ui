@@ -68,7 +68,7 @@ export const WithStats = {
           insightStats: {
             allIssuesCount: 100,
             criticalInsightsCount: 5,
-            totalQueryResultCount: 14,
+            issuesInsightsCount: 14,
             unreadInsightsCount: 20,
             analyticsInsightsCount: 10,
             scope: null

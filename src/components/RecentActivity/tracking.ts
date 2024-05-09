@@ -32,7 +32,13 @@ export const trackingEvents = addPrefix(
     CREATE_ENVIRONMENT_CANCEL_CONFIRMATION_CANCEL_CLICKED:
       "create environment cancel confirmation cancel clicked",
     CREATE_ENVIRONMENT_CANCEL_CONFIRMATION_CLOSE_CLICKED:
-      "create environment cancel confirmation close clicked"
+      "create environment cancel confirmation close clicked",
+    DIGMATHON_UPDATE_PROGRESS_BUTTON_CLICKED:
+      "digmathon update progress button clicked",
+    DIGMATHON_LEADERBOARD_BUTTON_CLICKED:
+      "digmathon leaderboard button clicked",
+    DIGMATHON_FIND_OUT_MORE_BUTTON_CLICKED:
+      "digmathon find out more button clicked"
   },
   " "
 );

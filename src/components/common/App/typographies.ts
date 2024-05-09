@@ -121,6 +121,12 @@ export const footnoteMediumTypography = css`
   line-height: ${typographies.footNote.lineHeight}px;
 `;
 
+export const footnoteSemiboldTypography = css`
+  font-size: ${typographies.footNote.fontSize}px;
+  font-weight: ${typographies.footNote.fontWeight.semibold};
+  line-height: ${typographies.footNote.lineHeight}px;
+`;
+
 export const footnoteBoldTypography = css`
   font-size: ${typographies.footNote.fontSize}px;
   font-weight: ${typographies.footNote.fontWeight.bold};

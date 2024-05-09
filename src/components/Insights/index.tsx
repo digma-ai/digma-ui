@@ -269,16 +269,16 @@ export const Insights = (props: InsightsProps) => {
   //   }
   // };
 
-  const handleTroubleshootingLinkClick = () => {
-    sendUserActionTrackingEvent(
-      globalTrackingEvents.TROUBLESHOOTING_LINK_CLICKED,
-      {
-        origin: "insights"
-      }
-    );
+  // const handleTroubleshootingLinkClick = () => {
+  //   sendUserActionTrackingEvent(
+  //     globalTrackingEvents.TROUBLESHOOTING_LINK_CLICKED,
+  //     {
+  //       origin: "insights"
+  //     }
+  //   );
 
-    sendMessage(globalActions.OPEN_TROUBLESHOOTING_GUIDE);
-  };
+  //   sendMessage(globalActions.OPEN_TROUBLESHOOTING_GUIDE);
+  // };
 
   const handleJiraTicketPopupOpen = (
     insight: GenericCodeObjectInsight,
@@ -327,6 +327,7 @@ export const Insights = (props: InsightsProps) => {
         isDismissalEnabled={isDismissalEnabled}
         unreadCount={data.unreadCount}
         isMarkingAsReadEnabled={isMarkingAsReadEnabled}
+        hideInsightsStats={props.insightViewType === "Analytics"}
       />
     );
   };

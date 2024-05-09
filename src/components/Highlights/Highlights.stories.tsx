@@ -12,13 +12,31 @@ import { mockedScalingData } from "./Scaling/mockData";
 import { mockedTopIssuesData } from "./TopIssues/mockData";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
+
+const mockedConfig = {
+  ...initialState,
+  backendInfo: {
+    applicationVersion:
+      featureFlagMinBackendVersions[FeatureFlag.ARE_IMPACT_HIGHLIGHTS_ENABLED],
+    deploymentType: DeploymentType.HELM,
+    centralize: true
+  }
+};
+
 const meta: Meta<typeof Highlights> = {
   title: "Highlights/Highlights",
   component: Highlights,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
     layout: "fullscreen"
-  }
+  },
+  decorators: [
+    (Story) => (
+      <ConfigContext.Provider value={mockedConfig}>
+        <Story />
+      </ConfigContext.Provider>
+    )
+  ]
 };
 
 export default meta;

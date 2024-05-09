@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 
 export interface SectionProps {
-  title: string;
+  title?: string;
   toolbarContent?: ReactNode;
   children: ReactNode;
 }

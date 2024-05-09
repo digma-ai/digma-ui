@@ -1,21 +1,31 @@
-import styled from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 import {
   bodyMediumTypography,
   footnoteMediumTypography,
   footnoteRegularTypography,
+  footnoteSemiboldTypography,
   subscriptRegularTypography
 } from "../../../common/App/typographies";
+import { Button } from "../../../common/v3/Button";
+import {
+  FoundIssuesNumberProps,
+  NewIssuesFoundMessageProps,
+  UpdateProgressButtonProps
+} from "./types";
+
+export const NEW_ISSUES_FOUND_MESSAGE_TRANSITION_DURATION = 500; //in milliseconds
+export const NEW_ISSUES_FOUND_MESSAGE_ANIMATION_CLASS_NAME =
+  "new-issues-found-message";
 
 export const Header = styled.div`
   ${footnoteRegularTypography}
 
   display: flex;
   gap: 8px;
-  height: 32px;
   flex-shrink: 0;
   align-items: center;
   color: ${({ theme }) => theme.colors.v3.text.primary};
-  padding: 0 12px;
+  padding: 8px 12px;
 `;
 
 export const HeaderTitle = styled.span`
@@ -27,11 +37,90 @@ export const HeaderDescription = styled.span`
 `;
 
 export const IssuesCounter = styled.span`
-  margin-left: auto;
+  margin-right: auto;
 `;
 
-export const FoundIssuesNumber = styled.span`
-  color: ${({ theme }) => theme.colors.v3.icon.brandSecondary};
+export const FoundIssuesNumber = styled.span<FoundIssuesNumberProps>`
+  ${({ theme, $isNew }) =>
+    $isNew
+      ? css`
+          ${footnoteSemiboldTypography}
+
+          color: ${theme.colors.v3.text.link};
+        `
+      : ""}
+`;
+
+export const NewIssuesFoundMessage = styled.div<NewIssuesFoundMessageProps>`
+  ${footnoteSemiboldTypography}
+
+  color: ${({ theme }) => theme.colors.v3.text.link};
+  display: flex;
+  align-items: center;
+
+  ${({ $transitionClassName, $transitionDuration }) => {
+    return `
+    &.${$transitionClassName}-enter {
+      opacity: 0;
+      transform: translateX(100px);
+    }
+    &.${$transitionClassName}-enter-active {
+      opacity: 1;
+      transform: translateX(0);
+      transition: all ${$transitionDuration}ms;
+    }
+    &.${$transitionClassName}-exit {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    &.${$transitionClassName}-exit-active {
+      opacity: 0;
+      transform: translateX(100px);
+      transition: all ${$transitionDuration}ms;
+    }`;
+  }}
+`;
+
+export const ButtonsContainer = styled.div`
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  z-index: 1;
+`;
+
+const shineAnimation = keyframes`
+  0% { left: -100%; }
+  25% { left: 100%; }
+  100% { left: 100%; }
+`;
+
+export const UpdateProgressButtonContainer = styled.div`
+  position: relative;
+  overflow: hidden;
+`;
+
+export const UpdateProgressButton = styled(Button)<UpdateProgressButtonProps>`
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      100deg,
+      rgb(255 255 255 / 0%) 30%,
+      rgb(255 255 255 / 35%),
+      rgb(255 255 255 / 0%) 70%
+    );
+
+    ${({ $isShining }) =>
+      $isShining
+        ? css`
+            animation: ${shineAnimation} 3s infinite linear;
+          `
+        : ""};
+  }
 `;
 
 export const CardsContainer = styled.div`
@@ -53,6 +142,7 @@ export const EmptyStateContentContainer = styled.div`
   width: 290px;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 12px;
 `;
 
