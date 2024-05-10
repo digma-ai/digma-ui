@@ -2,6 +2,7 @@ import { Duration } from "./globals";
 
 export enum FeatureFlag {
   ARE_IMPACT_HIGHLIGHTS_ENABLED,
+  ARE_SCALING_HIGHLIGHTS_ENABLED,
   ARE_INSIGHT_STATS_SUPPORTED
 }
 

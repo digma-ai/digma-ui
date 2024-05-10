@@ -1,17 +1,17 @@
 import { Meta, StoryObj } from "@storybook/react";
 
-import { Impact } from ".";
+import { Scaling } from ".";
 import { featureFlagMinBackendVersions } from "../../../featureFlags";
 import { FeatureFlag } from "../../../types";
 import { actions } from "../../Main/actions";
 import { ConfigContext, initialState } from "../../common/App/ConfigContext";
 import { DeploymentType } from "../../common/App/types";
-import { mockedImpactData } from "./mockData";
+import { mockedScalingData } from "./mockData";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
-const meta: Meta<typeof Impact> = {
-  title: "Highlights/Impact",
-  component: Impact,
+const meta: Meta<typeof Scaling> = {
+  title: "Highlights/Scaling",
+  component: Scaling,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
     layout: "fullscreen"
@@ -34,7 +34,7 @@ const mockedConfig = {
   }
 };
 
-export const Default: Story = {
+export const NoData: Story = {
   decorators: [
     (Story) => (
       <ConfigContext.Provider value={mockedConfig}>
@@ -46,24 +46,14 @@ export const Default: Story = {
     window.setTimeout(() => {
       window.postMessage({
         type: "digma",
-        action: actions.SET_HIGHLIGHTS_IMPACT_DATA,
-        payload: mockedImpactData
+        action: actions.SET_HIGHLIGHTS_SCALING_DATA,
+        payload: { ...mockedScalingData, dataState: "noData" }
       });
     });
   }
 };
 
-export const Loading: Story = {
-  decorators: [
-    (Story) => (
-      <ConfigContext.Provider value={mockedConfig}>
-        <Story />
-      </ConfigContext.Provider>
-    )
-  ]
-};
-
-export const Empty: Story = {
+export const PartialData: Story = {
   decorators: [
     (Story) => (
       <ConfigContext.Provider value={mockedConfig}>
@@ -75,27 +65,47 @@ export const Empty: Story = {
     window.setTimeout(() => {
       window.postMessage({
         type: "digma",
-        action: actions.SET_HIGHLIGHTS_IMPACT_DATA,
-        payload: { impactHighlights: [] }
+        action: actions.SET_HIGHLIGHTS_SCALING_DATA,
+        payload: { ...mockedScalingData, dataState: "partial" }
       });
     });
   }
 };
 
-export const Locked: Story = {
+export const ScalingWell: Story = {
   decorators: [
     (Story) => (
-      <ConfigContext.Provider
-        value={{
-          ...mockedConfig,
-          backendInfo: {
-            ...mockedConfig.backendInfo,
-            centralize: false
-          }
-        }}
-      >
+      <ConfigContext.Provider value={mockedConfig}>
         <Story />
       </ConfigContext.Provider>
     )
-  ]
+  ],
+  play: () => {
+    window.setTimeout(() => {
+      window.postMessage({
+        type: "digma",
+        action: actions.SET_HIGHLIGHTS_SCALING_DATA,
+        payload: { ...mockedScalingData, dataState: "scalingWell" }
+      });
+    });
+  }
+};
+
+export const ScalingBadly: Story = {
+  decorators: [
+    (Story) => (
+      <ConfigContext.Provider value={mockedConfig}>
+        <Story />
+      </ConfigContext.Provider>
+    )
+  ],
+  play: () => {
+    window.setTimeout(() => {
+      window.postMessage({
+        type: "digma",
+        action: actions.SET_HIGHLIGHTS_SCALING_DATA,
+        payload: mockedScalingData
+      });
+    });
+  }
 };
