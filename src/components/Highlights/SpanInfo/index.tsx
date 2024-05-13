@@ -14,6 +14,18 @@ import { useSpanInfoData } from "./useSpanInfoData";
 
 const SPAN_NAME_MAX_LENGTH = 75;
 
+const getLanguage = (assetTypeId: string) => {
+  if (assetTypeId === "DatabaseQueries") {
+    return "sql";
+  }
+
+  if (assetTypeId === "Endpoint" || assetTypeId === "EndpointClient") {
+    return "http";
+  }
+
+  return undefined;
+};
+
 export const SpanInfo = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const { data, getData } = useSpanInfoData();
@@ -37,9 +49,6 @@ export const SpanInfo = () => {
     ? `${data.displayName.slice(0, SPAN_NAME_MAX_LENGTH)}...`
     : data.displayName;
   const codeSnippetText = isExpanded ? data.displayName : truncatedName;
-
-  const codeSnippetLanguage =
-    data.assetTypeId === "DatabaseQueries" ? "sql" : undefined;
 
   const ExpandButtonIcon = isExpanded ? ArrowsInsideIcon : ArrowsOutsideIcon;
 
@@ -74,7 +83,10 @@ export const SpanInfo = () => {
         )}
       </s.Header>
       <s.ContentContainer>
-        <CodeSnippet language={codeSnippetLanguage} text={codeSnippetText} />
+        <CodeSnippet
+          language={getLanguage(data.assetTypeId)}
+          text={codeSnippetText}
+        />
         <s.StatsContainer>
           <s.Stat>
             <s.StatLabel>Services</s.StatLabel>
