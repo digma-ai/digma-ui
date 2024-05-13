@@ -165,5 +165,5 @@ export const Scaling = () => {
     return renderScalingCard(data.scaling);
   };
 
-  return <Section title={"Scaling"}>{renderCard()}</Section>;
+  return <Section>{renderCard()}</Section>;
 };
