@@ -8,6 +8,7 @@ import { ConfigContext, initialState } from "../common/App/ConfigContext";
 import { DeploymentType } from "../common/App/types";
 import { mockedImpactData } from "./Impact/mockData";
 import { mockedPerformanceData } from "./Performance/mockData";
+import { mockedScalingData } from "./Scaling/mockData";
 import { mockedSpanInfoData } from "./SpanInfo/mockData";
 import { mockedTopIssuesData } from "./TopIssues/mockData";
 
@@ -47,6 +48,13 @@ type Story = StoryObj<typeof meta>;
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 export const Default: Story = {
+  decorators: [
+    (Story) => (
+      <ConfigContext.Provider value={mockedConfig}>
+        <Story />
+      </ConfigContext.Provider>
+    )
+  ],
   play: () => {
     window.setTimeout(() => {
       window.postMessage({
@@ -69,11 +77,23 @@ export const Default: Story = {
         action: mainActions.SET_HIGHLIGHTS_IMPACT_DATA,
         payload: mockedImpactData
       });
+      window.postMessage({
+        type: "digma",
+        action: mainActions.SET_HIGHLIGHTS_SCALING_DATA,
+        payload: mockedScalingData
+      });
     }, 1000);
   }
 };
 
 export const Empty: Story = {
+  decorators: [
+    (Story) => (
+      <ConfigContext.Provider value={mockedConfig}>
+        <Story />
+      </ConfigContext.Provider>
+    )
+  ],
   play: () => {
     window.setTimeout(() => {
       window.postMessage({
@@ -95,6 +115,11 @@ export const Empty: Story = {
         type: "digma",
         action: mainActions.SET_HIGHLIGHTS_IMPACT_DATA,
         payload: { impactHighlights: [] }
+      });
+      window.postMessage({
+        type: "digma",
+        action: mainActions.SET_HIGHLIGHTS_SCALING_DATA,
+        payload: { scaling: [] }
       });
     }, 1000);
   }

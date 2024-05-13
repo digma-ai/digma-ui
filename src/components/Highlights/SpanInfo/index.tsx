@@ -30,13 +30,14 @@ export const SpanInfo = () => {
     return <EmptyStateCard icon={RefreshIcon} title={"Waiting for data"} />;
   }
 
-  const isExpandButtonVisible = data.displayName.length > SPAN_NAME_MAX_LENGTH;
-
   const assetTypeInfo = getAssetTypeInfo(data.assetTypeId);
 
-  const codeSnippetText = isExpanded
-    ? data.displayName
-    : `${data.displayName.slice(0, SPAN_NAME_MAX_LENGTH)}...`;
+  const isNameTooLong = data.displayName.length > SPAN_NAME_MAX_LENGTH;
+  const truncatedName = isNameTooLong
+    ? `${data.displayName.slice(0, SPAN_NAME_MAX_LENGTH)}...`
+    : data.displayName;
+  const codeSnippetText = isExpanded ? data.displayName : truncatedName;
+
   const codeSnippetLanguage =
     data.assetTypeId === "DatabaseQueries" ? "sql" : undefined;
 
@@ -63,7 +64,7 @@ export const SpanInfo = () => {
           )}
           Span Info
         </s.TitleContainer>
-        {isExpandButtonVisible && (
+        {isNameTooLong && (
           <s.ExpandButton onClick={handleExpandButtonClick}>
             <s.ExpandButtonIconButtonContainer>
               <ExpandButtonIcon color={"currentColor"} size={12} />

@@ -4,6 +4,7 @@ import { FeatureFlag } from "../../types";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { Impact } from "./Impact";
 import { Performance } from "./Performance";
+import { Scaling } from "./Scaling";
 import { SpanInfo } from "./SpanInfo";
 import { TopIssues } from "./TopIssues";
 import * as s from "./styles";
@@ -15,10 +16,13 @@ export const Highlights = () => {
     config,
     FeatureFlag.IS_HIGHLIGHTS_SPAN_INFO_ENABLED
   );
-
   const areImpactHighlightsVisible = getFeatureFlagValue(
     config,
-    FeatureFlag.ARE_HIGHLIGHTS_IMPACT_ENABLED
+    FeatureFlag.IS_HIGHLIGHTS_IMPACT_ENABLED
+  );
+  const areScalingHighlightsVisible = getFeatureFlagValue(
+    config,
+    FeatureFlag.IS_HIGHLIGHTS_SCALING_ENABLED
   );
 
   return (
@@ -27,6 +31,7 @@ export const Highlights = () => {
       <TopIssues />
       <Performance />
       {areImpactHighlightsVisible && <Impact />}
+      {areScalingHighlightsVisible && <Scaling />}
     </s.Container>
   );
 };
