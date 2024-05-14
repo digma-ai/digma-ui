@@ -1,16 +1,27 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import {
   bodySemiboldTypography,
   caption1RegularTypography,
   subscriptMediumTypography,
   subscriptRegularTypography
 } from "../../common/App/typographies";
+import { CodeSnippet } from "../../common/CodeSnippet";
+import {
+  AnimatedButtonContainerProps,
+  ExpandButtonProps,
+  StatsContainerProps,
+  StyledCodeSnippetProps
+} from "./types";
+
+const COLLAPSE_BTN = "71px";
+const EXPAND_BTN = "65px";
 
 export const Container = styled.div`
   background: ${({ theme }) => theme.colors.v3.surface.secondary};
   border-radius: 4px;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 `;
 
 export const Section = styled.div`
@@ -36,7 +47,15 @@ export const IconContainer = styled.div`
   display: flex;
 `;
 
-export const ExpandButton = styled.button`
+export const AnimatedButtonContainer = styled.div<AnimatedButtonContainerProps>`
+  display: flex;
+  position: relative;
+  width: ${({ $isExpanded }) => ($isExpanded ? COLLAPSE_BTN : EXPAND_BTN)};
+  transition: all 500ms;
+  align-items: center;
+`;
+
+export const ExpandButton = styled.button<ExpandButtonProps>`
   ${subscriptMediumTypography}
 
   display: flex;
@@ -47,6 +66,25 @@ export const ExpandButton = styled.button`
   border: none;
   padding: 0;
   cursor: pointer;
+  position: absolute;
+
+  ${({ $transitionClassName, $transitionDuration }) => {
+    return `
+    &.${$transitionClassName}-enter {
+      opacity: 0;
+    }
+    &.${$transitionClassName}-enter-active {
+      opacity: 1;
+      transition: all ${$transitionDuration}ms;
+    }
+    &.${$transitionClassName}-exit {
+      opacity: 1;
+    }
+    &.${$transitionClassName}-exit-active {
+      opacity: 0;
+      transition: all ${$transitionDuration}ms;
+    }`;
+  }}
 `;
 
 export const ExpandButtonIconButtonContainer = styled.div`
@@ -62,10 +100,34 @@ export const ContentContainer = styled(Section)`
   padding: 8px 8px 12px;
 `;
 
-export const StatsContainer = styled.div`
+export const StatsContainer = styled.div<StatsContainerProps>`
   display: flex;
   gap: 5px;
   flex-grow: 1;
+  height: 37px;
+
+  ${({ $transitionClassName, $transitionDuration }) => {
+    return `
+    &.${$transitionClassName}-enter {
+      opacity: 0;
+      height: 0;
+    }
+
+    &.${$transitionClassName}-enter-active {
+      opacity: 1;
+      height: 37px;
+      transition: all ${$transitionDuration}ms;
+    }
+    &.${$transitionClassName}-exit {
+      opacity: 1;
+      height: 37px;
+    }
+    &.${$transitionClassName}-exit-active {
+      opacity: 0;
+      height: 0;
+      transition: all ${$transitionDuration}ms;
+    }`;
+  }}
 `;
 
 export const Stat = styled.div`
@@ -98,9 +160,36 @@ export const StatValue = styled.div`
 
   display: flex;
   align-items: center;
+`;
+
+export const StatValueContainer = styled.div`
+  display: flex;
   gap: 4px;
 `;
 
 export const StatValueText = styled.span`
   color: ${({ theme }) => theme.colors.v3.text.primary};
+`;
+
+export const StyledCodeSnippet = styled(CodeSnippet)<StyledCodeSnippetProps>`
+  ${({ $isExpanded }) =>
+    !$isExpanded
+      ? css`
+          & > div > code {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            padding: 0;
+          }
+        `
+      : css`
+          & > div > code {
+            padding: 0;
+          }
+        `}
+
+  transition: height 500ms;
+  max-height: 140px;
+  overflow: auto;
 `;

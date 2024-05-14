@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { RefObject, useEffect, useRef, useState } from "react";
+import { CSSTransition } from "react-transition-group";
 import { getAssetTypeInfo } from "../../Assets/utils";
-import { CodeSnippet } from "../../common/CodeSnippet";
 import { ArrowsInsideIcon } from "../../common/icons/12px/ArrowsInsideIcon";
 import { ArrowsOutsideIcon } from "../../common/icons/12px/ArrowsOutsideIcon";
 import { GlobeIcon } from "../../common/icons/16px/GlobeIcon";
@@ -12,7 +12,9 @@ import { EmptyStateCard } from "../EmptyStateCard";
 import * as s from "./styles";
 import { useSpanInfoData } from "./useSpanInfoData";
 
-const SPAN_NAME_MAX_LENGTH = 75;
+const EXPAND_BTN_TRANSITION_CLASS_NAME = "expand-btn-animations";
+const STATS_TRANSITION_CLASS_NAME = "stats-animation";
+const DEFAULT_TRANSITION_DURATION = 500; // in milliseconds
 
 const getLanguage = (assetTypeId: string) => {
   if (assetTypeId === "DatabaseQueries") {
@@ -29,6 +31,9 @@ const getLanguage = (assetTypeId: string) => {
 export const SpanInfo = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const { data, getData } = useSpanInfoData();
+  const expandedBtnRef = useRef<HTMLButtonElement>(null);
+  const collapseBtnRef = useRef<HTMLButtonElement>(null);
+  const statsRef = useRef<HTMLDivElement | null>(null);
 
   const handleExpandButtonClick = () => {
     setIsExpanded(!isExpanded);
@@ -44,19 +49,41 @@ export const SpanInfo = () => {
 
   const assetTypeInfo = getAssetTypeInfo(data.assetTypeId);
 
-  const isNameTooLong = data.displayName.length > SPAN_NAME_MAX_LENGTH;
-  const truncatedName = isNameTooLong
-    ? `${data.displayName.slice(0, SPAN_NAME_MAX_LENGTH)}...`
-    : data.displayName;
-  const codeSnippetText = isExpanded ? data.displayName : truncatedName;
-
   const ExpandButtonIcon = isExpanded ? ArrowsInsideIcon : ArrowsOutsideIcon;
 
-  const servicesTooltipTitle = data.services.slice(1).join(", ");
+  const servicesTooltipTitle = data.services.join(", ");
   const environmentsTooltipTitle = data.environments
-    .slice(1)
     .map((x) => x.name)
     .join(", ");
+
+  const renderAnimatedButton = (
+    isVisible: boolean,
+    name: string,
+    ref: RefObject<HTMLButtonElement>
+  ) => {
+    return (
+      <CSSTransition
+        in={isVisible}
+        classNames={EXPAND_BTN_TRANSITION_CLASS_NAME}
+        timeout={DEFAULT_TRANSITION_DURATION}
+        mountOnEnter={true}
+        unmountOnExit={true}
+        nodeRef={ref}
+      >
+        <s.ExpandButton
+          ref={ref}
+          $transitionClassName={EXPAND_BTN_TRANSITION_CLASS_NAME}
+          $transitionDuration={DEFAULT_TRANSITION_DURATION}
+          onClick={handleExpandButtonClick}
+        >
+          <s.ExpandButtonIconButtonContainer>
+            <ExpandButtonIcon color={"currentColor"} size={12} />
+          </s.ExpandButtonIconButtonContainer>
+          {name}
+        </s.ExpandButton>
+      </CSSTransition>
+    );
+  };
 
   return (
     <s.Container>
@@ -73,54 +100,71 @@ export const SpanInfo = () => {
           )}
           Span Info
         </s.TitleContainer>
-        {isNameTooLong && (
-          <s.ExpandButton onClick={handleExpandButtonClick}>
-            <s.ExpandButtonIconButtonContainer>
-              <ExpandButtonIcon color={"currentColor"} size={12} />
-            </s.ExpandButtonIconButtonContainer>
-            {isExpanded ? "Collapse" : "Expand"}
-          </s.ExpandButton>
-        )}
+        <s.AnimatedButtonContainer $isExpanded={isExpanded}>
+          {renderAnimatedButton(!isExpanded, "Expand", expandedBtnRef)}
+          {renderAnimatedButton(isExpanded, "Collapse", collapseBtnRef)}
+        </s.AnimatedButtonContainer>
       </s.Header>
       <s.ContentContainer>
-        <CodeSnippet
+        <s.StyledCodeSnippet
           language={getLanguage(data.assetTypeId)}
-          text={codeSnippetText}
+          text={data.displayName}
+          $isExpanded={isExpanded}
         />
-        <s.StatsContainer>
-          <s.Stat>
-            <s.StatLabel>Services</s.StatLabel>
-
-            <s.StatValue>
-              <s.StatIconContainer>
-                <WrenchIcon color={"currentColor"} size={16} />
-              </s.StatIconContainer>
-              <s.StatValueText>{data.services[0]}</s.StatValueText>
-              {data.services.length > 1 && (
+        <CSSTransition
+          in={isExpanded}
+          classNames={STATS_TRANSITION_CLASS_NAME}
+          timeout={DEFAULT_TRANSITION_DURATION}
+          nodeRef={statsRef}
+          mountOnEnter={true}
+          unmountOnExit={true}
+        >
+          <s.StatsContainer
+            $transitionClassName={STATS_TRANSITION_CLASS_NAME}
+            $transitionDuration={DEFAULT_TRANSITION_DURATION}
+            ref={statsRef}
+          >
+            <s.Stat>
+              <s.StatLabel>Services</s.StatLabel>
+              <s.StatValue>
                 <Tooltip title={servicesTooltipTitle}>
-                  <span>+{data.services.length - 1}</span>
-                </Tooltip>
-              )}
-            </s.StatValue>
-          </s.Stat>
-          <s.Stat>
-            <s.StatLabel>Environments</s.StatLabel>
+                  <s.StatValueContainer>
+                    <s.StatIconContainer>
+                      <WrenchIcon color={"currentColor"} size={16} />
+                    </s.StatIconContainer>
 
-            <s.StatValue>
-              <s.StatIconContainer>
-                <GlobeIcon color={"currentColor"} size={16} />
-              </s.StatIconContainer>
-              <s.StatValueText>{data.environments[0].name}</s.StatValueText>
-              {data.environments.length > 1 && (
-                <Tooltip title={environmentsTooltipTitle}>
-                  <span>
-                    <span>+{data.environments.length - 1}</span>
-                  </span>
+                    <s.StatValueText>{data.services[0]}</s.StatValueText>
+                    {data.services.length > 1 && (
+                      <span>+{data.services.length - 1}</span>
+                    )}
+                  </s.StatValueContainer>
                 </Tooltip>
-              )}
-            </s.StatValue>
-          </s.Stat>
-        </s.StatsContainer>
+              </s.StatValue>
+            </s.Stat>
+            <s.Stat>
+              <s.StatLabel>Environments</s.StatLabel>
+
+              <s.StatValue>
+                <Tooltip title={environmentsTooltipTitle}>
+                  <s.StatValueContainer>
+                    <s.StatIconContainer>
+                      <GlobeIcon color={"currentColor"} size={16} />
+                    </s.StatIconContainer>
+
+                    <s.StatValueText>
+                      {data.environments[0].name}
+                    </s.StatValueText>
+                    {data.environments.length > 1 && (
+                      <span>
+                        <span>+{data.environments.length - 1}</span>
+                      </span>
+                    )}
+                  </s.StatValueContainer>
+                </Tooltip>
+              </s.StatValue>
+            </s.Stat>
+          </s.StatsContainer>
+        </CSSTransition>
       </s.ContentContainer>
     </s.Container>
   );

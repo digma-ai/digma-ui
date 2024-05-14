@@ -1,15 +1,9 @@
 import { Fragment, useEffect, useState } from "react";
-import { actions as globalActions } from "../../../actions";
-import { ROUTES } from "../../../constants";
 import { usePrevious } from "../../../hooks/usePrevious";
-import { ChangeViewPayload } from "../../../types";
-import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { CrossCircleIcon } from "../../common/icons/16px/CrossCircleIcon";
 import { RefreshIcon } from "../../common/icons/16px/RefreshIcon";
-import { Link } from "../../common/v3/Link";
 import { EmptyStateCard } from "../EmptyStateCard";
 import { Section } from "../common/Section";
-import { trackingEvents } from "../tracking";
 import { EndpointBottleneckHighlightCard } from "./highlightCards/EndpointBottleneckHighlightCard";
 import { EndpointChattyApiV2HighlightCard } from "./highlightCards/EndpointChattyApiV2HighlightCard";
 import { EndpointHighNumberOfQueriesHighlightCard } from "./highlightCards/EndpointHighNumberOfQueriesHighlightCard";
@@ -94,17 +88,6 @@ export const TopIssues = () => {
   const { data, getData } = useTopIssuesData();
   const previousData = usePrevious(data);
 
-  const handleViewAllLinkClick = () => {
-    sendUserActionTrackingEvent(trackingEvents.VIEW_ALL_LINK_CLICKED);
-
-    window.sendMessageToDigma<ChangeViewPayload>({
-      action: globalActions.CHANGE_VIEW,
-      payload: {
-        view: ROUTES.INSIGHTS
-      }
-    });
-  };
-
   useEffect(() => {
     getData();
   }, []);
@@ -114,8 +97,6 @@ export const TopIssues = () => {
       setIsInitialLoading(false);
     }
   }, [previousData, data]);
-
-  const isViewAllLinkDisabled = (data?.topInsights || []).length === 0;
 
   const renderContent = () => {
     if (isInitialLoading) {
@@ -144,16 +125,5 @@ export const TopIssues = () => {
     ));
   };
 
-  return (
-    <Section
-      title={"Top Issues"}
-      toolbarContent={
-        <Link onClick={handleViewAllLinkClick} disabled={isViewAllLinkDisabled}>
-          View all
-        </Link>
-      }
-    >
-      {renderContent()}
-    </Section>
-  );
+  return <Section title={"Top Issues"}>{renderContent()}</Section>;
 };
