@@ -117,7 +117,6 @@ export const SpanInfo = () => {
           timeout={DEFAULT_TRANSITION_DURATION}
           nodeRef={statsRef}
           mountOnEnter={true}
-          unmountOnExit={true}
         >
           <s.StatsContainer
             $transitionClassName={STATS_TRANSITION_CLASS_NAME}

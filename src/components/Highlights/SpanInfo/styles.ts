@@ -126,7 +126,12 @@ export const StatsContainer = styled.div<StatsContainerProps>`
       opacity: 0;
       height: 0;
       transition: all ${$transitionDuration}ms;
-    }`;
+    }
+    &.${$transitionClassName}-exit-done {
+      opacity: 0;
+      height: 0;
+    }
+    `;
   }}
 `;
 
