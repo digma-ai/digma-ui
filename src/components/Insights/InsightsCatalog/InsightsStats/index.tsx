@@ -74,7 +74,11 @@ export const InsightStats = ({
 };
 
 const NotAssignedValue = () => (
-  <Tooltip title="To see more statistics, please update digma backend to the latest version">
+  <Tooltip
+    title={
+      "To see more statistics, please update digma backend to the latest version"
+    }
+  >
     <s.StatCounter>N/A</s.StatCounter>
   </Tooltip>
 );

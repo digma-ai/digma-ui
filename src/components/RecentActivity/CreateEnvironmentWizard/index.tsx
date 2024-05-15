@@ -261,7 +261,7 @@ export const CreateEnvironmentWizard = ({
             </s.Step>
           </>
         ) : (
-          <s.Step key="finish" $isVisible={completed}>
+          <s.Step key={"finish"} $isVisible={completed}>
             <EnvironmentCreated
               goToEnvironment={() => {
                 onClose(newEnvironment.id);

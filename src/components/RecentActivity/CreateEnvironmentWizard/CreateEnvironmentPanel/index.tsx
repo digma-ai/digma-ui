@@ -41,7 +41,7 @@ export const CreateEnvironmentPanel = ({
           })}
         </s.TabPanel>
         <s.CancelButton
-          buttonType="secondary"
+          buttonType={"secondary"}
           label={"Cancel"}
           onClick={() => setShowCancelConfirmation(true)}
           isDisabled={cancelDisabled}

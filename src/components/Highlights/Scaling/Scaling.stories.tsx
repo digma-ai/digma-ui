@@ -28,7 +28,7 @@ const mockedConfig = {
   ...initialState,
   backendInfo: {
     applicationVersion:
-      featureFlagMinBackendVersions[FeatureFlag.ARE_IMPACT_HIGHLIGHTS_ENABLED],
+      featureFlagMinBackendVersions[FeatureFlag.IS_HIGHLIGHTS_IMPACT_ENABLED],
     deploymentType: DeploymentType.HELM,
     centralize: true
   }

@@ -138,7 +138,7 @@ export const Registration = ({ onRegister }: RegistrationProps) => {
           render={({ field }) => (
             <TextField
               icon={LockIcon}
-              type="password"
+              type={"password"}
               placeholder={"Enter password"}
               isInvalid={Boolean(errors.password)}
               {...field}
@@ -162,7 +162,7 @@ export const Registration = ({ onRegister }: RegistrationProps) => {
                 return "Confirm your password";
               }
               if (repeat !== values.password) {
-                return "Those passwords didn’t match. Try again.";
+                return "Those passwords didn't match. Try again.";
               }
               return true;
             }
@@ -170,7 +170,7 @@ export const Registration = ({ onRegister }: RegistrationProps) => {
           render={({ field }) => (
             <TextField
               icon={LockIcon}
-              type="password"
+              type={"password"}
               placeholder={"Repeat your password"}
               isInvalid={Boolean(errors.confirmPassword)}
               {...field}

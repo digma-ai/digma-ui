@@ -206,9 +206,9 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
     selectedFilters
   ]);
 
-  const areInsightStatsSupported = getFeatureFlagValue(
+  const areInsightStatsEnabled = getFeatureFlagValue(
     config,
-    FeatureFlag.ARE_INSIGHT_STATS_SUPPORTED
+    FeatureFlag.ARE_INSIGHT_STATS_ENABLED
   );
 
   return (
@@ -262,7 +262,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
                   criticalCount={config.insightStats?.criticalInsightsCount}
                   allIssuesCount={config.insightStats?.allIssuesCount}
                   unreadCount={
-                    areInsightStatsSupported
+                    areInsightStatsEnabled
                       ? config.insightStats?.unreadInsightsCount || 0
                       : props.unreadCount || 0
                   }

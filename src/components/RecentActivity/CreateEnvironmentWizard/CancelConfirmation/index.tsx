@@ -42,13 +42,13 @@ export const CancelConfirmation = (
       </s.Description>
       <s.ButtonsContainer>
         <Button
-          buttonType="primary"
-          label="No, continue"
+          buttonType={"primary"}
+          label={"No, continue"}
           onClick={handleCancelButtonClick}
         />
         <s.CancelButton
-          buttonType="secondary"
-          label="Yes, cancel"
+          buttonType={"secondary"}
+          label={"Yes, cancel"}
           onClick={handleConfirmButtonClick}
         />
       </s.ButtonsContainer>

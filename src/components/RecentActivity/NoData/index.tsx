@@ -18,19 +18,17 @@ const handleTroubleshootButtonClick = () => {
   });
 };
 
-export const NoData = () => {
-  return (
-    <s.NoDataContainer>
-      <CursorFollower>
-        <DigmaLogoFlatIcon size={64} />
-      </CursorFollower>
-      <s.NoDataTitle>No Recent Activity</s.NoDataTitle>
-      <s.NoDataText>Not seeing your application data?</s.NoDataText>
-      <s.TroubleshootButton
-        buttonType={"primary"}
-        label="Troubleshoot"
-        onClick={handleTroubleshootButtonClick}
-      />
-    </s.NoDataContainer>
-  );
-};
+export const NoData = () => (
+  <s.NoDataContainer>
+    <CursorFollower>
+      <DigmaLogoFlatIcon size={64} />
+    </CursorFollower>
+    <s.NoDataTitle>No Recent Activity</s.NoDataTitle>
+    <s.NoDataText>Not seeing your application data?</s.NoDataText>
+    <s.TroubleshootButton
+      buttonType={"primary"}
+      label={"Troubleshoot"}
+      onClick={handleTroubleshootButtonClick}
+    />
+  </s.NoDataContainer>
+);

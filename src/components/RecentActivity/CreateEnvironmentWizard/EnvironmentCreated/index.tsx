@@ -19,8 +19,8 @@ export const EnvironmentCreated = ({
         </s.Description>
       </s.Info>
       <Button
-        buttonType="primary"
-        label="Open Environment"
+        buttonType={"primary"}
+        label={"Open Environment"}
         onClick={goToEnvironment}
       />
     </s.Container>

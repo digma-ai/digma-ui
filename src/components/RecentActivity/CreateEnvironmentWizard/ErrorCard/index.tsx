@@ -53,7 +53,7 @@ export const ErrorCard = ({ title, description }: ErrorCardProps) => {
         </s.ContentContainer>
 
         <s.CrossButton
-          buttonType="tertiary"
+          buttonType={"tertiary"}
           icon={CrossIcon}
           onClick={() => setIsVisible(false)}
         />

@@ -104,7 +104,7 @@ export const Login = ({ successMessage, onLogin }: LoginProps) => {
           render={({ field }) => (
             <TextField
               icon={LockIcon}
-              type="password"
+              type={"password"}
               placeholder={"Enter password"}
               isInvalid={Boolean(errors.password)}
               {...field}
