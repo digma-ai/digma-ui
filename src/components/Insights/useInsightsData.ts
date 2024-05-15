@@ -76,12 +76,7 @@ export const useInsightsData = ({
   refreshInterval,
   query
 }: UseInsightDataProps) => {
-  const [data, setData] = useState<InsightsData>({
-    insightsStatus: InsightsStatus.LOADING,
-    insights: [],
-    viewMode: ViewMode.INSIGHTS,
-    totalCount: 0
-  });
+  const [data, setData] = useState<InsightsData>();
   const previousData = usePrevious(data);
   const [isInitialLoading, setIsInitialLoading] = useState(false);
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();

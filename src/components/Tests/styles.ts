@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { LAYERS } from "../common/App/styles";
+import { FadingContentSwitch } from "../common/FadingContentSwitch";
 
 export const Container = styled.div`
   background: ${({ theme }) => theme.colors.panel.background};
@@ -7,6 +8,10 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   overflow: hidden;
+`;
+
+export const StyledFadingContentSwitch = styled(FadingContentSwitch)`
+  height: 100%;
 `;
 
 export const NoDataContainer = styled.div`
@@ -19,6 +24,7 @@ export const NoDataContainer = styled.div`
   text-align: center;
   color: ${({ theme }) => theme.colors.text.subtext};
   font-size: 14px;
+  height: 100%;
 `;
 
 export const EnvironmentFilterContainer = styled.div`
@@ -37,6 +43,7 @@ export const ContentContainer = styled.div`
   padding: 8px 12px;
   gap: 12px;
   overflow: auto;
+  box-sizing: border-box;
 `;
 
 export const TestsList = styled.div`

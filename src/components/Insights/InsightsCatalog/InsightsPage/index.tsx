@@ -14,6 +14,7 @@ import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserA
 import { ConfigContext } from "../../../common/App/ConfigContext";
 import { EmptyState } from "../../../common/EmptyState";
 import { CardsIcon } from "../../../common/icons/CardsIcon";
+import { InsightCardSkeleton } from "../../InsightsCatalogSkeleton/InsightCardSkeleton";
 import { actions } from "../../actions";
 import { trackingEvents } from "../../tracking";
 import {
@@ -86,6 +87,14 @@ const getInsightToShowJiraHint = (insights: CodeObjectInsight[]): number => {
   return insights.findIndex((insight) =>
     insightsWithJiraButton.includes(insight.type)
   );
+};
+
+const renderInsightCardSkeletons = () => {
+  <>
+    <InsightCardSkeleton />
+    <InsightCardSkeleton />
+    <InsightCardSkeleton />
+  </>;
 };
 
 const renderInsightCard = (
@@ -563,74 +572,85 @@ export const InsightsPage = (props: InsightsPageProps) => {
   };
 
   return (
-    <s.Container ref={listRef}>
-      {props.insights.length > 0 ? (
-        props.insights.map((insight, j) => {
-          return renderInsightCard(
-            insight,
-            handleShowJiraTicket,
-            !isUndefined(isInsightJiraTicketHintShown) &&
-              !isInsightJiraTicketHintShown?.value &&
-              j === insightIndexWithJiraHint,
-            props.onRefresh,
-            props.isMarkAsReadButtonEnabled
-          );
-        })
-      ) : props.isFilteringEnabled ? (
-        <EmptyState
-          icon={CardsIcon}
-          title={"No data found"}
-          content={
-            <s.EmptyStateDescription>
-              There are no insights for this criteria
-            </s.EmptyStateDescription>
-          }
-        />
-      ) : config.scope &&
-        isNumber(config.scope.analyticsInsightsCount) &&
-        config.scope.analyticsInsightsCount > 0 ? (
-        <EmptyState
-          icon={CardsIcon}
-          title={"No insights yet"}
-          content={
-            <s.EmptyStateDescription>
-              Performing more actions that trigger this asset will increase the
-              chance of identifying insights. You can also check out the{" "}
-              <s.TroubleshootingLink onClick={handleAnalyticsTabLinkClick}>
-                analytics
-              </s.TroubleshootingLink>{" "}
-              tab
-            </s.EmptyStateDescription>
-          }
-        />
-      ) : config.scope?.span ? (
-        <EmptyState
-          icon={CardsIcon}
-          title={"No data yet"}
-          content={
-            <s.EmptyStateDescription>
-              No data received yet for this span, please trigger some actions
-              using this code to see more insights.
-            </s.EmptyStateDescription>
-          }
-        />
-      ) : (
-        <EmptyState
-          icon={CardsIcon}
-          title={"No data yet"}
-          content={
-            <>
-              <s.EmptyStateDescription>
-                Trigger actions that call this application to learn more about
-                its runtime behavior
-              </s.EmptyStateDescription>
-              <s.TroubleshootingLink onClick={handleTroubleshootingLinkClick}>
-                Not seeing your application data?
-              </s.TroubleshootingLink>
-            </>
-          }
-        />
-      )}
+    <s.Container>
+      <s.StyledFadingContentSwitch switchFlag={props.isLoading}>
+        <s.ContentContainer>
+          <InsightCardSkeleton />
+          <InsightCardSkeleton />
+          <InsightCardSkeleton />
+        </s.ContentContainer>
+        <s.ContentContainer ref={listRef}>
+          {props.insights.length > 0 ? (
+            props.insights.map((insight, j) => {
+              return renderInsightCard(
+                insight,
+                handleShowJiraTicket,
+                !isUndefined(isInsightJiraTicketHintShown) &&
+                  !isInsightJiraTicketHintShown?.value &&
+                  j === insightIndexWithJiraHint,
+                props.onRefresh,
+                props.isMarkAsReadButtonEnabled
+              );
+            })
+          ) : props.isFilteringEnabled ? (
+            <EmptyState
+              icon={CardsIcon}
+              title={"No data found"}
+              content={
+                <s.EmptyStateDescription>
+                  There are no insights for this criteria
+                </s.EmptyStateDescription>
+              }
+            />
+          ) : config.scope &&
+            isNumber(config.scope.analyticsInsightsCount) &&
+            config.scope.analyticsInsightsCount > 0 ? (
+            <EmptyState
+              icon={CardsIcon}
+              title={"No insights yet"}
+              content={
+                <s.EmptyStateDescription>
+                  Performing more actions that trigger this asset will increase
+                  the chance of identifying insights. You can also check out the{" "}
+                  <s.TroubleshootingLink onClick={handleAnalyticsTabLinkClick}>
+                    analytics
+                  </s.TroubleshootingLink>{" "}
+                  tab
+                </s.EmptyStateDescription>
+              }
+            />
+          ) : config.scope?.span ? (
+            <EmptyState
+              icon={CardsIcon}
+              title={"No data yet"}
+              content={
+                <s.EmptyStateDescription>
+                  No data received yet for this span, please trigger some
+                  actions using this code to see more insights.
+                </s.EmptyStateDescription>
+              }
+            />
+          ) : (
+            <EmptyState
+              icon={CardsIcon}
+              title={"No data yet"}
+              content={
+                <>
+                  <s.EmptyStateDescription>
+                    Trigger actions that call this application to learn more
+                    about its runtime behavior
+                  </s.EmptyStateDescription>
+                  <s.TroubleshootingLink
+                    onClick={handleTroubleshootingLinkClick}
+                  >
+                    Not seeing your application data?
+                  </s.TroubleshootingLink>
+                </>
+              }
+            />
+          )}
+        </s.ContentContainer>
+      </s.StyledFadingContentSwitch>
     </s.Container>
   );
 };

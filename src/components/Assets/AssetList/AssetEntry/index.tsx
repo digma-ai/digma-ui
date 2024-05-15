@@ -1,4 +1,4 @@
-import { DefaultTheme, useTheme } from "styled-components";
+import { useTheme } from "styled-components";
 import { isString } from "../../../../typeGuards/isString";
 import { InsightType } from "../../../../types";
 import { formatTimeDistance } from "../../../../utils/formatTimeDistance";
@@ -9,7 +9,7 @@ import { InsightImportance } from "../../../Insights/types";
 import { ImpactScore } from "../../../common/ImpactScore";
 import { Tag } from "../../../common/Tag";
 import { Tooltip } from "../../../common/Tooltip";
-import { GlobeIcon } from "../../../common/icons/GlobeIcon";
+import { GlobeIcon } from "../../../common/icons/16px/GlobeIcon";
 import { getAssetTypeInfo } from "../../utils";
 import { SORTING_CRITERION } from "../types";
 import * as s from "./styles";
@@ -17,19 +17,8 @@ import { AssetEntryProps } from "./types";
 
 const IS_NEW_TIME_LIMIT = 1000 * 60 * 10; // in milliseconds
 
-const getServiceIconColor = (theme: DefaultTheme) => {
-  switch (theme.mode) {
-    case "light":
-      return "#4d668a";
-    case "dark":
-    case "dark-jetbrains":
-      return "#dadada";
-  }
-};
-
 export const AssetEntry = (props: AssetEntryProps) => {
   const theme = useTheme();
-  const serviceIconColor = getServiceIconColor(theme);
 
   const handleLinkClick = () => {
     props.onAssetLinkClick(props.entry);
@@ -79,7 +68,7 @@ export const AssetEntry = (props: AssetEntryProps) => {
         <s.TitleRow>
           {assetTypeInfo?.icon && (
             <s.AssetTypeIconContainer>
-              <assetTypeInfo.icon color={"#7891d0"} size={16} />
+              <assetTypeInfo.icon color={"currentColor"} size={16} />
             </s.AssetTypeIconContainer>
           )}
           <Tooltip title={name}>
@@ -104,7 +93,7 @@ export const AssetEntry = (props: AssetEntryProps) => {
                     <s.InsightIconContainer>
                       <insightTypeInfo.icon
                         color={insightIconColor}
-                        size={20}
+                        size={16}
                       />
                     </s.InsightIconContainer>
                   </Tooltip>
@@ -121,12 +110,12 @@ export const AssetEntry = (props: AssetEntryProps) => {
       </s.Header>
       <s.StatsContainer>
         <s.StatsColumn>
-          <s.Stats>
-            <span>Services</span>
+          <s.Stat>
+            <s.StatLabel>Services</s.StatLabel>
             <Tooltip title={servicesTitle}>
               <s.ServicesContainer>
                 <s.IconContainer>
-                  <GlobeIcon color={serviceIconColor} size={14} />
+                  <GlobeIcon color={"currentColor"} size={16} />
                 </s.IconContainer>
                 <s.ServiceName>{props.entry.services[0]}</s.ServiceName>
                 {otherServices.length > 0 && (
@@ -134,45 +123,45 @@ export const AssetEntry = (props: AssetEntryProps) => {
                 )}
               </s.ServicesContainer>
             </Tooltip>
-          </s.Stats>
-          <s.Stats>
-            <span>Last</span>
+          </s.Stat>
+          <s.Stat>
+            <s.StatLabel>Last</s.StatLabel>
             <Tooltip title={timeDistanceTitle}>
-              <s.ValueContainer>
+              <s.StatValue>
                 {timeDistanceString}
                 <s.Suffix>ago</s.Suffix>
-              </s.ValueContainer>
+              </s.StatValue>
             </Tooltip>
-          </s.Stats>
+          </s.Stat>
         </s.StatsColumn>
         <s.StatsColumn>
-          <s.Stats>
-            <span>Performance</span>
-            <s.ValueContainer>
+          <s.Stat>
+            <s.StatLabel>Performance</s.StatLabel>
+            <s.StatValue>
               {performanceDuration ? performanceDuration.value : "N/A"}
               {performanceDuration && (
                 <s.Suffix>{performanceDuration.unit}</s.Suffix>
               )}
-            </s.ValueContainer>
-          </s.Stats>
-          <s.Stats>
-            <span>Slowest 5%</span>
-            <s.ValueContainer>
+            </s.StatValue>
+          </s.Stat>
+          <s.Stat>
+            <s.StatLabel>Slowest 5%</s.StatLabel>
+            <s.StatValue>
               {slowestFivePercentDuration
                 ? slowestFivePercentDuration.value
                 : "N/A"}
               {slowestFivePercentDuration && (
                 <s.Suffix>{slowestFivePercentDuration.unit}</s.Suffix>
               )}
-            </s.ValueContainer>
-          </s.Stats>
+            </s.StatValue>
+          </s.Stat>
         </s.StatsColumn>
         {!props.isImpactHidden && props.entry.impactScores && (
           <s.StatsColumn>
-            <s.Stats>
-              <span>Performance impact</span>
+            <s.Stat>
+              <s.StatLabel>Performance impact</s.StatLabel>
               <Tooltip title={props.entry.impactScores.ScoreExp25}>
-                <s.ValueContainer>
+                <s.StatValue>
                   <ImpactScore
                     score={props.entry.impactScores.ScoreExp25}
                     showIndicator={
@@ -180,9 +169,9 @@ export const AssetEntry = (props: AssetEntryProps) => {
                       SORTING_CRITERION.PERFORMANCE_IMPACT
                     }
                   />
-                </s.ValueContainer>
+                </s.StatValue>
               </Tooltip>
-            </s.Stats>
+            </s.Stat>
           </s.StatsColumn>
         )}
       </s.StatsContainer>

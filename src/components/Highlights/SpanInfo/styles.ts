@@ -198,3 +198,18 @@ export const StyledCodeSnippet = styled(CodeSnippet)<StyledCodeSnippetProps>`
   max-height: 140px;
   overflow: auto;
 `;
+
+export const TitleContainerSkeleton = styled(TitleContainer)`
+  height: 24px;
+`;
+
+export const StatsContainerSkeleton = styled.div`
+  display: flex;
+  gap: 5px;
+  height: 28px;
+  justify-content: space-between;
+`;
+
+export const StatSkeleton = styled.div`
+  width: 81px;
+`;

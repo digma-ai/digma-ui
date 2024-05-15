@@ -2,8 +2,8 @@ import styled from "styled-components";
 import {
   subscriptMediumTypography,
   subscriptRegularTypography
-} from "../../common/App/typographies";
-import { Card as CommonCard } from "../../common/v3/Card";
+} from "../../../common/App/typographies";
+import { Card as CommonCard } from "../../../common/v3/Card";
 import { IconContainerProps } from "./types";
 
 export const Card = styled(CommonCard)`

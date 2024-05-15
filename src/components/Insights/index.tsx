@@ -13,7 +13,6 @@ import { isNumber } from "../../typeGuards/isNumber";
 import { openURLInDefaultBrowser } from "../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 import { ConfigContext } from "../common/App/ConfigContext";
-import { CircleLoader } from "../common/CircleLoader";
 import { EmptyState } from "../common/EmptyState";
 import { RegistrationDialog } from "../common/RegistrationDialog";
 import { RegistrationFormValues } from "../common/RegistrationDialog/types";
@@ -26,6 +25,7 @@ import { OpenTelemetryLogoCrossedSmallIcon } from "../common/icons/OpenTelemetry
 import { SlackLogoIcon } from "../common/icons/SlackLogoIcon";
 import { InsightsCatalog } from "./InsightsCatalog";
 import { SORTING_CRITERION } from "./InsightsCatalog/types";
+import { InsightsCatalogSkeleton } from "./InsightsCatalogSkeleton";
 import { EndpointBottleneckInsightTicket } from "./insightTickets/EndpointBottleneckInsightTicket";
 import { EndpointHighNumberOfQueriesInsightTicket } from "./insightTickets/EndpointHighNumberOfQueriesInsightTicket";
 import { EndpointQueryOptimizationV2InsightTicket } from "./insightTickets/EndpointQueryOptimizationV2InsightTicket";
@@ -206,7 +206,7 @@ export const Insights = (props: InsightsProps) => {
   };
   // const [isAutofixing, setIsAutofixing] = useState(false);
   const [query, setQuery] = useState<InsightsQuery>(DEFAULT_QUERY);
-  const { isInitialLoading, data, refresh } = useInsightsData({
+  const { isInitialLoading, data, refresh, isLoading } = useInsightsData({
     refreshInterval: REFRESH_INTERVAL,
     query
   });
@@ -314,7 +314,10 @@ export const Insights = (props: InsightsProps) => {
     }
   };
 
-  const renderDefaultContent = (data: InsightsData): JSX.Element => {
+  const renderDefaultContent = (
+    data: InsightsData,
+    isLoading: boolean
+  ): JSX.Element => {
     return (
       <InsightsCatalog
         insights={data.insights}
@@ -328,20 +331,17 @@ export const Insights = (props: InsightsProps) => {
         unreadCount={data.unreadCount}
         isMarkingAsReadEnabled={isMarkingAsReadEnabled}
         hideInsightsStats={props.insightViewType === "Analytics"}
+        isLoading={isLoading}
       />
     );
   };
 
   const renderContent = (
-    data: InsightsData,
-    isInitialLoading: boolean
+    data: InsightsData | undefined,
+    isLoading: boolean
   ): JSX.Element => {
-    if (isInitialLoading) {
-      return <EmptyState content={<CircleLoader size={32} />} />;
-    }
-
-    if (!config.environments?.length) {
-      return <NoDataYet />;
+    if (!data || !config.environments?.length) {
+      return <></>;
     }
 
     switch (data?.insightsStatus) {
@@ -417,13 +417,20 @@ export const Insights = (props: InsightsProps) => {
         );
       case InsightsStatus.DEFAULT:
       default:
-        return renderDefaultContent(data);
+        return renderDefaultContent(data, isLoading);
     }
   };
 
   return (
     <s.Container>
-      {renderContent(data, isInitialLoading)}
+      <s.StyledFadingContentSwitch switchFlag={isInitialLoading}>
+        <s.FadingContentContainer>
+          <InsightsCatalogSkeleton />
+        </s.FadingContentContainer>
+        <s.FadingContentContainer>
+          {renderContent(data, isInitialLoading ? false : isLoading)}
+        </s.FadingContentContainer>
+      </s.StyledFadingContentSwitch>
       {infoToOpenJiraTicket && (
         <s.Overlay onKeyDown={handleOverlayKeyDown} tabIndex={-1}>
           <s.PopupContainer>

@@ -1,7 +1,16 @@
 import styled from "styled-components";
+import { FadingContentSwitch } from "../../../common/FadingContentSwitch";
 import { Link } from "../../../common/Link";
 
 export const Container = styled.div`
+  height: 100%;
+`;
+
+export const StyledFadingContentSwitch = styled(FadingContentSwitch)`
+  height: 100%;
+`;
+
+export const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;

@@ -252,7 +252,6 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
             />
           </Tooltip>
         </s.ToolbarRow>
-
         {mode === ViewMode.All ? (
           <>
             {!searchInputValue &&
@@ -319,6 +318,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
         onJiraTicketCreate={onJiraTicketCreate}
         onRefresh={props.onRefresh}
         isMarkAsReadButtonEnabled={isShowUnreadOnly(selectedFilters)}
+        isLoading={props.isLoading}
       />
       <s.Footer>
         {totalCount > 0 && (

@@ -13,12 +13,12 @@ import { isNumber } from "../../typeGuards/isNumber";
 import { sendTrackingEvent } from "../../utils/actions/sendTrackingEvent";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { MenuItem } from "../common/FilterMenu/types";
-import { NewCircleLoader } from "../common/NewCircleLoader";
 import { Pagination } from "../common/Pagination";
 import { RegistrationDialog } from "../common/RegistrationDialog";
 import { RegistrationFormValues } from "../common/RegistrationDialog/types";
 import { EnvironmentFilter } from "./EnvironmentFilter";
 import { TestCard } from "./TestCard";
+import { TestCardSkeleton } from "./TestCardSkeleton";
 import { TestTicket } from "./TestTicket";
 import { actions } from "./actions";
 import * as s from "./styles";
@@ -274,13 +274,17 @@ export const Tests = (props: TestsProps) => {
   };
 
   const renderContent = () => {
-    if (isInitialLoading) {
-      return (
-        <s.NoDataContainer>
-          <NewCircleLoader size={32} />
-        </s.NoDataContainer>
-      );
-    }
+    // if (isInitialLoading) {
+    //   return (
+    //     <s.ContentContainer>
+    //       <s.TestsList>
+    //         <TestCardSkeleton />
+    //         <TestCardSkeleton />
+    //         <TestCardSkeleton />
+    //       </s.TestsList>
+    //     </s.ContentContainer>
+    //   );
+    // }
 
     if (data?.error) {
       return <s.NoDataContainer>{data.error.message}</s.NoDataContainer>;
@@ -328,7 +332,16 @@ export const Tests = (props: TestsProps) => {
           onMenuItemClick={handleEnvironmentMenuItemClick}
         />
       </s.EnvironmentFilterContainer>
-      {renderContent()}
+      <s.StyledFadingContentSwitch switchFlag={isInitialLoading}>
+        <s.ContentContainer>
+          <s.TestsList>
+            <TestCardSkeleton />
+            <TestCardSkeleton />
+            <TestCardSkeleton />
+          </s.TestsList>
+        </s.ContentContainer>
+        {renderContent()}
+      </s.StyledFadingContentSwitch>
       {testToOpenTicketPopup && (
         <s.Overlay onKeyDown={handleOverlayKeyDown} tabIndex={-1}>
           <s.PopupContainer>

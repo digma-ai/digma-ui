@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { LAYERS } from "../common/App/styles";
+import { FadingContentSwitch } from "../common/FadingContentSwitch";
 import { Link as CommonLink } from "../common/Link";
 
 export const Container = styled.div`
@@ -11,6 +12,17 @@ export const Container = styled.div`
   box-sizing: border-box;
   background: ${({ theme }) => theme.colors.v3.surface.primary};
   position: relative;
+`;
+
+export const StyledFadingContentSwitch = styled(FadingContentSwitch)`
+  height: 100%;
+`;
+
+export const FadingContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  height: 100%;
 `;
 
 export const StartupText = styled.span`

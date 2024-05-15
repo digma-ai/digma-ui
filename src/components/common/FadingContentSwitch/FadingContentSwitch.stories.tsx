@@ -1,11 +1,11 @@
 import { Meta, StoryObj } from "@storybook/react";
 
-import { NoDataMessage } from ".";
+import { FadingContentSwitch } from ".";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
-const meta: Meta<typeof NoDataMessage> = {
-  title: "Assets/NoDataMessage",
-  component: NoDataMessage,
+const meta: Meta<typeof FadingContentSwitch> = {
+  title: "Common/FadingContentSwitch",
+  component: FadingContentSwitch,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
     layout: "fullscreen"
@@ -17,20 +17,9 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
-export const NoDataYet: Story = {
+export const Default: Story = {
   args: {
-    type: "noDataYet"
-  }
-};
-
-export const NoSearchResults: Story = {
-  args: {
-    type: "noSearchResults"
-  }
-};
-
-export const NoDataForAssetResults: Story = {
-  args: {
-    type: "noDataForAsset"
+    switchFlag: true,
+    children: ["Content A", "Content B"]
   }
 };

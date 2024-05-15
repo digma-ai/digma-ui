@@ -2,7 +2,6 @@ import { actions as globalActions } from "../../../actions";
 import { trackingEvents as globalTrackingEvents } from "../../../trackingEvents";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { EmptyState } from "../../common/EmptyState";
-import { NewCircleLoader } from "../../common/NewCircleLoader";
 import { CardsIcon } from "../../common/icons/CardsIcon";
 import * as s from "./styles";
 import { NoDataMessageProps } from "./types";
@@ -24,9 +23,6 @@ export const NoDataMessage = (props: NoDataMessageProps) => {
   let content: JSX.Element | null = null;
 
   switch (props.type) {
-    case "loading":
-      content = <NewCircleLoader size={32} />;
-      break;
     case "noDataYet":
       content = (
         <EmptyState

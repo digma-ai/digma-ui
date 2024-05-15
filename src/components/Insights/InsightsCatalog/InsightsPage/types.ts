@@ -10,6 +10,7 @@ export interface InsightsPageProps {
   onRefresh: () => void;
   page: number;
   isMarkAsReadButtonEnabled: boolean;
+  isLoading: boolean;
 }
 
 export interface isInsightJiraTicketHintShownPayload {

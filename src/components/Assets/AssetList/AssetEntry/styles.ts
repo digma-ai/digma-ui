@@ -1,33 +1,22 @@
 import styled from "styled-components";
-import { caption2RegularTypography } from "../../../common/App/typographies";
-import { grayScale } from "../../../common/App/v2colors";
+import {
+  footnoteRegularTypography,
+  subscriptRegularTypography
+} from "../../../common/App/typographies";
 import { CopyButton } from "../../../common/v3/CopyButton";
 import { ImpactScoreIndicatorProps } from "./types";
 
 export const Container = styled.div`
+  ${footnoteRegularTypography}
+
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
   padding: 8px;
   border-radius: 4px;
-  color: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#828797";
-      case "dark":
-      case "dark-jetbrains":
-        return "#9b9b9b";
-    }
-  }};
-  background: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#f1f5fa";
-      case "dark":
-      case "dark-jetbrains":
-        return "#383838";
-    }
-  }};
+  color: ${({ theme }) => theme.colors.v3.text.tertiary};
+  border: 1px solid ${({ theme }) => theme.colors.v3.stroke.tertiary};
+  background: ${({ theme }) => theme.colors.v3.surface.secondary};
 `;
 
 export const Header = styled.div`
@@ -43,8 +32,7 @@ export const StyledCopyButton = styled(CopyButton)`
 
 export const TitleRow = styled.div`
   display: flex;
-  gap: 2px;
-  height: 20px;
+  gap: 4px;
   align-items: center;
 
   &:hover {
@@ -57,16 +45,17 @@ export const TitleRow = styled.div`
 export const AssetTypeIconContainer = styled.div`
   display: flex;
   justify-content: center;
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   align-items: center;
+  color: ${({ theme }) => theme.colors.v3.text.link};
 `;
 
 export const Link = styled.a`
-  color: #7891d0;
+  ${subscriptRegularTypography}
+
+  color: ${({ theme }) => theme.colors.v3.text.link};
   text-decoration: none;
-  font-weight: 500;
-  font-size: 14px;
   cursor: pointer;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -82,28 +71,20 @@ export const IndicatorsContainer = styled.div`
 
 export const InsightIconContainer = styled(AssetTypeIconContainer)`
   border-radius: 4px;
-  background: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#e9eef4";
-      case "dark":
-      case "dark-jetbrains":
-        return "#2e2e2e";
-    }
-  }};
+  background: ${({ theme }) => theme.colors.v3.surface.primaryLight};
 `;
 
 export const StatsContainer = styled.div`
   display: flex;
-  gap: 12px 16px;
+  gap: 8px 16px;
   flex-wrap: wrap;
   font-size: 14px;
 `;
 
-export const Stats = styled.div`
+export const Stat = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
   width: 140px;
 `;
 
@@ -122,52 +103,31 @@ export const ServicesContainer = styled.div`
 export const IconContainer = styled.div`
   display: flex;
   align-items: center;
+  color: ${({ theme }) => theme.colors.v3.icon.tertiary};
 `;
 
 export const ServiceName = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#4d668a";
-      case "dark":
-      case "dark-jetbrains":
-        return "#dadada";
-    }
-  }};
+  color: ${({ theme }) => theme.colors.v3.text.primary};
 `;
 
-export const ValueContainer = styled.div`
+export const StatLabel = styled.span`
+  color: ${({ theme }) => theme.colors.v3.text.secondary};
+`;
+
+export const StatValue = styled.div`
+  ${subscriptRegularTypography}
+
   display: flex;
   align-items: flex-end;
-  gap: 2px;
-  font-size: 14px;
-  font-weight: 500;
-  color: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#4d668a";
-      case "dark":
-      case "dark-jetbrains":
-        return "#c6c6c6";
-    }
-  }};
+  gap: 4px;
+  color: ${({ theme }) => theme.colors.v3.text.primary};
 `;
 
 export const Suffix = styled.span`
-  font-weight: 400;
-  font-size: 14px;
-  color: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#828797";
-      case "dark":
-      case "dark-jetbrains":
-        return "#9b9b9b";
-    }
-  }};
+  color: ${({ theme }) => theme.colors.v3.text.tertiary};
 `;
 
 export const ImpactScoreIndicatorContainer = styled.div`
@@ -185,12 +145,9 @@ export const ImpactScoreIndicator = styled.div<ImpactScoreIndicatorProps>`
 `;
 
 export const ScopeName = styled.div`
-  ${caption2RegularTypography}
-
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: ${grayScale[500]};
-  opacity: 0.87;
+  color: ${({ theme }) => theme.colors.v3.text.tertiary};
   max-width: fit-content;
 `;
