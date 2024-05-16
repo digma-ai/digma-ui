@@ -38,6 +38,14 @@ const getComponentTypeColors = (theme: DefaultTheme) => ({
     stroke: theme.colors.v3.pieChart.brightOrangeStroke
   },
   [ComponentType.Rendering]: {
+    fill: theme.colors.v3.pieChart.brightGreenFill,
+    stroke: theme.colors.v3.pieChart.brightGreenStroke
+  },
+  [ComponentType.Caching]: {
+    fill: theme.colors.v3.pieChart.brightRedFill,
+    stroke: theme.colors.v3.pieChart.brightRedStroke
+  },
+  [ComponentType.Producer]: {
     fill: theme.colors.v3.pieChart.azureFill,
     stroke: theme.colors.v3.pieChart.azureStroke
   }
