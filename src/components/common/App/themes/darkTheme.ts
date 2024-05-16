@@ -289,7 +289,11 @@ export const darkTheme: ThemeColors = {
       azureStroke: v3colors.azure[300],
       brightOrangeFill: v3colors.brightOrange[200],
       brightOrangeStroke: v3colors.brightOrange[300],
-      darkRed: v3colors.red[500]
+      darkRed: v3colors.red[500],
+      brightGreenFill: "#8df8b7",
+      brightGreenStroke: "#262e2d",
+      brightRedFill: "#f68d8d",
+      brightRedStroke: "#302629"
     }
   }
 };

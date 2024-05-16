@@ -122,6 +122,10 @@ export interface ThemeColors {
       brightOrangeFill: string;
       brightOrangeStroke: string;
       darkRed: string;
+      brightGreenFill: string;
+      brightRedFill: string;
+      brightRedStroke: string;
+      brightGreenStroke: string;
     };
     barChart: {
       pink: string;
