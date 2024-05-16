@@ -596,7 +596,9 @@ export enum ComponentType {
   Internal = "Internal",
   DbQueries = "DB Queries",
   HttpClients = "HTTP Clients",
-  Rendering = "Rendering"
+  Rendering = "Rendering",
+  Caching = "Caching",
+  Producer = "Producer"
 }
 
 export interface Component {

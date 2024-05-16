@@ -23,7 +23,9 @@ const componentTypeColors = {
   [ComponentType.Internal]: "#53aeb4",
   [ComponentType.DbQueries]: "#b180d7",
   [ComponentType.HttpClients]: "#75beff",
-  [ComponentType.Rendering]: "#f55385"
+  [ComponentType.Rendering]: "#f55385",
+  [ComponentType.Caching]: "#f68d8d",
+  [ComponentType.Producer]: "#8df8b7"
 };
 
 const DEFAULT_PERCENTILE = 0.5;
