@@ -274,18 +274,6 @@ export const Tests = (props: TestsProps) => {
   };
 
   const renderContent = () => {
-    // if (isInitialLoading) {
-    //   return (
-    //     <s.ContentContainer>
-    //       <s.TestsList>
-    //         <TestCardSkeleton />
-    //         <TestCardSkeleton />
-    //         <TestCardSkeleton />
-    //       </s.TestsList>
-    //     </s.ContentContainer>
-    //   );
-    // }
-
     if (data?.error) {
       return <s.NoDataContainer>{data.error.message}</s.NoDataContainer>;
     }

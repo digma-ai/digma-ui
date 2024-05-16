@@ -11,7 +11,7 @@ import { NoDataMessage } from "../NoDataMessage";
 import { actions } from "../actions";
 import { checkIfAnyFiltersApplied, getAssetTypeInfo } from "../utils";
 import { AssetTypeListItem } from "./AssetTypeListItem";
-import { AssetTypeSkeleton } from "./AssetTypeListSkeleton";
+import { AssetTypeListItemSkeleton } from "./AssetTypeListItemSkeleton";
 import * as s from "./styles";
 import {
   AssetCategoriesData,
@@ -60,7 +60,6 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
   const previousData = usePrevious(data);
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
-  const [isInitialLoading, setIsInitialLoading] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const config = useContext(ConfigContext);
   const previousEnvironment = usePrevious(config.environment);
@@ -96,7 +95,6 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
 
   useEffect(() => {
     refreshData();
-    setIsInitialLoading(true);
     setIsLoading(true);
 
     const handleCategoriesData = (data: unknown, timeStamp: number) => {
@@ -163,12 +161,6 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
     }
   }, [props.data]);
 
-  useEffect(() => {
-    if (!previousData && data) {
-      setIsInitialLoading(false);
-    }
-  }, [previousData, data]);
-
   const handleAssetTypeClick = (assetTypeId: string) => {
     props.onAssetTypeSelect(assetTypeId);
   };
@@ -221,10 +213,10 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
   return (
     <s.StyledFadingContentSwitch switchFlag={isLoading}>
       <s.List>
-        <AssetTypeSkeleton />
-        <AssetTypeSkeleton />
-        <AssetTypeSkeleton />
-        <AssetTypeSkeleton />
+        <AssetTypeListItemSkeleton />
+        <AssetTypeListItemSkeleton />
+        <AssetTypeListItemSkeleton />
+        <AssetTypeListItemSkeleton />
       </s.List>
       {renderContent()}
     </s.StyledFadingContentSwitch>

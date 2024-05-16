@@ -1,7 +1,5 @@
 import styled from "styled-components";
-import { LAYERS } from "../common/App/styles";
 import { Button } from "../common/v3/Button";
-import { FadingContainerProps } from "./types";
 
 export const Container = styled.div`
   height: 100%;
@@ -118,36 +116,4 @@ export const RefreshButton = styled(Button)`
     color: ${({ theme }) => theme.colors.v3.icon.white};
     background: none;
   }
-`;
-
-export const FadingContainer = styled.div<FadingContainerProps>`
-  ${({ $transitionClassName, $transitionDuration }) => {
-    return `
-      &.${$transitionClassName}-enter {
-        opacity: 0;
-      }
-      
-      &.${$transitionClassName}-enter-active {
-        opacity: 1;
-        transition: opacity ${$transitionDuration}ms ease-out;
-      }
-
-      &.${$transitionClassName}-exit {
-        opacity: 1;
-      }
-      
-      &.${$transitionClassName}-exit-active {
-        opacity: 0;
-        transition: opacity ${$transitionDuration}ms ease-out;
-      }
-      `;
-  }}
-`;
-
-export const SkeletonContainer = styled(FadingContainer)`
-  position: fixed;
-  inset: 0;
-  margin: auto;
-  padding: 8px;
-  z-index: ${LAYERS.OVERLAY};
 `;

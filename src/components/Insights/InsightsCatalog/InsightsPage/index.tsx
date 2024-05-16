@@ -89,14 +89,6 @@ const getInsightToShowJiraHint = (insights: CodeObjectInsight[]): number => {
   );
 };
 
-const renderInsightCardSkeletons = () => {
-  <>
-    <InsightCardSkeleton />
-    <InsightCardSkeleton />
-    <InsightCardSkeleton />
-  </>;
-};
-
 const renderInsightCard = (
   insight: GenericCodeObjectInsight,
   onJiraTicketCreate: (
