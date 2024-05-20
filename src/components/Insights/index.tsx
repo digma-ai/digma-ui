@@ -425,7 +425,7 @@ export const Insights = (props: InsightsProps) => {
     <s.Container>
       <s.StyledFadingContentSwitch switchFlag={isInitialLoading}>
         <s.FadingContentContainer>
-          <InsightsCatalogSkeleton />
+          <InsightsCatalogSkeleton insightViewType={props.insightViewType} />
         </s.FadingContentContainer>
         <s.FadingContentContainer>
           {renderContent(data, isInitialLoading ? false : isLoading)}

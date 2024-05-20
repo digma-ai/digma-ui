@@ -9,7 +9,9 @@ export const Container = styled.div`
 `;
 
 export const Header = styled.div`
-  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
   font-size: 16px;
   padding: 8px;
   color: ${({ theme }) => {
@@ -28,7 +30,6 @@ export const HeaderItem = styled.div`
   gap: 8px;
   align-items: center;
   flex-shrink: 0;
-  height: 36px;
 `;
 
 export const SearchInputContainer = styled.div`

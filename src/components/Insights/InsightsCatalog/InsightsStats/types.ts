@@ -5,6 +5,7 @@ export interface InsightStatsProps {
   allIssuesCount?: number;
   unreadCount: number;
   criticalCount?: number;
+  isLoading: boolean;
 }
 
 export interface StatsProps {

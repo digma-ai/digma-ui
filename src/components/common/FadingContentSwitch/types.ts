@@ -7,6 +7,6 @@ export interface FadingContentSwitchProps {
 }
 
 export interface FadingContainerProps {
-  $transitionClassName: string;
-  $transitionDuration: number;
+  $transitionDuration?: number;
+  $transitionClassName?: string;
 }

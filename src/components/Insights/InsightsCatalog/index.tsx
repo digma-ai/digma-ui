@@ -266,6 +266,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
                       : props.unreadCount || 0
                   }
                   onChange={handleFilterSelectionChange}
+                  isLoading={props.isLoading}
                 />
               )}
             {selectedFilters.length === 1 && (

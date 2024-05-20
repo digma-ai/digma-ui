@@ -6,7 +6,6 @@ import { Link as CommonLink } from "../common/Link";
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 8px 0;
   gap: 8px;
   height: 100%;
   box-sizing: border-box;

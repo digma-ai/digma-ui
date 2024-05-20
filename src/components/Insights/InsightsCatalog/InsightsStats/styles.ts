@@ -3,6 +3,7 @@ import {
   bodyBoldTypography,
   caption1MediumTypography
 } from "../../../common/App/typographies";
+import { FadingContentSwitch } from "../../../common/FadingContentSwitch";
 import { StatsProps } from "./types";
 
 export const Stats = styled.div`
@@ -11,7 +12,8 @@ export const Stats = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.v3.stroke.tertiary};
   gap: 8px;
   padding: 8px;
-  align-items: stretch;
+  height: 100%;
+  box-sizing: border-box;
 `;
 
 export const Stat = styled.button<StatsProps>`
@@ -35,6 +37,10 @@ export const Stat = styled.button<StatsProps>`
   &:disabled > span {
     color: ${({ theme }) => theme.colors.v3.text.disabled};
   }
+`;
+
+export const StyledFadingContentSwitch = styled(FadingContentSwitch)`
+  height: 72px;
 `;
 
 export const CriticalStat = styled(Stat)`
