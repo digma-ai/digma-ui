@@ -24,7 +24,7 @@ const componentTypeColors = {
   [ComponentType.DbQueries]: "#b180d7",
   [ComponentType.HttpClients]: "#75beff",
   [ComponentType.Rendering]: "#f55385",
-  [ComponentType.Caching]: "#f68d8d",
+  [ComponentType.Cache]: "#f68d8d",
   [ComponentType.Producer]: "#8df8b7"
 };
 

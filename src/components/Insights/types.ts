@@ -597,7 +597,7 @@ export enum ComponentType {
   DbQueries = "DB Queries",
   HttpClients = "HTTP Clients",
   Rendering = "Rendering",
-  Caching = "Caching",
+  Cache = "Cache",
   Producer = "Producer"
 }
 
