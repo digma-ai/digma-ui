@@ -24,32 +24,52 @@ import { EndpointBreakdownInsightCardProps } from "./types";
 const PIE_CHART_RADIUS = 50;
 const PIE_CHART_ARC_WIDTH = 4;
 
-const getComponentTypeColors = (theme: DefaultTheme) => ({
-  [ComponentType.Internal]: {
-    fill: theme.colors.v3.pieChart.brightPurpleFill,
-    stroke: theme.colors.v3.pieChart.brightPurpleStroke
-  },
-  [ComponentType.DbQueries]: {
-    fill: theme.colors.v3.pieChart.pinkFill,
-    stroke: theme.colors.v3.pieChart.pinkStroke
-  },
-  [ComponentType.HttpClients]: {
-    fill: theme.colors.v3.pieChart.brightOrangeFill,
-    stroke: theme.colors.v3.pieChart.brightOrangeStroke
-  },
-  [ComponentType.Rendering]: {
-    fill: theme.colors.v3.pieChart.brightGreenFill,
-    stroke: theme.colors.v3.pieChart.brightGreenStroke
-  },
-  [ComponentType.Caching]: {
-    fill: theme.colors.v3.pieChart.brightRedFill,
-    stroke: theme.colors.v3.pieChart.brightRedStroke
-  },
-  [ComponentType.Producer]: {
-    fill: theme.colors.v3.pieChart.azureFill,
-    stroke: theme.colors.v3.pieChart.azureStroke
+const getComponentTypeColors = (
+  theme: DefaultTheme,
+  componentType: ComponentType
+): {
+  fill: string;
+  stroke: string;
+} => {
+  switch (componentType) {
+    case ComponentType.Internal:
+      return {
+        fill: theme.colors.v3.pieChart.brightPurpleFill,
+        stroke: theme.colors.v3.pieChart.brightPurpleStroke
+      };
+    case ComponentType.DbQueries:
+      return {
+        fill: theme.colors.v3.pieChart.pinkFill,
+        stroke: theme.colors.v3.pieChart.pinkStroke
+      };
+    case ComponentType.HttpClients:
+      return {
+        fill: theme.colors.v3.pieChart.brightOrangeFill,
+        stroke: theme.colors.v3.pieChart.brightOrangeStroke
+      };
+
+    case ComponentType.Rendering:
+      return {
+        fill: theme.colors.v3.pieChart.brightGreenFill,
+        stroke: theme.colors.v3.pieChart.brightGreenStroke
+      };
+    case ComponentType.Cache:
+      return {
+        fill: theme.colors.v3.pieChart.brightRedFill,
+        stroke: theme.colors.v3.pieChart.brightRedStroke
+      };
+    case ComponentType.Producer:
+      return {
+        fill: theme.colors.v3.pieChart.azureFill,
+        stroke: theme.colors.v3.pieChart.azureStroke
+      };
+    default:
+      return {
+        fill: theme.colors.v3.surface.gray,
+        stroke: theme.colors.v3.surface.primary
+      };
   }
-});
+};
 
 const DEFAULT_PERCENTILE = 0.5;
 
@@ -76,7 +96,6 @@ export const EndpointBreakdownInsightCard = (
   props: EndpointBreakdownInsightCardProps
 ) => {
   const theme = useTheme();
-  const componentTypeColors = getComponentTypeColors(theme);
 
   const [percentileViewMode, setPercentileViewMode] =
     useState<number>(DEFAULT_PERCENTILE);
@@ -121,8 +140,8 @@ export const EndpointBreakdownInsightCard = (
             {data.map((entry) => (
               <Cell
                 key={entry.type}
-                fill={componentTypeColors[entry.type].fill}
-                stroke={componentTypeColors[entry.type].stroke}
+                fill={getComponentTypeColors(theme, entry.type).fill}
+                stroke={getComponentTypeColors(theme, entry.type).stroke}
               />
             ))}
           </Pie>
@@ -133,8 +152,8 @@ export const EndpointBreakdownInsightCard = (
           <s.LegendItem key={x.type}>
             <s.LegendItemDataColorBadge
               $colors={{
-                background: componentTypeColors[x.type].fill,
-                border: componentTypeColors[x.type].stroke
+                background: getComponentTypeColors(theme, x.type).fill,
+                border: getComponentTypeColors(theme, x.type).stroke
               }}
             />
             <s.LegendItemDataLabel>{x.type}</s.LegendItemDataLabel>
