@@ -36,9 +36,13 @@ export const TableHeadRow = styled.div`
 export const TableHeaderCell = styled.div`
   text-align: start;
   overflow: hidden;
+  display: flex;
+  gap: 4px;
+  align-items: center;
 
   &:last-child {
     text-align: end;
+    justify-content: end;
   }
 `;
 

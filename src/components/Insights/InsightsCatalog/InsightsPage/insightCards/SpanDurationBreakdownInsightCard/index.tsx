@@ -13,6 +13,7 @@ import { FeatureFlag } from "../../../../../../types";
 import { getDurationString } from "../../../../../../utils/getDurationString";
 import { getPercentileLabel } from "../../../../../../utils/getPercentileLabel";
 import { ConfigContext } from "../../../../../common/App/ConfigContext";
+import { Info } from "../../../../../common/v3/Info";
 import { Pagination } from "../../../../../common/v3/Pagination";
 import { Tag } from "../../../../../common/v3/Tag";
 import {
@@ -103,13 +104,18 @@ export const SpanDurationBreakdownInsightCard = ({
       id: "quantity",
       meta: {
         minWidth: 30,
-        width: "20%"
+        width: "20%",
+        info: "The number of times this asset repeats within the trace. The duration shown next to this column represents the overall duration of all asset instances."
       },
       cell: (info) => {
         const entry = info.getValue();
 
         const percentile = getPercentile(entry, percentileViewMode);
-        const quantity = percentile?.occurrence || 0;
+        const quantity = percentile?.occurrence;
+        if (!quantity) {
+          return null;
+        }
+
         return (
           <Tag
             key={"quantity"}
@@ -240,6 +246,7 @@ export const SpanDurationBreakdownInsightCard = ({
                         header.column.columnDef.header,
                         header.getContext()
                       )}
+                  {meta.info && <Info title={meta.info} />}
                 </s.TableHeaderCell>
               );
             })}
