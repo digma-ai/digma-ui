@@ -9,3 +9,8 @@ export interface SpanDurationBreakdownInsightCardProps
     insightType: InsightType
   ) => void;
 }
+
+export interface ColumnMeta {
+  width: string | number;
+  minWidth?: string | number;
+}
