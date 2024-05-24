@@ -40,7 +40,7 @@ export const Name = styled.div<NameProps>`
   opacity: ${({ $isActive }) => (!$isActive ? 0.5 : 1)};
 `;
 
-export const CheckIconContainer = styled.div`
+export const CheckMarkIconContainer = styled.div`
   display: flex;
   color: ${({ theme }) => theme.colors.v3.status.success};
 `;

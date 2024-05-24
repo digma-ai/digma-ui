@@ -1,58 +1,80 @@
-import { useContext, useState } from "react";
-import { useTheme } from "styled-components";
-import { actions as globalActions } from "../../../actions";
+import { useContext } from "react";
 import { INSTRUMENTATION_DOCUMENTATION_URL } from "../../../constants";
+import { getFeatureFlagValue } from "../../../featureFlags";
+import { isString } from "../../../typeGuards/isString";
+import { FeatureFlag } from "../../../types";
 import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
-import { getThemeKind } from "../../common/App/styles";
-import { EnvironmentType } from "../../common/App/types";
-import { CodeSnippet } from "../../common/CodeSnippet";
-import { Link } from "../../common/Link";
-import { DesktopIcon } from "../../common/icons/DesktopIcon";
-import { InfinityIcon } from "../../common/icons/InfinityIcon";
-import { PlayButtonWithCursorIcon } from "../../common/icons/PlayButtonWithCursorIcon";
-import { SetupOrgDigmaPanel } from "../SetupOrgDigmaPanel";
-import { Overlay } from "../common/Overlay";
+import { ConfigContextData, EnvironmentType } from "../../common/App/types";
+import { CheckmarkIcon } from "../../common/icons/12px/CheckmarkIcon";
+import { InfinityIcon } from "../../common/icons/32px/InfinityIcon";
+import { Link } from "../../common/v3/Link";
+import { Tooltip } from "../../common/v3/Tooltip";
+import { actions } from "../actions";
 import { trackingEvents } from "../tracking";
 import { EnvironmentVariableCode } from "./EnvironmentVariableCode";
 import * as s from "./styles";
-import {
-  AddToRunConfigState,
-  EnvironmentInstructionsPanelContent,
-  EnvironmentInstructionsPanelProps
-} from "./types";
+import { EnvironmentInstructionsPanelProps } from "./types";
 import { useAddToRunConfig } from "./useAddToRunConfig";
+
+const getIsActiveRunConfigSet = (
+  config: ConfigContextData,
+  environmentId: string,
+  environmentName: string,
+  environmentType: EnvironmentType | null
+) => {
+  if (!config.runConfig) {
+    return false;
+  }
+
+  const isCentralizedDeployment = config.backendInfo?.centralize;
+  const areNewInstrumentationAttributesEnabled = getFeatureFlagValue(
+    config,
+    FeatureFlag.ARE_NEW_INSTRUMENTATION_ATTRIBUTES_ENABLED
+  );
+
+  if (areNewInstrumentationAttributesEnabled) {
+    if (isCentralizedDeployment) {
+      return (
+        config.runConfig.environmentName === environmentName &&
+        isString(environmentType) &&
+        config.runConfig.environmentType === environmentType &&
+        isString(config.userInfo?.id) &&
+        config.runConfig.userId === config.userInfo?.id
+      );
+    } else {
+      return config.runConfig.environmentName === environmentName;
+    }
+  }
+
+  return config.runConfig.environmentId === environmentId;
+};
 
 export const EnvironmentInstructionsPanel = (
   props: EnvironmentInstructionsPanelProps
 ) => {
-  const [isOrgDigmaSetupGuideVisible, setIsOrgDigmaSetupGuideVisible] =
-    useState(false);
-  const theme = useTheme();
-  const themeKind = getThemeKind(theme);
   const config = useContext(ConfigContext);
+  const { addToRunConfig } = useAddToRunConfig(props.environment.id);
 
-  const { addToRunConfig, state } = useAddToRunConfig(props.environment.id);
-
-  const handleDocumentationLinkClick = () => {
+  const handleOpenDocsButtonClick = () => {
     openURLInDefaultBrowser(INSTRUMENTATION_DOCUMENTATION_URL);
   };
 
-  const handleAddToRunConfigLinkClick = () => {
-    sendUserActionTrackingEvent(trackingEvents.ADD_TO_RUN_CONFIG_CLICKED);
+  const handleSetActiveRunConfigButtonClick = () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.SET_ACTIVE_RUN_CONFIG_BUTTON_CLICKED
+    );
     addToRunConfig();
   };
 
-  const handleTroubleshootLinkClick = () => {
-    globalActions.OPEN_TROUBLESHOOTING_GUIDE;
+  const handleRemoveLinkClick = () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.REMOVE_FROM_RUN_CONFIG_LINK_CLICKED
+    );
     window.sendMessageToDigma({
-      action: globalActions.OPEN_TROUBLESHOOTING_GUIDE
+      action: actions.CLEAR_RUN_CONFIG
     });
-  };
-
-  const handleOrgDigmaSetupClose = () => {
-    setIsOrgDigmaSetupGuideVisible(false);
   };
 
   const handleCloseButtonClick = () => {
@@ -61,161 +83,182 @@ export const EnvironmentInstructionsPanel = (
     }
   };
 
-  if (isOrgDigmaSetupGuideVisible) {
-    return (
-      <Overlay>
-        <SetupOrgDigmaPanel
-          environment={props.environment}
-          onFinish={handleOrgDigmaSetupClose}
-          onCancel={handleOrgDigmaSetupClose}
-        />
-      </Overlay>
-    );
-  }
+  const renderContent = () => {
+    const environmentType = props.environment.type;
 
-  const environmentTypesContent: Record<
-    EnvironmentType,
-    EnvironmentInstructionsPanelContent
-  > = {
-    Private: {
-      icon: DesktopIcon,
-      title: "How to setup your Digma Environment",
-      instrumentation: {
-        title: "Instrument your code",
-        content: (
-          <>
-            <span>
-              Set up the following environment variables when running your code
-              to tag the observability data with this run config:
-            </span>
-            <s.EnvironmentVariableCodeSnippet
-              text={
-                <EnvironmentVariableCode
-                  isMicrometerProject={config.isMicrometerProject}
-                  environmentId={props.environment.id}
-                />
-              }
-            />
-            <s.ActionContainer>
-              <s.AddToConfigContainer>
-                <s.Link onClick={handleAddToRunConfigLinkClick}>
-                  Add to the active run config
-                </s.Link>
-                {state === AddToRunConfigState.success && (
-                  <s.AddToConfigSuccessMessage>
-                    Successfully added
-                  </s.AddToConfigSuccessMessage>
-                )}
-                {state === AddToRunConfigState.failure && (
-                  <s.AddToConfigFailureMessage>
-                    Failed to add
-                  </s.AddToConfigFailureMessage>
-                )}
-              </s.AddToConfigContainer>
-              <s.Link onClick={handleTroubleshootLinkClick}>
-                Troubleshoot
-              </s.Link>
-            </s.ActionContainer>
-          </>
-        )
-      },
-      run: {
-        title: "Run your Application",
-        content: (
-          <>
-            <span>
-              Running your app will integrate your environment and Digma can
-              start showing you info!
-            </span>
-            <s.IllustrationContainer>
-              <s.RunOrDebugIllustration
-                src={`/images/runOrDebug_${themeKind}.gif`}
+    if (environmentType === "Private") {
+      const isActiveRunConfigSet = getIsActiveRunConfigSet(
+        config,
+        props.environment.id,
+        props.environment.name,
+        props.environment.type
+      );
+
+      const isRunConfigSupported = Boolean(
+        config.runConfig?.isRunConfigurationSupported
+      );
+
+      return (
+        <>
+          <s.Card>
+            <s.CardHeader>
+              <s.CardTitleContainer>
+                <s.CardTitle>Running Locally?</s.CardTitle>
+                Setup automatically or use the env variable below
+              </s.CardTitleContainer>
+              {isActiveRunConfigSet ? (
+                <s.CardButtons>
+                  <s.RunConfigSetMessage>
+                    <s.RunConfigSetMessageIconContainer>
+                      <CheckmarkIcon color={"currentColor"} />
+                    </s.RunConfigSetMessageIconContainer>
+                    Run config set
+                  </s.RunConfigSetMessage>
+                  <Link onClick={handleRemoveLinkClick}>Remove</Link>
+                </s.CardButtons>
+              ) : (
+                <Tooltip
+                  title={
+                    "Automatic run config modification is not supported for this configuration type"
+                  }
+                  isDisabled={isRunConfigSupported}
+                >
+                  <s.ActionButton
+                    label={"Set active run config"}
+                    onClick={handleSetActiveRunConfigButtonClick}
+                    isDisabled={!isRunConfigSupported}
+                  />
+                </Tooltip>
+              )}
+            </s.CardHeader>
+            <s.CardContent>
+              <s.MultiLineCodeSnippet text={<EnvironmentVariableCode />} />
+            </s.CardContent>
+          </s.Card>
+          <s.CardDivider>OR</s.CardDivider>
+          <s.Card>
+            <s.CardHeader>
+              <s.CardTitleContainer>
+                <s.CardTitle>Running outside the IDE?</s.CardTitle>
+                Use the following values referenced in the docs:
+              </s.CardTitleContainer>
+              <s.ActionButton
+                label={"Open Docs"}
+                onClick={handleOpenDocsButtonClick}
               />
-            </s.IllustrationContainer>
-          </>
-        )
-      }
-    },
-    Public: {
-      icon: InfinityIcon,
-      title: "Connecting your CI/Prod Environment",
-      instrumentation: {
-        title: "Instrument your application",
-        content: (
-          <>
-            <span>
-              Please see our{" "}
-              <Link onClick={handleDocumentationLinkClick}>
-                Digma Developer Guide
-              </Link>{" "}
-              for the best way to instrument your application and send data to
-              Digma. Use the following environment ID:
-            </span>
-            <CodeSnippet
-              text={
-                <s.HighlightedCode>{props.environment.id}</s.HighlightedCode>
-              }
-            />
-          </>
-        )
-      },
-      run: {
-        title: "Deploy your application / run the build",
-        content: (
-          <>
-            <span>
-              Running your app will integrate your environment and Digma can
-              start showing you info!
-            </span>
-            <s.IllustrationContainer>
-              <PlayButtonWithCursorIcon size={80} themeKind={themeKind} />
-            </s.IllustrationContainer>
-          </>
-        )
-      }
+            </s.CardHeader>
+            <s.CardContent>
+              <s.ColumnsContainer>
+                <s.KeyValue>
+                  <s.Label>ENV_NAME</s.Label>
+                  <s.SingleLineCodeSnippet
+                    text={
+                      <s.HighlightedCode>
+                        {props.environment.name}
+                      </s.HighlightedCode>
+                    }
+                  />
+                </s.KeyValue>
+                <s.KeyValue>
+                  <s.Label>ENV_TYPE</s.Label>
+                  <s.SingleLineCodeSnippet
+                    text={
+                      <s.HighlightedCode>
+                        {props.environment.type}
+                      </s.HighlightedCode>
+                    }
+                  />
+                </s.KeyValue>
+                <s.KeyValue>
+                  <s.Label>USER_ID</s.Label>
+                  <s.SingleLineCodeSnippet
+                    text={
+                      <s.HighlightedCode>
+                        {config.userInfo?.id || ""}
+                      </s.HighlightedCode>
+                    }
+                  />
+                </s.KeyValue>
+              </s.ColumnsContainer>
+            </s.CardContent>
+          </s.Card>
+        </>
+      );
     }
-  };
 
-  const content = props.environment.type
-    ? environmentTypesContent[props.environment.type]
-    : null;
+    if (environmentType === "Public") {
+      return (
+        <>
+          <s.Card>
+            <s.CardHeader>
+              <s.CardTitleContainer>
+                <s.CardTitle>Connect your App to this environment</s.CardTitle>
+                Use the following values referenced in the docs:
+              </s.CardTitleContainer>
+              <s.ActionButton
+                label={"Open Docs"}
+                onClick={handleOpenDocsButtonClick}
+              />
+            </s.CardHeader>
+            <s.CardContent>
+              <s.ColumnsContainer>
+                <s.KeyValue>
+                  <s.Label>ENV_NAME</s.Label>
+                  <s.SingleLineCodeSnippet
+                    text={
+                      <s.HighlightedCode>
+                        {props.environment.name}
+                      </s.HighlightedCode>
+                    }
+                  />
+                </s.KeyValue>
+                <s.KeyValue>
+                  <s.Label>ENV_TYPE</s.Label>
+                  <s.SingleLineCodeSnippet
+                    text={
+                      <s.HighlightedCode>
+                        {props.environment.type}
+                      </s.HighlightedCode>
+                    }
+                  />
+                </s.KeyValue>
+              </s.ColumnsContainer>
+            </s.CardContent>
+          </s.Card>
+          <s.Card>
+            <s.PublicEnvironmentConnectCardContent>
+              <s.PublicEnvironmentIconBackground>
+                <InfinityIcon size={32} color={"currentColor"} />
+              </s.PublicEnvironmentIconBackground>
+              <s.PublicEnvironmentTextContainer>
+                <s.PublicEnvironmentTitle>
+                  Connect your app environment
+                </s.PublicEnvironmentTitle>
+                Use these instructions to connect Digma with environments such
+                as Prod/CI or Staging
+              </s.PublicEnvironmentTextContainer>
+            </s.PublicEnvironmentConnectCardContent>
+          </s.Card>
+        </>
+      );
+    }
 
-  if (!content) {
     return null;
-  }
+  };
 
   return (
     <s.Container>
-      <s.Header>
-        {content.title}
-        {props.onClose && (
+      {props.onClose && (
+        <s.Header>
+          How to setup your Environment
           <s.CloseButton
             onClick={handleCloseButtonClick}
             buttonType={"secondary"}
             label={"Close"}
           />
-        )}
-      </s.Header>
-      <s.ContentContainer>
-        <s.Section>
-          <s.SectionHeader>
-            <s.SectionNumber>1</s.SectionNumber>
-            <s.SectionTitle>{content.instrumentation.title}</s.SectionTitle>
-          </s.SectionHeader>
-          <s.SectionContentContainer>
-            {content.instrumentation.content}
-          </s.SectionContentContainer>
-        </s.Section>
-        <s.Section>
-          <s.SectionHeader>
-            <s.SectionNumber>2</s.SectionNumber>
-            <s.SectionTitle>{content.run.title}</s.SectionTitle>
-          </s.SectionHeader>
-          <s.SectionContentContainer>
-            {content.run.content}
-          </s.SectionContentContainer>
-        </s.Section>
-      </s.ContentContainer>
+        </s.Header>
+      )}
+      <s.ContentContainer>{renderContent()}</s.ContentContainer>
     </s.Container>
   );
 };

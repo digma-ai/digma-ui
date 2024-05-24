@@ -39,7 +39,7 @@ export const NameInput = styled(TextField)`
   width: 220px;
 `;
 
-export const CheckIconContainer = styled.div`
+export const CheckMarkIconContainer = styled.div`
   display: flex;
   color: ${({ theme }) => theme.colors.v3.status.success};
 `;

@@ -4,7 +4,9 @@ export enum FeatureFlag {
   IS_HIGHLIGHTS_IMPACT_ENABLED,
   IS_HIGHLIGHTS_SCALING_ENABLED,
   ARE_INSIGHT_STATS_ENABLED,
-  IS_HIGHLIGHTS_SPAN_INFO_ENABLED
+  IS_HIGHLIGHTS_SPAN_INFO_ENABLED,
+  ARE_NEW_INSTRUMENTATION_ATTRIBUTES_ENABLED,
+  IS_DURATION_BREAKDOWN_QUANTITY_ENABLED
 }
 
 export enum InsightType {
@@ -82,6 +84,7 @@ export interface ChangeScopePayload {
   span: {
     spanCodeObjectId: string;
   } | null;
+  forceNavigation?: boolean;
 }
 
 export interface ChangeViewPayload {

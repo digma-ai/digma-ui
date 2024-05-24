@@ -86,6 +86,16 @@ export interface GlobalState {
   };
 }
 
+export interface RunConfiguration {
+  environmentId: string | null;
+  environmentName: string | null;
+  environmentType: string | null;
+  userId: string | null;
+  observabilityMode: "Micrometer" | "OtelAgent" | null;
+  isRunConfigurationSupported: boolean;
+  javaToolOptions: string | null;
+}
+
 export interface ConfigContextData {
   digmaApiUrl: string;
   digmaApiProxyPrefix: string;
@@ -111,6 +121,7 @@ export interface ConfigContextData {
   userId: string;
   isDigmathonGameFinished: boolean;
   userInfo?: UserInfo;
+  runConfig?: RunConfiguration;
 }
 
 export interface InsightStats {

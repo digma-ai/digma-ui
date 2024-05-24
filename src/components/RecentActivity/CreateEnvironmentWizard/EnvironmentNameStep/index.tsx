@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { isNull } from "../../../../typeGuards/isNull";
-import { CheckCircleIcon } from "../../../common/icons/12px/CheckCircleIcon";
+import { CheckmarkCircleIcon } from "../../../common/icons/12px/CheckmarkCircleIcon";
 import { ErrorIcon } from "../../../common/icons/12px/ErrorIcon";
 import { Button } from "../../../common/v3/Button";
 import * as s from "./styles";
@@ -42,9 +42,9 @@ export const EnvironmentNameStep = ({
     }
 
     return isValid ? (
-      <s.CheckIconContainer>
-        <CheckCircleIcon color={"currentColor"} />
-      </s.CheckIconContainer>
+      <s.CheckMarkIconContainer>
+        <CheckmarkCircleIcon color={"currentColor"} />
+      </s.CheckMarkIconContainer>
     ) : (
       <s.ErrorIconContainer>
         <ErrorIcon color={"currentColor"} />

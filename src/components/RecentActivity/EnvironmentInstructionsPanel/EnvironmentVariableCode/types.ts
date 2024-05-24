@@ -1,4 +1,5 @@
-export interface EnvironmentVariableCodeProps {
-  isMicrometerProject: boolean;
-  environmentId: string;
-}
+export type DigmaAttribute =
+  | "environmentId"
+  | "environmentName"
+  | "environmentType"
+  | "userId";

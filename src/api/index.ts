@@ -27,7 +27,7 @@ export const initializeDigmaMessageListener = (
 export const sendMessage = <T>(
   message: DigmaOutgoingMessageData<T>
 ): string | undefined => {
-  console.debug("Message to send:", message);
+  console.debug("Digma message to send:", message);
 
   switch (platform) {
     case "Web":
@@ -36,7 +36,7 @@ export const sendMessage = <T>(
     case "VS Code":
       if (window.sendMessageToVSCode) {
         window.sendMessageToVSCode(message);
-        console.debug("Message has been sent to VS Code: ", message);
+        console.debug("Digma message has been sent to VS Code: ", message);
       }
       break;
     case "JetBrains":
@@ -44,11 +44,14 @@ export const sendMessage = <T>(
         return window.cefQuery({
           request: JSON.stringify(message),
           onSuccess: function (response) {
-            console.debug("cefQuery has been successfully sent: %s", response);
+            console.debug(
+              "Digma message cefQuery has been successfully sent: %s",
+              response
+            );
           },
           onFailure: function (error_code, error_message) {
             console.error(
-              "Failed to send cefQuery: %d, %s",
+              " Digma message failed to send cefQuery: %d, %s",
               error_code,
               error_message
             );

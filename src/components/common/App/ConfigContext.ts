@@ -3,7 +3,7 @@ import { isEnvironment } from "../../../typeGuards/isEnvironment";
 import { isString } from "../../../typeGuards/isString";
 import { ConfigContextData } from "./types";
 
-export const initialState = {
+export const initialState: ConfigContextData = {
   digmaApiUrl: isString(window.digmaApiUrl) ? window.digmaApiUrl : "",
   digmaApiProxyPrefix: isString(window.digmaApiProxyPrefix)
     ? window.digmaApiProxyPrefix
@@ -32,7 +32,8 @@ export const initialState = {
   productKey: isString(window.productKey) ? window.productKey : "",
   isDigmathonModeEnabled: window.isDigmathonModeEnabled === true,
   userId: isString(window.userId) ? window.userId : "",
-  isDigmathonGameFinished: window.isDigmathonGameFinished === true
+  isDigmathonGameFinished: window.isDigmathonGameFinished === true,
+  runConfig: undefined
 };
 
 export const ConfigContext = createContext<ConfigContextData>(initialState);
