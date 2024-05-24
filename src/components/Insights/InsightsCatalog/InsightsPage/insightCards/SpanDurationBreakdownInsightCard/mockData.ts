@@ -40,7 +40,8 @@ export const mockedSpanDurationBreakdownInsight: SpanDurationBreakdownInsight =
               value: 9.31,
               unit: "ms",
               raw: 9310166
-            }
+            },
+            occurrence: 1
           },
           {
             percentile: 0.95,
@@ -48,7 +49,8 @@ export const mockedSpanDurationBreakdownInsight: SpanDurationBreakdownInsight =
               value: 9.31,
               unit: "ms",
               raw: 9310166
-            }
+            },
+            occurrence: 2
           }
         ],
         codeObjectId: null
@@ -67,7 +69,8 @@ export const mockedSpanDurationBreakdownInsight: SpanDurationBreakdownInsight =
               value: 1.85,
               unit: "ms",
               raw: 1853959
-            }
+            },
+            occurrence: 2
           },
           {
             percentile: 0.95,
@@ -75,7 +78,8 @@ export const mockedSpanDurationBreakdownInsight: SpanDurationBreakdownInsight =
               value: 1.85,
               unit: "ms",
               raw: 1853959
-            }
+            },
+            occurrence: 3
           }
         ],
         codeObjectId: null
@@ -95,7 +99,8 @@ export const mockedSpanDurationBreakdownInsight: SpanDurationBreakdownInsight =
               value: 2.98,
               unit: "ms",
               raw: 2977875
-            }
+            },
+            occurrence: 5
           },
           {
             percentile: 0.95,
@@ -103,7 +108,8 @@ export const mockedSpanDurationBreakdownInsight: SpanDurationBreakdownInsight =
               value: 2.98,
               unit: "ms",
               raw: 2977875
-            }
+            },
+            occurrence: 3
           }
         ],
         codeObjectId: null

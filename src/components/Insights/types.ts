@@ -311,6 +311,7 @@ export interface SpanEndpointBottleneckInsight extends SpanInsight {
 export interface DurationPercentile {
   percentile: number;
   duration: Duration;
+  occurrence?: number;
 }
 
 export interface SpanDurationBreakdownEntry {

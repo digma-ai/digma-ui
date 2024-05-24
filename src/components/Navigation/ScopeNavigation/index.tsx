@@ -19,7 +19,8 @@ const changeScope = (scope: Scope | null) => {
   window.sendMessageToDigma<ChangeScopePayload>({
     action: globalActions.CHANGE_SCOPE,
     payload: {
-      span: scope?.span || null
+      span: scope?.span || null,
+      forceNavigation: true
     }
   });
 };
@@ -92,13 +93,15 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
 
     const handleSetViews = (data: unknown) => {
       const payload = data as SetViewsPayload;
+      const view = payload.views.find((x) => x.isSelected);
+      const viewId = [view?.id, view?.path].filter((x) => Boolean(x)).join("/");
+
       const currentStep = historyManager.getCurrent();
-      if (!payload.triggeredByJcef) {
+      if (!payload.createHistoryStep) {
+        historyManager.updateCurrent({ tabId: viewId });
         return;
       }
 
-      const view = payload.views.find((x) => x.isSelected);
-      const viewId = [view?.id, view?.path].filter((x) => Boolean(x)).join("/");
       if (view && currentStep && currentStep?.tabId !== viewId) {
         historyManager.push({
           environment: environment,

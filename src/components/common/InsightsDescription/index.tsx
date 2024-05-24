@@ -34,8 +34,8 @@ export const EndpointHighNumberOfQueriesDescription = () => (
 export const CodeNexusDescription = () => (
   <s.Content>
     Code nexus areas are places in the code that have a number level of runtime
-    dependencies. Developers To calculate this insight Digma looks at the
-    following factors:
+    dependencies. To calculate this insight Digma looks at the following
+    factors:
     <s.List>
       <li>
         Number of flows - how many unique execution flows touch this piece of
