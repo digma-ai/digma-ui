@@ -13,9 +13,7 @@ import { isEnvironment } from "../../../typeGuards/isEnvironment";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { isString } from "../../../typeGuards/isString";
 import { ConfigContext } from "../../common/App/ConfigContext";
-import { EmptyState } from "../../common/EmptyState";
 import { Menu } from "../../common/Menu";
-import { NewCircleLoader } from "../../common/NewCircleLoader";
 import { Pagination } from "../../common/Pagination";
 import { Popover } from "../../common/Popover";
 import { PopoverContent } from "../../common/Popover/PopoverContent";
@@ -28,6 +26,7 @@ import { AssetFilterQuery } from "../AssetsFilter/types";
 import { actions } from "../actions";
 import { checkIfAnyFiltersApplied, getAssetTypeInfo } from "../utils";
 import { AssetEntry as AssetEntryComponent } from "./AssetEntry";
+import { AssetEntrySkeleton } from "./AssetEntry/AssetEntrySkeleton";
 import * as s from "./styles";
 import {
   AssetEntry,
@@ -159,7 +158,7 @@ const getData = (
 export const AssetList = (props: AssetListProps) => {
   const [data, setData] = useState<AssetsData>();
   const previousData = usePrevious(data);
-  const [isInitialLoading, setIsInitialLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
   const [sorting, setSorting] = useState<Sorting>({
@@ -229,10 +228,11 @@ export const AssetList = (props: AssetListProps) => {
 
   useEffect(() => {
     refreshData();
-    setIsInitialLoading(true);
+    setIsLoading(true);
 
     const handleAssetsData = (data: unknown, timeStamp: number) => {
       setData(data as AssetsData);
+      setIsLoading(false);
       setLastSetDataTimeStamp(timeStamp);
     };
 
@@ -301,12 +301,6 @@ export const AssetList = (props: AssetListProps) => {
       setData(props.data);
     }
   }, [props.data]);
-
-  useEffect(() => {
-    if (!previousData && data) {
-      setIsInitialLoading(false);
-    }
-  }, [previousData, data]);
 
   useEffect(() => {
     if (
@@ -382,10 +376,6 @@ export const AssetList = (props: AssetListProps) => {
   };
 
   const renderContent = () => {
-    if (isInitialLoading) {
-      return <EmptyState content={<NewCircleLoader size={32} />} />;
-    }
-
     return entries.length > 0 ? (
       <>
         <s.List ref={listRef}>
@@ -498,7 +488,16 @@ export const AssetList = (props: AssetListProps) => {
           })}
         </s.SortingOrderToggle>
       </s.Toolbar>
-      {renderContent()}
+      <s.StyledFadingContentSwitch switchFlag={isLoading}>
+        <s.FadingContentContainer>
+          <s.List>
+            <AssetEntrySkeleton />
+            <AssetEntrySkeleton />
+            <AssetEntrySkeleton />
+          </s.List>
+        </s.FadingContentContainer>
+        <s.FadingContentContainer>{renderContent()}</s.FadingContentContainer>
+      </s.StyledFadingContentSwitch>
     </s.Container>
   );
 };

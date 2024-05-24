@@ -1,7 +1,8 @@
 import { Row, createColumnHelper } from "@tanstack/react-table";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { actions as globalActions } from "../../../actions";
 import { ROUTES, SCALING_ISSUE_DOCUMENTATION_URL } from "../../../constants";
+import { usePrevious } from "../../../hooks/usePrevious";
 import { ChangeViewPayload } from "../../../types";
 import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
@@ -12,9 +13,10 @@ import { RefreshIcon } from "../../common/icons/16px/RefreshIcon";
 import { CheckCircleIcon } from "../../common/icons/20px/CheckCircleIcon";
 import { Button } from "../../common/v3/Button";
 import { Card } from "../../common/v3/Card";
-import { EmptyStateCard } from "../EmptyStateCard";
 import { addEnvironmentColumns } from "../TopIssues/highlightCards/addEnvironmentColumns";
 import { EnvironmentData } from "../TopIssues/types";
+import { CardSkeleton } from "../common/CardSkeleton";
+import { EmptyStateCard } from "../common/EmptyStateCard";
 import { Section } from "../common/Section";
 import { Table } from "../common/Table";
 import { TableText } from "../common/TableText";
@@ -25,12 +27,21 @@ import { EnvironmentScalingData } from "./types";
 import { useScalingData } from "./useScalingData";
 
 export const Scaling = () => {
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
   const { data, getData } = useScalingData();
+  const previousData = usePrevious(data);
+
   const config = useContext(ConfigContext);
 
   useEffect(() => {
     getData();
   }, []);
+
+  useEffect(() => {
+    if (!previousData && data) {
+      setIsInitialLoading(false);
+    }
+  }, [previousData, data]);
 
   const renderScalingCard = (
     data: EnvironmentData<EnvironmentScalingData>[]
@@ -111,6 +122,10 @@ export const Scaling = () => {
         }
       });
     };
+
+    if (isInitialLoading) {
+      return <CardSkeleton />;
+    }
 
     if (!data) {
       return null;

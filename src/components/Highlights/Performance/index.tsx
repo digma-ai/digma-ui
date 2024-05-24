@@ -8,10 +8,10 @@ import { formatTimeDistance } from "../../../utils/formatTimeDistance";
 import { getDurationString } from "../../../utils/getDurationString";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { CrossCircleIcon } from "../../common/icons/16px/CrossCircleIcon";
-import { RefreshIcon } from "../../common/icons/16px/RefreshIcon";
 import { Card } from "../../common/v3/Card";
 import { Tag } from "../../common/v3/Tag";
-import { EmptyStateCard } from "../EmptyStateCard";
+import { CardSkeleton } from "../common/CardSkeleton";
+import { EmptyStateCard } from "../common/EmptyStateCard";
 import { EnvironmentName } from "../common/EnvironmentName";
 import { Section } from "../common/Section";
 import { Table } from "../common/Table";
@@ -139,14 +139,7 @@ export const Performance = () => {
 
   const renderCard = () => {
     if (isInitialLoading) {
-      return (
-        <EmptyStateCard
-          icon={RefreshIcon}
-          type={"lowSeverity"}
-          title={"Waiting for data"}
-          text={"Digma is collecting performance data"}
-        />
-      );
+      return <CardSkeleton />;
     }
 
     if (!data || data.performance.length === 0) {

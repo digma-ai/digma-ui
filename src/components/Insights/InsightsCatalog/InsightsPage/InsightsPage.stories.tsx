@@ -32,6 +32,7 @@ const scope: Scope = {
 };
 
 const props: InsightsPageProps = {
+  isLoading: false,
   insights: [],
   isFilteringEnabled: false,
   onJiraTicketCreate: () => {

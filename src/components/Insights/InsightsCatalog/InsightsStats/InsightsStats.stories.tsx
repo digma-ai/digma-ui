@@ -19,7 +19,17 @@ export const Default: Story = {
   args: {
     allIssuesCount: 100,
     criticalCount: 101,
-    unreadCount: 12
+    unreadCount: 12,
+    isLoading: false
+  }
+};
+
+export const Loading: Story = {
+  args: {
+    allIssuesCount: 100,
+    criticalCount: 101,
+    unreadCount: 12,
+    isLoading: true
   }
 };
 

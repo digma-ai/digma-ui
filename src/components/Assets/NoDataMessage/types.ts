@@ -1,3 +1,3 @@
 export interface NoDataMessageProps {
-  type: "loading" | "noDataYet" | "noSearchResults" | "noDataForAsset";
+  type: "noDataYet" | "noSearchResults" | "noDataForAsset";
 }

@@ -1,9 +1,10 @@
 import { Row, createColumnHelper } from "@tanstack/react-table";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   PERFORMANCE_IMPACT_DOCUMENTATION_URL,
   ROUTES
 } from "../../../constants";
+import { usePrevious } from "../../../hooks/usePrevious";
 import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
@@ -13,7 +14,8 @@ import { RefreshIcon } from "../../common/icons/16px/RefreshIcon";
 import { Button } from "../../common/v3/Button";
 import { Card } from "../../common/v3/Card";
 import { Tag } from "../../common/v3/Tag";
-import { EmptyStateCard } from "../EmptyStateCard";
+import { CardSkeleton } from "../common/CardSkeleton";
+import { EmptyStateCard } from "../common/EmptyStateCard";
 import { EnvironmentName } from "../common/EnvironmentName";
 import { Section } from "../common/Section";
 import { Table } from "../common/Table";
@@ -37,12 +39,20 @@ const getRankTagType = (normalizedRank: number) => {
 };
 
 export const Impact = () => {
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
   const { data, getData } = useImpactData();
+  const previousData = usePrevious(data);
   const config = useContext(ConfigContext);
 
   useEffect(() => {
     getData();
   }, []);
+
+  useEffect(() => {
+    if (!previousData && data) {
+      setIsInitialLoading(false);
+    }
+  }, [previousData, data]);
 
   const renderImpactCard = (data: EnvironmentImpactData[]) => {
     const columnHelper = createColumnHelper<EnvironmentImpactData>();
@@ -130,6 +140,10 @@ export const Impact = () => {
           }
         />
       );
+    }
+
+    if (isInitialLoading) {
+      return <CardSkeleton />;
     }
 
     if (!data || data.impactHighlights.length === 0) {

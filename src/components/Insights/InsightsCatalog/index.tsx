@@ -252,7 +252,6 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
             />
           </Tooltip>
         </s.ToolbarRow>
-
         {mode === ViewMode.All ? (
           <>
             {!searchInputValue &&
@@ -267,6 +266,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
                       : props.unreadCount || 0
                   }
                   onChange={handleFilterSelectionChange}
+                  isLoading={props.isLoading}
                 />
               )}
             {selectedFilters.length === 1 && (
@@ -319,6 +319,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
         onJiraTicketCreate={onJiraTicketCreate}
         onRefresh={props.onRefresh}
         isMarkAsReadButtonEnabled={isShowUnreadOnly(selectedFilters)}
+        isLoading={props.isLoading}
       />
       <s.Footer>
         {totalCount > 0 && (

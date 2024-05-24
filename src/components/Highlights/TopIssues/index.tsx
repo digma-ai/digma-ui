@@ -1,8 +1,8 @@
 import { Fragment, useEffect, useState } from "react";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { CrossCircleIcon } from "../../common/icons/16px/CrossCircleIcon";
-import { RefreshIcon } from "../../common/icons/16px/RefreshIcon";
-import { EmptyStateCard } from "../EmptyStateCard";
+import { CardSkeleton } from "../common/CardSkeleton";
+import { EmptyStateCard } from "../common/EmptyStateCard";
 import { Section } from "../common/Section";
 import { EndpointBottleneckHighlightCard } from "./highlightCards/EndpointBottleneckHighlightCard";
 import { EndpointChattyApiV2HighlightCard } from "./highlightCards/EndpointChattyApiV2HighlightCard";
@@ -100,14 +100,7 @@ export const TopIssues = () => {
 
   const renderContent = () => {
     if (isInitialLoading) {
-      return (
-        <EmptyStateCard
-          icon={RefreshIcon}
-          type={"lowSeverity"}
-          title={"Waiting for data"}
-          text={"Detected issues will appear here"}
-        />
-      );
+      return <CardSkeleton type={"asset"} />;
     }
 
     if (!data || data.topInsights.length === 0) {

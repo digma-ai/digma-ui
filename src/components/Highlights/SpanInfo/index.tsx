@@ -1,14 +1,13 @@
 import { RefObject, useEffect, useRef, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import { getAssetTypeInfo } from "../../Assets/utils";
+import { Skeleton } from "../../common/Skeleton";
 import { ArrowsInsideIcon } from "../../common/icons/12px/ArrowsInsideIcon";
 import { ArrowsOutsideIcon } from "../../common/icons/12px/ArrowsOutsideIcon";
 import { GlobeIcon } from "../../common/icons/16px/GlobeIcon";
-import { RefreshIcon } from "../../common/icons/16px/RefreshIcon";
 import { WrenchIcon } from "../../common/icons/16px/WrenchIcon";
 import { Tag } from "../../common/v3/Tag";
 import { Tooltip } from "../../common/v3/Tooltip";
-import { EmptyStateCard } from "../EmptyStateCard";
 import * as s from "./styles";
 import { useSpanInfoData } from "./useSpanInfoData";
 
@@ -44,7 +43,20 @@ export const SpanInfo = () => {
   }, []);
 
   if (!data) {
-    return <EmptyStateCard icon={RefreshIcon} title={"Waiting for data"} />;
+    return (
+      <s.Container>
+        <s.Header>
+          <s.TitleContainerSkeleton>
+            <Skeleton type={"rectangle"} width={24} />
+            <Skeleton type={"text"} width={96} />
+          </s.TitleContainerSkeleton>
+          <Skeleton type={"text"} width={81} />
+        </s.Header>
+        <s.ContentContainer>
+          <Skeleton type={"rectangle"} height={50} gradient={true} />
+        </s.ContentContainer>
+      </s.Container>
+    );
   }
 
   const assetTypeInfo = getAssetTypeInfo(data.assetTypeId);
@@ -142,14 +154,12 @@ export const SpanInfo = () => {
             </s.Stat>
             <s.Stat>
               <s.StatLabel>Environments</s.StatLabel>
-
               <s.StatValue>
                 <Tooltip title={environmentsTooltipTitle}>
                   <s.StatValueContainer>
                     <s.StatIconContainer>
                       <GlobeIcon color={"currentColor"} size={16} />
                     </s.StatIconContainer>
-
                     <s.StatValueText>
                       {data.environments[0].name}
                     </s.StatValueText>

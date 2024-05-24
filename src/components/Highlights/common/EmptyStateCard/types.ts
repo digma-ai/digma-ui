@@ -1,5 +1,5 @@
 import { ComponentType } from "react";
-import { IconProps } from "../../common/icons/types";
+import { IconProps } from "../../../common/icons/types";
 
 type EmptyStateType = "default" | "success" | "lowSeverity";
 

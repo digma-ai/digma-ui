@@ -11,6 +11,7 @@ import { NoDataMessage } from "../NoDataMessage";
 import { actions } from "../actions";
 import { checkIfAnyFiltersApplied, getAssetTypeInfo } from "../utils";
 import { AssetTypeListItem } from "./AssetTypeListItem";
+import { AssetTypeListItemSkeleton } from "./AssetTypeListItemSkeleton";
 import * as s from "./styles";
 import {
   AssetCategoriesData,
@@ -59,7 +60,7 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
   const previousData = usePrevious(data);
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
-  const [isInitialLoading, setIsInitialLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const config = useContext(ConfigContext);
   const previousEnvironment = usePrevious(config.environment);
   const refreshTimerId = useRef<number>();
@@ -94,10 +95,11 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
 
   useEffect(() => {
     refreshData();
-    setIsInitialLoading(true);
+    setIsLoading(true);
 
     const handleCategoriesData = (data: unknown, timeStamp: number) => {
       setData(data as AssetCategoriesData);
+      setIsLoading(false);
       setLastSetDataTimeStamp(timeStamp);
     };
 
@@ -159,60 +161,64 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
     }
   }, [props.data]);
 
-  useEffect(() => {
-    if (!previousData && data) {
-      setIsInitialLoading(false);
-    }
-  }, [previousData, data]);
-
   const handleAssetTypeClick = (assetTypeId: string) => {
     props.onAssetTypeSelect(assetTypeId);
   };
 
-  if (isInitialLoading) {
-    return <NoDataMessage type={"loading"} />;
-  }
+  const renderContent = () => {
+    if (data?.assetCategories.every((x) => x.count === 0)) {
+      if (areAnyFiltersApplied) {
+        return <NoDataMessage type={"noSearchResults"} />;
+      }
 
-  if (data?.assetCategories.every((x) => x.count === 0)) {
-    if (areAnyFiltersApplied) {
-      return <NoDataMessage type={"noSearchResults"} />;
+      if (config.scope !== null) {
+        return <NoDataMessage type={"noDataForAsset"} />;
+      }
+
+      return <NoDataMessage type={"noDataYet"} />;
     }
 
-    if (config.scope !== null) {
-      return <NoDataMessage type={"noDataForAsset"} />;
-    }
+    const assetTypeListItems = ASSET_TYPE_IDS.map((assetTypeId) => {
+      const assetTypeData = data?.assetCategories.find(
+        (x) => x.name === assetTypeId
+      );
+      const assetTypeInfo = getAssetTypeInfo(assetTypeId);
 
-    return <NoDataMessage type={"noDataYet"} />;
-  }
+      if (assetTypeData && assetTypeInfo) {
+        return {
+          ...assetTypeData,
+          ...assetTypeInfo
+        };
+      }
 
-  const assetTypeListItems = ASSET_TYPE_IDS.map((assetTypeId) => {
-    const assetTypeData = data?.assetCategories.find(
-      (x) => x.name === assetTypeId
+      return null;
+    }).filter((x) => !isNull(x) && x.count > 0) as AssetCategoryData[];
+
+    return (
+      <s.List>
+        {assetTypeListItems.map((x) => (
+          <AssetTypeListItem
+            id={x.name}
+            key={x.name}
+            icon={x?.icon}
+            entryCount={x.count}
+            label={x.label}
+            onAssetTypeClick={handleAssetTypeClick}
+          />
+        ))}
+      </s.List>
     );
-    const assetTypeInfo = getAssetTypeInfo(assetTypeId);
-
-    if (assetTypeData && assetTypeInfo) {
-      return {
-        ...assetTypeData,
-        ...assetTypeInfo
-      };
-    }
-
-    return null;
-  }).filter((x) => !isNull(x) && x.count > 0) as AssetCategoryData[];
+  };
 
   return (
-    <s.List>
-      {assetTypeListItems.map((x) => (
-        <AssetTypeListItem
-          id={x.name}
-          key={x.name}
-          icon={x?.icon}
-          entryCount={x.count}
-          label={x.label}
-          onAssetTypeClick={handleAssetTypeClick}
-        />
-      ))}
-    </s.List>
+    <s.StyledFadingContentSwitch switchFlag={isLoading}>
+      <s.List>
+        <AssetTypeListItemSkeleton />
+        <AssetTypeListItemSkeleton />
+        <AssetTypeListItemSkeleton />
+        <AssetTypeListItemSkeleton />
+      </s.List>
+      {renderContent()}
+    </s.StyledFadingContentSwitch>
   );
 };

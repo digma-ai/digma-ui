@@ -135,10 +135,6 @@ export const Assets = ({ selectedTypeId }: AssetsProps) => {
       return <NoDataMessage type={"noDataYet"} />;
     }
 
-    if (!selectedFilters) {
-      return <NoDataMessage type={"loading"} />;
-    }
-
     if (!selectedAssetTypeId) {
       return (
         <AssetTypeList

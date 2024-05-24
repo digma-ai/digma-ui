@@ -1,8 +1,8 @@
 import { Meta, StoryObj } from "@storybook/react";
 
 import { EmptyStateCard } from ".";
-import { CrossCircleIcon } from "../../common/icons/16px/CrossCircleIcon";
-import { RefreshIcon } from "../../common/icons/16px/RefreshIcon";
+import { CrossCircleIcon } from "../../../common/icons/16px/CrossCircleIcon";
+import { RefreshIcon } from "../../../common/icons/16px/RefreshIcon";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof EmptyStateCard> = {

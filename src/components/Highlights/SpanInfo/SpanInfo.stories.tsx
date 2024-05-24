@@ -32,7 +32,7 @@ export const Default: Story = {
   }
 };
 
-export const LargeText: Story = {
+export const WithLongText: Story = {
   play: () => {
     window.setTimeout(() => {
       window.postMessage({

@@ -15,6 +15,7 @@ export interface InsightsCatalogProps {
   unreadCount?: number;
   isMarkingAsReadEnabled: boolean;
   hideInsightsStats?: boolean;
+  isLoading: boolean;
 }
 
 export enum ViewMode {

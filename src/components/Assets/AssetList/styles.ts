@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { subscriptMediumTypography } from "../../common/App/typographies";
+import { FadingContentSwitch } from "../../common/FadingContentSwitch";
 import {
   SORTING_ORDER,
   SortingMenuButtonProps,
@@ -8,6 +9,16 @@ import {
 } from "./types";
 
 export const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+`;
+
+export const StyledFadingContentSwitch = styled(FadingContentSwitch)`
+  height: 100%;
+`;
+
+export const FadingContentContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
