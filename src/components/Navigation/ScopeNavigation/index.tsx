@@ -97,7 +97,7 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
       const viewId = [view?.id, view?.path].filter((x) => Boolean(x)).join("/");
 
       const currentStep = historyManager.getCurrent();
-      if (!payload.triggeredByJcef) {
+      if (!payload.createHistoryStep) {
         historyManager.updateCurrent({ tabId: viewId });
         return;
       }

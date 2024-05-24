@@ -34,7 +34,7 @@ export interface ChangeViewPayload {
 
 export interface SetViewsPayload {
   views: TabData[];
-  triggeredByJcef: boolean;
+  createHistoryStep: boolean;
 }
 
 export interface AutoFixMissingDependencyPayload {
