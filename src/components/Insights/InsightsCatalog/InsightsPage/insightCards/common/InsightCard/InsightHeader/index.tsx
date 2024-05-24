@@ -1,16 +1,10 @@
 import { useContext } from "react";
 import { isString } from "../../../../../../../../typeGuards/isString";
 import { formatTimeDistance } from "../../../../../../../../utils/formatTimeDistance";
-import {
-  InsightTypeInfo,
-  getInsightTypeInfo
-} from "../../../../../../../../utils/getInsightTypeInfo";
-import { roundTo } from "../../../../../../../../utils/roundTo";
+import { getInsightTypeInfo } from "../../../../../../../../utils/getInsightTypeInfo";
 import { ConfigContext } from "../../../../../../../common/App/ConfigContext";
 import { Link } from "../../../../../../../common/v3/Link";
 import { NewTag } from "../../../../../../../common/v3/NewTag";
-import { Tag } from "../../../../../../../common/v3/Tag";
-import { TagType } from "../../../../../../../common/v3/Tag/types";
 import { Tooltip } from "../../../../../../../common/v3/Tooltip";
 import { isEndpointInsight, isSpanInsight } from "../../../../../../typeGuards";
 import {
@@ -18,35 +12,13 @@ import {
   InsightStatus
 } from "../../../../../../types";
 import { AsyncTag } from "./AsyncTag";
+import { InsightIcon } from "./InsightIcon";
 import { InsightStatusBadge } from "./InsightStatusBadge";
 import { InsightStatusTooltipContent } from "./InsightStatusTooltipContent";
 import * as s from "./styles";
 import { InsightHeaderProps } from "./types";
 
 const IS_NEW_TIME_LIMIT = 1000 * 60 * 10; // in milliseconds
-
-const getTagType = (criticality: number): TagType => {
-  if (criticality < 0.2) {
-    return "lowSeverity";
-  }
-
-  if (criticality < 0.6) {
-    return "mediumSeverity";
-  }
-
-  return "highSeverity";
-};
-
-const getTagTitle = (
-  insightTypeInfo: InsightTypeInfo | undefined,
-  criticality: number
-) => {
-  const title = `${
-    insightTypeInfo ? `${insightTypeInfo.label}\n` : ""
-  }Criticality: ${roundTo(criticality * 100, 0)}%`;
-
-  return <s.TagTitle>{title}</s.TagTitle>;
-};
 
 const renderInsightStatusTooltipContent = (
   insight: GenericCodeObjectInsight
@@ -70,8 +42,6 @@ export const InsightHeader = ({
   const config = useContext(ConfigContext);
 
   const insightTypeInfo = getInsightTypeInfo(insight.type);
-  const tagType = getTagType(insight.criticality);
-  const tagTitle = getTagTitle(insightTypeInfo, insight.criticality);
   const statusTooltipContent = renderInsightStatusTooltipContent(insight);
   const isNew = isString(insight.firstDetected)
     ? Date.now() - new Date(insight.firstDetected).valueOf() < IS_NEW_TIME_LIMIT
@@ -91,14 +61,9 @@ export const InsightHeader = ({
     <s.Container>
       <s.TitleRow>
         {insightTypeInfo && (
-          <Tag
-            title={tagTitle}
-            type={tagType}
-            content={
-              <s.InsightIconContainer>
-                <insightTypeInfo.icon color={"currentColor"} size={16} />
-              </s.InsightIconContainer>
-            }
+          <InsightIcon
+            insightTypeInfo={insightTypeInfo}
+            criticality={insight.criticality}
           />
         )}
         <s.Title>

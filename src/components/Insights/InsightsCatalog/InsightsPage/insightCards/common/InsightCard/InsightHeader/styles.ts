@@ -36,10 +36,6 @@ export const SpanInfoRow = styled.div`
   }
 `;
 
-export const TagTitle = styled.span`
-  white-space: pre;
-`;
-
 export const InfoContainer = styled.div`
   display: flex;
 `;
@@ -69,8 +65,4 @@ export const Description = styled.div`
   gap: 4px;
   display: flex;
   color: ${({ theme }) => theme.colors.v3.text.secondary};
-`;
-
-export const InsightIconContainer = styled.div`
-  display: flex;
 `;
