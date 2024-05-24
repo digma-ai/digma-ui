@@ -18,6 +18,7 @@ import {
   Environment,
   GlobalState,
   InsightStats,
+  RunConfiguration,
   Scope,
   UserInfo
 } from "./types";
@@ -271,6 +272,13 @@ export const App = (props: AppProps) => {
       }
     };
 
+    const handleSetRunConfiguration = (data: unknown) => {
+      setConfig((config) => ({
+        ...config,
+        runConfig: data as RunConfiguration
+      }));
+    };
+
     dispatcher.addActionListener(actions.SET_THEME, handleSetTheme);
     dispatcher.addActionListener(actions.SET_MAIN_FONT, handleSetMainFont);
     dispatcher.addActionListener(actions.SET_CODE_FONT, handleSetCodeFont);
@@ -339,6 +347,10 @@ export const App = (props: AppProps) => {
     dispatcher.addActionListener(
       actions.SET_IS_DIGMATHON_GAME_FINISHED,
       handleIsDigmathonGameFinished
+    );
+    dispatcher.addActionListener(
+      actions.SET_RUN_CONFIGURATION,
+      handleSetRunConfiguration
     );
 
     return () => {
@@ -419,6 +431,10 @@ export const App = (props: AppProps) => {
       dispatcher.removeActionListener(
         actions.SET_IS_DIGMATHON_GAME_FINISHED,
         handleIsDigmathonGameFinished
+      );
+      dispatcher.removeActionListener(
+        actions.SET_RUN_CONFIGURATION,
+        handleSetRunConfiguration
       );
     };
   }, []);

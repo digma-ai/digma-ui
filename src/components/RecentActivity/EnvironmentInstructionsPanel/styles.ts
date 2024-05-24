@@ -1,10 +1,12 @@
 import styled from "styled-components";
 import {
+  bodyBoldTypography,
   bodyMediumTypography,
+  bodySemiboldTypography,
+  footnoteRegularTypography,
   subscriptRegularTypography
 } from "../../common/App/typographies";
 import { CodeSnippet } from "../../common/CodeSnippet";
-import { Link as CommonLink } from "../../common/Link";
 import { Button } from "../../common/v3/Button";
 
 export const Container = styled.div`
@@ -15,120 +17,184 @@ export const Container = styled.div`
 `;
 
 export const Header = styled.div`
+  ${bodyMediumTypography}
+
   display: flex;
   gap: 8px;
   align-items: center;
   justify-content: space-between;
   color: ${({ theme }) => theme.colors.v3.text.primary};
-  ${bodyMediumTypography}
-`;
-
-export const ContentContainer = styled.div`
-  display: flex;
-  gap: 12px;
-`;
-
-export const Section = styled.div`
-  display: flex;
-  flex: 1 1 0;
-  padding: 16px 12px;
-  flex-direction: column;
-  gap: 8px;
-  border-radius: 8px;
-  background: ${({ theme }) => theme.colors.v3.surface.secondary};
-  border: 1px solid ${({ theme }) => theme.colors.v3.stroke.primary};
-  box-shadow: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "0 1px 5px 0 rgb(0 0 0 / 12%)";
-      case "dark":
-      case "dark-jetbrains":
-        return "0 1px 4px 0 rgb(0 0 0 / 45%)";
-    }
-  }};
-`;
-
-export const SectionHeader = styled.div`
-  display: flex;
-  gap: 4px;
-  align-items: center;
-`;
-
-export const SectionNumber = styled.span`
-  width: 18px;
-  height: 18px;
-  flex-shrink: 0;
-  font-size: 14px;
-  line-height: 100%;
-  font-weight: 500;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  background: #6a6dfa;
-`;
-
-export const SectionTitle = styled.span`
-  ${bodyMediumTypography}
-  color: ${({ theme }) => theme.colors.v3.text.primary};
-`;
-
-export const SectionContentContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  height: 100%;
-  color: ${({ theme }) => theme.colors.v3.text.secondary};
-  ${subscriptRegularTypography}
-`;
-
-export const Link = styled(CommonLink)`
-  text-transform: capitalize;
-`;
-
-export const ActionContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-export const AddToConfigContainer = styled.div`
-  display: flex;
-  gap: 8px;
-`;
-
-export const AddToConfigSuccessMessage = styled.span`
-  color: ${({ theme }) => theme.colors.v3.status.success};
-`;
-
-export const AddToConfigFailureMessage = styled.span`
-  color: ${({ theme }) => theme.colors.v3.status.high};
-`;
-
-export const IllustrationContainer = styled.div`
-  padding-top: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-`;
-
-export const RunOrDebugIllustration = styled.img`
-  width: 153px;
-  height: 38px;
-  margin: 24px 0;
-  border-radius: 8px;
-  object-fit: cover;
 `;
 
 export const CloseButton = styled(Button)`
   margin-left: auto;
 `;
 
-export const EnvironmentVariableCodeSnippet = styled(CodeSnippet)`
+export const Card = styled.div`
+  display: flex;
+  padding: 16px 12px;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 152px;
+  max-height: 200px;
+  border-radius: 8px;
+  background: ${({ theme }) => theme.colors.v3.surface.primary};
+  overflow: hidden;
+  box-sizing: border-box;
+`;
+
+export const ContentContainer = styled.div`
+  ${bodyBoldTypography}
+
+  display: flex;
+  gap: 12px;
+  align-items: stretch;
+  color: ${({ theme }) => theme.colors.v3.text.tertiary};
+
+  & > ${Card} {
+    flex: 1;
+  }
+`;
+
+export const CardDivider = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+export const CardHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: flex-start;
+`;
+
+export const CardTitleContainer = styled.div`
+  ${subscriptRegularTypography}
+
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: ${({ theme }) => theme.colors.v3.text.secondary};
+`;
+
+export const CardTitle = styled.div`
+  ${bodyMediumTypography}
+  color: ${({ theme }) => theme.colors.v3.text.primary};
+`;
+
+export const CardButtons = styled.div`
+  display: flex;
+  gap: 8px;
+  align-items: center;
+`;
+
+export const ActionButton = styled(Button)`
+  padding: 6px;
+`;
+
+export const RunConfigSetMessage = styled.div`
+  ${footnoteRegularTypography}
+
+  display: flex;
+  height: 28px;
+  padding: 4px 6px;
+  box-sizing: border-box;
+  align-items: center;
+  gap: 4px;
+  border-radius: 4px;
+  background: ${({ theme }) => theme.colors.v3.status.backgroundSuccess};
+  color: ${({ theme }) => theme.colors.v3.status.success};
+`;
+
+export const RunConfigSetMessageIconContainer = styled.div`
+  width: 12px;
+  height: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const CardContent = styled.div`
+  display: flex;
+  overflow: hidden;
+`;
+
+export const ColumnsContainer = styled.div`
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+  width: 100%;
+
+  & > * {
+    flex: 1;
+  }
+`;
+
+export const KeyValue = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow: hidden;
+`;
+
+export const Label = styled.span`
+  ${subscriptRegularTypography}
+
+  color: ${({ theme }) => theme.colors.v3.text.secondary};
+`;
+
+export const MultiLineCodeSnippet = styled(CodeSnippet)`
+  overflow: auto;
   flex-grow: 1;
 `;
 
 export const HighlightedCode = styled.span`
   color: ${({ theme }) => theme.colors.v3.text.link};
+`;
+
+export const SingleLineCodeSnippet = styled(CodeSnippet)`
+  height: 33px;
+
+  & > code {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+`;
+
+export const PublicEnvironmentConnectCardContent = styled(CardContent)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  gap: 8px;
+`;
+
+export const PublicEnvironmentIconBackground = styled.div`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: ${({ theme }) => theme.colors.v3.surface.sidePanelHeader};
+  color: ${({ theme }) => theme.colors.v3.icon.primary};
+`;
+
+export const PublicEnvironmentTextContainer = styled.div`
+  ${footnoteRegularTypography}
+
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+  color: ${({ theme }) => theme.colors.v3.text.tertiary};
+`;
+
+export const PublicEnvironmentTitle = styled.div`
+  ${bodySemiboldTypography}
+
+  color: ${({ theme }) => theme.colors.v3.text.primary};
 `;

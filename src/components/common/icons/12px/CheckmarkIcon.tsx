@@ -2,7 +2,7 @@ import React from "react";
 import { useIconProps } from "../hooks";
 import { IconProps } from "../types";
 
-const CheckIconComponent = (props: IconProps) => {
+const CheckmarkIconComponent = (props: IconProps) => {
   const { size, color } = useIconProps(props);
 
   return (
@@ -22,4 +22,4 @@ const CheckIconComponent = (props: IconProps) => {
   );
 };
 
-export const CheckIcon = React.memo(CheckIconComponent);
+export const CheckmarkIcon = React.memo(CheckmarkIconComponent);

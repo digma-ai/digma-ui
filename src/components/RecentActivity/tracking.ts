@@ -18,7 +18,9 @@ export const trackingEvents = addPrefix(
     DIGMATHON_CONGRATULATIONS_VIEWED: "digmathon congratulations viewed",
     LIVE_VIEW_CLOSE_BUTTON_CLICKED: "live view close button clicked",
     OBSERVABILITY_TOGGLE_SWITCHED: "observability toggle switched",
-    ADD_TO_RUN_CONFIG_CLICKED: "add to run config clicked",
+    SET_ACTIVE_RUN_CONFIG_BUTTON_CLICKED:
+      "set active run config button clicked",
+    REMOVE_FROM_RUN_CONFIG_LINK_CLICKED: "remove from run config link clicked",
     LOCAL_REGISTRATION_FORM_SUBMITTED: "local registration form submitted",
     CREATE_NEW_ENVIRONMENT_FORM_SUBMITTED:
       "create new environment form submitted",

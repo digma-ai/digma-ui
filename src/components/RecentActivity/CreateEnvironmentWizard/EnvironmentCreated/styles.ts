@@ -28,7 +28,7 @@ export const Description = styled.div`
   color: ${({ theme }) => theme.colors.v3.text.secondary};
 `;
 
-export const CheckIconContainer = styled.div`
+export const CheckMarkIconContainer = styled.div`
   display: flex;
   color: ${({ theme }) => theme.colors.v3.status.success};
 `;
