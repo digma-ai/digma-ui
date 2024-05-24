@@ -71,7 +71,7 @@ export class HistoryManager {
       this.itemsCount++;
     }
 
-    console.debug("History: pushed: ", this.getHistoryData());
+    this.debug && console.log("History pushed: ", this.getHistoryData());
   }
 
   canMoveBack() {
@@ -89,7 +89,7 @@ export class HistoryManager {
     this.current = this.current.previous;
     this.currentIndex--;
 
-    console.debug("History: back: ", this.getHistoryData());
+    this.debug && console.log("History back: ", this.getHistoryData());
     return this.getCurrent();
   }
 
@@ -108,7 +108,7 @@ export class HistoryManager {
     this.current = this.current.next;
     this.currentIndex++;
 
-    console.debug("History: forward: ", this.getHistoryData());
+    this.debug && console.log("History forward: ", this.getHistoryData());
     return this.getCurrent();
   }
 
@@ -125,7 +125,8 @@ export class HistoryManager {
       this.current.value = { ...this.current.value, ...newValue };
     }
 
-    console.debug("History: current updated: ", this.getHistoryData());
+    this.debug &&
+      console.log("History current updated: ", this.getHistoryData());
   }
 
   getHistoryData() {
