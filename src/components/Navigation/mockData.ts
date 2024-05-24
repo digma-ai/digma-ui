@@ -67,5 +67,5 @@ export const mockedViewsData: SetViewsPayload = {
       cardName: "tests"
     }
   ],
-  triggeredByJcef: false
+  createHistoryStep: false
 };

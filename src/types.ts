@@ -83,6 +83,7 @@ export interface ChangeScopePayload {
   span: {
     spanCodeObjectId: string;
   } | null;
+  forceNavigation?: boolean;
 }
 
 export interface ChangeViewPayload {

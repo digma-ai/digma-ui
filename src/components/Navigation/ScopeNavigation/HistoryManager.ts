@@ -32,6 +32,7 @@ export class HistoryManager {
   private current: Node<HistoryStep> | null = null;
   private itemsCount = 0;
   private currentIndex = -1;
+  private debug = false;
 
   constructor(data?: HistoryData) {
     if (data) {
@@ -69,6 +70,8 @@ export class HistoryManager {
     } else {
       this.itemsCount++;
     }
+
+    this.debug && console.log("History pushed: ", this.getHistoryData());
   }
 
   canMoveBack() {
@@ -85,6 +88,8 @@ export class HistoryManager {
 
     this.current = this.current.previous;
     this.currentIndex--;
+
+    this.debug && console.log("History back: ", this.getHistoryData());
     return this.getCurrent();
   }
 
@@ -102,6 +107,8 @@ export class HistoryManager {
 
     this.current = this.current.next;
     this.currentIndex++;
+
+    this.debug && console.log("History forward: ", this.getHistoryData());
     return this.getCurrent();
   }
 
@@ -117,6 +124,9 @@ export class HistoryManager {
     if (this.current) {
       this.current.value = { ...this.current.value, ...newValue };
     }
+
+    this.debug &&
+      console.log("History current updated: ", this.getHistoryData());
   }
 
   getHistoryData() {
