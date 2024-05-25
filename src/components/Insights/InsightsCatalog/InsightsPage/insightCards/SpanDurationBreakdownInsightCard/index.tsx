@@ -75,7 +75,7 @@ export const SpanDurationBreakdownInsightCard = ({
   const config = useContext(ConfigContext);
   const isQuantitySupported = getFeatureFlagValue(
     config,
-    FeatureFlag.QUANTITY_DURATION_BREAKDOWN
+    FeatureFlag.IS_DURATION_BREAKDOWN_QUANTITY_ENABLED
   );
 
   const columnHelper = createColumnHelper<SpanDurationBreakdownEntry>();

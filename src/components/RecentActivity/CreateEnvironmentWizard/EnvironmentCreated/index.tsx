@@ -1,4 +1,4 @@
-import { CheckCircleIcon } from "../../../common/icons/20px/CheckCircleIcon";
+import { CheckmarkCircleIcon } from "../../../common/icons/20px/CheckmarkCircleIcon";
 import { Button } from "../../../common/v3/Button";
 import * as s from "./styles";
 import { EnvironmentCreatedProps } from "./types";
@@ -8,9 +8,9 @@ export const EnvironmentCreated = ({
 }: EnvironmentCreatedProps) => {
   return (
     <s.Container>
-      <s.CheckIconContainer>
-        <CheckCircleIcon size={20} color={"currentColor"} />
-      </s.CheckIconContainer>
+      <s.CheckMarkIconContainer>
+        <CheckmarkCircleIcon size={20} color={"currentColor"} />
+      </s.CheckMarkIconContainer>
       <s.Info>
         <s.Title>Environment Created</s.Title>
         <s.Description>

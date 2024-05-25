@@ -1,4 +1,4 @@
-import { CheckIcon } from "../../../../common/icons/12px/CheckIcon";
+import { CheckmarkIcon } from "../../../../common/icons/12px/CheckmarkIcon";
 import { ErrorIcon } from "../../../../common/icons/16px/ErrorIcon";
 import { StepStatus } from "../../types";
 import * as s from "./styles";
@@ -8,9 +8,9 @@ const getState = (index: number, state: StepStatus) => {
   switch (state) {
     case "completed":
       return (
-        <s.CheckIconContainer>
-          <CheckIcon color={"currentColor"} />
-        </s.CheckIconContainer>
+        <s.CheckMarkIconContainer>
+          <CheckmarkIcon color={"currentColor"} />
+        </s.CheckMarkIconContainer>
       );
     case "error":
       return (

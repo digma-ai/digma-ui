@@ -24,7 +24,9 @@ const mockedConfig = {
   ...initialState,
   backendInfo: {
     applicationVersion:
-      featureFlagMinBackendVersions[FeatureFlag.QUANTITY_DURATION_BREAKDOWN],
+      featureFlagMinBackendVersions[
+        FeatureFlag.IS_DURATION_BREAKDOWN_QUANTITY_ENABLED
+      ],
     deploymentType: DeploymentType.HELM,
     centralize: true
   }

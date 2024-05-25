@@ -91,7 +91,7 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
       }
     };
 
-    const handleViewChange = (data: unknown) => {
+    const handleSetViews = (data: unknown) => {
       const payload = data as SetViewsPayload;
       const view = payload.views.find((x) => x.isSelected);
       const viewId = [view?.id, view?.path].filter((x) => Boolean(x)).join("/");
@@ -112,11 +112,11 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
     };
 
     dispatcher.addActionListener(globalActions.SET_SCOPE, handleSetScope);
-    dispatcher.addActionListener(actions.SET_VIEWS, handleViewChange);
+    dispatcher.addActionListener(actions.SET_VIEWS, handleSetViews);
 
     return () => {
       dispatcher.removeActionListener(globalActions.SET_SCOPE, handleSetScope);
-      dispatcher.removeActionListener(actions.SET_VIEWS, handleViewChange);
+      dispatcher.removeActionListener(actions.SET_VIEWS, handleSetViews);
     };
   }, [environment, props.currentTabId, historyManager]);
 
