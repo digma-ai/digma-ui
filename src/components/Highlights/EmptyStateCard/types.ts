@@ -12,11 +12,15 @@ export interface EmptyStateCardProps {
   blurredContent?: JSX.Element;
 }
 
+export interface ContainerProps {
+  $blurredContent?: boolean;
+  $height: number;
+}
+
 export interface IconContainerProps {
   $type?: EmptyStateType;
 }
 
 export interface CardProps {
   $blurredBackground?: boolean;
-  $height: number;
 }

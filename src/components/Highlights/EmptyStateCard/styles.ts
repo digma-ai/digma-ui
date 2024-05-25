@@ -4,13 +4,14 @@ import {
   subscriptRegularTypography
 } from "../../common/App/typographies";
 import { Card as CommonCard } from "../../common/v3/Card";
-import { CardProps, IconContainerProps } from "./types";
+import { CardProps, ContainerProps, IconContainerProps } from "./types";
 
 const MIN_HEIGHT = 140; // in pixels
 
-export const Container = styled.div`
+export const Container = styled.div<ContainerProps>`
   position: relative;
-  min-height: ${MIN_HEIGHT}px;
+  height: ${({ $height, $blurredContent }) =>
+    $blurredContent ? $height : MIN_HEIGHT}px;
 `;
 
 export const BlurredContent = styled.div`
@@ -19,10 +20,9 @@ export const BlurredContent = styled.div`
 
 export const Card = styled(CommonCard)<CardProps>`
   box-sizing: border-box;
-  height: ${({ $height, $blurredBackground }) =>
-    $blurredBackground ? $height : MIN_HEIGHT}px;
   position: absolute;
   width: 100%;
+  height: 100%;
 
   ${({ $blurredBackground }) =>
     $blurredBackground

@@ -13,10 +13,9 @@ export const EmptyStateCard = ({
   const { observe, height } = useDimensions();
 
   return (
-    <s.Container>
+    <s.Container $blurredContent={Boolean(blurredContent)} $height={height}>
       <s.BlurredContent ref={observe}>{blurredContent}</s.BlurredContent>
       <s.Card
-        $height={height}
         $blurredBackground={Boolean(blurredContent)}
         content={
           <s.ContentContainer>
