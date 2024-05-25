@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { subscriptRegularTypography } from "../../../common/App/typographies";
+import { bodySemiboldTypography } from "../../../common/App/typographies";
 
 export const Container = styled.div`
   display: flex;
@@ -8,11 +8,11 @@ export const Container = styled.div`
 `;
 
 export const Header = styled.div`
-  ${subscriptRegularTypography}
+  ${bodySemiboldTypography}
 
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 4px;
-  color: ${({ theme }) => theme.colors.v3.text.secondary};
+  color: ${({ theme }) => theme.colors.v3.text.primary};
 `;

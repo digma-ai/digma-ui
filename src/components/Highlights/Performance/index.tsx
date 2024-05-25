@@ -9,6 +9,7 @@ import { getDurationString } from "../../../utils/getDurationString";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { CrossCircleIcon } from "../../common/icons/16px/CrossCircleIcon";
 import { RefreshIcon } from "../../common/icons/16px/RefreshIcon";
+import { TimerIcon } from "../../common/icons/16px/TimerIcon";
 import { Card } from "../../common/v3/Card";
 import { Tag } from "../../common/v3/Tag";
 import { EmptyStateCard } from "../EmptyStateCard";
@@ -125,7 +126,18 @@ export const Performance = () => {
 
     return (
       <Card
-        header={<s.CardTitle>Duration</s.CardTitle>}
+        header={
+          <s.CardTitle>
+            <Tag
+              content={
+                <s.CardIconContainer>
+                  <TimerIcon color={"currentColor"} size={16} />
+                </s.CardIconContainer>
+              }
+            />
+            Duration
+          </s.CardTitle>
+        }
         content={
           <Table<EnvironmentPerformanceData>
             columns={columns}

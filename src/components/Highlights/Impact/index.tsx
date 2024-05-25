@@ -10,6 +10,7 @@ import { ConfigContext } from "../../common/App/ConfigContext";
 import { getImpactScoreLabel } from "../../common/ImpactScore";
 import { InfinityIcon } from "../../common/icons/16px/InfinityIcon";
 import { RefreshIcon } from "../../common/icons/16px/RefreshIcon";
+import { TargetIcon } from "../../common/icons/16px/TargetIcon";
 import { Button } from "../../common/v3/Button";
 import { Card } from "../../common/v3/Card";
 import { Tag } from "../../common/v3/Tag";
@@ -23,6 +24,30 @@ import { trackingEvents } from "../tracking";
 import * as s from "./styles";
 import { EnvironmentImpactData } from "./types";
 import { useImpactData } from "./useImpactData";
+
+const demoData: EnvironmentImpactData[] = [
+  {
+    environmentName: "Prod",
+    environmentId: "1",
+    rank: 1,
+    rankNormalized: 0.9,
+    impact: 0.8
+  },
+  {
+    environmentName: "Stage",
+    environmentId: "2",
+    rank: 2,
+    rankNormalized: 0.5,
+    impact: 0.4
+  },
+  {
+    environmentName: "Dev",
+    environmentId: "3",
+    rank: 3,
+    rankNormalized: 0.4,
+    impact: 0.3
+  }
+];
 
 const getRankTagType = (normalizedRank: number) => {
   if (normalizedRank >= 0.9) {
@@ -95,7 +120,18 @@ export const Impact = () => {
 
     return (
       <Card
-        header={<s.CardTitle>Impact statistics</s.CardTitle>}
+        header={
+          <s.CardTitle>
+            <Tag
+              content={
+                <s.CardIconContainer>
+                  <TargetIcon color={"currentColor"} size={16} />
+                </s.CardIconContainer>
+              }
+            />
+            Impact statistics
+          </s.CardTitle>
+        }
         content={
           <Table<EnvironmentImpactData>
             columns={columns}
@@ -121,6 +157,7 @@ export const Impact = () => {
           icon={InfinityIcon}
           title={"Unlock Impact Analysis"}
           text={"Connect a CI environment to measure performance impact"}
+          blurredContent={renderImpactCard(demoData)}
           customContent={
             <Button
               buttonType={"secondary"}

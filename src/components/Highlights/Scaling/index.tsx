@@ -6,12 +6,15 @@ import { ChangeViewPayload } from "../../../types";
 import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { getDurationString } from "../../../utils/getDurationString";
+import { InsightStatus } from "../../Insights/types";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { CrossCircleIcon } from "../../common/icons/16px/CrossCircleIcon";
+import { MeterHighIcon } from "../../common/icons/16px/MeterHighIcon";
 import { RefreshIcon } from "../../common/icons/16px/RefreshIcon";
 import { CheckCircleIcon } from "../../common/icons/20px/CheckCircleIcon";
 import { Button } from "../../common/v3/Button";
 import { Card } from "../../common/v3/Card";
+import { Tag } from "../../common/v3/Tag";
 import { EmptyStateCard } from "../EmptyStateCard";
 import { addEnvironmentColumns } from "../TopIssues/highlightCards/addEnvironmentColumns";
 import { EnvironmentData } from "../TopIssues/types";
@@ -23,6 +26,51 @@ import { trackingEvents } from "../tracking";
 import * as s from "./styles";
 import { EnvironmentScalingData } from "./types";
 import { useScalingData } from "./useScalingData";
+
+const demoData: EnvironmentData<EnvironmentScalingData>[] = [
+  {
+    environmentId: "1",
+    environmentName: "Dev",
+    insightStatus: InsightStatus.Active,
+    criticality: 0.7,
+    metrics: {
+      concurrency: 31,
+      duration: {
+        value: 225.86,
+        unit: "sec",
+        raw: 225860000000
+      }
+    }
+  },
+  {
+    environmentId: "2",
+    environmentName: "Prod",
+    insightStatus: InsightStatus.InEvaluation,
+    criticality: 0.5,
+    metrics: {
+      concurrency: 12,
+      duration: {
+        value: 4.98,
+        unit: "sec",
+        raw: 4980000000
+      }
+    }
+  },
+  {
+    environmentId: "3",
+    environmentName: "Stage",
+    insightStatus: InsightStatus.Regression,
+    criticality: 0.1,
+    metrics: {
+      concurrency: 43,
+      duration: {
+        value: 2001.12,
+        unit: "sec",
+        raw: 2001120000000
+      }
+    }
+  }
+];
 
 export const Scaling = () => {
   const { data, getData } = useScalingData();
@@ -78,7 +126,18 @@ export const Scaling = () => {
 
     return (
       <Card
-        header={<s.CardTitle>Scaling badly</s.CardTitle>}
+        header={
+          <s.CardTitle>
+            <Tag
+              content={
+                <s.CardIconContainer>
+                  <MeterHighIcon color={"currentColor"} size={16} />
+                </s.CardIconContainer>
+              }
+            />
+            Scaling badly
+          </s.CardTitle>
+        }
         content={
           <Table<EnvironmentData<EnvironmentScalingData>>
             columns={columns}
@@ -119,6 +178,7 @@ export const Scaling = () => {
     if (data?.dataState === "NoData") {
       return (
         <EmptyStateCard
+          blurredContent={renderScalingCard(demoData)}
           icon={CrossCircleIcon}
           title={"Unlock Scaling Issues"}
           text={"Connect a CI/Prod environment to run code at scale"}

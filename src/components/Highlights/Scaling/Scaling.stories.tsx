@@ -47,7 +47,7 @@ export const NoData: Story = {
       window.postMessage({
         type: "digma",
         action: actions.SET_HIGHLIGHTS_SCALING_DATA,
-        payload: { ...mockedScalingData, dataState: "noData" }
+        payload: { ...mockedScalingData, dataState: "NoData" }
       });
     });
   }
@@ -66,7 +66,7 @@ export const PartialData: Story = {
       window.postMessage({
         type: "digma",
         action: actions.SET_HIGHLIGHTS_SCALING_DATA,
-        payload: { ...mockedScalingData, dataState: "partial" }
+        payload: { ...mockedScalingData, dataState: "Partial" }
       });
     });
   }
@@ -85,7 +85,7 @@ export const ScalingWell: Story = {
       window.postMessage({
         type: "digma",
         action: actions.SET_HIGHLIGHTS_SCALING_DATA,
-        payload: { ...mockedScalingData, dataState: "scalingWell" }
+        payload: { ...mockedScalingData, dataState: "ScalingWell" }
       });
     });
   }

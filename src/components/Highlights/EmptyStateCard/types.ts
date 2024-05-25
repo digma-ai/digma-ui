@@ -9,8 +9,14 @@ export interface EmptyStateCardProps {
   title?: string;
   text?: string;
   customContent?: React.ReactNode;
+  blurredContent?: JSX.Element;
 }
 
 export interface IconContainerProps {
   $type?: EmptyStateType;
+}
+
+export interface CardProps {
+  $blurredBackground?: boolean;
+  $height: number;
 }
