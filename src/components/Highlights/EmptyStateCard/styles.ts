@@ -1,14 +1,36 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import {
   subscriptMediumTypography,
   subscriptRegularTypography
 } from "../../common/App/typographies";
 import { Card as CommonCard } from "../../common/v3/Card";
-import { IconContainerProps } from "./types";
+import { CardProps, ContainerProps, IconContainerProps } from "./types";
 
-export const Card = styled(CommonCard)`
+const MIN_HEIGHT = 140; // in pixels
+
+export const Container = styled.div<ContainerProps>`
+  position: relative;
+  height: ${({ $height, $blurredContent }) =>
+    $blurredContent ? $height : MIN_HEIGHT}px;
+`;
+
+export const BlurredContent = styled.div`
+  position: absolute;
+`;
+
+export const Card = styled(CommonCard)<CardProps>`
   box-sizing: border-box;
-  height: 140px;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+
+  ${({ $blurredBackground }) =>
+    $blurredBackground
+      ? css`
+          background: none;
+          backdrop-filter: blur(4px);
+        `
+      : ""};
 `;
 
 export const ContentContainer = styled.div`

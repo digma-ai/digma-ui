@@ -1,8 +1,11 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
+import { usePagination } from "../../../hooks/usePagination";
 import { usePrevious } from "../../../hooks/usePrevious";
+import { ConfigContext } from "../../common/App/ConfigContext";
 import { CrossCircleIcon } from "../../common/icons/16px/CrossCircleIcon";
 import { RefreshIcon } from "../../common/icons/16px/RefreshIcon";
 import { EmptyStateCard } from "../EmptyStateCard";
+import { CarouselPagination } from "../common/CarouselPagination";
 import { Section } from "../common/Section";
 import { EndpointBottleneckHighlightCard } from "./highlightCards/EndpointBottleneckHighlightCard";
 import { EndpointChattyApiV2HighlightCard } from "./highlightCards/EndpointChattyApiV2HighlightCard";
@@ -32,6 +35,8 @@ import {
 } from "./typeGuards";
 import { GenericMetrics, HighlightData } from "./types";
 import { useTopIssuesData } from "./useTopIssuesData";
+
+const PAGE_SIZE = 2;
 
 const renderHighlightCard = (highlight: HighlightData<GenericMetrics>) => {
   if (isEndpointBottleneckHighlight(highlight)) {
@@ -87,6 +92,12 @@ export const TopIssues = () => {
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const { data, getData } = useTopIssuesData();
   const previousData = usePrevious(data);
+  const config = useContext(ConfigContext);
+  const [pageItems, page, setPage] = usePagination(
+    data?.topInsights || [],
+    PAGE_SIZE,
+    config.scope?.span?.spanCodeObjectId
+  );
 
   useEffect(() => {
     getData();
@@ -120,10 +131,25 @@ export const TopIssues = () => {
       );
     }
 
-    return data.topInsights.map((x) => (
+    return pageItems.map((x) => (
       <Fragment key={x.insightType}>{renderHighlightCard(x)}</Fragment>
     ));
   };
 
-  return <Section title={"Top Issues"}>{renderContent()}</Section>;
+  return (
+    <Section
+      title={"Top Issues"}
+      toolbarContent={
+        <CarouselPagination
+          itemsCount={data?.topInsights.length || 0}
+          onPageChange={setPage}
+          pageSize={PAGE_SIZE}
+          page={page}
+          trackingEventPrefix={"highlights top issues"}
+        />
+      }
+    >
+      {renderContent()}
+    </Section>
+  );
 };

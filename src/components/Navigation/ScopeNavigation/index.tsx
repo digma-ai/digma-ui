@@ -127,7 +127,7 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
     }
   };
 
-  const handleNexClick = () => {
+  const handleForwardClick = () => {
     const currentStep = historyManager.forward();
     if (currentStep && currentStep.scope) {
       changeScope(currentStep.scope);
@@ -139,7 +139,7 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
       isBackDisabled={!historyManager.canMoveBack()}
       isForwardDisabled={!historyManager.canMoveForward()}
       onGoBack={handleBackClick}
-      onGoForward={handleNexClick}
+      onGoForward={handleForwardClick}
     />
   );
 };
