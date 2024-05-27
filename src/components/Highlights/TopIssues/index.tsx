@@ -1,4 +1,5 @@
 import { Fragment, useContext, useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import { usePagination } from "../../../hooks/usePagination";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { ConfigContext } from "../../common/App/ConfigContext";
@@ -132,7 +133,7 @@ export const TopIssues = () => {
     }
 
     return pageItems.map((x) => (
-      <Fragment key={x.insightType}>{renderHighlightCard(x)}</Fragment>
+      <Fragment key={`${uuidv4()}`}>{renderHighlightCard(x)}</Fragment>
     ));
   };
 
