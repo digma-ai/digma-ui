@@ -196,6 +196,7 @@ export const Scaling = () => {
     if (data?.dataState === "Partial") {
       return (
         <EmptyStateCard
+          blurredContent={renderScalingCard(demoData)}
           type={"lowSeverity"}
           icon={RefreshIcon}
           title={"Collecting data"}
