@@ -7,12 +7,25 @@ import { sendMessageToWebService } from "./web/sendMessageToWebService";
 const isDigmaMessageEvent = (e: MessageEvent): e is DigmaMessageEvent =>
   isObject(e.data) && e.data.type === "digma";
 
+const OUTGOING_MESSAGE_ACTION_ID_CONSOLE_STYLE =
+  "color: blue; font-weight: bold";
+const FAILED_OUTGOING_MESSAGE_ACTION_ID_CONSOLE_STYLE =
+  "color: red; font-weight: bold";
+const INCOMING_MESSAGE_ACTION_ID_CONSOLE_STYLE =
+  "color: green; font-weight: bold";
+
 export const initializeDigmaMessageListener = (
   dispatcher: ActionDispatcher
 ) => {
   const handleDigmaMessage = (e: MessageEvent) => {
     if (isDigmaMessageEvent(e)) {
-      console.debug("Digma message received: ", e);
+      console.debug(
+        `Digma message received: %c${e.data.action}
+%cRaw message: %O`,
+        INCOMING_MESSAGE_ACTION_ID_CONSOLE_STYLE,
+        null,
+        e.data
+      );
       dispatcher.dispatch(e.timeStamp, e.data.action, e.data.payload);
     }
   };
@@ -27,8 +40,6 @@ export const initializeDigmaMessageListener = (
 export const sendMessage = <T>(
   message: DigmaOutgoingMessageData<T>
 ): string | undefined => {
-  console.debug("Digma message to send:", message);
-
   switch (platform) {
     case "Web":
       sendMessageToWebService(message);
@@ -36,7 +47,13 @@ export const sendMessage = <T>(
     case "VS Code":
       if (window.sendMessageToVSCode) {
         window.sendMessageToVSCode(message);
-        console.debug("Digma message has been sent to VS Code: ", message);
+        console.debug(
+          `Digma message has been successfully sent to VS Code: %c${message.action}
+%cRaw message: %O`,
+          OUTGOING_MESSAGE_ACTION_ID_CONSOLE_STYLE,
+          null,
+          message
+        );
       }
       break;
     case "JetBrains":
@@ -45,13 +62,23 @@ export const sendMessage = <T>(
           request: JSON.stringify(message),
           onSuccess: function (response) {
             console.debug(
-              "Digma message cefQuery has been successfully sent: %s",
+              `Digma message has been successfully handled by JCEF: %c${message.action}
+%cRaw message: %O
+Response: %O`,
+              OUTGOING_MESSAGE_ACTION_ID_CONSOLE_STYLE,
+              null,
+              message,
               response
             );
           },
-          onFailure: function (error_code, error_message) {
+          onFailure: function (error_code: number, error_message: string) {
             console.error(
-              " Digma message failed to send cefQuery: %d, %s",
+              `Digma message has failed to be handled by JCEF: %c${message.action}
+%cRaw message: %O
+%cError code: %d
+Error message: %s`,
+              FAILED_OUTGOING_MESSAGE_ACTION_ID_CONSOLE_STYLE,
+              null,
               error_code,
               error_message
             );

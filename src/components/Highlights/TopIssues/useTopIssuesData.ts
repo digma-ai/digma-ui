@@ -16,15 +16,21 @@ export const useTopIssuesData = () => {
   const refreshTimerId = useRef<number>();
 
   const getData = useCallback(() => {
-    window.sendMessageToDigma<GetHighlightsTopIssuesDataPayload>({
-      action: mainActions.GET_HIGHLIGHTS_TOP_ISSUES_DATA,
-      payload: {
-        query: {
-          scopedCodeObjectId: config.scope?.span?.spanCodeObjectId || null,
-          environments: config.environments?.map((env) => env.id) || []
+    if (
+      config.scope?.span?.spanCodeObjectId &&
+      config.environments &&
+      config.environments.length > 0
+    ) {
+      window.sendMessageToDigma<GetHighlightsTopIssuesDataPayload>({
+        action: mainActions.GET_HIGHLIGHTS_TOP_ISSUES_DATA,
+        payload: {
+          query: {
+            scopedCodeObjectId: config.scope?.span?.spanCodeObjectId,
+            environments: config.environments?.map((env) => env.id)
+          }
         }
-      }
-    });
+      });
+    }
   }, [config.scope?.span?.spanCodeObjectId, config.environments]);
   const previousGetData = usePrevious(getData);
 
@@ -37,10 +43,9 @@ export const useTopIssuesData = () => {
   }, [previousGetData, getData]);
 
   useEffect(() => {
-    if (
-      previousLastSetDataTimeStamp &&
-      previousLastSetDataTimeStamp !== lastSetDataTimeStamp
-    ) {
+    if (previousLastSetDataTimeStamp !== lastSetDataTimeStamp) {
+      window.clearTimeout(refreshTimerId.current);
+
       refreshTimerId.current = window.setTimeout(() => {
         getData();
       }, REFRESH_INTERVAL);
@@ -59,6 +64,7 @@ export const useTopIssuesData = () => {
     );
 
     return () => {
+      window.clearTimeout(refreshTimerId.current);
       dispatcher.removeActionListener(
         mainActions.SET_HIGHLIGHTS_TOP_ISSUES_DATA,
         handleTopIssuesData

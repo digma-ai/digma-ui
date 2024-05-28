@@ -15,15 +15,21 @@ export const useScalingData = () => {
   const refreshTimerId = useRef<number>();
 
   const getData = useCallback(() => {
-    window.sendMessageToDigma<GetHighlightsScalingDataPayload>({
-      action: mainActions.GET_HIGHLIGHTS_SCALING_DATA,
-      payload: {
-        query: {
-          scopedSpanCodeObjectId: config.scope?.span?.spanCodeObjectId || null,
-          environments: config.environments?.map((x) => x.id) || []
+    if (
+      config.scope?.span?.spanCodeObjectId &&
+      config.environments &&
+      config.environments.length > 0
+    ) {
+      window.sendMessageToDigma<GetHighlightsScalingDataPayload>({
+        action: mainActions.GET_HIGHLIGHTS_SCALING_DATA,
+        payload: {
+          query: {
+            scopedSpanCodeObjectId: config.scope.span.spanCodeObjectId,
+            environments: config.environments.map((x) => x.id)
+          }
         }
-      }
-    });
+      });
+    }
   }, [config.scope?.span?.spanCodeObjectId, config.environments]);
   const previousGetData = usePrevious(getData);
 
@@ -36,10 +42,8 @@ export const useScalingData = () => {
   }, [previousGetData, getData]);
 
   useEffect(() => {
-    if (
-      previousLastSetDataTimeStamp &&
-      previousLastSetDataTimeStamp !== lastSetDataTimeStamp
-    ) {
+    if (previousLastSetDataTimeStamp !== lastSetDataTimeStamp) {
+      window.clearTimeout(refreshTimerId.current);
       refreshTimerId.current = window.setTimeout(() => {
         getData();
       }, REFRESH_INTERVAL);
@@ -58,6 +62,7 @@ export const useScalingData = () => {
     );
 
     return () => {
+      window.clearTimeout(refreshTimerId.current);
       dispatcher.removeActionListener(
         mainActions.SET_HIGHLIGHTS_SCALING_DATA,
         handleScalingData

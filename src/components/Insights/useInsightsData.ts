@@ -121,6 +121,7 @@ export const useInsightsData = ({
         actions.SET_DATA_LIST,
         handleInsightsData
       );
+      window.clearTimeout(refreshTimerId.current);
     };
   }, []);
 
