@@ -15,14 +15,16 @@ export const useSpanInfoData = () => {
   const refreshTimerId = useRef<number>();
 
   const getData = useCallback(() => {
-    window.sendMessageToDigma<GetHighlightsSpanInfoDataPayload>({
-      action: mainActions.GET_HIGHLIGHTS_SPAN_INFO_DATA,
-      payload: {
-        query: {
-          spanCodeObjectId: config.scope?.span?.spanCodeObjectId || null
+    if (config.scope?.span?.spanCodeObjectId) {
+      window.sendMessageToDigma<GetHighlightsSpanInfoDataPayload>({
+        action: mainActions.GET_HIGHLIGHTS_SPAN_INFO_DATA,
+        payload: {
+          query: {
+            spanCodeObjectId: config.scope?.span?.spanCodeObjectId
+          }
         }
-      }
-    });
+      });
+    }
   }, [config.scope?.span?.spanCodeObjectId]);
   const previousGetData = usePrevious(getData);
 
@@ -35,10 +37,8 @@ export const useSpanInfoData = () => {
   }, [previousGetData, getData]);
 
   useEffect(() => {
-    if (
-      previousLastSetDataTimeStamp &&
-      previousLastSetDataTimeStamp !== lastSetDataTimeStamp
-    ) {
+    if (previousLastSetDataTimeStamp !== lastSetDataTimeStamp) {
+      window.clearTimeout(refreshTimerId.current);
       refreshTimerId.current = window.setTimeout(() => {
         getData();
       }, REFRESH_INTERVAL);
@@ -57,6 +57,7 @@ export const useSpanInfoData = () => {
     );
 
     return () => {
+      window.clearTimeout(refreshTimerId.current);
       dispatcher.removeActionListener(
         mainActions.SET_HIGHLIGHTS_SPAN_INFO_DATA,
         handleSpanInfoData

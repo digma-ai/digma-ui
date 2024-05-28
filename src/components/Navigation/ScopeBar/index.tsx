@@ -135,7 +135,9 @@ export const ScopeBar = (props: ScopeBarProps) => {
       </s.ScopeBarButton>
       <s.ScopeBarDivider />
       <s.ScopeNameContainer>
-        <s.ScopeName>{scopeDisplayName}</s.ScopeName>
+        <Tooltip title={scopeDisplayName}>
+          <s.ScopeName>{scopeDisplayName}</s.ScopeName>
+        </Tooltip>
         {isActive && <s.StyledCopyButton text={scopeDisplayName} />}
       </s.ScopeNameContainer>
       <s.ScopeBarDivider />

@@ -13,7 +13,7 @@ export const Tooltip = styled.div<TooltipComponentProps>`
   padding: 4px;
   border-radius: 4px;
   box-shadow: 0 0 6px 0 rgb(0 0 0 / 15%);
-  word-break: keep-all;
+  word-wrap: break-word;
   color: ${({ theme }) => theme.colors.v3.text.primary};
   background: ${({ theme }) => theme.colors.v3.surface.primary};
   border: 1px solid ${({ theme }) => theme.colors.v3.stroke.tertiary};
