@@ -80,12 +80,14 @@ export const ColumnsContainer = styled.div`
   }
 `;
 
-// TODO: restyle
 export const StyledKeyValue = styled(KeyValue)`
   gap: 4px;
 
+  & > *:first-child {
+    color: ${({ theme }) => theme.colors.v3.text.tertiary};
+  }
+
   & > *:last-child {
-    /* ${footnoteRegularTypography} */
     overflow: hidden;
     text-overflow: ellipsis;
   }

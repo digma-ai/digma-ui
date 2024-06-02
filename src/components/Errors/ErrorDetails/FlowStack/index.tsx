@@ -5,11 +5,11 @@ import { usePersistence } from "../../../../hooks/usePersistence";
 import { isNull } from "../../../../typeGuards/isNull";
 import { isString } from "../../../../typeGuards/isString";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
-import { ToggleSwitch } from "../../../common/ToggleSwitch";
+import { CodeIcon } from "../../../common/icons/12px/CodeIcon";
 import { OpenTelemetryLogoIcon } from "../../../common/icons/12px/OpenTelemetryLogoIcon";
-import { TraceIcon } from "../../../common/icons/12px/TraceIcon";
-import { CodeIcon } from "../../../common/icons/CodeIcon";
+import { TraceIcon } from "../../../common/icons/16px/TraceIcon";
 import { Button } from "../../../common/v3/Button";
+import { ToggleSwitch } from "../../../common/v3/ToggleSwitch";
 import { Tooltip } from "../../../common/v3/Tooltip";
 import { actions } from "../../actions";
 import { trackingEvents } from "../../tracking";
@@ -166,7 +166,6 @@ export const FlowStack = ({ data }: FlowStackProps) => {
           {exceptionMessage}
         </s.TitleContainer>
         <Tooltip title={"Open Trace"}>
-          {/* // TODO: check icon */}
           <Button
             icon={TraceIcon}
             onClick={handleTraceButtonClick}
@@ -192,7 +191,6 @@ export const FlowStack = ({ data }: FlowStackProps) => {
           return (
             <s.FrameContainer key={uuidv4()}>
               <s.SpanName>
-                {/* // TODO: check icon */}
                 <OpenTelemetryLogoIcon color={"currentColor"} size={12} />
                 <Tooltip title={spanName}>
                   <span>{spanName}</span>
@@ -205,7 +203,6 @@ export const FlowStack = ({ data }: FlowStackProps) => {
 
                 return (
                   <s.FrameItem key={uuidv4()}>
-                    {/* // TODO: check icon */}
                     <s.FrameItemIconContainer>
                       <CodeIcon color={"currentColor"} size={12} />
                     </s.FrameItemIconContainer>
@@ -235,7 +232,6 @@ export const FlowStack = ({ data }: FlowStackProps) => {
         })}
       </s.StackContainer>
       <s.Footer>
-        {/* // TODO: restyle */}
         <ToggleSwitch
           label={
             <s.WorkspaceOnlyToggleLabel>
@@ -245,7 +241,6 @@ export const FlowStack = ({ data }: FlowStackProps) => {
           checked={showWorkspaceOnly}
           onChange={handleWorkspaceOnlyToggleSwitchChange}
           labelPosition={"end"}
-          size={"large"}
         />
         <s.OpenRawErrorStackTraceButton
           buttonType={"tertiary"}

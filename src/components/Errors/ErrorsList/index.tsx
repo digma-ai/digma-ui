@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useRefreshData } from "../../../hooks/useRefreshData";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { NewCircleLoader } from "../../common/NewCircleLoader";
-import { CheckCircleIcon } from "../../common/icons/20px/CheckCircleIcon";
+import { CheckCircleIcon } from "../../common/icons/38px/CheckCircleIcon";
 import { ErrorCard } from "../ErrorCard";
 import { GetErrorDetailsPayload } from "../ErrorDetails/types";
 import { actions } from "../actions";
@@ -41,7 +41,6 @@ export const ErrorsList = ({ onErrorSelect }: ErrorsListProps) => {
     return (
       <s.EmptyStateContainer>
         <s.EmptyStateIconContainer>
-          {/* // TODO: check icon */}
           <CheckCircleIcon size={38} color={"currentColor"} />
         </s.EmptyStateIconContainer>
         <s.EmptyStateTextContainer>

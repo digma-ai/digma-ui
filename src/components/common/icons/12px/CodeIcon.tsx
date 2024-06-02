@@ -2,7 +2,7 @@ import React from "react";
 import { useIconProps } from "../hooks";
 import { IconProps } from "../types";
 
-const CheckCircleIconComponent = (props: IconProps) => {
+const CodeIconComponent = (props: IconProps) => {
   const { size, color } = useIconProps(props);
 
   return (
@@ -10,25 +10,24 @@ const CheckCircleIconComponent = (props: IconProps) => {
       xmlns="http://www.w3.org/2000/svg"
       width={size}
       height={size}
-      viewBox="0 0 20 20"
       fill="none"
+      viewBox="0 0 12 12"
     >
       <g
         stroke={color}
         strokeLinecap="round"
         strokeLinejoin="round"
-        clipPath="url(#check-circle-20px-clip-1)"
+        clipPath="url(#code-12-px-clip-1)"
       >
-        <path d="M6.875 10.625 8.75 12.5l4.375-4.375" />
-        <path d="M10 17.5a7.5 7.5 0 1 0 0-15 7.5 7.5 0 0 0 0 15Z" />
+        <path d="M3 4.13.75 6 3 7.88m6-3.75L11.25 6 9 7.88m-1.5-6-3 8.25" />
       </g>
       <defs>
-        <clipPath id="check-circle-20px-clip-1">
-          <path fill="#fff" d="M0 0h20v20H0z" />
+        <clipPath id="code-12px-clip-1">
+          <path fill="#fff" d="M0 0h12v12H0z" />
         </clipPath>
       </defs>
     </svg>
   );
 };
 
-export const CheckCircleIcon = React.memo(CheckCircleIconComponent);
+export const CodeIcon = React.memo(CodeIconComponent);

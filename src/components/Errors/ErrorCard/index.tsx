@@ -39,7 +39,6 @@ export const ErrorCard = ({ data, onClick }: ErrorCardProps) => {
             type={tagType}
             content={
               <s.ErrorIconContainer>
-                {/* // TODO: check icon */}
                 <CrossCircleIcon color={"currentColor"} size={16} />
               </s.ErrorIconContainer>
             }

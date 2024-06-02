@@ -89,7 +89,6 @@ export const ErrorDetails = ({ id, onGoToAllErrors }: ErrorDetailsProps) => {
         <s.Header>
           <s.TitleRow>
             <s.BackButton onClick={handleBackButtonClick}>
-              {/* // TODO: check icon */}
               <ChevronIcon16px
                 direction={Direction.LEFT}
                 size={16}
@@ -120,7 +119,6 @@ export const ErrorDetails = ({ id, onGoToAllErrors }: ErrorDetailsProps) => {
             <s.StyledKeyValue label={"Affected services"}>
               <s.ServicesContainer>
                 <s.ServicesIconContainer>
-                  {/* // TODO: check icon */}
                   <WrenchIcon color={"currentColor"} size={16} />
                 </s.ServicesIconContainer>
                 <span>{services.join(", ")}</span>
@@ -146,7 +144,6 @@ export const ErrorDetails = ({ id, onGoToAllErrors }: ErrorDetailsProps) => {
                 }
                 disabled={isPreviousFlowButtonDisabled}
               >
-                {/* // TODO: check icon */}
                 <ChevronIcon12px
                   direction={Direction.LEFT}
                   size={12}
@@ -166,7 +163,6 @@ export const ErrorDetails = ({ id, onGoToAllErrors }: ErrorDetailsProps) => {
                 }
                 disabled={isNextFlowButtonDisabled}
               >
-                {/* // TODO: check icon */}
                 <ChevronIcon12px
                   direction={Direction.RIGHT}
                   size={12}
