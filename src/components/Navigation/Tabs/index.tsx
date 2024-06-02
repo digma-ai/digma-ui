@@ -12,10 +12,7 @@ import * as s from "./styles";
 import { TabsProps } from "./types";
 
 const getTabTooltipMessage = (tab: TabData, scope?: Scope) => {
-  if (
-    !scope?.span &&
-    [ROUTES.ERRORS, ROUTES.ERROR_DETAILS, ROUTES.TESTS].includes(tab.id)
-  ) {
+  if (!scope?.span && [ROUTES.ERRORS, ROUTES.TESTS].includes(tab.id)) {
     return "Global errors and tests is COMING SOON";
   }
 
@@ -25,18 +22,22 @@ const getTabTooltipMessage = (tab: TabData, scope?: Scope) => {
 const getIsTabDisabled = (tab: TabData, scope?: Scope) => {
   if (
     !scope?.span &&
-    [
-      ROUTES.HIGHLIGHTS,
-      ROUTES.ANALYTICS,
-      ROUTES.ERRORS,
-      ROUTES.ERROR_DETAILS,
-      ROUTES.TESTS
-    ].includes(tab.id)
+    [ROUTES.HIGHLIGHTS, ROUTES.ANALYTICS, ROUTES.ERRORS, ROUTES.TESTS].includes(
+      tab.id
+    )
   ) {
     return true;
   }
 
   return tab.isDisabled;
+};
+
+const getTabTitle = (tab: TabData) => {
+  if (tab.id === ROUTES.ERRORS && tab.path) {
+    return "Error Details";
+  }
+
+  return tab.title;
 };
 
 const getTabIcon = (tab: TabData) => {
@@ -88,6 +89,7 @@ export const Tabs = (props: TabsProps) => {
         const isDisabled = getIsTabDisabled(tab, config.scope);
         const isNewIndicatorVisible = getIsNewIndicatorVisible(tab, config);
         const icon = getTabIcon(tab);
+        const title = getTabTitle(tab);
         const width = getTabWidth(tab);
 
         return (
@@ -103,12 +105,11 @@ export const Tabs = (props: TabsProps) => {
               onClick={() => handleTabClick(tab)}
             >
               {icon}
-              {tab.title}
+              {title}
               {isNewIndicatorVisible && <s.Indicator type={"new"} />}
-              {config.scope?.hasErrors &&
-                [ROUTES.ERRORS, ROUTES.ERROR_DETAILS].includes(tab.id) && (
-                  <s.Indicator type={"errors"} />
-                )}
+              {config.scope?.hasErrors && [ROUTES.ERRORS].includes(tab.id) && (
+                <s.Indicator type={"errors"} />
+              )}
             </s.Tab>
           </Tooltip>
         );

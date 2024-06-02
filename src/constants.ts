@@ -42,6 +42,5 @@ export const ROUTES = {
   ASSETS: "/assets",
   ANALYTICS: "/analytics",
   ERRORS: "/errors",
-  ERROR_DETAILS: "/errors/details",
   TESTS: "/tests"
 };

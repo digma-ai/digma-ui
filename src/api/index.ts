@@ -40,6 +40,12 @@ export const initializeDigmaMessageListener = (
 export const sendMessage = <T>(
   message: DigmaOutgoingMessageData<T>
 ): string | undefined => {
+  console.debug(
+    `Digma message to sent: ${message.action}
+Raw message: %O`,
+    message
+  );
+
   switch (platform) {
     case "Web":
       sendMessageToWebService(message);

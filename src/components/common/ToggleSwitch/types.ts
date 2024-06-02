@@ -1,7 +1,9 @@
+import { ReactNode } from "react";
+
 export type ToggleSwitchSize = "large" | "small";
 
 export interface ToggleSwitchProps {
-  label: string;
+  label: ReactNode;
   checked: boolean;
   size?: ToggleSwitchSize;
   onChange?: (value: boolean) => void;
