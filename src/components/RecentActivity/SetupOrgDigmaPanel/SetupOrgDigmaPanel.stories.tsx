@@ -23,7 +23,6 @@ export const Default: Story = {
       id: "MY_ENV",
       isPending: true,
       hasRecentActivity: false,
-      additionToConfigResult: null,
       type: "Public",
       token: "token_string",
       serverApiUrl: "https://example.com:80",

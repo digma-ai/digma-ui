@@ -1,5 +1,7 @@
 import styled from "styled-components";
 
+const RECENT_ACTIVITY_HEADER_HEIGHT = 44; // in pixels
+const RECENT_ACTIVITY_NO_DATA_PADDING_TOP = RECENT_ACTIVITY_HEADER_HEIGHT + 39; // in pixels
 const RECENT_ACTIVITY_MIN_WIDTH = 550; // in pixels
 
 export const Container = styled.div`
@@ -46,6 +48,7 @@ export const RecentActivityHeader = styled.div`
   flex-direction: column;
   min-width: ${RECENT_ACTIVITY_MIN_WIDTH}px;
   background: ${({ theme }) => theme.colors.recentActivity.background};
+  height: 44px;
 `;
 
 export const RecentActivityToolbarContainer = styled.div`
@@ -77,24 +80,25 @@ export const LiveViewContainer = styled.div`
 `;
 
 export const NoDataContainer = styled.div`
-  padding: 16px 12px 20px;
+  padding-top: ${RECENT_ACTIVITY_NO_DATA_PADDING_TOP}px;
 `;
 
 export const RecentActivityContainerBackground = styled.div`
   position: absolute;
   inset: 0;
   overflow: hidden;
+  z-index: 0;
 `;
 
 export const RecentActivityContainerBackgroundGradient = styled.div`
-  z-index: -1;
   position: absolute;
+  z-index: -1;
   left: 0;
   right: 0;
   margin: auto;
-  top: 0;
-  height: 383.6%;
-  width: 82.1%;
+  top: ${RECENT_ACTIVITY_NO_DATA_PADDING_TOP}px;
+  height: 454.5%;
+  width: 80.41%;
   border-radius: 100%;
   opacity: 0.7;
   background: radial-gradient(

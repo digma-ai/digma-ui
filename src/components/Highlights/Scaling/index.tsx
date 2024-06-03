@@ -22,7 +22,7 @@ import { Section } from "../common/Section";
 import { Table } from "../common/Table";
 import { TableText } from "../common/TableText";
 import { handleEnvironmentTableRowClick } from "../handleEnvironmentTableRowClick";
-import { trackingEvents } from "../tracking";
+import { trackingEventNames, trackingEvents } from "../tracking";
 import * as s from "./styles";
 import { EnvironmentScalingData } from "./types";
 import { useScalingData } from "./useScalingData";
@@ -152,7 +152,10 @@ export const Scaling = () => {
   const renderCard = () => {
     const handleLearnMoreButtonClick = () => {
       sendUserActionTrackingEvent(
-        trackingEvents.SCALING_CARD_LEARN_MORE_BUTTON_CLICKED
+        trackingEventNames.CARD_LEARN_MORE_BUTTON_CLICKED,
+        {
+          Source: "Scaling Issue"
+        }
       );
 
       openURLInDefaultBrowser(SCALING_ISSUE_DOCUMENTATION_URL);

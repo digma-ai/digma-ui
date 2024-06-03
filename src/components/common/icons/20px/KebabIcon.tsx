@@ -13,11 +13,11 @@ export const KebabIconComponent = (props: IconProps) => {
       fill="none"
       viewBox="0 0 20 20"
     >
-      <g fill={color} clipPath="url(#kebab-clip-1)">
+      <g fill={color} clipPath="url(#kebab-20px-clip-1)">
         <path d="M10 10.938a.937.937 0 1 0 0-1.875.937.937 0 0 0 0 1.874Zm0-5.313a.937.937 0 1 0 0-1.875.937.937 0 0 0 0 1.875Zm0 10.625a.937.937 0 1 0 0-1.875.937.937 0 0 0 0 1.875Z" />
       </g>
       <defs>
-        <clipPath id="kebab-clip-1">
+        <clipPath id="kebab-20px-clip-1">
           <path fill="#fff" d="M0 0h20v20H0z" />
         </clipPath>
       </defs>

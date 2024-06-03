@@ -16,18 +16,21 @@ export const CodeGradientIconComponent = (props: IconProps) => {
       <g
         strokeLinecap="round"
         strokeLinejoin="round"
-        clipPath="url(#code-gradient-clip-1)"
+        clipPath="url(#code-gradient-20px-clip-1)"
       >
-        <path stroke="url(#code-gradient-clip-2)" d="M5 6.88 1.25 10 5 13.13" />
         <path
-          stroke="url(#code-gradient-clip-3)"
+          stroke="url(#code-gradient-20px-clip-2)"
+          d="M5 6.88 1.25 10 5 13.13"
+        />
+        <path
+          stroke="url(#code-gradient-20px-clip-3)"
           d="M15 6.88 18.75 10 15 13.13"
         />
-        <path stroke="url(#code-gradient-clip-4)" d="m12.5 3.13-5 13.75" />
+        <path stroke="url(#code-gradient-20px-clip-4)" d="m12.5 3.13-5 13.75" />
       </g>
       <defs>
         <linearGradient
-          id="code-gradient-clip-2"
+          id="code-gradient-20px-clip-2"
           x1="1.25"
           x2="5.56"
           y1="6.88"
@@ -38,7 +41,7 @@ export const CodeGradientIconComponent = (props: IconProps) => {
           <stop offset=".97" stopColor="#6568CF" />
         </linearGradient>
         <linearGradient
-          id="code-gradient-clip-3"
+          id="code-gradient-20px-clip-3"
           x1="15"
           x2="19.31"
           y1="6.88"
@@ -49,7 +52,7 @@ export const CodeGradientIconComponent = (props: IconProps) => {
           <stop offset=".97" stopColor="#6568CF" />
         </linearGradient>
         <linearGradient
-          id="code-gradient-clip-4"
+          id="code-gradient-20px-clip-4"
           x1="7.5"
           x2="13.3"
           y1="3.13"
@@ -59,7 +62,7 @@ export const CodeGradientIconComponent = (props: IconProps) => {
           <stop offset=".11" stopColor="#7B5DB2" stopOpacity=".5" />
           <stop offset=".97" stopColor="#6568CF" />
         </linearGradient>
-        <clipPath id="code-gradient-clip-1">
+        <clipPath id="code-gradient-20px-clip-1">
           <path fill="#fff" d="M0 0h20v20H0z" />
         </clipPath>
       </defs>
