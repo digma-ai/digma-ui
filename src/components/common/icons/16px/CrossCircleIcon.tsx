@@ -17,12 +17,12 @@ const CrossCircleIconComponent = (props: IconProps) => {
         stroke={color}
         strokeLinecap="round"
         strokeLinejoin="round"
-        clipPath="url(#cross-circle-clip-1)"
+        clipPath="url(#cross-circle-16px-clip-1)"
       >
         <path d="m10 6-4 4m0-4 4 4m-2 4A6 6 0 1 0 8 2a6 6 0 0 0 0 12Z" />
       </g>
       <defs>
-        <clipPath id="cross-circle-clip-1">
+        <clipPath id="cross-circle-16px-clip-1">
           <path fill="#fff" d="M0 0h16v16H0z" />
         </clipPath>
       </defs>

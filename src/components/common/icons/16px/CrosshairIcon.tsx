@@ -17,12 +17,12 @@ const CrosshairIconComponent = (props: IconProps) => {
         stroke={color}
         strokeLinecap="round"
         strokeLinejoin="round"
-        clipPath="url(#crosshair-clip-1)"
+        clipPath="url(#crosshair-16px-clip-1)"
       >
         <path d="M8 14A6 6 0 1 0 8 2a6 6 0 0 0 0 12ZM8 2v2.5m0 7V14M2 8h2.5m7 0H14" />
       </g>
       <defs>
-        <clipPath id="crosshair-clip-1">
+        <clipPath id="crosshair-16px-clip-1">
           <path fill="#fff" d="M0 0h16v16H0z" />
         </clipPath>
       </defs>

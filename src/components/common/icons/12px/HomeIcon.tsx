@@ -13,7 +13,7 @@ const HomeIconComponent = (props: IconProps) => {
       fill="none"
       viewBox="0 0 12 12"
     >
-      <g clipPath="url(#home-clip-1)">
+      <g clipPath="url(#home-12px-clip-1)">
         <path
           stroke={color}
           strokeLinecap="round"
@@ -22,7 +22,7 @@ const HomeIconComponent = (props: IconProps) => {
         />
       </g>
       <defs>
-        <clipPath id="home-clip-1">
+        <clipPath id="home-12px-clip-1">
           <path fill="#fff" d="M0 0h12v12H0z" />
         </clipPath>
       </defs>

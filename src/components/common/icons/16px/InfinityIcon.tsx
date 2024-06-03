@@ -13,7 +13,7 @@ const InfinityIconComponent = (props: IconProps) => {
       fill="none"
       viewBox="0 0 16 16"
     >
-      <g clipPath="url(#infinity-clip-1)">
+      <g clipPath="url(#infinity-16px-clip-1)">
         <path
           stroke={color}
           strokeLinecap="round"
@@ -22,7 +22,7 @@ const InfinityIconComponent = (props: IconProps) => {
         />
       </g>
       <defs>
-        <clipPath id="infinity-clip-1">
+        <clipPath id="infinity-16px-clip-1">
           <path fill="#fff" d="M0 0h16v16H0z" />
         </clipPath>
       </defs>

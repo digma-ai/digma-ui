@@ -17,12 +17,12 @@ const ErrorIconComponent = (props: IconProps) => {
         stroke={color}
         strokeLinecap="round"
         strokeLinejoin="round"
-        clipPath="url(#error-icon-clip-1)"
+        clipPath="url(#error-icon-12px-clip-1)"
       >
         <path d="m7.5 4.5-3 3m0-3 3 3m-1.5 3a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Z" />
       </g>
       <defs>
-        <clipPath id="#error-icon-clip-1">
+        <clipPath id="#error-icon-12px-clip-1">
           <path fill="#fff" d="M0 0h12v12H0z" />
         </clipPath>
       </defs>

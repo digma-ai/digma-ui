@@ -17,12 +17,12 @@ const ArrowsInsideIconComponent = (props: IconProps) => {
         stroke={color}
         strokeLinecap="round"
         strokeLinejoin="round"
-        clipPath="url(#arrows-inside-clip-1)"
+        clipPath="url(#arrows-inside-12px-clip-1)"
       >
         <path d="M9 5.25H6.75V3m3-.75-3 3M3 6.75h2.25V9m-3 .75 3-3" />
       </g>
       <defs>
-        <clipPath id="arrows-inside-clip-1">
+        <clipPath id="arrows-inside-12px-clip-1">
           <path fill="#fff" d="M0 0h12v12H0z" />
         </clipPath>
       </defs>

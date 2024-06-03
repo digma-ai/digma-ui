@@ -17,12 +17,12 @@ const TargetIconComponent = (props: IconProps) => {
         stroke={color}
         strokeLinecap="round"
         strokeLinejoin="round"
-        clipPath="url(#target-clip-1)"
+        clipPath="url(#target-12px-clip-1)"
       >
         <path d="M6 10.5a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Zm0-9v1.88m0 5.25v1.87M1.5 6h1.88m5.25 0h1.87" />
       </g>
       <defs>
-        <clipPath id="target-clip-1">
+        <clipPath id="target-12px-clip-1">
           <path fill="#fff" d="M0 0h12v12H0z" />
         </clipPath>
       </defs>
