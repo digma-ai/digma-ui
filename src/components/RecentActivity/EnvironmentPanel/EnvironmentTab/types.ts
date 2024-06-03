@@ -26,6 +26,7 @@ export interface EnvironmentTabProps {
   onClick: (environment: ExtendedEnvironment) => void;
   onEnvironmentSetupInstructionsShow: (environmentId: string) => void;
   onEnvironmentDelete: (environmentId: string) => void;
+  onEnvironmentClearData: (environmentId: string) => void;
 }
 
 export interface ContainerProps {

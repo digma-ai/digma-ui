@@ -17,13 +17,13 @@ const CheckmarkCircleIconComponent = (props: IconProps) => {
         stroke={color}
         strokeLinecap="round"
         strokeLinejoin="round"
-        clipPath="url(#checkmark-circle-clip-1)"
+        clipPath="url(#checkmark-circle-20px-clip-1)"
       >
         <path d="m6.88 10.63 1.87 1.87 4.38-4.38" />
         <path d="M10 17.5a7.5 7.5 0 1 0 0-15 7.5 7.5 0 0 0 0 15Z" />
       </g>
       <defs>
-        <clipPath id="checkmark-circle-clip-1">
+        <clipPath id="checkmark-circle-20px-clip-1">
           <path fill="#fff" d="M0 0h20v20H0z" />
         </clipPath>
       </defs>

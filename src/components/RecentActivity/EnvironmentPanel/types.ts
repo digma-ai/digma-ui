@@ -8,6 +8,7 @@ export interface EnvironmentPanelProps {
   onEnvironmentSetupInstructionsShow: (environmentId: string) => void;
   onEnvironmentDelete: (environmentId: string) => void;
   onDigmathonModeButtonClick: () => void;
+  onEnvironmentClearData: (environmentId: string) => void;
 }
 
 export type ViewMode = "table" | "list";

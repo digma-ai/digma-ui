@@ -40,7 +40,15 @@ export const trackingEvents = addPrefix(
     DIGMATHON_LEADERBOARD_BUTTON_CLICKED:
       "digmathon leaderboard button clicked",
     DIGMATHON_FIND_OUT_MORE_BUTTON_CLICKED:
-      "digmathon find out more button clicked"
+      "digmathon find out more button clicked",
+    ENVIRONMENT_TAB_MENU_ITEM_SELECTED: "environment tab menu item selected",
+    CONFIRMATION_DIALOG_CONFIRM_BUTTON_CLICKED:
+      "confirmation dialog confirm button clicked",
+    CONFIRMATION_DIALOG_CLOSE_BUTTON_CLICKED:
+      "confirmation dialog close button clicked",
+    CONFIRMATION_DIALOG_CANCEL_BUTTON_CLICKED:
+      "confirmation dialog cancel button clicked",
+    OVERLAY_CLOSED: "overlay closed"
   },
   " "
 );
