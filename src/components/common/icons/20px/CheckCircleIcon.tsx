@@ -17,13 +17,13 @@ const CheckCircleIconComponent = (props: IconProps) => {
         stroke={color}
         strokeLinecap="round"
         strokeLinejoin="round"
-        clipPath="url(#check-circle-clip-1)"
+        clipPath="url(#check-circle-20px-clip-1)"
       >
         <path d="M6.875 10.625 8.75 12.5l4.375-4.375" />
         <path d="M10 17.5a7.5 7.5 0 1 0 0-15 7.5 7.5 0 0 0 0 15Z" />
       </g>
       <defs>
-        <clipPath id="check-circle-clip-1">
+        <clipPath id="check-circle-20px-clip-1">
           <path fill="#fff" d="M0 0h20v20H0z" />
         </clipPath>
       </defs>

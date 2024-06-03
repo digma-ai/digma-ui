@@ -30,7 +30,16 @@ import { EnvironmentPanelProps, ScrollDirection } from "./types";
 
 const FONT_WIDTH_TRANSITION_THRESHOLD = 5; // in pixels
 
-export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
+export const EnvironmentPanel = ({
+  environments,
+  selectedEnvironment,
+  onEnvironmentSelect,
+  onEnvironmentDelete,
+  onEnvironmentSetupInstructionsShow,
+  onEnvironmentClearData,
+  onEnvironmentAdd,
+  onDigmathonModeButtonClick
+}: EnvironmentPanelProps) => {
   const [scrollLeft, setScrollLeft] = useState(0);
   const environmentListContainerDimensions = useDimensions();
   const environmentListDimensions = useDimensions();
@@ -48,15 +57,19 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
   ]);
 
   const handleEnvironmentTabClick = (environment: ExtendedEnvironment) => {
-    props.onEnvironmentSelect(environment);
+    onEnvironmentSelect(environment);
   };
 
   const handleEnvironmentDelete = (environmentId: string) => {
-    props.onEnvironmentDelete(environmentId);
+    onEnvironmentDelete(environmentId);
   };
 
   const handleEnvironmentSetupInstructionsShow = (environmentId: string) => {
-    props.onEnvironmentSetupInstructionsShow(environmentId);
+    onEnvironmentSetupInstructionsShow(environmentId);
+  };
+
+  const handleEnvironmentClearData = (environmentId: string) => {
+    onEnvironmentClearData(environmentId);
   };
 
   const handleCarouselButtonClick = (direction: ScrollDirection) => {
@@ -121,7 +134,7 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
         label={"Add Environment"}
         size={"small"}
         icon={PlusIcon}
-        onClick={props.onEnvironmentAdd}
+        onClick={onEnvironmentAdd}
       />
     );
   };
@@ -168,7 +181,7 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
       sendUserActionTrackingEvent(trackingEvents.KEBAB_MENU_ITEM_CLICKED, {
         item: "Digmathon mode"
       });
-      props.onDigmathonModeButtonClick();
+      onDigmathonModeButtonClick();
     };
 
     return (
@@ -256,16 +269,17 @@ export const EnvironmentPanel = (props: EnvironmentPanelProps) => {
         ref={environmentListContainerDimensions.observe}
       >
         <s.EnvironmentList ref={environmentListDimensions.observe}>
-          {props.environments.map((environment) => (
+          {environments.map((environment) => (
             <EnvironmentTab
               key={environment.id}
               environment={environment}
-              isSelected={props.selectedEnvironment?.id === environment.id}
+              isSelected={selectedEnvironment?.id === environment.id}
               onClick={handleEnvironmentTabClick}
               onEnvironmentDelete={handleEnvironmentDelete}
               onEnvironmentSetupInstructionsShow={
                 handleEnvironmentSetupInstructionsShow
               }
+              onEnvironmentClearData={handleEnvironmentClearData}
             />
           ))}
         </s.EnvironmentList>

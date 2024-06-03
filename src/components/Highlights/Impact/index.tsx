@@ -20,7 +20,7 @@ import { Section } from "../common/Section";
 import { Table } from "../common/Table";
 import { TableText } from "../common/TableText";
 import { handleEnvironmentTableRowClick } from "../handleEnvironmentTableRowClick";
-import { trackingEvents } from "../tracking";
+import { trackingEventNames, trackingEvents } from "../tracking";
 import * as s from "./styles";
 import { EnvironmentImpactData } from "./types";
 import { useImpactData } from "./useImpactData";
@@ -146,7 +146,10 @@ export const Impact = () => {
   const renderCard = () => {
     const handleLearnMoreButtonClick = () => {
       sendUserActionTrackingEvent(
-        trackingEvents.IMPACT_CARD_LEARN_MORE_BUTTON_CLICKED
+        trackingEventNames.CARD_LEARN_MORE_BUTTON_CLICKED,
+        {
+          Source: "Impact analysis"
+        }
       );
       openURLInDefaultBrowser(PERFORMANCE_IMPACT_DOCUMENTATION_URL);
     };
@@ -176,6 +179,7 @@ export const Impact = () => {
           icon={RefreshIcon}
           title={"Waiting for more data"}
           text={"Impact analysis is in progress"}
+          blurredContent={renderImpactCard(demoData)}
         />
       );
     }

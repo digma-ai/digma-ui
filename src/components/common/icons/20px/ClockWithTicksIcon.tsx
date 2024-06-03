@@ -13,7 +13,7 @@ export const ClockWithTicksIconComponent = (props: IconProps) => {
       fill="none"
       viewBox="0 0 20 20"
     >
-      <g clipPath="url(#clock-with-ticks-clip-1)">
+      <g clipPath="url(#clock-with-ticks-20px-clip-1)">
         <path
           stroke={color}
           strokeLinecap="round"
@@ -32,7 +32,7 @@ export const ClockWithTicksIconComponent = (props: IconProps) => {
         />
       </g>
       <defs>
-        <clipPath id="clock-with-ticks-clip-1">
+        <clipPath id="clock-with-ticks-20px-clip-1">
           <path fill="#fff" d="M0 0h20v20H0z" />
         </clipPath>
       </defs>

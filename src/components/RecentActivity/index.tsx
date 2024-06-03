@@ -4,9 +4,11 @@ import { useContext, useEffect, useMemo, useState } from "react";
 import useDimensions from "react-cool-dimensions";
 import { actions as globalActions } from "../../actions";
 import { dispatcher } from "../../dispatcher";
+import { usePersistence } from "../../hooks/usePersistence";
 import { usePrevious } from "../../hooks/usePrevious";
 import { isBoolean } from "../../typeGuards/isBoolean";
 import { ChangeEnvironmentPayload } from "../../types";
+import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 import { groupBy } from "../../utils/groupBy";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { Environment } from "../common/App/types";
@@ -14,8 +16,8 @@ import { RegistrationDialog } from "../common/RegistrationDialog";
 import { RegistrationFormValues } from "../common/RegistrationDialog/types";
 import { ListIcon } from "../common/icons/ListIcon";
 import { TableIcon } from "../common/icons/TableIcon";
+import { ConfirmationDialog } from "./ConfirmationDialog";
 import { CreateEnvironmentWizard } from "./CreateEnvironmentWizard";
-import { DeleteEnvironmentConfirmation } from "./DeleteEnvironmentConfirmation";
 import { Digmathon } from "./Digmathon";
 import { EnvironmentInstructionsPanel } from "./EnvironmentInstructionsPanel";
 import { EnvironmentPanel } from "./EnvironmentPanel";
@@ -30,8 +32,10 @@ import { WelcomeScreen } from "./WelcomeScreen";
 import { actions } from "./actions";
 import { Overlay } from "./common/Overlay";
 import * as s from "./styles";
+import { trackingEvents } from "./tracking";
 import {
   EntrySpan,
+  EnvironmentClearDataTimeStamps,
   EnvironmentInstructionsVisibility,
   ExtendedEnvironment,
   RecentActivityProps,
@@ -70,6 +74,9 @@ const changeSelectedEnvironment = (
   }
 };
 
+const ENVIRONMENT_CLEAR_DATA_TIMESTAMP_PERSISTENCE_KEY =
+  "environmentClearDataTimestamps";
+
 export const RecentActivity = (props: RecentActivityProps) => {
   const [selectedEnvironment, setSelectedEnvironment] =
     useState<ExtendedEnvironment>();
@@ -79,9 +86,21 @@ export const RecentActivity = (props: RecentActivityProps) => {
   const [isRegistrationInProgress, setIsRegistrationInProgress] =
     useState(false);
   const [environmentToDelete, setEnvironmentToDelete] = useState<string>();
+  const [environmentToClearData, setEnvironmentToClearData] =
+    useState<string>();
   const { recentActivityData: data } = useRecentActivityData({
     data: props.data
   });
+  const isEnvironmentConfirmationDialogVisible = Boolean(
+    environmentToDelete || environmentToClearData
+  );
+  const [
+    persistedEnvironmentClearDataTimestamps,
+    setPersistedEnvironmentClearDataTimestamps
+  ] = usePersistence<EnvironmentClearDataTimeStamps>(
+    ENVIRONMENT_CLEAR_DATA_TIMESTAMP_PERSISTENCE_KEY,
+    "project"
+  );
 
   const config = useContext(ConfigContext);
   const previousUserRegistrationEmail = usePrevious(
@@ -110,10 +129,24 @@ export const RecentActivity = (props: RecentActivityProps) => {
     keepOpen: false
   });
 
+  const filteredEntries = useMemo(() => {
+    return data?.entries.filter((entry) => {
+      const clearDataTimestamp =
+        persistedEnvironmentClearDataTimestamps?.[entry.environment];
+
+      return clearDataTimestamp
+        ? new Date(entry.latestTraceTimestamp).valueOf() >
+            new Date(clearDataTimestamp).valueOf()
+        : true;
+    });
+  }, [data, persistedEnvironmentClearDataTimestamps]);
+
   const environmentActivities = useMemo(
-    () => (data ? groupBy(data.entries, (x) => x.environment) : {}),
-    [data]
+    () =>
+      filteredEntries ? groupBy(filteredEntries, (x) => x.environment) : {},
+    [filteredEntries]
   );
+
   const environments: ExtendedEnvironment[] = useMemo(
     () =>
       data
@@ -275,6 +308,32 @@ export const RecentActivity = (props: RecentActivityProps) => {
     setEnvironmentToDelete(undefined);
   };
 
+  const handleEnvironmentClearData = (environment: string) => {
+    setEnvironmentToClearData(environment);
+  };
+
+  const handleConfirmEnvironmentDataClearance = () => {
+    if (environmentToClearData) {
+      const currentTimeStamps = persistedEnvironmentClearDataTimestamps || {};
+      setPersistedEnvironmentClearDataTimestamps({
+        ...currentTimeStamps,
+        [environmentToClearData]: new Date().toISOString()
+      });
+
+      setEnvironmentToClearData(undefined);
+    }
+  };
+
+  const handleCloseClearDataConfirmation = () => {
+    setEnvironmentToClearData(undefined);
+  };
+
+  const handleOverlayClick = () => {
+    sendUserActionTrackingEvent(trackingEvents.OVERLAY_CLOSED);
+    handleCloseDeleteConfirmation();
+    handleCloseClearDataConfirmation();
+  };
+
   const handleEnvironmentSetupInstructionsShow = () => {
     setEnvironmentInstructionsVisibility({
       isOpen: true,
@@ -339,9 +398,14 @@ export const RecentActivity = (props: RecentActivityProps) => {
       !environmentActivities[selectedEnvironment.id]
     ) {
       return (
-        <s.NoDataContainer>
-          <NoData />
-        </s.NoDataContainer>
+        <>
+          <s.RecentActivityContainerBackground>
+            <s.RecentActivityContainerBackgroundGradient />
+          </s.RecentActivityContainerBackground>
+          <s.NoDataContainer>
+            <NoData />
+          </s.NoDataContainer>
+        </>
       );
     }
 
@@ -408,9 +472,6 @@ export const RecentActivity = (props: RecentActivityProps) => {
       ) : (
         <Allotment defaultSizes={[70, 30]}>
           <s.RecentActivityContainer id={RECENT_ACTIVITY_CONTAINER_ID}>
-            {/* <s.RecentActivityContainerBackground>
-            <s.RecentActivityContainerBackgroundGradient />
-          </s.RecentActivityContainerBackground> */}
             <s.RecentActivityHeader ref={observe}>
               <EnvironmentPanel
                 environments={environments}
@@ -422,6 +483,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
                 onEnvironmentSetupInstructionsShow={
                   handleEnvironmentSetupInstructionsShow
                 }
+                onEnvironmentClearData={handleEnvironmentClearData}
               />
             </s.RecentActivityHeader>
             <s.RecentActivityContentContainer>
@@ -437,15 +499,34 @@ export const RecentActivity = (props: RecentActivityProps) => {
           </Allotment.Pane>
         </Allotment>
       )}
-      {environmentToDelete && (
-        <Overlay
-          onClose={() => setEnvironmentToDelete(undefined)}
-          tabIndex={-1}
-        >
-          <DeleteEnvironmentConfirmation
-            onClose={handleCloseDeleteConfirmation}
-            onDelete={handleConfirmEnvironmentDeletion}
-          />
+      {isEnvironmentConfirmationDialogVisible && (
+        <Overlay onClose={handleOverlayClick} tabIndex={-1}>
+          {environmentToDelete && (
+            <ConfirmationDialog
+              title={"Delete environment"}
+              message={"Are you sure that you want to delete this environment?"}
+              confirmButtonText={"Delete"}
+              onConfirm={handleConfirmEnvironmentDeletion}
+              onCancel={handleCloseDeleteConfirmation}
+              trackingData={{
+                dialog: "Delete environment"
+              }}
+            />
+          )}
+          {environmentToClearData && (
+            <ConfirmationDialog
+              title={"Clear data?"}
+              message={
+                "Are you sure you want to clear the data from this environment? This action cannot be undone."
+              }
+              confirmButtonText={"Clear Data"}
+              onConfirm={handleConfirmEnvironmentDataClearance}
+              onCancel={handleCloseClearDataConfirmation}
+              trackingData={{
+                dialog: "Clear data"
+              }}
+            />
+          )}
         </Overlay>
       )}
       {isRegistrationPopupVisible && (

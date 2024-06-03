@@ -1,57 +1,75 @@
 import { useState } from "react";
+import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { greenScale } from "../../../common/App/v2colors";
 import { EnvironmentIcon } from "../../../common/EnvironmentIcon";
 import { NewPopover } from "../../../common/NewPopover";
 import { Tooltip } from "../../../common/Tooltip";
+import { RefreshIcon } from "../../../common/icons/16px/RefreshIcon";
 import { TrashBinIcon } from "../../../common/icons/16px/TrashBinIcon";
 import { WrenchIcon } from "../../../common/icons/16px/WrenchIcon";
 import { Badge } from "../../Badge";
 import { EnvironmentMenu } from "../../EnvironmentMenu";
 import { EnvironmentMenuItem } from "../../EnvironmentMenu/types";
+import { trackingEvents } from "../../tracking";
 import { getEnvironmentTabId } from "./getEnvironmentTabIdPrefix";
 import * as s from "./styles";
 import { EnvironmentTabProps } from "./types";
 
-export const EnvironmentTab = (props: EnvironmentTabProps) => {
+export const EnvironmentTab = ({
+  environment,
+  isSelected,
+  onClick,
+  onEnvironmentSetupInstructionsShow,
+  onEnvironmentClearData,
+  onEnvironmentDelete
+}: EnvironmentTabProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleClick = () => {
-    props.onClick(props.environment);
+    onClick(environment);
   };
 
+  const menuItems: EnvironmentMenuItem[] = [
+    { label: "How to setup", value: "setup-instructions", icon: WrenchIcon },
+    { label: "Clear data", value: "clear-data", icon: RefreshIcon },
+    { label: "Delete", value: "delete", icon: TrashBinIcon }
+  ];
+
   const handleMenuItemSelect = (value: string) => {
+    sendUserActionTrackingEvent(
+      trackingEvents.ENVIRONMENT_TAB_MENU_ITEM_SELECTED,
+      {
+        item: menuItems.find((x) => x.value === value)?.label || value
+      }
+    );
     switch (value) {
       case "setup-instructions":
-        props.onEnvironmentSetupInstructionsShow(props.environment.id);
+        onEnvironmentSetupInstructionsShow(environment.id);
+        break;
+      case "clear-data":
+        onEnvironmentClearData(environment.id);
         break;
       case "delete":
-        props.onEnvironmentDelete(props.environment.id);
+        onEnvironmentDelete(environment.id);
         break;
     }
 
     setIsMenuOpen(false);
   };
 
-  const menuItems: EnvironmentMenuItem[] = [
-    { label: "How to setup", value: "setup-instructions", icon: WrenchIcon },
-    { label: "Delete", value: "delete", icon: TrashBinIcon }
-  ];
-
-  const environmentTabId = getEnvironmentTabId(props.environment.id);
+  const environmentTabId = getEnvironmentTabId(environment.id);
 
   return (
     <s.Container
       id={environmentTabId}
-      $isSelected={props.isSelected}
+      $isSelected={isSelected}
       onClick={handleClick}
     >
-      <EnvironmentIcon environment={props.environment} />
-      <Tooltip title={props.environment.name}>
+      <EnvironmentIcon environment={environment} />
+      <Tooltip title={environment.name}>
         <s.LabelContainer>
-          <s.Label $isSelected={props.isSelected}>
-            {props.environment.name}
-          </s.Label>
-          {props.environment.hasRecentActivity && (
+          <s.Label $isSelected={isSelected}>{environment.name}</s.Label>
+          {environment.hasRecentActivity && (
             <Badge
               backgroundColor={greenScale[300]}
               borderColor={greenScale[400]}
@@ -74,7 +92,7 @@ export const EnvironmentTab = (props: EnvironmentTabProps) => {
           <span>
             <s.StyledKebabMenuButton
               $isMenuOpen={isMenuOpen}
-              $isSelected={props.isSelected}
+              $isSelected={isSelected}
             />
           </span>
         </NewPopover>

@@ -140,3 +140,7 @@ export interface EnvironmentInstructionsVisibility {
   newlyCreatedEnvironmentId?: string;
   keepOpen: boolean;
 }
+
+export interface EnvironmentClearDataTimeStamps {
+  [environmentId: string]: string;
+}
