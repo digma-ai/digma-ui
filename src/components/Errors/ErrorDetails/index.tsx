@@ -48,7 +48,7 @@ export const ErrorDetails = ({ id, onGoToAllErrors }: ErrorDetailsProps) => {
   }, []);
 
   if (!data) {
-    // TODO: restyle
+    // TODO: replace with skeletons
     return (
       <EmptyStateContainer>
         <NewCircleLoader size={32} />

@@ -124,6 +124,5 @@ export const FlowPagination = styled.div`
 `;
 
 export const CurrentFlowNumber = styled.span`
-  /* TODO: check color */
-  color: ${({ theme }) => theme.colors.v3.text.link};
+  color: ${({ theme }) => theme.colors.v3.surface.brandSecondary};
 `;

@@ -29,7 +29,7 @@ export const ErrorsList = ({ onErrorSelect }: ErrorsListProps) => {
   }, [getData]);
 
   if (!data) {
-    // TODO: restyle
+    // TODO: replace with skeletons
     return (
       <s.EmptyStateContainer>
         <NewCircleLoader size={32} />
