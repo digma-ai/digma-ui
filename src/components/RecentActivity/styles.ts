@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
-const RECENT_ACTIVITY_HEADER_HEIGHT = 44; // in pixels
-const RECENT_ACTIVITY_NO_DATA_PADDING_TOP = RECENT_ACTIVITY_HEADER_HEIGHT + 39; // in pixels
+const RECENT_ACTIVITY_NO_DATA_PADDING_TOP = 39; // in pixels
 const RECENT_ACTIVITY_MIN_WIDTH = 550; // in pixels
 
 export const Container = styled.div`
@@ -80,6 +79,7 @@ export const LiveViewContainer = styled.div`
 `;
 
 export const NoDataContainer = styled.div`
+  position: relative;
   padding-top: ${RECENT_ACTIVITY_NO_DATA_PADDING_TOP}px;
 `;
 
@@ -87,12 +87,10 @@ export const RecentActivityContainerBackground = styled.div`
   position: absolute;
   inset: 0;
   overflow: hidden;
-  z-index: 0;
 `;
 
 export const RecentActivityContainerBackgroundGradient = styled.div`
   position: absolute;
-  z-index: -1;
   left: 0;
   right: 0;
   margin: auto;

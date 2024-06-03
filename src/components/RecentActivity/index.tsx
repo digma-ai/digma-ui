@@ -132,11 +132,11 @@ export const RecentActivity = (props: RecentActivityProps) => {
   const filteredEntries = useMemo(() => {
     return data?.entries.filter((entry) => {
       const clearDataTimestamp =
-        persistedEnvironmentClearDataTimestamps?.[entry.environment] ||
-        undefined;
+        persistedEnvironmentClearDataTimestamps?.[entry.environment];
 
       return clearDataTimestamp
-        ? entry.latestTraceTimestamp > clearDataTimestamp
+        ? new Date(entry.latestTraceTimestamp).valueOf() >
+            new Date(clearDataTimestamp).valueOf()
         : true;
     });
   }, [data, persistedEnvironmentClearDataTimestamps]);
@@ -401,10 +401,10 @@ export const RecentActivity = (props: RecentActivityProps) => {
         <>
           <s.RecentActivityContainerBackground>
             <s.RecentActivityContainerBackgroundGradient />
-            <s.NoDataContainer>
-              <NoData />
-            </s.NoDataContainer>
           </s.RecentActivityContainerBackground>
+          <s.NoDataContainer>
+            <NoData />
+          </s.NoDataContainer>
         </>
       );
     }
