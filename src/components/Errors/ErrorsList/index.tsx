@@ -1,28 +1,40 @@
-import { useEffect } from "react";
-import { useRefreshData } from "../../../hooks/useRefreshData";
+import { useEffect, useMemo } from "react";
+import {
+  DataFetcherConfiguration,
+  useFetchData
+} from "../../../hooks/useFetchData";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { NewCircleLoader } from "../../common/NewCircleLoader";
 import { CheckCircleIcon } from "../../common/icons/38px/CheckCircleIcon";
 import { ErrorCard } from "../ErrorCard";
-import { GetErrorDetailsPayload } from "../ErrorDetails/types";
 import { actions } from "../actions";
 import { trackingEvents } from "../tracking";
-import { SetErrorsDataPayload } from "../types";
+import { GetErrorsDataPayload, SetErrorsDataPayload } from "../types";
 import * as s from "./styles";
 import { ErrorsListProps } from "./types";
 
-export const ErrorsList = ({ onErrorSelect }: ErrorsListProps) => {
-  const { data, getData } = useRefreshData<
-    GetErrorDetailsPayload,
+const dataFetcherConfiguration: DataFetcherConfiguration = {
+  requestAction: actions.GET_ERRORS_DATA,
+  responseAction: actions.SET_ERRORS_DATA
+};
+
+export const ErrorsList = ({
+  onErrorSelect,
+  spanCodeObjectId,
+  methodId
+}: ErrorsListProps) => {
+  const payload = useMemo(
+    () => ({
+      spanCodeObjectId,
+      methodId
+    }),
+    [spanCodeObjectId, methodId]
+  );
+
+  const { data, getData } = useFetchData<
+    GetErrorsDataPayload,
     SetErrorsDataPayload
-  >({
-    request: {
-      action: actions.GET_ERRORS_DATA
-    },
-    response: {
-      action: actions.SET_ERRORS_DATA
-    }
-  });
+  >(dataFetcherConfiguration, payload);
 
   useEffect(() => {
     getData();

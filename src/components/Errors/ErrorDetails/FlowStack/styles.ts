@@ -12,12 +12,15 @@ export const Container = styled.div`
   padding: 6px 8px 12px;
   gap: 12px;
   background: ${({ theme }) => theme.colors.v3.surface.primary};
+  overflow: hidden;
+  height: 100%;
 `;
 
 export const Header = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 8px;
 `;
 
 export const TitleContainer = styled.div`
@@ -26,6 +29,7 @@ export const TitleContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2px;
+  overflow: hidden;
   color: ${({ theme }) => theme.colors.v3.text.tertiary};
 `;
 
@@ -38,12 +42,15 @@ export const Title = styled.span`
   text-align: left;
   direction: rtl;
   color: ${({ theme }) => theme.colors.v3.text.primary};
+  width: fit-content;
+  max-width: 100%;
 `;
 
 export const Divider = styled.div`
   width: 100%;
   height: 1px;
   background: ${({ theme }) => theme.colors.v3.stroke.primary};
+  flex-shrink: 0;
 `;
 
 export const StackContainer = styled.div`
@@ -52,6 +59,7 @@ export const StackContainer = styled.div`
   gap: 4px;
   padding-left: 8px;
   border-left: 1px solid ${({ theme }) => theme.colors.v3.surface.gray};
+  overflow: auto;
 `;
 
 export const FrameContainer = styled.div`
@@ -60,14 +68,23 @@ export const FrameContainer = styled.div`
   gap: 12px;
 `;
 
-export const SpanName = styled.div`
-  ${subscriptRegularTypography}
-
+export const Span = styled.div`
   color: ${({ theme }) => theme.colors.v3.text.primary};
   display: flex;
   align-items: center;
   overflow: hidden;
   gap: 8px;
+`;
+
+export const SpanName = styled.span`
+  ${subscriptRegularTypography}
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+`;
+
+export const SpanIconContainer = styled.div`
+  display: flex;
 `;
 
 export const FrameItem = styled.div`
@@ -107,12 +124,14 @@ export const LineNumber = styled.span`
 
   margin-left: auto;
   color: ${({ theme }) => theme.colors.v3.text.tertiary};
+  flex-shrink: 0;
 `;
 
 export const Footer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-top: auto;
 `;
 
 export const WorkspaceOnlyToggleLabel = styled.span`

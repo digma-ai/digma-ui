@@ -15,7 +15,7 @@ const KeyValueComponent = (
       </Tooltip>
       {info && <Info title={info} />}
     </s.KeyContainer>
-    <Tooltip title={title} isDisabled={!title}>
+    <Tooltip title={title || ""} isDisabled={!title}>
       <s.Value>{children}</s.Value>
     </Tooltip>
   </s.Container>

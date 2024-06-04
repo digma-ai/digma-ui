@@ -1,4 +1,30 @@
-import { SetErrorDetailsPayload } from "./types";
+import { FrameStack, SetErrorDetailsPayload } from "./types";
+
+export const mockedFrameStack: FrameStack = {
+  exceptionType: "exceptionType1",
+  frames: [
+    {
+      moduleName: "moduleName1",
+      functionName: "functionName1",
+      lineNumber: 1,
+      executedCode: "executedCode1",
+      codeObjectId: "codeObjectId1",
+      parameters: [
+        {
+          paramName: "paramName1",
+          alwaysNoneValue: false
+        }
+      ],
+      repeat: 1,
+      spanName: "veryLongLongLongLongLongLongSpanName1",
+      spanKind: "spanKind1",
+      moduleLogicalPath: "moduleLogicalPath1",
+      modulePhysicalPath: "modulePhysicalPath1",
+      className: "className1"
+    }
+  ],
+  exceptionMessage: "exceptionMessage1"
+};
 
 export const mockedErrorDetails: SetErrorDetailsPayload = {
   details: {
@@ -17,114 +43,19 @@ export const mockedErrorDetails: SetErrorDetailsPayload = {
     errors: [
       {
         frameStacks: [
-          {
-            exceptionType: "exceptionType1",
-            frames: [
-              {
-                moduleName: "moduleName1",
-                functionName: "functionName1",
-                lineNumber: 1,
-                executedCode: "executedCode1",
-                codeObjectId: "codeObjectId1",
-                parameters: [
-                  {
-                    paramName: "paramName1",
-                    alwaysNoneValue: false
-                  }
-                ],
-                repeat: 1,
-                spanName: "spanName1",
-                spanKind: "spanKind1",
-                moduleLogicalPath: "moduleLogicalPath1",
-                modulePhysicalPath: "modulePhysicalPath1",
-                className: "className1"
-              }
-            ],
-            exceptionMessage: "exceptionMessage1"
-          },
-          {
-            exceptionType: "exceptionType1",
-            frames: [
-              {
-                moduleName: "moduleName1",
-                functionName: "functionName1",
-                lineNumber: 1,
-                executedCode: "executedCode1",
-                codeObjectId: "codeObjectId1",
-                parameters: [
-                  {
-                    paramName: "paramName1",
-                    alwaysNoneValue: false
-                  }
-                ],
-                repeat: 1,
-                spanName: "spanName1",
-                spanKind: "spanKind1",
-                moduleLogicalPath: "moduleLogicalPath1",
-                modulePhysicalPath: "modulePhysicalPath1",
-                className: "className1"
-              }
-            ],
-            exceptionMessage: "exceptionMessage1"
-          }
+          mockedFrameStack,
+          mockedFrameStack,
+          mockedFrameStack,
+          mockedFrameStack,
+          mockedFrameStack,
+          mockedFrameStack
         ],
         stackTrace: "stackTrace1",
         lastInstanceCommitId: "lastInstanceCommitId1",
         latestTraceId: "latestTraceId1"
       },
       {
-        frameStacks: [
-          {
-            exceptionType: "exceptionType1",
-            frames: [
-              {
-                moduleName: "moduleName1",
-                functionName: "functionName1",
-                lineNumber: 1,
-                executedCode: "executedCode1",
-                codeObjectId: "codeObjectId1",
-                parameters: [
-                  {
-                    paramName: "paramName1",
-                    alwaysNoneValue: false
-                  }
-                ],
-                repeat: 1,
-                spanName: "spanName1",
-                spanKind: "spanKind1",
-                moduleLogicalPath: "moduleLogicalPath1",
-                modulePhysicalPath: "modulePhysicalPath1",
-                className: "className1"
-              }
-            ],
-            exceptionMessage: "exceptionMessage1"
-          },
-          {
-            exceptionType: "exceptionType1",
-            frames: [
-              {
-                moduleName: "moduleName1",
-                functionName: "functionName1",
-                lineNumber: 1,
-                executedCode: "executedCode1",
-                codeObjectId: "codeObjectId1",
-                parameters: [
-                  {
-                    paramName: "paramName1",
-                    alwaysNoneValue: false
-                  }
-                ],
-                repeat: 1,
-                spanName: "spanName1",
-                spanKind: "spanKind1",
-                moduleLogicalPath: "moduleLogicalPath1",
-                modulePhysicalPath: "modulePhysicalPath1",
-                className: "className1"
-              }
-            ],
-            exceptionMessage: "exceptionMessage1"
-          }
-        ],
+        frameStacks: [mockedFrameStack, mockedFrameStack],
         stackTrace: "stackTrace1",
         lastInstanceCommitId: "lastInstanceCommitId1",
         latestTraceId: "latestTraceId1"

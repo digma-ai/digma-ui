@@ -9,14 +9,18 @@ import { getErrorMethodId } from "../getErrorMethodId";
 import * as s from "./styles";
 import { ErrorCardProps } from "./types";
 
-const renderTimestampStat = (label: string, timestamp: string) => (
-  <Tooltip title={new Date(timestamp).toString()} key={label}>
-    <s.TimestampContainer>
-      <s.TimestampLabel>{label}:</s.TimestampLabel>
-      <s.TimeDistance>{formatTimeDistance(timestamp)}</s.TimeDistance>
-    </s.TimestampContainer>
-  </Tooltip>
-);
+const renderTimestampStat = (label: string, timestamp: string) => {
+  const dateTimeString = new Date(timestamp).toString();
+
+  return (
+    <Tooltip title={dateTimeString} key={label}>
+      <s.TimestampContainer>
+        <s.TimestampLabel>{label}:</s.TimestampLabel>
+        <s.TimeDistance>{formatTimeDistance(timestamp)}</s.TimeDistance>
+      </s.TimestampContainer>
+    </Tooltip>
+  );
+};
 
 export const ErrorCard = ({ data, onClick }: ErrorCardProps) => {
   const tagType = getTagType(data.scoreInfo.score);

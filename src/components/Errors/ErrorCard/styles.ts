@@ -2,7 +2,8 @@ import styled from "styled-components";
 import { KeyValue } from "../../Insights/InsightsCatalog/InsightsPage/insightCards/common/InsightCard/KeyValue";
 import {
   bodySemiboldTypography,
-  footnoteRegularTypography
+  footnoteRegularTypography,
+  subscriptRegularTypography
 } from "../../common/App/typographies";
 
 export const Header = styled.div`
@@ -67,6 +68,8 @@ export const Footer = styled.div`
 `;
 
 export const TimestampContainer = styled.div`
+  ${subscriptRegularTypography}
+
   display: flex;
   gap: 4px;
   align-items: center;

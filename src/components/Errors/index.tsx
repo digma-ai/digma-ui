@@ -1,13 +1,18 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { actions as globalActions } from "../../actions";
 import { ROUTES } from "../../constants";
 import { ChangeViewPayload } from "../../types";
+import { ConfigContext } from "../common/App/ConfigContext";
 import { ErrorDetails } from "./ErrorDetails";
 import { ErrorsList } from "./ErrorsList";
 import * as s from "./styles";
 import { ErrorsProps } from "./types";
 
 export const Errors = ({ errorId }: ErrorsProps) => {
+  const config = useContext(ConfigContext);
+  const spanCodeObjectId = config.scope?.span?.spanCodeObjectId;
+  const methodId = config?.scope?.span?.methodId;
+
   const [selectedErrorId, setSelectedErrorId] = useState<string | null>(
     errorId || null
   );
@@ -41,7 +46,18 @@ export const Errors = ({ errorId }: ErrorsProps) => {
         />
       );
     }
-    return <ErrorsList onErrorSelect={handleErrorSelect} />;
+
+    if (spanCodeObjectId) {
+      return (
+        <ErrorsList
+          onErrorSelect={handleErrorSelect}
+          spanCodeObjectId={spanCodeObjectId}
+          methodId={methodId}
+        />
+      );
+    }
+
+    return null;
   };
 
   return <s.Container>{renderContent()}</s.Container>;

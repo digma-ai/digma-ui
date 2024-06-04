@@ -5,6 +5,30 @@ import {
   footnoteRegularTypography,
   subscriptRegularTypography
 } from "../../common/App/typographies";
+import { Card } from "../../common/v3/Card";
+import { Content as CardContent } from "../../common/v3/Card/styles";
+
+export const Container = styled.div`
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: auto;
+`;
+
+export const ErrorDetailsCard = styled(Card)`
+  height: 100%;
+  min-height: 450px;
+  overflow: hidden;
+
+  & > ${CardContent}:first-child {
+    height: initial;
+  }
+
+  & > ${CardContent}:last-child {
+    overflow: hidden;
+  }
+`;
 
 export const Header = styled.div`
   display: flex;
@@ -69,6 +93,8 @@ export const Content = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
+  overflow: hidden;
+  height: 100%;
 `;
 
 export const ColumnsContainer = styled.div`
@@ -82,6 +108,7 @@ export const ColumnsContainer = styled.div`
 
 export const StyledKeyValue = styled(KeyValue)`
   gap: 4px;
+  flex-shrink: 0;
 
   & > *:first-child {
     color: ${({ theme }) => theme.colors.v3.text.tertiary};
@@ -108,6 +135,8 @@ export const FlowsContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
+  overflow: hidden;
+  height: 100%;
 `;
 
 export const FlowPagination = styled.div`

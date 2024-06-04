@@ -190,16 +190,20 @@ export const FlowStack = ({ data }: FlowStackProps) => {
 
           return (
             <s.FrameContainer key={uuidv4()}>
-              <s.SpanName>
-                <OpenTelemetryLogoIcon color={"currentColor"} size={12} />
+              <s.Span>
+                <s.SpanIconContainer>
+                  <OpenTelemetryLogoIcon color={"currentColor"} size={12} />
+                </s.SpanIconContainer>
                 <Tooltip title={spanName}>
-                  <span>{spanName}</span>
+                  <s.SpanName>{spanName}</s.SpanName>
                 </Tooltip>
-              </s.SpanName>
+              </s.Span>
               {visibleFrames.map((x) => {
                 const frameItemText = getFrameItemText(x);
-
-                const hasFileURI = x.codeObjectId && filesURIs[x.codeObjectId];
+                const URI = x.codeObjectId
+                  ? filesURIs[x.codeObjectId]
+                  : undefined;
+                const lineNumber = Math.max(1, x.lineNumber); // handle the case when line number is 0 or negative
 
                 return (
                   <s.FrameItem key={uuidv4()}>
@@ -207,13 +211,13 @@ export const FlowStack = ({ data }: FlowStackProps) => {
                       <CodeIcon color={"currentColor"} size={12} />
                     </s.FrameItemIconContainer>
                     <Tooltip title={frameItemText}>
-                      {hasFileURI ? (
+                      {URI ? (
                         <s.FrameItemLink
                           onClick={(e: MouseEvent<HTMLAnchorElement>) => {
                             e.preventDefault();
                             handleFrameItemLinkClick({
-                              URI: x.codeObjectId as string,
-                              lineNumber: x.lineNumber
+                              URI,
+                              lineNumber
                             });
                           }}
                         >
@@ -223,7 +227,7 @@ export const FlowStack = ({ data }: FlowStackProps) => {
                         <s.FrameItemText>{frameItemText}</s.FrameItemText>
                       )}
                     </Tooltip>
-                    <s.LineNumber>Line {x.lineNumber}</s.LineNumber>
+                    <s.LineNumber>Line {lineNumber}</s.LineNumber>
                   </s.FrameItem>
                 );
               })}

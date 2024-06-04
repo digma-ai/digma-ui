@@ -2,13 +2,31 @@ import { Meta, StoryObj } from "@storybook/react";
 
 import { Errors } from ".";
 import { ConfigContext, initialState } from "../common/App/ConfigContext";
+import { ConfigContextData } from "../common/App/types";
 import { mockedErrorDetails } from "./ErrorDetails/mockData";
 import { actions } from "./actions";
 import { mockedErrorsData } from "./mockData";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
-const mockedConfig = {
-  ...initialState
+const mockedConfig: ConfigContextData = {
+  ...initialState,
+  scope: {
+    span: {
+      spanCodeObjectId: "spanCodeObjectId",
+      methodId: "methodId",
+      displayName: "displayName",
+      role: "Entry",
+      serviceName: "serviceName"
+    },
+    hasErrors: true,
+    issuesInsightsCount: 1,
+    analyticsInsightsCount: 1,
+    unreadInsightsCount: 1,
+    code: {
+      codeDetailsList: [],
+      relatedCodeDetailsList: []
+    }
+  }
 };
 
 const meta: Meta<typeof Errors> = {

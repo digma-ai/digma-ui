@@ -4,43 +4,36 @@ import { usePrevious } from "./usePrevious";
 
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 
-export const useRefreshData = <T, K>(props: {
-  request: {
-    action: string;
-    payload?: T;
-  };
-  response: {
-    action: string;
-  };
+export interface DataFetcherConfiguration {
+  requestAction: string;
+  responseAction: string;
   refreshInterval?: number;
-  dependencies?: any[];
-}) => {
+}
+
+export const useFetchData = <T, K>(
+  config: DataFetcherConfiguration,
+  payload?: T
+) => {
   const [data, setData] = useState<K>();
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
   const refreshTimerId = useRef<number>();
-  const refreshInterval = props.refreshInterval
-    ? props.refreshInterval
+  const refreshInterval = config.refreshInterval
+    ? config.refreshInterval
     : REFRESH_INTERVAL;
   const previousRefreshInterval = usePrevious(refreshInterval);
 
   const getData = useCallback(() => {
-    window.sendMessageToDigma<T>(props.request);
-  }, [
-    props.request,
-    // eslint-disable-next-line react-hooks/exhaustive-deps, @typescript-eslint/no-unsafe-assignment
-    ...(props.dependencies ? props.dependencies : [])
-  ]);
-
-  const previousGetData = usePrevious(getData);
+    window.sendMessageToDigma<T>({
+      action: config.requestAction,
+      payload
+    });
+  }, [config.requestAction, payload]);
 
   useEffect(() => {
-    if (previousGetData && previousGetData !== getData) {
-      window.clearTimeout(refreshTimerId.current);
-
-      getData();
-    }
-  }, [previousGetData, getData]);
+    window.clearTimeout(refreshTimerId.current);
+    getData();
+  }, [getData]);
 
   useEffect(() => {
     if (
@@ -67,13 +60,13 @@ export const useRefreshData = <T, K>(props: {
       setLastSetDataTimeStamp(timeStamp);
     };
 
-    dispatcher.addActionListener(props.response.action, handleData);
+    dispatcher.addActionListener(config.responseAction, handleData);
 
     return () => {
+      dispatcher.removeActionListener(config.responseAction, handleData);
       window.clearTimeout(refreshTimerId.current);
-      dispatcher.removeActionListener(props.response.action, handleData);
     };
-  }, []);
+  }, [config.responseAction]);
 
   return {
     data,

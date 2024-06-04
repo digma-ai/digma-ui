@@ -11,12 +11,20 @@ import { TabData } from "../types";
 import * as s from "./styles";
 import { TabsProps } from "./types";
 
+const getTabTitle = (tab: TabData) => {
+  if (tab.id === ROUTES.ERRORS && tab.path) {
+    return "Error Details";
+  }
+
+  return tab.title;
+};
+
 const getTabTooltipMessage = (tab: TabData, scope?: Scope) => {
   if (!scope?.span && [ROUTES.ERRORS, ROUTES.TESTS].includes(tab.id)) {
     return "Global errors and tests is COMING SOON";
   }
 
-  return tab.tooltipMessage;
+  return tab.tooltipMessage || getTabTitle(tab);
 };
 
 const getIsTabDisabled = (tab: TabData, scope?: Scope) => {
@@ -30,14 +38,6 @@ const getIsTabDisabled = (tab: TabData, scope?: Scope) => {
   }
 
   return tab.isDisabled;
-};
-
-const getTabTitle = (tab: TabData) => {
-  if (tab.id === ROUTES.ERRORS && tab.path) {
-    return "Error Details";
-  }
-
-  return tab.title;
 };
 
 const getTabIcon = (tab: TabData) => {
@@ -105,7 +105,7 @@ export const Tabs = (props: TabsProps) => {
               onClick={() => handleTabClick(tab)}
             >
               {icon}
-              {title}
+              <s.TabTitle>{title}</s.TabTitle>
               {isNewIndicatorVisible && <s.Indicator type={"new"} />}
               {config.scope?.hasErrors && [ROUTES.ERRORS].includes(tab.id) && (
                 <s.Indicator type={"errors"} />
