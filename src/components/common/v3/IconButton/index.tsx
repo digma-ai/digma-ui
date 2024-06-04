@@ -3,7 +3,7 @@ import * as s from "./styles";
 import { IconButtonProps } from "./types";
 
 const IconButtonComponent = (
-  { onClick, className, disabled, icon }: IconButtonProps,
+  { onClick, className, isDisabled, icon, buttonType }: IconButtonProps,
   ref: ForwardedRef<HTMLButtonElement>
 ) => {
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -16,8 +16,9 @@ const IconButtonComponent = (
     <s.Button
       className={className}
       onClick={handleClick}
-      disabled={disabled}
+      disabled={isDisabled}
       ref={ref}
+      $type={buttonType}
     >
       <icon.component size={icon.size} color={"currentColor"} />
     </s.Button>

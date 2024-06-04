@@ -7,50 +7,26 @@ export const Link = styled.a<LinkElementProps>`
 
   cursor: pointer;
   text-decoration: none;
-  color: ${({ theme }) => theme.colors.v3.text.link};
   display: block;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
   width: fit-content;
+  color: ${({ theme }) => theme.colors.v3.text.link};
 
-  &:hover,
-  &:focus {
-    color: ${({ theme }) => {
-      switch (theme.mode) {
-        case "light":
-          return "#002d61";
-        case "dark":
-        case "dark-jetbrains":
-          return "#e2e7ff";
-      }
-    }};
+  &:hover {
+    color: ${({ theme }) => theme.colors.v3.text.primary};
   }
 
+  &:focus,
   &:active {
-    color: ${({ theme }) => {
-      switch (theme.mode) {
-        case "light":
-          return "#002d61";
-        case "dark":
-        case "dark-jetbrains":
-          return "#7891d0";
-      }
-    }};
+    color: ${({ theme }) => theme.colors.v3.text.link};
   }
 
   ${({ $disabled }) =>
     $disabled
       ? css`
-          color: ${({ theme }) => {
-            switch (theme.mode) {
-              case "light":
-                return "#b9c0d4";
-              case "dark":
-              case "dark-jetbrains":
-                return "#49494d";
-            }
-          }};
+          color: ${({ theme }) => theme.colors.v3.text.disabled};
           pointer-events: none;
         `
       : ""}

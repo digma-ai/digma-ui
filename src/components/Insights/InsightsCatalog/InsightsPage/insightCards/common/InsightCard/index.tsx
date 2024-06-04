@@ -284,9 +284,9 @@ export const InsightCard = (props: InsightCardProps) => {
             </div>
           </Tooltip>
         ))}
-        <s.MainActions>
+        <s.MainActionContainer>
           <mainAction.button buttonType={"primary"} />
-        </s.MainActions>
+        </s.MainActionContainer>
       </s.Actions>
     );
   };
@@ -330,14 +330,14 @@ export const InsightCard = (props: InsightCardProps) => {
               {props.insight.isDismissible && (
                 <s.ButtonContainer>
                   {props.insight.isDismissed ? (
-                    <s.DismissButton
+                    <Button
                       label={isDismissalChangeInProgress ? "Showing" : "Show"}
                       buttonType={"tertiary"}
                       isDisabled={isDismissalChangeInProgress}
                       onClick={handleShowClick}
                     />
                   ) : (
-                    <s.DismissButton
+                    <Button
                       icon={CrossIcon}
                       isDisabled={isDismissalChangeInProgress}
                       label={

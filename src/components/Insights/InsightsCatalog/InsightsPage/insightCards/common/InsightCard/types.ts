@@ -68,6 +68,7 @@ export interface SetMarkAllAsReadResponsePayload {
   status: "success" | "failure";
   error?: string;
 }
+
 export interface InsightCardCommonProps {
   onRecalculate: (insightId: string) => void;
   onRefresh: (insightType: InsightType) => void;
@@ -80,3 +81,12 @@ export interface InsightCardCommonProps {
   isJiraHintEnabled?: boolean;
   isMarkAsReadButtonEnabled: boolean;
 }
+
+export type Action =
+  | "markAsRead"
+  | "openHistogram"
+  | "recheck"
+  | "viewTicketInfo"
+  | "openTrace"
+  | "openLiveView"
+  | "pin";

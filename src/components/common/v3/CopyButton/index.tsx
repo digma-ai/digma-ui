@@ -17,6 +17,7 @@ export const CopyButton = ({ text, className }: CopyButtonProps) => {
         className={className}
         icon={{ component: CopyIcon, size: 16 }}
         onClick={handleClick}
+        buttonType={"tertiary"}
       />
     </Tooltip>
   );

@@ -12,7 +12,6 @@ export interface BaseButtonProps {
 export interface ButtonProps extends BaseButtonProps {
   onClick?: () => void;
   isDisabled?: boolean;
-
   className?: string;
   type?: ButtonHTMLAttributes<HTMLButtonElement>["type"];
   form?: ButtonHTMLAttributes<HTMLButtonElement>["form"];

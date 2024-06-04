@@ -1,22 +1,32 @@
 import { ForwardedRef, forwardRef } from "react";
+import { isString } from "../../../../typeGuards/isString";
 import * as s from "./styles";
 import { ButtonProps } from "./types";
 
 export const ButtonComponent = (
-  props: ButtonProps,
+  {
+    isDisabled,
+    onClick,
+    buttonType,
+    className,
+    type,
+    form,
+    icon: Icon,
+    label
+  }: ButtonProps,
   ref: ForwardedRef<HTMLButtonElement>
 ) => (
   <s.Button
     ref={ref}
-    disabled={props.isDisabled}
-    onClick={props.onClick}
-    $type={props.buttonType}
-    className={props.className}
-    type={props.type}
-    form={props.form}
+    disabled={isDisabled}
+    onClick={onClick}
+    $type={buttonType}
+    className={className}
+    type={type}
+    form={form}
   >
-    {props.icon && <props.icon size={16} color={"currentColor"} />}
-    {typeof props.label === "string" && <span>{props.label}</span>}
+    {Icon && <Icon size={16} color={"currentColor"} />}
+    {isString(label) && <span>{label}</span>}
   </s.Button>
 );
 export const Button = forwardRef(ButtonComponent);

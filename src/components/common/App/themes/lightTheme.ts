@@ -239,7 +239,7 @@ export const lightTheme: ThemeColors = {
     text: {
       primary: v3colors.gray[1200],
       secondary: v3colors.gray[700],
-      tertiary: v3colors.gray[600],
+      tertiary: v3colors.gray[700],
       disabled: v3colors.gray[500],
       white: v3colors.gray[0],
       link: v3colors.primary[400]
