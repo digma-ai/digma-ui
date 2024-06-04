@@ -99,7 +99,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
     setPersistedEnvironmentClearDataTimestamps
   ] = usePersistence<EnvironmentClearDataTimeStamps>(
     ENVIRONMENT_CLEAR_DATA_TIMESTAMP_PERSISTENCE_KEY,
-    "project"
+    "application"
   );
 
   const config = useContext(ConfigContext);
