@@ -64,7 +64,7 @@ export const Title = styled.span`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: ${({ theme }) => theme.colors.v3.text.link};
+  color: ${({ theme }) => theme.colors.v3.text.primary};
 `;
 
 export const ScoreContainer = styled.div`

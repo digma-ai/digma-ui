@@ -1,7 +1,6 @@
 import { formatTimeDistance } from "../../../utils/formatTimeDistance";
 import { ProductionAffectionBar } from "../../Insights/InsightsCatalog/InsightsPage/insightCards/common/InsightCard/ProductionAffectionBar";
 import { CrossCircleIcon } from "../../common/icons/16px/CrossCircleIcon";
-import { Card } from "../../common/v3/Card";
 import { Tag } from "../../common/v3/Tag";
 import { Tooltip } from "../../common/v3/Tooltip";
 import { HIGH_SEVERITY_SCORE_THRESHOLD, Score, getTagType } from "../Score";
@@ -35,7 +34,7 @@ export const ErrorCard = ({ data, onClick }: ErrorCardProps) => {
   };
 
   return (
-    <Card
+    <s.StyledCard
       onClick={handleCardClick}
       header={
         <s.Header>

@@ -150,7 +150,7 @@ export const FlowStack = ({ data }: FlowStackProps) => {
       action: actions.GO_TO_CODE_LOCATION,
       payload: {
         URI,
-        lineNumber,
+        lineNumber: Math.max(1, lineNumber),
         lastInstanceCommitId: data.lastInstanceCommitId
       }
     });
@@ -203,7 +203,8 @@ export const FlowStack = ({ data }: FlowStackProps) => {
                 const URI = x.codeObjectId
                   ? filesURIs[x.codeObjectId]
                   : undefined;
-                const lineNumber = Math.max(1, x.lineNumber); // handle the case when line number is 0 or negative
+                const lineNumberString =
+                  x.lineNumber < 1 ? "..." : x.lineNumber;
 
                 return (
                   <s.FrameItem key={uuidv4()}>
@@ -217,7 +218,7 @@ export const FlowStack = ({ data }: FlowStackProps) => {
                             e.preventDefault();
                             handleFrameItemLinkClick({
                               URI,
-                              lineNumber
+                              lineNumber: x.lineNumber
                             });
                           }}
                         >
@@ -227,7 +228,7 @@ export const FlowStack = ({ data }: FlowStackProps) => {
                         <s.FrameItemText>{frameItemText}</s.FrameItemText>
                       )}
                     </Tooltip>
-                    <s.LineNumber>Line {lineNumber}</s.LineNumber>
+                    <s.LineNumber>Line {lineNumberString}</s.LineNumber>
                   </s.FrameItem>
                 );
               })}

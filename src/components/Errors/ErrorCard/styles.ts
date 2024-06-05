@@ -5,6 +5,11 @@ import {
   footnoteRegularTypography,
   subscriptRegularTypography
 } from "../../common/App/typographies";
+import { Card } from "../../common/v3/Card";
+
+export const StyledCard = styled(Card)`
+  cursor: pointer;
+`;
 
 export const Header = styled.div`
   display: flex;

@@ -9,6 +9,7 @@ import { isNumber } from "../../../typeGuards/isNumber";
 import { isString } from "../../../typeGuards/isString";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { formatTimeDistance } from "../../../utils/formatTimeDistance";
+import { roundTo } from "../../../utils/roundTo";
 import { ProductionAffectionBar } from "../../Insights/InsightsCatalog/InsightsPage/insightCards/common/InsightCard/ProductionAffectionBar";
 import { NewCircleLoader } from "../../common/NewCircleLoader";
 import { ChevronIcon as ChevronIcon12px } from "../../common/icons/12px/ChevronIcon";
@@ -156,7 +157,7 @@ export const ErrorDetails = ({ id, onGoToAllErrors }: ErrorDetailsProps) => {
               </s.StyledKeyValue>
               {isNumber(data.details.dayAvg) && (
                 <s.StyledKeyValue label={"Frequency"}>
-                  {data.details.dayAvg}/day
+                  {roundTo(data.details.dayAvg, 1)}/day
                 </s.StyledKeyValue>
               )}
             </s.ColumnsContainer>
