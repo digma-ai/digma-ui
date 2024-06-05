@@ -83,13 +83,13 @@ export const NoDataContainer = styled.div`
   padding-top: ${RECENT_ACTIVITY_NO_DATA_PADDING_TOP}px;
 `;
 
-export const RecentActivityContainerBackground = styled.div`
+export const NoDataRecentActivityContainerBackground = styled.div`
   position: absolute;
   inset: 0;
   overflow: hidden;
 `;
 
-export const RecentActivityContainerBackgroundGradient = styled.div`
+export const NoDataRecentActivityContainerBackgroundGradient = styled.div`
   position: absolute;
   left: 0;
   right: 0;
@@ -97,6 +97,25 @@ export const RecentActivityContainerBackgroundGradient = styled.div`
   top: ${RECENT_ACTIVITY_NO_DATA_PADDING_TOP}px;
   height: 454.5%;
   width: 80.41%;
+  border-radius: 100%;
+  opacity: 0.7;
+  background: radial-gradient(
+    50% 50% at 50% 50%,
+    rgb(79 93 163 / 60%) 0%,
+    rgb(79 93 163 / 0%) 100%
+  );
+  filter: blur(5px);
+`;
+
+export const RecentActivityContainerBackgroundGradient = styled.div`
+  z-index: -1;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: auto;
+  top: 0;
+  height: 383.6%;
+  width: 82.1%;
   border-radius: 100%;
   opacity: 0.7;
   background: radial-gradient(
