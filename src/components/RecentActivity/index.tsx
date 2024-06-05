@@ -399,9 +399,9 @@ export const RecentActivity = (props: RecentActivityProps) => {
     ) {
       return (
         <>
-          <s.RecentActivityContainerBackground>
-            <s.RecentActivityContainerBackgroundGradient />
-          </s.RecentActivityContainerBackground>
+          <s.NoDataRecentActivityContainerBackground>
+            <s.NoDataRecentActivityContainerBackgroundGradient />
+          </s.NoDataRecentActivityContainerBackground>
           <s.NoDataContainer>
             <NoData />
           </s.NoDataContainer>
