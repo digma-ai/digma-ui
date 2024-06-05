@@ -9,21 +9,29 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   border-radius: 4px;
-  padding: 6px 8px 12px;
+  padding: 6px 0 12px;
   gap: 12px;
   background: ${({ theme }) => theme.colors.v3.surface.primary};
   overflow: hidden;
   height: 100%;
 `;
 
-export const Header = styled.div`
+export const StacksContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  gap: 12px;
+  padding: 0 8px;
+`;
+
+export const StackHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
 `;
 
-export const TitleContainer = styled.div`
+export const StackTitleContainer = styled.div`
   ${footnoteRegularTypography}
 
   display: flex;
@@ -33,7 +41,7 @@ export const TitleContainer = styled.div`
   color: ${({ theme }) => theme.colors.v3.text.tertiary};
 `;
 
-export const Title = styled.span`
+export const StackTitle = styled.span`
   ${subscriptRegularTypography}
 
   overflow: hidden;
@@ -56,13 +64,18 @@ export const Divider = styled.div`
 export const StackContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding-left: 8px;
-  border-left: 1px solid ${({ theme }) => theme.colors.v3.surface.gray};
-  overflow: auto;
+  gap: 12px;
 `;
 
-export const FrameContainer = styled.div`
+export const SpanGroupsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-left: 1px solid ${({ theme }) => theme.colors.v3.surface.gray};
+  padding-left: 8px;
+`;
+
+export const SpanGroup = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -132,6 +145,7 @@ export const Footer = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-top: auto;
+  padding: 0 8px;
 `;
 
 export const WorkspaceOnlyToggleLabel = styled.span`

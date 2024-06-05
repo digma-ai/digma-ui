@@ -1,4 +1,4 @@
-import { MouseEvent, useEffect, useMemo, useState } from "react";
+import { MouseEvent, useEffect, useMemo, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { dispatcher } from "../../../../dispatcher";
 import { usePersistence } from "../../../../hooks/usePersistence";
@@ -49,6 +49,7 @@ export const FlowStack = ({ data }: FlowStackProps) => {
       "application"
     );
   const [showWorkspaceOnly, setShowWorkspaceOnly] = useState(false);
+  const stacksContainerRef = useRef<HTMLDivElement>(null);
 
   const frameStacks = useMemo(
     () => data.frameStacks.filter(Boolean) as FrameStack[],
@@ -69,6 +70,10 @@ export const FlowStack = ({ data }: FlowStackProps) => {
       }
     });
   }, [frameStacks]);
+
+  useEffect(() => {
+    stacksContainerRef.current?.scrollTo(0, 0);
+  }, [frameStacks, showWorkspaceOnly]);
 
   useEffect(() => {
     setShowWorkspaceOnly(Boolean(persistedShowWorkspaceItemsOnly?.value));
@@ -158,84 +163,107 @@ export const FlowStack = ({ data }: FlowStackProps) => {
 
   return (
     <s.Container>
-      <s.Header>
-        <s.TitleContainer>
-          <Tooltip title={exceptionType}>
-            <s.Title>{exceptionType}</s.Title>
-          </Tooltip>
-          {exceptionMessage}
-        </s.TitleContainer>
-        <Tooltip title={"Open Trace"}>
-          <Button
-            icon={TraceIcon}
-            onClick={handleTraceButtonClick}
-            isDisabled={isNull(traceId)}
-          />
-        </Tooltip>
-      </s.Header>
-      <s.Divider />
-      <s.StackContainer>
+      <s.StacksContainer ref={stacksContainerRef}>
         {frameStacks.map((x) => {
           const frames = x.frames.filter(Boolean) as Frame[];
-
           const visibleFrames = showWorkspaceOnly
             ? frames.filter((x) => x.codeObjectId && filesURIs[x.codeObjectId])
             : frames;
 
-          const spanName = x.frames[0]?.spanName || "";
-
-          if (visibleFrames.length === 0) {
-            return null;
-          }
+          const spanGroups = visibleFrames.reduce((acc, frame, i) => {
+            if (i == 0 || frame.spanName !== frames[i - 1].spanName) {
+              acc.push([frame]);
+            } else {
+              acc[acc.length - 1].push(frame);
+            }
+            return acc;
+          }, [] as Frame[][]);
 
           return (
-            <s.FrameContainer key={uuidv4()}>
-              <s.Span>
-                <s.SpanIconContainer>
-                  <OpenTelemetryLogoIcon color={"currentColor"} size={12} />
-                </s.SpanIconContainer>
-                <Tooltip title={spanName}>
-                  <s.SpanName>{spanName}</s.SpanName>
+            <s.StackContainer key={uuidv4()}>
+              <s.StackHeader>
+                <s.StackTitleContainer>
+                  <Tooltip title={exceptionType}>
+                    <s.StackTitle>{exceptionType}</s.StackTitle>
+                  </Tooltip>
+                  {exceptionMessage}
+                </s.StackTitleContainer>
+                <Tooltip title={"Open Trace"}>
+                  <Button
+                    icon={TraceIcon}
+                    onClick={handleTraceButtonClick}
+                    isDisabled={isNull(traceId)}
+                  />
                 </Tooltip>
-              </s.Span>
-              {visibleFrames.map((x) => {
-                const frameItemText = getFrameItemText(x);
-                const URI = x.codeObjectId
-                  ? filesURIs[x.codeObjectId]
-                  : undefined;
-                const lineNumberString =
-                  x.lineNumber < 1 ? "..." : x.lineNumber;
+              </s.StackHeader>
+              <s.Divider />
+              {spanGroups.length > 0 && (
+                <s.SpanGroupsContainer>
+                  {spanGroups.map((spanFrames) => {
+                    const spanName = spanFrames[0].spanName;
 
-                return (
-                  <s.FrameItem key={uuidv4()}>
-                    <s.FrameItemIconContainer>
-                      <CodeIcon color={"currentColor"} size={12} />
-                    </s.FrameItemIconContainer>
-                    <Tooltip title={frameItemText}>
-                      {URI ? (
-                        <s.FrameItemLink
-                          onClick={(e: MouseEvent<HTMLAnchorElement>) => {
-                            e.preventDefault();
-                            handleFrameItemLinkClick({
-                              URI,
-                              lineNumber: x.lineNumber
-                            });
-                          }}
-                        >
-                          {frameItemText}
-                        </s.FrameItemLink>
-                      ) : (
-                        <s.FrameItemText>{frameItemText}</s.FrameItemText>
-                      )}
-                    </Tooltip>
-                    <s.LineNumber>Line {lineNumberString}</s.LineNumber>
-                  </s.FrameItem>
-                );
-              })}
-            </s.FrameContainer>
+                    return (
+                      <s.SpanGroup key={spanName}>
+                        <s.Span>
+                          <s.SpanIconContainer>
+                            <OpenTelemetryLogoIcon
+                              color={"currentColor"}
+                              size={12}
+                            />
+                          </s.SpanIconContainer>
+                          <Tooltip title={spanName}>
+                            <s.SpanName>{spanName}</s.SpanName>
+                          </Tooltip>
+                        </s.Span>
+                        {spanFrames.map((x) => {
+                          const frameItemText = getFrameItemText(x);
+                          const URI = x.codeObjectId
+                            ? filesURIs[x.codeObjectId]
+                            : undefined;
+                          const lineNumberString =
+                            x.lineNumber < 1 ? "..." : x.lineNumber;
+
+                          return (
+                            <s.FrameItem key={uuidv4()}>
+                              <s.FrameItemIconContainer>
+                                <CodeIcon color={"currentColor"} size={12} />
+                              </s.FrameItemIconContainer>
+                              <Tooltip title={frameItemText}>
+                                {URI ? (
+                                  <s.FrameItemLink
+                                    onClick={(
+                                      e: MouseEvent<HTMLAnchorElement>
+                                    ) => {
+                                      e.preventDefault();
+                                      handleFrameItemLinkClick({
+                                        URI,
+                                        lineNumber: x.lineNumber
+                                      });
+                                    }}
+                                  >
+                                    {frameItemText}
+                                  </s.FrameItemLink>
+                                ) : (
+                                  <s.FrameItemText>
+                                    {frameItemText}
+                                  </s.FrameItemText>
+                                )}
+                              </Tooltip>
+                              <s.LineNumber>
+                                Line {lineNumberString}
+                              </s.LineNumber>
+                            </s.FrameItem>
+                          );
+                        })}
+                      </s.SpanGroup>
+                    );
+                  })}
+                </s.SpanGroupsContainer>
+              )}
+            </s.StackContainer>
           );
         })}
-      </s.StackContainer>
+      </s.StacksContainer>
       <s.Footer>
         <ToggleSwitch
           label={
