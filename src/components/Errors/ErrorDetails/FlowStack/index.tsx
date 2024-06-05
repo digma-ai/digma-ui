@@ -46,7 +46,7 @@ export const FlowStack = ({ data }: FlowStackProps) => {
   const [persistedShowWorkspaceItemsOnly, setPersistedShowWorkspaceItemsOnly] =
     usePersistence<ShowOnlyWorkspaceErrorStackTraceItemsPayload>(
       SHOW_ONLY_WORKSPACE_ERROR_STACK_TRACE_ITEMS_PERSISTENCE_KEY,
-      "project"
+      "application"
     );
   const [showWorkspaceOnly, setShowWorkspaceOnly] = useState(false);
 
