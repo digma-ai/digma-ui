@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { actions as globalActions } from "../../actions";
 import { ROUTES } from "../../constants";
 import { ChangeViewPayload } from "../../types";
@@ -16,6 +16,10 @@ export const Errors = ({ errorId }: ErrorsProps) => {
   const [selectedErrorId, setSelectedErrorId] = useState<string | null>(
     errorId || null
   );
+
+  useEffect(() => {
+    setSelectedErrorId(errorId || null);
+  }, [errorId]);
 
   const handleErrorSelect = (errorId: string) => {
     setSelectedErrorId(errorId);
