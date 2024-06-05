@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { dispatcher } from "../dispatcher";
+import { isNumber } from "../typeGuards/isNumber";
 import { usePrevious } from "./usePrevious";
 
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
@@ -29,16 +30,20 @@ export const useFetchData = <T, K>(
       payload
     });
   }, [config.requestAction, payload]);
+  const previousGetData = usePrevious(getData);
 
   useEffect(() => {
-    window.clearTimeout(refreshTimerId.current);
-    getData();
-  }, [getData]);
+    if (previousGetData && previousGetData !== getData) {
+      window.clearTimeout(refreshTimerId.current);
+      getData();
+    }
+  }, [previousGetData, getData]);
 
   useEffect(() => {
     if (
       previousLastSetDataTimeStamp !== lastSetDataTimeStamp ||
-      refreshInterval !== previousRefreshInterval
+      (isNumber(previousRefreshInterval) &&
+        previousRefreshInterval !== refreshInterval)
     ) {
       window.clearTimeout(refreshTimerId.current);
 

@@ -38,7 +38,7 @@ export const ErrorsList = ({
 
   useEffect(() => {
     getData();
-  }, [getData]);
+  }, []);
 
   if (!data) {
     // TODO: replace with skeletons
