@@ -26,7 +26,7 @@ module.exports = {
   plugins: ["react", "@typescript-eslint"],
   rules: {
     curly: "error",
-    "no-console": "warn",
+    "no-console": "error",
     "no-useless-return": "error",
     "react/jsx-boolean-value": ["error", "always"],
     "react/jsx-curly-brace-presence": ["error", "always"]

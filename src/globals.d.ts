@@ -56,6 +56,7 @@ declare global {
     isDigmathonModeEnabled?: unknown;
     userId?: unknown;
     isDigmathonGameFinished?: unknown;
+    isLoggingEnabled?: unknown;
   }
 }
 
