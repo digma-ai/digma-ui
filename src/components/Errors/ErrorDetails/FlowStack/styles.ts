@@ -3,7 +3,6 @@ import {
   footnoteRegularTypography,
   subscriptRegularTypography
 } from "../../../common/App/typographies";
-import { Button } from "../../../common/v3/Button";
 
 export const Container = styled.div`
   display: flex;
@@ -27,7 +26,6 @@ export const StacksContainer = styled.div`
 export const StackHeader = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 8px;
 `;
 
@@ -143,18 +141,20 @@ export const LineNumber = styled.span`
 export const Footer = styled.div`
   display: flex;
   align-items: center;
+  gap: 12px;
   justify-content: space-between;
   margin-top: auto;
   padding: 0 8px;
 `;
 
-export const WorkspaceOnlyToggleLabel = styled.span`
-  ${subscriptRegularTypography}
-  color: ${({ theme }) => theme.colors.v3.text.primary};
+export const FooterButtonsContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
 `;
 
-export const OpenRawErrorStackTraceButton = styled(Button)`
-  & > span {
-    color: ${({ theme }) => theme.colors.v3.text.link};
-  }
+export const WorkspaceOnlyToggleLabel = styled.span`
+  ${footnoteRegularTypography}
+
+  color: ${({ theme }) => theme.colors.v3.text.primary};
 `;

@@ -177,10 +177,12 @@ export const ErrorDetails = ({ id, onGoToAllErrors }: ErrorDetailsProps) => {
                 </s.IconButton>
                 <span>
                   Flow Stacks{" "}
-                  <s.CurrentFlowNumber>
-                    {currentFlowStack + 1}
-                  </s.CurrentFlowNumber>
-                  /{data.details.errors.length}
+                  <s.FlowsCountNumber>
+                    <s.CurrentFlowNumber>
+                      {currentFlowStack + 1}
+                    </s.CurrentFlowNumber>
+                    /{data.details.errors.length}
+                  </s.FlowsCountNumber>
                 </span>
                 <s.IconButton
                   onClick={() =>

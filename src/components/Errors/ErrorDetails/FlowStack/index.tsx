@@ -188,13 +188,6 @@ export const FlowStack = ({ data }: FlowStackProps) => {
                   </Tooltip>
                   {exceptionMessage}
                 </s.StackTitleContainer>
-                <Tooltip title={"Open Trace"}>
-                  <Button
-                    icon={TraceIcon}
-                    onClick={handleTraceButtonClick}
-                    isDisabled={isNull(traceId)}
-                  />
-                </Tooltip>
               </s.StackHeader>
               <s.Divider />
               {spanGroups.length > 0 && (
@@ -275,12 +268,21 @@ export const FlowStack = ({ data }: FlowStackProps) => {
           onChange={handleWorkspaceOnlyToggleSwitchChange}
           labelPosition={"end"}
         />
-        <s.OpenRawErrorStackTraceButton
-          buttonType={"tertiary"}
-          label={"Raw error stack trace"}
-          onClick={handleRawErrorStackTraceButton}
-          isDisabled={isNull(data.stackTrace)}
-        />
+        <s.FooterButtonsContainer>
+          <Button
+            buttonType={"secondary"}
+            label={"Raw error stack trace"}
+            onClick={handleRawErrorStackTraceButton}
+            isDisabled={isNull(data.stackTrace)}
+          />
+          <Tooltip title={"Open Trace"}>
+            <Button
+              icon={TraceIcon}
+              onClick={handleTraceButtonClick}
+              isDisabled={isNull(traceId)}
+            />
+          </Tooltip>
+        </s.FooterButtonsContainer>
       </s.Footer>
     </s.Container>
   );

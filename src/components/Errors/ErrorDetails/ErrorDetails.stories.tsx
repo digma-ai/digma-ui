@@ -41,15 +41,3 @@ export const Default: Story = {
     }, 2000);
   }
 };
-
-export const Empty: Story = {
-  play: () => {
-    window.setTimeout(() => {
-      window.postMessage({
-        type: "digma",
-        action: actions.SET_ERROR_DETAILS,
-        payload: mockedErrorDetails
-      });
-    }, 1000);
-  }
-};

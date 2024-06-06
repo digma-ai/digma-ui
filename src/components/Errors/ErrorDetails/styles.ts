@@ -152,6 +152,10 @@ export const FlowPagination = styled.div`
   color: ${({ theme }) => theme.colors.v3.text.primary};
 `;
 
+export const FlowsCountNumber = styled.span`
+  color: ${({ theme }) => theme.colors.v3.text.tertiary};
+`;
+
 export const CurrentFlowNumber = styled.span`
-  color: ${({ theme }) => theme.colors.v3.surface.brandSecondary};
+  color: ${({ theme }) => theme.colors.v3.text.primary};
 `;
