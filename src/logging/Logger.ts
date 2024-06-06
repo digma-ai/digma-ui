@@ -16,10 +16,6 @@ export class Logger {
     this.showLogLevel = showLogLevel;
   }
 
-  public setLogLevel(logLevel: LOG_LEVEL): void {
-    this.logLevel = logLevel;
-  }
-
   private getTimestampTag(): string {
     return format(new Date(), "HH:mm:ss");
   }
@@ -40,6 +36,10 @@ export class Logger {
     const tagsString = tags.map((x) => `[${x}]`).join("");
 
     return `${tagsString}: ${message as string}`;
+  }
+
+  public setLogLevel(logLevel: LOG_LEVEL): void {
+    this.logLevel = logLevel;
   }
 
   public log(
