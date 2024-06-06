@@ -1,8 +1,9 @@
 import type { StorybookConfig } from "@storybook/react-webpack5";
 
 const config: StorybookConfig = {
-  stories: ["../src/**/*.stories.mdx", "../src/**/*.stories.tsx"],
+  stories: ["../src/**/*.mdx", "../src/**/*.stories.tsx"],
   addons: [
+    "@storybook/addon-webpack5-compiler-swc",
     "@storybook/addon-links",
     "@storybook/addon-essentials",
     "@storybook/addon-interactions",
@@ -12,19 +13,25 @@ const config: StorybookConfig = {
   framework: {
     name: "@storybook/react-webpack5",
     options: {
-      fastRefresh: true,
       strictMode: true
     }
   },
+  swc: () => ({
+    jsc: {
+      transform: {
+        react: {
+          runtime: "automatic"
+        }
+      }
+    }
+  }),
   core: {
     disableTelemetry: true
   },
   staticDirs: ["../public"],
   typescript: {
-    check: true
-  },
-  docs: {
-    autodocs: "tag"
+    check: true,
+    reactDocgen: "react-docgen-typescript"
   }
 };
 
