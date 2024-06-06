@@ -48,7 +48,10 @@ export const FlowStack = ({ data }: FlowStackProps) => {
       SHOW_ONLY_WORKSPACE_ERROR_STACK_TRACE_ITEMS_PERSISTENCE_KEY,
       "application"
     );
-  const [showWorkspaceOnly, setShowWorkspaceOnly] = useState(false);
+  const showWorkspaceOnly = useMemo(
+    () => Boolean(persistedShowWorkspaceItemsOnly?.value),
+    [persistedShowWorkspaceItemsOnly]
+  );
   const stacksContainerRef = useRef<HTMLDivElement>(null);
 
   const frameStacks = useMemo(
@@ -73,11 +76,7 @@ export const FlowStack = ({ data }: FlowStackProps) => {
 
   useEffect(() => {
     stacksContainerRef.current?.scrollTo(0, 0);
-  }, [frameStacks, showWorkspaceOnly]);
-
-  useEffect(() => {
-    setShowWorkspaceOnly(Boolean(persistedShowWorkspaceItemsOnly?.value));
-  }, [persistedShowWorkspaceItemsOnly]);
+  }, [showWorkspaceOnly]);
 
   useEffect(() => {
     const handleSetFilesURIs = (payload: unknown) => {
@@ -139,7 +138,6 @@ export const FlowStack = ({ data }: FlowStackProps) => {
       value
     });
 
-    setShowWorkspaceOnly(value);
     setPersistedShowWorkspaceItemsOnly({
       value
     });

@@ -55,7 +55,14 @@ export const mockedErrorDetails: SetErrorDetailsPayload = {
         latestTraceId: "latestTraceId1"
       },
       {
-        frameStacks: [mockedFrameStack, mockedFrameStack],
+        frameStacks: [
+          mockedFrameStack,
+          mockedFrameStack,
+          mockedFrameStack,
+          mockedFrameStack,
+          mockedFrameStack,
+          mockedFrameStack
+        ],
         stackTrace: "stackTrace1",
         lastInstanceCommitId: "lastInstanceCommitId1",
         latestTraceId: "latestTraceId1"

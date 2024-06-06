@@ -197,7 +197,7 @@ export const ErrorDetails = ({ id, onGoToAllErrors }: ErrorDetailsProps) => {
                   />
                 </s.IconButton>
               </s.FlowPagination>
-              <FlowStack data={currentFlow} />
+              <FlowStack data={currentFlow} key={currentFlowStack} />
             </s.FlowsContainer>
           </s.Content>
         }

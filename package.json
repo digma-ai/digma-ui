@@ -103,7 +103,7 @@
     "@floating-ui/react": "^0.25.1",
     "@tanstack/react-table": "^8.7.8",
     "allotment": "^1.19.0",
-    "axios": "^1.6.5",
+    "axios": "^1.7.2",
     "copy-to-clipboard": "^3.3.3",
     "date-fns": "^2.29.3",
     "free-email-domains": "^1.2.5",
