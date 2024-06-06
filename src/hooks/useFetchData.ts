@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { dispatcher } from "../dispatcher";
+import { isBoolean } from "../typeGuards/isBoolean";
 import { isNumber } from "../typeGuards/isNumber";
 import { usePrevious } from "./usePrevious";
 
@@ -9,41 +10,75 @@ export interface DataFetcherConfiguration {
   requestAction: string;
   responseAction: string;
   refreshInterval?: number;
+  refreshWithInterval?: boolean;
+  refreshOnPayloadChange?: boolean;
 }
 
 export const useFetchData = <T, K>(
-  config: DataFetcherConfiguration,
+  {
+    requestAction,
+    responseAction,
+    refreshWithInterval = false,
+    refreshOnPayloadChange = false,
+    refreshInterval = REFRESH_INTERVAL
+  }: DataFetcherConfiguration,
   payload?: T
 ) => {
   const [data, setData] = useState<K>();
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
   const refreshTimerId = useRef<number>();
-  const refreshInterval = config.refreshInterval
-    ? config.refreshInterval
-    : REFRESH_INTERVAL;
   const previousRefreshInterval = usePrevious(refreshInterval);
+  const previousRefreshWithInterval = usePrevious(refreshWithInterval);
+  const [isInProgress, setIsInProgress] = useState<boolean>(false);
+  const [handleResponse, setHandleResponse] = useState<boolean>(true);
 
   const getData = useCallback(() => {
     window.sendMessageToDigma<T>({
-      action: config.requestAction,
+      action: requestAction,
       payload
     });
-  }, [config.requestAction, payload]);
+    setIsInProgress(true);
+  }, [requestAction, payload]);
+
   const previousGetData = usePrevious(getData);
 
   useEffect(() => {
-    if (previousGetData && previousGetData !== getData) {
+    if (
+      refreshOnPayloadChange &&
+      previousGetData &&
+      previousGetData !== getData
+    ) {
       window.clearTimeout(refreshTimerId.current);
       getData();
     }
-  }, [previousGetData, getData]);
+  }, [previousGetData, getData, refreshOnPayloadChange]);
 
   useEffect(() => {
     if (
-      previousLastSetDataTimeStamp !== lastSetDataTimeStamp ||
-      (isNumber(previousRefreshInterval) &&
-        previousRefreshInterval !== refreshInterval)
+      isBoolean(previousRefreshWithInterval) &&
+      previousRefreshWithInterval !== refreshWithInterval
+    ) {
+      if (refreshWithInterval) {
+        getData();
+      } else {
+        setHandleResponse(false);
+        window.clearTimeout(refreshTimerId.current);
+      }
+    }
+  }, [
+    previousRefreshWithInterval,
+    refreshWithInterval,
+    refreshInterval,
+    getData
+  ]);
+
+  useEffect(() => {
+    if (
+      refreshWithInterval &&
+      (previousLastSetDataTimeStamp !== lastSetDataTimeStamp ||
+        (isNumber(previousRefreshInterval) &&
+          previousRefreshInterval !== refreshInterval))
     ) {
       window.clearTimeout(refreshTimerId.current);
 
@@ -56,22 +91,28 @@ export const useFetchData = <T, K>(
     lastSetDataTimeStamp,
     previousRefreshInterval,
     refreshInterval,
-    getData
+    getData,
+    refreshWithInterval
   ]);
 
   useEffect(() => {
     const handleData = (data: any, timeStamp: number) => {
-      setData(data as K);
-      setLastSetDataTimeStamp(timeStamp);
+      if (isInProgress) {
+        if (handleResponse) {
+          setData(data as K);
+          setLastSetDataTimeStamp(timeStamp);
+        }
+        setIsInProgress(false);
+      }
     };
 
-    dispatcher.addActionListener(config.responseAction, handleData);
+    dispatcher.addActionListener(responseAction, handleData);
 
     return () => {
-      dispatcher.removeActionListener(config.responseAction, handleData);
+      dispatcher.removeActionListener(responseAction, handleData);
       window.clearTimeout(refreshTimerId.current);
     };
-  }, [config.responseAction]);
+  }, [responseAction, isInProgress, handleResponse]);
 
   return {
     data,

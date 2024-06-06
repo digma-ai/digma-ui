@@ -44,18 +44,20 @@ export interface FlowInfo {
   latestTraceId: string | null;
 }
 
+export interface ErrorDetails {
+  name: string | null;
+  sourceCodeObjectId: string | null;
+  latestTraceId: string | null;
+  firstOccurenceTime: string;
+  lastOccurenceTime: string;
+  dayAvg: number | null;
+  scoreInfo: ErrorScoreInfo;
+  errors: (FlowInfo | null)[];
+  originServices: (ServiceInfo | null)[];
+}
+
 export interface SetErrorDetailsPayload {
-  details: {
-    name: string | null;
-    sourceCodeObjectId: string | null;
-    latestTraceId: string | null;
-    firstOccurenceTime: string;
-    lastOccurenceTime: string;
-    dayAvg: number | null;
-    scoreInfo: ErrorScoreInfo;
-    errors: (FlowInfo | null)[];
-    originServices: (ServiceInfo | null)[];
-  };
+  details: ErrorDetails;
 }
 
 export interface GoToTracePayload {
@@ -78,6 +80,8 @@ export interface GetFilesURIsPayload {
   codeObjectIds: string[];
 }
 
+export type FilesURIsMap = Record<string, string>;
+
 export interface SetFilesURIsPayload {
-  filesURIs: Record<string, string>;
+  filesURIs: FilesURIsMap;
 }

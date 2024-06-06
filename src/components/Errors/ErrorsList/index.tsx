@@ -15,7 +15,9 @@ import { ErrorsListProps } from "./types";
 
 const dataFetcherConfiguration: DataFetcherConfiguration = {
   requestAction: actions.GET_ERRORS_DATA,
-  responseAction: actions.SET_ERRORS_DATA
+  responseAction: actions.SET_ERRORS_DATA,
+  refreshWithInterval: true,
+  refreshOnPayloadChange: true
 };
 
 export const ErrorsList = ({

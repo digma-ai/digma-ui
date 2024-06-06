@@ -2,8 +2,7 @@ import styled from "styled-components";
 import { KeyValue } from "../../Insights/InsightsCatalog/InsightsPage/insightCards/common/InsightCard/KeyValue";
 import {
   bodySemiboldTypography,
-  footnoteRegularTypography,
-  subscriptRegularTypography
+  footnoteRegularTypography
 } from "../../common/App/typographies";
 import { Card } from "../../common/v3/Card";
 
@@ -70,23 +69,4 @@ export const Footer = styled.div`
   & > * {
     flex: 1 1 0;
   }
-`;
-
-export const TimestampContainer = styled.div`
-  ${subscriptRegularTypography}
-
-  display: flex;
-  gap: 4px;
-  align-items: center;
-  overflow: hidden;
-`;
-
-export const TimestampLabel = styled.span`
-  color: ${({ theme }) => theme.colors.v3.text.tertiary};
-`;
-
-export const TimeDistance = styled.span`
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 `;

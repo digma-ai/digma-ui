@@ -1,19 +1,21 @@
-import { MouseEvent, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { dispatcher } from "../../../../dispatcher";
-import { usePersistence } from "../../../../hooks/usePersistence";
-import { isNull } from "../../../../typeGuards/isNull";
-import { isString } from "../../../../typeGuards/isString";
-import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
-import { CodeIcon } from "../../../common/icons/12px/CodeIcon";
-import { OpenTelemetryLogoIcon } from "../../../common/icons/12px/OpenTelemetryLogoIcon";
-import { TraceIcon } from "../../../common/icons/16px/TraceIcon";
-import { Button } from "../../../common/v3/Button";
-import { ToggleSwitch } from "../../../common/v3/ToggleSwitch";
-import { Tooltip } from "../../../common/v3/Tooltip";
-import { actions } from "../../actions";
-import { trackingEvents } from "../../tracking";
 import {
+  DataFetcherConfiguration,
+  useFetchData
+} from "../../../../../hooks/useFetchData";
+import { usePersistence } from "../../../../../hooks/usePersistence";
+import { isNull } from "../../../../../typeGuards/isNull";
+import { isString } from "../../../../../typeGuards/isString";
+import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
+import { TraceIcon } from "../../../../common/icons/16px/TraceIcon";
+import { Button } from "../../../../common/v3/Button";
+import { ToggleSwitch } from "../../../../common/v3/ToggleSwitch";
+import { Tooltip } from "../../../../common/v3/Tooltip";
+import { actions } from "../../../actions";
+import { trackingEvents } from "../../../tracking";
+import {
+  FilesURIsMap,
   Frame,
   FrameStack,
   GetFilesURIsPayload,
@@ -21,25 +23,21 @@ import {
   GoToTracePayload,
   OpenRawErrorStackTraceInEditorPayload,
   SetFilesURIsPayload
-} from "../types";
+} from "../../types";
+import { SpanFrameGroup } from "./SpanFrameGroup";
+import { FrameItemCodeLocation } from "./SpanFrameGroup/types";
 import * as s from "./styles";
 import {
   FlowProps as FlowStackProps,
-  FrameItemCodeLocation,
   ShowOnlyWorkspaceErrorStackTraceItemsPayload
 } from "./types";
 
 const SHOW_ONLY_WORKSPACE_ERROR_STACK_TRACE_ITEMS_PERSISTENCE_KEY =
   "showOnlyWorkspaceErrorStackTraceItems";
 
-const getFrameItemText = (frame: Frame) => {
-  if (window.ide === "PyCharm" && frame.executedCode) {
-    return frame.executedCode;
-  }
-
-  return [frame.modulePhysicalPath || frame.moduleName, frame.functionName]
-    .filter((x) => isString(x))
-    .join(" in ");
+const filesURIsDataFetcherConfiguration: DataFetcherConfiguration = {
+  requestAction: actions.GET_FILES_URIS,
+  responseAction: actions.SET_FILES_URIS
 };
 
 export const FlowStack = ({ data }: FlowStackProps) => {
@@ -58,40 +56,31 @@ export const FlowStack = ({ data }: FlowStackProps) => {
     () => data.frameStacks.filter(Boolean) as FrameStack[],
     [data]
   );
-  const [filesURIs, setFilesURIs] = useState<Record<string, string>>({});
+
+  const filesURIsPayload = useMemo(
+    () => ({
+      codeObjectIds: frameStacks
+        .map((stack) => stack.frames.map((x) => x?.codeObjectId))
+        .flat()
+        .filter((x) => isString(x)) as string[]
+    }),
+    [frameStacks]
+  );
+
+  const { data: filesURIsResponse, getData: getFilesURIs } = useFetchData<
+    GetFilesURIsPayload,
+    SetFilesURIsPayload
+  >(filesURIsDataFetcherConfiguration, filesURIsPayload);
+
+  const filesURIs: FilesURIsMap = filesURIsResponse?.filesURIs || {};
 
   useEffect(() => {
-    const codeObjectsToResolve = frameStacks
-      .map((stack) => stack.frames.map((x) => x?.codeObjectId))
-      .flat()
-      .filter((x) => isString(x)) as string[];
-
-    window.sendMessageToDigma<GetFilesURIsPayload>({
-      action: actions.GET_FILES_URIS,
-      payload: {
-        codeObjectIds: codeObjectsToResolve
-      }
-    });
-  }, [frameStacks]);
+    getFilesURIs();
+  }, [frameStacks, getFilesURIs]);
 
   useEffect(() => {
     stacksContainerRef.current?.scrollTo(0, 0);
   }, [showWorkspaceOnly]);
-
-  useEffect(() => {
-    const handleSetFilesURIs = (payload: unknown) => {
-      setFilesURIs((payload as SetFilesURIsPayload).filesURIs);
-    };
-
-    dispatcher.addActionListener(actions.SET_FILES_URIS, handleSetFilesURIs);
-
-    return () => {
-      dispatcher.removeActionListener(
-        actions.SET_FILES_URIS,
-        handleSetFilesURIs
-      );
-    };
-  }, [filesURIs]);
 
   if (frameStacks.length === 0) {
     return null;
@@ -147,8 +136,6 @@ export const FlowStack = ({ data }: FlowStackProps) => {
     URI,
     lineNumber
   }: FrameItemCodeLocation) => {
-    sendUserActionTrackingEvent(trackingEvents.ERROR_STACK_TRACE_ITEM_CLICKED);
-
     window.sendMessageToDigma<GoToCodeLocationPayload>({
       action: actions.GO_TO_CODE_LOCATION,
       payload: {
@@ -191,62 +178,16 @@ export const FlowStack = ({ data }: FlowStackProps) => {
               {spanGroups.length > 0 && (
                 <s.SpanGroupsContainer>
                   {spanGroups.map((spanFrames) => {
-                    const spanName = spanFrames[0].spanName;
+                    const spanName = frames[0].spanName as string;
 
                     return (
-                      <s.SpanGroup key={spanName}>
-                        <s.Span>
-                          <s.SpanIconContainer>
-                            <OpenTelemetryLogoIcon
-                              color={"currentColor"}
-                              size={12}
-                            />
-                          </s.SpanIconContainer>
-                          <Tooltip title={spanName}>
-                            <s.SpanName>{spanName}</s.SpanName>
-                          </Tooltip>
-                        </s.Span>
-                        {spanFrames.map((x) => {
-                          const frameItemText = getFrameItemText(x);
-                          const URI = x.codeObjectId
-                            ? filesURIs[x.codeObjectId]
-                            : undefined;
-                          const lineNumberString =
-                            x.lineNumber < 1 ? "..." : x.lineNumber;
-
-                          return (
-                            <s.FrameItem key={uuidv4()}>
-                              <s.FrameItemIconContainer>
-                                <CodeIcon color={"currentColor"} size={12} />
-                              </s.FrameItemIconContainer>
-                              <Tooltip title={frameItemText}>
-                                {URI ? (
-                                  <s.FrameItemLink
-                                    onClick={(
-                                      e: MouseEvent<HTMLAnchorElement>
-                                    ) => {
-                                      e.preventDefault();
-                                      handleFrameItemLinkClick({
-                                        URI,
-                                        lineNumber: x.lineNumber
-                                      });
-                                    }}
-                                  >
-                                    {frameItemText}
-                                  </s.FrameItemLink>
-                                ) : (
-                                  <s.FrameItemText>
-                                    {frameItemText}
-                                  </s.FrameItemText>
-                                )}
-                              </Tooltip>
-                              <s.LineNumber>
-                                Line {lineNumberString}
-                              </s.LineNumber>
-                            </s.FrameItem>
-                          );
-                        })}
-                      </s.SpanGroup>
+                      <SpanFrameGroup
+                        key={spanName}
+                        spanName={spanName}
+                        frames={spanFrames}
+                        filesURIs={filesURIs}
+                        onGoCodeLocation={handleFrameItemLinkClick}
+                      />
                     );
                   })}
                 </s.SpanGroupsContainer>
