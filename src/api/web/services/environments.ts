@@ -1,4 +1,4 @@
-import { logger } from "../../../logger";
+import { logger } from "../../../logging";
 import { client } from "../client";
 
 export interface GetEnvironmentParams {

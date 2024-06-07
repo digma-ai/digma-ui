@@ -1,6 +1,6 @@
 import { AxiosError } from "axios";
 import { actions as dashboardActions } from "../../../components/Dashboard/actions";
-import { logger } from "../../../logger";
+import { logger } from "../../../logging";
 import { client } from "../client";
 
 export interface GetDashboardParams<T> {

@@ -1,4 +1,4 @@
-import { logger } from "../logger";
+import { logger } from "../logging";
 import { TaggedLogger } from "../logging/TaggedLogger";
 import { platform } from "../platform";
 import { isObject } from "../typeGuards/isObject";

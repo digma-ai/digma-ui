@@ -1,6 +1,6 @@
 import { actions as globalActions } from "../../../actions";
 import { BackendInfo } from "../../../components/common/App/types";
-import { logger } from "../../../logger";
+import { logger } from "../../../logging";
 import { client } from "../client";
 
 type GetAboutResponse = BackendInfo;

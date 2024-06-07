@@ -1,4 +1,4 @@
-import { logger as baseLogger } from "../../../logger";
+import { logger as baseLogger } from "../../../logging";
 import { TaggedLogger } from "../../../logging/TaggedLogger";
 import { Environment, Scope } from "../../common/App/types";
 

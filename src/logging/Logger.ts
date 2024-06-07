@@ -2,16 +2,16 @@ import { format } from "date-fns";
 import { LOG_LEVEL } from "./types";
 
 export class Logger {
-  private logLevel: number;
+  private minLogLevel: number;
   private showTimeStamp: boolean;
   private showLogLevel: boolean;
 
-  public constructor(
-    logLevel: LOG_LEVEL,
+  constructor(
+    minLogLevel: LOG_LEVEL,
     showTimeStamp = true,
     showLogLevel = true
   ) {
-    this.logLevel = logLevel;
+    this.minLogLevel = minLogLevel;
     this.showTimeStamp = showTimeStamp;
     this.showLogLevel = showLogLevel;
   }
@@ -21,7 +21,7 @@ export class Logger {
   }
 
   private getLogLevelTag(): string {
-    return LOG_LEVEL[this.logLevel];
+    return LOG_LEVEL[this.minLogLevel];
   }
 
   private getFormattedMessage(tags: string[], message: unknown): string {
@@ -39,7 +39,7 @@ export class Logger {
   }
 
   public setLogLevel(logLevel: LOG_LEVEL): void {
-    this.logLevel = logLevel;
+    this.minLogLevel = logLevel;
   }
 
   public log(
@@ -50,7 +50,7 @@ export class Logger {
   ): void {
     const formattedMessage = this.getFormattedMessage(tags, message);
 
-    if (this.logLevel > level) {
+    if (this.minLogLevel > level) {
       return;
     }
 
