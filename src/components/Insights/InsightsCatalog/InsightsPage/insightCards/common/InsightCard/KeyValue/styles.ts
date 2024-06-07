@@ -29,5 +29,7 @@ export const Key = styled.div`
 export const Value = styled.div`
   ${subscriptRegularTypography}
 
+  width: fit-content;
+  max-width: 100%;
   color: ${({ theme }) => theme.colors.v3.text.primary};
 `;

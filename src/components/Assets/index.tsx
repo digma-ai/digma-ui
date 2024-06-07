@@ -62,6 +62,10 @@ export const Assets = ({ selectedTypeId }: AssetsProps) => {
     }
   }, [config.scope, previousScope, selectedTypeId]);
 
+  useEffect(() => {
+    setSelectedAssetTypeId(selectedTypeId || null);
+  }, [selectedTypeId]);
+
   const handleGoToAllAssets = () => {
     setSelectedAssetTypeId(null);
     changeView(ROUTES.ASSETS);

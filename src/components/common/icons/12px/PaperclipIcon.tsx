@@ -13,7 +13,7 @@ const PaperclipIconComponent = (props: IconProps) => {
       fill="none"
       viewBox="0 0 12 12"
     >
-      <g clipPath="url(#paperclip-clip-1)">
+      <g clipPath="url(#paperclip-12px-clip-1)">
         <path
           stroke={color}
           strokeLinecap="round"
@@ -22,7 +22,7 @@ const PaperclipIconComponent = (props: IconProps) => {
         />
       </g>
       <defs>
-        <clipPath id="paperclip-clip-1">
+        <clipPath id="paperclip-12px-clip-1">
           <path fill="#fff" d="M0 0h12v12H0z" />
         </clipPath>
       </defs>

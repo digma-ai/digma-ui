@@ -17,13 +17,13 @@ const DownloadIconComponent = (props: IconProps) => {
         stroke={color}
         strokeLinecap="round"
         strokeLinejoin="round"
-        clipPath="url(#download-clip-1)"
+        clipPath="url(#download-12px-clip-1)"
       >
         <path d="M6 7.125v-5.25m4.125 5.25V9.75a.375.375 0 0 1-.375.375h-7.5a.375.375 0 0 1-.375-.375V7.125" />
         <path d="M7.875 5.25 6 7.125 4.125 5.25" />
       </g>
       <defs>
-        <clipPath id="download-clip-1">
+        <clipPath id="download-12px-clip-1">
           <path fill="#fff" d="M0 0h12v12H0z" />
         </clipPath>
       </defs>

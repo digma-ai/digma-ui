@@ -42,7 +42,7 @@ export const sendMessage = <T>(
 ): string | undefined => {
   console.debug(
     `Digma message to sent: ${message.action}
-  Raw message: %O`,
+Raw message: %O`,
     message
   );
 

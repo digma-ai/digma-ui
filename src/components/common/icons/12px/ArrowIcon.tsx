@@ -31,12 +31,12 @@ const ArrowIconComponent = (props: RotatableIconProps) => {
         stroke={color}
         strokeLinecap="round"
         strokeLinejoin="round"
-        clipPath="url(#arrow-clip-1)"
+        clipPath="url(#arrow-12px-clip-1)"
       >
         <path d="M6 1.76v8.48M9.45 6.8 6 10.24 2.55 6.8" />
       </g>
       <defs>
-        <clipPath id="arrow-clip-1">
+        <clipPath id="arrow-12px-clip-1">
           <path fill="#fff" d="M0 0h12v12H0z" />
         </clipPath>
       </defs>

@@ -21,6 +21,7 @@ export const Tab = styled.li<TabProps>`
   box-sizing: border-box;
   flex-grow: 1;
   flex-basis: 0;
+  overflow: hidden;
   ${({ $width }) =>
     isNumber($width)
       ? css`
@@ -52,7 +53,14 @@ export const Tab = styled.li<TabProps>`
   }
 `;
 
+export const TabTitle = styled.span`
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`;
+
 export const Indicator = styled.div<IndicatorProps>`
+  flex-shrink: 0;
   border-radius: 50%;
   width: 4px;
   height: 4px;

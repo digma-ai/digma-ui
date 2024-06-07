@@ -13,7 +13,7 @@ const ConfettiIconComponent = (props: IconProps) => {
       fill="none"
       viewBox="0 0 16 16"
     >
-      <g clipPath="url(#confetti-clip-1)">
+      <g clipPath="url(#confetti-16px-clip-1)">
         <path
           stroke={color}
           strokeLinecap="round"
@@ -22,7 +22,7 @@ const ConfettiIconComponent = (props: IconProps) => {
         />
       </g>
       <defs>
-        <clipPath id="confetti-clip-1">
+        <clipPath id="confetti-16px-clip-1">
           <path fill="#fff" d="M0 0h16v16H0z" />
         </clipPath>
       </defs>

@@ -13,7 +13,7 @@ const FourPointedStarIconComponent = (props: IconProps) => {
       fill="none"
       viewBox="0 0 16 16"
     >
-      <g clipPath="url(#four-pointed-star-clip-1)">
+      <g clipPath="url(#four-pointed-star-16px-clip-1)">
         <path
           stroke={color}
           strokeLinecap="round"
@@ -22,7 +22,7 @@ const FourPointedStarIconComponent = (props: IconProps) => {
         />
       </g>
       <defs>
-        <clipPath id="four-pointed-star-clip-1">
+        <clipPath id="four-pointed-star-16px-clip-1">
           <path fill="#fff" d="M0 0h16v16H0z" />
         </clipPath>
       </defs>

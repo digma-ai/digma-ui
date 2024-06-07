@@ -442,13 +442,11 @@ export const App = (props: AppProps) => {
   const theme = getTheme(mode, mainFont, codeFont);
 
   return (
-    <>
-      <ConfigContext.Provider value={config}>
-        <ThemeProvider theme={theme}>
-          <GlobalStyle />
-          {props.children}
-        </ThemeProvider>
-      </ConfigContext.Provider>
-    </>
+    <ConfigContext.Provider value={config}>
+      <ThemeProvider theme={theme}>
+        <GlobalStyle />
+        {props.children}
+      </ThemeProvider>
+    </ConfigContext.Provider>
   );
 };

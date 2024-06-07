@@ -13,7 +13,7 @@ const WrenchIconComponent = (props: IconProps) => {
       fill="none"
       viewBox="0 0 16 16"
     >
-      <g clipPath="url(#wrench-clip-1)">
+      <g clipPath="url(#wrench-16px-clip-1)">
         <path
           stroke={color}
           strokeLinecap="round"
@@ -22,7 +22,7 @@ const WrenchIconComponent = (props: IconProps) => {
         />
       </g>
       <defs>
-        <clipPath id="wrench-clip-1">
+        <clipPath id="wrench-16px-clip-1">
           <path fill="#fff" d="M0 0h16v16H0z" />
         </clipPath>
       </defs>

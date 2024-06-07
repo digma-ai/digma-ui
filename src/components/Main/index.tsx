@@ -2,6 +2,7 @@ import { useContext, useLayoutEffect, useState } from "react";
 import { ROUTES } from "../../constants";
 import { dispatcher } from "../../dispatcher";
 import { Assets } from "../Assets";
+import { Errors } from "../Errors";
 import { Highlights } from "../Highlights";
 import { Insights } from "../Insights";
 import { SetViewsPayload } from "../Navigation/types";
@@ -48,6 +49,8 @@ export const Main = () => {
       return <Assets selectedTypeId={view.path} />;
     case ROUTES.ANALYTICS:
       return <Insights insightViewType={"Analytics"} key={"analytics"} />;
+    case ROUTES.ERRORS:
+      return <Errors errorId={view.path} />;
     case ROUTES.TESTS:
       return <Tests />;
     default:

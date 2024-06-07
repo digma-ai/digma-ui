@@ -17,13 +17,13 @@ const ArrowsOutsideIconComponent = (props: IconProps) => {
         stroke={color}
         strokeLinecap="round"
         strokeLinejoin="round"
-        clipPath="url(#arrows-outside-clip-1)"
+        clipPath="url(#arrows-outside-12px-clip-1)"
       >
         <path d="M7.5 2.25h2.25V4.5m-3 .75 3-3M4.5 9.75H2.25V7.5m3-.75-3 3" />
       </g>
       <defs>
         <clipPath id="a">
-          <path fill="#arrows-outside-clip-1" d="M0 0h12v12H0z" />
+          <path fill="#arrows-outside-12px-clip-1" d="M0 0h12v12H0z" />
         </clipPath>
       </defs>
     </svg>

@@ -17,13 +17,13 @@ const TimerIconComponent = (props: IconProps) => {
         stroke={color}
         strokeLinecap="round"
         strokeLinejoin="round"
-        clipPath="url(#timer-clip-1)"
+        clipPath="url(#timer-12px-clip-1)"
       >
         <path d="M6 10.125a4.125 4.125 0 1 0 0-8.25 4.125 4.125 0 0 0 0 8.25Zm-3.375-9-1.5 1.5m8.25-1.5 1.5 1.5" />
         <path d="M6 3.375V6h2.625" />
       </g>
       <defs>
-        <clipPath id="timer-clip-1">
+        <clipPath id="timer-12px-clip-1">
           <path fill="#fff" d="M0 0h12v12H0z" />
         </clipPath>
       </defs>
