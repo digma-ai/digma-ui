@@ -1,3 +1,5 @@
+import { logger as baseLogger } from "../../../logging";
+import { TaggedLogger } from "../../../logging/TaggedLogger";
 import { Environment, Scope } from "../../common/App/types";
 
 const MAX_STEPS = 15;
@@ -32,7 +34,8 @@ export class HistoryManager {
   private current: Node<HistoryStep> | null = null;
   private itemsCount = 0;
   private currentIndex = -1;
-  private debug = false;
+
+  private logger = new TaggedLogger(baseLogger, "HISTORY");
 
   constructor(data?: HistoryData) {
     if (data) {
@@ -71,7 +74,11 @@ export class HistoryManager {
       this.itemsCount++;
     }
 
-    this.debug && console.log("History pushed: ", this.getHistoryData());
+    this.logger.debug(
+      `New frame pushed
+History state: %O`,
+      this.getHistoryData()
+    );
   }
 
   canMoveBack() {
@@ -89,7 +96,11 @@ export class HistoryManager {
     this.current = this.current.previous;
     this.currentIndex--;
 
-    this.debug && console.log("History back: ", this.getHistoryData());
+    this.logger.debug(
+      `Navigated back
+History state: %O`,
+      this.getHistoryData()
+    );
     return this.getCurrent();
   }
 
@@ -108,7 +119,12 @@ export class HistoryManager {
     this.current = this.current.next;
     this.currentIndex++;
 
-    this.debug && console.log("History forward: ", this.getHistoryData());
+    this.logger.debug(
+      `Navigated forward
+History state: %O`,
+      this.getHistoryData()
+    );
+
     return this.getCurrent();
   }
 
@@ -125,8 +141,11 @@ export class HistoryManager {
       this.current.value = { ...this.current.value, ...newValue };
     }
 
-    this.debug &&
-      console.log("History current updated: ", this.getHistoryData());
+    this.logger.debug(
+      `Current frame updated
+History state: %O`,
+      this.getHistoryData()
+    );
   }
 
   getHistoryData() {

@@ -1,5 +1,6 @@
 import { actions as globalActions } from "../../../actions";
 import { BackendInfo } from "../../../components/common/App/types";
+import { logger } from "../../../logging";
 import { client } from "../client";
 
 type GetAboutResponse = BackendInfo;
@@ -14,6 +15,6 @@ export const getAboutInfo = async () => {
       payload: response.data
     });
   } catch (e) {
-    console.error(e);
+    logger.error(e);
   }
 };

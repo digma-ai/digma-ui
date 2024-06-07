@@ -1,3 +1,4 @@
+import { logger } from "../../../logging";
 import { client } from "../client";
 
 export interface GetEnvironmentParams {
@@ -28,7 +29,7 @@ export const getEnvironment = async (
       payload: response.data
     });
   } catch (e) {
-    console.error(e);
+    logger.error(e);
     const errorMessage = e instanceof Error ? e.message : "Unknown error";
 
     window.postMessage({

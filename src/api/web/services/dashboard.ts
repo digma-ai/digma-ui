@@ -1,5 +1,6 @@
 import { AxiosError } from "axios";
 import { actions as dashboardActions } from "../../../components/Dashboard/actions";
+import { logger } from "../../../logging";
 import { client } from "../client";
 
 export interface GetDashboardParams<T> {
@@ -29,7 +30,7 @@ export const getDashboard = async (
       payload: response.data
     });
   } catch (e) {
-    console.error(e);
+    logger.error(e);
     let errorMessage = e instanceof Error ? e.message : "Unknown error";
     if (e instanceof AxiosError && e.response?.status === 404) {
       errorMessage = "Backend version is outdated. Please update Digma.";
