@@ -25,12 +25,12 @@ export class Logger {
   }
 
   private getFormattedMessage(tags: string[], message: unknown): string {
-    if (this.showTimeStamp) {
-      tags.unshift(this.getTimestampTag());
-    }
-
     if (this.showLogLevel) {
       tags.unshift(this.getLogLevelTag());
+    }
+
+    if (this.showTimeStamp) {
+      tags.unshift(this.getTimestampTag());
     }
 
     const tagsString = tags.map((x) => `[${x}]`).join("");
