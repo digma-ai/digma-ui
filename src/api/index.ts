@@ -23,7 +23,7 @@ export const initializeDigmaMessageListener = (
 ) => {
   const handleDigmaMessage = (e: MessageEvent) => {
     if (isDigmaMessageEvent(e)) {
-      logger.debug(
+      messagingLogger.debug(
         `Message received: %c${e.data.action}
 %cRaw message: %O`,
         INCOMING_MESSAGE_ACTION_ID_CONSOLE_STYLE,
