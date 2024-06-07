@@ -12,26 +12,19 @@ import * as s from "./styles";
 import { TabsProps } from "./types";
 
 const getTabTooltipMessage = (tab: TabData, scope?: Scope) => {
-  if (
-    !scope?.span &&
-    [ROUTES.ERRORS, ROUTES.ERROR_DETAILS, ROUTES.TESTS].includes(tab.id)
-  ) {
+  if (!scope?.span && [ROUTES.ERRORS, ROUTES.TESTS].includes(tab.id)) {
     return "Global errors and tests is COMING SOON";
   }
 
-  return tab.tooltipMessage;
+  return tab.tooltipMessage || tab.title;
 };
 
 const getIsTabDisabled = (tab: TabData, scope?: Scope) => {
   if (
     !scope?.span &&
-    [
-      ROUTES.HIGHLIGHTS,
-      ROUTES.ANALYTICS,
-      ROUTES.ERRORS,
-      ROUTES.ERROR_DETAILS,
-      ROUTES.TESTS
-    ].includes(tab.id)
+    [ROUTES.HIGHLIGHTS, ROUTES.ANALYTICS, ROUTES.ERRORS, ROUTES.TESTS].includes(
+      tab.id
+    )
   ) {
     return true;
   }
@@ -103,12 +96,11 @@ export const Tabs = (props: TabsProps) => {
               onClick={() => handleTabClick(tab)}
             >
               {icon}
-              {tab.title}
+              <s.TabTitle>{tab.title}</s.TabTitle>
               {isNewIndicatorVisible && <s.Indicator type={"new"} />}
-              {config.scope?.hasErrors &&
-                [ROUTES.ERRORS, ROUTES.ERROR_DETAILS].includes(tab.id) && (
-                  <s.Indicator type={"errors"} />
-                )}
+              {config.scope?.hasErrors && [ROUTES.ERRORS].includes(tab.id) && (
+                <s.Indicator type={"errors"} />
+              )}
             </s.Tab>
           </Tooltip>
         );

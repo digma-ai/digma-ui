@@ -13,7 +13,7 @@ const TreeNodesIconComponent = (props: IconProps) => {
       fill="none"
       viewBox="0 0 12 12"
     >
-      <g stroke={color} clipPath="url(#tree-nodes-clip-1)">
+      <g stroke={color} clipPath="url(#tree-nodes-12px-clip-1)">
         <path
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -23,7 +23,7 @@ const TreeNodesIconComponent = (props: IconProps) => {
         <circle cx="2" cy="9.71" r="1.5" />
       </g>
       <defs>
-        <clipPath id="tree-nodes-clip-1">
+        <clipPath id="tree-nodes-12px-clip-1">
           <path fill="#fff" d="M0 0h12v12H0z" />
         </clipPath>
       </defs>

@@ -16,7 +16,7 @@ const CodeGradientIconComponent = (props: IconProps) => {
       <g
         strokeLinecap="round"
         strokeLinejoin="round"
-        clipPath="url(#code-gradient-clip-1)"
+        clipPath="url(#code-gradient-16px-clip-1)"
       >
         <path stroke="url(#code-gradient-stroke-1)" d="M4 5.5 1 8l3 2.5" />
         <path stroke="url(#code-gradient-stroke-2)" d="M12 5.5 15 8l-3 2.5" />
@@ -56,7 +56,7 @@ const CodeGradientIconComponent = (props: IconProps) => {
           <stop offset=".11" stopColor="#7B5DB2" stopOpacity=".5" />
           <stop offset=".975" stopColor="#6568CF" />
         </linearGradient>
-        <clipPath id="code-gradient-clip-1">
+        <clipPath id="code-gradient-16px-clip-1">
           <path fill="#fff" d="M0 0h16v16H0z" />
         </clipPath>
       </defs>

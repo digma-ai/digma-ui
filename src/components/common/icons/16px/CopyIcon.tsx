@@ -17,13 +17,13 @@ const CopyIconComponent = (props: IconProps) => {
         stroke={color}
         strokeLinecap="round"
         strokeLinejoin="round"
-        clipPath="url(#copy-clip-1)"
+        clipPath="url(#copy-16px-clip-1)"
       >
         <path d="M10.5 10.5h3v-8h-8v3" />
         <path d="M10.5 5.5h-8v8h8v-8Z" />
       </g>
       <defs>
-        <clipPath id="copy-clip-1">
+        <clipPath id="copy-16px-clip-1">
           <path fill="#fff" d="M0 0h16v16H0z" />
         </clipPath>
       </defs>

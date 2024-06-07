@@ -17,12 +17,12 @@ const CrossIconComponent = (props: IconProps) => {
         stroke={color}
         strokeLinecap="round"
         strokeLinejoin="round"
-        clipPath="url(#cross-clip-1)"
+        clipPath="url(#cross-12px-clip-1)"
       >
         <path d="m9.375 2.625-6.75 6.75m6.75 0-6.75-6.75" />
       </g>
       <defs>
-        <clipPath id="cross-clip-1">
+        <clipPath id="cross-12px-clip-1">
           <path fill="#fff" d="M0 0h12v12H0z" />
         </clipPath>
       </defs>

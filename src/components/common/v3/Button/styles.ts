@@ -90,7 +90,7 @@ export const Button = styled.button<ButtonElementProps>`
     background: ${({ theme, $type }) => {
       switch ($type) {
         case "tertiary":
-          return "none";
+          return "transparent";
         case "secondary":
           return theme.colors.v3.surface.brandDark;
         case "primary":
@@ -102,7 +102,7 @@ export const Button = styled.button<ButtonElementProps>`
       ${({ theme, $type }) => {
         switch ($type) {
           case "tertiary":
-            return "none";
+            return "transparent";
           case "secondary":
             return theme.colors.v3.stroke.primary;
           case "primary":
@@ -133,7 +133,7 @@ export const Button = styled.button<ButtonElementProps>`
     background: ${({ theme, $type }) => {
       switch ($type) {
         case "tertiary":
-          return "none";
+          return "transparent";
         case "secondary":
           return theme.colors.v3.surface.primary;
         case "primary":
@@ -145,7 +145,7 @@ export const Button = styled.button<ButtonElementProps>`
       ${({ theme, $type }) => {
         switch ($type) {
           case "tertiary":
-            return "none";
+            return "transparent";
           case "secondary":
             return theme.colors.v3.stroke.primary;
           case "primary":

@@ -13,7 +13,7 @@ const SlackLogoIconComponent = (props: IconProps) => {
       fill="none"
       viewBox="0 0 16 16"
     >
-      <g clipPath="url(#slack-logo-clip-1)">
+      <g clipPath="url(#slack-logo-16px-clip-1)">
         <path
           fill="#DE1C59"
           d="M3.407 10.09c0 .916-.747 1.665-1.664 1.665A1.668 1.668 0 0 1 .08 10.09c0-.916.748-1.665 1.664-1.665h1.664v1.665Zm.838 0c0-.916.749-1.665 1.665-1.665s1.665.749 1.665 1.665v4.167c0 .916-.749 1.664-1.665 1.664a1.669 1.669 0 0 1-1.665-1.664V10.09Z"
@@ -32,7 +32,7 @@ const SlackLogoIconComponent = (props: IconProps) => {
         />
       </g>
       <defs>
-        <clipPath id="slack-logo-clip-1">
+        <clipPath id="slack-logo-16px-clip-1">
           <path fill="#fff" d="M0 0h16v16H0z" />
         </clipPath>
       </defs>

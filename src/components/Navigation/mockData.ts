@@ -54,7 +54,8 @@ export const mockedViewsData: SetViewsPayload = {
       hasNewData: false,
       isHidden: true,
       title: "Error Details",
-      id: ROUTES.ERROR_DETAILS,
+      id: ROUTES.ERRORS,
+      path: "1",
       cardName: "errors"
     },
     {

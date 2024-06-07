@@ -5,4 +5,5 @@ export interface KeyValueProps {
   info?: ReactNode;
   children: ReactNode;
   className?: string;
+  title?: string;
 }

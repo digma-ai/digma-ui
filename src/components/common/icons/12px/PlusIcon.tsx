@@ -17,7 +17,7 @@ const PlusIconComponent = (props: IconProps) => {
         stroke={color}
         strokeLinecap="round"
         strokeLinejoin="round"
-        clipPath="url(#plus-clip-1)"
+        clipPath="url(#plus-12px-clip-1)"
       >
         <path d="M1.875 6h8.25M6 1.875v8.25" />
       </g>
