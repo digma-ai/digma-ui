@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import { EnvironmentBarProps } from "./types";
+import { Popup } from "../common/Popup";
+import { EnvironmentBarElementProps } from "./types";
 
 export const EnvironmentIconContainer = styled.div`
   display: flex;
@@ -10,7 +11,7 @@ export const ChevronIconContainer = styled.div`
   display: flex;
 `;
 
-export const EnvironmentBar = styled.div<EnvironmentBarProps>`
+export const EnvironmentBar = styled.div<EnvironmentBarElementProps>`
   overflow: hidden;
   flex-grow: 1;
   user-select: none;
@@ -30,8 +31,8 @@ export const EnvironmentBar = styled.div<EnvironmentBarProps>`
     $isDisabled
       ? theme.colors.surface.primary
       : $isMenuOpen
-      ? theme.colors.v3.surface.primaryLight
-      : theme.colors.v3.surface.brandDark};
+        ? theme.colors.v3.surface.primaryLight
+        : theme.colors.v3.surface.brandDark};
   color: ${({ theme, $isDisabled }) =>
     $isDisabled ? theme.colors.v3.text.secondary : theme.colors.v3.text.link};
   cursor: ${({ $isDisabled }) => ($isDisabled ? "initial" : "pointer")};
@@ -41,8 +42,8 @@ export const EnvironmentBar = styled.div<EnvironmentBarProps>`
       $isDisabled
         ? theme.colors.v3.icon.disabled
         : $isMenuOpen
-        ? theme.colors.v3.icon.secondary
-        : theme.colors.v3.text.tertiary};
+          ? theme.colors.v3.icon.secondary
+          : theme.colors.v3.text.tertiary};
   }
 
   & ${ChevronIconContainer} {
@@ -72,4 +73,8 @@ export const SelectedEnvironmentName = styled.span`
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+`;
+
+export const EnvironmentMenuPopup = styled(Popup)`
+  width: 100%;
 `;

@@ -5,7 +5,6 @@ export const Container = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: ${({ theme }) => theme.colors.v3.surface.primary};
 `;
 
 export const Header = styled.div`
