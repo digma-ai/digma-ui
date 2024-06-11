@@ -180,6 +180,11 @@ export const subheadingBoldTypography = css`
   font-weight: ${typographies.subheading.fontWeight.bold};
 `;
 
+export const subheadingSemiboldTypography = css`
+  font-size: ${typographies.subheading.fontSize}px;
+  font-weight: ${typographies.subheading.fontWeight.semibold};
+`;
+
 export const codeRegularTypography = css`
   font-size: ${typographies.code.fontSize}px;
   font-weight: ${typographies.code.fontWeight.regular};
