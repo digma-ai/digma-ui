@@ -22,6 +22,9 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
+    onQueryChange: () => {
+      /*some spy */
+    },
     insights: [
       { ...mockedEndpointBottleneckInsight, isRead: false },
       {
