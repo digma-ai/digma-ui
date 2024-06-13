@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 
 import { EnvironmentBar } from ".";
-import { Environment } from "../../common/App/types";
+import { mockedEnvironments } from "./mockData";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof EnvironmentBar> = {
@@ -16,34 +16,6 @@ const meta: Meta<typeof EnvironmentBar> = {
 export default meta;
 
 type Story = StoryObj<typeof meta>;
-
-const mockedEnvironments: Environment[] = [
-  {
-    id: "DEV",
-    name: "DEV",
-    type: "Private"
-  },
-  {
-    id: "QA",
-    name: "QA",
-    type: "Private"
-  },
-  {
-    id: "STAGING",
-    name: "STAGING",
-    type: "Private"
-  },
-  {
-    id: "UAT",
-    name: "UAT",
-    type: "Private"
-  },
-  {
-    id: "PROD",
-    name: "PROD",
-    type: "Private"
-  }
-];
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 export const Default: Story = {
