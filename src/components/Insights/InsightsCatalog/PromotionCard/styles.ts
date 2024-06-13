@@ -65,7 +65,7 @@ export const Description = styled.span`
   color: ${({ theme }) => theme.colors.v3.text.primary};
 `;
 
-export const StyledButton = styled(Button)`
+export const AcceptButton = styled(Button)`
   padding: 6px 8px;
 `;
 
