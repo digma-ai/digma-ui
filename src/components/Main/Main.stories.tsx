@@ -2,7 +2,6 @@ import { Meta, StoryObj } from "@storybook/react";
 
 import { Main } from ".";
 import { ROUTES } from "../../constants";
-import { actions as navigationActions } from "../Navigation/actions";
 import { mockedViewsData } from "../Navigation/mockData";
 import { SetViewsPayload } from "../Navigation/types";
 import { ConfigContext, initialState } from "../common/App/ConfigContext";
@@ -76,7 +75,7 @@ export const Highlights: Story = {
     window.setTimeout(() => {
       window.postMessage({
         type: "digma",
-        action: navigationActions.SET_VIEWS,
+        action: actions.SET_VIEWS,
         payload: updateSelectedView(mockedViewsData, ROUTES.HIGHLIGHTS)
       });
       window.postMessage({
@@ -93,7 +92,7 @@ export const Insights: Story = {
     window.setTimeout(() => {
       window.postMessage({
         type: "digma",
-        action: navigationActions.SET_VIEWS,
+        action: actions.SET_VIEWS,
         payload: updateSelectedView(mockedViewsData, ROUTES.INSIGHTS)
       });
       window.postMessage({
@@ -110,7 +109,7 @@ export const Assets: Story = {
     window.setTimeout(() => {
       window.postMessage({
         type: "digma",
-        action: navigationActions.SET_VIEWS,
+        action: actions.SET_VIEWS,
         payload: updateSelectedView(mockedViewsData, ROUTES.ASSETS)
       });
       window.postMessage({
@@ -127,7 +126,7 @@ export const Analytics: Story = {
     window.setTimeout(() => {
       window.postMessage({
         type: "digma",
-        action: navigationActions.SET_VIEWS,
+        action: actions.SET_VIEWS,
         payload: updateSelectedView(mockedViewsData, ROUTES.ANALYTICS)
       });
       window.postMessage({
@@ -144,7 +143,7 @@ export const Errors: Story = {
     window.setTimeout(() => {
       window.postMessage({
         type: "digma",
-        action: navigationActions.SET_VIEWS,
+        action: actions.SET_VIEWS,
         payload: updateSelectedView(mockedViewsData, ROUTES.ERRORS)
       });
       window.postMessage({
@@ -161,7 +160,7 @@ export const Tests: Story = {
     window.setTimeout(() => {
       window.postMessage({
         type: "digma",
-        action: navigationActions.SET_VIEWS,
+        action: actions.SET_VIEWS,
         payload: updateSelectedView(mockedViewsData, ROUTES.TESTS)
       });
       window.postMessage({

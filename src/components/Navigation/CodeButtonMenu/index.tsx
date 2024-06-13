@@ -105,7 +105,6 @@ export const CodeButtonMenu = (props: CodeButtonMenuProps) => {
 
   return (
     <Popup
-      height={"86px"}
       header={
         props.codeContext.hasMissingDependency
           ? renderMissingDependency()

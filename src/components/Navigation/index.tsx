@@ -12,6 +12,7 @@ import {
 } from "../../types";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 import { AsyncActionResultData } from "../InstallationWizard/types";
+import { actions as mainActions } from "../Main/actions";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { Environment, Scope } from "../common/App/types";
 import { NewPopover } from "../common/NewPopover";
@@ -133,7 +134,7 @@ export const Navigation = () => {
       }
     };
 
-    dispatcher.addActionListener(actions.SET_VIEWS, handleViewData);
+    dispatcher.addActionListener(mainActions.SET_VIEWS, handleViewData);
     dispatcher.addActionListener(
       actions.SET_CODE_CONTEXT,
       handleCodeContextData
@@ -148,7 +149,7 @@ export const Navigation = () => {
     );
 
     return () => {
-      dispatcher.removeActionListener(actions.SET_VIEWS, handleViewData);
+      dispatcher.removeActionListener(mainActions.SET_VIEWS, handleViewData);
       dispatcher.removeActionListener(
         actions.SET_CODE_CONTEXT,
         handleCodeContextData
