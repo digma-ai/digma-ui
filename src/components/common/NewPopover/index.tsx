@@ -64,24 +64,33 @@ const getArrowColor = (theme: DefaultTheme) => {
   }
 };
 
-export const NewPopover = (props: PopoverProps) => {
+export const NewPopover = ({
+  placement = "top",
+  isOpen,
+  onOpenChange,
+  arrow: showArrow,
+  boundary,
+  useClickInteraction,
+  children,
+  sameWidth,
+  width,
+  content
+}: PopoverProps) => {
   const arrowRef = useRef(null);
   const theme = useTheme();
   const arrowColor = getArrowColor(theme);
 
-  const placement = props.placement || "top";
-
   const { refs, floatingStyles, context } = useFloating({
     placement,
-    open: props.isOpen,
-    onOpenChange: props.onOpenChange,
+    open: isOpen,
+    onOpenChange: onOpenChange,
     middleware: [
-      offset(props.arrow ? ARROW_HEIGHT + ARROW_GAP : GAP),
+      offset(showArrow ? ARROW_HEIGHT + ARROW_GAP : GAP),
       flip(),
       shift({
-        boundary: props.boundary || undefined
+        boundary: boundary ?? undefined
       }),
-      ...(props.arrow
+      ...(showArrow
         ? [
             arrow({
               element: arrowRef
@@ -96,34 +105,34 @@ export const NewPopover = (props: PopoverProps) => {
   const dismiss = useDismiss(context);
 
   const { getReferenceProps, getFloatingProps } = useInteractions([
-    ...(props.useClickInteraction === false ? [] : [click]),
+    ...(useClickInteraction === false ? [] : [click]),
     dismiss
   ]);
 
   return (
     <>
-      {Children.map(props.children, (child) =>
+      {Children.map(children, (child) =>
         cloneElement(child, {
           ref: refs.setReference,
           ...getReferenceProps()
         })
       )}
-      {props.isOpen && (
+      {isOpen && (
         <FloatingPortal>
           <div
             ref={refs.setFloating}
             style={{
               ...floatingStyles,
-              width: props.sameWidth
+              width: sameWidth
                 ? context.elements.reference?.getBoundingClientRect().width
-                : isUndefined(props.width)
+                : isUndefined(width)
                 ? undefined
-                : props.width,
+                : width,
               zIndex: LAYERS.MODAL
             }}
             {...getFloatingProps()}
           >
-            {props.arrow && (
+            {showArrow && (
               <FloatingArrow
                 ref={arrowRef}
                 context={context}
@@ -136,7 +145,7 @@ export const NewPopover = (props: PopoverProps) => {
                 style={getArrowStyles(context.placement)}
               />
             )}
-            <div>{props.content}</div>
+            <div>{content}</div>
           </div>
         </FloatingPortal>
       )}

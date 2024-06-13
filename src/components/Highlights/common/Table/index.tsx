@@ -27,7 +27,7 @@ export const Table = <T,>({ columns, data, id, onRowClick }: TableProps<T>) => {
   // More info: https://github.com/TanStack/table/issues/4614
   useEffect(() => {
     if (
-      (previousId && previousId !== id) ||
+      Boolean(previousId && previousId !== id) ||
       (isNumber(previousPage) && previousPage !== page)
     ) {
       setTableData({ pageItems });

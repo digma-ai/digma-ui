@@ -8,7 +8,7 @@ export const NPlusOneEndpoints = ({ insight }: NPlusOneEndpointsProps) => {
     return null;
   }
 
-  const endpoints = insight.endpoints || [];
+  const endpoints = insight.endpoints ?? [];
 
   if (endpoints.length === 0) {
     return null;

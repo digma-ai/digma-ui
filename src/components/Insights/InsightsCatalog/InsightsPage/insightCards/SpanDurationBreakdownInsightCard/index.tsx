@@ -137,6 +137,10 @@ export const SpanDurationBreakdownInsightCard = ({
         const entry = info.getValue();
 
         const percentile = getPercentile(entry, percentileViewMode);
+        if (!percentile) {
+          return null;
+        }
+
         const title = getDurationTitle(entry);
 
         return (
@@ -144,8 +148,7 @@ export const SpanDurationBreakdownInsightCard = ({
             key={"duration"}
             title={title}
             type={"highlight"}
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            content={getDurationString(percentile!.duration)}
+            content={getDurationString(percentile.duration)}
           />
         );
       }
@@ -203,7 +206,7 @@ export const SpanDurationBreakdownInsightCard = ({
   // More info: https://github.com/TanStack/table/issues/4614
   useEffect(() => {
     if (
-      (previousInsightId && previousInsightId !== insight.id) ||
+      Boolean(previousInsightId && previousInsightId !== insight.id) ||
       (isNumber(previousPage) && previousPage !== page)
     ) {
       setData({ items: pageItems });

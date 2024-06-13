@@ -96,7 +96,7 @@ export const useFetchData = <T, K>(
   ]);
 
   useEffect(() => {
-    const handleData = (data: any, timeStamp: number) => {
+    const handleData = (data: unknown, timeStamp: number) => {
       if (isInProgress) {
         if (handleResponse) {
           setData(data as K);

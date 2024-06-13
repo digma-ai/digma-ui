@@ -38,7 +38,7 @@ export const EndpointQueryOptimizationV2InsightTicket = ({
 
   const services = [
     ...new Set(
-      (spanInsight?.endpoints || []).map((x) => x.endpointInfo.serviceName)
+      (spanInsight?.endpoints ?? []).map((x) => x.endpointInfo.serviceName)
     )
   ];
   const serviceString = services.length > 0 ? services.join(", ") : "";
@@ -48,7 +48,7 @@ export const EndpointQueryOptimizationV2InsightTicket = ({
     ? `Criticality: ${getCriticalityLabel(spanInsight?.criticality)}`
     : "";
 
-  const dbStatement = spanInsight?.dbStatement.toUpperCase() || "";
+  const dbStatement = spanInsight?.dbStatement.toUpperCase() ?? "";
 
   const summary = [
     `Slow ${dbStatement} query found on db: ${dbName}`,
@@ -58,7 +58,7 @@ export const EndpointQueryOptimizationV2InsightTicket = ({
     .filter(Boolean)
     .join(" - ");
 
-  const queryString = spanInsight?.spanInfo?.displayName || "";
+  const queryString = spanInsight?.spanInfo?.displayName ?? "";
 
   const renderDescription = () => (
     <>

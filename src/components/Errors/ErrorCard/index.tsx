@@ -14,7 +14,7 @@ export const ErrorCard = ({ data, onClick }: ErrorCardProps) => {
   const name = data.name;
   const scoreInfo = data.scoreInfo;
   const characteristic = data.characteristic;
-  const location = getErrorMethodId(data.sourceCodeObjectId || "");
+  const location = getErrorMethodId(data.sourceCodeObjectId ?? "");
 
   const handleCardClick = () => {
     onClick(data.uid);

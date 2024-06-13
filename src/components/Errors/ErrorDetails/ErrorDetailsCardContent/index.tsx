@@ -13,8 +13,9 @@ import { Direction } from "../../../common/icons/types";
 import { Tooltip } from "../../../common/v3/Tooltip";
 import { HIGH_SEVERITY_SCORE_THRESHOLD } from "../../Score";
 import { trackingEvents } from "../../tracking";
-import { FlowInfo, ServiceInfo } from "../types";
+import { FlowInfo } from "../types";
 import { FlowStack } from "./FlowStack";
+import { isServiceInfoWithName } from "./FlowStack/SpanFrameGroup/typeGuards";
 import * as s from "./styles";
 import { ErrorDetailsCardContentProps } from "./types";
 
@@ -32,8 +33,8 @@ export const ErrorDetailsCardContent = ({
   }, [previousId, id]);
 
   const services = data.originServices
-    .filter((x) => !isNull(x) && !isNull(x.serviceName))
-    .map((x) => (x as ServiceInfo).serviceName as string);
+    .filter(isServiceInfoWithName)
+    .map((x) => x.serviceName);
   const startedTooltip = new Date(data.firstOccurenceTime).toString();
   const startedString = formatTimeDistance(data.firstOccurenceTime);
   const lastTooltip = new Date(data.lastOccurenceTime).toString();

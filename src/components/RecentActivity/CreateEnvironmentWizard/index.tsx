@@ -71,7 +71,7 @@ export const CreateEnvironmentWizard = ({
   useEffect(() => {
     const getFailedSteps = (result: EnvironmentCreatedData) => {
       return stepsStatus.filter((x) =>
-        result.errors?.find((e) => x.errors && x.errors[e.errorCode])
+        result.errors?.find((e) => x.errors?.[e.errorCode])
       );
     };
 

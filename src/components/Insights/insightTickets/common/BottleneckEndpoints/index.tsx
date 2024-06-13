@@ -9,7 +9,7 @@ export const BottleneckEndpoints = ({ insight }: BottleneckEndpointsProps) => {
     return null;
   }
 
-  const endpoints = insight.slowEndpoints || [];
+  const endpoints = insight.slowEndpoints ?? [];
 
   if (endpoints.length === 0) {
     return null;
@@ -18,7 +18,7 @@ export const BottleneckEndpoints = ({ insight }: BottleneckEndpointsProps) => {
   return (
     <div>
       <div>
-        The span {insight.spanInfo?.displayName || ""} is slowing down the
+        The span {insight.spanInfo?.displayName ?? ""} is slowing down the
         following endpoints:
       </div>
       <s.List>

@@ -20,7 +20,6 @@ type Story = StoryObj<typeof meta>;
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 export const Default: Story = {
   render: (args) => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
     const handleItemClick = (value: string) => {

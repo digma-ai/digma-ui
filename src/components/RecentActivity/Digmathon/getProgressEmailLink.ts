@@ -5,6 +5,11 @@ import { DigmathonInsightData } from "../types";
 export const EMAIL_ADDRESS = "digmathon@digma.ai";
 const LINE_BREAK = "%0D%0A";
 
+const isDigmathonInsightDataWithFoundDate = (
+  x: DigmathonInsightData
+): x is Omit<DigmathonInsightData, "foundAt"> & { foundAt: string } =>
+  isString(x.foundAt);
+
 export const getProgressEmailLink = (
   insights: DigmathonInsightData[],
   config: ConfigContextData
@@ -13,16 +18,14 @@ export const getProgressEmailLink = (
   const subject = `Digmathon Challenge [${userId}]`;
 
   const foundInsights = insights
-    .filter((x) => isString(x.foundAt))
+    .filter(isDigmathonInsightDataWithFoundDate)
     .sort(
-      (a, b) =>
-        new Date(a.foundAt as string).valueOf() -
-        new Date(b.foundAt as string).valueOf()
+      (a, b) => new Date(a.foundAt).valueOf() - new Date(b.foundAt).valueOf()
     )
     .map(
       (x, i) =>
-        `${i + 1}) ${x.data?.title || x.type}${LINE_BREAK}Found at: ${new Date(
-          x.foundAt as string
+        `${i + 1}) ${x.data?.title ?? x.type}${LINE_BREAK}Found at: ${new Date(
+          x.foundAt
         ).toISOString()}`
     )
     .join(LINE_BREAK.repeat(2));

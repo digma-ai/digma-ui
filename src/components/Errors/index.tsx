@@ -14,11 +14,11 @@ export const Errors = ({ errorId }: ErrorsProps) => {
   const methodId = config?.scope?.span?.methodId;
 
   const [selectedErrorId, setSelectedErrorId] = useState<string | null>(
-    errorId || null
+    errorId ?? null
   );
 
   useEffect(() => {
-    setSelectedErrorId(errorId || null);
+    setSelectedErrorId(errorId ?? null);
   }, [errorId]);
 
   const handleErrorSelect = (errorId: string) => {

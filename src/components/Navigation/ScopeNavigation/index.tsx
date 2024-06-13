@@ -19,7 +19,7 @@ const changeScope = (scope: Scope | null) => {
   window.sendMessageToDigma<ChangeScopePayload>({
     action: globalActions.CHANGE_SCOPE,
     payload: {
-      span: scope?.span || null,
+      span: scope?.span ?? null,
       forceNavigation: true
     }
   });
@@ -63,14 +63,14 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
         currentScope.span?.spanCodeObjectId !== newScope.span?.spanCodeObjectId
       ) {
         historyManager.push({
-          environment: environment || null,
+          environment: environment ?? null,
           scope: newScope,
           tabId: props.currentTabId
         });
       } else {
         const historyStep = historyManager.getCurrent();
 
-        if (historyStep && historyStep.tabId) {
+        if (historyStep?.tabId) {
           window.sendMessageToDigma<ChangeViewPayload>({
             action: globalActions.CHANGE_VIEW,
             payload: {
@@ -80,7 +80,7 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
           });
         }
 
-        if (historyStep && historyStep.environment) {
+        if (historyStep?.environment) {
           window.sendMessageToDigma<ChangeEnvironmentPayload>({
             action: globalActions.CHANGE_ENVIRONMENT,
             payload: {
@@ -122,14 +122,14 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
 
   const handleBackClick = () => {
     const currentStep = historyManager.back();
-    if (currentStep && currentStep.scope) {
+    if (currentStep?.scope) {
       changeScope(currentStep.scope);
     }
   };
 
   const handleForwardClick = () => {
     const currentStep = historyManager.forward();
-    if (currentStep && currentStep.scope) {
+    if (currentStep?.scope) {
       changeScope(currentStep.scope);
     }
   };

@@ -53,19 +53,23 @@ const getArrowStyles = (placement: Placement) => {
   }
 };
 
-export const Tooltip = (props: TooltipProps) => {
+export const Tooltip = ({
+  placement = "top",
+  isOpen: forcedIsOpen,
+  children,
+  style,
+  title
+}: TooltipProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const arrowRef = useRef(null);
 
   const theme = useTheme();
 
-  const placement = props.placement || "top";
-
   const { refs, floatingStyles, context } = useFloating({
     whileElementsMounted: autoUpdate,
     placement,
-    open: isBoolean(props.isOpen) ? props.isOpen : isOpen,
-    onOpenChange: isBoolean(props.isOpen) ? undefined : setIsOpen,
+    open: isBoolean(forcedIsOpen) ? forcedIsOpen : isOpen,
+    onOpenChange: isBoolean(forcedIsOpen) ? undefined : setIsOpen,
     middleware: [
       offset(ARROW_HEIGHT + GAP),
       flip(),
@@ -78,26 +82,26 @@ export const Tooltip = (props: TooltipProps) => {
 
   const hover = useHover(context, {
     delay: { open: 1000, close: 0 },
-    enabled: !isBoolean(props.isOpen)
+    enabled: !isBoolean(forcedIsOpen)
   });
 
   const { getReferenceProps, getFloatingProps } = useInteractions([hover]);
 
   return (
     <>
-      {Children.map(props.children, (child) =>
+      {Children.map(children, (child) =>
         cloneElement(child, {
           ref: refs.setReference,
           ...getReferenceProps()
         })
       )}
-      {(isBoolean(props.isOpen) ? props.isOpen : isOpen) && (
+      {(isBoolean(forcedIsOpen) ? forcedIsOpen : isOpen) && (
         <FloatingPortal>
           <s.TooltipContainer
             ref={refs.setFloating}
             style={{
               ...floatingStyles,
-              ...props.style
+              ...style
             }}
             {...getFloatingProps()}
           >
@@ -105,8 +109,8 @@ export const Tooltip = (props: TooltipProps) => {
               ref={arrowRef}
               context={context}
               fill={
-                isString(props.style?.background)
-                  ? props.style?.background
+                isString(style?.background)
+                  ? style?.background
                   : theme.colors.tooltip.background
               }
               width={10}
@@ -116,7 +120,7 @@ export const Tooltip = (props: TooltipProps) => {
               }
               style={getArrowStyles(context.placement)}
             />
-            {props.title}
+            {title}
           </s.TooltipContainer>
         </FloatingPortal>
       )}

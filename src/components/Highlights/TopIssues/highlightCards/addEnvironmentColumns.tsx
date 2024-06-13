@@ -5,6 +5,8 @@ import { EnvironmentData } from "../types";
 
 export const addEnvironmentColumns = <T,>(
   columnHelper: ColumnHelper<EnvironmentData<T>>,
+  // TODO: fix types
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   columns: ColumnDef<EnvironmentData<T>, any>[]
 ) => {
   return [

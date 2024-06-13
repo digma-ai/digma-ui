@@ -112,7 +112,7 @@ export const AlreadyAtCode: Story = {
     scope: mockedScope,
     codeContext: {
       ...mockedCodeContext,
-      methodId: mockedScope.span?.methodId || null
+      methodId: mockedScope.span?.methodId ?? null
     }
   }
 };

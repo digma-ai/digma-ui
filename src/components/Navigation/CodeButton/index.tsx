@@ -44,7 +44,7 @@ const CodeButtonComponent = (
   }, [onMouseEnter, onMouseLeave, previousIsHovered, isHovered]);
 
   const getButtonComponent = () => {
-    if (isDisabled || isAlreadyAtScope) {
+    if (isDisabled ?? isAlreadyAtScope) {
       return (
         <s.ExtendedIconButton
           icon={<CodeIcon color={"currentColor"} size={20} />}

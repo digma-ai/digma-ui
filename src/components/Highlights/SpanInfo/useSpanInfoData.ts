@@ -46,7 +46,7 @@ export const useSpanInfoData = () => {
   }, [previousLastSetDataTimeStamp, lastSetDataTimeStamp, getData]);
 
   useEffect(() => {
-    const handleSpanInfoData = (data: any, timeStamp: number) => {
+    const handleSpanInfoData = (data: unknown, timeStamp: number) => {
       setData(data as SpanInfoData);
       setLastSetDataTimeStamp(timeStamp);
     };

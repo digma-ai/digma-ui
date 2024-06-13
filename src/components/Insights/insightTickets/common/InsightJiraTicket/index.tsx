@@ -33,8 +33,8 @@ export const InsightJiraTicket = ({
       window.sendMessageToDigma<LinkTicketPayload>({
         action: actions.LINK_TICKET,
         payload: {
-          insightId: relatedInsight?.id || insight.id,
-          insightType: relatedInsight?.type || insight.type,
+          insightId: relatedInsight?.id ?? insight.id,
+          insightType: relatedInsight?.type ?? insight.type,
           ticketLink: link
         }
       });
@@ -47,8 +47,8 @@ export const InsightJiraTicket = ({
     window.sendMessageToDigma<UnlinkTicketPayload>({
       action: actions.UNLINK_TICKET,
       payload: {
-        insightId: relatedInsight?.id || insight.id,
-        insightType: relatedInsight?.type || insight.type
+        insightId: relatedInsight?.id ?? insight.id,
+        insightType: relatedInsight?.type ?? insight.type
       }
     });
   };
@@ -95,7 +95,7 @@ export const InsightJiraTicket = ({
     <JiraTicket
       description={description}
       summary={summary}
-      attachments={attachments || []}
+      attachments={attachments ?? []}
       onClose={onClose}
       ticketLink={{ link: ticketLink, errorMessage }}
       unlinkTicket={unlinkTicket}

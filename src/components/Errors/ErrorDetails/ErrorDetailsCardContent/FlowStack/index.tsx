@@ -72,7 +72,7 @@ export const FlowStack = ({ data }: FlowStackProps) => {
     SetFilesURIsPayload
   >(filesURIsDataFetcherConfiguration, filesURIsPayload);
 
-  const filesURIs: FilesURIsMap = filesURIsResponse?.filesURIs || {};
+  const filesURIs: FilesURIsMap = filesURIsResponse?.filesURIs ?? {};
 
   useEffect(() => {
     getFilesURIs();
@@ -99,9 +99,9 @@ export const FlowStack = ({ data }: FlowStackProps) => {
         payload: {
           traceId,
           spanName:
-            frameStacks[0].frames[0]?.spanName ||
-            `Sample trace for error ${exceptionType || ""}`.trim(),
-          spanCodeObjectId: frameStacks[0].frames[0]?.codeObjectId || undefined
+            frameStacks[0].frames[0]?.spanName ??
+            `Sample trace for error ${exceptionType ?? ""}`.trim(),
+          spanCodeObjectId: frameStacks[0].frames[0]?.codeObjectId ?? undefined
         }
       });
     }
@@ -178,11 +178,12 @@ export const FlowStack = ({ data }: FlowStackProps) => {
               {spanGroups.length > 0 && (
                 <s.SpanGroupsContainer>
                   {spanGroups.map((spanFrames) => {
-                    const spanName = frames[0].spanName as string;
+                    const key = frames[0].spanName ?? uuidv4();
+                    const spanName = spanFrames[0].spanName ?? "N/A";
 
                     return (
                       <SpanFrameGroup
-                        key={spanName}
+                        key={key}
                         spanName={spanName}
                         frames={spanFrames}
                         filesURIs={filesURIs}

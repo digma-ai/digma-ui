@@ -275,11 +275,6 @@ export interface SpanUsagesInsight extends SpanInsight {
   }[];
 }
 
-interface Percentile {
-  fraction: number;
-  maxDuration: Duration;
-}
-
 export interface BottleneckEndpointInfo {
   endpointInfo: {
     route: string;

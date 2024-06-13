@@ -94,7 +94,7 @@ export const useInsightsData = ({
   const scopedQuery = useMemo(
     () => ({
       ...query,
-      scopedSpanCodeObjectId: scope?.span?.spanCodeObjectId || null
+      scopedSpanCodeObjectId: scope?.span?.spanCodeObjectId ?? null
     }),
     [query, scope]
   );

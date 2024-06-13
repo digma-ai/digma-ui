@@ -51,9 +51,9 @@ type AppEntries = Record<
   { entry: string; environmentVariables?: string[] }
 >;
 
-export type WebpackEnv = {
+export interface WebpackEnv {
   WEBPACK_BUNDLE: true;
   WEBPACK_BUILD: true;
   app?: keyof typeof entries;
   platform?: string;
-};
+}

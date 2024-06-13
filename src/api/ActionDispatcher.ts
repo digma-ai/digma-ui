@@ -1,9 +1,7 @@
 import { ActionListener } from "./types";
 
 export class ActionDispatcher {
-  private actions: {
-    [key: string]: ActionListener[];
-  };
+  private actions: Record<string, ActionListener[]>;
   constructor() {
     this.actions = {};
   }

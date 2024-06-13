@@ -9,6 +9,7 @@ import { addPrefix } from "../../utils/addPrefix";
 import { FullView } from "./FullView";
 import { RecentView } from "./RecentView";
 import * as s from "./styles";
+import { isNotificationsViewMode } from "./typeGuards";
 import {
   GoToInsightsPayload,
   NotificationsData,
@@ -59,7 +60,9 @@ export const Notifications = (props: NotificationsProps) => {
   const [page, setPage] = useState(0);
   const previousPage = usePrevious(page);
   const refreshTimerId = useRef<number>();
-  const viewMode = window.notificationsViewMode || props.viewMode || "full";
+  const viewMode = isNotificationsViewMode(window.notificationsViewMode)
+    ? window.notificationsViewMode
+    : props.viewMode ?? "full";
   const pageSize = viewMode === "popup" ? 3 : 10;
 
   useEffect(() => {
@@ -94,10 +97,10 @@ export const Notifications = (props: NotificationsProps) => {
 
   useEffect(() => {
     if (previousData !== data && data) {
-      setNotificationsData(data.data || undefined);
+      setNotificationsData(data.data ?? undefined);
 
       if (!notificationsData) {
-        setNotificationsError(data.error || undefined);
+        setNotificationsError(data.error ?? undefined);
       } else {
         setNotificationsError(undefined);
       }

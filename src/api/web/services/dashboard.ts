@@ -9,10 +9,10 @@ export interface GetDashboardParams<T> {
   query: T;
 }
 
-export type GetDashboardResponse<T> = {
+export interface GetDashboardResponse<T> {
   type: string;
   data: T;
-};
+}
 
 export const getDashboard = async (
   data: GetDashboardParams<Record<string, unknown>>

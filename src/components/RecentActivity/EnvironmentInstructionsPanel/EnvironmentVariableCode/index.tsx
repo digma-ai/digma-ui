@@ -99,7 +99,7 @@ export const EnvironmentVariableCode = () => {
   const userId = config.userInfo?.id;
   const environmentId = config.environment.id;
   const environmentName = config.environment.name;
-  const environmentType = config.environment.type || undefined;
+  const environmentType = config.environment.type ?? undefined;
   const isRunConfigSupported = Boolean(
     config.runConfig?.isRunConfigurationSupported
   );

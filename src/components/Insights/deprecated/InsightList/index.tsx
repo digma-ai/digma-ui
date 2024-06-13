@@ -125,16 +125,17 @@ const groupInsights = (
   );
 
   const sortByName = (a: InsightGroup, b: InsightGroup) => {
-    const aName = a.name || "";
-    const bName = b.name || "";
+    const aName = a.name ?? "";
+    const bName = b.name ?? "";
     return aName.localeCompare(bName);
   };
 
   const ungroupedInsights: GenericCodeObjectInsight[] = [];
-  const spanInsightGroups: { [key: string]: GenericSpanInsight[] } = {};
-  const endpointInsightGroups: {
-    [key: string]: (GenericEndpointInsight | GenericSpanInsight)[];
-  } = {};
+  const spanInsightGroups: Record<string, GenericSpanInsight[]> = {};
+  const endpointInsightGroups: Record<
+    string,
+    (GenericEndpointInsight | GenericSpanInsight)[]
+  > = {};
 
   for (const insight of sortedInsights) {
     // Do not show unknown insights
@@ -207,7 +208,7 @@ const groupInsights = (
           ? insights[0].spanInfo?.displayName
           : spans.find(
               (methodSpan) => spanDisplayName === methodSpan.spanDisplayName
-            )?.spanDisplayName || "",
+            )?.spanDisplayName ?? "",
         insights
       }))
       .sort(sortByName)
@@ -757,7 +758,7 @@ export const InsightList = (props: InsightListProps) => {
   return (
     <s.Container>
       {insightGroups.map((x, i) => (
-        <s.InsightGroup key={x.name || "__ungrouped"}>
+        <s.InsightGroup key={x.name ?? "__ungrouped"}>
           {x.name && (
             <s.InsightGroupHeader>
               <s.InsightGroupIconContainer>

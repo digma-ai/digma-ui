@@ -1,11 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { EnvironmentInstructionsPanel } from ".";
 import { ConfigContext, initialState } from "../../common/App/ConfigContext";
-import {
-  ConfigContextData,
-  DeploymentType,
-  RunConfiguration
-} from "../../common/App/types";
+import { ConfigContextData, DeploymentType } from "../../common/App/types";
 import { ExtendedEnvironment } from "../types";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
@@ -81,7 +77,7 @@ export const PrivateRunConfigSet: Story = {
         value={{
           ...mockedConfig,
           runConfig: {
-            ...(mockedConfig.runConfig as RunConfiguration),
+            ...mockedConfig.runConfig!,
             environmentName: "Development",
             environmentId: "123"
           }
@@ -116,7 +112,7 @@ export const NotSupportedConfiguration: Story = {
         value={{
           ...mockedConfig,
           runConfig: {
-            ...(mockedConfig.runConfig as RunConfiguration),
+            ...mockedConfig.runConfig!,
             isRunConfigurationSupported: false,
             javaToolOptions: "javaToolOptions"
           }

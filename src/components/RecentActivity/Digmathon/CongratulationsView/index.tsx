@@ -21,7 +21,7 @@ const getEmailURL = (
 
   const foundInsights = data
     .filter((x) => isString(x.foundAt))
-    .map((x) => x.data?.title || x.type)
+    .map((x) => x.data?.title ?? x.type)
     .join(", ");
   const body = [
     "Insights found:",

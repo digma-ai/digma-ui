@@ -49,7 +49,7 @@ export const SpanEndpointBottleneckInsightCard = ({
   isMarkAsReadButtonEnabled
 }: SpanEndpointBottleneckInsightCardProps) => {
   const config = useContext(ConfigContext);
-  const slowEndpoints = insight.slowEndpoints || [];
+  const slowEndpoints = insight.slowEndpoints ?? [];
   const [selectedEndpoint, setSelectedEndpoint] = useState(
     slowEndpoints.length > 0 ? slowEndpoints[0] : null
   );
@@ -94,35 +94,33 @@ export const SpanEndpointBottleneckInsightCard = ({
                   const selected =
                     slowEndpoints.find(
                       (x) => x.endpointInfo.spanCodeObjectId === selectedOption
-                    ) || null;
+                    ) ?? null;
 
                   setSelectedEndpoint(selected);
                 }}
                 options={renderOptions(slowEndpoints, handleSpanLinkClick)}
               />
-              {config.isJaegerEnabled &&
-                selectedEndpoint &&
-                selectedEndpoint.traceId && (
-                  <Tooltip title={"Open Trace"}>
-                    <Button
-                      icon={TraceIcon}
-                      onClick={() => {
-                        if (isNull(selectedEndpoint.traceId)) {
-                          return;
-                        }
+              {config.isJaegerEnabled && selectedEndpoint?.traceId && (
+                <Tooltip title={"Open Trace"}>
+                  <Button
+                    icon={TraceIcon}
+                    onClick={() => {
+                      if (isNull(selectedEndpoint.traceId)) {
+                        return;
+                      }
 
-                        handleTraceButtonClick(
-                          {
-                            name: selectedEndpoint.endpointInfo.route,
-                            id: selectedEndpoint.traceId
-                          },
-                          insight.type,
-                          selectedEndpoint.endpointInfo.spanCodeObjectId
-                        );
-                      }}
-                    />
-                  </Tooltip>
-                )}
+                      handleTraceButtonClick(
+                        {
+                          name: selectedEndpoint.endpointInfo.route,
+                          id: selectedEndpoint.traceId
+                        },
+                        insight.type,
+                        selectedEndpoint.endpointInfo.spanCodeObjectId
+                      );
+                    }}
+                  />
+                </Tooltip>
+              )}
             </s.SelectContainer>
           </Details>
           {selectedEndpoint && (

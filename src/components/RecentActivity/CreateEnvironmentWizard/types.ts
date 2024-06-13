@@ -17,6 +17,4 @@ export interface StepDefinitions {
   errors?: ErrorDefinitions;
 }
 
-export interface ErrorDefinitions {
-  [key: string]: string;
-}
+export type ErrorDefinitions = Record<string, string>;

@@ -30,7 +30,7 @@ const CodeSnippetComponent = (
 
   const textToCopy = isString(props.text)
     ? props.text
-    : codeRef.current?.innerText || "";
+    : codeRef.current?.innerText ?? "";
 
   return (
     <s.Container className={props.className} ref={ref}>

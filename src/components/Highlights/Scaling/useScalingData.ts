@@ -51,7 +51,7 @@ export const useScalingData = () => {
   }, [previousLastSetDataTimeStamp, lastSetDataTimeStamp, getData]);
 
   useEffect(() => {
-    const handleScalingData = (data: any, timeStamp: number) => {
+    const handleScalingData = (data: unknown, timeStamp: number) => {
       setData(data as ScalingData);
       setLastSetDataTimeStamp(timeStamp);
     };

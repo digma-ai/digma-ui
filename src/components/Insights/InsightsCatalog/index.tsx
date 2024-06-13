@@ -67,7 +67,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
   const previousMode = usePrevious(mode);
   const theme = useTheme();
   const { isMarkingAllAsReadInProgress, markAllAsRead } = useMarkingAllAsRead(
-    config.scope?.span || null
+    config.scope?.span ?? null
   );
   const previousIsMarkingAllAsReadInProgress = usePrevious(
     isMarkingAllAsReadInProgress
@@ -184,7 +184,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
   useEffect(() => {
     if (
       (isNumber(previousPage) && previousPage !== page) ||
-      (previousSorting && previousSorting !== sorting) ||
+      Boolean(previousSorting && previousSorting !== sorting) ||
       (isString(previousSearchQuery) &&
         previousSearchQuery !== debouncedSearchInputValue) ||
       previousMode !== mode ||
@@ -263,8 +263,8 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
                   allIssuesCount={config.insightStats?.allIssuesCount}
                   unreadCount={
                     areInsightStatsEnabled
-                      ? config.insightStats?.unreadInsightsCount || 0
-                      : props.unreadCount || 0
+                      ? config.insightStats?.unreadInsightsCount ?? 0
+                      : props.unreadCount ?? 0
                   }
                   onChange={handleFilterSelectionChange}
                 />

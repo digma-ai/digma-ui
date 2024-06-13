@@ -317,7 +317,7 @@ ${getDurationString(insight.average)}${
                       name:
                         PERCENTILES.find(
                           (x) => x.percentile === percentile.percentile
-                        )?.label || `P${percentile.percentile * 100}`
+                        )?.label ?? `P${percentile.percentile * 100}`
                     });
                   }
 

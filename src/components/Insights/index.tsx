@@ -223,6 +223,10 @@ export const Insights = (props: InsightsProps) => {
 
   const isMarkingAsReadEnabled = props.insightViewType === "Issues";
 
+  const isRegistrationEnabled = false;
+  const isRegistrationRequired =
+    isRegistrationEnabled && !config.userRegistrationEmail;
+
   useLayoutEffect(() => {
     sendMessage(globalActions.GET_STATE);
   }, []);
@@ -427,18 +431,17 @@ export const Insights = (props: InsightsProps) => {
       {infoToOpenJiraTicket && (
         <s.Overlay onKeyDown={handleOverlayKeyDown} tabIndex={-1}>
           <s.PopupContainer>
-            {/* {config.userRegistrationEmail ? ( */}
-            {true ? ( // eslint-disable-line no-constant-condition
-              renderInsightTicket(
-                infoToOpenJiraTicket,
-                handleJiraTicketPopupClose
-              )
-            ) : (
+            {isRegistrationRequired ? (
               <RegistrationDialog
                 onSubmit={handleRegistrationSubmit}
                 onClose={handleRegistrationDialogClose}
                 isRegistrationInProgress={isRegistrationInProgress}
               />
+            ) : (
+              renderInsightTicket(
+                infoToOpenJiraTicket,
+                handleJiraTicketPopupClose
+              )
             )}
           </s.PopupContainer>
         </s.Overlay>

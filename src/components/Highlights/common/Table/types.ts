@@ -2,6 +2,8 @@ import { ColumnDef, Row } from "@tanstack/react-table";
 
 export interface TableProps<T> {
   data: T[];
+  // TODO: fix types
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   columns: ColumnDef<T, any>[];
   id?: string;
   onRowClick?: (row: Row<T>) => void;

@@ -20,7 +20,7 @@ export const SpanEndpointBottleneckInsightTicket = ({
       data.insight
     );
 
-  const slowEndpoints = data.insight.slowEndpoints || [];
+  const slowEndpoints = data.insight.slowEndpoints ?? [];
   const services = [
     ...new Set(slowEndpoints.map((x) => x.endpointInfo.serviceName))
   ];

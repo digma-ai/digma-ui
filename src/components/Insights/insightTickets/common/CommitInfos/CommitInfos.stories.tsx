@@ -21,13 +21,13 @@ export const Default: Story = {
     insight: mockedSpaNPlusOneInsight,
     commitInfos: {
       commitInfos: {
-        [mockedSpaNPlusOneInsight.firstCommitId as string]: {
-          commit: mockedSpaNPlusOneInsight.firstCommitId as string,
-          url: mockedSpaNPlusOneInsight.firstCommitId as string
+        [mockedSpaNPlusOneInsight.firstCommitId!]: {
+          commit: mockedSpaNPlusOneInsight.firstCommitId!,
+          url: mockedSpaNPlusOneInsight.firstCommitId!
         },
-        [mockedSpaNPlusOneInsight.lastCommitId as string]: {
-          commit: mockedSpaNPlusOneInsight.lastCommitId as string,
-          url: mockedSpaNPlusOneInsight.firstCommitId as string
+        [mockedSpaNPlusOneInsight.lastCommitId!]: {
+          commit: mockedSpaNPlusOneInsight.lastCommitId!,
+          url: mockedSpaNPlusOneInsight.firstCommitId!
         }
       }
     }

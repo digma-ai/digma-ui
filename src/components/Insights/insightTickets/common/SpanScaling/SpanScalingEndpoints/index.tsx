@@ -9,7 +9,7 @@ export const ScalingIssueAffectedEndpoints = ({
     return null;
   }
 
-  const endpoints = insight.affectedEndpoints || [];
+  const endpoints = insight.affectedEndpoints ?? [];
 
   if (endpoints.length === 0) {
     return null;

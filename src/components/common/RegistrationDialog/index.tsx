@@ -99,7 +99,7 @@ export const RegistrationDialog = (props: RegistrationDialogProps) => {
               icon={UserIcon}
               placeholder={"Enter your full name"}
               isValid={
-                touchedFields.fullName || errors.fullName
+                touchedFields.fullName ?? errors.fullName
                   ? !errors.fullName
                   : undefined
               }
@@ -117,7 +117,7 @@ export const RegistrationDialog = (props: RegistrationDialogProps) => {
               icon={EnvelopeIcon}
               placeholder={"Enter your email"}
               isValid={
-                touchedFields.email || errors.email ? !errors.email : undefined
+                touchedFields.email ?? errors.email ? !errors.email : undefined
               }
               {...field}
             />

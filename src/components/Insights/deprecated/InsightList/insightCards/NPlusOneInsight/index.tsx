@@ -1,15 +1,11 @@
-import { useContext } from "react";
-import { InsightType } from "../../../../../../types";
 import { sendUserActionTrackingEvent } from "../../../../../../utils/actions/sendUserActionTrackingEvent";
 import { getCriticalityLabel } from "../../../../../../utils/getCriticalityLabel";
 import { getDurationString } from "../../../../../../utils/getDurationString";
 import { trimEndpointScheme } from "../../../../../../utils/trimEndpointScheme";
-import { ConfigContext } from "../../../../../common/App/ConfigContext";
 import { ScoreIndicator } from "../../../../../common/ScoreIndicator";
 import { Tooltip } from "../../../../../common/Tooltip";
 import { Description, Link } from "../../../../styles";
 import { trackingEvents } from "../../../../tracking";
-import { Trace } from "../../../../types";
 import { InsightCard } from "../../InsightCard";
 import { JiraButton } from "../common/JiraButton";
 import * as s from "./styles";
@@ -20,20 +16,20 @@ import { NPlusOneInsightProps } from "./types";
  * safe to delete after 2024-06-05
  */
 export const NPlusOneInsight = (props: NPlusOneInsightProps) => {
-  const config = useContext(ConfigContext);
+  // const config = useContext(ConfigContext);
 
   const handleSpanLinkClick = (spanCodeObjectId?: string) => {
     spanCodeObjectId &&
       props.onAssetLinkClick(spanCodeObjectId, props.insight.type);
   };
 
-  const handleTraceButtonClick = (
-    trace: Trace,
-    insightType: InsightType,
-    spanCodeObjectId?: string
-  ) => {
-    props.onTraceButtonClick(trace, insightType, spanCodeObjectId);
-  };
+  // const handleTraceButtonClick = (
+  //   trace: Trace,
+  //   insightType: InsightType,
+  //   spanCodeObjectId?: string
+  // ) => {
+  //   props.onTraceButtonClick(trace, insightType, spanCodeObjectId);
+  // };
 
   const handleCreateJiraTicketButtonClick = (event: string) => {
     sendUserActionTrackingEvent(
@@ -48,9 +44,9 @@ export const NPlusOneInsight = (props: NPlusOneInsightProps) => {
 
   // const spanName = props.insight.clientSpanName || undefined;
   // const spanCodeObjectId = props.insight.clientSpanCodeObjectId || undefined;
-  const traceId = props.insight.traceId;
+  // const traceId = props.insight.traceId;
 
-  const endpoints = props.insight.endpoints || [];
+  const endpoints = props.insight.endpoints ?? [];
 
   return (
     <InsightCard

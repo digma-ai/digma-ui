@@ -1,11 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { EnvironmentVariableCode } from ".";
 import { ConfigContext, initialState } from "../../../common/App/ConfigContext";
-import {
-  BackendInfo,
-  ConfigContextData,
-  DeploymentType
-} from "../../../common/App/types";
+import { ConfigContextData, DeploymentType } from "../../../common/App/types";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof EnvironmentVariableCode> = {
@@ -71,7 +67,7 @@ export const CentralizedDeployment: Story = {
         value={{
           ...mockedConfig,
           backendInfo: {
-            ...(mockedConfig.backendInfo as BackendInfo),
+            ...mockedConfig.backendInfo!,
             centralize: true
           }
         }}
@@ -90,7 +86,7 @@ export const PrivateInCentralizedDeploymentMicrometer: Story = {
         value={{
           ...mockedConfig,
           backendInfo: {
-            ...(mockedConfig.backendInfo as BackendInfo),
+            ...mockedConfig.backendInfo!,
             centralize: true
           },
           isMicrometerProject: true
@@ -110,7 +106,7 @@ export const DeprecatedBehavior: Story = {
         value={{
           ...mockedConfig,
           backendInfo: {
-            ...(mockedConfig.backendInfo as BackendInfo),
+            ...mockedConfig.backendInfo!,
             applicationVersion: "0.3.14"
           }
         }}
@@ -129,7 +125,7 @@ export const DeprecatedBehaviorMicrometer: Story = {
         value={{
           ...mockedConfig,
           backendInfo: {
-            ...(mockedConfig.backendInfo as BackendInfo),
+            ...mockedConfig.backendInfo!,
             applicationVersion: "0.3.14"
           },
           isMicrometerProject: true

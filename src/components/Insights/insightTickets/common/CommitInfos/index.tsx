@@ -49,7 +49,7 @@ export const CommitInfos = ({ insight, commitInfos }: CommitInfosProps) => {
       id: insight.lastCommitId,
       dateTime: insight.lastDetected
     }
-  ].filter((x) => x.id || x.dateTime);
+  ].filter((x) => x.id ?? x.dateTime);
 
   if (commits.length === 0) {
     return null;

@@ -284,7 +284,10 @@ export const LiveView = (props: LiveViewProps) => {
     );
   };
 
-  const handleAreaMouseMove = (props: any, e: React.MouseEvent<SVGElement>) => {
+  const handleAreaMouseMove = (
+    props: unknown,
+    e: React.MouseEvent<SVGElement>
+  ) => {
     setAreaTooltip({ x: e.clientX, y: e.clientY });
   };
 
@@ -293,13 +296,12 @@ export const LiveView = (props: LiveViewProps) => {
   };
 
   const handleDotMouseOver = (
-    props: any,
+    props: unknown,
     e: React.MouseEvent<SVGCircleElement>
   ) => {
     setDotTooltip({
       coordinates: { x: e.clientX, y: e.clientY },
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-      data: props.payload as ExtendedLiveDataRecord
+      data: (props as DotProps).payload
     });
   };
 
@@ -368,10 +370,10 @@ export const LiveView = (props: LiveViewProps) => {
   ]);
 
   const maxDuration = getMaxDurationRecord(YAxisData)?.duration;
-  const maxDurationUnit = maxDuration?.unit || "ns";
+  const maxDurationUnit = maxDuration?.unit ?? "ns";
   const YAxisTickInterval = roundToNonZeroDecimals(
     convertToDurationUnit(
-      maxDuration?.raw || 0 / Y_AXIS_TICK_COUNT,
+      maxDuration?.raw ?? 0 / Y_AXIS_TICK_COUNT,
       maxDurationUnit
     ),
     2
@@ -381,7 +383,7 @@ export const LiveView = (props: LiveViewProps) => {
       ? 0
       : String(YAxisTickInterval).split(".")[1].length || 0;
   const YAxisMaxTickWholePart = Math.ceil(
-    convertToDurationUnit(maxDuration?.raw || 0, maxDurationUnit)
+    convertToDurationUnit(maxDuration?.raw ?? 0, maxDurationUnit)
   );
   const longestTickDigitCount = maxDuration
     ? String(YAxisMaxTickWholePart).length + 1 + YAxisTickDecimalPlaces
@@ -568,6 +570,7 @@ export const LiveView = (props: LiveViewProps) => {
                       fillOpacity={0.2}
                       isAnimationActive={false}
                       activeDot={false}
+                      // TODO: check if this issue is still present in latest version of recharts package
                       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                       // @ts-ignore
                       onMouseMove={handleAreaMouseMove}

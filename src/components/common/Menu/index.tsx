@@ -1,16 +1,16 @@
 import * as s from "./styles";
 import { MenuProps } from "./types";
 
-export const Menu = (props: MenuProps) => {
+export const Menu = ({ onSelect, title, width, items }: MenuProps) => {
   const handleMenuItemClick = (value: string) => {
-    props.onSelect(value);
+    onSelect(value);
   };
 
   return (
     <s.Container>
-      {props.title && <s.Header>{props.title}</s.Header>}
-      <s.List width={props.width}>
-        {props.items.map((item) => (
+      {title && <s.Header>{title}</s.Header>}
+      <s.List width={width}>
+        {items.map((item) => (
           <s.ListItem
             key={item.value}
             onClick={() =>
@@ -21,8 +21,8 @@ export const Menu = (props: MenuProps) => {
           >
             {item.icon && (
               <item.icon.component
-                size={item.icon.size || 14}
-                color={item.icon.color || "currentColor"}
+                size={item.icon.size ?? 14}
+                color={item.icon.color ?? "currentColor"}
               />
             )}
             {item.label}

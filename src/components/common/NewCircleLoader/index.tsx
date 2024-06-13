@@ -13,10 +13,12 @@ const getDefaultColor = (theme: DefaultTheme) => {
   }
 };
 
-export const NewCircleLoader = (props: NewCircleLoaderProps) => {
-  const size = props.size || DEFAULT_ICON_SIZE;
+export const NewCircleLoader = ({
+  size = DEFAULT_ICON_SIZE,
+  color
+}: NewCircleLoaderProps) => {
   const theme = useTheme();
-  const color = props.color || getDefaultColor(theme);
+  const loaderColor = color ?? getDefaultColor(theme);
 
   const VIEWPORT_SIZE = 200;
   const EXTRA_PATH = 2; // for the round end cap
@@ -32,7 +34,7 @@ export const NewCircleLoader = (props: NewCircleLoaderProps) => {
       height={size}
       viewBox={`0 0 ${VIEWPORT_SIZE} ${VIEWPORT_SIZE}`}
       fill="none"
-      color={color}
+      color={loaderColor}
     >
       <defs>
         <linearGradient id="circle-loader-upperHalf">

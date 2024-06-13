@@ -28,7 +28,7 @@ export const SpanQueryOptimizationInsightTicket = ({
 
   const services = [
     ...new Set(
-      (data.insight.endpoints || []).map((x) => x.endpointInfo.serviceName)
+      (data.insight.endpoints ?? []).map((x) => x.endpointInfo.serviceName)
     )
   ];
   const serviceString = services.length > 0 ? services.join(", ") : "";
@@ -42,7 +42,7 @@ export const SpanQueryOptimizationInsightTicket = ({
     .filter(Boolean)
     .join(" - ");
 
-  const queryString = data.insight.spanInfo?.displayName || "";
+  const queryString = data.insight.spanInfo?.displayName ?? "";
 
   const renderDescription = () => (
     <>

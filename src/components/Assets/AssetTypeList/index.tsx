@@ -44,7 +44,7 @@ const getData = (
       query: {
         directOnly: isDirect,
         scopedSpanCodeObjectId,
-        ...(filters || { services: [], operations: [], insights: [] }),
+        ...(filters ?? { services: [], operations: [], insights: [] }),
         ...(searchQuery.length > 0 ? { displayName: searchQuery } : {})
       }
     }
@@ -125,7 +125,7 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
     if (
       (isEnvironment(previousEnvironment) &&
         previousEnvironment.id !== config.environment?.id) ||
-      (previousFilters && previousFilters !== props.filters) ||
+      Boolean(previousFilters && previousFilters !== props.filters) ||
       (isString(previousSearchQuery) &&
         previousSearchQuery !== props.searchQuery) ||
       previousViewScope !== props.scopeViewOptions

@@ -1,34 +1,33 @@
 import * as s from "./styles";
 import { ToggleSwitchProps } from "./types";
 
-export const ToggleSwitch = (props: ToggleSwitchProps) => {
-  const size = props.size || "small";
-
+export const ToggleSwitch = ({
+  size = "small",
+  onChange,
+  checked,
+  className,
+  disabled,
+  labelPosition = "start",
+  label
+}: ToggleSwitchProps) => {
   const handleContainerClick = () => {
-    if (props.onChange) {
-      props.onChange(!props.checked);
+    if (onChange) {
+      onChange(!checked);
     }
   };
+
   return (
     <s.Container
       onClick={handleContainerClick}
-      className={props.className}
+      className={className}
       $size={size}
-      $disabled={props.disabled}
+      $disabled={disabled}
     >
-      {(!props.labelPosition || props.labelPosition === "start") && props.label}
-      <s.SwitchContainer
-        $disabled={props.disabled}
-        $isChecked={props.checked}
-        $size={size}
-      >
-        <s.Circle
-          $disabled={props.disabled}
-          $isChecked={props.checked}
-          $size={size}
-        />
+      {labelPosition === "start" && label}
+      <s.SwitchContainer $disabled={disabled} $isChecked={checked} $size={size}>
+        <s.Circle $disabled={disabled} $isChecked={checked} $size={size} />
       </s.SwitchContainer>
-      {props.labelPosition === "end" && props.label}
+      {labelPosition === "end" && label}
     </s.Container>
   );
 };

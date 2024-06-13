@@ -64,9 +64,9 @@ const renderUpdatePluginSettingsMessage = () => {
  * safe to delete after 2024-07-22
  */
 export const SetupOrgDigmaPanel = (props: SetupOrgDigmaPanelProps) => {
-  const [apiToken, setApiToken] = useState(props.environment.token || "");
+  const [apiToken, setApiToken] = useState(props.environment.token ?? "");
   const [serverApiUrl, setServerApiUrl] = useState(
-    props.environment.serverApiUrl || ""
+    props.environment.serverApiUrl ?? ""
   );
   const [connectionTestResult, setConnectionTestResult] =
     useState<AsyncActionResultData>();

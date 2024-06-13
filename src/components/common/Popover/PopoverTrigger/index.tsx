@@ -21,8 +21,8 @@ const PopoverTriggerComponent = (
   propRef: ForwardedRef<HTMLElement>
 ) => {
   const context = usePopoverContext();
-  // TODO: improve types
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+  // TODO: fix types
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access
   const childrenRef: Ref<unknown> = (children as any).ref;
   const ref = useMergeRefs([context.refs.setReference, propRef, childrenRef]);
 
@@ -30,7 +30,7 @@ const PopoverTriggerComponent = (
   if (asChild && isValidElement(children)) {
     return cloneElement(
       children,
-      // TODO: improve types
+      // TODO: fix types
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       context.getReferenceProps({
         ref,

@@ -16,7 +16,7 @@ const getTabTooltipMessage = (tab: TabData, scope?: Scope) => {
     return "Global errors and tests is COMING SOON";
   }
 
-  return tab.tooltipMessage || tab.title;
+  return tab.tooltipMessage ?? tab.title;
 };
 
 const getIsTabDisabled = (tab: TabData, scope?: Scope) => {
