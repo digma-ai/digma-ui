@@ -13,6 +13,8 @@ export const Container = styled.div`
   gap: 10px;
   padding: 32px 10px 10px;
   align-items: center;
+  border-radius: 12px 12px 0 0;
+  background: ${({ theme }) => theme.colors.v3.surface.secondary};
 `;
 
 export const CrossButton = styled(Button)`

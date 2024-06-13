@@ -71,11 +71,13 @@ const RegisterFromComponent = (
       isRegistrationInProgress
     ) {
       setIsRegistrationInProgress(false);
+      onNext(true);
     }
   }, [
     config.userRegistrationEmail,
     isRegistrationInProgress,
-    previousUserRegistrationEmail
+    previousUserRegistrationEmail,
+    onNext
   ]);
 
   useEffect(() => {
@@ -94,7 +96,6 @@ const RegisterFromComponent = (
       }
     });
     setIsRegistrationInProgress(true);
-    onNext(true);
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
