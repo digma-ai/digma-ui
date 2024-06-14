@@ -191,7 +191,7 @@ export const EnvironmentPanel = ({
         onOpenChange={setIsKebabMenuOpen}
         isOpen={isKebabMenuOpen}
         content={
-          <Popup height={"auto"}>
+          <Popup>
             <MenuList
               items={[
                 {

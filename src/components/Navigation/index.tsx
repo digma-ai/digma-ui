@@ -12,9 +12,9 @@ import {
 } from "../../types";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 import { AsyncActionResultData } from "../InstallationWizard/types";
+import { actions as mainActions } from "../Main/actions";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { Environment, Scope } from "../common/App/types";
-import { EnvironmentIcon } from "../common/EnvironmentIcon";
 import { NewPopover } from "../common/NewPopover";
 import { FourSquaresIcon } from "../common/icons/FourSquaresIcon";
 import { ThreeDotsIcon } from "../common/icons/ThreeDotsIcon";
@@ -28,8 +28,6 @@ import { ScopeNavigation } from "./ScopeNavigation";
 import { Tabs } from "./Tabs";
 import { actions } from "./actions";
 import { IconButton } from "./common/IconButton";
-import { MenuList } from "./common/MenuList";
-import { Popup } from "./common/Popup";
 import * as s from "./styles";
 import { trackingEvents } from "./tracking";
 import {
@@ -95,7 +93,6 @@ export const Navigation = () => {
     config.environment
   );
   const [codeContext, setCodeContext] = useState<CodeContext>();
-  const [isEnvironmentMenuOpen, setIsEnvironmentMenuOpen] = useState(false);
   const [isCodeButtonMenuOpen, setIsCodeButtonMenuOpen] = useState(false);
   const [isKebabButtonMenuOpen, setIsKebabButtonMenuOpen] = useState(false);
   const [isAutoFixing, setIsAutoFixing] = useState(false);
@@ -110,10 +107,6 @@ export const Navigation = () => {
     codeContext && codeContext.spans.assets.length !== 1;
 
   useEffect(() => {
-    window.sendMessageToDigma({
-      action: actions.INITIALIZE
-    });
-
     const handleViewData = (data: unknown) => {
       const payload = data as SetViewsPayload;
       setTabs(payload.views);
@@ -141,7 +134,7 @@ export const Navigation = () => {
       }
     };
 
-    dispatcher.addActionListener(actions.SET_VIEWS, handleViewData);
+    dispatcher.addActionListener(mainActions.SET_VIEWS, handleViewData);
     dispatcher.addActionListener(
       actions.SET_CODE_CONTEXT,
       handleCodeContextData
@@ -156,7 +149,7 @@ export const Navigation = () => {
     );
 
     return () => {
-      dispatcher.removeActionListener(actions.SET_VIEWS, handleViewData);
+      dispatcher.removeActionListener(mainActions.SET_VIEWS, handleViewData);
       dispatcher.removeActionListener(
         actions.SET_CODE_CONTEXT,
         handleCodeContextData
@@ -184,7 +177,6 @@ export const Navigation = () => {
 
   const handleEnvironmentChange = useCallback((environment: Environment) => {
     sendUserActionTrackingEvent(trackingEvents.ENVIRONMENT_SELECTED);
-    setIsEnvironmentMenuOpen(false);
 
     window.sendMessageToDigma<ChangeEnvironmentPayload>({
       action: globalActions.CHANGE_ENVIRONMENT,
@@ -339,32 +331,6 @@ export const Navigation = () => {
   };
 
   const environments = config.environments || [];
-  const renderEnvironmentMenu = () => {
-    const handleOverlayClick = () => {
-      setIsEnvironmentMenuOpen(false);
-    };
-
-    return (
-      <s.Overlay onClick={handleOverlayClick}>
-        <s.EnvironmentMenuContainer>
-          <Popup height={"78px"}>
-            <MenuList
-              items={environments.map((x) => ({
-                id: x.id,
-                label: x.name,
-                onClick: () => handleEnvironmentChange(x),
-                icon: <EnvironmentIcon environment={x} />
-              }))}
-            />
-          </Popup>
-        </s.EnvironmentMenuContainer>
-      </s.Overlay>
-    );
-  };
-
-  const handleEnvironmentBarClick = () => {
-    setIsEnvironmentMenuOpen(!isEnvironmentMenuOpen);
-  };
 
   if (!config.userInfo?.id && config.backendInfo?.centralize) {
     return <s.Background />;
@@ -379,7 +345,7 @@ export const Navigation = () => {
           content={<KebabMenu onClose={handleKebabButtonMenuClose} />}
           onOpenChange={handleKebabMenuOpenChange}
           isOpen={isKebabButtonMenuOpen}
-          placement={"left-start"}
+          placement={"bottom-end"}
         >
           <IconButton
             icon={<ThreeDotsIcon size={16} color={"currentColor"} />}
@@ -391,7 +357,7 @@ export const Navigation = () => {
         <Tooltip
           title={codeButtonTooltip}
           isOpen={isCodeButtonMenuOpen ? false : undefined}
-          placement={"right"}
+          placement={"bottom-start"}
         >
           {isCodeButtonMenuEnabled ? (
             <div>
@@ -413,7 +379,7 @@ export const Navigation = () => {
                 }
                 onOpenChange={handleCodeMenuButtonOpenChange}
                 isOpen={isCodeButtonMenuOpen}
-                placement={"right"}
+                placement={"bottom-start"}
               >
                 <CodeButton
                   hasData={hasData(codeContext)}
@@ -442,9 +408,8 @@ export const Navigation = () => {
         </Tooltip>
         <EnvironmentBar
           selectedEnvironment={selectedEnvironment}
-          onClick={handleEnvironmentBarClick}
-          isMenuOpen={isEnvironmentMenuOpen}
-          isDisabled={environments.length === 0}
+          onEnvironmentChange={handleEnvironmentChange}
+          environments={environments}
         />
         <Tooltip
           title={!selectedEnvironment ? "No environment selected" : "Dashboard"}
@@ -460,7 +425,6 @@ export const Navigation = () => {
       <s.TabsContainer>
         <Tabs tabs={tabs || []} onSelect={changeTab} />
       </s.TabsContainer>
-      {isEnvironmentMenuOpen && renderEnvironmentMenu()}
     </s.Container>
   );
 };

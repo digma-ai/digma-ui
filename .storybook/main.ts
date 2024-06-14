@@ -3,7 +3,7 @@ import type { StorybookConfig } from "@storybook/react-webpack5";
 const config: StorybookConfig = {
   stories: ["../src/**/*.mdx", "../src/**/*.stories.tsx"],
   addons: [
-    "@storybook/addon-webpack5-compiler-swc",
+    "@storybook/addon-webpack5-compiler-babel",
     "@storybook/addon-links",
     "@storybook/addon-essentials",
     "@storybook/addon-interactions",
@@ -16,15 +16,6 @@ const config: StorybookConfig = {
       strictMode: true
     }
   },
-  swc: () => ({
-    jsc: {
-      transform: {
-        react: {
-          runtime: "automatic"
-        }
-      }
-    }
-  }),
   core: {
     disableTelemetry: true
   },

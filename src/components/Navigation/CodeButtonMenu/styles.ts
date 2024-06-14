@@ -4,7 +4,7 @@ import { LinkProps } from "./types";
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  width: 270px;
+  max-width: 322px;
   gap: 4px;
 `;
 
