@@ -141,6 +141,4 @@ export interface EnvironmentInstructionsVisibility {
   keepOpen: boolean;
 }
 
-export interface EnvironmentClearDataTimeStamps {
-  [environmentId: string]: string;
-}
+export type EnvironmentClearDataTimeStamps = Record<string, string>;

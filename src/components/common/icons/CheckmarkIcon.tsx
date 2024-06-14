@@ -8,7 +8,7 @@ interface CheckmarkIconComponentProps extends IconProps {
 
 const CheckmarkIconComponent = (props: CheckmarkIconComponentProps) => {
   const { color } = useIconProps(props);
-  const height = props.height || 4;
+  const height = props.height ?? 4;
 
   return (
     <svg

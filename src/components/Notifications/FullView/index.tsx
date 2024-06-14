@@ -25,7 +25,7 @@ export const FullView = (props: FullViewProps) => {
   };
 
   const totalCount =
-    (props.showAll ? props.data?.totalCount : props.data?.unreadCount) || 0;
+    (props.showAll ? props.data?.totalCount : props.data?.unreadCount) ?? 0;
   const pageStartItemNumber = props.page * props.pageSize + 1;
   const pageEndItemNumber = Math.min(
     pageStartItemNumber + props.pageSize - 1,
@@ -65,10 +65,10 @@ export const FullView = (props: FullViewProps) => {
       <Toggle
         options={[
           {
-            label: `Unread (${props.data?.unreadCount || 0})`,
+            label: `Unread (${props.data?.unreadCount ?? 0})`,
             value: "unread"
           },
-          { label: `All (${props.data?.totalCount || 0})`, value: "all" }
+          { label: `All (${props.data?.totalCount ?? 0})`, value: "all" }
         ]}
         value={props.showAll ? "all" : "unread"}
         onValueChange={handleToggleValueChange}

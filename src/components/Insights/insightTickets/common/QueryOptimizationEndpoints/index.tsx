@@ -9,7 +9,7 @@ export const QueryOptimizationEndpoints = ({
     return null;
   }
 
-  const endpoints = insight.endpoints || [];
+  const endpoints = insight.endpoints ?? [];
 
   if (endpoints.length === 0) {
     return null;

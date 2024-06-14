@@ -12,13 +12,13 @@ export type InstallationType =
   | "dockerCompose"
   | "dockerDesktop";
 
-export type DigmaStatus = {
+export interface DigmaStatus {
   connection: {
     type: "local" | "remote" | null;
     status: boolean;
   };
   runningDigmaInstances: InstallationType[];
-};
+}
 
 export interface BackendInfo {
   applicationVersion: string;

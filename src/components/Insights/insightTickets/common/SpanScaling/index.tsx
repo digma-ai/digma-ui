@@ -17,7 +17,7 @@ export const getHistogramAttachment = (
 
   const histogramUrlParams = new URLSearchParams({
     env: insight.environment,
-    scoid: insight.spanInfo?.spanCodeObjectId || ""
+    scoid: insight.spanInfo?.spanCodeObjectId ?? ""
   });
 
   return {

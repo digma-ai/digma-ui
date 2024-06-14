@@ -56,7 +56,7 @@ export const SpanUsagesInsightCard = ({
   // More info: https://github.com/TanStack/table/issues/4614
   useEffect(() => {
     if (
-      (previousInsightId && previousInsightId !== insight.id) ||
+      Boolean(previousInsightId && previousInsightId !== insight.id) ||
       (isNumber(previousPage) && previousPage !== page)
     ) {
       setData({ pageItems });

@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { CSSProperties, ReactNode } from "react";
 
 export interface CodeSnippetProps {
   text: ReactNode;
@@ -6,6 +6,4 @@ export interface CodeSnippetProps {
   className?: string;
 }
 
-export interface HighlighterTheme {
-  [key: string]: React.CSSProperties;
-}
+export type HighlighterTheme = Record<string, CSSProperties>;

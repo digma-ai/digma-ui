@@ -21,7 +21,7 @@ export const SpaNPlusOneInsightTicket = ({
     useSpanDataSource<SpaNPlusOneInsight>(data.insight.spanInfo, data.insight);
   const config = useContext(ConfigContext);
 
-  const endpoints = data.insight.endpoints || [];
+  const endpoints = data.insight.endpoints ?? [];
 
   const services = [
     ...new Set(endpoints.map((x) => x.endpointInfo.serviceName))
@@ -37,7 +37,7 @@ export const SpaNPlusOneInsightTicket = ({
     .filter(Boolean)
     .join(" - ");
 
-  const queryString = data.insight.spanInfo?.displayName || "";
+  const queryString = data.insight.spanInfo?.displayName ?? "";
 
   const renderDescription = () => (
     <>

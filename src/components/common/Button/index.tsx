@@ -3,34 +3,40 @@ import * as s from "./styles";
 import { ButtonProps } from "./types";
 
 export const ButtonComponent = (
-  props: ButtonProps,
+  {
+    onClick,
+    buttonType = "primary",
+    className,
+    disabled,
+    icon: Icon,
+    children,
+    afterTextIcon
+  }: ButtonProps,
   ref: ForwardedRef<HTMLButtonElement>
 ) => {
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (props.onClick) {
-      props.onClick(e);
+    if (onClick) {
+      onClick(e);
     }
   };
-
-  const buttonType = props.buttonType || "primary";
 
   return (
     <s.Button
       ref={ref}
-      className={props.className}
+      className={className}
       onClick={handleClick}
-      disabled={props.disabled}
+      disabled={disabled}
       $buttonType={buttonType}
     >
       <s.ContentContainer>
-        {props.icon && (
-          <props.icon.component
-            size={props.icon.size || 14}
-            color={props.icon.color || "currentColor"}
+        {Icon && (
+          <Icon.component
+            size={Icon.size ?? 14}
+            color={Icon.color ?? "currentColor"}
           />
         )}
-        {props.children && <span>{props.children}</span>}
-        {props.afterTextIcon && props.afterTextIcon}
+        {children && <span>{children}</span>}
+        {afterTextIcon}
       </s.ContentContainer>
     </s.Button>
   );

@@ -16,6 +16,6 @@ export const Badge = styled.div<BadgeElementProps>`
   height: ${({ $size }) => getDimensions($size)}px;
   width: ${({ $size }) => getDimensions($size)}px;
   border-radius: 2px;
-  background: ${({ $backgroundColor }) => $backgroundColor || grayScale[200]};
-  border: 2px solid ${({ $borderColor }) => $borderColor || grayScale[850]};
+  background: ${({ $backgroundColor = grayScale[200] }) => $backgroundColor};
+  border: 2px solid ${({ $borderColor = grayScale[850] }) => $borderColor};
 `;

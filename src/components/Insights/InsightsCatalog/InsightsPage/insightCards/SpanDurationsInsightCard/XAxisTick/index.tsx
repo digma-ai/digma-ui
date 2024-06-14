@@ -7,7 +7,7 @@ export const XAxisTick = (props: XAxisTickProps) => {
   const theme = useTheme();
 
   const tick = props.ticks[props.payload.value];
-  const textAnchor = tick.textAnchor || props.textAnchor;
+  const textAnchor = tick.textAnchor ?? props.textAnchor;
 
   const labels = tick.value.split(DIVIDER);
 

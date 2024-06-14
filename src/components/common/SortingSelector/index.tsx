@@ -69,7 +69,7 @@ export const SortingSelector = (props: SortingSelectorProps) => {
       setSorting({
         criterion: value,
         order:
-          getSortingCriterionInfo(value)?.defaultOrder || SORTING_ORDER.DESC
+          getSortingCriterionInfo(value)?.defaultOrder ?? SORTING_ORDER.DESC
       });
     }
     handleSortingMenuToggle();

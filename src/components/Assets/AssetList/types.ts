@@ -70,8 +70,8 @@ export interface AssetEntry {
   firstDetected?: string;
 }
 
-export type AssetsData = {
+export interface AssetsData {
   data: AssetEntry[];
   totalCount: number;
   filteredCount: number;
-};
+}

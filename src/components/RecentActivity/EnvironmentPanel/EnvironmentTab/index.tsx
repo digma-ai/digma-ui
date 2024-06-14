@@ -39,7 +39,7 @@ export const EnvironmentTab = ({
     sendUserActionTrackingEvent(
       trackingEvents.ENVIRONMENT_TAB_MENU_ITEM_SELECTED,
       {
-        item: menuItems.find((x) => x.value === value)?.label || value
+        item: menuItems.find((x) => x.value === value)?.label ?? value
       }
     );
     switch (value) {

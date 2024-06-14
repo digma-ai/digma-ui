@@ -12,7 +12,7 @@ export const useDismissal = (insightId: string) => {
     useState(false);
 
   useEffect(() => {
-    const handleDismissed = (data: any) => {
+    const handleDismissed = (data: unknown) => {
       if (insightId === (data as DismissResponsePayload).insightId) {
         setIsDismissalChangeInProgress(false);
       }
@@ -29,7 +29,7 @@ export const useDismissal = (insightId: string) => {
   }, []);
 
   useEffect(() => {
-    const handleUndismissed = (data: any) => {
+    const handleUndismissed = (data: unknown) => {
       if (insightId === (data as UndismissResponsePayload).insightId) {
         setIsDismissalChangeInProgress(false);
       }

@@ -58,7 +58,8 @@ export const checkIfAnyFiltersApplied = (
   filters: AssetFilterQuery | undefined,
   searchQuery: string
 ) =>
-  (filters &&
-    [...filters.insights, ...filters.operations, ...filters.services].length >
-      0) ||
-  searchQuery.length > 0;
+  Boolean(
+    filters &&
+      [...filters.insights, ...filters.operations, ...filters.services].length >
+        0
+  ) || searchQuery.length > 0;

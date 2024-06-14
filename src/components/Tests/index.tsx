@@ -87,10 +87,10 @@ export const Tests = (props: TestsProps) => {
     []
   );
   const testsListRef = useRef<HTMLDivElement>(null);
-  const scopeSpan = config.scope?.span || null;
+  const scopeSpan = config.scope?.span ?? null;
   const previousScopeSpan = usePrevious(scopeSpan);
 
-  const environmentMenuItems: MenuItem[] = (config.environments || []).map(
+  const environmentMenuItems: MenuItem[] = (config.environments ?? []).map(
     (environment) => ({
       value: environment.id,
       label: environment.name,
@@ -103,7 +103,7 @@ export const Tests = (props: TestsProps) => {
       environments:
         selectedEnvironments.length > 0
           ? selectedEnvironments
-          : (config.environments || []).map((x) => x.id)
+          : (config.environments ?? []).map((x) => x.id)
     }),
     [selectedEnvironments, config.environments]
   );
@@ -149,7 +149,7 @@ export const Tests = (props: TestsProps) => {
           action: actions.GET_SPAN_LATEST_DATA,
           payload: {
             ...environmentsToSend,
-            pageNumber: data?.data?.paging.pageNumber || 1,
+            pageNumber: data?.data?.paging.pageNumber ?? 1,
             scope: scopeSpan
           }
         });
@@ -165,8 +165,10 @@ export const Tests = (props: TestsProps) => {
 
   useEffect(() => {
     if (
-      (previousEnvironmentsToSend &&
-        previousEnvironmentsToSend !== environmentsToSend) ||
+      Boolean(
+        previousEnvironmentsToSend &&
+          previousEnvironmentsToSend !== environmentsToSend
+      ) ||
       previousScopeSpan !== scopeSpan
     ) {
       window.sendMessageToDigma<GetSpanLatestDataPayload>({
@@ -306,7 +308,7 @@ export const Tests = (props: TestsProps) => {
               <TestCard
                 key={key}
                 test={x}
-                spanContexts={data.data?.spanContexts || []}
+                spanContexts={data.data?.spanContexts ?? []}
                 onTicketInfoOpen={openJiraTicketPopup}
               />
             );
@@ -336,7 +338,7 @@ export const Tests = (props: TestsProps) => {
             {true ? ( // eslint-disable-line no-constant-condition
               <TestTicket
                 test={testToOpenTicketPopup}
-                spanContexts={data?.data?.spanContexts || []}
+                spanContexts={data?.data?.spanContexts ?? []}
                 onClose={closeJiraTicketPopup}
               />
             ) : (

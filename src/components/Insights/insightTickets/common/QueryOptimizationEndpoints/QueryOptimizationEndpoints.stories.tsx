@@ -16,7 +16,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-const mockedEndpoints = mockedSpanQueryOptimizationInsight.endpoints || [];
+const mockedEndpoints = mockedSpanQueryOptimizationInsight.endpoints ?? [];
 
 export const Default: Story = {
   args: {

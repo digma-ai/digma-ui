@@ -174,7 +174,7 @@ export const EnvironmentInstructionsPanel = (
                   <s.SingleLineCodeSnippet
                     text={
                       <s.HighlightedCode>
-                        {config.userInfo?.id || ""}
+                        {config.userInfo?.id ?? ""}
                       </s.HighlightedCode>
                     }
                   />

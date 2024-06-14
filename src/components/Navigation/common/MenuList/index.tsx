@@ -15,7 +15,7 @@ export const MenuList = (props: MenuListProps) => {
 
   const groups = groupBy(
     props.items,
-    (item) => item.groupName || UNGROUPED_GROUP_LABEL
+    (item) => item.groupName ?? UNGROUPED_GROUP_LABEL
   );
 
   const groupElements = Object.entries(groups).map(([groupName, items]) => {

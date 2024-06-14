@@ -4,6 +4,7 @@ import { ROUTES } from "../../constants";
 import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
 import { isNull } from "../../typeGuards/isNull";
+import { isUndefined } from "../../typeGuards/isUndefined";
 import {
   ChangeEnvironmentPayload,
   ChangeScopePayload,
@@ -67,7 +68,7 @@ const getCodeButtonTooltip = (
   codeContext?: CodeContext,
   scope?: Scope
 ): string => {
-  if (!codeContext || codeContext.methodId === null) {
+  if (isUndefined(codeContext) || codeContext.methodId === null) {
     return "No code selected";
   }
 
@@ -264,7 +265,7 @@ export const Navigation = () => {
   };
 
   const handleCodeButtonMouseEnter = () => {
-    if (codeContext && codeContext.methodId) {
+    if (codeContext?.methodId) {
       window.sendMessageToDigma<HighlightMethodInEditorPayload>({
         action: actions.HIGHLIGHT_METHOD_IN_EDITOR,
         payload: {
@@ -330,7 +331,7 @@ export const Navigation = () => {
     setIsCodeButtonMenuOpen(false);
   };
 
-  const environments = config.environments || [];
+  const environments = config.environments ?? [];
 
   if (!config.userInfo?.id && config.backendInfo?.centralize) {
     return <s.Background />;
@@ -423,7 +424,7 @@ export const Navigation = () => {
         </Tooltip>
       </s.Row>
       <s.TabsContainer>
-        <Tabs tabs={tabs || []} onSelect={changeTab} />
+        <Tabs tabs={tabs ?? []} onSelect={changeTab} />
       </s.TabsContainer>
     </s.Container>
   );

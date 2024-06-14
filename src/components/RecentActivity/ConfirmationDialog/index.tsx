@@ -10,7 +10,7 @@ import { ConfirmationDialogProps } from "./types";
 export const ConfirmationDialog = ({
   title,
   message,
-  confirmButtonText,
+  confirmButtonText = "Confirm",
   onConfirm,
   onCancel,
   trackingData
@@ -58,9 +58,7 @@ export const ConfirmationDialog = ({
         <Button buttonType={"secondary"} onClick={handleCancelButtonClick}>
           Cancel
         </Button>
-        <Button onClick={handleConfirmButtonClick}>
-          {confirmButtonText || "Confirm"}
-        </Button>
+        <Button onClick={handleConfirmButtonClick}>{confirmButtonText}</Button>
       </s.ButtonsContainer>
     </s.Container>
   );

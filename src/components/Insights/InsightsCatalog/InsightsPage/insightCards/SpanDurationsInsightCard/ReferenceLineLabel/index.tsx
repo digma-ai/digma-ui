@@ -31,7 +31,7 @@ export const ReferenceLineLabel = (props: ReferenceLineLabelProps) => {
 
   const textAnchor = isTextAnchor(props.textAnchor)
     ? props.textAnchor
-    : undefined;
+    : "middle";
 
   return (
     <g>
@@ -39,7 +39,7 @@ export const ReferenceLineLabel = (props: ReferenceLineLabelProps) => {
         <Text
           key={text}
           x={x}
-          textAnchor={textAnchor || "middle"}
+          textAnchor={textAnchor}
           y={y + i * LABEL_HEIGHT - LABEL_GAP}
           dy={
             labels.length > 1

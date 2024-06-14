@@ -24,7 +24,7 @@ export const SpanQueryOptimizationInsightCard = ({
   isJiraHintEnabled,
   onJiraTicketCreate
 }: SpanQueryOptimizationInsightCardProps) => {
-  const endpoints = insight.endpoints || [];
+  const endpoints = insight.endpoints ?? [];
   const [pageItems, page, setPage] = usePagination(
     endpoints,
     PAGE_SIZE,
@@ -50,8 +50,8 @@ export const SpanQueryOptimizationInsightCard = ({
     onJiraTicketCreate && onJiraTicketCreate(insight, spanCodeObjectId, event);
   };
 
-  const spanName = insight.spanInfo?.displayName || undefined;
-  const spanCodeObjectId = insight.spanInfo?.spanCodeObjectId || undefined;
+  const spanName = insight.spanInfo?.displayName ?? undefined;
+  const spanCodeObjectId = insight.spanInfo?.spanCodeObjectId ?? undefined;
   const traceId = insight.traceId;
 
   return (
@@ -66,7 +66,7 @@ export const SpanQueryOptimizationInsightCard = ({
                 {insight.dbStatement.toUpperCase()} requests
               </Description>
               <AssetLink
-                name={spanName || ""}
+                name={spanName ?? ""}
                 onClick={() => handleAssetLinkClick(spanCodeObjectId)}
               />
             </Details>

@@ -51,7 +51,7 @@ export const useImpactData = () => {
   }, [previousLastSetDataTimeStamp, lastSetDataTimeStamp, getData]);
 
   useEffect(() => {
-    const handleImpactData = (data: any, timeStamp: number) => {
+    const handleImpactData = (data: unknown, timeStamp: number) => {
       setData(data as ImpactData);
       setLastSetDataTimeStamp(timeStamp);
     };

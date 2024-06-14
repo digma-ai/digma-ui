@@ -6,10 +6,10 @@ import { TicketLinkButtonProps } from "./types";
 
 export const TicketLinkButton = (props: TicketLinkButtonProps) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(
-    props.ticketLink?.errorMessage || null
+    props.ticketLink?.errorMessage ?? null
   );
   const [link, setLink] = useState<string | null>(
-    props.ticketLink?.link || null
+    props.ticketLink?.link ?? null
   );
   const onTicketLinkChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const ticketLink = event.target.value;

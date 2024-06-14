@@ -29,7 +29,6 @@ import { InsightCardProps } from "./types";
 const HIGH_CRITICALITY_THRESHOLD = 0.8;
 
 export const InsightCard = (props: InsightCardProps) => {
-  const [isRecalculatingStarted, setIsRecalculatingStarted] = useState(false);
   const [isDismissConfirmationOpened, setDismissConfirmationOpened] =
     useState(false);
   const { isDismissalChangeInProgress, dismiss, show } = useDismissal(
@@ -64,7 +63,6 @@ export const InsightCard = (props: InsightCardProps) => {
 
   const handleRecheckButtonClick = () => {
     props.onRecalculate && props.onRecalculate(props.insight.id);
-    setIsRecalculatingStarted(true);
     // TODO: handle Recheck response and refresh the insight data
     setInsightStatus(InsightStatus.InEvaluation);
   };

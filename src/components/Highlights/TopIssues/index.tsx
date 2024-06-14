@@ -95,7 +95,7 @@ export const TopIssues = () => {
   const previousData = usePrevious(data);
   const config = useContext(ConfigContext);
   const [pageItems, page, setPage] = usePagination(
-    data?.topInsights || [],
+    data?.topInsights ?? [],
     PAGE_SIZE,
     config.scope?.span?.spanCodeObjectId
   );
@@ -142,7 +142,7 @@ export const TopIssues = () => {
       title={"Top Issues"}
       toolbarContent={
         <CarouselPagination
-          itemsCount={data?.topInsights.length || 0}
+          itemsCount={data?.topInsights.length ?? 0}
           onPageChange={setPage}
           pageSize={PAGE_SIZE}
           page={page}

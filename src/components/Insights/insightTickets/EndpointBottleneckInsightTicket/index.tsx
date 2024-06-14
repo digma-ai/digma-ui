@@ -33,7 +33,7 @@ export const EndpointBottleneckInsightTicket = ({
 
   const services = [
     ...new Set(
-      (spanInsight?.slowEndpoints || []).map((x) => x.endpointInfo.serviceName)
+      (spanInsight?.slowEndpoints ?? []).map((x) => x.endpointInfo.serviceName)
     )
   ];
   const serviceString = services.length > 0 ? services.join(", ") : "";

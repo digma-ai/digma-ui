@@ -15,7 +15,7 @@ const getFrameItemText = (frame: Frame) => {
     return frame.executedCode;
   }
 
-  return [frame.modulePhysicalPath || frame.moduleName, frame.functionName]
+  return [frame.modulePhysicalPath ?? frame.moduleName, frame.functionName]
     .filter((x) => isString(x))
     .join(" in ");
 };

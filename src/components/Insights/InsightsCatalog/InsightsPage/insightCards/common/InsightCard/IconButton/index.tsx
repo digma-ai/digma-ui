@@ -3,18 +3,18 @@ import * as s from "./styles";
 import { IconButtonProps } from "./types";
 
 export const IconButtonComponent = (
-  props: IconButtonProps,
+  { isDisabled, onClick, className, icon }: IconButtonProps,
   ref: ForwardedRef<HTMLButtonElement>
 ) => (
   <s.Button
     ref={ref}
-    disabled={props.isDisabled}
-    onClick={props.onClick}
-    className={props.className}
+    disabled={isDisabled}
+    onClick={onClick}
+    className={className}
   >
-    <props.icon.component
-      size={props.icon.size || 16}
-      color={props.icon.color || "currentColor"}
+    <icon.component
+      size={icon.size ?? 16}
+      color={icon.color ?? "currentColor"}
     />
   </s.Button>
 );

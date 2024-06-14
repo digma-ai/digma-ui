@@ -51,7 +51,7 @@ export const usePerformanceData = () => {
   }, [previousLastSetDataTimeStamp, lastSetDataTimeStamp, getData]);
 
   useEffect(() => {
-    const handlePerformanceData = (data: any, timeStamp: number) => {
+    const handlePerformanceData = (data: unknown, timeStamp: number) => {
       setData(data as PerformanceData);
       setLastSetDataTimeStamp(timeStamp);
     };

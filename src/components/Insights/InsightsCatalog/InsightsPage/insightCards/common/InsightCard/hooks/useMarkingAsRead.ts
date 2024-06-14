@@ -18,7 +18,7 @@ export const useMarkingAsRead = (insightId: string) => {
   };
 
   useEffect(() => {
-    const handleMarkAsReadResponse = (data: any) => {
+    const handleMarkAsReadResponse = (data: unknown) => {
       if (
         (data as SetMarkAsReadResponsePayload).insightIds.includes(insightId)
       ) {

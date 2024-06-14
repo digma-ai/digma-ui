@@ -9,9 +9,7 @@ export interface GetErrorsDataPayload {
 
 export interface ErrorScoreInfo {
   score: number;
-  scoreParams: {
-    [key: string]: string;
-  } | null;
+  scoreParams: Record<string, string> | null;
 }
 
 export interface Error {

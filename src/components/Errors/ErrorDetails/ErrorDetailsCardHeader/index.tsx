@@ -13,7 +13,7 @@ export const ErrorDetailsCardHeader = ({
   data
 }: ErrorDetailsCardHeaderProps) => {
   const name = data.name;
-  const location = getErrorMethodId(data.sourceCodeObjectId || "");
+  const location = getErrorMethodId(data.sourceCodeObjectId ?? "");
   const scoreInfo = data.scoreInfo;
 
   const handleBackButtonClick = () => {

@@ -1,35 +1,41 @@
 import { ForwardedRef, forwardRef } from "react";
+import { isString } from "../../../typeGuards/isString";
 import * as s from "./styles";
 import { NewButtonProps } from "./types";
 
 export const NewButtonComponent = (
-  props: NewButtonProps,
+  {
+    buttonType = "primary",
+    size = "small",
+    disabled,
+    title,
+    onClick,
+    className,
+    type,
+    form,
+    icon: Icon,
+    label
+  }: NewButtonProps,
   ref: ForwardedRef<HTMLButtonElement>
 ) => {
-  const buttonType = props.buttonType || "primary";
-  const buttonSize = props.size || "small";
-  const iconSize = buttonSize === "large" ? 16 : 13;
+  const iconSize = size === "large" ? 16 : 13;
 
   return (
     <s.Button
       ref={ref}
-      disabled={props.disabled}
-      title={props.title}
-      onClick={props.onClick}
+      disabled={disabled}
+      title={title}
+      onClick={onClick}
       $type={buttonType}
-      className={props.className}
-      $size={buttonSize}
-      type={props.type}
-      form={props.form}
+      className={className}
+      $size={size}
+      type={type}
+      form={form}
     >
-      {props.icon && <props.icon size={iconSize} color={"currentColor"} />}
-      {typeof props.label === "string" && (
-        <s.Label
-          $disabled={props.disabled}
-          $size={buttonSize}
-          $type={buttonType}
-        >
-          {props.label}
+      {Icon && <Icon size={iconSize} color={"currentColor"} />}
+      {isString(label) && (
+        <s.Label $disabled={disabled} $size={size} $type={buttonType}>
+          {label}
         </s.Label>
       )}
     </s.Button>

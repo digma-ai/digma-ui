@@ -38,7 +38,7 @@ export const EndpointSpanNPlusOneInsightCard = ({
     onTraceButtonClick(trace, insightType, spanCodeObjectId);
   };
 
-  const spanInfo = span.internalSpan || span.clientSpan;
+  const spanInfo = span.internalSpan ?? span.clientSpan;
   const spanName = spanInfo.displayName;
 
   return (

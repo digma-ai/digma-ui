@@ -24,7 +24,7 @@ import { AssetsProps, DataRefresher } from "./types";
 export const Assets = ({ selectedTypeId }: AssetsProps) => {
   const [assetsCount, setAssetsCount] = useState<number>();
   const [selectedAssetTypeId, setSelectedAssetTypeId] = useState<string | null>(
-    selectedTypeId || null
+    selectedTypeId ?? null
   );
   const [searchInputValue, setSearchInputValue] = useState("");
   const debouncedSearchInputValue = useDebounce(searchInputValue, 1000);
@@ -58,12 +58,12 @@ export const Assets = ({ selectedTypeId }: AssetsProps) => {
   useEffect(() => {
     if (!previousScope || previousScope !== config.scope?.span) {
       setSearchInputValue("");
-      setSelectedAssetTypeId(selectedTypeId || null);
+      setSelectedAssetTypeId(selectedTypeId ?? null);
     }
   }, [config.scope, previousScope, selectedTypeId]);
 
   useEffect(() => {
-    setSelectedAssetTypeId(selectedTypeId || null);
+    setSelectedAssetTypeId(selectedTypeId ?? null);
   }, [selectedTypeId]);
 
   const handleGoToAllAssets = () => {
@@ -72,7 +72,7 @@ export const Assets = ({ selectedTypeId }: AssetsProps) => {
   };
 
   const handleSearchInputChange = (val: string | null) => {
-    setSearchInputValue(val || "");
+    setSearchInputValue(val ?? "");
   };
 
   const handleAssetTypeSelect = (assetTypeId: string) => {
@@ -172,7 +172,7 @@ export const Assets = ({ selectedTypeId }: AssetsProps) => {
   return (
     <s.Container>
       <s.Header>
-        {config.scope && config.scope.span && (
+        {config?.scope?.span && (
           <s.HeaderItem>
             <AssetsViewScopeConfiguration
               assetsCount={assetsCount}
@@ -198,7 +198,7 @@ export const Assets = ({ selectedTypeId }: AssetsProps) => {
             />
           </Tooltip>
         </s.HeaderItem>
-        {config.scope && config.scope.span && (
+        {config?.scope?.span && (
           <s.HeaderItem>Assets filtered to current scope</s.HeaderItem>
         )}
       </s.Header>

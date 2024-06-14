@@ -65,7 +65,7 @@ export const AssetsViewScopeConfiguration = ({
         <s.AssetsCount>
           {isNumber(assetsCount) ? ` ${assetsCount} ` : " "}
         </s.AssetsCount>
-        {assetTypeDescription} {formatUnit(assetsCount || 0, "asset")}
+        {assetTypeDescription} {formatUnit(assetsCount ?? 0, "asset")}
       </s.Label>
     </s.Container>
   );

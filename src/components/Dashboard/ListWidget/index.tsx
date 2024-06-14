@@ -61,8 +61,8 @@ export const ListWidget = <T extends object>(props: ListWidgetProps<T>) => {
   const previousPage = usePrevious(page);
   const [data, setData] = useState<ListWidgetData<T>>();
   const previousData = usePrevious(data);
-  const entries = data?.data?.entries || [];
-  const totalCount = data?.data?.totalCount || 0;
+  const entries = data?.data?.entries ?? [];
+  const totalCount = data?.data?.totalCount ?? 0;
   const errorMessage = getErrorMessage(data?.error?.message);
   const percentile = getPercentileKey(percentileViewMode);
   const previousPercentile = usePrevious(percentile);
@@ -81,6 +81,8 @@ export const ListWidget = <T extends object>(props: ListWidgetProps<T>) => {
     setIsInitialLoading(true);
 
     const handleSetData = (data: unknown, timeStamp: number) => {
+      // TODO: fix types
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
       if ((data as ListWidgetData<unknown>).type === props.type) {
         setData(data as ListWidgetData<T>);
         setLastSetDataTimeStamp(timeStamp);

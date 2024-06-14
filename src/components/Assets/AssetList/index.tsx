@@ -146,7 +146,7 @@ const getData = (
         ...(searchQuery && searchQuery.length > 0
           ? { displayName: searchQuery }
           : {}),
-        ...(filters || {
+        ...(filters ?? {
           services: [],
           operations: [],
           insights: []
@@ -174,7 +174,7 @@ export const AssetList = (props: AssetListProps) => {
   const sortingMenuChevronColor = getSortingMenuChevronColor(theme);
   const [page, setPage] = useState(0);
   const previousPage = usePrevious(page);
-  const filteredCount = data?.filteredCount || 0;
+  const filteredCount = data?.filteredCount ?? 0;
   const pageStartItemNumber = page * PAGE_SIZE + 1;
   const pageEndItemNumber = Math.min(
     pageStartItemNumber + PAGE_SIZE - 1,
@@ -208,7 +208,7 @@ export const AssetList = (props: AssetListProps) => {
     sorting
   ]);
 
-  const entries = data?.data || [];
+  const entries = data?.data ?? [];
 
   const assetTypeInfo = getAssetTypeInfo(props.assetTypeId);
 
@@ -259,12 +259,12 @@ export const AssetList = (props: AssetListProps) => {
       (isNumber(previousPage) && previousPage !== page) ||
       (isEnvironment(previousEnvironment) &&
         previousEnvironment.id !== config.environment?.id) ||
-      (previousSorting && previousSorting !== sorting) ||
+      Boolean(previousSorting && previousSorting !== sorting) ||
       (isString(previousSearchQuery) &&
         previousSearchQuery !== props.searchQuery) ||
       (isString(previousAssetTypeId) &&
         previousAssetTypeId !== props.assetTypeId) ||
-      (previousFilters && previousFilters !== props.filters) ||
+      Boolean(previousFilters && previousFilters !== props.filters) ||
       previousViewScope !== props.scopeViewOptions
     ) {
       refreshData();
@@ -350,6 +350,8 @@ export const AssetList = (props: AssetListProps) => {
   };
 
   const handleSortingMenuItemSelect = (value: string) => {
+    // TODO: fix types
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
     if (sorting.criterion === value) {
       setSorting({
         ...sorting,
@@ -444,7 +446,7 @@ export const AssetList = (props: AssetListProps) => {
           {assetTypeInfo?.icon && (
             <assetTypeInfo.icon color={assetTypeIconColor} size={14} />
           )}
-          {assetTypeInfo?.label || props.assetTypeId}
+          {assetTypeInfo?.label ?? props.assetTypeId}
         </s.TypeHeader>
         <Link onClick={handleAllAssetsLinkClick}>All Assets</Link>
       </s.Header>

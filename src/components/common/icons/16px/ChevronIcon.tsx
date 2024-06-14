@@ -14,7 +14,7 @@ const ChevronIconComponent = (props: RotatableIconProps) => {
 
   const transform = {
     transform: `rotate(${
-      directionRotateMap[props.direction || Direction.DOWN]
+      directionRotateMap[props.direction ?? Direction.DOWN]
     })`
   };
 
