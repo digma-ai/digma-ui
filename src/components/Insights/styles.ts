@@ -9,7 +9,6 @@ export const Container = styled.div`
   gap: 8px;
   height: 100%;
   box-sizing: border-box;
-  background: ${({ theme }) => theme.colors.v3.surface.primary};
   position: relative;
 `;
 

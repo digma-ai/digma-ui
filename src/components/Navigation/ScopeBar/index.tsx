@@ -144,7 +144,7 @@ export const ScopeBar = (props: ScopeBarProps) => {
       {isTargetButtonMenuEnabled ? (
         <NewPopover
           content={
-            <Popup height={"78px"}>
+            <Popup height={"126px"}>
               {props.scope && (
                 <TargetButtonMenu
                   scope={props.scope}

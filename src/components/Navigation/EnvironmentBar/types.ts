@@ -2,12 +2,11 @@ import { Environment } from "../../common/App/types";
 
 export interface EnvironmentBarProps {
   selectedEnvironment?: Environment | null;
-  isMenuOpen?: boolean;
-  onClick: () => void;
-  isDisabled?: boolean;
+  environments: Environment[];
+  onEnvironmentChange: (environment: Environment) => void;
 }
 
-export interface EnvironmentBarProps {
+export interface EnvironmentBarElementProps {
   $isMenuOpen?: boolean;
   $isDisabled?: boolean;
 }

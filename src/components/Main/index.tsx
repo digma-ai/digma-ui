@@ -5,11 +5,13 @@ import { Assets } from "../Assets";
 import { Errors } from "../Errors";
 import { Highlights } from "../Highlights";
 import { Insights } from "../Insights";
+import { Navigation } from "../Navigation";
 import { SetViewsPayload } from "../Navigation/types";
 import { Tests } from "../Tests";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { Authentication } from "./Authentication";
 import { actions } from "./actions";
+import * as s from "./styles";
 import { ViewData } from "./types";
 
 export const Main = () => {
@@ -40,20 +42,29 @@ export const Main = () => {
     return <Authentication />;
   }
 
-  switch (view.id) {
-    case ROUTES.HIGHLIGHTS:
-      return <Highlights />;
-    case ROUTES.INSIGHTS:
-      return <Insights insightViewType={"Issues"} key={"insights"} />;
-    case ROUTES.ASSETS:
-      return <Assets selectedTypeId={view.path} />;
-    case ROUTES.ANALYTICS:
-      return <Insights insightViewType={"Analytics"} key={"analytics"} />;
-    case ROUTES.ERRORS:
-      return <Errors errorId={view.path} />;
-    case ROUTES.TESTS:
-      return <Tests />;
-    default:
-      return null;
-  }
+  const renderContent = () => {
+    switch (view.id) {
+      case ROUTES.HIGHLIGHTS:
+        return <Highlights />;
+      case ROUTES.INSIGHTS:
+        return <Insights insightViewType={"Issues"} key={"insights"} />;
+      case ROUTES.ASSETS:
+        return <Assets selectedTypeId={view.path} />;
+      case ROUTES.ANALYTICS:
+        return <Insights insightViewType={"Analytics"} key={"analytics"} />;
+      case ROUTES.ERRORS:
+        return <Errors errorId={view.path} />;
+      case ROUTES.TESTS:
+        return <Tests />;
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <s.Container>
+      <Navigation />
+      <s.ContentContainer>{renderContent()}</s.ContentContainer>
+    </s.Container>
+  );
 };

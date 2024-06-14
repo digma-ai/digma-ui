@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { LAYERS } from "../common/App/styles";
 
 export const Container = styled.div`
-  background: ${({ theme }) => theme.colors.panel.background};
   height: 100%;
   display: flex;
   flex-direction: column;

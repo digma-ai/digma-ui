@@ -7,5 +7,4 @@ export const Container = styled.div`
   padding: 16px 8px;
   min-height: 100%;
   box-sizing: border-box;
-  background: ${({ theme }) => theme.colors.v3.surface.primary};
 `;

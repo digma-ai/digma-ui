@@ -7,9 +7,9 @@ import {
   ChangeScopePayload,
   ChangeViewPayload
 } from "../../../types";
+import { actions as mainActions } from "../../Main/actions";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Scope } from "../../common/App/types";
-import { actions } from "../actions";
 import { SetViewsPayload } from "../types";
 import { HistoryManager } from "./HistoryManager";
 import { HistoryNavigationPanel } from "./HistoryNavigationPanel";
@@ -112,11 +112,11 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
     };
 
     dispatcher.addActionListener(globalActions.SET_SCOPE, handleSetScope);
-    dispatcher.addActionListener(actions.SET_VIEWS, handleSetViews);
+    dispatcher.addActionListener(mainActions.SET_VIEWS, handleSetViews);
 
     return () => {
       dispatcher.removeActionListener(globalActions.SET_SCOPE, handleSetScope);
-      dispatcher.removeActionListener(actions.SET_VIEWS, handleSetViews);
+      dispatcher.removeActionListener(mainActions.SET_VIEWS, handleSetViews);
     };
   }, [environment, props.currentTabId, historyManager]);
 

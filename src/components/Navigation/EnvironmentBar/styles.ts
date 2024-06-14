@@ -1,5 +1,6 @@
 import styled from "styled-components";
-import { EnvironmentBarProps } from "./types";
+import { Popup } from "../common/Popup";
+import { EnvironmentBarElementProps } from "./types";
 
 export const EnvironmentIconContainer = styled.div`
   display: flex;
@@ -10,7 +11,7 @@ export const ChevronIconContainer = styled.div`
   display: flex;
 `;
 
-export const EnvironmentBar = styled.div<EnvironmentBarProps>`
+export const EnvironmentBar = styled.div<EnvironmentBarElementProps>`
   overflow: hidden;
   flex-grow: 1;
   user-select: none;
@@ -72,4 +73,8 @@ export const SelectedEnvironmentName = styled.span`
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+`;
+
+export const EnvironmentMenuPopup = styled(Popup)`
+  width: 100%;
 `;
