@@ -1,4 +1,4 @@
-import { SuccessRegistrationIcon } from "../../Icons/SuccessRegistrationIcon";
+import { SuccessRegistrationIcon } from "../Icons/SuccessRegistrationIcon";
 import * as s from "./styles";
 
 export const SuccessRegistration = () => {

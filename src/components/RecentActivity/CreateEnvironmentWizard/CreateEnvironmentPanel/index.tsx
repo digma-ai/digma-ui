@@ -1,7 +1,7 @@
 import { useState } from "react";
+import { Overlay } from "../../../common/Overlay";
 import { ChevronIcon } from "../../../common/icons/16px/ChevronIcon";
 import { Direction } from "../../../common/icons/types";
-import { Overlay } from "../../common/Overlay";
 import { CancelConfirmation } from "../CancelConfirmation";
 import { Tab } from "./Tab";
 import * as s from "./styles";

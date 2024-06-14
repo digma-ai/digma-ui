@@ -2,10 +2,10 @@ import styled from "styled-components";
 import {
   bodyBoldTypography,
   subscriptRegularTypography
-} from "../../../common/App/typographies";
-import { Button } from "../../../common/v3/Button";
-import { Spinner } from "../../../common/v3/Spinner";
-import { TextField } from "../../../common/v3/TextField";
+} from "../App/typographies";
+import { Button } from "../v3/Button";
+import { Spinner } from "../v3/Spinner";
+import { TextField } from "../v3/TextField";
 
 export const Container = styled.div`
   display: flex;

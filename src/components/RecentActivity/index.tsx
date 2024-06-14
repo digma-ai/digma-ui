@@ -12,6 +12,7 @@ import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionT
 import { groupBy } from "../../utils/groupBy";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { Environment } from "../common/App/types";
+import { Overlay } from "../common/Overlay";
 import { RegistrationDialog } from "../common/RegistrationDialog";
 import { RegistrationFormValues } from "../common/RegistrationDialog/types";
 import { ListIcon } from "../common/icons/ListIcon";
@@ -30,7 +31,6 @@ import { RecentActivityTable, isRecent } from "./RecentActivityTable";
 import { Toggle } from "./Toggle";
 import { WelcomeScreen } from "./WelcomeScreen";
 import { actions } from "./actions";
-import { Overlay } from "./common/Overlay";
 import * as s from "./styles";
 import { trackingEvents } from "./tracking";
 import {

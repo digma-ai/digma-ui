@@ -1,13 +1,13 @@
 import { forwardRef, useState } from "react";
+import { RegisterFrom } from "../../common/RegisterForm";
 import { SlackLogoIcon } from "../../common/icons/16px/SlackLogoIcon";
 import { CrossIcon } from "../../common/icons/CrossIcon";
 import { RegistrationPromoIcon } from "./Icons/RegistrationPromoIcon";
-import { RegisterFrom } from "./RegisterForm";
-import { SuccessRegistration } from "./RegisterForm/SuccessRegistration";
+import { SuccessRegistration } from "./SuccessRegistration";
 import * as s from "./styles";
 import { RegistrationProps } from "./types";
 
-const RegistrationCardComponent = (props: RegistrationProps) => {
+const RegistrationCardComponent = ({ onClose }: RegistrationProps) => {
   const [isFormCompleted, setIsFormCompleted] = useState(false);
 
   return (
@@ -15,9 +15,7 @@ const RegistrationCardComponent = (props: RegistrationProps) => {
       <s.CrossButton
         buttonType={"tertiary"}
         icon={() => <CrossIcon className="currentColor" size={20} />}
-        onClick={() => {
-          ("");
-        }}
+        onClick={onClose}
       />
       {!isFormCompleted ? (
         <>

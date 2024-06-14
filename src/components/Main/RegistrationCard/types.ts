@@ -1,3 +1,3 @@
 export interface RegistrationProps {
-  email?: string;
+  onClose: () => void;
 }

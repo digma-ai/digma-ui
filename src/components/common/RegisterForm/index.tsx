@@ -8,14 +8,14 @@ import {
 } from "react";
 import { Controller, useForm } from "react-hook-form";
 
-import { actions as globalActions } from "../../../../actions";
-import { usePrevious } from "../../../../hooks/usePrevious";
-import { sendTrackingEvent } from "../../../../utils/actions/sendTrackingEvent";
-import { isValidEmailFormat } from "../../../../utils/isValidEmailFormat";
-import { trackingEvents } from "../../../RecentActivity/tracking";
-import { ConfigContext } from "../../../common/App/ConfigContext";
-import { EnvelopeIcon } from "../../../common/icons/16px/EnvelopeIcon";
-import { UserIcon } from "../../../common/icons/UserIcon";
+import { actions as globalActions } from "../../../actions";
+import { usePrevious } from "../../../hooks/usePrevious";
+import { sendTrackingEvent } from "../../../utils/actions/sendTrackingEvent";
+import { isValidEmailFormat } from "../../../utils/isValidEmailFormat";
+import { trackingEvents } from "../../RecentActivity/tracking";
+import { ConfigContext } from "../App/ConfigContext";
+import { EnvelopeIcon } from "../icons/16px/EnvelopeIcon";
+import { UserIcon } from "../icons/UserIcon";
 import { isWorkEmail } from "./isWorkEmail";
 import * as s from "./styles";
 import { RegisterFromProps, RegistrationFormValues } from "./types";

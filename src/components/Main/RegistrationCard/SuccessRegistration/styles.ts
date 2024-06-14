@@ -2,7 +2,7 @@ import styled from "styled-components";
 import {
   bodyRegularTypography,
   subscriptRegularTypography
-} from "../../../../common/App/typographies";
+} from "../../../common/App/typographies";
 
 export const Container = styled.div`
   display: flex;

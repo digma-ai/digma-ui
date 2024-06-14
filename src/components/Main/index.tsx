@@ -10,12 +10,14 @@ import { SetViewsPayload } from "../Navigation/types";
 import { Tests } from "../Tests";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { Authentication } from "./Authentication";
+import { RegistrationCard } from "./RegistrationCard";
 import { actions } from "./actions";
 import * as s from "./styles";
 import { ViewData } from "./types";
 
 export const Main = () => {
   const [view, setView] = useState<ViewData>({ id: ROUTES.INSIGHTS });
+  const [showRegistration, setShowRegistration] = useState(true);
   const config = useContext(ConfigContext);
 
   useLayoutEffect(() => {
@@ -65,6 +67,15 @@ export const Main = () => {
     <s.Container>
       <Navigation />
       <s.ContentContainer>{renderContent()}</s.ContentContainer>
+
+      {showRegistration && (
+        <s.RegistrationOverlay
+          onClose={() => setShowRegistration(false)}
+          tabIndex={-1}
+        >
+          <RegistrationCard onClose={() => setShowRegistration(false)} />
+        </s.RegistrationOverlay>
+      )}
     </s.Container>
   );
 };
