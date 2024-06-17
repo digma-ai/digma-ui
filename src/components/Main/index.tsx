@@ -1,6 +1,8 @@
 import { useContext, useLayoutEffect, useState } from "react";
 import { ROUTES } from "../../constants";
 import { dispatcher } from "../../dispatcher";
+import { usePersistence } from "../../hooks/usePersistence";
+import { sendTrackingEvent } from "../../utils/actions/sendTrackingEvent";
 import { Assets } from "../Assets";
 import { Errors } from "../Errors";
 import { Highlights } from "../Highlights";
@@ -14,13 +16,65 @@ import { Authentication } from "./Authentication";
 import { RegistrationCard } from "./RegistrationCard";
 import { actions } from "./actions";
 import * as s from "./styles";
+import { trackingEvents } from "./tracking";
 import { ViewData } from "./types";
+
+const PROMOTION_KEY = "PROMOTION";
+const PROMOTION_COMPLETED_KEY = "PROMOTION_COMPLETED";
+const PROMOTION_DELAY_IN_DAYS = 30;
+
+const getDaysDiff = (left: number, right: number) => {
+  const Difference_In_Time =
+    new Date(left).getTime() - new Date(right).getTime();
+  const Difference_In_Days = Math.round(
+    Difference_In_Time / (1000 * 3600 * 24)
+  );
+
+  return Math.abs(Difference_In_Days);
+};
 
 export const Main = () => {
   const [view, setView] = useState<ViewData>({ id: ROUTES.INSIGHTS });
   const [showRegistration, setShowRegistration] = useState(false);
   const [showDiscardConfirmation, setShowDiscardConfirmation] = useState(false);
   const config = useContext(ConfigContext);
+  const [dismissalDate, setDismissalDate] = usePersistence<number>(
+    PROMOTION_KEY,
+    "application"
+  );
+  const [promotionCompleted, setPromotionCompleted] = usePersistence<boolean>(
+    PROMOTION_COMPLETED_KEY,
+    "application"
+  );
+
+  const hidePromotion =
+    dismissalDate &&
+    getDaysDiff(dismissalDate, Date.now()) < PROMOTION_DELAY_IN_DAYS;
+
+  const handleRegistrationCompleted = () => {
+    sendTrackingEvent(trackingEvents.PROMOTION_REGISTRATION_SUBMITTED);
+    setPromotionCompleted(true);
+  };
+
+  const handleRegistrationClose = () => {
+    sendTrackingEvent(trackingEvents.PROMOTION_REGISTRATION_CLOSED_CLICKED);
+    setShowRegistration(false);
+  };
+
+  const handleCloseCancelConfirmation = () => {
+    sendTrackingEvent(
+      trackingEvents.PROMOTION_CANCEL_CONFIRMATION_CLOSE_CLICKED
+    );
+    setShowDiscardConfirmation(false);
+  };
+
+  const handleAcceptCancelConfirmation = () => {
+    sendTrackingEvent(
+      trackingEvents.PROMOTION_CANCEL_CONFIRMATION_ACCEPT_CLICKED
+    );
+    setDismissalDate(Date.now());
+    setShowDiscardConfirmation(false);
+  };
 
   useLayoutEffect(() => {
     window.sendMessageToDigma({
@@ -59,6 +113,9 @@ export const Main = () => {
             onShowPromotionConfirmationDiscard={() =>
               setShowDiscardConfirmation(true)
             }
+            hidePromotion={
+              Boolean(hidePromotion) || Boolean(promotionCompleted)
+            }
           />
         );
       case ROUTES.ASSETS:
@@ -87,22 +144,18 @@ export const Main = () => {
             header="Discard offer?"
             description="Are you sure you want to miss out on this exclusive, limited-time offer?"
             cancelBtnText="Yes, discard"
-            onClose={() => {
-              setShowDiscardConfirmation(false);
-            }}
-            onCancel={() => {
-              setShowDiscardConfirmation(false);
-            }}
+            onClose={handleCloseCancelConfirmation}
+            onCancel={handleAcceptCancelConfirmation}
           />
         </s.StyledOverlay>
       )}
 
       {showRegistration && (
-        <s.StyledOverlay
-          onClose={() => setShowRegistration(false)}
-          tabIndex={-1}
-        >
-          <RegistrationCard onClose={() => setShowRegistration(false)} />
+        <s.StyledOverlay onClose={handleRegistrationClose} tabIndex={-1}>
+          <RegistrationCard
+            onClose={handleRegistrationClose}
+            onComplete={handleRegistrationCompleted}
+          />
         </s.StyledOverlay>
       )}
     </s.Container>

@@ -1,13 +1,25 @@
 import { forwardRef, useState } from "react";
+import { SLACK_WORKSPACE_URL } from "../../../constants";
+import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
+import { sendTrackingEvent } from "../../../utils/actions/sendTrackingEvent";
 import { SlackLogoIcon } from "../../common/icons/16px/SlackLogoIcon";
 import { CrossIcon } from "../../common/icons/CrossIcon";
+import { trackingEvents } from "../tracking";
 import { RegistrationPromoIcon } from "./Icons/RegistrationPromoIcon";
 import { SuccessRegistration } from "./SuccessRegistration";
 import * as s from "./styles";
 import { RegistrationProps } from "./types";
 
-const RegistrationCardComponent = ({ onClose }: RegistrationProps) => {
+const RegistrationCardComponent = ({
+  onClose,
+  onComplete
+}: RegistrationProps) => {
   const [isFormCompleted, setIsFormCompleted] = useState(false);
+
+  const handleSlackLinkClick = () => {
+    sendTrackingEvent(trackingEvents.PROMOTION_SLACK_LINK_CLICKED);
+    openURLInDefaultBrowser(SLACK_WORKSPACE_URL);
+  };
 
   return (
     <s.Container>
@@ -25,9 +37,12 @@ const RegistrationCardComponent = ({ onClose }: RegistrationProps) => {
               to access the exclusive Digma course on Udemy
             </s.Description>
             <s.Register
-              scope="test"
+              scope="promotion"
               alwaysRenderError={true}
-              onNext={() => setIsFormCompleted(true)}
+              onNext={() => {
+                setIsFormCompleted(true);
+                onComplete();
+              }}
             />
           </s.FormContainer>
         </>
@@ -35,7 +50,7 @@ const RegistrationCardComponent = ({ onClose }: RegistrationProps) => {
         <SuccessRegistration />
       )}
 
-      <s.SlackLink onClick={() => ({})}>
+      <s.SlackLink onClick={handleSlackLinkClick}>
         <SlackLogoIcon size={14} />
         Join our Digma channel
       </s.SlackLink>
