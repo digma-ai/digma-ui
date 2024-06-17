@@ -1,4 +1,5 @@
-import { useContext, useLayoutEffect, useState } from "react";
+import { useContext, useLayoutEffect, useRef, useState } from "react";
+import { CSSTransition } from "react-transition-group";
 import { ROUTES } from "../../constants";
 import { dispatcher } from "../../dispatcher";
 import { usePersistence } from "../../hooks/usePersistence";
@@ -13,7 +14,6 @@ import { Tests } from "../Tests";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { CancelConfirmation } from "../common/CancelConfirmation";
 import { Authentication } from "./Authentication";
-import { RegistrationCard } from "./RegistrationCard";
 import { actions } from "./actions";
 import * as s from "./styles";
 import { trackingEvents } from "./tracking";
@@ -22,6 +22,8 @@ import { ViewData } from "./types";
 const PROMOTION_KEY = "PROMOTION";
 const PROMOTION_COMPLETED_KEY = "PROMOTION_COMPLETED";
 const PROMOTION_DELAY_IN_DAYS = 30;
+const TRANSITION_CLASS_NAME = "registration-card";
+const DEFAULT_TRANSITION_DURATION = 1000; // in milliseconds
 
 const getDaysDiff = (left: number, right: number) => {
   const Difference_In_Time =
@@ -36,8 +38,10 @@ const getDaysDiff = (left: number, right: number) => {
 export const Main = () => {
   const [view, setView] = useState<ViewData>({ id: ROUTES.INSIGHTS });
   const [showRegistration, setShowRegistration] = useState(false);
+  const [showOverlay, setShowOverlay] = useState(false);
   const [showDiscardConfirmation, setShowDiscardConfirmation] = useState(false);
   const config = useContext(ConfigContext);
+  const registrationCardRef = useRef<HTMLDivElement>(null);
   const [dismissalDate, setDismissalDate] = usePersistence<number>(
     PROMOTION_KEY,
     "application"
@@ -150,14 +154,33 @@ export const Main = () => {
         </s.StyledOverlay>
       )}
 
-      {showRegistration && (
-        <s.StyledOverlay onClose={handleRegistrationClose} tabIndex={-1}>
-          <RegistrationCard
-            onClose={handleRegistrationClose}
-            onComplete={handleRegistrationCompleted}
-          />
+      <CSSTransition
+        in={showRegistration}
+        timeout={DEFAULT_TRANSITION_DURATION}
+        classNames={TRANSITION_CLASS_NAME}
+        unmountOnExit={true}
+        mountOnEnter={true}
+        nodeRef={registrationCardRef}
+        onEnter={() => setShowOverlay(true)}
+        onExited={() => setShowOverlay(false)}
+      >
+        <s.StyledOverlay
+          onClose={handleRegistrationClose}
+          tabIndex={-1}
+          $isVisible={showOverlay}
+        >
+          +
+          <s.CardContainer>
+            <s.AnimatedRegistrationCard
+              ref={registrationCardRef}
+              $transitionClassName={TRANSITION_CLASS_NAME}
+              $transitionDuration={DEFAULT_TRANSITION_DURATION}
+              onClose={handleRegistrationClose}
+              onComplete={handleRegistrationCompleted}
+            />
+          </s.CardContainer>
         </s.StyledOverlay>
-      )}
+      </CSSTransition>
     </s.Container>
   );
 };

@@ -64,8 +64,9 @@ export const Description = styled.span`
 `;
 
 const shineAnimation = keyframes`
-  0% { left: -35%; }
-  100% { left: 33%; }
+  0% { left: -33%; }
+  50% {left: 33%}
+  100% { left: -33%; }
 `;
 
 export const AcceptButton = styled(Button)`
@@ -85,7 +86,7 @@ export const AcceptButton = styled(Button)`
       rgb(255 255 255 / 35%),
       rgb(255 255 255 / 0%) 70%
     );
-    animation: ${shineAnimation} 1000ms infinite linear;
+    animation: ${shineAnimation} 2s infinite linear;
   }
 `;
 

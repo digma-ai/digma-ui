@@ -87,7 +87,7 @@ const RegisterFromComponent = (
   ]);
 
   useEffect(() => {
-    setFocus("fullName");
+    // setFocus("fullName");
   }, [setFocus]);
 
   const onSubmit = (data: RegistrationFormValues) => {

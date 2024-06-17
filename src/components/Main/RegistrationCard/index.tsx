@@ -1,4 +1,4 @@
-import { forwardRef, useState } from "react";
+import { ForwardedRef, forwardRef, useState } from "react";
 import { SLACK_WORKSPACE_URL } from "../../../constants";
 import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
 import { sendTrackingEvent } from "../../../utils/actions/sendTrackingEvent";
@@ -8,12 +8,12 @@ import { trackingEvents } from "../tracking";
 import { RegistrationPromoIcon } from "./Icons/RegistrationPromoIcon";
 import { SuccessRegistration } from "./SuccessRegistration";
 import * as s from "./styles";
-import { RegistrationProps } from "./types";
+import { RegistrationCardProps } from "./types";
 
-const RegistrationCardComponent = ({
-  onClose,
-  onComplete
-}: RegistrationProps) => {
+const RegistrationCardComponent = (
+  { onClose, onComplete, className }: RegistrationCardProps,
+  ref: ForwardedRef<HTMLDivElement>
+) => {
   const [isFormCompleted, setIsFormCompleted] = useState(false);
 
   const handleSlackLinkClick = () => {
@@ -22,7 +22,7 @@ const RegistrationCardComponent = ({
   };
 
   return (
-    <s.Container>
+    <s.Container className={className} ref={ref}>
       <s.CrossButton
         buttonType={"tertiary"}
         icon={() => <CrossIcon className="currentColor" size={20} />}
