@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import {
   bodySemiboldTypography,
   subheadingSemiboldTypography
@@ -61,8 +61,30 @@ export const Description = styled.span`
   color: ${({ theme }) => theme.colors.v3.text.primary};
 `;
 
+const shineAnimation = keyframes`
+  0% { left: -35%; }
+  100% { left: 33%; }
+`;
+
 export const AcceptButton = styled(Button)`
   padding: 6px 8px;
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      100deg,
+      rgb(255 255 255 / 0%) 30%,
+      rgb(255 255 255 / 35%),
+      rgb(255 255 255 / 0%) 70%
+    );
+    animation: ${shineAnimation} 1000ms infinite linear;
+  }
 `;
 
 export const ContentContainer = styled.div`
