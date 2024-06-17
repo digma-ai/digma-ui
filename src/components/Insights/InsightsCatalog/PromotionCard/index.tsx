@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Link } from "../../../common/Link";
 import { CrossIcon } from "../../../common/icons/CrossIcon";
-import { PromoLogIcon } from "./PromoLogIcon";
+import { CollapsedContainerEllipseIcon } from "./Icons/CollapsedContainerEllipseIcon";
+import { PromoLogIcon } from "./Icons/PromoLogIcon";
 import { PromotionTag } from "./PromotionTag";
 import * as s from "./styles";
 import { PromotionCardProps } from "./types";
@@ -20,11 +21,19 @@ export const PromotionCard = ({ onAccept, onDiscard }: PromotionCardProps) => {
   if (!expanded) {
     return (
       <s.CollapsedContainer>
-        <s.PromoText>
-          Get our <b>FREE Udemy course</b>
-        </s.PromoText>
+        <s.Centered>
+          <s.CenteredCollapsedContainerBackgroundIcon />
+        </s.Centered>
+        <s.Right>
+          <CollapsedContainerEllipseIcon />
+        </s.Right>
+        <s.CollapsedHolder>
+          <s.PromoText>
+            Get our <b>FREE Udemy course</b>
+          </s.PromoText>
 
-        <Link onClick={() => setExpended(true)}>See more</Link>
+          <Link onClick={() => setExpended(true)}>See more</Link>
+        </s.CollapsedHolder>
       </s.CollapsedContainer>
     );
   }

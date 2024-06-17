@@ -4,6 +4,7 @@ import {
   subheadingSemiboldTypography
 } from "../../../common/App/typographies";
 import { Button } from "../../../common/v3/Button";
+import { CollapsedContainerBackgroundIcon } from "./Icons/CollpasedContainerBackgroundIcon";
 
 export const CollapsedContainer = styled.div`
   display: flex;
@@ -14,6 +15,7 @@ export const CollapsedContainer = styled.div`
   padding: 8px 8px 8px 12px;
   align-items: flex-start;
   border-radius: 4px;
+  position: relative;
 `;
 
 export const PromoText = styled.span`
@@ -108,6 +110,31 @@ export const SkipButton = styled(Button)`
 
 export const Holder = styled.div`
   position: relative;
-  inset: initial;
+  inset: 0;
   width: 100%;
+`;
+
+export const Background = styled.div`
+  position: absolute;
+  top: 0;
+`;
+
+export const CollapsedHolder = styled(Holder)`
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const CenteredCollapsedContainerBackgroundIcon = styled(
+  CollapsedContainerBackgroundIcon
+)`
+  position: absolute;
+  inset: 0;
+`;
+
+export const Right = styled(Background)`
+  right: 0;
+`;
+
+export const Centered = styled(Background)`
+  right: 50%;
 `;
