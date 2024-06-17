@@ -31,35 +31,38 @@ export const PromotionCard = ({ onAccept, onDiscard }: PromotionCardProps) => {
 
   return (
     <s.ExpandedContainer>
-      <s.Background />
       <s.LogoBackground>
         <PromoLogIcon />
       </s.LogoBackground>
-      <s.ContentContainer>
-        <s.DetailsContainer>
-          <PromotionTag />
-          <s.Description>
-            Learn how to get more out of Digma <br /> issues
-          </s.Description>
-          <s.AcceptButton
-            buttonType="primary"
-            label="Access course"
-            onClick={handleAcceptClick}
-          />
-        </s.DetailsContainer>
-      </s.ContentContainer>
-      <s.ActionContainer>
-        <s.SkipButton
-          buttonType="tertiary"
-          label="Don’t show it again"
-          onClick={handleCancelClick}
+
+      <s.Holder>
+        <s.ContentContainer>
+          <s.DetailsContainer>
+            <PromotionTag />
+            <s.Description>
+              Learn how to get more out of Digma <br /> issues
+            </s.Description>
+          </s.DetailsContainer>
+          <s.ActionContainer>
+            <s.AcceptButton
+              buttonType="primary"
+              label="Access course"
+              onClick={handleAcceptClick}
+            />
+            <s.SkipButton
+              buttonType="tertiary"
+              label="Don’t show it again"
+              onClick={handleCancelClick}
+            />
+          </s.ActionContainer>
+        </s.ContentContainer>
+
+        <s.CrossButton
+          buttonType={"tertiary"}
+          icon={() => <CrossIcon className="currentColor" size={16} />}
+          onClick={() => setExpended(false)}
         />
-      </s.ActionContainer>
-      <s.CrossButton
-        buttonType={"tertiary"}
-        icon={() => <CrossIcon className="currentColor" size={16} />}
-        onClick={() => setExpended(false)}
-      />
+      </s.Holder>
     </s.ExpandedContainer>
   );
 };

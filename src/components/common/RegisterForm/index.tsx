@@ -10,9 +10,7 @@ import { Controller, useForm } from "react-hook-form";
 
 import { actions as globalActions } from "../../../actions";
 import { usePrevious } from "../../../hooks/usePrevious";
-import { sendTrackingEvent } from "../../../utils/actions/sendTrackingEvent";
 import { isValidEmailFormat } from "../../../utils/isValidEmailFormat";
-import { trackingEvents } from "../../RecentActivity/tracking";
 import { ConfigContext } from "../App/ConfigContext";
 import { EnvelopeIcon } from "../icons/16px/EnvelopeIcon";
 import { UserIcon } from "../icons/UserIcon";
@@ -44,7 +42,15 @@ const formDefaultValues: RegistrationFormValues = {
 };
 
 const RegisterFromComponent = (
-  { onNext, submitBtnText, scope, className }: RegisterFromProps,
+  {
+    onNext,
+    submitBtnText,
+    scope,
+    className,
+    alwaysRenderError,
+    emailPlaceholder,
+    fullNamePlaceholder
+  }: RegisterFromProps,
   ref: ForwardedRef<HTMLDivElement>
 ) => {
   const [isRegistrationInProgress, setIsRegistrationInProgress] =
@@ -85,7 +91,6 @@ const RegisterFromComponent = (
   }, [setFocus]);
 
   const onSubmit = (data: RegistrationFormValues) => {
-    sendTrackingEvent(trackingEvents.LOCAL_REGISTRATION_FORM_SUBMITTED);
     window.sendMessageToDigma({
       action: globalActions.PERSONALIZE_REGISTER,
       payload: {
@@ -121,9 +126,10 @@ const RegisterFromComponent = (
           render={({ field }) => (
             <s.TextInput
               icon={UserIcon}
-              placeholder={"Full name"}
+              placeholder={fullNamePlaceholder ?? "Full name"}
               isInvalid={Boolean(errors.fullName)}
               error={errors.fullName?.message}
+              alwaysRenderError={alwaysRenderError}
               {...field}
             />
           )}
@@ -136,9 +142,10 @@ const RegisterFromComponent = (
           render={({ field }) => (
             <s.TextInput
               icon={EnvelopeIcon}
-              placeholder={"Your email"}
+              placeholder={emailPlaceholder ?? "Your email"}
               isInvalid={Boolean(errors.email)}
               error={errors.email?.message}
+              alwaysRenderError={alwaysRenderError}
               {...field}
             />
           )}
@@ -146,7 +153,7 @@ const RegisterFromComponent = (
       </s.Form>
       <s.SubmitButton
         isDisabled={!isValid || isRegistrationInProgress}
-        label={submitBtnText || "Submit"}
+        label={submitBtnText ?? "Submit"}
         type={"submit"}
         form={"registrationForm"}
       />

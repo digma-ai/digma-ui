@@ -3,6 +3,9 @@ export interface RegisterFromProps {
   submitBtnText?: string;
   scope: string;
   className?: string;
+  alwaysRenderError?: boolean;
+  emailPlaceholder?: string;
+  fullNamePlaceholder?: string;
 }
 
 export interface RegistrationFormValues {

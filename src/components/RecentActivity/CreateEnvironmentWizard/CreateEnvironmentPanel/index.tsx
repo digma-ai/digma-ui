@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
+import { CancelConfirmation } from "../../../common/CancelConfirmation";
 import { Overlay } from "../../../common/Overlay";
 import { ChevronIcon } from "../../../common/icons/16px/ChevronIcon";
 import { Direction } from "../../../common/icons/types";
-import { CancelConfirmation } from "../CancelConfirmation";
+import { trackingEvents } from "../../tracking";
 import { Tab } from "./Tab";
 import * as s from "./styles";
 import { CreateEnvironmentPanelProps } from "./types";
@@ -50,11 +52,19 @@ export const CreateEnvironmentPanel = ({
       {showCancelConfirmation && (
         <Overlay onClose={() => setShowCancelConfirmation(false)} tabIndex={-1}>
           <CancelConfirmation
+            header="Discard adding a new Environment?"
+            description="Are you sure that you want to stop adding new environment?"
             onClose={() => {
+              sendUserActionTrackingEvent(
+                trackingEvents.CREATE_ENVIRONMENT_CANCEL_CONFIRMATION_CLOSE_CLICKED
+              );
               setShowCancelConfirmation(false);
             }}
             onCancel={() => {
               setShowCancelConfirmation(false);
+              sendUserActionTrackingEvent(
+                trackingEvents.CREATE_ENVIRONMENT_CANCEL_CONFIRMATION_CONFIRM_CLICKED
+              );
               onCancel();
             }}
           />

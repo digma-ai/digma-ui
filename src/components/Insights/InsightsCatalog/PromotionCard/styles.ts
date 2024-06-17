@@ -36,19 +36,15 @@ export const ExpandedContainer = styled.div`
   display: flex;
   align-items: flex-start;
   border-radius: 4px;
-  height: 161px;
   position: relative;
+  width: 100%;
+  background: ${({ theme }) => theme.colors.v3.surface.secondary};
 `;
 
 export const ActionContainer = styled.div`
   display: flex;
-  /* stylelint-disable-next-line value-no-vendor-prefix */
-  height: -webkit-fill-available;
-  flex: 1;
-  align-items: end;
-  justify-content: end;
-  padding-bottom: 16px;
-  padding-right: 16px;
+  flex-direction: row;
+  justify-content: space-between;
 `;
 
 export const DetailsContainer = styled.div`
@@ -72,21 +68,12 @@ export const AcceptButton = styled(Button)`
 export const ContentContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  flex: 1;
-  padding-left: 16px;
-  padding-top: 16px;
-  padding-bottom: 16px;
-`;
-
-export const Background = styled.div`
-  z-index: -1;
-  position: absolute;
-  inset: 0;
-  background: ${({ theme }) => theme.colors.v3.surface.secondary};
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
 `;
 
 export const LogoBackground = styled.div`
-  z-index: -1;
   position: absolute;
   right: 0;
 `;
@@ -95,4 +82,10 @@ export const SkipButton = styled(Button)`
   span {
     color: ${({ theme }) => theme.colors.v3.text.tertiary};
   }
+`;
+
+export const Holder = styled.div`
+  position: relative;
+  inset: initial;
+  width: 100%;
 `;

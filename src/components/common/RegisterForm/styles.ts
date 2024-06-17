@@ -33,7 +33,9 @@ export const Description = styled.div`
 
 export const Form = styled.form`
   display: flex;
+  flex-direction: column;
   gap: 8px;
+  width: 100%;
 `;
 
 export const CircleLoaderContainer = styled.div`
@@ -53,7 +55,6 @@ export const SubmitButton = styled(Button)`
 
 export const TextInput = styled(TextField)`
   padding: 6px 8px;
-  max-width: 134px;
 `;
 
 export const Loader = styled(Spinner)`

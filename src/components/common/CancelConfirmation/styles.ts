@@ -2,8 +2,8 @@ import styled from "styled-components";
 import {
   bodyBoldTypography,
   footnoteRegularTypography
-} from "../../../common/App/typographies";
-import { Button } from "../../../common/v3/Button";
+} from "../App/typographies";
+import { Button } from "../v3/Button";
 
 export const Container = styled.div`
   display: flex;

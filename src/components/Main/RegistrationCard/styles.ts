@@ -43,6 +43,10 @@ export const FormContainer = styled.div`
 
 export const Register = styled(RegisterFrom)`
   flex-direction: column;
+
+  form {
+    gap: 2px;
+  }
 `;
 
 export const SlackLink = styled(Link)`

@@ -13,6 +13,6 @@ export const ContentContainer = styled.div`
   overflow: auto;
 `;
 
-export const RegistrationOverlay = styled(Overlay)`
+export const StyledOverlay = styled(Overlay)`
   padding: 40vh 0 0;
 `;

@@ -17,7 +17,7 @@ const TextFieldComponent = (
   };
 
   return (
-    <s.TextInputControl>
+    <s.TextInputControl $alwaysRenderError={props.alwaysRenderError}>
       <s.Container
         $focused={isFocused}
         $isInvalid={props.isInvalid}
@@ -39,7 +39,9 @@ const TextFieldComponent = (
         />
         {props.inputEndContent}
       </s.Container>
-      {props.error && <s.ErrorMessage>{props.error}</s.ErrorMessage>}
+      {(props.error || props.alwaysRenderError) && (
+        <s.ErrorMessage>{props.error}</s.ErrorMessage>
+      )}
     </s.TextInputControl>
   );
 };

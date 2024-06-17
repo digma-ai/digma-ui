@@ -93,6 +93,8 @@ export type InsightViewType = "Issues" | "Analytics";
 export interface InsightsProps {
   data?: InsightsData;
   insightViewType: InsightViewType;
+  onShowPromotionConfirmationDiscard?: () => void;
+  onShowPromotion?: () => void;
 }
 
 export interface InsightGroup {

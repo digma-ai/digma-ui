@@ -1,5 +1,4 @@
 import { forwardRef, useState } from "react";
-import { RegisterFrom } from "../../common/RegisterForm";
 import { SlackLogoIcon } from "../../common/icons/16px/SlackLogoIcon";
 import { CrossIcon } from "../../common/icons/CrossIcon";
 import { RegistrationPromoIcon } from "./Icons/RegistrationPromoIcon";
@@ -25,8 +24,9 @@ const RegistrationCardComponent = ({ onClose }: RegistrationProps) => {
               Enter your email address below, and we will send you instructions
               to access the exclusive Digma course on Udemy
             </s.Description>
-            <RegisterFrom
+            <s.Register
               scope="test"
+              alwaysRenderError={true}
               onNext={() => setIsFormCompleted(true)}
             />
           </s.FormContainer>
