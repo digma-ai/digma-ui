@@ -1,9 +1,9 @@
 import {
-  ForwardedRef,
   KeyboardEvent,
   forwardRef,
   useContext,
   useEffect,
+  useMemo,
   useState
 } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -36,37 +36,37 @@ const validateEmail = (email: string): string | boolean => {
   return true;
 };
 
-const formDefaultValues: RegistrationFormValues = {
-  fullName: "",
-  email: ""
-};
-
-const RegisterFromComponent = (
-  {
-    onNext,
-    submitBtnText,
-    scope,
-    className,
-    alwaysRenderError,
-    emailPlaceholder,
-    fullNamePlaceholder
-  }: RegisterFromProps,
-  ref: ForwardedRef<HTMLDivElement>
-) => {
+const RegisterFromComponent = ({
+  onNext,
+  submitBtnText,
+  scope,
+  className,
+  alwaysRenderError,
+  emailPlaceholder,
+  fullNamePlaceholder
+}: RegisterFromProps) => {
   const [isRegistrationInProgress, setIsRegistrationInProgress] =
     useState(false);
+  const config = useContext(ConfigContext);
+
+  const formDefaultValues: RegistrationFormValues = useMemo(
+    () => ({
+      fullName: "",
+      email: config.userRegistrationEmail
+    }),
+    [config.userRegistrationEmail]
+  );
   const {
     handleSubmit,
     control,
     getValues,
-    formState: { errors, isValid },
-    setFocus
+    formState: { errors, isValid }
   } = useForm<RegistrationFormValues>({
     mode: "onChange",
     defaultValues: formDefaultValues
   });
   const values = getValues();
-  const config = useContext(ConfigContext);
+
   const previousUserRegistrationEmail = usePrevious(
     config.userRegistrationEmail
   );
@@ -85,10 +85,6 @@ const RegisterFromComponent = (
     previousUserRegistrationEmail,
     onNext
   ]);
-
-  useEffect(() => {
-    // setFocus("fullName");
-  }, [setFocus]);
 
   const onSubmit = (data: RegistrationFormValues) => {
     window.sendMessageToDigma({
@@ -110,7 +106,7 @@ const RegisterFromComponent = (
   };
 
   return (
-    <s.Container className={className} onKeyDown={handleKeyDown} ref={ref}>
+    <s.Container className={className} onKeyDown={handleKeyDown}>
       <s.Form
         id={"registrationForm"}
         onSubmit={(e) => {

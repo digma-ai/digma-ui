@@ -263,11 +263,11 @@ const LightIcon = () => (
 const SuccessRegistrationIconComponent = () => {
   const theme = useTheme();
 
-  if (theme.mode === "dark") {
-    return <DarkIcon />;
+  if (theme.mode === "light") {
+    return <LightIcon />;
   }
 
-  return <LightIcon />;
+  return <DarkIcon />;
 };
 
 export const SuccessRegistrationIcon = React.memo(
