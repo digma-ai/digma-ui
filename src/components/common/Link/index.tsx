@@ -3,28 +3,28 @@ import * as s from "./styles";
 import { LinkProps } from "./types";
 
 const LinkComponent = (
-  props: LinkProps,
+  { onClick, href = "#", className, target, rel, children }: LinkProps,
   ref: ForwardedRef<HTMLAnchorElement>
 ) => {
   const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
-    if (props.onClick) {
-      if (!props.href) {
+    if (onClick) {
+      if (!href) {
         e.preventDefault();
       }
-      props.onClick(e);
+      onClick(e);
     }
   };
 
   return (
     <s.Link
       ref={ref}
-      className={props.className}
-      href={props.href || "#"}
-      target={props.target}
-      rel={props.rel}
+      className={className}
+      href={href}
+      target={target}
+      rel={rel}
       onClick={handleClick}
     >
-      {props.children}
+      {children}
     </s.Link>
   );
 };

@@ -61,8 +61,8 @@ export const CodeButtonMenu = (props: CodeButtonMenuProps) => {
         <NewButton
           buttonType={"primary"}
           disabled={
-            props.codeContext.hasMissingDependency ||
-            !props.codeContext.canInstrumentMethod ||
+            props.codeContext.hasMissingDependency ??
+            !props.codeContext.canInstrumentMethod ??
             props.isAnnotationAdding
           }
           onClick={handleAddObservabilityClick}
@@ -105,7 +105,6 @@ export const CodeButtonMenu = (props: CodeButtonMenuProps) => {
 
   return (
     <Popup
-      height={"86px"}
       header={
         props.codeContext.hasMissingDependency
           ? renderMissingDependency()

@@ -35,7 +35,7 @@ export const TableCellContent = styled.div<TableCellContentProps>`
   display: flex;
   gap: 4px;
   align-items: center;
-  text-align: ${({ $align }) => $align || "left"};
+  text-align: ${({ $align = "left" }) => $align};
   justify-content: ${({ $align }) => {
     switch ($align) {
       case "right":
