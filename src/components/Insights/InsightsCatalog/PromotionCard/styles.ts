@@ -39,6 +39,7 @@ export const ExpandedContainer = styled.div`
   align-items: flex-start;
   border-radius: 4px;
   position: relative;
+  overflow: hidden;
   width: 100%;
   background: ${({ theme }) => theme.colors.v3.surface.secondary};
 `;
@@ -95,7 +96,7 @@ export const ContentContainer = styled.div`
   justify-content: space-between;
   flex-direction: column;
   gap: 12px;
-  padding: 16px;
+  padding: 12px;
 `;
 
 export const LogoBackground = styled.div`
@@ -138,4 +139,15 @@ export const Right = styled(Background)`
 
 export const Centered = styled(Background)`
   right: 50%;
+`;
+
+const blurAnimation = keyframes`
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+`;
+
+export const AnimatedPromotionBackground = styled.div`
+  position: absolute;
+  top: 0;
+  animation: 1s ${blurAnimation} linear infinite alternate;
 `;

@@ -3,6 +3,7 @@ import { Link } from "../../../common/Link";
 import { CrossIcon } from "../../../common/icons/CrossIcon";
 import { CollapsedContainerEllipseIcon } from "./Icons/CollapsedContainerEllipseIcon";
 import { PromoLogIcon } from "./Icons/PromoLogIcon";
+import { PromoLogIconWithShadow } from "./Icons/PromoLogIconWithShadow";
 import { PromotionTag } from "./PromotionTag";
 import * as s from "./styles";
 import { PromotionCardProps } from "./types";
@@ -42,6 +43,9 @@ export const PromotionCard = ({ onAccept, onDiscard }: PromotionCardProps) => {
     <s.ExpandedContainer>
       <s.LogoBackground>
         <PromoLogIcon />
+        <s.AnimatedPromotionBackground>
+          <PromoLogIconWithShadow />
+        </s.AnimatedPromotionBackground>
       </s.LogoBackground>
 
       <s.Holder>
