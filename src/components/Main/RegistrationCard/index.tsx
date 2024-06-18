@@ -13,7 +13,7 @@ import { RegistrationCardProps } from "./types";
 
 const TRANSITION_CLASS_NAME = "registration-card";
 const DEFAULT_TRANSITION_DURATION = 1000;
-// in milliseconds
+
 const RegistrationCardComponent = ({
   onClose,
   onComplete,
