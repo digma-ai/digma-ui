@@ -12,7 +12,6 @@ export const Container = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  gap: 24px;
 `;
 
 export const Header = styled.div`

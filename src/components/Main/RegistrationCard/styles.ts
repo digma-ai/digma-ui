@@ -53,7 +53,6 @@ export const Description = styled.div`
   ${subscriptRegularTypography}
 
   color: ${({ theme }) => theme.colors.v3.text.secondary};
-  max-width: 308px;
   text-align: center;
 `;
 

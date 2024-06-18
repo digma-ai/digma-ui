@@ -82,9 +82,7 @@ const RegistrationCardComponent = ({
               </s.FormContainer>
             </>
           ) : (
-            <div>
-              <SuccessRegistration />
-            </div>
+            <SuccessRegistration />
           )}
 
           <s.SlackLink onClick={handleSlackLinkClick}>
