@@ -3,7 +3,7 @@ import {
   bodyBoldTypography,
   footnoteRegularTypography
 } from "../App/typographies";
-import { Button } from "../v3/Button";
+import { NewButton } from "../v3/NewButton";
 
 export const Container = styled.div`
   display: flex;
@@ -47,6 +47,6 @@ export const Description = styled.div`
   color: ${({ theme }) => theme.colors.v3.text.secondary};
 `;
 
-export const CancelButton = styled(Button)`
+export const CancelButton = styled(NewButton)`
   border: 1px solid ${({ theme }) => theme.colors.v3.stroke.dark};
 `;
