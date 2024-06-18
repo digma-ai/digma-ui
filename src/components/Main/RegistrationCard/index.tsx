@@ -5,7 +5,6 @@ import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefault
 import { sendTrackingEvent } from "../../../utils/actions/sendTrackingEvent";
 import { SlackLogoIcon } from "../../common/icons/16px/SlackLogoIcon";
 import { CrossIcon } from "../../common/icons/CrossIcon";
-import { MainOverlay } from "../styles";
 import { trackingEvents } from "../tracking";
 import { RegistrationPromoIcon } from "./Icons/RegistrationPromoIcon";
 import { SuccessRegistration } from "./SuccessRegistration";
@@ -45,7 +44,7 @@ const RegistrationCardComponent = ({
       onEnter={() => setShowOverlay(true)}
       onExited={() => setShowOverlay(false)}
     >
-      <MainOverlay
+      <s.CustomOverlay
         onClose={handleRegistrationClose}
         tabIndex={-1}
         $isVisible={showOverlay}
@@ -88,7 +87,7 @@ const RegistrationCardComponent = ({
             Join our Digma channel
           </s.SlackLink>
         </s.Container>
-      </MainOverlay>
+      </s.CustomOverlay>
     </CSSTransition>
   );
 };

@@ -110,9 +110,9 @@ export const Main = () => {
             insightViewType={"Issues"}
             key={"insights"}
             onShowPromotion={() => setShowRegistration(true)}
-            onShowPromotionConfirmationDiscard={() =>
-              setShowDiscardConfirmation(true)
-            }
+            onShowPromotionConfirmationDiscard={() => {
+              setShowDiscardConfirmation(true);
+            }}
             hidePromotion={
               Boolean(hidePromotion) || Boolean(promotionCompleted)
             }
@@ -136,7 +136,7 @@ export const Main = () => {
       <Navigation />
       <s.ContentContainer>{renderContent()}</s.ContentContainer>
       {showDiscardConfirmation && (
-        <s.MainOverlay
+        <s.StyledOverlay
           onClose={() => setShowDiscardConfirmation(false)}
           tabIndex={-1}
         >
@@ -147,7 +147,7 @@ export const Main = () => {
             onClose={handleCloseCancelConfirmation}
             onCancel={handleAcceptCancelConfirmation}
           />
-        </s.MainOverlay>
+        </s.StyledOverlay>
       )}
 
       <RegistrationCard

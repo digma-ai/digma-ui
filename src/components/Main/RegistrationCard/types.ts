@@ -9,3 +9,7 @@ export interface AnimatedRegistrationCardProps {
   $transitionDuration: number;
   $transitionClassName: string;
 }
+
+export interface CustomOverlayProps {
+  $isVisible: boolean;
+}
