@@ -1,8 +1,7 @@
-import { KeyboardEvent, useContext, useEffect, useMemo, useState } from "react";
+import { KeyboardEvent, useContext, useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 import { actions as globalActions } from "../../../actions";
-import { usePrevious } from "../../../hooks/usePrevious";
 import { isValidEmailFormat } from "../../../utils/isValidEmailFormat";
 import { ConfigContext } from "../App/ConfigContext";
 import { EnvelopeIcon } from "../icons/16px/EnvelopeIcon";
@@ -41,8 +40,6 @@ export const RegisterForm = ({
   emailPlaceholder,
   fullNamePlaceholder
 }: RegisterFormProps) => {
-  const [isRegistrationInProgress, setIsRegistrationInProgress] =
-    useState(false);
   const config = useContext(ConfigContext);
 
   const formDefaultValues: RegistrationFormValues = useMemo(
@@ -63,25 +60,6 @@ export const RegisterForm = ({
   });
   const values = getValues();
 
-  const previousUserRegistrationEmail = usePrevious(
-    config.userRegistrationEmail
-  );
-
-  useEffect(() => {
-    if (
-      previousUserRegistrationEmail !== config.userRegistrationEmail &&
-      isRegistrationInProgress
-    ) {
-      setIsRegistrationInProgress(false);
-      onNext(true);
-    }
-  }, [
-    config.userRegistrationEmail,
-    isRegistrationInProgress,
-    previousUserRegistrationEmail,
-    onNext
-  ]);
-
   const onSubmit = (data: RegistrationFormValues) => {
     window.sendMessageToDigma({
       action: globalActions.PERSONALIZE_REGISTER,
@@ -92,7 +70,7 @@ export const RegisterForm = ({
         }
       }
     });
-    setIsRegistrationInProgress(true);
+    onNext(true);
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
@@ -142,12 +120,11 @@ export const RegisterForm = ({
         />
       </s.Form>
       <s.SubmitButton
-        isDisabled={!isValid || isRegistrationInProgress}
+        isDisabled={!isValid}
         label={submitBtnText ?? "Submit"}
         type={"submit"}
         form={"registrationForm"}
       />
-      {isRegistrationInProgress && <s.Loader />}
     </s.Container>
   );
 };
