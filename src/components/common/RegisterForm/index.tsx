@@ -100,16 +100,14 @@ export const RegisterForm = ({
       onSubmit(values);
     }
   };
+  const handleOnSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
+    void handleSubmit(onSubmit)(e);
+  };
 
   return (
     <s.Container className={className} onKeyDown={handleKeyDown}>
-      <s.Form
-        id={"registrationForm"}
-        onSubmit={(e) => {
-          e.preventDefault();
-          void handleSubmit(onSubmit)(e);
-        }}
-      >
+      <s.Form id={"registrationForm"} onSubmit={handleOnSubmit}>
         <Controller
           name={"fullName"}
           control={control}

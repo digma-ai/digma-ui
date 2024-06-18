@@ -33,6 +33,19 @@ export const RegistrationCard = ({
     onClose();
   };
 
+  const handleAnimationOnEnter = () => {
+    setShowOverlay(true);
+  };
+
+  const handleAnimationOnExit = () => {
+    setShowOverlay(false);
+  };
+
+  const handleOnRegistrationExit = () => {
+    setIsFormCompleted(true);
+    onComplete();
+  };
+
   return (
     <CSSTransition
       in={show}
@@ -41,8 +54,8 @@ export const RegistrationCard = ({
       unmountOnExit={true}
       mountOnEnter={true}
       nodeRef={registrationCardRef}
-      onEnter={() => setShowOverlay(true)}
-      onExited={() => setShowOverlay(false)}
+      onEnter={handleAnimationOnEnter}
+      onExited={handleAnimationOnExit}
     >
       <s.CustomOverlay
         onClose={handleRegistrationClose}
@@ -57,7 +70,9 @@ export const RegistrationCard = ({
         >
           <s.CrossButton
             buttonType={"tertiary"}
-            icon={() => <CrossIcon className="currentColor" size={20} />}
+            icon={(props) => (
+              <CrossIcon {...props} className="currentColor" size={20} />
+            )}
             onClick={onClose}
           />
 
@@ -74,10 +89,7 @@ export const RegistrationCard = ({
                 <s.Register
                   scope="promotion"
                   alwaysRenderError={true}
-                  onNext={() => {
-                    setIsFormCompleted(true);
-                    onComplete();
-                  }}
+                  onNext={handleOnRegistrationExit}
                 />
               </s.FormContainer>
             </>

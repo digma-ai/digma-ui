@@ -24,13 +24,9 @@ const PROMOTION_COMPLETED_KEY = "PROMOTION_COMPLETED";
 const PROMOTION_DELAY_IN_DAYS = 30;
 
 const getDaysDiff = (left: number, right: number) => {
-  const Difference_In_Time =
-    new Date(left).getTime() - new Date(right).getTime();
-  const Difference_In_Days = Math.round(
-    Difference_In_Time / (1000 * 3600 * 24)
-  );
-
-  return Math.abs(Difference_In_Days);
+  const DifferenceInTime = new Date(left).valueOf() - new Date(right).valueOf();
+  const DifferenceInDays = Math.ceil(DifferenceInTime / (1000 * 3600 * 24));
+  return Math.abs(DifferenceInDays);
 };
 
 export const Main = () => {
@@ -68,11 +64,25 @@ export const Main = () => {
     setShowDiscardConfirmation(false);
   };
 
+  const handleShowPromotionOpen = () => {
+    sendTrackingEvent(trackingEvents.PROMOTION_REGISTRATION_OPENED);
+    setShowRegistration(true);
+  };
+
+  const handlePromotionDiscard = () => {
+    sendTrackingEvent(trackingEvents.PROMOTION_DISCARDED);
+    setShowDiscardConfirmation(true);
+  };
+
   const handleAcceptCancelConfirmation = () => {
     sendTrackingEvent(
       trackingEvents.PROMOTION_CANCEL_CONFIRMATION_ACCEPT_CLICKED
     );
     setDismissalDate(Date.now());
+    setShowDiscardConfirmation(false);
+  };
+
+  const handleConfirmationClosed = () => {
     setShowDiscardConfirmation(false);
   };
 
@@ -109,10 +119,8 @@ export const Main = () => {
           <Insights
             insightViewType={"Issues"}
             key={"insights"}
-            onShowPromotion={() => setShowRegistration(true)}
-            onShowPromotionConfirmationDiscard={() => {
-              setShowDiscardConfirmation(true);
-            }}
+            onShowPromotion={handleShowPromotionOpen}
+            onShowPromotionConfirmationDiscard={handlePromotionDiscard}
             hidePromotion={
               Boolean(hidePromotion) || Boolean(promotionCompleted)
             }
@@ -136,10 +144,7 @@ export const Main = () => {
       <Navigation />
       <s.ContentContainer>{renderContent()}</s.ContentContainer>
       {showDiscardConfirmation && (
-        <s.StyledOverlay
-          onClose={() => setShowDiscardConfirmation(false)}
-          tabIndex={-1}
-        >
+        <s.StyledOverlay onClose={handleConfirmationClosed} tabIndex={-1}>
           <CancelConfirmation
             header="Discard offer?"
             description="Are you sure you want to miss out on this exclusive, limited-time offer?"

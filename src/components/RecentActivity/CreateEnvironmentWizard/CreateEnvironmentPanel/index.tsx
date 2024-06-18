@@ -17,6 +17,21 @@ export const CreateEnvironmentPanel = ({
   cancelDisabled
 }: CreateEnvironmentPanelProps) => {
   const [showCancelConfirmation, setShowCancelConfirmation] = useState(false);
+  const handleConfirmationClose = () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.CREATE_ENVIRONMENT_CANCEL_CONFIRMATION_CLOSE_CLICKED
+    );
+    setShowCancelConfirmation(false);
+  };
+
+  const handleConfirmationAccept = () => {
+    setShowCancelConfirmation(false);
+    sendUserActionTrackingEvent(
+      trackingEvents.CREATE_ENVIRONMENT_CANCEL_CONFIRMATION_CONFIRM_CLICKED
+    );
+    onCancel();
+  };
+
   return (
     <s.Container>
       <s.BackButton
@@ -54,19 +69,8 @@ export const CreateEnvironmentPanel = ({
           <CancelConfirmation
             header="Discard adding a new Environment?"
             description="Are you sure that you want to stop adding new environment?"
-            onClose={() => {
-              sendUserActionTrackingEvent(
-                trackingEvents.CREATE_ENVIRONMENT_CANCEL_CONFIRMATION_CLOSE_CLICKED
-              );
-              setShowCancelConfirmation(false);
-            }}
-            onCancel={() => {
-              setShowCancelConfirmation(false);
-              sendUserActionTrackingEvent(
-                trackingEvents.CREATE_ENVIRONMENT_CANCEL_CONFIRMATION_CONFIRM_CLICKED
-              );
-              onCancel();
-            }}
+            onClose={handleConfirmationClose}
+            onCancel={handleConfirmationAccept}
           />
         </Overlay>
       )}

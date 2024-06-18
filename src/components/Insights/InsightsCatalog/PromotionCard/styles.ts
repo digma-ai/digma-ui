@@ -19,11 +19,11 @@ export const CollapsedContainer = styled.div`
 
 export const PromoText = styled.span`
   ${bodySemiboldTypography}
+`;
 
-  b {
-    ${bodySemiboldTypography};
-    color: ${({ theme }) => theme.colors.v3.text.link};
-  }
+export const PromoTextBold = styled.span`
+  ${bodySemiboldTypography};
+  color: ${({ theme }) => theme.colors.v3.text.link};
 `;
 
 export const CrossButton = styled(Button)`
@@ -59,6 +59,8 @@ export const DetailsContainer = styled.div`
 export const Description = styled.span`
   ${subheadingSemiboldTypography}
 
+  display:flex;
+  flex-direction: column;
   width: 167px;
   color: ${({ theme }) => theme.colors.v3.text.primary};
 `;

@@ -1,12 +1,14 @@
 import { useState } from "react";
+import { sendTrackingEvent } from "../../../../utils/actions/sendTrackingEvent";
 import { Link } from "../../../common/Link";
 import { CrossIcon } from "../../../common/icons/CrossIcon";
+import { trackingEvents } from "../../tracking";
 import { PromotionTag } from "./PromotionTag";
 import * as s from "./styles";
 import { PromotionCardProps } from "./types";
 
 export const PromotionCard = ({ onAccept, onDiscard }: PromotionCardProps) => {
-  const [expanded, setExpended] = useState(false);
+  const [expanded, setExpanded] = useState(false);
 
   const handleCancelClick = () => {
     onDiscard();
@@ -14,6 +16,20 @@ export const PromotionCard = ({ onAccept, onDiscard }: PromotionCardProps) => {
 
   const handleAcceptClick = () => {
     onAccept();
+  };
+
+  const handleCollapseClick = () => {
+    sendTrackingEvent(
+      trackingEvents.PROMOTION_CLOSE_EXPANDED_VIEW_BUTTON_CLICKED
+    );
+    setExpanded(false);
+  };
+
+  const handleExpandClick = () => {
+    sendTrackingEvent(
+      trackingEvents.PROMOTION_CLOSE_EXPANDED_VIEW_BUTTON_CLICKED
+    );
+    setExpanded(true);
   };
 
   if (!expanded) {
@@ -27,10 +43,10 @@ export const PromotionCard = ({ onAccept, onDiscard }: PromotionCardProps) => {
         </s.Right>
         <s.CollapsedHolder>
           <s.PromoText>
-            Get our <b>FREE Udemy course</b>
+            Get our <s.PromoTextBold>FREE Udemy course</s.PromoTextBold>
           </s.PromoText>
 
-          <Link onClick={() => setExpended(true)}>See more</Link>
+          <Link onClick={handleExpandClick}>See more</Link>
         </s.CollapsedHolder>
       </s.CollapsedContainer>
     );
@@ -50,7 +66,8 @@ export const PromotionCard = ({ onAccept, onDiscard }: PromotionCardProps) => {
           <s.DetailsContainer>
             <PromotionTag />
             <s.Description>
-              Learn how to get more out of Digma <br /> issues
+              <span>Learn how to get more out of Digma</span>
+              <span> issues</span>
             </s.Description>
           </s.DetailsContainer>
           <s.ActionContainer>
@@ -69,8 +86,10 @@ export const PromotionCard = ({ onAccept, onDiscard }: PromotionCardProps) => {
 
         <s.CrossButton
           buttonType={"tertiary"}
-          icon={() => <CrossIcon className="currentColor" size={16} />}
-          onClick={() => setExpended(false)}
+          icon={(props) => (
+            <CrossIcon {...props} className="currentColor" size={16} />
+          )}
+          onClick={handleCollapseClick}
         />
       </s.Holder>
     </s.ExpandedContainer>
