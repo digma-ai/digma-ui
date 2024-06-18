@@ -1,9 +1,6 @@
 import { useState } from "react";
 import { Link } from "../../../common/Link";
 import { CrossIcon } from "../../../common/icons/CrossIcon";
-import { CollapsedContainerEllipseIcon } from "./Icons/CollapsedContainerEllipseIcon";
-import { PromoLogIcon } from "./Icons/PromoLogIcon";
-import { PromoLogIconWithShadow } from "./Icons/PromoLogIconWithShadow";
 import { PromotionTag } from "./PromotionTag";
 import * as s from "./styles";
 import { PromotionCardProps } from "./types";
@@ -23,10 +20,10 @@ export const PromotionCard = ({ onAccept, onDiscard }: PromotionCardProps) => {
     return (
       <s.CollapsedContainer>
         <s.Centered>
-          <s.CenteredCollapsedContainerBackgroundIcon />
+          <img src="/images/promotion/collapsedContainerBackground.svg" />
         </s.Centered>
         <s.Right>
-          <CollapsedContainerEllipseIcon />
+          <img src="/images/promotion/collapsedContainerEllipseShadow.svg" />
         </s.Right>
         <s.CollapsedHolder>
           <s.PromoText>
@@ -42,9 +39,9 @@ export const PromotionCard = ({ onAccept, onDiscard }: PromotionCardProps) => {
   return (
     <s.ExpandedContainer>
       <s.LogoBackground>
-        <PromoLogIcon />
+        <img src={`/images/promotion/promotionLogo.svg`} />
         <s.AnimatedPromotionBackground>
-          <PromoLogIconWithShadow />
+          <img src={`/images/promotion/promotionLogoWithShadow.svg`} />
         </s.AnimatedPromotionBackground>
       </s.LogoBackground>
 

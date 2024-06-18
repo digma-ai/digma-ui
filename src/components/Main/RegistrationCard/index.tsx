@@ -1,4 +1,4 @@
-import { forwardRef, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import { SLACK_WORKSPACE_URL } from "../../../constants";
 import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
@@ -6,7 +6,7 @@ import { sendTrackingEvent } from "../../../utils/actions/sendTrackingEvent";
 import { SlackLogoIcon } from "../../common/icons/16px/SlackLogoIcon";
 import { CrossIcon } from "../../common/icons/CrossIcon";
 import { trackingEvents } from "../tracking";
-import { RegistrationPromoIcon } from "./Icons/RegistrationPromoIcon";
+import { RegistrationPromoImage } from "./Images/RegistrationPromoImage";
 import { SuccessRegistration } from "./SuccessRegistration";
 import * as s from "./styles";
 import { RegistrationCardProps } from "./types";
@@ -14,7 +14,7 @@ import { RegistrationCardProps } from "./types";
 const TRANSITION_CLASS_NAME = "registration-card";
 const DEFAULT_TRANSITION_DURATION = 1000;
 
-const RegistrationCardComponent = ({
+export const RegistrationCard = ({
   onClose,
   onComplete,
   className,
@@ -64,7 +64,7 @@ const RegistrationCardComponent = ({
           {!isFormCompleted ? (
             <>
               <div>
-                <RegistrationPromoIcon />
+                <RegistrationPromoImage />
               </div>
               <s.FormContainer>
                 <s.Description>
@@ -94,5 +94,3 @@ const RegistrationCardComponent = ({
     </CSSTransition>
   );
 };
-
-export const RegistrationCard = forwardRef(RegistrationCardComponent);

@@ -1,10 +1,10 @@
-import { SuccessRegistrationIcon } from "../Icons/SuccessRegistrationIcon";
+import { SuccessRegistrationImage } from "../Images/SuccessRegistrationImage";
 import * as s from "./styles";
 
 export const SuccessRegistration = () => {
   return (
     <s.Container>
-      <SuccessRegistrationIcon />
+      <SuccessRegistrationImage />
       <s.Details>
         <s.Header>Email sent!</s.Header>
         <s.Description>

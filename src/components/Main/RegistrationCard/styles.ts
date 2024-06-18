@@ -4,7 +4,7 @@ import {
   subscriptRegularTypography
 } from "../../common/App/typographies";
 import { Overlay } from "../../common/Overlay";
-import { RegisterFrom } from "../../common/RegisterForm";
+import { RegisterForm } from "../../common/RegisterForm";
 import { Button } from "../../common/v3/Button";
 import { Link } from "../../common/v3/Link";
 import { AnimatedRegistrationCardProps, CustomOverlayProps } from "./types";
@@ -63,7 +63,7 @@ export const FormContainer = styled.div`
   flex-direction: column;
 `;
 
-export const Register = styled(RegisterFrom)`
+export const Register = styled(RegisterForm)`
   flex-direction: column;
 
   form {

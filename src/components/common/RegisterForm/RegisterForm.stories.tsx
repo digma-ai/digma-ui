@@ -1,10 +1,10 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { RegisterFrom } from ".";
+import { RegisterForm } from ".";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
-const meta: Meta<typeof RegisterFrom> = {
-  title: "common/RegisterFrom",
-  component: RegisterFrom,
+const meta: Meta<typeof RegisterForm> = {
+  title: "common/RegisterForm",
+  component: RegisterForm,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
     layout: "fullscreen"

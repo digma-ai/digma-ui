@@ -4,7 +4,6 @@ import {
   subheadingSemiboldTypography
 } from "../../../common/App/typographies";
 import { Button } from "../../../common/v3/Button";
-import { CollapsedContainerBackgroundIcon } from "./Icons/CollpasedContainerBackgroundIcon";
 
 export const CollapsedContainer = styled.div`
   display: flex;
@@ -119,6 +118,7 @@ export const Holder = styled.div`
 export const Background = styled.div`
   position: absolute;
   top: 0;
+  height: 100%;
 `;
 
 export const CollapsedHolder = styled(Holder)`
@@ -126,19 +126,15 @@ export const CollapsedHolder = styled(Holder)`
   justify-content: space-between;
 `;
 
-export const CenteredCollapsedContainerBackgroundIcon = styled(
-  CollapsedContainerBackgroundIcon
-)`
-  position: absolute;
-  inset: 0;
-`;
-
 export const Right = styled(Background)`
   right: 0;
+  overflow: hidden;
 `;
 
 export const Centered = styled(Background)`
   right: 50%;
+  position: absolute;
+  overflow: hidden;
 `;
 
 const blurAnimation = keyframes`

@@ -1,11 +1,4 @@
-import {
-  KeyboardEvent,
-  forwardRef,
-  useContext,
-  useEffect,
-  useMemo,
-  useState
-} from "react";
+import { KeyboardEvent, useContext, useEffect, useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 import { actions as globalActions } from "../../../actions";
@@ -16,7 +9,10 @@ import { EnvelopeIcon } from "../icons/16px/EnvelopeIcon";
 import { UserIcon } from "../icons/UserIcon";
 import { isWorkEmail } from "./isWorkEmail";
 import * as s from "./styles";
-import { RegisterFromProps, RegistrationFormValues } from "./types";
+import {
+  RegisterFromProps as RegisterFormProps,
+  RegistrationFormValues
+} from "./types";
 
 const validateEmail = (email: string): string | boolean => {
   const emailMessage = "Please enter a valid work email address";
@@ -36,7 +32,7 @@ const validateEmail = (email: string): string | boolean => {
   return true;
 };
 
-const RegisterFromComponent = ({
+export const RegisterForm = ({
   onNext,
   submitBtnText,
   scope,
@@ -44,7 +40,7 @@ const RegisterFromComponent = ({
   alwaysRenderError,
   emailPlaceholder,
   fullNamePlaceholder
-}: RegisterFromProps) => {
+}: RegisterFormProps) => {
   const [isRegistrationInProgress, setIsRegistrationInProgress] =
     useState(false);
   const config = useContext(ConfigContext);
@@ -157,5 +153,3 @@ const RegisterFromComponent = ({
     </s.Container>
   );
 };
-
-export const RegisterFrom = forwardRef(RegisterFromComponent);
