@@ -55,6 +55,7 @@ export const SubmitButton = styled(Button)`
 
 export const TextInput = styled(TextField)`
   padding: 6px 8px;
+  gap: 4px;
 `;
 
 export const Loader = styled(Spinner)`

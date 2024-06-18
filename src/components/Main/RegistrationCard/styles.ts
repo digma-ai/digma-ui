@@ -19,6 +19,8 @@ export const Container = styled.div<AnimatedRegistrationCardProps>`
   background: ${({ theme }) => theme.colors.v3.surface.secondary};
   position: absolute;
   bottom: 0;
+  max-height: 100%;
+  overflow: auto;
 
   ${({ $transitionClassName, $transitionDuration }) => {
     return `

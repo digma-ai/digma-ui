@@ -60,9 +60,12 @@ const RegistrationCardComponent = ({
             icon={() => <CrossIcon className="currentColor" size={20} />}
             onClick={onClose}
           />
+
           {!isFormCompleted ? (
             <>
-              <RegistrationPromoIcon />
+              <div>
+                <RegistrationPromoIcon />
+              </div>
               <s.FormContainer>
                 <s.Description>
                   Enter your email address below, and we will send you
@@ -79,7 +82,9 @@ const RegistrationCardComponent = ({
               </s.FormContainer>
             </>
           ) : (
-            <SuccessRegistration />
+            <div>
+              <SuccessRegistration />
+            </div>
           )}
 
           <s.SlackLink onClick={handleSlackLinkClick}>
