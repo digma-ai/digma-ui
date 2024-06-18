@@ -2,8 +2,8 @@ import styled from "styled-components";
 import {
   bodyBoldTypography,
   footnoteRegularTypography
-} from "../../../common/App/typographies";
-import { Button } from "../../../common/v3/Button";
+} from "../App/typographies";
+import { NewButton } from "../v3/NewButton";
 
 export const Container = styled.div`
   display: flex;
@@ -47,6 +47,6 @@ export const Description = styled.div`
   color: ${({ theme }) => theme.colors.v3.text.secondary};
 `;
 
-export const CancelButton = styled(Button)`
+export const CancelButton = styled(NewButton)`
   border: 1px solid ${({ theme }) => theme.colors.v3.stroke.dark};
 `;

@@ -332,6 +332,11 @@ export const Insights = (props: InsightsProps) => {
         unreadCount={data.unreadCount}
         isMarkingAsReadEnabled={isMarkingAsReadEnabled}
         hideInsightsStats={props.insightViewType === "Analytics"}
+        showPromotion={
+          props.insightViewType == "Issues" && !props.hidePromotion
+        }
+        onPromotionAccepted={props.onShowPromotion}
+        onPromotionCanceled={props.onShowPromotionConfirmationDiscard}
       />
     );
   };

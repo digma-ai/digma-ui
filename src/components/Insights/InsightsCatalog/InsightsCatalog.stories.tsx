@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from "@storybook/react";
+import { fn } from "@storybook/test";
 import { InsightsCatalog } from ".";
 import { ConfigContext, initialState } from "../../common/App/ConfigContext";
 import { SORTING_ORDER } from "../../common/SortingSelector/types";
@@ -22,6 +23,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
+    onQueryChange: fn(),
     insights: [
       { ...mockedEndpointBottleneckInsight, isRead: false },
       {

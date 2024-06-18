@@ -31,8 +31,8 @@ export const EnvironmentBar = styled.div<EnvironmentBarElementProps>`
     $isDisabled
       ? theme.colors.surface.primary
       : $isMenuOpen
-      ? theme.colors.v3.surface.primaryLight
-      : theme.colors.v3.surface.brandDark};
+        ? theme.colors.v3.surface.primaryLight
+        : theme.colors.v3.surface.brandDark};
   color: ${({ theme, $isDisabled }) =>
     $isDisabled ? theme.colors.v3.text.secondary : theme.colors.v3.text.link};
   cursor: ${({ $isDisabled }) => ($isDisabled ? "initial" : "pointer")};
@@ -42,8 +42,8 @@ export const EnvironmentBar = styled.div<EnvironmentBarElementProps>`
       $isDisabled
         ? theme.colors.v3.icon.disabled
         : $isMenuOpen
-        ? theme.colors.v3.icon.secondary
-        : theme.colors.v3.text.tertiary};
+          ? theme.colors.v3.icon.secondary
+          : theme.colors.v3.text.tertiary};
   }
 
   & ${ChevronIconContainer} {

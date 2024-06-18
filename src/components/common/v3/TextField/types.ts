@@ -12,11 +12,13 @@ export interface TextFieldProps {
   error?: string;
   type?: HTMLInputTypeAttribute;
   icon?: React.ComponentType<IconProps>;
+  alwaysRenderError?: boolean;
 }
 
 export interface ContainerProps {
   $focused: boolean;
   $isInvalid?: boolean;
+  $alwaysRenderError?: boolean;
 }
 
 export interface IconContainerProps {
@@ -25,4 +27,8 @@ export interface IconContainerProps {
 
 export interface InputProps {
   $isInvalid?: boolean;
+}
+
+export interface TextInputControlProps {
+  $alwaysRenderError?: boolean;
 }

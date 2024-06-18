@@ -15,6 +15,9 @@ export interface InsightsCatalogProps {
   unreadCount?: number;
   isMarkingAsReadEnabled: boolean;
   hideInsightsStats?: boolean;
+  onPromotionAccepted?: () => void;
+  onPromotionCanceled?: () => void;
+  showPromotion: boolean;
 }
 
 export enum ViewMode {
