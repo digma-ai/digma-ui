@@ -6,16 +6,37 @@ import {
 import { RegisterFrom } from "../../common/RegisterForm";
 import { Button } from "../../common/v3/Button";
 import { Link } from "../../common/v3/Link";
+import { AnimatedRegistrationCardProps } from "./types";
 
-export const Container = styled.div`
+export const Container = styled.div<AnimatedRegistrationCardProps>`
   display: flex;
   width: 100%;
   flex-direction: column;
   gap: 10px;
   align-items: center;
   border-radius: 12px 12px 0 0;
-  position: relative;
   background: ${({ theme }) => theme.colors.v3.surface.secondary};
+  position: absolute;
+  bottom: 0;
+
+  ${({ $transitionClassName, $transitionDuration }) => {
+    return `
+    &.${$transitionClassName}-enter {
+      transform: translateY(100%);
+    }
+
+    &.${$transitionClassName}-enter-active {
+      transform: translateY(0);
+      transition:all ${$transitionDuration}ms ease;
+    }
+    &.${$transitionClassName}-exit {
+      transform: translateY(0);
+    }
+    &.${$transitionClassName}-exit-active {
+      transform: translateY(100%);
+      transition:all ${$transitionDuration}ms ease;
+    }`;
+  }};
 `;
 
 export const CrossButton = styled(Button)`

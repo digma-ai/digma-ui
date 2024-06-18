@@ -1,5 +1,3 @@
-import { RegistrationCardProps } from "./RegistrationCard/types";
-
 export interface GetHighlightsTopIssuesDataPayload {
   query: {
     scopedCodeObjectId: string | null;
@@ -34,9 +32,4 @@ export interface RegisterResult {
 export interface ViewData {
   id: string;
   path?: string;
-}
-
-export interface AnimatedRegistrationCardProps extends RegistrationCardProps {
-  $transitionDuration: number;
-  $transitionClassName: string;
 }
