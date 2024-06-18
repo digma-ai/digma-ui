@@ -1,7 +1,7 @@
 import { InsightType, SpanInfo } from "../../types";
 import { InsightScope } from "../Insights/types";
 
-type NotificationsViewMode = "popup" | "full";
+export type NotificationsViewMode = "popup" | "full";
 
 export interface NotificationsProps {
   data?: NotificationsSetDataPayload;

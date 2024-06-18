@@ -349,7 +349,6 @@ export const DurationInsight = (props: DurationInsightProps) => {
               })}
             </>
           ) : (
-            // TODO: add hourglass icon
             <span>Waiting for more data...</span>
           )}
           {!props.insight.histogramPlot &&

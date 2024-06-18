@@ -135,7 +135,7 @@ export const EngineManager = (props: EngineManagerProps) => {
     let title = "Digma Local Analysis Engine ";
 
     const lastOperation =
-      props.engine.currentOperation?.operation ||
+      props.engine.currentOperation?.operation ??
       props.engine.failedOperation?.operation;
 
     if (lastOperation) {

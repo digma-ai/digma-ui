@@ -31,7 +31,7 @@ export const BottleneckInsight = (props: BottleneckInsightProps) => {
       props.onJiraTicketCreate(props.insight, undefined, event);
   };
 
-  const slowEndpoints = props.insight.slowEndpoints || [];
+  const slowEndpoints = props.insight.slowEndpoints ?? [];
 
   return (
     <InsightCard

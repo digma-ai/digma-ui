@@ -28,7 +28,7 @@ const initialPage = isString(window.documentationPage)
   : undefined;
 
 export const Documentation = (props: DocumentationProps) => {
-  const page = props.page || initialPage;
+  const page = props.page ?? initialPage;
   const pageContent = page ? pages[page] : undefined;
 
   useEffect(() => {

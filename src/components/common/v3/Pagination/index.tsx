@@ -14,10 +14,10 @@ export const Pagination = ({
   onPageChange,
   extendedNavigation,
   withDescription,
-  trackingEventPrefix
+  trackingEventPrefix = ""
 }: PaginationProps) => {
   const prefixedGlobalTrackingEvents = addPrefix(
-    trackingEventPrefix || "",
+    trackingEventPrefix,
     globalTrackingEvents,
     ""
   );

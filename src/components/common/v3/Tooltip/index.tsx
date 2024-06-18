@@ -67,19 +67,25 @@ const getArrowStyles = (placement: Placement, dropShadow: boolean) => {
   return styles;
 };
 
-export const Tooltip = (props: TooltipProps) => {
+export const Tooltip = ({
+  isOpen: forcedIsOpen,
+  placement = "top",
+  style,
+  children,
+  isDisabled,
+  fullWidth,
+  title
+}: TooltipProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const arrowRef = useRef(null);
 
   const theme = useTheme();
 
-  const placement = props.placement || "top";
-
   const { refs, floatingStyles, context } = useFloating({
     whileElementsMounted: autoUpdate,
     placement,
-    open: isBoolean(props.isOpen) ? props.isOpen : isOpen,
-    onOpenChange: isBoolean(props.isOpen) ? undefined : setIsOpen,
+    open: isBoolean(forcedIsOpen) ? forcedIsOpen : isOpen,
+    onOpenChange: isBoolean(forcedIsOpen) ? undefined : setIsOpen,
     middleware: [
       offset(GAP + ARROW_HEIGHT + ARROW_MARGIN),
       flip(),
@@ -99,7 +105,7 @@ export const Tooltip = (props: TooltipProps) => {
 
   const hover = useHover(context, {
     delay: { open: 1000, close: 0 },
-    enabled: !isBoolean(props.isOpen)
+    enabled: !isBoolean(forcedIsOpen)
   });
 
   const { getReferenceProps, getFloatingProps } = useInteractions([hover]);
@@ -109,8 +115,8 @@ export const Tooltip = (props: TooltipProps) => {
       ref={arrowRef}
       context={context}
       fill={
-        isString(props.style?.background)
-          ? props.style?.background
+        isString(style?.background)
+          ? style?.background
           : theme.colors.v3.stroke.tertiary
       }
       width={ARROW_WIDTH}
@@ -126,27 +132,27 @@ export const Tooltip = (props: TooltipProps) => {
 
   return (
     <>
-      {Children.map(props.children, (child) =>
+      {Children.map(children, (child) =>
         cloneElement(child, {
           ref: refs.setReference,
           ...getReferenceProps()
         })
       )}
-      {!props.isDisabled &&
-        (isBoolean(props.isOpen) ? props.isOpen && isMounted : isMounted) && (
+      {!isDisabled &&
+        (isBoolean(forcedIsOpen) ? forcedIsOpen && isMounted : isMounted) && (
           <FloatingPortal>
             <s.TooltipContainer
               ref={refs.setFloating}
               style={{
                 ...floatingStyles,
                 ...transitionStyles,
-                ...props.style
+                ...style
               }}
               {...getFloatingProps()}
             >
               {renderArrow(true)}
               {renderArrow(false)}
-              <s.Tooltip $fullWidth={props.fullWidth}>{props.title}</s.Tooltip>
+              <s.Tooltip $fullWidth={fullWidth}>{title}</s.Tooltip>
             </s.TooltipContainer>
           </FloatingPortal>
         )}

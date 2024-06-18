@@ -5,7 +5,7 @@ import * as s from "./styles";
 import { KeyValueProps } from "./types";
 
 const KeyValueComponent = (
-  { className, label, children, info, title }: KeyValueProps,
+  { className, label, children, info, title = "" }: KeyValueProps,
   ref: ForwardedRef<HTMLDivElement>
 ) => (
   <s.Container className={className} ref={ref}>
@@ -15,7 +15,7 @@ const KeyValueComponent = (
       </Tooltip>
       {info && <Info title={info} />}
     </s.KeyContainer>
-    <Tooltip title={title || ""} isDisabled={!title}>
+    <Tooltip title={title} isDisabled={!title}>
       <s.Value>{children}</s.Value>
     </Tooltip>
   </s.Container>

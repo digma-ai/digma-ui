@@ -52,11 +52,11 @@ export const QueryOptimizationInsight = (
       );
   };
 
-  const spanName = props.insight.spanInfo?.displayName || undefined;
+  const spanName = props.insight.spanInfo?.displayName ?? undefined;
   const spanCodeObjectId =
-    props.insight.spanInfo?.spanCodeObjectId || undefined;
+    props.insight.spanInfo?.spanCodeObjectId ?? undefined;
   const traceId = props.insight.traceId;
-  const endpoints = props.insight.endpoints || [];
+  const endpoints = props.insight.endpoints ?? [];
 
   return (
     <InsightCard

@@ -30,7 +30,7 @@ export const SpanScalingInsightCard = ({
   isMarkAsReadButtonEnabled
 }: SpanScalingInsightCardProps) => {
   const config = useContext(ConfigContext);
-  const affectedEndpoints = insight.affectedEndpoints || [];
+  const affectedEndpoints = insight.affectedEndpoints ?? [];
   const [pageItems, page, setPage] = usePagination(
     affectedEndpoints,
     PAGE_SIZE,

@@ -25,7 +25,7 @@ const DIGMA_UI_DEFAULT_PORT = 5280;
 
 const environment = isString(window.dashboardEnvironment)
   ? window.dashboardEnvironment
-  : new URLSearchParams(window.location.search).get("environment") || "";
+  : new URLSearchParams(window.location.search).get("environment") ?? "";
 
 export const Dashboard = () => {
   const [isInitialLoading, setIsInitialLoading] = useState(true);

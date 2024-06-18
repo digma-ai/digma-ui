@@ -7,5 +7,5 @@ export const getHostnameFromURL = (value: string) => {
     return null;
   }
 
-  return url && url.hostname;
+  return url?.hostname;
 };

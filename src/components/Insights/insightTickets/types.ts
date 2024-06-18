@@ -9,6 +9,6 @@ export interface InsightTicketProps<T extends GenericCodeObjectInsight> {
   onClose: () => void;
 }
 
-export type CommitInfosData = {
+export interface CommitInfosData {
   commitInfos: Record<string, { commit: string; url: string }>;
-};
+}

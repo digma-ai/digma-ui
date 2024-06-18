@@ -10,11 +10,11 @@ export const useIconProps = (props: IconProps): IconProps => {
   const themeKind = getThemeKind(theme);
   const defaultColor = themeKind === "light" ? "#828797" : "#7c7c94";
   const color: string = useMemo(
-    () => props.color || defaultColor,
+    () => props.color ?? defaultColor,
     [props.color, defaultColor]
   );
   const size: number = useMemo(
-    () => props.size || DEFAULT_ICON_SIZE,
+    () => props.size ?? DEFAULT_ICON_SIZE,
     [props.size]
   );
   return { color, size };

@@ -14,7 +14,7 @@ const LocalEngineIconComponent = (props: LocalEngineIconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={props.width || 16}
+      width={props.width ?? 16}
       viewBox="0 0 16 14"
       fill={color}
     >

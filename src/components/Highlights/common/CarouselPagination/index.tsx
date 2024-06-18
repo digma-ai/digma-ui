@@ -11,10 +11,10 @@ export const CarouselPagination = ({
   pageSize,
   page,
   onPageChange,
-  trackingEventPrefix
+  trackingEventPrefix = ""
 }: CarouselPaginationProps) => {
   const prefixedGlobalTrackingEvents = addPrefix(
-    trackingEventPrefix || "",
+    trackingEventPrefix,
     globalTrackingEvents,
     ""
   );

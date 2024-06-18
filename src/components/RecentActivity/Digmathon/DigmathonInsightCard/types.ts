@@ -1,11 +1,11 @@
 import { DigmathonInsightCardData } from "../../types";
 
-export type DigmathonInsightCardProps = {
+export interface DigmathonInsightCardProps {
   number: number;
   data: DigmathonInsightCardData;
   isActive: boolean;
-};
+}
 
-export type ContainerProps = {
+export interface ContainerProps {
   $isActive: boolean;
-};
+}

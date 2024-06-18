@@ -12,7 +12,7 @@ const directionRotateMap: { [key in Direction]: string } = {
 const ArrowSmallIconComponent = (props: RotatableIconProps) => {
   const { size, color } = useIconProps(props);
   const transform = {
-    transform: `rotate(${directionRotateMap[props.direction || Direction.UP]})`
+    transform: `rotate(${directionRotateMap[props.direction ?? Direction.UP]})`
   };
 
   return (

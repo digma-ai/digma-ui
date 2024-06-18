@@ -57,7 +57,7 @@ export const KebabMenu = (props: KebabMenuProps) => {
     props.onClose();
   };
 
-  const items: Array<MenuItem> = [
+  const items: MenuItem[] = [
     {
       id: "onboarding",
       label: "Digma Onboarding",

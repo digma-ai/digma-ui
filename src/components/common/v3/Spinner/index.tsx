@@ -4,11 +4,11 @@ import * as s from "./styles";
 import { SpinnerProps } from "./types";
 
 const SpinnerComponent = (
-  props: SpinnerProps,
+  { className, size = 16 }: SpinnerProps,
   ref: ForwardedRef<HTMLDivElement>
 ) => (
-  <s.Container ref={ref} className={props.className}>
-    <PetalsIcon color={"currentColor"} size={props.size || 16} />
+  <s.Container ref={ref} className={className}>
+    <PetalsIcon color={"currentColor"} size={size} />
   </s.Container>
 );
 

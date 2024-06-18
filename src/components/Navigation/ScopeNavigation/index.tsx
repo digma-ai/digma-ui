@@ -7,9 +7,9 @@ import {
   ChangeScopePayload,
   ChangeViewPayload
 } from "../../../types";
+import { actions as mainActions } from "../../Main/actions";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Scope } from "../../common/App/types";
-import { actions } from "../actions";
 import { SetViewsPayload } from "../types";
 import { HistoryManager } from "./HistoryManager";
 import { HistoryNavigationPanel } from "./HistoryNavigationPanel";
@@ -19,7 +19,7 @@ const changeScope = (scope: Scope | null) => {
   window.sendMessageToDigma<ChangeScopePayload>({
     action: globalActions.CHANGE_SCOPE,
     payload: {
-      span: scope?.span || null,
+      span: scope?.span ?? null,
       forceNavigation: true
     }
   });
@@ -63,14 +63,14 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
         currentScope.span?.spanCodeObjectId !== newScope.span?.spanCodeObjectId
       ) {
         historyManager.push({
-          environment: environment || null,
+          environment: environment ?? null,
           scope: newScope,
           tabId: props.currentTabId
         });
       } else {
         const historyStep = historyManager.getCurrent();
 
-        if (historyStep && historyStep.tabId) {
+        if (historyStep?.tabId) {
           window.sendMessageToDigma<ChangeViewPayload>({
             action: globalActions.CHANGE_VIEW,
             payload: {
@@ -80,7 +80,7 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
           });
         }
 
-        if (historyStep && historyStep.environment) {
+        if (historyStep?.environment) {
           window.sendMessageToDigma<ChangeEnvironmentPayload>({
             action: globalActions.CHANGE_ENVIRONMENT,
             payload: {
@@ -112,24 +112,24 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
     };
 
     dispatcher.addActionListener(globalActions.SET_SCOPE, handleSetScope);
-    dispatcher.addActionListener(actions.SET_VIEWS, handleSetViews);
+    dispatcher.addActionListener(mainActions.SET_VIEWS, handleSetViews);
 
     return () => {
       dispatcher.removeActionListener(globalActions.SET_SCOPE, handleSetScope);
-      dispatcher.removeActionListener(actions.SET_VIEWS, handleSetViews);
+      dispatcher.removeActionListener(mainActions.SET_VIEWS, handleSetViews);
     };
   }, [environment, props.currentTabId, historyManager]);
 
   const handleBackClick = () => {
     const currentStep = historyManager.back();
-    if (currentStep && currentStep.scope) {
+    if (currentStep?.scope) {
       changeScope(currentStep.scope);
     }
   };
 
   const handleForwardClick = () => {
     const currentStep = historyManager.forward();
-    if (currentStep && currentStep.scope) {
+    if (currentStep?.scope) {
       changeScope(currentStep.scope);
     }
   };

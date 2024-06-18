@@ -72,7 +72,6 @@ export const Empty: Story = {
 
 export const Multiselect: Story = {
   render: (args) => {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
     const handleChange = (value: string | string[]) => {

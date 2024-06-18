@@ -31,7 +31,7 @@ export const useCodeLocations = (spanInfo: SpanInfo | null) => {
 
   useEffect(() => {
     const spanCodeObjectId = spanInfo?.spanCodeObjectId;
-    const methodCodeObjectId = spanInfo?.methodCodeObjectId || undefined;
+    const methodCodeObjectId = spanInfo?.methodCodeObjectId ?? undefined;
 
     setIsLoading(true);
     window.sendMessageToDigma({

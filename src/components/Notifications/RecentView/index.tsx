@@ -21,7 +21,7 @@ export const RecentView = (props: RecentViewProps) => {
     props.onGoToNotifications();
   };
 
-  const notificationsCount = props.data?.notifications.length || 0;
+  const notificationsCount = props.data?.notifications.length ?? 0;
 
   const renderEmptyState = () => {
     if (props.isLoading) {

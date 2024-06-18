@@ -27,7 +27,7 @@ const PopoverContentComponent = (
                 top: context.y ?? 0,
                 left: context.x ?? 0,
                 width:
-                  width ||
+                  width ??
                   context.elements.reference?.getBoundingClientRect().width,
                 outline: "none",
                 ...style

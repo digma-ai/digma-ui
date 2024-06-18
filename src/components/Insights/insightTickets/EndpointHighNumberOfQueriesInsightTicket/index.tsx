@@ -15,7 +15,7 @@ export const EndpointHighNumberOfQueriesInsightTicket = ({
     useCommitInfos<EndpointHighNumberOfQueriesInsight>(data.insight);
 
   const renderDescription = () => {
-    if (!data.insight || !data.insight.spanInfo) {
+    if (!data.insight?.spanInfo) {
       return null;
     }
 

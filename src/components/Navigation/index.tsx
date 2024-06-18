@@ -4,6 +4,7 @@ import { ROUTES } from "../../constants";
 import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
 import { isNull } from "../../typeGuards/isNull";
+import { isUndefined } from "../../typeGuards/isUndefined";
 import {
   ChangeEnvironmentPayload,
   ChangeScopePayload,
@@ -12,6 +13,7 @@ import {
 } from "../../types";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 import { AsyncActionResultData } from "../InstallationWizard/types";
+import { actions as mainActions } from "../Main/actions";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { Environment, Scope } from "../common/App/types";
 import { NewPopover } from "../common/NewPopover";
@@ -66,7 +68,7 @@ const getCodeButtonTooltip = (
   codeContext?: CodeContext,
   scope?: Scope
 ): string => {
-  if (!codeContext || codeContext.methodId === null) {
+  if (isUndefined(codeContext) || codeContext.methodId === null) {
     return "No code selected";
   }
 
@@ -133,7 +135,7 @@ export const Navigation = () => {
       }
     };
 
-    dispatcher.addActionListener(actions.SET_VIEWS, handleViewData);
+    dispatcher.addActionListener(mainActions.SET_VIEWS, handleViewData);
     dispatcher.addActionListener(
       actions.SET_CODE_CONTEXT,
       handleCodeContextData
@@ -148,7 +150,7 @@ export const Navigation = () => {
     );
 
     return () => {
-      dispatcher.removeActionListener(actions.SET_VIEWS, handleViewData);
+      dispatcher.removeActionListener(mainActions.SET_VIEWS, handleViewData);
       dispatcher.removeActionListener(
         actions.SET_CODE_CONTEXT,
         handleCodeContextData
@@ -263,7 +265,7 @@ export const Navigation = () => {
   };
 
   const handleCodeButtonMouseEnter = () => {
-    if (codeContext && codeContext.methodId) {
+    if (codeContext?.methodId) {
       window.sendMessageToDigma<HighlightMethodInEditorPayload>({
         action: actions.HIGHLIGHT_METHOD_IN_EDITOR,
         payload: {
@@ -329,7 +331,7 @@ export const Navigation = () => {
     setIsCodeButtonMenuOpen(false);
   };
 
-  const environments = config.environments || [];
+  const environments = config.environments ?? [];
 
   if (!config.userInfo?.id && config.backendInfo?.centralize) {
     return <s.Background />;
@@ -422,7 +424,7 @@ export const Navigation = () => {
         </Tooltip>
       </s.Row>
       <s.TabsContainer>
-        <Tabs tabs={tabs || []} onSelect={changeTab} />
+        <Tabs tabs={tabs ?? []} onSelect={changeTab} />
       </s.TabsContainer>
     </s.Container>
   );

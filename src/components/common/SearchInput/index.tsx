@@ -4,13 +4,17 @@ import { MagnifierIcon } from "../icons/MagnifierIcon";
 import * as s from "./styles";
 import { SearchInputProps } from "./types";
 
-export const SearchInput = (props: SearchInputProps) => {
+export const SearchInput = ({
+  onChange,
+  value,
+  disabled
+}: SearchInputProps) => {
   const handleDeleteButtonClick = () => {
-    props.onChange("");
+    onChange("");
   };
 
   const handleSearchInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    props.onChange(e.target.value);
+    onChange(e.target.value);
   };
 
   return (
@@ -19,15 +23,12 @@ export const SearchInput = (props: SearchInputProps) => {
         <MagnifierIcon color={"currentColor"} size={14} />
       </s.SearchInputIconContainer>
       <s.SearchInput
-        disabled={props.disabled}
+        disabled={disabled}
         placeholder={"Search"}
         onChange={handleSearchInputChange}
-        value={props.value || ""}
+        value={value ?? ""}
       />
-      <s.DeleteTagButton
-        disabled={props.disabled}
-        onClick={handleDeleteButtonClick}
-      >
+      <s.DeleteTagButton disabled={disabled} onClick={handleDeleteButtonClick}>
         <CrossIcon color={"currentColor"} size={14} />
       </s.DeleteTagButton>
     </s.SearchInputContainer>

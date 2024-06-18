@@ -47,7 +47,7 @@ export const SpaNPlusOneInsightCard = ({
   onGoToSpan,
   isMarkAsReadButtonEnabled
 }: SpaNPlusOneInsightCardProps) => {
-  const endpoints = insight.endpoints || [];
+  const endpoints = insight.endpoints ?? [];
   const config = useContext(ConfigContext);
   const [selectedEndpoint, setSelectedEndpoint] = useState(
     endpoints.length ? endpoints[0] : null
@@ -87,7 +87,7 @@ export const SpaNPlusOneInsightCard = ({
                     endpoints.find(
                       (x) =>
                         x.endpointInfo.entrySpanCodeObjectId === selectedOption
-                    ) || null;
+                    ) ?? null;
 
                   setSelectedEndpoint(selected);
                 }}

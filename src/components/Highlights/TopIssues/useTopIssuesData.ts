@@ -53,7 +53,7 @@ export const useTopIssuesData = () => {
   }, [previousLastSetDataTimeStamp, lastSetDataTimeStamp, getData]);
 
   useEffect(() => {
-    const handleTopIssuesData = (data: any, timeStamp: number) => {
+    const handleTopIssuesData = (data: unknown, timeStamp: number) => {
       setData(data as TopIssuesData);
       setLastSetDataTimeStamp(timeStamp);
     };

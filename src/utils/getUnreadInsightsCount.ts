@@ -11,5 +11,5 @@ export const getUnreadInsightsCount = (config: ConfigContextData) => {
     }
   }
 
-  return config.scope?.unreadInsightsCount || 0;
+  return config.scope?.unreadInsightsCount ?? 0;
 };

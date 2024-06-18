@@ -50,6 +50,8 @@ export const AssetEntry = (props: AssetEntryProps) => {
           InsightType.SpanScalingInsufficientData
         ].includes(x.type as InsightType)
     )
+    // TODO: fix types
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
     .filter((x) => x.importance < InsightImportance.Info);
 
   const sortedInsights = [...filteredInsights].sort(

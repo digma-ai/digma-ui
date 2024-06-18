@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { InstallationType } from "../types";
 
-export type InstallationTypeCardProps = {
+export interface InstallationTypeCardProps {
   disabled?: boolean;
   installationType: InstallationType;
   icon: ReactNode;
@@ -9,8 +9,8 @@ export type InstallationTypeCardProps = {
   description: ReactNode;
   onClick: (installationType: InstallationType) => void;
   additionalContent?: ReactNode;
-};
+}
 
-export type ContainerProps = {
+export interface ContainerProps {
   $disabled?: boolean;
-};
+}

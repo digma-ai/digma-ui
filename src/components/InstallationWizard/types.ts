@@ -23,6 +23,4 @@ export interface FieldValidationResult {
   error?: string;
 }
 
-export interface FieldsErrors {
-  [key: string]: string | undefined;
-}
+export type FieldsErrors = Record<string, string | undefined>;

@@ -15,7 +15,7 @@ export const GlobeIconComponent = (props: IconProps) => {
     >
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
         <g
-          stroke="#F0F1F7"
+          stroke={color}
           strokeLinecap="round"
           strokeLinejoin="round"
           clipPath="url(#globe-20px-clip-1)"

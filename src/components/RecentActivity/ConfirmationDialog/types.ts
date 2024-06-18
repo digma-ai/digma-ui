@@ -5,5 +5,5 @@ export interface ConfirmationDialogProps {
   trackingPrefix?: string;
   onConfirm: () => void;
   onCancel: () => void;
-  trackingData?: Record<string, any>;
+  trackingData?: Record<string, unknown>;
 }

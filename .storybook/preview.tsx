@@ -1,5 +1,7 @@
 import type { Preview } from "@storybook/react";
 import { StoryFn } from "@storybook/react";
+// TODO: remove React import due to new JSX transform
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React, { useEffect, useState } from "react";
 import {
   cancelMessage,
@@ -14,7 +16,6 @@ const preview: Preview = {
   decorators: [
     (Story: StoryFn, context): JSX.Element => {
       const [isInitialized, setIsInitialized] = useState(false);
-      // TODO: Fix types
       const theme = context.globals.theme as Mode;
 
       useEffect(() => {

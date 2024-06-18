@@ -71,7 +71,7 @@ export const EndpointNPlusOneInsight = (
           <Description>Check the following locations:</Description>
           <s.SpanList>
             {pageItems.map((span, i) => {
-              const spanInfo = span.internalSpan || span.clientSpan;
+              const spanInfo = span.internalSpan ?? span.clientSpan;
               const spanName = spanInfo.displayName;
               const fraction =
                 span.fraction < FRACTION_MIN_LIMIT

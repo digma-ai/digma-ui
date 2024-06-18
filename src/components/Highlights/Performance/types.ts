@@ -6,7 +6,7 @@ interface PerformancePercentileData {
   isCritical?: boolean;
 }
 
-export type EnvironmentPerformanceData = {
+export interface EnvironmentPerformanceData {
   environment: {
     name: string;
     id: string;
@@ -15,9 +15,11 @@ export type EnvironmentPerformanceData = {
   p50: PerformancePercentileData;
   p95: PerformancePercentileData;
   lastCallTimeStamp: string | null;
-};
+}
 
-export type PerformanceData = { performance: EnvironmentPerformanceData[] };
+export interface PerformanceData {
+  performance: EnvironmentPerformanceData[];
+}
 
 export interface GetHighlightsPerformanceDataPayload {
   query: {

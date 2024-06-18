@@ -50,6 +50,8 @@ export class Logger {
   ): void {
     const formattedMessage = this.getFormattedMessage(tags, message);
 
+    // TODO: fix types
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
     if (this.minLogLevel > level) {
       return;
     }

@@ -141,7 +141,7 @@ export const EnvironmentPanel = ({
 
   const renderKebabMenuButton = () => {
     const boundaryEl =
-      document.getElementById(RECENT_ACTIVITY_CONTAINER_ID) || undefined;
+      document.getElementById(RECENT_ACTIVITY_CONTAINER_ID) ?? undefined;
 
     const handleObservabilityChange = (value: boolean) => {
       sendUserActionTrackingEvent(
@@ -191,7 +191,7 @@ export const EnvironmentPanel = ({
         onOpenChange={setIsKebabMenuOpen}
         isOpen={isKebabMenuOpen}
         content={
-          <Popup height={"auto"}>
+          <Popup>
             <MenuList
               items={[
                 {

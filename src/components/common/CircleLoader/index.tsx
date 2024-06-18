@@ -21,19 +21,20 @@ const getDefaultColors = (theme: DefaultTheme): CircleLoaderColors => {
   }
 };
 
-export const CircleLoader = (props: CircleLoaderProps) => {
-  const size = props.size || DEFAULT_ICON_SIZE;
+export const CircleLoader = ({
+  size = DEFAULT_ICON_SIZE,
+  colors
+}: CircleLoaderProps) => {
   const theme = useTheme();
-
-  const colors = props.colors || getDefaultColors(theme);
+  const loaderColors = colors ?? getDefaultColors(theme);
 
   return (
     <s.OuterCircle
       $size={size}
-      $startColor={colors.start}
-      $endColor={colors.end}
+      $startColor={loaderColors.start}
+      $endColor={loaderColors.end}
     >
-      <s.InnerCircle $background={colors.background} />
+      <s.InnerCircle $background={loaderColors.background} />
     </s.OuterCircle>
   );
 };

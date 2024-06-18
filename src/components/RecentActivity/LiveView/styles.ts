@@ -210,8 +210,7 @@ export const AxisChartContainer = styled.div<AxisChartContainerProps>`
 
 export const ChartContainer = styled.div`
   width: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
+  overflow: auto hidden;
 `;
 
 export const Footer = styled.div`

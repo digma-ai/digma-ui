@@ -1,12 +1,14 @@
-export type EnvironmentImpactData = {
+export interface EnvironmentImpactData {
   environmentName: string;
   environmentId: string;
   rank: number;
   rankNormalized: number;
   impact: number;
-};
+}
 
-export type ImpactData = { impactHighlights: EnvironmentImpactData[] };
+export interface ImpactData {
+  impactHighlights: EnvironmentImpactData[];
+}
 
 export interface GetHighlightsImpactDataPayload {
   query: {

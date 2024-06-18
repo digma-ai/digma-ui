@@ -43,7 +43,7 @@ const renderFilterCategory = (
       label: transformLabel ? transformLabel(entry.name) : entry.name,
       enabled: entry.enabled,
       selected: selectedValues.includes(entry.name)
-    })) || [];
+    })) ?? [];
 
   return (
     <Select
@@ -99,8 +99,8 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
       previousPersistedFilters !== persistedFilters
     ) {
       getData(
-        persistedFilters?.services || selectedServices,
-        persistedFilters?.operations || [
+        persistedFilters?.services ?? selectedServices,
+        persistedFilters?.operations ?? [
           ...selectedEndpoints,
           ...selectedConsumers,
           ...selectedInternals
@@ -183,7 +183,7 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
       data?.data?.categories
         .find((x) => x.categoryName === "Services")
         ?.entries?.filter((x) => x.selected)
-        .map((x) => x.name) || [];
+        .map((x) => x.name) ?? [];
     setSelectedServices(servicesToSelect);
 
     const operationsCategory = data?.data?.categories.find(
@@ -194,27 +194,27 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
       operationsCategory?.categories
         ?.find((x) => x.categoryName === "Endpoints")
         ?.entries?.filter((x) => x.selected)
-        .map((x) => x.name) || [];
+        .map((x) => x.name) ?? [];
     setSelectedEndpoints(endpointsToSelect);
 
     const consumersToSelect =
       operationsCategory?.categories
         ?.find((x) => x.categoryName === "Consumers")
         ?.entries?.filter((x) => x.selected)
-        .map((x) => x.name) || [];
+        .map((x) => x.name) ?? [];
     setSelectedConsumers(consumersToSelect);
 
     const internalsToSelect =
       operationsCategory?.categories
         ?.find((x) => x.categoryName === "Internal")
         ?.entries?.filter((x) => x.selected)
-        .map((x) => x.name) || [];
+        .map((x) => x.name) ?? [];
     setSelectedInternals(internalsToSelect);
 
     const insightsToSelect = (data?.data?.categories
       .find((x) => x.categoryName === "Insights")
       ?.entries?.filter((x) => x.selected)
-      .map((x) => x.name) || []) as InsightType[];
+      .map((x) => x.name) ?? []) as InsightType[];
     setSelectedInsights(insightsToSelect);
 
     if (!props.filters) {
@@ -310,7 +310,7 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
 
   const servicesCategory = data?.data?.categories.find(
     (x) => x.categoryName === "Services"
-  ) || {
+  ) ?? {
     categoryName: "Services",
     entries: []
   };
@@ -320,26 +320,26 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
   );
   const endpointsCategory = operationsCategory?.categories?.find(
     (x) => x.categoryName === "Endpoints"
-  ) || {
+  ) ?? {
     categoryName: "Endpoints",
     entries: []
   };
   const consumersCategory = operationsCategory?.categories?.find(
     (x) => x.categoryName === "Consumers"
-  ) || {
+  ) ?? {
     categoryName: "Consumers",
     entries: []
   };
   const internalsCategory = operationsCategory?.categories?.find(
     (x) => x.categoryName === "Internal"
-  ) || {
+  ) ?? {
     categoryName: "Internal",
     entries: []
   };
 
   const insightsCategory = data?.data?.categories.find(
     (x) => x.categoryName === "Insights"
-  ) || {
+  ) ?? {
     categoryName: "Insights",
     entries: []
   };
@@ -396,7 +396,7 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
               "Insights",
               selectedInsights,
               handleSelectedItemsChange,
-              (value) => getInsightTypeInfo(value)?.label || value
+              (value) => getInsightTypeInfo(value)?.label ?? value
             )}
           <s.Footer>
             <NewButton

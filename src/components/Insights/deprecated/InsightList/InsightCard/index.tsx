@@ -170,7 +170,7 @@ export const InsightCard = (props: InsightCardProps) => {
                   <insightTypeInfo.icon color={insightIconColor} size={16} />
                 )}
               </s.InsightIconContainer>
-              {insightTypeInfo?.label || props.data.type}
+              {insightTypeInfo?.label ?? props.data.type}
               {insightTypeInfo?.description && (
                 <Tooltip title={<insightTypeInfo.description />}>
                   <s.InfoContainer>
@@ -183,7 +183,7 @@ export const InsightCard = (props: InsightCardProps) => {
               {isNew && <Tag type={"success"} value={"New"} />}
               {props.isAsync && <s.AsyncBadge>Async</s.AsyncBadge>}
               {props.stats && <s.Stats>{props.stats}</s.Stats>}
-              {(props.menuItems || props.data.isRecalculateEnabled) && (
+              {(props.menuItems ?? props.data.isRecalculateEnabled) && (
                 <Popover
                   open={isKebabMenuOpen}
                   onOpenChange={setIsKebabMenuOpen}

@@ -24,7 +24,7 @@ export const EnvironmentBar = (props: EnvironmentBarProps) => {
     };
 
     return (
-      <s.EnvironmentMenuPopup height={"124px"}>
+      <s.EnvironmentMenuPopup height={"140px"}>
         <MenuList
           items={props.environments.map((x) => ({
             id: x.id,
@@ -38,6 +38,13 @@ export const EnvironmentBar = (props: EnvironmentBarProps) => {
   };
 
   const renderEnvironmentBar = () => {
+    const handleEnvironmentBarClick = () => {
+      if (!isDisabled) {
+        sendUserActionTrackingEvent(trackingEvents.ENVIRONMENT_BAR_CLICKED);
+      }
+      setIsMenuOpen(!isMenuOpen);
+    };
+
     return (
       <s.EnvironmentBar
         $isDisabled={isDisabled}
@@ -71,19 +78,12 @@ export const EnvironmentBar = (props: EnvironmentBarProps) => {
     setIsMenuOpen(isOpen);
   };
 
-  const handleEnvironmentBarClick = () => {
-    if (!isDisabled) {
-      sendUserActionTrackingEvent(trackingEvents.ENVIRONMENT_BAR_CLICKED);
-    }
-    setIsMenuOpen(!isMenuOpen);
-  };
-
   const environmentName = props.selectedEnvironment
     ? props.selectedEnvironment.name
     : "No environments";
 
   // TODO: refactor
-  return isMenuOpen ? (
+  return !isDisabled && isMenuOpen ? (
     <NewPopover
       content={renderEnvironmentMenu()}
       onOpenChange={handleEnvironmentMenuOpenChange}

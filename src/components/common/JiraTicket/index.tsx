@@ -48,7 +48,7 @@ export const JiraTicket = (props: JiraTicketProps) => {
   const theme = useTheme();
 
   const prefixedTrackingEvents = addPrefix(
-    props.tracking?.prefix || "",
+    props.tracking?.prefix ?? "",
     trackingEvents,
     ""
   );
@@ -64,7 +64,7 @@ export const JiraTicket = (props: JiraTicketProps) => {
     sendUserActionTrackingEvent(
       prefixedTrackingEvents.JIRA_TICKET_FIELD_COPY_BUTTON_CLICKED,
       {
-        ...(props.tracking?.additionalInfo || {}),
+        ...(props.tracking?.additionalInfo ?? {}),
         field
       }
     );
@@ -86,7 +86,7 @@ export const JiraTicket = (props: JiraTicketProps) => {
   }) => {
     sendUserActionTrackingEvent(
       prefixedTrackingEvents.JIRA_TICKET_ATTACHMENT_DOWNLOAD_BUTTON_CLICKED,
-      { ...(props.tracking?.additionalInfo || {}) }
+      { ...(props.tracking?.additionalInfo ?? {}) }
     );
 
     downloadFile(attachment.url, attachment.fileName).catch(

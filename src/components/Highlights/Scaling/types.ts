@@ -1,15 +1,15 @@
 import { Duration } from "../../../globals";
 import { EnvironmentData } from "../TopIssues/types";
 
-export type EnvironmentScalingData = {
+export interface EnvironmentScalingData {
   concurrency: number;
   duration: Duration;
-};
+}
 
-export type ScalingData = {
+export interface ScalingData {
   dataState: "NoData" | "Partial" | "ScalingWell" | "ScalingBadly";
   scaling: EnvironmentData<EnvironmentScalingData>[];
-};
+}
 
 export interface GetHighlightsScalingDataPayload {
   query: {

@@ -92,7 +92,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
     data: props.data
   });
   const isEnvironmentConfirmationDialogVisible = Boolean(
-    environmentToDelete || environmentToClearData
+    environmentToDelete ?? environmentToClearData
   );
   const [
     persistedEnvironmentClearDataTimestamps,
@@ -314,7 +314,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
 
   const handleConfirmEnvironmentDataClearance = () => {
     if (environmentToClearData) {
-      const currentTimeStamps = persistedEnvironmentClearDataTimestamps || {};
+      const currentTimeStamps = persistedEnvironmentClearDataTimestamps ?? {};
       setPersistedEnvironmentClearDataTimestamps({
         ...currentTimeStamps,
         [environmentToClearData]: new Date().toISOString()
@@ -409,7 +409,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
       );
     }
 
-    const headerHeight = entry?.target.clientHeight || 0;
+    const headerHeight = entry?.target.clientHeight ?? 0;
 
     return (
       <>

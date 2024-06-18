@@ -74,14 +74,14 @@ const getFoundAt = (
       return getMinFoundDate(filteredInsights);
     }
     default:
-      return insights.find((x) => x.type === type)?.foundAt || null;
+      return insights.find((x) => x.type === type)?.foundAt ?? null;
   }
 };
 
 export const useDigmathonProgressData = () => {
   const [data, setData] = useState<DigmathonProgressData>();
   const foundIssuesCount =
-    data?.insights.filter((x) => isString(x.foundAt)).length || 0;
+    data?.insights.filter((x) => isString(x.foundAt)).length ?? 0;
   const isDigmathonCompleted = false;
   //   foundIssuesCount >= REQUIRED_COUNT_OF_FOUND_ISSUES;
   const previousIsDigmathonCompleted = usePrevious(isDigmathonCompleted);

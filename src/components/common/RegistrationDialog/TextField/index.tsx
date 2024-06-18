@@ -5,7 +5,16 @@ import * as s from "./styles";
 import { TextFieldProps } from "./types";
 
 export const TextFieldComponent = (
-  props: TextFieldProps,
+  {
+    onBlur,
+    isValid,
+    className,
+    icon: Icon,
+    type = "text",
+    value,
+    onChange,
+    placeholder
+  }: TextFieldProps,
   ref: ForwardedRef<HTMLInputElement>
 ) => {
   const [isFocused, setIsFocused] = useState(false);
@@ -15,40 +24,36 @@ export const TextFieldComponent = (
   };
 
   const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
-    if (props.onBlur) {
-      props.onBlur(e);
+    if (onBlur) {
+      onBlur(e);
     }
     setIsFocused(false);
   };
 
   return (
-    <s.Container
-      $focused={isFocused}
-      $isValid={props.isValid}
-      className={props.className}
-    >
-      {props.icon && (
-        <s.IconContainer $isValid={props.isValid}>
-          <props.icon size={16} color={"currentColor"} />
+    <s.Container $focused={isFocused} $isValid={isValid} className={className}>
+      {Icon && (
+        <s.IconContainer $isValid={isValid}>
+          <Icon size={16} color={"currentColor"} />
         </s.IconContainer>
       )}
       <s.Input
-        $isValid={props.isValid}
-        type={props.type || "text"}
-        value={props.value}
-        onChange={props.onChange}
-        placeholder={props.placeholder}
+        $isValid={isValid}
+        type={type}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
         onFocus={handleFocus}
         onBlur={handleBlur}
         ref={ref}
       />
-      {props.isValid === true && (
-        <s.ValidationStatusIconContainer $isValid={props.isValid}>
+      {isValid === true && (
+        <s.ValidationStatusIconContainer $isValid={isValid}>
           <CheckmarkCircleInvertedIcon size={11} color={"currentColor"} />
         </s.ValidationStatusIconContainer>
       )}
-      {props.isValid === false && (
-        <s.IconContainer $isValid={props.isValid}>
+      {isValid === false && (
+        <s.IconContainer $isValid={isValid}>
           <CrossCircleIcon size={15} color={"currentColor"} />
         </s.IconContainer>
       )}

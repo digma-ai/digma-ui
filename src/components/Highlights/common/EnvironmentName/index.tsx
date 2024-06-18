@@ -12,13 +12,13 @@ export const EnvironmentName = ({
   const theme = useTheme();
   const iconColor = criticality
     ? getInsightCriticalityColor(criticality, theme)
-    : undefined;
+    : "currentColor";
 
   return (
     <Tooltip title={name}>
       <s.Container>
         <s.IconContainer>
-          <GlobeIcon color={iconColor || "currentColor"} size={16} />
+          <GlobeIcon color={iconColor} size={16} />
         </s.IconContainer>
         <s.Name>{name}</s.Name>
       </s.Container>

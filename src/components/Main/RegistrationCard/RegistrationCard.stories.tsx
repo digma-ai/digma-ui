@@ -23,7 +23,7 @@ export const Default: Story = {
 export const WithEmail: Story = {
   args: {},
   decorators: [
-    (Story: any) => (
+    (Story) => (
       <ConfigContext.Provider
         value={{
           ...initialState,

@@ -54,7 +54,7 @@ const getConfig = (env: WebpackEnv): WebpackConfiguration => {
           minify: false,
           scriptLoading: "blocking",
           templateParameters: {
-            environmentVariables: entries[entry]?.environmentVariables || []
+            environmentVariables: entries[entry]?.environmentVariables ?? []
           }
         });
       })

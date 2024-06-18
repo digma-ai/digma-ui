@@ -60,7 +60,7 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
       props.onJiraTicketCreate(props.insight, spanCodeObjectId, event);
   };
 
-  const affectedEndpoints = props.insight.affectedEndpoints || [];
+  const affectedEndpoints = props.insight.affectedEndpoints ?? [];
 
   return (
     <InsightCard

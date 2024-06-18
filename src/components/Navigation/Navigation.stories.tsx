@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 
 import { Navigation } from ".";
-import { actions } from "./actions";
+import { actions as mainActions } from "../Main/actions";
 import { mockedViewsData } from "./mockData";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
@@ -23,7 +23,7 @@ export const Default: Story = {
   play: () => {
     window.postMessage({
       type: "digma",
-      action: actions.SET_VIEWS,
+      action: mainActions.SET_VIEWS,
       payload: mockedViewsData
     });
   }

@@ -19,7 +19,7 @@ export const EndpointSpanNPlusOneInsightTicket = ({
 }: InsightTicketProps<EndpointSpanNPlusOneInsight>) => {
   const config = useContext(ConfigContext);
   const span = data.insight.span;
-  const spanInfo = span?.internalSpan || span?.clientSpan || null;
+  const spanInfo = span?.internalSpan ?? span?.clientSpan;
 
   const {
     commitInfos,
@@ -34,7 +34,7 @@ export const EndpointSpanNPlusOneInsightTicket = ({
 
   const services = [
     ...new Set(
-      (spanInsight?.endpoints || []).map((x) => x.endpointInfo.serviceName)
+      (spanInsight?.endpoints ?? []).map((x) => x.endpointInfo.serviceName)
     )
   ];
   const serviceString = services.length > 0 ? services.join(", ") : "";

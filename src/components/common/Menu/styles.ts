@@ -36,7 +36,7 @@ export const List = styled.ul<ListProps>`
   flex-direction: column;
   margin: 0;
   padding: 0;
-  width: ${(props) => props.width || "auto"};
+  width: ${({ width = "auto" }) => width};
 `;
 
 export const ListItem = styled.li`

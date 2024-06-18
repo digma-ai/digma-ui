@@ -61,10 +61,10 @@ export const Default: Story = {
   }
 };
 
-export const WithStats = {
+export const WithStats: Story = {
   ...Default,
   decorators: [
-    (Story: any) => (
+    (Story) => (
       <ConfigContext.Provider
         value={{
           ...initialState,

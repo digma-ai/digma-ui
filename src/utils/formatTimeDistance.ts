@@ -126,7 +126,7 @@ export const formatTimeDistance = (
     typeof options?.withDescriptiveWords === "boolean"
       ? options.withDescriptiveWords
       : true;
-  const format = options?.format || "long";
+  const format = options?.format ?? "long";
   let unitString = unitFormats[distance.unit][format];
 
   if (distance.value !== 1 && format === "long") {
