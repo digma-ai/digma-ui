@@ -30,7 +30,12 @@ export const initializeDigmaMessageListener = (
         null,
         e.data
       );
-      dispatcher.dispatch(e.timeStamp, e.data.action, e.data.payload);
+      dispatcher.dispatch(
+        e.timeStamp,
+        e.data.action,
+        e.data.payload,
+        e.data.error
+      );
     }
   };
 

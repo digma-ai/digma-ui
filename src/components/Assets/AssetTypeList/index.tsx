@@ -1,4 +1,5 @@
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { DigmaMessageError } from "../../../api/types";
 import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { isEnvironment } from "../../../typeGuards/isEnvironment";
@@ -96,8 +97,14 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
     refreshData();
     setIsInitialLoading(true);
 
-    const handleCategoriesData = (data: unknown, timeStamp: number) => {
-      setData(data as AssetCategoriesData);
+    const handleCategoriesData = (
+      data: unknown,
+      timeStamp: number,
+      error: DigmaMessageError | undefined
+    ) => {
+      if (!error) {
+        setData(data as AssetCategoriesData);
+      }
       setLastSetDataTimeStamp(timeStamp);
     };
 
