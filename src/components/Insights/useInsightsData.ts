@@ -1,5 +1,6 @@
 import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { actions as globalActions } from "../../actions";
+import { DigmaMessageError } from "../../api/types";
 import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
 import { GetInsightStatsPayload } from "../../types";
@@ -104,13 +105,19 @@ export const useInsightsData = ({
 
     setIsInitialLoading(true);
     setIsLoading(true);
-    const handleInsightsData = (data: unknown, timeStamp: number) => {
-      const insightsData = data as InsightsData;
-      insightsData.insightsStatus = InsightsStatus.DEFAULT;
-      insightsData.viewMode = ViewMode.INSIGHTS;
+    const handleInsightsData = (
+      data: unknown,
+      timeStamp: number,
+      error: DigmaMessageError | undefined
+    ) => {
+      if (!error) {
+        const insightsData = data as InsightsData;
+        insightsData.insightsStatus = InsightsStatus.DEFAULT;
+        insightsData.viewMode = ViewMode.INSIGHTS;
 
+        setData(insightsData);
+      }
       setIsLoading(false);
-      setData(insightsData);
       setLastSetDataTimeStamp(timeStamp);
     };
 
