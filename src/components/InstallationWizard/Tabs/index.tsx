@@ -2,16 +2,22 @@ import { Tab } from "./Tab";
 import * as s from "./styles";
 import { TabsProps } from "./types";
 
-export const Tabs = (props: TabsProps) => {
+export const Tabs = ({
+  onSelect,
+  className,
+  tabs,
+  selectedTab,
+  fullWidth
+}: TabsProps) => {
   const handleTabClick = (tabIndex: number) => {
-    props.onSelect(tabIndex);
+    onSelect(tabIndex);
   };
 
   return (
-    <s.Container className={props.className}>
+    <s.Container className={className}>
       <s.TabList>
-        {props.tabs.map((tab, i) => {
-          const isSelected = props.selectedTab === i;
+        {tabs.map((tab, i) => {
+          const isSelected = selectedTab === i;
 
           return (
             <Tab
@@ -20,14 +26,14 @@ export const Tabs = (props: TabsProps) => {
               isSelected={isSelected}
               onClick={() => handleTabClick(i)}
               icon={tab.icon}
-              fullWidth={props.fullWidth}
+              fullWidth={fullWidth}
             >
               {tab.title}
             </Tab>
           );
         })}
       </s.TabList>
-      {props.tabs[props.selectedTab].content}
+      {tabs[selectedTab].content}
     </s.Container>
   );
 };

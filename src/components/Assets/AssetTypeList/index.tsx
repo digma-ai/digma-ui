@@ -54,7 +54,14 @@ const getData = (
 const getAssetCount = (assetCategoriesData: AssetCategoriesData) =>
   assetCategoriesData.assetCategories.reduce((acc, cur) => acc + cur.count, 0);
 
-export const AssetTypeList = (props: AssetTypeListProps) => {
+export const AssetTypeList = ({
+  filters,
+  searchQuery,
+  scopeViewOptions,
+  setRefresher,
+  onAssetCountChange,
+  onAssetTypeSelect
+}: AssetTypeListProps) => {
   const [data, setData] = useState<AssetCategoriesData>();
   const previousData = usePrevious(data);
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
@@ -63,34 +70,31 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
   const config = useContext(ConfigContext);
   const previousEnvironment = usePrevious(config.environment);
   const refreshTimerId = useRef<number>();
-  const previousFilters = usePrevious(props.filters);
-  const previousSearchQuery = usePrevious(props.searchQuery);
-  const previousViewScope = usePrevious(props.scopeViewOptions);
+  const previousFilters = usePrevious(filters);
+  const previousSearchQuery = usePrevious(searchQuery);
+  const previousViewScope = usePrevious(scopeViewOptions);
 
   const refreshData = useCallback(
     () =>
       getData(
-        props.filters,
-        props.searchQuery,
-        props.scopeViewOptions?.isDirect,
-        props.scopeViewOptions?.scopedSpanCodeObjectId
+        filters,
+        searchQuery,
+        scopeViewOptions?.isDirect,
+        scopeViewOptions?.scopedSpanCodeObjectId
       ),
     [
-      props.filters,
-      props.scopeViewOptions?.isDirect,
-      props.scopeViewOptions?.scopedSpanCodeObjectId,
-      props.searchQuery
+      filters,
+      scopeViewOptions?.isDirect,
+      scopeViewOptions?.scopedSpanCodeObjectId,
+      searchQuery
     ]
   );
 
   useEffect(() => {
-    props.setRefresher(refreshData);
-  }, [refreshData, props.setRefresher]);
+    setRefresher(refreshData);
+  }, [refreshData, setRefresher]);
 
-  const areAnyFiltersApplied = checkIfAnyFiltersApplied(
-    props.filters,
-    props.searchQuery
-  );
+  const areAnyFiltersApplied = checkIfAnyFiltersApplied(filters, searchQuery);
 
   useEffect(() => {
     refreshData();
@@ -117,18 +121,17 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
 
   useEffect(() => {
     if (data && previousData !== data) {
-      props.onAssetCountChange(getAssetCount(data));
+      onAssetCountChange(getAssetCount(data));
     }
-  }, [previousData, data, props.onAssetCountChange]);
+  }, [previousData, data, onAssetCountChange]);
 
   useEffect(() => {
     if (
       (isEnvironment(previousEnvironment) &&
         previousEnvironment.id !== config.environment?.id) ||
-      Boolean(previousFilters && previousFilters !== props.filters) ||
-      (isString(previousSearchQuery) &&
-        previousSearchQuery !== props.searchQuery) ||
-      previousViewScope !== props.scopeViewOptions
+      Boolean(previousFilters && previousFilters !== filters) ||
+      (isString(previousSearchQuery) && previousSearchQuery !== searchQuery) ||
+      previousViewScope !== scopeViewOptions
     ) {
       refreshData();
     }
@@ -138,9 +141,9 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
     previousFilters,
     previousSearchQuery,
     previousViewScope,
-    props.filters,
-    props.scopeViewOptions,
-    props.searchQuery,
+    filters,
+    scopeViewOptions,
+    searchQuery,
     refreshData
   ]);
 
@@ -154,19 +157,13 @@ export const AssetTypeList = (props: AssetTypeListProps) => {
   }, [lastSetDataTimeStamp, previousLastSetDataTimeStamp, refreshData]);
 
   useEffect(() => {
-    if (props.data) {
-      setData(props.data);
-    }
-  }, [props.data]);
-
-  useEffect(() => {
     if (!previousData && data) {
       setIsInitialLoading(false);
     }
   }, [previousData, data]);
 
   const handleAssetTypeClick = (assetTypeId: string) => {
-    props.onAssetTypeSelect(assetTypeId);
+    onAssetTypeSelect(assetTypeId);
   };
 
   if (isInitialLoading) {

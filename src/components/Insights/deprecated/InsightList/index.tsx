@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import { DefaultTheme, useTheme } from "styled-components";
-import { actions as globalActions } from "../../../../actions";
 import { usePersistence } from "../../../../hooks/usePersistence";
 import { isUndefined } from "../../../../typeGuards/isUndefined";
-import { ChangeScopePayload, InsightType } from "../../../../types";
+import { InsightType } from "../../../../types";
+import { changeScope } from "../../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { getInsightTypeInfo } from "../../../../utils/getInsightTypeInfo";
 import { getInsightTypeOrderPriority } from "../../../../utils/getInsightTypeOrderPriority";
@@ -215,16 +214,6 @@ const groupInsights = (
   ];
 };
 
-const getInsightGroupIconColor = (theme: DefaultTheme) => {
-  switch (theme.mode) {
-    case "light":
-      return "#7891d0";
-    case "dark":
-    case "dark-jetbrains":
-      return "#b4b8bf";
-  }
-};
-
 const renderInsightCard = (
   insight: GenericCodeObjectInsight,
   onJiraTicketCreate: (
@@ -319,10 +308,12 @@ const renderInsightCard = (
         insightType
       }
     );
-    window.sendMessageToDigma({
-      action: actions.GO_TO_ASSET,
-      payload: {
+    changeScope({
+      span: {
         spanCodeObjectId
+      },
+      context: {
+        event: "INSIGHTS/INSIGHT_CARD_ASSET_LINK_CLICKED"
       }
     });
   };
@@ -346,12 +337,12 @@ const renderInsightCard = (
   };
 
   const handleGoToSpan = (spanCodeObjectId: string) => {
-    window.sendMessageToDigma<ChangeScopePayload>({
-      action: globalActions.CHANGE_SCOPE,
-      payload: {
-        span: {
-          spanCodeObjectId
-        }
+    changeScope({
+      span: {
+        spanCodeObjectId
+      },
+      context: {
+        event: "INSIGHTS/INSIGHT_CARD_ASSET_LINK_CLICKED"
       }
     });
   };
@@ -689,11 +680,20 @@ const IS_INSIGHT_JIRA_TICKET_HINT_SHOWN_PERSISTENCE_KEY =
  * @deprecated
  * safe to delete after the migration Errors and Navigation to the Main app
  */
-export const InsightList = (props: InsightListProps) => {
+export const InsightList = ({
+  assetId,
+  environment,
+  serviceName,
+  insights,
+  spans,
+  onJiraTicketCreate,
+  isMarkAsReadButtonEnabled,
+  hasObservability,
+  canInstrumentMethod,
+  hasMissingDependency
+}: InsightListProps) => {
   const [insightGroups, setInsightGroups] = useState<InsightGroup[]>([]);
   const [isAutofixing, setIsAutofixing] = useState(false);
-  const theme = useTheme();
-  const insightGroupIconColor = getInsightGroupIconColor(theme);
   const [isInsightJiraTicketHintShown, setIsInsightJiraTicketHintShown] =
     usePersistence<isInsightJiraTicketHintShownPayload>(
       IS_INSIGHT_JIRA_TICKET_HINT_SHOWN_PERSISTENCE_KEY,
@@ -704,27 +704,27 @@ export const InsightList = (props: InsightListProps) => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [props.assetId, props.environment, props.serviceName]);
+  }, [assetId, environment, serviceName]);
 
   useEffect(() => {
-    setInsightGroups(groupInsights(props.insights, props.spans));
+    setInsightGroups(groupInsights(insights, spans));
 
     window.sendMessageToDigma({
       action: actions.MARK_INSIGHT_TYPES_AS_VIEWED,
       payload: {
-        insightTypes: props.insights.map((x) => ({
+        insightTypes: insights.map((x) => ({
           type: x.type,
           reopenCount: x.reopenCount
         }))
       }
     });
-  }, [props.insights, props.spans]);
+  }, [insights, spans]);
 
   const handleAddAnnotation = () => {
     window.sendMessageToDigma({
       action: actions.ADD_ANNOTATION,
       payload: {
-        methodId: props.assetId
+        methodId: assetId
       }
     });
   };
@@ -734,7 +734,7 @@ export const InsightList = (props: InsightListProps) => {
       window.sendMessageToDigma({
         action: actions.AUTOFIX_MISSING_DEPENDENCY,
         payload: {
-          methodId: props.assetId
+          methodId: assetId
         }
       });
     }
@@ -746,7 +746,7 @@ export const InsightList = (props: InsightListProps) => {
     spanCodeObjectId: string | undefined,
     event?: string
   ) => {
-    props.onJiraTicketCreate(insight, spanCodeObjectId);
+    onJiraTicketCreate(insight, spanCodeObjectId);
     if (!isInsightJiraTicketHintShown?.value) {
       sendUserActionTrackingEvent(trackingEvents.JIRA_TICKET_HINT_CLOSED, {
         event
@@ -762,7 +762,7 @@ export const InsightList = (props: InsightListProps) => {
           {x.name && (
             <s.InsightGroupHeader>
               <s.InsightGroupIconContainer>
-                {x.icon && <x.icon size={16} color={insightGroupIconColor} />}{" "}
+                {x.icon && <x.icon size={16} color={"currentColor"} />}{" "}
               </s.InsightGroupIconContainer>
               <Tooltip title={x.name}>
                 <s.InsightGroupName>{x.name}</s.InsightGroupName>
@@ -781,7 +781,7 @@ export const InsightList = (props: InsightListProps) => {
                 insight,
                 handleShowJiraTicket,
                 isJiraHintEnabled,
-                props.isMarkAsReadButtonEnabled
+                isMarkAsReadButtonEnabled
               );
             })
           ) : (
@@ -795,10 +795,10 @@ export const InsightList = (props: InsightListProps) => {
               }
             />
           )}
-          {!props.hasObservability && (
+          {!hasObservability && (
             <NoObservabilityCard
-              canInstrumentMethod={props.canInstrumentMethod}
-              hasMissingDependency={props.hasMissingDependency}
+              canInstrumentMethod={canInstrumentMethod}
+              hasMissingDependency={hasMissingDependency}
               onAutofix={handleAutofix}
               onAddAnnotation={handleAddAnnotation}
             />

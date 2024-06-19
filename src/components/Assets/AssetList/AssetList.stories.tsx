@@ -3,6 +3,7 @@ import { Meta, StoryObj } from "@storybook/react";
 import { AssetList } from ".";
 import { ConfigContext, initialState } from "../../common/App/ConfigContext";
 import { ConfigContextData, DeploymentType } from "../../common/App/types";
+import { actions } from "../actions";
 import { mockedAssetsData } from "./mockedData";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
@@ -41,8 +42,16 @@ export const Default: Story = {
     setRefresher: () => {
       return undefined;
     },
-    assetTypeId: "Endpoint",
-    data: mockedAssetsData
+    assetTypeId: "Endpoint"
+  },
+  play: () => {
+    window.setTimeout(() => {
+      window.postMessage({
+        type: "digma",
+        action: actions.SET_DATA,
+        payload: mockedAssetsData
+      });
+    }, 500);
   }
 };
 
@@ -59,7 +68,15 @@ export const WithPerformanceImpact: Story = {
     setRefresher: () => {
       return undefined;
     },
-    assetTypeId: "Endpoint",
-    data: mockedAssetsData
+    assetTypeId: "Endpoint"
+  },
+  play: () => {
+    window.setTimeout(() => {
+      window.postMessage({
+        type: "digma",
+        action: actions.SET_DATA,
+        payload: mockedAssetsData
+      });
+    }, 500);
   }
 };

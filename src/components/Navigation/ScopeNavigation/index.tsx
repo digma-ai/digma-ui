@@ -2,29 +2,17 @@ import { useContext, useEffect, useState } from "react";
 import { actions as globalActions } from "../../../actions";
 import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
-import {
-  ChangeEnvironmentPayload,
-  ChangeScopePayload,
-  ChangeViewPayload
-} from "../../../types";
+import { changeScope } from "../../../utils/actions/changeScope";
 import { actions as mainActions } from "../../Main/actions";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Scope } from "../../common/App/types";
 import { SetViewsPayload } from "../types";
 import { HistoryManager } from "./HistoryManager";
-import { HistoryNavigationPanel } from "./HistoryNavigationPanel";
 import { ScopeNavigationProps } from "./types";
 
-const changeScope = (scope: Scope | null) => {
-  window.sendMessageToDigma<ChangeScopePayload>({
-    action: globalActions.CHANGE_SCOPE,
-    payload: {
-      span: scope?.span ?? null,
-      forceNavigation: true
-    }
-  });
-};
-
+/**
+ * @deprecated
+ */
 export const ScopeNavigation = (props: ScopeNavigationProps) => {
   const [historyManager, setHistoryManager] = useState<HistoryManager>(
     new HistoryManager()
@@ -35,7 +23,10 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
 
   useEffect(() => {
     if (!environment || !environments?.find((x) => x.id == environment?.id)) {
-      changeScope(null);
+      changeScope({
+        span: null,
+        forceNavigation: true
+      });
       setHistoryManager(new HistoryManager());
     }
   }, [environment, environments]);
@@ -71,23 +62,23 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
         const historyStep = historyManager.getCurrent();
 
         if (historyStep?.tabId) {
-          window.sendMessageToDigma<ChangeViewPayload>({
-            action: globalActions.CHANGE_VIEW,
-            payload: {
-              view: historyStep.tabId,
-              isUserAction: false
-            }
-          });
+          // window.sendMessageToDigma<ChangeViewPayload>({
+          //   action: globalActions.CHANGE_VIEW,
+          //   payload: {
+          //     view: historyStep.tabId,
+          //     isUserAction: false
+          //   }
+          // });
         }
 
-        if (historyStep?.environment) {
-          window.sendMessageToDigma<ChangeEnvironmentPayload>({
-            action: globalActions.CHANGE_ENVIRONMENT,
-            payload: {
-              environment: historyStep.environment.id
-            }
-          });
-        }
+        // if (historyStep?.environment) {
+        //   window.sendMessageToDigma<ChangeEnvironmentPayload>({
+        //     action: globalActions.CHANGE_ENVIRONMENT,
+        //     payload: {
+        //       environment: historyStep.environment.id
+        //     }
+        //   });
+        // }
       }
     };
 
@@ -120,26 +111,27 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
     };
   }, [environment, props.currentTabId, historyManager]);
 
-  const handleBackClick = () => {
-    const currentStep = historyManager.back();
-    if (currentStep?.scope) {
-      changeScope(currentStep.scope);
-    }
-  };
+  // const handleBackClick = () => {
+  //   const currentStep = historyManager.back();
+  //   if (currentStep?.scope) {
+  //     changeScope(currentStep.scope);
+  //   }
+  // };
 
-  const handleForwardClick = () => {
-    const currentStep = historyManager.forward();
-    if (currentStep?.scope) {
-      changeScope(currentStep.scope);
-    }
-  };
+  // const handleForwardClick = () => {
+  //   const currentStep = historyManager.forward();
+  //   if (currentStep?.scope) {
+  //     changeScope(currentStep.scope);
+  //   }
+  // };
 
   return (
-    <HistoryNavigationPanel
-      isBackDisabled={!historyManager.canMoveBack()}
-      isForwardDisabled={!historyManager.canMoveForward()}
-      onGoBack={handleBackClick}
-      onGoForward={handleForwardClick}
-    />
+    <></>
+    // <HistoryNavigationPanel
+    //   isBackDisabled={!historyManager.canMoveBack()}
+    //   isForwardDisabled={!historyManager.canMoveForward()}
+    //   onGoBack={handleBackClick}
+    //   onGoForward={handleForwardClick}
+    // />
   );
 };

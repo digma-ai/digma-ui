@@ -27,6 +27,9 @@ interface Node<T> {
   value: T;
 }
 
+/**
+ * @deprecated
+ */
 export class HistoryManager {
   private head: Node<HistoryStep> | null = null;
   private tail: Node<HistoryStep> | null = null;

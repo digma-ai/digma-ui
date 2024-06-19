@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { ChangeEvent, useCallback, useRef, useState } from "react";
 import useDimensions from "react-cool-dimensions";
 import { isString } from "../../../typeGuards/isString";
 import { Checkbox } from "../Checkbox";
@@ -22,7 +22,16 @@ const sortItemsBySelectedState = (a: SelectItem, b: SelectItem) => {
   return 0;
 };
 
-export const Select = (props: SelectProps) => {
+export const Select = ({
+  multiselect,
+  items,
+  onChange,
+  searchable,
+  disabled,
+  icon: Icon,
+  placeholder,
+  counts
+}: SelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const optionListRef = useRef<HTMLUListElement | null>(null);
@@ -40,7 +49,7 @@ export const Select = (props: SelectProps) => {
     setIsOpen(!isOpen);
   };
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
   };
 
@@ -49,12 +58,12 @@ export const Select = (props: SelectProps) => {
       return;
     }
 
-    if (!props.multiselect) {
-      props.onChange(item.value);
+    if (!multiselect) {
+      onChange(item.value);
       return;
     }
 
-    const otherSelectedItems = props.items
+    const otherSelectedItems = items
       .filter((x) => x.selected && x.value !== item.value)
       .map((x) => x.value);
 
@@ -62,14 +71,12 @@ export const Select = (props: SelectProps) => {
       ? otherSelectedItems
       : [...otherSelectedItems, item.value];
 
-    props.onChange(newValue);
+    onChange(newValue);
   };
 
-  const selectedValues = props.items
-    .filter((x) => x.selected)
-    .map((x) => x.value);
+  const selectedValues = items.filter((x) => x.selected).map((x) => x.value);
 
-  const filteredItems = props.items.filter((x) =>
+  const filteredItems = items.filter((x) =>
     x.label.toLocaleLowerCase().includes(searchValue)
   );
 
@@ -81,8 +88,7 @@ export const Select = (props: SelectProps) => {
   );
 
   const isSearchBarVisible =
-    props.searchable &&
-    (optionListHasVerticalScrollbar || searchValue.length > 0);
+    searchable && (optionListHasVerticalScrollbar || searchValue.length > 0);
 
   return (
     <NewPopover
@@ -110,7 +116,7 @@ export const Select = (props: SelectProps) => {
                   $enabled={x.enabled}
                   $selected={x.selected}
                 >
-                  {props.multiselect && (
+                  {multiselect && (
                     <Checkbox
                       value={Boolean(x.selected)}
                       label={""}
@@ -129,33 +135,31 @@ export const Select = (props: SelectProps) => {
           </s.OptionList>
         </s.MenuContainer>
       }
-      onOpenChange={props.disabled ? undefined : setIsOpen}
-      isOpen={props.disabled ? false : isOpen}
+      onOpenChange={disabled ? undefined : setIsOpen}
+      isOpen={disabled ? false : isOpen}
       placement={"bottom-start"}
     >
       <s.Button
         $isActive={isOpen}
         onClick={handleButtonClick}
-        disabled={props.disabled}
+        disabled={disabled}
       >
-        {props.icon && <props.icon color={"currentColor"} />}
-        {isString(props.placeholder) && (
-          <s.ButtonLabel>{props.placeholder}</s.ButtonLabel>
-        )}
+        {Icon && <Icon color={"currentColor"} />}
+        {isString(placeholder) && <s.ButtonLabel>{placeholder}</s.ButtonLabel>}
         {selectedValues.length > 0 && (
           <s.Number>{selectedValues.length}</s.Number>
         )}
-        {props.counts && (
+        {counts && (
           <s.Counts>
-            {props.counts.filtered < props.counts.total ? (
-              <s.FilteredCount>{props.counts.filtered}</s.FilteredCount>
+            {counts.filtered < counts.total ? (
+              <s.FilteredCount>{counts.filtered}</s.FilteredCount>
             ) : (
-              props.counts.filtered
+              counts.filtered
             )}
-            /{props.counts.total}
+            /{counts.total}
           </s.Counts>
         )}
-        <s.ChevronIconContainer $disabled={props.disabled}>
+        <s.ChevronIconContainer $disabled={disabled}>
           <ChevronIcon
             color={"currentColor"}
             size={14}

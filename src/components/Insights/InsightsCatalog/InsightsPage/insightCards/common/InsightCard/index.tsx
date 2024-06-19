@@ -28,62 +28,77 @@ import { InsightCardProps } from "./types";
 
 const HIGH_CRITICALITY_THRESHOLD = 0.8;
 
-export const InsightCard = (props: InsightCardProps) => {
+export const InsightCard = ({
+  insight,
+  onRefresh,
+  onRecalculate,
+  onOpenHistogram,
+  onGoToSpan,
+  onJiraButtonClick,
+  jiraTicketInfo,
+  isMarkAsReadButtonEnabled,
+  onGoToTrace,
+  onGoToLive,
+  onPin,
+  content,
+  isAsync
+}: InsightCardProps) => {
   const [isDismissConfirmationOpened, setDismissConfirmationOpened] =
     useState(false);
   const { isDismissalChangeInProgress, dismiss, show } = useDismissal(
-    props.insight.id
+    insight.id
   );
   const { isMarkingAsReadInProgress, markAsRead } = useMarkingAsRead(
-    props.insight.id
+    insight.id
   );
   const isOperationInProgress =
     isDismissalChangeInProgress || isMarkingAsReadInProgress;
   const previousIsOperationInProgress = usePrevious(isOperationInProgress);
   const config = useContext(ConfigContext);
-  const [insightStatus, setInsightStatus] = useState(props.insight.status);
+  const [insightStatus, setInsightStatus] = useState(insight.status);
 
-  const isCritical = props.insight.criticality > HIGH_CRITICALITY_THRESHOLD;
+  const isCritical = insight.criticality > HIGH_CRITICALITY_THRESHOLD;
 
   // TODO: remove and refresh the insight data
   useEffect(() => {
-    setInsightStatus(props.insight.status);
-  }, [props.insight.status]);
+    setInsightStatus(insight.status);
+  }, [insight.status]);
 
   useEffect(() => {
     if (previousIsOperationInProgress && !isOperationInProgress) {
-      props.onRefresh(props.insight.type);
+      onRefresh(insight.type);
     }
   }, [
     previousIsOperationInProgress,
     isOperationInProgress,
-    props.onRefresh,
-    props.insight.type
+    onRefresh,
+    insight.type
   ]);
 
   const handleRecheckButtonClick = () => {
-    props.onRecalculate && props.onRecalculate(props.insight.id);
+    if (onRecalculate) {
+      onRecalculate(insight.id);
+    }
     // TODO: handle Recheck response and refresh the insight data
     setInsightStatus(InsightStatus.InEvaluation);
   };
 
   const handleHistogramButtonClick = () => {
-    isSpanInsight(props.insight) &&
-      props.insight.spanInfo &&
-      props.onOpenHistogram &&
-      props.onOpenHistogram(
-        props.insight.spanInfo.spanCodeObjectId,
-        props.insight.type,
-        props.insight.spanInfo.displayName
+    if (isSpanInsight(insight) && insight.spanInfo && onOpenHistogram) {
+      onOpenHistogram(
+        insight.spanInfo.spanCodeObjectId,
+        insight.type,
+        insight.spanInfo.displayName
       );
+    }
   };
 
   const getRecalculateVisibilityParams = () => {
     const areStartTimesEqual =
-      props.insight.customStartTime &&
-      props.insight.actualStartTime &&
-      new Date(props.insight.actualStartTime).valueOf() -
-        new Date(props.insight.customStartTime).valueOf() ===
+      insight.customStartTime &&
+      insight.actualStartTime &&
+      new Date(insight.actualStartTime).valueOf() -
+        new Date(insight.customStartTime).valueOf() ===
         0;
 
     return {
@@ -94,10 +109,10 @@ export const InsightCard = (props: InsightCardProps) => {
 
   const handleSpanLinkClick = () => {
     if (
-      (isSpanInsight(props.insight) || isEndpointInsight(props.insight)) &&
-      props.insight.spanInfo
+      (isSpanInsight(insight) || isEndpointInsight(insight)) &&
+      insight.spanInfo
     ) {
-      props.onGoToSpan(props.insight.spanInfo.spanCodeObjectId);
+      onGoToSpan(insight.spanInfo.spanCodeObjectId);
     }
   };
 
@@ -105,7 +120,7 @@ export const InsightCard = (props: InsightCardProps) => {
     sendUserActionTrackingEvent(
       trackingEvents.INSIGHT_CARD_DISMISS_BUTTON_CLICKED,
       {
-        insightType: props.insight.type
+        insightType: insight.type
       }
     );
     dismiss();
@@ -116,7 +131,7 @@ export const InsightCard = (props: InsightCardProps) => {
     sendUserActionTrackingEvent(
       trackingEvents.INSIGHT_CARD_SHOW_BUTTON_CLICKED,
       {
-        insightType: props.insight.type
+        insightType: insight.type
       }
     );
     show();
@@ -126,7 +141,7 @@ export const InsightCard = (props: InsightCardProps) => {
     sendUserActionTrackingEvent(
       trackingEvents.INSIGHT_CARD_MARK_AS_READ_BUTTON_CLICKED,
       {
-        insightType: props.insight.type
+        insightType: insight.type
       }
     );
     markAsRead();
@@ -136,8 +151,8 @@ export const InsightCard = (props: InsightCardProps) => {
     spanCodeObjectId: string | undefined,
     event: string
   ) => {
-    if (props.onJiraButtonClick) {
-      props.onJiraButtonClick(spanCodeObjectId, event);
+    if (onJiraButtonClick) {
+      onJiraButtonClick(spanCodeObjectId, event);
     }
   };
 
@@ -145,20 +160,20 @@ export const InsightCard = (props: InsightCardProps) => {
     sendUserActionTrackingEvent(
       trackingEvents.INSIGHT_CARD_CREATE_TICKET_LINK_CLICKED,
       {
-        insightType: props.insight.type
+        insightType: insight.type
       }
     );
     openTicketInfo(
-      props.jiraTicketInfo?.spanCodeObjectId,
+      jiraTicketInfo?.spanCodeObjectId,
       "create ticket link clicked"
     );
   };
 
   const handleClick = () => {
     if (
-      !props.isMarkAsReadButtonEnabled &&
-      props.insight.isReadable &&
-      props.insight.isRead === false
+      !isMarkAsReadButtonEnabled &&
+      insight.isReadable &&
+      insight.isRead === false
     ) {
       markAsRead();
     }
@@ -171,9 +186,9 @@ export const InsightCard = (props: InsightCardProps) => {
     }[] = [];
 
     if (
-      props.isMarkAsReadButtonEnabled &&
-      props.insight.isReadable &&
-      props.insight.isRead === false
+      isMarkAsReadButtonEnabled &&
+      insight.isReadable &&
+      insight.isRead === false
     ) {
       buttonsToRender.push({
         tooltip: "Mark as read",
@@ -189,7 +204,7 @@ export const InsightCard = (props: InsightCardProps) => {
       });
     }
 
-    props.onOpenHistogram &&
+    if (onOpenHistogram) {
       buttonsToRender.push({
         tooltip: "Open Histogram",
         button: (btnProps) => (
@@ -201,8 +216,9 @@ export const InsightCard = (props: InsightCardProps) => {
           />
         )
       });
+    }
 
-    props.insight.isRecalculateEnabled &&
+    if (insight.isRecalculateEnabled) {
       buttonsToRender.push({
         tooltip: "Recheck",
         button: (btnProps) => (
@@ -214,57 +230,61 @@ export const InsightCard = (props: InsightCardProps) => {
           />
         )
       });
+    }
 
-    props.onJiraButtonClick &&
+    if (onJiraButtonClick) {
       buttonsToRender.push({
         tooltip: "Open ticket info",
         button: (btnProps) => (
           <JiraButton
-            ticketLink={props.jiraTicketInfo?.ticketLink}
-            isHintEnabled={props.jiraTicketInfo?.isHintEnabled}
-            spanCodeObjectId={props.jiraTicketInfo?.spanCodeObjectId}
+            ticketLink={jiraTicketInfo?.ticketLink}
+            isHintEnabled={jiraTicketInfo?.isHintEnabled}
+            spanCodeObjectId={jiraTicketInfo?.spanCodeObjectId}
             label={"Ticket"}
             onTicketInfoOpen={openTicketInfo}
-            insightType={props.insight.type}
+            insightType={insight.type}
             {...btnProps}
           />
         )
       });
+    }
 
-    config.isJaegerEnabled &&
-      props.onGoToTrace &&
+    if (config.isJaegerEnabled && onGoToTrace) {
       buttonsToRender.push({
         tooltip: "Open Trace",
         button: (btnProps) => (
           <Button
             icon={TraceIcon}
             label={"Trace"}
-            onClick={() => props.onGoToTrace && props.onGoToTrace()}
+            onClick={() => onGoToTrace()}
             {...btnProps}
           />
         )
       });
+    }
 
-    props.onGoToLive &&
+    if (onGoToLive) {
       buttonsToRender.push({
         tooltip: "Open live view",
         button: (btnProps) => (
           <Button
             icon={DoubleCircleIcon}
             label={"Live"}
-            onClick={() => props.onGoToLive && props.onGoToLive()}
+            onClick={() => onGoToLive()}
             {...btnProps}
           />
         )
       });
+    }
 
-    props.onPin &&
+    if (onPin) {
       buttonsToRender.push({
         tooltip: "Pin",
         button: (btnProps) => (
           <Button icon={PinIcon} label={"Pin"} {...btnProps} />
         )
       });
+    }
 
     if (buttonsToRender.length === 0) {
       return;
@@ -293,41 +313,39 @@ export const InsightCard = (props: InsightCardProps) => {
 
   return (
     <s.StyledInsightCard
-      $isDismissed={props.insight.isDismissed}
-      $isRead={props.insight.isRead}
-      $isReadable={props.insight.isReadable}
+      $isDismissed={insight.isDismissed}
+      $isRead={insight.isRead}
+      $isReadable={insight.isReadable}
       onClick={handleClick}
       header={
         <InsightHeader
-          insight={props.insight}
-          isAsync={props.isAsync}
+          insight={insight}
+          isAsync={isAsync}
           onSpanLinkClick={handleSpanLinkClick}
-          lastUpdateTimer={showTimer ? props.insight.actualStartTime : null}
+          lastUpdateTimer={showTimer ? insight.actualStartTime : null}
         />
       }
       content={
         <s.ContentContainer>
           {isCritical && (
             <ProductionAffectionBar
-              isTicketCreated={isString(props.insight.ticketLink)}
+              isTicketCreated={isString(insight.ticketLink)}
               onCreateTicket={
-                props.onJiraButtonClick
-                  ? handleCreateTicketLinkClick
-                  : undefined
+                onJiraButtonClick ? handleCreateTicketLinkClick : undefined
               }
             />
           )}
           {showBanner && <RecalculateBar />}
-          {props.content}
+          {content}
         </s.ContentContainer>
       }
       footer={
         <>
           {!isDismissConfirmationOpened ? (
             <s.InsightFooter>
-              {props.insight.isDismissible && (
+              {insight.isDismissible && (
                 <s.ButtonContainer>
-                  {props.insight.isDismissed ? (
+                  {insight.isDismissed ? (
                     <s.DismissButton
                       label={isDismissalChangeInProgress ? "Showing" : "Show"}
                       buttonType={"tertiary"}

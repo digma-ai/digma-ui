@@ -636,9 +636,6 @@ const data: RecentActivityData = {
 };
 
 export const WithData: Story = {
-  args: {
-    data
-  },
   decorators: [
     (Story) => (
       <ConfigContext.Provider
@@ -656,43 +653,78 @@ export const WithData: Story = {
         <Story />
       </ConfigContext.Provider>
     )
-  ]
+  ],
+  play: () => {
+    window.setTimeout(() => {
+      window.postMessage({
+        type: "digma",
+        action: actions.SET_DATA,
+        payload: data
+      });
+    }, 0);
+  }
 };
 
 export const WithEmptyEnv: Story = {
-  args: {
-    data: {
-      environments: [
-        {
-          name: "ENV_RENDER",
-          id: "ENV_RENDER",
-          isPending: false,
+  play: () => {
+    window.setTimeout(() => {
+      window.postMessage({
+        type: "digma",
+        action: actions.SET_DATA,
+        payload: {
+          environments: [
+            {
+              name: "ENV_RENDER",
+              id: "ENV_RENDER",
+              isPending: false,
 
-          type: "Private",
-          token: null,
-          serverApiUrl: null,
-          isOrgDigmaSetupFinished: false
+              type: "Private",
+              token: null,
+              serverApiUrl: null,
+              isOrgDigmaSetupFinished: false
+            }
+          ],
+          entries: []
         }
-      ],
-      entries: []
-    }
+      });
+    }, 0);
   }
 };
 
 export const WithLiveData: Story = {
-  args: {
-    data,
-    liveData
+  play: () => {
+    window.setTimeout(() => {
+      window.postMessage({
+        type: "digma",
+        action: actions.SET_DATA,
+        payload: data
+      });
+      window.postMessage({
+        type: "digma",
+        action: actions.SET_LIVE_DATA,
+        payload: liveData
+      });
+    }, 0);
   }
 };
 
 export const WithNoLiveData: Story = {
-  args: {
-    data,
-    liveData: {
-      ...liveData,
-      liveDataRecords: []
-    }
+  play: () => {
+    window.setTimeout(() => {
+      window.postMessage({
+        type: "digma",
+        action: actions.SET_DATA,
+        payload: data
+      });
+      window.postMessage({
+        type: "digma",
+        action: actions.SET_LIVE_DATA,
+        payload: {
+          ...liveData,
+          liveDataRecords: []
+        }
+      });
+    }, 0);
   }
 };
 

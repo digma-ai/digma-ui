@@ -7,11 +7,11 @@ import { dispatcher } from "../../dispatcher";
 import { usePersistence } from "../../hooks/usePersistence";
 import { usePrevious } from "../../hooks/usePrevious";
 import { isBoolean } from "../../typeGuards/isBoolean";
-import { ChangeEnvironmentPayload } from "../../types";
+import { changeScope } from "../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 import { groupBy } from "../../utils/groupBy";
 import { ConfigContext } from "../common/App/ConfigContext";
-import { Environment } from "../common/App/types";
+import { Environment, Scope } from "../common/App/types";
 import { RegistrationDialog } from "../common/RegistrationDialog";
 import { RegistrationFormValues } from "../common/RegistrationDialog/types";
 import { ListIcon } from "../common/icons/ListIcon";
@@ -38,7 +38,6 @@ import {
   EnvironmentClearDataTimeStamps,
   EnvironmentInstructionsVisibility,
   ExtendedEnvironment,
-  RecentActivityProps,
   ViewModeOption
 } from "./types";
 import { useDigmathonProgressData } from "./useDigmathonProgressData";
@@ -59,16 +58,18 @@ const viewModeOptions: ViewModeOption[] = [
 ];
 
 const changeSelectedEnvironment = (
+  scope: Scope | undefined,
   environments: Environment[] | undefined,
   environmentId: string
 ) => {
   const environmentToSelect = environments?.find((x) => x.id === environmentId);
 
   if (environmentToSelect) {
-    window.sendMessageToDigma<ChangeEnvironmentPayload>({
-      action: globalActions.CHANGE_ENVIRONMENT,
-      payload: {
-        environment: environmentToSelect.id
+    changeScope({
+      span: scope?.span ?? null,
+      environmentId: environmentToSelect.id,
+      context: {
+        event: "RECENT_ACTIVITY/ENVIRONMENT_TAB_SELECTED"
       }
     });
   }
@@ -77,7 +78,7 @@ const changeSelectedEnvironment = (
 const ENVIRONMENT_CLEAR_DATA_TIMESTAMP_PERSISTENCE_KEY =
   "environmentClearDataTimestamps";
 
-export const RecentActivity = (props: RecentActivityProps) => {
+export const RecentActivity = () => {
   const [selectedEnvironment, setSelectedEnvironment] =
     useState<ExtendedEnvironment>();
   const [showCreationWizard, setShowCreationWizard] = useState(false);
@@ -88,9 +89,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
   const [environmentToDelete, setEnvironmentToDelete] = useState<string>();
   const [environmentToClearData, setEnvironmentToClearData] =
     useState<string>();
-  const { recentActivityData: data } = useRecentActivityData({
-    data: props.data
-  });
+  const { recentActivityData: data } = useRecentActivityData();
   const isEnvironmentConfirmationDialogVisible = Boolean(
     environmentToDelete ?? environmentToClearData
   );
@@ -108,9 +107,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
   );
 
   const [viewMode, setViewMode] = useState<ViewMode>("table");
-  const { liveData, closeLiveSession } = useLiveData({
-    liveData: props.liveData
-  });
+  const { liveData, closeLiveView } = useLiveData();
 
   const [isDigmathonMode, setIsDigmathonMode] = useState(false);
   const { observe, entry } = useDimensions();
@@ -254,16 +251,21 @@ export const RecentActivity = (props: RecentActivityProps) => {
   ]);
 
   const handleEnvironmentSelect = (environment: ExtendedEnvironment) => {
-    changeSelectedEnvironment(config.environments, environment.id);
+    changeSelectedEnvironment(
+      config.scope,
+      config.environments,
+      environment.id
+    );
   };
 
   const handleSpanLinkClick = (span: EntrySpan) => {
     if (selectedEnvironment) {
-      window.sendMessageToDigma({
-        action: actions.GO_TO_SPAN,
-        payload: {
-          span,
-          environment: selectedEnvironment.id
+      changeScope({
+        span: {
+          spanCodeObjectId: span.spanCodeObjectId
+        },
+        context: {
+          event: "RECENT_ACTIVITY_SPAN_LINK_CLICKED"
         }
       });
     }
@@ -448,7 +450,11 @@ export const RecentActivity = (props: RecentActivityProps) => {
         if (newEnvId) {
           const newEnv = environments.find((x) => x.id == newEnvId);
           if (newEnv) {
-            changeSelectedEnvironment(config.environments, newEnv.id);
+            changeSelectedEnvironment(
+              config.scope,
+              config.environments,
+              newEnv.id
+            );
             setEnvironmentInstructionsVisibility({
               isOpen: true,
               newlyCreatedEnvironmentId: newEnv.id,
@@ -493,7 +499,7 @@ export const RecentActivity = (props: RecentActivityProps) => {
           <Allotment.Pane visible={Boolean(liveData)} minSize={450}>
             {liveData && (
               <s.LiveViewContainer>
-                <LiveView data={liveData} onClose={closeLiveSession} />
+                <LiveView data={liveData} onClose={closeLiveView} />
               </s.LiveViewContainer>
             )}
           </Allotment.Pane>

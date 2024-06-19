@@ -4,28 +4,33 @@ import { CheckmarkIcon } from "../icons/CheckmarkIcon";
 import * as s from "./styles";
 import { CheckboxProps } from "./types";
 
-export const Checkbox = (props: CheckboxProps) => {
+export const Checkbox = ({
+  onChange,
+  label,
+  value,
+  disabled
+}: CheckboxProps) => {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    props.onChange(e.target.checked);
+    onChange(e.target.checked);
   };
 
   return (
-    <Tooltip title={props.label} placement={"top-start"}>
-      <s.Label $disabled={props.value}>
+    <Tooltip title={label} placement={"top-start"}>
+      <s.Label $disabled={value}>
         <s.CheckboxContainer>
           <s.Checkbox
-            disabled={props.disabled}
+            disabled={disabled}
             type={"checkbox"}
             onChange={handleChange}
-            checked={props.value}
+            checked={value}
           />
-          {props.value && (
+          {value && (
             <s.CheckContainer>
               <CheckmarkIcon color={"currentColor"} height={5} />
             </s.CheckContainer>
           )}
         </s.CheckboxContainer>
-        <s.LabelText>{props.label}</s.LabelText>
+        <s.LabelText>{label}</s.LabelText>
       </s.Label>
     </Tooltip>
   );

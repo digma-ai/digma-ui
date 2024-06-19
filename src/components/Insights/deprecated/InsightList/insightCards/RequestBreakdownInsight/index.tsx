@@ -53,16 +53,18 @@ const columnHelper = createColumnHelper<Component>();
  * @deprecated
  * safe to delete after 2024-06-05
  */
-export const RequestBreakdownInsight = (
-  props: RequestBreakdownInsightProps
-) => {
+export const RequestBreakdownInsight = ({
+  insight,
+  onRecalculate,
+  onRefresh
+}: RequestBreakdownInsightProps) => {
   const [percentileViewMode, setPercentileViewMode] =
     useState<number>(DEFAULT_PERCENTILE);
 
   const data = useMemo(() => {
-    const components = getComponents(props.insight, percentileViewMode);
+    const components = getComponents(insight, percentileViewMode);
 
-    const sortedComponents = props.insight.hasAsyncSpans
+    const sortedComponents = insight.hasAsyncSpans
       ? [...components].sort((a, b) =>
           a.duration && b.duration
             ? a.duration.raw - b.duration.raw
@@ -73,7 +75,7 @@ export const RequestBreakdownInsight = (
         );
 
     return sortedComponents;
-  }, [props.insight, percentileViewMode]);
+  }, [insight, percentileViewMode]);
 
   const handlePercentileViewModeChange = (value: number) => {
     setPercentileViewMode(value);
@@ -200,17 +202,17 @@ export const RequestBreakdownInsight = (
 
   return (
     <InsightCard
-      data={props.insight}
-      spanInfo={props.insight.spanInfo}
-      content={props.insight.hasAsyncSpans ? renderTable() : renderPieChart()}
-      onRecalculate={props.onRecalculate}
-      onRefresh={props.onRefresh}
+      data={insight}
+      spanInfo={insight.spanInfo}
+      content={insight.hasAsyncSpans ? renderTable() : renderPieChart()}
+      onRecalculate={onRecalculate}
+      onRefresh={onRefresh}
       onPercentileViewModeChange={
-        props.insight.p50Components && props.insight.p95Components
+        insight.p50Components && insight.p95Components
           ? handlePercentileViewModeChange
           : undefined
       }
-      isAsync={props.insight.hasAsyncSpans}
+      isAsync={insight.hasAsyncSpans}
     />
   );
 };

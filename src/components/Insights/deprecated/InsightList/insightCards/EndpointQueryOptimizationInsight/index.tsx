@@ -23,19 +23,25 @@ const PAGE_SIZE = 3;
  * @deprecated
  * safe to delete after 2024-06-05
  */
-export const EndpointQueryOptimizationInsight = (
-  props: EndpointQueryOptimizationInsightProps
-) => {
+export const EndpointQueryOptimizationInsight = ({
+  insight,
+  onAssetLinkClick,
+  onJiraTicketCreate,
+  onTraceButtonClick,
+  isJiraHintEnabled,
+  onRecalculate,
+  onRefresh
+}: EndpointQueryOptimizationInsightProps) => {
   const config = useContext(ConfigContext);
 
   const [pageItems, page, setPage] = usePagination(
-    props.insight.spans,
+    insight.spans,
     PAGE_SIZE,
-    props.insight.codeObjectId
+    insight.codeObjectId
   );
 
   const handleSpanLinkClick = (spanCodeObjectId: string) => {
-    props.onAssetLinkClick(spanCodeObjectId, props.insight.type);
+    onAssetLinkClick(spanCodeObjectId, insight.type);
   };
 
   const handleTicketInfoButtonClick = (
@@ -45,11 +51,13 @@ export const EndpointQueryOptimizationInsight = (
     sendUserActionTrackingEvent(
       trackingEvents.JIRA_TICKET_INFO_BUTTON_CLICKED,
       {
-        insightType: props.insight.type
+        insightType: insight.type
       }
     );
-    props.onJiraTicketCreate &&
-      props.onJiraTicketCreate(props.insight, spanCodeObjectId, event);
+
+    if (onJiraTicketCreate) {
+      onJiraTicketCreate(insight, spanCodeObjectId, event);
+    }
   };
 
   const handleTraceButtonClick = (
@@ -57,13 +65,13 @@ export const EndpointQueryOptimizationInsight = (
     insightType: InsightType,
     spanCodeObjectId: string
   ) => {
-    props.onTraceButtonClick(trace, insightType, spanCodeObjectId);
+    onTraceButtonClick(trace, insightType, spanCodeObjectId);
   };
 
   return (
     <InsightCard
-      data={props.insight}
-      spanInfo={props.insight.spanInfo}
+      data={insight}
+      spanInfo={insight.spanInfo}
       content={
         <s.ContentContainer>
           <Description>Check the following locations:</Description>
@@ -102,7 +110,7 @@ export const EndpointQueryOptimizationInsight = (
                       spanCodeObjectId={spanInfo.spanCodeObjectId}
                       ticketLink={span.ticketLink}
                       buttonType={"small"}
-                      isHintEnabled={props.isJiraHintEnabled && i === 0}
+                      isHintEnabled={isJiraHintEnabled && i === 0}
                     />
                     {config.isJaegerEnabled && (
                       <Tooltip title={"Trace"}>
@@ -114,7 +122,7 @@ export const EndpointQueryOptimizationInsight = (
                                 name: spanName,
                                 id: span.traceId
                               },
-                              props.insight.type,
+                              insight.type,
                               spanInfo.spanCodeObjectId
                             )
                           }
@@ -126,7 +134,7 @@ export const EndpointQueryOptimizationInsight = (
               );
             })}
             <Pagination
-              itemsCount={props.insight.spans.length}
+              itemsCount={insight.spans.length}
               page={page}
               pageSize={PAGE_SIZE}
               onPageChange={setPage}
@@ -134,8 +142,8 @@ export const EndpointQueryOptimizationInsight = (
           </s.SpanList>
         </s.ContentContainer>
       }
-      onRecalculate={props.onRecalculate}
-      onRefresh={props.onRefresh}
+      onRecalculate={onRecalculate}
+      onRefresh={onRefresh}
     />
   );
 };

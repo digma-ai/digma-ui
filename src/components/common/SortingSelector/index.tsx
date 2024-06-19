@@ -20,40 +20,25 @@ const getSortingMenuChevronColor = (theme: DefaultTheme) => {
   }
 };
 
-const getSortIconColor = (theme: DefaultTheme, selected: boolean) => {
-  if (selected) {
-    switch (theme.mode) {
-      case "light":
-        return "#f1f5fa";
-      case "dark":
-      case "dark-jetbrains":
-        return "#dadada";
-    }
-  }
-  switch (theme.mode) {
-    case "light":
-      return "#828797";
-    case "dark":
-    case "dark-jetbrains":
-      return "#dadada";
-  }
-};
-
-export const SortingSelector = (props: SortingSelectorProps) => {
+export const SortingSelector = ({
+  defaultSorting,
+  onChange,
+  options
+}: SortingSelectorProps) => {
   const theme = useTheme();
-  const [sorting, setSorting] = useState<Sorting>(props.default);
+  const [sorting, setSorting] = useState<Sorting>(defaultSorting);
   const [isSortingMenuOpen, setIsSortingMenuOpen] = useState(false);
   const sortingMenuChevronColor = getSortingMenuChevronColor(theme);
 
   useEffect(() => {
-    props.onChange(sorting);
-  }, [sorting, props.default]);
+    onChange(sorting);
+  }, [sorting, defaultSorting]);
 
   const getSortingCriterionInfo = useCallback(
     (value: string) => {
-      return props.options.find((x) => x.value === value);
+      return options.find((x) => x.value === value);
     },
-    [props.options]
+    [options]
   );
 
   const handleSortingMenuItemSelect = (value: string) => {
@@ -108,7 +93,7 @@ export const SortingSelector = (props: SortingSelectorProps) => {
         <PopoverContent className={"Popover"}>
           <Menu
             title={"Sort by"}
-            items={props.options.map(({ value, label }) => ({
+            items={options.map(({ value, label }) => ({
               value,
               label
             }))}
@@ -120,7 +105,6 @@ export const SortingSelector = (props: SortingSelectorProps) => {
       <s.SortingOrderToggle>
         {[SORTING_ORDER.DESC, SORTING_ORDER.ASC].map((order) => {
           const isSelected = sorting.order === order;
-          const iconColor = getSortIconColor(theme, isSelected);
 
           return (
             <s.SortingOrderToggleOptionButton
@@ -129,7 +113,7 @@ export const SortingSelector = (props: SortingSelectorProps) => {
               onClick={() => handleSortingOrderToggleOptionButtonClick(order)}
             >
               <s.SortingOrderIconContainer $sortingOrder={order}>
-                <SortIcon color={iconColor} size={14} />
+                <SortIcon color={"currentColor"} size={14} />
               </s.SortingOrderIconContainer>
             </s.SortingOrderToggleOptionButton>
           );

@@ -3,7 +3,7 @@ import { EnvironmentCreated } from ".";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof EnvironmentCreated> = {
-  title: "Recent Activity/CreateEnvironmentPanel/EnvironmentCreated",
+  title: "Recent Activity/CreateEnvironmentWizard/EnvironmentCreated",
   component: EnvironmentCreated,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout

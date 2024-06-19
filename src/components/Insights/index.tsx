@@ -191,7 +191,7 @@ const sendMessage = (action: string, data?: object) => {
   });
 };
 
-export const Insights = (props: InsightsProps) => {
+export const Insights = ({ insightViewType }: InsightsProps) => {
   const DEFAULT_QUERY: InsightsQuery = {
     page: 0,
     sorting: {
@@ -200,7 +200,7 @@ export const Insights = (props: InsightsProps) => {
     },
     searchQuery: null,
     showDismissed: false,
-    insightViewType: props.insightViewType,
+    insightViewType,
     showUnreadOnly: false,
     filters: []
   };
@@ -219,9 +219,9 @@ export const Insights = (props: InsightsProps) => {
   const [isRegistrationInProgress, setIsRegistrationInProgress] =
     useState(false);
 
-  const isDismissalEnabled = props.insightViewType === "Issues";
+  const isDismissalEnabled = insightViewType === "Issues";
 
-  const isMarkingAsReadEnabled = props.insightViewType === "Issues";
+  const isMarkingAsReadEnabled = insightViewType === "Issues";
 
   const isRegistrationEnabled = false;
   const isRegistrationRequired =
@@ -331,7 +331,7 @@ export const Insights = (props: InsightsProps) => {
         isDismissalEnabled={isDismissalEnabled}
         unreadCount={data.unreadCount}
         isMarkingAsReadEnabled={isMarkingAsReadEnabled}
-        hideInsightsStats={props.insightViewType === "Analytics"}
+        hideInsightsStats={insightViewType === "Analytics"}
       />
     );
   };

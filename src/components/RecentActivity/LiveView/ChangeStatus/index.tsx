@@ -69,14 +69,14 @@ const renderArrowIcon = (
   );
 };
 
-export const ChangeStatus = (props: ChangeStatusProps) => {
+export const ChangeStatus = ({ percentile }: ChangeStatusProps) => {
   const theme = useTheme();
 
   return (
     <s.Container>
-      {renderArrowIcon(props.percentile, theme)}
-      {getStatusString(props.percentile)}
-      {!props.percentile.changeVerified && (
+      {renderArrowIcon(percentile, theme)}
+      {getStatusString(percentile)}
+      {!percentile.changeVerified && (
         <s.EvaluatingBadge>Evaluating</s.EvaluatingBadge>
       )}
     </s.Container>

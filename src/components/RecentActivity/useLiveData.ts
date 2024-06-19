@@ -3,10 +3,10 @@ import { dispatcher } from "../../dispatcher";
 import { LiveData } from "./LiveView/types";
 import { actions } from "./actions";
 
-export const useLiveData = (props: { liveData: LiveData | undefined }) => {
+export const useLiveData = () => {
   const [liveData, setLiveData] = useState<LiveData>();
 
-  const closeLiveSession = (codeObjectId: string) => {
+  const closeLiveView = (codeObjectId: string) => {
     setLiveData(undefined);
     window.sendMessageToDigma({
       action: actions.CLOSE_LIVE_VIEW,
@@ -28,11 +28,5 @@ export const useLiveData = (props: { liveData: LiveData | undefined }) => {
     };
   }, []);
 
-  useEffect(() => {
-    if (props.liveData) {
-      setLiveData(props.liveData);
-    }
-  }, [props.liveData]);
-
-  return { liveData, closeLiveSession };
+  return { liveData, closeLiveView };
 };

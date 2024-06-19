@@ -145,6 +145,24 @@ export const SortingOrderToggleOptionButton = styled.button<SortingOrderOptionPr
   border-radius: 2px;
   cursor: pointer;
   background: ${({ $selected }) => ($selected ? "#3538cd" : "transparent")};
+  color: ${({ theme, $selected }) => {
+    if ($selected) {
+      switch (theme.mode) {
+        case "light":
+          return "#f1f5fa";
+        case "dark":
+        case "dark-jetbrains":
+          return "#dadada";
+      }
+    }
+    switch (theme.mode) {
+      case "light":
+        return "#828797";
+      case "dark":
+      case "dark-jetbrains":
+        return "#dadada";
+    }
+  }};
 `;
 
 export const SortingOrderIconContainer = styled.div<SortingOrderIconContainerProps>`

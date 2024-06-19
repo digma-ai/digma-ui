@@ -28,8 +28,7 @@ import {
   RegisterPayload,
   SetSpanLatestDataPayload,
   Test,
-  TestsData,
-  TestsProps
+  TestsData
 } from "./types";
 
 const REFRESH_INTERVAL = isNumber(window.testsRefreshInterval)
@@ -68,7 +67,7 @@ const renderPagination = (
   );
 };
 
-export const Tests = (props: TestsProps) => {
+export const Tests = () => {
   const [data, setData] = useState<SetSpanLatestDataPayload>();
   const previousData = usePrevious(data);
   const refreshTimerId = useRef<number>();
@@ -199,14 +198,6 @@ export const Tests = (props: TestsProps) => {
     isRegistrationInProgress,
     previousUserRegistrationEmail
   ]);
-
-  useEffect(() => {
-    if (!props.data) {
-      return;
-    }
-
-    setData(props.data);
-  }, [props.data]);
 
   useEffect(() => {
     if (!previousData && data) {

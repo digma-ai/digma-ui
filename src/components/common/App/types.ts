@@ -1,10 +1,11 @@
-import { Mode } from "../../../globals";
+import { ReactNode } from "react";
+import { Theme } from "../../../globals";
 import { InsightFilterType } from "../../Insights/InsightsCatalog/types";
 import { InsightViewType } from "../../Insights/types";
 
 export interface AppProps {
-  children: React.ReactNode;
-  theme?: Mode;
+  children: ReactNode;
+  theme?: Theme;
 }
 
 export type InstallationType =
@@ -63,6 +64,11 @@ export interface Scope {
   issuesInsightsCount: number;
   analyticsInsightsCount: number;
   unreadInsightsCount: number;
+  environmentId?: string;
+  context?: {
+    event: string;
+    payload?: Record<string, unknown>;
+  };
 }
 
 export interface InsightsQuery {

@@ -20,7 +20,13 @@ pipelines:
 traces:
   exporters: [otlp/digma, ...]`;
 
-export const ObservabilityStep = (props: ObservabilityStepProps) => {
+export const ObservabilityStep = ({
+  onGoToNextStep,
+  onIsAlreadyUsingOtelChange,
+  isAlreadyUsingOtel,
+  onObservabilityChange,
+  isObservabilityEnabled
+}: ObservabilityStepProps) => {
   const theme = useTheme();
   const themeKind = getThemeKind(theme);
 
@@ -28,11 +34,11 @@ export const ObservabilityStep = (props: ObservabilityStepProps) => {
     useState<boolean>(false);
 
   const handleNextButtonClick = () => {
-    props.onGoToNextStep();
+    onGoToNextStep();
   };
 
   const handleAlreadyUsingOTELLinkClick = () => {
-    props.onIsAlreadyUsingOtelChange(!props.isAlreadyUsingOtel);
+    onIsAlreadyUsingOtelChange(!isAlreadyUsingOtel);
   };
 
   const handleCollectorIsModifiedButtonClick = () => {
@@ -40,10 +46,10 @@ export const ObservabilityStep = (props: ObservabilityStepProps) => {
   };
 
   const handleObservabilityToggleSwitch = () => {
-    props.onObservabilityChange(!props.isObservabilityEnabled);
+    onObservabilityChange(!isObservabilityEnabled);
   };
 
-  return props.isAlreadyUsingOtel ? (
+  return isAlreadyUsingOtel ? (
     <s.Container>
       <SectionTitle>Add Digma to your collector</SectionTitle>
       <s.SectionDescription>
@@ -55,7 +61,7 @@ export const ObservabilityStep = (props: ObservabilityStepProps) => {
         {isCollectorModified ? (
           <MainButton
             onClick={handleNextButtonClick}
-            disabled={props.isAlreadyUsingOtel && !isCollectorModified}
+            disabled={isAlreadyUsingOtel && !isCollectorModified}
           >
             Next
           </MainButton>
@@ -85,13 +91,13 @@ export const ObservabilityStep = (props: ObservabilityStepProps) => {
           <s.ObservabilityToggleSwitchContainer>
             <s.ObservabilityToggleSwitch
               onChange={handleObservabilityToggleSwitch}
-              checked={props.isObservabilityEnabled}
+              checked={isObservabilityEnabled}
               label={"Click here"}
               size={"large"}
             />
           </s.ObservabilityToggleSwitchContainer>
         </s.ObservabilityDescription>
-        {props.isObservabilityEnabled && (
+        {isObservabilityEnabled && (
           <s.CongratulationsTextContainer>
             <Loader status={"success"} size={24} themeKind={themeKind} />
             <s.CongratulationsText>Congratulations!</s.CongratulationsText>

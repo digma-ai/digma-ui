@@ -1,5 +1,4 @@
 import { formatDuration, intervalToDuration } from "date-fns";
-import { DefaultTheme, useTheme } from "styled-components";
 import { Duration } from "../../../../../globals";
 import { formatTimeDistance } from "../../../../../utils/formatTimeDistance";
 import { roundTo } from "../../../../../utils/roundTo";
@@ -56,30 +55,9 @@ export const getDurationDifferenceString = (
   return formatDuration(intervalToDuration({ start: 0, end: diff })); // approximate for the units larger then hours as start and end dates are unknown
 };
 
-const getArrowIconColor = (direction: Direction, theme: DefaultTheme) => {
-  if (direction === Direction.UP) {
-    switch (theme.mode) {
-      case "light":
-        return "#e00036";
-      case "dark":
-      case "dark-jetbrains":
-        return "#f93967";
-    }
-  }
-
-  switch (theme.mode) {
-    case "light":
-      return "#1dc693";
-    case "dark":
-    case "dark-jetbrains":
-      return "#67d28b";
-  }
-};
-
 const renderArrowIcon = (
   currentDuration: Duration,
-  previousDuration: Duration | null,
-  theme: DefaultTheme
+  previousDuration: Duration | null
 ): JSX.Element | null => {
   if (!previousDuration) {
     return null;
@@ -89,12 +67,8 @@ const renderArrowIcon = (
     previousDuration.raw > currentDuration.raw ? Direction.DOWN : Direction.UP;
 
   return (
-    <s.ArrowContainer>
-      <ArrowIcon
-        direction={direction}
-        color={getArrowIconColor(direction, theme)}
-        size={14}
-      />
+    <s.ArrowContainer $direction={direction}>
+      <ArrowIcon direction={direction} color={"currentColor"} />
     </s.ArrowContainer>
   );
 };
@@ -103,36 +77,33 @@ const renderArrowIcon = (
  * @deprecated
  * safe to delete after 2024-06-05
  */
-export const DurationChange = (props: DurationChangeProps) => {
-  const theme = useTheme();
-
+export const DurationChange = ({
+  currentDuration,
+  previousDuration,
+  changeTime,
+  changeVerified
+}: DurationChangeProps) => {
   const isChangeMeaningful = isChangeMeaningfulEnough(
-    props.currentDuration,
-    props.previousDuration,
-    props.changeTime
+    currentDuration,
+    previousDuration,
+    changeTime
   );
 
   return (
     <>
-      {props.previousDuration && props.changeTime && isChangeMeaningful && (
+      {previousDuration && changeTime && isChangeMeaningful && (
         <s.Change>
-          {renderArrowIcon(
-            props.currentDuration,
-            props.previousDuration,
-            theme
-          )}
-          by{" "}
-          {getDurationDifferenceString(
-            props.previousDuration,
-            props.currentDuration
-          )}
-          ,{" "}
-          <Tooltip title={new Date(props.changeTime).toString()}>
-            <span>{formatTimeDistance(props.changeTime)}</span>
+          {renderArrowIcon(currentDuration, previousDuration)}
+          by {getDurationDifferenceString(
+            previousDuration,
+            currentDuration
+          )},{" "}
+          <Tooltip title={new Date(changeTime).toString()}>
+            <span>{formatTimeDistance(changeTime)}</span>
           </Tooltip>
         </s.Change>
       )}
-      {isChangeMeaningful && props.changeVerified === false && (
+      {isChangeMeaningful && changeVerified === false && (
         <Tooltip
           title={
             "This change is still being validated and is based on initial data"

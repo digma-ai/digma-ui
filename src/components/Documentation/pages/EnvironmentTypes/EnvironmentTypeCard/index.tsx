@@ -3,31 +3,35 @@ import { getThemeKind } from "../../../../common/App/styles";
 import * as s from "./styles";
 import { EnvironmentTypeCardProps } from "./types";
 
-export const EnvironmentTypeCard = (props: EnvironmentTypeCardProps) => {
+export const EnvironmentTypeCard = ({
+  name,
+  icon: Icon,
+  description
+}: EnvironmentTypeCardProps) => {
   const theme = useTheme();
   const themeKind = getThemeKind(theme);
 
   return (
     <s.Container>
       <s.Title>
-        <props.icon height={24} themeKind={themeKind} />
-        <span>{props.name}</span>
+        <Icon height={24} themeKind={themeKind} />
+        <span>{name}</span>
       </s.Title>
-      <span>{props.description}</span>
+      <span>{description}</span>
       {/* <s.StatusContainer>
-        {props.status === "active" && <StatusChip status={props.status} />}
-        {props.status === "waiting-for-data" && (
+        {status === "active" && <StatusChip status={status} />}
+        {status === "waiting-for-data" && (
           <>
-            <StatusChip status={props.status} />
+            <StatusChip status={status} />
             <s.NoDataContainer>
               <InfoCircleIcon size={14} color={"currentColor"} />
               <s.Link>What is this?</s.Link>
             </s.NoDataContainer>
           </>
         )}
-        {!props.status && (
+        {!status && (
           <s.AddEnvironmentButton
-            icon={{ component: PlusIcon, color: "#b9c2eb" }}
+            icon={{ component: PlusIcon, color: "currentColor" }}
           >
             Add Environment
           </s.AddEnvironmentButton>

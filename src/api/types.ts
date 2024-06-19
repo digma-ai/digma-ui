@@ -4,6 +4,9 @@ export interface DigmaIncomingMessageData {
   type: "digma";
   action: string;
   payload?: unknown;
+  error?: {
+    message: string;
+  };
 }
 
 export interface DigmaOutgoingMessageData<T> {

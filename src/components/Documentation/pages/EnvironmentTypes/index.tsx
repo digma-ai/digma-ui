@@ -3,25 +3,23 @@ import { InsightCard } from "./InsightCard";
 import { environmentTypesData } from "./data";
 import * as s from "./styles";
 
-const renderEnvironmentTypesTable = () => {
-  return (
-    <s.Table>
-      <s.TableRow>
-        {environmentTypesData.map((x) => (
-          <s.TableCell key={x.id}>
-            <EnvironmentTypeCard
-              name={x.name}
-              icon={x.icon}
-              description={x.description}
-              insights={x.insights}
-              status={x.status}
-            />
-          </s.TableCell>
-        ))}
-      </s.TableRow>
-    </s.Table>
-  );
-};
+const renderEnvironmentTypesTable = () => (
+  <s.Table>
+    <s.TableRow>
+      {environmentTypesData.map((x) => (
+        <s.TableCell key={x.id}>
+          <EnvironmentTypeCard
+            name={x.name}
+            icon={x.icon}
+            description={x.description}
+            insights={x.insights}
+            status={x.status}
+          />
+        </s.TableCell>
+      ))}
+    </s.TableRow>
+  </s.Table>
+);
 
 const renderInsightsTable = () => {
   const rowsCount = Math.max(

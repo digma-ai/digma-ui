@@ -34,7 +34,31 @@ const getLoaderStatus = (
   }
 };
 
-export const EngineManager = (props: EngineManagerProps) => {
+const operationsInfo: Record<Operation, OperationInfo> = {
+  [Operation.INSTALL]: {
+    button: { label: "Start", icon: PlayCircleIcon },
+    titleSuffix: "Starting"
+  },
+  [Operation.UNINSTALL]: {
+    button: { label: "Remove", icon: CrossCircleIcon },
+    titleSuffix: "Removing"
+  },
+  [Operation.START]: {
+    button: { label: "Start", icon: PlayCircleIcon },
+    titleSuffix: "Starting"
+  },
+  [Operation.STOP]: {
+    button: { label: "Stop", icon: StopCircleIcon },
+    titleSuffix: "Stopping"
+  }
+};
+
+export const EngineManager = ({
+  engine,
+  onManualInstallSelect,
+  isAutoInstallationFlow,
+  overlay
+}: EngineManagerProps) => {
   const config = useContext(ConfigContext);
   const theme = useTheme();
   const themeKind = getThemeKind(theme);
@@ -52,25 +76,6 @@ export const EngineManager = (props: EngineManagerProps) => {
   //     config.digmaStatus.runningDigmaInstances.length > 1
   // );
 
-  const operationsInfo: Record<Operation, OperationInfo> = {
-    [Operation.INSTALL]: {
-      button: { label: "Start", icon: PlayCircleIcon },
-      titleSuffix: "Starting"
-    },
-    [Operation.UNINSTALL]: {
-      button: { label: "Remove", icon: CrossCircleIcon },
-      titleSuffix: "Removing"
-    },
-    [Operation.START]: {
-      button: { label: "Start", icon: PlayCircleIcon },
-      titleSuffix: "Starting"
-    },
-    [Operation.STOP]: {
-      button: { label: "Stop", icon: StopCircleIcon },
-      titleSuffix: "Stopping"
-    }
-  };
-
   const sendActionButtonTrackingEvent = (buttonName: string) => {
     sendUserActionTrackingEvent(trackingEvents.ENGINE_ACTION_BUTTON_CLICKED, {
       buttonName
@@ -79,21 +84,23 @@ export const EngineManager = (props: EngineManagerProps) => {
 
   const handleRetryButtonClick = () => {
     sendActionButtonTrackingEvent("Retry");
-    if (props.engine.failedOperation) {
-      props.engine.startOperation(props.engine.failedOperation.operation);
+    if (engine.failedOperation) {
+      engine.startOperation(engine.failedOperation.operation);
     }
   };
 
   const handleInstallManuallyButtonClick = () => {
     sendActionButtonTrackingEvent("Install manually");
-    props.onManualInstallSelect && props.onManualInstallSelect();
+    if (onManualInstallSelect) {
+      onManualInstallSelect();
+    }
   };
 
   const renderOperationButton = (operation: Operation, disabled?: boolean) => {
     const handleOperationButtonClick = () => {
       const operationInfo = operationsInfo[operation];
       sendActionButtonTrackingEvent(operationInfo.button.label);
-      props.engine.startOperation(operation);
+      engine.startOperation(operation);
     };
 
     const operationInfo = operationsInfo[operation];
@@ -115,15 +122,15 @@ export const EngineManager = (props: EngineManagerProps) => {
       : Operation.INSTALL;
     const operationInfo = operationsInfo[operation];
     sendActionButtonTrackingEvent(operationInfo.button.label);
-    props.engine.startOperation(operation);
+    engine.startOperation(operation);
   };
 
   const renderContent = () => {
     const loaderStatus = getLoaderStatus(
       config.isDigmaEngineInstalled,
       isEngineRunning,
-      props.engine.currentOperation?.status,
-      props.engine.failedOperation?.operation
+      engine.currentOperation?.status,
+      engine.failedOperation?.operation
     );
 
     const icon = loaderStatus ? (
@@ -135,8 +142,7 @@ export const EngineManager = (props: EngineManagerProps) => {
     let title = "Digma Local Analysis Engine ";
 
     const lastOperation =
-      props.engine.currentOperation?.operation ??
-      props.engine.failedOperation?.operation;
+      engine.currentOperation?.operation ?? engine.failedOperation?.operation;
 
     if (lastOperation) {
       title += operationsInfo[lastOperation].titleSuffix;
@@ -148,20 +154,20 @@ export const EngineManager = (props: EngineManagerProps) => {
         : "Not installed";
     }
 
-    if (props.engine.failedOperation) {
+    if (engine.failedOperation) {
       title += " Failed";
     }
 
     const buttons = [];
 
-    if (props.engine.failedOperation) {
+    if (engine.failedOperation) {
       buttons.push(
         <s.ActionButton onClick={handleRetryButtonClick} key={"retry"}>
           Retry
         </s.ActionButton>
       );
 
-      if (props.onManualInstallSelect) {
+      if (onManualInstallSelect) {
         buttons.push(
           <s.ActionButton
             onClick={handleInstallManuallyButtonClick}
@@ -172,7 +178,7 @@ export const EngineManager = (props: EngineManagerProps) => {
         );
       }
     } else {
-      if (config.isDigmaEngineInstalled && !props.isAutoInstallationFlow) {
+      if (config.isDigmaEngineInstalled && !isAutoInstallationFlow) {
         if (isEngineRunning) {
           buttons.push(renderOperationButton(Operation.STOP));
         }
@@ -182,30 +188,30 @@ export const EngineManager = (props: EngineManagerProps) => {
     }
 
     const isStartButtonDisabled =
-      props.engine.currentOperation?.status === "pending" ||
+      engine.currentOperation?.status === "pending" ||
       (config.digmaStatus &&
         config.digmaStatus.runningDigmaInstances.length > 0);
 
     return (
       <>
-        <s.ContentContainer $overlay={props.overlay}>
+        <s.ContentContainer $overlay={overlay}>
           {icon}
           <s.TextContainer>
             <s.Title>{title}</s.Title>
-            {!props.overlay && (
+            {!overlay && (
               <>
-                {!props.engine.failedOperation && (
+                {!engine.failedOperation && (
                   <span>
-                    {props.engine.currentOperation?.status === "pending"
+                    {engine.currentOperation?.status === "pending"
                       ? "This may take a few minutes..."
                       : `Click "${
                           isEngineRunning ? "Configure" : "Start"
                         }" to continue setup`}
                   </span>
                 )}
-                {props.engine.failedOperation ? (
+                {engine.failedOperation ? (
                   <s.ErrorMessage>
-                    {props.engine.failedOperation.error}
+                    {engine.failedOperation.error}
                   </s.ErrorMessage>
                 ) : (
                   <span>
@@ -218,11 +224,11 @@ export const EngineManager = (props: EngineManagerProps) => {
           </s.TextContainer>
           {buttons.length > 0 && (
             <s.ButtonsContainer>
-              {!props.engine.currentOperation && buttons}
+              {!engine.currentOperation && buttons}
             </s.ButtonsContainer>
           )}
         </s.ContentContainer>
-        {!props.isAutoInstallationFlow && (
+        {!isAutoInstallationFlow && (
           <s.MainButton
             disabled={isStartButtonDisabled}
             onClick={handleStartButtonClick}

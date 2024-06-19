@@ -12,21 +12,25 @@ import { trackingEvents } from "../tracking";
 import * as s from "./styles";
 import { EnvironmentBarProps } from "./types";
 
-export const EnvironmentBar = (props: EnvironmentBarProps) => {
+export const EnvironmentBar = ({
+  environments,
+  onEnvironmentChange,
+  selectedEnvironment
+}: EnvironmentBarProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const isDisabled = props.environments.length === 0;
+  const isDisabled = environments.length === 0;
 
   const renderEnvironmentMenu = () => {
     const handleMenuItemClick = (environment: Environment) => {
       setIsMenuOpen(false);
-      props.onEnvironmentChange(environment);
+      onEnvironmentChange(environment);
     };
 
     return (
       <s.EnvironmentMenuPopup height={"140px"}>
         <MenuList
-          items={props.environments.map((x) => ({
+          items={environments.map((x) => ({
             id: x.id,
             label: x.name,
             onClick: () => handleMenuItemClick(x),
@@ -38,6 +42,8 @@ export const EnvironmentBar = (props: EnvironmentBarProps) => {
   };
 
   const renderEnvironmentBar = () => {
+    const environmentName = selectedEnvironment?.name ?? "No environments";
+
     const handleEnvironmentBarClick = () => {
       if (!isDisabled) {
         sendUserActionTrackingEvent(trackingEvents.ENVIRONMENT_BAR_CLICKED);
@@ -52,8 +58,8 @@ export const EnvironmentBar = (props: EnvironmentBarProps) => {
         onClick={handleEnvironmentBarClick}
       >
         <s.EnvironmentIconContainer>
-          {props.selectedEnvironment ? (
-            <EnvironmentIcon environment={props.selectedEnvironment} />
+          {selectedEnvironment ? (
+            <EnvironmentIcon environment={selectedEnvironment} />
           ) : (
             <GlobeIcon size={16} color={"currentColor"} />
           )}
@@ -77,10 +83,6 @@ export const EnvironmentBar = (props: EnvironmentBarProps) => {
   const handleEnvironmentMenuOpenChange = (isOpen: boolean) => {
     setIsMenuOpen(isOpen);
   };
-
-  const environmentName = props.selectedEnvironment
-    ? props.selectedEnvironment.name
-    : "No environments";
 
   // TODO: refactor
   return !isDisabled && isMenuOpen ? (

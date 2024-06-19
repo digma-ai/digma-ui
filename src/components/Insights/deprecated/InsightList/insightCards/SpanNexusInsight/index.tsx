@@ -12,8 +12,11 @@ const getTagType = (isHigh: boolean) => {
  * @deprecated
  * safe to delete after 2024-06-05
  */
-export const SpanNexusInsight = (props: SpanNexusInsightProps) => {
-  const { insight } = props;
+export const SpanNexusInsight = ({
+  insight,
+  onRecalculate,
+  onRefresh
+}: SpanNexusInsightProps) => {
   const {
     entries,
     flows,
@@ -26,7 +29,7 @@ export const SpanNexusInsight = (props: SpanNexusInsightProps) => {
   return (
     <InsightCard
       data={insight}
-      spanInfo={props.insight.spanInfo}
+      spanInfo={insight.spanInfo}
       content={
         <s.ContentContainer>
           <Description>Multiple code flows depend on this location</Description>
@@ -52,8 +55,8 @@ export const SpanNexusInsight = (props: SpanNexusInsightProps) => {
           </s.Stats>
         </s.ContentContainer>
       }
-      onRecalculate={props.onRecalculate}
-      onRefresh={props.onRefresh}
+      onRecalculate={onRecalculate}
+      onRefresh={onRefresh}
     />
   );
 };

@@ -46,6 +46,15 @@ export const PlayIconContainer = styled.div`
   inset: 0;
   margin: auto;
   width: 8%;
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#3538cd";
+      case "dark":
+      case "dark-jetbrains":
+        return "#dadada";
+    }
+  }};
 `;
 
 export const GettingStartedVideoThumbnail = styled.img`
@@ -132,6 +141,7 @@ export const EmailInputIconContainer = styled.div`
   height: 16px;
   width: 16px;
   margin: auto;
+  color: #00c108;
 `;
 
 export const ErrorMessage = styled(CommonSectionDescription)`

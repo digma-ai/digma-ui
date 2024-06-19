@@ -1,5 +1,4 @@
 import { ReactElement } from "react";
-import { isBoolean } from "../../../../typeGuards/isBoolean";
 import { groupBy } from "../../../../utils/groupBy";
 import { intersperse } from "../../../../utils/intersperse";
 import { Tooltip } from "../../../common/v3/Tooltip";
@@ -8,13 +7,13 @@ import { MenuListProps } from "./types";
 
 const UNGROUPED_GROUP_LABEL = "__ungrouped";
 
-export const MenuList = (props: MenuListProps) => {
-  const showGroupNames = isBoolean(props.showGroupNames)
-    ? props.showGroupNames
-    : true;
-
+export const MenuList = ({
+  showGroupNames = true,
+  items,
+  showGroupDividers
+}: MenuListProps) => {
   const groups = groupBy(
-    props.items,
+    items,
     (item) => item.groupName ?? UNGROUPED_GROUP_LABEL
   );
 
@@ -44,7 +43,7 @@ export const MenuList = (props: MenuListProps) => {
 
   return (
     <s.List>
-      {props.showGroupDividers
+      {showGroupDividers
         ? intersperse<ReactElement, ReactElement>(
             groupElements,
             (i: number) => <s.ListGroupDivider key={`divider-${i}`} />

@@ -6,6 +6,7 @@ import { Meta, StoryObj } from "@storybook/react";
 import { Notifications } from ".";
 import { InsightType } from "../../types";
 import { InsightScope } from "../Insights/types";
+import { actions } from "./actions";
 import { Notification } from "./types";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
@@ -276,80 +277,128 @@ const notifications: Notification[] = [
 
 export const NoDataRecent: Story = {
   args: {
-    data: {
-      data: {
-        notifications: [],
-        totalCount: 0,
-        unreadCount: 0
-      },
-      error: null
-    },
     viewMode: "popup"
+  },
+  play: () => {
+    window.setTimeout(() => {
+      window.postMessage({
+        type: "digma",
+        action: actions.SET_DATA,
+        payload: {
+          data: {
+            notifications: [],
+            totalCount: 0,
+            unreadCount: 0
+          },
+          error: null
+        }
+      });
+    }, 500);
   }
 };
 
 export const RecentWithError: Story = {
   args: {
-    data: {
-      data: null,
-      error: {
-        message: "error message"
-      }
-    },
     viewMode: "popup"
+  },
+  play: () => {
+    window.setTimeout(() => {
+      window.postMessage({
+        type: "digma",
+        action: actions.SET_DATA,
+        payload: {
+          data: null,
+          error: {
+            message: "error message"
+          }
+        }
+      });
+    }, 500);
   }
 };
 
 export const Recent: Story = {
   args: {
-    data: {
-      data: {
-        notifications: notifications.slice(0, 3),
-        totalCount: 3,
-        unreadCount: 1
-      },
-      error: null
-    },
     viewMode: "popup"
+  },
+  play: () => {
+    window.setTimeout(() => {
+      window.postMessage({
+        type: "digma",
+        action: actions.SET_DATA,
+        payload: {
+          data: {
+            notifications: notifications.slice(0, 3),
+            totalCount: 3,
+            unreadCount: 1
+          },
+          error: null
+        }
+      });
+    }, 500);
   }
 };
 
 export const NoDataFull: Story = {
   args: {
-    data: {
-      data: {
-        notifications: [],
-        totalCount: 0,
-        unreadCount: 0
-      },
-      error: null
-    },
     viewMode: "full"
+  },
+  play: () => {
+    window.setTimeout(() => {
+      window.postMessage({
+        type: "digma",
+        action: actions.SET_DATA,
+        payload: {
+          data: {
+            notifications: [],
+            totalCount: 0,
+            unreadCount: 0
+          },
+          error: null
+        }
+      });
+    }, 500);
   }
 };
 
 export const Full: Story = {
   args: {
-    data: {
-      data: {
-        notifications,
-        totalCount: 12,
-        unreadCount: 1
-      },
-      error: null
-    },
     viewMode: "full"
+  },
+  play: () => {
+    window.setTimeout(() => {
+      window.postMessage({
+        type: "digma",
+        action: actions.SET_DATA,
+        payload: {
+          data: {
+            notifications,
+            totalCount: 12,
+            unreadCount: 1
+          },
+          error: null
+        }
+      });
+    }, 500);
   }
 };
 
 export const FullWithError: Story = {
   args: {
-    data: {
-      data: null,
-      error: {
-        message: "error message"
-      }
-    },
     viewMode: "full"
+  },
+  play: () => {
+    window.setTimeout(() => {
+      window.postMessage({
+        type: "digma",
+        action: actions.SET_DATA,
+        payload: {
+          data: null,
+          error: {
+            message: "error message"
+          }
+        }
+      });
+    }, 500);
   }
 };

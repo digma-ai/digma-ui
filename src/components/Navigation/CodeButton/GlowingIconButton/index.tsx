@@ -1,8 +1,12 @@
 import * as s from "./styles";
 import { GlowingIconButtonProps } from "./types";
 
-export const GlowingIconButton = (props: GlowingIconButtonProps) => (
-  <s.BorderContainer $type={props.type} onClick={props.onClick}>
-    <s.BorderlessIconButton icon={props.icon} />
+export const GlowingIconButton = ({
+  type,
+  onClick,
+  icon
+}: GlowingIconButtonProps) => (
+  <s.BorderContainer $type={type} onClick={onClick}>
+    <s.BorderlessIconButton icon={icon} />
   </s.BorderContainer>
 );

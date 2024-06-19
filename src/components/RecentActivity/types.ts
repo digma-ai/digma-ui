@@ -4,7 +4,6 @@ import { InsightType } from "../Insights/types";
 import { EnvironmentType } from "../common/App/types";
 import { IconProps } from "../common/icons/types";
 import { ViewMode } from "./EnvironmentPanel/types";
-import { LiveData } from "./LiveView/types";
 
 export interface RecentActivityThemeColors {
   background: string;
@@ -78,11 +77,6 @@ export interface ExtendedEnvironment extends Environment {
 export interface RecentActivityData {
   environments: Environment[];
   entries: ActivityEntry[];
-}
-
-export interface RecentActivityProps {
-  data?: RecentActivityData;
-  liveData?: LiveData;
 }
 
 export interface SetIsJaegerData {

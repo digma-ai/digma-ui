@@ -91,7 +91,6 @@ export interface InsightsData {
 export type InsightViewType = "Issues" | "Analytics";
 
 export interface InsightsProps {
-  data?: InsightsData;
   insightViewType: InsightViewType;
 }
 

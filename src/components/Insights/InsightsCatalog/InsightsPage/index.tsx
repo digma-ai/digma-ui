@@ -1,16 +1,15 @@
 import { useContext, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { actions as globalActions } from "../../../../actions";
 import { usePersistence } from "../../../../hooks/usePersistence";
 import { usePrevious } from "../../../../hooks/usePrevious";
 import { trackingEvents as globalTrackingEvents } from "../../../../trackingEvents";
 import { isNumber } from "../../../../typeGuards/isNumber";
 import { isUndefined } from "../../../../typeGuards/isUndefined";
-import {
-  ChangeScopePayload,
-  ChangeViewPayload,
-  InsightType
-} from "../../../../types";
+import { InsightType } from "../../../../types";
+import { changeScope } from "../../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
+import { TAB_IDS } from "../../../Navigation/Tabs/types";
 import { ConfigContext } from "../../../common/App/ConfigContext";
 import { EmptyState } from "../../../common/EmptyState";
 import { CardsIcon } from "../../../common/icons/CardsIcon";
@@ -176,12 +175,9 @@ const renderInsightCard = (
         insightType
       }
     );
-
-    window.sendMessageToDigma({
-      action: actions.GO_TO_ASSET,
-      payload: {
-        spanCodeObjectId
-      }
+    changeScope({
+      span: { spanCodeObjectId },
+      context: { event: "INSIGHTS/INSIGHT_CARD_TITLE_ASSET_LINK_CLICKED" }
     });
   };
 
@@ -195,13 +191,9 @@ const renderInsightCard = (
   };
 
   const handleGoToSpan = (spanCodeObjectId: string) => {
-    window.sendMessageToDigma<ChangeScopePayload>({
-      action: globalActions.CHANGE_SCOPE,
-      payload: {
-        span: {
-          spanCodeObjectId
-        }
-      }
+    changeScope({
+      span: { spanCodeObjectId },
+      context: { event: "INSIGHTS/INSIGHT_CARD_ASSET_LINK_CLICKED" }
     });
   };
 
@@ -490,7 +482,14 @@ const renderInsightCard = (
 const IS_INSIGHT_JIRA_TICKET_HINT_SHOWN_PERSISTENCE_KEY =
   "isInsightJiraTicketHintShown";
 
-export const InsightsPage = (props: InsightsPageProps) => {
+export const InsightsPage = ({
+  page,
+  insights,
+  onJiraTicketCreate,
+  onRefresh,
+  isMarkAsReadButtonEnabled,
+  isFilteringEnabled
+}: InsightsPageProps) => {
   const config = useContext(ConfigContext);
   const previousConfig = usePrevious(config);
   const [isInsightJiraTicketHintShown, setIsInsightJiraTicketHintShown] =
@@ -499,39 +498,40 @@ export const InsightsPage = (props: InsightsPageProps) => {
       "application"
     );
   const listRef = useRef<HTMLDivElement>(null);
-  const previousPage = usePrevious(props.page);
+  const previousPage = usePrevious(page);
+  const navigate = useNavigate();
 
-  const insightIndexWithJiraHint = getInsightToShowJiraHint(props.insights);
+  const insightIndexWithJiraHint = getInsightToShowJiraHint(insights);
 
   useEffect(() => {
     if (
-      (isNumber(previousPage) && previousPage !== props.page) ||
+      (isNumber(previousPage) && previousPage !== page) ||
       (previousConfig &&
         (previousConfig?.scope?.span !== config?.scope?.span ||
           previousConfig?.environment?.id !== config.environment?.id))
     ) {
       listRef.current?.scrollTo(0, 0);
     }
-  }, [previousPage, props.page, config, previousConfig]);
+  }, [previousPage, page, config, previousConfig]);
 
   useEffect(() => {
     window.sendMessageToDigma<MarkInsightTypesAsViewedPayload>({
       action: actions.MARK_INSIGHT_TYPES_AS_VIEWED,
       payload: {
-        insightTypes: props.insights.map((x) => ({
+        insightTypes: insights.map((x) => ({
           type: x.type,
           reopenCount: x.reopenCount
         }))
       }
     });
-  }, [props.insights]);
+  }, [insights]);
 
   const handleShowJiraTicket = (
     insight: GenericCodeObjectInsight,
     spanCodeObjectId: string | undefined,
     event?: string
   ) => {
-    props.onJiraTicketCreate(insight, spanCodeObjectId);
+    onJiraTicketCreate(insight, spanCodeObjectId);
     if (!isInsightJiraTicketHintShown?.value) {
       sendUserActionTrackingEvent(trackingEvents.JIRA_TICKET_HINT_CLOSED, {
         event
@@ -554,29 +554,24 @@ export const InsightsPage = (props: InsightsPageProps) => {
   };
 
   const handleAnalyticsTabLinkClick = () => {
-    window.sendMessageToDigma<ChangeViewPayload>({
-      action: globalActions.CHANGE_VIEW,
-      payload: {
-        view: "/analytics"
-      }
-    });
+    navigate(TAB_IDS.ANALYTICS);
   };
 
   return (
     <s.Container ref={listRef}>
-      {props.insights.length > 0 ? (
-        props.insights.map((insight, j) => {
+      {insights.length > 0 ? (
+        insights.map((insight, j) => {
           return renderInsightCard(
             insight,
             handleShowJiraTicket,
             !isUndefined(isInsightJiraTicketHintShown) &&
               !isInsightJiraTicketHintShown?.value &&
               j === insightIndexWithJiraHint,
-            props.onRefresh,
-            props.isMarkAsReadButtonEnabled
+            onRefresh,
+            isMarkAsReadButtonEnabled
           );
         })
-      ) : props.isFilteringEnabled ? (
+      ) : isFilteringEnabled ? (
         <EmptyState
           icon={CardsIcon}
           title={"No data found"}

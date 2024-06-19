@@ -19,9 +19,12 @@ const MIN_CONCURRENCY_STATES_TO_EVALUATE_SCALE = 4;
  * @deprecated
  * safe to delete after the implementation of the version with new UI
  */
-export const PerformanceAtScaleInsight = (
-  props: PerformanceAtScaleInsightProps
-) => {
+export const PerformanceAtScaleInsight = ({
+  insight,
+  onHistogramButtonClick,
+  onRecalculate,
+  onRefresh
+}: PerformanceAtScaleInsightProps) => {
   const columnHelper = createColumnHelper<Concurrency>();
 
   const renderDuration = (duration: Duration) => (
@@ -52,30 +55,31 @@ export const PerformanceAtScaleInsight = (
   ];
 
   const table = useReactTable({
-    data: props.insight.concurrencies,
+    data: insight.concurrencies,
     columns,
     getCoreRowModel: getCoreRowModel()
   });
 
   const handleHistogramButtonClick = () => {
-    props.insight.spanInfo &&
-      props.onHistogramButtonClick(
-        props.insight.spanInfo.spanCodeObjectId,
-        props.insight.type,
-        props.insight.spanInfo.displayName
+    if (insight.spanInfo) {
+      onHistogramButtonClick(
+        insight.spanInfo.spanCodeObjectId,
+        insight.type,
+        insight.spanInfo.displayName
       );
+    }
   };
 
   return (
     <InsightCard
-      key={props.insight.type}
-      data={props.insight}
-      spanInfo={props.insight.spanInfo}
+      key={insight.type}
+      data={insight}
+      spanInfo={insight.spanInfo}
       content={
         <div>
           Run at{" "}
           {MIN_CONCURRENCY_STATES_TO_EVALUATE_SCALE -
-            props.insight.concurrencies.length}{" "}
+            insight.concurrencies.length}{" "}
           more concurrently states to scale evaluations
         </div>
       }
@@ -111,7 +115,7 @@ export const PerformanceAtScaleInsight = (
         </s.Table>
       }
       buttons={[
-        ...(props.insight.spanInfo
+        ...(insight.spanInfo
           ? [
               <Button
                 icon={{ component: ChartIcon }}
@@ -123,8 +127,8 @@ export const PerformanceAtScaleInsight = (
             ]
           : [])
       ]}
-      onRecalculate={props.onRecalculate}
-      onRefresh={props.onRefresh}
+      onRecalculate={onRecalculate}
+      onRefresh={onRefresh}
     />
   );
 };

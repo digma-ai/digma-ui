@@ -10,3 +10,7 @@ export interface AssetEntryProps {
 export interface ImpactScoreIndicatorProps {
   $score: number;
 }
+
+export interface InsightIconContainerProps {
+  $criticality: number;
+}

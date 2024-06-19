@@ -1,15 +1,19 @@
 import * as s from "./styles";
 import { ToggleProps } from "./types";
 
-export const Toggle = <T extends string>(props: ToggleProps<T>) => {
+export const Toggle = <T extends string>({
+  onChange,
+  options,
+  value
+}: ToggleProps<T>) => {
   const handleValueChange = (value: T) => {
-    props.onChange(value);
+    onChange(value);
   };
 
   return (
     <s.Container>
-      {props.options.map((option) => {
-        const isSelected = option.value === props.value;
+      {options.map((option) => {
+        const isSelected = option.value === value;
 
         return (
           <s.ToggleOptionButton

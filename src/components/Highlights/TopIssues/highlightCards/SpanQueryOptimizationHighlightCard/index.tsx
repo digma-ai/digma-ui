@@ -1,9 +1,9 @@
 import { Row, createColumnHelper } from "@tanstack/react-table";
 import { useContext } from "react";
-import { ROUTES } from "../../../../../constants";
 import { Duration } from "../../../../../globals";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { getDurationString } from "../../../../../utils/getDurationString";
+import { TAB_IDS } from "../../../../Navigation/Tabs/types";
 import { ConfigContext } from "../../../../common/App/ConfigContext";
 import { Tag } from "../../../../common/v3/Tag";
 import { Table } from "../../../common/Table";
@@ -80,9 +80,10 @@ export const SpanQueryOptimizationHighlightCard = ({
       }
     );
     handleEnvironmentTableRowClick(
+      config.scope,
       config.environments,
       row.original.environmentId,
-      ROUTES.INSIGHTS
+      TAB_IDS.ISSUES
     );
   };
 

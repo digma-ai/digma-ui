@@ -1,4 +1,3 @@
-import { DefaultTheme, useTheme } from "styled-components";
 import { Button } from "../../../../common/Button";
 import { Card } from "../../../../common/Card";
 import { OpenTelemetryLogoCrossedSmallIcon } from "../../../../common/icons/OpenTelemetryLogoCrossedSmallIcon";
@@ -6,29 +5,22 @@ import { Description, Link } from "../../../styles";
 import * as s from "./styles";
 import { NoObservabilityCardProps } from "./types";
 
-const getIconColor = (theme: DefaultTheme) => {
-  switch (theme.mode) {
-    case "light":
-      return "#4d668a";
-    case "dark":
-    case "dark-jetbrains":
-      return "#dadada";
-  }
-};
 /**
  * @deprecated
  * safe to delete after the implementation of the version with new UI
  */
-export const NoObservabilityCard = (props: NoObservabilityCardProps) => {
-  const theme = useTheme();
-  const iconColor = getIconColor(theme);
-
+export const NoObservabilityCard = ({
+  onAutofix,
+  onAddAnnotation,
+  hasMissingDependency,
+  canInstrumentMethod
+}: NoObservabilityCardProps) => {
   const handleAutofixLinkClick = () => {
-    props.onAutofix();
+    onAutofix();
   };
 
   const handleAddAnnotationButtonClick = () => {
-    props.onAddAnnotation();
+    onAddAnnotation();
   };
 
   return (
@@ -36,7 +28,10 @@ export const NoObservabilityCard = (props: NoObservabilityCardProps) => {
       header={
         <s.Title>
           <s.InsightIconContainer>
-            <OpenTelemetryLogoCrossedSmallIcon color={iconColor} size={16} />
+            <OpenTelemetryLogoCrossedSmallIcon
+              color={"currentColor"}
+              size={16}
+            />
           </s.InsightIconContainer>
           No observability
         </s.Title>
@@ -47,7 +42,7 @@ export const NoObservabilityCard = (props: NoObservabilityCardProps) => {
             Add an annotation to observe this method and collect data about its
             runtime behavior
           </Description>
-          {props.hasMissingDependency && (
+          {hasMissingDependency && (
             <s.MissingDependencyContainer>
               <s.MissingDependencyText>
                 missing dependency: opentelemetry.annotation
@@ -58,12 +53,12 @@ export const NoObservabilityCard = (props: NoObservabilityCardProps) => {
         </>
       }
       buttons={[
-        ...(props.canInstrumentMethod
+        ...(canInstrumentMethod
           ? [
               <Button
                 key={"addAnnotation"}
                 onClick={handleAddAnnotationButtonClick}
-                disabled={props.hasMissingDependency}
+                disabled={hasMissingDependency}
               >
                 Add annotation
               </Button>

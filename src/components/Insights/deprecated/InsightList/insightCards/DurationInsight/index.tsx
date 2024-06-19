@@ -140,33 +140,40 @@ const calculateBars = (
  * @deprecated
  * safe to delete after 2024-06-05
  */
-export const DurationInsight = (props: DurationInsightProps) => {
+export const DurationInsight = ({
+  insight,
+  onHistogramButtonClick,
+  onLiveButtonClick,
+  onRefresh,
+  onRecalculate
+}: DurationInsightProps) => {
   // const config = useContext(ConfigContext);
   const theme = useTheme();
   const tickColor = getTickColor(theme);
   const { observe, width } = useDimensions();
 
-  const sortedPercentiles = [...props.insight.percentiles].sort(
+  const sortedPercentiles = [...insight.percentiles].sort(
     (a, b) => a.percentile - b.percentile
   );
 
-  const spanLastCall = props.insight.lastSpanInstanceInfo;
+  const spanLastCall = insight.lastSpanInstanceInfo;
 
   const handleHistogramButtonClick = () => {
-    props.insight.spanInfo &&
-      props.onHistogramButtonClick(
-        props.insight.spanInfo.spanCodeObjectId,
-        props.insight.type,
-        props.insight.spanInfo.displayName
+    if (insight.spanInfo) {
+      onHistogramButtonClick(
+        insight.spanInfo.spanCodeObjectId,
+        insight.type,
+        insight.spanInfo.displayName
       );
+    }
   };
 
   const handleLiveButtonClick = () => {
-    props.onLiveButtonClick(props.insight.codeObjectId);
+    onLiveButtonClick(insight.codeObjectId);
   };
 
   // const handleCompareButtonClick = (traces: [Trace, Trace]) => {
-  //   props.onCompareButtonClick(traces, props.insight.type);
+  //   onCompareButtonClick(traces, insight.type);
   // };
 
   const traces: Trace[] = [];
@@ -176,9 +183,9 @@ export const DurationInsight = (props: DurationInsightProps) => {
       LAST_CALL_TIME_DISTANCE_LIMIT
     : false;
 
-  const chartData = props.insight.histogramPlot
+  const chartData = insight.histogramPlot
     ? calculateBars(
-        props.insight.histogramPlot.bars,
+        insight.histogramPlot.bars,
         Math.max(width - MIN_X_AXIS_PADDING * 2, 0)
       )
     : [];
@@ -188,11 +195,11 @@ export const DurationInsight = (props: DurationInsightProps) => {
     MIN_X_AXIS_PADDING
   );
 
-  const p50 = props.insight.histogramPlot?.quantiles.find(
+  const p50 = insight.histogramPlot?.quantiles.find(
     (x) => x.quantileValue === 0.5
   )?.timestamp;
 
-  const p95 = props.insight.histogramPlot?.quantiles.find(
+  const p95 = insight.histogramPlot?.quantiles.find(
     (x) => x.quantileValue === 0.95
   )?.timestamp;
 
@@ -288,8 +295,8 @@ export const DurationInsight = (props: DurationInsightProps) => {
 
   return (
     <InsightCard
-      data={props.insight}
-      spanInfo={props.insight.spanInfo}
+      data={insight}
+      spanInfo={insight.spanInfo}
       isRecent={isLastCallRecent}
       content={
         <s.Container>
@@ -351,21 +358,21 @@ export const DurationInsight = (props: DurationInsightProps) => {
           ) : (
             <span>Waiting for more data...</span>
           )}
-          {!props.insight.histogramPlot &&
-            props.insight.average &&
-            props.insight.average.raw > 0 &&
-            props.insight.standardDeviation && (
+          {!insight.histogramPlot &&
+            insight.average &&
+            insight.average.raw > 0 &&
+            insight.standardDeviation && (
               <s.Stats key={"average"}>
                 <s.StatsTitle>Average</s.StatsTitle>
                 <Description>
-                  {getDurationString(props.insight.average)}
-                  {props.insight.standardDeviation.raw > 0 &&
-                    ` ± ${getDurationString(props.insight.standardDeviation)}`}
+                  {getDurationString(insight.average)}
+                  {insight.standardDeviation.raw > 0 &&
+                    ` ± ${getDurationString(insight.standardDeviation)}`}
                 </Description>
               </s.Stats>
             )}
 
-          {props.insight.histogramPlot && (
+          {insight.histogramPlot && (
             <s.ChartContainer ref={observe} $height={chartContainerHeight}>
               <ResponsiveContainer width={"100%"} height={"100%"}>
                 <BarChart
@@ -445,11 +452,11 @@ export const DurationInsight = (props: DurationInsightProps) => {
           )}
         </s.Container>
       }
-      onRecalculate={props.onRecalculate}
-      onRefresh={props.onRefresh}
-      isAsync={props.insight.isAsync}
+      onRecalculate={onRecalculate}
+      onRefresh={onRefresh}
+      isAsync={insight.isAsync}
       buttons={[
-        ...(props.insight.spanInfo
+        ...(insight.spanInfo
           ? [
               <Button
                 icon={{ component: ChartIcon }}

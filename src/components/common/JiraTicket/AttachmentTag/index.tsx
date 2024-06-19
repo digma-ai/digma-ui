@@ -2,13 +2,13 @@ import { Tooltip } from "../../../common/Tooltip";
 import * as s from "./styles";
 import { AttachmentTagProps } from "./types";
 
-export const AttachmentTag = (props: AttachmentTagProps) => (
+export const AttachmentTag = ({ icon: Icon, text }: AttachmentTagProps) => (
   <s.Container>
     <s.IconContainer>
-      <props.icon color={"currentColor"} size={16} />
+      <Icon color={"currentColor"} size={16} />
     </s.IconContainer>
-    <Tooltip title={props.text}>
-      <s.TextContainer>{props.text}</s.TextContainer>
+    <Tooltip title={text}>
+      <s.TextContainer>{text}</s.TextContainer>
     </Tooltip>
   </s.Container>
 );

@@ -15,28 +15,36 @@ import { BottleneckInsightProps } from "./types";
  * @deprecated
  * safe to delete after 2024-06-05
  */
-export const BottleneckInsight = (props: BottleneckInsightProps) => {
+export const BottleneckInsight = ({
+  onAssetLinkClick,
+  insight,
+  onJiraTicketCreate,
+  onRecalculate,
+  onRefresh,
+  isJiraHintEnabled
+}: BottleneckInsightProps) => {
   const handleEndpointLinkClick = (spanCodeObjectId: string) => {
-    props.onAssetLinkClick(spanCodeObjectId, props.insight.type);
+    onAssetLinkClick(spanCodeObjectId, insight.type);
   };
 
   const handleCreateJiraTicketButtonClick = (event: string) => {
     sendUserActionTrackingEvent(
       trackingEvents.JIRA_TICKET_INFO_BUTTON_CLICKED,
       {
-        insightType: props.insight.type
+        insightType: insight.type
       }
     );
-    props.onJiraTicketCreate &&
-      props.onJiraTicketCreate(props.insight, undefined, event);
+    if (onJiraTicketCreate) {
+      onJiraTicketCreate(insight, undefined, event);
+    }
   };
 
-  const slowEndpoints = props.insight.slowEndpoints ?? [];
+  const slowEndpoints = insight.slowEndpoints ?? [];
 
   return (
     <InsightCard
-      spanInfo={props.insight.spanInfo}
-      data={props.insight}
+      spanInfo={insight.spanInfo}
+      data={insight}
       content={
         <>
           <s.EndpointList>
@@ -77,21 +85,21 @@ export const BottleneckInsight = (props: BottleneckInsightProps) => {
             })}
           </s.EndpointList>
           <s.Container>
-            <Criticality value={props.insight.criticality} />
+            <Criticality value={insight.criticality} />
             <s.Box>
               <JiraButton
                 onTicketInfoButtonClick={handleCreateJiraTicketButtonClick}
-                spanCodeObjectId={props.insight.spanInfo?.spanCodeObjectId}
-                ticketLink={props.insight.ticketLink}
+                spanCodeObjectId={insight.spanInfo?.spanCodeObjectId}
+                ticketLink={insight.ticketLink}
                 buttonType={"large"}
-                isHintEnabled={props.isJiraHintEnabled}
+                isHintEnabled={isJiraHintEnabled}
               />
             </s.Box>
           </s.Container>
         </>
       }
-      onRecalculate={props.onRecalculate}
-      onRefresh={props.onRefresh}
+      onRecalculate={onRecalculate}
+      onRefresh={onRefresh}
     />
   );
 };

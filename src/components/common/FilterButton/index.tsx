@@ -3,15 +3,18 @@ import { FunnelIcon } from "../icons/FunnelIcon";
 import * as s from "./styles";
 import { FilterButtonProps } from "./types";
 
-export const FilterButton = (props: FilterButtonProps) => (
-  <s.Button
-    $hasSelectedItems={isNumber(props.selectedCount) && props.selectedCount > 0}
-  >
+export const FilterButton = ({
+  selectedCount,
+  title,
+  showCount,
+  isLoading
+}: FilterButtonProps) => (
+  <s.Button $hasSelectedItems={isNumber(selectedCount) && selectedCount > 0}>
     <FunnelIcon color={"currentColor"} size={14} />
-    <s.Title>{props.title}</s.Title>
-    {props.showCount &&
-      isNumber(props.selectedCount) &&
-      props.selectedCount > 0 &&
-      !props.isLoading && <s.Number>{props.selectedCount}</s.Number>}
+    <s.Title>{title}</s.Title>
+    {showCount &&
+      isNumber(selectedCount) &&
+      selectedCount > 0 &&
+      !isLoading && <s.Number>{selectedCount}</s.Number>}
   </s.Button>
 );

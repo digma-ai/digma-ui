@@ -43,17 +43,21 @@ const getDescription = (insightType: InsightType): string => {
  * @deprecated
  * safe to delete after 2024-06-05
  */
-export const TrafficInsight = (props: TrafficInsightProps) => {
-  const valueString = getValueString(props.insight.maxCallsIn1Min);
+export const TrafficInsight = ({
+  insight,
+  onRecalculate,
+  onRefresh
+}: TrafficInsightProps) => {
+  const valueString = getValueString(insight.maxCallsIn1Min);
 
   return (
     <InsightCard
-      spanInfo={props.insight.spanInfo}
-      data={props.insight}
-      content={<Description>{getDescription(props.insight.type)}</Description>}
+      spanInfo={insight.spanInfo}
+      data={insight}
+      content={<Description>{getDescription(insight.type)}</Description>}
       stats={`${valueString}/min`}
-      onRecalculate={props.onRecalculate}
-      onRefresh={props.onRefresh}
+      onRecalculate={onRecalculate}
+      onRefresh={onRefresh}
     />
   );
 };

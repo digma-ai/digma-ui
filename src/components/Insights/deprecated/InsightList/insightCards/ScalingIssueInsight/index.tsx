@@ -21,11 +21,20 @@ import { ScalingIssueInsightProps } from "./types";
  * @deprecated
  * safe to delete after 2024-06-05
  */
-export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
+export const ScalingIssueInsight = ({
+  onAssetLinkClick,
+  insight,
+  onTraceButtonClick,
+  onHistogramButtonClick,
+  onJiraTicketCreate,
+  isJiraHintEnabled,
+  onRecalculate,
+  onRefresh
+}: ScalingIssueInsightProps) => {
   const config = useContext(ConfigContext);
 
   const handleLinkClick = (spanCodeObjectId: string) => {
-    props.onAssetLinkClick(spanCodeObjectId, props.insight.type);
+    onAssetLinkClick(spanCodeObjectId, insight.type);
   };
 
   const handleTraceButtonClick = (
@@ -33,15 +42,15 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
     insightType: InsightType,
     spanCodeObjectId: string
   ) => {
-    props.onTraceButtonClick(trace, insightType, spanCodeObjectId);
+    onTraceButtonClick(trace, insightType, spanCodeObjectId);
   };
 
   const handleHistogramButtonClick = () => {
-    props.insight.spanInfo &&
-      props.onHistogramButtonClick(
-        props.insight.spanInfo.spanCodeObjectId,
-        props.insight.type,
-        props.insight.spanInfo.displayName
+    insight.spanInfo &&
+      onHistogramButtonClick(
+        insight.spanInfo.spanCodeObjectId,
+        insight.type,
+        insight.spanInfo.displayName
       );
   };
 
@@ -52,45 +61,44 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
     sendUserActionTrackingEvent(
       trackingEvents.JIRA_TICKET_INFO_BUTTON_CLICKED,
       {
-        insightType: props.insight.type
+        insightType: insight.type
       }
     );
 
-    props.onJiraTicketCreate &&
-      props.onJiraTicketCreate(props.insight, spanCodeObjectId, event);
+    if (onJiraTicketCreate) {
+      onJiraTicketCreate(insight, spanCodeObjectId, event);
+    }
   };
 
-  const affectedEndpoints = props.insight.affectedEndpoints ?? [];
+  const affectedEndpoints = insight.affectedEndpoints ?? [];
 
   return (
     <InsightCard
-      data={props.insight}
-      spanInfo={props.insight.spanInfo}
+      data={insight}
+      spanInfo={insight.spanInfo}
       content={
         <s.ContentContainer>
-          <Description>
-            {props.insight.shortDisplayInfo.description}
-          </Description>
+          <Description>{insight.shortDisplayInfo.description}</Description>
           <s.Stats>
             <s.Stat>
-              <Criticality value={props.insight.criticality} />
+              <Criticality value={insight.criticality} />
             </s.Stat>
             <s.Stat>
               <Description>Tested concurrency</Description>
-              <span>{props.insight.maxConcurrency}</span>
+              <span>{insight.maxConcurrency}</span>
             </s.Stat>
             <s.Stat>
               <Description>Duration</Description>
               <span>
-                {getDurationString(props.insight.minDuration)} -{" "}
-                {getDurationString(props.insight.maxDuration)}
+                {getDurationString(insight.minDuration)} -{" "}
+                {getDurationString(insight.maxDuration)}
               </span>
             </s.Stat>
           </s.Stats>
-          {props.insight.rootCauseSpans.length > 0 && (
+          {insight.rootCauseSpans.length > 0 && (
             <s.List>
               <Description>Caused by:</Description>
-              {props.insight.rootCauseSpans.map((span, i) => {
+              {insight.rootCauseSpans.map((span, i) => {
                 const spanName = span.displayName;
                 const traceId = span.sampleTraceId;
                 const spanCodeObjectId = span.spanCodeObjectId;
@@ -111,9 +119,9 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
                           handleCreateJiraTicketButtonClick
                         }
                         spanCodeObjectId={spanCodeObjectId}
-                        ticketLink={props.insight.ticketLink}
+                        ticketLink={insight.ticketLink}
                         buttonType={"small"}
-                        isHintEnabled={props.isJiraHintEnabled && i === 0}
+                        isHintEnabled={isJiraHintEnabled && i === 0}
                       />
                       {config.isJaegerEnabled && traceId && (
                         <s.Button
@@ -124,7 +132,7 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
                                 name: spanName,
                                 id: traceId
                               },
-                              props.insight.type,
+                              insight.type,
                               spanCodeObjectId
                             )
                           }
@@ -163,19 +171,19 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
         </s.ContentContainer>
       }
       buttons={[
-        ...(props.insight.rootCauseSpans.length == 0
+        ...(insight.rootCauseSpans.length == 0
           ? [
               <JiraButton
                 key={"view-ticket-info"}
                 onTicketInfoButtonClick={handleCreateJiraTicketButtonClick}
-                spanCodeObjectId={props.insight.spanInfo?.spanCodeObjectId}
-                ticketLink={props.insight.ticketLink}
+                spanCodeObjectId={insight.spanInfo?.spanCodeObjectId}
+                ticketLink={insight.ticketLink}
                 buttonType={"large"}
-                isHintEnabled={props.isJiraHintEnabled}
+                isHintEnabled={isJiraHintEnabled}
               />
             ]
           : []),
-        ...(props.insight.spanInfo
+        ...(insight.spanInfo
           ? [
               <Button
                 icon={{ component: ChartIcon }}
@@ -187,8 +195,8 @@ export const ScalingIssueInsight = (props: ScalingIssueInsightProps) => {
             ]
           : [])
       ]}
-      onRecalculate={props.onRecalculate}
-      onRefresh={props.onRefresh}
+      onRecalculate={onRecalculate}
+      onRefresh={onRefresh}
     />
   );
 };

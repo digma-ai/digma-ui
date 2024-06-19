@@ -10,18 +10,21 @@ import { DurationSlowdownSourceInsightProps } from "./types";
  * @deprecated
  * safe to delete after 2024-06-05
  */
-export const DurationSlowdownSourceInsight = (
-  props: DurationSlowdownSourceInsightProps
-) => {
+export const DurationSlowdownSourceInsight = ({
+  insight,
+  onAssetLinkClick,
+  onRecalculate,
+  onRefresh
+}: DurationSlowdownSourceInsightProps) => {
   const handleSpanLinkClick = (spanCodeObjectId: string) => {
-    props.onAssetLinkClick(spanCodeObjectId, props.insight.type);
+    onAssetLinkClick(spanCodeObjectId, insight.type);
   };
 
-  const p50Sources = props.insight.durationSlowdownSources.filter(
+  const p50Sources = insight.durationSlowdownSources.filter(
     (x) => x.percentile === "0.5"
   );
 
-  const p95Sources = props.insight.durationSlowdownSources.filter(
+  const p95Sources = insight.durationSlowdownSources.filter(
     (x) => x.percentile === "0.95"
   );
 
@@ -56,8 +59,8 @@ export const DurationSlowdownSourceInsight = (
 
   return (
     <InsightCard
-      data={props.insight}
-      spanInfo={props.insight.spanInfo}
+      data={insight}
+      spanInfo={insight.spanInfo}
       content={
         <s.Container>
           <Description>Found spans slowing the endpoint</Description>
@@ -75,8 +78,8 @@ export const DurationSlowdownSourceInsight = (
           )}
         </s.Container>
       }
-      onRecalculate={props.onRecalculate}
-      onRefresh={props.onRefresh}
+      onRecalculate={onRecalculate}
+      onRefresh={onRefresh}
     />
   );
 };

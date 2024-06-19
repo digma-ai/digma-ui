@@ -14,9 +14,16 @@ import { SpanBottleneckInsightProps } from "./types";
  * @deprecated
  * safe to delete after 2024-06-05
  */
-export const SpanBottleneckInsight = (props: SpanBottleneckInsightProps) => {
+export const SpanBottleneckInsight = ({
+  onAssetLinkClick,
+  insight,
+  onJiraTicketCreate,
+  isJiraHintEnabled,
+  onRecalculate,
+  onRefresh
+}: SpanBottleneckInsightProps) => {
   const handleSpanLinkClick = (spanCodeObjectId: string) => {
-    props.onAssetLinkClick(spanCodeObjectId, props.insight.type);
+    onAssetLinkClick(spanCodeObjectId, insight.type);
   };
 
   const handleTicketInfoButtonClick = (
@@ -26,17 +33,19 @@ export const SpanBottleneckInsight = (props: SpanBottleneckInsightProps) => {
     sendUserActionTrackingEvent(
       trackingEvents.JIRA_TICKET_INFO_BUTTON_CLICKED,
       {
-        insightType: props.insight.type
+        insightType: insight.type
       }
     );
-    props.onJiraTicketCreate &&
-      props.onJiraTicketCreate(props.insight, spanCodeObjectId, event);
+
+    if (onJiraTicketCreate) {
+      onJiraTicketCreate(insight, spanCodeObjectId, event);
+    }
   };
 
   return (
     <InsightCard
-      data={props.insight}
-      spanInfo={props.insight.spanInfo}
+      data={insight}
+      spanInfo={insight.spanInfo}
       content={
         <>
           <Description>
@@ -44,7 +53,7 @@ export const SpanBottleneckInsight = (props: SpanBottleneckInsightProps) => {
           </Description>
           <s.Container>
             <s.SpanList>
-              {props.insight.spans.map((span, i) => {
+              {insight.spans.map((span, i) => {
                 const spanName = span.spanInfo.displayName;
                 const spanCodeObjectId = span.spanInfo.spanCodeObjectId;
 
@@ -80,7 +89,7 @@ export const SpanBottleneckInsight = (props: SpanBottleneckInsightProps) => {
                         spanCodeObjectId={spanCodeObjectId}
                         ticketLink={span.ticketLink}
                         buttonType={"small"}
-                        isHintEnabled={props.isJiraHintEnabled && i === 0}
+                        isHintEnabled={isJiraHintEnabled && i === 0}
                       />
                     </s.ButtonsContainer>
                   </s.Span>
@@ -90,8 +99,8 @@ export const SpanBottleneckInsight = (props: SpanBottleneckInsightProps) => {
           </s.Container>
         </>
       }
-      onRecalculate={props.onRecalculate}
-      onRefresh={props.onRefresh}
+      onRecalculate={onRecalculate}
+      onRefresh={onRefresh}
     />
   );
 };

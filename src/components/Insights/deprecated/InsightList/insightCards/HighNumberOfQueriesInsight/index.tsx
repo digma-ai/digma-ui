@@ -18,10 +18,14 @@ import { HighNumberOfQueriesInsightProps } from "./types";
  * @deprecated
  * safe to delete after 2024-06-05
  */
-export const HighNumberOfQueriesInsight = (
-  props: HighNumberOfQueriesInsightProps
-) => {
-  const { insight } = props;
+export const HighNumberOfQueriesInsight = ({
+  insight,
+  onTraceButtonClick,
+  onJiraTicketCreate,
+  isJiraHintEnabled,
+  onRecalculate,
+  onRefresh
+}: HighNumberOfQueriesInsightProps) => {
   const traceId = insight.traceId;
 
   const handleTraceButtonClick = (
@@ -29,7 +33,7 @@ export const HighNumberOfQueriesInsight = (
     insightType: InsightType,
     spanCodeObjectId?: string
   ) => {
-    props.onTraceButtonClick(trace, insightType, spanCodeObjectId);
+    onTraceButtonClick(trace, insightType, spanCodeObjectId);
   };
 
   const handleCreateJiraTicketButtonClick = (event: string) => {
@@ -39,14 +43,16 @@ export const HighNumberOfQueriesInsight = (
         insightType: insight.type
       }
     );
-    props.onJiraTicketCreate &&
-      props.onJiraTicketCreate(insight, undefined, event);
+
+    if (onJiraTicketCreate) {
+      onJiraTicketCreate(insight, undefined, event);
+    }
   };
 
   return (
     <InsightCard
       data={insight}
-      spanInfo={props.insight.spanInfo}
+      spanInfo={insight.spanInfo}
       content={
         <s.ContentContainer>
           <Description>
@@ -86,7 +92,7 @@ export const HighNumberOfQueriesInsight = (
                   spanCodeObjectId={insight.spanInfo?.spanCodeObjectId}
                   ticketLink={insight.ticketLink}
                   buttonType={"small"}
-                  isHintEnabled={props.isJiraHintEnabled}
+                  isHintEnabled={isJiraHintEnabled}
                 />
                 {traceId && (
                   <Tooltip title={"Trace"}>
@@ -110,8 +116,8 @@ export const HighNumberOfQueriesInsight = (
           </s.Stats>
         </s.ContentContainer>
       }
-      onRecalculate={props.onRecalculate}
-      onRefresh={props.onRefresh}
+      onRecalculate={onRecalculate}
+      onRefresh={onRefresh}
     />
   );
 };

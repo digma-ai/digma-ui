@@ -8,30 +8,36 @@ import { ErrorsInsightProps } from "./types";
  * @deprecated
  * safe to delete after the implementation of the version with new UI
  */
-export const ErrorsInsight = (props: ErrorsInsightProps) => {
+export const ErrorsInsight = ({
+  onErrorSelect,
+  onExpandButtonClick,
+  insight,
+  onRecalculate,
+  onRefresh
+}: ErrorsInsightProps) => {
   const handleErrorLinkClick = (errorId: string) => {
-    props.onErrorSelect(errorId, props.insight.type);
+    onErrorSelect(errorId, insight.type);
   };
 
   const handleExpandButtonClick = () => {
-    props.onExpandButtonClick();
+    onExpandButtonClick();
   };
 
   return (
     <InsightCard
-      data={props.insight}
+      data={insight}
       content={
         <s.ContentContainer>
           <Description>
-            {props.insight.errorCount} Error
-            {props.insight.errorCount === 1 ? "" : "s"}
+            {insight.errorCount} Error
+            {insight.errorCount === 1 ? "" : "s"}
           </Description>
           <span>
-            {props.insight.unhandledCount} unhandled,{" "}
-            {props.insight.unexpectedCount} unexpected
+            {insight.unhandledCount} unhandled, {insight.unexpectedCount}{" "}
+            unexpected
           </span>
           <s.ErrorList>
-            {props.insight.topErrors.map((error) => (
+            {insight.topErrors.map((error) => (
               <Description key={error.uid}>
                 <s.Error>
                   <Link onClick={() => handleErrorLinkClick(error.uid)}>
@@ -50,8 +56,8 @@ export const ErrorsInsight = (props: ErrorsInsightProps) => {
           Expand
         </Button>
       ]}
-      onRecalculate={props.onRecalculate}
-      onRefresh={props.onRefresh}
+      onRecalculate={onRecalculate}
+      onRefresh={onRefresh}
     />
   );
 };

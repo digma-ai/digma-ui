@@ -33,3 +33,9 @@ export interface ViewData {
   id: string;
   path?: string;
 }
+
+// TODO: Add more events
+export enum SCOPE_CHANGE_EVENTS {
+  RECENT_ACTIVITY_ENVIRONMENT_SELECT = "recentActivityEnvironmentSelect",
+  RECENT_ACTIVITY_SPAN_SELECT = "recentActivitySpanSelect"
+}

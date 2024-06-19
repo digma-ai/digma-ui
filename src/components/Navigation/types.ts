@@ -1,15 +1,9 @@
+import { ViewData } from "../Main/types";
 import { CodeDetails } from "../common/App/types";
 
-export interface TabData {
-  title: string;
-  id: string;
-  isSelected: boolean;
-  isDisabled: boolean;
-  hasNewData: boolean;
-  isHidden: boolean;
-  cardName: string;
-  tooltipMessage?: string;
-  path?: string;
+export interface NavigationProps {
+  view: ViewData;
+  onViewChange: (viewId: string) => void;
 }
 
 export interface OpenDocumentationPayload {
@@ -24,14 +18,32 @@ export interface GoToCodeLocationPayload {
   codeDetails: CodeDetails;
 }
 
-export interface ChangeEnvironmentPayload {
-  environment: string;
+// export interface ChangeEnvironmentPayload {
+//   environment: string;
+// }
+
+// export interface ChangeViewPayload {
+//   view: string;
+// }
+
+/**
+ * @deprecated
+ */
+export interface TabData {
+  title: string;
+  id: string;
+  isSelected: boolean;
+  isDisabled: boolean;
+  hasNewData: boolean;
+  isHidden: boolean;
+  cardName: string;
+  tooltipMessage?: string;
+  path?: string;
 }
 
-export interface ChangeViewPayload {
-  view: string;
-}
-
+/**
+ * @deprecated
+ */
 export interface SetViewsPayload {
   views: TabData[];
   createHistoryStep: boolean;

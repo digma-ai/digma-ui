@@ -35,7 +35,7 @@ const formDefaultValues: RegistrationFormValues = {
   email: ""
 };
 
-export const RegisterStep = (props: RegisterStepProps) => {
+export const RegisterStep = ({ onNext }: RegisterStepProps) => {
   const [isRegistrationInProgress, setIsRegistrationInProgress] =
     useState(false);
   const {
@@ -83,7 +83,7 @@ export const RegisterStep = (props: RegisterStepProps) => {
       }
     });
     setIsRegistrationInProgress(true);
-    props.onNext(true);
+    onNext(true);
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {

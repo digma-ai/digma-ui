@@ -99,13 +99,20 @@ const renderInsights = (insights: SlimInsight[]) => {
   );
 };
 
-export const RecentActivityTable = (props: RecentActivityTableProps) => {
+export const RecentActivityTable = ({
+  data,
+  onSpanLinkClick,
+  onTraceButtonClick,
+  viewMode,
+  isTraceButtonVisible,
+  headerHeight
+}: RecentActivityTableProps) => {
   const handleSpanLinkClick = (span: EntrySpan) => {
-    props.onSpanLinkClick(span);
+    onSpanLinkClick(span);
   };
 
   const handleTraceButtonClick = (traceId: string, span: EntrySpan) => {
-    props.onTraceButtonClick(traceId, span);
+    onTraceButtonClick(traceId, span);
   };
 
   const renderSpanLink = (span: EntrySpan) => (
@@ -164,7 +171,7 @@ export const RecentActivityTable = (props: RecentActivityTableProps) => {
         width: "10%",
         minWidth: 100
       },
-      cell: (info) => <>{renderTimeDistance(info.getValue(), props.viewMode)}</>
+      cell: (info) => <>{renderTimeDistance(info.getValue(), viewMode)}</>
     }),
     columnHelper.accessor("latestTraceDuration", {
       header: "Duration",
@@ -172,7 +179,7 @@ export const RecentActivityTable = (props: RecentActivityTableProps) => {
         width: "10%",
         minWidth: 100
       },
-      cell: (info) => renderDuration(info.getValue(), props.viewMode)
+      cell: (info) => renderDuration(info.getValue(), viewMode)
     }),
     columnHelper.accessor("slimAggregatedInsights", {
       header: "Insights",
@@ -182,7 +189,7 @@ export const RecentActivityTable = (props: RecentActivityTableProps) => {
       },
       cell: (info) => renderInsights(info.getValue())
     }),
-    ...(props.isTraceButtonVisible
+    ...(isTraceButtonVisible
       ? [
           columnHelper.accessor((row) => row, {
             id: "latestTraceId",
@@ -198,12 +205,12 @@ export const RecentActivityTable = (props: RecentActivityTableProps) => {
 
   const sortedData = useMemo(
     () =>
-      [...props.data].sort(
+      [...data].sort(
         (a, b) =>
           new Date(b.latestTraceTimestamp).valueOf() -
           new Date(a.latestTraceTimestamp).valueOf()
       ),
-    [props.data]
+    [data]
   );
 
   const table = useReactTable({
@@ -212,9 +219,9 @@ export const RecentActivityTable = (props: RecentActivityTableProps) => {
     getCoreRowModel: getCoreRowModel()
   });
 
-  return props.viewMode === "table" ? (
+  return viewMode === "table" ? (
     <s.Table>
-      <s.TableHead $offset={props.headerHeight}>
+      <s.TableHead $offset={headerHeight}>
         {table.getHeaderGroups().map((headerGroup) => (
           <s.TableHeadRow key={headerGroup.id}>
             {headerGroup.headers.map((header) => {
@@ -268,13 +275,13 @@ export const RecentActivityTable = (props: RecentActivityTableProps) => {
         {sortedData.map((entry, i) => (
           <s.ListItem key={i} $isRecent={isRecent(entry)}>
             {isRecent(entry) && renderBadge()}
-            {renderTimeDistance(entry.latestTraceTimestamp, props.viewMode)}
+            {renderTimeDistance(entry.latestTraceTimestamp, viewMode)}
             {renderSpanLinks(entry)}
-            {renderDuration(entry.latestTraceDuration, props.viewMode)}
+            {renderDuration(entry.latestTraceDuration, viewMode)}
             <s.ListInsightsContainer>
               {renderInsights(entry.slimAggregatedInsights)}
             </s.ListInsightsContainer>
-            {props.isTraceButtonVisible && renderTraceButton(entry)}
+            {isTraceButtonVisible && renderTraceButton(entry)}
           </s.ListItem>
         ))}
       </s.List>

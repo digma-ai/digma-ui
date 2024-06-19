@@ -9,6 +9,7 @@ import { mockedSpanDurationBreakdownInsight } from "./InsightsCatalog/InsightsPa
 import { mockedSpanDurationsInsight } from "./InsightsCatalog/InsightsPage/insightCards/SpanDurationsInsightCard/mockData";
 import { mockedSpanEndpointBottleneckInsight } from "./InsightsCatalog/InsightsPage/insightCards/SpanEndpointBottleneckInsightCard/mockData";
 import { mockedSpanNexusInsight } from "./InsightsCatalog/InsightsPage/insightCards/SpanNexusInsightCard/mockData";
+import { actions } from "./actions";
 import { InsightsStatus, ViewMode } from "./types";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
@@ -26,227 +27,287 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  args: {
-    data: {
-      totalCount: 100,
-      // spans: [
-      //   {
-      //     spanCodeObjectId: "empty_span1_id",
-      //     spanDisplayName: "empty_span1"
-      //   },
-      //   {
-      //     spanCodeObjectId: "empty_span2_id",
-      //     spanDisplayName: "empty_span2"
-      //   }
-      // ],
-      // assetId: "string",
-      // serviceName: "string",
-      // environment: "string",
-      viewMode: ViewMode.INSIGHTS,
-      // hasMissingDependency: false,
-      insightsStatus: InsightsStatus.DEFAULT,
-      // methods: [],
-      // canInstrumentMethod: false,
-      // needsObservabilityFix: false,
-      insights: [
-        mockedSpaNPlusOneInsight,
-        mockedEndpointBreakdownInsight,
-        mockedEndpointNormalUsageInsight,
-        mockedSpanDurationBreakdownInsight,
-        mockedSpanDurationsInsight,
-        mockedEndpointSpanNPlusOneInsight,
-        mockedSpanEndpointBottleneckInsight,
-        mockedEndpointHighNumberOfQueriesInsight,
-        mockedSpanNexusInsight
-      ]
-    }
+  play: () => {
+    window.setTimeout(() => {
+      window.postMessage({
+        type: "digma",
+        action: actions.SET_DATA_LIST,
+        payload: {
+          totalCount: 100,
+          // spans: [
+          //   {
+          //     spanCodeObjectId: "empty_span1_id",
+          //     spanDisplayName: "empty_span1"
+          //   },
+          //   {
+          //     spanCodeObjectId: "empty_span2_id",
+          //     spanDisplayName: "empty_span2"
+          //   }
+          // ],
+          // assetId: "string",
+          // serviceName: "string",
+          // environment: "string",
+          viewMode: ViewMode.INSIGHTS,
+          // hasMissingDependency: false,
+          insightsStatus: InsightsStatus.DEFAULT,
+          // methods: [],
+          // canInstrumentMethod: false,
+          // needsObservabilityFix: false,
+          insights: [
+            mockedSpaNPlusOneInsight,
+            mockedEndpointBreakdownInsight,
+            mockedEndpointNormalUsageInsight,
+            mockedSpanDurationBreakdownInsight,
+            mockedSpanDurationsInsight,
+            mockedEndpointSpanNPlusOneInsight,
+            mockedSpanEndpointBottleneckInsight,
+            mockedEndpointHighNumberOfQueriesInsight,
+            mockedSpanNexusInsight
+          ]
+        }
+      });
+    }, 500);
   }
 };
 
 export const NoInsights: Story = {
-  args: {
-    data: {
-      // spans: [],
-      // assetId: "string",
-      // serviceName: "string",
-      // environment: "string",
-      // canInstrumentMethod: false,
-      // needsObservabilityFix: false,
-      // hasMissingDependency: false,
-      // methods: [],
+  play: () => {
+    window.setTimeout(() => {
+      window.postMessage({
+        type: "digma",
+        action: actions.SET_DATA_LIST,
+        payload: {
+          // spans: [],
+          // assetId: "string",
+          // serviceName: "string",
+          // environment: "string",
+          // canInstrumentMethod: false,
+          // needsObservabilityFix: false,
+          // hasMissingDependency: false,
+          // methods: [],
 
-      viewMode: ViewMode.INSIGHTS,
-      insightsStatus: InsightsStatus.NO_INSIGHTS,
-      insights: [],
-      totalCount: 0
-    }
+          viewMode: ViewMode.INSIGHTS,
+          insightsStatus: InsightsStatus.NO_INSIGHTS,
+          insights: [],
+          totalCount: 0
+        }
+      });
+    }, 500);
   }
 };
 
 export const NoDataYet: Story = {
-  args: {
-    data: {
-      // spans: [],
-      // assetId: "string",
-      // serviceName: "string",
-      // environment: "string",
-      // canInstrumentMethod: false,
-      // needsObservabilityFix: false,
-      // hasMissingDependency: false,
-      // methods: [],
+  play: () => {
+    window.setTimeout(() => {
+      window.postMessage({
+        type: "digma",
+        action: actions.SET_DATA_LIST,
+        payload: {
+          // spans: [],
+          // assetId: "string",
+          // serviceName: "string",
+          // environment: "string",
+          // canInstrumentMethod: false,
+          // needsObservabilityFix: false,
+          // hasMissingDependency: false,
+          // methods: [],
 
-      viewMode: ViewMode.INSIGHTS,
-      insightsStatus: InsightsStatus.NO_SPANS_DATA,
-      insights: [],
-      totalCount: 0
-    }
+          viewMode: ViewMode.INSIGHTS,
+          insightsStatus: InsightsStatus.NO_SPANS_DATA,
+          insights: [],
+          totalCount: 0
+        }
+      });
+    }, 500);
   }
 };
 
 export const ProcessingInsights: Story = {
-  args: {
-    data: {
-      // spans: [],
-      // assetId: "string",
-      // serviceName: "string",
-      // environment: "string",
-      // hasMissingDependency: false,
-      // methods: [],
-      // canInstrumentMethod: false,
-      // needsObservabilityFix: false,
+  play: () => {
+    window.setTimeout(() => {
+      window.postMessage({
+        type: "digma",
+        action: actions.SET_DATA_LIST,
+        payload: {
+          // spans: [],
+          // assetId: "string",
+          // serviceName: "string",
+          // environment: "string",
+          // hasMissingDependency: false,
+          // methods: [],
+          // canInstrumentMethod: false,
+          // needsObservabilityFix: false,
 
-      viewMode: ViewMode.INSIGHTS,
-      insightsStatus: InsightsStatus.INSIGHT_PENDING,
-      insights: [],
-      totalCount: 0
-    }
+          viewMode: ViewMode.INSIGHTS,
+          insightsStatus: InsightsStatus.INSIGHT_PENDING,
+          insights: [],
+          totalCount: 0
+        }
+      });
+    }, 500);
   }
 };
 
 export const NoObservability: Story = {
-  args: {
-    data: {
-      // spans: [],
-      // assetId: "string",
-      // serviceName: "string",
-      // environment: "string",
-      // hasMissingDependency: false,
-      // methods: [],
-      // canInstrumentMethod: true,
-      // needsObservabilityFix: true
+  play: () => {
+    window.setTimeout(() => {
+      window.postMessage({
+        type: "digma",
+        action: actions.SET_DATA_LIST,
+        payload: {
+          // spans: [],
+          // assetId: "string",
+          // serviceName: "string",
+          // environment: "string",
+          // hasMissingDependency: false,
+          // methods: [],
+          // canInstrumentMethod: true,
+          // needsObservabilityFix: true
 
-      viewMode: ViewMode.INSIGHTS,
-      insightsStatus: InsightsStatus.NO_OBSERVABILITY,
-      insights: [],
-      totalCount: 0
-    }
+          viewMode: ViewMode.INSIGHTS,
+          insightsStatus: InsightsStatus.NO_OBSERVABILITY,
+          insights: [],
+          totalCount: 0
+        }
+      });
+    }, 500);
   }
 };
 
 export const NoObservabilityWithInsights: Story = {
-  args: {
-    data: {
-      viewMode: ViewMode.INSIGHTS,
-      insightsStatus: InsightsStatus.DEFAULT,
-      insights: [mockedSpaNPlusOneInsight],
-      totalCount: 0
+  play: () => {
+    window.setTimeout(() => {
+      window.postMessage({
+        type: "digma",
+        action: actions.SET_DATA_LIST,
+        payload: {
+          viewMode: ViewMode.INSIGHTS,
+          insightsStatus: InsightsStatus.DEFAULT,
+          insights: [mockedSpaNPlusOneInsight],
+          totalCount: 0
 
-      // spans: [],
-      // assetId: "string",
-      // serviceName: "string",
-      // environment: "string",
-      // hasMissingDependency: false,
-      // methods: [],
-      // canInstrumentMethod: true,
-      // needsObservabilityFix: true
-    }
+          // spans: [],
+          // assetId: "string",
+          // serviceName: "string",
+          // environment: "string",
+          // hasMissingDependency: false,
+          // methods: [],
+          // canInstrumentMethod: true,
+          // needsObservabilityFix: true
+        }
+      });
+    }, 500);
   }
 };
 
 export const HasMissingDependency: Story = {
-  args: {
-    data: {
-      // spans: [],
-      // assetId: "string",
-      // serviceName: "string",
-      // environment: "string",
-      // hasMissingDependency: true,
-      // methods: [],
-      // canInstrumentMethod: true,
-      // needsObservabilityFix: true
-      viewMode: ViewMode.INSIGHTS,
-      totalCount: 0,
-      insightsStatus: InsightsStatus.NO_OBSERVABILITY,
-      insights: []
-    }
+  play: () => {
+    window.setTimeout(() => {
+      window.postMessage({
+        type: "digma",
+        action: actions.SET_DATA_LIST,
+        payload: {
+          // spans: [],
+          // assetId: "string",
+          // serviceName: "string",
+          // environment: "string",
+          // hasMissingDependency: true,
+          // methods: [],
+          // canInstrumentMethod: true,
+          // needsObservabilityFix: true
+          viewMode: ViewMode.INSIGHTS,
+          totalCount: 0,
+          insightsStatus: InsightsStatus.NO_OBSERVABILITY,
+          insights: []
+        }
+      });
+    }, 500);
   }
 };
 
 export const HasMissingDependencyWithInsights: Story = {
-  args: {
-    data: {
-      // spans: [],
-      // assetId: "string",
-      // serviceName: "string",
-      // environment: "string",
-      // hasMissingDependency: true,
-      // methods: [],
-      // canInstrumentMethod: true,
-      // needsObservabilityFix: true,
+  play: () => {
+    window.setTimeout(() => {
+      window.postMessage({
+        type: "digma",
+        action: actions.SET_DATA_LIST,
+        payload: {
+          // spans: [],
+          // assetId: "string",
+          // serviceName: "string",
+          // environment: "string",
+          // hasMissingDependency: true,
+          // methods: [],
+          // canInstrumentMethod: true,
+          // needsObservabilityFix: true,
 
-      viewMode: ViewMode.INSIGHTS,
-      insightsStatus: InsightsStatus.DEFAULT,
-      insights: [mockedSpaNPlusOneInsight],
-      totalCount: 0
-    }
+          viewMode: ViewMode.INSIGHTS,
+          insightsStatus: InsightsStatus.DEFAULT,
+          insights: [mockedSpaNPlusOneInsight],
+          totalCount: 0
+        }
+      });
+    }, 500);
   }
 };
 
 export const Startup: Story = {
-  args: {
-    data: {
-      viewMode: ViewMode.INSIGHTS,
-      insights: [],
-      insightsStatus: InsightsStatus.STARTUP,
-      totalCount: 0
-      // spans: [],
-      // serviceName: "string",
-      // environment: "string",
-      // methods: [],
-      // canInstrumentMethod: false,
-      // needsObservabilityFix: false
-      // hasMissingDependency: false,
-    }
+  play: () => {
+    window.setTimeout(() => {
+      window.postMessage({
+        type: "digma",
+        action: actions.SET_DATA_LIST,
+        payload: {
+          viewMode: ViewMode.INSIGHTS,
+          insights: [],
+          insightsStatus: InsightsStatus.STARTUP,
+          totalCount: 0
+          // spans: [],
+          // serviceName: "string",
+          // environment: "string",
+          // methods: [],
+          // canInstrumentMethod: false,
+          // needsObservabilityFix: false
+          // hasMissingDependency: false,
+        }
+      });
+    }, 500);
   }
 };
 
 export const Preview: Story = {
-  args: {
-    data: {
-      viewMode: ViewMode.PREVIEW,
-      totalCount: 0,
-      insightsStatus: InsightsStatus.DEFAULT,
-      // spans: [],
-      // serviceName: "string",
-      // environment: "string",
-      // hasMissingDependency: false,
-      // canInstrumentMethod: false,
-      // methods: [
-      //   {
-      //     id: "method1",
-      //     name: "method1"
-      //   },
-      //   {
-      //     id: "method2",
-      //     name: "method2"
-      //   },
-      //   {
-      //     id: "method3",
-      //     name: "method3"
-      //   }
-      // ],
-      insights: []
-      // needsObservabilityFix: false
-    }
+  play: () => {
+    window.setTimeout(() => {
+      window.postMessage({
+        type: "digma",
+        action: actions.SET_DATA_LIST,
+        payload: {
+          viewMode: ViewMode.PREVIEW,
+          totalCount: 0,
+          insightsStatus: InsightsStatus.DEFAULT,
+          // spans: [],
+          // serviceName: "string",
+          // environment: "string",
+          // hasMissingDependency: false,
+          // canInstrumentMethod: false,
+          // methods: [
+          //   {
+          //     id: "method1",
+          //     name: "method1"
+          //   },
+          //   {
+          //     id: "method2",
+          //     name: "method2"
+          //   },
+          //   {
+          //     id: "method3",
+          //     name: "method3"
+          //   }
+          // ],
+          insights: []
+          // needsObservabilityFix: false
+        }
+      });
+    }, 500);
   }
 };

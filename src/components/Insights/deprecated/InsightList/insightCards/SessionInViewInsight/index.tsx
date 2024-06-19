@@ -17,17 +17,23 @@ const PAGE_SIZE = 3;
  * @deprecated
  * safe to delete after 2024-06-05
  */
-export const SessionInViewInsight = (props: SessionInViewInsightProps) => {
+export const SessionInViewInsight = ({
+  insight,
+  onAssetLinkClick,
+  onTraceButtonClick,
+  onRecalculate,
+  onRefresh
+}: SessionInViewInsightProps) => {
   const config = useContext(ConfigContext);
 
   const [pageItems, page, setPage] = usePagination(
-    props.insight.spans,
+    insight.spans,
     PAGE_SIZE,
-    props.insight.codeObjectId
+    insight.codeObjectId
   );
 
   const handleLinkClick = (spanCodeObjectId: string) => {
-    props.onAssetLinkClick(spanCodeObjectId, props.insight.type);
+    onAssetLinkClick(spanCodeObjectId, insight.type);
   };
 
   const handleTraceButtonClick = (
@@ -35,13 +41,13 @@ export const SessionInViewInsight = (props: SessionInViewInsightProps) => {
     insightType: InsightType,
     spanCodeObjectId: string
   ) => {
-    props.onTraceButtonClick(trace, insightType, spanCodeObjectId);
+    onTraceButtonClick(trace, insightType, spanCodeObjectId);
   };
 
   return (
     <InsightCard
-      data={props.insight}
-      spanInfo={props.insight.spanInfo}
+      data={insight}
+      spanInfo={insight.spanInfo}
       content={
         <s.ContentContainer>
           <Description>
@@ -71,7 +77,7 @@ export const SessionInViewInsight = (props: SessionInViewInsightProps) => {
                             name: spanName,
                             id: traceId
                           },
-                          props.insight.type,
+                          insight.type,
                           spanCodeObjectId
                         )
                       }
@@ -83,7 +89,7 @@ export const SessionInViewInsight = (props: SessionInViewInsightProps) => {
               );
             })}
             <Pagination
-              itemsCount={props.insight.spans.length}
+              itemsCount={insight.spans.length}
               page={page}
               pageSize={PAGE_SIZE}
               onPageChange={setPage}
@@ -91,8 +97,8 @@ export const SessionInViewInsight = (props: SessionInViewInsightProps) => {
           </s.List>
         </s.ContentContainer>
       }
-      onRecalculate={props.onRecalculate}
-      onRefresh={props.onRefresh}
+      onRecalculate={onRecalculate}
+      onRefresh={onRefresh}
     />
   );
 };

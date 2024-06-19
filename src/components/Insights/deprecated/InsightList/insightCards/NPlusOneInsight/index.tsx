@@ -15,12 +15,20 @@ import { NPlusOneInsightProps } from "./types";
  * @deprecated
  * safe to delete after 2024-06-05
  */
-export const NPlusOneInsight = (props: NPlusOneInsightProps) => {
+export const NPlusOneInsight = ({
+  onAssetLinkClick,
+  insight,
+  onJiraTicketCreate,
+  onRecalculate,
+  onRefresh,
+  isJiraHintEnabled
+}: NPlusOneInsightProps) => {
   // const config = useContext(ConfigContext);
 
   const handleSpanLinkClick = (spanCodeObjectId?: string) => {
-    spanCodeObjectId &&
-      props.onAssetLinkClick(spanCodeObjectId, props.insight.type);
+    if (spanCodeObjectId) {
+      onAssetLinkClick(spanCodeObjectId, insight.type);
+    }
   };
 
   // const handleTraceButtonClick = (
@@ -28,30 +36,32 @@ export const NPlusOneInsight = (props: NPlusOneInsightProps) => {
   //   insightType: InsightType,
   //   spanCodeObjectId?: string
   // ) => {
-  //   props.onTraceButtonClick(trace, insightType, spanCodeObjectId);
+  //   onTraceButtonClick(trace, insightType, spanCodeObjectId);
   // };
 
   const handleCreateJiraTicketButtonClick = (event: string) => {
     sendUserActionTrackingEvent(
       trackingEvents.JIRA_TICKET_INFO_BUTTON_CLICKED,
       {
-        insightType: props.insight.type
+        insightType: insight.type
       }
     );
-    props.onJiraTicketCreate &&
-      props.onJiraTicketCreate(props.insight, undefined, event);
+
+    if (onJiraTicketCreate) {
+      onJiraTicketCreate(insight, undefined, event);
+    }
   };
 
-  // const spanName = props.insight.clientSpanName || undefined;
-  // const spanCodeObjectId = props.insight.clientSpanCodeObjectId || undefined;
-  // const traceId = props.insight.traceId;
+  // const spanName = insight.clientSpanName || undefined;
+  // const spanCodeObjectId = insight.clientSpanCodeObjectId || undefined;
+  // const traceId = insight.traceId;
 
-  const endpoints = props.insight.endpoints ?? [];
+  const endpoints = insight.endpoints ?? [];
 
   return (
     <InsightCard
-      data={props.insight}
-      spanInfo={props.insight.spanInfo}
+      data={insight}
+      spanInfo={insight.spanInfo}
       content={
         <s.ContentContainer>
           <Description>Check the following SELECT statement:</Description>
@@ -75,7 +85,7 @@ export const NPlusOneInsight = (props: NPlusOneInsightProps) => {
                       name: spanName,
                       id: traceId
                     },
-                    props.insight.type,
+                    insight.type,
                     spanCodeObjectId
                   )
                 }
@@ -88,11 +98,11 @@ export const NPlusOneInsight = (props: NPlusOneInsightProps) => {
           <s.Stats>
             {/* <s.Stat>
               <Description>Repeats</Description>
-              <span>{props.insight.occurrences} (median)</span>
+              <span>{insight.occurrences} (median)</span>
             </s.Stat> */}
             <s.Stat>
               <Description>Duration</Description>
-              <span>{getDurationString(props.insight.duration)}</span>
+              <span>{getDurationString(insight.duration)}</span>
             </s.Stat>
           </s.Stats>
           <Description>Affected endpoints:</Description>
@@ -135,16 +145,16 @@ export const NPlusOneInsight = (props: NPlusOneInsightProps) => {
           </s.EndpointList>
         </s.ContentContainer>
       }
-      onRecalculate={props.onRecalculate}
-      onRefresh={props.onRefresh}
+      onRecalculate={onRecalculate}
+      onRefresh={onRefresh}
       buttons={[
         <JiraButton
           key={"view-ticket-info"}
           onTicketInfoButtonClick={handleCreateJiraTicketButtonClick}
-          spanCodeObjectId={props.insight.spanInfo?.spanCodeObjectId}
-          ticketLink={props.insight.ticketLink}
+          spanCodeObjectId={insight.spanInfo?.spanCodeObjectId}
+          ticketLink={insight.ticketLink}
           buttonType={"large"}
-          isHintEnabled={props.isJiraHintEnabled}
+          isHintEnabled={isJiraHintEnabled}
         />
       ]}
     />

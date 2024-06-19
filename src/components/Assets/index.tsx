@@ -1,10 +1,15 @@
-import { useCallback, useContext, useEffect, useState } from "react";
-import { actions as globalActions } from "../../actions";
-import { ROUTES } from "../../constants";
+import { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import {
+  Location,
+  useLocation,
+  useNavigate,
+  useParams
+} from "react-router-dom";
 import { useDebounce } from "../../hooks/useDebounce";
 import { usePrevious } from "../../hooks/usePrevious";
-import { ChangeViewPayload } from "../../types";
+import { logger } from "../../logging";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
+import { HistoryState } from "../Navigation/HistoryNavigationPanel/types";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { EmptyState } from "../common/EmptyState";
 import { SearchInput } from "../common/SearchInput";
@@ -19,13 +24,12 @@ import { AssetScopeOption } from "./AssetsViewScopeConfiguration/types";
 import { NoDataMessage } from "./NoDataMessage";
 import * as s from "./styles";
 import { trackingEvents } from "./tracking";
-import { AssetsProps, DataRefresher } from "./types";
+import { DataRefresher } from "./types";
 
-export const Assets = ({ selectedTypeId }: AssetsProps) => {
+export const Assets = () => {
   const [assetsCount, setAssetsCount] = useState<number>();
-  const [selectedAssetTypeId, setSelectedAssetTypeId] = useState<string | null>(
-    selectedTypeId ?? null
-  );
+  const params = useParams();
+  const selectedAssetTypeId = useMemo(() => params.typeId, [params]);
   const [searchInputValue, setSearchInputValue] = useState("");
   const debouncedSearchInputValue = useDebounce(searchInputValue, 1000);
   const [assetScopeOption, setAssetScopeOption] =
@@ -37,6 +41,10 @@ export const Assets = ({ selectedTypeId }: AssetsProps) => {
     useState<DataRefresher | null>(null);
   const [assetListDataRefresher, setAssetListRefresher] =
     useState<DataRefresher | null>(null);
+  const navigate = useNavigate();
+  const location = useLocation() as Location<HistoryState>;
+
+  logger.info("params", params);
 
   const isBackendUpgradeMessageVisible = false;
 
@@ -46,29 +54,15 @@ export const Assets = ({ selectedTypeId }: AssetsProps) => {
     }
   }, [config.scope]);
 
-  const changeView = (path: string) => {
-    window.sendMessageToDigma<ChangeViewPayload>({
-      action: globalActions.CHANGE_VIEW,
-      payload: {
-        view: path
-      }
-    });
-  };
-
   useEffect(() => {
     if (!previousScope || previousScope !== config.scope?.span) {
       setSearchInputValue("");
-      setSelectedAssetTypeId(selectedTypeId ?? null);
     }
-  }, [config.scope, previousScope, selectedTypeId]);
-
-  useEffect(() => {
-    setSelectedAssetTypeId(selectedTypeId ?? null);
-  }, [selectedTypeId]);
+  }, [config.scope, previousScope]);
 
   const handleGoToAllAssets = () => {
-    setSelectedAssetTypeId(null);
-    changeView(ROUTES.ASSETS);
+    // navigate({ search: "" });
+    navigate("..", { state: { idx: location.state.idx }, relative: "path" });
   };
 
   const handleSearchInputChange = (val: string | null) => {
@@ -76,8 +70,9 @@ export const Assets = ({ selectedTypeId }: AssetsProps) => {
   };
 
   const handleAssetTypeSelect = (assetTypeId: string) => {
-    setSelectedAssetTypeId(assetTypeId);
-    changeView(`${ROUTES.ASSETS}/${assetTypeId}`);
+    // const params = new URLSearchParams({ typeId: assetTypeId });
+    // navigate({ search: params.toString() });
+    navigate(`${assetTypeId}`);
   };
 
   const handleApplyFilters = (filters: AssetFilterQuery) => {

@@ -3,7 +3,6 @@ import { AssetFilterQuery } from "../AssetsFilter/types";
 import { AssetScopeOption } from "../AssetsViewScopeConfiguration/types";
 
 export interface AssetListProps {
-  data?: AssetsData;
   onGoToAllAssets: () => void;
   assetTypeId: string;
   filters?: AssetFilterQuery;

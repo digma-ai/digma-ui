@@ -5,28 +5,29 @@ import { trackingEvents } from "../../tracking";
 import * as s from "./styles";
 import { DeleteEnvironmentConfirmationProps } from "./types";
 
-export const CancelConfirmation = (
-  props: DeleteEnvironmentConfirmationProps
-) => {
+export const CancelConfirmation = ({
+  onCancel,
+  onClose
+}: DeleteEnvironmentConfirmationProps) => {
   const handleConfirmButtonClick = () => {
     sendUserActionTrackingEvent(
       trackingEvents.CREATE_ENVIRONMENT_CANCEL_CONFIRMATION_CONFIRM_CLICKED
     );
-    props.onCancel();
+    onCancel();
   };
 
   const handleCancelButtonClick = () => {
     sendUserActionTrackingEvent(
       trackingEvents.CREATE_ENVIRONMENT_CANCEL_CONFIRMATION_CANCEL_CLICKED
     );
-    props.onClose();
+    onClose();
   };
 
   const handleCloseButtonClick = () => {
     sendUserActionTrackingEvent(
       trackingEvents.CREATE_ENVIRONMENT_CANCEL_CONFIRMATION_CLOSE_CLICKED
     );
-    props.onClose();
+    onClose();
   };
 
   return (

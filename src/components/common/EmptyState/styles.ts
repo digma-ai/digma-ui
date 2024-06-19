@@ -23,6 +23,15 @@ export const IconContainer = styled.div`
         return "#323334";
     }
   }};
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#fbfdff";
+      case "dark":
+      case "dark-jetbrains":
+        return "#9b9b9b";
+    }
+  }};
 `;
 
 export const Title = styled.div`

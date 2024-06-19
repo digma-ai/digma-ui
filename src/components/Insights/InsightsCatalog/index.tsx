@@ -39,8 +39,19 @@ const PAGE_SIZE = 10;
 const isShowUnreadOnly = (filters: InsightFilterType[]) =>
   filters.length === 1 && filters[0] === "unread";
 
-export const InsightsCatalog = (props: InsightsCatalogProps) => {
-  const { insights, onJiraTicketCreate, defaultQuery, totalCount } = props;
+export const InsightsCatalog = ({
+  insights,
+  onJiraTicketCreate,
+  defaultQuery,
+  totalCount,
+  isDismissalEnabled,
+  dismissedCount,
+  isMarkingAsReadEnabled,
+  unreadCount,
+  onQueryChange,
+  hideInsightsStats,
+  onRefresh
+}: InsightsCatalogProps) => {
   const [page, setPage] = useState(0);
   const previousPage = usePrevious(page);
   const [searchInputValue, setSearchInputValue] = useState(
@@ -74,15 +85,14 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
   );
 
   const isDismissalViewModeButtonVisible =
-    props.isDismissalEnabled &&
-    (isUndefined(props.dismissedCount) || props.dismissedCount > 0); // isUndefined - check for backward compatibility, always show when BE does not return this counter
+    isDismissalEnabled && (isUndefined(dismissedCount) || dismissedCount > 0); // isUndefined - check for backward compatibility, always show when BE does not return this counter
 
   const isMarkingAsReadOptionsEnabled =
-    props.isMarkingAsReadEnabled &&
-    isNumber(props.unreadCount) &&
+    isMarkingAsReadEnabled &&
+    isNumber(unreadCount) &&
     selectedFilters.length === 1 &&
     selectedFilters[0] === "unread" &&
-    props.unreadCount > 0;
+    unreadCount > 0;
 
   const refreshData = useCallback(() => {
     window.sendMessageToDigma<GetInsightStatsPayload>({
@@ -98,8 +108,8 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
       }
     });
 
-    props.onQueryChange({
-      ...props.defaultQuery,
+    onQueryChange({
+      ...defaultQuery,
       page,
       sorting,
       searchQuery: debouncedSearchInputValue,
@@ -111,8 +121,8 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
     page,
     sorting,
     debouncedSearchInputValue,
-    props.onQueryChange,
-    props.defaultQuery,
+    onQueryChange,
+    defaultQuery,
     mode,
     selectedFilters
   ]);
@@ -242,7 +252,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
                 defaultOrder: SORTING_ORDER.DESC
               }
             ]}
-            default={defaultQuery.sorting}
+            defaultSorting={defaultQuery.sorting}
           />
           <Tooltip title={"Refresh"}>
             <s.RefreshButton
@@ -256,7 +266,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
         {mode === ViewMode.All ? (
           <>
             {!searchInputValue &&
-              !props.hideInsightsStats &&
+              !hideInsightsStats &&
               (insights.length > 0 || selectedFilters.length > 0) && (
                 <InsightStats
                   criticalCount={config.insightStats?.criticalInsightsCount}
@@ -264,7 +274,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
                   unreadCount={
                     areInsightStatsEnabled
                       ? config.insightStats?.unreadInsightsCount ?? 0
-                      : props.unreadCount ?? 0
+                      : unreadCount ?? 0
                   }
                   onChange={handleFilterSelectionChange}
                 />
@@ -300,13 +310,12 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
               </s.BackToAllInsightsButtonIconContainer>
               Back to All Issues
             </s.BackToAllInsightsButton>
-            {mode === ViewMode.OnlyDismissed &&
-              isNumber(props.dismissedCount) && (
-                <s.InsightsDescription>
-                  <s.InsightCount>{props.dismissedCount}</s.InsightCount>
-                  dismissed {formatUnit(props.dismissedCount || 0, "issue")}
-                </s.InsightsDescription>
-              )}
+            {mode === ViewMode.OnlyDismissed && isNumber(dismissedCount) && (
+              <s.InsightsDescription>
+                <s.InsightCount>{dismissedCount}</s.InsightCount>
+                dismissed {formatUnit(dismissedCount || 0, "issue")}
+              </s.InsightsDescription>
+            )}
           </s.ViewModeToolbarRow>
         )}
       </s.Toolbar>
@@ -317,7 +326,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
           debouncedSearchInputValue !== null && debouncedSearchInputValue !== ""
         }
         onJiraTicketCreate={onJiraTicketCreate}
-        onRefresh={props.onRefresh}
+        onRefresh={onRefresh}
         isMarkAsReadButtonEnabled={isShowUnreadOnly(selectedFilters)}
       />
       <s.Footer>

@@ -22,16 +22,6 @@ import { FinishStepProps } from "./types";
 
 const EMAIL_ERROR_MESSAGE = "Enter a valid email";
 
-const getPlayIconColor = (theme: DefaultTheme) => {
-  switch (theme.mode) {
-    case "light":
-      return "#3538cd";
-    case "dark":
-    case "dark-jetbrains":
-      return "#dadada";
-  }
-};
-
 const getErrorIconColor = (theme: DefaultTheme) => {
   switch (theme.mode) {
     case "light":
@@ -42,7 +32,17 @@ const getErrorIconColor = (theme: DefaultTheme) => {
   }
 };
 
-export const FinishStep = (props: FinishStepProps) => {
+export const FinishStep = ({
+  quickstartURL,
+  productKey,
+  onProductKeyInputChange,
+  email,
+  onEmailInputChange,
+  isEmailValidating,
+  isEmailValid,
+  errors,
+  onSlackLinkClick
+}: FinishStepProps) => {
   const theme = useTheme();
   const themeKind = getThemeKind(theme);
   const config = useContext(ConfigContext);
@@ -56,7 +56,7 @@ export const FinishStep = (props: FinishStepProps) => {
 
   return (
     <s.Container>
-      {props.quickstartURL && (
+      {quickstartURL && (
         <s.Section>
           <s.SectionTitle icon={GearIcon}>Instrument your code</s.SectionTitle>
           <SectionDescription>
@@ -64,7 +64,7 @@ export const FinishStep = (props: FinishStepProps) => {
             <Link
               target={"_blank"}
               rel={"noopener noreferrer"}
-              href={props.quickstartURL}
+              href={quickstartURL}
             >
               quickstart
             </Link>{" "}
@@ -84,8 +84,8 @@ export const FinishStep = (props: FinishStepProps) => {
             <s.TextInput
               type={"text"}
               placeholder={"Product key"}
-              value={props.productKey}
-              onChange={props.onProductKeyInputChange}
+              value={productKey}
+              onChange={onProductKeyInputChange}
             />
           </s.TextField>
         </s.Section>
@@ -93,9 +93,7 @@ export const FinishStep = (props: FinishStepProps) => {
       <s.Section>
         <s.SectionTitle icon={RingingBellIcon}>
           Stay up to date
-          {!props.productKey && (
-            <s.SectionTitleNote>(optional)</s.SectionTitleNote>
-          )}
+          {!productKey && <s.SectionTitleNote>(optional)</s.SectionTitleNote>}
         </s.SectionTitle>
         <SectionDescription>
           Enter your E-mail address to be the first to get Digma updates
@@ -104,27 +102,27 @@ export const FinishStep = (props: FinishStepProps) => {
           <s.TextInput
             type={"text"}
             placeholder={"Enter E-mail"}
-            value={props.email}
-            onChange={props.onEmailInputChange}
+            value={email}
+            onChange={onEmailInputChange}
           />
-          {props.errors.email && (
+          {errors.email && (
             <s.ErrorMessage>
               <WarningCircleLargeIcon color={getErrorIconColor(theme)} />
-              {props.errors.email}
+              {errors.email}
             </s.ErrorMessage>
           )}
-          {props.isEmailValid === false && (
+          {isEmailValid === false && (
             <s.ErrorMessage>
               <WarningCircleLargeIcon color={getErrorIconColor(theme)} />
               {EMAIL_ERROR_MESSAGE}
             </s.ErrorMessage>
           )}
-          {props.isEmailValid && (
+          {isEmailValid && (
             <s.EmailInputIconContainer>
-              <CheckmarkCircleInvertedIcon color={"#00c108"} size={16} />
+              <CheckmarkCircleInvertedIcon color={"currentColor"} size={16} />
             </s.EmailInputIconContainer>
           )}
-          {props.isEmailValidating && (
+          {isEmailValidating && (
             <s.EmailInputIconContainer>
               <CircleLoader
                 size={16}
@@ -161,7 +159,7 @@ export const FinishStep = (props: FinishStepProps) => {
         <Link onClick={handleGettingStartedVideoLinkClick}>
           <s.IllustrationContainer>
             <s.PlayIconContainer>
-              <s.ThumbnailPlayCircleIcon color={getPlayIconColor(theme)} />
+              <s.ThumbnailPlayCircleIcon color={"currentColor"} />
             </s.PlayIconContainer>
             <s.GettingStartedVideoThumbnail
               src={`/images/gettingStartedVideoThumbnail_${themeKind}.png`}
@@ -171,7 +169,7 @@ export const FinishStep = (props: FinishStepProps) => {
       </s.Section>
       <s.Section>
         <s.SectionTitle icon={ChatIcon}>Give us feedback</s.SectionTitle>
-        <s.SlackLink onClick={props.onSlackLinkClick}>
+        <s.SlackLink onClick={onSlackLinkClick}>
           <SlackLogoIcon size={14} />
           Join Our Slack Group
         </s.SlackLink>

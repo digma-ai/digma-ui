@@ -18,19 +18,23 @@ const PAGE_SIZE = 3;
  * @deprecated
  * safe to delete after 2024-06-05
  */
-export const ExcessiveAPICallsInsight = (
-  props: ExcessiveAPICallsInsightProps
-) => {
+export const ExcessiveAPICallsInsight = ({
+  insight,
+  onAssetLinkClick,
+  onTraceButtonClick,
+  onRecalculate,
+  onRefresh
+}: ExcessiveAPICallsInsightProps) => {
   const config = useContext(ConfigContext);
 
   const [pageItems, page, setPage] = usePagination(
-    props.insight.spans,
+    insight.spans,
     PAGE_SIZE,
-    props.insight.codeObjectId
+    insight.codeObjectId
   );
 
   const handleLinkClick = (spanCodeObjectId: string) => {
-    props.onAssetLinkClick(spanCodeObjectId, props.insight.type);
+    onAssetLinkClick(spanCodeObjectId, insight.type);
   };
 
   const handleTraceButtonClick = (
@@ -38,13 +42,13 @@ export const ExcessiveAPICallsInsight = (
     insightType: InsightType,
     spanCodeObjectId: string
   ) => {
-    props.onTraceButtonClick(trace, insightType, spanCodeObjectId);
+    onTraceButtonClick(trace, insightType, spanCodeObjectId);
   };
 
   return (
     <InsightCard
-      data={props.insight}
-      spanInfo={props.insight.spanInfo}
+      data={insight}
+      spanInfo={insight.spanInfo}
       content={
         <s.ContentContainer>
           <Description>
@@ -75,7 +79,7 @@ export const ExcessiveAPICallsInsight = (
                               name: spanName,
                               id: traceId
                             },
-                            props.insight.type,
+                            insight.type,
                             spanCodeObjectId
                           )
                         }
@@ -88,17 +92,17 @@ export const ExcessiveAPICallsInsight = (
               );
             })}
             <Pagination
-              itemsCount={props.insight.spans.length}
+              itemsCount={insight.spans.length}
               page={page}
               pageSize={PAGE_SIZE}
               onPageChange={setPage}
             />
           </s.List>
-          <Criticality value={props.insight.criticality} />
+          <Criticality value={insight.criticality} />
         </s.ContentContainer>
       }
-      onRecalculate={props.onRecalculate}
-      onRefresh={props.onRefresh}
+      onRecalculate={onRecalculate}
+      onRefresh={onRefresh}
     />
   );
 };

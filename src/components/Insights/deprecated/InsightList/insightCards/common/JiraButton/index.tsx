@@ -17,7 +17,13 @@ import { JiraButtonProps } from "./types";
  * @deprecated
  * safe to delete after 2024-06-05
  */
-export const JiraButton = (props: JiraButtonProps) => {
+export const JiraButton = ({
+  ticketLink,
+  onTicketInfoButtonClick,
+  spanCodeObjectId,
+  buttonType,
+  isHintEnabled
+}: JiraButtonProps) => {
   const [isJiraPopoverOpen, setIsJiraPopoverOpen] = useState(false);
   const theme = useTheme();
 
@@ -26,19 +32,21 @@ export const JiraButton = (props: JiraButtonProps) => {
   };
 
   const handleViewButtonClick = () => {
-    props.ticketLink && openURLInDefaultBrowser(props.ticketLink);
+    if (ticketLink) {
+      openURLInDefaultBrowser(ticketLink);
+    }
   };
 
   const openTicketInfo = (event: string) => {
-    props.onTicketInfoButtonClick(props.spanCodeObjectId, event);
+    onTicketInfoButtonClick(spanCodeObjectId, event);
   };
 
-  const menuWidth = props.buttonType == "large" ? "119px" : "70px";
-  const buttonText = props.buttonType == "large" ? "Ticket Info" : "";
+  const menuWidth = buttonType == "large" ? "119px" : "70px";
+  const buttonText = buttonType == "large" ? "Ticket Info" : "";
 
   const renderButton = () => (
     <div>
-      {props.ticketLink ? (
+      {ticketLink ? (
         <NewPopover
           content={
             <Menu
@@ -47,13 +55,13 @@ export const JiraButton = (props: JiraButtonProps) => {
                 {
                   icon: { component: OpenLinkIcon },
                   label: "View",
-                  value: props.ticketLink,
+                  value: ticketLink,
                   onClick: handleViewButtonClick
                 },
                 {
                   icon: { component: PencilIcon },
                   label: "Edit",
-                  value: props.spanCodeObjectId ?? "",
+                  value: spanCodeObjectId ?? "",
                   onClick: () => openTicketInfo("edit menu item click")
                 }
               ]}
@@ -115,7 +123,7 @@ export const JiraButton = (props: JiraButtonProps) => {
           />
         </s.HintContainer>
       }
-      isOpen={props.isHintEnabled}
+      isOpen={isHintEnabled}
     >
       {renderButton()}
     </Tooltip>

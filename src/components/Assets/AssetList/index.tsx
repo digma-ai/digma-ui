@@ -12,6 +12,7 @@ import { usePrevious } from "../../../hooks/usePrevious";
 import { isEnvironment } from "../../../typeGuards/isEnvironment";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { isString } from "../../../typeGuards/isString";
+import { changeScope } from "../../../utils/actions/changeScope";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { EmptyState } from "../../common/EmptyState";
 import { Menu } from "../../common/Menu";
@@ -57,25 +58,6 @@ const getSortingMenuChevronColor = (theme: DefaultTheme) => {
   switch (theme.mode) {
     case "light":
       return "#4d668a";
-    case "dark":
-    case "dark-jetbrains":
-      return "#dadada";
-  }
-};
-
-const getSortIconColor = (theme: DefaultTheme, selected: boolean) => {
-  if (selected) {
-    switch (theme.mode) {
-      case "light":
-        return "#f1f5fa";
-      case "dark":
-      case "dark-jetbrains":
-        return "#dadada";
-    }
-  }
-  switch (theme.mode) {
-    case "light":
-      return "#828797";
     case "dark":
     case "dark-jetbrains":
       return "#dadada";
@@ -156,7 +138,15 @@ const getData = (
   });
 };
 
-export const AssetList = (props: AssetListProps) => {
+export const AssetList = ({
+  searchQuery,
+  assetTypeId,
+  filters,
+  scopeViewOptions,
+  onAssetCountChange,
+  setRefresher,
+  onGoToAllAssets
+}: AssetListProps) => {
   const [data, setData] = useState<AssetsData>();
   const previousData = usePrevious(data);
   const [isInitialLoading, setIsInitialLoading] = useState(false);
@@ -168,7 +158,7 @@ export const AssetList = (props: AssetListProps) => {
   });
   const previousSorting = usePrevious(sorting);
   const [isSortingMenuOpen, setIsSortingMenuOpen] = useState(false);
-  const previousSearchQuery = usePrevious(props.searchQuery);
+  const previousSearchQuery = usePrevious(searchQuery);
   const theme = useTheme();
   const assetTypeIconColor = getAssetTypeIconColor(theme);
   const sortingMenuChevronColor = getSortingMenuChevronColor(theme);
@@ -184,33 +174,33 @@ export const AssetList = (props: AssetListProps) => {
   const config = useContext(ConfigContext);
   const refreshTimerId = useRef<number>();
   const previousEnvironment = usePrevious(config.environment);
-  const previousAssetTypeId = usePrevious(props.assetTypeId);
-  const previousFilters = usePrevious(props.filters);
-  const previousViewScope = usePrevious(props.scopeViewOptions);
+  const previousAssetTypeId = usePrevious(assetTypeId);
+  const previousFilters = usePrevious(filters);
+  const previousViewScope = usePrevious(scopeViewOptions);
 
   const refreshData = useCallback(() => {
     getData(
-      props.assetTypeId,
+      assetTypeId,
       page,
       sorting,
-      props.searchQuery,
-      props.filters,
-      props.scopeViewOptions?.isDirect,
-      props.scopeViewOptions?.scopedSpanCodeObjectId
+      searchQuery,
+      filters,
+      scopeViewOptions?.isDirect,
+      scopeViewOptions?.scopedSpanCodeObjectId
     );
   }, [
     page,
-    props.assetTypeId,
-    props.filters,
-    props.scopeViewOptions?.isDirect,
-    props.scopeViewOptions?.scopedSpanCodeObjectId,
-    props.searchQuery,
+    assetTypeId,
+    filters,
+    scopeViewOptions?.isDirect,
+    scopeViewOptions?.scopedSpanCodeObjectId,
+    searchQuery,
     sorting
   ]);
 
   const entries = data?.data ?? [];
 
-  const assetTypeInfo = getAssetTypeInfo(props.assetTypeId);
+  const assetTypeInfo = getAssetTypeInfo(assetTypeId);
 
   const isImpactHidden = useMemo(
     () =>
@@ -222,10 +212,7 @@ export const AssetList = (props: AssetListProps) => {
 
   const sortingCriteria = getSortingCriteria(isImpactHidden);
 
-  const areAnyFiltersApplied = checkIfAnyFiltersApplied(
-    props.filters,
-    props.searchQuery
-  );
+  const areAnyFiltersApplied = checkIfAnyFiltersApplied(filters, searchQuery);
 
   useEffect(() => {
     refreshData();
@@ -246,13 +233,13 @@ export const AssetList = (props: AssetListProps) => {
 
   useEffect(() => {
     if (data && previousData?.filteredCount !== data?.filteredCount) {
-      props.onAssetCountChange(data.filteredCount);
+      onAssetCountChange(data.filteredCount);
     }
-  }, [previousData, data, props.onAssetCountChange]);
+  }, [previousData, data, onAssetCountChange]);
 
   useEffect(() => {
-    props.setRefresher(refreshData);
-  }, [refreshData, props.setRefresher]);
+    setRefresher(refreshData);
+  }, [refreshData, setRefresher]);
 
   useEffect(() => {
     if (
@@ -260,12 +247,10 @@ export const AssetList = (props: AssetListProps) => {
       (isEnvironment(previousEnvironment) &&
         previousEnvironment.id !== config.environment?.id) ||
       Boolean(previousSorting && previousSorting !== sorting) ||
-      (isString(previousSearchQuery) &&
-        previousSearchQuery !== props.searchQuery) ||
-      (isString(previousAssetTypeId) &&
-        previousAssetTypeId !== props.assetTypeId) ||
-      Boolean(previousFilters && previousFilters !== props.filters) ||
-      previousViewScope !== props.scopeViewOptions
+      (isString(previousSearchQuery) && previousSearchQuery !== searchQuery) ||
+      (isString(previousAssetTypeId) && previousAssetTypeId !== assetTypeId) ||
+      Boolean(previousFilters && previousFilters !== filters) ||
+      previousViewScope !== scopeViewOptions
     ) {
       refreshData();
     }
@@ -279,10 +264,10 @@ export const AssetList = (props: AssetListProps) => {
     previousSearchQuery,
     previousSorting,
     previousViewScope,
-    props.assetTypeId,
-    props.filters,
-    props.scopeViewOptions,
-    props.searchQuery,
+    assetTypeId,
+    filters,
+    scopeViewOptions,
+    searchQuery,
     refreshData,
     sorting
   ]);
@@ -295,12 +280,6 @@ export const AssetList = (props: AssetListProps) => {
       }, REFRESH_INTERVAL);
     }
   }, [lastSetDataTimeStamp, previousLastSetDataTimeStamp, refreshData]);
-
-  useEffect(() => {
-    if (props.data) {
-      setData(props.data);
-    }
-  }, [props.data]);
 
   useEffect(() => {
     if (!previousData && data) {
@@ -324,25 +303,25 @@ export const AssetList = (props: AssetListProps) => {
     setPage(0);
   }, [
     config.environment?.id,
-    props.searchQuery,
+    searchQuery,
     sorting,
-    props.assetTypeId,
-    props.scopeViewOptions
+    assetTypeId,
+    scopeViewOptions
   ]);
 
   useEffect(() => {
     listRef.current?.scrollTo(0, 0);
   }, [
     config.environment?.id,
-    props.searchQuery,
+    searchQuery,
     sorting,
     page,
-    props.assetTypeId,
-    props.scopeViewOptions
+    assetTypeId,
+    scopeViewOptions
   ]);
 
   const handleAllAssetsLinkClick = () => {
-    props.onGoToAllAssets();
+    onGoToAllAssets();
   };
 
   const handleSortingMenuToggle = () => {
@@ -370,9 +349,13 @@ export const AssetList = (props: AssetListProps) => {
   };
 
   const handleAssetLinkClick = (entry: AssetEntry) => {
-    window.sendMessageToDigma({
-      action: actions.GO_TO_ASSET,
-      payload: { spanCodeObjectId: entry.spanCodeObjectId }
+    changeScope({
+      span: {
+        spanCodeObjectId: entry.spanCodeObjectId
+      },
+      context: {
+        event: "ASSETS/ASSET_CARD_TITLE_LINK_CLICKED"
+      }
     });
   };
 
@@ -446,7 +429,7 @@ export const AssetList = (props: AssetListProps) => {
           {assetTypeInfo?.icon && (
             <assetTypeInfo.icon color={assetTypeIconColor} size={14} />
           )}
-          {assetTypeInfo?.label ?? props.assetTypeId}
+          {assetTypeInfo?.label ?? assetTypeId}
         </s.TypeHeader>
         <Link onClick={handleAllAssetsLinkClick}>All Assets</Link>
       </s.Header>
@@ -484,7 +467,6 @@ export const AssetList = (props: AssetListProps) => {
         <s.SortingOrderToggle>
           {[SORTING_ORDER.DESC, SORTING_ORDER.ASC].map((order) => {
             const isSelected = sorting.order === order;
-            const iconColor = getSortIconColor(theme, isSelected);
 
             return (
               <s.SortingOrderToggleOptionButton
@@ -493,7 +475,7 @@ export const AssetList = (props: AssetListProps) => {
                 onClick={() => handleSortingOrderToggleOptionButtonClick(order)}
               >
                 <s.SortingOrderIconContainer $sortingOrder={order}>
-                  <SortIcon color={iconColor} size={14} />
+                  <SortIcon color={"currentColor"} size={14} />
                 </s.SortingOrderIconContainer>
               </s.SortingOrderToggleOptionButton>
             );

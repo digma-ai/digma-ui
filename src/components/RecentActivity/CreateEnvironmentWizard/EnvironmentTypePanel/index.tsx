@@ -11,7 +11,9 @@ import { trackingEvents } from "../../tracking";
 import * as s from "./styles";
 import { EnvironmentTypeData, EnvironmentTypePanelProps } from "./types";
 
-export const EnvironmentTypePanel = (props: EnvironmentTypePanelProps) => {
+export const EnvironmentTypePanel = ({
+  onEnvironmentTypeSelect
+}: EnvironmentTypePanelProps) => {
   const config = useContext(ConfigContext);
 
   const handleEnvironmentTypeButtonClick = (type: EnvironmentType) => {
@@ -24,7 +26,7 @@ export const EnvironmentTypePanel = (props: EnvironmentTypePanelProps) => {
         }
       );
     }
-    props.onEnvironmentTypeSelect(type);
+    onEnvironmentTypeSelect(type);
   };
 
   const handleLearnMoreClick = () => {

@@ -18,14 +18,19 @@ import { QueryOptimizationInsightProps } from "./types";
  * @deprecated
  * safe to delete after 2024-06-05
  */
-export const QueryOptimizationInsight = (
-  props: QueryOptimizationInsightProps
-) => {
+export const QueryOptimizationInsight = ({
+  onAssetLinkClick,
+  insight,
+  onTraceButtonClick,
+  onJiraTicketCreate,
+  onRecalculate,
+  onRefresh,
+  isJiraHintEnabled
+}: QueryOptimizationInsightProps) => {
   const config = useContext(ConfigContext);
 
   const handleSpanLinkClick = (spanCodeObjectId?: string) => {
-    spanCodeObjectId &&
-      props.onAssetLinkClick(spanCodeObjectId, props.insight.type);
+    spanCodeObjectId && onAssetLinkClick(spanCodeObjectId, insight.type);
   };
 
   const handleTraceButtonClick = (
@@ -33,40 +38,36 @@ export const QueryOptimizationInsight = (
     insightType: InsightType,
     spanCodeObjectId?: string
   ) => {
-    props.onTraceButtonClick(trace, insightType, spanCodeObjectId);
+    onTraceButtonClick(trace, insightType, spanCodeObjectId);
   };
 
   const handleCreateJiraTicketButtonClick = (event: string) => {
     sendUserActionTrackingEvent(
       trackingEvents.JIRA_TICKET_INFO_BUTTON_CLICKED,
       {
-        insightType: props.insight.type
+        insightType: insight.type
       }
     );
 
-    props.onJiraTicketCreate &&
-      props.onJiraTicketCreate(
-        props.insight,
-        props.insight.spanInfo?.spanCodeObjectId,
-        event
-      );
+    if (onJiraTicketCreate) {
+      onJiraTicketCreate(insight, insight.spanInfo?.spanCodeObjectId, event);
+    }
   };
 
-  const spanName = props.insight.spanInfo?.displayName ?? undefined;
-  const spanCodeObjectId =
-    props.insight.spanInfo?.spanCodeObjectId ?? undefined;
-  const traceId = props.insight.traceId;
-  const endpoints = props.insight.endpoints ?? [];
+  const spanName = insight.spanInfo?.displayName ?? undefined;
+  const spanCodeObjectId = insight.spanInfo?.spanCodeObjectId ?? undefined;
+  const traceId = insight.traceId;
+  const endpoints = insight.endpoints ?? [];
 
   return (
     <InsightCard
-      data={props.insight}
-      spanInfo={props.insight.spanInfo}
+      data={insight}
+      spanInfo={insight.spanInfo}
       content={
         <s.ContentContainer>
           <Description>
-            Query is slow compared to other{" "}
-            {props.insight.dbStatement.toUpperCase()} requests.
+            Query is slow compared to other {insight.dbStatement.toUpperCase()}{" "}
+            requests.
           </Description>
           <s.SpanContainer>
             <Tooltip title={spanName}>
@@ -88,7 +89,7 @@ export const QueryOptimizationInsight = (
                       name: spanName,
                       id: traceId
                     },
-                    props.insight.type,
+                    insight.type,
                     spanCodeObjectId
                   )
                 }
@@ -101,11 +102,11 @@ export const QueryOptimizationInsight = (
           <s.Stats>
             <s.Stat>
               <Description>Duration</Description>
-              <span>{getDurationString(props.insight.duration)}</span>
+              <span>{getDurationString(insight.duration)}</span>
             </s.Stat>
             <s.Stat>
               <Description>Typical Duration</Description>
-              <span>{getDurationString(props.insight.typicalDuration)}</span>
+              <span>{getDurationString(insight.typicalDuration)}</span>
             </s.Stat>
           </s.Stats>
           <Description>Affected endpoints:</Description>
@@ -131,16 +132,16 @@ export const QueryOptimizationInsight = (
           </s.EndpointList>
         </s.ContentContainer>
       }
-      onRecalculate={props.onRecalculate}
-      onRefresh={props.onRefresh}
+      onRecalculate={onRecalculate}
+      onRefresh={onRefresh}
       buttons={[
         <JiraButton
           key={"view-ticket-info"}
           onTicketInfoButtonClick={handleCreateJiraTicketButtonClick}
-          spanCodeObjectId={props.insight.spanInfo?.spanCodeObjectId}
-          ticketLink={props.insight.ticketLink}
+          spanCodeObjectId={insight.spanInfo?.spanCodeObjectId}
+          ticketLink={insight.ticketLink}
           buttonType={"large"}
-          isHintEnabled={props.isJiraHintEnabled}
+          isHintEnabled={isJiraHintEnabled}
         />
       ]}
     />

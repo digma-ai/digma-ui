@@ -1,7 +1,7 @@
 import { Row, createColumnHelper } from "@tanstack/react-table";
 import { useContext } from "react";
-import { ROUTES } from "../../../../../constants";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
+import { TAB_IDS } from "../../../../Navigation/Tabs/types";
 import { ConfigContext } from "../../../../common/App/ConfigContext";
 import { Table } from "../../../common/Table";
 import { TableText } from "../../../common/TableText";
@@ -62,9 +62,10 @@ export const EndpointHighNumberOfQueriesHighlightCard = ({
       }
     );
     handleEnvironmentTableRowClick(
+      config.scope,
       config.environments,
       row.original.environmentId,
-      ROUTES.INSIGHTS
+      TAB_IDS.ISSUES
     );
   };
 

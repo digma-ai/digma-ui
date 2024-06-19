@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { InsightType, SpanInfo } from "../../../../../types";
-import { GenericCodeObjectInsight } from "../../../types";
+import { GenericCodeObjectInsight, InsightImportance } from "../../../types";
 
 export interface InsightCardProps {
   data: GenericCodeObjectInsight;
@@ -20,4 +20,8 @@ export interface InsightCardProps {
 
 export interface PercentileViewModeOptionProps {
   selected: boolean;
+}
+
+export interface InsightIconContainerProps {
+  $importance: InsightImportance;
 }

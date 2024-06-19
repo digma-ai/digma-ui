@@ -1,7 +1,3 @@
-export interface ErrorsProps {
-  errorId?: string;
-}
-
 export interface GetErrorsDataPayload {
   spanCodeObjectId: string;
   methodId?: string;

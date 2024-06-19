@@ -7,28 +7,32 @@ import { Direction } from "../../common/icons/types";
 import * as s from "./styles";
 import { EnvironmentFilterProps } from "./types";
 
-export const EnvironmentFilter = (props: EnvironmentFilterProps) => {
+export const EnvironmentFilter = ({
+  onMenuItemClick,
+  items,
+  isLoading
+}: EnvironmentFilterProps) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleMenuItemClick = (value: string) => {
-    props.onMenuItemClick(value);
+    onMenuItemClick(value);
   };
 
   const handleServiceMenuClose = () => {
     setIsMenuOpen(false);
   };
 
-  const selectedItems = props.items.filter((x) => x.selected);
+  const selectedItems = items.filter((x) => x.selected);
 
   return (
     <NewPopover
       content={
         <FilterMenu
           title={"Filter by environments"}
-          items={props.items}
+          items={items}
           onItemClick={handleMenuItemClick}
           onClose={handleServiceMenuClose}
-          isLoading={props.isLoading}
+          isLoading={isLoading}
         />
       }
       onOpenChange={setIsMenuOpen}
@@ -41,7 +45,7 @@ export const EnvironmentFilter = (props: EnvironmentFilterProps) => {
             <GlobeIcon color={"currentColor"} />
           </s.IconContainer>
           <span>Environment :</span>
-          {selectedItems && selectedItems.length > 0 && !props.isLoading ? (
+          {selectedItems && selectedItems.length > 0 && !isLoading ? (
             <s.Number>{selectedItems.length}</s.Number>
           ) : (
             <s.SelectedEntriesNumberPlaceholder>

@@ -1,5 +1,5 @@
 import {
-  GoToInsightsPayload,
+  CodeObjectData,
   NotificationsData,
   NotificationsError
 } from "../types";
@@ -10,7 +10,7 @@ export interface FullViewProps {
   showAll: boolean;
   page: number;
   pageSize: number;
-  onLinkClick: (codeObjectData: GoToInsightsPayload) => void;
+  onLinkClick: (codeObjectData: CodeObjectData) => void;
   onPageChange: (page: number) => void;
   onFilterChange: (showAll: boolean) => void;
   onClose: () => void;

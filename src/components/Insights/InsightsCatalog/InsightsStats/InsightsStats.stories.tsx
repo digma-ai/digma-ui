@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from "@storybook/react";
+import { fn } from "@storybook/test";
 import { InsightStats } from ".";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
@@ -19,12 +20,14 @@ export const Default: Story = {
   args: {
     allIssuesCount: 100,
     criticalCount: 101,
-    unreadCount: 12
+    unreadCount: 12,
+    onChange: fn()
   }
 };
 
 export const Old: Story = {
   args: {
-    unreadCount: 12
+    unreadCount: 12,
+    onChange: fn()
   }
 };

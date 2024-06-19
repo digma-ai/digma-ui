@@ -1,17 +1,17 @@
 import * as s from "./styles";
 import { ToggleProps, ToggleValue } from "./types";
 
-export const Toggle = (props: ToggleProps) => {
+export const Toggle = ({ onValueChange, options, value }: ToggleProps) => {
   const handleOptionButtonClick = (value: ToggleValue) => {
-    props.onValueChange(value);
+    onValueChange(value);
   };
 
   return (
     <s.Container>
-      {props.options.map((option) => (
+      {options.map((option) => (
         <s.OptionButton
           key={option.value}
-          $selected={props.value === option.value}
+          $selected={value === option.value}
           onClick={() => handleOptionButtonClick(option.value)}
         >
           {option.label}

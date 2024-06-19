@@ -5,7 +5,3 @@ export interface ServiceData {
 export interface DataRefresher {
   refresh: () => void;
 }
-
-export interface AssetsProps {
-  selectedTypeId?: string;
-}

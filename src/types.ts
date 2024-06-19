@@ -85,6 +85,11 @@ export interface ChangeScopePayload {
     spanCodeObjectId: string;
   } | null;
   forceNavigation?: boolean;
+  environmentId?: string;
+  context?: {
+    event: string;
+    payload?: Record<string, unknown>;
+  };
 }
 
 export interface ChangeViewPayload {

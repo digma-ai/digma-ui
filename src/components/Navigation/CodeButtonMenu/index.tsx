@@ -12,21 +12,29 @@ import { Spinner } from "./Spinner";
 import * as s from "./styles";
 import { CodeButtonMenuProps } from "./types";
 
-export const CodeButtonMenu = (props: CodeButtonMenuProps) => {
+export const CodeButtonMenu = ({
+  codeContext,
+  onObservabilityAdd,
+  onAutoFix,
+  onClose,
+  isAutoFixing,
+  isAnnotationAdding,
+  onScopeChange
+}: CodeButtonMenuProps) => {
   const handleAddObservabilityClick = () => {
-    if (isString(props.codeContext.methodId)) {
+    if (isString(codeContext.methodId)) {
       sendUserActionTrackingEvent(
         trackingEvents.ADD_OBSERVABILITY_BUTTON_CLICKED
       );
-      props.onObservabilityAdd(props.codeContext.methodId);
+      onObservabilityAdd(codeContext.methodId);
     }
   };
 
   const handleAutoFixLinkClick = (e: MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    if (isString(props.codeContext.methodId)) {
+    if (isString(codeContext.methodId)) {
       sendUserActionTrackingEvent(trackingEvents.AUTO_FIX_BUTTON_CLICKED);
-      props.onAutoFix(props.codeContext.methodId);
+      onAutoFix(codeContext.methodId);
     }
   };
 
@@ -36,7 +44,7 @@ export const CodeButtonMenu = (props: CodeButtonMenuProps) => {
     window.sendMessageToDigma({
       action: actions.OPEN_TROUBLESHOOTING_GUIDE
     });
-    props.onClose();
+    onClose();
   };
 
   const renderMissingDependency = () => (
@@ -44,12 +52,12 @@ export const CodeButtonMenu = (props: CodeButtonMenuProps) => {
       <s.MissingDependencyText>Missing dependency</s.MissingDependencyText>
       <s.Link
         href={"#"}
-        $isDisabled={props.isAutoFixing}
+        $isDisabled={isAutoFixing}
         onClick={handleAutoFixLinkClick}
       >
         Autofix
       </s.Link>
-      {props.isAutoFixing && <Spinner />}
+      {isAutoFixing && <Spinner />}
     </s.MissingDependencyContainer>
   );
 
@@ -57,13 +65,13 @@ export const CodeButtonMenu = (props: CodeButtonMenuProps) => {
     <s.EmptyStateContainer>
       <s.Text>Click to observe this code in runtime</s.Text>
       <s.AddObservabilityButtonContainer>
-        {props.isAnnotationAdding && <Spinner />}
+        {isAnnotationAdding && <Spinner />}
         <NewButton
           buttonType={"primary"}
           disabled={
-            props.codeContext.hasMissingDependency ??
-            !props.codeContext.canInstrumentMethod ??
-            props.isAnnotationAdding
+            codeContext.hasMissingDependency ??
+            !codeContext.canInstrumentMethod ??
+            isAnnotationAdding
           }
           onClick={handleAddObservabilityClick}
           label={"Add observability"}
@@ -87,12 +95,12 @@ export const CodeButtonMenu = (props: CodeButtonMenuProps) => {
   const renderSpans = () => {
     const handleMenuItemClick = (spanCodeObjectId: string) => {
       sendUserActionTrackingEvent(trackingEvents.ASSET_SELECTED);
-      props.onScopeChange(spanCodeObjectId);
+      onScopeChange(spanCodeObjectId);
     };
 
     return (
       <MenuList
-        items={props.codeContext.spans.assets.map((x) => ({
+        items={codeContext.spans.assets.map((x) => ({
           id: x.spanCodeObjectId,
           label: x.displayName,
           onClick: () => handleMenuItemClick(x.spanCodeObjectId),
@@ -106,9 +114,7 @@ export const CodeButtonMenu = (props: CodeButtonMenuProps) => {
   return (
     <Popup
       header={
-        props.codeContext.hasMissingDependency
-          ? renderMissingDependency()
-          : undefined
+        codeContext.hasMissingDependency ? renderMissingDependency() : undefined
       }
     >
       <s.Container>
@@ -116,15 +122,13 @@ export const CodeButtonMenu = (props: CodeButtonMenuProps) => {
           <s.CodeIconContainer>
             <CodeIcon color={"currentColor"} />
           </s.CodeIconContainer>
-          <Tooltip title={props.codeContext.displayName}>
-            <s.CodeLocationName>
-              {props.codeContext.displayName}
-            </s.CodeLocationName>
+          <Tooltip title={codeContext.displayName}>
+            <s.CodeLocationName>{codeContext.displayName}</s.CodeLocationName>
           </Tooltip>
         </s.CodeLocation>
-        {props.codeContext.isInstrumented === false
+        {codeContext.isInstrumented === false
           ? renderNoObservability()
-          : props.codeContext.spans.assets.length > 0
+          : codeContext.spans.assets.length > 0
           ? renderSpans()
           : renderNoData()}
       </s.Container>

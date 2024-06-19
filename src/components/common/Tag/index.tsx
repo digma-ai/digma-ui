@@ -1,4 +1,3 @@
-import { isString } from "../../../typeGuards/isString";
 import { isUndefined } from "../../../typeGuards/isUndefined";
 import { Tooltip } from "../Tooltip";
 import * as s from "./styles";
@@ -15,14 +14,14 @@ const renderValue = (value: TagProps["value"]) => {
   }
 };
 
-export const Tag = (props: TagProps) => {
-  const title = isString(props.title) ? props.title : props.value;
+export const Tag = ({ title: tagTitle, value, type, icon: Icon }: TagProps) => {
+  const title = tagTitle ?? value;
   return (
     <Tooltip title={title}>
-      <s.Container $type={props.type}>
-        {props.icon && <props.icon size={16} color={"currentColor"} />}
-        {!isUndefined(props.value) && (
-          <s.ValueContainer>{renderValue(props.value)}</s.ValueContainer>
+      <s.Container $type={type}>
+        {Icon && <Icon size={16} color={"currentColor"} />}
+        {!isUndefined(value) && (
+          <s.ValueContainer>{renderValue(value)}</s.ValueContainer>
         )}
       </s.Container>
     </Tooltip>

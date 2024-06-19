@@ -1,23 +1,30 @@
 import * as s from "./styles";
 import { TabProps } from "./types";
 
-export const Tab = (props: TabProps) => {
+export const Tab = ({
+  isDisabled,
+  onClick,
+  isSelected,
+  fullWidth,
+  icon: Icon,
+  children
+}: TabProps) => {
   const handleContainerClick = () => {
-    if (!props.isDisabled) {
-      props.onClick();
+    if (!isDisabled) {
+      onClick();
     }
   };
   return (
     <s.Container
-      $isDisabled={props.isDisabled}
-      $isSelected={props.isSelected}
+      $isDisabled={isDisabled}
+      $isSelected={isSelected}
       onClick={handleContainerClick}
-      $fullWidth={props.fullWidth}
+      $fullWidth={fullWidth}
     >
       <s.IconContainer>
-        {props.icon && <props.icon size={14} color={"currentColor"} />}
+        {Icon && <Icon size={14} color={"currentColor"} />}
       </s.IconContainer>
-      {props.children}
+      {children}
     </s.Container>
   );
 };

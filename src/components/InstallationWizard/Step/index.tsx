@@ -2,7 +2,6 @@ import { useRef } from "react";
 import useDimensions from "react-cool-dimensions";
 import { CSSTransition } from "react-transition-group";
 import { useTheme } from "styled-components";
-import { isNumber } from "../../../typeGuards/isNumber";
 import { CheckmarkCircleInvertedIcon } from "../../common/icons/CheckmarkCircleInvertedIcon";
 import * as s from "./styles";
 import { StepProps } from "./types";
@@ -11,12 +10,14 @@ const TRANSITION_CLASS_NAME = "step";
 const NUMBER_TRANSITION_CLASS_NAME = "number-link";
 const DEFAULT_TRANSITION_DURATION = 300; // in milliseconds
 
-export const Step = (props: StepProps) => {
+export const Step = ({
+  transitionDuration = DEFAULT_TRANSITION_DURATION,
+  status,
+  stepIndex,
+  onGoToStep,
+  data
+}: StepProps) => {
   const theme = useTheme();
-
-  const transitionDuration = isNumber(props.transitionDuration)
-    ? props.transitionDuration
-    : DEFAULT_TRANSITION_DURATION;
 
   const containerRef = useRef<HTMLDivElement>(null);
   const numberRef = useRef<HTMLSpanElement>(null);
@@ -24,12 +25,12 @@ export const Step = (props: StepProps) => {
   const { observe, height } = useDimensions();
 
   const handleHeaderClick = () => {
-    if (props.status === "completed") {
-      props.onGoToStep(props.stepIndex);
+    if (status === "completed") {
+      onGoToStep(stepIndex);
     }
   };
 
-  const isActive = props.status === "active";
+  const isActive = status === "active";
 
   return (
     <CSSTransition
@@ -39,7 +40,7 @@ export const Step = (props: StepProps) => {
       nodeRef={containerRef}
     >
       <s.Container
-        $status={props.status}
+        $status={status}
         ref={containerRef}
         $contentHeight={height}
         $transitionClassName={TRANSITION_CLASS_NAME}
@@ -47,7 +48,7 @@ export const Step = (props: StepProps) => {
       >
         <s.ContentContainer>
           <s.Header
-            $status={props.status}
+            $status={status}
             $transitionDuration={transitionDuration}
             onClick={handleHeaderClick}
           >
@@ -60,7 +61,7 @@ export const Step = (props: StepProps) => {
                 color={s.getNumberBackgroundColor(theme)}
               />
               <CSSTransition
-                in={props.status !== "completed"}
+                in={status !== "completed"}
                 timeout={transitionDuration}
                 classNames={NUMBER_TRANSITION_CLASS_NAME}
                 nodeRef={numberRef}
@@ -69,17 +70,17 @@ export const Step = (props: StepProps) => {
               >
                 <s.Number
                   ref={numberRef}
-                  $status={props.status}
+                  $status={status}
                   $transitionClassName={NUMBER_TRANSITION_CLASS_NAME}
                   $transitionDuration={transitionDuration}
                 >
-                  {props.stepIndex + 1}
+                  {stepIndex + 1}
                 </s.Number>
               </CSSTransition>
             </s.NumberContainer>
-            {props.data.title}
+            {data.title}
           </s.Header>
-          <s.Content ref={observe}>{props.data.content}</s.Content>
+          <s.Content ref={observe}>{data.content}</s.Content>
         </s.ContentContainer>
       </s.Container>
     </CSSTransition>

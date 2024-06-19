@@ -1,5 +1,5 @@
 import {
-  GoToInsightsPayload,
+  CodeObjectData,
   NotificationsData,
   NotificationsError
 } from "../types";
@@ -7,7 +7,7 @@ import {
 export interface RecentViewProps {
   data?: NotificationsData;
   error?: NotificationsError;
-  onLinkClick: (codeObjectData: GoToInsightsPayload) => void;
+  onLinkClick: (codeObjectData: CodeObjectData) => void;
   onGoToNotifications: () => void;
   onClose: () => void;
   isLoading: boolean;

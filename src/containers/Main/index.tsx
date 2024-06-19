@@ -1,12 +1,13 @@
 import { createRoot } from "react-dom/client";
+import { RouterProvider } from "react-router-dom";
 import {
   cancelMessage,
   initializeDigmaMessageListener,
   sendMessage
 } from "../../api";
-import { Main } from "../../components/Main";
 import { App } from "../../components/common/App";
 import { dispatcher } from "../../dispatcher";
+import { router } from "./router";
 
 initializeDigmaMessageListener(dispatcher);
 
@@ -19,7 +20,7 @@ if (rootElement) {
   const root = createRoot(rootElement);
   root.render(
     <App>
-      <Main />
+      <RouterProvider router={router} />
     </App>
   );
 }

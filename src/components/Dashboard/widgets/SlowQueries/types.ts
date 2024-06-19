@@ -1,5 +1,4 @@
 import { Duration } from "../../../../globals";
-import { ListWidgetData } from "../../ListWidget/types";
 
 export interface SlowQueryEntry {
   spanCodeObjectId: string;
@@ -10,5 +9,4 @@ export interface SlowQueryEntry {
 
 export interface SlowQueriesProps {
   environment: string;
-  data?: ListWidgetData<SlowQueryEntry>;
 }

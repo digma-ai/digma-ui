@@ -21,22 +21,20 @@ const getHighlighterTheme = (theme: DefaultTheme): HighlighterTheme => {
 };
 
 const CodeSnippetComponent = (
-  props: CodeSnippetProps,
+  { text, className, language }: CodeSnippetProps,
   ref: ForwardedRef<HTMLDivElement>
 ) => {
   const theme = useTheme();
   const highlighterTheme = getHighlighterTheme(theme);
   const codeRef = useRef<HTMLElement>(null);
 
-  const textToCopy = isString(props.text)
-    ? props.text
-    : codeRef.current?.innerText ?? "";
+  const textToCopy = isString(text) ? text : codeRef.current?.innerText ?? "";
 
   return (
-    <s.Container className={props.className} ref={ref}>
-      {props.language && isString(props.text) ? (
+    <s.Container className={className} ref={ref}>
+      {language && isString(text) ? (
         <SyntaxHighlighter
-          language={props.language}
+          language={language}
           style={highlighterTheme}
           customStyle={{
             padding: "6px 0 6px 8px",
@@ -47,10 +45,10 @@ const CodeSnippetComponent = (
           wrapLongLines={true}
           PreTag={"div"}
         >
-          {props.text}
+          {text}
         </SyntaxHighlighter>
       ) : (
-        <s.Code ref={codeRef}>{props.text}</s.Code>
+        <s.Code ref={codeRef}>{text}</s.Code>
       )}
       <CopyButton text={textToCopy} />
     </s.Container>

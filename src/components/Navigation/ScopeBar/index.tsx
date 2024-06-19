@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import { actions as globalActions } from "../../../actions";
-import { ChangeScopePayload } from "../../../types";
+import { changeScope } from "../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { CodeDetails, Scope } from "../../common/App/types";
 import { NewPopover } from "../../common/NewPopover";
@@ -49,19 +48,16 @@ const getTargetButtonTooltip = (
   }
 };
 
-export const ScopeBar = (props: ScopeBarProps) => {
+export const ScopeBar = ({ scope, codeContext }: ScopeBarProps) => {
   const [isTargetButtonMenuOpen, setIsTargetButtonMenuOpen] = useState(false);
 
-  const scopeDisplayName = props.scope
-    ? props.scope.span
-      ? props.scope.span.displayName
+  const scopeDisplayName = scope
+    ? scope.span
+      ? scope.span.displayName
       : "Home"
     : "";
 
-  const targetButtonTooltip = getTargetButtonTooltip(
-    props.codeContext,
-    props.scope
-  );
+  const targetButtonTooltip = getTargetButtonTooltip(codeContext, scope);
 
   const isTargetButtonTooltipOpen =
     isTargetButtonMenuOpen || targetButtonTooltip.length === 0
@@ -69,28 +65,26 @@ export const ScopeBar = (props: ScopeBarProps) => {
       : undefined;
 
   const isTargetButtonEnabled = Boolean(
-    props.scope?.span &&
-      [
-        ...props.scope.code.codeDetailsList,
-        ...props.scope.code.relatedCodeDetailsList
-      ].length > 0 &&
-      !isAlreadyAtCode(props.codeContext, props.scope)
+    scope?.span &&
+      [...scope.code.codeDetailsList, ...scope.code.relatedCodeDetailsList]
+        .length > 0 &&
+      !isAlreadyAtCode(codeContext, scope)
   );
   const isTargetButtonMenuEnabled =
-    props.scope &&
-    (props.scope.code.codeDetailsList.length > 1 ||
-      props.scope.code.relatedCodeDetailsList.length > 0);
+    scope &&
+    (scope.code.codeDetailsList.length > 1 ||
+      scope.code.relatedCodeDetailsList.length > 0);
 
   useEffect(() => {
     setIsTargetButtonMenuOpen(false);
-  }, [props.scope]);
+  }, [scope]);
 
   const handleHomeButtonClick = () => {
     sendUserActionTrackingEvent(trackingEvents.HOME_BUTTON_CLICKED);
-    window.sendMessageToDigma<ChangeScopePayload>({
-      action: globalActions.CHANGE_SCOPE,
-      payload: {
-        span: null
+    changeScope({
+      span: null,
+      context: {
+        event: "NAVIGATION/HOME_BUTTON_CLICKED"
       }
     });
   };
@@ -107,8 +101,8 @@ export const ScopeBar = (props: ScopeBarProps) => {
 
   const handleTargetButtonClick = () => {
     sendUserActionTrackingEvent(trackingEvents.TARGET_BUTTON_CLICKED);
-    if (props.scope && props.scope.code.codeDetailsList.length === 1) {
-      handleGoToCodeLocation(props.scope.code.codeDetailsList[0]);
+    if (scope && scope.code.codeDetailsList.length === 1) {
+      handleGoToCodeLocation(scope.code.codeDetailsList[0]);
     }
   };
 
@@ -123,14 +117,11 @@ export const ScopeBar = (props: ScopeBarProps) => {
     </Tooltip>
   );
 
-  const isActive = Boolean(props.scope?.span);
+  const isActive = Boolean(scope?.span);
 
   return (
-    <s.ScopeBar $isActive={Boolean(props.scope?.span)}>
-      <s.ScopeBarButton
-        disabled={!props.scope?.span}
-        onClick={handleHomeButtonClick}
-      >
+    <s.ScopeBar $isActive={Boolean(scope?.span)}>
+      <s.ScopeBarButton disabled={!scope?.span} onClick={handleHomeButtonClick}>
         <HomeIcon color={"currentColor"} size={16} />
       </s.ScopeBarButton>
       <s.ScopeBarDivider />
@@ -145,9 +136,9 @@ export const ScopeBar = (props: ScopeBarProps) => {
         <NewPopover
           content={
             <Popup height={"126px"}>
-              {props.scope && (
+              {scope && (
                 <TargetButtonMenu
-                  scope={props.scope}
+                  scope={scope}
                   onGoToCodeLocation={handleGoToCodeLocation}
                 />
               )}

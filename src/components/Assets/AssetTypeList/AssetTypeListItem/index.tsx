@@ -1,16 +1,22 @@
 import * as s from "./styles";
 import { AssetTypeListItemProps } from "./types";
 
-export const AssetTypeListItem = (props: AssetTypeListItemProps) => {
+export const AssetTypeListItem = ({
+  onAssetTypeClick,
+  id,
+  icon: Icon,
+  label,
+  entryCount
+}: AssetTypeListItemProps) => {
   const handleAssetTypeClick = () => {
-    props.onAssetTypeClick(props.id);
+    onAssetTypeClick(id);
   };
 
   return (
     <s.ListItem onClick={handleAssetTypeClick}>
-      {props.icon && <props.icon size={16} color={"currentColor"} />}
-      {props.label ?? props.id}
-      <s.EntryCount>{props.entryCount}</s.EntryCount>
+      {Icon && <Icon size={16} color={"currentColor"} />}
+      {label ?? id}
+      <s.EntryCount>{entryCount}</s.EntryCount>
     </s.ListItem>
   );
 };

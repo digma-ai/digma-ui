@@ -1,12 +1,12 @@
 import { Row, createColumnHelper } from "@tanstack/react-table";
 import { useContext, useEffect } from "react";
-import { actions as globalActions } from "../../../actions";
-import { ROUTES, SCALING_ISSUE_DOCUMENTATION_URL } from "../../../constants";
-import { ChangeViewPayload } from "../../../types";
+import { useNavigate } from "react-router-dom";
+import { SCALING_ISSUE_DOCUMENTATION_URL } from "../../../constants";
 import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { getDurationString } from "../../../utils/getDurationString";
 import { InsightStatus } from "../../Insights/types";
+import { TAB_IDS } from "../../Navigation/Tabs/types";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { CrossCircleIcon } from "../../common/icons/16px/CrossCircleIcon";
 import { MeterHighIcon } from "../../common/icons/16px/MeterHighIcon";
@@ -75,6 +75,7 @@ const demoData: EnvironmentData<EnvironmentScalingData>[] = [
 export const Scaling = () => {
   const { data, getData } = useScalingData();
   const config = useContext(ConfigContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     getData();
@@ -118,9 +119,10 @@ export const Scaling = () => {
         trackingEvents.SCALING_CARD_TABLE_ROW_CLICKED
       );
       handleEnvironmentTableRowClick(
+        config.scope,
         config.environments,
         row.original.environmentId,
-        ROUTES.INSIGHTS
+        TAB_IDS.ISSUES
       );
     };
 
@@ -166,12 +168,7 @@ export const Scaling = () => {
         trackingEvents.SCALING_CARD_VIEW_ANALYTICS_BUTTON_CLICKED
       );
 
-      window.sendMessageToDigma<ChangeViewPayload>({
-        action: globalActions.CHANGE_VIEW,
-        payload: {
-          view: ROUTES.ANALYTICS
-        }
-      });
+      navigate(TAB_IDS.ANALYTICS);
     };
 
     if (!data) {

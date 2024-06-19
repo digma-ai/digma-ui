@@ -27,4 +27,13 @@ export const CloseButton = styled.button`
   background: none;
   border: none;
   height: 14px;
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#818594";
+      case "dark":
+      case "dark-jetbrains":
+        return "#b4b8bf";
+    }
+  }};
 `;

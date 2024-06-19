@@ -1,6 +1,6 @@
 export interface SortingSelectorProps {
   options: SortingOption[];
-  default: Sorting;
+  defaultSorting: Sorting;
   onChange: (val: Sorting) => void;
 }
 

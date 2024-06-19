@@ -4,27 +4,34 @@ import { EmptyState } from "../EmptyState";
 import { ErrorEmptyState } from "../ErrorEmptyState";
 import { Header } from "../Header";
 import { NotificationList } from "../NotificationList";
-import { GoToInsightsPayload } from "../types";
+import { CodeObjectData } from "../types";
 import * as s from "./styles";
 import { RecentViewProps } from "./types";
 
-export const RecentView = (props: RecentViewProps) => {
+export const RecentView = ({
+  onClose,
+  onLinkClick,
+  onGoToNotifications,
+  data,
+  isLoading,
+  error
+}: RecentViewProps) => {
   const handleClose = () => {
-    props.onClose();
+    onClose();
   };
 
-  const handleGoToInsights = (codeObjectData: GoToInsightsPayload) => {
-    props.onLinkClick(codeObjectData);
+  const handleLinkClick = (codeObjectData: CodeObjectData) => {
+    onLinkClick(codeObjectData);
   };
 
   const handleViewAllLinkClick = () => {
-    props.onGoToNotifications();
+    onGoToNotifications();
   };
 
-  const notificationsCount = props.data?.notifications.length ?? 0;
+  const notificationsCount = data?.notifications.length ?? 0;
 
   const renderEmptyState = () => {
-    if (props.isLoading) {
+    if (isLoading) {
       return (
         <s.CircleLoaderContainer>
           <CircleLoader size={32} />
@@ -32,7 +39,7 @@ export const RecentView = (props: RecentViewProps) => {
       );
     }
 
-    return props.error ? (
+    return error ? (
       <ErrorEmptyState />
     ) : (
       <EmptyState title={"No unread notifications"} />
@@ -42,15 +49,15 @@ export const RecentView = (props: RecentViewProps) => {
   return (
     <s.Container>
       <Header onClose={handleClose} />
-      {props.data && notificationsCount ? (
+      {data && notificationsCount ? (
         <s.ContentContainer>
           <s.Subtitle>
             Top {notificationsCount} Unread Notification
             {notificationsCount > 1 ? "s" : ""}
           </s.Subtitle>
           <NotificationList
-            notifications={props.data.notifications}
-            onGoToInsights={handleGoToInsights}
+            notifications={data.notifications}
+            onLinkClick={handleLinkClick}
           />
         </s.ContentContainer>
       ) : (

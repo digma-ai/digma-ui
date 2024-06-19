@@ -44,10 +44,6 @@ export interface SetSpanLatestDataPayload {
   } | null;
 }
 
-export interface TestsProps {
-  data?: SetSpanLatestDataPayload;
-}
-
 export interface RegisterPayload {
   email: string;
   fullName: string;

@@ -1,3 +1,4 @@
+import { ChartOffset } from "recharts/types/util/types";
 import { Duration } from "../../../globals";
 
 export interface LiveViewProps {
@@ -66,4 +67,9 @@ export interface AreaLegendIllustrationProps {
 
 export interface DotProps {
   payload: ExtendedLiveDataRecord;
+}
+
+export interface VerticalCoordinatesGeneratorProps {
+  width: number | undefined;
+  offset: ChartOffset;
 }

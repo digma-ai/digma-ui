@@ -8,16 +8,18 @@ import { SlowEndpointInsightProps } from "./types";
  * @deprecated
  * safe to delete after 2024-06-05
  */
-export const SlowEndpointInsight = (props: SlowEndpointInsightProps) => {
+export const SlowEndpointInsight = ({
+  insight,
+  onRecalculate,
+  onRefresh
+}: SlowEndpointInsightProps) => {
   const diff =
-    (props.insight.median.raw / props.insight.endpointsMedianOfMedians.raw -
-      1) *
-    100;
+    (insight.median.raw / insight.endpointsMedianOfMedians.raw - 1) * 100;
 
   return (
     <InsightCard
-      data={props.insight}
-      spanInfo={props.insight.spanInfo}
+      data={insight}
+      spanInfo={insight.spanInfo}
       content={
         <Description>
           {`On average requests are slower than other endpoints by ${roundTo(
@@ -26,9 +28,9 @@ export const SlowEndpointInsight = (props: SlowEndpointInsightProps) => {
           )}%`}
         </Description>
       }
-      stats={getDurationString(props.insight.median)}
-      onRecalculate={props.onRecalculate}
-      onRefresh={props.onRefresh}
+      stats={getDurationString(insight.median)}
+      onRecalculate={onRecalculate}
+      onRefresh={onRefresh}
     />
   );
 };

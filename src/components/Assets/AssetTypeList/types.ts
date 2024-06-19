@@ -4,7 +4,6 @@ import { AssetFilterQuery } from "../AssetsFilter/types";
 import { AssetScopeOption } from "../AssetsViewScopeConfiguration/types";
 
 export interface AssetTypeListProps {
-  data?: AssetCategoriesData;
   onAssetTypeSelect: (assetTypeId: string) => void;
   filters?: AssetFilterQuery;
   searchQuery: string;

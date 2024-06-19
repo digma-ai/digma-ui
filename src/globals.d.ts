@@ -6,7 +6,7 @@ export type Platform = "JetBrains" | "VS Code" | "Web";
 
 export type IDE = "IDEA" | "Rider" | "PyCharm";
 
-export type Mode = "light" | "dark" | "dark-jetbrains";
+export type Theme = "light" | "dark" | "dark-jetbrains";
 
 declare global {
   interface Window {

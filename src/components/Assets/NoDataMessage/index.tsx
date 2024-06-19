@@ -7,7 +7,7 @@ import { CardsIcon } from "../../common/icons/CardsIcon";
 import * as s from "./styles";
 import { NoDataMessageProps } from "./types";
 
-export const NoDataMessage = (props: NoDataMessageProps) => {
+export const NoDataMessage = ({ type }: NoDataMessageProps) => {
   const handleTroubleshootingLinkClick = () => {
     sendUserActionTrackingEvent(
       globalTrackingEvents.TROUBLESHOOTING_LINK_CLICKED,
@@ -23,7 +23,7 @@ export const NoDataMessage = (props: NoDataMessageProps) => {
 
   let content: JSX.Element | null = null;
 
-  switch (props.type) {
+  switch (type) {
     case "loading":
       content = <NewCircleLoader size={32} />;
       break;

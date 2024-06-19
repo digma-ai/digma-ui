@@ -3,7 +3,7 @@ import { ErrorsPanel } from ".";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof ErrorsPanel> = {
-  title: "Recent Activity/CreateEnvironmentPanel/ErrorsPanel",
+  title: "Recent Activity/CreateEnvironmentWizard/ErrorsPanel",
   component: ErrorsPanel,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout

@@ -21,7 +21,6 @@ import {
   XAxis,
   YAxis
 } from "recharts";
-import { ChartOffset } from "recharts/types/util/types";
 import { DefaultTheme, useTheme } from "styled-components";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { isNumber } from "../../../typeGuards/isNumber";
@@ -51,7 +50,8 @@ import {
   DotTooltipProps,
   ExtendedLiveDataRecord,
   LiveViewProps,
-  PercentileInfo
+  PercentileInfo,
+  VerticalCoordinatesGeneratorProps
 } from "./types";
 
 const ZOOM_FACTOR = 1.2;
@@ -64,16 +64,6 @@ const PERCENTILES = [
   { label: "Slowest 5%", percentile: 0.95 }
 ];
 
-const getSpanIconColor = (theme: DefaultTheme) => {
-  switch (theme.mode) {
-    case "light":
-      return "#4d668a";
-    case "dark":
-    case "dark-jetbrains":
-      return "#7891d0";
-  }
-};
-
 const getLiveIconColor = (theme: DefaultTheme) => {
   switch (theme.mode) {
     case "light":
@@ -81,16 +71,6 @@ const getLiveIconColor = (theme: DefaultTheme) => {
     case "dark":
     case "dark-jetbrains":
       return "#b9c2eb";
-  }
-};
-
-const getCloseIconColor = (theme: DefaultTheme) => {
-  switch (theme.mode) {
-    case "light":
-      return "#6e6e6e";
-    case "dark":
-    case "dark-jetbrains":
-      return "#afb1b3";
   }
 };
 
@@ -134,16 +114,6 @@ const getAreaColor = (theme: DefaultTheme) => {
   }
 };
 
-const getZoomButtonIconColor = (theme: DefaultTheme) => {
-  switch (theme.mode) {
-    case "light":
-      return "#7891d0";
-    case "dark":
-    case "dark-jetbrains":
-      return "#e2e7ff";
-  }
-};
-
 const getLatestDataButtonIconColor = (theme: DefaultTheme) => {
   switch (theme.mode) {
     case "light":
@@ -176,14 +146,13 @@ const getMaxDurationRecord = (
 const formatXAxisDate = (dateTime: number): string =>
   format(new Date(dateTime), "HH:mm MM/dd/yyyy");
 
-export const LiveView = (props: LiveViewProps) => {
+export const LiveView = ({ data, onClose }: LiveViewProps) => {
   const theme = useTheme();
   const themeKind = getThemeKind(theme);
   const lineColor = getLineColor(theme);
   const axisColor = getAxisColor(theme);
   const areaColor = getAreaColor(theme);
   const tickLabelColor = getTickLabelColor(theme);
-  const zoomButtonIconColor = getZoomButtonIconColor(theme);
   const latestDataButtonIconColor = getLatestDataButtonIconColor(theme);
   const { observe, width } = useDimensions();
   const previousWidth = usePrevious(width);
@@ -240,7 +209,7 @@ export const LiveView = (props: LiveViewProps) => {
 
   const handleCloseButtonClick = () => {
     sendUserActionTrackingEvent(trackingEvents.LIVE_VIEW_CLOSE_BUTTON_CLICKED);
-    props.onClose(props.data.durationData.codeObjectId);
+    onClose(data.durationData.codeObjectId);
   };
 
   const handleShowErrorsToggleSwitchChange = (value: boolean) => {
@@ -322,7 +291,7 @@ export const LiveView = (props: LiveViewProps) => {
 
   const percentiles = PERCENTILES.map((percentile) => ({
     ...percentile,
-    duration: props.data.durationData.percentiles.find(
+    duration: data.durationData.percentiles.find(
       (x) => x.percentile === percentile.percentile
     )?.currentDuration
   })).filter(Boolean) as PercentileInfo[];
@@ -330,22 +299,22 @@ export const LiveView = (props: LiveViewProps) => {
   const p50 = percentiles.find((p) => p.percentile === 0.5);
   const p95 = percentiles.find((p) => p.percentile === 0.95);
 
-  const spanName = props.data.durationData.displayName;
+  const spanName = data.durationData.displayName;
 
-  const data: ExtendedLiveDataRecord[] = [...props.data.liveDataRecords].map(
+  const extendedData: ExtendedLiveDataRecord[] = [...data.liveDataRecords].map(
     (x) => ({
       ...x,
       dateTimeValue: new Date(x.dateTime).valueOf()
     })
   );
 
-  let filteredData: ExtendedLiveDataRecord[] = data;
+  let filteredData: ExtendedLiveDataRecord[] = extendedData;
 
   if (!areErrorsVisible) {
-    filteredData = data.filter((x) => !x.isError);
+    filteredData = extendedData.filter((x) => !x.isError);
   }
 
-  const dataForAxes = filteredData.length > 0 ? filteredData : data;
+  const dataForAxes = filteredData.length > 0 ? filteredData : extendedData;
 
   // Add P50 and P95 values to build the correct scale for Y axis
   const YAxisData = dataForAxes.concat([
@@ -400,11 +369,11 @@ export const LiveView = (props: LiveViewProps) => {
       : 0;
 
   const changedPercentile = useMemo(() => {
-    if (props.data.durationData.percentiles.length === 0) {
+    if (data.durationData.percentiles.length === 0) {
       return null;
     }
 
-    const percentile = props.data.durationData.percentiles.find(
+    const percentile = data.durationData.percentiles.find(
       (x) => x.previousDuration && typeof x.changeVerified === "boolean"
     );
 
@@ -429,14 +398,14 @@ export const LiveView = (props: LiveViewProps) => {
     }
 
     return percentile;
-  }, [props.data.durationData.percentiles]);
+  }, [data.durationData.percentiles]);
 
   return (
     <s.Container $isChangeStatusBarPresent={Boolean(changedPercentile)}>
       <s.Header>
         <s.Title>
           <s.SpanIconContainer>
-            <EndpointIcon color={getSpanIconColor(theme)} size={16} />
+            <EndpointIcon color={"currentColor"} size={16} />
           </s.SpanIconContainer>
           <CommonTooltip title={spanName}>
             <s.SpanName>{spanName}</s.SpanName>
@@ -448,10 +417,10 @@ export const LiveView = (props: LiveViewProps) => {
           Live
         </s.LiveBadge>
         <s.CloseButton onClick={handleCloseButtonClick}>
-          <CrossIcon color={getCloseIconColor(theme)} size={16} />
+          <CrossIcon color={"currentColor"} size={16} />
         </s.CloseButton>
       </s.Header>
-      {data.length > 0 ? (
+      {extendedData.length > 0 ? (
         <>
           <s.Toolbar>
             <ToggleSwitch
@@ -462,10 +431,10 @@ export const LiveView = (props: LiveViewProps) => {
             />
             <s.ZoomButtonsContainer>
               <s.ZoomButton onClick={handleZoomOutButtonClick}>
-                <MinusIcon size={16} color={zoomButtonIconColor} />
+                <MinusIcon size={16} color={"currentColor"} />
               </s.ZoomButton>
               <s.ZoomButton onClick={handleZoomInButtonClick}>
-                <PlusIcon size={16} color={zoomButtonIconColor} />
+                <PlusIcon size={16} color={"currentColor"} />
               </s.ZoomButton>
             </s.ZoomButtonsContainer>
           </s.Toolbar>
@@ -537,19 +506,19 @@ export const LiveView = (props: LiveViewProps) => {
                     strokeDasharray={"2"}
                     stroke={axisColor}
                     horizontal={false}
-                    verticalCoordinatesGenerator={(props: {
-                      width: number | undefined;
-                      offset: ChartOffset;
-                    }) => {
-                      if (!props.width || !isNumber(props.offset.left)) {
+                    verticalCoordinatesGenerator={({
+                      width,
+                      offset
+                    }: VerticalCoordinatesGeneratorProps) => {
+                      if (!width || !isNumber(offset.left)) {
                         return [];
                       }
 
                       let linesCount = 5;
 
                       const lines = [];
-                      const interval = Math.floor(props.width / linesCount);
-                      let left = props.offset.left + interval;
+                      const interval = Math.floor(width / linesCount);
+                      let left = offset.left + interval;
 
                       while (linesCount) {
                         lines.push(left);
@@ -560,7 +529,7 @@ export const LiveView = (props: LiveViewProps) => {
                       return lines;
                     }}
                   />
-                  {data.length > 1 && (
+                  {extendedData.length > 1 && (
                     <Area
                       dataKey={() =>
                         p50 && p95 ? [p50.duration.raw, p95.duration.raw] : []

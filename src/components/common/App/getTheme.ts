@@ -1,11 +1,11 @@
 import { DefaultTheme } from "styled-components";
-import { Mode } from "../../../globals";
+import { Theme } from "../../../globals";
 import { ThemeColors } from "../../../styled";
 import { darkTheme } from "./themes/darkTheme";
 import { lightTheme } from "./themes/lightTheme";
 import { typographies } from "./typographies";
 
-const getColors = (mode: Mode): ThemeColors => {
+const getColors = (mode: Theme): ThemeColors => {
   switch (mode) {
     case "light":
       return lightTheme;
@@ -15,8 +15,8 @@ const getColors = (mode: Mode): ThemeColors => {
   }
 };
 
-export const getTheme = (
-  mode: Mode,
+export const getStyledComponentsTheme = (
+  mode: Theme,
   mainFont: string,
   codeFont: string
 ): DefaultTheme => {

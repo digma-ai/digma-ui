@@ -42,19 +42,28 @@ const getCircleLoaderColors = (theme: DefaultTheme): CircleLoaderColors => {
   }
 };
 
-export const JiraTicket = (props: JiraTicketProps) => {
+export const JiraTicket = ({
+  tracking,
+  onClose,
+  description,
+  summary,
+  attachments,
+  ticketLink,
+  linkTicket,
+  unlinkTicket
+}: JiraTicketProps) => {
   const [downloadErrorMessage, setDownloadErrorMessage] = useState<string>();
   const descriptionContentRef = useRef<HTMLDivElement>(null);
   const theme = useTheme();
 
   const prefixedTrackingEvents = addPrefix(
-    props.tracking?.prefix ?? "",
+    tracking?.prefix ?? "",
     trackingEvents,
     ""
   );
 
   const handleCloseButtonClick = () => {
-    props.onClose();
+    onClose();
   };
 
   const copyToClipboard = (
@@ -64,7 +73,7 @@ export const JiraTicket = (props: JiraTicketProps) => {
     sendUserActionTrackingEvent(
       prefixedTrackingEvents.JIRA_TICKET_FIELD_COPY_BUTTON_CLICKED,
       {
-        ...(props.tracking?.additionalInfo ?? {}),
+        ...(tracking?.additionalInfo ?? {}),
         field
       }
     );
@@ -86,7 +95,7 @@ export const JiraTicket = (props: JiraTicketProps) => {
   }) => {
     sendUserActionTrackingEvent(
       prefixedTrackingEvents.JIRA_TICKET_ATTACHMENT_DOWNLOAD_BUTTON_CLICKED,
-      { ...(props.tracking?.additionalInfo ?? {}) }
+      { ...(tracking?.additionalInfo ?? {}) }
     );
 
     downloadFile(attachment.url, attachment.fileName).catch(
@@ -101,9 +110,7 @@ export const JiraTicket = (props: JiraTicketProps) => {
     );
   };
 
-  const errorMessage = props.description.isLoading
-    ? ""
-    : props.description.errorMessage;
+  const errorMessage = description.isLoading ? "" : description.errorMessage;
 
   return (
     <s.Container>
@@ -125,11 +132,11 @@ export const JiraTicket = (props: JiraTicketProps) => {
             <IconButton
               icon={CopyIcon}
               title={"Copy"}
-              onClick={() => copyToClipboard("summary", props.summary)}
+              onClick={() => copyToClipboard("summary", summary)}
             />
           }
         >
-          {props.summary}
+          {summary}
         </Field>
       </Section>
       <Section
@@ -144,7 +151,7 @@ export const JiraTicket = (props: JiraTicketProps) => {
             <IconButton
               icon={CopyIcon}
               title={"Copy"}
-              disabled={props.description.isLoading}
+              disabled={description.isLoading}
               onClick={() =>
                 copyToClipboard("description", descriptionContentRef.current)
               }
@@ -152,23 +159,23 @@ export const JiraTicket = (props: JiraTicketProps) => {
           }
         >
           <div ref={descriptionContentRef}>
-            {props.description.isLoading ? (
+            {description.isLoading ? (
               <s.LoaderContainer>
                 <CircleLoader size={32} colors={getCircleLoaderColors(theme)} />
               </s.LoaderContainer>
             ) : (
-              props.description.content
+              description.content
             )}
           </div>
         </Field>
       </Section>
-      {props.attachments.length > 0 && (
+      {attachments.length > 0 && (
         <Section
           key={"attachments"}
           title={"Attachments"}
           errorMessage={downloadErrorMessage}
         >
-          {props.attachments.map((attachment, i) => {
+          {attachments.map((attachment, i) => {
             return (
               <Field
                 key={"attachment-" + i.toString()}
@@ -191,9 +198,9 @@ export const JiraTicket = (props: JiraTicketProps) => {
         </Section>
       )}
       <TicketLinkButton
-        ticketLink={props.ticketLink}
-        unlinkTicket={props.unlinkTicket}
-        linkTicket={props.linkTicket}
+        ticketLink={ticketLink}
+        unlinkTicket={unlinkTicket}
+        linkTicket={linkTicket}
       />
     </s.Container>
   );

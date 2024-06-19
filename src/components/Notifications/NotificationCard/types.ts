@@ -1,6 +1,6 @@
-import { GoToInsightsPayload, Notification } from "../types";
+import { CodeObjectData, Notification } from "../types";
 
 export interface NotificationCardProps {
   data: Notification;
-  onLinkClick: (codeObjectData: GoToInsightsPayload) => void;
+  onLinkClick: (codeObjectData: CodeObjectData) => void;
 }

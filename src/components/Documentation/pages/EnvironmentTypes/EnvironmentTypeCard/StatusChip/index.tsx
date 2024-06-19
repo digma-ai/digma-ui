@@ -29,11 +29,9 @@ const getLabel = (status: EnvironmentStatus): string => {
   }
 };
 
-export const StatusChip = (props: StatusChipProps) => {
-  return (
-    <s.Container $status={props.status}>
-      <Badge customStyles={getBadgeStyles(props.status)} />
-      {getLabel(props.status)}
-    </s.Container>
-  );
-};
+export const StatusChip = ({ status }: StatusChipProps) => (
+  <s.Container $status={status}>
+    <Badge customStyles={getBadgeStyles(status)} />
+    {getLabel(status)}
+  </s.Container>
+);

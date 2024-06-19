@@ -3,15 +3,17 @@ import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
 import { isBoolean } from "../../typeGuards/isBoolean";
 import { isNumber } from "../../typeGuards/isNumber";
+import { changeScope } from "../../utils/actions/changeScope";
 import { sendTrackingEvent } from "../../utils/actions/sendTrackingEvent";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
-import { addPrefix } from "../../utils/addPrefix";
 import { FullView } from "./FullView";
 import { RecentView } from "./RecentView";
+import { actions } from "./actions";
 import * as s from "./styles";
+import { trackingEvents } from "./tracking";
 import { isNotificationsViewMode } from "./typeGuards";
 import {
-  GoToInsightsPayload,
+  CodeObjectData,
   NotificationsData,
   NotificationsError,
   NotificationsProps,
@@ -22,30 +24,7 @@ const REFRESH_INTERVAL = isNumber(window.notificationsRefreshInterval)
   ? window.notificationsRefreshInterval
   : 10 * 1000; // in milliseconds
 
-const ACTION_PREFIX = "NOTIFICATIONS";
-
-const actions = addPrefix(ACTION_PREFIX, {
-  INITIALIZE: "INITIALIZE",
-  GET_DATA: "GET_DATA",
-  SET_DATA: "SET_DATA",
-  CLOSE: "CLOSE",
-  GO_TO_INSIGHTS: "GO_TO_INSIGHTS",
-  GO_TO_NOTIFICATIONS: "GO_TO_NOTIFICATIONS"
-});
-
-const TRACKING_PREFIX = "notifications";
-
-export const trackingEvents = addPrefix(
-  TRACKING_PREFIX,
-  {
-    PAGE_LOADED: "page loaded",
-    LINK_CLICKED: "link clicked",
-    VIEW_ALL_LINK_CLICKED: "view all link clicked"
-  },
-  " "
-);
-
-export const Notifications = (props: NotificationsProps) => {
+export const Notifications = ({ viewMode }: NotificationsProps) => {
   const [data, setData] = useState<NotificationsSetDataPayload>();
   const previousData = usePrevious(data);
   const [notificationsData, setNotificationsData] =
@@ -60,10 +39,12 @@ export const Notifications = (props: NotificationsProps) => {
   const [page, setPage] = useState(0);
   const previousPage = usePrevious(page);
   const refreshTimerId = useRef<number>();
-  const viewMode = isNotificationsViewMode(window.notificationsViewMode)
+  const notificationsViewMode = isNotificationsViewMode(
+    window.notificationsViewMode
+  )
     ? window.notificationsViewMode
-    : props.viewMode ?? "full";
-  const pageSize = viewMode === "popup" ? 3 : 10;
+    : viewMode ?? "full";
+  const pageSize = notificationsViewMode === "popup" ? 3 : 10;
 
   useEffect(() => {
     window.sendMessageToDigma({
@@ -152,14 +133,6 @@ export const Notifications = (props: NotificationsProps) => {
   }, [previousShowAll, showAll, previousPage, page, pageSize]);
 
   useEffect(() => {
-    if (!props.data) {
-      return;
-    }
-
-    setData(props.data);
-  }, [props.data]);
-
-  useEffect(() => {
     if (!previousData && data) {
       setIsInitialLoading(false);
     }
@@ -182,17 +155,24 @@ export const Notifications = (props: NotificationsProps) => {
     setShowAll(showAll);
   };
 
-  const handleLinkClick = (codeObjectData: GoToInsightsPayload) => {
+  const handleLinkClick = (codeObjectData: CodeObjectData) => {
     sendUserActionTrackingEvent(trackingEvents.LINK_CLICKED);
-    window.sendMessageToDigma({
-      action: actions.GO_TO_INSIGHTS,
-      payload: { ...codeObjectData }
-    });
+
+    if (codeObjectData.spanCodeObjectId) {
+      changeScope({
+        span: {
+          spanCodeObjectId: codeObjectData.spanCodeObjectId
+        },
+        context: {
+          event: "NOTIFICATIONS/NOTIFICATION_CARD_ASSET_LINK_CLICKED"
+        }
+      });
+    }
   };
 
   return (
     <s.Container>
-      {viewMode === "popup" ? (
+      {notificationsViewMode === "popup" ? (
         <RecentView
           data={notificationsData}
           error={notificationError}

@@ -8,7 +8,11 @@ import { JiraTicket } from "../../common/JiraTicket";
 import { Attachment } from "../../common/JiraTicket/types";
 import { TestTicketProps } from "./types";
 
-export const TestTicket = (props: TestTicketProps) => {
+export const TestTicket = ({
+  test,
+  spanContexts,
+  onClose
+}: TestTicketProps) => {
   const {
     traceId,
     name,
@@ -16,11 +20,11 @@ export const TestTicket = (props: TestTicketProps) => {
     runAt,
     duration,
     contextsSpanCodeObjectIds
-  } = props.test;
+  } = test;
   const summary = `"${name}" test failed`;
   const config = useContext(ConfigContext);
 
-  const relatedSpans = props.spanContexts
+  const relatedSpans = spanContexts
     .filter((x) => contextsSpanCodeObjectIds.includes(x.spanCodeObjectId))
     .map((x) => x.displayName)
     .join("\n");
@@ -67,7 +71,7 @@ export const TestTicket = (props: TestTicketProps) => {
         content: renderDescription()
       }}
       attachments={attachments}
-      onClose={props.onClose}
+      onClose={onClose}
       tracking={{ prefix: "tests" }}
     />
   );

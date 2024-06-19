@@ -59,7 +59,7 @@ const renderFilterCategory = (
   );
 };
 
-export const AssetsFilter = (props: AssetsFilterProps) => {
+export const AssetsFilter = ({ onApply, filters }: AssetsFilterProps) => {
   const [data, setData] = useState<{ data: AssetsFiltersData | null }>();
   const previousData = usePrevious(data);
   const [isOpen, setIsOpen] = useState(false);
@@ -146,14 +146,14 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
         insights: []
       };
       setPersistedFilters(defaultFilters);
-      props.onApply(defaultFilters);
+      onApply(defaultFilters);
       getData([], [], []);
     }
   }, [
     previousEnvironment,
     config.environment,
     setPersistedFilters,
-    props.onApply,
+    onApply,
     previousScope,
     config.scope
   ]);
@@ -167,12 +167,6 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
       );
     }
   }, [isOpen, previousIsOpen]);
-
-  useEffect(() => {
-    if (props.data) {
-      setData({ data: props.data });
-    }
-  }, [props.data]);
 
   useEffect(() => {
     if (previousData === data || isNull(data?.data)) {
@@ -217,7 +211,7 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
       .map((x) => x.name) ?? []) as InsightType[];
     setSelectedInsights(insightsToSelect);
 
-    if (!props.filters) {
+    if (!filters) {
       const filtersQuery = {
         services: servicesToSelect,
         operations: [
@@ -229,13 +223,13 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
       };
 
       setPersistedFilters(filtersQuery);
-      props.onApply(filtersQuery);
+      onApply(filtersQuery);
     }
   }, [
     previousData,
     data,
-    props.filters,
-    props.onApply,
+    filters,
+    onApply,
     selectedServices,
     selectedEndpoints,
     selectedConsumers,
@@ -255,14 +249,14 @@ export const AssetsFilter = (props: AssetsFilterProps) => {
         ],
         insights: selectedInsights
       };
-      props.onApply(filtersQuery);
+      onApply(filtersQuery);
       setPersistedFilters(filtersQuery);
       sendTrackingEvent(trackingEvents.FILTER_APPLIED);
     }
   }, [
     previousIsOpen,
     isOpen,
-    props.onApply,
+    onApply,
     selectedConsumers,
     selectedEndpoints,
     selectedInsights,

@@ -1,4 +1,5 @@
 import { Meta, StoryObj } from "@storybook/react";
+import { fn } from "@storybook/test";
 import { InsightsCatalog } from ".";
 import { ConfigContext, initialState } from "../../common/App/ConfigContext";
 import { SORTING_ORDER } from "../../common/SortingSelector/types";
@@ -54,7 +55,8 @@ export const Default: Story = {
     },
     isDismissalEnabled: true,
     unreadCount: 1,
-    isMarkingAsReadEnabled: true
+    isMarkingAsReadEnabled: true,
+    onQueryChange: fn()
   }
 };
 

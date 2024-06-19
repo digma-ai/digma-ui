@@ -19,25 +19,27 @@ export const getImpactScoreLabel = (score: number) => {
   return "High";
 };
 
-export const ImpactScore = (props: ImpactScoreProps) => {
-  let indicatorPosition: "start" | "end" | undefined;
+export const ImpactScore = ({
+  score,
+  showIndicator,
+  indicatorPosition
+}: ImpactScoreProps) => {
+  let scoreIndicatorPosition: "start" | "end" | undefined;
 
-  if (props.score > 0 && props.showIndicator) {
-    indicatorPosition = "end";
+  if (score > 0 && showIndicator) {
+    scoreIndicatorPosition = "end";
 
-    if (props.indicatorPosition) {
-      indicatorPosition = props.indicatorPosition;
+    if (scoreIndicatorPosition) {
+      scoreIndicatorPosition = indicatorPosition;
     }
   }
 
   return (
-    <Tooltip title={props.score}>
+    <Tooltip title={score}>
       <s.Container>
-        {indicatorPosition === "start" && (
-          <ScoreIndicator score={props.score} />
-        )}
-        {getImpactScoreLabel(props.score)}
-        {indicatorPosition === "end" && <ScoreIndicator score={props.score} />}
+        {scoreIndicatorPosition === "start" && <ScoreIndicator score={score} />}
+        {getImpactScoreLabel(score)}
+        {scoreIndicatorPosition === "end" && <ScoreIndicator score={score} />}
       </s.Container>
     </Tooltip>
   );

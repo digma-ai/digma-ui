@@ -17,18 +17,23 @@ const PAGE_SIZE = 3;
  * @deprecated
  * safe to delete after 2024-06-05
  */
-export const TopUsageInsight = (props: TopUsageInsightProps) => {
+export const TopUsageInsight = ({
+  insight,
+  onAssetLinkClick,
+  onTraceButtonClick,
+  onRecalculate,
+  onRefresh
+}: TopUsageInsightProps) => {
   const config = useContext(ConfigContext);
 
   const [pageItems, page, setPage] = usePagination(
-    props.insight.flows,
+    insight.flows,
     PAGE_SIZE,
-    props.insight.codeObjectId
+    insight.codeObjectId
   );
 
   const handleServiceLinkClick = (spanCodeObjectId?: string) => {
-    spanCodeObjectId &&
-      props.onAssetLinkClick(spanCodeObjectId, props.insight.type);
+    spanCodeObjectId && onAssetLinkClick(spanCodeObjectId, insight.type);
   };
 
   const handleTraceButtonClick = (
@@ -36,13 +41,13 @@ export const TopUsageInsight = (props: TopUsageInsightProps) => {
     insightType: InsightType,
     spanCodeObjectId?: string
   ) => {
-    props.onTraceButtonClick(trace, insightType, spanCodeObjectId);
+    onTraceButtonClick(trace, insightType, spanCodeObjectId);
   };
 
   return (
     <InsightCard
-      data={props.insight}
-      spanInfo={props.insight.spanInfo}
+      data={insight}
+      spanInfo={insight.spanInfo}
       content={
         <s.FlowList>
           {pageItems.map((flow, i) => {
@@ -98,8 +103,8 @@ export const TopUsageInsight = (props: TopUsageInsightProps) => {
                           name: firstServiceName,
                           id: traceId
                         },
-                        props.insight.type,
-                        props.insight.spanInfo?.spanCodeObjectId
+                        insight.type,
+                        insight.spanInfo?.spanCodeObjectId
                       )
                     }
                   >
@@ -110,15 +115,15 @@ export const TopUsageInsight = (props: TopUsageInsightProps) => {
             );
           })}
           <Pagination
-            itemsCount={props.insight.flows.length}
+            itemsCount={insight.flows.length}
             page={page}
             pageSize={PAGE_SIZE}
             onPageChange={setPage}
           />
         </s.FlowList>
       }
-      onRecalculate={props.onRecalculate}
-      onRefresh={props.onRefresh}
+      onRecalculate={onRecalculate}
+      onRefresh={onRefresh}
     />
   );
 };

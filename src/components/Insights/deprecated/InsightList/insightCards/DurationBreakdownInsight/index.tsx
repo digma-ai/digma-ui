@@ -47,13 +47,16 @@ const getDurationTitle = (breakdownEntry: SpanDurationBreakdownEntry) => {
  * @deprecated
  * safe to delete after 2024-06-05
  */
-export const DurationBreakdownInsight = (
-  props: DurationBreakdownInsightProps
-) => {
+export const DurationBreakdownInsight = ({
+  insight,
+  onAssetLinkClick,
+  onRecalculate,
+  onRefresh
+}: DurationBreakdownInsightProps) => {
   const [percentileViewMode, setPercentileViewMode] =
     useState<number>(DEFAULT_PERCENTILE);
 
-  const filteredEntries = props.insight.breakdownEntries.filter((entry) =>
+  const filteredEntries = insight.breakdownEntries.filter((entry) =>
     entry.percentiles.some(
       (percentile) => percentile.percentile === percentileViewMode
     )
@@ -73,11 +76,11 @@ export const DurationBreakdownInsight = (
   const [pageItems, page, setPage] = usePagination(
     sortedEntries,
     PAGE_SIZE,
-    props.insight.codeObjectId
+    insight.codeObjectId
   );
 
   const handleSpanLinkClick = (spanCodeObjectId: string) => {
-    props.onAssetLinkClick(spanCodeObjectId, props.insight.type);
+    onAssetLinkClick(spanCodeObjectId, insight.type);
   };
 
   const handlePercentileViewModeChange = (value: number) => {
@@ -86,8 +89,8 @@ export const DurationBreakdownInsight = (
 
   return (
     <InsightCard
-      data={props.insight}
-      spanInfo={props.insight.spanInfo}
+      data={insight}
+      spanInfo={insight.spanInfo}
       content={
         <s.EntryList>
           {pageItems.map((entry) => {
@@ -122,8 +125,8 @@ export const DurationBreakdownInsight = (
         </s.EntryList>
       }
       onPercentileViewModeChange={handlePercentileViewModeChange}
-      onRecalculate={props.onRecalculate}
-      onRefresh={props.onRefresh}
+      onRecalculate={onRecalculate}
+      onRefresh={onRefresh}
     />
   );
 };
