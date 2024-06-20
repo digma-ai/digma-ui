@@ -22,3 +22,13 @@ export const Default: Story = {
     insight: mockedSpanUsagesInsight
   }
 };
+
+export const WithoutUsage: Story = {
+  args: {
+    insight: {
+      ...mockedSpanUsagesInsight,
+      flows: [],
+      isRecalculateEnabled: false
+    }
+  }
+};

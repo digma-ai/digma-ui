@@ -20,19 +20,14 @@ export interface InsightTypeInfo {
   icon: MemoExoticComponent<(props: IconProps) => JSX.Element>;
   label: string;
   description?: () => JSX.Element;
+  subTypes?: Record<string, InsightTypeInfo>;
 }
 
 export const getInsightTypeInfo = (
-  type: string
+  type: string,
+  subType?: string
 ): InsightTypeInfo | undefined => {
-  const insightTypeInfoMap: Record<
-    string,
-    {
-      icon: MemoExoticComponent<(props: IconProps) => JSX.Element>;
-      label: string;
-      description?: () => JSX.Element;
-    }
-  > = {
+  const insightTypeInfoMap: Record<string, InsightTypeInfo> = {
     [InsightType.Errors]: {
       icon: WarningCircleIcon,
       label: "Errors"
@@ -80,12 +75,32 @@ export const getInsightTypeInfo = (
     [InsightType.EndpointSpanNPlusOne]: {
       icon: SQLDatabaseIcon,
       label: "Suspected N+1",
-      description: descriptionProvider.NPlusOneDescription
+      description: descriptionProvider.NPlusOneDescription,
+      subTypes: {
+        repeatedQueries: {
+          icon: SQLDatabaseIcon,
+          label: "Repeated query"
+        },
+        repeatedInserts: {
+          icon: SQLDatabaseIcon,
+          label: "Repeated inserts"
+        }
+      }
     },
     [InsightType.SpaNPlusOne]: {
       icon: SQLDatabaseIcon,
       label: "Suspected N+1",
-      description: descriptionProvider.NPlusOneDescription
+      description: descriptionProvider.NPlusOneDescription,
+      subTypes: {
+        repeatedQueries: {
+          icon: SQLDatabaseIcon,
+          label: "Repeated query"
+        },
+        repeatedInserts: {
+          icon: SQLDatabaseIcon,
+          label: "Repeated inserts"
+        }
+      }
     },
     [InsightType.SpanEndpointBottleneck]: {
       icon: BottleneckIcon,
@@ -177,5 +192,11 @@ export const getInsightTypeInfo = (
     }
   };
 
-  return insightTypeInfoMap[type];
+  const insightTypeInfo = insightTypeInfoMap[type];
+
+  if (subType && insightTypeInfo.subTypes?.[subType]) {
+    return insightTypeInfo.subTypes[subType];
+  }
+
+  return insightTypeInfo;
 };

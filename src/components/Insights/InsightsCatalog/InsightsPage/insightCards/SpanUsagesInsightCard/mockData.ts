@@ -23,9 +23,9 @@ export const mockedSpanUsagesInsight: SpanUsagesInsight = {
   specifity: 4,
   isRecalculateEnabled: true,
   importance: 5,
-  sampleTrace: null,
+  sampleTrace: "3E41E4197B696CA9BF1157AEB254DFE0",
   isDismissed: false,
-  isDismissible: true,
+  isDismissible: false,
   flows: [
     {
       sampleTraceIds: ["3E41E4197B696CA9BF1157AEB254DFE0"],
