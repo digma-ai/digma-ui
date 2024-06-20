@@ -291,7 +291,9 @@ export const InsightCard = (props: InsightCardProps) => {
 
   const { showBanner, showTimer } = getRecalculateVisibilityParams();
 
-  const isFooterVisible = props.insight.isDismissible ?? renderActions();
+  const isFooterVisible = Boolean(
+    renderActions() ?? props.insight.isDismissible
+  );
 
   return (
     <s.StyledInsightCard
