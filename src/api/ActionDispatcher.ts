@@ -1,4 +1,4 @@
-import { ActionListener } from "./types";
+import { ActionListener, DigmaMessageError } from "./types";
 
 export class ActionDispatcher {
   private actions: Record<string, ActionListener[]>;
@@ -24,9 +24,14 @@ export class ActionDispatcher {
     }
   }
 
-  public dispatch(timeStamp: number, type: string, data?: unknown): void {
+  public dispatch(
+    timeStamp: number,
+    type: string,
+    data: unknown,
+    error: DigmaMessageError | undefined
+  ): void {
     if (this.actions[type]) {
-      this.actions[type].forEach((fn) => fn(data, timeStamp));
+      this.actions[type].forEach((fn) => fn(data, timeStamp, error));
     }
   }
 }

@@ -1,11 +1,15 @@
 import styled from "styled-components";
 import { footnoteRegularTypography } from "../../App/typographies";
-import { ContainerProps, IconContainerProps, InputProps } from "./types";
+import {
+  ContainerProps,
+  IconContainerProps,
+  InputProps,
+  TextInputControlProps
+} from "./types";
 
 export const Container = styled.div<ContainerProps>`
   display: flex;
   align-items: center;
-  gap: 8px;
   padding: 4px 6px;
   border-radius: 4px;
   border: 1px solid
@@ -59,13 +63,14 @@ export const IconContainer = styled.div<IconContainerProps>`
   }};
 `;
 
-export const TextInputControl = styled.div`
+export const TextInputControl = styled.div<TextInputControlProps>`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: ${({ $alwaysRenderError }) => ($alwaysRenderError ? "4px" : "8px")};
 `;
 
 export const ErrorMessage = styled.div`
+  min-height: 16px;
   color: ${({ theme }) => theme.colors.v3.status.high};
   ${footnoteRegularTypography}
 `;

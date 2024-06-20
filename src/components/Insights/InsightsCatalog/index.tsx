@@ -25,6 +25,7 @@ import { Tooltip } from "../../common/v3/Tooltip";
 import { trackingEvents } from "../tracking";
 import { InsightsPage } from "./InsightsPage";
 import { InsightStats } from "./InsightsStats";
+import { PromotionCard } from "./PromotionCard";
 import * as s from "./styles";
 import {
   InsightFilterType,
@@ -50,7 +51,10 @@ export const InsightsCatalog = ({
   unreadCount,
   onQueryChange,
   hideInsightsStats,
-  onRefresh
+  onRefresh,
+  onPromotionAccepted,
+  onPromotionCanceled,
+  showPromotion
 }: InsightsCatalogProps) => {
   const [page, setPage] = useState(0);
   const previousPage = usePrevious(page);
@@ -139,6 +143,18 @@ export const InsightsCatalog = ({
     const newMode =
       mode === ViewMode.All ? ViewMode.OnlyDismissed : ViewMode.All;
     setMode(newMode);
+  };
+
+  const handlePromotionAccept = () => {
+    if (onPromotionAccepted) {
+      onPromotionAccepted();
+    }
+  };
+
+  const handlePromotionDiscard = () => {
+    if (onPromotionCanceled) {
+      onPromotionCanceled();
+    }
   };
 
   const handleReadAllLinkClick = () => {
@@ -317,6 +333,14 @@ export const InsightsCatalog = ({
               </s.InsightsDescription>
             )}
           </s.ViewModeToolbarRow>
+        )}
+        {showPromotion && (
+          <s.ToolbarRow>
+            <PromotionCard
+              onAccept={handlePromotionAccept}
+              onDiscard={handlePromotionDiscard}
+            />
+          </s.ToolbarRow>
         )}
       </s.Toolbar>
       <InsightsPage

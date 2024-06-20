@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { LAYERS } from "../../../common/App/styles";
+import { LAYERS } from "../App/styles";
 
 export const Overlay = styled.div`
   position: absolute;

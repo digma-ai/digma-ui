@@ -1,4 +1,4 @@
-import { useContext, useEffect, useLayoutEffect } from "react";
+import { useContext, useEffect, useLayoutEffect, useState } from "react";
 import {
   Outlet,
   matchPath,
@@ -8,14 +8,30 @@ import {
 } from "react-router-dom";
 import { actions as globalActions } from "../../actions";
 import { dispatcher } from "../../dispatcher";
+import { usePersistence } from "../../hooks/usePersistence";
 import { logger } from "../../logging";
+import { sendTrackingEvent } from "../../utils/actions/sendTrackingEvent";
 import { Navigation } from "../Navigation";
 import { TAB_IDS } from "../Navigation/Tabs/types";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { Scope } from "../common/App/types";
+import { CancelConfirmation } from "../common/CancelConfirmation";
 import { Authentication } from "./Authentication";
+import { RegistrationCard } from "./RegistrationCard";
 import { actions } from "./actions";
 import * as s from "./styles";
+import { trackingEvents } from "./tracking";
+
+const PROMOTION_KEY = "PROMOTION";
+const PROMOTION_COMPLETED_KEY = "PROMOTION_COMPLETED";
+const PROMOTION_DELAY_IN_DAYS = 30;
+
+const getDaysDiff = (left: number, right: number) => {
+  const DifferenceInTime = new Date(left).valueOf() - new Date(right).valueOf();
+  const DifferenceInDays = Math.ceil(DifferenceInTime / (1000 * 3600 * 24));
+  return Math.abs(DifferenceInDays);
+};
+
 import { SCOPE_CHANGE_EVENTS } from "./types";
 export const Main = () => {
   const config = useContext(ConfigContext);
@@ -23,6 +39,64 @@ export const Main = () => {
   logger.info("location", location);
   const navigate = useNavigate();
   const [, setSearchParams] = useSearchParams();
+  const [showRegistration, setShowRegistration] = useState(false);
+  const [showDiscardConfirmation, setShowDiscardConfirmation] = useState(false);
+  const [dismissalDate, setDismissalDate] = usePersistence<number>(
+    PROMOTION_KEY,
+    "application"
+  );
+  // TODO: fix promotion
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [promotionCompleted, setPromotionCompleted] = usePersistence<boolean>(
+    PROMOTION_COMPLETED_KEY,
+    "application"
+  );
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const hidePromotion =
+    dismissalDate &&
+    getDaysDiff(dismissalDate, Date.now()) < PROMOTION_DELAY_IN_DAYS;
+
+  const handleRegistrationCompleted = () => {
+    sendTrackingEvent(trackingEvents.PROMOTION_REGISTRATION_SUBMITTED);
+    setPromotionCompleted(true);
+  };
+
+  const handleRegistrationClose = () => {
+    sendTrackingEvent(trackingEvents.PROMOTION_REGISTRATION_CLOSED_CLICKED);
+    setShowRegistration(false);
+  };
+
+  const handleCloseCancelConfirmation = () => {
+    sendTrackingEvent(
+      trackingEvents.PROMOTION_CANCEL_CONFIRMATION_CLOSE_CLICKED
+    );
+    setShowDiscardConfirmation(false);
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const handleShowPromotionOpen = () => {
+    sendTrackingEvent(trackingEvents.PROMOTION_REGISTRATION_OPENED);
+    setShowRegistration(true);
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const handlePromotionDiscard = () => {
+    sendTrackingEvent(trackingEvents.PROMOTION_DISCARDED);
+    setShowDiscardConfirmation(true);
+  };
+
+  const handleAcceptCancelConfirmation = () => {
+    sendTrackingEvent(
+      trackingEvents.PROMOTION_CANCEL_CONFIRMATION_ACCEPT_CLICKED
+    );
+    setDismissalDate(Date.now());
+    setShowDiscardConfirmation(false);
+  };
+
+  const handleConfirmationClosed = () => {
+    setShowDiscardConfirmation(false);
+  };
 
   useEffect(() => {
     const handleSetScope = (data: unknown) => {
@@ -102,9 +176,23 @@ export const Main = () => {
   return (
     <s.Container>
       <Navigation />
-      <s.ContentContainer>
-        <Outlet />
-      </s.ContentContainer>
+      <s.ContentContainer>{<Outlet />}</s.ContentContainer>
+      {showDiscardConfirmation && (
+        <s.StyledOverlay onClose={handleConfirmationClosed} tabIndex={-1}>
+          <CancelConfirmation
+            header="Discard offer?"
+            description="Are you sure you want to miss out on this exclusive, limited-time offer?"
+            cancelBtnText="Yes, discard"
+            onClose={handleCloseCancelConfirmation}
+            onCancel={handleAcceptCancelConfirmation}
+          />
+        </s.StyledOverlay>
+      )}
+      <RegistrationCard
+        onClose={handleRegistrationClose}
+        onComplete={handleRegistrationCompleted}
+        show={showRegistration}
+      />
     </s.Container>
   );
 };

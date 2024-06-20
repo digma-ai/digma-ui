@@ -13,7 +13,8 @@ const TextFieldComponent = (
     placeholder,
     disabled,
     inputEndContent,
-    error
+    error,
+    alwaysRenderError
   }: TextFieldProps,
   ref: ForwardedRef<HTMLInputElement>
 ) => {
@@ -28,7 +29,7 @@ const TextFieldComponent = (
   };
 
   return (
-    <s.TextInputControl>
+    <s.TextInputControl $alwaysRenderError={alwaysRenderError}>
       <s.Container
         $focused={isFocused}
         $isInvalid={isInvalid}
@@ -50,7 +51,7 @@ const TextFieldComponent = (
         />
         {inputEndContent}
       </s.Container>
-      {error && <s.ErrorMessage>{error}</s.ErrorMessage>}
+      {(error ?? alwaysRenderError) && <s.ErrorMessage>{error}</s.ErrorMessage>}
     </s.TextInputControl>
   );
 };

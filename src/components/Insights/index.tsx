@@ -191,7 +191,12 @@ const sendMessage = (action: string, data?: object) => {
   });
 };
 
-export const Insights = ({ insightViewType }: InsightsProps) => {
+export const Insights = ({
+  insightViewType,
+  hidePromotion,
+  onShowPromotion,
+  onShowPromotionConfirmationDiscard
+}: InsightsProps) => {
   const DEFAULT_QUERY: InsightsQuery = {
     page: 0,
     sorting: {
@@ -332,6 +337,9 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
         unreadCount={data.unreadCount}
         isMarkingAsReadEnabled={isMarkingAsReadEnabled}
         hideInsightsStats={insightViewType === "Analytics"}
+        showPromotion={insightViewType == "Issues" && !hidePromotion}
+        onPromotionAccepted={onShowPromotion}
+        onPromotionCanceled={onShowPromotionConfirmationDiscard}
       />
     );
   };

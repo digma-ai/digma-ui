@@ -92,6 +92,9 @@ export type InsightViewType = "Issues" | "Analytics";
 
 export interface InsightsProps {
   insightViewType: InsightViewType;
+  onShowPromotionConfirmationDiscard?: () => void;
+  onShowPromotion?: () => void;
+  hidePromotion?: boolean;
 }
 
 export interface InsightGroup {

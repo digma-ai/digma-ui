@@ -7,6 +7,7 @@ import {
   useState
 } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
+import { DigmaMessageError } from "../../../api/types";
 import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { isEnvironment } from "../../../typeGuards/isEnvironment";
@@ -219,8 +220,14 @@ export const AssetList = ({
     refreshData();
     setIsInitialLoading(true);
 
-    const handleAssetsData = (data: unknown, timeStamp: number) => {
-      setData(data as AssetsData);
+    const handleAssetsData = (
+      data: unknown,
+      timeStamp: number,
+      error: DigmaMessageError | undefined
+    ) => {
+      if (!error) {
+        setData(data as AssetsData);
+      }
       setLastSetDataTimeStamp(timeStamp);
     };
 
