@@ -106,7 +106,6 @@ export const Main = () => {
       // https://github.com/digma-ai/digma-ui/issues/851
       if (scope?.context) {
         switch (scope.context.event) {
-          case SCOPE_CHANGE_EVENTS.IDE_RUNTIME_DATA_CODE_LENS_CLICKED as string:
           case SCOPE_CHANGE_EVENTS.JAEGER_SPAN_LINK_CLICKED as string:
           case SCOPE_CHANGE_EVENTS.ASSETS_ASSET_CARD_TITLE_LINK_CLICKED as string:
             navigate(`/${TAB_IDS.HIGHLIGHTS}`);
@@ -127,8 +126,7 @@ export const Main = () => {
               break;
             }
           // eslint-disable-next-line no-fallthrough
-          case SCOPE_CHANGE_EVENTS.IDE_ISSUE_CODE_LENS_CLICKED as string: // TODO: verify
-          case SCOPE_CHANGE_EVENTS.IDE_NOTIFICATION_LINK_CLICKED as string: // TODO: verify
+          case SCOPE_CHANGE_EVENTS.IDE_CODE_LENS_CLICKED as string: // TODO: redirect relying on payload
           case SCOPE_CHANGE_EVENTS.DASHBOARD_SLOW_QUERIES_WIDGET_ITEM_LINK_CLICKED as string:
           case SCOPE_CHANGE_EVENTS.DASHBOARD_CLIENT_SPANS_PERFORMANCE_IMPACT_WIDGET_ITEM_LINK_CLICKED as string:
           case SCOPE_CHANGE_EVENTS.NAVIGATION_ENVIRONMENT_MENU_ITEM_SELECTED as string:

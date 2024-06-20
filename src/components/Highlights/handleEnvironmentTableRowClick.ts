@@ -13,7 +13,11 @@ export const handleEnvironmentTableRowClick = (
 
   if (environmentChangeTo) {
     changeScope({
-      span: scope?.span ?? null,
+      span: scope?.span
+        ? {
+            spanCodeObjectId: scope.span.spanCodeObjectId
+          }
+        : null,
       environmentId: environmentChangeTo.id,
       context: {
         event: changeScopeEvent

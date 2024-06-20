@@ -218,10 +218,12 @@ export const App = ({ theme, children }: AppProps) => {
 
     const handleSetScope = (data: unknown) => {
       const scope = data as Scope;
+
+      // TODO: fix by getting the details of the environment from config.environments
+
       setConfig((config) => ({
         ...config,
         scope,
-        // TODO: fix by getting the details of the environment
         environment: scope.environmentId
           ? {
               id: scope.environmentId,

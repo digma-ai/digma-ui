@@ -56,8 +56,7 @@ export const Default: Story = {
     },
     isDismissalEnabled: true,
     unreadCount: 1,
-    isMarkingAsReadEnabled: true,
-    onQueryChange: fn()
+    isMarkingAsReadEnabled: true
   }
 };
 
