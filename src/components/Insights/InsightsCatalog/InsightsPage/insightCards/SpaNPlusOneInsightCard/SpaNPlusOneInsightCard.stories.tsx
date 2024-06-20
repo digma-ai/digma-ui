@@ -28,3 +28,21 @@ export const LinkedJira: Story = {
     insight: { ...mockedSpaNPlusOneInsight, ticketLink: "https://digma.ai/1" }
   }
 };
+
+export const RepeatedQuery: Story = {
+  args: {
+    insight: {
+      ...mockedSpaNPlusOneInsight,
+      subType: "repeatedQueries"
+    }
+  }
+};
+
+export const RepeatedInserts: Story = {
+  args: {
+    insight: {
+      ...mockedSpaNPlusOneInsight,
+      subType: "repeatedInserts"
+    }
+  }
+};

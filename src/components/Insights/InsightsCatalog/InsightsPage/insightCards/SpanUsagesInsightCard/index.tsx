@@ -12,9 +12,11 @@ import { InsightType } from "../../../../../../types";
 import { roundTo } from "../../../../../../utils/roundTo";
 import { ConfigContext } from "../../../../../common/App/ConfigContext";
 import { TraceIcon } from "../../../../../common/icons/12px/TraceIcon";
+import { ArrowToTopIcon } from "../../../../../common/icons/20px/ArrowToTopIcon";
 import { ArrowDashedLineIcon } from "../../../../../common/icons/ArrowDashedLineIcon";
 import { Direction } from "../../../../../common/icons/types";
 import { Button } from "../../../../../common/v3/Button";
+import { NewButton } from "../../../../../common/v3/NewButton";
 import { Pagination } from "../../../../../common/v3/Pagination";
 import { Tag } from "../../../../../common/v3/Tag";
 import { Tooltip } from "../../../../../common/v3/Tooltip";
@@ -73,6 +75,21 @@ export const SpanUsagesInsightCard = ({
     spanCodeObjectId?: string
   ) => {
     onTraceButtonClick(trace, insightType, spanCodeObjectId);
+  };
+
+  const handleEmptyStateTraceButtonClick = () => {
+    if (!insight.sampleTrace) {
+      return;
+    }
+
+    onTraceButtonClick(
+      {
+        id: insight.sampleTrace,
+        name: insight.spanInfo?.displayName
+      },
+      insight.type,
+      insight.spanInfo?.spanCodeObjectId
+    );
   };
 
   const columnHelper = createColumnHelper<SpanUsagesInsight["flows"][0]>();
@@ -266,20 +283,43 @@ export const SpanUsagesInsightCard = ({
     </s.Table>
   );
 
+  const renderEmptyState = () => (
+    <s.EmptyStateContainer>
+      <s.EmptyStateIconContainer>
+        <ArrowToTopIcon size={38} color={"currentColor"} />
+      </s.EmptyStateIconContainer>
+      <s.EmptyStateTextContainer>
+        <s.EmptyStateTitle>This is a top level asset</s.EmptyStateTitle>
+        Drill into a specific asset to see more usage information
+      </s.EmptyStateTextContainer>
+      {insight.sampleTrace && (
+        <NewButton
+          icon={TraceIcon}
+          label="Trace"
+          onClick={handleEmptyStateTraceButtonClick}
+        />
+      )}
+    </s.EmptyStateContainer>
+  );
+
   return (
     <InsightCard
       insight={insight}
       content={
-        <s.Container>
-          {renderTable()}
-          <Pagination
-            itemsCount={insight.flows.length}
-            page={page}
-            pageSize={PAGE_SIZE}
-            onPageChange={setPage}
-            withDescription={true}
-          />
-        </s.Container>
+        insight.flows.length > 0 ? (
+          <s.Container>
+            {renderTable()}
+            <Pagination
+              itemsCount={insight.flows.length}
+              page={page}
+              pageSize={PAGE_SIZE}
+              onPageChange={setPage}
+              withDescription={true}
+            />
+          </s.Container>
+        ) : (
+          renderEmptyState()
+        )
       }
       onRecalculate={onRecalculate}
       onRefresh={onRefresh}

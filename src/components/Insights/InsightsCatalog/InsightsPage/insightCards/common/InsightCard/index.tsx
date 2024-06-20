@@ -291,6 +291,10 @@ export const InsightCard = (props: InsightCardProps) => {
 
   const { showBanner, showTimer } = getRecalculateVisibilityParams();
 
+  const isFooterVisible = Boolean(
+    renderActions() ?? props.insight.isDismissible
+  );
+
   return (
     <s.StyledInsightCard
       $isDismissed={props.insight.isDismissed}
@@ -322,52 +326,54 @@ export const InsightCard = (props: InsightCardProps) => {
         </s.ContentContainer>
       }
       footer={
-        <>
-          {!isDismissConfirmationOpened ? (
-            <s.InsightFooter>
-              {props.insight.isDismissible && (
-                <s.ButtonContainer>
-                  {props.insight.isDismissed ? (
-                    <s.DismissButton
-                      label={isDismissalChangeInProgress ? "Showing" : "Show"}
-                      buttonType={"tertiary"}
-                      isDisabled={isDismissalChangeInProgress}
-                      onClick={handleShowClick}
-                    />
-                  ) : (
-                    <s.DismissButton
-                      icon={CrossIcon}
-                      isDisabled={isDismissalChangeInProgress}
-                      label={
-                        isDismissalChangeInProgress ? "Dismissing" : "Dismiss"
-                      }
-                      buttonType={"tertiary"}
-                      onClick={() => setDismissConfirmationOpened(true)}
-                    />
-                  )}
-                  {isDismissalChangeInProgress && <Spinner />}
-                </s.ButtonContainer>
-              )}
-              {renderActions()}
-            </s.InsightFooter>
-          ) : (
-            <s.DismissDialog>
-              Dismiss insight?
-              <s.DismissDialogActions>
-                <Button
-                  label={"No"}
-                  buttonType={"primary"}
-                  onClick={() => setDismissConfirmationOpened(false)}
-                />
-                <Button
-                  label={"Yes, dismiss"}
-                  buttonType={"secondary"}
-                  onClick={handleDismissClick}
-                />
-              </s.DismissDialogActions>
-            </s.DismissDialog>
-          )}
-        </>
+        isFooterVisible ? (
+          <>
+            {!isDismissConfirmationOpened ? (
+              <s.InsightFooter>
+                {props.insight.isDismissible && (
+                  <s.ButtonContainer>
+                    {props.insight.isDismissed ? (
+                      <s.DismissButton
+                        label={isDismissalChangeInProgress ? "Showing" : "Show"}
+                        buttonType={"tertiary"}
+                        isDisabled={isDismissalChangeInProgress}
+                        onClick={handleShowClick}
+                      />
+                    ) : (
+                      <s.DismissButton
+                        icon={CrossIcon}
+                        isDisabled={isDismissalChangeInProgress}
+                        label={
+                          isDismissalChangeInProgress ? "Dismissing" : "Dismiss"
+                        }
+                        buttonType={"tertiary"}
+                        onClick={() => setDismissConfirmationOpened(true)}
+                      />
+                    )}
+                    {isDismissalChangeInProgress && <Spinner />}
+                  </s.ButtonContainer>
+                )}
+                {renderActions()}
+              </s.InsightFooter>
+            ) : (
+              <s.DismissDialog>
+                Dismiss insight?
+                <s.DismissDialogActions>
+                  <Button
+                    label={"No"}
+                    buttonType={"primary"}
+                    onClick={() => setDismissConfirmationOpened(false)}
+                  />
+                  <Button
+                    label={"Yes, dismiss"}
+                    buttonType={"secondary"}
+                    onClick={handleDismissClick}
+                  />
+                </s.DismissDialogActions>
+              </s.DismissDialog>
+            )}
+          </>
+        ) : undefined
       }
     />
   );
