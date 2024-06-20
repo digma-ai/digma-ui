@@ -1,5 +1,9 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { Insights } from ".";
+import { ConfigContext, initialState } from "../common/App/ConfigContext";
+import { ConfigContextData } from "../common/App/types";
+import { actions as globalActions } from "./../../actions";
+import { IS_INSIGHT_JIRA_TICKET_HINT_SHOWN_PERSISTENCE_KEY } from "./InsightsCatalog/InsightsPage";
 import { mockedEndpointBreakdownInsight } from "./InsightsCatalog/InsightsPage/insightCards/EndpointBreakdownInsightCard/mockData";
 import { mockedEndpointHighNumberOfQueriesInsight } from "./InsightsCatalog/InsightsPage/insightCards/EndpointHighNumberOfQueriesInsightCard/mockData";
 import { mockedEndpointSpanNPlusOneInsight } from "./InsightsCatalog/InsightsPage/insightCards/EndpointSpanNPlusOneInsightInsightCard/mockData";
@@ -12,10 +16,28 @@ import { mockedSpanNexusInsight } from "./InsightsCatalog/InsightsPage/insightCa
 import { actions } from "./actions";
 import { InsightsStatus, ViewMode } from "./types";
 
+const mockedConfig: ConfigContextData = {
+  ...initialState,
+  environments: [
+    {
+      id: "1",
+      name: "Development",
+      type: "Public"
+    }
+  ]
+};
+
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof Insights> = {
   title: "Insights/Insights",
   component: Insights,
+  decorators: [
+    (Story) => (
+      <ConfigContext.Provider value={mockedConfig}>
+        <Story />
+      </ConfigContext.Provider>
+    )
+  ],
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
     layout: "fullscreen"
@@ -53,6 +75,45 @@ export const Default: Story = {
           // methods: [],
           // canInstrumentMethod: false,
           // needsObservabilityFix: false,
+          insights: [
+            mockedSpaNPlusOneInsight,
+            mockedEndpointBreakdownInsight,
+            mockedEndpointNormalUsageInsight,
+            mockedSpanDurationBreakdownInsight,
+            mockedSpanDurationsInsight,
+            mockedEndpointSpanNPlusOneInsight,
+            mockedSpanEndpointBottleneckInsight,
+            mockedEndpointHighNumberOfQueriesInsight,
+            mockedSpanNexusInsight
+          ]
+        }
+      });
+    }, 500);
+  }
+};
+
+export const WithJiraHint: Story = {
+  play: () => {
+    window.setTimeout(() => {
+      window.postMessage({
+        type: "digma",
+        action: globalActions.SET_FROM_PERSISTENCE,
+        payload: {
+          key: IS_INSIGHT_JIRA_TICKET_HINT_SHOWN_PERSISTENCE_KEY,
+          value: {
+            value: false
+          },
+          scope: "application",
+          error: null
+        }
+      });
+      window.postMessage({
+        type: "digma",
+        action: actions.SET_DATA_LIST,
+        payload: {
+          totalCount: 100,
+          viewMode: ViewMode.INSIGHTS,
+          insightsStatus: InsightsStatus.DEFAULT,
           insights: [
             mockedSpaNPlusOneInsight,
             mockedEndpointBreakdownInsight,

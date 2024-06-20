@@ -6,6 +6,7 @@ import { changeScope } from "../../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { getInsightTypeInfo } from "../../../../utils/getInsightTypeInfo";
 import { getInsightTypeOrderPriority } from "../../../../utils/getInsightTypeOrderPriority";
+import { SCOPE_CHANGE_EVENTS } from "../../../Main/types";
 import { Card } from "../../../common/Card";
 import { Tooltip } from "../../../common/Tooltip";
 import { EndpointIcon } from "../../../common/icons/EndpointIcon";
@@ -313,7 +314,7 @@ const renderInsightCard = (
         spanCodeObjectId
       },
       context: {
-        event: "INSIGHTS/INSIGHT_CARD_ASSET_LINK_CLICKED"
+        event: SCOPE_CHANGE_EVENTS.INSIGHTS_INSIGHT_CARD_ASSET_LINK_CLICKED
       }
     });
   };
@@ -342,7 +343,8 @@ const renderInsightCard = (
         spanCodeObjectId
       },
       context: {
-        event: "INSIGHTS/INSIGHT_CARD_ASSET_LINK_CLICKED"
+        event:
+          SCOPE_CHANGE_EVENTS.INSIGHTS_INSIGHT_CARD_TITLE_ASSET_LINK_CLICKED
       }
     });
   };

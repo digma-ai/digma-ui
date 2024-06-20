@@ -2,7 +2,7 @@ import { Row, createColumnHelper } from "@tanstack/react-table";
 import { useContext } from "react";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { getDurationString } from "../../../../../utils/getDurationString";
-import { TAB_IDS } from "../../../../Navigation/Tabs/types";
+import { SCOPE_CHANGE_EVENTS } from "../../../../Main/types";
 import { ConfigContext } from "../../../../common/App/ConfigContext";
 import { Tag } from "../../../../common/v3/Tag";
 import { Table } from "../../../common/Table";
@@ -52,7 +52,7 @@ export const EndpointQueryOptimizationV2HighlightCard = ({
       config.scope,
       config.environments,
       row.original.environmentId,
-      TAB_IDS.ISSUES
+      SCOPE_CHANGE_EVENTS.HIGHLIGHTS_TOP_ISSUES_CARD_ITEM_CLICKED
     );
   };
 

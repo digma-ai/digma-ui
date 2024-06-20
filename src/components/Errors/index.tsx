@@ -13,16 +13,14 @@ export const Errors = () => {
   const navigate = useNavigate();
   const params = useParams();
   const selectedErrorId = params.id;
-
   logger.info("params", params);
 
   const handleErrorSelect = (errorId: string) => {
-    const params = new URLSearchParams({ id: errorId });
-    navigate({ search: params.toString() });
+    navigate(errorId);
   };
 
   const handleGoToAllErrors = () => {
-    navigate({ search: "" });
+    navigate(".");
   };
 
   const renderContent = () => {

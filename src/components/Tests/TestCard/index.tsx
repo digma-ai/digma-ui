@@ -5,6 +5,7 @@ import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActi
 import { formatEnvironmentName } from "../../../utils/formatEnvironmentName";
 import { formatTimeDistance } from "../../../utils/formatTimeDistance";
 import { getDurationString } from "../../../utils/getDurationString";
+import { SCOPE_CHANGE_EVENTS } from "../../Main/types";
 import { NewButton } from "../../common/NewButton";
 import { Tag } from "../../common/Tag";
 import { Tooltip } from "../../common/Tooltip";
@@ -72,7 +73,7 @@ export const TestCard = ({
       },
       environmentId: test.environmentId,
       context: {
-        event: "TESTS/TEST_CARD_TITLE_LINK_CLICKED"
+        event: SCOPE_CHANGE_EVENTS.TESTS_TEST_CARD_TITLE_LINK_CLICKED
       }
     });
   };

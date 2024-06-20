@@ -9,6 +9,7 @@ import { isUndefined } from "../../../../typeGuards/isUndefined";
 import { InsightType } from "../../../../types";
 import { changeScope } from "../../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
+import { SCOPE_CHANGE_EVENTS } from "../../../Main/types";
 import { TAB_IDS } from "../../../Navigation/Tabs/types";
 import { ConfigContext } from "../../../common/App/ConfigContext";
 import { EmptyState } from "../../../common/EmptyState";
@@ -69,6 +70,8 @@ import {
   RecalculatePayload,
   isInsightJiraTicketHintShownPayload
 } from "./types";
+
+export const INSIGHTS_PAGE_CONTAINER_ID = "insightsPageContainer";
 
 const getInsightToShowJiraHint = (insights: CodeObjectInsight[]): number => {
   const insightsWithJiraButton = [
@@ -177,7 +180,9 @@ const renderInsightCard = (
     );
     changeScope({
       span: { spanCodeObjectId },
-      context: { event: "INSIGHTS/INSIGHT_CARD_TITLE_ASSET_LINK_CLICKED" }
+      context: {
+        event: SCOPE_CHANGE_EVENTS.INSIGHTS_INSIGHT_CARD_ASSET_LINK_CLICKED
+      }
     });
   };
 
@@ -193,7 +198,10 @@ const renderInsightCard = (
   const handleGoToSpan = (spanCodeObjectId: string) => {
     changeScope({
       span: { spanCodeObjectId },
-      context: { event: "INSIGHTS/INSIGHT_CARD_ASSET_LINK_CLICKED" }
+      context: {
+        event:
+          SCOPE_CHANGE_EVENTS.INSIGHTS_INSIGHT_CARD_TITLE_ASSET_LINK_CLICKED
+      }
     });
   };
 
@@ -479,7 +487,7 @@ const renderInsightCard = (
   }
 };
 
-const IS_INSIGHT_JIRA_TICKET_HINT_SHOWN_PERSISTENCE_KEY =
+export const IS_INSIGHT_JIRA_TICKET_HINT_SHOWN_PERSISTENCE_KEY =
   "isInsightJiraTicketHintShown";
 
 export const InsightsPage = ({
@@ -558,7 +566,7 @@ export const InsightsPage = ({
   };
 
   return (
-    <s.Container ref={listRef}>
+    <s.Container ref={listRef} id={INSIGHTS_PAGE_CONTAINER_ID}>
       {insights.length > 0 ? (
         insights.map((insight, j) => {
           return renderInsightCard(

@@ -3,15 +3,7 @@ import * as s from "./styles";
 import { LinkProps } from "./types";
 
 const LinkComponent = (
-  {
-    onClick,
-    href = "#",
-    className,
-    target,
-    rel,
-    disabled,
-    children
-  }: LinkProps,
+  { onClick, href, className, target, rel, disabled, children }: LinkProps,
   ref: ForwardedRef<HTMLAnchorElement>
 ) => {
   const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
@@ -27,7 +19,7 @@ const LinkComponent = (
     <s.Link
       ref={ref}
       className={className}
-      href={href}
+      href={href ?? "#"}
       target={target}
       rel={rel}
       onClick={handleClick}

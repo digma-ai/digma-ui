@@ -6,6 +6,7 @@ import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefault
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { getDurationString } from "../../../utils/getDurationString";
 import { InsightStatus } from "../../Insights/types";
+import { SCOPE_CHANGE_EVENTS } from "../../Main/types";
 import { TAB_IDS } from "../../Navigation/Tabs/types";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { CrossCircleIcon } from "../../common/icons/16px/CrossCircleIcon";
@@ -122,7 +123,7 @@ export const Scaling = () => {
         config.scope,
         config.environments,
         row.original.environmentId,
-        TAB_IDS.ISSUES
+        SCOPE_CHANGE_EVENTS.HIGHLIGHTS_SCALING_CARD_ITEM_CLICKED
       );
     };
 

@@ -8,6 +8,7 @@ import { GetInsightStatsPayload } from "../../types";
 import { changeScope } from "../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 import { AsyncActionResultData } from "../InstallationWizard/types";
+import { SCOPE_CHANGE_EVENTS } from "../Main/types";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { Environment, Scope } from "../common/App/types";
 import { NewPopover } from "../common/NewPopover";
@@ -164,7 +165,7 @@ export const Navigation = () => {
         span: config.scope?.span ?? null,
         environmentId: environment.id,
         context: {
-          event: "NAVIGATION/ENVIRONMENT_MENU_ITEM_SELECTED"
+          event: SCOPE_CHANGE_EVENTS.NAVIGATION_ENVIRONMENT_MENU_ITEM_SELECTED
         }
       });
 
@@ -249,7 +250,7 @@ export const Navigation = () => {
           spanCodeObjectId
         },
         context: {
-          event: "NAVIGATION/CODE_BUTTON_CLICKED"
+          event: SCOPE_CHANGE_EVENTS.NAVIGATION_CODE_BUTTON_CLICKED
         }
       });
     }
@@ -298,7 +299,7 @@ export const Navigation = () => {
         spanCodeObjectId
       },
       context: {
-        event: "NAVIGATION/CODE_BUTTON_MENU_ITEM_CLICKED"
+        event: SCOPE_CHANGE_EVENTS.NAVIGATION_CODE_BUTTON_MENU_ITEM_SELECTED
       }
     });
 

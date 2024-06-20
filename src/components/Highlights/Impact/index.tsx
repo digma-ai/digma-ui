@@ -3,7 +3,7 @@ import { useContext, useEffect } from "react";
 import { PERFORMANCE_IMPACT_DOCUMENTATION_URL } from "../../../constants";
 import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
-import { TAB_IDS } from "../../Navigation/Tabs/types";
+import { SCOPE_CHANGE_EVENTS } from "../../Main/types";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { getImpactScoreLabel } from "../../common/ImpactScore";
 import { InfinityIcon } from "../../common/icons/16px/InfinityIcon";
@@ -113,7 +113,7 @@ export const Impact = () => {
         config.scope,
         config.environments,
         row.original.environmentId,
-        TAB_IDS.ANALYTICS
+        SCOPE_CHANGE_EVENTS.HIGHLIGHTS_IMPACT_CARD_ITEM_CLICKED
       );
     };
 

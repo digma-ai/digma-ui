@@ -6,6 +6,7 @@ import { isNumber } from "../../typeGuards/isNumber";
 import { changeScope } from "../../utils/actions/changeScope";
 import { sendTrackingEvent } from "../../utils/actions/sendTrackingEvent";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
+import { SCOPE_CHANGE_EVENTS } from "../Main/types";
 import { FullView } from "./FullView";
 import { RecentView } from "./RecentView";
 import { actions } from "./actions";
@@ -164,7 +165,8 @@ export const Notifications = ({ viewMode }: NotificationsProps) => {
           spanCodeObjectId: codeObjectData.spanCodeObjectId
         },
         context: {
-          event: "NOTIFICATIONS/NOTIFICATION_CARD_ASSET_LINK_CLICKED"
+          event:
+            SCOPE_CHANGE_EVENTS.NOTIFICATIONS_NOTIFICATION_CARD_ASSET_LINK_CLICKED
         }
       });
     }

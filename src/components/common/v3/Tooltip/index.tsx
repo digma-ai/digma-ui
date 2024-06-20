@@ -5,6 +5,7 @@ import {
   arrow,
   autoUpdate,
   flip,
+  hide,
   offset,
   shift,
   useFloating,
@@ -74,25 +75,29 @@ export const Tooltip = ({
   children,
   isDisabled,
   fullWidth,
-  title
+  title,
+  boundary
 }: TooltipProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const arrowRef = useRef(null);
 
   const theme = useTheme();
 
-  const { refs, floatingStyles, context } = useFloating({
+  const { refs, floatingStyles, context, middlewareData } = useFloating({
     whileElementsMounted: autoUpdate,
     placement,
     open: isBoolean(forcedIsOpen) ? forcedIsOpen : isOpen,
     onOpenChange: isBoolean(forcedIsOpen) ? undefined : setIsOpen,
     middleware: [
       offset(GAP + ARROW_HEIGHT + ARROW_MARGIN),
-      flip(),
+      flip({
+        boundary
+      }),
       shift(),
       arrow({
         element: arrowRef
-      })
+      }),
+      hide()
     ]
   });
 
@@ -146,6 +151,9 @@ export const Tooltip = ({
               style={{
                 ...floatingStyles,
                 ...transitionStyles,
+                display: middlewareData.hide?.referenceHidden
+                  ? "none"
+                  : "initial",
                 ...style
               }}
               {...getFloatingProps()}

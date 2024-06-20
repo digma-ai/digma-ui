@@ -13,6 +13,7 @@ import { isEnvironment } from "../../../typeGuards/isEnvironment";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { isString } from "../../../typeGuards/isString";
 import { changeScope } from "../../../utils/actions/changeScope";
+import { SCOPE_CHANGE_EVENTS } from "../../Main/types";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { EmptyState } from "../../common/EmptyState";
 import { Menu } from "../../common/Menu";
@@ -354,7 +355,7 @@ export const AssetList = ({
         spanCodeObjectId: entry.spanCodeObjectId
       },
       context: {
-        event: "ASSETS/ASSET_CARD_TITLE_LINK_CLICKED"
+        event: SCOPE_CHANGE_EVENTS.ASSETS_ASSET_CARD_TITLE_LINK_CLICKED
       }
     });
   };

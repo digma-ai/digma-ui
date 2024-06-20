@@ -4,7 +4,6 @@ import { actions } from "../../../actions";
 import { dispatcher } from "../../../dispatcher";
 import { Theme } from "../../../globals";
 import { isBoolean } from "../../../typeGuards/isBoolean";
-import { isEnvironment } from "../../../typeGuards/isEnvironment";
 import { isNull } from "../../../typeGuards/isNull";
 import { isObject } from "../../../typeGuards/isObject";
 import { isString } from "../../../typeGuards/isString";
@@ -165,15 +164,6 @@ export const App = ({ theme, children }: AppProps) => {
       }
     };
 
-    const handleSetEnvironment = (data: unknown) => {
-      if (isObject(data) && isEnvironment(data?.environment)) {
-        setConfig((config) => ({
-          ...config,
-          environment: data.environment as Environment
-        }));
-      }
-    };
-
     const handleIsObservabilityEnabled = (data: unknown) => {
       if (isObject(data) && isBoolean(data.isObservabilityEnabled)) {
         setConfig((config) => ({
@@ -217,10 +207,28 @@ export const App = ({ theme, children }: AppProps) => {
       }
     };
 
+    // const handleSetEnvironment = (data: unknown) => {
+    //   if (isObject(data) && isEnvironment(data?.environment)) {
+    //     setConfig((config) => ({
+    //       ...config,
+    //       environment: data.environment as Environment
+    //     }));
+    //   }
+    // };
+
     const handleSetScope = (data: unknown) => {
+      const scope = data as Scope;
       setConfig((config) => ({
         ...config,
-        scope: data as Scope
+        scope,
+        // TODO: fix by getting the details of the environment
+        environment: scope.environmentId
+          ? {
+              id: scope.environmentId,
+              name: scope.environmentId,
+              type: "Private"
+            }
+          : undefined
       }));
     };
 
@@ -317,7 +325,7 @@ export const App = ({ theme, children }: AppProps) => {
       actions.SET_USER_REGISTRATION_EMAIL,
       handleSetUserRegistrationEmail
     );
-    dispatcher.addActionListener(actions.SET_ENVIRONMENT, handleSetEnvironment);
+    // dispatcher.addActionListener(actions.SET_ENVIRONMENT, handleSetEnvironment);
     dispatcher.addActionListener(
       actions.SET_IS_OBSERVABILITY_ENABLED,
       handleIsObservabilityEnabled
@@ -395,10 +403,10 @@ export const App = ({ theme, children }: AppProps) => {
         actions.SET_USER_REGISTRATION_EMAIL,
         handleSetUserRegistrationEmail
       );
-      dispatcher.removeActionListener(
-        actions.SET_ENVIRONMENT,
-        handleSetEnvironment
-      );
+      // dispatcher.removeActionListener(
+      //   actions.SET_ENVIRONMENT,
+      //   handleSetEnvironment
+      // );
       dispatcher.removeActionListener(
         actions.SET_IS_OBSERVABILITY_ENABLED,
         handleIsObservabilityEnabled

@@ -1,4 +1,5 @@
 import { changeScope } from "../../../../utils/actions/changeScope";
+import { SCOPE_CHANGE_EVENTS } from "../../../Main/types";
 import { ImpactScore } from "../../../common/ImpactScore";
 import { Tooltip } from "../../../common/Tooltip";
 import { AlarmClockIcon } from "../../../common/icons/AlarmClockIcon";
@@ -22,7 +23,7 @@ const renderClientSpanOverallImpactEntry = (
       environmentId: environment,
       context: {
         event:
-          "DASHBOARD/CLIENT_SPANS_PERFORMANCE_IMPACT_WIDGET_ITEM_LINK_CLICKED"
+          SCOPE_CHANGE_EVENTS.DASHBOARD_CLIENT_SPANS_PERFORMANCE_IMPACT_WIDGET_ITEM_LINK_CLICKED
       }
     });
   };

@@ -14,6 +14,7 @@ export interface TooltipProps {
   isOpen?: boolean;
   fullWidth?: boolean;
   isDisabled?: boolean;
+  boundary?: HTMLElement;
 }
 
 export interface TooltipComponentProps {

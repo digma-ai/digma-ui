@@ -4,6 +4,7 @@ import { isString } from "../../../../../typeGuards/isString";
 import { changeScope } from "../../../../../utils/actions/changeScope";
 import { formatTimeDistance } from "../../../../../utils/formatTimeDistance";
 import { getInsightTypeInfo } from "../../../../../utils/getInsightTypeInfo";
+import { SCOPE_CHANGE_EVENTS } from "../../../../Main/types";
 import { ConfigContext } from "../../../../common/App/ConfigContext";
 import { Badge } from "../../../../common/Badge";
 import { Card } from "../../../../common/Card";
@@ -140,7 +141,7 @@ export const InsightCard = ({
           spanCodeObjectId: spanInfo.spanCodeObjectId
         },
         context: {
-          event: "INSIGHTS/INSIGHT_CARD_TITLE_ASSET_LINK_CLICKED"
+          event: SCOPE_CHANGE_EVENTS.INSIGHTS_INSIGHT_CARD_ASSET_LINK_CLICKED
         }
       });
     }

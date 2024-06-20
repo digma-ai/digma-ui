@@ -1,15 +1,9 @@
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import {
-  Location,
-  useLocation,
-  useNavigate,
-  useParams
-} from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDebounce } from "../../hooks/useDebounce";
 import { usePrevious } from "../../hooks/usePrevious";
 import { logger } from "../../logging";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
-import { HistoryState } from "../Navigation/HistoryNavigationPanel/types";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { EmptyState } from "../common/EmptyState";
 import { SearchInput } from "../common/SearchInput";
@@ -42,8 +36,6 @@ export const Assets = () => {
   const [assetListDataRefresher, setAssetListRefresher] =
     useState<DataRefresher | null>(null);
   const navigate = useNavigate();
-  const location = useLocation() as Location<HistoryState>;
-
   logger.info("params", params);
 
   const isBackendUpgradeMessageVisible = false;
@@ -61,8 +53,7 @@ export const Assets = () => {
   }, [config.scope, previousScope]);
 
   const handleGoToAllAssets = () => {
-    // navigate({ search: "" });
-    navigate("..", { state: { idx: location.state.idx }, relative: "path" });
+    navigate(".");
   };
 
   const handleSearchInputChange = (val: string | null) => {
@@ -70,9 +61,7 @@ export const Assets = () => {
   };
 
   const handleAssetTypeSelect = (assetTypeId: string) => {
-    // const params = new URLSearchParams({ typeId: assetTypeId });
-    // navigate({ search: params.toString() });
-    navigate(`${assetTypeId}`);
+    navigate(assetTypeId);
   };
 
   const handleApplyFilters = (filters: AssetFilterQuery) => {

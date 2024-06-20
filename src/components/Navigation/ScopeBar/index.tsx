@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { changeScope } from "../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
+import { SCOPE_CHANGE_EVENTS } from "../../Main/types";
 import { CodeDetails, Scope } from "../../common/App/types";
 import { NewPopover } from "../../common/NewPopover";
 import { CrosshairIcon } from "../../common/icons/16px/CrosshairIcon";
@@ -84,7 +85,7 @@ export const ScopeBar = ({ scope, codeContext }: ScopeBarProps) => {
     changeScope({
       span: null,
       context: {
-        event: "NAVIGATION/HOME_BUTTON_CLICKED"
+        event: SCOPE_CHANGE_EVENTS.NAVIGATION_HOME_BUTTON_CLICKED
       }
     });
   };

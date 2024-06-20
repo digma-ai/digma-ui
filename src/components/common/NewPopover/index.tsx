@@ -88,7 +88,7 @@ export const NewPopover = ({
       offset(showArrow ? ARROW_HEIGHT + ARROW_GAP : GAP),
       flip(),
       shift({
-        boundary: boundary ?? undefined
+        boundary
       }),
       ...(showArrow
         ? [

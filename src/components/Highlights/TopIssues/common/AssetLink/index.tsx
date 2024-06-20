@@ -1,5 +1,6 @@
 import { changeScope } from "../../../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
+import { SCOPE_CHANGE_EVENTS } from "../../../../Main/types";
 import { Link } from "../../../../common/v3/Link";
 import { Tooltip } from "../../../../common/v3/Tooltip";
 import { trackingEvents } from "../../../tracking";
@@ -17,7 +18,7 @@ export const AssetLink = ({ asset }: AssetLinkProps) => {
         spanCodeObjectId: asset.spanCodeObjectId
       },
       context: {
-        event: "HIGHLIGHTS/TOP_ISSUES_CARD_ASSET_LINK_CLICKED"
+        event: SCOPE_CHANGE_EVENTS.HIGHLIGHTS_TOP_ISSUES_CARD_ASSET_LINK_CLICKED
       }
     });
   };

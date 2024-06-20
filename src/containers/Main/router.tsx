@@ -20,7 +20,7 @@ export const routes: RouteObject[] = [
       { path: TAB_IDS.HIGHLIGHTS, element: <Highlights /> },
       {
         path: TAB_IDS.ISSUES,
-        element: <Insights insightViewType={"Issues"} key={"insights"} />
+        element: <Insights insightViewType={"Issues"} key={"issues"} />
       },
       {
         path: TAB_IDS.ASSETS,

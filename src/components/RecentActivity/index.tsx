@@ -10,6 +10,7 @@ import { isBoolean } from "../../typeGuards/isBoolean";
 import { changeScope } from "../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 import { groupBy } from "../../utils/groupBy";
+import { SCOPE_CHANGE_EVENTS } from "../Main/types";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { Environment, Scope } from "../common/App/types";
 import { RegistrationDialog } from "../common/RegistrationDialog";
@@ -69,7 +70,7 @@ const changeSelectedEnvironment = (
       span: scope?.span ?? null,
       environmentId: environmentToSelect.id,
       context: {
-        event: "RECENT_ACTIVITY/ENVIRONMENT_TAB_SELECTED"
+        event: SCOPE_CHANGE_EVENTS.RECENT_ACTIVITY_ENVIRONMENT_TAB_SELECTED
       }
     });
   }
@@ -265,7 +266,7 @@ export const RecentActivity = () => {
           spanCodeObjectId: span.spanCodeObjectId
         },
         context: {
-          event: "RECENT_ACTIVITY_SPAN_LINK_CLICKED"
+          event: SCOPE_CHANGE_EVENTS.RECENT_ACTIVITY_SPAN_LINK_CLICKED
         }
       });
     }

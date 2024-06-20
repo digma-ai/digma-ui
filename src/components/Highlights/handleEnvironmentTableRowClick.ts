@@ -5,7 +5,7 @@ export const handleEnvironmentTableRowClick = (
   scope: Scope | undefined,
   environments: Environment[] | undefined,
   environmentIdToSelect: string,
-  viewToSelect: string
+  changeScopeEvent: string
 ) => {
   const environmentChangeTo = environments?.find(
     (x) => x.id === environmentIdToSelect
@@ -16,8 +16,7 @@ export const handleEnvironmentTableRowClick = (
       span: scope?.span ?? null,
       environmentId: environmentChangeTo.id,
       context: {
-        event: "HIGHLIGHTS/ENVIRONMENT_TABLE_ROW_CLICKED",
-        payload: { viewToSelect }
+        event: changeScopeEvent
       }
     });
   }

@@ -4,6 +4,7 @@ import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { changeScope } from "../../../utils/actions/changeScope";
 import { actions as mainActions } from "../../Main/actions";
+import { SCOPE_CHANGE_EVENTS } from "../../Main/types";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { Scope } from "../../common/App/types";
 import { SetViewsPayload } from "../types";
@@ -25,7 +26,11 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
     if (!environment || !environments?.find((x) => x.id == environment?.id)) {
       changeScope({
         span: null,
-        forceNavigation: true
+        forceNavigation: true,
+        context: {
+          event:
+            SCOPE_CHANGE_EVENTS.NAVIGATION_HISTORY_NAVIGATION_BUTTON_CLICKED
+        }
       });
       setHistoryManager(new HistoryManager());
     }

@@ -1,7 +1,7 @@
 import { Row, createColumnHelper } from "@tanstack/react-table";
 import { useContext } from "react";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
-import { TAB_IDS } from "../../../../Navigation/Tabs/types";
+import { SCOPE_CHANGE_EVENTS } from "../../../../Main/types";
 import { ConfigContext } from "../../../../common/App/ConfigContext";
 import { Table } from "../../../common/Table";
 import { TableText } from "../../../common/TableText";
@@ -41,7 +41,7 @@ export const HotSpotHighlightCard = ({ data }: HotSpotHighlightCardProps) => {
       config.scope,
       config.environments,
       row.original.environmentId,
-      TAB_IDS.ISSUES
+      SCOPE_CHANGE_EVENTS.HIGHLIGHTS_TOP_ISSUES_CARD_ITEM_CLICKED
     );
   };
 

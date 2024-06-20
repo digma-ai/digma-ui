@@ -1,5 +1,5 @@
 import { useContext, useMemo } from "react";
-import { matchPath, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { isString } from "../../../typeGuards/isString";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
@@ -94,14 +94,16 @@ export const Tabs = () => {
         tabName: tab.id
       });
 
-      navigate(tab.id);
+      if (!tab.isSelected) {
+        navigate(tab.id);
+      }
     }
   };
 
   const tabsData: TabData[] = useMemo(() => {
     return tabs.map((tab) => ({
       ...tab,
-      isSelected: Boolean(matchPath(tab.id, location.pathname)),
+      isSelected: location.pathname.startsWith(`/${tab.id}`),
       isDisabled: getIsTabDisabled(tab, config.scope),
       hasNewData: getIsNewIndicatorVisible(
         tab,
