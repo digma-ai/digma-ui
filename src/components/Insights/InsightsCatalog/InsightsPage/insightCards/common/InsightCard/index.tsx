@@ -311,6 +311,8 @@ export const InsightCard = ({
 
   const { showBanner, showTimer } = getRecalculateVisibilityParams();
 
+  const isFooterVisible = Boolean(renderActions() ?? insight.isDismissible);
+
   return (
     <s.StyledInsightCard
       $isDismissed={insight.isDismissed}
@@ -340,52 +342,54 @@ export const InsightCard = ({
         </s.ContentContainer>
       }
       footer={
-        <>
-          {!isDismissConfirmationOpened ? (
-            <s.InsightFooter>
-              {insight.isDismissible && (
-                <s.ButtonContainer>
-                  {insight.isDismissed ? (
-                    <s.DismissButton
-                      label={isDismissalChangeInProgress ? "Showing" : "Show"}
-                      buttonType={"tertiary"}
-                      isDisabled={isDismissalChangeInProgress}
-                      onClick={handleShowClick}
-                    />
-                  ) : (
-                    <s.DismissButton
-                      icon={CrossIcon}
-                      isDisabled={isDismissalChangeInProgress}
-                      label={
-                        isDismissalChangeInProgress ? "Dismissing" : "Dismiss"
-                      }
-                      buttonType={"tertiary"}
-                      onClick={() => setDismissConfirmationOpened(true)}
-                    />
-                  )}
-                  {isDismissalChangeInProgress && <Spinner />}
-                </s.ButtonContainer>
-              )}
-              {renderActions()}
-            </s.InsightFooter>
-          ) : (
-            <s.DismissDialog>
-              Dismiss insight?
-              <s.DismissDialogActions>
-                <Button
-                  label={"No"}
-                  buttonType={"primary"}
-                  onClick={() => setDismissConfirmationOpened(false)}
-                />
-                <Button
-                  label={"Yes, dismiss"}
-                  buttonType={"secondary"}
-                  onClick={handleDismissClick}
-                />
-              </s.DismissDialogActions>
-            </s.DismissDialog>
-          )}
-        </>
+        isFooterVisible ? (
+          <>
+            {!isDismissConfirmationOpened ? (
+              <s.InsightFooter>
+                {insight.isDismissible && (
+                  <s.ButtonContainer>
+                    {insight.isDismissed ? (
+                      <s.DismissButton
+                        label={isDismissalChangeInProgress ? "Showing" : "Show"}
+                        buttonType={"tertiary"}
+                        isDisabled={isDismissalChangeInProgress}
+                        onClick={handleShowClick}
+                      />
+                    ) : (
+                      <s.DismissButton
+                        icon={CrossIcon}
+                        isDisabled={isDismissalChangeInProgress}
+                        label={
+                          isDismissalChangeInProgress ? "Dismissing" : "Dismiss"
+                        }
+                        buttonType={"tertiary"}
+                        onClick={() => setDismissConfirmationOpened(true)}
+                      />
+                    )}
+                    {isDismissalChangeInProgress && <Spinner />}
+                  </s.ButtonContainer>
+                )}
+                {renderActions()}
+              </s.InsightFooter>
+            ) : (
+              <s.DismissDialog>
+                Dismiss insight?
+                <s.DismissDialogActions>
+                  <Button
+                    label={"No"}
+                    buttonType={"primary"}
+                    onClick={() => setDismissConfirmationOpened(false)}
+                  />
+                  <Button
+                    label={"Yes, dismiss"}
+                    buttonType={"secondary"}
+                    onClick={handleDismissClick}
+                  />
+                </s.DismissDialogActions>
+              </s.DismissDialog>
+            )}
+          </>
+        ) : undefined
       }
     />
   );

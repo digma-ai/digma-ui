@@ -41,7 +41,7 @@ export const InsightHeader = ({
 }: InsightHeaderProps) => {
   const config = useContext(ConfigContext);
 
-  const insightTypeInfo = getInsightTypeInfo(insight.type);
+  const insightTypeInfo = getInsightTypeInfo(insight.type, insight.subType);
   const statusTooltipContent = renderInsightStatusTooltipContent(insight);
   const isNew = isString(insight.firstDetected)
     ? Date.now() - new Date(insight.firstDetected).valueOf() < IS_NEW_TIME_LIMIT

@@ -22,3 +22,21 @@ export const Default: Story = {
     insight: mockedEndpointSpanNPlusOneInsight
   }
 };
+
+export const RepeatedQuery: Story = {
+  args: {
+    insight: {
+      ...mockedEndpointSpanNPlusOneInsight,
+      subType: "repeatedQueries"
+    }
+  }
+};
+
+export const RepeatedInserts: Story = {
+  args: {
+    insight: {
+      ...mockedEndpointSpanNPlusOneInsight,
+      subType: "repeatedInserts"
+    }
+  }
+};

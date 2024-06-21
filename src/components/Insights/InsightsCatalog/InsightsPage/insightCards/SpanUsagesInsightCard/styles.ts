@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import {
+  bodySemiboldTypography,
   caption2RegularTypography,
   footnoteRegularTypography
 } from "../../../../../common/App/typographies";
@@ -126,4 +127,37 @@ export const TableBodyCell = styled.div`
     padding-right: 8px;
     justify-content: flex-end;
   }
+`;
+
+export const EmptyStateContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  height: 333px;
+`;
+
+export const EmptyStateTextContainer = styled.div`
+  ${footnoteRegularTypography}
+
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: center;
+  color: ${({ theme }) => theme.colors.v3.text.tertiary};
+`;
+
+export const EmptyStateTitle = styled.span`
+  ${bodySemiboldTypography}
+
+  color: ${({ theme }) => theme.colors.v3.text.primary};
+`;
+
+export const EmptyStateIconContainer = styled.div`
+  display: flex;
+  padding: 6px;
+  border-radius: 50%;
+  color: ${({ theme }) => theme.colors.v3.icon.primary};
+  background: ${({ theme }) => theme.colors.v3.surface.sidePanelHeader};
 `;

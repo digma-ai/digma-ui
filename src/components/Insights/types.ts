@@ -150,6 +150,7 @@ export interface Trace {
 export interface Insight {
   category: string;
   type: InsightType;
+  subType?: string;
   specifity: InsightSpecificity;
 }
 
@@ -264,7 +265,7 @@ export interface SpanUsagesInsight extends SpanInsight {
   type: InsightType.SpanUsages;
   category: InsightCategory.Usage;
   specifity: InsightSpecificity.OwnInsight;
-  isRecalculateEnabled: true;
+  isRecalculateEnabled: boolean;
   importance: InsightImportance.Interesting;
   sampleTrace: string | null;
   flows: {
