@@ -191,12 +191,7 @@ const sendMessage = (action: string, data?: object) => {
   });
 };
 
-export const Insights = ({
-  insightViewType,
-  hidePromotion,
-  onShowPromotion,
-  onShowPromotionConfirmationDiscard
-}: InsightsProps) => {
+export const Insights = ({ insightViewType }: InsightsProps) => {
   const DEFAULT_QUERY: InsightsQuery = {
     page: 0,
     sorting: {
@@ -223,11 +218,6 @@ export const Insights = ({
   );
   const [isRegistrationInProgress, setIsRegistrationInProgress] =
     useState(false);
-
-  const isDismissalEnabled = insightViewType === "Issues";
-
-  const isMarkingAsReadEnabled = insightViewType === "Issues";
-
   const isRegistrationEnabled = false;
   const isRegistrationRequired =
     isRegistrationEnabled && !config.userRegistrationEmail;
@@ -326,6 +316,7 @@ export const Insights = ({
   const renderDefaultContent = (data: InsightsData): JSX.Element => {
     return (
       <InsightsCatalog
+        insightViewType={insightViewType}
         insights={data.insights}
         totalCount={data.totalCount}
         onJiraTicketCreate={handleJiraTicketPopupOpen}
@@ -333,13 +324,7 @@ export const Insights = ({
         onRefresh={refresh}
         defaultQuery={DEFAULT_QUERY}
         dismissedCount={data.dismissedCount}
-        isDismissalEnabled={isDismissalEnabled}
         unreadCount={data.unreadCount}
-        isMarkingAsReadEnabled={isMarkingAsReadEnabled}
-        hideInsightsStats={insightViewType === "Analytics"}
-        showPromotion={insightViewType == "Issues" && !hidePromotion}
-        onPromotionAccepted={onShowPromotion}
-        onPromotionCanceled={onShowPromotionConfirmationDiscard}
       />
     );
   };

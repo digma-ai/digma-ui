@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { sendTrackingEvent } from "../../../../utils/actions/sendTrackingEvent";
+import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { Link } from "../../../common/Link";
 import { CrossIcon } from "../../../common/icons/CrossIcon";
 import { trackingEvents } from "../../tracking";
@@ -10,23 +10,23 @@ import { PromotionCardProps } from "./types";
 export const PromotionCard = ({ onAccept, onDiscard }: PromotionCardProps) => {
   const [expanded, setExpanded] = useState(false);
 
-  const handleCancelClick = () => {
+  const handleDontShowButtonClick = () => {
     onDiscard();
   };
 
-  const handleAcceptClick = () => {
+  const handleAccessCourseButtonClick = () => {
     onAccept();
   };
 
   const handleCollapseClick = () => {
-    sendTrackingEvent(
+    sendUserActionTrackingEvent(
       trackingEvents.PROMOTION_CLOSE_EXPANDED_VIEW_BUTTON_CLICKED
     );
     setExpanded(false);
   };
 
   const handleExpandClick = () => {
-    sendTrackingEvent(
+    sendUserActionTrackingEvent(
       trackingEvents.PROMOTION_CLOSE_EXPANDED_VIEW_BUTTON_CLICKED
     );
     setExpanded(true);
@@ -45,7 +45,6 @@ export const PromotionCard = ({ onAccept, onDiscard }: PromotionCardProps) => {
           <s.PromoText>
             Get our <s.PromoTextBold>FREE Udemy course</s.PromoTextBold>
           </s.PromoText>
-
           <Link onClick={handleExpandClick}>See more</Link>
         </s.CollapsedHolder>
       </s.CollapsedContainer>
@@ -60,30 +59,28 @@ export const PromotionCard = ({ onAccept, onDiscard }: PromotionCardProps) => {
           <img src={`/images/promotion/promotionLogoWithShadow.svg`} />
         </s.AnimatedPromotionBackground>
       </s.LogoBackground>
-
       <s.Holder>
         <s.ContentContainer>
           <s.DetailsContainer>
             <PromotionTag />
             <s.Description>
               <span>Learn how to get more out of Digma</span>
-              <span> issues</span>
+              <span>issues</span>
             </s.Description>
           </s.DetailsContainer>
           <s.ActionContainer>
-            <s.AcceptButton
-              buttonType="primary"
-              label="Access course"
-              onClick={handleAcceptClick}
+            <s.AccessCourseButton
+              buttonType={"primary"}
+              label={"Access course"}
+              onClick={handleAccessCourseButtonClick}
             />
-            <s.SkipButton
-              buttonType="tertiary"
-              label="Don’t show it again"
-              onClick={handleCancelClick}
+            <s.DontShowButton
+              buttonType={"tertiary"}
+              label={"Don't show it again"}
+              onClick={handleDontShowButtonClick}
             />
           </s.ActionContainer>
         </s.ContentContainer>
-
         <s.CrossButton
           buttonType={"tertiary"}
           icon={(props) => (

@@ -1,6 +1,11 @@
-import { GenericCodeObjectInsight, InsightsQuery } from "../types";
+import {
+  GenericCodeObjectInsight,
+  InsightViewType,
+  InsightsQuery
+} from "../types";
 
 export interface InsightsCatalogProps {
+  insightViewType: InsightViewType;
   insights: GenericCodeObjectInsight[];
   totalCount: number;
   dismissedCount?: number;
@@ -11,13 +16,7 @@ export interface InsightsCatalogProps {
   onQueryChange: (query: InsightsQuery) => void;
   defaultQuery: InsightsQuery;
   onRefresh: () => void;
-  isDismissalEnabled: boolean;
   unreadCount?: number;
-  isMarkingAsReadEnabled: boolean;
-  hideInsightsStats?: boolean;
-  onPromotionAccepted?: () => void;
-  onPromotionCanceled?: () => void;
-  showPromotion: boolean;
 }
 
 export enum ViewMode {

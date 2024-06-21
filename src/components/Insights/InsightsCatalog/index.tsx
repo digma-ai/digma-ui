@@ -1,17 +1,23 @@
 import { useCallback, useContext, useEffect, useState } from "react";
-import { usePrevious } from "../../../hooks/usePrevious";
-
+import { createPortal } from "react-dom";
 import { useTheme } from "styled-components";
 import { actions as globalActions } from "../../../actions";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import { useDebounce } from "../../../hooks/useDebounce";
+import { usePersistence } from "../../../hooks/usePersistence";
+import { usePrevious } from "../../../hooks/usePrevious";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { isString } from "../../../typeGuards/isString";
 import { isUndefined } from "../../../typeGuards/isUndefined";
 import { FeatureFlag, GetInsightStatsPayload } from "../../../types";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { formatUnit } from "../../../utils/formatUnit";
+import { MAIN_CONTAINER_ID } from "../../Main";
+import { RegistrationCard } from "../../Main/RegistrationCard";
+import { MainOverlay } from "../../Main/styles";
+import { trackingEvents as mainTrackingEvents } from "../../Main/tracking";
 import { ConfigContext } from "../../common/App/ConfigContext";
+import { CancelConfirmation } from "../../common/CancelConfirmation";
 import { Pagination } from "../../common/Pagination";
 import { SearchInput } from "../../common/SearchInput";
 import { SortingSelector } from "../../common/SortingSelector";
@@ -40,21 +46,27 @@ const PAGE_SIZE = 10;
 const isShowUnreadOnly = (filters: InsightFilterType[]) =>
   filters.length === 1 && filters[0] === "unread";
 
+const PROMOTION_PERSISTENCE_KEY = "PROMOTION";
+const PROMOTION_COMPLETED_PERSISTENCE_KEY = "PROMOTION_COMPLETED";
+
+const isPromotionEnabled = (dismissalDate: number | null | undefined) => {
+  const PROMOTION_INTERVAL = 30 * 24 * 60 * 60 * 1000; // in milliseconds
+
+  return (
+    !dismissalDate || Math.abs(dismissalDate - Date.now()) > PROMOTION_INTERVAL
+  );
+};
+
 export const InsightsCatalog = ({
+  insightViewType,
   insights,
   onJiraTicketCreate,
   defaultQuery,
   totalCount,
-  isDismissalEnabled,
   dismissedCount,
-  isMarkingAsReadEnabled,
   unreadCount,
   onQueryChange,
-  hideInsightsStats,
-  onRefresh,
-  onPromotionAccepted,
-  onPromotionCanceled,
-  showPromotion
+  onRefresh
 }: InsightsCatalogProps) => {
   const [page, setPage] = useState(0);
   const previousPage = usePrevious(page);
@@ -87,16 +99,81 @@ export const InsightsCatalog = ({
   const previousIsMarkingAllAsReadInProgress = usePrevious(
     isMarkingAllAsReadInProgress
   );
+  const [showRegistration, setShowRegistration] = useState(false);
+  const [showDiscardConfirmation, setShowDiscardConfirmation] = useState(false);
+  const [dismissalDate, setDismissalDate] = usePersistence<number>(
+    PROMOTION_PERSISTENCE_KEY,
+    "application"
+  );
+  const [promotionCompleted, setPromotionCompleted] = usePersistence<boolean>(
+    PROMOTION_COMPLETED_PERSISTENCE_KEY,
+    "application"
+  );
 
+  const handleRegistrationComplete = () => {
+    sendUserActionTrackingEvent(
+      mainTrackingEvents.PROMOTION_REGISTRATION_SUBMITTED
+    );
+    setPromotionCompleted(true);
+  };
+
+  const handleRegistrationClose = () => {
+    sendUserActionTrackingEvent(
+      mainTrackingEvents.PROMOTION_REGISTRATION_CLOSED_CLICKED
+    );
+    setShowRegistration(false);
+  };
+
+  const handleCancelConfirmationClose = () => {
+    sendUserActionTrackingEvent(
+      mainTrackingEvents.PROMOTION_CANCEL_CONFIRMATION_CLOSE_CLICKED
+    );
+    setShowDiscardConfirmation(false);
+  };
+
+  const handleCancelConfirmationAccept = () => {
+    sendUserActionTrackingEvent(
+      mainTrackingEvents.PROMOTION_CANCEL_CONFIRMATION_ACCEPT_CLICKED
+    );
+    setDismissalDate(Date.now());
+    setShowDiscardConfirmation(false);
+  };
+
+  const handleConfirmationClose = () => {
+    setShowDiscardConfirmation(false);
+  };
+
+  const handlePromotionAccept = () => {
+    sendUserActionTrackingEvent(
+      mainTrackingEvents.PROMOTION_REGISTRATION_OPENED
+    );
+    setShowRegistration(true);
+  };
+
+  const handlePromotionDiscard = () => {
+    sendUserActionTrackingEvent(mainTrackingEvents.PROMOTION_DISCARDED);
+    setShowDiscardConfirmation(true);
+  };
+
+  const isPromotionVisible =
+    insightViewType == "Issues" &&
+    !promotionCompleted &&
+    isPromotionEnabled(dismissalDate);
+  const areInsightsStatsVisible = insightViewType === "Issues";
   const isDismissalViewModeButtonVisible =
-    isDismissalEnabled && (isUndefined(dismissedCount) || dismissedCount > 0); // isUndefined - check for backward compatibility, always show when BE does not return this counter
-
+    insightViewType === "Issues" &&
+    (isUndefined(dismissedCount) || dismissedCount > 0); // isUndefined - check for backward compatibility, always show when BE does not return this counter
   const isMarkingAsReadOptionsEnabled =
-    isMarkingAsReadEnabled &&
+    insightViewType === "Issues" &&
     isNumber(unreadCount) &&
     selectedFilters.length === 1 &&
     selectedFilters[0] === "unread" &&
     unreadCount > 0;
+  const areInsightStatsEnabled = getFeatureFlagValue(
+    config,
+    FeatureFlag.ARE_INSIGHT_STATS_ENABLED
+  );
+  const mainContainer = document.getElementById(MAIN_CONTAINER_ID);
 
   const refreshData = useCallback(() => {
     window.sendMessageToDigma<GetInsightStatsPayload>({
@@ -143,18 +220,6 @@ export const InsightsCatalog = ({
     const newMode =
       mode === ViewMode.All ? ViewMode.OnlyDismissed : ViewMode.All;
     setMode(newMode);
-  };
-
-  const handlePromotionAccept = () => {
-    if (onPromotionAccepted) {
-      onPromotionAccepted();
-    }
-  };
-
-  const handlePromotionDiscard = () => {
-    if (onPromotionCanceled) {
-      onPromotionCanceled();
-    }
   };
 
   const handleReadAllLinkClick = () => {
@@ -232,11 +297,6 @@ export const InsightsCatalog = ({
     selectedFilters
   ]);
 
-  const areInsightStatsEnabled = getFeatureFlagValue(
-    config,
-    FeatureFlag.ARE_INSIGHT_STATS_ENABLED
-  );
-
   return (
     <>
       <s.Toolbar>
@@ -282,7 +342,7 @@ export const InsightsCatalog = ({
         {mode === ViewMode.All ? (
           <>
             {!searchInputValue &&
-              !hideInsightsStats &&
+              areInsightsStatsVisible &&
               (insights.length > 0 || selectedFilters.length > 0) && (
                 <InsightStats
                   criticalCount={config.insightStats?.criticalInsightsCount}
@@ -334,7 +394,7 @@ export const InsightsCatalog = ({
             )}
           </s.ViewModeToolbarRow>
         )}
-        {showPromotion && (
+        {isPromotionVisible && (
           <s.ToolbarRow>
             <PromotionCard
               onAccept={handlePromotionAccept}
@@ -390,6 +450,31 @@ export const InsightsCatalog = ({
           />
         )}
       </s.Footer>
+      {mainContainer &&
+        showDiscardConfirmation &&
+        createPortal(
+          <MainOverlay onClose={handleConfirmationClose} tabIndex={-1}>
+            <CancelConfirmation
+              header={"Discard offer?"}
+              description={
+                "Are you sure you want to miss out on this exclusive, limited-time offer?"
+              }
+              cancelBtnText={"Yes, discard"}
+              onClose={handleCancelConfirmationClose}
+              onCancel={handleCancelConfirmationAccept}
+            />
+          </MainOverlay>,
+          mainContainer
+        )}
+      {mainContainer &&
+        createPortal(
+          <RegistrationCard
+            onClose={handleRegistrationClose}
+            onComplete={handleRegistrationComplete}
+            show={showRegistration}
+          />,
+          mainContainer
+        )}
     </>
   );
 };

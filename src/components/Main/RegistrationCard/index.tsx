@@ -57,7 +57,7 @@ export const RegistrationCard = ({
       onEnter={handleAnimationOnEnter}
       onExited={handleAnimationOnExit}
     >
-      <s.CustomOverlay
+      <s.StyledOverlay
         onClose={handleRegistrationClose}
         tabIndex={-1}
         $isVisible={showOverlay}
@@ -102,7 +102,7 @@ export const RegistrationCard = ({
             Join our Digma channel
           </s.SlackLink>
         </s.Container>
-      </s.CustomOverlay>
+      </s.StyledOverlay>
     </CSSTransition>
   );
 };

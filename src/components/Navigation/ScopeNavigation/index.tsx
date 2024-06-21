@@ -14,7 +14,7 @@ import { ScopeNavigationProps } from "./types";
 /**
  * @deprecated
  */
-export const ScopeNavigation = (props: ScopeNavigationProps) => {
+export const ScopeNavigation = ({ currentTabId }: ScopeNavigationProps) => {
   const [historyManager, setHistoryManager] = useState<HistoryManager>(
     new HistoryManager()
   );
@@ -61,7 +61,7 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
         historyManager.push({
           environment: environment ?? null,
           scope: newScope,
-          tabId: props.currentTabId
+          tabId: currentTabId
         });
       } else {
         const historyStep = historyManager.getCurrent();
@@ -114,7 +114,7 @@ export const ScopeNavigation = (props: ScopeNavigationProps) => {
       dispatcher.removeActionListener(globalActions.SET_SCOPE, handleSetScope);
       dispatcher.removeActionListener(mainActions.SET_VIEWS, handleSetViews);
     };
-  }, [environment, props.currentTabId, historyManager]);
+  }, [environment, currentTabId, historyManager]);
 
   // const handleBackClick = () => {
   //   const currentStep = historyManager.back();

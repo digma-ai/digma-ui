@@ -71,6 +71,23 @@ export interface Scope {
   };
 }
 
+export interface CodeLens {
+  id: string;
+  codeMethod: string;
+  scopeCodeObjectId: string;
+  lensTitle: string;
+  importance: number;
+}
+
+export interface ScopeWithCodeLensContext extends Omit<Scope, "context"> {
+  context: {
+    event: string;
+    payload: {
+      codeLens: CodeLens;
+    };
+  };
+}
+
 export interface InsightsQuery {
   displayName: string | null;
   sortBy: string;
@@ -115,7 +132,7 @@ export interface ConfigContextData {
   isDockerComposeInstalled: boolean;
   userEmail: string;
   userRegistrationEmail: string;
-  environment?: Environment | null;
+  environment?: Environment;
   backendInfo?: BackendInfo;
   environments?: Environment[];
   scope?: Scope;

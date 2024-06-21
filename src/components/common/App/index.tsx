@@ -184,17 +184,18 @@ export const App = ({ theme, children }: AppProps) => {
 
     const handleSetEnvironments = (data: unknown) => {
       if (isObject(data) && Array.isArray(data.environments)) {
-        setConfig((config) => ({
-          ...config,
-          environments: data.environments as Environment[]
-        }));
+        setConfig((config) => {
+          const environments = data.environments as Environment[];
+          const environment = environments.find(
+            (x) => x.id === config.environment?.id
+          );
 
-        if (!data.environments.length) {
-          setConfig((config) => ({
+          return {
             ...config,
-            environment: null
-          }));
-        }
+            environments,
+            environment
+          };
+        });
       }
     };
 
@@ -207,31 +208,19 @@ export const App = ({ theme, children }: AppProps) => {
       }
     };
 
-    // const handleSetEnvironment = (data: unknown) => {
-    //   if (isObject(data) && isEnvironment(data?.environment)) {
-    //     setConfig((config) => ({
-    //       ...config,
-    //       environment: data.environment as Environment
-    //     }));
-    //   }
-    // };
-
     const handleSetScope = (data: unknown) => {
-      const scope = data as Scope;
+      setConfig((config) => {
+        const scope = data as Scope;
+        const environment = scope.environmentId
+          ? config.environments?.find((x) => x.id === scope.environmentId)
+          : config.environment;
 
-      // TODO: fix by getting the details of the environment from config.environments
-
-      setConfig((config) => ({
-        ...config,
-        scope,
-        environment: scope.environmentId
-          ? {
-              id: scope.environmentId,
-              name: scope.environmentId,
-              type: "Private"
-            }
-          : undefined
-      }));
+        return {
+          ...config,
+          scope,
+          environment
+        };
+      });
     };
 
     const handleSetUserInfo = (data: unknown) => {
@@ -327,7 +316,6 @@ export const App = ({ theme, children }: AppProps) => {
       actions.SET_USER_REGISTRATION_EMAIL,
       handleSetUserRegistrationEmail
     );
-    // dispatcher.addActionListener(actions.SET_ENVIRONMENT, handleSetEnvironment);
     dispatcher.addActionListener(
       actions.SET_IS_OBSERVABILITY_ENABLED,
       handleIsObservabilityEnabled
@@ -405,10 +393,6 @@ export const App = ({ theme, children }: AppProps) => {
         actions.SET_USER_REGISTRATION_EMAIL,
         handleSetUserRegistrationEmail
       );
-      // dispatcher.removeActionListener(
-      //   actions.SET_ENVIRONMENT,
-      //   handleSetEnvironment
-      // );
       dispatcher.removeActionListener(
         actions.SET_IS_OBSERVABILITY_ENABLED,
         handleIsObservabilityEnabled

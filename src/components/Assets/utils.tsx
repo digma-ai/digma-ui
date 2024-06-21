@@ -7,21 +7,15 @@ import { UserIcon } from "../common/icons/UserIcon";
 import { IconProps } from "../common/icons/types";
 import { AssetFilterQuery } from "./AssetsFilter/types";
 
+interface AssetTypeInfo {
+  label: string;
+  icon?: MemoExoticComponent<(props: IconProps) => JSX.Element>;
+}
+
 export const getAssetTypeInfo = (
   assetTypeId: string
-):
-  | {
-      label: string;
-      icon?: MemoExoticComponent<(props: IconProps) => JSX.Element>;
-    }
-  | undefined => {
-  const assetTypeInfoMap: Record<
-    string,
-    {
-      label: string;
-      icon?: MemoExoticComponent<(props: IconProps) => JSX.Element>;
-    }
-  > = {
+): AssetTypeInfo | undefined => {
+  const assetTypeInfoMap: Record<string, AssetTypeInfo> = {
     Endpoint: {
       label: "Endpoints",
       icon: EndpointIcon

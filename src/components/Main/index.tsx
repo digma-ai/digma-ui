@@ -1,4 +1,4 @@
-import { useContext, useEffect, useLayoutEffect, useState } from "react";
+import { useContext, useEffect, useLayoutEffect } from "react";
 import {
   Outlet,
   matchPath,
@@ -8,30 +8,37 @@ import {
 } from "react-router-dom";
 import { actions as globalActions } from "../../actions";
 import { dispatcher } from "../../dispatcher";
-import { usePersistence } from "../../hooks/usePersistence";
 import { logger } from "../../logging";
-import { sendTrackingEvent } from "../../utils/actions/sendTrackingEvent";
 import { Navigation } from "../Navigation";
 import { TAB_IDS } from "../Navigation/Tabs/types";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { Scope } from "../common/App/types";
-import { CancelConfirmation } from "../common/CancelConfirmation";
 import { Authentication } from "./Authentication";
-import { RegistrationCard } from "./RegistrationCard";
 import { actions } from "./actions";
 import * as s from "./styles";
-import { trackingEvents } from "./tracking";
 
-const PROMOTION_KEY = "PROMOTION";
-const PROMOTION_COMPLETED_KEY = "PROMOTION_COMPLETED";
-const PROMOTION_DELAY_IN_DAYS = 30;
+export const MAIN_CONTAINER_ID = "mainContainer";
 
-const getDaysDiff = (left: number, right: number) => {
-  const DifferenceInTime = new Date(left).valueOf() - new Date(right).valueOf();
-  const DifferenceInDays = Math.ceil(DifferenceInTime / (1000 * 3600 * 24));
-  return Math.abs(DifferenceInDays);
+const getURLToNavigateOnCodeLensClick = (scope: Scope): string | undefined => {
+  if (!isScopeWithCodeLensContext(scope)) {
+    return;
+  }
+
+  const codeLens = scope.context.payload.codeLens;
+  if (codeLens.scopeCodeObjectId.startsWith("span:")) {
+    return;
+  }
+
+  if (codeLens.importance <= 4) {
+    return `/${TAB_IDS.ISSUES}`;
+  }
+
+  if (codeLens.lensTitle.toLocaleLowerCase().includes("runtime data")) {
+    return `/${TAB_IDS.HIGHLIGHTS}`;
+  }
 };
 
+import { isScopeWithCodeLensContext } from "./typeGuards";
 import { SCOPE_CHANGE_EVENTS } from "./types";
 export const Main = () => {
   const config = useContext(ConfigContext);
@@ -39,71 +46,11 @@ export const Main = () => {
   logger.info("location", location);
   const navigate = useNavigate();
   const [, setSearchParams] = useSearchParams();
-  const [showRegistration, setShowRegistration] = useState(false);
-  const [showDiscardConfirmation, setShowDiscardConfirmation] = useState(false);
-  const [dismissalDate, setDismissalDate] = usePersistence<number>(
-    PROMOTION_KEY,
-    "application"
-  );
-  // TODO: fix promotion
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [promotionCompleted, setPromotionCompleted] = usePersistence<boolean>(
-    PROMOTION_COMPLETED_KEY,
-    "application"
-  );
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const hidePromotion =
-    dismissalDate &&
-    getDaysDiff(dismissalDate, Date.now()) < PROMOTION_DELAY_IN_DAYS;
-
-  const handleRegistrationCompleted = () => {
-    sendTrackingEvent(trackingEvents.PROMOTION_REGISTRATION_SUBMITTED);
-    setPromotionCompleted(true);
-  };
-
-  const handleRegistrationClose = () => {
-    sendTrackingEvent(trackingEvents.PROMOTION_REGISTRATION_CLOSED_CLICKED);
-    setShowRegistration(false);
-  };
-
-  const handleCloseCancelConfirmation = () => {
-    sendTrackingEvent(
-      trackingEvents.PROMOTION_CANCEL_CONFIRMATION_CLOSE_CLICKED
-    );
-    setShowDiscardConfirmation(false);
-  };
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handleShowPromotionOpen = () => {
-    sendTrackingEvent(trackingEvents.PROMOTION_REGISTRATION_OPENED);
-    setShowRegistration(true);
-  };
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handlePromotionDiscard = () => {
-    sendTrackingEvent(trackingEvents.PROMOTION_DISCARDED);
-    setShowDiscardConfirmation(true);
-  };
-
-  const handleAcceptCancelConfirmation = () => {
-    sendTrackingEvent(
-      trackingEvents.PROMOTION_CANCEL_CONFIRMATION_ACCEPT_CLICKED
-    );
-    setDismissalDate(Date.now());
-    setShowDiscardConfirmation(false);
-  };
-
-  const handleConfirmationClosed = () => {
-    setShowDiscardConfirmation(false);
-  };
 
   useEffect(() => {
     const handleSetScope = (data: unknown) => {
       const scope = data as Scope;
 
-      // TODO: Handle all change scope events
-      // https://github.com/digma-ai/digma-ui/issues/851
       if (scope?.context) {
         switch (scope.context.event) {
           case SCOPE_CHANGE_EVENTS.JAEGER_SPAN_LINK_CLICKED as string:
@@ -125,8 +72,14 @@ export const Main = () => {
             if (matchPath(window.location.pathname, TAB_IDS.ASSETS)) {
               break;
             }
-          // eslint-disable-next-line no-fallthrough
-          case SCOPE_CHANGE_EVENTS.IDE_CODE_LENS_CLICKED as string: // TODO: redirect relying on payload
+          // falls through
+          case SCOPE_CHANGE_EVENTS.IDE_CODE_LENS_CLICKED as string: {
+            const url = getURLToNavigateOnCodeLensClick(scope);
+            if (url) {
+              navigate(url);
+            }
+            break;
+          }
           case SCOPE_CHANGE_EVENTS.DASHBOARD_SLOW_QUERIES_WIDGET_ITEM_LINK_CLICKED as string:
           case SCOPE_CHANGE_EVENTS.DASHBOARD_CLIENT_SPANS_PERFORMANCE_IMPACT_WIDGET_ITEM_LINK_CLICKED as string:
           case SCOPE_CHANGE_EVENTS.NAVIGATION_ENVIRONMENT_MENU_ITEM_SELECTED as string:
@@ -172,25 +125,9 @@ export const Main = () => {
   }
 
   return (
-    <s.Container>
+    <s.Container id={MAIN_CONTAINER_ID}>
       <Navigation />
       <s.ContentContainer>{<Outlet />}</s.ContentContainer>
-      {showDiscardConfirmation && (
-        <s.StyledOverlay onClose={handleConfirmationClosed} tabIndex={-1}>
-          <CancelConfirmation
-            header="Discard offer?"
-            description="Are you sure you want to miss out on this exclusive, limited-time offer?"
-            cancelBtnText="Yes, discard"
-            onClose={handleCloseCancelConfirmation}
-            onCancel={handleAcceptCancelConfirmation}
-          />
-        </s.StyledOverlay>
-      )}
-      <RegistrationCard
-        onClose={handleRegistrationClose}
-        onComplete={handleRegistrationCompleted}
-        show={showRegistration}
-      />
     </s.Container>
   );
 };

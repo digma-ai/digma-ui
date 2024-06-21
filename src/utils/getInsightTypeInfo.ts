@@ -20,7 +20,7 @@ export interface InsightTypeInfo {
   icon: MemoExoticComponent<(props: IconProps) => JSX.Element>;
   label: string;
   description?: () => JSX.Element;
-  subTypes?: Record<string, InsightTypeInfo>;
+  subTypes?: Record<string, Omit<InsightTypeInfo, "subTypes">>;
 }
 
 export const getInsightTypeInfo = (
