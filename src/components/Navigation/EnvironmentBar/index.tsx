@@ -84,7 +84,7 @@ export const EnvironmentBar = ({
     setIsMenuOpen(isOpen);
   };
 
-  // TODO: refactor
+  // TODO: refactor this to use only popover
   return !isDisabled && isMenuOpen ? (
     <NewPopover
       content={renderEnvironmentMenu()}

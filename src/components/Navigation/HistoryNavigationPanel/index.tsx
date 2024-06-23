@@ -1,56 +1,62 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { Location, useLocation, useNavigationType } from "react-router-dom";
+import { changeScope } from "../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
+import { SCOPE_CHANGE_EVENTS } from "../../Main/types";
+import { useHistoryNavigation } from "../../Main/useHistoryNavigation";
 import { ChevronIcon } from "../../common/icons/20px/ChevronIcon";
 import { Direction } from "../../common/icons/types";
 import { trackingEvents } from "../tracking";
 import * as s from "./styles";
 
-// TODO: add spanCodeObjectId to the query params
-// TODO: and change the scope on the spanCodeObjectId change
 export const HistoryNavigationPanel = () => {
-  const navigate = useNavigate();
-
-  const [canGoBack, setCanGoBack] = useState(false);
-  const [canGoForward, setCanGoForward] = useState(false);
+  const { goBack, goForward, canGoBack, canGoForward } = useHistoryNavigation();
+  const navigationType = useNavigationType();
+  const location = useLocation() as Location<{
+    idx: number;
+    environmentId?: string;
+    spanCodeObjectId?: string;
+  } | null>;
 
   useEffect(() => {
-    const updateHistoryState = () => {
-      const length = window.history.length;
-      const state = window.history.state as { idx: number } | undefined;
-
-      setCanGoBack(state ? state.idx > 0 : false);
-      setCanGoForward(state ? state.idx < length - 1 : false);
-    };
-
-    updateHistoryState();
-    window.addEventListener("popstate", updateHistoryState);
-
-    return () => {
-      window.removeEventListener("popstate", updateHistoryState);
-    };
-  }, []);
+    // react-router-dom doesn't export Action enum
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
+    if (navigationType === "POP") {
+      const spanCodeObjectId = location.state?.spanCodeObjectId;
+      changeScope({
+        span: spanCodeObjectId
+          ? {
+              spanCodeObjectId
+            }
+          : null,
+        environmentId: location.state?.environmentId,
+        context: {
+          event: SCOPE_CHANGE_EVENTS.HISTORY
+        }
+      });
+    }
+  }, [location.state, navigationType]);
 
   const handleBackButtonClick = () => {
     sendUserActionTrackingEvent(trackingEvents.BACK_BUTTON_CLICKED);
-    navigate(-1);
+    goBack();
   };
 
   const handleForwardButtonClick = () => {
     sendUserActionTrackingEvent(trackingEvents.FORWARD_BUTTON_CLICKED);
-    navigate(1);
+    goForward();
   };
 
   return (
     <s.Container>
-      <s.Button onClick={handleBackButtonClick} disabled={canGoBack}>
+      <s.Button onClick={handleBackButtonClick} disabled={!canGoBack}>
         <ChevronIcon
           direction={Direction.LEFT}
           size={16}
           color={"currentColor"}
         />
       </s.Button>
-      <s.Button onClick={handleForwardButtonClick} disabled={canGoForward}>
+      <s.Button onClick={handleForwardButtonClick} disabled={!canGoForward}>
         <ChevronIcon
           direction={Direction.RIGHT}
           size={16}

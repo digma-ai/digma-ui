@@ -1,12 +1,12 @@
 import { Row, createColumnHelper } from "@tanstack/react-table";
 import { useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { SCALING_ISSUE_DOCUMENTATION_URL } from "../../../constants";
 import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { getDurationString } from "../../../utils/getDurationString";
 import { InsightStatus } from "../../Insights/types";
 import { SCOPE_CHANGE_EVENTS } from "../../Main/types";
+import { useHistoryNavigation } from "../../Main/useHistoryNavigation";
 import { TAB_IDS } from "../../Navigation/Tabs/types";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { CrossCircleIcon } from "../../common/icons/16px/CrossCircleIcon";
@@ -76,7 +76,7 @@ const demoData: EnvironmentData<EnvironmentScalingData>[] = [
 export const Scaling = () => {
   const { data, getData } = useScalingData();
   const config = useContext(ConfigContext);
-  const navigate = useNavigate();
+  const { goTo } = useHistoryNavigation();
 
   useEffect(() => {
     getData();
@@ -169,7 +169,7 @@ export const Scaling = () => {
         trackingEvents.SCALING_CARD_VIEW_ANALYTICS_BUTTON_CLICKED
       );
 
-      navigate(TAB_IDS.ANALYTICS);
+      goTo(`/${TAB_IDS.ANALYTICS}`);
     };
 
     if (!data) {

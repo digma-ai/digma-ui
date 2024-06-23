@@ -1,8 +1,9 @@
 import { useContext, useMemo } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { isString } from "../../../typeGuards/isString";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
+import { useHistoryNavigation } from "../../Main/useHistoryNavigation";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { InsightStats, Scope } from "../../common/App/types";
 import { MagicWandIcon } from "../../common/icons/16px/MagicWandIcon";
@@ -86,7 +87,7 @@ const getIsNewIndicatorVisible = (
 export const Tabs = () => {
   const config = useContext(ConfigContext);
   const location = useLocation();
-  const navigate = useNavigate();
+  const { goTo } = useHistoryNavigation();
 
   const handleTabClick = (tab: TabData) => {
     if (!getIsTabDisabled(tab, config.scope)) {
@@ -95,7 +96,7 @@ export const Tabs = () => {
       });
 
       if (!tab.isSelected) {
-        navigate(tab.id);
+        goTo(`/${tab.id}`);
       }
     }
   };

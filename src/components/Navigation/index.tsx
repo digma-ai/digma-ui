@@ -162,14 +162,13 @@ export const Navigation = () => {
       sendUserActionTrackingEvent(trackingEvents.ENVIRONMENT_SELECTED);
 
       changeScope({
-        span: config.scope?.span ?? null,
-        environmentId: environment.id,
-        context: {
-          event: SCOPE_CHANGE_EVENTS.NAVIGATION_ENVIRONMENT_MENU_ITEM_SELECTED
-        }
+        span: config.scope?.span
+          ? {
+              spanCodeObjectId: config.scope.span.spanCodeObjectId
+            }
+          : null,
+        environmentId: environment.id
       });
-
-      setSelectedEnvironment(environment);
     },
     [config.scope]
   );
@@ -181,13 +180,20 @@ export const Navigation = () => {
       (!config.environment ||
         !config.environments.find((x) => x.id == config.environment?.id))
     ) {
-      handleEnvironmentChange(config.environments[0]);
+      changeScope({
+        span: config.scope?.span
+          ? {
+              spanCodeObjectId: config.scope.span.spanCodeObjectId
+            }
+          : null,
+        environmentId: config.environments[0].id
+      });
     }
 
     if (config.environments && config.environments.length === 0) {
       setSelectedEnvironment(undefined);
     }
-  }, [config.environments, config.environment, handleEnvironmentChange]);
+  }, [config.environments, config.environment, config.scope]);
 
   useEffect(() => {
     setIsAutoFixing(false);

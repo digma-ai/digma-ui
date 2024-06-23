@@ -67,11 +67,12 @@ const changeSelectedEnvironment = (
 
   if (environmentToSelect) {
     changeScope({
-      span: scope?.span ?? null,
-      environmentId: environmentToSelect.id,
-      context: {
-        event: SCOPE_CHANGE_EVENTS.RECENT_ACTIVITY_ENVIRONMENT_TAB_SELECTED
-      }
+      span: scope?.span
+        ? {
+            spanCodeObjectId: scope.span.spanCodeObjectId
+          }
+        : null,
+      environmentId: environmentToSelect.id
     });
   }
 };
@@ -232,10 +233,17 @@ export const RecentActivity = () => {
 
     if (environmentToSelect) {
       setSelectedEnvironment(environmentToSelect);
-    } else {
-      setSelectedEnvironment(environments[0]);
+    } else if (environments.length > 0) {
+      changeScope({
+        span: config.scope?.span
+          ? {
+              spanCodeObjectId: config.scope.span.spanCodeObjectId
+            }
+          : null,
+        environmentId: environments[0].id
+      });
     }
-  }, [config.environment?.id, environments]);
+  }, [config.environment?.id, environments, config.scope?.span]);
 
   useEffect(() => {
     if (

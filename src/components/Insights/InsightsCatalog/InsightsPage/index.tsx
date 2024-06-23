@@ -1,5 +1,4 @@
 import { useContext, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 import { actions as globalActions } from "../../../../actions";
 import { usePersistence } from "../../../../hooks/usePersistence";
 import { usePrevious } from "../../../../hooks/usePrevious";
@@ -10,6 +9,7 @@ import { InsightType } from "../../../../types";
 import { changeScope } from "../../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { SCOPE_CHANGE_EVENTS } from "../../../Main/types";
+import { useHistoryNavigation } from "../../../Main/useHistoryNavigation";
 import { TAB_IDS } from "../../../Navigation/Tabs/types";
 import { ConfigContext } from "../../../common/App/ConfigContext";
 import { EmptyState } from "../../../common/EmptyState";
@@ -507,7 +507,7 @@ export const InsightsPage = ({
     );
   const listRef = useRef<HTMLDivElement>(null);
   const previousPage = usePrevious(page);
-  const navigate = useNavigate();
+  const { goTo } = useHistoryNavigation();
 
   const insightIndexWithJiraHint = getInsightToShowJiraHint(insights);
 
@@ -562,7 +562,7 @@ export const InsightsPage = ({
   };
 
   const handleAnalyticsTabLinkClick = () => {
-    navigate(TAB_IDS.ANALYTICS);
+    goTo(`/${TAB_IDS.ANALYTICS}`);
   };
 
   return (

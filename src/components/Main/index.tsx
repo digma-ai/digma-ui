@@ -1,11 +1,5 @@
 import { useContext, useEffect, useLayoutEffect } from "react";
-import {
-  Outlet,
-  matchPath,
-  useLocation,
-  useNavigate,
-  useSearchParams
-} from "react-router-dom";
+import { Outlet, matchPath, useLocation } from "react-router-dom";
 import { actions as globalActions } from "../../actions";
 import { dispatcher } from "../../dispatcher";
 import { logger } from "../../logging";
@@ -16,6 +10,9 @@ import { Scope } from "../common/App/types";
 import { Authentication } from "./Authentication";
 import { actions } from "./actions";
 import * as s from "./styles";
+import { isScopeWithCodeLensContext } from "./typeGuards";
+import { SCOPE_CHANGE_EVENTS } from "./types";
+import { useHistoryNavigation } from "./useHistoryNavigation";
 
 export const MAIN_CONTAINER_ID = "mainContainer";
 
@@ -38,73 +35,67 @@ const getURLToNavigateOnCodeLensClick = (scope: Scope): string | undefined => {
   }
 };
 
-import { isScopeWithCodeLensContext } from "./typeGuards";
-import { SCOPE_CHANGE_EVENTS } from "./types";
 export const Main = () => {
-  const config = useContext(ConfigContext);
   const location = useLocation();
-  logger.info("location", location);
-  const navigate = useNavigate();
-  const [, setSearchParams] = useSearchParams();
+  const config = useContext(ConfigContext);
+  const { goTo } = useHistoryNavigation();
 
   useEffect(() => {
     const handleSetScope = (data: unknown) => {
       const scope = data as Scope;
+      logger.debug("[SCOPE CHANGE]: ", scope);
+
+      const state = {
+        environmentId: scope.environmentId ?? config.environment?.id,
+        spanCodeObjectId: scope.span?.spanCodeObjectId
+      };
 
       if (scope?.context) {
         switch (scope.context.event) {
+          case SCOPE_CHANGE_EVENTS.HISTORY as string:
+            break;
           case SCOPE_CHANGE_EVENTS.JAEGER_SPAN_LINK_CLICKED as string:
           case SCOPE_CHANGE_EVENTS.ASSETS_ASSET_CARD_TITLE_LINK_CLICKED as string:
-            navigate(`/${TAB_IDS.HIGHLIGHTS}`);
+            goTo(`/${TAB_IDS.HIGHLIGHTS}`, { state });
             break;
           case SCOPE_CHANGE_EVENTS.HIGHLIGHTS_TOP_ISSUES_CARD_ITEM_CLICKED as string:
           case SCOPE_CHANGE_EVENTS.HIGHLIGHTS_SCALING_CARD_ITEM_CLICKED as string:
-            navigate(`/${TAB_IDS.ISSUES}`);
+            goTo(`/${TAB_IDS.ISSUES}`, { state });
             break;
-          case SCOPE_CHANGE_EVENTS.HIGHLIGHTS_PERFORMANCE_CARD_ITEM_CLICKED as string: // TODO: verify
+          case SCOPE_CHANGE_EVENTS.HIGHLIGHTS_PERFORMANCE_CARD_ITEM_CLICKED as string:
           case SCOPE_CHANGE_EVENTS.HIGHLIGHTS_IMPACT_CARD_ITEM_CLICKED as string:
-            navigate(`/${TAB_IDS.ANALYTICS}`);
+            goTo(`/${TAB_IDS.ANALYTICS}`, { state });
             break;
-          case SCOPE_CHANGE_EVENTS.INSIGHTS_INSIGHT_CARD_TITLE_ASSET_LINK_CLICKED as string:
-          case SCOPE_CHANGE_EVENTS.INSIGHTS_INSIGHT_CARD_ASSET_LINK_CLICKED as string:
-            break;
-          case SCOPE_CHANGE_EVENTS.NAVIGATION_HOME_BUTTON_CLICKED as string:
-            if (matchPath(window.location.pathname, TAB_IDS.ASSETS)) {
-              break;
-            }
-          // falls through
           case SCOPE_CHANGE_EVENTS.IDE_CODE_LENS_CLICKED as string: {
             const url = getURLToNavigateOnCodeLensClick(scope);
             if (url) {
-              navigate(url);
+              goTo(url, { state });
             }
             break;
           }
+          case SCOPE_CHANGE_EVENTS.NAVIGATION_HOME_BUTTON_CLICKED as string:
+            if (matchPath(window.location.pathname, TAB_IDS.ASSETS)) {
+              goTo(`/${TAB_IDS.ASSETS}`);
+              break;
+            }
+          // falls through
           case SCOPE_CHANGE_EVENTS.DASHBOARD_SLOW_QUERIES_WIDGET_ITEM_LINK_CLICKED as string:
           case SCOPE_CHANGE_EVENTS.DASHBOARD_CLIENT_SPANS_PERFORMANCE_IMPACT_WIDGET_ITEM_LINK_CLICKED as string:
-          case SCOPE_CHANGE_EVENTS.NAVIGATION_ENVIRONMENT_MENU_ITEM_SELECTED as string:
           case SCOPE_CHANGE_EVENTS.NAVIGATION_CODE_BUTTON_CLICKED as string:
           case SCOPE_CHANGE_EVENTS.HIGHLIGHTS_TOP_ISSUES_CARD_ASSET_LINK_CLICKED as string:
+          case SCOPE_CHANGE_EVENTS.INSIGHTS_INSIGHT_CARD_TITLE_ASSET_LINK_CLICKED as string:
+          case SCOPE_CHANGE_EVENTS.INSIGHTS_INSIGHT_CARD_ASSET_LINK_CLICKED as string:
           case SCOPE_CHANGE_EVENTS.TESTS_TEST_CARD_TITLE_LINK_CLICKED as string:
           case SCOPE_CHANGE_EVENTS.NOTIFICATIONS_NOTIFICATION_CARD_ASSET_LINK_CLICKED as string:
-          case SCOPE_CHANGE_EVENTS.RECENT_ACTIVITY_ENVIRONMENT_TAB_SELECTED as string:
           case SCOPE_CHANGE_EVENTS.RECENT_ACTIVITY_SPAN_LINK_CLICKED as string:
           default:
             scope.issuesInsightsCount > 0
-              ? navigate(`/${TAB_IDS.ISSUES}`)
-              : navigate(`/${TAB_IDS.ANALYTICS}`);
+              ? goTo(`/${TAB_IDS.ISSUES}`, { state })
+              : goTo(`/${TAB_IDS.ANALYTICS}`, { state });
         }
+      } else {
+        goTo(location, { state });
       }
-
-      setSearchParams(
-        {
-          spanCodeObjectId: scope?.span?.spanCodeObjectId ?? "",
-          environmentId: scope?.environmentId ?? ""
-        },
-        {
-          replace: true
-        }
-      );
     };
 
     dispatcher.addActionListener(globalActions.SET_SCOPE, handleSetScope);
@@ -112,7 +103,7 @@ export const Main = () => {
     return () => {
       dispatcher.removeActionListener(globalActions.SET_SCOPE, handleSetScope);
     };
-  }, [navigate, setSearchParams]);
+  }, [goTo, config.environment?.id, location]);
 
   useLayoutEffect(() => {
     window.sendMessageToDigma({

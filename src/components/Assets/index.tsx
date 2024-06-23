@@ -1,9 +1,9 @@
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useDebounce } from "../../hooks/useDebounce";
 import { usePrevious } from "../../hooks/usePrevious";
-import { logger } from "../../logging";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
+import { useHistoryNavigation } from "../Main/useHistoryNavigation";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { EmptyState } from "../common/EmptyState";
 import { SearchInput } from "../common/SearchInput";
@@ -35,8 +35,7 @@ export const Assets = () => {
     useState<DataRefresher | null>(null);
   const [assetListDataRefresher, setAssetListRefresher] =
     useState<DataRefresher | null>(null);
-  const navigate = useNavigate();
-  logger.info("params", params);
+  const { goTo } = useHistoryNavigation();
 
   const isBackendUpgradeMessageVisible = false;
 
@@ -53,7 +52,7 @@ export const Assets = () => {
   }, [config.scope, previousScope]);
 
   const handleGoToAllAssets = () => {
-    navigate(".");
+    goTo(".");
   };
 
   const handleSearchInputChange = (val: string | null) => {
@@ -61,7 +60,7 @@ export const Assets = () => {
   };
 
   const handleAssetTypeSelect = (assetTypeId: string) => {
-    navigate(assetTypeId);
+    goTo(assetTypeId);
   };
 
   const handleApplyFilters = (filters: AssetFilterQuery) => {
