@@ -69,8 +69,8 @@ export const CodeButtonMenu = ({
         <NewButton
           buttonType={"primary"}
           disabled={
-            codeContext.hasMissingDependency ??
-            !codeContext.canInstrumentMethod ??
+            Boolean(codeContext.hasMissingDependency) ||
+            !codeContext.canInstrumentMethod ||
             isAnnotationAdding
           }
           onClick={handleAddObservabilityClick}
