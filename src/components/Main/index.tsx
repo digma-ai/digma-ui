@@ -5,6 +5,7 @@ import { dispatcher } from "../../dispatcher";
 import { logger } from "../../logging";
 import { Navigation } from "../Navigation";
 import { TAB_IDS } from "../Navigation/Tabs/types";
+import { useHistoryTransitioningStore } from "../common/App";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { Scope } from "../common/App/types";
 import { Authentication } from "./Authentication";
@@ -39,6 +40,8 @@ export const Main = () => {
   const location = useLocation();
   const config = useContext(ConfigContext);
   const { goTo } = useHistoryNavigation();
+  const { isHistoryTransitioning, setIsHistoryTransitioning } =
+    useHistoryTransitioningStore();
 
   useEffect(() => {
     const handleSetScope = (data: unknown) => {
@@ -53,6 +56,7 @@ export const Main = () => {
       if (scope?.context) {
         switch (scope.context.event) {
           case SCOPE_CHANGE_EVENTS.HISTORY as string:
+            setIsHistoryTransitioning(false);
             break;
           case SCOPE_CHANGE_EVENTS.JAEGER_SPAN_LINK_CLICKED as string:
           case SCOPE_CHANGE_EVENTS.ASSETS_ASSET_CARD_TITLE_LINK_CLICKED as string:
@@ -103,7 +107,7 @@ export const Main = () => {
     return () => {
       dispatcher.removeActionListener(globalActions.SET_SCOPE, handleSetScope);
     };
-  }, [goTo, config.environment?.id, location]);
+  }, [goTo, config.environment?.id, location, setIsHistoryTransitioning]);
 
   useLayoutEffect(() => {
     window.sendMessageToDigma({
@@ -118,7 +122,13 @@ export const Main = () => {
   return (
     <s.Container id={MAIN_CONTAINER_ID}>
       <Navigation />
-      <s.ContentContainer>{<Outlet />}</s.ContentContainer>
+      <s.ContentContainer>
+        {isHistoryTransitioning ? (
+          <s.EmptyStateContainer>Updating the scope...</s.EmptyStateContainer>
+        ) : (
+          <Outlet />
+        )}
+      </s.ContentContainer>
     </s.Container>
   );
 };

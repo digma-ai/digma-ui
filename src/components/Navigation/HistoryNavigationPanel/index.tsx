@@ -4,6 +4,7 @@ import { changeScope } from "../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { SCOPE_CHANGE_EVENTS } from "../../Main/types";
 import { useHistoryNavigation } from "../../Main/useHistoryNavigation";
+import { useHistoryTransitioningStore } from "../../common/App";
 import { ChevronIcon } from "../../common/icons/20px/ChevronIcon";
 import { Direction } from "../../common/icons/types";
 import { trackingEvents } from "../tracking";
@@ -17,11 +18,13 @@ export const HistoryNavigationPanel = () => {
     environmentId?: string;
     spanCodeObjectId?: string;
   } | null>;
+  const { setIsHistoryTransitioning } = useHistoryTransitioningStore();
 
   useEffect(() => {
     // react-router-dom doesn't export Action enum
     // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
     if (navigationType === "POP") {
+      setIsHistoryTransitioning(true);
       const spanCodeObjectId = location.state?.spanCodeObjectId;
       changeScope({
         span: spanCodeObjectId
@@ -35,7 +38,7 @@ export const HistoryNavigationPanel = () => {
         }
       });
     }
-  }, [location.state, navigationType]);
+  }, [location.state, navigationType, setIsHistoryTransitioning]);
 
   const handleBackButtonClick = () => {
     sendUserActionTrackingEvent(trackingEvents.BACK_BUTTON_CLICKED);

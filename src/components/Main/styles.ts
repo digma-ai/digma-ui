@@ -14,6 +14,13 @@ export const ContentContainer = styled.div`
   overflow: auto;
 `;
 
+export const EmptyStateContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+`;
+
 export const MainOverlay = styled(Overlay)`
   align-items: center;
   z-index: ${LAYERS.GLOBAL_OVERLAY};
