@@ -13,7 +13,7 @@ import { Authentication } from "./Authentication";
 import { actions } from "./actions";
 import * as s from "./styles";
 import { isScopeWithCodeLensContext } from "./typeGuards";
-import { SCOPE_CHANGE_EVENTS } from "./types";
+import { GoToState, SCOPE_CHANGE_EVENTS } from "./types";
 import { useHistoryNavigation } from "./useHistoryNavigation";
 
 export const MAIN_CONTAINER_ID = "mainContainer";
@@ -49,8 +49,8 @@ export const Main = () => {
       const scope = data as Scope;
       logger.debug("[SCOPE CHANGE]: ", scope);
 
-      const state = {
-        environmentId: scope.environmentId ?? config.environment?.id,
+      const state: GoToState = {
+        environmentId: scope.environmentId,
         spanCodeObjectId: scope.span?.spanCodeObjectId
       };
 
@@ -108,7 +108,7 @@ export const Main = () => {
     return () => {
       dispatcher.removeActionListener(globalActions.SET_SCOPE, handleSetScope);
     };
-  }, [goTo, config.environment?.id, location, setIsHistoryTransitioning]);
+  }, [goTo, location, setIsHistoryTransitioning]);
 
   useLayoutEffect(() => {
     window.sendMessageToDigma({

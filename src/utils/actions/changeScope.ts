@@ -4,7 +4,6 @@ interface ChangeScopePayload {
   span: {
     spanCodeObjectId: string;
   } | null;
-  forceNavigation?: boolean;
   environmentId?: string;
   context?: {
     event: string;

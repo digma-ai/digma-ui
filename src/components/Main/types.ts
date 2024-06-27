@@ -56,3 +56,14 @@ export enum SCOPE_CHANGE_EVENTS {
   IDE_CODE_LENS_CLICKED = "IDE/CODE_LENS_CLICKED",
   IDE_NOTIFICATION_LINK_CLICKED = "IDE/NOTIFICATION_LINK_CLICKED"
 }
+
+export interface GoToState {
+  environmentId?: string;
+  spanCodeObjectId?: string;
+}
+
+export interface LocationState {
+  idx: number;
+  environmentId?: string;
+  spanCodeObjectId?: string;
+}
