@@ -60,17 +60,6 @@ export const EnvironmentTypes = () => {
       <s.BottomGradientBackground />
       <s.ContentContainer>
         <s.Header $columnCount={columnCount}>
-          {/* <s.HeaderTextContainer>
-            <s.Title>
-              <DigmaLogoIcon size={16} />
-              <span>Digma Insight Overview</span>
-            </s.Title>
-            <span>
-              The following lists describes some Digma&apos;s capabilities in
-              analyzing observability for multiple environment types, from local
-              dev and test through CI to real world production environment.
-            </span>
-          </s.HeaderTextContainer> */}
           {renderEnvironmentTypesTable()}
         </s.Header>
         <s.EnvironmentsContainer>

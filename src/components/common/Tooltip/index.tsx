@@ -53,6 +53,7 @@ const getArrowStyles = (placement: Placement) => {
   }
 };
 
+/** @deprecated */
 export const Tooltip = ({
   placement = "top",
   isOpen: forcedIsOpen,

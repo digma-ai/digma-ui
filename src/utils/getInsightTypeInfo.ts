@@ -53,25 +53,13 @@ export const getInsightTypeInfo = (
       icon: MeterHighIcon,
       label: "Endpoint High Traffic"
     },
-    // deprecated
-    // safe to delete after 2024-06-05
-    [InsightType.SlowestSpans]: {
-      icon: BottleneckIcon,
-      label: "Bottleneck",
-      description: descriptionProvider.BottleneckDescription
-    },
+
     [InsightType.EndpointBottleneck]: {
       icon: BottleneckIcon,
       label: "Bottleneck",
       description: descriptionProvider.BottleneckDescription
     },
-    // deprecated
-    // safe to delete after 2024-06-05
-    [InsightType.EndpointSpaNPlusOne]: {
-      icon: SQLDatabaseIcon,
-      label: "Suspected N+1",
-      description: descriptionProvider.NPlusOneDescription
-    },
+
     [InsightType.EndpointSpanNPlusOne]: {
       icon: SQLDatabaseIcon,
       label: "Suspected N+1",
@@ -124,12 +112,6 @@ export const getInsightTypeInfo = (
       icon: ClockWithTicksIcon,
       label: "Duration Breakdown"
     },
-    // deprecated
-    // safe to delete after 2024-06-05
-    [InsightType.EndpointDurationSlowdown]: {
-      icon: SnailIcon,
-      label: "Duration Slowdown Source Detected"
-    },
     [InsightType.EndpointSlowdownSource]: {
       icon: SnailIcon,
       label: "Duration Slowdown Source Detected"
@@ -151,13 +133,6 @@ export const getInsightTypeInfo = (
       label: "Session in View Query Detected",
       description: descriptionProvider.EndpointSessionInViewDescription
     },
-    // deprecated
-    // safe to delete after 2024-06-05
-    [InsightType.EndpointChattyApi]: {
-      icon: SQLDatabaseIcon,
-      label: "Excessive API Calls Detected",
-      description: descriptionProvider.ChattyApiDescription
-    },
     [InsightType.EndpointChattyApiV2]: {
       icon: SQLDatabaseIcon,
       label: "Excessive API Calls Detected",
@@ -174,13 +149,6 @@ export const getInsightTypeInfo = (
       description: descriptionProvider.CodeNexusDescription
     },
     [InsightType.SpanQueryOptimization]: {
-      icon: SQLDatabaseIcon,
-      label: "Inefficient Query",
-      description: descriptionProvider.QueryOptimizationDescription
-    },
-    // deprecated
-    // safe to delete after 2024-06-05
-    [InsightType.EndpointQueryOptimization]: {
       icon: SQLDatabaseIcon,
       label: "Inefficient Query",
       description: descriptionProvider.QueryOptimizationDescription

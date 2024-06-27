@@ -82,6 +82,9 @@ export const Tests = () => {
   useState(false);
   const [isRegistrationInProgress, setIsRegistrationInProgress] =
     useState(false);
+  const isRegistrationEnabled = false;
+  const isRegistrationRequired =
+    isRegistrationEnabled && !config.userRegistrationEmail;
   const [selectedEnvironments, setSelectedEnvironments] = useState<string[]>(
     []
   );
@@ -325,18 +328,17 @@ export const Tests = () => {
       {testToOpenTicketPopup && (
         <s.Overlay onKeyDown={handleOverlayKeyDown} tabIndex={-1}>
           <s.PopupContainer>
-            {/* {config.userRegistrationEmail ? ( */}
-            {true ? ( // eslint-disable-line no-constant-condition
-              <TestTicket
-                test={testToOpenTicketPopup}
-                spanContexts={data?.data?.spanContexts ?? []}
-                onClose={closeJiraTicketPopup}
-              />
-            ) : (
+            {isRegistrationRequired ? (
               <RegistrationDialog
                 onSubmit={handleRegistrationSubmit}
                 onClose={handleRegistrationDialogClose}
                 isRegistrationInProgress={isRegistrationInProgress}
+              />
+            ) : (
+              <TestTicket
+                test={testToOpenTicketPopup}
+                spanContexts={data?.data?.spanContexts ?? []}
+                onClose={closeJiraTicketPopup}
               />
             )}
           </s.PopupContainer>

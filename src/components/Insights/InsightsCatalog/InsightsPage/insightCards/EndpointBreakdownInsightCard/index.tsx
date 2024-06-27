@@ -23,6 +23,9 @@ import { EndpointBreakdownInsightCardProps } from "./types";
 
 const PIE_CHART_RADIUS = 50;
 const PIE_CHART_ARC_WIDTH = 4;
+const PIE_CHART_SIZE = PIE_CHART_RADIUS * 2 + PIE_CHART_ARC_WIDTH;
+const STROKE_WIDTH = PIE_CHART_ARC_WIDTH / 2;
+const DEFAULT_PERCENTILE = 0.5;
 
 const getComponentTypeColors = (
   theme: DefaultTheme,
@@ -70,8 +73,6 @@ const getComponentTypeColors = (
       };
   }
 };
-
-const DEFAULT_PERCENTILE = 0.5;
 
 const getComponents = (
   insight: EndpointBreakdownInsight,
@@ -123,9 +124,6 @@ export const EndpointBreakdownInsightCard = ({
   const handlePercentileViewModeChange = (value: number) => {
     setPercentileViewMode(value);
   };
-
-  const PIE_CHART_SIZE = PIE_CHART_RADIUS * 2 + PIE_CHART_ARC_WIDTH;
-  const STROKE_WIDTH = PIE_CHART_ARC_WIDTH / 2;
 
   const renderPieChart = () => (
     <s.ContentContainer>

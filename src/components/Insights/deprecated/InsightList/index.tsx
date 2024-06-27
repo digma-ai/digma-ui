@@ -15,65 +15,27 @@ import { actions } from "../../actions";
 import { Description } from "../../styles";
 import { trackingEvents } from "../../tracking";
 import {
-  isChattyApiEndpointInsight,
   isCodeObjectErrorsInsight,
   isCodeObjectHotSpotInsight,
-  isEndpointBreakdownInsight,
-  isEndpointDurationSlowdownInsight,
-  isEndpointHighNumberOfQueriesInsight,
-  isEndpointHighUsageInsight,
   isEndpointInsight,
-  isEndpointLowUsageInsight,
-  isEndpointNormalUsageInsight,
-  isEndpointQueryOptimizationInsight,
-  isEndpointSlowestSpansInsight,
-  isEndpointSuspectedNPlusOneInsight,
   isFunctionInsight,
-  isSessionInViewEndpointInsight,
-  isSlowEndpointInsight,
-  isSpanDurationBreakdownInsight,
-  isSpanDurationsInsight,
-  isSpanEndpointBottleneckInsight,
   isSpanInsight,
-  isSpanNPlusOneInsight,
-  isSpanNexusInsight,
-  isSpanQueryOptimizationInsight,
-  isSpanScalingBadlyInsight,
   isSpanScalingInsufficientDataInsight,
-  isSpanScalingWellInsight,
-  isSpanUsagesInsight
+  isSpanScalingWellInsight
 } from "../../typeGuards";
 import {
   GenericCodeObjectInsight,
   GenericEndpointInsight,
   GenericSpanInsight,
   InsightGroup,
-  MethodSpan,
-  Trace
+  MethodSpan
 } from "../../types";
 import { InsightCard } from "./InsightCard";
 import { NoObservabilityCard } from "./NoObservabilityCard";
-import { BottleneckInsight } from "./insightCards/BottleneckInsight";
-import { DurationBreakdownInsight } from "./insightCards/DurationBreakdownInsight";
-import { DurationInsight } from "./insightCards/DurationInsight";
-import { DurationSlowdownSourceInsight } from "./insightCards/DurationSlowdownSourceInsight";
-import { EndpointNPlusOneInsight } from "./insightCards/EndpointNPlusOneInsight";
-import { EndpointQueryOptimizationInsight } from "./insightCards/EndpointQueryOptimizationInsight";
 import { ErrorsInsight } from "./insightCards/ErrorsInsight";
-import { ExcessiveAPICallsInsight } from "./insightCards/ExcessiveAPICallsInsight";
-import { HighNumberOfQueriesInsight } from "./insightCards/HighNumberOfQueriesInsight";
-import { NPlusOneInsight } from "./insightCards/NPlusOneInsight";
 import { NoScalingIssueInsight } from "./insightCards/NoScalingIssueInsight";
 import { PerformanceAtScaleInsight } from "./insightCards/PerformanceAtScaleInsight";
-import { QueryOptimizationInsight } from "./insightCards/QueryOptimizationInsight";
-import { RequestBreakdownInsight } from "./insightCards/RequestBreakdownInsight";
-import { ScalingIssueInsight } from "./insightCards/ScalingIssueInsight";
-import { SessionInViewInsight } from "./insightCards/SessionInViewInsight";
-import { SlowEndpointInsight } from "./insightCards/SlowEndpointInsight";
-import { SpanBottleneckInsight } from "./insightCards/SpanBottleneckInsight";
-import { SpanNexusInsight } from "./insightCards/SpanNexusInsight";
-import { TopUsageInsight } from "./insightCards/TopUsageInsight";
-import { TrafficInsight } from "./insightCards/TrafficInsight";
+
 import * as s from "./styles";
 import {
   InsightListProps,
@@ -85,13 +47,13 @@ const getInsightToShowJiraHint = (
   insightGroups: InsightGroup[]
 ): { groupIndex: number; insightIndex: number } | null => {
   const insightsWithJiraButton = [
-    InsightType.EndpointSpaNPlusOne,
+    InsightType.EndpointSpanNPlusOne,
     InsightType.SpaNPlusOne,
     InsightType.SpanEndpointBottleneck,
-    InsightType.SlowestSpans,
+    InsightType.EndpointBottleneck,
     InsightType.SpanQueryOptimization,
     InsightType.EndpointHighNumberOfQueries,
-    InsightType.EndpointQueryOptimization
+    InsightType.EndpointQueryOptimizationV2
   ];
 
   let insightIndex = -1;
@@ -262,63 +224,6 @@ const renderInsightCard = (
     });
   };
 
-  const handleLiveButtonClick = (insightId: string) => {
-    window.sendMessageToDigma({
-      action: actions.OPEN_LIVE_VIEW,
-      payload: {
-        insightId
-      }
-    });
-  };
-
-  const handleTraceButtonClick = (
-    trace: Trace,
-    insightType: InsightType,
-    spanCodeObjectId?: string
-  ) => {
-    window.sendMessageToDigma({
-      action: actions.GO_TO_TRACE,
-      payload: {
-        trace,
-        insightType,
-        spanCodeObjectId
-      }
-    });
-  };
-
-  const handleCompareButtonClick = (
-    traces: [Trace, Trace],
-    insightType: InsightType
-  ) => {
-    window.sendMessageToDigma({
-      action: actions.GO_TO_TRACE_COMPARISON,
-      payload: {
-        traces,
-        insightType
-      }
-    });
-  };
-
-  const handleAssetLinkClick = (
-    spanCodeObjectId: string,
-    insightType: InsightType
-  ) => {
-    sendUserActionTrackingEvent(
-      trackingEvents.INSIGHT_CARD_ASSET_LINK_CLICKED,
-      {
-        insightType
-      }
-    );
-    changeScope({
-      span: {
-        spanCodeObjectId
-      },
-      context: {
-        event: SCOPE_CHANGE_EVENTS.INSIGHTS_INSIGHT_CARD_ASSET_LINK_CLICKED
-      }
-    });
-  };
-
   const handleRecalculate = (insightId: string) => {
     window.sendMessageToDigma<RecalculatePayload>({
       action: actions.RECALCULATE,
@@ -349,106 +254,6 @@ const renderInsightCard = (
     });
   };
 
-  if (isSpanDurationsInsight(insight)) {
-    return (
-      <DurationInsight
-        key={insight.type}
-        insight={insight}
-        onHistogramButtonClick={handleHistogramButtonClick}
-        onLiveButtonClick={handleLiveButtonClick}
-        onCompareButtonClick={handleCompareButtonClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-        onGoToSpan={handleGoToSpan}
-        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
-      />
-    );
-  }
-  if (isSpanDurationBreakdownInsight(insight)) {
-    return (
-      <DurationBreakdownInsight
-        key={insight.type}
-        insight={insight}
-        onAssetLinkClick={handleAssetLinkClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-        onGoToSpan={handleGoToSpan}
-        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
-      />
-    );
-  }
-  if (isSpanUsagesInsight(insight)) {
-    return (
-      <TopUsageInsight
-        key={insight.type}
-        insight={insight}
-        onAssetLinkClick={handleAssetLinkClick}
-        onTraceButtonClick={handleTraceButtonClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-        onGoToSpan={handleGoToSpan}
-        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
-      />
-    );
-  }
-  if (isSpanEndpointBottleneckInsight(insight)) {
-    return (
-      <BottleneckInsight
-        key={insight.type}
-        insight={insight}
-        onAssetLinkClick={handleAssetLinkClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-        onJiraTicketCreate={onJiraTicketCreate}
-        isJiraHintEnabled={isJiraHintEnabled}
-        onGoToSpan={handleGoToSpan}
-        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
-      />
-    );
-  }
-  if (isEndpointSlowestSpansInsight(insight)) {
-    return (
-      <SpanBottleneckInsight
-        key={insight.type}
-        insight={insight}
-        onAssetLinkClick={handleAssetLinkClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-        onJiraTicketCreate={onJiraTicketCreate}
-        isJiraHintEnabled={isJiraHintEnabled}
-        onGoToSpan={handleGoToSpan}
-        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
-      />
-    );
-  }
-  if (isSlowEndpointInsight(insight)) {
-    return (
-      <SlowEndpointInsight
-        key={insight.type}
-        insight={insight}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-        onGoToSpan={handleGoToSpan}
-        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
-      />
-    );
-  }
-  if (
-    isEndpointLowUsageInsight(insight) ||
-    isEndpointNormalUsageInsight(insight) ||
-    isEndpointHighUsageInsight(insight)
-  ) {
-    return (
-      <TrafficInsight
-        key={insight.type}
-        insight={insight}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-        onGoToSpan={handleGoToSpan}
-        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
-      />
-    );
-  }
   if (isCodeObjectErrorsInsight(insight)) {
     return (
       <ErrorsInsight
@@ -463,55 +268,7 @@ const renderInsightCard = (
       />
     );
   }
-  if (isEndpointSuspectedNPlusOneInsight(insight)) {
-    return (
-      <EndpointNPlusOneInsight
-        key={insight.type}
-        insight={insight}
-        onAssetLinkClick={handleAssetLinkClick}
-        onTraceButtonClick={handleTraceButtonClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-        onJiraTicketCreate={onJiraTicketCreate}
-        isJiraHintEnabled={isJiraHintEnabled}
-        onGoToSpan={handleGoToSpan}
-        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
-      />
-    );
-  }
-  if (isSpanNPlusOneInsight(insight)) {
-    return (
-      <NPlusOneInsight
-        key={insight.type}
-        insight={insight}
-        onAssetLinkClick={handleAssetLinkClick}
-        onTraceButtonClick={handleTraceButtonClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-        onJiraTicketCreate={onJiraTicketCreate}
-        isJiraHintEnabled={isJiraHintEnabled}
-        onGoToSpan={handleGoToSpan}
-        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
-      />
-    );
-  }
-  if (isSpanScalingBadlyInsight(insight)) {
-    return (
-      <ScalingIssueInsight
-        key={insight.type}
-        insight={insight}
-        onAssetLinkClick={handleAssetLinkClick}
-        onTraceButtonClick={handleTraceButtonClick}
-        onHistogramButtonClick={handleHistogramButtonClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-        onJiraTicketCreate={onJiraTicketCreate}
-        isJiraHintEnabled={isJiraHintEnabled}
-        onGoToSpan={handleGoToSpan}
-        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
-      />
-    );
-  }
+
   if (isCodeObjectHotSpotInsight(insight)) {
     return (
       <InsightCard
@@ -524,32 +281,6 @@ const renderInsightCard = (
         }
         onRecalculate={handleRecalculate}
         onRefresh={handleRefresh}
-      />
-    );
-  }
-  if (isEndpointDurationSlowdownInsight(insight)) {
-    return (
-      <DurationSlowdownSourceInsight
-        key={insight.type}
-        insight={insight}
-        onAssetLinkClick={handleAssetLinkClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-        onGoToSpan={handleGoToSpan}
-        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
-      />
-    );
-  }
-
-  if (isEndpointBreakdownInsight(insight)) {
-    return (
-      <RequestBreakdownInsight
-        key={insight.type}
-        insight={insight}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-        onGoToSpan={handleGoToSpan}
-        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -581,98 +312,6 @@ const renderInsightCard = (
       />
     );
   }
-
-  if (isSessionInViewEndpointInsight(insight)) {
-    return (
-      <SessionInViewInsight
-        key={insight.type}
-        insight={insight}
-        onAssetLinkClick={handleAssetLinkClick}
-        onTraceButtonClick={handleTraceButtonClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-        onGoToSpan={handleGoToSpan}
-        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
-      />
-    );
-  }
-
-  if (isChattyApiEndpointInsight(insight)) {
-    return (
-      <ExcessiveAPICallsInsight
-        key={insight.type}
-        insight={insight}
-        onAssetLinkClick={handleAssetLinkClick}
-        onTraceButtonClick={handleTraceButtonClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-        onGoToSpan={handleGoToSpan}
-        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
-      />
-    );
-  }
-
-  if (isEndpointHighNumberOfQueriesInsight(insight)) {
-    return (
-      <HighNumberOfQueriesInsight
-        key={insight.type}
-        insight={insight}
-        onTraceButtonClick={handleTraceButtonClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-        onJiraTicketCreate={onJiraTicketCreate}
-        isJiraHintEnabled={isJiraHintEnabled}
-        onGoToSpan={handleGoToSpan}
-        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
-      />
-    );
-  }
-
-  if (isSpanNexusInsight(insight)) {
-    return (
-      <SpanNexusInsight
-        key={insight.type}
-        insight={insight}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-        onGoToSpan={handleGoToSpan}
-        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
-      />
-    );
-  }
-
-  if (isSpanQueryOptimizationInsight(insight)) {
-    return (
-      <QueryOptimizationInsight
-        key={insight.type}
-        insight={insight}
-        onAssetLinkClick={handleAssetLinkClick}
-        onTraceButtonClick={handleTraceButtonClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-        onJiraTicketCreate={onJiraTicketCreate}
-        isJiraHintEnabled={isJiraHintEnabled}
-        onGoToSpan={handleGoToSpan}
-        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
-      />
-    );
-  }
-
-  if (isEndpointQueryOptimizationInsight(insight)) {
-    return (
-      <EndpointQueryOptimizationInsight
-        key={insight.type}
-        insight={insight}
-        onAssetLinkClick={handleAssetLinkClick}
-        onTraceButtonClick={handleTraceButtonClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-        onJiraTicketCreate={onJiraTicketCreate}
-        onGoToSpan={handleGoToSpan}
-        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
-      />
-    );
-  }
 };
 
 const IS_INSIGHT_JIRA_TICKET_HINT_SHOWN_PERSISTENCE_KEY =
@@ -680,7 +319,8 @@ const IS_INSIGHT_JIRA_TICKET_HINT_SHOWN_PERSISTENCE_KEY =
 
 /**
  * @deprecated
- * safe to delete after the migration Errors and Navigation to the Main app
+ * safe to delete after the confirmation that insight grouping by level,
+ *  adding the annotation and autofixing from the sidebar are not needed anymore
  */
 export const InsightList = ({
   assetId,

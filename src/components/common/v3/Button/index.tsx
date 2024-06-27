@@ -3,6 +3,7 @@ import { isString } from "../../../../typeGuards/isString";
 import * as s from "./styles";
 import { ButtonProps } from "./types";
 
+/** @deprecated */
 export const ButtonComponent = (
   {
     isDisabled,
@@ -29,4 +30,6 @@ export const ButtonComponent = (
     {isString(label) && <span>{label}</span>}
   </s.Button>
 );
+
+/** @deprecated */
 export const Button = forwardRef(ButtonComponent);

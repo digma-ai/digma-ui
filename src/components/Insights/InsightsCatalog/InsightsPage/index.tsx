@@ -75,13 +75,13 @@ export const INSIGHTS_PAGE_CONTAINER_ID = "insightsPageContainer";
 
 const getInsightToShowJiraHint = (insights: CodeObjectInsight[]): number => {
   const insightsWithJiraButton = [
-    InsightType.EndpointSpaNPlusOne,
+    InsightType.EndpointSpanNPlusOne,
     InsightType.SpaNPlusOne,
     InsightType.SpanEndpointBottleneck,
-    InsightType.SlowestSpans,
+    InsightType.EndpointBottleneck,
     InsightType.SpanQueryOptimization,
     InsightType.EndpointHighNumberOfQueries,
-    InsightType.EndpointQueryOptimization,
+    InsightType.EndpointQueryOptimizationV2,
     InsightType.SpanScaling
   ];
 
@@ -101,21 +101,6 @@ const renderInsightCard = (
   onRefresh: () => void,
   isMarkAsReadButtonEnabled: boolean
 ): JSX.Element | undefined => {
-  // const handleErrorSelect = (errorId: string, insightType: InsightType) => {
-  //   sendUserActionTrackingEvent(
-  //     trackingEvents.INSIGHT_CARD_ASSET_LINK_CLICKED,
-  //     {
-  //       insightType
-  //     }
-  //   );
-  // };
-
-  // const handleErrorsExpandButtonClick = () => {
-  //   window.sendMessageToDigma({
-  //     action: actions.GO_TO_ERRORS
-  //   });
-  // };
-
   const handleHistogramButtonClick = (
     spanCodeObjectId: string,
     insightType: InsightType,
@@ -151,19 +136,6 @@ const renderInsightCard = (
         trace,
         insightType,
         spanCodeObjectId
-      }
-    });
-  };
-
-  const handleCompareButtonClick = (
-    traces: [Trace, Trace],
-    insightType: InsightType
-  ) => {
-    window.sendMessageToDigma({
-      action: actions.GO_TO_TRACE_COMPARISON,
-      payload: {
-        traces,
-        insightType
       }
     });
   };
@@ -212,7 +184,6 @@ const renderInsightCard = (
         insight={insight}
         onHistogramButtonClick={handleHistogramButtonClick}
         onLiveButtonClick={handleLiveButtonClick}
-        onCompareButtonClick={handleCompareButtonClick}
         onRecalculate={handleRecalculate}
         onRefresh={onRefresh}
         onGoToSpan={handleGoToSpan}

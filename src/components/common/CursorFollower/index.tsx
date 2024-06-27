@@ -13,7 +13,6 @@ export const CursorFollower = ({ children }: CursorFollowerProps) => {
     if (ref.current) {
       const elPosition = ref.current.getBoundingClientRect();
       const diffX = event.pageX - elPosition.left - elPosition.width / 2;
-      // const diffY = event.pageY - elPosition.top - elPosition.height / 2;
       const degree = Math.min(
         Math.abs(diffX / COEFFICIENT),
         MAX_ROTATION_DEGREE

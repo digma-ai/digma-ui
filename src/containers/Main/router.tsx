@@ -19,7 +19,6 @@ export const routes: RouteObject[] = [
   {
     path: "/",
     element: <Main />,
-    // errorElement: <></>,
     children: [
       {
         index: true,

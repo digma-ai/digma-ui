@@ -8,6 +8,7 @@ import { TAB_IDS } from "../Navigation/Tabs/types";
 import { useHistoryTransitioningStore } from "../common/App";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { Scope } from "../common/App/types";
+import { NewCircleLoader } from "../common/NewCircleLoader";
 import { Authentication } from "./Authentication";
 import { actions } from "./actions";
 import * as s from "./styles";
@@ -124,7 +125,9 @@ export const Main = () => {
       <Navigation />
       <s.ContentContainer>
         {isHistoryTransitioning ? (
-          <s.EmptyStateContainer>Updating the scope...</s.EmptyStateContainer>
+          <s.EmptyStateContainer>
+            <NewCircleLoader size={32} />
+          </s.EmptyStateContainer>
         ) : (
           <Outlet />
         )}

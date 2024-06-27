@@ -3,6 +3,7 @@ import { isString } from "../../../typeGuards/isString";
 import * as s from "./styles";
 import { NewButtonProps } from "./types";
 
+/** @deprecated */
 export const NewButtonComponent = (
   {
     buttonType = "primary",
@@ -42,4 +43,5 @@ export const NewButtonComponent = (
   );
 };
 
+/** @deprecated */
 export const NewButton = forwardRef(NewButtonComponent);

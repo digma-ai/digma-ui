@@ -98,16 +98,15 @@ export const JiraTicket = ({
       { ...(tracking?.additionalInfo ?? {}) }
     );
 
-    downloadFile(attachment.url, attachment.fileName).catch(
-      // tmp
-      (e) => {
-        const errorMessageString =
-          e instanceof Error ? `Error: ${e.message}` : "";
-        setDownloadErrorMessage(
-          `Failed to download file.\n${errorMessageString}`
-        );
-      }
-    );
+    downloadFile(attachment.url, attachment.fileName).catch((e) => {
+      const errorMessageString =
+        e instanceof Error ? `Error: ${e.message}` : "";
+      setDownloadErrorMessage(
+        `Failed to download file.${
+          errorMessageString.length > 1 ? `\n${errorMessageString}` : ""
+        }`
+      );
+    });
   };
 
   const errorMessage = description.isLoading ? "" : description.errorMessage;

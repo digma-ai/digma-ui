@@ -12,6 +12,7 @@ import {
 import { usePopoverContext } from "../hooks";
 import { PopoverTriggerProps } from "./types";
 
+/** @deprecated */
 const PopoverTriggerComponent = (
   {
     children,
@@ -53,6 +54,7 @@ const PopoverTriggerComponent = (
   );
 };
 
+/** @deprecated */
 export const PopoverTrigger = forwardRef<
   HTMLElement,
   HTMLProps<HTMLElement> & PopoverTriggerProps

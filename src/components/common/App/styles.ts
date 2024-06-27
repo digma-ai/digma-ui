@@ -52,8 +52,7 @@ export const getCodeFont = (customFont: string) => {
   if (platform === "JetBrains") {
     osFontString = '"JetBrains Mono"';
   } else {
-    // Sources
-    //
+    // Sources:
     // VS Code: https://github.com/microsoft/vscode/blob/main/src/vs/editor/common/config/editorOptions.ts#L4721
     if (os === "Linux") {
       osFontString = '"Droid Sans Mono", "monospace"';

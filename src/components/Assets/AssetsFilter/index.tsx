@@ -409,7 +409,6 @@ export const AssetsFilter = ({ onApply, filters }: AssetsFilterProps) => {
       <div>
         <FilterButton
           title={"Filters"}
-          isMenuOpen={isOpen}
           showCount={true}
           selectedCount={selectedFilters.length}
         />

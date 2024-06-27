@@ -24,6 +24,7 @@ export const entries: AppEntries = {
       "testsRefreshInterval"
     ]
   },
+  // /** @deprecated */
   // notifications: {
   //   entry: path.resolve(__dirname, "./src/containers/Notifications/index.tsx"),
   //   environmentVariables: [

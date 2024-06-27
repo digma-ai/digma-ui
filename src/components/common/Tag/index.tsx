@@ -14,6 +14,7 @@ const renderValue = (value: TagProps["value"]) => {
   }
 };
 
+/** @deprecated */
 export const Tag = ({ title: tagTitle, value, type, icon: Icon }: TagProps) => {
   const title = tagTitle ?? value;
   return (

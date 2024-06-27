@@ -18,37 +18,6 @@ export interface GoToCodeLocationPayload {
   codeDetails: CodeDetails;
 }
 
-// export interface ChangeEnvironmentPayload {
-//   environment: string;
-// }
-
-// export interface ChangeViewPayload {
-//   view: string;
-// }
-
-/**
- * @deprecated
- */
-export interface TabData {
-  title: string;
-  id: string;
-  isSelected: boolean;
-  isDisabled: boolean;
-  hasNewData: boolean;
-  isHidden: boolean;
-  cardName: string;
-  tooltipMessage?: string;
-  path?: string;
-}
-
-/**
- * @deprecated
- */
-export interface SetViewsPayload {
-  views: TabData[];
-  createHistoryStep: boolean;
-}
-
 export interface AutoFixMissingDependencyPayload {
   methodId: string;
 }

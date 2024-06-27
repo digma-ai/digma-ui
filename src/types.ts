@@ -17,9 +17,7 @@ export enum InsightType {
   LowUsage = "LowUsage",
   NormalUsage = "NormalUsage",
   HighUsage = "HighUsage",
-  SlowestSpans = "SlowestSpans", // deprecated - safe to delete after 2024-06-05
   EndpointBottleneck = "EndpointBottleneck",
-  EndpointSpaNPlusOne = "EndpointSpaNPlusOne", // deprecated - safe to delete after 2024-06-05
   EndpointSpanNPlusOne = "EndpointSpanNPlusOne",
   SpanUsages = "SpanUsages",
   SpaNPlusOne = "SpaNPlusOne",
@@ -27,17 +25,14 @@ export enum InsightType {
   SpanDurations = "SpanDurations",
   SpanScaling = "SpanScaling",
   SpanDurationBreakdown = "SpanDurationBreakdown",
-  EndpointDurationSlowdown = "EndpointDurationSlowdown", // deprecated - safe to delete after 2024-06-05
   EndpointBreakdown = "EndpointBreakdown",
   SpanScalingWell = "SpanScalingWell",
   SpanScalingInsufficientData = "SpanScalingInsufficientData",
   EndpointSessionInView = "EndpointSessionInView",
-  EndpointChattyApi = "EndpointChattyApi", // deprecated - safe to delete after 2024-06-05
   EndpointChattyApiV2 = "EndpointChattyApiV2",
   EndpointHighNumberOfQueries = "EndpointHighNumberOfQueries",
   SpanNexus = "SpanNexus",
   SpanQueryOptimization = "SpanQueryOptimization",
-  EndpointQueryOptimization = "EndpointQueryOptimization", // deprecated to delete after 2024-06-05
   EndpointQueryOptimizationV2 = "EndpointQueryOptimizationV2",
   EndpointSlowdownSource = "EndpointSlowdownSource"
 }
@@ -74,25 +69,4 @@ export interface GetInsightStatsPayload {
       spanCodeObjectId: string;
     };
   } | null;
-}
-
-export interface ChangeEnvironmentPayload {
-  environment: string;
-}
-
-export interface ChangeScopePayload {
-  span: {
-    spanCodeObjectId: string;
-  } | null;
-  forceNavigation?: boolean;
-  environmentId?: string;
-  context?: {
-    event: string;
-    payload?: Record<string, unknown>;
-  };
-}
-
-export interface ChangeViewPayload {
-  view: string;
-  isUserAction?: boolean;
 }

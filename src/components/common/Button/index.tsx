@@ -42,4 +42,5 @@ export const ButtonComponent = (
   );
 };
 
+/** @deprecated */
 export const Button = forwardRef(ButtonComponent);

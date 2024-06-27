@@ -31,7 +31,7 @@ const IS_NEW_TIME_LIMIT = 1000 * 60 * 10; // in milliseconds
 
 /**
  * @deprecated
- * safe to delete after the implementation of all the insights with new UI
+ * safe to delete after the implementation of all the deprecated insight cards with new UI
  */
 export const InsightCard = ({
   data,

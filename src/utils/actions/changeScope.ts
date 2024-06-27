@@ -1,5 +1,16 @@
 import { actions } from "../../actions";
-import { ChangeScopePayload } from "../../types";
+
+interface ChangeScopePayload {
+  span: {
+    spanCodeObjectId: string;
+  } | null;
+  forceNavigation?: boolean;
+  environmentId?: string;
+  context?: {
+    event: string;
+    payload?: Record<string, unknown>;
+  };
+}
 
 export const changeScope = (payload: ChangeScopePayload) => {
   window.sendMessageToDigma<ChangeScopePayload>({
