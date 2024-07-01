@@ -57,6 +57,7 @@ const isNavigationNeeded = (
 
   const optionsState = options?.state as HistoryState | undefined;
 
+  // No need to navigate if the location, environment and scope are the same
   return (
     isLocationChanged(to, location.location) ||
     isEnvironmentChanged(optionsState, location.state) ||
@@ -64,8 +65,35 @@ const isNavigationNeeded = (
   );
 };
 
-const isNewHistoryEntryNeeded = (options: NavigateOptions | undefined) => {
-  return !options?.replace;
+const isNewHistoryEntryNeeded = (
+  to: To,
+  options: NavigateOptions | undefined,
+  location: HistoryEntry<HistoryState> | null
+) => {
+  if (!location) {
+    return true;
+  }
+
+  if (options?.replace) {
+    return false;
+  }
+
+  const optionsState = options?.state as HistoryState | undefined;
+
+  // No need to create a new history entry if the are no selected environment yet
+  if (!location?.state?.environmentId) {
+    return false;
+  }
+
+  // No need to create a new history entry if only environment is changed
+  if (
+    !isLocationChanged(to, location?.location) &&
+    !isScopeChanged(optionsState, location?.state)
+  ) {
+    return false;
+  }
+
+  return true;
 };
 
 export const useHistory = () => {
@@ -77,7 +105,7 @@ export const useHistory = () => {
       return;
     }
 
-    const isNewHistoryEntry = isNewHistoryEntryNeeded(options);
+    const isNewHistoryEntry = isNewHistoryEntryNeeded(to, options, location);
 
     const state: HistoryState = {
       environmentId:

@@ -227,23 +227,56 @@ export const RecentActivity = () => {
   }, [previousIsDigmathonCompleted, isDigmathonCompleted]);
 
   useEffect(() => {
+    const currentEnvironmentId = config.environment?.id;
     const environmentToSelect = environments.find(
-      (x) => x.id === config.environment?.id
+      (x) => x.id === currentEnvironmentId
     );
 
     if (environmentToSelect) {
       setSelectedEnvironment(environmentToSelect);
-    } else if (environments.length > 0) {
-      changeScope({
-        span: config.scope?.span
-          ? {
-              spanCodeObjectId: config.scope.span.spanCodeObjectId
-            }
-          : null,
-        environmentId: environments[0].id
-      });
+    } else {
+      setSelectedEnvironment(undefined);
+
+      if (currentEnvironmentId) {
+        if (currentEnvironmentId === environmentToDelete) {
+          setEnvironmentToDelete(undefined);
+        }
+
+        if (currentEnvironmentId === environmentToClearData) {
+          setEnvironmentToClearData(undefined);
+        }
+
+        if (
+          currentEnvironmentId ===
+          environmentInstructionsVisibility.newlyCreatedEnvironmentId
+        ) {
+          setEnvironmentInstructionsVisibility({
+            isOpen: false,
+            keepOpen: false,
+            newlyCreatedEnvironmentId: undefined
+          });
+        }
+      }
+
+      if (environments.length > 0) {
+        changeScope({
+          span: config.scope?.span
+            ? {
+                spanCodeObjectId: config.scope.span.spanCodeObjectId
+              }
+            : null,
+          environmentId: environments[0].id
+        });
+      }
     }
-  }, [config.environment?.id, environments, config.scope?.span]);
+  }, [
+    config.environment?.id,
+    environments,
+    config.scope?.span,
+    environmentInstructionsVisibility.newlyCreatedEnvironmentId,
+    environmentToClearData,
+    environmentToDelete
+  ]);
 
   useEffect(() => {
     if (
