@@ -2,7 +2,11 @@ import React from "react";
 import { useIconProps } from "../hooks";
 import { IconProps } from "../types";
 
-const GroupIconComponent = (props: IconProps & { crossOut: boolean }) => {
+interface GroupIconProps extends IconProps {
+  crossOut: boolean;
+}
+
+const GroupIconComponent = (props: GroupIconProps) => {
   const { size, color } = useIconProps(props);
 
   return (

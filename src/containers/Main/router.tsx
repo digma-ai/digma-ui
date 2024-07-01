@@ -6,14 +6,6 @@ import { Insights } from "../../components/Insights";
 import { Main } from "../../components/Main";
 import { TAB_IDS } from "../../components/Navigation/Tabs/types";
 import { Tests } from "../../components/Tests";
-import { isEnvironment } from "../../typeGuards/isEnvironment";
-
-const historyInitialState = {
-  idx: 0,
-  environmentId: isEnvironment(window.environment)
-    ? window.environment.id
-    : undefined
-};
 
 export const routes: RouteObject[] = [
   {
@@ -22,13 +14,7 @@ export const routes: RouteObject[] = [
     children: [
       {
         index: true,
-        element: (
-          <Navigate
-            replace={true}
-            to={TAB_IDS.ISSUES}
-            state={historyInitialState}
-          />
-        )
+        element: <Navigate replace={true} to={TAB_IDS.ISSUES} />
       },
       { path: TAB_IDS.HIGHLIGHTS, element: <Highlights /> },
       {

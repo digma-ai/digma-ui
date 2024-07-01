@@ -70,9 +70,7 @@ export const RegistrationCard = ({
         >
           <s.CrossButton
             buttonType={"tertiary"}
-            icon={(props) => (
-              <CrossIcon {...props} className="currentColor" size={20} />
-            )}
+            icon={CrossIcon}
             onClick={onClose}
           />
 
@@ -87,7 +85,7 @@ export const RegistrationCard = ({
                   instructions to access the exclusive Digma course on Udemy
                 </s.Description>
                 <s.Register
-                  scope="promotion"
+                  scope={"promotion"}
                   alwaysRenderError={true}
                   onNext={handleOnRegistrationExit}
                 />

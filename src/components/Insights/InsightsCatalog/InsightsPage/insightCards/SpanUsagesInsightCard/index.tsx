@@ -295,7 +295,7 @@ export const SpanUsagesInsightCard = ({
       {insight.sampleTrace && (
         <NewButton
           icon={TraceIcon}
-          label="Trace"
+          label={"Trace"}
           onClick={handleEmptyStateTraceButtonClick}
         />
       )}

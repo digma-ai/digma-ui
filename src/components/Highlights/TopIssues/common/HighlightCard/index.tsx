@@ -7,7 +7,7 @@ import * as s from "./styles";
 import { HighlightCardProps } from "./types";
 
 const getCriticality = (environments: EnvironmentData<GenericMetrics>[]) =>
-  environments.reduce((acc, env) => Math.max(acc, env.criticality), 0);
+  environments.reduce((acc, env) => Math.max(acc, env.insightCriticality), 0);
 
 export const HighlightCard = ({ highlight, content }: HighlightCardProps) => {
   const insightTypeInfo = getInsightTypeInfo(highlight.insightType);

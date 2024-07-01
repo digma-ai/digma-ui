@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useDebounce } from "../../hooks/useDebounce";
 import { usePrevious } from "../../hooks/usePrevious";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
-import { useHistoryNavigation } from "../Main/useHistoryNavigation";
+import { useHistory } from "../Main/useHistory";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { EmptyState } from "../common/EmptyState";
 import { SearchInput } from "../common/SearchInput";
@@ -35,7 +35,7 @@ export const Assets = () => {
     useState<DataRefresher | null>(null);
   const [assetListDataRefresher, setAssetListRefresher] =
     useState<DataRefresher | null>(null);
-  const { goTo } = useHistoryNavigation();
+  const { goTo } = useHistory();
 
   const isBackendUpgradeMessageVisible = false;
 
@@ -52,7 +52,7 @@ export const Assets = () => {
   }, [config.scope, previousScope]);
 
   const handleGoToAllAssets = () => {
-    goTo(".");
+    goTo("..");
   };
 
   const handleSearchInputChange = (val: string | null) => {

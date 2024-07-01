@@ -9,7 +9,6 @@ import { actions as globalActions } from "../../actions";
 import { SLACK_WORKSPACE_URL } from "../../constants";
 import { usePrevious } from "../../hooks/usePrevious";
 import { trackingEvents as globalTrackingEvents } from "../../trackingEvents";
-import { isNumber } from "../../typeGuards/isNumber";
 import { openURLInDefaultBrowser } from "../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 import { ConfigContext } from "../common/App/ConfigContext";
@@ -64,9 +63,7 @@ import {
 } from "./types";
 import { useInsightsData } from "./useInsightsData";
 
-const REFRESH_INTERVAL = isNumber(window.insightsRefreshInterval)
-  ? window.insightsRefreshInterval
-  : 10 * 1000; // in milliseconds
+const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 
 const renderInsightTicket = (
   data: InsightTicketInfo<GenericCodeObjectInsight>,

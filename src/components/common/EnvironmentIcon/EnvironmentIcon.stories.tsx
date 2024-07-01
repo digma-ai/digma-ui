@@ -16,7 +16,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-const environment: Environment = {
+const mockedEnvironment: Environment = {
   name: "Test",
   id: "test",
   type: "Private"
@@ -24,14 +24,14 @@ const environment: Environment = {
 
 export const Private: Story = {
   args: {
-    environment
+    environment: mockedEnvironment
   }
 };
 
 export const Public: Story = {
   args: {
     environment: {
-      ...environment,
+      ...mockedEnvironment,
       type: "Public"
     }
   }

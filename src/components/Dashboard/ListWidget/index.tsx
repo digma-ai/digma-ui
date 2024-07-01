@@ -18,9 +18,7 @@ import { GetDataPayload, ListWidgetData, ListWidgetProps } from "./types";
 
 const PAGE_SIZE = 4;
 const DEFAULT_PERCENTILE = 0.5;
-const REFRESH_INTERVAL = isNumber(window.dashboardRefreshInterval)
-  ? window.dashboardRefreshInterval
-  : 10 * 1000; // in milliseconds
+const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 
 const getErrorMessage = (message?: string) => {
   if (message?.endsWith("response code 400")) {

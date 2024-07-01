@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { useParams } from "react-router-dom";
-import { useHistoryNavigation } from "../Main/useHistoryNavigation";
+import { useHistory } from "../Main/useHistory";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { ErrorDetails } from "./ErrorDetails";
 import { ErrorsList } from "./ErrorsList";
@@ -10,7 +10,7 @@ export const Errors = () => {
   const config = useContext(ConfigContext);
   const spanCodeObjectId = config.scope?.span?.spanCodeObjectId;
   const methodId = config?.scope?.span?.methodId;
-  const { goTo } = useHistoryNavigation();
+  const { goTo } = useHistory();
   const params = useParams();
   const selectedErrorId = params.id;
 
@@ -19,7 +19,7 @@ export const Errors = () => {
   };
 
   const handleGoToAllErrors = () => {
-    goTo(".");
+    goTo("..");
   };
 
   const renderContent = () => {

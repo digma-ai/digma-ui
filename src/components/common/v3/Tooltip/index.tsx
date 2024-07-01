@@ -101,7 +101,10 @@ export const Tooltip = ({
     ]
   });
 
-  const { isMounted, styles: transitionStyles } = useTransitionStyles(context, {
+  const {
+    isMounted
+    //  styles: transitionStyles
+  } = useTransitionStyles(context, {
     common: {
       transitionTimingFunction: "ease-in-out"
     },
@@ -150,7 +153,9 @@ export const Tooltip = ({
               ref={refs.setFloating}
               style={{
                 ...floatingStyles,
-                ...transitionStyles,
+                // TODO: enable appearance animation of tooltip
+                // disabled due to constant re-rendering
+                // ...transitionStyles,
                 display: middlewareData.hide?.referenceHidden
                   ? "none"
                   : "initial",

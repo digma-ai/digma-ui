@@ -4,7 +4,6 @@ import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { isEnvironment } from "../../../typeGuards/isEnvironment";
 import { isNull } from "../../../typeGuards/isNull";
-import { isNumber } from "../../../typeGuards/isNumber";
 import { isString } from "../../../typeGuards/isString";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { AssetFilterQuery } from "../AssetsFilter/types";
@@ -19,9 +18,7 @@ import {
   AssetTypeListProps
 } from "./types";
 
-const REFRESH_INTERVAL = isNumber(window.assetsRefreshInterval)
-  ? window.assetsRefreshInterval
-  : 10 * 1000; // in milliseconds
+const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 
 export const ASSET_TYPE_IDS = [
   "Endpoint",

@@ -3,7 +3,7 @@ import path from "path";
 export const entries: AppEntries = {
   dashboard: {
     entry: path.resolve(__dirname, "./src/containers/Dashboard/index.tsx"),
-    environmentVariables: ["dashboardRefreshInterval", "dashboardEnvironment"]
+    environmentVariables: ["dashboardEnvironment"]
   },
   documentation: {
     entry: path.resolve(__dirname, "./src/containers/Documentation/index.tsx"),
@@ -17,27 +17,18 @@ export const entries: AppEntries = {
     environmentVariables: ["wizardFirstLaunch", "wizardSkipInstallationStep"]
   },
   main: {
-    entry: path.resolve(__dirname, "./src/containers/Main/index.tsx"),
-    environmentVariables: [
-      "assetsRefreshInterval",
-      "insightsRefreshInterval",
-      "testsRefreshInterval"
-    ]
+    entry: path.resolve(__dirname, "./src/containers/Main/index.tsx")
   },
   // /** @deprecated */
   // notifications: {
   //   entry: path.resolve(__dirname, "./src/containers/Notifications/index.tsx"),
   //   environmentVariables: [
-  //     "notificationsRefreshInterval",
   //     "notificationsViewMode"
   //   ]
   // },
   recentActivity: {
     entry: path.resolve(__dirname, "./src/containers/RecentActivity/index.tsx"),
-    environmentVariables: [
-      "recentActivityExpirationLimit",
-      "recentActivityDocumentationURL"
-    ]
+    environmentVariables: ["recentActivityExpirationLimit"]
   },
   troubleshooting: {
     entry: path.resolve(__dirname, "./src/containers/Troubleshooting/index.tsx")

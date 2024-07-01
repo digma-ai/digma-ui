@@ -21,9 +21,7 @@ import {
   NotificationsSetDataPayload
 } from "./types";
 
-const REFRESH_INTERVAL = isNumber(window.notificationsRefreshInterval)
-  ? window.notificationsRefreshInterval
-  : 10 * 1000; // in milliseconds
+const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 
 export const Notifications = ({ viewMode }: NotificationsProps) => {
   const [data, setData] = useState<NotificationsSetDataPayload>();

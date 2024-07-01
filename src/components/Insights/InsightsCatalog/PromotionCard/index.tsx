@@ -36,10 +36,10 @@ export const PromotionCard = ({ onAccept, onDiscard }: PromotionCardProps) => {
     return (
       <s.CollapsedContainer>
         <s.Centered>
-          <img src="/images/promotion/collapsedContainerBackground.svg" />
+          <img src={"/images/promotion/collapsedContainerBackground.svg"} />
         </s.Centered>
         <s.Right>
-          <img src="/images/promotion/collapsedContainerEllipseShadow.svg" />
+          <img src={"/images/promotion/collapsedContainerEllipseShadow.svg"} />
         </s.Right>
         <s.CollapsedHolder>
           <s.PromoText>
@@ -83,9 +83,7 @@ export const PromotionCard = ({ onAccept, onDiscard }: PromotionCardProps) => {
         </s.ContentContainer>
         <s.CrossButton
           buttonType={"tertiary"}
-          icon={(props) => (
-            <CrossIcon {...props} className="currentColor" size={16} />
-          )}
+          icon={CrossIcon}
           onClick={handleCollapseClick}
         />
       </s.Holder>

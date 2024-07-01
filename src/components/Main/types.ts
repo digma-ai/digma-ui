@@ -35,7 +35,8 @@ export interface ViewData {
 }
 
 export enum SCOPE_CHANGE_EVENTS {
-  HISTORY = "HISTORY",
+  HISTORY_NAVIGATED = "HISTORY/NAVIGATED",
+  HISTORY_CLEARED = "HISTORY/CLEARED",
   JAEGER_SPAN_LINK_CLICKED = "JAEGER/SPAN_LINK_CLICKED",
   DASHBOARD_CLIENT_SPANS_PERFORMANCE_IMPACT_WIDGET_ITEM_LINK_CLICKED = "DASHBOARD/CLIENT_SPANS_PERFORMANCE_IMPACT_WIDGET_ITEM_LINK_CLICKED",
   DASHBOARD_SLOW_QUERIES_WIDGET_ITEM_LINK_CLICKED = "DASHBOARD/SLOW_QUERIES_WIDGET_ITEM_LINK_CLICKED",
@@ -57,13 +58,11 @@ export enum SCOPE_CHANGE_EVENTS {
   IDE_NOTIFICATION_LINK_CLICKED = "IDE/NOTIFICATION_LINK_CLICKED"
 }
 
-export interface GoToState {
-  environmentId?: string;
-  spanCodeObjectId?: string;
+export interface ReactRouterLocationState {
+  navigatedWithCustomHistory?: boolean;
 }
 
-export interface LocationState {
-  idx: number;
+export interface HistoryState {
   environmentId?: string;
   spanCodeObjectId?: string;
 }

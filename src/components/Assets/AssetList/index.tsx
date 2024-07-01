@@ -42,9 +42,7 @@ import {
 } from "./types";
 
 const PAGE_SIZE = 10;
-const REFRESH_INTERVAL = isNumber(window.assetsRefreshInterval)
-  ? window.assetsRefreshInterval
-  : 10 * 1000; // in milliseconds
+const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 
 const getAssetTypeIconColor = (theme: DefaultTheme) => {
   switch (theme.mode) {

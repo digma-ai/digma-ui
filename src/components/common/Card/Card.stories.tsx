@@ -22,7 +22,7 @@ const props: CardProps = {
   title: "Title",
   header: "Header content",
   content: "Content",
-  buttons: [<NewButton key={"button"} label="Click me" />]
+  buttons: [<NewButton key={"button"} label={"Click me"} />]
 };
 
 export const Default: Story = {

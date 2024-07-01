@@ -9,7 +9,7 @@ import { InsightType } from "../../../../types";
 import { changeScope } from "../../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { SCOPE_CHANGE_EVENTS } from "../../../Main/types";
-import { useHistoryNavigation } from "../../../Main/useHistoryNavigation";
+import { useHistory } from "../../../Main/useHistory";
 import { TAB_IDS } from "../../../Navigation/Tabs/types";
 import { ConfigContext } from "../../../common/App/ConfigContext";
 import { EmptyState } from "../../../common/EmptyState";
@@ -478,7 +478,7 @@ export const InsightsPage = ({
     );
   const listRef = useRef<HTMLDivElement>(null);
   const previousPage = usePrevious(page);
-  const { goTo } = useHistoryNavigation();
+  const { goTo } = useHistory();
 
   const insightIndexWithJiraHint = getInsightToShowJiraHint(insights);
 

@@ -9,7 +9,6 @@ import {
 import { actions as globalActions } from "../../actions";
 import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
-import { isNumber } from "../../typeGuards/isNumber";
 import { sendTrackingEvent } from "../../utils/actions/sendTrackingEvent";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { MenuItem } from "../common/FilterMenu/types";
@@ -31,9 +30,7 @@ import {
   TestsData
 } from "./types";
 
-const REFRESH_INTERVAL = isNumber(window.testsRefreshInterval)
-  ? window.testsRefreshInterval
-  : 10 * 1000; // in milliseconds
+const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 
 const renderPagination = (
   data: TestsData["paging"],

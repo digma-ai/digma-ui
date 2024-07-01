@@ -39,10 +39,7 @@ const SETTINGS_MISMATCH_ERROR_MESSAGE =
 
 const renderUpdatePluginSettingsMessage = () => {
   const handleLinkClick = () => {
-    openURLInDefaultBrowser(
-      SETUP_PLUGIN_TO_ORGANIZATION_DIGMA_URL,
-      "Installing Digma in your organization"
-    );
+    openURLInDefaultBrowser(SETUP_PLUGIN_TO_ORGANIZATION_DIGMA_URL);
   };
 
   return (
@@ -130,10 +127,7 @@ export const SetupOrgDigmaPanel = ({
   }, []);
 
   const handleInstructionsLinkClick = () => {
-    openURLInDefaultBrowser(
-      INSTALL_DIGMA_IN_ORGANIZATION_DOCUMENTATION_URL,
-      "Installing Digma in your organization"
-    );
+    openURLInDefaultBrowser(INSTALL_DIGMA_IN_ORGANIZATION_DOCUMENTATION_URL);
   };
 
   // const handleCopyInstructionsLinkButtonClick = () => {

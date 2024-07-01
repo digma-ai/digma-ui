@@ -24,42 +24,42 @@ export const mockedEndpointChattyApiV2HighlightData: HighlightData<EndpointChatt
         environmentId: "1",
         environmentName: "Dev",
         insightStatus: InsightStatus.Active,
-        criticality: 0.8,
+        insightCriticality: 0.8,
         metrics: mockedEndpointChattyApiV2Metrics
       },
       {
         environmentId: "2",
         environmentName: "Staging",
         insightStatus: InsightStatus.Active,
-        criticality: 0.8,
+        insightCriticality: 0.8,
         metrics: mockedEndpointChattyApiV2Metrics
       },
       {
         environmentId: "3",
         environmentName: "Production",
         insightStatus: InsightStatus.Active,
-        criticality: 0.8,
+        insightCriticality: 0.8,
         metrics: mockedEndpointChattyApiV2Metrics
       },
       {
         environmentId: "4",
         environmentName: "Env1",
         insightStatus: InsightStatus.Active,
-        criticality: 0.8,
+        insightCriticality: 0.8,
         metrics: mockedEndpointChattyApiV2Metrics
       },
       {
         environmentId: "5",
         environmentName: "Env2",
         insightStatus: InsightStatus.Active,
-        criticality: 0.8,
+        insightCriticality: 0.8,
         metrics: mockedEndpointChattyApiV2Metrics
       },
       {
         environmentId: "6",
         environmentName: "Env3",
         insightStatus: InsightStatus.Active,
-        criticality: 0.8,
+        insightCriticality: 0.8,
         metrics: mockedEndpointChattyApiV2Metrics
       }
     ]
