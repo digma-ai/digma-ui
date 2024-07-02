@@ -1,12 +1,13 @@
 import { Row, createColumnHelper } from "@tanstack/react-table";
 import { useContext, useEffect } from "react";
-import { actions as globalActions } from "../../../actions";
-import { ROUTES, SCALING_ISSUE_DOCUMENTATION_URL } from "../../../constants";
-import { ChangeViewPayload } from "../../../types";
+import { SCALING_ISSUE_DOCUMENTATION_URL } from "../../../constants";
 import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { getDurationString } from "../../../utils/getDurationString";
 import { InsightStatus } from "../../Insights/types";
+import { SCOPE_CHANGE_EVENTS } from "../../Main/types";
+import { useHistory } from "../../Main/useHistory";
+import { TAB_IDS } from "../../Navigation/Tabs/types";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { CrossCircleIcon } from "../../common/icons/16px/CrossCircleIcon";
 import { MeterHighIcon } from "../../common/icons/16px/MeterHighIcon";
@@ -24,10 +25,10 @@ import { TableText } from "../common/TableText";
 import { handleEnvironmentTableRowClick } from "../handleEnvironmentTableRowClick";
 import { trackingEventNames, trackingEvents } from "../tracking";
 import * as s from "./styles";
-import { EnvironmentScalingData } from "./types";
+import { EnvironmentScalingData, ScalingMetrics } from "./types";
 import { useScalingData } from "./useScalingData";
 
-const demoData: EnvironmentData<EnvironmentScalingData>[] = [
+const demoData: EnvironmentScalingData[] = [
   {
     environmentId: "1",
     environmentName: "Dev",
@@ -75,16 +76,24 @@ const demoData: EnvironmentData<EnvironmentScalingData>[] = [
 export const Scaling = () => {
   const { data, getData } = useScalingData();
   const config = useContext(ConfigContext);
+  const { goTo } = useHistory();
 
   useEffect(() => {
     getData();
   }, []);
 
-  const renderScalingCard = (
-    data: EnvironmentData<EnvironmentScalingData>[]
-  ) => {
-    const columnHelper =
-      createColumnHelper<EnvironmentData<EnvironmentScalingData>>();
+  const renderScalingCard = (data: EnvironmentScalingData[]) => {
+    const transformedData: EnvironmentData<ScalingMetrics>[] = data.map(
+      (x) => ({
+        environmentId: x.environmentId,
+        environmentName: x.environmentName,
+        insightStatus: x.insightStatus,
+        insightCriticality: x.criticality,
+        metrics: x.metrics
+      })
+    );
+
+    const columnHelper = createColumnHelper<EnvironmentData<ScalingMetrics>>();
 
     const metricsColumns = [
       columnHelper.accessor((x) => x.metrics.concurrency, {
@@ -111,16 +120,15 @@ export const Scaling = () => {
 
     const columns = addEnvironmentColumns(columnHelper, metricsColumns);
 
-    const handleTableRowClick = (
-      row: Row<EnvironmentData<EnvironmentScalingData>>
-    ) => {
+    const handleTableRowClick = (row: Row<EnvironmentData<ScalingMetrics>>) => {
       sendUserActionTrackingEvent(
         trackingEvents.SCALING_CARD_TABLE_ROW_CLICKED
       );
       handleEnvironmentTableRowClick(
+        config.scope,
         config.environments,
         row.original.environmentId,
-        ROUTES.INSIGHTS
+        SCOPE_CHANGE_EVENTS.HIGHLIGHTS_SCALING_CARD_ITEM_CLICKED
       );
     };
 
@@ -139,9 +147,9 @@ export const Scaling = () => {
           </s.CardTitle>
         }
         content={
-          <Table<EnvironmentData<EnvironmentScalingData>>
+          <Table<EnvironmentData<ScalingMetrics>>
             columns={columns}
-            data={data}
+            data={transformedData}
             onRowClick={handleTableRowClick}
           />
         }
@@ -166,12 +174,7 @@ export const Scaling = () => {
         trackingEvents.SCALING_CARD_VIEW_ANALYTICS_BUTTON_CLICKED
       );
 
-      window.sendMessageToDigma<ChangeViewPayload>({
-        action: globalActions.CHANGE_VIEW,
-        payload: {
-          view: ROUTES.ANALYTICS
-        }
-      });
+      goTo(`/${TAB_IDS.ANALYTICS}`);
     };
 
     if (!data) {

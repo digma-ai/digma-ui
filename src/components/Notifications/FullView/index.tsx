@@ -7,42 +7,52 @@ import { EmptyState } from "../EmptyState";
 import { ErrorEmptyState } from "../ErrorEmptyState";
 import { Header } from "../Header";
 import { NotificationList } from "../NotificationList";
-import { GoToInsightsPayload } from "../types";
+import { CodeObjectData } from "../types";
 import * as s from "./styles";
 import { FullViewProps } from "./types";
 
-export const FullView = (props: FullViewProps) => {
+export const FullView = ({
+  onClose,
+  onFilterChange,
+  onLinkClick,
+  showAll,
+  data,
+  page,
+  pageSize,
+  onPageChange,
+  isLoading,
+  error
+}: FullViewProps) => {
   const handleClose = () => {
-    props.onClose();
+    onClose();
   };
 
   const handleToggleValueChange = (value: ToggleValue) => {
-    props.onFilterChange(value === "all");
+    onFilterChange(value === "all");
   };
 
-  const handleGoToInsights = (codeObjectData: GoToInsightsPayload) => {
-    props.onLinkClick(codeObjectData);
+  const handleLinkClick = (codeObjectData: CodeObjectData) => {
+    onLinkClick(codeObjectData);
   };
 
-  const totalCount =
-    (props.showAll ? props.data?.totalCount : props.data?.unreadCount) ?? 0;
-  const pageStartItemNumber = props.page * props.pageSize + 1;
+  const totalCount = (showAll ? data?.totalCount : data?.unreadCount) ?? 0;
+  const pageStartItemNumber = page * pageSize + 1;
   const pageEndItemNumber = Math.min(
-    pageStartItemNumber + props.pageSize - 1,
+    pageStartItemNumber + pageSize - 1,
     totalCount
   );
 
   useEffect(() => {
-    if (props.data) {
-      const pageCount = Math.ceil(totalCount / props.pageSize) || 1;
-      if (props.page >= pageCount) {
-        props.onPageChange(pageCount - 1);
+    if (data) {
+      const pageCount = Math.ceil(totalCount / pageSize) || 1;
+      if (page >= pageCount) {
+        onPageChange(pageCount - 1);
       }
     }
-  }, [props.data, props.page, props.pageSize, props.onPageChange, totalCount]);
+  }, [data, page, pageSize, onPageChange, totalCount]);
 
   const renderEmptyState = () => {
-    if (props.isLoading) {
+    if (isLoading) {
       return (
         <s.CircleLoaderContainer>
           <CircleLoader size={32} />
@@ -50,11 +60,11 @@ export const FullView = (props: FullViewProps) => {
       );
     }
 
-    return props.error ? (
+    return error ? (
       <ErrorEmptyState />
     ) : (
       <EmptyState
-        title={props.showAll ? "No notifications" : "No unread notifications"}
+        title={showAll ? "No notifications" : "No unread notifications"}
       />
     );
   };
@@ -65,19 +75,19 @@ export const FullView = (props: FullViewProps) => {
       <Toggle
         options={[
           {
-            label: `Unread (${props.data?.unreadCount ?? 0})`,
+            label: `Unread (${data?.unreadCount ?? 0})`,
             value: "unread"
           },
-          { label: `All (${props.data?.totalCount ?? 0})`, value: "all" }
+          { label: `All (${data?.totalCount ?? 0})`, value: "all" }
         ]}
-        value={props.showAll ? "all" : "unread"}
+        value={showAll ? "all" : "unread"}
         onValueChange={handleToggleValueChange}
       />
-      {props.data && totalCount > 0 ? (
+      {data && totalCount > 0 ? (
         <>
           <NotificationList
-            notifications={props.data.notifications}
-            onGoToInsights={handleGoToInsights}
+            notifications={data.notifications}
+            onLinkClick={handleLinkClick}
           />
           <s.Footer>
             <s.ItemsCount>
@@ -89,9 +99,9 @@ export const FullView = (props: FullViewProps) => {
             </s.ItemsCount>
             <Pagination
               itemsCount={totalCount}
-              onPageChange={props.onPageChange}
-              page={props.page}
-              pageSize={props.pageSize}
+              onPageChange={onPageChange}
+              page={page}
+              pageSize={pageSize}
               extendedNavigation={true}
             />
           </s.Footer>

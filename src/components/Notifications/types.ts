@@ -4,7 +4,6 @@ import { InsightScope } from "../Insights/types";
 export type NotificationsViewMode = "popup" | "full";
 
 export interface NotificationsProps {
-  data?: NotificationsSetDataPayload;
   viewMode?: NotificationsViewMode;
 }
 
@@ -42,7 +41,7 @@ export interface Notification {
   isRead: boolean;
 }
 
-export interface GoToInsightsPayload {
+export interface CodeObjectData {
   spanCodeObjectId?: string;
   methodCodeObjectId?: string;
 }

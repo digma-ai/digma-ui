@@ -8,6 +8,7 @@ import {
 import { CSSProperties, ForwardedRef, HTMLProps, forwardRef } from "react";
 import { usePopoverContext } from "../hooks";
 
+/** @deprecated */
 const PopoverContentComponent = (
   { style, width, ...props }: HTMLProps<HTMLDivElement>,
   propRef: ForwardedRef<HTMLDivElement>
@@ -45,6 +46,7 @@ const PopoverContentComponent = (
   );
 };
 
+/** @deprecated */
 export const PopoverContent = forwardRef<
   HTMLDivElement,
   HTMLProps<HTMLDivElement>

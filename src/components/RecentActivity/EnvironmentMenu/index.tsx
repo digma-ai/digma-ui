@@ -1,15 +1,15 @@
 import * as s from "./styles";
 import { EnvironmentMenuProps } from "./types";
 
-export const EnvironmentMenu = (props: EnvironmentMenuProps) => {
+export const EnvironmentMenu = ({ onSelect, items }: EnvironmentMenuProps) => {
   const handleMenuItemClick = (value: string) => {
-    props.onSelect(value);
+    onSelect(value);
   };
 
   return (
     <s.Container>
       <s.List>
-        {props.items.map((item) => (
+        {items.map((item) => (
           <s.ListItem
             key={item.value}
             onClick={() => handleMenuItemClick(item.value)}

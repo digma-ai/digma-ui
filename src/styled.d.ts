@@ -10,7 +10,7 @@ import { ButtonThemeColors } from "./components/common/NewButton/types";
 import { SelectThemeColors } from "./components/common/Select/types";
 import { TagThemeColors } from "./components/common/Tag/types";
 import { TooltipThemeColors } from "./components/common/Tooltip/types";
-import { Mode } from "./globals";
+import { Theme } from "./globals";
 
 export interface ThemeColors {
   icon: {
@@ -161,7 +161,7 @@ export interface Typographies {
 
 declare module "styled-components" {
   export interface DefaultTheme {
-    mode: Mode;
+    mode: Theme;
     mainFont: string;
     codeFont: string;
     colors: ThemeColors;

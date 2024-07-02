@@ -14,7 +14,7 @@ import {
   SetDigmathonProgressDataPayload
 } from "./types";
 
-// const REQUIRED_COUNT_OF_FOUND_ISSUES = 3;
+const REQUIRED_COUNT_OF_FOUND_ISSUES = Infinity; // disabled Digmathon completion
 
 const getData = () => {
   window.sendMessageToDigma({
@@ -40,26 +40,21 @@ const getFoundAt = (
 ) => {
   switch (type) {
     case InsightType.EndpointQueryOptimizationV2:
-    case InsightType.EndpointQueryOptimization:
     case InsightType.SpanQueryOptimization: {
       const filteredInsights = insights.filter((x) =>
         [
           InsightType.EndpointQueryOptimizationV2,
-          InsightType.EndpointQueryOptimization,
           InsightType.SpanQueryOptimization
         ].includes(x.type)
       );
       return getMinFoundDate(filteredInsights);
     }
     case InsightType.EndpointSpanNPlusOne:
-    case InsightType.EndpointSpaNPlusOne:
     case InsightType.SpaNPlusOne: {
       const filteredInsights = insights.filter((x) =>
-        [
-          InsightType.EndpointSpanNPlusOne,
-          InsightType.EndpointSpaNPlusOne,
-          InsightType.SpaNPlusOne
-        ].includes(x.type)
+        [InsightType.EndpointSpanNPlusOne, InsightType.SpaNPlusOne].includes(
+          x.type
+        )
       );
       return getMinFoundDate(filteredInsights);
     }
@@ -82,8 +77,8 @@ export const useDigmathonProgressData = () => {
   const [data, setData] = useState<DigmathonProgressData>();
   const foundIssuesCount =
     data?.insights.filter((x) => isString(x.foundAt)).length ?? 0;
-  const isDigmathonCompleted = false;
-  //   foundIssuesCount >= REQUIRED_COUNT_OF_FOUND_ISSUES;
+  const isDigmathonCompleted =
+    foundIssuesCount >= REQUIRED_COUNT_OF_FOUND_ISSUES;
   const previousIsDigmathonCompleted = usePrevious(isDigmathonCompleted);
   useEffect(() => {
     const handleSetDigmaProgressData = (data: unknown) => {

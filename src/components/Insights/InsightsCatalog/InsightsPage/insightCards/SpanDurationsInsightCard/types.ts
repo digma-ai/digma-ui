@@ -1,4 +1,4 @@
-import { InsightType, SpanDurationsInsight, Trace } from "../../../../types";
+import { InsightType, SpanDurationsInsight } from "../../../../types";
 import { InsightCardCommonProps } from "../common/InsightCard/types";
 
 export interface SpanDurationsInsightCardProps extends InsightCardCommonProps {
@@ -9,10 +9,6 @@ export interface SpanDurationsInsightCardProps extends InsightCardCommonProps {
     displayName: string
   ) => void;
   onLiveButtonClick: (codeObjectId: string) => void;
-  onCompareButtonClick: (
-    traces: [Trace, Trace],
-    insightType: InsightType
-  ) => void;
 }
 
 export interface TickData {

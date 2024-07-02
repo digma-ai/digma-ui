@@ -70,9 +70,14 @@ const checkIfAutoInstallationFlow = (
       config.isDockerComposeInstalled
   );
 
-export const InstallStep = (props: InstallStepProps) => {
+export const InstallStep = ({
+  onGoToNextStep,
+  onGetDigmaDockerDesktopButtonClick,
+  onInstallTabSelect,
+  onSlackLinkClick
+}: InstallStepProps) => {
   const theme = useTheme();
-  // const isConnectionCheckStarted = Boolean(props.connectionCheckStatus);
+  // const isConnectionCheckStarted = Boolean(connectionCheckStatus);
   const [selectedInstallTab, setSelectedInstallTab] = useState(0);
   const [selectedDockerComposeOSTab, setSelectedDockerComposeOSTab] =
     useState(0);
@@ -162,9 +167,9 @@ export const InstallStep = (props: InstallStepProps) => {
       config.digmaStatus?.connection.status &&
       config.digmaStatus.runningDigmaInstances.length === 1
     ) {
-      props.onGoToNextStep(true);
+      onGoToNextStep(true);
     }
-  }, [config, previousDigmaStatus, props.onGoToNextStep]);
+  }, [config, previousDigmaStatus, onGoToNextStep]);
 
   // Move to the next step if connection has been established
   // on the first launch of the plugin
@@ -177,29 +182,29 @@ export const InstallStep = (props: InstallStepProps) => {
       config.digmaStatus.runningDigmaInstances.length === 1 &&
       config.digmaStatus.runningDigmaInstances
     ) {
-      props.onGoToNextStep();
+      onGoToNextStep();
     }
-  }, [config, previousDigmaStatus, props.onGoToNextStep]);
+  }, [config, previousDigmaStatus, onGoToNextStep]);
 
   const handleInstallDigmaButtonClick = () => {
-    props.onGetDigmaDockerDesktopButtonClick();
+    onGetDigmaDockerDesktopButtonClick();
   };
 
   // const handleDigmaIsInstalledButtonClick = () => {
-  //   props.onConnectionStatusCheck();
+  //   onConnectionStatusCheck();
   // };
 
   // const handleRetryButtonClick = () => {
-  //   props.onResetConnectionCheckStatus();
+  //   onResetConnectionCheckStatus();
   // };
 
   const handleConfigureButtonClick = () => {
-    props.onGoToNextStep();
+    onGoToNextStep();
   };
 
   const handleInstallTabSelect = (tabIndex: number) => {
     setSelectedInstallTab(tabIndex);
-    props.onInstallTabSelect(installTabs[tabIndex].title);
+    onInstallTabSelect(installTabs[tabIndex].title);
   };
 
   const handleSelectDockerComposeOSTab = (tabIndex: number) => {
@@ -208,7 +213,7 @@ export const InstallStep = (props: InstallStepProps) => {
 
   const handleSlackLinkClick = () => {
     sendUserActionTrackingEvent(trackingEvents.NO_DOCKER_SLACK_LINK_CLICKED);
-    props.onSlackLinkClick();
+    onSlackLinkClick();
   };
 
   // const handleEngineAutoInstallationFinish = (result: AsyncActionResult) => {
@@ -239,10 +244,10 @@ export const InstallStep = (props: InstallStepProps) => {
 
   // const renderLoader = () => (
   //   <s.LoaderContainer>
-  //     {props.connectionCheckStatus && (
+  //     {connectionCheckStatus && (
   //       <Loader
   //         size={84}
-  //         status={props.connectionCheckStatus}
+  //         status={connectionCheckStatus}
   //         themeKind={getThemeKind(theme)}
   //       />
   //     )}
@@ -292,7 +297,7 @@ export const InstallStep = (props: InstallStepProps) => {
   //     );
   //   }
 
-  //   switch (props.connectionCheckStatus) {
+  //   switch (connectionCheckStatus) {
   //     case "pending":
   //       return <MainButton disabled={true}>Complete</MainButton>;
   //     case "failure":

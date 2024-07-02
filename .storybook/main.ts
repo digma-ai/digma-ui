@@ -8,7 +8,8 @@ const config: StorybookConfig = {
     "@storybook/addon-essentials",
     "@storybook/addon-interactions",
     "@storybook/addon-a11y",
-    "@storybook/addon-designs"
+    "@storybook/addon-designs",
+    "storybook-addon-remix-react-router"
   ],
   framework: {
     name: "@storybook/react-webpack5",

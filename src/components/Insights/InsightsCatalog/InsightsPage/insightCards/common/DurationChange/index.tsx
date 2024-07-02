@@ -69,25 +69,28 @@ export const getDurationDifferenceString = (
   return formatDuration(intervalToDuration({ start: 0, end: diff })); // approximate for the units larger then hours as start and end dates are unknown
 };
 
-export const DurationChange = (props: DurationChangeProps) => {
+export const DurationChange = ({
+  currentDuration,
+  previousDuration,
+  changeTime
+}: DurationChangeProps) => {
   const isChangeMeaningful = isChangeMeaningfulEnough(
-    props.currentDuration,
-    props.previousDuration,
-    props.changeTime
+    currentDuration,
+    previousDuration,
+    changeTime
   );
 
   const direction =
-    props.previousDuration &&
-    props.previousDuration.raw > props.currentDuration.raw
+    previousDuration && previousDuration.raw > currentDuration.raw
       ? Direction.DOWN
       : Direction.UP;
 
   return (
     <>
-      {props.previousDuration && props.changeTime && isChangeMeaningful && (
+      {previousDuration && changeTime && isChangeMeaningful && (
         <Tag
           type={getTagType(direction)}
-          title={formatTimeDistance(props.changeTime)}
+          title={formatTimeDistance(changeTime)}
           content={
             <s.Container>
               <s.ArrowContainer>
@@ -98,10 +101,7 @@ export const DurationChange = (props: DurationChangeProps) => {
                 />
               </s.ArrowContainer>
               <s.Text>
-                {getDurationDifferenceString(
-                  props.previousDuration,
-                  props.currentDuration
-                )}
+                {getDurationDifferenceString(previousDuration, currentDuration)}
               </s.Text>
             </s.Container>
           }

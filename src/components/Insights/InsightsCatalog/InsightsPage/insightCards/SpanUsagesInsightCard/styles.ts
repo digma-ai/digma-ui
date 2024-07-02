@@ -135,7 +135,7 @@ export const EmptyStateContainer = styled.div`
   gap: 8px;
   justify-content: center;
   align-items: center;
-  height: 333px;
+  padding: 24px 0;
 `;
 
 export const EmptyStateTextContainer = styled.div`

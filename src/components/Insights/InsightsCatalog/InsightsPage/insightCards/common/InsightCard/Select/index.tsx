@@ -8,14 +8,20 @@ import { Tooltip } from "../../../../../../../common/v3/Tooltip";
 import * as s from "./styles";
 import { SelectOption, SelectProps } from "./types";
 
-export const Select = (props: SelectProps) => {
+export const Select = ({
+  options,
+  onChange,
+  isDisabled,
+  value,
+  placeholder
+}: SelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const selectedOption = props.options.find((x) => x.value === props.value);
+  const selectedOption = options.find((x) => x.value === value);
 
   const handleOptionClick = (option: SelectOption) => {
     setIsOpen(false);
-    props.onChange(option.value);
+    onChange(option.value);
   };
 
   const handleSelectBarClick = (e: MouseEvent<HTMLElement>) => {
@@ -33,7 +39,7 @@ export const Select = (props: SelectProps) => {
       content={
         <Popup height={"125px"}>
           <MenuList
-            items={props.options.map((x) => ({
+            items={options.map((x) => ({
               id: x.value,
               label: x.label,
               onClick: () => handleOptionClick(x)
@@ -41,13 +47,13 @@ export const Select = (props: SelectProps) => {
           />
         </Popup>
       }
-      onOpenChange={props.isDisabled ? undefined : setIsOpen}
+      onOpenChange={isDisabled ? undefined : setIsOpen}
       useClickInteraction={false}
-      isOpen={props.isDisabled ? false : isOpen}
+      isOpen={isDisabled ? false : isOpen}
       placement={"bottom-start"}
     >
       <s.SelectBar
-        $isDisabled={props.isDisabled}
+        $isDisabled={isDisabled}
         $isOpen={isOpen}
         onClick={handleSelectBarClick}
       >
@@ -62,7 +68,7 @@ export const Select = (props: SelectProps) => {
             )}
           </s.SelectedValue>
         ) : (
-          props.placeholder
+          placeholder
         )}
         <s.Divider />
         <s.ExpandButton>

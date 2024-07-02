@@ -1,6 +1,8 @@
+import { ReactNode } from "react";
+
 export interface PopupProps {
-  children: React.ReactNode;
-  header?: React.ReactNode;
+  children: ReactNode;
+  header?: ReactNode;
   height?: string;
   className?: string;
 }

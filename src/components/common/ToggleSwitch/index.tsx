@@ -1,6 +1,7 @@
 import * as s from "./styles";
 import { ToggleSwitchProps } from "./types";
 
+/** @deprecated */
 export const ToggleSwitch = ({
   size = "small",
   onChange,

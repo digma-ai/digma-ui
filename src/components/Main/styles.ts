@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { LAYERS } from "../common/App/styles";
 import { Overlay } from "../common/Overlay";
 
 export const Container = styled.div`
@@ -13,6 +14,7 @@ export const ContentContainer = styled.div`
   overflow: auto;
 `;
 
-export const StyledOverlay = styled(Overlay)`
+export const MainOverlay = styled(Overlay)`
   align-items: center;
+  z-index: ${LAYERS.GLOBAL_OVERLAY};
 `;

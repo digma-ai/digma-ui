@@ -50,7 +50,7 @@ export const sendMessage = <T>(
   message: DigmaOutgoingMessageData<T>
 ): string | undefined => {
   messagingLogger.debug(
-    `Message to sent: ${message.action}
+    `Message to send: ${message.action}
 Raw message: %O`,
     message
   );

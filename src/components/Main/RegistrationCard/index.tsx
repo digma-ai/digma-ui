@@ -57,7 +57,7 @@ export const RegistrationCard = ({
       onEnter={handleAnimationOnEnter}
       onExited={handleAnimationOnExit}
     >
-      <s.CustomOverlay
+      <s.StyledOverlay
         onClose={handleRegistrationClose}
         tabIndex={-1}
         $isVisible={showOverlay}
@@ -70,9 +70,7 @@ export const RegistrationCard = ({
         >
           <s.CrossButton
             buttonType={"tertiary"}
-            icon={(props) => (
-              <CrossIcon {...props} className="currentColor" size={20} />
-            )}
+            icon={CrossIcon}
             onClick={onClose}
           />
 
@@ -87,7 +85,7 @@ export const RegistrationCard = ({
                   instructions to access the exclusive Digma course on Udemy
                 </s.Description>
                 <s.Register
-                  scope="promotion"
+                  scope={"promotion"}
                   alwaysRenderError={true}
                   onNext={handleOnRegistrationExit}
                 />
@@ -102,7 +100,7 @@ export const RegistrationCard = ({
             Join our Digma channel
           </s.SlackLink>
         </s.Container>
-      </s.CustomOverlay>
+      </s.StyledOverlay>
     </CSSTransition>
   );
 };

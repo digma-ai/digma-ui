@@ -1,9 +1,11 @@
 import { isString } from "../../../typeGuards/isString";
+import { changeScope } from "../../../utils/actions/changeScope";
 import { sendTrackingEvent } from "../../../utils/actions/sendTrackingEvent";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { formatEnvironmentName } from "../../../utils/formatEnvironmentName";
 import { formatTimeDistance } from "../../../utils/formatTimeDistance";
 import { getDurationString } from "../../../utils/getDurationString";
+import { SCOPE_CHANGE_EVENTS } from "../../Main/types";
 import { NewButton } from "../../common/NewButton";
 import { Tag } from "../../common/Tag";
 import { Tooltip } from "../../common/Tooltip";
@@ -18,12 +20,7 @@ import { actions } from "../actions";
 import { trackingEvents } from "../tracking";
 import { Test } from "../types";
 import * as s from "./styles";
-import {
-  GoToSpanOfTestPayload,
-  GoToTracePayload,
-  RunTestPayload,
-  TestCardProps
-} from "./types";
+import { GoToTracePayload, RunTestPayload, TestCardProps } from "./types";
 
 const renderTestResultTag = (test: Test) => {
   switch (test.result) {
@@ -62,28 +59,34 @@ const renderTestResultTag = (test: Test) => {
   }
 };
 
-export const TestCard = (props: TestCardProps) => {
+export const TestCard = ({
+  test,
+  onTicketInfoOpen,
+  spanContexts
+}: TestCardProps) => {
   const handleTestNameClick = () => {
     sendUserActionTrackingEvent(trackingEvents.TEST_NAME_LINK_CLICKED);
-    window.sendMessageToDigma<GoToSpanOfTestPayload>({
-      action: actions.GO_TO_SPAN_OF_TEST,
-      payload: {
-        environment: props.test.environmentId,
-        spanCodeObjectId: props.test.spanInfo.spanCodeObjectId,
-        methodCodeObjectId: props.test.spanInfo.methodCodeObjectId
+
+    changeScope({
+      span: {
+        spanCodeObjectId: test.spanInfo.spanCodeObjectId
+      },
+      environmentId: test.environmentId,
+      context: {
+        event: SCOPE_CHANGE_EVENTS.TESTS_TEST_CARD_TITLE_LINK_CLICKED
       }
     });
   };
 
   const handleTicketButtonClick = () => {
     sendUserActionTrackingEvent(trackingEvents.JIRA_TICKET_INFO_BUTTON_CLICKED);
-    props.onTicketInfoOpen(props.test);
+    onTicketInfoOpen(test);
   };
 
   const handleTraceButtonClick = () => {
     sendUserActionTrackingEvent(trackingEvents.GO_TO_TRACE_BUTTON_CLICKED);
-    const spanContext = props.spanContexts.find((context) => {
-      const id = props.test.contextsSpanCodeObjectIds.find(
+    const spanContext = spanContexts.find((context) => {
+      const id = test.contextsSpanCodeObjectIds.find(
         (x) => x === context.spanCodeObjectId
       );
 
@@ -93,7 +96,7 @@ export const TestCard = (props: TestCardProps) => {
     window.sendMessageToDigma<GoToTracePayload>({
       action: actions.GO_TO_TRACE,
       payload: {
-        traceId: props.test.traceId,
+        traceId: test.traceId,
         displayName: spanContext?.displayName,
         spanCodeObjectId: spanContext?.spanCodeObjectId
       }
@@ -101,27 +104,29 @@ export const TestCard = (props: TestCardProps) => {
   };
 
   const handleRunButtonClick = () => {
-    if (props.test.spanInfo.methodCodeObjectId) {
+    if (test.spanInfo.methodCodeObjectId) {
       sendTrackingEvent(trackingEvents.RUN_TEST_BUTTON_CLICKED);
       window.sendMessageToDigma<RunTestPayload>({
         action: actions.RUN_TEST,
         payload: {
-          methodCodeObjectId: props.test.spanInfo.methodCodeObjectId
+          methodCodeObjectId: test.spanInfo.methodCodeObjectId
         }
       });
     }
   };
 
-  const durationString = getDurationString(props.test.duration);
-  const environmentName = formatEnvironmentName(props.test.environment);
+  const durationString = getDurationString(test.duration);
+  const environmentName = formatEnvironmentName(test.environment);
+  const testName = test.name;
+  const runAt = test.runAt;
 
   return (
     <s.Container>
       <s.Header>
-        {renderTestResultTag(props.test)}
-        <Tooltip title={props.test.name}>
+        {renderTestResultTag(test)}
+        <Tooltip title={testName}>
           <s.TestNameLink onClick={handleTestNameClick}>
-            {props.test.name}
+            {testName}
           </s.TestNameLink>
         </Tooltip>
       </s.Header>
@@ -134,12 +139,12 @@ export const TestCard = (props: TestCardProps) => {
             <s.StatValue>{environmentName}</s.StatValue>
           </s.Stat>
         </Tooltip>
-        <Tooltip title={new Date(props.test.runAt).toString()}>
+        <Tooltip title={new Date(runAt).toString()}>
           <s.Stat>
             <s.IconContainer>
               <TimerIcon size={16} />
             </s.IconContainer>
-            <s.StatValue>{formatTimeDistance(props.test.runAt)}</s.StatValue>
+            <s.StatValue>{formatTimeDistance(runAt)}</s.StatValue>
           </s.Stat>
         </Tooltip>
         <Tooltip title={durationString}>
@@ -154,7 +159,7 @@ export const TestCard = (props: TestCardProps) => {
               onClick={handleTicketButtonClick}
               icon={JiraLogoIcon}
               buttonType={"tertiary"}
-              disabled={props.test.result === "success"}
+              disabled={test.result === "success"}
             />
           </Tooltip>
           <Tooltip title={"Open Trace"}>
@@ -170,7 +175,7 @@ export const TestCard = (props: TestCardProps) => {
             buttonType={"secondary"}
             onClick={handleRunButtonClick}
             size={"large"}
-            disabled={!props.test.spanInfo.methodCodeObjectId}
+            disabled={!test.spanInfo.methodCodeObjectId}
           />
         </s.ButtonsContainer>
       </s.Content>

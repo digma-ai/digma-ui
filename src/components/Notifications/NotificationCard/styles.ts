@@ -30,6 +30,15 @@ export const Title = styled.span`
 
 export const IconContainer = styled.div`
   flex-shrink: 0;
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#494b57";
+      case "dark":
+      case "dark-jetbrains":
+        return "#dfe1e5";
+    }
+  }};
 `;
 
 export const TimeDistance = styled.span`

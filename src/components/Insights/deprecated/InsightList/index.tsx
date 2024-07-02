@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { DefaultTheme, useTheme } from "styled-components";
-import { actions as globalActions } from "../../../../actions";
 import { usePersistence } from "../../../../hooks/usePersistence";
 import { isUndefined } from "../../../../typeGuards/isUndefined";
-import { ChangeScopePayload, InsightType } from "../../../../types";
+import { InsightType } from "../../../../types";
+import { changeScope } from "../../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { getInsightTypeInfo } from "../../../../utils/getInsightTypeInfo";
 import { getInsightTypeOrderPriority } from "../../../../utils/getInsightTypeOrderPriority";
+import { SCOPE_CHANGE_EVENTS } from "../../../Main/types";
 import { Card } from "../../../common/Card";
 import { Tooltip } from "../../../common/Tooltip";
 import { EndpointIcon } from "../../../common/icons/EndpointIcon";
@@ -15,65 +15,27 @@ import { actions } from "../../actions";
 import { Description } from "../../styles";
 import { trackingEvents } from "../../tracking";
 import {
-  isChattyApiEndpointInsight,
   isCodeObjectErrorsInsight,
   isCodeObjectHotSpotInsight,
-  isEndpointBreakdownInsight,
-  isEndpointDurationSlowdownInsight,
-  isEndpointHighNumberOfQueriesInsight,
-  isEndpointHighUsageInsight,
   isEndpointInsight,
-  isEndpointLowUsageInsight,
-  isEndpointNormalUsageInsight,
-  isEndpointQueryOptimizationInsight,
-  isEndpointSlowestSpansInsight,
-  isEndpointSuspectedNPlusOneInsight,
   isFunctionInsight,
-  isSessionInViewEndpointInsight,
-  isSlowEndpointInsight,
-  isSpanDurationBreakdownInsight,
-  isSpanDurationsInsight,
-  isSpanEndpointBottleneckInsight,
   isSpanInsight,
-  isSpanNPlusOneInsight,
-  isSpanNexusInsight,
-  isSpanQueryOptimizationInsight,
-  isSpanScalingBadlyInsight,
   isSpanScalingInsufficientDataInsight,
-  isSpanScalingWellInsight,
-  isSpanUsagesInsight
+  isSpanScalingWellInsight
 } from "../../typeGuards";
 import {
   GenericCodeObjectInsight,
   GenericEndpointInsight,
   GenericSpanInsight,
   InsightGroup,
-  MethodSpan,
-  Trace
+  MethodSpan
 } from "../../types";
 import { InsightCard } from "./InsightCard";
 import { NoObservabilityCard } from "./NoObservabilityCard";
-import { BottleneckInsight } from "./insightCards/BottleneckInsight";
-import { DurationBreakdownInsight } from "./insightCards/DurationBreakdownInsight";
-import { DurationInsight } from "./insightCards/DurationInsight";
-import { DurationSlowdownSourceInsight } from "./insightCards/DurationSlowdownSourceInsight";
-import { EndpointNPlusOneInsight } from "./insightCards/EndpointNPlusOneInsight";
-import { EndpointQueryOptimizationInsight } from "./insightCards/EndpointQueryOptimizationInsight";
 import { ErrorsInsight } from "./insightCards/ErrorsInsight";
-import { ExcessiveAPICallsInsight } from "./insightCards/ExcessiveAPICallsInsight";
-import { HighNumberOfQueriesInsight } from "./insightCards/HighNumberOfQueriesInsight";
-import { NPlusOneInsight } from "./insightCards/NPlusOneInsight";
 import { NoScalingIssueInsight } from "./insightCards/NoScalingIssueInsight";
 import { PerformanceAtScaleInsight } from "./insightCards/PerformanceAtScaleInsight";
-import { QueryOptimizationInsight } from "./insightCards/QueryOptimizationInsight";
-import { RequestBreakdownInsight } from "./insightCards/RequestBreakdownInsight";
-import { ScalingIssueInsight } from "./insightCards/ScalingIssueInsight";
-import { SessionInViewInsight } from "./insightCards/SessionInViewInsight";
-import { SlowEndpointInsight } from "./insightCards/SlowEndpointInsight";
-import { SpanBottleneckInsight } from "./insightCards/SpanBottleneckInsight";
-import { SpanNexusInsight } from "./insightCards/SpanNexusInsight";
-import { TopUsageInsight } from "./insightCards/TopUsageInsight";
-import { TrafficInsight } from "./insightCards/TrafficInsight";
+
 import * as s from "./styles";
 import {
   InsightListProps,
@@ -85,13 +47,13 @@ const getInsightToShowJiraHint = (
   insightGroups: InsightGroup[]
 ): { groupIndex: number; insightIndex: number } | null => {
   const insightsWithJiraButton = [
-    InsightType.EndpointSpaNPlusOne,
+    InsightType.EndpointSpanNPlusOne,
     InsightType.SpaNPlusOne,
     InsightType.SpanEndpointBottleneck,
-    InsightType.SlowestSpans,
+    InsightType.EndpointBottleneck,
     InsightType.SpanQueryOptimization,
     InsightType.EndpointHighNumberOfQueries,
-    InsightType.EndpointQueryOptimization
+    InsightType.EndpointQueryOptimizationV2
   ];
 
   let insightIndex = -1;
@@ -215,16 +177,6 @@ const groupInsights = (
   ];
 };
 
-const getInsightGroupIconColor = (theme: DefaultTheme) => {
-  switch (theme.mode) {
-    case "light":
-      return "#7891d0";
-    case "dark":
-    case "dark-jetbrains":
-      return "#b4b8bf";
-  }
-};
-
 const renderInsightCard = (
   insight: GenericCodeObjectInsight,
   onJiraTicketCreate: (
@@ -272,61 +224,6 @@ const renderInsightCard = (
     });
   };
 
-  const handleLiveButtonClick = (insightId: string) => {
-    window.sendMessageToDigma({
-      action: actions.OPEN_LIVE_VIEW,
-      payload: {
-        insightId
-      }
-    });
-  };
-
-  const handleTraceButtonClick = (
-    trace: Trace,
-    insightType: InsightType,
-    spanCodeObjectId?: string
-  ) => {
-    window.sendMessageToDigma({
-      action: actions.GO_TO_TRACE,
-      payload: {
-        trace,
-        insightType,
-        spanCodeObjectId
-      }
-    });
-  };
-
-  const handleCompareButtonClick = (
-    traces: [Trace, Trace],
-    insightType: InsightType
-  ) => {
-    window.sendMessageToDigma({
-      action: actions.GO_TO_TRACE_COMPARISON,
-      payload: {
-        traces,
-        insightType
-      }
-    });
-  };
-
-  const handleAssetLinkClick = (
-    spanCodeObjectId: string,
-    insightType: InsightType
-  ) => {
-    sendUserActionTrackingEvent(
-      trackingEvents.INSIGHT_CARD_ASSET_LINK_CLICKED,
-      {
-        insightType
-      }
-    );
-    window.sendMessageToDigma({
-      action: actions.GO_TO_ASSET,
-      payload: {
-        spanCodeObjectId
-      }
-    });
-  };
-
   const handleRecalculate = (insightId: string) => {
     window.sendMessageToDigma<RecalculatePayload>({
       action: actions.RECALCULATE,
@@ -346,116 +243,17 @@ const renderInsightCard = (
   };
 
   const handleGoToSpan = (spanCodeObjectId: string) => {
-    window.sendMessageToDigma<ChangeScopePayload>({
-      action: globalActions.CHANGE_SCOPE,
-      payload: {
-        span: {
-          spanCodeObjectId
-        }
+    changeScope({
+      span: {
+        spanCodeObjectId
+      },
+      context: {
+        event:
+          SCOPE_CHANGE_EVENTS.INSIGHTS_INSIGHT_CARD_TITLE_ASSET_LINK_CLICKED
       }
     });
   };
 
-  if (isSpanDurationsInsight(insight)) {
-    return (
-      <DurationInsight
-        key={insight.type}
-        insight={insight}
-        onHistogramButtonClick={handleHistogramButtonClick}
-        onLiveButtonClick={handleLiveButtonClick}
-        onCompareButtonClick={handleCompareButtonClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-        onGoToSpan={handleGoToSpan}
-        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
-      />
-    );
-  }
-  if (isSpanDurationBreakdownInsight(insight)) {
-    return (
-      <DurationBreakdownInsight
-        key={insight.type}
-        insight={insight}
-        onAssetLinkClick={handleAssetLinkClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-        onGoToSpan={handleGoToSpan}
-        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
-      />
-    );
-  }
-  if (isSpanUsagesInsight(insight)) {
-    return (
-      <TopUsageInsight
-        key={insight.type}
-        insight={insight}
-        onAssetLinkClick={handleAssetLinkClick}
-        onTraceButtonClick={handleTraceButtonClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-        onGoToSpan={handleGoToSpan}
-        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
-      />
-    );
-  }
-  if (isSpanEndpointBottleneckInsight(insight)) {
-    return (
-      <BottleneckInsight
-        key={insight.type}
-        insight={insight}
-        onAssetLinkClick={handleAssetLinkClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-        onJiraTicketCreate={onJiraTicketCreate}
-        isJiraHintEnabled={isJiraHintEnabled}
-        onGoToSpan={handleGoToSpan}
-        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
-      />
-    );
-  }
-  if (isEndpointSlowestSpansInsight(insight)) {
-    return (
-      <SpanBottleneckInsight
-        key={insight.type}
-        insight={insight}
-        onAssetLinkClick={handleAssetLinkClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-        onJiraTicketCreate={onJiraTicketCreate}
-        isJiraHintEnabled={isJiraHintEnabled}
-        onGoToSpan={handleGoToSpan}
-        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
-      />
-    );
-  }
-  if (isSlowEndpointInsight(insight)) {
-    return (
-      <SlowEndpointInsight
-        key={insight.type}
-        insight={insight}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-        onGoToSpan={handleGoToSpan}
-        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
-      />
-    );
-  }
-  if (
-    isEndpointLowUsageInsight(insight) ||
-    isEndpointNormalUsageInsight(insight) ||
-    isEndpointHighUsageInsight(insight)
-  ) {
-    return (
-      <TrafficInsight
-        key={insight.type}
-        insight={insight}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-        onGoToSpan={handleGoToSpan}
-        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
-      />
-    );
-  }
   if (isCodeObjectErrorsInsight(insight)) {
     return (
       <ErrorsInsight
@@ -470,55 +268,7 @@ const renderInsightCard = (
       />
     );
   }
-  if (isEndpointSuspectedNPlusOneInsight(insight)) {
-    return (
-      <EndpointNPlusOneInsight
-        key={insight.type}
-        insight={insight}
-        onAssetLinkClick={handleAssetLinkClick}
-        onTraceButtonClick={handleTraceButtonClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-        onJiraTicketCreate={onJiraTicketCreate}
-        isJiraHintEnabled={isJiraHintEnabled}
-        onGoToSpan={handleGoToSpan}
-        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
-      />
-    );
-  }
-  if (isSpanNPlusOneInsight(insight)) {
-    return (
-      <NPlusOneInsight
-        key={insight.type}
-        insight={insight}
-        onAssetLinkClick={handleAssetLinkClick}
-        onTraceButtonClick={handleTraceButtonClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-        onJiraTicketCreate={onJiraTicketCreate}
-        isJiraHintEnabled={isJiraHintEnabled}
-        onGoToSpan={handleGoToSpan}
-        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
-      />
-    );
-  }
-  if (isSpanScalingBadlyInsight(insight)) {
-    return (
-      <ScalingIssueInsight
-        key={insight.type}
-        insight={insight}
-        onAssetLinkClick={handleAssetLinkClick}
-        onTraceButtonClick={handleTraceButtonClick}
-        onHistogramButtonClick={handleHistogramButtonClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-        onJiraTicketCreate={onJiraTicketCreate}
-        isJiraHintEnabled={isJiraHintEnabled}
-        onGoToSpan={handleGoToSpan}
-        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
-      />
-    );
-  }
+
   if (isCodeObjectHotSpotInsight(insight)) {
     return (
       <InsightCard
@@ -531,32 +281,6 @@ const renderInsightCard = (
         }
         onRecalculate={handleRecalculate}
         onRefresh={handleRefresh}
-      />
-    );
-  }
-  if (isEndpointDurationSlowdownInsight(insight)) {
-    return (
-      <DurationSlowdownSourceInsight
-        key={insight.type}
-        insight={insight}
-        onAssetLinkClick={handleAssetLinkClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-        onGoToSpan={handleGoToSpan}
-        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
-      />
-    );
-  }
-
-  if (isEndpointBreakdownInsight(insight)) {
-    return (
-      <RequestBreakdownInsight
-        key={insight.type}
-        insight={insight}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-        onGoToSpan={handleGoToSpan}
-        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       />
     );
   }
@@ -588,98 +312,6 @@ const renderInsightCard = (
       />
     );
   }
-
-  if (isSessionInViewEndpointInsight(insight)) {
-    return (
-      <SessionInViewInsight
-        key={insight.type}
-        insight={insight}
-        onAssetLinkClick={handleAssetLinkClick}
-        onTraceButtonClick={handleTraceButtonClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-        onGoToSpan={handleGoToSpan}
-        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
-      />
-    );
-  }
-
-  if (isChattyApiEndpointInsight(insight)) {
-    return (
-      <ExcessiveAPICallsInsight
-        key={insight.type}
-        insight={insight}
-        onAssetLinkClick={handleAssetLinkClick}
-        onTraceButtonClick={handleTraceButtonClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-        onGoToSpan={handleGoToSpan}
-        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
-      />
-    );
-  }
-
-  if (isEndpointHighNumberOfQueriesInsight(insight)) {
-    return (
-      <HighNumberOfQueriesInsight
-        key={insight.type}
-        insight={insight}
-        onTraceButtonClick={handleTraceButtonClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-        onJiraTicketCreate={onJiraTicketCreate}
-        isJiraHintEnabled={isJiraHintEnabled}
-        onGoToSpan={handleGoToSpan}
-        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
-      />
-    );
-  }
-
-  if (isSpanNexusInsight(insight)) {
-    return (
-      <SpanNexusInsight
-        key={insight.type}
-        insight={insight}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-        onGoToSpan={handleGoToSpan}
-        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
-      />
-    );
-  }
-
-  if (isSpanQueryOptimizationInsight(insight)) {
-    return (
-      <QueryOptimizationInsight
-        key={insight.type}
-        insight={insight}
-        onAssetLinkClick={handleAssetLinkClick}
-        onTraceButtonClick={handleTraceButtonClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-        onJiraTicketCreate={onJiraTicketCreate}
-        isJiraHintEnabled={isJiraHintEnabled}
-        onGoToSpan={handleGoToSpan}
-        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
-      />
-    );
-  }
-
-  if (isEndpointQueryOptimizationInsight(insight)) {
-    return (
-      <EndpointQueryOptimizationInsight
-        key={insight.type}
-        insight={insight}
-        onAssetLinkClick={handleAssetLinkClick}
-        onTraceButtonClick={handleTraceButtonClick}
-        onRecalculate={handleRecalculate}
-        onRefresh={handleRefresh}
-        onJiraTicketCreate={onJiraTicketCreate}
-        onGoToSpan={handleGoToSpan}
-        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
-      />
-    );
-  }
 };
 
 const IS_INSIGHT_JIRA_TICKET_HINT_SHOWN_PERSISTENCE_KEY =
@@ -687,13 +319,23 @@ const IS_INSIGHT_JIRA_TICKET_HINT_SHOWN_PERSISTENCE_KEY =
 
 /**
  * @deprecated
- * safe to delete after the migration Errors and Navigation to the Main app
+ * safe to delete after the confirmation that insight grouping by level,
+ *  adding the annotation and autofixing from the sidebar are not needed anymore
  */
-export const InsightList = (props: InsightListProps) => {
+export const InsightList = ({
+  assetId,
+  environment,
+  serviceName,
+  insights,
+  spans,
+  onJiraTicketCreate,
+  isMarkAsReadButtonEnabled,
+  hasObservability,
+  canInstrumentMethod,
+  hasMissingDependency
+}: InsightListProps) => {
   const [insightGroups, setInsightGroups] = useState<InsightGroup[]>([]);
   const [isAutofixing, setIsAutofixing] = useState(false);
-  const theme = useTheme();
-  const insightGroupIconColor = getInsightGroupIconColor(theme);
   const [isInsightJiraTicketHintShown, setIsInsightJiraTicketHintShown] =
     usePersistence<isInsightJiraTicketHintShownPayload>(
       IS_INSIGHT_JIRA_TICKET_HINT_SHOWN_PERSISTENCE_KEY,
@@ -704,27 +346,27 @@ export const InsightList = (props: InsightListProps) => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [props.assetId, props.environment, props.serviceName]);
+  }, [assetId, environment, serviceName]);
 
   useEffect(() => {
-    setInsightGroups(groupInsights(props.insights, props.spans));
+    setInsightGroups(groupInsights(insights, spans));
 
     window.sendMessageToDigma({
       action: actions.MARK_INSIGHT_TYPES_AS_VIEWED,
       payload: {
-        insightTypes: props.insights.map((x) => ({
+        insightTypes: insights.map((x) => ({
           type: x.type,
           reopenCount: x.reopenCount
         }))
       }
     });
-  }, [props.insights, props.spans]);
+  }, [insights, spans]);
 
   const handleAddAnnotation = () => {
     window.sendMessageToDigma({
       action: actions.ADD_ANNOTATION,
       payload: {
-        methodId: props.assetId
+        methodId: assetId
       }
     });
   };
@@ -734,7 +376,7 @@ export const InsightList = (props: InsightListProps) => {
       window.sendMessageToDigma({
         action: actions.AUTOFIX_MISSING_DEPENDENCY,
         payload: {
-          methodId: props.assetId
+          methodId: assetId
         }
       });
     }
@@ -746,7 +388,7 @@ export const InsightList = (props: InsightListProps) => {
     spanCodeObjectId: string | undefined,
     event?: string
   ) => {
-    props.onJiraTicketCreate(insight, spanCodeObjectId);
+    onJiraTicketCreate(insight, spanCodeObjectId);
     if (!isInsightJiraTicketHintShown?.value) {
       sendUserActionTrackingEvent(trackingEvents.JIRA_TICKET_HINT_CLOSED, {
         event
@@ -762,7 +404,7 @@ export const InsightList = (props: InsightListProps) => {
           {x.name && (
             <s.InsightGroupHeader>
               <s.InsightGroupIconContainer>
-                {x.icon && <x.icon size={16} color={insightGroupIconColor} />}{" "}
+                {x.icon && <x.icon size={16} color={"currentColor"} />}{" "}
               </s.InsightGroupIconContainer>
               <Tooltip title={x.name}>
                 <s.InsightGroupName>{x.name}</s.InsightGroupName>
@@ -781,7 +423,7 @@ export const InsightList = (props: InsightListProps) => {
                 insight,
                 handleShowJiraTicket,
                 isJiraHintEnabled,
-                props.isMarkAsReadButtonEnabled
+                isMarkAsReadButtonEnabled
               );
             })
           ) : (
@@ -795,10 +437,10 @@ export const InsightList = (props: InsightListProps) => {
               }
             />
           )}
-          {!props.hasObservability && (
+          {!hasObservability && (
             <NoObservabilityCard
-              canInstrumentMethod={props.canInstrumentMethod}
-              hasMissingDependency={props.hasMissingDependency}
+              canInstrumentMethod={canInstrumentMethod}
+              hasMissingDependency={hasMissingDependency}
               onAutofix={handleAutofix}
               onAddAnnotation={handleAddAnnotation}
             />

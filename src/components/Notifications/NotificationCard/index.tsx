@@ -4,19 +4,9 @@ import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
 import { InsightScope } from "../../Insights/types";
 import { Badge } from "../../common/Badge";
 import { Tooltip } from "../../common/Tooltip";
-import { GoToInsightsPayload, InsightNotificationData } from "../types";
+import { CodeObjectData, InsightNotificationData } from "../types";
 import * as s from "./styles";
 import { NotificationCardProps } from "./types";
-
-const getIconColor = (theme: DefaultTheme) => {
-  switch (theme.mode) {
-    case "light":
-      return "#494b57";
-    case "dark":
-    case "dark-jetbrains":
-      return "#dfe1e5";
-  }
-};
 
 const getBadgeStyles = (theme: DefaultTheme) => {
   switch (theme.mode) {
@@ -46,10 +36,8 @@ const getBadgeStyles = (theme: DefaultTheme) => {
   }
 };
 
-const getCodeObjectData = (
-  data: InsightNotificationData
-): GoToInsightsPayload => {
-  const codeObjectData: GoToInsightsPayload = {};
+const getCodeObjectData = (data: InsightNotificationData): CodeObjectData => {
+  const codeObjectData: CodeObjectData = {};
 
   // for top level insights
   if (data.scope === InsightScope.Function) {
@@ -85,23 +73,25 @@ const getLinkName = (data: InsightNotificationData) => {
   }
 };
 
-export const NotificationCard = (props: NotificationCardProps) => {
+export const NotificationCard = ({
+  data,
+  onLinkClick
+}: NotificationCardProps) => {
   const theme = useTheme();
-  const iconColor = getIconColor(theme);
   const badgeStyles = getBadgeStyles(theme);
 
   const handleLinkClick = () => {
-    const codeObjectData = getCodeObjectData(props.data.data);
-    props.onLinkClick(codeObjectData);
+    const codeObjectData = getCodeObjectData(data.data);
+    onLinkClick(codeObjectData);
   };
 
   const Icon =
-    props.data.type === "NewInsight" &&
-    getInsightTypeInfo(props.data.data.insightType)?.icon;
+    data.type === "NewInsight" &&
+    getInsightTypeInfo(data.data.insightType)?.icon;
 
-  const title = props.data.title;
-  const linkName = getLinkName(props.data.data);
-  const timeDistanceString = formatTimeDistance(props.data.timestamp, {
+  const title = data.title;
+  const linkName = getLinkName(data.data);
+  const timeDistanceString = formatTimeDistance(data.timestamp, {
     format: "medium"
   });
 
@@ -111,14 +101,14 @@ export const NotificationCard = (props: NotificationCardProps) => {
         <s.Header>
           {Icon && (
             <s.IconContainer>
-              <Icon color={iconColor} size={16} />
+              <Icon color={"currentColor"} size={16} />
             </s.IconContainer>
           )}
           <Tooltip title={title}>
             <s.Title>{title}</s.Title>
           </Tooltip>
           {timeDistanceString && (
-            <Tooltip title={new Date(props.data.timestamp).toString()}>
+            <Tooltip title={new Date(data.timestamp).toString()}>
               <s.TimeDistance>{timeDistanceString}</s.TimeDistance>
             </Tooltip>
           )}
@@ -126,12 +116,12 @@ export const NotificationCard = (props: NotificationCardProps) => {
       }
       content={
         <s.ContentContainer>
-          {!props.data.isRead && (
+          {!data.isRead && (
             <s.BadgeContainer>
               <Badge customStyles={badgeStyles} />
             </s.BadgeContainer>
           )}
-          {props.data.message}
+          {data.message}
           <Tooltip title={linkName}>
             <s.Link onClick={handleLinkClick}>{linkName}</s.Link>
           </Tooltip>

@@ -6,7 +6,7 @@ export type Platform = "JetBrains" | "VS Code" | "Web";
 
 export type IDE = "IDEA" | "Rider" | "PyCharm";
 
-export type Mode = "light" | "dark" | "dark-jetbrains";
+export type Theme = "light" | "dark" | "dark-jetbrains";
 
 declare global {
   interface Window {
@@ -40,16 +40,10 @@ declare global {
     isDockerInstalled?: unknown;
     isDockerComposeInstalled?: unknown;
     isMicrometerProject?: unknown;
-    assetsRefreshInterval?: unknown;
     dashboardEnvironment?: unknown;
-    dashboardRefreshInterval?: unknown;
     documentationPage?: unknown;
-    insightsRefreshInterval?: unknown;
-    notificationsRefreshInterval?: unknown;
     notificationsViewMode?: unknown;
     recentActivityExpirationLimit?: unknown;
-    recentActivityDocumentationURL?: unknown;
-    testsRefreshInterval?: unknown;
     wizardSkipInstallationStep?: unknown;
     wizardFirstLaunch?: unknown;
     productKey?: unknown;

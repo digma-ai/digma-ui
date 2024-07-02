@@ -19,4 +19,13 @@ export const Container = styled.div`
 export const IconContainer = styled.div`
   display: flex;
   flex-shrink: 0;
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#4d668a";
+      case "dark":
+      case "dark-jetbrains":
+        return "#fff";
+    }
+  }};
 `;

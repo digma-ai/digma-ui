@@ -1,8 +1,8 @@
 import * as s from "./styles";
 import { AnimatedCodeButtonProps } from "./types";
 
-export const AnimatedCodeButton = (props: AnimatedCodeButtonProps) => (
-  <s.Button onClick={props.onClick}>
+export const AnimatedCodeButton = ({ onClick }: AnimatedCodeButtonProps) => (
+  <s.Button onClick={onClick}>
     <s.BorderContainer />
     <s.Background>
       <s.InitialMask />

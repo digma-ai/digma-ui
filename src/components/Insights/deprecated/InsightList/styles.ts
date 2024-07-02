@@ -33,6 +33,15 @@ export const InsightGroupHeader = styled.div`
 export const InsightGroupIconContainer = styled.div`
   display: flex;
   align-items: center;
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#7891d0";
+      case "dark":
+      case "dark-jetbrains":
+        return "#b4b8bf";
+    }
+  }};
 `;
 
 export const InsightGroupName = styled.span`

@@ -2,9 +2,9 @@ import React from "react";
 import * as s from "./styles";
 import { BadgeProps } from "./types";
 
-const BadgeComponent = (props: BadgeProps) => (
-  <s.Outline $customStyles={props.customStyles?.outline}>
-    <s.Badge $customStyles={props.customStyles?.main} />
+const BadgeComponent = ({ customStyles }: BadgeProps) => (
+  <s.Outline $customStyles={customStyles?.outline}>
+    <s.Badge $customStyles={customStyles?.main} />
   </s.Outline>
 );
 

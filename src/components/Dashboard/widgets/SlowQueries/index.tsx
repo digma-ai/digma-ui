@@ -1,9 +1,10 @@
+import { changeScope } from "../../../../utils/actions/changeScope";
 import { getDurationString } from "../../../../utils/getDurationString";
 import { getPercentileKey } from "../../../../utils/getPercentileKey";
+import { SCOPE_CHANGE_EVENTS } from "../../../Main/types";
 import { Tooltip } from "../../../common/Tooltip";
 import { SnailIcon } from "../../../common/icons/SnailIcon";
 import { ListWidget } from "../../ListWidget";
-import { actions } from "../../actions";
 import { WidgetType } from "../types";
 import * as s from "./styles";
 import { SlowQueriesProps, SlowQueryEntry } from "./types";
@@ -21,12 +22,14 @@ const renderSlowQueryEntry = (
   }
 
   const handleSpanClick = (spanCodeObjectId: string) => {
-    window.sendMessageToDigma({
-      action: actions.GO_TO_SPAN,
-      payload: {
-        spanCodeObjectId,
-        environment,
-        type: WidgetType.SLOW_QUERIES
+    changeScope({
+      span: {
+        spanCodeObjectId
+      },
+      environmentId: environment,
+      context: {
+        event:
+          SCOPE_CHANGE_EVENTS.DASHBOARD_SLOW_QUERIES_WIDGET_ITEM_LINK_CLICKED
       }
     });
   };
@@ -44,13 +47,12 @@ const renderSlowQueryEntry = (
   );
 };
 
-export const SlowQueries = (props: SlowQueriesProps) => (
+export const SlowQueries = ({ environment }: SlowQueriesProps) => (
   <ListWidget<SlowQueryEntry>
     title={"Slow queries"}
     type={WidgetType.SLOW_QUERIES}
     icon={SnailIcon}
-    data={props.data}
-    environment={props.environment}
+    environment={environment}
     renderListItem={renderSlowQueryEntry}
     showPercentileToggleSwitch={true}
   />

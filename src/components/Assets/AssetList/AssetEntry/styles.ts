@@ -1,8 +1,9 @@
 import styled from "styled-components";
+import { getInsightCriticalityColor } from "../../../../utils/getInsightCriticalityColor";
 import { caption2RegularTypography } from "../../../common/App/typographies";
 import { grayScale } from "../../../common/App/v2colors";
 import { CopyButton } from "../../../common/v3/CopyButton";
-import { ImpactScoreIndicatorProps } from "./types";
+import { ImpactScoreIndicatorProps, InsightIconContainerProps } from "./types";
 
 export const Container = styled.div`
   display: flex;
@@ -60,6 +61,7 @@ export const AssetTypeIconContainer = styled.div`
   width: 20px;
   height: 20px;
   align-items: center;
+  color: #7891d0;
 `;
 
 export const Link = styled.a`
@@ -80,7 +82,9 @@ export const IndicatorsContainer = styled.div`
   margin-left: auto;
 `;
 
-export const InsightIconContainer = styled(AssetTypeIconContainer)`
+export const InsightIconContainer = styled(
+  AssetTypeIconContainer
+)<InsightIconContainerProps>`
   border-radius: 4px;
   background: ${({ theme }) => {
     switch (theme.mode) {
@@ -91,6 +95,8 @@ export const InsightIconContainer = styled(AssetTypeIconContainer)`
         return "#2e2e2e";
     }
   }};
+  color: ${({ theme, $criticality }) =>
+    getInsightCriticalityColor($criticality, theme)};
 `;
 
 export const StatsContainer = styled.div`
@@ -122,6 +128,15 @@ export const ServicesContainer = styled.div`
 export const IconContainer = styled.div`
   display: flex;
   align-items: center;
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#4d668a";
+      case "dark":
+      case "dark-jetbrains":
+        return "#dadada";
+    }
+  }};
 `;
 
 export const ServiceName = styled.div`

@@ -4,7 +4,7 @@ import { AssetEntry } from ".";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof AssetEntry> = {
-  title: "Assets/AssetEntry",
+  title: "Assets/AssetList/AssetEntry",
   component: AssetEntry,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout

@@ -1,11 +1,11 @@
 import { Row, createColumnHelper } from "@tanstack/react-table";
 import { useContext, useEffect, useState } from "react";
-import { ROUTES } from "../../../constants";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { isBoolean } from "../../../typeGuards/isBoolean";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { formatTimeDistance } from "../../../utils/formatTimeDistance";
 import { getDurationString } from "../../../utils/getDurationString";
+import { SCOPE_CHANGE_EVENTS } from "../../Main/types";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { CrossCircleIcon } from "../../common/icons/16px/CrossCircleIcon";
 import { RefreshIcon } from "../../common/icons/16px/RefreshIcon";
@@ -117,10 +117,12 @@ export const Performance = () => {
       sendUserActionTrackingEvent(
         trackingEvents.PERFORMANCE_CARD_TABLE_ROW_CLICKED
       );
+
       handleEnvironmentTableRowClick(
+        config.scope,
         config.environments,
         row.original.environment.id,
-        ROUTES.ANALYTICS
+        SCOPE_CHANGE_EVENTS.HIGHLIGHTS_PERFORMANCE_CARD_ITEM_CLICKED
       );
     };
 

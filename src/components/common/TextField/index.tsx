@@ -3,7 +3,14 @@ import * as s from "./styles";
 import { TextFieldProps } from "./types";
 
 export const TextFieldComponent = (
-  props: TextFieldProps,
+  {
+    className,
+    value,
+    onChange,
+    placeholder,
+    disabled,
+    inputEndContent
+  }: TextFieldProps,
   ref: ForwardedRef<HTMLInputElement>
 ) => {
   const [isFocused, setIsFocused] = useState(false);
@@ -17,18 +24,18 @@ export const TextFieldComponent = (
   };
 
   return (
-    <s.Container $focused={isFocused} className={props.className}>
+    <s.Container $focused={isFocused} className={className}>
       <s.Input
         type={"text"}
-        value={props.value}
-        onChange={props.onChange}
-        placeholder={props.placeholder}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
         onFocus={handleFocus}
         onBlur={handleBlur}
-        disabled={props.disabled}
+        disabled={disabled}
         ref={ref}
       />
-      {props.inputEndContent && <div>{props.inputEndContent}</div>}
+      {inputEndContent && <div>{inputEndContent}</div>}
     </s.Container>
   );
 };

@@ -84,40 +84,6 @@ export const Header = styled.div<HeaderProps>`
   }};
 `;
 
-// export const HeaderTextContainer = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   gap: 10px;
-//   font-size: 14px;
-//   color: ${({ theme }) => {
-//     switch (theme.mode) {
-//       case "light":
-//         return "#828797";
-//       case "dark":
-//       case "dark-jetbrains":
-//         return "#b4b8bf";
-//     }
-//   }};
-// `;
-
-// export const Title = styled.div`
-//   display: flex;
-//   gap: 8px;
-//   align-items: center;
-//   font-size: 16px;
-//   font-weight: 500;
-//   text-transform: capitalize;
-//   color: ${({ theme }) => {
-//     switch (theme.mode) {
-//       case "light":
-//         return "#4d668a";
-//       case "dark":
-//       case "dark-jetbrains":
-//         return "#fff";
-//     }
-//   }};
-// `;
-
 export const EnvironmentsContainer = styled.div`
   padding: 15px 16px ${COLUMN_PADDING}px;
 `;

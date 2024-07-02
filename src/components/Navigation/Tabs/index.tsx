@@ -1,104 +1,145 @@
-import { useContext } from "react";
-import { ROUTES } from "../../../constants";
+import { useContext, useMemo } from "react";
+import { useLocation } from "react-router-dom";
 import { isNumber } from "../../../typeGuards/isNumber";
+import { isString } from "../../../typeGuards/isString";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
+import { useHistory } from "../../Main/useHistory";
 import { ConfigContext } from "../../common/App/ConfigContext";
-import { ConfigContextData, Scope } from "../../common/App/types";
+import { InsightStats, Scope } from "../../common/App/types";
 import { MagicWandIcon } from "../../common/icons/16px/MagicWandIcon";
 import { Tooltip } from "../../common/v3/Tooltip";
 import { trackingEvents } from "../tracking";
-import { TabData } from "../types";
 import * as s from "./styles";
-import { TabsProps } from "./types";
+import { BaseTabData, TAB_IDS, TabData } from "./types";
 
-const getTabTooltipMessage = (tab: TabData, scope?: Scope) => {
-  if (!scope?.span && [ROUTES.ERRORS, ROUTES.TESTS].includes(tab.id)) {
+const tabs: BaseTabData[] = [
+  {
+    id: TAB_IDS.HIGHLIGHTS,
+    icon: MagicWandIcon,
+    width: 40
+  },
+  {
+    title: "Issues",
+    id: TAB_IDS.ISSUES
+  },
+  {
+    title: "Assets",
+    id: TAB_IDS.ASSETS
+  },
+  {
+    title: "Analytics",
+    id: TAB_IDS.ANALYTICS
+  },
+  {
+    title: "Errors",
+    id: TAB_IDS.ERRORS
+  },
+  {
+    title: "Tests",
+    id: TAB_IDS.TESTS
+  }
+];
+
+const getTabTooltipMessage = (
+  tab: BaseTabData,
+  scope?: Scope
+): string | undefined => {
+  if (!scope?.span && [TAB_IDS.ERRORS, TAB_IDS.TESTS].includes(tab.id)) {
     return "Global errors and tests is COMING SOON";
   }
 
-  return tab.tooltipMessage ?? tab.title;
+  return tab.title;
 };
 
-const getIsTabDisabled = (tab: TabData, scope?: Scope) => {
+const getIsTabDisabled = (tab: BaseTabData, scope?: Scope): boolean => {
   if (
     !scope?.span &&
-    [ROUTES.HIGHLIGHTS, ROUTES.ANALYTICS, ROUTES.ERRORS, ROUTES.TESTS].includes(
-      tab.id
-    )
+    [
+      TAB_IDS.HIGHLIGHTS,
+      TAB_IDS.ANALYTICS,
+      TAB_IDS.ERRORS,
+      TAB_IDS.TESTS
+    ].includes(tab.id)
   ) {
     return true;
   }
 
-  return tab.isDisabled;
+  return false;
 };
 
-const getTabIcon = (tab: TabData) => {
-  if (tab.id === ROUTES.HIGHLIGHTS) {
-    return <MagicWandIcon color={"currentColor"} size={16} />;
-  }
+const getIsNewIndicatorVisible = (
+  tab: BaseTabData,
+  insightsStats: InsightStats | undefined,
+  scope: Scope | undefined
+): boolean =>
+  Boolean(
+    tab.id === TAB_IDS.ISSUES
+      ? insightsStats &&
+        scope?.span?.spanCodeObjectId ===
+          insightsStats.scope?.span.spanCodeObjectId
+        ? insightsStats && insightsStats.unreadInsightsCount > 0
+        : scope &&
+          isNumber(scope.unreadInsightsCount) &&
+          scope.unreadInsightsCount > 0
+      : false
+  );
 
-  return null;
-};
-
-const getIsNewIndicatorVisible = (tab: TabData, config: ConfigContextData) =>
-  tab.hasNewData ||
-  (tab.id === ROUTES.INSIGHTS
-    ? config.insightStats &&
-      config.scope?.span?.spanCodeObjectId ===
-        config.insightStats.scope?.span.spanCodeObjectId
-      ? config.insightStats && config.insightStats.unreadInsightsCount > 0
-      : config.scope &&
-        isNumber(config.scope.unreadInsightsCount) &&
-        config.scope.unreadInsightsCount > 0
-    : false);
-
-const getTabWidth = (tab: TabData) => {
-  if (tab.id === ROUTES.HIGHLIGHTS) {
-    return 40;
-  }
-
-  return undefined;
-};
-
-export const Tabs = (props: TabsProps) => {
+export const Tabs = () => {
   const config = useContext(ConfigContext);
+  const location = useLocation();
+  const { goTo } = useHistory();
 
   const handleTabClick = (tab: TabData) => {
     if (!getIsTabDisabled(tab, config.scope)) {
       sendUserActionTrackingEvent(trackingEvents.TAB_CLICKED, {
         tabName: tab.id
       });
-      props.onSelect(tab.id);
+
+      if (!tab.isSelected) {
+        goTo(`/${tab.id}`);
+      }
     }
   };
 
-  const tabs = props.tabs.filter((x) => !x.isHidden);
+  const tabsData: TabData[] = useMemo(() => {
+    return tabs.map((tab) => ({
+      ...tab,
+      isSelected: location.pathname.startsWith(`/${tab.id}`),
+      isDisabled: getIsTabDisabled(tab, config.scope),
+      hasNewData: getIsNewIndicatorVisible(
+        tab,
+        config.insightStats,
+        config.scope
+      ),
+      tooltipMessage: getTabTooltipMessage(tab, config.scope)
+    }));
+  }, [config.scope, config.insightStats, location.pathname]);
 
   return (
     <s.TabList>
-      {tabs.map((tab) => {
-        const tooltipMessage = getTabTooltipMessage(tab, config.scope);
-        const isDisabled = getIsTabDisabled(tab, config.scope);
-        const isNewIndicatorVisible = getIsNewIndicatorVisible(tab, config);
-        const icon = getTabIcon(tab);
-        const width = getTabWidth(tab);
+      {tabsData.map((tab) => {
+        const isNewIndicatorVisible = getIsNewIndicatorVisible(
+          tab,
+          config.insightStats,
+          config.scope
+        );
 
         return (
           <Tooltip
-            title={tooltipMessage}
+            title={tab.tooltipMessage ?? ""}
             key={tab.id}
-            isOpen={tooltipMessage ? undefined : false}
+            isOpen={isString(tab.tooltipMessage) ? undefined : false}
           >
             <s.Tab
-              $width={width}
+              $width={tab.width}
               $isSelected={tab.isSelected}
-              $isDisabled={isDisabled}
+              $isDisabled={tab.isDisabled}
               onClick={() => handleTabClick(tab)}
             >
-              {icon}
-              <s.TabTitle>{tab.title}</s.TabTitle>
+              {tab.icon && <tab.icon color={"currentColor"} size={16} />}
+              {isString(tab.title) && <s.TabTitle>{tab.title}</s.TabTitle>}
               {isNewIndicatorVisible && <s.Indicator type={"new"} />}
-              {config.scope?.hasErrors && [ROUTES.ERRORS].includes(tab.id) && (
+              {config.scope?.hasErrors && [TAB_IDS.ERRORS].includes(tab.id) && (
                 <s.Indicator type={"errors"} />
               )}
             </s.Tab>

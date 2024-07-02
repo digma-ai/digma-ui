@@ -22,7 +22,6 @@ export const getDigmathonInsightCardData = (
         )
       };
     case InsightType.EndpointQueryOptimizationV2:
-    case InsightType.EndpointQueryOptimization:
     case InsightType.SpanQueryOptimization:
       return {
         title: "Query Optimization Suggested",
@@ -38,7 +37,6 @@ export const getDigmathonInsightCardData = (
         illustration: <img src={"images/insightCards/HotSpotInsightCard.svg"} />
       };
     case InsightType.EndpointSpanNPlusOne:
-    case InsightType.EndpointSpaNPlusOne:
     case InsightType.SpaNPlusOne:
       return {
         title: "N+1 Select",

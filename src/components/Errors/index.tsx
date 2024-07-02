@@ -1,44 +1,25 @@
-import { useContext, useEffect, useState } from "react";
-import { actions as globalActions } from "../../actions";
-import { ROUTES } from "../../constants";
-import { ChangeViewPayload } from "../../types";
+import { useContext } from "react";
+import { useParams } from "react-router-dom";
+import { useHistory } from "../Main/useHistory";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { ErrorDetails } from "./ErrorDetails";
 import { ErrorsList } from "./ErrorsList";
 import * as s from "./styles";
-import { ErrorsProps } from "./types";
 
-export const Errors = ({ errorId }: ErrorsProps) => {
+export const Errors = () => {
   const config = useContext(ConfigContext);
   const spanCodeObjectId = config.scope?.span?.spanCodeObjectId;
   const methodId = config?.scope?.span?.methodId;
-
-  const [selectedErrorId, setSelectedErrorId] = useState<string | null>(
-    errorId ?? null
-  );
-
-  useEffect(() => {
-    setSelectedErrorId(errorId ?? null);
-  }, [errorId]);
+  const { goTo } = useHistory();
+  const params = useParams();
+  const selectedErrorId = params.id;
 
   const handleErrorSelect = (errorId: string) => {
-    setSelectedErrorId(errorId);
-    window.sendMessageToDigma<ChangeViewPayload>({
-      action: globalActions.CHANGE_VIEW,
-      payload: {
-        view: `${ROUTES.ERRORS}/${errorId}`
-      }
-    });
+    goTo(errorId);
   };
 
   const handleGoToAllErrors = () => {
-    setSelectedErrorId(null);
-    window.sendMessageToDigma<ChangeViewPayload>({
-      action: globalActions.CHANGE_VIEW,
-      payload: {
-        view: ROUTES.ERRORS
-      }
-    });
+    goTo("..");
   };
 
   const renderContent = () => {

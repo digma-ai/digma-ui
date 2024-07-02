@@ -71,7 +71,7 @@ const shineAnimation = keyframes`
   100% { left: -33%; }
 `;
 
-export const AcceptButton = styled(Button)`
+export const AccessCourseButton = styled(Button)`
   padding: 6px 8px;
   position: relative;
 
@@ -105,7 +105,7 @@ export const LogoBackground = styled.div`
   right: 0;
 `;
 
-export const SkipButton = styled(Button)`
+export const DontShowButton = styled(Button)`
   span {
     color: ${({ theme }) => theme.colors.v3.text.tertiary};
   }

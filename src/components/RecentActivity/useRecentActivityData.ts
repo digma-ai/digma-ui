@@ -3,16 +3,8 @@ import { dispatcher } from "../../dispatcher";
 import { actions } from "./actions";
 import { RecentActivityData } from "./types";
 
-export const useRecentActivityData = (props: {
-  data: RecentActivityData | undefined;
-}) => {
+export const useRecentActivityData = () => {
   const [data, setData] = useState<RecentActivityData>();
-
-  useEffect(() => {
-    if (props.data) {
-      setData(props.data);
-    }
-  }, [props.data]);
 
   useEffect(() => {
     const handleRecentActivityData = (data: unknown) => {

@@ -21,4 +21,13 @@ export const TipContainer = styled.div`
 export const TipIconContainer = styled.div`
   display: flex;
   flex-shrink: 0;
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#788ca9";
+      case "dark":
+      case "dark-jetbrains":
+        return "#b9c2eb";
+    }
+  }};
 `;

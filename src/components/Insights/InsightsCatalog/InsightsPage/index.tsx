@@ -5,12 +5,12 @@ import { usePrevious } from "../../../../hooks/usePrevious";
 import { trackingEvents as globalTrackingEvents } from "../../../../trackingEvents";
 import { isNumber } from "../../../../typeGuards/isNumber";
 import { isUndefined } from "../../../../typeGuards/isUndefined";
-import {
-  ChangeScopePayload,
-  ChangeViewPayload,
-  InsightType
-} from "../../../../types";
+import { InsightType } from "../../../../types";
+import { changeScope } from "../../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
+import { SCOPE_CHANGE_EVENTS } from "../../../Main/types";
+import { useHistory } from "../../../Main/useHistory";
+import { TAB_IDS } from "../../../Navigation/Tabs/types";
 import { ConfigContext } from "../../../common/App/ConfigContext";
 import { EmptyState } from "../../../common/EmptyState";
 import { CardsIcon } from "../../../common/icons/CardsIcon";
@@ -71,15 +71,17 @@ import {
   isInsightJiraTicketHintShownPayload
 } from "./types";
 
+export const INSIGHTS_PAGE_CONTAINER_ID = "insightsPageContainer";
+
 const getInsightToShowJiraHint = (insights: CodeObjectInsight[]): number => {
   const insightsWithJiraButton = [
-    InsightType.EndpointSpaNPlusOne,
+    InsightType.EndpointSpanNPlusOne,
     InsightType.SpaNPlusOne,
     InsightType.SpanEndpointBottleneck,
-    InsightType.SlowestSpans,
+    InsightType.EndpointBottleneck,
     InsightType.SpanQueryOptimization,
     InsightType.EndpointHighNumberOfQueries,
-    InsightType.EndpointQueryOptimization,
+    InsightType.EndpointQueryOptimizationV2,
     InsightType.SpanScaling
   ];
 
@@ -99,21 +101,6 @@ const renderInsightCard = (
   onRefresh: () => void,
   isMarkAsReadButtonEnabled: boolean
 ): JSX.Element | undefined => {
-  // const handleErrorSelect = (errorId: string, insightType: InsightType) => {
-  //   sendUserActionTrackingEvent(
-  //     trackingEvents.INSIGHT_CARD_ASSET_LINK_CLICKED,
-  //     {
-  //       insightType
-  //     }
-  //   );
-  // };
-
-  // const handleErrorsExpandButtonClick = () => {
-  //   window.sendMessageToDigma({
-  //     action: actions.GO_TO_ERRORS
-  //   });
-  // };
-
   const handleHistogramButtonClick = (
     spanCodeObjectId: string,
     insightType: InsightType,
@@ -153,19 +140,6 @@ const renderInsightCard = (
     });
   };
 
-  const handleCompareButtonClick = (
-    traces: [Trace, Trace],
-    insightType: InsightType
-  ) => {
-    window.sendMessageToDigma({
-      action: actions.GO_TO_TRACE_COMPARISON,
-      payload: {
-        traces,
-        insightType
-      }
-    });
-  };
-
   const handleAssetLinkClick = (
     spanCodeObjectId: string,
     insightType: InsightType
@@ -176,11 +150,10 @@ const renderInsightCard = (
         insightType
       }
     );
-
-    window.sendMessageToDigma({
-      action: actions.GO_TO_ASSET,
-      payload: {
-        spanCodeObjectId
+    changeScope({
+      span: { spanCodeObjectId },
+      context: {
+        event: SCOPE_CHANGE_EVENTS.INSIGHTS_INSIGHT_CARD_ASSET_LINK_CLICKED
       }
     });
   };
@@ -195,12 +168,11 @@ const renderInsightCard = (
   };
 
   const handleGoToSpan = (spanCodeObjectId: string) => {
-    window.sendMessageToDigma<ChangeScopePayload>({
-      action: globalActions.CHANGE_SCOPE,
-      payload: {
-        span: {
-          spanCodeObjectId
-        }
+    changeScope({
+      span: { spanCodeObjectId },
+      context: {
+        event:
+          SCOPE_CHANGE_EVENTS.INSIGHTS_INSIGHT_CARD_TITLE_ASSET_LINK_CLICKED
       }
     });
   };
@@ -212,7 +184,6 @@ const renderInsightCard = (
         insight={insight}
         onHistogramButtonClick={handleHistogramButtonClick}
         onLiveButtonClick={handleLiveButtonClick}
-        onCompareButtonClick={handleCompareButtonClick}
         onRecalculate={handleRecalculate}
         onRefresh={onRefresh}
         onGoToSpan={handleGoToSpan}
@@ -487,10 +458,17 @@ const renderInsightCard = (
   }
 };
 
-const IS_INSIGHT_JIRA_TICKET_HINT_SHOWN_PERSISTENCE_KEY =
+export const IS_INSIGHT_JIRA_TICKET_HINT_SHOWN_PERSISTENCE_KEY =
   "isInsightJiraTicketHintShown";
 
-export const InsightsPage = (props: InsightsPageProps) => {
+export const InsightsPage = ({
+  page,
+  insights,
+  onJiraTicketCreate,
+  onRefresh,
+  isMarkAsReadButtonEnabled,
+  isFilteringEnabled
+}: InsightsPageProps) => {
   const config = useContext(ConfigContext);
   const previousConfig = usePrevious(config);
   const [isInsightJiraTicketHintShown, setIsInsightJiraTicketHintShown] =
@@ -499,39 +477,40 @@ export const InsightsPage = (props: InsightsPageProps) => {
       "application"
     );
   const listRef = useRef<HTMLDivElement>(null);
-  const previousPage = usePrevious(props.page);
+  const previousPage = usePrevious(page);
+  const { goTo } = useHistory();
 
-  const insightIndexWithJiraHint = getInsightToShowJiraHint(props.insights);
+  const insightIndexWithJiraHint = getInsightToShowJiraHint(insights);
 
   useEffect(() => {
     if (
-      (isNumber(previousPage) && previousPage !== props.page) ||
+      (isNumber(previousPage) && previousPage !== page) ||
       (previousConfig &&
         (previousConfig?.scope?.span !== config?.scope?.span ||
           previousConfig?.environment?.id !== config.environment?.id))
     ) {
       listRef.current?.scrollTo(0, 0);
     }
-  }, [previousPage, props.page, config, previousConfig]);
+  }, [previousPage, page, config, previousConfig]);
 
   useEffect(() => {
     window.sendMessageToDigma<MarkInsightTypesAsViewedPayload>({
       action: actions.MARK_INSIGHT_TYPES_AS_VIEWED,
       payload: {
-        insightTypes: props.insights.map((x) => ({
+        insightTypes: insights.map((x) => ({
           type: x.type,
           reopenCount: x.reopenCount
         }))
       }
     });
-  }, [props.insights]);
+  }, [insights]);
 
   const handleShowJiraTicket = (
     insight: GenericCodeObjectInsight,
     spanCodeObjectId: string | undefined,
     event?: string
   ) => {
-    props.onJiraTicketCreate(insight, spanCodeObjectId);
+    onJiraTicketCreate(insight, spanCodeObjectId);
     if (!isInsightJiraTicketHintShown?.value) {
       sendUserActionTrackingEvent(trackingEvents.JIRA_TICKET_HINT_CLOSED, {
         event
@@ -554,29 +533,24 @@ export const InsightsPage = (props: InsightsPageProps) => {
   };
 
   const handleAnalyticsTabLinkClick = () => {
-    window.sendMessageToDigma<ChangeViewPayload>({
-      action: globalActions.CHANGE_VIEW,
-      payload: {
-        view: "/analytics"
-      }
-    });
+    goTo(`/${TAB_IDS.ANALYTICS}`);
   };
 
   return (
-    <s.Container ref={listRef}>
-      {props.insights.length > 0 ? (
-        props.insights.map((insight, j) => {
+    <s.Container ref={listRef} id={INSIGHTS_PAGE_CONTAINER_ID}>
+      {insights.length > 0 ? (
+        insights.map((insight, j) => {
           return renderInsightCard(
             insight,
             handleShowJiraTicket,
             !isUndefined(isInsightJiraTicketHintShown) &&
               !isInsightJiraTicketHintShown?.value &&
               j === insightIndexWithJiraHint,
-            props.onRefresh,
-            props.isMarkAsReadButtonEnabled
+            onRefresh,
+            isMarkAsReadButtonEnabled
           );
         })
-      ) : props.isFilteringEnabled ? (
+      ) : isFilteringEnabled ? (
         <EmptyState
           icon={CardsIcon}
           title={"No data found"}

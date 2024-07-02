@@ -1,19 +1,14 @@
 import { useCallback, useContext, useEffect, useState } from "react";
 import { actions as globalActions } from "../../actions";
-import { ROUTES } from "../../constants";
 import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
 import { isNull } from "../../typeGuards/isNull";
 import { isUndefined } from "../../typeGuards/isUndefined";
-import {
-  ChangeEnvironmentPayload,
-  ChangeScopePayload,
-  ChangeViewPayload,
-  GetInsightStatsPayload
-} from "../../types";
+import { GetInsightStatsPayload } from "../../types";
+import { changeScope } from "../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 import { AsyncActionResultData } from "../InstallationWizard/types";
-import { actions as mainActions } from "../Main/actions";
+import { SCOPE_CHANGE_EVENTS } from "../Main/types";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { Environment, Scope } from "../common/App/types";
 import { NewPopover } from "../common/NewPopover";
@@ -23,9 +18,9 @@ import { Tooltip } from "../common/v3/Tooltip";
 import { CodeButton } from "./CodeButton";
 import { CodeButtonMenu } from "./CodeButtonMenu";
 import { EnvironmentBar } from "./EnvironmentBar";
+import { HistoryNavigationPanel } from "./HistoryNavigationPanel";
 import { KebabMenu } from "./KebabMenu";
 import { ScopeBar } from "./ScopeBar";
-import { ScopeNavigation } from "./ScopeNavigation";
 import { Tabs } from "./Tabs";
 import { actions } from "./actions";
 import { IconButton } from "./common/IconButton";
@@ -36,9 +31,7 @@ import {
   AutoFixMissingDependencyPayload,
   CodeContext,
   HighlightMethodInEditorPayload,
-  OpenDashboardPayload,
-  SetViewsPayload,
-  TabData
+  OpenDashboardPayload
 } from "./types";
 
 const hasData = (codeContext?: CodeContext): boolean =>
@@ -88,7 +81,6 @@ const getCodeButtonTooltip = (
 };
 
 export const Navigation = () => {
-  const [tabs, setTabs] = useState<TabData[]>();
   const config = useContext(ConfigContext);
   const [selectedEnvironment, setSelectedEnvironment] = useState(
     config.environment
@@ -100,7 +92,6 @@ export const Navigation = () => {
   const [isAnnotationAdding, setIsAnnotationAdding] = useState(false);
   const previousCodeContext = usePrevious(codeContext);
   const previousEnv = usePrevious(config.environment);
-  const [currentTab, setCurrentTab] = useState<string>(ROUTES.INSIGHTS);
 
   const codeButtonTooltip = getCodeButtonTooltip(codeContext, config.scope);
   const isCodeButtonEnabled = codeContext && !isNull(codeContext.methodId);
@@ -108,14 +99,6 @@ export const Navigation = () => {
     codeContext && codeContext.spans.assets.length !== 1;
 
   useEffect(() => {
-    const handleViewData = (data: unknown) => {
-      const payload = data as SetViewsPayload;
-      setTabs(payload.views);
-
-      const selected = payload.views.find((x) => x.isSelected);
-      selected && setCurrentTab(selected.id);
-    };
-
     const handleCodeContextData = (data: unknown) => {
       const payload = data as CodeContext;
       setCodeContext(payload);
@@ -135,7 +118,6 @@ export const Navigation = () => {
       }
     };
 
-    dispatcher.addActionListener(mainActions.SET_VIEWS, handleViewData);
     dispatcher.addActionListener(
       actions.SET_CODE_CONTEXT,
       handleCodeContextData
@@ -150,7 +132,6 @@ export const Navigation = () => {
     );
 
     return () => {
-      dispatcher.removeActionListener(mainActions.SET_VIEWS, handleViewData);
       dispatcher.removeActionListener(
         actions.SET_CODE_CONTEXT,
         handleCodeContextData
@@ -176,18 +157,21 @@ export const Navigation = () => {
     }
   }, [config.environment, config.scope, previousEnv?.id]);
 
-  const handleEnvironmentChange = useCallback((environment: Environment) => {
-    sendUserActionTrackingEvent(trackingEvents.ENVIRONMENT_SELECTED);
+  const handleEnvironmentChange = useCallback(
+    (environment: Environment) => {
+      sendUserActionTrackingEvent(trackingEvents.ENVIRONMENT_SELECTED);
 
-    window.sendMessageToDigma<ChangeEnvironmentPayload>({
-      action: globalActions.CHANGE_ENVIRONMENT,
-      payload: {
-        environment: environment.id
-      }
-    });
-
-    setSelectedEnvironment(environment);
-  }, []);
+      changeScope({
+        span: config.scope?.span
+          ? {
+              spanCodeObjectId: config.scope.span.spanCodeObjectId
+            }
+          : null,
+        environmentId: environment.id
+      });
+    },
+    [config.scope]
+  );
 
   useEffect(() => {
     if (
@@ -196,13 +180,20 @@ export const Navigation = () => {
       (!config.environment ||
         !config.environments.find((x) => x.id == config.environment?.id))
     ) {
-      handleEnvironmentChange(config.environments[0]);
+      changeScope({
+        span: config.scope?.span
+          ? {
+              spanCodeObjectId: config.scope.span.spanCodeObjectId
+            }
+          : null,
+        environmentId: config.environments[0].id
+      });
     }
 
     if (config.environments && config.environments.length === 0) {
       setSelectedEnvironment(undefined);
     }
-  }, [config.environments, config.environment, handleEnvironmentChange]);
+  }, [config.environments, config.environment, config.scope]);
 
   useEffect(() => {
     setIsAutoFixing(false);
@@ -260,7 +251,14 @@ export const Navigation = () => {
     sendUserActionTrackingEvent(trackingEvents.CODE_BUTTON_CLICKED);
     if (codeContext && codeContext.spans.assets.length === 1) {
       const { spanCodeObjectId } = codeContext.spans.assets[0];
-      changeScope(spanCodeObjectId);
+      changeScope({
+        span: {
+          spanCodeObjectId
+        },
+        context: {
+          event: SCOPE_CHANGE_EVENTS.NAVIGATION_CODE_BUTTON_CLICKED
+        }
+      });
     }
   };
 
@@ -278,16 +276,6 @@ export const Navigation = () => {
   const handleCodeButtonMouseLeave = () => {
     window.sendMessageToDigma({
       action: actions.CLEAR_HIGHLIGHTS_IN_EDITOR
-    });
-  };
-
-  const changeTab = (tabId: string) => {
-    setCurrentTab(tabId);
-    window.sendMessageToDigma<ChangeViewPayload>({
-      action: globalActions.CHANGE_VIEW,
-      payload: {
-        view: tabId
-      }
     });
   };
 
@@ -311,15 +299,16 @@ export const Navigation = () => {
     setIsAutoFixing(true);
   };
 
-  const changeScope = (spanCodeObjectId: string) => {
-    window.sendMessageToDigma<ChangeScopePayload>({
-      action: globalActions.CHANGE_SCOPE,
-      payload: {
-        span: {
-          spanCodeObjectId
-        }
+  const handleScopeChange = (spanCodeObjectId: string) => {
+    changeScope({
+      span: {
+        spanCodeObjectId
+      },
+      context: {
+        event: SCOPE_CHANGE_EVENTS.NAVIGATION_CODE_BUTTON_MENU_ITEM_SELECTED
       }
     });
+
     setIsCodeButtonMenuOpen(false);
   };
 
@@ -340,7 +329,7 @@ export const Navigation = () => {
   return (
     <s.Container>
       <s.Row>
-        <ScopeNavigation currentTabId={currentTab} />
+        <HistoryNavigationPanel />
         <ScopeBar codeContext={codeContext} scope={config.scope} />
         <NewPopover
           content={<KebabMenu onClose={handleKebabButtonMenuClose} />}
@@ -372,7 +361,7 @@ export const Navigation = () => {
                         isAnnotationAdding={isAnnotationAdding}
                         onAutoFix={handleAutoFix}
                         onObservabilityAdd={handleObservabilityAdd}
-                        onScopeChange={changeScope}
+                        onScopeChange={handleScopeChange}
                         onClose={handleCodeButtonMenuClose}
                       />
                     )}
@@ -424,7 +413,7 @@ export const Navigation = () => {
         </Tooltip>
       </s.Row>
       <s.TabsContainer>
-        <Tabs tabs={tabs ?? []} onSelect={changeTab} />
+        <Tabs />
       </s.TabsContainer>
     </s.Container>
   );

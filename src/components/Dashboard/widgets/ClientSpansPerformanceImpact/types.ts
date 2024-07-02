@@ -1,5 +1,3 @@
-import { ListWidgetData } from "../../ListWidget/types";
-
 export interface ClientSpanOverallImpactEntry {
   spanCodeObjectId: string;
   displayName: string;
@@ -7,6 +5,5 @@ export interface ClientSpanOverallImpactEntry {
 }
 
 export interface ClientSpansPerformanceImpactProps {
-  data?: ListWidgetData<ClientSpanOverallImpactEntry>;
   environment: string;
 }

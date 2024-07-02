@@ -93,6 +93,15 @@ export const Title = styled.span`
 
 export const SpanIconContainer = styled.span`
   display: flex;
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#4d668a";
+      case "dark":
+      case "dark-jetbrains":
+        return "#7891d0";
+    }
+  }};
 `;
 
 export const SpanName = styled.span`
@@ -134,6 +143,15 @@ export const CloseButton = styled.button`
   background: none;
   border: none;
   cursor: pointer;
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#6e6e6e";
+      case "dark":
+      case "dark-jetbrains":
+        return "#afb1b3";
+    }
+  }};
 `;
 
 export const ChartsContainer = styled.div<ChartsContainerProps>`
@@ -191,6 +209,15 @@ export const ZoomButton = styled.button`
       case "dark":
       case "dark-jetbrains":
         return "1px 1px 4px rgb(0 0 0 / 25%)";
+    }
+  }};
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#7891d0";
+      case "dark":
+      case "dark-jetbrains":
+        return "#e2e7ff";
     }
   }};
 `;

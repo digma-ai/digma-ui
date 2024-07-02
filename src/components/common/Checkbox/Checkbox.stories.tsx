@@ -3,7 +3,7 @@ import { Checkbox } from ".";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof Checkbox> = {
-  title: "Common/Checkbox",
+  title: "common/Checkbox",
   component: Checkbox,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout

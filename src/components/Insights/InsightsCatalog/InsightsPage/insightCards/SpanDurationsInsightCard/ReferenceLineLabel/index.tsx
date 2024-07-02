@@ -13,15 +13,19 @@ const isTextAnchor = (
 ): value is "start" | "end" | "middle" | "inherit" | undefined =>
   ["start", "middle", "end", "inherit", undefined].includes(value);
 
-export const ReferenceLineLabel = (props: ReferenceLineLabelProps) => {
+export const ReferenceLineLabel = ({
+  value,
+  viewBox: labelViewBox,
+  textAnchor: labelTextAnchor
+}: ReferenceLineLabelProps) => {
   const theme = useTheme();
-  const labels = isString(props.value)
-    ? props.value.split(DIVIDER)
-    : isNumber(props.value)
-    ? [props.value]
+  const labels = isString(value)
+    ? value.split(DIVIDER)
+    : isNumber(value)
+    ? [value]
     : undefined;
 
-  const viewBox = props.viewBox as CartesianViewBox | undefined;
+  const viewBox = labelViewBox as CartesianViewBox | undefined;
   const x = viewBox?.x;
   const y = viewBox?.y;
 
@@ -29,9 +33,7 @@ export const ReferenceLineLabel = (props: ReferenceLineLabelProps) => {
     return null;
   }
 
-  const textAnchor = isTextAnchor(props.textAnchor)
-    ? props.textAnchor
-    : "middle";
+  const textAnchor = isTextAnchor(labelTextAnchor) ? labelTextAnchor : "middle";
 
   return (
     <g>

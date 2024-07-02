@@ -23,6 +23,9 @@ import { EndpointBreakdownInsightCardProps } from "./types";
 
 const PIE_CHART_RADIUS = 50;
 const PIE_CHART_ARC_WIDTH = 4;
+const PIE_CHART_SIZE = PIE_CHART_RADIUS * 2 + PIE_CHART_ARC_WIDTH;
+const STROKE_WIDTH = PIE_CHART_ARC_WIDTH / 2;
+const DEFAULT_PERCENTILE = 0.5;
 
 const getComponentTypeColors = (
   theme: DefaultTheme,
@@ -71,8 +74,6 @@ const getComponentTypeColors = (
   }
 };
 
-const DEFAULT_PERCENTILE = 0.5;
-
 const getComponents = (
   insight: EndpointBreakdownInsight,
   percentile: number
@@ -92,18 +93,22 @@ const sortByType = (a: Component, b: Component) =>
 
 const columnHelper = createColumnHelper<Component>();
 
-export const EndpointBreakdownInsightCard = (
-  props: EndpointBreakdownInsightCardProps
-) => {
+export const EndpointBreakdownInsightCard = ({
+  insight,
+  onRecalculate,
+  onRefresh,
+  onGoToSpan,
+  isMarkAsReadButtonEnabled
+}: EndpointBreakdownInsightCardProps) => {
   const theme = useTheme();
 
   const [percentileViewMode, setPercentileViewMode] =
     useState<number>(DEFAULT_PERCENTILE);
 
   const data = useMemo(() => {
-    const components = getComponents(props.insight, percentileViewMode);
+    const components = getComponents(insight, percentileViewMode);
 
-    const sortedComponents = props.insight.hasAsyncSpans
+    const sortedComponents = insight.hasAsyncSpans
       ? [...components].sort((a, b) =>
           a.duration && b.duration
             ? a.duration.raw - b.duration.raw
@@ -114,14 +119,11 @@ export const EndpointBreakdownInsightCard = (
         );
 
     return sortedComponents;
-  }, [props.insight, percentileViewMode]);
+  }, [insight, percentileViewMode]);
 
   const handlePercentileViewModeChange = (value: number) => {
     setPercentileViewMode(value);
   };
-
-  const PIE_CHART_SIZE = PIE_CHART_RADIUS * 2 + PIE_CHART_ARC_WIDTH;
-  const STROKE_WIDTH = PIE_CHART_ARC_WIDTH / 2;
 
   const renderPieChart = () => (
     <s.ContentContainer>
@@ -246,21 +248,21 @@ export const EndpointBreakdownInsightCard = (
 
   return (
     <InsightCard
-      insight={props.insight}
+      insight={insight}
       content={
         <s.Container>
           <PercentileViewModeToggle
             viewMode={percentileViewMode}
             onChange={handlePercentileViewModeChange}
           />
-          {props.insight.hasAsyncSpans ? renderTable() : renderPieChart()}
+          {insight.hasAsyncSpans ? renderTable() : renderPieChart()}
         </s.Container>
       }
-      onRecalculate={props.onRecalculate}
-      onRefresh={props.onRefresh}
-      isAsync={props.insight.hasAsyncSpans}
-      onGoToSpan={props.onGoToSpan}
-      isMarkAsReadButtonEnabled={props.isMarkAsReadButtonEnabled}
+      onRecalculate={onRecalculate}
+      onRefresh={onRefresh}
+      isAsync={insight.hasAsyncSpans}
+      onGoToSpan={onGoToSpan}
+      isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
     />
   );
 };

@@ -9,7 +9,6 @@ import {
 import { actions as globalActions } from "../../actions";
 import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
-import { isNumber } from "../../typeGuards/isNumber";
 import { sendTrackingEvent } from "../../utils/actions/sendTrackingEvent";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { MenuItem } from "../common/FilterMenu/types";
@@ -28,13 +27,10 @@ import {
   RegisterPayload,
   SetSpanLatestDataPayload,
   Test,
-  TestsData,
-  TestsProps
+  TestsData
 } from "./types";
 
-const REFRESH_INTERVAL = isNumber(window.testsRefreshInterval)
-  ? window.testsRefreshInterval
-  : 10 * 1000; // in milliseconds
+const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 
 const renderPagination = (
   data: TestsData["paging"],
@@ -68,7 +64,7 @@ const renderPagination = (
   );
 };
 
-export const Tests = (props: TestsProps) => {
+export const Tests = () => {
   const [data, setData] = useState<SetSpanLatestDataPayload>();
   const previousData = usePrevious(data);
   const refreshTimerId = useRef<number>();
@@ -83,6 +79,9 @@ export const Tests = (props: TestsProps) => {
   useState(false);
   const [isRegistrationInProgress, setIsRegistrationInProgress] =
     useState(false);
+  const isRegistrationEnabled = false;
+  const isRegistrationRequired =
+    isRegistrationEnabled && !config.userRegistrationEmail;
   const [selectedEnvironments, setSelectedEnvironments] = useState<string[]>(
     []
   );
@@ -199,14 +198,6 @@ export const Tests = (props: TestsProps) => {
     isRegistrationInProgress,
     previousUserRegistrationEmail
   ]);
-
-  useEffect(() => {
-    if (!props.data) {
-      return;
-    }
-
-    setData(props.data);
-  }, [props.data]);
 
   useEffect(() => {
     if (!previousData && data) {
@@ -334,18 +325,17 @@ export const Tests = (props: TestsProps) => {
       {testToOpenTicketPopup && (
         <s.Overlay onKeyDown={handleOverlayKeyDown} tabIndex={-1}>
           <s.PopupContainer>
-            {/* {config.userRegistrationEmail ? ( */}
-            {true ? ( // eslint-disable-line no-constant-condition
-              <TestTicket
-                test={testToOpenTicketPopup}
-                spanContexts={data?.data?.spanContexts ?? []}
-                onClose={closeJiraTicketPopup}
-              />
-            ) : (
+            {isRegistrationRequired ? (
               <RegistrationDialog
                 onSubmit={handleRegistrationSubmit}
                 onClose={handleRegistrationDialogClose}
                 isRegistrationInProgress={isRegistrationInProgress}
+              />
+            ) : (
+              <TestTicket
+                test={testToOpenTicketPopup}
+                spanContexts={data?.data?.spanContexts ?? []}
+                onClose={closeJiraTicketPopup}
               />
             )}
           </s.PopupContainer>

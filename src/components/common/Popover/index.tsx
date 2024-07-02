@@ -3,6 +3,7 @@
 import { PopoverContext, usePopover } from "./hooks";
 import { PopoverProps } from "./types";
 
+/** @deprecated */
 export function Popover({
   children,
   modal = false,

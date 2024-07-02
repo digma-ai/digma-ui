@@ -1,33 +1,9 @@
 import { useLayoutEffect } from "react";
-import { DefaultTheme, useTheme } from "styled-components";
 import { ChevronIcon } from "../icons/ChevronIcon";
 import { DoubleChevronIcon } from "../icons/DoubleChevronIcon";
 import { Direction } from "../icons/types";
 import * as s from "./styles";
 import { PaginationProps } from "./types";
-
-const getPaginationButtonIconColor = (
-  theme: DefaultTheme,
-  isDisabled: boolean
-) => {
-  if (isDisabled) {
-    switch (theme.mode) {
-      case "light":
-        return "#828797";
-      case "dark":
-      case "dark-jetbrains":
-        return "#9da0a8";
-    }
-  }
-
-  switch (theme.mode) {
-    case "light":
-      return "#494b57";
-    case "dark":
-    case "dark-jetbrains":
-      return "#dfe1e5";
-  }
-};
 
 export const Pagination = ({
   page,
@@ -36,8 +12,6 @@ export const Pagination = ({
   onPageChange,
   extendedNavigation
 }: PaginationProps) => {
-  const theme = useTheme();
-
   const pageCount = Math.ceil(itemsCount / pageSize);
 
   const isPrevDisabled = page === 0 || pageCount === 0;
@@ -65,7 +39,7 @@ export const Pagination = ({
               >
                 <DoubleChevronIcon
                   direction={Direction.LEFT}
-                  color={getPaginationButtonIconColor(theme, isPrevDisabled)}
+                  color={"currentColor"}
                   size={14}
                 />
               </s.Button>
@@ -76,7 +50,7 @@ export const Pagination = ({
             >
               <ChevronIcon
                 direction={Direction.LEFT}
-                color={getPaginationButtonIconColor(theme, isPrevDisabled)}
+                color={"currentColor"}
                 size={14}
               />
             </s.Button>
@@ -91,7 +65,7 @@ export const Pagination = ({
             >
               <ChevronIcon
                 direction={Direction.RIGHT}
-                color={getPaginationButtonIconColor(theme, isNextDisabled)}
+                color={"currentColor"}
                 size={14}
               />
             </s.Button>
@@ -102,7 +76,7 @@ export const Pagination = ({
               >
                 <DoubleChevronIcon
                   direction={Direction.RIGHT}
-                  color={getPaginationButtonIconColor(theme, isNextDisabled)}
+                  color={"currentColor"}
                   size={14}
                 />
               </s.Button>

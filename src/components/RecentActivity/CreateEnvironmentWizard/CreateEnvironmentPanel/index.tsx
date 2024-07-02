@@ -67,8 +67,10 @@ export const CreateEnvironmentPanel = ({
       {showCancelConfirmation && (
         <Overlay onClose={() => setShowCancelConfirmation(false)} tabIndex={-1}>
           <CancelConfirmation
-            header="Discard adding a new Environment?"
-            description="Are you sure that you want to stop adding new environment?"
+            header={"Discard adding a new Environment?"}
+            description={
+              "Are you sure that you want to stop adding new environment?"
+            }
             onClose={handleConfirmationClose}
             onCancel={handleConfirmationAccept}
           />

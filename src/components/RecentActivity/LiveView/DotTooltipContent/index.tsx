@@ -4,10 +4,10 @@ import { TooltipContent } from "../TooltipContent";
 import * as s from "./styles";
 import { DotTooltipContentProps } from "./types";
 
-export const DotTooltipContent = (
-  props: DotTooltipContentProps
-): JSX.Element => {
-  const date = new Date(props.data.dateTime);
+export const DotTooltipContent = ({
+  data
+}: DotTooltipContentProps): JSX.Element => {
+  const date = new Date(data.dateTime);
 
   return (
     <TooltipContent>
@@ -17,7 +17,7 @@ export const DotTooltipContent = (
           <s.Divider />
           {format(date, "MM/dd/yyyy")}
         </s.Timestamp>
-        {getDurationString(props.data.duration)}
+        {getDurationString(data.duration)}
       </s.Container>
     </TooltipContent>
   );

@@ -1,64 +1,41 @@
 import { useEffect } from "react";
-import { DefaultTheme, useTheme } from "styled-components";
+import { useTheme } from "styled-components";
 import { actions as globalActions } from "../../actions";
 import { SLACK_WORKSPACE_URL } from "../../constants";
 import { openURLInDefaultBrowser } from "../../utils/actions/openURLInDefaultBrowser";
 import { sendTrackingEvent } from "../../utils/actions/sendTrackingEvent";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
-import { addPrefix } from "../../utils/addPrefix";
 import { getThemeKind } from "../common/App/styles";
 import { CrossIcon } from "../common/icons/CrossIcon";
 import { DockerLogoIcon } from "../common/icons/DockerLogoIcon";
 import { GradleLogoIcon } from "../common/icons/GradleLogoIcon";
 import { SlackLogoIcon } from "../common/icons/SlackLogoIcon";
 import { TerminalIcon } from "../common/icons/TerminalIcon";
+import { actions } from "./actions";
 import * as s from "./styles";
+import { trackingEvents } from "./tracking";
 
-const ACTION_PREFIX = "TROUBLESHOOTING";
-
-const actions = addPrefix(ACTION_PREFIX, {
-  INITIALIZE: "INITIALIZE",
-  CLOSE: "CLOSE"
-});
-
-const TRACKING_PREFIX = "troubleshooting";
-
-export const trackingEvents = addPrefix(
-  TRACKING_PREFIX,
+const runOptions = [
   {
-    PAGE_LOADED: "page loaded",
-    RUN_OPTION_BUTTON_CLICKED: "run option button clicked",
-    CLOSE_BUTTON_CLICKED: "close button clicked",
-    SLACK_LINK_CLICKED: "slack link clicked"
+    key: "terminal",
+    icon: TerminalIcon,
+    label: "I Run it via Terminal"
   },
-  " "
-);
-
-const getRunOptionButtonIconColor = (theme: DefaultTheme) => {
-  switch (theme.mode) {
-    case "light":
-      return "#4d668a";
-    case "dark":
-    case "dark-jetbrains":
-      return "#dadada";
+  {
+    key: "docker",
+    icon: DockerLogoIcon,
+    label: "I Run it on Docker"
+  },
+  {
+    key: "gradle-tasks",
+    icon: GradleLogoIcon,
+    label: "I Run it using Native Gradle Tasks"
   }
-};
-
-const getCloseButtonIconColor = (theme: DefaultTheme) => {
-  switch (theme.mode) {
-    case "light":
-      return "#6e6e6e";
-    case "dark":
-    case "dark-jetbrains":
-      return "#9b9b9b";
-  }
-};
+];
 
 export const Troubleshooting = () => {
   const theme = useTheme();
   const themeKind = getThemeKind(theme);
-  const runOptionButtonIconColor = getRunOptionButtonIconColor(theme);
-  const closeButtonIconColor = getCloseButtonIconColor(theme);
 
   useEffect(() => {
     window.sendMessageToDigma({
@@ -67,24 +44,6 @@ export const Troubleshooting = () => {
 
     sendTrackingEvent(trackingEvents.PAGE_LOADED);
   }, []);
-
-  const runOptions = [
-    {
-      key: "terminal",
-      icon: TerminalIcon,
-      label: "I Run it via Terminal"
-    },
-    {
-      key: "docker",
-      icon: DockerLogoIcon,
-      label: "I Run it on Docker"
-    },
-    {
-      key: "gradle-tasks",
-      icon: GradleLogoIcon,
-      label: "I Run it using Native Gradle Tasks"
-    }
-  ];
 
   const handleCloseButtonClick = () => {
     sendUserActionTrackingEvent(trackingEvents.CLOSE_BUTTON_CLICKED);
@@ -117,7 +76,7 @@ export const Troubleshooting = () => {
       <s.Header>
         Not seeing your application data?
         <s.CloseButton onClick={handleCloseButtonClick}>
-          <CrossIcon color={closeButtonIconColor} size={14} />
+          <CrossIcon color={"currentColor"} size={14} />
         </s.CloseButton>
       </s.Header>
       <s.Section>
@@ -140,7 +99,7 @@ export const Troubleshooting = () => {
               onClick={() => handleRunOptionButtonClick(option.key)}
             >
               <s.IconContainer>
-                <option.icon size={24} color={runOptionButtonIconColor} />
+                <option.icon size={24} color={"currentColor"} />
               </s.IconContainer>
               {option.label}
             </s.RunOptionButton>

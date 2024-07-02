@@ -1,12 +1,10 @@
 import { useContext, useState } from "react";
-import { useTheme } from "styled-components";
-import { actions } from "../../../../../actions";
 import { PERCENTILES } from "../../../../../constants";
 import { isString } from "../../../../../typeGuards/isString";
-import { ChangeScopePayload } from "../../../../../types";
+import { changeScope } from "../../../../../utils/actions/changeScope";
 import { formatTimeDistance } from "../../../../../utils/formatTimeDistance";
-import { getInsightImportanceColor } from "../../../../../utils/getInsightImportanceColor";
 import { getInsightTypeInfo } from "../../../../../utils/getInsightTypeInfo";
+import { SCOPE_CHANGE_EVENTS } from "../../../../Main/types";
 import { ConfigContext } from "../../../../common/App/ConfigContext";
 import { Badge } from "../../../../common/Badge";
 import { Card } from "../../../../common/Card";
@@ -33,9 +31,22 @@ const IS_NEW_TIME_LIMIT = 1000 * 60 * 10; // in milliseconds
 
 /**
  * @deprecated
- * safe to delete after the implementation of all the insights with new UI
+ * safe to delete after the implementation of all the deprecated insight cards with new UI
  */
-export const InsightCard = (props: InsightCardProps) => {
+export const InsightCard = ({
+  data,
+  onRecalculate,
+  onPercentileViewModeChange,
+  onRefresh,
+  spanInfo,
+  isRecent,
+  isAsync,
+  menuItems,
+  stats,
+  expandableContent,
+  content,
+  buttons
+}: InsightCardProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isKebabMenuOpen, setIsKebabMenuOpen] = useState(false);
   const [percentileViewMode, setPercentileViewMode] =
@@ -43,12 +54,7 @@ export const InsightCard = (props: InsightCardProps) => {
   const [isRecalculatingStarted, setIsRecalculatingStarted] = useState(false);
   const { scope } = useContext(ConfigContext);
 
-  const theme = useTheme();
-  const insightTypeInfo = getInsightTypeInfo(props.data.type);
-  const insightIconColor = getInsightImportanceColor(
-    props.data.importance,
-    theme
-  );
+  const insightTypeInfo = getInsightTypeInfo(data.type);
 
   const handleKebabMenuButtonToggle = () => {
     setIsKebabMenuOpen(!isKebabMenuOpen);
@@ -56,7 +62,7 @@ export const InsightCard = (props: InsightCardProps) => {
 
   const handleKebabMenuItemSelect = (value: string) => {
     if (value === RECALCULATE) {
-      props.onRecalculate(props.data.id, props.data.type);
+      onRecalculate(data.id, data.type);
       setIsRecalculatingStarted(true);
     }
 
@@ -70,13 +76,14 @@ export const InsightCard = (props: InsightCardProps) => {
   const handlePercentileToggleValueChange = (value: ToggleValue) => {
     if (value !== percentileViewMode) {
       setPercentileViewMode(value as number);
-      props.onPercentileViewModeChange &&
-        props.onPercentileViewModeChange(value as number);
+      if (onPercentileViewModeChange) {
+        onPercentileViewModeChange(value as number);
+      }
     }
   };
 
   const handleRefreshLinkClick = () => {
-    props.onRefresh(props.data.type);
+    onRefresh(data.type);
   };
 
   const renderRecalculationBlock = (
@@ -84,7 +91,7 @@ export const InsightCard = (props: InsightCardProps) => {
     customStartTime: string | null,
     isRecalculatingStarted: boolean
   ) => {
-    if (!props.data.customStartTime && !isRecalculatingStarted) {
+    if (!data.customStartTime && !isRecalculatingStarted) {
       return;
     }
 
@@ -123,19 +130,18 @@ export const InsightCard = (props: InsightCardProps) => {
     }
   };
 
-  const isNew = isString(props.data.firstDetected)
-    ? Date.now() - new Date(props.data.firstDetected).valueOf() <
-      IS_NEW_TIME_LIMIT
+  const isNew = isString(data.firstDetected)
+    ? Date.now() - new Date(data.firstDetected).valueOf() < IS_NEW_TIME_LIMIT
     : false;
 
   const handleTitleLinkClick = () => {
-    if (props.spanInfo) {
-      window.sendMessageToDigma<ChangeScopePayload>({
-        action: actions.CHANGE_SCOPE,
-        payload: {
-          span: {
-            spanCodeObjectId: props.spanInfo.spanCodeObjectId
-          }
+    if (spanInfo) {
+      changeScope({
+        span: {
+          spanCodeObjectId: spanInfo.spanCodeObjectId
+        },
+        context: {
+          event: SCOPE_CHANGE_EVENTS.INSIGHTS_INSIGHT_CARD_ASSET_LINK_CLICKED
         }
       });
     }
@@ -144,15 +150,15 @@ export const InsightCard = (props: InsightCardProps) => {
   return (
     <>
       <Card
-        showTitle={Boolean(!scope?.span && props.spanInfo)}
+        showTitle={Boolean(!scope?.span && spanInfo)}
         title={
           <s.Title>
             <s.TitleIconContainer>
               <OpenTelemetryLogoIcon color={"currentColor"} />
             </s.TitleIconContainer>
-            <Tooltip title={props.spanInfo?.displayName}>
+            <Tooltip title={spanInfo?.displayName}>
               <s.TitleLink onClick={handleTitleLinkClick}>
-                {props.spanInfo?.displayName}
+                {spanInfo?.displayName}
               </s.TitleLink>
             </Tooltip>
           </s.Title>
@@ -160,17 +166,17 @@ export const InsightCard = (props: InsightCardProps) => {
         header={
           <>
             <s.Header>
-              <s.InsightIconContainer>
-                {props.isRecent && (
+              <s.InsightIconContainer $importance={data.importance}>
+                {isRecent && (
                   <s.BadgeContainer>
                     <Badge />
                   </s.BadgeContainer>
                 )}
                 {insightTypeInfo && (
-                  <insightTypeInfo.icon color={insightIconColor} size={16} />
+                  <insightTypeInfo.icon color={"currentColor"} size={16} />
                 )}
               </s.InsightIconContainer>
-              {insightTypeInfo?.label ?? props.data.type}
+              {insightTypeInfo?.label ?? data.type}
               {insightTypeInfo?.description && (
                 <Tooltip title={<insightTypeInfo.description />}>
                   <s.InfoContainer>
@@ -181,9 +187,9 @@ export const InsightCard = (props: InsightCardProps) => {
             </s.Header>
             <s.Toolbar>
               {isNew && <Tag type={"success"} value={"New"} />}
-              {props.isAsync && <s.AsyncBadge>Async</s.AsyncBadge>}
-              {props.stats && <s.Stats>{props.stats}</s.Stats>}
-              {(props.menuItems ?? props.data.isRecalculateEnabled) && (
+              {isAsync && <s.AsyncBadge>Async</s.AsyncBadge>}
+              {stats && <s.Stats>{stats}</s.Stats>}
+              {(menuItems ?? data.isRecalculateEnabled) && (
                 <Popover
                   open={isKebabMenuOpen}
                   onOpenChange={setIsKebabMenuOpen}
@@ -195,11 +201,11 @@ export const InsightCard = (props: InsightCardProps) => {
                   <PopoverContent className={"Popover"} width={"max-content"}>
                     <Menu
                       items={[
-                        ...(props.data.isRecalculateEnabled
+                        ...(data.isRecalculateEnabled
                           ? [{ value: RECALCULATE, label: "Recalculate" }]
                           : []),
-                        ...(props.menuItems
-                          ? props.menuItems.map((x) => ({ value: x, label: x }))
+                        ...(menuItems
+                          ? menuItems.map((x) => ({ value: x, label: x }))
                           : [])
                       ]}
                       onSelect={handleKebabMenuItemSelect}
@@ -207,10 +213,10 @@ export const InsightCard = (props: InsightCardProps) => {
                   </PopoverContent>
                 </Popover>
               )}
-              {props.expandableContent && (
+              {expandableContent && (
                 <s.ExpandButton onClick={handleExpandButtonClick}>
                   <ChevronIcon
-                    color={theme.mode === "light" ? "#828797" : "#b9c2eb"}
+                    color={"currentColor"}
                     direction={isExpanded ? Direction.UP : Direction.DOWN}
                     size={14}
                   />
@@ -221,7 +227,7 @@ export const InsightCard = (props: InsightCardProps) => {
         }
         content={
           <>
-            {props.onPercentileViewModeChange && (
+            {onPercentileViewModeChange && (
               <Toggle
                 options={PERCENTILES.map((percentile) => ({
                   value: percentile.percentile,
@@ -231,28 +237,26 @@ export const InsightCard = (props: InsightCardProps) => {
                 onValueChange={handlePercentileToggleValueChange}
               />
             )}
-            {props.data.actualStartTime &&
+            {data.actualStartTime &&
               renderRecalculationBlock(
-                props.data.actualStartTime,
-                props.data.customStartTime,
+                data.actualStartTime,
+                data.customStartTime,
                 isRecalculatingStarted
               )}
-            {props.content && (
-              <s.ContentContainer>{props.content}</s.ContentContainer>
-            )}
-            {props.expandableContent && (
+            {content && <s.ContentContainer>{content}</s.ContentContainer>}
+            {expandableContent && (
               <span>
                 <Link onClick={handleExpandButtonClick}>
                   Show {isExpanded ? "less" : "more"}
                 </Link>
               </span>
             )}
-            {isExpanded && props.expandableContent && (
-              <s.ContentContainer>{props.expandableContent}</s.ContentContainer>
+            {isExpanded && expandableContent && (
+              <s.ContentContainer>{expandableContent}</s.ContentContainer>
             )}
           </>
         }
-        buttons={props.buttons}
+        buttons={buttons}
       />
     </>
   );

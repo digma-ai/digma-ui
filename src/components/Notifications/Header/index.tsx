@@ -14,23 +14,12 @@ const getIconColor = (theme: DefaultTheme) => {
   }
 };
 
-const getCloseButtonIconColor = (theme: DefaultTheme) => {
-  switch (theme.mode) {
-    case "light":
-      return "#818594";
-    case "dark":
-    case "dark-jetbrains":
-      return "#b4b8bf";
-  }
-};
-
-export const Header = (props: HeaderProps) => {
+export const Header = ({ onClose }: HeaderProps) => {
   const theme = useTheme();
   const iconColor = getIconColor(theme);
-  const closeButtonIconColor = getCloseButtonIconColor(theme);
 
   const handleCloseButtonClick = () => {
-    props.onClose();
+    onClose();
   };
 
   return (
@@ -40,7 +29,7 @@ export const Header = (props: HeaderProps) => {
         Notifications
       </s.Title>
       <s.CloseButton onClick={handleCloseButtonClick}>
-        <CrossIcon color={closeButtonIconColor} size={14} />
+        <CrossIcon color={"currentColor"} size={14} />
       </s.CloseButton>
     </s.Container>
   );

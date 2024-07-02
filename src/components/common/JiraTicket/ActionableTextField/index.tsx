@@ -1,18 +1,24 @@
 import * as s from "./styles";
 import { TextFieldProps as ActionableTextFieldProps } from "./types";
 
-export const ActionableTextField = (props: ActionableTextFieldProps) => {
-  return (
-    <s.TextFieldContainer>
-      <s.Label>{props.label}</s.Label>
-      <s.RelativeTextField
-        placeholder={props.placeholder ?? ""}
-        value={props.value ?? ""}
-        onChange={props.onChange}
-        disabled={props.disabled}
-        inputEndContent={<s.ButtonContainer>{props.buttons}</s.ButtonContainer>}
-      />
-      <s.ErrorMessage>{props.errorMessage}</s.ErrorMessage>
-    </s.TextFieldContainer>
-  );
-};
+export const ActionableTextField = ({
+  label,
+  placeholder,
+  value,
+  onChange,
+  disabled,
+  buttons,
+  errorMessage
+}: ActionableTextFieldProps) => (
+  <s.TextFieldContainer>
+    <s.Label>{label}</s.Label>
+    <s.RelativeTextField
+      placeholder={placeholder ?? ""}
+      value={value ?? ""}
+      onChange={onChange}
+      disabled={disabled}
+      inputEndContent={<s.ButtonContainer>{buttons}</s.ButtonContainer>}
+    />
+    <s.ErrorMessage>{errorMessage}</s.ErrorMessage>
+  </s.TextFieldContainer>
+);

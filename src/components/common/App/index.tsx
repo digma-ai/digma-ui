@@ -2,14 +2,13 @@ import { useContext, useEffect, useState } from "react";
 import { ThemeProvider } from "styled-components";
 import { actions } from "../../../actions";
 import { dispatcher } from "../../../dispatcher";
-import { Mode } from "../../../globals";
+import { Theme } from "../../../globals";
 import { isBoolean } from "../../../typeGuards/isBoolean";
-import { isEnvironment } from "../../../typeGuards/isEnvironment";
 import { isNull } from "../../../typeGuards/isNull";
 import { isObject } from "../../../typeGuards/isObject";
 import { isString } from "../../../typeGuards/isString";
 import { ConfigContext } from "./ConfigContext";
-import { getTheme } from "./getTheme";
+import { getStyledComponentsTheme } from "./getTheme";
 import { GlobalStyle } from "./styles";
 import {
   AppProps,
@@ -30,8 +29,8 @@ export const isBackendInfo = (info: unknown): info is BackendInfo =>
   isString(info.applicationVersion) &&
   isString(info.deploymentType);
 
-const isMode = (mode: unknown): mode is Mode =>
-  isString(mode) && THEMES.includes(mode);
+const isTheme = (theme: unknown): theme is Theme =>
+  isString(theme) && THEMES.includes(theme);
 
 export const isDigmaStatus = (status: unknown): status is DigmaStatus =>
   isObject(status) &&
@@ -39,8 +38,8 @@ export const isDigmaStatus = (status: unknown): status is DigmaStatus =>
   (isString(status.connection.type) || isNull(status.connection.type)) &&
   Array.isArray(status.runningDigmaInstances);
 
-const getMode = (): Mode => {
-  if (!isMode(window.theme)) {
+const getTheme = (): Theme => {
+  if (!isTheme(window.theme)) {
     const bodyEl = document.getElementsByTagName("body");
     const vscodeTheme =
       bodyEl[0].dataset.vscodeThemeKind === "vscode-light" ? "light" : "dark";
@@ -53,22 +52,22 @@ const getMode = (): Mode => {
 const defaultMainFont = isString(window.mainFont) ? window.mainFont : "";
 const defaultCodeFont = isString(window.codeFont) ? window.codeFont : "";
 
-export const App = (props: AppProps) => {
-  const [mode, setMode] = useState(getMode());
+export const App = ({ theme, children }: AppProps) => {
+  const [currentTheme, setCurrentTheme] = useState(theme ?? getTheme());
   const [mainFont, setMainFont] = useState(defaultMainFont);
   const [codeFont, setCodeFont] = useState(defaultCodeFont);
   const [config, setConfig] = useState(useContext(ConfigContext));
 
   useEffect(() => {
-    if (props.theme) {
-      setMode(props.theme);
+    if (theme) {
+      setCurrentTheme(theme);
     }
-  }, [props.theme]);
+  }, [theme]);
 
   useEffect(() => {
     const handleSetTheme = (data: unknown) => {
-      if (isObject(data) && isMode(data.theme)) {
-        setMode(data.theme);
+      if (isObject(data) && isTheme(data.theme)) {
+        setCurrentTheme(data.theme);
       }
     };
 
@@ -165,15 +164,6 @@ export const App = (props: AppProps) => {
       }
     };
 
-    const handleSetEnvironment = (data: unknown) => {
-      if (isObject(data) && isEnvironment(data?.environment)) {
-        setConfig((config) => ({
-          ...config,
-          environment: data.environment as Environment
-        }));
-      }
-    };
-
     const handleIsObservabilityEnabled = (data: unknown) => {
       if (isObject(data) && isBoolean(data.isObservabilityEnabled)) {
         setConfig((config) => ({
@@ -194,17 +184,18 @@ export const App = (props: AppProps) => {
 
     const handleSetEnvironments = (data: unknown) => {
       if (isObject(data) && Array.isArray(data.environments)) {
-        setConfig((config) => ({
-          ...config,
-          environments: data.environments as Environment[]
-        }));
+        setConfig((config) => {
+          const environments = data.environments as Environment[];
+          const environment = environments.find(
+            (x) => x.id === config.environment?.id
+          );
 
-        if (!data.environments.length) {
-          setConfig((config) => ({
+          return {
             ...config,
-            environment: null
-          }));
-        }
+            environments,
+            environment
+          };
+        });
       }
     };
 
@@ -218,10 +209,18 @@ export const App = (props: AppProps) => {
     };
 
     const handleSetScope = (data: unknown) => {
-      setConfig((config) => ({
-        ...config,
-        scope: data as Scope
-      }));
+      setConfig((config) => {
+        const scope = data as Scope;
+        const environment = scope.environmentId
+          ? config.environments?.find((x) => x.id === scope.environmentId)
+          : config.environment;
+
+        return {
+          ...config,
+          scope,
+          environment
+        };
+      });
     };
 
     const handleSetUserInfo = (data: unknown) => {
@@ -317,7 +316,6 @@ export const App = (props: AppProps) => {
       actions.SET_USER_REGISTRATION_EMAIL,
       handleSetUserRegistrationEmail
     );
-    dispatcher.addActionListener(actions.SET_ENVIRONMENT, handleSetEnvironment);
     dispatcher.addActionListener(
       actions.SET_IS_OBSERVABILITY_ENABLED,
       handleIsObservabilityEnabled
@@ -396,10 +394,6 @@ export const App = (props: AppProps) => {
         handleSetUserRegistrationEmail
       );
       dispatcher.removeActionListener(
-        actions.SET_ENVIRONMENT,
-        handleSetEnvironment
-      );
-      dispatcher.removeActionListener(
         actions.SET_IS_OBSERVABILITY_ENABLED,
         handleIsObservabilityEnabled
       );
@@ -439,13 +433,17 @@ export const App = (props: AppProps) => {
     };
   }, []);
 
-  const theme = getTheme(mode, mainFont, codeFont);
+  const styledComponentsTheme = getStyledComponentsTheme(
+    currentTheme,
+    mainFont,
+    codeFont
+  );
 
   return (
     <ConfigContext.Provider value={config}>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={styledComponentsTheme}>
         <GlobalStyle />
-        {props.children}
+        {children}
       </ThemeProvider>
     </ConfigContext.Provider>
   );

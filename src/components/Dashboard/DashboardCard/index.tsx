@@ -1,17 +1,22 @@
 import * as s from "./styles";
 import { DashboardCardProps } from "./types";
 
-export const DashboardCard = (props: DashboardCardProps) => (
+export const DashboardCard = ({
+  title,
+  icon: Icon,
+  headerContent,
+  content
+}: DashboardCardProps) => (
   <s.Container>
     <s.Header>
       <s.Title>
         <s.IconContainer>
-          <props.icon size={16} color={"currentColor"} />
+          <Icon size={16} color={"currentColor"} />
         </s.IconContainer>
-        {props.title}
+        {title}
       </s.Title>
-      {props.headerContent}
+      {headerContent}
     </s.Header>
-    {props.content}
+    {content}
   </s.Container>
 );

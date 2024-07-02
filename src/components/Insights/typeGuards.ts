@@ -5,21 +5,16 @@ import {
   CodeObjectInsight,
   EndpointBottleneckInsight,
   EndpointBreakdownInsight,
-  EndpointChattyApiInsight,
   EndpointChattyApiV2Insight,
-  EndpointDurationSlowdownInsight,
   EndpointHighNumberOfQueriesInsight,
   EndpointHighUsageInsight,
   EndpointInsight,
   EndpointLowUsageInsight,
   EndpointNormalUsageInsight,
-  EndpointQueryOptimizationInsight,
   EndpointQueryOptimizationV2Insight,
   EndpointSessionInViewInsight,
   EndpointSlowdownSourceInsight,
-  EndpointSlowestSpansInsight,
   EndpointSpanNPlusOneInsight,
-  EndpointSuspectedNPlusOneInsight,
   GenericFunctionInsight,
   InsightScope,
   SlowEndpointInsight,
@@ -81,15 +76,6 @@ export const isEndpointHighUsageInsight = (
 ): insight is EndpointHighUsageInsight =>
   insight.type === InsightType.HighUsage;
 
-/**
- * @deprecated
- * safe to delete after 2024-06-05
- */
-export const isEndpointSlowestSpansInsight = (
-  insight: CodeObjectInsight
-): insight is EndpointSlowestSpansInsight =>
-  insight.type === InsightType.SlowestSpans;
-
 export const isEndpointBottleneckInsight = (
   insight: CodeObjectInsight
 ): insight is EndpointBottleneckInsight =>
@@ -103,28 +89,10 @@ export const isSpanNPlusOneInsight = (
   insight: CodeObjectInsight
 ): insight is SpaNPlusOneInsight => insight.type === InsightType.SpaNPlusOne;
 
-/**
- * @deprecated
- * safe to delete after 2024-06-05
- */
-export const isEndpointSuspectedNPlusOneInsight = (
-  insight: CodeObjectInsight
-): insight is EndpointSuspectedNPlusOneInsight =>
-  insight.type === InsightType.EndpointSpaNPlusOne;
-
 export const isEndpointSpanNPlusOneInsight = (
   insight: CodeObjectInsight
 ): insight is EndpointSpanNPlusOneInsight =>
   insight.type === InsightType.EndpointSpanNPlusOne;
-
-/**
- * @deprecated
- * safe to delete after 2024-06-05
- */
-export const isEndpointQueryOptimizationInsight = (
-  insight: CodeObjectInsight
-): insight is EndpointQueryOptimizationInsight =>
-  insight.type === InsightType.EndpointQueryOptimization;
 
 export const isEndpointQueryOptimizationV2Insight = (
   insight: CodeObjectInsight
@@ -148,15 +116,6 @@ export const isEndpointSlowdownSourceInsight = (
 ): insight is EndpointSlowdownSourceInsight =>
   insight.type === InsightType.EndpointSlowdownSource;
 
-/**
- * @deprecated
- * safe to delete after 2024-06-05
- */
-export const isEndpointDurationSlowdownInsight = (
-  insight: CodeObjectInsight
-): insight is EndpointDurationSlowdownInsight =>
-  insight.type === InsightType.EndpointDurationSlowdown;
-
 export const isEndpointBreakdownInsight = (
   insight: CodeObjectInsight
 ): insight is EndpointBreakdownInsight =>
@@ -176,15 +135,6 @@ export const isSessionInViewEndpointInsight = (
   insight: CodeObjectInsight
 ): insight is EndpointSessionInViewInsight =>
   insight.type === InsightType.EndpointSessionInView;
-
-/**
- * @deprecated
- * safe to delete after 2024-06-05
- */
-export const isChattyApiEndpointInsight = (
-  insight: CodeObjectInsight
-): insight is EndpointChattyApiInsight =>
-  insight.type === InsightType.EndpointChattyApi;
 
 export const isEndpointChattyApiV2Insight = (
   insight: CodeObjectInsight

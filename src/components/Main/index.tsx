@@ -1,165 +1,172 @@
-import { useContext, useLayoutEffect, useState } from "react";
-import { ROUTES } from "../../constants";
+import { useContext, useEffect, useLayoutEffect } from "react";
+import { Outlet, matchPath, useLocation } from "react-router-dom";
+import { actions as globalActions } from "../../actions";
+import { history } from "../../containers/Main/history";
 import { dispatcher } from "../../dispatcher";
-import { usePersistence } from "../../hooks/usePersistence";
-import { sendTrackingEvent } from "../../utils/actions/sendTrackingEvent";
-import { Assets } from "../Assets";
-import { Errors } from "../Errors";
-import { Highlights } from "../Highlights";
-import { Insights } from "../Insights";
+import { HistoryEntryLocation } from "../../history/History";
+import { logger } from "../../logging";
 import { Navigation } from "../Navigation";
-import { SetViewsPayload } from "../Navigation/types";
-import { Tests } from "../Tests";
+import { TAB_IDS } from "../Navigation/Tabs/types";
 import { ConfigContext } from "../common/App/ConfigContext";
-import { CancelConfirmation } from "../common/CancelConfirmation";
+import { Scope } from "../common/App/types";
 import { Authentication } from "./Authentication";
-import { RegistrationCard } from "./RegistrationCard";
 import { actions } from "./actions";
 import * as s from "./styles";
-import { trackingEvents } from "./tracking";
-import { ViewData } from "./types";
+import { isScopeWithCodeLensContext } from "./typeGuards";
+import { HistoryState, SCOPE_CHANGE_EVENTS } from "./types";
+import { useBrowserLocationUpdater } from "./updateBrowserLocationUpdater";
+import { useHistory } from "./useHistory";
 
-const PROMOTION_KEY = "PROMOTION";
-const PROMOTION_COMPLETED_KEY = "PROMOTION_COMPLETED";
-const PROMOTION_DELAY_IN_DAYS = 30;
+export const MAIN_CONTAINER_ID = "mainContainer";
 
-const getDaysDiff = (left: number, right: number) => {
-  const DifferenceInTime = new Date(left).valueOf() - new Date(right).valueOf();
-  const DifferenceInDays = Math.ceil(DifferenceInTime / (1000 * 3600 * 24));
-  return Math.abs(DifferenceInDays);
+const getURLToNavigateOnCodeLensClick = (scope: Scope): string | undefined => {
+  if (!isScopeWithCodeLensContext(scope)) {
+    return;
+  }
+
+  const codeLens = scope.context.payload.codeLens;
+  if (!codeLens.scopeCodeObjectId.startsWith("span:")) {
+    return;
+  }
+
+  if (codeLens.importance <= 4) {
+    return `/${TAB_IDS.ISSUES}`;
+  }
+
+  if (codeLens.lensTitle.toLocaleLowerCase().includes("runtime data")) {
+    return `/${TAB_IDS.HIGHLIGHTS}`;
+  }
 };
 
 export const Main = () => {
-  const [view, setView] = useState<ViewData>({ id: ROUTES.INSIGHTS });
-  const [showRegistration, setShowRegistration] = useState(false);
-  const [showDiscardConfirmation, setShowDiscardConfirmation] = useState(false);
+  const location = useLocation();
   const config = useContext(ConfigContext);
-  const [dismissalDate, setDismissalDate] = usePersistence<number>(
-    PROMOTION_KEY,
-    "application"
-  );
-  const [promotionCompleted, setPromotionCompleted] = usePersistence<boolean>(
-    PROMOTION_COMPLETED_KEY,
-    "application"
-  );
+  const { goTo } = useHistory();
+  const updateBrowserLocation = useBrowserLocationUpdater();
 
-  const hidePromotion =
-    dismissalDate &&
-    getDaysDiff(dismissalDate, Date.now()) < PROMOTION_DELAY_IN_DAYS;
+  useEffect(() => {
+    // clear the history in following cases:
+    // 1) there are no environments
+    // 2) selected environment is not exist in the list of environments
+    // 3) scope is not exist in the current environment
+    if (
+      !config.environments ||
+      config.environments.length === 0 ||
+      Boolean(
+        config.environment &&
+          !config.environments?.find((x) => x.id == config.environment?.id)
+      ) ||
+      (config.scope?.span && !config.scope.span.displayName)
+    ) {
+      history.clear();
+    }
+  }, [config.environments, config.environment, config.scope?.span]);
 
-  const handleRegistrationCompleted = () => {
-    sendTrackingEvent(trackingEvents.PROMOTION_REGISTRATION_SUBMITTED);
-    setPromotionCompleted(true);
-  };
+  useEffect(() => {
+    const handleSetScope = (data: unknown) => {
+      const scope = data as Scope;
+      logger.debug("[SCOPE CHANGE]: ", scope);
 
-  const handleRegistrationClose = () => {
-    sendTrackingEvent(trackingEvents.PROMOTION_REGISTRATION_CLOSED_CLICKED);
-    setShowRegistration(false);
-  };
+      const state: HistoryState = {
+        environmentId: scope.environmentId ?? config.environment?.id,
+        spanCodeObjectId: scope.span?.spanCodeObjectId
+      };
 
-  const handleCloseCancelConfirmation = () => {
-    sendTrackingEvent(
-      trackingEvents.PROMOTION_CANCEL_CONFIRMATION_CLOSE_CLICKED
-    );
-    setShowDiscardConfirmation(false);
-  };
+      if (scope?.context) {
+        switch (scope.context.event) {
+          case SCOPE_CHANGE_EVENTS.HISTORY_NAVIGATED as string: {
+            updateBrowserLocation(
+              scope.context.payload?.location as HistoryEntryLocation
+            );
+            break;
+          }
+          case SCOPE_CHANGE_EVENTS.HISTORY_CLEARED as string:
+            goTo(`/${TAB_IDS.ISSUES}`, {
+              state: {
+                environmentId: (
+                  scope.context.payload as {
+                    environmentId: string | undefined;
+                  }
+                ).environmentId,
+                spanCodeObjectId: scope.span?.spanCodeObjectId
+              }
+            });
+            break;
+          case SCOPE_CHANGE_EVENTS.JAEGER_SPAN_LINK_CLICKED as string:
+          case SCOPE_CHANGE_EVENTS.ASSETS_ASSET_CARD_TITLE_LINK_CLICKED as string:
+            goTo(`/${TAB_IDS.HIGHLIGHTS}`, { state });
+            break;
+          case SCOPE_CHANGE_EVENTS.HIGHLIGHTS_TOP_ISSUES_CARD_ITEM_CLICKED as string:
+          case SCOPE_CHANGE_EVENTS.HIGHLIGHTS_SCALING_CARD_ITEM_CLICKED as string:
+            goTo(`/${TAB_IDS.ISSUES}`, { state });
+            break;
+          case SCOPE_CHANGE_EVENTS.HIGHLIGHTS_PERFORMANCE_CARD_ITEM_CLICKED as string:
+          case SCOPE_CHANGE_EVENTS.HIGHLIGHTS_IMPACT_CARD_ITEM_CLICKED as string:
+            goTo(`/${TAB_IDS.ANALYTICS}`, { state });
+            break;
+          case SCOPE_CHANGE_EVENTS.NAVIGATION_HOME_BUTTON_CLICKED as string:
+            if (matchPath(window.location.pathname, TAB_IDS.ASSETS)) {
+              goTo(`/${TAB_IDS.ASSETS}`);
+              break;
+            }
+            goTo(`/${TAB_IDS.ISSUES}`);
+            break;
+          case SCOPE_CHANGE_EVENTS.IDE_CODE_LENS_CLICKED as string: {
+            const url = getURLToNavigateOnCodeLensClick(scope);
+            if (url) {
+              goTo(url, { state });
+              break;
+            }
+          }
+          // falls through
+          case SCOPE_CHANGE_EVENTS.DASHBOARD_SLOW_QUERIES_WIDGET_ITEM_LINK_CLICKED as string:
+          case SCOPE_CHANGE_EVENTS.DASHBOARD_CLIENT_SPANS_PERFORMANCE_IMPACT_WIDGET_ITEM_LINK_CLICKED as string:
+          case SCOPE_CHANGE_EVENTS.NAVIGATION_CODE_BUTTON_CLICKED as string:
+          case SCOPE_CHANGE_EVENTS.HIGHLIGHTS_TOP_ISSUES_CARD_ASSET_LINK_CLICKED as string:
+          case SCOPE_CHANGE_EVENTS.INSIGHTS_INSIGHT_CARD_TITLE_ASSET_LINK_CLICKED as string:
+          case SCOPE_CHANGE_EVENTS.INSIGHTS_INSIGHT_CARD_ASSET_LINK_CLICKED as string:
+          case SCOPE_CHANGE_EVENTS.TESTS_TEST_CARD_TITLE_LINK_CLICKED as string:
+          case SCOPE_CHANGE_EVENTS.NOTIFICATIONS_NOTIFICATION_CARD_ASSET_LINK_CLICKED as string:
+          case SCOPE_CHANGE_EVENTS.RECENT_ACTIVITY_SPAN_LINK_CLICKED as string:
+          default:
+            scope.issuesInsightsCount > 0
+              ? goTo(`/${TAB_IDS.ISSUES}`, { state })
+              : goTo(`/${TAB_IDS.ANALYTICS}`, { state });
+        }
+      } else {
+        goTo(location, { state });
+      }
+    };
 
-  const handleShowPromotionOpen = () => {
-    sendTrackingEvent(trackingEvents.PROMOTION_REGISTRATION_OPENED);
-    setShowRegistration(true);
-  };
+    dispatcher.addActionListener(globalActions.SET_SCOPE, handleSetScope);
 
-  const handlePromotionDiscard = () => {
-    sendTrackingEvent(trackingEvents.PROMOTION_DISCARDED);
-    setShowDiscardConfirmation(true);
-  };
-
-  const handleAcceptCancelConfirmation = () => {
-    sendTrackingEvent(
-      trackingEvents.PROMOTION_CANCEL_CONFIRMATION_ACCEPT_CLICKED
-    );
-    setDismissalDate(Date.now());
-    setShowDiscardConfirmation(false);
-  };
-
-  const handleConfirmationClosed = () => {
-    setShowDiscardConfirmation(false);
-  };
+    return () => {
+      dispatcher.removeActionListener(globalActions.SET_SCOPE, handleSetScope);
+    };
+  }, [
+    goTo,
+    location,
+    config.environments,
+    config.environment,
+    updateBrowserLocation
+  ]);
 
   useLayoutEffect(() => {
     window.sendMessageToDigma({
       action: actions.INITIALIZE
     });
-
-    const handleSetViewsData = (data: unknown) => {
-      const payload = data as SetViewsPayload;
-      const view = payload.views.find((x) => x.isSelected);
-      if (view) {
-        setView({ id: view.id, path: view.path });
-      }
-    };
-
-    dispatcher.addActionListener(actions.SET_VIEWS, handleSetViewsData);
-
-    return () => {
-      dispatcher.removeActionListener(actions.SET_VIEWS, handleSetViewsData);
-    };
   }, [config.userInfo?.id]);
 
   if (!config.userInfo?.id && config.backendInfo?.centralize) {
     return <Authentication />;
   }
 
-  const renderContent = () => {
-    switch (view.id) {
-      case ROUTES.HIGHLIGHTS:
-        return <Highlights />;
-      case ROUTES.INSIGHTS:
-        return (
-          <Insights
-            insightViewType={"Issues"}
-            key={"insights"}
-            onShowPromotion={handleShowPromotionOpen}
-            onShowPromotionConfirmationDiscard={handlePromotionDiscard}
-            hidePromotion={
-              Boolean(hidePromotion) || Boolean(promotionCompleted)
-            }
-          />
-        );
-      case ROUTES.ASSETS:
-        return <Assets selectedTypeId={view.path} />;
-      case ROUTES.ANALYTICS:
-        return <Insights insightViewType={"Analytics"} key={"analytics"} />;
-      case ROUTES.ERRORS:
-        return <Errors errorId={view.path} />;
-      case ROUTES.TESTS:
-        return <Tests />;
-      default:
-        return null;
-    }
-  };
-
   return (
-    <s.Container>
+    <s.Container id={MAIN_CONTAINER_ID}>
       <Navigation />
-      <s.ContentContainer>{renderContent()}</s.ContentContainer>
-      {showDiscardConfirmation && (
-        <s.StyledOverlay onClose={handleConfirmationClosed} tabIndex={-1}>
-          <CancelConfirmation
-            header="Discard offer?"
-            description="Are you sure you want to miss out on this exclusive, limited-time offer?"
-            cancelBtnText="Yes, discard"
-            onClose={handleCloseCancelConfirmation}
-            onCancel={handleAcceptCancelConfirmation}
-          />
-        </s.StyledOverlay>
-      )}
-
-      <RegistrationCard
-        onClose={handleRegistrationClose}
-        onComplete={handleRegistrationCompleted}
-        show={showRegistration}
-      />
+      <s.ContentContainer>
+        <Outlet />
+      </s.ContentContainer>
     </s.Container>
   );
 };

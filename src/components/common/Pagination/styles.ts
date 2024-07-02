@@ -27,9 +27,27 @@ export const Button = styled.button`
   cursor: pointer;
   display: flex;
   align-items: center;
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#494b57";
+      case "dark":
+      case "dark-jetbrains":
+        return "#dfe1e5";
+    }
+  }};
 
   &:disabled {
     cursor: initial;
+    color: ${({ theme }) => {
+      switch (theme.mode) {
+        case "light":
+          return "#828797";
+        case "dark":
+        case "dark-jetbrains":
+          return "#9da0a8";
+      }
+    }};
   }
 `;
 

@@ -4,7 +4,7 @@ import useScrollbarSize from "react-scrollbar-size";
 import * as s from "./styles";
 import { ButtonPosition, FieldProps } from "./types";
 
-export const Field = (props: FieldProps) => {
+export const Field = ({ multiline, children, button }: FieldProps) => {
   const scrollbar = useScrollbarSize();
   const contentRef = useRef<HTMLDivElement | null>(null);
   const { observe } = useDimensions();
@@ -23,18 +23,17 @@ export const Field = (props: FieldProps) => {
       ? scrollbar.width
       : 0;
 
-  const iconPosition: ButtonPosition =
-    props.multiline === true ? "top" : "center";
+  const iconPosition: ButtonPosition = multiline === true ? "top" : "center";
 
   return (
     <s.ContentContainer>
-      <s.Content ref={getContentRef} $multiline={props.multiline}>
-        {props.children}
+      <s.Content ref={getContentRef} $multiline={multiline}>
+        {children}
         <s.ButtonContainer
           $position={iconPosition}
           $scrollbarOffset={scrollbarOffset}
         >
-          {props.button}
+          {button}
         </s.ButtonContainer>
       </s.Content>
     </s.ContentContainer>

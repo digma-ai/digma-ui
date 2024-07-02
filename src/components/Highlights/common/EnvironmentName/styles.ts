@@ -1,4 +1,7 @@
 import styled from "styled-components";
+import { isNumber } from "../../../../typeGuards/isNumber";
+import { getInsightCriticalityColor } from "../../../../utils/getInsightCriticalityColor";
+import { IconContainerProps } from "./types";
 
 export const Container = styled.div`
   display: flex;
@@ -9,9 +12,12 @@ export const Container = styled.div`
   overflow: hidden;
 `;
 
-export const IconContainer = styled.div`
+export const IconContainer = styled.div<IconContainerProps>`
   display: flex;
-  color: ${({ theme }) => theme.colors.v3.icon.disabled};
+  color: ${({ theme, $criticality }) =>
+    isNumber($criticality)
+      ? getInsightCriticalityColor($criticality, theme)
+      : theme.colors.v3.icon.disabled};
 `;
 
 export const Name = styled.span`

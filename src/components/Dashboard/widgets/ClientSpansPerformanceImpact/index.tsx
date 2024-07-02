@@ -1,8 +1,9 @@
+import { changeScope } from "../../../../utils/actions/changeScope";
+import { SCOPE_CHANGE_EVENTS } from "../../../Main/types";
 import { ImpactScore } from "../../../common/ImpactScore";
 import { Tooltip } from "../../../common/Tooltip";
 import { AlarmClockIcon } from "../../../common/icons/AlarmClockIcon";
 import { ListWidget } from "../../ListWidget";
-import { actions } from "../../actions";
 import { WidgetType } from "../types";
 import * as s from "./styles";
 import {
@@ -15,12 +16,14 @@ const renderClientSpanOverallImpactEntry = (
   environment: string
 ) => {
   const handleSpanClick = (spanCodeObjectId: string) => {
-    window.sendMessageToDigma({
-      action: actions.GO_TO_SPAN,
-      payload: {
-        spanCodeObjectId,
-        environment,
-        type: WidgetType.CLIENT_SPANS_PERFORMANCE_IMPACT
+    changeScope({
+      span: {
+        spanCodeObjectId
+      },
+      environmentId: environment,
+      context: {
+        event:
+          SCOPE_CHANGE_EVENTS.DASHBOARD_CLIENT_SPANS_PERFORMANCE_IMPACT_WIDGET_ITEM_LINK_CLICKED
       }
     });
   };
@@ -44,15 +47,14 @@ const renderClientSpanOverallImpactEntry = (
   );
 };
 
-export const ClientSpansPerformanceImpact = (
-  props: ClientSpansPerformanceImpactProps
-) => (
+export const ClientSpansPerformanceImpact = ({
+  environment
+}: ClientSpansPerformanceImpactProps) => (
   <ListWidget<ClientSpanOverallImpactEntry>
     title={"Client Spans Performance Impact"}
     type={WidgetType.CLIENT_SPANS_PERFORMANCE_IMPACT}
     icon={AlarmClockIcon}
-    data={props.data}
-    environment={props.environment}
+    environment={environment}
     renderListItem={renderClientSpanOverallImpactEntry}
   />
 );

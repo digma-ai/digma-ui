@@ -97,15 +97,15 @@ const getInsightTypeCardData = (type: InsightCardType): InsightCardTypeData => {
   return data[type];
 };
 
-export const InsightCard = (props: InsightCardProps) => {
-  const insightTypeCardInfo = getInsightTypeCardData(props.type);
+export const InsightCard = ({ type, isDisabled }: InsightCardProps) => {
+  const insightTypeCardInfo = getInsightTypeCardData(type);
 
   if (!insightTypeCardInfo) {
     return <></>;
   }
 
   return (
-    <s.Container $isDisabled={props.isDisabled}>
+    <s.Container $isDisabled={isDisabled}>
       <s.Header>
         {insightTypeCardInfo.icon && (
           <insightTypeCardInfo.icon size={22} color={"currentColor"} />
@@ -114,11 +114,11 @@ export const InsightCard = (props: InsightCardProps) => {
       </s.Header>
       <span>{insightTypeCardInfo.description}</span>
       {/* <s.StatusContainer>
-        {!props.isDisabled && (
+        {!isDisabled && (
           <>
-            {isNumber(props.count) ? (
-              <s.CountChip $count={props.count}>{`${props.count} issue${
-                props.count === 1 ? "" : "s"
+            {isNumber(count) ? (
+              <s.CountChip $count={count}>{`${count} issue${
+                count === 1 ? "" : "s"
               } found`}</s.CountChip>
             ) : (
               <s.NoDataContainer>

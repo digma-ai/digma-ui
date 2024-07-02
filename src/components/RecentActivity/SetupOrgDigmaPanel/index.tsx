@@ -39,10 +39,7 @@ const SETTINGS_MISMATCH_ERROR_MESSAGE =
 
 const renderUpdatePluginSettingsMessage = () => {
   const handleLinkClick = () => {
-    openURLInDefaultBrowser(
-      SETUP_PLUGIN_TO_ORGANIZATION_DIGMA_URL,
-      "Installing Digma in your organization"
-    );
+    openURLInDefaultBrowser(SETUP_PLUGIN_TO_ORGANIZATION_DIGMA_URL);
   };
 
   return (
@@ -63,10 +60,14 @@ const renderUpdatePluginSettingsMessage = () => {
  * @deprecated
  * safe to delete after 2024-07-22
  */
-export const SetupOrgDigmaPanel = (props: SetupOrgDigmaPanelProps) => {
-  const [apiToken, setApiToken] = useState(props.environment.token ?? "");
+export const SetupOrgDigmaPanel = ({
+  environment,
+  onCancel,
+  onFinish
+}: SetupOrgDigmaPanelProps) => {
+  const [apiToken, setApiToken] = useState(environment.token ?? "");
   const [serverApiUrl, setServerApiUrl] = useState(
-    props.environment.serverApiUrl ?? ""
+    environment.serverApiUrl ?? ""
   );
   const [connectionTestResult, setConnectionTestResult] =
     useState<AsyncActionResultData>();
@@ -82,8 +83,7 @@ export const SetupOrgDigmaPanel = (props: SetupOrgDigmaPanelProps) => {
   //   useState(false);
   const config = useContext(ConfigContext);
   const [skipOrgDigmaSetupGuide] = useState(
-    !props.environment.isOrgDigmaSetupFinished &&
-      !isIDEConnectedToLocalDigma(config)
+    !environment.isOrgDigmaSetupFinished && !isIDEConnectedToLocalDigma(config)
   );
 
   useEffect(() => {
@@ -127,10 +127,7 @@ export const SetupOrgDigmaPanel = (props: SetupOrgDigmaPanelProps) => {
   }, []);
 
   const handleInstructionsLinkClick = () => {
-    openURLInDefaultBrowser(
-      INSTALL_DIGMA_IN_ORGANIZATION_DOCUMENTATION_URL,
-      "Installing Digma in your organization"
-    );
+    openURLInDefaultBrowser(INSTALL_DIGMA_IN_ORGANIZATION_DOCUMENTATION_URL);
   };
 
   // const handleCopyInstructionsLinkButtonClick = () => {
@@ -149,18 +146,18 @@ export const SetupOrgDigmaPanel = (props: SetupOrgDigmaPanelProps) => {
   };
 
   const handleCloseButtonClick = () => {
-    props.onCancel(props.environment.id);
+    onCancel(environment.id);
   };
 
   const handleCancelButtonClick = () => {
-    props.onCancel(props.environment.id);
+    onCancel(environment.id);
   };
 
   const handleTestConnectionButtonClick = () => {
     window.sendMessageToDigma({
       action: actions.CHECK_REMOTE_ENVIRONMENT_CONNECTION,
       payload: {
-        environment: props.environment.id,
+        environment: environment.id,
         token: apiToken,
         serverAddress: serverApiUrl
       }
@@ -188,7 +185,7 @@ export const SetupOrgDigmaPanel = (props: SetupOrgDigmaPanelProps) => {
     });
 
     if (areSettingsMatch) {
-      props.onFinish(props.environment.id);
+      onFinish(environment.id);
     } else {
       setIsSettingsMessageVisible(true);
     }
@@ -199,7 +196,7 @@ export const SetupOrgDigmaPanel = (props: SetupOrgDigmaPanelProps) => {
   };
 
   if (skipOrgDigmaSetupGuide) {
-    props.onFinish(props.environment.id);
+    onFinish(environment.id);
     return null;
   }
 

@@ -5,20 +5,20 @@ import * as s from "./styles";
 import { InsightStatusBadgeProps } from "./types";
 
 export const InsightStatusBadgeComponent = (
-  props: InsightStatusBadgeProps,
+  { status, className }: InsightStatusBadgeProps,
   ref: ForwardedRef<HTMLDivElement>
 ) => {
   const theme = useTheme();
 
-  const statusInfo = getInsightStatusInfo(props.status, theme);
+  const statusInfo = getInsightStatusInfo(status, theme);
 
   if (!statusInfo) {
     return null;
   }
 
   return (
-    <s.Container className={props.className} ref={ref}>
-      <s.Indicator $status={props.status} />
+    <s.Container className={className} ref={ref}>
+      <s.Indicator $status={status} />
       <s.Status>{statusInfo.label}</s.Status>
     </s.Container>
   );

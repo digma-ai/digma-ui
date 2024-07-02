@@ -5,7 +5,7 @@ export const PromotionTag = () => {
   return (
     <s.Container>
       <s.IconContainer>
-        <AffectIcon color="currentColor" />
+        <AffectIcon color={"currentColor"} />
       </s.IconContainer>
       <s.Text>FREE UDEMY COURSE</s.Text>
     </s.Container>

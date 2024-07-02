@@ -1,15 +1,20 @@
 import * as s from "./styles";
 import { CardProps } from "./types";
 
-export const Card = (props: CardProps) => (
-  <s.Container className={props.className}>
-    {props.showTitle && props.title}
+export const Card = ({
+  className,
+  showTitle,
+  title,
+  header,
+  content,
+  buttons
+}: CardProps) => (
+  <s.Container className={className}>
+    {showTitle && title}
     <s.Content>
-      <s.Header>{props.header}</s.Header>
-      {props.content}
-      {props.buttons && (
-        <s.ButtonsContainer>{props.buttons}</s.ButtonsContainer>
-      )}
+      <s.Header>{header}</s.Header>
+      {content}
+      {buttons && <s.ButtonsContainer>{buttons}</s.ButtonsContainer>}
     </s.Content>
   </s.Container>
 );

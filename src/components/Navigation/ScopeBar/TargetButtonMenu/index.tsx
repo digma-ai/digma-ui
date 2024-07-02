@@ -5,24 +5,27 @@ import { trackingEvents } from "../../tracking";
 import * as s from "./styles";
 import { TargetButtonMenuProps } from "./types";
 
-export const TargetButtonMenu = (props: TargetButtonMenuProps) => {
+export const TargetButtonMenu = ({
+  onGoToCodeLocation,
+  scope
+}: TargetButtonMenuProps) => {
   const handleMenuItemClick = (codeDetails: CodeDetails) => {
     sendUserActionTrackingEvent(trackingEvents.CODE_LOCATION_SELECTED);
-    props.onGoToCodeLocation(codeDetails);
+    onGoToCodeLocation(codeDetails);
   };
 
   return (
     <s.Container>
       <MenuList
         items={[
-          ...props.scope.code.codeDetailsList.map((x) => ({
+          ...scope.code.codeDetailsList.map((x) => ({
             id: x.codeObjectId,
             label: x.displayName,
             onClick: () => handleMenuItemClick(x),
             disabled: false,
             groupName: "Code locations"
           })),
-          ...props.scope.code.relatedCodeDetailsList.map((x) => ({
+          ...scope.code.relatedCodeDetailsList.map((x) => ({
             id: x.codeObjectId,
             label: x.displayName,
             onClick: () => handleMenuItemClick(x),

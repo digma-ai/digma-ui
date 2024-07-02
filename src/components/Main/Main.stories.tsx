@@ -1,13 +1,15 @@
 import { Meta, StoryObj } from "@storybook/react";
 
+import {
+  RouterRoute,
+  reactRouterParameters
+} from "storybook-addon-remix-react-router";
 import { Main } from ".";
-import { ROUTES } from "../../constants";
+import { routes } from "../../containers/Main/router";
 import { mockedEnvironments } from "../Navigation/EnvironmentBar/mockData";
-import { mockedViewsData } from "../Navigation/mockData";
-import { SetViewsPayload } from "../Navigation/types";
+import { TAB_IDS } from "../Navigation/Tabs/types";
 import { ConfigContext, initialState } from "../common/App/ConfigContext";
 import { ConfigContextData } from "../common/App/types";
-import { actions } from "./actions";
 
 const mockedConfig: ConfigContextData = {
   ...initialState,
@@ -35,89 +37,57 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-const updateSelectedView = (
-  data: SetViewsPayload,
-  viewId: string
-): SetViewsPayload => {
-  return {
-    ...data,
-    views: data.views.map((view) =>
-      view.id === viewId
-        ? { ...view, isSelected: true }
-        : { ...view, isSelected: false }
-    )
-  };
-};
-
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 export const Highlights: Story = {
-  play: () => {
-    window.setTimeout(() => {
-      window.postMessage({
-        type: "digma",
-        action: actions.SET_VIEWS,
-        payload: updateSelectedView(mockedViewsData, ROUTES.HIGHLIGHTS)
-      });
-    }, 0);
+  parameters: {
+    reactRouter: reactRouterParameters({
+      location: { path: `/${TAB_IDS.HIGHLIGHTS}` },
+      routing: routes as RouterRoute
+    })
   }
 };
 
-export const Insights: Story = {
-  play: () => {
-    window.setTimeout(() => {
-      window.postMessage({
-        type: "digma",
-        action: actions.SET_VIEWS,
-        payload: updateSelectedView(mockedViewsData, ROUTES.INSIGHTS)
-      });
-    }, 0);
+export const Issues: Story = {
+  parameters: {
+    reactRouter: reactRouterParameters({
+      location: { path: `/${TAB_IDS.ISSUES}` },
+      routing: routes as RouterRoute
+    })
   }
 };
 
 export const Assets: Story = {
-  play: () => {
-    window.setTimeout(() => {
-      window.postMessage({
-        type: "digma",
-        action: actions.SET_VIEWS,
-        payload: updateSelectedView(mockedViewsData, ROUTES.ASSETS)
-      });
-    }, 0);
+  parameters: {
+    reactRouter: reactRouterParameters({
+      location: { path: `/${TAB_IDS.ASSETS}` },
+      routing: routes as RouterRoute
+    })
   }
 };
 
 export const Analytics: Story = {
-  play: () => {
-    window.setTimeout(() => {
-      window.postMessage({
-        type: "digma",
-        action: actions.SET_VIEWS,
-        payload: updateSelectedView(mockedViewsData, ROUTES.ANALYTICS)
-      });
-    }, 0);
+  parameters: {
+    reactRouter: reactRouterParameters({
+      location: { path: `/${TAB_IDS.ANALYTICS}` },
+      routing: routes as RouterRoute
+    })
   }
 };
 
 export const Errors: Story = {
-  play: () => {
-    window.setTimeout(() => {
-      window.postMessage({
-        type: "digma",
-        action: actions.SET_VIEWS,
-        payload: updateSelectedView(mockedViewsData, ROUTES.ERRORS)
-      });
-    }, 0);
+  parameters: {
+    reactRouter: reactRouterParameters({
+      location: { path: `/${TAB_IDS.ERRORS}` },
+      routing: routes as RouterRoute
+    })
   }
 };
 
 export const Tests: Story = {
-  play: () => {
-    window.setTimeout(() => {
-      window.postMessage({
-        type: "digma",
-        action: actions.SET_VIEWS,
-        payload: updateSelectedView(mockedViewsData, ROUTES.TESTS)
-      });
-    }, 0);
+  parameters: {
+    reactRouter: reactRouterParameters({
+      location: { path: `/${TAB_IDS.TESTS}` },
+      routing: routes as RouterRoute
+    })
   }
 };

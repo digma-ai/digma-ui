@@ -23,6 +23,15 @@ export const InsightIconContainer = styled.div`
         return "#43454a";
     }
   }};
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#4d668a";
+      case "dark":
+      case "dark-jetbrains":
+        return "#dadada";
+    }
+  }};
 `;
 
 export const MissingDependencyContainer = styled.div`

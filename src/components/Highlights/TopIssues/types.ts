@@ -6,7 +6,7 @@ export interface EnvironmentData<T> {
   environmentId: string;
   environmentName: string;
   insightStatus: InsightStatus;
-  criticality: number;
+  insightCriticality: number;
   metrics: T;
 }
 

@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 
 import { AssetTypeList } from ".";
+import { actions } from "../actions";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof AssetTypeList> = {
@@ -22,35 +23,43 @@ export const Default: Story = {
     setRefresher: () => {
       return undefined;
     },
-    searchQuery: "",
-    data: {
-      assetCategories: [
-        {
-          name: "Other",
-          count: 11
-        },
-        {
-          name: "Endpoint",
-          count: 20
-        },
-        {
-          name: "EndpointClient",
-          count: 20
-        },
-        {
-          name: "DatabaseQueries",
-          count: 7
-        },
-        {
-          name: "CodeLocation",
-          count: 13
-        },
-        {
-          name: "Consumer",
-          count: 0
+    searchQuery: ""
+  },
+  play: () => {
+    window.setTimeout(() => {
+      window.postMessage({
+        type: "digma",
+        action: actions.SET_CATEGORIES_DATA,
+        payload: {
+          assetCategories: [
+            {
+              name: "Other",
+              count: 11
+            },
+            {
+              name: "Endpoint",
+              count: 20
+            },
+            {
+              name: "EndpointClient",
+              count: 20
+            },
+            {
+              name: "DatabaseQueries",
+              count: 7
+            },
+            {
+              name: "CodeLocation",
+              count: 13
+            },
+            {
+              name: "Consumer",
+              count: 0
+            }
+          ]
         }
-      ]
-    }
+      });
+    }, 0);
   }
 };
 
@@ -59,9 +68,17 @@ export const Empty: Story = {
     searchQuery: "",
     setRefresher: () => {
       return undefined;
-    },
-    data: {
-      assetCategories: []
     }
+  },
+  play: () => {
+    window.setTimeout(() => {
+      window.postMessage({
+        type: "digma",
+        action: actions.SET_CATEGORIES_DATA,
+        payload: {
+          assetCategories: []
+        }
+      });
+    }, 0);
   }
 };

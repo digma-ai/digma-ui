@@ -9,7 +9,6 @@ import { actions as globalActions } from "../../actions";
 import { SLACK_WORKSPACE_URL } from "../../constants";
 import { usePrevious } from "../../hooks/usePrevious";
 import { trackingEvents as globalTrackingEvents } from "../../trackingEvents";
-import { isNumber } from "../../typeGuards/isNumber";
 import { openURLInDefaultBrowser } from "../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 import { ConfigContext } from "../common/App/ConfigContext";
@@ -64,9 +63,7 @@ import {
 } from "./types";
 import { useInsightsData } from "./useInsightsData";
 
-const REFRESH_INTERVAL = isNumber(window.insightsRefreshInterval)
-  ? window.insightsRefreshInterval
-  : 10 * 1000; // in milliseconds
+const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 
 const renderInsightTicket = (
   data: InsightTicketInfo<GenericCodeObjectInsight>,
@@ -191,7 +188,7 @@ const sendMessage = (action: string, data?: object) => {
   });
 };
 
-export const Insights = (props: InsightsProps) => {
+export const Insights = ({ insightViewType }: InsightsProps) => {
   const DEFAULT_QUERY: InsightsQuery = {
     page: 0,
     sorting: {
@@ -200,7 +197,7 @@ export const Insights = (props: InsightsProps) => {
     },
     searchQuery: null,
     showDismissed: false,
-    insightViewType: props.insightViewType,
+    insightViewType,
     showUnreadOnly: false,
     filters: []
   };
@@ -218,11 +215,6 @@ export const Insights = (props: InsightsProps) => {
   );
   const [isRegistrationInProgress, setIsRegistrationInProgress] =
     useState(false);
-
-  const isDismissalEnabled = props.insightViewType === "Issues";
-
-  const isMarkingAsReadEnabled = props.insightViewType === "Issues";
-
   const isRegistrationEnabled = false;
   const isRegistrationRequired =
     isRegistrationEnabled && !config.userRegistrationEmail;
@@ -321,6 +313,7 @@ export const Insights = (props: InsightsProps) => {
   const renderDefaultContent = (data: InsightsData): JSX.Element => {
     return (
       <InsightsCatalog
+        insightViewType={insightViewType}
         insights={data.insights}
         totalCount={data.totalCount}
         onJiraTicketCreate={handleJiraTicketPopupOpen}
@@ -328,15 +321,7 @@ export const Insights = (props: InsightsProps) => {
         onRefresh={refresh}
         defaultQuery={DEFAULT_QUERY}
         dismissedCount={data.dismissedCount}
-        isDismissalEnabled={isDismissalEnabled}
         unreadCount={data.unreadCount}
-        isMarkingAsReadEnabled={isMarkingAsReadEnabled}
-        hideInsightsStats={props.insightViewType === "Analytics"}
-        showPromotion={
-          props.insightViewType == "Issues" && !props.hidePromotion
-        }
-        onPromotionAccepted={props.onShowPromotion}
-        onPromotionCanceled={props.onShowPromotionConfirmationDiscard}
       />
     );
   };

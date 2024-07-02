@@ -10,20 +10,12 @@ export const mockedDigmathonProgressData: SetDigmathonProgressDataPayload = {
       foundAt: "2024-01-05T13:14:47.010Z"
     },
     {
-      type: InsightType.EndpointQueryOptimization,
-      foundAt: "2024-01-05T11:14:47.010Z"
-    },
-    {
       type: InsightType.SpanQueryOptimization,
       foundAt: "2024-01-05T13:14:47.010Z"
     },
     { type: InsightType.HotSpot, foundAt: "2024-01-05T12:14:47.010Z" },
     {
       type: InsightType.EndpointSpanNPlusOne,
-      foundAt: "2024-01-05T13:14:47.010Z"
-    },
-    {
-      type: InsightType.EndpointSpaNPlusOne,
       foundAt: "2024-01-05T13:14:47.010Z"
     },
     { type: InsightType.SpaNPlusOne, foundAt: "2024-01-05T13:14:47.010Z" },

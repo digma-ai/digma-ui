@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react";
+import { CursorFollowerProps } from "./types";
 
 const MAX_ROTATION_DEGREE = 40;
 const PERSPECTIVE = 100;
 const COEFFICIENT = 10;
 
-export const CursorFollower = (props: { children: JSX.Element }) => {
+export const CursorFollower = ({ children }: CursorFollowerProps) => {
   const [degree, setDegree] = useState(0);
   const ref = useRef<HTMLDivElement | null>(null);
 
@@ -12,7 +13,6 @@ export const CursorFollower = (props: { children: JSX.Element }) => {
     if (ref.current) {
       const elPosition = ref.current.getBoundingClientRect();
       const diffX = event.pageX - elPosition.left - elPosition.width / 2;
-      // const diffY = event.pageY - elPosition.top - elPosition.height / 2;
       const degree = Math.min(
         Math.abs(diffX / COEFFICIENT),
         MAX_ROTATION_DEGREE
@@ -39,7 +39,7 @@ export const CursorFollower = (props: { children: JSX.Element }) => {
   return (
     <div style={{ perspective: PERSPECTIVE }}>
       <div style={{ transform: `rotateY(${degree}deg)` }} ref={ref}>
-        {props.children}
+        {children}
       </div>
     </div>
   );

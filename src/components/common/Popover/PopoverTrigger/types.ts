@@ -1,4 +1,6 @@
+import { ReactNode } from "react";
+
 export interface PopoverTriggerProps {
-  children: React.ReactNode;
+  children: ReactNode;
   asChild?: boolean;
 }

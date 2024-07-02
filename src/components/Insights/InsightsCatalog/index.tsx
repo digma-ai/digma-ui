@@ -1,17 +1,23 @@
 import { useCallback, useContext, useEffect, useState } from "react";
-import { usePrevious } from "../../../hooks/usePrevious";
-
+import { createPortal } from "react-dom";
 import { useTheme } from "styled-components";
 import { actions as globalActions } from "../../../actions";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import { useDebounce } from "../../../hooks/useDebounce";
+import { usePersistence } from "../../../hooks/usePersistence";
+import { usePrevious } from "../../../hooks/usePrevious";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { isString } from "../../../typeGuards/isString";
 import { isUndefined } from "../../../typeGuards/isUndefined";
 import { FeatureFlag, GetInsightStatsPayload } from "../../../types";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { formatUnit } from "../../../utils/formatUnit";
+import { MAIN_CONTAINER_ID } from "../../Main";
+import { RegistrationCard } from "../../Main/RegistrationCard";
+import { MainOverlay } from "../../Main/styles";
+import { trackingEvents as mainTrackingEvents } from "../../Main/tracking";
 import { ConfigContext } from "../../common/App/ConfigContext";
+import { CancelConfirmation } from "../../common/CancelConfirmation";
 import { Pagination } from "../../common/Pagination";
 import { SearchInput } from "../../common/SearchInput";
 import { SortingSelector } from "../../common/SortingSelector";
@@ -40,8 +46,28 @@ const PAGE_SIZE = 10;
 const isShowUnreadOnly = (filters: InsightFilterType[]) =>
   filters.length === 1 && filters[0] === "unread";
 
-export const InsightsCatalog = (props: InsightsCatalogProps) => {
-  const { insights, onJiraTicketCreate, defaultQuery, totalCount } = props;
+const PROMOTION_PERSISTENCE_KEY = "PROMOTION";
+const PROMOTION_COMPLETED_PERSISTENCE_KEY = "PROMOTION_COMPLETED";
+
+const isPromotionEnabled = (dismissalDate: number | null | undefined) => {
+  const PROMOTION_INTERVAL = 30 * 24 * 60 * 60 * 1000; // in milliseconds
+
+  return (
+    !dismissalDate || Math.abs(dismissalDate - Date.now()) > PROMOTION_INTERVAL
+  );
+};
+
+export const InsightsCatalog = ({
+  insightViewType,
+  insights,
+  onJiraTicketCreate,
+  defaultQuery,
+  totalCount,
+  dismissedCount,
+  unreadCount,
+  onQueryChange,
+  onRefresh
+}: InsightsCatalogProps) => {
   const [page, setPage] = useState(0);
   const previousPage = usePrevious(page);
   const [searchInputValue, setSearchInputValue] = useState(
@@ -73,17 +99,81 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
   const previousIsMarkingAllAsReadInProgress = usePrevious(
     isMarkingAllAsReadInProgress
   );
+  const [showRegistration, setShowRegistration] = useState(false);
+  const [showDiscardConfirmation, setShowDiscardConfirmation] = useState(false);
+  const [dismissalDate, setDismissalDate] = usePersistence<number>(
+    PROMOTION_PERSISTENCE_KEY,
+    "application"
+  );
+  const [promotionCompleted, setPromotionCompleted] = usePersistence<boolean>(
+    PROMOTION_COMPLETED_PERSISTENCE_KEY,
+    "application"
+  );
 
+  const handleRegistrationComplete = () => {
+    sendUserActionTrackingEvent(
+      mainTrackingEvents.PROMOTION_REGISTRATION_SUBMITTED
+    );
+    setPromotionCompleted(true);
+  };
+
+  const handleRegistrationClose = () => {
+    sendUserActionTrackingEvent(
+      mainTrackingEvents.PROMOTION_REGISTRATION_CLOSED_CLICKED
+    );
+    setShowRegistration(false);
+  };
+
+  const handleCancelConfirmationClose = () => {
+    sendUserActionTrackingEvent(
+      mainTrackingEvents.PROMOTION_CANCEL_CONFIRMATION_CLOSE_CLICKED
+    );
+    setShowDiscardConfirmation(false);
+  };
+
+  const handleCancelConfirmationAccept = () => {
+    sendUserActionTrackingEvent(
+      mainTrackingEvents.PROMOTION_CANCEL_CONFIRMATION_ACCEPT_CLICKED
+    );
+    setDismissalDate(Date.now());
+    setShowDiscardConfirmation(false);
+  };
+
+  const handleConfirmationClose = () => {
+    setShowDiscardConfirmation(false);
+  };
+
+  const handlePromotionAccept = () => {
+    sendUserActionTrackingEvent(
+      mainTrackingEvents.PROMOTION_REGISTRATION_OPENED
+    );
+    setShowRegistration(true);
+  };
+
+  const handlePromotionDiscard = () => {
+    sendUserActionTrackingEvent(mainTrackingEvents.PROMOTION_DISCARDED);
+    setShowDiscardConfirmation(true);
+  };
+
+  const isPromotionVisible =
+    insightViewType == "Issues" &&
+    !promotionCompleted &&
+    isPromotionEnabled(dismissalDate);
+  const areInsightsStatsVisible = insightViewType === "Issues";
   const isDismissalViewModeButtonVisible =
-    props.isDismissalEnabled &&
-    (isUndefined(props.dismissedCount) || props.dismissedCount > 0); // isUndefined - check for backward compatibility, always show when BE does not return this counter
-
+    insightViewType === "Issues" &&
+    (isUndefined(dismissedCount) || dismissedCount > 0); // isUndefined - check for backward compatibility, always show when BE does not return this counter
   const isMarkingAsReadOptionsEnabled =
-    props.isMarkingAsReadEnabled &&
-    isNumber(props.unreadCount) &&
+    insightViewType === "Issues" &&
+    isNumber(unreadCount) &&
     selectedFilters.length === 1 &&
     selectedFilters[0] === "unread" &&
-    props.unreadCount > 0;
+    unreadCount > 0;
+  const areInsightStatsEnabled = getFeatureFlagValue(
+    config,
+    FeatureFlag.ARE_INSIGHT_STATS_ENABLED
+  );
+  const mainContainer = document.getElementById(MAIN_CONTAINER_ID);
 
   const refreshData = useCallback(() => {
     window.sendMessageToDigma<GetInsightStatsPayload>({
@@ -99,8 +189,8 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
       }
     });
 
-    props.onQueryChange({
-      ...props.defaultQuery,
+    onQueryChange({
+      ...defaultQuery,
       page,
       sorting,
       searchQuery: debouncedSearchInputValue,
@@ -112,8 +202,8 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
     page,
     sorting,
     debouncedSearchInputValue,
-    props.onQueryChange,
-    props.defaultQuery,
+    onQueryChange,
+    defaultQuery,
     mode,
     selectedFilters
   ]);
@@ -130,14 +220,6 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
     const newMode =
       mode === ViewMode.All ? ViewMode.OnlyDismissed : ViewMode.All;
     setMode(newMode);
-  };
-
-  const handlePromotionAccept = () => {
-    props.onPromotionAccepted && props.onPromotionAccepted();
-  };
-
-  const handlePromotionDiscard = () => {
-    props.onPromotionCanceled && props.onPromotionCanceled();
   };
 
   const handleReadAllLinkClick = () => {
@@ -215,11 +297,6 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
     selectedFilters
   ]);
 
-  const areInsightStatsEnabled = getFeatureFlagValue(
-    config,
-    FeatureFlag.ARE_INSIGHT_STATS_ENABLED
-  );
-
   return (
     <>
       <s.Toolbar>
@@ -251,7 +328,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
                 defaultOrder: SORTING_ORDER.DESC
               }
             ]}
-            default={defaultQuery.sorting}
+            defaultSorting={defaultQuery.sorting}
           />
           <Tooltip title={"Refresh"}>
             <s.RefreshButton
@@ -265,7 +342,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
         {mode === ViewMode.All ? (
           <>
             {!searchInputValue &&
-              !props.hideInsightsStats &&
+              areInsightsStatsVisible &&
               (insights.length > 0 || selectedFilters.length > 0) && (
                 <InsightStats
                   criticalCount={config.insightStats?.criticalInsightsCount}
@@ -273,7 +350,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
                   unreadCount={
                     areInsightStatsEnabled
                       ? config.insightStats?.unreadInsightsCount ?? 0
-                      : props.unreadCount ?? 0
+                      : unreadCount ?? 0
                   }
                   onChange={handleFilterSelectionChange}
                 />
@@ -309,17 +386,15 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
               </s.BackToAllInsightsButtonIconContainer>
               Back to All Issues
             </s.BackToAllInsightsButton>
-            {mode === ViewMode.OnlyDismissed &&
-              isNumber(props.dismissedCount) && (
-                <s.InsightsDescription>
-                  <s.InsightCount>{props.dismissedCount}</s.InsightCount>
-                  dismissed {formatUnit(props.dismissedCount || 0, "issue")}
-                </s.InsightsDescription>
-              )}
+            {mode === ViewMode.OnlyDismissed && isNumber(dismissedCount) && (
+              <s.InsightsDescription>
+                <s.InsightCount>{dismissedCount}</s.InsightCount>
+                dismissed {formatUnit(dismissedCount || 0, "issue")}
+              </s.InsightsDescription>
+            )}
           </s.ViewModeToolbarRow>
         )}
-
-        {props.showPromotion && (
+        {isPromotionVisible && (
           <s.ToolbarRow>
             <PromotionCard
               onAccept={handlePromotionAccept}
@@ -335,7 +410,7 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
           debouncedSearchInputValue !== null && debouncedSearchInputValue !== ""
         }
         onJiraTicketCreate={onJiraTicketCreate}
-        onRefresh={props.onRefresh}
+        onRefresh={onRefresh}
         isMarkAsReadButtonEnabled={isShowUnreadOnly(selectedFilters)}
       />
       <s.Footer>
@@ -375,6 +450,31 @@ export const InsightsCatalog = (props: InsightsCatalogProps) => {
           />
         )}
       </s.Footer>
+      {mainContainer &&
+        showDiscardConfirmation &&
+        createPortal(
+          <MainOverlay onClose={handleConfirmationClose} tabIndex={-1}>
+            <CancelConfirmation
+              header={"Discard offer?"}
+              description={
+                "Are you sure you want to miss out on this exclusive, limited-time offer?"
+              }
+              cancelBtnText={"Yes, discard"}
+              onClose={handleCancelConfirmationClose}
+              onCancel={handleCancelConfirmationAccept}
+            />
+          </MainOverlay>,
+          mainContainer
+        )}
+      {mainContainer &&
+        createPortal(
+          <RegistrationCard
+            onClose={handleRegistrationClose}
+            onComplete={handleRegistrationComplete}
+            show={showRegistration}
+          />,
+          mainContainer
+        )}
     </>
   );
 };

@@ -67,4 +67,5 @@ export const InsightContainer = styled.div`
 
 export const AddEnvironmentButton = styled(Button)`
   width: 100%;
+  color: #b9c2eb;
 `;

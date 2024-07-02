@@ -1,8 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 
 import { Navigation } from ".";
-import { actions as mainActions } from "../Main/actions";
-import { mockedViewsData } from "./mockData";
+import { TAB_IDS } from "./Tabs/types";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof Navigation> = {
@@ -20,11 +19,9 @@ type Story = StoryObj<typeof meta>;
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 export const Default: Story = {
-  play: () => {
-    window.postMessage({
-      type: "digma",
-      action: mainActions.SET_VIEWS,
-      payload: mockedViewsData
-    });
+  args: {
+    view: {
+      id: TAB_IDS.HIGHLIGHTS
+    }
   }
 };

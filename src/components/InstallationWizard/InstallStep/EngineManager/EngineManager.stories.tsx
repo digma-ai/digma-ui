@@ -4,7 +4,7 @@ import { EngineManager } from ".";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof EngineManager> = {
-  title: "Installation Wizard/EngineManager",
+  title: "Installation Wizard/InstallStep/EngineManager",
   component: EngineManager,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout

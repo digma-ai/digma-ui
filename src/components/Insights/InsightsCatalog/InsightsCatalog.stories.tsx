@@ -23,6 +23,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
+    insightViewType: "Issues",
     onQueryChange: fn(),
     insights: [
       { ...mockedEndpointBottleneckInsight, isRead: false },
@@ -54,9 +55,7 @@ export const Default: Story = {
       showUnreadOnly: false,
       filters: []
     },
-    isDismissalEnabled: true,
-    unreadCount: 1,
-    isMarkingAsReadEnabled: true
+    unreadCount: 1
   }
 };
 

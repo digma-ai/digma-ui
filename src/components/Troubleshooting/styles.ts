@@ -43,6 +43,15 @@ export const CloseButton = styled.button`
   background: none;
   border: none;
   height: 14px;
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#6e6e6e";
+      case "dark":
+      case "dark-jetbrains":
+        return "#9b9b9b";
+    }
+  }};
 `;
 
 export const Section = styled.div`
@@ -148,6 +157,15 @@ export const IconContainer = styled.div`
       case "dark":
       case "dark-jetbrains":
         return "#49494d";
+    }
+  }};
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#4d668a";
+      case "dark":
+      case "dark-jetbrains":
+        return "#dadada";
     }
   }};
 `;

@@ -1,14 +1,22 @@
 import { Duration } from "../../../globals";
-import { EnvironmentData } from "../TopIssues/types";
+import { InsightStatus } from "../../Insights/types";
 
-export interface EnvironmentScalingData {
+export interface ScalingMetrics {
   concurrency: number;
   duration: Duration;
 }
 
+export interface EnvironmentScalingData {
+  environmentId: string;
+  environmentName: string;
+  insightStatus: InsightStatus;
+  criticality: number;
+  metrics: ScalingMetrics;
+}
+
 export interface ScalingData {
   dataState: "NoData" | "Partial" | "ScalingWell" | "ScalingBadly";
-  scaling: EnvironmentData<EnvironmentScalingData>[];
+  scaling: EnvironmentScalingData[];
 }
 
 export interface GetHighlightsScalingDataPayload {

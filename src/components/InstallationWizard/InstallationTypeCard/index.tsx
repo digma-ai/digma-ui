@@ -1,23 +1,31 @@
 import * as s from "./styles";
 import { InstallationTypeCardProps } from "./types";
 
-export const InstallationTypeCard = (props: InstallationTypeCardProps) => {
+export const InstallationTypeCard = ({
+  disabled,
+  onClick,
+  installationType,
+  icon,
+  title,
+  description,
+  additionalContent
+}: InstallationTypeCardProps) => {
   const handleClick = () => {
-    if (!props.disabled) {
-      props.onClick(props.installationType);
+    if (!disabled) {
+      onClick(installationType);
     }
   };
 
   return (
-    <s.Container $disabled={props.disabled} onClick={handleClick}>
+    <s.Container $disabled={disabled} onClick={handleClick}>
       <s.ContentContainer>
-        <s.IconContainer>{props.icon}</s.IconContainer>
+        <s.IconContainer>{icon}</s.IconContainer>
         <s.TextContainer>
-          <s.Title>{props.title}</s.Title>
-          {props.description}
+          <s.Title>{title}</s.Title>
+          {description}
         </s.TextContainer>
       </s.ContentContainer>
-      {props.additionalContent && <div>{props.additionalContent}</div>}
+      {additionalContent && <div>{additionalContent}</div>}
     </s.Container>
   );
 };

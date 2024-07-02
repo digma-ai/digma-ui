@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import { LAYERS } from "../../common/App/styles";
 import {
   bodyMediumTypography,
   subscriptRegularTypography
@@ -7,7 +8,7 @@ import { Overlay } from "../../common/Overlay";
 import { RegisterForm } from "../../common/RegisterForm";
 import { Button } from "../../common/v3/Button";
 import { Link } from "../../common/v3/Link";
-import { AnimatedRegistrationCardProps, CustomOverlayProps } from "./types";
+import { AnimatedRegistrationCardProps, StyledOverlayProps } from "./types";
 
 export const Container = styled.div<AnimatedRegistrationCardProps>`
   display: flex;
@@ -80,9 +81,11 @@ export const SlackLink = styled(Link)`
   text-decoration: underline;
 `;
 
-export const CustomOverlay = styled(Overlay)<CustomOverlayProps>`
+export const StyledOverlay = styled(Overlay)<StyledOverlayProps>`
   overflow: hidden;
   padding: 0;
+  display: initial;
+  z-index: ${LAYERS.GLOBAL_OVERLAY};
   ${({ $isVisible }) =>
     $isVisible
       ? ""

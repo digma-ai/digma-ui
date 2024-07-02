@@ -7,24 +7,30 @@ import { NoScalingIssueInsightProps } from "./types";
  * @deprecated
  * safe to delete after the implementation of the version with new UI
  */
-export const NoScalingIssueInsight = (props: NoScalingIssueInsightProps) => {
+export const NoScalingIssueInsight = ({
+  insight,
+  onHistogramButtonClick,
+  onRecalculate,
+  onRefresh
+}: NoScalingIssueInsightProps) => {
   const handleHistogramButtonClick = () => {
-    props.insight.spanInfo &&
-      props.onHistogramButtonClick(
-        props.insight.spanInfo.spanCodeObjectId,
-        props.insight.type,
-        props.insight.spanInfo.displayName
+    if (insight.spanInfo) {
+      onHistogramButtonClick(
+        insight.spanInfo.spanCodeObjectId,
+        insight.type,
+        insight.spanInfo.displayName
       );
+    }
   };
 
   return (
     <InsightCard
-      key={props.insight.type}
-      spanInfo={props.insight.spanInfo}
-      data={props.insight}
+      key={insight.type}
+      spanInfo={insight.spanInfo}
+      data={insight}
       content={<div>This code is scaling well at concurrent executions</div>}
       buttons={[
-        ...(props.insight.spanInfo
+        ...(insight.spanInfo
           ? [
               <Button
                 icon={{ component: ChartIcon }}
@@ -36,8 +42,8 @@ export const NoScalingIssueInsight = (props: NoScalingIssueInsightProps) => {
             ]
           : [])
       ]}
-      onRecalculate={props.onRecalculate}
-      onRefresh={props.onRefresh}
+      onRecalculate={onRecalculate}
+      onRefresh={onRefresh}
     />
   );
 };

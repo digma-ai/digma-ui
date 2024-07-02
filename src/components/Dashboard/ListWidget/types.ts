@@ -8,7 +8,6 @@ export interface ListWidgetProps<T> {
   title: string;
   environment: string;
   type: WidgetType;
-  data?: ListWidgetData<T>;
   showPercentileToggleSwitch?: boolean;
   renderListItem: (
     item: T,

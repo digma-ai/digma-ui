@@ -18,9 +18,7 @@ import { GetDataPayload, ListWidgetData, ListWidgetProps } from "./types";
 
 const PAGE_SIZE = 4;
 const DEFAULT_PERCENTILE = 0.5;
-const REFRESH_INTERVAL = isNumber(window.dashboardRefreshInterval)
-  ? window.dashboardRefreshInterval
-  : 10 * 1000; // in milliseconds
+const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 
 const getErrorMessage = (message?: string) => {
   if (message?.endsWith("response code 400")) {
@@ -50,7 +48,14 @@ const getData = (payload: GetDataPayload) => {
   });
 };
 
-export const ListWidget = <T extends object>(props: ListWidgetProps<T>) => {
+export const ListWidget = <T extends object>({
+  environment,
+  type,
+  showPercentileToggleSwitch,
+  icon,
+  title,
+  renderListItem
+}: ListWidgetProps<T>) => {
   const [percentileViewMode, setPercentileViewMode] =
     useState<number>(DEFAULT_PERCENTILE);
   const [isInitialLoading, setIsInitialLoading] = useState(false);
@@ -66,13 +71,13 @@ export const ListWidget = <T extends object>(props: ListWidgetProps<T>) => {
   const errorMessage = getErrorMessage(data?.error?.message);
   const percentile = getPercentileKey(percentileViewMode);
   const previousPercentile = usePrevious(percentile);
-  const previousEnvironment = usePrevious(props.environment);
-  const previousType = usePrevious(props.type);
+  const previousEnvironment = usePrevious(environment);
+  const previousType = usePrevious(type);
 
   useEffect(() => {
     getData({
-      type: props.type,
-      environment: props.environment,
+      type,
+      environment,
       query: {
         page,
         percentile: getPercentileKey(DEFAULT_PERCENTILE)
@@ -83,7 +88,7 @@ export const ListWidget = <T extends object>(props: ListWidgetProps<T>) => {
     const handleSetData = (data: unknown, timeStamp: number) => {
       // TODO: fix types
       // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
-      if ((data as ListWidgetData<unknown>).type === props.type) {
+      if ((data as ListWidgetData<unknown>).type === type) {
         setData(data as ListWidgetData<T>);
         setLastSetDataTimeStamp(timeStamp);
       }
@@ -102,8 +107,8 @@ export const ListWidget = <T extends object>(props: ListWidgetProps<T>) => {
       window.clearTimeout(refreshTimerId.current);
       refreshTimerId.current = window.setTimeout(() => {
         getData({
-          type: props.type,
-          environment: props.environment,
+          type,
+          environment,
           query: {
             page,
             percentile
@@ -116,21 +121,20 @@ export const ListWidget = <T extends object>(props: ListWidgetProps<T>) => {
     lastSetDataTimeStamp,
     page,
     percentile,
-    props.type,
-    props.environment
+    type,
+    environment
   ]);
 
   useEffect(() => {
     if (
       (isNumber(previousPage) && previousPage !== page) ||
       (isString(previousPercentile) && previousPercentile !== percentile) ||
-      (isString(previousEnvironment) &&
-        previousEnvironment !== props.environment) ||
-      (isString(previousType) && previousType !== props.type)
+      (isString(previousEnvironment) && previousEnvironment !== environment) ||
+      (isString(previousType) && previousType !== type)
     ) {
       getData({
-        type: props.type,
-        environment: props.environment,
+        type,
+        environment,
         query: {
           page,
           percentile
@@ -142,23 +146,15 @@ export const ListWidget = <T extends object>(props: ListWidgetProps<T>) => {
     page,
     previousPercentile,
     percentile,
-    props.type,
+    type,
     previousType,
-    props.environment,
+    environment,
     previousEnvironment
   ]);
 
   useEffect(() => {
     setPage(0);
-  }, [props.environment]);
-
-  useEffect(() => {
-    if (!props.data) {
-      return;
-    }
-
-    setData(props.data);
-  }, [props.data]);
+  }, [environment]);
 
   useEffect(() => {
     if (!previousData && data) {
@@ -178,7 +174,7 @@ export const ListWidget = <T extends object>(props: ListWidgetProps<T>) => {
     totalCount
   );
 
-  const headerContent = props.showPercentileToggleSwitch ? (
+  const headerContent = showPercentileToggleSwitch ? (
     <Toggle
       options={PERCENTILES.map((percentile) => ({
         value: percentile.percentile,
@@ -191,8 +187,8 @@ export const ListWidget = <T extends object>(props: ListWidgetProps<T>) => {
 
   return (
     <DashboardCard
-      icon={props.icon}
-      title={props.title}
+      icon={icon}
+      title={title}
       headerContent={headerContent}
       content={
         <s.Container>
@@ -224,11 +220,7 @@ export const ListWidget = <T extends object>(props: ListWidgetProps<T>) => {
               <s.ContentContainer>
                 <s.EntryList>
                   {entries.map((x) =>
-                    props.renderListItem(
-                      x,
-                      props.environment,
-                      percentileViewMode
-                    )
+                    renderListItem(x, environment, percentileViewMode)
                   )}
                 </s.EntryList>
               </s.ContentContainer>

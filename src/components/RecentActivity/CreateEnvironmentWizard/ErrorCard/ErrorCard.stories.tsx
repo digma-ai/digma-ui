@@ -3,7 +3,7 @@ import { ErrorCard } from ".";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof ErrorCard> = {
-  title: "Recent Activity/CreateEnvironmentPanel/ErrorCard",
+  title: "Recent Activity/CreateEnvironmentWizard/ErrorCard",
   component: ErrorCard,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout

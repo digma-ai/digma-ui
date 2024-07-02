@@ -1,9 +1,9 @@
 import * as s from "./styles";
 import { PopupProps } from "./types";
 
-export const Popup = (props: PopupProps) => (
-  <s.Container className={props.className} $height={props.height}>
-    {props.header && <div>{props.header}</div>}
-    <s.ContentContainer>{props.children}</s.ContentContainer>
+export const Popup = ({ className, height, header, children }: PopupProps) => (
+  <s.Container className={className} $height={height}>
+    {header && <div>{header}</div>}
+    <s.ContentContainer>{children}</s.ContentContainer>
   </s.Container>
 );

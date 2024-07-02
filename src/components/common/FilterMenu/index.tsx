@@ -7,7 +7,13 @@ import { MagnifierIcon } from "../icons/MagnifierIcon";
 import * as s from "./styles";
 import { FilterMenuProps } from "./types";
 
-export const FilterMenu = (props: FilterMenuProps) => {
+export const FilterMenu = ({
+  onClose,
+  onItemClick,
+  items,
+  isLoading,
+  title
+}: FilterMenuProps) => {
   const [searchInputValue, setSearchInputValue] = useState("");
 
   const handleSearchInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -15,21 +21,21 @@ export const FilterMenu = (props: FilterMenuProps) => {
   };
 
   const handleCloseButtonClick = () => {
-    props.onClose();
+    onClose();
   };
 
   const handleMenuItemClick = (value: string) => {
-    props.onItemClick(value);
+    onItemClick(value);
   };
 
-  const filteredItems = props.items.filter((x) =>
+  const filteredItems = items.filter((x) =>
     x.label.toLocaleLowerCase().includes(searchInputValue.toLowerCase())
   );
 
-  const selectedItems = props.items.filter((x) => x.selected);
+  const selectedItems = items.filter((x) => x.selected);
 
   const renderContent = () => {
-    if (props.isLoading) {
+    if (isLoading) {
       return (
         <s.EmptyStateContainer>
           <NewCircleLoader size={24} />
@@ -75,7 +81,7 @@ export const FilterMenu = (props: FilterMenuProps) => {
   return (
     <s.Container>
       <s.Header>
-        {props.title}
+        {title}
         <s.CloseButton onClick={handleCloseButtonClick}>
           <CrossIcon color={"currentColor"} size={14} />
         </s.CloseButton>

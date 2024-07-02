@@ -51,11 +51,12 @@ const getIsActiveRunConfigSet = (
   return config.runConfig.environmentId === environmentId;
 };
 
-export const EnvironmentInstructionsPanel = (
-  props: EnvironmentInstructionsPanelProps
-) => {
+export const EnvironmentInstructionsPanel = ({
+  environment,
+  onClose
+}: EnvironmentInstructionsPanelProps) => {
   const config = useContext(ConfigContext);
-  const { addToRunConfig } = useAddToRunConfig(props.environment.id);
+  const { addToRunConfig } = useAddToRunConfig(environment.id);
 
   const handleOpenDocsButtonClick = () => {
     openURLInDefaultBrowser(INSTRUMENTATION_DOCUMENTATION_URL);
@@ -78,20 +79,20 @@ export const EnvironmentInstructionsPanel = (
   };
 
   const handleCloseButtonClick = () => {
-    if (props.onClose) {
-      props.onClose();
+    if (onClose) {
+      onClose();
     }
   };
 
   const renderContent = () => {
-    const environmentType = props.environment.type;
+    const { id, name, type } = environment;
 
-    if (environmentType === "Private") {
+    if (type === "Private") {
       const isActiveRunConfigSet = getIsActiveRunConfigSet(
         config,
-        props.environment.id,
-        props.environment.name,
-        props.environment.type
+        id,
+        name,
+        type
       );
 
       const isRunConfigSupported = Boolean(
@@ -152,21 +153,13 @@ export const EnvironmentInstructionsPanel = (
                 <s.KeyValue>
                   <s.Label>ENV_NAME</s.Label>
                   <s.SingleLineCodeSnippet
-                    text={
-                      <s.HighlightedCode>
-                        {props.environment.name}
-                      </s.HighlightedCode>
-                    }
+                    text={<s.HighlightedCode>{name}</s.HighlightedCode>}
                   />
                 </s.KeyValue>
                 <s.KeyValue>
                   <s.Label>ENV_TYPE</s.Label>
                   <s.SingleLineCodeSnippet
-                    text={
-                      <s.HighlightedCode>
-                        {props.environment.type}
-                      </s.HighlightedCode>
-                    }
+                    text={<s.HighlightedCode>{type}</s.HighlightedCode>}
                   />
                 </s.KeyValue>
                 <s.KeyValue>
@@ -186,7 +179,7 @@ export const EnvironmentInstructionsPanel = (
       );
     }
 
-    if (environmentType === "Public") {
+    if (type === "Public") {
       return (
         <>
           <s.Card>
@@ -205,21 +198,13 @@ export const EnvironmentInstructionsPanel = (
                 <s.KeyValue>
                   <s.Label>ENV_NAME</s.Label>
                   <s.SingleLineCodeSnippet
-                    text={
-                      <s.HighlightedCode>
-                        {props.environment.name}
-                      </s.HighlightedCode>
-                    }
+                    text={<s.HighlightedCode>{name}</s.HighlightedCode>}
                   />
                 </s.KeyValue>
                 <s.KeyValue>
                   <s.Label>ENV_TYPE</s.Label>
                   <s.SingleLineCodeSnippet
-                    text={
-                      <s.HighlightedCode>
-                        {props.environment.type}
-                      </s.HighlightedCode>
-                    }
+                    text={<s.HighlightedCode>{type}</s.HighlightedCode>}
                   />
                 </s.KeyValue>
               </s.ColumnsContainer>
@@ -248,7 +233,7 @@ export const EnvironmentInstructionsPanel = (
 
   return (
     <s.Container>
-      {props.onClose && (
+      {onClose && (
         <s.Header>
           How to setup your Environment
           <s.CloseButton

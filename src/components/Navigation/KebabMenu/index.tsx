@@ -14,7 +14,7 @@ import { trackingEvents } from "../tracking";
 import { OpenDocumentationPayload } from "../types";
 import { KebabMenuProps } from "./types";
 
-export const KebabMenu = (props: KebabMenuProps) => {
+export const KebabMenu = ({ onClose }: KebabMenuProps) => {
   const config = useContext(ConfigContext);
 
   const handleOnboardingClick = () => {
@@ -25,7 +25,7 @@ export const KebabMenu = (props: KebabMenuProps) => {
         skipInstallationStep: true
       }
     });
-    props.onClose();
+    onClose();
   };
 
   const handleLocalEngineClick = () => {
@@ -36,7 +36,7 @@ export const KebabMenu = (props: KebabMenuProps) => {
         skipInstallationStep: false
       }
     });
-    props.onClose();
+    onClose();
   };
 
   const handleInsightsOverviewClick = () => {
@@ -46,7 +46,7 @@ export const KebabMenu = (props: KebabMenuProps) => {
         page: "environment-types"
       }
     });
-    props.onClose();
+    onClose();
   };
 
   const handleLogoutClick = () => {
@@ -54,7 +54,7 @@ export const KebabMenu = (props: KebabMenuProps) => {
     window.sendMessageToDigma({
       action: globalActions.LOGOUT
     });
-    props.onClose();
+    onClose();
   };
 
   const items: MenuItem[] = [

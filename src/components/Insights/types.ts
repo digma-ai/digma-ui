@@ -33,19 +33,14 @@ export type GenericEndpointInsight =
   | EndpointLowUsageInsight
   | EndpointNormalUsageInsight
   | EndpointHighUsageInsight
-  | EndpointSlowestSpansInsight
   | EndpointBottleneckInsight
   | SlowEndpointInsight
-  | EndpointSuspectedNPlusOneInsight
   | EndpointSpanNPlusOneInsight
-  | EndpointDurationSlowdownInsight
   | EndpointSlowdownSourceInsight
   | EndpointBreakdownInsight
   | EndpointSessionInViewInsight
-  | EndpointChattyApiInsight
   | EndpointChattyApiV2Insight
   | EndpointHighNumberOfQueriesInsight
-  | EndpointQueryOptimizationInsight
   | EndpointQueryOptimizationV2Insight;
 
 export type GenericSpanInsight =
@@ -91,11 +86,7 @@ export interface InsightsData {
 export type InsightViewType = "Issues" | "Analytics";
 
 export interface InsightsProps {
-  data?: InsightsData;
   insightViewType: InsightViewType;
-  onShowPromotionConfirmationDiscard?: () => void;
-  onShowPromotion?: () => void;
-  hidePromotion?: boolean;
 }
 
 export interface InsightGroup {
@@ -368,26 +359,6 @@ export interface EndpointHighUsageInsight extends EndpointInsight {
   maxCallsIn1Min: number;
 }
 
-/**
- * @deprecated
- * safe to delete after 2024-06-05
- */
-export interface EndpointSlowestSpansInsight extends EndpointInsight {
-  name: "Bottleneck Detected";
-  type: InsightType.SlowestSpans;
-  category: InsightCategory.Performance;
-  specifity: InsightSpecificity.TargetFound;
-  importance: InsightImportance.Critical;
-  isRecalculateEnabled: true;
-  spans: {
-    spanInfo: SpanInfo;
-    probabilityOfBeingBottleneck: number;
-    avgDurationWhenBeingBottleneck: Duration;
-    criticality: number;
-    ticketLink: string | null;
-  }[];
-}
-
 export interface EndpointBottleneckInsight extends EndpointInsight {
   name: "Bottleneck Detected";
   type: InsightType.EndpointBottleneck;
@@ -476,31 +447,6 @@ export interface SpaNPlusOneInsight extends SpanInsight {
   endpoints: NPlusOneEndpointInfo[] | null;
 }
 
-/**
- * @deprecated
- * safe to delete after 2024-06-05
- */
-export interface EndpointSuspectedNPlusOneInsight extends EndpointInsight {
-  name: "Suspected N+1 Query";
-  type: InsightType.EndpointSpaNPlusOne;
-  category: InsightCategory.Performance;
-  specifity: InsightSpecificity.TargetAndReasonFound;
-  importance: InsightImportance.HighlyImportant;
-  isRecalculateEnabled: true;
-  spans: {
-    occurrences: number;
-    internalSpan: SpanInfo | null;
-    clientSpan: SpanInfo;
-    traceId: string;
-    duration: Duration;
-    fraction: number;
-    criticality: number;
-    impact: number;
-    severity: number;
-    ticketLink: string | null;
-  }[];
-}
-
 export interface EndpointSpanNPlusOneInsight extends EndpointInsight {
   name: "Suspected N+1 Query";
   type: InsightType.EndpointSpanNPlusOne;
@@ -560,26 +506,6 @@ export interface EndpointSlowdownSource {
   currentDuration: Duration;
   changeTime: string;
   changeVerified: boolean;
-}
-
-/**
- * @deprecated
- * safe to delete after 2024-06-05
- */
-export type DurationSlowdownSource = EndpointSlowdownSource;
-
-/**
- * @deprecated
- * safe to delete after 2024-06-05
- */
-export interface EndpointDurationSlowdownInsight extends EndpointInsight {
-  name: "Endpoint Duration Slowdown Source";
-  type: InsightType.EndpointDurationSlowdown;
-  category: InsightCategory.Performance;
-  specifity: InsightSpecificity.OwnInsight;
-  importance: InsightImportance.Critical;
-  durationSlowdownSources: DurationSlowdownSource[];
-  decorators: CodeObjectDecorator[];
 }
 
 export interface EndpointSlowdownSourceInsight extends EndpointInsight {
@@ -658,23 +584,6 @@ export interface EndpointSessionInViewInsight extends EndpointInsight {
   }[];
 }
 
-/**
- * @deprecated
- * safe to delete after 2024-06-05
- */
-export interface EndpointChattyApiInsight extends EndpointInsight {
-  name: "HTTP Chatter";
-  type: InsightType.EndpointChattyApi;
-  category: InsightCategory.Performance;
-  specifity: InsightSpecificity.TargetAndReasonFound;
-  importance: InsightImportance.HighlyImportant;
-  spans: {
-    repeats: number;
-    clientSpan: SpanInfo;
-    traceId?: string;
-  }[];
-}
-
 export interface EndpointChattyApiV2Insight extends EndpointInsight {
   name: "HTTP Chatter";
   type: InsightType.EndpointChattyApiV2;
@@ -736,20 +645,6 @@ export interface EndpointQueryOptimizationSpan {
   impact: number;
   severity: number;
   ticketLink: string | null;
-}
-
-/**
- * @deprecated
- * safe to delete after 2024-06-05
- */
-export interface EndpointQueryOptimizationInsight extends EndpointInsight {
-  name: "Query Optimization";
-  type: InsightType.EndpointQueryOptimization;
-  category: InsightCategory.Performance;
-  specifity: InsightSpecificity.TargetAndReasonFound;
-  importance: InsightImportance.HighlyImportant;
-  isRecalculateEnabled: true;
-  spans: EndpointQueryOptimizationSpan[];
 }
 
 export interface EndpointQueryOptimizationV2Insight extends EndpointInsight {

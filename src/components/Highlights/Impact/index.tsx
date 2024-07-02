@@ -1,11 +1,9 @@
 import { Row, createColumnHelper } from "@tanstack/react-table";
 import { useContext, useEffect } from "react";
-import {
-  PERFORMANCE_IMPACT_DOCUMENTATION_URL,
-  ROUTES
-} from "../../../constants";
+import { PERFORMANCE_IMPACT_DOCUMENTATION_URL } from "../../../constants";
 import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
+import { SCOPE_CHANGE_EVENTS } from "../../Main/types";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { getImpactScoreLabel } from "../../common/ImpactScore";
 import { InfinityIcon } from "../../common/icons/16px/InfinityIcon";
@@ -112,9 +110,10 @@ export const Impact = () => {
     const handleTableRowClick = (row: Row<EnvironmentImpactData>) => {
       sendUserActionTrackingEvent(trackingEvents.IMPACT_CARD_TABLE_ROW_CLICKED);
       handleEnvironmentTableRowClick(
+        config.scope,
         config.environments,
         row.original.environmentId,
-        ROUTES.ANALYTICS
+        SCOPE_CHANGE_EVENTS.HIGHLIGHTS_IMPACT_CARD_ITEM_CLICKED
       );
     };
 

@@ -17,7 +17,7 @@ export const addEnvironmentColumns = <T,>(
         return (
           <EnvironmentName
             name={environmentData.environmentName}
-            criticality={environmentData.criticality}
+            criticality={environmentData.insightCriticality}
           />
         );
       }

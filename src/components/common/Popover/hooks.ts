@@ -25,7 +25,7 @@ export const usePopover = ({
   const [labelId, setLabelId] = useState<string | undefined>();
   const [descriptionId, setDescriptionId] = useState<string | undefined>();
 
-  const open = controlledOpen ?? uncontrolledOpen;
+  const open = Boolean(controlledOpen) || uncontrolledOpen;
   const setOpen = setControlledOpen ?? setUncontrolledOpen;
 
   const data = useFloating({

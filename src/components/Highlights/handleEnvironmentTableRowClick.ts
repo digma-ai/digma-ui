@@ -1,28 +1,26 @@
-import { actions as globalActions } from "../../actions";
-import { ChangeEnvironmentPayload, ChangeViewPayload } from "../../types";
-import { Environment } from "../common/App/types";
+import { changeScope } from "../../utils/actions/changeScope";
+import { Environment, Scope } from "../common/App/types";
 
 export const handleEnvironmentTableRowClick = (
+  scope: Scope | undefined,
   environments: Environment[] | undefined,
   environmentIdToSelect: string,
-  viewToSelect: string
+  changeScopeEvent: string
 ) => {
   const environmentChangeTo = environments?.find(
     (x) => x.id === environmentIdToSelect
   );
 
   if (environmentChangeTo) {
-    window.sendMessageToDigma<ChangeEnvironmentPayload>({
-      action: globalActions.CHANGE_ENVIRONMENT,
-      payload: {
-        environment: environmentChangeTo.id
-      }
-    });
-
-    window.sendMessageToDigma<ChangeViewPayload>({
-      action: globalActions.CHANGE_VIEW,
-      payload: {
-        view: viewToSelect
+    changeScope({
+      span: scope?.span
+        ? {
+            spanCodeObjectId: scope.span.spanCodeObjectId
+          }
+        : null,
+      environmentId: environmentChangeTo.id,
+      context: {
+        event: changeScopeEvent
       }
     });
   }

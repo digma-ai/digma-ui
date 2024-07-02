@@ -1,13 +1,13 @@
 import * as s from "./styles";
 import { PageProps } from "./types";
 
-export const Page = (props: PageProps) => (
+export const Page = ({ title, description, sections }: PageProps) => (
   <s.Container>
     <s.Header>
-      <s.Title>{props.title}</s.Title>
-      {props.description}
+      <s.Title>{title}</s.Title>
+      {description}
     </s.Header>
-    {props.sections?.map((section, i) => (
+    {sections?.map((section, i) => (
       <s.Section key={i}>
         <s.SectionHeader>
           {Number.isInteger(section.number) && (

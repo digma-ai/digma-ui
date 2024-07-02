@@ -1,5 +1,7 @@
 import styled from "styled-components";
+import { getInsightImportanceColor } from "../../../../../utils/getInsightImportanceColor";
 import { Link as CommonLink } from "../../../../common/Link";
+import { InsightIconContainerProps } from "./types";
 
 export const Link = styled.a`
   color: #7891d0;
@@ -44,7 +46,7 @@ export const Header = styled.div`
   align-items: center;
 `;
 
-export const InsightIconContainer = styled.div`
+export const InsightIconContainer = styled.div<InsightIconContainerProps>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -61,6 +63,8 @@ export const InsightIconContainer = styled.div`
         return "#43454a";
     }
   }};
+  color: ${({ theme, $importance }) =>
+    getInsightImportanceColor($importance, theme)};
 `;
 
 export const TicketIconContainer = styled.button`
@@ -110,6 +114,15 @@ export const ExpandButton = styled.button`
   border: none;
   background: none;
   cursor: pointer;
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return "#828797";
+      case "dark":
+      case "dark-jetbrains":
+        return "#b9c2eb";
+    }
+  }};
 `;
 
 export const RefreshContainer = styled.div`

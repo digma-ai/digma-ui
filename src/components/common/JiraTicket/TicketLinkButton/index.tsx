@@ -4,13 +4,15 @@ import { Button } from "../../Button";
 import { ActionableTextField } from "../ActionableTextField";
 import { TicketLinkButtonProps } from "./types";
 
-export const TicketLinkButton = (props: TicketLinkButtonProps) => {
+export const TicketLinkButton = ({
+  ticketLink,
+  unlinkTicket,
+  linkTicket
+}: TicketLinkButtonProps) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(
-    props.ticketLink?.errorMessage ?? null
+    ticketLink?.errorMessage ?? null
   );
-  const [link, setLink] = useState<string | null>(
-    props.ticketLink?.link ?? null
-  );
+  const [link, setLink] = useState<string | null>(ticketLink?.link ?? null);
   const onTicketLinkChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const ticketLink = event.target.value;
     setLink(ticketLink);
@@ -23,26 +25,29 @@ export const TicketLinkButton = (props: TicketLinkButtonProps) => {
 
   const onUnlink = () => {
     setLink("");
-    props.unlinkTicket && props.unlinkTicket();
+
+    if (unlinkTicket) {
+      unlinkTicket();
+    }
   };
 
   const onLink = () => {
-    if (!link) {
+    if (!link || !linkTicket) {
       return;
     }
 
-    props.linkTicket && props.linkTicket(link);
+    linkTicket(link);
   };
 
   useEffect(() => {
-    if (props.ticketLink?.link) {
-      setLink(props.ticketLink?.link);
+    if (ticketLink?.link) {
+      setLink(ticketLink?.link);
     }
 
-    if (props.ticketLink?.errorMessage) {
-      setErrorMessage(props.ticketLink?.errorMessage);
+    if (ticketLink?.errorMessage) {
+      setErrorMessage(ticketLink?.errorMessage);
     }
-  }, [props.ticketLink]);
+  }, [ticketLink]);
 
   return (
     <ActionableTextField
@@ -53,10 +58,10 @@ export const TicketLinkButton = (props: TicketLinkButtonProps) => {
       }
       label={"Ticket URL"}
       onChange={onTicketLinkChange}
-      disabled={Boolean(props.ticketLink?.link)}
+      disabled={Boolean(ticketLink?.link)}
       errorMessage={errorMessage}
       buttons={
-        props.ticketLink?.link ? (
+        ticketLink?.link ? (
           <Button key={"unlink-ticket"} onClick={onUnlink}>
             Unlink
           </Button>
