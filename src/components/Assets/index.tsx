@@ -30,7 +30,9 @@ export const Assets = () => {
     useState<AssetScopeOption | null>(null);
   const [selectedFilters, setSelectedFilters] = useState<AssetFilterQuery>();
   const config = useContext(ConfigContext);
-  const previousScope = usePrevious(config.scope?.span);
+  const previousScopeSpanCodeObjectId = usePrevious(
+    config.scope?.span?.spanCodeObjectId
+  );
   const [assetTypeListDataRefresher, setAssetTypeListRefresher] =
     useState<DataRefresher | null>(null);
   const [assetListDataRefresher, setAssetListRefresher] =
@@ -46,10 +48,12 @@ export const Assets = () => {
   }, [config.scope]);
 
   useEffect(() => {
-    if (!previousScope || previousScope !== config.scope?.span) {
+    if (
+      previousScopeSpanCodeObjectId !== config.scope?.span?.spanCodeObjectId
+    ) {
       setSearchInputValue("");
     }
-  }, [config.scope, previousScope]);
+  }, [config.scope?.span?.spanCodeObjectId, previousScopeSpanCodeObjectId]);
 
   const handleGoToAllAssets = () => {
     goTo("..");
