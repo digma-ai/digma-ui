@@ -37,7 +37,7 @@ export const ErrorDetails = ({ id, onGoToAllErrors }: ErrorDetailsProps) => {
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [getData]);
 
   if (!data) {
     // TODO: replace with skeletons

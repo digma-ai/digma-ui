@@ -41,7 +41,7 @@ class History<T> {
     const event = new CustomEvent(`${eventNamePrefix}${name}`, { detail });
     this.logger.debug(`Emitting "${name}" event: %O`, event);
     this.logger.debug("Stack: %O", this.historyStack);
-    this.logger.debug("Current index: ", this.historyStack);
+    this.logger.debug("Current index: ", this.currentIndex);
     window.dispatchEvent(event);
   }
 

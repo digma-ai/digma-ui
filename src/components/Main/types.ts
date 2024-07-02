@@ -62,7 +62,7 @@ export interface ReactRouterLocationState {
   navigatedWithCustomHistory?: boolean;
 }
 
-export interface HistoryState {
+export interface HistoryState extends ReactRouterLocationState {
   environmentId?: string;
   spanCodeObjectId?: string;
 }

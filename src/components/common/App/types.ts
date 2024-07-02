@@ -163,8 +163,3 @@ export interface InsightStats {
 export interface UserInfo {
   id?: string;
 }
-
-export interface HistoryTransitioningStore {
-  isHistoryTransitioning: boolean;
-  setIsHistoryTransitioning: (value: boolean) => void;
-}

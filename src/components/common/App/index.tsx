@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import { ThemeProvider } from "styled-components";
-import { create } from "zustand";
 import { actions } from "../../../actions";
 import { dispatcher } from "../../../dispatcher";
 import { Theme } from "../../../globals";
@@ -17,20 +16,11 @@ import {
   DigmaStatus,
   Environment,
   GlobalState,
-  HistoryTransitioningStore,
   InsightStats,
   RunConfiguration,
   Scope,
   UserInfo
 } from "./types";
-
-export const useHistoryTransitioningStore = create<HistoryTransitioningStore>()(
-  (set) => ({
-    isHistoryTransitioning: false,
-    setIsHistoryTransitioning: (value: boolean) =>
-      set({ isHistoryTransitioning: value })
-  })
-);
 
 export const THEMES = ["light", "dark", "dark-jetbrains"];
 

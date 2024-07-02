@@ -2,7 +2,6 @@ import { useContext } from "react";
 import { NavigateOptions, To, resolvePath } from "react-router-dom";
 import { history } from "../../containers/Main/history";
 import { HistoryEntry, HistoryEntryLocation } from "../../history/History";
-import { isObject } from "../../typeGuards/isObject";
 import { isString } from "../../typeGuards/isString";
 import { ConfigContext } from "../common/App/ConfigContext";
 import { HistoryState } from "./types";
@@ -107,19 +106,10 @@ export const useHistory = () => {
 
     const isNewHistoryEntry = isNewHistoryEntryNeeded(to, options, location);
 
-    const state: HistoryState = {
-      environmentId:
-        isObject(options) &&
-        isObject(options.state) &&
-        isString(options.state.environmentId)
-          ? options.state.environmentId
-          : config.environment?.id,
-      spanCodeObjectId:
-        isObject(options) &&
-        isObject(options.state) &&
-        isString(options.state.spanCodeObjectId)
-          ? options.state.spanCodeObjectId
-          : config.scope?.span?.spanCodeObjectId
+    const optionsState = options?.state as HistoryState | undefined;
+    const state: HistoryState = optionsState ?? {
+      environmentId: config.environment?.id,
+      spanCodeObjectId: config.scope?.span?.spanCodeObjectId
     };
 
     const resolvedPath = resolvePath(to, location?.location.pathname ?? "/");

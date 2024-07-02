@@ -9,8 +9,8 @@ import {
   ReactRouterLocationState,
   SCOPE_CHANGE_EVENTS
 } from "../../Main/types";
+import { useBrowserLocationUpdater } from "../../Main/updateBrowserLocationUpdater";
 import { useHistory } from "../../Main/useHistory";
-import { useHistoryTransitioningStore } from "../../common/App";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { ChevronIcon } from "../../common/icons/20px/ChevronIcon";
 import { Direction } from "../../common/icons/types";
@@ -22,7 +22,7 @@ export const HistoryNavigationPanel = () => {
   const navigate = useNavigate();
   const config = useContext(ConfigContext);
   const location = useLocation() as Location<ReactRouterLocationState | null>;
-  const { setIsHistoryTransitioning } = useHistoryTransitioningStore();
+  const updateBrowserLocation = useBrowserLocationUpdater();
 
   useEffect(() => {
     // Initialize history with the current state
@@ -52,12 +52,7 @@ export const HistoryNavigationPanel = () => {
     const handleHistoryChange = (
       e: CustomEvent<HistoryEntry<HistoryState>>
     ) => {
-      navigate(e.detail.location, {
-        replace: true,
-        state: {
-          navigatedWithCustomHistory: true
-        }
-      });
+      updateBrowserLocation(e.detail.location);
     };
 
     window.addEventListener(
@@ -71,14 +66,20 @@ export const HistoryNavigationPanel = () => {
         handleHistoryChange as EventListener
       );
     };
-  }, [navigate]);
+  }, [updateBrowserLocation]);
 
   useEffect(() => {
     const handleHistoryClear = () => {
+      const environmentNavigateTo = config.environment?.id
+        ? config.environments?.find((x) => x.id === config.environment?.id)
+        : config.environments?.[0];
       changeScope({
         span: null,
         context: {
-          event: SCOPE_CHANGE_EVENTS.HISTORY_CLEARED
+          event: SCOPE_CHANGE_EVENTS.HISTORY_CLEARED,
+          payload: {
+            environmentId: environmentNavigateTo?.id
+          }
         }
       });
     };
@@ -100,23 +101,19 @@ export const HistoryNavigationPanel = () => {
     const handleHistoryNavigate = (
       e: CustomEvent<HistoryEntry<HistoryState>>
     ) => {
-      setIsHistoryTransitioning(true);
       const spanCodeObjectId = e.detail.state?.spanCodeObjectId;
       changeScope({
         span: spanCodeObjectId
           ? {
-              spanCodeObjectId: spanCodeObjectId
+              spanCodeObjectId
             }
           : null,
         environmentId: e.detail.state?.environmentId,
         context: {
-          event: SCOPE_CHANGE_EVENTS.HISTORY_NAVIGATED
-        }
-      });
-      navigate(e.detail.location, {
-        replace: true,
-        state: {
-          navigatedWithCustomHistory: true
+          event: SCOPE_CHANGE_EVENTS.HISTORY_NAVIGATED,
+          payload: {
+            location: e.detail.location
+          }
         }
       });
     };
@@ -132,7 +129,7 @@ export const HistoryNavigationPanel = () => {
         handleHistoryNavigate as EventListener
       );
     };
-  }, [navigate, setIsHistoryTransitioning]);
+  }, [navigate]);
 
   const handleBackButtonClick = () => {
     sendUserActionTrackingEvent(trackingEvents.BACK_BUTTON_CLICKED);
