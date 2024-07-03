@@ -9,8 +9,10 @@ import {
   GlobalState,
   InsightsQuery as InsightsDataQuery
 } from "../common/App/types";
+import { actions as issuesActions } from "./Issues/actions";
 import { actions } from "./actions";
 import {
+  GetIssuesQuery,
   InsightsData,
   InsightsQuery,
   InsightsStatus,
@@ -22,6 +24,15 @@ interface UseInsightDataProps {
   refreshInterval: number;
   query: InsightsQuery;
 }
+
+const getIssues = (query: GetIssuesQuery) => {
+  window.sendMessageToDigma({
+    action: issuesActions.GET_DATA_LIST,
+    payload: {
+      query: query
+    }
+  });
+};
 
 const getData = (scopedQuery: ScopedInsightsQuery, state?: GlobalState) => {
   const getDataQuery: InsightsDataQuery = {
@@ -36,12 +47,24 @@ const getData = (scopedQuery: ScopedInsightsQuery, state?: GlobalState) => {
     filters: scopedQuery.filters
   };
 
-  window.sendMessageToDigma({
-    action: actions.GET_DATA_LIST,
-    payload: {
-      query: getDataQuery
-    }
-  });
+  if (scopedQuery.insightViewType === "Issues") {
+    getIssues({
+      filters: scopedQuery.filters,
+      page: scopedQuery.page,
+      showDismissed: scopedQuery.showDismissed,
+      sorting: scopedQuery.sorting,
+      scopedSpanCodeObjectId: scopedQuery.scopedSpanCodeObjectId,
+      displayName: scopedQuery.searchQuery,
+      insightTypes: scopedQuery.insightTypes
+    });
+  } else {
+    window.sendMessageToDigma({
+      action: actions.GET_DATA_LIST,
+      payload: {
+        query: getDataQuery
+      }
+    });
+  }
 
   const globalStateSlice =
     scopedQuery.insightViewType === "Analytics" ? "analytics" : "insights";

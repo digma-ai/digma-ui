@@ -1,3 +1,4 @@
+import { GetIssuesQuery } from "./components/Insights/types";
 import { Duration } from "./globals";
 
 export enum FeatureFlag {
@@ -69,4 +70,8 @@ export interface GetInsightStatsPayload {
       spanCodeObjectId: string;
     };
   } | null;
+}
+
+export interface GetIssuesFiltersPayload {
+  query: GetIssuesQuery;
 }
