@@ -3,16 +3,16 @@ import { actions as globalActions } from "../../actions";
 import { DigmaMessageError } from "../../api/types";
 import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
-import { GetInsightStatsPayload } from "../../types";
+import { GetInsightStatsPayload, GetIssuesPayload } from "../../types";
 import { ConfigContext } from "../common/App/ConfigContext";
 import {
   GlobalState,
   InsightsQuery as InsightsDataQuery
 } from "../common/App/types";
 import { actions as issuesActions } from "./Issues/actions";
+import { GetIssuesQuery } from "./Issues/types";
 import { actions } from "./actions";
 import {
-  GetIssuesQuery,
   InsightsData,
   InsightsQuery,
   InsightsStatus,
@@ -26,7 +26,7 @@ interface UseInsightDataProps {
 }
 
 const getIssues = (query: GetIssuesQuery) => {
-  window.sendMessageToDigma({
+  window.sendMessageToDigma<GetIssuesPayload>({
     action: issuesActions.GET_DATA_LIST,
     payload: {
       query: query

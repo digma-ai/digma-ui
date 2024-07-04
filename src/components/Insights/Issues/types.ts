@@ -1,8 +1,15 @@
-export interface InsightTypeFilter {
-  name: string;
-  enabled: boolean;
+import { Sorting } from "../../common/SortingSelector/types";
+import { InsightFilterType } from "../InsightsCatalog/types";
+
+export interface IssuesQuery {
+  displayName: string | null;
+  showDismissed: boolean;
+  filters: InsightFilterType[];
+  insightTypes?: string[];
+  scopedSpanCodeObjectId?: string | null;
 }
 
-export interface IssueFiltersData {
-  issueTypeFilters: InsightTypeFilter[];
+export interface GetIssuesQuery extends IssuesQuery {
+  page: number;
+  sorting: Sorting;
 }

@@ -19,7 +19,6 @@ import { trackingEvents as mainTrackingEvents } from "../../Main/tracking";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { CancelConfirmation } from "../../common/CancelConfirmation";
 import { Pagination } from "../../common/Pagination";
-import { SearchInput } from "../../common/SearchInput";
 import { SortingSelector } from "../../common/SortingSelector";
 import { SORTING_ORDER, Sorting } from "../../common/SortingSelector/types";
 import { ChevronIcon } from "../../common/icons/16px/ChevronIcon";
@@ -66,7 +65,8 @@ export const InsightsCatalog = ({
   dismissedCount,
   unreadCount,
   onQueryChange,
-  onRefresh
+  onRefresh,
+  filterComponent
 }: InsightsCatalogProps) => {
   const [page, setPage] = useState(0);
   const previousPage = usePrevious(page);
@@ -301,13 +301,7 @@ export const InsightsCatalog = ({
     <>
       <s.Toolbar>
         <s.ToolbarRow>
-          <SearchInput
-            disabled={Boolean(config.scope?.span)}
-            onChange={(val: string | null) => {
-              setSearchInputValue(val);
-            }}
-            value={searchInputValue}
-          />
+          {!isUndefined(filterComponent) && filterComponent}
           <SortingSelector
             onChange={(val: Sorting) => {
               setSorting(val);

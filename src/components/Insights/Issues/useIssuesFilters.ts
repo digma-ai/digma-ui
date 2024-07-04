@@ -3,18 +3,18 @@ import { DigmaMessageError } from "../../../api/types";
 import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { ConfigContext } from "../../common/App/ConfigContext";
-import { GetIssuesQuery } from "../types";
 import { actions, actions as issuesActions } from "./actions";
 
 import { GetIssuesFiltersPayload } from "../../../types";
-import { IssueFiltersData } from "./types";
+import { IssuesFiltersData } from "./IssuesFilter/types";
+import { IssuesQuery } from "./types";
 
 interface UseIssuesFiltersProps {
   refreshInterval: number;
-  query: GetIssuesQuery;
+  query: IssuesQuery;
 }
 
-const getData = (query: GetIssuesQuery) => {
+const getData = (query: IssuesQuery) => {
   window.sendMessageToDigma<GetIssuesFiltersPayload>({
     action: issuesActions.GET_FILTERS,
     payload: {
@@ -27,13 +27,10 @@ export const useIssuesFilters = ({
   refreshInterval,
   query
 }: UseIssuesFiltersProps) => {
-  const [data, setData] = useState<IssueFiltersData>({
-    issueTypeFilters: []
+  const [data, setData] = useState<IssuesFiltersData>({
+    issuesTypes: []
   });
-  const previousData = usePrevious(data);
-  const [isInitialLoading, setIsInitialLoading] = useState(false);
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
-  const [isLoading, setIsLoading] = useState(false);
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
   const refreshTimerId = useRef<number>();
   const config = useContext(ConfigContext);
@@ -47,22 +44,21 @@ export const useIssuesFilters = ({
     [query, scope]
   );
 
+  const refresh = () => getData(scopedQuery);
+
   useEffect(() => {
     getData(scopedQuery);
 
-    setIsInitialLoading(true);
-    setIsLoading(true);
     const handleIssueFiltersData = (
       data: unknown,
       timeStamp: number,
       error: DigmaMessageError | undefined
     ) => {
       if (!error) {
-        const insightsData = data as IssueFiltersData;
+        const insightsData = data as IssuesFiltersData;
         setData(insightsData);
       }
 
-      setIsLoading(false);
       setLastSetDataTimeStamp(timeStamp);
     };
 
@@ -76,12 +72,6 @@ export const useIssuesFilters = ({
       window.clearTimeout(refreshTimerId.current);
     };
   }, [scopedQuery]);
-
-  useEffect(() => {
-    if (!previousData && data) {
-      setIsInitialLoading(false);
-    }
-  }, [previousData, data]);
 
   useEffect(() => {
     if (previousLastSetDataTimeStamp !== lastSetDataTimeStamp) {
@@ -104,12 +94,10 @@ export const useIssuesFilters = ({
 
   useEffect(() => {
     getData(scopedQuery);
-    setIsLoading(true);
   }, [scopedQuery, scope?.span?.spanCodeObjectId, environment?.id]);
 
   return {
-    isInitialLoading,
     data,
-    isLoading
+    refresh
   };
 };

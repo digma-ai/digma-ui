@@ -1,4 +1,7 @@
-import { GetIssuesQuery } from "./components/Insights/types";
+import {
+  GetIssuesQuery,
+  IssuesQuery
+} from "./components/Insights/Issues/types";
 import { Duration } from "./globals";
 
 export enum FeatureFlag {
@@ -73,5 +76,9 @@ export interface GetInsightStatsPayload {
 }
 
 export interface GetIssuesFiltersPayload {
+  query: IssuesQuery;
+}
+
+export interface GetIssuesPayload {
   query: GetIssuesQuery;
 }

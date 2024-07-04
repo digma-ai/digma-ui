@@ -681,13 +681,3 @@ export interface DismissInsightPayload {
 export interface UndismissInsightPayload {
   insightId: string;
 }
-
-export interface GetIssuesQuery {
-  page: number;
-  sorting: Sorting;
-  displayName: string | null;
-  showDismissed: boolean;
-  filters: InsightFilterType[];
-  insightTypes?: [];
-  scopedSpanCodeObjectId: string | null;
-}
