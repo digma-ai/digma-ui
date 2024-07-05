@@ -9,7 +9,7 @@ import { isNull } from "../../../../../typeGuards/isNull";
 import { isString } from "../../../../../typeGuards/isString";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { TraceIcon } from "../../../../common/icons/16px/TraceIcon";
-import { Button } from "../../../../common/v3/Button";
+import { NewButton } from "../../../../common/v3/NewButton";
 import { ToggleSwitch } from "../../../../common/v3/ToggleSwitch";
 import { Tooltip } from "../../../../common/v3/Tooltip";
 import { actions } from "../../../actions";
@@ -209,14 +209,14 @@ export const FlowStack = ({ data }: FlowStackProps) => {
           labelPosition={"end"}
         />
         <s.FooterButtonsContainer>
-          <Button
+          <NewButton
             buttonType={"secondary"}
             label={"Raw error stack trace"}
             onClick={handleRawErrorStackTraceButton}
             isDisabled={isNull(data.stackTrace)}
           />
           <Tooltip title={"Open Trace"}>
-            <Button
+            <NewButton
               icon={TraceIcon}
               onClick={handleTraceButtonClick}
               isDisabled={isNull(traceId)}
