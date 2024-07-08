@@ -669,7 +669,7 @@ export interface InsightsQuery {
 
 export interface ScopedInsightsQuery extends InsightsQuery {
   scopedSpanCodeObjectId: string | null;
-  insightTypes?: [];
+  insightTypes?: string[];
 }
 
 export { InsightType };

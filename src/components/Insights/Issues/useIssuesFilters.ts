@@ -28,7 +28,7 @@ export const useIssuesFilters = ({
   query
 }: UseIssuesFiltersProps) => {
   const [data, setData] = useState<IssuesFiltersData>({
-    issuesTypes: []
+    issueTypeFilters: []
   });
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);

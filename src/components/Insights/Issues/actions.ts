@@ -1,6 +1,6 @@
 import { addPrefix } from "../../../utils/addPrefix";
 
-const ACTION_PREFIX = "INSIGHTS";
+const ACTION_PREFIX = "ISSUES";
 
 export const actions = addPrefix(ACTION_PREFIX, {
   SET_DATA_LIST: "SET_DATA_LIST",

@@ -1,7 +1,6 @@
 import { useCallback, useContext, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useTheme } from "styled-components";
-import { actions as globalActions } from "../../../actions";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import { useDebounce } from "../../../hooks/useDebounce";
 import { usePersistence } from "../../../hooks/usePersistence";
@@ -9,7 +8,7 @@ import { usePrevious } from "../../../hooks/usePrevious";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { isString } from "../../../typeGuards/isString";
 import { isUndefined } from "../../../typeGuards/isUndefined";
-import { FeatureFlag, GetInsightStatsPayload } from "../../../types";
+import { FeatureFlag } from "../../../types";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { formatUnit } from "../../../utils/formatUnit";
 import { MAIN_CONTAINER_ID } from "../../Main";
@@ -19,6 +18,7 @@ import { trackingEvents as mainTrackingEvents } from "../../Main/tracking";
 import { ConfigContext } from "../../common/App/ConfigContext";
 import { CancelConfirmation } from "../../common/CancelConfirmation";
 import { Pagination } from "../../common/Pagination";
+import { SearchInput } from "../../common/SearchInput";
 import { SortingSelector } from "../../common/SortingSelector";
 import { SORTING_ORDER, Sorting } from "../../common/SortingSelector/types";
 import { ChevronIcon } from "../../common/icons/16px/ChevronIcon";
@@ -176,19 +176,6 @@ export const InsightsCatalog = ({
   const mainContainer = document.getElementById(MAIN_CONTAINER_ID);
 
   const refreshData = useCallback(() => {
-    window.sendMessageToDigma<GetInsightStatsPayload>({
-      action: globalActions.GET_INSIGHT_STATS,
-      payload: {
-        scope: config.scope?.span
-          ? {
-              span: {
-                spanCodeObjectId: config.scope.span.spanCodeObjectId
-              }
-            }
-          : null
-      }
-    });
-
     onQueryChange({
       ...defaultQuery,
       page,
@@ -302,6 +289,13 @@ export const InsightsCatalog = ({
       <s.Toolbar>
         <s.ToolbarRow>
           {!isUndefined(filterComponent) && filterComponent}
+          <SearchInput
+            disabled={Boolean(config.scope?.span)}
+            onChange={(val: string | null) => {
+              setSearchInputValue(val);
+            }}
+            value={searchInputValue}
+          />
           <SortingSelector
             onChange={(val: Sorting) => {
               setSorting(val);

@@ -15,7 +15,7 @@ export interface IssuesFilterSectorEntry extends IssuesFilterEntry {
 }
 
 export interface IssuesFiltersData {
-  issuesTypes: IssuesFilterEntry[];
+  issueTypeFilters: IssuesFilterEntry[];
 }
 
 export interface IssuesFilterQuery {

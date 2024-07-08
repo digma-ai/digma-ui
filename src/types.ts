@@ -73,6 +73,9 @@ export interface GetInsightStatsPayload {
       spanCodeObjectId: string;
     };
   } | null;
+  filters?: {
+    insights?: string[];
+  };
 }
 
 export interface GetIssuesFiltersPayload {

@@ -25,7 +25,7 @@ export const Default: Story = {
         type: "digma",
         action: actions.SET_FILTERS,
         payload: {
-          issuesTypes: [
+          issueTypeFilters: [
             {
               enabled: true,
               name: "SlowEndpoint"

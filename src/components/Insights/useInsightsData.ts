@@ -9,6 +9,7 @@ import {
   GlobalState,
   InsightsQuery as InsightsDataQuery
 } from "../common/App/types";
+import { IssuesFilterQuery } from "./Issues/IssuesFilter/types";
 import { actions as issuesActions } from "./Issues/actions";
 import { GetIssuesQuery } from "./Issues/types";
 import { actions } from "./actions";
@@ -23,6 +24,7 @@ import {
 interface UseInsightDataProps {
   refreshInterval: number;
   query: InsightsQuery;
+  filters?: IssuesFilterQuery;
 }
 
 const getIssues = (query: GetIssuesQuery) => {
@@ -81,24 +83,28 @@ const getData = (scopedQuery: ScopedInsightsQuery, state?: GlobalState) => {
   });
 };
 
-const getStats = (spanCodeObjectId: string | null) => {
+const getStats = (query: ScopedInsightsQuery) => {
   window.sendMessageToDigma<GetInsightStatsPayload>({
     action: globalActions.GET_INSIGHT_STATS,
     payload: {
-      scope: spanCodeObjectId
+      scope: query?.scopedSpanCodeObjectId
         ? {
             span: {
-              spanCodeObjectId: spanCodeObjectId
+              spanCodeObjectId: query?.scopedSpanCodeObjectId
             }
           }
-        : null
+        : null,
+      filters: {
+        insights: query.insightTypes
+      }
     }
   });
 };
 
 export const useInsightsData = ({
   refreshInterval,
-  query
+  query,
+  filters
 }: UseInsightDataProps) => {
   const [data, setData] = useState<InsightsData>({
     insightsStatus: InsightsStatus.LOADING,
@@ -115,12 +121,13 @@ export const useInsightsData = ({
   const config = useContext(ConfigContext);
   const { scope, environment, state } = config;
 
-  const scopedQuery = useMemo(
+  const scopedQuery: ScopedInsightsQuery = useMemo(
     () => ({
       ...query,
-      scopedSpanCodeObjectId: scope?.span?.spanCodeObjectId ?? null
+      scopedSpanCodeObjectId: scope?.span?.spanCodeObjectId ?? null,
+      insightTypes: filters?.issueTypes
     }),
-    [query, scope]
+    [query, scope, filters]
   );
 
   useEffect(() => {
@@ -146,9 +153,18 @@ export const useInsightsData = ({
 
     dispatcher.addActionListener(actions.SET_DATA_LIST, handleInsightsData);
 
+    dispatcher.addActionListener(
+      issuesActions.SET_DATA_LIST,
+      handleInsightsData
+    );
+
     return () => {
       dispatcher.removeActionListener(
         actions.SET_DATA_LIST,
+        handleInsightsData
+      );
+      dispatcher.removeActionListener(
+        issuesActions.SET_DATA_LIST,
         handleInsightsData
       );
       window.clearTimeout(refreshTimerId.current);
@@ -166,7 +182,7 @@ export const useInsightsData = ({
       window.clearTimeout(refreshTimerId.current);
       refreshTimerId.current = window.setTimeout(() => {
         getData(scopedQuery, state);
-        getStats(scopedQuery.scopedSpanCodeObjectId);
+        getStats(scopedQuery);
       }, refreshInterval);
     }
 
@@ -183,7 +199,7 @@ export const useInsightsData = ({
 
   useEffect(() => {
     getData(scopedQuery, state);
-    getStats(scopedQuery.scopedSpanCodeObjectId);
+    getStats(scopedQuery);
     setIsLoading(true);
   }, [scopedQuery, scope?.span?.spanCodeObjectId, environment?.id]);
 
@@ -193,7 +209,7 @@ export const useInsightsData = ({
     isLoading,
     refresh: () => {
       getData(scopedQuery, state);
-      getStats(scopedQuery.scopedSpanCodeObjectId);
+      getStats(scopedQuery);
     }
   };
 };

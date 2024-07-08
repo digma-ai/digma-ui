@@ -204,8 +204,11 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
     filters: []
   };
   const [query, setQuery] = useState<InsightsQuery>(DEFAULT_QUERY);
+  const [issuesFiltersQuery, setIssuesFilterQuery] =
+    useState<IssuesFilterQuery>();
   const { isInitialLoading, data, refresh } = useInsightsData({
     refreshInterval: REFRESH_INTERVAL,
+    filters: issuesFiltersQuery,
     query
   });
   const [infoToOpenJiraTicket, setInfoToOpenJiraTicket] =
@@ -219,8 +222,6 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
   const isRegistrationEnabled = false;
   const isRegistrationRequired =
     isRegistrationEnabled && !config.userRegistrationEmail;
-  const [issuesFiltersQuery, setIssuesFilterQuery] =
-    useState<IssuesFilterQuery>();
 
   useLayoutEffect(() => {
     sendMessage(globalActions.GET_STATE);

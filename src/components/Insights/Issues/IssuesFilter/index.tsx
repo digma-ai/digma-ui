@@ -3,11 +3,12 @@ import { usePersistence } from "../../../../hooks/usePersistence";
 import { usePrevious } from "../../../../hooks/usePrevious";
 import { isEnvironment } from "../../../../typeGuards/isEnvironment";
 import { isUndefined } from "../../../../typeGuards/isUndefined";
+import { getInsightTypeInfo } from "../../../../utils/getInsightTypeInfo";
 import { ConfigContext } from "../../../common/App/ConfigContext";
 import { FilterButton } from "../../../common/FilterButton";
 import { NewPopover } from "../../../common/NewPopover";
 import { Select } from "../../../common/Select";
-import { WrenchIcon } from "../../../common/icons/12px/WrenchIcon";
+import { SparkleIcon } from "../../../common/icons/SparkleIcon";
 import { NewButton } from "../../../common/v3/NewButton";
 import { useIssuesFilters } from "../useIssuesFilters";
 import * as s from "./styles";
@@ -31,7 +32,7 @@ export const IssuesFilter = ({ query, onApply }: IssuesFilterProps) => {
   });
 
   const handleClearFiltersButtonClick = () => {
-    setSelectedIssueTypes([]);
+    handleSelectionChange([]);
   };
 
   const handleSelectionChange = (value: string | string[]) => {
@@ -71,10 +72,10 @@ export const IssuesFilter = ({ query, onApply }: IssuesFilterProps) => {
   ]);
 
   const issuesTypeFilter =
-    data?.issuesTypes.map((entry) => ({
+    data?.issueTypeFilters?.map((entry) => ({
       value: entry.name,
-      label: entry.name,
-      enabled: entry.enabled,
+      label: getInsightTypeInfo(entry.name)?.label ?? entry.name,
+      enabled: entry.enabled || selectedIssueTypes.includes(entry.name),
       selected: selectedIssueTypes.includes(entry.name)
     })) ?? [];
 
@@ -93,7 +94,7 @@ export const IssuesFilter = ({ query, onApply }: IssuesFilterProps) => {
               onChange={handleSelectionChange}
               placeholder={selectedIssueTypes.length > 0 ? "Issues" : "All"}
               multiselect={true}
-              icon={WrenchIcon}
+              icon={SparkleIcon}
               disabled={issuesTypeFilter?.length === 0}
             />
           }
