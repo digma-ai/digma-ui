@@ -7,9 +7,9 @@ import { getInsightTypeInfo } from "../../../../utils/getInsightTypeInfo";
 import { ConfigContext } from "../../../common/App/ConfigContext";
 import { FilterButton } from "../../../common/FilterButton";
 import { NewPopover } from "../../../common/NewPopover";
-import { Select } from "../../../common/Select";
-import { SparkleIcon } from "../../../common/icons/SparkleIcon";
-import { NewButton } from "../../../common/v3/NewButton";
+import { InsightsIcon } from "../../../common/icons/12px/InsightsIcon";
+import { IconProps } from "../../../common/icons/types";
+import { Select } from "../../../common/v3/Select";
 import { useIssuesFilters } from "../useIssuesFilters";
 import * as s from "./styles";
 import { IssuesFilterProps, IssuesFilterQuery } from "./types";
@@ -81,25 +81,28 @@ export const IssuesFilter = ({ query, onApply }: IssuesFilterProps) => {
 
   return (
     <NewPopover
-      width={"calc(100% - 16px)"}
+      width={"calc(100%)"}
       content={
         <s.Container>
           <s.Header>Filters</s.Header>
           <s.FilterCategoryName>Issues</s.FilterCategoryName>
           {
             <Select
-              searchable={true}
               key={"issues"}
               items={issuesTypeFilter}
               onChange={handleSelectionChange}
               placeholder={selectedIssueTypes.length > 0 ? "Issues" : "All"}
               multiselect={true}
-              icon={SparkleIcon}
+              icon={(props: IconProps) => (
+                <s.InsightIconContainer>
+                  <InsightsIcon {...props} size={12} color="currentColor" />
+                </s.InsightIconContainer>
+              )}
               disabled={issuesTypeFilter?.length === 0}
             />
           }
           <s.Footer>
-            <NewButton
+            <s.ClearAllButton
               buttonType={"tertiary"}
               label={"Clear filters"}
               isDisabled={selectedIssueTypes.length === 0}

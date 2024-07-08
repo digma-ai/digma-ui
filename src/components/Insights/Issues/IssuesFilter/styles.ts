@@ -1,5 +1,10 @@
 import styled from "styled-components";
+import {
+  bodyBoldTypography,
+  subscriptRegularTypography
+} from "../../../common/App/typographies";
 import { grayScale } from "../../../common/App/v2colors";
+import { NewButton } from "../../../common/v3/NewButton";
 
 export const Container = styled.div`
   display: flex;
@@ -14,16 +19,18 @@ export const Container = styled.div`
 `;
 
 export const Header = styled.div`
-  color: ${({ theme }) => theme.colors.select.menu.text.primary};
+  color: ${({ theme }) => theme.colors.v3.text.primary};
   padding: 0 4px;
   display: flex;
   align-items: center;
+  ${bodyBoldTypography}
 `;
 
 export const FilterCategoryName = styled.div`
   display: flex;
   padding: 4px;
-  color: ${grayScale[400]};
+  color: ${({ theme }) => theme.colors.v3.text.tertiary};
+  ${subscriptRegularTypography}
 `;
 
 export const MenuButton = styled.button`
@@ -46,4 +53,23 @@ export const Footer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+`;
+
+export const ClearAllButton = styled(NewButton)`
+  span {
+    color: ${({ theme }) => theme.colors.v3.status.high};
+  }
+
+  &:hover:enabled {
+    color: ${({ theme }) => theme.colors.v3.status.high};
+
+    span {
+      color: ${({ theme }) => theme.colors.v3.status.high};
+    }
+  }
+`;
+
+export const InsightIconContainer = styled.div`
+  display: flex;
+  color: ${({ theme }) => theme.colors.v3.icon.tertiary};
 `;
