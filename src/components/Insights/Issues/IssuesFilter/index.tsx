@@ -117,6 +117,7 @@ export const IssuesFilter = ({ query, onApply }: IssuesFilterProps) => {
           title={"Filters"}
           showCount={true}
           selectedCount={selectedIssueTypes.length}
+          isActive={isOpen}
         />
       </div>
     </NewPopover>

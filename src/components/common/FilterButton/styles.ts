@@ -1,26 +1,26 @@
 import styled from "styled-components";
-import { grayScale } from "../App/v2colors";
 import { ButtonProps } from "./types";
 
 export const Button = styled.button<ButtonProps>`
   border-radius: 4px;
-  padding: 4px 8px;
+  padding: 6px 8px;
   display: flex;
   gap: 4px;
   align-items: center;
-  border: 1px solid ${({ theme }) => theme.colors.stroke.primary};
-  background: ${({ theme, $hasSelectedItems }) => {
-    if ($hasSelectedItems) {
-      return theme.colors.surface.brandDark;
+  border: 1px solid
+    ${({ theme, $hasSelectedItems, $isActive }) => {
+      if ($hasSelectedItems || $isActive) {
+        return theme.colors.v3.surface.brandPrimary;
+      }
+
+      return theme.colors.v3.stroke.primary;
+    }};
+  background: ${({ theme, $hasSelectedItems, $isActive }) => {
+    if ($hasSelectedItems || $isActive) {
+      return theme.colors.v3.surface.brandDark;
     }
 
-    switch (theme.mode) {
-      case "light":
-        return grayScale[50];
-      case "dark":
-      case "dark-jetbrains":
-        return grayScale[1000];
-    }
+    return theme.colors.v3.surface.primary;
   }};
   box-shadow: 1px 1px 4px 0 rgb(0 0 0 / 25%);
   color: ${({ theme }) => theme.colors.icon.primary};
@@ -30,7 +30,7 @@ export const Button = styled.button<ButtonProps>`
 `;
 
 export const Title = styled.span`
-  color: ${({ theme }) => theme.colors.text.subtext};
+  color: ${({ theme }) => theme.colors.v3.text.primary};
 `;
 
 export const Number = styled.span`
@@ -42,5 +42,5 @@ export const Number = styled.span`
   align-items: center;
   justify-content: center;
   color: #fff;
-  background: #4b4db4;
+  background: ${({ theme }) => theme.colors.v3.surface.brandTertiary};
 `;
