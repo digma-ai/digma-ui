@@ -1,4 +1,8 @@
 import styled from "styled-components";
+import {
+  footnoteRegularTypography,
+  subscriptRegularTypography
+} from "../App/typographies";
 import { ButtonProps } from "./types";
 
 export const Button = styled.button<ButtonProps>`
@@ -30,17 +34,18 @@ export const Button = styled.button<ButtonProps>`
 `;
 
 export const Title = styled.span`
+  ${subscriptRegularTypography}
   color: ${({ theme }) => theme.colors.v3.text.primary};
 `;
 
 export const Number = styled.span`
   width: 16px;
   height: 16px;
-  font-weight: 500;
   border-radius: 2px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
   background: ${({ theme }) => theme.colors.v3.surface.brandTertiary};
+  ${footnoteRegularTypography}
 `;
