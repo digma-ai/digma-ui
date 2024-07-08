@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { usePersistence } from "../../../../hooks/usePersistence";
 import { usePrevious } from "../../../../hooks/usePrevious";
 import { isEnvironment } from "../../../../typeGuards/isEnvironment";
@@ -27,21 +27,38 @@ export const IssuesFilter = ({ query, onApply }: IssuesFilterProps) => {
   const [persistedFilters, setPersistedFilters] =
     usePersistence<IssuesFilterQuery>(PERSISTENCE_KEY, "project");
   const previousPersistedFilters = usePrevious(persistedFilters);
-
   const { data, refresh } = useIssuesFilters({
     refreshInterval: 1000,
     query: query
   });
 
-  const changeSelection = (value: string | string[]) => {
-    const newValue = Array.isArray(value) ? value : [value];
-    setSelectedIssueTypes(newValue);
-    const newFilterValue: IssuesFilterQuery = {
-      issueTypes: newValue
-    };
-    setPersistedFilters(newFilterValue);
-    onApply(newFilterValue);
-  };
+  // const previousData = usePrevious(data);
+
+  const changeSelection = useCallback(
+    (value: string | string[]) => {
+      const newValue = Array.isArray(value) ? value : [value];
+      setSelectedIssueTypes(newValue);
+      const newFilterValue: IssuesFilterQuery = {
+        issueTypes: newValue
+      };
+      setPersistedFilters(newFilterValue);
+      onApply(newFilterValue);
+    },
+    [onApply, setPersistedFilters]
+  );
+
+  // useEffect(() => {
+  //   if (previousData && previousData !== data && selectedIssueTypes) {
+  //     ``;
+  //     const newSelection = selectedIssueTypes.filter((e) =>
+  //       Boolean(data.issueTypeFilters.find((x) => x.name === e && x.enabled))
+  //     );
+
+  //     if (newSelection.length !== selectedIssueTypes.length) {
+  //       changeSelection(newSelection);
+  //     }
+  //   }
+  // }, [previousData, data, selectedIssueTypes, changeSelection]);
 
   const handleClearFiltersButtonClick = () => {
     sendTrackingEvent(trackingEvents.CLEAR_ALL_FILTERS_BUTTON_CLICKED);
@@ -84,7 +101,7 @@ export const IssuesFilter = ({ query, onApply }: IssuesFilterProps) => {
       value: entry.name,
       label: getInsightTypeInfo(entry.name)?.label ?? entry.name,
       enabled: entry.enabled || selectedIssueTypes.includes(entry.name),
-      selected: selectedIssueTypes.includes(entry.name)
+      selected: selectedIssueTypes.includes(entry.name) && entry.enabled
     })) ?? [];
 
   return (
