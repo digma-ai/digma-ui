@@ -3,6 +3,7 @@ import { usePersistence } from "../../../../hooks/usePersistence";
 import { usePrevious } from "../../../../hooks/usePrevious";
 import { isEnvironment } from "../../../../typeGuards/isEnvironment";
 import { isUndefined } from "../../../../typeGuards/isUndefined";
+import { sendTrackingEvent } from "../../../../utils/actions/sendTrackingEvent";
 import { getInsightTypeInfo } from "../../../../utils/getInsightTypeInfo";
 import { ConfigContext } from "../../../common/App/ConfigContext";
 import { FilterButton } from "../../../common/FilterButton";
@@ -12,6 +13,7 @@ import { IconProps } from "../../../common/icons/types";
 import { Select } from "../../../common/v3/Select";
 import { useIssuesFilters } from "../useIssuesFilters";
 import * as s from "./styles";
+import { trackingEvents } from "./tracking";
 import { IssuesFilterProps, IssuesFilterQuery } from "./types";
 
 const PERSISTENCE_KEY = "issuesFilters";
@@ -31,11 +33,7 @@ export const IssuesFilter = ({ query, onApply }: IssuesFilterProps) => {
     query: query
   });
 
-  const handleClearFiltersButtonClick = () => {
-    handleSelectionChange([]);
-  };
-
-  const handleSelectionChange = (value: string | string[]) => {
+  const changeSelection = (value: string | string[]) => {
     const newValue = Array.isArray(value) ? value : [value];
     setSelectedIssueTypes(newValue);
     const newFilterValue: IssuesFilterQuery = {
@@ -43,6 +41,16 @@ export const IssuesFilter = ({ query, onApply }: IssuesFilterProps) => {
     };
     setPersistedFilters(newFilterValue);
     onApply(newFilterValue);
+  };
+
+  const handleClearFiltersButtonClick = () => {
+    sendTrackingEvent(trackingEvents.CLEAR_ALL_FILTERS_BUTTON_CLICKED);
+    changeSelection([]);
+  };
+
+  const handleSelectionChange = (value: string | string[]) => {
+    sendTrackingEvent(trackingEvents.FILTER_OPTION_SELECTED);
+    changeSelection(value);
   };
 
   useEffect(() => {

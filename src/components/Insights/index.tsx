@@ -278,14 +278,16 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
     }
   };
 
+  const handleIssueFiltersApplied = (filters: IssuesFilterQuery) => {
+    setIssuesFilterQuery(filters);
+  };
+
   const renderDefaultContent = (data: InsightsData): JSX.Element => {
     let filter;
     if (insightViewType === "Issues") {
       filter = (
         <IssuesFilter
-          onApply={(filters) => {
-            setIssuesFilterQuery(filters);
-          }}
+          onApply={handleIssueFiltersApplied}
           query={{
             displayName: query.searchQuery,
             filters: query.filters,
