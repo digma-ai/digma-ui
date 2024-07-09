@@ -117,7 +117,8 @@ export const OptionListItem = styled.li<OptionListItemProps>`
     $selected ? `background: ${theme.colors.v3.surface.gray}` : ""};
 
   &:hover {
-    background: ${({ theme }) => theme.colors.v3.surface.highlight};
+    background: ${({ theme, $enabled }) =>
+      $enabled ? theme.colors.v3.surface.highlight : ""};
   }
 `;
 
