@@ -28,10 +28,9 @@ export const IssuesFilter = ({ query, onApply }: IssuesFilterProps) => {
   const previousPersistedFilters = usePrevious(persistedFilters);
   const { data, refresh } = useIssuesFilters({
     refreshInterval: 10 * 1000,
-    query: query
+    query
   });
-
-  // const previousData = usePrevious(data);
+  const previousData = usePrevious(data);
 
   const changeSelection = useCallback(
     (value: string | string[]) => {
@@ -46,18 +45,21 @@ export const IssuesFilter = ({ query, onApply }: IssuesFilterProps) => {
     [onApply, setPersistedFilters]
   );
 
-  // useEffect(() => {
-  //   if (previousData && previousData !== data && selectedIssueTypes) {
-  //     ``;
-  //     const newSelection = selectedIssueTypes.filter((e) =>
-  //       Boolean(data.issueTypeFilters.find((x) => x.name === e && x.enabled))
-  //     );
+  useEffect(() => {
+    if (
+      previousData &&
+      previousData !== data &&
+      selectedIssueTypes.length > 0
+    ) {
+      const newSelection = selectedIssueTypes.filter((e) =>
+        Boolean(data.issueTypeFilters.find((x) => x.name === e && x.enabled))
+      );
 
-  //     if (newSelection.length !== selectedIssueTypes.length) {
-  //       changeSelection(newSelection);
-  //     }
-  //   }
-  // }, [previousData, data, selectedIssueTypes, changeSelection]);
+      if (newSelection.length !== selectedIssueTypes.length) {
+        changeSelection(newSelection);
+      }
+    }
+  }, [previousData, data, selectedIssueTypes, changeSelection]);
 
   const handleClearFiltersButtonClick = () => {
     sendUserActionTrackingEvent(

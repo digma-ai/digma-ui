@@ -7,8 +7,10 @@ import {
 } from "react";
 import { actions as globalActions } from "../../actions";
 import { SLACK_WORKSPACE_URL } from "../../constants";
+import { getFeatureFlagValue } from "../../featureFlags";
 import { usePrevious } from "../../hooks/usePrevious";
 import { trackingEvents as globalTrackingEvents } from "../../trackingEvents";
+import { FeatureFlag } from "../../types";
 import { openURLInDefaultBrowser } from "../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 import { ConfigContext } from "../common/App/ConfigContext";
@@ -222,6 +224,10 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
   const isRegistrationEnabled = false;
   const isRegistrationRequired =
     isRegistrationEnabled && !config.userRegistrationEmail;
+  const isIssuesFilterVisible = getFeatureFlagValue(
+    config,
+    FeatureFlag.ARE_ISSUES_FILTERS_ENABLED
+  );
 
   useLayoutEffect(() => {
     sendMessage(globalActions.GET_STATE);
@@ -284,7 +290,7 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
 
   const renderDefaultContent = (data: InsightsData): JSX.Element => {
     let filter;
-    if (insightViewType === "Issues") {
+    if (insightViewType === "Issues" && isIssuesFilterVisible) {
       filter = (
         <IssuesFilter
           onApply={handleIssueFiltersApplied}

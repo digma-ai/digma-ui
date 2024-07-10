@@ -2,8 +2,13 @@ import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { actions as globalActions } from "../../actions";
 import { DigmaMessageError } from "../../api/types";
 import { dispatcher } from "../../dispatcher";
+import { getFeatureFlagValue } from "../../featureFlags";
 import { usePrevious } from "../../hooks/usePrevious";
-import { GetInsightStatsPayload, GetIssuesPayload } from "../../types";
+import {
+  FeatureFlag,
+  GetInsightStatsPayload,
+  GetIssuesPayload
+} from "../../types";
 import { ConfigContext } from "../common/App/ConfigContext";
 import {
   GlobalState,
@@ -36,7 +41,11 @@ const getIssues = (query: GetIssuesQuery) => {
   });
 };
 
-const getData = (scopedQuery: ScopedInsightsQuery, state?: GlobalState) => {
+const getData = (
+  scopedQuery: ScopedInsightsQuery,
+  areIssuesFiltersEnabled: boolean,
+  state?: GlobalState
+) => {
   const getDataQuery: InsightsDataQuery = {
     displayName: scopedQuery.searchQuery,
     sortBy: scopedQuery.sorting.criterion,
@@ -49,7 +58,7 @@ const getData = (scopedQuery: ScopedInsightsQuery, state?: GlobalState) => {
     filters: scopedQuery.filters
   };
 
-  if (scopedQuery.insightViewType === "Issues") {
+  if (scopedQuery.insightViewType === "Issues" && areIssuesFiltersEnabled) {
     getIssues({
       filters: scopedQuery.filters,
       page: scopedQuery.page,
@@ -130,8 +139,16 @@ export const useInsightsData = ({
     [query, scope, filters]
   );
 
+  const areNewIssuesFiltersEnabled = useMemo(
+    () =>
+      Boolean(
+        getFeatureFlagValue(config, FeatureFlag.ARE_ISSUES_FILTERS_ENABLED)
+      ),
+    [config]
+  );
+
   useEffect(() => {
-    getData(scopedQuery, state);
+    getData(scopedQuery, areNewIssuesFiltersEnabled, state);
 
     setIsInitialLoading(true);
     setIsLoading(true);
@@ -181,7 +198,7 @@ export const useInsightsData = ({
     if (previousLastSetDataTimeStamp !== lastSetDataTimeStamp) {
       window.clearTimeout(refreshTimerId.current);
       refreshTimerId.current = window.setTimeout(() => {
-        getData(scopedQuery, state);
+        getData(scopedQuery, areNewIssuesFiltersEnabled, state);
         getStats(scopedQuery);
       }, refreshInterval);
     }
@@ -194,21 +211,27 @@ export const useInsightsData = ({
     previousLastSetDataTimeStamp,
     environment,
     scopedQuery,
-    refreshInterval
+    refreshInterval,
+    areNewIssuesFiltersEnabled
   ]);
 
   useEffect(() => {
-    getData(scopedQuery, state);
+    getData(scopedQuery, areNewIssuesFiltersEnabled, state);
     getStats(scopedQuery);
     setIsLoading(true);
-  }, [scopedQuery, scope?.span?.spanCodeObjectId, environment?.id]);
+  }, [
+    scopedQuery,
+    areNewIssuesFiltersEnabled,
+    scope?.span?.spanCodeObjectId,
+    environment?.id
+  ]);
 
   return {
     isInitialLoading,
     data,
     isLoading,
     refresh: () => {
-      getData(scopedQuery, state);
+      getData(scopedQuery, areNewIssuesFiltersEnabled, state);
       getStats(scopedQuery);
     }
   };
