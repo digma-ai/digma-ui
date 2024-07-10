@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import { SLACK_WORKSPACE_URL } from "../../../constants";
 import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
-import { sendTrackingEvent } from "../../../utils/actions/sendTrackingEvent";
+import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { SlackLogoIcon } from "../../common/icons/16px/SlackLogoIcon";
 import { CrossIcon } from "../../common/icons/CrossIcon";
 import { trackingEvents } from "../tracking";
@@ -25,7 +25,7 @@ export const RegistrationCard = ({
   const registrationCardRef = useRef<HTMLDivElement>(null);
 
   const handleSlackLinkClick = () => {
-    sendTrackingEvent(trackingEvents.PROMOTION_SLACK_LINK_CLICKED);
+    sendUserActionTrackingEvent(trackingEvents.PROMOTION_SLACK_LINK_CLICKED);
     openURLInDefaultBrowser(SLACK_WORKSPACE_URL);
   };
 

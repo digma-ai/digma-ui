@@ -7,12 +7,24 @@ import {
 import { InstallationWizard } from "../../components/InstallationWizard";
 import { App } from "../../components/common/App";
 import { dispatcher } from "../../dispatcher";
+import { handleUncaughtError } from "../../utils/handleUncaughtError";
 import { GlobalStyle } from "./styles";
 
 initializeDigmaMessageListener(dispatcher);
 
 window.sendMessageToDigma = sendMessage;
 window.cancelMessageToDigma = cancelMessage;
+
+window.onerror = (message, source, lineno, colno, error) => {
+  handleUncaughtError(
+    "installationWizard",
+    message,
+    source,
+    lineno,
+    colno,
+    error
+  );
+};
 
 const rootElement = document.getElementById("root");
 

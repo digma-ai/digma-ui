@@ -1,6 +1,5 @@
 import { isString } from "../../../typeGuards/isString";
 import { changeScope } from "../../../utils/actions/changeScope";
-import { sendTrackingEvent } from "../../../utils/actions/sendTrackingEvent";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { formatEnvironmentName } from "../../../utils/formatEnvironmentName";
 import { formatTimeDistance } from "../../../utils/formatTimeDistance";
@@ -105,7 +104,7 @@ export const TestCard = ({
 
   const handleRunButtonClick = () => {
     if (test.spanInfo.methodCodeObjectId) {
-      sendTrackingEvent(trackingEvents.RUN_TEST_BUTTON_CLICKED);
+      sendUserActionTrackingEvent(trackingEvents.RUN_TEST_BUTTON_CLICKED);
       window.sendMessageToDigma<RunTestPayload>({
         action: actions.RUN_TEST,
         payload: {
