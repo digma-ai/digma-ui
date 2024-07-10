@@ -411,6 +411,7 @@ export const AssetsFilter = ({ onApply, filters }: AssetsFilterProps) => {
           title={"Filters"}
           showCount={true}
           selectedCount={selectedFilters.length}
+          isActive={isOpen}
         />
       </div>
     </NewPopover>

@@ -13,6 +13,7 @@ import { mockedSpanDurationBreakdownInsight } from "./InsightsCatalog/InsightsPa
 import { mockedSpanDurationsInsight } from "./InsightsCatalog/InsightsPage/insightCards/SpanDurationsInsightCard/mockData";
 import { mockedSpanEndpointBottleneckInsight } from "./InsightsCatalog/InsightsPage/insightCards/SpanEndpointBottleneckInsightCard/mockData";
 import { mockedSpanNexusInsight } from "./InsightsCatalog/InsightsPage/insightCards/SpanNexusInsightCard/mockData";
+import { actions as issuesActions } from "./Issues/actions";
 import { actions } from "./actions";
 import { InsightsStatus, ViewMode } from "./types";
 
@@ -75,6 +76,59 @@ export const Default: Story = {
           // methods: [],
           // canInstrumentMethod: false,
           // needsObservabilityFix: false,
+          insights: [
+            mockedSpaNPlusOneInsight,
+            mockedEndpointBreakdownInsight,
+            mockedEndpointNormalUsageInsight,
+            mockedSpanDurationBreakdownInsight,
+            mockedSpanDurationsInsight,
+            mockedEndpointSpanNPlusOneInsight,
+            mockedSpanEndpointBottleneckInsight,
+            mockedEndpointHighNumberOfQueriesInsight,
+            mockedSpanNexusInsight
+          ]
+        }
+      });
+    }, 500);
+  }
+};
+
+export const Issues: Story = {
+  args: {
+    insightViewType: "Issues"
+  },
+  play: () => {
+    window.setTimeout(() => {
+      window.postMessage({
+        type: "digma",
+        action: issuesActions.SET_FILTERS,
+        payload: {
+          issueTypeFilters: [
+            {
+              enabled: true,
+              name: "SlowEndpoint"
+            },
+            {
+              enabled: true,
+              name: "NPlusOne"
+            },
+            {
+              enabled: false,
+              name: "ChattyApi"
+            }
+          ]
+        }
+      });
+    });
+
+    window.setTimeout(() => {
+      window.postMessage({
+        type: "digma",
+        action: issuesActions.SET_DATA_LIST,
+        payload: {
+          totalCount: 100,
+          viewMode: ViewMode.INSIGHTS,
+          insightsStatus: InsightsStatus.DEFAULT,
           insights: [
             mockedSpaNPlusOneInsight,
             mockedEndpointBreakdownInsight,

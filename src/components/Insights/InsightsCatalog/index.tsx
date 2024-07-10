@@ -1,7 +1,6 @@
 import { useCallback, useContext, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useTheme } from "styled-components";
-import { actions as globalActions } from "../../../actions";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import { useDebounce } from "../../../hooks/useDebounce";
 import { usePersistence } from "../../../hooks/usePersistence";
@@ -9,7 +8,7 @@ import { usePrevious } from "../../../hooks/usePrevious";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { isString } from "../../../typeGuards/isString";
 import { isUndefined } from "../../../typeGuards/isUndefined";
-import { FeatureFlag, GetInsightStatsPayload } from "../../../types";
+import { FeatureFlag } from "../../../types";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { formatUnit } from "../../../utils/formatUnit";
 import { MAIN_CONTAINER_ID } from "../../Main";
@@ -66,7 +65,8 @@ export const InsightsCatalog = ({
   dismissedCount,
   unreadCount,
   onQueryChange,
-  onRefresh
+  onRefresh,
+  filterComponent
 }: InsightsCatalogProps) => {
   const [page, setPage] = useState(0);
   const previousPage = usePrevious(page);
@@ -176,19 +176,6 @@ export const InsightsCatalog = ({
   const mainContainer = document.getElementById(MAIN_CONTAINER_ID);
 
   const refreshData = useCallback(() => {
-    window.sendMessageToDigma<GetInsightStatsPayload>({
-      action: globalActions.GET_INSIGHT_STATS,
-      payload: {
-        scope: config.scope?.span
-          ? {
-              span: {
-                spanCodeObjectId: config.scope.span.spanCodeObjectId
-              }
-            }
-          : null
-      }
-    });
-
     onQueryChange({
       ...defaultQuery,
       page,
@@ -301,6 +288,7 @@ export const InsightsCatalog = ({
     <>
       <s.Toolbar>
         <s.ToolbarRow>
+          {!isUndefined(filterComponent) && filterComponent}
           <SearchInput
             disabled={Boolean(config.scope?.span)}
             onChange={(val: string | null) => {
@@ -346,7 +334,7 @@ export const InsightsCatalog = ({
               (insights.length > 0 || selectedFilters.length > 0) && (
                 <InsightStats
                   criticalCount={config.insightStats?.criticalInsightsCount}
-                  allIssuesCount={config.insightStats?.allIssuesCount}
+                  allIssuesCount={config.insightStats?.issuesInsightsCount}
                   unreadCount={
                     areInsightStatsEnabled
                       ? config.insightStats?.unreadInsightsCount ?? 0
