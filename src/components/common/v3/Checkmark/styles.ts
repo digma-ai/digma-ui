@@ -23,7 +23,6 @@ export const Checkmark = styled.input`
   width: 10px;
   height: 10px;
   border-radius: 4px;
-  background: transparent;
   background: ${({ theme }) => theme.colors.v3.surface.highlight};
 
   &:disabled {

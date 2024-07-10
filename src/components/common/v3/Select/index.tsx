@@ -1,5 +1,4 @@
-import { useCallback, useRef, useState } from "react";
-import useDimensions from "react-cool-dimensions";
+import { useState } from "react";
 import { isString } from "../../../../typeGuards/isString";
 import { NewPopover } from "../../NewPopover";
 import { ChevronIcon } from "../../icons/ChevronIcon";
@@ -30,16 +29,6 @@ export const Select = ({
   placeholder
 }: SelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const optionListRef = useRef<HTMLUListElement | null>(null);
-  const { observe } = useDimensions();
-
-  const getOptionListRef = useCallback(
-    (el: HTMLUListElement | null) => {
-      observe(el);
-      optionListRef.current = el;
-    },
-    [observe]
-  );
 
   const handleButtonClick = () => {
     setIsOpen(!isOpen);
@@ -74,7 +63,7 @@ export const Select = ({
       sameWidth={true}
       content={
         <s.MenuContainer>
-          <s.OptionList ref={getOptionListRef}>
+          <s.OptionList>
             {sortedItems.length > 0 ? (
               sortedItems.map((x) => (
                 <s.OptionListItem

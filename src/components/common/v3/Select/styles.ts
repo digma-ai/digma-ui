@@ -26,7 +26,6 @@ export const Button = styled.button<ButtonProps>`
   align-items: center;
   width: 100%;
   justify-content: flex-end;
-  font-size: 14px;
   color: ${({ theme }) => theme.colors.v3.text.primary};
 
   &:hover {
@@ -96,7 +95,6 @@ export const OptionList = styled.ul`
   gap: 8px;
   padding: 0;
   margin: 0;
-  font-size: 14px;
   overflow: hidden;
   overflow-y: auto;
 `;

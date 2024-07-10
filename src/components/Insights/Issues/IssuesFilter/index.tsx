@@ -2,8 +2,7 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import { usePersistence } from "../../../../hooks/usePersistence";
 import { usePrevious } from "../../../../hooks/usePrevious";
 import { isEnvironment } from "../../../../typeGuards/isEnvironment";
-import { isUndefined } from "../../../../typeGuards/isUndefined";
-import { sendTrackingEvent } from "../../../../utils/actions/sendTrackingEvent";
+import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { getInsightTypeInfo } from "../../../../utils/getInsightTypeInfo";
 import { ConfigContext } from "../../../common/App/ConfigContext";
 import { FilterButton } from "../../../common/FilterButton";
@@ -61,23 +60,28 @@ export const IssuesFilter = ({ query, onApply }: IssuesFilterProps) => {
   // }, [previousData, data, selectedIssueTypes, changeSelection]);
 
   const handleClearFiltersButtonClick = () => {
-    sendTrackingEvent(trackingEvents.CLEAR_ALL_FILTERS_BUTTON_CLICKED);
+    sendUserActionTrackingEvent(
+      trackingEvents.CLEAR_ALL_FILTERS_BUTTON_CLICKED
+    );
     changeSelection([]);
   };
 
-  const handleSelectionChange = (value: string | string[]) => {
-    sendTrackingEvent(trackingEvents.FILTER_OPTION_SELECTED);
-    changeSelection(value);
-  };
+  const handleSelectionChange = useCallback(
+    (value: string | string[]) => {
+      sendUserActionTrackingEvent(trackingEvents.FILTER_OPTION_SELECTED);
+      changeSelection(value);
+    },
+    [changeSelection]
+  );
 
   useEffect(() => {
     if (
-      isUndefined(previousPersistedFilters) &&
+      !previousPersistedFilters &&
       previousPersistedFilters !== persistedFilters
     ) {
       handleSelectionChange(persistedFilters?.issueTypes ?? []);
     }
-  }, [previousPersistedFilters, persistedFilters]);
+  }, [previousPersistedFilters, persistedFilters, handleSelectionChange]);
 
   useEffect(() => {
     if (
@@ -106,26 +110,23 @@ export const IssuesFilter = ({ query, onApply }: IssuesFilterProps) => {
 
   return (
     <NewPopover
-      width={"calc(100%)"}
       content={
         <s.Container>
           <s.Header>Filters</s.Header>
           <s.FilterCategoryName>Issues</s.FilterCategoryName>
-          {
-            <Select
-              key={"issues"}
-              items={issuesTypeFilter}
-              onChange={handleSelectionChange}
-              placeholder={selectedIssueTypes.length > 0 ? "Issues" : "All"}
-              multiselect={true}
-              icon={(props: IconProps) => (
-                <s.InsightIconContainer>
-                  <InsightsIcon {...props} size={12} color="currentColor" />
-                </s.InsightIconContainer>
-              )}
-              disabled={issuesTypeFilter?.length === 0}
-            />
-          }
+          <Select
+            key={"issues"}
+            items={issuesTypeFilter}
+            onChange={handleSelectionChange}
+            placeholder={selectedIssueTypes.length > 0 ? "Issues" : "All"}
+            multiselect={true}
+            icon={(props: IconProps) => (
+              <s.InsightIconContainer>
+                <InsightsIcon {...props} size={12} color="currentColor" />
+              </s.InsightIconContainer>
+            )}
+            disabled={issuesTypeFilter?.length === 0}
+          />
           <s.Footer>
             <s.ClearAllButton
               buttonType={"tertiary"}
