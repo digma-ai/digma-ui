@@ -11,14 +11,10 @@ export interface ErrorData {
 export const sendErrorTrackingEvent = (error: Error, data: ErrorData) => {
   sendTrackingEvent(trackingEvents.ERROR, {
     ...(data ? { ...data } : {}),
-    error: {
-      source: "ui"
-    },
-    exception: {
-      type: error.name,
-      message: error.message,
-      "stack-trace": error.stack
-    },
+    "error.source": "ui",
+    "exception.type": error.name,
+    "exception.message": error.message,
+    "exception.stack-trace": error.stack,
     message: data.message ?? error.message
   });
 };
