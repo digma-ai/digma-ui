@@ -155,7 +155,9 @@ export const CreateEnvironmentWizard = ({
         }
       });
 
-      sendTrackingEvent(trackingEvents.CREATE_NEW_ENVIRONMENT_FORM_SUBMITTED);
+      sendUserActionTrackingEvent(
+        trackingEvents.CREATE_NEW_ENVIRONMENT_FORM_SUBMITTED
+      );
       return;
     }
 
