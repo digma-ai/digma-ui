@@ -27,7 +27,7 @@ export const IssuesFilter = ({ query, onApply }: IssuesFilterProps) => {
     usePersistence<IssuesFilterQuery>(PERSISTENCE_KEY, "project");
   const previousPersistedFilters = usePrevious(persistedFilters);
   const { data, refresh } = useIssuesFilters({
-    refreshInterval: 1000,
+    refreshInterval: 10 * 1000,
     query: query
   });
 
@@ -110,6 +110,7 @@ export const IssuesFilter = ({ query, onApply }: IssuesFilterProps) => {
 
   return (
     <NewPopover
+      width={"100%"}
       content={
         <s.Container>
           <s.Header>Filters</s.Header>
