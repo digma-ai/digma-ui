@@ -334,7 +334,7 @@ export const InsightsCatalog = ({
               (insights.length > 0 || selectedFilters.length > 0) && (
                 <InsightStats
                   criticalCount={config.insightStats?.criticalInsightsCount}
-                  allIssuesCount={config.insightStats?.allIssuesCount}
+                  allIssuesCount={config.insightStats?.issuesInsightsCount}
                   unreadCount={
                     areInsightStatsEnabled
                       ? config.insightStats?.unreadInsightsCount ?? 0
