@@ -2,7 +2,7 @@ import { KeyboardEvent, useContext, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { actions as globalActions } from "../../../../actions";
 import { usePrevious } from "../../../../hooks/usePrevious";
-import { sendTrackingEvent } from "../../../../utils/actions/sendTrackingEvent";
+import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { isValidEmailFormat } from "../../../../utils/isValidEmailFormat";
 import { ConfigContext } from "../../../common/App/ConfigContext";
 import { EnvelopeIcon } from "../../../common/icons/16px/EnvelopeIcon";
@@ -72,7 +72,9 @@ export const RegisterStep = ({ onNext }: RegisterStepProps) => {
   }, [setFocus]);
 
   const onSubmit = (data: RegistrationFormValues) => {
-    sendTrackingEvent(trackingEvents.LOCAL_REGISTRATION_FORM_SUBMITTED);
+    sendUserActionTrackingEvent(
+      trackingEvents.LOCAL_REGISTRATION_FORM_SUBMITTED
+    );
     window.sendMessageToDigma({
       action: globalActions.PERSONALIZE_REGISTER,
       payload: {

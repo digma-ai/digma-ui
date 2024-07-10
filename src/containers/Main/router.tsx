@@ -1,4 +1,9 @@
-import { Navigate, RouteObject, createHashRouter } from "react-router-dom";
+import {
+  Navigate,
+  RouteObject,
+  createHashRouter,
+  useRouteError
+} from "react-router-dom";
 import { Assets } from "../../components/Assets";
 import { Errors } from "../../components/Errors";
 import { Highlights } from "../../components/Highlights";
@@ -11,6 +16,9 @@ export const routes: RouteObject[] = [
   {
     path: "/",
     element: <Main />,
+    ErrorBoundary: () => {
+      throw useRouteError();
+    },
     children: [
       {
         index: true,

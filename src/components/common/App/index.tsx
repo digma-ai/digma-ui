@@ -1,12 +1,16 @@
-import { useContext, useEffect, useState } from "react";
+import { ErrorInfo, useContext, useEffect, useState } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 import { ThemeProvider } from "styled-components";
 import { actions } from "../../../actions";
 import { dispatcher } from "../../../dispatcher";
 import { Theme } from "../../../globals";
+import { logger } from "../../../logging";
 import { isBoolean } from "../../../typeGuards/isBoolean";
 import { isNull } from "../../../typeGuards/isNull";
 import { isObject } from "../../../typeGuards/isObject";
 import { isString } from "../../../typeGuards/isString";
+import { sendErrorTrackingEvent } from "../../../utils/actions/sendErrorTrackingEvent";
+import { ErrorScreen } from "../ErrorScreen";
 import { ConfigContext } from "./ConfigContext";
 import { getStyledComponentsTheme } from "./getTheme";
 import { GlobalStyle } from "./styles";
@@ -57,6 +61,14 @@ export const App = ({ theme, children }: AppProps) => {
   const [mainFont, setMainFont] = useState(defaultMainFont);
   const [codeFont, setCodeFont] = useState(defaultCodeFont);
   const [config, setConfig] = useState(useContext(ConfigContext));
+
+  const handleError = (error: Error, info: ErrorInfo) => {
+    logger.error(error, info);
+    sendErrorTrackingEvent(error, {
+      severity: "high",
+      level: "App react component"
+    });
+  };
 
   useEffect(() => {
     if (theme) {
@@ -443,7 +455,9 @@ export const App = ({ theme, children }: AppProps) => {
     <ConfigContext.Provider value={config}>
       <ThemeProvider theme={styledComponentsTheme}>
         <GlobalStyle />
-        {children}
+        <ErrorBoundary fallback={<ErrorScreen />} onError={handleError}>
+          {children}
+        </ErrorBoundary>
       </ThemeProvider>
     </ConfigContext.Provider>
   );
