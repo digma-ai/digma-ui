@@ -1,3 +1,7 @@
+import {
+  GetIssuesQuery,
+  IssuesQuery
+} from "./components/Insights/Issues/types";
 import { Duration } from "./globals";
 
 export enum FeatureFlag {
@@ -6,7 +10,8 @@ export enum FeatureFlag {
   ARE_INSIGHT_STATS_ENABLED,
   IS_HIGHLIGHTS_SPAN_INFO_ENABLED,
   ARE_NEW_INSTRUMENTATION_ATTRIBUTES_ENABLED,
-  IS_DURATION_BREAKDOWN_QUANTITY_ENABLED
+  IS_DURATION_BREAKDOWN_QUANTITY_ENABLED,
+  ARE_ISSUES_FILTERS_ENABLED
 }
 
 export enum InsightType {
@@ -69,4 +74,15 @@ export interface GetInsightStatsPayload {
       spanCodeObjectId: string;
     };
   } | null;
+  filters?: {
+    insights?: string[];
+  };
+}
+
+export interface GetIssuesFiltersPayload {
+  query: IssuesQuery;
+}
+
+export interface GetIssuesPayload {
+  query: GetIssuesQuery;
 }

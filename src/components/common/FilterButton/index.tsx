@@ -7,9 +7,13 @@ export const FilterButton = ({
   selectedCount,
   title,
   showCount,
-  isLoading
+  isLoading,
+  isActive
 }: FilterButtonProps) => (
-  <s.Button $hasSelectedItems={isNumber(selectedCount) && selectedCount > 0}>
+  <s.Button
+    $hasSelectedItems={isNumber(selectedCount) && selectedCount > 0}
+    $isActive={isActive}
+  >
     <FunnelIcon color={"currentColor"} size={14} />
     <s.Title>{title}</s.Title>
     {showCount &&

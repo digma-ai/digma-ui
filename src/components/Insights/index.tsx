@@ -7,8 +7,10 @@ import {
 } from "react";
 import { actions as globalActions } from "../../actions";
 import { SLACK_WORKSPACE_URL } from "../../constants";
+import { getFeatureFlagValue } from "../../featureFlags";
 import { usePrevious } from "../../hooks/usePrevious";
 import { trackingEvents as globalTrackingEvents } from "../../trackingEvents";
+import { FeatureFlag } from "../../types";
 import { openURLInDefaultBrowser } from "../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 import { ConfigContext } from "../common/App/ConfigContext";
@@ -25,6 +27,8 @@ import { OpenTelemetryLogoCrossedSmallIcon } from "../common/icons/OpenTelemetry
 import { SlackLogoIcon } from "../common/icons/SlackLogoIcon";
 import { InsightsCatalog } from "./InsightsCatalog";
 import { SORTING_CRITERION } from "./InsightsCatalog/types";
+import { IssuesFilter } from "./Issues/IssuesFilter";
+import { IssuesFilterQuery } from "./Issues/IssuesFilter/types";
 import { EndpointBottleneckInsightTicket } from "./insightTickets/EndpointBottleneckInsightTicket";
 import { EndpointHighNumberOfQueriesInsightTicket } from "./insightTickets/EndpointHighNumberOfQueriesInsightTicket";
 import { EndpointQueryOptimizationV2InsightTicket } from "./insightTickets/EndpointQueryOptimizationV2InsightTicket";
@@ -201,10 +205,12 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
     showUnreadOnly: false,
     filters: []
   };
-  // const [isAutofixing, setIsAutofixing] = useState(false);
   const [query, setQuery] = useState<InsightsQuery>(DEFAULT_QUERY);
+  const [issuesFiltersQuery, setIssuesFilterQuery] =
+    useState<IssuesFilterQuery>();
   const { isInitialLoading, data, refresh } = useInsightsData({
     refreshInterval: REFRESH_INTERVAL,
+    filters: issuesFiltersQuery,
     query
   });
   const [infoToOpenJiraTicket, setInfoToOpenJiraTicket] =
@@ -218,16 +224,14 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
   const isRegistrationEnabled = false;
   const isRegistrationRequired =
     isRegistrationEnabled && !config.userRegistrationEmail;
+  const isIssuesFilterVisible = getFeatureFlagValue(
+    config,
+    FeatureFlag.ARE_ISSUES_FILTERS_ENABLED
+  );
 
   useLayoutEffect(() => {
     sendMessage(globalActions.GET_STATE);
   }, []);
-
-  // useEffect(() => {
-  //   if (previousData && data && previousData.assetId !== data.assetId) {
-  //     setIsAutofixing(false);
-  //   }
-  // }, [previousData, data]);
 
   useEffect(() => {
     if (
@@ -242,39 +246,9 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
     previousUserRegistrationEmail
   ]);
 
-  // const handleMethodSelect = (method: Method) => {
-  //   sendMessage(actions.GO_TO_METHOD, method);
-  // };
-
   const handleSlackLinkClick = () => {
     openURLInDefaultBrowser(SLACK_WORKSPACE_URL);
   };
-
-  // const handleAddAnnotationButtonClick = () => {
-  //   sendMessage(actions.ADD_ANNOTATION, {
-  //     methodId: data?.assetId
-  //   });
-  // };
-
-  // const handleAutofixLinkClick = () => {
-  //   if (!isAutofixing) {
-  //     sendMessage(actions.AUTOFIX_MISSING_DEPENDENCY, {
-  //       methodId: data?.assetId
-  //     });
-  //     setIsAutofixing(true);
-  //   }
-  // };
-
-  // const handleTroubleshootingLinkClick = () => {
-  //   sendUserActionTrackingEvent(
-  //     globalTrackingEvents.TROUBLESHOOTING_LINK_CLICKED,
-  //     {
-  //       origin: "insights"
-  //     }
-  //   );
-
-  //   sendMessage(globalActions.OPEN_TROUBLESHOOTING_GUIDE);
-  // };
 
   const handleJiraTicketPopupOpen = (
     insight: GenericCodeObjectInsight,
@@ -310,7 +284,26 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
     }
   };
 
+  const handleIssueFiltersApplied = (filters: IssuesFilterQuery) => {
+    setIssuesFilterQuery(filters);
+  };
+
   const renderDefaultContent = (data: InsightsData): JSX.Element => {
+    let filter;
+    if (insightViewType === "Issues" && isIssuesFilterVisible) {
+      filter = (
+        <IssuesFilter
+          onApply={handleIssueFiltersApplied}
+          query={{
+            displayName: query.searchQuery,
+            filters: query.filters,
+            insightTypes: issuesFiltersQuery?.issueTypes ?? [],
+            showDismissed: query.showDismissed
+          }}
+        />
+      );
+    }
+
     return (
       <InsightsCatalog
         insightViewType={insightViewType}
@@ -322,6 +315,7 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
         defaultQuery={DEFAULT_QUERY}
         dismissedCount={data.dismissedCount}
         unreadCount={data.unreadCount}
+        filterComponent={filter}
       />
     );
   };
@@ -389,22 +383,6 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
                   Add an annotation to observe this method and collect data
                   about its runtime behavior
                 </s.EmptyStateDescription>
-                {/* {data.hasMissingDependency && (
-                  <s.MissingDependencyContainer>
-                    <s.MissingDependencyText>
-                      missing dependency: opentelemetry.annotation
-                    </s.MissingDependencyText>
-                    <s.Link onClick={handleAutofixLinkClick}>Autofix</s.Link>
-                  </s.MissingDependencyContainer>
-                )} */}
-                {/* {data.canInstrumentMethod && (
-                  <Button
-                    onClick={handleAddAnnotationButtonClick}
-                    disabled={data.hasMissingDependency}
-                  >
-                    Add annotation
-                  </Button>
-                )} */}
               </>
             }
           />
