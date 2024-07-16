@@ -17,6 +17,7 @@ export interface InsightsCatalogProps {
   defaultQuery: InsightsQuery;
   onRefresh: () => void;
   unreadCount?: number;
+  filterComponent?: JSX.Element;
 }
 
 export enum ViewMode {

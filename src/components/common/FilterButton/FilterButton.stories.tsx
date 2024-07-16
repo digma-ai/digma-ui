@@ -18,7 +18,8 @@ type Story = StoryObj<typeof meta>;
 
 const props: FilterButtonProps = {
   selectedCount: 1,
-  title: "Filters"
+  title: "Filters",
+  isActive: false
 };
 
 export const Default: Story = {

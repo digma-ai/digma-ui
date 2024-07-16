@@ -3,8 +3,10 @@ export interface FilterButtonProps {
   isLoading?: boolean;
   selectedCount?: number;
   showCount?: boolean;
+  isActive: boolean;
 }
 
 export interface ButtonProps {
   $hasSelectedItems: boolean;
+  $isActive: boolean;
 }

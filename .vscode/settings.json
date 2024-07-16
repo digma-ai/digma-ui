@@ -5,5 +5,12 @@
   },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "stylelint.validate": ["typescript"],
-  "cSpell.words": ["digma", "digmathon", "digmo", "leaderboard", "undismiss"]
+  "cSpell.words": [
+    "Checkmark",
+    "digma",
+    "digmathon",
+    "digmo",
+    "leaderboard",
+    "undismiss"
+  ]
 }
