@@ -28,8 +28,8 @@ const isAlreadyAtCode = (codeContext?: CodeContext, scope?: Scope): boolean => {
 };
 
 const getTargetButtonTooltip = (
-  codeContext?: CodeContext,
-  scope?: Scope
+  codeContext: CodeContext | undefined,
+  scope: Scope | null
 ): string => {
   if (!scope?.span) {
     return "";

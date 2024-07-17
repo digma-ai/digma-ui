@@ -1,21 +1,12 @@
-import {
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState
-} from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
 import { DigmaMessageError } from "../../../api/types";
+import { useGlobalStore } from "../../../containers/Main/stores/globalStore";
 import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { isEnvironment } from "../../../typeGuards/isEnvironment";
-import { isNumber } from "../../../typeGuards/isNumber";
-import { isString } from "../../../typeGuards/isString";
 import { changeScope } from "../../../utils/actions/changeScope";
 import { SCOPE_CHANGE_EVENTS } from "../../Main/types";
-import { ConfigContext } from "../../common/App/ConfigContext";
 import { EmptyState } from "../../common/EmptyState";
 import { Menu } from "../../common/Menu";
 import { NewCircleLoader } from "../../common/NewCircleLoader";
@@ -156,14 +147,11 @@ export const AssetList = ({
     criterion: SORTING_CRITERION.CRITICAL_INSIGHTS,
     order: SORTING_ORDER.DESC
   });
-  const previousSorting = usePrevious(sorting);
   const [isSortingMenuOpen, setIsSortingMenuOpen] = useState(false);
-  const previousSearchQuery = usePrevious(searchQuery);
   const theme = useTheme();
   const assetTypeIconColor = getAssetTypeIconColor(theme);
   const sortingMenuChevronColor = getSortingMenuChevronColor(theme);
   const [page, setPage] = useState(0);
-  const previousPage = usePrevious(page);
   const filteredCount = data?.filteredCount ?? 0;
   const pageStartItemNumber = page * PAGE_SIZE + 1;
   const pageEndItemNumber = Math.min(
@@ -171,11 +159,10 @@ export const AssetList = ({
     filteredCount
   );
   const listRef = useRef<HTMLUListElement>(null);
-  const config = useContext(ConfigContext);
+  const environment = useGlobalStore.use.environment();
+  const backendInfo = useGlobalStore.use.backendInfo();
   const refreshTimerId = useRef<number>();
-  const previousEnvironment = usePrevious(config.environment);
-  const previousAssetTypeId = usePrevious(assetTypeId);
-  const previousFilters = usePrevious(filters);
+  const previousEnvironment = usePrevious(environment);
   const previousViewScope = usePrevious(scopeViewOptions);
 
   const refreshData = useCallback(() => {
@@ -203,11 +190,8 @@ export const AssetList = ({
   const assetTypeInfo = getAssetTypeInfo(assetTypeId);
 
   const isImpactHidden = useMemo(
-    () =>
-      !(
-        config.backendInfo?.centralize && config.environment?.type === "Public"
-      ),
-    [config.backendInfo?.centralize, config.environment?.type]
+    () => !(backendInfo?.centralize && environment?.type === "Public"),
+    [backendInfo?.centralize, environment?.type]
   );
 
   const sortingCriteria = getSortingCriteria(isImpactHidden);
@@ -216,8 +200,12 @@ export const AssetList = ({
 
   useEffect(() => {
     refreshData();
-    setIsInitialLoading(true);
+    if (!data) {
+      setIsInitialLoading(true);
+    }
+  }, [refreshData]);
 
+  useEffect(() => {
     const handleAssetsData = (
       data: unknown,
       timeStamp: number,
@@ -249,33 +237,18 @@ export const AssetList = ({
 
   useEffect(() => {
     if (
-      (isNumber(previousPage) && previousPage !== page) ||
       (isEnvironment(previousEnvironment) &&
-        previousEnvironment.id !== config.environment?.id) ||
-      Boolean(previousSorting && previousSorting !== sorting) ||
-      (isString(previousSearchQuery) && previousSearchQuery !== searchQuery) ||
-      (isString(previousAssetTypeId) && previousAssetTypeId !== assetTypeId) ||
-      Boolean(previousFilters && previousFilters !== filters) ||
+        previousEnvironment.id !== environment?.id) ||
       previousViewScope !== scopeViewOptions
     ) {
       refreshData();
     }
   }, [
-    config.environment?.id,
-    page,
-    previousAssetTypeId,
+    environment?.id,
     previousEnvironment,
-    previousFilters,
-    previousPage,
-    previousSearchQuery,
-    previousSorting,
     previousViewScope,
-    assetTypeId,
-    filters,
     scopeViewOptions,
-    searchQuery,
-    refreshData,
-    sorting
+    refreshData
   ]);
 
   useEffect(() => {
@@ -307,18 +280,12 @@ export const AssetList = ({
 
   useEffect(() => {
     setPage(0);
-  }, [
-    config.environment?.id,
-    searchQuery,
-    sorting,
-    assetTypeId,
-    scopeViewOptions
-  ]);
+  }, [environment?.id, searchQuery, sorting, assetTypeId, scopeViewOptions]);
 
   useEffect(() => {
     listRef.current?.scrollTo(0, 0);
   }, [
-    config.environment?.id,
+    environment?.id,
     searchQuery,
     sorting,
     page,

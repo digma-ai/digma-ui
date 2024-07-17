@@ -1,31 +1,31 @@
-import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useGlobalStore } from "../../../containers/Main/stores/globalStore";
 import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { actions as mainActions } from "../../Main/actions";
-import { ConfigContext } from "../../common/App/ConfigContext";
 import { GetHighlightsSpanInfoDataPayload, SpanInfoData } from "./types";
 
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 
 export const useSpanInfoData = () => {
   const [data, setData] = useState<SpanInfoData>();
-  const config = useContext(ConfigContext);
+  const scope = useGlobalStore.use.scope();
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
   const refreshTimerId = useRef<number>();
 
   const getData = useCallback(() => {
-    if (config.scope?.span?.spanCodeObjectId) {
+    if (scope?.span?.spanCodeObjectId) {
       window.sendMessageToDigma<GetHighlightsSpanInfoDataPayload>({
         action: mainActions.GET_HIGHLIGHTS_SPAN_INFO_DATA,
         payload: {
           query: {
-            spanCodeObjectId: config.scope?.span?.spanCodeObjectId
+            spanCodeObjectId: scope?.span?.spanCodeObjectId
           }
         }
       });
     }
-  }, [config.scope?.span?.spanCodeObjectId]);
+  }, [scope?.span?.spanCodeObjectId]);
   const previousGetData = usePrevious(getData);
 
   useEffect(() => {

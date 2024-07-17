@@ -1,7 +1,7 @@
-import { ReactElement, useContext } from "react";
+import { ReactElement } from "react";
+import { useGlobalStore } from "../../../../containers/Main/stores/globalStore";
 import { getCriticalityLabel } from "../../../../utils/getCriticalityLabel";
 import { intersperse } from "../../../../utils/intersperse";
-import { ConfigContext } from "../../../common/App/ConfigContext";
 import { DigmaSignature } from "../../../common/DigmaSignature";
 import { Attachment } from "../../../common/JiraTicket/types";
 import { SpaNPlusOneInsight } from "../../types";
@@ -10,6 +10,7 @@ import { CodeLocations } from "../common/CodeLocations";
 import { CommitInfos } from "../common/CommitInfos";
 import { InsightJiraTicket } from "../common/InsightJiraTicket";
 import { NPlusOneEndpoints } from "../common/NPlusOneEndpoints";
+import { getTraceAttachment } from "../common/SpanScaling";
 import { InsightTicketProps } from "../types";
 
 export const SpaNPlusOneInsightTicket = ({
@@ -19,7 +20,7 @@ export const SpaNPlusOneInsightTicket = ({
   const spanInsight = data.insight;
   const { commitInfos, isLoading, codeLocations } =
     useSpanDataSource<SpaNPlusOneInsight>(data.insight.spanInfo, data.insight);
-  const config = useContext(ConfigContext);
+  const jaegerURL = useGlobalStore.use.jaegerURL();
 
   const endpoints = data.insight.endpoints ?? [];
 
@@ -62,15 +63,9 @@ export const SpaNPlusOneInsightTicket = ({
   );
 
   const traceId = data.insight.traceId;
+  const traceAttachment = getTraceAttachment(jaegerURL, traceId);
   const attachments: Attachment[] = [
-    ...(traceId
-      ? [
-          {
-            url: `${config.jaegerURL}/api/traces/${traceId}?prettyPrint=true`,
-            fileName: `trace-${traceId}.json`
-          }
-        ]
-      : [])
+    ...(traceAttachment ? [traceAttachment] : [])
   ];
 
   return (

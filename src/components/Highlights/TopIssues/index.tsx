@@ -1,8 +1,8 @@
-import { Fragment, useContext, useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { useGlobalStore } from "../../../containers/Main/stores/globalStore";
 import { usePagination } from "../../../hooks/usePagination";
 import { usePrevious } from "../../../hooks/usePrevious";
-import { ConfigContext } from "../../common/App/ConfigContext";
 import { CrossCircleIcon } from "../../common/icons/16px/CrossCircleIcon";
 import { RefreshIcon } from "../../common/icons/16px/RefreshIcon";
 import { EmptyStateCard } from "../EmptyStateCard";
@@ -93,11 +93,11 @@ export const TopIssues = () => {
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const { data, getData } = useTopIssuesData();
   const previousData = usePrevious(data);
-  const config = useContext(ConfigContext);
+  const scope = useGlobalStore.use.scope();
   const [pageItems, page, setPage] = usePagination(
     data?.topInsights ?? [],
     PAGE_SIZE,
-    config.scope?.span?.spanCodeObjectId
+    scope?.span?.spanCodeObjectId
   );
 
   useEffect(() => {

@@ -1,9 +1,8 @@
 import { Row, createColumnHelper } from "@tanstack/react-table";
-import { useContext } from "react";
+import { useGlobalStore } from "../../../../../containers/Main/stores/globalStore";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { getDurationString } from "../../../../../utils/getDurationString";
 import { SCOPE_CHANGE_EVENTS } from "../../../../Main/types";
-import { ConfigContext } from "../../../../common/App/ConfigContext";
 import { Tag } from "../../../../common/v3/Tag";
 import { Table } from "../../../common/Table";
 import { handleEnvironmentTableRowClick } from "../../../handleEnvironmentTableRowClick";
@@ -18,7 +17,8 @@ import { EndpointSlowdownSourceHighlightCardProps } from "./types";
 export const EndpointSlowdownSourceHighlightCard = ({
   data
 }: EndpointSlowdownSourceHighlightCardProps) => {
-  const config = useContext(ConfigContext);
+  const scope = useGlobalStore.use.scope();
+  const environments = useGlobalStore.use.environments();
 
   const columnHelper =
     createColumnHelper<EnvironmentData<EndpointSlowdownSourceMetrics>>();
@@ -49,8 +49,8 @@ export const EndpointSlowdownSourceHighlightCard = ({
       }
     );
     handleEnvironmentTableRowClick(
-      config.scope,
-      config.environments,
+      scope,
+      environments,
       row.original.environmentId,
       SCOPE_CHANGE_EVENTS.HIGHLIGHTS_TOP_ISSUES_CARD_ITEM_CLICKED
     );

@@ -1,11 +1,11 @@
-import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { DigmaMessageError } from "../../../api/types";
+import { useGlobalStore } from "../../../containers/Main/stores/globalStore";
 import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { isEnvironment } from "../../../typeGuards/isEnvironment";
 import { isNull } from "../../../typeGuards/isNull";
 import { isString } from "../../../typeGuards/isString";
-import { ConfigContext } from "../../common/App/ConfigContext";
 import { AssetFilterQuery } from "../AssetsFilter/types";
 import { NoDataMessage } from "../NoDataMessage";
 import { actions } from "../actions";
@@ -65,10 +65,10 @@ export const AssetTypeList = ({
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
   const [isInitialLoading, setIsInitialLoading] = useState(false);
-  const config = useContext(ConfigContext);
-  const previousEnvironment = usePrevious(config.environment);
+  const scope = useGlobalStore.use.scope();
+  const environment = useGlobalStore.use.environment();
+  const previousEnvironment = usePrevious(environment);
   const refreshTimerId = useRef<number>();
-  const previousFilters = usePrevious(filters);
   const previousSearchQuery = usePrevious(searchQuery);
   const previousViewScope = usePrevious(scopeViewOptions);
 
@@ -96,8 +96,12 @@ export const AssetTypeList = ({
 
   useEffect(() => {
     refreshData();
-    setIsInitialLoading(true);
+    if (!data) {
+      setIsInitialLoading(true);
+    }
+  }, [refreshData]);
 
+  useEffect(() => {
     const handleCategoriesData = (
       data: unknown,
       timeStamp: number,
@@ -132,20 +136,17 @@ export const AssetTypeList = ({
   useEffect(() => {
     if (
       (isEnvironment(previousEnvironment) &&
-        previousEnvironment.id !== config.environment?.id) ||
-      Boolean(previousFilters && previousFilters !== filters) ||
+        previousEnvironment.id !== environment?.id) ||
       (isString(previousSearchQuery) && previousSearchQuery !== searchQuery) ||
       previousViewScope !== scopeViewOptions
     ) {
       refreshData();
     }
   }, [
-    config.environment?.id,
+    environment?.id,
     previousEnvironment,
-    previousFilters,
     previousSearchQuery,
     previousViewScope,
-    filters,
     scopeViewOptions,
     searchQuery,
     refreshData
@@ -179,7 +180,7 @@ export const AssetTypeList = ({
       return <NoDataMessage type={"noSearchResults"} />;
     }
 
-    if (config.scope !== null) {
+    if (scope !== null) {
       return <NoDataMessage type={"noDataForAsset"} />;
     }
 

@@ -100,7 +100,7 @@ export interface InsightsQuery {
   filters: InsightFilterType[];
 }
 
-export interface GlobalState {
+export interface PersistedState {
   insights?: {
     query?: InsightsQuery;
   };
@@ -137,7 +137,7 @@ export interface ConfigContextData {
   environments?: Environment[];
   scope?: Scope;
   isMicrometerProject: boolean;
-  state?: GlobalState;
+  state?: PersistedState;
   insightStats?: InsightStats;
   productKey: string;
   isDigmathonModeEnabled: boolean;

@@ -1,16 +1,10 @@
-import {
-  KeyboardEvent,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState
-} from "react";
+import { KeyboardEvent, useEffect, useMemo, useRef, useState } from "react";
 import { actions as globalActions } from "../../actions";
+import { useGlobalStore } from "../../containers/Main/stores/globalStore";
 import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
+import { isNull } from "../../typeGuards/isNull";
 import { sendTrackingEvent } from "../../utils/actions/sendTrackingEvent";
-import { ConfigContext } from "../common/App/ConfigContext";
 import { MenuItem } from "../common/FilterMenu/types";
 import { NewCircleLoader } from "../common/NewCircleLoader";
 import { Pagination } from "../common/Pagination";
@@ -71,25 +65,25 @@ export const Tests = () => {
   const [isInitialLoading, setIsInitialLoading] = useState(false);
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
-  const config = useContext(ConfigContext);
+  const userRegistrationEmail = useGlobalStore.use.userRegistrationEmail();
+  const scope = useGlobalStore.use.scope();
+  const environments = useGlobalStore.use.environments();
   const [testToOpenTicketPopup, setTestToOpenTicketPopup] = useState<Test>();
-  const previousUserRegistrationEmail = usePrevious(
-    config.userRegistrationEmail
-  );
+  const previousUserRegistrationEmail = usePrevious(userRegistrationEmail);
   useState(false);
   const [isRegistrationInProgress, setIsRegistrationInProgress] =
     useState(false);
   const isRegistrationEnabled = false;
   const isRegistrationRequired =
-    isRegistrationEnabled && !config.userRegistrationEmail;
+    isRegistrationEnabled && !userRegistrationEmail;
   const [selectedEnvironments, setSelectedEnvironments] = useState<string[]>(
     []
   );
   const testsListRef = useRef<HTMLDivElement>(null);
-  const scopeSpan = config.scope?.span ?? null;
+  const scopeSpan = scope?.span ?? null;
   const previousScopeSpan = usePrevious(scopeSpan);
 
-  const environmentMenuItems: MenuItem[] = (config.environments ?? []).map(
+  const environmentMenuItems: MenuItem[] = (environments ?? []).map(
     (environment) => ({
       value: environment.id,
       label: environment.name,
@@ -102,9 +96,9 @@ export const Tests = () => {
       environments:
         selectedEnvironments.length > 0
           ? selectedEnvironments
-          : (config.environments ?? []).map((x) => x.id)
+          : (environments ?? []).map((x) => x.id)
     }),
-    [selectedEnvironments, config.environments]
+    [selectedEnvironments, environments]
   );
   const previousEnvironmentsToSend = usePrevious(environmentsToSend);
 
@@ -188,13 +182,13 @@ export const Tests = () => {
 
   useEffect(() => {
     if (
-      previousUserRegistrationEmail !== config.userRegistrationEmail &&
+      previousUserRegistrationEmail !== userRegistrationEmail &&
       isRegistrationInProgress
     ) {
       setIsRegistrationInProgress(false);
     }
   }, [
-    config.userRegistrationEmail,
+    userRegistrationEmail,
     isRegistrationInProgress,
     previousUserRegistrationEmail
   ]);
@@ -317,7 +311,7 @@ export const Tests = () => {
         Environment
         <EnvironmentFilter
           items={environmentMenuItems}
-          isLoading={config.environments === undefined}
+          isLoading={isNull(environments)}
           onMenuItemClick={handleEnvironmentMenuItemClick}
         />
       </s.EnvironmentFilterContainer>

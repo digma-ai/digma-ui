@@ -1,13 +1,13 @@
-import { useContext, useEffect, useLayoutEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import { Outlet, matchPath, useLocation } from "react-router-dom";
 import { actions as globalActions } from "../../actions";
 import { history } from "../../containers/Main/history";
+import { useGlobalStore } from "../../containers/Main/stores/globalStore";
 import { dispatcher } from "../../dispatcher";
 import { HistoryEntryLocation } from "../../history/History";
 import { logger } from "../../logging";
 import { Navigation } from "../Navigation";
 import { TAB_IDS } from "../Navigation/Tabs/types";
-import { ConfigContext } from "../common/App/ConfigContext";
 import { Scope } from "../common/App/types";
 import { Authentication } from "./Authentication";
 import { actions } from "./actions";
@@ -40,7 +40,11 @@ const getURLToNavigateOnCodeLensClick = (scope: Scope): string | undefined => {
 
 export const Main = () => {
   const location = useLocation();
-  const config = useContext(ConfigContext);
+  const environments = useGlobalStore.use.environments();
+  const environment = useGlobalStore.use.environment();
+  const scope = useGlobalStore.use.scope();
+  const userInfo = useGlobalStore.use.userInfo();
+  const backendInfo = useGlobalStore.use.backendInfo();
   const { goTo } = useHistory();
   const updateBrowserLocation = useBrowserLocationUpdater();
 
@@ -50,17 +54,16 @@ export const Main = () => {
     // 2) selected environment is not exist in the list of environments
     // 3) scope is not exist in the current environment
     if (
-      !config.environments ||
-      config.environments.length === 0 ||
+      !environments ||
+      environments.length === 0 ||
       Boolean(
-        config.environment &&
-          !config.environments?.find((x) => x.id == config.environment?.id)
+        environment && !environments?.find((x) => x.id == environment?.id)
       ) ||
-      (config.scope?.span && !config.scope.span.displayName)
+      (scope?.span && !scope.span.displayName)
     ) {
       history.clear();
     }
-  }, [config.environments, config.environment, config.scope?.span]);
+  }, [environments, environment, scope?.span]);
 
   useEffect(() => {
     const handleSetScope = (data: unknown) => {
@@ -68,7 +71,7 @@ export const Main = () => {
       logger.debug("[SCOPE CHANGE]: ", scope);
 
       const state: HistoryState = {
-        environmentId: scope.environmentId ?? config.environment?.id,
+        environmentId: scope.environmentId ?? environment?.id,
         spanCodeObjectId: scope.span?.spanCodeObjectId
       };
 
@@ -143,21 +146,15 @@ export const Main = () => {
     return () => {
       dispatcher.removeActionListener(globalActions.SET_SCOPE, handleSetScope);
     };
-  }, [
-    goTo,
-    location,
-    config.environments,
-    config.environment,
-    updateBrowserLocation
-  ]);
+  }, [goTo, location, environments, environment, updateBrowserLocation]);
 
   useLayoutEffect(() => {
     window.sendMessageToDigma({
       action: actions.INITIALIZE
     });
-  }, [config.userInfo?.id]);
+  }, [userInfo?.id]);
 
-  if (!config.userInfo?.id && config.backendInfo?.centralize) {
+  if (!userInfo?.id && backendInfo?.centralize) {
     return <Authentication />;
   }
 

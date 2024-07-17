@@ -1,7 +1,7 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useGlobalStore } from "../../../../containers/Main/stores/globalStore";
 import { isNumber } from "../../../../typeGuards/isNumber";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
-import { ConfigContext } from "../../../common/App/ConfigContext";
 import { Tooltip } from "../../../common/v3/Tooltip";
 import { InsightFilterType } from "../types";
 import * as s from "./styles";
@@ -17,12 +17,13 @@ export const InsightStats = ({
     []
   );
 
-  const config = useContext(ConfigContext);
+  const environment = useGlobalStore.use.environment();
+  const scope = useGlobalStore.use.scope();
 
   useEffect(() => {
     setSelectedFilters([]);
     onChange([]);
-  }, [config.environment?.id, config.scope?.span?.spanCodeObjectId, onChange]);
+  }, [environment?.id, scope?.span?.spanCodeObjectId, onChange]);
 
   const handleSelectionChange = (selectedFilter: InsightFilterType) => {
     const selection = [...selectedFilters];

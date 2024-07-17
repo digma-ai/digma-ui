@@ -4,13 +4,13 @@ import {
   getCoreRowModel,
   useReactTable
 } from "@tanstack/react-table";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useGlobalStore } from "../../../../../../containers/Main/stores/globalStore";
 import { usePagination } from "../../../../../../hooks/usePagination";
 import { usePrevious } from "../../../../../../hooks/usePrevious";
 import { isNumber } from "../../../../../../typeGuards/isNumber";
 import { InsightType } from "../../../../../../types";
 import { roundTo } from "../../../../../../utils/roundTo";
-import { ConfigContext } from "../../../../../common/App/ConfigContext";
 import { TraceIcon } from "../../../../../common/icons/12px/TraceIcon";
 import { ArrowToTopIcon } from "../../../../../common/icons/20px/ArrowToTopIcon";
 import { ArrowDashedLineIcon } from "../../../../../common/icons/ArrowDashedLineIcon";
@@ -42,7 +42,7 @@ export const SpanUsagesInsightCard = ({
   onGoToSpan,
   isMarkAsReadButtonEnabled
 }: SpanUsagesInsightCardProps) => {
-  const config = useContext(ConfigContext);
+  const isJaegerEnabled = useGlobalStore.use.isJaegerEnabled();
   const [data, setData] = useState({
     pageItems: insight.flows.slice(0, PAGE_SIZE)
   });
@@ -201,7 +201,7 @@ export const SpanUsagesInsightCard = ({
 
         return (
           <>
-            {config.isJaegerEnabled && traceId && (
+            {isJaegerEnabled && traceId && (
               <Tooltip title={"Open Trace"}>
                 <Button
                   buttonType={"primary"}

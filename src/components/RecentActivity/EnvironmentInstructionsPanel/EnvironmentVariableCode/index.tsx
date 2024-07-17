@@ -1,9 +1,9 @@
-import { Fragment, ReactNode, useContext } from "react";
+import { Fragment, ReactNode } from "react";
+import { useGlobalStore } from "../../../../containers/Main/stores/globalStore";
 import { getFeatureFlagValue } from "../../../../featureFlags";
 import { isString } from "../../../../typeGuards/isString";
 import { FeatureFlag } from "../../../../types";
 import { intersperse } from "../../../../utils/intersperse";
-import { ConfigContext } from "../../../common/App/ConfigContext";
 import { HighlightedCode } from "../styles";
 import { DigmaAttribute } from "./types";
 
@@ -88,27 +88,27 @@ const renderEnvironmentVariables = (
 };
 
 export const EnvironmentVariableCode = () => {
-  const config = useContext(ConfigContext);
+  const environment = useGlobalStore.use.environment();
+  const backendInfo = useGlobalStore.use.backendInfo();
 
-  if (!config.environment || !config.backendInfo) {
+  if (!environment || !backendInfo) {
     return null;
   }
 
-  const isCentralizedDeployment = config.backendInfo.centralize;
-  const isMicrometerProject = config.isMicrometerProject;
-  const userId = config.userInfo?.id;
-  const environmentId = config.environment.id;
-  const environmentName = config.environment.name;
-  const environmentType = config.environment.type ?? undefined;
-  const isRunConfigSupported = Boolean(
-    config.runConfig?.isRunConfigurationSupported
-  );
+  const isCentralizedDeployment = backendInfo.centralize;
+  const isMicrometerProject = Boolean(useGlobalStore.use.isMicrometerProject());
+  const userId = useGlobalStore.use.userInfo()?.id;
+  const environmentId = environment.id;
+  const environmentName = environment.name;
+  const environmentType = environment.type ?? undefined;
+  const runConfig = useGlobalStore.use.runConfig();
+  const isRunConfigSupported = Boolean(runConfig?.isRunConfigurationSupported);
   const javaToolOptions = isRunConfigSupported
     ? undefined
-    : config.runConfig?.javaToolOptions;
+    : runConfig?.javaToolOptions;
 
   const areNewInstrumentationAttributesEnabled = getFeatureFlagValue(
-    config,
+    backendInfo,
     FeatureFlag.ARE_NEW_INSTRUMENTATION_ATTRIBUTES_ENABLED
   );
 

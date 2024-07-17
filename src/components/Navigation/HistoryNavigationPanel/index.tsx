@@ -1,6 +1,7 @@
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { Location, useLocation, useNavigate } from "react-router-dom";
 import { history } from "../../../containers/Main/history";
+import { useGlobalStore } from "../../../containers/Main/stores/globalStore";
 import { HistoryEntry } from "../../../history/History";
 import { changeScope } from "../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
@@ -11,7 +12,6 @@ import {
 } from "../../Main/types";
 import { useBrowserLocationUpdater } from "../../Main/updateBrowserLocationUpdater";
 import { useHistory } from "../../Main/useHistory";
-import { ConfigContext } from "../../common/App/ConfigContext";
 import { ChevronIcon } from "../../common/icons/20px/ChevronIcon";
 import { Direction } from "../../common/icons/types";
 import { trackingEvents } from "../tracking";
@@ -20,7 +20,9 @@ import * as s from "./styles";
 export const HistoryNavigationPanel = () => {
   const { goBack, goForward, goTo, canGoBack, canGoForward } = useHistory();
   const navigate = useNavigate();
-  const config = useContext(ConfigContext);
+  const environments = useGlobalStore.use.environments();
+  const environment = useGlobalStore.use.environment();
+  const scope = useGlobalStore.use.scope();
   const location = useLocation() as Location<ReactRouterLocationState | null>;
   const updateBrowserLocation = useBrowserLocationUpdater();
 
@@ -35,18 +37,13 @@ export const HistoryNavigationPanel = () => {
         {
           replace: history.historyStack.length > 0,
           state: {
-            environmentId: config.environment?.id,
-            spanCodeObjectId: config.scope?.span?.spanCodeObjectId
+            environmentId: environment?.id,
+            spanCodeObjectId: scope?.span?.spanCodeObjectId
           }
         }
       );
     }
-  }, [
-    location,
-    goTo,
-    config.environment?.id,
-    config.scope?.span?.spanCodeObjectId
-  ]);
+  }, [location, goTo, environment?.id, scope?.span?.spanCodeObjectId]);
 
   useEffect(() => {
     const handleHistoryChange = (
@@ -70,9 +67,9 @@ export const HistoryNavigationPanel = () => {
 
   useEffect(() => {
     const handleHistoryClear = () => {
-      const environmentNavigateTo = config.environment?.id
-        ? config.environments?.find((x) => x.id === config.environment?.id)
-        : config.environments?.[0];
+      const environmentNavigateTo = environment?.id
+        ? environments?.find((x) => x.id === environment?.id)
+        : environments?.[0];
       changeScope({
         span: null,
         context: {

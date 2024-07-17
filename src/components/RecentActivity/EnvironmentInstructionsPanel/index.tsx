@@ -30,7 +30,7 @@ const getIsActiveRunConfigSet = (
 
   const isCentralizedDeployment = config.backendInfo?.centralize;
   const areNewInstrumentationAttributesEnabled = getFeatureFlagValue(
-    config,
+    config.backendInfo ?? null,
     FeatureFlag.ARE_NEW_INSTRUMENTATION_ATTRIBUTES_ENABLED
   );
 

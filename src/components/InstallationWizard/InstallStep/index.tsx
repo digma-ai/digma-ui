@@ -514,7 +514,7 @@ export const InstallStep = ({
   ];
 
   const renderEngineManager = () => {
-    const isEngineRunning = isDigmaEngineRunning(config);
+    const isEngineRunning = isDigmaEngineRunning(config.digmaStatus ?? null);
 
     const isConfigureButtonEnabled =
       (isFirstLaunch &&

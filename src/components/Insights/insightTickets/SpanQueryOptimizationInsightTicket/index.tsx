@@ -1,8 +1,8 @@
-import { ReactElement, useContext } from "react";
+import { ReactElement } from "react";
+import { useGlobalStore } from "../../../../containers/Main/stores/globalStore";
 import { getCriticalityLabel } from "../../../../utils/getCriticalityLabel";
 import { getDurationString } from "../../../../utils/getDurationString";
 import { intersperse } from "../../../../utils/intersperse";
-import { ConfigContext } from "../../../common/App/ConfigContext";
 import { DigmaSignature } from "../../../common/DigmaSignature";
 import { Attachment } from "../../../common/JiraTicket/types";
 import { SpanQueryOptimizationInsight } from "../../types";
@@ -10,6 +10,7 @@ import { useCommitInfos } from "../common";
 import { CommitInfos } from "../common/CommitInfos";
 import { InsightJiraTicket } from "../common/InsightJiraTicket";
 import { QueryOptimizationEndpoints } from "../common/QueryOptimizationEndpoints";
+import { getTraceAttachment } from "../common/SpanScaling";
 import { InsightTicketProps } from "../types";
 
 export const SpanQueryOptimizationInsightTicket = ({
@@ -17,7 +18,7 @@ export const SpanQueryOptimizationInsightTicket = ({
   onClose
 }: InsightTicketProps<SpanQueryOptimizationInsight>) => {
   const { isLoading, commitInfos } = useCommitInfos(data.insight);
-  const config = useContext(ConfigContext);
+  const jaegerURL = useGlobalStore.use.jaegerURL();
 
   const criticalityString =
     data.insight.criticality > 0
@@ -78,15 +79,9 @@ export const SpanQueryOptimizationInsightTicket = ({
   );
 
   const traceId = data.insight.traceId;
+  const traceAttachment = getTraceAttachment(jaegerURL, traceId);
   const attachments: Attachment[] = [
-    ...(traceId
-      ? [
-          {
-            url: `${config.jaegerURL}/api/traces/${traceId}?prettyPrint=true`,
-            fileName: `trace-${traceId}.json`
-          }
-        ]
-      : [])
+    ...(traceAttachment ? [traceAttachment] : [])
   ];
 
   return (

@@ -1,12 +1,12 @@
 import { Row, createColumnHelper } from "@tanstack/react-table";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useGlobalStore } from "../../../containers/Main/stores/globalStore";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { isBoolean } from "../../../typeGuards/isBoolean";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { formatTimeDistance } from "../../../utils/formatTimeDistance";
 import { getDurationString } from "../../../utils/getDurationString";
 import { SCOPE_CHANGE_EVENTS } from "../../Main/types";
-import { ConfigContext } from "../../common/App/ConfigContext";
 import { CrossCircleIcon } from "../../common/icons/16px/CrossCircleIcon";
 import { RefreshIcon } from "../../common/icons/16px/RefreshIcon";
 import { TimerIcon } from "../../common/icons/16px/TimerIcon";
@@ -26,11 +26,12 @@ export const Performance = () => {
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const { data, getData } = usePerformanceData();
   const previousData = usePrevious(data);
-  const config = useContext(ConfigContext);
+  const scope = useGlobalStore.use.scope();
+  const environments = useGlobalStore.use.environments();
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [getData]);
 
   useEffect(() => {
     if (!previousData && data) {
@@ -119,8 +120,8 @@ export const Performance = () => {
       );
 
       handleEnvironmentTableRowClick(
-        config.scope,
-        config.environments,
+        scope,
+        environments,
         row.original.environment.id,
         SCOPE_CHANGE_EVENTS.HIGHLIGHTS_PERFORMANCE_CARD_ITEM_CLICKED
       );

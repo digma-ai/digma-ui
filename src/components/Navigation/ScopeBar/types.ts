@@ -3,7 +3,7 @@ import { CodeContext } from "../types";
 
 export interface ScopeBarProps {
   codeContext?: CodeContext;
-  scope?: Scope;
+  scope: Scope | null;
 }
 
 export interface ScopeBarElementProps {

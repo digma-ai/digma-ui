@@ -63,7 +63,7 @@ export const EngineManager = ({
   const theme = useTheme();
   const themeKind = getThemeKind(theme);
 
-  const isEngineRunning = isDigmaEngineRunning(config);
+  const isEngineRunning = isDigmaEngineRunning(config.digmaStatus ?? null);
 
   // const isNotEngineDigmaInstanceRunning = Boolean(
   //   config.digmaStatus &&

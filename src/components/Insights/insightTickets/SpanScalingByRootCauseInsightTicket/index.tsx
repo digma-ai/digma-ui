@@ -1,7 +1,7 @@
-import { ReactElement, useContext } from "react";
+import { ReactElement } from "react";
+import { useGlobalStore } from "../../../../containers/Main/stores/globalStore";
 import { InsightType } from "../../../../types";
 import { intersperse } from "../../../../utils/intersperse";
-import { ConfigContext } from "../../../common/App/ConfigContext";
 import { DigmaSignature } from "../../../common/DigmaSignature";
 import { Attachment } from "../../../common/JiraTicket/types";
 import { RootCauseSpanInfo, SpanScalingInsight } from "../../types";
@@ -28,7 +28,8 @@ export const SpanScalingByRootCauseInsightTicket = ({
 }: InsightTicketProps<SpanScalingInsight> & {
   rootCauseSpanInfo: RootCauseSpanInfo;
 }) => {
-  const config = useContext(ConfigContext);
+  const jaegerURL = useGlobalStore.use.jaegerURL();
+  const digmaApiProxyPrefix = useGlobalStore.use.digmaApiProxyPrefix();
 
   const spanInfo = rootCauseSpanInfo;
 
@@ -86,8 +87,14 @@ export const SpanScalingByRootCauseInsightTicket = ({
 
   const summary = getScalingIssueSummary(spanInsight);
 
-  const attachmentTrace = getTraceAttachment(config, spanInfo?.sampleTraceId);
-  const attachmentHistogram = getHistogramAttachment(config, spanInsight);
+  const attachmentTrace = getTraceAttachment(
+    jaegerURL,
+    spanInfo?.sampleTraceId
+  );
+  const attachmentHistogram = getHistogramAttachment(
+    digmaApiProxyPrefix,
+    spanInsight
+  );
   const attachments: Attachment[] = [
     ...(attachmentTrace ? [attachmentTrace] : []),
     ...(attachmentHistogram ? [attachmentHistogram] : [])
