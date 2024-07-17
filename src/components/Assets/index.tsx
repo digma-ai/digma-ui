@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useAssetsStore } from "../../containers/Main/stores/assetsStore";
 import { useGlobalStore } from "../../containers/Main/stores/globalStore";
 import { useDebounce } from "../../hooks/useDebounce";
 import { usePrevious } from "../../hooks/usePrevious";
@@ -40,14 +39,7 @@ export const Assets = () => {
   const [assetListDataRefresher, setAssetListRefresher] =
     useState<DataRefresher | null>(null);
   const { goTo } = useHistory();
-  const clear = useAssetsStore.use.clear();
   const isBackendUpgradeMessageVisible = false;
-
-  useEffect(() => {
-    return () => {
-      clear();
-    };
-  }, []);
 
   useEffect(() => {
     if (!scope?.span) {
