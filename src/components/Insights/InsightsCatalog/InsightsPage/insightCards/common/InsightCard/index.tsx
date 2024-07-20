@@ -1,9 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useGlobalStore } from "../../../../../../../containers/Main/stores/globalStore";
 import { usePrevious } from "../../../../../../../hooks/usePrevious";
 import { isString } from "../../../../../../../typeGuards/isString";
 import { sendUserActionTrackingEvent } from "../../../../../../../utils/actions/sendUserActionTrackingEvent";
 import { Spinner } from "../../../../../../Navigation/CodeButtonMenu/Spinner";
-import { ConfigContext } from "../../../../../../common/App/ConfigContext";
 import { CheckmarkCircleIcon } from "../../../../../../common/icons/12px/CheckmarkCircleIcon";
 import { TraceIcon } from "../../../../../../common/icons/12px/TraceIcon";
 import { DoubleCircleIcon } from "../../../../../../common/icons/16px/DoubleCircleIcon";
@@ -54,7 +54,7 @@ export const InsightCard = ({
   const isOperationInProgress =
     isDismissalChangeInProgress || isMarkingAsReadInProgress;
   const previousIsOperationInProgress = usePrevious(isOperationInProgress);
-  const config = useContext(ConfigContext);
+  const isJaegerEnabled = useGlobalStore.use.isJaegerEnabled();
   const [insightStatus, setInsightStatus] = useState(insight.status);
 
   const isCritical = insight.criticality > HIGH_CRITICALITY_THRESHOLD;
@@ -249,7 +249,7 @@ export const InsightCard = ({
       });
     }
 
-    if (config.isJaegerEnabled && onGoToTrace) {
+    if (isJaegerEnabled && onGoToTrace) {
       buttonsToRender.push({
         tooltip: "Open Trace",
         button: (btnProps) => (

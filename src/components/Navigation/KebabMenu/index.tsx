@@ -1,9 +1,8 @@
-import { useContext } from "react";
 import { actions as globalActions } from "../../../actions";
+import { useGlobalStore } from "../../../containers/Main/stores/globalStore";
 import { OpenInstallationWizardPayload } from "../../../types";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { isDigmaEngineRunning } from "../../../utils/isDigmaEngineRunning";
-import { ConfigContext } from "../../common/App/ConfigContext";
 import { DigmaLogoFlatIcon } from "../../common/icons/16px/DigmaLogoFlatIcon";
 import { FourPointedStarIcon } from "../../common/icons/16px/FourPointedStarIcon";
 import { LocalEngineIcon } from "../../common/icons/LocalEngineIcon";
@@ -15,7 +14,8 @@ import { OpenDocumentationPayload } from "../types";
 import { KebabMenuProps } from "./types";
 
 export const KebabMenu = ({ onClose }: KebabMenuProps) => {
-  const config = useContext(ConfigContext);
+  const backendInfo = useGlobalStore.use.backendInfo();
+  const digmaStatus = useGlobalStore.use.digmaStatus();
 
   const handleOnboardingClick = () => {
     sendUserActionTrackingEvent(trackingEvents.ONBOARDING_LINK_CLICKED);
@@ -68,7 +68,10 @@ export const KebabMenu = ({ onClose }: KebabMenuProps) => {
       id: "localEngine",
       label: "Local Engine",
       icon: (
-        <LocalEngineIcon size={16} isActive={isDigmaEngineRunning(config)} />
+        <LocalEngineIcon
+          size={16}
+          isActive={isDigmaEngineRunning(digmaStatus)}
+        />
       ),
       onClick: handleLocalEngineClick
     },
@@ -80,7 +83,7 @@ export const KebabMenu = ({ onClose }: KebabMenuProps) => {
     }
   ];
 
-  if (config.backendInfo?.centralize) {
+  if (backendInfo?.centralize) {
     items.push({
       id: "logout",
       label: "Logout",

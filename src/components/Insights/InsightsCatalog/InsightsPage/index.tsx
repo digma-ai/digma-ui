@@ -1,7 +1,7 @@
-import { useContext, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { actions as globalActions } from "../../../../actions";
+import { useGlobalStore } from "../../../../containers/Main/stores/globalStore";
 import { usePersistence } from "../../../../hooks/usePersistence";
-import { usePrevious } from "../../../../hooks/usePrevious";
 import { trackingEvents as globalTrackingEvents } from "../../../../trackingEvents";
 import { isNumber } from "../../../../typeGuards/isNumber";
 import { isUndefined } from "../../../../typeGuards/isUndefined";
@@ -11,7 +11,6 @@ import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserA
 import { SCOPE_CHANGE_EVENTS } from "../../../Main/types";
 import { useHistory } from "../../../Main/useHistory";
 import { TAB_IDS } from "../../../Navigation/Tabs/types";
-import { ConfigContext } from "../../../common/App/ConfigContext";
 import { EmptyState } from "../../../common/EmptyState";
 import { CardsIcon } from "../../../common/icons/CardsIcon";
 import { actions } from "../../actions";
@@ -469,29 +468,21 @@ export const InsightsPage = ({
   isMarkAsReadButtonEnabled,
   isFilteringEnabled
 }: InsightsPageProps) => {
-  const config = useContext(ConfigContext);
-  const previousConfig = usePrevious(config);
+  const scope = useGlobalStore.use.scope();
+  const environment = useGlobalStore.use.environment();
   const [isInsightJiraTicketHintShown, setIsInsightJiraTicketHintShown] =
     usePersistence<isInsightJiraTicketHintShownPayload>(
       IS_INSIGHT_JIRA_TICKET_HINT_SHOWN_PERSISTENCE_KEY,
       "application"
     );
   const listRef = useRef<HTMLDivElement>(null);
-  const previousPage = usePrevious(page);
   const { goTo } = useHistory();
 
   const insightIndexWithJiraHint = getInsightToShowJiraHint(insights);
 
   useEffect(() => {
-    if (
-      (isNumber(previousPage) && previousPage !== page) ||
-      (previousConfig &&
-        (previousConfig?.scope?.span !== config?.scope?.span ||
-          previousConfig?.environment?.id !== config.environment?.id))
-    ) {
-      listRef.current?.scrollTo(0, 0);
-    }
-  }, [previousPage, page, config, previousConfig]);
+    listRef.current?.scrollTo(0, 0);
+  }, [scope?.span, environment?.id, page]);
 
   useEffect(() => {
     window.sendMessageToDigma<MarkInsightTypesAsViewedPayload>({
@@ -560,9 +551,9 @@ export const InsightsPage = ({
             </s.EmptyStateDescription>
           }
         />
-      ) : config.scope &&
-        isNumber(config.scope.analyticsInsightsCount) &&
-        config.scope.analyticsInsightsCount > 0 ? (
+      ) : scope &&
+        isNumber(scope.analyticsInsightsCount) &&
+        scope.analyticsInsightsCount > 0 ? (
         <EmptyState
           icon={CardsIcon}
           title={"No insights yet"}
@@ -577,7 +568,7 @@ export const InsightsPage = ({
             </s.EmptyStateDescription>
           }
         />
-      ) : config.scope?.span ? (
+      ) : scope?.span ? (
         <EmptyState
           icon={CardsIcon}
           title={"No data yet"}

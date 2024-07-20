@@ -1,8 +1,8 @@
-import { ConfigContextData } from "../components/common/App/types";
+import { DigmaStatus } from "../components/common/App/types";
 
-export const isDigmaEngineRunning = (config: ConfigContextData) =>
+export const isDigmaEngineRunning = (digmaStatus: DigmaStatus | null) =>
   Boolean(
-    config.digmaStatus?.connection.status &&
-      config.digmaStatus.runningDigmaInstances.length === 1 &&
-      config.digmaStatus.runningDigmaInstances.includes("localEngine")
+    digmaStatus?.connection.status &&
+      digmaStatus.runningDigmaInstances.length === 1 &&
+      digmaStatus.runningDigmaInstances.includes("localEngine")
   );

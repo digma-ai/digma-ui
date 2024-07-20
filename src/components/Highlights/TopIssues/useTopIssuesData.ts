@@ -1,37 +1,38 @@
-import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useGlobalStore } from "../../../containers/Main/stores/globalStore";
 import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { actions as mainActions } from "../../Main/actions";
 import { GetHighlightsTopIssuesDataPayload } from "../../Main/types";
-import { ConfigContext } from "../../common/App/ConfigContext";
 import { TopIssuesData } from "./types";
 
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 
 export const useTopIssuesData = () => {
   const [data, setData] = useState<TopIssuesData>();
-  const config = useContext(ConfigContext);
+  const scope = useGlobalStore.use.scope();
+  const environments = useGlobalStore.use.environments();
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
   const refreshTimerId = useRef<number>();
 
   const getData = useCallback(() => {
     if (
-      config.scope?.span?.spanCodeObjectId &&
-      config.environments &&
-      config.environments.length > 0
+      scope?.span?.spanCodeObjectId &&
+      environments &&
+      environments.length > 0
     ) {
       window.sendMessageToDigma<GetHighlightsTopIssuesDataPayload>({
         action: mainActions.GET_HIGHLIGHTS_TOP_ISSUES_DATA,
         payload: {
           query: {
-            scopedCodeObjectId: config.scope?.span?.spanCodeObjectId,
-            environments: config.environments?.map((env) => env.id)
+            scopedCodeObjectId: scope?.span?.spanCodeObjectId,
+            environments: environments?.map((env) => env.id)
           }
         }
       });
     }
-  }, [config.scope?.span?.spanCodeObjectId, config.environments]);
+  }, [scope?.span?.spanCodeObjectId, environments]);
   const previousGetData = usePrevious(getData);
 
   useEffect(() => {

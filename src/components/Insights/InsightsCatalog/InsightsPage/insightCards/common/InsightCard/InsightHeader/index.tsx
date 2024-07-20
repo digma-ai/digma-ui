@@ -1,8 +1,7 @@
-import { useContext } from "react";
+import { useGlobalStore } from "../../../../../../../../containers/Main/stores/globalStore";
 import { isString } from "../../../../../../../../typeGuards/isString";
 import { formatTimeDistance } from "../../../../../../../../utils/formatTimeDistance";
 import { getInsightTypeInfo } from "../../../../../../../../utils/getInsightTypeInfo";
-import { ConfigContext } from "../../../../../../../common/App/ConfigContext";
 import { Link } from "../../../../../../../common/v3/Link";
 import { NewTag } from "../../../../../../../common/v3/NewTag";
 import { Tooltip } from "../../../../../../../common/v3/Tooltip";
@@ -39,7 +38,7 @@ export const InsightHeader = ({
   lastUpdateTimer,
   isAsync
 }: InsightHeaderProps) => {
-  const config = useContext(ConfigContext);
+  const scope = useGlobalStore.use.scope();
 
   const insightTypeInfo = getInsightTypeInfo(insight.type, insight.subType);
   const statusTooltipContent = renderInsightStatusTooltipContent(insight);
@@ -95,7 +94,7 @@ export const InsightHeader = ({
           )}
         </s.BadgeContainer>
       </s.TitleRow>
-      {!config.scope?.span && spanInfo && (
+      {!scope?.span && spanInfo && (
         <s.SpanInfoRow>
           <Tooltip title={spanInfo.displayName}>
             <Link onClick={handleSpanLinkClick}>{spanInfo.displayName}</Link>

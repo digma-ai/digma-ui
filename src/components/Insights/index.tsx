@@ -1,19 +1,13 @@
-import {
-  KeyboardEvent,
-  useContext,
-  useEffect,
-  useLayoutEffect,
-  useState
-} from "react";
+import { KeyboardEvent, useEffect, useLayoutEffect, useState } from "react";
 import { actions as globalActions } from "../../actions";
 import { SLACK_WORKSPACE_URL } from "../../constants";
+import { useGlobalStore } from "../../containers/Main/stores/globalStore";
 import { getFeatureFlagValue } from "../../featureFlags";
 import { usePrevious } from "../../hooks/usePrevious";
 import { trackingEvents as globalTrackingEvents } from "../../trackingEvents";
 import { FeatureFlag } from "../../types";
 import { openURLInDefaultBrowser } from "../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
-import { ConfigContext } from "../common/App/ConfigContext";
 import { CircleLoader } from "../common/CircleLoader";
 import { EmptyState } from "../common/EmptyState";
 import { RegistrationDialog } from "../common/RegistrationDialog";
@@ -215,17 +209,17 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
   });
   const [infoToOpenJiraTicket, setInfoToOpenJiraTicket] =
     useState<InsightTicketInfo<GenericCodeObjectInsight>>();
-  const config = useContext(ConfigContext);
-  const previousUserRegistrationEmail = usePrevious(
-    config.userRegistrationEmail
-  );
+  const backendInfo = useGlobalStore.use.backendInfo();
+  const userRegistrationEmail = useGlobalStore.use.userRegistrationEmail();
+  const previousUserRegistrationEmail = usePrevious(userRegistrationEmail);
+  const environments = useGlobalStore.use.environments();
   const [isRegistrationInProgress, setIsRegistrationInProgress] =
     useState(false);
   const isRegistrationEnabled = false;
   const isRegistrationRequired =
-    isRegistrationEnabled && !config.userRegistrationEmail;
+    isRegistrationEnabled && !userRegistrationEmail;
   const isIssuesFilterVisible = getFeatureFlagValue(
-    config,
+    backendInfo,
     FeatureFlag.ARE_ISSUES_FILTERS_ENABLED
   );
 
@@ -235,13 +229,13 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
 
   useEffect(() => {
     if (
-      previousUserRegistrationEmail !== config.userRegistrationEmail &&
+      previousUserRegistrationEmail !== userRegistrationEmail &&
       isRegistrationInProgress
     ) {
       setIsRegistrationInProgress(false);
     }
   }, [
-    config.userRegistrationEmail,
+    userRegistrationEmail,
     isRegistrationInProgress,
     previousUserRegistrationEmail
   ]);
@@ -328,7 +322,7 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
       return <EmptyState content={<CircleLoader size={32} />} />;
     }
 
-    if (!config.environments?.length) {
+    if (!environments?.length) {
       return <NoDataYet />;
     }
 

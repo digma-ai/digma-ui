@@ -1,10 +1,10 @@
-import { useContext, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { DigmaMessageError } from "../../../api/types";
 import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
-import { ConfigContext } from "../../common/App/ConfigContext";
 import { actions, actions as issuesActions } from "./actions";
 
+import { useGlobalStore } from "../../../containers/Main/stores/globalStore";
 import { GetIssuesFiltersPayload } from "../../../types";
 import { IssuesFiltersData } from "./IssuesFilter/types";
 import { IssuesQuery } from "./types";
@@ -33,8 +33,8 @@ export const useIssuesFilters = ({
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
   const refreshTimerId = useRef<number>();
-  const config = useContext(ConfigContext);
-  const { scope, environment } = config;
+  const environment = useGlobalStore.use.environment();
+  const scope = useGlobalStore.use.scope();
 
   const scopedQuery = useMemo(
     () => ({

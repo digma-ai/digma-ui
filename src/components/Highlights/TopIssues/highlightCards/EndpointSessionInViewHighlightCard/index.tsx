@@ -1,8 +1,7 @@
 import { Row, createColumnHelper } from "@tanstack/react-table";
-import { useContext } from "react";
+import { useGlobalStore } from "../../../../../containers/Main/stores/globalStore";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { SCOPE_CHANGE_EVENTS } from "../../../../Main/types";
-import { ConfigContext } from "../../../../common/App/ConfigContext";
 import { Table } from "../../../common/Table";
 import { handleEnvironmentTableRowClick } from "../../../handleEnvironmentTableRowClick";
 import { trackingEvents } from "../../../tracking";
@@ -16,7 +15,8 @@ import { EndpointSessionInViewHighlightCardProps } from "./types";
 export const EndpointSessionInViewHighlightCard = ({
   data
 }: EndpointSessionInViewHighlightCardProps) => {
-  const config = useContext(ConfigContext);
+  const scope = useGlobalStore.use.scope();
+  const environments = useGlobalStore.use.environments();
 
   const columnHelper =
     createColumnHelper<EnvironmentData<EndpointSessionInViewMetrics>>();
@@ -33,8 +33,8 @@ export const EndpointSessionInViewHighlightCard = ({
       }
     );
     handleEnvironmentTableRowClick(
-      config.scope,
-      config.environments,
+      scope,
+      environments,
       row.original.environmentId,
       SCOPE_CHANGE_EVENTS.HIGHLIGHTS_TOP_ISSUES_CARD_ITEM_CLICKED
     );

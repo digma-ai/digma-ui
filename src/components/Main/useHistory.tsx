@@ -1,9 +1,8 @@
-import { useContext } from "react";
 import { NavigateOptions, To, resolvePath } from "react-router-dom";
 import { history } from "../../containers/Main/history";
+import { useGlobalStore } from "../../containers/Main/stores/globalStore";
 import { HistoryEntry, HistoryEntryLocation } from "../../history/History";
 import { isString } from "../../typeGuards/isString";
-import { ConfigContext } from "../common/App/ConfigContext";
 import { HistoryState } from "./types";
 
 const isLocationChanged = (to: To, location: HistoryEntryLocation) => {
@@ -97,7 +96,8 @@ const isNewHistoryEntryNeeded = (
 
 export const useHistory = () => {
   const location = history.getCurrentLocation();
-  const config = useContext(ConfigContext);
+  const environment = useGlobalStore.use.environment();
+  const scope = useGlobalStore.use.scope();
 
   const goTo = (to: To, options?: NavigateOptions) => {
     if (!isNavigationNeeded(to, options, location)) {
@@ -108,8 +108,8 @@ export const useHistory = () => {
 
     const optionsState = options?.state as HistoryState | undefined;
     const state: HistoryState = optionsState ?? {
-      environmentId: config.environment?.id,
-      spanCodeObjectId: config.scope?.span?.spanCodeObjectId
+      environmentId: environment?.id,
+      spanCodeObjectId: scope?.span?.spanCodeObjectId
     };
 
     const resolvedPath = resolvePath(to, location?.location.pathname ?? "/");

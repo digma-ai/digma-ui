@@ -1,8 +1,7 @@
-import { useContext } from "react";
+import { useGlobalStore } from "../../../../../../containers/Main/stores/globalStore";
 import { usePagination } from "../../../../../../hooks/usePagination";
 import { getDurationString } from "../../../../../../utils/getDurationString";
 import { trimEndpointScheme } from "../../../../../../utils/trimEndpointScheme";
-import { ConfigContext } from "../../../../../common/App/ConfigContext";
 import { TraceIcon } from "../../../../../common/icons/12px/TraceIcon";
 import { Button } from "../../../../../common/v3/Button";
 import { JiraButton } from "../../../../../common/v3/JiraButton";
@@ -29,7 +28,7 @@ export const SpanScalingInsightCard = ({
   onGoToSpan,
   isMarkAsReadButtonEnabled
 }: SpanScalingInsightCardProps) => {
-  const config = useContext(ConfigContext);
+  const isJaegerEnabled = useGlobalStore.use.isJaegerEnabled();
   const affectedEndpoints = insight.affectedEndpoints ?? [];
   const [pageItems, page, setPage] = usePagination(
     affectedEndpoints,
@@ -77,7 +76,7 @@ export const SpanScalingInsightCard = ({
               />
             ];
 
-            if (config.isJaegerEnabled && traceId) {
+            if (isJaegerEnabled && traceId) {
               buttons.push(
                 <Button
                   key={"trace"}

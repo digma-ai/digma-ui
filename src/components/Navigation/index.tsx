@@ -1,5 +1,6 @@
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { actions as globalActions } from "../../actions";
+import { useGlobalStore } from "../../containers/Main/stores/globalStore";
 import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
 import { isNull } from "../../typeGuards/isNull";
@@ -9,7 +10,6 @@ import { changeScope } from "../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 import { AsyncActionResultData } from "../InstallationWizard/types";
 import { SCOPE_CHANGE_EVENTS } from "../Main/types";
-import { ConfigContext } from "../common/App/ConfigContext";
 import { Environment, Scope } from "../common/App/types";
 import { NewPopover } from "../common/NewPopover";
 import { FourSquaresIcon } from "../common/icons/FourSquaresIcon";
@@ -45,8 +45,8 @@ const hasObservability = (codeContext?: CodeContext): boolean =>
   Boolean(codeContext && [null, true].includes(codeContext.isInstrumented));
 
 const isAlreadyAtScope = (
-  codeContext?: CodeContext,
-  scope?: Scope
+  codeContext: CodeContext | undefined,
+  scope: Scope | null
 ): boolean => {
   if (!codeContext || !scope?.span) {
     return false;
@@ -58,8 +58,8 @@ const isAlreadyAtScope = (
 };
 
 const getCodeButtonTooltip = (
-  codeContext?: CodeContext,
-  scope?: Scope
+  codeContext: CodeContext | undefined,
+  scope: Scope | null
 ): string => {
   if (isUndefined(codeContext) || codeContext.methodId === null) {
     return "No code selected";
@@ -81,19 +81,21 @@ const getCodeButtonTooltip = (
 };
 
 export const Navigation = () => {
-  const config = useContext(ConfigContext);
-  const [selectedEnvironment, setSelectedEnvironment] = useState(
-    config.environment
-  );
+  const environments = useGlobalStore.use.environments();
+  const environment = useGlobalStore.use.environment();
+  const scope = useGlobalStore.use.scope();
+  const userInfo = useGlobalStore.use.userInfo();
+  const backendInfo = useGlobalStore.use.backendInfo();
+  const [selectedEnvironment, setSelectedEnvironment] = useState(environment);
   const [codeContext, setCodeContext] = useState<CodeContext>();
   const [isCodeButtonMenuOpen, setIsCodeButtonMenuOpen] = useState(false);
   const [isKebabButtonMenuOpen, setIsKebabButtonMenuOpen] = useState(false);
   const [isAutoFixing, setIsAutoFixing] = useState(false);
   const [isAnnotationAdding, setIsAnnotationAdding] = useState(false);
   const previousCodeContext = usePrevious(codeContext);
-  const previousEnv = usePrevious(config.environment);
+  const previousEnv = usePrevious(environment);
 
-  const codeButtonTooltip = getCodeButtonTooltip(codeContext, config.scope);
+  const codeButtonTooltip = getCodeButtonTooltip(codeContext, scope);
   const isCodeButtonEnabled = codeContext && !isNull(codeContext.methodId);
   const isCodeButtonMenuEnabled =
     codeContext && codeContext.spans.assets.length !== 1;
@@ -137,63 +139,62 @@ export const Navigation = () => {
         handleCodeContextData
       );
     };
-  }, [config.userInfo?.id]);
+  }, [userInfo?.id]);
 
   useEffect(() => {
-    if (config.environment?.id !== previousEnv?.id) {
-      setSelectedEnvironment(config.environment);
+    if (environment?.id !== previousEnv?.id) {
+      setSelectedEnvironment(environment);
       window.sendMessageToDigma<GetInsightStatsPayload>({
         action: globalActions.GET_INSIGHT_STATS,
         payload: {
-          scope: config.scope?.span
+          scope: scope?.span
             ? {
                 span: {
-                  spanCodeObjectId: config.scope.span.spanCodeObjectId
+                  spanCodeObjectId: scope.span.spanCodeObjectId
                 }
               }
             : null
         }
       });
     }
-  }, [config.environment, config.scope, previousEnv?.id]);
+  }, [environment, scope, previousEnv?.id]);
 
   const handleEnvironmentChange = useCallback(
     (environment: Environment) => {
       sendUserActionTrackingEvent(trackingEvents.ENVIRONMENT_SELECTED);
 
       changeScope({
-        span: config.scope?.span
+        span: scope?.span
           ? {
-              spanCodeObjectId: config.scope.span.spanCodeObjectId
+              spanCodeObjectId: scope.span.spanCodeObjectId
             }
           : null,
         environmentId: environment.id
       });
     },
-    [config.scope]
+    [scope]
   );
 
   useEffect(() => {
     if (
-      config.environments &&
-      config.environments.length > 0 &&
-      (!config.environment ||
-        !config.environments.find((x) => x.id == config.environment?.id))
+      environments &&
+      environments.length > 0 &&
+      (!environment || !environments.find((x) => x.id == environment?.id))
     ) {
       changeScope({
-        span: config.scope?.span
+        span: scope?.span
           ? {
-              spanCodeObjectId: config.scope.span.spanCodeObjectId
+              spanCodeObjectId: scope.span.spanCodeObjectId
             }
           : null,
-        environmentId: config.environments[0].id
+        environmentId: environments[0].id
       });
     }
 
-    if (config.environments && config.environments.length === 0) {
-      setSelectedEnvironment(undefined);
+    if (environments && environments.length === 0) {
+      setSelectedEnvironment(null);
     }
-  }, [config.environments, config.environment, config.scope]);
+  }, [environments, environment, scope]);
 
   useEffect(() => {
     setIsAutoFixing(false);
@@ -320,9 +321,7 @@ export const Navigation = () => {
     setIsCodeButtonMenuOpen(false);
   };
 
-  const environments = config.environments ?? [];
-
-  if (!config.userInfo?.id && config.backendInfo?.centralize) {
+  if (!userInfo?.id && backendInfo?.centralize) {
     return <s.Background />;
   }
 
@@ -330,7 +329,7 @@ export const Navigation = () => {
     <s.Container>
       <s.Row>
         <HistoryNavigationPanel />
-        <ScopeBar codeContext={codeContext} scope={config.scope} />
+        <ScopeBar codeContext={codeContext} scope={scope} />
         <NewPopover
           content={<KebabMenu onClose={handleKebabButtonMenuClose} />}
           onOpenChange={handleKebabMenuOpenChange}
@@ -376,7 +375,7 @@ export const Navigation = () => {
                   hasObservability={hasObservability(codeContext)}
                   isDisabled={!isCodeButtonEnabled}
                   onClick={handleCodeButtonClick}
-                  isAlreadyAtScope={isAlreadyAtScope(codeContext, config.scope)}
+                  isAlreadyAtScope={isAlreadyAtScope(codeContext, scope)}
                   hasErrors={false}
                   onMouseEnter={handleCodeButtonMouseEnter}
                   onMouseLeave={handleCodeButtonMouseLeave}
@@ -389,7 +388,7 @@ export const Navigation = () => {
               hasObservability={hasObservability(codeContext)}
               isDisabled={!isCodeButtonEnabled}
               onClick={handleCodeButtonClick}
-              isAlreadyAtScope={isAlreadyAtScope(codeContext, config.scope)}
+              isAlreadyAtScope={isAlreadyAtScope(codeContext, scope)}
               hasErrors={false}
               onMouseEnter={handleCodeButtonMouseEnter}
               onMouseLeave={handleCodeButtonMouseLeave}
@@ -399,7 +398,7 @@ export const Navigation = () => {
         <EnvironmentBar
           selectedEnvironment={selectedEnvironment}
           onEnvironmentChange={handleEnvironmentChange}
-          environments={environments}
+          environments={environments ?? []}
         />
         <Tooltip
           title={!selectedEnvironment ? "No environment selected" : "Dashboard"}

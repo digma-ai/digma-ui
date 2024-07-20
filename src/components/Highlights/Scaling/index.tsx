@@ -1,6 +1,7 @@
 import { Row, createColumnHelper } from "@tanstack/react-table";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { SCALING_ISSUE_DOCUMENTATION_URL } from "../../../constants";
+import { useGlobalStore } from "../../../containers/Main/stores/globalStore";
 import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { getDurationString } from "../../../utils/getDurationString";
@@ -8,7 +9,6 @@ import { InsightStatus } from "../../Insights/types";
 import { SCOPE_CHANGE_EVENTS } from "../../Main/types";
 import { useHistory } from "../../Main/useHistory";
 import { TAB_IDS } from "../../Navigation/Tabs/types";
-import { ConfigContext } from "../../common/App/ConfigContext";
 import { CrossCircleIcon } from "../../common/icons/16px/CrossCircleIcon";
 import { MeterHighIcon } from "../../common/icons/16px/MeterHighIcon";
 import { RefreshIcon } from "../../common/icons/16px/RefreshIcon";
@@ -75,12 +75,13 @@ const demoData: EnvironmentScalingData[] = [
 
 export const Scaling = () => {
   const { data, getData } = useScalingData();
-  const config = useContext(ConfigContext);
+  const scope = useGlobalStore.use.scope();
+  const environments = useGlobalStore.use.environments();
   const { goTo } = useHistory();
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [getData]);
 
   const renderScalingCard = (data: EnvironmentScalingData[]) => {
     const transformedData: EnvironmentData<ScalingMetrics>[] = data.map(
@@ -125,8 +126,8 @@ export const Scaling = () => {
         trackingEvents.SCALING_CARD_TABLE_ROW_CLICKED
       );
       handleEnvironmentTableRowClick(
-        config.scope,
-        config.environments,
+        scope,
+        environments,
         row.original.environmentId,
         SCOPE_CHANGE_EVENTS.HIGHLIGHTS_SCALING_CARD_ITEM_CLICKED
       );

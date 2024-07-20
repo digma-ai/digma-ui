@@ -1,6 +1,7 @@
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useTheme } from "styled-components";
+import { useGlobalStore } from "../../../containers/Main/stores/globalStore";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import { useDebounce } from "../../../hooks/useDebounce";
 import { usePersistence } from "../../../hooks/usePersistence";
@@ -15,7 +16,6 @@ import { MAIN_CONTAINER_ID } from "../../Main";
 import { RegistrationCard } from "../../Main/RegistrationCard";
 import { MainOverlay } from "../../Main/styles";
 import { trackingEvents as mainTrackingEvents } from "../../Main/tracking";
-import { ConfigContext } from "../../common/App/ConfigContext";
 import { CancelConfirmation } from "../../common/CancelConfirmation";
 import { Pagination } from "../../common/Pagination";
 import { SearchInput } from "../../common/SearchInput";
@@ -87,14 +87,16 @@ export const InsightsCatalog = ({
     pageStartItemNumber + PAGE_SIZE - 1,
     totalCount
   );
-  const config = useContext(ConfigContext);
-  const previousConfig = usePrevious(config);
-  const previousScope = usePrevious(config.scope?.span);
+  const insightStats = useGlobalStore.use.insightStats();
+  const environment = useGlobalStore.use.environment();
+  const scope = useGlobalStore.use.scope();
+  const previousScopeSpan = usePrevious(scope?.span);
+  const backendInfo = useGlobalStore.use.backendInfo();
   const [mode, setMode] = useState<ViewMode>(ViewMode.All);
   const previousMode = usePrevious(mode);
   const theme = useTheme();
   const { isMarkingAllAsReadInProgress, markAllAsRead } = useMarkingAllAsRead(
-    config.scope?.span ?? null
+    scope?.span ?? null
   );
   const previousIsMarkingAllAsReadInProgress = usePrevious(
     isMarkingAllAsReadInProgress
@@ -170,7 +172,7 @@ export const InsightsCatalog = ({
     selectedFilters[0] === "unread" &&
     unreadCount > 0;
   const areInsightStatsEnabled = getFeatureFlagValue(
-    config,
+    backendInfo,
     FeatureFlag.ARE_INSIGHT_STATS_ENABLED
   );
   const mainContainer = document.getElementById(MAIN_CONTAINER_ID);
@@ -232,32 +234,22 @@ export const InsightsCatalog = ({
     isMarkingAllAsReadInProgress,
     previousIsMarkingAllAsReadInProgress,
     refreshData,
-    config.scope
+    scope
   ]);
 
   useEffect(() => {
-    if (!previousScope || previousScope !== config.scope?.span) {
+    if (!previousScopeSpan || previousScopeSpan !== scope?.span) {
       setSearchInputValue("");
     }
-  }, [config.scope, previousScope]);
+  }, [scope?.span, previousScopeSpan]);
 
   useEffect(() => {
-    if (
-      previousConfig &&
-      (previousConfig?.scope?.span !== config?.scope?.span ||
-        previousConfig?.environment?.id !== config.environment?.id)
-    ) {
-      setPage(0);
-    }
-  }, [previousConfig, config]);
+    setPage(0);
+  }, [environment?.id, scope?.span, mode]);
 
   useEffect(() => {
     refreshData();
   }, []);
-
-  useEffect(() => {
-    setPage(0);
-  }, [mode]);
 
   useEffect(() => {
     if (
@@ -290,7 +282,7 @@ export const InsightsCatalog = ({
         <s.ToolbarRow>
           {!isUndefined(filterComponent) && filterComponent}
           <SearchInput
-            disabled={Boolean(config.scope?.span)}
+            disabled={Boolean(scope?.span)}
             onChange={(val: string | null) => {
               setSearchInputValue(val);
             }}
@@ -333,11 +325,11 @@ export const InsightsCatalog = ({
               areInsightsStatsVisible &&
               (insights.length > 0 || selectedFilters.length > 0) && (
                 <InsightStats
-                  criticalCount={config.insightStats?.criticalInsightsCount}
-                  allIssuesCount={config.insightStats?.issuesInsightsCount}
+                  criticalCount={insightStats?.criticalInsightsCount}
+                  allIssuesCount={insightStats?.issuesInsightsCount}
                   unreadCount={
                     areInsightStatsEnabled
-                      ? config.insightStats?.unreadInsightsCount ?? 0
+                      ? insightStats?.unreadInsightsCount ?? 0
                       : unreadCount ?? 0
                   }
                   onChange={handleFilterSelectionChange}

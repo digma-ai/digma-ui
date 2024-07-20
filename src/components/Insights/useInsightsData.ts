@@ -1,6 +1,7 @@
-import { useContext, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { actions as globalActions } from "../../actions";
 import { DigmaMessageError } from "../../api/types";
+import { useGlobalStore } from "../../containers/Main/stores/globalStore";
 import { dispatcher } from "../../dispatcher";
 import { getFeatureFlagValue } from "../../featureFlags";
 import { usePrevious } from "../../hooks/usePrevious";
@@ -9,10 +10,9 @@ import {
   GetInsightStatsPayload,
   GetIssuesPayload
 } from "../../types";
-import { ConfigContext } from "../common/App/ConfigContext";
 import {
-  GlobalState,
-  InsightsQuery as InsightsDataQuery
+  InsightsQuery as InsightsDataQuery,
+  PersistedState
 } from "../common/App/types";
 import { IssuesFilterQuery } from "./Issues/IssuesFilter/types";
 import { actions as issuesActions } from "./Issues/actions";
@@ -44,7 +44,7 @@ const getIssues = (query: GetIssuesQuery) => {
 const getData = (
   scopedQuery: ScopedInsightsQuery,
   areIssuesFiltersEnabled: boolean,
-  state?: GlobalState
+  state: PersistedState | null
 ) => {
   const getDataQuery: InsightsDataQuery = {
     displayName: scopedQuery.searchQuery,
@@ -80,7 +80,7 @@ const getData = (
   const globalStateSlice =
     scopedQuery.insightViewType === "Analytics" ? "analytics" : "insights";
 
-  window.sendMessageToDigma<GlobalState>({
+  window.sendMessageToDigma<PersistedState>({
     action: globalActions.UPDATE_STATE,
     payload: {
       ...state,
@@ -127,8 +127,10 @@ export const useInsightsData = ({
   const [isLoading, setIsLoading] = useState(false);
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
   const refreshTimerId = useRef<number>();
-  const config = useContext(ConfigContext);
-  const { scope, environment, state } = config;
+  const backendInfo = useGlobalStore.use.backendInfo();
+  const scope = useGlobalStore.use.scope();
+  const environment = useGlobalStore.use.environment();
+  const persistedState = useGlobalStore.use.persistedState();
 
   const scopedQuery: ScopedInsightsQuery = useMemo(
     () => ({
@@ -142,13 +144,13 @@ export const useInsightsData = ({
   const areNewIssuesFiltersEnabled = useMemo(
     () =>
       Boolean(
-        getFeatureFlagValue(config, FeatureFlag.ARE_ISSUES_FILTERS_ENABLED)
+        getFeatureFlagValue(backendInfo, FeatureFlag.ARE_ISSUES_FILTERS_ENABLED)
       ),
-    [config]
+    [backendInfo]
   );
 
   useEffect(() => {
-    getData(scopedQuery, areNewIssuesFiltersEnabled, state);
+    getData(scopedQuery, areNewIssuesFiltersEnabled, persistedState);
 
     setIsInitialLoading(true);
     setIsLoading(true);
@@ -198,7 +200,7 @@ export const useInsightsData = ({
     if (previousLastSetDataTimeStamp !== lastSetDataTimeStamp) {
       window.clearTimeout(refreshTimerId.current);
       refreshTimerId.current = window.setTimeout(() => {
-        getData(scopedQuery, areNewIssuesFiltersEnabled, state);
+        getData(scopedQuery, areNewIssuesFiltersEnabled, persistedState);
         getStats(scopedQuery);
       }, refreshInterval);
     }
@@ -216,7 +218,7 @@ export const useInsightsData = ({
   ]);
 
   useEffect(() => {
-    getData(scopedQuery, areNewIssuesFiltersEnabled, state);
+    getData(scopedQuery, areNewIssuesFiltersEnabled, persistedState);
     getStats(scopedQuery);
     setIsLoading(true);
   }, [
@@ -231,7 +233,7 @@ export const useInsightsData = ({
     data,
     isLoading,
     refresh: () => {
-      getData(scopedQuery, areNewIssuesFiltersEnabled, state);
+      getData(scopedQuery, areNewIssuesFiltersEnabled, persistedState);
       getStats(scopedQuery);
     }
   };

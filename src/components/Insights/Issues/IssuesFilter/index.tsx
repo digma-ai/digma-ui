@@ -1,10 +1,10 @@
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useGlobalStore } from "../../../../containers/Main/stores/globalStore";
 import { usePersistence } from "../../../../hooks/usePersistence";
 import { usePrevious } from "../../../../hooks/usePrevious";
 import { isEnvironment } from "../../../../typeGuards/isEnvironment";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { getInsightTypeInfo } from "../../../../utils/getInsightTypeInfo";
-import { ConfigContext } from "../../../common/App/ConfigContext";
 import { FilterButton } from "../../../common/FilterButton";
 import { NewPopover } from "../../../common/NewPopover";
 import { InsightsIcon } from "../../../common/icons/12px/InsightsIcon";
@@ -20,9 +20,10 @@ const PERSISTENCE_KEY = "issuesFilters";
 export const IssuesFilter = ({ query, onApply }: IssuesFilterProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedIssueTypes, setSelectedIssueTypes] = useState<string[]>([]);
-  const config = useContext(ConfigContext);
-  const previousEnvironment = usePrevious(config.environment);
-  const previousScope = usePrevious(config.scope);
+  const environment = useGlobalStore.use.environment();
+  const scope = useGlobalStore.use.scope();
+  const previousEnvironment = usePrevious(environment);
+  const previousScope = usePrevious(scope);
   const [persistedFilters, setPersistedFilters] =
     usePersistence<IssuesFilterQuery>(PERSISTENCE_KEY, "project");
   const previousPersistedFilters = usePrevious(persistedFilters);
@@ -88,17 +89,17 @@ export const IssuesFilter = ({ query, onApply }: IssuesFilterProps) => {
   useEffect(() => {
     if (
       (isEnvironment(previousEnvironment) &&
-        previousEnvironment.id !== config.environment?.id) ||
-      (previousScope && previousScope !== config.scope)
+        previousEnvironment.id !== environment?.id) ||
+      (previousScope && previousScope !== scope)
     ) {
       refresh();
     }
   }, [
     previousEnvironment,
-    config.environment,
+    environment,
     onApply,
     previousScope,
-    config.scope,
+    scope,
     refresh
   ]);
 

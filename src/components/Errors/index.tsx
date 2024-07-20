@@ -1,15 +1,14 @@
-import { useContext } from "react";
 import { useParams } from "react-router-dom";
+import { useGlobalStore } from "../../containers/Main/stores/globalStore";
 import { useHistory } from "../Main/useHistory";
-import { ConfigContext } from "../common/App/ConfigContext";
 import { ErrorDetails } from "./ErrorDetails";
 import { ErrorsList } from "./ErrorsList";
 import * as s from "./styles";
 
 export const Errors = () => {
-  const config = useContext(ConfigContext);
-  const spanCodeObjectId = config.scope?.span?.spanCodeObjectId;
-  const methodId = config?.scope?.span?.methodId;
+  const scope = useGlobalStore.use.scope();
+  const spanCodeObjectId = scope?.span?.spanCodeObjectId;
+  const methodId = scope?.span?.methodId;
   const { goTo } = useHistory();
   const params = useParams();
   const selectedErrorId = params.id;

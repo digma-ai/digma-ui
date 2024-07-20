@@ -1,7 +1,7 @@
-import { ReactNode, useContext, useState } from "react";
+import { ReactNode, useState } from "react";
+import { useGlobalStore } from "../../../../../../containers/Main/stores/globalStore";
 import { getDurationString } from "../../../../../../utils/getDurationString";
 import { trimEndpointScheme } from "../../../../../../utils/trimEndpointScheme";
-import { ConfigContext } from "../../../../../common/App/ConfigContext";
 import { TraceIcon } from "../../../../../common/icons/12px/TraceIcon";
 import { Button } from "../../../../../common/v3/Button";
 import { Tooltip } from "../../../../../common/v3/Tooltip";
@@ -48,7 +48,7 @@ export const SpaNPlusOneInsightCard = ({
   isMarkAsReadButtonEnabled
 }: SpaNPlusOneInsightCardProps) => {
   const endpoints = insight.endpoints ?? [];
-  const config = useContext(ConfigContext);
+  const isJaegerEnabled = useGlobalStore.use.isJaegerEnabled();
   const [selectedEndpoint, setSelectedEndpoint] = useState(
     endpoints.length ? endpoints[0] : null
   );
@@ -93,7 +93,7 @@ export const SpaNPlusOneInsightCard = ({
                 }}
                 options={renderOptions(endpoints, handleSpanLinkClick)}
               />
-              {config.isJaegerEnabled && selectedEndpoint && (
+              {isJaegerEnabled && selectedEndpoint && (
                 <Tooltip title={"Open Trace"}>
                   <Button
                     icon={TraceIcon}

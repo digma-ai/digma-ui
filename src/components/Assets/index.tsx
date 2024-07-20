@@ -1,10 +1,10 @@
-import { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useGlobalStore } from "../../containers/Main/stores/globalStore";
 import { useDebounce } from "../../hooks/useDebounce";
 import { usePrevious } from "../../hooks/usePrevious";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 import { useHistory } from "../Main/useHistory";
-import { ConfigContext } from "../common/App/ConfigContext";
 import { EmptyState } from "../common/EmptyState";
 import { SearchInput } from "../common/SearchInput";
 import { RefreshIcon } from "../common/icons/16px/RefreshIcon";
@@ -29,31 +29,29 @@ export const Assets = () => {
   const [assetScopeOption, setAssetScopeOption] =
     useState<AssetScopeOption | null>(null);
   const [selectedFilters, setSelectedFilters] = useState<AssetFilterQuery>();
-  const config = useContext(ConfigContext);
+  const scope = useGlobalStore.use.scope();
+  const environments = useGlobalStore.use.environments();
   const previousScopeSpanCodeObjectId = usePrevious(
-    config.scope?.span?.spanCodeObjectId
+    scope?.span?.spanCodeObjectId
   );
   const [assetTypeListDataRefresher, setAssetTypeListRefresher] =
     useState<DataRefresher | null>(null);
   const [assetListDataRefresher, setAssetListRefresher] =
     useState<DataRefresher | null>(null);
   const { goTo } = useHistory();
-
   const isBackendUpgradeMessageVisible = false;
 
   useEffect(() => {
-    if (!config.scope?.span) {
+    if (!scope?.span) {
       setAssetScopeOption(null);
     }
-  }, [config.scope]);
+  }, [scope]);
 
   useEffect(() => {
-    if (
-      previousScopeSpanCodeObjectId !== config.scope?.span?.spanCodeObjectId
-    ) {
+    if (previousScopeSpanCodeObjectId !== scope?.span?.spanCodeObjectId) {
       setSearchInputValue("");
     }
-  }, [config.scope?.span?.spanCodeObjectId, previousScopeSpanCodeObjectId]);
+  }, [scope?.span?.spanCodeObjectId, previousScopeSpanCodeObjectId]);
 
   const handleGoToAllAssets = () => {
     goTo("..");
@@ -122,7 +120,7 @@ export const Assets = () => {
       );
     }
 
-    if (!config.environments?.length) {
+    if (!environments?.length) {
       return <NoDataMessage type={"noDataYet"} />;
     }
 
@@ -159,11 +157,11 @@ export const Assets = () => {
   return (
     <s.Container>
       <s.Header>
-        {config?.scope?.span && (
+        {scope?.span && (
           <s.HeaderItem>
             <AssetsViewScopeConfiguration
               assetsCount={assetsCount}
-              currentScope={config.scope}
+              currentScope={scope}
               onAssetViewChange={handleAssetViewModeChange}
             />
           </s.HeaderItem>
@@ -185,7 +183,7 @@ export const Assets = () => {
             />
           </Tooltip>
         </s.HeaderItem>
-        {config?.scope?.span && (
+        {scope?.span && (
           <s.HeaderItem>Assets filtered to current scope</s.HeaderItem>
         )}
       </s.Header>

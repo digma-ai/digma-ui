@@ -1,10 +1,10 @@
-import { useContext, useMemo } from "react";
+import { useMemo } from "react";
 import { useLocation } from "react-router-dom";
+import { useGlobalStore } from "../../../containers/Main/stores/globalStore";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { isString } from "../../../typeGuards/isString";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { useHistory } from "../../Main/useHistory";
-import { ConfigContext } from "../../common/App/ConfigContext";
 import { InsightStats, Scope } from "../../common/App/types";
 import { MagicWandIcon } from "../../common/icons/16px/MagicWandIcon";
 import { Tooltip } from "../../common/v3/Tooltip";
@@ -42,7 +42,7 @@ const tabs: BaseTabData[] = [
 
 const getTabTooltipMessage = (
   tab: BaseTabData,
-  scope?: Scope
+  scope: Scope | null
 ): string | undefined => {
   if (!scope?.span && [TAB_IDS.ERRORS, TAB_IDS.TESTS].includes(tab.id)) {
     return "Global errors and tests is COMING SOON";
@@ -51,7 +51,7 @@ const getTabTooltipMessage = (
   return tab.title;
 };
 
-const getIsTabDisabled = (tab: BaseTabData, scope?: Scope): boolean => {
+const getIsTabDisabled = (tab: BaseTabData, scope: Scope | null): boolean => {
   if (
     !scope?.span &&
     [
@@ -69,8 +69,8 @@ const getIsTabDisabled = (tab: BaseTabData, scope?: Scope): boolean => {
 
 const getIsNewIndicatorVisible = (
   tab: BaseTabData,
-  insightsStats: InsightStats | undefined,
-  scope: Scope | undefined
+  insightsStats: InsightStats | null,
+  scope: Scope | null
 ): boolean =>
   Boolean(
     tab.id === TAB_IDS.ISSUES
@@ -85,12 +85,13 @@ const getIsNewIndicatorVisible = (
   );
 
 export const Tabs = () => {
-  const config = useContext(ConfigContext);
+  const scope = useGlobalStore.use.scope();
+  const insightStats = useGlobalStore.use.insightStats();
   const location = useLocation();
   const { goTo } = useHistory();
 
   const handleTabClick = (tab: TabData) => {
-    if (!getIsTabDisabled(tab, config.scope)) {
+    if (!getIsTabDisabled(tab, scope)) {
       sendUserActionTrackingEvent(trackingEvents.TAB_CLICKED, {
         tabName: tab.id
       });
@@ -105,23 +106,19 @@ export const Tabs = () => {
     return tabs.map((tab) => ({
       ...tab,
       isSelected: location.pathname.startsWith(`/${tab.id}`),
-      isDisabled: getIsTabDisabled(tab, config.scope),
-      hasNewData: getIsNewIndicatorVisible(
-        tab,
-        config.insightStats,
-        config.scope
-      ),
-      tooltipMessage: getTabTooltipMessage(tab, config.scope)
+      isDisabled: getIsTabDisabled(tab, scope),
+      hasNewData: getIsNewIndicatorVisible(tab, insightStats, scope),
+      tooltipMessage: getTabTooltipMessage(tab, scope)
     }));
-  }, [config.scope, config.insightStats, location.pathname]);
+  }, [scope, insightStats, location.pathname]);
 
   return (
     <s.TabList>
       {tabsData.map((tab) => {
         const isNewIndicatorVisible = getIsNewIndicatorVisible(
           tab,
-          config.insightStats,
-          config.scope
+          insightStats,
+          scope
         );
 
         return (
@@ -139,7 +136,7 @@ export const Tabs = () => {
               {tab.icon && <tab.icon color={"currentColor"} size={16} />}
               {isString(tab.title) && <s.TabTitle>{tab.title}</s.TabTitle>}
               {isNewIndicatorVisible && <s.Indicator type={"new"} />}
-              {config.scope?.hasErrors && [TAB_IDS.ERRORS].includes(tab.id) && (
+              {scope?.hasErrors && [TAB_IDS.ERRORS].includes(tab.id) && (
                 <s.Indicator type={"errors"} />
               )}
             </s.Tab>

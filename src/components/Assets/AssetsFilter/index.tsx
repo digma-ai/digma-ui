@@ -1,4 +1,5 @@
-import { ComponentType, useContext, useEffect, useState } from "react";
+import { ComponentType, useEffect, useState } from "react";
+import { useGlobalStore } from "../../../containers/Main/stores/globalStore";
 import { dispatcher } from "../../../dispatcher";
 import { usePersistence } from "../../../hooks/usePersistence";
 import { usePrevious } from "../../../hooks/usePrevious";
@@ -8,7 +9,6 @@ import { isUndefined } from "../../../typeGuards/isUndefined";
 import { InsightType } from "../../../types";
 import { sendTrackingEvent } from "../../../utils/actions/sendTrackingEvent";
 import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
-import { ConfigContext } from "../../common/App/ConfigContext";
 import { FilterButton } from "../../common/FilterButton";
 import { NewButton } from "../../common/NewButton";
 import { NewPopover } from "../../common/NewPopover";
@@ -72,9 +72,10 @@ export const AssetsFilter = ({ onApply, filters }: AssetsFilterProps) => {
   const [selectedConsumers, setSelectedConsumers] = useState<string[]>([]);
   const [selectedInternals, setSelectedInternals] = useState<string[]>([]);
   const [selectedInsights, setSelectedInsights] = useState<InsightType[]>([]);
-  const config = useContext(ConfigContext);
-  const previousEnvironment = usePrevious(config.environment);
-  const previousScope = usePrevious(config.scope);
+  const environment = useGlobalStore.use.environment();
+  const scope = useGlobalStore.use.scope();
+  const previousEnvironment = usePrevious(environment);
+  const previousScope = usePrevious(scope);
 
   const getData = (
     services: string[],
@@ -137,8 +138,8 @@ export const AssetsFilter = ({ onApply, filters }: AssetsFilterProps) => {
   useEffect(() => {
     if (
       (isEnvironment(previousEnvironment) &&
-        previousEnvironment.id !== config.environment?.id) ||
-      (previousScope && previousScope !== config.scope)
+        previousEnvironment.id !== environment?.id) ||
+      (previousScope && previousScope !== scope)
     ) {
       const defaultFilters = {
         services: [],
@@ -151,11 +152,11 @@ export const AssetsFilter = ({ onApply, filters }: AssetsFilterProps) => {
     }
   }, [
     previousEnvironment,
-    config.environment,
+    environment,
     setPersistedFilters,
     onApply,
     previousScope,
-    config.scope
+    scope
   ]);
 
   useEffect(() => {

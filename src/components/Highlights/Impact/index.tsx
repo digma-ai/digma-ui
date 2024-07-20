@@ -1,10 +1,10 @@
 import { Row, createColumnHelper } from "@tanstack/react-table";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { PERFORMANCE_IMPACT_DOCUMENTATION_URL } from "../../../constants";
+import { useGlobalStore } from "../../../containers/Main/stores/globalStore";
 import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { SCOPE_CHANGE_EVENTS } from "../../Main/types";
-import { ConfigContext } from "../../common/App/ConfigContext";
 import { getImpactScoreLabel } from "../../common/ImpactScore";
 import { InfinityIcon } from "../../common/icons/16px/InfinityIcon";
 import { RefreshIcon } from "../../common/icons/16px/RefreshIcon";
@@ -61,11 +61,13 @@ const getRankTagType = (normalizedRank: number) => {
 
 export const Impact = () => {
   const { data, getData } = useImpactData();
-  const config = useContext(ConfigContext);
+  const scope = useGlobalStore.use.scope();
+  const environments = useGlobalStore.use.environments();
+  const backendInfo = useGlobalStore.use.backendInfo();
 
   useEffect(() => {
     getData();
-  }, []);
+  }, [getData]);
 
   const renderImpactCard = (data: EnvironmentImpactData[]) => {
     const columnHelper = createColumnHelper<EnvironmentImpactData>();
@@ -110,8 +112,8 @@ export const Impact = () => {
     const handleTableRowClick = (row: Row<EnvironmentImpactData>) => {
       sendUserActionTrackingEvent(trackingEvents.IMPACT_CARD_TABLE_ROW_CLICKED);
       handleEnvironmentTableRowClick(
-        config.scope,
-        config.environments,
+        scope,
+        environments,
         row.original.environmentId,
         SCOPE_CHANGE_EVENTS.HIGHLIGHTS_IMPACT_CARD_ITEM_CLICKED
       );
@@ -153,7 +155,7 @@ export const Impact = () => {
       openURLInDefaultBrowser(PERFORMANCE_IMPACT_DOCUMENTATION_URL);
     };
 
-    if (!config.backendInfo?.centralize) {
+    if (!backendInfo?.centralize) {
       return (
         <EmptyStateCard
           icon={InfinityIcon}

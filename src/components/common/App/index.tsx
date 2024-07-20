@@ -2,6 +2,7 @@ import { ErrorInfo, useContext, useEffect, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { ThemeProvider } from "styled-components";
 import { actions } from "../../../actions";
+import { useGlobalStore } from "../../../containers/Main/stores/globalStore";
 import { dispatcher } from "../../../dispatcher";
 import { Theme } from "../../../globals";
 import { logger } from "../../../logging";
@@ -19,8 +20,8 @@ import {
   BackendInfo,
   DigmaStatus,
   Environment,
-  GlobalState,
   InsightStats,
+  PersistedState,
   RunConfiguration,
   Scope,
   UserInfo
@@ -61,6 +62,43 @@ export const App = ({ theme, children }: AppProps) => {
   const [mainFont, setMainFont] = useState(defaultMainFont);
   const [codeFont, setCodeFont] = useState(defaultCodeFont);
   const [config, setConfig] = useState(useContext(ConfigContext));
+  const setJaegerURL = useGlobalStore((state) => state.setJaegerURL);
+  const setIsJaegerEnabled = useGlobalStore(
+    (state) => state.setIsJaegerEnabled
+  );
+  const setIsDigmaEngineInstalled = useGlobalStore(
+    (state) => state.setIsDigmaEngineInstalled
+  );
+  const setIsDigmaEngineRunning = useGlobalStore(
+    (state) => state.setIsDigmaEngineRunning
+  );
+  const setDigmaStatus = useGlobalStore((state) => state.setDigmaStatus);
+  const setIsDockerInstalled = useGlobalStore(
+    (state) => state.setIsDockerInstalled
+  );
+  const setIsDockerComposeInstalled = useGlobalStore(
+    (state) => state.setIsDockerComposeInstalled
+  );
+  const setDigmaApiUrl = useGlobalStore((state) => state.setDigmaApiUrl);
+  const setUserRegistrationEmail = useGlobalStore(
+    (state) => state.setUserRegistrationEmail
+  );
+  const setIsObservabilityEnabled = useGlobalStore(
+    (state) => state.setIsObservabilityEnabled
+  );
+  const setBackendInfo = useGlobalStore((state) => state.setBackendInfo);
+  const setEnvironments = useGlobalStore((state) => state.setEnvironments);
+  const setEnvironment = useGlobalStore((state) => state.setEnvironment);
+  const setScope = useGlobalStore((state) => state.setScope);
+  const setUserInfo = useGlobalStore((state) => state.setUserInfo);
+  const setInsightStats = useGlobalStore((state) => state.setInsightStats);
+  const setRunConfiguration = useGlobalStore((state) => state.setRunConfig);
+  const setIsMicrometerProject = useGlobalStore(
+    (state) => state.setIsMicrometerProject
+  );
+  const setIsDigmathonGameFinished = useGlobalStore(
+    (state) => state.setIsDigmathonGameFinished
+  );
 
   const handleError = (error: Error, info: ErrorInfo) => {
     logger.error(error, info);
@@ -101,6 +139,7 @@ export const App = ({ theme, children }: AppProps) => {
           ...config,
           jaegerURL: data.jaegerURL as string
         }));
+        setJaegerURL(data.jaegerURL);
       }
     };
 
@@ -110,6 +149,7 @@ export const App = ({ theme, children }: AppProps) => {
           ...config,
           isJaegerEnabled: data.isJaegerEnabled as boolean
         }));
+        setIsJaegerEnabled(data.isJaegerEnabled);
       }
     };
 
@@ -119,6 +159,7 @@ export const App = ({ theme, children }: AppProps) => {
           ...config,
           isDigmaEngineInstalled: data.isDigmaEngineInstalled as boolean
         }));
+        setIsDigmaEngineInstalled(data.isDigmaEngineInstalled);
       }
     };
 
@@ -128,6 +169,7 @@ export const App = ({ theme, children }: AppProps) => {
           ...config,
           isDigmaEngineRunning: data.isDigmaEngineRunning as boolean
         }));
+        setIsDigmaEngineRunning(data.isDigmaEngineRunning);
       }
     };
 
@@ -137,6 +179,7 @@ export const App = ({ theme, children }: AppProps) => {
           ...config,
           digmaStatus: data
         }));
+        setDigmaStatus(data);
       }
     };
 
@@ -146,6 +189,7 @@ export const App = ({ theme, children }: AppProps) => {
           ...config,
           isDockerInstalled: data.isDockerInstalled as boolean
         }));
+        setIsDockerInstalled(data.isDockerInstalled);
       }
     };
 
@@ -155,6 +199,7 @@ export const App = ({ theme, children }: AppProps) => {
           ...config,
           isDockerComposeInstalled: data.isDockerComposeInstalled as boolean
         }));
+        setIsDockerComposeInstalled(data.isDockerComposeInstalled);
       }
     };
 
@@ -164,6 +209,7 @@ export const App = ({ theme, children }: AppProps) => {
           ...config,
           digmaApiUrl: data.url as string
         }));
+        setDigmaApiUrl(data.url);
       }
     };
 
@@ -173,6 +219,7 @@ export const App = ({ theme, children }: AppProps) => {
           ...config,
           userRegistrationEmail: data.email as string
         }));
+        setUserRegistrationEmail(data.email);
       }
     };
 
@@ -182,6 +229,7 @@ export const App = ({ theme, children }: AppProps) => {
           ...config,
           isObservabilityEnabled: data.isObservabilityEnabled as boolean
         }));
+        setIsObservabilityEnabled(data.isObservabilityEnabled);
       }
     };
 
@@ -191,6 +239,7 @@ export const App = ({ theme, children }: AppProps) => {
           ...config,
           backendInfo: data
         }));
+        setBackendInfo(data);
       }
     };
 
@@ -208,6 +257,7 @@ export const App = ({ theme, children }: AppProps) => {
             environment
           };
         });
+        setEnvironments(data.environments as Environment[]);
       }
     };
 
@@ -217,6 +267,7 @@ export const App = ({ theme, children }: AppProps) => {
           ...config,
           isMicrometerProject: data.isMicrometerProject as boolean
         }));
+        setIsMicrometerProject(data.isMicrometerProject as boolean);
       }
     };
 
@@ -226,6 +277,9 @@ export const App = ({ theme, children }: AppProps) => {
         const environment = scope.environmentId
           ? config.environments?.find((x) => x.id === scope.environmentId)
           : config.environment;
+
+        setScope(scope);
+        setEnvironment(environment ?? null);
 
         return {
           ...config,
@@ -240,6 +294,8 @@ export const App = ({ theme, children }: AppProps) => {
         ...config,
         userInfo: data as UserInfo
       }));
+
+      setUserInfo(data as UserInfo);
     };
 
     const handleSetInsightStats = (data: unknown) => {
@@ -247,12 +303,13 @@ export const App = ({ theme, children }: AppProps) => {
         ...config,
         insightStats: data as InsightStats
       }));
+      setInsightStats(data as InsightStats);
     };
 
     const handleSetState = (data: unknown) => {
       setConfig((config) => ({
         ...config,
-        state: data as GlobalState
+        state: data as PersistedState
       }));
     };
 
@@ -281,6 +338,7 @@ export const App = ({ theme, children }: AppProps) => {
           isDigmathonGameFinished: data.isDigmathonGameFinished as boolean
         }));
       }
+      setIsDigmathonGameFinished(data as boolean);
     };
 
     const handleSetRunConfiguration = (data: unknown) => {
@@ -288,6 +346,7 @@ export const App = ({ theme, children }: AppProps) => {
         ...config,
         runConfig: data as RunConfiguration
       }));
+      setRunConfiguration(data as RunConfiguration);
     };
 
     dispatcher.addActionListener(actions.SET_THEME, handleSetTheme);

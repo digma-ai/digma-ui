@@ -1,5 +1,4 @@
 import { getCriticalityLabel } from "../../../../../utils/getCriticalityLabel";
-import { ConfigContextData } from "../../../../common/App/types";
 import { SpanScalingInsight } from "../../../types";
 import { ScalingIssueDuration as ScalingIssueDuration_ } from "./SpanScalingDuration";
 import { ScalingIssueAffectedEndpoints as ScalingIssueAffectedEndpoints_ } from "./SpanScalingEndpoints";
@@ -8,7 +7,7 @@ import { ScalingIssueRootCauses as ScalingIssueRootCauses_ } from "./SpanScaling
 import { ScalingIssueTestedConcurrency as ScalingIssueTestedConcurrency_ } from "./SpanScalingTestedConcurrency";
 
 export const getHistogramAttachment = (
-  config: ConfigContextData,
+  baseURL: string | null,
   insight: SpanScalingInsight | null
 ) => {
   if (!insight) {
@@ -22,14 +21,14 @@ export const getHistogramAttachment = (
 
   return {
     url: `${
-      config.digmaApiProxyPrefix
+      baseURL ?? ""
     }/Graphs/graphForSpanScaling?${histogramUrlParams.toString()}`,
     fileName: `histogram.html`
   };
 };
 
 export const getTraceAttachment = (
-  config: ConfigContextData,
+  baseURL: string | null,
   traceId: string | null | undefined
 ) => {
   if (!traceId) {
@@ -37,7 +36,7 @@ export const getTraceAttachment = (
   }
 
   return {
-    url: `${config.jaegerURL}/api/traces/${traceId}?prettyPrint=true`,
+    url: `${baseURL ?? ""}/api/traces/${traceId}?prettyPrint=true`,
     fileName: `trace-${traceId}.json`
   };
 };

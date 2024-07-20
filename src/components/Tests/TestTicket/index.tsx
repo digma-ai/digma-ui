@@ -1,11 +1,12 @@
-import { ReactElement, useContext } from "react";
+import { ReactElement } from "react";
+import { useGlobalStore } from "../../../containers/Main/stores/globalStore";
 import { isString } from "../../../typeGuards/isString";
 import { getDurationString } from "../../../utils/getDurationString";
 import { intersperse } from "../../../utils/intersperse";
-import { ConfigContext } from "../../common/App/ConfigContext";
 import { DigmaSignature } from "../../common/DigmaSignature";
 import { JiraTicket } from "../../common/JiraTicket";
 import { Attachment } from "../../common/JiraTicket/types";
+import { getTraceAttachment } from "../../Insights/insightTickets/common/SpanScaling";
 import { TestTicketProps } from "./types";
 
 export const TestTicket = ({
@@ -22,7 +23,7 @@ export const TestTicket = ({
     contextsSpanCodeObjectIds
   } = test;
   const summary = `"${name}" test failed`;
-  const config = useContext(ConfigContext);
+  const jaegerURL = useGlobalStore.use.jaegerURL() ?? "";
 
   const relatedSpans = spanContexts
     .filter((x) => contextsSpanCodeObjectIds.includes(x.spanCodeObjectId))
@@ -53,15 +54,9 @@ export const TestTicket = ({
     </>
   );
 
+  const traceAttachment = getTraceAttachment(jaegerURL, traceId);
   const attachments: Attachment[] = [
-    ...(traceId
-      ? [
-          {
-            url: `${config.jaegerURL}/api/traces/${traceId}?prettyPrint=true`,
-            fileName: `trace-${traceId}.json`
-          }
-        ]
-      : [])
+    ...(traceAttachment ? [traceAttachment] : [])
   ];
 
   return (

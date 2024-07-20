@@ -1,6 +1,5 @@
-import { useContext } from "react";
+import { useGlobalStore } from "../../../../../../containers/Main/stores/globalStore";
 import { usePagination } from "../../../../../../hooks/usePagination";
-import { ConfigContext } from "../../../../../common/App/ConfigContext";
 import { TraceIcon } from "../../../../../common/icons/12px/TraceIcon";
 import { Button } from "../../../../../common/v3/Button";
 import { Pagination } from "../../../../../common/v3/Pagination";
@@ -23,7 +22,7 @@ export const EndpointSessionInViewInsightCard = ({
   onGoToSpan,
   isMarkAsReadButtonEnabled
 }: EndpointSessionInViewInsightCardProps) => {
-  const config = useContext(ConfigContext);
+  const isJaegerEnabled = useGlobalStore.use.isJaegerEnabled();
 
   const [pageItems, page, setPage] = usePagination(
     insight.spans,
@@ -57,7 +56,7 @@ export const EndpointSessionInViewInsightCard = ({
               const traceId = span.traceId;
               const spanCodeObjectId = span.renderSpan.spanCodeObjectId;
               const buttons =
-                config.isJaegerEnabled && traceId
+                isJaegerEnabled && traceId
                   ? [
                       <Tooltip title={"Open Trace"} key={"openTrace"}>
                         <Button

@@ -2,8 +2,8 @@ import { changeScope } from "../../utils/actions/changeScope";
 import { Environment, Scope } from "../common/App/types";
 
 export const handleEnvironmentTableRowClick = (
-  scope: Scope | undefined,
-  environments: Environment[] | undefined,
+  scope: Scope | null,
+  environments: Environment[] | null,
   environmentIdToSelect: string,
   changeScopeEvent: string
 ) => {
