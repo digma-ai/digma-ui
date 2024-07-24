@@ -25,7 +25,7 @@ export const MenuList = ({
           <s.ListGroupName>{groupName}</s.ListGroupName>
         )}
         {items.map((item) => {
-          const isHighlighted = highlightSelected === item.isSelected;
+          const isHighlighted = highlightSelected && item.isSelected;
           return item.customContent ? (
             <li key={item.id}>{item.customContent}</li>
           ) : (
