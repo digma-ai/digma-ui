@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useGlobalStore } from "../../containers/Main/stores/globalStore";
+import { useGlobalStore } from "../../containers/Main/stores/useGlobalStore";
 import { useDebounce } from "../../hooks/useDebounce";
 import { usePrevious } from "../../hooks/usePrevious";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";

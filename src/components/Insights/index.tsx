@@ -1,18 +1,16 @@
-import { KeyboardEvent, useEffect, useLayoutEffect, useState } from "react";
+import { KeyboardEvent, useCallback, useEffect, useState } from "react";
 import { actions as globalActions } from "../../actions";
 import { SLACK_WORKSPACE_URL } from "../../constants";
-import { useGlobalStore } from "../../containers/Main/stores/globalStore";
-import { getFeatureFlagValue } from "../../featureFlags";
+import { useGlobalStore } from "../../containers/Main/stores/useGlobalStore";
+import { useInsightsStore } from "../../containers/Main/stores/useInsightsStore";
 import { usePrevious } from "../../hooks/usePrevious";
 import { trackingEvents as globalTrackingEvents } from "../../trackingEvents";
-import { FeatureFlag } from "../../types";
 import { openURLInDefaultBrowser } from "../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 import { CircleLoader } from "../common/CircleLoader";
 import { EmptyState } from "../common/EmptyState";
 import { RegistrationDialog } from "../common/RegistrationDialog";
 import { RegistrationFormValues } from "../common/RegistrationDialog/types";
-import { SORTING_ORDER } from "../common/SortingSelector/types";
 import { CardsIcon } from "../common/icons/CardsIcon";
 import { DocumentWithMagnifierIcon } from "../common/icons/DocumentWithMagnifierIcon";
 import { LightBulbSmallCrossedIcon } from "../common/icons/LightBulbSmallCrossedIcon";
@@ -20,9 +18,6 @@ import { LightBulbSmallIcon } from "../common/icons/LightBulbSmallIcon";
 import { OpenTelemetryLogoCrossedSmallIcon } from "../common/icons/OpenTelemetryLogoCrossedSmallIcon";
 import { SlackLogoIcon } from "../common/icons/SlackLogoIcon";
 import { InsightsCatalog } from "./InsightsCatalog";
-import { SORTING_CRITERION } from "./InsightsCatalog/types";
-import { IssuesFilter } from "./Issues/IssuesFilter";
-import { IssuesFilterQuery } from "./Issues/IssuesFilter/types";
 import { EndpointBottleneckInsightTicket } from "./insightTickets/EndpointBottleneckInsightTicket";
 import { EndpointHighNumberOfQueriesInsightTicket } from "./insightTickets/EndpointHighNumberOfQueriesInsightTicket";
 import { EndpointQueryOptimizationV2InsightTicket } from "./insightTickets/EndpointQueryOptimizationV2InsightTicket";
@@ -52,7 +47,6 @@ import {
   InsightTicketInfo,
   InsightsData,
   InsightsProps,
-  InsightsQuery,
   InsightsStatus,
   SpaNPlusOneInsight,
   SpanEndpointBottleneckInsight,
@@ -61,21 +55,30 @@ import {
 } from "./types";
 import { useInsightsData } from "./useInsightsData";
 
-const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
-
 const renderInsightTicket = (
   data: InsightTicketInfo<GenericCodeObjectInsight>,
+  refreshInsights: () => void,
   onClose: () => void
 ) => {
   if (isSpanNPlusOneInsight(data.insight)) {
     const ticketData = data as InsightTicketInfo<SpaNPlusOneInsight>;
-    return <SpaNPlusOneInsightTicket data={ticketData} onClose={onClose} />;
+    return (
+      <SpaNPlusOneInsightTicket
+        data={ticketData}
+        refreshInsights={refreshInsights}
+        onClose={onClose}
+      />
+    );
   }
 
   if (isEndpointSpanNPlusOneInsight(data.insight)) {
     const ticketData = data as InsightTicketInfo<EndpointSpanNPlusOneInsight>;
     return (
-      <EndpointSpanNPlusOneInsightTicket data={ticketData} onClose={onClose} />
+      <EndpointSpanNPlusOneInsightTicket
+        data={ticketData}
+        refreshInsights={refreshInsights}
+        onClose={onClose}
+      />
     );
   }
 
@@ -84,6 +87,7 @@ const renderInsightTicket = (
     return (
       <SpanEndpointBottleneckInsightTicket
         data={ticketData}
+        refreshInsights={refreshInsights}
         onClose={onClose}
       />
     );
@@ -92,14 +96,22 @@ const renderInsightTicket = (
   if (isEndpointBottleneckInsight(data.insight)) {
     const ticketData = data as InsightTicketInfo<EndpointBottleneckInsight>;
     return (
-      <EndpointBottleneckInsightTicket data={ticketData} onClose={onClose} />
+      <EndpointBottleneckInsightTicket
+        data={ticketData}
+        refreshInsights={refreshInsights}
+        onClose={onClose}
+      />
     );
   }
 
   if (isSpanQueryOptimizationInsight(data.insight)) {
     const ticketData = data as InsightTicketInfo<SpanQueryOptimizationInsight>;
     return (
-      <SpanQueryOptimizationInsightTicket data={ticketData} onClose={onClose} />
+      <SpanQueryOptimizationInsightTicket
+        data={ticketData}
+        refreshInsights={refreshInsights}
+        onClose={onClose}
+      />
     );
   }
 
@@ -109,6 +121,7 @@ const renderInsightTicket = (
     return (
       <EndpointQueryOptimizationV2InsightTicket
         data={ticketData}
+        refreshInsights={refreshInsights}
         onClose={onClose}
       />
     );
@@ -120,6 +133,7 @@ const renderInsightTicket = (
     return (
       <EndpointHighNumberOfQueriesInsightTicket
         data={ticketData}
+        refreshInsights={refreshInsights}
         onClose={onClose}
       />
     );
@@ -135,11 +149,18 @@ const renderInsightTicket = (
         <SpanScalingByRootCauseInsightTicket
           rootCauseSpanInfo={selectedRootCause}
           data={ticketData}
+          refreshInsights={refreshInsights}
           onClose={onClose}
         />
       );
     } else {
-      return <SpanScalingInsightTicket data={ticketData} onClose={onClose} />;
+      return (
+        <SpanScalingInsightTicket
+          data={ticketData}
+          refreshInsights={refreshInsights}
+          onClose={onClose}
+        />
+      );
     }
   }
 
@@ -187,29 +208,10 @@ const sendMessage = (action: string, data?: object) => {
 };
 
 export const Insights = ({ insightViewType }: InsightsProps) => {
-  const DEFAULT_QUERY: InsightsQuery = {
-    page: 0,
-    sorting: {
-      criterion: SORTING_CRITERION.LATEST,
-      order: SORTING_ORDER.DESC
-    },
-    searchQuery: null,
-    showDismissed: false,
-    insightViewType,
-    showUnreadOnly: false,
-    filters: []
-  };
-  const [query, setQuery] = useState<InsightsQuery>(DEFAULT_QUERY);
-  const [issuesFiltersQuery, setIssuesFilterQuery] =
-    useState<IssuesFilterQuery>();
-  const { isInitialLoading, data, refresh } = useInsightsData({
-    refreshInterval: REFRESH_INTERVAL,
-    filters: issuesFiltersQuery,
-    query
-  });
+  const { data, isLoading, refresh } = useInsightsData();
+  const reset = useInsightsStore.use.reset();
   const [infoToOpenJiraTicket, setInfoToOpenJiraTicket] =
     useState<InsightTicketInfo<GenericCodeObjectInsight>>();
-  const backendInfo = useGlobalStore.use.backendInfo();
   const userRegistrationEmail = useGlobalStore.use.userRegistrationEmail();
   const previousUserRegistrationEmail = usePrevious(userRegistrationEmail);
   const environments = useGlobalStore.use.environments();
@@ -218,14 +220,17 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
   const isRegistrationEnabled = false;
   const isRegistrationRequired =
     isRegistrationEnabled && !userRegistrationEmail;
-  const isIssuesFilterVisible = getFeatureFlagValue(
-    backendInfo,
-    FeatureFlag.ARE_ISSUES_FILTERS_ENABLED
-  );
+  const setInsightsViewType = useInsightsStore.use.setInsightViewType();
 
-  useLayoutEffect(() => {
-    sendMessage(globalActions.GET_STATE);
-  }, []);
+  useEffect(() => {
+    return () => {
+      reset();
+    };
+  }, [reset]);
+
+  useEffect(() => {
+    setInsightsViewType(insightViewType);
+  }, [insightViewType, setInsightsViewType]);
 
   useEffect(() => {
     if (
@@ -244,12 +249,12 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
     openURLInDefaultBrowser(SLACK_WORKSPACE_URL);
   };
 
-  const handleJiraTicketPopupOpen = (
-    insight: GenericCodeObjectInsight,
-    spanCodeObjectId?: string
-  ) => {
-    setInfoToOpenJiraTicket({ insight, spanCodeObjectId });
-  };
+  const handleJiraTicketPopupOpen = useCallback(
+    (insight: GenericCodeObjectInsight, spanCodeObjectId?: string) => {
+      setInfoToOpenJiraTicket({ insight, spanCodeObjectId });
+    },
+    []
+  );
 
   const handleJiraTicketPopupClose = () => {
     setInfoToOpenJiraTicket(undefined);
@@ -268,56 +273,17 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
     setInfoToOpenJiraTicket(undefined);
   };
 
-  const handleQueryChange = (query: InsightsQuery) => {
-    setQuery(query);
-  };
-
   const handleOverlayKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "Escape") {
       setInfoToOpenJiraTicket(undefined);
     }
   };
 
-  const handleIssueFiltersApplied = (filters: IssuesFilterQuery) => {
-    setIssuesFilterQuery(filters);
-  };
-
-  const renderDefaultContent = (data: InsightsData): JSX.Element => {
-    let filter;
-    if (insightViewType === "Issues" && isIssuesFilterVisible) {
-      filter = (
-        <IssuesFilter
-          onApply={handleIssueFiltersApplied}
-          query={{
-            displayName: query.searchQuery,
-            filters: query.filters,
-            insightTypes: issuesFiltersQuery?.issueTypes ?? [],
-            showDismissed: query.showDismissed
-          }}
-        />
-      );
-    }
-
-    return (
-      <InsightsCatalog
-        insightViewType={insightViewType}
-        insights={data.insights}
-        totalCount={data.totalCount}
-        onJiraTicketCreate={handleJiraTicketPopupOpen}
-        onQueryChange={handleQueryChange}
-        onRefresh={refresh}
-        defaultQuery={DEFAULT_QUERY}
-        dismissedCount={data.dismissedCount}
-        unreadCount={data.unreadCount}
-        filterComponent={filter}
-      />
-    );
-  };
-
   const renderContent = (
-    data: InsightsData,
-    isInitialLoading: boolean
+    data: InsightsData | null,
+    isLoading: boolean
   ): JSX.Element => {
+    const isInitialLoading = !data && isLoading;
     if (isInitialLoading) {
       return <EmptyState content={<CircleLoader size={32} />} />;
     }
@@ -383,13 +349,18 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
         );
       case InsightsStatus.DEFAULT:
       default:
-        return renderDefaultContent(data);
+        return (
+          <InsightsCatalog
+            onJiraTicketCreate={handleJiraTicketPopupOpen}
+            onRefresh={refresh}
+          />
+        );
     }
   };
 
   return (
     <s.Container>
-      {renderContent(data, isInitialLoading)}
+      {renderContent(data, isLoading)}
       {infoToOpenJiraTicket && (
         <s.Overlay onKeyDown={handleOverlayKeyDown} tabIndex={-1}>
           <s.PopupContainer>
@@ -402,6 +373,7 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
             ) : (
               renderInsightTicket(
                 infoToOpenJiraTicket,
+                refresh,
                 handleJiraTicketPopupClose
               )
             )}

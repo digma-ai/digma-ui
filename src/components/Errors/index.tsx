@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useGlobalStore } from "../../containers/Main/stores/globalStore";
+import { useGlobalStore } from "../../containers/Main/stores/useGlobalStore";
 import { useHistory } from "../Main/useHistory";
 import { ErrorDetails } from "./ErrorDetails";
 import { ErrorsList } from "./ErrorsList";

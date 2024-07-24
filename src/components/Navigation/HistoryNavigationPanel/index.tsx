@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { Location, useLocation, useNavigate } from "react-router-dom";
+import { useTheme } from "styled-components";
 import { history } from "../../../containers/Main/history";
-import { useGlobalStore } from "../../../containers/Main/stores/globalStore";
+import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
 import { HistoryEntry } from "../../../history/History";
 import { changeScope } from "../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
@@ -12,6 +13,7 @@ import {
 } from "../../Main/types";
 import { useBrowserLocationUpdater } from "../../Main/updateBrowserLocationUpdater";
 import { useHistory } from "../../Main/useHistory";
+import { HomeIcon } from "../../common/icons/16px/HomeIcon";
 import { ChevronIcon } from "../../common/icons/20px/ChevronIcon";
 import { Direction } from "../../common/icons/types";
 import { trackingEvents } from "../tracking";
@@ -24,6 +26,7 @@ export const HistoryNavigationPanel = () => {
   const environment = useGlobalStore.use.environment();
   const scope = useGlobalStore.use.scope();
   const location = useLocation() as Location<ReactRouterLocationState | null>;
+  const theme = useTheme();
   const updateBrowserLocation = useBrowserLocationUpdater();
 
   useEffect(() => {
@@ -138,8 +141,20 @@ export const HistoryNavigationPanel = () => {
     goForward();
   };
 
+  const handleHomeButtonClick = () => {
+    sendUserActionTrackingEvent(trackingEvents.HOME_BUTTON_CLICKED);
+    changeScope({
+      span: null,
+      context: {
+        event: SCOPE_CHANGE_EVENTS.NAVIGATION_HOME_BUTTON_CLICKED
+      }
+    });
+  };
+
+  const isAtSpan = Boolean(scope?.span);
+
   return (
-    <s.Container>
+    <s.Container $isActive={isAtSpan}>
       <s.Button onClick={handleBackButtonClick} disabled={!canGoBack}>
         <ChevronIcon
           direction={Direction.LEFT}
@@ -152,6 +167,15 @@ export const HistoryNavigationPanel = () => {
           direction={Direction.RIGHT}
           size={16}
           color={"currentColor"}
+        />
+      </s.Button>
+      <s.Button onClick={handleHomeButtonClick} disabled={!isAtSpan}>
+        <HomeIcon
+          color={isAtSpan ? "currentColor" : theme.colors.v3.icon.brandPrimary}
+          size={16}
+          fillColor={
+            isAtSpan ? undefined : theme.colors.v3.surface.brandPrimary
+          }
         />
       </s.Button>
     </s.Container>

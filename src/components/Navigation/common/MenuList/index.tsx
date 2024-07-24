@@ -10,7 +10,8 @@ const UNGROUPED_GROUP_LABEL = "__ungrouped";
 export const MenuList = ({
   showGroupNames = true,
   items,
-  showGroupDividers
+  showGroupDividers,
+  highlightSelected
 }: MenuListProps) => {
   const groups = groupBy(
     items,
@@ -23,20 +24,23 @@ export const MenuList = ({
         {showGroupNames && groupName !== UNGROUPED_GROUP_LABEL && (
           <s.ListGroupName>{groupName}</s.ListGroupName>
         )}
-        {items.map((item) =>
-          item.customContent ? (
+        {items.map((item) => {
+          const isHighlighted = highlightSelected === item.isSelected;
+          return item.customContent ? (
             <li key={item.id}>{item.customContent}</li>
           ) : (
             <Tooltip title={item.label} key={item.id}>
-              <s.ListItem onClick={item.onClick}>
+              <s.ListItem $isHighlighted={isHighlighted} onClick={item.onClick}>
                 {item.icon && (
-                  <s.ListItemIconContainer>{item.icon}</s.ListItemIconContainer>
+                  <s.ListItemIconContainer $isHighlighted={isHighlighted}>
+                    {item.icon}
+                  </s.ListItemIconContainer>
                 )}
                 {item.label && <s.ListItemLabel>{item.label}</s.ListItemLabel>}
               </s.ListItem>
             </Tooltip>
-          )
-        )}
+          );
+        })}
       </s.ListGroup>
     );
   });

@@ -100,6 +100,11 @@ export interface InsightsQuery {
   filters: InsightFilterType[];
 }
 
+export interface GetInsightsDataListPayload {
+  query: InsightsQuery;
+}
+
+/** @deprecated */
 export interface PersistedState {
   insights?: {
     query?: InsightsQuery;

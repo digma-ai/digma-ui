@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
-import { changeScope } from "../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
-import { SCOPE_CHANGE_EVENTS } from "../../Main/types";
 import { CodeDetails, Scope } from "../../common/App/types";
 import { NewPopover } from "../../common/NewPopover";
 import { CrosshairIcon } from "../../common/icons/16px/CrosshairIcon";
-import { HomeIcon } from "../../common/icons/16px/HomeIcon";
+import { EndpointIcon } from "../../common/icons/EndpointIcon";
 import { Tooltip } from "../../common/v3/Tooltip";
 import { actions } from "../actions";
 import { Popup } from "../common/Popup";
@@ -52,12 +50,10 @@ const getTargetButtonTooltip = (
 export const ScopeBar = ({ scope, codeContext }: ScopeBarProps) => {
   const [isTargetButtonMenuOpen, setIsTargetButtonMenuOpen] = useState(false);
 
-  const scopeDisplayName = scope
-    ? scope.span
-      ? scope.span.displayName
-      : "Home"
-    : "";
-
+  const spanDisplayName = scope?.span?.displayName;
+  const scopeDisplayName = spanDisplayName
+    ? spanDisplayName
+    : scope?.span?.spanCodeObjectId ?? "";
   const targetButtonTooltip = getTargetButtonTooltip(codeContext, scope);
 
   const isTargetButtonTooltipOpen =
@@ -71,6 +67,7 @@ export const ScopeBar = ({ scope, codeContext }: ScopeBarProps) => {
         .length > 0 &&
       !isAlreadyAtCode(codeContext, scope)
   );
+
   const isTargetButtonMenuEnabled =
     scope &&
     (scope.code.codeDetailsList.length > 1 ||
@@ -79,16 +76,6 @@ export const ScopeBar = ({ scope, codeContext }: ScopeBarProps) => {
   useEffect(() => {
     setIsTargetButtonMenuOpen(false);
   }, [scope]);
-
-  const handleHomeButtonClick = () => {
-    sendUserActionTrackingEvent(trackingEvents.HOME_BUTTON_CLICKED);
-    changeScope({
-      span: null,
-      context: {
-        event: SCOPE_CHANGE_EVENTS.NAVIGATION_HOME_BUTTON_CLICKED
-      }
-    });
-  };
 
   const handleGoToCodeLocation = (codeDetails: CodeDetails) => {
     window.sendMessageToDigma<GoToCodeLocationPayload>({
@@ -118,21 +105,21 @@ export const ScopeBar = ({ scope, codeContext }: ScopeBarProps) => {
     </Tooltip>
   );
 
-  const isActive = Boolean(scope?.span);
-
   return (
-    <s.ScopeBar $isActive={Boolean(scope?.span)}>
-      <s.ScopeBarButton disabled={!scope?.span} onClick={handleHomeButtonClick}>
-        <HomeIcon color={"currentColor"} size={16} />
-      </s.ScopeBarButton>
-      <s.ScopeBarDivider />
+    <s.ScopeBar>
       <s.ScopeNameContainer>
-        <Tooltip title={scopeDisplayName}>
-          <s.ScopeName>{scopeDisplayName}</s.ScopeName>
-        </Tooltip>
-        {isActive && <s.StyledCopyButton text={scopeDisplayName} />}
+        <s.SpanIconContainer>
+          <EndpointIcon color={"currentColor"} />
+        </s.SpanIconContainer>
+        {scopeDisplayName && (
+          <>
+            <Tooltip title={scopeDisplayName}>
+              <s.ScopeName>{scopeDisplayName}</s.ScopeName>
+            </Tooltip>
+            <s.StyledCopyButton text={scopeDisplayName} />
+          </>
+        )}
       </s.ScopeNameContainer>
-      <s.ScopeBarDivider />
       {isTargetButtonMenuEnabled ? (
         <NewPopover
           content={

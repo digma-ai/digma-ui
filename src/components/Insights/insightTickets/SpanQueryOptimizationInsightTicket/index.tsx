@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import { useGlobalStore } from "../../../../containers/Main/stores/globalStore";
+import { useGlobalStore } from "../../../../containers/Main/stores/useGlobalStore";
 import { getCriticalityLabel } from "../../../../utils/getCriticalityLabel";
 import { getDurationString } from "../../../../utils/getDurationString";
 import { intersperse } from "../../../../utils/intersperse";
@@ -15,6 +15,7 @@ import { InsightTicketProps } from "../types";
 
 export const SpanQueryOptimizationInsightTicket = ({
   data,
+  refreshInsights,
   onClose
 }: InsightTicketProps<SpanQueryOptimizationInsight>) => {
   const { isLoading, commitInfos } = useCommitInfos(data.insight);
@@ -94,6 +95,7 @@ export const SpanQueryOptimizationInsightTicket = ({
       attachments={attachments}
       insight={data.insight}
       onClose={onClose}
+      refreshInsights={refreshInsights}
     />
   );
 };

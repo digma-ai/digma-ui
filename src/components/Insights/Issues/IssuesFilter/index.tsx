@@ -1,80 +1,118 @@
-import { useCallback, useEffect, useState } from "react";
-import { useGlobalStore } from "../../../../containers/Main/stores/globalStore";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useInsightsStore } from "../../../../containers/Main/stores/useInsightsStore";
 import { usePersistence } from "../../../../hooks/usePersistence";
 import { usePrevious } from "../../../../hooks/usePrevious";
-import { isEnvironment } from "../../../../typeGuards/isEnvironment";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { getInsightTypeInfo } from "../../../../utils/getInsightTypeInfo";
 import { FilterButton } from "../../../common/FilterButton";
 import { NewPopover } from "../../../common/NewPopover";
-import { InsightsIcon } from "../../../common/icons/12px/InsightsIcon";
+import { EyeIcon } from "../../../common/icons/12px/EyeIcon";
+import { FourPointedStarIcon } from "../../../common/icons/12px/FourPointedStarIcon";
+import { WarningTriangleIcon } from "../../../common/icons/WarningTriangleIcon";
 import { IconProps } from "../../../common/icons/types";
 import { Select } from "../../../common/v3/Select";
+import { SelectItem } from "../../../common/v3/Select/types";
+import { InsightFilterType } from "../../InsightsCatalog/types";
 import { useIssuesFilters } from "../useIssuesFilters";
 import * as s from "./styles";
 import { trackingEvents } from "./tracking";
-import { IssuesFilterProps, IssuesFilterQuery } from "./types";
+import { IssuesFilterQuery } from "./types";
 
 const PERSISTENCE_KEY = "issuesFilters";
 
-export const IssuesFilter = ({ query, onApply }: IssuesFilterProps) => {
+export const IssuesFilter = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedIssueTypes, setSelectedIssueTypes] = useState<string[]>([]);
-  const environment = useGlobalStore.use.environment();
-  const scope = useGlobalStore.use.scope();
-  const previousEnvironment = usePrevious(environment);
-  const previousScope = usePrevious(scope);
+  const filteredInsightTypes = useInsightsStore.use.filteredInsightTypes();
+  const setFilteredInsightTypes =
+    useInsightsStore.use.setFilteredInsightTypes();
+  const filters = useInsightsStore.use.filters();
+  const setFilters = useInsightsStore.use.setFilters();
+  const isCriticalOnly = useMemo(
+    () => filters.includes("criticality"),
+    [filters]
+  );
+  const isUnreadOnly = useMemo(() => filters.includes("unread"), [filters]);
   const [persistedFilters, setPersistedFilters] =
     usePersistence<IssuesFilterQuery>(PERSISTENCE_KEY, "project");
   const previousPersistedFilters = usePrevious(persistedFilters);
-  const { data, refresh } = useIssuesFilters({
-    refreshInterval: 10 * 1000,
-    query
-  });
+  const { data } = useIssuesFilters();
   const previousData = usePrevious(data);
 
-  const changeSelection = useCallback(
-    (value: string | string[]) => {
-      const newValue = Array.isArray(value) ? value : [value];
-      setSelectedIssueTypes(newValue);
+  const applyFilters = useCallback(
+    (
+      value: string | string[],
+      isCriticalOnly: boolean,
+      isUnreadOnly: boolean
+    ) => {
+      const newInsightTypes = Array.isArray(value) ? value : [value];
+      const newFilters: InsightFilterType[] = [
+        ...(isCriticalOnly ? (["criticality"] as InsightFilterType[]) : []),
+        ...(isUnreadOnly ? (["unread"] as InsightFilterType[]) : [])
+      ];
+      setFilteredInsightTypes(newInsightTypes);
+      setFilters(newFilters);
+
       const newFilterValue: IssuesFilterQuery = {
-        issueTypes: newValue
+        issueTypes: newInsightTypes,
+        filters: newFilters
       };
       setPersistedFilters(newFilterValue);
-      onApply(newFilterValue);
     },
-    [onApply, setPersistedFilters]
+    [setFilters, setPersistedFilters, setFilteredInsightTypes]
   );
 
   useEffect(() => {
     if (
       previousData &&
       previousData !== data &&
-      selectedIssueTypes.length > 0
+      filteredInsightTypes.length > 0
     ) {
-      const newSelection = selectedIssueTypes.filter((e) =>
-        Boolean(data.issueTypeFilters.find((x) => x.name === e && x.enabled))
+      const newSelection = filteredInsightTypes.filter((e) =>
+        Boolean(data?.issueTypeFilters.find((x) => x.name === e && x.enabled))
       );
 
-      if (newSelection.length !== selectedIssueTypes.length) {
-        changeSelection(newSelection);
+      if (newSelection.length !== filteredInsightTypes.length) {
+        applyFilters(newSelection, isCriticalOnly, isUnreadOnly);
       }
     }
-  }, [previousData, data, selectedIssueTypes, changeSelection]);
+  }, [
+    previousData,
+    data,
+    filteredInsightTypes,
+    applyFilters,
+    isCriticalOnly,
+    isUnreadOnly
+  ]);
 
   const handleClearFiltersButtonClick = () => {
     sendUserActionTrackingEvent(
       trackingEvents.CLEAR_ALL_FILTERS_BUTTON_CLICKED
     );
-    changeSelection([]);
+    applyFilters([], false, false);
   };
 
-  const handleSelectionChange = useCallback(
+  const handleIssueTypesChange = useCallback(
     (value: string | string[]) => {
       sendUserActionTrackingEvent(trackingEvents.FILTER_OPTION_SELECTED);
-      changeSelection(value);
+      applyFilters(value, isCriticalOnly, isUnreadOnly);
     },
-    [changeSelection]
+    [applyFilters, isCriticalOnly, isUnreadOnly]
+  );
+
+  const handleCriticalityChange = useCallback(
+    (value: string | string[]) => {
+      sendUserActionTrackingEvent(trackingEvents.FILTER_OPTION_SELECTED);
+      applyFilters(filteredInsightTypes, value === "criticality", isUnreadOnly);
+    },
+    [applyFilters, filteredInsightTypes, isUnreadOnly]
+  );
+
+  const handleReadStatusChange = useCallback(
+    (value: string | string[]) => {
+      sendUserActionTrackingEvent(trackingEvents.FILTER_OPTION_SELECTED);
+      applyFilters(filteredInsightTypes, isCriticalOnly, value === "unread");
+    },
+    [applyFilters, filteredInsightTypes, isCriticalOnly]
   );
 
   useEffect(() => {
@@ -82,34 +120,60 @@ export const IssuesFilter = ({ query, onApply }: IssuesFilterProps) => {
       !previousPersistedFilters &&
       previousPersistedFilters !== persistedFilters
     ) {
-      handleSelectionChange(persistedFilters?.issueTypes ?? []);
+      applyFilters(
+        persistedFilters?.issueTypes ?? [],
+        Boolean(persistedFilters?.filters.includes("criticality")),
+        Boolean(persistedFilters?.filters.includes("unread"))
+      );
     }
-  }, [previousPersistedFilters, persistedFilters, handleSelectionChange]);
+  }, [previousPersistedFilters, persistedFilters, applyFilters]);
 
-  useEffect(() => {
-    if (
-      (isEnvironment(previousEnvironment) &&
-        previousEnvironment.id !== environment?.id) ||
-      (previousScope && previousScope !== scope)
-    ) {
-      refresh();
-    }
-  }, [
-    previousEnvironment,
-    environment,
-    onApply,
-    previousScope,
-    scope,
-    refresh
-  ]);
-
-  const issuesTypeFilter =
+  const issueTypesFilterOptions: SelectItem[] =
     data?.issueTypeFilters?.map((entry) => ({
       value: entry.name,
       label: getInsightTypeInfo(entry.name)?.label ?? entry.name,
-      enabled: entry.enabled || selectedIssueTypes.includes(entry.name),
-      selected: selectedIssueTypes.includes(entry.name) && entry.enabled
+      enabled: entry.enabled || filteredInsightTypes.includes(entry.name),
+      selected: filteredInsightTypes.includes(entry.name) && entry.enabled
     })) ?? [];
+
+  const criticalityFilterOptions: SelectItem[] = [
+    {
+      label: "Critical",
+      value: "criticality",
+      enabled: true,
+      selected: isCriticalOnly
+    },
+    {
+      label: "All",
+      value: "all",
+      enabled: true,
+      selected: !isCriticalOnly
+    }
+  ];
+
+  const readStatusFilterOptions: SelectItem[] = [
+    {
+      label: "Unread",
+      value: "unread",
+      enabled: true,
+      selected: isUnreadOnly
+    },
+    {
+      label: "All",
+      value: "all",
+      enabled: true,
+      selected: !isUnreadOnly
+    }
+  ];
+
+  const criticalityFilterPlaceholder =
+    criticalityFilterOptions.find((x) => x.selected)?.label ?? "All";
+  const readStatusFilterPlaceholder =
+    readStatusFilterOptions.find((x) => x.selected)?.label ?? "All";
+  const selectedFiltersCount =
+    (filteredInsightTypes.length > 0 ? 1 : 0) +
+    (isCriticalOnly ? 1 : 0) +
+    (isUnreadOnly ? 1 : 0);
 
   return (
     <NewPopover
@@ -120,22 +184,48 @@ export const IssuesFilter = ({ query, onApply }: IssuesFilterProps) => {
           <s.FilterCategoryName>Issues</s.FilterCategoryName>
           <Select
             key={"issues"}
-            items={issuesTypeFilter}
-            onChange={handleSelectionChange}
-            placeholder={selectedIssueTypes.length > 0 ? "Issues" : "All"}
+            items={issueTypesFilterOptions}
+            onChange={handleIssueTypesChange}
+            placeholder={filteredInsightTypes.length > 0 ? "Issues" : "All"}
             multiselect={true}
             icon={(props: IconProps) => (
               <s.InsightIconContainer>
-                <InsightsIcon {...props} size={12} color="currentColor" />
+                <FourPointedStarIcon {...props} />
               </s.InsightIconContainer>
             )}
-            disabled={issuesTypeFilter?.length === 0}
+            disabled={issueTypesFilterOptions?.length === 0}
+          />
+          <s.FilterCategoryName>Criticality</s.FilterCategoryName>
+          <Select
+            key={"criticality"}
+            items={criticalityFilterOptions}
+            onChange={handleCriticalityChange}
+            placeholder={criticalityFilterPlaceholder}
+            icon={(props: IconProps) => (
+              <s.InsightIconContainer>
+                <WarningTriangleIcon {...props} />
+              </s.InsightIconContainer>
+            )}
+            showSelectedState={isCriticalOnly}
+          />
+          <s.FilterCategoryName>Read/Unread</s.FilterCategoryName>
+          <Select
+            key={"readStatus"}
+            items={readStatusFilterOptions}
+            onChange={handleReadStatusChange}
+            placeholder={readStatusFilterPlaceholder}
+            icon={(props: IconProps) => (
+              <s.InsightIconContainer>
+                <EyeIcon {...props} />
+              </s.InsightIconContainer>
+            )}
+            showSelectedState={isUnreadOnly}
           />
           <s.Footer>
             <s.ClearAllButton
               buttonType={"tertiary"}
               label={"Clear filters"}
-              isDisabled={selectedIssueTypes.length === 0}
+              isDisabled={filteredInsightTypes.length === 0}
               onClick={handleClearFiltersButtonClick}
             />
           </s.Footer>
@@ -149,7 +239,7 @@ export const IssuesFilter = ({ query, onApply }: IssuesFilterProps) => {
         <FilterButton
           title={"Filters"}
           showCount={true}
-          selectedCount={selectedIssueTypes.length}
+          selectedCount={selectedFiltersCount}
           isActive={isOpen}
         />
       </div>

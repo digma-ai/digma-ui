@@ -1,28 +1,20 @@
-import {
-  GenericCodeObjectInsight,
-  InsightViewType,
-  InsightsQuery
-} from "../types";
+import { GenericCodeObjectInsight } from "../types";
 
 export interface InsightsCatalogProps {
-  insightViewType: InsightViewType;
-  insights: GenericCodeObjectInsight[];
-  totalCount: number;
-  dismissedCount?: number;
   onJiraTicketCreate: (
     insight: GenericCodeObjectInsight,
     spanCodeObjectId?: string
   ) => void;
-  onQueryChange: (query: InsightsQuery) => void;
-  defaultQuery: InsightsQuery;
   onRefresh: () => void;
-  unreadCount?: number;
-  filterComponent?: JSX.Element;
+}
+
+export interface FilterButtonContainerProps {
+  $isActive: boolean;
 }
 
 export enum ViewMode {
-  All,
-  OnlyDismissed
+  All = "All",
+  OnlyDismissed = "OnlyDismissed"
 }
 
 export enum SORTING_CRITERION {
@@ -35,4 +27,4 @@ export interface PagedData<TData> {
   totalCount: number;
 }
 
-export type InsightFilterType = "criticality" | "unread" | null;
+export type InsightFilterType = "criticality" | "unread";

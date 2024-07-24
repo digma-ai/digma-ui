@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect } from "react";
 import { Outlet, matchPath, useLocation } from "react-router-dom";
 import { actions as globalActions } from "../../actions";
 import { history } from "../../containers/Main/history";
-import { useGlobalStore } from "../../containers/Main/stores/globalStore";
+import { useGlobalStore } from "../../containers/Main/stores/useGlobalStore";
 import { dispatcher } from "../../dispatcher";
 import { HistoryEntryLocation } from "../../history/History";
 import { logger } from "../../logging";
@@ -52,14 +52,12 @@ export const Main = () => {
     // clear the history in following cases:
     // 1) there are no environments
     // 2) selected environment is not exist in the list of environments
-    // 3) scope is not exist in the current environment
     if (
       !environments ||
       environments.length === 0 ||
       Boolean(
         environment && !environments?.find((x) => x.id == environment?.id)
-      ) ||
-      (scope?.span && !scope.span.displayName)
+      )
     ) {
       history.clear();
     }

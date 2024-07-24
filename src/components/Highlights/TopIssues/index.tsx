@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { useGlobalStore } from "../../../containers/Main/stores/globalStore";
+import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
 import { usePagination } from "../../../hooks/usePagination";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { CrossCircleIcon } from "../../common/icons/16px/CrossCircleIcon";

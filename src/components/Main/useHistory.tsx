@@ -1,6 +1,6 @@
 import { NavigateOptions, To, resolvePath } from "react-router-dom";
 import { history } from "../../containers/Main/history";
-import { useGlobalStore } from "../../containers/Main/stores/globalStore";
+import { useGlobalStore } from "../../containers/Main/stores/useGlobalStore";
 import { HistoryEntry, HistoryEntryLocation } from "../../history/History";
 import { isString } from "../../typeGuards/isString";
 import { HistoryState } from "./types";

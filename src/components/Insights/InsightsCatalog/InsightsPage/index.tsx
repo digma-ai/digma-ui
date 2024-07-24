@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { actions as globalActions } from "../../../../actions";
-import { useGlobalStore } from "../../../../containers/Main/stores/globalStore";
+import { useGlobalStore } from "../../../../containers/Main/stores/useGlobalStore";
 import { usePersistence } from "../../../../hooks/usePersistence";
 import { trackingEvents as globalTrackingEvents } from "../../../../trackingEvents";
 import { isNumber } from "../../../../typeGuards/isNumber";
@@ -482,7 +482,7 @@ export const InsightsPage = ({
 
   useEffect(() => {
     listRef.current?.scrollTo(0, 0);
-  }, [scope?.span, environment?.id, page]);
+  }, [scope?.span?.spanCodeObjectId, environment?.id, page]);
 
   useEffect(() => {
     window.sendMessageToDigma<MarkInsightTypesAsViewedPayload>({

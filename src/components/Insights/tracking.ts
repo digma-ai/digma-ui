@@ -18,7 +18,9 @@ export const trackingEvents = addPrefix(
     PROMOTION_CLOSE_EXPANDED_VIEW_BUTTON_CLICKED:
       "promotion close expanded view button clicked",
     PROMOTION_OPEN_EXPANDED_VIEW_BUTTON_CLICKED:
-      "promotion open expanded view button clicked"
+      "promotion open expanded view button clicked",
+    ENVIRONMENT_SELECTED: "environment selected",
+    ENVIRONMENT_MENU_BUTTON_CLICKED: "environment menu button clicked"
   },
   " "
 );

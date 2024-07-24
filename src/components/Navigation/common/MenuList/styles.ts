@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { ListItemProps } from "./types";
+import { ListItemIconContainerProps, ListItemProps } from "./types";
 
 export const List = styled.ul`
   display: flex;
@@ -37,8 +37,12 @@ export const ListItem = styled.li<ListItemProps>`
   align-items: center;
   gap: 6px;
   border-radius: 4px;
-  color: ${({ theme, $isDisabled }) =>
-    $isDisabled ? theme.colors.v3.text.disabled : theme.colors.v3.text.primary};
+  color: ${({ theme, $isDisabled, $isHighlighted }) =>
+    $isDisabled
+      ? theme.colors.v3.text.disabled
+      : $isHighlighted
+      ? theme.colors.v3.text.link
+      : theme.colors.v3.text.primary};
   cursor: ${({ $isDisabled }) => ($isDisabled ? "initial" : "pointer")};
 
   &:hover {
@@ -52,9 +56,12 @@ export const ListItem = styled.li<ListItemProps>`
   }
 `;
 
-export const ListItemIconContainer = styled.div`
+export const ListItemIconContainer = styled.div<ListItemIconContainerProps>`
   display: flex;
-  color: ${({ theme }) => theme.colors.v3.icon.tertiary};
+  color: ${({ theme, $isHighlighted }) =>
+    $isHighlighted
+      ? theme.colors.v3.icon.brandTertiary
+      : theme.colors.v3.icon.tertiary};
 
   &:disabled {
     color: ${({ theme }) => theme.colors.v3.icon.disabled};
@@ -62,7 +69,10 @@ export const ListItemIconContainer = styled.div`
 
   &:hover:enabled,
   &:active:enabled {
-    color: ${({ theme }) => theme.colors.v3.icon.primary};
+    color: ${({ theme, $isHighlighted }) =>
+      $isHighlighted
+        ? theme.colors.v3.icon.brandTertiary
+        : theme.colors.v3.icon.primary};
   }
 `;
 

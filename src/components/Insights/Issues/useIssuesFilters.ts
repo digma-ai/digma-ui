@@ -1,54 +1,60 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { DigmaMessageError } from "../../../api/types";
 import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { actions, actions as issuesActions } from "./actions";
 
-import { useGlobalStore } from "../../../containers/Main/stores/globalStore";
+import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
+import { useInsightsStore } from "../../../containers/Main/stores/useInsightsStore";
 import { GetIssuesFiltersPayload } from "../../../types";
+import { ViewMode } from "../InsightsCatalog/types";
 import { IssuesFiltersData } from "./IssuesFilter/types";
-import { IssuesQuery } from "./types";
+import { GetIssuesFiltersQuery } from "./types";
 
-interface UseIssuesFiltersProps {
-  refreshInterval: number;
-  query: IssuesQuery;
-}
+const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 
-const getData = (query: IssuesQuery) => {
+const getFilters = (query: GetIssuesFiltersQuery) => {
   window.sendMessageToDigma<GetIssuesFiltersPayload>({
     action: issuesActions.GET_FILTERS,
     payload: {
-      query: query
+      query
     }
   });
 };
 
-export const useIssuesFilters = ({
-  refreshInterval,
-  query
-}: UseIssuesFiltersProps) => {
-  const [data, setData] = useState<IssuesFiltersData>({
-    issueTypeFilters: []
-  });
+export const useIssuesFilters = () => {
+  const data = useInsightsStore.use.issuesFilters();
+  const setData = useInsightsStore.use.setIssuesFilters();
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
   const refreshTimerId = useRef<number>();
   const environment = useGlobalStore.use.environment();
   const scope = useGlobalStore.use.scope();
+  const spanCodeObjectId = scope?.span?.spanCodeObjectId ?? null;
+  const search = useInsightsStore.use.search();
+  const filters = useInsightsStore.use.filters();
+  const filteredInsightTypes = useInsightsStore.use.filteredInsightTypes();
+  const viewMode = useInsightsStore.use.viewMode();
 
-  const scopedQuery = useMemo(
+  const query: GetIssuesFiltersQuery = useMemo(
     () => ({
-      ...query,
-      scopedSpanCodeObjectId: scope?.span?.spanCodeObjectId ?? null
+      displayName: search,
+      filters,
+      insightTypes: filteredInsightTypes,
+      showDismissed: viewMode === ViewMode.OnlyDismissed,
+      scopedSpanCodeObjectId: spanCodeObjectId
     }),
-    [query, scope]
+    [search, filters, filteredInsightTypes, viewMode, spanCodeObjectId]
   );
 
-  const refresh = () => getData(scopedQuery);
+  const refresh = useCallback(() => getFilters(query), [query]);
 
   useEffect(() => {
-    getData(scopedQuery);
+    window.clearTimeout(refreshTimerId.current);
+    refresh();
+  }, [refresh, scope?.span?.spanCodeObjectId, environment?.id]);
 
+  useEffect(() => {
     const handleIssueFiltersData = (
       data: unknown,
       timeStamp: number,
@@ -71,14 +77,14 @@ export const useIssuesFilters = ({
       );
       window.clearTimeout(refreshTimerId.current);
     };
-  }, [scopedQuery]);
+  }, [setData]);
 
   useEffect(() => {
     if (previousLastSetDataTimeStamp !== lastSetDataTimeStamp) {
       window.clearTimeout(refreshTimerId.current);
       refreshTimerId.current = window.setTimeout(() => {
-        getData(scopedQuery);
-      }, refreshInterval);
+        refresh();
+      }, REFRESH_INTERVAL);
     }
 
     return () => {
@@ -88,13 +94,8 @@ export const useIssuesFilters = ({
     lastSetDataTimeStamp,
     previousLastSetDataTimeStamp,
     environment,
-    scopedQuery,
-    refreshInterval
+    refresh
   ]);
-
-  useEffect(() => {
-    getData(scopedQuery);
-  }, [scopedQuery, scope?.span?.spanCodeObjectId, environment?.id]);
 
   return {
     data,

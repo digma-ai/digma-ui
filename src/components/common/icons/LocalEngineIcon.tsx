@@ -3,33 +3,44 @@ import { useIconProps } from "./hooks";
 import { IconProps } from "./types";
 
 interface LocalEngineIconProps extends IconProps {
-  width?: number;
   isActive?: boolean;
 }
 
 const LocalEngineIconComponent = (props: LocalEngineIconProps) => {
-  const { color } = useIconProps(props);
-  const status = props.isActive ? "#6EBD9C" : undefined;
+  const { size, color } = useIconProps(props);
+  const fillColor = props.isActive ? "#6EBD9C" : "#37383F";
 
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width={props.width ?? 16}
-      viewBox="0 0 16 14"
-      fill={color}
+      width={size}
+      height={size}
+      fill="none"
+      viewBox="0 0 16 16"
     >
-      <g stroke="#F0F1F7">
-        <rect
-          width="9.667"
-          height="8.333"
-          x="3.167"
-          y=".833"
-          rx=".833"
-          fill={status}
-        />
-        <path d="M8 9v3.333m0 0H0m8 0h8" />
-        <path strokeLinecap="round" strokeWidth="2" d="M6.667 12.334h2.666" />
-      </g>
+      <rect
+        width="10.67"
+        height="9.33"
+        x="2.67"
+        y="1.33"
+        fill={fillColor}
+        rx="1.33"
+      />
+      <rect
+        width="9.67"
+        height="8.33"
+        x="3.17"
+        y="1.83"
+        stroke={color}
+        rx=".83"
+      />
+      <path stroke={color} d="M8 10v3.33m0 0H0m8 0h8" />
+      <path
+        stroke={color}
+        strokeLinecap="round"
+        strokeWidth="2"
+        d="M6.67 13.33h2.66"
+      />
     </svg>
   );
 };

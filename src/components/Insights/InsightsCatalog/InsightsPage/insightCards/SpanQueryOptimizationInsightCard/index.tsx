@@ -7,7 +7,7 @@ import { InsightCard } from "../common/InsightCard";
 import { ColumnsContainer } from "../common/InsightCard/ColumnsContainer";
 import { KeyValue } from "../common/InsightCard/KeyValue";
 import { ListItem } from "../common/InsightCard/ListItem";
-import { AssetLink, ContentContainer, Description, Details } from "../styles";
+import { ContentContainer, Description } from "../styles";
 import * as s from "./styles";
 import { SpanQueryOptimizationInsightCardProps } from "./types";
 
@@ -59,18 +59,6 @@ export const SpanQueryOptimizationInsightCard = ({
       insight={insight}
       content={
         <ContentContainer>
-          {spanCodeObjectId && (
-            <Details>
-              <Description>
-                Query is slow compared to other{" "}
-                {insight.dbStatement.toUpperCase()} requests
-              </Description>
-              <AssetLink
-                name={spanName ?? ""}
-                onClick={() => handleAssetLinkClick(spanCodeObjectId)}
-              />
-            </Details>
-          )}
           <ColumnsContainer>
             <KeyValue label={"Duration"}>
               {getDurationString(insight.duration)}

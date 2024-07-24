@@ -15,6 +15,7 @@ export interface InsightJiraTicketProps {
   relatedInsight?: GenericCodeObjectInsight | null;
   onClose: () => void;
   onReloadSpanInsight?: () => void;
+  refreshInsights: () => void;
 }
 
 export interface LinkTicketResponse {

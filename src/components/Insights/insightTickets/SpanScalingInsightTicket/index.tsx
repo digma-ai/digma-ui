@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import { useGlobalStore } from "../../../../containers/Main/stores/globalStore";
+import { useGlobalStore } from "../../../../containers/Main/stores/useGlobalStore";
 import { intersperse } from "../../../../utils/intersperse";
 import { DigmaSignature } from "../../../common/DigmaSignature";
 import { Attachment } from "../../../common/JiraTicket/types";
@@ -22,6 +22,7 @@ import { InsightTicketProps } from "../types";
 
 export const SpanScalingInsightTicket = ({
   data,
+  refreshInsights,
   onClose
 }: InsightTicketProps<SpanScalingInsight>) => {
   const jaegerURL = useGlobalStore.use.jaegerURL();
@@ -98,6 +99,7 @@ export const SpanScalingInsightTicket = ({
       attachments={attachments}
       insight={data.insight}
       onClose={onClose}
+      refreshInsights={refreshInsights}
     />
   );
 };

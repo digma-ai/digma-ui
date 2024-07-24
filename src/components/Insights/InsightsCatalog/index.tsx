@@ -1,13 +1,13 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useTheme } from "styled-components";
-import { useGlobalStore } from "../../../containers/Main/stores/globalStore";
+import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
+import { useInsightsStore } from "../../../containers/Main/stores/useInsightsStore";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import { useDebounce } from "../../../hooks/useDebounce";
 import { usePersistence } from "../../../hooks/usePersistence";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { isNumber } from "../../../typeGuards/isNumber";
-import { isString } from "../../../typeGuards/isString";
 import { isUndefined } from "../../../typeGuards/isUndefined";
 import { FeatureFlag } from "../../../types";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
@@ -22,14 +22,18 @@ import { SearchInput } from "../../common/SearchInput";
 import { SortingSelector } from "../../common/SortingSelector";
 import { SORTING_ORDER, Sorting } from "../../common/SortingSelector/types";
 import { ChevronIcon } from "../../common/icons/16px/ChevronIcon";
-import { GroupIcon } from "../../common/icons/16px/GroupIcon";
+import { EyeIcon } from "../../common/icons/16px/EyeIcon";
+import { FunnelIcon } from "../../common/icons/16px/FunnelIcon";
 import { RefreshIcon } from "../../common/icons/16px/RefreshIcon";
 import { Direction } from "../../common/icons/types";
 import { Button } from "../../common/v3/Button";
+import { NewIconButton } from "../../common/v3/NewIconButton";
 import { Tooltip } from "../../common/v3/Tooltip";
+import { IssuesFilter } from "../Issues/IssuesFilter";
 import { trackingEvents } from "../tracking";
+import { EnvironmentSelector } from "./EnvironmentSelector";
+import { FilterPanel } from "./FilterPanel";
 import { InsightsPage } from "./InsightsPage";
-import { InsightStats } from "./InsightsStats";
 import { PromotionCard } from "./PromotionCard";
 import * as s from "./styles";
 import {
@@ -57,31 +61,25 @@ const isPromotionEnabled = (dismissalDate: number | null | undefined) => {
 };
 
 export const InsightsCatalog = ({
-  insightViewType,
-  insights,
   onJiraTicketCreate,
-  defaultQuery,
-  totalCount,
-  dismissedCount,
-  unreadCount,
-  onQueryChange,
-  onRefresh,
-  filterComponent
+  onRefresh
 }: InsightsCatalogProps) => {
-  const [page, setPage] = useState(0);
-  const previousPage = usePrevious(page);
-  const [searchInputValue, setSearchInputValue] = useState(
-    defaultQuery.searchQuery
-  );
-
-  const [selectedFilters, setSelectedFilters] = useState<InsightFilterType[]>(
-    []
-  );
+  const insightViewType = useInsightsStore.use.insightViewType();
+  const mode = useInsightsStore.use.viewMode();
+  const setMode = useInsightsStore.use.setViewMode();
+  const page = useInsightsStore.use.page();
+  const setPage = useInsightsStore.use.setPage();
+  const searchInputValue = useInsightsStore.use.search();
+  const setSearchInputValue = useInsightsStore.use.setSearch();
   const debouncedSearchInputValue = useDebounce(searchInputValue, 1000);
-  const [sorting, setSorting] = useState<Sorting>(defaultQuery.sorting);
-  const previousSorting = usePrevious(sorting);
-  const previousFilters = usePrevious(selectedFilters);
-  const previousSearchQuery = usePrevious(debouncedSearchInputValue);
+  const sorting = useInsightsStore.use.sorting();
+  const setSorting = useInsightsStore.use.setSorting();
+  const filters = useInsightsStore.use.filters();
+  const data = useInsightsStore.use.data();
+  const insights = data?.insights ?? [];
+  const totalCount = data?.totalCount ?? 0;
+  const dismissedCount = data?.dismissedCount;
+  const unreadCount = data?.unreadCount ?? 0;
   const pageStartItemNumber = page * PAGE_SIZE + 1;
   const pageEndItemNumber = Math.min(
     pageStartItemNumber + PAGE_SIZE - 1,
@@ -89,11 +87,11 @@ export const InsightsCatalog = ({
   );
   const insightStats = useGlobalStore.use.insightStats();
   const environment = useGlobalStore.use.environment();
+  const environments = useGlobalStore.use.environments();
   const scope = useGlobalStore.use.scope();
-  const previousScopeSpan = usePrevious(scope?.span);
+  const scopeSpanCodeObjectId = scope?.span?.spanCodeObjectId;
+  const isAtSpan = Boolean(scope?.span?.spanCodeObjectId);
   const backendInfo = useGlobalStore.use.backendInfo();
-  const [mode, setMode] = useState<ViewMode>(ViewMode.All);
-  const previousMode = usePrevious(mode);
   const theme = useTheme();
   const { isMarkingAllAsReadInProgress, markAllAsRead } = useMarkingAllAsRead(
     scope?.span ?? null
@@ -103,6 +101,7 @@ export const InsightsCatalog = ({
   );
   const [showRegistration, setShowRegistration] = useState(false);
   const [showDiscardConfirmation, setShowDiscardConfirmation] = useState(false);
+  const [isFiltersToolbarVisible, setIsFiltersToolbarVisible] = useState(false);
   const [dismissalDate, setDismissalDate] = usePersistence<number>(
     PROMOTION_PERSISTENCE_KEY,
     "application"
@@ -157,52 +156,34 @@ export const InsightsCatalog = ({
     setShowDiscardConfirmation(true);
   };
 
+  const isIssuesView = insightViewType === "Issues";
+
   const isPromotionVisible =
-    insightViewType == "Issues" &&
-    !promotionCompleted &&
-    isPromotionEnabled(dismissalDate);
-  const areInsightsStatsVisible = insightViewType === "Issues";
+    isIssuesView && !promotionCompleted && isPromotionEnabled(dismissalDate);
   const isDismissalViewModeButtonVisible =
-    insightViewType === "Issues" &&
-    (isUndefined(dismissedCount) || dismissedCount > 0); // isUndefined - check for backward compatibility, always show when BE does not return this counter
+    isIssuesView && (isUndefined(dismissedCount) || dismissedCount > 0); // isUndefined - check for backward compatibility, always show when BE does not return this counter
   const isMarkingAsReadOptionsEnabled =
-    insightViewType === "Issues" &&
+    isIssuesView &&
     isNumber(unreadCount) &&
-    selectedFilters.length === 1 &&
-    selectedFilters[0] === "unread" &&
+    filters.length === 1 &&
+    filters[0] === "unread" &&
     unreadCount > 0;
   const areInsightStatsEnabled = getFeatureFlagValue(
     backendInfo,
     FeatureFlag.ARE_INSIGHT_STATS_ENABLED
   );
+  const isIssuesFilterVisible = getFeatureFlagValue(
+    backendInfo,
+    FeatureFlag.ARE_ISSUES_FILTERS_ENABLED
+  );
   const mainContainer = document.getElementById(MAIN_CONTAINER_ID);
-
-  const refreshData = useCallback(() => {
-    onQueryChange({
-      ...defaultQuery,
-      page,
-      sorting,
-      searchQuery: debouncedSearchInputValue,
-      showDismissed: mode === ViewMode.OnlyDismissed,
-      showUnreadOnly: isShowUnreadOnly(selectedFilters),
-      filters: selectedFilters
-    });
-  }, [
-    page,
-    sorting,
-    debouncedSearchInputValue,
-    onQueryChange,
-    defaultQuery,
-    mode,
-    selectedFilters
-  ]);
 
   const handleRefreshButtonClick = () => {
     sendUserActionTrackingEvent(trackingEvents.REFRESH_BUTTON_CLICKED, {
       viewMode: mode
     });
 
-    refreshData();
+    onRefresh();
   };
 
   const handleDismissalViewModeButtonClick = () => {
@@ -219,126 +200,130 @@ export const InsightsCatalog = ({
     setMode(ViewMode.All);
   };
 
-  const handleFilterSelectionChange = useCallback(
-    (selectedFilter: InsightFilterType[]) => {
-      setSelectedFilters(selectedFilter);
-    },
-    []
-  );
+  const handleFilterButtonClick = () => {
+    setIsFiltersToolbarVisible(!isFiltersToolbarVisible);
+  };
+
+  const handleSearchInputChange = (val: string | null) => {
+    setSearchInputValue(val ?? "");
+  };
+
+  useEffect(() => {
+    setSearchInputValue("");
+  }, [scopeSpanCodeObjectId, setSearchInputValue]);
+
+  useEffect(() => {
+    setPage(0);
+  }, [environment?.id, scopeSpanCodeObjectId, mode, setPage]);
 
   useEffect(() => {
     if (previousIsMarkingAllAsReadInProgress && !isMarkingAllAsReadInProgress) {
-      refreshData();
+      onRefresh();
     }
   }, [
     isMarkingAllAsReadInProgress,
     previousIsMarkingAllAsReadInProgress,
-    refreshData,
-    scope
+    onRefresh
   ]);
 
-  useEffect(() => {
-    if (!previousScopeSpan || previousScopeSpan !== scope?.span) {
-      setSearchInputValue("");
-    }
-  }, [scope?.span, previousScopeSpan]);
-
-  useEffect(() => {
-    setPage(0);
-  }, [environment?.id, scope?.span, mode]);
-
-  useEffect(() => {
-    refreshData();
-  }, []);
-
-  useEffect(() => {
+  const renderFilterPanel = () => {
     if (
-      (isNumber(previousPage) && previousPage !== page) ||
-      Boolean(previousSorting && previousSorting !== sorting) ||
-      (isString(previousSearchQuery) &&
-        previousSearchQuery !== debouncedSearchInputValue) ||
-      previousMode !== mode ||
-      previousFilters !== selectedFilters
+      !isIssuesView ||
+      Boolean(searchInputValue) ||
+      (insights.length === 0 && filters.length === 0)
     ) {
-      refreshData();
+      return null;
     }
-  }, [
-    previousSorting,
-    sorting,
-    previousPage,
-    page,
-    debouncedSearchInputValue,
-    previousSearchQuery,
-    refreshData,
-    mode,
-    previousMode,
-    previousFilters,
-    selectedFilters
-  ]);
+
+    return (
+      <FilterPanel
+        criticalCount={insightStats?.criticalInsightsCount}
+        allIssuesCount={insightStats?.issuesInsightsCount}
+        unreadCount={
+          areInsightStatsEnabled
+            ? insightStats?.unreadInsightsCount ?? 0
+            : unreadCount ?? 0
+        }
+      />
+    );
+  };
 
   return (
     <>
       <s.Toolbar>
         <s.ToolbarRow>
-          {!isUndefined(filterComponent) && filterComponent}
-          <SearchInput
-            disabled={Boolean(scope?.span)}
-            onChange={(val: string | null) => {
-              setSearchInputValue(val);
-            }}
-            value={searchInputValue}
-          />
-          <SortingSelector
-            onChange={(val: Sorting) => {
-              setSorting(val);
-            }}
-            options={[
-              ...(defaultQuery.insightViewType === "Issues"
-                ? [
-                    {
-                      value: SORTING_CRITERION.CRITICAL_INSIGHTS,
-                      label: "Critical issues",
-                      defaultOrder: SORTING_ORDER.DESC
-                    }
-                  ]
-                : []),
-              {
-                value: SORTING_CRITERION.LATEST,
-                label: "Latest",
-                defaultOrder: SORTING_ORDER.DESC
-              }
-            ]}
-            defaultSorting={defaultQuery.sorting}
-          />
-          <Tooltip title={"Refresh"}>
-            <s.RefreshButton
-              buttonType={"tertiary"}
-              icon={RefreshIcon}
-              onClick={handleRefreshButtonClick}
-            />
-          </Tooltip>
+          {isAtSpan && environments && environments.length > 1 && (
+            <EnvironmentSelector environments={environments} />
+          )}
+          {!isAtSpan && renderFilterPanel()}
+          <s.ToolbarButtonsContainer>
+            <Tooltip title={"Refresh"}>
+              <NewIconButton
+                icon={RefreshIcon}
+                onClick={handleRefreshButtonClick}
+                buttonType={"secondary"}
+              />
+            </Tooltip>
+            <Tooltip title={"Filters"}>
+              <s.FilterButtonContainer $isActive={isFiltersToolbarVisible}>
+                <NewIconButton
+                  icon={FunnelIcon}
+                  onClick={handleFilterButtonClick}
+                  isHighlighted={isFiltersToolbarVisible}
+                  buttonType={"secondary"}
+                />
+              </s.FilterButtonContainer>
+            </Tooltip>
+          </s.ToolbarButtonsContainer>
         </s.ToolbarRow>
-
+        {isFiltersToolbarVisible && (
+          <>
+            <s.ToolbarRow>
+              {isIssuesView && isIssuesFilterVisible && <IssuesFilter />}
+              <SearchInput
+                disabled={isAtSpan}
+                onChange={handleSearchInputChange}
+                value={searchInputValue}
+              />
+              <SortingSelector
+                onChange={(val: Sorting) => {
+                  setSorting(val);
+                }}
+                options={[
+                  ...(isIssuesView
+                    ? [
+                        {
+                          value: SORTING_CRITERION.CRITICAL_INSIGHTS,
+                          label: "Critical issues",
+                          defaultOrder: SORTING_ORDER.DESC
+                        }
+                      ]
+                    : []),
+                  {
+                    value: SORTING_CRITERION.LATEST,
+                    label: "Latest",
+                    defaultOrder: SORTING_ORDER.DESC
+                  }
+                ]}
+                defaultSorting={sorting}
+              />
+            </s.ToolbarRow>
+          </>
+        )}
+        {isPromotionVisible && (
+          <s.ToolbarRow>
+            <PromotionCard
+              onAccept={handlePromotionAccept}
+              onDiscard={handlePromotionDiscard}
+            />
+          </s.ToolbarRow>
+        )}
         {mode === ViewMode.All ? (
           <>
-            {!searchInputValue &&
-              areInsightsStatsVisible &&
-              (insights.length > 0 || selectedFilters.length > 0) && (
-                <InsightStats
-                  criticalCount={insightStats?.criticalInsightsCount}
-                  allIssuesCount={insightStats?.issuesInsightsCount}
-                  unreadCount={
-                    areInsightStatsEnabled
-                      ? insightStats?.unreadInsightsCount ?? 0
-                      : unreadCount ?? 0
-                  }
-                  onChange={handleFilterSelectionChange}
-                />
-              )}
-            {selectedFilters.length === 1 && (
+            {filters.length === 1 && (
               <s.ViewModeToolbarRow>
                 <s.InsightsDescription>
-                  {isShowUnreadOnly(selectedFilters) ? "Unread" : "Critical"}
+                  {isShowUnreadOnly(filters) ? "Unread" : "Critical"}
                 </s.InsightsDescription>
                 {isMarkingAsReadOptionsEnabled && (
                   <s.MarkingAsReadToolbarActionsContainer>
@@ -374,14 +359,6 @@ export const InsightsCatalog = ({
             )}
           </s.ViewModeToolbarRow>
         )}
-        {isPromotionVisible && (
-          <s.ToolbarRow>
-            <PromotionCard
-              onAccept={handlePromotionAccept}
-              onDiscard={handlePromotionDiscard}
-            />
-          </s.ToolbarRow>
-        )}
       </s.Toolbar>
       <InsightsPage
         page={page}
@@ -391,7 +368,7 @@ export const InsightsCatalog = ({
         }
         onJiraTicketCreate={onJiraTicketCreate}
         onRefresh={onRefresh}
-        isMarkAsReadButtonEnabled={isShowUnreadOnly(selectedFilters)}
+        isMarkAsReadButtonEnabled={isShowUnreadOnly(filters)}
       />
       <s.Footer>
         {totalCount > 0 && (
@@ -416,7 +393,7 @@ export const InsightsCatalog = ({
           <Button
             buttonType={"tertiary"}
             icon={(props) => (
-              <GroupIcon
+              <EyeIcon
                 {...props}
                 crossOut={mode !== ViewMode.OnlyDismissed}
                 color={

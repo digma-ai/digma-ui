@@ -23,15 +23,6 @@ export const Default: Story = {
   }
 };
 
-export const NoSpanCodeObjectId: Story = {
-  args: {
-    insight: {
-      ...mockedSpanQueryOptimizationInsight,
-      spanInfo: null
-    }
-  }
-};
-
 export const ManyEndpoints: Story = {
   args: {
     insight: {

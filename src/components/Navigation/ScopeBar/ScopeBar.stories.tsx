@@ -65,16 +65,7 @@ const mockedCodeContext: CodeContext = {
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 
-export const Default: Story = {};
-
-export const Home: Story = {
-  args: {
-    scope: { ...mockedScope, span: null },
-    codeContext: mockedCodeContext
-  }
-};
-
-export const SelectedSpan: Story = {
+export const Default: Story = {
   args: {
     scope: mockedScope,
     codeContext: mockedCodeContext

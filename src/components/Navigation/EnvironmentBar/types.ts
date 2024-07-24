@@ -7,6 +7,5 @@ export interface EnvironmentBarProps {
 }
 
 export interface EnvironmentBarElementProps {
-  $isMenuOpen?: boolean;
   $isDisabled?: boolean;
 }

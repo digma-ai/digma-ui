@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
-import { useGlobalStore } from "../../../../../containers/Main/stores/globalStore";
 import { dispatcher } from "../../../../../dispatcher";
 import { isValidHttpUrl } from "../../../../../utils/isValidUrl";
 import { JiraTicket } from "../../../../common/JiraTicket";
 import { actions } from "../../../actions";
 import {
   InsightJiraTicketProps,
-  InsightsGetDataListQuery,
   LinkTicketPayload,
   LinkTicketResponse,
   UnlinkTicketPayload
@@ -19,13 +17,13 @@ export const InsightJiraTicket = ({
   description,
   summary,
   attachments,
-  onClose
+  onClose,
+  refreshInsights
 }: InsightJiraTicketProps) => {
   const [errorMessage, setErrorMessage] = useState<string | null>();
   const [ticketLink, setTicketLink] = useState<string | null>(
     relatedInsight?.ticketLink ?? insight.ticketLink
   );
-  const persistedState = useGlobalStore.use.persistedState();
 
   const linkTicket = (link: string) => {
     setTicketLink(link);
@@ -63,11 +61,7 @@ export const InsightJiraTicket = ({
         setErrorMessage(linkTicketResponse.message);
       }
 
-      persistedState?.insights?.query &&
-        window.sendMessageToDigma<InsightsGetDataListQuery>({
-          action: actions.GET_DATA_LIST,
-          payload: { query: persistedState.insights.query }
-        });
+      refreshInsights();
 
       onReloadSpanInsight && onReloadSpanInsight();
     };
@@ -83,7 +77,7 @@ export const InsightJiraTicket = ({
         handleInsightTicketLink
       );
     };
-  }, [persistedState?.insights?.query, onReloadSpanInsight]);
+  }, [refreshInsights, onReloadSpanInsight]);
 
   useEffect(() => {
     if (relatedInsight) {

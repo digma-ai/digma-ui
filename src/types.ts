@@ -1,6 +1,6 @@
 import {
-  GetIssuesQuery,
-  IssuesQuery
+  GetIssuesDataListQuery,
+  GetIssuesFiltersQuery
 } from "./components/Insights/Issues/types";
 import { Duration } from "./globals";
 
@@ -80,9 +80,9 @@ export interface GetInsightStatsPayload {
 }
 
 export interface GetIssuesFiltersPayload {
-  query: IssuesQuery;
+  query: GetIssuesFiltersQuery;
 }
 
-export interface GetIssuesPayload {
-  query: GetIssuesQuery;
+export interface GetIssuesDataListPayload {
+  query: GetIssuesDataListQuery;
 }
