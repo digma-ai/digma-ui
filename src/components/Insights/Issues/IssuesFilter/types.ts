@@ -11,5 +11,5 @@ export interface IssuesFiltersData {
 
 export interface IssuesFilterQuery {
   issueTypes: string[];
-  filters: InsightFilterType[];
+  filters?: InsightFilterType[];
 }

@@ -122,8 +122,8 @@ export const IssuesFilter = () => {
     ) {
       applyFilters(
         persistedFilters?.issueTypes ?? [],
-        Boolean(persistedFilters?.filters.includes("criticality")),
-        Boolean(persistedFilters?.filters.includes("unread"))
+        Boolean(persistedFilters?.filters?.includes("criticality")),
+        Boolean(persistedFilters?.filters?.includes("unread"))
       );
     }
   }, [previousPersistedFilters, persistedFilters, applyFilters]);
