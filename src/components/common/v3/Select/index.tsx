@@ -26,7 +26,8 @@ export const Select = ({
   onChange,
   disabled,
   icon: Icon,
-  placeholder
+  placeholder,
+  className
 }: SelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -98,6 +99,7 @@ export const Select = ({
         $isActive={isOpen || selectedValues.length > 0}
         onClick={handleButtonClick}
         disabled={disabled}
+        className={className}
       >
         {Icon && <Icon color={"currentColor"} />}
         {isString(placeholder) && <s.ButtonLabel>{placeholder}</s.ButtonLabel>}

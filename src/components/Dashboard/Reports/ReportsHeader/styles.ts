@@ -1,0 +1,52 @@
+import styled from "styled-components";
+import { Select } from "../../../common/v3/Select";
+
+export const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+export const FiltersContainer = styled.div`
+  position: relative;
+  height: 189px;
+`;
+
+export const Header = styled.div`
+  color: ${({ theme }) => theme.colors.v3.text.primary};
+  font-size: 36px;
+  font-weight: 700;
+  text-align: center;
+  height: 43px;
+`;
+
+export const FiltersGroup = styled.div`
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+`;
+
+export const Group = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  gap: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
+
+export const Background = styled.div`
+  position: absolute;
+  width: 100%;
+
+  img {
+    height: 100%;
+    width: 100%;
+  }
+`;
+
+export const FilterSelector = styled(Select)`
+  width: 180px;
+  height: 28px;
+  color: ${({ theme }) => theme.colors.v3.text.secondary};
+`;
