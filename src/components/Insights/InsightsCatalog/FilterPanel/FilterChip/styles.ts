@@ -11,7 +11,7 @@ export const StatCounter = styled.div`
   display: flex;
   justify-content: center;
   padding: 0 4px;
-  color: ${({ theme }) => theme.colors.v3.text.primary};
+  color: ${({ theme }) => theme.colors.v3.text.white};
   border-radius: 2px;
   background: ${({ theme }) => theme.colors.v3.surface.highlight};
 `;

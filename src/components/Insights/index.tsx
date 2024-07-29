@@ -9,6 +9,7 @@ import { trackingEvents as globalTrackingEvents } from "../../trackingEvents";
 import { isUndefined } from "../../typeGuards/isUndefined";
 import { openURLInDefaultBrowser } from "../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
+import { areBackendInfosEqual } from "../../utils/areBackendInfosEqual";
 import { CircleLoader } from "../common/CircleLoader";
 import { EmptyState } from "../common/EmptyState";
 import { RegistrationDialog } from "../common/RegistrationDialog";
@@ -315,14 +316,17 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
   // Reset filters on backend instance or scope change
   useEffect(() => {
     if (
-      previousBackendInfo &&
-      previousBackendInfo !== backendInfo &&
-      areFiltersRehydrated &&
-      previousScope &&
-      previousScopeSpanCodeObjectId !== scopeSpanCodeObjectId
+      (areFiltersRehydrated &&
+        Boolean(
+          previousBackendInfo &&
+            !areBackendInfosEqual(previousBackendInfo, backendInfo)
+        )) ||
+      Boolean(
+        previousScope && previousScopeSpanCodeObjectId !== scopeSpanCodeObjectId
+      )
     ) {
-      setFilteredInsightTypes(persistedFilters?.issueTypes ?? []);
-      setFilters(persistedFilters?.filters ?? []);
+      setFilteredInsightTypes([]);
+      setFilters([]);
     }
   }, [
     previousBackendInfo,
