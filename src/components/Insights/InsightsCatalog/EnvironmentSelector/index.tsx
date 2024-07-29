@@ -74,11 +74,14 @@ export const EnvironmentSelector = ({
     (x) => x.id === environment?.id
   );
 
-  const environmentsWithChips = getSlidingWindow(
-    environments,
-    environmentIndex - 1,
-    ENVIRONMENT_CHIP_COUNT
-  );
+  const environmentsWithChips =
+    environments.length > ENVIRONMENT_CHIP_COUNT
+      ? getSlidingWindow(
+          environments,
+          environmentIndex - 1,
+          ENVIRONMENT_CHIP_COUNT
+        )
+      : environments;
 
   const renderEnvironmentMenuButton = () => (
     <NewButton

@@ -97,6 +97,10 @@ export const UnreadFilterChip = styled(FilterChip)<FilterChipComponentProps>`
   &:hover:enabled {
     border: 1px solid ${({ theme }) => theme.colors.v3.stroke.brandPrimary};
     background: ${({ theme }) => theme.colors.v3.surface.brandDark};
+
+    & ${StatCounter} {
+      background: ${({ theme }) => theme.colors.v3.surface.brandSecondary};
+    }
   }
 
   &:active:enabled {
