@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useInsightsStore } from "../../../../containers/Main/stores/useInsightsStore";
-import { usePersistence } from "../../../../hooks/usePersistence";
 import { usePrevious } from "../../../../hooks/usePrevious";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { getInsightTypeInfo } from "../../../../utils/getInsightTypeInfo";
@@ -16,9 +15,6 @@ import { InsightFilterType } from "../../InsightsCatalog/types";
 import { useIssuesFilters } from "../useIssuesFilters";
 import * as s from "./styles";
 import { trackingEvents } from "./tracking";
-import { IssuesFilterQuery } from "./types";
-
-const PERSISTENCE_KEY = "issuesFilters";
 
 export const IssuesFilter = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -32,34 +28,8 @@ export const IssuesFilter = () => {
     [filters]
   );
   const isUnreadOnly = useMemo(() => filters.includes("unread"), [filters]);
-  const [persistedFilters, setPersistedFilters] =
-    usePersistence<IssuesFilterQuery>(PERSISTENCE_KEY, "project");
-  const previousPersistedFilters = usePrevious(persistedFilters);
   const { data } = useIssuesFilters();
   const previousData = usePrevious(data);
-
-  const applyFilters = useCallback(
-    (
-      value: string | string[],
-      isCriticalOnly: boolean,
-      isUnreadOnly: boolean
-    ) => {
-      const newInsightTypes = Array.isArray(value) ? value : [value];
-      const newFilters: InsightFilterType[] = [
-        ...(isCriticalOnly ? (["criticality"] as InsightFilterType[]) : []),
-        ...(isUnreadOnly ? (["unread"] as InsightFilterType[]) : [])
-      ];
-      setFilteredInsightTypes(newInsightTypes);
-      setFilters(newFilters);
-
-      const newFilterValue: IssuesFilterQuery = {
-        issueTypes: newInsightTypes,
-        filters: newFilters
-      };
-      setPersistedFilters(newFilterValue);
-    },
-    [setFilters, setPersistedFilters, setFilteredInsightTypes]
-  );
 
   useEffect(() => {
     if (
@@ -72,61 +42,47 @@ export const IssuesFilter = () => {
       );
 
       if (newSelection.length !== filteredInsightTypes.length) {
-        applyFilters(newSelection, isCriticalOnly, isUnreadOnly);
+        setFilteredInsightTypes(newSelection);
       }
     }
   }, [
     previousData,
     data,
     filteredInsightTypes,
-    applyFilters,
-    isCriticalOnly,
-    isUnreadOnly
+    setFilteredInsightTypes,
+    filters
   ]);
 
   const handleClearFiltersButtonClick = () => {
     sendUserActionTrackingEvent(
       trackingEvents.CLEAR_ALL_FILTERS_BUTTON_CLICKED
     );
-    applyFilters([], false, false);
+    setFilteredInsightTypes([]);
+    setFilters([]);
   };
 
-  const handleIssueTypesChange = useCallback(
-    (value: string | string[]) => {
-      sendUserActionTrackingEvent(trackingEvents.FILTER_OPTION_SELECTED);
-      applyFilters(value, isCriticalOnly, isUnreadOnly);
-    },
-    [applyFilters, isCriticalOnly, isUnreadOnly]
-  );
+  const handleIssueTypesChange = (value: string | string[]) => {
+    sendUserActionTrackingEvent(trackingEvents.FILTER_OPTION_SELECTED);
+    const newInsightTypes = Array.isArray(value) ? value : [value];
+    setFilteredInsightTypes(newInsightTypes);
+  };
 
-  const handleCriticalityChange = useCallback(
-    (value: string | string[]) => {
-      sendUserActionTrackingEvent(trackingEvents.FILTER_OPTION_SELECTED);
-      applyFilters(filteredInsightTypes, value === "criticality", isUnreadOnly);
-    },
-    [applyFilters, filteredInsightTypes, isUnreadOnly]
-  );
-
-  const handleReadStatusChange = useCallback(
-    (value: string | string[]) => {
-      sendUserActionTrackingEvent(trackingEvents.FILTER_OPTION_SELECTED);
-      applyFilters(filteredInsightTypes, isCriticalOnly, value === "unread");
-    },
-    [applyFilters, filteredInsightTypes, isCriticalOnly]
-  );
-
-  useEffect(() => {
-    if (
-      !previousPersistedFilters &&
-      previousPersistedFilters !== persistedFilters
-    ) {
-      applyFilters(
-        persistedFilters?.issueTypes ?? [],
-        Boolean(persistedFilters?.filters?.includes("criticality")),
-        Boolean(persistedFilters?.filters?.includes("unread"))
-      );
+  const handleToggleFilterChange = (
+    value: string | string[],
+    filterType: InsightFilterType
+  ) => {
+    sendUserActionTrackingEvent(trackingEvents.FILTER_OPTION_SELECTED, {
+      filterType
+    });
+    const selectedFilters = new Set(filters);
+    if (value === filterType) {
+      selectedFilters.add(filterType);
+    } else {
+      selectedFilters.delete(filterType);
     }
-  }, [previousPersistedFilters, persistedFilters, applyFilters]);
+
+    setFilters(Array.from(selectedFilters));
+  };
 
   const issueTypesFilterOptions: SelectItem[] =
     data?.issueTypeFilters?.map((entry) => ({
@@ -199,7 +155,7 @@ export const IssuesFilter = () => {
           <Select
             key={"criticality"}
             items={criticalityFilterOptions}
-            onChange={handleCriticalityChange}
+            onChange={(value) => handleToggleFilterChange(value, "criticality")}
             placeholder={criticalityFilterPlaceholder}
             icon={(props: IconProps) => (
               <s.InsightIconContainer>
@@ -212,7 +168,7 @@ export const IssuesFilter = () => {
           <Select
             key={"readStatus"}
             items={readStatusFilterOptions}
-            onChange={handleReadStatusChange}
+            onChange={(value) => handleToggleFilterChange(value, "unread")}
             placeholder={readStatusFilterPlaceholder}
             icon={(props: IconProps) => (
               <s.InsightIconContainer>

@@ -3,8 +3,10 @@ import { actions as globalActions } from "../../actions";
 import { SLACK_WORKSPACE_URL } from "../../constants";
 import { useGlobalStore } from "../../containers/Main/stores/useGlobalStore";
 import { useInsightsStore } from "../../containers/Main/stores/useInsightsStore";
+import { usePersistence } from "../../hooks/usePersistence";
 import { usePrevious } from "../../hooks/usePrevious";
 import { trackingEvents as globalTrackingEvents } from "../../trackingEvents";
+import { isUndefined } from "../../typeGuards/isUndefined";
 import { openURLInDefaultBrowser } from "../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 import { CircleLoader } from "../common/CircleLoader";
@@ -18,6 +20,7 @@ import { LightBulbSmallIcon } from "../common/icons/LightBulbSmallIcon";
 import { OpenTelemetryLogoCrossedSmallIcon } from "../common/icons/OpenTelemetryLogoCrossedSmallIcon";
 import { SlackLogoIcon } from "../common/icons/SlackLogoIcon";
 import { InsightsCatalog } from "./InsightsCatalog";
+import { IssuesFilterQuery } from "./Issues/IssuesFilter/types";
 import { EndpointBottleneckInsightTicket } from "./insightTickets/EndpointBottleneckInsightTicket";
 import { EndpointHighNumberOfQueriesInsightTicket } from "./insightTickets/EndpointHighNumberOfQueriesInsightTicket";
 import { EndpointQueryOptimizationV2InsightTicket } from "./insightTickets/EndpointQueryOptimizationV2InsightTicket";
@@ -207,8 +210,19 @@ const sendMessage = (action: string, data?: object) => {
   });
 };
 
+export const ISSUES_FILTERS_PERSISTENCE_KEY = "issuesFilters";
+
 export const Insights = ({ insightViewType }: InsightsProps) => {
-  const { data, isLoading, refresh } = useInsightsData();
+  const [areFiltersRehydrated, setAreFiltersRehydrated] = useState(false);
+  const [persistedFilters, setPersistedFilters] =
+    usePersistence<IssuesFilterQuery>(
+      ISSUES_FILTERS_PERSISTENCE_KEY,
+      "project"
+    );
+  const previousPersistedFilters = usePrevious(persistedFilters);
+  const { data, isLoading, refresh } = useInsightsData({
+    areFiltersRehydrated
+  });
   const reset = useInsightsStore.use.reset();
   const [infoToOpenJiraTicket, setInfoToOpenJiraTicket] =
     useState<InsightTicketInfo<GenericCodeObjectInsight>>();
@@ -221,6 +235,15 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
   const isRegistrationRequired =
     isRegistrationEnabled && !userRegistrationEmail;
   const setInsightsViewType = useInsightsStore.use.setInsightViewType();
+  const storedInsightViewType = useInsightsStore.use.insightViewType();
+  const filteredInsightTypes = useInsightsStore.use.filteredInsightTypes();
+  const previousFilteredInsightTypes = usePrevious(filteredInsightTypes);
+  const setFilteredInsightTypes =
+    useInsightsStore.use.setFilteredInsightTypes();
+  const filters = useInsightsStore.use.filters();
+  const previousFilters = usePrevious(filters);
+  const setFilters = useInsightsStore.use.setFilters();
+  const backendInfo = useGlobalStore.use.backendInfo();
 
   useEffect(() => {
     return () => {
@@ -243,6 +266,43 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
     userRegistrationEmail,
     isRegistrationInProgress,
     previousUserRegistrationEmail
+  ]);
+
+  useEffect(() => {
+    if (
+      isUndefined(previousPersistedFilters) &&
+      !isUndefined(persistedFilters)
+    ) {
+      setFilteredInsightTypes(persistedFilters?.issueTypes ?? []);
+      setFilters(persistedFilters?.filters ?? []);
+      setAreFiltersRehydrated(true);
+    }
+  }, [
+    previousPersistedFilters,
+    persistedFilters,
+    setFilters,
+    setFilteredInsightTypes
+  ]);
+
+  useEffect(() => {
+    if (
+      (previousFilteredInsightTypes !== filteredInsightTypes ||
+        previousFilters !== filters) &&
+      areFiltersRehydrated
+    ) {
+      setPersistedFilters({
+        issueTypes: filteredInsightTypes,
+        filters
+      });
+    }
+  }, [
+    previousFilteredInsightTypes,
+    filteredInsightTypes,
+    previousFilters,
+    filters,
+    setPersistedFilters,
+    areFiltersRehydrated,
+    persistedFilters
   ]);
 
   const handleSlackLinkClick = () => {
@@ -283,7 +343,11 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
     data: InsightsData | null,
     isLoading: boolean
   ): JSX.Element => {
-    const isInitialLoading = !data && isLoading;
+    const isInitialLoading =
+      (!data && isLoading) ||
+      !backendInfo ||
+      !storedInsightViewType ||
+      !areFiltersRehydrated;
     if (isInitialLoading) {
       return <EmptyState content={<CircleLoader size={32} />} />;
     }

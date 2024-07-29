@@ -1,13 +1,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { DigmaMessageError } from "../../../api/types";
-import { dispatcher } from "../../../dispatcher";
-import { usePrevious } from "../../../hooks/usePrevious";
-import { actions, actions as issuesActions } from "./actions";
-
 import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
 import { useInsightsStore } from "../../../containers/Main/stores/useInsightsStore";
+import { dispatcher } from "../../../dispatcher";
+import { usePrevious } from "../../../hooks/usePrevious";
 import { GetIssuesFiltersPayload } from "../../../types";
 import { ViewMode } from "../InsightsCatalog/types";
+import { actions as issuesActions } from "./actions";
 import { IssuesFiltersData } from "./IssuesFilter/types";
 import { GetIssuesFiltersQuery } from "./types";
 
@@ -29,12 +28,14 @@ export const useIssuesFilters = () => {
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
   const refreshTimerId = useRef<number>();
   const environment = useGlobalStore.use.environment();
+  const environmentId = environment?.id;
   const scope = useGlobalStore.use.scope();
   const spanCodeObjectId = scope?.span?.spanCodeObjectId ?? null;
   const search = useInsightsStore.use.search();
   const filters = useInsightsStore.use.filters();
   const filteredInsightTypes = useInsightsStore.use.filteredInsightTypes();
   const viewMode = useInsightsStore.use.viewMode();
+  const backendInfo = useGlobalStore.use.backendInfo();
 
   const query: GetIssuesFiltersQuery = useMemo(
     () => ({
@@ -47,12 +48,16 @@ export const useIssuesFilters = () => {
     [search, filters, filteredInsightTypes, viewMode, spanCodeObjectId]
   );
 
-  const refresh = useCallback(() => getFilters(query), [query]);
+  const refresh = useCallback(() => {
+    if (environmentId) {
+      getFilters(query);
+    }
+  }, [query, environmentId]);
 
   useEffect(() => {
     window.clearTimeout(refreshTimerId.current);
     refresh();
-  }, [refresh, scope?.span?.spanCodeObjectId, environment?.id]);
+  }, [refresh, scope?.span?.spanCodeObjectId, environmentId, backendInfo]);
 
   useEffect(() => {
     const handleIssueFiltersData = (
@@ -68,11 +73,14 @@ export const useIssuesFilters = () => {
       setLastSetDataTimeStamp(timeStamp);
     };
 
-    dispatcher.addActionListener(actions.SET_FILTERS, handleIssueFiltersData);
+    dispatcher.addActionListener(
+      issuesActions.SET_FILTERS,
+      handleIssueFiltersData
+    );
 
     return () => {
       dispatcher.removeActionListener(
-        actions.SET_FILTERS,
+        issuesActions.SET_FILTERS,
         handleIssueFiltersData
       );
       window.clearTimeout(refreshTimerId.current);
@@ -90,12 +98,7 @@ export const useIssuesFilters = () => {
     return () => {
       window.clearTimeout(refreshTimerId.current);
     };
-  }, [
-    lastSetDataTimeStamp,
-    previousLastSetDataTimeStamp,
-    environment,
-    refresh
-  ]);
+  }, [lastSetDataTimeStamp, previousLastSetDataTimeStamp, refresh]);
 
   return {
     data,

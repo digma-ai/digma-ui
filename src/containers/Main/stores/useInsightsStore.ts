@@ -18,7 +18,7 @@ import { createSelectors } from "./createSelectors";
 export interface InsightsState {
   data: InsightsData | null;
   isDataLoading: boolean;
-  search: string | null;
+  search: string;
   page: number;
   sorting: Sorting;
   viewMode: ViewMode;
@@ -32,7 +32,7 @@ export interface InsightsState {
 export const initialState: InsightsState = {
   data: null,
   isDataLoading: false,
-  search: null,
+  search: "",
   page: 0,
   sorting: {
     criterion: SORTING_CRITERION.LATEST,

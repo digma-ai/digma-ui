@@ -15,9 +15,9 @@ initializeDigmaMessageListener(dispatcher);
 window.sendMessageToDigma = sendMessage;
 window.cancelMessageToDigma = cancelMessage;
 
-window.onerror = (message, source, lineno, colno, error) => {
-  handleUncaughtError("troubleshooting", message, source, lineno, colno, error);
-};
+window.addEventListener("error", (e) => {
+  handleUncaughtError("troubleshooting", e);
+});
 
 const rootElement = document.getElementById("root");
 

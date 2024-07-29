@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { useGlobalStore } from "../../../../containers/Main/stores/useGlobalStore";
 import { useInsightsStore } from "../../../../containers/Main/stores/useInsightsStore";
 import { usePrevious } from "../../../../hooks/usePrevious";
@@ -19,62 +19,69 @@ export const FilterPanel = ({
   const environmentId = environment?.id;
   const previousEnvironmentId = usePrevious(environmentId);
   const scope = useGlobalStore.use.scope();
-  const scopeSpanCodeObjectId = useMemo(
-    () => scope?.span?.spanCodeObjectId,
-    [scope]
-  );
-  const previousScopeSpanCodeObjectId = usePrevious(scopeSpanCodeObjectId);
+  const previousScope = usePrevious(scope);
+  const scopeSpanCodeObjectId = scope?.span?.spanCodeObjectId;
+  const previousScopeSpanCodeObjectId = previousScope?.span?.spanCodeObjectId;
 
   useEffect(() => {
     if (
-      previousEnvironmentId !== environmentId ||
-      previousScopeSpanCodeObjectId !== scopeSpanCodeObjectId
+      Boolean(
+        previousEnvironmentId && previousEnvironmentId !== environmentId
+      ) ||
+      (previousScope && previousScopeSpanCodeObjectId !== scopeSpanCodeObjectId)
     ) {
       setFilters([]);
     }
   }, [
     previousEnvironmentId,
     environmentId,
-    previousScopeSpanCodeObjectId,
+    previousScope,
+    setFilters,
     scopeSpanCodeObjectId,
-    setFilters
+    previousScopeSpanCodeObjectId
   ]);
 
-  const handleSelectionChange = (selectedFilter: InsightFilterType | null) => {
-    const selection = selectedFilter ? [...filters] : [];
+  const handleFilterChipClick = (selectedFilter?: InsightFilterType) => {
+    const newFilters = new Set(filters);
 
     if (selectedFilter) {
-      const indexOfSelected = filters.indexOf(selectedFilter);
-      if (indexOfSelected !== -1) {
-        selection.splice(indexOfSelected, 1);
+      if (newFilters.has(selectedFilter)) {
+        newFilters.delete(selectedFilter);
       } else {
-        selection.push(selectedFilter);
+        newFilters.add(selectedFilter);
       }
+    } else {
+      newFilters.clear();
     }
 
-    sendUserActionTrackingEvent(`issues filter changed`, { selection });
+    const selection = Array.from(newFilters);
+
+    sendUserActionTrackingEvent("issues filter changed", { selection });
     setFilters(selection);
   };
+
+  const isCriticalSelected = filters.includes("criticality");
+  const isUnreadSelected = filters.includes("unread");
 
   return (
     <s.Stats>
       <FilterChip
-        disabled={!criticalCount}
-        selected={filters.includes("criticality")}
-        onClick={() => handleSelectionChange("criticality")}
+        disabled={!criticalCount && !isCriticalSelected}
+        selected={isCriticalSelected}
+        onClick={() => handleFilterChipClick("criticality")}
         count={criticalCount}
         type={"critical"}
       />
       <FilterChip
-        disabled={!unreadCount}
+        disabled={!unreadCount && !isUnreadSelected}
         selected={filters.includes("unread")}
-        onClick={() => handleSelectionChange("unread")}
+        onClick={() => handleFilterChipClick("unread")}
         count={unreadCount}
         type={"unread"}
       />
       <FilterChip
         selected={filters.length === 0}
-        onClick={() => handleSelectionChange(null)}
+        onClick={() => handleFilterChipClick()}
         count={allIssuesCount}
         type={"all"}
       />

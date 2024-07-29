@@ -19,6 +19,10 @@ import { GetIssuesDataListQuery } from "./Issues/types";
 import { actions } from "./actions";
 import { InsightsData, InsightViewType } from "./types";
 
+interface UseInsightsDataProps {
+  areFiltersRehydrated: boolean;
+}
+
 interface GetDataListParams {
   search: string | null;
   page: number;
@@ -118,7 +122,9 @@ const getStats = ({
   });
 };
 
-export const useInsightsData = () => {
+export const useInsightsData = ({
+  areFiltersRehydrated
+}: UseInsightsDataProps) => {
   const data = useInsightsStore.use.data();
   const setData = useInsightsStore.use.setData();
   const isLoading = useInsightsStore.use.isDataLoading();
@@ -130,6 +136,7 @@ export const useInsightsData = () => {
   const backendInfo = useGlobalStore.use.backendInfo();
   const scope = useGlobalStore.use.scope();
   const environment = useGlobalStore.use.environment();
+  const environmentId = environment?.id;
   const search = useInsightsStore.use.search();
   const page = useInsightsStore.use.page();
   const sorting = useInsightsStore.use.sorting();
@@ -139,6 +146,13 @@ export const useInsightsData = () => {
   const insightViewType = useInsightsStore.use.insightViewType();
   const spanCodeObjectId = scope?.span?.spanCodeObjectId ?? null;
   const showDismissed = viewMode === ViewMode.OnlyDismissed;
+  const isAppReadyToGetData = useMemo(
+    () =>
+      Boolean(
+        backendInfo && areFiltersRehydrated && insightViewType && environment
+      ),
+    [backendInfo, areFiltersRehydrated, insightViewType, environment]
+  );
 
   const areIssuesFiltersEnabled = useMemo(
     () =>
@@ -182,19 +196,26 @@ export const useInsightsData = () => {
   );
 
   const refresh = useCallback(() => {
-    getDataList(getDataListParams);
-    getStats(getStatsParams);
-    setIsLoading(true);
-  }, [getDataListParams, getStatsParams, setIsLoading]);
+    if (isAppReadyToGetData) {
+      getDataList(getDataListParams);
+      getStats(getStatsParams);
+      setIsLoading(true);
+    }
+  }, [getDataListParams, getStatsParams, setIsLoading, isAppReadyToGetData]);
+
+  useEffect(() => {
+    const timerId = refreshTimerId.current;
+    return () => {
+      window.clearTimeout(timerId);
+    };
+  }, []);
 
   useEffect(() => {
     window.clearTimeout(refreshTimerId.current);
     refresh();
-  }, [spanCodeObjectId, environment?.id, refresh]);
+  }, [backendInfo, environmentId, spanCodeObjectId, refresh]);
 
   useEffect(() => {
-    const timerId = refreshTimerId.current;
-
     const handleInsightsData = (
       data: unknown,
       timeStamp: number,
@@ -222,22 +243,16 @@ export const useInsightsData = () => {
         issuesActions.SET_DATA_LIST,
         handleInsightsData
       );
-      window.clearTimeout(timerId);
     };
   }, [setData, setIsLoading]);
 
   useEffect(() => {
-    let timerId = refreshTimerId.current;
     if (previousLastSetDataTimeStamp !== lastSetDataTimeStamp) {
-      window.clearTimeout(timerId);
-      timerId = window.setTimeout(() => {
+      window.clearTimeout(refreshTimerId.current);
+      refreshTimerId.current = window.setTimeout(() => {
         refresh();
       }, REFRESH_INTERVAL);
     }
-
-    return () => {
-      window.clearTimeout(timerId);
-    };
   }, [lastSetDataTimeStamp, previousLastSetDataTimeStamp, refresh]);
 
   return {
