@@ -244,6 +244,11 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
   const previousFilters = usePrevious(filters);
   const setFilters = useInsightsStore.use.setFilters();
   const backendInfo = useGlobalStore.use.backendInfo();
+  const previousBackendInfo = usePrevious(backendInfo);
+  const scope = useGlobalStore.use.scope();
+  const scopeSpanCodeObjectId = scope?.span?.spanCodeObjectId;
+  const previousScope = usePrevious(scope);
+  const previousScopeSpanCodeObjectId = previousScope?.span?.spanCodeObjectId;
 
   useEffect(() => {
     return () => {
@@ -268,6 +273,7 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
     previousUserRegistrationEmail
   ]);
 
+  // Rehydrate filters from persistence
   useEffect(() => {
     if (
       isUndefined(previousPersistedFilters) &&
@@ -284,6 +290,7 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
     setFilteredInsightTypes
   ]);
 
+  // Persist filters on its change
   useEffect(() => {
     if (
       (previousFilteredInsightTypes !== filteredInsightTypes ||
@@ -303,6 +310,30 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
     setPersistedFilters,
     areFiltersRehydrated,
     persistedFilters
+  ]);
+
+  // Reset filters on backend instance or scope change
+  useEffect(() => {
+    if (
+      previousBackendInfo &&
+      previousBackendInfo !== backendInfo &&
+      areFiltersRehydrated &&
+      previousScope &&
+      previousScopeSpanCodeObjectId !== scopeSpanCodeObjectId
+    ) {
+      setFilteredInsightTypes(persistedFilters?.issueTypes ?? []);
+      setFilters(persistedFilters?.filters ?? []);
+    }
+  }, [
+    previousBackendInfo,
+    backendInfo,
+    previousScope,
+    previousScopeSpanCodeObjectId,
+    scopeSpanCodeObjectId,
+    areFiltersRehydrated,
+    persistedFilters,
+    setFilteredInsightTypes,
+    setFilters
   ]);
 
   const handleSlackLinkClick = () => {

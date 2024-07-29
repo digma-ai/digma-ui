@@ -23,7 +23,6 @@ import { SortingSelector } from "../../common/SortingSelector";
 import { SORTING_ORDER, Sorting } from "../../common/SortingSelector/types";
 import { ChevronIcon } from "../../common/icons/16px/ChevronIcon";
 import { EyeIcon } from "../../common/icons/16px/EyeIcon";
-import { FunnelIcon } from "../../common/icons/16px/FunnelIcon";
 import { RefreshIcon } from "../../common/icons/16px/RefreshIcon";
 import { Direction } from "../../common/icons/types";
 import { Button } from "../../common/v3/Button";
@@ -32,6 +31,7 @@ import { Tooltip } from "../../common/v3/Tooltip";
 import { IssuesFilter } from "../Issues/IssuesFilter";
 import { trackingEvents } from "../tracking";
 import { EnvironmentSelector } from "./EnvironmentSelector";
+import { FilterButton } from "./FilterButton";
 import { FilterPanel } from "./FilterPanel";
 import { InsightsPage } from "./InsightsPage";
 import { PromotionCard } from "./PromotionCard";
@@ -70,11 +70,12 @@ export const InsightsCatalog = ({
   const page = useInsightsStore.use.page();
   const setPage = useInsightsStore.use.setPage();
   const searchInputValue = useInsightsStore.use.search();
-  const setSearchInputValue = useInsightsStore.use.setSearch();
+  const setSearch = useInsightsStore.use.setSearch();
   const debouncedSearchInputValue = useDebounce(searchInputValue, 1000);
   const sorting = useInsightsStore.use.sorting();
   const setSorting = useInsightsStore.use.setSorting();
   const filters = useInsightsStore.use.filters();
+  const filteredInsightTypes = useInsightsStore.use.filteredInsightTypes();
   const data = useInsightsStore.use.data();
   const insights = data?.insights ?? [];
   const totalCount = data?.totalCount ?? 0;
@@ -205,12 +206,12 @@ export const InsightsCatalog = ({
   };
 
   const handleSearchInputChange = (val: string | null) => {
-    setSearchInputValue(val ?? "");
+    setSearch(val ?? "");
   };
 
   useEffect(() => {
-    setSearchInputValue("");
-  }, [scopeSpanCodeObjectId, setSearchInputValue]);
+    setSearch("");
+  }, [scopeSpanCodeObjectId, setSearch]);
 
   useEffect(() => {
     setPage(0);
@@ -227,11 +228,7 @@ export const InsightsCatalog = ({
   ]);
 
   const renderFilterPanel = () => {
-    if (
-      !isIssuesView ||
-      Boolean(searchInputValue) ||
-      (insights.length === 0 && filters.length === 0)
-    ) {
+    if (!isIssuesView) {
       return null;
     }
 
@@ -247,6 +244,9 @@ export const InsightsCatalog = ({
       />
     );
   };
+
+  const appliedFilterCount =
+    filters.length + (filteredInsightTypes.length > 0 ? 1 : 0);
 
   return (
     <>
@@ -264,16 +264,11 @@ export const InsightsCatalog = ({
                 buttonType={"secondary"}
               />
             </Tooltip>
-            <Tooltip title={"Filters"}>
-              <s.FilterButtonContainer $isActive={isFiltersToolbarVisible}>
-                <NewIconButton
-                  icon={FunnelIcon}
-                  onClick={handleFilterButtonClick}
-                  isHighlighted={isFiltersToolbarVisible}
-                  buttonType={"secondary"}
-                />
-              </s.FilterButtonContainer>
-            </Tooltip>
+            <FilterButton
+              isActive={isFiltersToolbarVisible}
+              onClick={handleFilterButtonClick}
+              filterCount={appliedFilterCount}
+            />
           </s.ToolbarButtonsContainer>
         </s.ToolbarRow>
         {isFiltersToolbarVisible && (

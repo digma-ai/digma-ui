@@ -49,7 +49,7 @@ export interface CodeDetails {
 export interface ScopeSpan {
   displayName: string;
   spanCodeObjectId: string;
-  methodId?: string;
+  methodId: string | null;
   serviceName: string | null;
   role: "Entry" | "Internal" | "Unknown" | null;
 }

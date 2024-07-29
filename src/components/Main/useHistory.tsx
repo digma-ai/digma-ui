@@ -98,6 +98,7 @@ export const useHistory = () => {
   const location = history.getCurrentLocation();
   const environment = useGlobalStore.use.environment();
   const scope = useGlobalStore.use.scope();
+  const scopeSpanCodeObjectId = scope?.span?.spanCodeObjectId;
 
   const goTo = (to: To, options?: NavigateOptions) => {
     if (!isNavigationNeeded(to, options, location)) {
@@ -109,7 +110,12 @@ export const useHistory = () => {
     const optionsState = options?.state as HistoryState | undefined;
     const state: HistoryState = optionsState ?? {
       environmentId: environment?.id,
-      spanCodeObjectId: scope?.span?.spanCodeObjectId
+      spanCodeObjectId: scopeSpanCodeObjectId,
+      spanDisplayName: scopeSpanCodeObjectId
+        ? scope?.span?.displayName
+          ? scope.span.displayName
+          : location?.state?.spanDisplayName
+        : undefined
     };
 
     const resolvedPath = resolvePath(to, location?.location.pathname ?? "/");

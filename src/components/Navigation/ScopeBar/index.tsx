@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { history } from "../../../containers/Main/history";
+import { isString } from "../../../typeGuards/isString";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { CodeDetails, Scope } from "../../common/App/types";
 import { NewPopover } from "../../common/NewPopover";
@@ -50,10 +52,16 @@ const getTargetButtonTooltip = (
 export const ScopeBar = ({ scope, codeContext }: ScopeBarProps) => {
   const [isTargetButtonMenuOpen, setIsTargetButtonMenuOpen] = useState(false);
 
+  const location = history.getCurrentLocation();
   const spanDisplayName = scope?.span?.displayName;
+  const spanCodeObjectId = scope?.span?.spanCodeObjectId;
+  // Take scope display name from history state if it's not provided
   const scopeDisplayName = spanDisplayName
     ? spanDisplayName
-    : scope?.span?.spanCodeObjectId ?? "";
+    : isString(spanCodeObjectId) &&
+      spanCodeObjectId === location?.state?.spanCodeObjectId
+    ? location?.state?.spanDisplayName
+    : "";
   const targetButtonTooltip = getTargetButtonTooltip(codeContext, scope);
 
   const isTargetButtonTooltipOpen =

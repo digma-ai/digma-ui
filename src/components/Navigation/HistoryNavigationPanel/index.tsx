@@ -41,12 +41,13 @@ export const HistoryNavigationPanel = () => {
           replace: history.historyStack.length > 0,
           state: {
             environmentId: environment?.id,
-            spanCodeObjectId: scope?.span?.spanCodeObjectId
+            spanCodeObjectId: scope?.span?.spanCodeObjectId,
+            spanDisplayName: scope?.span?.displayName
           }
         }
       );
     }
-  }, [location, goTo, environment?.id, scope?.span?.spanCodeObjectId]);
+  }, [location, goTo, environment?.id, scope?.span]);
 
   useEffect(() => {
     const handleHistoryChange = (

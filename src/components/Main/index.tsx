@@ -68,9 +68,17 @@ export const Main = () => {
       const scope = data as Scope;
       logger.debug("[SCOPE CHANGE]: ", scope);
 
+      // Get scope display name from history state if it's not provided
+      const spanDisplayName = scope.span
+        ? scope.span.displayName
+          ? scope.span.displayName
+          : history.getCurrentLocation()?.state?.spanDisplayName
+        : undefined;
+
       const state: HistoryState = {
         environmentId: scope.environmentId ?? environment?.id,
-        spanCodeObjectId: scope.span?.spanCodeObjectId
+        spanCodeObjectId: scope.span?.spanCodeObjectId,
+        spanDisplayName
       };
 
       if (scope?.context) {
@@ -89,7 +97,8 @@ export const Main = () => {
                     environmentId: string | undefined;
                   }
                 ).environmentId,
-                spanCodeObjectId: scope.span?.spanCodeObjectId
+                spanCodeObjectId: scope.span?.spanCodeObjectId,
+                spanDisplayName
               }
             });
             break;

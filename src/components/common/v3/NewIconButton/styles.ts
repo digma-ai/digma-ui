@@ -37,6 +37,7 @@ const activeStyles = css<ButtonElementProps>`
 `;
 
 export const Button = styled.button<ButtonElementProps>`
+  font-family: inherit;
   border-radius: 4px;
   display: flex;
   flex-shrink: 0;

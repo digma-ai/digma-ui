@@ -5,7 +5,6 @@ import {
   subscriptRegularTypography
 } from "../../common/App/typographies";
 import { Link } from "../../common/v3/Link";
-import { FilterButtonContainerProps } from "./types";
 
 export const Footer = styled.div`
   display: flex;
@@ -114,11 +113,4 @@ export const ToolbarButtonsContainer = styled.div`
   display: flex;
   gap: 4px;
   align-items: center;
-`;
-
-export const FilterButtonContainer = styled.div<FilterButtonContainerProps>`
-  color: ${({ theme, $isActive }) =>
-    $isActive
-      ? theme.colors.v3.icon.brandPrimary
-      : theme.colors.v3.text.tertiary};
 `;

@@ -65,4 +65,5 @@ export interface ReactRouterLocationState {
 export interface HistoryState extends ReactRouterLocationState {
   environmentId?: string;
   spanCodeObjectId?: string;
+  spanDisplayName?: string;
 }
