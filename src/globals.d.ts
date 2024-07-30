@@ -42,6 +42,7 @@ declare global {
     isMicrometerProject?: unknown;
     dashboardEnvironment?: unknown;
     documentationPage?: unknown;
+    initialRoutePath?: unknown;
     notificationsViewMode?: unknown;
     recentActivityExpirationLimit?: unknown;
     wizardSkipInstallationStep?: unknown;

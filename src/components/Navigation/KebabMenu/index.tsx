@@ -49,6 +49,13 @@ export const KebabMenu = ({ onClose }: KebabMenuProps) => {
     onClose();
   };
 
+  const handleReportClick = () => {
+    window.sendMessageToDigma({
+      action: globalActions.OPEN_REPORT
+    });
+    onClose();
+  };
+
   const handleLogoutClick = () => {
     sendUserActionTrackingEvent(trackingEvents.LOGOUT_CLICKED);
     window.sendMessageToDigma({
@@ -80,6 +87,11 @@ export const KebabMenu = ({ onClose }: KebabMenuProps) => {
       label: "Insights Overview",
       icon: <FourPointedStarIcon size={16} color={"currentColor"} />,
       onClick: handleInsightsOverviewClick
+    },
+    {
+      id: "reports",
+      label: "Open Report",
+      onClick: handleReportClick
     }
   ];
 
