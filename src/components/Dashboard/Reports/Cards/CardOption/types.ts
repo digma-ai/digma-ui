@@ -5,16 +5,16 @@ export type DiscoverdCardType =
   | "low"
   | "default";
 
-export interface DiscoverdCardProps {
+export interface CardOptionsProps {
   title: string;
   counter: number;
-  type: DiscoverdCardType;
+  type?: DiscoverdCardType;
   isActive: boolean;
-  disabled: boolean;
+  disabled?: boolean;
 }
 
 export interface ContainerProps {
   $type: DiscoverdCardType;
   $isActive: boolean;
-  $disabled: boolean;
+  $disabled?: boolean;
 }

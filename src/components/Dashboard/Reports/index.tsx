@@ -1,17 +1,41 @@
-import { Card } from "../../common/Card";
+import { useState } from "react";
+import { DiscoveredAssets } from "./Cards/DiscoveredAssets";
+import { DiscoveredIssues } from "./Cards/DiscoveredIssues";
+import { ReportsFooter } from "./ReportsFooter";
 import { ReportsHeader } from "./ReportsHeader";
 import * as s from "./styles";
+import { ReportFilterQuery } from "./types";
+import { useReportsData } from "./useReportsData";
+
+const DefaultQuery: ReportFilterQuery = {
+  environment: "",
+  services: []
+};
 
 export const Reports = () => {
+  const [query, setQuery] = useState<ReportFilterQuery>(DefaultQuery);
+  const { discoveredAssets, discoveredIssues, refresh } = useReportsData(query);
+
+  const handleFilterChanged = (query: ReportFilterQuery) => {
+    setQuery(query);
+  };
   return (
     <s.Container>
-      <ReportsHeader />
+      <ReportsHeader
+        onRefresh={refresh}
+        onFilterChanged={handleFilterChanged}
+        environments={[]}
+        services={[]}
+      />
       <s.Content>
         <s.Column key={"issues"}>
-          <Card content="test" header="test" />
+          <DiscoveredIssues statistics={discoveredIssues} />
         </s.Column>
-        <s.Column key={"assets"}></s.Column>
+        <s.Column key={"assets"}>
+          <DiscoveredAssets statistics={discoveredAssets} />
+        </s.Column>
       </s.Content>
+      <ReportsFooter />
     </s.Container>
   );
 };

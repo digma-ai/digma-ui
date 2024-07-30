@@ -9,6 +9,7 @@ export const Container = styled.div`
 export const FiltersContainer = styled.div`
   position: relative;
   height: 189px;
+  overflow: hidden;
 `;
 
 export const Header = styled.div`

@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { bodyRegularTypography } from "../../../../../common/App/typographies";
+import { bodyRegularTypography } from "../../../../common/App/typographies";
 import { ContainerProps } from "./types";
 
 export const Title = styled.div`
@@ -33,6 +33,9 @@ export const Container = styled.div<ContainerProps>`
   justify-content: center;
   align-items: center;
   display: flex;
+  flex: 1;
+  gap: 12px;
+  min-width: 116px;
   color: ${({ theme, $type, $isActive }) => {
     if ($isActive && $type === "high") {
       return theme.colors.v3.status.high;

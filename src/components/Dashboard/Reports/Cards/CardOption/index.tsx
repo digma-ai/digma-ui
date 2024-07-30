@@ -1,5 +1,5 @@
 import * as s from "./styles";
-import { DiscoverdCardProps } from "./types";
+import { CardOptionsProps } from "./types";
 
 export const CardOption = ({
   title,
@@ -7,8 +7,12 @@ export const CardOption = ({
   type,
   isActive,
   disabled
-}: DiscoverdCardProps) => (
-  <s.Container $type={type} $disabled={disabled} $isActive={isActive}>
+}: CardOptionsProps) => (
+  <s.Container
+    $type={type ?? "default"}
+    $disabled={disabled}
+    $isActive={isActive}
+  >
     <s.Counter> {counter}</s.Counter>
     <s.Title>{title}</s.Title>
   </s.Container>
