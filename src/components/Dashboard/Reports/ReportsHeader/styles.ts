@@ -13,7 +13,7 @@ export const FiltersContainer = styled.div`
 `;
 
 export const Header = styled.div`
-  color: ${({ theme }) => theme.colors.v3.text.primary};
+  color: ${({ theme }) => theme.colors.v3.text.white};
   font-size: 36px;
   font-weight: 700;
   text-align: center;
@@ -37,13 +37,9 @@ export const Group = styled.div`
 `;
 
 export const Background = styled.div`
-  position: absolute;
   width: 100%;
-
-  img {
-    height: 100%;
-    width: 100%;
-  }
+  height: 100%;
+  background-image: url("/images/report-background.svg");
 `;
 
 export const FilterSelector = styled(Select)`

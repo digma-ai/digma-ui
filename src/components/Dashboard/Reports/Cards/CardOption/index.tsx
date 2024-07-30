@@ -13,7 +13,7 @@ export const CardOption = ({
     $disabled={disabled}
     $isActive={isActive}
   >
-    <s.Counter> {counter}</s.Counter>
+    <s.Counter>{counter}</s.Counter>
     <s.Title>{title}</s.Title>
   </s.Container>
 );

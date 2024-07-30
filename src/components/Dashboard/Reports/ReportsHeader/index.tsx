@@ -62,41 +62,39 @@ export const ReportsHeader = ({
       />
       <s.FiltersContainer>
         <s.Background>
-          <img src={"images/report-background.svg"} />
+          <s.Group>
+            <s.Header>Digma Report</s.Header>
+            <s.FiltersGroup>
+              <s.FilterSelector
+                items={
+                  environments?.map((x) => ({
+                    label: x.name,
+                    value: x.id,
+                    enabled: true,
+                    selected: x.id === selectedEnvironment
+                  })) ?? []
+                }
+                icon={EnvironmentIcon}
+                onChange={handleSelectedEnvironmentChanged}
+                placeholder="Environments"
+              />
+              <s.FilterSelector
+                items={
+                  services?.map((service) => ({
+                    label: service,
+                    value: service,
+                    enabled: true,
+                    selected: selectedServices.includes(service)
+                  })) ?? []
+                }
+                multiselect={true}
+                icon={ServiceIcon}
+                onChange={handleSelectedServicesChanged}
+                placeholder="All Services"
+              />
+            </s.FiltersGroup>
+          </s.Group>
         </s.Background>
-
-        <s.Group>
-          <s.Header>Digma Report</s.Header>
-          <s.FiltersGroup>
-            <s.FilterSelector
-              items={
-                environments?.map((x) => ({
-                  label: x.name,
-                  value: x.id,
-                  enabled: true,
-                  selected: x.id === selectedEnvironment
-                })) ?? []
-              }
-              icon={EnvironmentIcon}
-              onChange={handleSelectedEnvironmentChanged}
-              placeholder="Environments"
-            />
-            <s.FilterSelector
-              items={
-                services?.map((service) => ({
-                  label: service,
-                  value: service,
-                  enabled: true,
-                  selected: selectedServices.includes(service)
-                })) ?? []
-              }
-              multiselect={true}
-              icon={ServiceIcon}
-              onChange={handleSelectedServicesChanged}
-              placeholder="All Services"
-            />
-          </s.FiltersGroup>
-        </s.Group>
       </s.FiltersContainer>
     </s.Container>
   );

@@ -17,7 +17,7 @@ export const Row = styled.div`
 
 export const Header = styled.span`
   color: ${({ theme }) => {
-    return theme.colors.v3.text.white;
+    return theme.colors.v3.text.primary;
   }};
   font-size: 24px;
   font-weight: 600;

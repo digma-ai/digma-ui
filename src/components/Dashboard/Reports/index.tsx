@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
+import { actions } from "../actions";
 import { DiscoveredAssets } from "./Cards/DiscoveredAssets";
 import { DiscoveredIssues } from "./Cards/DiscoveredIssues";
 import { ReportsFooter } from "./ReportsFooter";
@@ -19,13 +20,18 @@ export const Reports = () => {
   const handleFilterChanged = (query: ReportFilterQuery) => {
     setQuery(query);
   };
+
+  useLayoutEffect(() => {
+    window.sendMessageToDigma({
+      action: actions.INITIALIZE
+    });
+  }, []);
+
   return (
     <s.Container>
       <ReportsHeader
         onRefresh={refresh}
         onFilterChanged={handleFilterChanged}
-        environments={[]}
-        services={[]}
       />
       <s.Content>
         <s.Column key={"issues"}>

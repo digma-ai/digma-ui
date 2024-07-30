@@ -40,7 +40,7 @@ export const Container = styled.div<ContainerProps>`
     if ($isActive && $type === "high") {
       return theme.colors.v3.status.high;
     }
-    return theme.colors.v3.icon.white;
+    return theme.colors.v3.icon.primary;
   }};
   background: ${({ theme, $type, $isActive }) => {
     if ($isActive) {
@@ -77,7 +77,7 @@ export const Container = styled.div<ContainerProps>`
                 case "high":
                   return theme.colors.v3.status.high;
                 default:
-                  return theme.colors.v3.icon.white;
+                  return theme.colors.v3.icon.primary;
               }
             }};
             background: ${({ theme }) => theme.colors.v3.surface.primaryLight};
