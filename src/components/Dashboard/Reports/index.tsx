@@ -9,7 +9,7 @@ import { ReportFilterQuery } from "./types";
 import { useReportsData } from "./useReportsData";
 
 const DefaultQuery: ReportFilterQuery = {
-  environment: "",
+  environmentId: "",
   services: []
 };
 

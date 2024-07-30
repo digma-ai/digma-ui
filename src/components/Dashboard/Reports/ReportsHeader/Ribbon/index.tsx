@@ -19,7 +19,8 @@ export const Ribbon = ({ onDownload, onRefresh }: RibbonProps) => {
 
   return (
     <s.Container>
-      <img src={"images/reports-ribbon-logo-dark.svg"} />
+      <s.ThemedLogoIcon />
+      {/* <img src={"images/reports-ribbon-logo-dark.svg"} /> */}
       <s.ButtonContainer>
         <NewButton
           buttonType="primary"

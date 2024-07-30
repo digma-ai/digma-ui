@@ -1,5 +1,5 @@
 export interface ReportFilterQuery {
-  environment: string;
+  environmentId: string;
   services: string[];
 }
 

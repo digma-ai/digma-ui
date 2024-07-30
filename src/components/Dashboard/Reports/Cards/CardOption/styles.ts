@@ -34,7 +34,6 @@ export const Container = styled.div<ContainerProps>`
   align-items: center;
   display: flex;
   flex: 1;
-  gap: 12px;
   min-width: 116px;
   color: ${({ theme, $type, $isActive }) => {
     if ($isActive && $type === "high") {

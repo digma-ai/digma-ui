@@ -29,17 +29,22 @@ export const ReportsHeader = ({
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [selectedEnvironment, setSelectedEnvironment] = useState<string>("");
   const environments = useGlobalStore.use.environments();
-
   const handleSelectedEnvironmentChanged = (option: string | string[]) => {
-    const newItem = Array.isArray(option) ? option : [option];
+    const newItem =
+      option === selectedEnvironment
+        ? [""]
+        : Array.isArray(option)
+        ? option
+        : [option];
+
     setSelectedEnvironment(newItem[0]);
-    onFilterChanged({ environment: newItem[0], services: selectedServices });
+    onFilterChanged({ environmentId: newItem[0], services: selectedServices });
   };
 
   const handleSelectedServicesChanged = (option: string | string[]) => {
     const newItem = Array.isArray(option) ? option : [option];
     setSelectedServices(newItem);
-    onFilterChanged({ environment: selectedEnvironment, services: newItem });
+    onFilterChanged({ environmentId: selectedEnvironment, services: newItem });
   };
 
   const { data: services, getData } = useFetchData<undefined, string[]>(

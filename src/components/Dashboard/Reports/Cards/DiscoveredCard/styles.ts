@@ -12,7 +12,7 @@ export const Row = styled.div`
   display: flex;
   justify-content: stretch;
   gap: 8px;
-  max-height: 102px;
+  max-height: 112px;
 `;
 
 export const Header = styled.span`

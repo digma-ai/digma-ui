@@ -22,3 +22,10 @@ export const DownloadButton = styled(NewButton)`
     color: ${({ theme }) => theme.colors.v3.text.link};
   }
 `;
+
+export const ThemedLogoIcon = styled.img`
+  content: ${({ theme }) =>
+    theme.mode === "light"
+      ? "url('images/reports-ribbon-logo-light.svg')"
+      : "url('images/reports-ribbon-logo-dark.svg')"};
+`;

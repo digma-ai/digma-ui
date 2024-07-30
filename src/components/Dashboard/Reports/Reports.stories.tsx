@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 
 import { Reports } from ".";
+import { actions as globalActions } from "../../../actions";
 import { actions } from "../actions";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
@@ -79,6 +80,25 @@ export const Default: Story = {
         type: "digma",
         action: actions.SET_SERVICES,
         payload: ["service 1", "service 2", "service 3", "service 4"]
+      });
+    }, 500);
+
+    window.setTimeout(() => {
+      window.postMessage({
+        type: "digma",
+        action: globalActions.SET_ENVIRONMENTS,
+        payload: [
+          {
+            id: "test1",
+            name: "test1",
+            type: "Public"
+          },
+          {
+            id: "test2",
+            name: "test2",
+            type: "Public"
+          }
+        ]
       });
     }, 500);
   }
