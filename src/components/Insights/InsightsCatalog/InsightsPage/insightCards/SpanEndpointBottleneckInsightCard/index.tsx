@@ -46,7 +46,8 @@ export const SpanEndpointBottleneckInsightCard = ({
   onRecalculate,
   onRefresh,
   onGoToSpan,
-  isMarkAsReadButtonEnabled
+  isMarkAsReadButtonEnabled,
+  viewMode
 }: SpanEndpointBottleneckInsightCardProps) => {
   const isJaegerEnabled = useGlobalStore.use.isJaegerEnabled();
   const slowEndpoints = insight.slowEndpoints ?? [];
@@ -154,6 +155,7 @@ export const SpanEndpointBottleneckInsightCard = ({
       onRefresh={onRefresh}
       onGoToSpan={onGoToSpan}
       isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
+      viewMode={viewMode}
     />
   );
 };

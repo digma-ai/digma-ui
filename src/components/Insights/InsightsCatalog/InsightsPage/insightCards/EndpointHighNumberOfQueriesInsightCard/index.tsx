@@ -14,7 +14,8 @@ export const EndpointHighNumberOfQueriesInsightCard = ({
   onRefresh,
   isJiraHintEnabled,
   onGoToSpan,
-  isMarkAsReadButtonEnabled
+  isMarkAsReadButtonEnabled,
+  viewMode
 }: EndpointHighNumberOfQueriesInsightCardProps) => {
   const traceId = insight.traceId;
 
@@ -83,6 +84,7 @@ export const EndpointHighNumberOfQueriesInsightCard = ({
       }
       onGoToSpan={onGoToSpan}
       isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
+      viewMode={viewMode}
     />
   );
 };

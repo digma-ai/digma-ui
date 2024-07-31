@@ -12,7 +12,8 @@ export const EndpointSlowdownSourceInsightCard = ({
   onRecalculate,
   onRefresh,
   onGoToSpan,
-  isMarkAsReadButtonEnabled
+  isMarkAsReadButtonEnabled,
+  viewMode
 }: EndpointSlowdownSourceInsightCardProps) => {
   const handleSpanLinkClick = (spanCodeObjectId: string) => {
     onAssetLinkClick(spanCodeObjectId, insight.type);
@@ -77,6 +78,7 @@ export const EndpointSlowdownSourceInsightCard = ({
       onRefresh={onRefresh}
       onGoToSpan={onGoToSpan}
       isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
+      viewMode={viewMode}
     />
   );
 };

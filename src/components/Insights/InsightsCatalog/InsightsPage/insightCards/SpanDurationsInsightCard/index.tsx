@@ -137,7 +137,8 @@ export const SpanDurationsInsightCard = ({
   onRefresh,
   onHistogramButtonClick,
   onGoToSpan,
-  isMarkAsReadButtonEnabled
+  isMarkAsReadButtonEnabled,
+  viewMode
 }: SpanDurationsInsightCardProps) => {
   const theme = useTheme();
   const { observe, width } = useDimensions();
@@ -441,6 +442,7 @@ ${getDurationString(insight.average)}${
       onOpenHistogram={insight.spanInfo ? onHistogramButtonClick : undefined}
       onGoToSpan={onGoToSpan}
       isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
+      viewMode={viewMode}
     />
   );
 };

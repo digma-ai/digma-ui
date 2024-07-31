@@ -1,6 +1,14 @@
 import { useState } from "react";
+import { useTheme } from "styled-components";
+import { useGlobalStore } from "../../../../../../../containers/Main/stores/useGlobalStore";
 import { sendUserActionTrackingEvent } from "../../../../../../../utils/actions/sendUserActionTrackingEvent";
 import { getInsightTypeInfo } from "../../../../../../../utils/getInsightTypeInfo";
+import { CrossIcon } from "../../../../../../common/icons/16px/CrossIcon";
+import { EyeIcon } from "../../../../../../common/icons/16px/EyeIcon";
+import { FourPointedStarWithPlusesIcon } from "../../../../../../common/icons/16px/FourPointedStarWithPlusesIcon";
+import { JiraLogoIcon } from "../../../../../../common/icons/16px/JiraLogoIcon";
+import { RecheckIcon } from "../../../../../../common/icons/16px/RecheckIcon";
+import { TraceIcon } from "../../../../../../common/icons/16px/TraceIcon";
 import { ThreeDotsIcon } from "../../../../../../common/icons/ThreeDotsIcon";
 import { NewPopover } from "../../../../../../common/NewPopover";
 import { Link } from "../../../../../../common/v3/Link";
@@ -12,9 +20,9 @@ import { trackingEvents } from "../../../../../tracking";
 import { isEndpointInsight, isSpanInsight } from "../../../../../typeGuards";
 import { InsightIcon } from "../InsightCard/InsightHeader/InsightIcon";
 import * as s from "./styles";
-import { IssueSimplifiedCardProps } from "./types";
+import { IssueCompactCardProps } from "./types";
 
-export const IssueSimplifiedCard = ({
+export const IssueCompactCard = ({
   insight,
   metric,
   onGoToSpan,
@@ -22,23 +30,26 @@ export const IssueSimplifiedCard = ({
   onDismiss,
   onShow,
   onRecheck,
-  onRead,
+  onMarkAsRead,
+  onTicketOpen,
   isCritical
-}: IssueSimplifiedCardProps) => {
+}: IssueCompactCardProps) => {
+  const isJaegerEnabled = useGlobalStore.use.isJaegerEnabled();
   const [isKebabMenuOpen, setIsKebabMenuOpen] = useState(false);
-  const insightTypeInfo = getInsightTypeInfo(insight.type);
+  const insightTypeInfo = getInsightTypeInfo(insight.type, insight.subType);
   const spanInfo =
     isSpanInsight(insight) || isEndpointInsight(insight)
       ? insight.spanInfo
       : undefined;
-
+  const theme = useTheme();
+  const isTicketLinkAttached = Boolean(insight.ticketLink);
   const handleContainerClick = () => {
-    // sendUserActionTrackingEvent(trackingEvents.ISSUE_CARD_CLICKED, {
-    //   insightType: insight.type
-    // });
+    sendUserActionTrackingEvent(trackingEvents.ISSUE_CARD_CLICKED, {
+      insightType: insight.type
+    });
 
-    if (insight.isReadable && onRead && !insight.isRead) {
-      onRead();
+    if (insight.isReadable && insight.isRead === false) {
+      onMarkAsRead();
     }
   };
 
@@ -46,9 +57,7 @@ export const IssueSimplifiedCard = ({
     sendUserActionTrackingEvent(
       trackingEvents.ISSUE_CARD_TITLE_ASSET_LINK_CLICKED
     );
-    if (spanInfo) {
-      onGoToSpan();
-    }
+    onGoToSpan();
   };
 
   const handleMenuItemClick = (item: string) => {
@@ -58,18 +67,19 @@ export const IssueSimplifiedCard = ({
     );
     switch (item) {
       case "details":
-        onGoToSpan && onGoToSpan();
+        onGoToSpan();
         break;
       case "trace":
         onGoToTrace && onGoToTrace();
         break;
       case "dismiss":
-        onDismiss && onDismiss();
+        onDismiss();
         break;
       case "show":
-        onShow && onShow();
+        onShow();
         break;
       case "ticket":
+        onTicketOpen();
         break;
       case "recheck":
         onRecheck();
@@ -80,36 +90,56 @@ export const IssueSimplifiedCard = ({
   const menuItems: MenuItem[] = [
     {
       id: "details",
+      icon: <FourPointedStarWithPlusesIcon size={16} color={"currentColor"} />,
       label: "Details",
       onClick: () => handleMenuItemClick("details")
     },
-    {
-      id: "trace",
-      label: "Trace",
-      onClick: () => handleMenuItemClick("trace")
-    },
+    ...(isJaegerEnabled && onGoToTrace
+      ? [
+          {
+            id: "trace",
+            icon: <TraceIcon size={16} color={"currentColor"} />,
+            label: "Trace",
+            onClick: () => handleMenuItemClick("trace")
+          }
+        ]
+      : []),
     ...(insight.isDismissed
       ? [
           {
             id: "show",
-            label: "show",
+            icon: <EyeIcon size={16} color={"currentColor"} />,
+            label: "Show",
             onClick: () => handleMenuItemClick("show")
           }
         ]
       : [
           {
             id: "dismiss",
+            icon: <CrossIcon size={16} color={"currentColor"} />,
             label: "Dismiss",
             onClick: () => handleMenuItemClick("dismiss")
           }
         ]),
     {
       id: "ticket",
+      icon: (
+        <JiraLogoIcon
+          size={16}
+          color={
+            isTicketLinkAttached
+              ? theme.colors.v3.icon.secondary
+              : "currentColor"
+          }
+          isActive={isTicketLinkAttached}
+        />
+      ),
       label: "Ticket",
       onClick: () => handleMenuItemClick("ticket")
     },
     {
       id: "recheck",
+      icon: <RecheckIcon size={16} color={"currentColor"} />,
       label: "Recheck",
       onClick: () => handleMenuItemClick("recheck")
     }
@@ -133,9 +163,18 @@ export const IssueSimplifiedCard = ({
         <NewPopover
           isOpen={isKebabMenuOpen}
           onOpenChange={setIsKebabMenuOpen}
-          content={<MenuList items={menuItems} />}
+          placement={"bottom-end"}
+          content={
+            <s.StyledPopup>
+              <MenuList items={menuItems} />
+            </s.StyledPopup>
+          }
         >
-          <NewIconButton icon={ThreeDotsIcon} buttonType={"tertiary"} />
+          <NewIconButton
+            icon={ThreeDotsIcon}
+            buttonType={"tertiary"}
+            size={"small"}
+          />
         </NewPopover>
       </s.TitleRow>
       {spanInfo && (

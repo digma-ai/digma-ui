@@ -2,6 +2,7 @@ import { usePagination } from "../../../../../../hooks/usePagination";
 import { getDurationString } from "../../../../../../utils/getDurationString";
 import { trimEndpointScheme } from "../../../../../../utils/trimEndpointScheme";
 import { Pagination } from "../../../../../common/v3/Pagination";
+import { Tooltip } from "../../../../../common/v3/Tooltip";
 import { InsightType, Trace } from "../../../../types";
 import { InsightCard } from "../common/InsightCard";
 import { ColumnsContainer } from "../common/InsightCard/ColumnsContainer";
@@ -22,7 +23,8 @@ export const SpanQueryOptimizationInsightCard = ({
   onGoToSpan,
   isMarkAsReadButtonEnabled,
   isJiraHintEnabled,
-  onJiraTicketCreate
+  onJiraTicketCreate,
+  viewMode
 }: SpanQueryOptimizationInsightCardProps) => {
   const endpoints = insight.endpoints ?? [];
   const [pageItems, page, setPage] = usePagination(
@@ -53,6 +55,7 @@ export const SpanQueryOptimizationInsightCard = ({
   const spanName = insight.spanInfo?.displayName ?? undefined;
   const spanCodeObjectId = insight.spanInfo?.spanCodeObjectId ?? undefined;
   const traceId = insight.traceId;
+  const durationString = getDurationString(insight.duration);
 
   return (
     <InsightCard
@@ -60,9 +63,7 @@ export const SpanQueryOptimizationInsightCard = ({
       content={
         <ContentContainer>
           <ColumnsContainer>
-            <KeyValue label={"Duration"}>
-              {getDurationString(insight.duration)}
-            </KeyValue>
+            <KeyValue label={"Duration"}>{durationString}</KeyValue>
             <KeyValue label={"Typical Duration"}>
               {getDurationString(insight.typicalDuration)}
             </KeyValue>
@@ -117,6 +118,12 @@ export const SpanQueryOptimizationInsightCard = ({
       }
       onGoToSpan={onGoToSpan}
       isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
+      viewMode={viewMode}
+      mainMetric={
+        <Tooltip title={durationString}>
+          <>{durationString}</>
+        </Tooltip>
+      }
     />
   );
 };

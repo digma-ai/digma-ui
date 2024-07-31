@@ -15,7 +15,8 @@ export const SpanNexusInsightCard = ({
   onRecalculate,
   onRefresh,
   onGoToSpan,
-  isMarkAsReadButtonEnabled
+  isMarkAsReadButtonEnabled,
+  viewMode
 }: SpanNexusInsightCardProps) => {
   const {
     entries,
@@ -68,6 +69,7 @@ export const SpanNexusInsightCard = ({
       onRefresh={onRefresh}
       onGoToSpan={onGoToSpan}
       isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
+      viewMode={viewMode}
     />
   );
 };

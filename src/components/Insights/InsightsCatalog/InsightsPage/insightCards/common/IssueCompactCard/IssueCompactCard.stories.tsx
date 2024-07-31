@@ -1,12 +1,12 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { IssueSimplifiedCard } from ".";
+import { IssueCompactCard } from ".";
 import { mockedEndpointSpanNPlusOneInsight } from "../../EndpointSpanNPlusOneInsightInsightCard/mockData";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
-const meta: Meta<typeof IssueSimplifiedCard> = {
+const meta: Meta<typeof IssueCompactCard> = {
   title:
-    "Insights/InsightsCatalog/InsightsPage/insightCards/common/IssueSimplifiedCard",
-  component: IssueSimplifiedCard,
+    "Insights/InsightsCatalog/InsightsPage/insightCards/common/IssueCompactCard",
+  component: IssueCompactCard,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
     layout: "fullscreen"

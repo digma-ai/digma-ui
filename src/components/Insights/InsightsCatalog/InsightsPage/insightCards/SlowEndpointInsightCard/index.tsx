@@ -1,6 +1,7 @@
 import { getDurationString } from "../../../../../../utils/getDurationString";
 import { roundTo } from "../../../../../../utils/roundTo";
 import { Tag } from "../../../../../common/v3/Tag";
+import { Tooltip } from "../../../../../common/v3/Tooltip";
 import { InsightCard } from "../common/InsightCard";
 import { ColumnsContainer } from "../common/InsightCard/ColumnsContainer";
 import { KeyValue } from "../common/InsightCard/KeyValue";
@@ -12,7 +13,8 @@ export const SlowEndpointInsightCard = ({
   onRecalculate,
   onRefresh,
   onGoToSpan,
-  isMarkAsReadButtonEnabled
+  isMarkAsReadButtonEnabled,
+  viewMode
 }: SlowEndpointInsightCardProps) => {
   const diff =
     (insight.median.raw / insight.endpointsMedianOfMedians.raw - 1) * 100;
@@ -39,6 +41,12 @@ export const SlowEndpointInsightCard = ({
       onRefresh={onRefresh}
       onGoToSpan={onGoToSpan}
       isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
+      viewMode={viewMode}
+      mainMetric={
+        <Tooltip title={durationString}>
+          <>{durationString}</>
+        </Tooltip>
+      }
     />
   );
 };

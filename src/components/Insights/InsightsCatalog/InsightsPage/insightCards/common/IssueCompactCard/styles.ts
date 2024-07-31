@@ -2,13 +2,17 @@ import styled, { css } from "styled-components";
 import { bodyBoldTypography } from "../../../../../../common/App/typographies";
 import { CopyButton } from "../../../../../../common/v3/CopyButton";
 import { Tag } from "../../../../../../common/v3/Tag";
+import { Popup } from "../../../../../../Navigation/common/Popup";
 import { ContainerProps } from "./types";
 
 export const Container = styled.div<ContainerProps>`
   display: flex;
   flex-direction: column;
+  gap: 8px;
   border-radius: 4px;
   padding: 12px;
+  height: 72px;
+  box-sizing: border-box;
 
   ${({ $isCritical, $isRead, theme }) => {
     if ($isCritical) {
@@ -21,6 +25,7 @@ export const Container = styled.div<ContainerProps>`
       return css`
         border: 1px solid ${theme.colors.v3.status.backgroundHigh};
         background: ${theme.colors.v3.pieChart.brightRedStroke};
+        padding: 11px;
       `;
     }
 
@@ -33,6 +38,7 @@ export const Container = styled.div<ContainerProps>`
     return css`
       border: 1px solid ${theme.colors.v3.stroke.primary};
       background: ${theme.colors.v3.surface.brandDarkest};
+      padding: 11px;
     `;
   }}
 `;
@@ -72,5 +78,11 @@ export const SpanInfoRow = styled.div`
     ${StyledCopyButton} {
       display: flex;
     }
+  }
+`;
+
+export const StyledPopup = styled(Popup)`
+  & > div {
+    padding: 8px 4px;
   }
 `;

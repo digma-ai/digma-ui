@@ -1,4 +1,5 @@
 import { getDurationString } from "../../../../../../utils/getDurationString";
+import { Tooltip } from "../../../../../common/v3/Tooltip";
 import { InsightCard } from "../common/InsightCard";
 import { ColumnsContainer } from "../common/InsightCard/ColumnsContainer";
 import { KeyValue } from "../common/InsightCard/KeyValue";
@@ -14,7 +15,8 @@ export const EndpointBottleneckInsightCard = ({
   onRecalculate,
   onGoToSpan,
   onRefresh,
-  isMarkAsReadButtonEnabled
+  isMarkAsReadButtonEnabled,
+  viewMode
 }: EndpointBottleneckInsightCardProps) => {
   const { span, ticketLink } = insight;
 
@@ -41,6 +43,7 @@ export const EndpointBottleneckInsightCard = ({
 
   const spanName = span.spanInfo.displayName;
   const spanCodeObjectId = span.spanInfo.spanCodeObjectId;
+  const durationString = getDurationString(span.avgDurationWhenBeingBottleneck);
 
   return (
     <InsightCard
@@ -75,9 +78,7 @@ export const EndpointBottleneckInsightCard = ({
             >
               {span.requestPercentage}%
             </KeyValue>
-            <KeyValue label={"Duration"}>
-              {getDurationString(span.avgDurationWhenBeingBottleneck)}
-            </KeyValue>
+            <KeyValue label={"Duration"}>{durationString}</KeyValue>
           </ColumnsContainer>
         </ContentContainer>
       }
@@ -87,6 +88,12 @@ export const EndpointBottleneckInsightCard = ({
       onGoToSpan={onGoToSpan}
       onGoToTrace={span.traceId ? handleTraceButtonClick : undefined}
       isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
+      viewMode={viewMode}
+      mainMetric={
+        <Tooltip title={durationString}>
+          <>{durationString}</>
+        </Tooltip>
+      }
     />
   );
 };

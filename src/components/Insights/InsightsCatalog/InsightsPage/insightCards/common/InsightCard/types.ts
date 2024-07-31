@@ -3,6 +3,8 @@ import { ScopeSpan } from "../../../../../../common/App/types";
 import { CardProps } from "../../../../../../common/v3/Card/types";
 import { GenericCodeObjectInsight, InsightType } from "../../../../../types";
 
+export type InsightCardViewMode = "full" | "compact";
+
 export interface InsightCardProps {
   insight: GenericCodeObjectInsight;
   content?: ReactNode;
@@ -29,7 +31,8 @@ export interface InsightCardProps {
   ) => void;
   onGoToSpan: (spanCodeObjectId: string) => void;
   isMarkAsReadButtonEnabled: boolean;
-  // viewMode: "full" | "compact";
+  viewMode: InsightCardViewMode;
+  mainMetric?: ReactNode;
 }
 
 export interface StyledCardProps extends CardProps {
@@ -69,6 +72,7 @@ export interface SetMarkAllAsReadResponsePayload {
   status: "success" | "failure";
   error?: string;
 }
+
 export interface InsightCardCommonProps {
   onRecalculate: (insightId: string) => void;
   onRefresh: (insightType: InsightType) => void;
@@ -80,4 +84,5 @@ export interface InsightCardCommonProps {
   onGoToSpan: (spanCodeObjectId: string) => void;
   isJiraHintEnabled?: boolean;
   isMarkAsReadButtonEnabled: boolean;
+  viewMode: InsightCardViewMode;
 }

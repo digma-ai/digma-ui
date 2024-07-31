@@ -9,7 +9,7 @@ import { TraceIcon } from "../../../../../../common/icons/12px/TraceIcon";
 import { DoubleCircleIcon } from "../../../../../../common/icons/16px/DoubleCircleIcon";
 import { HistogramIcon } from "../../../../../../common/icons/16px/HistogramIcon";
 import { PinIcon } from "../../../../../../common/icons/16px/PinIcon";
-import { RecalculateIcon } from "../../../../../../common/icons/16px/RecalculateIcon";
+import { RecheckIcon } from "../../../../../../common/icons/16px/RecheckIcon";
 import { CrossIcon } from "../../../../../../common/icons/CrossIcon";
 import { Button } from "../../../../../../common/v3/Button";
 import { BaseButtonProps } from "../../../../../../common/v3/Button/types";
@@ -18,6 +18,7 @@ import { Tooltip } from "../../../../../../common/v3/Tooltip";
 import { trackingEvents } from "../../../../../tracking";
 import { isEndpointInsight, isSpanInsight } from "../../../../../typeGuards";
 import { InsightStatus } from "../../../../../types";
+import { IssueCompactCard } from "../IssueCompactCard";
 import { InsightHeader } from "./InsightHeader";
 import { ProductionAffectionBar } from "./ProductionAffectionBar";
 import { RecalculateBar } from "./RecalculateBar";
@@ -41,7 +42,9 @@ export const InsightCard = ({
   onGoToLive,
   onPin,
   content,
-  isAsync
+  isAsync,
+  viewMode,
+  mainMetric
 }: InsightCardProps) => {
   const [isDismissConfirmationOpened, setDismissConfirmationOpened] =
     useState(false);
@@ -107,13 +110,17 @@ export const InsightCard = ({
     };
   };
 
-  const handleSpanLinkClick = () => {
+  const goToSpan = () => {
     if (
       (isSpanInsight(insight) || isEndpointInsight(insight)) &&
       insight.spanInfo
     ) {
       onGoToSpan(insight.spanInfo.spanCodeObjectId);
     }
+  };
+
+  const handleSpanLinkClick = () => {
+    goToSpan();
   };
 
   const handleDismissClick = () => {
@@ -179,6 +186,28 @@ export const InsightCard = ({
     }
   };
 
+  if (viewMode === "compact") {
+    return (
+      <IssueCompactCard
+        insight={insight}
+        metric={mainMetric}
+        onGoToSpan={goToSpan}
+        onGoToTrace={onGoToTrace}
+        onDismiss={dismiss}
+        onShow={show}
+        onRecheck={() => onRecalculate(insight.id)}
+        onMarkAsRead={markAsRead}
+        onTicketOpen={() =>
+          openTicketInfo(
+            jiraTicketInfo?.spanCodeObjectId,
+            "ticket menu item clicked"
+          )
+        }
+        isCritical={isCritical}
+      />
+    );
+  }
+
   const renderActions = () => {
     const buttonsToRender: {
       tooltip: string;
@@ -223,7 +252,7 @@ export const InsightCard = ({
         tooltip: "Recheck",
         button: (btnProps) => (
           <Button
-            icon={RecalculateIcon}
+            icon={RecheckIcon}
             label={"Recheck"}
             onClick={handleRecheckButtonClick}
             {...btnProps}

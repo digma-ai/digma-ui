@@ -45,7 +45,8 @@ export const SpaNPlusOneInsightCard = ({
   onRefresh,
   isJiraHintEnabled,
   onGoToSpan,
-  isMarkAsReadButtonEnabled
+  isMarkAsReadButtonEnabled,
+  viewMode
 }: SpaNPlusOneInsightCardProps) => {
   const endpoints = insight.endpoints ?? [];
   const isJaegerEnabled = useGlobalStore.use.isJaegerEnabled();
@@ -140,6 +141,7 @@ export const SpaNPlusOneInsightCard = ({
       }}
       onGoToSpan={onGoToSpan}
       isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
+      viewMode={viewMode}
     />
   );
 };

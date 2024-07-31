@@ -1,4 +1,5 @@
 import { getDurationString } from "../../../../../../utils/getDurationString";
+import { Tooltip } from "../../../../../common/v3/Tooltip";
 import { InsightType, Trace } from "../../../../types";
 import { InsightCard } from "../common/InsightCard";
 import { ColumnsContainer } from "../common/InsightCard/ColumnsContainer";
@@ -15,7 +16,8 @@ export const EndpointSpanNPlusOneInsightCard = ({
   onRecalculate,
   onGoToSpan,
   onRefresh,
-  isMarkAsReadButtonEnabled
+  isMarkAsReadButtonEnabled,
+  viewMode
 }: EndpointSpanNPlusOneInsightCardProps) => {
   const { span } = insight;
 
@@ -40,6 +42,7 @@ export const EndpointSpanNPlusOneInsightCard = ({
 
   const spanInfo = span.internalSpan ?? span.clientSpan;
   const spanName = spanInfo.displayName;
+  const durationString = getDurationString(span.duration);
 
   return (
     <InsightCard
@@ -76,9 +79,7 @@ export const EndpointSpanNPlusOneInsightCard = ({
             >
               {span.requestPercentage}%
             </KeyValue>
-            <KeyValue label={"Duration"}>
-              {getDurationString(span.duration)}
-            </KeyValue>
+            <KeyValue label={"Duration"}>{durationString}</KeyValue>
           </ColumnsContainer>
         </ContentContainer>
       }
@@ -86,6 +87,12 @@ export const EndpointSpanNPlusOneInsightCard = ({
       onRefresh={onRefresh}
       onGoToSpan={onGoToSpan}
       isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
+      viewMode={viewMode}
+      mainMetric={
+        <Tooltip title={durationString}>
+          <>{durationString}</>
+        </Tooltip>
+      }
     />
   );
 };
