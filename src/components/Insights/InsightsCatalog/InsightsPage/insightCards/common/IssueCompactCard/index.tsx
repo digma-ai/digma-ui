@@ -128,7 +128,7 @@ export const IssueCompactCard = ({
           size={16}
           color={
             isTicketLinkAttached
-              ? theme.colors.v3.icon.secondary
+              ? theme.colors.v3.icon.brandSecondary
               : "currentColor"
           }
           isActive={isTicketLinkAttached}
