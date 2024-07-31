@@ -39,7 +39,7 @@ export const Group = styled.div`
 export const Background = styled.div`
   width: 100%;
   height: 100%;
-  background-image: url("/images/report-background.svg");
+  background-image: url("/images/nightCityView.svg");
 `;
 
 export const FilterSelector = styled(Select)`

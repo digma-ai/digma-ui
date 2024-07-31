@@ -1,4 +1,6 @@
+import { useTheme } from "styled-components";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
+import { getThemeKind } from "../../../../common/App/styles";
 import { RecalculateIcon } from "../../../../common/icons/16px/RecalculateIcon";
 import { NewButton } from "../../../../common/v3/NewButton";
 import { trackingEvents } from "../../tracking";
@@ -6,6 +8,9 @@ import * as s from "./styles";
 import { RibbonProps } from "./types";
 
 export const Ribbon = ({ onRefresh }: RibbonProps) => {
+  const theme = useTheme();
+  const themeKind = getThemeKind(theme);
+
   // const handleDownloadClick = () => {
   //   sendUserActionTrackingEvent(trackingEvents.DOWNLOAD_REPORT_CLICKED);
   //   onDownload();
@@ -18,8 +23,7 @@ export const Ribbon = ({ onRefresh }: RibbonProps) => {
 
   return (
     <s.Container>
-      <s.ThemedLogoIcon />
-      {/* <img src={"images/reports-ribbon-logo-dark.svg"} /> */}
+      <img src={`images/digmaLogo_${themeKind}.svg`} />
       <s.ButtonContainer>
         <NewButton
           buttonType="primary"

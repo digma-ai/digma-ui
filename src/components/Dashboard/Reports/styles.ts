@@ -3,9 +3,8 @@ import styled from "styled-components";
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100%;
-  width: 100%;
-  flex-grow: 1;
+  min-height: 100%;
+  min-width: fit-content;
   background: ${({ theme }) => theme.colors.v3.surface.primary};
 `;
 
