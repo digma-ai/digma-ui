@@ -1,4 +1,4 @@
-import { useGlobalStore } from "../../../../../../../../containers/Main/stores/globalStore";
+import { useGlobalStore } from "../../../../../../../../containers/Main/stores/useGlobalStore";
 import { isString } from "../../../../../../../../typeGuards/isString";
 import { formatTimeDistance } from "../../../../../../../../utils/formatTimeDistance";
 import { getInsightTypeInfo } from "../../../../../../../../utils/getInsightTypeInfo";

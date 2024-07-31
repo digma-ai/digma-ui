@@ -49,7 +49,7 @@ export interface CodeDetails {
 export interface ScopeSpan {
   displayName: string;
   spanCodeObjectId: string;
-  methodId?: string;
+  methodId: string | null;
   serviceName: string | null;
   role: "Entry" | "Internal" | "Unknown" | null;
 }
@@ -100,6 +100,11 @@ export interface InsightsQuery {
   filters: InsightFilterType[];
 }
 
+export interface GetInsightsDataListPayload {
+  query: InsightsQuery;
+}
+
+/** @deprecated */
 export interface PersistedState {
   insights?: {
     query?: InsightsQuery;

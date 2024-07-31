@@ -94,7 +94,8 @@ export const NoInsightsAndNoAnalyticsAtSpan: Story = {
               displayName: "displayName",
               spanCodeObjectId: "spanCodeObjectId",
               serviceName: null,
-              role: "Internal"
+              role: "Internal",
+              methodId: null
             }
           }
         }}

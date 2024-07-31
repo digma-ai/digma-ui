@@ -147,7 +147,7 @@ export const InstallStep = ({
         sendTrackingEvent(
           trackingEvents.AUTO_INSTALLATION_PREREQUISITES_WERE_NOT_MET,
           {
-            isFirstLaunch: isFirstLaunch,
+            isFirstLaunch,
             digmaStatus: config.digmaStatus,
             isDigmaEngineInstalled: config.isDigmaEngineInstalled,
             isDockerInstalled: config.isDockerInstalled,

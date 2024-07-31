@@ -1,5 +1,5 @@
 import { ReactNode, useState } from "react";
-import { useGlobalStore } from "../../../../../../containers/Main/stores/globalStore";
+import { useGlobalStore } from "../../../../../../containers/Main/stores/useGlobalStore";
 import { getDurationString } from "../../../../../../utils/getDurationString";
 import { trimEndpointScheme } from "../../../../../../utils/trimEndpointScheme";
 import { TraceIcon } from "../../../../../common/icons/12px/TraceIcon";

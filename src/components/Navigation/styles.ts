@@ -1,8 +1,12 @@
 import styled from "styled-components";
+import { ContainerProps } from "./types";
 
-export const Container = styled.div`
+export const Container = styled.div<ContainerProps>`
   width: 100%;
-  background: ${({ theme }) => theme.colors.v3.surface.secondary};
+  background: ${({ theme, $isActive }) =>
+    $isActive
+      ? theme.colors.v3.surface.brandDarkest
+      : theme.colors.v3.surface.secondary};
   display: flex;
   flex-direction: column;
   gap: 4px;

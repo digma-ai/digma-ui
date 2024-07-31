@@ -4,7 +4,6 @@ import {
   subscriptMediumTypography,
   subscriptRegularTypography
 } from "../../common/App/typographies";
-import { Button } from "../../common/v3/Button";
 import { Link } from "../../common/v3/Link";
 
 export const Footer = styled.div`
@@ -43,13 +42,13 @@ export const FooterPageItemsCount = styled.span`
 export const Toolbar = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 8px;
+  padding: 0 8px;
   gap: 8px;
 `;
 
 export const ToolbarRow = styled.div`
   display: flex;
-  gap: 8px;
+  gap: 4px;
   justify-content: space-between;
   align-items: center;
 `;
@@ -110,12 +109,8 @@ export const InsightsViewModeToolbar = styled(Toolbar)`
   padding: 0 8px;
 `;
 
-export const RefreshButton = styled(Button)`
-  border: 1px solid ${({ theme }) => theme.colors.v3.stroke.dark};
-  color: ${({ theme }) => theme.colors.v3.icon.tertiary};
-
-  &:hover:enabled {
-    color: ${({ theme }) => theme.colors.v3.icon.white};
-    background: none;
-  }
+export const ToolbarButtonsContainer = styled.div`
+  display: flex;
+  gap: 4px;
+  align-items: center;
 `;

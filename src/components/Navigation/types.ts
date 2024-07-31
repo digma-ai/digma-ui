@@ -6,6 +6,10 @@ export interface NavigationProps {
   onViewChange: (viewId: string) => void;
 }
 
+export interface ContainerProps {
+  $isActive: boolean;
+}
+
 export interface OpenDocumentationPayload {
   page: string;
 }

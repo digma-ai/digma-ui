@@ -1,5 +1,5 @@
 import { Row, createColumnHelper } from "@tanstack/react-table";
-import { useGlobalStore } from "../../../../../containers/Main/stores/globalStore";
+import { useGlobalStore } from "../../../../../containers/Main/stores/useGlobalStore";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { SCOPE_CHANGE_EVENTS } from "../../../../Main/types";
 import { Table } from "../../../common/Table";

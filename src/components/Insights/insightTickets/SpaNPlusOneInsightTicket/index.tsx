@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import { useGlobalStore } from "../../../../containers/Main/stores/globalStore";
+import { useGlobalStore } from "../../../../containers/Main/stores/useGlobalStore";
 import { getCriticalityLabel } from "../../../../utils/getCriticalityLabel";
 import { intersperse } from "../../../../utils/intersperse";
 import { DigmaSignature } from "../../../common/DigmaSignature";
@@ -15,6 +15,7 @@ import { InsightTicketProps } from "../types";
 
 export const SpaNPlusOneInsightTicket = ({
   data,
+  refreshInsights,
   onClose
 }: InsightTicketProps<SpaNPlusOneInsight>) => {
   const spanInsight = data.insight;
@@ -78,6 +79,7 @@ export const SpaNPlusOneInsightTicket = ({
       attachments={attachments}
       insight={data.insight}
       onClose={onClose}
+      refreshInsights={refreshInsights}
     />
   );
 };

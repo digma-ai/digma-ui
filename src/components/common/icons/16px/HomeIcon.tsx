@@ -2,7 +2,11 @@ import React from "react";
 import { useIconProps } from "../hooks";
 import { IconProps } from "../types";
 
-const HomeIconComponent = (props: IconProps) => {
+export interface HomeIconProps extends IconProps {
+  fillColor?: string;
+}
+
+const HomeIconComponent = (props: HomeIconProps) => {
   const { size, color } = useIconProps(props);
 
   return (
@@ -15,6 +19,7 @@ const HomeIconComponent = (props: IconProps) => {
     >
       <g clipPath="url(#home-16px-clip-1)">
         <path
+          fill={props.fillColor}
           stroke={color}
           strokeLinecap="round"
           strokeLinejoin="round"

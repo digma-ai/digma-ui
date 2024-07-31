@@ -5,7 +5,3 @@ export interface ScopeBarProps {
   codeContext?: CodeContext;
   scope: Scope | null;
 }
-
-export interface ScopeBarElementProps {
-  $isActive?: boolean;
-}

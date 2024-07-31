@@ -3,12 +3,12 @@ import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActi
 import { Environment } from "../../common/App/types";
 import { EnvironmentIcon } from "../../common/EnvironmentIcon";
 import { NewPopover } from "../../common/NewPopover";
-import { ChevronIcon } from "../../common/icons/16px/ChevronIcon";
-import { GlobeIcon } from "../../common/icons/16px/GlobeIcon";
+import { ChevronIcon } from "../../common/icons/12px/ChevronIcon";
+import { GlobeIcon } from "../../common/icons/12px/GlobeIcon";
 import { Direction } from "../../common/icons/types";
 import { Tooltip } from "../../common/v3/Tooltip";
-import { MenuList } from "../common/MenuList";
 import { trackingEvents } from "../tracking";
+import { EnvironmentMenu } from "./EnvironmentMenu";
 import * as s from "./styles";
 import { EnvironmentBarProps } from "./types";
 
@@ -21,28 +21,13 @@ export const EnvironmentBar = ({
 
   const isDisabled = environments.length === 0;
 
-  const renderEnvironmentMenu = () => {
-    const handleMenuItemClick = (environment: Environment) => {
-      setIsMenuOpen(false);
-      onEnvironmentChange(environment);
-    };
-
-    return (
-      <s.EnvironmentMenuPopup height={"140px"}>
-        <MenuList
-          items={environments.map((x) => ({
-            id: x.id,
-            label: x.name,
-            onClick: () => handleMenuItemClick(x),
-            icon: <EnvironmentIcon environment={x} />
-          }))}
-        />
-      </s.EnvironmentMenuPopup>
-    );
+  const handleMenuItemClick = (environment: Environment) => {
+    setIsMenuOpen(false);
+    onEnvironmentChange(environment);
   };
 
   const renderEnvironmentBar = () => {
-    const environmentName = selectedEnvironment?.name ?? "No environments";
+    const environmentName = selectedEnvironment?.name ?? "";
 
     const handleEnvironmentBarClick = () => {
       if (!isDisabled) {
@@ -54,24 +39,29 @@ export const EnvironmentBar = ({
     return (
       <s.EnvironmentBar
         $isDisabled={isDisabled}
-        $isMenuOpen={isMenuOpen}
         onClick={handleEnvironmentBarClick}
       >
         <s.EnvironmentIconContainer>
           {selectedEnvironment ? (
             <EnvironmentIcon environment={selectedEnvironment} />
           ) : (
-            <GlobeIcon size={16} color={"currentColor"} />
+            <GlobeIcon color={"currentColor"} />
           )}
         </s.EnvironmentIconContainer>
-        <Tooltip title={environmentName}>
-          <s.SelectedEnvironmentName>
-            {environmentName}
-          </s.SelectedEnvironmentName>
-        </Tooltip>
+        {selectedEnvironment && (
+          <>
+            <Tooltip title={environmentName}>
+              <s.SelectedEnvironmentName>
+                {environmentName}
+              </s.SelectedEnvironmentName>
+            </Tooltip>
+            <span>/</span>
+            <span>Home</span>
+          </>
+        )}
+        {isDisabled && <span>No environments</span>}
         <s.ChevronIconContainer>
           <ChevronIcon
-            size={16}
             color={"currentColor"}
             direction={isMenuOpen ? Direction.UP : Direction.DOWN}
           />
@@ -87,7 +77,12 @@ export const EnvironmentBar = ({
   // TODO: refactor this to use only popover
   return !isDisabled && isMenuOpen ? (
     <NewPopover
-      content={renderEnvironmentMenu()}
+      content={
+        <EnvironmentMenu
+          environments={environments}
+          onMenuItemClick={handleMenuItemClick}
+        />
+      }
       onOpenChange={handleEnvironmentMenuOpenChange}
       isOpen={isMenuOpen}
       placement={"bottom"}

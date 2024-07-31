@@ -1,17 +1,8 @@
-import { IssuesQuery } from "../types";
-
-export interface IssuesFilterProps {
-  query: IssuesQuery;
-  onApply: (filter: IssuesFilterQuery) => void;
-}
+import { InsightFilterType } from "../../InsightsCatalog/types";
 
 export interface IssuesFilterEntry {
   enabled: boolean;
   name: string;
-}
-
-export interface IssuesFilterSectorEntry extends IssuesFilterEntry {
-  selected: boolean;
 }
 
 export interface IssuesFiltersData {
@@ -20,4 +11,5 @@ export interface IssuesFiltersData {
 
 export interface IssuesFilterQuery {
   issueTypes: string[];
+  filters?: InsightFilterType[];
 }

@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import { useGlobalStore } from "../../../../containers/Main/stores/globalStore";
+import { useGlobalStore } from "../../../../containers/Main/stores/useGlobalStore";
 import { InsightType } from "../../../../types";
 import { intersperse } from "../../../../utils/intersperse";
 import { DigmaSignature } from "../../../common/DigmaSignature";
@@ -23,6 +23,7 @@ import { InsightTicketProps } from "../types";
 
 export const SpanScalingByRootCauseInsightTicket = ({
   data,
+  refreshInsights,
   onClose,
   rootCauseSpanInfo
 }: InsightTicketProps<SpanScalingInsight> & {
@@ -114,6 +115,7 @@ export const SpanScalingByRootCauseInsightTicket = ({
       relatedInsight={spanInsight}
       onClose={onClose}
       onReloadSpanInsight={onReloadSpanInsight}
+      refreshInsights={refreshInsights}
     />
   );
 };

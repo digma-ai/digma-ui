@@ -1,21 +1,24 @@
 import { actions as globalActions } from "../../../actions";
-import { useGlobalStore } from "../../../containers/Main/stores/globalStore";
+import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
 import { OpenInstallationWizardPayload } from "../../../types";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { isDigmaEngineRunning } from "../../../utils/isDigmaEngineRunning";
 import { DigmaLogoFlatIcon } from "../../common/icons/16px/DigmaLogoFlatIcon";
 import { FourPointedStarIcon } from "../../common/icons/16px/FourPointedStarIcon";
+import { LogoutIcon } from "../../common/icons/16px/LogoutIcon";
+import { FourSquaresIcon } from "../../common/icons/FourSquaresIcon";
 import { LocalEngineIcon } from "../../common/icons/LocalEngineIcon";
 import { MenuList } from "../common/MenuList";
 import { MenuItem } from "../common/MenuList/types";
 import { Popup } from "../common/Popup";
 import { trackingEvents } from "../tracking";
-import { OpenDocumentationPayload } from "../types";
+import { OpenDashboardPayload, OpenDocumentationPayload } from "../types";
 import { KebabMenuProps } from "./types";
 
 export const KebabMenu = ({ onClose }: KebabMenuProps) => {
   const backendInfo = useGlobalStore.use.backendInfo();
   const digmaStatus = useGlobalStore.use.digmaStatus();
+  const environment = useGlobalStore.use.environment();
 
   const handleOnboardingClick = () => {
     sendUserActionTrackingEvent(trackingEvents.ONBOARDING_LINK_CLICKED);
@@ -47,6 +50,18 @@ export const KebabMenu = ({ onClose }: KebabMenuProps) => {
       }
     });
     onClose();
+  };
+
+  const handleDashboardClick = () => {
+    if (environment) {
+      sendUserActionTrackingEvent(trackingEvents.DASHBOARD_LINK_CLICKED);
+      window.sendMessageToDigma<OpenDashboardPayload>({
+        action: globalActions.OPEN_DASHBOARD,
+        payload: {
+          environment: environment.id
+        }
+      });
+    }
   };
 
   const handleLogoutClick = () => {
@@ -83,10 +98,20 @@ export const KebabMenu = ({ onClose }: KebabMenuProps) => {
     }
   ];
 
+  if (environment) {
+    items.push({
+      id: "dashboard",
+      label: "Dashboard",
+      icon: <FourSquaresIcon size={16} color={"currentColor"} />,
+      onClick: handleDashboardClick
+    });
+  }
+
   if (backendInfo?.centralize) {
     items.push({
       id: "logout",
       label: "Logout",
+      icon: <LogoutIcon size={16} color={"currentColor"} />,
       onClick: handleLogoutClick
     });
   }

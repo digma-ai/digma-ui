@@ -23,7 +23,8 @@ export const Default: Story = {
         displayName: "displayName",
         spanCodeObjectId: "spanCodeObjectId",
         serviceName: null,
-        role: "Entry"
+        role: "Entry",
+        methodId: null
       },
       code: {
         relatedCodeDetailsList: [],

@@ -5,4 +5,9 @@ export interface IconButtonProps {
   isDisabled?: boolean;
   className?: string;
   onClick?: () => void;
+  isHighlighted?: boolean;
+}
+
+export interface ButtonProps {
+  $isHighlighted?: boolean;
 }

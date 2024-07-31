@@ -1,7 +1,7 @@
 import { Sorting } from "../../common/SortingSelector/types";
 import { InsightFilterType } from "../InsightsCatalog/types";
 
-export interface IssuesQuery {
+export interface GetIssuesFiltersQuery {
   displayName: string | null;
   showDismissed: boolean;
   filters: InsightFilterType[];
@@ -9,7 +9,7 @@ export interface IssuesQuery {
   scopedSpanCodeObjectId?: string | null;
 }
 
-export interface GetIssuesQuery extends IssuesQuery {
+export interface GetIssuesDataListQuery extends GetIssuesFiltersQuery {
   page: number;
   sorting: Sorting;
 }

@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useGlobalStore } from "../../containers/Main/stores/globalStore";
+import { useGlobalStore } from "../../containers/Main/stores/useGlobalStore";
 import { useHistory } from "../Main/useHistory";
 import { ErrorDetails } from "./ErrorDetails";
 import { ErrorsList } from "./ErrorsList";
@@ -8,7 +8,7 @@ import * as s from "./styles";
 export const Errors = () => {
   const scope = useGlobalStore.use.scope();
   const spanCodeObjectId = scope?.span?.spanCodeObjectId;
-  const methodId = scope?.span?.methodId;
+  const methodId = scope?.span?.methodId ?? undefined;
   const { goTo } = useHistory();
   const params = useParams();
   const selectedErrorId = params.id;

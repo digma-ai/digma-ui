@@ -2,12 +2,12 @@ import React from "react";
 import { useIconProps } from "../hooks";
 import { IconProps } from "../types";
 
-const InsightsIconComponent = (props: IconProps) => {
+const FourPointedStarIconComponent = (props: IconProps) => {
   const { size, color } = useIconProps(props);
 
   return (
     <svg width={size} height={size} fill="none">
-      <g clipPath="url(#insights-12px-clip-1)">
+      <g clipPath="url(#four-pointed-star-12px-clip-1)">
         <path
           stroke={color}
           strokeLinecap="round"
@@ -16,7 +16,7 @@ const InsightsIconComponent = (props: IconProps) => {
         />
       </g>
       <defs>
-        <clipPath id="insights-12px-clip-1">
+        <clipPath id="four-pointed-star-12px-clip-1">
           <path fill="#fff" d="M0 0h12v12H0z" />
         </clipPath>
       </defs>
@@ -24,4 +24,4 @@ const InsightsIconComponent = (props: IconProps) => {
   );
 };
 
-export const InsightsIcon = React.memo(InsightsIconComponent);
+export const FourPointedStarIcon = React.memo(FourPointedStarIconComponent);
