@@ -29,9 +29,10 @@ export interface InsightCardProps {
   ) => void;
   onGoToSpan: (spanCodeObjectId: string) => void;
   isMarkAsReadButtonEnabled: boolean;
+  // viewMode: "full" | "compact";
 }
 
-export interface StyledInsightCardProps extends CardProps {
+export interface StyledCardProps extends CardProps {
   $isDismissed?: boolean;
   $isRead?: boolean;
   $isReadable?: boolean;

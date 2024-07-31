@@ -314,7 +314,7 @@ export const InsightCard = ({
   const isFooterVisible = Boolean(renderActions() ?? insight.isDismissible);
 
   return (
-    <s.StyledInsightCard
+    <s.StyledCard
       $isDismissed={insight.isDismissed}
       $isRead={insight.isRead}
       $isReadable={insight.isReadable}

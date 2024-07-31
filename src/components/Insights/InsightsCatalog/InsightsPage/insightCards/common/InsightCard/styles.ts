@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 import { subscriptRegularTypography } from "../../../../../../common/App/typographies";
 import { Button } from "../../../../../../common/v3/Button";
 import { Card } from "../../../../../../common/v3/Card";
-import { StyledInsightCardProps } from "./types";
+import { StyledCardProps } from "./types";
 
 export const InsightFooter = styled.div`
   display: flex;
@@ -39,7 +39,7 @@ export const ContentContainer = styled.div`
   gap: 8px;
 `;
 
-export const StyledInsightCard = styled(Card)<StyledInsightCardProps>`
+export const StyledCard = styled(Card)<StyledCardProps>`
   ${({ $isDismissed, theme }) =>
     $isDismissed
       ? css`
