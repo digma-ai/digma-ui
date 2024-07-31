@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useGlobalStore } from "../../../../../../../containers/Main/stores/globalStore";
+import { useGlobalStore } from "../../../../../../../containers/Main/stores/useGlobalStore";
 import { usePrevious } from "../../../../../../../hooks/usePrevious";
 import { isString } from "../../../../../../../typeGuards/isString";
 import { sendUserActionTrackingEvent } from "../../../../../../../utils/actions/sendUserActionTrackingEvent";

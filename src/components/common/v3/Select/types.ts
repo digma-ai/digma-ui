@@ -25,6 +25,7 @@ export interface SelectProps {
   disabled?: boolean;
   icon?: ComponentType<IconProps>;
   className?: string;
+  showSelectedState?: boolean;
 }
 
 export interface ButtonProps {

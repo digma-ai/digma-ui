@@ -1,6 +1,6 @@
 import { Row, createColumnHelper } from "@tanstack/react-table";
 import { useEffect, useState } from "react";
-import { useGlobalStore } from "../../../containers/Main/stores/globalStore";
+import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { isBoolean } from "../../../typeGuards/isBoolean";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";

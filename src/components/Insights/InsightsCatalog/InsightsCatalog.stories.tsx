@@ -1,11 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { fn } from "@storybook/test";
 import { InsightsCatalog } from ".";
 import { ConfigContext, initialState } from "../../common/App/ConfigContext";
-import { SORTING_ORDER } from "../../common/SortingSelector/types";
-import { mockedEndpointBottleneckInsight } from "./InsightsPage/insightCards/EndpointBottleneckInsightCard/mockData";
-import { mockedSpanDurationsInsight } from "./InsightsPage/insightCards/SpanDurationsInsightCard/mockData";
-import { SORTING_CRITERION } from "./types";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof InsightsCatalog> = {
@@ -21,46 +16,9 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-  args: {
-    insightViewType: "Issues",
-    onQueryChange: fn(),
-    insights: [
-      { ...mockedEndpointBottleneckInsight, isRead: false },
-      {
-        ...mockedSpanDurationsInsight,
-        average: {
-          value: 110.74,
-          unit: "ms",
-          raw: 110735000
-        },
-        standardDeviation: {
-          value: 12.55,
-          unit: "ms",
-          raw: 12548500
-        }
-      }
-    ],
-    totalCount: 1,
-    dismissedCount: 1,
-    defaultQuery: {
-      page: 0,
-      sorting: {
-        criterion: SORTING_CRITERION.LATEST,
-        order: SORTING_ORDER.DESC
-      },
-      searchQuery: null,
-      showDismissed: false,
-      insightViewType: "Issues",
-      showUnreadOnly: false,
-      filters: []
-    },
-    unreadCount: 1
-  }
-};
+export const Default: Story = {};
 
 export const WithStats: Story = {
-  ...Default,
   decorators: [
     (Story) => (
       <ConfigContext.Provider

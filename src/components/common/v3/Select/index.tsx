@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { isString } from "../../../../typeGuards/isString";
+import { isUndefined } from "../../../../typeGuards/isUndefined";
 import { NewPopover } from "../../NewPopover";
 import { ChevronIcon } from "../../icons/ChevronIcon";
 import { Direction } from "../../icons/types";
@@ -27,7 +28,8 @@ export const Select = ({
   disabled,
   icon: Icon,
   placeholder,
-  className
+  className,
+  showSelectedState
 }: SelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -42,6 +44,7 @@ export const Select = ({
 
     if (!multiselect) {
       onChange(item.value);
+      setIsOpen(false);
       return;
     }
 
@@ -57,7 +60,11 @@ export const Select = ({
   };
 
   const selectedValues = items.filter((x) => x.selected).map((x) => x.value);
-  const sortedItems = items.sort(sortItemsBySelectedState);
+  const sortedItems = multiselect
+    ? items.sort(sortItemsBySelectedState)
+    : items;
+  const isSelectedStateEnabled =
+    isUndefined(showSelectedState) || showSelectedState;
 
   return (
     <NewPopover
@@ -96,14 +103,16 @@ export const Select = ({
       placement={"bottom-start"}
     >
       <s.Button
-        $isActive={isOpen || selectedValues.length > 0}
+        $isActive={
+          isOpen || (isSelectedStateEnabled && selectedValues.length > 0)
+        }
         onClick={handleButtonClick}
         disabled={disabled}
         className={className}
       >
         {Icon && <Icon color={"currentColor"} />}
         {isString(placeholder) && <s.ButtonLabel>{placeholder}</s.ButtonLabel>}
-        {selectedValues.length > 0 && (
+        {multiselect && isSelectedStateEnabled && selectedValues.length > 0 && (
           <s.Number>{selectedValues.length}</s.Number>
         )}
         <s.ChevronIconContainer $disabled={disabled}>

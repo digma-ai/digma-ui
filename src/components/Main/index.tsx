@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect } from "react";
 import { Outlet, matchPath, useLocation } from "react-router-dom";
 import { actions as globalActions } from "../../actions";
 import { history } from "../../containers/Main/history";
-import { useGlobalStore } from "../../containers/Main/stores/globalStore";
+import { useGlobalStore } from "../../containers/Main/stores/useGlobalStore";
 import { dispatcher } from "../../dispatcher";
 import { HistoryEntryLocation } from "../../history/History";
 import { logger } from "../../logging";
@@ -52,14 +52,12 @@ export const Main = () => {
     // clear the history in following cases:
     // 1) there are no environments
     // 2) selected environment is not exist in the list of environments
-    // 3) scope is not exist in the current environment
     if (
       !environments ||
       environments.length === 0 ||
       Boolean(
         environment && !environments?.find((x) => x.id == environment?.id)
-      ) ||
-      (scope?.span && !scope.span.displayName)
+      )
     ) {
       history.clear();
     }
@@ -70,9 +68,17 @@ export const Main = () => {
       const scope = data as Scope;
       logger.debug("[SCOPE CHANGE]: ", scope);
 
+      // Get scope display name from history state if it's not provided
+      const spanDisplayName = scope.span
+        ? scope.span.displayName
+          ? scope.span.displayName
+          : history.getCurrentLocation()?.state?.spanDisplayName
+        : undefined;
+
       const state: HistoryState = {
         environmentId: scope.environmentId ?? environment?.id,
-        spanCodeObjectId: scope.span?.spanCodeObjectId
+        spanCodeObjectId: scope.span?.spanCodeObjectId,
+        spanDisplayName
       };
 
       if (scope?.context) {
@@ -91,7 +97,8 @@ export const Main = () => {
                     environmentId: string | undefined;
                   }
                 ).environmentId,
-                spanCodeObjectId: scope.span?.spanCodeObjectId
+                spanCodeObjectId: scope.span?.spanCodeObjectId,
+                spanDisplayName
               }
             });
             break;

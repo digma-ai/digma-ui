@@ -2,11 +2,11 @@ import React from "react";
 import { useIconProps } from "../hooks";
 import { IconProps } from "../types";
 
-interface GroupIconProps extends IconProps {
-  crossOut: boolean;
+interface EyeIconProps extends IconProps {
+  crossOut?: boolean;
 }
 
-const GroupIconComponent = (props: GroupIconProps) => {
+const EyeIconComponent = (props: EyeIconProps) => {
   const { size, color } = useIconProps(props);
 
   return (
@@ -32,4 +32,4 @@ const GroupIconComponent = (props: GroupIconProps) => {
   );
 };
 
-export const GroupIcon = React.memo(GroupIconComponent);
+export const EyeIcon = React.memo(EyeIconComponent);

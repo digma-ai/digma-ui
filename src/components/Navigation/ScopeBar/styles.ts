@@ -1,23 +1,19 @@
 import styled from "styled-components";
+import { bodyRegularTypography } from "../../common/App/typographies";
 import { CopyButton } from "../../common/v3/CopyButton";
-import { ScopeBarElementProps } from "./types";
+import { Bar } from "../common/Bar";
 
-export const ScopeBar = styled.div<ScopeBarElementProps>`
-  display: flex;
-  flex-grow: 1;
+export const ScopeBar = styled(Bar)`
+  ${bodyRegularTypography}
+
   align-items: center;
-  border-radius: 4px;
-  border: 1px solid ${({ theme }) => theme.colors.v3.stroke.primary};
-  background: ${({ theme, $isActive }) =>
-    $isActive
-      ? theme.colors.v3.surface.brandDark
-      : theme.colors.v3.surface.primary};
-  box-shadow: 0 0 4.9px 0 rgb(0 0 0 / 13%);
-  color: ${({ theme, $isActive }) =>
-    $isActive ? theme.colors.v3.text.link : theme.colors.v3.text.secondary};
-  font-size: 14px;
-  padding: 5px 2px;
-  overflow: hidden;
+  background: ${({ theme }) => theme.colors.v3.surface.brandDark};
+  color: ${({ theme }) => theme.colors.v3.text.secondary};
+`;
+
+export const SpanIconContainer = styled.div`
+  display: flex;
+  color: ${({ theme }) => theme.colors.v3.icon.brandSecondary};
 `;
 
 export const StyledCopyButton = styled(CopyButton)`
@@ -44,12 +40,6 @@ export const ScopeName = styled.span`
   white-space: nowrap;
   padding: 0 4px;
   user-select: none;
-`;
-
-export const ScopeBarDivider = styled.div`
-  width: 1px;
-  height: 18px;
-  background: ${({ theme }) => theme.colors.v3.stroke.primaryLight};
 `;
 
 export const ScopeBarButton = styled.button`

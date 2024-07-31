@@ -2,6 +2,7 @@ import React, { ForwardedRef, forwardRef } from "react";
 import * as s from "./styles";
 import { IconButtonProps } from "./types";
 
+/** @deprecated */
 const IconButtonComponent = (
   { onClick, className, disabled, icon }: IconButtonProps,
   ref: ForwardedRef<HTMLButtonElement>
@@ -24,4 +25,5 @@ const IconButtonComponent = (
   );
 };
 
+/** @deprecated */
 export const IconButton = forwardRef(IconButtonComponent);

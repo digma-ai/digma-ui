@@ -16,6 +16,7 @@ import { InsightTicketProps } from "../types";
 
 export const EndpointBottleneckInsightTicket = ({
   data,
+  refreshInsights,
   onClose
 }: InsightTicketProps<EndpointBottleneckInsight>) => {
   const span = data.insight.span;
@@ -83,6 +84,7 @@ export const EndpointBottleneckInsightTicket = ({
       relatedInsight={spanInsight}
       onReloadSpanInsight={onReloadSpanInsight}
       onClose={onClose}
+      refreshInsights={refreshInsights}
     />
   );
 };

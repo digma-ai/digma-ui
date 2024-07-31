@@ -2,7 +2,7 @@ import { ErrorInfo, useContext, useEffect, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { ThemeProvider } from "styled-components";
 import { actions } from "../../../actions";
-import { useGlobalStore } from "../../../containers/Main/stores/globalStore";
+import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
 import { dispatcher } from "../../../dispatcher";
 import { Theme } from "../../../globals";
 import { logger } from "../../../logging";

@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import { useGlobalStore } from "../../../containers/Main/stores/globalStore";
+import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
 import { isString } from "../../../typeGuards/isString";
 import { getDurationString } from "../../../utils/getDurationString";
 import { intersperse } from "../../../utils/intersperse";

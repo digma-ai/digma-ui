@@ -1,147 +1,160 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { actions as globalActions } from "../../actions";
 import { DigmaMessageError } from "../../api/types";
-import { useGlobalStore } from "../../containers/Main/stores/globalStore";
+import { useGlobalStore } from "../../containers/Main/stores/useGlobalStore";
+import { useInsightsStore } from "../../containers/Main/stores/useInsightsStore";
 import { dispatcher } from "../../dispatcher";
 import { getFeatureFlagValue } from "../../featureFlags";
 import { usePrevious } from "../../hooks/usePrevious";
 import {
   FeatureFlag,
   GetInsightStatsPayload,
-  GetIssuesPayload
+  GetIssuesDataListPayload
 } from "../../types";
-import {
-  InsightsQuery as InsightsDataQuery,
-  PersistedState
-} from "../common/App/types";
-import { IssuesFilterQuery } from "./Issues/IssuesFilter/types";
+import { GetInsightsDataListPayload, InsightsQuery } from "../common/App/types";
+import { Sorting } from "../common/SortingSelector/types";
+import { InsightFilterType, ViewMode } from "./InsightsCatalog/types";
 import { actions as issuesActions } from "./Issues/actions";
-import { GetIssuesQuery } from "./Issues/types";
+import { GetIssuesDataListQuery } from "./Issues/types";
 import { actions } from "./actions";
-import {
-  InsightsData,
-  InsightsQuery,
-  InsightsStatus,
-  ScopedInsightsQuery,
-  ViewMode
-} from "./types";
+import { InsightsData, InsightViewType } from "./types";
 
-interface UseInsightDataProps {
-  refreshInterval: number;
-  query: InsightsQuery;
-  filters?: IssuesFilterQuery;
+interface UseInsightsDataProps {
+  areFiltersRehydrated: boolean;
 }
 
-const getIssues = (query: GetIssuesQuery) => {
-  window.sendMessageToDigma<GetIssuesPayload>({
+interface GetDataListParams {
+  search: string | null;
+  page: number;
+  sorting: Sorting;
+  showDismissed: boolean;
+  filters: InsightFilterType[];
+  filteredInsightTypes: string[];
+  insightViewType: InsightViewType | null;
+  spanCodeObjectId: string | null;
+  areIssuesFiltersEnabled: boolean;
+}
+
+interface GetStatsParams {
+  spanCodeObjectId: string | null;
+  filteredInsightTypes: string[];
+}
+
+const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
+
+const getInsightsDataList = (query: InsightsQuery) => {
+  window.sendMessageToDigma<GetInsightsDataListPayload>({
+    action: actions.GET_DATA_LIST,
+    payload: {
+      query
+    }
+  });
+};
+
+const getIssuesDataList = (query: GetIssuesDataListQuery) => {
+  window.sendMessageToDigma<GetIssuesDataListPayload>({
     action: issuesActions.GET_DATA_LIST,
     payload: {
-      query: query
+      query
     }
   });
 };
 
-const getData = (
-  scopedQuery: ScopedInsightsQuery,
-  areIssuesFiltersEnabled: boolean,
-  state: PersistedState | null
-) => {
-  const getDataQuery: InsightsDataQuery = {
-    displayName: scopedQuery.searchQuery,
-    sortBy: scopedQuery.sorting.criterion,
-    sortOrder: scopedQuery.sorting.order,
-    page: scopedQuery.page,
-    scopedSpanCodeObjectId: scopedQuery.scopedSpanCodeObjectId,
-    showDismissed: scopedQuery.showDismissed,
-    insightViewType: scopedQuery.insightViewType,
-    showUnreadOnly: scopedQuery.showUnreadOnly,
-    filters: scopedQuery.filters
-  };
-
-  if (scopedQuery.insightViewType === "Issues" && areIssuesFiltersEnabled) {
-    getIssues({
-      filters: scopedQuery.filters,
-      page: scopedQuery.page,
-      showDismissed: scopedQuery.showDismissed,
-      sorting: scopedQuery.sorting,
-      scopedSpanCodeObjectId: scopedQuery.scopedSpanCodeObjectId,
-      displayName: scopedQuery.searchQuery,
-      insightTypes: scopedQuery.insightTypes
-    });
-  } else {
-    window.sendMessageToDigma({
-      action: actions.GET_DATA_LIST,
-      payload: {
-        query: getDataQuery
-      }
-    });
+const getDataList = ({
+  search,
+  page,
+  sorting,
+  showDismissed,
+  filters,
+  filteredInsightTypes,
+  insightViewType,
+  spanCodeObjectId,
+  areIssuesFiltersEnabled
+}: GetDataListParams) => {
+  if (!insightViewType) {
+    return;
   }
 
-  const globalStateSlice =
-    scopedQuery.insightViewType === "Analytics" ? "analytics" : "insights";
-
-  window.sendMessageToDigma<PersistedState>({
-    action: globalActions.UPDATE_STATE,
-    payload: {
-      ...state,
-      [globalStateSlice]: {
-        ...state?.[globalStateSlice],
-        query: getDataQuery
-      }
-    }
-  });
+  if (insightViewType === "Issues" && areIssuesFiltersEnabled) {
+    getIssuesDataList({
+      displayName: search,
+      page,
+      sorting,
+      filters,
+      showDismissed,
+      scopedSpanCodeObjectId: spanCodeObjectId,
+      insightTypes: filteredInsightTypes
+    });
+  } else {
+    const showUnreadOnly = filters.length === 1 && filters[0] === "unread";
+    getInsightsDataList({
+      displayName: search,
+      page,
+      sortBy: sorting.criterion,
+      sortOrder: sorting.order,
+      filters,
+      showDismissed,
+      scopedSpanCodeObjectId: spanCodeObjectId,
+      insightViewType,
+      showUnreadOnly
+    });
+  }
 };
 
-const getStats = (query: ScopedInsightsQuery) => {
+const getStats = ({
+  spanCodeObjectId,
+  filteredInsightTypes
+}: GetStatsParams) => {
   window.sendMessageToDigma<GetInsightStatsPayload>({
     action: globalActions.GET_INSIGHT_STATS,
     payload: {
-      scope: query?.scopedSpanCodeObjectId
+      scope: spanCodeObjectId
         ? {
             span: {
-              spanCodeObjectId: query?.scopedSpanCodeObjectId
+              spanCodeObjectId: spanCodeObjectId
             }
           }
         : null,
       filters: {
-        insights: query.insightTypes
+        insights: filteredInsightTypes
       }
     }
   });
 };
 
 export const useInsightsData = ({
-  refreshInterval,
-  query,
-  filters
-}: UseInsightDataProps) => {
-  const [data, setData] = useState<InsightsData>({
-    insightsStatus: InsightsStatus.LOADING,
-    insights: [],
-    viewMode: ViewMode.INSIGHTS,
-    totalCount: 0
-  });
-  const previousData = usePrevious(data);
-  const [isInitialLoading, setIsInitialLoading] = useState(false);
+  areFiltersRehydrated
+}: UseInsightsDataProps) => {
+  const data = useInsightsStore.use.data();
+  const setData = useInsightsStore.use.setData();
+  const isLoading = useInsightsStore.use.isDataLoading();
+  const setIsLoading = useInsightsStore.use.setIsDataLoading();
+  const isInitialLoading = !data && isLoading;
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
-  const [isLoading, setIsLoading] = useState(false);
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
   const refreshTimerId = useRef<number>();
   const backendInfo = useGlobalStore.use.backendInfo();
   const scope = useGlobalStore.use.scope();
   const environment = useGlobalStore.use.environment();
-  const persistedState = useGlobalStore.use.persistedState();
-
-  const scopedQuery: ScopedInsightsQuery = useMemo(
-    () => ({
-      ...query,
-      scopedSpanCodeObjectId: scope?.span?.spanCodeObjectId ?? null,
-      insightTypes: filters?.issueTypes
-    }),
-    [query, scope, filters]
+  const environmentId = environment?.id;
+  const search = useInsightsStore.use.search();
+  const page = useInsightsStore.use.page();
+  const sorting = useInsightsStore.use.sorting();
+  const viewMode = useInsightsStore.use.viewMode();
+  const filters = useInsightsStore.use.filters();
+  const filteredInsightTypes = useInsightsStore.use.filteredInsightTypes();
+  const insightViewType = useInsightsStore.use.insightViewType();
+  const spanCodeObjectId = scope?.span?.spanCodeObjectId ?? null;
+  const showDismissed = viewMode === ViewMode.OnlyDismissed;
+  const isAppReadyToGetData = useMemo(
+    () =>
+      Boolean(
+        backendInfo && areFiltersRehydrated && insightViewType && environment
+      ),
+    [backendInfo, areFiltersRehydrated, insightViewType, environment]
   );
 
-  const areNewIssuesFiltersEnabled = useMemo(
+  const areIssuesFiltersEnabled = useMemo(
     () =>
       Boolean(
         getFeatureFlagValue(backendInfo, FeatureFlag.ARE_ISSUES_FILTERS_ENABLED)
@@ -149,29 +162,73 @@ export const useInsightsData = ({
     [backendInfo]
   );
 
-  useEffect(() => {
-    getData(scopedQuery, areNewIssuesFiltersEnabled, persistedState);
+  const getDataListParams = useMemo(
+    () => ({
+      search,
+      page,
+      sorting,
+      showDismissed,
+      filters,
+      filteredInsightTypes,
+      insightViewType,
+      spanCodeObjectId,
+      areIssuesFiltersEnabled
+    }),
+    [
+      search,
+      page,
+      sorting,
+      showDismissed,
+      filters,
+      filteredInsightTypes,
+      insightViewType,
+      spanCodeObjectId,
+      areIssuesFiltersEnabled
+    ]
+  );
 
-    setIsInitialLoading(true);
-    setIsLoading(true);
+  const getStatsParams = useMemo(
+    () => ({
+      spanCodeObjectId,
+      filteredInsightTypes
+    }),
+    [spanCodeObjectId, filteredInsightTypes]
+  );
+
+  const refresh = useCallback(() => {
+    if (isAppReadyToGetData) {
+      getDataList(getDataListParams);
+      getStats(getStatsParams);
+      setIsLoading(true);
+    }
+  }, [getDataListParams, getStatsParams, setIsLoading, isAppReadyToGetData]);
+
+  useEffect(() => {
+    const timerId = refreshTimerId.current;
+    return () => {
+      window.clearTimeout(timerId);
+    };
+  }, []);
+
+  useEffect(() => {
+    window.clearTimeout(refreshTimerId.current);
+    refresh();
+  }, [backendInfo, environmentId, spanCodeObjectId, refresh]);
+
+  useEffect(() => {
     const handleInsightsData = (
       data: unknown,
       timeStamp: number,
       error: DigmaMessageError | undefined
     ) => {
       if (!error) {
-        const insightsData = data as InsightsData;
-        insightsData.insightsStatus = InsightsStatus.DEFAULT;
-        insightsData.viewMode = ViewMode.INSIGHTS;
-
-        setData(insightsData);
+        setData(data as InsightsData);
       }
       setIsLoading(false);
       setLastSetDataTimeStamp(timeStamp);
     };
 
     dispatcher.addActionListener(actions.SET_DATA_LIST, handleInsightsData);
-
     dispatcher.addActionListener(
       issuesActions.SET_DATA_LIST,
       handleInsightsData
@@ -186,55 +243,22 @@ export const useInsightsData = ({
         issuesActions.SET_DATA_LIST,
         handleInsightsData
       );
-      window.clearTimeout(refreshTimerId.current);
     };
-  }, []);
-
-  useEffect(() => {
-    if (!previousData && data) {
-      setIsInitialLoading(false);
-    }
-  }, [previousData, data]);
+  }, [setData, setIsLoading]);
 
   useEffect(() => {
     if (previousLastSetDataTimeStamp !== lastSetDataTimeStamp) {
       window.clearTimeout(refreshTimerId.current);
       refreshTimerId.current = window.setTimeout(() => {
-        getData(scopedQuery, areNewIssuesFiltersEnabled, persistedState);
-        getStats(scopedQuery);
-      }, refreshInterval);
+        refresh();
+      }, REFRESH_INTERVAL);
     }
-
-    return () => {
-      window.clearTimeout(refreshTimerId.current);
-    };
-  }, [
-    lastSetDataTimeStamp,
-    previousLastSetDataTimeStamp,
-    environment,
-    scopedQuery,
-    refreshInterval,
-    areNewIssuesFiltersEnabled
-  ]);
-
-  useEffect(() => {
-    getData(scopedQuery, areNewIssuesFiltersEnabled, persistedState);
-    getStats(scopedQuery);
-    setIsLoading(true);
-  }, [
-    scopedQuery,
-    areNewIssuesFiltersEnabled,
-    scope?.span?.spanCodeObjectId,
-    environment?.id
-  ]);
+  }, [lastSetDataTimeStamp, previousLastSetDataTimeStamp, refresh]);
 
   return {
-    isInitialLoading,
     data,
     isLoading,
-    refresh: () => {
-      getData(scopedQuery, areNewIssuesFiltersEnabled, persistedState);
-      getStats(scopedQuery);
-    }
+    isInitialLoading,
+    refresh
   };
 };

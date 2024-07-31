@@ -1,5 +1,5 @@
 import { ComponentType, useEffect, useState } from "react";
-import { useGlobalStore } from "../../../containers/Main/stores/globalStore";
+import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
 import { dispatcher } from "../../../dispatcher";
 import { usePersistence } from "../../../hooks/usePersistence";
 import { usePrevious } from "../../../hooks/usePrevious";

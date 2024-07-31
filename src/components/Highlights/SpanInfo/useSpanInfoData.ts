@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useGlobalStore } from "../../../containers/Main/stores/globalStore";
+import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
 import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { actions as mainActions } from "../../Main/actions";

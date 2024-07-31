@@ -1,4 +1,4 @@
-import { useGlobalStore } from "../../../../../../containers/Main/stores/globalStore";
+import { useGlobalStore } from "../../../../../../containers/Main/stores/useGlobalStore";
 import { usePagination } from "../../../../../../hooks/usePagination";
 import { TraceIcon } from "../../../../../common/icons/12px/TraceIcon";
 import { Button } from "../../../../../common/v3/Button";

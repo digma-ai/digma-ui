@@ -5,7 +5,7 @@ import {
   useReactTable
 } from "@tanstack/react-table";
 import { useEffect, useMemo, useState } from "react";
-import { useGlobalStore } from "../../../../../../containers/Main/stores/globalStore";
+import { useGlobalStore } from "../../../../../../containers/Main/stores/useGlobalStore";
 import { getFeatureFlagValue } from "../../../../../../featureFlags";
 import { usePagination } from "../../../../../../hooks/usePagination";
 import { usePrevious } from "../../../../../../hooks/usePrevious";
