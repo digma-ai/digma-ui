@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useGlobalStore } from "../../../../containers/Main/stores/globalStore";
+import { useGlobalStore } from "../../../../containers/Main/stores/useGlobalStore";
 import {
   DataFetcherConfiguration,
   useFetchData
