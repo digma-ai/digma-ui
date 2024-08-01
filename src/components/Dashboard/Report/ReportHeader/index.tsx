@@ -4,9 +4,11 @@ import {
   DataFetcherConfiguration,
   useFetchData
 } from "../../../../hooks/useFetchData";
+import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { GlobeIcon } from "../../../common/icons/12px/GlobeIcon";
 import { WrenchIcon } from "../../../common/icons/12px/WrenchIcon";
 import { actions } from "../../actions";
+import { trackingEvents } from "../tracking";
 import { GetServicesPayload } from "../types";
 import { Ribbon } from "./Ribbon";
 import * as s from "./styles";
@@ -40,12 +42,14 @@ export const ReportHeader = ({
 
     setSelectedEnvironment(newItem[0]);
     onFilterChanged({ environmentId: newItem[0], services: selectedServices });
+    sendUserActionTrackingEvent(trackingEvents.ENVIRONMENT_FILTER_SELECTED);
   };
 
   const handleSelectedServicesChanged = (option: string | string[]) => {
     const newItem = Array.isArray(option) ? option : [option];
     setSelectedServices(newItem);
     onFilterChanged({ environmentId: selectedEnvironment, services: newItem });
+    sendUserActionTrackingEvent(trackingEvents.SERVICES_FILTER_SELECTED);
   };
 
   const getServicesPayload = useMemo(
