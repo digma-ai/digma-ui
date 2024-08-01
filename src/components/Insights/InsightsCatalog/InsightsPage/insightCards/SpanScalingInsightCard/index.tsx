@@ -6,6 +6,7 @@ import { TraceIcon } from "../../../../../common/icons/12px/TraceIcon";
 import { Button } from "../../../../../common/v3/Button";
 import { JiraButton } from "../../../../../common/v3/JiraButton";
 import { Pagination } from "../../../../../common/v3/Pagination";
+import { Tooltip } from "../../../../../common/v3/Tooltip";
 import { InsightType, RootCauseSpanInfo, Trace } from "../../../../types";
 import { InsightCard } from "../common/InsightCard";
 import { ColumnsContainer } from "../common/InsightCard/ColumnsContainer";
@@ -26,7 +27,8 @@ export const SpanScalingInsightCard = ({
   onRecalculate,
   onRefresh,
   onGoToSpan,
-  isMarkAsReadButtonEnabled
+  isMarkAsReadButtonEnabled,
+  viewMode
 }: SpanScalingInsightCardProps) => {
   const isJaegerEnabled = useGlobalStore.use.isJaegerEnabled();
   const affectedEndpoints = insight.affectedEndpoints ?? [];
@@ -108,6 +110,10 @@ export const SpanScalingInsightCard = ({
     }
   };
 
+  const durationRangeString = `${getDurationString(
+    insight.minDuration
+  )} - ${getDurationString(insight.maxDuration)}`;
+
   return (
     <InsightCard
       insight={insight}
@@ -120,10 +126,7 @@ export const SpanScalingInsightCard = ({
             <KeyValue label={"Tested concurrency"}>
               {insight.maxConcurrency}
             </KeyValue>
-            <KeyValue label={"Duration"}>
-              {getDurationString(insight.minDuration)} -{" "}
-              {getDurationString(insight.maxDuration)}
-            </KeyValue>
+            <KeyValue label={"Duration"}>{durationRangeString}</KeyValue>
           </ColumnsContainer>
           {renderRootCause(insight.rootCauseSpans)}
           {affectedEndpoints.length > 0 && (
@@ -164,6 +167,12 @@ export const SpanScalingInsightCard = ({
       onRefresh={onRefresh}
       onGoToSpan={onGoToSpan}
       isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
+      viewMode={viewMode}
+      mainMetric={
+        <Tooltip title={durationRangeString}>
+          <span>{durationRangeString}</span>
+        </Tooltip>
+      }
     />
   );
 };

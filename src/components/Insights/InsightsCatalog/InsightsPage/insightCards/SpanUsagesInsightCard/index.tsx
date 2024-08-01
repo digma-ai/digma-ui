@@ -40,7 +40,8 @@ export const SpanUsagesInsightCard = ({
   onRecalculate,
   onRefresh,
   onGoToSpan,
-  isMarkAsReadButtonEnabled
+  isMarkAsReadButtonEnabled,
+  viewMode
 }: SpanUsagesInsightCardProps) => {
   const isJaegerEnabled = useGlobalStore.use.isJaegerEnabled();
   const [data, setData] = useState({
@@ -325,6 +326,7 @@ export const SpanUsagesInsightCard = ({
       onRefresh={onRefresh}
       onGoToSpan={onGoToSpan}
       isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
+      viewMode={viewMode}
     />
   );
 };

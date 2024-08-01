@@ -20,7 +20,8 @@ export const EndpointSessionInViewInsightCard = ({
   onRecalculate,
   onRefresh,
   onGoToSpan,
-  isMarkAsReadButtonEnabled
+  isMarkAsReadButtonEnabled,
+  viewMode
 }: EndpointSessionInViewInsightCardProps) => {
   const isJaegerEnabled = useGlobalStore.use.isJaegerEnabled();
 
@@ -99,6 +100,7 @@ export const EndpointSessionInViewInsightCard = ({
       onRefresh={onRefresh}
       onGoToSpan={onGoToSpan}
       isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
+      viewMode={viewMode}
     />
   );
 };

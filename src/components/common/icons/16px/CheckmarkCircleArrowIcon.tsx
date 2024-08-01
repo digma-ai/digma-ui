@@ -2,7 +2,7 @@ import React from "react";
 import { useIconProps } from "../hooks";
 import { IconProps } from "../types";
 
-const RecalculateStartedIconComponent = (props: IconProps) => {
+const CheckmarkCircleArrowIconComponent = (props: IconProps) => {
   const { size, color } = useIconProps(props);
 
   return (
@@ -26,6 +26,6 @@ const RecalculateStartedIconComponent = (props: IconProps) => {
   );
 };
 
-export const RecalculateStartedIcon = React.memo(
-  RecalculateStartedIconComponent
+export const CheckmarkCircleArrowIcon = React.memo(
+  CheckmarkCircleArrowIconComponent
 );

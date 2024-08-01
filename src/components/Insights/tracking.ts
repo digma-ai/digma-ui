@@ -15,6 +15,9 @@ export const trackingEvents = addPrefix(
       "insight card mark as read button clicked",
     REFRESH_BUTTON_CLICKED: "refresh button clicked",
     INSIGHT_CARD_ASSET_LINK_CLICKED: "insight card asset link clicked",
+    ISSUE_CARD_CLICKED: "issue card clicked",
+    ISSUE_CARD_TITLE_ASSET_LINK_CLICKED: "issue card title asset link clicked",
+    ISSUE_CARD_KEBAB_MENU_ITEM_CLICKED: "issue card kebab menu item clicked",
     PROMOTION_CLOSE_EXPANDED_VIEW_BUTTON_CLICKED:
       "promotion close expanded view button clicked",
     PROMOTION_OPEN_EXPANDED_VIEW_BUTTON_CLICKED:

@@ -46,10 +46,22 @@ export const SpanEndpointBottleneckInsightCard = ({
   onRecalculate,
   onRefresh,
   onGoToSpan,
-  isMarkAsReadButtonEnabled
+  isMarkAsReadButtonEnabled,
+  viewMode
 }: SpanEndpointBottleneckInsightCardProps) => {
   const isJaegerEnabled = useGlobalStore.use.isJaegerEnabled();
   const slowEndpoints = insight.slowEndpoints ?? [];
+  const endpointWithMaxDuration = slowEndpoints.reduce(
+    (acc, cur) =>
+      acc.avgDurationWhenBeingBottleneck.raw >=
+      cur.avgDurationWhenBeingBottleneck.raw
+        ? acc
+        : cur,
+    slowEndpoints[0]
+  );
+  const maxDurationString = getDurationString(
+    endpointWithMaxDuration.avgDurationWhenBeingBottleneck
+  );
   const [selectedEndpoint, setSelectedEndpoint] = useState(
     slowEndpoints.length > 0 ? slowEndpoints[0] : null
   );
@@ -154,6 +166,12 @@ export const SpanEndpointBottleneckInsightCard = ({
       onRefresh={onRefresh}
       onGoToSpan={onGoToSpan}
       isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
+      viewMode={viewMode}
+      mainMetric={
+        <Tooltip title={maxDurationString}>
+          <span>{maxDurationString}</span>
+        </Tooltip>
+      }
     />
   );
 };

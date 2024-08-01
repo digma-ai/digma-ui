@@ -265,6 +265,7 @@ const renderInsightCard = (
         onRefresh={handleRefresh}
         onGoToSpan={handleGoToSpan}
         isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
+        viewMode={"full"}
       />
     );
   }
@@ -295,6 +296,7 @@ const renderInsightCard = (
         onRefresh={handleRefresh}
         onGoToSpan={handleGoToSpan}
         isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
+        viewMode={"full"}
       />
     );
   }
@@ -309,6 +311,7 @@ const renderInsightCard = (
         onRefresh={handleRefresh}
         onGoToSpan={handleGoToSpan}
         isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
+        viewMode={"full"}
       />
     );
   }

@@ -1,4 +1,5 @@
 import { getDurationString } from "../../../../../../utils/getDurationString";
+import { Tooltip } from "../../../../../common/v3/Tooltip";
 import { InsightType, Trace } from "../../../../types";
 import { InsightCard } from "../common/InsightCard";
 import { ColumnsContainer } from "../common/InsightCard/ColumnsContainer";
@@ -15,7 +16,8 @@ export const EndpointQueryOptimizationV2InsightCard = ({
   onRecalculate,
   onRefresh,
   onGoToSpan,
-  isMarkAsReadButtonEnabled
+  isMarkAsReadButtonEnabled,
+  viewMode
 }: EndpointQueryOptimizationV2InsightCardProps) => {
   const handleSpanLinkClick = (spanCodeObjectId: string) => {
     onAssetLinkClick(spanCodeObjectId, insight.type);
@@ -38,6 +40,7 @@ export const EndpointQueryOptimizationV2InsightCard = ({
 
   const spanName = insight.span.spanInfo.displayName;
   const spanCodeObjectId = insight.span.spanInfo.spanCodeObjectId;
+  const durationString = getDurationString(insight.span.duration);
 
   return (
     <InsightCard
@@ -77,6 +80,12 @@ export const EndpointQueryOptimizationV2InsightCard = ({
       }}
       onGoToSpan={onGoToSpan}
       isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
+      viewMode={viewMode}
+      mainMetric={
+        <Tooltip title={durationString}>
+          <span>{durationString}</span>
+        </Tooltip>
+      }
     />
   );
 };

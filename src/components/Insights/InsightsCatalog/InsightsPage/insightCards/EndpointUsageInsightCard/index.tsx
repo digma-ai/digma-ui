@@ -47,7 +47,8 @@ export const EndpointUsageInsightCard = ({
   onRecalculate,
   onRefresh,
   onGoToSpan,
-  isMarkAsReadButtonEnabled
+  isMarkAsReadButtonEnabled,
+  viewMode
 }: EndpointUsageInsightCardProps) => {
   const valueString = `${getValueString(insight.maxCallsIn1Min)}/min`;
 
@@ -70,6 +71,7 @@ export const EndpointUsageInsightCard = ({
       onRefresh={onRefresh}
       onGoToSpan={onGoToSpan}
       isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
+      viewMode={viewMode}
     />
   );
 };

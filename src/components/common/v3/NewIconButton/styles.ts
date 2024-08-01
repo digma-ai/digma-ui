@@ -43,14 +43,26 @@ export const Button = styled.button<ButtonElementProps>`
   flex-shrink: 0;
   cursor: pointer;
   user-select: none;
-  padding: ${({ $type }) => {
+  padding: ${({ $type, $size }) => {
     switch ($type) {
       case "tertiary":
-        return 6;
+        switch ($size) {
+          case "small":
+            return 4;
+          case "medium":
+          default:
+            return 6;
+        }
       case "secondary":
       case "primary":
       default:
-        return 5;
+        switch ($size) {
+          case "small":
+            return 3;
+          case "medium":
+          default:
+            return 5;
+        }
     }
   }}px;
   color: ${({ theme, $type }) => {
