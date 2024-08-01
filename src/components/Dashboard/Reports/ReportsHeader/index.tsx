@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useGlobalStore } from "../../../../containers/Main/stores/useGlobalStore";
 import {
   DataFetcherConfiguration,
@@ -7,6 +7,7 @@ import {
 import { EnvironmentIcon } from "../../../common/icons/12px/EnvironmentIcon";
 import { ServiceIcon } from "../../../common/icons/12px/ServiceIcon";
 import { actions } from "../../actions";
+import { GetServicesPayload } from "../types";
 import { Ribbon } from "./Ribbon";
 import * as s from "./styles";
 import { ReportsHeaderProps } from "./types";
@@ -47,9 +48,14 @@ export const ReportsHeader = ({
     onFilterChanged({ environmentId: selectedEnvironment, services: newItem });
   };
 
-  const { data: services, getData } = useFetchData<undefined, string[]>(
-    dataFetcherIssuesStatsConfiguration
+  const getServicesPayload = useMemo(
+    () => ({ environment: selectedEnvironment }),
+    [selectedEnvironment]
   );
+  const { data: services, getData } = useFetchData<
+    GetServicesPayload,
+    string[]
+  >(dataFetcherIssuesStatsConfiguration, getServicesPayload);
 
   useEffect(() => {
     getData();
@@ -81,7 +87,10 @@ export const ReportsHeader = ({
                 }
                 icon={EnvironmentIcon}
                 onChange={handleSelectedEnvironmentChanged}
-                placeholder="Environments"
+                placeholder={
+                  environments?.find((x) => x.id === selectedEnvironment)
+                    ?.name ?? "All Environments"
+                }
               />
               <s.FilterSelector
                 items={
@@ -95,7 +104,9 @@ export const ReportsHeader = ({
                 multiselect={true}
                 icon={ServiceIcon}
                 onChange={handleSelectedServicesChanged}
-                placeholder="All Services"
+                placeholder={
+                  selectedServices.length > 0 ? "Services" : "All Services"
+                }
               />
             </s.FiltersGroup>
           </s.Group>

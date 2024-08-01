@@ -102,11 +102,6 @@ export const KebabMenu = ({ onClose }: KebabMenuProps) => {
       label: "Insights Overview",
       icon: <FourPointedStarIcon size={16} color={"currentColor"} />,
       onClick: handleInsightsOverviewClick
-    },
-    {
-      id: "reports",
-      label: "Open Report",
-      onClick: handleReportClick
     }
   ];
 
@@ -116,6 +111,13 @@ export const KebabMenu = ({ onClose }: KebabMenuProps) => {
       label: "Dashboard",
       icon: <FourSquaresIcon size={16} color={"currentColor"} />,
       onClick: handleDashboardClick
+    });
+
+    items.push({
+      id: "reports",
+      label: "Open Report",
+      icon: <FourSquaresIcon size={16} color={"currentColor"} />,
+      onClick: handleReportClick
     });
   }
 

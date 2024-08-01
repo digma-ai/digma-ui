@@ -20,3 +20,7 @@ export interface AssetCategory {
   name: string;
   count: number;
 }
+
+export interface GetServicesPayload {
+  environment: string;
+}
