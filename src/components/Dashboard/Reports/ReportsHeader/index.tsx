@@ -4,8 +4,8 @@ import {
   DataFetcherConfiguration,
   useFetchData
 } from "../../../../hooks/useFetchData";
-import { EnvironmentIcon } from "../../../common/icons/12px/EnvironmentIcon";
-import { ServiceIcon } from "../../../common/icons/12px/ServiceIcon";
+import { GlobeIcon } from "../../../common/icons/12px/GlobeIcon";
+import { WrenchIcon } from "../../../common/icons/12px/WrenchIcon";
 import { actions } from "../../actions";
 import { GetServicesPayload } from "../types";
 import { Ribbon } from "./Ribbon";
@@ -65,7 +65,7 @@ export const ReportsHeader = ({
     <s.Container>
       <Ribbon
         onDownload={() => {
-          1;
+          // TODO
         }}
         onRefresh={() => {
           onRefresh();
@@ -85,7 +85,7 @@ export const ReportsHeader = ({
                     selected: x.id === selectedEnvironment
                   })) ?? []
                 }
-                icon={EnvironmentIcon}
+                icon={GlobeIcon}
                 onChange={handleSelectedEnvironmentChanged}
                 placeholder={
                   environments?.find((x) => x.id === selectedEnvironment)
@@ -102,7 +102,7 @@ export const ReportsHeader = ({
                   })) ?? []
                 }
                 multiselect={true}
-                icon={ServiceIcon}
+                icon={WrenchIcon}
                 onChange={handleSelectedServicesChanged}
                 placeholder={
                   selectedServices.length > 0 ? "Services" : "All Services"
