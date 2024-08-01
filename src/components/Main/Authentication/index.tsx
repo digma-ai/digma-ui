@@ -1,9 +1,11 @@
-import { forwardRef, useState } from "react";
+import { forwardRef, useEffect, useState } from "react";
 import { SLACK_WORKSPACE_URL } from "../../../constants";
 import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
+import { sendTrackingEvent } from "../../../utils/actions/sendTrackingEvent";
 import { SlackLogoIcon } from "../../common/icons/16px/SlackLogoIcon";
 import { DigmaLoginLogo } from "../../common/icons/DigmaLoginLogo";
 import { Toggle } from "../../common/v3/Toggle";
+import { trackingEvents } from "../tracking";
 import { Login } from "./Login";
 import { Registration } from "./Registration";
 import * as s from "./styles";
@@ -29,6 +31,10 @@ const AuthenticationComponent = () => {
     setOption(option);
     setLoginSuccessMessage("");
   };
+
+  useEffect(() => {
+    sendTrackingEvent(trackingEvents.LOGIN_SCREEN_VIEWED);
+  }, []);
 
   return (
     <s.Container>

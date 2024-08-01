@@ -9,6 +9,7 @@ import { UserIcon } from "../icons/UserIcon";
 import { TextField } from "./TextField";
 import { isWorkEmail } from "./isWorkEmail";
 import * as s from "./styles";
+import { trackingEvents } from "./tracking";
 import { RegistrationDialogProps, RegistrationFormValues } from "./types";
 
 const validateEmail = (email: string): string | boolean => {
@@ -56,11 +57,15 @@ export const RegistrationDialog = (props: RegistrationDialogProps) => {
       fullName: data.fullName.trim(),
       email: data.email
     });
-    sendUserActionTrackingEvent("registration dialog form submitted");
+    sendUserActionTrackingEvent(
+      trackingEvents.REGISTRATION_DIALOG_FORM_SUBMITTED
+    );
   };
 
   const handleCloseButtonClick = () => {
-    sendUserActionTrackingEvent("registration dialog close button clicked");
+    sendUserActionTrackingEvent(
+      trackingEvents.REGISTRATION_DIALOG_CLOSE_BUTTON_CLICKED
+    );
     props.onClose();
   };
 

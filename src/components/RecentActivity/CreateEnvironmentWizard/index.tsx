@@ -253,10 +253,6 @@ export const CreateEnvironmentWizard = ({
                 handleEnvironmentTypeSelect={(type) => {
                   newEnvironment.type = type;
                   setNewEnvironment(newEnvironment);
-                  sendUserActionTrackingEvent(
-                    trackingEvents.ENVIRONMENT_TYPE_BUTTON_CLICKED,
-                    { type }
-                  );
                 }}
                 onNext={goToNextStep}
               />

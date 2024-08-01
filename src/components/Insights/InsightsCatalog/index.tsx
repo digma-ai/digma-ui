@@ -91,7 +91,7 @@ export const InsightsCatalog = ({
   const environments = useGlobalStore.use.environments();
   const scope = useGlobalStore.use.scope();
   const scopeSpanCodeObjectId = scope?.span?.spanCodeObjectId;
-  const isAtSpan = Boolean(scope?.span?.spanCodeObjectId);
+  const isAtSpan = Boolean(scope?.span);
   const backendInfo = useGlobalStore.use.backendInfo();
   const theme = useTheme();
   const { isMarkingAllAsReadInProgress, markAllAsRead } = useMarkingAllAsRead(
@@ -114,14 +114,14 @@ export const InsightsCatalog = ({
 
   const handleRegistrationComplete = () => {
     sendUserActionTrackingEvent(
-      mainTrackingEvents.PROMOTION_REGISTRATION_SUBMITTED
+      mainTrackingEvents.PROMOTION_REGISTRATION_FORM_SUBMITTED
     );
     setPromotionCompleted(true);
   };
 
   const handleRegistrationClose = () => {
     sendUserActionTrackingEvent(
-      mainTrackingEvents.PROMOTION_REGISTRATION_CLOSED_CLICKED
+      mainTrackingEvents.PROMOTION_REGISTRATION_CLOSE_BUTTON_CLICKED
     );
     setShowRegistration(false);
   };
@@ -147,7 +147,7 @@ export const InsightsCatalog = ({
 
   const handlePromotionAccept = () => {
     sendUserActionTrackingEvent(
-      mainTrackingEvents.PROMOTION_REGISTRATION_OPENED
+      mainTrackingEvents.PROMOTION_REGISTRATION_FORM_OPENED
     );
     setShowRegistration(true);
   };

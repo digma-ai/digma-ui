@@ -5,5 +5,6 @@ export const trackingEvents = {
   ERROR_SCREEN_REFRESH_BUTTON_CLICKED: "error screen refresh button clicked",
   PAGINATION_BUTTON_CLICKED: "pagination button clicked",
   CAROUSEL_NAVIGATION_BUTTON_CLICKED: "carousel navigation button clicked",
-  CAROUSEL_PAGE_BUTTON_CLICKED: "carousel page button clicked"
+  CAROUSEL_PAGE_BUTTON_CLICKED: "carousel page button clicked",
+  USER_ID_CHANGED: "user id changed"
 };

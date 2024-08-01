@@ -22,7 +22,7 @@ export const EnvironmentTypePanel = ({
       sendUserActionTrackingEvent(
         trackingEvents.ENVIRONMENT_TYPE_BUTTON_CLICKED,
         {
-          type: typeData.title
+          type: typeData.type
         }
       );
     }

@@ -98,7 +98,8 @@ export const EndpointBreakdownInsightCard = ({
   onRecalculate,
   onRefresh,
   onGoToSpan,
-  isMarkAsReadButtonEnabled
+  isMarkAsReadButtonEnabled,
+  viewMode
 }: EndpointBreakdownInsightCardProps) => {
   const theme = useTheme();
 
@@ -263,6 +264,7 @@ export const EndpointBreakdownInsightCard = ({
       isAsync={insight.hasAsyncSpans}
       onGoToSpan={onGoToSpan}
       isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
+      viewMode={viewMode}
     />
   );
 };

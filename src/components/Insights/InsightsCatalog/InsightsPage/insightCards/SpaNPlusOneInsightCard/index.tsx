@@ -45,9 +45,15 @@ export const SpaNPlusOneInsightCard = ({
   onRefresh,
   isJiraHintEnabled,
   onGoToSpan,
-  isMarkAsReadButtonEnabled
+  isMarkAsReadButtonEnabled,
+  viewMode
 }: SpaNPlusOneInsightCardProps) => {
   const endpoints = insight.endpoints ?? [];
+  const endpointWithMaxDuration = endpoints.reduce(
+    (acc, cur) => (acc.duration.raw >= cur.duration.raw ? acc : cur),
+    endpoints[0]
+  );
+  const maxDurationString = getDurationString(endpointWithMaxDuration.duration);
   const isJaegerEnabled = useGlobalStore.use.isJaegerEnabled();
   const [selectedEndpoint, setSelectedEndpoint] = useState(
     endpoints.length ? endpoints[0] : null
@@ -140,6 +146,12 @@ export const SpaNPlusOneInsightCard = ({
       }}
       onGoToSpan={onGoToSpan}
       isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
+      viewMode={viewMode}
+      mainMetric={
+        <Tooltip title={maxDurationString}>
+          <span>{maxDurationString}</span>
+        </Tooltip>
+      }
     />
   );
 };

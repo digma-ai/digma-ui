@@ -25,7 +25,9 @@ export const RegistrationCard = ({
   const registrationCardRef = useRef<HTMLDivElement>(null);
 
   const handleSlackLinkClick = () => {
-    sendUserActionTrackingEvent(trackingEvents.PROMOTION_SLACK_LINK_CLICKED);
+    sendUserActionTrackingEvent(
+      trackingEvents.PROMOTION_REGISTRATION_CARD_SLACK_LINK_CLICKED
+    );
     openURLInDefaultBrowser(SLACK_WORKSPACE_URL);
   };
 

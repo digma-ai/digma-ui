@@ -9,6 +9,7 @@ const NewIconButtonComponent = (
     isDisabled,
     icon: Icon,
     buttonType,
+    size = "medium",
     isHighlighted
   }: NewIconButtonProps,
   ref: ForwardedRef<HTMLButtonElement>
@@ -26,6 +27,7 @@ const NewIconButtonComponent = (
       disabled={isDisabled}
       ref={ref}
       $type={buttonType}
+      $size={size}
       $isHighlighted={isHighlighted}
     >
       <Icon size={16} color={"currentColor"} />

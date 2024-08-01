@@ -27,7 +27,7 @@ export const PromotionCard = ({ onAccept, onDiscard }: PromotionCardProps) => {
 
   const handleExpandClick = () => {
     sendUserActionTrackingEvent(
-      trackingEvents.PROMOTION_CLOSE_EXPANDED_VIEW_BUTTON_CLICKED
+      trackingEvents.PROMOTION_OPEN_EXPANDED_VIEW_BUTTON_CLICKED
     );
     setExpanded(true);
   };
