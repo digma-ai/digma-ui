@@ -78,12 +78,14 @@ export const ReportHeader = ({
             <s.FiltersGroup>
               <s.FilterSelector
                 items={
-                  environments?.map((x) => ({
-                    label: x.name,
-                    value: x.id,
-                    enabled: true,
-                    selected: x.id === selectedEnvironment
-                  })) ?? []
+                  environments
+                    ?.sort((a, b) => a.name.localeCompare(b.name))
+                    .map((x) => ({
+                      label: x.name,
+                      value: x.id,
+                      enabled: true,
+                      selected: x.id === selectedEnvironment
+                    })) ?? []
                 }
                 icon={GlobeIcon}
                 onChange={handleSelectedEnvironmentChanged}
@@ -94,7 +96,7 @@ export const ReportHeader = ({
               />
               <s.FilterSelector
                 items={
-                  services?.map((service) => ({
+                  services?.sort()?.map((service) => ({
                     label: service,
                     value: service,
                     enabled: true,

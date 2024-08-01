@@ -24,7 +24,7 @@ export const Default: Story = {
       window.postMessage({
         type: "digma",
         action: actions.SET_SERVICES,
-        payload: ["service 1", "service 2", "service 3", "service 4"]
+        payload: ["service 3", "service 1", "service 2", "service 4"]
       });
     }, 500);
   }
