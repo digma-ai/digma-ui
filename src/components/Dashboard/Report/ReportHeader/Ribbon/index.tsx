@@ -1,7 +1,7 @@
 import { useTheme } from "styled-components";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { getThemeKind } from "../../../../common/App/styles";
-import { RecalculateIcon } from "../../../../common/icons/16px/RecalculateIcon";
+import { RecheckIcon } from "../../../../common/icons/16px/RecheckIcon";
 import { NewButton } from "../../../../common/v3/NewButton";
 import { trackingEvents } from "../../tracking";
 import * as s from "./styles";
@@ -27,7 +27,7 @@ export const Ribbon = ({ onRefresh }: RibbonProps) => {
       <s.ButtonContainer>
         <NewButton
           buttonType="primary"
-          icon={RecalculateIcon}
+          icon={RecheckIcon}
           label="Refresh data"
           onClick={handleRefreshClick}
         />
