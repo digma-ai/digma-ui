@@ -62,7 +62,9 @@ export const IssuesFilter = () => {
   };
 
   const handleIssueTypesChange = (value: string | string[]) => {
-    sendUserActionTrackingEvent(trackingEvents.FILTER_OPTION_SELECTED);
+    sendUserActionTrackingEvent(trackingEvents.FILTER_OPTION_SELECTED, {
+      filterType: "issueType"
+    });
     const newInsightTypes = Array.isArray(value) ? value : [value];
     setFilteredInsightTypes(newInsightTypes);
   };

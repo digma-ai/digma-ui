@@ -55,7 +55,10 @@ export const IssueCompactCard = ({
 
   const handleSpanLinkClick = () => {
     sendUserActionTrackingEvent(
-      trackingEvents.ISSUE_CARD_TITLE_ASSET_LINK_CLICKED
+      trackingEvents.ISSUE_CARD_TITLE_ASSET_LINK_CLICKED,
+      {
+        insightType: insight.type
+      }
     );
     onGoToSpan();
   };
