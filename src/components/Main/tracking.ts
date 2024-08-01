@@ -15,7 +15,8 @@ export const trackingEvents = addPrefix(
     PROMOTION_REGISTRATION_CLOSED_CLICKED:
       "promotion registration close button clicked",
     PROMOTION_DISCARDED: "promotion discarded",
-    PROMOTION_REGISTRATION_OPENED: "promotion registration form opened"
+    PROMOTION_REGISTRATION_OPENED: "promotion registration form opened",
+    LOGIN_SCREEN_VIEWED: "login screen viewed"
   },
   " "
 );

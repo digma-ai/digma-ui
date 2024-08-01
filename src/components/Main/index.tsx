@@ -5,7 +5,10 @@ import { history } from "../../containers/Main/history";
 import { useGlobalStore } from "../../containers/Main/stores/useGlobalStore";
 import { dispatcher } from "../../dispatcher";
 import { HistoryEntryLocation } from "../../history/History";
+import { usePrevious } from "../../hooks/usePrevious";
 import { logger } from "../../logging";
+import { trackingEvents as globalTrackingEvents } from "../../trackingEvents";
+import { sendTrackingEvent } from "../../utils/actions/sendTrackingEvent";
 import { Navigation } from "../Navigation";
 import { TAB_IDS } from "../Navigation/Tabs/types";
 import { Scope } from "../common/App/types";
@@ -44,6 +47,8 @@ export const Main = () => {
   const environment = useGlobalStore.use.environment();
   const scope = useGlobalStore.use.scope();
   const userInfo = useGlobalStore.use.userInfo();
+  const userId = userInfo?.id;
+  const previousUserId = usePrevious(userId);
   const backendInfo = useGlobalStore.use.backendInfo();
   const { goTo } = useHistory();
   const updateBrowserLocation = useBrowserLocationUpdater();
@@ -159,9 +164,17 @@ export const Main = () => {
     window.sendMessageToDigma({
       action: actions.INITIALIZE
     });
-  }, [userInfo?.id]);
+  }, [userId]);
 
-  if (!userInfo?.id && backendInfo?.centralize) {
+  useEffect(() => {
+    if (previousUserId !== userId) {
+      sendTrackingEvent(globalTrackingEvents.USER_ID_CHANGED, {
+        userId
+      });
+    }
+  }, [previousUserId, userId]);
+
+  if (!userId && backendInfo?.centralize) {
     return <Authentication />;
   }
 
