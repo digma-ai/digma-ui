@@ -16,7 +16,7 @@ export const DiscoveredCard = ({ options, title }: DiscoveredCardProps) => {
             <s.Row key={uuidv4()}>
               {row.map((option) => (
                 <CardOption
-                  key={uuidv4()}
+                  key={option.title}
                   {...option}
                   isActive={selected == option.title}
                 />

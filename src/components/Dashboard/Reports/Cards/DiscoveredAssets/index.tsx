@@ -1,16 +1,9 @@
+import { getAssetTypeInfo } from "../../../../Assets/utils";
 import { DiscoveredCard } from "../DiscoveredCard";
 import { OptionConfig } from "../DiscoveredCard/types";
 import { DiscoveredAssetsProps } from "./types";
 
-const titleMap: Record<string, string> = {
-  ["Endpoint"]: "Endpoints",
-  ["DatabaseQueries"]: "Database Queries",
-  ["Consumer"]: "Consumer",
-  ["EndpointClient"]: "Endpoint Client",
-  ["CodeLocation"]: "Code locations",
-  ["Cache"]: "Cache",
-  ["otherCount"]: "Other"
-};
+const ROW_SIZE = 4;
 
 export const DiscoveredAssets = ({
   statistics = { data: [], totalCount: 0 }
@@ -20,14 +13,14 @@ export const DiscoveredAssets = ({
   ].concat(
     statistics.data.map((x) => ({
       counter: x.count,
-      title: titleMap[x.name] ?? x.name
+      title: getAssetTypeInfo(x.name)?.label ?? x.name
     }))
   );
 
   return (
     <DiscoveredCard
       title="Discovered Assets"
-      options={[items.slice(0, 4), items.slice(4)]}
+      options={[items.slice(0, ROW_SIZE), items.slice(ROW_SIZE)]}
     />
   );
 };
