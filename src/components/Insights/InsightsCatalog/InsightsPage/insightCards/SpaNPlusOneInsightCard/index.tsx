@@ -149,7 +149,7 @@ export const SpaNPlusOneInsightCard = ({
       viewMode={viewMode}
       mainMetric={
         <Tooltip title={maxDurationString}>
-          <>{maxDurationString}</>
+          <span>{maxDurationString}</span>
         </Tooltip>
       }
     />

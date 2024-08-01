@@ -170,7 +170,7 @@ export const SpanScalingInsightCard = ({
       viewMode={viewMode}
       mainMetric={
         <Tooltip title={durationRangeString}>
-          <>{durationRangeString}</>
+          <span>{durationRangeString}</span>
         </Tooltip>
       }
     />

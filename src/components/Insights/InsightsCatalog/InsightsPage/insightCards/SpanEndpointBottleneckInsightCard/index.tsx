@@ -169,7 +169,7 @@ export const SpanEndpointBottleneckInsightCard = ({
       viewMode={viewMode}
       mainMetric={
         <Tooltip title={maxDurationString}>
-          <>{maxDurationString}</>
+          <span>{maxDurationString}</span>
         </Tooltip>
       }
     />

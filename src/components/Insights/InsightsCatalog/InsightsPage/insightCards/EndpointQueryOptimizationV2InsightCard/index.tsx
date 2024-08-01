@@ -83,7 +83,7 @@ export const EndpointQueryOptimizationV2InsightCard = ({
       viewMode={viewMode}
       mainMetric={
         <Tooltip title={durationString}>
-          <>{durationString}</>
+          <span>{durationString}</span>
         </Tooltip>
       }
     />

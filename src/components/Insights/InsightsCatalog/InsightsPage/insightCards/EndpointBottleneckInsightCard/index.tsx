@@ -91,7 +91,7 @@ export const EndpointBottleneckInsightCard = ({
       viewMode={viewMode}
       mainMetric={
         <Tooltip title={durationString}>
-          <>{durationString}</>
+          <span>{durationString}</span>
         </Tooltip>
       }
     />

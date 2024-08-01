@@ -90,7 +90,7 @@ export const EndpointSpanNPlusOneInsightCard = ({
       viewMode={viewMode}
       mainMetric={
         <Tooltip title={durationString}>
-          <>{durationString}</>
+          <span>{durationString}</span>
         </Tooltip>
       }
     />
