@@ -2,8 +2,8 @@ import { useLayoutEffect, useState } from "react";
 import { actions } from "../actions";
 import { DiscoveredAssets } from "./Cards/DiscoveredAssets";
 import { DiscoveredIssues } from "./Cards/DiscoveredIssues";
-import { ReportsFooter } from "./ReportsFooter";
-import { ReportsHeader } from "./ReportsHeader";
+import { ReportFooter } from "./ReportFooter";
+import { ReportHeader } from "./ReportHeader";
 import * as s from "./styles";
 import { ReportFilterQuery } from "./types";
 import { useReportsData } from "./useReportsData";
@@ -13,7 +13,7 @@ const DefaultQuery: ReportFilterQuery = {
   services: []
 };
 
-export const Reports = () => {
+export const Report = () => {
   const [query, setQuery] = useState<ReportFilterQuery>(DefaultQuery);
   const { discoveredAssets, discoveredIssues, refresh } = useReportsData(query);
 
@@ -29,10 +29,7 @@ export const Reports = () => {
 
   return (
     <s.Container>
-      <ReportsHeader
-        onRefresh={refresh}
-        onFilterChanged={handleFilterChanged}
-      />
+      <ReportHeader onRefresh={refresh} onFilterChanged={handleFilterChanged} />
       <s.Content>
         <s.Column key={"issues"}>
           <DiscoveredIssues statistics={discoveredIssues} />
@@ -41,7 +38,7 @@ export const Reports = () => {
           <DiscoveredAssets statistics={discoveredAssets} />
         </s.Column>
       </s.Content>
-      <ReportsFooter />
+      <ReportFooter />
     </s.Container>
   );
 };

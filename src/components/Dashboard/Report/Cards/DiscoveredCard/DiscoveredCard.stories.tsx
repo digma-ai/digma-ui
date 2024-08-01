@@ -2,7 +2,7 @@ import { Meta, StoryObj } from "@storybook/react";
 import { DiscoveredCard } from ".";
 
 const meta: Meta<typeof DiscoveredCard> = {
-  title: "Dashboard/Reports/Cards/DiscoveredCard",
+  title: "Dashboard/Report/Cards/DiscoveredCard",
   component: DiscoveredCard,
   parameters: {
     layout: "fullscreen"

@@ -10,7 +10,7 @@ import { actions } from "../../actions";
 import { GetServicesPayload } from "../types";
 import { Ribbon } from "./Ribbon";
 import * as s from "./styles";
-import { ReportsHeaderProps } from "./types";
+import { ReportHeaderProps } from "./types";
 
 const baseFetchConfig = {
   refreshWithInterval: false,
@@ -23,10 +23,10 @@ const dataFetcherIssuesStatsConfiguration: DataFetcherConfiguration = {
   ...baseFetchConfig
 };
 
-export const ReportsHeader = ({
+export const ReportHeader = ({
   onRefresh,
   onFilterChanged
-}: ReportsHeaderProps) => {
+}: ReportHeaderProps) => {
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [selectedEnvironment, setSelectedEnvironment] = useState<string>("");
   const environments = useGlobalStore.use.environments();

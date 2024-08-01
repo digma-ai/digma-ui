@@ -3,7 +3,7 @@ import { DiscoveredIssues } from ".";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof DiscoveredIssues> = {
-  title: "Dashboard/Reports/Cards/DiscoveredIssues",
+  title: "Dashboard/Report/Cards/DiscoveredIssues",
   component: DiscoveredIssues,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout

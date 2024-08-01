@@ -1,6 +1,6 @@
 import { ReportFilterQuery } from "../types";
 
-export interface ReportsHeaderProps {
+export interface ReportHeaderProps {
   onFilterChanged: (query: ReportFilterQuery) => void;
   onRefresh: () => void;
 }

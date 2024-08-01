@@ -1,10 +1,10 @@
 import { Meta, StoryObj } from "@storybook/react";
-import { ReportCard } from ".";
+import { ReportFooter } from ".";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
-const meta: Meta<typeof ReportCard> = {
-  title: "Dashboard/Reports/ReportCard",
-  component: ReportCard,
+const meta: Meta<typeof ReportFooter> = {
+  title: "Dashboard/Report/ReportFooter",
+  component: ReportFooter,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
     layout: "fullscreen"

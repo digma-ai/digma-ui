@@ -1,13 +1,13 @@
 import { Meta, StoryObj } from "@storybook/react";
 
-import { Reports } from ".";
+import { Report } from ".";
 import { actions as globalActions } from "../../../actions";
 import { actions } from "../actions";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
-const meta: Meta<typeof Reports> = {
-  title: "Dashboard/Reports",
-  component: Reports,
+const meta: Meta<typeof Report> = {
+  title: "Dashboard/Report",
+  component: Report,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
     layout: "fullscreen"
