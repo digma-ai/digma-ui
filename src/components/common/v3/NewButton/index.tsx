@@ -16,25 +16,23 @@ export const NewButtonComponent = (
     iconPosition = "left"
   }: ButtonProps,
   ref: ForwardedRef<HTMLButtonElement>
-) => {
-  return (
-    <s.Button
-      ref={ref}
-      disabled={isDisabled}
-      onClick={onClick}
-      $type={buttonType}
-      className={className}
-      type={type}
-      form={form}
-    >
-      {Icon && iconPosition === "left" && (
-        <Icon size={16} color={"currentColor"} />
-      )}
-      {isString(label) && <span>{label}</span>}
-      {Icon && iconPosition === "right" && (
-        <Icon size={16} color={"currentColor"} />
-      )}
-    </s.Button>
-  );
-};
+) => (
+  <s.Button
+    ref={ref}
+    disabled={isDisabled}
+    onClick={onClick}
+    $type={buttonType}
+    className={className}
+    type={type}
+    form={form}
+  >
+    {Icon && iconPosition === "left" && (
+      <Icon size={16} color={"currentColor"} />
+    )}
+    {isString(label) && <span>{label}</span>}
+    {Icon && iconPosition === "right" && (
+      <Icon size={16} color={"currentColor"} />
+    )}
+  </s.Button>
+);
 export const NewButton = forwardRef(NewButtonComponent);
