@@ -28,6 +28,7 @@ export const Select = ({
   disabled,
   icon: Icon,
   placeholder,
+  className,
   showSelectedState
 }: SelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -107,6 +108,7 @@ export const Select = ({
         }
         onClick={handleButtonClick}
         disabled={disabled}
+        className={className}
       >
         {Icon && <Icon color={"currentColor"} />}
         {isString(placeholder) && <s.ButtonLabel>{placeholder}</s.ButtonLabel>}

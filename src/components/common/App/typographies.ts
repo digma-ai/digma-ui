@@ -76,6 +76,36 @@ export const typographies: Typographies = {
       bold: 600
     },
     lineHeight: 14
+  },
+  display: {
+    fontSize: 48,
+    fontWeight: {
+      light: 300,
+      regular: 400,
+      medium: 500,
+      semibold: 600,
+      bold: 600
+    }
+  },
+  headingOne: {
+    fontSize: 24,
+    fontWeight: {
+      light: 300,
+      regular: 400,
+      medium: 500,
+      semibold: 600,
+      bold: 600
+    }
+  },
+  headingTwo: {
+    fontSize: 36,
+    fontWeight: {
+      light: 300,
+      regular: 400,
+      medium: 500,
+      semibold: 600,
+      bold: 700
+    }
   }
 };
 
@@ -188,4 +218,19 @@ export const subheadingSemiboldTypography = css`
 export const codeRegularTypography = css`
   font-size: ${typographies.code.fontSize}px;
   font-weight: ${typographies.code.fontWeight.regular};
+`;
+
+export const displaySemiboldTypography = css`
+  font-size: ${typographies.display.fontSize}px;
+  font-weight: ${typographies.display.fontWeight.semibold};
+`;
+
+export const headingOneSemiboldTypography = css`
+  font-size: ${typographies.headingOne.fontSize}px;
+  font-weight: ${typographies.headingOne.fontWeight.semibold};
+`;
+
+export const headingTowBoldTypography = css`
+  font-size: ${typographies.headingTwo.fontSize}px;
+  font-weight: ${typographies.headingTwo.fontWeight.bold};
 `;
