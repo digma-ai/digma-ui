@@ -204,9 +204,8 @@ export const useInsightsData = ({
   }, [getDataListParams, getStatsParams, setIsLoading, isAppReadyToGetData]);
 
   useEffect(() => {
-    const timerId = refreshTimerId.current;
     return () => {
-      window.clearTimeout(timerId);
+      window.clearTimeout(refreshTimerId.current);
     };
   }, []);
 

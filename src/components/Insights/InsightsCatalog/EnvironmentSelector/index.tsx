@@ -9,8 +9,9 @@ import { NewButton } from "../../../common/v3/NewButton";
 import { EnvironmentMenu } from "../../../Navigation/EnvironmentBar/EnvironmentMenu";
 import { trackingEvents } from "../../tracking";
 import { EnvironmentChip } from "./EnvironmentChip";
+import { getMostCriticalIssueCount } from "./getMostCriticalIssueCount";
 import * as s from "./styles";
-import { EnvironmentSelectorProps } from "./types";
+import { EnvironmentSelectorProps, SelectorEnvironment } from "./types";
 
 const ENVIRONMENT_CHIP_COUNT = 3;
 
@@ -26,6 +27,32 @@ const getSlidingWindow = <T,>(arr: T[], start: number, length: number) => {
   return result;
 };
 
+const sortEnvironmentsByCriticalIssues = (
+  a: SelectorEnvironment,
+  b: SelectorEnvironment
+) => {
+  const aCount = getMostCriticalIssueCount(a.issueCounts);
+  const bCount = getMostCriticalIssueCount(b.issueCounts);
+
+  if (aCount && !bCount) {
+    return -1;
+  }
+
+  if (!aCount && bCount) {
+    return 1;
+  }
+
+  if (aCount && bCount) {
+    if (aCount.criticality === bCount.criticality) {
+      return bCount.count - aCount.count;
+    }
+
+    return bCount.criticality - aCount.criticality;
+  }
+
+  return 0;
+};
+
 export const EnvironmentSelector = ({
   environments
 }: EnvironmentSelectorProps) => {
@@ -33,8 +60,11 @@ export const EnvironmentSelector = ({
   const environment = useGlobalStore.use.environment();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { observe, width } = useDimensions();
+  const sortedEnvironments = environments.sort(
+    sortEnvironmentsByCriticalIssues
+  );
 
-  if (environments.length < 2) {
+  if (sortedEnvironments.length < 2) {
     return null;
   }
 
@@ -70,24 +100,24 @@ export const EnvironmentSelector = ({
     setIsMenuOpen(!isMenuOpen);
   };
 
-  const environmentIndex = environments.findIndex(
-    (x) => x.id === environment?.id
+  const environmentIndex = sortedEnvironments.findIndex(
+    (x) => x.environment.id === environment?.id
   );
 
   const environmentsWithChips =
-    environments.length > ENVIRONMENT_CHIP_COUNT
+    sortedEnvironments.length > ENVIRONMENT_CHIP_COUNT
       ? getSlidingWindow(
-          environments,
+          sortedEnvironments,
           environmentIndex - 1,
           ENVIRONMENT_CHIP_COUNT
         )
-      : environments;
+      : sortedEnvironments;
 
   const renderEnvironmentMenuButton = () => (
     <NewButton
       buttonType={"secondary"}
       onClick={handleEnvironmentMenuButtonClick}
-      label={`+${environments.length - ENVIRONMENT_CHIP_COUNT}`}
+      label={`+${sortedEnvironments.length - ENVIRONMENT_CHIP_COUNT}`}
     />
   );
 
@@ -96,21 +126,22 @@ export const EnvironmentSelector = ({
       <s.EnvironmentsContainer>
         {environmentsWithChips.map((x) => (
           <EnvironmentChip
-            key={x.id}
-            environment={x}
-            isActive={x.id === environment?.id}
+            key={x.environment.id}
+            environment={x.environment}
+            isActive={x.environment.id === environment?.id}
             onClick={handleEnvironmentChipClick}
+            issueCounts={x.issueCounts}
           />
         ))}
       </s.EnvironmentsContainer>
-      {environments.length > ENVIRONMENT_CHIP_COUNT && (
+      {sortedEnvironments.length > ENVIRONMENT_CHIP_COUNT && (
         <>
           {/* // TODO: refactor this to use only popover */}
           {isMenuOpen ? (
             <NewPopover
               content={
                 <EnvironmentMenu
-                  environments={environments}
+                  environments={sortedEnvironments.map((x) => x.environment)}
                   onMenuItemClick={handleMenuItemClick}
                 />
               }
