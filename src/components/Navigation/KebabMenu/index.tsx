@@ -114,9 +114,9 @@ export const KebabMenu = ({ onClose }: KebabMenuProps) => {
       onClick: handleDashboardClick
     });
 
-    if (getFeatureFlagValue(backendInfo, FeatureFlag.ARE_REPORT_ENABLED)) {
+    if (getFeatureFlagValue(backendInfo, FeatureFlag.IS_REPORT_ENABLED)) {
       items.push({
-        id: "reports",
+        id: "report",
         label: "Open Report",
         icon: <FourSquaresIcon size={16} color={"currentColor"} />,
         onClick: handleReportClick

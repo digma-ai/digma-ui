@@ -18,8 +18,6 @@ export const Row = styled.div`
 
 export const Header = styled.span`
   ${headingOneSemiboldTypography}
-  color: ${({ theme }) => {
-    return theme.colors.v3.text.primary;
-  }};
+  color: ${({ theme }) => theme.colors.v3.text.primary};
   padding: 12px 16px;
 `;
