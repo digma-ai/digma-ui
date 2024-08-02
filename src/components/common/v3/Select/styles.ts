@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import {
   bodyRegularTypography,
-  footnoteRegularTypography
+  footnoteRegularTypography,
+  subscriptRegularTypography
 } from "../../App/typographies";
 import {
   ButtonProps,
@@ -10,6 +11,7 @@ import {
 } from "./types";
 
 export const Button = styled.button<ButtonProps>`
+  height: 28px;
   border: 1px solid
     ${({ theme, $isActive }) =>
       $isActive
@@ -48,7 +50,7 @@ export const Button = styled.button<ButtonProps>`
 `;
 
 export const ButtonLabel = styled.span`
-  ${footnoteRegularTypography}
+  ${subscriptRegularTypography}
   margin-right: auto;
   text-overflow: ellipsis;
   overflow: hidden;

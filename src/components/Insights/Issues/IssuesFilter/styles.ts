@@ -56,6 +56,8 @@ export const Footer = styled.div`
 `;
 
 export const ClearAllButton = styled(NewButton)`
+  padding: 0;
+
   span {
     color: ${({ theme }) => theme.colors.v3.status.high};
   }
