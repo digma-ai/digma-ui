@@ -54,6 +54,17 @@ export interface ScopeSpan {
   role: "Entry" | "Internal" | "Unknown" | null;
 }
 
+export interface EnvironmentIssueCounts {
+  highCriticality: number;
+  mediumCriticality: number;
+  lowCriticality: number;
+}
+
+export interface SpanEnvironment {
+  environment: Environment;
+  issueCounts: EnvironmentIssueCounts;
+}
+
 export interface Scope {
   span: ScopeSpan | null;
   code: {
@@ -163,6 +174,7 @@ export interface InsightStats {
   unreadInsightsCount: number;
   criticalInsightsCount?: number;
   allIssuesCount?: number;
+  spanEnvironments?: SpanEnvironment[];
 }
 
 export interface UserInfo {

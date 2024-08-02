@@ -96,7 +96,6 @@ export const useFetchData = <T, K>(
   ]);
 
   useEffect(() => {
-    const timerId = refreshTimerId.current;
     const handleData = (data: unknown, timeStamp: number) => {
       if (isInProgress) {
         if (handleResponse) {
@@ -111,7 +110,7 @@ export const useFetchData = <T, K>(
 
     return () => {
       dispatcher.removeActionListener(responseAction, handleData);
-      window.clearTimeout(timerId);
+      window.clearTimeout(refreshTimerId.current);
     };
   }, [responseAction, isInProgress, handleResponse]);
 

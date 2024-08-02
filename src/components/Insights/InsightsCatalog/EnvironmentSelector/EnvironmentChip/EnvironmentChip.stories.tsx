@@ -37,3 +37,39 @@ export const Active: Story = {
     isActive: true
   }
 };
+
+export const WithHighCriticalIssues: Story = {
+  args: {
+    environment: mockedEnvironment,
+    isActive: false,
+    issueCounts: {
+      highCriticality: 1,
+      mediumCriticality: 2,
+      lowCriticality: 3
+    }
+  }
+};
+
+export const WithMediumCriticalIssues: Story = {
+  args: {
+    environment: mockedEnvironment,
+    isActive: false,
+    issueCounts: {
+      highCriticality: 0,
+      mediumCriticality: 2,
+      lowCriticality: 3
+    }
+  }
+};
+
+export const WithLowCriticalIssues: Story = {
+  args: {
+    environment: mockedEnvironment,
+    isActive: false,
+    issueCounts: {
+      highCriticality: 0,
+      mediumCriticality: 0,
+      lowCriticality: 3
+    }
+  }
+};
