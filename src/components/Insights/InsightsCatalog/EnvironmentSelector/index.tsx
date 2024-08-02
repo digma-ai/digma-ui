@@ -44,7 +44,10 @@ const sortEnvironmentsByCriticalIssues = (
 
   if (aCount && bCount) {
     if (aCount.criticality === bCount.criticality) {
-      return bCount.count - aCount.count;
+      return (
+        bCount.count - aCount.count ||
+        a.environment.name.localeCompare(b.environment.name)
+      );
     }
 
     return bCount.criticality - aCount.criticality;
