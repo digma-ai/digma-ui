@@ -1,6 +1,7 @@
 import { actions as globalActions } from "../../../actions";
 import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
-import { OpenInstallationWizardPayload } from "../../../types";
+import { getFeatureFlagValue } from "../../../featureFlags";
+import { FeatureFlag, OpenInstallationWizardPayload } from "../../../types";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { isDigmaEngineRunning } from "../../../utils/isDigmaEngineRunning";
 import { DigmaLogoFlatIcon } from "../../common/icons/16px/DigmaLogoFlatIcon";
@@ -64,6 +65,13 @@ export const KebabMenu = ({ onClose }: KebabMenuProps) => {
     }
   };
 
+  const handleReportClick = () => {
+    window.sendMessageToDigma({
+      action: globalActions.OPEN_REPORT
+    });
+    onClose();
+  };
+
   const handleLogoutClick = () => {
     sendUserActionTrackingEvent(trackingEvents.LOGOUT_CLICKED);
     window.sendMessageToDigma({
@@ -105,6 +113,15 @@ export const KebabMenu = ({ onClose }: KebabMenuProps) => {
       icon: <FourSquaresIcon size={16} color={"currentColor"} />,
       onClick: handleDashboardClick
     });
+
+    if (getFeatureFlagValue(backendInfo, FeatureFlag.IS_REPORT_ENABLED)) {
+      items.push({
+        id: "report",
+        label: "Open Report",
+        icon: <FourSquaresIcon size={16} color={"currentColor"} />,
+        onClick: handleReportClick
+      });
+    }
   }
 
   if (backendInfo?.centralize) {

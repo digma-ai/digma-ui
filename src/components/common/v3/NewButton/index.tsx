@@ -12,7 +12,8 @@ export const NewButtonComponent = (
     type,
     form,
     icon: Icon,
-    label
+    label,
+    iconPosition = "left"
   }: ButtonProps,
   ref: ForwardedRef<HTMLButtonElement>
 ) => (
@@ -25,8 +26,13 @@ export const NewButtonComponent = (
     type={type}
     form={form}
   >
-    {Icon && <Icon size={16} color={"currentColor"} />}
+    {Icon && iconPosition === "left" && (
+      <Icon size={16} color={"currentColor"} />
+    )}
     {isString(label) && <span>{label}</span>}
+    {Icon && iconPosition === "right" && (
+      <Icon size={16} color={"currentColor"} />
+    )}
   </s.Button>
 );
 export const NewButton = forwardRef(NewButtonComponent);
