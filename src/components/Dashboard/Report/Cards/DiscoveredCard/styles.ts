@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { headingOneSemiboldTypography } from "../../../../common/App/typographies";
 
 export const Container = styled.div`
   display: flex;
@@ -16,10 +17,9 @@ export const Row = styled.div`
 `;
 
 export const Header = styled.span`
+  ${headingOneSemiboldTypography}
   color: ${({ theme }) => {
     return theme.colors.v3.text.primary;
   }};
-  font-size: 24px;
-  font-weight: 600;
   padding: 12px 16px;
 `;

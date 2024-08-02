@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { headingTowBoldTypography } from "../../../common/App/typographies";
 import { Select } from "../../../common/v3/Select";
 
 export const Container = styled.div`
@@ -13,9 +14,9 @@ export const FiltersContainer = styled.div`
 `;
 
 export const Header = styled.div`
+  ${headingTowBoldTypography}
+
   color: ${({ theme }) => theme.colors.v3.text.white};
-  font-size: 36px;
-  font-weight: 700;
   text-align: center;
   height: 43px;
 `;

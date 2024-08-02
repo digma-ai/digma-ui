@@ -1,5 +1,8 @@
 import styled, { css } from "styled-components";
-import { bodyRegularTypography } from "../../../../common/App/typographies";
+import {
+  bodyRegularTypography,
+  displaySemiboldTypography
+} from "../../../../common/App/typographies";
 import { ContainerProps } from "./types";
 
 export const Title = styled.div`
@@ -85,6 +88,5 @@ export const Container = styled.div<ContainerProps>`
 `;
 
 export const Counter = styled.div`
-  font-size: 49px;
-  font-weight: 600;
+  ${displaySemiboldTypography}
 `;

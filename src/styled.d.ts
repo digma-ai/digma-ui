@@ -157,6 +157,9 @@ export interface Typographies {
   body: FontStyle;
   subheading: FontStyle;
   code: FontStyle;
+  headingOne: FontStyle;
+  headingTwo: FontStyle;
+  display: FontStyle;
 }
 
 declare module "styled-components" {
