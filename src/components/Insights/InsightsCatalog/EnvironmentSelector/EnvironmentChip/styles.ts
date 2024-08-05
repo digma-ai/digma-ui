@@ -52,7 +52,7 @@ export const Counter = styled.div<CounterProps>`
       case ISSUE_CRITICALITY.LOW:
       default:
         return css`
-          background: ${({ theme }) => theme.colors.v3.status.low};
+          background: ${({ theme }) => theme.colors.v3.status.backgroundLow};
         `;
     }
   }}
