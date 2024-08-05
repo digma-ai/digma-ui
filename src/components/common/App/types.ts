@@ -6,6 +6,7 @@ import { InsightViewType } from "../../Insights/types";
 export interface AppProps {
   children: ReactNode;
   theme?: Theme;
+  id?: string;
 }
 
 export type InstallationType =

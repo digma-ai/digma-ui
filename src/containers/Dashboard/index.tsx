@@ -12,13 +12,15 @@ import { isString } from "../../typeGuards/isString";
 import { handleUncaughtError } from "../../utils/handleUncaughtError";
 import { GlobalStyle } from "./styles";
 
+const APP_ID = "dashboard";
+
 initializeDigmaMessageListener(dispatcher);
 
 window.sendMessageToDigma = sendMessage;
 window.cancelMessageToDigma = cancelMessage;
 
 window.addEventListener("error", (e) => {
-  handleUncaughtError("dashboard", e);
+  handleUncaughtError(APP_ID, e);
 });
 
 const rootElement = document.getElementById("root");
@@ -40,7 +42,7 @@ const getView = () => {
 if (rootElement) {
   const root = createRoot(rootElement);
   root.render(
-    <App>
+    <App id={APP_ID}>
       <GlobalStyle />
       {getView()}
     </App>
