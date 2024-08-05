@@ -57,7 +57,7 @@ const getTheme = (): Theme => {
 const defaultMainFont = isString(window.mainFont) ? window.mainFont : "";
 const defaultCodeFont = isString(window.codeFont) ? window.codeFont : "";
 
-export const App = ({ theme, children }: AppProps) => {
+export const App = ({ theme, children, id }: AppProps) => {
   const [currentTheme, setCurrentTheme] = useState(theme ?? getTheme());
   const [mainFont, setMainFont] = useState(defaultMainFont);
   const [codeFont, setCodeFont] = useState(defaultCodeFont);
@@ -104,7 +104,8 @@ export const App = ({ theme, children }: AppProps) => {
     logger.error(error, info);
     sendErrorTrackingEvent(error, {
       severity: "high",
-      level: "App react component"
+      level: "App react component",
+      app: id
     });
   };
 
