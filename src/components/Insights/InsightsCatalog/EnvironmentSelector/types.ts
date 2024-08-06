@@ -8,3 +8,9 @@ export interface SelectorEnvironment {
 export interface EnvironmentSelectorProps {
   environments: SelectorEnvironment[];
 }
+
+export type ScrollDirection = "left" | "right";
+
+export interface CarouselButtonProps {
+  direction: ScrollDirection;
+}

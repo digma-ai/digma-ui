@@ -1,17 +1,19 @@
-import { useState } from "react";
 import useDimensions from "react-cool-dimensions";
 import { useGlobalStore } from "../../../../containers/Main/stores/useGlobalStore";
+import { logger } from "../../../../logging";
 import { changeScope } from "../../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
-import { Environment } from "../../../common/App/types";
-import { NewPopover } from "../../../common/NewPopover";
-import { NewButton } from "../../../common/v3/NewButton";
-import { EnvironmentMenu } from "../../../Navigation/EnvironmentBar/EnvironmentMenu";
+import { ChevronIcon } from "../../../common/icons/12px/ChevronIcon";
+import { Direction } from "../../../common/icons/types";
 import { trackingEvents } from "../../tracking";
 import { EnvironmentChip } from "./EnvironmentChip";
 import { getMostCriticalIssueCount } from "./getMostCriticalIssueCount";
 import * as s from "./styles";
-import { EnvironmentSelectorProps, SelectorEnvironment } from "./types";
+import {
+  EnvironmentSelectorProps,
+  ScrollDirection,
+  SelectorEnvironment
+} from "./types";
 
 const ENVIRONMENT_CHIP_COUNT = 3;
 
@@ -61,8 +63,7 @@ export const EnvironmentSelector = ({
 }: EnvironmentSelectorProps) => {
   const scope = useGlobalStore.use.scope();
   const environment = useGlobalStore.use.environment();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { observe, width } = useDimensions();
+  const { observe } = useDimensions();
   const sortedEnvironments = environments.sort(
     sortEnvironmentsByCriticalIssues
   );
@@ -84,23 +85,31 @@ export const EnvironmentSelector = ({
     });
   };
 
-  const handleMenuItemClick = (environment: Environment) => {
-    setIsMenuOpen(false);
-    changeEnvironment(environment.id);
-  };
-
   const handleEnvironmentChipClick = (environmentId: string) => {
     changeEnvironment(environmentId);
   };
 
-  const handleEnvironmentMenuOpenChange = (isOpen: boolean) => {
-    setIsMenuOpen(isOpen);
-  };
-
-  const handleEnvironmentMenuButtonClick = () => {
-    sendUserActionTrackingEvent(trackingEvents.ENVIRONMENT_MENU_BUTTON_CLICKED);
-
-    setIsMenuOpen(!isMenuOpen);
+  const handleCarouselButtonClick = (direction: ScrollDirection) => {
+    logger.debug(direction);
+    // const { entry: containerEntry, width: containerWidth } =
+    //   environmentListContainerDimensions;
+    // const { entry } = environmentListDimensions;
+    // if (containerEntry && entry) {
+    //   let delta = containerWidth;
+    //   if (direction === "left") {
+    //     delta *= -1;
+    //   }
+    //   let newScrollLeft = containerEntry.target.scrollLeft + delta;
+    //   const maxScrollLeft = containerEntry.target.scrollWidth - containerWidth;
+    //   if (newScrollLeft >= maxScrollLeft) {
+    //     newScrollLeft = maxScrollLeft;
+    //   }
+    //   if (newScrollLeft < 0) {
+    //     newScrollLeft = 0;
+    //   }
+    //   setScrollLeft(newScrollLeft);
+    //   containerEntry.target.scrollLeft = newScrollLeft;
+    // }
   };
 
   const environmentIndex = sortedEnvironments.findIndex(
@@ -116,13 +125,7 @@ export const EnvironmentSelector = ({
         )
       : sortedEnvironments;
 
-  const renderEnvironmentMenuButton = () => (
-    <NewButton
-      buttonType={"secondary"}
-      onClick={handleEnvironmentMenuButtonClick}
-      label={`+${sortedEnvironments.length - ENVIRONMENT_CHIP_COUNT}`}
-    />
-  );
+  const isCarouselVisible = sortedEnvironments.length > ENVIRONMENT_CHIP_COUNT;
 
   return (
     <s.Container ref={observe}>
@@ -137,28 +140,23 @@ export const EnvironmentSelector = ({
           />
         ))}
       </s.EnvironmentsContainer>
-      {sortedEnvironments.length > ENVIRONMENT_CHIP_COUNT && (
-        <>
-          {/* // TODO: refactor this to use only popover */}
-          {isMenuOpen ? (
-            <NewPopover
-              content={
-                <EnvironmentMenu
-                  environments={sortedEnvironments.map((x) => x.environment)}
-                  onMenuItemClick={handleMenuItemClick}
-                />
-              }
-              onOpenChange={handleEnvironmentMenuOpenChange}
-              isOpen={isMenuOpen}
-              placement={"bottom-end"}
-              width={width}
-            >
-              {renderEnvironmentMenuButton()}
-            </NewPopover>
-          ) : (
-            renderEnvironmentMenuButton()
+      {isCarouselVisible && (
+        <s.CarouselButton
+          direction={"left"}
+          icon={(props) => (
+            <ChevronIcon {...props} direction={Direction.LEFT} />
           )}
-        </>
+          onClick={() => handleCarouselButtonClick("left")}
+        />
+      )}
+      {isCarouselVisible && (
+        <s.CarouselButton
+          direction={"right"}
+          icon={(props) => (
+            <ChevronIcon {...props} direction={Direction.RIGHT} />
+          )}
+          onClick={() => handleCarouselButtonClick("right")}
+        />
       )}
     </s.Container>
   );

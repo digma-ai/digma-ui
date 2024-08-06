@@ -13,7 +13,7 @@ export const Button = styled.button<ButtonElementProps>`
   width: fit-content;
   padding: ${({ $type }) => {
     switch ($type) {
-      case "tertiary":
+      case "borderlessPrimary":
         return "6px 8px";
       case "secondary":
       case "primary":
@@ -23,7 +23,7 @@ export const Button = styled.button<ButtonElementProps>`
   }};
   color: ${({ theme, $type }) => {
     switch ($type) {
-      case "tertiary":
+      case "borderlessPrimary":
       case "secondary":
         return theme.colors.v3.icon.primary;
       case "primary":
@@ -33,7 +33,7 @@ export const Button = styled.button<ButtonElementProps>`
   }};
   border: ${({ theme, $type }) => {
     switch ($type) {
-      case "tertiary":
+      case "borderlessPrimary":
         return "none";
       case "secondary":
         return `1px solid ${theme.colors.v3.stroke.dark}`;
@@ -44,7 +44,7 @@ export const Button = styled.button<ButtonElementProps>`
   }};
   background: ${({ theme, $type }) => {
     switch ($type) {
-      case "tertiary":
+      case "borderlessPrimary":
         return "none";
       case "secondary":
         return theme.colors.v3.surface.primary;
@@ -57,7 +57,7 @@ export const Button = styled.button<ButtonElementProps>`
   span {
     color: ${({ theme, $type }) => {
       switch ($type) {
-        case "tertiary":
+        case "borderlessPrimary":
         case "secondary":
           return theme.colors.v3.text.primary;
         case "primary":
@@ -78,7 +78,7 @@ export const Button = styled.button<ButtonElementProps>`
     cursor: initial;
     color: ${({ theme, $type }) => {
       switch ($type) {
-        case "tertiary":
+        case "borderlessPrimary":
         case "secondary":
           return theme.colors.v3.icon.disabled;
         case "primary":
@@ -88,7 +88,7 @@ export const Button = styled.button<ButtonElementProps>`
     }};
     border: ${({ theme, $type }) => {
       switch ($type) {
-        case "tertiary":
+        case "borderlessPrimary":
           return "none";
         case "secondary":
           return `1px solid ${theme.colors.v3.stroke.tertiary}`;
@@ -99,7 +99,7 @@ export const Button = styled.button<ButtonElementProps>`
     }};
     background: ${({ theme, $type }) => {
       switch ($type) {
-        case "tertiary":
+        case "borderlessPrimary":
           return "none";
         case "secondary":
           return theme.colors.v3.surface.primaryLight;
@@ -112,7 +112,7 @@ export const Button = styled.button<ButtonElementProps>`
     span {
       color: ${({ theme, $type }) => {
         switch ($type) {
-          case "tertiary":
+          case "borderlessPrimary":
           case "secondary":
             return theme.colors.v3.text.disabled;
           case "primary":
@@ -126,7 +126,7 @@ export const Button = styled.button<ButtonElementProps>`
   &:hover:enabled {
     color: ${({ theme, $type }) => {
       switch ($type) {
-        case "tertiary":
+        case "borderlessPrimary":
           return theme.colors.v3.icon.brandTertiary;
         case "secondary":
           return theme.colors.v3.icon.primary;
@@ -137,7 +137,7 @@ export const Button = styled.button<ButtonElementProps>`
     }};
     border: ${({ theme, $type }) => {
       switch ($type) {
-        case "tertiary":
+        case "borderlessPrimary":
           return "none";
         case "secondary":
           return `1px solid ${theme.colors.v3.stroke.primary}`;
@@ -148,7 +148,7 @@ export const Button = styled.button<ButtonElementProps>`
     }};
     background: ${({ theme, $type }) => {
       switch ($type) {
-        case "tertiary":
+        case "borderlessPrimary":
           return "none";
         case "secondary":
           return theme.colors.v3.surface.brandDark;
@@ -161,7 +161,7 @@ export const Button = styled.button<ButtonElementProps>`
     span {
       color: ${({ theme, $type }) => {
         switch ($type) {
-          case "tertiary":
+          case "borderlessPrimary":
             return theme.colors.v3.text.link;
           case "secondary":
             return theme.colors.v3.text.primary;
@@ -177,7 +177,7 @@ export const Button = styled.button<ButtonElementProps>`
   &:active:enabled {
     color: ${({ theme, $type }) => {
       switch ($type) {
-        case "tertiary":
+        case "borderlessPrimary":
           return theme.colors.v3.icon.brandSecondary;
         case "secondary":
           return theme.colors.v3.icon.primary;
@@ -188,7 +188,7 @@ export const Button = styled.button<ButtonElementProps>`
     }};
     border: ${({ theme, $type }) => {
       switch ($type) {
-        case "tertiary":
+        case "borderlessPrimary":
           return "none";
         case "secondary":
           return `1px solid ${theme.colors.v3.stroke.primary}`;
@@ -199,7 +199,7 @@ export const Button = styled.button<ButtonElementProps>`
     }};
     background: ${({ theme, $type }) => {
       switch ($type) {
-        case "tertiary":
+        case "borderlessPrimary":
           return "none";
         case "secondary":
           return theme.colors.v3.surface.primary;
@@ -212,7 +212,7 @@ export const Button = styled.button<ButtonElementProps>`
     span {
       color: ${({ theme, $type }) => {
         switch ($type) {
-          case "tertiary":
+          case "borderlessPrimary":
             return theme.colors.v3.surface.brandSecondary;
           case "secondary":
             return theme.colors.v3.text.primary;
