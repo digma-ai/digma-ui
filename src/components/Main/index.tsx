@@ -121,10 +121,10 @@ export const Main = () => {
             break;
           case SCOPE_CHANGE_EVENTS.NAVIGATION_HOME_BUTTON_CLICKED as string:
             if (matchPath(window.location.pathname, TAB_IDS.ASSETS)) {
-              goTo(`/${TAB_IDS.ASSETS}`);
+              goTo(`/${TAB_IDS.ASSETS}`, { state });
               break;
             }
-            goTo(`/${TAB_IDS.ISSUES}`);
+            goTo(`/${TAB_IDS.ISSUES}`, { state });
             break;
           case SCOPE_CHANGE_EVENTS.IDE_CODE_LENS_CLICKED as string: {
             const url = getURLToNavigateOnCodeLensClick(scope);
