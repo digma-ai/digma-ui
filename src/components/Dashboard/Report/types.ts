@@ -1,5 +1,5 @@
 export interface ReportFilterQuery {
-  environmentId: string;
+  environmentId: string | null;
   services: string[];
 }
 
@@ -22,5 +22,5 @@ export interface AssetCategory {
 }
 
 export interface GetServicesPayload {
-  environment: string;
+  environment: string | null;
 }
