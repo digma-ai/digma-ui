@@ -20,8 +20,8 @@ export const Checkmark = styled.input`
   margin: 1px;
   cursor: pointer;
   border: 1px solid ${({ theme }) => theme.colors.v3.surface.highlight};
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
   border-radius: 4px;
   background: ${({ theme }) => theme.colors.v3.surface.highlight};
 

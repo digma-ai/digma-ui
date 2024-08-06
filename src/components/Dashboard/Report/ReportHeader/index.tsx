@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { actions as globalActions } from "../../../../actions";
 import { useGlobalStore } from "../../../../containers/Main/stores/useGlobalStore";
 import {
   DataFetcherConfiguration,
@@ -19,10 +20,16 @@ const baseFetchConfig = {
   refreshOnPayloadChange: true
 };
 
-const dataFetcherIssuesStatsConfiguration: DataFetcherConfiguration = {
+const dataFetcherFiltersConfiguration: DataFetcherConfiguration = {
   requestAction: actions.GET_SERVICES,
   responseAction: actions.SET_SERVICES,
   ...baseFetchConfig
+};
+
+const refreshEnvList = () => {
+  window.sendMessageToDigma({
+    action: globalActions.GET_ENVIRONMENTS
+  });
 };
 
 export const ReportHeader = ({
@@ -30,7 +37,9 @@ export const ReportHeader = ({
   onFilterChanged
 }: ReportHeaderProps) => {
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
-  const [selectedEnvironment, setSelectedEnvironment] = useState<string>("");
+  const [selectedEnvironment, setSelectedEnvironment] = useState<string | null>(
+    null
+  );
   const environments = useGlobalStore.use.environments();
   const handleSelectedEnvironmentChanged = (option: string | string[]) => {
     const newItem =
@@ -59,11 +68,17 @@ export const ReportHeader = ({
   const { data: services, getData } = useFetchData<
     GetServicesPayload,
     string[]
-  >(dataFetcherIssuesStatsConfiguration, getServicesPayload);
+  >(dataFetcherFiltersConfiguration, getServicesPayload);
 
   useEffect(() => {
     getData();
   }, []);
+
+  const handleRefresh = () => {
+    getData();
+    onRefresh();
+    refreshEnvList();
+  };
 
   return (
     <s.Container>
@@ -72,7 +87,7 @@ export const ReportHeader = ({
           // TODO
         }}
         onRefresh={() => {
-          onRefresh();
+          handleRefresh();
         }}
       />
       <s.FiltersContainer>

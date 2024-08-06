@@ -18,7 +18,7 @@ export const Checkmark = ({ onChange, value, disabled }: CheckmarkProps) => {
       />
       {value && (
         <s.CheckmarkContainer>
-          <CheckmarkIcon color={"currentColor"} height={5} />
+          <CheckmarkIcon color={"currentColor"} height={10} width={10} />
         </s.CheckmarkContainer>
       )}
     </s.Container>
