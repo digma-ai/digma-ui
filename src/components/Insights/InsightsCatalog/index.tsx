@@ -31,6 +31,7 @@ import { Tooltip } from "../../common/v3/Tooltip";
 import { IssuesFilter } from "../Issues/IssuesFilter";
 import { trackingEvents } from "../tracking";
 import { EnvironmentSelector } from "./EnvironmentSelector";
+import { SelectorEnvironment } from "./EnvironmentSelector/types";
 import { FilterButton } from "./FilterButton";
 import { FilterPanel } from "./FilterPanel";
 import { InsightsPage } from "./InsightsPage";
@@ -111,6 +112,17 @@ export const InsightsCatalog = ({
     PROMOTION_COMPLETED_PERSISTENCE_KEY,
     "application"
   );
+
+  const appliedFilterCount =
+    filters.length + (filteredInsightTypes.length > 0 ? 1 : 0);
+
+  const areSpanEnvironmentsEnabled = getFeatureFlagValue(
+    backendInfo,
+    FeatureFlag.ARE_SPAN_ENVIRONMENTS_ENABLED
+  );
+  const selectorEnvironments: SelectorEnvironment[] = areSpanEnvironmentsEnabled
+    ? insightStats?.spanEnvironments ?? []
+    : environments?.map((x) => ({ environment: x })) ?? [];
 
   const handleRegistrationComplete = () => {
     sendUserActionTrackingEvent(
@@ -245,15 +257,12 @@ export const InsightsCatalog = ({
     );
   };
 
-  const appliedFilterCount =
-    filters.length + (filteredInsightTypes.length > 0 ? 1 : 0);
-
   return (
     <>
       <s.Toolbar>
         <s.ToolbarRow>
-          {isAtSpan && environments && environments.length > 1 && (
-            <EnvironmentSelector environments={environments} />
+          {isAtSpan && selectorEnvironments.length > 1 && (
+            <EnvironmentSelector environments={selectorEnvironments} />
           )}
           {!isAtSpan && renderFilterPanel()}
           <s.ToolbarButtonsContainer>

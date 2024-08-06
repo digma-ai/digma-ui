@@ -11,9 +11,12 @@ export const useLoading = (
       return;
     }
 
-    const timerId = setTimeout(() => setIsLoading(false), cancelTimeoutMs);
+    const timerId = window.setTimeout(
+      () => setIsLoading(false),
+      cancelTimeoutMs
+    );
     return () => {
-      clearTimeout(timerId);
+      window.clearTimeout(timerId);
     };
   }, []);
 

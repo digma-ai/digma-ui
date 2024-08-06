@@ -6,6 +6,7 @@ import { InsightViewType } from "../../Insights/types";
 export interface AppProps {
   children: ReactNode;
   theme?: Theme;
+  id?: string;
 }
 
 export type InstallationType =
@@ -52,6 +53,17 @@ export interface ScopeSpan {
   methodId: string | null;
   serviceName: string | null;
   role: "Entry" | "Internal" | "Unknown" | null;
+}
+
+export interface EnvironmentIssueCounts {
+  highCriticality: number;
+  mediumCriticality: number;
+  lowCriticality: number;
+}
+
+export interface SpanEnvironment {
+  environment: Environment;
+  issueCounts: EnvironmentIssueCounts;
 }
 
 export interface Scope {
@@ -163,6 +175,7 @@ export interface InsightStats {
   unreadInsightsCount: number;
   criticalInsightsCount?: number;
   allIssuesCount?: number;
+  spanEnvironments?: SpanEnvironment[];
 }
 
 export interface UserInfo {

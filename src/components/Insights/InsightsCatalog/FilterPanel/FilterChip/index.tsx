@@ -36,7 +36,9 @@ export const FilterChip = ({
   return (
     <Tooltip title={label}>
       <Component disabled={disabled} $selected={selected} onClick={onClick}>
-        <span>{label}</span>
+        <Tooltip title={label}>
+          <span>{label}</span>
+        </Tooltip>
         {isNumber(count) ? (
           <s.StatCounter>{count}</s.StatCounter>
         ) : (
