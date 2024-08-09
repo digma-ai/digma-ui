@@ -5,7 +5,7 @@ import * as s from "./styles";
 import { InsightStatusBadgeProps } from "./types";
 
 export const InsightStatusBadgeComponent = (
-  { status, className }: InsightStatusBadgeProps,
+  { status, className, withLabel = true }: InsightStatusBadgeProps,
   ref: ForwardedRef<HTMLDivElement>
 ) => {
   const theme = useTheme();
@@ -19,7 +19,7 @@ export const InsightStatusBadgeComponent = (
   return (
     <s.Container className={className} ref={ref}>
       <s.Indicator $status={status} />
-      <s.Status>{statusInfo.label}</s.Status>
+      {withLabel && <s.Status>{statusInfo.label}</s.Status>}
     </s.Container>
   );
 };

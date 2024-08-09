@@ -13,12 +13,15 @@ import { ThreeDotsIcon } from "../../../../../../common/icons/ThreeDotsIcon";
 import { NewPopover } from "../../../../../../common/NewPopover";
 import { Link } from "../../../../../../common/v3/Link";
 import { NewIconButton } from "../../../../../../common/v3/NewIconButton";
+import { Tag } from "../../../../../../common/v3/Tag";
 import { Tooltip } from "../../../../../../common/v3/Tooltip";
 import { MenuList } from "../../../../../../Navigation/common/MenuList";
 import { MenuItem } from "../../../../../../Navigation/common/MenuList/types";
 import { trackingEvents } from "../../../../../tracking";
 import { isEndpointInsight, isSpanInsight } from "../../../../../typeGuards";
 import { InsightIcon } from "../InsightCard/InsightHeader/InsightIcon";
+import { KeyValue } from "../InsightCard/InsightHeader/InsightStatusTooltipContent/KeyValue";
+import { getInsightStatusInfo } from "../InsightStatusBadge/getInsightStatusInfo";
 import * as s from "./styles";
 import { IssueCompactCardProps } from "./types";
 
@@ -34,14 +37,17 @@ export const IssueCompactCard = ({
   onTicketOpen,
   isCritical
 }: IssueCompactCardProps) => {
+  const theme = useTheme();
   const isJaegerEnabled = useGlobalStore.use.isJaegerEnabled();
   const [isKebabMenuOpen, setIsKebabMenuOpen] = useState(false);
   const insightTypeInfo = getInsightTypeInfo(insight.type, insight.subType);
+  const statusInfo = insight.status
+    ? getInsightStatusInfo(insight.status, theme)
+    : undefined;
   const spanInfo =
     isSpanInsight(insight) || isEndpointInsight(insight)
       ? insight.spanInfo
       : undefined;
-  const theme = useTheme();
   const isTicketLinkAttached = Boolean(insight.ticketLink);
   const handleContainerClick = () => {
     sendUserActionTrackingEvent(trackingEvents.ISSUE_CARD_CLICKED, {
@@ -162,7 +168,19 @@ export const IssueCompactCard = ({
           />
         )}
         <s.Title>{insightTypeInfo?.label}</s.Title>
-        {metric && <s.MetricTag content={metric} type={"highlight"} />}
+        {insight.status && statusInfo && (
+          <Tooltip
+            title={<KeyValue label="Status">{statusInfo.label}</KeyValue>}
+            placement={"top"}
+            fullWidth={true}
+          >
+            <s.StyledInsightStatusBadge
+              status={insight.status}
+              withLabel={false}
+            />
+          </Tooltip>
+        )}
+        {metric && <Tag content={metric} type={"highlight"} />}
         <NewPopover
           isOpen={isKebabMenuOpen}
           onOpenChange={setIsKebabMenuOpen}
