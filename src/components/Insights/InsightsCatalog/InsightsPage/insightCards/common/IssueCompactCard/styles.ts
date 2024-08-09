@@ -1,8 +1,8 @@
 import styled, { css } from "styled-components";
 import { bodyBoldTypography } from "../../../../../../common/App/typographies";
 import { CopyButton } from "../../../../../../common/v3/CopyButton";
-import { Tag } from "../../../../../../common/v3/Tag";
 import { Popup } from "../../../../../../Navigation/common/Popup";
+import { InsightStatusBadge } from "../InsightStatusBadge";
 import { ContainerProps } from "./types";
 
 export const Container = styled.div<ContainerProps>`
@@ -59,8 +59,8 @@ export const Title = styled.span`
   color: ${({ theme }) => theme.colors.v3.text.primary};
 `;
 
-export const MetricTag = styled(Tag)`
-  margin-left: 4px;
+export const StyledInsightStatusBadge = styled(InsightStatusBadge)`
+  padding: 10px;
 `;
 
 export const StyledCopyButton = styled(CopyButton)`
