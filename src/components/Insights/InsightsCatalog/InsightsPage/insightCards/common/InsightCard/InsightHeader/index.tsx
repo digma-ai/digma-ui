@@ -10,9 +10,9 @@ import {
   GenericCodeObjectInsight,
   InsightStatus
 } from "../../../../../../types";
+import { InsightStatusBadge } from "../../InsightStatusBadge";
 import { AsyncTag } from "./AsyncTag";
 import { InsightIcon } from "./InsightIcon";
-import { InsightStatusBadge } from "./InsightStatusBadge";
 import { InsightStatusTooltipContent } from "./InsightStatusTooltipContent";
 import * as s from "./styles";
 import { InsightHeaderProps } from "./types";
