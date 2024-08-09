@@ -101,6 +101,7 @@
   },
   "dependencies": {
     "@floating-ui/react": "^0.25.1",
+    "@splidejs/react-splide": "^0.7.12",
     "@tanstack/react-table": "^8.7.8",
     "allotment": "^1.19.0",
     "axios": "^1.7.2",

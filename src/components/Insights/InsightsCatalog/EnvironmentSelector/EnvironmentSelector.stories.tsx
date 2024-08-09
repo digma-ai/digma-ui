@@ -78,6 +78,18 @@ export const WithCarousel: Story = {
           mediumCriticality: 0,
           lowCriticality: 1
         }
+      },
+      {
+        environment: {
+          id: "5",
+          name: "Custom2",
+          type: "Private"
+        },
+        issueCounts: {
+          highCriticality: 0,
+          mediumCriticality: 0,
+          lowCriticality: 2
+        }
       }
     ]
   }
