@@ -47,7 +47,7 @@ export const initialState: InsightsState = {
 };
 
 export interface InsightsActions {
-  setData: (data: InsightsData) => void;
+  setData: (data: InsightsData | null) => void;
   setIsDataLoading: (isDataLoading: boolean) => void;
   setSearch: (search: string) => void;
   setPage: (page: number) => void;

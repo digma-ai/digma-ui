@@ -34,6 +34,7 @@ import { SelectorEnvironment } from "./EnvironmentSelector/types";
 import { FilterButton } from "./FilterButton";
 import { FilterPanel } from "./FilterPanel";
 import { InsightsPage } from "./InsightsPage";
+import { LoadingMessage } from "./LoadingMessage";
 import { PromotionCard } from "./PromotionCard";
 import * as s from "./styles";
 import {
@@ -111,6 +112,10 @@ export const InsightsCatalog = ({
     PROMOTION_COMPLETED_PERSISTENCE_KEY,
     "application"
   );
+  const areInsightsLoading = useInsightsStore.use.isDataLoading();
+  const isScopeLoading = useGlobalStore.use.isScopeLoading();
+  const isInitialLoading = !data && areInsightsLoading;
+  const isLoading = isInitialLoading || isScopeLoading;
 
   const appliedFilterCount =
     filters.length + (filteredInsightTypes.length > 0 ? 1 : 0);
@@ -363,16 +368,21 @@ export const InsightsCatalog = ({
           </s.ViewModeToolbarRow>
         )}
       </s.Toolbar>
-      <InsightsPage
-        page={page}
-        insights={insights}
-        isFilteringEnabled={
-          debouncedSearchInputValue !== null && debouncedSearchInputValue !== ""
-        }
-        onJiraTicketCreate={onJiraTicketCreate}
-        onRefresh={onRefresh}
-        isMarkAsReadButtonEnabled={isShowUnreadOnly(filters)}
-      />
+      {isLoading ? (
+        <LoadingMessage />
+      ) : (
+        <InsightsPage
+          page={page}
+          insights={insights}
+          isFilteringEnabled={
+            debouncedSearchInputValue !== null &&
+            debouncedSearchInputValue !== ""
+          }
+          onJiraTicketCreate={onJiraTicketCreate}
+          onRefresh={onRefresh}
+          isMarkAsReadButtonEnabled={isShowUnreadOnly(filters)}
+        />
+      )}
       <s.Footer>
         {totalCount > 0 && (
           <>

@@ -62,37 +62,28 @@ export const App = ({ theme, children, id }: AppProps) => {
   const [mainFont, setMainFont] = useState(defaultMainFont);
   const [codeFont, setCodeFont] = useState(defaultCodeFont);
   const [config, setConfig] = useState(useContext(ConfigContext));
-  const setJaegerURL = useGlobalStore((state) => state.setJaegerURL);
-  const setIsJaegerEnabled = useGlobalStore(
-    (state) => state.setIsJaegerEnabled
-  );
-  const setIsDigmaEngineInstalled = useGlobalStore(
-    (state) => state.setIsDigmaEngineInstalled
-  );
-  const setIsDigmaEngineRunning = useGlobalStore(
-    (state) => state.setIsDigmaEngineRunning
-  );
-  const setDigmaStatus = useGlobalStore((state) => state.setDigmaStatus);
-  const setIsDockerInstalled = useGlobalStore(
-    (state) => state.setIsDockerInstalled
-  );
-  const setIsDockerComposeInstalled = useGlobalStore(
-    (state) => state.setIsDockerComposeInstalled
-  );
-  const setDigmaApiUrl = useGlobalStore((state) => state.setDigmaApiUrl);
-  const setUserRegistrationEmail = useGlobalStore(
-    (state) => state.setUserRegistrationEmail
-  );
-  const setIsObservabilityEnabled = useGlobalStore(
-    (state) => state.setIsObservabilityEnabled
-  );
-  const setBackendInfo = useGlobalStore((state) => state.setBackendInfo);
-  const setEnvironments = useGlobalStore((state) => state.setEnvironments);
-  const setEnvironment = useGlobalStore((state) => state.setEnvironment);
-  const setScope = useGlobalStore((state) => state.setScope);
-  const setUserInfo = useGlobalStore((state) => state.setUserInfo);
-  const setInsightStats = useGlobalStore((state) => state.setInsightStats);
-  const setRunConfiguration = useGlobalStore((state) => state.setRunConfig);
+  const setJaegerURL = useGlobalStore.use.setJaegerURL();
+  const setIsJaegerEnabled = useGlobalStore.use.setIsJaegerEnabled();
+  const setIsDigmaEngineInstalled =
+    useGlobalStore.use.setIsDigmaEngineInstalled();
+  const setIsDigmaEngineRunning = useGlobalStore.use.setIsDigmaEngineRunning();
+  const setDigmaStatus = useGlobalStore.use.setDigmaStatus();
+  const setIsDockerInstalled = useGlobalStore.use.setIsDockerInstalled();
+  const setIsDockerComposeInstalled =
+    useGlobalStore.use.setIsDockerComposeInstalled();
+  const setDigmaApiUrl = useGlobalStore.use.setDigmaApiUrl();
+  const setUserRegistrationEmail =
+    useGlobalStore.use.setUserRegistrationEmail();
+  const setIsObservabilityEnabled =
+    useGlobalStore.use.setIsObservabilityEnabled();
+  const setBackendInfo = useGlobalStore.use.setBackendInfo();
+  const setEnvironments = useGlobalStore.use.setEnvironments();
+  const setEnvironment = useGlobalStore.use.setEnvironment();
+  const setScope = useGlobalStore.use.setScope();
+  const setIsScopeLoading = useGlobalStore.use.setIsScopeLoading();
+  const setUserInfo = useGlobalStore.use.setUserInfo();
+  const setInsightStats = useGlobalStore.use.setInsightStats();
+  const setRunConfiguration = useGlobalStore.use.setRunConfig();
   const setIsMicrometerProject = useGlobalStore(
     (state) => state.setIsMicrometerProject
   );
@@ -280,6 +271,7 @@ export const App = ({ theme, children, id }: AppProps) => {
           : config.environment;
 
         setScope(scope);
+        setIsScopeLoading(false);
         setEnvironment(environment ?? null);
 
         return {
