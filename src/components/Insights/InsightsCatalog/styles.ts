@@ -5,6 +5,10 @@ import {
   subscriptRegularTypography
 } from "../../common/App/typographies";
 import { Link } from "../../common/v3/Link";
+import { EnvironmentSelector } from "./EnvironmentSelector";
+
+const TOOLBAR_BUTTONS_CONTAINER_WIDTH = 60; // in pixels
+const TOOLBAR_GAP = 4; // in pixels
 
 export const Footer = styled.div`
   display: flex;
@@ -109,7 +113,12 @@ export const InsightsViewModeToolbar = styled(Toolbar)`
   padding: 0 8px;
 `;
 
+export const StyledEnvironmentSelector = styled(EnvironmentSelector)`
+  width: calc(100% - ${TOOLBAR_BUTTONS_CONTAINER_WIDTH + TOOLBAR_GAP}px);
+`;
+
 export const ToolbarButtonsContainer = styled.div`
+  width: ${TOOLBAR_BUTTONS_CONTAINER_WIDTH}px;
   display: flex;
   gap: 4px;
   align-items: center;

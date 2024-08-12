@@ -1,17 +1,13 @@
 import styled from "styled-components";
+import { EnvironmentChip } from "./EnvironmentChip";
 
-export const Container = styled.div`
-  display: flex;
-  gap: 4px;
-  overflow: hidden;
-  flex-grow: 1;
+export const CarouselEnvironmentChip = styled(EnvironmentChip)`
+  width: 100%;
 `;
 
 export const EnvironmentsContainer = styled.div`
   display: flex;
   gap: 4px;
-  overflow: hidden;
-  flex-grow: 1;
 
   & > * {
     flex: 1 1 0;

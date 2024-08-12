@@ -1,12 +1,10 @@
-import { useState } from "react";
-import useDimensions from "react-cool-dimensions";
+import { useEffect, useMemo, useState } from "react";
 import { useGlobalStore } from "../../../../containers/Main/stores/useGlobalStore";
+import { usePrevious } from "../../../../hooks/usePrevious";
+import { isNumber } from "../../../../typeGuards/isNumber";
 import { changeScope } from "../../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
-import { Environment } from "../../../common/App/types";
-import { NewPopover } from "../../../common/NewPopover";
-import { NewButton } from "../../../common/v3/NewButton";
-import { EnvironmentMenu } from "../../../Navigation/EnvironmentBar/EnvironmentMenu";
+import { Carousel } from "../../../common/Carousel";
 import { trackingEvents } from "../../tracking";
 import { EnvironmentChip } from "./EnvironmentChip";
 import { getMostCriticalIssueCount } from "./getMostCriticalIssueCount";
@@ -14,18 +12,6 @@ import * as s from "./styles";
 import { EnvironmentSelectorProps, SelectorEnvironment } from "./types";
 
 const ENVIRONMENT_CHIP_COUNT = 3;
-
-const getSlidingWindow = <T,>(arr: T[], start: number, length: number) => {
-  const result = [];
-  const arrLength = arr.length;
-
-  for (let i = 0; i < length; i++) {
-    const currentIndex = (start + i + arrLength) % arrLength;
-    result.push(arr[currentIndex]);
-  }
-
-  return result;
-};
 
 const sortEnvironmentsByCriticalIssues = (
   a: SelectorEnvironment,
@@ -57,19 +43,43 @@ const sortEnvironmentsByCriticalIssues = (
 };
 
 export const EnvironmentSelector = ({
-  environments
+  environments,
+  className
 }: EnvironmentSelectorProps) => {
   const scope = useGlobalStore.use.scope();
   const environment = useGlobalStore.use.environment();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { observe, width } = useDimensions();
   const sortedEnvironments = environments.sort(
     sortEnvironmentsByCriticalIssues
   );
+  const environmentIndex = useMemo(
+    () =>
+      Math.max(
+        sortedEnvironments.findIndex(
+          (x) => x.environment.id === environment?.id
+        ),
+        0
+      ),
+    [sortedEnvironments, environment]
+  );
+  const previousEnvironmentIndex = usePrevious(environmentIndex);
+  const [carouselIndex, setCarouselIndex] = useState(environmentIndex);
+
+  useEffect(() => {
+    if (
+      isNumber(previousEnvironmentIndex) &&
+      environmentIndex !== previousEnvironmentIndex
+    ) {
+      setCarouselIndex(environmentIndex);
+    }
+  }, [environmentIndex, previousEnvironmentIndex]);
 
   if (sortedEnvironments.length < 2) {
     return null;
   }
+
+  const handleCarouselMove = (index: number) => {
+    setCarouselIndex(index);
+  };
 
   const changeEnvironment = (environmentId: string) => {
     sendUserActionTrackingEvent(trackingEvents.ENVIRONMENT_SELECTED);
@@ -84,82 +94,51 @@ export const EnvironmentSelector = ({
     });
   };
 
-  const handleMenuItemClick = (environment: Environment) => {
-    setIsMenuOpen(false);
-    changeEnvironment(environment.id);
-  };
-
   const handleEnvironmentChipClick = (environmentId: string) => {
     changeEnvironment(environmentId);
   };
 
-  const handleEnvironmentMenuOpenChange = (isOpen: boolean) => {
-    setIsMenuOpen(isOpen);
-  };
-
-  const handleEnvironmentMenuButtonClick = () => {
-    sendUserActionTrackingEvent(trackingEvents.ENVIRONMENT_MENU_BUTTON_CLICKED);
-
-    setIsMenuOpen(!isMenuOpen);
-  };
-
-  const environmentIndex = sortedEnvironments.findIndex(
-    (x) => x.environment.id === environment?.id
-  );
-
-  const environmentsWithChips =
-    sortedEnvironments.length > ENVIRONMENT_CHIP_COUNT
-      ? getSlidingWindow(
-          sortedEnvironments,
-          environmentIndex - 1,
-          ENVIRONMENT_CHIP_COUNT
-        )
-      : sortedEnvironments;
-
-  const renderEnvironmentMenuButton = () => (
-    <NewButton
-      buttonType={"secondary"}
-      onClick={handleEnvironmentMenuButtonClick}
-      label={`+${sortedEnvironments.length - ENVIRONMENT_CHIP_COUNT}`}
-    />
-  );
+  const isCarouselVisible = sortedEnvironments.length > ENVIRONMENT_CHIP_COUNT;
 
   return (
-    <s.Container ref={observe}>
-      <s.EnvironmentsContainer>
-        {environmentsWithChips.map((x) => (
-          <EnvironmentChip
-            key={x.environment.id}
-            environment={x.environment}
-            isActive={x.environment.id === environment?.id}
-            onClick={handleEnvironmentChipClick}
-            issueCounts={x.issueCounts}
-          />
-        ))}
-      </s.EnvironmentsContainer>
-      {sortedEnvironments.length > ENVIRONMENT_CHIP_COUNT && (
-        <>
-          {/* // TODO: refactor this to use only popover */}
-          {isMenuOpen ? (
-            <NewPopover
-              content={
-                <EnvironmentMenu
-                  environments={sortedEnvironments.map((x) => x.environment)}
-                  onMenuItemClick={handleMenuItemClick}
-                />
-              }
-              onOpenChange={handleEnvironmentMenuOpenChange}
-              isOpen={isMenuOpen}
-              placement={"bottom-end"}
-              width={width}
-            >
-              {renderEnvironmentMenuButton()}
-            </NewPopover>
-          ) : (
-            renderEnvironmentMenuButton()
-          )}
-        </>
+    <div className={className}>
+      {isCarouselVisible ? (
+        <Carousel
+          itemsPerSlide={ENVIRONMENT_CHIP_COUNT}
+          gap={4}
+          breakpoints={{
+            461: {
+              perPage: ENVIRONMENT_CHIP_COUNT + 1
+            },
+            561: {
+              perPage: ENVIRONMENT_CHIP_COUNT + 2
+            }
+          }}
+          items={sortedEnvironments.map((x) => (
+            <s.CarouselEnvironmentChip
+              key={x.environment.id}
+              environment={x.environment}
+              isActive={x.environment.id === environment?.id}
+              onClick={handleEnvironmentChipClick}
+              issueCounts={x.issueCounts}
+            />
+          ))}
+          currentIndex={carouselIndex}
+          onMove={handleCarouselMove}
+        />
+      ) : (
+        <s.EnvironmentsContainer>
+          {sortedEnvironments.map((x) => (
+            <EnvironmentChip
+              key={x.environment.id}
+              environment={x.environment}
+              isActive={x.environment.id === environment?.id}
+              onClick={handleEnvironmentChipClick}
+              issueCounts={x.issueCounts}
+            />
+          ))}
+        </s.EnvironmentsContainer>
       )}
-    </s.Container>
+    </div>
   );
 };

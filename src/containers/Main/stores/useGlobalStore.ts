@@ -34,6 +34,7 @@ export interface GlobalState {
   environment: Environment | null;
   environments: Environment[] | null;
   scope: Scope | null;
+  isScopeLoading: boolean;
   insightStats: InsightStats | null;
   userId: string | null;
   userInfo: UserInfo | null;
@@ -82,6 +83,7 @@ export const initialState: GlobalState = {
   environment: isEnvironment(window.environment) ? window.environment : null,
   environments: null,
   scope: null,
+  isScopeLoading: false,
   insightStats: null,
   userId: isString(window.userId) ? window.userId : null,
   userInfo: null,
@@ -112,6 +114,7 @@ export interface GlobalActions {
   setEnvironment: (environment: Environment | null) => void;
   setEnvironments: (environments: Environment[]) => void;
   setScope: (scope: Scope) => void;
+  setIsScopeLoading: (isLoading: boolean) => void;
   setInsightStats: (stats: InsightStats) => void;
   setUserId: (userId: string) => void;
   setUserInfo: (userInfo: UserInfo) => void;
@@ -151,6 +154,7 @@ export const useGlobalStore = createSelectors(
     setEnvironment: (environment) => set({ environment }),
     setEnvironments: (environments) => set({ environments }),
     setScope: (scope) => set({ scope }),
+    setIsScopeLoading: (isLoading) => set({ isScopeLoading: isLoading }),
     setInsightStats: (stats) => set({ insightStats: stats }),
     setUserId: (userId) => set({ userId }),
     setUserInfo: (userInfo) => set({ userInfo }),

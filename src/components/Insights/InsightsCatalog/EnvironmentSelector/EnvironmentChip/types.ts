@@ -14,6 +14,7 @@ export interface EnvironmentChipProps {
   onClick: (environment: string) => void;
   isActive: boolean;
   issueCounts?: EnvironmentIssueCounts;
+  className?: string;
 }
 
 export interface StyledChipProps {
