@@ -8,7 +8,8 @@ export const EnvironmentChip = ({
   environment,
   issueCounts,
   onClick,
-  isActive
+  isActive,
+  className
 }: EnvironmentChipProps) => {
   const handleClick = () => {
     if (!isActive) {
@@ -21,7 +22,11 @@ export const EnvironmentChip = ({
 
   return (
     <Tooltip title={environmentName}>
-      <s.StyledChip $isActive={isActive} onClick={handleClick}>
+      <s.StyledChip
+        $isActive={isActive}
+        onClick={handleClick}
+        className={className}
+      >
         <s.IconContainer>
           <EnvironmentIcon size={16} environment={environment} />
         </s.IconContainer>

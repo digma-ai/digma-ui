@@ -30,7 +30,6 @@ import { NewIconButton } from "../../common/v3/NewIconButton";
 import { Tooltip } from "../../common/v3/Tooltip";
 import { IssuesFilter } from "../Issues/IssuesFilter";
 import { trackingEvents } from "../tracking";
-import { EnvironmentSelector } from "./EnvironmentSelector";
 import { SelectorEnvironment } from "./EnvironmentSelector/types";
 import { FilterButton } from "./FilterButton";
 import { FilterPanel } from "./FilterPanel";
@@ -262,7 +261,7 @@ export const InsightsCatalog = ({
       <s.Toolbar>
         <s.ToolbarRow>
           {isAtSpan && selectorEnvironments.length > 1 && (
-            <EnvironmentSelector environments={selectorEnvironments} />
+            <s.StyledEnvironmentSelector environments={selectorEnvironments} />
           )}
           {!isAtSpan && renderFilterPanel()}
           <s.ToolbarButtonsContainer>

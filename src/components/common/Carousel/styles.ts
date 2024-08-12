@@ -22,7 +22,7 @@ export const CarouselButton = styled(NewIconButton)<CarouselButtonProps>`
 
     return direction === "left"
       ? css`
-          padding-left: 22px;
+          padding-right: 22px;
           left: 0;
           background: ${rgbColor
             ? `linear-gradient(
@@ -33,7 +33,7 @@ export const CarouselButton = styled(NewIconButton)<CarouselButtonProps>`
             : "transparent"};
         `
       : css`
-          padding-right: 22px;
+          padding-left: 22px;
           right: 0;
           background: ${rgbColor
             ? `linear-gradient(

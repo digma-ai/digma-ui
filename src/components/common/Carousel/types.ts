@@ -6,6 +6,8 @@ export interface CarouselProps {
   itemsPerSlide?: number;
   breakpoints: Options["breakpoints"];
   gap?: number | string;
+  currentIndex?: number;
+  onMove: (index: number) => void;
 }
 
 export interface CarouselButtonProps {

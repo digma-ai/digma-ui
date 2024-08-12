@@ -7,6 +7,7 @@ export interface SelectorEnvironment {
 
 export interface EnvironmentSelectorProps {
   environments: SelectorEnvironment[];
+  className?: string;
 }
 
 export type ScrollDirection = "left" | "right";

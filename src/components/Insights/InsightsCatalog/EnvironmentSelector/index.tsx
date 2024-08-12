@@ -1,5 +1,7 @@
-import useDimensions from "react-cool-dimensions";
+import { useEffect, useMemo, useState } from "react";
 import { useGlobalStore } from "../../../../containers/Main/stores/useGlobalStore";
+import { usePrevious } from "../../../../hooks/usePrevious";
+import { isNumber } from "../../../../typeGuards/isNumber";
 import { changeScope } from "../../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { Carousel } from "../../../common/Carousel";
@@ -41,18 +43,43 @@ const sortEnvironmentsByCriticalIssues = (
 };
 
 export const EnvironmentSelector = ({
-  environments
+  environments,
+  className
 }: EnvironmentSelectorProps) => {
   const scope = useGlobalStore.use.scope();
   const environment = useGlobalStore.use.environment();
-  const { observe } = useDimensions();
   const sortedEnvironments = environments.sort(
     sortEnvironmentsByCriticalIssues
   );
+  const environmentIndex = useMemo(
+    () =>
+      Math.max(
+        sortedEnvironments.findIndex(
+          (x) => x.environment.id === environment?.id
+        ),
+        0
+      ),
+    [sortedEnvironments, environment]
+  );
+  const previousEnvironmentIndex = usePrevious(environmentIndex);
+  const [carouselIndex, setCarouselIndex] = useState(environmentIndex);
+
+  useEffect(() => {
+    if (
+      isNumber(previousEnvironmentIndex) &&
+      environmentIndex !== previousEnvironmentIndex
+    ) {
+      setCarouselIndex(environmentIndex);
+    }
+  }, [environmentIndex, previousEnvironmentIndex]);
 
   if (sortedEnvironments.length < 2) {
     return null;
   }
+
+  const handleCarouselMove = (index: number) => {
+    setCarouselIndex(index);
+  };
 
   const changeEnvironment = (environmentId: string) => {
     sendUserActionTrackingEvent(trackingEvents.ENVIRONMENT_SELECTED);
@@ -74,10 +101,11 @@ export const EnvironmentSelector = ({
   const isCarouselVisible = sortedEnvironments.length > ENVIRONMENT_CHIP_COUNT;
 
   return (
-    <s.Container ref={observe}>
+    <div className={className}>
       {isCarouselVisible ? (
         <Carousel
           itemsPerSlide={ENVIRONMENT_CHIP_COUNT}
+          gap={4}
           breakpoints={{
             461: {
               perPage: ENVIRONMENT_CHIP_COUNT + 1
@@ -87,7 +115,7 @@ export const EnvironmentSelector = ({
             }
           }}
           items={sortedEnvironments.map((x) => (
-            <EnvironmentChip
+            <s.CarouselEnvironmentChip
               key={x.environment.id}
               environment={x.environment}
               isActive={x.environment.id === environment?.id}
@@ -95,6 +123,8 @@ export const EnvironmentSelector = ({
               issueCounts={x.issueCounts}
             />
           ))}
+          currentIndex={carouselIndex}
+          onMove={handleCarouselMove}
         />
       ) : (
         <s.EnvironmentsContainer>
@@ -109,6 +139,6 @@ export const EnvironmentSelector = ({
           ))}
         </s.EnvironmentsContainer>
       )}
-    </s.Container>
+    </div>
   );
 };
