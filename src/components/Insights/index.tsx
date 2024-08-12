@@ -221,7 +221,7 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
       "project"
     );
   const previousPersistedFilters = usePrevious(persistedFilters);
-  const { data, isLoading, refresh } = useInsightsData({
+  const { data, refresh } = useInsightsData({
     areFiltersRehydrated
   });
   const reset = useInsightsStore.use.reset();
@@ -374,16 +374,10 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
     }
   };
 
-  const renderContent = (
-    data: InsightsData | null,
-    isLoading: boolean
-  ): JSX.Element => {
-    const isInitialLoading =
-      (!data && isLoading) ||
-      !backendInfo ||
-      !storedInsightViewType ||
-      !areFiltersRehydrated;
-    if (isInitialLoading) {
+  const renderContent = (data: InsightsData | null): JSX.Element => {
+    const isInitializationInProgress =
+      !backendInfo || !storedInsightViewType || !areFiltersRehydrated;
+    if (isInitializationInProgress) {
       return <EmptyState content={<CircleLoader size={32} />} />;
     }
 
@@ -459,7 +453,7 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
 
   return (
     <s.Container>
-      {renderContent(data, isLoading)}
+      {renderContent(data)}
       {infoToOpenJiraTicket && (
         <s.Overlay onKeyDown={handleOverlayKeyDown} tabIndex={-1}>
           <s.PopupContainer>

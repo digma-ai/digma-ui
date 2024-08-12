@@ -2,7 +2,7 @@ import styled from "styled-components";
 import {
   bodySemiboldTypography,
   footnoteRegularTypography
-} from "../../../common/App/typographies";
+} from "../../common/App/typographies";
 
 export const Container = styled.div`
   display: flex;

@@ -1,4 +1,4 @@
-import { PetalsIcon } from "../../../common/icons/16px/PetalsIcon";
+import { PetalsIcon } from "../../common/icons/16px/PetalsIcon";
 import * as s from "./styles";
 
 export const LoadingMessage = () => (

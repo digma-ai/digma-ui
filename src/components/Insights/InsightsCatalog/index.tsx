@@ -29,12 +29,12 @@ import { Button } from "../../common/v3/Button";
 import { NewIconButton } from "../../common/v3/NewIconButton";
 import { Tooltip } from "../../common/v3/Tooltip";
 import { IssuesFilter } from "../Issues/IssuesFilter";
+import { LoadingMessage } from "../LoadingMessage";
 import { trackingEvents } from "../tracking";
 import { SelectorEnvironment } from "./EnvironmentSelector/types";
 import { FilterButton } from "./FilterButton";
 import { FilterPanel } from "./FilterPanel";
 import { InsightsPage } from "./InsightsPage";
-import { LoadingMessage } from "./LoadingMessage";
 import { PromotionCard } from "./PromotionCard";
 import * as s from "./styles";
 import {
