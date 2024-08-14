@@ -1,6 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
+import { useGlobalStore } from "../../../../containers/Main/stores/useGlobalStore";
 import { useInsightsStore } from "../../../../containers/Main/stores/useInsightsStore";
+import { getFeatureFlagValue } from "../../../../featureFlags";
 import { usePrevious } from "../../../../hooks/usePrevious";
+import { FeatureFlag } from "../../../../types";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { getInsightTypeInfo } from "../../../../utils/getInsightTypeInfo";
 import { FilterButton } from "../../../common/FilterButton";
@@ -25,6 +28,7 @@ export const IssuesFilter = () => {
     useInsightsStore.use.setFilteredInsightTypes();
   const setFilteredServices = useInsightsStore.use.setFilteredServices();
   const filters = useInsightsStore.use.filters();
+  const backendInfo = useGlobalStore.use.backendInfo();
   const setFilters = useInsightsStore.use.setFilters();
   const isCriticalOnly = useMemo(
     () => filters.includes("criticality"),
@@ -210,20 +214,29 @@ export const IssuesFilter = () => {
             )}
             showSelectedState={isUnreadOnly}
           />
-          <s.FilterCategoryName>Services</s.FilterCategoryName>
-          <Select
-            key={"services"}
-            items={servicesFilterOptions}
-            onChange={handleServiceChange}
-            placeholder={filteredServices.length > 0 ? "Services" : "All"}
-            multiselect={true}
-            icon={(props: IconProps) => (
-              <s.InsightIconContainer>
-                <WrenchIcon {...props} />
-              </s.InsightIconContainer>
-            )}
-            disabled={issueTypesFilterOptions?.length === 0}
-          />
+          {Boolean(
+            getFeatureFlagValue(
+              backendInfo,
+              FeatureFlag.ARE_ISSUES_FILTERS_ENABLED
+            )
+          ) && (
+            <>
+              <s.FilterCategoryName>Services</s.FilterCategoryName>
+              <Select
+                key={"services"}
+                items={servicesFilterOptions}
+                onChange={handleServiceChange}
+                placeholder={filteredServices.length > 0 ? "Services" : "All"}
+                multiselect={true}
+                icon={(props: IconProps) => (
+                  <s.InsightIconContainer>
+                    <WrenchIcon {...props} />
+                  </s.InsightIconContainer>
+                )}
+                disabled={issueTypesFilterOptions?.length === 0}
+              />
+            </>
+          )}
           <s.Footer>
             <s.ClearAllButton
               buttonType={"tertiary"}
