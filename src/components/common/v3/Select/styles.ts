@@ -104,7 +104,7 @@ export const OptionList = styled.ul`
 export const OptionListItem = styled.li<OptionListItemProps>`
   display: flex;
   gap: 8px;
-  height: 28px;
+  max-height: 28px;
   align-self: stretch;
   align-items: center;
   padding: 5px 8px;

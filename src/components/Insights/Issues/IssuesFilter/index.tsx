@@ -11,6 +11,7 @@ import { NewPopover } from "../../../common/NewPopover";
 import { EyeIcon } from "../../../common/icons/12px/EyeIcon";
 import { FourPointedStarIcon } from "../../../common/icons/12px/FourPointedStarIcon";
 import { WrenchIcon } from "../../../common/icons/12px/WrenchIcon";
+import { CrossIcon } from "../../../common/icons/16px/CrossIcon";
 import { WarningTriangleIcon } from "../../../common/icons/WarningTriangleIcon";
 import { IconProps } from "../../../common/icons/types";
 import { Select } from "../../../common/v3/Select";
@@ -95,6 +96,11 @@ export const IssuesFilter = () => {
     setFilteredServices(newFilteredServices);
   };
 
+  const handleCloseButtonClick = () => {
+    sendUserActionTrackingEvent(trackingEvents.CLOSE_FILTER_DIALOG_CLICKED);
+    setIsOpen(false);
+  };
+
   const handleToggleFilterChange = (
     value: string | string[],
     filterType: InsightFilterType
@@ -173,7 +179,12 @@ export const IssuesFilter = () => {
       width={"100%"}
       content={
         <s.Container>
-          <s.Header>Filters</s.Header>
+          <s.Header>
+            Filters
+            <s.CloseButton onClick={handleCloseButtonClick}>
+              <CrossIcon color={"currentColor"} size={16} />
+            </s.CloseButton>
+          </s.Header>
           <s.FilterCategoryName>Issues</s.FilterCategoryName>
           <Select
             key={"issues"}

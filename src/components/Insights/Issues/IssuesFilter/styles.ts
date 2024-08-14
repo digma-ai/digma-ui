@@ -23,6 +23,7 @@ export const Header = styled.div`
   padding: 0 4px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   ${bodyBoldTypography}
 `;
 
@@ -74,4 +75,13 @@ export const ClearAllButton = styled(NewButton)`
 export const InsightIconContainer = styled.div`
   display: flex;
   color: ${({ theme }) => theme.colors.v3.icon.tertiary};
+`;
+
+export const CloseButton = styled.button`
+  padding: 0;
+  cursor: pointer;
+  background: none;
+  border: none;
+  height: 14px;
+  color: inherit;
 `;
