@@ -38,7 +38,8 @@ export const Default: Story = {
               enabled: false,
               name: "ChattyApi"
             }
-          ]
+          ],
+          services: ["service-one", "service-two"]
         }
       });
     }, 0);

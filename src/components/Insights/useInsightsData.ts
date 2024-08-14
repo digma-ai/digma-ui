@@ -30,6 +30,7 @@ interface GetDataListParams {
   showDismissed: boolean;
   filters: InsightFilterType[];
   filteredInsightTypes: string[];
+  filteredServices: string[];
   insightViewType: InsightViewType | null;
   spanCodeObjectId: string | null;
   areIssuesFiltersEnabled: boolean;
@@ -38,6 +39,7 @@ interface GetDataListParams {
 interface GetStatsParams {
   spanCodeObjectId: string | null;
   filteredInsightTypes: string[];
+  filteredServices: string[];
 }
 
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
@@ -67,6 +69,7 @@ const getDataList = ({
   showDismissed,
   filters,
   filteredInsightTypes,
+  filteredServices,
   insightViewType,
   spanCodeObjectId,
   areIssuesFiltersEnabled
@@ -83,7 +86,8 @@ const getDataList = ({
       filters,
       showDismissed,
       scopedSpanCodeObjectId: spanCodeObjectId,
-      insightTypes: filteredInsightTypes
+      insightTypes: filteredInsightTypes,
+      services: filteredServices
     });
   } else {
     const showUnreadOnly = filters.length === 1 && filters[0] === "unread";
@@ -103,7 +107,8 @@ const getDataList = ({
 
 const getStats = ({
   spanCodeObjectId,
-  filteredInsightTypes
+  filteredInsightTypes,
+  filteredServices
 }: GetStatsParams) => {
   window.sendMessageToDigma<GetInsightStatsPayload>({
     action: globalActions.GET_INSIGHT_STATS,
@@ -116,7 +121,8 @@ const getStats = ({
           }
         : null,
       filters: {
-        insights: filteredInsightTypes
+        insights: filteredInsightTypes,
+        services: filteredServices
       }
     }
   });
@@ -143,6 +149,7 @@ export const useInsightsData = ({
   const viewMode = useInsightsStore.use.viewMode();
   const filters = useInsightsStore.use.filters();
   const filteredInsightTypes = useInsightsStore.use.filteredInsightTypes();
+  const filteredServices = useInsightsStore.use.filteredServices();
   const insightViewType = useInsightsStore.use.insightViewType();
   const spanCodeObjectId = scope?.span?.spanCodeObjectId ?? null;
   const showDismissed = viewMode === ViewMode.OnlyDismissed;
@@ -170,6 +177,7 @@ export const useInsightsData = ({
       showDismissed,
       filters,
       filteredInsightTypes,
+      filteredServices,
       insightViewType,
       spanCodeObjectId,
       areIssuesFiltersEnabled
@@ -181,6 +189,7 @@ export const useInsightsData = ({
       showDismissed,
       filters,
       filteredInsightTypes,
+      filteredServices,
       insightViewType,
       spanCodeObjectId,
       areIssuesFiltersEnabled
@@ -190,9 +199,10 @@ export const useInsightsData = ({
   const getStatsParams = useMemo(
     () => ({
       spanCodeObjectId,
-      filteredInsightTypes
+      filteredInsightTypes,
+      filteredServices
     }),
-    [spanCodeObjectId, filteredInsightTypes]
+    [spanCodeObjectId, filteredInsightTypes, filteredServices]
   );
 
   const refresh = useCallback(() => {

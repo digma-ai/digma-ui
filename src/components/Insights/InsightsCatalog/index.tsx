@@ -77,6 +77,7 @@ export const InsightsCatalog = ({
   const setSorting = useInsightsStore.use.setSorting();
   const filters = useInsightsStore.use.filters();
   const filteredInsightTypes = useInsightsStore.use.filteredInsightTypes();
+  const filteredServices = useInsightsStore.use.filteredServices();
   const data = useInsightsStore.use.data();
   const insights = data?.insights ?? [];
   const totalCount = data?.totalCount ?? 0;
@@ -114,7 +115,9 @@ export const InsightsCatalog = ({
   );
 
   const appliedFilterCount =
-    filters.length + (filteredInsightTypes.length > 0 ? 1 : 0);
+    filters.length +
+    (filteredInsightTypes.length > 0 ? 1 : 0) +
+    (filteredServices.length > 0 ? 1 : 0);
 
   const areSpanEnvironmentsEnabled = getFeatureFlagValue(
     backendInfo,

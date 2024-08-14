@@ -1,12 +1,16 @@
 import { useEffect, useMemo, useState } from "react";
+import { useGlobalStore } from "../../../../containers/Main/stores/useGlobalStore";
 import { useInsightsStore } from "../../../../containers/Main/stores/useInsightsStore";
+import { getFeatureFlagValue } from "../../../../featureFlags";
 import { usePrevious } from "../../../../hooks/usePrevious";
+import { FeatureFlag } from "../../../../types";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { getInsightTypeInfo } from "../../../../utils/getInsightTypeInfo";
 import { FilterButton } from "../../../common/FilterButton";
 import { NewPopover } from "../../../common/NewPopover";
 import { EyeIcon } from "../../../common/icons/12px/EyeIcon";
 import { FourPointedStarIcon } from "../../../common/icons/12px/FourPointedStarIcon";
+import { WrenchIcon } from "../../../common/icons/12px/WrenchIcon";
 import { WarningTriangleIcon } from "../../../common/icons/WarningTriangleIcon";
 import { IconProps } from "../../../common/icons/types";
 import { Select } from "../../../common/v3/Select";
@@ -19,9 +23,12 @@ import { trackingEvents } from "./tracking";
 export const IssuesFilter = () => {
   const [isOpen, setIsOpen] = useState(false);
   const filteredInsightTypes = useInsightsStore.use.filteredInsightTypes();
+  const filteredServices = useInsightsStore.use.filteredServices();
   const setFilteredInsightTypes =
     useInsightsStore.use.setFilteredInsightTypes();
+  const setFilteredServices = useInsightsStore.use.setFilteredServices();
   const filters = useInsightsStore.use.filters();
+  const backendInfo = useGlobalStore.use.backendInfo();
   const setFilters = useInsightsStore.use.setFilters();
   const isCriticalOnly = useMemo(
     () => filters.includes("criticality"),
@@ -32,17 +39,25 @@ export const IssuesFilter = () => {
   const previousData = usePrevious(data);
 
   useEffect(() => {
-    if (
-      previousData &&
-      previousData !== data &&
-      filteredInsightTypes.length > 0
-    ) {
-      const newSelection = filteredInsightTypes.filter((e) =>
-        Boolean(data?.issueTypeFilters.find((x) => x.name === e && x.enabled))
-      );
+    if (previousData && previousData !== data) {
+      if (filteredInsightTypes.length > 0) {
+        const newSelection = filteredInsightTypes.filter((e) =>
+          Boolean(data?.issueTypeFilters.find((x) => x.name === e && x.enabled))
+        );
 
-      if (newSelection.length !== filteredInsightTypes.length) {
-        setFilteredInsightTypes(newSelection);
+        if (newSelection.length !== filteredInsightTypes.length) {
+          setFilteredInsightTypes(newSelection);
+        }
+      }
+
+      if (filteredServices.length > 0) {
+        const newSelection = filteredServices.filter((e) =>
+          Boolean(data?.services?.find((x) => x === e))
+        );
+
+        if (newSelection.length !== filteredServices.length) {
+          setFilteredServices(newSelection);
+        }
       }
     }
   }, [
@@ -50,7 +65,9 @@ export const IssuesFilter = () => {
     data,
     filteredInsightTypes,
     setFilteredInsightTypes,
-    filters
+    filters,
+    setFilteredServices,
+    filteredServices
   ]);
 
   const handleClearFiltersButtonClick = () => {
@@ -59,6 +76,7 @@ export const IssuesFilter = () => {
     );
     setFilteredInsightTypes([]);
     setFilters([]);
+    setFilteredServices([]);
   };
 
   const handleIssueTypesChange = (value: string | string[]) => {
@@ -67,6 +85,14 @@ export const IssuesFilter = () => {
     });
     const newInsightTypes = Array.isArray(value) ? value : [value];
     setFilteredInsightTypes(newInsightTypes);
+  };
+
+  const handleServiceChange = (value: string | string[]) => {
+    sendUserActionTrackingEvent(trackingEvents.FILTER_OPTION_SELECTED, {
+      filterType: "service"
+    });
+    const newFilteredServices = Array.isArray(value) ? value : [value];
+    setFilteredServices(newFilteredServices);
   };
 
   const handleToggleFilterChange = (
@@ -85,6 +111,14 @@ export const IssuesFilter = () => {
 
     setFilters(Array.from(selectedFilters));
   };
+
+  const servicesFilterOptions: SelectItem[] =
+    data?.services?.map((entry) => ({
+      value: entry,
+      label: entry,
+      enabled: true,
+      selected: filteredServices.includes(entry)
+    })) ?? [];
 
   const issueTypesFilterOptions: SelectItem[] =
     data?.issueTypeFilters?.map((entry) => ({
@@ -130,6 +164,7 @@ export const IssuesFilter = () => {
     readStatusFilterOptions.find((x) => x.selected)?.label ?? "All";
   const selectedFiltersCount =
     (filteredInsightTypes.length > 0 ? 1 : 0) +
+    (filteredServices.length > 0 ? 1 : 0) +
     (isCriticalOnly ? 1 : 0) +
     (isUnreadOnly ? 1 : 0);
 
@@ -179,6 +214,29 @@ export const IssuesFilter = () => {
             )}
             showSelectedState={isUnreadOnly}
           />
+          {Boolean(
+            getFeatureFlagValue(
+              backendInfo,
+              FeatureFlag.ARE_ISSUES_FILTERS_ENABLED
+            )
+          ) && (
+            <>
+              <s.FilterCategoryName>Services</s.FilterCategoryName>
+              <Select
+                key={"services"}
+                items={servicesFilterOptions}
+                onChange={handleServiceChange}
+                placeholder={filteredServices.length > 0 ? "Services" : "All"}
+                multiselect={true}
+                icon={(props: IconProps) => (
+                  <s.InsightIconContainer>
+                    <WrenchIcon {...props} />
+                  </s.InsightIconContainer>
+                )}
+                disabled={issueTypesFilterOptions?.length === 0}
+              />
+            </>
+          )}
           <s.Footer>
             <s.ClearAllButton
               buttonType={"tertiary"}

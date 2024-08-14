@@ -13,7 +13,8 @@ export enum FeatureFlag {
   IS_DURATION_BREAKDOWN_QUANTITY_ENABLED,
   ARE_ISSUES_FILTERS_ENABLED,
   ARE_SPAN_ENVIRONMENTS_ENABLED,
-  IS_REPORT_ENABLED
+  IS_REPORT_ENABLED,
+  IS_ISSUES_SERVICES_FILTERS_ENABLED
 }
 
 export enum InsightType {
@@ -78,6 +79,7 @@ export interface GetInsightStatsPayload {
   } | null;
   filters?: {
     insights?: string[];
+    services?: string[];
   };
 }
 
