@@ -239,8 +239,11 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
   const storedInsightViewType = useInsightsStore.use.insightViewType();
   const filteredInsightTypes = useInsightsStore.use.filteredInsightTypes();
   const previousFilteredInsightTypes = usePrevious(filteredInsightTypes);
+  const filteredServices = useInsightsStore.use.filteredServices();
+  const previousFilteredServices = usePrevious(filteredServices);
   const setFilteredInsightTypes =
     useInsightsStore.use.setFilteredInsightTypes();
+  const setFilteredServices = useInsightsStore.use.setFilteredServices();
   const filters = useInsightsStore.use.filters();
   const previousFilters = usePrevious(filters);
   const setFilters = useInsightsStore.use.setFilters();
@@ -281,6 +284,7 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
       !isUndefined(persistedFilters)
     ) {
       setFilteredInsightTypes(persistedFilters?.issueTypes ?? []);
+      setFilteredServices(persistedFilters?.services ?? []);
       setFilters(persistedFilters?.filters ?? []);
       setAreFiltersRehydrated(true);
     }
@@ -288,18 +292,21 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
     previousPersistedFilters,
     persistedFilters,
     setFilters,
-    setFilteredInsightTypes
+    setFilteredInsightTypes,
+    setFilteredServices
   ]);
 
   // Persist filters on its change
   useEffect(() => {
     if (
       (previousFilteredInsightTypes !== filteredInsightTypes ||
+        previousFilteredServices !== filteredServices ||
         previousFilters !== filters) &&
       areFiltersRehydrated
     ) {
       setPersistedFilters({
         issueTypes: filteredInsightTypes,
+        services: filteredServices,
         filters
       });
     }
@@ -310,7 +317,9 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
     filters,
     setPersistedFilters,
     areFiltersRehydrated,
-    persistedFilters
+    persistedFilters,
+    filteredServices,
+    previousFilteredServices
   ]);
 
   // Reset filters on backend instance or scope change
@@ -327,6 +336,7 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
     ) {
       setFilteredInsightTypes([]);
       setFilters([]);
+      setFilteredServices([]);
     }
   }, [
     previousBackendInfo,
@@ -337,7 +347,8 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
     areFiltersRehydrated,
     persistedFilters,
     setFilteredInsightTypes,
-    setFilters
+    setFilters,
+    setFilteredServices
   ]);
 
   const handleSlackLinkClick = () => {

@@ -116,7 +116,8 @@ export const Issues: Story = {
               enabled: false,
               name: "ChattyApi"
             }
-          ]
+          ],
+          services: ["service-one", "service-two"]
         }
       });
     });

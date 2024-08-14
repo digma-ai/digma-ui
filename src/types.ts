@@ -78,6 +78,7 @@ export interface GetInsightStatsPayload {
   } | null;
   filters?: {
     insights?: string[];
+    services?: string[];
   };
 }
 

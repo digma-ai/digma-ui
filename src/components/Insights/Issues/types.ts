@@ -6,6 +6,7 @@ export interface GetIssuesFiltersQuery {
   showDismissed: boolean;
   filters: InsightFilterType[];
   insightTypes?: string[];
+  services?: string[];
   scopedSpanCodeObjectId?: string | null;
 }
 
