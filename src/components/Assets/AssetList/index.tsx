@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
 import { DigmaMessageError } from "../../../api/types";
+import { useAssetsStore } from "../../../containers/Main/stores/useAssetsStore";
 import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
 import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
@@ -19,6 +20,7 @@ import { SortIcon } from "../../common/icons/SortIcon";
 import { Direction } from "../../common/icons/types";
 import { Link } from "../../common/v3/Link";
 import { AssetFilterQuery } from "../AssetsFilter/types";
+import { ViewMode } from "../AssetsViewScopeConfiguration/types";
 import { actions } from "../actions";
 import { checkIfAnyFiltersApplied, getAssetTypeInfo } from "../utils";
 import { AssetEntry as AssetEntryComponent } from "./AssetEntry";
@@ -101,8 +103,8 @@ const getData = (
   page: number,
   sorting: Sorting,
   searchQuery: string,
-  filters: AssetFilterQuery | undefined,
-  isDirect?: boolean,
+  filters: AssetFilterQuery,
+  viewMode: ViewMode,
   scopedSpanCodeObjectId?: string
 ) => {
   window.sendMessageToDigma({
@@ -114,44 +116,36 @@ const getData = (
         pageSize: PAGE_SIZE,
         sortBy: sorting.criterion,
         sortOrder: sorting.order,
-        directOnly: isDirect,
+        directOnly: viewMode === "children",
         scopedSpanCodeObjectId,
         ...(searchQuery && searchQuery.length > 0
           ? { displayName: searchQuery }
           : {}),
-        ...(filters ?? {
-          services: [],
-          operations: [],
-          insights: []
-        })
+        filters
       }
     }
   });
 };
 
 export const AssetList = ({
-  searchQuery,
   assetTypeId,
-  filters,
-  scopeViewOptions,
   onAssetCountChange,
   setRefresher,
   onGoToAllAssets
 }: AssetListProps) => {
-  const [data, setData] = useState<AssetsData>();
+  const data = useAssetsStore.use.assets();
+  const setData = useAssetsStore.use.setAssets();
   const previousData = usePrevious(data);
-  const [isInitialLoading, setIsInitialLoading] = useState(false);
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
-  const [sorting, setSorting] = useState<Sorting>({
-    criterion: SORTING_CRITERION.CRITICAL_INSIGHTS,
-    order: SORTING_ORDER.DESC
-  });
+  const sorting = useAssetsStore.use.sorting();
+  const setSorting = useAssetsStore.use.setSorting();
   const [isSortingMenuOpen, setIsSortingMenuOpen] = useState(false);
   const theme = useTheme();
   const assetTypeIconColor = getAssetTypeIconColor(theme);
   const sortingMenuChevronColor = getSortingMenuChevronColor(theme);
-  const [page, setPage] = useState(0);
+  const page = useAssetsStore.use.page();
+  const setPage = useAssetsStore.use.setPage();
   const filteredCount = data?.filteredCount ?? 0;
   const pageStartItemNumber = page * PAGE_SIZE + 1;
   const pageEndItemNumber = Math.min(
@@ -163,25 +157,32 @@ export const AssetList = ({
   const backendInfo = useGlobalStore.use.backendInfo();
   const refreshTimerId = useRef<number>();
   const previousEnvironment = usePrevious(environment);
-  const previousViewScope = usePrevious(scopeViewOptions);
+  const viewMode = useAssetsStore.use.viewMode();
+  const search = useAssetsStore.use.search();
+  const filters = useAssetsStore.use.filters();
+  const previousViewMode = usePrevious(viewMode);
+  const scope = useGlobalStore.use.scope();
+  const scopeSpanCodeObjectId = scope?.span?.spanCodeObjectId;
+  const previousScopeSpanCodeObjectId = usePrevious(scopeSpanCodeObjectId);
+  const isInitialLoading = !data;
 
   const refreshData = useCallback(() => {
     getData(
       assetTypeId,
       page,
       sorting,
-      searchQuery,
+      search,
       filters,
-      scopeViewOptions?.isDirect,
-      scopeViewOptions?.scopedSpanCodeObjectId
+      viewMode,
+      scopeSpanCodeObjectId
     );
   }, [
     page,
     assetTypeId,
     filters,
-    scopeViewOptions?.isDirect,
-    scopeViewOptions?.scopedSpanCodeObjectId,
-    searchQuery,
+    viewMode,
+    scopeSpanCodeObjectId,
+    search,
     sorting
   ]);
 
@@ -196,13 +197,10 @@ export const AssetList = ({
 
   const sortingCriteria = getSortingCriteria(isImpactHidden);
 
-  const areAnyFiltersApplied = checkIfAnyFiltersApplied(filters, searchQuery);
+  const areAnyFiltersApplied = checkIfAnyFiltersApplied(filters, search);
 
   useEffect(() => {
     refreshData();
-    if (!data) {
-      setIsInitialLoading(true);
-    }
   }, [refreshData]);
 
   useEffect(() => {
@@ -223,7 +221,7 @@ export const AssetList = ({
       dispatcher.removeActionListener(actions.SET_DATA, handleAssetsData);
       window.clearTimeout(refreshTimerId.current);
     };
-  }, []);
+  }, [setData]);
 
   useEffect(() => {
     if (data && previousData?.filteredCount !== data?.filteredCount) {
@@ -239,15 +237,18 @@ export const AssetList = ({
     if (
       (isEnvironment(previousEnvironment) &&
         previousEnvironment.id !== environment?.id) ||
-      previousViewScope !== scopeViewOptions
+      viewMode !== previousViewMode ||
+      previousScopeSpanCodeObjectId !== scopeSpanCodeObjectId
     ) {
       refreshData();
     }
   }, [
     environment?.id,
     previousEnvironment,
-    previousViewScope,
-    scopeViewOptions,
+    previousViewMode,
+    viewMode,
+    scopeSpanCodeObjectId,
+    previousScopeSpanCodeObjectId,
     refreshData
   ]);
 
@@ -261,12 +262,6 @@ export const AssetList = ({
   }, [lastSetDataTimeStamp, previousLastSetDataTimeStamp, refreshData]);
 
   useEffect(() => {
-    if (!previousData && data) {
-      setIsInitialLoading(false);
-    }
-  }, [previousData, data]);
-
-  useEffect(() => {
     if (
       isImpactHidden &&
       sorting.criterion === SORTING_CRITERION.PERFORMANCE_IMPACT
@@ -276,21 +271,30 @@ export const AssetList = ({
         order: SORTING_ORDER.DESC
       });
     }
-  }, [isImpactHidden, sorting]);
+  }, [isImpactHidden, setSorting, sorting]);
 
   useEffect(() => {
     setPage(0);
-  }, [environment?.id, searchQuery, sorting, assetTypeId, scopeViewOptions]);
+  }, [
+    search,
+    sorting,
+    assetTypeId,
+    viewMode,
+    setPage,
+    scopeSpanCodeObjectId,
+    environment?.id
+  ]);
 
   useEffect(() => {
     listRef.current?.scrollTo(0, 0);
   }, [
     environment?.id,
-    searchQuery,
+    search,
     sorting,
     page,
     assetTypeId,
-    scopeViewOptions
+    viewMode,
+    scopeSpanCodeObjectId
   ]);
 
   const handleAllAssetsLinkClick = () => {

@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Location, useLocation, useNavigate } from "react-router-dom";
 import { useTheme } from "styled-components";
 import { history } from "../../../containers/Main/history";
+import { useAssetsStore } from "../../../containers/Main/stores/useAssetsStore";
 import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
 import { HistoryEntry } from "../../../history/History";
 import { changeScope } from "../../../utils/actions/changeScope";
@@ -28,6 +29,11 @@ export const HistoryNavigationPanel = () => {
   const location = useLocation() as Location<ReactRouterLocationState | null>;
   const theme = useTheme();
   const updateBrowserLocation = useBrowserLocationUpdater();
+  const setAssetsFilters = useAssetsStore.use.setFilters();
+  const setAssetsPage = useAssetsStore.use.setPage();
+  const setAssetsSorting = useAssetsStore.use.setSorting();
+  const setAssetsSearch = useAssetsStore.use.setSearch();
+  const setAssetsViewMode = useAssetsStore.use.setViewMode();
 
   useEffect(() => {
     // Initialize history with the current state
@@ -96,20 +102,21 @@ export const HistoryNavigationPanel = () => {
         handleHistoryClear as EventListener
       );
     };
-  }, []);
+  }, [environments, environment]);
 
   useEffect(() => {
     const handleHistoryNavigate = (
       e: CustomEvent<HistoryEntry<HistoryState>>
     ) => {
-      const spanCodeObjectId = e.detail.state?.spanCodeObjectId;
+      const state = e.detail.state;
+      const spanCodeObjectId = state?.spanCodeObjectId;
       changeScope({
         span: spanCodeObjectId
           ? {
               spanCodeObjectId
             }
           : null,
-        environmentId: e.detail.state?.environmentId,
+        environmentId: state?.environmentId,
         context: {
           event: SCOPE_CHANGE_EVENTS.HISTORY_NAVIGATED,
           payload: {
@@ -117,6 +124,14 @@ export const HistoryNavigationPanel = () => {
           }
         }
       });
+
+      if (state?.assets) {
+        setAssetsFilters(state.assets.filters);
+        setAssetsPage(state.assets.page);
+        setAssetsSorting(state.assets.sorting);
+        setAssetsSearch(state.assets.search);
+        setAssetsViewMode(state.assets.viewMode);
+      }
     };
 
     window.addEventListener(
@@ -130,7 +145,14 @@ export const HistoryNavigationPanel = () => {
         handleHistoryNavigate as EventListener
       );
     };
-  }, [navigate]);
+  }, [
+    navigate,
+    setAssetsFilters,
+    setAssetsPage,
+    setAssetsSorting,
+    setAssetsSearch,
+    setAssetsViewMode
+  ]);
 
   const handleBackButtonClick = () => {
     sendUserActionTrackingEvent(trackingEvents.BACK_BUTTON_CLICKED);

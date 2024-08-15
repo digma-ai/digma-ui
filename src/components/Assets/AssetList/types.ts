@@ -1,13 +1,8 @@
 import { Duration } from "../../../globals";
-import { AssetFilterQuery } from "../AssetsFilter/types";
-import { AssetScopeOption } from "../AssetsViewScopeConfiguration/types";
 
 export interface AssetListProps {
   onGoToAllAssets: () => void;
   assetTypeId: string;
-  filters?: AssetFilterQuery;
-  searchQuery: string;
-  scopeViewOptions: AssetScopeOption | null;
   setRefresher: (refresher: () => void) => void;
   onAssetCountChange: (count: number) => void;
 }

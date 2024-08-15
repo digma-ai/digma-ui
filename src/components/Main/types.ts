@@ -1,3 +1,7 @@
+import { Sorting } from "../Assets/AssetList/types";
+import { AssetFilterQuery } from "../Assets/AssetsFilter/types";
+import { ViewMode } from "../Assets/AssetsViewScopeConfiguration/types";
+
 export interface GetHighlightsTopIssuesDataPayload {
   query: {
     scopedCodeObjectId: string | null;
@@ -66,4 +70,11 @@ export interface HistoryState extends ReactRouterLocationState {
   environmentId?: string;
   spanCodeObjectId?: string;
   spanDisplayName?: string;
+  assets?: {
+    page: number;
+    search: string;
+    sorting: Sorting;
+    viewMode: ViewMode;
+    filters: AssetFilterQuery;
+  };
 }

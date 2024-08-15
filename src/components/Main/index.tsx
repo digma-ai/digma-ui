@@ -21,6 +21,7 @@ import { useBrowserLocationUpdater } from "./updateBrowserLocationUpdater";
 import { useHistory } from "./useHistory";
 
 export const MAIN_CONTAINER_ID = "mainContainer";
+// const ASSETS_FILTERS_PERSISTENCE_KEY = "assetsFilters";
 
 const getURLToNavigateOnCodeLensClick = (scope: Scope): string | undefined => {
   if (!isScopeWithCodeLensContext(scope)) {
@@ -46,12 +47,92 @@ export const Main = () => {
   const environments = useGlobalStore.use.environments();
   const environment = useGlobalStore.use.environment();
   const scope = useGlobalStore.use.scope();
+  // const previousEnvironment = usePrevious(environment);
+  // const previousScope = usePrevious(scope);
   const userInfo = useGlobalStore.use.userInfo();
   const userId = userInfo?.id;
   const previousUserId = usePrevious(userId);
   const backendInfo = useGlobalStore.use.backendInfo();
   const { goTo } = useHistory();
   const updateBrowserLocation = useBrowserLocationUpdater();
+  // const assetsStore = useAssetsStore();
+
+  // const assetsFilters = useAssetsStore.use.filters();
+  // const previousAssetsFilters = usePrevious(assetsFilters);
+  // const setAssetsFilters = useAssetsStore.use.setFilters();
+  // const [areAssetsFiltersRehydrated, setAreAssetsFiltersRehydrated] =
+  // useState(true);
+  // const [persistedAssetsFilters, setPersistedAssetsFilters] =
+  // usePersistence<AssetFilterQuery>(ASSETS_FILTERS_PERSISTENCE_KEY, "project");
+  // const previousAssetsPersistedFilters = usePrevious(persistedAssetsFilters);
+  // const isInitialized = areAssetsFiltersRehydrated;
+
+  // Rehydrate assets filters from persistence
+  // useEffect(() => {
+  //   if (
+  //     isUndefined(previousAssetsPersistedFilters) &&
+  //     !isUndefined(persistedAssetsFilters)
+  //   ) {
+  //     // Temporary disabled rehydration of filters
+  //     // const filters = persistedAssetsFilters ?? assetsFilters;
+  //     // setAssetsFilters(filters);
+  //     setAreAssetsFiltersRehydrated(true);
+
+  //     // const currentHistoryEntry = history.getCurrentLocation();
+
+  //     // if (currentHistoryEntry) {
+  //     //   history.replaceEntry(currentHistoryEntry.location, {
+  //     //     ...currentHistoryEntry?.state,
+  //     //     assets: currentHistoryEntry?.state?.assets
+  //     //       ? {
+  //     //           ...currentHistoryEntry?.state?.assets,
+  //     //           filters
+  //     //         }
+  //     //       : {
+  //     //           page: initialState.page,
+  //     //           search: initialState.search,
+  //     //           sorting: initialState.sorting,
+  //     //           viewMode: initialState.viewMode,
+  //     //           filters
+  //     //         }
+  //     //   });
+  //     // }
+  //   }
+  // }, [
+  //   previousAssetsPersistedFilters,
+  //   persistedAssetsFilters,
+  //   setAssetsFilters,
+  //   assetsFilters
+  // ]);
+
+  // Persist assets filters on its change
+  // useEffect(() => {
+  //   if (previousAssetsFilters !== assetsFilters && areAssetsFiltersRehydrated) {
+  //     setPersistedAssetsFilters(assetsFilters);
+  //   }
+  // }, [
+  //   previousAssetsFilters,
+  //   assetsFilters,
+  //   setPersistedAssetsFilters,
+  //   areAssetsFiltersRehydrated,
+  //   persistedAssetsFilters
+  // ]);
+
+  // Clear filters when the environment or scope changes
+  // useEffect(() => {
+  //   if (
+  //     Boolean(
+  //       previousEnvironment?.id && previousEnvironment?.id !== environment?.id
+  //     ) ||
+  //     (previousScope && previousScope !== scope)
+  //   ) {
+  //     assetsStore.setFilters(initialState.filters);
+  //     assetsStore.setPage(initialState.page);
+  //     assetsStore.setSorting(initialState.sorting);
+  //     assetsStore.setViewMode(initialState.viewMode);
+  //     assetsStore.setSearch(initialState.search);
+  //   }
+  // }, [previousEnvironment, environment, previousScope, scope, assetsStore]);
 
   useEffect(() => {
     // clear the history in following cases:
@@ -173,6 +254,10 @@ export const Main = () => {
       });
     }
   }, [previousUserId, userId]);
+
+  // if (!isInitialized) {
+  //   return null;
+  // }
 
   if (!userId && backendInfo?.centralize) {
     return <Authentication />;

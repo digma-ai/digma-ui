@@ -47,9 +47,9 @@ const isScopeChanged = (
 const isNavigationNeeded = (
   to: To,
   options: NavigateOptions | undefined,
-  location: HistoryEntry<HistoryState> | null
+  currentHistoryEntry: HistoryEntry<HistoryState> | null
 ) => {
-  if (!location) {
+  if (!currentHistoryEntry) {
     return true;
   }
 
@@ -57,18 +57,18 @@ const isNavigationNeeded = (
 
   // No need to navigate if the location, environment and scope are the same
   return (
-    isLocationChanged(to, location.location) ||
-    isEnvironmentChanged(optionsState, location.state) ||
-    isScopeChanged(optionsState, location.state)
+    isLocationChanged(to, currentHistoryEntry.location) ||
+    isEnvironmentChanged(optionsState, currentHistoryEntry.state) ||
+    isScopeChanged(optionsState, currentHistoryEntry.state)
   );
 };
 
 const isNewHistoryEntryNeeded = (
   to: To,
   options: NavigateOptions | undefined,
-  location: HistoryEntry<HistoryState> | null
+  currentHistoryEntry: HistoryEntry<HistoryState> | null
 ) => {
-  if (!location) {
+  if (!currentHistoryEntry) {
     return true;
   }
 
@@ -79,14 +79,14 @@ const isNewHistoryEntryNeeded = (
   const optionsState = options?.state as HistoryState | undefined;
 
   // No need to create a new history entry if the are no selected environment yet
-  if (!location?.state?.environmentId) {
+  if (!currentHistoryEntry?.state?.environmentId) {
     return false;
   }
 
   // No need to create a new history entry if only environment is changed
   if (
-    !isLocationChanged(to, location?.location) &&
-    !isScopeChanged(optionsState, location?.state)
+    !isLocationChanged(to, currentHistoryEntry?.location) &&
+    !isScopeChanged(optionsState, currentHistoryEntry?.state)
   ) {
     return false;
   }
@@ -95,17 +95,42 @@ const isNewHistoryEntryNeeded = (
 };
 
 export const useHistory = () => {
-  const location = history.getCurrentLocation();
+  const currentHistoryEntry = history.getCurrentLocation();
   const environment = useGlobalStore.use.environment();
   const scope = useGlobalStore.use.scope();
   const scopeSpanCodeObjectId = scope?.span?.spanCodeObjectId;
+  // const assetsStore = useAssetsStore();
 
   const goTo = (to: To, options?: NavigateOptions) => {
-    if (!isNavigationNeeded(to, options, location)) {
+    // // Persist the assets state in the current history entry
+    // if (currentHistoryEntry) {
+    //   history.historyStack[history.currentIndex] = {
+    //     ...currentHistoryEntry,
+    //     state: {
+    //       ...currentHistoryEntry.state,
+    //       assets: {
+    //         filters: assetsStore.filters,
+    //         sorting: assetsStore.sorting,
+    //         search: assetsStore.search,
+    //         page: assetsStore.page,
+    //         viewMode: assetsStore.viewMode
+    //       }
+    //     }
+    //   };
+    // }
+
+    // Reset the assets store
+    // assetsStore.reset();
+
+    if (!isNavigationNeeded(to, options, currentHistoryEntry)) {
       return;
     }
 
-    const isNewHistoryEntry = isNewHistoryEntryNeeded(to, options, location);
+    const isNewHistoryEntry = isNewHistoryEntryNeeded(
+      to,
+      options,
+      currentHistoryEntry
+    );
 
     const optionsState = options?.state as HistoryState | undefined;
     const state: HistoryState = optionsState ?? {
@@ -114,11 +139,14 @@ export const useHistory = () => {
       spanDisplayName: scopeSpanCodeObjectId
         ? scope?.span?.displayName
           ? scope.span.displayName
-          : location?.state?.spanDisplayName
+          : currentHistoryEntry?.state?.spanDisplayName
         : undefined
     };
 
-    const resolvedPath = resolvePath(to, location?.location.pathname ?? "/");
+    const resolvedPath = resolvePath(
+      to,
+      currentHistoryEntry?.location.pathname ?? "/"
+    );
     const historyLocation: HistoryEntryLocation = {
       pathname: resolvedPath.pathname,
       search: resolvedPath.search

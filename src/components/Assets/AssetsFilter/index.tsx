@@ -1,11 +1,8 @@
 import { ComponentType, useEffect, useState } from "react";
-import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
+import { useAssetsStore } from "../../../containers/Main/stores/useAssetsStore";
 import { dispatcher } from "../../../dispatcher";
-import { usePersistence } from "../../../hooks/usePersistence";
 import { usePrevious } from "../../../hooks/usePrevious";
-import { isEnvironment } from "../../../typeGuards/isEnvironment";
 import { isNull } from "../../../typeGuards/isNull";
-import { isUndefined } from "../../../typeGuards/isUndefined";
 import { InsightType } from "../../../types";
 import { sendTrackingEvent } from "../../../utils/actions/sendTrackingEvent";
 import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
@@ -22,12 +19,26 @@ import { trackingEvents } from "../tracking";
 import * as s from "./styles";
 import {
   AssetFilterCategory,
-  AssetFilterQuery,
-  AssetsFilterProps,
-  AssetsFiltersData
+  AssetsFiltersData,
+  GetAssetFiltersDataPayload
 } from "./types";
 
-const PERSISTENCE_KEY = "assetsFilters";
+const getData = (
+  services: string[],
+  operations: string[],
+  insights: InsightType[]
+) => {
+  window.sendMessageToDigma<GetAssetFiltersDataPayload>({
+    action: actions.GET_ASSET_FILTERS_DATA,
+    payload: {
+      query: {
+        services,
+        operations,
+        insights
+      }
+    }
+  });
+};
 
 const renderFilterCategory = (
   category: AssetFilterCategory,
@@ -59,70 +70,76 @@ const renderFilterCategory = (
   );
 };
 
-export const AssetsFilter = ({ onApply, filters }: AssetsFilterProps) => {
-  const [data, setData] = useState<{ data: AssetsFiltersData | null }>();
-  const previousData = usePrevious(data);
+export const AssetsFilter = () => {
+  const [data, setData] = useState<AssetsFiltersData | null>();
+  const filters = useAssetsStore.use.filters();
+  const setFilters = useAssetsStore.use.setFilters();
   const [isOpen, setIsOpen] = useState(false);
   const previousIsOpen = usePrevious(isOpen);
-  const [persistedFilters, setPersistedFilters] =
-    usePersistence<AssetFilterQuery>(PERSISTENCE_KEY, "project");
-  const previousPersistedFilters = usePrevious(persistedFilters);
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [selectedEndpoints, setSelectedEndpoints] = useState<string[]>([]);
   const [selectedConsumers, setSelectedConsumers] = useState<string[]>([]);
   const [selectedInternals, setSelectedInternals] = useState<string[]>([]);
   const [selectedInsights, setSelectedInsights] = useState<InsightType[]>([]);
-  const environment = useGlobalStore.use.environment();
-  const scope = useGlobalStore.use.scope();
-  const previousEnvironment = usePrevious(environment);
-  const previousScope = usePrevious(scope);
-
-  const getData = (
-    services: string[],
-    operations: string[],
-    insights: InsightType[]
-  ) => {
-    window.sendMessageToDigma({
-      action: actions.GET_ASSET_FILTERS_DATA,
-      payload: {
-        query: {
-          services,
-          operations,
-          insights
-        }
-      }
-    });
-  };
+  // const environment = useGlobalStore.use.environment();
+  // const scope = useGlobalStore.use.scope();
+  // const previousEnvironment = usePrevious(environment);
+  // const previousScope = usePrevious(scope);
 
   useEffect(() => {
-    if (
-      isUndefined(previousPersistedFilters) &&
-      previousPersistedFilters !== persistedFilters
-    ) {
-      getData(
-        persistedFilters?.services ?? selectedServices,
-        persistedFilters?.operations ?? [
-          ...selectedEndpoints,
-          ...selectedConsumers,
-          ...selectedInternals
-        ],
-        (persistedFilters?.insights as InsightType[]) || selectedInsights
-      );
-    }
-  }, [
-    previousPersistedFilters,
-    persistedFilters,
-    selectedServices,
-    selectedEndpoints,
-    selectedConsumers,
-    selectedInternals,
-    selectedInsights
-  ]);
+    getData(
+      filters.services,
+      filters.operations,
+      filters.insights as InsightType[]
+    );
+  }, [filters]);
 
   useEffect(() => {
     const handleData = (data: unknown) => {
       const filtersData = data as AssetsFiltersData | null;
-      setData({ data: filtersData });
+      setData(filtersData);
+
+      if (isNull(filtersData)) {
+        return;
+      }
+
+      const servicesToSelect =
+        filtersData.categories
+          .find((x) => x.categoryName === "Services")
+          ?.entries?.filter((x) => x.selected)
+          .map((x) => x.name) ?? [];
+      setSelectedServices(servicesToSelect);
+
+      const operationsCategory = filtersData.categories.find(
+        (x) => x.categoryName === "Operations"
+      );
+
+      const endpointsToSelect =
+        operationsCategory?.categories
+          ?.find((x) => x.categoryName === "Endpoints")
+          ?.entries?.filter((x) => x.selected)
+          .map((x) => x.name) ?? [];
+      setSelectedEndpoints(endpointsToSelect);
+
+      const consumersToSelect =
+        operationsCategory?.categories
+          ?.find((x) => x.categoryName === "Consumers")
+          ?.entries?.filter((x) => x.selected)
+          .map((x) => x.name) ?? [];
+      setSelectedConsumers(consumersToSelect);
+
+      const internalsToSelect =
+        operationsCategory?.categories
+          ?.find((x) => x.categoryName === "Internal")
+          ?.entries?.filter((x) => x.selected)
+          .map((x) => x.name) ?? [];
+      setSelectedInternals(internalsToSelect);
+
+      const insightsToSelect = (filtersData.categories
+        .find((x) => x.categoryName === "Insights")
+        ?.entries?.filter((x) => x.selected)
+        .map((x) => x.name) ?? []) as InsightType[];
+      setSelectedInsights(insightsToSelect);
     };
 
     dispatcher.addActionListener(actions.SET_ASSET_FILTERS_DATA, handleData);
@@ -135,110 +152,18 @@ export const AssetsFilter = ({ onApply, filters }: AssetsFilterProps) => {
     };
   }, []);
 
-  useEffect(() => {
-    if (
-      (isEnvironment(previousEnvironment) &&
-        previousEnvironment.id !== environment?.id) ||
-      (previousScope && previousScope !== scope)
-    ) {
-      const defaultFilters = {
-        services: [],
-        operations: [],
-        insights: []
-      };
-      setPersistedFilters(defaultFilters);
-      onApply(defaultFilters);
-      getData([], [], []);
-    }
-  }, [
-    previousEnvironment,
-    environment,
-    setPersistedFilters,
-    onApply,
-    previousScope,
-    scope
-  ]);
-
+  // Get data when the popover is opened
   useEffect(() => {
     if (isOpen && !previousIsOpen) {
       getData(
-        selectedServices,
-        [...selectedEndpoints, ...selectedConsumers, ...selectedInternals],
-        selectedInsights
+        filters.services,
+        filters.operations,
+        filters.insights as InsightType[]
       );
     }
-  }, [isOpen, previousIsOpen]);
+  }, [isOpen, filters, previousIsOpen]);
 
-  useEffect(() => {
-    if (previousData === data || isNull(data?.data)) {
-      return;
-    }
-
-    const servicesToSelect =
-      data?.data?.categories
-        .find((x) => x.categoryName === "Services")
-        ?.entries?.filter((x) => x.selected)
-        .map((x) => x.name) ?? [];
-    setSelectedServices(servicesToSelect);
-
-    const operationsCategory = data?.data?.categories.find(
-      (x) => x.categoryName === "Operations"
-    );
-
-    const endpointsToSelect =
-      operationsCategory?.categories
-        ?.find((x) => x.categoryName === "Endpoints")
-        ?.entries?.filter((x) => x.selected)
-        .map((x) => x.name) ?? [];
-    setSelectedEndpoints(endpointsToSelect);
-
-    const consumersToSelect =
-      operationsCategory?.categories
-        ?.find((x) => x.categoryName === "Consumers")
-        ?.entries?.filter((x) => x.selected)
-        .map((x) => x.name) ?? [];
-    setSelectedConsumers(consumersToSelect);
-
-    const internalsToSelect =
-      operationsCategory?.categories
-        ?.find((x) => x.categoryName === "Internal")
-        ?.entries?.filter((x) => x.selected)
-        .map((x) => x.name) ?? [];
-    setSelectedInternals(internalsToSelect);
-
-    const insightsToSelect = (data?.data?.categories
-      .find((x) => x.categoryName === "Insights")
-      ?.entries?.filter((x) => x.selected)
-      .map((x) => x.name) ?? []) as InsightType[];
-    setSelectedInsights(insightsToSelect);
-
-    if (!filters) {
-      const filtersQuery = {
-        services: servicesToSelect,
-        operations: [
-          ...endpointsToSelect,
-          ...consumersToSelect,
-          ...internalsToSelect
-        ],
-        insights: insightsToSelect
-      };
-
-      setPersistedFilters(filtersQuery);
-      onApply(filtersQuery);
-    }
-  }, [
-    previousData,
-    data,
-    filters,
-    onApply,
-    selectedServices,
-    selectedEndpoints,
-    selectedConsumers,
-    selectedInternals,
-    selectedInsights,
-    setPersistedFilters
-  ]);
-
+  // Apply filters when the popover is closed
   useEffect(() => {
     if (previousIsOpen && !isOpen) {
       const filtersQuery = {
@@ -250,20 +175,18 @@ export const AssetsFilter = ({ onApply, filters }: AssetsFilterProps) => {
         ],
         insights: selectedInsights
       };
-      onApply(filtersQuery);
-      setPersistedFilters(filtersQuery);
+      setFilters(filtersQuery);
       sendTrackingEvent(trackingEvents.FILTER_APPLIED);
     }
   }, [
     previousIsOpen,
     isOpen,
-    onApply,
+    setFilters,
     selectedConsumers,
     selectedEndpoints,
     selectedInsights,
     selectedInternals,
-    selectedServices,
-    setPersistedFilters
+    selectedServices
   ]);
 
   const handleClearFiltersButtonClick = () => {
@@ -303,14 +226,14 @@ export const AssetsFilter = ({ onApply, filters }: AssetsFilterProps) => {
     getData(services, [...endpoints, ...consumers, ...internals], insights);
   };
 
-  const servicesCategory = data?.data?.categories.find(
+  const servicesCategory = data?.categories.find(
     (x) => x.categoryName === "Services"
   ) ?? {
     categoryName: "Services",
     entries: []
   };
 
-  const operationsCategory = data?.data?.categories.find(
+  const operationsCategory = data?.categories.find(
     (x) => x.categoryName === "Operations"
   );
   const endpointsCategory = operationsCategory?.categories?.find(
@@ -332,7 +255,7 @@ export const AssetsFilter = ({ onApply, filters }: AssetsFilterProps) => {
     entries: []
   };
 
-  const insightsCategory = data?.data?.categories.find(
+  const insightsCategory = data?.categories.find(
     (x) => x.categoryName === "Insights"
   ) ?? {
     categoryName: "Insights",

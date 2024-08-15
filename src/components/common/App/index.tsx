@@ -503,7 +503,27 @@ export const App = ({ theme, children, id }: AppProps) => {
         handleSetRunConfiguration
       );
     };
-  }, []);
+  }, [
+    setJaegerURL,
+    setIsJaegerEnabled,
+    setIsDigmaEngineInstalled,
+    setIsDigmaEngineRunning,
+    setDigmaStatus,
+    setIsDockerInstalled,
+    setIsDockerComposeInstalled,
+    setDigmaApiUrl,
+    setUserRegistrationEmail,
+    setIsObservabilityEnabled,
+    setBackendInfo,
+    setEnvironments,
+    setEnvironment,
+    setScope,
+    setUserInfo,
+    setInsightStats,
+    setRunConfiguration,
+    setIsMicrometerProject,
+    setIsDigmathonGameFinished
+  ]);
 
   const styledComponentsTheme = getStyledComponentsTheme(
     currentTheme,

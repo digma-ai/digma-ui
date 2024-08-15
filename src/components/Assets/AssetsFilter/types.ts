@@ -1,8 +1,3 @@
-export interface AssetsFilterProps {
-  filters?: AssetFilterQuery;
-  onApply: (filter: AssetFilterQuery) => void;
-}
-
 export interface AssetFilterEntry {
   enabled: boolean;
   selected: boolean;
@@ -23,4 +18,8 @@ export interface AssetFilterQuery {
   services: string[];
   operations: string[];
   insights: string[];
+}
+
+export interface GetAssetFiltersDataPayload {
+  query: AssetFilterQuery;
 }
