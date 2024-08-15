@@ -40,6 +40,7 @@ export interface GlobalState {
   userEmail: string | null;
   userRegistrationEmail: string | null;
   persistedState: PersistedState | null;
+  selectedServices: string[] | null;
 }
 
 export const initialState: GlobalState = {
@@ -89,6 +90,7 @@ export const initialState: GlobalState = {
   userRegistrationEmail: isString(window.userRegistrationEmail)
     ? window.userRegistrationEmail
     : null,
+  selectedServices: null,
   persistedState: null
 };
 
@@ -118,6 +120,7 @@ export interface GlobalActions {
   setUserEmail: (email: string) => void;
   setUserRegistrationEmail: (email: string) => void;
   setPersistedState: (state: PersistedState) => void;
+  setSelectedServices: (services: string[]) => void;
   reset: () => void;
 }
 
@@ -157,6 +160,7 @@ export const useGlobalStore = createSelectors(
     setUserEmail: (email) => set({ userEmail: email }),
     setUserRegistrationEmail: (email) => set({ userRegistrationEmail: email }),
     setPersistedState: (state) => set({ persistedState: state }),
+    setSelectedServices: (services) => set({ selectedServices: services }),
     reset: () => set(initialState)
   }))
 );

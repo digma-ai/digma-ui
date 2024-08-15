@@ -101,7 +101,7 @@ const getData = (
   page: number,
   sorting: Sorting,
   searchQuery: string,
-  filters: AssetFilterQuery | undefined,
+  filters: AssetFilterQuery = { services: [], operations: [], insights: [] },
   isDirect?: boolean,
   scopedSpanCodeObjectId?: string
 ) => {
@@ -116,14 +116,8 @@ const getData = (
         sortOrder: sorting.order,
         directOnly: isDirect,
         scopedSpanCodeObjectId,
-        ...(searchQuery && searchQuery.length > 0
-          ? { displayName: searchQuery }
-          : {}),
-        ...(filters ?? {
-          services: [],
-          operations: [],
-          insights: []
-        })
+        ...(searchQuery.length > 0 ? { displayName: searchQuery } : {}),
+        ...(scopedSpanCodeObjectId ? { ...filters, services: [] } : filters)
       }
     }
   });
@@ -140,7 +134,6 @@ export const AssetList = ({
 }: AssetListProps) => {
   const [data, setData] = useState<AssetsData>();
   const previousData = usePrevious(data);
-  const [isInitialLoading, setIsInitialLoading] = useState(false);
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
   const [sorting, setSorting] = useState<Sorting>({
@@ -164,6 +157,8 @@ export const AssetList = ({
   const refreshTimerId = useRef<number>();
   const previousEnvironment = usePrevious(environment);
   const previousViewScope = usePrevious(scopeViewOptions);
+  const scope = useGlobalStore.use.scope();
+  const isServicesFilterEnabled = !scope?.span?.spanCodeObjectId;
 
   const refreshData = useCallback(() => {
     getData(
@@ -196,13 +191,16 @@ export const AssetList = ({
 
   const sortingCriteria = getSortingCriteria(isImpactHidden);
 
-  const areAnyFiltersApplied = checkIfAnyFiltersApplied(filters, searchQuery);
+  const areAnyFiltersApplied = checkIfAnyFiltersApplied(
+    filters,
+    searchQuery,
+    isServicesFilterEnabled
+  );
+
+  const isInitialLoading = !data;
 
   useEffect(() => {
     refreshData();
-    if (!data) {
-      setIsInitialLoading(true);
-    }
   }, [refreshData]);
 
   useEffect(() => {
@@ -259,12 +257,6 @@ export const AssetList = ({
       }, REFRESH_INTERVAL);
     }
   }, [lastSetDataTimeStamp, previousLastSetDataTimeStamp, refreshData]);
-
-  useEffect(() => {
-    if (!previousData && data) {
-      setIsInitialLoading(false);
-    }
-  }, [previousData, data]);
 
   useEffect(() => {
     if (

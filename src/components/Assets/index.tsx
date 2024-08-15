@@ -174,6 +174,9 @@ export const Assets = () => {
           <AssetsFilter
             onApply={handleApplyFilters}
             filters={selectedFilters}
+            // Temporarily disabled passing of assetScopeOption and searchQuery due to issues on the backend side
+            assetScopeOption={null}
+            searchQuery={""}
           />
           <Tooltip title={"Refresh"}>
             <s.RefreshButton
