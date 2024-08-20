@@ -17,6 +17,7 @@ import { WrenchIcon } from "../../common/icons/12px/WrenchIcon";
 import { EndpointIcon } from "../../common/icons/EndpointIcon";
 import { SparkleIcon } from "../../common/icons/SparkleIcon";
 import { IconProps } from "../../common/icons/types";
+import { AssetScopeOption } from "../AssetsViewScopeConfiguration/types";
 import { actions } from "../actions";
 import { trackingEvents } from "../tracking";
 import * as s from "./styles";
@@ -24,10 +25,39 @@ import {
   AssetFilterCategory,
   AssetFilterQuery,
   AssetsFilterProps,
-  AssetsFiltersData
+  AssetsFiltersData,
+  GetAssetFiltersDataPayload
 } from "./types";
 
 const PERSISTENCE_KEY = "assetsFilters";
+
+const getData = ({
+  services,
+  operations,
+  insights,
+  assetScopeOption,
+  searchQuery
+}: {
+  services: string[];
+  operations: string[];
+  insights: InsightType[];
+  assetScopeOption: AssetScopeOption | null;
+  searchQuery: string;
+}) => {
+  window.sendMessageToDigma<GetAssetFiltersDataPayload>({
+    action: actions.GET_ASSET_FILTERS_DATA,
+    payload: {
+      query: {
+        services,
+        operations,
+        insights,
+        directOnly: Boolean(assetScopeOption?.isDirect),
+        scopedSpanCodeObjectId: assetScopeOption?.scopedSpanCodeObjectId,
+        ...(searchQuery.length > 0 ? { displayName: searchQuery } : {})
+      }
+    }
+  });
+};
 
 const renderFilterCategory = (
   category: AssetFilterCategory,
@@ -59,55 +89,52 @@ const renderFilterCategory = (
   );
 };
 
-export const AssetsFilter = ({ onApply, filters }: AssetsFilterProps) => {
+export const AssetsFilter = ({
+  onApply,
+  filters,
+  assetScopeOption,
+  searchQuery
+}: AssetsFilterProps) => {
   const [data, setData] = useState<{ data: AssetsFiltersData | null }>();
   const previousData = usePrevious(data);
   const [isOpen, setIsOpen] = useState(false);
   const previousIsOpen = usePrevious(isOpen);
+  const globallySelectedServices = useGlobalStore.use.selectedServices();
+  const setGloballySelectedServices = useGlobalStore.use.setSelectedServices();
   const [persistedFilters, setPersistedFilters] =
     usePersistence<AssetFilterQuery>(PERSISTENCE_KEY, "project");
   const previousPersistedFilters = usePrevious(persistedFilters);
-  const [selectedServices, setSelectedServices] = useState<string[]>([]);
+  const scope = useGlobalStore.use.scope();
+  const isServicesFilterEnabled = !scope?.span?.spanCodeObjectId;
+  const [selectedServices, setSelectedServices] = useState<string[]>(
+    isServicesFilterEnabled ? globallySelectedServices ?? [] : []
+  );
   const [selectedEndpoints, setSelectedEndpoints] = useState<string[]>([]);
   const [selectedConsumers, setSelectedConsumers] = useState<string[]>([]);
   const [selectedInternals, setSelectedInternals] = useState<string[]>([]);
   const [selectedInsights, setSelectedInsights] = useState<InsightType[]>([]);
   const environment = useGlobalStore.use.environment();
-  const scope = useGlobalStore.use.scope();
   const previousEnvironment = usePrevious(environment);
   const previousScope = usePrevious(scope);
 
-  const getData = (
-    services: string[],
-    operations: string[],
-    insights: InsightType[]
-  ) => {
-    window.sendMessageToDigma({
-      action: actions.GET_ASSET_FILTERS_DATA,
-      payload: {
-        query: {
-          services,
-          operations,
-          insights
-        }
-      }
-    });
-  };
-
+  // Get data after filters have been rehydrated
   useEffect(() => {
     if (
       isUndefined(previousPersistedFilters) &&
-      previousPersistedFilters !== persistedFilters
+      !isUndefined(persistedFilters)
     ) {
-      getData(
-        persistedFilters?.services ?? selectedServices,
-        persistedFilters?.operations ?? [
+      getData({
+        services: isServicesFilterEnabled ? selectedServices : [],
+        operations: persistedFilters?.operations ?? [
           ...selectedEndpoints,
           ...selectedConsumers,
           ...selectedInternals
         ],
-        (persistedFilters?.insights as InsightType[]) || selectedInsights
-      );
+        insights:
+          (persistedFilters?.insights as InsightType[]) || selectedInsights,
+        assetScopeOption,
+        searchQuery
+      });
     }
   }, [
     previousPersistedFilters,
@@ -116,7 +143,12 @@ export const AssetsFilter = ({ onApply, filters }: AssetsFilterProps) => {
     selectedEndpoints,
     selectedConsumers,
     selectedInternals,
-    selectedInsights
+    selectedInsights,
+    scope,
+    assetScopeOption,
+    searchQuery,
+    globallySelectedServices,
+    isServicesFilterEnabled
   ]);
 
   useEffect(() => {
@@ -135,11 +167,11 @@ export const AssetsFilter = ({ onApply, filters }: AssetsFilterProps) => {
     };
   }, []);
 
+  // Clear filters and get data when environment is changed
   useEffect(() => {
     if (
-      (isEnvironment(previousEnvironment) &&
-        previousEnvironment.id !== environment?.id) ||
-      (previousScope && previousScope !== scope)
+      isEnvironment(previousEnvironment) &&
+      previousEnvironment.id !== environment?.id
     ) {
       const defaultFilters = {
         services: [],
@@ -147,28 +179,88 @@ export const AssetsFilter = ({ onApply, filters }: AssetsFilterProps) => {
         insights: []
       };
       setPersistedFilters(defaultFilters);
+      if (isServicesFilterEnabled) {
+        setGloballySelectedServices(defaultFilters.services);
+      }
       onApply(defaultFilters);
-      getData([], [], []);
+      getData({
+        ...defaultFilters,
+        assetScopeOption,
+        searchQuery
+      });
     }
   }, [
     previousEnvironment,
     environment,
     setPersistedFilters,
     onApply,
-    previousScope,
-    scope
+    assetScopeOption,
+    searchQuery,
+    isServicesFilterEnabled,
+    setGloballySelectedServices
   ]);
 
+  // Clear filters and get data when scope is changed, but keep selected services
+  useEffect(() => {
+    if (previousScope && previousScope !== scope) {
+      const newFilters = {
+        services: selectedServices,
+        operations: [],
+        insights: []
+      };
+      setPersistedFilters(newFilters);
+      if (isServicesFilterEnabled) {
+        setGloballySelectedServices(newFilters.services);
+      }
+      onApply(newFilters);
+      getData({
+        ...newFilters,
+        assetScopeOption,
+        searchQuery
+      });
+    }
+  }, [
+    setPersistedFilters,
+    setGloballySelectedServices,
+    onApply,
+    previousScope,
+    scope,
+    assetScopeOption,
+    searchQuery,
+    selectedServices,
+    isServicesFilterEnabled
+  ]);
+
+  // Get data when the popover is opened
   useEffect(() => {
     if (isOpen && !previousIsOpen) {
-      getData(
-        selectedServices,
-        [...selectedEndpoints, ...selectedConsumers, ...selectedInternals],
-        selectedInsights
-      );
+      getData({
+        services: isServicesFilterEnabled ? selectedServices : [],
+        operations: [
+          ...selectedEndpoints,
+          ...selectedConsumers,
+          ...selectedInternals
+        ],
+        insights: selectedInsights,
+        assetScopeOption,
+        searchQuery
+      });
     }
-  }, [isOpen, previousIsOpen]);
+  }, [
+    isOpen,
+    previousIsOpen,
+    scope,
+    selectedConsumers,
+    selectedEndpoints,
+    selectedInsights,
+    selectedInternals,
+    selectedServices,
+    assetScopeOption,
+    searchQuery,
+    isServicesFilterEnabled
+  ]);
 
+  // Apply filters when data is loaded
   useEffect(() => {
     if (previousData === data || isNull(data?.data)) {
       return;
@@ -224,6 +316,9 @@ export const AssetsFilter = ({ onApply, filters }: AssetsFilterProps) => {
       };
 
       setPersistedFilters(filtersQuery);
+      if (isServicesFilterEnabled) {
+        setGloballySelectedServices(filtersQuery.services);
+      }
       onApply(filtersQuery);
     }
   }, [
@@ -236,9 +331,12 @@ export const AssetsFilter = ({ onApply, filters }: AssetsFilterProps) => {
     selectedConsumers,
     selectedInternals,
     selectedInsights,
-    setPersistedFilters
+    setPersistedFilters,
+    setGloballySelectedServices,
+    isServicesFilterEnabled
   ]);
 
+  // Apply filters when the popover is closed
   useEffect(() => {
     if (previousIsOpen && !isOpen) {
       const filtersQuery = {
@@ -252,6 +350,9 @@ export const AssetsFilter = ({ onApply, filters }: AssetsFilterProps) => {
       };
       onApply(filtersQuery);
       setPersistedFilters(filtersQuery);
+      if (isServicesFilterEnabled) {
+        setGloballySelectedServices(filtersQuery.services);
+      }
       sendTrackingEvent(trackingEvents.FILTER_APPLIED);
     }
   }, [
@@ -263,11 +364,19 @@ export const AssetsFilter = ({ onApply, filters }: AssetsFilterProps) => {
     selectedInsights,
     selectedInternals,
     selectedServices,
-    setPersistedFilters
+    setPersistedFilters,
+    setGloballySelectedServices,
+    isServicesFilterEnabled
   ]);
 
   const handleClearFiltersButtonClick = () => {
-    getData([], [], []);
+    getData({
+      services: isServicesFilterEnabled ? [] : selectedServices,
+      insights: [],
+      operations: [],
+      assetScopeOption,
+      searchQuery
+    });
   };
 
   const handleSelectedItemsChange = (
@@ -300,7 +409,13 @@ export const AssetsFilter = ({ onApply, filters }: AssetsFilterProps) => {
         break;
     }
 
-    getData(services, [...endpoints, ...consumers, ...internals], insights);
+    getData({
+      services,
+      operations: [...endpoints, ...consumers, ...internals],
+      insights,
+      assetScopeOption,
+      searchQuery
+    });
   };
 
   const servicesCategory = data?.data?.categories.find(
@@ -340,7 +455,7 @@ export const AssetsFilter = ({ onApply, filters }: AssetsFilterProps) => {
   };
 
   const selectedFilters = [
-    ...selectedServices,
+    ...(isServicesFilterEnabled ? selectedServices : []),
     ...selectedEndpoints,
     ...selectedConsumers,
     ...selectedInternals,
@@ -353,13 +468,17 @@ export const AssetsFilter = ({ onApply, filters }: AssetsFilterProps) => {
       content={
         <s.Container>
           <s.Header>Filters</s.Header>
-          <s.FilterCategoryName>Services</s.FilterCategoryName>
-          {renderFilterCategory(
-            servicesCategory,
-            WrenchIcon,
-            selectedServices.length > 0 ? "Services" : "All",
-            selectedServices,
-            handleSelectedItemsChange
+          {isServicesFilterEnabled && (
+            <>
+              <s.FilterCategoryName>Services</s.FilterCategoryName>
+              {renderFilterCategory(
+                servicesCategory,
+                WrenchIcon,
+                selectedServices.length > 0 ? "Services" : "All",
+                selectedServices,
+                handleSelectedItemsChange
+              )}
+            </>
           )}
           <s.FilterCategoryName>Operations</s.FilterCategoryName>
           {renderFilterCategory(

@@ -77,7 +77,7 @@ export const InsightsCatalog = ({
   const setSorting = useInsightsStore.use.setSorting();
   const filters = useInsightsStore.use.filters();
   const filteredInsightTypes = useInsightsStore.use.filteredInsightTypes();
-  const filteredServices = useInsightsStore.use.filteredServices();
+  const selectedServices = useGlobalStore.use.selectedServices();
   const data = useInsightsStore.use.data();
   const insights = data?.insights ?? [];
   const totalCount = data?.totalCount ?? 0;
@@ -113,11 +113,14 @@ export const InsightsCatalog = ({
     PROMOTION_COMPLETED_PERSISTENCE_KEY,
     "application"
   );
+  const isServicesFilterEnabled = !scopeSpanCodeObjectId;
 
   const appliedFilterCount =
     filters.length +
     (filteredInsightTypes.length > 0 ? 1 : 0) +
-    (filteredServices.length > 0 ? 1 : 0);
+    (isServicesFilterEnabled && selectedServices && selectedServices.length > 0
+      ? 1
+      : 0);
 
   const areSpanEnvironmentsEnabled = getFeatureFlagValue(
     backendInfo,

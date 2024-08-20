@@ -24,10 +24,10 @@ import { trackingEvents } from "./tracking";
 export const IssuesFilter = () => {
   const [isOpen, setIsOpen] = useState(false);
   const filteredInsightTypes = useInsightsStore.use.filteredInsightTypes();
-  const filteredServices = useInsightsStore.use.filteredServices();
+  const selectedServices = useGlobalStore.use.selectedServices();
   const setFilteredInsightTypes =
     useInsightsStore.use.setFilteredInsightTypes();
-  const setFilteredServices = useInsightsStore.use.setFilteredServices();
+  const setSelectedServices = useGlobalStore.use.setSelectedServices();
   const filters = useInsightsStore.use.filters();
   const backendInfo = useGlobalStore.use.backendInfo();
   const setFilters = useInsightsStore.use.setFilters();
@@ -38,6 +38,16 @@ export const IssuesFilter = () => {
   const isUnreadOnly = useMemo(() => filters.includes("unread"), [filters]);
   const { data } = useIssuesFilters();
   const previousData = usePrevious(data);
+  const scope = useGlobalStore.use.scope();
+  const scopeSpanCodeObjectId = scope?.span?.spanCodeObjectId;
+  const isServicesFilterEnabled =
+    Boolean(
+      getFeatureFlagValue(backendInfo, FeatureFlag.ARE_ISSUES_FILTERS_ENABLED)
+    ) && !scopeSpanCodeObjectId;
+  const filteredServices = useMemo(
+    () => selectedServices ?? [],
+    [selectedServices]
+  );
 
   useEffect(() => {
     if (previousData && previousData !== data) {
@@ -51,13 +61,13 @@ export const IssuesFilter = () => {
         }
       }
 
-      if (filteredServices.length > 0) {
+      if (isServicesFilterEnabled && filteredServices.length > 0) {
         const newSelection = filteredServices.filter((e) =>
           Boolean(data?.services?.find((x) => x === e))
         );
 
         if (newSelection.length !== filteredServices.length) {
-          setFilteredServices(newSelection);
+          setSelectedServices(newSelection);
         }
       }
     }
@@ -67,8 +77,9 @@ export const IssuesFilter = () => {
     filteredInsightTypes,
     setFilteredInsightTypes,
     filters,
-    setFilteredServices,
-    filteredServices
+    setSelectedServices,
+    filteredServices,
+    isServicesFilterEnabled
   ]);
 
   const handleClearFiltersButtonClick = () => {
@@ -77,7 +88,10 @@ export const IssuesFilter = () => {
     );
     setFilteredInsightTypes([]);
     setFilters([]);
-    setFilteredServices([]);
+
+    if (isServicesFilterEnabled) {
+      setSelectedServices([]);
+    }
   };
 
   const handleIssueTypesChange = (value: string | string[]) => {
@@ -93,7 +107,7 @@ export const IssuesFilter = () => {
       filterType: "service"
     });
     const newFilteredServices = Array.isArray(value) ? value : [value];
-    setFilteredServices(newFilteredServices);
+    setSelectedServices(newFilteredServices);
   };
 
   const handleCloseButtonClick = () => {
@@ -170,7 +184,7 @@ export const IssuesFilter = () => {
     readStatusFilterOptions.find((x) => x.selected)?.label ?? "All";
   const selectedFiltersCount =
     (filteredInsightTypes.length > 0 ? 1 : 0) +
-    (filteredServices.length > 0 ? 1 : 0) +
+    (isServicesFilterEnabled && filteredServices.length > 0 ? 1 : 0) +
     (isCriticalOnly ? 1 : 0) +
     (isUnreadOnly ? 1 : 0);
 
@@ -225,12 +239,7 @@ export const IssuesFilter = () => {
             )}
             showSelectedState={isUnreadOnly}
           />
-          {Boolean(
-            getFeatureFlagValue(
-              backendInfo,
-              FeatureFlag.ARE_ISSUES_FILTERS_ENABLED
-            )
-          ) && (
+          {isServicesFilterEnabled && (
             <>
               <s.FilterCategoryName>Services</s.FilterCategoryName>
               <Select

@@ -1,13 +1,15 @@
-import { useEffect, useLayoutEffect } from "react";
+import { useEffect, useLayoutEffect, useMemo } from "react";
 import { Outlet, matchPath, useLocation } from "react-router-dom";
 import { actions as globalActions } from "../../actions";
 import { history } from "../../containers/Main/history";
 import { useGlobalStore } from "../../containers/Main/stores/useGlobalStore";
 import { dispatcher } from "../../dispatcher";
 import { HistoryEntryLocation } from "../../history/History";
+import { usePersistence } from "../../hooks/usePersistence";
 import { usePrevious } from "../../hooks/usePrevious";
 import { logger } from "../../logging";
 import { trackingEvents as globalTrackingEvents } from "../../trackingEvents";
+import { isUndefined } from "../../typeGuards/isUndefined";
 import { sendTrackingEvent } from "../../utils/actions/sendTrackingEvent";
 import { Navigation } from "../Navigation";
 import { TAB_IDS } from "../Navigation/Tabs/types";
@@ -20,6 +22,7 @@ import { HistoryState, SCOPE_CHANGE_EVENTS } from "./types";
 import { useBrowserLocationUpdater } from "./updateBrowserLocationUpdater";
 import { useHistory } from "./useHistory";
 
+export const SERVICES_PERSISTENCE_KEY = "services";
 export const MAIN_CONTAINER_ID = "mainContainer";
 
 const getURLToNavigateOnCodeLensClick = (scope: Scope): string | undefined => {
@@ -45,6 +48,7 @@ export const Main = () => {
   const location = useLocation();
   const environments = useGlobalStore.use.environments();
   const environment = useGlobalStore.use.environment();
+  const previousEnvironment = usePrevious(environment);
   const scope = useGlobalStore.use.scope();
   const userInfo = useGlobalStore.use.userInfo();
   const userId = userInfo?.id;
@@ -52,6 +56,38 @@ export const Main = () => {
   const backendInfo = useGlobalStore.use.backendInfo();
   const { goTo } = useHistory();
   const updateBrowserLocation = useBrowserLocationUpdater();
+  const [persistedServices, setPersistedServices] = usePersistence<string[]>(
+    SERVICES_PERSISTENCE_KEY,
+    "project"
+  );
+  const previousPersistedServices = usePrevious(persistedServices);
+  const selectedServices = useGlobalStore.use.selectedServices();
+  const setSelectedServices = useGlobalStore.use.setSelectedServices();
+  const isInitialized = useMemo(
+    () => !isUndefined(persistedServices),
+    [persistedServices]
+  );
+
+  // Rehydrate selected services from persistence
+  useEffect(() => {
+    if (isUndefined(previousPersistedServices) && persistedServices) {
+      setSelectedServices(persistedServices);
+    }
+  }, [previousPersistedServices, persistedServices, setSelectedServices]);
+
+  // Persist selected services on its change
+  useEffect(() => {
+    if (isInitialized) {
+      setPersistedServices(selectedServices ?? []);
+    }
+  }, [selectedServices, isInitialized, setPersistedServices]);
+
+  // Clear selected services when environment is changed
+  useEffect(() => {
+    if (previousEnvironment && previousEnvironment.id !== environment?.id) {
+      setSelectedServices([]);
+    }
+  }, [setSelectedServices, previousEnvironment, environment?.id]);
 
   useEffect(() => {
     // clear the history in following cases:
@@ -173,6 +209,10 @@ export const Main = () => {
       });
     }
   }, [previousUserId, userId]);
+
+  if (!isInitialized) {
+    return null;
+  }
 
   if (!userId && backendInfo?.centralize) {
     return <Authentication />;

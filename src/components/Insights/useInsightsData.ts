@@ -87,7 +87,7 @@ const getDataList = ({
       showDismissed,
       scopedSpanCodeObjectId: spanCodeObjectId,
       insightTypes: filteredInsightTypes,
-      services: filteredServices
+      services: spanCodeObjectId ? [] : filteredServices
     });
   } else {
     const showUnreadOnly = filters.length === 1 && filters[0] === "unread";
@@ -122,7 +122,7 @@ const getStats = ({
         : null,
       filters: {
         insights: filteredInsightTypes,
-        services: filteredServices
+        services: spanCodeObjectId ? [] : filteredServices
       }
     }
   });
@@ -149,7 +149,11 @@ export const useInsightsData = ({
   const viewMode = useInsightsStore.use.viewMode();
   const filters = useInsightsStore.use.filters();
   const filteredInsightTypes = useInsightsStore.use.filteredInsightTypes();
-  const filteredServices = useInsightsStore.use.filteredServices();
+  const selectedServices = useGlobalStore.use.selectedServices();
+  const filteredServices = useMemo(
+    () => selectedServices ?? [],
+    [selectedServices]
+  );
   const insightViewType = useInsightsStore.use.insightViewType();
   const spanCodeObjectId = scope?.span?.spanCodeObjectId ?? null;
   const showDismissed = viewMode === ViewMode.OnlyDismissed;

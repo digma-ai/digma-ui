@@ -24,7 +24,6 @@ export interface InsightsState {
   viewMode: ViewMode;
   filters: InsightFilterType[];
   filteredInsightTypes: string[];
-  filteredServices: string[];
   insightViewType: InsightViewType | null;
   issuesFilters: IssuesFiltersData | null;
   areIssuesFiltersLoading: boolean;
@@ -42,7 +41,6 @@ export const initialState: InsightsState = {
   viewMode: ViewMode.All,
   filters: [],
   filteredInsightTypes: [],
-  filteredServices: [],
   insightViewType: null,
   issuesFilters: null,
   areIssuesFiltersLoading: false
@@ -57,7 +55,6 @@ export interface InsightsActions {
   setViewMode: (viewMode: ViewMode) => void;
   setFilters: (filters: InsightFilterType[]) => void;
   setFilteredInsightTypes: (insightTypes: string[]) => void;
-  setFilteredServices: (services: string[]) => void;
   setInsightViewType: (insightViewType: InsightViewType) => void;
   setIssuesFilters: (filters: IssuesFiltersData) => void;
   setAreIssuesFiltersLoading: (areIssuesFiltersLoading: boolean) => void;
@@ -76,7 +73,6 @@ export const useInsightsStore = createSelectors(
     setFilters: (filters) => set({ filters }),
     setFilteredInsightTypes: (filteredInsightTypes) =>
       set({ filteredInsightTypes }),
-    setFilteredServices: (filteredServices) => set({ filteredServices }),
     setInsightViewType: (insightViewType) => set({ insightViewType }),
     setIssuesFilters: (issuesFilters) => set({ issuesFilters }),
     setAreIssuesFiltersLoading: (areIssuesFiltersLoading) =>

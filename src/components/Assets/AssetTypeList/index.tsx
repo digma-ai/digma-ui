@@ -31,7 +31,7 @@ export const ASSET_TYPE_IDS = [
 ];
 
 const getData = (
-  filters: AssetFilterQuery | undefined,
+  filters: AssetFilterQuery = { services: [], operations: [], insights: [] },
   searchQuery: string,
   isDirect?: boolean,
   scopedSpanCodeObjectId?: string
@@ -42,7 +42,12 @@ const getData = (
       query: {
         directOnly: isDirect,
         scopedSpanCodeObjectId,
-        ...(filters ?? { services: [], operations: [], insights: [] }),
+        ...(scopedSpanCodeObjectId
+          ? {
+              ...filters,
+              services: []
+            }
+          : filters),
         ...(searchQuery.length > 0 ? { displayName: searchQuery } : {})
       }
     }
@@ -64,13 +69,15 @@ export const AssetTypeList = ({
   const previousData = usePrevious(data);
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
-  const [isInitialLoading, setIsInitialLoading] = useState(false);
   const scope = useGlobalStore.use.scope();
   const environment = useGlobalStore.use.environment();
   const previousEnvironment = usePrevious(environment);
   const refreshTimerId = useRef<number>();
   const previousSearchQuery = usePrevious(searchQuery);
   const previousViewScope = usePrevious(scopeViewOptions);
+  const isServicesFilterEnabled = !scope?.span?.spanCodeObjectId;
+
+  const isInitialLoading = !data;
 
   const refreshData = useCallback(
     () =>
@@ -92,13 +99,14 @@ export const AssetTypeList = ({
     setRefresher(refreshData);
   }, [refreshData, setRefresher]);
 
-  const areAnyFiltersApplied = checkIfAnyFiltersApplied(filters, searchQuery);
+  const areAnyFiltersApplied = checkIfAnyFiltersApplied(
+    filters,
+    searchQuery,
+    isServicesFilterEnabled
+  );
 
   useEffect(() => {
     refreshData();
-    if (!data) {
-      setIsInitialLoading(true);
-    }
   }, [refreshData]);
 
   useEffect(() => {
@@ -160,12 +168,6 @@ export const AssetTypeList = ({
       }, REFRESH_INTERVAL);
     }
   }, [lastSetDataTimeStamp, previousLastSetDataTimeStamp, refreshData]);
-
-  useEffect(() => {
-    if (!previousData && data) {
-      setIsInitialLoading(false);
-    }
-  }, [previousData, data]);
 
   const handleAssetTypeClick = (assetTypeId: string) => {
     onAssetTypeSelect(assetTypeId);
