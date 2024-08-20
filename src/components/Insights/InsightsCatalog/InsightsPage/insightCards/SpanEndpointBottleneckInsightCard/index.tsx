@@ -127,7 +127,7 @@ export const SpanEndpointBottleneckInsightCard = ({
                           id: selectedEndpoint.traceId
                         },
                         insight.type,
-                        selectedEndpoint.endpointInfo.spanCodeObjectId
+                        insight.spanInfo?.spanCodeObjectId
                       );
                     }}
                   />

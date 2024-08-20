@@ -199,6 +199,24 @@ export const IssuesFilter = () => {
               <CrossIcon color={"currentColor"} size={16} />
             </s.CloseButton>
           </s.Header>
+          {isServicesFilterEnabled && (
+            <>
+              <s.FilterCategoryName>Services</s.FilterCategoryName>
+              <Select
+                key={"services"}
+                items={servicesFilterOptions}
+                onChange={handleServiceChange}
+                placeholder={filteredServices.length > 0 ? "Services" : "All"}
+                multiselect={true}
+                icon={(props: IconProps) => (
+                  <s.InsightIconContainer>
+                    <WrenchIcon {...props} />
+                  </s.InsightIconContainer>
+                )}
+                disabled={issueTypesFilterOptions?.length === 0}
+              />
+            </>
+          )}
           <s.FilterCategoryName>Issues</s.FilterCategoryName>
           <Select
             key={"issues"}
@@ -239,24 +257,6 @@ export const IssuesFilter = () => {
             )}
             showSelectedState={isUnreadOnly}
           />
-          {isServicesFilterEnabled && (
-            <>
-              <s.FilterCategoryName>Services</s.FilterCategoryName>
-              <Select
-                key={"services"}
-                items={servicesFilterOptions}
-                onChange={handleServiceChange}
-                placeholder={filteredServices.length > 0 ? "Services" : "All"}
-                multiselect={true}
-                icon={(props: IconProps) => (
-                  <s.InsightIconContainer>
-                    <WrenchIcon {...props} />
-                  </s.InsightIconContainer>
-                )}
-                disabled={issueTypesFilterOptions?.length === 0}
-              />
-            </>
-          )}
           <s.Footer>
             <s.ClearAllButton
               buttonType={"tertiary"}
