@@ -24,11 +24,13 @@ export const EnvironmentChip = ({
       title={
         <s.TooltipContent>
           {environmentName}
-          <s.TooltipContentIssueCountsContainer>
-            <span>High: {issueCounts?.highCriticality ?? 0}</span>
-            <span>Medium: {issueCounts?.mediumCriticality ?? 0}</span>
-            <span>Low: {issueCounts?.mediumCriticality ?? 0}</span>
-          </s.TooltipContentIssueCountsContainer>
+          {issueCounts && (
+            <s.TooltipContentIssueCountsContainer>
+              <span>High: {issueCounts.highCriticality}</span>
+              <span>Medium: {issueCounts.mediumCriticality}</span>
+              <span>Low: {issueCounts.mediumCriticality}</span>
+            </s.TooltipContentIssueCountsContainer>
+          )}
         </s.TooltipContent>
       }
     >
