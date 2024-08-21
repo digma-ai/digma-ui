@@ -57,3 +57,14 @@ export const Counter = styled.div<CounterProps>`
     }
   }}
 `;
+
+export const TooltipContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+export const TooltipContentIssueCountsContainer = styled.span`
+  display: flex;
+  flex-direction: column;
+`;

@@ -20,7 +20,20 @@ export const EnvironmentChip = ({
   const count = getMostCriticalIssueCount(issueCounts);
 
   return (
-    <Tooltip title={environmentName}>
+    <Tooltip
+      title={
+        <s.TooltipContent>
+          {environmentName}
+          {issueCounts && (
+            <s.TooltipContentIssueCountsContainer>
+              <span>High: {issueCounts.highCriticality}</span>
+              <span>Medium: {issueCounts.mediumCriticality}</span>
+              <span>Low: {issueCounts.mediumCriticality}</span>
+            </s.TooltipContentIssueCountsContainer>
+          )}
+        </s.TooltipContent>
+      }
+    >
       <s.StyledChip $isActive={isActive} onClick={handleClick}>
         <s.IconContainer>
           <EnvironmentIcon size={16} environment={environment} />
