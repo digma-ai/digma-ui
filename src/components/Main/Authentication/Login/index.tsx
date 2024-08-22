@@ -1,4 +1,4 @@
-import { KeyboardEvent, useEffect } from "react";
+import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { LockIcon } from "../../../common/icons/12px/LockIcon";
@@ -27,7 +27,6 @@ export const Login = ({ successMessage, onLogin }: LoginProps) => {
   const {
     handleSubmit,
     control,
-    getValues,
     clearErrors,
     watch,
     setError,
@@ -37,7 +36,6 @@ export const Login = ({ successMessage, onLogin }: LoginProps) => {
     mode: "onChange",
     defaultValues: formDefaultValues
   });
-  const values = getValues();
   const { isLoading, login, error } = useLogin();
 
   useEffect(() => {
@@ -65,21 +63,11 @@ export const Login = ({ successMessage, onLogin }: LoginProps) => {
     sendUserActionTrackingEvent("login form submitted");
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === "Enter" && isValid) {
-      onSubmit(values);
-    }
-  };
-
   const errorMessage =
     Object.values(errors).length > 0 ? Object.values(errors)[0].message : "";
 
   return (
-    <FormContainer
-    // Temporary disabled due to the issue in JetBrains 2024.2.x
-    // onKeyDown={handleKeyDown}
-    >
+    <FormContainer>
       <Form
         id={"loginForm"}
         onSubmit={(e) => {

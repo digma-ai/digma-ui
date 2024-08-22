@@ -1,4 +1,4 @@
-import { KeyboardEvent, useContext, useMemo } from "react";
+import { useContext, useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 import { actions as globalActions } from "../../../actions";
@@ -52,13 +52,11 @@ export const RegisterForm = ({
   const {
     handleSubmit,
     control,
-    getValues,
     formState: { errors, isValid }
   } = useForm<RegistrationFormValues>({
     mode: "onChange",
     defaultValues: formDefaultValues
   });
-  const values = getValues();
 
   const onSubmit = (data: RegistrationFormValues) => {
     window.sendMessageToDigma({
@@ -73,18 +71,13 @@ export const RegisterForm = ({
     onNext(true);
   };
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === "Enter" && isValid) {
-      onSubmit(values);
-    }
-  };
   const handleOnSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     void handleSubmit(onSubmit)(e);
   };
 
   return (
-    <s.Container className={className} onKeyDown={handleKeyDown}>
+    <s.Container className={className}>
       <s.Form id={"registrationForm"} onSubmit={handleOnSubmit}>
         <Controller
           name={"fullName"}

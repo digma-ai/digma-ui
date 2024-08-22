@@ -1,4 +1,4 @@
-import { KeyboardEvent, useEffect } from "react";
+import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { isValidEmailFormat } from "../../../utils/isValidEmailFormat";
@@ -39,14 +39,12 @@ export const RegistrationDialog = (props: RegistrationDialogProps) => {
   const {
     handleSubmit,
     control,
-    getValues,
     formState: { errors, isValid, touchedFields },
     setFocus
   } = useForm<RegistrationFormValues>({
     mode: "onChange",
     defaultValues: formDefaultValues
   });
-  const values = getValues();
 
   useEffect(() => {
     setFocus("fullName");
@@ -69,17 +67,11 @@ export const RegistrationDialog = (props: RegistrationDialogProps) => {
     props.onClose();
   };
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === "Enter" && isValid) {
-      onSubmit(values);
-    }
-  };
-
   const errorMessage =
     Object.values(errors).length > 0 ? Object.values(errors)[0].message : "";
 
   return (
-    <s.Container onKeyDown={handleKeyDown}>
+    <s.Container>
       <s.Header>
         <s.Title>Register</s.Title>
         <s.CloseButton onClick={handleCloseButtonClick}>

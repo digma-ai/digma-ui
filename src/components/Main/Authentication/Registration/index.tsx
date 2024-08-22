@@ -1,4 +1,4 @@
-import { KeyboardEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { isAlphanumeric } from "../../../../utils/isAlphanumeric";
@@ -95,21 +95,11 @@ export const Registration = ({ onRegister }: RegistrationProps) => {
     sendUserActionTrackingEvent("registration form submitted");
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === "Enter" && isValid) {
-      onSubmit(values);
-    }
-  };
-
   const errorMessage =
     Object.values(errors).length > 0 ? Object.values(errors)[0].message : "";
 
   return (
-    <s.FormContainer
-    // Temporary disabled due to the issue in JetBrains 2024.2.x
-    // onKeyDown={handleKeyDown}
-    >
+    <s.FormContainer>
       <s.Form
         id={"registrationForm"}
         onSubmit={(e) => {
