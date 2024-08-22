@@ -1,7 +1,8 @@
 import { ComponentType, MouseEventHandler } from "react";
 import { IconProps } from "../../icons/types";
 
-export type ButtonType = "primary" | "secondary" | "tertiary";
+export type ButtonType = "primary" | "secondary" | "secondaryBorderless";
+
 export type ButtonSize = "medium" | "small";
 
 export interface NewIconButtonProps {

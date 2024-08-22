@@ -86,3 +86,12 @@ export interface InsightCardCommonProps {
   isMarkAsReadButtonEnabled: boolean;
   viewMode: InsightCardViewMode;
 }
+
+export type Action =
+  | "markAsRead"
+  | "openHistogram"
+  | "recheck"
+  | "viewTicketInfo"
+  | "openTrace"
+  | "openLiveView"
+  | "pin";

@@ -7,7 +7,7 @@ import {
   subscriptRegularTypography
 } from "../../common/App/typographies";
 import { CodeSnippet } from "../../common/CodeSnippet";
-import { Button } from "../../common/v3/Button";
+import { NewButton } from "../../common/v3/NewButton";
 
 export const Container = styled.div`
   margin-top: 12px;
@@ -26,7 +26,7 @@ export const Header = styled.div`
   color: ${({ theme }) => theme.colors.v3.text.primary};
 `;
 
-export const CloseButton = styled(Button)`
+export const CloseButton = styled(NewButton)`
   margin-left: auto;
 `;
 
@@ -89,7 +89,7 @@ export const CardButtons = styled.div`
   align-items: center;
 `;
 
-export const ActionButton = styled(Button)`
+export const ActionButton = styled(NewButton)`
   padding: 6px;
 `;
 

@@ -179,8 +179,7 @@ export const InstallStep = ({
       previousDigmaStatus &&
       !previousDigmaStatus.connection.status &&
       config.digmaStatus?.connection.status &&
-      config.digmaStatus.runningDigmaInstances.length === 1 &&
-      config.digmaStatus.runningDigmaInstances
+      config.digmaStatus.runningDigmaInstances.length === 1
     ) {
       onGoToNextStep();
     }

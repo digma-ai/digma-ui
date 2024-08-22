@@ -1,6 +1,5 @@
 import styled, { css } from "styled-components";
 import { subscriptRegularTypography } from "../../../../../../common/App/typographies";
-import { Button } from "../../../../../../common/v3/Button";
 import { Card } from "../../../../../../common/v3/Card";
 import { StyledCardProps } from "./types";
 
@@ -28,9 +27,8 @@ export const Actions = styled.div`
   display: flex;
 `;
 
-export const MainActions = styled(Actions)`
-  padding-left: 4px;
-  gap: 4px;
+export const MainActionContainer = styled.div`
+  margin-left: 4px;
 `;
 
 export const ContentContainer = styled.div`
@@ -58,10 +56,6 @@ export const StyledCard = styled(Card)<StyledCardProps>`
           }
         `
       : ""}
-`;
-
-export const DismissButton = styled(Button)`
-  color: ${({ theme }) => theme.colors.v3.icon.tertiary};
 `;
 
 export const DismissDialog = styled.div`

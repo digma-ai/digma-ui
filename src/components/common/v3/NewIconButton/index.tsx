@@ -1,6 +1,17 @@
 import React, { ForwardedRef, forwardRef } from "react";
 import * as s from "./styles";
-import { NewIconButtonProps } from "./types";
+import { ButtonType, NewIconButtonProps } from "./types";
+
+const getButtonComponent = (buttonType: ButtonType) => {
+  switch (buttonType) {
+    case "primary":
+      return s.PrimaryIconButton;
+    case "secondary":
+      return s.SecondaryIconButton;
+    case "secondaryBorderless":
+      return s.SecondaryBorderlessIconButton;
+  }
+};
 
 const NewIconButtonComponent = (
   {
@@ -8,7 +19,7 @@ const NewIconButtonComponent = (
     className,
     isDisabled,
     icon: Icon,
-    buttonType,
+    buttonType = "primary",
     size = "medium",
     isHighlighted
   }: NewIconButtonProps,
@@ -20,8 +31,10 @@ const NewIconButtonComponent = (
     }
   };
 
+  const ButtonComponent = getButtonComponent(buttonType);
+
   return (
-    <s.Button
+    <ButtonComponent
       className={className}
       onClick={handleClick}
       disabled={isDisabled}
@@ -31,7 +44,7 @@ const NewIconButtonComponent = (
       $isHighlighted={isHighlighted}
     >
       <Icon size={16} color={"currentColor"} />
-    </s.Button>
+    </ButtonComponent>
   );
 };
 

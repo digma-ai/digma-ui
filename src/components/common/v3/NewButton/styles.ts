@@ -1,226 +1,153 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { subscriptRegularTypography } from "../../App/typographies";
 import { ButtonElementProps } from "./types";
 
-export const Button = styled.button<ButtonElementProps>`
+const BaseButton = styled.button<ButtonElementProps>`
   ${subscriptRegularTypography}
 
-  border-radius: 4px;
+  font-family: inherit;
   display: flex;
   align-items: center;
   gap: 4px;
-  cursor: pointer;
+  border-radius: 4px;
   width: fit-content;
-  padding: ${({ $type }) => {
-    switch ($type) {
-      case "tertiary":
-        return "6px 8px";
-      case "secondary":
-      case "primary":
-      default:
-        return "5px 7px";
-    }
-  }};
-  color: ${({ theme, $type }) => {
-    switch ($type) {
-      case "tertiary":
-      case "secondary":
-        return theme.colors.v3.icon.primary;
-      case "primary":
-      default:
-        return theme.colors.v3.icon.white;
-    }
-  }};
-  border: ${({ theme, $type }) => {
-    switch ($type) {
-      case "tertiary":
-        return "none";
-      case "secondary":
-        return `1px solid ${theme.colors.v3.stroke.dark}`;
-      case "primary":
-      default:
-        return `1px solid ${theme.colors.v3.surface.brandTertiary}`;
-    }
-  }};
-  background: ${({ theme, $type }) => {
-    switch ($type) {
-      case "tertiary":
-        return "none";
-      case "secondary":
-        return theme.colors.v3.surface.primary;
-      case "primary":
-      default:
-        return theme.colors.v3.surface.brandTertiary;
-    }
-  }};
-
-  span {
-    color: ${({ theme, $type }) => {
-      switch ($type) {
-        case "tertiary":
-        case "secondary":
-          return theme.colors.v3.text.primary;
-        case "primary":
-        default:
-          return theme.colors.v3.text.white;
-      }
-    }};
-  }
-
-  ${({ $type }) =>
-    $type === "secondary"
-      ? css`
-          box-shadow: 0 2px 4px 0 rgb(0 0 0 / 13%);
-        `
-      : ""};
+  cursor: pointer;
+  user-select: none;
 
   &:disabled {
     cursor: initial;
-    color: ${({ theme, $type }) => {
-      switch ($type) {
-        case "tertiary":
-        case "secondary":
-          return theme.colors.v3.icon.disabled;
-        case "primary":
-        default:
-          return theme.colors.v3.icon.tertiary;
-      }
-    }};
-    border: ${({ theme, $type }) => {
-      switch ($type) {
-        case "tertiary":
-          return "none";
-        case "secondary":
-          return `1px solid ${theme.colors.v3.stroke.tertiary}`;
-        case "primary":
-        default:
-          return `1px solid ${theme.colors.v3.surface.gray}`;
-      }
-    }};
-    background: ${({ theme, $type }) => {
-      switch ($type) {
-        case "tertiary":
-          return "none";
-        case "secondary":
-          return theme.colors.v3.surface.primaryLight;
-        case "primary":
-        default:
-          return theme.colors.v3.surface.gray;
-      }
-    }};
+  }
+`;
+
+export const PrimaryButton = styled(BaseButton)`
+  padding: 5px 7px;
+  color: ${({ theme }) => theme.colors.v3.icon.white};
+  border: 1px solid ${({ theme }) => theme.colors.v3.surface.brandTertiary};
+  background: ${({ theme }) => theme.colors.v3.surface.brandTertiary};
+
+  span {
+    color: ${({ theme }) => theme.colors.v3.text.white};
+  }
+
+  &:hover {
+    border: 1px solid ${({ theme }) => theme.colors.v3.surface.brandSecondary};
+    background: ${({ theme }) => theme.colors.v3.surface.brandSecondary};
+  }
+
+  &:active {
+    border: 1px solid ${({ theme }) => theme.colors.v3.surface.brandSecondary};
+    background: ${({ theme }) => theme.colors.v3.surface.brandPrimary};
+  }
+
+  &:disabled {
+    color: ${({ theme }) => theme.colors.v3.icon.tertiary};
+    border: 1px solid ${({ theme }) => theme.colors.v3.surface.gray};
+    background: ${({ theme }) => theme.colors.v3.surface.gray};
 
     span {
-      color: ${({ theme, $type }) => {
-        switch ($type) {
-          case "tertiary":
-          case "secondary":
-            return theme.colors.v3.text.disabled;
-          case "primary":
-          default:
-            return theme.colors.v3.text.tertiary;
-        }
-      }};
+      color: ${({ theme }) => theme.colors.v3.text.tertiary};
+    }
+  }
+`;
+
+export const SecondaryButton = styled(BaseButton)`
+  padding: 5px 7px;
+  color: ${({ theme }) => theme.colors.v3.icon.primary};
+  border: 1px solid ${({ theme }) => theme.colors.v3.stroke.dark};
+  background: ${({ theme }) => theme.colors.v3.surface.primary};
+  box-shadow: 0 2px 4px 0 rgb(0 0 0 / 13%);
+
+  span {
+    color: ${({ theme }) => theme.colors.v3.text.primary};
+  }
+
+  &:hover {
+    border: 1px solid ${({ theme }) => theme.colors.v3.stroke.primary};
+    background: ${({ theme }) => theme.colors.v3.surface.brandDark};
+  }
+
+  &:active {
+    border: 1px solid ${({ theme }) => theme.colors.v3.stroke.primary};
+    background: ${({ theme }) => theme.colors.v3.surface.primary};
+  }
+
+  &:disabled {
+    color: ${({ theme }) => theme.colors.v3.icon.disabled};
+    border: 1px solid ${({ theme }) => theme.colors.v3.stroke.tertiary};
+    background: ${({ theme }) => theme.colors.v3.surface.primaryLight};
+
+    span {
+      color: ${({ theme }) => theme.colors.v3.text.disabled};
+    }
+  }
+`;
+
+export const PrimaryBorderlessButton = styled(BaseButton)`
+  padding: 5px 7px;
+  color: ${({ theme }) => theme.colors.v3.icon.primary};
+  border: 1px solid transparent;
+  background: none;
+
+  span {
+    color: ${({ theme }) => theme.colors.v3.text.primary};
+  }
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.v3.icon.brandTertiary};
+
+    span {
+      color: ${({ theme }) => theme.colors.v3.text.link};
     }
   }
 
-  &:hover:enabled {
-    color: ${({ theme, $type }) => {
-      switch ($type) {
-        case "tertiary":
-          return theme.colors.v3.icon.brandTertiary;
-        case "secondary":
-          return theme.colors.v3.icon.primary;
-        case "primary":
-        default:
-          return theme.colors.v3.icon.white;
-      }
-    }};
-    border: ${({ theme, $type }) => {
-      switch ($type) {
-        case "tertiary":
-          return "none";
-        case "secondary":
-          return `1px solid ${theme.colors.v3.stroke.primary}`;
-        case "primary":
-        default:
-          return `1px solid ${theme.colors.v3.surface.brandSecondary}`;
-      }
-    }};
-    background: ${({ theme, $type }) => {
-      switch ($type) {
-        case "tertiary":
-          return "none";
-        case "secondary":
-          return theme.colors.v3.surface.brandDark;
-        case "primary":
-        default:
-          return theme.colors.v3.surface.brandSecondary;
-      }
-    }};
+  &:active {
+    color: ${({ theme }) => theme.colors.v3.icon.brandSecondary};
 
     span {
-      color: ${({ theme, $type }) => {
-        switch ($type) {
-          case "tertiary":
-            return theme.colors.v3.text.link;
-          case "secondary":
-            return theme.colors.v3.text.primary;
-          case "primary":
-          default:
-            return theme.colors.v3.text.white;
-        }
-      }};
+      color: ${({ theme }) => theme.colors.v3.surface.brandSecondary};
     }
   }
 
-  &:focus:enabled,
-  &:active:enabled {
-    color: ${({ theme, $type }) => {
-      switch ($type) {
-        case "tertiary":
-          return theme.colors.v3.icon.brandSecondary;
-        case "secondary":
-          return theme.colors.v3.icon.primary;
-        case "primary":
-        default:
-          return theme.colors.v3.icon.white;
-      }
-    }};
-    border: ${({ theme, $type }) => {
-      switch ($type) {
-        case "tertiary":
-          return "none";
-        case "secondary":
-          return `1px solid ${theme.colors.v3.stroke.primary}`;
-        case "primary":
-        default:
-          return `1px solid ${theme.colors.v3.surface.brandSecondary}`;
-      }
-    }};
-    background: ${({ theme, $type }) => {
-      switch ($type) {
-        case "tertiary":
-          return "none";
-        case "secondary":
-          return theme.colors.v3.surface.primary;
-        case "primary":
-        default:
-          return theme.colors.v3.surface.brandPrimary;
-      }
-    }};
+  &:disabled {
+    color: ${({ theme }) => theme.colors.v3.icon.disabled};
 
     span {
-      color: ${({ theme, $type }) => {
-        switch ($type) {
-          case "tertiary":
-            return theme.colors.v3.surface.brandSecondary;
-          case "secondary":
-            return theme.colors.v3.text.primary;
-          case "primary":
-          default:
-            return theme.colors.v3.text.white;
-        }
-      }};
+      color: ${({ theme }) => theme.colors.v3.text.disabled};
+    }
+  }
+`;
+
+export const SecondaryBorderlessButton = styled(BaseButton)`
+  padding: 6px 0;
+  color: ${({ theme }) => theme.colors.v3.icon.tertiary};
+  border: 1px solid transparent;
+  background: none;
+
+  span {
+    color: ${({ theme }) => theme.colors.v3.text.tertiary};
+  }
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.v3.icon.primary};
+
+    span {
+      color: ${({ theme }) => theme.colors.v3.text.primary};
+    }
+  }
+
+  &:active {
+    color: ${({ theme }) => theme.colors.v3.icon.secondary};
+
+    span {
+      color: ${({ theme }) => theme.colors.v3.text.secondary};
+    }
+  }
+
+  &:disabled {
+    color: ${({ theme }) => theme.colors.v3.icon.disabled};
+
+    span {
+      color: ${({ theme }) => theme.colors.v3.text.disabled};
     }
   }
 `;

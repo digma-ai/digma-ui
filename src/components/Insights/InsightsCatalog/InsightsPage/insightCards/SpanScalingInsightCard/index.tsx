@@ -75,6 +75,7 @@ export const SpanScalingInsightCard = ({
                 ticketLink={insight.ticketLink}
                 isHintEnabled={isJiraHintEnabled && i === 0}
                 insightType={insight.type}
+                type={"icon"}
               />
             ];
 

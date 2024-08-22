@@ -16,23 +16,34 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const Primary: Story = {
   args: {
-    icon: CrosshairIcon
-  }
-};
-
-export const WithLabel: Story = {
-  args: {
-    label: "Click me",
-    icon: CrosshairIcon
-  }
-};
-
-export const Disabled: Story = {
-  args: {
-    label: "Click me",
     icon: CrosshairIcon,
-    isDisabled: true
+    label: "Click me",
+    buttonType: "primary"
+  }
+};
+
+export const Secondary: Story = {
+  args: {
+    icon: CrosshairIcon,
+    label: "Click me",
+    buttonType: "secondary"
+  }
+};
+
+export const PrimaryBorderless: Story = {
+  args: {
+    icon: CrosshairIcon,
+    label: "Click me",
+    buttonType: "primaryBorderless"
+  }
+};
+
+export const SecondaryBorderless: Story = {
+  args: {
+    icon: CrosshairIcon,
+    label: "Click me",
+    buttonType: "secondaryBorderless"
   }
 };
