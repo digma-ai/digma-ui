@@ -28,7 +28,7 @@ export const Button = styled.button<ButtonProps>`
   align-items: center;
   width: 100%;
   justify-content: flex-end;
-  color: ${({ theme }) => theme.colors.v3.text.primary};
+  color: ${({ theme }) => theme.colors.v3.text.secondary};
 
   &:hover {
     border: 1px solid ${({ theme }) => theme.colors.v3.stroke.primaryLight};

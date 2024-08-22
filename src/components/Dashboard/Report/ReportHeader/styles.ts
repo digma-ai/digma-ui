@@ -46,5 +46,4 @@ export const Background = styled.div`
 export const FilterSelector = styled(Select)`
   width: 180px;
   height: 28px;
-  color: ${({ theme }) => theme.colors.v3.text.secondary};
 `;

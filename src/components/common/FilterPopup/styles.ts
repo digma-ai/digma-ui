@@ -63,12 +63,6 @@ export const Filter = styled.div`
   flex-direction: column;
   gap: 8px;
   color: ${({ theme }) => theme.colors.v3.text.secondary};
-
-  button {
-    span {
-      color: ${({ theme }) => theme.colors.v3.text.secondary};
-    }
-  }
 `;
 
 export const FilterCategoryName = styled.div`
