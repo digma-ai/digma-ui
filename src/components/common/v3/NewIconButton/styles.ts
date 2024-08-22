@@ -1,184 +1,109 @@
 import styled, { css } from "styled-components";
 import { ButtonElementProps } from "./types";
 
-const activeStyles = css<ButtonElementProps>`
-  color: ${({ theme, $type }) => {
-    switch ($type) {
-      case "tertiary":
-      case "secondary":
-        return theme.colors.v3.icon.primary;
-      case "primary":
-      default:
-        return theme.colors.v3.icon.white;
-    }
-  }};
-  border: ${({ theme, $type }) => {
-    switch ($type) {
-      case "tertiary":
-        return "none";
-      case "secondary":
-        return `1px solid ${theme.colors.v3.stroke.primary}`;
-      case "primary":
-      default:
-        return `1px solid ${theme.colors.v3.surface.brandSecondary}`;
-    }
-  }};
-  background: ${({ theme, $type }) => {
-    switch ($type) {
-      case "tertiary":
-        return "none";
-      case "secondary":
-        return theme.colors.v3.surface.brandDark;
-      case "primary":
-      default:
-        return theme.colors.v3.surface.brandPrimary;
-    }
-  }};
-`;
-
-export const Button = styled.button<ButtonElementProps>`
+const BaseIconButton = styled.button<ButtonElementProps>`
   font-family: inherit;
-  border-radius: 4px;
   display: flex;
   flex-shrink: 0;
+  border-radius: 4px;
   cursor: pointer;
   user-select: none;
-  padding: ${({ $type, $size }) => {
-    switch ($type) {
-      case "tertiary":
-        switch ($size) {
-          case "small":
-            return 4;
-          case "medium":
-          default:
-            return 6;
-        }
-      case "secondary":
-      case "primary":
+  padding: ${({ $size }) => {
+    switch ($size) {
+      case "small":
+        return 3;
+      case "medium":
       default:
-        switch ($size) {
-          case "small":
-            return 3;
-          case "medium":
-          default:
-            return 5;
-        }
+        return 5;
     }
   }}px;
-  color: ${({ theme, $type }) => {
-    switch ($type) {
-      case "tertiary":
-      case "secondary":
-        return theme.colors.v3.icon.tertiary;
-      case "primary":
-      default:
-        return theme.colors.v3.icon.white;
-    }
-  }};
-  border: ${({ theme, $type }) => {
-    switch ($type) {
-      case "tertiary":
-        return "none";
-      case "secondary":
-        return `1px solid ${theme.colors.v3.stroke.dark}`;
-      case "primary":
-      default:
-        return `1px solid ${theme.colors.v3.surface.brandTertiary}`;
-    }
-  }};
-  background: ${({ theme, $type }) => {
-    switch ($type) {
-      case "tertiary":
-        return "none";
-      case "secondary":
-        return theme.colors.v3.surface.primary;
-      case "primary":
-      default:
-        return theme.colors.v3.surface.brandTertiary;
-    }
-  }};
-
-  ${({ $type }) =>
-    $type === "secondary"
-      ? css`
-          box-shadow: 0 2px 4px 0 rgb(0 0 0 / 13%);
-        `
-      : ""};
-
-  ${({ $isHighlighted }) => ($isHighlighted ? activeStyles : "")}
 
   &:disabled {
     cursor: initial;
-    color: ${({ theme, $type }) => {
-      switch ($type) {
-        case "tertiary":
-        case "secondary":
-          return theme.colors.v3.icon.disabled;
-        case "primary":
-        default:
-          return theme.colors.v3.icon.tertiary;
-      }
-    }};
-    border: ${({ theme, $type }) => {
-      switch ($type) {
-        case "tertiary":
-          return "none";
-        case "secondary":
-          return `1px solid ${theme.colors.v3.stroke.tertiary}`;
-        case "primary":
-        default:
-          return `1px solid ${theme.colors.v3.surface.gray}`;
-      }
-    }};
-    background: ${({ theme, $type }) => {
-      switch ($type) {
-        case "tertiary":
-          return "none";
-        case "secondary":
-          return theme.colors.v3.surface.primaryLight;
-        case "primary":
-        default:
-          return theme.colors.v3.surface.gray;
-      }
-    }};
+  }
+`;
+
+const PrimaryIconButtonActiveStyles = css`
+  border: 1px solid ${({ theme }) => theme.colors.v3.surface.brandSecondary};
+  background: ${({ theme }) => theme.colors.v3.surface.brandPrimary};
+`;
+
+export const PrimaryIconButton = styled(BaseIconButton)`
+  color: ${({ theme }) => theme.colors.v3.icon.white};
+  border: 1px solid ${({ theme }) => theme.colors.v3.surface.brandTertiary};
+  background: ${({ theme }) => theme.colors.v3.surface.brandTertiary};
+
+  ${({ $isHighlighted }) =>
+    $isHighlighted ? PrimaryIconButtonActiveStyles : ""}
+
+  &:hover {
+    border: 1px solid ${({ theme }) => theme.colors.v3.surface.brandSecondary};
+    background: ${({ theme }) => theme.colors.v3.surface.brandSecondary};
   }
 
-  &:hover:enabled {
-    color: ${({ theme, $type }) => {
-      switch ($type) {
-        case "tertiary":
-        case "secondary":
-          return theme.colors.v3.icon.primary;
-        case "primary":
-        default:
-          return theme.colors.v3.icon.white;
-      }
-    }};
-    border: ${({ theme, $type }) => {
-      switch ($type) {
-        case "tertiary":
-          return "none";
-        case "secondary":
-          return `1px solid ${theme.colors.v3.stroke.primary}`;
-        case "primary":
-        default:
-          return `1px solid ${theme.colors.v3.surface.brandSecondary}`;
-      }
-    }};
-    background: ${({ theme, $type }) => {
-      switch ($type) {
-        case "tertiary":
-          return "none";
-        case "secondary":
-          return theme.colors.v3.surface.primary;
-        case "primary":
-        default:
-          return theme.colors.v3.surface.brandSecondary;
-      }
-    }};
+  &:active {
+    ${PrimaryIconButtonActiveStyles}
   }
 
-  &:active:enabled {
-    ${activeStyles}
+  &:disabled {
+    color: ${({ theme }) => theme.colors.v3.icon.tertiary};
+    border: 1px solid ${({ theme }) => theme.colors.v3.surface.gray};
+    background: ${({ theme }) => theme.colors.v3.surface.gray};
+  }
+`;
+
+const SecondaryIconButtonActiveStyles = css`
+  color: ${({ theme }) => theme.colors.v3.icon.primary};
+  border: 1px solid ${({ theme }) => theme.colors.v3.stroke.primary};
+  background: ${({ theme }) => theme.colors.v3.surface.brandDark};
+`;
+
+export const SecondaryIconButton = styled(BaseIconButton)`
+  color: ${({ theme }) => theme.colors.v3.icon.tertiary};
+  border: 1px solid ${({ theme }) => theme.colors.v3.stroke.dark};
+  background: ${({ theme }) => theme.colors.v3.surface.primary};
+  box-shadow: 0 2px 4px 0 rgb(0 0 0 / 13%);
+
+  ${({ $isHighlighted }) =>
+    $isHighlighted ? SecondaryIconButtonActiveStyles : ""}
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.v3.icon.primary};
+    border: 1px solid ${({ theme }) => theme.colors.v3.stroke.primary};
+  }
+
+  &:active {
+    ${SecondaryIconButtonActiveStyles}
+  }
+
+  &:disabled {
+    color: ${({ theme }) => theme.colors.v3.icon.disabled};
+    border: 1px solid ${({ theme }) => theme.colors.v3.stroke.tertiary};
+    background: ${({ theme }) => theme.colors.v3.surface.primaryLight};
+  }
+`;
+
+const SecondaryBorderlessIconButtonActiveStyles = css`
+  color: ${({ theme }) => theme.colors.v3.icon.primary};
+`;
+
+export const SecondaryBorderlessIconButton = styled(BaseIconButton)`
+  color: ${({ theme }) => theme.colors.v3.icon.tertiary};
+  border: 1px solid transparent;
+  background: none;
+
+  ${({ $isHighlighted }) =>
+    $isHighlighted ? SecondaryBorderlessIconButtonActiveStyles : ""}
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.v3.icon.primary};
+  }
+
+  &:active {
+    ${SecondaryBorderlessIconButtonActiveStyles}
+  }
+
+  &:disabled {
+    color: ${({ theme }) => theme.colors.v3.icon.disabled};
   }
 `;

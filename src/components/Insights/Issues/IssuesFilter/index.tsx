@@ -259,7 +259,7 @@ export const IssuesFilter = () => {
           />
           <s.Footer>
             <s.ClearAllButton
-              buttonType={"tertiary"}
+              buttonType={"primaryBorderless"}
               label={"Clear filters"}
               isDisabled={selectedFiltersCount === 0}
               onClick={handleClearFiltersButtonClick}

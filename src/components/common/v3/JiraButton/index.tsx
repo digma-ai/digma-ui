@@ -11,7 +11,8 @@ import { JiraLogoIcon } from "../../../common/icons/16px/JiraLogoIcon";
 import { OpenLinkIcon } from "../../../common/icons/OpenLinkIcon";
 import { Tooltip } from "../../../common/v3/Tooltip";
 import { NewPopover } from "../../NewPopover";
-import { Button } from "../Button";
+import { NewButton } from "../NewButton";
+import { NewIconButton } from "../NewIconButton";
 import * as s from "./styles";
 import { JiraButtonProps } from "./types";
 
@@ -21,7 +22,7 @@ export const JiraButtonComponent = (
     isHintEnabled,
     onTicketInfoOpen,
     spanCodeObjectId,
-    buttonType,
+    type,
     label,
     insightType
   }: JiraButtonProps,
@@ -68,56 +69,62 @@ export const JiraButtonComponent = (
     openTicketInfo("try now button click");
   };
 
-  const renderButton = () => (
-    <div>
-      {ticketLink ? (
-        <NewPopover
-          content={
-            <Popup>
-              <MenuList
-                items={[
-                  {
-                    icon: <OpenLinkIcon />,
-                    label: "View",
-                    id: "view",
-                    onClick: handleViewMenuItemClick
-                  },
-                  {
-                    icon: <PencilIcon />,
-                    label: "Edit",
-                    id: "edit",
-                    onClick: handleEditMenuItemClick
-                  }
-                ]}
-              />
-            </Popup>
-          }
-          isOpen={isMenuOpen}
-          onOpenChange={handleMenuOpenChange}
-          placement={"bottom-start"}
-        >
-          <Button
-            buttonType={buttonType}
+  const renderButton = () => {
+    const ButtonComponent = type === "icon" ? NewIconButton : NewButton;
+    const buttonComponentType =
+      type === "icon" ? "secondaryBorderless" : "primary";
+
+    return (
+      <div>
+        {ticketLink ? (
+          <NewPopover
+            content={
+              <Popup>
+                <MenuList
+                  items={[
+                    {
+                      icon: <OpenLinkIcon />,
+                      label: "View",
+                      id: "view",
+                      onClick: handleViewMenuItemClick
+                    },
+                    {
+                      icon: <PencilIcon />,
+                      label: "Edit",
+                      id: "edit",
+                      onClick: handleEditMenuItemClick
+                    }
+                  ]}
+                />
+              </Popup>
+            }
+            isOpen={isMenuOpen}
+            onOpenChange={handleMenuOpenChange}
+            placement={"bottom-start"}
+          >
+            <ButtonComponent
+              buttonType={buttonComponentType}
+              label={label}
+              icon={() => (
+                <JiraLogoIcon
+                  isActive={true}
+                  size={16}
+                  color={theme.colors.v3.icon.brandSecondary}
+                />
+              )}
+            />
+          </NewPopover>
+        ) : (
+          <ButtonComponent
+            buttonType={buttonComponentType}
             label={label}
-            icon={() => (
-              <JiraLogoIcon
-                isActive={true}
-                size={16}
-                color={theme.colors.v3.icon.brandSecondary}
-              />
-            )}
+            icon={JiraLogoIcon}
+            onClick={handleJiraButtonClick}
           />
-        </NewPopover>
-      ) : (
-        <Button
-          buttonType={buttonType}
-          label={label}
-          icon={JiraLogoIcon}
-          onClick={handleJiraButtonClick}
-        />
-      )}
-    </div>
-  );
+        )}
+      </div>
+    );
+  };
 
   const boundaryEl =
     document.getElementById(INSIGHTS_PAGE_CONTAINER_ID) ?? undefined;

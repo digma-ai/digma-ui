@@ -1,8 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useGlobalStore } from "../../containers/Main/stores/useGlobalStore";
+import { getFeatureFlagValue } from "../../featureFlags";
 import { useDebounce } from "../../hooks/useDebounce";
 import { usePrevious } from "../../hooks/usePrevious";
+import { FeatureFlag } from "../../types";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 import { useHistory } from "../Main/useHistory";
 import { EmptyState } from "../common/EmptyState";
@@ -40,6 +42,11 @@ export const Assets = () => {
     useState<DataRefresher | null>(null);
   const { goTo } = useHistory();
   const isBackendUpgradeMessageVisible = false;
+  const backendInfo = useGlobalStore.use.backendInfo();
+  const areExtendedAssetsFiltersEnabled = getFeatureFlagValue(
+    backendInfo,
+    FeatureFlag.ARE_EXTENDED_ASSETS_FILTERS_ENABLED
+  );
 
   useEffect(() => {
     if (!scope?.span) {
@@ -174,9 +181,12 @@ export const Assets = () => {
           <AssetsFilter
             onApply={handleApplyFilters}
             filters={selectedFilters}
-            // Temporarily disabled passing of assetScopeOption and searchQuery due to issues on the backend side
-            assetScopeOption={null}
-            searchQuery={""}
+            assetScopeOption={
+              areExtendedAssetsFiltersEnabled ? assetScopeOption : null
+            }
+            searchQuery={
+              areExtendedAssetsFiltersEnabled ? debouncedSearchInputValue : ""
+            }
           />
           <Tooltip title={"Refresh"}>
             <s.RefreshButton

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { useGlobalStore } from "../../../../../../../containers/Main/stores/useGlobalStore";
 import { usePrevious } from "../../../../../../../hooks/usePrevious";
 import { isString } from "../../../../../../../typeGuards/isString";
@@ -11,21 +11,22 @@ import { HistogramIcon } from "../../../../../../common/icons/16px/HistogramIcon
 import { PinIcon } from "../../../../../../common/icons/16px/PinIcon";
 import { RecheckIcon } from "../../../../../../common/icons/16px/RecheckIcon";
 import { CrossIcon } from "../../../../../../common/icons/CrossIcon";
-import { Button } from "../../../../../../common/v3/Button";
-import { BaseButtonProps } from "../../../../../../common/v3/Button/types";
 import { JiraButton } from "../../../../../../common/v3/JiraButton";
+import { NewButton } from "../../../../../../common/v3/NewButton";
 import { Tooltip } from "../../../../../../common/v3/Tooltip";
 import { trackingEvents } from "../../../../../tracking";
 import { isEndpointInsight, isSpanInsight } from "../../../../../typeGuards";
 import { InsightStatus } from "../../../../../types";
 import { IssueCompactCard } from "../IssueCompactCard";
+import { ActionButton } from "./ActionButton";
+import { ActionButtonType } from "./ActionButton/types";
 import { InsightHeader } from "./InsightHeader";
 import { ProductionAffectionBar } from "./ProductionAffectionBar";
 import { RecalculateBar } from "./RecalculateBar";
 import { useDismissal } from "./hooks/useDismissal";
 import { useMarkingAsRead } from "./hooks/useMarkingAsRead";
 import * as s from "./styles";
-import { InsightCardProps } from "./types";
+import { Action, InsightCardProps } from "./types";
 
 const HIGH_CRITICALITY_THRESHOLD = 0.8;
 
@@ -208,132 +209,145 @@ export const InsightCard = ({
     );
   }
 
+  const renderAction = (action: Action, type: ActionButtonType) => {
+    switch (action) {
+      case "markAsRead":
+        return (
+          <ActionButton
+            type={type}
+            icon={CheckmarkCircleIcon}
+            label={"Mark as read"}
+            title={"Mark as read"}
+            isDisabled={isMarkingAsReadInProgress}
+            onClick={handleMarkAsReadButtonClick}
+          />
+        );
+      case "openHistogram":
+        return (
+          <ActionButton
+            type={type}
+            icon={HistogramIcon}
+            label={"Histogram"}
+            title={"Open Histogram"}
+            onClick={handleHistogramButtonClick}
+          />
+        );
+      case "recheck":
+        return (
+          <ActionButton
+            type={type}
+            icon={RecheckIcon}
+            label={"Recheck"}
+            title={"Recheck"}
+            onClick={handleRecheckButtonClick}
+          />
+        );
+      case "viewTicketInfo":
+        return (
+          <Tooltip title={"Open ticket info"}>
+            <JiraButton
+              type={type}
+              ticketLink={jiraTicketInfo?.ticketLink}
+              isHintEnabled={jiraTicketInfo?.isHintEnabled}
+              spanCodeObjectId={jiraTicketInfo?.spanCodeObjectId}
+              label={"Ticket"}
+              onTicketInfoOpen={openTicketInfo}
+              insightType={insight.type}
+            />
+          </Tooltip>
+        );
+      case "openTrace":
+        return (
+          <ActionButton
+            type={type}
+            icon={TraceIcon}
+            label={"Trace"}
+            title={"Open Trace"}
+            onClick={() => onGoToTrace && onGoToTrace()}
+          />
+        );
+      case "openLiveView":
+        return (
+          <ActionButton
+            type={type}
+            icon={DoubleCircleIcon}
+            label={"Live"}
+            title={"Open live view"}
+            onClick={() => onGoToLive && onGoToLive()}
+          />
+        );
+      case "pin":
+        return (
+          <ActionButton
+            type={type}
+            icon={PinIcon}
+            label={"Pin"}
+            title={"Pin"}
+            onClick={() =>
+              //TODO: implement
+              {
+                return undefined;
+              }
+            }
+          />
+        );
+      default:
+        return null;
+    }
+  };
+
   const renderActions = () => {
-    const buttonsToRender: {
-      tooltip: string;
-      button: React.ComponentType<BaseButtonProps>;
-    }[] = [];
+    const actions: Action[] = [];
 
     if (
       isMarkAsReadButtonEnabled &&
       insight.isReadable &&
       insight.isRead === false
     ) {
-      buttonsToRender.push({
-        tooltip: "Mark as read",
-        button: (btnProps) => (
-          <Button
-            icon={CheckmarkCircleIcon}
-            label={"Mark as read"}
-            onClick={handleMarkAsReadButtonClick}
-            isDisabled={isMarkingAsReadInProgress}
-            {...btnProps}
-          />
-        )
-      });
+      actions.push("markAsRead");
     }
 
     if (onOpenHistogram) {
-      buttonsToRender.push({
-        tooltip: "Open Histogram",
-        button: (btnProps) => (
-          <Button
-            icon={HistogramIcon}
-            label={"Histogram"}
-            onClick={handleHistogramButtonClick}
-            {...btnProps}
-          />
-        )
-      });
+      actions.push("openHistogram");
     }
 
     if (insight.isRecalculateEnabled) {
-      buttonsToRender.push({
-        tooltip: "Recheck",
-        button: (btnProps) => (
-          <Button
-            icon={RecheckIcon}
-            label={"Recheck"}
-            onClick={handleRecheckButtonClick}
-            {...btnProps}
-          />
-        )
-      });
+      actions.push("recheck");
     }
 
     if (onJiraButtonClick) {
-      buttonsToRender.push({
-        tooltip: "Open ticket info",
-        button: (btnProps) => (
-          <JiraButton
-            ticketLink={jiraTicketInfo?.ticketLink}
-            isHintEnabled={jiraTicketInfo?.isHintEnabled}
-            spanCodeObjectId={jiraTicketInfo?.spanCodeObjectId}
-            label={"Ticket"}
-            onTicketInfoOpen={openTicketInfo}
-            insightType={insight.type}
-            {...btnProps}
-          />
-        )
-      });
+      actions.push("viewTicketInfo");
     }
 
     if (isJaegerEnabled && onGoToTrace) {
-      buttonsToRender.push({
-        tooltip: "Open Trace",
-        button: (btnProps) => (
-          <Button
-            icon={TraceIcon}
-            label={"Trace"}
-            onClick={() => onGoToTrace()}
-            {...btnProps}
-          />
-        )
-      });
+      actions.push("openTrace");
     }
 
     if (onGoToLive) {
-      buttonsToRender.push({
-        tooltip: "Open live view",
-        button: (btnProps) => (
-          <Button
-            icon={DoubleCircleIcon}
-            label={"Live"}
-            onClick={() => onGoToLive()}
-            {...btnProps}
-          />
-        )
-      });
+      actions.push("openLiveView");
     }
 
     if (onPin) {
-      buttonsToRender.push({
-        tooltip: "Pin",
-        button: (btnProps) => (
-          <Button icon={PinIcon} label={"Pin"} {...btnProps} />
-        )
-      });
+      actions.push("pin");
     }
 
-    if (buttonsToRender.length === 0) {
+    if (actions.length === 0) {
       return;
     }
 
-    const toolbarActions = buttonsToRender.slice(0, -1);
-    const mainAction = buttonsToRender[buttonsToRender.length - 1];
+    const toolbarActions = actions.slice(0, -1);
+    const mainAction = actions[actions.length - 1];
 
     return (
       <s.Actions>
         {toolbarActions.map((toolbarAction) => (
-          <Tooltip key={toolbarAction.tooltip} title={toolbarAction.tooltip}>
-            <div>
-              <toolbarAction.button buttonType={"tertiary"} label={undefined} />
-            </div>
-          </Tooltip>
+          <Fragment key={toolbarAction}>
+            {renderAction(toolbarAction, "icon")}
+          </Fragment>
         ))}
-        <s.MainActions>
-          <mainAction.button buttonType={"primary"} />
-        </s.MainActions>
+        <s.MainActionContainer>
+          {renderAction(mainAction, "regular")}
+        </s.MainActionContainer>
       </s.Actions>
     );
   };
@@ -378,20 +392,20 @@ export const InsightCard = ({
                 {insight.isDismissible && (
                   <s.ButtonContainer>
                     {insight.isDismissed ? (
-                      <s.DismissButton
+                      <NewButton
                         label={isDismissalChangeInProgress ? "Showing" : "Show"}
-                        buttonType={"tertiary"}
+                        buttonType={"secondaryBorderless"}
                         isDisabled={isDismissalChangeInProgress}
                         onClick={handleShowClick}
                       />
                     ) : (
-                      <s.DismissButton
+                      <NewButton
                         icon={CrossIcon}
                         isDisabled={isDismissalChangeInProgress}
                         label={
                           isDismissalChangeInProgress ? "Dismissing" : "Dismiss"
                         }
-                        buttonType={"tertiary"}
+                        buttonType={"secondaryBorderless"}
                         onClick={() => setDismissConfirmationOpened(true)}
                       />
                     )}
@@ -404,12 +418,11 @@ export const InsightCard = ({
               <s.DismissDialog>
                 Dismiss insight?
                 <s.DismissDialogActions>
-                  <Button
+                  <NewButton
                     label={"No"}
-                    buttonType={"primary"}
                     onClick={() => setDismissConfirmationOpened(false)}
                   />
-                  <Button
+                  <NewButton
                     label={"Yes, dismiss"}
                     buttonType={"secondary"}
                     onClick={handleDismissClick}

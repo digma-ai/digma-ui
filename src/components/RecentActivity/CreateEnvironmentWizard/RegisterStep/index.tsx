@@ -1,4 +1,4 @@
-import { KeyboardEvent, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { actions as globalActions } from "../../../../actions";
 import { usePrevious } from "../../../../hooks/usePrevious";
@@ -41,14 +41,12 @@ export const RegisterStep = ({ onNext }: RegisterStepProps) => {
   const {
     handleSubmit,
     control,
-    getValues,
     formState: { errors, isValid },
     setFocus
   } = useForm<RegistrationFormValues>({
     mode: "onChange",
     defaultValues: formDefaultValues
   });
-  const values = getValues();
   const config = useContext(ConfigContext);
   const previousUserRegistrationEmail = usePrevious(
     config.userRegistrationEmail
@@ -88,14 +86,8 @@ export const RegisterStep = ({ onNext }: RegisterStepProps) => {
     onNext(true);
   };
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === "Enter" && isValid) {
-      onSubmit(values);
-    }
-  };
-
   return (
-    <s.Container onKeyDown={handleKeyDown}>
+    <s.Container>
       <s.Description>
         <s.Header>Register</s.Header>
         Please register with your email address

@@ -6,7 +6,8 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "stylelint.validate": ["typescript"],
   "cSpell.words": [
-    "Checkmark",
+    "borderless",
+    "checkmark",
     "digma",
     "digmathon",
     "digmo",

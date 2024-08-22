@@ -16,15 +16,23 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const Primary: Story = {
   args: {
-    icon: CrosshairIcon
+    icon: CrosshairIcon,
+    buttonType: "primary"
   }
 };
 
-export const Disabled: Story = {
+export const Secondary: Story = {
   args: {
     icon: CrosshairIcon,
-    isDisabled: true
+    buttonType: "secondary"
+  }
+};
+
+export const SecondaryBorderless: Story = {
+  args: {
+    icon: CrosshairIcon,
+    buttonType: "secondaryBorderless"
   }
 };

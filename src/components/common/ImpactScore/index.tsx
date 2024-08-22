@@ -1,9 +1,37 @@
+import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
+import { getFeatureFlagValue } from "../../../featureFlags";
+import { FeatureFlag } from "../../../types";
+import { BackendInfo } from "../App/types";
 import { ScoreIndicator } from "../ScoreIndicator";
 import { Tooltip } from "../Tooltip";
 import * as s from "./styles";
 import { ImpactScoreProps } from "./types";
 
-export const getImpactScoreLabel = (score: number) => {
+const getImpactScoreLabel = (
+  score: number,
+  backendInfo: BackendInfo | null
+) => {
+  const isNewImpactScoreCalculationEnabled = getFeatureFlagValue(
+    backendInfo,
+    FeatureFlag.IS_NEW_IMPACT_SCORE_CALCULATION_ENABLED
+  );
+
+  if (isNewImpactScoreCalculationEnabled) {
+    if (score <= 0) {
+      return "Waiting for data";
+    }
+
+    if (score <= 0.01) {
+      return "Low";
+    }
+
+    if (score <= 0.1) {
+      return "Medium";
+    }
+
+    return "High";
+  }
+
   if (score <= 0) {
     return "Waiting for data";
   }
@@ -24,6 +52,8 @@ export const ImpactScore = ({
   showIndicator,
   indicatorPosition
 }: ImpactScoreProps) => {
+  const backendInfo = useGlobalStore.use.backendInfo();
+
   let scoreIndicatorPosition: "start" | "end" | undefined;
 
   if (score > 0 && showIndicator) {
@@ -38,7 +68,7 @@ export const ImpactScore = ({
     <Tooltip title={score}>
       <s.Container>
         {scoreIndicatorPosition === "start" && <ScoreIndicator score={score} />}
-        {getImpactScoreLabel(score)}
+        {getImpactScoreLabel(score, backendInfo)}
         {scoreIndicatorPosition === "end" && <ScoreIndicator score={score} />}
       </s.Container>
     </Tooltip>

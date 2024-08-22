@@ -193,7 +193,7 @@ export const IssueCompactCard = ({
         >
           <NewIconButton
             icon={ThreeDotsIcon}
-            buttonType={"tertiary"}
+            buttonType={"secondaryBorderless"}
             size={"small"}
           />
         </NewPopover>
