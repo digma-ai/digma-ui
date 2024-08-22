@@ -43,6 +43,7 @@ export const MenuButton = styled.button`
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  cursor: pointer;
 `;
 
 export const MenuButtonChevronIconContainer = styled.span`

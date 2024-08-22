@@ -250,6 +250,9 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
   const scopeSpanCodeObjectId = scope?.span?.spanCodeObjectId;
   const previousScope = usePrevious(scope);
   const previousScopeSpanCodeObjectId = previousScope?.span?.spanCodeObjectId;
+  const environment = useGlobalStore.use.environment();
+  const environmentId = environment?.id;
+  const previousEnvironmentId = usePrevious(environmentId);
 
   useEffect(() => {
     return () => {
@@ -313,7 +316,7 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
     persistedFilters
   ]);
 
-  // Reset filters on backend instance or scope change
+  // Reset filters on backend instance, environment or scope change (except if previous or current scope is Home)
   useEffect(() => {
     if (
       (areFiltersRehydrated &&
@@ -322,7 +325,13 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
             !areBackendInfosEqual(previousBackendInfo, backendInfo)
         )) ||
       Boolean(
-        previousScope && previousScopeSpanCodeObjectId !== scopeSpanCodeObjectId
+        previousEnvironmentId && previousEnvironmentId !== environmentId
+      ) ||
+      Boolean(
+        previousScope &&
+          previousScopeSpanCodeObjectId &&
+          scopeSpanCodeObjectId &&
+          previousScopeSpanCodeObjectId !== scopeSpanCodeObjectId
       )
     ) {
       setFilteredInsightTypes([]);
@@ -337,7 +346,9 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
     areFiltersRehydrated,
     persistedFilters,
     setFilteredInsightTypes,
-    setFilters
+    setFilters,
+    previousEnvironmentId,
+    environmentId
   ]);
 
   const handleSlackLinkClick = () => {

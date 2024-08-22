@@ -74,6 +74,7 @@ export const BackToAllInsightsButton = styled.button`
   gap: 4px;
   align-items: center;
   color: ${({ theme }) => theme.colors.v3.text.primary};
+  cursor: pointer;
 `;
 
 export const MarkingAsReadToolbarActionsContainer = styled.div`

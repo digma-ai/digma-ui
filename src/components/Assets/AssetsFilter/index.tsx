@@ -116,6 +116,8 @@ export const AssetsFilter = ({
   const environment = useGlobalStore.use.environment();
   const previousEnvironment = usePrevious(environment);
   const previousScope = usePrevious(scope);
+  const scopeSpanCodeObjectId = scope?.span?.spanCodeObjectId;
+  const previousScopeSpanCodeObjectId = previousScope?.span?.spanCodeObjectId;
 
   // Get data after filters have been rehydrated
   useEffect(() => {
@@ -200,9 +202,14 @@ export const AssetsFilter = ({
     setGloballySelectedServices
   ]);
 
-  // Clear filters and get data when scope is changed, but keep selected services
+  // Clear filters and get data when scope is changed (except if previous or current scope is Home), but keep selected services
   useEffect(() => {
-    if (previousScope && previousScope !== scope) {
+    if (
+      previousScope &&
+      previousScopeSpanCodeObjectId &&
+      scopeSpanCodeObjectId &&
+      previousScopeSpanCodeObjectId !== scopeSpanCodeObjectId
+    ) {
       const newFilters = {
         services: selectedServices,
         operations: [],
@@ -228,7 +235,9 @@ export const AssetsFilter = ({
     assetScopeOption,
     searchQuery,
     selectedServices,
-    isServicesFilterEnabled
+    isServicesFilterEnabled,
+    previousScopeSpanCodeObjectId,
+    scopeSpanCodeObjectId
   ]);
 
   // Get data when the popover is opened

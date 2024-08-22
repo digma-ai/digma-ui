@@ -286,6 +286,7 @@ export const LatestDataButton = styled.button`
   align-self: flex-end;
   font-size: 14px;
   font-family: inherit;
+  cursor: pointer;
   color: ${({ theme }) => {
     switch (theme.mode) {
       case "light":
