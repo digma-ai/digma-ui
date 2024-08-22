@@ -95,6 +95,7 @@ export const Registration = ({ onRegister }: RegistrationProps) => {
     sendUserActionTrackingEvent("registration form submitted");
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "Enter" && isValid) {
       onSubmit(values);
@@ -105,7 +106,10 @@ export const Registration = ({ onRegister }: RegistrationProps) => {
     Object.values(errors).length > 0 ? Object.values(errors)[0].message : "";
 
   return (
-    <s.FormContainer onKeyDown={handleKeyDown}>
+    <s.FormContainer
+    // Temporary disabled due to the issue in JetBrains 2024.2.x
+    // onKeyDown={handleKeyDown}
+    >
       <s.Form
         id={"registrationForm"}
         onSubmit={(e) => {
