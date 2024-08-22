@@ -8,11 +8,9 @@ import { isNull } from "../../../typeGuards/isNull";
 import { isUndefined } from "../../../typeGuards/isUndefined";
 import { InsightType } from "../../../types";
 import { sendTrackingEvent } from "../../../utils/actions/sendTrackingEvent";
+import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
-import { FilterButton } from "../../common/FilterButton";
-import { NewButton } from "../../common/NewButton";
-import { NewPopover } from "../../common/NewPopover";
-import { Select } from "../../common/Select";
+import { FilterPopup } from "../../common/FilterPopup";
 import { WrenchIcon } from "../../common/icons/12px/WrenchIcon";
 import { EndpointIcon } from "../../common/icons/EndpointIcon";
 import { SparkleIcon } from "../../common/icons/SparkleIcon";
@@ -20,7 +18,6 @@ import { IconProps } from "../../common/icons/types";
 import { AssetScopeOption } from "../AssetsViewScopeConfiguration/types";
 import { actions } from "../actions";
 import { trackingEvents } from "../tracking";
-import * as s from "./styles";
 import {
   AssetFilterCategory,
   AssetFilterQuery,
@@ -28,6 +25,8 @@ import {
   AssetsFiltersData,
   GetAssetFiltersDataPayload
 } from "./types";
+
+import * as s from "./styles";
 
 const PERSISTENCE_KEY = "assetsFilters";
 
@@ -76,8 +75,7 @@ const renderFilterCategory = (
     })) ?? [];
 
   return (
-    <Select
-      searchable={true}
+    <s.StyledSelect
       key={category.categoryName}
       items={items}
       onChange={(value) => onChange(value, category.categoryName)}
@@ -462,25 +460,20 @@ export const AssetsFilter = ({
     ...selectedInsights
   ];
 
-  return (
-    <NewPopover
-      width={"calc(100% - 16px)"}
-      content={
-        <s.Container>
-          <s.Header>Filters</s.Header>
-          {isServicesFilterEnabled && (
-            <>
-              <s.FilterCategoryName>Services</s.FilterCategoryName>
-              {renderFilterCategory(
-                servicesCategory,
-                WrenchIcon,
-                selectedServices.length > 0 ? "Services" : "All",
-                selectedServices,
-                handleSelectedItemsChange
-              )}
-            </>
-          )}
-          <s.FilterCategoryName>Operations</s.FilterCategoryName>
+  const handleCloseButtonClick = () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.FILTERS_POPUP_CLOSE_BUTTON_CLICKED
+    );
+  };
+  const handleOnStateChange = (state: boolean) => {
+    setIsOpen(state);
+  };
+
+  const filterComponents = [
+    {
+      title: "Operations",
+      component: (
+        <>
           {renderFilterCategory(
             endpointsCategory,
             EndpointIcon,
@@ -502,38 +495,46 @@ export const AssetsFilter = ({
             selectedInternals,
             handleSelectedItemsChange
           )}
-          <s.FilterCategoryName>Insights</s.FilterCategoryName>
-          {insightsCategory &&
-            renderFilterCategory(
-              insightsCategory,
-              SparkleIcon,
-              "Insights",
-              selectedInsights,
-              handleSelectedItemsChange,
-              (value) => getInsightTypeInfo(value)?.label ?? value
-            )}
-          <s.Footer>
-            <NewButton
-              buttonType={"tertiary"}
-              label={"Clear filters"}
-              disabled={selectedFilters.length === 0}
-              onClick={handleClearFiltersButtonClick}
-            />
-          </s.Footer>
-        </s.Container>
-      }
-      onOpenChange={setIsOpen}
-      isOpen={isOpen}
-      placement={"bottom-end"}
-    >
-      <div>
-        <FilterButton
-          title={"Filters"}
-          showCount={true}
-          selectedCount={selectedFilters.length}
-          isActive={isOpen}
-        />
-      </div>
-    </NewPopover>
+        </>
+      )
+    }
+  ];
+
+  if (insightsCategory) {
+    filterComponents.push({
+      title: "Insights",
+      component: renderFilterCategory(
+        insightsCategory,
+        SparkleIcon,
+        "Insights",
+        selectedInsights,
+        handleSelectedItemsChange,
+        (value) => getInsightTypeInfo(value)?.label ?? value
+      )
+    });
+  }
+
+  if (isServicesFilterEnabled) {
+    filterComponents.unshift({
+      title: "Services",
+      component: renderFilterCategory(
+        servicesCategory,
+        WrenchIcon,
+        selectedServices.length > 0 ? "Services" : "All",
+        selectedServices,
+        handleSelectedItemsChange
+      )
+    });
+  }
+
+  return (
+    <FilterPopup
+      onClose={handleCloseButtonClick}
+      onClearAll={handleClearFiltersButtonClick}
+      title="Filters"
+      filters={filterComponents}
+      selectedFiltersCount={selectedFilters.length}
+      onStateChange={handleOnStateChange}
+    />
   );
 };

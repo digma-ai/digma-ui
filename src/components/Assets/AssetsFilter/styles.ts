@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { grayScale } from "../../common/App/v2colors";
+import { Select } from "../../common/v3/Select";
 
 export const Container = styled.div`
   display: flex;
@@ -46,4 +47,8 @@ export const Footer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+`;
+
+export const StyledSelect = styled(Select)`
+  background: ${({ theme }) => theme.colors.surface.brandDark};
 `;

@@ -9,4 +9,5 @@ export interface FilterPopupProps {
     title: string;
     component: ReactNode;
   }[];
+  onStateChange?: (state: boolean) => void;
 }

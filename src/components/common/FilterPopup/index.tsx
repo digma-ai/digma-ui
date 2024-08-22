@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { usePrevious } from "../../../hooks/usePrevious";
 import { FilterButton } from "../FilterButton";
 import { CrossIcon } from "../icons/16px/CrossIcon";
 import { NewPopover } from "../NewPopover";
@@ -10,9 +11,18 @@ export const FilterPopup = ({
   onClose,
   title,
   selectedFiltersCount,
-  filters
+  filters,
+  onStateChange
 }: FilterPopupProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const previousIsOpen = usePrevious(isOpen);
+
+  useEffect(() => {
+    if (isOpen !== previousIsOpen && onStateChange) {
+      onStateChange(isOpen);
+    }
+  }, [isOpen, previousIsOpen, onStateChange]);
+
   const handleCloseButtonClick = () => {
     setIsOpen(false);
     onClose();
