@@ -13,6 +13,7 @@ import { RecheckIcon } from "../../../../../../common/icons/16px/RecheckIcon";
 import { CrossIcon } from "../../../../../../common/icons/CrossIcon";
 import { JiraButton } from "../../../../../../common/v3/JiraButton";
 import { NewButton } from "../../../../../../common/v3/NewButton";
+import { Tooltip } from "../../../../../../common/v3/Tooltip";
 import { trackingEvents } from "../../../../../tracking";
 import { isEndpointInsight, isSpanInsight } from "../../../../../typeGuards";
 import { InsightStatus } from "../../../../../types";
@@ -243,15 +244,17 @@ export const InsightCard = ({
         );
       case "viewTicketInfo":
         return (
-          <JiraButton
-            type={type}
-            ticketLink={jiraTicketInfo?.ticketLink}
-            isHintEnabled={jiraTicketInfo?.isHintEnabled}
-            spanCodeObjectId={jiraTicketInfo?.spanCodeObjectId}
-            label={"Ticket"}
-            onTicketInfoOpen={openTicketInfo}
-            insightType={insight.type}
-          />
+          <Tooltip title={"Open ticket info"}>
+            <JiraButton
+              type={type}
+              ticketLink={jiraTicketInfo?.ticketLink}
+              isHintEnabled={jiraTicketInfo?.isHintEnabled}
+              spanCodeObjectId={jiraTicketInfo?.spanCodeObjectId}
+              label={"Ticket"}
+              onTicketInfoOpen={openTicketInfo}
+              insightType={insight.type}
+            />
+          </Tooltip>
         );
       case "openTrace":
         return (

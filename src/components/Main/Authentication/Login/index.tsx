@@ -65,16 +65,21 @@ export const Login = ({ successMessage, onLogin }: LoginProps) => {
     sendUserActionTrackingEvent("login form submitted");
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "Enter" && isValid) {
       onSubmit(values);
     }
   };
+
   const errorMessage =
     Object.values(errors).length > 0 ? Object.values(errors)[0].message : "";
 
   return (
-    <FormContainer onKeyDown={handleKeyDown}>
+    <FormContainer
+    // Temporary disabled due to the issue in JetBrains 2024.2.x
+    // onKeyDown={handleKeyDown}
+    >
       <Form
         id={"loginForm"}
         onSubmit={(e) => {

@@ -11,28 +11,22 @@ export const ActionButton = ({
   title,
   onClick,
   isDisabled
-}: ActionButtonProps) => {
-  if (type === "icon") {
-    return (
-      <Tooltip title={title} isDisabled={isUndefined(title)}>
-        <NewIconButton
-          icon={icon}
-          onClick={onClick}
-          isDisabled={isDisabled}
-          buttonType={"secondaryBorderless"}
-        />
-      </Tooltip>
-    );
-  }
-
-  return (
-    <Tooltip title={title} isDisabled={isUndefined(title)}>
+}: ActionButtonProps) => (
+  <Tooltip title={title} isDisabled={isUndefined(title)}>
+    {type === "icon" ? (
+      <NewIconButton
+        icon={icon}
+        onClick={onClick}
+        isDisabled={isDisabled}
+        buttonType={"secondaryBorderless"}
+      />
+    ) : (
       <NewButton
         icon={icon}
         label={label}
         onClick={onClick}
         isDisabled={isDisabled}
       />
-    </Tooltip>
-  );
-};
+    )}
+  </Tooltip>
+);
