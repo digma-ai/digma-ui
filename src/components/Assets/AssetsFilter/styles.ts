@@ -26,10 +26,6 @@ export const FilterCategoryName = styled.div`
   color: ${grayScale[400]};
 `;
 
-export const MenuButtonChevronIconContainer = styled.span`
-  color: ${({ theme }) => theme.colors.icon.primary};
-`;
-
 export const Footer = styled.div`
   padding: 8px 0;
   display: flex;
