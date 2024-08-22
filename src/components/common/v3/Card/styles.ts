@@ -9,11 +9,13 @@ export const Container = styled.div`
 `;
 
 const Section = styled.div`
-  padding: 8px;
+  padding: 7px;
   height: 100%;
 `;
 
-export const Content = Section;
+export const Content = styled(Section)`
+  padding: 8px 7px;
+`;
 
 export const Header = styled(Section)`
   border-bottom: 1px solid ${({ theme }) => theme.colors.v3.stroke.primary};
