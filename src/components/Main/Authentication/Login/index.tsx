@@ -36,7 +36,7 @@ export const Login = ({ successMessage, onLogin }: LoginProps) => {
     mode: "onChange",
     defaultValues: formDefaultValues
   });
-  const { isLoading, login, error } = useLogin();
+  const { isLoading, login, error, isSucceed } = useLogin();
 
   useEffect(() => {
     setFocus("email");
@@ -108,7 +108,7 @@ export const Login = ({ successMessage, onLogin }: LoginProps) => {
       {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
       <ButtonsContainer>
         <SubmitButton
-          isDisabled={!isValid || isLoading}
+          isDisabled={!isValid || isLoading || isSucceed}
           label={"Sign In"}
           type={"submit"}
           form={"loginForm"}

@@ -7,12 +7,16 @@ import { LoginPayload, LoginResult } from "../../types";
 export const useLogin = () => {
   const [isLoading, setIsLoading] = useLoading(false);
   const [error, setError] = useState<{ description: string }>();
+  const [isSucceed, setIsSucceed] = useState<boolean | undefined>(undefined);
 
   useEffect(() => {
     const handleLogin = (data: unknown) => {
       const result = data as LoginResult;
       if (result.error) {
         setError({ description: result.error });
+        setIsSucceed(false);
+      } else {
+        setIsSucceed(true);
       }
       setIsLoading(false);
     };
@@ -35,6 +39,7 @@ export const useLogin = () => {
       });
     },
     isLoading,
-    error
+    error,
+    isSucceed
   };
 };
