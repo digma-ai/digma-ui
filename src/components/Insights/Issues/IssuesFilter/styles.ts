@@ -5,14 +5,15 @@ import {
 } from "../../../common/App/typographies";
 import { grayScale } from "../../../common/App/v2colors";
 import { NewButton } from "../../../common/v3/NewButton";
+import { Select } from "../../../common/v3/Select";
 
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
   padding: 8px;
-  border-radius: 4px;
-  background: ${({ theme }) => theme.colors.surface.primary};
+  border-radius: 8px;
+  background: ${({ theme }) => theme.colors.surface.brandDark};
   box-shadow: 0 2px 4px 0 rgb(0 0 0 / 29%);
   font-size: 14px;
   color: ${grayScale[400]};
@@ -29,7 +30,7 @@ export const Header = styled.div`
 
 export const FilterCategoryName = styled.div`
   display: flex;
-  padding: 4px;
+  padding-top: 4px;
   color: ${({ theme }) => theme.colors.v3.text.tertiary};
   ${subscriptRegularTypography}
 `;
@@ -50,7 +51,8 @@ export const MenuButtonChevronIconContainer = styled.span`
 `;
 
 export const Footer = styled.div`
-  padding: 8px 0;
+  padding-top: 12px;
+  padding-bottom: 8px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -84,4 +86,9 @@ export const CloseButton = styled.button`
   border: none;
   height: 14px;
   color: inherit;
+  color: ${({ theme }) => theme.colors.v3.icon.tertiary};
+`;
+
+export const StyledSelect = styled(Select)`
+  background: ${({ theme }) => theme.colors.surface.brandDark};
 `;

@@ -14,7 +14,6 @@ import { WrenchIcon } from "../../../common/icons/12px/WrenchIcon";
 import { CrossIcon } from "../../../common/icons/16px/CrossIcon";
 import { WarningTriangleIcon } from "../../../common/icons/WarningTriangleIcon";
 import { IconProps } from "../../../common/icons/types";
-import { Select } from "../../../common/v3/Select";
 import { SelectItem } from "../../../common/v3/Select/types";
 import { InsightFilterType } from "../../InsightsCatalog/types";
 import { useIssuesFilters } from "../useIssuesFilters";
@@ -202,7 +201,7 @@ export const IssuesFilter = () => {
           {isServicesFilterEnabled && (
             <>
               <s.FilterCategoryName>Services</s.FilterCategoryName>
-              <Select
+              <s.StyledSelect
                 key={"services"}
                 items={servicesFilterOptions}
                 onChange={handleServiceChange}
@@ -218,7 +217,7 @@ export const IssuesFilter = () => {
             </>
           )}
           <s.FilterCategoryName>Issues</s.FilterCategoryName>
-          <Select
+          <s.StyledSelect
             key={"issues"}
             items={issueTypesFilterOptions}
             onChange={handleIssueTypesChange}
@@ -232,7 +231,7 @@ export const IssuesFilter = () => {
             disabled={issueTypesFilterOptions?.length === 0}
           />
           <s.FilterCategoryName>Criticality</s.FilterCategoryName>
-          <Select
+          <s.StyledSelect
             key={"criticality"}
             items={criticalityFilterOptions}
             onChange={(value) => handleToggleFilterChange(value, "criticality")}
@@ -245,7 +244,7 @@ export const IssuesFilter = () => {
             showSelectedState={isCriticalOnly}
           />
           <s.FilterCategoryName>Read/Unread</s.FilterCategoryName>
-          <Select
+          <s.StyledSelect
             key={"readStatus"}
             items={readStatusFilterOptions}
             onChange={(value) => handleToggleFilterChange(value, "unread")}
