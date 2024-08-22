@@ -22,6 +22,7 @@ const sortItemsBySelectedState = (a: SelectItem, b: SelectItem) => {
   return 0;
 };
 
+/** @deprecated */
 export const Select = ({
   multiselect,
   items,

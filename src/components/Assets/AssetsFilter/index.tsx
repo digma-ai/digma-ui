@@ -76,6 +76,7 @@ const renderFilterCategory = (
 
   return (
     <s.StyledSelect
+      searchable={true}
       key={category.categoryName}
       items={items}
       onChange={(value) => onChange(value, category.categoryName)}

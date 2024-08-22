@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { ChangeEvent, useCallback, useRef, useState } from "react";
+import useDimensions from "react-cool-dimensions";
 import { isString } from "../../../../typeGuards/isString";
 import { isUndefined } from "../../../../typeGuards/isUndefined";
 import { NewPopover } from "../../NewPopover";
 import { ChevronIcon } from "../../icons/ChevronIcon";
+import { MagnifierIcon } from "../../icons/MagnifierIcon";
 import { Direction } from "../../icons/types";
 import { Checkmark } from "../Checkmark";
 import { Tooltip } from "../Tooltip";
@@ -29,9 +31,21 @@ export const Select = ({
   icon: Icon,
   placeholder,
   className,
+  searchable,
   showSelectedState
 }: SelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+  const optionListRef = useRef<HTMLUListElement | null>(null);
+  const { observe } = useDimensions();
+
+  const getOptionListRef = useCallback(
+    (el: HTMLUListElement | null) => {
+      observe(el);
+      optionListRef.current = el;
+    },
+    [observe]
+  );
 
   const handleButtonClick = () => {
     setIsOpen(!isOpen);
@@ -59,6 +73,10 @@ export const Select = ({
     onChange(newValue);
   };
 
+  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value);
+  };
+
   const selectedValues = items.filter((x) => x.selected).map((x) => x.value);
   const sortedItems = multiselect
     ? items.sort(sortItemsBySelectedState)
@@ -66,12 +84,31 @@ export const Select = ({
   const isSelectedStateEnabled =
     isUndefined(showSelectedState) || showSelectedState;
 
+  const optionListHasVerticalScrollbar = Boolean(
+    optionListRef?.current &&
+      optionListRef.current.scrollHeight > optionListRef.current.clientHeight
+  );
+  const isSearchBarVisible =
+    searchable && (optionListHasVerticalScrollbar || searchValue.length > 0);
+
   return (
     <NewPopover
       sameWidth={true}
       content={
         <s.MenuContainer>
-          <s.OptionList>
+          {isSearchBarVisible && (
+            <s.SearchInputContainer>
+              <s.SearchInputIconContainer>
+                <MagnifierIcon />
+              </s.SearchInputIconContainer>
+              <s.SearchInput
+                type={"text"}
+                placeholder={"Search"}
+                onChange={handleSearchChange}
+              />
+            </s.SearchInputContainer>
+          )}
+          <s.OptionList ref={getOptionListRef}>
             {sortedItems.length > 0 ? (
               sortedItems.map((x) => (
                 <s.OptionListItem

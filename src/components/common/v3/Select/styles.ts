@@ -4,6 +4,7 @@ import {
   footnoteRegularTypography,
   subscriptRegularTypography
 } from "../../App/typographies";
+import { grayScale } from "../../App/v2colors";
 import {
   ButtonProps,
   ChevronIconContainerProps,
@@ -136,4 +137,40 @@ export const NoResultsContainer = styled.div`
   padding: 8px 0;
   font-size: 14px;
   color: ${({ theme }) => theme.colors.text.subtext};
+`;
+
+export const SearchInputContainer = styled.div`
+  border-radius: 4px;
+  border: 1px solid ${grayScale[700]};
+  padding: 5px 8px;
+  gap: 4px;
+  display: flex;
+  align-items: center;
+`;
+
+export const SearchInput = styled.input`
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  padding: 0;
+  color: ${({ theme }) => {
+    switch (theme.mode) {
+      case "light":
+        return grayScale[1000];
+      case "dark":
+      case "dark-jetbrains":
+        return grayScale[0];
+    }
+  }};
+
+  &::placeholder {
+    color: ${grayScale[500]};
+  }
+`;
+
+export const SearchInputIconContainer = styled.div`
+  pointer-events: none;
+  color: ${grayScale[400]};
 `;
