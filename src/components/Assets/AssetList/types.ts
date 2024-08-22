@@ -62,7 +62,9 @@ export interface AssetEntry {
   instrumentationLibrary?: string;
   insights: Insight[];
   latestSpanTimestamp: string;
+  /** @deprecated */
   impactScores?: ImpactScores;
+  impactScore: number;
   service: string;
   services: string[];
   spanCodeObjectId: string;

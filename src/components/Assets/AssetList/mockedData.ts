@@ -47,6 +47,7 @@ export const mockedAssetsData: AssetsData = {
           criticality: 0.5
         }
       ],
+      impactScore: 0.3521035689991816,
       impactScores: {
         ScoreExp25: 0.3521035689991816,
         ScoreExp1000: 0.3386358571779296
@@ -97,6 +98,7 @@ export const mockedAssetsData: AssetsData = {
           criticality: 0.5
         }
       ],
+      impactScore: 0.0,
       impactScores: {
         ScoreExp25: 0.0,
         ScoreExp1000: 0.0
@@ -146,6 +148,7 @@ export const mockedAssetsData: AssetsData = {
           criticality: 0.5
         }
       ],
+      impactScore: 0.0,
       impactScores: {
         ScoreExp25: 0.0,
         ScoreExp1000: 0.0
@@ -196,6 +199,7 @@ export const mockedAssetsData: AssetsData = {
           criticality: 0.5
         }
       ],
+      impactScore: 0.0,
       impactScores: {
         ScoreExp25: 0.0,
         ScoreExp1000: 0.0
@@ -246,6 +250,7 @@ export const mockedAssetsData: AssetsData = {
           criticality: 0.5
         }
       ],
+      impactScore: 0.0,
       impactScores: {
         ScoreExp25: 0.0,
         ScoreExp1000: 0.0
@@ -291,6 +296,7 @@ export const mockedAssetsData: AssetsData = {
           criticality: 0.5
         }
       ],
+      impactScore: 0.0,
       impactScores: {
         ScoreExp25: 0.8314664295667409,
         ScoreExp1000: 0.8645342516094802
@@ -336,6 +342,7 @@ export const mockedAssetsData: AssetsData = {
           criticality: 0.5
         }
       ],
+      impactScore: 0.0,
       impactScores: {
         ScoreExp25: 0.0,
         ScoreExp1000: 0.0
@@ -381,6 +388,7 @@ export const mockedAssetsData: AssetsData = {
           criticality: 0.5
         }
       ],
+      impactScore: 0.0,
       impactScores: {
         ScoreExp25: 0.0,
         ScoreExp1000: 0.0
@@ -426,6 +434,7 @@ export const mockedAssetsData: AssetsData = {
           criticality: 0.5
         }
       ],
+      impactScore: 0.0,
       impactScores: {
         ScoreExp25: 0.0,
         ScoreExp1000: 0.0
@@ -471,6 +480,7 @@ export const mockedAssetsData: AssetsData = {
           criticality: 0.5
         }
       ],
+      impactScore: 0.0,
       impactScores: {
         ScoreExp25: 0.0,
         ScoreExp1000: 0.0
@@ -516,6 +526,7 @@ export const mockedAssetsData: AssetsData = {
           criticality: 0.5
         }
       ],
+      impactScore: 0.0,
       impactScores: {
         ScoreExp25: 0.0,
         ScoreExp1000: 0.0
@@ -555,6 +566,7 @@ export const mockedAssetsData: AssetsData = {
           criticality: 0.5
         }
       ],
+      impactScore: 0.0,
       impactScores: {
         ScoreExp25: 0.7208595047530149,
         ScoreExp1000: 0.6627975469849793
@@ -594,6 +606,7 @@ export const mockedAssetsData: AssetsData = {
           criticality: 0.5
         }
       ],
+      impactScore: 0.0,
       impactScores: {
         ScoreExp25: 0.0,
         ScoreExp1000: 0.0
@@ -633,6 +646,7 @@ export const mockedAssetsData: AssetsData = {
           criticality: 0.5
         }
       ],
+      impactScore: 0.0,
       impactScores: {
         ScoreExp25: 0.0,
         ScoreExp1000: 0.0
@@ -673,6 +687,7 @@ export const mockedAssetsData: AssetsData = {
           criticality: 0.5
         }
       ],
+      impactScore: 0.0,
       impactScores: {
         ScoreExp25: 1.0,
         ScoreExp1000: 1.0
@@ -713,6 +728,7 @@ export const mockedAssetsData: AssetsData = {
           criticality: 0.5
         }
       ],
+      impactScore: 0.0,
       impactScores: {
         ScoreExp25: 0.0,
         ScoreExp1000: 0.0
@@ -753,6 +769,7 @@ export const mockedAssetsData: AssetsData = {
           criticality: 0.5
         }
       ],
+      impactScore: 0.0,
       impactScores: {
         ScoreExp25: 0.0,
         ScoreExp1000: 0.0
@@ -793,6 +810,7 @@ export const mockedAssetsData: AssetsData = {
           criticality: 0.5
         }
       ],
+      impactScore: 0.0,
       impactScores: {
         ScoreExp25: 0.0,
         ScoreExp1000: 0.0
@@ -833,6 +851,7 @@ export const mockedAssetsData: AssetsData = {
           criticality: 0.5
         }
       ],
+      impactScore: 0.0,
       impactScores: {
         ScoreExp25: 0.0,
         ScoreExp1000: 0.0
@@ -873,6 +892,7 @@ export const mockedAssetsData: AssetsData = {
           criticality: 0.5
         }
       ],
+      impactScore: 0.0,
       impactScores: {
         ScoreExp25: 0.0,
         ScoreExp1000: 0.0
