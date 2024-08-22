@@ -34,7 +34,7 @@ export const useRegistration = () => {
         handleRegister
       );
     };
-  }, []);
+  }, [setIsLoading]);
 
   return {
     isLoading,

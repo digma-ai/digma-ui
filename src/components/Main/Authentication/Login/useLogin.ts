@@ -22,7 +22,7 @@ export const useLogin = () => {
     return () => {
       dispatcher.removeActionListener(actions.SET_LOGIN_RESULT, handleLogin);
     };
-  }, []);
+  }, [setIsLoading]);
 
   return {
     login: (payload: LoginPayload) => {

@@ -5,7 +5,6 @@ import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
 import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { SCOPE_CHANGE_EVENTS } from "../../Main/types";
-import { getImpactScoreLabel } from "../../common/ImpactScore";
 import { InfinityIcon } from "../../common/icons/16px/InfinityIcon";
 import { RefreshIcon } from "../../common/icons/16px/RefreshIcon";
 import { TargetIcon } from "../../common/icons/16px/TargetIcon";
@@ -46,6 +45,22 @@ const demoData: EnvironmentImpactData[] = [
     impact: 0.3
   }
 ];
+
+const getImpactScoreLabel = (score: number) => {
+  if (score <= 0) {
+    return "Waiting for data";
+  }
+
+  if (score < 0.4) {
+    return "Low";
+  }
+
+  if (score < 0.8) {
+    return "Medium";
+  }
+
+  return "High";
+};
 
 const getRankTagType = (normalizedRank: number) => {
   if (normalizedRank >= 0.9) {
