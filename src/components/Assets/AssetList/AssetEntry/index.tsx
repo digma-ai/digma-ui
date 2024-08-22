@@ -1,5 +1,8 @@
+import { useGlobalStore } from "../../../../containers/Main/stores/useGlobalStore";
+import { getFeatureFlagValue } from "../../../../featureFlags";
+import { isNumber } from "../../../../typeGuards/isNumber";
 import { isString } from "../../../../typeGuards/isString";
-import { InsightType } from "../../../../types";
+import { FeatureFlag, InsightType } from "../../../../types";
 import { formatTimeDistance } from "../../../../utils/formatTimeDistance";
 import { getInsightTypeInfo } from "../../../../utils/getInsightTypeInfo";
 import { getInsightTypeOrderPriority } from "../../../../utils/getInsightTypeOrderPriority";
@@ -21,6 +24,15 @@ export const AssetEntry = ({
   isImpactHidden,
   sortingCriterion
 }: AssetEntryProps) => {
+  const backendInfo = useGlobalStore.use.backendInfo();
+  const isNewImpactScoreCalculationEnabled = getFeatureFlagValue(
+    backendInfo,
+    FeatureFlag.IS_NEW_IMPACT_SCORE_CALCULATION_ENABLED
+  );
+  const impactScore = isNewImpactScoreCalculationEnabled
+    ? entry.impactScore
+    : entry.impactScores?.ScoreExp25;
+
   const handleLinkClick = () => {
     onAssetLinkClick(entry);
   };
@@ -151,14 +163,14 @@ export const AssetEntry = ({
             </s.ValueContainer>
           </s.Stats>
         </s.StatsColumn>
-        {!isImpactHidden && entry.impactScores && (
+        {!isImpactHidden && isNumber(impactScore) && (
           <s.StatsColumn>
             <s.Stats>
               <span>Performance impact</span>
-              <Tooltip title={entry.impactScores.ScoreExp25}>
+              <Tooltip title={impactScore}>
                 <s.ValueContainer>
                   <ImpactScore
-                    score={entry.impactScores.ScoreExp25}
+                    score={impactScore}
                     showIndicator={
                       sortingCriterion === SORTING_CRITERION.PERFORMANCE_IMPACT
                     }
