@@ -215,7 +215,8 @@ export const lightTheme: ThemeColors = {
     card: grayScale[0],
     brand: primaryScale[300],
     brandDark: grayScale[50],
-    secondary: grayScale[50]
+    secondary: grayScale[50],
+    brandDarkest: grayScale[75]
   },
   stroke: {
     primary: grayScale[300],

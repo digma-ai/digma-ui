@@ -53,7 +53,7 @@ const getData = ({
         insights,
         directOnly: Boolean(assetScopeOption?.isDirect),
         scopedSpanCodeObjectId: assetScopeOption?.scopedSpanCodeObjectId,
-        ...(searchQuery.length > 0 ? { displayName: searchQuery } : {})
+        ...(searchQuery?.length > 0 ? { displayName: searchQuery } : {})
       }
     }
   });
