@@ -95,13 +95,14 @@ export const TopIssues = () => {
   const { data, getData } = useTopIssuesData();
   const previousData = usePrevious(data);
   const scope = useGlobalStore.use.scope();
+  // Do not show unimplemented insights
   const filteredTopInsights = useMemo(
     () =>
       (data?.topInsights ?? []).filter(
         (x) => x.insightType !== InsightType.SlowEndpoint
       ),
     [data]
-  ); // https://github.com/digma-ai/digma-ui/issues/864
+  );
   const [pageItems, page, setPage] = usePagination(
     filteredTopInsights,
     PAGE_SIZE,
