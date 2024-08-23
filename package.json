@@ -31,7 +31,7 @@
     "build:prod:web": "webpack --config webpack.prod.ts --env platform=Web",
     "precommit": "lint-staged",
     "prepare": "husky",
-    "start": "storybook dev -p 6006"
+    "start": "npm run storybook"
   },
   "lint-staged": {
     "*.{js,ts,tsx}": [
