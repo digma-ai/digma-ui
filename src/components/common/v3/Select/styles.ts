@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import {
   bodyRegularTypography,
+  bodySemiboldTypography,
   footnoteRegularTypography,
   subscriptRegularTypography
 } from "../../App/typographies";
@@ -28,7 +29,8 @@ export const Button = styled.button<ButtonProps>`
   align-items: center;
   width: 100%;
   justify-content: flex-end;
-  color: ${({ theme }) => theme.colors.v3.text.primary};
+  color: ${({ theme }) => theme.colors.v3.text.secondary};
+  outline: none;
 
   &:hover {
     border: 1px solid ${({ theme }) => theme.colors.v3.stroke.primaryLight};
@@ -89,6 +91,8 @@ export const MenuContainer = styled.div`
   max-height: 162px;
   box-sizing: border-box;
   background: ${({ theme }) => theme.colors.v3.surface.primaryLight};
+  gap: 8px;
+  outline: none;
 `;
 
 export const OptionList = styled.ul`
@@ -99,6 +103,7 @@ export const OptionList = styled.ul`
   margin: 0;
   overflow: hidden;
   overflow-y: auto;
+  outline: none;
 `;
 
 export const OptionListItem = styled.li<OptionListItemProps>`
@@ -120,6 +125,12 @@ export const OptionListItem = styled.li<OptionListItemProps>`
     background: ${({ theme, $enabled }) =>
       $enabled ? theme.colors.v3.surface.highlight : ""};
   }
+
+  button {
+    :focus-visible {
+      outline: none;
+    }
+  }
 `;
 
 export const OptionListItemLabel = styled.span`
@@ -134,6 +145,50 @@ export const NoResultsContainer = styled.div`
   align-items: center;
   justify-content: center;
   padding: 8px 0;
-  font-size: 14px;
-  color: ${({ theme }) => theme.colors.text.subtext};
+  color: ${({ theme }) => theme.colors.v3.text.primary};
+  gap: 8px;
+  flex-direction: column;
+
+  ${bodySemiboldTypography}
+`;
+
+export const NoSearchResults = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color: ${({ theme }) => theme.colors.v3.text.tertiary};
+
+  ${footnoteRegularTypography}
+`;
+
+export const SearchInputContainer = styled.div`
+  border-radius: 4px;
+  border: 1px solid ${({ theme }) => theme.colors.v3.stroke.dark};
+  background: ${({ theme }) => theme.colors.v3.surface.primary};
+  padding: 5px 8px;
+  gap: 4px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 4px 0 rgba(0 0 0 / 13%);
+`;
+
+export const SearchInput = styled.input`
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 0;
+  color: ${({ theme }) => theme.colors.v3.text.primary};
+
+  ${subscriptRegularTypography}
+
+  &::placeholder {
+    color: ${({ theme }) => theme.colors.v3.text.primary};
+  }
+`;
+
+export const SearchInputIconContainer = styled.div`
+  pointer-events: none;
+  color: ${({ theme }) => theme.colors.v3.icon.tertiary};
 `;

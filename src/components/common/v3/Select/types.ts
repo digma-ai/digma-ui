@@ -23,6 +23,7 @@ export interface SelectProps {
   onChange: (value: string | string[]) => void;
   placeholder?: string;
   disabled?: boolean;
+  searchable?: boolean;
   icon?: ComponentType<IconProps>;
   className?: string;
   showSelectedState?: boolean;

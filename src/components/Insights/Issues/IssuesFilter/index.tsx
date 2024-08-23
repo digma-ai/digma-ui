@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { useGlobalStore } from "../../../../containers/Main/stores/useGlobalStore";
 import { useInsightsStore } from "../../../../containers/Main/stores/useInsightsStore";
 import { getFeatureFlagValue } from "../../../../featureFlags";
@@ -6,15 +6,12 @@ import { usePrevious } from "../../../../hooks/usePrevious";
 import { FeatureFlag } from "../../../../types";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { getInsightTypeInfo } from "../../../../utils/getInsightTypeInfo";
-import { FilterButton } from "../../../common/FilterButton";
-import { NewPopover } from "../../../common/NewPopover";
+import { FilterPopup } from "../../../common/FilterPopup";
 import { EyeIcon } from "../../../common/icons/12px/EyeIcon";
 import { FourPointedStarIcon } from "../../../common/icons/12px/FourPointedStarIcon";
 import { WrenchIcon } from "../../../common/icons/12px/WrenchIcon";
-import { CrossIcon } from "../../../common/icons/16px/CrossIcon";
 import { WarningTriangleIcon } from "../../../common/icons/WarningTriangleIcon";
 import { IconProps } from "../../../common/icons/types";
-import { Select } from "../../../common/v3/Select";
 import { SelectItem } from "../../../common/v3/Select/types";
 import { InsightFilterType } from "../../InsightsCatalog/types";
 import { useIssuesFilters } from "../useIssuesFilters";
@@ -22,7 +19,6 @@ import * as s from "./styles";
 import { trackingEvents } from "./tracking";
 
 export const IssuesFilter = () => {
-  const [isOpen, setIsOpen] = useState(false);
   const filteredInsightTypes = useInsightsStore.use.filteredInsightTypes();
   const selectedServices = useGlobalStore.use.selectedServices();
   const setFilteredInsightTypes =
@@ -112,7 +108,6 @@ export const IssuesFilter = () => {
 
   const handleCloseButtonClick = () => {
     sendUserActionTrackingEvent(trackingEvents.CLOSE_FILTER_DIALOG_CLICKED);
-    setIsOpen(false);
   };
 
   const handleToggleFilterChange = (
@@ -183,102 +178,94 @@ export const IssuesFilter = () => {
   const readStatusFilterPlaceholder =
     readStatusFilterOptions.find((x) => x.selected)?.label ?? "All";
   const selectedFiltersCount =
-    (filteredInsightTypes.length > 0 ? 1 : 0) +
-    (isServicesFilterEnabled && filteredServices.length > 0 ? 1 : 0) +
+    filteredInsightTypes.length +
+    (isServicesFilterEnabled ? filteredServices.length : 0) +
     (isCriticalOnly ? 1 : 0) +
     (isUnreadOnly ? 1 : 0);
 
-  return (
-    <NewPopover
-      width={"100%"}
-      content={
-        <s.Container>
-          <s.Header>
-            Filters
-            <s.CloseButton onClick={handleCloseButtonClick}>
-              <CrossIcon color={"currentColor"} size={16} />
-            </s.CloseButton>
-          </s.Header>
-          {isServicesFilterEnabled && (
-            <>
-              <s.FilterCategoryName>Services</s.FilterCategoryName>
-              <Select
-                key={"services"}
-                items={servicesFilterOptions}
-                onChange={handleServiceChange}
-                placeholder={filteredServices.length > 0 ? "Services" : "All"}
-                multiselect={true}
-                icon={(props: IconProps) => (
-                  <s.InsightIconContainer>
-                    <WrenchIcon {...props} />
-                  </s.InsightIconContainer>
-                )}
-                disabled={issueTypesFilterOptions?.length === 0}
-              />
-            </>
+  const filterComponents = [
+    {
+      title: "Issues",
+      component: (
+        <s.StyledSelect
+          key={"issues"}
+          items={issueTypesFilterOptions}
+          onChange={handleIssueTypesChange}
+          placeholder={filteredInsightTypes.length > 0 ? "Issues" : "All"}
+          multiselect={true}
+          icon={(props: IconProps) => (
+            <s.InsightIconContainer>
+              <FourPointedStarIcon {...props} />
+            </s.InsightIconContainer>
           )}
-          <s.FilterCategoryName>Issues</s.FilterCategoryName>
-          <Select
-            key={"issues"}
-            items={issueTypesFilterOptions}
-            onChange={handleIssueTypesChange}
-            placeholder={filteredInsightTypes.length > 0 ? "Issues" : "All"}
-            multiselect={true}
-            icon={(props: IconProps) => (
-              <s.InsightIconContainer>
-                <FourPointedStarIcon {...props} />
-              </s.InsightIconContainer>
-            )}
-            disabled={issueTypesFilterOptions?.length === 0}
-          />
-          <s.FilterCategoryName>Criticality</s.FilterCategoryName>
-          <Select
-            key={"criticality"}
-            items={criticalityFilterOptions}
-            onChange={(value) => handleToggleFilterChange(value, "criticality")}
-            placeholder={criticalityFilterPlaceholder}
-            icon={(props: IconProps) => (
-              <s.InsightIconContainer>
-                <WarningTriangleIcon {...props} />
-              </s.InsightIconContainer>
-            )}
-            showSelectedState={isCriticalOnly}
-          />
-          <s.FilterCategoryName>Read/Unread</s.FilterCategoryName>
-          <Select
-            key={"readStatus"}
-            items={readStatusFilterOptions}
-            onChange={(value) => handleToggleFilterChange(value, "unread")}
-            placeholder={readStatusFilterPlaceholder}
-            icon={(props: IconProps) => (
-              <s.InsightIconContainer>
-                <EyeIcon {...props} />
-              </s.InsightIconContainer>
-            )}
-            showSelectedState={isUnreadOnly}
-          />
-          <s.Footer>
-            <s.ClearAllButton
-              buttonType={"primaryBorderless"}
-              label={"Clear filters"}
-              isDisabled={selectedFiltersCount === 0}
-              onClick={handleClearFiltersButtonClick}
-            />
-          </s.Footer>
-        </s.Container>
-      }
-      onOpenChange={setIsOpen}
-      isOpen={isOpen}
-      placement={"bottom-end"}
-    >
-      <div>
-        <FilterButton
-          title={"Filters"}
-          showCount={true}
-          selectedCount={selectedFiltersCount}
-          isActive={isOpen}
+          disabled={issueTypesFilterOptions?.length === 0}
         />
-      </div>
-    </NewPopover>
+      )
+    },
+    {
+      title: "Criticality",
+      component: (
+        <s.StyledSelect
+          key={"criticality"}
+          items={criticalityFilterOptions}
+          onChange={(value) => handleToggleFilterChange(value, "criticality")}
+          placeholder={criticalityFilterPlaceholder}
+          icon={(props: IconProps) => (
+            <s.InsightIconContainer>
+              <WarningTriangleIcon {...props} />
+            </s.InsightIconContainer>
+          )}
+          showSelectedState={isCriticalOnly}
+        />
+      )
+    },
+    {
+      title: "Read/Unread",
+      component: (
+        <s.StyledSelect
+          key={"readStatus"}
+          items={readStatusFilterOptions}
+          onChange={(value) => handleToggleFilterChange(value, "unread")}
+          placeholder={readStatusFilterPlaceholder}
+          icon={(props: IconProps) => (
+            <s.InsightIconContainer>
+              <EyeIcon {...props} />
+            </s.InsightIconContainer>
+          )}
+          showSelectedState={isUnreadOnly}
+        />
+      )
+    }
+  ];
+
+  if (isServicesFilterEnabled) {
+    filterComponents.unshift({
+      title: "Services",
+      component: (
+        <s.StyledSelect
+          key={"services"}
+          items={servicesFilterOptions}
+          onChange={handleServiceChange}
+          placeholder={filteredServices.length > 0 ? "Services" : "All"}
+          multiselect={true}
+          icon={(props: IconProps) => (
+            <s.InsightIconContainer>
+              <WrenchIcon {...props} />
+            </s.InsightIconContainer>
+          )}
+          disabled={issueTypesFilterOptions?.length === 0}
+        />
+      )
+    });
+  }
+
+  return (
+    <FilterPopup
+      onClearAll={handleClearFiltersButtonClick}
+      onClose={handleCloseButtonClick}
+      title="Filters"
+      selectedFiltersCount={selectedFiltersCount}
+      filters={filterComponents}
+    />
   );
 };

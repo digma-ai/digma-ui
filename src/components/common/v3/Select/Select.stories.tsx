@@ -56,6 +56,13 @@ export const Default: Story = {
   }
 };
 
+export const Searchable: Story = {
+  args: {
+    searchable: true,
+    items: mockedData.items.map((x, i) => ({ ...x, enabled: i !== 0 }))
+  }
+};
+
 export const Empty: Story = {
   args: {
     items: []

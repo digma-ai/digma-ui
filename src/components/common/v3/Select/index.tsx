@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { ChangeEvent, useCallback, useRef, useState } from "react";
+import useDimensions from "react-cool-dimensions";
 import { isString } from "../../../../typeGuards/isString";
 import { isUndefined } from "../../../../typeGuards/isUndefined";
 import { NewPopover } from "../../NewPopover";
 import { ChevronIcon } from "../../icons/ChevronIcon";
+import { MagnifierIcon } from "../../icons/MagnifierIcon";
 import { Direction } from "../../icons/types";
 import { Checkmark } from "../Checkmark";
 import { Tooltip } from "../Tooltip";
@@ -29,9 +31,21 @@ export const Select = ({
   icon: Icon,
   placeholder,
   className,
+  searchable,
   showSelectedState
 }: SelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+  const optionListRef = useRef<HTMLUListElement | null>(null);
+  const { observe } = useDimensions();
+
+  const getOptionListRef = useCallback(
+    (el: HTMLUListElement | null) => {
+      observe(el);
+      optionListRef.current = el;
+    },
+    [observe]
+  );
 
   const handleButtonClick = () => {
     setIsOpen(!isOpen);
@@ -59,19 +73,48 @@ export const Select = ({
     onChange(newValue);
   };
 
+  const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value);
+  };
+
   const selectedValues = items.filter((x) => x.selected).map((x) => x.value);
+
+  const filteredItems = items.filter((x) =>
+    x.label.toLocaleLowerCase().includes(searchValue)
+  );
+
   const sortedItems = multiselect
-    ? items.sort(sortItemsBySelectedState)
-    : items;
+    ? filteredItems.sort(sortItemsBySelectedState)
+    : filteredItems;
+
   const isSelectedStateEnabled =
     isUndefined(showSelectedState) || showSelectedState;
+
+  const optionListHasVerticalScrollbar = Boolean(
+    optionListRef?.current &&
+      optionListRef.current.scrollHeight > optionListRef.current.clientHeight
+  );
+  const isSearchBarVisible =
+    searchable && (optionListHasVerticalScrollbar || searchValue.length > 0);
 
   return (
     <NewPopover
       sameWidth={true}
       content={
         <s.MenuContainer>
-          <s.OptionList>
+          {isSearchBarVisible && (
+            <s.SearchInputContainer>
+              <s.SearchInputIconContainer>
+                <MagnifierIcon />
+              </s.SearchInputIconContainer>
+              <s.SearchInput
+                type={"text"}
+                placeholder={"Search"}
+                onChange={handleSearchChange}
+              />
+            </s.SearchInputContainer>
+          )}
+          <s.OptionList ref={getOptionListRef}>
             {sortedItems.length > 0 ? (
               sortedItems.map((x) => (
                 <s.OptionListItem
@@ -93,7 +136,15 @@ export const Select = ({
                 </s.OptionListItem>
               ))
             ) : (
-              <s.NoResultsContainer>No results</s.NoResultsContainer>
+              <s.NoResultsContainer>
+                <span>No results</span>
+                {searchValue?.length > 0 && (
+                  <s.NoSearchResults>
+                    <span>Check spelling or try to search</span>
+                    <span>something else.</span>
+                  </s.NoSearchResults>
+                )}
+              </s.NoResultsContainer>
             )}
           </s.OptionList>
         </s.MenuContainer>
