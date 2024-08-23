@@ -35,7 +35,7 @@ export const Default: Story = {
         unit: "ms",
         raw: 62466300.59999996
       },
-
+      impactScore: 0,
       impactScores: {
         ScoreExp25: 0,
         ScoreExp1000: 0

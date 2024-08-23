@@ -118,7 +118,7 @@ export const PrimaryBorderlessButton = styled(BaseButton)`
 `;
 
 export const SecondaryBorderlessButton = styled(BaseButton)`
-  padding: 6px 0;
+  padding: 5px 0;
   color: ${({ theme }) => theme.colors.v3.icon.tertiary};
   border: 1px solid transparent;
   background: none;
