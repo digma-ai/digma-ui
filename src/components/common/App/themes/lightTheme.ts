@@ -216,7 +216,7 @@ export const lightTheme: ThemeColors = {
     brand: primaryScale[300],
     brandDark: grayScale[50],
     secondary: grayScale[50],
-    brandDarkest: grayScale[75]
+    brandDarkest: v3colors.gray[150]
   },
   stroke: {
     primary: grayScale[300],

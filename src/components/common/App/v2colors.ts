@@ -1,7 +1,6 @@
 export const grayScale = {
   0: "#fff",
   50: "#f7f8fc",
-  75: "#f0f0ff",
   100: "#f0f1f7",
   150: "#e6e8f2",
   200: "#d3d6e5",
@@ -26,8 +25,7 @@ export const primaryScale = {
   400: "#393cea",
   500: "#2628a6",
   600: "#22235e",
-  700: "#28293e",
-  800: "#242433"
+  700: "#28293e"
 };
 
 export const blueScale = {
