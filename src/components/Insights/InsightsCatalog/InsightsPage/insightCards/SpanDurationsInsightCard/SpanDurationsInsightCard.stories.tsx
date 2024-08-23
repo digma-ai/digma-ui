@@ -41,6 +41,25 @@ export const WithAverage: Story = {
   }
 };
 
+export const WithoutPercentiles: Story = {
+  args: {
+    insight: {
+      ...mockedSpanDurationsInsight,
+      average: {
+        value: 110.74,
+        unit: "ms",
+        raw: 110735000
+      },
+      standardDeviation: {
+        value: 12.55,
+        unit: "ms",
+        raw: 12548500
+      },
+      percentiles: []
+    }
+  }
+};
+
 export const WithChange: Story = {
   args: {
     insight: mockedSpanDurationsInsight

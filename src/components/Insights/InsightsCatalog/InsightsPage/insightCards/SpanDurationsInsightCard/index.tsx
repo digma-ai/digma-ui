@@ -309,7 +309,7 @@ ${getDurationString(insight.average)}${
                 </CommonTooltip>
               </KeyValue>
             )}
-            {sortedPercentiles.length > 0 ? (
+            {sortedPercentiles.length > 0 && (
               <>
                 {sortedPercentiles.map((percentile) => {
                   if (percentile.traceIds.length > 0) {
@@ -342,8 +342,6 @@ ${getDurationString(insight.average)}${
                   ) : null;
                 })}
               </>
-            ) : (
-              <span>Waiting for more data...</span>
             )}
             {!insight.histogramPlot &&
               insight.average &&
