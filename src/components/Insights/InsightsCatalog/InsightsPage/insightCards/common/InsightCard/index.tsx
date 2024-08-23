@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useState } from "react";
 import { useGlobalStore } from "../../../../../../../containers/Main/stores/useGlobalStore";
+import { dispatcher } from "../../../../../../../dispatcher";
 import { usePrevious } from "../../../../../../../hooks/usePrevious";
 import { isString } from "../../../../../../../typeGuards/isString";
 import { sendUserActionTrackingEvent } from "../../../../../../../utils/actions/sendUserActionTrackingEvent";
@@ -14,6 +15,7 @@ import { CrossIcon } from "../../../../../../common/icons/CrossIcon";
 import { JiraButton } from "../../../../../../common/v3/JiraButton";
 import { NewButton } from "../../../../../../common/v3/NewButton";
 import { Tooltip } from "../../../../../../common/v3/Tooltip";
+import { actions } from "../../../../../actions";
 import { trackingEvents } from "../../../../../tracking";
 import { isEndpointInsight, isSpanInsight } from "../../../../../typeGuards";
 import { InsightStatus } from "../../../../../types";
@@ -26,7 +28,7 @@ import { RecalculateBar } from "./RecalculateBar";
 import { useDismissal } from "./hooks/useDismissal";
 import { useMarkingAsRead } from "./hooks/useMarkingAsRead";
 import * as s from "./styles";
-import { Action, InsightCardProps } from "./types";
+import { Action, InsightCardProps, RecalculateResponse } from "./types";
 
 const HIGH_CRITICALITY_THRESHOLD = 0.8;
 
@@ -67,6 +69,27 @@ export const InsightCard = ({
   useEffect(() => {
     setInsightStatus(insight.status);
   }, [insight.status]);
+
+  useEffect(() => {
+    const handleRecalculatedSet = (data: unknown) => {
+      const recalculateResponse = data as RecalculateResponse;
+      if (recalculateResponse && insight.id === recalculateResponse.insightId) {
+        onRefresh(insight.type);
+      }
+    };
+
+    dispatcher.addActionListener(
+      actions.SET_RECALCULATED,
+      handleRecalculatedSet
+    );
+
+    return () => {
+      dispatcher.removeActionListener(
+        actions.SET_RECALCULATED,
+        handleRecalculatedSet
+      );
+    };
+  }, [insight.id]);
 
   useEffect(() => {
     if (previousIsOperationInProgress && !isOperationInProgress) {

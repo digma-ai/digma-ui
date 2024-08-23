@@ -73,6 +73,10 @@ export interface SetMarkAllAsReadResponsePayload {
   error?: string;
 }
 
+export interface RecalculateResponse {
+  insightId: string;
+}
+
 export interface InsightCardCommonProps {
   onRecalculate: (insightId: string) => void;
   onRefresh: (insightType: InsightType) => void;
