@@ -54,7 +54,6 @@ export interface ThemeColors {
     card: string;
     brand: string;
     brandDark: string;
-    brandDarkest: string;
     secondary: string;
   };
   stroke: {

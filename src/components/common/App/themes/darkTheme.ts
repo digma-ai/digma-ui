@@ -217,7 +217,6 @@ export const darkTheme: ThemeColors = {
     card: grayScale[1100],
     brand: primaryScale[300],
     brandDark: primaryScale[700],
-    brandDarkest: v3colors.primary[1000],
     secondary: grayScale[1100]
   },
   stroke: {

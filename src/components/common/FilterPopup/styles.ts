@@ -11,7 +11,7 @@ export const Container = styled.div`
   gap: 12px;
   padding: 8px;
   border-radius: 8px;
-  background: ${({ theme }) => theme.colors.surface.brandDarkest};
+  background: ${({ theme }) => theme.colors.v3.surface.brandDarkest};
   box-shadow: 0 2px 4px 0 rgb(0 0 0 / 29%);
   font-size: 14px;
   color: ${({ theme }) => theme.colors.v3.text.tertiary};
