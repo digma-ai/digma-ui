@@ -74,8 +74,8 @@ export const InsightCard = ({
     const handleRecalculatedSet = (data: unknown) => {
       const recalculateResponse = data as RecalculateResponse;
       if (recalculateResponse && insight.id === recalculateResponse.insightId) {
-        onRefresh(insight.type);
         setInsightStatus(InsightStatus.InEvaluation);
+        onRefresh(insight.type);
       }
     };
 
