@@ -65,7 +65,7 @@ export const InsightCard = ({
 
   const isCritical = insight.criticality > HIGH_CRITICALITY_THRESHOLD;
 
-  // TODO: remove and refresh the insight data
+  // reset internal state after recalculate
   useEffect(() => {
     setInsightStatus(insight.status);
   }, [insight.status]);
@@ -75,6 +75,7 @@ export const InsightCard = ({
       const recalculateResponse = data as RecalculateResponse;
       if (recalculateResponse && insight.id === recalculateResponse.insightId) {
         onRefresh(insight.type);
+        setInsightStatus(InsightStatus.InEvaluation);
       }
     };
 
@@ -106,8 +107,6 @@ export const InsightCard = ({
     if (onRecalculate) {
       onRecalculate(insight.id);
     }
-    // TODO: handle Recheck response and refresh the insight data
-    setInsightStatus(InsightStatus.InEvaluation);
   };
 
   const handleHistogramButtonClick = () => {
