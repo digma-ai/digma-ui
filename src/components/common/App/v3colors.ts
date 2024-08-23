@@ -2,7 +2,6 @@ export const v3colors = {
   gray: {
     0: "#fff",
     100: "#f7f8fc",
-    150: "#f0f0ff",
     200: "#f0f1f7",
     300: "#e6e8f2",
     400: "#d3d6e5",
