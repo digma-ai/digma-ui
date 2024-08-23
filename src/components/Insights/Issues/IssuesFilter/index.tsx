@@ -178,8 +178,8 @@ export const IssuesFilter = () => {
   const readStatusFilterPlaceholder =
     readStatusFilterOptions.find((x) => x.selected)?.label ?? "All";
   const selectedFiltersCount =
-    (filteredInsightTypes.length > 0 ? 1 : 0) +
-    (isServicesFilterEnabled && filteredServices.length > 0 ? 1 : 0) +
+    filteredInsightTypes.length +
+    (isServicesFilterEnabled ? filteredServices.length : 0) +
     (isCriticalOnly ? 1 : 0) +
     (isUnreadOnly ? 1 : 0);
 

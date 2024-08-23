@@ -78,9 +78,15 @@ export const Select = ({
   };
 
   const selectedValues = items.filter((x) => x.selected).map((x) => x.value);
+
+  const filteredItems = items.filter((x) =>
+    x.label.toLocaleLowerCase().includes(searchValue)
+  );
+
   const sortedItems = multiselect
-    ? items.sort(sortItemsBySelectedState)
-    : items;
+    ? filteredItems.sort(sortItemsBySelectedState)
+    : filteredItems;
+
   const isSelectedStateEnabled =
     isUndefined(showSelectedState) || showSelectedState;
 
@@ -130,7 +136,15 @@ export const Select = ({
                 </s.OptionListItem>
               ))
             ) : (
-              <s.NoResultsContainer>No results</s.NoResultsContainer>
+              <s.NoResultsContainer>
+                <span>No results</span>
+                {searchValue?.length > 0 && (
+                  <s.NoSearchResults>
+                    <span>Check spelling or try to search</span>
+                    <span>something else.</span>
+                  </s.NoSearchResults>
+                )}
+              </s.NoResultsContainer>
             )}
           </s.OptionList>
         </s.MenuContainer>
