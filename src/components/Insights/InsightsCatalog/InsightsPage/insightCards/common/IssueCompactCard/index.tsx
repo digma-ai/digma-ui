@@ -94,6 +94,7 @@ export const IssueCompactCard = ({
         onRecheck();
         break;
     }
+    setIsKebabMenuOpen(false);
   };
 
   const menuItems: MenuItem[] = [

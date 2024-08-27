@@ -1,8 +1,9 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
 import { usePagination } from "../../../hooks/usePagination";
 import { usePrevious } from "../../../hooks/usePrevious";
+import { InsightType } from "../../Insights/types";
 import { CrossCircleIcon } from "../../common/icons/16px/CrossCircleIcon";
 import { RefreshIcon } from "../../common/icons/16px/RefreshIcon";
 import { EmptyStateCard } from "../EmptyStateCard";
@@ -94,8 +95,16 @@ export const TopIssues = () => {
   const { data, getData } = useTopIssuesData();
   const previousData = usePrevious(data);
   const scope = useGlobalStore.use.scope();
+  // Do not show unimplemented insights
+  const filteredTopInsights = useMemo(
+    () =>
+      (data?.topInsights ?? []).filter(
+        (x) => x.insightType !== InsightType.SlowEndpoint
+      ),
+    [data]
+  );
   const [pageItems, page, setPage] = usePagination(
-    data?.topInsights ?? [],
+    filteredTopInsights,
     PAGE_SIZE,
     scope?.span?.spanCodeObjectId
   );
@@ -142,7 +151,7 @@ export const TopIssues = () => {
       title={"Top Issues"}
       toolbarContent={
         <CarouselPagination
-          itemsCount={data?.topInsights.length ?? 0}
+          itemsCount={filteredTopInsights.length ?? 0}
           onPageChange={setPage}
           pageSize={PAGE_SIZE}
           page={page}
