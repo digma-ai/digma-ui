@@ -1,8 +1,8 @@
 import { ReactNode } from "react";
 import { trimEndpointScheme } from "../../../../../utils/trimEndpointScheme";
-import { EndpointOption } from "../insightCards/common/InsightCard/EndpointOption";
 import { Select } from "../insightCards/common/InsightCard/Select";
 import { CustomContentProps } from "../insightCards/common/InsightCard/Select/types";
+import { EndpointOption } from "./EndpointOption";
 import * as s from "./styles";
 import { AffectedEndpointsSelectorProps, Option } from "./types";
 
