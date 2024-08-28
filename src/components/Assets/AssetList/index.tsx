@@ -17,7 +17,6 @@ import { PopoverTrigger } from "../../common/Popover/PopoverTrigger";
 import { ChevronIcon } from "../../common/icons/ChevronIcon";
 import { SortIcon } from "../../common/icons/SortIcon";
 import { Direction } from "../../common/icons/types";
-import { Link } from "../../common/v3/Link";
 import { AssetFilterQuery } from "../AssetsFilter/types";
 import { actions } from "../actions";
 import { checkIfAnyFiltersApplied, getAssetTypeInfo } from "../utils";
@@ -34,16 +33,6 @@ import {
 
 const PAGE_SIZE = 10;
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
-
-const getAssetTypeIconColor = (theme: DefaultTheme) => {
-  switch (theme.mode) {
-    case "light":
-      return "#788ca9";
-    case "dark":
-    case "dark-jetbrains":
-      return "#9c9c9c";
-  }
-};
 
 const getSortingMenuChevronColor = (theme: DefaultTheme) => {
   switch (theme.mode) {
@@ -142,7 +131,6 @@ export const AssetList = ({
   });
   const [isSortingMenuOpen, setIsSortingMenuOpen] = useState(false);
   const theme = useTheme();
-  const assetTypeIconColor = getAssetTypeIconColor(theme);
   const sortingMenuChevronColor = getSortingMenuChevronColor(theme);
   const [page, setPage] = useState(0);
   const filteredCount = data?.filteredCount ?? 0;
@@ -390,13 +378,11 @@ export const AssetList = ({
   return (
     <s.Container>
       <s.Header>
-        <s.TypeHeader>
-          {assetTypeInfo?.icon && (
-            <assetTypeInfo.icon color={assetTypeIconColor} size={14} />
-          )}
-          {assetTypeInfo?.label ?? assetTypeId}
-        </s.TypeHeader>
-        <Link onClick={handleAllAssetsLinkClick}>All Assets</Link>
+        <s.StyledLink onClick={handleAllAssetsLinkClick}>
+          All Assets
+        </s.StyledLink>
+        <span>/</span>
+        {assetTypeInfo?.label ?? assetTypeId}
       </s.Header>
       <s.Toolbar>
         <s.PopoverContainer>

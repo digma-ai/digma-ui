@@ -267,7 +267,7 @@ export const InsightsCatalog = ({
     <>
       <s.Toolbar>
         <s.ToolbarRow>
-          {isAtSpan && selectorEnvironments.length > 1 && (
+          {isAtSpan && (
             <EnvironmentSelector environments={selectorEnvironments} />
           )}
           {!isAtSpan && renderFilterPanel()}

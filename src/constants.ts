@@ -27,6 +27,8 @@ export const SCALING_ISSUE_DOCUMENTATION_URL =
 export const TEST_OBSERVABILITY_DOCUMENTATION_URL =
   "https://docs.digma.ai/digma-developer-guide/digma-features/test-observability";
 
+export const DIGMA_DOCUMENTATION = "https://docs.digma.ai";
+
 export const PERCENTILES: {
   label: string;
   percentile: number;

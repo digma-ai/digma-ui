@@ -169,6 +169,7 @@ export const IssueCompactCard = ({
           />
         )}
         <s.Title>{insightTypeInfo?.label}</s.Title>
+        {metric && <Tag content={metric} type={"highlight"} />}
         {insight.status && statusInfo && (
           <Tooltip
             title={<KeyValue label="Status">{statusInfo.label}</KeyValue>}
@@ -181,7 +182,6 @@ export const IssueCompactCard = ({
             />
           </Tooltip>
         )}
-        {metric && <Tag content={metric} type={"highlight"} />}
         <NewPopover
           isOpen={isKebabMenuOpen}
           onOpenChange={setIsKebabMenuOpen}
