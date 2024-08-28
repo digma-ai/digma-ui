@@ -57,7 +57,11 @@ export const AffectedEndpointsSelector = ({
       options={renderOptions(options, handleSpanLinkClick)}
       listHeader={
         <s.ListHeader>
-          <EndpointOption route="Endpoint" serviceName="Service" />
+          <EndpointOption
+            route="Endpoint"
+            serviceName="Service"
+            hideCopyIcon={true}
+          />
         </s.ListHeader>
       }
     />

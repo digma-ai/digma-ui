@@ -56,4 +56,5 @@ export const ServiceName = styled.span`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  color: ${({ theme }) => theme.colors.v3.text.tertiary};
 `;
