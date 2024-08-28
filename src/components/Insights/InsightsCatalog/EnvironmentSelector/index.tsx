@@ -67,10 +67,6 @@ export const EnvironmentSelector = ({
     sortEnvironmentsByCriticalIssues
   );
 
-  if (sortedEnvironments.length < 2) {
-    return null;
-  }
-
   const changeEnvironment = (environmentId: string) => {
     sendUserActionTrackingEvent(trackingEvents.ENVIRONMENT_SELECTED);
 
