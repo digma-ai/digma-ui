@@ -1,8 +1,10 @@
 import { actions as globalActions } from "../../../actions";
 import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
 import { OpenInstallationWizardPayload } from "../../../types";
+import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { isDigmaEngineRunning } from "../../../utils/isDigmaEngineRunning";
+import { BookIcon } from "../../common/icons/16px/BookIcon";
 import { DigmaLogoFlatIcon } from "../../common/icons/16px/DigmaLogoFlatIcon";
 import { FourPointedStarIcon } from "../../common/icons/16px/FourPointedStarIcon";
 import { LogoutIcon } from "../../common/icons/16px/LogoutIcon";
@@ -50,6 +52,11 @@ export const KebabMenu = ({ onClose }: KebabMenuProps) => {
       }
     });
     onClose();
+  };
+
+  const handleOpenDocsClick = () => {
+    sendUserActionTrackingEvent(trackingEvents.OPEN_DOCS_CLICKED);
+    openURLInDefaultBrowser("https://docs.digma.ai");
   };
 
   const handleDashboardClick = () => {
@@ -122,6 +129,13 @@ export const KebabMenu = ({ onClose }: KebabMenuProps) => {
     //   });
     // }
   }
+
+  items.push({
+    id: "digma_docs",
+    label: "Digma Docs",
+    icon: <BookIcon size={16} />,
+    onClick: handleOpenDocsClick
+  });
 
   if (backendInfo?.centralize) {
     items.push({

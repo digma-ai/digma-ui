@@ -22,6 +22,7 @@ export const trackingEvents = addPrefix(
     OBSERVABILITY_TOGGLE_SWITCHED: "observability toggle switched",
     ONBOARDING_LINK_CLICKED: "onboarding link clicked",
     DASHBOARD_LINK_CLICKED: "dashboard link clicked",
+    OPEN_DOCS_CLICKED: "open docs clicked",
     TAB_CLICKED: "tab clicked",
     LOGOUT_CLICKED: "logout clicked"
   },
