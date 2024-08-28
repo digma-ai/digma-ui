@@ -98,7 +98,7 @@ export const SpanInfo = () => {
               }
             />
           )}
-          Span Info
+          Scope
         </s.TitleContainer>
         <s.AnimatedButtonContainer $isExpanded={isExpanded}>
           {renderAnimatedButton(!isExpanded, "Expand", expandedBtnRef)}
