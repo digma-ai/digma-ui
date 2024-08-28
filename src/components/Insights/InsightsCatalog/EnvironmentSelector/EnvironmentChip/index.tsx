@@ -26,6 +26,7 @@ export const EnvironmentChip = ({
           {environmentName}
           {issueCounts && (
             <s.TooltipContentIssueCountsContainer>
+              <span>Issues by priority:</span>
               <span>High: {issueCounts.highCriticality}</span>
               <span>Medium: {issueCounts.mediumCriticality}</span>
               <span>Low: {issueCounts.mediumCriticality}</span>
