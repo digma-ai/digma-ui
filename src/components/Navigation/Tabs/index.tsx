@@ -97,7 +97,7 @@ export const Tabs = () => {
       });
 
       if (!tab.isSelected) {
-        goTo(`/${tab.id}`);
+        goTo(`/${tab.id}`, { replace: true });
       }
     }
   };

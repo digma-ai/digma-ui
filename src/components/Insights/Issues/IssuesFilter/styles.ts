@@ -1,19 +1,28 @@
 import styled from "styled-components";
+import { NewButton } from "../../../common/v3/NewButton";
 import { Select } from "../../../common/v3/Select";
 
-export const MenuButton = styled.button`
-  border: 1px solid ${({ theme }) => theme.colors.stroke.primary};
-  background: ${({ theme }) => theme.colors.surface.secondary};
-  border-radius: 4px;
-  padding: 4px 8px;
+export const Footer = styled.div`
+  padding: 8px 0;
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  width: 100%;
+  align-items: center;
 `;
 
-export const MenuButtonChevronIconContainer = styled.span`
-  color: ${({ theme }) => theme.colors.icon.primary};
+export const ClearAllButton = styled(NewButton)`
+  padding: 0;
+
+  span {
+    color: ${({ theme }) => theme.colors.v3.status.high};
+  }
+
+  &:hover:enabled {
+    color: ${({ theme }) => theme.colors.v3.status.high};
+
+    span {
+      color: ${({ theme }) => theme.colors.v3.status.high};
+    }
+  }
 `;
 
 export const InsightIconContainer = styled.div`

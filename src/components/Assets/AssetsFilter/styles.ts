@@ -27,21 +27,6 @@ export const FilterCategoryName = styled.div`
   color: ${grayScale[400]};
 `;
 
-export const MenuButton = styled.button`
-  border: 1px solid ${({ theme }) => theme.colors.stroke.primary};
-  background: ${({ theme }) => theme.colors.surface.secondary};
-  border-radius: 4px;
-  padding: 4px 8px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-`;
-
-export const MenuButtonChevronIconContainer = styled.span`
-  color: ${({ theme }) => theme.colors.icon.primary};
-`;
-
 export const Footer = styled.div`
   padding: 8px 0;
   display: flex;
