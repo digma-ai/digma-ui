@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
 import { bodyBoldTypography } from "../../../../../../common/App/typographies";
 import { CopyButton } from "../../../../../../common/v3/CopyButton";
+import { NewIconButton } from "../../../../../../common/v3/NewIconButton";
 import { Popup } from "../../../../../../Navigation/common/Popup";
 import { InsightStatusBadge } from "../InsightStatusBadge";
 import { ContainerProps } from "./types";
@@ -85,4 +86,8 @@ export const StyledPopup = styled(Popup)`
   & > div {
     padding: 8px 4px;
   }
+`;
+
+export const StyledNewIconButton = styled(NewIconButton)`
+  padding: 4px;
 `;

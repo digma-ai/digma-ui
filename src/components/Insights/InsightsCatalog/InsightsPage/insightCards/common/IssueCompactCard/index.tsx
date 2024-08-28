@@ -12,7 +12,6 @@ import { TraceIcon } from "../../../../../../common/icons/16px/TraceIcon";
 import { ThreeDotsIcon } from "../../../../../../common/icons/ThreeDotsIcon";
 import { NewPopover } from "../../../../../../common/NewPopover";
 import { Link } from "../../../../../../common/v3/Link";
-import { NewIconButton } from "../../../../../../common/v3/NewIconButton";
 import { Tag } from "../../../../../../common/v3/Tag";
 import { Tooltip } from "../../../../../../common/v3/Tooltip";
 import { MenuList } from "../../../../../../Navigation/common/MenuList";
@@ -169,6 +168,7 @@ export const IssueCompactCard = ({
           />
         )}
         <s.Title>{insightTypeInfo?.label}</s.Title>
+        {metric && <Tag content={metric} type={"highlight"} />}
         {insight.status && statusInfo && (
           <Tooltip
             title={<KeyValue label="Status">{statusInfo.label}</KeyValue>}
@@ -181,7 +181,6 @@ export const IssueCompactCard = ({
             />
           </Tooltip>
         )}
-        {metric && <Tag content={metric} type={"highlight"} />}
         <NewPopover
           isOpen={isKebabMenuOpen}
           onOpenChange={setIsKebabMenuOpen}
@@ -192,7 +191,7 @@ export const IssueCompactCard = ({
             </s.StyledPopup>
           }
         >
-          <NewIconButton
+          <s.StyledNewIconButton
             icon={ThreeDotsIcon}
             buttonType={"secondaryBorderless"}
             size={"small"}
