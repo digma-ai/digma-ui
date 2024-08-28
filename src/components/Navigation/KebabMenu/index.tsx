@@ -1,4 +1,5 @@
 import { actions as globalActions } from "../../../actions";
+import { DIGMA_DOCUMENTATION } from "../../../constants";
 import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
 import { OpenInstallationWizardPayload } from "../../../types";
 import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
@@ -56,7 +57,7 @@ export const KebabMenu = ({ onClose }: KebabMenuProps) => {
 
   const handleOpenDocsClick = () => {
     sendUserActionTrackingEvent(trackingEvents.OPEN_DOCS_CLICKED);
-    openURLInDefaultBrowser("https://docs.digma.ai");
+    openURLInDefaultBrowser(DIGMA_DOCUMENTATION);
   };
 
   const handleDashboardClick = () => {

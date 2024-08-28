@@ -12,6 +12,7 @@ import { TraceIcon } from "../../../../../../common/icons/16px/TraceIcon";
 import { ThreeDotsIcon } from "../../../../../../common/icons/ThreeDotsIcon";
 import { NewPopover } from "../../../../../../common/NewPopover";
 import { Link } from "../../../../../../common/v3/Link";
+import { NewIconButton } from "../../../../../../common/v3/NewIconButton";
 import { Tag } from "../../../../../../common/v3/Tag";
 import { Tooltip } from "../../../../../../common/v3/Tooltip";
 import { MenuList } from "../../../../../../Navigation/common/MenuList";
@@ -191,7 +192,7 @@ export const IssueCompactCard = ({
             </s.StyledPopup>
           }
         >
-          <s.StyledNewIconButton
+          <NewIconButton
             icon={ThreeDotsIcon}
             buttonType={"secondaryBorderless"}
             size={"small"}

@@ -34,16 +34,6 @@ import {
 const PAGE_SIZE = 10;
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 
-// const getAssetTypeIconColor = (theme: DefaultTheme) => {
-//   switch (theme.mode) {
-//     case "light":
-//       return "#788ca9";
-//     case "dark":
-//     case "dark-jetbrains":
-//       return "#9c9c9c";
-//   }
-// };
-
 const getSortingMenuChevronColor = (theme: DefaultTheme) => {
   switch (theme.mode) {
     case "light":
