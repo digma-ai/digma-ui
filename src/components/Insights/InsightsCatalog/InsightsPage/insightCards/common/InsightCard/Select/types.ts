@@ -1,8 +1,8 @@
-import { ReactNode } from "react";
+import { ReactElement, ReactNode } from "react";
 
 export interface SelectOption {
   label: string;
-  customContent?: ReactNode;
+  customContent?: (props: CustomContentProps) => ReactNode;
   value: string;
 }
 
@@ -12,9 +12,15 @@ export interface SelectProps {
   placeholder?: string;
   isDisabled?: boolean;
   onChange: (value: string) => void;
+  listHeader?: ReactElement;
 }
 
 export interface SelectBarProps {
   $isOpen: boolean;
   $isDisabled?: boolean;
+}
+
+export interface CustomContentProps {
+  isSelected: boolean;
+  onClick: (() => void) | null;
 }

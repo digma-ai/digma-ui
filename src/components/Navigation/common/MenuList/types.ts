@@ -1,8 +1,11 @@
+import { ReactNode } from "react";
+
 export interface MenuListProps {
   items: MenuItem[];
   showGroupNames?: boolean;
   showGroupDividers?: boolean;
   highlightSelected?: boolean;
+  header?: ReactNode;
 }
 
 export interface ListItemProps {

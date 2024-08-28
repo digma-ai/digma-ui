@@ -67,7 +67,7 @@ export const ItemWithCustomContent: Story = {
       {
         value: "item_with_custom_content",
         label: "Item with custom content",
-        customContent: <a href={"#"}>Custom content</a>
+        customContent: () => <a href={"#"}>Custom content</a>
       }
     ],
     value: "item_with_custom_content"

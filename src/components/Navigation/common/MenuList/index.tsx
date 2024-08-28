@@ -11,7 +11,8 @@ export const MenuList = ({
   showGroupNames = true,
   items,
   showGroupDividers,
-  highlightSelected
+  highlightSelected,
+  header
 }: MenuListProps) => {
   const groups = groupBy(
     items,
@@ -47,6 +48,7 @@ export const MenuList = ({
 
   return (
     <s.List>
+      {header}
       {showGroupDividers
         ? intersperse<ReactElement, ReactElement>(
             groupElements,

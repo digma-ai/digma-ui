@@ -1,40 +1,17 @@
-import { ReactNode, useState } from "react";
+import { useState } from "react";
 import { useGlobalStore } from "../../../../../../containers/Main/stores/useGlobalStore";
 import { getDurationString } from "../../../../../../utils/getDurationString";
-import { trimEndpointScheme } from "../../../../../../utils/trimEndpointScheme";
 import { TraceIcon } from "../../../../../common/icons/12px/TraceIcon";
 import { Button } from "../../../../../common/v3/Button";
 import { Tooltip } from "../../../../../common/v3/Tooltip";
-import { InsightType, NPlusOneEndpointInfo, Trace } from "../../../../types";
+import { InsightType, Trace } from "../../../../types";
+import { AffectedEndpointsSelector } from "../../AffectedEndpointsSelector";
 import { InsightCard } from "../common/InsightCard";
 import { ColumnsContainer } from "../common/InsightCard/ColumnsContainer";
-import { EndpointSelectedOption } from "../common/InsightCard/EndpointSelectedOption";
 import { KeyValue } from "../common/InsightCard/KeyValue";
-import { Select } from "../common/InsightCard/Select";
 import { ContentContainer, Description, Details } from "../styles";
 import * as s from "./styles";
 import { SpaNPlusOneInsightCardProps } from "./types";
-
-const renderOptions = (
-  endpoints: NPlusOneEndpointInfo[],
-  handleLinkClick: (spanCodeObjectId?: string) => void
-): { label: string; customContent: ReactNode; value: string }[] =>
-  endpoints.map((x) => {
-    const spanCodeObjectId = x.endpointInfo.entrySpanCodeObjectId;
-    const route = trimEndpointScheme(x.endpointInfo.route);
-    return {
-      label: route,
-      customContent: (
-        <EndpointSelectedOption
-          serviceName={x.endpointInfo.serviceName}
-          route={route}
-          spanCodeObjectId={spanCodeObjectId}
-          onClick={handleLinkClick}
-        />
-      ),
-      value: spanCodeObjectId
-    };
-  });
 
 export const SpaNPlusOneInsightCard = ({
   insight,
@@ -86,18 +63,25 @@ export const SpaNPlusOneInsightCard = ({
           <Details>
             <Description>Affected Endpoints ({endpoints.length})</Description>
             <s.SelectContainer>
-              <Select
+              <AffectedEndpointsSelector
                 value={selectedEndpoint?.endpointInfo.entrySpanCodeObjectId}
                 onChange={(selectedOption) => {
                   const selected =
                     endpoints.find(
                       (x) =>
-                        x.endpointInfo.entrySpanCodeObjectId === selectedOption
+                        x.endpointInfo.entrySpanCodeObjectId ===
+                        selectedOption?.spanCodeObjectId
                     ) ?? null;
 
                   setSelectedEndpoint(selected);
                 }}
-                options={renderOptions(endpoints, handleSpanLinkClick)}
+                options={endpoints.map((x) => ({
+                  route: x.endpointInfo.route,
+                  serviceName: x.endpointInfo.serviceName,
+                  spanCodeObjectId: x.endpointInfo.entrySpanCodeObjectId
+                }))}
+                insightType={insight.type}
+                onAssetLinkClick={handleSpanLinkClick}
               />
               {isJaegerEnabled && selectedEndpoint && (
                 <Tooltip title={"Open Trace"}>
