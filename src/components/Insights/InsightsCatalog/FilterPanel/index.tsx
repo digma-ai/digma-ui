@@ -1,7 +1,4 @@
-import { useEffect } from "react";
-import { useGlobalStore } from "../../../../containers/Main/stores/useGlobalStore";
 import { useInsightsStore } from "../../../../containers/Main/stores/useInsightsStore";
-import { usePrevious } from "../../../../hooks/usePrevious";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { InsightFilterType } from "../types";
 import { FilterChip } from "./FilterChip";
@@ -15,31 +12,6 @@ export const FilterPanel = ({
 }: FilterPanelProps) => {
   const filters = useInsightsStore.use.filters();
   const setFilters = useInsightsStore.use.setFilters();
-  const environment = useGlobalStore.use.environment();
-  const environmentId = environment?.id;
-  const previousEnvironmentId = usePrevious(environmentId);
-  const scope = useGlobalStore.use.scope();
-  const previousScope = usePrevious(scope);
-  const scopeSpanCodeObjectId = scope?.span?.spanCodeObjectId;
-  const previousScopeSpanCodeObjectId = previousScope?.span?.spanCodeObjectId;
-
-  useEffect(() => {
-    if (
-      Boolean(
-        previousEnvironmentId && previousEnvironmentId !== environmentId
-      ) ||
-      (previousScope && previousScopeSpanCodeObjectId !== scopeSpanCodeObjectId)
-    ) {
-      setFilters([]);
-    }
-  }, [
-    previousEnvironmentId,
-    environmentId,
-    previousScope,
-    setFilters,
-    scopeSpanCodeObjectId,
-    previousScopeSpanCodeObjectId
-  ]);
 
   const handleFilterChipClick = (selectedFilter?: InsightFilterType) => {
     const newFilters = new Set(filters);

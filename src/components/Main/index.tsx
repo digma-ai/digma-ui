@@ -11,6 +11,7 @@ import { logger } from "../../logging";
 import { trackingEvents as globalTrackingEvents } from "../../trackingEvents";
 import { isUndefined } from "../../typeGuards/isUndefined";
 import { sendTrackingEvent } from "../../utils/actions/sendTrackingEvent";
+import { areBackendInfosEqual } from "../../utils/areBackendInfosEqual";
 import { Navigation } from "../Navigation";
 import { TAB_IDS } from "../Navigation/Tabs/types";
 import { Scope } from "../common/App/types";
@@ -54,6 +55,7 @@ export const Main = () => {
   const userId = userInfo?.id;
   const previousUserId = usePrevious(userId);
   const backendInfo = useGlobalStore.use.backendInfo();
+  const previousBackendInfo = usePrevious(backendInfo);
   const { goTo } = useHistory();
   const updateBrowserLocation = useBrowserLocationUpdater();
   const [persistedServices, setPersistedServices] = usePersistence<string[]>(
@@ -82,12 +84,24 @@ export const Main = () => {
     }
   }, [selectedServices, isInitialized, setPersistedServices]);
 
-  // Clear selected services when environment is changed
+  // Clear selected services when backend instance or environment is changed
   useEffect(() => {
-    if (previousEnvironment && previousEnvironment.id !== environment?.id) {
+    if (
+      Boolean(
+        previousBackendInfo &&
+          !areBackendInfosEqual(previousBackendInfo, backendInfo)
+      ) ||
+      (previousEnvironment && previousEnvironment.id !== environment?.id)
+    ) {
       setSelectedServices([]);
     }
-  }, [setSelectedServices, previousEnvironment, environment?.id]);
+  }, [
+    setSelectedServices,
+    previousEnvironment,
+    environment?.id,
+    previousBackendInfo,
+    backendInfo
+  ]);
 
   useEffect(() => {
     // clear the history in following cases:

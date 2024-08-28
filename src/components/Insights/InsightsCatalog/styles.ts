@@ -73,6 +73,7 @@ export const BackToAllInsightsButton = styled.button`
   display: flex;
   gap: 4px;
   align-items: center;
+  cursor: pointer;
   color: ${({ theme }) => theme.colors.v3.text.primary};
 `;
 
