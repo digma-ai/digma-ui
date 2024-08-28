@@ -13,7 +13,8 @@ export const Select = ({
   onChange,
   isDisabled,
   value,
-  placeholder
+  placeholder,
+  listHeader
 }: SelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -39,10 +40,16 @@ export const Select = ({
       content={
         <Popup height={"125px"}>
           <MenuList
+            header={listHeader}
             items={options.map((x) => ({
               id: x.value,
               label: x.label,
-              onClick: () => handleOptionClick(x)
+              customContent: x.customContent
+                ? x.customContent({
+                    isSelected: false,
+                    onClick: () => handleOptionClick(x)
+                  })
+                : null
             }))}
           />
         </Popup>
@@ -60,7 +67,7 @@ export const Select = ({
         {selectedOption ? (
           <s.SelectedValue>
             {selectedOption.customContent ? (
-              selectedOption.customContent
+              selectedOption.customContent({ isSelected: true, onClick: null })
             ) : (
               <Tooltip title={selectedOption.label}>
                 <span>{selectedOption.label}</span>
