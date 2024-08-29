@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { useState } from "react";
 import { useGlobalStore } from "../../../../../../containers/Main/stores/useGlobalStore";
 import { isNull } from "../../../../../../typeGuards/isNull";
 import { getDurationString } from "../../../../../../utils/getDurationString";
@@ -6,36 +6,14 @@ import { trimEndpointScheme } from "../../../../../../utils/trimEndpointScheme";
 import { TraceIcon } from "../../../../../common/icons/12px/TraceIcon";
 import { Button } from "../../../../../common/v3/Button";
 import { Tooltip } from "../../../../../common/v3/Tooltip";
-import { BottleneckEndpointInfo, InsightType, Trace } from "../../../../types";
+import { InsightType, Trace } from "../../../../types";
+import { AffectedEndpointsSelector } from "../../AffectedEndpointsSelector";
 import { InsightCard } from "../common/InsightCard";
 import { ColumnsContainer } from "../common/InsightCard/ColumnsContainer";
-import { EndpointSelectedOption } from "../common/InsightCard/EndpointSelectedOption";
 import { KeyValue } from "../common/InsightCard/KeyValue";
-import { Select } from "../common/InsightCard/Select";
 import { ContentContainer, Description, Details } from "../styles";
 import * as s from "./styles";
 import { SpanEndpointBottleneckInsightCardProps } from "./types";
-
-const renderOptions = (
-  endpoints: BottleneckEndpointInfo[],
-  handleLinkClick: (spanCodeObjectId?: string) => void
-): { label: string; customContent: ReactNode; value: string }[] =>
-  endpoints.map((x) => {
-    const spanCodeObjectId = x.endpointInfo.spanCodeObjectId;
-    const route = trimEndpointScheme(x.endpointInfo.route);
-    return {
-      label: route,
-      customContent: (
-        <EndpointSelectedOption
-          serviceName={x.endpointInfo.serviceName}
-          route={route}
-          spanCodeObjectId={spanCodeObjectId}
-          onClick={handleLinkClick}
-        />
-      ),
-      value: spanCodeObjectId
-    };
-  });
 
 export const SpanEndpointBottleneckInsightCard = ({
   insight,
@@ -100,17 +78,25 @@ export const SpanEndpointBottleneckInsightCard = ({
               Affected Endpoints ({slowEndpoints.length})
             </Description>
             <s.SelectContainer>
-              <Select
-                value={selectedEndpoint?.endpointInfo.spanCodeObjectId}
+              <AffectedEndpointsSelector
+                insightType={insight.type}
                 onChange={(selectedOption) => {
                   const selected =
                     slowEndpoints.find(
-                      (x) => x.endpointInfo.spanCodeObjectId === selectedOption
+                      (x) =>
+                        x.endpointInfo.spanCodeObjectId ===
+                        selectedOption?.spanCodeObjectId
                     ) ?? null;
 
                   setSelectedEndpoint(selected);
                 }}
-                options={renderOptions(slowEndpoints, handleSpanLinkClick)}
+                onAssetLinkClick={handleSpanLinkClick}
+                value={selectedEndpoint?.endpointInfo.spanCodeObjectId}
+                options={slowEndpoints.map((x) => ({
+                  route: trimEndpointScheme(x.endpointInfo.route),
+                  serviceName: x.endpointInfo.serviceName,
+                  spanCodeObjectId: x.endpointInfo.spanCodeObjectId
+                }))}
               />
               {isJaegerEnabled && selectedEndpoint?.traceId && (
                 <Tooltip title={"Open Trace"}>
