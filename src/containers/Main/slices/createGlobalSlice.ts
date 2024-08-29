@@ -1,3 +1,4 @@
+import { createSlice } from "zustand-slices";
 import {
   BackendInfo,
   DigmaStatus,
@@ -5,13 +6,11 @@ import {
   InsightStats,
   PersistedState,
   RunConfiguration,
-  Scope,
   UserInfo
 } from "../../../components/common/App/types";
 import { isBoolean } from "../../../typeGuards/isBoolean";
 import { isEnvironment } from "../../../typeGuards/isEnvironment";
 import { isString } from "../../../typeGuards/isString";
-import { useStore } from "./useStore";
 
 export interface GlobalState {
   digmaApiUrl: string | null;
@@ -32,7 +31,6 @@ export interface GlobalState {
   isDigmathonGameFinished: boolean | null;
   environment: Environment | null;
   environments: Environment[] | null;
-  scope: Scope | null;
   insightStats: InsightStats | null;
   userId: string | null;
   userInfo: UserInfo | null;
@@ -81,7 +79,6 @@ export const initialState: GlobalState = {
     : null,
   environment: isEnvironment(window.environment) ? window.environment : null,
   environments: null,
-  scope: null,
   insightStats: null,
   userId: isString(window.userId) ? window.userId : null,
   userInfo: null,
@@ -112,7 +109,6 @@ export interface GlobalActions {
   setIsDigmathonGameFinished: (isFinished: boolean) => void;
   setEnvironment: (environment: Environment | null) => void;
   setEnvironments: (environments: Environment[]) => void;
-  setScope: (scope: Scope) => void;
   setInsightStats: (stats: InsightStats) => void;
   setUserId: (userId: string) => void;
   setUserInfo: (userInfo: UserInfo) => void;
@@ -123,4 +119,52 @@ export interface GlobalActions {
   reset: () => void;
 }
 
-export const useGlobalStore = () => useStore((state) => state.global);
+export type GlobalSlice = GlobalActions & GlobalState;
+
+const set = (update: Partial<GlobalState>) => (state: GlobalState) => ({
+  ...state,
+  ...update
+});
+
+export const createGlobalSlice = () =>
+  createSlice({
+    name: "global",
+    value: initialState,
+    actions: {
+      setDigmaApiUrl: (url) => set({ digmaApiUrl: url }),
+      setDigmaApiProxyPrefix: (prefix) => set({ digmaApiProxyPrefix: prefix }),
+      setDigmaStatus: (status) => set({ digmaStatus: status }),
+      setIsDigmaEngineInstalled: (isInstalled) =>
+        set({ isDigmaEngineInstalled: isInstalled }),
+      setIsDigmaEngineRunning: (isRunning) =>
+        set({ isDigmaEngineRunning: isRunning }),
+      setIsDockerInstalled: (isInstalled) =>
+        set({ isDockerInstalled: isInstalled }),
+      setIsDockerComposeInstalled: (isInstalled) =>
+        set({ isDockerComposeInstalled: isInstalled }),
+      setBackendInfo: (info) => set({ backendInfo: info }),
+      setJaegerURL: (url) => set({ jaegerURL: url }),
+      setIsJaegerEnabled: (isEnabled) => set({ isJaegerEnabled: isEnabled }),
+      setIsMicrometerProject: (isMicrometer) =>
+        set({ isMicrometerProject: isMicrometer }),
+      setRunConfig: (config) => set({ runConfig: config }),
+      setIsObservabilityEnabled: (isEnabled) =>
+        set({ isObservabilityEnabled: isEnabled }),
+      setProductKey: (key) => set({ productKey: key }),
+      setIsDigmathonModeEnabled: (isEnabled) =>
+        set({ isDigmathonModeEnabled: isEnabled }),
+      setIsDigmathonGameFinished: (isFinished) =>
+        set({ isDigmathonGameFinished: isFinished }),
+      setEnvironment: (environment) => set({ environment }),
+      setEnvironments: (environments) => set({ environments }),
+      setInsightStats: (stats) => set({ insightStats: stats }),
+      setUserId: (userId) => set({ userId }),
+      setUserInfo: (userInfo) => set({ userInfo }),
+      setUserEmail: (email) => set({ userEmail: email }),
+      setUserRegistrationEmail: (email) =>
+        set({ userRegistrationEmail: email }),
+      setPersistedState: (state) => set({ persistedState: state }),
+      setSelectedServices: (services) => set({ selectedServices: services }),
+      reset: () => set(initialState)
+    }
+  });
