@@ -50,26 +50,25 @@ const set = (update: Partial<InsightsSlice>) => (state: InsightsSlice) => ({
   ...update
 });
 
-export const createInsightsSlice = () =>
-  createSlice({
-    name: "insights",
-    value: initialState,
-    actions: {
-      setData: (data: InsightsData) => set({ data }),
-      setIsDataLoading: (isDataLoading: boolean) => set({ isDataLoading }),
-      setSearch: (search: string) => set({ search }),
-      setPage: (page: number) => set({ page }),
-      setSorting: (sorting: Sorting) => set({ sorting }),
-      setViewMode: (viewMode: ViewMode) => set({ viewMode }),
-      setFilters: (filters: InsightFilterType[]) => set({ filters }),
-      setFilteredInsightTypes: (filteredInsightTypes: string[]) =>
-        set({ filteredInsightTypes }),
-      setInsightViewType: (insightViewType: InsightViewType) =>
-        set({ insightViewType }),
-      setIssuesFilters: (issuesFilters: IssuesFiltersData) =>
-        set({ issuesFilters }),
-      setAreIssuesFiltersLoading: (areIssuesFiltersLoading: boolean) =>
-        set({ areIssuesFiltersLoading }),
-      reset: () => set(initialState)
-    }
-  });
+export const createInsightsSlice = createSlice({
+  name: "insights",
+  value: initialState,
+  actions: {
+    setData: (data: InsightsData) => set({ data }),
+    setIsDataLoading: (isDataLoading: boolean) => set({ isDataLoading }),
+    setSearch: (search: string) => set({ search }),
+    setPage: (page: number) => set({ page }),
+    setSorting: (sorting: Sorting) => set({ sorting }),
+    setViewMode: (viewMode: ViewMode) => set({ viewMode }),
+    setFilters: (filters: InsightFilterType[]) => set({ filters }),
+    setFilteredInsightTypes: (filteredInsightTypes: string[]) =>
+      set({ filteredInsightTypes }),
+    setInsightViewType: (insightViewType: InsightViewType) =>
+      set({ insightViewType }),
+    setIssuesFilters: (issuesFilters: IssuesFiltersData) =>
+      set({ issuesFilters }),
+    setAreIssuesFiltersLoading: (areIssuesFiltersLoading: boolean) =>
+      set({ areIssuesFiltersLoading }),
+    reset: () => set(initialState)
+  }
+});

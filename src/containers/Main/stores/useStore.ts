@@ -5,5 +5,5 @@ import { createInsightsSlice } from "../slices/createInsightSlice";
 import { createScopeSlice } from "../slices/createScopeSlice";
 
 export const useStore = create(
-  withSlices(createGlobalSlice(), createInsightsSlice(), createScopeSlice())
+  withSlices(createGlobalSlice, createInsightsSlice, createScopeSlice)
 );
