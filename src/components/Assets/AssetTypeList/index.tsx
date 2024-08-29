@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { DigmaMessageError } from "../../../api/types";
 import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
+import { useScopeStore } from "../../../containers/Main/stores/useScopeStore";
 import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { isEnvironment } from "../../../typeGuards/isEnvironment";
@@ -69,8 +70,8 @@ export const AssetTypeList = ({
   const previousData = usePrevious(data);
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
-  const scope = useGlobalStore.use.scope();
-  const environment = useGlobalStore.use.environment();
+  const scope = useScopeStore().scope;
+  const environment = useGlobalStore().environment;
   const previousEnvironment = usePrevious(environment);
   const refreshTimerId = useRef<number>();
   const previousSearchQuery = usePrevious(searchQuery);

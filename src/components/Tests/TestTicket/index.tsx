@@ -23,7 +23,7 @@ export const TestTicket = ({
     contextsSpanCodeObjectIds
   } = test;
   const summary = `"${name}" test failed`;
-  const jaegerURL = useGlobalStore.use.jaegerURL() ?? "";
+  const jaegerURL = useGlobalStore().jaegerURL ?? "";
 
   const relatedSpans = spanContexts
     .filter((x) => contextsSpanCodeObjectIds.includes(x.spanCodeObjectId))

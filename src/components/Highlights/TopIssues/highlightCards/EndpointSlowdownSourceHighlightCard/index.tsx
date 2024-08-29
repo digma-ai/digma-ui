@@ -1,5 +1,6 @@
 import { Row, createColumnHelper } from "@tanstack/react-table";
 import { useGlobalStore } from "../../../../../containers/Main/stores/useGlobalStore";
+import { useScopeStore } from "../../../../../containers/Main/stores/useScopeStore";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { getDurationString } from "../../../../../utils/getDurationString";
 import { SCOPE_CHANGE_EVENTS } from "../../../../Main/types";
@@ -17,8 +18,8 @@ import { EndpointSlowdownSourceHighlightCardProps } from "./types";
 export const EndpointSlowdownSourceHighlightCard = ({
   data
 }: EndpointSlowdownSourceHighlightCardProps) => {
-  const scope = useGlobalStore.use.scope();
-  const environments = useGlobalStore.use.environments();
+  const scope = useScopeStore().scope;
+  const environments = useGlobalStore().environments;
 
   const columnHelper =
     createColumnHelper<EnvironmentData<EndpointSlowdownSourceMetrics>>();

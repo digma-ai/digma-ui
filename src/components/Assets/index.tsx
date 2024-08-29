@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useGlobalStore } from "../../containers/Main/stores/useGlobalStore";
+import { useScopeStore } from "../../containers/Main/stores/useScopeStore";
 import { getFeatureFlagValue } from "../../featureFlags";
 import { useDebounce } from "../../hooks/useDebounce";
 import { usePrevious } from "../../hooks/usePrevious";
@@ -31,8 +32,8 @@ export const Assets = () => {
   const [assetScopeOption, setAssetScopeOption] =
     useState<AssetScopeOption | null>(null);
   const [selectedFilters, setSelectedFilters] = useState<AssetFilterQuery>();
-  const scope = useGlobalStore.use.scope();
-  const environments = useGlobalStore.use.environments();
+  const scope = useScopeStore().scope;
+  const environments = useGlobalStore().environments;
   const previousScopeSpanCodeObjectId = usePrevious(
     scope?.span?.spanCodeObjectId
   );
@@ -42,7 +43,7 @@ export const Assets = () => {
     useState<DataRefresher | null>(null);
   const { goTo } = useHistory();
   const isBackendUpgradeMessageVisible = false;
-  const backendInfo = useGlobalStore.use.backendInfo();
+  const backendInfo = useGlobalStore().backendInfo;
   const areExtendedAssetsFiltersEnabled = getFeatureFlagValue(
     backendInfo,
     FeatureFlag.ARE_EXTENDED_ASSETS_FILTERS_ENABLED

@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useLocation } from "react-router-dom";
 import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
+import { useScopeStore } from "../../../containers/Main/stores/useScopeStore";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { isString } from "../../../typeGuards/isString";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
@@ -85,8 +86,8 @@ const getIsNewIndicatorVisible = (
   );
 
 export const Tabs = () => {
-  const scope = useGlobalStore.use.scope();
-  const insightStats = useGlobalStore.use.insightStats();
+  const scope = useScopeStore().scope;
+  const insightStats = useGlobalStore().insightStats;
   const location = useLocation();
   const { goTo } = useHistory();
 

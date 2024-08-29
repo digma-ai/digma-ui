@@ -30,7 +30,7 @@ export const SpanScalingInsightCard = ({
   isMarkAsReadButtonEnabled,
   viewMode
 }: SpanScalingInsightCardProps) => {
-  const isJaegerEnabled = useGlobalStore.use.isJaegerEnabled();
+  const isJaegerEnabled = useGlobalStore().isJaegerEnabled;
   const affectedEndpoints = insight.affectedEndpoints ?? [];
   const [pageItems, page, setPage] = usePagination(
     affectedEndpoints,

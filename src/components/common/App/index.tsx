@@ -2,7 +2,7 @@ import { ErrorInfo, useContext, useEffect, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { ThemeProvider } from "styled-components";
 import { actions } from "../../../actions";
-import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
+import { useStore } from "../../../containers/Main/stores/useStore";
 import { dispatcher } from "../../../dispatcher";
 import { Theme } from "../../../globals";
 import { logger } from "../../../logging";
@@ -62,43 +62,27 @@ export const App = ({ theme, children, id }: AppProps) => {
   const [mainFont, setMainFont] = useState(defaultMainFont);
   const [codeFont, setCodeFont] = useState(defaultCodeFont);
   const [config, setConfig] = useState(useContext(ConfigContext));
-  const setJaegerURL = useGlobalStore((state) => state.setJaegerURL);
-  const setIsJaegerEnabled = useGlobalStore(
-    (state) => state.setIsJaegerEnabled
-  );
-  const setIsDigmaEngineInstalled = useGlobalStore(
-    (state) => state.setIsDigmaEngineInstalled
-  );
-  const setIsDigmaEngineRunning = useGlobalStore(
-    (state) => state.setIsDigmaEngineRunning
-  );
-  const setDigmaStatus = useGlobalStore((state) => state.setDigmaStatus);
-  const setIsDockerInstalled = useGlobalStore(
-    (state) => state.setIsDockerInstalled
-  );
-  const setIsDockerComposeInstalled = useGlobalStore(
-    (state) => state.setIsDockerComposeInstalled
-  );
-  const setDigmaApiUrl = useGlobalStore((state) => state.setDigmaApiUrl);
-  const setUserRegistrationEmail = useGlobalStore(
-    (state) => state.setUserRegistrationEmail
-  );
-  const setIsObservabilityEnabled = useGlobalStore(
-    (state) => state.setIsObservabilityEnabled
-  );
-  const setBackendInfo = useGlobalStore((state) => state.setBackendInfo);
-  const setEnvironments = useGlobalStore((state) => state.setEnvironments);
-  const setEnvironment = useGlobalStore((state) => state.setEnvironment);
-  const setScope = useGlobalStore((state) => state.setScope);
-  const setUserInfo = useGlobalStore((state) => state.setUserInfo);
-  const setInsightStats = useGlobalStore((state) => state.setInsightStats);
-  const setRunConfiguration = useGlobalStore((state) => state.setRunConfig);
-  const setIsMicrometerProject = useGlobalStore(
-    (state) => state.setIsMicrometerProject
-  );
-  const setIsDigmathonGameFinished = useGlobalStore(
-    (state) => state.setIsDigmathonGameFinished
-  );
+  const {
+    setJaegerURL,
+    setIsJaegerEnabled,
+    setIsDigmaEngineInstalled,
+    setIsDigmaEngineRunning,
+    setDigmaStatus,
+    setIsDockerInstalled,
+    setIsDockerComposeInstalled,
+    setDigmaApiUrl,
+    setUserRegistrationEmail,
+    setIsObservabilityEnabled,
+    setBackendInfo,
+    setEnvironments,
+    setEnvironment,
+    setScope,
+    setUserInfo,
+    setInsightStats,
+    setRunConfig,
+    setIsDigmathonGameFinished,
+    setIsMicrometerProject
+  } = useStore.getState();
 
   const handleError = (error: Error, info: ErrorInfo) => {
     logger.error(error, info);
@@ -347,7 +331,7 @@ export const App = ({ theme, children, id }: AppProps) => {
         ...config,
         runConfig: data as RunConfiguration
       }));
-      setRunConfiguration(data as RunConfiguration);
+      setRunConfig(data as RunConfiguration);
     };
 
     dispatcher.addActionListener(actions.SET_THEME, handleSetTheme);

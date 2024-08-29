@@ -9,7 +9,7 @@ import { TopIssues } from "./TopIssues";
 import * as s from "./styles";
 
 export const Highlights = () => {
-  const backendInfo = useGlobalStore.use.backendInfo();
+  const backendInfo = useGlobalStore().backendInfo;
 
   const isSpanInfoVisible = getFeatureFlagValue(
     backendInfo,

@@ -24,7 +24,7 @@ export const AssetEntry = ({
   isImpactHidden,
   sortingCriterion
 }: AssetEntryProps) => {
-  const backendInfo = useGlobalStore.use.backendInfo();
+  const backendInfo = useGlobalStore().backendInfo;
   const isNewImpactScoreCalculationEnabled = getFeatureFlagValue(
     backendInfo,
     FeatureFlag.IS_NEW_IMPACT_SCORE_CALCULATION_ENABLED

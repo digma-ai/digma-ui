@@ -88,20 +88,20 @@ const renderEnvironmentVariables = (
 };
 
 export const EnvironmentVariableCode = () => {
-  const environment = useGlobalStore.use.environment();
-  const backendInfo = useGlobalStore.use.backendInfo();
-
+  const environment = useGlobalStore().environment;
+  const backendInfo = useGlobalStore().backendInfo;
+  const isMicrometerProject = Boolean(useGlobalStore().isMicrometerProject);
+  const userId = useGlobalStore().userInfo?.id;
+  const runConfig = useGlobalStore().runConfig;
   if (!environment || !backendInfo) {
     return null;
   }
 
   const isCentralizedDeployment = backendInfo.centralize;
-  const isMicrometerProject = Boolean(useGlobalStore.use.isMicrometerProject());
-  const userId = useGlobalStore.use.userInfo()?.id;
   const environmentId = environment.id;
   const environmentName = environment.name;
   const environmentType = environment.type ?? undefined;
-  const runConfig = useGlobalStore.use.runConfig();
+
   const isRunConfigSupported = Boolean(runConfig?.isRunConfigurationSupported);
   const javaToolOptions = isRunConfigSupported
     ? undefined

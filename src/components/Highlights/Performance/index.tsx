@@ -1,6 +1,7 @@
 import { Row, createColumnHelper } from "@tanstack/react-table";
 import { useEffect, useState } from "react";
 import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
+import { useScopeStore } from "../../../containers/Main/stores/useScopeStore";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { isBoolean } from "../../../typeGuards/isBoolean";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
@@ -26,8 +27,8 @@ export const Performance = () => {
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const { data, getData } = usePerformanceData();
   const previousData = usePrevious(data);
-  const scope = useGlobalStore.use.scope();
-  const environments = useGlobalStore.use.environments();
+  const scope = useScopeStore().scope;
+  const environments = useGlobalStore().environments;
 
   useEffect(() => {
     getData();

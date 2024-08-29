@@ -3,6 +3,7 @@ import { actions as globalActions } from "../../actions";
 import { DigmaMessageError } from "../../api/types";
 import { useGlobalStore } from "../../containers/Main/stores/useGlobalStore";
 import { useInsightsStore } from "../../containers/Main/stores/useInsightsStore";
+import { useScopeStore } from "../../containers/Main/stores/useScopeStore";
 import { dispatcher } from "../../dispatcher";
 import { getFeatureFlagValue } from "../../featureFlags";
 import { usePrevious } from "../../hooks/usePrevious";
@@ -139,9 +140,9 @@ export const useInsightsData = ({
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
   const refreshTimerId = useRef<number>();
-  const backendInfo = useGlobalStore.use.backendInfo();
-  const scope = useGlobalStore.use.scope();
-  const environment = useGlobalStore.use.environment();
+  const backendInfo = useGlobalStore().backendInfo;
+  const scope = useScopeStore().scope;
+  const environment = useGlobalStore().environment;
   const environmentId = environment?.id;
   const search = useInsightsStore.use.search();
   const page = useInsightsStore.use.page();
@@ -149,7 +150,7 @@ export const useInsightsData = ({
   const viewMode = useInsightsStore.use.viewMode();
   const filters = useInsightsStore.use.filters();
   const filteredInsightTypes = useInsightsStore.use.filteredInsightTypes();
-  const selectedServices = useGlobalStore.use.selectedServices();
+  const selectedServices = useGlobalStore().selectedServices;
   const filteredServices = useMemo(
     () => selectedServices ?? [],
     [selectedServices]

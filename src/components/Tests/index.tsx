@@ -1,6 +1,7 @@
 import { KeyboardEvent, useEffect, useMemo, useRef, useState } from "react";
 import { actions as globalActions } from "../../actions";
 import { useGlobalStore } from "../../containers/Main/stores/useGlobalStore";
+import { useScopeStore } from "../../containers/Main/stores/useScopeStore";
 import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
 import { isNull } from "../../typeGuards/isNull";
@@ -65,9 +66,9 @@ export const Tests = () => {
   const [isInitialLoading, setIsInitialLoading] = useState(false);
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
-  const userRegistrationEmail = useGlobalStore.use.userRegistrationEmail();
-  const scope = useGlobalStore.use.scope();
-  const environments = useGlobalStore.use.environments();
+  const userRegistrationEmail = useGlobalStore().userRegistrationEmail;
+  const scope = useScopeStore().scope;
+  const environments = useGlobalStore().environments;
   const [testToOpenTicketPopup, setTestToOpenTicketPopup] = useState<Test>();
   const previousUserRegistrationEmail = usePrevious(userRegistrationEmail);
   useState(false);

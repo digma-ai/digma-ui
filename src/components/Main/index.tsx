@@ -3,6 +3,8 @@ import { Outlet, matchPath, useLocation } from "react-router-dom";
 import { actions as globalActions } from "../../actions";
 import { history } from "../../containers/Main/history";
 import { useGlobalStore } from "../../containers/Main/stores/useGlobalStore";
+import { useScopeStore } from "../../containers/Main/stores/useScopeStore";
+import { useStore } from "../../containers/Main/stores/useStore";
 import { dispatcher } from "../../dispatcher";
 import { HistoryEntryLocation } from "../../history/History";
 import { usePersistence } from "../../hooks/usePersistence";
@@ -47,14 +49,14 @@ const getURLToNavigateOnCodeLensClick = (scope: Scope): string | undefined => {
 
 export const Main = () => {
   const location = useLocation();
-  const environments = useGlobalStore.use.environments();
-  const environment = useGlobalStore.use.environment();
+  const environments = useGlobalStore().environments;
+  const environment = useGlobalStore().environment;
   const previousEnvironment = usePrevious(environment);
-  const scope = useGlobalStore.use.scope();
-  const userInfo = useGlobalStore.use.userInfo();
+  const scope = useScopeStore().scope;
+  const userInfo = useGlobalStore().userInfo;
   const userId = userInfo?.id;
   const previousUserId = usePrevious(userId);
-  const backendInfo = useGlobalStore.use.backendInfo();
+  const backendInfo = useGlobalStore().backendInfo;
   const previousBackendInfo = usePrevious(backendInfo);
   const { goTo } = useHistory();
   const updateBrowserLocation = useBrowserLocationUpdater();
@@ -63,8 +65,8 @@ export const Main = () => {
     "project"
   );
   const previousPersistedServices = usePrevious(persistedServices);
-  const selectedServices = useGlobalStore.use.selectedServices();
-  const setSelectedServices = useGlobalStore.use.setSelectedServices();
+  const selectedServices = useGlobalStore().selectedServices;
+  const { setSelectedServices } = useStore.getState();
   const isInitialized = useMemo(
     () => !isUndefined(persistedServices),
     [persistedServices]

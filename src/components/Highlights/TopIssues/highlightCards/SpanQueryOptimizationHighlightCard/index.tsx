@@ -1,5 +1,6 @@
 import { Row, createColumnHelper } from "@tanstack/react-table";
 import { useGlobalStore } from "../../../../../containers/Main/stores/useGlobalStore";
+import { useScopeStore } from "../../../../../containers/Main/stores/useScopeStore";
 import { Duration } from "../../../../../globals";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { getDurationString } from "../../../../../utils/getDurationString";
@@ -19,8 +20,8 @@ import { SpanQueryOptimizationHighlightCardProps } from "./types";
 export const SpanQueryOptimizationHighlightCard = ({
   data
 }: SpanQueryOptimizationHighlightCardProps) => {
-  const scope = useGlobalStore.use.scope();
-  const environments = useGlobalStore.use.environments();
+  const scope = useScopeStore().scope;
+  const environments = useGlobalStore().environments;
 
   const columnHelper =
     createColumnHelper<EnvironmentData<SpanQueryOptimizationMetrics>>();

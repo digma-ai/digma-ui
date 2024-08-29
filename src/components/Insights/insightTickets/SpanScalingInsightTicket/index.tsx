@@ -25,8 +25,8 @@ export const SpanScalingInsightTicket = ({
   refreshInsights,
   onClose
 }: InsightTicketProps<SpanScalingInsight>) => {
-  const jaegerURL = useGlobalStore.use.jaegerURL();
-  const digmaApiProxyPrefix = useGlobalStore.use.digmaApiProxyPrefix();
+  const jaegerURL = useGlobalStore().jaegerURL;
+  const digmaApiProxyPrefix = useGlobalStore().digmaApiProxyPrefix;
 
   const insight = data.insight;
 

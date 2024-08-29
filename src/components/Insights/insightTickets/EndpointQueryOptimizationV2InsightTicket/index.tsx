@@ -23,7 +23,7 @@ export const EndpointQueryOptimizationV2InsightTicket = ({
   refreshInsights,
   onClose
 }: InsightTicketProps<EndpointQueryOptimizationV2Insight>) => {
-  const jaegerURL = useGlobalStore.use.jaegerURL();
+  const jaegerURL = useGlobalStore().jaegerURL;
   const span = data.insight.span;
   const spanInfo = span?.spanInfo || null;
 

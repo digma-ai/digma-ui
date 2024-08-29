@@ -40,7 +40,7 @@ export const ReportHeader = ({
   const [selectedEnvironment, setSelectedEnvironment] = useState<string | null>(
     null
   );
-  const environments = useGlobalStore.use.environments();
+  const environments = useGlobalStore().environments;
   const handleSelectedEnvironmentChanged = (option: string | string[]) => {
     const newItem =
       option === selectedEnvironment

@@ -23,7 +23,7 @@ export const EndpointSessionInViewInsightCard = ({
   isMarkAsReadButtonEnabled,
   viewMode
 }: EndpointSessionInViewInsightCardProps) => {
-  const isJaegerEnabled = useGlobalStore.use.isJaegerEnabled();
+  const isJaegerEnabled = useGlobalStore().isJaegerEnabled;
 
   const [pageItems, page, setPage] = usePagination(
     insight.spans,

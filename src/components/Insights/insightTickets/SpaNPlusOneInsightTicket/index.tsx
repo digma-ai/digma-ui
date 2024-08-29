@@ -21,7 +21,7 @@ export const SpaNPlusOneInsightTicket = ({
   const spanInsight = data.insight;
   const { commitInfos, isLoading, codeLocations } =
     useSpanDataSource<SpaNPlusOneInsight>(data.insight.spanInfo, data.insight);
-  const jaegerURL = useGlobalStore.use.jaegerURL();
+  const jaegerURL = useGlobalStore().jaegerURL;
 
   const endpoints = data.insight.endpoints ?? [];
 

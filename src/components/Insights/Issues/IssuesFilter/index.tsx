@@ -1,6 +1,8 @@
 import { useEffect, useMemo } from "react";
 import { useGlobalStore } from "../../../../containers/Main/stores/useGlobalStore";
 import { useInsightsStore } from "../../../../containers/Main/stores/useInsightsStore";
+import { useScopeStore } from "../../../../containers/Main/stores/useScopeStore";
+import { useStore } from "../../../../containers/Main/stores/useStore";
 import { getFeatureFlagValue } from "../../../../featureFlags";
 import { usePrevious } from "../../../../hooks/usePrevious";
 import { FeatureFlag } from "../../../../types";
@@ -20,12 +22,12 @@ import { trackingEvents } from "./tracking";
 
 export const IssuesFilter = () => {
   const filteredInsightTypes = useInsightsStore.use.filteredInsightTypes();
-  const selectedServices = useGlobalStore.use.selectedServices();
+  const selectedServices = useGlobalStore().selectedServices;
   const setFilteredInsightTypes =
     useInsightsStore.use.setFilteredInsightTypes();
-  const setSelectedServices = useGlobalStore.use.setSelectedServices();
+  const { setSelectedServices } = useStore.getState();
   const filters = useInsightsStore.use.filters();
-  const backendInfo = useGlobalStore.use.backendInfo();
+  const backendInfo = useGlobalStore().backendInfo;
   const setFilters = useInsightsStore.use.setFilters();
   const isCriticalOnly = useMemo(
     () => filters.includes("criticality"),
@@ -34,7 +36,7 @@ export const IssuesFilter = () => {
   const isUnreadOnly = useMemo(() => filters.includes("unread"), [filters]);
   const { data } = useIssuesFilters();
   const previousData = usePrevious(data);
-  const scope = useGlobalStore.use.scope();
+  const scope = useScopeStore().scope;
   const scopeSpanCodeObjectId = scope?.span?.spanCodeObjectId;
   const isServicesFilterEnabled =
     Boolean(

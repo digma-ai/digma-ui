@@ -19,9 +19,9 @@ import { OpenDashboardPayload, OpenDocumentationPayload } from "../types";
 import { KebabMenuProps } from "./types";
 
 export const KebabMenu = ({ onClose }: KebabMenuProps) => {
-  const backendInfo = useGlobalStore.use.backendInfo();
-  const digmaStatus = useGlobalStore.use.digmaStatus();
-  const environment = useGlobalStore.use.environment();
+  const backendInfo = useGlobalStore().backendInfo;
+  const digmaStatus = useGlobalStore().digmaStatus;
+  const environment = useGlobalStore().environment;
 
   const handleOnboardingClick = () => {
     sendUserActionTrackingEvent(trackingEvents.ONBOARDING_LINK_CLICKED);

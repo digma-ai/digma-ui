@@ -43,7 +43,7 @@ export const SpanUsagesInsightCard = ({
   isMarkAsReadButtonEnabled,
   viewMode
 }: SpanUsagesInsightCardProps) => {
-  const isJaegerEnabled = useGlobalStore.use.isJaegerEnabled();
+  const isJaegerEnabled = useGlobalStore().isJaegerEnabled;
   const [data, setData] = useState({
     pageItems: insight.flows.slice(0, PAGE_SIZE)
   });

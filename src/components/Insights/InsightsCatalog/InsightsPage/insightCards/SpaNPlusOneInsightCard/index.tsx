@@ -31,7 +31,7 @@ export const SpaNPlusOneInsightCard = ({
     endpoints[0]
   );
   const maxDurationString = getDurationString(endpointWithMaxDuration.duration);
-  const isJaegerEnabled = useGlobalStore.use.isJaegerEnabled();
+  const isJaegerEnabled = useGlobalStore().isJaegerEnabled;
   const [selectedEndpoint, setSelectedEndpoint] = useState(
     endpoints.length ? endpoints[0] : null
   );

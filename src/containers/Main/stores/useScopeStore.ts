@@ -1,6 +1,6 @@
 import { useStore } from "./useStore";
 
-export const useGlobalStore = () => {
+export const useScopeStore = () => {
   const state = useStore.getState();
-  return state.global;
+  return state.scope;
 };

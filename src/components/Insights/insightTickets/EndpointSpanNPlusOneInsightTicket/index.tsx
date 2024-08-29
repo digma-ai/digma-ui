@@ -19,7 +19,7 @@ export const EndpointSpanNPlusOneInsightTicket = ({
   refreshInsights,
   onClose
 }: InsightTicketProps<EndpointSpanNPlusOneInsight>) => {
-  const jaegerURL = useGlobalStore.use.jaegerURL();
+  const jaegerURL = useGlobalStore().jaegerURL;
   const span = data.insight.span;
   const spanInfo = span?.internalSpan ?? span?.clientSpan;
 

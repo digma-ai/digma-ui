@@ -26,6 +26,8 @@ import {
   GetAssetFiltersDataPayload
 } from "./types";
 
+import { useScopeStore } from "../../../containers/Main/stores/useScopeStore";
+import { useStore } from "../../../containers/Main/stores/useStore";
 import * as s from "./styles";
 
 const PERSISTENCE_KEY = "assetsFilters";
@@ -98,12 +100,13 @@ export const AssetsFilter = ({
   const previousData = usePrevious(data);
   const [isOpen, setIsOpen] = useState(false);
   const previousIsOpen = usePrevious(isOpen);
-  const globallySelectedServices = useGlobalStore.use.selectedServices();
-  const setGloballySelectedServices = useGlobalStore.use.setSelectedServices();
+  const globallySelectedServices = useGlobalStore().selectedServices;
+  const { setSelectedServices: setGloballySelectedServices } =
+    useStore.getState();
   const [persistedFilters, setPersistedFilters] =
     usePersistence<AssetFilterQuery>(PERSISTENCE_KEY, "project");
   const previousPersistedFilters = usePrevious(persistedFilters);
-  const scope = useGlobalStore.use.scope();
+  const scope = useScopeStore().scope;
   const isServicesFilterEnabled = !scope?.span?.spanCodeObjectId;
   const [selectedServices, setSelectedServices] = useState<string[]>(
     isServicesFilterEnabled ? globallySelectedServices ?? [] : []
@@ -112,7 +115,7 @@ export const AssetsFilter = ({
   const [selectedConsumers, setSelectedConsumers] = useState<string[]>([]);
   const [selectedInternals, setSelectedInternals] = useState<string[]>([]);
   const [selectedInsights, setSelectedInsights] = useState<InsightType[]>([]);
-  const environment = useGlobalStore.use.environment();
+  const environment = useGlobalStore().environment;
   const previousEnvironment = usePrevious(environment);
   const previousScope = usePrevious(scope);
 

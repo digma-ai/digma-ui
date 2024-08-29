@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { actions as globalActions } from "../../../../actions";
 import { useGlobalStore } from "../../../../containers/Main/stores/useGlobalStore";
+import { useScopeStore } from "../../../../containers/Main/stores/useScopeStore";
 import { usePersistence } from "../../../../hooks/usePersistence";
 import { trackingEvents as globalTrackingEvents } from "../../../../trackingEvents";
 import { isNumber } from "../../../../typeGuards/isNumber";
@@ -488,8 +489,8 @@ export const InsightsPage = ({
   isMarkAsReadButtonEnabled,
   isFilteringEnabled
 }: InsightsPageProps) => {
-  const scope = useGlobalStore.use.scope();
-  const environment = useGlobalStore.use.environment();
+  const scope = useScopeStore().scope;
+  const environment = useGlobalStore().environment;
   const [isInsightJiraTicketHintShown, setIsInsightJiraTicketHintShown] =
     usePersistence<isInsightJiraTicketHintShownPayload>(
       IS_INSIGHT_JIRA_TICKET_HINT_SHOWN_PERSISTENCE_KEY,

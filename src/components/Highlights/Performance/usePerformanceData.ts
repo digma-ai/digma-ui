@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
+import { useScopeStore } from "../../../containers/Main/stores/useScopeStore";
 import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { actions as mainActions } from "../../Main/actions";
@@ -9,8 +10,8 @@ const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 
 export const usePerformanceData = () => {
   const [data, setData] = useState<PerformanceData>();
-  const scope = useGlobalStore.use.scope();
-  const environments = useGlobalStore.use.environments();
+  const scope = useScopeStore().scope;
+  const environments = useGlobalStore().environments;
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
   const refreshTimerId = useRef<number>();

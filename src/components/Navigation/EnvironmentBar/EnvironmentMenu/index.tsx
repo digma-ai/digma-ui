@@ -9,7 +9,7 @@ export const EnvironmentMenu = ({
   environments,
   onMenuItemClick
 }: EnvironmentMenuProps) => {
-  const environment = useGlobalStore.use.environment();
+  const environment = useGlobalStore().environment;
 
   const handleMenuItemClick = (environment: Environment) => {
     onMenuItemClick(environment);

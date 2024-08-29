@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import { useTheme } from "styled-components";
 import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
 import { useInsightsStore } from "../../../containers/Main/stores/useInsightsStore";
+import { useScopeStore } from "../../../containers/Main/stores/useScopeStore";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import { useDebounce } from "../../../hooks/useDebounce";
 import { usePersistence } from "../../../hooks/usePersistence";
@@ -77,7 +78,7 @@ export const InsightsCatalog = ({
   const setSorting = useInsightsStore.use.setSorting();
   const filters = useInsightsStore.use.filters();
   const filteredInsightTypes = useInsightsStore.use.filteredInsightTypes();
-  const selectedServices = useGlobalStore.use.selectedServices();
+  const selectedServices = useGlobalStore().selectedServices;
   const data = useInsightsStore.use.data();
   const insights = data?.insights ?? [];
   const totalCount = data?.totalCount ?? 0;
@@ -88,13 +89,13 @@ export const InsightsCatalog = ({
     pageStartItemNumber + PAGE_SIZE - 1,
     totalCount
   );
-  const insightStats = useGlobalStore.use.insightStats();
-  const environment = useGlobalStore.use.environment();
-  const environments = useGlobalStore.use.environments();
-  const scope = useGlobalStore.use.scope();
+  const insightStats = useGlobalStore().insightStats;
+  const environment = useGlobalStore().environment;
+  const environments = useGlobalStore().environments;
+  const scope = useScopeStore().scope;
   const scopeSpanCodeObjectId = scope?.span?.spanCodeObjectId;
   const isAtSpan = Boolean(scope?.span);
-  const backendInfo = useGlobalStore.use.backendInfo();
+  const backendInfo = useGlobalStore().backendInfo;
   const theme = useTheme();
   const { isMarkingAllAsReadInProgress, markAllAsRead } = useMarkingAllAsRead(
     scope?.span ?? null

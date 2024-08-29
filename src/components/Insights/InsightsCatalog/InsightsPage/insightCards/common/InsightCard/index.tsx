@@ -60,7 +60,7 @@ export const InsightCard = ({
   const isOperationInProgress =
     isDismissalChangeInProgress || isMarkingAsReadInProgress;
   const previousIsOperationInProgress = usePrevious(isOperationInProgress);
-  const isJaegerEnabled = useGlobalStore.use.isJaegerEnabled();
+  const isJaegerEnabled = useGlobalStore().isJaegerEnabled;
   const [insightStatus, setInsightStatus] = useState(insight.status);
 
   const isCritical = insight.criticality > HIGH_CRITICALITY_THRESHOLD;

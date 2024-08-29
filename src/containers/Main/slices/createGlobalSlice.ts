@@ -90,37 +90,6 @@ export const initialState: GlobalState = {
   persistedState: null
 };
 
-export interface GlobalActions {
-  setDigmaApiUrl: (url: string) => void;
-  setDigmaApiProxyPrefix: (prefix: string) => void;
-  setDigmaStatus: (status: DigmaStatus) => void;
-  setIsDigmaEngineInstalled: (isInstalled: boolean) => void;
-  setIsDigmaEngineRunning: (isRunning: boolean) => void;
-  setIsDockerInstalled: (isInstalled: boolean) => void;
-  setIsDockerComposeInstalled: (isInstalled: boolean) => void;
-  setBackendInfo: (info: BackendInfo) => void;
-  setJaegerURL: (url: string) => void;
-  setIsJaegerEnabled: (isEnabled: boolean) => void;
-  setIsMicrometerProject: (isMicrometer: boolean) => void;
-  setRunConfig: (config: RunConfiguration) => void;
-  setIsObservabilityEnabled: (isEnabled: boolean) => void;
-  setProductKey: (key: string) => void;
-  setIsDigmathonModeEnabled: (isEnabled: boolean) => void;
-  setIsDigmathonGameFinished: (isFinished: boolean) => void;
-  setEnvironment: (environment: Environment | null) => void;
-  setEnvironments: (environments: Environment[]) => void;
-  setInsightStats: (stats: InsightStats) => void;
-  setUserId: (userId: string) => void;
-  setUserInfo: (userInfo: UserInfo) => void;
-  setUserEmail: (email: string) => void;
-  setUserRegistrationEmail: (email: string) => void;
-  setPersistedState: (state: PersistedState) => void;
-  setSelectedServices: (services: string[]) => void;
-  reset: () => void;
-}
-
-export type GlobalSlice = GlobalActions & GlobalState;
-
 const set = (update: Partial<GlobalState>) => (state: GlobalState) => ({
   ...state,
   ...update
@@ -131,40 +100,44 @@ export const createGlobalSlice = () =>
     name: "global",
     value: initialState,
     actions: {
-      setDigmaApiUrl: (url) => set({ digmaApiUrl: url }),
-      setDigmaApiProxyPrefix: (prefix) => set({ digmaApiProxyPrefix: prefix }),
-      setDigmaStatus: (status) => set({ digmaStatus: status }),
-      setIsDigmaEngineInstalled: (isInstalled) =>
+      setDigmaApiUrl: (url: string) => set({ digmaApiUrl: url }),
+      setDigmaApiProxyPrefix: (prefix: string) =>
+        set({ digmaApiProxyPrefix: prefix }),
+      setDigmaStatus: (status: DigmaStatus) => set({ digmaStatus: status }),
+      setIsDigmaEngineInstalled: (isInstalled: boolean) =>
         set({ isDigmaEngineInstalled: isInstalled }),
-      setIsDigmaEngineRunning: (isRunning) =>
+      setIsDigmaEngineRunning: (isRunning: boolean) =>
         set({ isDigmaEngineRunning: isRunning }),
-      setIsDockerInstalled: (isInstalled) =>
+      setIsDockerInstalled: (isInstalled: boolean) =>
         set({ isDockerInstalled: isInstalled }),
-      setIsDockerComposeInstalled: (isInstalled) =>
+      setIsDockerComposeInstalled: (isInstalled: boolean) =>
         set({ isDockerComposeInstalled: isInstalled }),
-      setBackendInfo: (info) => set({ backendInfo: info }),
-      setJaegerURL: (url) => set({ jaegerURL: url }),
-      setIsJaegerEnabled: (isEnabled) => set({ isJaegerEnabled: isEnabled }),
-      setIsMicrometerProject: (isMicrometer) =>
+      setBackendInfo: (info: BackendInfo) => set({ backendInfo: info }),
+      setJaegerURL: (url: string) => set({ jaegerURL: url }),
+      setIsJaegerEnabled: (isEnabled: boolean) =>
+        set({ isJaegerEnabled: isEnabled }),
+      setIsMicrometerProject: (isMicrometer: boolean) =>
         set({ isMicrometerProject: isMicrometer }),
-      setRunConfig: (config) => set({ runConfig: config }),
-      setIsObservabilityEnabled: (isEnabled) =>
+      setRunConfig: (config: RunConfiguration) => set({ runConfig: config }),
+      setIsObservabilityEnabled: (isEnabled: boolean) =>
         set({ isObservabilityEnabled: isEnabled }),
-      setProductKey: (key) => set({ productKey: key }),
-      setIsDigmathonModeEnabled: (isEnabled) =>
+      setProductKey: (key: string) => set({ productKey: key }),
+      setIsDigmathonModeEnabled: (isEnabled: boolean) =>
         set({ isDigmathonModeEnabled: isEnabled }),
-      setIsDigmathonGameFinished: (isFinished) =>
+      setIsDigmathonGameFinished: (isFinished: boolean) =>
         set({ isDigmathonGameFinished: isFinished }),
-      setEnvironment: (environment) => set({ environment }),
-      setEnvironments: (environments) => set({ environments }),
-      setInsightStats: (stats) => set({ insightStats: stats }),
-      setUserId: (userId) => set({ userId }),
-      setUserInfo: (userInfo) => set({ userInfo }),
+      setEnvironment: (environment: Environment | null) => set({ environment }),
+      setEnvironments: (environments: Environment[]) => set({ environments }),
+      setInsightStats: (stats: InsightStats) => set({ insightStats: stats }),
+      setUserId: (userId: string) => set({ userId }),
+      setUserInfo: (userInfo: UserInfo) => set({ userInfo }),
       setUserEmail: (email) => set({ userEmail: email }),
-      setUserRegistrationEmail: (email) =>
+      setUserRegistrationEmail: (email: string) =>
         set({ userRegistrationEmail: email }),
-      setPersistedState: (state) => set({ persistedState: state }),
-      setSelectedServices: (services) => set({ selectedServices: services }),
+      setPersistedState: (state: PersistedState) =>
+        set({ persistedState: state }),
+      setSelectedServices: (services: string[]) =>
+        set({ selectedServices: services }),
       reset: () => set(initialState)
     }
   });

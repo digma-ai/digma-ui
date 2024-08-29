@@ -29,8 +29,8 @@ export const SpanScalingByRootCauseInsightTicket = ({
 }: InsightTicketProps<SpanScalingInsight> & {
   rootCauseSpanInfo: RootCauseSpanInfo;
 }) => {
-  const jaegerURL = useGlobalStore.use.jaegerURL();
-  const digmaApiProxyPrefix = useGlobalStore.use.digmaApiProxyPrefix();
+  const jaegerURL = useGlobalStore().jaegerURL;
+  const digmaApiProxyPrefix = useGlobalStore().digmaApiProxyPrefix;
 
   const spanInfo = rootCauseSpanInfo;
 

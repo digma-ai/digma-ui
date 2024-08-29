@@ -9,12 +9,6 @@ const initialState: ScopeState = {
   scope: null
 };
 
-interface ScopeActions {
-  setScope: (scope: Scope) => void;
-}
-
-export type ScopeSlice = ScopeActions & ScopeState;
-
 export const createScopeSlice = () =>
   createSlice({
     name: "scope",

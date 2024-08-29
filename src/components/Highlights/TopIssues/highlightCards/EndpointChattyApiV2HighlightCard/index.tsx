@@ -1,5 +1,6 @@
 import { Row, createColumnHelper } from "@tanstack/react-table";
 import { useGlobalStore } from "../../../../../containers/Main/stores/useGlobalStore";
+import { useScopeStore } from "../../../../../containers/Main/stores/useScopeStore";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { SCOPE_CHANGE_EVENTS } from "../../../../Main/types";
 import { Table } from "../../../common/Table";
@@ -16,8 +17,8 @@ import { EndpointChattyApiV2HighlightCardProps } from "./types";
 export const EndpointChattyApiV2HighlightCard = ({
   data
 }: EndpointChattyApiV2HighlightCardProps) => {
-  const scope = useGlobalStore.use.scope();
-  const environments = useGlobalStore.use.environments();
+  const scope = useScopeStore().scope;
+  const environments = useGlobalStore().environments;
 
   const columnHelper =
     createColumnHelper<EnvironmentData<EndpointChattyApiV2Metrics>>();

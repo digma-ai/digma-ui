@@ -73,7 +73,7 @@ export const SpanDurationBreakdownInsightCard = ({
     items: []
   });
 
-  const backendInfo = useGlobalStore.use.backendInfo();
+  const backendInfo = useGlobalStore().backendInfo;
   const isQuantitySupported = getFeatureFlagValue(
     backendInfo,
     FeatureFlag.IS_DURATION_BREAKDOWN_QUANTITY_ENABLED

@@ -52,7 +52,7 @@ export const ImpactScore = ({
   showIndicator,
   indicatorPosition
 }: ImpactScoreProps) => {
-  const backendInfo = useGlobalStore.use.backendInfo();
+  const backendInfo = useGlobalStore().backendInfo;
 
   let scoreIndicatorPosition: "start" | "end" | undefined;
 

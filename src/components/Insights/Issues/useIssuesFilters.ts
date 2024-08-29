@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { DigmaMessageError } from "../../../api/types";
 import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
 import { useInsightsStore } from "../../../containers/Main/stores/useInsightsStore";
+import { useScopeStore } from "../../../containers/Main/stores/useScopeStore";
 import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { GetIssuesFiltersPayload } from "../../../types";
@@ -27,15 +28,15 @@ export const useIssuesFilters = () => {
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
   const refreshTimerId = useRef<number>();
-  const environment = useGlobalStore.use.environment();
+  const environment = useGlobalStore().environment;
   const environmentId = environment?.id;
-  const scope = useGlobalStore.use.scope();
+  const scope = useScopeStore().scope;
   const spanCodeObjectId = scope?.span?.spanCodeObjectId ?? null;
   const search = useInsightsStore.use.search();
   const filters = useInsightsStore.use.filters();
   const filteredInsightTypes = useInsightsStore.use.filteredInsightTypes();
   const viewMode = useInsightsStore.use.viewMode();
-  const backendInfo = useGlobalStore.use.backendInfo();
+  const backendInfo = useGlobalStore().backendInfo;
 
   const query: GetIssuesFiltersQuery = useMemo(
     () => ({

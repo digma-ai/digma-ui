@@ -45,21 +45,6 @@ export const initialState: InsightsSlice = {
   areIssuesFiltersLoading: false
 };
 
-export interface InsightsActions {
-  setData: (data: InsightsData) => void;
-  setIsDataLoading: (isDataLoading: boolean) => void;
-  setSearch: (search: string) => void;
-  setPage: (page: number) => void;
-  setSorting: (sorting: Sorting) => void;
-  setViewMode: (viewMode: ViewMode) => void;
-  setFilters: (filters: InsightFilterType[]) => void;
-  setFilteredInsightTypes: (insightTypes: string[]) => void;
-  setInsightViewType: (insightViewType: InsightViewType) => void;
-  setIssuesFilters: (filters: IssuesFiltersData) => void;
-  setAreIssuesFiltersLoading: (areIssuesFiltersLoading: boolean) => void;
-  reset: () => void;
-}
-
 const set = (update: Partial<InsightsSlice>) => (state: InsightsSlice) => ({
   ...state,
   ...update
@@ -70,18 +55,20 @@ export const createInsightsSlice = () =>
     name: "insights",
     value: initialState,
     actions: {
-      setData: (data) => set({ data }),
-      setIsDataLoading: (isDataLoading) => set({ isDataLoading }),
-      setSearch: (search) => set({ search }),
-      setPage: (page) => set({ page }),
-      setSorting: (sorting) => set({ sorting }),
-      setViewMode: (viewMode) => set({ viewMode }),
-      setFilters: (filters) => set({ filters }),
-      setFilteredInsightTypes: (filteredInsightTypes) =>
+      setData: (data: InsightsData) => set({ data }),
+      setIsDataLoading: (isDataLoading: boolean) => set({ isDataLoading }),
+      setSearch: (search: string) => set({ search }),
+      setPage: (page: number) => set({ page }),
+      setSorting: (sorting: Sorting) => set({ sorting }),
+      setViewMode: (viewMode: ViewMode) => set({ viewMode }),
+      setFilters: (filters: InsightFilterType[]) => set({ filters }),
+      setFilteredInsightTypes: (filteredInsightTypes: string[]) =>
         set({ filteredInsightTypes }),
-      setInsightViewType: (insightViewType) => set({ insightViewType }),
-      setIssuesFilters: (issuesFilters) => set({ issuesFilters }),
-      setAreIssuesFiltersLoading: (areIssuesFiltersLoading) =>
+      setInsightViewType: (insightViewType: InsightViewType) =>
+        set({ insightViewType }),
+      setIssuesFilters: (issuesFilters: IssuesFiltersData) =>
+        set({ issuesFilters }),
+      setAreIssuesFiltersLoading: (areIssuesFiltersLoading: boolean) =>
         set({ areIssuesFiltersLoading }),
       reset: () => set(initialState)
     }

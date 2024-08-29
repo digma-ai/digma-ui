@@ -19,7 +19,7 @@ export const SpanQueryOptimizationInsightTicket = ({
   onClose
 }: InsightTicketProps<SpanQueryOptimizationInsight>) => {
   const { isLoading, commitInfos } = useCommitInfos(data.insight);
-  const jaegerURL = useGlobalStore.use.jaegerURL();
+  const jaegerURL = useGlobalStore().jaegerURL;
 
   const criticalityString =
     data.insight.criticality > 0

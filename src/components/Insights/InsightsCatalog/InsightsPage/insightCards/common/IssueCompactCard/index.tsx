@@ -38,7 +38,7 @@ export const IssueCompactCard = ({
   isCritical
 }: IssueCompactCardProps) => {
   const theme = useTheme();
-  const isJaegerEnabled = useGlobalStore.use.isJaegerEnabled();
+  const isJaegerEnabled = useGlobalStore().isJaegerEnabled;
   const [isKebabMenuOpen, setIsKebabMenuOpen] = useState(false);
   const insightTypeInfo = getInsightTypeInfo(insight.type, insight.subType);
   const statusInfo = insight.status
