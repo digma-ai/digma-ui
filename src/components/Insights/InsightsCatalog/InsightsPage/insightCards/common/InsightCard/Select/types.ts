@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode } from "react";
+import { ReactNode } from "react";
 
 export interface SelectOption {
   label: string;
@@ -12,7 +12,7 @@ export interface SelectProps {
   placeholder?: string;
   isDisabled?: boolean;
   onChange: (value: string) => void;
-  listHeader?: ReactElement;
+  listHeader?: ReactNode;
 }
 
 export interface SelectBarProps {
