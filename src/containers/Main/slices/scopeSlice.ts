@@ -9,7 +9,7 @@ const initialState: ScopeState = {
   scope: null
 };
 
-export const createScopeSlice = createSlice({
+export const scopeSlice = createSlice({
   name: "scope",
   value: initialState,
   actions: {

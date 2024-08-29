@@ -12,7 +12,7 @@ import { isBoolean } from "../../../typeGuards/isBoolean";
 import { isEnvironment } from "../../../typeGuards/isEnvironment";
 import { isString } from "../../../typeGuards/isString";
 
-export interface GlobalState {
+interface GlobalState {
   digmaApiUrl: string | null;
   digmaApiProxyPrefix: string | null;
   digmaStatus: DigmaStatus | null;
@@ -40,7 +40,7 @@ export interface GlobalState {
   selectedServices: string[] | null;
 }
 
-export const initialState: GlobalState = {
+const initialState: GlobalState = {
   digmaApiUrl: isString(window.digmaApiUrl) ? window.digmaApiUrl : null,
   digmaApiProxyPrefix: isString(window.digmaApiProxyPrefix)
     ? window.digmaApiProxyPrefix
@@ -95,7 +95,7 @@ const set = (update: Partial<GlobalState>) => (state: GlobalState) => ({
   ...update
 });
 
-export const createGlobalSlice = createSlice({
+export const globalSlice = createSlice({
   name: "global",
   value: initialState,
   actions: {

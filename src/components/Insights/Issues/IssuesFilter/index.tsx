@@ -21,14 +21,11 @@ import * as s from "./styles";
 import { trackingEvents } from "./tracking";
 
 export const IssuesFilter = () => {
-  const filteredInsightTypes = useInsightsStore.use.filteredInsightTypes();
+  const { filteredInsightTypes, filters } = useInsightsStore();
   const selectedServices = useGlobalStore().selectedServices;
-  const setFilteredInsightTypes =
-    useInsightsStore.use.setFilteredInsightTypes();
-  const { setSelectedServices } = useStore.getState();
-  const filters = useInsightsStore.use.filters();
+  const { setSelectedServices, setFilteredInsightTypes, setFilters } =
+    useStore.getState();
   const backendInfo = useGlobalStore().backendInfo;
-  const setFilters = useInsightsStore.use.setFilters();
   const isCriticalOnly = useMemo(
     () => filters.includes("criticality"),
     [filters]

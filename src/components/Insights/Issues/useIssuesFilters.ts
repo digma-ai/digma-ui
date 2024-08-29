@@ -3,6 +3,7 @@ import { DigmaMessageError } from "../../../api/types";
 import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
 import { useInsightsStore } from "../../../containers/Main/stores/useInsightsStore";
 import { useScopeStore } from "../../../containers/Main/stores/useScopeStore";
+import { useStore } from "../../../containers/Main/stores/useStore";
 import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { GetIssuesFiltersPayload } from "../../../types";
@@ -23,8 +24,14 @@ const getFilters = (query: GetIssuesFiltersQuery) => {
 };
 
 export const useIssuesFilters = () => {
-  const data = useInsightsStore.use.issuesFilters();
-  const setData = useInsightsStore.use.setIssuesFilters();
+  const {
+    issuesFilters: data,
+    search,
+    filteredInsightTypes,
+    viewMode,
+    filters
+  } = useInsightsStore();
+  const { setIssuesFilters: setData } = useStore.getState();
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
   const refreshTimerId = useRef<number>();
@@ -32,10 +39,6 @@ export const useIssuesFilters = () => {
   const environmentId = environment?.id;
   const scope = useScopeStore().scope;
   const spanCodeObjectId = scope?.span?.spanCodeObjectId ?? null;
-  const search = useInsightsStore.use.search();
-  const filters = useInsightsStore.use.filters();
-  const filteredInsightTypes = useInsightsStore.use.filteredInsightTypes();
-  const viewMode = useInsightsStore.use.viewMode();
   const backendInfo = useGlobalStore().backendInfo;
 
   const query: GetIssuesFiltersQuery = useMemo(

@@ -1,4 +1,5 @@
 import { useInsightsStore } from "../../../../containers/Main/stores/useInsightsStore";
+import { useStore } from "../../../../containers/Main/stores/useStore";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { InsightFilterType } from "../types";
 import { FilterChip } from "./FilterChip";
@@ -10,8 +11,8 @@ export const FilterPanel = ({
   allIssuesCount,
   unreadCount
 }: FilterPanelProps) => {
-  const filters = useInsightsStore.use.filters();
-  const setFilters = useInsightsStore.use.setFilters();
+  const filters = useInsightsStore().filters;
+  const setFilters = useStore.use.setFilters();
 
   const handleFilterChipClick = (selectedFilter?: InsightFilterType) => {
     const newFilters = new Set(filters);

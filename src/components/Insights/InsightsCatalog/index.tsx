@@ -4,6 +4,7 @@ import { useTheme } from "styled-components";
 import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
 import { useInsightsStore } from "../../../containers/Main/stores/useInsightsStore";
 import { useScopeStore } from "../../../containers/Main/stores/useScopeStore";
+import { useStore } from "../../../containers/Main/stores/useStore";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import { useDebounce } from "../../../hooks/useDebounce";
 import { usePersistence } from "../../../hooks/usePersistence";
@@ -66,20 +67,28 @@ export const InsightsCatalog = ({
   onJiraTicketCreate,
   onRefresh
 }: InsightsCatalogProps) => {
-  const insightViewType = useInsightsStore.use.insightViewType();
-  const mode = useInsightsStore.use.viewMode();
-  const setMode = useInsightsStore.use.setViewMode();
-  const page = useInsightsStore.use.page();
-  const setPage = useInsightsStore.use.setPage();
-  const searchInputValue = useInsightsStore.use.search();
-  const setSearch = useInsightsStore.use.setSearch();
+  const {
+    setViewMode: setMode,
+    setPage,
+    setSorting,
+    setSearch
+  } = useStore.getState();
+
+  const {
+    page,
+    search: searchInputValue,
+    sorting,
+    filters,
+    filteredInsightTypes,
+    data,
+    viewMode: mode,
+    insightViewType
+  } = useInsightsStore();
+
+  const { selectedServices } = useGlobalStore();
+
   const debouncedSearchInputValue = useDebounce(searchInputValue, 1000);
-  const sorting = useInsightsStore.use.sorting();
-  const setSorting = useInsightsStore.use.setSorting();
-  const filters = useInsightsStore.use.filters();
-  const filteredInsightTypes = useInsightsStore.use.filteredInsightTypes();
-  const selectedServices = useGlobalStore().selectedServices;
-  const data = useInsightsStore.use.data();
+
   const insights = data?.insights ?? [];
   const totalCount = data?.totalCount ?? 0;
   const dismissedCount = data?.dismissedCount;

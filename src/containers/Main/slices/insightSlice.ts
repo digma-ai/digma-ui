@@ -14,7 +14,7 @@ import {
   InsightViewType
 } from "../../../components/Insights/types";
 
-export interface InsightsSlice {
+interface InsightsState {
   data: InsightsData | null;
   isDataLoading: boolean;
   search: string;
@@ -28,7 +28,7 @@ export interface InsightsSlice {
   areIssuesFiltersLoading: boolean;
 }
 
-export const initialState: InsightsSlice = {
+const initialState: InsightsState = {
   data: null,
   isDataLoading: false,
   search: "",
@@ -45,12 +45,12 @@ export const initialState: InsightsSlice = {
   areIssuesFiltersLoading: false
 };
 
-const set = (update: Partial<InsightsSlice>) => (state: InsightsSlice) => ({
+const set = (update: Partial<InsightsState>) => (state: InsightsState) => ({
   ...state,
   ...update
 });
 
-export const createInsightsSlice = createSlice({
+export const insightsSlice = createSlice({
   name: "insights",
   value: initialState,
   actions: {
