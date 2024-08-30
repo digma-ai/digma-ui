@@ -1,5 +1,4 @@
 import { createSlice } from "zustand-slices";
-import { Scope } from "../../../components/common/App/types";
 import {
   Sorting,
   SORTING_ORDER
@@ -27,7 +26,6 @@ interface InsightsState {
   insightViewType: InsightViewType | null;
   issuesFilters: IssuesFiltersData | null;
   areIssuesFiltersLoading: boolean;
-  scope: Scope | null;
 }
 
 const initialState: InsightsState = {
@@ -44,8 +42,7 @@ const initialState: InsightsState = {
   filteredInsightTypes: [],
   insightViewType: null,
   issuesFilters: null,
-  areIssuesFiltersLoading: false,
-  scope: null
+  areIssuesFiltersLoading: false
 };
 
 const set = (update: Partial<InsightsState>) => (state: InsightsState) => ({
