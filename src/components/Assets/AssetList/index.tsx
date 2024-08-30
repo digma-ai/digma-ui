@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
 import { DigmaMessageError } from "../../../api/types";
-import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
 import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
+import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { isEnvironment } from "../../../typeGuards/isEnvironment";
 import { changeScope } from "../../../utils/actions/changeScope";
 import { SCOPE_CHANGE_EVENTS } from "../../Main/types";
@@ -140,12 +140,10 @@ export const AssetList = ({
     filteredCount
   );
   const listRef = useRef<HTMLUListElement>(null);
-  const environment = useGlobalStore.use.environment();
-  const backendInfo = useGlobalStore.use.backendInfo();
+  const { environment, backendInfo, scope } = useConfigSelector();
   const refreshTimerId = useRef<number>();
   const previousEnvironment = usePrevious(environment);
   const previousViewScope = usePrevious(scopeViewOptions);
-  const scope = useGlobalStore.use.scope();
   const isServicesFilterEnabled = !scope?.span?.spanCodeObjectId;
 
   const refreshData = useCallback(() => {

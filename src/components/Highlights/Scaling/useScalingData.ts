@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
 import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
+import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { actions as mainActions } from "../../Main/actions";
 import { GetHighlightsScalingDataPayload, ScalingData } from "./types";
 
@@ -9,8 +9,7 @@ const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 
 export const useScalingData = () => {
   const [data, setData] = useState<ScalingData>();
-  const scope = useGlobalStore.use.scope();
-  const environments = useGlobalStore.use.environments();
+  const { scope, environments } = useConfigSelector();
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
   const refreshTimerId = useRef<number>();

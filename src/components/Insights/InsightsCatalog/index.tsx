@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useTheme } from "styled-components";
-import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
-import { useInsightsStore } from "../../../containers/Main/stores/useInsightsStore";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import { useDebounce } from "../../../hooks/useDebounce";
 import { usePersistence } from "../../../hooks/usePersistence";
 import { usePrevious } from "../../../hooks/usePrevious";
+import { useConfigSelector } from "../../../store/config/useConfigSelector";
+import { useInsightsSelector } from "../../../store/insights/useInsightsSelector";
+import { useStore } from "../../../store/useStore";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { isUndefined } from "../../../typeGuards/isUndefined";
 import { FeatureFlag } from "../../../types";
@@ -65,20 +66,35 @@ export const InsightsCatalog = ({
   onJiraTicketCreate,
   onRefresh
 }: InsightsCatalogProps) => {
-  const insightViewType = useInsightsStore.use.insightViewType();
-  const mode = useInsightsStore.use.viewMode();
-  const setMode = useInsightsStore.use.setViewMode();
-  const page = useInsightsStore.use.page();
-  const setPage = useInsightsStore.use.setPage();
-  const searchInputValue = useInsightsStore.use.search();
-  const setSearch = useInsightsStore.use.setSearch();
+  const {
+    setViewMode: setMode,
+    setPage,
+    setSorting,
+    setSearch
+  } = useStore.getState();
+
+  const {
+    page,
+    search: searchInputValue,
+    sorting,
+    filters,
+    filteredInsightTypes,
+    data,
+    viewMode: mode,
+    insightViewType
+  } = useInsightsSelector();
+
+  const {
+    selectedServices,
+    insightStats,
+    environment,
+    environments,
+    scope,
+    backendInfo
+  } = useConfigSelector();
+
   const debouncedSearchInputValue = useDebounce(searchInputValue, 1000);
-  const sorting = useInsightsStore.use.sorting();
-  const setSorting = useInsightsStore.use.setSorting();
-  const filters = useInsightsStore.use.filters();
-  const filteredInsightTypes = useInsightsStore.use.filteredInsightTypes();
-  const selectedServices = useGlobalStore.use.selectedServices();
-  const data = useInsightsStore.use.data();
+
   const insights = data?.insights ?? [];
   const totalCount = data?.totalCount ?? 0;
   const dismissedCount = data?.dismissedCount;
@@ -88,13 +104,8 @@ export const InsightsCatalog = ({
     pageStartItemNumber + PAGE_SIZE - 1,
     totalCount
   );
-  const insightStats = useGlobalStore.use.insightStats();
-  const environment = useGlobalStore.use.environment();
-  const environments = useGlobalStore.use.environments();
-  const scope = useGlobalStore.use.scope();
   const scopeSpanCodeObjectId = scope?.span?.spanCodeObjectId;
   const isAtSpan = Boolean(scope?.span);
-  const backendInfo = useGlobalStore.use.backendInfo();
   const theme = useTheme();
   const { isMarkingAllAsReadInProgress, markAllAsRead } = useMarkingAllAsRead(
     scope?.span ?? null

@@ -1,4 +1,4 @@
-import { useGlobalStore } from "../../../../containers/Main/stores/useGlobalStore";
+import { useConfigSelector } from "../../../../store/config/useConfigSelector";
 import { Environment } from "../../../common/App/types";
 import { EnvironmentIcon } from "../../../common/EnvironmentIcon";
 import { MenuList } from "../../common/MenuList";
@@ -9,7 +9,7 @@ export const EnvironmentMenu = ({
   environments,
   onMenuItemClick
 }: EnvironmentMenuProps) => {
-  const environment = useGlobalStore.use.environment();
+  const { environment } = useConfigSelector();
 
   const handleMenuItemClick = (environment: Environment) => {
     onMenuItemClick(environment);

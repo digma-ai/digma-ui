@@ -1,7 +1,7 @@
 import { Row, createColumnHelper } from "@tanstack/react-table";
 import { useEffect } from "react";
 import { PERFORMANCE_IMPACT_DOCUMENTATION_URL } from "../../../constants";
-import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
+import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { SCOPE_CHANGE_EVENTS } from "../../Main/types";
@@ -76,9 +76,7 @@ const getRankTagType = (normalizedRank: number) => {
 
 export const Impact = () => {
   const { data, getData } = useImpactData();
-  const scope = useGlobalStore.use.scope();
-  const environments = useGlobalStore.use.environments();
-  const backendInfo = useGlobalStore.use.backendInfo();
+  const { scope, environments, backendInfo } = useConfigSelector();
 
   useEffect(() => {
     getData();

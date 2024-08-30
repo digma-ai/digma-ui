@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
+import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { isString } from "../../../typeGuards/isString";
 import { getDurationString } from "../../../utils/getDurationString";
 import { intersperse } from "../../../utils/intersperse";
@@ -23,7 +23,8 @@ export const TestTicket = ({
     contextsSpanCodeObjectIds
   } = test;
   const summary = `"${name}" test failed`;
-  const jaegerURL = useGlobalStore.use.jaegerURL() ?? "";
+  const { jaegerURL } = useConfigSelector();
+  const jaegerURLString = jaegerURL ?? "";
 
   const relatedSpans = spanContexts
     .filter((x) => contextsSpanCodeObjectIds.includes(x.spanCodeObjectId))
@@ -54,7 +55,7 @@ export const TestTicket = ({
     </>
   );
 
-  const traceAttachment = getTraceAttachment(jaegerURL, traceId);
+  const traceAttachment = getTraceAttachment(jaegerURLString, traceId);
   const attachments: Attachment[] = [
     ...(traceAttachment ? [traceAttachment] : [])
   ];

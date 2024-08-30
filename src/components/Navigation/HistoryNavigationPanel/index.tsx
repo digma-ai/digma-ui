@@ -2,8 +2,8 @@ import { useEffect } from "react";
 import { Location, useLocation, useNavigate } from "react-router-dom";
 import { useTheme } from "styled-components";
 import { history } from "../../../containers/Main/history";
-import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
 import { HistoryEntry } from "../../../history/History";
+import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { changeScope } from "../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import {
@@ -22,9 +22,7 @@ import * as s from "./styles";
 export const HistoryNavigationPanel = () => {
   const { goBack, goForward, goTo, canGoBack, canGoForward } = useHistory();
   const navigate = useNavigate();
-  const environments = useGlobalStore.use.environments();
-  const environment = useGlobalStore.use.environment();
-  const scope = useGlobalStore.use.scope();
+  const { environments, environment, scope } = useConfigSelector();
   const location = useLocation() as Location<ReactRouterLocationState | null>;
   const theme = useTheme();
   const updateBrowserLocation = useBrowserLocationUpdater();

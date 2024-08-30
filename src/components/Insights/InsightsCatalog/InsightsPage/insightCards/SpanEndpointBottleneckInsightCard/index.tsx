@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useGlobalStore } from "../../../../../../containers/Main/stores/useGlobalStore";
+import { useConfigSelector } from "../../../../../../store/config/useConfigSelector";
 import { isNull } from "../../../../../../typeGuards/isNull";
 import { getDurationString } from "../../../../../../utils/getDurationString";
 import { trimEndpointScheme } from "../../../../../../utils/trimEndpointScheme";
@@ -27,7 +27,7 @@ export const SpanEndpointBottleneckInsightCard = ({
   isMarkAsReadButtonEnabled,
   viewMode
 }: SpanEndpointBottleneckInsightCardProps) => {
-  const isJaegerEnabled = useGlobalStore.use.isJaegerEnabled();
+  const { isJaegerEnabled } = useConfigSelector();
   const slowEndpoints = insight.slowEndpoints ?? [];
   const endpointWithMaxDuration = slowEndpoints.reduce(
     (acc, cur) =>

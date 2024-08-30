@@ -1,6 +1,6 @@
 import { Fragment, ReactNode } from "react";
-import { useGlobalStore } from "../../../../containers/Main/stores/useGlobalStore";
 import { getFeatureFlagValue } from "../../../../featureFlags";
+import { useConfigSelector } from "../../../../store/config/useConfigSelector";
 import { isString } from "../../../../typeGuards/isString";
 import { FeatureFlag } from "../../../../types";
 import { intersperse } from "../../../../utils/intersperse";
@@ -88,20 +88,19 @@ const renderEnvironmentVariables = (
 };
 
 export const EnvironmentVariableCode = () => {
-  const environment = useGlobalStore.use.environment();
-  const backendInfo = useGlobalStore.use.backendInfo();
-
+  const { environment, backendInfo, userInfo, runConfig, isMicrometerProject } =
+    useConfigSelector();
+  const isMicrometerProjectValue = isMicrometerProject ?? false;
+  const userId = userInfo?.id;
   if (!environment || !backendInfo) {
     return null;
   }
 
   const isCentralizedDeployment = backendInfo.centralize;
-  const isMicrometerProject = Boolean(useGlobalStore.use.isMicrometerProject());
-  const userId = useGlobalStore.use.userInfo()?.id;
   const environmentId = environment.id;
   const environmentName = environment.name;
   const environmentType = environment.type ?? undefined;
-  const runConfig = useGlobalStore.use.runConfig();
+
   const isRunConfigSupported = Boolean(runConfig?.isRunConfigurationSupported);
   const javaToolOptions = isRunConfigSupported
     ? undefined
@@ -115,7 +114,7 @@ export const EnvironmentVariableCode = () => {
   if (areNewInstrumentationAttributesEnabled) {
     if (isCentralizedDeployment) {
       return renderEnvironmentVariables(
-        isMicrometerProject,
+        isMicrometerProjectValue,
         [
           ["environmentName", environmentName],
           ["environmentType", environmentType],
@@ -125,7 +124,7 @@ export const EnvironmentVariableCode = () => {
       );
     } else {
       return renderEnvironmentVariables(
-        isMicrometerProject,
+        isMicrometerProjectValue,
         [["environmentName", environmentName]],
         javaToolOptions
       );
@@ -133,7 +132,7 @@ export const EnvironmentVariableCode = () => {
   }
 
   return renderEnvironmentVariables(
-    isMicrometerProject,
+    isMicrometerProjectValue,
     [["environmentId", environmentId]],
     javaToolOptions
   );

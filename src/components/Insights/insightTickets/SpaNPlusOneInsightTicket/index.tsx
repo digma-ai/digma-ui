@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import { useGlobalStore } from "../../../../containers/Main/stores/useGlobalStore";
+import { useConfigSelector } from "../../../../store/config/useConfigSelector";
 import { getCriticalityLabel } from "../../../../utils/getCriticalityLabel";
 import { intersperse } from "../../../../utils/intersperse";
 import { DigmaSignature } from "../../../common/DigmaSignature";
@@ -21,7 +21,7 @@ export const SpaNPlusOneInsightTicket = ({
   const spanInsight = data.insight;
   const { commitInfos, isLoading, codeLocations } =
     useSpanDataSource<SpaNPlusOneInsight>(data.insight.spanInfo, data.insight);
-  const jaegerURL = useGlobalStore.use.jaegerURL();
+  const { jaegerURL } = useConfigSelector();
 
   const endpoints = data.insight.endpoints ?? [];
 

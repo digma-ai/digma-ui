@@ -5,10 +5,10 @@ import {
   useReactTable
 } from "@tanstack/react-table";
 import { useEffect, useMemo, useState } from "react";
-import { useGlobalStore } from "../../../../../../containers/Main/stores/useGlobalStore";
 import { getFeatureFlagValue } from "../../../../../../featureFlags";
 import { usePagination } from "../../../../../../hooks/usePagination";
 import { usePrevious } from "../../../../../../hooks/usePrevious";
+import { useConfigSelector } from "../../../../../../store/config/useConfigSelector";
 import { isNumber } from "../../../../../../typeGuards/isNumber";
 import { FeatureFlag } from "../../../../../../types";
 import { getDurationString } from "../../../../../../utils/getDurationString";
@@ -73,7 +73,7 @@ export const SpanDurationBreakdownInsightCard = ({
     items: []
   });
 
-  const backendInfo = useGlobalStore.use.backendInfo();
+  const { backendInfo } = useConfigSelector();
   const isQuantitySupported = getFeatureFlagValue(
     backendInfo,
     FeatureFlag.IS_DURATION_BREAKDOWN_QUANTITY_ENABLED

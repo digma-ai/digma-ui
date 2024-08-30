@@ -2,13 +2,14 @@ import { useEffect, useLayoutEffect, useMemo } from "react";
 import { Outlet, matchPath, useLocation } from "react-router-dom";
 import { actions as globalActions } from "../../actions";
 import { history } from "../../containers/Main/history";
-import { useGlobalStore } from "../../containers/Main/stores/useGlobalStore";
 import { dispatcher } from "../../dispatcher";
 import { HistoryEntryLocation } from "../../history/History";
 import { usePersistence } from "../../hooks/usePersistence";
 import { usePrevious } from "../../hooks/usePrevious";
 import { logger } from "../../logging";
 import { PLUGIN_EVENTS } from "../../pluginEvents";
+import { useConfigSelector } from "../../store/config/useConfigSelector";
+import { useStore } from "../../store/useStore";
 import { trackingEvents as globalTrackingEvents } from "../../trackingEvents";
 import { isUndefined } from "../../typeGuards/isUndefined";
 import { SendPluginEventPayload } from "../../types";
@@ -49,14 +50,11 @@ const getURLToNavigateOnCodeLensClick = (scope: Scope): string | undefined => {
 
 export const Main = () => {
   const location = useLocation();
-  const environments = useGlobalStore.use.environments();
-  const environment = useGlobalStore.use.environment();
+  const { environments, environment, scope, userInfo, backendInfo } =
+    useConfigSelector();
   const previousEnvironment = usePrevious(environment);
-  const scope = useGlobalStore.use.scope();
-  const userInfo = useGlobalStore.use.userInfo();
   const userId = userInfo?.id;
   const previousUserId = usePrevious(userId);
-  const backendInfo = useGlobalStore.use.backendInfo();
   const previousBackendInfo = usePrevious(backendInfo);
   const { goTo } = useHistory();
   const updateBrowserLocation = useBrowserLocationUpdater();
@@ -65,8 +63,8 @@ export const Main = () => {
     "project"
   );
   const previousPersistedServices = usePrevious(persistedServices);
-  const selectedServices = useGlobalStore.use.selectedServices();
-  const setSelectedServices = useGlobalStore.use.setSelectedServices();
+  const selectedServices = useConfigSelector().selectedServices;
+  const { setSelectedServices } = useStore.getState();
   const isInitialized = useMemo(
     () => !isUndefined(persistedServices),
     [persistedServices]

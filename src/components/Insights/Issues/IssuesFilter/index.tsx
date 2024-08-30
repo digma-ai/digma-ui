@@ -1,8 +1,9 @@
 import { useEffect, useMemo } from "react";
-import { useGlobalStore } from "../../../../containers/Main/stores/useGlobalStore";
-import { useInsightsStore } from "../../../../containers/Main/stores/useInsightsStore";
 import { getFeatureFlagValue } from "../../../../featureFlags";
 import { usePrevious } from "../../../../hooks/usePrevious";
+import { useConfigSelector } from "../../../../store/config/useConfigSelector";
+import { useInsightsSelector } from "../../../../store/insights/useInsightsSelector";
+import { useStore } from "../../../../store/useStore";
 import { FeatureFlag } from "../../../../types";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { getInsightTypeInfo } from "../../../../utils/getInsightTypeInfo";
@@ -19,14 +20,10 @@ import * as s from "./styles";
 import { trackingEvents } from "./tracking";
 
 export const IssuesFilter = () => {
-  const filteredInsightTypes = useInsightsStore.use.filteredInsightTypes();
-  const selectedServices = useGlobalStore.use.selectedServices();
-  const setFilteredInsightTypes =
-    useInsightsStore.use.setFilteredInsightTypes();
-  const setSelectedServices = useGlobalStore.use.setSelectedServices();
-  const filters = useInsightsStore.use.filters();
-  const backendInfo = useGlobalStore.use.backendInfo();
-  const setFilters = useInsightsStore.use.setFilters();
+  const { filteredInsightTypes, filters } = useInsightsSelector();
+  const { selectedServices, backendInfo, scope } = useConfigSelector();
+  const { setSelectedServices, setFilteredInsightTypes, setFilters } =
+    useStore.getState();
   const isCriticalOnly = useMemo(
     () => filters.includes("criticality"),
     [filters]
@@ -34,7 +31,6 @@ export const IssuesFilter = () => {
   const isUnreadOnly = useMemo(() => filters.includes("unread"), [filters]);
   const { data } = useIssuesFilters();
   const previousData = usePrevious(data);
-  const scope = useGlobalStore.use.scope();
   const scopeSpanCodeObjectId = scope?.span?.spanCodeObjectId;
   const isServicesFilterEnabled =
     Boolean(

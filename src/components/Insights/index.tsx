@@ -1,10 +1,11 @@
 import { KeyboardEvent, useCallback, useEffect, useState } from "react";
 import { actions as globalActions } from "../../actions";
 import { SLACK_WORKSPACE_URL } from "../../constants";
-import { useGlobalStore } from "../../containers/Main/stores/useGlobalStore";
-import { useInsightsStore } from "../../containers/Main/stores/useInsightsStore";
 import { usePersistence } from "../../hooks/usePersistence";
 import { usePrevious } from "../../hooks/usePrevious";
+import { useConfigSelector } from "../../store/config/useConfigSelector";
+import { useInsightsSelector } from "../../store/insights/useInsightsSelector";
+import { useStore } from "../../store/useStore";
 import { trackingEvents as globalTrackingEvents } from "../../trackingEvents";
 import { isUndefined } from "../../typeGuards/isUndefined";
 import { openURLInDefaultBrowser } from "../../utils/actions/openURLInDefaultBrowser";
@@ -224,33 +225,39 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
   const { data, isLoading, refresh } = useInsightsData({
     areFiltersRehydrated
   });
-  const reset = useInsightsStore.use.reset();
   const [infoToOpenJiraTicket, setInfoToOpenJiraTicket] =
     useState<InsightTicketInfo<GenericCodeObjectInsight>>();
-  const userRegistrationEmail = useGlobalStore.use.userRegistrationEmail();
+  const {
+    backendInfo,
+    environment,
+    userRegistrationEmail,
+    environments,
+    scope
+  } = useConfigSelector();
   const previousUserRegistrationEmail = usePrevious(userRegistrationEmail);
-  const environments = useGlobalStore.use.environments();
   const [isRegistrationInProgress, setIsRegistrationInProgress] =
     useState(false);
   const isRegistrationEnabled = false;
   const isRegistrationRequired =
     isRegistrationEnabled && !userRegistrationEmail;
-  const setInsightsViewType = useInsightsStore.use.setInsightViewType();
-  const storedInsightViewType = useInsightsStore.use.insightViewType();
-  const filteredInsightTypes = useInsightsStore.use.filteredInsightTypes();
+  const {
+    setInsightViewType,
+    setFilteredInsightTypes,
+    setFilters,
+    insightsReset: reset
+  } = useStore.getState();
+  const {
+    insightViewType: storedInsightViewType,
+    filteredInsightTypes,
+    filters
+  } = useInsightsSelector();
+
   const previousFilteredInsightTypes = usePrevious(filteredInsightTypes);
-  const setFilteredInsightTypes =
-    useInsightsStore.use.setFilteredInsightTypes();
-  const filters = useInsightsStore.use.filters();
   const previousFilters = usePrevious(filters);
-  const setFilters = useInsightsStore.use.setFilters();
-  const backendInfo = useGlobalStore.use.backendInfo();
   const previousBackendInfo = usePrevious(backendInfo);
-  const scope = useGlobalStore.use.scope();
   const scopeSpanCodeObjectId = scope?.span?.spanCodeObjectId;
   const previousScope = usePrevious(scope);
   const previousScopeSpanCodeObjectId = previousScope?.span?.spanCodeObjectId;
-  const environment = useGlobalStore.use.environment();
   const environmentId = environment?.id;
   const previousEnvironmentId = usePrevious(environmentId);
 
@@ -261,8 +268,8 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
   }, [reset]);
 
   useEffect(() => {
-    setInsightsViewType(insightViewType);
-  }, [insightViewType, setInsightsViewType]);
+    setInsightViewType(insightViewType);
+  }, [insightViewType, setInsightViewType]);
 
   useEffect(() => {
     if (
