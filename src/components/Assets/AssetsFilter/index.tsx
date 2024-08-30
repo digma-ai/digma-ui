@@ -99,7 +99,7 @@ export const AssetsFilter = ({
   const previousData = usePrevious(data);
   const [isOpen, setIsOpen] = useState(false);
   const previousIsOpen = usePrevious(isOpen);
-  const globallySelectedServices = useGlobalStore().selectedServices;
+  const { selectedServices: globallySelectedServices, scope, environment } = useGlobalStore();
   const { setSelectedServices: setGloballySelectedServices } =
     useStore.getState();
   const [persistedFilters, setPersistedFilters] =
