@@ -1,6 +1,6 @@
 import { Row, createColumnHelper } from "@tanstack/react-table";
-import { useGlobalStore } from "../../../../../containers/Main/stores/useGlobalStore";
 import { Duration } from "../../../../../globals";
+import { useConfigSelector } from "../../../../../store/config/useConfigSelector";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { getDurationString } from "../../../../../utils/getDurationString";
 import { SCOPE_CHANGE_EVENTS } from "../../../../Main/types";
@@ -17,8 +17,7 @@ import { SpanEndpointBottleneckHighlightCardProps } from "./types";
 export const SpanEndpointBottleneckHighlightCard = ({
   data
 }: SpanEndpointBottleneckHighlightCardProps) => {
-  const scope = useGlobalStore.use.scope();
-  const environments = useGlobalStore.use.environments();
+  const { scope, environments } = useConfigSelector();
 
   const columnHelper =
     createColumnHelper<EnvironmentData<SpanEndpointBottleneckMetrics>>();

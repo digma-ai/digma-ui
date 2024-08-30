@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
 import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
+import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { actions as mainActions } from "../../Main/actions";
 import { GetHighlightsTopIssuesDataPayload } from "../../Main/types";
 import { TopIssuesData } from "./types";
@@ -10,8 +10,7 @@ const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 
 export const useTopIssuesData = () => {
   const [data, setData] = useState<TopIssuesData>();
-  const scope = useGlobalStore.use.scope();
-  const environments = useGlobalStore.use.environments();
+  const { scope, environments } = useConfigSelector();
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
   const refreshTimerId = useRef<number>();

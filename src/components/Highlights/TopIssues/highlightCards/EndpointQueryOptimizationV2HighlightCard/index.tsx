@@ -1,5 +1,5 @@
 import { Row, createColumnHelper } from "@tanstack/react-table";
-import { useGlobalStore } from "../../../../../containers/Main/stores/useGlobalStore";
+import { useConfigSelector } from "../../../../../store/config/useConfigSelector";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { getDurationString } from "../../../../../utils/getDurationString";
 import { SCOPE_CHANGE_EVENTS } from "../../../../Main/types";
@@ -20,8 +20,7 @@ import { EndpointQueryOptimizationV2HighlightCardProps } from "./types";
 export const EndpointQueryOptimizationV2HighlightCard = ({
   data
 }: EndpointQueryOptimizationV2HighlightCardProps) => {
-  const scope = useGlobalStore.use.scope();
-  const environments = useGlobalStore.use.environments();
+  const { scope, environments } = useConfigSelector();
 
   const columnHelper =
     createColumnHelper<EnvironmentData<EndpointQueryOptimizationV2Metrics>>();

@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { actions as globalActions } from "../../actions";
 import { DigmaMessageError } from "../../api/types";
-import { useGlobalStore } from "../../containers/Main/stores/useGlobalStore";
-import { useInsightsStore } from "../../containers/Main/stores/useInsightsStore";
 import { dispatcher } from "../../dispatcher";
 import { getFeatureFlagValue } from "../../featureFlags";
 import { usePrevious } from "../../hooks/usePrevious";
+import { useConfigSelector } from "../../store/config/useConfigSelector";
+import { useInsightsSelector } from "../../store/insights/useInsightsSelector";
+import { useStore } from "../../store/useStore";
 import {
   FeatureFlag,
   GetInsightStatsPayload,
@@ -131,30 +132,30 @@ const getStats = ({
 export const useInsightsData = ({
   areFiltersRehydrated
 }: UseInsightsDataProps) => {
-  const data = useInsightsStore.use.data();
-  const setData = useInsightsStore.use.setData();
-  const isLoading = useInsightsStore.use.isDataLoading();
-  const setIsLoading = useInsightsStore.use.setIsDataLoading();
+  const { scope, backendInfo, environment, selectedServices } =
+    useConfigSelector();
+  const {
+    data,
+    search,
+    page,
+    sorting,
+    viewMode,
+    filters,
+    filteredInsightTypes,
+    isDataLoading: isLoading,
+    insightViewType
+  } = useInsightsSelector();
+  const { setData, setIsDataLoading: setIsLoading } = useStore.getState();
   const isInitialLoading = !data && isLoading;
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
   const refreshTimerId = useRef<number>();
-  const backendInfo = useGlobalStore.use.backendInfo();
-  const scope = useGlobalStore.use.scope();
-  const environment = useGlobalStore.use.environment();
   const environmentId = environment?.id;
-  const search = useInsightsStore.use.search();
-  const page = useInsightsStore.use.page();
-  const sorting = useInsightsStore.use.sorting();
-  const viewMode = useInsightsStore.use.viewMode();
-  const filters = useInsightsStore.use.filters();
-  const filteredInsightTypes = useInsightsStore.use.filteredInsightTypes();
-  const selectedServices = useGlobalStore.use.selectedServices();
+
   const filteredServices = useMemo(
     () => selectedServices ?? [],
     [selectedServices]
   );
-  const insightViewType = useInsightsStore.use.insightViewType();
   const spanCodeObjectId = scope?.span?.spanCodeObjectId ?? null;
   const showDismissed = viewMode === ViewMode.OnlyDismissed;
   const isAppReadyToGetData = useMemo(

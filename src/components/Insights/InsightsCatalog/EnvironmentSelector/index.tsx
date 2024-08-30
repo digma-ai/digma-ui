@@ -1,6 +1,6 @@
 import { useState } from "react";
 import useDimensions from "react-cool-dimensions";
-import { useGlobalStore } from "../../../../containers/Main/stores/useGlobalStore";
+import { useConfigSelector } from "../../../../store/config/useConfigSelector";
 import { changeScope } from "../../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { Environment } from "../../../common/App/types";
@@ -59,8 +59,7 @@ const sortEnvironmentsByCriticalIssues = (
 export const EnvironmentSelector = ({
   environments
 }: EnvironmentSelectorProps) => {
-  const scope = useGlobalStore.use.scope();
-  const environment = useGlobalStore.use.environment();
+  const { scope, environment } = useConfigSelector();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { observe, width } = useDimensions();
   const sortedEnvironments = environments.sort(

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useGlobalStore } from "../../../../../../containers/Main/stores/useGlobalStore";
+import { useConfigSelector } from "../../../../../../store/config/useConfigSelector";
 import { getDurationString } from "../../../../../../utils/getDurationString";
 import { TraceIcon } from "../../../../../common/icons/12px/TraceIcon";
 import { Button } from "../../../../../common/v3/Button";
@@ -31,7 +31,7 @@ export const SpaNPlusOneInsightCard = ({
     endpoints[0]
   );
   const maxDurationString = getDurationString(endpointWithMaxDuration.duration);
-  const isJaegerEnabled = useGlobalStore.use.isJaegerEnabled();
+  const { isJaegerEnabled } = useConfigSelector();
   const [selectedEndpoint, setSelectedEndpoint] = useState(
     endpoints.length ? endpoints[0] : null
   );

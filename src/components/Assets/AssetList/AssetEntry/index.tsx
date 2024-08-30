@@ -1,5 +1,5 @@
-import { useGlobalStore } from "../../../../containers/Main/stores/useGlobalStore";
 import { getFeatureFlagValue } from "../../../../featureFlags";
+import { useConfigSelector } from "../../../../store/config/useConfigSelector";
 import { isNumber } from "../../../../typeGuards/isNumber";
 import { isString } from "../../../../typeGuards/isString";
 import { FeatureFlag, InsightType } from "../../../../types";
@@ -24,7 +24,7 @@ export const AssetEntry = ({
   isImpactHidden,
   sortingCriterion
 }: AssetEntryProps) => {
-  const backendInfo = useGlobalStore.use.backendInfo();
+  const { backendInfo } = useConfigSelector();
   const isNewImpactScoreCalculationEnabled = getFeatureFlagValue(
     backendInfo,
     FeatureFlag.IS_NEW_IMPACT_SCORE_CALCULATION_ENABLED

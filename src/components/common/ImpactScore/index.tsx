@@ -1,5 +1,5 @@
-import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
 import { getFeatureFlagValue } from "../../../featureFlags";
+import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { FeatureFlag } from "../../../types";
 import { BackendInfo } from "../App/types";
 import { ScoreIndicator } from "../ScoreIndicator";
@@ -52,7 +52,7 @@ export const ImpactScore = ({
   showIndicator,
   indicatorPosition
 }: ImpactScoreProps) => {
-  const backendInfo = useGlobalStore.use.backendInfo();
+  const { backendInfo } = useConfigSelector();
 
   let scoreIndicatorPosition: "start" | "end" | undefined;
 

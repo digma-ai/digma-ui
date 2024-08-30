@@ -1,5 +1,5 @@
 import { Row, createColumnHelper } from "@tanstack/react-table";
-import { useGlobalStore } from "../../../../../containers/Main/stores/useGlobalStore";
+import { useConfigSelector } from "../../../../../store/config/useConfigSelector";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { SCOPE_CHANGE_EVENTS } from "../../../../Main/types";
 import { Table } from "../../../common/Table";
@@ -14,8 +14,7 @@ import { SpanScalingHighlightCardProps } from "./types";
 export const SpanScalingHighlightCard = ({
   data
 }: SpanScalingHighlightCardProps) => {
-  const scope = useGlobalStore.use.scope();
-  const environments = useGlobalStore.use.environments();
+  const { scope, environments } = useConfigSelector();
 
   const columnHelper =
     createColumnHelper<EnvironmentData<SpanScalingMetrics>>();

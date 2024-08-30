@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { DigmaMessageError } from "../../../api/types";
-import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
-import { useInsightsStore } from "../../../containers/Main/stores/useInsightsStore";
 import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
+import { useConfigSelector } from "../../../store/config/useConfigSelector";
+import { useInsightsSelector } from "../../../store/insights/useInsightsSelector";
+import { useStore } from "../../../store/useStore";
 import { GetIssuesFiltersPayload } from "../../../types";
 import { ViewMode } from "../InsightsCatalog/types";
 import { actions as issuesActions } from "./actions";
@@ -22,20 +23,20 @@ const getFilters = (query: GetIssuesFiltersQuery) => {
 };
 
 export const useIssuesFilters = () => {
-  const data = useInsightsStore.use.issuesFilters();
-  const setData = useInsightsStore.use.setIssuesFilters();
+  const {
+    issuesFilters: data,
+    search,
+    filteredInsightTypes,
+    viewMode,
+    filters
+  } = useInsightsSelector();
+  const { setIssuesFilters: setData } = useStore.getState();
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
   const refreshTimerId = useRef<number>();
-  const environment = useGlobalStore.use.environment();
+  const { environment, scope, backendInfo } = useConfigSelector();
   const environmentId = environment?.id;
-  const scope = useGlobalStore.use.scope();
   const spanCodeObjectId = scope?.span?.spanCodeObjectId ?? null;
-  const search = useInsightsStore.use.search();
-  const filters = useInsightsStore.use.filters();
-  const filteredInsightTypes = useInsightsStore.use.filteredInsightTypes();
-  const viewMode = useInsightsStore.use.viewMode();
-  const backendInfo = useGlobalStore.use.backendInfo();
 
   const query: GetIssuesFiltersQuery = useMemo(
     () => ({

@@ -1,6 +1,6 @@
 import { actions as globalActions } from "../../../actions";
 import { DIGMA_DOCUMENTATION } from "../../../constants";
-import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
+import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { OpenInstallationWizardPayload } from "../../../types";
 import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
@@ -19,9 +19,7 @@ import { OpenDashboardPayload, OpenDocumentationPayload } from "../types";
 import { KebabMenuProps } from "./types";
 
 export const KebabMenu = ({ onClose }: KebabMenuProps) => {
-  const backendInfo = useGlobalStore.use.backendInfo();
-  const digmaStatus = useGlobalStore.use.digmaStatus();
-  const environment = useGlobalStore.use.environment();
+  const { backendInfo, digmaStatus, environment } = useConfigSelector();
 
   const handleOnboardingClick = () => {
     sendUserActionTrackingEvent(trackingEvents.ONBOARDING_LINK_CLICKED);

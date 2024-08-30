@@ -1,8 +1,8 @@
 import { Fragment, useEffect, useMemo, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
 import { usePagination } from "../../../hooks/usePagination";
 import { usePrevious } from "../../../hooks/usePrevious";
+import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { InsightType } from "../../Insights/types";
 import { CrossCircleIcon } from "../../common/icons/16px/CrossCircleIcon";
 import { RefreshIcon } from "../../common/icons/16px/RefreshIcon";
@@ -94,8 +94,7 @@ export const TopIssues = () => {
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const { data, getData } = useTopIssuesData();
   const previousData = usePrevious(data);
-  const scope = useGlobalStore.use.scope();
-
+  const { scope } = useConfigSelector();
   // Do not show unimplemented insights
   const filteredInsights = useMemo(
     () =>
