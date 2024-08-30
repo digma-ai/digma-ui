@@ -4,17 +4,12 @@ import { FeatureFlag } from "../../types";
 import { Impact } from "./Impact";
 import { Performance } from "./Performance";
 import { Scaling } from "./Scaling";
-import { SpanInfo } from "./SpanInfo";
 import { TopIssues } from "./TopIssues";
 import * as s from "./styles";
 
 export const Highlights = () => {
   const backendInfo = useGlobalStore.use.backendInfo();
 
-  const isSpanInfoVisible = getFeatureFlagValue(
-    backendInfo,
-    FeatureFlag.IS_HIGHLIGHTS_SPAN_INFO_ENABLED
-  );
   const areImpactHighlightsVisible = getFeatureFlagValue(
     backendInfo,
     FeatureFlag.IS_HIGHLIGHTS_IMPACT_ENABLED
@@ -26,7 +21,6 @@ export const Highlights = () => {
 
   return (
     <s.Container>
-      {isSpanInfoVisible && <SpanInfo />}
       <TopIssues />
       <Performance />
       {areImpactHighlightsVisible && <Impact />}

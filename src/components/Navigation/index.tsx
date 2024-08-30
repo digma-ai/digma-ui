@@ -5,7 +5,7 @@ import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
 // import { isNull } from "../../typeGuards/isNull";
 // import { isUndefined } from "../../typeGuards/isUndefined";
-import { GetInsightStatsPayload } from "../../types";
+import { FeatureFlag, GetInsightStatsPayload } from "../../types";
 import { changeScope } from "../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 // import { AsyncActionResultData } from "../InstallationWizard/types";
@@ -16,10 +16,12 @@ import { ThreeDotsIcon } from "../common/icons/ThreeDotsIcon";
 // import { Tooltip } from "../common/v3/Tooltip";
 // import { CodeButton } from "./CodeButton";
 // import { CodeButtonMenu } from "./CodeButtonMenu";
+import { getFeatureFlagValue } from "../../featureFlags";
 import { EnvironmentBar } from "./EnvironmentBar";
 import { HistoryNavigationPanel } from "./HistoryNavigationPanel";
 import { KebabMenu } from "./KebabMenu";
 import { ScopeBar } from "./ScopeBar";
+import { SpanInfo } from "./SpanInfo";
 import { Tabs } from "./Tabs";
 import { actions } from "./actions";
 import { IconButton } from "./common/IconButton";
@@ -96,6 +98,11 @@ export const Navigation = () => {
   // const isCodeButtonEnabled = codeContext && !isNull(codeContext.methodId);
   // const isCodeButtonMenuEnabled =
   //   codeContext && codeContext.spans.assets.length !== 1;
+
+  const isSpanInfoEnabled = getFeatureFlagValue(
+    backendInfo,
+    FeatureFlag.IS_HIGHLIGHTS_SPAN_INFO_ENABLED
+  );
 
   useEffect(() => {
     const handleCodeContextData = (data: unknown) => {
@@ -340,8 +347,13 @@ export const Navigation = () => {
           />
         </NewPopover>
       </s.Row>
-      <s.Row>
-        {/* <Tooltip
+      {isAtSpan && isSpanInfoEnabled && (
+        <s.Row>
+          <SpanInfo />
+        </s.Row>
+      )}
+      {/* <s.Row>
+        <Tooltip
           title={codeButtonTooltip}
           isOpen={isCodeButtonMenuOpen ? false : undefined}
           placement={"bottom-start"}
@@ -392,8 +404,8 @@ export const Navigation = () => {
               onMouseLeave={handleCodeButtonMouseLeave}
             />
           )}
-        </Tooltip> */}
-      </s.Row>
+        </Tooltip>
+      </s.Row> */}
       <s.TabsContainer>
         <Tabs />
       </s.TabsContainer>

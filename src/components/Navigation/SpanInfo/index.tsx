@@ -8,7 +8,7 @@ import { RefreshIcon } from "../../common/icons/16px/RefreshIcon";
 import { WrenchIcon } from "../../common/icons/16px/WrenchIcon";
 import { Tag } from "../../common/v3/Tag";
 import { Tooltip } from "../../common/v3/Tooltip";
-import { EmptyStateCard } from "../EmptyStateCard";
+import { EmptyStateCard } from "../../Highlights/EmptyStateCard";
 import * as s from "./styles";
 import { useSpanInfoData } from "./useSpanInfoData";
 
