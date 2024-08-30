@@ -9,8 +9,10 @@ import { HistoryEntryLocation } from "../../history/History";
 import { usePersistence } from "../../hooks/usePersistence";
 import { usePrevious } from "../../hooks/usePrevious";
 import { logger } from "../../logging";
+import { PLUGIN_EVENTS } from "../../pluginEvents";
 import { trackingEvents as globalTrackingEvents } from "../../trackingEvents";
 import { isUndefined } from "../../typeGuards/isUndefined";
+import { SendPluginEventPayload } from "../../types";
 import { sendTrackingEvent } from "../../utils/actions/sendTrackingEvent";
 import { areBackendInfosEqual } from "../../utils/areBackendInfosEqual";
 import { Navigation } from "../Navigation";
@@ -70,6 +72,35 @@ export const Main = () => {
     () => !isUndefined(persistedServices),
     [persistedServices]
   );
+
+  useEffect(() => {
+    const handlePluginEvent = (data: unknown) => {
+      const { name } = data as SendPluginEventPayload;
+
+      switch (name) {
+        case PLUGIN_EVENTS.FIRST_IMPORTANT_ISSUE_NOTIFICATION_LINK_CLICK:
+        case PLUGIN_EVENTS.FIRST_ISSUE_NOTIFICATION_LINK_CLICK:
+          goTo(`/${TAB_IDS.ISSUES}`);
+          break;
+        case PLUGIN_EVENTS.FIRST_INSIGHT_NOTIFICATION_LINK_CLICK:
+        case PLUGIN_EVENTS.FIRST_ASSET_NOTIFICATION_LINK_CLICK:
+          goTo(`/${TAB_IDS.ASSETS}`);
+          break;
+      }
+    };
+
+    dispatcher.addActionListener(
+      globalActions.SEND_PLUGIN_EVENT,
+      handlePluginEvent
+    );
+
+    return () => {
+      dispatcher.removeActionListener(
+        globalActions.SEND_PLUGIN_EVENT,
+        handlePluginEvent
+      );
+    };
+  }, [goTo]);
 
   // Rehydrate selected services from persistence
   useEffect(() => {

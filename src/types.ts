@@ -92,3 +92,8 @@ export interface GetIssuesFiltersPayload {
 export interface GetIssuesDataListPayload {
   query: GetIssuesDataListQuery;
 }
+
+export interface SendPluginEventPayload {
+  name: string;
+  payload?: Record<string, unknown>;
+}

@@ -96,7 +96,7 @@ export const TopIssues = () => {
   const previousData = usePrevious(data);
   const scope = useGlobalStore().scope;
   // Do not show unimplemented insights
-  const filteredTopInsights = useMemo(
+  const filteredInsights = useMemo(
     () =>
       (data?.topInsights ?? []).filter(
         (x) => x.insightType !== InsightType.SlowEndpoint
@@ -104,7 +104,7 @@ export const TopIssues = () => {
     [data]
   );
   const [pageItems, page, setPage] = usePagination(
-    filteredTopInsights,
+    filteredInsights,
     PAGE_SIZE,
     scope?.span?.spanCodeObjectId
   );
@@ -151,7 +151,7 @@ export const TopIssues = () => {
       title={"Top Issues"}
       toolbarContent={
         <CarouselPagination
-          itemsCount={filteredTopInsights.length ?? 0}
+          itemsCount={filteredInsights.length ?? 0}
           onPageChange={setPage}
           pageSize={PAGE_SIZE}
           page={page}
