@@ -1,5 +1,5 @@
-import { useGlobalStore } from "../../../../../../containers/Main/stores/global/useGlobalStore";
 import { usePagination } from "../../../../../../hooks/usePagination";
+import { useConfigSelector } from "../../../../../../store/config/useConfigSelector";
 import { TraceIcon } from "../../../../../common/icons/12px/TraceIcon";
 import { Button } from "../../../../../common/v3/Button";
 import { Pagination } from "../../../../../common/v3/Pagination";
@@ -23,7 +23,7 @@ export const EndpointSessionInViewInsightCard = ({
   isMarkAsReadButtonEnabled,
   viewMode
 }: EndpointSessionInViewInsightCardProps) => {
-  const isJaegerEnabled = useGlobalStore().isJaegerEnabled;
+  const { isJaegerEnabled } = useConfigSelector();
 
   const [pageItems, page, setPage] = usePagination(
     insight.spans,

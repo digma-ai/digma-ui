@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import { useGlobalStore } from "../../../../containers/Main/stores/global/useGlobalStore";
+import { useConfigSelector } from "../../../../store/config/useConfigSelector";
 import { InsightType } from "../../../../types";
 import { intersperse } from "../../../../utils/intersperse";
 import { DigmaSignature } from "../../../common/DigmaSignature";
@@ -29,8 +29,7 @@ export const SpanScalingByRootCauseInsightTicket = ({
 }: InsightTicketProps<SpanScalingInsight> & {
   rootCauseSpanInfo: RootCauseSpanInfo;
 }) => {
-  const jaegerURL = useGlobalStore().jaegerURL;
-  const digmaApiProxyPrefix = useGlobalStore().digmaApiProxyPrefix;
+  const { jaegerURL, digmaApiProxyPrefix } = useConfigSelector();
 
   const spanInfo = rootCauseSpanInfo;
 

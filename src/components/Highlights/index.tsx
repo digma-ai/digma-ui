@@ -1,5 +1,5 @@
-import { useGlobalStore } from "../../containers/Main/stores/global/useGlobalStore";
 import { getFeatureFlagValue } from "../../featureFlags";
+import { useConfigSelector } from "../../store/config/useConfigSelector";
 import { FeatureFlag } from "../../types";
 import { Impact } from "./Impact";
 import { Performance } from "./Performance";
@@ -9,7 +9,7 @@ import { TopIssues } from "./TopIssues";
 import * as s from "./styles";
 
 export const Highlights = () => {
-  const backendInfo = useGlobalStore().backendInfo;
+  const { backendInfo } = useConfigSelector();
 
   const isSpanInfoVisible = getFeatureFlagValue(
     backendInfo,

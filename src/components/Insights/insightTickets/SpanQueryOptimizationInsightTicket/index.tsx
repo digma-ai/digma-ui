@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import { useGlobalStore } from "../../../../containers/Main/stores/global/useGlobalStore";
+import { useConfigSelector } from "../../../../store/config/useConfigSelector";
 import { getCriticalityLabel } from "../../../../utils/getCriticalityLabel";
 import { getDurationString } from "../../../../utils/getDurationString";
 import { intersperse } from "../../../../utils/intersperse";
@@ -19,7 +19,7 @@ export const SpanQueryOptimizationInsightTicket = ({
   onClose
 }: InsightTicketProps<SpanQueryOptimizationInsight>) => {
   const { isLoading, commitInfos } = useCommitInfos(data.insight);
-  const jaegerURL = useGlobalStore().jaegerURL;
+  const { jaegerURL } = useConfigSelector();
 
   const criticalityString =
     data.insight.criticality > 0

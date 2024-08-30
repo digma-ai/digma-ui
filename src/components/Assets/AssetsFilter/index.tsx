@@ -1,8 +1,9 @@
 import { ComponentType, useEffect, useState } from "react";
-import { useGlobalStore } from "../../../containers/Main/stores/global/useGlobalStore";
 import { dispatcher } from "../../../dispatcher";
 import { usePersistence } from "../../../hooks/usePersistence";
 import { usePrevious } from "../../../hooks/usePrevious";
+import { useConfigSelector } from "../../../store/config/useConfigSelector";
+import { useStore } from "../../../store/useStore";
 import { isEnvironment } from "../../../typeGuards/isEnvironment";
 import { isNull } from "../../../typeGuards/isNull";
 import { isUndefined } from "../../../typeGuards/isUndefined";
@@ -18,6 +19,7 @@ import { IconProps } from "../../common/icons/types";
 import { AssetScopeOption } from "../AssetsViewScopeConfiguration/types";
 import { actions } from "../actions";
 import { trackingEvents } from "../tracking";
+import * as s from "./styles";
 import {
   AssetFilterCategory,
   AssetFilterQuery,
@@ -25,9 +27,6 @@ import {
   AssetsFiltersData,
   GetAssetFiltersDataPayload
 } from "./types";
-
-import { useStore } from "../../../containers/Main/stores/useStore";
-import * as s from "./styles";
 
 const PERSISTENCE_KEY = "assetsFilters";
 
@@ -99,13 +98,16 @@ export const AssetsFilter = ({
   const previousData = usePrevious(data);
   const [isOpen, setIsOpen] = useState(false);
   const previousIsOpen = usePrevious(isOpen);
-  const { selectedServices: globallySelectedServices, scope, environment } = useGlobalStore();
+  const {
+    selectedServices: globallySelectedServices,
+    environment,
+    scope
+  } = useConfigSelector();
   const { setSelectedServices: setGloballySelectedServices } =
     useStore.getState();
   const [persistedFilters, setPersistedFilters] =
     usePersistence<AssetFilterQuery>(PERSISTENCE_KEY, "project");
   const previousPersistedFilters = usePrevious(persistedFilters);
-  const scope = useGlobalStore().scope;
   const isServicesFilterEnabled = !scope?.span?.spanCodeObjectId;
   const [selectedServices, setSelectedServices] = useState<string[]>(
     isServicesFilterEnabled ? globallySelectedServices ?? [] : []
@@ -114,7 +116,6 @@ export const AssetsFilter = ({
   const [selectedConsumers, setSelectedConsumers] = useState<string[]>([]);
   const [selectedInternals, setSelectedInternals] = useState<string[]>([]);
   const [selectedInsights, setSelectedInsights] = useState<InsightType[]>([]);
-  const environment = useGlobalStore().environment;
   const previousEnvironment = usePrevious(environment);
   const previousScope = usePrevious(scope);
 

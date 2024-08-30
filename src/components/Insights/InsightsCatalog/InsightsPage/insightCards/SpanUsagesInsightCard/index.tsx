@@ -5,9 +5,9 @@ import {
   useReactTable
 } from "@tanstack/react-table";
 import { useEffect, useState } from "react";
-import { useGlobalStore } from "../../../../../../containers/Main/stores/global/useGlobalStore";
 import { usePagination } from "../../../../../../hooks/usePagination";
 import { usePrevious } from "../../../../../../hooks/usePrevious";
+import { useConfigSelector } from "../../../../../../store/config/useConfigSelector";
 import { isNumber } from "../../../../../../typeGuards/isNumber";
 import { InsightType } from "../../../../../../types";
 import { roundTo } from "../../../../../../utils/roundTo";
@@ -43,7 +43,7 @@ export const SpanUsagesInsightCard = ({
   isMarkAsReadButtonEnabled,
   viewMode
 }: SpanUsagesInsightCardProps) => {
-  const isJaegerEnabled = useGlobalStore().isJaegerEnabled;
+  const { isJaegerEnabled } = useConfigSelector();
   const [data, setData] = useState({
     pageItems: insight.flows.slice(0, PAGE_SIZE)
   });

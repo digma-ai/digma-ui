@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useTheme } from "styled-components";
-import { useGlobalStore } from "../../../../../../../containers/Main/stores/global/useGlobalStore";
+import { useConfigSelector } from "../../../../../../../store/config/useConfigSelector";
 import { sendUserActionTrackingEvent } from "../../../../../../../utils/actions/sendUserActionTrackingEvent";
 import { getInsightTypeInfo } from "../../../../../../../utils/getInsightTypeInfo";
 import { CrossIcon } from "../../../../../../common/icons/16px/CrossIcon";
@@ -38,7 +38,7 @@ export const IssueCompactCard = ({
   isCritical
 }: IssueCompactCardProps) => {
   const theme = useTheme();
-  const isJaegerEnabled = useGlobalStore().isJaegerEnabled;
+  const { isJaegerEnabled } = useConfigSelector();
   const [isKebabMenuOpen, setIsKebabMenuOpen] = useState(false);
   const insightTypeInfo = getInsightTypeInfo(insight.type, insight.subType);
   const statusInfo = insight.status

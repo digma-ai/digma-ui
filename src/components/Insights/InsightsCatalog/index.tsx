@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useTheme } from "styled-components";
-import { useGlobalStore } from "../../../containers/Main/stores/global/useGlobalStore";
-import { useInsightsStore } from "../../../containers/Main/stores/insights/useInsightsStore";
-import { useStore } from "../../../containers/Main/stores/useStore";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import { useDebounce } from "../../../hooks/useDebounce";
 import { usePersistence } from "../../../hooks/usePersistence";
 import { usePrevious } from "../../../hooks/usePrevious";
+import { useConfigSelector } from "../../../store/config/useConfigSelector";
+import { useInsightsSelector } from "../../../store/insights/useInsightsSelector";
+import { useStore } from "../../../store/useStore";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { isUndefined } from "../../../typeGuards/isUndefined";
 import { FeatureFlag } from "../../../types";
@@ -82,9 +82,16 @@ export const InsightsCatalog = ({
     data,
     viewMode: mode,
     insightViewType
-  } = useInsightsStore();
+  } = useInsightsSelector();
 
-  const { selectedServices } = useGlobalStore();
+  const {
+    selectedServices,
+    insightStats,
+    environment,
+    environments,
+    scope,
+    backendInfo
+  } = useConfigSelector();
 
   const debouncedSearchInputValue = useDebounce(searchInputValue, 1000);
 
@@ -97,13 +104,8 @@ export const InsightsCatalog = ({
     pageStartItemNumber + PAGE_SIZE - 1,
     totalCount
   );
-  const insightStats = useGlobalStore().insightStats;
-  const environment = useGlobalStore().environment;
-  const environments = useGlobalStore().environments;
-  const scope = useGlobalStore().scope;
   const scopeSpanCodeObjectId = scope?.span?.spanCodeObjectId;
   const isAtSpan = Boolean(scope?.span);
-  const backendInfo = useGlobalStore().backendInfo;
   const theme = useTheme();
   const { isMarkingAllAsReadInProgress, markAllAsRead } = useMarkingAllAsRead(
     scope?.span ?? null

@@ -1,12 +1,12 @@
 import { useParams } from "react-router-dom";
-import { useGlobalStore } from "../../containers/Main/stores/global/useGlobalStore";
+import { useConfigSelector } from "../../store/config/useConfigSelector";
 import { useHistory } from "../Main/useHistory";
 import { ErrorDetails } from "./ErrorDetails";
 import { ErrorsList } from "./ErrorsList";
 import * as s from "./styles";
 
 export const Errors = () => {
-  const scope = useGlobalStore().scope;
+  const { scope } = useConfigSelector();
   const spanCodeObjectId = scope?.span?.spanCodeObjectId;
   const methodId = scope?.span?.methodId ?? undefined;
   const { goTo } = useHistory();

@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
-import { useGlobalStore } from "../../../../../../../containers/Main/stores/global/useGlobalStore";
 import { dispatcher } from "../../../../../../../dispatcher";
 import { usePrevious } from "../../../../../../../hooks/usePrevious";
+import { useConfigSelector } from "../../../../../../../store/config/useConfigSelector";
 import { isString } from "../../../../../../../typeGuards/isString";
 import { sendUserActionTrackingEvent } from "../../../../../../../utils/actions/sendUserActionTrackingEvent";
 import { Spinner } from "../../../../../../Navigation/CodeButtonMenu/Spinner";
@@ -60,7 +60,7 @@ export const InsightCard = ({
   const isOperationInProgress =
     isDismissalChangeInProgress || isMarkingAsReadInProgress;
   const previousIsOperationInProgress = usePrevious(isOperationInProgress);
-  const isJaegerEnabled = useGlobalStore().isJaegerEnabled;
+  const { isJaegerEnabled } = useConfigSelector();
   const [insightStatus, setInsightStatus] = useState(insight.status);
 
   const isCritical = insight.criticality > HIGH_CRITICALITY_THRESHOLD;

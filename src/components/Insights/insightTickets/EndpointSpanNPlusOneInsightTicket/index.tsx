@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import { useGlobalStore } from "../../../../containers/Main/stores/global/useGlobalStore";
+import { useConfigSelector } from "../../../../store/config/useConfigSelector";
 import { InsightType } from "../../../../types";
 import { getCriticalityLabel } from "../../../../utils/getCriticalityLabel";
 import { intersperse } from "../../../../utils/intersperse";
@@ -19,7 +19,7 @@ export const EndpointSpanNPlusOneInsightTicket = ({
   refreshInsights,
   onClose
 }: InsightTicketProps<EndpointSpanNPlusOneInsight>) => {
-  const jaegerURL = useGlobalStore().jaegerURL;
+  const { jaegerURL } = useConfigSelector();
   const span = data.insight.span;
   const spanInfo = span?.internalSpan ?? span?.clientSpan;
 

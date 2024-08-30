@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { actions as globalActions } from "../../actions";
 import { DigmaMessageError } from "../../api/types";
-import { useGlobalStore } from "../../containers/Main/stores/global/useGlobalStore";
-import { useInsightsStore } from "../../containers/Main/stores/insights/useInsightsStore";
-import { useStore } from "../../containers/Main/stores/useStore";
 import { dispatcher } from "../../dispatcher";
 import { getFeatureFlagValue } from "../../featureFlags";
 import { usePrevious } from "../../hooks/usePrevious";
+import { useConfigSelector } from "../../store/config/useConfigSelector";
+import { useInsightsSelector } from "../../store/insights/useInsightsSelector";
+import { useStore } from "../../store/useStore";
 import {
   FeatureFlag,
   GetInsightStatsPayload,
@@ -132,7 +132,8 @@ const getStats = ({
 export const useInsightsData = ({
   areFiltersRehydrated
 }: UseInsightsDataProps) => {
-  const scope = useGlobalStore().scope;
+  const { scope, backendInfo, environment, selectedServices } =
+    useConfigSelector();
   const {
     data,
     search,
@@ -141,11 +142,10 @@ export const useInsightsData = ({
     viewMode,
     filters,
     filteredInsightTypes,
-    isDataLoading: isLoading
-  } = useInsightsStore();
+    isDataLoading: isLoading,
+    insightViewType
+  } = useInsightsSelector();
   const { setData, setIsDataLoading: setIsLoading } = useStore.getState();
-  const { backendInfo, environment, selectedServices } = useGlobalStore();
-
   const isInitialLoading = !data && isLoading;
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
@@ -156,7 +156,6 @@ export const useInsightsData = ({
     () => selectedServices ?? [],
     [selectedServices]
   );
-  const insightViewType = useInsightsStore().insightViewType;
   const spanCodeObjectId = scope?.span?.spanCodeObjectId ?? null;
   const showDismissed = viewMode === ViewMode.OnlyDismissed;
   const isAppReadyToGetData = useMemo(

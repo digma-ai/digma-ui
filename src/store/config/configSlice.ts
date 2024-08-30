@@ -8,12 +8,12 @@ import {
   RunConfiguration,
   Scope,
   UserInfo
-} from "../../../../components/common/App/types";
-import { isBoolean } from "../../../../typeGuards/isBoolean";
-import { isEnvironment } from "../../../../typeGuards/isEnvironment";
-import { isString } from "../../../../typeGuards/isString";
+} from "../../components/common/App/types";
+import { isBoolean } from "../../typeGuards/isBoolean";
+import { isEnvironment } from "../../typeGuards/isEnvironment";
+import { isString } from "../../typeGuards/isString";
 
-export interface GlobalState {
+export interface ConfigState {
   digmaApiUrl: string | null;
   digmaApiProxyPrefix: string | null;
   digmaStatus: DigmaStatus | null;
@@ -42,7 +42,7 @@ export interface GlobalState {
   scope: Scope | null;
 }
 
-const initialState: GlobalState = {
+const initialState: ConfigState = {
   digmaApiUrl: isString(window.digmaApiUrl) ? window.digmaApiUrl : null,
   digmaApiProxyPrefix: isString(window.digmaApiProxyPrefix)
     ? window.digmaApiProxyPrefix
@@ -93,13 +93,13 @@ const initialState: GlobalState = {
   scope: null
 };
 
-const set = (update: Partial<GlobalState>) => (state: GlobalState) => ({
+const set = (update: Partial<ConfigState>) => (state: ConfigState) => ({
   ...state,
   ...update
 });
 
-export const globalSlice = createSlice({
-  name: "global",
+export const configSlice = createSlice({
+  name: "config",
   value: initialState,
   actions: {
     setDigmaApiUrl: (url: string) => set({ digmaApiUrl: url }),

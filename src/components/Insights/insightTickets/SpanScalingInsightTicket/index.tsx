@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import { useGlobalStore } from "../../../../containers/Main/stores/global/useGlobalStore";
+import { useConfigSelector } from "../../../../store/config/useConfigSelector";
 import { intersperse } from "../../../../utils/intersperse";
 import { DigmaSignature } from "../../../common/DigmaSignature";
 import { Attachment } from "../../../common/JiraTicket/types";
@@ -25,8 +25,7 @@ export const SpanScalingInsightTicket = ({
   refreshInsights,
   onClose
 }: InsightTicketProps<SpanScalingInsight>) => {
-  const jaegerURL = useGlobalStore().jaegerURL;
-  const digmaApiProxyPrefix = useGlobalStore().digmaApiProxyPrefix;
+  const { jaegerURL, digmaApiProxyPrefix } = useConfigSelector();
 
   const insight = data.insight;
 

@@ -2,17 +2,14 @@ import { createSlice } from "zustand-slices";
 import {
   Sorting,
   SORTING_ORDER
-} from "../../../../components/common/SortingSelector/types";
+} from "../../components/common/SortingSelector/types";
 import {
   InsightFilterType,
   SORTING_CRITERION,
   ViewMode
-} from "../../../../components/Insights/InsightsCatalog/types";
-import { IssuesFiltersData } from "../../../../components/Insights/Issues/IssuesFilter/types";
-import {
-  InsightsData,
-  InsightViewType
-} from "../../../../components/Insights/types";
+} from "../../components/Insights/InsightsCatalog/types";
+import { IssuesFiltersData } from "../../components/Insights/Issues/IssuesFilter/types";
+import { InsightsData, InsightViewType } from "../../components/Insights/types";
 
 interface InsightsState {
   data: InsightsData | null;

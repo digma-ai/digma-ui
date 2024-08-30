@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import { useGlobalStore } from "../../../../containers/Main/stores/global/useGlobalStore";
+import { useConfigSelector } from "../../../../store/config/useConfigSelector";
 import { InsightType } from "../../../../types";
 import { getCriticalityLabel } from "../../../../utils/getCriticalityLabel";
 import { getDurationString } from "../../../../utils/getDurationString";
@@ -23,7 +23,7 @@ export const EndpointQueryOptimizationV2InsightTicket = ({
   refreshInsights,
   onClose
 }: InsightTicketProps<EndpointQueryOptimizationV2Insight>) => {
-  const jaegerURL = useGlobalStore().jaegerURL;
+  const { jaegerURL } = useConfigSelector();
   const span = data.insight.span;
   const spanInfo = span?.spanInfo || null;
 

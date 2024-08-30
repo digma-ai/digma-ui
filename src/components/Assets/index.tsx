@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useGlobalStore } from "../../containers/Main/stores/global/useGlobalStore";
 import { getFeatureFlagValue } from "../../featureFlags";
 import { useDebounce } from "../../hooks/useDebounce";
 import { usePrevious } from "../../hooks/usePrevious";
+import { useConfigSelector } from "../../store/config/useConfigSelector";
 import { FeatureFlag } from "../../types";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 import { useHistory } from "../Main/useHistory";
@@ -31,8 +31,7 @@ export const Assets = () => {
   const [assetScopeOption, setAssetScopeOption] =
     useState<AssetScopeOption | null>(null);
   const [selectedFilters, setSelectedFilters] = useState<AssetFilterQuery>();
-  const scope = useGlobalStore().scope;
-  const environments = useGlobalStore().environments;
+  const { scope, environments, backendInfo } = useConfigSelector();
   const previousScopeSpanCodeObjectId = usePrevious(
     scope?.span?.spanCodeObjectId
   );
@@ -42,7 +41,6 @@ export const Assets = () => {
     useState<DataRefresher | null>(null);
   const { goTo } = useHistory();
   const isBackendUpgradeMessageVisible = false;
-  const backendInfo = useGlobalStore().backendInfo;
   const areExtendedAssetsFiltersEnabled = getFeatureFlagValue(
     backendInfo,
     FeatureFlag.ARE_EXTENDED_ASSETS_FILTERS_ENABLED

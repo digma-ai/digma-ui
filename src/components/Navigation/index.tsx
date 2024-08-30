@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
 import { actions as globalActions } from "../../actions";
-import { useGlobalStore } from "../../containers/Main/stores/global/useGlobalStore";
 import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
 // import { isNull } from "../../typeGuards/isNull";
@@ -16,6 +15,7 @@ import { ThreeDotsIcon } from "../common/icons/ThreeDotsIcon";
 // import { Tooltip } from "../common/v3/Tooltip";
 // import { CodeButton } from "./CodeButton";
 // import { CodeButtonMenu } from "./CodeButtonMenu";
+import { useConfigSelector } from "../../store/config/useConfigSelector";
 import { EnvironmentBar } from "./EnvironmentBar";
 import { HistoryNavigationPanel } from "./HistoryNavigationPanel";
 import { KebabMenu } from "./KebabMenu";
@@ -78,11 +78,8 @@ import {
 // };
 
 export const Navigation = () => {
-  const environments = useGlobalStore().environments;
-  const environment = useGlobalStore().environment;
-  const scope = useGlobalStore().scope;
-  const userInfo = useGlobalStore().userInfo;
-  const backendInfo = useGlobalStore().backendInfo;
+  const { environments, environment, scope, userInfo, backendInfo } =
+    useConfigSelector();
   const [selectedEnvironment, setSelectedEnvironment] = useState(environment);
   const [codeContext, setCodeContext] = useState<CodeContext>();
   // const [isCodeButtonMenuOpen, setIsCodeButtonMenuOpen] = useState(false);

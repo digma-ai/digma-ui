@@ -1,6 +1,6 @@
 import { Fragment, ReactNode } from "react";
-import { useGlobalStore } from "../../../../containers/Main/stores/global/useGlobalStore";
 import { getFeatureFlagValue } from "../../../../featureFlags";
+import { useConfigSelector } from "../../../../store/config/useConfigSelector";
 import { isString } from "../../../../typeGuards/isString";
 import { FeatureFlag } from "../../../../types";
 import { intersperse } from "../../../../utils/intersperse";
@@ -88,11 +88,10 @@ const renderEnvironmentVariables = (
 };
 
 export const EnvironmentVariableCode = () => {
-  const environment = useGlobalStore().environment;
-  const backendInfo = useGlobalStore().backendInfo;
-  const isMicrometerProject = Boolean(useGlobalStore().isMicrometerProject);
-  const userId = useGlobalStore().userInfo?.id;
-  const runConfig = useGlobalStore().runConfig;
+  const { environment, backendInfo, userInfo, runConfig, isMicrometerProject } =
+    useConfigSelector();
+  const isMicrometerProjectValue = isMicrometerProject ?? false;
+  const userId = userInfo?.id;
   if (!environment || !backendInfo) {
     return null;
   }
@@ -115,7 +114,7 @@ export const EnvironmentVariableCode = () => {
   if (areNewInstrumentationAttributesEnabled) {
     if (isCentralizedDeployment) {
       return renderEnvironmentVariables(
-        isMicrometerProject,
+        isMicrometerProjectValue,
         [
           ["environmentName", environmentName],
           ["environmentType", environmentType],
@@ -125,7 +124,7 @@ export const EnvironmentVariableCode = () => {
       );
     } else {
       return renderEnvironmentVariables(
-        isMicrometerProject,
+        isMicrometerProjectValue,
         [["environmentName", environmentName]],
         javaToolOptions
       );
@@ -133,7 +132,7 @@ export const EnvironmentVariableCode = () => {
   }
 
   return renderEnvironmentVariables(
-    isMicrometerProject,
+    isMicrometerProjectValue,
     [["environmentId", environmentId]],
     javaToolOptions
   );

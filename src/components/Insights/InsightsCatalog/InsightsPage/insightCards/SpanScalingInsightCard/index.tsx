@@ -1,5 +1,5 @@
-import { useGlobalStore } from "../../../../../../containers/Main/stores/global/useGlobalStore";
 import { usePagination } from "../../../../../../hooks/usePagination";
+import { useConfigSelector } from "../../../../../../store/config/useConfigSelector";
 import { getDurationString } from "../../../../../../utils/getDurationString";
 import { trimEndpointScheme } from "../../../../../../utils/trimEndpointScheme";
 import { TraceIcon } from "../../../../../common/icons/12px/TraceIcon";
@@ -30,7 +30,7 @@ export const SpanScalingInsightCard = ({
   isMarkAsReadButtonEnabled,
   viewMode
 }: SpanScalingInsightCardProps) => {
-  const isJaegerEnabled = useGlobalStore().isJaegerEnabled;
+  const { isJaegerEnabled } = useConfigSelector();
   const affectedEndpoints = insight.affectedEndpoints ?? [];
   const [pageItems, page, setPage] = usePagination(
     affectedEndpoints,

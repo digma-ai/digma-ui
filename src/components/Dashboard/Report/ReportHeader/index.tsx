@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { actions as globalActions } from "../../../../actions";
-import { useGlobalStore } from "../../../../containers/Main/stores/global/useGlobalStore";
 import {
   DataFetcherConfiguration,
   useFetchData
 } from "../../../../hooks/useFetchData";
+import { useConfigSelector } from "../../../../store/config/useConfigSelector";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { GlobeIcon } from "../../../common/icons/12px/GlobeIcon";
 import { WrenchIcon } from "../../../common/icons/12px/WrenchIcon";
@@ -40,7 +40,7 @@ export const ReportHeader = ({
   const [selectedEnvironment, setSelectedEnvironment] = useState<string | null>(
     null
   );
-  const environments = useGlobalStore().environments;
+  const { environments } = useConfigSelector();
   const handleSelectedEnvironmentChanged = (option: string | string[]) => {
     const newItem =
       option === selectedEnvironment
