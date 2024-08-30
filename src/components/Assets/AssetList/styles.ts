@@ -26,15 +26,15 @@ export const BackButton = styled.button`
 export const Toolbar = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 8px;
   gap: 4px;
 `;
 
 export const Header = styled.div`
   display: flex;
   align-items: center;
-  gap: 4px;
-  padding: 8px 12px 8px 8px;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 8px 8px;
   color: ${({ theme }) => theme.colors.v3.text.tertiary};
   ${bodyRegularTypography}
 `;
@@ -257,4 +257,9 @@ export const FooterPageItemsCount = styled.span`
         return "#dfe1e5";
     }
   }};
+`;
+
+export const BreadCrumb = styled.div`
+  display: flex;
+  gap: 4px;
 `;
