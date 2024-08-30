@@ -26,8 +26,7 @@ export const Performance = () => {
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const { data, getData } = usePerformanceData();
   const previousData = usePrevious(data);
-  const scope = useGlobalStore().scope;
-  const environments = useGlobalStore().environments;
+  const { scope } = useGlobalStore();
 
   useEffect(() => {
     getData();
