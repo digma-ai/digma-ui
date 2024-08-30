@@ -1,4 +1,4 @@
-import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
+import { useGlobalStore } from "../../../containers/Main/stores/global/useGlobalStore";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import { FeatureFlag } from "../../../types";
 import { BackendInfo } from "../App/types";

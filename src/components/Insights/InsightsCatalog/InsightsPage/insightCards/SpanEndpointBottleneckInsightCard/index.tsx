@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useGlobalStore } from "../../../../../../containers/Main/stores/useGlobalStore";
+import { useGlobalStore } from "../../../../../../containers/Main/stores/global/useGlobalStore";
 import { isNull } from "../../../../../../typeGuards/isNull";
 import { getDurationString } from "../../../../../../utils/getDurationString";
 import { trimEndpointScheme } from "../../../../../../utils/trimEndpointScheme";

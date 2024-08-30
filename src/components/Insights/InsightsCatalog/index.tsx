@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useTheme } from "styled-components";
-import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
-import { useInsightsStore } from "../../../containers/Main/stores/useInsightsStore";
+import { useGlobalStore } from "../../../containers/Main/stores/global/useGlobalStore";
+import { useInsightsStore } from "../../../containers/Main/stores/insights/useInsightsStore";
 import { useStore } from "../../../containers/Main/stores/useStore";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import { useDebounce } from "../../../hooks/useDebounce";

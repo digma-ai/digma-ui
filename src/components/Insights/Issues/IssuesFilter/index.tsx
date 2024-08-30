@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from "react";
-import { useGlobalStore } from "../../../../containers/Main/stores/useGlobalStore";
-import { useInsightsStore } from "../../../../containers/Main/stores/useInsightsStore";
+import { useGlobalStore } from "../../../../containers/Main/stores/global/useGlobalStore";
+import { useInsightsStore } from "../../../../containers/Main/stores/insights/useInsightsStore";
 import { useStore } from "../../../../containers/Main/stores/useStore";
 import { getFeatureFlagValue } from "../../../../featureFlags";
 import { usePrevious } from "../../../../hooks/usePrevious";

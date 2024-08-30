@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useTheme } from "styled-components";
-import { useGlobalStore } from "../../../../../../../containers/Main/stores/useGlobalStore";
+import { useGlobalStore } from "../../../../../../../containers/Main/stores/global/useGlobalStore";
 import { sendUserActionTrackingEvent } from "../../../../../../../utils/actions/sendUserActionTrackingEvent";
 import { getInsightTypeInfo } from "../../../../../../../utils/getInsightTypeInfo";
 import { CrossIcon } from "../../../../../../common/icons/16px/CrossIcon";

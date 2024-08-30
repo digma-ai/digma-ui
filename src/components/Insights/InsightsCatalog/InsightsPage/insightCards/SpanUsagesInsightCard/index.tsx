@@ -5,7 +5,7 @@ import {
   useReactTable
 } from "@tanstack/react-table";
 import { useEffect, useState } from "react";
-import { useGlobalStore } from "../../../../../../containers/Main/stores/useGlobalStore";
+import { useGlobalStore } from "../../../../../../containers/Main/stores/global/useGlobalStore";
 import { usePagination } from "../../../../../../hooks/usePagination";
 import { usePrevious } from "../../../../../../hooks/usePrevious";
 import { isNumber } from "../../../../../../typeGuards/isNumber";

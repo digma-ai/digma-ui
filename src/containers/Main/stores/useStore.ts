@@ -1,9 +1,9 @@
 import { create } from "zustand";
 import { withSlices } from "zustand-slices";
 import { Scope } from "../../../components/common/App/types";
-import { globalSlice } from "../slices/globalSlice";
-import { insightsSlice } from "../slices/insightSlice";
 import { createSelectors } from "./createSelectors";
+import { globalSlice } from "./global/globalSlice";
+import { insightsSlice } from "./insights/insightSlice";
 import { withMutableActions } from "./withMutableActions";
 
 export const useStore = createSelectors(

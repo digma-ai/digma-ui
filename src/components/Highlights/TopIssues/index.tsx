@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useMemo, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
+import { useGlobalStore } from "../../../containers/Main/stores/global/useGlobalStore";
 import { usePagination } from "../../../hooks/usePagination";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { InsightType } from "../../Insights/types";

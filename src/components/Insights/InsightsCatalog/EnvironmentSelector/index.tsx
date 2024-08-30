@@ -1,6 +1,6 @@
 import { useState } from "react";
 import useDimensions from "react-cool-dimensions";
-import { useGlobalStore } from "../../../../containers/Main/stores/useGlobalStore";
+import { useGlobalStore } from "../../../../containers/Main/stores/global/useGlobalStore";
 import { changeScope } from "../../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { Environment } from "../../../common/App/types";

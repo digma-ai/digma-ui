@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import { useGlobalStore } from "../../../../containers/Main/stores/useGlobalStore";
+import { useGlobalStore } from "../../../../containers/Main/stores/global/useGlobalStore";
 import { InsightType } from "../../../../types";
 import { intersperse } from "../../../../utils/intersperse";
 import { DigmaSignature } from "../../../common/DigmaSignature";

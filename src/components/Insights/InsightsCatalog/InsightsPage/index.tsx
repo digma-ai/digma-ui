@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { actions as globalActions } from "../../../../actions";
-import { useGlobalStore } from "../../../../containers/Main/stores/useGlobalStore";
+import { useGlobalStore } from "../../../../containers/Main/stores/global/useGlobalStore";
 import { usePersistence } from "../../../../hooks/usePersistence";
 import { trackingEvents as globalTrackingEvents } from "../../../../trackingEvents";
 import { isNumber } from "../../../../typeGuards/isNumber";

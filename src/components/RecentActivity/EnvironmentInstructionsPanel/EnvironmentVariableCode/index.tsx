@@ -1,5 +1,5 @@
 import { Fragment, ReactNode } from "react";
-import { useGlobalStore } from "../../../../containers/Main/stores/useGlobalStore";
+import { useGlobalStore } from "../../../../containers/Main/stores/global/useGlobalStore";
 import { getFeatureFlagValue } from "../../../../featureFlags";
 import { isString } from "../../../../typeGuards/isString";
 import { FeatureFlag } from "../../../../types";

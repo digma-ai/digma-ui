@@ -8,10 +8,10 @@ import {
   RunConfiguration,
   Scope,
   UserInfo
-} from "../../../components/common/App/types";
-import { isBoolean } from "../../../typeGuards/isBoolean";
-import { isEnvironment } from "../../../typeGuards/isEnvironment";
-import { isString } from "../../../typeGuards/isString";
+} from "../../../../components/common/App/types";
+import { isBoolean } from "../../../../typeGuards/isBoolean";
+import { isEnvironment } from "../../../../typeGuards/isEnvironment";
+import { isString } from "../../../../typeGuards/isString";
 
 export interface GlobalState {
   digmaApiUrl: string | null;

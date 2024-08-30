@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { actions as globalActions } from "../../../../actions";
-import { useGlobalStore } from "../../../../containers/Main/stores/useGlobalStore";
+import { useGlobalStore } from "../../../../containers/Main/stores/global/useGlobalStore";
 import {
   DataFetcherConfiguration,
   useFetchData

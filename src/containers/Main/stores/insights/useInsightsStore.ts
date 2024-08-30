@@ -1,3 +1,3 @@
-import { useStore } from "./useStore";
+import { useStore } from ".././useStore";
 
 export const useInsightsStore = () => useStore((state) => state.insights);

@@ -1,7 +1,7 @@
 import { Row, createColumnHelper } from "@tanstack/react-table";
 import { useEffect } from "react";
 import { SCALING_ISSUE_DOCUMENTATION_URL } from "../../../constants";
-import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
+import { useGlobalStore } from "../../../containers/Main/stores/global/useGlobalStore";
 import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { getDurationString } from "../../../utils/getDurationString";

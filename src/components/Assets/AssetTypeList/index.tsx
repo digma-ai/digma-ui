@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { DigmaMessageError } from "../../../api/types";
-import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
+import { useGlobalStore } from "../../../containers/Main/stores/global/useGlobalStore";
 import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { isEnvironment } from "../../../typeGuards/isEnvironment";

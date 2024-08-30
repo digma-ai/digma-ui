@@ -1,6 +1,6 @@
 import { actions as globalActions } from "../../../actions";
 import { DIGMA_DOCUMENTATION } from "../../../constants";
-import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
+import { useGlobalStore } from "../../../containers/Main/stores/global/useGlobalStore";
 import { OpenInstallationWizardPayload } from "../../../types";
 import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";

@@ -1,4 +1,4 @@
-import { useGlobalStore } from "../../../../../../containers/Main/stores/useGlobalStore";
+import { useGlobalStore } from "../../../../../../containers/Main/stores/global/useGlobalStore";
 import { usePagination } from "../../../../../../hooks/usePagination";
 import { getDurationString } from "../../../../../../utils/getDurationString";
 import { trimEndpointScheme } from "../../../../../../utils/trimEndpointScheme";

@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { actions as globalActions } from "../../actions";
 import { DigmaMessageError } from "../../api/types";
-import { useGlobalStore } from "../../containers/Main/stores/useGlobalStore";
-import { useInsightsStore } from "../../containers/Main/stores/useInsightsStore";
+import { useGlobalStore } from "../../containers/Main/stores/global/useGlobalStore";
+import { useInsightsStore } from "../../containers/Main/stores/insights/useInsightsStore";
 import { useStore } from "../../containers/Main/stores/useStore";
 import { dispatcher } from "../../dispatcher";
 import { getFeatureFlagValue } from "../../featureFlags";

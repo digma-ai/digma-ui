@@ -1,5 +1,5 @@
 import { Row, createColumnHelper } from "@tanstack/react-table";
-import { useGlobalStore } from "../../../../../containers/Main/stores/useGlobalStore";
+import { useGlobalStore } from "../../../../../containers/Main/stores/global/useGlobalStore";
 import { Duration } from "../../../../../globals";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { getDurationString } from "../../../../../utils/getDurationString";

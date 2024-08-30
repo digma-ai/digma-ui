@@ -1,8 +1,8 @@
 import { KeyboardEvent, useCallback, useEffect, useState } from "react";
 import { actions as globalActions } from "../../actions";
 import { SLACK_WORKSPACE_URL } from "../../constants";
-import { useGlobalStore } from "../../containers/Main/stores/useGlobalStore";
-import { useInsightsStore } from "../../containers/Main/stores/useInsightsStore";
+import { useGlobalStore } from "../../containers/Main/stores/global/useGlobalStore";
+import { useInsightsStore } from "../../containers/Main/stores/insights/useInsightsStore";
 import { useStore } from "../../containers/Main/stores/useStore";
 import { usePersistence } from "../../hooks/usePersistence";
 import { usePrevious } from "../../hooks/usePrevious";

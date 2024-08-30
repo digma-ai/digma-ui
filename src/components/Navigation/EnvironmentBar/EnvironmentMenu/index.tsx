@@ -1,4 +1,4 @@
-import { useGlobalStore } from "../../../../containers/Main/stores/useGlobalStore";
+import { useGlobalStore } from "../../../../containers/Main/stores/global/useGlobalStore";
 import { Environment } from "../../../common/App/types";
 import { EnvironmentIcon } from "../../../common/EnvironmentIcon";
 import { MenuList } from "../../common/MenuList";

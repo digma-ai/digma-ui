@@ -1,4 +1,4 @@
-import { useInsightsStore } from "../../../../containers/Main/stores/useInsightsStore";
+import { useInsightsStore } from "../../../../containers/Main/stores/insights/useInsightsStore";
 import { useStore } from "../../../../containers/Main/stores/useStore";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { InsightFilterType } from "../types";

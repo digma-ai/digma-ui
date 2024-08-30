@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useMemo } from "react";
 import { Outlet, matchPath, useLocation } from "react-router-dom";
 import { actions as globalActions } from "../../actions";
 import { history } from "../../containers/Main/history";
-import { useGlobalStore } from "../../containers/Main/stores/useGlobalStore";
+import { useGlobalStore } from "../../containers/Main/stores/global/useGlobalStore";
 import { useStore } from "../../containers/Main/stores/useStore";
 import { dispatcher } from "../../dispatcher";
 import { HistoryEntryLocation } from "../../history/History";
