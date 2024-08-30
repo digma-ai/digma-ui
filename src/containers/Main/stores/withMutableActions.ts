@@ -1,3 +1,5 @@
+/// inspired by  https://github.com/zustandjs/zustand-slices/blob/main/src/with-actions.ts
+
 type InferStateActions<Actions> = Actions extends Record<
   string,
   (...args: never[]) => unknown
