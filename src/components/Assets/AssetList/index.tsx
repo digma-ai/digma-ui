@@ -376,61 +376,68 @@ export const AssetList = ({
   return (
     <s.Container>
       <s.Header>
-        <s.StyledLink onClick={handleAllAssetsLinkClick}>
-          All Assets
-        </s.StyledLink>
-        <span>/</span>
-        {assetTypeInfo?.label ?? assetTypeId}
-      </s.Header>
-      <s.Toolbar>
-        <s.PopoverContainer>
-          <Popover
-            open={isSortingMenuOpen}
-            onOpenChange={setIsSortingMenuOpen}
-            placement={"bottom-start"}
-          >
-            <PopoverTrigger onClick={handleSortingMenuToggle}>
-              <s.SortingMenuButton $isOpen={isSortingMenuOpen}>
-                <span>Sort by</span>
-                <s.SortingLabel>
-                  {getSortingCriterionInfo(sorting.criterion).label}
-                </s.SortingLabel>
-                <ChevronIcon
-                  direction={isSortingMenuOpen ? Direction.UP : Direction.DOWN}
-                  color={sortingMenuChevronColor}
+        <s.BreadCrumb>
+          <s.StyledLink onClick={handleAllAssetsLinkClick}>
+            All Assets
+          </s.StyledLink>
+          <span>/</span>
+          {assetTypeInfo?.label ?? assetTypeId}
+        </s.BreadCrumb>
+        <s.Toolbar>
+          <s.PopoverContainer>
+            <Popover
+              open={isSortingMenuOpen}
+              onOpenChange={setIsSortingMenuOpen}
+              placement={"bottom-start"}
+            >
+              <PopoverTrigger onClick={handleSortingMenuToggle}>
+                <s.SortingMenuButton $isOpen={isSortingMenuOpen}>
+                  <span>Sort by</span>
+                  <s.SortingLabel>
+                    {getSortingCriterionInfo(sorting.criterion).label}
+                  </s.SortingLabel>
+                  <ChevronIcon
+                    direction={
+                      isSortingMenuOpen ? Direction.UP : Direction.DOWN
+                    }
+                    color={sortingMenuChevronColor}
+                  />
+                </s.SortingMenuButton>
+              </PopoverTrigger>
+              <PopoverContent className={"Popover"}>
+                <Menu
+                  title={"Sort by"}
+                  items={sortingCriteria.map((x) => ({
+                    value: x,
+                    label: getSortingCriterionInfo(x).label
+                  }))}
+                  onSelect={handleSortingMenuItemSelect}
                 />
-              </s.SortingMenuButton>
-            </PopoverTrigger>
-            <PopoverContent className={"Popover"}>
-              <Menu
-                title={"Sort by"}
-                items={sortingCriteria.map((x) => ({
-                  value: x,
-                  label: getSortingCriterionInfo(x).label
-                }))}
-                onSelect={handleSortingMenuItemSelect}
-              />
-            </PopoverContent>
-          </Popover>
-        </s.PopoverContainer>
-        <s.SortingOrderToggle>
-          {[SORTING_ORDER.DESC, SORTING_ORDER.ASC].map((order) => {
-            const isSelected = sorting.order === order;
+              </PopoverContent>
+            </Popover>
+          </s.PopoverContainer>
+          <s.SortingOrderToggle>
+            {[SORTING_ORDER.DESC, SORTING_ORDER.ASC].map((order) => {
+              const isSelected = sorting.order === order;
 
-            return (
-              <s.SortingOrderToggleOptionButton
-                key={order}
-                $selected={isSelected}
-                onClick={() => handleSortingOrderToggleOptionButtonClick(order)}
-              >
-                <s.SortingOrderIconContainer $sortingOrder={order}>
-                  <SortIcon color={"currentColor"} size={14} />
-                </s.SortingOrderIconContainer>
-              </s.SortingOrderToggleOptionButton>
-            );
-          })}
-        </s.SortingOrderToggle>
-      </s.Toolbar>
+              return (
+                <s.SortingOrderToggleOptionButton
+                  key={order}
+                  $selected={isSelected}
+                  onClick={() =>
+                    handleSortingOrderToggleOptionButtonClick(order)
+                  }
+                >
+                  <s.SortingOrderIconContainer $sortingOrder={order}>
+                    <SortIcon color={"currentColor"} size={14} />
+                  </s.SortingOrderIconContainer>
+                </s.SortingOrderToggleOptionButton>
+              );
+            })}
+          </s.SortingOrderToggle>
+        </s.Toolbar>
+      </s.Header>
+
       {renderContent()}
     </s.Container>
   );
