@@ -13,7 +13,7 @@ export const useStore = create(
         scope.span?.spanCodeObjectId
           ? {
               ...state,
-              global: { ...state.config, scope },
+              config: { ...state.config, scope },
               insights: { ...state.insights, page: 0, search: "" }
             }
           : state
