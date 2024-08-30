@@ -2,7 +2,6 @@ import { Row, createColumnHelper } from "@tanstack/react-table";
 import { useEffect } from "react";
 import { SCALING_ISSUE_DOCUMENTATION_URL } from "../../../constants";
 import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
-import { useScopeStore } from "../../../containers/Main/stores/useScopeStore";
 import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { getDurationString } from "../../../utils/getDurationString";
@@ -76,7 +75,7 @@ const demoData: EnvironmentScalingData[] = [
 
 export const Scaling = () => {
   const { data, getData } = useScalingData();
-  const scope = useScopeStore().scope;
+  const scope = useGlobalStore().scope;
   const environments = useGlobalStore().environments;
   const { goTo } = useHistory();
 

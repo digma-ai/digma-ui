@@ -16,7 +16,6 @@ import { ThreeDotsIcon } from "../common/icons/ThreeDotsIcon";
 // import { Tooltip } from "../common/v3/Tooltip";
 // import { CodeButton } from "./CodeButton";
 // import { CodeButtonMenu } from "./CodeButtonMenu";
-import { useScopeStore } from "../../containers/Main/stores/useScopeStore";
 import { EnvironmentBar } from "./EnvironmentBar";
 import { HistoryNavigationPanel } from "./HistoryNavigationPanel";
 import { KebabMenu } from "./KebabMenu";
@@ -81,7 +80,7 @@ import {
 export const Navigation = () => {
   const environments = useGlobalStore().environments;
   const environment = useGlobalStore().environment;
-  const scope = useScopeStore().scope;
+  const scope = useGlobalStore().scope;
   const userInfo = useGlobalStore().userInfo;
   const backendInfo = useGlobalStore().backendInfo;
   const [selectedEnvironment, setSelectedEnvironment] = useState(environment);

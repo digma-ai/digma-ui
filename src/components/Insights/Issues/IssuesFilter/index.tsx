@@ -1,7 +1,6 @@
 import { useEffect, useMemo } from "react";
 import { useGlobalStore } from "../../../../containers/Main/stores/useGlobalStore";
 import { useInsightsStore } from "../../../../containers/Main/stores/useInsightsStore";
-import { useScopeStore } from "../../../../containers/Main/stores/useScopeStore";
 import { useStore } from "../../../../containers/Main/stores/useStore";
 import { getFeatureFlagValue } from "../../../../featureFlags";
 import { usePrevious } from "../../../../hooks/usePrevious";
@@ -33,7 +32,7 @@ export const IssuesFilter = () => {
   const isUnreadOnly = useMemo(() => filters.includes("unread"), [filters]);
   const { data } = useIssuesFilters();
   const previousData = usePrevious(data);
-  const scope = useScopeStore().scope;
+  const scope = useGlobalStore().scope;
   const scopeSpanCodeObjectId = scope?.span?.spanCodeObjectId;
   const isServicesFilterEnabled =
     Boolean(

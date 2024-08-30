@@ -3,7 +3,6 @@ import { createPortal } from "react-dom";
 import { useTheme } from "styled-components";
 import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
 import { useInsightsStore } from "../../../containers/Main/stores/useInsightsStore";
-import { useScopeStore } from "../../../containers/Main/stores/useScopeStore";
 import { useStore } from "../../../containers/Main/stores/useStore";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import { useDebounce } from "../../../hooks/useDebounce";
@@ -101,7 +100,7 @@ export const InsightsCatalog = ({
   const insightStats = useGlobalStore().insightStats;
   const environment = useGlobalStore().environment;
   const environments = useGlobalStore().environments;
-  const scope = useScopeStore().scope;
+  const scope = useGlobalStore().scope;
   const scopeSpanCodeObjectId = scope?.span?.spanCodeObjectId;
   const isAtSpan = Boolean(scope?.span);
   const backendInfo = useGlobalStore().backendInfo;

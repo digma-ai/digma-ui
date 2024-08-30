@@ -1,7 +1,6 @@
 import { NavigateOptions, To, resolvePath } from "react-router-dom";
 import { history } from "../../containers/Main/history";
 import { useGlobalStore } from "../../containers/Main/stores/useGlobalStore";
-import { useScopeStore } from "../../containers/Main/stores/useScopeStore";
 import { HistoryEntry, HistoryEntryLocation } from "../../history/History";
 import { isString } from "../../typeGuards/isString";
 import { HistoryState } from "./types";
@@ -98,7 +97,7 @@ const isNewHistoryEntryNeeded = (
 export const useHistory = () => {
   const location = history.getCurrentLocation();
   const environment = useGlobalStore().environment;
-  const scope = useScopeStore().scope;
+  const scope = useGlobalStore().scope;
   const scopeSpanCodeObjectId = scope?.span?.spanCodeObjectId;
 
   const goTo = (to: To, options?: NavigateOptions) => {

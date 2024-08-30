@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useGlobalStore } from "../../containers/Main/stores/useGlobalStore";
-import { useScopeStore } from "../../containers/Main/stores/useScopeStore";
 import { getFeatureFlagValue } from "../../featureFlags";
 import { useDebounce } from "../../hooks/useDebounce";
 import { usePrevious } from "../../hooks/usePrevious";
@@ -32,7 +31,7 @@ export const Assets = () => {
   const [assetScopeOption, setAssetScopeOption] =
     useState<AssetScopeOption | null>(null);
   const [selectedFilters, setSelectedFilters] = useState<AssetFilterQuery>();
-  const scope = useScopeStore().scope;
+  const scope = useGlobalStore().scope;
   const environments = useGlobalStore().environments;
   const previousScopeSpanCodeObjectId = usePrevious(
     scope?.span?.spanCodeObjectId

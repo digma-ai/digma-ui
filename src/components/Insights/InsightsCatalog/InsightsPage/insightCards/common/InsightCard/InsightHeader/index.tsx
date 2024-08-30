@@ -1,4 +1,4 @@
-import { useScopeStore } from "../../../../../../../../containers/Main/stores/useScopeStore";
+import { useGlobalStore } from "../../../../../../../../containers/Main/stores/useGlobalStore";
 import { isString } from "../../../../../../../../typeGuards/isString";
 import { formatTimeDistance } from "../../../../../../../../utils/formatTimeDistance";
 import { getInsightTypeInfo } from "../../../../../../../../utils/getInsightTypeInfo";
@@ -38,7 +38,7 @@ export const InsightHeader = ({
   lastUpdateTimer,
   isAsync
 }: InsightHeaderProps) => {
-  const scope = useScopeStore().scope;
+  const scope = useGlobalStore().scope;
 
   const insightTypeInfo = getInsightTypeInfo(insight.type, insight.subType);
   const statusTooltipContent = renderInsightStatusTooltipContent(insight);

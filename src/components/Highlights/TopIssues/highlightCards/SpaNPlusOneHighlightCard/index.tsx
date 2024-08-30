@@ -1,6 +1,5 @@
 import { Row, createColumnHelper } from "@tanstack/react-table";
 import { useGlobalStore } from "../../../../../containers/Main/stores/useGlobalStore";
-import { useScopeStore } from "../../../../../containers/Main/stores/useScopeStore";
 import { Duration } from "../../../../../globals";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { getDurationString } from "../../../../../utils/getDurationString";
@@ -18,7 +17,7 @@ import { SpaNPlusOneHighlightCardProps } from "./types";
 export const SpaNPlusOneHighlightCard = ({
   data
 }: SpaNPlusOneHighlightCardProps) => {
-  const scope = useScopeStore().scope;
+  const scope = useGlobalStore().scope;
   const environments = useGlobalStore().environments;
 
   const columnHelper =

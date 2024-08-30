@@ -26,7 +26,6 @@ import {
   GetAssetFiltersDataPayload
 } from "./types";
 
-import { useScopeStore } from "../../../containers/Main/stores/useScopeStore";
 import { useStore } from "../../../containers/Main/stores/useStore";
 import * as s from "./styles";
 
@@ -106,7 +105,7 @@ export const AssetsFilter = ({
   const [persistedFilters, setPersistedFilters] =
     usePersistence<AssetFilterQuery>(PERSISTENCE_KEY, "project");
   const previousPersistedFilters = usePrevious(persistedFilters);
-  const scope = useScopeStore().scope;
+  const scope = useGlobalStore().scope;
   const isServicesFilterEnabled = !scope?.span?.spanCodeObjectId;
   const [selectedServices, setSelectedServices] = useState<string[]>(
     isServicesFilterEnabled ? globallySelectedServices ?? [] : []

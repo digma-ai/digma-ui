@@ -6,13 +6,14 @@ import {
   InsightStats,
   PersistedState,
   RunConfiguration,
+  Scope,
   UserInfo
 } from "../../../components/common/App/types";
 import { isBoolean } from "../../../typeGuards/isBoolean";
 import { isEnvironment } from "../../../typeGuards/isEnvironment";
 import { isString } from "../../../typeGuards/isString";
 
-interface GlobalState {
+export interface GlobalState {
   digmaApiUrl: string | null;
   digmaApiProxyPrefix: string | null;
   digmaStatus: DigmaStatus | null;
@@ -38,6 +39,7 @@ interface GlobalState {
   userRegistrationEmail: string | null;
   persistedState: PersistedState | null;
   selectedServices: string[] | null;
+  scope: Scope | null;
 }
 
 const initialState: GlobalState = {
@@ -87,7 +89,8 @@ const initialState: GlobalState = {
     ? window.userRegistrationEmail
     : null,
   selectedServices: null,
-  persistedState: null
+  persistedState: null,
+  scope: null
 };
 
 const set = (update: Partial<GlobalState>) => (state: GlobalState) => ({
@@ -136,7 +139,6 @@ export const globalSlice = createSlice({
     setPersistedState: (state: PersistedState) =>
       set({ persistedState: state }),
     setSelectedServices: (services: string[]) =>
-      set({ selectedServices: services }),
-    reset: () => set(initialState)
+      set({ selectedServices: services })
   }
 });

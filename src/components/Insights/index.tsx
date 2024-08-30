@@ -3,7 +3,6 @@ import { actions as globalActions } from "../../actions";
 import { SLACK_WORKSPACE_URL } from "../../constants";
 import { useGlobalStore } from "../../containers/Main/stores/useGlobalStore";
 import { useInsightsStore } from "../../containers/Main/stores/useInsightsStore";
-import { useScopeStore } from "../../containers/Main/stores/useScopeStore";
 import { useStore } from "../../containers/Main/stores/useStore";
 import { usePersistence } from "../../hooks/usePersistence";
 import { usePrevious } from "../../hooks/usePrevious";
@@ -226,29 +225,32 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
   const { data, isLoading, refresh } = useInsightsData({
     areFiltersRehydrated
   });
-  const reset = useStore().reset;
   const [infoToOpenJiraTicket, setInfoToOpenJiraTicket] =
     useState<InsightTicketInfo<GenericCodeObjectInsight>>();
-  const userRegistrationEmail = useGlobalStore().userRegistrationEmail;
+  const { backendInfo, environment, userRegistrationEmail, environments } =
+    useGlobalStore();
   const previousUserRegistrationEmail = usePrevious(userRegistrationEmail);
-  const environments = useGlobalStore().environments;
   const [isRegistrationInProgress, setIsRegistrationInProgress] =
     useState(false);
   const isRegistrationEnabled = false;
   const isRegistrationRequired =
     isRegistrationEnabled && !userRegistrationEmail;
-  const { setInsightViewType, setFilteredInsightTypes, setFilters } =
-    useStore.getState();
+  const {
+    setInsightViewType,
+    setFilteredInsightTypes,
+    setFilters,
+    insightsReset: reset
+  } = useStore.getState();
   const {
     insightViewType: storedInsightViewType,
     filteredInsightTypes,
     filters
   } = useInsightsStore();
-  const { backendInfo, environment } = useGlobalStore();
+
   const previousFilteredInsightTypes = usePrevious(filteredInsightTypes);
   const previousFilters = usePrevious(filters);
   const previousBackendInfo = usePrevious(backendInfo);
-  const scope = useScopeStore().scope;
+  const scope = useGlobalStore().scope;
   const scopeSpanCodeObjectId = scope?.span?.spanCodeObjectId;
   const previousScope = usePrevious(scope);
   const previousScopeSpanCodeObjectId = previousScope?.span?.spanCodeObjectId;

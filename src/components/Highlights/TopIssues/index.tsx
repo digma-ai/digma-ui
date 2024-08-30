@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useMemo, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { useScopeStore } from "../../../containers/Main/stores/useScopeStore";
+import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
 import { usePagination } from "../../../hooks/usePagination";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { InsightType } from "../../Insights/types";
@@ -94,7 +94,7 @@ export const TopIssues = () => {
   const [isInitialLoading, setIsInitialLoading] = useState(true);
   const { data, getData } = useTopIssuesData();
   const previousData = usePrevious(data);
-  const scope = useScopeStore().scope;
+  const scope = useGlobalStore().scope;
   // Do not show unimplemented insights
   const filteredTopInsights = useMemo(
     () =>

@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
 import { DigmaMessageError } from "../../../api/types";
 import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
-import { useScopeStore } from "../../../containers/Main/stores/useScopeStore";
 import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { isEnvironment } from "../../../typeGuards/isEnvironment";
@@ -146,7 +145,7 @@ export const AssetList = ({
   const refreshTimerId = useRef<number>();
   const previousEnvironment = usePrevious(environment);
   const previousViewScope = usePrevious(scopeViewOptions);
-  const scope = useScopeStore().scope;
+  const scope = useGlobalStore().scope;
   const isServicesFilterEnabled = !scope?.span?.spanCodeObjectId;
 
   const refreshData = useCallback(() => {

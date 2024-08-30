@@ -3,7 +3,6 @@ import { Location, useLocation, useNavigate } from "react-router-dom";
 import { useTheme } from "styled-components";
 import { history } from "../../../containers/Main/history";
 import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
-import { useScopeStore } from "../../../containers/Main/stores/useScopeStore";
 import { HistoryEntry } from "../../../history/History";
 import { changeScope } from "../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
@@ -25,7 +24,7 @@ export const HistoryNavigationPanel = () => {
   const navigate = useNavigate();
   const environments = useGlobalStore().environments;
   const environment = useGlobalStore().environment;
-  const scope = useScopeStore().scope;
+  const scope = useGlobalStore().scope;
   const location = useLocation() as Location<ReactRouterLocationState | null>;
   const theme = useTheme();
   const updateBrowserLocation = useBrowserLocationUpdater();

@@ -3,7 +3,6 @@ import { Outlet, matchPath, useLocation } from "react-router-dom";
 import { actions as globalActions } from "../../actions";
 import { history } from "../../containers/Main/history";
 import { useGlobalStore } from "../../containers/Main/stores/useGlobalStore";
-import { useScopeStore } from "../../containers/Main/stores/useScopeStore";
 import { useStore } from "../../containers/Main/stores/useStore";
 import { dispatcher } from "../../dispatcher";
 import { HistoryEntryLocation } from "../../history/History";
@@ -52,7 +51,7 @@ export const Main = () => {
   const environments = useGlobalStore().environments;
   const environment = useGlobalStore().environment;
   const previousEnvironment = usePrevious(environment);
-  const scope = useScopeStore().scope;
+  const scope = useGlobalStore().scope;
   const userInfo = useGlobalStore().userInfo;
   const userId = userInfo?.id;
   const previousUserId = usePrevious(userId);

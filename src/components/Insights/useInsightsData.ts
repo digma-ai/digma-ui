@@ -3,7 +3,6 @@ import { actions as globalActions } from "../../actions";
 import { DigmaMessageError } from "../../api/types";
 import { useGlobalStore } from "../../containers/Main/stores/useGlobalStore";
 import { useInsightsStore } from "../../containers/Main/stores/useInsightsStore";
-import { useScopeStore } from "../../containers/Main/stores/useScopeStore";
 import { useStore } from "../../containers/Main/stores/useStore";
 import { dispatcher } from "../../dispatcher";
 import { getFeatureFlagValue } from "../../featureFlags";
@@ -133,7 +132,7 @@ const getStats = ({
 export const useInsightsData = ({
   areFiltersRehydrated
 }: UseInsightsDataProps) => {
-  const scope = useScopeStore().scope;
+  const scope = useGlobalStore().scope;
   const {
     data,
     search,

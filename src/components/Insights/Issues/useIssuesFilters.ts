@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { DigmaMessageError } from "../../../api/types";
 import { useGlobalStore } from "../../../containers/Main/stores/useGlobalStore";
 import { useInsightsStore } from "../../../containers/Main/stores/useInsightsStore";
-import { useScopeStore } from "../../../containers/Main/stores/useScopeStore";
 import { useStore } from "../../../containers/Main/stores/useStore";
 import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
@@ -37,7 +36,7 @@ export const useIssuesFilters = () => {
   const refreshTimerId = useRef<number>();
   const environment = useGlobalStore().environment;
   const environmentId = environment?.id;
-  const scope = useScopeStore().scope;
+  const scope = useGlobalStore().scope;
   const spanCodeObjectId = scope?.span?.spanCodeObjectId ?? null;
   const backendInfo = useGlobalStore().backendInfo;
 
