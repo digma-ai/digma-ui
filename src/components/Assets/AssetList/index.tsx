@@ -140,8 +140,7 @@ export const AssetList = ({
     filteredCount
   );
   const listRef = useRef<HTMLUListElement>(null);
-  const environment = useGlobalStore().environment;
-  const backendInfo = useGlobalStore().backendInfo;
+  const { environment, backendInfo, scope } = useGlobalStore();
   const refreshTimerId = useRef<number>();
   const previousEnvironment = usePrevious(environment);
   const previousViewScope = usePrevious(scopeViewOptions);
