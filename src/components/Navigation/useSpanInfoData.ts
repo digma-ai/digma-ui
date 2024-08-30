@@ -1,11 +1,24 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { dispatcher } from "../../../dispatcher";
-import { usePrevious } from "../../../hooks/usePrevious";
-import { useConfigSelector } from "../../../store/config/useConfigSelector";
-import { actions as mainActions } from "../../Main/actions";
-import { GetHighlightsSpanInfoDataPayload, SpanInfoData } from "./types";
+import { dispatcher } from "../../dispatcher";
+import { usePrevious } from "../../hooks/usePrevious";
+import { useConfigSelector } from "../../store/config/useConfigSelector";
+import { Environment } from "../common/App/types";
+import { actions as mainActions } from "../Main/actions";
 
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
+
+export interface GetHighlightsSpanInfoDataPayload {
+  query: {
+    spanCodeObjectId: string | null;
+  };
+}
+
+export interface SpanInfoData {
+  displayName: string;
+  services: string[];
+  environments: Environment[];
+  assetTypeId: string;
+}
 
 export const useSpanInfoData = () => {
   const [data, setData] = useState<SpanInfoData>();
@@ -13,20 +26,27 @@ export const useSpanInfoData = () => {
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
   const refreshTimerId = useRef<number>();
+  const scopeSpanCodeObjectId = scope?.span?.spanCodeObjectId;
 
   const getData = useCallback(() => {
-    if (scope?.span?.spanCodeObjectId) {
+    if (scopeSpanCodeObjectId) {
       window.sendMessageToDigma<GetHighlightsSpanInfoDataPayload>({
         action: mainActions.GET_HIGHLIGHTS_SPAN_INFO_DATA,
         payload: {
           query: {
-            spanCodeObjectId: scope?.span?.spanCodeObjectId
+            spanCodeObjectId: scopeSpanCodeObjectId
           }
         }
       });
     }
-  }, [scope?.span?.spanCodeObjectId]);
+  }, [scopeSpanCodeObjectId]);
   const previousGetData = usePrevious(getData);
+
+  useEffect(() => {
+    if (!scopeSpanCodeObjectId) {
+      setData(undefined);
+    }
+  }, [scopeSpanCodeObjectId]);
 
   useEffect(() => {
     if (previousGetData && previousGetData !== getData) {
