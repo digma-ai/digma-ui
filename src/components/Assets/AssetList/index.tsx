@@ -144,7 +144,6 @@ export const AssetList = ({
   const refreshTimerId = useRef<number>();
   const previousEnvironment = usePrevious(environment);
   const previousViewScope = usePrevious(scopeViewOptions);
-  const scope = useGlobalStore().scope;
   const isServicesFilterEnabled = !scope?.span?.spanCodeObjectId;
 
   const refreshData = useCallback(() => {
