@@ -227,7 +227,7 @@ export const useInsightsData = ({
   useEffect(() => {
     window.clearTimeout(refreshTimerId.current);
     refresh();
-  }, [backendInfo, environmentId, spanCodeObjectId, refresh]);
+  }, [backendInfo, environmentId, spanCodeObjectId, insightViewType, refresh]);
 
   useEffect(() => {
     const handleInsightsData = (
@@ -235,6 +235,26 @@ export const useInsightsData = ({
       timeStamp: number,
       error: DigmaMessageError | undefined
     ) => {
+      if (insightViewType !== "Analytics") {
+        return;
+      }
+
+      if (!error) {
+        setData(data as InsightsData);
+      }
+      setIsLoading(false);
+      setLastSetDataTimeStamp(timeStamp);
+    };
+
+    const handleIssuesData = (
+      data: unknown,
+      timeStamp: number,
+      error: DigmaMessageError | undefined
+    ) => {
+      if (insightViewType !== "Issues") {
+        return;
+      }
+
       if (!error) {
         setData(data as InsightsData);
       }
@@ -243,10 +263,7 @@ export const useInsightsData = ({
     };
 
     dispatcher.addActionListener(actions.SET_DATA_LIST, handleInsightsData);
-    dispatcher.addActionListener(
-      issuesActions.SET_DATA_LIST,
-      handleInsightsData
-    );
+    dispatcher.addActionListener(issuesActions.SET_DATA_LIST, handleIssuesData);
 
     return () => {
       dispatcher.removeActionListener(
@@ -255,10 +272,10 @@ export const useInsightsData = ({
       );
       dispatcher.removeActionListener(
         issuesActions.SET_DATA_LIST,
-        handleInsightsData
+        handleIssuesData
       );
     };
-  }, [setData, setIsLoading]);
+  }, [setData, setIsLoading, insightViewType]);
 
   useEffect(() => {
     if (previousLastSetDataTimeStamp !== lastSetDataTimeStamp) {
