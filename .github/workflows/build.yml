@@ -3,8 +3,35 @@ name: Lint & build
 on:
   push:
     branches: ["main"]
+    # Github Actions do not support YAML anchors yet,so we have to repeat
+    # the paths-ignore in both push and pull_request events.
+    # More info: https://github.com/actions/runner/issues/1182
+    paths-ignore:
+      - "public/**"
+      - ".husky/**"
+      - ".vscode/**"
+      - "*.html"
+      - ".nvmrc"
+      - ".prettierignore"
+      - ".prettierrc"
+      - "Dockerfile"
+      - "LICENSE"
+      - "nginx.conf.template"
+      - "README.md"
   pull_request:
     branches: ["main"]
+    paths-ignore:
+      - "public/**"
+      - ".husky/**"
+      - ".vscode/**"
+      - "*.html"
+      - ".nvmrc"
+      - ".prettierignore"
+      - ".prettierrc"
+      - "Dockerfile"
+      - "LICENSE"
+      - "nginx.conf.template"
+      - "README.md"
 
 jobs:
   build:
