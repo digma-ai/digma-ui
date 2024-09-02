@@ -42,7 +42,9 @@ export const AffectedEndpointsSelector = ({
   onChange
 }: AffectedEndpointsSelectorProps) => {
   const handleSpanLinkClick = (spanCodeObjectId?: string) => {
-    spanCodeObjectId && onAssetLinkClick(spanCodeObjectId, insightType);
+    if (spanCodeObjectId) {
+      onAssetLinkClick(spanCodeObjectId, insightType);
+    }
   };
 
   return (

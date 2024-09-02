@@ -7,8 +7,8 @@ const OverlayComponent = (
   ref: ForwardedRef<HTMLDivElement>
 ) => {
   const handleOverlayKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === "Escape") {
-      onClose && onClose();
+    if (e.key === "Escape" && onClose) {
+      onClose();
     }
   };
 

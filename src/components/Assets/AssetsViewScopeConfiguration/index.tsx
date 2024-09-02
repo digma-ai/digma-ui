@@ -31,11 +31,12 @@ export const AssetsViewScopeConfiguration = ({
   const handleToggleOptionChange = (value: ViewMode) => {
     setViewMode(value);
 
-    onAssetViewChange &&
+    if (onAssetViewChange) {
       onAssetViewChange({
         isDirect: value === "children",
         scopedSpanCodeObjectId: currentScope?.span?.spanCodeObjectId
       });
+    }
   };
 
   const toggleOptions: ToggleOption<ViewMode>[] = [

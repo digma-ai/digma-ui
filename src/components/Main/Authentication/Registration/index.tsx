@@ -140,7 +140,9 @@ export const Registration = ({ onRegister }: RegistrationProps) => {
                 if (touchedFields.confirmPassword) {
                   resetField("confirmPassword");
                 }
-                field.onChange && field.onChange(args);
+                if (field.onChange) {
+                  field.onChange(args);
+                }
               }}
             />
           )}

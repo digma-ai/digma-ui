@@ -83,7 +83,9 @@ export const Assets = () => {
       ? assetTypeListDataRefresher
       : assetListDataRefresher;
 
-    currentRefresher && currentRefresher.refresh();
+    if (currentRefresher) {
+      currentRefresher.refresh();
+    }
   };
 
   const handleAssetCountChange = useCallback((count: number) => {

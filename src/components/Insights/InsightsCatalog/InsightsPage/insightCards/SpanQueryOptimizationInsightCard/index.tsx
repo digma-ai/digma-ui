@@ -34,7 +34,9 @@ export const SpanQueryOptimizationInsightCard = ({
   );
 
   const handleAssetLinkClick = (spanCodeObjectId?: string) => {
-    spanCodeObjectId && onAssetLinkClick(spanCodeObjectId, insight.type);
+    if (spanCodeObjectId) {
+      onAssetLinkClick(spanCodeObjectId, insight.type);
+    }
   };
 
   const handleTraceButtonClick = (
@@ -49,7 +51,9 @@ export const SpanQueryOptimizationInsightCard = ({
     spanCodeObjectId: string | undefined,
     event: string
   ) => {
-    onJiraTicketCreate && onJiraTicketCreate(insight, spanCodeObjectId, event);
+    if (onJiraTicketCreate) {
+      onJiraTicketCreate(insight, spanCodeObjectId, event);
+    }
   };
 
   const spanName = insight.spanInfo?.displayName ?? undefined;

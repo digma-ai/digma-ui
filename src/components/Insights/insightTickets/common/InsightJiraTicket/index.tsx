@@ -63,7 +63,9 @@ export const InsightJiraTicket = ({
 
       refreshInsights();
 
-      onReloadSpanInsight && onReloadSpanInsight();
+      if (onReloadSpanInsight) {
+        onReloadSpanInsight();
+      }
     };
 
     dispatcher.addActionListener(

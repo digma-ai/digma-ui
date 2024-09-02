@@ -79,7 +79,11 @@ export const IssueCompactCard = ({
         onGoToSpan();
         break;
       case "trace":
-        onGoToTrace && onGoToTrace();
+        {
+          if (onGoToTrace) {
+            onGoToTrace();
+          }
+        }
         break;
       case "dismiss":
         onDismiss();

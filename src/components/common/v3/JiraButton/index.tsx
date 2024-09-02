@@ -47,7 +47,9 @@ export const JiraButtonComponent = (
 
   const handleViewMenuItemClick = () => {
     setIsMenuOpen(false);
-    ticketLink && openURLInDefaultBrowser(ticketLink);
+    if (ticketLink) {
+      openURLInDefaultBrowser(ticketLink);
+    }
   };
 
   const handleEditMenuItemClick = () => {

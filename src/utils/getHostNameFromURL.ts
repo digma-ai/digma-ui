@@ -3,7 +3,7 @@ export const getHostnameFromURL = (value: string) => {
 
   try {
     url = new URL(value);
-  } catch (e) {
+  } catch {
     return null;
   }
 
