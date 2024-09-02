@@ -43,7 +43,7 @@ export const PromotionCard = ({ onAccept, onDiscard }: PromotionCardProps) => {
         </s.Right>
         <s.CollapsedHolder>
           <s.PromoText>
-            Get our <s.PromoTextBold>FREE Udemy course</s.PromoTextBold>
+            Get our <s.PromoTextBold>Udemy course FREE</s.PromoTextBold>
           </s.PromoText>
           <Link onClick={handleExpandClick}>See more</Link>
         </s.CollapsedHolder>

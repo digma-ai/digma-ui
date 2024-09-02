@@ -4,7 +4,7 @@ import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
 // import { isNull } from "../../typeGuards/isNull";
 // import { isUndefined } from "../../typeGuards/isUndefined";
-import { GetInsightStatsPayload } from "../../types";
+import { FeatureFlag, GetInsightStatsPayload } from "../../types";
 import { changeScope } from "../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 // import { AsyncActionResultData } from "../InstallationWizard/types";
@@ -15,11 +15,14 @@ import { ThreeDotsIcon } from "../common/icons/ThreeDotsIcon";
 // import { Tooltip } from "../common/v3/Tooltip";
 // import { CodeButton } from "./CodeButton";
 // import { CodeButtonMenu } from "./CodeButtonMenu";
+import useDimensions from "react-cool-dimensions";
+import { getFeatureFlagValue } from "../../featureFlags";
 import { useConfigSelector } from "../../store/config/useConfigSelector";
 import { EnvironmentBar } from "./EnvironmentBar";
 import { HistoryNavigationPanel } from "./HistoryNavigationPanel";
 import { KebabMenu } from "./KebabMenu";
 import { ScopeBar } from "./ScopeBar";
+import { SpanInfo } from "./SpanInfo";
 import { Tabs } from "./Tabs";
 import { actions } from "./actions";
 import { IconButton } from "./common/IconButton";
@@ -30,6 +33,18 @@ import {
   // AutoFixMissingDependencyPayload,
   CodeContext
 } from "./types";
+import { useSpanInfoData } from "./useSpanInfoData";
+
+const isDisplayNameTooLong = (displayName: string, containerWidth: number) => {
+  const CHAR_WIDTH = 8; // in pixels
+  const MAX_DISPLAY_NAME_OVERFLOW_RATIO = 1.5;
+  const CONTAINER_PADDING = 64; // in pixels
+  return (
+    (displayName.length * CHAR_WIDTH) /
+      Math.max(containerWidth - CONTAINER_PADDING, 1) >
+    MAX_DISPLAY_NAME_OVERFLOW_RATIO
+  );
+};
 
 // const hasData = (codeContext?: CodeContext): boolean =>
 //   Boolean(
@@ -87,12 +102,30 @@ export const Navigation = () => {
   // const [isAutoFixing, setIsAutoFixing] = useState(false);
   // const [isAnnotationAdding, setIsAnnotationAdding] = useState(false);
   // const previousCodeContext = usePrevious(codeContext);
-  const previousEnv = usePrevious(environment);
+  const previousEnvironment = usePrevious(environment);
+  const [isSpanInfoVisible, setIsSpanInfoVisible] = useState(false);
+  const { data: spanInfo, getData: getSpanInfo } = useSpanInfoData();
+  const previousSpanInfo = usePrevious(spanInfo);
+
+  const isAtSpan = Boolean(scope?.span);
+
+  const { observe, width: containerWidth } = useDimensions();
 
   // const codeButtonTooltip = getCodeButtonTooltip(codeContext, config.scope);
   // const isCodeButtonEnabled = codeContext && !isNull(codeContext.methodId);
   // const isCodeButtonMenuEnabled =
   //   codeContext && codeContext.spans.assets.length !== 1;
+
+  const isSpanInfoEnabled = Boolean(
+    getFeatureFlagValue(
+      backendInfo,
+      FeatureFlag.IS_HIGHLIGHTS_SPAN_INFO_ENABLED
+    )
+  );
+
+  useEffect(() => {
+    getSpanInfo();
+  }, []);
 
   useEffect(() => {
     const handleCodeContextData = (data: unknown) => {
@@ -136,7 +169,7 @@ export const Navigation = () => {
   }, [userInfo?.id]);
 
   useEffect(() => {
-    if (environment?.id !== previousEnv?.id) {
+    if (environment?.id !== previousEnvironment?.id) {
       setSelectedEnvironment(environment);
       window.sendMessageToDigma<GetInsightStatsPayload>({
         action: globalActions.GET_INSIGHT_STATS,
@@ -151,7 +184,7 @@ export const Navigation = () => {
         }
       });
     }
-  }, [environment, scope, previousEnv?.id]);
+  }, [environment, scope, previousEnvironment?.id]);
 
   const handleEnvironmentChange = useCallback(
     (environment: Environment) => {
@@ -190,6 +223,19 @@ export const Navigation = () => {
     }
   }, [environments, environment, scope]);
 
+  useEffect(() => {
+    if (
+      previousSpanInfo?.displayName !== spanInfo?.displayName &&
+      spanInfo?.displayName
+    ) {
+      const isSpanInfoVisible = isDisplayNameTooLong(
+        spanInfo.displayName,
+        containerWidth
+      );
+      setIsSpanInfoVisible(isSpanInfoVisible);
+    }
+  }, [spanInfo, previousSpanInfo, containerWidth]);
+
   // useEffect(() => {
   //   setIsAutoFixing(false);
   //   setIsAnnotationAdding(false);
@@ -213,6 +259,14 @@ export const Navigation = () => {
   //     setIsAnnotationAdding(false);
   //   }
   // }, [codeContext, previousCodeContext]);
+
+  const handleScopeDisplayNameExpandCollapseChange = (isExpanded: boolean) => {
+    setIsSpanInfoVisible(isExpanded);
+  };
+
+  const handleSpanInfoCollapse = () => {
+    setIsSpanInfoVisible(false);
+  };
 
   const handleKebabMenuOpenChange = (isOpen: boolean) => {
     if (isOpen) {
@@ -309,14 +363,18 @@ export const Navigation = () => {
     return <s.Background />;
   }
 
-  const isAtSpan = Boolean(scope?.span);
-
   return (
-    <s.Container $isActive={isAtSpan}>
+    <s.Container $isActive={isAtSpan} ref={observe}>
       <s.Row>
         <HistoryNavigationPanel />
         {isAtSpan ? (
-          <ScopeBar codeContext={codeContext} scope={scope} />
+          <ScopeBar
+            codeContext={codeContext}
+            scope={scope}
+            isExpanded={isSpanInfoVisible}
+            onExpandCollapseChange={handleScopeDisplayNameExpandCollapseChange}
+            isSpanInfoEnabled={isSpanInfoEnabled}
+          />
         ) : (
           <EnvironmentBar
             selectedEnvironment={selectedEnvironment}
@@ -337,8 +395,11 @@ export const Navigation = () => {
           />
         </NewPopover>
       </s.Row>
-      <s.Row>
-        {/* <Tooltip
+      {isAtSpan && isSpanInfoEnabled && spanInfo && isSpanInfoVisible && (
+        <SpanInfo data={spanInfo} onCollapse={handleSpanInfoCollapse} />
+      )}
+      {/* <s.Row>
+        <Tooltip
           title={codeButtonTooltip}
           isOpen={isCodeButtonMenuOpen ? false : undefined}
           placement={"bottom-start"}
@@ -389,8 +450,8 @@ export const Navigation = () => {
               onMouseLeave={handleCodeButtonMouseLeave}
             />
           )}
-        </Tooltip> */}
-      </s.Row>
+        </Tooltip>
+      </s.Row> */}
       <s.TabsContainer>
         <Tabs />
       </s.TabsContainer>

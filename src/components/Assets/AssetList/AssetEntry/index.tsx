@@ -145,20 +145,26 @@ export const AssetEntry = ({
           <s.Stats>
             <span>Performance</span>
             <s.ValueContainer>
-              {performanceDuration ? performanceDuration.value : "N/A"}
-              {performanceDuration && (
-                <s.Suffix>{performanceDuration.unit}</s.Suffix>
+              {performanceDuration?.value ? (
+                <>
+                  {performanceDuration.value}
+                  <s.Suffix>{performanceDuration.unit}</s.Suffix>
+                </>
+              ) : (
+                "N/A"
               )}
             </s.ValueContainer>
           </s.Stats>
           <s.Stats>
             <span>Slowest 5%</span>
             <s.ValueContainer>
-              {slowestFivePercentDuration
-                ? slowestFivePercentDuration.value
-                : "N/A"}
-              {slowestFivePercentDuration && (
-                <s.Suffix>{slowestFivePercentDuration.unit}</s.Suffix>
+              {slowestFivePercentDuration?.value ? (
+                <>
+                  {slowestFivePercentDuration.value}
+                  <s.Suffix>{slowestFivePercentDuration.unit}</s.Suffix>
+                </>
+              ) : (
+                "N/A"
               )}
             </s.ValueContainer>
           </s.Stats>

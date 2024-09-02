@@ -9,7 +9,6 @@ import { DeploymentType } from "../common/App/types";
 import { mockedImpactData } from "./Impact/mockData";
 import { mockedPerformanceData } from "./Performance/mockData";
 import { mockedScalingData } from "./Scaling/mockData";
-import { mockedSpanInfoData } from "./SpanInfo/mockData";
 import { mockedTopIssuesData } from "./TopIssues/mockData";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
@@ -18,9 +17,7 @@ const mockedConfig = {
   ...initialState,
   backendInfo: {
     applicationVersion:
-      featureFlagMinBackendVersions[
-        FeatureFlag.IS_HIGHLIGHTS_SPAN_INFO_ENABLED
-      ],
+      featureFlagMinBackendVersions[FeatureFlag.IS_HIGHLIGHTS_SCALING_ENABLED],
     deploymentType: DeploymentType.HELM,
     centralize: true
   }
@@ -59,11 +56,6 @@ export const Default: Story = {
     window.setTimeout(() => {
       window.postMessage({
         type: "digma",
-        action: mainActions.SET_HIGHLIGHTS_SPAN_INFO_DATA,
-        payload: mockedSpanInfoData
-      });
-      window.postMessage({
-        type: "digma",
         action: mainActions.SET_HIGHLIGHTS_TOP_ISSUES_DATA,
         payload: mockedTopIssuesData
       });
@@ -96,11 +88,6 @@ export const Empty: Story = {
   ],
   play: () => {
     window.setTimeout(() => {
-      window.postMessage({
-        type: "digma",
-        action: mainActions.SET_HIGHLIGHTS_SPAN_INFO_DATA,
-        payload: mockedSpanInfoData
-      });
       window.postMessage({
         type: "digma",
         action: mainActions.SET_HIGHLIGHTS_TOP_ISSUES_DATA,

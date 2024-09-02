@@ -1,5 +1,8 @@
 import styled from "styled-components";
-import { bodyRegularTypography } from "../../common/App/typographies";
+import {
+  bodyRegularTypography,
+  footnoteBoldTypography
+} from "../../common/App/typographies";
 import { CopyButton } from "../../common/v3/CopyButton";
 import { Bar } from "../common/Bar";
 
@@ -40,6 +43,12 @@ export const ScopeName = styled.span`
   white-space: nowrap;
   padding: 0 4px;
   user-select: none;
+`;
+
+export const ScopeNamePlaceholder = styled(ScopeName)`
+  ${footnoteBoldTypography}
+  color: ${({ theme }) => theme.colors.v3.text.tertiary};
+  text-transform: uppercase;
 `;
 
 export const ScopeBarButton = styled.button`

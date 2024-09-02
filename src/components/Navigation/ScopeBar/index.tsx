@@ -5,7 +5,10 @@ import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActi
 import { CodeDetails, Scope } from "../../common/App/types";
 import { NewPopover } from "../../common/NewPopover";
 import { CrosshairIcon } from "../../common/icons/16px/CrosshairIcon";
+import { MaximizeIcon } from "../../common/icons/16px/MaximizeIcon";
+import { MinimizeIcon } from "../../common/icons/16px/MinimizeIcon";
 import { EndpointIcon } from "../../common/icons/EndpointIcon";
+import { NewIconButton } from "../../common/v3/NewIconButton";
 import { Tooltip } from "../../common/v3/Tooltip";
 import { actions } from "../actions";
 import { Popup } from "../common/Popup";
@@ -14,6 +17,8 @@ import { CodeContext, GoToCodeLocationPayload } from "../types";
 import { TargetButtonMenu } from "./TargetButtonMenu";
 import * as s from "./styles";
 import { ScopeBarProps } from "./types";
+
+const EXPANDED_SCOPE_DISPLAY_NAME_PLACEHOLDER = "Full scope text below";
 
 const isAlreadyAtCode = (codeContext?: CodeContext, scope?: Scope): boolean => {
   if (!codeContext || !scope?.span) {
@@ -49,7 +54,13 @@ const getTargetButtonTooltip = (
   }
 };
 
-export const ScopeBar = ({ scope, codeContext }: ScopeBarProps) => {
+export const ScopeBar = ({
+  scope,
+  codeContext,
+  isExpanded,
+  onExpandCollapseChange,
+  isSpanInfoEnabled
+}: ScopeBarProps) => {
   const [isTargetButtonMenuOpen, setIsTargetButtonMenuOpen] = useState(false);
 
   const location = history.getCurrentLocation();
@@ -62,6 +73,7 @@ export const ScopeBar = ({ scope, codeContext }: ScopeBarProps) => {
       spanCodeObjectId === location?.state?.spanCodeObjectId
     ? location?.state?.spanDisplayName
     : "";
+
   const targetButtonTooltip = getTargetButtonTooltip(codeContext, scope);
 
   const isTargetButtonTooltipOpen =
@@ -95,6 +107,10 @@ export const ScopeBar = ({ scope, codeContext }: ScopeBarProps) => {
     setIsTargetButtonMenuOpen(false);
   };
 
+  const handleExpandCollapseButtonClick = () => {
+    onExpandCollapseChange(!isExpanded);
+  };
+
   const handleTargetButtonClick = () => {
     sendUserActionTrackingEvent(trackingEvents.TARGET_BUTTON_CLICKED);
     if (scope && scope.code.codeDetailsList.length === 1) {
@@ -104,12 +120,12 @@ export const ScopeBar = ({ scope, codeContext }: ScopeBarProps) => {
 
   const renderTargetButton = () => (
     <Tooltip title={targetButtonTooltip} isOpen={isTargetButtonTooltipOpen}>
-      <s.ScopeBarButton
-        disabled={!isTargetButtonEnabled}
+      <NewIconButton
+        icon={CrosshairIcon}
+        isDisabled={!isTargetButtonEnabled}
         onClick={handleTargetButtonClick}
-      >
-        <CrosshairIcon color={"currentColor"} size={16} />
-      </s.ScopeBarButton>
+        buttonType={"secondaryBorderless"}
+      />
     </Tooltip>
   );
 
@@ -119,15 +135,30 @@ export const ScopeBar = ({ scope, codeContext }: ScopeBarProps) => {
         <s.SpanIconContainer>
           <EndpointIcon color={"currentColor"} />
         </s.SpanIconContainer>
-        {scopeDisplayName && (
+        {isSpanInfoEnabled && isExpanded ? (
+          <Tooltip title={EXPANDED_SCOPE_DISPLAY_NAME_PLACEHOLDER}>
+            <s.ScopeNamePlaceholder>
+              {EXPANDED_SCOPE_DISPLAY_NAME_PLACEHOLDER}
+            </s.ScopeNamePlaceholder>
+          </Tooltip>
+        ) : scopeDisplayName ? (
           <>
             <Tooltip title={scopeDisplayName}>
               <s.ScopeName>{scopeDisplayName}</s.ScopeName>
             </Tooltip>
             <s.StyledCopyButton text={scopeDisplayName} />
           </>
-        )}
+        ) : null}
       </s.ScopeNameContainer>
+      {isSpanInfoEnabled && (
+        <Tooltip title={isExpanded ? "Collapse" : "Expand"}>
+          <NewIconButton
+            icon={isExpanded ? MinimizeIcon : MaximizeIcon}
+            onClick={handleExpandCollapseButtonClick}
+            buttonType={"secondaryBorderless"}
+          />
+        </Tooltip>
+      )}
       {isTargetButtonMenuEnabled ? (
         <NewPopover
           content={

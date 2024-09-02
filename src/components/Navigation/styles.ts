@@ -9,7 +9,7 @@ export const Container = styled.div<ContainerProps>`
       : theme.colors.v3.surface.secondary};
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 8px;
   padding: 8px 8px 0;
   border-radius: 0 0 12px 12px;
   border-bottom: 1px solid ${({ theme }) => theme.colors.v3.stroke.primary};
