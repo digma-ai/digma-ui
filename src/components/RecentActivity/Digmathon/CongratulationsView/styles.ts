@@ -7,7 +7,7 @@ import {
 import { Link } from "../../../common/v3/Link";
 
 export const Container = styled.div`
-  background: url("images/confettiBackground.svg") no-repeat center top / cover;
+  background: url("/images/confettiBackground.svg") no-repeat center top / cover;
   display: flex;
   flex-direction: column;
   gap: 16px;

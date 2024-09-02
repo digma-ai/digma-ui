@@ -29,7 +29,9 @@ export const EndpointSpanNPlusOneInsightCard = ({
     spanCodeObjectId: string | undefined,
     event: string
   ) => {
-    onJiraTicketCreate && onJiraTicketCreate(insight, spanCodeObjectId, event);
+    if (onJiraTicketCreate) {
+      onJiraTicketCreate(insight, spanCodeObjectId, event);
+    }
   };
 
   const handleTraceButtonClick = (

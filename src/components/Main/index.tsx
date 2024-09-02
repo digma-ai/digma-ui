@@ -222,10 +222,13 @@ export const Main = () => {
           case SCOPE_CHANGE_EVENTS.TESTS_TEST_CARD_TITLE_LINK_CLICKED as string:
           case SCOPE_CHANGE_EVENTS.NOTIFICATIONS_NOTIFICATION_CARD_ASSET_LINK_CLICKED as string:
           case SCOPE_CHANGE_EVENTS.RECENT_ACTIVITY_SPAN_LINK_CLICKED as string:
-          default:
-            scope.issuesInsightsCount > 0
-              ? goTo(`/${TAB_IDS.ISSUES}`, { state })
-              : goTo(`/${TAB_IDS.ANALYTICS}`, { state });
+          default: {
+            if (scope.issuesInsightsCount > 0) {
+              goTo(`/${TAB_IDS.ISSUES}`, { state });
+            } else {
+              goTo(`/${TAB_IDS.ANALYTICS}`, { state });
+            }
+          }
         }
       } else {
         goTo(location, { state });

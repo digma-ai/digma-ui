@@ -23,7 +23,7 @@ export const Ribbon = ({ onRefresh }: RibbonProps) => {
 
   return (
     <s.Container>
-      <img src={`images/digmaLogo_${themeKind}.svg`} />
+      <img src={`/images/digmaLogo_${themeKind}.svg`} />
       <s.ButtonContainer>
         <NewButton
           buttonType="primary"

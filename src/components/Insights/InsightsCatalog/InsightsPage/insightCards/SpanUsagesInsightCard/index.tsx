@@ -67,7 +67,9 @@ export const SpanUsagesInsightCard = ({
   }, [previousInsightId, insight, previousPage, page, pageItems]);
 
   const handleServiceLinkClick = (spanCodeObjectId?: string) => {
-    spanCodeObjectId && onAssetLinkClick(spanCodeObjectId, insight.type);
+    if (spanCodeObjectId) {
+      onAssetLinkClick(spanCodeObjectId, insight.type);
+    }
   };
 
   const handleTraceButtonClick = (
