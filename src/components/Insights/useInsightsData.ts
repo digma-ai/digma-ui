@@ -227,7 +227,7 @@ export const useInsightsData = ({
   useEffect(() => {
     window.clearTimeout(refreshTimerId.current);
     refresh();
-  }, [backendInfo, environmentId, spanCodeObjectId, insightViewType, refresh]);
+  }, [backendInfo, environmentId, spanCodeObjectId, refresh]);
 
   useEffect(() => {
     const handleInsightsData = (
