@@ -18,7 +18,7 @@ import { InsightFilterType, ViewMode } from "./InsightsCatalog/types";
 import { actions as issuesActions } from "./Issues/actions";
 import { GetIssuesDataListQuery } from "./Issues/types";
 import { actions } from "./actions";
-import { InsightsData, InsightViewType } from "./types";
+import { InsightViewType, WrappedInsightData } from "./types";
 
 interface UseInsightsDataProps {
   areFiltersRehydrated: boolean;
@@ -235,35 +235,24 @@ export const useInsightsData = ({
       timeStamp: number,
       error: DigmaMessageError | undefined
     ) => {
-      if (insightViewType !== "Analytics") {
+      const insightsData = data as WrappedInsightData;
+
+      if (insightViewType !== insightsData.insightsViewMode) {
         return;
       }
 
       if (!error) {
-        setData(data as InsightsData);
-      }
-      setIsLoading(false);
-      setLastSetDataTimeStamp(timeStamp);
-    };
-
-    const handleIssuesData = (
-      data: unknown,
-      timeStamp: number,
-      error: DigmaMessageError | undefined
-    ) => {
-      if (insightViewType !== "Issues") {
-        return;
-      }
-
-      if (!error) {
-        setData(data as InsightsData);
+        setData(insightsData.data);
       }
       setIsLoading(false);
       setLastSetDataTimeStamp(timeStamp);
     };
 
     dispatcher.addActionListener(actions.SET_DATA_LIST, handleInsightsData);
-    dispatcher.addActionListener(issuesActions.SET_DATA_LIST, handleIssuesData);
+    dispatcher.addActionListener(
+      issuesActions.SET_DATA_LIST,
+      handleInsightsData
+    );
 
     return () => {
       dispatcher.removeActionListener(
@@ -272,7 +261,7 @@ export const useInsightsData = ({
       );
       dispatcher.removeActionListener(
         issuesActions.SET_DATA_LIST,
-        handleIssuesData
+        handleInsightsData
       );
     };
   }, [setData, setIsLoading, insightViewType]);
