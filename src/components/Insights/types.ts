@@ -65,6 +65,11 @@ export interface Method {
   name: string;
 }
 
+export interface WrappedInsightData {
+  insightsViewMode: string;
+  data: InsightsData;
+}
+
 export interface InsightsData {
   insights: GenericCodeObjectInsight[];
   totalCount: number;

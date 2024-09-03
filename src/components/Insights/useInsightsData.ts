@@ -18,7 +18,7 @@ import { InsightFilterType, ViewMode } from "./InsightsCatalog/types";
 import { actions as issuesActions } from "./Issues/actions";
 import { GetIssuesDataListQuery } from "./Issues/types";
 import { actions } from "./actions";
-import { InsightsData, InsightViewType } from "./types";
+import { InsightViewType, WrappedInsightData } from "./types";
 
 interface UseInsightsDataProps {
   areFiltersRehydrated: boolean;
@@ -235,8 +235,15 @@ export const useInsightsData = ({
       timeStamp: number,
       error: DigmaMessageError | undefined
     ) => {
+      const insightsData = data as WrappedInsightData;
+
+      //Do not handle the response message if the view mode has been already changed
+      if (insightViewType !== insightsData.insightsViewMode) {
+        return;
+      }
+
       if (!error) {
-        setData(data as InsightsData);
+        setData(insightsData.data);
       }
       setIsLoading(false);
       setLastSetDataTimeStamp(timeStamp);
@@ -258,7 +265,7 @@ export const useInsightsData = ({
         handleInsightsData
       );
     };
-  }, [setData, setIsLoading]);
+  }, [setData, setIsLoading, insightViewType]);
 
   useEffect(() => {
     if (previousLastSetDataTimeStamp !== lastSetDataTimeStamp) {
