@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { footnoteRegularTypography } from "../../../common/App/typographies";
 import { Link } from "../../../common/Link";
 
 export const Container = styled.div`
@@ -29,4 +30,20 @@ export const EmptyStateDescription = styled.span`
 export const TroubleshootingLink = styled(Link)`
   font-size: 14px;
   text-decoration: underline;
+`;
+
+export const HomeEmptyStateContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  padding-top: 4px;
+`;
+
+export const EmptyDescriptionContainer = styled.div`
+  flex-direction: column;
+  display: flex;
+  text-align: center;
+  ${footnoteRegularTypography}
+  color: ${({ theme }) => theme.colors.v3.text.tertiary}
 `;

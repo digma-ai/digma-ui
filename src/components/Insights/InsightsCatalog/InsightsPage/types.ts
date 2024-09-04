@@ -1,4 +1,8 @@
-import { GenericCodeObjectInsight, InsightType } from "../../types";
+import {
+  GenericCodeObjectInsight,
+  InsightType,
+  InsightViewType
+} from "../../types";
 
 export interface InsightsPageProps {
   insights: GenericCodeObjectInsight[];
@@ -10,6 +14,7 @@ export interface InsightsPageProps {
   onRefresh: () => void;
   page: number;
   isMarkAsReadButtonEnabled: boolean;
+  insightsViewType: InsightViewType | null;
 }
 
 export interface isInsightJiraTicketHintShownPayload {

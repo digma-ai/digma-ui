@@ -41,7 +41,8 @@ const props: InsightsPageProps = {
     return undefined;
   },
   page: 0,
-  isMarkAsReadButtonEnabled: false
+  isMarkAsReadButtonEnabled: false,
+  insightsViewType: "Analytics"
 };
 
 export const WithInsights: Story = {
@@ -143,4 +144,23 @@ export const NoInsightsButAnalyticsExist: Story = {
     )
   ],
   args: props
+};
+
+export const NoInsightsOnHomeScreen: Story = {
+  decorators: [
+    (Story) => (
+      <ConfigContext.Provider
+        value={{
+          ...initialState,
+          scope: undefined
+        }}
+      >
+        <Story />
+      </ConfigContext.Provider>
+    )
+  ],
+  args: {
+    ...props,
+    insightsViewType: "Analytics"
+  }
 };

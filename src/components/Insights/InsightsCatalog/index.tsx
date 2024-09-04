@@ -384,6 +384,7 @@ export const InsightsCatalog = ({
       <InsightsPage
         page={page}
         insights={insights}
+        insightsViewType={insightViewType}
         isFilteringEnabled={
           debouncedSearchInputValue !== null && debouncedSearchInputValue !== ""
         }
