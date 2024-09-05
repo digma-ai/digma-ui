@@ -107,4 +107,6 @@ export const Error: Story = {
   }
 };
 
+export const EmptyWithoutSpan: Story = {};
+
 export const Loading: Story = {};

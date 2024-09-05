@@ -31,17 +31,13 @@ export const Errors = () => {
       );
     }
 
-    if (spanCodeObjectId) {
-      return (
-        <ErrorsList
-          onErrorSelect={handleErrorSelect}
-          spanCodeObjectId={spanCodeObjectId}
-          methodId={methodId}
-        />
-      );
-    }
-
-    return null;
+    return (
+      <ErrorsList
+        onErrorSelect={handleErrorSelect}
+        spanCodeObjectId={spanCodeObjectId}
+        methodId={methodId}
+      />
+    );
   };
 
   return <s.Container>{renderContent()}</s.Container>;

@@ -19,7 +19,6 @@ export const EmptyStateContainer = styled.div`
   gap: 8px;
   justify-content: center;
   flex-grow: 1;
-  width: 210px;
   align-self: center;
 `;
 
@@ -41,6 +40,8 @@ export const EmptyStateTextContainer = styled.div`
   flex-direction: column;
   text-align: center;
   gap: 4px;
+  padding-top: 4px;
+  padding-bottom: 4px;
   color: ${({ theme }) => theme.colors.v3.text.tertiary};
 `;
 

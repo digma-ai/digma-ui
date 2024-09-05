@@ -44,3 +44,17 @@ export const Empty: Story = {
     }, 1000);
   }
 };
+
+export const EmptyHome: Story = {
+  play: () => {
+    window.setTimeout(() => {
+      window.postMessage({
+        type: "digma",
+        action: actions.SET_ERRORS_DATA,
+        payload: {
+          errors: []
+        }
+      });
+    }, 1000);
+  }
+};

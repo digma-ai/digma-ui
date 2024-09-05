@@ -4,8 +4,10 @@ import { DigmaMessageError } from "../../../api/types";
 import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
+import { trackingEvents as globalEvents } from "../../../trackingEvents";
 import { isEnvironment } from "../../../typeGuards/isEnvironment";
 import { changeScope } from "../../../utils/actions/changeScope";
+import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { SCOPE_CHANGE_EVENTS } from "../../Main/types";
 import { EmptyState } from "../../common/EmptyState";
 import { Menu } from "../../common/Menu";
@@ -272,6 +274,10 @@ export const AssetList = ({
   ]);
 
   const handleAllAssetsLinkClick = () => {
+    sendUserActionTrackingEvent(globalEvents.GOT_TO_ALL_ASSETS_CLICKED, {
+      source: "Assets List"
+    });
+
     onGoToAllAssets();
   };
 

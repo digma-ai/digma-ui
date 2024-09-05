@@ -2,7 +2,10 @@ import { useEffect, useRef } from "react";
 import { actions as globalActions } from "../../../../actions";
 import { usePersistence } from "../../../../hooks/usePersistence";
 import { useConfigSelector } from "../../../../store/config/useConfigSelector";
-import { trackingEvents as globalTrackingEvents } from "../../../../trackingEvents";
+import {
+  trackingEvents as globalEvents,
+  trackingEvents as globalTrackingEvents
+} from "../../../../trackingEvents";
 import { isNumber } from "../../../../typeGuards/isNumber";
 import { isUndefined } from "../../../../typeGuards/isUndefined";
 import { InsightType } from "../../../../types";
@@ -506,6 +509,10 @@ const renderEmptyState = (
   };
 
   const handleSeeAllAssetsClick = () => {
+    sendUserActionTrackingEvent(globalEvents.GOT_TO_ALL_ASSETS_CLICKED, {
+      source: "Analytics tab"
+    });
+
     goTo(`/${TAB_IDS.ASSETS}`);
   };
 

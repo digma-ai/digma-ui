@@ -1,5 +1,5 @@
 export interface ErrorsListProps {
-  spanCodeObjectId: string;
+  spanCodeObjectId?: string;
   methodId?: string;
   onErrorSelect: (id: string) => void;
 }

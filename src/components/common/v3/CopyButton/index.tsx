@@ -1,5 +1,7 @@
 import copy from "copy-to-clipboard";
 import { MouseEvent } from "react";
+import { trackingEvents as globalEvents } from "../../../../trackingEvents";
+import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { CopyIcon } from "../../icons/16px/CopyIcon";
 import { IconButton } from "../IconButton";
 import { Tooltip } from "../Tooltip";
@@ -9,6 +11,7 @@ export const CopyButton = ({ text, className }: CopyButtonProps) => {
   const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     copy(text);
+    sendUserActionTrackingEvent(globalEvents.COPY_BTN_CLICKED);
   };
 
   return (

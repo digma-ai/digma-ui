@@ -3,13 +3,20 @@ import { actions as globalActions } from "../../actions";
 import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
 import { useConfigSelector } from "../../store/config/useConfigSelector";
+import { trackingEvents as globalEvents } from "../../trackingEvents";
 import { isNull } from "../../typeGuards/isNull";
 import { sendTrackingEvent } from "../../utils/actions/sendTrackingEvent";
+import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
+import { useHistory } from "../Main/useHistory";
+import { TAB_IDS } from "../Navigation/Tabs/types";
 import { MenuItem } from "../common/FilterMenu/types";
 import { NewCircleLoader } from "../common/NewCircleLoader";
 import { Pagination } from "../common/Pagination";
 import { RegistrationDialog } from "../common/RegistrationDialog";
 import { RegistrationFormValues } from "../common/RegistrationDialog/types";
+import { RefreshIcon } from "../common/icons/16px/RefreshIcon";
+import { NewButton } from "../common/v3/NewButton";
+import { NewEmptyState } from "../common/v3/NewEmptyState";
 import { EnvironmentFilter } from "./EnvironmentFilter";
 import { TestCard } from "./TestCard";
 import { TestTicket } from "./TestTicket";
@@ -80,6 +87,7 @@ export const Tests = () => {
   const testsListRef = useRef<HTMLDivElement>(null);
   const scopeSpan = scope?.span ?? null;
   const previousScopeSpan = usePrevious(scopeSpan);
+  const { goTo } = useHistory();
 
   const environmentMenuItems: MenuItem[] = (environments ?? []).map(
     (environment) => ({
@@ -258,6 +266,13 @@ export const Tests = () => {
     }
   };
 
+  const handleSeeAllAssetsClick = () => {
+    sendUserActionTrackingEvent(globalEvents.GOT_TO_ALL_ASSETS_CLICKED, {
+      source: "Tests tab"
+    });
+    goTo(`/${TAB_IDS.ASSETS}`);
+  };
+
   const renderContent = () => {
     if (isInitialLoading) {
       return (
@@ -305,33 +320,60 @@ export const Tests = () => {
 
   return (
     <s.Container>
-      <s.EnvironmentFilterContainer>
-        Environment
-        <EnvironmentFilter
-          items={environmentMenuItems}
-          isLoading={isNull(environments)}
-          onMenuItemClick={handleEnvironmentMenuItemClick}
-        />
-      </s.EnvironmentFilterContainer>
-      {renderContent()}
-      {testToOpenTicketPopup && (
-        <s.Overlay onKeyDown={handleOverlayKeyDown} tabIndex={-1}>
-          <s.PopupContainer>
-            {isRegistrationRequired ? (
-              <RegistrationDialog
-                onSubmit={handleRegistrationSubmit}
-                onClose={handleRegistrationDialogClose}
-                isRegistrationInProgress={isRegistrationInProgress}
-              />
-            ) : (
-              <TestTicket
-                test={testToOpenTicketPopup}
-                spanContexts={data?.data?.spanContexts ?? []}
-                onClose={closeJiraTicketPopup}
-              />
-            )}
-          </s.PopupContainer>
-        </s.Overlay>
+      {scope?.span?.spanCodeObjectId ? (
+        <>
+          <s.EnvironmentFilterContainer>
+            Environment
+            <EnvironmentFilter
+              items={environmentMenuItems}
+              isLoading={isNull(environments)}
+              onMenuItemClick={handleEnvironmentMenuItemClick}
+            />
+          </s.EnvironmentFilterContainer>
+          {renderContent()}
+          {testToOpenTicketPopup && (
+            <s.Overlay onKeyDown={handleOverlayKeyDown} tabIndex={-1}>
+              <s.PopupContainer>
+                {isRegistrationRequired ? (
+                  <RegistrationDialog
+                    onSubmit={handleRegistrationSubmit}
+                    onClose={handleRegistrationDialogClose}
+                    isRegistrationInProgress={isRegistrationInProgress}
+                  />
+                ) : (
+                  <TestTicket
+                    test={testToOpenTicketPopup}
+                    spanContexts={data?.data?.spanContexts ?? []}
+                    onClose={closeJiraTicketPopup}
+                  />
+                )}
+              </s.PopupContainer>
+            </s.Overlay>
+          )}
+        </>
+      ) : (
+        <s.NoDataContainer>
+          <NewEmptyState
+            icon={RefreshIcon}
+            title={"Select an asset to run tests"}
+            content={
+              <>
+                <s.EmptyStateTextContainer>
+                  <span>The Errors tab shows details for</span>
+                  <span>exceptions for each Digma-tracked</span>
+                  <span>asset. See all tracked assets on the</span>
+                  <span>Assets page.</span>
+                </s.EmptyStateTextContainer>
+
+                <NewButton
+                  buttonType="primary"
+                  onClick={handleSeeAllAssetsClick}
+                  label="See all assets"
+                />
+              </>
+            }
+          />
+        </s.NoDataContainer>
       )}
     </s.Container>
   );

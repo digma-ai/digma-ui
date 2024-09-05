@@ -3,9 +3,15 @@ import {
   DataFetcherConfiguration,
   useFetchData
 } from "../../../hooks/useFetchData";
+import { trackingEvents as globalEvents } from "../../../trackingEvents";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
+import { useHistory } from "../../Main/useHistory";
+import { TAB_IDS } from "../../Navigation/Tabs/types";
 import { NewCircleLoader } from "../../common/NewCircleLoader";
+import { ErrorIcon } from "../../common/icons/16px/ErrorIcon";
 import { CheckCircleIcon } from "../../common/icons/38px/CheckCircleIcon";
+import { NewButton } from "../../common/v3/NewButton";
+import { NewEmptyState } from "../../common/v3/NewEmptyState";
 import { ErrorCard } from "../ErrorCard";
 import { actions } from "../actions";
 import { trackingEvents } from "../tracking";
@@ -25,6 +31,7 @@ export const ErrorsList = ({
   spanCodeObjectId,
   methodId
 }: ErrorsListProps) => {
+  const { goTo } = useHistory();
   const payload = useMemo(
     () => ({
       spanCodeObjectId,
@@ -32,6 +39,13 @@ export const ErrorsList = ({
     }),
     [spanCodeObjectId, methodId]
   );
+
+  const handleSeeAllAssetsClick = () => {
+    sendUserActionTrackingEvent(globalEvents.GOT_TO_ALL_ASSETS_CLICKED, {
+      source: "Error tab"
+    });
+    goTo(`/${TAB_IDS.ASSETS}`);
+  };
 
   const { data, getData } = useFetchData<
     GetErrorsDataPayload,
@@ -41,6 +55,33 @@ export const ErrorsList = ({
   useEffect(() => {
     getData();
   }, [getData]);
+
+  if (!spanCodeObjectId) {
+    return (
+      <s.EmptyStateContainer>
+        <NewEmptyState
+          icon={ErrorIcon}
+          title={"Select an asset to view errors"}
+          content={
+            <>
+              <s.EmptyStateTextContainer>
+                <span>The Errors tab shows details for</span>
+                <span>exceptions for each Digma-tracked</span>
+                <span>asset. See all tracked assets on the</span>
+                <span>Assets page.</span>
+              </s.EmptyStateTextContainer>
+
+              <NewButton
+                buttonType="primary"
+                onClick={handleSeeAllAssetsClick}
+                label="See all assets"
+              />
+            </>
+          }
+        />
+      </s.EmptyStateContainer>
+    );
+  }
 
   if (!data) {
     // TODO: replace with skeletons
