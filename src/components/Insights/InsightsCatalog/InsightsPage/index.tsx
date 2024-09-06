@@ -2,10 +2,7 @@ import { useEffect, useRef } from "react";
 import { actions as globalActions } from "../../../../actions";
 import { usePersistence } from "../../../../hooks/usePersistence";
 import { useConfigSelector } from "../../../../store/config/useConfigSelector";
-import {
-  trackingEvents as globalEvents,
-  trackingEvents as globalTrackingEvents
-} from "../../../../trackingEvents";
+import { trackingEvents as globalEvents } from "../../../../trackingEvents";
 import { isNumber } from "../../../../typeGuards/isNumber";
 import { isUndefined } from "../../../../typeGuards/isUndefined";
 import { InsightType } from "../../../../types";
@@ -492,12 +489,9 @@ const renderEmptyState = (
   goTo: (location: string) => void
 ) => {
   const handleTroubleshootingLinkClick = () => {
-    sendUserActionTrackingEvent(
-      globalTrackingEvents.TROUBLESHOOTING_LINK_CLICKED,
-      {
-        origin: "insights"
-      }
-    );
+    sendUserActionTrackingEvent(globalEvents.TROUBLESHOOTING_LINK_CLICKED, {
+      origin: "insights"
+    });
 
     window.sendMessageToDigma({
       action: globalActions.OPEN_TROUBLESHOOTING_GUIDE
