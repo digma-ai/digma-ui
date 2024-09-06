@@ -1,5 +1,9 @@
 import styled from "styled-components";
-import { footnoteRegularTypography } from "../../common/App/typographies";
+import {
+  footnoteRegularTypography,
+  subscriptRegularTypography
+} from "../../common/App/typographies";
+import { Link } from "../../common/v3/Link";
 import { NewEmptyState } from "../../common/v3/NewEmptyState";
 
 export const List = styled.ul`
@@ -34,4 +38,9 @@ export const EmptyStateTextContainer = styled.div`
 export const StyledEmptyState = styled(NewEmptyState)`
   flex-grow: 1;
   align-self: center;
+`;
+
+export const ParentLink = styled(Link)`
+  text-decoration: underline;
+  ${subscriptRegularTypography}
 `;

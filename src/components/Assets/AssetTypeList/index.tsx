@@ -11,7 +11,6 @@ import { changeScope } from "../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { SCOPE_CHANGE_EVENTS } from "../../Main/types";
 import { ChildIcon } from "../../common/icons/30px/ChildIcon";
-import { Link } from "../../common/v3/Link";
 import { AssetFilterQuery } from "../AssetsFilter/types";
 import { NoDataMessage } from "../NoDataMessage";
 import { actions } from "../actions";
@@ -227,12 +226,12 @@ export const AssetTypeList = ({
                   </span>
                 </s.EmptyStateTextContainer>
                 {data.parents.map((x) => (
-                  <Link
+                  <s.ParentLink
                     key={x.spanCodeObjectId}
                     onClick={() => handleAssetLinkClick(x.spanCodeObjectId)}
                   >
                     {x.displayName}
-                  </Link>
+                  </s.ParentLink>
                 ))}
               </>
             }
