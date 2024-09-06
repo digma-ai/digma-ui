@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { getFeatureFlagValue } from "../../featureFlags";
 import { useDebounce } from "../../hooks/useDebounce";
 import { usePrevious } from "../../hooks/usePrevious";
+import { useAssetsSelector } from "../../store/assetsSlice/useAssetsSelector";
 import { useConfigSelector } from "../../store/config/useConfigSelector";
 import { FeatureFlag } from "../../types";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
@@ -45,6 +46,7 @@ export const Assets = () => {
     backendInfo,
     FeatureFlag.ARE_EXTENDED_ASSETS_FILTERS_ENABLED
   );
+  const { showAssetsHeader } = useAssetsSelector();
 
   useEffect(() => {
     if (!scope?.span) {
@@ -131,7 +133,7 @@ export const Assets = () => {
       return <NoDataMessage type={"noDataYet"} />;
     }
 
-    if (!selectedFilters) {
+    if (!selectedFilters && showAssetsHeader) {
       return <NoDataMessage type={"loading"} />;
     }
 
@@ -163,43 +165,45 @@ export const Assets = () => {
 
   return (
     <s.Container>
-      <s.Header>
-        {scope?.span && (
+      {showAssetsHeader && (
+        <s.Header>
+          {scope?.span && (
+            <s.HeaderItem>
+              <AssetsViewScopeConfiguration
+                assetsCount={assetsCount}
+                currentScope={scope}
+                onAssetViewChange={handleAssetViewModeChange}
+              />
+            </s.HeaderItem>
+          )}
           <s.HeaderItem>
-            <AssetsViewScopeConfiguration
-              assetsCount={assetsCount}
-              currentScope={scope}
-              onAssetViewChange={handleAssetViewModeChange}
+            <SearchInput
+              onChange={handleSearchInputChange}
+              value={searchInputValue}
             />
+            <AssetsFilter
+              onApply={handleApplyFilters}
+              filters={selectedFilters}
+              assetScopeOption={
+                areExtendedAssetsFiltersEnabled ? assetScopeOption : null
+              }
+              searchQuery={
+                areExtendedAssetsFiltersEnabled ? debouncedSearchInputValue : ""
+              }
+            />
+            <Tooltip title={"Refresh"}>
+              <s.RefreshButton
+                buttonType={"tertiary"}
+                icon={RefreshIcon}
+                onClick={handleRefresh}
+              />
+            </Tooltip>
           </s.HeaderItem>
-        )}
-        <s.HeaderItem>
-          <SearchInput
-            onChange={handleSearchInputChange}
-            value={searchInputValue}
-          />
-          <AssetsFilter
-            onApply={handleApplyFilters}
-            filters={selectedFilters}
-            assetScopeOption={
-              areExtendedAssetsFiltersEnabled ? assetScopeOption : null
-            }
-            searchQuery={
-              areExtendedAssetsFiltersEnabled ? debouncedSearchInputValue : ""
-            }
-          />
-          <Tooltip title={"Refresh"}>
-            <s.RefreshButton
-              buttonType={"tertiary"}
-              icon={RefreshIcon}
-              onClick={handleRefresh}
-            />
-          </Tooltip>
-        </s.HeaderItem>
-        {scope?.span && (
-          <s.HeaderItem>Assets filtered to current scope</s.HeaderItem>
-        )}
-      </s.Header>
+          {scope?.span && (
+            <s.HeaderItem>Assets filtered to current scope</s.HeaderItem>
+          )}
+        </s.Header>
+      )}
       {renderContent()}
     </s.Container>
   );

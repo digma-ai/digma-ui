@@ -3,6 +3,7 @@ import { DigmaMessageError } from "../../../api/types";
 import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
+import { useStore } from "../../../store/useStore";
 import { isEnvironment } from "../../../typeGuards/isEnvironment";
 import { isNull } from "../../../typeGuards/isNull";
 import { isString } from "../../../typeGuards/isString";
@@ -81,6 +82,8 @@ export const AssetTypeList = ({
   const previousSearchQuery = usePrevious(searchQuery);
   const previousViewScope = usePrevious(scopeViewOptions);
   const isServicesFilterEnabled = !scope?.span?.spanCodeObjectId;
+  const { setShowAssetsHeader } = useStore.getState();
+  const [showNoDataWithParents, setShowNoDataWithParents] = useState(false);
 
   const isInitialLoading = !data;
 
@@ -143,8 +146,14 @@ export const AssetTypeList = ({
   useEffect(() => {
     if (data && previousData !== data) {
       onAssetCountChange(getAssetCount(data));
+      const showNoDataWithParents =
+        data &&
+        data.parents.length > 0 &&
+        data?.assetCategories.every((x) => x.count === 0);
+      setShowAssetsHeader(!showNoDataWithParents);
+      setShowNoDataWithParents(showNoDataWithParents);
     }
-  }, [previousData, data, onAssetCountChange]);
+  }, [previousData, data, onAssetCountChange, setShowAssetsHeader]);
 
   useEffect(() => {
     if (
@@ -197,11 +206,11 @@ export const AssetTypeList = ({
       return <NoDataMessage type={"noSearchResults"} />;
     }
 
-    if (scope !== null) {
-      return <NoDataMessage type={"noDataForAsset"} />;
+    if (!scope) {
+      return <NoDataMessage type={"noDataYet"} />;
     }
 
-    if (data.parents.length > 0) {
+    if (showNoDataWithParents) {
       return (
         <s.EmptyStateContainer>
           <s.StyledEmptyState
@@ -232,7 +241,7 @@ export const AssetTypeList = ({
       );
     }
 
-    return <NoDataMessage type={"noDataYet"} />;
+    return <NoDataMessage type={"noDataForAsset"} />;
   }
 
   const assetTypeListItems = ASSET_TYPE_IDS.map((assetTypeId) => {
