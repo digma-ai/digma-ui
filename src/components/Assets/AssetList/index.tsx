@@ -148,7 +148,7 @@ export const AssetList = ({
   const previousEnvironment = usePrevious(environment);
   const previousViewScope = usePrevious(scopeViewOptions);
   const isServicesFilterEnabled = !scope?.span?.spanCodeObjectId;
-  const { setShowAssetsHeader } = useStore.getState();
+  const { setShowAssetsHeaderToolBox } = useStore.getState();
 
   const refreshData = useCallback(() => {
     getData(
@@ -206,7 +206,7 @@ export const AssetList = ({
     };
 
     dispatcher.addActionListener(actions.SET_DATA, handleAssetsData);
-    setShowAssetsHeader(true);
+    setShowAssetsHeaderToolBox(true);
 
     return () => {
       dispatcher.removeActionListener(actions.SET_DATA, handleAssetsData);

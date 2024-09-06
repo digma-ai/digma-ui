@@ -46,7 +46,7 @@ export const Assets = () => {
     backendInfo,
     FeatureFlag.ARE_EXTENDED_ASSETS_FILTERS_ENABLED
   );
-  const { showAssetsHeader } = useAssetsSelector();
+  const { showAssetsHeaderToolBox } = useAssetsSelector();
 
   useEffect(() => {
     if (!scope?.span) {
@@ -133,7 +133,7 @@ export const Assets = () => {
       return <NoDataMessage type={"noDataYet"} />;
     }
 
-    if (!selectedFilters && showAssetsHeader) {
+    if (!selectedFilters && showAssetsHeaderToolBox) {
       return <NoDataMessage type={"loading"} />;
     }
 
@@ -165,45 +165,50 @@ export const Assets = () => {
 
   return (
     <s.Container>
-      {showAssetsHeader && (
-        <s.Header>
-          {scope?.span && (
-            <s.HeaderItem>
-              <AssetsViewScopeConfiguration
-                assetsCount={assetsCount}
-                currentScope={scope}
-                onAssetViewChange={handleAssetViewModeChange}
-              />
-            </s.HeaderItem>
-          )}
+      <s.Header>
+        {scope?.span && (
           <s.HeaderItem>
-            <SearchInput
-              onChange={handleSearchInputChange}
-              value={searchInputValue}
+            <AssetsViewScopeConfiguration
+              assetsCount={assetsCount}
+              currentScope={scope}
+              onAssetViewChange={handleAssetViewModeChange}
             />
-            <AssetsFilter
-              onApply={handleApplyFilters}
-              filters={selectedFilters}
-              assetScopeOption={
-                areExtendedAssetsFiltersEnabled ? assetScopeOption : null
-              }
-              searchQuery={
-                areExtendedAssetsFiltersEnabled ? debouncedSearchInputValue : ""
-              }
-            />
-            <Tooltip title={"Refresh"}>
-              <s.RefreshButton
-                buttonType={"tertiary"}
-                icon={RefreshIcon}
-                onClick={handleRefresh}
-              />
-            </Tooltip>
           </s.HeaderItem>
-          {scope?.span && (
-            <s.HeaderItem>Assets filtered to current scope</s.HeaderItem>
-          )}
-        </s.Header>
-      )}
+        )}
+        {showAssetsHeaderToolBox && (
+          <>
+            <s.HeaderItem>
+              <SearchInput
+                onChange={handleSearchInputChange}
+                value={searchInputValue}
+              />
+              <AssetsFilter
+                onApply={handleApplyFilters}
+                filters={selectedFilters}
+                assetScopeOption={
+                  areExtendedAssetsFiltersEnabled ? assetScopeOption : null
+                }
+                searchQuery={
+                  areExtendedAssetsFiltersEnabled
+                    ? debouncedSearchInputValue
+                    : ""
+                }
+              />
+              <Tooltip title={"Refresh"}>
+                <s.RefreshButton
+                  buttonType={"tertiary"}
+                  icon={RefreshIcon}
+                  onClick={handleRefresh}
+                />
+              </Tooltip>
+            </s.HeaderItem>
+            {scope?.span && (
+              <s.HeaderItem>Assets filtered to current scope</s.HeaderItem>
+            )}
+          </>
+        )}
+      </s.Header>
+
       {renderContent()}
     </s.Container>
   );

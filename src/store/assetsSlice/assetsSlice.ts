@@ -1,11 +1,11 @@
 import { createSlice } from "zustand-slices";
 
 interface AssetsState {
-  showAssetsHeader: boolean;
+  showAssetsHeaderToolBox: boolean;
 }
 
 const initialState: AssetsState = {
-  showAssetsHeader: true
+  showAssetsHeaderToolBox: true
 };
 
 const set = (update: Partial<AssetsState>) => (state: AssetsState) => ({
@@ -17,7 +17,7 @@ export const assetsSlice = createSlice({
   name: "assets",
   value: initialState,
   actions: {
-    setShowAssetsHeader: (showAssetsHeader: boolean) =>
-      set({ showAssetsHeader })
+    setShowAssetsHeaderToolBox: (showAssetsHeaderToolBox: boolean) =>
+      set({ showAssetsHeaderToolBox })
   }
 });

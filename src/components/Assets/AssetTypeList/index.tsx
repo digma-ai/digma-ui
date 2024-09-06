@@ -81,7 +81,7 @@ export const AssetTypeList = ({
   const previousSearchQuery = usePrevious(searchQuery);
   const previousViewScope = usePrevious(scopeViewOptions);
   const isServicesFilterEnabled = !scope?.span?.spanCodeObjectId;
-  const { setShowAssetsHeader } = useStore.getState();
+  const { setShowAssetsHeaderToolBox } = useStore.getState();
   const [showNoDataWithParents, setShowNoDataWithParents] = useState(false);
 
   const isInitialLoading = !data;
@@ -149,10 +149,10 @@ export const AssetTypeList = ({
         data &&
         data.parents.length > 0 &&
         data?.assetCategories.every((x) => x.count === 0);
-      setShowAssetsHeader(!showNoDataWithParents);
+      setShowAssetsHeaderToolBox(!showNoDataWithParents);
       setShowNoDataWithParents(showNoDataWithParents);
     }
-  }, [previousData, data, onAssetCountChange, setShowAssetsHeader]);
+  }, [previousData, data, onAssetCountChange, setShowAssetsHeaderToolBox]);
 
   useEffect(() => {
     if (
