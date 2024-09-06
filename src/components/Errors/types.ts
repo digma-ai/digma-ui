@@ -1,5 +1,5 @@
 export interface GetErrorsDataPayload {
-  spanCodeObjectId?: string;
+  spanCodeObjectId: string;
   methodId?: string;
 }
 
