@@ -179,9 +179,7 @@ export const AssetTypeList = ({
   };
 
   const handleAssetLinkClick = (spanCodeObjectId: string) => {
-    sendUserActionTrackingEvent(
-      trackingEvents.EMPTY_CATEGORY_PARENT_LINK_CLICKED
-    );
+    sendUserActionTrackingEvent(trackingEvents.ALL_ASSETS_LINK_CLICKED);
     changeScope({
       span: { spanCodeObjectId },
       context: {

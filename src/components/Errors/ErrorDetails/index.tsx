@@ -4,8 +4,8 @@ import {
   useFetchData
 } from "../../../hooks/useFetchData";
 import { NewCircleLoader } from "../../common/NewCircleLoader";
-import { EmptyStateContainer } from "../ErrorsList/styles";
 import { actions } from "../actions";
+import { EmptyStateContainer } from "../styles";
 import { ErrorDetailsCardContent } from "./ErrorDetailsCardContent";
 import { ErrorDetailsCardHeader } from "./ErrorDetailsCardHeader";
 import * as s from "./styles";

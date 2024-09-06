@@ -146,7 +146,7 @@ export const NoInsightsButAnalyticsExist: Story = {
   args: props
 };
 
-export const NoInsightsOnHomeScreen: Story = {
+export const NoAnalyticsInsightsOnHomeScope: Story = {
   decorators: [
     (Story) => (
       <ConfigContext.Provider
