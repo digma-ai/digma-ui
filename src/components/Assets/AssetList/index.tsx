@@ -274,9 +274,7 @@ export const AssetList = ({
   ]);
 
   const handleAllAssetsLinkClick = () => {
-    sendUserActionTrackingEvent(trackingEvents.ALL_ASSETS_LINK_CLICKED, {
-      source: "Assets List"
-    });
+    sendUserActionTrackingEvent(trackingEvents.ALL_ASSETS_LINK_CLICKED);
 
     onGoToAllAssets();
   };
