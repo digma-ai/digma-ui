@@ -11,7 +11,6 @@ import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActi
 import { SCOPE_CHANGE_EVENTS } from "../../Main/types";
 import { ChildIcon } from "../../common/icons/30px/ChildIcon";
 import { Link } from "../../common/v3/Link";
-import { NewEmptyState } from "../../common/v3/NewEmptyState";
 import { AssetFilterQuery } from "../AssetsFilter/types";
 import { NoDataMessage } from "../NoDataMessage";
 import { actions } from "../actions";
@@ -207,7 +206,7 @@ export const AssetTypeList = ({
     if (data.parents.length > 0) {
       return (
         <s.EmptyStateContainer>
-          <NewEmptyState
+          <s.StyledEmptyState
             icon={ChildIcon}
             title="No Child Assets"
             content={

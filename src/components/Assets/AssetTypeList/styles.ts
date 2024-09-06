@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { footnoteRegularTypography } from "../../common/App/typographies";
+import { NewEmptyState } from "../../common/v3/NewEmptyState";
 
 export const List = styled.ul`
   display: flex;
@@ -15,9 +16,9 @@ export const EmptyStateContainer = styled.div`
   align-items: center;
   gap: 8px;
   justify-content: center;
-  flex-grow: 1;
-  align-self: center;
+  height: 100%;
 `;
+
 export const EmptyStateTextContainer = styled.div`
   ${footnoteRegularTypography}
 
@@ -28,4 +29,9 @@ export const EmptyStateTextContainer = styled.div`
   padding-top: 4px;
   padding-bottom: 4px;
   color: ${({ theme }) => theme.colors.v3.text.tertiary};
+`;
+
+export const StyledEmptyState = styled(NewEmptyState)`
+  flex-grow: 1;
+  align-self: center;
 `;
