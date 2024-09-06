@@ -4,7 +4,6 @@ import { DigmaMessageError } from "../../../api/types";
 import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
-import { trackingEvents as globalEvents } from "../../../trackingEvents";
 import { isEnvironment } from "../../../typeGuards/isEnvironment";
 import { changeScope } from "../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
@@ -21,6 +20,7 @@ import { SortIcon } from "../../common/icons/SortIcon";
 import { Direction } from "../../common/icons/types";
 import { AssetFilterQuery } from "../AssetsFilter/types";
 import { actions } from "../actions";
+import { trackingEvents } from "../tracking";
 import { checkIfAnyFiltersApplied, getAssetTypeInfo } from "../utils";
 import { AssetEntry as AssetEntryComponent } from "./AssetEntry";
 import * as s from "./styles";
@@ -274,7 +274,7 @@ export const AssetList = ({
   ]);
 
   const handleAllAssetsLinkClick = () => {
-    sendUserActionTrackingEvent(globalEvents.GOT_TO_ALL_ASSETS_CLICKED, {
+    sendUserActionTrackingEvent(trackingEvents.ALL_ASSETS_LINK_CLICKED, {
       source: "Assets List"
     });
 
