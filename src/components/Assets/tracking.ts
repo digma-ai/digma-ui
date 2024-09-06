@@ -7,7 +7,8 @@ export const trackingEvents = addPrefix(
   {
     FILTER_APPLIED: "filter applied",
     REFRESH_BUTTON_CLICKED: "refresh button clicked",
-    FILTERS_POPUP_CLOSE_BUTTON_CLICKED: "filter popup close button clicked"
+    FILTERS_POPUP_CLOSE_BUTTON_CLICKED: "filter popup close button clicked",
+    EMPTY_CATEGORY_PARENT_LINK_CLICKED: "parent link in empty category clicked"
   },
   " "
 );

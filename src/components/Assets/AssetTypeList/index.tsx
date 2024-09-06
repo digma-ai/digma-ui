@@ -6,9 +6,16 @@ import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { isEnvironment } from "../../../typeGuards/isEnvironment";
 import { isNull } from "../../../typeGuards/isNull";
 import { isString } from "../../../typeGuards/isString";
+import { changeScope } from "../../../utils/actions/changeScope";
+import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
+import { SCOPE_CHANGE_EVENTS } from "../../Main/types";
+import { ChildIcon } from "../../common/icons/30px/ChildIcon";
+import { Link } from "../../common/v3/Link";
+import { NewEmptyState } from "../../common/v3/NewEmptyState";
 import { AssetFilterQuery } from "../AssetsFilter/types";
 import { NoDataMessage } from "../NoDataMessage";
 import { actions } from "../actions";
+import { trackingEvents } from "../tracking";
 import { checkIfAnyFiltersApplied, getAssetTypeInfo } from "../utils";
 import { AssetTypeListItem } from "./AssetTypeListItem";
 import * as s from "./styles";
@@ -172,6 +179,18 @@ export const AssetTypeList = ({
     onAssetTypeSelect(assetTypeId);
   };
 
+  const handleAssetLinkClick = (spanCodeObjectId: string) => {
+    sendUserActionTrackingEvent(
+      trackingEvents.EMPTY_CATEGORY_PARENT_LINK_CLICKED
+    );
+    changeScope({
+      span: { spanCodeObjectId },
+      context: {
+        event: SCOPE_CHANGE_EVENTS.ASSETS_EMPTY_CATEGORY_PARENT_LINK_CLICKED
+      }
+    });
+  };
+
   if (isInitialLoading) {
     return <NoDataMessage type={"loading"} />;
   }
@@ -183,6 +202,37 @@ export const AssetTypeList = ({
 
     if (scope !== null) {
       return <NoDataMessage type={"noDataForAsset"} />;
+    }
+
+    if (data.parents.length > 0) {
+      return (
+        <s.EmptyStateContainer>
+          <NewEmptyState
+            icon={ChildIcon}
+            title="No Child Assets"
+            content={
+              <>
+                <s.EmptyStateTextContainer>
+                  <span>
+                    There are no child assets under this asset. You can try
+                  </span>
+                  <span>
+                    browsing its parent spans to continue to explore the trace.
+                  </span>
+                </s.EmptyStateTextContainer>
+                {data.parents.map((x) => (
+                  <Link
+                    key={x.spanCodeObjectId}
+                    onClick={() => handleAssetLinkClick(x.spanCodeObjectId)}
+                  >
+                    {x.displayName}
+                  </Link>
+                ))}
+              </>
+            }
+          />
+        </s.EmptyStateContainer>
+      );
     }
 
     return <NoDataMessage type={"noDataYet"} />;
