@@ -52,15 +52,7 @@ const getTabTooltipMessage = (
 };
 
 const getIsTabDisabled = (tab: BaseTabData, scope: Scope | null): boolean => {
-  if (
-    !scope?.span &&
-    [
-      TAB_IDS.HIGHLIGHTS,
-      TAB_IDS.ANALYTICS,
-      TAB_IDS.ERRORS,
-      TAB_IDS.TESTS
-    ].includes(tab.id)
-  ) {
+  if (!scope?.span && [TAB_IDS.HIGHLIGHTS].includes(tab.id)) {
     return true;
   }
 
