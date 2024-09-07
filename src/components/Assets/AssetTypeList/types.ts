@@ -18,7 +18,7 @@ export interface AssetCategoriesData {
     name: string;
     count: number;
   }[];
-  parents: SpanInfo[];
+  parents?: SpanInfo[];
 }
 
 export interface AssetCategoryData {

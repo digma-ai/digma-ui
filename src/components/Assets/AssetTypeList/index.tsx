@@ -145,10 +145,11 @@ export const AssetTypeList = ({
   useEffect(() => {
     if (data && previousData !== data) {
       onAssetCountChange(getAssetCount(data));
-      const showNoDataWithParents =
-        data &&
-        data.parents.length > 0 &&
-        data?.assetCategories.every((x) => x.count === 0);
+      const showNoDataWithParents = Boolean(
+        data?.parents &&
+          data.parents.length > 0 &&
+          data?.assetCategories.every((x) => x.count === 0)
+      );
       setShowAssetsHeaderToolBox(!showNoDataWithParents);
       setShowNoDataWithParents(showNoDataWithParents);
     }
@@ -209,7 +210,7 @@ export const AssetTypeList = ({
       return <NoDataMessage type={"noDataYet"} />;
     }
 
-    if (showNoDataWithParents) {
+    if (showNoDataWithParents && data.parents) {
       return (
         <s.EmptyStateContainer>
           <s.StyledEmptyState
