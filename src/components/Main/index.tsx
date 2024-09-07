@@ -205,10 +205,9 @@ export const Main = () => {
             }
             goTo(`/${TAB_IDS.ISSUES}`, { state });
             break;
-          case SCOPE_CHANGE_EVENTS.ASSETS_EMPTY_CATEGORY_PARENT_LINK_CLICKED as string: {
+          case SCOPE_CHANGE_EVENTS.ASSETS_EMPTY_CATEGORY_PARENT_LINK_CLICKED as string:
             goTo(`/${TAB_IDS.ASSETS}`, { state });
             break;
-          }
           case SCOPE_CHANGE_EVENTS.IDE_CODE_LENS_CLICKED as string: {
             const url = getURLToNavigateOnCodeLensClick(scope);
             if (url) {
