@@ -1,4 +1,5 @@
 import { MemoExoticComponent } from "react";
+import { SpanInfo } from "../../../types";
 import { IconProps } from "../../common/icons/types";
 
 export interface AssetTypeListProps {
@@ -12,6 +13,7 @@ export interface AssetCategoriesData {
     name: string;
     count: number;
   }[];
+  parents?: SpanInfo[];
 }
 
 export interface AssetCategoryData {

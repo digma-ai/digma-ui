@@ -8,10 +8,15 @@ import { useStore } from "../../../store/useStore";
 import { isEnvironment } from "../../../typeGuards/isEnvironment";
 import { isNull } from "../../../typeGuards/isNull";
 import { isString } from "../../../typeGuards/isString";
+import { changeScope } from "../../../utils/actions/changeScope";
+import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
+import { SCOPE_CHANGE_EVENTS } from "../../Main/types";
+import { ChildIcon } from "../../common/icons/30px/ChildIcon";
 import { AssetFilterQuery } from "../AssetsFilter/types";
 import { ViewMode } from "../AssetsViewScopeConfiguration/types";
 import { NoDataMessage } from "../NoDataMessage";
 import { actions } from "../actions";
+import { trackingEvents } from "../tracking";
 import { checkIfAnyFiltersApplied, getAssetTypeInfo } from "../utils";
 import { AssetTypeListItem } from "./AssetTypeListItem";
 import * as s from "./styles";
@@ -57,8 +62,8 @@ const getData = (
   });
 };
 
-const getAssetCount = (data: AssetCategoryData[]) =>
-  data.reduce((acc, cur) => acc + cur.count, 0);
+const getAssetCount = (assetCategoriesData: AssetCategoriesData) =>
+  assetCategoriesData.assetCategories.reduce((acc, cur) => acc + cur.count, 0);
 
 export const AssetTypeList = ({
   setRefresher,
@@ -69,9 +74,9 @@ export const AssetTypeList = ({
     search,
     viewMode,
     filters,
-    assetCategories: data
+    assetCategoriesData: data
   } = useAssetsSelector();
-  const { setAssetCategories: setData } = useStore.getState();
+  const { setAssetCategoriesData: setData } = useStore.getState();
   const previousSearch = usePrevious(search);
   const previousViewMode = usePrevious(viewMode);
   const previousData = usePrevious(data);
@@ -83,6 +88,9 @@ export const AssetTypeList = ({
   const previousEnvironment = usePrevious(environment);
   const refreshTimerId = useRef<number>();
   const isServicesFilterEnabled = !scope?.span?.spanCodeObjectId;
+  const { setShowAssetsHeaderToolBox } = useStore.getState();
+  const [showNoDataWithParents, setShowNoDataWithParents] = useState(false);
+
   const isInitialLoading = !data;
 
   const refreshData = useCallback(
@@ -110,9 +118,8 @@ export const AssetTypeList = ({
       timeStamp: number,
       error: DigmaMessageError | undefined
     ) => {
-      const assetCategoriesData = data as AssetCategoriesData;
       if (!error) {
-        setData(assetCategoriesData.assetCategories);
+        setData(data as AssetCategoriesData);
       }
       setLastSetDataTimeStamp(timeStamp);
     };
@@ -134,8 +141,15 @@ export const AssetTypeList = ({
   useEffect(() => {
     if (data && previousData !== data) {
       onAssetCountChange(getAssetCount(data));
+      const showNoDataWithParents = Boolean(
+        data?.parents &&
+          data.parents.length > 0 &&
+          data?.assetCategories.every((x) => x.count === 0)
+      );
+      setShowAssetsHeaderToolBox(!showNoDataWithParents);
+      setShowNoDataWithParents(showNoDataWithParents);
     }
-  }, [previousData, data, onAssetCountChange]);
+  }, [previousData, data, onAssetCountChange, setShowAssetsHeaderToolBox]);
 
   useEffect(() => {
     if (
@@ -172,24 +186,67 @@ export const AssetTypeList = ({
     onAssetTypeSelect(assetTypeId);
   };
 
+  const handleAssetLinkClick = (spanCodeObjectId: string) => {
+    sendUserActionTrackingEvent(trackingEvents.ALL_ASSETS_LINK_CLICKED);
+    changeScope({
+      span: { spanCodeObjectId },
+      context: {
+        event: SCOPE_CHANGE_EVENTS.ASSETS_EMPTY_CATEGORY_PARENT_LINK_CLICKED
+      }
+    });
+  };
+
   if (isInitialLoading) {
     return <NoDataMessage type={"loading"} />;
   }
 
-  if (data?.every((x) => x.count === 0)) {
+  if (data?.assetCategories.every((x) => x.count === 0)) {
     if (areAnyFiltersApplied) {
       return <NoDataMessage type={"noSearchResults"} />;
     }
 
-    if (scope !== null) {
-      return <NoDataMessage type={"noDataForAsset"} />;
+    if (!scope) {
+      return <NoDataMessage type={"noDataYet"} />;
     }
 
-    return <NoDataMessage type={"noDataYet"} />;
+    if (showNoDataWithParents && data.parents) {
+      return (
+        <s.EmptyStateContainer>
+          <s.StyledEmptyState
+            icon={ChildIcon}
+            title="No Child Assets"
+            content={
+              <>
+                <s.EmptyStateTextContainer>
+                  <span>
+                    There are no child assets under this asset. You can try
+                  </span>
+                  <span>
+                    browsing its parent spans to continue to explore the trace.
+                  </span>
+                </s.EmptyStateTextContainer>
+                {data.parents.map((x) => (
+                  <s.ParentLink
+                    key={x.spanCodeObjectId}
+                    onClick={() => handleAssetLinkClick(x.spanCodeObjectId)}
+                  >
+                    {x.displayName}
+                  </s.ParentLink>
+                ))}
+              </>
+            }
+          />
+        </s.EmptyStateContainer>
+      );
+    }
+
+    return <NoDataMessage type={"noDataForAsset"} />;
   }
 
   const assetTypeListItems = ASSET_TYPE_IDS.map((assetTypeId) => {
-    const assetTypeData = data?.find((x) => x.name === assetTypeId);
+    const assetTypeData = data?.assetCategories.find(
+      (x) => x.name === assetTypeId
+    );
     const assetTypeInfo = getAssetTypeInfo(assetTypeId);
 
     if (assetTypeData && assetTypeInfo) {

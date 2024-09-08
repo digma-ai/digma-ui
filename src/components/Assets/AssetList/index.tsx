@@ -157,6 +157,7 @@ export const AssetList = ({
   const previousScopeSpanCodeObjectId = usePrevious(scopeSpanCodeObjectId);
   const isServicesFilterEnabled = !scopeSpanCodeObjectId;
   const isInitialLoading = !data;
+  const { setShowAssetsHeaderToolBox } = useStore.getState();
 
   const refreshData = useCallback(() => {
     getData(
@@ -212,12 +213,13 @@ export const AssetList = ({
     };
 
     dispatcher.addActionListener(actions.SET_DATA, handleAssetsData);
+    setShowAssetsHeaderToolBox(true);
 
     return () => {
       dispatcher.removeActionListener(actions.SET_DATA, handleAssetsData);
       window.clearTimeout(refreshTimerId.current);
     };
-  }, [setData]);
+  }, [setData, setShowAssetsHeaderToolBox]);
 
   useEffect(() => {
     if (data && previousData?.filteredCount !== data?.filteredCount) {

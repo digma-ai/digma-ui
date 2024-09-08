@@ -42,6 +42,7 @@ export const Assets = () => {
     useState<DataRefresher | null>(null);
   const { goTo } = useHistory();
   const isBackendUpgradeMessageVisible = false;
+  const { showAssetsHeaderToolBox } = useAssetsSelector();
 
   useEffect(() => {
     if (previousScopeSpanCodeObjectId !== scopeSpanCodeObjectId) {
@@ -118,7 +119,7 @@ export const Assets = () => {
       return <NoDataMessage type={"noDataYet"} />;
     }
 
-    if (!filters) {
+    if (!filters && showAssetsHeaderToolBox) {
       return <NoDataMessage type={"loading"} />;
     }
 
@@ -150,24 +151,29 @@ export const Assets = () => {
             <AssetsViewScopeConfiguration assetsCount={assetsCount} />
           </s.HeaderItem>
         )}
-        <s.HeaderItem>
-          <SearchInput
-            onChange={handleSearchInputChange}
-            value={searchInputValue}
-          />
-          <AssetsFilter />
-          <Tooltip title={"Refresh"}>
-            <s.RefreshButton
-              buttonType={"tertiary"}
-              icon={RefreshIcon}
-              onClick={handleRefresh}
-            />
-          </Tooltip>
-        </s.HeaderItem>
-        {scope?.span && (
-          <s.HeaderItem>Assets filtered to current scope</s.HeaderItem>
+        {showAssetsHeaderToolBox && (
+          <>
+            <s.HeaderItem>
+              <SearchInput
+                onChange={handleSearchInputChange}
+                value={searchInputValue}
+              />
+              <AssetsFilter />
+              <Tooltip title={"Refresh"}>
+                <s.RefreshButton
+                  buttonType={"tertiary"}
+                  icon={RefreshIcon}
+                  onClick={handleRefresh}
+                />
+              </Tooltip>
+            </s.HeaderItem>
+            {scope?.span && (
+              <s.HeaderItem>Assets filtered to current scope</s.HeaderItem>
+            )}
+          </>
         )}
       </s.Header>
+
       {renderContent()}
     </s.Container>
   );

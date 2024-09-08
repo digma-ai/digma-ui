@@ -5,12 +5,12 @@ import {
   SORTING_CRITERION,
   SORTING_ORDER
 } from "../../components/Assets/AssetList/types";
-import { AssetCategoryData } from "../../components/Assets/AssetTypeList/types";
+import { AssetCategoriesData } from "../../components/Assets/AssetTypeList/types";
 import { AssetFilterQuery } from "../../components/Assets/AssetsFilter/types";
 import { ViewMode } from "../../components/Assets/AssetsViewScopeConfiguration/types";
 
 export interface AssetsState {
-  assetCategories: AssetCategoryData[] | null;
+  assetCategoriesData: AssetCategoriesData | null;
   areAssetCategoriesLoading: boolean;
   selectedAssetCategory: string | null;
   assets: AssetsData | null;
@@ -20,6 +20,7 @@ export interface AssetsState {
   search: string;
   page: number;
   sorting: Sorting;
+  showAssetsHeaderToolBox: boolean;
 }
 
 const allFiltersInitialState: {
@@ -45,11 +46,12 @@ const allFiltersInitialState: {
 
 export const initialState: AssetsState = {
   ...allFiltersInitialState,
-  assetCategories: null,
+  assetCategoriesData: null,
   areAssetCategoriesLoading: false,
   selectedAssetCategory: null,
   assets: null,
-  areAssetsLoading: false
+  areAssetsLoading: false,
+  showAssetsHeaderToolBox: true
 };
 
 const set = (update: Partial<AssetsState>) => (state: AssetsState) => ({
@@ -61,8 +63,8 @@ export const assetsSlice = createSlice({
   name: "assets",
   value: initialState,
   actions: {
-    setAssetCategories: (categories: AssetCategoryData[]) =>
-      set({ assetCategories: categories }),
+    setAssetCategoriesData: (data: AssetCategoriesData) =>
+      set({ assetCategoriesData: data }),
     setAreAssetCategoriesLoading: (isLoading: boolean) =>
       set({ areAssetCategoriesLoading: isLoading }),
     setSelectedAssetCategory: (category: string | null) =>
@@ -75,6 +77,8 @@ export const assetsSlice = createSlice({
     setAssetsSearch: (search: string) => set({ search }),
     setAssetsPage: (page: number) => set({ page }),
     setAssetsSorting: (sorting: Sorting) => set({ sorting }),
+    setShowAssetsHeaderToolBox: (showAssetsHeaderToolBox: boolean) =>
+      set({ showAssetsHeaderToolBox }),
     resetAssets: () => set(initialState)
   }
 });

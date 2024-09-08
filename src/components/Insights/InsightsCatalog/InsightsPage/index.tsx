@@ -562,7 +562,7 @@ const renderEmptyState = (
     );
   }
 
-  if (!scope && insightsViewType == "Analytics") {
+  if (!scope?.span?.spanCodeObjectId && insightsViewType == "Analytics") {
     return (
       <NewEmptyState
         icon={PulseIcon}
