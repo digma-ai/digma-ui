@@ -259,7 +259,7 @@ export const IssuesFilter = () => {
     <FilterPopup
       onClearAll={handleClearFiltersButtonClick}
       onClose={handleCloseButtonClick}
-      title="Filters"
+      title={"Filters"}
       selectedFiltersCount={selectedFiltersCount}
       filters={filterComponents}
     />

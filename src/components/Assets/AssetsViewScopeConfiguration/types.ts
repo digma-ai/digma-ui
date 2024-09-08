@@ -1,12 +1,5 @@
-import { Scope } from "../../common/App/types";
-
-export interface AssetsViewConfigurationProps {
-  onAssetViewChange: (assetViewScope: AssetScopeOption) => void;
-  currentScope: Scope;
+export interface AssetsViewScopeConfigurationProps {
   assetsCount?: number;
 }
 
-export interface AssetScopeOption {
-  scopedSpanCodeObjectId?: string;
-  isDirect: boolean;
-}
+export type ViewMode = "descendants" | "children";

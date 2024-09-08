@@ -1,6 +1,8 @@
+import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { GlobeIcon } from "../../common/icons/16px/GlobeIcon";
 import { WrenchIcon } from "../../common/icons/16px/WrenchIcon";
 import { Tooltip } from "../../common/v3/Tooltip";
+import { trackingEvents } from "../../Main/tracking";
 import * as s from "./styles";
 import { SpanInfoProps } from "./types";
 
@@ -18,6 +20,9 @@ const getLanguage = (assetTypeId: string) => {
 
 export const SpanInfo = ({ onCollapse, data }: SpanInfoProps) => {
   const handleCollapseButtonClick = () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.SPAN_INFO_COLLAPSE_BUTTON_CLICKED
+    );
     onCollapse();
   };
 

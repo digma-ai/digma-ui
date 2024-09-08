@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getFeatureFlagValue } from "../../featureFlags";
 import { useDebounce } from "../../hooks/useDebounce";
 import { usePrevious } from "../../hooks/usePrevious";
+import { useAssetsSelector } from "../../store/assets/useAssetsSelector";
 import { useConfigSelector } from "../../store/config/useConfigSelector";
-import { FeatureFlag } from "../../types";
+import { useStore } from "../../store/useStore";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 import { useHistory } from "../Main/useHistory";
 import { EmptyState } from "../common/EmptyState";
@@ -14,49 +14,44 @@ import { Tooltip } from "../common/v3/Tooltip";
 import { AssetList } from "./AssetList";
 import { AssetTypeList } from "./AssetTypeList";
 import { AssetsFilter } from "./AssetsFilter";
-import { AssetFilterQuery } from "./AssetsFilter/types";
 import { AssetsViewScopeConfiguration } from "./AssetsViewScopeConfiguration";
-import { AssetScopeOption } from "./AssetsViewScopeConfiguration/types";
 import { NoDataMessage } from "./NoDataMessage";
 import * as s from "./styles";
 import { trackingEvents } from "./tracking";
 import { DataRefresher } from "./types";
 
+const SEARCH_INPUT_DEBOUNCE_DELAY = 1000; // in milliseconds
+
 export const Assets = () => {
   const [assetsCount, setAssetsCount] = useState<number>();
   const params = useParams();
   const selectedAssetTypeId = useMemo(() => params.typeId, [params]);
-  const [searchInputValue, setSearchInputValue] = useState("");
-  const debouncedSearchInputValue = useDebounce(searchInputValue, 1000);
-  const [assetScopeOption, setAssetScopeOption] =
-    useState<AssetScopeOption | null>(null);
-  const [selectedFilters, setSelectedFilters] = useState<AssetFilterQuery>();
-  const { scope, environments, backendInfo } = useConfigSelector();
-  const previousScopeSpanCodeObjectId = usePrevious(
-    scope?.span?.spanCodeObjectId
+  const { search, filters } = useAssetsSelector();
+  const { setSearch } = useStore.getState();
+  const [searchInputValue, setSearchInputValue] = useState(search);
+  const debouncedSearchInputValue = useDebounce(
+    searchInputValue,
+    SEARCH_INPUT_DEBOUNCE_DELAY
   );
+  const { scope, environments } = useConfigSelector();
+  const scopeSpanCodeObjectId = scope?.span?.spanCodeObjectId;
+  const previousScopeSpanCodeObjectId = usePrevious(scopeSpanCodeObjectId);
   const [assetTypeListDataRefresher, setAssetTypeListRefresher] =
     useState<DataRefresher | null>(null);
   const [assetListDataRefresher, setAssetListRefresher] =
     useState<DataRefresher | null>(null);
   const { goTo } = useHistory();
   const isBackendUpgradeMessageVisible = false;
-  const areExtendedAssetsFiltersEnabled = getFeatureFlagValue(
-    backendInfo,
-    FeatureFlag.ARE_EXTENDED_ASSETS_FILTERS_ENABLED
-  );
 
   useEffect(() => {
-    if (!scope?.span) {
-      setAssetScopeOption(null);
-    }
-  }, [scope]);
-
-  useEffect(() => {
-    if (previousScopeSpanCodeObjectId !== scope?.span?.spanCodeObjectId) {
+    if (previousScopeSpanCodeObjectId !== scopeSpanCodeObjectId) {
       setSearchInputValue("");
     }
-  }, [scope?.span?.spanCodeObjectId, previousScopeSpanCodeObjectId]);
+  }, [scopeSpanCodeObjectId, previousScopeSpanCodeObjectId, setSearch]);
+
+  useEffect(() => {
+    setSearch(debouncedSearchInputValue);
+  }, [debouncedSearchInputValue, setSearch]);
 
   const handleGoToAllAssets = () => {
     goTo("..");
@@ -68,10 +63,6 @@ export const Assets = () => {
 
   const handleAssetTypeSelect = (assetTypeId: string) => {
     goTo(assetTypeId);
-  };
-
-  const handleApplyFilters = (filters: AssetFilterQuery) => {
-    setSelectedFilters(filters);
   };
 
   const handleRefresh = () => {
@@ -90,10 +81,6 @@ export const Assets = () => {
 
   const handleAssetCountChange = useCallback((count: number) => {
     setAssetsCount(count);
-  }, []);
-
-  const handleAssetViewModeChange = useCallback((val: AssetScopeOption) => {
-    setAssetScopeOption(val);
   }, []);
 
   const handleAssetTypeListRefresherChange = useCallback(
@@ -131,7 +118,7 @@ export const Assets = () => {
       return <NoDataMessage type={"noDataYet"} />;
     }
 
-    if (!selectedFilters) {
+    if (!filters) {
       return <NoDataMessage type={"loading"} />;
     }
 
@@ -139,9 +126,6 @@ export const Assets = () => {
       return (
         <AssetTypeList
           onAssetTypeSelect={handleAssetTypeSelect}
-          filters={selectedFilters}
-          searchQuery={debouncedSearchInputValue}
-          scopeViewOptions={assetScopeOption}
           setRefresher={handleAssetTypeListRefresherChange}
           onAssetCountChange={handleAssetCountChange}
         />
@@ -152,9 +136,6 @@ export const Assets = () => {
       <AssetList
         onGoToAllAssets={handleGoToAllAssets}
         assetTypeId={selectedAssetTypeId}
-        filters={selectedFilters}
-        searchQuery={debouncedSearchInputValue}
-        scopeViewOptions={assetScopeOption}
         setRefresher={handleAssetListRefresherChange}
         onAssetCountChange={handleAssetCountChange}
       />
@@ -166,11 +147,7 @@ export const Assets = () => {
       <s.Header>
         {scope?.span && (
           <s.HeaderItem>
-            <AssetsViewScopeConfiguration
-              assetsCount={assetsCount}
-              currentScope={scope}
-              onAssetViewChange={handleAssetViewModeChange}
-            />
+            <AssetsViewScopeConfiguration assetsCount={assetsCount} />
           </s.HeaderItem>
         )}
         <s.HeaderItem>
@@ -178,16 +155,7 @@ export const Assets = () => {
             onChange={handleSearchInputChange}
             value={searchInputValue}
           />
-          <AssetsFilter
-            onApply={handleApplyFilters}
-            filters={selectedFilters}
-            assetScopeOption={
-              areExtendedAssetsFiltersEnabled ? assetScopeOption : null
-            }
-            searchQuery={
-              areExtendedAssetsFiltersEnabled ? debouncedSearchInputValue : ""
-            }
-          />
+          <AssetsFilter />
           <Tooltip title={"Refresh"}>
             <s.RefreshButton
               buttonType={"tertiary"}

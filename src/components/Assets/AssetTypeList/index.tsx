@@ -2,11 +2,14 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { DigmaMessageError } from "../../../api/types";
 import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
+import { useAssetsSelector } from "../../../store/assets/useAssetsSelector";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
+import { useStore } from "../../../store/useStore";
 import { isEnvironment } from "../../../typeGuards/isEnvironment";
 import { isNull } from "../../../typeGuards/isNull";
 import { isString } from "../../../typeGuards/isString";
 import { AssetFilterQuery } from "../AssetsFilter/types";
+import { ViewMode } from "../AssetsViewScopeConfiguration/types";
 import { NoDataMessage } from "../NoDataMessage";
 import { actions } from "../actions";
 import { checkIfAnyFiltersApplied, getAssetTypeInfo } from "../utils";
@@ -31,18 +34,18 @@ export const ASSET_TYPE_IDS = [
 ];
 
 const getData = (
-  filters: AssetFilterQuery = { services: [], operations: [], insights: [] },
+  filters: AssetFilterQuery,
   searchQuery: string,
-  isDirect?: boolean,
-  scopedSpanCodeObjectId?: string
+  viewMode: ViewMode,
+  scopeSpanCodeObjectId?: string
 ) => {
   window.sendMessageToDigma({
     action: actions.GET_CATEGORIES_DATA,
     payload: {
       query: {
-        directOnly: isDirect,
-        scopedSpanCodeObjectId,
-        ...(scopedSpanCodeObjectId
+        directOnly: viewMode === "children",
+        scopedSpanCodeObjectId: scopeSpanCodeObjectId,
+        ...(scopeSpanCodeObjectId
           ? {
               ...filters,
               services: []
@@ -54,44 +57,37 @@ const getData = (
   });
 };
 
-const getAssetCount = (assetCategoriesData: AssetCategoriesData) =>
-  assetCategoriesData.assetCategories.reduce((acc, cur) => acc + cur.count, 0);
+const getAssetCount = (data: AssetCategoryData[]) =>
+  data.reduce((acc, cur) => acc + cur.count, 0);
 
 export const AssetTypeList = ({
-  filters,
-  searchQuery,
-  scopeViewOptions,
   setRefresher,
   onAssetCountChange,
   onAssetTypeSelect
 }: AssetTypeListProps) => {
-  const [data, setData] = useState<AssetCategoriesData>();
+  const {
+    search,
+    viewMode,
+    filters,
+    assetCategories: data
+  } = useAssetsSelector();
+  const { setAssetCategories: setData } = useStore.getState();
+  const previousSearch = usePrevious(search);
+  const previousViewMode = usePrevious(viewMode);
   const previousData = usePrevious(data);
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
   const { scope, environment } = useConfigSelector();
+  const scopeSpanCodeObjectId = scope?.span?.spanCodeObjectId;
+  const previousScopeSpanCodeObjectId = usePrevious(scopeSpanCodeObjectId);
   const previousEnvironment = usePrevious(environment);
   const refreshTimerId = useRef<number>();
-  const previousSearchQuery = usePrevious(searchQuery);
-  const previousViewScope = usePrevious(scopeViewOptions);
   const isServicesFilterEnabled = !scope?.span?.spanCodeObjectId;
-
   const isInitialLoading = !data;
 
   const refreshData = useCallback(
-    () =>
-      getData(
-        filters,
-        searchQuery,
-        scopeViewOptions?.isDirect,
-        scopeViewOptions?.scopedSpanCodeObjectId
-      ),
-    [
-      filters,
-      scopeViewOptions?.isDirect,
-      scopeViewOptions?.scopedSpanCodeObjectId,
-      searchQuery
-    ]
+    () => getData(filters, search, viewMode, scopeSpanCodeObjectId),
+    [filters, scopeSpanCodeObjectId, viewMode, search]
   );
 
   useEffect(() => {
@@ -100,7 +96,7 @@ export const AssetTypeList = ({
 
   const areAnyFiltersApplied = checkIfAnyFiltersApplied(
     filters,
-    searchQuery,
+    search,
     isServicesFilterEnabled
   );
 
@@ -114,8 +110,9 @@ export const AssetTypeList = ({
       timeStamp: number,
       error: DigmaMessageError | undefined
     ) => {
+      const assetCategoriesData = data as AssetCategoriesData;
       if (!error) {
-        setData(data as AssetCategoriesData);
+        setData(assetCategoriesData.assetCategories);
       }
       setLastSetDataTimeStamp(timeStamp);
     };
@@ -132,7 +129,7 @@ export const AssetTypeList = ({
       );
       window.clearTimeout(refreshTimerId.current);
     };
-  }, []);
+  }, [setData]);
 
   useEffect(() => {
     if (data && previousData !== data) {
@@ -144,18 +141,21 @@ export const AssetTypeList = ({
     if (
       (isEnvironment(previousEnvironment) &&
         previousEnvironment.id !== environment?.id) ||
-      (isString(previousSearchQuery) && previousSearchQuery !== searchQuery) ||
-      previousViewScope !== scopeViewOptions
+      (isString(previousSearch) && previousSearch !== search) ||
+      previousViewMode !== viewMode ||
+      previousScopeSpanCodeObjectId !== scopeSpanCodeObjectId
     ) {
       refreshData();
     }
   }, [
     environment?.id,
     previousEnvironment,
-    previousSearchQuery,
-    previousViewScope,
-    scopeViewOptions,
-    searchQuery,
+    search,
+    previousSearch,
+    previousScopeSpanCodeObjectId,
+    scopeSpanCodeObjectId,
+    viewMode,
+    previousViewMode,
     refreshData
   ]);
 
@@ -176,7 +176,7 @@ export const AssetTypeList = ({
     return <NoDataMessage type={"loading"} />;
   }
 
-  if (data?.assetCategories.every((x) => x.count === 0)) {
+  if (data?.every((x) => x.count === 0)) {
     if (areAnyFiltersApplied) {
       return <NoDataMessage type={"noSearchResults"} />;
     }
@@ -189,9 +189,7 @@ export const AssetTypeList = ({
   }
 
   const assetTypeListItems = ASSET_TYPE_IDS.map((assetTypeId) => {
-    const assetTypeData = data?.assetCategories.find(
-      (x) => x.name === assetTypeId
-    );
+    const assetTypeData = data?.find((x) => x.name === assetTypeId);
     const assetTypeInfo = getAssetTypeInfo(assetTypeId);
 
     if (assetTypeData && assetTypeInfo) {

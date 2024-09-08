@@ -1,6 +1,9 @@
 import styled from "styled-components";
 import { Card } from "../../common/v3/Card";
-import { Content as CardContent } from "../../common/v3/Card/styles";
+import {
+  Content as CardContent,
+  Header as CardHeader
+} from "../../common/v3/Card/styles";
 
 export const Container = styled.div`
   padding: 8px;
@@ -15,11 +18,11 @@ export const ErrorDetailsCard = styled(Card)`
   min-height: 450px;
   overflow: hidden;
 
-  & > ${CardContent}:first-child {
+  & > ${CardHeader} {
     height: initial;
   }
 
-  & > ${CardContent}:last-child {
+  & > ${CardContent} {
     overflow: hidden;
   }
 `;

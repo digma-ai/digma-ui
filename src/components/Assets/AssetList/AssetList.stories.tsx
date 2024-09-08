@@ -38,7 +38,6 @@ const mockedConfig: ConfigContextData = {
 
 export const Default: Story = {
   args: {
-    searchQuery: "",
     setRefresher: () => {
       return undefined;
     },
@@ -64,7 +63,6 @@ export const WithPerformanceImpact: Story = {
     )
   ],
   args: {
-    searchQuery: "",
     setRefresher: () => {
       return undefined;
     },

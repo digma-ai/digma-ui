@@ -3,7 +3,7 @@ name: Lint & build
 on:
   push:
     branches: ["main"]
-    # Github Actions do not support YAML anchors yet,so we have to repeat
+    # Github Actions don't support YAML anchors yet, so we have to repeat
     # the paths-ignore in both push and pull_request events.
     # More info: https://github.com/actions/runner/issues/1182
     paths-ignore:

@@ -176,7 +176,7 @@ export const IssueCompactCard = ({
         {metric && <Tag content={metric} type={"highlight"} />}
         {insight.status && statusInfo && (
           <Tooltip
-            title={<KeyValue label="Status">{statusInfo.label}</KeyValue>}
+            title={<KeyValue label={"Status"}>{statusInfo.label}</KeyValue>}
             placement={"top"}
             fullWidth={true}
           >

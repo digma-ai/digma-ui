@@ -60,8 +60,8 @@ export const AffectedEndpointsSelector = ({
       listHeader={
         <s.ListHeader>
           <EndpointOption
-            route="Endpoint"
-            serviceName="Service"
+            route={"Endpoint"}
+            serviceName={"Service"}
             hideCopyIcon={true}
           />
         </s.ListHeader>

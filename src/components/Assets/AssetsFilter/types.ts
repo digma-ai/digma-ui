@@ -1,11 +1,4 @@
-import { AssetScopeOption } from "../AssetsViewScopeConfiguration/types";
-
-export interface AssetsFilterProps {
-  filters?: AssetFilterQuery;
-  onApply: (filter: AssetFilterQuery) => void;
-  assetScopeOption: AssetScopeOption | null;
-  searchQuery: string;
-}
+import { InsightType } from "../../Insights/types";
 
 export interface AssetFilterEntry {
   enabled: boolean;
@@ -34,4 +27,13 @@ export interface AssetFilterQuery {
 
 export interface GetAssetFiltersDataPayload {
   query: AssetFilterQuery;
+}
+
+export interface GetAssetFiltersDataParams {
+  services: string[];
+  operations: string[];
+  insights: InsightType[];
+  viewMode?: string;
+  scopeSpanCodeObjectId?: string;
+  searchQuery: string;
 }
