@@ -1,29 +1,30 @@
 import styled from "styled-components";
-import { bodySemiboldTypography } from "../../common/App/typographies";
+import { bodySemiboldTypography } from "../../App/typographies";
 
 export const Container = styled.div`
   display: flex;
+  align-items: center;
+  justify-content: center;
   flex-direction: column;
-  gap: 8px;
-  padding: 8px;
-  overflow: auto;
+  padding: 0 40px;
+  gap: 4px;
+  flex-grow: 1;
 `;
 
-export const EmptyStateIconContainer = styled.div`
+export const IconContainer = styled.div`
+  width: 50px;
+  height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 50px;
-  height: 50px;
   border-radius: 50%;
-  color: ${({ theme }) => theme.colors.v3.icon.secondary};
   background: ${({ theme }) => theme.colors.v3.surface.sidePanelHeader};
+  color: ${({ theme }) => theme.colors.v3.surface.gray};
 `;
 
-export const EmptyStateTitle = styled.div`
+export const Title = styled.div`
   ${bodySemiboldTypography}
-
-  display: flex;
-  flex-direction: column;
+  text-align: center;
   color: ${({ theme }) => theme.colors.v3.text.primary};
+  margin-top: 4px;
 `;

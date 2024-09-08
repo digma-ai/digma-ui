@@ -8,6 +8,7 @@ import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { useStore } from "../../../store/useStore";
 import { isEnvironment } from "../../../typeGuards/isEnvironment";
 import { changeScope } from "../../../utils/actions/changeScope";
+import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { SCOPE_CHANGE_EVENTS } from "../../Main/types";
 import { EmptyState } from "../../common/EmptyState";
 import { Menu } from "../../common/Menu";
@@ -22,6 +23,7 @@ import { Direction } from "../../common/icons/types";
 import { AssetFilterQuery } from "../AssetsFilter/types";
 import { ViewMode } from "../AssetsViewScopeConfiguration/types";
 import { actions } from "../actions";
+import { trackingEvents } from "../tracking";
 import { checkIfAnyFiltersApplied, getAssetTypeInfo } from "../utils";
 import { AssetEntry as AssetEntryComponent } from "./AssetEntry";
 import * as s from "./styles";
@@ -292,6 +294,8 @@ export const AssetList = ({
   ]);
 
   const handleAllAssetsLinkClick = () => {
+    sendUserActionTrackingEvent(trackingEvents.ALL_ASSETS_LINK_CLICKED);
+
     onGoToAllAssets();
   };
 
