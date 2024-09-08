@@ -12,7 +12,7 @@ export const FilterPanel = ({
   unreadCount
 }: FilterPanelProps) => {
   const { filters } = useInsightsSelector();
-  const { setFilters } = useStore.getState();
+  const { setInsightsFilters: setFilters } = useStore.getState();
 
   const handleFilterChipClick = (selectedFilter?: InsightFilterType) => {
     const newFilters = new Set(filters);

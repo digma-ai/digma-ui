@@ -133,8 +133,9 @@ export const AssetList = ({
   } = useAssetsSelector();
   const {
     setAssets: setData,
-    setSorting,
-    setAssetsPage: setPage
+    setAssetsSorting: setSorting,
+    setAssetsPage: setPage,
+    setShowAssetsHeaderToolBox
   } = useStore.getState();
   const previousData = usePrevious(data);
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
@@ -157,7 +158,6 @@ export const AssetList = ({
   const previousScopeSpanCodeObjectId = usePrevious(scopeSpanCodeObjectId);
   const isServicesFilterEnabled = !scopeSpanCodeObjectId;
   const isInitialLoading = !data;
-  const { setShowAssetsHeaderToolBox } = useStore.getState();
 
   const refreshData = useCallback(() => {
     getData(

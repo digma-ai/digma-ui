@@ -11,7 +11,7 @@ import { ViewMode } from "../../components/Assets/AssetsViewScopeConfiguration/t
 
 export interface AssetsState {
   assetCategoriesData: AssetCategoriesData | null;
-  areAssetCategoriesLoading: boolean;
+  isAssetCategoriesDataLoading: boolean;
   selectedAssetCategory: string | null;
   assets: AssetsData | null;
   areAssetsLoading: boolean;
@@ -47,7 +47,7 @@ const allFiltersInitialState: {
 export const initialState: AssetsState = {
   ...allFiltersInitialState,
   assetCategoriesData: null,
-  areAssetCategoriesLoading: false,
+  isAssetCategoriesDataLoading: false,
   selectedAssetCategory: null,
   assets: null,
   areAssetsLoading: false,
@@ -65,8 +65,8 @@ export const assetsSlice = createSlice({
   actions: {
     setAssetCategoriesData: (data: AssetCategoriesData) =>
       set({ assetCategoriesData: data }),
-    setAreAssetCategoriesLoading: (isLoading: boolean) =>
-      set({ areAssetCategoriesLoading: isLoading }),
+    setIsAssetCategoriesDataLoading: (isLoading: boolean) =>
+      set({ isAssetCategoriesDataLoading: isLoading }),
     setSelectedAssetCategory: (category: string | null) =>
       set({ selectedAssetCategory: category }),
     setAssets: (assets: AssetsData) => set({ assets }),

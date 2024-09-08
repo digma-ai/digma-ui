@@ -260,6 +260,7 @@ export const AssetsFilter = () => {
       getData(query);
     }
   }, [isOpen, previousIsOpen, query]);
+
   // Apply filters when data is loaded
   useEffect(() => {
     if (previousData === data || isNull(data)) {

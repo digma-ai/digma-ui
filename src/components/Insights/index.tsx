@@ -242,9 +242,9 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
     isRegistrationEnabled && !userRegistrationEmail;
   const {
     setInsightViewType,
-    setFilteredInsightTypes,
-    setFilters,
-    insightsReset: reset
+    setInsightsFilteredInsightTypes: setFilteredInsightTypes,
+    setInsightsFilters: setFilters,
+    resetInsights: reset
   } = useStore.getState();
   const {
     insightViewType: storedInsightViewType,

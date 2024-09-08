@@ -145,7 +145,8 @@ export const useInsightsData = ({
     isDataLoading: isLoading,
     insightViewType
   } = useInsightsSelector();
-  const { setData, setIsDataLoading: setIsLoading } = useStore.getState();
+  const { setInsightsData: setData, setIsInsightsDataLoading: setIsLoading } =
+    useStore.getState();
   const isInitialLoading = !data && isLoading;
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);

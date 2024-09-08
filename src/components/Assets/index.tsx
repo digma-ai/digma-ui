@@ -27,7 +27,7 @@ export const Assets = () => {
   const params = useParams();
   const selectedAssetTypeId = useMemo(() => params.typeId, [params]);
   const { search, filters } = useAssetsSelector();
-  const { setSearch } = useStore.getState();
+  const { setAssetsSearch: setSearch } = useStore.getState();
   const [searchInputValue, setSearchInputValue] = useState(search);
   const debouncedSearchInputValue = useDebounce(
     searchInputValue,

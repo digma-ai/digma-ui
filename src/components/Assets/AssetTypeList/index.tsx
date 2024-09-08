@@ -76,7 +76,8 @@ export const AssetTypeList = ({
     filters,
     assetCategoriesData: data
   } = useAssetsSelector();
-  const { setAssetCategoriesData: setData } = useStore.getState();
+  const { setAssetCategoriesData: setData, setShowAssetsHeaderToolBox } =
+    useStore.getState();
   const previousSearch = usePrevious(search);
   const previousViewMode = usePrevious(viewMode);
   const previousData = usePrevious(data);
@@ -88,7 +89,6 @@ export const AssetTypeList = ({
   const previousEnvironment = usePrevious(environment);
   const refreshTimerId = useRef<number>();
   const isServicesFilterEnabled = !scope?.span?.spanCodeObjectId;
-  const { setShowAssetsHeaderToolBox } = useStore.getState();
   const [showNoDataWithParents, setShowNoDataWithParents] = useState(false);
 
   const isInitialLoading = !data;
