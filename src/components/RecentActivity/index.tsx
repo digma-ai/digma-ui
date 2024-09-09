@@ -552,7 +552,7 @@ export const RecentActivity = () => {
           {environmentToDelete && (
             <ConfirmationDialog
               title={"Delete environment"}
-              message={"Are you sure that you want to delete this environment?"}
+              content={"Are you sure that you want to delete this environment?"}
               confirmButtonText={"Delete"}
               onConfirm={handleConfirmEnvironmentDeletion}
               onCancel={handleCloseDeleteConfirmation}
@@ -564,8 +564,11 @@ export const RecentActivity = () => {
           {environmentToClearData && (
             <ConfirmationDialog
               title={"Clear data?"}
-              message={
-                "Are you sure you want to clear the data from this environment? This action cannot be undone."
+              content={
+                <s.ClearDataMessageContainer>
+                  <span>Are you sure you want to clear the data from this</span>
+                  <span>environment? This action cannot be undone.</span>
+                </s.ClearDataMessageContainer>
               }
               confirmButtonText={"Clear Data"}
               onConfirm={handleConfirmEnvironmentDataClearance}

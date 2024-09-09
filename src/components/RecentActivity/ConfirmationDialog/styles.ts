@@ -12,7 +12,6 @@ export const Container = styled.div`
   gap: 8px;
   padding: 12px;
   border-radius: 4px;
-  width: 339px;
   height: fit-content;
   background: ${({ theme }) => theme.colors.v3.surface.primary};
   color: ${({ theme }) => theme.colors.v3.text.secondary};
@@ -45,4 +44,8 @@ export const CloseButton = styled.button`
   border: none;
   cursor: pointer;
   color: ${({ theme }) => theme.colors.v3.text.secondary};
+`;
+
+export const MessageContainer = styled.span`
+  width: 339px;
 `;
