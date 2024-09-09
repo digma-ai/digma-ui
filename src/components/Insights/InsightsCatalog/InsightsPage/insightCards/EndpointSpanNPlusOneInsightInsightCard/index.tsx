@@ -81,7 +81,12 @@ export const EndpointSpanNPlusOneInsightCard = ({
             >
               {span.requestPercentage}%
             </KeyValue>
-            <KeyValue label={"Duration"}>{durationString}</KeyValue>
+            <KeyValue
+              label={"Duration"}
+              info={"The execution time of the group"}
+            >
+              {durationString}
+            </KeyValue>
           </ColumnsContainer>
         </ContentContainer>
       }

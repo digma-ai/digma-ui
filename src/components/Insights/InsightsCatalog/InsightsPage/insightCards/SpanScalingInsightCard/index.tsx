@@ -129,7 +129,14 @@ export const SpanScalingInsightCard = ({
             <KeyValue label={"Tested concurrency"}>
               {insight.maxConcurrency}
             </KeyValue>
-            <KeyValue label={"Duration"}>{durationRangeString}</KeyValue>
+            <KeyValue
+              label={"Duration"}
+              info={
+                "The execution time range from minimal  to maximum duration"
+              }
+            >
+              {durationRangeString}
+            </KeyValue>
           </ColumnsContainer>
           {renderRootCause(insight.rootCauseSpans)}
           {affectedEndpoints.length > 0 && (

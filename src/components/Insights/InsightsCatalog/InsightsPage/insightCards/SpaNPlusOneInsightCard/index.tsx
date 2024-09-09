@@ -118,7 +118,10 @@ export const SpaNPlusOneInsightCard = ({
               >
                 {selectedEndpoint.requestPercentage}%
               </KeyValue>
-              <KeyValue label={"Duration"}>
+              <KeyValue
+                label={"Duration"}
+                info={"The execution time of the group for selected endpoint"}
+              >
                 {getDurationString(selectedEndpoint.duration)}
               </KeyValue>
             </ColumnsContainer>
