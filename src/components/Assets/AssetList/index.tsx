@@ -4,6 +4,7 @@ import { DigmaMessageError } from "../../../api/types";
 import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
+import { useStore } from "../../../store/useStore";
 import { isEnvironment } from "../../../typeGuards/isEnvironment";
 import { changeScope } from "../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
@@ -147,6 +148,7 @@ export const AssetList = ({
   const previousEnvironment = usePrevious(environment);
   const previousViewScope = usePrevious(scopeViewOptions);
   const isServicesFilterEnabled = !scope?.span?.spanCodeObjectId;
+  const { setShowAssetsHeaderToolBox } = useStore.getState();
 
   const refreshData = useCallback(() => {
     getData(
@@ -204,6 +206,7 @@ export const AssetList = ({
     };
 
     dispatcher.addActionListener(actions.SET_DATA, handleAssetsData);
+    setShowAssetsHeaderToolBox(true);
 
     return () => {
       dispatcher.removeActionListener(actions.SET_DATA, handleAssetsData);

@@ -82,3 +82,37 @@ export const Empty: Story = {
     }, 0);
   }
 };
+
+export const EmptyWithParents: Story = {
+  args: {
+    searchQuery: "",
+    setRefresher: () => {
+      return undefined;
+    }
+  },
+  play: () => {
+    window.setTimeout(() => {
+      window.postMessage({
+        type: "digma",
+        action: actions.SET_CATEGORIES_DATA,
+        payload: {
+          assetCategories: [],
+          parents: [
+            {
+              name: "http test",
+              displayName: "http get one",
+              instrumentationLibrary: "common",
+              spanCodeObjectId: "some span"
+            },
+            {
+              name: "http test 2",
+              displayName: "http get two",
+              instrumentationLibrary: "common",
+              spanCodeObjectId: "some span 2"
+            }
+          ]
+        }
+      });
+    }, 0);
+  }
+};
