@@ -19,7 +19,7 @@ export const trackingEvents = addPrefix(
     PROMOTION_REGISTRATION_FORM_OPENED: "promotion registration form opened",
     LOGIN_SCREEN_VIEWED: "login screen viewed",
     SCOPE_BAR_EXPAND_BUTTON_CLICKED: "span info expand button clicked",
-    SCOPE_BAR_COLLAPSE_BUTTON_CLICKED: "span info collapse button clicked",
+    SCOPE_BAR_COLLAPSE_BUTTON_CLICKED: "scope bar collapse button clicked",
     SPAN_INFO_COLLAPSE_BUTTON_CLICKED: "span info collapse button clicked"
   },
   " "
