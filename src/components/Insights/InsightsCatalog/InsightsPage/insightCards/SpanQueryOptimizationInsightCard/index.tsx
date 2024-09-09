@@ -67,7 +67,12 @@ export const SpanQueryOptimizationInsightCard = ({
       content={
         <ContentContainer>
           <ColumnsContainer>
-            <KeyValue label={"Duration"}>{durationString}</KeyValue>
+            <KeyValue
+              label={"Duration"}
+              info={"The execution time for the query"}
+            >
+              {durationString}
+            </KeyValue>
             <KeyValue label={"Typical Duration"}>
               {getDurationString(insight.typicalDuration)}
             </KeyValue>

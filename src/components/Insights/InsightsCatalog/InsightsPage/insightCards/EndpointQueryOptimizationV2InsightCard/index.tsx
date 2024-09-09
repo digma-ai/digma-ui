@@ -56,7 +56,10 @@ export const EndpointQueryOptimizationV2InsightCard = ({
             />
           </Details>
           <ColumnsContainer>
-            <KeyValue label={"Duration"}>
+            <KeyValue
+              label={"Duration"}
+              info={"The execution time for the query"}
+            >
               {getDurationString(insight.span.duration)}
             </KeyValue>
           </ColumnsContainer>
