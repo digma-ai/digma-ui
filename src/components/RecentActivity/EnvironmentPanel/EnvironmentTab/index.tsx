@@ -4,7 +4,7 @@ import { greenScale } from "../../../common/App/v2colors";
 import { EnvironmentIcon } from "../../../common/EnvironmentIcon";
 import { NewPopover } from "../../../common/NewPopover";
 import { Tooltip } from "../../../common/Tooltip";
-import { RefreshIcon } from "../../../common/icons/16px/RefreshIcon";
+import { ClearIcon } from "../../../common/icons/16px/ClearIcon";
 import { TrashBinIcon } from "../../../common/icons/16px/TrashBinIcon";
 import { WrenchIcon } from "../../../common/icons/16px/WrenchIcon";
 import { Badge } from "../../Badge";
@@ -31,7 +31,7 @@ export const EnvironmentTab = ({
 
   const menuItems: EnvironmentMenuItem[] = [
     { label: "How to setup", value: "setup-instructions", icon: WrenchIcon },
-    { label: "Clear data", value: "clear-data", icon: RefreshIcon },
+    { label: "Clear data", value: "clear-data", icon: ClearIcon },
     { label: "Delete", value: "delete", icon: TrashBinIcon }
   ];
 
