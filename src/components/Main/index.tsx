@@ -50,8 +50,15 @@ const getURLToNavigateOnCodeLensClick = (scope: Scope): string | undefined => {
 
 export const Main = () => {
   const location = useLocation();
-  const { environments, environment, scope, userInfo, backendInfo } =
-    useConfigSelector();
+  const {
+    environments,
+    environment,
+    scope,
+    userInfo,
+    backendInfo,
+    selectedServices
+  } = useConfigSelector();
+  const { setSelectedServices } = useStore.getState();
   const previousEnvironment = usePrevious(environment);
   const userId = userInfo?.id;
   const previousUserId = usePrevious(userId);
@@ -63,8 +70,6 @@ export const Main = () => {
     "project"
   );
   const previousPersistedServices = usePrevious(persistedServices);
-  const selectedServices = useConfigSelector().selectedServices;
-  const { setSelectedServices } = useStore.getState();
   const isInitialized = useMemo(
     () => !isUndefined(persistedServices),
     [persistedServices]

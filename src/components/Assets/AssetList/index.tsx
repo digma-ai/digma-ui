@@ -3,6 +3,7 @@ import { DefaultTheme, useTheme } from "styled-components";
 import { DigmaMessageError } from "../../../api/types";
 import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
+import { useAssetsSelector } from "../../../store/assets/useAssetsSelector";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { useStore } from "../../../store/useStore";
 import { isEnvironment } from "../../../typeGuards/isEnvironment";
@@ -20,6 +21,7 @@ import { ChevronIcon } from "../../common/icons/ChevronIcon";
 import { SortIcon } from "../../common/icons/SortIcon";
 import { Direction } from "../../common/icons/types";
 import { AssetFilterQuery } from "../AssetsFilter/types";
+import { ViewMode } from "../AssetsViewScopeConfiguration/types";
 import { actions } from "../actions";
 import { trackingEvents } from "../tracking";
 import { checkIfAnyFiltersApplied, getAssetTypeInfo } from "../utils";
@@ -93,9 +95,9 @@ const getData = (
   page: number,
   sorting: Sorting,
   searchQuery: string,
-  filters: AssetFilterQuery = { services: [], operations: [], insights: [] },
-  isDirect?: boolean,
-  scopedSpanCodeObjectId?: string
+  filters: AssetFilterQuery,
+  viewMode: ViewMode,
+  scopeSpanCodeObjectId?: string
 ) => {
   window.sendMessageToDigma({
     action: actions.GET_DATA,
@@ -106,36 +108,41 @@ const getData = (
         pageSize: PAGE_SIZE,
         sortBy: sorting.criterion,
         sortOrder: sorting.order,
-        directOnly: isDirect,
-        scopedSpanCodeObjectId,
+        directOnly: viewMode === "children",
+        scopedSpanCodeObjectId: scopeSpanCodeObjectId,
         ...(searchQuery.length > 0 ? { displayName: searchQuery } : {}),
-        ...(scopedSpanCodeObjectId ? { ...filters, services: [] } : filters)
+        ...(scopeSpanCodeObjectId ? { ...filters, services: [] } : filters)
       }
     }
   });
 };
 
 export const AssetList = ({
-  searchQuery,
   assetTypeId,
-  filters,
-  scopeViewOptions,
   onAssetCountChange,
   setRefresher,
   onGoToAllAssets
 }: AssetListProps) => {
-  const [data, setData] = useState<AssetsData>();
+  const {
+    assets: data,
+    sorting,
+    page,
+    viewMode,
+    search,
+    filters
+  } = useAssetsSelector();
+  const {
+    setAssets: setData,
+    setAssetsSorting: setSorting,
+    setAssetsPage: setPage,
+    setShowAssetsHeaderToolBox
+  } = useStore.getState();
   const previousData = usePrevious(data);
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
-  const [sorting, setSorting] = useState<Sorting>({
-    criterion: SORTING_CRITERION.CRITICAL_INSIGHTS,
-    order: SORTING_ORDER.DESC
-  });
   const [isSortingMenuOpen, setIsSortingMenuOpen] = useState(false);
   const theme = useTheme();
   const sortingMenuChevronColor = getSortingMenuChevronColor(theme);
-  const [page, setPage] = useState(0);
   const filteredCount = data?.filteredCount ?? 0;
   const pageStartItemNumber = page * PAGE_SIZE + 1;
   const pageEndItemNumber = Math.min(
@@ -143,30 +150,32 @@ export const AssetList = ({
     filteredCount
   );
   const listRef = useRef<HTMLUListElement>(null);
-  const { environment, backendInfo, scope } = useConfigSelector();
   const refreshTimerId = useRef<number>();
+  const { environment, backendInfo, scope } = useConfigSelector();
   const previousEnvironment = usePrevious(environment);
-  const previousViewScope = usePrevious(scopeViewOptions);
-  const isServicesFilterEnabled = !scope?.span?.spanCodeObjectId;
-  const { setShowAssetsHeaderToolBox } = useStore.getState();
+  const previousViewMode = usePrevious(viewMode);
+  const scopeSpanCodeObjectId = scope?.span?.spanCodeObjectId;
+  const previousScopeSpanCodeObjectId = usePrevious(scopeSpanCodeObjectId);
+  const isServicesFilterEnabled = !scopeSpanCodeObjectId;
+  const isInitialLoading = !data;
 
   const refreshData = useCallback(() => {
     getData(
       assetTypeId,
       page,
       sorting,
-      searchQuery,
+      search,
       filters,
-      scopeViewOptions?.isDirect,
-      scopeViewOptions?.scopedSpanCodeObjectId
+      viewMode,
+      scopeSpanCodeObjectId
     );
   }, [
     page,
     assetTypeId,
     filters,
-    scopeViewOptions?.isDirect,
-    scopeViewOptions?.scopedSpanCodeObjectId,
-    searchQuery,
+    viewMode,
+    scopeSpanCodeObjectId,
+    search,
     sorting
   ]);
 
@@ -183,11 +192,9 @@ export const AssetList = ({
 
   const areAnyFiltersApplied = checkIfAnyFiltersApplied(
     filters,
-    searchQuery,
+    search,
     isServicesFilterEnabled
   );
-
-  const isInitialLoading = !data;
 
   useEffect(() => {
     refreshData();
@@ -212,7 +219,7 @@ export const AssetList = ({
       dispatcher.removeActionListener(actions.SET_DATA, handleAssetsData);
       window.clearTimeout(refreshTimerId.current);
     };
-  }, []);
+  }, [setData, setShowAssetsHeaderToolBox]);
 
   useEffect(() => {
     if (data && previousData?.filteredCount !== data?.filteredCount) {
@@ -228,15 +235,18 @@ export const AssetList = ({
     if (
       (isEnvironment(previousEnvironment) &&
         previousEnvironment.id !== environment?.id) ||
-      previousViewScope !== scopeViewOptions
+      viewMode !== previousViewMode ||
+      previousScopeSpanCodeObjectId !== scopeSpanCodeObjectId
     ) {
       refreshData();
     }
   }, [
     environment?.id,
     previousEnvironment,
-    previousViewScope,
-    scopeViewOptions,
+    previousViewMode,
+    viewMode,
+    scopeSpanCodeObjectId,
+    previousScopeSpanCodeObjectId,
     refreshData
   ]);
 
@@ -259,21 +269,30 @@ export const AssetList = ({
         order: SORTING_ORDER.DESC
       });
     }
-  }, [isImpactHidden, sorting]);
+  }, [isImpactHidden, sorting, setSorting]);
 
   useEffect(() => {
     setPage(0);
-  }, [environment?.id, searchQuery, sorting, assetTypeId, scopeViewOptions]);
+  }, [
+    environment?.id,
+    search,
+    sorting,
+    assetTypeId,
+    viewMode,
+    scopeSpanCodeObjectId,
+    setPage
+  ]);
 
   useEffect(() => {
     listRef.current?.scrollTo(0, 0);
   }, [
     environment?.id,
-    searchQuery,
+    search,
     sorting,
     page,
     assetTypeId,
-    scopeViewOptions
+    viewMode,
+    scopeSpanCodeObjectId
   ]);
 
   const handleAllAssetsLinkClick = () => {

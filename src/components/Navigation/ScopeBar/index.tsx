@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { history } from "../../../containers/Main/history";
 import { isString } from "../../../typeGuards/isString";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
+import { trackingEvents as mainTrackingEvents } from "../../Main/tracking";
 import { CodeDetails, Scope } from "../../common/App/types";
 import { NewPopover } from "../../common/NewPopover";
 import { CrosshairIcon } from "../../common/icons/16px/CrosshairIcon";
@@ -108,6 +109,15 @@ export const ScopeBar = ({
   };
 
   const handleExpandCollapseButtonClick = () => {
+    if (isExpanded) {
+      sendUserActionTrackingEvent(
+        mainTrackingEvents.SCOPE_BAR_COLLAPSE_BUTTON_CLICKED
+      );
+    } else {
+      sendUserActionTrackingEvent(
+        mainTrackingEvents.SCOPE_BAR_EXPAND_BUTTON_CLICKED
+      );
+    }
     onExpandCollapseChange(!isExpanded);
   };
 

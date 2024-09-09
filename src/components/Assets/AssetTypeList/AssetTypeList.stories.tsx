@@ -22,8 +22,7 @@ export const Default: Story = {
   args: {
     setRefresher: () => {
       return undefined;
-    },
-    searchQuery: ""
+    }
   },
   play: () => {
     window.setTimeout(() => {
@@ -65,7 +64,6 @@ export const Default: Story = {
 
 export const Empty: Story = {
   args: {
-    searchQuery: "",
     setRefresher: () => {
       return undefined;
     }
@@ -85,7 +83,6 @@ export const Empty: Story = {
 
 export const EmptyWithParents: Story = {
   args: {
-    searchQuery: "",
     setRefresher: () => {
       return undefined;
     }

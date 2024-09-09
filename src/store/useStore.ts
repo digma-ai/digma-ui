@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { withSlices } from "zustand-slices";
 import { Scope } from "../components/common/App/types";
-import { assetsSlice } from "./assetsSlice/assetsSlice";
+import { assetsSlice } from "./assets/assetsSlice";
 import { configSlice } from "./config/configSlice";
 import { insightsSlice } from "./insights/insightsSlice";
 import { withMutableActions } from "./withMutableActions";

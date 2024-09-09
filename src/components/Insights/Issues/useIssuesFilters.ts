@@ -30,7 +30,7 @@ export const useIssuesFilters = () => {
     viewMode,
     filters
   } = useInsightsSelector();
-  const { setIssuesFilters: setData } = useStore.getState();
+  const { setInsightsIssuesFilters: setData } = useStore.getState();
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
   const refreshTimerId = useRef<number>();

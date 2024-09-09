@@ -19,7 +19,7 @@ export const DiscoveredAssets = ({
 
   return (
     <DiscoveredCard
-      title="Discovered Assets"
+      title={"Discovered Assets"}
       options={[items.slice(0, ROW_SIZE), items.slice(ROW_SIZE)]}
     />
   );

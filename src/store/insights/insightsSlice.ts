@@ -51,21 +51,22 @@ export const insightsSlice = createSlice({
   name: "insights",
   value: initialState,
   actions: {
-    setData: (data: InsightsData) => set({ data }),
-    setIsDataLoading: (isDataLoading: boolean) => set({ isDataLoading }),
-    setSearch: (search: string) => set({ search }),
-    setPage: (page: number) => set({ page }),
-    setSorting: (sorting: Sorting) => set({ sorting }),
-    setViewMode: (viewMode: ViewMode) => set({ viewMode }),
-    setFilters: (filters: InsightFilterType[]) => set({ filters }),
-    setFilteredInsightTypes: (filteredInsightTypes: string[]) =>
+    setInsightsData: (data: InsightsData) => set({ data }),
+    setIsInsightsDataLoading: (isDataLoading: boolean) =>
+      set({ isDataLoading }),
+    setInsightsSearch: (search: string) => set({ search }),
+    setInsightsPage: (page: number) => set({ page }),
+    setInsightsSorting: (sorting: Sorting) => set({ sorting }),
+    setInsightsViewMode: (viewMode: ViewMode) => set({ viewMode }),
+    setInsightsFilters: (filters: InsightFilterType[]) => set({ filters }),
+    setInsightsFilteredInsightTypes: (filteredInsightTypes: string[]) =>
       set({ filteredInsightTypes }),
     setInsightViewType: (insightViewType: InsightViewType) =>
       set({ insightViewType }),
-    setIssuesFilters: (issuesFilters: IssuesFiltersData) =>
+    setInsightsIssuesFilters: (issuesFilters: IssuesFiltersData) =>
       set({ issuesFilters }),
-    setAreIssuesFiltersLoading: (areIssuesFiltersLoading: boolean) =>
+    setAreInsightsIssuesFiltersLoading: (areIssuesFiltersLoading: boolean) =>
       set({ areIssuesFiltersLoading }),
-    insightsReset: () => set(initialState)
+    resetInsights: () => set(initialState)
   }
 });

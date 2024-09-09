@@ -22,8 +22,11 @@ import { trackingEvents } from "./tracking";
 export const IssuesFilter = () => {
   const { filteredInsightTypes, filters } = useInsightsSelector();
   const { selectedServices, backendInfo, scope } = useConfigSelector();
-  const { setSelectedServices, setFilteredInsightTypes, setFilters } =
-    useStore.getState();
+  const {
+    setSelectedServices,
+    setInsightsFilteredInsightTypes: setFilteredInsightTypes,
+    setInsightsFilters: setFilters
+  } = useStore.getState();
   const isCriticalOnly = useMemo(
     () => filters.includes("criticality"),
     [filters]
@@ -259,7 +262,7 @@ export const IssuesFilter = () => {
     <FilterPopup
       onClearAll={handleClearFiltersButtonClick}
       onClose={handleCloseButtonClick}
-      title="Filters"
+      title={"Filters"}
       selectedFiltersCount={selectedFiltersCount}
       filters={filterComponents}
     />

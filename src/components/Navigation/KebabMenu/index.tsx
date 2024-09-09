@@ -56,6 +56,7 @@ export const KebabMenu = ({ onClose }: KebabMenuProps) => {
   const handleOpenDocsClick = () => {
     sendUserActionTrackingEvent(trackingEvents.OPEN_DOCS_CLICKED);
     openURLInDefaultBrowser(DIGMA_DOCUMENTATION);
+    onClose();
   };
 
   const handleDashboardClick = () => {
@@ -68,6 +69,7 @@ export const KebabMenu = ({ onClose }: KebabMenuProps) => {
         }
       });
     }
+    onClose();
   };
 
   // const handleReportClick = () => {

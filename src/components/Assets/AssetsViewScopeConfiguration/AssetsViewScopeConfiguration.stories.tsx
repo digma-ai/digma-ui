@@ -18,26 +18,6 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    currentScope: {
-      span: {
-        displayName: "displayName",
-        spanCodeObjectId: "spanCodeObjectId",
-        serviceName: null,
-        role: "Entry",
-        methodId: null
-      },
-      code: {
-        relatedCodeDetailsList: [],
-        codeDetailsList: []
-      },
-      hasErrors: false,
-      issuesInsightsCount: 0,
-      analyticsInsightsCount: 0,
-      unreadInsightsCount: 0
-    },
-    assetsCount: 1,
-    onAssetViewChange: () => {
-      return undefined;
-    }
+    assetsCount: 1
   }
 };

@@ -12,7 +12,7 @@ export const DiscoveredIssues = ({
 }: DiscoveredIssuesProps) => {
   return (
     <DiscoveredCard
-      title="Discovered Issues"
+      title={"Discovered Issues"}
       options={[
         [
           {

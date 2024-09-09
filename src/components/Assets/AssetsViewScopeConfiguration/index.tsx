@@ -1,4 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useAssetsSelector } from "../../../store/assets/useAssetsSelector";
+import { useConfigSelector } from "../../../store/config/useConfigSelector";
+import { useStore } from "../../../store/useStore";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { formatUnit } from "../../../utils/formatUnit";
 import { ArrowIcon } from "../../common/icons/12px/ArrowIcon";
@@ -6,37 +9,23 @@ import { TreeNodesIcon } from "../../common/icons/12px/TreeNodesIcon";
 import { Toggle } from "../../common/v3/Toggle";
 import { ToggleOption } from "../../common/v3/Toggle/types";
 import * as s from "./styles";
-import { AssetsViewConfigurationProps as AssetsViewScopeConfigurationProps } from "./types";
-
-type ViewMode = "descendants" | "children";
+import { AssetsViewScopeConfigurationProps, ViewMode } from "./types";
 
 export const AssetsViewScopeConfiguration = ({
-  currentScope,
-  onAssetViewChange,
   assetsCount
 }: AssetsViewScopeConfigurationProps) => {
-  const [viewMode, setViewMode] = useState<ViewMode>("descendants");
+  const { scope } = useConfigSelector();
+  const { viewMode } = useAssetsSelector();
+  const { setAssetsViewMode } = useStore.getState();
 
   useEffect(() => {
-    const isEntryPoint = !currentScope || currentScope.span?.role === "Entry";
+    const isEntryPoint = !scope || scope.span?.role === "Entry";
 
-    setViewMode(isEntryPoint ? "descendants" : "children");
-
-    onAssetViewChange({
-      scopedSpanCodeObjectId: currentScope?.span?.spanCodeObjectId,
-      isDirect: !isEntryPoint
-    });
-  }, [currentScope, onAssetViewChange]);
+    setAssetsViewMode(isEntryPoint ? "descendants" : "children");
+  }, [scope, setAssetsViewMode]);
 
   const handleToggleOptionChange = (value: ViewMode) => {
-    setViewMode(value);
-
-    if (onAssetViewChange) {
-      onAssetViewChange({
-        isDirect: value === "children",
-        scopedSpanCodeObjectId: currentScope?.span?.spanCodeObjectId
-      });
-    }
+    setAssetsViewMode(value);
   };
 
   const toggleOptions: ToggleOption<ViewMode>[] = [

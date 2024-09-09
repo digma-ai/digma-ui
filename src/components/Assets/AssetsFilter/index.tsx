@@ -1,13 +1,15 @@
-import { ComponentType, useEffect, useState } from "react";
+import { ComponentType, useEffect, useMemo, useState } from "react";
 import { dispatcher } from "../../../dispatcher";
+import { getFeatureFlagValue } from "../../../featureFlags";
 import { usePersistence } from "../../../hooks/usePersistence";
 import { usePrevious } from "../../../hooks/usePrevious";
+import { useAssetsSelector } from "../../../store/assets/useAssetsSelector";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { useStore } from "../../../store/useStore";
 import { isEnvironment } from "../../../typeGuards/isEnvironment";
 import { isNull } from "../../../typeGuards/isNull";
 import { isUndefined } from "../../../typeGuards/isUndefined";
-import { InsightType } from "../../../types";
+import { FeatureFlag, InsightType } from "../../../types";
 import { sendTrackingEvent } from "../../../utils/actions/sendTrackingEvent";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
@@ -16,15 +18,14 @@ import { WrenchIcon } from "../../common/icons/12px/WrenchIcon";
 import { EndpointIcon } from "../../common/icons/EndpointIcon";
 import { SparkleIcon } from "../../common/icons/SparkleIcon";
 import { IconProps } from "../../common/icons/types";
-import { AssetScopeOption } from "../AssetsViewScopeConfiguration/types";
 import { actions } from "../actions";
 import { trackingEvents } from "../tracking";
 import * as s from "./styles";
 import {
   AssetFilterCategory,
   AssetFilterQuery,
-  AssetsFilterProps,
   AssetsFiltersData,
+  GetAssetFiltersDataParams,
   GetAssetFiltersDataPayload
 } from "./types";
 
@@ -34,24 +35,19 @@ const getData = ({
   services,
   operations,
   insights,
-  assetScopeOption,
+  viewMode,
+  scopeSpanCodeObjectId,
   searchQuery
-}: {
-  services: string[];
-  operations: string[];
-  insights: InsightType[];
-  assetScopeOption: AssetScopeOption | null;
-  searchQuery: string;
-}) => {
+}: GetAssetFiltersDataParams) => {
   window.sendMessageToDigma<GetAssetFiltersDataPayload>({
     action: actions.GET_ASSET_FILTERS_DATA,
     payload: {
       query: {
-        services,
+        services: scopeSpanCodeObjectId ? services : [],
         operations,
         insights,
-        directOnly: Boolean(assetScopeOption?.isDirect),
-        scopedSpanCodeObjectId: assetScopeOption?.scopedSpanCodeObjectId,
+        directOnly: viewMode === "children",
+        scopedSpanCodeObjectId: scopeSpanCodeObjectId,
         ...(searchQuery?.length > 0 ? { displayName: searchQuery } : {})
       }
     }
@@ -88,23 +84,22 @@ const renderFilterCategory = (
   );
 };
 
-export const AssetsFilter = ({
-  onApply,
-  filters,
-  assetScopeOption,
-  searchQuery
-}: AssetsFilterProps) => {
-  const [data, setData] = useState<{ data: AssetsFiltersData | null }>();
+export const AssetsFilter = () => {
+  const [data, setData] = useState<AssetsFiltersData | null>();
   const previousData = usePrevious(data);
+  const { filters, search: searchQuery, viewMode } = useAssetsSelector();
+  const {
+    setAssetsFilters: setFilters,
+    setSelectedServices: setGloballySelectedServices
+  } = useStore.getState();
   const [isOpen, setIsOpen] = useState(false);
   const previousIsOpen = usePrevious(isOpen);
   const {
     selectedServices: globallySelectedServices,
     environment,
-    scope
+    scope,
+    backendInfo
   } = useConfigSelector();
-  const { setSelectedServices: setGloballySelectedServices } =
-    useStore.getState();
   const [persistedFilters, setPersistedFilters] =
     usePersistence<AssetFilterQuery>(PERSISTENCE_KEY, "project");
   const previousPersistedFilters = usePrevious(persistedFilters);
@@ -118,6 +113,34 @@ export const AssetsFilter = ({
   const [selectedInsights, setSelectedInsights] = useState<InsightType[]>([]);
   const previousEnvironment = usePrevious(environment);
   const previousScope = usePrevious(scope);
+  const scopeSpanCodeObjectId = scope?.span?.spanCodeObjectId;
+  const areExtendedAssetsFiltersEnabled = getFeatureFlagValue(
+    backendInfo,
+    FeatureFlag.ARE_EXTENDED_ASSETS_FILTERS_ENABLED
+  );
+
+  const query = useMemo(
+    () => ({
+      services: isServicesFilterEnabled ? selectedServices : [],
+      operations: filters.operations,
+      insights: filters.insights as InsightType[],
+      viewMode: areExtendedAssetsFiltersEnabled ? viewMode : undefined,
+      scopeSpanCodeObjectId: areExtendedAssetsFiltersEnabled
+        ? scopeSpanCodeObjectId
+        : undefined,
+      searchQuery: areExtendedAssetsFiltersEnabled ? searchQuery : ""
+    }),
+    [
+      isServicesFilterEnabled,
+      selectedServices,
+      filters.operations,
+      filters.insights,
+      viewMode,
+      searchQuery,
+      scopeSpanCodeObjectId,
+      areExtendedAssetsFiltersEnabled
+    ]
+  );
 
   // Get data after filters have been rehydrated
   useEffect(() => {
@@ -126,6 +149,7 @@ export const AssetsFilter = ({
       !isUndefined(persistedFilters)
     ) {
       getData({
+        ...query,
         services: isServicesFilterEnabled ? selectedServices : [],
         operations: persistedFilters?.operations ?? [
           ...selectedEndpoints,
@@ -133,9 +157,7 @@ export const AssetsFilter = ({
           ...selectedInternals
         ],
         insights:
-          (persistedFilters?.insights as InsightType[]) || selectedInsights,
-        assetScopeOption,
-        searchQuery
+          (persistedFilters?.insights as InsightType[]) || selectedInsights
       });
     }
   }, [
@@ -146,17 +168,15 @@ export const AssetsFilter = ({
     selectedConsumers,
     selectedInternals,
     selectedInsights,
-    scope,
-    assetScopeOption,
-    searchQuery,
-    globallySelectedServices,
-    isServicesFilterEnabled
+    isServicesFilterEnabled,
+    query
   ]);
 
+  // Handle filters data response
   useEffect(() => {
     const handleData = (data: unknown) => {
       const filtersData = data as AssetsFiltersData | null;
-      setData({ data: filtersData });
+      setData(filtersData);
     };
 
     dispatcher.addActionListener(actions.SET_ASSET_FILTERS_DATA, handleData);
@@ -180,31 +200,33 @@ export const AssetsFilter = ({
         operations: [],
         insights: []
       };
+      setFilters(defaultFilters);
       setPersistedFilters(defaultFilters);
       if (isServicesFilterEnabled) {
         setGloballySelectedServices(defaultFilters.services);
       }
-      onApply(defaultFilters);
       getData({
-        ...defaultFilters,
-        assetScopeOption,
-        searchQuery
+        ...query,
+        ...defaultFilters
       });
     }
   }, [
+    setFilters,
     previousEnvironment,
     environment,
     setPersistedFilters,
-    onApply,
-    assetScopeOption,
-    searchQuery,
     isServicesFilterEnabled,
-    setGloballySelectedServices
+    setGloballySelectedServices,
+    areExtendedAssetsFiltersEnabled,
+    query
   ]);
 
   // Clear filters and get data when scope is changed, but keep selected services
   useEffect(() => {
-    if (previousScope && previousScope !== scope) {
+    if (
+      previousScope &&
+      previousScope.span?.spanCodeObjectId !== scopeSpanCodeObjectId
+    ) {
       const newFilters = {
         services: selectedServices,
         operations: [],
@@ -214,68 +236,45 @@ export const AssetsFilter = ({
       if (isServicesFilterEnabled) {
         setGloballySelectedServices(newFilters.services);
       }
-      onApply(newFilters);
+      setFilters(newFilters);
       getData({
-        ...newFilters,
-        assetScopeOption,
-        searchQuery
+        ...query,
+        ...newFilters
       });
     }
   }, [
+    setFilters,
     setPersistedFilters,
     setGloballySelectedServices,
-    onApply,
     previousScope,
-    scope,
-    assetScopeOption,
-    searchQuery,
+    scopeSpanCodeObjectId,
     selectedServices,
-    isServicesFilterEnabled
+    isServicesFilterEnabled,
+    areExtendedAssetsFiltersEnabled,
+    query
   ]);
 
   // Get data when the popover is opened
   useEffect(() => {
     if (isOpen && !previousIsOpen) {
-      getData({
-        services: isServicesFilterEnabled ? selectedServices : [],
-        operations: [
-          ...selectedEndpoints,
-          ...selectedConsumers,
-          ...selectedInternals
-        ],
-        insights: selectedInsights,
-        assetScopeOption,
-        searchQuery
-      });
+      getData(query);
     }
-  }, [
-    isOpen,
-    previousIsOpen,
-    scope,
-    selectedConsumers,
-    selectedEndpoints,
-    selectedInsights,
-    selectedInternals,
-    selectedServices,
-    assetScopeOption,
-    searchQuery,
-    isServicesFilterEnabled
-  ]);
+  }, [isOpen, previousIsOpen, query]);
 
   // Apply filters when data is loaded
   useEffect(() => {
-    if (previousData === data || isNull(data?.data)) {
+    if (previousData === data || isNull(data)) {
       return;
     }
 
     const servicesToSelect =
-      data?.data?.categories
+      data?.categories
         .find((x) => x.categoryName === "Services")
         ?.entries?.filter((x) => x.selected)
         .map((x) => x.name) ?? [];
     setSelectedServices(servicesToSelect);
 
-    const operationsCategory = data?.data?.categories.find(
+    const operationsCategory = data?.categories.find(
       (x) => x.categoryName === "Operations"
     );
 
@@ -300,7 +299,7 @@ export const AssetsFilter = ({
         .map((x) => x.name) ?? [];
     setSelectedInternals(internalsToSelect);
 
-    const insightsToSelect = (data?.data?.categories
+    const insightsToSelect = (data?.categories
       .find((x) => x.categoryName === "Insights")
       ?.entries?.filter((x) => x.selected)
       .map((x) => x.name) ?? []) as InsightType[];
@@ -321,13 +320,13 @@ export const AssetsFilter = ({
       if (isServicesFilterEnabled) {
         setGloballySelectedServices(filtersQuery.services);
       }
-      onApply(filtersQuery);
+      setFilters(filtersQuery);
     }
   }, [
     previousData,
     data,
     filters,
-    onApply,
+    setFilters,
     selectedServices,
     selectedEndpoints,
     selectedConsumers,
@@ -342,7 +341,7 @@ export const AssetsFilter = ({
   useEffect(() => {
     if (previousIsOpen && !isOpen) {
       const filtersQuery = {
-        services: selectedServices,
+        services: isServicesFilterEnabled ? selectedServices : [],
         operations: [
           ...selectedEndpoints,
           ...selectedConsumers,
@@ -350,7 +349,7 @@ export const AssetsFilter = ({
         ],
         insights: selectedInsights
       };
-      onApply(filtersQuery);
+      setFilters(filtersQuery);
       setPersistedFilters(filtersQuery);
       if (isServicesFilterEnabled) {
         setGloballySelectedServices(filtersQuery.services);
@@ -360,7 +359,6 @@ export const AssetsFilter = ({
   }, [
     previousIsOpen,
     isOpen,
-    onApply,
     selectedConsumers,
     selectedEndpoints,
     selectedInsights,
@@ -368,16 +366,16 @@ export const AssetsFilter = ({
     selectedServices,
     setPersistedFilters,
     setGloballySelectedServices,
-    isServicesFilterEnabled
+    isServicesFilterEnabled,
+    setFilters
   ]);
 
   const handleClearFiltersButtonClick = () => {
     getData({
+      ...query,
       services: isServicesFilterEnabled ? [] : selectedServices,
       insights: [],
-      operations: [],
-      assetScopeOption,
-      searchQuery
+      operations: []
     });
   };
 
@@ -412,22 +410,21 @@ export const AssetsFilter = ({
     }
 
     getData({
+      ...query,
       services,
       operations: [...endpoints, ...consumers, ...internals],
-      insights,
-      assetScopeOption,
-      searchQuery
+      insights
     });
   };
 
-  const servicesCategory = data?.data?.categories.find(
+  const servicesCategory = data?.categories.find(
     (x) => x.categoryName === "Services"
   ) ?? {
     categoryName: "Services",
     entries: []
   };
 
-  const operationsCategory = data?.data?.categories.find(
+  const operationsCategory = data?.categories.find(
     (x) => x.categoryName === "Operations"
   );
   const endpointsCategory = operationsCategory?.categories?.find(
@@ -449,7 +446,7 @@ export const AssetsFilter = ({
     entries: []
   };
 
-  const insightsCategory = data?.data?.categories.find(
+  const insightsCategory = data?.categories.find(
     (x) => x.categoryName === "Insights"
   ) ?? {
     categoryName: "Insights",
@@ -535,7 +532,7 @@ export const AssetsFilter = ({
     <FilterPopup
       onClose={handleCloseButtonClick}
       onClearAll={handleClearFiltersButtonClick}
-      title="Filters"
+      title={"Filters"}
       filters={filterComponents}
       selectedFiltersCount={selectedFilters.length}
       onStateChange={handleOnStateChange}

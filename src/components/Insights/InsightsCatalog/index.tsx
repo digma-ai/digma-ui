@@ -67,10 +67,10 @@ export const InsightsCatalog = ({
   onRefresh
 }: InsightsCatalogProps) => {
   const {
-    setViewMode: setMode,
-    setPage,
-    setSorting,
-    setSearch
+    setInsightsViewMode: setMode,
+    setInsightsPage: setPage,
+    setInsightsSorting: setSorting,
+    setInsightsSearch: setSearch
   } = useStore.getState();
 
   const {

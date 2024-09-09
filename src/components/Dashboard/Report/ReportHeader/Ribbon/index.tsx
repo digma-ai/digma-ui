@@ -26,16 +26,16 @@ export const Ribbon = ({ onRefresh }: RibbonProps) => {
       <img src={`/images/digmaLogo_${themeKind}.svg`} />
       <s.ButtonContainer>
         <NewButton
-          buttonType="primary"
+          buttonType={"primary"}
           icon={RecheckIcon}
-          label="Refresh data"
+          label={"Refresh data"}
           onClick={handleRefreshClick}
         />
         {/* <s.DownloadButton
-          buttonType="tertiary"
+          buttonType={"tertiary"}
           icon={DownloadIcon}
-          label="Download PDF"
-          iconPosition="right"
+          label={"Download PDF"}
+          iconPosition={"right"}
           onClick={handleDownloadClick}
         /> */}
       </s.ButtonContainer>
