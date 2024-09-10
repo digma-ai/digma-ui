@@ -12,4 +12,5 @@ export interface PromotionCardProps {
   title: ReactNode;
   background: ReactNode;
   collapsedBackground: ReactNode;
+  className?: string;
 }

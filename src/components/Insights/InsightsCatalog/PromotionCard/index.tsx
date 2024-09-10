@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ForwardedRef, forwardRef, useState } from "react";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { Link } from "../../../common/Link";
 import { CrossIcon } from "../../../common/icons/CrossIcon";
@@ -6,15 +6,19 @@ import { trackingEvents } from "../../tracking";
 import * as s from "./styles";
 import { PromotionCardProps } from "./types";
 
-export const PromotionCard = ({
-  onAccept,
-  onDiscard,
-  acceptBtnText,
-  children,
-  title,
-  background,
-  collapsedBackground
-}: PromotionCardProps) => {
+const PromotionCardComponent = (
+  {
+    onAccept,
+    onDiscard,
+    acceptBtnText,
+    children,
+    title,
+    background,
+    collapsedBackground,
+    className
+  }: PromotionCardProps,
+  ref: ForwardedRef<HTMLDivElement>
+) => {
   const [expanded, setExpanded] = useState(false);
 
   const handleDontShowButtonClick = () => {
@@ -55,7 +59,7 @@ export const PromotionCard = ({
     <s.ExpandedContainer>
       <s.LogoBackground>{background}</s.LogoBackground>
       <s.Holder>
-        <s.ContentContainer>
+        <s.ContentContainer className={className} ref={ref}>
           <s.DetailsContainer>{children}</s.DetailsContainer>
           <s.ActionContainer>
             <s.AccessCourseButton
@@ -79,3 +83,5 @@ export const PromotionCard = ({
     </s.ExpandedContainer>
   );
 };
+
+export const PromotionCard = forwardRef(PromotionCardComponent);
