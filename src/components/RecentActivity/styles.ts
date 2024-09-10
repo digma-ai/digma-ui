@@ -125,3 +125,9 @@ export const RecentActivityContainerBackgroundGradient = styled.div`
   );
   filter: blur(5px);
 `;
+
+export const ClearDataMessageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 315px;
+`;

@@ -1,6 +1,8 @@
+import { ReactNode } from "react";
+
 export interface ConfirmationDialogProps {
   title: string;
-  message?: string;
+  content?: ReactNode;
   confirmButtonText?: string;
   trackingPrefix?: string;
   onConfirm: () => void;

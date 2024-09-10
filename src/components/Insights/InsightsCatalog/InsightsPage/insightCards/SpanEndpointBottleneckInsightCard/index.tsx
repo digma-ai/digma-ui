@@ -143,7 +143,12 @@ export const SpanEndpointBottleneckInsightCard = ({
               >
                 {selectedEndpoint.requestPercentage}%
               </KeyValue>
-              <KeyValue label={"Duration"}>
+              <KeyValue
+                label={"Duration"}
+                info={
+                  "The average duration when being detected as a bottleneck for selected endpoint"
+                }
+              >
                 {getDurationString(
                   selectedEndpoint.avgDurationWhenBeingBottleneck
                 )}

@@ -19,7 +19,7 @@ type Story = StoryObj<typeof meta>;
 export const DeleteEnvironment: Story = {
   args: {
     title: "Delete environment",
-    message: "Are you sure that you want to delete this environment?",
+    content: "Are you sure that you want to delete this environment?",
     confirmButtonText: "Delete"
   }
 };
@@ -27,8 +27,11 @@ export const DeleteEnvironment: Story = {
 export const ClearEnvironmentData: Story = {
   args: {
     title: "Clear Data?",
-    message:
-      "Are you sure you want to clear the data from this environment? This action cannot be undone.",
-    confirmButtonText: "Clear Data"
+    content: (
+      <>
+        <span>Are you sure you want to clear the data from</span>
+        <span>this environment? This action cannot be undone.</span>
+      </>
+    )
   }
 };

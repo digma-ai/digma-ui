@@ -1,15 +1,15 @@
 import { useEffect, useRef } from "react";
 import { isString } from "../../../typeGuards/isString";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
-import { Button } from "../../common/Button";
 import { CrossIcon } from "../../common/icons/CrossIcon";
+import { NewButton } from "../../common/v3/NewButton";
 import { trackingEvents } from "../tracking";
 import * as s from "./styles";
 import { ConfirmationDialogProps } from "./types";
 
 export const ConfirmationDialog = ({
   title,
-  message,
+  content,
   confirmButtonText = "Confirm",
   onConfirm,
   onCancel,
@@ -53,12 +53,21 @@ export const ConfirmationDialog = ({
           <CrossIcon color={"currentColor"} size={12} />
         </s.CloseButton>
       </s.Header>
-      {isString(message) && <span>{message}</span>}
+      {isString(content) ? (
+        <s.MessageContainer>{content}</s.MessageContainer>
+      ) : (
+        content
+      )}
       <s.ButtonsContainer>
-        <Button buttonType={"secondary"} onClick={handleCancelButtonClick}>
-          Cancel
-        </Button>
-        <Button onClick={handleConfirmButtonClick}>{confirmButtonText}</Button>
+        <NewButton
+          buttonType={"secondary"}
+          onClick={handleCancelButtonClick}
+          label="Cancel"
+        />
+        <NewButton
+          onClick={handleConfirmButtonClick}
+          label={confirmButtonText}
+        />
       </s.ButtonsContainer>
     </s.Container>
   );

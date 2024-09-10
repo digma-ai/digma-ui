@@ -74,14 +74,26 @@ export const EndpointSpanNPlusOneInsightCard = ({
             />
           </Details>
           <ColumnsContainer>
-            <KeyValue label={"Repeats"}>{span.occurrences}</KeyValue>
+            <KeyValue
+              label={"Repeats"}
+              info={
+                "The median number of times this query repeats in each requets"
+              }
+            >
+              {span.occurrences}
+            </KeyValue>
             <KeyValue
               label={"Requests"}
-              info={"The amount of requests affected by this issue."}
+              info={"The amount of requests affected by this issue"}
             >
               {span.requestPercentage}%
             </KeyValue>
-            <KeyValue label={"Duration"}>{durationString}</KeyValue>
+            <KeyValue
+              label={"Duration"}
+              info={"The execution time of the last group of queries"}
+            >
+              {durationString}
+            </KeyValue>
           </ColumnsContainer>
         </ContentContainer>
       }
