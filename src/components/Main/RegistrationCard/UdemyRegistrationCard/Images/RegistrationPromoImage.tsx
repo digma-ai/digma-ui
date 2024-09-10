@@ -1,5 +1,5 @@
 import { useTheme } from "styled-components";
-import { getThemeKind } from "../../../common/App/styles";
+import { getThemeKind } from "../../../../common/App/styles";
 
 export const RegistrationPromoImage = () => {
   const theme = useTheme();

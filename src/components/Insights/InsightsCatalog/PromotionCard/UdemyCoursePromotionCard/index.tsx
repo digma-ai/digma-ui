@@ -1,5 +1,7 @@
 import { PromotionCard } from "..";
+import { PromoText, PromoTextBold } from "../../styles";
 import { PromotionTag } from "../PromotionTag";
+import { Centered, Description, Right } from "../styles";
 import * as s from "./styles";
 import { UdemyCoursePromotionCardProps } from "./types";
 
@@ -13,20 +15,20 @@ export const UdemyCoursePromotionCard = ({
       onDiscard={onDiscard}
       acceptBtnText="Access course"
       title={
-        <s.PromoText>
-          Get our <s.PromoTextBold>Udemy course FREE</s.PromoTextBold>
-        </s.PromoText>
+        <PromoText>
+          Get our <PromoTextBold>Udemy course FREE</PromoTextBold>
+        </PromoText>
       }
       collapsedBackground={
         <>
-          <s.Centered>
+          <Centered>
             <img src={"/images/promotion/collapsedContainerBackground.svg"} />
-          </s.Centered>
-          <s.Right>
+          </Centered>
+          <Right>
             <img
               src={"/images/promotion/collapsedContainerEllipseShadow.svg"}
             />
-          </s.Right>
+          </Right>
         </>
       }
       background={
@@ -40,10 +42,10 @@ export const UdemyCoursePromotionCard = ({
     >
       <>
         <PromotionTag />
-        <s.Description>
+        <Description>
           <span>Learn how to get more out of Digma</span>
           <span>issues</span>
-        </s.Description>
+        </Description>
       </>
     </PromotionCard>
   );

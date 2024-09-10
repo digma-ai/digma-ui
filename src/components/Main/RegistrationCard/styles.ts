@@ -1,13 +1,10 @@
 import styled, { css } from "styled-components";
 import { LAYERS } from "../../common/App/styles";
-import {
-  bodyMediumTypography,
-  subscriptRegularTypography
-} from "../../common/App/typographies";
+import { bodyMediumTypography } from "../../common/App/typographies";
 import { Overlay } from "../../common/Overlay";
 import { RegisterForm } from "../../common/RegisterForm";
-import { Button } from "../../common/v3/Button";
 import { Link } from "../../common/v3/Link";
+import { NewIconButton } from "../../common/v3/NewIconButton";
 import { AnimatedRegistrationCardProps, StyledOverlayProps } from "./types";
 
 export const Container = styled.div<AnimatedRegistrationCardProps>`
@@ -43,18 +40,11 @@ export const Container = styled.div<AnimatedRegistrationCardProps>`
   }};
 `;
 
-export const CrossButton = styled(Button)`
+export const CrossButton = styled(NewIconButton)`
   padding: 0;
   position: absolute;
   top: 16px;
   right: 9px;
-`;
-
-export const Description = styled.div`
-  ${subscriptRegularTypography}
-
-  color: ${({ theme }) => theme.colors.v3.text.secondary};
-  text-align: center;
 `;
 
 export const FormContainer = styled.div`

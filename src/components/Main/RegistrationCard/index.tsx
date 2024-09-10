@@ -6,7 +6,6 @@ import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActi
 import { SlackLogoIcon } from "../../common/icons/16px/SlackLogoIcon";
 import { CrossIcon } from "../../common/icons/CrossIcon";
 import { trackingEvents } from "../tracking";
-import { RegistrationPromoImage } from "./Images/RegistrationPromoImage";
 import { SuccessRegistration } from "./SuccessRegistration";
 import * as s from "./styles";
 import { RegistrationCardProps } from "./types";
@@ -18,7 +17,10 @@ export const RegistrationCard = ({
   onClose,
   onComplete,
   className,
-  show
+  show,
+  icon,
+  details,
+  submitBtnText
 }: RegistrationCardProps) => {
   const [showOverlay, setShowOverlay] = useState(false);
   const [isFormCompleted, setIsFormCompleted] = useState(false);
@@ -71,25 +73,21 @@ export const RegistrationCard = ({
           ref={registrationCardRef}
         >
           <s.CrossButton
-            buttonType={"tertiary"}
+            buttonType={"secondaryBorderless"}
             icon={CrossIcon}
             onClick={onClose}
           />
 
           {!isFormCompleted ? (
             <>
-              <div>
-                <RegistrationPromoImage />
-              </div>
+              <div>{icon}</div>
               <s.FormContainer>
-                <s.Description>
-                  Enter your email address below, and we will send you
-                  instructions to access the exclusive Digma course on Udemy
-                </s.Description>
+                {details}
                 <s.Register
                   scope={"promotion"}
                   alwaysRenderError={true}
                   onNext={handleOnRegistrationExit}
+                  submitBtnText={submitBtnText}
                 />
               </s.FormContainer>
             </>

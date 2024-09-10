@@ -1,8 +1,13 @@
+import { ReactNode } from "react";
+
 export interface RegistrationCardProps {
   onClose: () => void;
   onComplete: () => void;
   className?: string;
   show?: boolean;
+  icon: ReactNode;
+  details: ReactNode;
+  submitBtnText?: string;
 }
 
 export interface AnimatedRegistrationCardProps {

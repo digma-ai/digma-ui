@@ -1,3 +1,5 @@
+import { PromoText, PromoTextBold } from "../../styles";
+import { Right } from "../styles";
 import * as s from "./styles";
 import { UdemyCoursePromotionCardProps } from "./types";
 
@@ -11,30 +13,28 @@ export const UdemyCoursePromotionCard = ({
       onDiscard={onDiscard}
       acceptBtnText="Register now"
       title={
-        <s.PromoText>
-          Get <s.PromoTextBold>Digma features early access</s.PromoTextBold>
-        </s.PromoText>
+        <PromoText>
+          Get <PromoTextBold>Digma features early access</PromoTextBold>
+        </PromoText>
       }
       collapsedBackground={
-        <>
-          <s.Right>
-            <img
-              src={
-                "/images/promotion/early-access/collapsedContainerBackground.svg"
-              }
-            />
-          </s.Right>
-        </>
+        <Right>
+          <img
+            src={
+              "/images/promotion/early-access/collapsedContainerBackground.svg"
+            }
+          />
+        </Right>
       }
       background={
         <img src={"/images/promotion/early-access/promotionLogo.svg"} />
       }
     >
-      <s.Description>
+      <s.StyledDescription>
         <span>Register to get early</span>
         <span>access to Digma</span>
         <span>capabilities</span>
-      </s.Description>
+      </s.StyledDescription>
     </s.StyledPromotionCard>
   );
 };

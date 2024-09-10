@@ -1,9 +1,7 @@
 import styled, { keyframes } from "styled-components";
-import {
-  bodySemiboldTypography,
-  subheadingSemiboldTypography
-} from "../../../common/App/typographies";
+import { subheadingSemiboldTypography } from "../../../common/App/typographies";
 import { Button } from "../../../common/v3/Button";
+import { NewIconButton } from "../../../common/v3/NewIconButton";
 
 export const CollapsedContainer = styled.div`
   display: flex;
@@ -17,16 +15,7 @@ export const CollapsedContainer = styled.div`
   position: relative;
 `;
 
-export const PromoText = styled.span`
-  ${bodySemiboldTypography}
-`;
-
-export const PromoTextBold = styled.span`
-  ${bodySemiboldTypography};
-  color: ${({ theme }) => theme.colors.v3.text.link};
-`;
-
-export const CrossButton = styled(Button)`
+export const CrossButton = styled(NewIconButton)`
   padding: 0;
   position: absolute;
   right: 16px;
@@ -120,4 +109,21 @@ export const Holder = styled.div`
 export const CollapsedHolder = styled(Holder)`
   display: flex;
   justify-content: space-between;
+`;
+
+export const Background = styled.div`
+  position: absolute;
+  top: 0;
+  height: 100%;
+`;
+
+export const Right = styled(Background)`
+  right: 0;
+  overflow: hidden;
+`;
+
+export const Centered = styled(Background)`
+  right: 50%;
+  position: absolute;
+  overflow: hidden;
 `;

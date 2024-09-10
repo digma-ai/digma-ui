@@ -75,7 +75,7 @@ const PromotionCardComponent = (
           </s.ActionContainer>
         </s.ContentContainer>
         <s.CrossButton
-          buttonType={"tertiary"}
+          buttonType={"secondaryBorderless"}
           icon={CrossIcon}
           onClick={handleCollapseClick}
         />

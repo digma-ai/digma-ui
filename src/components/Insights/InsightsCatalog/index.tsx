@@ -14,7 +14,7 @@ import { FeatureFlag } from "../../../types";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { formatUnit } from "../../../utils/formatUnit";
 import { MAIN_CONTAINER_ID } from "../../Main";
-import { RegistrationCard } from "../../Main/RegistrationCard";
+import { UdemyRegistrationCard } from "../../Main/RegistrationCard/UdemyRegistrationCard";
 import { MainOverlay } from "../../Main/styles";
 import { trackingEvents as mainTrackingEvents } from "../../Main/tracking";
 import { CancelConfirmation } from "../../common/CancelConfirmation";
@@ -447,7 +447,7 @@ export const InsightsCatalog = ({
         )}
       {mainContainer &&
         createPortal(
-          <RegistrationCard
+          <UdemyRegistrationCard
             onClose={handleRegistrationClose}
             onComplete={handleRegistrationComplete}
             show={showRegistration}
