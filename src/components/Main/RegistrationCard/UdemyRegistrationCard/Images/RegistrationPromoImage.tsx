@@ -6,6 +6,8 @@ export const RegistrationPromoImage = () => {
   const themeKind = getThemeKind(theme);
 
   return (
-    <img src={`/images/promotion/registrationPromoLogo_${themeKind}.svg`} />
+    <img
+      src={`/images/promotion/udemy/registrationPromoLogo_${themeKind}.svg`}
+    />
   );
 };
