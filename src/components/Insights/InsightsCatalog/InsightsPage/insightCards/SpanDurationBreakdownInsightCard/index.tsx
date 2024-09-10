@@ -133,7 +133,7 @@ export const SpanDurationBreakdownInsightCard = ({
       meta: {
         minWidth: 30,
         width: "20%",
-        info: "The duration of the asset to selected percentile"
+        info: "The execution time of the asset"
       },
       cell: (info) => {
         const entry = info.getValue();
