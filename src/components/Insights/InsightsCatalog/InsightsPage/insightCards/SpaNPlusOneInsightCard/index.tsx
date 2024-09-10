@@ -111,7 +111,9 @@ export const SpaNPlusOneInsightCard = ({
             <ColumnsContainer>
               <KeyValue
                 label={"Repeats"}
-                info={"Average times this query repeats in each request"}
+                info={
+                  "The median number of times this query repeats in each request"
+                }
               >
                 {selectedEndpoint.occurrences}
               </KeyValue>
@@ -124,7 +126,7 @@ export const SpaNPlusOneInsightCard = ({
               <KeyValue
                 label={"Duration"}
                 info={
-                  "The execution time of the group of queries for selected endpoint"
+                  "The execution time of the last group of queries for selected endpoint"
                 }
               >
                 {getDurationString(selectedEndpoint.duration)}
