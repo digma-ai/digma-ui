@@ -36,7 +36,7 @@ import { SelectorEnvironment } from "./EnvironmentSelector/types";
 import { FilterButton } from "./FilterButton";
 import { FilterPanel } from "./FilterPanel";
 import { InsightsPage } from "./InsightsPage";
-import { PromotionCard } from "./PromotionCard";
+import { UdemyCoursePromotionCard } from "./PromotionCard/UdemyCoursePromotionCard";
 import * as s from "./styles";
 import {
   InsightFilterType,
@@ -333,7 +333,7 @@ export const InsightsCatalog = ({
         )}
         {isPromotionVisible && (
           <s.ToolbarRow>
-            <PromotionCard
+            <UdemyCoursePromotionCard
               onAccept={handlePromotionAccept}
               onDiscard={handlePromotionDiscard}
             />

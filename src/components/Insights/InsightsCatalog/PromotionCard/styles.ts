@@ -117,35 +117,7 @@ export const Holder = styled.div`
   width: 100%;
 `;
 
-export const Background = styled.div`
-  position: absolute;
-  top: 0;
-  height: 100%;
-`;
-
 export const CollapsedHolder = styled(Holder)`
   display: flex;
   justify-content: space-between;
-`;
-
-export const Right = styled(Background)`
-  right: 0;
-  overflow: hidden;
-`;
-
-export const Centered = styled(Background)`
-  right: 50%;
-  position: absolute;
-  overflow: hidden;
-`;
-
-const blurAnimation = keyframes`
-  0% { opacity: 0; }
-  100% { opacity: 1; }
-`;
-
-export const AnimatedPromotionBackground = styled.div`
-  position: absolute;
-  top: 0;
-  animation: 1s ${blurAnimation} linear infinite alternate;
 `;
