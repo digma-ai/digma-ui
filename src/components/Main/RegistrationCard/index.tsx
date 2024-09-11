@@ -20,7 +20,8 @@ export const RegistrationCard = ({
   show,
   icon,
   details,
-  submitBtnText
+  submitBtnText,
+  hideSuccess
 }: RegistrationCardProps) => {
   const [showOverlay, setShowOverlay] = useState(false);
   const [isFormCompleted, setIsFormCompleted] = useState(false);
@@ -78,7 +79,7 @@ export const RegistrationCard = ({
             onClick={onClose}
           />
 
-          {!isFormCompleted ? (
+          {!isFormCompleted || (hideSuccess && isFormCompleted) ? (
             <>
               <div>{icon}</div>
               <s.FormContainer>

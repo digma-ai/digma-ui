@@ -15,6 +15,7 @@ export const EarlyAccessRegistrationCard = ({
       className={className}
       submitBtnText="Sign Up"
       show={show}
+      hideSuccess={true}
       icon={
         <img src={`/images/promotion/early-access/registrationPromoLogo.svg`} />
       }
