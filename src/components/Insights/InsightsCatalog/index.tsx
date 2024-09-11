@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
-import { createPortal } from "react-dom";
 import { useTheme } from "styled-components";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import { useDebounce } from "../../../hooks/useDebounce";
-import { usePersistence } from "../../../hooks/usePersistence";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { useInsightsSelector } from "../../../store/insights/useInsightsSelector";
@@ -13,11 +11,6 @@ import { isUndefined } from "../../../typeGuards/isUndefined";
 import { FeatureFlag } from "../../../types";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { formatUnit } from "../../../utils/formatUnit";
-import { MAIN_CONTAINER_ID } from "../../Main";
-import { UdemyRegistrationCard } from "../../Main/RegistrationCard/UdemyRegistrationCard";
-import { MainOverlay } from "../../Main/styles";
-import { trackingEvents as mainTrackingEvents } from "../../Main/tracking";
-import { CancelConfirmation } from "../../common/CancelConfirmation";
 import { Pagination } from "../../common/Pagination";
 import { SearchInput } from "../../common/SearchInput";
 import { SortingSelector } from "../../common/SortingSelector";
@@ -36,7 +29,7 @@ import { SelectorEnvironment } from "./EnvironmentSelector/types";
 import { FilterButton } from "./FilterButton";
 import { FilterPanel } from "./FilterPanel";
 import { InsightsPage } from "./InsightsPage";
-import { UdemyCoursePromotionCard } from "./PromotionCard/UdemyCoursePromotionCard";
+import { PromotionSection } from "./PromotionSection";
 import * as s from "./styles";
 import {
   InsightFilterType,
@@ -50,17 +43,6 @@ const PAGE_SIZE = 10;
 
 const isShowUnreadOnly = (filters: InsightFilterType[]) =>
   filters.length === 1 && filters[0] === "unread";
-
-const PROMOTION_PERSISTENCE_KEY = "PROMOTION";
-const PROMOTION_COMPLETED_PERSISTENCE_KEY = "PROMOTION_COMPLETED";
-
-const isPromotionEnabled = (dismissalDate: number | null | undefined) => {
-  const PROMOTION_INTERVAL = 30 * 24 * 60 * 60 * 1000; // in milliseconds
-
-  return (
-    !dismissalDate || Math.abs(dismissalDate - Date.now()) > PROMOTION_INTERVAL
-  );
-};
 
 export const InsightsCatalog = ({
   onJiraTicketCreate,
@@ -113,17 +95,8 @@ export const InsightsCatalog = ({
   const previousIsMarkingAllAsReadInProgress = usePrevious(
     isMarkingAllAsReadInProgress
   );
-  const [showRegistration, setShowRegistration] = useState(false);
-  const [showDiscardConfirmation, setShowDiscardConfirmation] = useState(false);
   const [isFiltersToolbarVisible, setIsFiltersToolbarVisible] = useState(false);
-  const [dismissalDate, setDismissalDate] = usePersistence<number>(
-    PROMOTION_PERSISTENCE_KEY,
-    "application"
-  );
-  const [promotionCompleted, setPromotionCompleted] = usePersistence<boolean>(
-    PROMOTION_COMPLETED_PERSISTENCE_KEY,
-    "application"
-  );
+
   const isServicesFilterEnabled = !scopeSpanCodeObjectId;
 
   const appliedFilterCount =
@@ -141,55 +114,8 @@ export const InsightsCatalog = ({
     ? insightStats?.spanEnvironments ?? []
     : environments?.map((x) => ({ environment: x })) ?? [];
 
-  const handleRegistrationComplete = () => {
-    sendUserActionTrackingEvent(
-      mainTrackingEvents.PROMOTION_REGISTRATION_FORM_SUBMITTED
-    );
-    setPromotionCompleted(true);
-  };
-
-  const handleRegistrationClose = () => {
-    sendUserActionTrackingEvent(
-      mainTrackingEvents.PROMOTION_REGISTRATION_CLOSE_BUTTON_CLICKED
-    );
-    setShowRegistration(false);
-  };
-
-  const handleCancelConfirmationClose = () => {
-    sendUserActionTrackingEvent(
-      mainTrackingEvents.PROMOTION_CANCEL_CONFIRMATION_CLOSE_CLICKED
-    );
-    setShowDiscardConfirmation(false);
-  };
-
-  const handleCancelConfirmationAccept = () => {
-    sendUserActionTrackingEvent(
-      mainTrackingEvents.PROMOTION_CANCEL_CONFIRMATION_ACCEPT_CLICKED
-    );
-    setDismissalDate(Date.now());
-    setShowDiscardConfirmation(false);
-  };
-
-  const handleConfirmationClose = () => {
-    setShowDiscardConfirmation(false);
-  };
-
-  const handlePromotionAccept = () => {
-    sendUserActionTrackingEvent(
-      mainTrackingEvents.PROMOTION_REGISTRATION_FORM_OPENED
-    );
-    setShowRegistration(true);
-  };
-
-  const handlePromotionDiscard = () => {
-    sendUserActionTrackingEvent(mainTrackingEvents.PROMOTION_DISCARDED);
-    setShowDiscardConfirmation(true);
-  };
-
   const isIssuesView = insightViewType === "Issues";
 
-  const isPromotionVisible =
-    isIssuesView && !promotionCompleted && isPromotionEnabled(dismissalDate);
   const isDismissalViewModeButtonVisible =
     isIssuesView && (isUndefined(dismissedCount) || dismissedCount > 0); // isUndefined - check for backward compatibility, always show when BE does not return this counter
   const isMarkingAsReadOptionsEnabled =
@@ -206,7 +132,6 @@ export const InsightsCatalog = ({
     backendInfo,
     FeatureFlag.ARE_ISSUES_FILTERS_ENABLED
   );
-  const mainContainer = document.getElementById(MAIN_CONTAINER_ID);
 
   const handleRefreshButtonClick = () => {
     sendUserActionTrackingEvent(trackingEvents.REFRESH_BUTTON_CLICKED, {
@@ -331,14 +256,7 @@ export const InsightsCatalog = ({
             </s.ToolbarRow>
           </>
         )}
-        {isPromotionVisible && (
-          <s.ToolbarRow>
-            <UdemyCoursePromotionCard
-              onAccept={handlePromotionAccept}
-              onDiscard={handlePromotionDiscard}
-            />
-          </s.ToolbarRow>
-        )}
+        {isIssuesView && <PromotionSection />}
         {mode === ViewMode.All ? (
           <>
             {filters.length === 1 && (
@@ -429,31 +347,6 @@ export const InsightsCatalog = ({
           />
         )}
       </s.Footer>
-      {mainContainer &&
-        showDiscardConfirmation &&
-        createPortal(
-          <MainOverlay onClose={handleConfirmationClose} tabIndex={-1}>
-            <CancelConfirmation
-              header={"Discard offer?"}
-              description={
-                "Are you sure you want to miss out on this exclusive, limited-time offer?"
-              }
-              cancelBtnText={"Yes, discard"}
-              onClose={handleCancelConfirmationClose}
-              onCancel={handleCancelConfirmationAccept}
-            />
-          </MainOverlay>,
-          mainContainer
-        )}
-      {mainContainer &&
-        createPortal(
-          <UdemyRegistrationCard
-            onClose={handleRegistrationClose}
-            onComplete={handleRegistrationComplete}
-            show={showRegistration}
-          />,
-          mainContainer
-        )}
     </>
   );
 };

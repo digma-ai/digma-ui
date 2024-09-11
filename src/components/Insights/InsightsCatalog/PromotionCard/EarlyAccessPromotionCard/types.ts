@@ -1,4 +1,4 @@
-export interface UdemyCoursePromotionCardProps {
+export interface EarlyAccessPromotionCardProps {
   onDiscard: () => void;
   onAccept: () => void;
 }

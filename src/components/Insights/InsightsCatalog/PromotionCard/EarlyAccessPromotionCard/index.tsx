@@ -1,12 +1,12 @@
 import { PromoText, PromoTextBold } from "../../styles";
 import { Right } from "../styles";
 import * as s from "./styles";
-import { UdemyCoursePromotionCardProps } from "./types";
+import { EarlyAccessPromotionCardProps } from "./types";
 
-export const UdemyCoursePromotionCard = ({
+export const EarlyAccessPromotionCard = ({
   onAccept,
   onDiscard
-}: UdemyCoursePromotionCardProps) => {
+}: EarlyAccessPromotionCardProps) => {
   return (
     <s.StyledPromotionCard
       onAccept={onAccept}
