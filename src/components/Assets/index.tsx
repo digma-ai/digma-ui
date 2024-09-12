@@ -10,6 +10,7 @@ import { useHistory } from "../Main/useHistory";
 import { EmptyState } from "../common/EmptyState";
 import { SearchInput } from "../common/SearchInput";
 import { RefreshIcon } from "../common/icons/16px/RefreshIcon";
+import { NewIconButton } from "../common/v3/NewIconButton";
 import { Tooltip } from "../common/v3/Tooltip";
 import { AssetList } from "./AssetList";
 import { AssetTypeList } from "./AssetTypeList";
@@ -160,8 +161,8 @@ export const Assets = () => {
               />
               <AssetsFilter />
               <Tooltip title={"Refresh"}>
-                <s.RefreshButton
-                  buttonType={"tertiary"}
+                <NewIconButton
+                  buttonType={"secondaryBorderless"}
                   icon={RefreshIcon}
                   onClick={handleRefresh}
                 />
