@@ -6,8 +6,8 @@ import { PLUGIN_EVENTS } from "../../../../pluginEvents";
 import { SendPluginEventPayload } from "../../../../types";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { trackingEvents as mainTrackingEvents } from "../../../Main/tracking";
-import { EarlyAccessPromotionCard } from "../PromotionCard/EarlyAccessPromotionCard";
 import { ToolbarRow } from "../styles";
+import { EarlyAccessPromotion } from "./Promotions/EarlyAccessPromotion";
 import { UdemyPromotion } from "./Promotions/UdemyPromotion";
 import { EarlyAccessPromotionDetails, PromotionType } from "./types";
 
@@ -143,7 +143,7 @@ export const PromotionSection = () => {
             />
           )}
           {isEarlyAccessPromotionIsVisible && (
-            <EarlyAccessPromotionCard
+            <EarlyAccessPromotion
               onAccept={handleEarlyAccessRegistrationComplete}
               onDiscard={handleCancelConfirmationAccept}
             />

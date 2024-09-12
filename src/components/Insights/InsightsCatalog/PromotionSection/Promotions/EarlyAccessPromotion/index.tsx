@@ -6,6 +6,7 @@ import { MAIN_CONTAINER_ID } from "../../../../../Main";
 import { EarlyAccessRegistrationCard } from "../../../../../Main/RegistrationCard/EarlyAccessRegistrationCard";
 import { MainOverlay } from "../../../../../Main/styles";
 import { trackingEvents as mainTrackingEvents } from "../../../../../Main/tracking";
+import { EarlyAccessPromotionCard } from "../../../PromotionCard/EarlyAccessPromotionCard";
 import { PromotionProps } from "../types";
 
 export const EarlyAccessPromotion = ({
@@ -64,7 +65,7 @@ export const EarlyAccessPromotion = ({
 
   return (
     <>
-      <EarlyAccessPromotion
+      <EarlyAccessPromotionCard
         onAccept={handlePromotionAccept}
         onDiscard={handlePromotionDiscard}
       />
