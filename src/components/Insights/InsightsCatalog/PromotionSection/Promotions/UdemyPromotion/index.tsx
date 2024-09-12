@@ -6,10 +6,14 @@ import { MAIN_CONTAINER_ID } from "../../../../../Main";
 import { UdemyRegistrationCard } from "../../../../../Main/RegistrationCard/UdemyRegistrationCard";
 import { MainOverlay } from "../../../../../Main/styles";
 import { trackingEvents as mainTrackingEvents } from "../../../../../Main/tracking";
-import { UdemyCoursePromotionCard } from "../../../PromotionCard/UdemyCoursePromotionCard";
+import { UdemyCoursePromotionCard } from "../../PromotionCard/UdemyCoursePromotionCard";
 import { PromotionProps } from "../types";
 
-export const UdemyPromotion = ({ onDiscard, onAccept }: PromotionProps) => {
+export const UdemyPromotion = ({
+  onDiscard,
+  onAccept,
+  isVisible
+}: PromotionProps) => {
   const [showDiscardConfirmation, setShowDiscardConfirmation] = useState(false);
   const [showRegistration, setShowRegistration] = useState(false);
 
@@ -63,10 +67,12 @@ export const UdemyPromotion = ({ onDiscard, onAccept }: PromotionProps) => {
   };
   return (
     <>
-      <UdemyCoursePromotionCard
-        onAccept={handlePromotionAccept}
-        onDiscard={handlePromotionDiscard}
-      />
+      {isVisible && (
+        <UdemyCoursePromotionCard
+          onAccept={handlePromotionAccept}
+          onDiscard={handlePromotionDiscard}
+        />
+      )}
 
       {mainContainer &&
         createPortal(

@@ -1,4 +1,4 @@
-import { PromoText, PromoTextBold } from "../../styles";
+import { PromoText, PromoTextBold } from "../../../styles";
 import { Right } from "../styles";
 import * as s from "./styles";
 import { EarlyAccessPromotionCardProps } from "./types";

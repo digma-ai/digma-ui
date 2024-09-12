@@ -1,5 +1,5 @@
 import { PromotionCard } from "..";
-import { PromoText, PromoTextBold } from "../../styles";
+import { PromoText, PromoTextBold } from "../../../styles";
 import { PromotionTag } from "../PromotionTag";
 import { Centered, Description, Right } from "../styles";
 import * as s from "./styles";

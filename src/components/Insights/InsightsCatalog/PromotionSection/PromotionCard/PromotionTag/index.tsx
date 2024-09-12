@@ -1,4 +1,4 @@
-import { AffectIcon } from "../../../../common/icons/12px/AffectIcon";
+import { AffectIcon } from "../../../../../common/icons/12px/AffectIcon";
 import * as s from "./styles";
 
 export const PromotionTag = () => {

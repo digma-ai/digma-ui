@@ -6,12 +6,13 @@ import { MAIN_CONTAINER_ID } from "../../../../../Main";
 import { EarlyAccessRegistrationCard } from "../../../../../Main/RegistrationCard/EarlyAccessRegistrationCard";
 import { MainOverlay } from "../../../../../Main/styles";
 import { trackingEvents as mainTrackingEvents } from "../../../../../Main/tracking";
-import { EarlyAccessPromotionCard } from "../../../PromotionCard/EarlyAccessPromotionCard";
+import { EarlyAccessPromotionCard } from "../../PromotionCard/EarlyAccessPromotionCard";
 import { PromotionProps } from "../types";
 
 export const EarlyAccessPromotion = ({
   onDiscard,
-  onAccept
+  onAccept,
+  isVisible
 }: PromotionProps) => {
   const [showDiscardConfirmation, setShowDiscardConfirmation] = useState(false);
   const [showRegistration, setShowRegistration] = useState(false);
@@ -70,10 +71,12 @@ export const EarlyAccessPromotion = ({
 
   return (
     <>
-      <EarlyAccessPromotionCard
-        onAccept={handlePromotionAccept}
-        onDiscard={handlePromotionDiscard}
-      />
+      {isVisible && (
+        <EarlyAccessPromotionCard
+          onAccept={handlePromotionAccept}
+          onDiscard={handlePromotionDiscard}
+        />
+      )}
 
       {mainContainer &&
         createPortal(

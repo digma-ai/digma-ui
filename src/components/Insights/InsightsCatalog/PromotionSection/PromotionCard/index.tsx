@@ -1,8 +1,8 @@
 import { ForwardedRef, forwardRef, useState } from "react";
-import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
-import { Link } from "../../../common/Link";
-import { CrossIcon } from "../../../common/icons/CrossIcon";
-import { trackingEvents } from "../../tracking";
+import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
+import { Link } from "../../../../common/Link";
+import { CrossIcon } from "../../../../common/icons/CrossIcon";
+import { trackingEvents } from "../../../tracking";
 import * as s from "./styles";
 import { PromotionCardProps } from "./types";
 

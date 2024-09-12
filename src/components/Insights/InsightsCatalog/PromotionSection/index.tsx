@@ -137,27 +137,19 @@ export const PromotionSection = () => {
     showPromotion === "early-access" &&
     isPromotionEnabled(earlyAccessPromotionDetails?.dismissalDate);
 
-  const isPromotionVisible =
-    isEarlyAccessPromotionIsVisible || isUdemyPromotionVisible;
-
   return (
-    <>
-      {isPromotionVisible && (
-        <ToolbarRow>
-          {isUdemyPromotionVisible && (
-            <UdemyPromotion
-              onAccept={handleUdemyRegistrationComplete}
-              onDiscard={handleCancelConfirmationAccept}
-            />
-          )}
-          {isEarlyAccessPromotionIsVisible && (
-            <EarlyAccessPromotion
-              onAccept={handleEarlyAccessRegistrationComplete}
-              onDiscard={handleCancelConfirmationAccept}
-            />
-          )}
-        </ToolbarRow>
-      )}
-    </>
+    <ToolbarRow>
+      <UdemyPromotion
+        onAccept={handleUdemyRegistrationComplete}
+        onDiscard={handleCancelConfirmationAccept}
+        isVisible={isUdemyPromotionVisible}
+      />
+
+      <EarlyAccessPromotion
+        onAccept={handleEarlyAccessRegistrationComplete}
+        onDiscard={handleCancelConfirmationAccept}
+        isVisible={isEarlyAccessPromotionIsVisible}
+      />
+    </ToolbarRow>
   );
 };
