@@ -6,8 +6,8 @@ import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActi
 import { SlackLogoIcon } from "../../common/icons/16px/SlackLogoIcon";
 import { CrossIcon } from "../../common/icons/CrossIcon";
 import { trackingEvents } from "../tracking";
-import { SuccessRegistration } from "./SuccessRegistration";
 import * as s from "./styles";
+import { SuccessRegistration } from "./SuccessRegistration";
 import { RegistrationCardProps } from "./types";
 
 const TRANSITION_CLASS_NAME = "registration-card";
@@ -21,7 +21,7 @@ export const RegistrationCard = ({
   icon,
   details,
   submitBtnText,
-  hideSuccess,
+  successLogo,
   scope
 }: RegistrationCardProps) => {
   const [showOverlay, setShowOverlay] = useState(false);
@@ -80,7 +80,7 @@ export const RegistrationCard = ({
             onClick={onClose}
           />
 
-          {!isFormCompleted || (hideSuccess && isFormCompleted) ? (
+          {!isFormCompleted ? (
             <>
               <div>{icon}</div>
               <s.FormContainer>
@@ -94,7 +94,7 @@ export const RegistrationCard = ({
               </s.FormContainer>
             </>
           ) : (
-            <SuccessRegistration />
+            <SuccessRegistration image={successLogo} />
           )}
 
           <s.SlackLink onClick={handleSlackLinkClick}>

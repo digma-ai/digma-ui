@@ -1,4 +1,5 @@
 import { RegistrationCard } from "..";
+import { SuccessRegistrationImage } from "../Images/SuccessRegistrationImage";
 import * as s from "./styles";
 import { EarlyAccessRegistrationCardPros } from "./types";
 
@@ -16,7 +17,9 @@ export const EarlyAccessRegistrationCard = ({
       submitBtnText="Sign Up"
       show={show}
       scope={"early-access"}
-      hideSuccess={true}
+      successLogo={
+        <SuccessRegistrationImage basePath="/images/promotion/early-access/" />
+      }
       icon={
         <img src={`/images/promotion/early-access/registrationPromoLogo.svg`} />
       }
