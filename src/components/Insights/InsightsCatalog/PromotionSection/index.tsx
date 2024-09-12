@@ -15,7 +15,7 @@ const EARLY_ACCESS_PROMOTION_PERSISTENCE_KEY = "EARLY_ACCESS_PROMOTION";
 
 const PROMOTION_PERSISTENCE_KEY = "PROMOTION";
 const PROMOTION_COMPLETED_PERSISTENCE_KEY = "PROMOTION_COMPLETED";
-const PROMOTION_INTERVAL_DAYS = 30; // in milliseconds
+const PROMOTION_INTERVAL_DAYS = 30;
 const INTERVAL_BETWEEN_PROMOTIONS_DAYS = 1;
 
 const isPromotionEnabled = (dismissalDate: number | null | undefined) => {
@@ -50,13 +50,21 @@ export const PromotionSection = () => {
     const handlePluginEvent = (data: unknown) => {
       const { name } = data as SendPluginEventPayload;
 
+      if (name !== PLUGIN_EVENTS.SHOW_EARLY_ACCESS_PROMOTION) {
+        return;
+      }
+
+      if (earlyAccessPromotionDetails?.completionDate) {
+        return;
+      }
+
       if (
-        name !== PLUGIN_EVENTS.SHOW_EARLY_ACCESS_PROMOTION &&
-        (new Boolean(earlyAccessPromotionDetails?.completionDate) ||
-          new Boolean(earlyAccessPromotionDetails?.dismissalDate))
+        earlyAccessPromotionDetails?.dismissalDate &&
+        !isPromotionEnabled(earlyAccessPromotionDetails.dismissalDate)
       ) {
         return;
       }
+
       setShowPromotion("early-access");
     };
 
