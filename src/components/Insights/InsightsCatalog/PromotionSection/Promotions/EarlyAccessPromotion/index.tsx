@@ -20,44 +20,49 @@ export const EarlyAccessPromotion = ({
 
   const handleRegistrationComplete = () => {
     sendUserActionTrackingEvent(
-      mainTrackingEvents.PROMOTION_REGISTRATION_FORM_SUBMITTED
+      mainTrackingEvents.EARLY_ACCESS_PROMOTION_REGISTRATION_FORM_SUBMITTED
     );
     onAccept();
   };
 
   const handleRegistrationClose = () => {
     sendUserActionTrackingEvent(
-      mainTrackingEvents.PROMOTION_REGISTRATION_CLOSE_BUTTON_CLICKED
+      mainTrackingEvents.EARLY_ACCESS_PROMOTION_REGISTRATION_CLOSE_BUTTON_CLICKED
     );
     setShowRegistration(false);
   };
 
   const handlePromotionAccept = () => {
     sendUserActionTrackingEvent(
-      mainTrackingEvents.PROMOTION_REGISTRATION_FORM_OPENED
+      mainTrackingEvents.EARLY_ACCESS_PROMOTION_REGISTRATION_FORM_OPENED
     );
     setShowRegistration(true);
   };
 
   const handlePromotionDiscard = () => {
-    sendUserActionTrackingEvent(mainTrackingEvents.PROMOTION_DISCARDED);
+    sendUserActionTrackingEvent(
+      mainTrackingEvents.EARLY_ACCESS_PROMOTION_DISCARDED
+    );
     setShowDiscardConfirmation(true);
   };
 
   const handleConfirmationClose = () => {
+    sendUserActionTrackingEvent(
+      mainTrackingEvents.EARLY_ACCESS_PROMOTION_CANCEL_CONFIRMATION_CLOSE_CLICKED
+    );
     setShowDiscardConfirmation(false);
   };
 
   const handleCancelConfirmationClose = () => {
     sendUserActionTrackingEvent(
-      mainTrackingEvents.PROMOTION_CANCEL_CONFIRMATION_CLOSE_CLICKED
+      mainTrackingEvents.EARLY_ACCESS_PROMOTION_CANCEL_CONFIRMATION_CLOSE_CLICKED
     );
     setShowDiscardConfirmation(false);
   };
 
   const handleCancelConfirmationAccept = () => {
     sendUserActionTrackingEvent(
-      mainTrackingEvents.PROMOTION_CANCEL_CONFIRMATION_ACCEPT_CLICKED
+      mainTrackingEvents.EARLY_ACCESS_PROMOTION_CANCEL_CONFIRMATION_ACCEPT_CLICKED
     );
     onDiscard();
     setShowDiscardConfirmation(false);

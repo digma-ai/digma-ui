@@ -41,6 +41,9 @@ export const UdemyPromotion = ({ onDiscard, onAccept }: PromotionProps) => {
   };
 
   const handleConfirmationClose = () => {
+    sendUserActionTrackingEvent(
+      mainTrackingEvents.PROMOTION_CANCEL_CONFIRMATION_CLOSE_CLICKED
+    );
     setShowDiscardConfirmation(false);
   };
 
