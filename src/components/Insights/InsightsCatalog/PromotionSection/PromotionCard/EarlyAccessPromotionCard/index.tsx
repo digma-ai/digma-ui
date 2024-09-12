@@ -11,6 +11,7 @@ export const EarlyAccessPromotionCard = ({
     <s.StyledPromotionCard
       onAccept={onAccept}
       onDiscard={onDiscard}
+      scope="early-access"
       acceptBtnText="Register now"
       title={
         <PromoText>

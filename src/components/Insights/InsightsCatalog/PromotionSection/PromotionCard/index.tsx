@@ -15,7 +15,8 @@ const PromotionCardComponent = (
     title,
     background,
     collapsedBackground,
-    className
+    className,
+    scope
   }: PromotionCardProps,
   ref: ForwardedRef<HTMLDivElement>
 ) => {
@@ -31,14 +32,16 @@ const PromotionCardComponent = (
 
   const handleCollapseClick = () => {
     sendUserActionTrackingEvent(
-      trackingEvents.PROMOTION_CLOSE_EXPANDED_VIEW_BUTTON_CLICKED
+      trackingEvents.PROMOTION_CLOSE_EXPANDED_VIEW_BUTTON_CLICKED,
+      { scope }
     );
     setExpanded(false);
   };
 
   const handleExpandClick = () => {
     sendUserActionTrackingEvent(
-      trackingEvents.PROMOTION_OPEN_EXPANDED_VIEW_BUTTON_CLICKED
+      trackingEvents.PROMOTION_OPEN_EXPANDED_VIEW_BUTTON_CLICKED,
+      { scope }
     );
     setExpanded(true);
   };
