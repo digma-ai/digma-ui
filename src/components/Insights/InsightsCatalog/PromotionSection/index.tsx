@@ -1,155 +1,155 @@
-import { useState } from "react";
-import { createPortal } from "react-dom";
+import { useEffect, useState } from "react";
+import { actions as globalActions } from "../../../../actions";
+import { dispatcher } from "../../../../dispatcher";
 import { usePersistence } from "../../../../hooks/usePersistence";
+import { PLUGIN_EVENTS } from "../../../../pluginEvents";
+import { SendPluginEventPayload } from "../../../../types";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
-import { MAIN_CONTAINER_ID } from "../../../Main";
-import { EarlyAccessRegistrationCard } from "../../../Main/RegistrationCard/EarlyAccessRegistrationCard";
-import { UdemyRegistrationCard } from "../../../Main/RegistrationCard/UdemyRegistrationCard";
-import { MainOverlay } from "../../../Main/styles";
 import { trackingEvents as mainTrackingEvents } from "../../../Main/tracking";
-import { CancelConfirmation } from "../../../common/CancelConfirmation";
-import { UdemyCoursePromotionCard } from "../PromotionCard/UdemyCoursePromotionCard";
+import { EarlyAccessPromotionCard } from "../PromotionCard/EarlyAccessPromotionCard";
 import { ToolbarRow } from "../styles";
-import { PromotionType } from "./types";
+import { UdemyPromotion } from "./Promotions/UdemyPromotion";
+import { EarlyAccessPromotionDetails, PromotionType } from "./types";
+
+const EARLY_ACCESS_PROMOTION_PERSISTENCE_KEY = "EARLY_ACCESS_PROMOTION";
 
 const PROMOTION_PERSISTENCE_KEY = "PROMOTION";
 const PROMOTION_COMPLETED_PERSISTENCE_KEY = "PROMOTION_COMPLETED";
+const PROMOTION_INTERVAL_DAYS = 30; // in milliseconds
+const INTERVAL_BETWEEN_PROMOTIONS_DAYS = 1;
 
 const isPromotionEnabled = (dismissalDate: number | null | undefined) => {
-  const PROMOTION_INTERVAL = 30 * 24 * 60 * 60 * 1000; // in milliseconds
+  return dateReachesInterval(PROMOTION_INTERVAL_DAYS, dismissalDate);
+};
 
-  return (
-    !dismissalDate || Math.abs(dismissalDate - Date.now()) > PROMOTION_INTERVAL
-  );
+const dateReachesInterval = (
+  days: number,
+  dismissalDate: number | null | undefined
+) => {
+  const interval = days * 24 * 60 * 60 * 1000; // in milliseconds
+  return !dismissalDate || Math.abs(dismissalDate - Date.now()) > interval;
 };
 
 export const PromotionSection = () => {
-  const [showRegistration, setShowRegistration] = useState(false);
-  const [showDiscardConfirmation, setShowDiscardConfirmation] = useState(false);
-  const [promotionCompleted, setPromotionCompleted] = usePersistence<boolean>(
-    PROMOTION_COMPLETED_PERSISTENCE_KEY,
-    "application"
-  );
-  const [dismissalDate, setDismissalDate] = usePersistence<number>(
+  const [showPromotion, setShowPromotion] = useState<PromotionType>("udemy");
+
+  const [earlyAccessPromotionDetails, setEarlyAccessPromotionDetails] =
+    usePersistence<EarlyAccessPromotionDetails>(
+      EARLY_ACCESS_PROMOTION_PERSISTENCE_KEY,
+      "application"
+    );
+
+  const [udemyPromotionCompleted, setUdemyPromotionCompleted] =
+    usePersistence<boolean>(PROMOTION_COMPLETED_PERSISTENCE_KEY, "application");
+  const [udemyDismissalDate, setUdemyDismissalDate] = usePersistence<number>(
     PROMOTION_PERSISTENCE_KEY,
     "application"
   );
 
-  const mainContainer = document.getElementById(MAIN_CONTAINER_ID);
+  useEffect(() => {
+    const handlePluginEvent = (data: unknown) => {
+      const { name } = data as SendPluginEventPayload;
+
+      if (
+        name !== PLUGIN_EVENTS.SHOW_EARLY_ACCESS_PROMOTION &&
+        (new Boolean(earlyAccessPromotionDetails?.completionDate) ||
+          new Boolean(earlyAccessPromotionDetails?.dismissalDate))
+      ) {
+        return;
+      }
+      setShowPromotion("early-access");
+    };
+
+    dispatcher.addActionListener(
+      globalActions.SEND_PLUGIN_EVENT,
+      handlePluginEvent
+    );
+
+    return () => {
+      dispatcher.removeActionListener(
+        globalActions.SEND_PLUGIN_EVENT,
+        handlePluginEvent
+      );
+    };
+  }, [
+    earlyAccessPromotionDetails?.completionDate,
+    earlyAccessPromotionDetails?.dismissalDate,
+    setShowPromotion
+  ]);
+
   const handleUdemyRegistrationComplete = () => {
     sendUserActionTrackingEvent(
-      mainTrackingEvents.PROMOTION_REGISTRATION_FORM_SUBMITTED
+      mainTrackingEvents.PROMOTION_REGISTRATION_FORM_SUBMITTED,
+      { source: showPromotion }
     );
-    setPromotionCompleted(true);
-  };
-
-  const handleUdemyRegistrationClose = () => {
-    sendUserActionTrackingEvent(
-      mainTrackingEvents.PROMOTION_REGISTRATION_CLOSE_BUTTON_CLICKED
-    );
-    setShowRegistration(false);
+    setUdemyPromotionCompleted(true);
   };
 
   const handleEarlyAccessRegistrationComplete = () => {
-    // sendUserActionTrackingEvent(
-    //   mainTrackingEvents.PROMOTION_REGISTRATION_FORM_SUBMITTED
-    // );
-    setPromotionCompleted(true);
-  };
-
-  const handleEarlyAccessRegistrationClose = () => {
-    // sendUserActionTrackingEvent(
-    //   mainTrackingEvents.PROMOTION_REGISTRATION_CLOSE_BUTTON_CLICKED
-    // );
-    setShowRegistration(false);
-  };
-
-  const handlePromotionAccept = (source: PromotionType) => {
     sendUserActionTrackingEvent(
-      mainTrackingEvents.PROMOTION_REGISTRATION_FORM_OPENED,
-      {
-        source
-      }
+      mainTrackingEvents.PROMOTION_REGISTRATION_FORM_SUBMITTED,
+      { source: showPromotion }
     );
-    setShowRegistration(true);
-  };
-
-  const handlePromotionDiscard = (source: PromotionType) => {
-    sendUserActionTrackingEvent(mainTrackingEvents.PROMOTION_DISCARDED, {
-      source
+    setEarlyAccessPromotionDetails({
+      ...earlyAccessPromotionDetails,
+      isCompleted: true,
+      completionDate: Date.now()
     });
-    setShowDiscardConfirmation(true);
   };
 
   const handleCancelConfirmationAccept = () => {
     sendUserActionTrackingEvent(
-      mainTrackingEvents.PROMOTION_CANCEL_CONFIRMATION_ACCEPT_CLICKED
+      mainTrackingEvents.PROMOTION_CANCEL_CONFIRMATION_ACCEPT_CLICKED,
+      { source: showPromotion }
     );
-    setDismissalDate(Date.now());
-    setShowDiscardConfirmation(false);
+
+    if (showPromotion === "udemy") {
+      setUdemyDismissalDate(Date.now());
+    } else if (showPromotion === "early-access") {
+      setEarlyAccessPromotionDetails({
+        isCompleted: false,
+        dismissalDate: Date.now()
+      });
+    }
   };
 
-  const handleConfirmationClose = () => {
-    setShowDiscardConfirmation(false);
-  };
+  const isUdemyPromotionVisible =
+    !udemyPromotionCompleted &&
+    isPromotionEnabled(udemyDismissalDate) &&
+    showPromotion === "udemy" &&
+    (!earlyAccessPromotionDetails?.isCompleted ||
+      (earlyAccessPromotionDetails.isCompleted &&
+        dateReachesInterval(
+          INTERVAL_BETWEEN_PROMOTIONS_DAYS,
+          earlyAccessPromotionDetails.completionDate
+        )));
 
-  const handleCancelConfirmationClose = () => {
-    sendUserActionTrackingEvent(
-      mainTrackingEvents.PROMOTION_CANCEL_CONFIRMATION_CLOSE_CLICKED
-    );
-    setShowDiscardConfirmation(false);
-  };
+  const isEarlyAccessPromotionIsVisible =
+    !earlyAccessPromotionDetails?.isCompleted &&
+    showPromotion === "early-access" &&
+    isPromotionEnabled(earlyAccessPromotionDetails?.dismissalDate);
 
   const isPromotionVisible =
-    !promotionCompleted && isPromotionEnabled(dismissalDate);
+    isEarlyAccessPromotionIsVisible || isUdemyPromotionVisible;
 
   return (
     <>
       {isPromotionVisible && (
         <ToolbarRow>
-          <UdemyCoursePromotionCard
-            onAccept={() => handlePromotionAccept("udemy")}
-            onDiscard={() => handlePromotionDiscard("udemy")}
-          />
+          {isUdemyPromotionVisible && (
+            <UdemyPromotion
+              onAccept={handleUdemyRegistrationComplete}
+              onDiscard={handleCancelConfirmationAccept}
+            />
+          )}
+          {isEarlyAccessPromotionIsVisible && (
+            <EarlyAccessPromotionCard
+              onAccept={handleEarlyAccessRegistrationComplete}
+              onDiscard={handleCancelConfirmationAccept}
+            />
+          )}
         </ToolbarRow>
       )}
-
-      {mainContainer &&
-        createPortal(
-          <UdemyRegistrationCard
-            onClose={handleUdemyRegistrationClose}
-            onComplete={handleUdemyRegistrationComplete}
-            show={showRegistration}
-          />,
-          mainContainer
-        )}
-
-      {mainContainer &&
-        createPortal(
-          <EarlyAccessRegistrationCard
-            onClose={handleEarlyAccessRegistrationClose}
-            onComplete={handleEarlyAccessRegistrationComplete}
-            show={showRegistration}
-          />,
-          mainContainer
-        )}
-
-      {mainContainer &&
-        showDiscardConfirmation &&
-        createPortal(
-          <MainOverlay onClose={handleConfirmationClose} tabIndex={-1}>
-            <CancelConfirmation
-              header={"Discard offer?"}
-              description={
-                "Are you sure you want to miss out on this exclusive, limited-time offer?"
-              }
-              cancelBtnText={"Yes, discard"}
-              onClose={handleCancelConfirmationClose}
-              onCancel={handleCancelConfirmationAccept}
-            />
-          </MainOverlay>,
-          mainContainer
-        )}
     </>
   );
 };

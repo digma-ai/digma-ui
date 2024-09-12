@@ -21,7 +21,8 @@ export const RegistrationCard = ({
   icon,
   details,
   submitBtnText,
-  hideSuccess
+  hideSuccess,
+  scope
 }: RegistrationCardProps) => {
   const [showOverlay, setShowOverlay] = useState(false);
   const [isFormCompleted, setIsFormCompleted] = useState(false);
@@ -85,7 +86,7 @@ export const RegistrationCard = ({
               <s.FormContainer>
                 {details}
                 <s.Register
-                  scope={"promotion"}
+                  scope={scope}
                   alwaysRenderError={true}
                   onNext={handleOnRegistrationExit}
                   submitBtnText={submitBtnText}

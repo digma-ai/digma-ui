@@ -9,6 +9,7 @@ export interface RegistrationCardProps {
   details: ReactNode;
   submitBtnText?: string;
   hideSuccess?: boolean;
+  scope: string;
 }
 
 export interface AnimatedRegistrationCardProps {

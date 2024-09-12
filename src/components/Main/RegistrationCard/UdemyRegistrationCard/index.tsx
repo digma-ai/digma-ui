@@ -15,6 +15,7 @@ export const UdemyRegistrationCard = ({
       onComplete={onComplete}
       className={className}
       show={show}
+      scope={"promotion"}
       icon={<RegistrationPromoImage />}
       details={
         <s.Description>
