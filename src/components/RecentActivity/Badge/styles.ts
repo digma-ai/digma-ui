@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { grayScale } from "../../common/App/v2colors";
 import { BadgeElementProps, BadgeSize } from "./types";
 
 const getDimensions = (size: BadgeSize) => {
@@ -16,6 +15,6 @@ export const Badge = styled.div<BadgeElementProps>`
   height: ${({ $size }) => getDimensions($size)}px;
   width: ${({ $size }) => getDimensions($size)}px;
   border-radius: 2px;
-  background: ${({ $backgroundColor = grayScale[200] }) => $backgroundColor};
-  border: 2px solid ${({ $borderColor = grayScale[850] }) => $borderColor};
+  border: 2px solid ${({ theme }) => theme.colors.v3.surface.secondary};
+  background: ${({ theme }) => theme.colors.v3.status.success};
 `;
