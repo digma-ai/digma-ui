@@ -1,18 +1,20 @@
+import { forwardRef } from "react";
 import * as s from "./styles";
 import { ToggleProps, ToggleValue } from "./types";
 
-export const Toggle = <T extends ToggleValue>({
+const ToggleComponent = <T extends ToggleValue>({
   size = "large",
   options,
   value,
-  onValueChange
+  onValueChange,
+  className
 }: ToggleProps<T>) => {
   const handleOptionButtonClick = (value: T) => {
     onValueChange(value);
   };
 
   return (
-    <s.Container>
+    <s.Container className={className}>
       {options.map((option) => (
         <s.OptionButton
           $size={size}
@@ -27,3 +29,5 @@ export const Toggle = <T extends ToggleValue>({
     </s.Container>
   );
 };
+
+export const Toggle = forwardRef(ToggleComponent) as typeof ToggleComponent;

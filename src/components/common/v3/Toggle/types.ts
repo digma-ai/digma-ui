@@ -15,6 +15,7 @@ export interface ToggleProps<T> {
   onValueChange: (value: T) => void;
   value: T;
   size?: ToggleSize;
+  className?: string;
 }
 
 export interface OptionButtonProps {

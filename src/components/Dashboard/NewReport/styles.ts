@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import { Toggle } from "../../common/v3/Toggle";
+import { OptionButton } from "../../common/v3/Toggle/styles";
 
 export const Container = styled.div`
   display: flex;
@@ -24,4 +26,38 @@ export const Column = styled.div`
   background: ${({ theme }) => theme.colors.v3.surface.secondary};
   border-radius: 12px;
   width: 100%;
+`;
+
+export const ViewModeToggle = styled(Toggle)`
+  border-radius: 8px;
+  padding: 6px;
+  align-items: center;
+  background-color: transparent;
+  border-color: ${({ theme }) => theme.colors.v3.stroke.dark};
+
+  ${OptionButton} {
+    padding: 6px;
+  }
+`;
+
+export const TimeModeToggle = styled(Toggle)`
+  border-radius: 8px;
+  padding: 0;
+  align-items: center;
+  background-color: transparent;
+  border-color: ${({ theme }) => theme.colors.v3.stroke.dark};
+
+  ${OptionButton} {
+    padding: 10px 16px;
+
+    &:first-child {
+      border-bottom-right-radius: 0;
+      border-top-right-radius: 0;
+    }
+
+    &:last-child {
+      border-bottom-left-radius: 0;
+      border-top-left-radius: 0;
+    }
+  }
 `;

@@ -28,8 +28,7 @@ export const FilterSelect = styled(Select)`
   background: transparent;
 `;
 
-export const FilterRow = styled(Row)`
+export const Filters = styled(Row)`
   display: flex;
-  justify-content: start;
   gap: 18px;
 `;
