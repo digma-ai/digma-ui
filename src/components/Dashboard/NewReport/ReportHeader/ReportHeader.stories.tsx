@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 
+import { fn } from "@storybook/test";
 import { ReportHeader } from ".";
 import { actions } from "../../actions";
 
@@ -19,6 +20,10 @@ type Story = StoryObj<typeof meta>;
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 export const Default: Story = {
+  args: {
+    onFilterChanged: fn(),
+    onViewModeChanged: fn()
+  },
   play: () => {
     window.setTimeout(() => {
       window.postMessage({

@@ -1,22 +1,28 @@
-import { useLayoutEffect } from "react";
+import { useLayoutEffect, useState } from "react";
 import { actions } from "../actions";
 
 import { Chart } from "./Chart";
+import { MetricsTable } from "./MetricsTable";
 import { ReportHeader } from "./ReportHeader";
+import { ReportViewMode } from "./ReportHeader/types";
 import * as s from "./styles";
+import { ReportFilterQuery } from "./types";
+import { useReportsData } from "./useReportsData";
 
-// const DefaultQuery: ReportFilterQuery = {
-//   environmentId: "",
-//   services: []
-// };
+const DefaultQuery: ReportFilterQuery = {
+  environmentId: "",
+  services: [],
+  lastDays: null
+};
 
 export const NewReport = ({
   type
 }: {
   type: "squarified" | "stripes" | "strip" | "sliceAndDice";
 }) => {
-  // const [query, setQuery] = useState<ReportFilterQuery>(DefaultQuery);
-  // const { data } = useReportsData(query);
+  const [query, setQuery] = useState<ReportFilterQuery>(DefaultQuery);
+  const { data } = useReportsData(query);
+  const [viewMode, setViewMode] = useState<ReportViewMode>("table");
 
   useLayoutEffect(() => {
     window.sendMessageToDigma({
@@ -24,16 +30,22 @@ export const NewReport = ({
     });
   }, []);
 
-  const handleFilterChanged = () =>
-    //  query: ReportFilterQuery
-    {
-      // setQuery(query);
-    };
+  const handleFilterChanged = (query: ReportFilterQuery) => {
+    setQuery(query);
+  };
+
+  const handleViewModeChange = (value: ReportViewMode) => {
+    setViewMode(value);
+  };
 
   return (
     <s.Container>
-      <ReportHeader onFilterChanged={handleFilterChanged} />
-      <Chart type={type} data={[]} labelFormat="" />
+      <ReportHeader
+        onFilterChanged={handleFilterChanged}
+        onViewModeChanged={handleViewModeChange}
+      />
+      {viewMode === "table" && <MetricsTable data={data?.reports ?? []} />}
+      {viewMode === "treemap" && <Chart type={type} data={[]} labelFormat="" />}
     </s.Container>
   );
 };

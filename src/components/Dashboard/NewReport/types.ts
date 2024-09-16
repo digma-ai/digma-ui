@@ -4,6 +4,14 @@ export interface ReportFilterQuery {
   scope?: string;
 }
 
+export interface ReportQuery {
+  keys: {
+    environment: string | null;
+    service: string | null;
+    lastDays: number | null;
+  }[];
+}
+
 export interface GetServicesPayload {
   environment: string | null;
 }
@@ -11,15 +19,19 @@ export interface GetServicesPayload {
 export interface ReportFilterQuery {
   environmentId: string | null;
   services: string[];
+  lastDays: number | null;
 }
 
 export interface ServiceData {
-  name: string;
-  criticalIssuesCount: number;
-  impactScore: string;
-  totalIssuesCount: number;
+  key: {
+    environment: string;
+    service: string;
+    lastDays: number | null;
+  };
+  issues: number;
+  impact: number;
 }
 
-export interface ServiceDashboardsData {
-  data: ServiceData[];
+export interface ServiceMetricsReport {
+  reports: ServiceData[];
 }

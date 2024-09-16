@@ -1,8 +1,8 @@
 import { Meta, StoryObj } from "@storybook/react";
 
 import { NewReport } from ".";
-import { actions as globalActions } from "../../../actions";
 import { actions } from "../actions";
+import { mockedReport } from "./MetricsTable/mockData";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof NewReport> = {
@@ -24,54 +24,8 @@ export const Default: Story = {
     window.setTimeout(() => {
       window.postMessage({
         type: "digma",
-        action: actions.SET_REPORT_ASSETS_STATS,
-        payload: {
-          totalCount: 10,
-          data: [
-            {
-              name: "Endpoint",
-              count: 1
-            },
-            {
-              name: "DatabaseQueries",
-              count: 2
-            },
-            {
-              name: "Consumer",
-              count: 3
-            },
-            {
-              name: "EndpointClient",
-              count: 4
-            },
-            {
-              name: "CodeLocation",
-              count: 5
-            },
-            {
-              name: "Cache",
-              count: 6
-            },
-            {
-              name: "Other",
-              count: 7
-            }
-          ]
-        }
-      });
-    }, 500);
-
-    window.setTimeout(() => {
-      window.postMessage({
-        type: "digma",
-        action: actions.SET_REPORT_ISSUES_STATS,
-        payload: {
-          totalCount: 10,
-          fixedCount: 9,
-          activeCount: 8,
-          regressionCount: 7,
-          criticalCount: 6
-        }
+        action: actions.SET_METRICS_REPORT_DATA,
+        payload: { ...mockedReport }
       });
     }, 500);
 
@@ -80,25 +34,6 @@ export const Default: Story = {
         type: "digma",
         action: actions.SET_SERVICES,
         payload: ["service 1", "service 2", "service 3", "service 4"]
-      });
-    }, 500);
-
-    window.setTimeout(() => {
-      window.postMessage({
-        type: "digma",
-        action: globalActions.SET_ENVIRONMENTS,
-        payload: [
-          {
-            id: "test1",
-            name: "test1",
-            type: "Public"
-          },
-          {
-            id: "test2",
-            name: "test2",
-            type: "Public"
-          }
-        ]
       });
     }, 500);
   }

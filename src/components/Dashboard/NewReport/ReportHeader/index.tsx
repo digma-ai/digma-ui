@@ -9,9 +9,11 @@ import { WrenchIcon } from "../../../common/icons/12px/WrenchIcon";
 
 import { actions } from "../../actions";
 
+import { isNumber } from "highcharts";
+import { usePrevious } from "../../../../hooks/usePrevious";
+import { formatUnit } from "../../../../utils/formatUnit";
 import { TableIcon } from "../../../common/icons/16px/TableIcon";
 import { TreemapIcon } from "../../../common/icons/16px/TreemapIcon";
-import { TimeModeToggle, ViewModeToggle } from "../styles";
 import { GetServicesPayload } from "../types";
 import * as s from "./styles";
 import { ReportHeaderProps, ReportTimeMode, ReportViewMode } from "./types";
@@ -27,11 +29,13 @@ const dataFetcherFiltersConfiguration: DataFetcherConfiguration = {
   ...baseFetchConfig
 };
 
+const DEFAULT_PERIOD = 1;
+
 export const ReportHeader = ({
   onFilterChanged,
-  onViewModeChanged,
-  onTimeModeChanged
+  onViewModeChanged
 }: ReportHeaderProps) => {
+  const [periodInDays, setPeriodInDays] = useState(DEFAULT_PERIOD);
   const [viewMode, setVieMode] = useState<ReportViewMode>("table");
   const [timeMode, setTimeMode] = useState<ReportTimeMode>("baseline");
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
@@ -39,6 +43,10 @@ export const ReportHeader = ({
     null
   );
   const { environments } = useConfigSelector();
+  const previousServices = usePrevious(selectedServices);
+  const previousEnvironment = usePrevious(selectedEnvironment);
+  const previousTimeMode = usePrevious(timeMode);
+  const previousPeriod = usePrevious(periodInDays);
 
   const getServicesPayload = useMemo(
     () => ({ environment: selectedEnvironment }),
@@ -54,6 +62,31 @@ export const ReportHeader = ({
     getData();
   }, []);
 
+  useEffect(() => {
+    if (
+      previousEnvironment !== selectedEnvironment ||
+      previousServices !== previousServices ||
+      previousTimeMode !== timeMode ||
+      previousPeriod !== periodInDays
+    ) {
+      onFilterChanged({
+        lastDays: timeMode === "baseline" ? null : periodInDays,
+        services: selectedServices,
+        environmentId: selectedEnvironment
+      });
+    }
+  }, [
+    periodInDays,
+    timeMode,
+    selectedServices,
+    selectedEnvironment,
+    onFilterChanged,
+    previousEnvironment,
+    previousServices,
+    previousTimeMode,
+    previousPeriod
+  ]);
+
   const handleSelectedEnvironmentChanged = (option: string | string[]) => {
     const newItem =
       option === selectedEnvironment
@@ -68,7 +101,18 @@ export const ReportHeader = ({
   const handleSelectedServicesChanged = (option: string | string[]) => {
     const newItem = Array.isArray(option) ? option : [option];
     setSelectedServices(newItem);
-    onFilterChanged({ environmentId: selectedEnvironment, services: newItem });
+  };
+
+  const handlePeriodChanged = (option: string | string[]) => {
+    const newItem = Array.isArray(option) ? option : [option];
+    if (newItem.length === 0) {
+      setPeriodInDays(DEFAULT_PERIOD);
+      return;
+    }
+
+    const value = newItem[0];
+    const newValue = isNumber(value) ? value : DEFAULT_PERIOD;
+    setPeriodInDays(newValue as number);
   };
 
   const handleViewModeChanged = (value: string) => {
@@ -80,14 +124,13 @@ export const ReportHeader = ({
   const handleTimeModeChanged = (value: string) => {
     const newMode = value as ReportTimeMode;
     setTimeMode(newMode);
-    onTimeModeChanged(newMode);
   };
 
   return (
     <s.Container>
       <s.Row>
         <s.Title>Services with critical issues</s.Title>
-        <TimeModeToggle
+        <s.TimeModeToggle
           options={[
             { value: "baseline", label: "Baseline" },
             { value: "changes", label: "Changes" }
@@ -98,7 +141,7 @@ export const ReportHeader = ({
       </s.Row>
       <s.Row>
         <s.Filters>
-          <s.FilterSelect
+          <s.EnvironmentFilter
             items={
               environments
                 ?.sort((a, b) => a.name.localeCompare(b.name))
@@ -109,6 +152,7 @@ export const ReportHeader = ({
                   selected: x.id === selectedEnvironment
                 })) ?? []
             }
+            showSelectedState={true}
             icon={GlobeIcon}
             onChange={handleSelectedEnvironmentChanged}
             placeholder={
@@ -116,6 +160,20 @@ export const ReportHeader = ({
               "Select Environments"
             }
           />
+
+          {timeMode === "changes" && (
+            <s.FilterSelect
+              items={[1, 7].map((x) => ({
+                value: x.toString(),
+                label: formatUnit(x, "Day"),
+                selected: x === periodInDays
+              }))}
+              showSelectedState={true}
+              icon={WrenchIcon}
+              onChange={handlePeriodChanged}
+              placeholder={`Period: ${formatUnit(periodInDays, "day")}`}
+            />
+          )}
 
           <s.FilterSelect
             items={
@@ -126,6 +184,7 @@ export const ReportHeader = ({
                 selected: selectedServices.includes(service)
               })) ?? []
             }
+            showSelectedState={true}
             multiselect={true}
             icon={WrenchIcon}
             onChange={handleSelectedServicesChanged}
@@ -134,7 +193,7 @@ export const ReportHeader = ({
             }
           />
         </s.Filters>
-        <ViewModeToggle
+        <s.ViewModeToggle
           size="large"
           options={[
             {

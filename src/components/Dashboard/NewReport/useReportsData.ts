@@ -4,7 +4,7 @@ import {
   useFetchData
 } from "../../../hooks/useFetchData";
 import { actions } from "../actions";
-import { ReportFilterQuery, ServiceDashboardsData } from "./types";
+import { ReportFilterQuery, ReportQuery, ServiceMetricsReport } from "./types";
 
 const baseFetchConfig = {
   refreshWithInterval: false,
@@ -12,18 +12,44 @@ const baseFetchConfig = {
 };
 
 const dataFetcherIssuesStatsConfiguration: DataFetcherConfiguration = {
-  requestAction: actions.GET_NEW_REPORT_DATA,
-  responseAction: actions.SET_NEW_REPORT_DATA,
+  requestAction: actions.GET_METRICS_REPORT_DATA,
+  responseAction: actions.SET_METRICS_REPORT_DATA,
   ...baseFetchConfig
 };
 
 export const useReportsData = (query: ReportFilterQuery) => {
-  const payload = useMemo(() => query, [query]);
+  const payload = useMemo(() => {
+    if (!query.environmentId && !(query.services?.length > 0)) {
+      return {
+        keys: []
+      };
+    }
 
-  const { data, getData } = useFetchData<
-    ReportFilterQuery,
-    ServiceDashboardsData
-  >(dataFetcherIssuesStatsConfiguration, payload);
+    if (!(query.services?.length > 0)) {
+      return {
+        keys: [
+          {
+            environment: query.environmentId,
+            service: null,
+            lastDays: query.lastDays
+          }
+        ]
+      };
+    }
+
+    return {
+      keys: query.services.map((x) => ({
+        environment: query.environmentId,
+        service: x,
+        lastDays: query.lastDays
+      }))
+    };
+  }, [query]);
+
+  const { data, getData } = useFetchData<ReportQuery, ServiceMetricsReport>(
+    dataFetcherIssuesStatsConfiguration,
+    payload
+  );
 
   useEffect(() => {
     getData();
