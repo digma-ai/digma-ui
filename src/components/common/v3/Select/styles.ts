@@ -49,6 +49,10 @@ export const Button = styled.button<ButtonProps>`
   }
 `;
 
+export const ButtonIconContainer = styled.div`
+  display: flex;
+`;
+
 export const ButtonLabel = styled.span`
   ${subscriptRegularTypography}
   margin-right: auto;

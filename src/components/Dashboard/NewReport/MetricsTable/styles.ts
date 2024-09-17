@@ -20,7 +20,7 @@ export const TableHead = styled.thead`
 `;
 
 export const TableHeaderCell = styled.th`
-  vertical-align: top;
+  height: 68px;
 `;
 
 export const TableCellContent = styled.div<TableCellContentProps>`
@@ -51,7 +51,7 @@ export const TableHeaderCellContent = styled(TableCellContent)`
 export const TableBodyRow = styled.tr`
   ${subheadingBoldTypography}
   color: ${({ theme }) => theme.colors.v3.text.primary};
-  height: 38px;
+  height: 68px;
   border-spacing: 0;
 
   &:hover {

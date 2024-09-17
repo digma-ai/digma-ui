@@ -5,10 +5,11 @@ export const getSeverity = (
   max: number,
   value: number
 ): Severity => {
-  const range = max - min;
-  const lowThreshold = min + 0.15 * range;
-  const mediumThreshold = min + 0.5 * range;
-  const highThreshold = min + 0.85 * range;
+  const normalizedMin = Math.max(min, 0);
+  const range = max - normalizedMin;
+  const lowThreshold = normalizedMin + 0.15 * range;
+  const mediumThreshold = normalizedMin + 0.5 * range;
+  const highThreshold = normalizedMin + 0.85 * range;
 
   if (value <= lowThreshold) {
     return "Low";

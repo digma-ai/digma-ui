@@ -161,7 +161,11 @@ export const Select = ({
         disabled={disabled}
         className={className}
       >
-        {Icon && <Icon color={"currentColor"} />}
+        {Icon && (
+          <s.ButtonIconContainer>
+            <Icon color={"currentColor"} />
+          </s.ButtonIconContainer>
+        )}
         {isString(placeholder) && <s.ButtonLabel>{placeholder}</s.ButtonLabel>}
         {multiselect && isSelectedStateEnabled && selectedValues.length > 0 && (
           <s.Number>{selectedValues.length}</s.Number>

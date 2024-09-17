@@ -6,14 +6,13 @@ export const Container = styled.div`
   flex-direction: column;
   height: 100%;
   width: 100%;
-  padding: 24px;
+  padding: 24px 24px 16px;
   gap: 24px;
   box-sizing: border-box;
   overflow: auto;
 `;
 
 export const Footer = styled.div`
-  padding: 24px 32px 16px;
   align-items: center;
   display: flex;
   justify-content: start;
