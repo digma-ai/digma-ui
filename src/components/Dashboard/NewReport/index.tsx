@@ -37,6 +37,8 @@ export const NewReport = () => {
 
   return (
     <s.Section>
+      <s.SectionBackground />
+      <s.ContainerBackgroundGradient />
       <s.Container>
         <ReportHeader
           onFilterChanged={handleFilterChanged}

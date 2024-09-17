@@ -70,6 +70,7 @@ export const ReportHeader = ({
         ? environments[0].id
         : null
     );
+    setSelectedServices([]);
   }, [environments]);
   useEffect(() => {
     if (
