@@ -12,7 +12,7 @@ export const mockedReport: ServiceMetricsReport = {
       issues: 10
     },
     {
-      impact: 10,
+      impact: 50,
       key: {
         environment: "TEST",
         service: "API",
@@ -21,7 +21,7 @@ export const mockedReport: ServiceMetricsReport = {
       issues: 10
     },
     {
-      impact: 101,
+      impact: 1,
       key: {
         environment: "TEST",
         service: "Orders",
@@ -48,13 +48,13 @@ export const mockedReport: ServiceMetricsReport = {
       issues: 110
     },
     {
-      impact: 120,
+      impact: 70,
       key: {
         environment: "TEST",
         service: "Users",
         lastDays: null
       },
-      issues: 110
+      issues: 70
     },
     {
       impact: 120,

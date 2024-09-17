@@ -1,14 +1,13 @@
 import styled from "styled-components";
 import {
-  footnoteRegularTypography,
-  subscriptRegularTypography
+  subheadingBoldTypography,
+  subheadingSemiboldTypography
 } from "../../../common/App/typographies";
-import { TableCellContentProps } from "./types";
+import { TableBodyCellCellProps, TableCellContentProps } from "./types";
 
 export const Table = styled.table`
   width: 100%;
-  table-layout: fixed;
-  border-spacing: 0 4px;
+  border-spacing: 0;
 `;
 
 export const TableHead = styled.thead`
@@ -17,23 +16,12 @@ export const TableHead = styled.thead`
 `;
 
 export const TableHeaderCell = styled.th`
-  ${footnoteRegularTypography}
-
-  padding: 0 2px;
   vertical-align: top;
-
-  &:first-child {
-    padding-left: 0;
-  }
-
-  &:last-child {
-    padding-right: 0;
-  }
 `;
 
 export const TableCellContent = styled.div<TableCellContentProps>`
   display: flex;
-  gap: 4px;
+  padding: 16px;
   align-items: center;
   text-align: ${({ $align = "left" }) => $align};
   justify-content: ${({ $align }) => {
@@ -50,13 +38,16 @@ export const TableCellContent = styled.div<TableCellContentProps>`
 `;
 
 export const TableHeaderCellContent = styled(TableCellContent)`
-  ${footnoteRegularTypography}
+  ${subheadingSemiboldTypography}
+  font-weight: 400;
+  color: ${({ theme }) => theme.colors.v3.text.tertiary};
 `;
 
 export const TableBodyRow = styled.tr`
-  ${subscriptRegularTypography}
+  ${subheadingBoldTypography}
   color: ${({ theme }) => theme.colors.v3.text.primary};
-  height: 28px;
+  height: 38px;
+  border-spacing: 0;
 
   &:hover {
     background: ${({ theme }) => theme.colors.v3.surface.primaryLight};
@@ -64,16 +55,20 @@ export const TableBodyRow = styled.tr`
   }
 `;
 
-export const TableBodyCell = styled.td`
-  padding: 0 2px;
-
-  &:first-child {
-    padding-left: 0;
-    border-radius: 4px 0 0 4px;
-  }
-
-  &:last-child {
-    padding-right: 0;
-    border-radius: 0 4px 4px 0;
-  }
+export const TableBodyCell = styled.td<TableBodyCellCellProps>`
+  border: 1px solid ${({ theme }) => theme.colors.v3.surface.sidePanelHeader};
+  background: ${({ $severity }) => {
+    switch ($severity) {
+      case "Critical":
+        return "radial-gradient(1166.07% 138.62% at 0% 0%, #B92B2B 0%, #B95E2B 100%)";
+      case "High":
+        return "radial-gradient(129.2% 111.8% at 0% 0%, #B95E2B 0%, #B9A22B 100%)";
+      case "Medium":
+        return "radial-gradient(408.61% 111.8% at 0% 0%, #B9A22B 0%, #6AB92B 100%)";
+      case "Low":
+        return "radial-gradient(408.61% 111.8% at 0% 0%, #6AB92B 0%, #2BB997 100%)";
+      default:
+        return "transparent";
+    }
+  }};
 `;

@@ -5,6 +5,7 @@ export interface MetricsTableProps {
 }
 
 export type ContentAlignment = "left" | "center" | "right";
+export type Severity = "Critical" | "High" | "Medium" | "Low";
 
 export interface ColumnMeta {
   contentAlign?: ContentAlignment;
@@ -13,4 +14,8 @@ export interface ColumnMeta {
 
 export interface TableCellContentProps {
   $align?: ContentAlignment;
+}
+
+export interface TableBodyCellCellProps {
+  $severity: Severity | null;
 }

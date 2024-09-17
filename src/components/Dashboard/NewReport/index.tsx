@@ -15,11 +15,7 @@ const DefaultQuery: ReportFilterQuery = {
   lastDays: null
 };
 
-export const NewReport = ({
-  type
-}: {
-  type: "squarified" | "stripes" | "strip" | "sliceAndDice";
-}) => {
+export const NewReport = () => {
   const [query, setQuery] = useState<ReportFilterQuery>(DefaultQuery);
   const { data } = useReportsData(query);
   const [viewMode, setViewMode] = useState<ReportViewMode>("table");
@@ -45,7 +41,9 @@ export const NewReport = ({
         onViewModeChanged={handleViewModeChange}
       />
       {viewMode === "table" && <MetricsTable data={data?.reports ?? []} />}
-      {viewMode === "treemap" && <Chart type={type} data={[]} labelFormat="" />}
+      {viewMode === "treemap" && (
+        <Chart type={"strip"} data={[]} labelFormat="" />
+      )}
     </s.Container>
   );
 };

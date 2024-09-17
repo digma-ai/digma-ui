@@ -9,9 +9,7 @@ import { WrenchIcon } from "../../../common/icons/12px/WrenchIcon";
 
 import { actions } from "../../actions";
 
-import { isNumber } from "highcharts";
 import { usePrevious } from "../../../../hooks/usePrevious";
-import { formatUnit } from "../../../../utils/formatUnit";
 import { TableIcon } from "../../../common/icons/16px/TableIcon";
 import { TreemapIcon } from "../../../common/icons/16px/TreemapIcon";
 import { GetServicesPayload } from "../types";
@@ -28,6 +26,9 @@ const dataFetcherFiltersConfiguration: DataFetcherConfiguration = {
   responseAction: actions.SET_SERVICES,
   ...baseFetchConfig
 };
+
+export const formatUnit = (value: number, unit: string) =>
+  value === 1 ? `${value} ${unit}` : `${value} ${unit}s`;
 
 const DEFAULT_PERIOD = 1;
 
@@ -65,7 +66,7 @@ export const ReportHeader = ({
   useEffect(() => {
     if (
       previousEnvironment !== selectedEnvironment ||
-      previousServices !== previousServices ||
+      previousServices !== selectedServices ||
       previousTimeMode !== timeMode ||
       previousPeriod !== periodInDays
     ) {
@@ -111,8 +112,8 @@ export const ReportHeader = ({
     }
 
     const value = newItem[0];
-    const newValue = isNumber(value) ? value : DEFAULT_PERIOD;
-    setPeriodInDays(newValue as number);
+    const newValue = Number(value);
+    setPeriodInDays(newValue);
   };
 
   const handleViewModeChanged = (value: string) => {
@@ -166,9 +167,9 @@ export const ReportHeader = ({
               items={[1, 7].map((x) => ({
                 value: x.toString(),
                 label: formatUnit(x, "Day"),
-                selected: x === periodInDays
+                selected: x === periodInDays,
+                enabled: true
               }))}
-              showSelectedState={true}
               icon={WrenchIcon}
               onChange={handlePeriodChanged}
               placeholder={`Period: ${formatUnit(periodInDays, "day")}`}

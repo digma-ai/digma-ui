@@ -2,36 +2,45 @@ import {
   createColumnHelper,
   flexRender,
   getCoreRowModel,
+  sortingFns,
   useReactTable
 } from "@tanstack/react-table";
 import { ServiceData } from "../types";
+import { getRank } from "../utils";
 import * as s from "./styles";
-import { ColumnMeta, MetricsTableProps } from "./types";
+import { ColumnMeta, MetricsTableProps, Severity } from "./types";
 
 export const MetricsTable = ({ data }: MetricsTableProps) => {
   const columnHelper = createColumnHelper<ServiceData>();
+  const maxImpact = Math.max(...data.map((x) => x.impact));
+
   const columns = [
     columnHelper.accessor((row) => row.key.service, {
       header: "Service",
       cell: (info) => info.getValue()
     }),
-    columnHelper.accessor((row) => row.key.environment, {
-      header: "Environment",
-      cell: (info) => info.getValue(),
-      meta: {
-        contentAlign: "center"
-      }
-    }),
     columnHelper.accessor((row) => row.issues, {
-      header: "Issues",
-      cell: (info) => info.getValue(),
+      header: "Critical issues",
+      cell: (info) => (info.getValue() === 0 ? 0 : `+${info.getValue()}`),
+      sortingFn: sortingFns.alphanumeric,
       meta: {
         contentAlign: "center"
       }
     }),
     columnHelper.accessor((row) => row.impact, {
       header: "Impact",
-      cell: (info) => info.getValue(),
+      cell: (info) => info.getValue() * 100,
+      sortingFn: sortingFns.alphanumeric,
+      meta: {
+        contentAlign: "center"
+      }
+    }),
+    columnHelper.accessor((row) => getRank(maxImpact, row.impact), {
+      header: "Rank",
+      cell: (info) => {
+        return info.getValue();
+      },
+      sortingFn: sortingFns.alphanumeric,
       meta: {
         contentAlign: "center"
       }
@@ -75,9 +84,12 @@ export const MetricsTable = ({ data }: MetricsTableProps) => {
           <s.TableBodyRow key={row.id}>
             {row.getVisibleCells().map((cell) => {
               const meta = cell.column.columnDef.meta as ColumnMeta | undefined;
-
+              const severity =
+                cell.column.columnDef.header === "Rank"
+                  ? (cell.getValue() as Severity)
+                  : null;
               return (
-                <s.TableBodyCell key={cell.id}>
+                <s.TableBodyCell key={cell.id} $severity={severity}>
                   <s.TableCellContent $align={meta?.contentAlign}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </s.TableCellContent>
