@@ -4,12 +4,16 @@ import {
   useFetchData
 } from "../../../../hooks/useFetchData";
 import { useConfigSelector } from "../../../../store/config/useConfigSelector";
-import { GlobeIcon } from "../../../common/icons/12px/GlobeIcon";
 import { WrenchIcon } from "../../../common/icons/12px/WrenchIcon";
 
 import { actions } from "../../actions";
 
 import { usePrevious } from "../../../../hooks/usePrevious";
+import { Environment } from "../../../common/App/types";
+
+import { CodeIcon } from "../../../common/icons/12px/CodeIcon";
+import { DurationBreakdownIcon } from "../../../common/icons/12px/DurationBreakdownIcon";
+import { InfinityIcon } from "../../../common/icons/16px/InfinityIcon";
 import { TableIcon } from "../../../common/icons/16px/TableIcon";
 import { TreemapIcon } from "../../../common/icons/16px/TreemapIcon";
 import { GetServicesPayload } from "../types";
@@ -41,9 +45,8 @@ export const ReportHeader = ({
   const [viewMode, setVieMode] = useState<ReportViewMode>("table");
   const [timeMode, setTimeMode] = useState<ReportTimeMode>("baseline");
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
-  const [selectedEnvironment, setSelectedEnvironment] = useState<string | null>(
-    null
-  );
+  const [selectedEnvironment, setSelectedEnvironment] =
+    useState<Environment | null>(null);
 
   const previousServices = usePrevious(selectedServices);
   const previousEnvironment = usePrevious(selectedEnvironment);
@@ -51,7 +54,7 @@ export const ReportHeader = ({
   const previousPeriod = usePrevious(periodInDays);
 
   const getServicesPayload = useMemo(
-    () => ({ environment: selectedEnvironment }),
+    () => ({ environment: selectedEnvironment?.id ?? null }),
     [selectedEnvironment]
   );
 
@@ -66,9 +69,7 @@ export const ReportHeader = ({
 
   useEffect(() => {
     setSelectedEnvironment(
-      environments?.length && environments?.length > 0
-        ? environments[0].id
-        : null
+      environments?.length && environments?.length > 0 ? environments[0] : null
     );
     setSelectedServices([]);
   }, [environments]);
@@ -83,7 +84,7 @@ export const ReportHeader = ({
         lastDays: timeMode === "baseline" ? null : periodInDays,
         services:
           selectedServices.length > 0 ? selectedServices : services ?? [],
-        environmentId: selectedEnvironment
+        environmentId: selectedEnvironment?.id ?? null
       });
     }
   }, [
@@ -101,13 +102,14 @@ export const ReportHeader = ({
 
   const handleSelectedEnvironmentChanged = (option: string | string[]) => {
     const newItem =
-      option === selectedEnvironment
+      option === selectedEnvironment?.id
         ? [""]
         : Array.isArray(option)
         ? option
         : [option];
 
-    setSelectedEnvironment(newItem[0]);
+    const newItemEnv = environments?.find((x) => x.id === newItem[0]) ?? null;
+    setSelectedEnvironment(newItemEnv);
   };
 
   const handleSelectedServicesChanged = (option: string | string[]) => {
@@ -161,16 +163,19 @@ export const ReportHeader = ({
                   label: x.name,
                   value: x.id,
                   enabled: true,
-                  selected: x.id === selectedEnvironment
+                  selected: x.id === selectedEnvironment?.id
                 })) ?? []
             }
             showSelectedState={true}
-            icon={GlobeIcon}
-            onChange={handleSelectedEnvironmentChanged}
-            placeholder={
-              environments?.find((x) => x.id === selectedEnvironment)?.name ??
-              "Select Environments"
+            icon={(props) =>
+              selectedEnvironment?.type === "Public" ? (
+                <InfinityIcon {...props} size={12} />
+              ) : (
+                <CodeIcon {...props} size={12} />
+              )
             }
+            onChange={handleSelectedEnvironmentChanged}
+            placeholder={selectedEnvironment?.name ?? "Select Environments"}
           />
 
           {timeMode === "changes" && (
@@ -181,7 +186,7 @@ export const ReportHeader = ({
                 selected: x === periodInDays,
                 enabled: true
               }))}
-              icon={WrenchIcon}
+              icon={DurationBreakdownIcon}
               onChange={handlePeriodChanged}
               placeholder={`Period: ${formatUnit(periodInDays, "day")}`}
             />
