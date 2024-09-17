@@ -83,16 +83,14 @@ export const ReportHeader = ({
   }, [environments]);
 
   useEffect(() => {
-    if (servicesFromStore.length > 0) {
-      onFilterChanged({
-        lastDays: timeMode === "baseline" ? null : periodInDays,
-        services:
-          selectedServices.length > 0
-            ? selectedServices
-            : servicesFromStore ?? [],
-        environmentId: selectedEnvironment?.id ?? null
-      });
-    }
+    onFilterChanged({
+      lastDays: timeMode === "baseline" ? null : periodInDays,
+      services:
+        selectedServices.length > 0
+          ? selectedServices
+          : servicesFromStore ?? [],
+      environmentId: selectedEnvironment?.id ?? null
+    });
   }, [servicesFromStore]);
 
   useEffect(() => {

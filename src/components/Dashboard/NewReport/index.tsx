@@ -34,7 +34,7 @@ export const NewReport = () => {
     setViewMode(value);
   };
 
-  const serviceData = data?.reports ?? [];
+  const serviceData = (query?.services.length > 0 ? data?.reports : null) ?? [];
 
   return (
     <s.Section>
