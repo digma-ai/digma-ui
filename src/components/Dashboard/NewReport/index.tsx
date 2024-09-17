@@ -40,7 +40,12 @@ export const NewReport = () => {
         onFilterChanged={handleFilterChanged}
         onViewModeChanged={handleViewModeChange}
       />
-      {viewMode === "table" && <MetricsTable data={data?.reports ?? []} />}
+      {viewMode === "table" && (
+        <MetricsTable
+          data={data?.reports ?? []}
+          showSign={query.lastDays !== null}
+        />
+      )}
       {viewMode === "treemap" && (
         <Chart type={"strip"} data={[]} labelFormat="" />
       )}

@@ -10,7 +10,7 @@ import { getRank } from "../utils";
 import * as s from "./styles";
 import { ColumnMeta, MetricsTableProps, Severity } from "./types";
 
-export const MetricsTable = ({ data }: MetricsTableProps) => {
+export const MetricsTable = ({ data, showSign }: MetricsTableProps) => {
   const columnHelper = createColumnHelper<ServiceData>();
   const maxImpact = Math.max(...data.map((x) => x.impact));
 
@@ -21,7 +21,14 @@ export const MetricsTable = ({ data }: MetricsTableProps) => {
     }),
     columnHelper.accessor((row) => row.issues, {
       header: "Critical issues",
-      cell: (info) => (info.getValue() === 0 ? 0 : `+${info.getValue()}`),
+      cell: (info) => {
+        const value = info.getValue();
+        if (!showSign) {
+          return value;
+        }
+
+        return `${value > 0 ? "+" : ""}${value}`;
+      },
       sortingFn: sortingFns.alphanumeric,
       meta: {
         contentAlign: "center"
@@ -29,7 +36,7 @@ export const MetricsTable = ({ data }: MetricsTableProps) => {
     }),
     columnHelper.accessor((row) => row.impact, {
       header: "Impact",
-      cell: (info) => info.getValue() * 100,
+      cell: (info) => Math.round(info.getValue() * 100),
       sortingFn: sortingFns.alphanumeric,
       meta: {
         contentAlign: "center"

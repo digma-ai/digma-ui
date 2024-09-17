@@ -3,7 +3,7 @@ import { ServiceMetricsReport } from "../types";
 export const mockedReport: ServiceMetricsReport = {
   reports: [
     {
-      impact: 100,
+      impact: 100.123123,
       key: {
         environment: "TEST",
         service: "Transactions",
@@ -57,7 +57,7 @@ export const mockedReport: ServiceMetricsReport = {
       issues: 70
     },
     {
-      impact: 120,
+      impact: 99.1231,
       key: {
         environment: "TEST",
         service: "Users",
