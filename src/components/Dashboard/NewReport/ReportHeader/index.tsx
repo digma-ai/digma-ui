@@ -47,6 +47,7 @@ export const ReportHeader = ({
   const [viewMode, setVieMode] = useState<ReportViewMode>("table");
   const [timeMode, setTimeMode] = useState<ReportTimeMode>("baseline");
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
+  const [servicesFromStore, setServicesFromStore] = useState<string[]>([]);
   const [selectedEnvironment, setSelectedEnvironment] =
     useState<Environment | null>(null);
 
@@ -67,6 +68,10 @@ export const ReportHeader = ({
   const previousServices = usePrevious(services);
 
   useEffect(() => {
+    setServicesFromStore(services ?? []);
+  }, [services, setServicesFromStore]);
+
+  useEffect(() => {
     getData();
   }, []);
 
@@ -74,22 +79,43 @@ export const ReportHeader = ({
     setSelectedEnvironment(
       environments?.length && environments?.length > 0 ? environments[0] : null
     );
-    setSelectedServices([]);
+    setServicesFromStore([]);
   }, [environments]);
 
   useEffect(() => {
+    if (servicesFromStore.length > 0) {
+      onFilterChanged({
+        lastDays: timeMode === "baseline" ? null : periodInDays,
+        services:
+          selectedServices.length > 0
+            ? selectedServices
+            : servicesFromStore ?? [],
+        environmentId: selectedEnvironment?.id ?? null
+      });
+    }
+  }, [servicesFromStore]);
+
+  useEffect(() => {
+    if (
+      getServicesPayload.environment !== selectedEnvironment?.id ||
+      servicesFromStore.length === 0
+    ) {
+      return;
+    }
+
     if (
       previousTimeMode !== timeMode ||
       (isEnvironment(selectedEnvironment) &&
         previousEnvironment !== selectedEnvironment) ||
       previousSelectedServices !== selectedServices ||
-      services !== previousServices ||
       (isNumber(periodInDays) && previousPeriod !== periodInDays)
     ) {
       onFilterChanged({
         lastDays: timeMode === "baseline" ? null : periodInDays,
         services:
-          selectedServices.length > 0 ? selectedServices : services ?? [],
+          selectedServices.length > 0
+            ? selectedServices
+            : servicesFromStore ?? [],
         environmentId: selectedEnvironment?.id ?? null
       });
     }
@@ -102,9 +128,10 @@ export const ReportHeader = ({
     previousEnvironment,
     previousTimeMode,
     previousPeriod,
-    services,
     previousSelectedServices,
-    previousServices
+    previousServices,
+    getServicesPayload,
+    servicesFromStore
   ]);
 
   const handleSelectedEnvironmentChanged = (option: string | string[]) => {
@@ -118,6 +145,7 @@ export const ReportHeader = ({
     const newItemEnv = environments?.find((x) => x.id === newItem[0]) ?? null;
     setSelectedEnvironment(newItemEnv);
     setSelectedServices([]);
+    setServicesFromStore([]);
   };
 
   const handleSelectedServicesChanged = (option: string | string[]) => {
