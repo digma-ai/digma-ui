@@ -11,7 +11,7 @@ import { isUndefined } from "../../../../typeGuards/isUndefined";
 import { SortIcon } from "../../../common/icons/16px/SortIcon";
 import { SORTING_ORDER } from "../../../common/SortingSelector/types";
 import { ServiceData } from "../types";
-import { getRank } from "../utils";
+import { getChangesSeverity, getRank } from "../utils";
 import * as s from "./styles";
 import { ColumnMeta, MetricsTableProps, Severity } from "./types";
 
@@ -52,18 +52,24 @@ export const MetricsTable = ({ data, showSign }: MetricsTableProps) => {
         contentAlign: "center"
       }
     }),
-    columnHelper.accessor((row) => getRank(maxImpact, row.impact), {
-      header: "Rank",
-      id: "rank",
-      enableSorting: true,
-      cell: (info) => {
-        return info.getValue();
-      },
-      sortingFn: sortingFns.alphanumeric,
-      meta: {
-        contentAlign: "center"
+    columnHelper.accessor(
+      (row) =>
+        row.key.lastDays
+          ? getChangesSeverity(row.impact)
+          : getRank(maxImpact, row.impact),
+      {
+        header: "Rank",
+        id: "rank",
+        enableSorting: true,
+        cell: (info) => {
+          return info.getValue();
+        },
+        sortingFn: sortingFns.alphanumeric,
+        meta: {
+          contentAlign: "center"
+        }
       }
-    })
+    )
   ];
 
   const table = useReactTable({

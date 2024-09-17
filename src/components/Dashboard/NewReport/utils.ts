@@ -18,3 +18,15 @@ export const getRank = (maxImpactScore: number, value: number): Severity => {
 
   return "Critical";
 };
+
+export const getChangesSeverity = (impactScore: number): Severity => {
+  if (impactScore < 0) {
+    return "Low";
+  }
+
+  if (impactScore > 0) {
+    return "Critical";
+  }
+
+  return "Medium";
+};

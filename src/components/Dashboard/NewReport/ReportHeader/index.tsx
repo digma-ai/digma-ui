@@ -11,6 +11,8 @@ import { actions } from "../../actions";
 import { usePrevious } from "../../../../hooks/usePrevious";
 import { Environment } from "../../../common/App/types";
 
+import { isEnvironment } from "../../../../typeGuards/isEnvironment";
+import { isNumber } from "../../../../typeGuards/isNumber";
 import { CodeIcon } from "../../../common/icons/12px/CodeIcon";
 import { DurationBreakdownIcon } from "../../../common/icons/12px/DurationBreakdownIcon";
 import { InfinityIcon } from "../../../common/icons/16px/InfinityIcon";
@@ -48,7 +50,7 @@ export const ReportHeader = ({
   const [selectedEnvironment, setSelectedEnvironment] =
     useState<Environment | null>(null);
 
-  const previousServices = usePrevious(selectedServices);
+  const previousSelectedServices = usePrevious(selectedServices);
   const previousEnvironment = usePrevious(selectedEnvironment);
   const previousTimeMode = usePrevious(timeMode);
   const previousPeriod = usePrevious(periodInDays);
@@ -62,6 +64,7 @@ export const ReportHeader = ({
     GetServicesPayload,
     string[]
   >(dataFetcherFiltersConfiguration, getServicesPayload);
+  const previousServices = usePrevious(services);
 
   useEffect(() => {
     getData();
@@ -73,12 +76,15 @@ export const ReportHeader = ({
     );
     setSelectedServices([]);
   }, [environments]);
+
   useEffect(() => {
     if (
-      previousEnvironment !== selectedEnvironment ||
-      previousServices !== selectedServices ||
       previousTimeMode !== timeMode ||
-      previousPeriod !== periodInDays
+      (isEnvironment(selectedEnvironment) &&
+        previousEnvironment !== selectedEnvironment) ||
+      previousSelectedServices !== selectedServices ||
+      services !== previousServices ||
+      (isNumber(periodInDays) && previousPeriod !== periodInDays)
     ) {
       onFilterChanged({
         lastDays: timeMode === "baseline" ? null : periodInDays,
@@ -94,10 +100,11 @@ export const ReportHeader = ({
     selectedEnvironment,
     onFilterChanged,
     previousEnvironment,
-    previousServices,
     previousTimeMode,
     previousPeriod,
-    services
+    services,
+    previousSelectedServices,
+    previousServices
   ]);
 
   const handleSelectedEnvironmentChanged = (option: string | string[]) => {

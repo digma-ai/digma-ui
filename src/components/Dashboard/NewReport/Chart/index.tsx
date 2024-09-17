@@ -3,24 +3,11 @@ import { Input } from "squarify";
 import { isNumber } from "../../../../typeGuards/isNumber";
 import { TreeMap } from "../../../common/TreeMap";
 import { TileData } from "../../../common/TreeMap/types";
-import { Severity } from "../MetricsTable/types";
 import { ReportTimeMode } from "../ReportHeader/types";
-import { getRank } from "../utils";
+import { getChangesSeverity, getRank } from "../utils";
 import { ServiceTile } from "./ServiceTile";
 import * as s from "./styles";
 import { ChartProps } from "./types";
-
-const getChangesSeverity = (impactScore: number): Severity => {
-  if (impactScore < 0) {
-    return "Low";
-  }
-
-  if (impactScore > 0) {
-    return "Critical";
-  }
-
-  return "High";
-};
 
 export const Chart = ({ data }: ChartProps) => {
   const { width, height, observe } = useDimensions();
