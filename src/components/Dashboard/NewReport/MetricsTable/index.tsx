@@ -2,9 +2,14 @@ import {
   createColumnHelper,
   flexRender,
   getCoreRowModel,
+  getSortedRowModel,
   sortingFns,
   useReactTable
 } from "@tanstack/react-table";
+
+import { isUndefined } from "../../../../typeGuards/isUndefined";
+import { SortIcon } from "../../../common/icons/16px/SortIcon";
+import { SORTING_ORDER } from "../../../common/SortingSelector/types";
 import { ServiceData } from "../types";
 import { getRank } from "../utils";
 import * as s from "./styles";
@@ -17,10 +22,12 @@ export const MetricsTable = ({ data, showSign }: MetricsTableProps) => {
   const columns = [
     columnHelper.accessor((row) => row.key.service, {
       header: "Service",
+      enableSorting: false,
       cell: (info) => info.getValue()
     }),
     columnHelper.accessor((row) => row.issues, {
       header: "Critical issues",
+      id: "issues",
       cell: (info) => {
         const value = info.getValue();
         if (!showSign) {
@@ -32,18 +39,23 @@ export const MetricsTable = ({ data, showSign }: MetricsTableProps) => {
       sortingFn: sortingFns.alphanumeric,
       meta: {
         contentAlign: "center"
-      }
+      },
+      enableSorting: true
     }),
     columnHelper.accessor((row) => row.impact, {
+      id: "impact",
       header: "Impact",
       cell: (info) => Math.round(info.getValue() * 100),
       sortingFn: sortingFns.alphanumeric,
+      enableSorting: true,
       meta: {
         contentAlign: "center"
       }
     }),
     columnHelper.accessor((row) => getRank(maxImpact, row.impact), {
       header: "Rank",
+      id: "rank",
+      enableSorting: true,
       cell: (info) => {
         return info.getValue();
       },
@@ -57,7 +69,8 @@ export const MetricsTable = ({ data, showSign }: MetricsTableProps) => {
   const table = useReactTable({
     data,
     columns,
-    getCoreRowModel: getCoreRowModel()
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel()
   });
 
   return (
@@ -72,13 +85,34 @@ export const MetricsTable = ({ data, showSign }: MetricsTableProps) => {
 
               return (
                 <s.TableHeaderCell key={header.id}>
-                  <s.TableHeaderCellContent $align={meta?.contentAlign}>
+                  <s.TableHeaderCellContent
+                    onClick={header.column.getToggleSortingHandler()}
+                    $align={meta?.contentAlign}
+                  >
                     {header.isPlaceholder
                       ? null
                       : flexRender(
                           header.column.columnDef.header,
                           header.getContext()
                         )}
+                    {isUndefined(header.column.columnDef.enableSorting) ||
+                      (header.column.columnDef.enableSorting &&
+                        {
+                          asc: (
+                            <s.SortingOrderIconContainer
+                              $sortingOrder={SORTING_ORDER.ASC}
+                            >
+                              <SortIcon color={"currentColor"} size={16} />
+                            </s.SortingOrderIconContainer>
+                          ),
+                          desc: (
+                            <s.SortingOrderIconContainer
+                              $sortingOrder={SORTING_ORDER.DESC}
+                            >
+                              <SortIcon color={"currentColor"} size={16} />
+                            </s.SortingOrderIconContainer>
+                          )
+                        }[(header.column.getIsSorted() as string) || "asc"])}
                   </s.TableHeaderCellContent>
                 </s.TableHeaderCell>
               );

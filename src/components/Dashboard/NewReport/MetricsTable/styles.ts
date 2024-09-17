@@ -3,6 +3,10 @@ import {
   subheadingBoldTypography,
   subheadingSemiboldTypography
 } from "../../../common/App/typographies";
+import {
+  SORTING_ORDER,
+  SortingOrderIconContainerProps
+} from "../../../common/SortingSelector/types";
 import { TableBodyCellCellProps, TableCellContentProps } from "./types";
 
 export const Table = styled.table`
@@ -40,6 +44,7 @@ export const TableCellContent = styled.div<TableCellContentProps>`
 export const TableHeaderCellContent = styled(TableCellContent)`
   ${subheadingSemiboldTypography}
   font-weight: 400;
+  gap: 4px;
   color: ${({ theme }) => theme.colors.v3.text.tertiary};
 `;
 
@@ -71,4 +76,11 @@ export const TableBodyCell = styled.td<TableBodyCellCellProps>`
         return "transparent";
     }
   }};
+`;
+
+export const SortingOrderIconContainer = styled.div<SortingOrderIconContainerProps>`
+  display: flex;
+  transform: scaleY(
+    ${({ $sortingOrder }) => ($sortingOrder === SORTING_ORDER.DESC ? -1 : 1)}
+  );
 `;

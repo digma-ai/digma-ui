@@ -36,6 +36,7 @@ export const ReportHeader = ({
   onFilterChanged,
   onViewModeChanged
 }: ReportHeaderProps) => {
+  const { environments } = useConfigSelector();
   const [periodInDays, setPeriodInDays] = useState(DEFAULT_PERIOD);
   const [viewMode, setVieMode] = useState<ReportViewMode>("table");
   const [timeMode, setTimeMode] = useState<ReportTimeMode>("baseline");
@@ -43,7 +44,7 @@ export const ReportHeader = ({
   const [selectedEnvironment, setSelectedEnvironment] = useState<string | null>(
     null
   );
-  const { environments } = useConfigSelector();
+
   const previousServices = usePrevious(selectedServices);
   const previousEnvironment = usePrevious(selectedEnvironment);
   const previousTimeMode = usePrevious(timeMode);
@@ -64,6 +65,13 @@ export const ReportHeader = ({
   }, []);
 
   useEffect(() => {
+    setSelectedEnvironment(
+      environments?.length && environments?.length > 0
+        ? environments[0].id
+        : null
+    );
+  }, [environments]);
+  useEffect(() => {
     if (
       previousEnvironment !== selectedEnvironment ||
       previousServices !== selectedServices ||
@@ -72,7 +80,8 @@ export const ReportHeader = ({
     ) {
       onFilterChanged({
         lastDays: timeMode === "baseline" ? null : periodInDays,
-        services: selectedServices,
+        services:
+          selectedServices.length > 0 ? selectedServices : services ?? [],
         environmentId: selectedEnvironment
       });
     }
@@ -85,7 +94,8 @@ export const ReportHeader = ({
     previousEnvironment,
     previousServices,
     previousTimeMode,
-    previousPeriod
+    previousPeriod,
+    services
   ]);
 
   const handleSelectedEnvironmentChanged = (option: string | string[]) => {
