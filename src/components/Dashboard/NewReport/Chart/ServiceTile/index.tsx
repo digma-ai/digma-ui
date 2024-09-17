@@ -1,15 +1,12 @@
 import { Tile } from "../../../../common/TreeMap/Tile";
+import { ReportTimeMode } from "../../ReportHeader/types";
 import * as s from "./styles";
 import { TooltipKeyValue } from "./TooltipKeyValue";
 import { ServiceTileProps } from "./types";
 
-const getNumberSign = (value: number) => {
-  if (value > 0) {
+const getFormattedNumber = (viewMode: ReportTimeMode, value: number) => {
+  if (viewMode === "changes" && value > 0) {
     return "+";
-  }
-
-  if (value < 0) {
-    return "-";
   }
 
   return "";
@@ -21,24 +18,33 @@ export const ServiceTile = ({
   impactScore,
   severity,
   viewMode
-}: ServiceTileProps) => (
-  <Tile
-    title={name}
-    severity={severity}
-    tooltip={
-      <s.TooltipContent>
-        <span>{name}</span>
-        <TooltipKeyValue label={"Critical Issues"}>
-          {viewMode === "changes" && getNumberSign(impactScore)}
-          {criticalIssuesCount}
-        </TooltipKeyValue>
-        <TooltipKeyValue label={"Impact Score"}>{impactScore}</TooltipKeyValue>
-      </s.TooltipContent>
-    }
-  >
-    <span>
-      <s.StatsMainNumber>{criticalIssuesCount}</s.StatsMainNumber>
-      <span> | {impactScore}</span>
-    </span>
-  </Tile>
-);
+}: ServiceTileProps) => {
+  const formattedCriticalIssuesCount = getFormattedNumber(
+    viewMode,
+    criticalIssuesCount
+  );
+  const formattedImpactScore = getFormattedNumber(viewMode, impactScore);
+
+  return (
+    <Tile
+      title={name}
+      severity={severity}
+      tooltip={
+        <s.TooltipContent>
+          <span>{name}</span>
+          <TooltipKeyValue label={"Critical Issues"}>
+            {formattedCriticalIssuesCount}
+          </TooltipKeyValue>
+          <TooltipKeyValue label={"Impact Score"}>
+            {formattedImpactScore}
+          </TooltipKeyValue>
+        </s.TooltipContent>
+      }
+    >
+      <span>
+        <s.StatsMainNumber>{formattedCriticalIssuesCount}</s.StatsMainNumber>
+        <span> | {formattedImpactScore}</span>
+      </span>
+    </Tile>
+  );
+};

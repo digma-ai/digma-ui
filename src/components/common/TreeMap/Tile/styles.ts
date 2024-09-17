@@ -39,7 +39,7 @@ export const ContentContainer = styled.div`
 `;
 
 export const Title = styled.span<TitleProps>`
-  color: ${(props) => props.theme.colors.v3.text.primary};
+  color: ${({ theme }) => theme.colors.v3.text.primary};
   font-size: 32px;
   font-weight: 400;
   overflow: hidden;
@@ -51,11 +51,11 @@ export const ChildrenContainer = styled.div<ChildrenContainerProps>`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: ${(props) => {
-    const rgb = hexToRgb(props.theme.colors.v3.text.primary);
+  color: ${({ theme }) => {
+    const rgb = hexToRgb(theme.colors.v3.text.primary);
     return rgb
       ? `rgba(${rgb.r} ${rgb.g} ${rgb.b} / 70%)`
-      : props.theme.colors.v3.text.primary;
+      : theme.colors.v3.text.primary;
   }};
   font-size: 32px;
   font-weight: 700;
