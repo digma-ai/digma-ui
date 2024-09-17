@@ -36,7 +36,7 @@ export const NewReport = () => {
   };
 
   return (
-    <>
+    <s.Section>
       <s.Container>
         <ReportHeader
           onFilterChanged={handleFilterChanged}
@@ -51,11 +51,11 @@ export const NewReport = () => {
         {viewMode === "treemap" && (
           <Chart type={"strip"} data={[]} labelFormat="" />
         )}
-        <s.Footer>
-          <DigmaLogoIcon />
-          <span>© 2024 digma.ai</span>
-        </s.Footer>
       </s.Container>
-    </>
+      <s.Footer>
+        <DigmaLogoIcon size={14} />
+        <span>© 2024 digma.ai</span>
+      </s.Footer>
+    </s.Section>
   );
 };
