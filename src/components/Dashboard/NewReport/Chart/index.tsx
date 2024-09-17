@@ -1,90 +1,67 @@
-import Highcharts from "highcharts";
-import HighchartsReact from "highcharts-react-official";
-import addHeatmap from "highcharts/modules/heatmap";
-import addTreemapModule from "highcharts/modules/treemap";
+import useDimensions from "react-cool-dimensions";
+import { Input } from "squarify";
+import { isNumber } from "../../../../typeGuards/isNumber";
+import { TreeMap } from "../../../common/TreeMap";
+import { TileData } from "../../../common/TreeMap/types";
+import { Severity } from "../MetricsTable/types";
+import { ReportTimeMode } from "../ReportHeader/types";
+import { getRank } from "../utils";
+import { ServiceTile } from "./ServiceTile";
 import * as s from "./styles";
 import { ChartProps } from "./types";
-addTreemapModule(Highcharts);
-addHeatmap(Highcharts);
 
-const baseOptions = (
-  type: "squarified" | "stripes" | "strip" | "sliceAndDice"
-) => ({
-  colorAxis: {
-    maxColor: "#B92B2B",
-    minColor: "#2BA0B9"
-  },
-  legend: {
-    enabled: false
-  },
-  series: [
-    {
-      type: "treemap",
-      layoutStartingDirection: "horizontal",
-      layoutAlgorithm: type ?? "sliceAndDice",
-      alternateStartingDirection: true,
-      borderRadius: 12,
-      clip: false,
-      levels: [
-        {
-          level: 1,
-          borderWidth: 12,
-          borderColor: "#1A1B1E", // todo color depends on theme
-          dataLabels: {
-            enabled: true,
-            align: "center",
-            verticalAlign: "middle",
-            padding: 24,
-
-            style: {
-              fontSize: 32,
-              color: "#FFFFFF",
-              fontWeight: "400"
-            }
-          }
-        }
-      ],
-      data: [
-        {
-          name: "Payment Service </br> 12 / 1500",
-          value: 6,
-          colorValue: 6
-        },
-        {
-          name: "Transaction Service </br> 15 / 710",
-          value: 5,
-          colorValue: 5
-        },
-        {
-          name: "Share Service </br> 5 / 530",
-          value: 3,
-          colorValue: 3
-        },
-        {
-          name: "Metadata Service </br> 2 / 100",
-          value: 1,
-          colorValue: 1
-        }
-      ]
-    }
-  ],
-  chart: {
-    backgroundColor: "transparent",
-    height: "100%", // 16:9 ratio,Transaction Service
-    margin: 0
+const getChangesSeverity = (impactScore: number): Severity => {
+  if (impactScore < 0) {
+    return "Low";
   }
-});
 
-export const Chart = ({ type }: ChartProps) => {
+  if (impactScore > 0) {
+    return "Critical";
+  }
+
+  return "High";
+};
+
+export const Chart = ({ data }: ChartProps) => {
+  const { width, height, observe } = useDimensions();
+
+  const viewMode: ReportTimeMode = data.some((service) =>
+    isNumber(service.key.lastDays)
+  )
+    ? "changes"
+    : "baseline";
+
+  const transformedData = data.map((service) => ({
+    ...service,
+    impact: Math.trunc(service.impact * 100)
+  }));
+
+  const maxImpactScore = Math.max(...transformedData.map((x) => x.impact));
+
+  const chartData: Input<TileData>[] = transformedData.map((service) => {
+    const severity =
+      viewMode === "baseline"
+        ? getRank(maxImpactScore, service.impact)
+        : getChangesSeverity(service.impact);
+
+    return {
+      id: service.key.service,
+      value: service.impact,
+      content: (
+        <ServiceTile
+          name={service.key.service}
+          criticalIssuesCount={service.issues}
+          impactScore={service.impact}
+          severity={severity}
+          viewMode={viewMode}
+        />
+      )
+    };
+  });
+
   return (
-    <s.Container>
-      <HighchartsReact
-        highcharts={Highcharts}
-        options={{
-          ...baseOptions(type),
-          title: "test"
-        }}
-      />
+    <s.Container ref={observe}>
+      <TreeMap data={chartData} padding={12} width={width} height={height} />
     </s.Container>
   );
 };

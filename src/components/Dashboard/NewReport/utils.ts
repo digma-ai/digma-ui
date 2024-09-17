@@ -1,4 +1,6 @@
-export const getRank = (maxImpactScore: number, value: number) => {
+import { Severity } from "./MetricsTable/types";
+
+export const getRank = (maxImpactScore: number, value: number): Severity => {
   const rangeStep = maxImpactScore / 4;
   const rangeValue = value / rangeStep;
 

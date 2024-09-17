@@ -1,11 +1,5 @@
-export interface ChartDataItem {
-  id: string;
-  name: string;
-  value: string;
-}
+import { ServiceData } from "../types";
 
 export interface ChartProps {
-  labelFormat?: string;
-  data: ChartDataItem[];
-  type: "squarified" | "stripes" | "strip" | "sliceAndDice";
+  data: ServiceData[];
 }

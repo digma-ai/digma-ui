@@ -4,10 +4,11 @@ import { bodyRegularTypography } from "../../common/App/typographies";
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  flex: 1;
-  min-width: fit-content;
+  height: 100%;
+  width: 100%;
   padding: 24px;
   gap: 24px;
+  box-sizing: border-box;
 `;
 
 export const Footer = styled.div`

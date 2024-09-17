@@ -15,6 +15,7 @@ export interface TooltipProps {
   fullWidth?: boolean;
   isDisabled?: boolean;
   boundary?: HTMLElement;
+  followCursor?: boolean;
 }
 
 export interface TooltipComponentProps {

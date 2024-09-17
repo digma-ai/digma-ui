@@ -1,7 +1,6 @@
 import { useLayoutEffect, useState } from "react";
-import { actions } from "../actions";
-
 import { DigmaLogoIcon } from "../../common/icons/16px/DigmaLogoIcon";
+import { actions } from "../actions";
 import { Chart } from "./Chart";
 import { MetricsTable } from "./MetricsTable";
 import { ReportHeader } from "./ReportHeader";
@@ -35,6 +34,8 @@ export const NewReport = () => {
     setViewMode(value);
   };
 
+  const serviceData = data?.reports ?? [];
+
   return (
     <s.Section>
       <s.SectionBackground />
@@ -45,14 +46,9 @@ export const NewReport = () => {
           onViewModeChanged={handleViewModeChange}
         />
         {viewMode === "table" && (
-          <MetricsTable
-            data={data?.reports ?? []}
-            showSign={query.lastDays !== null}
-          />
+          <MetricsTable data={serviceData} showSign={query.lastDays !== null} />
         )}
-        {viewMode === "treemap" && (
-          <Chart type={"strip"} data={[]} labelFormat="" />
-        )}
+        {viewMode === "treemap" && <Chart data={serviceData} />}
       </s.Container>
       <s.Footer>
         <DigmaLogoIcon size={14} />

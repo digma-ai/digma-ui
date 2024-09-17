@@ -8,6 +8,7 @@ import {
   hide,
   offset,
   shift,
+  useClientPoint,
   useFloating,
   useHover,
   useInteractions,
@@ -76,7 +77,8 @@ export const Tooltip = ({
   isDisabled,
   fullWidth,
   title,
-  boundary
+  boundary,
+  followCursor
 }: TooltipProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const arrowRef = useRef(null);
@@ -113,10 +115,17 @@ export const Tooltip = ({
 
   const hover = useHover(context, {
     delay: { open: 1000, close: 0 },
-    enabled: !isBoolean(forcedIsOpen)
+    enabled: !isBoolean(forcedIsOpen) || !followCursor
   });
 
-  const { getReferenceProps, getFloatingProps } = useInteractions([hover]);
+  const clientPoint = useClientPoint(context, {
+    enabled: followCursor
+  });
+
+  const { getReferenceProps, getFloatingProps } = useInteractions([
+    hover,
+    clientPoint
+  ]);
 
   const renderArrow = (withShadow: boolean) => (
     <FloatingArrow
