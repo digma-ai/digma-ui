@@ -1,6 +1,7 @@
 import { useLayoutEffect, useState } from "react";
 import { actions } from "../actions";
 
+import { DigmaLogoIcon } from "../../common/icons/16px/DigmaLogoIcon";
 import { Chart } from "./Chart";
 import { MetricsTable } from "./MetricsTable";
 import { ReportHeader } from "./ReportHeader";
@@ -35,20 +36,26 @@ export const NewReport = () => {
   };
 
   return (
-    <s.Container>
-      <ReportHeader
-        onFilterChanged={handleFilterChanged}
-        onViewModeChanged={handleViewModeChange}
-      />
-      {viewMode === "table" && (
-        <MetricsTable
-          data={data?.reports ?? []}
-          showSign={query.lastDays !== null}
+    <>
+      <s.Container>
+        <ReportHeader
+          onFilterChanged={handleFilterChanged}
+          onViewModeChanged={handleViewModeChange}
         />
-      )}
-      {viewMode === "treemap" && (
-        <Chart type={"strip"} data={[]} labelFormat="" />
-      )}
-    </s.Container>
+        {viewMode === "table" && (
+          <MetricsTable
+            data={data?.reports ?? []}
+            showSign={query.lastDays !== null}
+          />
+        )}
+        {viewMode === "treemap" && (
+          <Chart type={"strip"} data={[]} labelFormat="" />
+        )}
+        <s.Footer>
+          <DigmaLogoIcon />
+          <span>© 2024 digma.ai</span>
+        </s.Footer>
+      </s.Container>
+    </>
   );
 };
