@@ -110,6 +110,7 @@ export const ReportHeader = ({
 
     const newItemEnv = environments?.find((x) => x.id === newItem[0]) ?? null;
     setSelectedEnvironment(newItemEnv);
+    setSelectedServices([]);
   };
 
   const handleSelectedServicesChanged = (option: string | string[]) => {

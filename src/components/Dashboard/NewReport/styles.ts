@@ -9,6 +9,7 @@ export const Container = styled.div`
   padding: 24px;
   gap: 24px;
   box-sizing: border-box;
+  overflow: auto;
 `;
 
 export const Footer = styled.div`
