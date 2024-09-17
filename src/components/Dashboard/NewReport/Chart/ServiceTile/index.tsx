@@ -4,13 +4,8 @@ import * as s from "./styles";
 import { TooltipKeyValue } from "./TooltipKeyValue";
 import { ServiceTileProps } from "./types";
 
-const getFormattedNumber = (viewMode: ReportTimeMode, value: number) => {
-  if (viewMode === "changes" && value > 0) {
-    return "+";
-  }
-
-  return "";
-};
+const getFormattedNumber = (viewMode: ReportTimeMode, value: number) =>
+  `${viewMode === "changes" && value > 0 ? "+" : ""}${value}`;
 
 export const ServiceTile = ({
   name,

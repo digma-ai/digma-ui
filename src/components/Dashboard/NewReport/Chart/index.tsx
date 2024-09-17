@@ -4,7 +4,7 @@ import { isNumber } from "../../../../typeGuards/isNumber";
 import { TreeMap } from "../../../common/TreeMap";
 import { TileData } from "../../../common/TreeMap/types";
 import { ReportTimeMode } from "../ReportHeader/types";
-import { getChangesSeverity, getRank } from "../utils";
+import { getSeverity } from "../utils";
 import { ServiceTile } from "./ServiceTile";
 import * as s from "./styles";
 import { ChartProps } from "./types";
@@ -20,16 +20,18 @@ export const Chart = ({ data }: ChartProps) => {
 
   const transformedData = data.map((service) => ({
     ...service,
-    impact: Math.trunc(service.impact * 100)
+    impact: Math.round(service.impact * 100)
   }));
 
+  const minImpactScore = Math.min(...transformedData.map((x) => x.impact));
   const maxImpactScore = Math.max(...transformedData.map((x) => x.impact));
 
   const chartData: Input<TileData>[] = transformedData.map((service) => {
-    const severity =
-      viewMode === "baseline"
-        ? getRank(maxImpactScore, service.impact)
-        : getChangesSeverity(service.impact);
+    const severity = getSeverity(
+      minImpactScore,
+      maxImpactScore,
+      service.impact
+    );
 
     return {
       id: service.key.service,

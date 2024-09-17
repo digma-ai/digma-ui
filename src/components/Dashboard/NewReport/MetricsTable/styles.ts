@@ -64,7 +64,7 @@ export const TableBodyCell = styled.td<TableBodyCellCellProps>`
   border: 1px solid ${({ theme }) => theme.colors.v3.surface.sidePanelHeader};
   background: ${({ $severity }) => {
     switch ($severity) {
-      case "Critical":
+      case "Top":
         return "radial-gradient(1166.07% 138.62% at 0% 0%, #B92B2B 0%, #B95E2B 100%)";
       case "High":
         return "radial-gradient(129.2% 111.8% at 0% 0%, #B95E2B 0%, #B9A22B 100%)";

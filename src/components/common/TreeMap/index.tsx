@@ -14,8 +14,8 @@ export const TreeMap = ({ padding = 0, data, width, height }: TreeMapProps) => {
       content: item.content
     };
   });
-
-  const tiles = squarify(normalizedData, container);
+  const sortedData = [...normalizedData].sort((a, b) => b.value - a.value);
+  const tiles = squarify(sortedData, container);
 
   // Transform coordinates to add paddings between tiles
   const transformedTiles = padding
@@ -27,10 +27,10 @@ export const TreeMap = ({ padding = 0, data, width, height }: TreeMapProps) => {
 
         return {
           ...tile,
-          x0: isLeftEdge ? tile.x0 : tile.x0 + padding / 2,
-          y0: isTopEdge ? tile.y0 : tile.y0 + padding / 2,
-          x1: isRightEdge ? tile.x1 : tile.x1 - padding / 2,
-          y1: isBottomEdge ? tile.y1 : tile.y1 - padding / 2
+          x0: isLeftEdge ? tile.x0 : tile.x0 + padding,
+          y0: isTopEdge ? tile.y0 : tile.y0 + padding,
+          x1: isRightEdge ? tile.x1 : tile.x1 - padding,
+          y1: isBottomEdge ? tile.y1 : tile.y1 - padding
         };
       })
     : tiles;

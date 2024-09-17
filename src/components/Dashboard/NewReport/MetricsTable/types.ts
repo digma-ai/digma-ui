@@ -6,7 +6,7 @@ export interface MetricsTableProps {
 }
 
 export type ContentAlignment = "left" | "center" | "right";
-export type Severity = "Critical" | "High" | "Medium" | "Low";
+export type Severity = "Top" | "High" | "Medium" | "Low";
 
 export interface ColumnMeta {
   contentAlign?: ContentAlignment;

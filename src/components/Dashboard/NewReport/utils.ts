@@ -1,32 +1,26 @@
 import { Severity } from "./MetricsTable/types";
 
-export const getRank = (maxImpactScore: number, value: number): Severity => {
-  const rangeStep = maxImpactScore / 4;
-  const rangeValue = value / rangeStep;
+export const getSeverity = (
+  min: number,
+  max: number,
+  value: number
+): Severity => {
+  const range = max - min;
+  const lowThreshold = min + 0.15 * range;
+  const mediumThreshold = min + 0.5 * range;
+  const highThreshold = min + 0.85 * range;
 
-  if (rangeValue < 1) {
+  if (value <= lowThreshold) {
     return "Low";
   }
 
-  if (rangeValue < 2) {
+  if (value <= mediumThreshold) {
     return "Medium";
   }
 
-  if (rangeValue < 3) {
+  if (value <= highThreshold) {
     return "High";
   }
 
-  return "Critical";
-};
-
-export const getChangesSeverity = (impactScore: number): Severity => {
-  if (impactScore < 0) {
-    return "Low";
-  }
-
-  if (impactScore > 0) {
-    return "Critical";
-  }
-
-  return "Medium";
+  return "Top";
 };

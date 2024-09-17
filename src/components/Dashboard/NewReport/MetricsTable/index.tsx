@@ -11,12 +11,13 @@ import { isUndefined } from "../../../../typeGuards/isUndefined";
 import { SortIcon } from "../../../common/icons/16px/SortIcon";
 import { SORTING_ORDER } from "../../../common/SortingSelector/types";
 import { ServiceData } from "../types";
-import { getChangesSeverity, getRank } from "../utils";
+import { getSeverity } from "../utils";
 import * as s from "./styles";
 import { ColumnMeta, MetricsTableProps, Severity } from "./types";
 
 export const MetricsTable = ({ data, showSign }: MetricsTableProps) => {
   const columnHelper = createColumnHelper<ServiceData>();
+  const minImpact = Math.min(...data.map((x) => x.impact));
   const maxImpact = Math.max(...data.map((x) => x.impact));
 
   const columns = [
@@ -53,10 +54,7 @@ export const MetricsTable = ({ data, showSign }: MetricsTableProps) => {
       }
     }),
     columnHelper.accessor(
-      (row) =>
-        row.key.lastDays
-          ? getChangesSeverity(row.impact)
-          : getRank(maxImpact, row.impact),
+      (row) => getSeverity(minImpact, maxImpact, row.impact),
       {
         header: "Rank",
         id: "rank",

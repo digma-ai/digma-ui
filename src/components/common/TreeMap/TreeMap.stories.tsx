@@ -28,7 +28,7 @@ export const Default: Story = {
             name={"Payment Service"}
             criticalIssuesCount={12}
             impactScore={1500}
-            severity={"Critical"}
+            severity={"Top"}
             viewMode={"baseline"}
           />
         )

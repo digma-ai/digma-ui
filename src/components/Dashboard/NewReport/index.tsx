@@ -49,11 +49,11 @@ export const NewReport = () => {
           <MetricsTable data={serviceData} showSign={query.lastDays !== null} />
         )}
         {viewMode === "treemap" && <Chart data={serviceData} />}
+        <s.Footer>
+          <DigmaLogoIcon size={14} />
+          <span>© 2024 digma.ai</span>
+        </s.Footer>
       </s.Container>
-      <s.Footer>
-        <DigmaLogoIcon size={14} />
-        <span>© 2024 digma.ai</span>
-      </s.Footer>
     </s.Section>
   );
 };
