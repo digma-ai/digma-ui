@@ -40,7 +40,7 @@ export const ContentContainer = styled.div`
 
 export const Title = styled.span<TitleProps>`
   color: ${({ theme }) => theme.colors.v3.text.primary};
-  font-size: 32px;
+  font-size: 24px;
   font-weight: 400;
   overflow: hidden;
   text-overflow: ellipsis;
