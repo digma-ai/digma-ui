@@ -162,7 +162,7 @@ export const Assets = () => {
               <AssetsFilter />
               <Tooltip title={"Refresh"}>
                 <NewIconButton
-                  buttonType={"secondaryBorderless"}
+                  buttonType={"secondary"}
                   icon={RefreshIcon}
                   onClick={handleRefresh}
                 />
