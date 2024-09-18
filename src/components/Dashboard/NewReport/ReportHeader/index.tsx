@@ -83,6 +83,10 @@ export const ReportHeader = ({
   }, [environments]);
 
   useEffect(() => {
+    if (!selectedEnvironment?.id) {
+      return;
+    }
+
     onFilterChanged({
       lastDays: timeMode === "baseline" ? null : periodInDays,
       services:
@@ -91,11 +95,12 @@ export const ReportHeader = ({
           : servicesFromStore ?? [],
       environmentId: selectedEnvironment?.id ?? null
     });
-  }, [servicesFromStore]);
+  }, [servicesFromStore, selectedEnvironment]);
 
   useEffect(() => {
     if (
-      getServicesPayload.environment !== selectedEnvironment?.id ||
+      !selectedEnvironment?.id ||
+      getServicesPayload.environment !== selectedEnvironment.id ||
       servicesFromStore.length === 0
     ) {
       return;
