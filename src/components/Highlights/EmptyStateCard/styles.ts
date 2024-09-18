@@ -28,7 +28,7 @@ export const Card = styled(CommonCard)<CardProps>`
     $blurredBackground
       ? css`
           background: none;
-          backdrop-filter: blur(4px);
+          backdrop-filter: blur(12px);
         `
       : ""};
 `;
@@ -82,7 +82,7 @@ export const TextContainer = styled.div`
   align-items: center;
   justify-content: center;
   gap: 2px;
-  color: ${({ theme }) => theme.colors.v3.text.secondary};
+  color: ${({ theme }) => theme.colors.v3.text.tertiary};
 `;
 
 export const Title = styled.span`

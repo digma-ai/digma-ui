@@ -1,9 +1,8 @@
 export type BadgeSize = "small" | "large";
 
 export interface BadgeProps {
-  backgroundColor?: string;
-  borderColor?: string;
   size?: BadgeSize;
+  className?: string;
 }
 
 export interface BadgeElementProps {

@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 
+import { fn } from "@storybook/test";
 import { AssetList } from ".";
 import { ConfigContext, initialState } from "../../common/App/ConfigContext";
 import { ConfigContextData, DeploymentType } from "../../common/App/types";
@@ -38,6 +39,7 @@ const mockedConfig: ConfigContextData = {
 
 export const Default: Story = {
   args: {
+    onAssetCountChange: fn(),
     setRefresher: () => {
       return undefined;
     },
@@ -63,6 +65,7 @@ export const WithPerformanceImpact: Story = {
     )
   ],
   args: {
+    onAssetCountChange: fn(),
     setRefresher: () => {
       return undefined;
     },

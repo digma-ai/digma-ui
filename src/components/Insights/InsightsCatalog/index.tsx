@@ -19,7 +19,7 @@ import { ChevronIcon } from "../../common/icons/16px/ChevronIcon";
 import { EyeIcon } from "../../common/icons/16px/EyeIcon";
 import { RefreshIcon } from "../../common/icons/16px/RefreshIcon";
 import { Direction } from "../../common/icons/types";
-import { Button } from "../../common/v3/Button";
+import { NewButton } from "../../common/v3/NewButton";
 import { NewIconButton } from "../../common/v3/NewIconButton";
 import { Tooltip } from "../../common/v3/Tooltip";
 import { IssuesFilter } from "../Issues/IssuesFilter";
@@ -330,8 +330,8 @@ export const InsightsCatalog = ({
           </>
         )}
         {isDismissalViewModeButtonVisible && (
-          <Button
-            buttonType={"tertiary"}
+          <NewButton
+            buttonType={"secondaryBorderless"}
             icon={(props) => (
               <EyeIcon
                 {...props}

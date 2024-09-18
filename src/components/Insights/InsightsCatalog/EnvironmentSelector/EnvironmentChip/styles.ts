@@ -35,7 +35,7 @@ export const Counter = styled.div<CounterProps>`
   display: flex;
   justify-content: center;
   padding: 0 4px;
-  color: ${({ theme }) => theme.colors.v3.text.white};
+  color: ${({ theme }) => theme.colors.v3.text.primary};
   border-radius: 2px;
   margin-left: auto;
 
