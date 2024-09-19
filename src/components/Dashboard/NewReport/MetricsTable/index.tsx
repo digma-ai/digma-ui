@@ -4,7 +4,6 @@ import {
   getCoreRowModel,
   getSortedRowModel,
   SortingFn,
-  sortingFns,
   useReactTable
 } from "@tanstack/react-table";
 
@@ -84,7 +83,6 @@ export const MetricsTable = ({
   const columns = [
     columnHelper.accessor((row) => row.key.service, {
       header: "Service",
-      enableSorting: false,
       cell: (info) => info.getValue()
     }),
     columnHelper.accessor((row) => row, {
@@ -135,7 +133,7 @@ export const MetricsTable = ({
         cell: (info) => {
           return info.getValue();
         },
-        sortingFn: sortingFns.alphanumeric,
+        sortingFn: sortImpactFn,
         meta: {
           contentAlign: "center"
         }
@@ -147,7 +145,8 @@ export const MetricsTable = ({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel()
+    getSortedRowModel: getSortedRowModel(),
+    enableSortingRemoval: false
   });
 
   return (
@@ -163,8 +162,12 @@ export const MetricsTable = ({
               return (
                 <s.TableHeaderCell key={header.id}>
                   <s.TableHeaderCellContent
-                    onClick={header.column.getToggleSortingHandler()}
                     $align={meta?.contentAlign}
+                    onClick={
+                      header.column.columnDef.enableSorting
+                        ? header.column.getToggleSortingHandler()
+                        : undefined
+                    }
                   >
                     {header.isPlaceholder
                       ? null

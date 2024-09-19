@@ -20,7 +20,7 @@ export const TableHead = styled.thead`
 `;
 
 export const TableHeaderCell = styled.th`
-  height: 70;
+  height: 70px;
 `;
 
 export const TableCellContent = styled.div<TableCellContentProps>`
@@ -49,7 +49,7 @@ export const TableHeaderCellContent = styled(TableCellContent)`
   font-weight: 400;
   gap: 4px;
   color: ${({ theme }) => theme.colors.v3.text.tertiary};
-  cursor: pointer;
+  ${({ onClick }) => (onClick ? "cursor: pointer;" : "")}
 `;
 
 export const TableBodyRow = styled.tr`
