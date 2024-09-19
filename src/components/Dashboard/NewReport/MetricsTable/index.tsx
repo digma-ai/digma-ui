@@ -7,18 +7,51 @@ import {
   useReactTable
 } from "@tanstack/react-table";
 
+import { ReactNode } from "react";
 import { isUndefined } from "../../../../typeGuards/isUndefined";
+import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { SortIcon } from "../../../common/icons/16px/SortIcon";
+import { ChevronIcon } from "../../../common/icons/20px/ChevronIcon";
+import { Direction } from "../../../common/icons/types";
 import { SORTING_ORDER } from "../../../common/SortingSelector/types";
+import { trackingEvents } from "../tracking";
 import { ServiceData } from "../types";
 import { getSeverity } from "../utils";
 import * as s from "./styles";
 import { ColumnMeta, MetricsTableProps, Severity } from "./types";
 
-export const MetricsTable = ({ data, showSign }: MetricsTableProps) => {
+const IssuesLink = ({
+  children,
+  onClick
+}: {
+  onClick: () => void;
+  children: ReactNode;
+}) => {
+  return (
+    <s.SeeIssuesLink onClick={onClick}>
+      <span>{children}</span>
+      <s.LinkChevron>
+        <ChevronIcon direction={Direction.RIGHT} size={20} />
+      </s.LinkChevron>
+    </s.SeeIssuesLink>
+  );
+};
+
+export const MetricsTable = ({
+  data,
+  showSign,
+  onServiceSelected
+}: MetricsTableProps) => {
   const columnHelper = createColumnHelper<ServiceData>();
   const minImpact = Math.min(...data.map((x) => x.impact));
   const maxImpact = Math.max(...data.map((x) => x.impact));
+
+  const handleSeeIssuesLinkClick = (service: string, source: string) => {
+    onServiceSelected(service);
+    sendUserActionTrackingEvent(trackingEvents.TABLE_SEE_ISSUES_LINK_CLICKED, {
+      source
+    });
+  };
 
   const columns = [
     columnHelper.accessor((row) => row.key.service, {
@@ -26,16 +59,20 @@ export const MetricsTable = ({ data, showSign }: MetricsTableProps) => {
       enableSorting: false,
       cell: (info) => info.getValue()
     }),
-    columnHelper.accessor((row) => row.issues, {
+    columnHelper.accessor((row) => row, {
       header: "Critical issues",
       id: "issues",
       cell: (info) => {
-        const value = info.getValue();
-        if (!showSign) {
-          return value;
-        }
-
-        return `${value > 0 ? "+" : ""}${value}`;
+        const value = info.getValue().issues;
+        return (
+          <IssuesLink
+            onClick={() =>
+              handleSeeIssuesLinkClick(info.getValue().key.service, "issues")
+            }
+          >
+            {!showSign ? value : `${value > 0 ? "+" : ""}${value}`}
+          </IssuesLink>
+        );
       },
       sortingFn: sortingFns.alphanumeric,
       meta: {
@@ -43,10 +80,18 @@ export const MetricsTable = ({ data, showSign }: MetricsTableProps) => {
       },
       enableSorting: true
     }),
-    columnHelper.accessor((row) => row.impact, {
+    columnHelper.accessor((row) => row, {
       id: "impact",
       header: "Impact",
-      cell: (info) => Math.round(info.getValue() * 100),
+      cell: (info) => (
+        <IssuesLink
+          onClick={() =>
+            handleSeeIssuesLinkClick(info.getValue().key.service, "impact")
+          }
+        >
+          {Math.round(info.getValue().impact * 100)}
+        </IssuesLink>
+      ),
       sortingFn: sortingFns.alphanumeric,
       enableSorting: true,
       meta: {

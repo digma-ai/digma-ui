@@ -61,7 +61,11 @@ export const NewReport = () => {
           onViewModeChanged={handleViewModeChange}
         />
         {viewMode === "table" && (
-          <MetricsTable data={serviceData} showSign={query.lastDays !== null} />
+          <MetricsTable
+            data={serviceData}
+            showSign={query.lastDays !== null}
+            onServiceSelected={handleServiceSelected}
+          />
         )}
         {viewMode === "treemap" && (
           <Chart onServiceSelected={handleServiceSelected} data={serviceData} />

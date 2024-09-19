@@ -1,9 +1,11 @@
 import useDimensions from "react-cool-dimensions";
 import { Input } from "squarify";
 import { isNumber } from "../../../../typeGuards/isNumber";
+import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { TreeMap } from "../../../common/TreeMap";
 import { TileData } from "../../../common/TreeMap/types";
 import { ReportTimeMode } from "../ReportHeader/types";
+import { trackingEvents } from "../tracking";
 import { getSeverity } from "../utils";
 import { ServiceTile } from "./ServiceTile";
 import * as s from "./styles";
@@ -22,6 +24,11 @@ export const Chart = ({ data, onServiceSelected }: ChartProps) => {
     ...service,
     impact: Math.round(service.impact * 100)
   }));
+
+  const handSeeIssuesClick = (service: string) => {
+    sendUserActionTrackingEvent(trackingEvents.HEATMAP_SEE_ISSUES_LINK_CLICKED);
+    onServiceSelected(service);
+  };
 
   const minImpactScore = Math.min(...transformedData.map((x) => x.impact));
   const maxImpactScore = Math.max(...transformedData.map((x) => x.impact));
@@ -43,7 +50,7 @@ export const Chart = ({ data, onServiceSelected }: ChartProps) => {
           impactScore={service.impact}
           severity={severity}
           viewMode={viewMode}
-          onIssuesClick={onServiceSelected}
+          onIssuesClick={handSeeIssuesClick}
         />
       )
     };

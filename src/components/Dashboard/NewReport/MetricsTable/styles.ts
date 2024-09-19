@@ -7,6 +7,7 @@ import {
   SORTING_ORDER,
   SortingOrderIconContainerProps
 } from "../../../common/SortingSelector/types";
+import { Link } from "../../../common/v3/Link";
 import { TableBodyCellCellProps, TableCellContentProps } from "./types";
 
 export const Table = styled.table`
@@ -83,4 +84,36 @@ export const SortingOrderIconContainer = styled.div<SortingOrderIconContainerPro
   transform: scaleY(
     ${({ $sortingOrder }) => ($sortingOrder === SORTING_ORDER.DESC ? -1 : 1)}
   );
+`;
+
+export const LinkChevron = styled.div`
+  display: none;
+`;
+
+export const SeeIssuesLink = styled(Link)`
+  ${subheadingBoldTypography}
+  color: ${({ theme }) => theme.colors.v3.text.primary};
+  min-width: 103px;
+  width: 100%;
+
+  &:hover {
+    align-items: center;
+    justify-content: space-between;
+    display: flex;
+
+    span {
+      display: none;
+    }
+
+    ${LinkChevron} {
+      display: flex;
+      margin-left: auto;
+    }
+  }
+
+  &:hover::before {
+    content: "See Issues";
+    margin-left: auto;
+    color: ${({ theme }) => theme.colors.v3.text.link};
+  }
 `;
