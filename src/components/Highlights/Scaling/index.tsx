@@ -13,8 +13,8 @@ import { CrossCircleIcon } from "../../common/icons/16px/CrossCircleIcon";
 import { MeterHighIcon } from "../../common/icons/16px/MeterHighIcon";
 import { RefreshIcon } from "../../common/icons/16px/RefreshIcon";
 import { CheckCircleIcon } from "../../common/icons/20px/CheckCircleIcon";
-import { Button } from "../../common/v3/Button";
 import { Card } from "../../common/v3/Card";
+import { NewButton } from "../../common/v3/NewButton";
 import { Tag } from "../../common/v3/Tag";
 import { EmptyStateCard } from "../EmptyStateCard";
 import { addEnvironmentColumns } from "../TopIssues/highlightCards/addEnvironmentColumns";
@@ -189,7 +189,7 @@ export const Scaling = () => {
           title={"Unlock Scaling Issues"}
           text={"Connect a CI/Prod environment to run code at scale"}
           customContent={
-            <Button
+            <NewButton
               buttonType={"secondary"}
               onClick={handleLearnMoreButtonClick}
               label={"Learn more"}
@@ -219,7 +219,7 @@ export const Scaling = () => {
           title={"No scaling issue found"}
           text={"Looks like this asset is scaling well"}
           customContent={
-            <Button
+            <NewButton
               buttonType={"secondary"}
               onClick={handleViewAnalyticsButtonClick}
               label={"View analytics"}

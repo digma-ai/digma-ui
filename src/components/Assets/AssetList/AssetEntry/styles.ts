@@ -20,15 +20,8 @@ export const Container = styled.div`
         return "#9b9b9b";
     }
   }};
-  background: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#f1f5fa";
-      case "dark":
-      case "dark-jetbrains":
-        return "#383838";
-    }
-  }};
+  background: ${({ theme }) => theme.colors.v3.surface.secondary};
+  border: 1px solid ${({ theme }) => theme.colors.v3.stroke.primary};
 `;
 
 export const Header = styled.div`

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
-import { greenScale } from "../../../common/App/v2colors";
 import { EnvironmentIcon } from "../../../common/EnvironmentIcon";
 import { NewPopover } from "../../../common/NewPopover";
 import { Tooltip } from "../../../common/Tooltip";
@@ -69,12 +68,7 @@ export const EnvironmentTab = ({
       <Tooltip title={environment.name}>
         <s.LabelContainer>
           <s.Label $isSelected={isSelected}>{environment.name}</s.Label>
-          {environment.hasRecentActivity && (
-            <Badge
-              backgroundColor={greenScale[300]}
-              borderColor={greenScale[400]}
-            />
-          )}
+          {environment.hasRecentActivity && <Badge />}
         </s.LabelContainer>
       </Tooltip>
       {menuItems.length > 0 && (

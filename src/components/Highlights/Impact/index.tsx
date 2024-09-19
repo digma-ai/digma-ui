@@ -8,8 +8,8 @@ import { SCOPE_CHANGE_EVENTS } from "../../Main/types";
 import { InfinityIcon } from "../../common/icons/16px/InfinityIcon";
 import { RefreshIcon } from "../../common/icons/16px/RefreshIcon";
 import { TargetIcon } from "../../common/icons/16px/TargetIcon";
-import { Button } from "../../common/v3/Button";
 import { Card } from "../../common/v3/Card";
+import { NewButton } from "../../common/v3/NewButton";
 import { Tag } from "../../common/v3/Tag";
 import { EmptyStateCard } from "../EmptyStateCard";
 import { EnvironmentName } from "../common/EnvironmentName";
@@ -176,7 +176,7 @@ export const Impact = () => {
           text={"Connect a CI environment to measure performance impact"}
           blurredContent={renderImpactCard(demoData)}
           customContent={
-            <Button
+            <NewButton
               buttonType={"secondary"}
               onClick={handleLearnMoreButtonClick}
               label={"Learn more"}

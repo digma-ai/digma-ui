@@ -1,10 +1,10 @@
-import { SuccessRegistrationImage } from "../Images/SuccessRegistrationImage";
 import * as s from "./styles";
+import { SuccessRegistrationProps } from "./types";
 
-export const SuccessRegistration = () => {
+export const SuccessRegistration = ({ image }: SuccessRegistrationProps) => {
   return (
     <s.Container>
-      <SuccessRegistrationImage />
+      {image}
       <s.Details>
         <s.Header>Email sent!</s.Header>
         <s.Description>

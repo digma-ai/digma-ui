@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { caption2BoldTypography } from "../../../../common/App/typographies";
+import { caption2BoldTypography } from "../../../../../common/App/typographies";
 
 export const Container = styled.div`
   width: fit-content;
