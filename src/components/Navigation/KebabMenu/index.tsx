@@ -78,6 +78,7 @@ export const KebabMenu = ({ onClose }: KebabMenuProps) => {
   };
 
   const handleReportClick = () => {
+    sendUserActionTrackingEvent(trackingEvents.OPEN_DIGMA_METRICS_CLICKED);
     window.sendMessageToDigma({
       action: globalActions.OPEN_REPORT
     });

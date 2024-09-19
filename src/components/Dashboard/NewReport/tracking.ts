@@ -10,7 +10,10 @@ export const trackingEvents = addPrefix(
     ENVIRONMENT_FILTER_SELECTED: "environment filter selected",
     SERVICES_FILTER_SELECTED: "service filter selected",
     TABLE_SEE_ISSUES_LINK_CLICKED: "table see issues link clicked",
-    HEATMAP_SEE_ISSUES_LINK_CLICKED: "heatmap see issues link clicked"
+    HEATMAP_SEE_ISSUES_LINK_CLICKED: "heatmap see issues link clicked",
+    PERIOD_FILTER_CHANGED: "period filter changed",
+    VIEW_MODE_CHANGED: "view mode changed",
+    TIME_MODE_CHANGED: "time mode changed"
   },
   " "
 );
