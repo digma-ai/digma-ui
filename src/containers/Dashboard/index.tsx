@@ -5,7 +5,7 @@ import {
   sendMessage
 } from "../../api";
 import { Dashboard } from "../../components/Dashboard";
-import { Report } from "../../components/Dashboard/Report";
+import { NewReport } from "../../components/Dashboard/NewReport";
 import { App } from "../../components/common/App";
 import { dispatcher } from "../../dispatcher";
 import { isString } from "../../typeGuards/isString";
@@ -32,7 +32,7 @@ const initialPath = isString(window.initialRoutePath)
 const getView = () => {
   switch (initialPath) {
     case "report":
-      return <Report />;
+      return <NewReport />;
 
     default:
       return <Dashboard />;

@@ -1,10 +1,12 @@
 import { actions as globalActions } from "../../../actions";
 import { DIGMA_DOCUMENTATION } from "../../../constants";
+import { getFeatureFlagValue } from "../../../featureFlags";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
-import { OpenInstallationWizardPayload } from "../../../types";
+import { FeatureFlag, OpenInstallationWizardPayload } from "../../../types";
 import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { isDigmaEngineRunning } from "../../../utils/isDigmaEngineRunning";
+import { MetricsIcon } from "../../common/icons/12px/MetricsIcon";
 import { BookIcon } from "../../common/icons/16px/BookIcon";
 import { DigmaLogoFlatIcon } from "../../common/icons/16px/DigmaLogoFlatIcon";
 import { FourPointedStarIcon } from "../../common/icons/16px/FourPointedStarIcon";
@@ -20,6 +22,9 @@ import { KebabMenuProps } from "./types";
 
 export const KebabMenu = ({ onClose }: KebabMenuProps) => {
   const { backendInfo, digmaStatus, environment } = useConfigSelector();
+  const isDigmaMetricsEnabled =
+    backendInfo?.centralize &&
+    getFeatureFlagValue(backendInfo, FeatureFlag.IS_METRICS_REPORT_ENABLED);
 
   const handleOnboardingClick = () => {
     sendUserActionTrackingEvent(trackingEvents.ONBOARDING_LINK_CLICKED);
@@ -72,12 +77,13 @@ export const KebabMenu = ({ onClose }: KebabMenuProps) => {
     onClose();
   };
 
-  // const handleReportClick = () => {
-  //   window.sendMessageToDigma({
-  //     action: globalActions.OPEN_REPORT
-  //   });
-  //   onClose();
-  // };
+  const handleReportClick = () => {
+    window.sendMessageToDigma({
+      action: globalActions.OPEN_REPORT
+    });
+
+    onClose();
+  };
 
   const handleLogoutClick = () => {
     sendUserActionTrackingEvent(trackingEvents.LOGOUT_CLICKED);
@@ -120,15 +126,15 @@ export const KebabMenu = ({ onClose }: KebabMenuProps) => {
       icon: <FourSquaresIcon size={16} color={"currentColor"} />,
       onClick: handleDashboardClick
     });
+  }
 
-    // if (getFeatureFlagValue(backendInfo, FeatureFlag.IS_REPORT_ENABLED)) {
-    //   items.push({
-    //     id: "report",
-    //     label: "Open Report",
-    //     icon: <FourSquaresIcon size={16} color={"currentColor"} />,
-    //     onClick: handleReportClick
-    //   });
-    // }
+  if (isDigmaMetricsEnabled) {
+    items.push({
+      id: "metrics",
+      label: "Digma Metrics",
+      icon: <MetricsIcon size={16} color={"currentColor"} />,
+      onClick: handleReportClick
+    });
   }
 
   items.push({

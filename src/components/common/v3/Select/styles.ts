@@ -19,9 +19,7 @@ export const Button = styled.button<ButtonProps>`
         ? theme.colors.v3.stroke.brandPrimary
         : theme.colors.v3.stroke.primaryLight};
   background: ${({ theme, $isActive }) =>
-    $isActive
-      ? theme.colors.v3.surface.brandDark
-      : theme.colors.v3.surface.sidePanelHeader};
+    $isActive ? theme.colors.v3.surface.brandDark : "transparent"};
   border-radius: 4px;
   padding: 4px 8px;
   display: flex;
@@ -49,6 +47,10 @@ export const Button = styled.button<ButtonProps>`
     border: 1px solid ${({ theme }) => theme.colors.v3.stroke.primary};
     color: ${({ theme }) => theme.colors.v3.text.disabled};
   }
+`;
+
+export const ButtonIconContainer = styled.div`
+  display: flex;
 `;
 
 export const ButtonLabel = styled.span`
