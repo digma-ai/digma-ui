@@ -30,6 +30,7 @@ export interface ServiceData {
   };
   issues: number;
   impact: number;
+  criticality?: number;
 }
 
 export interface ServiceMetricsReport {
