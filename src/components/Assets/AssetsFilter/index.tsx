@@ -43,7 +43,7 @@ const getData = ({
     action: actions.GET_ASSET_FILTERS_DATA,
     payload: {
       query: {
-        services: scopeSpanCodeObjectId ? services : [],
+        services: !scopeSpanCodeObjectId ? services : [],
         operations,
         insights,
         directOnly: viewMode === "children",
