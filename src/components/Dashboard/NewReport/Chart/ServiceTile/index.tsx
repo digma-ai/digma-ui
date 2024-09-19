@@ -12,7 +12,8 @@ export const ServiceTile = ({
   criticalIssuesCount,
   impactScore,
   severity,
-  viewMode
+  viewMode,
+  onIssuesClick
 }: ServiceTileProps) => {
   const formattedCriticalIssuesCount = getFormattedNumber(
     viewMode,
@@ -36,10 +37,11 @@ export const ServiceTile = ({
         </s.TooltipContent>
       }
     >
-      <span>
-        <s.StatsMainNumber>{formattedCriticalIssuesCount}</s.StatsMainNumber>
-        <span> | {formattedImpactScore}</span>
-      </span>
+      <s.StyledLink onClick={() => onIssuesClick && onIssuesClick(name)}>
+        <span>
+          {formattedCriticalIssuesCount} | {formattedImpactScore}
+        </span>
+      </s.StyledLink>
     </Tile>
   );
 };

@@ -1,5 +1,7 @@
 import { useLayoutEffect, useState } from "react";
+import { changeScope } from "../../../utils/actions/changeScope";
 import { DigmaLogoIcon } from "../../common/icons/16px/DigmaLogoIcon";
+import { SCOPE_CHANGE_EVENTS } from "../../Main/types";
 import { actions } from "../actions";
 import { Chart } from "./Chart";
 import { MetricsTable } from "./MetricsTable";
@@ -34,6 +36,19 @@ export const NewReport = () => {
     setViewMode(value);
   };
 
+  const handleServiceSelected = (name: string) => {
+    changeScope({
+      span: null,
+      environmentId: query.environmentId ?? undefined,
+      context: {
+        event: SCOPE_CHANGE_EVENTS.METRICS_SERVICE_SELECTED,
+        payload: {
+          service: name
+        }
+      }
+    });
+  };
+
   const serviceData = (query?.services.length > 0 ? data?.reports : null) ?? [];
 
   return (
@@ -48,7 +63,9 @@ export const NewReport = () => {
         {viewMode === "table" && (
           <MetricsTable data={serviceData} showSign={query.lastDays !== null} />
         )}
-        {viewMode === "treemap" && <Chart data={serviceData} />}
+        {viewMode === "treemap" && (
+          <Chart onServiceSelected={handleServiceSelected} data={serviceData} />
+        )}
         <s.Footer>
           <DigmaLogoIcon size={14} />
           <span>© 2024 digma.ai</span>

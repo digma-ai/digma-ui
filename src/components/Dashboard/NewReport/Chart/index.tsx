@@ -9,7 +9,7 @@ import { ServiceTile } from "./ServiceTile";
 import * as s from "./styles";
 import { ChartProps } from "./types";
 
-export const Chart = ({ data }: ChartProps) => {
+export const Chart = ({ data, onServiceSelected }: ChartProps) => {
   const { width, height, observe } = useDimensions();
 
   const viewMode: ReportTimeMode = data.some((service) =>
@@ -43,6 +43,7 @@ export const Chart = ({ data }: ChartProps) => {
           impactScore={service.impact}
           severity={severity}
           viewMode={viewMode}
+          onIssuesClick={onServiceSelected}
         />
       )
     };
