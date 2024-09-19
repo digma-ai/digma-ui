@@ -7,12 +7,10 @@ import {
   useReactTable
 } from "@tanstack/react-table";
 
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import { isUndefined } from "../../../../typeGuards/isUndefined";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { SortIcon } from "../../../common/icons/16px/SortIcon";
-import { ChevronIcon } from "../../../common/icons/20px/ChevronIcon";
-import { Direction } from "../../../common/icons/types";
 import { SORTING_ORDER } from "../../../common/SortingSelector/types";
 import { trackingEvents } from "../tracking";
 import { ServiceData } from "../types";
@@ -27,13 +25,28 @@ const IssuesLink = ({
   onClick: () => void;
   children: ReactNode;
 }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
+
   return (
-    <s.SeeIssuesLink onClick={onClick}>
-      <span>{children}</span>
-      <s.LinkChevron>
-        <ChevronIcon direction={Direction.RIGHT} size={20} />
-      </s.LinkChevron>
-    </s.SeeIssuesLink>
+    <s.IssuesLinkContainer
+      onClick={onClick}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      {isHovered ? (
+        <s.SeeIssuesLink>See issues</s.SeeIssuesLink>
+      ) : (
+        <span>{children}</span>
+      )}
+    </s.IssuesLinkContainer>
   );
 };
 
