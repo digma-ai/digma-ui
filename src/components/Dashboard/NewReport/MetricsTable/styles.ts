@@ -7,7 +7,6 @@ import {
   SORTING_ORDER,
   SortingOrderIconContainerProps
 } from "../../../common/SortingSelector/types";
-import { Link } from "../../../common/v3/Link";
 import { TableBodyCellCellProps, TableCellContentProps } from "./types";
 
 export const Table = styled.table`
@@ -21,7 +20,7 @@ export const TableHead = styled.thead`
 `;
 
 export const TableHeaderCell = styled.th`
-  height: 68px;
+  height: 70;
 `;
 
 export const TableCellContent = styled.div<TableCellContentProps>`
@@ -40,6 +39,9 @@ export const TableCellContent = styled.div<TableCellContentProps>`
         return "flex-start";
     }
   }};
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
 `;
 
 export const TableHeaderCellContent = styled(TableCellContent)`
@@ -47,6 +49,7 @@ export const TableHeaderCellContent = styled(TableCellContent)`
   font-weight: 400;
   gap: 4px;
   color: ${({ theme }) => theme.colors.v3.text.tertiary};
+  cursor: pointer;
 `;
 
 export const TableBodyRow = styled.tr`
@@ -57,11 +60,11 @@ export const TableBodyRow = styled.tr`
 
   &:hover {
     background: ${({ theme }) => theme.colors.v3.surface.primaryLight};
-    cursor: pointer;
   }
 `;
 
 export const TableBodyCell = styled.td<TableBodyCellCellProps>`
+  height: 68px;
   border: 1px solid ${({ theme }) => theme.colors.v3.surface.sidePanelHeader};
   background: ${({ $severity }) => {
     switch ($severity) {
@@ -90,30 +93,19 @@ export const LinkChevron = styled.div`
   display: none;
 `;
 
-export const SeeIssuesLink = styled(Link)`
-  ${subheadingBoldTypography}
-  color: ${({ theme }) => theme.colors.v3.text.primary};
-  min-width: 103px;
+export const IssuesLinkContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
   width: 100%;
+  min-width: 103px;
 
   &:hover {
-    align-items: center;
-    justify-content: space-between;
-    display: flex;
-
-    span {
-      display: none;
-    }
-
-    ${LinkChevron} {
-      display: flex;
-      margin-left: auto;
-    }
+    cursor: pointer;
   }
+`;
 
-  &:hover::before {
-    content: "See Issues";
-    margin-left: auto;
-    color: ${({ theme }) => theme.colors.v3.text.link};
-  }
+export const SeeIssuesLink = styled.span`
+  color: ${({ theme }) => theme.colors.v3.text.link};
 `;
