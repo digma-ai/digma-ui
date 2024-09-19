@@ -3,6 +3,7 @@ import {
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
+  SortingFn,
   sortingFns,
   useReactTable
 } from "@tanstack/react-table";
@@ -17,6 +18,20 @@ import { ServiceData } from "../types";
 import { getSeverity } from "../utils";
 import * as s from "./styles";
 import { ColumnMeta, MetricsTableProps, Severity } from "./types";
+
+const sortImpactFn: SortingFn<ServiceData> = (rowA, rowB) => {
+  const impactA = rowA.original.impact;
+  const impactB = rowB.original.impact;
+
+  return impactA - impactB;
+};
+
+const sortIssuesFn: SortingFn<ServiceData> = (rowA, rowB) => {
+  const issuesA = rowA.original.issues;
+  const issuesB = rowB.original.issues;
+
+  return issuesA - issuesB;
+};
 
 const IssuesLink = ({
   children,
@@ -87,7 +102,7 @@ export const MetricsTable = ({
           </IssuesLink>
         );
       },
-      sortingFn: sortingFns.alphanumeric,
+      sortingFn: sortIssuesFn,
       meta: {
         contentAlign: "center"
       },
@@ -105,7 +120,7 @@ export const MetricsTable = ({
           {Math.round(info.getValue().impact * 100)}
         </IssuesLink>
       ),
-      sortingFn: sortingFns.alphanumeric,
+      sortingFn: sortImpactFn,
       enableSorting: true,
       meta: {
         contentAlign: "center"
