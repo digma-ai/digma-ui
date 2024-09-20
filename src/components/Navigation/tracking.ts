@@ -24,7 +24,8 @@ export const trackingEvents = addPrefix(
     DASHBOARD_LINK_CLICKED: "dashboard link clicked",
     OPEN_DOCS_CLICKED: "open docs clicked",
     TAB_CLICKED: "tab clicked",
-    LOGOUT_CLICKED: "logout clicked"
+    LOGOUT_CLICKED: "logout clicked",
+    OPEN_DIGMA_METRICS_CLICKED: "open digma metrics clicked"
   },
   " "
 );

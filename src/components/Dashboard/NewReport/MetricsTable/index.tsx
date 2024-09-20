@@ -3,22 +3,34 @@ import {
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
-  sortingFns,
+  SortingFn,
   useReactTable
 } from "@tanstack/react-table";
 
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 import { isUndefined } from "../../../../typeGuards/isUndefined";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { SortIcon } from "../../../common/icons/16px/SortIcon";
-import { ChevronIcon } from "../../../common/icons/20px/ChevronIcon";
-import { Direction } from "../../../common/icons/types";
 import { SORTING_ORDER } from "../../../common/SortingSelector/types";
 import { trackingEvents } from "../tracking";
 import { ServiceData } from "../types";
 import { getSeverity } from "../utils";
 import * as s from "./styles";
 import { ColumnMeta, MetricsTableProps, Severity } from "./types";
+
+const sortImpactFn: SortingFn<ServiceData> = (rowA, rowB) => {
+  const impactA = rowA.original.impact;
+  const impactB = rowB.original.impact;
+
+  return impactA - impactB;
+};
+
+const sortIssuesFn: SortingFn<ServiceData> = (rowA, rowB) => {
+  const issuesA = rowA.original.issues;
+  const issuesB = rowB.original.issues;
+
+  return issuesA - issuesB;
+};
 
 const IssuesLink = ({
   children,
@@ -27,13 +39,28 @@ const IssuesLink = ({
   onClick: () => void;
   children: ReactNode;
 }) => {
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
+
   return (
-    <s.SeeIssuesLink onClick={onClick}>
-      <span>{children}</span>
-      <s.LinkChevron>
-        <ChevronIcon direction={Direction.RIGHT} size={20} />
-      </s.LinkChevron>
-    </s.SeeIssuesLink>
+    <s.IssuesLinkContainer
+      onClick={onClick}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      {isHovered ? (
+        <s.SeeIssuesLink>See issues</s.SeeIssuesLink>
+      ) : (
+        <span>{children}</span>
+      )}
+    </s.IssuesLinkContainer>
   );
 };
 
@@ -56,7 +83,6 @@ export const MetricsTable = ({
   const columns = [
     columnHelper.accessor((row) => row.key.service, {
       header: "Service",
-      enableSorting: false,
       cell: (info) => info.getValue()
     }),
     columnHelper.accessor((row) => row, {
@@ -74,7 +100,7 @@ export const MetricsTable = ({
           </IssuesLink>
         );
       },
-      sortingFn: sortingFns.alphanumeric,
+      sortingFn: sortIssuesFn,
       meta: {
         contentAlign: "center"
       },
@@ -92,7 +118,7 @@ export const MetricsTable = ({
           {Math.round(info.getValue().impact * 100)}
         </IssuesLink>
       ),
-      sortingFn: sortingFns.alphanumeric,
+      sortingFn: sortImpactFn,
       enableSorting: true,
       meta: {
         contentAlign: "center"
@@ -107,7 +133,7 @@ export const MetricsTable = ({
         cell: (info) => {
           return info.getValue();
         },
-        sortingFn: sortingFns.alphanumeric,
+        sortingFn: sortImpactFn,
         meta: {
           contentAlign: "center"
         }
@@ -119,7 +145,8 @@ export const MetricsTable = ({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel()
+    getSortedRowModel: getSortedRowModel(),
+    enableSortingRemoval: false
   });
 
   return (
@@ -135,8 +162,12 @@ export const MetricsTable = ({
               return (
                 <s.TableHeaderCell key={header.id}>
                   <s.TableHeaderCellContent
-                    onClick={header.column.getToggleSortingHandler()}
                     $align={meta?.contentAlign}
+                    onClick={
+                      header.column.columnDef.enableSorting
+                        ? header.column.getToggleSortingHandler()
+                        : undefined
+                    }
                   >
                     {header.isPlaceholder
                       ? null

@@ -13,11 +13,13 @@ import { Environment } from "../../../common/App/types";
 
 import { isEnvironment } from "../../../../typeGuards/isEnvironment";
 import { isNumber } from "../../../../typeGuards/isNumber";
+import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { CodeIcon } from "../../../common/icons/12px/CodeIcon";
 import { DurationBreakdownIcon } from "../../../common/icons/12px/DurationBreakdownIcon";
 import { InfinityIcon } from "../../../common/icons/16px/InfinityIcon";
 import { TableIcon } from "../../../common/icons/16px/TableIcon";
 import { TreemapIcon } from "../../../common/icons/16px/TreemapIcon";
+import { trackingEvents } from "../tracking";
 import { GetServicesPayload } from "../types";
 import * as s from "./styles";
 import { ReportHeaderProps, ReportTimeMode, ReportViewMode } from "./types";
@@ -138,6 +140,7 @@ export const ReportHeader = ({
   ]);
 
   const handleSelectedEnvironmentChanged = (option: string | string[]) => {
+    sendUserActionTrackingEvent(trackingEvents.ENVIRONMENT_FILTER_SELECTED);
     const newItem =
       option === selectedEnvironment?.id
         ? [""]
@@ -152,11 +155,13 @@ export const ReportHeader = ({
   };
 
   const handleSelectedServicesChanged = (option: string | string[]) => {
+    sendUserActionTrackingEvent(trackingEvents.SERVICES_FILTER_SELECTED);
     const newItem = Array.isArray(option) ? option : [option];
     setSelectedServices(newItem);
   };
 
   const handlePeriodChanged = (option: string | string[]) => {
+    sendUserActionTrackingEvent(trackingEvents.PERIOD_FILTER_CHANGED);
     const newItem = Array.isArray(option) ? option : [option];
     if (newItem.length === 0) {
       setPeriodInDays(DEFAULT_PERIOD);
@@ -169,12 +174,14 @@ export const ReportHeader = ({
   };
 
   const handleViewModeChanged = (value: string) => {
+    sendUserActionTrackingEvent(trackingEvents.VIEW_MODE_CHANGED, { value });
     const newMode = value as ReportViewMode;
     setVieMode(newMode);
     onViewModeChanged(newMode);
   };
 
   const handleTimeModeChanged = (value: string) => {
+    sendUserActionTrackingEvent(trackingEvents.TIME_MODE_CHANGED, { value });
     const newMode = value as ReportTimeMode;
     setTimeMode(newMode);
   };
