@@ -1,4 +1,7 @@
 import { useLayoutEffect, useState } from "react";
+import { getFeatureFlagValue } from "../../../featureFlags";
+import { useConfigSelector } from "../../../store/config/useConfigSelector";
+import { FeatureFlag } from "../../../types";
 import { changeScope } from "../../../utils/actions/changeScope";
 import { DigmaLogoIcon } from "../../common/icons/16px/DigmaLogoIcon";
 import { SCOPE_CHANGE_EVENTS } from "../../Main/types";
@@ -21,6 +24,12 @@ export const NewReport = () => {
   const [query, setQuery] = useState<ReportFilterQuery>(DefaultQuery);
   const { data } = useReportsData(query);
   const [viewMode, setViewMode] = useState<ReportViewMode>("table");
+  const { backendInfo } = useConfigSelector();
+  const isCriticalityEnabled = getFeatureFlagValue(
+    backendInfo,
+    FeatureFlag.IS_METRICS_REPORT_CRITICALITY_ENABLED
+  );
+  const scoreCriterion = isCriticalityEnabled ? "criticality" : "impact";
 
   useLayoutEffect(() => {
     window.sendMessageToDigma({
@@ -50,6 +59,10 @@ export const NewReport = () => {
   };
 
   const serviceData = (query?.services.length > 0 ? data?.reports : null) ?? [];
+  const transformedData = serviceData.map((service) => ({
+    ...service,
+    [scoreCriterion]: Math.round(service[scoreCriterion] * 100)
+  }));
 
   return (
     <s.Section>
@@ -62,13 +75,18 @@ export const NewReport = () => {
         />
         {viewMode === "table" && (
           <MetricsTable
-            data={serviceData}
+            scoreCriterion={scoreCriterion}
+            data={transformedData}
             showSign={query.lastDays !== null}
             onServiceSelected={handleServiceSelected}
           />
         )}
         {viewMode === "treemap" && (
-          <Chart onServiceSelected={handleServiceSelected} data={serviceData} />
+          <Chart
+            scoreCriterion={scoreCriterion}
+            onServiceSelected={handleServiceSelected}
+            data={transformedData}
+          />
         )}
         <s.Footer>
           <DigmaLogoIcon size={14} />

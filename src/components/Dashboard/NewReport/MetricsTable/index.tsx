@@ -13,17 +13,19 @@ import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserA
 import { SortIcon } from "../../../common/icons/16px/SortIcon";
 import { SORTING_ORDER } from "../../../common/SortingSelector/types";
 import { trackingEvents } from "../tracking";
-import { ServiceData } from "../types";
+import { ScoreCriterion, ServiceData } from "../types";
 import { getSeverity } from "../utils";
 import * as s from "./styles";
 import { ColumnMeta, MetricsTableProps, Severity } from "./types";
 
-const sortImpactFn: SortingFn<ServiceData> = (rowA, rowB) => {
-  const impactA = rowA.original.impact;
-  const impactB = rowB.original.impact;
+const getSortScoreFn =
+  (scoreCriterion: ScoreCriterion): SortingFn<ServiceData> =>
+  (rowA, rowB) => {
+    const scoreA = rowA.original[scoreCriterion];
+    const scoreB = rowB.original[scoreCriterion];
 
-  return impactA - impactB;
-};
+    return scoreA - scoreB;
+  };
 
 const sortIssuesFn: SortingFn<ServiceData> = (rowA, rowB) => {
   const issuesA = rowA.original.issues;
@@ -67,11 +69,12 @@ const IssuesLink = ({
 export const MetricsTable = ({
   data,
   showSign,
-  onServiceSelected
+  onServiceSelected,
+  scoreCriterion
 }: MetricsTableProps) => {
   const columnHelper = createColumnHelper<ServiceData>();
-  const minImpact = Math.min(...data.map((x) => x.impact));
-  const maxImpact = Math.max(...data.map((x) => x.impact));
+  const minScore = Math.min(...data.map((x) => x[scoreCriterion]));
+  const maxScore = Math.max(...data.map((x) => x[scoreCriterion]));
 
   const handleSeeIssuesLinkClick = (service: string, source: string) => {
     onServiceSelected(service);
@@ -107,25 +110,28 @@ export const MetricsTable = ({
       enableSorting: true
     }),
     columnHelper.accessor((row) => row, {
-      id: "impact",
-      header: "Impact",
+      id: "score",
+      header: scoreCriterion,
       cell: (info) => (
         <IssuesLink
           onClick={() =>
-            handleSeeIssuesLinkClick(info.getValue().key.service, "impact")
+            handleSeeIssuesLinkClick(
+              info.getValue().key.service,
+              scoreCriterion
+            )
           }
         >
-          {Math.round(info.getValue().impact * 100)}
+          {info.getValue()[scoreCriterion]}
         </IssuesLink>
       ),
-      sortingFn: sortImpactFn,
+      sortingFn: getSortScoreFn(scoreCriterion),
       enableSorting: true,
       meta: {
         contentAlign: "center"
       }
     }),
     columnHelper.accessor(
-      (row) => getSeverity(minImpact, maxImpact, row.impact),
+      (row) => getSeverity(minScore, maxScore, row[scoreCriterion]),
       {
         header: "Rank",
         id: "rank",
@@ -133,7 +139,7 @@ export const MetricsTable = ({
         cell: (info) => {
           return info.getValue();
         },
-        sortingFn: sortImpactFn,
+        sortingFn: getSortScoreFn(scoreCriterion),
         meta: {
           contentAlign: "center"
         }

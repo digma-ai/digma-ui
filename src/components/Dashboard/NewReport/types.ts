@@ -30,9 +30,11 @@ export interface ServiceData {
   };
   issues: number;
   impact: number;
-  criticality?: number;
+  criticality: number;
 }
 
 export interface ServiceMetricsReport {
   reports: ServiceData[];
 }
+
+export type ScoreCriterion = "impact" | "criticality";

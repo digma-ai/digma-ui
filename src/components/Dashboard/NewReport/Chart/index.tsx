@@ -11,7 +11,11 @@ import { ServiceTile } from "./ServiceTile";
 import * as s from "./styles";
 import { ChartProps } from "./types";
 
-export const Chart = ({ data, onServiceSelected }: ChartProps) => {
+export const Chart = ({
+  data,
+  onServiceSelected,
+  scoreCriterion
+}: ChartProps) => {
   const { width, height, observe } = useDimensions();
 
   const viewMode: ReportTimeMode = data.some((service) =>
@@ -20,34 +24,27 @@ export const Chart = ({ data, onServiceSelected }: ChartProps) => {
     ? "changes"
     : "baseline";
 
-  const transformedData = data.map((service) => ({
-    ...service,
-    impact: Math.round(service.impact * 100)
-  }));
-
   const handSeeIssuesClick = (service: string) => {
     sendUserActionTrackingEvent(trackingEvents.HEATMAP_SEE_ISSUES_LINK_CLICKED);
     onServiceSelected(service);
   };
 
-  const minImpactScore = Math.min(...transformedData.map((x) => x.impact));
-  const maxImpactScore = Math.max(...transformedData.map((x) => x.impact));
+  const minScore = Math.min(...data.map((x) => x[scoreCriterion]));
+  const maxScore = Math.max(...data.map((x) => x[scoreCriterion]));
 
-  const chartData: Input<TileData>[] = transformedData.map((service) => {
-    const severity = getSeverity(
-      minImpactScore,
-      maxImpactScore,
-      service.impact
-    );
+  const chartData: Input<TileData>[] = data.map((service) => {
+    const score = service[scoreCriterion];
+    const severity = getSeverity(minScore, maxScore, score);
 
     return {
       id: service.key.service,
-      value: service.impact,
+      value: service[scoreCriterion],
       content: (
         <ServiceTile
           name={service.key.service}
           criticalIssuesCount={service.issues}
-          impactScore={service.impact}
+          scoreCriterion={scoreCriterion}
+          score={score}
           severity={severity}
           viewMode={viewMode}
           onIssuesClick={handSeeIssuesClick}
