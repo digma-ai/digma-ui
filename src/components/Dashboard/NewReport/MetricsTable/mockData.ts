@@ -4,6 +4,7 @@ export const mockedReport: ServiceMetricsReport = {
   reports: [
     {
       impact: 100.123123,
+      criticality: 100.123123,
       key: {
         environment: "TEST",
         service: "Transactions",
@@ -13,6 +14,7 @@ export const mockedReport: ServiceMetricsReport = {
     },
     {
       impact: 50,
+      criticality: 50,
       key: {
         environment: "TEST",
         service: "API",
@@ -22,6 +24,7 @@ export const mockedReport: ServiceMetricsReport = {
     },
     {
       impact: 1,
+      criticality: 1,
       key: {
         environment: "TEST",
         service: "Orders",
@@ -31,6 +34,7 @@ export const mockedReport: ServiceMetricsReport = {
     },
     {
       impact: 120,
+      criticality: 120,
       key: {
         environment: "TEST",
         service: "Users",
@@ -40,6 +44,7 @@ export const mockedReport: ServiceMetricsReport = {
     },
     {
       impact: 120,
+      criticality: 120,
       key: {
         environment: "TEST",
         service: "Users1",
@@ -49,6 +54,7 @@ export const mockedReport: ServiceMetricsReport = {
     },
     {
       impact: 70,
+      criticality: 70,
       key: {
         environment: "TEST",
         service: "Users2",
@@ -58,6 +64,7 @@ export const mockedReport: ServiceMetricsReport = {
     },
     {
       impact: 99.1231,
+      criticality: 99.1231,
       key: {
         environment: "TEST",
         service: "Users3",

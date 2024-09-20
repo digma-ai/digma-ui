@@ -10,7 +10,8 @@ const getFormattedNumber = (viewMode: ReportTimeMode, value: number) =>
 export const ServiceTile = ({
   name,
   criticalIssuesCount,
-  impactScore,
+  scoreCriterion,
+  score,
   severity,
   viewMode,
   onIssuesClick: onSeeIssuesClick
@@ -19,7 +20,7 @@ export const ServiceTile = ({
     viewMode,
     criticalIssuesCount
   );
-  const formattedImpactScore = getFormattedNumber(viewMode, impactScore);
+  const formattedScore = getFormattedNumber(viewMode, score);
 
   return (
     <Tile
@@ -28,18 +29,18 @@ export const ServiceTile = ({
       tooltip={
         <s.TooltipContent>
           <span>{name}</span>
-          <TooltipKeyValue label={"Critical Issues"}>
+          <TooltipKeyValue label={"Critical issues"}>
             {formattedCriticalIssuesCount}
           </TooltipKeyValue>
-          <TooltipKeyValue label={"Impact Score"}>
-            {formattedImpactScore}
+          <TooltipKeyValue label={`${scoreCriterion} score`}>
+            {formattedScore}
           </TooltipKeyValue>
         </s.TooltipContent>
       }
     >
       <s.StyledLink onClick={() => onSeeIssuesClick && onSeeIssuesClick(name)}>
         <span>
-          {formattedCriticalIssuesCount} | {formattedImpactScore}
+          {formattedCriticalIssuesCount} | {formattedScore}
         </span>
       </s.StyledLink>
     </Tile>

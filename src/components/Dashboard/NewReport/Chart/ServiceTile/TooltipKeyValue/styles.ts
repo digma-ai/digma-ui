@@ -10,5 +10,6 @@ export const Container = styled.div`
 `;
 
 export const Label = styled.span`
+  text-transform: capitalize;
   color: ${({ theme }) => theme.colors.v3.text.secondary};
 `;

@@ -29,7 +29,8 @@ export const Default: Story = {
           <ServiceTile
             name={"Payment Service"}
             criticalIssuesCount={12}
-            impactScore={1500}
+            score={1500}
+            scoreCriterion={"criticality"}
             severity={"Top"}
             viewMode={"baseline"}
           />
@@ -42,7 +43,8 @@ export const Default: Story = {
           <ServiceTile
             name={"Transaction Service"}
             criticalIssuesCount={15}
-            impactScore={710}
+            score={710}
+            scoreCriterion={"criticality"}
             severity={"High"}
             viewMode={"baseline"}
           />
@@ -55,7 +57,8 @@ export const Default: Story = {
           <ServiceTile
             name={"Share Service"}
             criticalIssuesCount={5}
-            impactScore={530}
+            score={530}
+            scoreCriterion={"criticality"}
             severity={"Medium"}
             viewMode={"baseline"}
           />
@@ -68,7 +71,8 @@ export const Default: Story = {
           <ServiceTile
             name={"Metadata Service"}
             criticalIssuesCount={2}
-            impactScore={100}
+            score={100}
+            scoreCriterion={"criticality"}
             severity={"Low"}
             viewMode={"baseline"}
           />
@@ -81,7 +85,8 @@ export const Default: Story = {
           <ServiceTile
             name={"Monitoring Service"}
             criticalIssuesCount={2}
-            impactScore={100}
+            score={100}
+            scoreCriterion={"criticality"}
             severity={"Low"}
             viewMode={"baseline"}
           />

@@ -50,6 +50,7 @@ export const TableHeaderCellContent = styled(TableCellContent)`
   gap: 4px;
   color: ${({ theme }) => theme.colors.v3.text.tertiary};
   ${({ onClick }) => (onClick ? "cursor: pointer;" : "")}
+  text-transform: capitalize;
 `;
 
 export const TableBodyRow = styled.tr`
