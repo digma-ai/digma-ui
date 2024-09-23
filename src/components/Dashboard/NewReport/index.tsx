@@ -17,7 +17,8 @@ import { useReportsData } from "./useReportsData";
 const DefaultQuery: ReportFilterQuery = {
   environmentId: "",
   services: [],
-  lastDays: null
+  lastDays: null,
+  criticalities: []
 };
 
 export const NewReport = () => {
@@ -58,7 +59,7 @@ export const NewReport = () => {
     });
   };
 
-  const serviceData = (query?.services.length > 0 ? data?.reports : null) ?? [];
+  const serviceData = data?.reports ?? [];
   const transformedData = serviceData.map((service) => ({
     ...service,
     [scoreCriterion]: Math.round(service[scoreCriterion] * 100)

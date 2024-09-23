@@ -2,6 +2,7 @@ export interface ReportFilterQuery {
   environmentId: string | null;
   services: string[];
   scope?: string;
+  criticalities: string[];
 }
 
 export interface ReportQuery {

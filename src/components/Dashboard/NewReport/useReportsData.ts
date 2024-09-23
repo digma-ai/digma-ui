@@ -19,14 +19,9 @@ const dataFetcherIssuesStatsConfiguration: DataFetcherConfiguration = {
 
 export const useReportsData = (query: ReportFilterQuery) => {
   const payload = useMemo(() => {
-    if (!query.environmentId && !(query.services?.length > 0)) {
-      return {
-        keys: []
-      };
-    }
-
     if (!(query.services?.length > 0)) {
       return {
+        criticalities: query.criticalities,
         keys: [
           {
             environment: query.environmentId,
@@ -38,6 +33,7 @@ export const useReportsData = (query: ReportFilterQuery) => {
     }
 
     return {
+      criticalities: query.criticalities,
       keys: query.services.map((x) => ({
         environment: query.environmentId,
         service: x,

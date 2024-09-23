@@ -33,6 +33,21 @@ const dataFetcherFiltersConfiguration: DataFetcherConfiguration = {
   ...baseFetchConfig
 };
 
+const criticalityOptions = [
+  {
+    id: "High",
+    label: "Critical"
+  },
+  {
+    id: "Medium",
+    label: "Medium"
+  },
+  {
+    id: "Low",
+    label: "Low"
+  }
+];
+
 export const formatUnit = (value: number, unit: string) =>
   value === 1 ? `${value} ${unit}` : `${value} ${unit}s`;
 
@@ -49,14 +64,17 @@ export const ReportHeader = ({
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [selectedEnvironment, setSelectedEnvironment] =
     useState<Environment | null>(null);
+  const [selectedCriticality, setSelectedCriticality] = useState<string[]>(
+    criticalityOptions.map((x) => x.id)
+  );
 
-  const previousEnvironment = usePrevious(selectedEnvironment);
   const previousTimeMode = usePrevious(timeMode);
 
   const [filterQuery, setFilterQuery] = useState<ReportFilterQuery>({
     lastDays: null,
     services: [],
-    environmentId: null
+    environmentId: null,
+    criticalities: []
   });
 
   const getServicesPayload = useMemo(
@@ -104,6 +122,12 @@ export const ReportHeader = ({
   }, [periodInDays, filterQuery, timeMode, previousTimeMode]);
 
   useEffect(() => {
+    if (selectedCriticality !== filterQuery.criticalities) {
+      setFilterQuery({ ...filterQuery, criticalities: selectedCriticality });
+    }
+  }, [filterQuery, selectedCriticality]);
+
+  useEffect(() => {
     if (!selectedEnvironment?.id) {
       return;
     }
@@ -111,7 +135,7 @@ export const ReportHeader = ({
     if (selectedEnvironment.id !== filterQuery.environmentId) {
       setFilterQuery({ ...filterQuery, environmentId: selectedEnvironment.id });
     }
-  }, [filterQuery, previousEnvironment, selectedEnvironment]);
+  }, [filterQuery, selectedEnvironment]);
 
   const handleSelectedEnvironmentChanged = (option: string | string[]) => {
     sendUserActionTrackingEvent(trackingEvents.ENVIRONMENT_FILTER_SELECTED);
@@ -131,6 +155,12 @@ export const ReportHeader = ({
     sendUserActionTrackingEvent(trackingEvents.SERVICES_FILTER_SELECTED);
     const newItem = Array.isArray(option) ? option : [option];
     setSelectedServices(newItem);
+  };
+
+  const handleDataChanged = (option: string | string[]) => {
+    sendUserActionTrackingEvent(trackingEvents.DATA_FILTER_SELECTED);
+    const newItem = Array.isArray(option) ? option : [option];
+    setSelectedCriticality(newItem);
   };
 
   const handlePeriodChanged = (option: string | string[]) => {
@@ -205,11 +235,28 @@ export const ReportHeader = ({
                 selected: x === periodInDays,
                 enabled: true
               }))}
+              showSelectedState={false}
               icon={DurationBreakdownIcon}
               onChange={handlePeriodChanged}
               placeholder={`Period: ${formatUnit(periodInDays, "day")}`}
             />
           )}
+
+          <s.FilterSelect
+            items={
+              criticalityOptions.map((item) => ({
+                label: item.label,
+                value: item.id,
+                enabled: true,
+                selected: selectedCriticality.includes(item.id)
+              })) ?? []
+            }
+            showSelectedState={false}
+            multiselect={true}
+            icon={WrenchIcon}
+            onChange={handleDataChanged}
+            placeholder={"Data"}
+          />
 
           <s.FilterSelect
             items={
