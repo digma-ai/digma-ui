@@ -11,8 +11,6 @@ import { actions } from "../../actions";
 import { usePrevious } from "../../../../hooks/usePrevious";
 import { Environment } from "../../../common/App/types";
 
-import { isEnvironment } from "../../../../typeGuards/isEnvironment";
-import { isNumber } from "../../../../typeGuards/isNumber";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { CodeIcon } from "../../../common/icons/12px/CodeIcon";
 import { DurationBreakdownIcon } from "../../../common/icons/12px/DurationBreakdownIcon";
@@ -20,7 +18,7 @@ import { InfinityIcon } from "../../../common/icons/16px/InfinityIcon";
 import { TableIcon } from "../../../common/icons/16px/TableIcon";
 import { TreemapIcon } from "../../../common/icons/16px/TreemapIcon";
 import { trackingEvents } from "../tracking";
-import { GetServicesPayload } from "../types";
+import { GetServicesPayload, ReportFilterQuery } from "../types";
 import * as s from "./styles";
 import { ReportHeaderProps, ReportTimeMode, ReportViewMode } from "./types";
 
@@ -34,6 +32,21 @@ const dataFetcherFiltersConfiguration: DataFetcherConfiguration = {
   responseAction: actions.SET_SERVICES,
   ...baseFetchConfig
 };
+
+const criticalityOptions = [
+  {
+    id: "High",
+    label: "Critical"
+  },
+  {
+    id: "Medium",
+    label: "Medium"
+  },
+  {
+    id: "Low",
+    label: "Low"
+  }
+];
 
 export const formatUnit = (value: number, unit: string) =>
   value === 1 ? `${value} ${unit}` : `${value} ${unit}s`;
@@ -49,14 +62,20 @@ export const ReportHeader = ({
   const [viewMode, setVieMode] = useState<ReportViewMode>("table");
   const [timeMode, setTimeMode] = useState<ReportTimeMode>("baseline");
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
-  const [servicesFromStore, setServicesFromStore] = useState<string[]>([]);
   const [selectedEnvironment, setSelectedEnvironment] =
     useState<Environment | null>(null);
+  const [selectedCriticality, setSelectedCriticality] = useState<string[]>(
+    criticalityOptions.map((x) => x.id)
+  );
 
-  const previousSelectedServices = usePrevious(selectedServices);
-  const previousEnvironment = usePrevious(selectedEnvironment);
   const previousTimeMode = usePrevious(timeMode);
-  const previousPeriod = usePrevious(periodInDays);
+
+  const [filterQuery, setFilterQuery] = useState<ReportFilterQuery>({
+    lastDays: null,
+    services: [],
+    environmentId: null,
+    criticalities: []
+  });
 
   const getServicesPayload = useMemo(
     () => ({ environment: selectedEnvironment?.id ?? null }),
@@ -67,77 +86,56 @@ export const ReportHeader = ({
     GetServicesPayload,
     string[]
   >(dataFetcherFiltersConfiguration, getServicesPayload);
-  const previousServices = usePrevious(services);
-
-  useEffect(() => {
-    setServicesFromStore(services ?? []);
-  }, [services, setServicesFromStore]);
 
   useEffect(() => {
     getData();
   }, []);
 
   useEffect(() => {
+    if (!filterQuery.environmentId) {
+      return;
+    }
+
+    onFilterChanged(filterQuery);
+  }, [onFilterChanged, filterQuery]);
+
+  useEffect(() => {
     setSelectedEnvironment(
       environments?.length && environments?.length > 0 ? environments[0] : null
     );
-    setServicesFromStore([]);
   }, [environments]);
+
+  useEffect(() => {
+    if (selectedServices !== filterQuery.services) {
+      setFilterQuery({ ...filterQuery, services: selectedServices });
+    }
+  }, [filterQuery, selectedServices]);
+
+  useEffect(() => {
+    if (timeMode === "baseline" && previousTimeMode !== timeMode) {
+      setFilterQuery({ ...filterQuery, lastDays: null });
+    }
+
+    if (periodInDays !== filterQuery.lastDays) {
+      setFilterQuery({ ...filterQuery, lastDays: periodInDays });
+    }
+  }, [periodInDays, filterQuery, timeMode, previousTimeMode]);
+
+  useEffect(() => {
+    if (selectedCriticality !== filterQuery.criticalities) {
+      setFilterQuery({ ...filterQuery, criticalities: selectedCriticality });
+    }
+  }, [filterQuery, selectedCriticality]);
 
   useEffect(() => {
     if (!selectedEnvironment?.id) {
       return;
     }
 
-    onFilterChanged({
-      lastDays: timeMode === "baseline" ? null : periodInDays,
-      services:
-        selectedServices.length > 0
-          ? selectedServices
-          : servicesFromStore ?? [],
-      environmentId: selectedEnvironment?.id ?? null
-    });
-  }, [servicesFromStore, selectedEnvironment]);
-
-  useEffect(() => {
-    if (
-      !selectedEnvironment?.id ||
-      getServicesPayload.environment !== selectedEnvironment.id ||
-      servicesFromStore.length === 0
-    ) {
-      return;
+    if (selectedEnvironment.id !== filterQuery.environmentId) {
+      setFilterQuery({ ...filterQuery, environmentId: selectedEnvironment.id });
     }
-
-    if (
-      previousTimeMode !== timeMode ||
-      (isEnvironment(selectedEnvironment) &&
-        previousEnvironment !== selectedEnvironment) ||
-      previousSelectedServices !== selectedServices ||
-      (isNumber(periodInDays) && previousPeriod !== periodInDays)
-    ) {
-      onFilterChanged({
-        lastDays: timeMode === "baseline" ? null : periodInDays,
-        services:
-          selectedServices.length > 0
-            ? selectedServices
-            : servicesFromStore ?? [],
-        environmentId: selectedEnvironment?.id ?? null
-      });
-    }
-  }, [
-    periodInDays,
-    timeMode,
-    selectedServices,
-    selectedEnvironment,
-    onFilterChanged,
-    previousEnvironment,
-    previousTimeMode,
-    previousPeriod,
-    previousSelectedServices,
-    previousServices,
-    getServicesPayload,
-    servicesFromStore
-  ]);
+  }, [filterQuery, selectedEnvironment]);
 
   const handleSelectedEnvironmentChanged = (option: string | string[]) => {
     sendUserActionTrackingEvent(trackingEvents.ENVIRONMENT_FILTER_SELECTED);
@@ -151,13 +149,18 @@ export const ReportHeader = ({
     const newItemEnv = environments?.find((x) => x.id === newItem[0]) ?? null;
     setSelectedEnvironment(newItemEnv);
     setSelectedServices([]);
-    setServicesFromStore([]);
   };
 
   const handleSelectedServicesChanged = (option: string | string[]) => {
     sendUserActionTrackingEvent(trackingEvents.SERVICES_FILTER_SELECTED);
     const newItem = Array.isArray(option) ? option : [option];
     setSelectedServices(newItem);
+  };
+
+  const handleDataChanged = (option: string | string[]) => {
+    sendUserActionTrackingEvent(trackingEvents.DATA_FILTER_SELECTED);
+    const newItem = Array.isArray(option) ? option : [option];
+    setSelectedCriticality(newItem);
   };
 
   const handlePeriodChanged = (option: string | string[]) => {
@@ -232,11 +235,28 @@ export const ReportHeader = ({
                 selected: x === periodInDays,
                 enabled: true
               }))}
+              showSelectedState={false}
               icon={DurationBreakdownIcon}
               onChange={handlePeriodChanged}
               placeholder={`Period: ${formatUnit(periodInDays, "day")}`}
             />
           )}
+
+          <s.FilterSelect
+            items={
+              criticalityOptions.map((item) => ({
+                label: item.label,
+                value: item.id,
+                enabled: true,
+                selected: selectedCriticality.includes(item.id)
+              })) ?? []
+            }
+            showSelectedState={false}
+            multiselect={true}
+            icon={WrenchIcon}
+            onChange={handleDataChanged}
+            placeholder={"Data"}
+          />
 
           <s.FilterSelect
             items={
