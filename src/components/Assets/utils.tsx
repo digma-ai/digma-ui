@@ -30,7 +30,7 @@ export const getAssetTypeInfo = (
     },
     InternalOperation: {
       label: "Internal Operations",
-      icon: HTTPClientIcon
+      icon: EndpointIcon
     },
     DatabaseQueries: {
       label: "Database queries",
