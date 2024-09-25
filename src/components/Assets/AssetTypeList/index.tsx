@@ -31,6 +31,7 @@ const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 export const ASSET_TYPE_IDS = [
   "Endpoint",
   "Consumer",
+  "InternalOperation",
   "DatabaseQueries",
   "CodeLocation",
   "EndpointClient",
