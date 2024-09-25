@@ -201,14 +201,8 @@ export const ReportHeader = ({
 
   const handleSelectedEnvironmentChanged = (option: string | string[]) => {
     sendUserActionTrackingEvent(trackingEvents.ENVIRONMENT_FILTER_SELECTED);
-    const newItem =
-      option === selectedEnvironment?.id
-        ? [""]
-        : Array.isArray(option)
-        ? option
-        : [option];
-
-    const newItemEnv = environments?.find((x) => x.id === newItem[0]) ?? null;
+    const newItem = Array.isArray(option) ? option[0] : option;
+    const newItemEnv = environments?.find((x) => x.id === newItem) ?? null;
     setSelectedEnvironment(newItemEnv);
     setSelectedServices([]);
     setServicesFromStore([]);
