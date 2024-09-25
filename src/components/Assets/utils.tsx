@@ -28,6 +28,10 @@ export const getAssetTypeInfo = (
       label: "Consumers",
       icon: UserIcon
     },
+    InternalOperation: {
+      label: "Internal Operations",
+      icon: HTTPClientIcon
+    },
     DatabaseQueries: {
       label: "Database queries",
       icon: DatabaseIcon

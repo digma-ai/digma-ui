@@ -54,6 +54,10 @@ export const Default: Story = {
             {
               name: "Consumer",
               count: 0
+            },
+            {
+              name: "InternalOperation",
+              count: 10
             }
           ]
         }
