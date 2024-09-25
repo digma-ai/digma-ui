@@ -3,12 +3,12 @@ import { Tile } from "../../../../common/TreeMap/Tile";
 import { ReportTimeMode } from "../../ReportHeader/types";
 import * as s from "./styles";
 import { TooltipKeyValue } from "./TooltipKeyValue";
-import { ServiceTileProps } from "./types";
+import { ReportTileProps } from "./types";
 
 const getFormattedNumber = (viewMode: ReportTimeMode, value: number) =>
   `${viewMode === "changes" && value > 0 ? "+" : ""}${value}`;
 
-export const ServiceTile = ({
+export const ReportTile = ({
   name,
   criticalIssuesCount,
   scoreCriterion,
@@ -17,7 +17,7 @@ export const ServiceTile = ({
   viewMode,
   onTitleClick,
   onIssuesClick
-}: ServiceTileProps) => {
+}: ReportTileProps) => {
   const formattedCriticalIssuesCount = getFormattedNumber(
     viewMode,
     criticalIssuesCount
@@ -26,14 +26,14 @@ export const ServiceTile = ({
 
   const handleTitleClick = () => {
     if (onTitleClick) {
-      onTitleClick(name);
+      onTitleClick();
     }
   };
 
   const handleIssuesLinkClick = (e: MouseEvent<HTMLAnchorElement>) => {
     if (onIssuesClick) {
       e.preventDefault();
-      onIssuesClick(name);
+      onIssuesClick();
     }
   };
 
@@ -41,7 +41,7 @@ export const ServiceTile = ({
     <Tile
       title={name}
       severity={severity}
-      onTitleClick={handleTitleClick}
+      onTitleClick={onTitleClick ? handleTitleClick : undefined}
       tooltip={
         <s.TooltipContent>
           <span>{name}</span>

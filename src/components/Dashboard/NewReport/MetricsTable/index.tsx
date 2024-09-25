@@ -11,6 +11,8 @@ import { ReactNode, useState } from "react";
 import { isUndefined } from "../../../../typeGuards/isUndefined";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { SortIcon } from "../../../common/icons/16px/SortIcon";
+import { ChevronIcon } from "../../../common/icons/20px/ChevronIcon";
+import { Direction } from "../../../common/icons/types";
 import { SORTING_ORDER } from "../../../common/SortingSelector/types";
 import { trackingEvents } from "../tracking";
 import { PresentationalReportData } from "../types";
@@ -31,14 +33,35 @@ const sortIssuesFn: SortingFn<PresentationalReportData> = (rowA, rowB) => {
   return issuesA - issuesB;
 };
 
+const NavigationLink = ({
+  text,
+  withChevron
+}: {
+  text: string;
+  withChevron?: boolean;
+}) => {
+  return (
+    <s.NavigationLinkContainer $withChevron={withChevron}>
+      {text}
+      {withChevron && (
+        <ChevronIcon
+          direction={Direction.RIGHT}
+          color={"currentColor"}
+          size={20}
+        />
+      )}
+    </s.NavigationLinkContainer>
+  );
+};
+
 const HoverableTableCellContent = ({
   children,
   onClick,
-  hoverText
+  hoverContent
 }: {
   onClick: () => void;
   children: ReactNode;
-  hoverText: string;
+  hoverContent: ReactNode;
 }) => {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -51,17 +74,13 @@ const HoverableTableCellContent = ({
   };
 
   return (
-    <s.IssuesLinkContainer
+    <s.HoverableContentContainer
       onClick={onClick}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      {isHovered ? (
-        <s.NavigationText>{hoverText}</s.NavigationText>
-      ) : (
-        <span>{children}</span>
-      )}
-    </s.IssuesLinkContainer>
+      {isHovered ? hoverContent : children}
+    </s.HoverableContentContainer>
   );
 };
 
@@ -75,32 +94,44 @@ export const MetricsTable = ({
 }: MetricsTableProps) => {
   const columnHelper = createColumnHelper<PresentationalReportData>();
 
-  const handleSeeIssuesLinkClick = (service: string, source: string) => {
-    onIssuesStatsClick(service);
+  const handleIssuesLinkClick = (value: string, source: string) => {
+    onIssuesStatsClick(value);
     sendUserActionTrackingEvent(trackingEvents.TABLE_SEE_ISSUES_LINK_CLICKED, {
       source
     });
   };
 
-  const handleSeeEndpointsLinkClick = (service: string) => {
-    onTitleClick(service);
+  const handleTitleLinkClick = (value: string) => {
+    onTitleClick(value);
+    sendUserActionTrackingEvent(trackingEvents.TABLE_ITEM_NAME_CLICKED, {
+      view: viewLevel
+    });
   };
 
   const columns = [
-    columnHelper.accessor("name", {
+    columnHelper.accessor((row) => row, {
       header: viewLevel === "services" ? "Service" : "Endpoints",
       cell: (info) => {
         const value = info.getValue();
-        return viewLevel === "services" ? (
+        return (
           <HoverableTableCellContent
-            onClick={() => handleSeeEndpointsLinkClick(value)}
-            hoverText={"See endpoints"}
+            onClick={() => handleTitleLinkClick(value.id)}
+            hoverContent={
+              <NavigationLink
+                text={`See ${
+                  viewLevel === "services" ? "endpoints" : "issues"
+                }`}
+                withChevron={true}
+              />
+            }
           >
-            {value}
+            {value.name}
           </HoverableTableCellContent>
-        ) : (
-          value
         );
+      },
+      meta: {
+        width: "40%",
+        minWidth: 270
       }
     }),
     columnHelper.accessor((row) => row, {
@@ -111,8 +142,8 @@ export const MetricsTable = ({
         const issuesCount = value.criticalIssuesCount;
         return (
           <HoverableTableCellContent
-            onClick={() => handleSeeIssuesLinkClick(value.name, "issues")}
-            hoverText={"See issues"}
+            onClick={() => handleIssuesLinkClick(value.id, "issues")}
+            hoverContent={<NavigationLink text={"See issues"} />}
           >
             {timeMode === "baseline"
               ? issuesCount
@@ -122,7 +153,11 @@ export const MetricsTable = ({
       },
       sortingFn: sortIssuesFn,
       meta: {
-        contentAlign: "center"
+        contentAlign: "center",
+        meta: {
+          width: "20%",
+          minWidth: 140
+        }
       },
       enableSorting: true
     }),
@@ -133,8 +168,8 @@ export const MetricsTable = ({
         const value = info.getValue();
         return (
           <HoverableTableCellContent
-            onClick={() => handleSeeIssuesLinkClick(value.name, scoreCriterion)}
-            hoverText={"See issues"}
+            onClick={() => handleIssuesLinkClick(value.id, scoreCriterion)}
+            hoverContent={<NavigationLink text={"See issues"} />}
           >
             {value.score}
           </HoverableTableCellContent>
@@ -143,7 +178,11 @@ export const MetricsTable = ({
       sortingFn: sortScoreFn,
       enableSorting: true,
       meta: {
-        contentAlign: "center"
+        contentAlign: "center",
+        meta: {
+          width: "20%",
+          minWidth: 140
+        }
       }
     }),
     columnHelper.accessor("severity", {
@@ -155,7 +194,11 @@ export const MetricsTable = ({
       },
       sortingFn: sortScoreFn,
       meta: {
-        contentAlign: "center"
+        contentAlign: "center",
+        meta: {
+          width: "20%",
+          minWidth: 100
+        }
       }
     })
   ];
@@ -187,6 +230,10 @@ export const MetricsTable = ({
                         ? header.column.getToggleSortingHandler()
                         : undefined
                     }
+                    style={{
+                      width: meta?.width,
+                      minWidth: meta?.minWidth
+                    }}
                   >
                     {header.isPlaceholder
                       ? null

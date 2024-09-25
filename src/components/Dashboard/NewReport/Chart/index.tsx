@@ -4,7 +4,7 @@ import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserA
 import { TreeMap } from "../../../common/TreeMap";
 import { TileData } from "../../../common/TreeMap/types";
 import { trackingEvents } from "../tracking";
-import { ServiceTile } from "./ServiceTile";
+import { ReportTile } from "./ReportTile";
 import * as s from "./styles";
 import { ChartProps } from "./types";
 
@@ -18,23 +18,31 @@ export const Chart = ({
 }: ChartProps) => {
   const { width, height, observe } = useDimensions();
 
-  const handleTitleClick = (value: string) => {
-    onTitleClick(value);
-  };
-
-  const handleSeeIssuesClick = (service: string) => {
-    sendUserActionTrackingEvent(trackingEvents.HEATMAP_SEE_ISSUES_LINK_CLICKED);
-    onIssuesStatsClick(service);
-  };
-
   const chartData: Input<TileData>[] = data.map((x) => {
     const score = x.score;
+
+    const handleTitleClick = () => {
+      sendUserActionTrackingEvent(trackingEvents.HEATMAP_TILE_TITLE_CLICKED, {
+        view: viewLevel
+      });
+      onTitleClick(x.id);
+    };
+
+    const handleSeeIssuesClick = () => {
+      sendUserActionTrackingEvent(
+        trackingEvents.HEATMAP_SEE_ISSUES_LINK_CLICKED,
+        {
+          view: viewLevel
+        }
+      );
+      onIssuesStatsClick(x.id);
+    };
 
     return {
       id: x.id,
       value: score,
       content: (
-        <ServiceTile
+        <ReportTile
           name={x.name}
           criticalIssuesCount={x.criticalIssuesCount}
           scoreCriterion={scoreCriterion}

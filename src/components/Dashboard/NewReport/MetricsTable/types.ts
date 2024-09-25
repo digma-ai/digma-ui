@@ -8,8 +8,8 @@ import {
 export interface MetricsTableProps {
   data: PresentationalReportData[];
   timeMode: ReportTimeMode;
-  onTitleClick: (name: string) => void;
-  onIssuesStatsClick: (name: string) => void;
+  onTitleClick: (value: string) => void;
+  onIssuesStatsClick: (value: string) => void;
   scoreCriterion: ScoreCriterion;
   viewLevel: ReportViewLevel;
 }
@@ -20,6 +20,8 @@ export type Severity = "Top" | "High" | "Medium" | "Low";
 export interface ColumnMeta {
   contentAlign?: ContentAlignment;
   info?: string;
+  width?: string | number;
+  minWidth?: string | number;
 }
 
 export interface TableCellContentProps {

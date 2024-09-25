@@ -1,20 +1,16 @@
 import { useEffect, useMemo, useState } from "react";
+import { getFeatureFlagValue } from "../../../../featureFlags";
 import {
   DataFetcherConfiguration,
   useFetchData
 } from "../../../../hooks/useFetchData";
 import { useConfigSelector } from "../../../../store/config/useConfigSelector";
-import { WrenchIcon } from "../../../common/icons/12px/WrenchIcon";
-
-import { actions } from "../../actions";
-
-import { Environment } from "../../../common/App/types";
-
-import { getFeatureFlagValue } from "../../../../featureFlags";
 import { FeatureFlag } from "../../../../types";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
+import { Environment } from "../../../common/App/types";
 import { CodeIcon } from "../../../common/icons/12px/CodeIcon";
 import { DurationBreakdownIcon } from "../../../common/icons/12px/DurationBreakdownIcon";
+import { WrenchIcon } from "../../../common/icons/12px/WrenchIcon";
 import { InfinityIcon } from "../../../common/icons/16px/InfinityIcon";
 import { TableIcon } from "../../../common/icons/16px/TableIcon";
 import { TreemapIcon } from "../../../common/icons/16px/TreemapIcon";
@@ -22,23 +18,20 @@ import { ChevronIcon } from "../../../common/icons/20px/ChevronIcon";
 import { Direction } from "../../../common/icons/types";
 import { NewIconButton } from "../../../common/v3/NewIconButton";
 import { Tooltip } from "../../../common/v3/Tooltip";
+import { actions } from "../../actions";
 import { trackingEvents } from "../tracking";
-import { Criticality, GetServicesPayload } from "../types";
+import {
+  Criticality,
+  GetServiceEndpointsPayload,
+  GetServiceEnvironmentsPayload,
+  GetServicesPayload,
+  SetServiceEndpointsPayload,
+  SetServiceEnvironmentsPayload
+} from "../types";
 import * as s from "./styles";
 import { ReportHeaderProps, ReportTimeMode, ReportViewMode } from "./types";
 import { useReportQuery } from "./useReportQuery";
 import { useReportQueryV2 } from "./useReportQueryV2";
-
-const baseFetchConfig = {
-  refreshWithInterval: false,
-  refreshOnPayloadChange: true
-};
-
-const dataFetcherFiltersConfiguration: DataFetcherConfiguration = {
-  requestAction: actions.GET_SERVICES,
-  responseAction: actions.SET_SERVICES,
-  ...baseFetchConfig
-};
 
 const criticalityOptions: { id: Criticality; label: string }[] = [
   {
@@ -64,17 +57,18 @@ export const ReportHeader = ({
   onFilterChanged,
   onViewModeChanged,
   service,
-  onGoBack
+  onGoBack,
+  viewMode
 }: ReportHeaderProps) => {
   const { environments, backendInfo } = useConfigSelector();
   const [periodInDays, setPeriodInDays] = useState(DEFAULT_PERIOD);
-  const [viewMode, setVieMode] = useState<ReportViewMode>("table");
   const [timeMode, setTimeMode] = useState<ReportTimeMode>("baseline");
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
+  const [selectedEndpoints, setSelectedEndpoints] = useState<string[]>([]);
   const [selectedEnvironment, setSelectedEnvironment] =
     useState<Environment | null>(null);
   const [selectedCriticality, setSelectedCriticality] = useState<Criticality[]>(
-    []
+    ["Medium", "High"]
   );
   const [servicesFromStore, setServicesFromStore] = useState<string[]>([]);
 
@@ -83,15 +77,63 @@ export const ReportHeader = ({
     FeatureFlag.IS_METRICS_REPORT_DATA_FILTER_ENABLED
   );
 
-  const getServicesPayload = useMemo(
+  const getServicesPayload: GetServicesPayload = useMemo(
     () => ({ environment: selectedEnvironment?.id ?? null }),
     [selectedEnvironment]
   );
 
+  const dataFetcherServicesConfiguration: DataFetcherConfiguration = {
+    requestAction: actions.GET_SERVICES,
+    responseAction: actions.SET_SERVICES,
+    refreshOnPayloadChange: !service
+  };
+
   const { data: services, getData } = useFetchData<
     GetServicesPayload,
     string[]
-  >(dataFetcherFiltersConfiguration, getServicesPayload);
+  >(dataFetcherServicesConfiguration, getServicesPayload);
+
+  const dataFetcherEnvironmentsConfiguration: DataFetcherConfiguration = {
+    requestAction: actions.GET_SERVICE_ENVIRONMENTS,
+    responseAction: actions.SET_SERVICE_ENVIRONMENTS,
+    refreshOnPayloadChange: Boolean(selectedEnvironment?.id && service)
+  };
+
+  const getEnvironmentsPayload: GetServiceEnvironmentsPayload = useMemo(
+    () => ({
+      service: service ?? ""
+    }),
+    [service]
+  );
+
+  const { data: serviceEnvironmentsData, getData: getServiceEnvironmentsData } =
+    useFetchData<GetServiceEnvironmentsPayload, SetServiceEnvironmentsPayload>(
+      dataFetcherEnvironmentsConfiguration,
+      getEnvironmentsPayload
+    );
+
+  useEffect(() => {
+    getServiceEnvironmentsData();
+  }, [getServiceEnvironmentsData]);
+
+  const dataFetcherEndpointsConfiguration: DataFetcherConfiguration = {
+    requestAction: actions.GET_SERVICE_ENDPOINTS_DATA,
+    responseAction: actions.SET_SERVICE_ENDPOINTS_DATA,
+    refreshOnPayloadChange: Boolean(selectedEnvironment?.id && service)
+  };
+
+  const getEndpointsPayload: GetServiceEndpointsPayload = useMemo(
+    () => ({
+      environment: selectedEnvironment?.id ?? "",
+      service: service ?? ""
+    }),
+    [selectedEnvironment, service]
+  );
+
+  const { data: endpointsData, getData: getEndpointsData } = useFetchData<
+    GetServiceEndpointsPayload,
+    SetServiceEndpointsPayload
+  >(dataFetcherEndpointsConfiguration, getEndpointsPayload);
 
   useEffect(() => {
     setServicesFromStore(services ?? []);
@@ -110,12 +152,17 @@ export const ReportHeader = ({
     selectedCriticality,
     selectedServices,
     timeMode,
-    periodInDays
+    periodInDays,
+    selectedEndpoints
   });
 
   useEffect(() => {
     getData();
   }, []);
+
+  useEffect(() => {
+    getEndpointsData();
+  }, [getEndpointsData]);
 
   useEffect(() => {
     if (isDataFilterEnabled) {
@@ -165,12 +212,19 @@ export const ReportHeader = ({
     setSelectedEnvironment(newItemEnv);
     setSelectedServices([]);
     setServicesFromStore([]);
+    setSelectedEndpoints([]);
   };
 
   const handleSelectedServicesChanged = (option: string | string[]) => {
-    sendUserActionTrackingEvent(trackingEvents.SERVICES_FILTER_SELECTED);
+    sendUserActionTrackingEvent(trackingEvents.SERVICE_FILTER_SELECTED);
     const newItem = Array.isArray(option) ? option : [option];
     setSelectedServices(newItem);
+  };
+
+  const handleSelectedEndpointsChanged = (option: string | string[]) => {
+    sendUserActionTrackingEvent(trackingEvents.ENDPOINT_FILTER_SELECTED);
+    const newItem = Array.isArray(option) ? option : [option];
+    setSelectedEndpoints(newItem);
   };
 
   const handleDataChanged = (option: string | string[]) => {
@@ -195,7 +249,6 @@ export const ReportHeader = ({
   const handleViewModeChanged = (value: string) => {
     sendUserActionTrackingEvent(trackingEvents.VIEW_MODE_CHANGED, { value });
     const newMode = value as ReportViewMode;
-    setVieMode(newMode);
     onViewModeChanged(newMode);
   };
 
@@ -204,6 +257,10 @@ export const ReportHeader = ({
     const newMode = value as ReportTimeMode;
     setTimeMode(newMode);
   };
+
+  const environmentsToSelect = service
+    ? serviceEnvironmentsData?.environments ?? []
+    : environments ?? [];
 
   const title = service
     ? `${service} Service`
@@ -248,16 +305,14 @@ export const ReportHeader = ({
       <s.Row>
         <s.Filters>
           <s.EnvironmentFilter
-            items={
-              environments
-                ?.sort((a, b) => a.name.localeCompare(b.name))
-                .map((x) => ({
-                  label: x.name,
-                  value: x.id,
-                  enabled: true,
-                  selected: x.id === selectedEnvironment?.id
-                })) ?? []
-            }
+            items={environmentsToSelect
+              .sort((a, b) => a.name.localeCompare(b.name))
+              .map((x) => ({
+                label: x.name,
+                value: x.id,
+                enabled: true,
+                selected: x.id === selectedEnvironment?.id
+              }))}
             showSelectedState={true}
             icon={(props) =>
               selectedEnvironment?.type === "Public" ? (
@@ -269,39 +324,26 @@ export const ReportHeader = ({
             onChange={handleSelectedEnvironmentChanged}
             placeholder={selectedEnvironment?.name ?? "Select Environments"}
           />
-
-          {timeMode === "changes" && (
-            <s.FilterSelect
-              items={[1, 7].map((x) => ({
-                value: x.toString(),
-                label: formatUnit(x, "Day"),
-                selected: x === periodInDays,
-                enabled: true
-              }))}
-              showSelectedState={false}
-              icon={DurationBreakdownIcon}
-              onChange={handlePeriodChanged}
-              placeholder={`Period: ${formatUnit(periodInDays, "day")}`}
-            />
-          )}
-
-          {isDataFilterEnabled && (
+          {service ? (
             <s.FilterSelect
               items={
-                criticalityOptions.map((item) => ({
-                  label: item.label,
-                  value: item.id,
+                endpointsData?.endpoints?.sort()?.map((x) => ({
+                  label: x.displayName,
+                  value: x.spanCodeObjectId,
                   enabled: true,
-                  selected: selectedCriticality.includes(item.id)
+                  selected: selectedEndpoints.includes(x.spanCodeObjectId)
                 })) ?? []
               }
+              showSelectedState={true}
               multiselect={true}
               icon={WrenchIcon}
-              onChange={handleDataChanged}
-              placeholder={"Data"}
+              onChange={handleSelectedEndpointsChanged}
+              searchable={true}
+              placeholder={
+                selectedEndpoints.length > 0 ? "Endpoints" : "All Endpoints"
+              }
             />
-          )}
-          {!service && (
+          ) : (
             <s.FilterSelect
               items={
                 services?.sort()?.map((service) => ({
@@ -320,17 +362,47 @@ export const ReportHeader = ({
               }
             />
           )}
+          {timeMode === "changes" && (
+            <s.FilterSelect
+              items={[1, 7].map((x) => ({
+                value: x.toString(),
+                label: formatUnit(x, "Day"),
+                selected: x === periodInDays,
+                enabled: true
+              }))}
+              showSelectedState={false}
+              icon={DurationBreakdownIcon}
+              onChange={handlePeriodChanged}
+              placeholder={`Period: ${formatUnit(periodInDays, "day")}`}
+            />
+          )}
+          {isDataFilterEnabled && (
+            <s.FilterSelect
+              items={
+                criticalityOptions.map((item) => ({
+                  label: item.label,
+                  value: item.id,
+                  enabled: true,
+                  selected: selectedCriticality.includes(item.id)
+                })) ?? []
+              }
+              multiselect={true}
+              icon={WrenchIcon}
+              onChange={handleDataChanged}
+              placeholder={"Data"}
+            />
+          )}
         </s.Filters>
         <s.ViewModeToggle
           size="large"
           options={[
             {
-              value: "table",
-              icon: (props) => <TableIcon {...props} size={16} />
-            },
-            {
               value: "treemap",
               icon: (props) => <TreemapIcon {...props} size={16} />
+            },
+            {
+              value: "table",
+              icon: (props) => <TableIcon {...props} size={16} />
             }
           ]}
           value={viewMode}

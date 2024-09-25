@@ -7,8 +7,8 @@ import {
 
 export interface ChartProps {
   data: PresentationalReportData[];
-  onTitleClick: (name: string) => void;
-  onIssuesStatsClick: (name: string) => void;
+  onTitleClick: (value: string) => void;
+  onIssuesStatsClick: (value: string) => void;
   scoreCriterion: ScoreCriterion;
   viewLevel: ReportViewLevel;
   timeMode: ReportTimeMode;

@@ -9,6 +9,7 @@ export interface ReportFilterQuery {
   scope?: string;
   criticalities: Criticality[];
   lastDays: number | null;
+  endpoints?: string[];
 }
 
 export interface ReportQuery {

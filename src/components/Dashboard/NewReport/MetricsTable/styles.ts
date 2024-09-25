@@ -90,23 +90,20 @@ export const SortingOrderIconContainer = styled.div<SortingOrderIconContainerPro
   );
 `;
 
-export const LinkChevron = styled.div`
-  display: none;
-`;
-
-export const IssuesLinkContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
+export const HoverableContentContainer = styled.div`
   width: 100%;
-  min-width: 103px;
 
   &:hover {
     cursor: pointer;
   }
 `;
 
-export const NavigationText = styled.span`
+export const NavigationLinkContainer = styled.div<{ $withChevron?: boolean }>`
   color: ${({ theme }) => theme.colors.v3.text.link};
+  width: 100%;
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  justify-content: ${({ $withChevron }) =>
+    $withChevron ? "space-between" : "center"};
 `;

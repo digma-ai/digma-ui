@@ -9,13 +9,15 @@ export const useReportQueryV2 = ({
   selectedServices,
   timeMode,
   periodInDays,
-  selectedCriticality
+  selectedCriticality,
+  selectedEndpoints
 }: {
   selectedEnvironment: Environment | null;
   selectedServices: string[];
   timeMode: ReportTimeMode;
   periodInDays: number;
   selectedCriticality: Criticality[];
+  selectedEndpoints?: string[];
 }) => {
   const [filterQuery, setFilterQuery] = useState<ReportFilterQuery>({
     lastDays: null,
@@ -47,6 +49,12 @@ export const useReportQueryV2 = ({
       setFilterQuery({ ...filterQuery, criticalities: selectedCriticality });
     }
   }, [filterQuery, selectedCriticality]);
+
+  useEffect(() => {
+    if (selectedEndpoints !== filterQuery.endpoints) {
+      setFilterQuery({ ...filterQuery, endpoints: selectedEndpoints });
+    }
+  }, [filterQuery, selectedEndpoints]);
 
   useEffect(() => {
     if (!selectedEnvironment?.id) {
