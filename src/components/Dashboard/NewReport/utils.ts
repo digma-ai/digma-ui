@@ -1,4 +1,10 @@
 import { Severity } from "./MetricsTable/types";
+import {
+  EndpointData,
+  PresentationalReportData,
+  ScoreCriterion,
+  ServiceData
+} from "./types";
 
 export const getSeverity = (
   min: number,
@@ -24,4 +30,38 @@ export const getSeverity = (
   }
 
   return "Top";
+};
+
+export const transformServicesData = (
+  data: ServiceData[],
+  scoreCriterion: ScoreCriterion
+): PresentationalReportData[] => {
+  const scores = data.map((x) => x[scoreCriterion]);
+  const minScore = Math.min(...scores);
+  const maxScore = Math.max(...scores);
+
+  return data.map((x) => ({
+    id: x.key.service,
+    name: x.key.service,
+    criticalIssuesCount: x.issues,
+    score: Math.round(x[scoreCriterion] * 100),
+    severity: getSeverity(minScore, maxScore, x[scoreCriterion])
+  }));
+};
+
+export const transformEndpointsData = (
+  data: EndpointData[],
+  scoreCriterion: ScoreCriterion
+): PresentationalReportData[] => {
+  const scores = data.map((x) => x[scoreCriterion]);
+  const minScore = Math.min(...scores);
+  const maxScore = Math.max(...scores);
+
+  return data.map((x) => ({
+    id: x.spanCodeObjectId,
+    name: x.displayName,
+    criticalIssuesCount: x.issues,
+    score: Math.round(x[scoreCriterion] * 100),
+    severity: getSeverity(minScore, maxScore, x[scoreCriterion])
+  }));
 };

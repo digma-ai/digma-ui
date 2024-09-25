@@ -13,33 +13,32 @@ import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserA
 import { SortIcon } from "../../../common/icons/16px/SortIcon";
 import { SORTING_ORDER } from "../../../common/SortingSelector/types";
 import { trackingEvents } from "../tracking";
-import { ScoreCriterion, ServiceData } from "../types";
-import { getSeverity } from "../utils";
+import { PresentationalReportData } from "../types";
 import * as s from "./styles";
 import { ColumnMeta, MetricsTableProps, Severity } from "./types";
 
-const getSortScoreFn =
-  (scoreCriterion: ScoreCriterion): SortingFn<ServiceData> =>
-  (rowA, rowB) => {
-    const scoreA = rowA.original[scoreCriterion];
-    const scoreB = rowB.original[scoreCriterion];
+const sortScoreFn: SortingFn<PresentationalReportData> = (rowA, rowB) => {
+  const scoreA = rowA.original.score;
+  const scoreB = rowB.original.score;
 
-    return scoreA - scoreB;
-  };
+  return scoreA - scoreB;
+};
 
-const sortIssuesFn: SortingFn<ServiceData> = (rowA, rowB) => {
-  const issuesA = rowA.original.issues;
-  const issuesB = rowB.original.issues;
+const sortIssuesFn: SortingFn<PresentationalReportData> = (rowA, rowB) => {
+  const issuesA = rowA.original.criticalIssuesCount;
+  const issuesB = rowB.original.criticalIssuesCount;
 
   return issuesA - issuesB;
 };
 
-const IssuesLink = ({
+const HoverableTableCellContent = ({
   children,
-  onClick
+  onClick,
+  hoverText
 }: {
   onClick: () => void;
   children: ReactNode;
+  hoverText: string;
 }) => {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -58,7 +57,7 @@ const IssuesLink = ({
       onMouseLeave={handleMouseLeave}
     >
       {isHovered ? (
-        <s.SeeIssuesLink>See issues</s.SeeIssuesLink>
+        <s.NavigationText>{hoverText}</s.NavigationText>
       ) : (
         <span>{children}</span>
       )}
@@ -68,39 +67,57 @@ const IssuesLink = ({
 
 export const MetricsTable = ({
   data,
-  showSign,
-  onServiceSelected,
-  scoreCriterion
+  timeMode,
+  onTitleClick,
+  onIssuesStatsClick,
+  scoreCriterion,
+  viewLevel
 }: MetricsTableProps) => {
-  const columnHelper = createColumnHelper<ServiceData>();
-  const minScore = Math.min(...data.map((x) => x[scoreCriterion]));
-  const maxScore = Math.max(...data.map((x) => x[scoreCriterion]));
+  const columnHelper = createColumnHelper<PresentationalReportData>();
 
   const handleSeeIssuesLinkClick = (service: string, source: string) => {
-    onServiceSelected(service);
+    onIssuesStatsClick(service);
     sendUserActionTrackingEvent(trackingEvents.TABLE_SEE_ISSUES_LINK_CLICKED, {
       source
     });
   };
 
+  const handleSeeEndpointsLinkClick = (service: string) => {
+    onTitleClick(service);
+  };
+
   const columns = [
-    columnHelper.accessor((row) => row.key.service, {
-      header: "Service",
-      cell: (info) => info.getValue()
+    columnHelper.accessor("name", {
+      header: viewLevel === "services" ? "Service" : "Endpoints",
+      cell: (info) => {
+        const value = info.getValue();
+        return viewLevel === "services" ? (
+          <HoverableTableCellContent
+            onClick={() => handleSeeEndpointsLinkClick(value)}
+            hoverText={"See endpoints"}
+          >
+            {value}
+          </HoverableTableCellContent>
+        ) : (
+          value
+        );
+      }
     }),
     columnHelper.accessor((row) => row, {
       header: "Critical issues",
       id: "issues",
       cell: (info) => {
-        const value = info.getValue().issues;
+        const value = info.getValue();
+        const issuesCount = value.criticalIssuesCount;
         return (
-          <IssuesLink
-            onClick={() =>
-              handleSeeIssuesLinkClick(info.getValue().key.service, "issues")
-            }
+          <HoverableTableCellContent
+            onClick={() => handleSeeIssuesLinkClick(value.name, "issues")}
+            hoverText={"See issues"}
           >
-            {!showSign ? value : `${value > 0 ? "+" : ""}${value}`}
-          </IssuesLink>
+            {timeMode === "baseline"
+              ? issuesCount
+              : `${issuesCount > 0 ? "+" : ""}${issuesCount}`}
+          </HoverableTableCellContent>
         );
       },
       sortingFn: sortIssuesFn,
@@ -112,39 +129,35 @@ export const MetricsTable = ({
     columnHelper.accessor((row) => row, {
       id: "score",
       header: scoreCriterion,
-      cell: (info) => (
-        <IssuesLink
-          onClick={() =>
-            handleSeeIssuesLinkClick(
-              info.getValue().key.service,
-              scoreCriterion
-            )
-          }
-        >
-          {info.getValue()[scoreCriterion]}
-        </IssuesLink>
-      ),
-      sortingFn: getSortScoreFn(scoreCriterion),
+      cell: (info) => {
+        const value = info.getValue();
+        return (
+          <HoverableTableCellContent
+            onClick={() => handleSeeIssuesLinkClick(value.name, scoreCriterion)}
+            hoverText={"See issues"}
+          >
+            {value.score}
+          </HoverableTableCellContent>
+        );
+      },
+      sortingFn: sortScoreFn,
       enableSorting: true,
       meta: {
         contentAlign: "center"
       }
     }),
-    columnHelper.accessor(
-      (row) => getSeverity(minScore, maxScore, row[scoreCriterion]),
-      {
-        header: "Rank",
-        id: "rank",
-        enableSorting: true,
-        cell: (info) => {
-          return info.getValue();
-        },
-        sortingFn: getSortScoreFn(scoreCriterion),
-        meta: {
-          contentAlign: "center"
-        }
+    columnHelper.accessor("severity", {
+      header: "Rank",
+      id: "rank",
+      enableSorting: true,
+      cell: (info) => {
+        return info.getValue();
+      },
+      sortingFn: sortScoreFn,
+      meta: {
+        contentAlign: "center"
       }
-    )
+    })
   ];
 
   const table = useReactTable({

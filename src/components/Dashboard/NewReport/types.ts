@@ -1,8 +1,14 @@
+import { EnvironmentType } from "../../common/App/types";
+import { Severity } from "./MetricsTable/types";
+
+export type Criticality = "Low" | "Medium" | "High";
+
 export interface ReportFilterQuery {
   environmentId: string | null;
   services: string[];
   scope?: string;
-  criticalities: string[];
+  criticalities: Criticality[];
+  lastDays: number | null;
 }
 
 export interface ReportQuery {
@@ -15,12 +21,6 @@ export interface ReportQuery {
 
 export interface GetServicesPayload {
   environment: string | null;
-}
-
-export interface ReportFilterQuery {
-  environmentId: string | null;
-  services: string[];
-  lastDays: number | null;
 }
 
 export interface ServiceData {
@@ -39,3 +39,57 @@ export interface ServiceMetricsReport {
 }
 
 export type ScoreCriterion = "impact" | "criticality";
+
+export type ReportViewLevel = "services" | "endpoints";
+
+export interface GetServiceEndpointsPayload {
+  environment: string;
+  service: string;
+}
+
+export interface SetServiceEndpointsPayload {
+  endpoints: {
+    displayName: string;
+    spanCodeObjectId: string;
+  }[];
+}
+
+export interface GetEndpointsIssuesPayload {
+  environment: string;
+  service: string;
+  endpoints: string[];
+  criticalities: Criticality[];
+  lastDays: number | null;
+}
+
+export interface EndpointData {
+  displayName: string;
+  spanCodeObjectId: string;
+  issues: number;
+  impact: number;
+  criticality: number;
+}
+
+export interface SetEndpointsIssuesPayload {
+  reports: EndpointData[];
+}
+
+export interface GetServiceEnvironmentsPayload {
+  service: string;
+}
+
+export interface SetServiceEnvironmentsPayload {
+  environments: {
+    id: string;
+    name: string;
+    type: EnvironmentType;
+  }[];
+}
+
+export interface PresentationalReportData {
+  id: string;
+  name: string;
+  score: number;
+  criticalIssuesCount: number;
+  severity: Severity;
+}

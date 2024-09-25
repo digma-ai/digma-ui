@@ -107,6 +107,6 @@ export const IssuesLinkContainer = styled.div`
   }
 `;
 
-export const SeeIssuesLink = styled.span`
+export const NavigationText = styled.span`
   color: ${({ theme }) => theme.colors.v3.text.link};
 `;

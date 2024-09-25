@@ -11,7 +11,7 @@ const baseFetchConfig = {
   refreshOnPayloadChange: true
 };
 
-const dataFetcherIssuesStatsConfiguration: DataFetcherConfiguration = {
+const dataFetcherServiceDataConfiguration: DataFetcherConfiguration = {
   requestAction: actions.GET_METRICS_REPORT_DATA,
   responseAction: actions.SET_METRICS_REPORT_DATA,
   ...baseFetchConfig
@@ -43,7 +43,7 @@ export const useReportsData = (query: ReportFilterQuery) => {
   }, [query]);
 
   const { data, getData } = useFetchData<ReportQuery, ServiceMetricsReport>(
-    dataFetcherIssuesStatsConfiguration,
+    dataFetcherServiceDataConfiguration,
     payload
   );
 

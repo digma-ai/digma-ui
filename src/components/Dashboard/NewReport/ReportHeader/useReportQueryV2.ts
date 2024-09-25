@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { usePrevious } from "../../../../hooks/usePrevious";
 import { Environment } from "../../../common/App/types";
-import { ReportFilterQuery } from "../types";
+import { Criticality, ReportFilterQuery } from "../types";
 import { ReportTimeMode } from "./types";
 
 export const useReportQueryV2 = ({
@@ -15,7 +15,7 @@ export const useReportQueryV2 = ({
   selectedServices: string[];
   timeMode: ReportTimeMode;
   periodInDays: number;
-  selectedCriticality: string[];
+  selectedCriticality: Criticality[];
 }) => {
   const [filterQuery, setFilterQuery] = useState<ReportFilterQuery>({
     lastDays: null,

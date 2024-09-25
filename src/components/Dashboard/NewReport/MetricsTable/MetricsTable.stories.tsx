@@ -1,6 +1,7 @@
 import { Meta, StoryObj } from "@storybook/react";
 
 import { MetricsTable } from ".";
+import { transformServicesData } from "../utils";
 import { mockedReport } from "./mockData";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
@@ -21,12 +22,18 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    data: mockedReport.reports
+    data: transformServicesData(mockedReport.reports, "criticality"),
+    viewLevel: "services",
+    scoreCriterion: "criticality",
+    timeMode: "baseline"
   }
 };
 
 export const Empty: Story = {
   args: {
-    data: []
+    data: [],
+    viewLevel: "services",
+    scoreCriterion: "criticality",
+    timeMode: "baseline"
   }
 };

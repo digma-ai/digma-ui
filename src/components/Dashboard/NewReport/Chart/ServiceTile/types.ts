@@ -9,5 +9,6 @@ export interface ServiceTileProps {
   score: number;
   severity: Severity;
   viewMode: ReportTimeMode;
+  onTitleClick?: (service: string) => void;
   onIssuesClick?: (service: string) => void;
 }

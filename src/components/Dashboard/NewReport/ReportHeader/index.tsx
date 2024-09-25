@@ -18,8 +18,12 @@ import { DurationBreakdownIcon } from "../../../common/icons/12px/DurationBreakd
 import { InfinityIcon } from "../../../common/icons/16px/InfinityIcon";
 import { TableIcon } from "../../../common/icons/16px/TableIcon";
 import { TreemapIcon } from "../../../common/icons/16px/TreemapIcon";
+import { ChevronIcon } from "../../../common/icons/20px/ChevronIcon";
+import { Direction } from "../../../common/icons/types";
+import { NewIconButton } from "../../../common/v3/NewIconButton";
+import { Tooltip } from "../../../common/v3/Tooltip";
 import { trackingEvents } from "../tracking";
-import { GetServicesPayload } from "../types";
+import { Criticality, GetServicesPayload } from "../types";
 import * as s from "./styles";
 import { ReportHeaderProps, ReportTimeMode, ReportViewMode } from "./types";
 import { useReportQuery } from "./useReportQuery";
@@ -36,7 +40,7 @@ const dataFetcherFiltersConfiguration: DataFetcherConfiguration = {
   ...baseFetchConfig
 };
 
-const criticalityOptions = [
+const criticalityOptions: { id: Criticality; label: string }[] = [
   {
     id: "High",
     label: "Critical"
@@ -58,7 +62,9 @@ const DEFAULT_PERIOD = 1;
 
 export const ReportHeader = ({
   onFilterChanged,
-  onViewModeChanged
+  onViewModeChanged,
+  service,
+  onGoBack
 }: ReportHeaderProps) => {
   const { environments, backendInfo } = useConfigSelector();
   const [periodInDays, setPeriodInDays] = useState(DEFAULT_PERIOD);
@@ -67,7 +73,9 @@ export const ReportHeader = ({
   const [selectedServices, setSelectedServices] = useState<string[]>([]);
   const [selectedEnvironment, setSelectedEnvironment] =
     useState<Environment | null>(null);
-  const [selectedCriticality, setSelectedCriticality] = useState<string[]>([]);
+  const [selectedCriticality, setSelectedCriticality] = useState<Criticality[]>(
+    []
+  );
   const [servicesFromStore, setServicesFromStore] = useState<string[]>([]);
 
   const isDataFilterEnabled = getFeatureFlagValue(
@@ -140,6 +148,10 @@ export const ReportHeader = ({
     setServicesFromStore([]);
   }, [environments]);
 
+  const handleGoBack = () => {
+    onGoBack();
+  };
+
   const handleSelectedEnvironmentChanged = (option: string | string[]) => {
     sendUserActionTrackingEvent(trackingEvents.ENVIRONMENT_FILTER_SELECTED);
     const newItem =
@@ -164,7 +176,7 @@ export const ReportHeader = ({
   const handleDataChanged = (option: string | string[]) => {
     sendUserActionTrackingEvent(trackingEvents.DATA_FILTER_SELECTED);
     const newItem = Array.isArray(option) ? option : [option];
-    setSelectedCriticality(newItem);
+    setSelectedCriticality(newItem as Criticality[]);
   };
 
   const handlePeriodChanged = (option: string | string[]) => {
@@ -193,10 +205,37 @@ export const ReportHeader = ({
     setTimeMode(newMode);
   };
 
+  const title = service
+    ? `${service} Service`
+    : "Services with critical issues";
+  const titleSuffix = service ? " Endpoints" : "";
+  const tooltipTitle = `${title} ${titleSuffix}`;
+
   return (
     <s.Container>
       <s.Row>
-        <s.Title>Services with critical issues</s.Title>
+        <s.TitleContainer>
+          {service ? (
+            <>
+              <NewIconButton
+                icon={(props) => (
+                  <ChevronIcon {...props} direction={Direction.LEFT} />
+                )}
+                size={"small"}
+                buttonType={"secondaryBorderless"}
+                onClick={handleGoBack}
+              />
+              <Tooltip title={tooltipTitle}>
+                <s.Title>
+                  {title}
+                  <s.TitleSuffix>{titleSuffix}</s.TitleSuffix>
+                </s.Title>
+              </Tooltip>
+            </>
+          ) : (
+            <s.Title>{title}</s.Title>
+          )}
+        </s.TitleContainer>
         <s.TimeModeToggle
           options={[
             { value: "baseline", label: "Baseline" },
@@ -262,24 +301,25 @@ export const ReportHeader = ({
               placeholder={"Data"}
             />
           )}
-
-          <s.FilterSelect
-            items={
-              services?.sort()?.map((service) => ({
-                label: service,
-                value: service,
-                enabled: true,
-                selected: selectedServices.includes(service)
-              })) ?? []
-            }
-            showSelectedState={true}
-            multiselect={true}
-            icon={WrenchIcon}
-            onChange={handleSelectedServicesChanged}
-            placeholder={
-              selectedServices.length > 0 ? "Services" : "All Services"
-            }
-          />
+          {!service && (
+            <s.FilterSelect
+              items={
+                services?.sort()?.map((service) => ({
+                  label: service,
+                  value: service,
+                  enabled: true,
+                  selected: selectedServices.includes(service)
+                })) ?? []
+              }
+              showSelectedState={true}
+              multiselect={true}
+              icon={WrenchIcon}
+              onChange={handleSelectedServicesChanged}
+              placeholder={
+                selectedServices.length > 0 ? "Services" : "All Services"
+              }
+            />
+          )}
         </s.Filters>
         <s.ViewModeToggle
           size="large"

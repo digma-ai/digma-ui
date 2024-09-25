@@ -1,6 +1,7 @@
-import { useLayoutEffect, useState } from "react";
+import { useLayoutEffect, useMemo, useState } from "react";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
+import { isNull } from "../../../typeGuards/isNull";
 import { FeatureFlag } from "../../../types";
 import { changeScope } from "../../../utils/actions/changeScope";
 import { DigmaLogoIcon } from "../../common/icons/16px/DigmaLogoIcon";
@@ -9,10 +10,18 @@ import { actions } from "../actions";
 import { Chart } from "./Chart";
 import { MetricsTable } from "./MetricsTable";
 import { ReportHeader } from "./ReportHeader";
-import { ReportViewMode } from "./ReportHeader/types";
+import { ReportTimeMode, ReportViewMode } from "./ReportHeader/types";
 import * as s from "./styles";
-import { ReportFilterQuery } from "./types";
+import {
+  EndpointData,
+  ReportFilterQuery,
+  ReportViewLevel,
+  ScoreCriterion,
+  ServiceData
+} from "./types";
+import { useEndpointsIssuesData } from "./useEndpointsIssuesData";
 import { useReportsData } from "./useReportsData";
+import { transformEndpointsData, transformServicesData } from "./utils";
 
 const DefaultQuery: ReportFilterQuery = {
   environmentId: "",
@@ -23,14 +32,34 @@ const DefaultQuery: ReportFilterQuery = {
 
 export const NewReport = () => {
   const [query, setQuery] = useState<ReportFilterQuery>(DefaultQuery);
-  const { data } = useReportsData(query);
+  const { data: servicesData } = useReportsData(query);
+  const [selectedService, setSelectedService] = useState<string>();
+  const endpointsIssuesQuery = useMemo(
+    () => ({
+      ...query,
+      services: selectedService ? [selectedService] : []
+    }),
+    [query, selectedService]
+  );
+  const { data: endpointsData } = useEndpointsIssuesData(endpointsIssuesQuery);
   const [viewMode, setViewMode] = useState<ReportViewMode>("table");
   const { backendInfo } = useConfigSelector();
   const isCriticalityEnabled = getFeatureFlagValue(
     backendInfo,
     FeatureFlag.IS_METRICS_REPORT_CRITICALITY_ENABLED
   );
-  const scoreCriterion = isCriticalityEnabled ? "criticality" : "impact";
+  const isEndpointViewEnabled = getFeatureFlagValue(
+    backendInfo,
+    FeatureFlag.IS_METRICS_REPORT_ENDPOINT_VIEW_ENABLED
+  );
+  const scoreCriterion: ScoreCriterion = isCriticalityEnabled
+    ? "criticality"
+    : "impact";
+  const viewLevel: ReportViewLevel =
+    isEndpointViewEnabled && selectedService ? "endpoints" : "services";
+  const timeMode: ReportTimeMode = isNull(query.lastDays)
+    ? "baseline"
+    : "changes";
 
   useLayoutEffect(() => {
     window.sendMessageToDigma({
@@ -46,7 +75,13 @@ export const NewReport = () => {
     setViewMode(value);
   };
 
-  const handleServiceSelected = (name: string) => {
+  const handleTitleClick = (name: string) => {
+    if (viewLevel === "services") {
+      setSelectedService(name);
+    }
+  };
+
+  const handleIssuesStatsClick = (name: string) => {
     changeScope({
       span: null,
       environmentId: query.environmentId ?? undefined,
@@ -59,11 +94,18 @@ export const NewReport = () => {
     });
   };
 
-  const serviceData = data?.reports ?? [];
-  const transformedData = serviceData.map((service) => ({
-    ...service,
-    [scoreCriterion]: Math.round(service[scoreCriterion] * 100)
-  }));
+  const handleGoBack = () => {
+    setSelectedService(undefined);
+  };
+
+  const data =
+    (viewLevel === "services"
+      ? servicesData?.reports
+      : endpointsData?.reports) ?? [];
+  const transformedData =
+    viewLevel === "services"
+      ? transformServicesData(data as ServiceData[], scoreCriterion)
+      : transformEndpointsData(data as EndpointData[], scoreCriterion);
 
   return (
     <s.Section>
@@ -73,20 +115,27 @@ export const NewReport = () => {
         <ReportHeader
           onFilterChanged={handleFilterChanged}
           onViewModeChanged={handleViewModeChange}
+          service={selectedService}
+          onGoBack={handleGoBack}
         />
         {viewMode === "table" && (
           <MetricsTable
             scoreCriterion={scoreCriterion}
             data={transformedData}
-            showSign={query.lastDays !== null}
-            onServiceSelected={handleServiceSelected}
+            timeMode={timeMode}
+            onTitleClick={handleTitleClick}
+            onIssuesStatsClick={handleIssuesStatsClick}
+            viewLevel={viewLevel}
           />
         )}
         {viewMode === "treemap" && (
           <Chart
             scoreCriterion={scoreCriterion}
-            onServiceSelected={handleServiceSelected}
             data={transformedData}
+            timeMode={timeMode}
+            onTitleClick={handleTitleClick}
+            onIssuesStatsClick={handleIssuesStatsClick}
+            viewLevel={viewLevel}
           />
         )}
         <s.Footer>

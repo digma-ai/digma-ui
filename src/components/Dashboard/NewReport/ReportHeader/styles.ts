@@ -9,12 +9,24 @@ export const Container = styled.div`
   flex-direction: column;
 `;
 
-export const Title = styled.div`
+export const TitleContainer = styled.div`
+  display: flex;
+  gap: 8px;
+  overflow: hidden;
+`;
+
+export const Title = styled.span`
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   font-size: 20px;
-  font-style: normal;
   font-weight: 700;
-  line-height: normal;
   color: ${({ theme }) => theme.colors.v3.text.primary};
+`;
+
+export const TitleSuffix = styled.span`
+  color: ${({ theme }) => theme.colors.v3.text.secondary};
+  font-weight: 400;
 `;
 
 export const Row = styled.div`
