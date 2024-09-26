@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 
+import { fn } from "@storybook/test";
 import { Chart } from ".";
 import { mockedReport } from "../MetricsTable/mockData";
 import { transformServicesData } from "../utils";
@@ -24,9 +25,7 @@ export const Default: Story = {
     scoreCriterion: "criticality",
     timeMode: "baseline",
     viewLevel: "services",
-    onTitleClick: () => {
-      return undefined;
-    },
+    onTitleClick: fn(),
     data: transformServicesData(mockedReport.reports, "criticality")
   }
 };
