@@ -252,9 +252,9 @@ export const ReportHeader = ({
     setTimeMode(newMode);
   };
 
-  const environmentsToSelect = service
-    ? serviceEnvironmentsData?.environments ?? []
-    : environments ?? [];
+  const environmentsToSelect = (service
+    ? serviceEnvironmentsData?.environments 
+    : environments ) ??  [];
 
   const title = service
     ? `${service} Service`
