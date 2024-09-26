@@ -1,7 +1,7 @@
 import { DefaultTheme, useTheme } from "styled-components";
-import { PetalsIcon } from "../../../common/icons/16px/PetalsIcon";
-import { CardsIcon } from "../../../common/icons/CardsIcon";
-import { CrossCircleIcon } from "../../../common/icons/CrossCircleIcon";
+import { CrossCircleIcon } from "../../../common/icons/20px/CrossCircleIcon";
+import { PetalsIcon } from "../../../common/icons/32px/PetalsIcon";
+import { CardsColoredIcon } from "../../../common/icons/CardsColoredIcon";
 import { NewButton } from "../../../common/v3/NewButton";
 import * as s from "./styles";
 import { EmptyStateContent, EmptyStateProps, EmptyStateType } from "./types";
@@ -28,12 +28,12 @@ const getContent = (type: EmptyStateType, theme: DefaultTheme) => {
     noServices: {
       title: "No Results",
       message: "No services recorded for this environment",
-      icon: <CardsIcon size={50} /> // TODO: replace icon
+      icon: <CardsColoredIcon size={40} />
     },
     noEndpoints: {
       title: "No Results",
       message: "No entry points recorded for this environment",
-      icon: <CardsIcon size={50} /> // TODO: replace icon
+      icon: <CardsColoredIcon size={40} />
     },
     loading: {
       title: "Fetching results",
