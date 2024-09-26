@@ -155,10 +155,11 @@ export interface Typographies {
   footNote: FontStyle;
   subscript: FontStyle;
   body: FontStyle;
-  subheading: FontStyle;
+  subheading1: FontStyle;
+  subheading2: FontStyle;
   code: FontStyle;
-  headingOne: FontStyle;
-  headingTwo: FontStyle;
+  heading1: FontStyle;
+  heading2: FontStyle;
   display: FontStyle;
 }
 

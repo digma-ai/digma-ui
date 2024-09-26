@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import {
   footnoteRegularTypography,
-  subheadingBoldTypography
+  subheading1BoldTypography
 } from "../../../../common/App/typographies";
 
 export const Container = styled.div`
@@ -23,7 +23,7 @@ export const Section = styled.div`
 `;
 
 export const TitleSection = styled(Section)`
-  ${subheadingBoldTypography}
+  ${subheading1BoldTypography}
 
   color: ${({ theme }) => theme.colors.v3.text.primary};
   padding: 16px 0 24px;

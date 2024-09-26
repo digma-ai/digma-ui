@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components";
-import { hexToRgb } from "../../../../utils/hexToRgb";
+import { subheading2RegularTypography } from "../../App/typographies";
 import {
   ChildrenContainerProps,
   TileContainerProps,
@@ -39,9 +39,9 @@ export const ContentContainer = styled.div`
 `;
 
 const TitleStyles = css`
+  ${subheading2RegularTypography}
+
   color: ${({ theme }) => theme.colors.v3.text.primary};
-  font-size: 24px;
-  font-weight: 400;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -65,13 +65,4 @@ export const TitleLink = styled.a<TitleProps>`
 export const ChildrenContainer = styled.div<ChildrenContainerProps>`
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
-  color: ${({ theme }) => {
-    const rgb = hexToRgb(theme.colors.v3.text.primary);
-    return rgb
-      ? `rgba(${rgb.r} ${rgb.g} ${rgb.b} / 70%)`
-      : theme.colors.v3.text.primary;
-  }};
-  font-size: 32px;
-  font-weight: 700;
 `;

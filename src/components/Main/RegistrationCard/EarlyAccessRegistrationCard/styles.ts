@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import {
-  subheadingSemiboldTypography,
+  subheading1SemiboldTypography,
   subscriptRegularTypography
 } from "../../../common/App/typographies";
 
@@ -14,7 +14,7 @@ export const Description = styled.div`
 `;
 
 export const Title = styled.div`
-  ${subheadingSemiboldTypography}
+  ${subheading1SemiboldTypography}
   color: ${({ theme }) => theme.colors.v3.text.primary};
   padding: 12px 0;
 `;

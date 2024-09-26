@@ -1,4 +1,8 @@
 import styled from "styled-components";
+import {
+  subheading2BoldTypography,
+  subheading2RegularTypography
+} from "../../../common/App/typographies";
 import { Select } from "../../../common/v3/Select";
 import { Toggle } from "../../../common/v3/Toggle";
 import { OptionButton } from "../../../common/v3/Toggle/styles";
@@ -16,17 +20,18 @@ export const TitleContainer = styled.div`
 `;
 
 export const Title = styled.span`
+  ${subheading2BoldTypography}
+
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  font-size: 20px;
-  font-weight: 700;
   color: ${({ theme }) => theme.colors.v3.text.primary};
 `;
 
 export const TitleSuffix = styled.span`
+  ${subheading2RegularTypography}
+
   color: ${({ theme }) => theme.colors.v3.text.secondary};
-  font-weight: 400;
 `;
 
 export const Row = styled.div`

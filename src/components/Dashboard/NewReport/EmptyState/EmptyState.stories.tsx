@@ -29,6 +29,12 @@ export const NoEndpoints: Story = {
   }
 };
 
+export const NoServices: Story = {
+  args: {
+    type: "noServices"
+  }
+};
+
 export const Loading: Story = {
   args: {
     type: "loading"

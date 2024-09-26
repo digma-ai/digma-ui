@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import {
-  subheadingBoldTypography,
-  subheadingSemiboldTypography
+  subheading1BoldTypography,
+  subheading1RegularTypography,
+  subheading1SemiboldTypography
 } from "../../../common/App/typographies";
 import {
   SORTING_ORDER,
@@ -45,8 +46,8 @@ export const TableCellContent = styled.div<TableCellContentProps>`
 `;
 
 export const TableHeaderCellContent = styled(TableCellContent)`
-  ${subheadingSemiboldTypography}
-  font-weight: 400;
+  ${subheading1SemiboldTypography}
+
   gap: 4px;
   color: ${({ theme }) => theme.colors.v3.text.tertiary};
   ${({ onClick }) => (onClick ? "cursor: pointer;" : "")}
@@ -54,7 +55,8 @@ export const TableHeaderCellContent = styled(TableCellContent)`
 `;
 
 export const TableBodyRow = styled.tr`
-  ${subheadingBoldTypography}
+  ${subheading1BoldTypography}
+
   color: ${({ theme }) => theme.colors.v3.text.primary};
   height: 68px;
   border-spacing: 0;
@@ -99,6 +101,8 @@ export const HoverableContentContainer = styled.div`
 `;
 
 export const NavigationLinkContainer = styled.div<{ $withChevron?: boolean }>`
+  ${subheading1RegularTypography}
+
   color: ${({ theme }) => theme.colors.v3.text.link};
   width: 100%;
   display: flex;

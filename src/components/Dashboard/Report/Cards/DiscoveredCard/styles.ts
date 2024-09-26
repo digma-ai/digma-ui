@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { headingOneSemiboldTypography } from "../../../../common/App/typographies";
+import { heading1SemiboldTypography } from "../../../../common/App/typographies";
 
 export const Container = styled.div`
   display: flex;
@@ -17,7 +17,7 @@ export const Row = styled.div`
 `;
 
 export const Header = styled.span`
-  ${headingOneSemiboldTypography}
+  ${heading1SemiboldTypography}
   color: ${({ theme }) => theme.colors.v3.text.primary};
   padding: 12px 16px;
 `;

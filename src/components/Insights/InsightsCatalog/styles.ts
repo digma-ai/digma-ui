@@ -2,7 +2,7 @@ import styled from "styled-components";
 import {
   bodySemiboldTypography,
   caption1RegularTypography,
-  subheadingSemiboldTypography,
+  subheading1SemiboldTypography,
   subscriptMediumTypography,
   subscriptRegularTypography
 } from "../../common/App/typographies";
@@ -120,7 +120,7 @@ export const ToolbarButtonsContainer = styled.div`
 `;
 
 export const Description = styled.span`
-  ${subheadingSemiboldTypography}
+  ${subheading1SemiboldTypography}
 
   display:flex;
   flex-direction: column;
