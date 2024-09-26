@@ -8,12 +8,10 @@ import {
 } from "@tanstack/react-table";
 
 import { ReactNode, useState } from "react";
-import { isUndefined } from "../../../../typeGuards/isUndefined";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { SortIcon } from "../../../common/icons/16px/SortIcon";
 import { ChevronIcon } from "../../../common/icons/20px/ChevronIcon";
 import { Direction } from "../../../common/icons/types";
-import { SORTING_ORDER } from "../../../common/SortingSelector/types";
 import { trackingEvents } from "../tracking";
 import { PresentationalReportData } from "../types";
 import * as s from "./styles";
@@ -222,7 +220,7 @@ export const MetricsTable = ({
                 | undefined;
 
               return (
-                <s.TableHeaderCell key={header.id}>
+                <th key={header.id}>
                   <s.TableHeaderCellContent
                     $align={meta?.contentAlign}
                     onClick={
@@ -241,26 +239,29 @@ export const MetricsTable = ({
                           header.column.columnDef.header,
                           header.getContext()
                         )}
-                    {isUndefined(header.column.columnDef.enableSorting) ||
-                      (header.column.columnDef.enableSorting &&
-                        {
-                          asc: (
-                            <s.SortingOrderIconContainer
-                              $sortingOrder={SORTING_ORDER.ASC}
-                            >
-                              <SortIcon color={"currentColor"} size={16} />
-                            </s.SortingOrderIconContainer>
-                          ),
-                          desc: (
-                            <s.SortingOrderIconContainer
-                              $sortingOrder={SORTING_ORDER.DESC}
-                            >
-                              <SortIcon color={"currentColor"} size={16} />
-                            </s.SortingOrderIconContainer>
-                          )
-                        }[(header.column.getIsSorted() as string) || "asc"])}
+                    {header.column.columnDef.enableSorting &&
+                      {
+                        asc: (
+                          <s.SortingOrderIconContainer>
+                            <SortIcon
+                              color={"currentColor"}
+                              size={16}
+                              direction={Direction.UP}
+                            />
+                          </s.SortingOrderIconContainer>
+                        ),
+                        desc: (
+                          <s.SortingOrderIconContainer>
+                            <SortIcon
+                              color={"currentColor"}
+                              size={16}
+                              direction={Direction.DOWN}
+                            />
+                          </s.SortingOrderIconContainer>
+                        )
+                      }[header.column.getIsSorted() as string]}
                   </s.TableHeaderCellContent>
-                </s.TableHeaderCell>
+                </th>
               );
             })}
           </tr>

@@ -21,7 +21,10 @@ import { Scope } from "../common/App/types";
 import { Authentication } from "./Authentication";
 import { actions } from "./actions";
 import * as s from "./styles";
-import { isScopeWithCodeLensContext } from "./typeGuards";
+import {
+  isScopeWithCodeLensContext,
+  isScopeWithCustomProtocolLinkContext
+} from "./typeGuards";
 import { HistoryState, SCOPE_CHANGE_EVENTS } from "./types";
 import { useBrowserLocationUpdater } from "./updateBrowserLocationUpdater";
 import { useHistory } from "./useHistory";
@@ -46,6 +49,24 @@ const getURLToNavigateOnCodeLensClick = (scope: Scope): string | undefined => {
   if (codeLens.lensTitle.toLocaleLowerCase().includes("runtime data")) {
     return `/${TAB_IDS.HIGHLIGHTS}`;
   }
+};
+
+const getUrlToNavigateFromCustomProtocolLink = (
+  scope: Scope
+): string | undefined => {
+  if (!isScopeWithCustomProtocolLinkContext(scope)) {
+    return;
+  }
+
+  if (!scope.context.payload.targetTab) {
+    return;
+  }
+
+  if (!Object.values(TAB_IDS).includes(scope.context.payload.targetTab)) {
+    return `/${scope.context.payload.targetTab}`;
+  }
+
+  return `/${scope.context.payload.targetTab}`;
 };
 
 export const Main = () => {
@@ -153,6 +174,14 @@ export const Main = () => {
   }, [environments, environment, scope?.span]);
 
   useEffect(() => {
+    const defaultGoTo = (scope: Scope, state: HistoryState) => {
+      if (scope.issuesInsightsCount > 0) {
+        goTo(`/${TAB_IDS.ISSUES}`, { state });
+      } else {
+        goTo(`/${TAB_IDS.ANALYTICS}`, { state });
+      }
+    };
+
     const handleSetScope = (data: unknown) => {
       const scope = data as Scope;
       logger.debug("[SCOPE CHANGE]: ", scope);
@@ -226,9 +255,18 @@ export const Main = () => {
               goTo(url, { state });
               break;
             }
+            defaultGoTo(scope, state);
+            break;
           }
-
-          // falls through
+          case SCOPE_CHANGE_EVENTS.IDE_CUSTOM_PROTOCOL_LINK_CLICKED as string: {
+            const url = getUrlToNavigateFromCustomProtocolLink(scope);
+            if (url) {
+              goTo(url, { state });
+              break;
+            }
+            defaultGoTo(scope, state);
+            break;
+          }
           case SCOPE_CHANGE_EVENTS.DASHBOARD_SLOW_QUERIES_WIDGET_ITEM_LINK_CLICKED as string:
           case SCOPE_CHANGE_EVENTS.DASHBOARD_CLIENT_SPANS_PERFORMANCE_IMPACT_WIDGET_ITEM_LINK_CLICKED as string:
           case SCOPE_CHANGE_EVENTS.NAVIGATION_CODE_BUTTON_CLICKED as string:
@@ -239,11 +277,7 @@ export const Main = () => {
           case SCOPE_CHANGE_EVENTS.NOTIFICATIONS_NOTIFICATION_CARD_ASSET_LINK_CLICKED as string:
           case SCOPE_CHANGE_EVENTS.RECENT_ACTIVITY_SPAN_LINK_CLICKED as string:
           default: {
-            if (scope.issuesInsightsCount > 0) {
-              goTo(`/${TAB_IDS.ISSUES}`, { state });
-            } else {
-              goTo(`/${TAB_IDS.ANALYTICS}`, { state });
-            }
+            defaultGoTo(scope, state);
           }
         }
       } else {
@@ -256,7 +290,14 @@ export const Main = () => {
     return () => {
       dispatcher.removeActionListener(globalActions.SET_SCOPE, handleSetScope);
     };
-  }, [goTo, location, environments, environment, updateBrowserLocation]);
+  }, [
+    goTo,
+    location,
+    environments,
+    environment,
+    updateBrowserLocation,
+    setSelectedServices
+  ]);
 
   useLayoutEffect(() => {
     window.sendMessageToDigma({

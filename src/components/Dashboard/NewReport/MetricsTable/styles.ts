@@ -1,13 +1,8 @@
 import styled from "styled-components";
 import {
   subheading1BoldTypography,
-  subheading1RegularTypography,
-  subheading1SemiboldTypography
+  subheading1RegularTypography
 } from "../../../common/App/typographies";
-import {
-  SORTING_ORDER,
-  SortingOrderIconContainerProps
-} from "../../../common/SortingSelector/types";
 import { TableBodyCellCellProps, TableCellContentProps } from "./types";
 
 export const Table = styled.table`
@@ -16,11 +11,9 @@ export const Table = styled.table`
 `;
 
 export const TableHead = styled.thead`
-  color: ${({ theme }) => theme.colors.v3.text.secondary};
-  padding-bottom: 4px;
-`;
+  ${subheading1RegularTypography}
 
-export const TableHeaderCell = styled.th`
+  color: ${({ theme }) => theme.colors.v3.text.tertiary};
   height: 70px;
 `;
 
@@ -46,20 +39,16 @@ export const TableCellContent = styled.div<TableCellContentProps>`
 `;
 
 export const TableHeaderCellContent = styled(TableCellContent)`
-  ${subheading1SemiboldTypography}
-
   gap: 4px;
-  color: ${({ theme }) => theme.colors.v3.text.tertiary};
-  ${({ onClick }) => (onClick ? "cursor: pointer;" : "")}
   text-transform: capitalize;
+  ${({ onClick }) => (onClick ? "cursor: pointer;" : "")}
 `;
 
 export const TableBodyRow = styled.tr`
   ${subheading1BoldTypography}
 
   color: ${({ theme }) => theme.colors.v3.text.primary};
-  height: 68px;
-  border-spacing: 0;
+  height: 70px;
 
   &:hover {
     background: ${({ theme }) => theme.colors.v3.surface.primaryLight};
@@ -67,7 +56,7 @@ export const TableBodyRow = styled.tr`
 `;
 
 export const TableBodyCell = styled.td<TableBodyCellCellProps>`
-  height: 68px;
+  padding: 0;
   border: 1px solid ${({ theme }) => theme.colors.v3.surface.sidePanelHeader};
   background: ${({ $severity }) => {
     switch ($severity) {
@@ -85,11 +74,8 @@ export const TableBodyCell = styled.td<TableBodyCellCellProps>`
   }};
 `;
 
-export const SortingOrderIconContainer = styled.div<SortingOrderIconContainerProps>`
+export const SortingOrderIconContainer = styled.div`
   display: flex;
-  transform: scaleY(
-    ${({ $sortingOrder }) => ($sortingOrder === SORTING_ORDER.DESC ? -1 : 1)}
-  );
 `;
 
 export const HoverableContentContainer = styled.div`
