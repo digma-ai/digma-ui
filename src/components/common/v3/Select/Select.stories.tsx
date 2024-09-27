@@ -83,6 +83,13 @@ export const Multiselect: Story = {
       selected: selectedItems.includes(x.value)
     }));
 
+    items.push({
+      selected: true,
+      label: "selected & disabled",
+      enabled: false,
+      value: "selected&disabled"
+    });
+
     return (
       <Select
         {...args}

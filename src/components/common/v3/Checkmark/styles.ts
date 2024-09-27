@@ -23,10 +23,12 @@ export const Checkmark = styled.input`
   width: 12px;
   height: 12px;
   border-radius: 4px;
+  padding: 1px;
   background: ${({ theme }) => theme.colors.v3.surface.highlight};
 
   &:disabled {
-    background: ${({ theme }) => theme.colors.v3.surface.gray};
+    background: ${({ theme }) => theme.colors.v3.surface.primary};
+    border: none;
   }
 
   &:checked + ${CheckmarkContainer} {
@@ -34,6 +36,6 @@ export const Checkmark = styled.input`
   }
 
   &:disabled + ${CheckmarkContainer} {
-    color: ${({ theme }) => theme.colors.v3.stroke.primary};
+    color: ${({ theme }) => theme.colors.v3.icon.disabled};
   }
 `;

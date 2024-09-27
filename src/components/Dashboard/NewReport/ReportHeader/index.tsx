@@ -51,7 +51,7 @@ const criticalityOptions: { id: Criticality; label: string }[] = [
 export const formatUnit = (value: number, unit: string) =>
   value === 1 ? `${value} ${unit}` : `${value} ${unit}s`;
 
-const DEFAULT_PERIOD = 1;
+const DEFAULT_PERIOD = 7;
 
 export const ReportHeader = ({
   onFilterChanged,
@@ -252,13 +252,10 @@ export const ReportHeader = ({
     setTimeMode(newMode);
   };
 
-  const environmentsToSelect = (service
-    ? serviceEnvironmentsData?.environments 
-    : environments ) ??  [];
+  const environmentsToSelect =
+    (service ? serviceEnvironmentsData?.environments : environments) ?? [];
 
-  const title = service
-    ? `${service} Service`
-    : "Services with critical issues";
+  const title = service ? `${service} Service` : "Services with Issues map";
   const titleSuffix = service ? " Endpoints" : "";
   const tooltipTitle = `${title} ${titleSuffix}`;
 
@@ -298,7 +295,7 @@ export const ReportHeader = ({
       </s.Row>
       <s.Row>
         <s.Filters>
-          <s.EnvironmentFilter
+          <s.FilterSelect
             items={environmentsToSelect
               .sort((a, b) => a.name.localeCompare(b.name))
               .map((x) => ({

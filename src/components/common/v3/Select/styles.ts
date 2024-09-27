@@ -6,18 +6,26 @@ import {
   subscriptRegularTypography
 } from "../../App/typographies";
 import {
+  ButtonLabelProps,
   ButtonProps,
   ChevronIconContainerProps,
   OptionListItemProps
 } from "./types";
 
+export const ButtonLabel = styled.span<ButtonLabelProps>`
+  ${subscriptRegularTypography}
+  margin-right: auto;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 5px 6px;
+  color: ${({ theme, $isActive }) =>
+    $isActive ? theme.colors.v3.text.primary : theme.colors.v3.text.secondary};
+`;
+
 export const Button = styled.button<ButtonProps>`
   height: 28px;
-  border: 1px solid
-    ${({ theme, $isActive }) =>
-      $isActive
-        ? theme.colors.v3.stroke.brandPrimary
-        : theme.colors.v3.stroke.primaryLight};
+  border: 1px solid ${({ theme }) => theme.colors.v3.stroke.primary};
   background: ${({ theme, $isActive }) =>
     $isActive ? theme.colors.v3.surface.brandDark : "transparent"};
   border-radius: 4px;
@@ -36,7 +44,6 @@ export const Button = styled.button<ButtonProps>`
 
   &:focus,
   &:active {
-    border: 1px solid ${({ theme }) => theme.colors.v3.stroke.brandPrimary};
     background: ${({ theme }) => theme.colors.v3.surface.brandDark};
   }
 
@@ -46,20 +53,15 @@ export const Button = styled.button<ButtonProps>`
   &:disabled:active {
     border: 1px solid ${({ theme }) => theme.colors.v3.stroke.primary};
     color: ${({ theme }) => theme.colors.v3.text.disabled};
+
+    ${ButtonLabel} {
+      color: ${({ theme }) => theme.colors.v3.text.disabled};
+    }
   }
 `;
 
 export const ButtonIconContainer = styled.div`
   display: flex;
-`;
-
-export const ButtonLabel = styled.span`
-  ${subscriptRegularTypography}
-  margin-right: auto;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  padding: 5px 6px;
 `;
 
 export const Number = styled.span`
@@ -120,8 +122,8 @@ export const OptionListItem = styled.li<OptionListItemProps>`
     $enabled ? theme.colors.v3.text.primary : theme.colors.v3.text.disabled};
   cursor: ${({ $enabled }) => ($enabled ? "pointer" : "default")};
 
-  ${({ $selected, theme }) =>
-    $selected ? `background: ${theme.colors.v3.surface.gray}` : ""};
+  ${({ $selected, theme, $enabled }) =>
+    $selected && $enabled ? `background: ${theme.colors.v3.surface.gray}` : ""};
 
   &:hover {
     background: ${({ theme, $enabled }) =>
