@@ -51,6 +51,10 @@ export const TableHeaderTitle = styled.span`
   white-space: nowrap;
 `;
 
+export const TableHeaderTooltipTitle = styled.span`
+  text-transform: capitalize;
+`;
+
 export const SortingOrderIconContainer = styled.div`
   display: flex;
 `;

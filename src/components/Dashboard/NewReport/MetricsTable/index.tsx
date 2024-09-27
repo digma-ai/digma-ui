@@ -236,7 +236,13 @@ export const MetricsTable = ({
                         : undefined
                     }
                   >
-                    <Tooltip title={header.column.columnDef.header?.toString()}>
+                    <Tooltip
+                      title={
+                        <s.TableHeaderTooltipTitle>
+                          {header.column.columnDef.header?.toString()}
+                        </s.TableHeaderTooltipTitle>
+                      }
+                    >
                       <s.TableHeaderTitle>
                         {header.isPlaceholder
                           ? null
