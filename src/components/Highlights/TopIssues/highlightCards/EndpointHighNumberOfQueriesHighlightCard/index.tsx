@@ -1,7 +1,7 @@
 import { Row, createColumnHelper } from "@tanstack/react-table";
 import { useConfigSelector } from "../../../../../store/config/useConfigSelector";
+import { SCOPE_CHANGE_EVENTS } from "../../../../../types";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
-import { SCOPE_CHANGE_EVENTS } from "../../../../Main/types";
 import { Table } from "../../../common/Table";
 import { TableText } from "../../../common/TableText";
 import { handleEnvironmentTableRowClick } from "../../../handleEnvironmentTableRowClick";

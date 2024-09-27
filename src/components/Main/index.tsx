@@ -12,7 +12,7 @@ import { useConfigSelector } from "../../store/config/useConfigSelector";
 import { useStore } from "../../store/useStore";
 import { trackingEvents as globalTrackingEvents } from "../../trackingEvents";
 import { isUndefined } from "../../typeGuards/isUndefined";
-import { SendPluginEventPayload } from "../../types";
+import { SCOPE_CHANGE_EVENTS, SendPluginEventPayload } from "../../types";
 import { sendTrackingEvent } from "../../utils/actions/sendTrackingEvent";
 import { areBackendInfosEqual } from "../../utils/areBackendInfosEqual";
 import { Navigation } from "../Navigation";
@@ -25,7 +25,7 @@ import {
   isScopeWithCodeLensContext,
   isScopeWithCustomProtocolLinkContext
 } from "./typeGuards";
-import { HistoryState, SCOPE_CHANGE_EVENTS } from "./types";
+import { HistoryState } from "./types";
 import { useBrowserLocationUpdater } from "./updateBrowserLocationUpdater";
 import { useHistory } from "./useHistory";
 

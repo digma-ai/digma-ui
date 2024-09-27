@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import { usePersistence } from "../../../../hooks/usePersistence";
 import { isUndefined } from "../../../../typeGuards/isUndefined";
-import { InsightType } from "../../../../types";
+import { InsightType, SCOPE_CHANGE_EVENTS } from "../../../../types";
 import { changeScope } from "../../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { getInsightTypeInfo } from "../../../../utils/getInsightTypeInfo";
 import { getInsightTypeOrderPriority } from "../../../../utils/getInsightTypeOrderPriority";
-import { SCOPE_CHANGE_EVENTS } from "../../../Main/types";
 import { Card } from "../../../common/Card";
 import { Tooltip } from "../../../common/Tooltip";
 import { EndpointIcon } from "../../../common/icons/EndpointIcon";

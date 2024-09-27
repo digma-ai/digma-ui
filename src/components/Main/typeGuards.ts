@@ -1,9 +1,9 @@
+import { SCOPE_CHANGE_EVENTS } from "../../types";
 import {
   Scope,
   ScopeWithCodeLensContext,
   ScopeWithCustomProtocolLinkContext
 } from "../common/App/types";
-import { SCOPE_CHANGE_EVENTS } from "./types";
 
 export const isScopeWithCodeLensContext = (
   x: Scope
