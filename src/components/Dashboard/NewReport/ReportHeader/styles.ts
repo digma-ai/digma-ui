@@ -26,17 +26,13 @@ export const Row = styled.div`
 
 export const FilterSelect = styled(Select)`
   height: 36px;
-  width: 168px;
+  min-width: 190px;
   border-radius: 8px;
 `;
 
 export const Filters = styled(Row)`
   display: flex;
   gap: 18px;
-`;
-
-export const EnvironmentFilter = styled(FilterSelect)`
-  width: 124px;
 `;
 
 const StyledToggle = styled(Toggle)`

@@ -54,7 +54,7 @@ const criticalityOptions = [
 export const formatUnit = (value: number, unit: string) =>
   value === 1 ? `${value} ${unit}` : `${value} ${unit}s`;
 
-const DEFAULT_PERIOD = 1;
+const DEFAULT_PERIOD = 7;
 
 export const ReportHeader = ({
   onFilterChanged,
@@ -208,7 +208,7 @@ export const ReportHeader = ({
       </s.Row>
       <s.Row>
         <s.Filters>
-          <s.EnvironmentFilter
+          <s.FilterSelect
             items={
               environments
                 ?.sort((a, b) => a.name.localeCompare(b.name))
