@@ -196,7 +196,7 @@ export const ReportHeader = ({
   return (
     <s.Container>
       <s.Row>
-        <s.Title>Services with critical issues</s.Title>
+        <s.Title>Services with Issues map</s.Title>
         <s.TimeModeToggle
           options={[
             { value: "baseline", label: "Baseline" },
