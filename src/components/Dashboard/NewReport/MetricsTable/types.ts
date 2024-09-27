@@ -28,6 +28,6 @@ export interface TableCellContentProps {
   $align?: ContentAlignment;
 }
 
-export interface TableBodyCellCellProps {
+export interface TableBodyCellProps {
   $severity: Severity | null;
 }

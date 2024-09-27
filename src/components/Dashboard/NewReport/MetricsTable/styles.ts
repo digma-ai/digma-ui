@@ -3,11 +3,12 @@ import {
   subheading1BoldTypography,
   subheading1RegularTypography
 } from "../../../common/App/typographies";
-import { TableBodyCellCellProps, TableCellContentProps } from "./types";
+import { TableBodyCellProps, TableCellContentProps } from "./types";
 
 export const Table = styled.table`
   width: 100%;
   border-spacing: 0;
+  table-layout: fixed;
 `;
 
 export const TableHead = styled.thead`
@@ -18,10 +19,17 @@ export const TableHead = styled.thead`
 `;
 
 export const TableCellContent = styled.div<TableCellContentProps>`
-  display: flex;
   padding: 16px;
-  align-items: center;
   text-align: ${({ $align = "left" }) => $align};
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+`;
+
+export const TableHeaderCellContent = styled(TableCellContent)`
+  display: flex;
+  align-items: center;
+  gap: 4px;
   justify-content: ${({ $align }) => {
     switch ($align) {
       case "right":
@@ -33,15 +41,18 @@ export const TableCellContent = styled.div<TableCellContentProps>`
         return "flex-start";
     }
   }};
-  height: 100%;
-  width: 100%;
-  box-sizing: border-box;
+  ${({ onClick }) => (onClick ? "cursor: pointer;" : "")}
 `;
 
-export const TableHeaderCellContent = styled(TableCellContent)`
-  gap: 4px;
+export const TableHeaderTitle = styled.span`
   text-transform: capitalize;
-  ${({ onClick }) => (onClick ? "cursor: pointer;" : "")}
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
+
+export const SortingOrderIconContainer = styled.div`
+  display: flex;
 `;
 
 export const TableBodyRow = styled.tr`
@@ -55,7 +66,7 @@ export const TableBodyRow = styled.tr`
   }
 `;
 
-export const TableBodyCell = styled.td<TableBodyCellCellProps>`
+export const TableBodyCell = styled.td<TableBodyCellProps>`
   padding: 0;
   border: 1px solid ${({ theme }) => theme.colors.v3.surface.sidePanelHeader};
   background: ${({ $severity }) => {
@@ -74,12 +85,11 @@ export const TableBodyCell = styled.td<TableBodyCellCellProps>`
   }};
 `;
 
-export const SortingOrderIconContainer = styled.div`
-  display: flex;
-`;
-
 export const HoverableContentContainer = styled.div`
   width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 
   &:hover {
     cursor: pointer;

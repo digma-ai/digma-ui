@@ -12,6 +12,7 @@ import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserA
 import { SortIcon } from "../../../common/icons/16px/SortIcon";
 import { ChevronIcon } from "../../../common/icons/20px/ChevronIcon";
 import { Direction } from "../../../common/icons/types";
+import { Tooltip } from "../../../common/v3/Tooltip";
 import { trackingEvents } from "../tracking";
 import { PresentationalReportData } from "../types";
 import * as s from "./styles";
@@ -220,7 +221,13 @@ export const MetricsTable = ({
                 | undefined;
 
               return (
-                <th key={header.id}>
+                <th
+                  key={header.id}
+                  style={{
+                    width: meta?.width,
+                    minWidth: meta?.minWidth
+                  }}
+                >
                   <s.TableHeaderCellContent
                     $align={meta?.contentAlign}
                     onClick={
@@ -228,17 +235,17 @@ export const MetricsTable = ({
                         ? header.column.getToggleSortingHandler()
                         : undefined
                     }
-                    style={{
-                      width: meta?.width,
-                      minWidth: meta?.minWidth
-                    }}
                   >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                    <Tooltip title={header.column.columnDef.header?.toString()}>
+                      <s.TableHeaderTitle>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </s.TableHeaderTitle>
+                    </Tooltip>
                     {header.column.columnDef.enableSorting &&
                       {
                         asc: (
