@@ -96,7 +96,8 @@ export const Select = ({
   );
   const isSearchBarVisible =
     searchable && (optionListHasVerticalScrollbar || searchValue.length > 0);
-
+  const isActive =
+    isOpen || (isSelectedStateEnabled && selectedValues.length > 0);
   return (
     <NewPopover
       sameWidth={true}
@@ -154,9 +155,7 @@ export const Select = ({
       placement={"bottom-start"}
     >
       <s.Button
-        $isActive={
-          isOpen || (isSelectedStateEnabled && selectedValues.length > 0)
-        }
+        $isActive={isActive}
         onClick={handleButtonClick}
         disabled={disabled}
         className={className}
@@ -166,7 +165,9 @@ export const Select = ({
             <Icon color={"currentColor"} />
           </s.ButtonIconContainer>
         )}
-        {isString(placeholder) && <s.ButtonLabel>{placeholder}</s.ButtonLabel>}
+        {isString(placeholder) && (
+          <s.ButtonLabel $isActive={isActive}>{placeholder}</s.ButtonLabel>
+        )}
         {multiselect && isSelectedStateEnabled && selectedValues.length > 0 && (
           <s.Number>{selectedValues.length}</s.Number>
         )}
