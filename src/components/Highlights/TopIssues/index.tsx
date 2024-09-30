@@ -131,12 +131,12 @@ export const TopIssues = () => {
       );
     }
 
-    if (!data || data.topInsights.length === 0) {
+    if (!data || filteredInsights.length === 0) {
       return (
         <EmptyStateCard
           icon={CrossCircleIcon}
-          title={"No data"}
-          text={"No issues available at the moment"}
+          title={"No issues found"}
+          text={"No issues found in this asset"}
         />
       );
     }
