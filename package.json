@@ -45,7 +45,7 @@
       "prettier --write"
     ],
     "src/**/*.{ts,tsx}": [
-      "jest --bail --findRelatedTests"
+      "jest --bail --findRelatedTests --passWithNoTests"
     ]
   },
   "repository": {

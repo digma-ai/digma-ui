@@ -105,7 +105,7 @@ export const Header = ({ onGoBack }: HeaderProps) => {
     requestAction: actions.GET_SERVICES,
     responseAction: actions.SET_SERVICES,
     refreshOnPayloadChange: true,
-    isEnabled: Boolean(selectedEnvironment && viewLevel === "services")
+    isEnabled: Boolean(selectedEnvironmentId && viewLevel === "services")
   };
 
   const getServicesPayload: GetServicesPayload = useMemo(
@@ -129,7 +129,7 @@ export const Header = ({ onGoBack }: HeaderProps) => {
     responseAction: actions.SET_SERVICE_ENVIRONMENTS,
     refreshOnPayloadChange: true,
     isEnabled: Boolean(
-      selectedEnvironment && selectedService && viewLevel === "endpoints"
+      selectedEnvironmentId && selectedService && viewLevel === "endpoints"
     )
   };
 
@@ -149,7 +149,7 @@ export const Header = ({ onGoBack }: HeaderProps) => {
     requestAction: actions.GET_SERVICE_ENDPOINTS_DATA,
     responseAction: actions.SET_SERVICE_ENDPOINTS_DATA,
     refreshOnPayloadChange: true,
-    isEnabled: Boolean(selectedEnvironment && selectedService)
+    isEnabled: Boolean(selectedEnvironmentId && selectedService)
   };
 
   useEffect(() => {
@@ -288,7 +288,7 @@ export const Header = ({ onGoBack }: HeaderProps) => {
                 label: x.name,
                 value: x.id,
                 enabled: true,
-                selected: x.id === selectedEnvironment?.id
+                selected: x.id === selectedEnvironmentId
               }))}
             showSelectedState={true}
             icon={(props) =>
