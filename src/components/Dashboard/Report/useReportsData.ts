@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import {
   DataFetcherConfiguration,
   useFetchData
@@ -39,11 +39,6 @@ export const useReportsData = (query: ReportFilterQuery) => {
     ReportFilterQuery,
     DiscoveredAssetsStatistics
   >(dataFetcherAssetsStatsConfiguration, payload);
-
-  useEffect(() => {
-    getDiscoveredIssues();
-    getDiscoveredAssets();
-  }, []);
 
   return {
     discoveredIssues: discoveredIssues,

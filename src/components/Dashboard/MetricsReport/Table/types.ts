@@ -1,11 +1,11 @@
-import { ReportTimeMode } from "../ReportHeader/types";
 import {
   PresentationalReportData,
+  ReportTimeMode,
   ReportViewLevel,
   ScoreCriterion
 } from "../types";
 
-export interface MetricsTableProps {
+export interface TableProps {
   data: PresentationalReportData[];
   timeMode: ReportTimeMode;
   onTitleClick: (value: string) => void;
@@ -15,6 +15,7 @@ export interface MetricsTableProps {
 }
 
 export type ContentAlignment = "left" | "center" | "right";
+
 export type Severity = "Top" | "High" | "Medium" | "Low";
 
 export interface ColumnMeta {

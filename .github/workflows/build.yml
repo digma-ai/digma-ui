@@ -1,4 +1,4 @@
-name: Lint & build
+name: Lint & test & build
 
 on:
   push:
@@ -36,19 +36,31 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
     steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        id: setup-node
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version-file: ".nvmrc"
           cache: "npm"
-      - run: npm ci
+
+      - id: node-modules-cache
+        uses: actions/cache@4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ steps.setup-node.outputs.node-version }}-node_modules-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ steps.setup-node.outputs.node-version }}-node_modules-
+
+      - if: steps.node-modules-cache.outputs.cache-hit != 'true'
+        run: npm ci
+
       - run: npm run lint
+      - run: npm run test -- --bail
       - run: npm run build:prod
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/

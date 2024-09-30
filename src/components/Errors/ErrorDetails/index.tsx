@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import {
   DataFetcherConfiguration,
   useFetchData
@@ -30,14 +30,10 @@ export const ErrorDetails = ({ id, onGoToAllErrors }: ErrorDetailsProps) => {
     [id]
   );
 
-  const { data, getData } = useFetchData<
-    GetErrorDetailsPayload,
-    SetErrorDetailsPayload
-  >(dataFetcherConfiguration, payload);
-
-  useEffect(() => {
-    getData();
-  }, [getData]);
+  const { data } = useFetchData<GetErrorDetailsPayload, SetErrorDetailsPayload>(
+    dataFetcherConfiguration,
+    payload
+  );
 
   if (!data) {
     // TODO: replace with skeletons

@@ -1,30 +1,41 @@
 import { EnvironmentType } from "../../common/App/types";
-import { Severity } from "./MetricsTable/types";
+import { Severity } from "./Table/types";
 
 export type Criticality = "Low" | "Medium" | "High";
 
-export interface ReportFilterQuery {
+export type ReportViewMode = "treemap" | "table";
+
+export type ReportTimeMode = "baseline" | "changes";
+
+export type ScoreCriterion = "impact" | "criticality";
+
+export type ReportViewLevel = "services" | "endpoints";
+
+export interface UseServicesIssuesDataProps {
   environmentId: string | null;
   services: string[];
-  scope?: string;
   criticalities: Criticality[];
   lastDays: number | null;
-  endpoints?: string[];
 }
 
-export interface ReportQuery {
+export interface GetMetricsReportDataPayloadV1 {
   keys: {
-    environment: string | null;
+    environment: string;
+    service: string;
+    lastDays: number | null;
+  }[];
+}
+
+export interface GetMetricsReportDataPayloadV2 {
+  criticalities: Criticality[];
+  keys: {
+    environment: string;
     service: string | null;
     lastDays: number | null;
   }[];
 }
 
-export interface GetServicesPayload {
-  environment: string | null;
-}
-
-export interface ServiceData {
+export interface ServiceIssuesData {
   key: {
     environment: string;
     service: string;
@@ -35,24 +46,22 @@ export interface ServiceData {
   criticality: number;
 }
 
-export interface ServiceMetricsReport {
-  reports: ServiceData[];
+export interface SetMetricsReportDataPayload {
+  reports: ServiceIssuesData[];
 }
-
-export type ScoreCriterion = "impact" | "criticality";
-
-export type ReportViewLevel = "services" | "endpoints";
 
 export interface GetServiceEndpointsPayload {
   environment: string;
   service: string;
 }
 
+export interface EndpointData {
+  displayName: string;
+  spanCodeObjectId: string;
+}
+
 export interface SetServiceEndpointsPayload {
-  endpoints: {
-    displayName: string;
-    spanCodeObjectId: string;
-  }[];
+  endpoints: EndpointData[];
 }
 
 export interface GetEndpointsIssuesPayload {
@@ -63,7 +72,7 @@ export interface GetEndpointsIssuesPayload {
   lastDays: number | null;
 }
 
-export interface EndpointData {
+export interface EndpointIssuesData {
   displayName: string;
   spanCodeObjectId: string;
   issues: number;
@@ -72,7 +81,7 @@ export interface EndpointData {
 }
 
 export interface SetEndpointsIssuesPayload {
-  reports: EndpointData[];
+  reports: EndpointIssuesData[];
 }
 
 export interface GetServiceEnvironmentsPayload {

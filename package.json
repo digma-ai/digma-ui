@@ -8,7 +8,8 @@
     "lint:stylelint": "stylelint '**/*.ts'",
     "lint": "npm run lint:eslint && npm run lint:stylelint",
     "fix:prettier": "prettier --write '**/*.{js,json,md,ts,tsx}'",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "build:dashboard:dev": "webpack --config webpack.dev.ts --env app=dashboard",
@@ -42,6 +43,9 @@
     ],
     "*.{js,json,md,ts,tsx}": [
       "prettier --write"
+    ],
+    "src/**/*.{ts,tsx}": [
+      "jest --bail --findRelatedTests"
     ]
   },
   "repository": {
@@ -63,6 +67,8 @@
     "@storybook/react": "^8.2.9",
     "@storybook/react-webpack5": "^8.2.9",
     "@storybook/test": "^8.2.9",
+    "@testing-library/react": "^16.0.1",
+    "@types/jest": "^29.5.13",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
     "@types/react-helmet": "^6.1.7",
@@ -84,6 +90,8 @@
     "eslint-plugin-storybook": "^0.8.0",
     "html-webpack-plugin": "^5.5.0",
     "husky": "^9.0.10",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
     "lint-staged": "^15.2.10",
     "postcss-styled-syntax": "^0.6.4",
     "prettier": "^2.8.3",
@@ -92,6 +100,7 @@
     "style-loader": "^3.3.1",
     "stylelint": "^16.9.0",
     "stylelint-config-standard": "^36.0.1",
+    "ts-jest": "^29.2.5",
     "ts-loader": "^9.5.1",
     "ts-node": "^10.9.1",
     "typescript": "^4.9.4",

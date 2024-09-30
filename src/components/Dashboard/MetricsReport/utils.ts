@@ -1,9 +1,9 @@
-import { Severity } from "./MetricsTable/types";
+import { Severity } from "./Table/types";
 import {
-  EndpointData,
+  EndpointIssuesData,
   PresentationalReportData,
   ScoreCriterion,
-  ServiceData
+  ServiceIssuesData
 } from "./types";
 
 export const getSeverity = (
@@ -33,7 +33,7 @@ export const getSeverity = (
 };
 
 export const transformServicesData = (
-  data: ServiceData[],
+  data: ServiceIssuesData[],
   scoreCriterion: ScoreCriterion
 ): PresentationalReportData[] => {
   const scores = data.map((x) => x[scoreCriterion]);
@@ -50,7 +50,7 @@ export const transformServicesData = (
 };
 
 export const transformEndpointsData = (
-  data: EndpointData[],
+  data: EndpointIssuesData[],
   scoreCriterion: ScoreCriterion
 ): PresentationalReportData[] => {
   const scores = data.map((x) => x[scoreCriterion]);

@@ -1,7 +1,7 @@
 export type ActionListener = (
   data: unknown,
   timeStamp: number,
-  error: DigmaMessageError | undefined
+  error?: DigmaMessageError
 ) => void;
 
 export interface DigmaMessageError {

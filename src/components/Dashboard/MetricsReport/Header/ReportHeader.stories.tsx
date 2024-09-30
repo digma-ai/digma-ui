@@ -1,14 +1,13 @@
 import { Meta, StoryObj } from "@storybook/react";
 
-import { fn } from "@storybook/test";
-import { ReportHeader } from ".";
+import { Header } from ".";
 import { actions as globalActions } from "../../../../actions";
 import { actions } from "../../actions";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
-const meta: Meta<typeof ReportHeader> = {
-  title: "Dashboard/NewReport/ReportHeader",
-  component: ReportHeader,
+const meta: Meta<typeof Header> = {
+  title: "Dashboard/MetricsReport/Header",
+  component: Header,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
     layout: "fullscreen"
@@ -21,10 +20,6 @@ type Story = StoryObj<typeof meta>;
 
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 export const Default: Story = {
-  args: {
-    onFilterChanged: fn(),
-    onViewModeChanged: fn()
-  },
   play: () => {
     window.setTimeout(() => {
       window.postMessage({
