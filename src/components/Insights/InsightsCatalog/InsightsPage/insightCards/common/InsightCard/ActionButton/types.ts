@@ -10,4 +10,6 @@ export interface ActionButtonProps {
   title?: ReactNode;
   onClick: () => void;
   isDisabled?: boolean;
+  className?: string;
+  tooltip?: ReactNode;
 }

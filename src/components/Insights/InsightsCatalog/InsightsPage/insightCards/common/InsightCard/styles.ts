@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
 import { subscriptRegularTypography } from "../../../../../../common/App/typographies";
 import { Card } from "../../../../../../common/v3/Card";
+import { NewIconButton } from "../../../../../../common/v3/NewIconButton";
 import { StyledCardProps } from "./types";
 
 export const InsightFooter = styled.div`
@@ -77,4 +78,10 @@ export const DismissDialogActions = styled.div`
 export const ButtonContainer = styled.div`
   display: flex;
   align-items: center;
+`;
+
+export const InfoActionButton = styled(NewIconButton)`
+  &:hover {
+    color: ${({ theme }) => theme.colors.v3.status.medium};
+  }
 `;

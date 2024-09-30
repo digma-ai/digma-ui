@@ -16,6 +16,9 @@ export interface TooltipProps {
   isDisabled?: boolean;
   boundary?: HTMLElement;
   followCursor?: boolean;
+  hideArrow?: boolean;
+  className?: string;
+  onDismiss?: () => void;
 }
 
 export interface TooltipComponentProps {

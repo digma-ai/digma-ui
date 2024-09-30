@@ -24,6 +24,27 @@ export const PERFORMANCE_IMPACT_DOCUMENTATION_URL =
 export const SCALING_ISSUE_DOCUMENTATION_URL =
   "https://docs.digma.ai/digma-developer-guide/digma-features/insights/scaling-issue";
 
+export const BOTTLENECK_ISSUE_DOCUMENTATION_URL =
+  "https://docs.digma.ai/digma-developer-guide/digma-features/insights/bottleneck";
+
+export const SUSPECTED_N_PLUS_ONE_ISSUE_DOCUMENTATION_URL =
+  "https://docs.digma.ai/digma-developer-guide/digma-features/insights/suspected-n+1";
+
+export const SESSION_IN_VIEW_DOCUMENTATION_URL =
+  "https://docs.digma.ai/digma-developer-guide/digma-features/insights/session-in-view-query-detected";
+
+export const HIGH_NUMBER_OF_QUERIES_DOCUMENTATION_URL =
+  "https://docs.digma.ai/digma-developer-guide/digma-features/insights/high-number-of-queries";
+
+export const CHATTY_API_ISSUE_DOCUMENTATION_URL =
+  "https://docs.digma.ai/digma-developer-guide/digma-features/insights/excessive-api-calls-chatty-ap";
+
+export const QUERY_OPTIMIZATION_ISSUES_DOCUMENTATION_URL =
+  "https://docs.digma.ai/digma-developer-guide/digma-features/insights/query-optimization-suggested";
+
+export const CODE_NEXUS_DOCUMENTATION_URL =
+  "https://docs.digma.ai/digma-developer-guide/digma-features/analytics/code-nexus";
+
 export const TEST_OBSERVABILITY_DOCUMENTATION_URL =
   "https://docs.digma.ai/digma-developer-guide/digma-features/test-observability";
 

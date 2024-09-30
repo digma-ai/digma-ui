@@ -67,9 +67,6 @@ export const InsightHeader = ({
         )}
         <s.Title>
           {insightTypeInfo?.label}
-          {insightTypeInfo?.description && (
-            <s.TitleInfo title={<insightTypeInfo.description />} />
-          )}
           {lastUpdateTimer && (
             <s.Description>
               Updated:

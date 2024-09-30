@@ -9,6 +9,7 @@ import {
   offset,
   shift,
   useClientPoint,
+  useDismiss,
   useFloating,
   useHover,
   useInteractions,
@@ -78,29 +79,47 @@ export const Tooltip = ({
   fullWidth,
   title,
   boundary,
-  followCursor
+  followCursor,
+  hideArrow,
+  className,
+  onDismiss
 }: TooltipProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const arrowRef = useRef(null);
 
   const theme = useTheme();
+  const offsetValue = hideArrow ? GAP : GAP + ARROW_HEIGHT + ARROW_MARGIN;
+  const middlewares = [
+    offset(offsetValue),
+    flip({
+      boundary
+    }),
+    shift()
+  ];
+  if (!hideArrow) {
+    middlewares.push(
+      arrow({
+        element: arrowRef
+      })
+    );
+  }
 
   const { refs, floatingStyles, context, middlewareData } = useFloating({
     whileElementsMounted: autoUpdate,
     placement,
     open: isBoolean(forcedIsOpen) ? forcedIsOpen : isOpen,
-    onOpenChange: isBoolean(forcedIsOpen) ? undefined : setIsOpen,
-    middleware: [
-      offset(GAP + ARROW_HEIGHT + ARROW_MARGIN),
-      flip({
-        boundary
-      }),
-      shift(),
-      arrow({
-        element: arrowRef
-      }),
-      hide()
-    ]
+    onOpenChange: (open, event) => {
+      if (onDismiss && !open && event?.type === "click") {
+        onDismiss();
+      }
+
+      if (isBoolean(forcedIsOpen)) {
+        return;
+      }
+
+      setIsOpen(open);
+    },
+    middleware: [...middlewares, hide()]
   });
 
   const {
@@ -118,13 +137,19 @@ export const Tooltip = ({
     enabled: !isBoolean(forcedIsOpen) || !followCursor
   });
 
+  const dismiss = useDismiss(context, {
+    enabled: Boolean(onDismiss),
+    outsidePressEvent: "click"
+  });
+
   const clientPoint = useClientPoint(context, {
     enabled: Boolean(followCursor)
   });
 
   const { getReferenceProps, getFloatingProps } = useInteractions([
     hover,
-    clientPoint
+    clientPoint,
+    dismiss
   ]);
 
   const renderArrow = (withShadow: boolean) => (
@@ -159,6 +184,7 @@ export const Tooltip = ({
         (isBoolean(forcedIsOpen) ? forcedIsOpen && isMounted : isMounted) && (
           <FloatingPortal>
             <s.TooltipContainer
+              className={className}
               ref={refs.setFloating}
               style={{
                 ...floatingStyles,
@@ -172,8 +198,12 @@ export const Tooltip = ({
               }}
               {...getFloatingProps()}
             >
-              {renderArrow(true)}
-              {renderArrow(false)}
+              {!hideArrow && (
+                <>
+                  {renderArrow(true)}
+                  {renderArrow(false)}
+                </>
+              )}
               <s.Tooltip $fullWidth={fullWidth}>{title}</s.Tooltip>
             </s.TooltipContainer>
           </FloatingPortal>
