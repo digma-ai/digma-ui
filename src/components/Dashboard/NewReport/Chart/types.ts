@@ -1,7 +1,15 @@
-import { ScoreCriterion, ServiceData } from "../types";
+import { ReportTimeMode } from "../ReportHeader/types";
+import {
+  PresentationalReportData,
+  ReportViewLevel,
+  ScoreCriterion
+} from "../types";
 
 export interface ChartProps {
-  data: ServiceData[];
-  onServiceSelected: (name: string) => void;
+  data: PresentationalReportData[];
+  onTitleClick: (value: string) => void;
+  onIssuesStatsClick: (value: string) => void;
   scoreCriterion: ScoreCriterion;
+  viewLevel: ReportViewLevel;
+  timeMode: ReportTimeMode;
 }

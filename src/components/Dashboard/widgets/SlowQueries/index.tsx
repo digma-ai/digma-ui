@@ -1,7 +1,7 @@
+import { SCOPE_CHANGE_EVENTS } from "../../../../types";
 import { changeScope } from "../../../../utils/actions/changeScope";
 import { getDurationString } from "../../../../utils/getDurationString";
 import { getPercentileKey } from "../../../../utils/getPercentileKey";
-import { SCOPE_CHANGE_EVENTS } from "../../../Main/types";
 import { Tooltip } from "../../../common/Tooltip";
 import { SnailIcon } from "../../../common/icons/SnailIcon";
 import { ListWidget } from "../../ListWidget";

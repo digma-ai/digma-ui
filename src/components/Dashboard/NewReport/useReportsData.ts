@@ -6,18 +6,16 @@ import {
 import { actions } from "../actions";
 import { ReportFilterQuery, ReportQuery, ServiceMetricsReport } from "./types";
 
-const baseFetchConfig = {
-  refreshWithInterval: false,
-  refreshOnPayloadChange: true
-};
+export const useReportsData = (
+  query: ReportFilterQuery,
+  isEnabled: boolean
+) => {
+  const dataFetcherServiceDataConfiguration: DataFetcherConfiguration = {
+    requestAction: actions.GET_METRICS_REPORT_DATA,
+    responseAction: actions.SET_METRICS_REPORT_DATA,
+    refreshOnPayloadChange: isEnabled
+  };
 
-const dataFetcherIssuesStatsConfiguration: DataFetcherConfiguration = {
-  requestAction: actions.GET_METRICS_REPORT_DATA,
-  responseAction: actions.SET_METRICS_REPORT_DATA,
-  ...baseFetchConfig
-};
-
-export const useReportsData = (query: ReportFilterQuery) => {
   const payload = useMemo(() => {
     if (!(query.services?.length > 0)) {
       return {
@@ -43,7 +41,7 @@ export const useReportsData = (query: ReportFilterQuery) => {
   }, [query]);
 
   const { data, getData } = useFetchData<ReportQuery, ServiceMetricsReport>(
-    dataFetcherIssuesStatsConfiguration,
+    dataFetcherServiceDataConfiguration,
     payload
   );
 

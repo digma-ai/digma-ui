@@ -6,6 +6,7 @@ export interface TileProps {
   children?: ReactNode;
   severity?: Severity;
   tooltip?: ReactNode;
+  onTitleClick?: () => void;
 }
 
 export interface TileContainerProps {

@@ -100,6 +100,16 @@ export interface ScopeWithCodeLensContext extends Omit<Scope, "context"> {
   };
 }
 
+export interface ScopeWithCustomProtocolLinkContext
+  extends Omit<Scope, "context"> {
+  context: {
+    event: string;
+    payload: {
+      targetTab?: string;
+    };
+  };
+}
+
 export interface InsightsQuery {
   displayName: string | null;
   sortBy: string;

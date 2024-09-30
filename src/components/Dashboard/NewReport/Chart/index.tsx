@@ -1,53 +1,56 @@
 import useDimensions from "react-cool-dimensions";
 import { Input } from "squarify";
-import { isNumber } from "../../../../typeGuards/isNumber";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { TreeMap } from "../../../common/TreeMap";
 import { TileData } from "../../../common/TreeMap/types";
-import { ReportTimeMode } from "../ReportHeader/types";
 import { trackingEvents } from "../tracking";
-import { getSeverity } from "../utils";
-import { ServiceTile } from "./ServiceTile";
+import { ReportTile } from "./ReportTile";
 import * as s from "./styles";
 import { ChartProps } from "./types";
 
 export const Chart = ({
   data,
-  onServiceSelected,
-  scoreCriterion
+  onTitleClick,
+  onIssuesStatsClick,
+  scoreCriterion,
+  timeMode,
+  viewLevel
 }: ChartProps) => {
   const { width, height, observe } = useDimensions();
 
-  const viewMode: ReportTimeMode = data.some((service) =>
-    isNumber(service.key.lastDays)
-  )
-    ? "changes"
-    : "baseline";
+  const chartData: Input<TileData>[] = data.map((x) => {
+    const score = x.score;
 
-  const handSeeIssuesClick = (service: string) => {
-    sendUserActionTrackingEvent(trackingEvents.HEATMAP_SEE_ISSUES_LINK_CLICKED);
-    onServiceSelected(service);
-  };
+    const handleTitleClick = () => {
+      sendUserActionTrackingEvent(trackingEvents.HEATMAP_TILE_TITLE_CLICKED, {
+        view: viewLevel
+      });
+      onTitleClick(x.id);
+    };
 
-  const minScore = Math.min(...data.map((x) => x[scoreCriterion]));
-  const maxScore = Math.max(...data.map((x) => x[scoreCriterion]));
-
-  const chartData: Input<TileData>[] = data.map((service) => {
-    const score = service[scoreCriterion];
-    const severity = getSeverity(minScore, maxScore, score);
+    const handleSeeIssuesClick = () => {
+      sendUserActionTrackingEvent(
+        trackingEvents.HEATMAP_SEE_ISSUES_LINK_CLICKED,
+        {
+          view: viewLevel
+        }
+      );
+      onIssuesStatsClick(x.id);
+    };
 
     return {
-      id: service.key.service,
-      value: service[scoreCriterion],
+      id: x.id,
+      value: score,
       content: (
-        <ServiceTile
-          name={service.key.service}
-          criticalIssuesCount={service.issues}
+        <ReportTile
+          name={x.name}
+          criticalIssuesCount={x.criticalIssuesCount}
           scoreCriterion={scoreCriterion}
           score={score}
-          severity={severity}
-          viewMode={viewMode}
-          onIssuesClick={handSeeIssuesClick}
+          severity={x.severity}
+          viewMode={timeMode}
+          onIssuesClick={handleSeeIssuesClick}
+          onTitleClick={viewLevel === "services" ? handleTitleClick : undefined}
         />
       )
     };

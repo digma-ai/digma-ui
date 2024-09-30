@@ -1,33 +1,35 @@
 import styled from "styled-components";
 import {
-  subheadingBoldTypography,
-  subheadingSemiboldTypography
+  subheading1BoldTypography,
+  subheading1RegularTypography
 } from "../../../common/App/typographies";
-import {
-  SORTING_ORDER,
-  SortingOrderIconContainerProps
-} from "../../../common/SortingSelector/types";
-import { TableBodyCellCellProps, TableCellContentProps } from "./types";
+import { TableBodyCellProps, TableCellContentProps } from "./types";
 
 export const Table = styled.table`
   width: 100%;
   border-spacing: 0;
+  table-layout: fixed;
 `;
 
 export const TableHead = styled.thead`
-  color: ${({ theme }) => theme.colors.v3.text.secondary};
-  padding-bottom: 4px;
-`;
+  ${subheading1RegularTypography}
 
-export const TableHeaderCell = styled.th`
+  color: ${({ theme }) => theme.colors.v3.text.tertiary};
   height: 70px;
 `;
 
 export const TableCellContent = styled.div<TableCellContentProps>`
-  display: flex;
   padding: 16px;
-  align-items: center;
   text-align: ${({ $align = "left" }) => $align};
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+`;
+
+export const TableHeaderCellContent = styled(TableCellContent)`
+  display: flex;
+  align-items: center;
+  gap: 4px;
   justify-content: ${({ $align }) => {
     switch ($align) {
       case "right":
@@ -39,33 +41,37 @@ export const TableCellContent = styled.div<TableCellContentProps>`
         return "flex-start";
     }
   }};
-  height: 100%;
-  width: 100%;
-  box-sizing: border-box;
+  ${({ onClick }) => (onClick ? "cursor: pointer;" : "")}
 `;
 
-export const TableHeaderCellContent = styled(TableCellContent)`
-  ${subheadingSemiboldTypography}
-  font-weight: 400;
-  gap: 4px;
-  color: ${({ theme }) => theme.colors.v3.text.tertiary};
-  ${({ onClick }) => (onClick ? "cursor: pointer;" : "")}
+export const TableHeaderTitle = styled.span`
+  text-transform: capitalize;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
+
+export const TableHeaderTooltipTitle = styled.span`
   text-transform: capitalize;
 `;
 
+export const SortingOrderIconContainer = styled.div`
+  display: flex;
+`;
+
 export const TableBodyRow = styled.tr`
-  ${subheadingBoldTypography}
+  ${subheading1BoldTypography}
+
   color: ${({ theme }) => theme.colors.v3.text.primary};
-  height: 68px;
-  border-spacing: 0;
+  height: 70px;
 
   &:hover {
     background: ${({ theme }) => theme.colors.v3.surface.primaryLight};
   }
 `;
 
-export const TableBodyCell = styled.td<TableBodyCellCellProps>`
-  height: 68px;
+export const TableBodyCell = styled.td<TableBodyCellProps>`
+  padding: 0;
   border: 1px solid ${({ theme }) => theme.colors.v3.surface.sidePanelHeader};
   background: ${({ $severity }) => {
     switch ($severity) {
@@ -83,30 +89,25 @@ export const TableBodyCell = styled.td<TableBodyCellCellProps>`
   }};
 `;
 
-export const SortingOrderIconContainer = styled.div<SortingOrderIconContainerProps>`
-  display: flex;
-  transform: scaleY(
-    ${({ $sortingOrder }) => ($sortingOrder === SORTING_ORDER.DESC ? -1 : 1)}
-  );
-`;
-
-export const LinkChevron = styled.div`
-  display: none;
-`;
-
-export const IssuesLinkContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
+export const HoverableContentContainer = styled.div`
   width: 100%;
-  min-width: 103px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 
   &:hover {
     cursor: pointer;
   }
 `;
 
-export const SeeIssuesLink = styled.span`
+export const NavigationLinkContainer = styled.div<{ $withChevron?: boolean }>`
+  ${subheading1RegularTypography}
+
   color: ${({ theme }) => theme.colors.v3.text.link};
+  width: 100%;
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  justify-content: ${({ $withChevron }) =>
+    $withChevron ? "space-between" : "center"};
 `;

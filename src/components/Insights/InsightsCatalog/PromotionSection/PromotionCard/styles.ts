@@ -1,5 +1,5 @@
 import styled, { keyframes } from "styled-components";
-import { subheadingSemiboldTypography } from "../../../../common/App/typographies";
+import { subheading1SemiboldTypography } from "../../../../common/App/typographies";
 import { Button } from "../../../../common/v3/Button";
 import { NewIconButton } from "../../../../common/v3/NewIconButton";
 
@@ -46,7 +46,7 @@ export const DetailsContainer = styled.div`
 `;
 
 export const Description = styled.span`
-  ${subheadingSemiboldTypography}
+  ${subheading1SemiboldTypography}
 
   display:flex;
   flex-direction: column;

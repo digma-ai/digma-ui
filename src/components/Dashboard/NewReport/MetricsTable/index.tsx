@@ -8,38 +8,59 @@ import {
 } from "@tanstack/react-table";
 
 import { ReactNode, useState } from "react";
-import { isUndefined } from "../../../../typeGuards/isUndefined";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { SortIcon } from "../../../common/icons/16px/SortIcon";
-import { SORTING_ORDER } from "../../../common/SortingSelector/types";
+import { ChevronIcon } from "../../../common/icons/20px/ChevronIcon";
+import { Direction } from "../../../common/icons/types";
+import { Tooltip } from "../../../common/v3/Tooltip";
 import { trackingEvents } from "../tracking";
-import { ScoreCriterion, ServiceData } from "../types";
-import { getSeverity } from "../utils";
+import { PresentationalReportData } from "../types";
 import * as s from "./styles";
 import { ColumnMeta, MetricsTableProps, Severity } from "./types";
 
-const getSortScoreFn =
-  (scoreCriterion: ScoreCriterion): SortingFn<ServiceData> =>
-  (rowA, rowB) => {
-    const scoreA = rowA.original[scoreCriterion];
-    const scoreB = rowB.original[scoreCriterion];
+const sortScoreFn: SortingFn<PresentationalReportData> = (rowA, rowB) => {
+  const scoreA = rowA.original.score;
+  const scoreB = rowB.original.score;
 
-    return scoreA - scoreB;
-  };
+  return scoreA - scoreB;
+};
 
-const sortIssuesFn: SortingFn<ServiceData> = (rowA, rowB) => {
-  const issuesA = rowA.original.issues;
-  const issuesB = rowB.original.issues;
+const sortIssuesFn: SortingFn<PresentationalReportData> = (rowA, rowB) => {
+  const issuesA = rowA.original.criticalIssuesCount;
+  const issuesB = rowB.original.criticalIssuesCount;
 
   return issuesA - issuesB;
 };
 
-const IssuesLink = ({
+const NavigationLink = ({
+  text,
+  withChevron
+}: {
+  text: string;
+  withChevron?: boolean;
+}) => {
+  return (
+    <s.NavigationLinkContainer $withChevron={withChevron}>
+      {text}
+      {withChevron && (
+        <ChevronIcon
+          direction={Direction.RIGHT}
+          color={"currentColor"}
+          size={20}
+        />
+      )}
+    </s.NavigationLinkContainer>
+  );
+};
+
+const HoverableTableCellContent = ({
   children,
-  onClick
+  onClick,
+  hoverContent
 }: {
   onClick: () => void;
   children: ReactNode;
+  hoverContent: ReactNode;
 }) => {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -52,99 +73,133 @@ const IssuesLink = ({
   };
 
   return (
-    <s.IssuesLinkContainer
+    <s.HoverableContentContainer
       onClick={onClick}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      {isHovered ? (
-        <s.SeeIssuesLink>See issues</s.SeeIssuesLink>
-      ) : (
-        <span>{children}</span>
-      )}
-    </s.IssuesLinkContainer>
+      {isHovered ? hoverContent : children}
+    </s.HoverableContentContainer>
   );
 };
 
 export const MetricsTable = ({
   data,
-  showSign,
-  onServiceSelected,
-  scoreCriterion
+  timeMode,
+  onTitleClick,
+  onIssuesStatsClick,
+  scoreCriterion,
+  viewLevel
 }: MetricsTableProps) => {
-  const columnHelper = createColumnHelper<ServiceData>();
-  const minScore = Math.min(...data.map((x) => x[scoreCriterion]));
-  const maxScore = Math.max(...data.map((x) => x[scoreCriterion]));
+  const columnHelper = createColumnHelper<PresentationalReportData>();
 
-  const handleSeeIssuesLinkClick = (service: string, source: string) => {
-    onServiceSelected(service);
+  const handleIssuesLinkClick = (value: string, source: string) => {
+    onIssuesStatsClick(value);
     sendUserActionTrackingEvent(trackingEvents.TABLE_SEE_ISSUES_LINK_CLICKED, {
       source
     });
   };
 
+  const handleTitleLinkClick = (value: string) => {
+    onTitleClick(value);
+    sendUserActionTrackingEvent(trackingEvents.TABLE_ITEM_NAME_CLICKED, {
+      view: viewLevel
+    });
+  };
+
   const columns = [
-    columnHelper.accessor((row) => row.key.service, {
-      header: "Service",
-      cell: (info) => info.getValue()
+    columnHelper.accessor((row) => row, {
+      header: viewLevel === "services" ? "Service" : "Endpoints",
+      cell: (info) => {
+        const value = info.getValue();
+        return (
+          <HoverableTableCellContent
+            onClick={() => handleTitleLinkClick(value.id)}
+            hoverContent={
+              <NavigationLink
+                text={`See ${
+                  viewLevel === "services" ? "endpoints" : "issues"
+                }`}
+                withChevron={true}
+              />
+            }
+          >
+            {value.name}
+          </HoverableTableCellContent>
+        );
+      },
+      meta: {
+        width: "40%",
+        minWidth: 270
+      }
     }),
     columnHelper.accessor((row) => row, {
       header: "Critical issues",
       id: "issues",
       cell: (info) => {
-        const value = info.getValue().issues;
+        const value = info.getValue();
+        const issuesCount = value.criticalIssuesCount;
         return (
-          <IssuesLink
-            onClick={() =>
-              handleSeeIssuesLinkClick(info.getValue().key.service, "issues")
-            }
+          <HoverableTableCellContent
+            onClick={() => handleIssuesLinkClick(value.id, "issues")}
+            hoverContent={<NavigationLink text={"See issues"} />}
           >
-            {!showSign ? value : `${value > 0 ? "+" : ""}${value}`}
-          </IssuesLink>
+            {timeMode === "baseline"
+              ? issuesCount
+              : `${issuesCount > 0 ? "+" : ""}${issuesCount}`}
+          </HoverableTableCellContent>
         );
       },
       sortingFn: sortIssuesFn,
       meta: {
-        contentAlign: "center"
+        contentAlign: "center",
+        meta: {
+          width: "20%",
+          minWidth: 140
+        }
       },
       enableSorting: true
     }),
     columnHelper.accessor((row) => row, {
       id: "score",
       header: scoreCriterion,
-      cell: (info) => (
-        <IssuesLink
-          onClick={() =>
-            handleSeeIssuesLinkClick(
-              info.getValue().key.service,
-              scoreCriterion
-            )
-          }
-        >
-          {info.getValue()[scoreCriterion]}
-        </IssuesLink>
-      ),
-      sortingFn: getSortScoreFn(scoreCriterion),
+      cell: (info) => {
+        const value = info.getValue();
+        return (
+          <HoverableTableCellContent
+            onClick={() => handleIssuesLinkClick(value.id, scoreCriterion)}
+            hoverContent={<NavigationLink text={"See issues"} />}
+          >
+            {value.score}
+          </HoverableTableCellContent>
+        );
+      },
+      sortingFn: sortScoreFn,
       enableSorting: true,
       meta: {
-        contentAlign: "center"
-      }
-    }),
-    columnHelper.accessor(
-      (row) => getSeverity(minScore, maxScore, row[scoreCriterion]),
-      {
-        header: "Rank",
-        id: "rank",
-        enableSorting: true,
-        cell: (info) => {
-          return info.getValue();
-        },
-        sortingFn: getSortScoreFn(scoreCriterion),
+        contentAlign: "center",
         meta: {
-          contentAlign: "center"
+          width: "20%",
+          minWidth: 140
         }
       }
-    )
+    }),
+    columnHelper.accessor("severity", {
+      header: "Rank",
+      id: "rank",
+      enableSorting: true,
+      cell: (info) => {
+        return info.getValue();
+      },
+      sortingFn: sortScoreFn,
+      meta: {
+        contentAlign: "center",
+        meta: {
+          width: "20%",
+          minWidth: 100
+        }
+      }
+    })
   ];
 
   const table = useReactTable({
@@ -166,7 +221,13 @@ export const MetricsTable = ({
                 | undefined;
 
               return (
-                <s.TableHeaderCell key={header.id}>
+                <th
+                  key={header.id}
+                  style={{
+                    width: meta?.width,
+                    minWidth: meta?.minWidth
+                  }}
+                >
                   <s.TableHeaderCellContent
                     $align={meta?.contentAlign}
                     onClick={
@@ -175,32 +236,45 @@ export const MetricsTable = ({
                         : undefined
                     }
                   >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                    {isUndefined(header.column.columnDef.enableSorting) ||
-                      (header.column.columnDef.enableSorting &&
-                        {
-                          asc: (
-                            <s.SortingOrderIconContainer
-                              $sortingOrder={SORTING_ORDER.ASC}
-                            >
-                              <SortIcon color={"currentColor"} size={16} />
-                            </s.SortingOrderIconContainer>
-                          ),
-                          desc: (
-                            <s.SortingOrderIconContainer
-                              $sortingOrder={SORTING_ORDER.DESC}
-                            >
-                              <SortIcon color={"currentColor"} size={16} />
-                            </s.SortingOrderIconContainer>
-                          )
-                        }[(header.column.getIsSorted() as string) || "asc"])}
+                    <Tooltip
+                      title={
+                        <s.TableHeaderTooltipTitle>
+                          {header.column.columnDef.header?.toString()}
+                        </s.TableHeaderTooltipTitle>
+                      }
+                    >
+                      <s.TableHeaderTitle>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </s.TableHeaderTitle>
+                    </Tooltip>
+                    {header.column.columnDef.enableSorting &&
+                      {
+                        asc: (
+                          <s.SortingOrderIconContainer>
+                            <SortIcon
+                              color={"currentColor"}
+                              size={16}
+                              direction={Direction.UP}
+                            />
+                          </s.SortingOrderIconContainer>
+                        ),
+                        desc: (
+                          <s.SortingOrderIconContainer>
+                            <SortIcon
+                              color={"currentColor"}
+                              size={16}
+                              direction={Direction.DOWN}
+                            />
+                          </s.SortingOrderIconContainer>
+                        )
+                      }[header.column.getIsSorted() as string]}
                   </s.TableHeaderCellContent>
-                </s.TableHeaderCell>
+                </th>
               );
             })}
           </tr>

@@ -1,6 +1,6 @@
+import { SCOPE_CHANGE_EVENTS } from "../../../../../types";
 import { changeScope } from "../../../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
-import { SCOPE_CHANGE_EVENTS } from "../../../../Main/types";
 import { Link } from "../../../../common/v3/Link";
 import { Tooltip } from "../../../../common/v3/Tooltip";
 import { trackingEvents } from "../../../tracking";

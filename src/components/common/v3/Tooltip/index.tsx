@@ -119,7 +119,7 @@ export const Tooltip = ({
   });
 
   const clientPoint = useClientPoint(context, {
-    enabled: followCursor
+    enabled: Boolean(followCursor)
   });
 
   const { getReferenceProps, getFloatingProps } = useInteractions([

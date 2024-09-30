@@ -1,31 +1,47 @@
+import { MouseEvent } from "react";
 import { Tile } from "../../../../common/TreeMap/Tile";
 import { ReportTimeMode } from "../../ReportHeader/types";
 import * as s from "./styles";
 import { TooltipKeyValue } from "./TooltipKeyValue";
-import { ServiceTileProps } from "./types";
+import { ReportTileProps } from "./types";
 
 const getFormattedNumber = (viewMode: ReportTimeMode, value: number) =>
   `${viewMode === "changes" && value > 0 ? "+" : ""}${value}`;
 
-export const ServiceTile = ({
+export const ReportTile = ({
   name,
   criticalIssuesCount,
   scoreCriterion,
   score,
   severity,
   viewMode,
-  onIssuesClick: onSeeIssuesClick
-}: ServiceTileProps) => {
+  onTitleClick,
+  onIssuesClick
+}: ReportTileProps) => {
   const formattedCriticalIssuesCount = getFormattedNumber(
     viewMode,
     criticalIssuesCount
   );
   const formattedScore = getFormattedNumber(viewMode, score);
 
+  const handleTitleClick = () => {
+    if (onTitleClick) {
+      onTitleClick();
+    }
+  };
+
+  const handleIssuesLinkClick = (e: MouseEvent<HTMLAnchorElement>) => {
+    if (onIssuesClick) {
+      e.preventDefault();
+      onIssuesClick();
+    }
+  };
+
   return (
     <Tile
       title={name}
       severity={severity}
+      onTitleClick={onTitleClick ? handleTitleClick : undefined}
       tooltip={
         <s.TooltipContent>
           <span>{name}</span>
@@ -38,7 +54,7 @@ export const ServiceTile = ({
         </s.TooltipContent>
       }
     >
-      <s.StyledLink onClick={() => onSeeIssuesClick && onSeeIssuesClick(name)}>
+      <s.StyledLink href={"#"} onClick={handleIssuesLinkClick}>
         <span>
           {formattedCriticalIssuesCount} | {formattedScore}
         </span>

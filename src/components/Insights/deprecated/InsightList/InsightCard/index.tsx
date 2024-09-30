@@ -1,10 +1,10 @@
 import { useContext, useState } from "react";
 import { PERCENTILES } from "../../../../../constants";
 import { isString } from "../../../../../typeGuards/isString";
+import { SCOPE_CHANGE_EVENTS } from "../../../../../types";
 import { changeScope } from "../../../../../utils/actions/changeScope";
 import { formatTimeDistance } from "../../../../../utils/formatTimeDistance";
 import { getInsightTypeInfo } from "../../../../../utils/getInsightTypeInfo";
-import { SCOPE_CHANGE_EVENTS } from "../../../../Main/types";
 import { ConfigContext } from "../../../../common/App/ConfigContext";
 import { Badge } from "../../../../common/Badge";
 import { Card } from "../../../../common/Card";

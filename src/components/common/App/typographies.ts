@@ -12,8 +12,18 @@ export const typographies: Typographies = {
       bold: 700
     }
   },
-  subheading: {
+  subheading1: {
     fontSize: 16,
+    fontWeight: {
+      light: 300,
+      regular: 400,
+      medium: 500,
+      semibold: 600,
+      bold: 700
+    }
+  },
+  subheading2: {
+    fontSize: 20,
     fontWeight: {
       light: 300,
       regular: 400,
@@ -87,7 +97,7 @@ export const typographies: Typographies = {
       bold: 600
     }
   },
-  headingOne: {
+  heading1: {
     fontSize: 24,
     fontWeight: {
       light: 300,
@@ -97,7 +107,7 @@ export const typographies: Typographies = {
       bold: 600
     }
   },
-  headingTwo: {
+  heading2: {
     fontSize: 36,
     fontWeight: {
       light: 300,
@@ -115,15 +125,15 @@ export const caption1RegularTypography = css`
   line-height: ${typographies.captionOne.lineHeight}px;
 `;
 
-export const caption1BoldTypography = css`
-  font-size: ${typographies.captionOne.fontSize}px;
-  font-weight: ${typographies.captionOne.fontWeight.bold};
-  line-height: ${typographies.captionOne.lineHeight}px;
-`;
-
 export const caption1MediumTypography = css`
   font-size: ${typographies.captionOne.fontSize}px;
   font-weight: ${typographies.captionOne.fontWeight.medium};
+  line-height: ${typographies.captionOne.lineHeight}px;
+`;
+
+export const caption1BoldTypography = css`
+  font-size: ${typographies.captionOne.fontSize}px;
+  font-weight: ${typographies.captionOne.fontWeight.bold};
   line-height: ${typographies.captionOne.lineHeight}px;
 `;
 
@@ -187,12 +197,6 @@ export const bodyRegularTypography = css`
   line-height: ${typographies.body.lineHeight}px;
 `;
 
-export const bodyBoldTypography = css`
-  font-size: ${typographies.body.fontSize}px;
-  font-weight: ${typographies.body.fontWeight.bold};
-  line-height: ${typographies.body.lineHeight}px;
-`;
-
 export const bodyMediumTypography = css`
   font-size: ${typographies.body.fontSize}px;
   font-weight: ${typographies.body.fontWeight.medium};
@@ -205,14 +209,35 @@ export const bodySemiboldTypography = css`
   line-height: ${typographies.body.lineHeight}px;
 `;
 
-export const subheadingBoldTypography = css`
-  font-size: ${typographies.subheading.fontSize}px;
-  font-weight: ${typographies.subheading.fontWeight.bold};
+export const bodyBoldTypography = css`
+  font-size: ${typographies.body.fontSize}px;
+  font-weight: ${typographies.body.fontWeight.bold};
+  line-height: ${typographies.body.lineHeight}px;
 `;
 
-export const subheadingSemiboldTypography = css`
-  font-size: ${typographies.subheading.fontSize}px;
-  font-weight: ${typographies.subheading.fontWeight.semibold};
+export const subheading1RegularTypography = css`
+  font-size: ${typographies.subheading1.fontSize}px;
+  font-weight: ${typographies.subheading1.fontWeight.regular};
+`;
+
+export const subheading1SemiboldTypography = css`
+  font-size: ${typographies.subheading1.fontSize}px;
+  font-weight: ${typographies.subheading1.fontWeight.semibold};
+`;
+
+export const subheading1BoldTypography = css`
+  font-size: ${typographies.subheading1.fontSize}px;
+  font-weight: ${typographies.subheading1.fontWeight.bold};
+`;
+
+export const subheading2RegularTypography = css`
+  font-size: ${typographies.subheading2.fontSize}px;
+  font-weight: ${typographies.subheading2.fontWeight.regular};
+`;
+
+export const subheading2BoldTypography = css`
+  font-size: ${typographies.subheading2.fontSize}px;
+  font-weight: ${typographies.subheading2.fontWeight.bold};
 `;
 
 export const codeRegularTypography = css`
@@ -225,12 +250,12 @@ export const displaySemiboldTypography = css`
   font-weight: ${typographies.display.fontWeight.semibold};
 `;
 
-export const headingOneSemiboldTypography = css`
-  font-size: ${typographies.headingOne.fontSize}px;
-  font-weight: ${typographies.headingOne.fontWeight.semibold};
+export const heading1SemiboldTypography = css`
+  font-size: ${typographies.heading1.fontSize}px;
+  font-weight: ${typographies.heading1.fontWeight.semibold};
 `;
 
-export const headingTowBoldTypography = css`
-  font-size: ${typographies.headingTwo.fontSize}px;
-  font-weight: ${typographies.headingTwo.fontWeight.bold};
+export const heading2BoldTypography = css`
+  font-size: ${typographies.heading2.fontSize}px;
+  font-weight: ${typographies.heading2.fontWeight.bold};
 `;

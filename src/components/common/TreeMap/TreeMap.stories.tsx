@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { TreeMap } from ".";
-import { ServiceTile } from "../../Dashboard/NewReport/Chart/ServiceTile";
+import { ReportTile } from "../../Dashboard/NewReport/Chart/ReportTile";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof TreeMap> = {
@@ -26,7 +26,7 @@ export const Default: Story = {
         id: "payment",
         value: 1500,
         content: (
-          <ServiceTile
+          <ReportTile
             name={"Payment Service"}
             criticalIssuesCount={12}
             score={1500}
@@ -40,7 +40,7 @@ export const Default: Story = {
         id: "transaction",
         value: 710,
         content: (
-          <ServiceTile
+          <ReportTile
             name={"Transaction Service"}
             criticalIssuesCount={15}
             score={710}
@@ -54,7 +54,7 @@ export const Default: Story = {
         id: "share",
         value: 530,
         content: (
-          <ServiceTile
+          <ReportTile
             name={"Share Service"}
             criticalIssuesCount={5}
             score={530}
@@ -68,7 +68,7 @@ export const Default: Story = {
         id: "metadata",
         value: 100,
         content: (
-          <ServiceTile
+          <ReportTile
             name={"Metadata Service"}
             criticalIssuesCount={2}
             score={100}
@@ -82,7 +82,7 @@ export const Default: Story = {
         id: "monitoring",
         value: 3,
         content: (
-          <ServiceTile
+          <ReportTile
             name={"Monitoring Service"}
             criticalIssuesCount={2}
             score={100}

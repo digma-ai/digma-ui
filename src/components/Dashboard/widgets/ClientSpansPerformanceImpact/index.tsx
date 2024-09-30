@@ -1,5 +1,5 @@
+import { SCOPE_CHANGE_EVENTS } from "../../../../types";
 import { changeScope } from "../../../../utils/actions/changeScope";
-import { SCOPE_CHANGE_EVENTS } from "../../../Main/types";
 import { ImpactScore } from "../../../common/ImpactScore";
 import { Tooltip } from "../../../common/Tooltip";
 import { AlarmClockIcon } from "../../../common/icons/AlarmClockIcon";

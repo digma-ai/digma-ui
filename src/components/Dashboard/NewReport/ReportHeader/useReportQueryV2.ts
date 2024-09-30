@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { usePrevious } from "../../../../hooks/usePrevious";
 import { Environment } from "../../../common/App/types";
-import { ReportFilterQuery } from "../types";
+import { Criticality, ReportFilterQuery } from "../types";
 import { ReportTimeMode } from "./types";
 
 export const useReportQueryV2 = ({
@@ -9,13 +9,15 @@ export const useReportQueryV2 = ({
   selectedServices,
   timeMode,
   periodInDays,
-  selectedCriticality
+  selectedCriticality,
+  selectedEndpoints
 }: {
   selectedEnvironment: Environment | null;
   selectedServices: string[];
   timeMode: ReportTimeMode;
   periodInDays: number;
-  selectedCriticality: string[];
+  selectedCriticality: Criticality[];
+  selectedEndpoints?: string[];
 }) => {
   const [filterQuery, setFilterQuery] = useState<ReportFilterQuery>({
     lastDays: null,
@@ -47,6 +49,12 @@ export const useReportQueryV2 = ({
       setFilterQuery({ ...filterQuery, criticalities: selectedCriticality });
     }
   }, [filterQuery, selectedCriticality]);
+
+  useEffect(() => {
+    if (selectedEndpoints !== filterQuery.endpoints) {
+      setFilterQuery({ ...filterQuery, endpoints: selectedEndpoints });
+    }
+  }, [filterQuery, selectedEndpoints]);
 
   useEffect(() => {
     if (!selectedEnvironment?.id) {
