@@ -98,4 +98,5 @@ export type Action =
   | "viewTicketInfo"
   | "openTrace"
   | "openLiveView"
-  | "pin";
+  | "pin"
+  | "info";

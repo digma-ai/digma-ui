@@ -1,15 +1,17 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { dispatcher } from "../../../../../../../dispatcher";
 import { usePrevious } from "../../../../../../../hooks/usePrevious";
 import { useConfigSelector } from "../../../../../../../store/config/useConfigSelector";
 import { isString } from "../../../../../../../typeGuards/isString";
 import { sendUserActionTrackingEvent } from "../../../../../../../utils/actions/sendUserActionTrackingEvent";
+import { getInsightTypeInfo } from "../../../../../../../utils/getInsightTypeInfo";
 import { Spinner } from "../../../../../../Navigation/CodeButtonMenu/Spinner";
 import { CheckmarkCircleIcon } from "../../../../../../common/icons/12px/CheckmarkCircleIcon";
 import { TraceIcon } from "../../../../../../common/icons/12px/TraceIcon";
 import { DoubleCircleIcon } from "../../../../../../common/icons/16px/DoubleCircleIcon";
 import { HistogramIcon } from "../../../../../../common/icons/16px/HistogramIcon";
 import { PinIcon } from "../../../../../../common/icons/16px/PinIcon";
+import { QuestionMark } from "../../../../../../common/icons/16px/QuestionMark";
 import { RecheckIcon } from "../../../../../../common/icons/16px/RecheckIcon";
 import { CrossIcon } from "../../../../../../common/icons/CrossIcon";
 import { JiraButton } from "../../../../../../common/v3/JiraButton";
@@ -23,6 +25,7 @@ import { IssueCompactCard } from "../IssueCompactCard";
 import { ActionButton } from "./ActionButton";
 import { ActionButtonType } from "./ActionButton/types";
 import { InsightHeader } from "./InsightHeader";
+import { InsightsInfo } from "./InsightsInfo";
 import { ProductionAffectionBar } from "./ProductionAffectionBar";
 import { RecalculateBar } from "./RecalculateBar";
 import { useDismissal } from "./hooks/useDismissal";
@@ -62,6 +65,8 @@ export const InsightCard = ({
   const previousIsOperationInProgress = usePrevious(isOperationInProgress);
   const { isJaegerEnabled } = useConfigSelector();
   const [insightStatus, setInsightStatus] = useState(insight.status);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [showInfo, setShowInfo] = useState(false);
 
   const isCritical = insight.criticality > HIGH_CRITICALITY_THRESHOLD;
 
@@ -231,6 +236,7 @@ export const InsightCard = ({
     );
   }
 
+  const insightTypeInfo = getInsightTypeInfo(insight.type, insight.subType);
   const renderAction = (action: Action, type: ActionButtonType) => {
     switch (action) {
       case "markAsRead":
@@ -313,6 +319,25 @@ export const InsightCard = ({
             }
           />
         );
+      case "info":
+        return (
+          <InsightsInfo
+            isOpen={showInfo}
+            description={insightTypeInfo?.description}
+            documentationLink={insightTypeInfo?.documentationLink}
+            onClose={() => {
+              setShowInfo(false);
+            }}
+          >
+            <s.InfoActionButton
+              icon={QuestionMark}
+              buttonType={"secondaryBorderless"}
+              onClick={() => {
+                setShowInfo(!showInfo);
+              }}
+            />
+          </InsightsInfo>
+        );
       default:
         return null;
     }
@@ -320,6 +345,9 @@ export const InsightCard = ({
 
   const renderActions = () => {
     const actions: Action[] = [];
+    if (insightTypeInfo?.description) {
+      actions.push("info");
+    }
 
     if (
       isMarkAsReadButtonEnabled &&
@@ -377,84 +405,90 @@ export const InsightCard = ({
   const { showBanner, showTimer } = getRecalculateVisibilityParams();
 
   const isFooterVisible = Boolean(renderActions() ?? insight.isDismissible);
-
   return (
-    <s.StyledCard
-      $isDismissed={insight.isDismissed}
-      $isRead={insight.isRead}
-      $isReadable={insight.isReadable}
-      onClick={handleClick}
-      header={
-        <InsightHeader
-          insight={insight}
-          isAsync={isAsync}
-          onSpanLinkClick={handleSpanLinkClick}
-          lastUpdateTimer={showTimer ? insight.actualStartTime : null}
-        />
-      }
-      content={
-        <s.ContentContainer>
-          {isCritical && (
-            <ProductionAffectionBar
-              isTicketCreated={isString(insight.ticketLink)}
-              onCreateTicket={
-                onJiraButtonClick ? handleCreateTicketLinkClick : undefined
-              }
-            />
-          )}
-          {showBanner && <RecalculateBar />}
-          {content}
-        </s.ContentContainer>
-      }
-      footer={
-        isFooterVisible ? (
-          <>
-            {!isDismissConfirmationOpened ? (
-              <s.InsightFooter>
-                {insight.isDismissible && (
-                  <s.ButtonContainer>
-                    {insight.isDismissed ? (
-                      <NewButton
-                        label={isDismissalChangeInProgress ? "Showing" : "Show"}
-                        buttonType={"secondaryBorderless"}
-                        isDisabled={isDismissalChangeInProgress}
-                        onClick={handleShowClick}
-                      />
-                    ) : (
-                      <NewButton
-                        icon={CrossIcon}
-                        isDisabled={isDismissalChangeInProgress}
-                        label={
-                          isDismissalChangeInProgress ? "Dismissing" : "Dismiss"
-                        }
-                        buttonType={"secondaryBorderless"}
-                        onClick={() => setDismissConfirmationOpened(true)}
-                      />
-                    )}
-                    {isDismissalChangeInProgress && <Spinner />}
-                  </s.ButtonContainer>
-                )}
-                {renderActions()}
-              </s.InsightFooter>
-            ) : (
-              <s.DismissDialog>
-                Dismiss insight?
-                <s.DismissDialogActions>
-                  <NewButton
-                    label={"No"}
-                    onClick={() => setDismissConfirmationOpened(false)}
-                  />
-                  <NewButton
-                    label={"Yes, dismiss"}
-                    buttonType={"secondary"}
-                    onClick={handleDismissClick}
-                  />
-                </s.DismissDialogActions>
-              </s.DismissDialog>
+    <>
+      <s.StyledCard
+        ref={cardRef}
+        $isDismissed={insight.isDismissed}
+        $isRead={insight.isRead}
+        $isReadable={insight.isReadable}
+        onClick={handleClick}
+        header={
+          <InsightHeader
+            insight={insight}
+            isAsync={isAsync}
+            onSpanLinkClick={handleSpanLinkClick}
+            lastUpdateTimer={showTimer ? insight.actualStartTime : null}
+          />
+        }
+        content={
+          <s.ContentContainer>
+            {isCritical && (
+              <ProductionAffectionBar
+                isTicketCreated={isString(insight.ticketLink)}
+                onCreateTicket={
+                  onJiraButtonClick ? handleCreateTicketLinkClick : undefined
+                }
+              />
             )}
-          </>
-        ) : undefined
-      }
-    />
+            {showBanner && <RecalculateBar />}
+            {content}
+          </s.ContentContainer>
+        }
+        footer={
+          isFooterVisible ? (
+            <>
+              {!isDismissConfirmationOpened ? (
+                <s.InsightFooter>
+                  {insight.isDismissible && (
+                    <s.ButtonContainer>
+                      {insight.isDismissed ? (
+                        <NewButton
+                          label={
+                            isDismissalChangeInProgress ? "Showing" : "Show"
+                          }
+                          buttonType={"secondaryBorderless"}
+                          isDisabled={isDismissalChangeInProgress}
+                          onClick={handleShowClick}
+                        />
+                      ) : (
+                        <NewButton
+                          icon={CrossIcon}
+                          isDisabled={isDismissalChangeInProgress}
+                          label={
+                            isDismissalChangeInProgress
+                              ? "Dismissing"
+                              : "Dismiss"
+                          }
+                          buttonType={"secondaryBorderless"}
+                          onClick={() => setDismissConfirmationOpened(true)}
+                        />
+                      )}
+                      {isDismissalChangeInProgress && <Spinner />}
+                    </s.ButtonContainer>
+                  )}
+                  {renderActions()}
+                </s.InsightFooter>
+              ) : (
+                <s.DismissDialog>
+                  Dismiss insight?
+                  <s.DismissDialogActions>
+                    <NewButton
+                      label={"No"}
+                      onClick={() => setDismissConfirmationOpened(false)}
+                    />
+                    <NewButton
+                      label={"Yes, dismiss"}
+                      buttonType={"secondary"}
+                      onClick={handleDismissClick}
+                    />
+                  </s.DismissDialogActions>
+                </s.DismissDialog>
+              )}
+            </>
+          ) : undefined
+        }
+      />
+    </>
   );
 };

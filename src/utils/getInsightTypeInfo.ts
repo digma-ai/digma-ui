@@ -14,12 +14,23 @@ import { SnailIcon } from "../components/common/icons/SnailIcon";
 import { SpotIcon } from "../components/common/icons/SpotIcon";
 import { WarningCircleIcon } from "../components/common/icons/WarningCircleIcon";
 import { IconProps } from "../components/common/icons/types";
+import {
+  BOTTLENECK_ISSUE_DOCUMENTATION_URL,
+  CHATTY_API_ISSUE_DOCUMENTATION_URL,
+  CODE_NEXUS_DOCUMENTATION_URL,
+  HIGH_NUMBER_OF_QUERIES_DOCUMENTATION_URL,
+  QUERY_OPTIMIZATION_ISSUES_DOCUMENTATION_URL,
+  SCALING_ISSUE_DOCUMENTATION_URL,
+  SESSION_IN_VIEW_DOCUMENTATION_URL,
+  SUSPECTED_N_PLUS_ONE_ISSUE_DOCUMENTATION_URL
+} from "../constants";
 import { InsightType } from "../types";
 
 export interface InsightTypeInfo {
   icon: MemoExoticComponent<(props: IconProps) => JSX.Element>;
   label: string;
   description?: () => JSX.Element;
+  documentationLink?: string | null;
   subTypes?: Record<string, Omit<InsightTypeInfo, "subTypes">>;
 }
 
@@ -57,13 +68,15 @@ export const getInsightTypeInfo = (
     [InsightType.EndpointBottleneck]: {
       icon: BottleneckIcon,
       label: "Bottleneck",
-      description: descriptionProvider.BottleneckDescription
+      description: descriptionProvider.BottleneckDescription,
+      documentationLink: BOTTLENECK_ISSUE_DOCUMENTATION_URL
     },
 
     [InsightType.EndpointSpanNPlusOne]: {
       icon: SQLDatabaseIcon,
       label: "Suspected N+1",
       description: descriptionProvider.NPlusOneDescription,
+      documentationLink: SUSPECTED_N_PLUS_ONE_ISSUE_DOCUMENTATION_URL,
       subTypes: {
         repeatedQueries: {
           icon: SQLDatabaseIcon,
@@ -79,6 +92,7 @@ export const getInsightTypeInfo = (
       icon: SQLDatabaseIcon,
       label: "Suspected N+1",
       description: descriptionProvider.NPlusOneDescription,
+      documentationLink: SUSPECTED_N_PLUS_ONE_ISSUE_DOCUMENTATION_URL,
       subTypes: {
         repeatedQueries: {
           icon: SQLDatabaseIcon,
@@ -93,12 +107,14 @@ export const getInsightTypeInfo = (
     [InsightType.SpanEndpointBottleneck]: {
       icon: BottleneckIcon,
       label: "Bottleneck",
-      description: descriptionProvider.BottleneckDescription
+      description: descriptionProvider.BottleneckDescription,
+      documentationLink: BOTTLENECK_ISSUE_DOCUMENTATION_URL
     },
     [InsightType.SpanScaling]: {
       icon: ScalesIcon,
       label: "Scaling Issue Found",
-      description: descriptionProvider.SpanScalingDescription
+      description: descriptionProvider.SpanScalingDescription,
+      documentationLink: SCALING_ISSUE_DOCUMENTATION_URL
     },
     [InsightType.SpanUsages]: {
       icon: SineIcon,
@@ -131,32 +147,38 @@ export const getInsightTypeInfo = (
     [InsightType.EndpointSessionInView]: {
       icon: SQLDatabaseIcon,
       label: "Session in View Query Detected",
-      description: descriptionProvider.EndpointSessionInViewDescription
+      description: descriptionProvider.EndpointSessionInViewDescription,
+      documentationLink: SESSION_IN_VIEW_DOCUMENTATION_URL
     },
     [InsightType.EndpointChattyApiV2]: {
       icon: SQLDatabaseIcon,
       label: "Excessive API Calls Detected",
-      description: descriptionProvider.ChattyApiDescription
+      description: descriptionProvider.ChattyApiDescription,
+      documentationLink: CHATTY_API_ISSUE_DOCUMENTATION_URL
     },
     [InsightType.EndpointHighNumberOfQueries]: {
       icon: SQLDatabaseIcon,
       label: "High number of queries",
-      description: descriptionProvider.EndpointHighNumberOfQueriesDescription
+      description: descriptionProvider.EndpointHighNumberOfQueriesDescription,
+      documentationLink: HIGH_NUMBER_OF_QUERIES_DOCUMENTATION_URL
     },
     [InsightType.SpanNexus]: {
       icon: BottleneckIcon,
       label: "Code Nexus Point",
-      description: descriptionProvider.CodeNexusDescription
+      description: descriptionProvider.CodeNexusDescription,
+      documentationLink: CODE_NEXUS_DOCUMENTATION_URL
     },
     [InsightType.SpanQueryOptimization]: {
       icon: SQLDatabaseIcon,
       label: "Inefficient Query",
-      description: descriptionProvider.QueryOptimizationDescription
+      description: descriptionProvider.QueryOptimizationDescription,
+      documentationLink: QUERY_OPTIMIZATION_ISSUES_DOCUMENTATION_URL
     },
     [InsightType.EndpointQueryOptimizationV2]: {
       icon: SQLDatabaseIcon,
       label: "Inefficient Query",
-      description: descriptionProvider.QueryOptimizationDescription
+      description: descriptionProvider.QueryOptimizationDescription,
+      documentationLink: QUERY_OPTIMIZATION_ISSUES_DOCUMENTATION_URL
     }
   };
 

@@ -24,7 +24,9 @@ export const trackingEvents = addPrefix(
       "promotion open expanded view button clicked",
     ENVIRONMENT_SELECTED: "environment selected",
     ENVIRONMENT_MENU_BUTTON_CLICKED: "environment menu button clicked",
-    FILTER_ICON_BUTTON_CLICKED: "filter icon button clicked"
+    FILTER_ICON_BUTTON_CLICKED: "filter icon button clicked",
+    INSIGHTS_INFO_OPEN_DOCS_CLICKED: "insights info open docs clicked",
+    INSIGHTS_INFO_CLOSE_CLICKED: "insights info close clicked"
   },
   " "
 );
