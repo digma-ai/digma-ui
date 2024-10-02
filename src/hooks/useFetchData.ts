@@ -141,6 +141,7 @@ export const useFetchData = <T, K>(
     if (
       isEnabled &&
       refreshWithInterval &&
+      refreshInterval > 0 &&
       previousLastSetDataTimeStamp !== lastSetDataTimeStamp
     ) {
       window.clearTimeout(refreshTimerId.current);
@@ -165,14 +166,15 @@ export const useFetchData = <T, K>(
       isEnabled &&
       isMounted &&
       refreshWithInterval &&
-      previousRefreshInterval !== refreshInterval &&
-      refreshInterval > 0
+      previousRefreshInterval !== refreshInterval
     ) {
       window.clearTimeout(refreshTimerId.current);
 
-      refreshTimerId.current = window.setTimeout(() => {
-        sendMessage(requestAction, payload);
-      }, refreshInterval);
+      if (refreshInterval > 0) {
+        refreshTimerId.current = window.setTimeout(() => {
+          sendMessage(requestAction, payload);
+        }, refreshInterval);
+      }
     }
   }, [
     isMounted,
