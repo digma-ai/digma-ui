@@ -11,8 +11,8 @@ export const EarlyAccessPromotionCard = ({
     <s.StyledPromotionCard
       onAccept={onAccept}
       onDiscard={onDiscard}
-      scope="early-access"
-      acceptBtnText="Register now"
+      scope={"early-access"}
+      acceptBtnText={"Register now"}
       title={
         <PromoText>
           Get <PromoTextBold>Digma features early access</PromoTextBold>

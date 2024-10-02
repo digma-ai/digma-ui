@@ -584,9 +584,9 @@ const renderEmptyState = (
             </s.EmptyDescriptionContainer>
 
             <NewButton
-              buttonType="primary"
+              buttonType={"primary"}
               onClick={handleSeeAllAssetsClick}
-              label="See all assets"
+              label={"See all assets"}
             />
           </s.HomeEmptyStateContainer>
         }
