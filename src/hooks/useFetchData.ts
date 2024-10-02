@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { dispatcher } from "../dispatcher";
 import { useMount } from "./useMount";
 import { usePrevious } from "./usePrevious";
@@ -48,8 +48,14 @@ export const useFetchData = <T, K>(
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
   const refreshTimerId = useRef<number>();
   const previousRequestAction = usePrevious(requestAction);
+  const isRefreshWithIntervalEnabled = useMemo(
+    () => refreshWithInterval && refreshInterval > 0,
+    [refreshWithInterval, refreshInterval]
+  );
+  const isPreviousRefreshWithIntervalEnabled = usePrevious(
+    isRefreshWithIntervalEnabled
+  );
   const previousRefreshInterval = usePrevious(refreshInterval);
-  const previousRefreshWithInterval = usePrevious(refreshWithInterval);
   const previousIsEnabled = usePrevious(isEnabled);
   const previousPayload = usePrevious(payload);
   const [isMounted, setIsMounted] = useState(false);
@@ -117,19 +123,22 @@ export const useFetchData = <T, K>(
     }
   }, [isMounted, previousIsEnabled, requestAction, payload, isEnabled]);
 
-  // Toggle fetching on refreshWithInterval change
+  // Toggle fetching on isRefreshWithIntervalEnabled change
   useEffect(() => {
-    if (isMounted && previousRefreshWithInterval !== refreshWithInterval) {
+    if (
+      isMounted &&
+      isPreviousRefreshWithIntervalEnabled !== isRefreshWithIntervalEnabled
+    ) {
       window.clearTimeout(refreshTimerId.current);
 
-      if (isEnabled) {
+      if (isEnabled && isRefreshWithIntervalEnabled) {
         sendMessage(requestAction, payload);
       }
     }
   }, [
     isMounted,
-    previousRefreshWithInterval,
-    refreshWithInterval,
+    isPreviousRefreshWithIntervalEnabled,
+    isRefreshWithIntervalEnabled,
     refreshInterval,
     requestAction,
     payload,
@@ -140,8 +149,7 @@ export const useFetchData = <T, K>(
   useEffect(() => {
     if (
       isEnabled &&
-      refreshWithInterval &&
-      refreshInterval > 0 &&
+      isRefreshWithIntervalEnabled &&
       previousLastSetDataTimeStamp !== lastSetDataTimeStamp
     ) {
       window.clearTimeout(refreshTimerId.current);
@@ -156,7 +164,7 @@ export const useFetchData = <T, K>(
     refreshInterval,
     requestAction,
     payload,
-    refreshWithInterval,
+    isRefreshWithIntervalEnabled,
     isEnabled
   ]);
 
@@ -165,12 +173,12 @@ export const useFetchData = <T, K>(
     if (
       isEnabled &&
       isMounted &&
-      refreshWithInterval &&
+      isRefreshWithIntervalEnabled &&
       previousRefreshInterval !== refreshInterval
     ) {
       window.clearTimeout(refreshTimerId.current);
 
-      if (refreshInterval > 0) {
+      if (isRefreshWithIntervalEnabled) {
         refreshTimerId.current = window.setTimeout(() => {
           sendMessage(requestAction, payload);
         }, refreshInterval);
@@ -182,7 +190,7 @@ export const useFetchData = <T, K>(
     refreshInterval,
     requestAction,
     payload,
-    refreshWithInterval,
+    isRefreshWithIntervalEnabled,
     isEnabled
   ]);
 
