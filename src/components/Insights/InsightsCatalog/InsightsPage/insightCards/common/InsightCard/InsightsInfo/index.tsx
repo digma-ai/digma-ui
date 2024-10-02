@@ -1,9 +1,9 @@
 import { InsightsInfoProps } from "./types";
 
-import { openURLInDefaultBrowser } from "../../../../../utils/actions/openURLInDefaultBrowser";
-import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
-import { CrossIcon } from "../../../../common/icons/12px/CrossIcon";
-import { trackingEvents } from "../../../tracking";
+import { openURLInDefaultBrowser } from "../../../../../../../../utils/actions/openURLInDefaultBrowser";
+import { sendUserActionTrackingEvent } from "../../../../../../../../utils/actions/sendUserActionTrackingEvent";
+import { CrossIcon } from "../../../../../../../common/icons/12px/CrossIcon";
+import { trackingEvents } from "../../../../../../tracking";
 import * as s from "./styles";
 
 export const InsightsInfo = ({

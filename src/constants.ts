@@ -37,7 +37,7 @@ export const HIGH_NUMBER_OF_QUERIES_DOCUMENTATION_URL =
   "https://docs.digma.ai/digma-developer-guide/digma-features/insights/high-number-of-queries";
 
 export const CHATTY_API_ISSUE_DOCUMENTATION_URL =
-  "https://docs.digma.ai/digma-developer-guide/digma-features/insights/excessive-api-calls-chatty-ap";
+  "https://docs.digma.ai/digma-developer-guide/digma-features/insights/excessive-api-calls-chatty-api";
 
 export const QUERY_OPTIMIZATION_ISSUES_DOCUMENTATION_URL =
   "https://docs.digma.ai/digma-developer-guide/digma-features/insights/query-optimization-suggested";

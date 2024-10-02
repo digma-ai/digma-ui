@@ -2,10 +2,10 @@ import styled from "styled-components";
 import {
   footnoteRegularTypography,
   subscriptRegularTypography
-} from "../../../../common/App/typographies";
-import { Link } from "../../../../common/v3/Link";
-import { NewIconButton } from "../../../../common/v3/NewIconButton";
-import { Tooltip } from "../../../../common/v3/Tooltip";
+} from "../../../../../../../common/App/typographies";
+import { Link } from "../../../../../../../common/v3/Link";
+import { NewIconButton } from "../../../../../../../common/v3/NewIconButton";
+import { Tooltip } from "../../../../../../../common/v3/Tooltip";
 
 export const CloseButton = styled(NewIconButton)`
   display: flex;
