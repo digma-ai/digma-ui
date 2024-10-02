@@ -4,7 +4,7 @@ import { usePagination } from "../../../hooks/usePagination";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { InsightType } from "../../Insights/types";
-import { CrossCircleIcon } from "../../common/icons/16px/CrossCircleIcon";
+import { CheckmarkCircleIcon } from "../../common/icons/16px/CheckmarkCircleIcon";
 import { RefreshIcon } from "../../common/icons/16px/RefreshIcon";
 import { EmptyStateCard } from "../EmptyStateCard";
 import { CarouselPagination } from "../common/CarouselPagination";
@@ -134,7 +134,7 @@ export const TopIssues = () => {
     if (!data || filteredInsights.length === 0) {
       return (
         <EmptyStateCard
-          icon={CrossCircleIcon}
+          icon={CheckmarkCircleIcon}
           title={"No issues found"}
           text={"No issues found in this asset"}
         />
