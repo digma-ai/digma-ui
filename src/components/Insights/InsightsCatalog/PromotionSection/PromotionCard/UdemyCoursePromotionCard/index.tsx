@@ -35,8 +35,8 @@ export const UdemyCoursePromotionCard = ({
     <PromotionCard
       onAccept={onAccept}
       onDiscard={onDiscard}
-      scope="early-access"
-      acceptBtnText="Access course"
+      scope={"early-access"}
+      acceptBtnText={"Access course"}
       title={
         <PromoText>
           Get our <PromoTextBold>Udemy course FREE</PromoTextBold>

@@ -1,8 +1,7 @@
-import { forwardRef } from "react";
 import * as s from "./styles";
 import { ToggleProps, ToggleValue } from "./types";
 
-const ToggleComponent = <T extends ToggleValue>({
+export const Toggle = <T extends ToggleValue>({
   size = "large",
   options,
   value,
@@ -29,5 +28,3 @@ const ToggleComponent = <T extends ToggleValue>({
     </s.Container>
   );
 };
-
-export const Toggle = forwardRef(ToggleComponent) as typeof ToggleComponent;

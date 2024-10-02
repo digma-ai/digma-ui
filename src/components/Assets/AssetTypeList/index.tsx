@@ -215,7 +215,7 @@ export const AssetTypeList = ({
         <s.EmptyStateContainer>
           <s.StyledEmptyState
             icon={ChildIcon}
-            title="No Child Assets"
+            title={"No Child Assets"}
             content={
               <>
                 <s.EmptyStateTextContainer>

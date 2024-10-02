@@ -14,11 +14,13 @@ export const EarlyAccessRegistrationCard = ({
       onClose={onClose}
       onComplete={onComplete}
       className={className}
-      submitBtnText="Sign Up"
+      submitBtnText={"Sign Up"}
       show={show}
       scope={"early-access"}
       successLogo={
-        <SuccessRegistrationImage basePath="/images/promotion/early-access/" />
+        <SuccessRegistrationImage
+          basePath={"/images/promotion/early-access/"}
+        />
       }
       icon={
         <img src={`/images/promotion/early-access/registrationPromoLogo.svg`} />

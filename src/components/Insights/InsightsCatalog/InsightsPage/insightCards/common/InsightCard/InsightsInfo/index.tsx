@@ -1,10 +1,10 @@
-import { InsightsInfoProps } from "./types";
-
 import { openURLInDefaultBrowser } from "../../../../../../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../../../../../../utils/actions/sendUserActionTrackingEvent";
 import { CrossIcon } from "../../../../../../../common/icons/12px/CrossIcon";
+import { Tooltip } from "../../../../../../../common/v3/Tooltip";
 import { trackingEvents } from "../../../../../../tracking";
 import * as s from "./styles";
+import { InsightsInfoProps } from "./types";
 
 export const InsightsInfo = ({
   isOpen,
@@ -29,20 +29,19 @@ export const InsightsInfo = ({
   };
 
   return (
-    <s.InfoTooltip
+    <Tooltip
       isOpen={isOpen}
       onDismiss={onClose}
       isDisabled={!Description}
-      placement="top"
+      placement={"top"}
       title={
         <s.Container>
           <s.Header>
-            <s.CloseButton
-              onClick={handleCloseClick}
-              icon={(props) => <CrossIcon {...props} size={12} />}
-              size={"small"}
-              buttonType="secondaryBorderless"
-            ></s.CloseButton>
+            <s.CloseButton onClick={handleCloseClick}>
+              <s.CloseButtonIconContainer>
+                <CrossIcon color={"currentColor"} size={12} />
+              </s.CloseButtonIconContainer>
+            </s.CloseButton>
           </s.Header>
           <s.Content>
             <s.Description>{Description && <Description />}</s.Description>
@@ -55,9 +54,8 @@ export const InsightsInfo = ({
         </s.Container>
       }
       hideArrow={true}
-      fullWidth={true}
     >
       {children}
-    </s.InfoTooltip>
+    </Tooltip>
   );
 };

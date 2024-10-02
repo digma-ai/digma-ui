@@ -372,7 +372,7 @@ export const Header = ({ onGoBack }: HeaderProps) => {
           )}
         </s.Filters>
         <s.ViewModeToggle
-          size="large"
+          size={"large"}
           options={[
             {
               value: "treemap",

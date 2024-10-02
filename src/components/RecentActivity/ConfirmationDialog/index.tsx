@@ -62,7 +62,7 @@ export const ConfirmationDialog = ({
         <NewButton
           buttonType={"secondary"}
           onClick={handleCancelButtonClick}
-          label="Cancel"
+          label={"Cancel"}
         />
         <NewButton
           onClick={handleConfirmButtonClick}

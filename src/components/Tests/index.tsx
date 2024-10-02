@@ -366,9 +366,9 @@ export const Tests = () => {
                 </s.EmptyStateTextContainer>
 
                 <NewButton
-                  buttonType="primary"
+                  buttonType={"primary"}
                   onClick={handleSeeAllAssetsClick}
-                  label="See all assets"
+                  label={"See all assets"}
                 />
               </>
             }
