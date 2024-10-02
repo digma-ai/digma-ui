@@ -37,7 +37,8 @@ const SHOW_ONLY_WORKSPACE_ERROR_STACK_TRACE_ITEMS_PERSISTENCE_KEY =
 
 const filesURIsDataFetcherConfiguration: DataFetcherConfiguration = {
   requestAction: actions.GET_FILES_URIS,
-  responseAction: actions.SET_FILES_URIS
+  responseAction: actions.SET_FILES_URIS,
+  refreshOnPayloadChange: true
 };
 
 export const FlowStack = ({ data }: FlowStackProps) => {
@@ -67,16 +68,12 @@ export const FlowStack = ({ data }: FlowStackProps) => {
     [frameStacks]
   );
 
-  const { data: filesURIsResponse, getData: getFilesURIs } = useFetchData<
+  const { data: filesURIsResponse } = useFetchData<
     GetFilesURIsPayload,
     SetFilesURIsPayload
   >(filesURIsDataFetcherConfiguration, filesURIsPayload);
 
   const filesURIs: FilesURIsMap = filesURIsResponse?.filesURIs ?? {};
-
-  useEffect(() => {
-    getFilesURIs();
-  }, [frameStacks, getFilesURIs]);
 
   useEffect(() => {
     stacksContainerRef.current?.scrollTo(0, 0);

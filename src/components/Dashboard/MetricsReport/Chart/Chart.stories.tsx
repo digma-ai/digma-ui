@@ -2,12 +2,12 @@ import { Meta, StoryObj } from "@storybook/react";
 
 import { fn } from "@storybook/test";
 import { Chart } from ".";
-import { mockedReport } from "../MetricsTable/mockData";
+import { mockedReport } from "../Table/mockData";
 import { transformServicesData } from "../utils";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof Chart> = {
-  title: "Dashboard/NewReport/Chart",
+  title: "Dashboard/MetricsReport/Chart",
   component: Chart,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout

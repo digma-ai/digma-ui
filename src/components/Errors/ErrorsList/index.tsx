@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import {
   DataFetcherConfiguration,
   useFetchData
@@ -34,14 +34,10 @@ export const ErrorsList = ({
     [spanCodeObjectId, methodId]
   );
 
-  const { data, getData } = useFetchData<
-    GetErrorsDataPayload,
-    SetErrorsDataPayload
-  >(dataFetcherConfiguration, payload);
-
-  useEffect(() => {
-    getData();
-  }, [getData]);
+  const { data } = useFetchData<GetErrorsDataPayload, SetErrorsDataPayload>(
+    dataFetcherConfiguration,
+    payload
+  );
 
   if (!data) {
     // TODO: replace with skeletons

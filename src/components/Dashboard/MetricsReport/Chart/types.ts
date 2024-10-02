@@ -1,6 +1,6 @@
-import { ReportTimeMode } from "../ReportHeader/types";
 import {
   PresentationalReportData,
+  ReportTimeMode,
   ReportViewLevel,
   ScoreCriterion
 } from "../types";

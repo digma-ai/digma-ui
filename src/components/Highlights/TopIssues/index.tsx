@@ -1,10 +1,12 @@
-import { Fragment, useEffect, useMemo, useState } from "react";
+import { Fragment, useMemo } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { useFetchData } from "../../../hooks/useFetchData";
 import { usePagination } from "../../../hooks/usePagination";
-import { usePrevious } from "../../../hooks/usePrevious";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { InsightType } from "../../Insights/types";
-import { CrossCircleIcon } from "../../common/icons/16px/CrossCircleIcon";
+import { actions as mainActions } from "../../Main/actions";
+import { GetHighlightsTopIssuesDataPayload } from "../../Main/types";
+import { CheckmarkCircleIcon } from "../../common/icons/16px/CheckmarkCircleIcon";
 import { RefreshIcon } from "../../common/icons/16px/RefreshIcon";
 import { EmptyStateCard } from "../EmptyStateCard";
 import { CarouselPagination } from "../common/CarouselPagination";
@@ -35,8 +37,7 @@ import {
   isSpanQueryOptimizationHighlight,
   isSpanScalingHighlight
 } from "./typeGuards";
-import { GenericMetrics, HighlightData } from "./types";
-import { useTopIssuesData } from "./useTopIssuesData";
+import { GenericMetrics, HighlightData, TopIssuesData } from "./types";
 
 const PAGE_SIZE = 2;
 
@@ -91,10 +92,33 @@ const renderHighlightCard = (highlight: HighlightData<GenericMetrics>) => {
 };
 
 export const TopIssues = () => {
-  const [isInitialLoading, setIsInitialLoading] = useState(true);
-  const { data, getData } = useTopIssuesData();
-  const previousData = usePrevious(data);
-  const { scope } = useConfigSelector();
+  const { scope, environments } = useConfigSelector();
+
+  const payload: GetHighlightsTopIssuesDataPayload = useMemo(
+    () => ({
+      query: {
+        scopedCodeObjectId: scope?.span?.spanCodeObjectId ?? null,
+        environments: environments?.map((env) => env.id) ?? []
+      }
+    }),
+    [scope?.span?.spanCodeObjectId, environments]
+  );
+
+  const { data } = useFetchData<
+    GetHighlightsTopIssuesDataPayload,
+    TopIssuesData
+  >(
+    {
+      requestAction: mainActions.GET_HIGHLIGHTS_TOP_ISSUES_DATA,
+      responseAction: mainActions.SET_HIGHLIGHTS_TOP_ISSUES_DATA,
+      refreshOnPayloadChange: true,
+      isEnabled: Boolean(
+        scope?.span?.spanCodeObjectId && environments && environments.length > 0
+      )
+    },
+    payload
+  );
+
   // Do not show unimplemented insights
   const filteredInsights = useMemo(
     () =>
@@ -109,15 +133,7 @@ export const TopIssues = () => {
     scope?.span?.spanCodeObjectId
   );
 
-  useEffect(() => {
-    getData();
-  }, []);
-
-  useEffect(() => {
-    if (!previousData && data) {
-      setIsInitialLoading(false);
-    }
-  }, [previousData, data]);
+  const isInitialLoading = !data;
 
   const renderContent = () => {
     if (isInitialLoading) {
@@ -131,12 +147,12 @@ export const TopIssues = () => {
       );
     }
 
-    if (!data || data.topInsights.length === 0) {
+    if (!data || filteredInsights.length === 0) {
       return (
         <EmptyStateCard
-          icon={CrossCircleIcon}
-          title={"No data"}
-          text={"No issues available at the moment"}
+          icon={CheckmarkCircleIcon}
+          title={"No issues found"}
+          text={"No issues found in this asset"}
         />
       );
     }
@@ -151,7 +167,7 @@ export const TopIssues = () => {
       title={"Top Issues"}
       toolbarContent={
         <CarouselPagination
-          itemsCount={filteredInsights.length ?? 0}
+          itemsCount={filteredInsights.length}
           onPageChange={setPage}
           pageSize={PAGE_SIZE}
           page={page}

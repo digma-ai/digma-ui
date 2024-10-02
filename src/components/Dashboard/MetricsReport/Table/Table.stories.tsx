@@ -1,13 +1,13 @@
 import { Meta, StoryObj } from "@storybook/react";
 
-import { MetricsTable } from ".";
+import { Table } from ".";
 import { transformServicesData } from "../utils";
 import { mockedReport } from "./mockData";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
-const meta: Meta<typeof MetricsTable> = {
-  title: "Dashboard/NewReport/MetricsTable",
-  component: MetricsTable,
+const meta: Meta<typeof Table> = {
+  title: "Dashboard/MetricsReport/Table",
+  component: Table,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
     layout: "fullscreen"

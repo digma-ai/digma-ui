@@ -1,6 +1,5 @@
-import { Severity } from "../../MetricsTable/types";
-import { ReportTimeMode } from "../../ReportHeader/types";
-import { ScoreCriterion } from "../../types";
+import { Severity } from "../../Table/types";
+import { ReportTimeMode, ScoreCriterion } from "../../types";
 
 export interface ReportTileProps {
   name: string;

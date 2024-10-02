@@ -21,5 +21,6 @@
     "udemy",
     "undismiss",
     "zustand"
-  ]
+  ],
+  "jest.runMode": "on-demand"
 }

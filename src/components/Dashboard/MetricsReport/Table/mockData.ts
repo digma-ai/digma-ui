@@ -1,6 +1,6 @@
-import { ServiceMetricsReport } from "../types";
+import { SetMetricsReportDataPayload } from "../types";
 
-export const mockedReport: ServiceMetricsReport = {
+export const mockedReport: SetMetricsReportDataPayload = {
   reports: [
     {
       impact: 100.123123,

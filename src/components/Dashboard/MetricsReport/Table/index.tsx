@@ -16,7 +16,7 @@ import { Tooltip } from "../../../common/v3/Tooltip";
 import { trackingEvents } from "../tracking";
 import { PresentationalReportData } from "../types";
 import * as s from "./styles";
-import { ColumnMeta, MetricsTableProps, Severity } from "./types";
+import { ColumnMeta, Severity, TableProps } from "./types";
 
 const sortScoreFn: SortingFn<PresentationalReportData> = (rowA, rowB) => {
   const scoreA = rowA.original.score;
@@ -83,14 +83,14 @@ const HoverableTableCellContent = ({
   );
 };
 
-export const MetricsTable = ({
+export const Table = ({
   data,
   timeMode,
   onTitleClick,
   onIssuesStatsClick,
   scoreCriterion,
   viewLevel
-}: MetricsTableProps) => {
+}: TableProps) => {
   const columnHelper = createColumnHelper<PresentationalReportData>();
 
   const handleIssuesLinkClick = (value: string, source: string) => {

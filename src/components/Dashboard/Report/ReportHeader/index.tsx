@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { actions as globalActions } from "../../../../actions";
 import {
   DataFetcherConfiguration,
@@ -69,10 +69,6 @@ export const ReportHeader = ({
     GetServicesPayload,
     string[]
   >(dataFetcherFiltersConfiguration, getServicesPayload);
-
-  useEffect(() => {
-    getData();
-  }, []);
 
   const handleRefresh = () => {
     getData();

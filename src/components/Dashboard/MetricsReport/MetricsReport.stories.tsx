@@ -1,13 +1,13 @@
 import { Meta, StoryObj } from "@storybook/react";
 
-import { NewReport } from ".";
+import { MetricsReport } from ".";
 import { actions } from "../actions";
-import { mockedReport } from "./MetricsTable/mockData";
+import { mockedReport } from "./Table/mockData";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
-const meta: Meta<typeof NewReport> = {
-  title: "Dashboard/NewReport",
-  component: NewReport,
+const meta: Meta<typeof MetricsReport> = {
+  title: "Dashboard/MetricsReport",
+  component: MetricsReport,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
     layout: "fullscreen"

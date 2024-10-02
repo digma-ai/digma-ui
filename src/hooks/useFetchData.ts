@@ -1,7 +1,6 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { dispatcher } from "../dispatcher";
-import { isBoolean } from "../typeGuards/isBoolean";
-import { isNumber } from "../typeGuards/isNumber";
+import { useMount } from "./useMount";
 import { usePrevious } from "./usePrevious";
 
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
@@ -12,7 +11,23 @@ export interface DataFetcherConfiguration {
   refreshInterval?: number;
   refreshWithInterval?: boolean;
   refreshOnPayloadChange?: boolean;
+  isEnabled?: boolean;
+  fetchOnMount?: boolean;
+  refreshWithDebounce?: boolean;
+  debounceDelay?: number;
 }
+
+export interface FetchDataState {
+  data?: unknown;
+  getData: () => void;
+}
+
+const sendMessage = <T>(action: string, payload?: T) => {
+  window.sendMessageToDigma<T>({
+    action,
+    payload
+  });
+};
 
 export const useFetchData = <T, K>(
   {
@@ -20,7 +35,11 @@ export const useFetchData = <T, K>(
     responseAction,
     refreshWithInterval = false,
     refreshOnPayloadChange = false,
-    refreshInterval = REFRESH_INTERVAL
+    refreshInterval = REFRESH_INTERVAL,
+    isEnabled = true,
+    fetchOnMount = true,
+    refreshWithDebounce = false,
+    debounceDelay = 0
   }: DataFetcherConfiguration,
   payload?: T
 ) => {
@@ -28,81 +47,159 @@ export const useFetchData = <T, K>(
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
   const refreshTimerId = useRef<number>();
+  const previousRequestAction = usePrevious(requestAction);
+  const isRefreshWithIntervalEnabled = useMemo(
+    () => refreshWithInterval && refreshInterval > 0,
+    [refreshWithInterval, refreshInterval]
+  );
+  const isPreviousRefreshWithIntervalEnabled = usePrevious(
+    isRefreshWithIntervalEnabled
+  );
   const previousRefreshInterval = usePrevious(refreshInterval);
-  const previousRefreshWithInterval = usePrevious(refreshWithInterval);
-  const [isInProgress, setIsInProgress] = useState<boolean>(false);
-  const [handleResponse, setHandleResponse] = useState<boolean>(true);
+  const previousIsEnabled = usePrevious(isEnabled);
+  const previousPayload = usePrevious(payload);
+  const [isMounted, setIsMounted] = useState(false);
 
-  const getData = useCallback(() => {
-    window.sendMessageToDigma<T>({
-      action: requestAction,
-      payload
-    });
-    setIsInProgress(true);
-  }, [requestAction, payload]);
+  useMount(() => {
+    if (isEnabled && fetchOnMount) {
+      sendMessage(requestAction, payload);
+    }
+    setIsMounted(true);
+  });
 
-  const previousGetData = usePrevious(getData);
+  // Clear timer and get data on request action change
+  useEffect(() => {
+    if (isEnabled && isMounted && previousRequestAction !== requestAction) {
+      window.clearTimeout(refreshTimerId.current);
 
+      sendMessage(requestAction, payload);
+    }
+  }, [
+    refreshOnPayloadChange,
+    isEnabled,
+    requestAction,
+    payload,
+    isMounted,
+    previousRequestAction
+  ]);
+
+  // Restart timer and get data on payload change
   useEffect(() => {
     if (
+      isEnabled &&
       refreshOnPayloadChange &&
-      previousGetData &&
-      previousGetData !== getData
+      isMounted &&
+      previousPayload !== payload
     ) {
       window.clearTimeout(refreshTimerId.current);
-      getData();
-    }
-  }, [previousGetData, getData, refreshOnPayloadChange]);
 
-  useEffect(() => {
-    if (
-      isBoolean(previousRefreshWithInterval) &&
-      previousRefreshWithInterval !== refreshWithInterval
-    ) {
-      if (refreshWithInterval) {
-        getData();
+      if (refreshWithDebounce && debounceDelay >= 0) {
+        refreshTimerId.current = window.setTimeout(() => {
+          sendMessage<T>(requestAction, payload);
+        }, debounceDelay);
       } else {
-        setHandleResponse(false);
-        window.clearTimeout(refreshTimerId.current);
+        sendMessage<T>(requestAction, payload);
       }
     }
   }, [
-    previousRefreshWithInterval,
-    refreshWithInterval,
-    refreshInterval,
-    getData
+    previousPayload,
+    payload,
+    isMounted,
+    requestAction,
+    refreshOnPayloadChange,
+    isEnabled,
+    debounceDelay,
+    refreshWithDebounce
   ]);
 
+  // Toggle fetching on isEnabled change
+  useEffect(() => {
+    if (isMounted && previousIsEnabled !== isEnabled) {
+      window.clearTimeout(refreshTimerId.current);
+
+      if (isEnabled) {
+        sendMessage(requestAction, payload);
+      }
+    }
+  }, [isMounted, previousIsEnabled, requestAction, payload, isEnabled]);
+
+  // Toggle fetching on isRefreshWithIntervalEnabled change
   useEffect(() => {
     if (
-      refreshWithInterval &&
-      (previousLastSetDataTimeStamp !== lastSetDataTimeStamp ||
-        (isNumber(previousRefreshInterval) &&
-          previousRefreshInterval !== refreshInterval))
+      isMounted &&
+      isPreviousRefreshWithIntervalEnabled !== isRefreshWithIntervalEnabled
+    ) {
+      window.clearTimeout(refreshTimerId.current);
+
+      if (isEnabled && isRefreshWithIntervalEnabled) {
+        sendMessage(requestAction, payload);
+      }
+    }
+  }, [
+    isMounted,
+    isPreviousRefreshWithIntervalEnabled,
+    isRefreshWithIntervalEnabled,
+    refreshInterval,
+    requestAction,
+    payload,
+    isEnabled
+  ]);
+
+  // Restart timer on new data arrival (data timestamp change)
+  useEffect(() => {
+    if (
+      isEnabled &&
+      isRefreshWithIntervalEnabled &&
+      previousLastSetDataTimeStamp !== lastSetDataTimeStamp
     ) {
       window.clearTimeout(refreshTimerId.current);
 
       refreshTimerId.current = window.setTimeout(() => {
-        getData();
+        sendMessage(requestAction, payload);
       }, refreshInterval);
     }
   }, [
     previousLastSetDataTimeStamp,
     lastSetDataTimeStamp,
-    previousRefreshInterval,
     refreshInterval,
-    getData,
-    refreshWithInterval
+    requestAction,
+    payload,
+    isRefreshWithIntervalEnabled,
+    isEnabled
   ]);
 
+  // Restart timer on refresh interval duration change
+  useEffect(() => {
+    if (
+      isEnabled &&
+      isMounted &&
+      isRefreshWithIntervalEnabled &&
+      previousRefreshInterval !== refreshInterval
+    ) {
+      window.clearTimeout(refreshTimerId.current);
+
+      if (isRefreshWithIntervalEnabled) {
+        refreshTimerId.current = window.setTimeout(() => {
+          sendMessage(requestAction, payload);
+        }, refreshInterval);
+      }
+    }
+  }, [
+    isMounted,
+    previousRefreshInterval,
+    refreshInterval,
+    requestAction,
+    payload,
+    isRefreshWithIntervalEnabled,
+    isEnabled
+  ]);
+
+  // Add/Remove message listeners
   useEffect(() => {
     const handleData = (data: unknown, timeStamp: number) => {
-      if (isInProgress) {
-        if (handleResponse) {
-          setData(data as K);
-          setLastSetDataTimeStamp(timeStamp);
-        }
-        setIsInProgress(false);
+      if (isEnabled) {
+        setData(data as K);
+        setLastSetDataTimeStamp(timeStamp);
       }
     };
 
@@ -112,10 +209,10 @@ export const useFetchData = <T, K>(
       dispatcher.removeActionListener(responseAction, handleData);
       window.clearTimeout(refreshTimerId.current);
     };
-  }, [responseAction, isInProgress, handleResponse]);
+  }, [responseAction, isEnabled]);
 
   return {
     data,
-    getData
+    getData: () => sendMessage(requestAction, payload)
   };
 };

@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 import { TreeMap } from ".";
-import { ReportTile } from "../../Dashboard/NewReport/Chart/ReportTile";
+import { ReportTile } from "../../Dashboard/MetricsReport/Chart/ReportTile";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof TreeMap> = {

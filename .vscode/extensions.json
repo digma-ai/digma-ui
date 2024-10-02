@@ -3,6 +3,7 @@
     "dbaeumer.vscode-eslint",
     "davidanson.vscode-markdownlint",
     "esbenp.prettier-vscode",
+    "Orta.vscode-jest",
     "stylelint.vscode-stylelint",
     "styled-components.vscode-styled-components",
     "streetsidesoftware.code-spell-checker"

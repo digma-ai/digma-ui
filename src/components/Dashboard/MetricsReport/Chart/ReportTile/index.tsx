@@ -1,6 +1,6 @@
 import { MouseEvent } from "react";
 import { Tile } from "../../../../common/TreeMap/Tile";
-import { ReportTimeMode } from "../../ReportHeader/types";
+import { ReportTimeMode } from "../../types";
 import * as s from "./styles";
 import { TooltipKeyValue } from "./TooltipKeyValue";
 import { ReportTileProps } from "./types";
