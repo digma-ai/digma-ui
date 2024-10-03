@@ -95,7 +95,7 @@ export const InsightCard = ({
         handleRecalculatedSet
       );
     };
-  }, [insight.id]);
+  }, [insight.id, insight.type, onRefresh]);
 
   useEffect(() => {
     if (previousIsOperationInProgress && !isOperationInProgress) {
