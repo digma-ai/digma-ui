@@ -5,6 +5,7 @@ interface ChangeScopePayload {
     spanCodeObjectId: string;
   } | null;
   environmentId?: string;
+  openMainPanel?: boolean;
   context?: {
     event: string;
     payload?: Record<string, unknown>;

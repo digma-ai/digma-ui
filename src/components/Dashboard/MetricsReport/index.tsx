@@ -157,6 +157,7 @@ export const MetricsReport = () => {
         spanCodeObjectId
       },
       environmentId,
+      openMainPanel: true,
       context: {
         event: SCOPE_CHANGE_EVENTS.METRICS_ENDPOINT_SELECTED,
         payload: {
@@ -185,6 +186,7 @@ export const MetricsReport = () => {
     if (viewLevel === "services") {
       changeScope({
         span: null,
+        openMainPanel: true,
         environmentId: selectedEnvironmentId ?? undefined,
         context: {
           event: SCOPE_CHANGE_EVENTS.METRICS_SERVICE_SELECTED,
