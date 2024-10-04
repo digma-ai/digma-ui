@@ -20,11 +20,12 @@ export const StyledCodeSnippet = styled(CodeSnippet)`
 export const Footer = styled.div`
   display: flex;
   align-items: center;
+  gap: 12px;
 `;
 
 export const StatsContainer = styled.div`
   display: flex;
-  gap: 5px;
+  gap: 12 px;
   flex-grow: 1;
 
   & > * {

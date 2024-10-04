@@ -18,6 +18,8 @@ export interface SpanInfoData {
   services: string[];
   environments: Environment[];
   assetTypeId: string;
+  firstSeen?: string;
+  lastSeen?: string;
 }
 
 export const useSpanInfoData = () => {
