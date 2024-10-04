@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { subscriptRegularTypography } from "../../common/App/typographies";
 import { Link } from "../../common/Link";
 import { CopyButton } from "../../common/v3/CopyButton";
 import { ListItemProps, TableBodyRowProps, TableHeadProps } from "./types";
@@ -220,4 +221,21 @@ export const SpanLink = styled(Link)`
   white-space: nowrap;
   text-decoration: none;
   color: ${({ theme }) => theme.colors.recentActivity.table.row.default.link};
+`;
+
+export const SpanCounter = styled.div`
+  border-radius: 4px;
+  padding: 4px;
+  border: 1px solid ${({ theme }) => theme.colors.v3.surface.primaryLight};
+  min-width: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  ${subscriptRegularTypography}
+`;
+
+export const SpanCounterContainer = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
 `;

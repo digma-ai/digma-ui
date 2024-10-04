@@ -13,6 +13,7 @@ export interface RecentActivityTableProps {
 export interface ColumnMeta {
   width: string | number;
   minWidth?: string | number;
+  textAlign?: "center";
 }
 
 export interface TableHeadProps {

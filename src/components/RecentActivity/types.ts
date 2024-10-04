@@ -58,6 +58,7 @@ export interface ActivityEntry {
   latestTraceTimestamp: string;
   latestTraceDuration: Duration;
   slimAggregatedInsights: SlimInsight[];
+  spansCount?: number;
 }
 
 export interface Environment {
