@@ -34,6 +34,7 @@ export const v3colors = {
     100: "#d3fff2",
     200: "#2ddabb",
     300: "#6ebd9c",
+    350: "#386753",
     400: "#233332"
   },
   blue: {

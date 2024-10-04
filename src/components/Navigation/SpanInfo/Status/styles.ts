@@ -11,12 +11,6 @@ export const Container = styled.div`
   display: flex;
   gap: 4px;
   align-items: center;
-
-  &:hover {
-    border-radius: 4px;
-    background: ${({ theme }) => theme.colors.v3.surface.brandDarkest};
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0/13);
-  }
 `;
 
 export const Indicator = styled.div<IndicatorProps>`
@@ -26,11 +20,11 @@ export const Indicator = styled.div<IndicatorProps>`
   background: ${({ $status, theme }) => {
     switch ($status) {
       case "live":
-        return v3colors.green[100];
-      case "recent":
         return v3colors.green[200];
-      case "active":
+      case "recent":
         return v3colors.green[300];
+      case "active":
+        return v3colors.green[350];
       case "inactive":
         return theme.colors.v3.icon.secondary;
       case "stale":
