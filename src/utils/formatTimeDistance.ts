@@ -48,7 +48,7 @@ const unitFormats = {
   }
 };
 
-const getTimeDistance = (
+export const getTimeDistance = (
   date: string,
   dateTimeToCompare: string
 ): { value: number; unit: TimeUnit } | undefined => {
