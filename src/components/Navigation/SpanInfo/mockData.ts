@@ -1,4 +1,4 @@
-import { SpanInfoData } from "../useSpanInfoData";
+import { SpanInfoData } from "./types";
 
 export const mockedSpanInfoData: SpanInfoData = {
   displayName:
