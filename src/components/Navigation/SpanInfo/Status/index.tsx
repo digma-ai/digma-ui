@@ -17,22 +17,24 @@ const getStatus = (lastSeen: Date) => {
   }
 
   if (
-    (interval.value <= 5 && interval.unit === "minutes") ||
-    interval.unit === "seconds"
+    interval.unit === "seconds" ||
+    (interval.unit === "minutes" && interval.value <= 5)
   ) {
     return "live";
   }
 
-  if (interval.value <= 59 && interval.unit === "minutes") {
+  if (interval.unit === "minutes" && interval.value <= 59) {
     return "recent";
   }
+  
+ if (interval.unit === "hours" ||
+    (interval.unit === "days" && interval.value <= 4)
+   ) {
+   return "active";
+ }
 
-  if (interval.value < 4 && interval.unit === "days") {
-    return "active";
-  }
-
-  if (interval.value > 4 && interval.unit === "days" && interval.value < 7) {
-    return "inactive";
+  if (interval.unit === "days" && interval.value <= 7) {
+   return "inactive";
   }
 
   return "stale";
