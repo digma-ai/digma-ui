@@ -109,6 +109,12 @@ export const Navigation = () => {
   // const previousCodeContext = usePrevious(codeContext);
   const previousEnvironment = usePrevious(environment);
   const [isSpanInfoVisible, setIsSpanInfoVisible] = useState(false);
+  const payload: GetHighlightsSpanInfoDataPayload = useMemo(() => ({
+    query: {
+      spanCodeObjectId: scope?.span?.spanCodeObjectId ?? null
+    }
+  }), [scope?.span?.spanCodeObjectId])
+
   const { data: spanInfo } = useFetchData<
     GetHighlightsSpanInfoDataPayload,
     SpanInfoData
@@ -116,13 +122,10 @@ export const Navigation = () => {
     {
       requestAction: mainActions.GET_HIGHLIGHTS_SPAN_INFO_DATA,
       responseAction: mainActions.SET_HIGHLIGHTS_SPAN_INFO_DATA,
-      isEnabled: Boolean(scope?.span?.spanCodeObjectId)
+      isEnabled: Boolean(scope?.span?.spanCodeObjectId),
+      refreshOnPayloadChange: true
     },
-    {
-      query: {
-        spanCodeObjectId: scope?.span?.spanCodeObjectId ?? null
-      }
-    }
+    payload
   );
   const previousSpanInfo = usePrevious(spanInfo);
 
