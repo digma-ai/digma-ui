@@ -68,7 +68,19 @@ const mockedCodeContext: CodeContext = {
 export const Default: Story = {
   args: {
     scope: mockedScope,
-    codeContext: mockedCodeContext
+    codeContext: mockedCodeContext,
+    linkedEndpoints: [
+      {
+        spanCodeObjectId: "span:codeObject",
+        displayName: "testMethodCall",
+        environment: "TEST"
+      },
+      {
+        spanCodeObjectId: "span:codeObject2",
+        displayName: "restMethodCall",
+        environment: "local"
+      }
+    ]
   }
 };
 
@@ -94,7 +106,19 @@ export const HasMultipleCodeLocations: Story = {
         ]
       }
     },
-    codeContext: mockedCodeContext
+    codeContext: mockedCodeContext,
+    linkedEndpoints: [
+      {
+        spanCodeObjectId: "span:codeObject",
+        displayName: "testMethodCall",
+        environment: "TEST"
+      },
+      {
+        spanCodeObjectId: "span:codeObject2",
+        displayName: "restMethodCall",
+        environment: "local"
+      }
+    ]
   }
 };
 
@@ -104,6 +128,7 @@ export const AlreadyAtCode: Story = {
     codeContext: {
       ...mockedCodeContext,
       methodId: mockedScope.span?.methodId ?? null
-    }
+    },
+    linkedEndpoints: []
   }
 };

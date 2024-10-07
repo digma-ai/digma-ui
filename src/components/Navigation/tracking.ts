@@ -9,6 +9,7 @@ export const trackingEvents = addPrefix(
     FORWARD_BUTTON_CLICKED: "forward button clicked",
     HOME_BUTTON_CLICKED: "home button clicked",
     TARGET_BUTTON_CLICKED: "target button clicked",
+    LINKED_ENDPOINTS_BUTTON_CLICKED: "linked endpoints button clicked",
     CODE_LOCATION_SELECTED: "code location selected",
     CODE_BUTTON_CLICKED: "code button clicked",
     ASSET_SELECTED: "asset selected",
