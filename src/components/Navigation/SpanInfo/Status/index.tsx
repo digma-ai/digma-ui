@@ -4,7 +4,7 @@ import {
 } from "../../../../utils/formatTimeDistance";
 import { Tooltip } from "../../../common/v3/Tooltip";
 import * as s from "./styles";
-import { StatusProps } from "./types";
+import { StatusProps, StatusState } from "./types";
 
 const getStatus = (lastSeen: Date) => {
   const interval = getTimeDistance(
@@ -20,24 +20,25 @@ const getStatus = (lastSeen: Date) => {
     interval.unit === "seconds" ||
     (interval.unit === "minutes" && interval.value <= 5)
   ) {
-    return "live";
+    return StatusState.Live;
   }
 
   if (interval.unit === "minutes" && interval.value <= 59) {
-    return "recent";
+    return StatusState.Recent;
   }
-  
- if (interval.unit === "hours" ||
+
+  if (
+    interval.unit === "hours" ||
     (interval.unit === "days" && interval.value <= 4)
-   ) {
-   return "active";
- }
+  ) {
+    return StatusState.Active;
+  }
 
   if (interval.unit === "days" && interval.value <= 7) {
-   return "inactive";
+    return StatusState.Inactive;
   }
 
-  return "stale";
+  return StatusState.Stale;
 };
 
 export const Status = ({ firstSeen, lastSeen }: StatusProps) => {

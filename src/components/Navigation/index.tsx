@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { actions as globalActions } from "../../actions";
 import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
@@ -109,11 +109,14 @@ export const Navigation = () => {
   // const previousCodeContext = usePrevious(codeContext);
   const previousEnvironment = usePrevious(environment);
   const [isSpanInfoVisible, setIsSpanInfoVisible] = useState(false);
-  const payload: GetHighlightsSpanInfoDataPayload = useMemo(() => ({
-    query: {
-      spanCodeObjectId: scope?.span?.spanCodeObjectId ?? null
-    }
-  }), [scope?.span?.spanCodeObjectId])
+  const payload: GetHighlightsSpanInfoDataPayload = useMemo(
+    () => ({
+      query: {
+        spanCodeObjectId: scope?.span?.spanCodeObjectId ?? null
+      }
+    }),
+    [scope?.span?.spanCodeObjectId]
+  );
 
   const { data: spanInfo } = useFetchData<
     GetHighlightsSpanInfoDataPayload,

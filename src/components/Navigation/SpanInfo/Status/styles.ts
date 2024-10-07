@@ -4,7 +4,7 @@ import {
   subscriptRegularTypography
 } from "../../../common/App/typographies";
 import { v3colors } from "../../../common/App/v3colors";
-import { IndicatorProps } from "./types";
+import { IndicatorProps, StatusState } from "./types";
 
 export const Container = styled.div`
   padding: 5px 8px;
@@ -19,15 +19,15 @@ export const Indicator = styled.div<IndicatorProps>`
   height: 6px;
   background: ${({ $status, theme }) => {
     switch ($status) {
-      case "live":
+      case StatusState.Live:
         return v3colors.green[200];
-      case "recent":
+      case StatusState.Recent:
         return v3colors.green[300];
-      case "active":
+      case StatusState.Active:
         return v3colors.green[350];
-      case "inactive":
+      case StatusState.Inactive:
         return theme.colors.v3.icon.secondary;
-      case "stale":
+      case StatusState.Stale:
         return theme.colors.v3.icon.disabled;
       default:
         return "currentColor";

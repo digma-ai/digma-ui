@@ -3,6 +3,14 @@ export interface StatusProps {
   lastSeen: string;
 }
 
+export enum StatusState {
+  Live = "Live",
+  Recent = "Recent",
+  Active = "Active",
+  Stale = "Stale",
+  Inactive = "Inactive"
+}
+
 export interface IndicatorProps {
-  $status: "live" | "recent" | "active" | "stale" | "inactive";
+  $status: StatusState;
 }

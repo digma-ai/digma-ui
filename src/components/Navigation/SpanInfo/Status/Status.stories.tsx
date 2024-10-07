@@ -1,12 +1,18 @@
 import { Meta, StoryObj } from "@storybook/react";
 
+import { sub } from "date-fns";
 import { Status } from ".";
 
 const timeAgo = ({ minutes = 0, days = 0, weeks = 0 }) => {
   const now = new Date();
 
-  const interval = minutes + (days + weeks * 7) * 24 * 60;
-  return new Date(now.getTime() - interval * 60 * 1000).toDateString();
+  const date = sub(now, {
+    minutes: minutes,
+    days: days,
+    weeks: weeks
+  });
+
+  return date.toISOString();
 };
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
@@ -26,7 +32,7 @@ type Story = StoryObj<typeof meta>;
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 export const Live: Story = {
   args: {
-    lastSeen: new Date().toISOString(), // now
+    lastSeen: timeAgo({ minutes: 1 }), // now
     firstSeen: timeAgo({ minutes: 59 })
   }
 };
