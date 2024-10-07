@@ -3,6 +3,7 @@ import { GlobeIcon } from "../../common/icons/16px/GlobeIcon";
 import { WrenchIcon } from "../../common/icons/16px/WrenchIcon";
 import { Tooltip } from "../../common/v3/Tooltip";
 import { trackingEvents } from "../../Main/tracking";
+import { Status } from "./Status";
 import * as s from "./styles";
 import { SpanInfoProps } from "./types";
 
@@ -65,6 +66,9 @@ export const SpanInfo = ({ onCollapse, data }: SpanInfoProps) => {
             </s.Stat>
           ))}
         </s.StatsContainer>
+        {data.lastSeen && data.firstSeen && (
+          <Status firstSeen={data.firstSeen} lastSeen={data.lastSeen} />
+        )}
         <s.CollapseButton onClick={handleCollapseButtonClick}>
           Collapse
         </s.CollapseButton>

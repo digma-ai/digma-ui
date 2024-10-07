@@ -1,4 +1,4 @@
-import { SpanInfoData } from "../useSpanInfoData";
+import { SpanInfoData } from "./types";
 
 export const mockedSpanInfoData: SpanInfoData = {
   displayName:
@@ -42,5 +42,7 @@ export const mockedSpanInfoData: SpanInfoData = {
       type: "Public",
       name: "Production"
     }
-  ]
+  ],
+  firstSeen: "2024-08-07T11:59:41.727487Z",
+  lastSeen: "2024-10-04T09:21:14.115914Z"
 };

@@ -135,7 +135,8 @@ const data: RecentActivityData = {
         unit: "ms",
         raw: 3902134
       },
-      slimAggregatedInsights: []
+      slimAggregatedInsights: [],
+      spansCount: 10
     },
     {
       environment: "ENV_RENDER#ID#1",
@@ -161,6 +162,7 @@ const data: RecentActivityData = {
     {
       environment: "ENV_RENDER#ID#1",
       traceFlowDisplayName: "PetClinicWithAgent:HTTP GET /owners/{ownerId}",
+      spansCount: 10,
       firstEntrySpan: {
         displayText: "PetClinicWithAgent:HTTP GET /owners/{ownerId}",
         serviceName: "PetClinicWithAgent",

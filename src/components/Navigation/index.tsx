@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { actions as globalActions } from "../../actions";
 import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
@@ -17,12 +17,18 @@ import { ThreeDotsIcon } from "../common/icons/ThreeDotsIcon";
 // import { CodeButtonMenu } from "./CodeButtonMenu";
 import useDimensions from "react-cool-dimensions";
 import { getFeatureFlagValue } from "../../featureFlags";
+import { useFetchData } from "../../hooks/useFetchData";
 import { useConfigSelector } from "../../store/config/useConfigSelector";
+import { actions as mainActions } from "../Main/actions";
 import { EnvironmentBar } from "./EnvironmentBar";
 import { HistoryNavigationPanel } from "./HistoryNavigationPanel";
 import { KebabMenu } from "./KebabMenu";
 import { ScopeBar } from "./ScopeBar";
 import { SpanInfo } from "./SpanInfo";
+import {
+  GetHighlightsSpanInfoDataPayload,
+  SpanInfoData
+} from "./SpanInfo/types";
 import { Tabs } from "./Tabs";
 import { actions } from "./actions";
 import { IconButton } from "./common/IconButton";
@@ -33,7 +39,6 @@ import {
   // AutoFixMissingDependencyPayload,
   CodeContext
 } from "./types";
-import { useSpanInfoData } from "./useSpanInfoData";
 
 const isDisplayNameTooLong = (displayName: string, containerWidth: number) => {
   const CHAR_WIDTH = 8; // in pixels
@@ -104,7 +109,27 @@ export const Navigation = () => {
   // const previousCodeContext = usePrevious(codeContext);
   const previousEnvironment = usePrevious(environment);
   const [isSpanInfoVisible, setIsSpanInfoVisible] = useState(false);
-  const { data: spanInfo, getData: getSpanInfo } = useSpanInfoData();
+  const payload: GetHighlightsSpanInfoDataPayload = useMemo(
+    () => ({
+      query: {
+        spanCodeObjectId: scope?.span?.spanCodeObjectId ?? null
+      }
+    }),
+    [scope?.span?.spanCodeObjectId]
+  );
+
+  const { data: spanInfo } = useFetchData<
+    GetHighlightsSpanInfoDataPayload,
+    SpanInfoData
+  >(
+    {
+      requestAction: mainActions.GET_HIGHLIGHTS_SPAN_INFO_DATA,
+      responseAction: mainActions.SET_HIGHLIGHTS_SPAN_INFO_DATA,
+      isEnabled: Boolean(scope?.span?.spanCodeObjectId),
+      refreshOnPayloadChange: true
+    },
+    payload
+  );
   const previousSpanInfo = usePrevious(spanInfo);
 
   const isAtSpan = Boolean(scope?.span);
@@ -122,10 +147,6 @@ export const Navigation = () => {
       FeatureFlag.IS_HIGHLIGHTS_SPAN_INFO_ENABLED
     )
   );
-
-  useEffect(() => {
-    getSpanInfo();
-  }, []);
 
   useEffect(() => {
     const handleCodeContextData = (data: unknown) => {

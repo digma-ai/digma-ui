@@ -5,8 +5,11 @@ import {
   useReactTable
 } from "@tanstack/react-table";
 import { useMemo } from "react";
+import { getFeatureFlagValue } from "../../../featureFlags";
 import { Duration } from "../../../globals";
+import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { isNumber } from "../../../typeGuards/isNumber";
+import { FeatureFlag } from "../../../types";
 import { formatTimeDistance } from "../../../utils/formatTimeDistance";
 import { getDurationString } from "../../../utils/getDurationString";
 import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
@@ -106,6 +109,7 @@ export const RecentActivityTable = ({
   isTraceButtonVisible,
   headerHeight
 }: RecentActivityTableProps) => {
+  const { backendInfo } = useConfigSelector();
   const handleSpanLinkClick = (span: EntrySpan) => {
     onSpanLinkClick(span);
   };
@@ -113,6 +117,11 @@ export const RecentActivityTable = ({
   const handleTraceButtonClick = (traceId: string, span: EntrySpan) => {
     onTraceButtonClick(traceId, span);
   };
+
+  const spansCountEnabled = getFeatureFlagValue(
+    backendInfo,
+    FeatureFlag.RECENT_ACTIVITY_SPANS_COUNT_ENABLED
+  );
 
   const renderSpanLink = (span: EntrySpan) => (
     <s.SpanLinkContainer>
@@ -151,7 +160,7 @@ export const RecentActivityTable = ({
       id: "recentActivity",
       header: "Asset",
       meta: {
-        width: "60%",
+        width: "50%",
         minWidth: 60
       },
       cell: (info) => {
@@ -164,6 +173,23 @@ export const RecentActivityTable = ({
         );
       }
     }),
+    ...(spansCountEnabled
+      ? [
+          columnHelper.accessor("spansCount", {
+            header: "#Spans",
+            meta: {
+              width: "10%",
+              minWidth: 100,
+              textAlign: "center"
+            },
+            cell: (info) => (
+              <s.SpanCounterContainer>
+                <s.SpanCounter>{info.getValue()}</s.SpanCounter>
+              </s.SpanCounterContainer>
+            )
+          })
+        ]
+      : []),
     columnHelper.accessor("latestTraceTimestamp", {
       header: "Executed",
       meta: {
@@ -231,7 +257,8 @@ export const RecentActivityTable = ({
                   key={header.id}
                   style={{
                     width: meta.width,
-                    minWidth: meta.minWidth
+                    minWidth: meta.minWidth,
+                    textAlign: meta.textAlign
                   }}
                 >
                   {header.isPlaceholder

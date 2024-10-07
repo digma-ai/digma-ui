@@ -15,6 +15,7 @@ export const featureFlagMinBackendVersions: Record<FeatureFlag, string> = {
   [FeatureFlag.ARE_ISSUES_SERVICES_FILTERS_ENABLED]: "0.3.103",
   [FeatureFlag.ARE_EXTENDED_ASSETS_FILTERS_ENABLED]: "0.3.107",
   [FeatureFlag.IS_NEW_IMPACT_SCORE_CALCULATION_ENABLED]: "0.3.107",
+  [FeatureFlag.RECENT_ACTIVITY_SPANS_COUNT_ENABLED]: "0.3.118",
   [FeatureFlag.IS_METRICS_REPORT_ENABLED]: "0.3.120-alpha.15",
   [FeatureFlag.IS_METRICS_REPORT_CRITICALITY_ENABLED]: "0.3.121",
   [FeatureFlag.IS_METRICS_REPORT_DATA_FILTER_ENABLED]: "0.3.122-alpha.3",
