@@ -41,7 +41,7 @@ const getStatus = (lastSeen: Date) => {
 export const Status = ({ firstSeen, lastSeen }: StatusProps) => {
   const status = getStatus(new Date(lastSeen));
   if (!status) {
-    return <></>;
+    return null;
   }
 
   return (
