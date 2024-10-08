@@ -71,7 +71,8 @@ export const Default: Story = {
     codeContext: mockedCodeContext,
     linkedEndpoints: [
       {
-        spanCodeObjectId: "span:codeObject",
+        spanCodeObjectId:
+          "span:codeObjectasdasdasdsadasdassadasdasdasdsadasdasdasdasdasdasdasdsadsadasdasd",
         displayName: "testMethodCall",
         environment: "TEST"
       },
@@ -110,7 +111,7 @@ export const HasMultipleCodeLocations: Story = {
     linkedEndpoints: [
       {
         spanCodeObjectId: "span:codeObject",
-        displayName: "testMethodCall",
+        displayName: "testMethodCallasdasdasdasdadasdsadasdsadsadasdasdsads",
         environment: "TEST"
       },
       {

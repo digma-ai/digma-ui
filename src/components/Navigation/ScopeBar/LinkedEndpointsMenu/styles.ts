@@ -18,10 +18,17 @@ export const MenuItem = styled.div`
   align-items: center;
   color: ${({ theme }) => theme.colors.v3.icon.brandSecondary};
   cursor: pointer;
+
   ${bodyRegularTypography}
 
   &:hover {
     text-decoration: underline;
+  }
+
+  span {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
 `;
 

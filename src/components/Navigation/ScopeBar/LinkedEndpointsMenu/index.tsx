@@ -19,18 +19,16 @@ export const LinkedEndpointsMenu = ({
     <s.Container>
       <s.Title>This client assets calls the following endpoint:</s.Title>
       <MenuList
-        items={[
-          ...endpoints.map((x) => ({
-            id: x.spanCodeObjectId,
-            customContent: (
-              <s.MenuItem onClick={() => handleMenuItemClick(x)}>
-                <HTTPClientIcon size={12} color="currentColor" />
-                <span>{x.displayName}</span>
-              </s.MenuItem>
-            ),
-            disabled: false
-          }))
-        ]}
+        items={endpoints.map((x) => ({
+          id: x.spanCodeObjectId,
+          customContent: (
+            <s.MenuItem onClick={() => handleMenuItemClick(x)}>
+              <HTTPClientIcon size={12} color="currentColor" />
+              <span>{x.displayName}</span>
+            </s.MenuItem>
+          ),
+          disabled: false
+        }))}
       />
     </s.Container>
   );

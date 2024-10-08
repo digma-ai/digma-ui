@@ -395,7 +395,11 @@ export const Navigation = () => {
             isExpanded={isSpanInfoVisible}
             onExpandCollapseChange={handleScopeDisplayNameExpandCollapseChange}
             isSpanInfoEnabled={isSpanInfoEnabled}
-            linkedEndpoints={spanInfo?.linkedEndpoints ?? []}
+            linkedEndpoints={
+              spanInfo?.linkedEndpoints?.filter(
+                (x) => x.environment === environment?.id
+              ) ?? []
+            }
           />
         ) : (
           <EnvironmentBar

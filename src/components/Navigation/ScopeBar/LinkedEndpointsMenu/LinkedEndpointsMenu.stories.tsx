@@ -19,7 +19,8 @@ export const Default: StoryObj = {
     endpoints: [
       {
         spanCodeObjectId: "span:codeObject",
-        displayName: "testMethodCall",
+        displayName:
+          "testMethodCallasdasdsadsadasdasdasdasdasdasdasdsadasdsads",
         environment: "TEST"
       },
       {
