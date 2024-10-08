@@ -11,6 +11,12 @@ export interface GetHighlightsSpanInfoDataPayload {
   };
 }
 
+export interface LinkedEndpoint {
+  spanCodeObjectId: string;
+  displayName: string;
+  environment: string;
+}
+
 export interface SpanInfoData {
   displayName: string;
   services: string[];
@@ -18,4 +24,5 @@ export interface SpanInfoData {
   assetTypeId: string;
   firstSeen?: string;
   lastSeen?: string;
+  linkedEndpoints?: LinkedEndpoint[];
 }

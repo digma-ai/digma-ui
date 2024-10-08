@@ -5,6 +5,7 @@ import {
 } from "../../common/App/typographies";
 import { CopyButton } from "../../common/v3/CopyButton";
 import { Bar } from "../common/Bar";
+import { Popup } from "../common/Popup";
 
 export const ScopeBar = styled(Bar)`
   ${bodyRegularTypography}
@@ -70,4 +71,8 @@ export const ScopeBarButton = styled.button`
   &:hover:enabled {
     color: ${({ theme }) => theme.colors.v3.icon.primary};
   }
+`;
+
+export const LinkedEndpointsPopup = styled(Popup)`
+  margin: 4px 8px;
 `;

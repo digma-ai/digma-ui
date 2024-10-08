@@ -1,20 +1,24 @@
 import { useEffect, useState } from "react";
 import { history } from "../../../containers/Main/history";
 import { isString } from "../../../typeGuards/isString";
+import { changeScope } from "../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { trackingEvents as mainTrackingEvents } from "../../Main/tracking";
 import { CodeDetails, Scope } from "../../common/App/types";
 import { NewPopover } from "../../common/NewPopover";
+import { ChainIcon } from "../../common/icons/14px/ChainIcon";
 import { CrosshairIcon } from "../../common/icons/16px/CrosshairIcon";
 import { MaximizeIcon } from "../../common/icons/16px/MaximizeIcon";
 import { MinimizeIcon } from "../../common/icons/16px/MinimizeIcon";
 import { EndpointIcon } from "../../common/icons/EndpointIcon";
 import { NewIconButton } from "../../common/v3/NewIconButton";
 import { Tooltip } from "../../common/v3/Tooltip";
+import { LinkedEndpoint } from "../SpanInfo/types";
 import { actions } from "../actions";
 import { Popup } from "../common/Popup";
 import { trackingEvents } from "../tracking";
 import { CodeContext, GoToCodeLocationPayload } from "../types";
+import { LinkedEndpointsMenu } from "./LinkedEndpointsMenu";
 import { TargetButtonMenu } from "./TargetButtonMenu";
 import * as s from "./styles";
 import { ScopeBarProps } from "./types";
@@ -60,9 +64,12 @@ export const ScopeBar = ({
   codeContext,
   isExpanded,
   onExpandCollapseChange,
-  isSpanInfoEnabled
+  isSpanInfoEnabled,
+  linkedEndpoints
 }: ScopeBarProps) => {
   const [isTargetButtonMenuOpen, setIsTargetButtonMenuOpen] = useState(false);
+  const [isLinkedEndpointsMenuOpen, setIsLinkedEndpointsMenuOpen] =
+    useState(false);
 
   const location = history.getCurrentLocation();
   const spanDisplayName = scope?.span?.displayName;
@@ -94,6 +101,8 @@ export const ScopeBar = ({
     (scope.code.codeDetailsList.length > 1 ||
       scope.code.relatedCodeDetailsList.length > 0);
 
+  const isLinkedEndpointsButtonEnabled = linkedEndpoints.length > 0;
+
   useEffect(() => {
     setIsTargetButtonMenuOpen(false);
   }, [scope]);
@@ -108,6 +117,15 @@ export const ScopeBar = ({
     setIsTargetButtonMenuOpen(false);
   };
 
+  const handleLinkedEndpointsClick = (endpoint: LinkedEndpoint) => {
+    changeScope({
+      span: {
+        spanCodeObjectId: endpoint.spanCodeObjectId
+      }
+    });
+    setIsLinkedEndpointsMenuOpen(true);
+  };
+
   const handleExpandCollapseButtonClick = () => {
     if (isExpanded) {
       sendUserActionTrackingEvent(
@@ -119,6 +137,11 @@ export const ScopeBar = ({
       );
     }
     onExpandCollapseChange(!isExpanded);
+  };
+
+  const handleLinkedEndpointsButtonClick = () => {
+    sendUserActionTrackingEvent(trackingEvents.LINKED_ENDPOINTS_BUTTON_CLICKED);
+    setIsLinkedEndpointsMenuOpen(!isLinkedEndpointsMenuOpen);
   };
 
   const handleTargetButtonClick = () => {
@@ -160,6 +183,32 @@ export const ScopeBar = ({
           </>
         ) : null}
       </s.ScopeNameContainer>
+      {isLinkedEndpointsButtonEnabled && (
+        <NewPopover
+          content={
+            <s.LinkedEndpointsPopup height={"126px"}>
+              <LinkedEndpointsMenu
+                endpoints={linkedEndpoints}
+                onEndpointsClick={handleLinkedEndpointsClick}
+              />
+            </s.LinkedEndpointsPopup>
+          }
+          onOpenChange={setIsLinkedEndpointsMenuOpen}
+          isOpen={isLinkedEndpointsMenuOpen}
+          placement={"bottom-start"}
+          width={"100%"}
+        >
+          <div>
+            <Tooltip title={"Click to see the target endpoint"}>
+              <NewIconButton
+                icon={ChainIcon}
+                onClick={handleLinkedEndpointsButtonClick}
+                buttonType={"secondaryBorderless"}
+              />
+            </Tooltip>
+          </div>
+        </NewPopover>
+      )}
       {isSpanInfoEnabled && (
         <Tooltip title={isExpanded ? "Collapse" : "Expand"}>
           <NewIconButton
