@@ -13,6 +13,7 @@ export interface GlobalErrorData {
   id: string;
   errorType: string;
   fromDisplayName: string;
+  fromFullyQualifiedName?: string;
   fromCodeObjectId: string;
   status: string;
   firstDetected: string;

@@ -4,6 +4,7 @@ export const mockedGlobalErrorData: GlobalErrorData = {
   id: "034b64a4-83de-11ef-bc2a-0242ac160003",
   errorType: "java.util.InvalidPropertiesFormatException",
   fromDisplayName: "Check",
+  fromFullyQualifiedName: "Check",
   fromCodeObjectId:
     "method:org.springframework.samples.petclinic.sample.Utils$_$Check",
   status: "Recent, 2 days ago",

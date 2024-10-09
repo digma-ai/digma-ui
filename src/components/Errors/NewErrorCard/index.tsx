@@ -16,8 +16,15 @@ export const NewErrorCard = ({
   data,
   onSourceLinkClick
 }: NewErrorCardProps) => {
-  const { id, affectedEndpoints, score, errorType, fromDisplayName, status } =
-    data;
+  const {
+    id,
+    affectedEndpoints,
+    score,
+    errorType,
+    fromDisplayName,
+    fromFullyQualifiedName,
+    status
+  } = data;
   const selectorOptions = useMemo(
     () =>
       affectedEndpoints.map((x) => ({
@@ -76,7 +83,7 @@ export const NewErrorCard = ({
           <Tooltip title={errorType}>
             <s.Title>{errorType}</s.Title>
           </Tooltip>
-          <Tooltip title={fromDisplayName}>
+          <Tooltip title={fromFullyQualifiedName ?? fromDisplayName}>
             <s.SourceLink onClick={handleLinkClick}>
               {fromDisplayName}
             </s.SourceLink>
