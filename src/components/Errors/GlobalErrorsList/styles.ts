@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { footnoteRegularTypography } from "../../common/App/typographies";
 
 export const Container = styled.div`
   display: flex;
@@ -28,4 +29,15 @@ export const EmptyStateContainer = styled.div`
   height: 100%;
   align-items: center;
   justify-content: center;
+`;
+
+export const EmptyStateContent = styled.div`
+  ${footnoteRegularTypography}
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  max-width: 210px;
+  color: ${({ theme }) => theme.colors.v3.text.tertiary};
 `;

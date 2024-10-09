@@ -1,12 +1,12 @@
 import { useMemo, useState } from "react";
 import { changeScope } from "../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
-import { Tooltip } from "../../common/v3/Tooltip";
 import {
   AffectedEndpointsSelector,
   getEndpointKey
-} from "../../Insights/InsightsCatalog/InsightsPage/AffectedEndpointsSelector";
-import { Option } from "../../Insights/InsightsCatalog/InsightsPage/AffectedEndpointsSelector/types";
+} from "../../common/AffectedEndpointsSelector";
+import { Option } from "../../common/AffectedEndpointsSelector/types";
+import { Tooltip } from "../../common/v3/Tooltip";
 import { HIGH_SEVERITY_SCORE_THRESHOLD } from "../Score";
 import { trackingEvents } from "../tracking";
 import * as s from "./styles";

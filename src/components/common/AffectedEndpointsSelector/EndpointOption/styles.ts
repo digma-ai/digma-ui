@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
-import { footnoteRegularTypography } from "../../../../../common/App/typographies";
-import { CopyButton } from "../../../../../common/v3/CopyButton";
+import { footnoteRegularTypography } from "../../App/typographies";
+import { CopyButton } from "../../v3/CopyButton";
 import { EndpointNameProps } from "./types";
 
 export const StyledCopyButton = styled(CopyButton)`

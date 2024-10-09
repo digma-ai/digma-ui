@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { footnoteRegularTypography } from "../../../../common/App/typographies";
+import { footnoteRegularTypography } from "../App/typographies";
 
 export const ListHeader = styled.div`
   display: flex;

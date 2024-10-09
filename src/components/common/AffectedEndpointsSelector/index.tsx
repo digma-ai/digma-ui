@@ -1,8 +1,8 @@
 import { ReactNode } from "react";
-import { DELIMITER } from "../../../../../constants";
-import { trimEndpointScheme } from "../../../../../utils/trimEndpointScheme";
-import { Select } from "../insightCards/common/InsightCard/Select";
-import { CustomContentProps } from "../insightCards/common/InsightCard/Select/types";
+import { DELIMITER } from "../../../constants";
+import { trimEndpointScheme } from "../../../utils/trimEndpointScheme";
+import { Select } from "../../Insights/InsightsCatalog/InsightsPage/insightCards/common/InsightCard/Select";
+import { CustomContentProps } from "../../Insights/InsightsCatalog/InsightsPage/insightCards/common/InsightCard/Select/types";
 import { EndpointOption } from "./EndpointOption";
 import * as s from "./styles";
 import { AffectedEndpointsSelectorProps, Option } from "./types";

@@ -18,8 +18,8 @@ import { CardsColoredIcon } from "../../common/icons/CardsColoredIcon";
 import { NewPopover } from "../../common/NewPopover";
 import { SearchInput } from "../../common/SearchInput";
 import { NewButton } from "../../common/v3/NewButton";
+import { NewEmptyState } from "../../common/v3/NewEmptyState";
 import { Pagination } from "../../common/v3/Pagination";
-import { EmptyState } from "../../Dashboard/MetricsReport/EmptyState";
 import { useHistory } from "../../Main/useHistory";
 import { MenuList } from "../../Navigation/common/MenuList";
 import { Popup } from "../../Navigation/common/Popup";
@@ -93,6 +93,7 @@ export const GlobalErrorsList = () => {
     SetGlobalErrorsDataPayload
   >(dataFetcherConfiguration, payload);
 
+  // Set data to store on fetch
   useEffect(() => {
     if (data) {
       setGlobalErrorsData(data);
@@ -104,7 +105,7 @@ export const GlobalErrorsList = () => {
     setGlobalErrorsPage(0);
   }, [environmentId, search, setGlobalErrorsPage]);
 
-  // Reset scroll on filters change
+  // Reset scroll position on filters change
   useEffect(() => {
     if (listContainerRef.current) {
       listContainerRef.current.scrollTo(0, 0);
@@ -205,17 +206,20 @@ export const GlobalErrorsList = () => {
           />
         </>
       ) : (
-        <EmptyState
-          icon={<CardsColoredIcon size={30} />}
+        <NewEmptyState
+          icon={CardsColoredIcon}
           title={"No errors"}
-          message={
-            "No data is available for the selected filters. Try resetting your filters."
-          }
-          customContent={
-            <NewButton
-              label={"Reset filters"}
-              onClick={handleResetFiltersButtonClick}
-            />
+          content={
+            <s.EmptyStateContent>
+              <span>
+                No data is available for the selected filters. Try resetting
+                your filters.
+              </span>
+              <NewButton
+                label={"Reset filters"}
+                onClick={handleResetFiltersButtonClick}
+              />
+            </s.EmptyStateContent>
           }
         />
       )}

@@ -3,15 +3,15 @@ import { useConfigSelector } from "../../../../../../store/config/useConfigSelec
 import { isNull } from "../../../../../../typeGuards/isNull";
 import { getDurationString } from "../../../../../../utils/getDurationString";
 import { trimEndpointScheme } from "../../../../../../utils/trimEndpointScheme";
+import {
+  AffectedEndpointsSelector,
+  getEndpointKey
+} from "../../../../../common/AffectedEndpointsSelector";
+import { Option } from "../../../../../common/AffectedEndpointsSelector/types";
 import { TraceIcon } from "../../../../../common/icons/12px/TraceIcon";
 import { Button } from "../../../../../common/v3/Button";
 import { Tooltip } from "../../../../../common/v3/Tooltip";
 import { InsightType, Trace } from "../../../../types";
-import {
-  AffectedEndpointsSelector,
-  getEndpointKey
-} from "../../AffectedEndpointsSelector";
-import { Option } from "../../AffectedEndpointsSelector/types";
 import { InsightCard } from "../common/InsightCard";
 import { ColumnsContainer } from "../common/InsightCard/ColumnsContainer";
 import { KeyValue } from "../common/InsightCard/KeyValue";
