@@ -24,6 +24,7 @@ import { MenuList } from "../../Navigation/common/MenuList";
 import { Popup } from "../../Navigation/common/Popup";
 import { actions } from "../actions";
 import { NewErrorCard } from "../NewErrorCard";
+import { NoDataEmptyState } from "../NoDataEmptyState";
 import { trackingEvents } from "../tracking";
 import * as s from "./styles";
 import {
@@ -156,70 +157,76 @@ export const GlobalErrorsList = () => {
     setGlobalErrorsPage(0);
   };
 
+  const areAnyFiltersApplied = search;
+
   return (
     <s.Container>
-      {list && list.length > 0 ? (
-        <>
-          <s.ToolbarContainer>
-            <SearchInput value={search} onChange={handleSearchInputChange} />
-            <NewPopover
-              isOpen={isSortingMenuOpen}
-              onOpenChange={setIsSortingMenuOpen}
-              content={
-                <Popup>
-                  <MenuList items={sortingMenuItems} />
-                </Popup>
-              }
-              placement={"bottom-end"}
-            >
-              <NewButton
-                icon={() => (
-                  <s.SortButtonIconContainer>
-                    <OppositeArrowsIcon size={12} color={"currentColor"} />
-                  </s.SortButtonIconContainer>
-                )}
-                label={"Sort"}
-                buttonType={"secondary"}
-                onClick={handleSortingMenuButtonClick}
-              />
-            </NewPopover>
-          </s.ToolbarContainer>
-          <s.ListContainer ref={listContainerRef}>
-            {list.map((x) => (
-              <NewErrorCard
-                key={x.id}
-                data={x}
-                onSourceLinkClick={handleErrorSourceLinkClick}
-              />
-            ))}
-          </s.ListContainer>
-          <Pagination
-            itemsCount={totalCount}
-            page={page}
-            pageSize={pageSize}
-            onPageChange={handlePageChange}
-            extendedNavigation={true}
-            withDescription={true}
+      {list ? (
+        list.length > 0 ? (
+          <>
+            <s.ToolbarContainer>
+              <SearchInput value={search} onChange={handleSearchInputChange} />
+              <NewPopover
+                isOpen={isSortingMenuOpen}
+                onOpenChange={setIsSortingMenuOpen}
+                content={
+                  <Popup>
+                    <MenuList items={sortingMenuItems} />
+                  </Popup>
+                }
+                placement={"bottom-end"}
+              >
+                <NewButton
+                  icon={() => (
+                    <s.SortButtonIconContainer>
+                      <OppositeArrowsIcon size={12} color={"currentColor"} />
+                    </s.SortButtonIconContainer>
+                  )}
+                  label={"Sort"}
+                  buttonType={"secondary"}
+                  onClick={handleSortingMenuButtonClick}
+                />
+              </NewPopover>
+            </s.ToolbarContainer>
+            <s.ListContainer ref={listContainerRef}>
+              {list.map((x) => (
+                <NewErrorCard
+                  key={x.id}
+                  data={x}
+                  onSourceLinkClick={handleErrorSourceLinkClick}
+                />
+              ))}
+            </s.ListContainer>
+            <Pagination
+              itemsCount={totalCount}
+              page={page}
+              pageSize={pageSize}
+              onPageChange={handlePageChange}
+              extendedNavigation={true}
+              withDescription={true}
+            />
+          </>
+        ) : areAnyFiltersApplied ? (
+          <NewEmptyState
+            icon={CardsColoredIcon}
+            title={"No errors"}
+            content={
+              <s.EmptyStateContent>
+                <span>
+                  No data is available for the selected filters. Try resetting
+                  your filters.
+                </span>
+                <NewButton
+                  label={"Reset filters"}
+                  onClick={handleResetFiltersButtonClick}
+                />
+              </s.EmptyStateContent>
+            }
           />
-        </>
-      ) : (
-        <NewEmptyState
-          icon={CardsColoredIcon}
-          title={"No errors"}
-          content={
-            <s.EmptyStateContent>
-              <span>
-                No data is available for the selected filters. Try resetting
-                your filters.
-              </span>
-              <NewButton
-                label={"Reset filters"}
-                onClick={handleResetFiltersButtonClick}
-              />
-            </s.EmptyStateContent>
-          }
-        />
-      )}
+        ) : (
+          <NoDataEmptyState />
+        )
+      ) : null}
     </s.Container>
   );
 };
