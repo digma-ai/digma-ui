@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useTheme } from "styled-components";
 import {
   DataFetcherConfiguration,
   useFetchData
@@ -33,7 +32,6 @@ import {
 } from "./types";
 
 export const GlobalErrorsList = () => {
-  const theme = useTheme();
   const { goTo } = useHistory();
   const [isSortingMenuOpen, setIsSortingMenuOpen] = useState(false);
   const listContainerRef = useRef<HTMLDivElement>(null);
@@ -160,7 +158,7 @@ export const GlobalErrorsList = () => {
 
   return (
     <s.Container>
-      {list ? (
+      {list && list.length > 0 ? (
         <>
           <s.ToolbarContainer>
             <SearchInput value={search} onChange={handleSearchInputChange} />
@@ -176,10 +174,9 @@ export const GlobalErrorsList = () => {
             >
               <NewButton
                 icon={() => (
-                  <OppositeArrowsIcon
-                    size={12}
-                    color={theme.colors.v3.icon.tertiary}
-                  />
+                  <s.SortButtonIconContainer>
+                    <OppositeArrowsIcon size={12} color={"currentColor"} />
+                  </s.SortButtonIconContainer>
                 )}
                 label={"Sort"}
                 buttonType={"secondary"}

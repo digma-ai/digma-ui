@@ -9,6 +9,7 @@ import { useMetricsReportSelector } from "../../../../store/metricsReport/useMet
 import { useStore } from "../../../../store/useStore";
 import { FeatureFlag } from "../../../../types";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
+import { formatUnit } from "../../../../utils/formatUnit";
 import { CodeIcon } from "../../../common/icons/12px/CodeIcon";
 import { DurationBreakdownIcon } from "../../../common/icons/12px/DurationBreakdownIcon";
 import { WrenchIcon } from "../../../common/icons/12px/WrenchIcon";
@@ -47,9 +48,6 @@ const criticalityOptions: { id: Criticality; label: string }[] = [
     label: "Low"
   }
 ];
-
-export const formatUnit = (value: number, unit: string) =>
-  value === 1 ? `${value} ${unit}` : `${value} ${unit}s`;
 
 const DEFAULT_PERIOD = 7;
 
@@ -346,14 +344,17 @@ export const Header = ({ onGoBack }: HeaderProps) => {
             <s.FilterSelect
               items={[1, 7].map((x) => ({
                 value: x.toString(),
-                label: formatUnit(x, "Day"),
+                label: `${x} ${formatUnit(x, "Day")}`,
                 selected: x === periodInDays,
                 enabled: true
               }))}
               showSelectedState={false}
               icon={DurationBreakdownIcon}
               onChange={handlePeriodChanged}
-              placeholder={`Period: ${formatUnit(periodInDays, "day")}`}
+              placeholder={`Period: ${periodInDays} ${formatUnit(
+                periodInDays,
+                "day"
+              )}`}
             />
           )}
           {isDataFilterEnabled && (

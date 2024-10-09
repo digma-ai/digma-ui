@@ -1,5 +1,6 @@
 import intervalToDuration from "date-fns/intervalToDuration";
 import { isNumber } from "../typeGuards/isNumber";
+import { formatUnit } from "./formatUnit";
 
 export type TimeUnit =
   | "seconds"
@@ -129,8 +130,8 @@ export const formatTimeDistance = (
   const format = options?.format ?? "long";
   let unitString = unitFormats[distance.unit][format];
 
-  if (distance.value !== 1 && format === "long") {
-    unitString = `${unitString}s`;
+  if (format === "long") {
+    unitString = formatUnit(distance.value, unitString);
   }
 
   const distanceString = distance ? `${distance.value} ${unitString}` : "";

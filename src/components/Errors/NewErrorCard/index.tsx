@@ -6,11 +6,28 @@ import {
   getEndpointKey
 } from "../../common/AffectedEndpointsSelector";
 import { Option } from "../../common/AffectedEndpointsSelector/types";
+import { TagType } from "../../common/v3/Tag/types";
 import { Tooltip } from "../../common/v3/Tooltip";
 import { HIGH_SEVERITY_SCORE_THRESHOLD } from "../Score";
 import { trackingEvents } from "../tracking";
 import * as s from "./styles";
 import { NewErrorCardProps } from "./types";
+
+const getStatusTagType = (status: string): TagType => {
+  if (status === "High number of errors") {
+    return "highSeverity";
+  }
+
+  if (status === "Escalating") {
+    return "mediumSeverity";
+  }
+
+  if (status.includes("Recent")) {
+    return "lowSeverity";
+  }
+
+  return "default";
+};
 
 export const NewErrorCard = ({
   data,
@@ -25,6 +42,7 @@ export const NewErrorCard = ({
     fromFullyQualifiedName,
     status
   } = data;
+  const statusTagType = getStatusTagType(status);
   const selectorOptions = useMemo(
     () =>
       affectedEndpoints.map((x) => ({
@@ -89,7 +107,7 @@ export const NewErrorCard = ({
             </s.SourceLink>
           </Tooltip>
         </s.TitleContainer>
-        <s.StatusTag content={status} title={status} />
+        <s.StatusTag content={status} title={status} type={statusTagType} />
       </s.Header>
       {selectorOptions.length > 0 && (
         <s.AffectedEndpointsContainer>

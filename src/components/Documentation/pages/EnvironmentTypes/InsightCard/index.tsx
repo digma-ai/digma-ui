@@ -117,9 +117,10 @@ export const InsightCard = ({ type, isDisabled }: InsightCardProps) => {
         {!isDisabled && (
           <>
             {isNumber(count) ? (
-              <s.CountChip $count={count}>{`${count} issue${
-                count === 1 ? "" : "s"
-              } found`}</s.CountChip>
+              <s.CountChip $count={count}>{`${count} ${formatUnit(
+                count,
+                "issue"
+              )} found`}</s.CountChip>
             ) : (
               <s.NoDataContainer>
                 <s.NoDataChip>No Data</s.NoDataChip>

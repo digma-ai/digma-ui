@@ -1,6 +1,7 @@
 import { trackingEvents as globalTrackingEvents } from "../../../../trackingEvents";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { addPrefix } from "../../../../utils/addPrefix";
+import { formatUnit } from "../../../../utils/formatUnit";
 import { ChevronIcon } from "../../icons/12px/ChevronIcon";
 import { DoubleChevronIcon } from "../../icons/DoubleChevronIcon";
 import { Direction } from "../../icons/types";
@@ -46,7 +47,7 @@ export const Pagination = ({
           {withDescription && (
             <s.Description>
               Showing {pageStartItemNumber} - {pageEndItemNumber} of{" "}
-              {itemsCount} Result{itemsCount > 1 ? "s" : ""}
+              {itemsCount} {formatUnit(itemsCount, "Result")}
             </s.Description>
           )}
           <s.ButtonGroup>

@@ -41,3 +41,7 @@ export const EmptyStateContent = styled.div`
   max-width: 210px;
   color: ${({ theme }) => theme.colors.v3.text.tertiary};
 `;
+
+export const SortButtonIconContainer = styled.div`
+  color: ${({ theme }) => theme.colors.v3.icon.tertiary};
+`;

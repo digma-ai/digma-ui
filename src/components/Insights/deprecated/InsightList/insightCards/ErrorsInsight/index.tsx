@@ -1,3 +1,4 @@
+import { formatUnit } from "../../../../../../utils/formatUnit";
 import { Button } from "../../../../../common/Button";
 import { Description, Link } from "../../../../styles";
 import { InsightCard } from "../../InsightCard";
@@ -29,8 +30,7 @@ export const ErrorsInsight = ({
       content={
         <s.ContentContainer>
           <Description>
-            {insight.errorCount} Error
-            {insight.errorCount === 1 ? "" : "s"}
+            {insight.errorCount} {formatUnit(insight.errorCount, "Error")}
           </Description>
           <span>
             {insight.unhandledCount} unhandled, {insight.unexpectedCount}{" "}
