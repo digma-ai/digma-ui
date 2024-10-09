@@ -8,7 +8,6 @@ export type EmptyStateType =
 
 export interface EmptyStateProps {
   type: EmptyStateType;
-  customContent?: ReactNode;
 }
 
 export interface EmptyStateContent {

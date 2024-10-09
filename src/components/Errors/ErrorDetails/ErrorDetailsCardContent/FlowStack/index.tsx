@@ -63,7 +63,7 @@ export const FlowStack = ({ data }: FlowStackProps) => {
       codeObjectIds: frameStacks
         .map((stack) => stack.frames.map((x) => x?.codeObjectId))
         .flat()
-        .filter((x) => isString(x)) as string[]
+        .filter(isString)
     }),
     [frameStacks]
   );

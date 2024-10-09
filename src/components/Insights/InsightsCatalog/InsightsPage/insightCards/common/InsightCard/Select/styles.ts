@@ -22,7 +22,7 @@ export const SelectBar = styled.div<SelectBarProps>`
   border-radius: 4px;
   display: flex;
   align-items: center;
-  box-shadow: 1 1 4px 0 rgb(0 0 0 / 25%);
+  box-shadow: 1px 1px 4px 0 rgb(0 0 0 / 25%);
   cursor: ${({ $isDisabled }) => ($isDisabled ? "initial" : "pointer")};
   border: 1px solid
     ${({ theme, $isOpen }) =>

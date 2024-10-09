@@ -53,7 +53,7 @@ export const EndpointName = styled.div<EndpointNameProps>`
 `;
 
 export const ServiceName = styled.span`
-  max-width: 50%;
+  max-width: fit-content;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
