@@ -1,3 +1,4 @@
+import { DELIMITER } from "../../../../../../constants";
 import { trimEndpointScheme } from "../../../../../../utils/trimEndpointScheme";
 import * as s from "../styles";
 import { ScalingIssueCommonProps } from "../types";
@@ -19,13 +20,17 @@ export const ScalingIssueAffectedEndpoints = ({
     <div>
       <div>Affected endpoints:</div>
       <s.List>
-        {endpoints.map((x) => (
-          <li key={x.route}>
-            <div>
-              {x.serviceName} {trimEndpointScheme(x.route)}
-            </div>
-          </li>
-        ))}
+        {endpoints.map((x) => {
+          const key = [x.serviceName, x.route].join(DELIMITER);
+
+          return (
+            <li key={key}>
+              <div>
+                {x.serviceName} {trimEndpointScheme(x.route)}
+              </div>
+            </li>
+          );
+        })}
       </s.List>
     </div>
   );

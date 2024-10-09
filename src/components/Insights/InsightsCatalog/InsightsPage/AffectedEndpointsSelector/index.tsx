@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { DELIMITER } from "../../../../../constants";
 import { trimEndpointScheme } from "../../../../../utils/trimEndpointScheme";
 import { Select } from "../insightCards/common/InsightCard/Select";
 import { CustomContentProps } from "../insightCards/common/InsightCard/Select/types";
@@ -7,7 +8,6 @@ import * as s from "./styles";
 import { AffectedEndpointsSelectorProps, Option } from "./types";
 
 export const getEndpointKey = (option: Option): string => {
-  const DELIMITER = "|__|";
   return [option.serviceName, option.spanCodeObjectId].join(DELIMITER);
 };
 

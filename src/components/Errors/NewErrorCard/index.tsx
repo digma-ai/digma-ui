@@ -27,8 +27,8 @@ export const NewErrorCard = ({
       })),
     [affectedEndpoints]
   );
-  const [selectedEndpoint, setSelectedEndpoint] = useState<Option | null>(
-    selectorOptions.length > 0 ? selectorOptions[0] : null
+  const [selectedEndpoint, setSelectedEndpoint] = useState(
+    selectorOptions.length > 0 ? selectorOptions[0] : undefined
   );
   const isCritical = score.score > HIGH_SEVERITY_SCORE_THRESHOLD;
 
@@ -37,23 +37,24 @@ export const NewErrorCard = ({
     onSourceLinkClick(id);
   };
 
-  const handleAffectedEndpointChange = (selectedOption: Option | null) => {
+  const handleAffectedEndpointsSelectorChange = (
+    selectedOption: Option | null
+  ) => {
     sendUserActionTrackingEvent(
       trackingEvents.ERROR_CARD_SELECTED_AFFECTED_ENDPOINT_CHANGED
     );
-    const selected = selectedOption
+    const newValue = selectedOption
       ? selectorOptions.find(
-          (x) => getEndpointKey(x) === getEndpointKey(selectedOption)
+          (x) =>
+            x.serviceName === selectedOption.serviceName &&
+            x.spanCodeObjectId === selectedOption.spanCodeObjectId
         )
-      : null;
-
-    const newValue = selected ?? null;
+      : undefined;
 
     setSelectedEndpoint(newValue);
   };
 
   const handleAffectedEndpointLinkClick = (spanCodeObjectId: string) => {
-    // TODO: add custom event?
     sendUserActionTrackingEvent(
       trackingEvents.ERROR_CARD_AFFECTED_ENDPOINT_LINK_CLICKED
     );
@@ -64,7 +65,7 @@ export const NewErrorCard = ({
     });
   };
 
-  const selectValue = selectedEndpoint
+  const selectorValue = selectedEndpoint
     ? getEndpointKey(selectedEndpoint)
     : undefined;
 
@@ -87,9 +88,9 @@ export const NewErrorCard = ({
         <s.AffectedEndpointsContainer>
           Affected Endpoints ({selectorOptions.length})
           <AffectedEndpointsSelector
-            onChange={handleAffectedEndpointChange}
+            onChange={handleAffectedEndpointsSelectorChange}
             onAssetLinkClick={handleAffectedEndpointLinkClick}
-            value={selectValue}
+            value={selectorValue}
             options={selectorOptions}
           />
         </s.AffectedEndpointsContainer>
