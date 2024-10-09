@@ -49,7 +49,7 @@ export const ErrorsList = ({
   }
 
   if (data.errors.length === 0) {
-    <NoDataEmptyState />;
+    return <NoDataEmptyState />;
   }
 
   const handleErrorCardClick = (errorId: string) => {
