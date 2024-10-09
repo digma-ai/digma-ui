@@ -10,6 +10,7 @@ import {
   useReactTable
 } from "@tanstack/react-table";
 import { Duration } from "../../../../../../globals";
+import { formatUnit } from "../../../../../../utils/formatUnit";
 import { Concurrency } from "../../../../types";
 import * as s from "./styles";
 
@@ -42,8 +43,7 @@ export const PerformanceAtScaleInsight = ({
 
         return (
           <>
-            At {callNumber} call
-            {callNumber > 1 ? "s" : ""} per second
+            At {callNumber} {formatUnit(callNumber, "call")} per second
           </>
         );
       }

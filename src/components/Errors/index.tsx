@@ -1,6 +1,8 @@
 import { useParams } from "react-router-dom";
+import { getFeatureFlagValue } from "../../featureFlags";
 import { useConfigSelector } from "../../store/config/useConfigSelector";
 import { trackingEvents as globalEvents } from "../../trackingEvents";
+import { FeatureFlag } from "../../types";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 import { ErrorIcon } from "../common/icons/16px/ErrorIcon";
 import { NewButton } from "../common/v3/NewButton";
@@ -9,15 +11,20 @@ import { useHistory } from "../Main/useHistory";
 import { TAB_IDS } from "../Navigation/Tabs/types";
 import { ErrorDetails } from "./ErrorDetails";
 import { ErrorsList } from "./ErrorsList";
+import { GlobalErrorsList } from "./GlobalErrorsList";
 import * as s from "./styles";
 
 export const Errors = () => {
-  const { scope } = useConfigSelector();
+  const { scope, backendInfo } = useConfigSelector();
   const spanCodeObjectId = scope?.span?.spanCodeObjectId;
   const methodId = scope?.span?.methodId ?? undefined;
   const { goTo } = useHistory();
   const params = useParams();
   const selectedErrorId = params.id;
+  const isGlobalErrorsViewEnabled = getFeatureFlagValue(
+    backendInfo,
+    FeatureFlag.ARE_GLOBAL_ERRORS_ENABLED
+  );
 
   const handleErrorSelect = (errorId: string) => {
     goTo(errorId);
@@ -28,7 +35,7 @@ export const Errors = () => {
   };
 
   const handleSeeAllAssetsClick = () => {
-    sendUserActionTrackingEvent(globalEvents.GOT_TO_ALL_ASSETS_CLICKED, {
+    sendUserActionTrackingEvent(globalEvents.GO_TO_ALL_ASSETS_CLICKED, {
       source: "Error tab"
     });
     goTo(`/${TAB_IDS.ASSETS}`);
@@ -45,6 +52,10 @@ export const Errors = () => {
     }
 
     if (!spanCodeObjectId) {
+      if (isGlobalErrorsViewEnabled) {
+        return <GlobalErrorsList />;
+      }
+
       return (
         <s.EmptyStateContainer>
           <NewEmptyState

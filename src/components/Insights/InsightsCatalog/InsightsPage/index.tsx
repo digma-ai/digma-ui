@@ -502,7 +502,7 @@ const renderEmptyState = (
   };
 
   const handleSeeAllAssetsClick = () => {
-    sendUserActionTrackingEvent(globalEvents.GOT_TO_ALL_ASSETS_CLICKED, {
+    sendUserActionTrackingEvent(globalEvents.GO_TO_ALL_ASSETS_CLICKED, {
       source: "Analytics tab"
     });
 

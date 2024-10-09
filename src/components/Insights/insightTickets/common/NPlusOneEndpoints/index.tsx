@@ -1,3 +1,4 @@
+import { DELIMITER } from "../../../../../constants";
 import { getCriticalityLabel } from "../../../../../utils/getCriticalityLabel";
 import { trimEndpointScheme } from "../../../../../utils/trimEndpointScheme";
 import * as s from "./styles";
@@ -18,20 +19,26 @@ export const NPlusOneEndpoints = ({ insight }: NPlusOneEndpointsProps) => {
     <div>
       <div>Affected endpoints:</div>
       <s.List>
-        {endpoints.map((x) => (
-          <li key={x.endpointInfo.route}>
-            <div>
-              {x.endpointInfo.serviceName}{" "}
-              {trimEndpointScheme(x.endpointInfo.route)}
-            </div>
-            <div>
-              Repeats: {x.occurrences}{" "}
-              {x.criticality > 0
-                ? `Criticality: ${getCriticalityLabel(x.criticality)}`
-                : ""}
-            </div>
-          </li>
-        ))}
+        {endpoints.map((x) => {
+          const key = [x.endpointInfo.serviceName, x.endpointInfo.route].join(
+            DELIMITER
+          );
+
+          return (
+            <li key={key}>
+              <div>
+                {x.endpointInfo.serviceName}{" "}
+                {trimEndpointScheme(x.endpointInfo.route)}
+              </div>
+              <div>
+                Repeats: {x.occurrences}{" "}
+                {x.criticality > 0
+                  ? `Criticality: ${getCriticalityLabel(x.criticality)}`
+                  : ""}
+              </div>
+            </li>
+          );
+        })}
       </s.List>
     </div>
   );

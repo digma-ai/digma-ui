@@ -1,3 +1,4 @@
+import { formatUnit } from "../../../utils/formatUnit";
 import { CircleLoader } from "../../common/CircleLoader";
 import { Link } from "../../common/Link";
 import { EmptyState } from "../EmptyState";
@@ -52,8 +53,8 @@ export const RecentView = ({
       {data && notificationsCount ? (
         <s.ContentContainer>
           <s.Subtitle>
-            Top {notificationsCount} Unread Notification
-            {notificationsCount > 1 ? "s" : ""}
+            Top {notificationsCount} Unread{" "}
+            {formatUnit(notificationsCount, "Notification")}
           </s.Subtitle>
           <NotificationList
             notifications={data.notifications}

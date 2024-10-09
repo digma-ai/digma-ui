@@ -1,4 +1,5 @@
-import { Tooltip } from "../../../../../common/v3/Tooltip";
+import { Link } from "../../v3/Link";
+import { Tooltip } from "../../v3/Tooltip";
 import * as s from "./styles";
 import { EndpointOptionProps } from "./types";
 
@@ -22,16 +23,13 @@ export const EndpointOption = ({
           onClick={() => onClick && onClick()}
         >
           <s.ServiceName>{serviceName}</s.ServiceName>
-
-          <s.Route>
-            {spanCodeObjectId && onSpanLinkClick ? (
-              <s.StyledLink onClick={() => onSpanLinkClick(spanCodeObjectId)}>
-                {route}
-              </s.StyledLink>
-            ) : (
-              <span>{route}</span>
-            )}
-          </s.Route>
+          {spanCodeObjectId && onSpanLinkClick ? (
+            <Link onClick={() => onSpanLinkClick(spanCodeObjectId)}>
+              {route}
+            </Link>
+          ) : (
+            <span>{route}</span>
+          )}
         </s.EndpointName>
       </Tooltip>
       {!hideCopyIcon && <s.StyledCopyButton text={route} />}

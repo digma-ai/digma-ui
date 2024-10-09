@@ -1,13 +1,17 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useConfigSelector } from "../../../../../../store/config/useConfigSelector";
 import { isNull } from "../../../../../../typeGuards/isNull";
 import { getDurationString } from "../../../../../../utils/getDurationString";
 import { trimEndpointScheme } from "../../../../../../utils/trimEndpointScheme";
+import {
+  AffectedEndpointsSelector,
+  getEndpointKey
+} from "../../../../../common/AffectedEndpointsSelector";
+import { Option } from "../../../../../common/AffectedEndpointsSelector/types";
 import { TraceIcon } from "../../../../../common/icons/12px/TraceIcon";
 import { Button } from "../../../../../common/v3/Button";
 import { Tooltip } from "../../../../../common/v3/Tooltip";
 import { InsightType, Trace } from "../../../../types";
-import { AffectedEndpointsSelector } from "../../AffectedEndpointsSelector";
 import { InsightCard } from "../common/InsightCard";
 import { ColumnsContainer } from "../common/InsightCard/ColumnsContainer";
 import { KeyValue } from "../common/InsightCard/KeyValue";
@@ -28,7 +32,10 @@ export const SpanEndpointBottleneckInsightCard = ({
   viewMode
 }: SpanEndpointBottleneckInsightCardProps) => {
   const { isJaegerEnabled } = useConfigSelector();
-  const slowEndpoints = insight.slowEndpoints ?? [];
+  const slowEndpoints = useMemo(
+    () => insight.slowEndpoints ?? [],
+    [insight.slowEndpoints]
+  );
   const endpointWithMaxDuration = slowEndpoints.reduce(
     (acc, cur) =>
       acc.avgDurationWhenBeingBottleneck.raw >=
@@ -41,7 +48,7 @@ export const SpanEndpointBottleneckInsightCard = ({
     endpointWithMaxDuration.avgDurationWhenBeingBottleneck
   );
   const [selectedEndpoint, setSelectedEndpoint] = useState(
-    slowEndpoints.length > 0 ? slowEndpoints[0] : null
+    slowEndpoints.length > 0 ? slowEndpoints[0] : undefined
   );
 
   const handleSpanLinkClick = (spanCodeObjectId?: string) => {
@@ -67,6 +74,34 @@ export const SpanEndpointBottleneckInsightCard = ({
     onTraceButtonClick(trace, insightType, spanCodeObjectId);
   };
 
+  const handleAffectedEndpointsSelectorChange = (
+    selectedOption: Option | null
+  ) => {
+    const newValue = selectedOption
+      ? slowEndpoints.find(
+          (x) =>
+            x.endpointInfo.spanCodeObjectId ===
+              selectedOption.spanCodeObjectId &&
+            x.endpointInfo.serviceName === selectedOption.serviceName
+        )
+      : undefined;
+
+    setSelectedEndpoint(newValue);
+  };
+
+  const selectorOptions: Option[] = useMemo(
+    () =>
+      slowEndpoints.map((x) => ({
+        route: trimEndpointScheme(x.endpointInfo.route),
+        serviceName: x.endpointInfo.serviceName,
+        spanCodeObjectId: x.endpointInfo.spanCodeObjectId
+      })),
+    [slowEndpoints]
+  );
+  const selectorValue = selectedEndpoint
+    ? getEndpointKey(selectedEndpoint.endpointInfo)
+    : undefined;
+
   return (
     <InsightCard
       insight={insight}
@@ -79,28 +114,14 @@ export const SpanEndpointBottleneckInsightCard = ({
         <ContentContainer>
           <Details>
             <Description>
-              Affected Endpoints ({slowEndpoints.length})
+              Affected Endpoints ({selectorOptions.length})
             </Description>
             <s.SelectContainer>
               <AffectedEndpointsSelector
-                insightType={insight.type}
-                onChange={(selectedOption) => {
-                  const selected =
-                    slowEndpoints.find(
-                      (x) =>
-                        x.endpointInfo.spanCodeObjectId ===
-                        selectedOption?.spanCodeObjectId
-                    ) ?? null;
-
-                  setSelectedEndpoint(selected);
-                }}
+                onChange={handleAffectedEndpointsSelectorChange}
                 onAssetLinkClick={handleSpanLinkClick}
-                value={selectedEndpoint?.endpointInfo.spanCodeObjectId}
-                options={slowEndpoints.map((x) => ({
-                  route: trimEndpointScheme(x.endpointInfo.route),
-                  serviceName: x.endpointInfo.serviceName,
-                  spanCodeObjectId: x.endpointInfo.spanCodeObjectId
-                }))}
+                value={selectorValue}
+                options={selectorOptions}
               />
               {isJaegerEnabled && selectedEndpoint?.traceId && (
                 <Tooltip title={"Open Trace"}>

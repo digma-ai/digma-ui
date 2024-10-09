@@ -1,7 +1,6 @@
 import styled, { css } from "styled-components";
-import { footnoteRegularTypography } from "../../../../../common/App/typographies";
-import { CopyButton } from "../../../../../common/v3/CopyButton";
-import { Link } from "../../../../../common/v3/Link";
+import { footnoteRegularTypography } from "../../App/typographies";
+import { CopyButton } from "../../v3/CopyButton";
 import { EndpointNameProps } from "./types";
 
 export const StyledCopyButton = styled(CopyButton)`
@@ -35,6 +34,7 @@ export const EndpointName = styled.div<EndpointNameProps>`
         width: 100%;
         padding: 4px 8px;
         ${ServiceName} {
+          flex-shrink: 0;
           width: 151px;
         }
       `;
@@ -53,22 +53,9 @@ export const EndpointName = styled.div<EndpointNameProps>`
 `;
 
 export const ServiceName = styled.span`
-  width: 50%;
+  max-width: 50%;
   overflow: hidden;
-  flex-grow: 1;
   text-overflow: ellipsis;
   white-space: nowrap;
   color: ${({ theme }) => theme.colors.v3.text.tertiary};
-`;
-
-export const Route = styled.div`
-  width: 50%;
-  overflow: hidden;
-  flex-grow: 1;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-`;
-
-export const StyledLink = styled(Link)`
-  width: auto;
 `;

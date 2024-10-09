@@ -3,13 +3,20 @@ import { withSlices } from "zustand-slices";
 import { Scope } from "../components/common/App/types";
 import { assetsSlice } from "./assets/assetsSlice";
 import { configSlice } from "./config/configSlice";
+import { errorsSlice } from "./errors/errorsSlice";
 import { insightsSlice } from "./insights/insightsSlice";
 import { metricsReportSlice } from "./metricsReport/metricsReportSlice";
 import { withMutableActions } from "./withMutableActions";
 
 export const useStore = create(
   withMutableActions(
-    withSlices(configSlice, insightsSlice, assetsSlice, metricsReportSlice),
+    withSlices(
+      configSlice,
+      insightsSlice,
+      assetsSlice,
+      metricsReportSlice,
+      errorsSlice
+    ),
     {
       setScope: (scope: Scope) => (_, set) => {
         set((state) =>

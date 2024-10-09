@@ -1,3 +1,4 @@
+import { DELIMITER } from "../../../../../../constants";
 import { usePagination } from "../../../../../../hooks/usePagination";
 import { getDurationString } from "../../../../../../utils/getDurationString";
 import { trimEndpointScheme } from "../../../../../../utils/trimEndpointScheme";
@@ -85,10 +86,13 @@ export const SpanQueryOptimizationInsightCard = ({
                 {pageItems.map((x) => {
                   const spanCodeObjectId = x.endpointInfo.spanCodeObjectId;
                   const route = trimEndpointScheme(x.endpointInfo.route);
+                  const key = [x.endpointInfo.serviceName, route].join(
+                    DELIMITER
+                  );
                   return (
                     <ListItem
                       name={route}
-                      key={route}
+                      key={key}
                       onClick={() => handleAssetLinkClick(spanCodeObjectId)}
                     />
                   );

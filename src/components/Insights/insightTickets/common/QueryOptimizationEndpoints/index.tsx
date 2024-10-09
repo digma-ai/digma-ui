@@ -1,3 +1,4 @@
+import { DELIMITER } from "../../../../../constants";
 import { trimEndpointScheme } from "../../../../../utils/trimEndpointScheme";
 import * as s from "./styles";
 import { QueryOptimizationEndpointsProps } from "./types";
@@ -19,14 +20,20 @@ export const QueryOptimizationEndpoints = ({
     <div>
       <div>Affected endpoints:</div>
       <s.List>
-        {endpoints.map((x) => (
-          <li key={x.endpointInfo.route}>
-            <div>
-              {x.endpointInfo.serviceName}{" "}
-              {trimEndpointScheme(x.endpointInfo.route)}
-            </div>
-          </li>
-        ))}
+        {endpoints.map((x) => {
+          const key = [x.endpointInfo.serviceName, x.endpointInfo.route].join(
+            DELIMITER
+          );
+
+          return (
+            <li key={key}>
+              <div>
+                {x.endpointInfo.serviceName}{" "}
+                {trimEndpointScheme(x.endpointInfo.route)}
+              </div>
+            </li>
+          );
+        })}
       </s.List>
     </div>
   );
