@@ -45,20 +45,33 @@ const getContent = (type: EmptyStateType, theme: DefaultTheme) => {
   return content[type];
 };
 
-export const EmptyState = ({ type }: EmptyStateProps) => {
+export const EmptyState = ({
+  type,
+  title,
+  message,
+  icon,
+  customContent
+}: EmptyStateProps) => {
   const theme = useTheme();
-  const content = getContent(type, theme);
+  const content = type
+    ? getContent(type, theme)
+    : {
+        title,
+        message,
+        icon,
+        customContent
+      };
 
-  return content ? (
+  return (
     <s.Container>
       <s.ContentContainer>
-        <s.IconContainer>{content.icon}</s.IconContainer>
+        {icon && <s.IconContainer>{content.icon}</s.IconContainer>}
         <s.TextContainer>
-          <s.Title>{content.title}</s.Title>
-          <span>{content.message}</span>
+          {title && <s.Title>{content.title}</s.Title>}
+          {message && <span>{content.message}</span>}
         </s.TextContainer>
         {content.customContent}
       </s.ContentContainer>
     </s.Container>
-  ) : null;
+  );
 };

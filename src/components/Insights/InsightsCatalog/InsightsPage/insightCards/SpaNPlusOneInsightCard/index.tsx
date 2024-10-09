@@ -84,7 +84,6 @@ export const SpaNPlusOneInsightCard = ({
                   serviceName: x.endpointInfo.serviceName,
                   spanCodeObjectId: x.endpointInfo.entrySpanCodeObjectId
                 }))}
-                insightType={insight.type}
                 onAssetLinkClick={handleSpanLinkClick}
               />
               {isJaegerEnabled && selectedEndpoint && (

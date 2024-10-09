@@ -83,7 +83,6 @@ export const SpanEndpointBottleneckInsightCard = ({
             </Description>
             <s.SelectContainer>
               <AffectedEndpointsSelector
-                insightType={insight.type}
                 onChange={(selectedOption) => {
                   const selected =
                     slowEndpoints.find(

@@ -46,7 +46,7 @@ export const Pagination = ({
           {withDescription && (
             <s.Description>
               Showing {pageStartItemNumber} - {pageEndItemNumber} of{" "}
-              {itemsCount} Results
+              {itemsCount} Result{itemsCount > 1 ? "s" : ""}
             </s.Description>
           )}
           <s.ButtonGroup>

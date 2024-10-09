@@ -7,7 +7,11 @@ export type EmptyStateType =
   | "loading";
 
 export interface EmptyStateProps {
-  type: EmptyStateType;
+  type?: EmptyStateType;
+  title?: string;
+  message?: string;
+  icon?: ReactNode;
+  customContent?: ReactNode;
 }
 
 export interface EmptyStateContent {

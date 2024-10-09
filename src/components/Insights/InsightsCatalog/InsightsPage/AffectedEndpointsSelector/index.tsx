@@ -6,6 +6,11 @@ import { EndpointOption } from "./EndpointOption";
 import * as s from "./styles";
 import { AffectedEndpointsSelectorProps, Option } from "./types";
 
+export const getEndpointKey = (option: Option): string => {
+  const DELIMITER = "|__|";
+  return [option.serviceName, option.spanCodeObjectId].join(DELIMITER);
+};
+
 const renderOptions = (
   endpoints: Option[],
   handleLinkClick: (spanCodeObjectId?: string) => void
@@ -30,32 +35,33 @@ const renderOptions = (
           onClick={onClick}
         />
       ),
-      value: spanCodeObjectId
+      value: getEndpointKey(x)
     };
   });
 
 export const AffectedEndpointsSelector = ({
   onAssetLinkClick,
-  insightType,
   value,
   options,
   onChange
 }: AffectedEndpointsSelectorProps) => {
   const handleSpanLinkClick = (spanCodeObjectId?: string) => {
     if (spanCodeObjectId) {
-      onAssetLinkClick(spanCodeObjectId, insightType);
+      onAssetLinkClick(spanCodeObjectId);
     }
+  };
+
+  const handleSelectChange = (selectedOption: string) => {
+    const selected =
+      options.find((x) => getEndpointKey(x) === selectedOption) ?? null;
+
+    onChange(selected);
   };
 
   return (
     <Select
       value={value}
-      onChange={(selectedOption) => {
-        const selected =
-          options.find((x) => x.spanCodeObjectId === selectedOption) ?? null;
-
-        onChange(selected);
-      }}
+      onChange={handleSelectChange}
       options={renderOptions(options, handleSpanLinkClick)}
       listHeader={
         <s.ListHeader>

@@ -1,5 +1,3 @@
-import { InsightType } from "../../../../../types";
-
 export interface FilterButtonProps {
   isActive: boolean;
   onClick: () => void;
@@ -11,15 +9,10 @@ export interface ContainerProps {
 }
 
 export interface AffectedEndpointsSelectorProps {
-  insightType: InsightType;
   value?: string;
   options: Option[];
   onChange: (selected: Option | null) => void;
-
-  onAssetLinkClick: (
-    spanCodeObjectId: string,
-    insightType: InsightType
-  ) => void;
+  onAssetLinkClick: (spanCodeObjectId: string) => void;
 }
 
 export interface Option {
