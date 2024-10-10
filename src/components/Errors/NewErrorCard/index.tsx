@@ -14,15 +14,16 @@ import * as s from "./styles";
 import { NewErrorCardProps } from "./types";
 
 const getStatusTagType = (status: string): TagType => {
-  if (status === "High number of errors") {
+  const statusString = status.toLowerCase();
+  if (statusString.localeCompare("high number of errors")) {
     return "highSeverity";
   }
 
-  if (status === "Escalating") {
+  if (statusString.localeCompare("escalating")) {
     return "mediumSeverity";
   }
 
-  if (status.includes("Recent")) {
+  if (statusString.includes("recent")) {
     return "lowSeverity";
   }
 

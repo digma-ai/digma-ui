@@ -36,6 +36,7 @@ export const EndpointName = styled.div<EndpointNameProps>`
         ${ServiceName} {
           flex-shrink: 0;
           width: 151px;
+          max-width: none;
         }
       `;
     }
