@@ -36,17 +36,20 @@ export const SpanEndpointBottleneckInsightCard = ({
     () => insight.slowEndpoints ?? [],
     [insight.slowEndpoints]
   );
-  const endpointWithMaxDuration = slowEndpoints.reduce(
-    (acc, cur) =>
-      acc.avgDurationWhenBeingBottleneck.raw >=
-      cur.avgDurationWhenBeingBottleneck.raw
-        ? acc
-        : cur,
-    slowEndpoints[0]
-  );
-  const maxDurationString = getDurationString(
-    endpointWithMaxDuration.avgDurationWhenBeingBottleneck
-  );
+  const endpointWithMaxDuration =
+    slowEndpoints.length > 0
+      ? slowEndpoints.reduce(
+          (acc, cur) =>
+            acc.avgDurationWhenBeingBottleneck.raw >=
+            cur.avgDurationWhenBeingBottleneck.raw
+              ? acc
+              : cur,
+          slowEndpoints[0]
+        )
+      : undefined;
+  const maxDurationString = endpointWithMaxDuration
+    ? getDurationString(endpointWithMaxDuration.avgDurationWhenBeingBottleneck)
+    : undefined;
   const [selectedEndpoint, setSelectedEndpoint] = useState(
     slowEndpoints.length > 0 ? slowEndpoints[0] : undefined
   );
@@ -122,6 +125,7 @@ export const SpanEndpointBottleneckInsightCard = ({
                 onAssetLinkClick={handleSpanLinkClick}
                 value={selectorValue}
                 options={selectorOptions}
+                isDisabled={selectorOptions.length === 0}
               />
               {isJaegerEnabled && selectedEndpoint?.traceId && (
                 <Tooltip title={"Open Trace"}>
@@ -184,9 +188,11 @@ export const SpanEndpointBottleneckInsightCard = ({
       isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       viewMode={viewMode}
       mainMetric={
-        <Tooltip title={maxDurationString}>
-          <span>{maxDurationString}</span>
-        </Tooltip>
+        maxDurationString ? (
+          <Tooltip title={maxDurationString}>
+            <span>{maxDurationString}</span>
+          </Tooltip>
+        ) : undefined
       }
     />
   );

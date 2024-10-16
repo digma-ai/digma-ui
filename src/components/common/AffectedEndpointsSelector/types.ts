@@ -13,6 +13,7 @@ export interface AffectedEndpointsSelectorProps {
   options: Option[];
   onChange: (selected: Option | null) => void;
   onAssetLinkClick: (spanCodeObjectId: string) => void;
+  isDisabled?: boolean;
 }
 
 export interface Option {
