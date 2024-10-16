@@ -1,4 +1,8 @@
-import { GLOBAL_ERROR_SORTING_CRITERION } from "../../../store/errors/errorsSlice";
+import {
+  ErrorCriticality,
+  ErrorHandlingType,
+  GLOBAL_ERROR_SORTING_CRITERION
+} from "../../../store/errors/errorsSlice";
 
 export interface GetGlobalErrorsDataPayload {
   environment: string;
@@ -7,6 +11,11 @@ export interface GetGlobalErrorsDataPayload {
   sortBy?: GLOBAL_ERROR_SORTING_CRITERION;
   page?: number;
   pageSize?: number;
+  services?: string[];
+  endpoints?: string[];
+  errorTypes?: string[];
+  criticality?: ErrorCriticality[];
+  handlingTypes?: ErrorHandlingType[];
 }
 
 export interface GlobalErrorData {

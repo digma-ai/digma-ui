@@ -239,7 +239,7 @@ export const Header = ({ onGoBack }: HeaderProps) => {
   const title =
     viewLevel === "endpoints"
       ? `${selectedService ?? ""} Service`
-      : "Services with Issues map";
+      : "Issues Map";
   const titleSuffix = viewLevel === "endpoints" ? " Endpoints" : "";
   const tooltipTitle = `${title} ${titleSuffix}`;
 

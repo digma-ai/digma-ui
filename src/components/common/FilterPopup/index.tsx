@@ -27,6 +27,7 @@ export const FilterPopup = ({
     setIsOpen(false);
     onClose();
   };
+
   return (
     <NewPopover
       width={"100%"}
