@@ -283,6 +283,8 @@ export const GlobalErrorsList = () => {
             <NoDataEmptyState />
           )}
         </>
+      ) : !environmentId ? (
+        <NoDataEmptyState />
       ) : null}
     </s.Container>
   );

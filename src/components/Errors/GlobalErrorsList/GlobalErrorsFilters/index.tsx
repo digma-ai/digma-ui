@@ -24,6 +24,9 @@ import {
   SetGlobalErrorsFiltersDataPayload
 } from "./types";
 
+const getSelectPlaceholder = (options: SelectItem[], placeholder: string) =>
+  options.filter((x) => x.selected).length > 0 ? placeholder : "All";
+
 export const GlobalErrorsFilters = () => {
   const { environment } = useConfigSelector();
   const { globalErrorsFilters, globalErrorsSelectedFilters } =
@@ -68,7 +71,7 @@ export const GlobalErrorsFilters = () => {
             filterData: {
               values: getLastSelectedFilterValues(lastChangedFilter),
               ...(lastChangedFilter === "Endpoints"
-                ? { services: globalErrorsSelectedFilters.services }
+                ? { services: selectedServices }
                 : {})
             }
           }
@@ -76,7 +79,7 @@ export const GlobalErrorsFilters = () => {
     }),
     [
       environmentId,
-      globalErrorsSelectedFilters,
+      selectedServices,
       getLastSelectedFilterValues,
       lastChangedFilter
     ]
@@ -176,11 +179,6 @@ export const GlobalErrorsFilters = () => {
       enabled: true
     })) ?? [];
 
-  const servicesFilterPlaceholder =
-    servicesFilterOptions.filter((x) => x.selected).length > 0
-      ? "Services"
-      : "All";
-
   const endpointsFilterOptions: SelectItem[] =
     endpoints?.map((x) => ({
       label: x.displayName,
@@ -188,11 +186,6 @@ export const GlobalErrorsFilters = () => {
       selected: selectedEndpoints.includes(x.spanCodeObjectId),
       enabled: true
     })) ?? [];
-
-  const endpointsFilterPlaceholder =
-    endpointsFilterOptions.filter((x) => x.selected).length > 0
-      ? "Endpoints"
-      : "All";
 
   const errorTypesFilterOptions: SelectItem[] =
     errorTypes?.map((x) => ({
@@ -202,11 +195,6 @@ export const GlobalErrorsFilters = () => {
       enabled: true
     })) ?? [];
 
-  const errorTypesFilterPlaceholder =
-    errorTypesFilterOptions.filter((x) => x.selected).length > 0
-      ? "Error types"
-      : "All";
-
   const filters = [
     {
       title: "Services",
@@ -215,7 +203,7 @@ export const GlobalErrorsFilters = () => {
           key={"services"}
           items={servicesFilterOptions}
           onChange={handleServicesChange}
-          placeholder={servicesFilterPlaceholder}
+          placeholder={getSelectPlaceholder(servicesFilterOptions, "Services")}
           multiselect={true}
           icon={(props: IconProps) => (
             <s.SelectItemIconContainer>
@@ -233,7 +221,10 @@ export const GlobalErrorsFilters = () => {
           key={"endpoints"}
           items={endpointsFilterOptions}
           onChange={handleEndpointsChange}
-          placeholder={endpointsFilterPlaceholder}
+          placeholder={getSelectPlaceholder(
+            endpointsFilterOptions,
+            "Endpoints"
+          )}
           multiselect={true}
           icon={(props: IconProps) => (
             <s.SelectItemIconContainer>
@@ -251,7 +242,10 @@ export const GlobalErrorsFilters = () => {
           key={"errorTypes"}
           items={errorTypesFilterOptions}
           onChange={handleErrorTypesChange}
-          placeholder={errorTypesFilterPlaceholder}
+          placeholder={getSelectPlaceholder(
+            errorTypesFilterOptions,
+            "Error types"
+          )}
           multiselect={true}
           icon={(props: IconProps) => (
             <s.SelectItemIconContainer>
@@ -277,12 +271,7 @@ export const GlobalErrorsFilters = () => {
     sendUserActionTrackingEvent(
       trackingEvents.GLOBAL_ERRORS_VIEW_FILTERS_CLOSE_BUTTON_CLICKED
     );
-    setGlobalErrorsSelectedFilters({
-      ...globalErrorsSelectedFilters,
-      services: selectedServices,
-      endpoints: selectedEndpoints,
-      errorTypes: selectedErrorTypes
-    });
+    applyFilters();
   };
 
   const handleClearAll = () => {
