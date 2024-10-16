@@ -18,6 +18,7 @@ import { TableIcon } from "../../../common/icons/16px/TableIcon";
 import { TreemapIcon } from "../../../common/icons/16px/TreemapIcon";
 import { ChevronIcon } from "../../../common/icons/20px/ChevronIcon";
 import { Direction } from "../../../common/icons/types";
+import { ToggleValue } from "../../../common/Toggle/types";
 import { NewIconButton } from "../../../common/v3/NewIconButton";
 import { Tooltip } from "../../../common/v3/Tooltip";
 import { actions } from "../../actions";
@@ -218,13 +219,13 @@ export const Header = ({ onGoBack }: HeaderProps) => {
     setPeriodInDays(newValue);
   };
 
-  const handleViewModeChanged = (value: string) => {
+  const handleViewModeChanged = (value: ToggleValue) => {
     sendUserActionTrackingEvent(trackingEvents.VIEW_MODE_CHANGED, { value });
     const newViewMode = value as ReportViewMode;
     setViewMode(newViewMode);
   };
 
-  const handleTimeModeChanged = (value: string) => {
+  const handleTimeModeChanged = (value: ToggleValue) => {
     sendUserActionTrackingEvent(trackingEvents.TIME_MODE_CHANGED, { value });
     const newTimeMode = value as ReportTimeMode;
     setTimeMode(newTimeMode);
@@ -239,7 +240,7 @@ export const Header = ({ onGoBack }: HeaderProps) => {
   const title =
     viewLevel === "endpoints"
       ? `${selectedService ?? ""} Service`
-      : "Services with Issues map";
+      : "Issues Map";
   const titleSuffix = viewLevel === "endpoints" ? " Endpoints" : "";
   const tooltipTitle = `${title} ${titleSuffix}`;
 

@@ -1,4 +1,5 @@
 import { createSlice } from "zustand-slices";
+import { EndpointFilterData } from "../../components/Errors/GlobalErrorsList/GlobalErrorsFilters/types";
 import {
   GlobalErrorData,
   SetGlobalErrorsDataPayload
@@ -11,6 +12,24 @@ export enum GLOBAL_ERROR_SORTING_CRITERION {
   LATEST = "Latest"
 }
 
+export type ErrorFilter = "Services" | "Endpoints" | "ErrorTypes";
+export type ErrorHandlingType = "Handled" | "Unhandled";
+export type ErrorCriticality = "High" | "Medium" | "Low";
+
+export interface GlobalErrorsFiltersState {
+  services: string[] | null;
+  endpoints: EndpointFilterData[] | null;
+  errorTypes: string[] | null;
+}
+
+export interface GlobalErrorsSelectedFiltersState {
+  services: string[];
+  endpoints: string[];
+  errorTypes: string[];
+  criticality: ErrorCriticality[];
+  handlingTypes: ErrorHandlingType[];
+}
+
 export interface ErrorsState {
   globalErrorsList: GlobalErrorData[] | null;
   globalErrorsTotalCount: number;
@@ -19,7 +38,17 @@ export interface ErrorsState {
   globalErrorsPage: number;
   globalErrorsPageSize: number;
   globalErrorsSorting: GLOBAL_ERROR_SORTING_CRITERION;
+  globalErrorsFilters: GlobalErrorsFiltersState;
+  globalErrorsSelectedFilters: GlobalErrorsSelectedFiltersState;
 }
+
+const selectedFiltersInitialState = {
+  services: [],
+  endpoints: [],
+  errorTypes: [],
+  criticality: [],
+  handlingTypes: []
+};
 
 export const initialState: ErrorsState = {
   globalErrorsList: null,
@@ -28,7 +57,13 @@ export const initialState: ErrorsState = {
   globalErrorsSearch: "",
   globalErrorsPage: 0,
   globalErrorsPageSize: PAGE_SIZE,
-  globalErrorsSorting: GLOBAL_ERROR_SORTING_CRITERION.CRITICALITY
+  globalErrorsSorting: GLOBAL_ERROR_SORTING_CRITERION.CRITICALITY,
+  globalErrorsFilters: {
+    services: null,
+    endpoints: null,
+    errorTypes: null
+  },
+  globalErrorsSelectedFilters: selectedFiltersInitialState
 };
 
 const set = (update: Partial<ErrorsState>) => (state: ErrorsState) => ({
@@ -54,6 +89,13 @@ export const errorsSlice = createSlice({
       set({ globalErrorsPageSize: pageSize }),
     setGlobalErrorsSorting: (sorting: GLOBAL_ERROR_SORTING_CRITERION) =>
       set({ globalErrorsSorting: sorting }),
+    setGlobalErrorsFilters: (filters: ErrorsState["globalErrorsFilters"]) =>
+      set({ globalErrorsFilters: filters }),
+    setGlobalErrorsSelectedFilters: (
+      filters: ErrorsState["globalErrorsSelectedFilters"]
+    ) => set({ globalErrorsSelectedFilters: filters }),
+    resetGlobalErrorsSelectedFilters: () =>
+      set({ globalErrorsSelectedFilters: selectedFiltersInitialState }),
     resetGlobalErrors: () => set(initialState)
   }
 });

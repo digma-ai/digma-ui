@@ -20,7 +20,8 @@ export const featureFlagMinBackendVersions: Record<FeatureFlag, string> = {
   [FeatureFlag.IS_METRICS_REPORT_CRITICALITY_ENABLED]: "0.3.121",
   [FeatureFlag.IS_METRICS_REPORT_DATA_FILTER_ENABLED]: "0.3.122-alpha.3",
   [FeatureFlag.IS_METRICS_REPORT_ENDPOINT_VIEW_ENABLED]: "0.3.122-alpha.3",
-  [FeatureFlag.ARE_GLOBAL_ERRORS_ENABLED]: "0.3.129"
+  [FeatureFlag.ARE_GLOBAL_ERRORS_ENABLED]: "0.3.129",
+  [FeatureFlag.ARE_GLOBAL_ERRORS_FILTERS_ENABLED]: "0.3.140-alpha.2"
 };
 
 export const getFeatureFlagValue = (

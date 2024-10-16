@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { changeScope } from "../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import {
@@ -6,29 +6,11 @@ import {
   getEndpointKey
 } from "../../common/AffectedEndpointsSelector";
 import { Option } from "../../common/AffectedEndpointsSelector/types";
-import { TagType } from "../../common/v3/Tag/types";
 import { Tooltip } from "../../common/v3/Tooltip";
-import { HIGH_SEVERITY_SCORE_THRESHOLD } from "../Score";
+import { getTagType, HIGH_SEVERITY_SCORE_THRESHOLD } from "../Score";
 import { trackingEvents } from "../tracking";
 import * as s from "./styles";
 import { NewErrorCardProps } from "./types";
-
-const getStatusTagType = (status: string): TagType => {
-  const statusString = status.toLowerCase();
-  if (statusString.localeCompare("high number of errors")) {
-    return "highSeverity";
-  }
-
-  if (statusString.localeCompare("escalating")) {
-    return "mediumSeverity";
-  }
-
-  if (statusString.includes("recent")) {
-    return "lowSeverity";
-  }
-
-  return "default";
-};
 
 export const NewErrorCard = ({
   data,
@@ -43,8 +25,8 @@ export const NewErrorCard = ({
     fromFullyQualifiedName,
     status
   } = data;
-  const statusTagType = getStatusTagType(status);
-  const selectorOptions = useMemo(
+  const statusTagType = getTagType(score.score);
+  const selectorOptions: Option[] = useMemo(
     () =>
       affectedEndpoints.map((x) => ({
         route: x.displayName,
@@ -53,10 +35,20 @@ export const NewErrorCard = ({
       })),
     [affectedEndpoints]
   );
-  const [selectedEndpoint, setSelectedEndpoint] = useState(
-    selectorOptions.length > 0 ? selectorOptions[0] : undefined
+  const [selectedEndpoint, setSelectedEndpoint] = useState<Option | undefined>(
+    selectorOptions[0]
   );
-  const isCritical = score.score > HIGH_SEVERITY_SCORE_THRESHOLD;
+
+  useEffect(() => {
+    if (
+      selectedEndpoint &&
+      !selectorOptions.find(
+        (x) => getEndpointKey(x) === getEndpointKey(selectedEndpoint)
+      )
+    ) {
+      setSelectedEndpoint(selectorOptions[0]);
+    }
+  }, [selectorOptions, selectedEndpoint]);
 
   const handleLinkClick = () => {
     sendUserActionTrackingEvent(trackingEvents.ERROR_CARD_SOURCE_LINK_CLICKED);
@@ -91,6 +83,8 @@ export const NewErrorCard = ({
     });
   };
 
+  const isCritical = score.score > HIGH_SEVERITY_SCORE_THRESHOLD;
+
   const selectorValue = selectedEndpoint
     ? getEndpointKey(selectedEndpoint)
     : undefined;
@@ -108,7 +102,9 @@ export const NewErrorCard = ({
             </s.SourceLink>
           </Tooltip>
         </s.TitleContainer>
-        <s.StatusTag content={status} title={status} type={statusTagType} />
+        {status && (
+          <s.StatusTag content={status} title={status} type={statusTagType} />
+        )}
       </s.Header>
       {selectorOptions.length > 0 && (
         <s.AffectedEndpointsContainer>

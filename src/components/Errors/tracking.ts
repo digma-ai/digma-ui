@@ -18,6 +18,18 @@ export const trackingEvents = addPrefix(
     GLOBAL_ERRORS_VIEW_PAGE_CHANGE: "global errors view page change",
     GLOBAL_ERRORS_VIEW_RESET_FILTERS_BUTTON_CLICKED:
       "global errors view reset filters button clicked",
+    GLOBAL_ERRORS_VIEW_FILTERS_BUTTON_CLICKED:
+      "global errors view filters button clicked",
+    GLOBAL_ERRORS_VIEW_SERVICES_FILTER_CHANGED:
+      "global errors view services filter changed",
+    GLOBAL_ERRORS_VIEW_ENDPOINTS_FILTER_CHANGED:
+      "global errors view endpoints filter changed",
+    GLOBAL_ERRORS_VIEW_ERROR_TYPES_FILTER_CHANGED:
+      "global errors view error types filter changed",
+    GLOBAL_ERRORS_VIEW_FILTERS_CLOSE_BUTTON_CLICKED:
+      "global errors view filters close button clicked",
+    GLOBAL_ERRORS_VIEW_CLEAR_FILTERS_BUTTON_CLICKED:
+      "global errors view clear filters button clicked",
     ERROR_CARD_SOURCE_LINK_CLICKED: "error card source link clicked",
     ERROR_CARD_SELECTED_AFFECTED_ENDPOINT_CHANGED:
       "error card selected affected endpoint changed",

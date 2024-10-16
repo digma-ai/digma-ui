@@ -43,7 +43,8 @@ export const AffectedEndpointsSelector = ({
   onAssetLinkClick,
   value,
   options,
-  onChange
+  onChange,
+  isDisabled
 }: AffectedEndpointsSelectorProps) => {
   const handleSpanLinkClick = (spanCodeObjectId?: string) => {
     if (spanCodeObjectId) {
@@ -63,6 +64,7 @@ export const AffectedEndpointsSelector = ({
       value={value}
       onChange={handleSelectChange}
       options={renderOptions(options, handleSpanLinkClick)}
+      isDisabled={isDisabled}
       listHeader={
         <s.ListHeader>
           <EndpointOption

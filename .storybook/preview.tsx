@@ -41,9 +41,6 @@ const preview: Preview = {
       );
     }
   ],
-  parameters: {
-    actions: { argTypesRegex: "^on[A-Z].*" }
-  },
   globalTypes: {
     theme: {
       name: "Theme",

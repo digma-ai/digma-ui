@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { getFeatureFlagValue } from "../../../featureFlags";
 import {
   DataFetcherConfiguration,
   useFetchData
@@ -11,6 +12,7 @@ import {
 } from "../../../store/errors/errorsSlice";
 import { useErrorsSelector } from "../../../store/errors/useErrorsSelector";
 import { useStore } from "../../../store/useStore";
+import { FeatureFlag } from "../../../types";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { OppositeArrowsIcon } from "../../common/icons/12px/OppositeArrowsIcon";
 import { CardsColoredIcon } from "../../common/icons/CardsColoredIcon";
@@ -26,6 +28,7 @@ import { actions } from "../actions";
 import { NewErrorCard } from "../NewErrorCard";
 import { NoDataEmptyState } from "../NoDataEmptyState";
 import { trackingEvents } from "../tracking";
+import { GlobalErrorsFilters } from "./GlobalErrorsFilters";
 import * as s from "./styles";
 import {
   GetGlobalErrorsDataPayload,
@@ -37,14 +40,16 @@ export const GlobalErrorsList = () => {
   const [isSortingMenuOpen, setIsSortingMenuOpen] = useState(false);
   const listContainerRef = useRef<HTMLDivElement>(null);
 
-  const { environment } = useConfigSelector();
+  const { environment, backendInfo } = useConfigSelector();
+
   const {
     globalErrorsSearch: search,
     globalErrorsSorting: sorting,
     globalErrorsPage: page,
     globalErrorsPageSize: pageSize,
     globalErrorsList: list,
-    globalErrorsTotalCount: totalCount
+    globalErrorsTotalCount: totalCount,
+    globalErrorsSelectedFilters: selectedFilters
   } = useErrorsSelector();
 
   const {
@@ -52,8 +57,14 @@ export const GlobalErrorsList = () => {
     setGlobalErrorsSearch,
     setGlobalErrorsSorting,
     setGlobalErrorsPage,
-    resetGlobalErrors
+    resetGlobalErrors,
+    resetGlobalErrorsSelectedFilters
   } = useStore.getState();
+
+  const areGlobalErrorsFiltersEnabled = getFeatureFlagValue(
+    backendInfo,
+    FeatureFlag.ARE_GLOBAL_ERRORS_FILTERS_ENABLED
+  );
 
   const environmentId = environment?.id;
 
@@ -82,9 +93,29 @@ export const GlobalErrorsList = () => {
       searchCriteria: search,
       sortBy: sorting,
       page,
-      pageSize: PAGE_SIZE
+      pageSize: PAGE_SIZE,
+      ...(areGlobalErrorsFiltersEnabled
+        ? {
+            services: selectedFilters.services,
+            endpoints: selectedFilters.endpoints,
+            errorTypes: selectedFilters.errorTypes,
+            criticality: selectedFilters.criticality,
+            handlingTypes: selectedFilters.handlingTypes
+          }
+        : {})
     }),
-    [environmentId, search, sorting, page]
+    [
+      environmentId,
+      search,
+      sorting,
+      page,
+      areGlobalErrorsFiltersEnabled,
+      selectedFilters.services,
+      selectedFilters.endpoints,
+      selectedFilters.errorTypes,
+      selectedFilters.criticality,
+      selectedFilters.handlingTypes
+    ]
   );
 
   const { data } = useFetchData<
@@ -102,7 +133,21 @@ export const GlobalErrorsList = () => {
   // Reset page on filters change
   useEffect(() => {
     setGlobalErrorsPage(0);
-  }, [environmentId, search, setGlobalErrorsPage]);
+  }, [
+    environmentId,
+    search,
+    setGlobalErrorsPage,
+    selectedFilters.services,
+    selectedFilters.endpoints,
+    selectedFilters.errorTypes,
+    selectedFilters.criticality,
+    selectedFilters.handlingTypes
+  ]);
+
+  // Reset filters on environment change
+  useEffect(() => {
+    resetGlobalErrorsSelectedFilters();
+  }, [environmentId, resetGlobalErrorsSelectedFilters]);
 
   // Reset scroll position on filters change
   useEffect(() => {
@@ -155,15 +200,25 @@ export const GlobalErrorsList = () => {
     );
     setGlobalErrorsSearch("");
     setGlobalErrorsPage(0);
+    resetGlobalErrorsSelectedFilters();
   };
 
-  const areAnyFiltersApplied = search;
+  const areAnyFiltersApplied =
+    search ||
+    [
+      selectedFilters.services,
+      selectedFilters.endpoints,
+      selectedFilters.errorTypes,
+      selectedFilters.criticality,
+      selectedFilters.handlingTypes
+    ].some((x) => x.length > 0);
 
   return (
     <s.Container>
       {list ? (
         <>
           <s.ToolbarContainer>
+            {areGlobalErrorsFiltersEnabled && <GlobalErrorsFilters />}
             <SearchInput value={search} onChange={handleSearchInputChange} />
             <NewPopover
               isOpen={isSortingMenuOpen}
@@ -228,6 +283,8 @@ export const GlobalErrorsList = () => {
             <NoDataEmptyState />
           )}
         </>
+      ) : !environmentId ? (
+        <NoDataEmptyState />
       ) : null}
     </s.Container>
   );

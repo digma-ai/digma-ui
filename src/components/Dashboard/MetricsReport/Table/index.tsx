@@ -134,7 +134,7 @@ export const Table = ({
       }
     }),
     columnHelper.accessor((row) => row, {
-      header: "Critical issues",
+      header: "Issues",
       id: "issues",
       cell: (info) => {
         const value = info.getValue();
