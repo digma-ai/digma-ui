@@ -69,7 +69,6 @@ export const Errors = () => {
                   <span>asset. See all tracked assets on the</span>
                   <span>Assets page.</span>
                 </s.EmptyStateTextContainer>
-
                 <NewButton
                   buttonType={"primary"}
                   onClick={handleSeeAllAssetsClick}

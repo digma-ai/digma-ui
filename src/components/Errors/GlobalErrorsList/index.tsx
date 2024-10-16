@@ -82,9 +82,9 @@ export const GlobalErrorsList = () => {
       responseAction: actions.SET_GLOBAL_ERRORS_DATA,
       refreshWithInterval: true,
       refreshOnPayloadChange: true,
-      isEnabled: Boolean(environmentId && areGlobalErrorsFiltersEnabled)
+      isEnabled: Boolean(environmentId)
     }),
-    [environmentId, areGlobalErrorsFiltersEnabled]
+    [environmentId]
   );
 
   const payload: GetGlobalErrorsDataPayload = useMemo(
@@ -94,17 +94,22 @@ export const GlobalErrorsList = () => {
       sortBy: sorting,
       page,
       pageSize: PAGE_SIZE,
-      services: selectedFilters.services,
-      endpoints: selectedFilters.endpoints,
-      errorTypes: selectedFilters.errorTypes,
-      criticality: selectedFilters.criticality,
-      handlingTypes: selectedFilters.handlingTypes
+      ...(areGlobalErrorsFiltersEnabled
+        ? {
+            services: selectedFilters.services,
+            endpoints: selectedFilters.endpoints,
+            errorTypes: selectedFilters.errorTypes,
+            criticality: selectedFilters.criticality,
+            handlingTypes: selectedFilters.handlingTypes
+          }
+        : {})
     }),
     [
       environmentId,
       search,
       sorting,
       page,
+      areGlobalErrorsFiltersEnabled,
       selectedFilters.services,
       selectedFilters.endpoints,
       selectedFilters.errorTypes,
