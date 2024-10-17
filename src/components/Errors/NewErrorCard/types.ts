@@ -9,3 +9,8 @@ export interface ContainerProps {
   $isPinned?: boolean;
   $isCritical?: boolean;
 }
+
+export interface OccurrenceChartContainerProps {
+  $transitionDuration: number;
+  $transitionClassName: string;
+}

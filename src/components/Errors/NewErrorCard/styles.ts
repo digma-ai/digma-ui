@@ -5,7 +5,11 @@ import {
 } from "../../common/App/typographies";
 import { Link } from "../../common/v3/Link";
 import { Tag } from "../../common/v3/Tag";
-import { ContainerProps } from "./types";
+import { HEIGHT } from "./OccurrenceChart/styles";
+import { ContainerProps, OccurrenceChartContainerProps } from "./types";
+
+export const TRANSITION_DURATION = 300;
+export const chartContainerTransitionClassName = "chart-container";
 
 export const Container = styled.div<ContainerProps>`
   display: flex;
@@ -50,6 +54,11 @@ export const StatusTag = styled(Tag)`
   flex-shrink: 0;
 `;
 
+export const StatusTagTooltipContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
 export const SourceLink = styled(Link)`
   max-width: 100%;
 `;
@@ -61,4 +70,41 @@ export const AffectedEndpointsContainer = styled.div`
   flex-direction: column;
   gap: 4px;
   color: ${({ theme }) => theme.colors.v3.text.secondary};
+`;
+
+export const OccurrenceChartContainer = styled.div<OccurrenceChartContainerProps>`
+  margin-top: -8px;
+  overflow: hidden;
+  height: ${HEIGHT}px;
+
+  ${({ $transitionClassName, $transitionDuration }) => `
+    &.${$transitionClassName}-enter {
+      height: 0;
+      opacity: 0;
+    }
+    
+    &.${$transitionClassName}-enter-active {
+      height: ${HEIGHT}px;
+      opacity: 1;
+      transition: height ${$transitionDuration}ms ease-out, opacity ${$transitionDuration}ms ease-out;
+    }
+
+    &.${$transitionClassName}-exit {
+      height: ${HEIGHT}px;
+      opacity: 1;
+    }
+    
+    &.${$transitionClassName}-exit-active {
+      height: 0;
+      opacity: 0;
+      transition: height ${$transitionDuration}ms ease-out, opacity ${$transitionDuration}ms ease-out;
+    }
+  `}
+`;
+
+export const Footer = styled.div`
+  margin-top: -8px;
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
 `;
