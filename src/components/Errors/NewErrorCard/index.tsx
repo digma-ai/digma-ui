@@ -165,36 +165,36 @@ export const NewErrorCard = ({
         </s.AffectedEndpointsContainer>
       )}
       {isOccurrenceChartEnabled && selectedEndpoint && (
-        <CSSTransition
-          in={isHistogramVisible}
-          timeout={s.TRANSITION_DURATION}
-          classNames={s.chartContainerTransitionClassName}
-          nodeRef={chartContainerRef}
-          mountOnEnter={true}
-          unmountOnExit={true}
-        >
-          <s.OccurrenceChartContainer
-            ref={chartContainerRef}
-            $transitionClassName={s.chartContainerTransitionClassName}
-            $transitionDuration={s.TRANSITION_DURATION}
+        <>
+          <CSSTransition
+            in={isHistogramVisible}
+            timeout={s.TRANSITION_DURATION}
+            classNames={s.chartContainerTransitionClassName}
+            nodeRef={chartContainerRef}
+            mountOnEnter={true}
+            unmountOnExit={true}
           >
-            <OccurrenceChart
-              service={selectedEndpoint.serviceName}
-              spanCodeObjectId={selectedEndpoint.spanCodeObjectId}
-              errorId={id}
+            <s.OccurrenceChartContainer
+              ref={chartContainerRef}
+              $transitionClassName={s.chartContainerTransitionClassName}
+              $transitionDuration={s.TRANSITION_DURATION}
+            >
+              <OccurrenceChart
+                service={selectedEndpoint.serviceName}
+                spanCodeObjectId={selectedEndpoint.spanCodeObjectId}
+                errorId={id}
+              />
+            </s.OccurrenceChartContainer>
+          </CSSTransition>
+          <s.Footer>
+            <NewIconButton
+              isHighlighted={isHistogramVisible}
+              buttonType={"secondaryBorderless"}
+              icon={HistogramIcon}
+              onClick={handleHistogramButtonClick}
             />
-          </s.OccurrenceChartContainer>
-        </CSSTransition>
-      )}
-      {isOccurrenceChartEnabled && selectedEndpoint && (
-        <s.Footer>
-          <NewIconButton
-            isHighlighted={isHistogramVisible}
-            buttonType={"secondaryBorderless"}
-            icon={HistogramIcon}
-            onClick={handleHistogramButtonClick}
-          />
-        </s.Footer>
+          </s.Footer>
+        </>
       )}
     </s.Container>
   );
