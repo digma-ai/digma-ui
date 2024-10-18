@@ -16,6 +16,8 @@ import {
 } from "../../../../hooks/useFetchData";
 import { useConfigSelector } from "../../../../store/config/useConfigSelector";
 import { isNumber } from "../../../../typeGuards/isNumber";
+import { HistogramIcon } from "../../../common/icons/30px/HistogramIcon";
+import { PetalsIcon } from "../../../common/icons/32px/PetalsIcon";
 import { actions } from "../../actions";
 import * as s from "./styles";
 import {
@@ -168,10 +170,20 @@ export const OccurrenceChart = ({
             </BarChart>
           </ResponsiveContainer>
         ) : (
-          <s.EmptyStateContainer>No data</s.EmptyStateContainer>
+          <s.EmptyStateContainer>
+            <s.EmptyStateIconContainer>
+              <HistogramIcon size={30} color={"currentColor"} />
+            </s.EmptyStateIconContainer>
+            <span>No data</span>
+          </s.EmptyStateContainer>
         )
       ) : (
-        <s.EmptyStateContainer>Loading...</s.EmptyStateContainer>
+        <s.EmptyStateContainer>
+          <s.EmptyStateIconContainer>
+            <PetalsIcon size={32} color={"currentColor"} />
+          </s.EmptyStateIconContainer>
+          <span>Loading</span>
+        </s.EmptyStateContainer>
       )}
     </s.HistogramContainer>
   );

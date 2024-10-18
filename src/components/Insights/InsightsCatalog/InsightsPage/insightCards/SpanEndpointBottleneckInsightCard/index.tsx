@@ -11,7 +11,7 @@ import { Option } from "../../../../../common/AffectedEndpointsSelector/types";
 import { TraceIcon } from "../../../../../common/icons/12px/TraceIcon";
 import { Button } from "../../../../../common/v3/Button";
 import { Tooltip } from "../../../../../common/v3/Tooltip";
-import { InsightType, Trace } from "../../../../types";
+import { BottleneckEndpointInfo, InsightType, Trace } from "../../../../types";
 import { InsightCard } from "../common/InsightCard";
 import { ColumnsContainer } from "../common/InsightCard/ColumnsContainer";
 import { KeyValue } from "../common/InsightCard/KeyValue";
@@ -50,9 +50,10 @@ export const SpanEndpointBottleneckInsightCard = ({
   const maxDurationString = endpointWithMaxDuration
     ? getDurationString(endpointWithMaxDuration.avgDurationWhenBeingBottleneck)
     : undefined;
-  const [selectedEndpoint, setSelectedEndpoint] = useState(
-    slowEndpoints.length > 0 ? slowEndpoints[0] : undefined
-  );
+
+  const [selectedEndpoint, setSelectedEndpoint] = useState<
+    BottleneckEndpointInfo | undefined
+  >(slowEndpoints[0]);
 
   const handleSpanLinkClick = (spanCodeObjectId?: string) => {
     if (spanCodeObjectId) {
@@ -101,9 +102,22 @@ export const SpanEndpointBottleneckInsightCard = ({
       })),
     [slowEndpoints]
   );
-  const selectorValue = selectedEndpoint
-    ? getEndpointKey(selectedEndpoint.endpointInfo)
-    : undefined;
+
+  const selectedOption = useMemo(
+    () =>
+      selectedEndpoint &&
+      selectorOptions.find(
+        (x) =>
+          x.serviceName === selectedEndpoint.endpointInfo.serviceName &&
+          x.spanCodeObjectId === selectedEndpoint.endpointInfo.spanCodeObjectId
+      ),
+    [selectedEndpoint, selectorOptions]
+  );
+
+  const selectorValue = useMemo(
+    () => (selectedOption ? getEndpointKey(selectedOption) : undefined),
+    [selectedOption]
+  );
 
   return (
     <InsightCard
