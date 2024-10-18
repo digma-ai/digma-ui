@@ -32,3 +32,11 @@ export const TooltipContainer = styled(Tooltip)`
   flex-direction: column;
   gap: 8px;
 `;
+
+export const EmptyStateContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-grow: 1;
+`;

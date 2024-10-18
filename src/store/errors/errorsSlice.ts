@@ -40,6 +40,7 @@ export interface ErrorsState {
   globalErrorsSorting: GLOBAL_ERROR_SORTING_CRITERION;
   globalErrorsFilters: GlobalErrorsFiltersState;
   globalErrorsSelectedFilters: GlobalErrorsSelectedFiltersState;
+  errorDetailsWorkspaceItemsOnly: boolean;
 }
 
 const selectedFiltersInitialState = {
@@ -50,7 +51,7 @@ const selectedFiltersInitialState = {
   handlingTypes: []
 };
 
-export const initialState: ErrorsState = {
+export const globalErrorsInitialState = {
   globalErrorsList: null,
   globalErrorsTotalCount: 0,
   areGlobalErrorsLoading: false,
@@ -64,6 +65,11 @@ export const initialState: ErrorsState = {
     errorTypes: null
   },
   globalErrorsSelectedFilters: selectedFiltersInitialState
+};
+
+export const initialState: ErrorsState = {
+  ...globalErrorsInitialState,
+  errorDetailsWorkspaceItemsOnly: false
 };
 
 const set = (update: Partial<ErrorsState>) => (state: ErrorsState) => ({
@@ -96,6 +102,9 @@ export const errorsSlice = createSlice({
     ) => set({ globalErrorsSelectedFilters: filters }),
     resetGlobalErrorsSelectedFilters: () =>
       set({ globalErrorsSelectedFilters: selectedFiltersInitialState }),
-    resetGlobalErrors: () => set(initialState)
+    setErrorDetailsWorkspaceItemsOnly: (
+      errorDetailsWorkspaceItemsOnly: boolean
+    ) => set({ errorDetailsWorkspaceItemsOnly }),
+    resetGlobalErrors: () => set({ ...globalErrorsInitialState })
   }
 });
