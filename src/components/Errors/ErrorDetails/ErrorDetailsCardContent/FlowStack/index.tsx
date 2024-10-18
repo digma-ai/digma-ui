@@ -4,7 +4,8 @@ import {
   DataFetcherConfiguration,
   useFetchData
 } from "../../../../../hooks/useFetchData";
-import { usePersistence } from "../../../../../hooks/usePersistence";
+import { useErrorsSelector } from "../../../../../store/errors/useErrorsSelector";
+import { useStore } from "../../../../../store/useStore";
 import { isNull } from "../../../../../typeGuards/isNull";
 import { isString } from "../../../../../typeGuards/isString";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
@@ -27,13 +28,7 @@ import {
 import { SpanFrameGroup } from "./SpanFrameGroup";
 import { FrameItemCodeLocation } from "./SpanFrameGroup/types";
 import * as s from "./styles";
-import {
-  FlowProps as FlowStackProps,
-  ShowOnlyWorkspaceErrorStackTraceItemsPayload
-} from "./types";
-
-const SHOW_ONLY_WORKSPACE_ERROR_STACK_TRACE_ITEMS_PERSISTENCE_KEY =
-  "showOnlyWorkspaceErrorStackTraceItems";
+import { FlowProps as FlowStackProps } from "./types";
 
 const filesURIsDataFetcherConfiguration: DataFetcherConfiguration = {
   requestAction: actions.GET_FILES_URIS,
@@ -42,15 +37,9 @@ const filesURIsDataFetcherConfiguration: DataFetcherConfiguration = {
 };
 
 export const FlowStack = ({ data }: FlowStackProps) => {
-  const [persistedShowWorkspaceItemsOnly, setPersistedShowWorkspaceItemsOnly] =
-    usePersistence<ShowOnlyWorkspaceErrorStackTraceItemsPayload>(
-      SHOW_ONLY_WORKSPACE_ERROR_STACK_TRACE_ITEMS_PERSISTENCE_KEY,
-      "application"
-    );
-  const showWorkspaceOnly = useMemo(
-    () => Boolean(persistedShowWorkspaceItemsOnly?.value),
-    [persistedShowWorkspaceItemsOnly]
-  );
+  const { errorDetailsWorkspaceItemsOnly: showWorkspaceOnly } =
+    useErrorsSelector();
+  const { setErrorDetailsWorkspaceItemsOnly } = useStore.getState();
   const stacksContainerRef = useRef<HTMLDivElement>(null);
 
   const frameStacks = useMemo(
@@ -123,10 +112,7 @@ export const FlowStack = ({ data }: FlowStackProps) => {
     sendUserActionTrackingEvent(trackingEvents.WORKSPACE_ONLY_TOGGLE_SWITCHED, {
       value
     });
-
-    setPersistedShowWorkspaceItemsOnly({
-      value
-    });
+    setErrorDetailsWorkspaceItemsOnly(value);
   };
 
   const handleFrameItemLinkClick = ({

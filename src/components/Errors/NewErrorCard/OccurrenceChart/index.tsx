@@ -95,74 +95,83 @@ export const OccurrenceChart = ({
       <s.HistogramHeader>
         <s.HistogramTitle>Occurrence over time</s.HistogramTitle>
       </s.HistogramHeader>
-      {chartData?.dailyOccurrence && (
-        <ResponsiveContainer width={"100%"} height={"100%"}>
-          <BarChart data={chartData.dailyOccurrence} maxBarSize={MAX_BAR_WIDTH}>
-            <CartesianGrid
-              vertical={false}
-              stroke={theme.colors.v3.stroke.tertiary}
-              horizontalCoordinatesGenerator={({
-                offset
-              }: HorizontalCoordinatesGeneratorProps) => {
-                if (!offset.height || !isNumber(offset.top)) {
-                  return [];
-                }
-                let linesCount = 4;
-                const lines = [];
-                const maxTickTopOffset = offset.height + offset.top;
-                const interval = Math.floor(offset.height / linesCount);
-                let top = maxTickTopOffset - interval;
+      {chartData?.dailyOccurrence ? (
+        chartData.dailyOccurrence.length > 0 ? (
+          <ResponsiveContainer width={"100%"} height={"100%"}>
+            <BarChart
+              data={chartData.dailyOccurrence}
+              maxBarSize={MAX_BAR_WIDTH}
+            >
+              <CartesianGrid
+                vertical={false}
+                stroke={theme.colors.v3.stroke.tertiary}
+                horizontalCoordinatesGenerator={({
+                  offset
+                }: HorizontalCoordinatesGeneratorProps) => {
+                  if (!offset.height || !isNumber(offset.top)) {
+                    return [];
+                  }
+                  let linesCount = 4;
+                  const lines = [];
+                  const maxTickTopOffset = offset.height + offset.top;
+                  const interval = Math.floor(offset.height / linesCount);
+                  let top = maxTickTopOffset - interval;
 
-                while (linesCount) {
-                  lines.push(top);
-                  linesCount--;
-                  top -= interval;
-                }
+                  while (linesCount) {
+                    lines.push(top);
+                    linesCount--;
+                    top -= interval;
+                  }
 
-                return lines;
-              }}
-            />
-            <XAxis
-              dataKey={"date"}
-              axisLine={{ stroke: theme.colors.v3.stroke.tertiary }}
-              tickLine={false}
-              tick={XAxisTickLabelStyles}
-              tickFormatter={(x: string) => format(new Date(x), "MM/dd")}
-            />
-            <YAxis
-              axisLine={false}
-              tickLine={false}
-              tick={YAxisTickLabelStyles}
-              allowDecimals={false}
-            />
-            <Bar
-              isAnimationActive={false}
-              dataKey={"value"}
-              fill={theme.colors.v3.status.backgroundHigh}
-            />
-            <Tooltip
-              cursor={false}
-              content={(x) => {
-                const payload = x.payload;
+                  return lines;
+                }}
+              />
+              <XAxis
+                dataKey={"date"}
+                axisLine={{ stroke: theme.colors.v3.stroke.tertiary }}
+                tickLine={false}
+                tick={XAxisTickLabelStyles}
+                tickFormatter={(x: string) => format(new Date(x), "MM/dd")}
+              />
+              <YAxis
+                axisLine={false}
+                tickLine={false}
+                tick={YAxisTickLabelStyles}
+                allowDecimals={false}
+              />
+              <Bar
+                isAnimationActive={false}
+                dataKey={"value"}
+                fill={theme.colors.v3.status.backgroundHigh}
+              />
+              <Tooltip
+                cursor={false}
+                content={(x) => {
+                  const payload = x.payload;
 
-                if (!payload || payload.length === 0) {
-                  return;
-                }
+                  if (!payload || payload.length === 0) {
+                    return;
+                  }
 
-                const { date, value } = payload[0]
-                  .payload as ErrorOccurrenceRecord;
+                  const { date, value } = payload[0]
+                    .payload as ErrorOccurrenceRecord;
 
-                return (
-                  <s.TooltipContainer>
-                    <span>Occurrences: {value}</span>
-                    <span>{format(new Date(date), "MM/dd/yyyy")}</span>
-                  </s.TooltipContainer>
-                );
-              }}
-              isAnimationActive={false}
-            />
-          </BarChart>
-        </ResponsiveContainer>
+                  return (
+                    <s.TooltipContainer>
+                      <span>Occurrences: {value}</span>
+                      <span>{format(new Date(date), "MM/dd/yyyy")}</span>
+                    </s.TooltipContainer>
+                  );
+                }}
+                isAnimationActive={false}
+              />
+            </BarChart>
+          </ResponsiveContainer>
+        ) : (
+          <s.EmptyStateContainer>No data</s.EmptyStateContainer>
+        )
+      ) : (
+        <s.EmptyStateContainer>Loading...</s.EmptyStateContainer>
       )}
     </s.HistogramContainer>
   );
