@@ -14,7 +14,7 @@ export interface GetGlobalErrorsDataPayload {
   services?: string[];
   endpoints?: string[];
   errorTypes?: string[];
-  criticality?: ErrorCriticality[];
+  criticalities?: ErrorCriticality[];
   handlingTypes?: ErrorHandlingType[];
 }
 

@@ -26,6 +26,10 @@ export const trackingEvents = addPrefix(
       "global errors view endpoints filter changed",
     GLOBAL_ERRORS_VIEW_ERROR_TYPES_FILTER_CHANGED:
       "global errors view error types filter changed",
+    GLOBAL_ERRORS_VIEW_CRITICALITY_FILTER_CHANGED:
+      "global errors view criticality filter changed",
+    GLOBAL_ERRORS_VIEW_UNHANDLED_FILTER_CHANGED:
+      "global errors view unhandled filter changed",
     GLOBAL_ERRORS_VIEW_FILTERS_CLOSE_BUTTON_CLICKED:
       "global errors view filters close button clicked",
     GLOBAL_ERRORS_VIEW_CLEAR_FILTERS_BUTTON_CLICKED:
