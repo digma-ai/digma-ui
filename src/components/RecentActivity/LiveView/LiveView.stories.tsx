@@ -23,7 +23,11 @@ export const NoData: Story = {
   args: {
     data: {
       ...mockData,
-      liveDataRecords: []
+      liveDataRecords: [],
+      durationData: {
+        ...mockData.durationData,
+        percentiles: []
+      }
     }
   }
 };
