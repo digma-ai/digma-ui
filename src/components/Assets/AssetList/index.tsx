@@ -1,12 +1,11 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
-import { DigmaMessageError } from "../../../api/types";
-import { dispatcher } from "../../../dispatcher";
+import { useFetchData } from "../../../hooks/useFetchData";
+import { useMount } from "../../../hooks/useMount";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { useAssetsSelector } from "../../../store/assets/useAssetsSelector";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { useStore } from "../../../store/useStore";
-import { isEnvironment } from "../../../typeGuards/isEnvironment";
 import { SCOPE_CHANGE_EVENTS } from "../../../types";
 import { changeScope } from "../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
@@ -20,8 +19,6 @@ import { PopoverTrigger } from "../../common/Popover/PopoverTrigger";
 import { ChevronIcon } from "../../common/icons/ChevronIcon";
 import { SortIcon } from "../../common/icons/SortIcon";
 import { Direction } from "../../common/icons/types";
-import { AssetFilterQuery } from "../AssetsFilter/types";
-import { ViewMode } from "../AssetsViewScopeConfiguration/types";
 import { actions } from "../actions";
 import { trackingEvents } from "../tracking";
 import { checkIfAnyFiltersApplied, getAssetTypeInfo } from "../utils";
@@ -31,13 +28,23 @@ import {
   AssetEntry,
   AssetListProps,
   AssetsData,
+  GetAssetsListDataPayload,
   SORTING_CRITERION,
-  SORTING_ORDER,
-  Sorting
+  SORTING_ORDER
 } from "./types";
 
 const PAGE_SIZE = 10;
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
+const requestConfig = {
+  requestAction: actions.GET_DATA,
+  responseAction: actions.SET_DATA,
+  refreshOnPayloadChange: true,
+  refreshInterval: REFRESH_INTERVAL,
+  refreshWithInterval: true,
+  debounceDelay: 10,
+  refreshWithDebounce: true,
+  fetchOnMount: true
+};
 
 const getSortingMenuChevronColor = (theme: DefaultTheme) => {
   switch (theme.mode) {
@@ -90,33 +97,6 @@ const getSortingCriteria = (isImpactHidden: boolean) =>
     (x) => !(isImpactHidden && x === SORTING_CRITERION.PERFORMANCE_IMPACT)
   );
 
-const getData = (
-  assetTypeId: string,
-  page: number,
-  sorting: Sorting,
-  searchQuery: string,
-  filters: AssetFilterQuery,
-  viewMode: ViewMode,
-  scopeSpanCodeObjectId?: string
-) => {
-  window.sendMessageToDigma({
-    action: actions.GET_DATA,
-    payload: {
-      query: {
-        assetType: assetTypeId,
-        page,
-        pageSize: PAGE_SIZE,
-        sortBy: sorting.criterion,
-        sortOrder: sorting.order,
-        directOnly: viewMode === "children",
-        scopedSpanCodeObjectId: scopeSpanCodeObjectId,
-        ...(searchQuery.length > 0 ? { displayName: searchQuery } : {}),
-        ...(scopeSpanCodeObjectId ? { ...filters, services: [] } : filters)
-      }
-    }
-  });
-};
-
 export const AssetList = ({
   assetTypeId,
   onAssetCountChange,
@@ -138,8 +118,6 @@ export const AssetList = ({
     setShowAssetsHeaderToolBox
   } = useStore.getState();
   const previousData = usePrevious(data);
-  const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
-  const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
   const [isSortingMenuOpen, setIsSortingMenuOpen] = useState(false);
   const theme = useTheme();
   const sortingMenuChevronColor = getSortingMenuChevronColor(theme);
@@ -150,45 +128,67 @@ export const AssetList = ({
     filteredCount
   );
   const listRef = useRef<HTMLUListElement>(null);
-  const refreshTimerId = useRef<number>();
+
   const { environment, backendInfo, scope } = useConfigSelector();
-  const previousEnvironment = usePrevious(environment);
-  const previousViewMode = usePrevious(viewMode);
   const scopeSpanCodeObjectId = scope?.span?.spanCodeObjectId;
-  const previousScopeSpanCodeObjectId = usePrevious(scopeSpanCodeObjectId);
   const isServicesFilterEnabled = !scopeSpanCodeObjectId;
   const isInitialLoading = !data;
 
-  const refreshData = useCallback(() => {
-    getData(
-      assetTypeId,
+  const payload = useMemo<GetAssetsListDataPayload>(
+    () => ({
+      query: {
+        assetType: assetTypeId,
+        page,
+        pageSize: PAGE_SIZE,
+        sortBy: sorting.criterion,
+        sortOrder: sorting.order,
+        scopedSpanCodeObjectId: scopeSpanCodeObjectId,
+        ...(search.length > 0 ? { displayName: search } : {}),
+        ...(scopeSpanCodeObjectId ? { ...filters, services: [] } : filters),
+        directOnly: viewMode === "children"
+      }
+    }),
+    [
       page,
-      sorting,
-      search,
+      assetTypeId,
       filters,
       viewMode,
-      scopeSpanCodeObjectId
-    );
-  }, [
-    page,
-    assetTypeId,
-    filters,
-    viewMode,
-    scopeSpanCodeObjectId,
-    search,
-    sorting
-  ]);
+      scopeSpanCodeObjectId,
+      search,
+      sorting
+    ]
+  );
+
+  const { data: fetchedData, getData: refreshData } = useFetchData<
+    GetAssetsListDataPayload,
+    AssetsData
+  >(requestConfig, payload);
+
+  useMount(() => {
+    setShowAssetsHeaderToolBox(true);
+    refreshData();
+  });
+
+  useEffect(() => {
+    setRefresher(refreshData);
+  }, [refreshData, setRefresher]);
+
+  useEffect(() => {
+    if (fetchedData) {
+      setData(fetchedData);
+    }
+  }, [fetchedData, setData]);
 
   const entries = data?.data ?? [];
-
   const assetTypeInfo = getAssetTypeInfo(assetTypeId);
-
   const isImpactHidden = useMemo(
     () => !(backendInfo?.centralize && environment?.type === "Public"),
     [backendInfo?.centralize, environment?.type]
   );
-
-  const sortingCriteria = getSortingCriteria(isImpactHidden);
+  const sortingCriteria = useMemo(
+    () => getSortingCriteria(isImpactHidden),
+    [isImpactHidden]
+  );
 
   const areAnyFiltersApplied = checkIfAnyFiltersApplied(
     filters,
@@ -197,67 +197,10 @@ export const AssetList = ({
   );
 
   useEffect(() => {
-    refreshData();
-  }, [refreshData]);
-
-  useEffect(() => {
-    const handleAssetsData = (
-      data: unknown,
-      timeStamp: number,
-      error: DigmaMessageError | undefined
-    ) => {
-      if (!error) {
-        setData(data as AssetsData);
-      }
-      setLastSetDataTimeStamp(timeStamp);
-    };
-
-    dispatcher.addActionListener(actions.SET_DATA, handleAssetsData);
-    setShowAssetsHeaderToolBox(true);
-
-    return () => {
-      dispatcher.removeActionListener(actions.SET_DATA, handleAssetsData);
-      window.clearTimeout(refreshTimerId.current);
-    };
-  }, [setData, setShowAssetsHeaderToolBox]);
-
-  useEffect(() => {
     if (data && previousData?.filteredCount !== data?.filteredCount) {
       onAssetCountChange(data.filteredCount);
     }
   }, [previousData, data, onAssetCountChange]);
-
-  useEffect(() => {
-    setRefresher(refreshData);
-  }, [refreshData, setRefresher]);
-
-  useEffect(() => {
-    if (
-      (isEnvironment(previousEnvironment) &&
-        previousEnvironment.id !== environment?.id) ||
-      viewMode !== previousViewMode ||
-      previousScopeSpanCodeObjectId !== scopeSpanCodeObjectId
-    ) {
-      refreshData();
-    }
-  }, [
-    environment?.id,
-    previousEnvironment,
-    previousViewMode,
-    viewMode,
-    scopeSpanCodeObjectId,
-    previousScopeSpanCodeObjectId,
-    refreshData
-  ]);
-
-  useEffect(() => {
-    if (previousLastSetDataTimeStamp !== lastSetDataTimeStamp) {
-      window.clearTimeout(refreshTimerId.current);
-      refreshTimerId.current = window.setTimeout(() => {
-        refreshData();
-      }, REFRESH_INTERVAL);
-    }
-  }, [lastSetDataTimeStamp, previousLastSetDataTimeStamp, refreshData]);
 
   useEffect(() => {
     if (

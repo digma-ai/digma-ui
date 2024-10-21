@@ -1,4 +1,5 @@
 import { Duration } from "../../../globals";
+import { AssetFilterQuery } from "../AssetsFilter/types";
 
 export interface AssetListProps {
   onGoToAllAssets: () => void;
@@ -70,4 +71,16 @@ export interface AssetsData {
   data: AssetEntry[];
   totalCount: number;
   filteredCount: number;
+}
+
+export interface GetAssetListDataQuery extends AssetFilterQuery {
+  assetType: string;
+  page: number;
+  pageSize: number;
+  sortBy: SORTING_CRITERION;
+  sortOrder: SORTING_ORDER;
+}
+
+export interface GetAssetsListDataPayload {
+  query: GetAssetListDataQuery;
 }
