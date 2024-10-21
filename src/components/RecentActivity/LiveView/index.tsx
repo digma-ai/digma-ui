@@ -294,7 +294,7 @@ export const LiveView = ({ data, onClose }: LiveViewProps) => {
     duration: data.durationData.percentiles.find(
       (x) => x.percentile === percentile.percentile
     )?.currentDuration
-  })).filter(Boolean) as PercentileInfo[];
+  })).filter((x) => x.duration) as PercentileInfo[];
 
   const p50 = percentiles.find((p) => p.percentile === 0.5);
   const p95 = percentiles.find((p) => p.percentile === 0.95);
