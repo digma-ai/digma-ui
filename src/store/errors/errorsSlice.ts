@@ -26,7 +26,7 @@ export interface GlobalErrorsSelectedFiltersState {
   services: string[];
   endpoints: string[];
   errorTypes: string[];
-  criticality: ErrorCriticality[];
+  criticalities: ErrorCriticality[];
   handlingTypes: ErrorHandlingType[];
 }
 
@@ -47,7 +47,7 @@ const selectedFiltersInitialState = {
   services: [],
   endpoints: [],
   errorTypes: [],
-  criticality: [],
+  criticalities: [],
   handlingTypes: []
 };
 

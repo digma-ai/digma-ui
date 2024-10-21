@@ -3,13 +3,17 @@ import { useFetchData } from "../../../../hooks/useFetchData";
 import { usePrevious } from "../../../../hooks/usePrevious";
 import { useConfigSelector } from "../../../../store/config/useConfigSelector";
 import {
+  ErrorCriticality,
   ErrorFilter,
+  ErrorHandlingType,
   GlobalErrorsFiltersState
 } from "../../../../store/errors/errorsSlice";
 import { useErrorsSelector } from "../../../../store/errors/useErrorsSelector";
 import { useStore } from "../../../../store/useStore";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { FilterPopup } from "../../../common/FilterPopup";
+import { EyeIcon } from "../../../common/icons/12px/EyeIcon";
+import { WarningTriangleIcon } from "../../../common/icons/12px/WarningTriangleIcon";
 import { WrenchIcon } from "../../../common/icons/12px/WrenchIcon";
 import { CrossCircleIcon } from "../../../common/icons/CrossCircleIcon";
 import { EndpointIcon } from "../../../common/icons/EndpointIcon";
@@ -47,6 +51,12 @@ export const GlobalErrorsFilters = () => {
   const [selectedErrorTypes, setSelectedErrorTypes] = useState<string[]>(
     globalErrorsSelectedFilters.errorTypes
   );
+  const [selectedCriticalities, setSelectedCriticalities] = useState<
+    ErrorCriticality[]
+  >(globalErrorsSelectedFilters.criticalities);
+  const [selectedHandlingTypes, setSelectedHandlingTypes] = useState<
+    ErrorHandlingType[]
+  >(globalErrorsSelectedFilters.handlingTypes);
 
   const getLastSelectedFilterValues = useCallback(
     (changedFilter: ErrorFilter) => {
@@ -171,29 +181,111 @@ export const GlobalErrorsFilters = () => {
     setSelectedErrorTypes(newValue);
   };
 
-  const servicesFilterOptions: SelectItem[] =
-    services?.map((x) => ({
-      label: x,
-      value: x,
-      selected: selectedServices.includes(x),
-      enabled: true
-    })) ?? [];
+  const handleCriticalityChange = (value: string | string[]) => {
+    sendUserActionTrackingEvent(
+      trackingEvents.GLOBAL_ERRORS_VIEW_CRITICALITY_FILTER_CHANGED
+    );
+    const newValue = Array.isArray(value) ? value : [value];
+    setSelectedCriticalities(newValue as ErrorCriticality[]);
+  };
 
-  const endpointsFilterOptions: SelectItem[] =
-    endpoints?.map((x) => ({
-      label: x.displayName,
-      value: x.spanCodeObjectId,
-      selected: selectedEndpoints.includes(x.spanCodeObjectId),
-      enabled: true
-    })) ?? [];
+  const handleHandlingTypeChange = (value: string | string[]) => {
+    sendUserActionTrackingEvent(
+      trackingEvents.GLOBAL_ERRORS_VIEW_UNHANDLED_FILTER_CHANGED
+    );
+    const newValue = value === "All" ? [] : [value];
+    setSelectedHandlingTypes(newValue as ErrorHandlingType[]);
+  };
 
-  const errorTypesFilterOptions: SelectItem[] =
-    errorTypes?.map((x) => ({
-      label: x,
-      value: x,
-      selected: selectedErrorTypes.includes(x),
-      enabled: true
-    })) ?? [];
+  const servicesFilterOptions: SelectItem[] = useMemo(
+    () =>
+      services?.map((x) => ({
+        label: x,
+        value: x,
+        selected: selectedServices.includes(x),
+        enabled: true
+      })) ?? [],
+    [services, selectedServices]
+  );
+
+  const endpointsFilterOptions: SelectItem[] = useMemo(
+    () =>
+      endpoints?.map((x) => ({
+        label: x.displayName,
+        value: x.spanCodeObjectId,
+        selected: selectedEndpoints.includes(x.spanCodeObjectId),
+        enabled: true
+      })) ?? [],
+    [endpoints, selectedEndpoints]
+  );
+
+  const errorTypesFilterOptions: SelectItem[] = useMemo(
+    () =>
+      errorTypes?.map((x) => ({
+        label: x,
+        value: x,
+        selected: selectedErrorTypes.includes(x),
+        enabled: true
+      })) ?? [],
+    [errorTypes, selectedErrorTypes]
+  );
+
+  const criticalityFilterOptions: SelectItem[] = useMemo(
+    () => [
+      {
+        label: "Critical",
+        value: "High",
+        selected: selectedCriticalities.includes("High"),
+        enabled: true
+      },
+      {
+        label: "Medium",
+        value: "Medium",
+        selected: selectedCriticalities.includes("Medium"),
+        enabled: true
+      },
+      {
+        label: "Low",
+        value: "Low",
+        selected: selectedCriticalities.includes("Low"),
+        enabled: true
+      }
+    ],
+    [selectedCriticalities]
+  );
+
+  const handlingTypeFilterOptions: SelectItem[] = useMemo(
+    () => [
+      {
+        label: "Yes",
+        value: "Handled",
+        selected:
+          selectedHandlingTypes.length === 1 &&
+          selectedHandlingTypes[0] === "Handled",
+        enabled: true
+      },
+      {
+        label: "No",
+        value: "Unhandled",
+        selected:
+          selectedHandlingTypes.length === 1 &&
+          selectedHandlingTypes[0] === "Unhandled",
+        enabled: true
+      },
+      {
+        label: "All",
+        value: "All",
+        selected: selectedHandlingTypes.length === 0,
+        enabled: true
+      }
+    ],
+    [selectedHandlingTypes]
+  );
+
+  const selectedHandlingTypeOption = useMemo(
+    () => handlingTypeFilterOptions.find((x) => x.selected),
+    [handlingTypeFilterOptions]
+  );
 
   const filters = [
     {
@@ -255,6 +347,42 @@ export const GlobalErrorsFilters = () => {
           disabled={errorTypesFilterOptions?.length === 0}
         />
       )
+    },
+    {
+      title: "Criticality",
+      component: (
+        <s.StyledSelect
+          key={"criticality"}
+          items={criticalityFilterOptions}
+          onChange={handleCriticalityChange}
+          placeholder={getSelectPlaceholder(
+            criticalityFilterOptions,
+            "Criticality levels"
+          )}
+          multiselect={true}
+          icon={(props: IconProps) => (
+            <s.SelectItemIconContainer>
+              <WarningTriangleIcon {...props} />
+            </s.SelectItemIconContainer>
+          )}
+        />
+      )
+    },
+    {
+      title: "Unhandled",
+      component: (
+        <s.StyledSelect
+          key={"handlingType"}
+          items={handlingTypeFilterOptions}
+          onChange={handleHandlingTypeChange}
+          placeholder={selectedHandlingTypeOption?.label ?? "All"}
+          icon={(props: IconProps) => (
+            <s.SelectItemIconContainer>
+              <EyeIcon {...props} />
+            </s.SelectItemIconContainer>
+          )}
+        />
+      )
     }
   ];
 
@@ -263,7 +391,9 @@ export const GlobalErrorsFilters = () => {
       ...globalErrorsSelectedFilters,
       services: selectedServices,
       endpoints: selectedEndpoints,
-      errorTypes: selectedErrorTypes
+      errorTypes: selectedErrorTypes,
+      criticalities: selectedCriticalities,
+      handlingTypes: selectedHandlingTypes
     });
   };
 

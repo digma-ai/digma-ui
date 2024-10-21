@@ -99,7 +99,7 @@ export const GlobalErrorsList = () => {
             services: selectedFilters.services,
             endpoints: selectedFilters.endpoints,
             errorTypes: selectedFilters.errorTypes,
-            criticality: selectedFilters.criticality,
+            criticalities: selectedFilters.criticalities,
             handlingTypes: selectedFilters.handlingTypes
           }
         : {})
@@ -113,7 +113,7 @@ export const GlobalErrorsList = () => {
       selectedFilters.services,
       selectedFilters.endpoints,
       selectedFilters.errorTypes,
-      selectedFilters.criticality,
+      selectedFilters.criticalities,
       selectedFilters.handlingTypes
     ]
   );
@@ -140,7 +140,7 @@ export const GlobalErrorsList = () => {
     selectedFilters.services,
     selectedFilters.endpoints,
     selectedFilters.errorTypes,
-    selectedFilters.criticality,
+    selectedFilters.criticalities,
     selectedFilters.handlingTypes
   ]);
 
@@ -209,7 +209,7 @@ export const GlobalErrorsList = () => {
       selectedFilters.services,
       selectedFilters.endpoints,
       selectedFilters.errorTypes,
-      selectedFilters.criticality,
+      selectedFilters.criticalities,
       selectedFilters.handlingTypes
     ].some((x) => x.length > 0);
 
