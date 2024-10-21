@@ -9,7 +9,7 @@ import { Option } from "../../../../../common/AffectedEndpointsSelector/types";
 import { TraceIcon } from "../../../../../common/icons/12px/TraceIcon";
 import { Button } from "../../../../../common/v3/Button";
 import { Tooltip } from "../../../../../common/v3/Tooltip";
-import { InsightType, Trace } from "../../../../types";
+import { InsightType, NPlusOneEndpointInfo, Trace } from "../../../../types";
 import { InsightCard } from "../common/InsightCard";
 import { ColumnsContainer } from "../common/InsightCard/ColumnsContainer";
 import { KeyValue } from "../common/InsightCard/KeyValue";
@@ -36,9 +36,9 @@ export const SpaNPlusOneInsightCard = ({
   );
   const maxDurationString = getDurationString(endpointWithMaxDuration.duration);
   const { isJaegerEnabled } = useConfigSelector();
-  const [selectedEndpoint, setSelectedEndpoint] = useState(
-    endpoints.length ? endpoints[0] : undefined
-  );
+  const [selectedEndpoint, setSelectedEndpoint] = useState<
+    NPlusOneEndpointInfo | undefined
+  >(endpoints[0]);
 
   const handleSpanLinkClick = (spanCodeObjectId?: string) => {
     if (spanCodeObjectId) {
@@ -84,9 +84,23 @@ export const SpaNPlusOneInsightCard = ({
       })),
     [endpoints]
   );
-  const selectorValue = selectedEndpoint
-    ? getEndpointKey(selectedEndpoint.endpointInfo)
-    : undefined;
+
+  const selectedOption = useMemo(
+    () =>
+      selectedEndpoint &&
+      selectorOptions.find(
+        (x) =>
+          x.serviceName === selectedEndpoint.endpointInfo.serviceName &&
+          x.spanCodeObjectId ===
+            selectedEndpoint.endpointInfo.entrySpanCodeObjectId
+      ),
+    [selectedEndpoint, selectorOptions]
+  );
+
+  const selectorValue = useMemo(
+    () => (selectedOption ? getEndpointKey(selectedOption) : undefined),
+    [selectedOption]
+  );
 
   return (
     <InsightCard
