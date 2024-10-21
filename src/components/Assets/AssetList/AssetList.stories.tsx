@@ -39,7 +39,6 @@ const mockedConfig: ConfigContextData = {
 
 export const Default: Story = {
   args: {
-    onAssetCountChange: fn(),
     setRefresher: fn(),
     assetTypeId: "Endpoint"
   },
@@ -63,7 +62,6 @@ export const WithPerformanceImpact: Story = {
     )
   ],
   args: {
-    onAssetCountChange: fn(),
     setRefresher: fn(),
     assetTypeId: "Endpoint"
   },

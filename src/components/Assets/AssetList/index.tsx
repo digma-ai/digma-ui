@@ -2,7 +2,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
 import { useFetchData } from "../../../hooks/useFetchData";
 import { useMount } from "../../../hooks/useMount";
-import { usePrevious } from "../../../hooks/usePrevious";
 import { useAssetsSelector } from "../../../store/assets/useAssetsSelector";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { useStore } from "../../../store/useStore";
@@ -99,7 +98,6 @@ const getSortingCriteria = (isImpactHidden: boolean) =>
 
 export const AssetList = ({
   assetTypeId,
-  onAssetCountChange,
   setRefresher,
   onGoToAllAssets
 }: AssetListProps) => {
@@ -117,7 +115,6 @@ export const AssetList = ({
     setAssetsPage: setPage,
     setShowAssetsHeaderToolBox
   } = useStore.getState();
-  const previousData = usePrevious(data);
   const [isSortingMenuOpen, setIsSortingMenuOpen] = useState(false);
   const theme = useTheme();
   const sortingMenuChevronColor = getSortingMenuChevronColor(theme);
@@ -195,12 +192,6 @@ export const AssetList = ({
     search,
     isServicesFilterEnabled
   );
-
-  useEffect(() => {
-    if (data && previousData?.filteredCount !== data?.filteredCount) {
-      onAssetCountChange(data.filteredCount);
-    }
-  }, [previousData, data, onAssetCountChange]);
 
   useEffect(() => {
     if (

@@ -5,7 +5,6 @@ import { IconProps } from "../../common/icons/types";
 export interface AssetTypeListProps {
   onAssetTypeSelect: (assetTypeId: string) => void;
   setRefresher: (refresher: () => void) => void;
-  onAssetCountChange: (count: number) => void;
 }
 
 export interface AssetCategoriesData {

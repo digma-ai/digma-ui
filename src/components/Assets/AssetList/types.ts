@@ -5,7 +5,6 @@ export interface AssetListProps {
   onGoToAllAssets: () => void;
   assetTypeId: string;
   setRefresher: (refresher: () => void) => void;
-  onAssetCountChange: (count: number) => void;
 }
 
 export enum SORTING_CRITERION {

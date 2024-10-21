@@ -63,12 +63,8 @@ const getData = (
   });
 };
 
-const getAssetCount = (assetCategoriesData: AssetCategoriesData) =>
-  assetCategoriesData.assetCategories.reduce((acc, cur) => acc + cur.count, 0);
-
 export const AssetTypeList = ({
   setRefresher,
-  onAssetCountChange,
   onAssetTypeSelect
 }: AssetTypeListProps) => {
   const {
@@ -141,7 +137,6 @@ export const AssetTypeList = ({
 
   useEffect(() => {
     if (data && previousData !== data) {
-      onAssetCountChange(getAssetCount(data));
       const showNoDataWithParents = Boolean(
         data?.parents &&
           data.parents.length > 0 &&
@@ -150,7 +145,7 @@ export const AssetTypeList = ({
       setShowAssetsHeaderToolBox(!showNoDataWithParents);
       setShowNoDataWithParents(showNoDataWithParents);
     }
-  }, [previousData, data, onAssetCountChange, setShowAssetsHeaderToolBox]);
+  }, [previousData, data, setShowAssetsHeaderToolBox]);
 
   useEffect(() => {
     if (
