@@ -53,7 +53,7 @@ export const useFetchData = <T, K>(
     () => refreshWithInterval && refreshInterval > 0,
     [refreshWithInterval, refreshInterval]
   );
-  const isDebounceEnabledEnabled = useMemo(
+  const isDebounceEnabled = useMemo(
     () => refreshWithDebounce && debounceDelay >= 0,
     [refreshWithDebounce, debounceDelay]
   );
@@ -63,7 +63,7 @@ export const useFetchData = <T, K>(
   const previousRefreshInterval = usePrevious(refreshInterval);
   const previousIsEnabled = usePrevious(isEnabled);
   const [payload, setPayload] = useState(
-    !isDebounceEnabledEnabled ? query : undefined
+    !isDebounceEnabled ? query : undefined
   );
   const previousPayload = usePrevious(payload);
   const [isMounted, setIsMounted] = useState(false);
@@ -80,7 +80,7 @@ export const useFetchData = <T, K>(
       return;
     }
 
-    if (!isDebounceEnabledEnabled) {
+    if (!isDebounceEnabled) {
       setPayload(query);
       return;
     }
@@ -89,13 +89,7 @@ export const useFetchData = <T, K>(
     debounceRefreshTimerId.current = window.setTimeout(() => {
       setPayload(query);
     }, debounceDelay);
-  }, [
-    refreshWithDebounce,
-    debounceDelay,
-    query,
-    isMounted,
-    isDebounceEnabledEnabled
-  ]);
+  }, [refreshWithDebounce, debounceDelay, query, isMounted, isDebounceEnabled]);
 
   // Clear timer and get data on request action change
   useEffect(() => {
