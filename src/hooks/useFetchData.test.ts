@@ -142,6 +142,49 @@ describe("useFetchData", () => {
     expect(mockSendMessageToDigma).toHaveBeenCalledTimes(2);
   });
 
+  it("should refresh with new payload on payload change", () => {
+    try {
+      jest.useFakeTimers();
+      const { rerender } = setup({
+        refreshOnPayloadChange: true,
+        refreshWithInterval: true,
+        refreshInterval: 500
+      });
+
+      expect(mockSendMessageToDigma).toHaveBeenCalledTimes(1);
+      const newPayload = { key: "newValue" };
+      rerender({
+        config: {
+          requestAction,
+          responseAction,
+          refreshOnPayloadChange: true,
+          refreshWithInterval: true,
+          refreshInterval: 500
+        },
+        payload: newPayload
+      });
+
+      expect(mockSendMessageToDigma).toHaveBeenCalledTimes(2);
+      const handleData = (dispatcher.addActionListener as jest.Mock).mock
+        .calls[0][1] as ActionListener; // eslint-disable-line @typescript-eslint/no-unsafe-member-access
+
+      act(() => {
+        handleData({ data: "testData" }, Date.now());
+      });
+
+      act(() => {
+        jest.advanceTimersByTime(5000);
+      });
+
+      expect(mockSendMessageToDigma).toHaveBeenNthCalledWith(3, {
+        action: requestAction,
+        payload: newPayload
+      });
+    } finally {
+      jest.useRealTimers();
+    }
+  });
+
   it("should fetch data on refreshWithInterval change", () => {
     const { rerender } = setup({ refreshWithInterval: false });
 
@@ -158,6 +201,10 @@ describe("useFetchData", () => {
     });
 
     expect(mockSendMessageToDigma).toHaveBeenCalledTimes(2);
+
+    act(() => {
+      jest.advanceTimersByTime(10000);
+    });
   });
 
   it("should fetch data on refreshInterval change", () => {

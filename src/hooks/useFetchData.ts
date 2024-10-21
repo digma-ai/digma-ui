@@ -115,7 +115,6 @@ export const useFetchData = <T, K>(
       isMounted &&
       previousPayload !== payload
     ) {
-      window.clearTimeout(refreshTimerId.current);
       sendMessage<T>(requestAction, payload);
     }
   }, [
