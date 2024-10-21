@@ -66,6 +66,12 @@ export const GlobalErrorsList = () => {
     FeatureFlag.ARE_GLOBAL_ERRORS_FILTERS_ENABLED
   );
 
+  const areGlobalErrorsCriticalityAndUnhandledFiltersEnabled =
+    getFeatureFlagValue(
+      backendInfo,
+      FeatureFlag.ARE_GLOBAL_ERRORS_CRITICALITY_AND_UNHANDLED_FILTERS_ENABLED
+    );
+
   const environmentId = environment?.id;
 
   const sortingMenuItems = Object.values(GLOBAL_ERROR_SORTING_CRITERION).map(
@@ -98,7 +104,11 @@ export const GlobalErrorsList = () => {
         ? {
             services: selectedFilters.services,
             endpoints: selectedFilters.endpoints,
-            errorTypes: selectedFilters.errorTypes,
+            errorTypes: selectedFilters.errorTypes
+          }
+        : {}),
+      ...(areGlobalErrorsCriticalityAndUnhandledFiltersEnabled
+        ? {
             criticalities: selectedFilters.criticalities,
             handlingTypes: selectedFilters.handlingTypes
           }
@@ -110,6 +120,7 @@ export const GlobalErrorsList = () => {
       sorting,
       page,
       areGlobalErrorsFiltersEnabled,
+      areGlobalErrorsCriticalityAndUnhandledFiltersEnabled,
       selectedFilters.services,
       selectedFilters.endpoints,
       selectedFilters.errorTypes,

@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { getFeatureFlagValue } from "../../../../featureFlags";
 import { useFetchData } from "../../../../hooks/useFetchData";
 import { usePrevious } from "../../../../hooks/usePrevious";
 import { useConfigSelector } from "../../../../store/config/useConfigSelector";
@@ -10,6 +11,7 @@ import {
 } from "../../../../store/errors/errorsSlice";
 import { useErrorsSelector } from "../../../../store/errors/useErrorsSelector";
 import { useStore } from "../../../../store/useStore";
+import { FeatureFlag } from "../../../../types";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { FilterPopup } from "../../../common/FilterPopup";
 import { EyeIcon } from "../../../common/icons/12px/EyeIcon";
@@ -32,7 +34,14 @@ const getSelectPlaceholder = (options: SelectItem[], placeholder: string) =>
   options.filter((x) => x.selected).length > 0 ? placeholder : "All";
 
 export const GlobalErrorsFilters = () => {
-  const { environment } = useConfigSelector();
+  const { environment, backendInfo } = useConfigSelector();
+
+  const areGlobalErrorsCriticalityAndUnhandledFiltersEnabled =
+    getFeatureFlagValue(
+      backendInfo,
+      FeatureFlag.ARE_GLOBAL_ERRORS_CRITICALITY_AND_UNHANDLED_FILTERS_ENABLED
+    );
+
   const { globalErrorsFilters, globalErrorsSelectedFilters } =
     useErrorsSelector();
   const { setGlobalErrorsFilters, setGlobalErrorsSelectedFilters } =
@@ -348,42 +357,46 @@ export const GlobalErrorsFilters = () => {
         />
       )
     },
-    {
-      title: "Criticality",
-      component: (
-        <s.StyledSelect
-          key={"criticality"}
-          items={criticalityFilterOptions}
-          onChange={handleCriticalityChange}
-          placeholder={getSelectPlaceholder(
-            criticalityFilterOptions,
-            "Criticality levels"
-          )}
-          multiselect={true}
-          icon={(props: IconProps) => (
-            <s.SelectItemIconContainer>
-              <WarningTriangleIcon {...props} />
-            </s.SelectItemIconContainer>
-          )}
-        />
-      )
-    },
-    {
-      title: "Unhandled",
-      component: (
-        <s.StyledSelect
-          key={"handlingType"}
-          items={handlingTypeFilterOptions}
-          onChange={handleHandlingTypeChange}
-          placeholder={selectedHandlingTypeOption?.label ?? "All"}
-          icon={(props: IconProps) => (
-            <s.SelectItemIconContainer>
-              <EyeIcon {...props} />
-            </s.SelectItemIconContainer>
-          )}
-        />
-      )
-    }
+    ...(areGlobalErrorsCriticalityAndUnhandledFiltersEnabled
+      ? [
+          {
+            title: "Criticality",
+            component: (
+              <s.StyledSelect
+                key={"criticality"}
+                items={criticalityFilterOptions}
+                onChange={handleCriticalityChange}
+                placeholder={getSelectPlaceholder(
+                  criticalityFilterOptions,
+                  "Criticality levels"
+                )}
+                multiselect={true}
+                icon={(props: IconProps) => (
+                  <s.SelectItemIconContainer>
+                    <WarningTriangleIcon {...props} />
+                  </s.SelectItemIconContainer>
+                )}
+              />
+            )
+          },
+          {
+            title: "Unhandled",
+            component: (
+              <s.StyledSelect
+                key={"handlingType"}
+                items={handlingTypeFilterOptions}
+                onChange={handleHandlingTypeChange}
+                placeholder={selectedHandlingTypeOption?.label ?? "All"}
+                icon={(props: IconProps) => (
+                  <s.SelectItemIconContainer>
+                    <EyeIcon {...props} />
+                  </s.SelectItemIconContainer>
+                )}
+              />
+            )
+          }
+        ]
+      : [])
   ];
 
   const applyFilters = () => {
@@ -411,12 +424,16 @@ export const GlobalErrorsFilters = () => {
     setSelectedServices([]);
     setSelectedEndpoints([]);
     setSelectedErrorTypes([]);
+    setSelectedCriticalities([]);
+    setSelectedHandlingTypes([]);
   };
 
   const selectedFiltersCount = [
     selectedServices.length,
     selectedEndpoints.length,
-    selectedErrorTypes.length
+    selectedErrorTypes.length,
+    selectedCriticalities.length,
+    selectedHandlingTypes.length
   ].filter((x) => x > 0).length;
 
   const handlePopupOpenStateChange = (isOpen: boolean) => {
