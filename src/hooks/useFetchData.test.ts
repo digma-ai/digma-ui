@@ -142,7 +142,7 @@ describe("useFetchData", () => {
     expect(mockSendMessageToDigma).toHaveBeenCalledTimes(2);
   });
 
-  it("should refresh with new payload on payload change", () => {
+  it("should fetch data on payload change with interval", () => {
     try {
       jest.useFakeTimers();
       const { rerender } = setup({
@@ -201,10 +201,6 @@ describe("useFetchData", () => {
     });
 
     expect(mockSendMessageToDigma).toHaveBeenCalledTimes(2);
-
-    act(() => {
-      jest.advanceTimersByTime(10000);
-    });
   });
 
   it("should fetch data on refreshInterval change", () => {

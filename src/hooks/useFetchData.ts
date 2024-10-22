@@ -47,7 +47,7 @@ export const useFetchData = <T, K>(
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
   const refreshTimerId = useRef<number>();
-  const debounceRefreshTimerId = useRef<number>();
+  const debounceTimerId = useRef<number>();
   const previousRequestAction = usePrevious(requestAction);
   const isRefreshWithIntervalEnabled = useMemo(
     () => refreshWithInterval && refreshInterval > 0,
@@ -73,6 +73,11 @@ export const useFetchData = <T, K>(
       sendMessage(requestAction, query);
     }
     setIsMounted(true);
+
+    return () => {
+      window.clearTimeout(refreshTimerId.current);
+      window.clearTimeout(debounceTimerId.current);
+    };
   });
 
   useEffect(() => {
@@ -85,11 +90,11 @@ export const useFetchData = <T, K>(
       return;
     }
 
-    window.clearTimeout(debounceRefreshTimerId.current);
-    debounceRefreshTimerId.current = window.setTimeout(() => {
+    window.clearTimeout(debounceTimerId.current);
+    debounceTimerId.current = window.setTimeout(() => {
       setPayload(query);
     }, debounceDelay);
-  }, [refreshWithDebounce, debounceDelay, query, isMounted, isDebounceEnabled]);
+  }, [debounceDelay, query, isMounted, isDebounceEnabled]);
 
   // Clear timer and get data on request action change
   useEffect(() => {
@@ -115,6 +120,7 @@ export const useFetchData = <T, K>(
       isMounted &&
       previousPayload !== payload
     ) {
+      window.clearTimeout(refreshTimerId.current);
       sendMessage<T>(requestAction, payload);
     }
   }, [
@@ -222,7 +228,6 @@ export const useFetchData = <T, K>(
 
     return () => {
       dispatcher.removeActionListener(responseAction, handleData);
-      window.clearTimeout(refreshTimerId.current);
     };
   }, [responseAction, isEnabled]);
 
