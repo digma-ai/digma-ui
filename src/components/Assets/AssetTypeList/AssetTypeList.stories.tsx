@@ -21,7 +21,6 @@ type Story = StoryObj<typeof meta>;
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 export const Default: Story = {
   args: {
-    onAssetCountChange: fn(),
     setRefresher: fn()
   },
   play: () => {
@@ -68,7 +67,6 @@ export const Default: Story = {
 
 export const Empty: Story = {
   args: {
-    onAssetCountChange: fn(),
     setRefresher: fn()
   },
   play: () => {
@@ -86,7 +84,6 @@ export const Empty: Story = {
 
 export const EmptyWithParents: Story = {
   args: {
-    onAssetCountChange: fn(),
     setRefresher: fn()
   },
   play: () => {

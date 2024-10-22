@@ -14,6 +14,7 @@ import { NewIconButton } from "../common/v3/NewIconButton";
 import { Tooltip } from "../common/v3/Tooltip";
 import { AssetList } from "./AssetList";
 import { AssetTypeList } from "./AssetTypeList";
+import { AssetCategoriesData } from "./AssetTypeList/types";
 import { AssetsFilter } from "./AssetsFilter";
 import { AssetsViewScopeConfiguration } from "./AssetsViewScopeConfiguration";
 import { NoDataMessage } from "./NoDataMessage";
@@ -23,11 +24,19 @@ import { DataRefresher } from "./types";
 
 const SEARCH_INPUT_DEBOUNCE_DELAY = 1000; // in milliseconds
 
+const getAssetCategoryCount = (
+  assetCategoriesData: AssetCategoriesData | null
+) =>
+  assetCategoriesData?.assetCategories.reduce(
+    (acc, cur) => acc + cur.count,
+    0
+  ) ?? 0;
+
 export const Assets = () => {
   const [assetsCount, setAssetsCount] = useState<number>();
   const params = useParams();
   const selectedAssetTypeId = useMemo(() => params.typeId, [params]);
-  const { search, filters } = useAssetsSelector();
+  const { search, filters, assets, assetCategoriesData } = useAssetsSelector();
   const { setAssetsSearch: setSearch } = useStore.getState();
   const [searchInputValue, setSearchInputValue] = useState(search);
   const debouncedSearchInputValue = useDebounce(
@@ -81,9 +90,13 @@ export const Assets = () => {
     }
   };
 
-  const handleAssetCountChange = useCallback((count: number) => {
-    setAssetsCount(count);
-  }, []);
+  useEffect(() => {
+    setAssetsCount(
+      !selectedAssetTypeId
+        ? getAssetCategoryCount(assetCategoriesData)
+        : assets?.filteredCount
+    );
+  }, [assetCategoriesData, assets, selectedAssetTypeId]);
 
   const handleAssetTypeListRefresherChange = useCallback(
     (refresher: () => void) => {
@@ -129,7 +142,6 @@ export const Assets = () => {
         <AssetTypeList
           onAssetTypeSelect={handleAssetTypeSelect}
           setRefresher={handleAssetTypeListRefresherChange}
-          onAssetCountChange={handleAssetCountChange}
         />
       );
     }
@@ -139,7 +151,6 @@ export const Assets = () => {
         onGoToAllAssets={handleGoToAllAssets}
         assetTypeId={selectedAssetTypeId}
         setRefresher={handleAssetListRefresherChange}
-        onAssetCountChange={handleAssetCountChange}
       />
     );
   };
