@@ -1,6 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
-import { useFetchData } from "../../../hooks/useFetchData";
+import {
+  DataFetcherConfiguration,
+  useFetchData
+} from "../../../hooks/useFetchData";
 import { useMount } from "../../../hooks/useMount";
 import { useAssetsSelector } from "../../../store/assets/useAssetsSelector";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
@@ -34,7 +37,7 @@ import {
 
 const PAGE_SIZE = 10;
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
-const requestConfig = {
+const requestConfig: DataFetcherConfiguration = {
   requestAction: actions.GET_DATA,
   responseAction: actions.SET_DATA,
   refreshOnPayloadChange: true,
@@ -163,7 +166,6 @@ export const AssetList = ({
 
   useMount(() => {
     setShowAssetsHeaderToolBox(true);
-    refreshData();
   });
 
   useEffect(() => {
