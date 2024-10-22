@@ -22,10 +22,11 @@ import { KebabMenuProps } from "./types";
 
 export const KebabMenu = ({ onClose }: KebabMenuProps) => {
   const { backendInfo, digmaStatus, environment } = useConfigSelector();
-  const isDigmaMetricsEnabled =
+  const isDigmaMetricsVisible =
     backendInfo?.centralize &&
-    environment?.type === "Public" &&
     getFeatureFlagValue(backendInfo, FeatureFlag.IS_METRICS_REPORT_ENABLED);
+  const isDigmaMetricsEnabled =
+    isDigmaMetricsVisible && environment?.type === "Public";
 
   const handleOnboardingClick = () => {
     sendUserActionTrackingEvent(trackingEvents.ONBOARDING_LINK_CLICKED);
@@ -130,12 +131,16 @@ export const KebabMenu = ({ onClose }: KebabMenuProps) => {
     });
   }
 
-  if (isDigmaMetricsEnabled) {
+  if (isDigmaMetricsVisible) {
     items.push({
       id: "metrics",
       label: "Digma Metrics",
-      icon: <MetricsIcon size={16} color={"currentColor"} />,
-      onClick: handleReportClick
+      icon: <MetricsIcon color={"currentColor"} />,
+      onClick: handleReportClick,
+      tooltip: !isDigmaMetricsEnabled
+        ? "Available for CI/Prod environments only"
+        : undefined,
+      isDisabled: !isDigmaMetricsEnabled
     });
   }
 

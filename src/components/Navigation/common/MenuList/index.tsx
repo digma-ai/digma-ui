@@ -30,10 +30,17 @@ export const MenuList = ({
           return item.customContent ? (
             <li key={item.id}>{item.customContent}</li>
           ) : (
-            <Tooltip title={item.label} key={item.id}>
-              <s.ListItem $isHighlighted={isHighlighted} onClick={item.onClick}>
+            <Tooltip title={item.tooltip ?? item.label} key={item.id}>
+              <s.ListItem
+                $isHighlighted={isHighlighted}
+                onClick={item.onClick}
+                $isDisabled={item.isDisabled}
+              >
                 {item.icon && (
-                  <s.ListItemIconContainer $isHighlighted={isHighlighted}>
+                  <s.ListItemIconContainer
+                    $isHighlighted={isHighlighted}
+                    $isDisabled={item.isDisabled}
+                  >
                     {item.icon}
                   </s.ListItemIconContainer>
                 )}

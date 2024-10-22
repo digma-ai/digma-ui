@@ -58,19 +58,23 @@ export const ListItem = styled.li<ListItemProps>`
 
 export const ListItemIconContainer = styled.div<ListItemIconContainerProps>`
   display: flex;
-  color: ${({ theme, $isHighlighted }) =>
-    $isHighlighted
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  color: ${({ theme, $isHighlighted, $isDisabled }) =>
+    $isDisabled
+      ? theme.colors.v3.icon.disabled
+      : $isHighlighted
       ? theme.colors.v3.icon.brandTertiary
       : theme.colors.v3.icon.tertiary};
 
-  &:disabled {
-    color: ${({ theme }) => theme.colors.v3.icon.disabled};
-  }
-
-  &:hover:enabled,
-  &:active:enabled {
-    color: ${({ theme, $isHighlighted }) =>
-      $isHighlighted
+  &:hover,
+  &:active {
+    color: ${({ theme, $isHighlighted, $isDisabled }) =>
+      $isDisabled
+        ? theme.colors.v3.icon.disabled
+        : $isHighlighted
         ? theme.colors.v3.icon.brandTertiary
         : theme.colors.v3.icon.primary};
   }
