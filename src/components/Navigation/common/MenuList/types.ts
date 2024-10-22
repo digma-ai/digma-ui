@@ -6,6 +6,7 @@ export interface MenuListProps {
   showGroupDividers?: boolean;
   highlightSelected?: boolean;
   header?: ReactNode;
+  isDisabled?: boolean;
 }
 
 export interface ListItemProps {
@@ -15,6 +16,7 @@ export interface ListItemProps {
 
 export interface ListItemIconContainerProps {
   $isHighlighted?: boolean;
+  $isDisabled?: boolean;
 }
 
 export interface MenuItem {
@@ -26,4 +28,5 @@ export interface MenuItem {
   isDisabled?: boolean;
   groupName?: string;
   isSelected?: boolean;
+  tooltip?: string;
 }

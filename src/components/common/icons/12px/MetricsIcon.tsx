@@ -6,7 +6,7 @@ const MetricsIconComponent = (props: IconProps) => {
   const { size, color } = useIconProps(props);
 
   return (
-    <svg width={size} height={size} fill="none">
+    <svg width={size} height={size} fill="none" viewBox="0 0 12 12">
       <path
         stroke={color}
         strokeLinecap="round"
