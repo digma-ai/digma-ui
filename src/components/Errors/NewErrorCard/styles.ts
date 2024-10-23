@@ -17,8 +17,13 @@ export const Container = styled.div<ContainerProps>`
   gap: 16px;
   border-radius: 4px;
   padding: 12px;
-  border: ${({ theme, $isPinned }) =>
-    $isPinned ? `1px solid ${theme.colors.v3.stroke.primary}` : "none"};
+  border: 1px solid
+    ${({ theme, $isPinned, $isCritical }) =>
+      $isPinned
+        ? theme.colors.v3.stroke.primary
+        : $isCritical
+        ? theme.colors.v3.pieChart.darkRed
+        : theme.colors.v3.surface.secondary};
   background: ${({ theme, $isCritical }) =>
     $isCritical
       ? theme.colors.v3.pieChart.darkRed
