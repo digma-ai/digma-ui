@@ -1,72 +1,79 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { dispatcher } from "../../../../../../../../dispatcher";
 import { actions } from "../../../../../../actions";
-import {
-  DismissInsightPayload,
-  UndismissInsightPayload
-} from "../../../../../../types";
-import { DismissResponsePayload, UndismissResponsePayload } from "../types";
+import { DismissUndismissInsightPayload } from "../../../../../../types";
+import { DismissUndismissResponsePayload } from "../types";
 
 export const useDismissal = (insightId: string) => {
-  const [isDismissalChangeInProgress, setIsDismissalChangeInProgress] =
-    useState(false);
+  const [data, setData] = useState<{
+    action: string;
+    payload: DismissUndismissResponsePayload;
+  } | null>(null);
+  const [isOperationInProgress, setIsOperationInProgress] = useState(false);
 
   useEffect(() => {
-    const handleDismissed = (data: unknown) => {
-      if (insightId === (data as DismissResponsePayload).insightId) {
-        setIsDismissalChangeInProgress(false);
-      }
+    const handleDismissResponse = (payload: unknown) => {
+      handleResponse(actions.SET_DISMISS_RESPONSE, payload);
     };
 
-    dispatcher.addActionListener(actions.SET_DISMISS_RESPONSE, handleDismissed);
-
-    return () => {
-      dispatcher.removeActionListener(
-        actions.SET_DISMISS_RESPONSE,
-        handleDismissed
-      );
+    const handleUndismissResponse = (payload: unknown) => {
+      handleResponse(actions.SET_UNDISMISS_RESPONSE, payload);
     };
-  }, []);
 
-  useEffect(() => {
-    const handleUndismissed = (data: unknown) => {
-      if (insightId === (data as UndismissResponsePayload).insightId) {
-        setIsDismissalChangeInProgress(false);
+    const handleResponse = (action: string, data: unknown) => {
+      const payload = data as DismissUndismissResponsePayload;
+      if (insightId === payload.insightId) {
+        setData({ action, payload });
+        setIsOperationInProgress(false);
       }
     };
 
     dispatcher.addActionListener(
+      actions.SET_DISMISS_RESPONSE,
+      handleDismissResponse
+    );
+    dispatcher.addActionListener(
       actions.SET_UNDISMISS_RESPONSE,
-      handleUndismissed
+      handleUndismissResponse
     );
 
     return () => {
       dispatcher.removeActionListener(
+        actions.SET_DISMISS_RESPONSE,
+        handleDismissResponse
+      );
+      dispatcher.removeActionListener(
         actions.SET_UNDISMISS_RESPONSE,
-        handleUndismissed
+        handleUndismissResponse
       );
     };
   }, [insightId]);
 
-  return {
-    isDismissalChangeInProgress,
-    dismiss: () => {
-      window.sendMessageToDigma<DismissInsightPayload>({
-        action: actions.DISMISS,
+  const sendAction = useCallback(
+    (action: string) => {
+      window.sendMessageToDigma<DismissUndismissInsightPayload>({
+        action,
         payload: {
           insightId
         }
       });
-      setIsDismissalChangeInProgress(true);
+      setIsOperationInProgress(true);
     },
-    show: () => {
-      window.sendMessageToDigma<UndismissInsightPayload>({
-        action: actions.UNDISMISS,
-        payload: {
-          insightId: insightId
-        }
-      });
-      setIsDismissalChangeInProgress(true);
-    }
+    [insightId]
+  );
+
+  const dismiss = useCallback(() => {
+    sendAction(actions.DISMISS);
+  }, [sendAction]);
+
+  const undismiss = useCallback(() => {
+    sendAction(actions.UNDISMISS);
+  }, [sendAction]);
+
+  return {
+    dismiss,
+    show: undismiss,
+    data,
+    isDismissalChangeInProgress: isOperationInProgress
   };
 };

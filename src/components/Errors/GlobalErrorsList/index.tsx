@@ -214,7 +214,7 @@ export const GlobalErrorsList = () => {
     }
   }, [data, setGlobalErrorsData]);
 
-  // Disable animations after pin/unpin
+  // Disable animations after pin/unpin actions
   useEffect(() => {
     if (!previousList || !list || !latestPinChangedId) {
       return;
@@ -312,8 +312,13 @@ export const GlobalErrorsList = () => {
     setGlobalErrorsViewMode(ViewMode.All);
   };
 
-  const handlePinChange = () => {
+  const handlePinStatusToggle = () => {
     toggleAnimations(true);
+  };
+
+  const handlePinStatusChange = (errorId: string) => {
+    setLatestPinChangedId(errorId);
+    getData();
   };
 
   const areAnyFiltersApplied =
@@ -381,7 +386,8 @@ export const GlobalErrorsList = () => {
                     key={x.id}
                     data={x}
                     onSourceLinkClick={handleErrorSourceLinkClick}
-                    onPinChange={handlePinChange}
+                    onPinStatusChange={handlePinStatusChange}
+                    onPinStatusToggle={handlePinStatusToggle}
                   />
                 ))}
               </s.ListContainer>
