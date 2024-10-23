@@ -437,7 +437,7 @@ export const InsightCard = ({
                 <DismissPanel
                   onShow={handleShowClick}
                   onDismiss={handleDismissClick}
-                  message="Dismiss insight?"
+                  confirmationMessage="Dismiss insight?"
                   state={
                     isDismissalChangeInProgress
                       ? "in-progress"

@@ -10,11 +10,24 @@ const DismissPanelComponent = ({
   state,
   onShow,
   onDismiss,
-  message: confirmationMessage
+  confirmationMessage
 }: DismissPanelProps) => {
   const [isDismissConfirmationOpened, setDismissConfirmationOpened] =
     useState(false);
   const previousState = usePrevious(state);
+
+  const handleDismissClick = () => {
+    setDismissConfirmationOpened(true);
+  };
+
+  const handleConfirmationAgreed = () => {
+    setDismissConfirmationOpened(false);
+    onDismiss();
+  };
+
+  const handleConfirmationDiscard = () => {
+    setDismissConfirmationOpened(false);
+  };
 
   return (
     <>
@@ -32,7 +45,7 @@ const DismissPanelComponent = ({
               icon={CrossIcon}
               label={"Dismiss"}
               buttonType={"secondaryBorderless"}
-              onClick={() => setDismissConfirmationOpened(true)}
+              onClick={handleDismissClick}
             />
           )}
           {state === "in-progress" && (
@@ -50,17 +63,11 @@ const DismissPanelComponent = ({
         <s.DismissDialog>
           {confirmationMessage}
           <s.DismissDialogActions>
-            <NewButton
-              label={"No"}
-              onClick={() => setDismissConfirmationOpened(false)}
-            />
+            <NewButton label={"No"} onClick={handleConfirmationDiscard} />
             <NewButton
               label={"Yes, dismiss"}
               buttonType={"secondary"}
-              onClick={() => {
-                setDismissConfirmationOpened(false);
-                onDismiss();
-              }}
+              onClick={handleConfirmationAgreed}
             />
           </s.DismissDialogActions>
         </s.DismissDialog>

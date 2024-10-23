@@ -18,7 +18,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    message: "Dismiss insight?",
+    confirmationMessage: "Dismiss insight?",
     onDismiss: fn(),
     onShow: fn()
   }
