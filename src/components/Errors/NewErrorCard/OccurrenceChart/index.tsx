@@ -16,6 +16,7 @@ import {
 } from "../../../../hooks/useFetchData";
 import { useConfigSelector } from "../../../../store/config/useConfigSelector";
 import { isNumber } from "../../../../typeGuards/isNumber";
+import { measureTextWidth } from "../../../../utils/measureTextWidth";
 import { HistogramIcon } from "../../../common/icons/30px/HistogramIcon";
 import { PetalsIcon } from "../../../common/icons/32px/PetalsIcon";
 import { actions } from "../../actions";
@@ -29,6 +30,7 @@ import {
 } from "./types";
 
 const MAX_BAR_WIDTH = 32;
+const Y_AXIS_PADDING = 4;
 
 export const OccurrenceChart = ({
   errorId,
@@ -92,6 +94,29 @@ export const OccurrenceChart = ({
     }
   }, [data, errorId]);
 
+  const maxOccurrence = useMemo(
+    () =>
+      chartData?.dailyOccurrence.reduce((acc, cur) => {
+        return acc >= cur.value ? acc : cur.value;
+      }, 0) ?? 0,
+    [chartData]
+  );
+
+  const maxYAxisTickDigitsNumber = useMemo(
+    () => maxOccurrence.toString().length + 1,
+    [maxOccurrence]
+  );
+
+  const YAxisWidth = useMemo(
+    () =>
+      measureTextWidth("0".repeat(maxYAxisTickDigitsNumber), {
+        fontSize: theme.typographies.footNote.fontSize,
+        fontWeight: theme.typographies.footNote.fontWeight.regular,
+        fontFamily: theme.mainFont
+      }),
+    [maxYAxisTickDigitsNumber, theme]
+  );
+
   return (
     <s.HistogramContainer>
       <s.HistogramHeader>
@@ -140,6 +165,7 @@ export const OccurrenceChart = ({
                 tickLine={false}
                 tick={YAxisTickLabelStyles}
                 allowDecimals={false}
+                width={YAxisWidth + Y_AXIS_PADDING}
               />
               <Bar
                 isAnimationActive={false}
