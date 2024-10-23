@@ -64,6 +64,10 @@ export const StatusTagTooltipContainer = styled.div`
   flex-direction: column;
 `;
 
+export const StatusTagTooltipKey = styled.span`
+  color: ${({ theme }) => theme.colors.v3.text.tertiary};
+`;
+
 export const SourceLink = styled(Link)`
   max-width: 100%;
 `;

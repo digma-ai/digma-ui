@@ -53,6 +53,14 @@ export interface SetGlobalErrorsDataPayload {
   list: GlobalErrorData[];
 }
 
+export interface SetPinUnpinErrorResultPayload {
+  id: string;
+  status: "success" | "failure";
+  error?: {
+    message: string;
+  };
+}
+
 export interface DismissBtnIconProps {
   $isDismissedMode: boolean;
 }
