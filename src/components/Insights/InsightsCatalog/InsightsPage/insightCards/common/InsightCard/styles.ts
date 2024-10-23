@@ -7,6 +7,7 @@ import { StyledCardProps } from "./types";
 export const InsightFooter = styled.div`
   display: flex;
   justify-content: space-between;
+  position: relative;
 `;
 
 export const Description = styled.div`
