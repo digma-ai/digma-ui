@@ -41,6 +41,7 @@ export interface GlobalErrorData {
       Unhandled: number;
     };
   };
+  isPinned?: boolean;
 }
 
 export interface SetGlobalErrorsDataPayload {

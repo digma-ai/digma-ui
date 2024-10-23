@@ -14,3 +14,13 @@ export interface OccurrenceChartContainerProps {
   $transitionDuration: number;
   $transitionClassName: string;
 }
+
+export interface PinErrorPayload {
+  id: string;
+  environment: string;
+}
+
+export interface UnpinErrorPayload {
+  id: string;
+  environment: string;
+}

@@ -11,14 +11,16 @@ import {
 } from "../../common/AffectedEndpointsSelector";
 import { Option } from "../../common/AffectedEndpointsSelector/types";
 import { HistogramIcon } from "../../common/icons/16px/HistogramIcon";
+import { PinIcon } from "../../common/icons/16px/PinIcon";
 import { NewIconButton } from "../../common/v3/NewIconButton";
 import { Tooltip } from "../../common/v3/Tooltip";
+import { actions } from "../actions";
 import { TimestampKeyValue } from "../ErrorCard/TimestampKeyValue";
 import { getTagType, HIGH_SEVERITY_SCORE_THRESHOLD } from "../Score";
 import { trackingEvents } from "../tracking";
 import { OccurrenceChart } from "./OccurrenceChart";
 import * as s from "./styles";
-import { NewErrorCardProps } from "./types";
+import { NewErrorCardProps, PinErrorPayload, UnpinErrorPayload } from "./types";
 
 export const getStatusString = (status: string) =>
   status.toLowerCase().startsWith("recent") ? "Recent" : status;
@@ -29,11 +31,16 @@ export const NewErrorCard = ({
 }: NewErrorCardProps) => {
   const [isHistogramVisible, setIsHistogramVisible] = useState(false);
   const chartContainerRef = useRef<HTMLDivElement>(null);
-  const { backendInfo } = useConfigSelector();
+  const { environment, backendInfo } = useConfigSelector();
 
   const isOccurrenceChartEnabled = getFeatureFlagValue(
     backendInfo,
     FeatureFlag.IS_ERROR_OCCURRENCE_CHART_ENABLED
+  );
+
+  const isPinEnabled = getFeatureFlagValue(
+    backendInfo,
+    FeatureFlag.IS_GLOBAL_ERROR_PIN_ENABLED
   );
 
   const {
@@ -112,11 +119,68 @@ export const NewErrorCard = ({
     setIsHistogramVisible(!isHistogramVisible);
   };
 
+  const handlePinUnpinButtonClick = () => {
+    const value = !data.isPinned;
+    sendUserActionTrackingEvent(
+      trackingEvents.ERROR_CARD_PIN_UNPIN_BUTTON_CLICKED,
+      {
+        value
+      }
+    );
+
+    if (!environment) {
+      return;
+    }
+
+    if (value) {
+      window.sendMessageToDigma<PinErrorPayload>({
+        action: actions.PIN_ERROR,
+        payload: {
+          id,
+          environment: environment.id
+        }
+      });
+    } else {
+      window.sendMessageToDigma<UnpinErrorPayload>({
+        action: actions.UNPIN_ERROR,
+        payload: {
+          id,
+          environment: environment.id
+        }
+      });
+    }
+  };
+
   const isCritical = score.score > HIGH_SEVERITY_SCORE_THRESHOLD;
 
   const selectorValue = selectedEndpoint
     ? getEndpointKey(selectedEndpoint)
     : undefined;
+
+  const toolbarActions = [
+    ...(isPinEnabled
+      ? [
+          <NewIconButton
+            key={"pin-unpin"}
+            isHighlighted={data.isPinned}
+            buttonType={"secondaryBorderless"}
+            icon={PinIcon}
+            onClick={handlePinUnpinButtonClick}
+          />
+        ]
+      : []),
+    ...(isOccurrenceChartEnabled && selectedEndpoint
+      ? [
+          <NewIconButton
+            key={"toggle-occurrence-chart"}
+            isHighlighted={isHistogramVisible}
+            buttonType={"secondaryBorderless"}
+            icon={HistogramIcon}
+            onClick={handleHistogramButtonClick}
+          />
+        ]
+      : [])
+  ];
 
   return (
     <s.Container $isCritical={isCritical}>
@@ -186,16 +250,9 @@ export const NewErrorCard = ({
               />
             </s.OccurrenceChartContainer>
           </CSSTransition>
-          <s.Footer>
-            <NewIconButton
-              isHighlighted={isHistogramVisible}
-              buttonType={"secondaryBorderless"}
-              icon={HistogramIcon}
-              onClick={handleHistogramButtonClick}
-            />
-          </s.Footer>
         </>
       )}
+      {toolbarActions.length > 0 && <s.Footer>{toolbarActions}</s.Footer>}
     </s.Container>
   );
 };

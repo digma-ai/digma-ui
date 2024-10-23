@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { dispatcher } from "../../../dispatcher";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import {
   DataFetcherConfiguration,
@@ -38,7 +39,7 @@ import {
 export const GlobalErrorsList = () => {
   const { goTo } = useHistory();
   const [isSortingMenuOpen, setIsSortingMenuOpen] = useState(false);
-  const listContainerRef = useRef<HTMLDivElement>(null);
+  const listContainerRef = useRef<HTMLDivElement | null>(null);
 
   const { environment, backendInfo } = useConfigSelector();
 
@@ -129,10 +130,28 @@ export const GlobalErrorsList = () => {
     ]
   );
 
-  const { data } = useFetchData<
+  const { data, getData } = useFetchData<
     GetGlobalErrorsDataPayload,
     SetGlobalErrorsDataPayload
   >(dataFetcherConfiguration, payload);
+
+  // Refresh data after pin/unpin actions
+  useEffect(() => {
+    dispatcher.addActionListener(actions.SET_PIN_ERROR_RESULT, getData);
+    dispatcher.addActionListener(actions.SET_UNPIN_ERROR_RESULT, getData);
+
+    return () => {
+      dispatcher.removeActionListener(actions.SET_PIN_ERROR_RESULT, getData);
+      dispatcher.removeActionListener(actions.SET_UNPIN_ERROR_RESULT, getData);
+    };
+  }, [getData]);
+
+  // Cleanup errors store slice on unmount
+  useMount(() => {
+    return () => {
+      resetGlobalErrors();
+    };
+  });
 
   // Set data to store on fetch
   useEffect(() => {
@@ -166,13 +185,6 @@ export const GlobalErrorsList = () => {
       listContainerRef.current.scrollTo(0, 0);
     }
   }, [environmentId, search, sorting, page]);
-
-  // Cleanup errors store slice on unmount
-  useMount(() => {
-    return () => {
-      resetGlobalErrors();
-    };
-  });
 
   const handleErrorSourceLinkClick = (errorId: string) => {
     goTo(errorId);
