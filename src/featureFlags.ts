@@ -24,7 +24,8 @@ export const featureFlagMinBackendVersions: Record<FeatureFlag, string> = {
   [FeatureFlag.ARE_GLOBAL_ERRORS_FILTERS_ENABLED]: "0.3.140-alpha.2",
   [FeatureFlag.IS_ERROR_OCCURRENCE_CHART_ENABLED]: "0.3.141-alpha.3",
   [FeatureFlag.ARE_GLOBAL_ERRORS_CRITICALITY_AND_UNHANDLED_FILTERS_ENABLED]:
-    "0.3.145"
+    "0.3.145",
+  [FeatureFlag.IS_GLOBAL_ERROR_PIN_ENABLED]: "0.3.147" // TODO: Verify this value after release
 };
 
 export const getFeatureFlagValue = (
