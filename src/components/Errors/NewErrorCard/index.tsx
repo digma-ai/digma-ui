@@ -11,6 +11,7 @@ import {
 } from "../../common/AffectedEndpointsSelector";
 import { Option } from "../../common/AffectedEndpointsSelector/types";
 import { HistogramIcon } from "../../common/icons/16px/HistogramIcon";
+import { PinFillIcon } from "../../common/icons/16px/PinFillIcon";
 import { PinIcon } from "../../common/icons/16px/PinIcon";
 import { NewIconButton } from "../../common/v3/NewIconButton";
 import { Tooltip } from "../../common/v3/Tooltip";
@@ -120,7 +121,7 @@ export const NewErrorCard = ({
   };
 
   const handlePinUnpinButtonClick = () => {
-    const value = !data.isPinned;
+    const value = !data.pinnedAt;
     sendUserActionTrackingEvent(
       trackingEvents.ERROR_CARD_PIN_UNPIN_BUTTON_CLICKED,
       {
@@ -152,6 +153,7 @@ export const NewErrorCard = ({
   };
 
   const isCritical = score.score > HIGH_SEVERITY_SCORE_THRESHOLD;
+  const isPinned = Boolean(data.pinnedAt);
 
   const selectorValue = selectedEndpoint
     ? getEndpointKey(selectedEndpoint)
@@ -162,9 +164,9 @@ export const NewErrorCard = ({
       ? [
           <NewIconButton
             key={"pin-unpin"}
-            isHighlighted={data.isPinned}
+            isHighlighted={isPinned}
             buttonType={"secondaryBorderless"}
-            icon={PinIcon}
+            icon={isPinned ? PinFillIcon : PinIcon}
             onClick={handlePinUnpinButtonClick}
           />
         ]
@@ -183,7 +185,7 @@ export const NewErrorCard = ({
   ];
 
   return (
-    <s.Container $isCritical={isCritical}>
+    <s.Container $isCritical={isCritical} $isPinned={isPinned}>
       <s.Header>
         <s.TitleContainer>
           <Tooltip title={errorType}>
