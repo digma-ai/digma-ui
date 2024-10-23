@@ -10,6 +10,7 @@ import {
   getEndpointKey
 } from "../../common/AffectedEndpointsSelector";
 import { Option } from "../../common/AffectedEndpointsSelector/types";
+import { DismissPanel } from "../../common/DismissPanel";
 import { HistogramIcon } from "../../common/icons/16px/HistogramIcon";
 import { PinFillIcon } from "../../common/icons/16px/PinFillIcon";
 import { PinIcon } from "../../common/icons/16px/PinIcon";
@@ -19,6 +20,7 @@ import { actions } from "../actions";
 import { TimestampKeyValue } from "../ErrorCard/TimestampKeyValue";
 import { getTagType, HIGH_SEVERITY_SCORE_THRESHOLD } from "../Score";
 import { trackingEvents } from "../tracking";
+import { useDismissal } from "./hooks/useDismissal";
 import { OccurrenceChart } from "./OccurrenceChart";
 import * as s from "./styles";
 import { NewErrorCardProps, PinErrorPayload, UnpinErrorPayload } from "./types";
@@ -44,6 +46,11 @@ export const NewErrorCard = ({
     FeatureFlag.IS_GLOBAL_ERROR_PIN_ENABLED
   );
 
+  const isDismissEnabled = getFeatureFlagValue(
+    backendInfo,
+    FeatureFlag.IS_GLOBAL_ERROR_DISMISS_ENABLED
+  );
+
   const {
     id,
     affectedEndpoints,
@@ -53,9 +60,11 @@ export const NewErrorCard = ({
     fromFullyQualifiedName,
     status,
     firstDetected,
-    lastDetected
+    lastDetected,
+    isDismissed
   } = data;
   const statusTagType = getTagType(score.score);
+  const { isDismissalChangeInProgress, dismiss, show } = useDismissal(id);
   const selectorOptions: Option[] = useMemo(
     () =>
       affectedEndpoints.map((x) => ({
@@ -150,6 +159,20 @@ export const NewErrorCard = ({
         }
       });
     }
+  };
+
+  const handleDismissalButtonClick = () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.ERROR_CARD_DISMISS_BUTTON_CLICKED
+    );
+    dismiss();
+  };
+
+  const handleUndismissalButtonClick = () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.ERROR_CARD_PIN_UNDISMISS_BUTTON_CLICKED
+    );
+    show();
   };
 
   const isCritical = score.score > HIGH_SEVERITY_SCORE_THRESHOLD;
@@ -254,7 +277,25 @@ export const NewErrorCard = ({
           </CSSTransition>
         </>
       )}
-      {toolbarActions.length > 0 && <s.Footer>{toolbarActions}</s.Footer>}
+      {toolbarActions.length > 0 && (
+        <s.Footer>
+          {isDismissEnabled && (
+            <DismissPanel
+              confirmationMessage="Dismiss error?"
+              onShow={handleUndismissalButtonClick}
+              onDismiss={handleDismissalButtonClick}
+              state={
+                isDismissalChangeInProgress
+                  ? "in-progress"
+                  : isDismissed
+                  ? "dismissed"
+                  : "visible"
+              }
+            />
+          )}
+          {toolbarActions}
+        </s.Footer>
+      )}
     </s.Container>
   );
 };

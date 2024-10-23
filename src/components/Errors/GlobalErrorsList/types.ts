@@ -42,6 +42,7 @@ export interface GlobalErrorData {
     };
   };
   pinnedAt?: string;
+  isDismissed?: boolean;
 }
 
 export interface SetGlobalErrorsDataPayload {
