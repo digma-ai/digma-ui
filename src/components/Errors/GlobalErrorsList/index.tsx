@@ -1,6 +1,5 @@
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { dispatcher } from "../../../dispatcher";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import {
   DataFetcherConfiguration,
@@ -35,8 +34,7 @@ import { GlobalErrorsFilters } from "./GlobalErrorsFilters";
 import * as s from "./styles";
 import {
   GetGlobalErrorsDataPayload,
-  SetGlobalErrorsDataPayload,
-  SetPinUnpinErrorResultPayload
+  SetGlobalErrorsDataPayload
 } from "./types";
 
 const PIN_UNPIN_ANIMATION_DURATION = 250;
@@ -155,34 +153,6 @@ export const GlobalErrorsList = () => {
     SetGlobalErrorsDataPayload
   >(dataFetcherConfiguration, payload);
 
-  // Refresh data after pin/unpin actions
-  useEffect(() => {
-    const handlePinUnpinResult = (data: unknown) => {
-      const payload = data as SetPinUnpinErrorResultPayload;
-      setLatestPinChangedId(payload.id);
-      getData();
-    };
-    dispatcher.addActionListener(
-      actions.SET_PIN_ERROR_RESULT,
-      handlePinUnpinResult
-    );
-    dispatcher.addActionListener(
-      actions.SET_UNPIN_ERROR_RESULT,
-      handlePinUnpinResult
-    );
-
-    return () => {
-      dispatcher.removeActionListener(
-        actions.SET_PIN_ERROR_RESULT,
-        handlePinUnpinResult
-      );
-      dispatcher.removeActionListener(
-        actions.SET_UNPIN_ERROR_RESULT,
-        handlePinUnpinResult
-      );
-    };
-  }, [getData]);
-
   useMount(() => {
     toggleAnimations(false);
 
@@ -198,7 +168,7 @@ export const GlobalErrorsList = () => {
     }
   }, [data, setGlobalErrorsData]);
 
-  // Disable animations after pin/unpin
+  // Disable animations after pin/unpin actions
   useEffect(() => {
     if (!previousList || !list || !latestPinChangedId) {
       return;
@@ -286,8 +256,13 @@ export const GlobalErrorsList = () => {
     resetGlobalErrorsSelectedFilters();
   };
 
-  const handlePinChange = () => {
+  const handlePinStatusToggle = () => {
     toggleAnimations(true);
+  };
+
+  const handlePinStatusChange = (errorId: string) => {
+    setLatestPinChangedId(errorId);
+    getData();
   };
 
   const areAnyFiltersApplied =
@@ -337,7 +312,8 @@ export const GlobalErrorsList = () => {
                     key={x.id}
                     data={x}
                     onSourceLinkClick={handleErrorSourceLinkClick}
-                    onPinChange={handlePinChange}
+                    onPinStatusChange={handlePinStatusChange}
+                    onPinStatusToggle={handlePinStatusToggle}
                   />
                 ))}
               </s.ListContainer>

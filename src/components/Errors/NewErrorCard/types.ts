@@ -3,7 +3,8 @@ import { GlobalErrorData } from "../GlobalErrorsList/types";
 export interface NewErrorCardProps {
   data: GlobalErrorData;
   onSourceLinkClick: (codeObjectId: string) => void;
-  onPinChange: () => void;
+  onPinStatusChange: (errorId: string) => void;
+  onPinStatusToggle: () => void;
 }
 
 export interface ContainerProps {

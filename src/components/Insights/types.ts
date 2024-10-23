@@ -679,10 +679,6 @@ export interface ScopedInsightsQuery extends InsightsQuery {
 
 export { InsightType };
 
-export interface DismissInsightPayload {
-  insightId: string;
-}
-
-export interface UndismissInsightPayload {
+export interface DismissUndismissInsightPayload {
   insightId: string;
 }
