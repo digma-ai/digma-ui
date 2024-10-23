@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { dispatcher } from "../../../dispatcher";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import {
@@ -6,6 +7,7 @@ import {
   useFetchData
 } from "../../../hooks/useFetchData";
 import { useMount } from "../../../hooks/useMount";
+import { usePrevious } from "../../../hooks/usePrevious";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import {
   GLOBAL_ERROR_SORTING_CRITERION,
@@ -33,13 +35,29 @@ import { GlobalErrorsFilters } from "./GlobalErrorsFilters";
 import * as s from "./styles";
 import {
   GetGlobalErrorsDataPayload,
-  SetGlobalErrorsDataPayload
+  SetGlobalErrorsDataPayload,
+  SetPinUnpinErrorResultPayload
 } from "./types";
+
+const PIN_UNPIN_ANIMATION_DURATION = 250;
 
 export const GlobalErrorsList = () => {
   const { goTo } = useHistory();
   const [isSortingMenuOpen, setIsSortingMenuOpen] = useState(false);
   const listContainerRef = useRef<HTMLDivElement | null>(null);
+  const [parent, toggleAnimations] = useAutoAnimate({
+    duration: PIN_UNPIN_ANIMATION_DURATION
+  });
+  const [latestPinChangedId, setLatestPinChangedId] = useState<string>();
+
+  // useAutoAnimate requires to memoize callback
+  const getListContainerRef = useCallback(
+    (el: HTMLDivElement | null) => {
+      listContainerRef.current = el;
+      parent(el);
+    },
+    [parent, listContainerRef]
+  );
 
   const { environment, backendInfo } = useConfigSelector();
 
@@ -52,6 +70,8 @@ export const GlobalErrorsList = () => {
     globalErrorsTotalCount: totalCount,
     globalErrorsSelectedFilters: selectedFilters
   } = useErrorsSelector();
+
+  const previousList = usePrevious(list);
 
   const {
     setGlobalErrorsData,
@@ -137,17 +157,35 @@ export const GlobalErrorsList = () => {
 
   // Refresh data after pin/unpin actions
   useEffect(() => {
-    dispatcher.addActionListener(actions.SET_PIN_ERROR_RESULT, getData);
-    dispatcher.addActionListener(actions.SET_UNPIN_ERROR_RESULT, getData);
+    const handlePinUnpinResult = (data: unknown) => {
+      const payload = data as SetPinUnpinErrorResultPayload;
+      setLatestPinChangedId(payload.id);
+      getData();
+    };
+    dispatcher.addActionListener(
+      actions.SET_PIN_ERROR_RESULT,
+      handlePinUnpinResult
+    );
+    dispatcher.addActionListener(
+      actions.SET_UNPIN_ERROR_RESULT,
+      handlePinUnpinResult
+    );
 
     return () => {
-      dispatcher.removeActionListener(actions.SET_PIN_ERROR_RESULT, getData);
-      dispatcher.removeActionListener(actions.SET_UNPIN_ERROR_RESULT, getData);
+      dispatcher.removeActionListener(
+        actions.SET_PIN_ERROR_RESULT,
+        handlePinUnpinResult
+      );
+      dispatcher.removeActionListener(
+        actions.SET_UNPIN_ERROR_RESULT,
+        handlePinUnpinResult
+      );
     };
   }, [getData]);
 
-  // Cleanup errors store slice on unmount
   useMount(() => {
+    toggleAnimations(false);
+
     return () => {
       resetGlobalErrors();
     };
@@ -159,6 +197,28 @@ export const GlobalErrorsList = () => {
       setGlobalErrorsData(data);
     }
   }, [data, setGlobalErrorsData]);
+
+  // Disable animations after pin/unpin
+  useEffect(() => {
+    if (!previousList || !list || !latestPinChangedId) {
+      return;
+    }
+
+    if (previousList !== list) {
+      const isLatestChangedIdInList = list.some(
+        (x) => x.id === latestPinChangedId
+      );
+
+      if (isLatestChangedIdInList) {
+        setTimeout(() => {
+          toggleAnimations(false);
+        }, PIN_UNPIN_ANIMATION_DURATION);
+      } else {
+        toggleAnimations(false);
+      }
+      setLatestPinChangedId(undefined);
+    }
+  }, [previousList, list, latestPinChangedId, toggleAnimations]);
 
   // Reset page on filters change
   useEffect(() => {
@@ -226,6 +286,10 @@ export const GlobalErrorsList = () => {
     resetGlobalErrorsSelectedFilters();
   };
 
+  const handlePinChange = () => {
+    toggleAnimations(true);
+  };
+
   const areAnyFiltersApplied =
     search ||
     [
@@ -267,12 +331,13 @@ export const GlobalErrorsList = () => {
           </s.ToolbarContainer>
           {list.length > 0 ? (
             <>
-              <s.ListContainer ref={listContainerRef}>
+              <s.ListContainer ref={getListContainerRef}>
                 {list.map((x) => (
                   <NewErrorCard
                     key={x.id}
                     data={x}
                     onSourceLinkClick={handleErrorSourceLinkClick}
+                    onPinChange={handlePinChange}
                   />
                 ))}
               </s.ListContainer>

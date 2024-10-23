@@ -21,14 +21,15 @@ import { getTagType, HIGH_SEVERITY_SCORE_THRESHOLD } from "../Score";
 import { trackingEvents } from "../tracking";
 import { OccurrenceChart } from "./OccurrenceChart";
 import * as s from "./styles";
-import { NewErrorCardProps, PinErrorPayload, UnpinErrorPayload } from "./types";
+import { NewErrorCardProps, PinUnpinErrorPayload } from "./types";
 
 export const getStatusString = (status: string) =>
   status.toLowerCase().startsWith("recent") ? "Recent" : status;
 
 export const NewErrorCard = ({
   data,
-  onSourceLinkClick
+  onSourceLinkClick,
+  onPinChange
 }: NewErrorCardProps) => {
   const [isHistogramVisible, setIsHistogramVisible] = useState(false);
   const chartContainerRef = useRef<HTMLDivElement>(null);
@@ -134,7 +135,7 @@ export const NewErrorCard = ({
     }
 
     if (value) {
-      window.sendMessageToDigma<PinErrorPayload>({
+      window.sendMessageToDigma<PinUnpinErrorPayload>({
         action: actions.PIN_ERROR,
         payload: {
           id,
@@ -142,7 +143,7 @@ export const NewErrorCard = ({
         }
       });
     } else {
-      window.sendMessageToDigma<UnpinErrorPayload>({
+      window.sendMessageToDigma<PinUnpinErrorPayload>({
         action: actions.UNPIN_ERROR,
         payload: {
           id,
@@ -150,6 +151,7 @@ export const NewErrorCard = ({
         }
       });
     }
+    onPinChange();
   };
 
   const isCritical = score.score > HIGH_SEVERITY_SCORE_THRESHOLD;
@@ -202,17 +204,20 @@ export const NewErrorCard = ({
             content={getStatusString(status)}
             title={
               <s.StatusTagTooltipContainer>
-                <span>Score: {score.score}</span>
                 <TimestampKeyValue
                   key={"first-detected"}
                   label={"First detected"}
                   timestamp={firstDetected}
                 />
                 <TimestampKeyValue
-                  key={"last-seen"}
-                  label={"Last seen"}
+                  key={"last-detected"}
+                  label={"Last detected"}
                   timestamp={lastDetected}
                 />
+                <span>
+                  <s.StatusTagTooltipKey>Score:</s.StatusTagTooltipKey>{" "}
+                  {score.score}
+                </span>
               </s.StatusTagTooltipContainer>
             }
             type={statusTagType}

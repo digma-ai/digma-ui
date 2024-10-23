@@ -35,3 +35,12 @@ export const Critical: Story = {
     }
   }
 };
+
+export const Pinned: Story = {
+  args: {
+    data: {
+      ...mockedGlobalErrorData,
+      pinnedAt: "2024-10-06T12:57:46.864939Z"
+    }
+  }
+};
