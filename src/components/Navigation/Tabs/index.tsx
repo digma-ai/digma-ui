@@ -44,8 +44,8 @@ const getTabTooltipMessage = (
   tab: BaseTabData,
   scope: Scope | null
 ): string | undefined => {
-  if (!scope?.span && [TAB_IDS.ERRORS, TAB_IDS.TESTS].includes(tab.id)) {
-    return "Global errors and tests is COMING SOON";
+  if (!scope?.span && tab.id === TAB_IDS.TESTS) {
+    return "Global tests is COMING SOON";
   }
 
   return tab.title;
