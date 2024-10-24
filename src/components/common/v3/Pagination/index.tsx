@@ -15,7 +15,8 @@ export const Pagination = ({
   onPageChange,
   extendedNavigation,
   withDescription,
-  trackingEventPrefix = ""
+  trackingEventPrefix = "",
+  children
 }: PaginationProps) => {
   const prefixedGlobalTrackingEvents = addPrefix(
     trackingEventPrefix,
@@ -45,10 +46,13 @@ export const Pagination = ({
       {(pageCount > 1 || extendedNavigation) && (
         <s.Container>
           {withDescription && (
-            <s.Description>
-              Showing {pageStartItemNumber} - {pageEndItemNumber} of{" "}
-              {itemsCount} {formatUnit(itemsCount, "Result")}
-            </s.Description>
+            <s.DescriptionContainer>
+              <s.Description>
+                Showing {pageStartItemNumber} - {pageEndItemNumber} of{" "}
+                {itemsCount} {formatUnit(itemsCount, "Result")}
+              </s.Description>
+              {children}
+            </s.DescriptionContainer>
           )}
           <s.ButtonGroup>
             {extendedNavigation && (

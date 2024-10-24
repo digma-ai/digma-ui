@@ -9,14 +9,19 @@ import { useMount } from "../../../hooks/useMount";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import {
   GLOBAL_ERROR_SORTING_CRITERION,
-  PAGE_SIZE
+  PAGE_SIZE,
+  ViewMode
 } from "../../../store/errors/errorsSlice";
 import { useErrorsSelector } from "../../../store/errors/useErrorsSelector";
 import { useStore } from "../../../store/useStore";
+import { isNumber } from "../../../typeGuards/isNumber";
 import { FeatureFlag } from "../../../types";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
+import { formatUnit } from "../../../utils/formatUnit";
 import { OppositeArrowsIcon } from "../../common/icons/12px/OppositeArrowsIcon";
+import { ChevronIcon } from "../../common/icons/16px/ChevronIcon";
 import { CardsColoredIcon } from "../../common/icons/CardsColoredIcon";
+import { Direction } from "../../common/icons/types";
 import { NewPopover } from "../../common/NewPopover";
 import { SearchInput } from "../../common/SearchInput";
 import { NewButton } from "../../common/v3/NewButton";
@@ -44,6 +49,7 @@ export const GlobalErrorsList = () => {
   const { environment, backendInfo } = useConfigSelector();
 
   const {
+    globalErrorsViewMode: mode,
     globalErrorsSearch: search,
     globalErrorsSorting: sorting,
     globalErrorsPage: page,
@@ -59,7 +65,8 @@ export const GlobalErrorsList = () => {
     setGlobalErrorsSorting,
     setGlobalErrorsPage,
     resetGlobalErrors,
-    resetGlobalErrorsSelectedFilters
+    resetGlobalErrorsSelectedFilters,
+    setGlobalErrorsViewMode
   } = useStore.getState();
 
   const areGlobalErrorsFiltersEnabled = getFeatureFlagValue(
@@ -101,6 +108,7 @@ export const GlobalErrorsList = () => {
       sortBy: sorting,
       page,
       pageSize: PAGE_SIZE,
+      dismissed: mode === ViewMode.OnlyDismissed,
       ...(areGlobalErrorsFiltersEnabled
         ? {
             services: selectedFilters.services,
@@ -120,13 +128,14 @@ export const GlobalErrorsList = () => {
       search,
       sorting,
       page,
+      mode,
       areGlobalErrorsFiltersEnabled,
-      areGlobalErrorsCriticalityAndUnhandledFiltersEnabled,
       selectedFilters.services,
       selectedFilters.endpoints,
       selectedFilters.errorTypes,
       selectedFilters.criticalities,
-      selectedFilters.handlingTypes
+      selectedFilters.handlingTypes,
+      areGlobalErrorsCriticalityAndUnhandledFiltersEnabled
     ]
   );
 
@@ -135,14 +144,27 @@ export const GlobalErrorsList = () => {
     SetGlobalErrorsDataPayload
   >(dataFetcherConfiguration, payload);
 
+  const isDismissalViewModeButtonVisible =
+    data?.dismissedCount && data.dismissedCount > 0; // isUndefined - check for backward compatibility, always show when BE does not return this counter
+
   // Refresh data after pin/unpin actions
   useEffect(() => {
+    dispatcher.addActionListener(actions.SET_UNDISMISS_ERROR_RESULT, getData);
+    dispatcher.addActionListener(actions.SET_DISMISS_ERROR_RESULT, getData);
     dispatcher.addActionListener(actions.SET_PIN_ERROR_RESULT, getData);
     dispatcher.addActionListener(actions.SET_UNPIN_ERROR_RESULT, getData);
 
     return () => {
       dispatcher.removeActionListener(actions.SET_PIN_ERROR_RESULT, getData);
       dispatcher.removeActionListener(actions.SET_UNPIN_ERROR_RESULT, getData);
+      dispatcher.removeActionListener(
+        actions.SET_UNDISMISS_ERROR_RESULT,
+        getData
+      );
+      dispatcher.removeActionListener(
+        actions.SET_DISMISS_ERROR_RESULT,
+        getData
+      );
     };
   }, [getData]);
 
@@ -226,6 +248,16 @@ export const GlobalErrorsList = () => {
     resetGlobalErrorsSelectedFilters();
   };
 
+  const handleDismissalViewModeButtonClick = () => {
+    const newMode =
+      mode === ViewMode.All ? ViewMode.OnlyDismissed : ViewMode.All;
+    setGlobalErrorsViewMode(newMode);
+  };
+
+  const handleBackToAllInsightsButtonClick = () => {
+    setGlobalErrorsViewMode(ViewMode.All);
+  };
+
   const areAnyFiltersApplied =
     search ||
     [
@@ -238,6 +270,24 @@ export const GlobalErrorsList = () => {
 
   return (
     <s.Container>
+      {mode === ViewMode.OnlyDismissed && isNumber(data?.dismissedCount) && (
+        <s.ViewModeToolbarRow>
+          <s.BackToAllErrorsButton onClick={handleBackToAllInsightsButtonClick}>
+            <s.BackToAllErrorsButtonIconContainer>
+              <ChevronIcon
+                direction={Direction.LEFT}
+                size={16}
+                color={"currentColor"}
+              />
+            </s.BackToAllErrorsButtonIconContainer>
+            Back to All Errors
+          </s.BackToAllErrorsButton>
+          <s.Description>
+            <s.Count>{data?.dismissedCount}</s.Count>
+            dismissed {formatUnit(data?.dismissedCount ?? 0, "error")}
+          </s.Description>
+        </s.ViewModeToolbarRow>
+      )}
       {list ? (
         <>
           <s.ToolbarContainer>
@@ -283,7 +333,21 @@ export const GlobalErrorsList = () => {
                 onPageChange={handlePageChange}
                 extendedNavigation={true}
                 withDescription={true}
-              />
+              >
+                {isDismissalViewModeButtonVisible && (
+                  <NewButton
+                    buttonType={"secondaryBorderless"}
+                    icon={(props) => (
+                      <s.DismissBtnIcon
+                        {...props}
+                        crossOut={mode !== ViewMode.OnlyDismissed}
+                        $isDismissedMode={mode === ViewMode.OnlyDismissed}
+                      />
+                    )}
+                    onClick={handleDismissalViewModeButtonClick}
+                  />
+                )}
+              </Pagination>
             </>
           ) : areAnyFiltersApplied ? (
             <NewEmptyState

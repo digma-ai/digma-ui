@@ -16,6 +16,7 @@ export interface GetGlobalErrorsDataPayload {
   errorTypes?: string[];
   criticalities?: ErrorCriticality[];
   handlingTypes?: ErrorHandlingType[];
+  dismissed?: boolean;
 }
 
 export interface GlobalErrorData {
@@ -43,9 +44,15 @@ export interface GlobalErrorData {
   };
   pinnedAt?: string;
   isDismissed?: boolean;
+  unhandled?: boolean;
 }
 
 export interface SetGlobalErrorsDataPayload {
   totalCount: number;
+  dismissedCount?: number;
   list: GlobalErrorData[];
+}
+
+export interface DismissBtnIconProps {
+  $isDismissedMode: boolean;
 }

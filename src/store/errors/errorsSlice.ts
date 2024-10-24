@@ -12,6 +12,11 @@ export enum GLOBAL_ERROR_SORTING_CRITERION {
   LATEST = "Latest"
 }
 
+export enum ViewMode {
+  All = "All",
+  OnlyDismissed = "OnlyDismissed"
+}
+
 export type ErrorFilter = "Services" | "Endpoints" | "ErrorTypes";
 export type ErrorHandlingType = "Handled" | "Unhandled";
 export type ErrorCriticality = "High" | "Medium" | "Low";
@@ -40,6 +45,7 @@ export interface ErrorsState {
   globalErrorsSorting: GLOBAL_ERROR_SORTING_CRITERION;
   globalErrorsFilters: GlobalErrorsFiltersState;
   globalErrorsSelectedFilters: GlobalErrorsSelectedFiltersState;
+  globalErrorsViewMode: ViewMode;
   errorDetailsWorkspaceItemsOnly: boolean;
 }
 
@@ -64,6 +70,7 @@ export const globalErrorsInitialState = {
     endpoints: null,
     errorTypes: null
   },
+  globalErrorsViewMode: ViewMode.All,
   globalErrorsSelectedFilters: selectedFiltersInitialState
 };
 
@@ -105,6 +112,8 @@ export const errorsSlice = createSlice({
     setErrorDetailsWorkspaceItemsOnly: (
       errorDetailsWorkspaceItemsOnly: boolean
     ) => set({ errorDetailsWorkspaceItemsOnly }),
+    setGlobalErrorsViewMode: (mode: ViewMode) =>
+      set({ globalErrorsViewMode: mode }),
     resetGlobalErrors: () => set({ ...globalErrorsInitialState })
   }
 });

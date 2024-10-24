@@ -9,8 +9,14 @@ export const Container = styled.div`
   gap: 8px;
 `;
 
-export const Description = styled.span`
+export const DescriptionContainer = styled.div`
+  gap: 8px;
+  display: flex;
   margin-right: auto;
+  align-items: center;
+`;
+
+export const Description = styled.span`
   color: ${({ theme }) => theme.colors.v3.text.tertiary};
 `;
 
