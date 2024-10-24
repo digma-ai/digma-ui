@@ -3,6 +3,8 @@ import { GlobalErrorData } from "../GlobalErrorsList/types";
 export interface NewErrorCardProps {
   data: GlobalErrorData;
   onSourceLinkClick: (codeObjectId: string) => void;
+  onPinStatusChange: (errorId: string) => void;
+  onPinStatusToggle: () => void;
 }
 
 export interface ContainerProps {
@@ -15,12 +17,7 @@ export interface OccurrenceChartContainerProps {
   $transitionClassName: string;
 }
 
-export interface PinErrorPayload {
-  id: string;
-  environment: string;
-}
-
-export interface UnpinErrorPayload {
+export interface PinUnpinErrorPayload {
   id: string;
   environment: string;
 }

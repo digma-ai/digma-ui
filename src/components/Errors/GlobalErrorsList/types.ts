@@ -48,3 +48,11 @@ export interface SetGlobalErrorsDataPayload {
   totalCount: number;
   list: GlobalErrorData[];
 }
+
+export interface SetPinUnpinErrorResultPayload {
+  id: string;
+  status: "success" | "failure";
+  error?: {
+    message: string;
+  };
+}

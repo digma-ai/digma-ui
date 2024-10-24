@@ -142,47 +142,51 @@ describe("useFetchData", () => {
     expect(mockSendMessageToDigma).toHaveBeenCalledTimes(2);
   });
 
-  it("should fetch data on payload change with interval", () => {
-    try {
-      jest.useFakeTimers();
-      const { rerender } = setup({
-        refreshOnPayloadChange: true,
-        refreshWithInterval: true,
-        refreshInterval: 500
-      });
+  it("should fetch data with the new payload on payload change with interval", () => {
+    jest.useFakeTimers();
 
-      expect(mockSendMessageToDigma).toHaveBeenCalledTimes(1);
-      const newPayload = { key: "newValue" };
-      rerender({
-        config: {
-          requestAction,
-          responseAction,
-          refreshOnPayloadChange: true,
-          refreshWithInterval: true,
-          refreshInterval: 500
-        },
-        payload: newPayload
-      });
+    const refreshInterval = 500;
 
-      expect(mockSendMessageToDigma).toHaveBeenCalledTimes(2);
-      const handleData = (dispatcher.addActionListener as jest.Mock).mock
-        .calls[0][1] as ActionListener; // eslint-disable-line @typescript-eslint/no-unsafe-member-access
+    const config = {
+      refreshOnPayloadChange: true,
+      refreshWithInterval: true,
+      refreshInterval
+    };
 
-      act(() => {
-        handleData({ data: "testData" }, Date.now());
-      });
+    const { rerender } = setup(config);
 
-      act(() => {
-        jest.advanceTimersByTime(5000);
-      });
+    expect(mockSendMessageToDigma).toHaveBeenCalledTimes(1);
 
-      expect(mockSendMessageToDigma).toHaveBeenNthCalledWith(3, {
-        action: requestAction,
-        payload: newPayload
-      });
-    } finally {
-      jest.useRealTimers();
-    }
+    const newPayload = { key: "newValue" };
+
+    rerender({
+      config: {
+        requestAction,
+        responseAction,
+        ...config
+      },
+      payload: newPayload
+    });
+
+    expect(mockSendMessageToDigma).toHaveBeenCalledTimes(2);
+
+    const handleData = (dispatcher.addActionListener as jest.Mock).mock
+      .calls[0][1] as ActionListener; // eslint-disable-line @typescript-eslint/no-unsafe-member-access
+
+    act(() => {
+      handleData({ data: "testData" }, Date.now());
+    });
+
+    act(() => {
+      jest.advanceTimersByTime(refreshInterval);
+    });
+
+    expect(mockSendMessageToDigma).toHaveBeenNthCalledWith(3, {
+      action: requestAction,
+      payload: newPayload
+    });
+
+    jest.useRealTimers();
   });
 
   it("should fetch data on refreshWithInterval change", () => {

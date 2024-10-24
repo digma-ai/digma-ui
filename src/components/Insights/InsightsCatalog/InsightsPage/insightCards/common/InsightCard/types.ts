@@ -41,13 +41,7 @@ export interface StyledCardProps extends CardProps {
   $isReadable?: boolean;
 }
 
-export interface DismissResponsePayload {
-  insightId: string;
-  status: "success" | "failure";
-  error?: string;
-}
-
-export interface UndismissResponsePayload {
+export interface DismissUndismissResponsePayload {
   insightId: string;
   status: "success" | "failure";
   error?: string;

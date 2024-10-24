@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import { getFeatureFlagValue } from "../../../featureFlags";
+import { usePrevious } from "../../../hooks/usePrevious";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { FeatureFlag } from "../../../types";
 import { changeScope } from "../../../utils/actions/changeScope";
@@ -15,24 +16,26 @@ import { PinFillIcon } from "../../common/icons/16px/PinFillIcon";
 import { PinIcon } from "../../common/icons/16px/PinIcon";
 import { NewIconButton } from "../../common/v3/NewIconButton";
 import { Tooltip } from "../../common/v3/Tooltip";
-import { actions } from "../actions";
 import { TimestampKeyValue } from "../ErrorCard/TimestampKeyValue";
+import { usePinning } from "../GlobalErrorsList/usePinning";
 import { getTagType, HIGH_SEVERITY_SCORE_THRESHOLD } from "../Score";
 import { trackingEvents } from "../tracking";
 import { OccurrenceChart } from "./OccurrenceChart";
 import * as s from "./styles";
-import { NewErrorCardProps, PinErrorPayload, UnpinErrorPayload } from "./types";
+import { NewErrorCardProps } from "./types";
 
 export const getStatusString = (status: string) =>
   status.toLowerCase().startsWith("recent") ? "Recent" : status;
 
 export const NewErrorCard = ({
   data,
-  onSourceLinkClick
+  onSourceLinkClick,
+  onPinStatusChange,
+  onPinStatusToggle
 }: NewErrorCardProps) => {
   const [isHistogramVisible, setIsHistogramVisible] = useState(false);
   const chartContainerRef = useRef<HTMLDivElement>(null);
-  const { environment, backendInfo } = useConfigSelector();
+  const { backendInfo } = useConfigSelector();
 
   const isOccurrenceChartEnabled = getFeatureFlagValue(
     backendInfo,
@@ -43,6 +46,14 @@ export const NewErrorCard = ({
     backendInfo,
     FeatureFlag.IS_GLOBAL_ERROR_PIN_ENABLED
   );
+
+  const {
+    pin,
+    unpin,
+    data: pinUnpinResponse,
+    isInProgress: isPinUnpinInProgress
+  } = usePinning(data.id);
+  const previousPinUnpinResponse = usePrevious(pinUnpinResponse);
 
   const {
     id,
@@ -79,6 +90,15 @@ export const NewErrorCard = ({
       setSelectedEndpoint(selectorOptions[0]);
     }
   }, [selectorOptions, selectedEndpoint]);
+
+  useEffect(() => {
+    if (
+      previousPinUnpinResponse !== pinUnpinResponse &&
+      pinUnpinResponse?.payload.status === "success"
+    ) {
+      onPinStatusChange(pinUnpinResponse.payload.id);
+    }
+  }, [onPinStatusChange, pinUnpinResponse, previousPinUnpinResponse]);
 
   const handleLinkClick = () => {
     sendUserActionTrackingEvent(trackingEvents.ERROR_CARD_SOURCE_LINK_CLICKED);
@@ -129,27 +149,13 @@ export const NewErrorCard = ({
       }
     );
 
-    if (!environment) {
-      return;
+    if (value) {
+      pin();
+    } else {
+      unpin();
     }
 
-    if (value) {
-      window.sendMessageToDigma<PinErrorPayload>({
-        action: actions.PIN_ERROR,
-        payload: {
-          id,
-          environment: environment.id
-        }
-      });
-    } else {
-      window.sendMessageToDigma<UnpinErrorPayload>({
-        action: actions.UNPIN_ERROR,
-        payload: {
-          id,
-          environment: environment.id
-        }
-      });
-    }
+    onPinStatusToggle();
   };
 
   const isCritical = score.score > HIGH_SEVERITY_SCORE_THRESHOLD;
@@ -168,6 +174,7 @@ export const NewErrorCard = ({
             buttonType={"secondaryBorderless"}
             icon={isPinned ? PinFillIcon : PinIcon}
             onClick={handlePinUnpinButtonClick}
+            isDisabled={isPinUnpinInProgress}
           />
         ]
       : []),
@@ -202,17 +209,20 @@ export const NewErrorCard = ({
             content={getStatusString(status)}
             title={
               <s.StatusTagTooltipContainer>
-                <span>Score: {score.score}</span>
                 <TimestampKeyValue
                   key={"first-detected"}
                   label={"First detected"}
                   timestamp={firstDetected}
                 />
                 <TimestampKeyValue
-                  key={"last-seen"}
-                  label={"Last seen"}
+                  key={"last-detected"}
+                  label={"Last detected"}
                   timestamp={lastDetected}
                 />
+                <span>
+                  <s.StatusTagTooltipKey>Score:</s.StatusTagTooltipKey>{" "}
+                  {score.score}
+                </span>
               </s.StatusTagTooltipContainer>
             }
             type={statusTagType}

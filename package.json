@@ -111,6 +111,7 @@
   },
   "dependencies": {
     "@floating-ui/react": "^0.25.1",
+    "@formkit/auto-animate": "^0.8.2",
     "@tanstack/react-table": "^8.7.8",
     "allotment": "^1.19.0",
     "axios": "^1.7.4",
