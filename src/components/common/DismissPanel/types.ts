@@ -3,4 +3,5 @@ export interface DismissPanelProps {
   onShow: () => void;
   onDismiss: () => void;
   confirmationMessage: string;
+  className?: string;
 }

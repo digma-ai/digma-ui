@@ -11,7 +11,6 @@ import {
   getEndpointKey
 } from "../../common/AffectedEndpointsSelector";
 import { Option } from "../../common/AffectedEndpointsSelector/types";
-import { DismissPanel } from "../../common/DismissPanel";
 import { HistogramIcon } from "../../common/icons/16px/HistogramIcon";
 import { PinFillIcon } from "../../common/icons/16px/PinFillIcon";
 import { PinIcon } from "../../common/icons/16px/PinIcon";
@@ -216,96 +215,100 @@ export const NewErrorCard = ({
 
   return (
     <s.Container $isCritical={isCritical} $isPinned={isPinned}>
-      <s.Header>
-        <s.TitleContainer>
-          <Tooltip title={errorType}>
-            <s.Title>{errorType}</s.Title>
-          </Tooltip>
-          <Tooltip title={fromFullyQualifiedName ?? fromDisplayName}>
-            <s.SourceLink onClick={handleLinkClick}>
-              {fromDisplayName}
-            </s.SourceLink>
-          </Tooltip>
-        </s.TitleContainer>
-        {status && (
-          <s.StatusTag
-            content={getStatusString(status)}
-            title={
-              <s.StatusTagTooltipContainer>
-                <TimestampKeyValue
-                  key={"first-detected"}
-                  label={"First detected"}
-                  timestamp={firstDetected}
-                />
-                <TimestampKeyValue
-                  key={"last-detected"}
-                  label={"Last detected"}
-                  timestamp={lastDetected}
-                />
-                <span>
-                  <s.StatusTagTooltipKey>Score:</s.StatusTagTooltipKey>{" "}
-                  {score.score}
-                </span>
-              </s.StatusTagTooltipContainer>
-            }
-            type={statusTagType}
-          />
-        )}
-      </s.Header>
-      {selectorOptions.length > 0 && (
-        <s.AffectedEndpointsContainer>
-          Affected Endpoints ({selectorOptions.length})
-          <AffectedEndpointsSelector
-            onChange={handleAffectedEndpointsSelectorChange}
-            onAssetLinkClick={handleAffectedEndpointLinkClick}
-            value={selectorValue}
-            options={selectorOptions}
-          />
-        </s.AffectedEndpointsContainer>
-      )}
-      {isOccurrenceChartEnabled && selectedEndpoint && (
-        <>
-          <CSSTransition
-            in={isHistogramVisible}
-            timeout={s.TRANSITION_DURATION}
-            classNames={s.chartContainerTransitionClassName}
-            nodeRef={chartContainerRef}
-            mountOnEnter={true}
-            unmountOnExit={true}
-          >
-            <s.OccurrenceChartContainer
-              ref={chartContainerRef}
-              $transitionClassName={s.chartContainerTransitionClassName}
-              $transitionDuration={s.TRANSITION_DURATION}
-            >
-              <OccurrenceChart
-                service={selectedEndpoint.serviceName}
-                spanCodeObjectId={selectedEndpoint.spanCodeObjectId}
-                errorId={id}
-              />
-            </s.OccurrenceChartContainer>
-          </CSSTransition>
-        </>
-      )}
-      {toolbarActions.length > 0 && (
-        <s.Footer>
-          {isDismissEnabled && (
-            <DismissPanel
-              confirmationMessage="Dismiss error?"
-              onShow={handleUndismissalButtonClick}
-              onDismiss={handleDismissalButtonClick}
-              state={
-                isDismissalChangeInProgress
-                  ? "in-progress"
-                  : isDismissed
-                  ? "dismissed"
-                  : "visible"
+      <s.Content>
+        <s.Header>
+          <s.TitleContainer>
+            <Tooltip title={errorType}>
+              <s.Title>{errorType}</s.Title>
+            </Tooltip>
+            <Tooltip title={fromFullyQualifiedName ?? fromDisplayName}>
+              <s.SourceLink onClick={handleLinkClick}>
+                {fromDisplayName}
+              </s.SourceLink>
+            </Tooltip>
+          </s.TitleContainer>
+          {status && (
+            <s.StatusTag
+              content={getStatusString(status)}
+              title={
+                <s.StatusTagTooltipContainer>
+                  <TimestampKeyValue
+                    key={"first-detected"}
+                    label={"First detected"}
+                    timestamp={firstDetected}
+                  />
+                  <TimestampKeyValue
+                    key={"last-detected"}
+                    label={"Last detected"}
+                    timestamp={lastDetected}
+                  />
+                  <span>
+                    <s.StatusTagTooltipKey>Score:</s.StatusTagTooltipKey>{" "}
+                    {score.score}
+                  </span>
+                </s.StatusTagTooltipContainer>
               }
+              type={statusTagType}
             />
           )}
-          {toolbarActions}
-        </s.Footer>
-      )}
+        </s.Header>
+        {selectorOptions.length > 0 && (
+          <s.AffectedEndpointsContainer>
+            Affected Endpoints ({selectorOptions.length})
+            <AffectedEndpointsSelector
+              onChange={handleAffectedEndpointsSelectorChange}
+              onAssetLinkClick={handleAffectedEndpointLinkClick}
+              value={selectorValue}
+              options={selectorOptions}
+            />
+          </s.AffectedEndpointsContainer>
+        )}
+        {isOccurrenceChartEnabled && selectedEndpoint && (
+          <>
+            <CSSTransition
+              in={isHistogramVisible}
+              timeout={s.TRANSITION_DURATION}
+              classNames={s.chartContainerTransitionClassName}
+              nodeRef={chartContainerRef}
+              mountOnEnter={true}
+              unmountOnExit={true}
+            >
+              <s.OccurrenceChartContainer
+                ref={chartContainerRef}
+                $transitionClassName={s.chartContainerTransitionClassName}
+                $transitionDuration={s.TRANSITION_DURATION}
+              >
+                <OccurrenceChart
+                  service={selectedEndpoint.serviceName}
+                  spanCodeObjectId={selectedEndpoint.spanCodeObjectId}
+                  errorId={id}
+                />
+              </s.OccurrenceChartContainer>
+            </CSSTransition>
+          </>
+        )}
+      </s.Content>
+      <s.Footer>
+        {(toolbarActions.length > 0 || isDismissEnabled) && (
+          <s.FooterContainer>
+            {isDismissEnabled && (
+              <s.StyledDismissPanel
+                confirmationMessage="Dismiss error?"
+                onShow={handleUndismissalButtonClick}
+                onDismiss={handleDismissalButtonClick}
+                state={
+                  isDismissalChangeInProgress
+                    ? "in-progress"
+                    : isDismissed
+                    ? "dismissed"
+                    : "visible"
+                }
+              />
+            )}
+            {toolbarActions}
+          </s.FooterContainer>
+        )}
+      </s.Footer>
     </s.Container>
   );
 };

@@ -10,7 +10,8 @@ const DismissPanelComponent = ({
   state,
   onShow,
   onDismiss,
-  confirmationMessage
+  confirmationMessage,
+  className
 }: DismissPanelProps) => {
   const [isDismissConfirmationOpened, setDismissConfirmationOpened] =
     useState(false);
@@ -32,7 +33,7 @@ const DismissPanelComponent = ({
   return (
     <>
       {!isDismissConfirmationOpened ? (
-        <s.ButtonContainer>
+        <s.ButtonContainer className={className}>
           {state === "dismissed" && (
             <NewButton
               label={"Show"}
