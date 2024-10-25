@@ -40,8 +40,7 @@ import { GlobalErrorsFilters } from "./GlobalErrorsFilters";
 import * as s from "./styles";
 import {
   GetGlobalErrorsDataPayload,
-  SetGlobalErrorsDataPayload,
-  SetPinUnpinErrorResultPayload
+  SetGlobalErrorsDataPayload
 } from "./types";
 
 const PIN_UNPIN_ANIMATION_DURATION = 250;
@@ -171,23 +170,8 @@ export const GlobalErrorsList = () => {
   useEffect(() => {
     dispatcher.addActionListener(actions.SET_UNDISMISS_ERROR_RESULT, getData);
     dispatcher.addActionListener(actions.SET_DISMISS_ERROR_RESULT, getData);
-    const handlePinUnpinResult = (data: unknown) => {
-      const payload = data as SetPinUnpinErrorResultPayload;
-      setLatestPinChangedId(payload.id);
-      getData();
-    };
-    dispatcher.addActionListener(
-      actions.SET_PIN_ERROR_RESULT,
-      handlePinUnpinResult
-    );
-    dispatcher.addActionListener(
-      actions.SET_UNPIN_ERROR_RESULT,
-      handlePinUnpinResult
-    );
 
     return () => {
-      dispatcher.removeActionListener(actions.SET_PIN_ERROR_RESULT, getData);
-      dispatcher.removeActionListener(actions.SET_UNPIN_ERROR_RESULT, getData);
       dispatcher.removeActionListener(
         actions.SET_UNDISMISS_ERROR_RESULT,
         getData
