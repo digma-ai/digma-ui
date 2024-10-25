@@ -32,6 +32,7 @@ export const NewErrorCard = ({
   data,
   onSourceLinkClick,
   onPinStatusChange,
+  onDismissStatusChange,
   onPinStatusToggle
 }: NewErrorCardProps) => {
   const [isHistogramVisible, setIsHistogramVisible] = useState(false);
@@ -59,6 +60,7 @@ export const NewErrorCard = ({
     data: pinUnpinResponse,
     isInProgress: isPinUnpinInProgress
   } = usePinning(data.id);
+
   const previousPinUnpinResponse = usePrevious(pinUnpinResponse);
 
   const {
@@ -74,7 +76,13 @@ export const NewErrorCard = ({
     isDismissed
   } = data;
   const statusTagType = getTagType(score.score);
-  const { isDismissalChangeInProgress, dismiss, show } = useDismissal(id);
+  const {
+    isDismissalChangeInProgress,
+    dismiss,
+    show,
+    data: dismissalData
+  } = useDismissal(id);
+  const previousDismissalData = usePrevious(dismissalData);
   const selectorOptions: Option[] = useMemo(
     () =>
       affectedEndpoints.map((x) => ({
@@ -98,6 +106,15 @@ export const NewErrorCard = ({
       setSelectedEndpoint(selectorOptions[0]);
     }
   }, [selectorOptions, selectedEndpoint]);
+
+  useEffect(() => {
+    if (
+      previousDismissalData !== dismissalData &&
+      dismissalData?.payload.status === "success"
+    ) {
+      onDismissStatusChange(dismissalData.payload.id);
+    }
+  }, [dismissalData, onDismissStatusChange, previousDismissalData]);
 
   useEffect(() => {
     if (
@@ -288,8 +305,8 @@ export const NewErrorCard = ({
           </>
         )}
       </s.Content>
-      <s.Footer>
-        {(toolbarActions.length > 0 || isDismissEnabled) && (
+      {(toolbarActions.length > 0 || isDismissEnabled) && (
+        <s.Footer>
           <s.FooterContainer>
             {isDismissEnabled && (
               <s.StyledDismissPanel
@@ -307,8 +324,8 @@ export const NewErrorCard = ({
             )}
             {toolbarActions}
           </s.FooterContainer>
-        )}
-      </s.Footer>
+        </s.Footer>
+      )}
     </s.Container>
   );
 };

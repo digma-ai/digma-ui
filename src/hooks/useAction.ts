@@ -1,6 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
 import { dispatcher } from "../dispatcher";
-import { Identifier } from "../types";
+
+interface Identifier {
+  id: string;
+}
 
 export const useAction = <
   TPayload extends Identifier,

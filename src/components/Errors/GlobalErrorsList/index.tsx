@@ -17,6 +17,7 @@ import {
 import { useErrorsSelector } from "../../../store/errors/useErrorsSelector";
 import { useStore } from "../../../store/useStore";
 import { isNumber } from "../../../typeGuards/isNumber";
+import { isUndefined } from "../../../typeGuards/isUndefined";
 import { FeatureFlag } from "../../../types";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { formatUnit } from "../../../utils/formatUnit";
@@ -64,6 +65,10 @@ export const GlobalErrorsList = () => {
   );
 
   const { environment, backendInfo } = useConfigSelector();
+  const isDismissEnabled = getFeatureFlagValue(
+    backendInfo,
+    FeatureFlag.IS_GLOBAL_ERROR_DISMISS_ENABLED
+  );
 
   const {
     globalErrorsViewMode: mode,
@@ -164,7 +169,10 @@ export const GlobalErrorsList = () => {
   >(dataFetcherConfiguration, payload);
 
   const isDismissalViewModeButtonVisible =
-    data?.dismissedCount && data.dismissedCount > 0; // isUndefined - check for backward compatibility, always show when BE does not return this counter
+    isDismissEnabled &&
+    data &&
+    !isUndefined(data.dismissedCount) &&
+    data.dismissedCount > 0;
 
   // Refresh data after pin/unpin actions
   useEffect(() => {
@@ -305,6 +313,10 @@ export const GlobalErrorsList = () => {
     getData();
   };
 
+  const handleDismissalStatusChange = () => {
+    getData();
+  };
+
   const areAnyFiltersApplied =
     search ||
     [
@@ -314,6 +326,20 @@ export const GlobalErrorsList = () => {
       selectedFilters.criticalities,
       selectedFilters.handlingTypes
     ].some((x) => x.length > 0);
+
+  const renderDismissBtn = () => (
+    <NewButton
+      buttonType={"secondaryBorderless"}
+      icon={(props) => (
+        <s.DismissBtnIcon
+          {...props}
+          crossOut={mode !== ViewMode.OnlyDismissed}
+          $isDismissedMode={mode === ViewMode.OnlyDismissed}
+        />
+      )}
+      onClick={handleDismissalViewModeButtonClick}
+    />
+  );
 
   return (
     <s.Container>
@@ -372,31 +398,10 @@ export const GlobalErrorsList = () => {
                     onSourceLinkClick={handleErrorSourceLinkClick}
                     onPinStatusChange={handlePinStatusChange}
                     onPinStatusToggle={handlePinStatusToggle}
+                    onDismissStatusChange={handleDismissalStatusChange}
                   />
                 ))}
               </s.ListContainer>
-              <Pagination
-                itemsCount={totalCount}
-                page={page}
-                pageSize={pageSize}
-                onPageChange={handlePageChange}
-                extendedNavigation={true}
-                withDescription={true}
-              >
-                {isDismissalViewModeButtonVisible && (
-                  <NewButton
-                    buttonType={"secondaryBorderless"}
-                    icon={(props) => (
-                      <s.DismissBtnIcon
-                        {...props}
-                        crossOut={mode !== ViewMode.OnlyDismissed}
-                        $isDismissedMode={mode === ViewMode.OnlyDismissed}
-                      />
-                    )}
-                    onClick={handleDismissalViewModeButtonClick}
-                  />
-                )}
-              </Pagination>
             </>
           ) : areAnyFiltersApplied ? (
             <NewEmptyState
@@ -418,6 +423,20 @@ export const GlobalErrorsList = () => {
           ) : (
             <NoDataEmptyState />
           )}
+          {list.length > 0 ? (
+            <Pagination
+              itemsCount={totalCount}
+              page={page}
+              pageSize={pageSize}
+              onPageChange={handlePageChange}
+              extendedNavigation={true}
+              withDescription={true}
+            >
+              {isDismissalViewModeButtonVisible && renderDismissBtn()}
+            </Pagination>
+          ) : isDismissalViewModeButtonVisible ? (
+            renderDismissBtn()
+          ) : undefined}
         </>
       ) : !environmentId ? (
         <NoDataEmptyState />

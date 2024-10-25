@@ -15,7 +15,6 @@ export const chartContainerTransitionClassName = "chart-container";
 export const Container = styled.div<ContainerProps>`
   display: flex;
   flex-direction: column;
-  gap: 16px;
   border-radius: 4px;
   border: 1px solid
     ${({ theme, $isPinned, $isCritical }) =>
@@ -113,7 +112,7 @@ export const OccurrenceChartContainer = styled.div<OccurrenceChartContainerProps
 
 export const Footer = styled.div`
   display: flex;
-  padding: 7px;
+  padding: 0 7px 7px;
 `;
 
 export const FooterContainer = styled.div`
@@ -137,4 +136,5 @@ export const Content = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
+  margin-bottom: 16px;
 `;

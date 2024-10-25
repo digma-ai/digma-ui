@@ -1,4 +1,4 @@
-import { forwardRef } from "react";
+import React from "react";
 import { useIconProps } from "../hooks";
 import { IconProps } from "../types";
 
@@ -34,4 +34,4 @@ const EyeIconComponent = (props: EyeIconProps) => {
   );
 };
 
-export const EyeIcon = forwardRef(EyeIconComponent);
+export const EyeIcon = React.memo(EyeIconComponent);
