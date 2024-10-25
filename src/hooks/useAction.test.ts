@@ -69,6 +69,30 @@ describe("useAction Hook", () => {
     expect(result.current.isOperationInProgress).toBe(false);
   });
 
+  it("should set data and stop operation on valid action response with customId", () => {
+    const { result } = renderHook(() =>
+      useAction(
+        requestAction,
+        responseAction,
+        mockPayload,
+        (result: { errorId: string; id: string }) => result.errorId
+      )
+    );
+
+    act(() => {
+      const handleActionResponse = (dispatcher.addActionListener as jest.Mock)
+        .mock.calls[0][1] as ActionListener; // eslint-disable-line @typescript-eslint/no-unsafe-member-access
+
+      handleActionResponse({ errorId: "123" }, Date.now());
+    });
+
+    expect(result.current.data).toEqual({
+      action: responseAction,
+      payload: { errorId: "123" }
+    });
+    expect(result.current.isOperationInProgress).toBe(false);
+  });
+
   it("should start operation in progress and send message on execute", () => {
     const { result } = renderHook(() =>
       useAction(requestAction, responseAction, mockPayload)

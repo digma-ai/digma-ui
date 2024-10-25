@@ -3,6 +3,8 @@ import { actions } from "../../../../../../actions";
 import { DismissUndismissInsightPayload } from "../../../../../../types";
 import { DismissUndismissResponsePayload } from "../types";
 
+const mapId = (response: DismissUndismissResponsePayload) => response.insightId;
+
 export const useDismissal = (insightId: string) => {
   const { isOperationInProgress: isDismissInProgress, execute: dismiss } =
     useAction<DismissUndismissInsightPayload, DismissUndismissResponsePayload>(
@@ -11,7 +13,8 @@ export const useDismissal = (insightId: string) => {
       {
         id: insightId,
         insightId
-      }
+      },
+      mapId
     );
 
   const { isOperationInProgress: isUndismissInProgress, execute: undismiss } =
@@ -21,7 +24,8 @@ export const useDismissal = (insightId: string) => {
       {
         id: insightId,
         insightId
-      }
+      },
+      mapId
     );
   return {
     dismiss,

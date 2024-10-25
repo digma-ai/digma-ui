@@ -8,7 +8,8 @@ export const useAction = <
 >(
   requestAction: string,
   responseAction: string,
-  payload: TPayload
+  payload: TPayload,
+  mapId?: (response: TResponse) => string
 ) => {
   const [data, setData] = useState<{
     action: string;
@@ -19,8 +20,8 @@ export const useAction = <
   useEffect(() => {
     const handleActionResponse = (data: unknown) => {
       const result = data as TResponse;
-
-      if (result.id === payload.id) {
+      const responseId = mapId ? mapId(result) : result.id;
+      if (payload.id === responseId) {
         setData({ action: responseAction, payload: result });
         setIsOperationInProgress(false);
       }
@@ -31,7 +32,7 @@ export const useAction = <
     return () => {
       dispatcher.removeActionListener(responseAction, handleActionResponse);
     };
-  }, [payload, payload.id, responseAction]);
+  }, [mapId, payload, payload.id, responseAction]);
 
   const sendAction = useCallback(
     (action: string) => {
