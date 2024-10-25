@@ -1,71 +1,30 @@
-import { useEffect, useState } from "react";
-import { dispatcher } from "../../../../dispatcher";
+import { useAction } from "../../../../hooks/useAction";
+import { Identifier } from "../../../../types";
 import { actions } from "../../actions";
-import { DismissPayload, UndismissPayload } from "./types";
+import { DismissPayload } from "./types";
 
 export const useDismissal = (id: string) => {
-  const [isDismissalChangeInProgress, setIsDismissalChangeInProgress] =
-    useState(false);
-
-  useEffect(() => {
-    const handleDismissed = (data: unknown) => {
-      if (id === (data as DismissPayload).id) {
-        setIsDismissalChangeInProgress(false);
-      }
-    };
-
-    dispatcher.addActionListener(
+  const { isOperationInProgress: isDismissInProgress, execute: dismiss } =
+    useAction<Identifier, DismissPayload>(
+      actions.DISMISS_ERROR,
       actions.SET_DISMISS_ERROR_RESULT,
-      handleDismissed
-    );
-
-    return () => {
-      dispatcher.removeActionListener(
-        actions.SET_DISMISS_ERROR_RESULT,
-        handleDismissed
-      );
-    };
-  }, [id]);
-
-  useEffect(() => {
-    const handleUndismissed = (data: unknown) => {
-      if (id === (data as UndismissPayload).id) {
-        setIsDismissalChangeInProgress(false);
+      {
+        id
       }
-    };
-
-    dispatcher.addActionListener(
-      actions.SET_UNDISMISS_ERROR_RESULT,
-      handleUndismissed
     );
 
-    return () => {
-      dispatcher.removeActionListener(
-        actions.SET_UNDISMISS_ERROR_RESULT,
-        handleUndismissed
-      );
-    };
-  }, [id]);
+  const { isOperationInProgress: isUndismissInProgress, execute: undismiss } =
+    useAction<Identifier, DismissPayload>(
+      actions.UNDISMISS_ERROR,
+      actions.SET_UNDISMISS_ERROR_RESULT,
+      {
+        id
+      }
+    );
 
   return {
-    isDismissalChangeInProgress,
-    dismiss: () => {
-      window.sendMessageToDigma<DismissPayload>({
-        action: actions.DISMISS_ERROR,
-        payload: {
-          id
-        }
-      });
-      setIsDismissalChangeInProgress(true);
-    },
-    show: () => {
-      window.sendMessageToDigma<UndismissPayload>({
-        action: actions.UNDISMISS_ERROR,
-        payload: {
-          id
-        }
-      });
-      setIsDismissalChangeInProgress(true);
-    }
+    dismiss,
+    show: undismiss,
+    isDismissalChangeInProgress: isDismissInProgress || isUndismissInProgress
   };
 };

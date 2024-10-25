@@ -136,3 +136,7 @@ export interface SendPluginEventPayload {
   name: string;
   payload?: Record<string, unknown>;
 }
+
+export interface Identifier {
+  id: string;
+}

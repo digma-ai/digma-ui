@@ -4,7 +4,6 @@ import {
   footnoteRegularTypography
 } from "../../common/App/typographies";
 import { DismissPanel } from "../../common/DismissPanel";
-import { DismissDialog } from "../../common/DismissPanel/styles";
 import { Link } from "../../common/v3/Link";
 import { Tag } from "../../common/v3/Tag";
 import { HEIGHT } from "./OccurrenceChart/styles";
@@ -131,10 +130,6 @@ export const StyledDismissPanel = styled(DismissPanel)`
   display: flex;
   flex: 1;
   width: 100%;
-
-  & ${DismissDialog} {
-    margin: 10px;
-  }
 `;
 
 export const Content = styled.div`

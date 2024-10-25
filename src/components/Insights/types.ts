@@ -1,6 +1,11 @@
 import { MemoExoticComponent } from "react";
 import { Duration } from "../../globals";
-import { InsightType, SpanInfo, SpanInstanceInfo } from "../../types";
+import {
+  Identifier,
+  InsightType,
+  SpanInfo,
+  SpanInstanceInfo
+} from "../../types";
 import { Sorting } from "../common/SortingSelector/types";
 import { IconProps } from "../common/icons/types";
 import { InsightFilterType } from "./InsightsCatalog/types";
@@ -679,6 +684,6 @@ export interface ScopedInsightsQuery extends InsightsQuery {
 
 export { InsightType };
 
-export interface DismissUndismissInsightPayload {
+export interface DismissUndismissInsightPayload extends Identifier {
   insightId: string;
 }

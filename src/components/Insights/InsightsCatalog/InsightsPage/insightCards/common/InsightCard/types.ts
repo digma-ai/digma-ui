@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { Identifier } from "../../../../../../../types";
 import { ScopeSpan } from "../../../../../../common/App/types";
 import { CardProps } from "../../../../../../common/v3/Card/types";
 import { GenericCodeObjectInsight, InsightType } from "../../../../../types";
@@ -41,7 +42,7 @@ export interface StyledCardProps extends CardProps {
   $isReadable?: boolean;
 }
 
-export interface DismissUndismissResponsePayload {
+export interface DismissUndismissResponsePayload extends Identifier {
   insightId: string;
   status: "success" | "failure";
   error?: string;
