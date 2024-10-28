@@ -1,6 +1,7 @@
 import { getFeatureFlagValue } from "../../../featureFlags";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { FeatureFlag } from "../../../types";
+import { roundTo } from "../../../utils/roundTo";
 import { BackendInfo } from "../App/types";
 import { ScoreIndicator } from "../ScoreIndicator";
 import { Tooltip } from "../Tooltip";
@@ -64,8 +65,10 @@ export const ImpactScore = ({
     }
   }
 
+  const formattedScore = `${roundTo(score * 100, 2)}%`;
+
   return (
-    <Tooltip title={score}>
+    <Tooltip title={formattedScore}>
       <s.Container>
         {scoreIndicatorPosition === "start" && <ScoreIndicator score={score} />}
         {getImpactScoreLabel(score, backendInfo)}
