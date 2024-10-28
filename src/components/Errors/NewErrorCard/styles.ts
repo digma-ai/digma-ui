@@ -3,6 +3,7 @@ import {
   bodySemiboldTypography,
   footnoteRegularTypography
 } from "../../common/App/typographies";
+import { DismissPanel } from "../../common/DismissPanel";
 import { Link } from "../../common/v3/Link";
 import { Tag } from "../../common/v3/Tag";
 import { HEIGHT } from "./OccurrenceChart/styles";
@@ -14,9 +15,7 @@ export const chartContainerTransitionClassName = "chart-container";
 export const Container = styled.div<ContainerProps>`
   display: flex;
   flex-direction: column;
-  gap: 16px;
   border-radius: 4px;
-  padding: 12px;
   border: 1px solid
     ${({ theme, $isPinned, $isCritical }) =>
       $isPinned
@@ -112,8 +111,30 @@ export const OccurrenceChartContainer = styled.div<OccurrenceChartContainerProps
 `;
 
 export const Footer = styled.div`
-  margin-top: -8px;
+  display: flex;
+  padding: 0 7px 7px;
+`;
+
+export const FooterContainer = styled.div`
   display: flex;
   gap: 8px;
+  position: relative;
   justify-content: flex-end;
+  width: 100%;
+  min-height: 27px;
+`;
+
+export const StyledDismissPanel = styled(DismissPanel)`
+  margin-right: auto;
+  display: flex;
+  flex: 1;
+  width: 100%;
+`;
+
+export const Content = styled.div`
+  padding: 12px 12px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 16px;
 `;

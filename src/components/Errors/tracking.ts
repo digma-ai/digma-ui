@@ -40,7 +40,10 @@ export const trackingEvents = addPrefix(
     ERROR_CARD_AFFECTED_ENDPOINT_LINK_CLICKED:
       "error card affected endpoint link clicked",
     ERROR_CARD_HISTOGRAM_BUTTON_CLICKED: "error card histogram button clicked",
-    ERROR_CARD_PIN_UNPIN_BUTTON_CLICKED: "error card pin unpin button clicked"
+    ERROR_CARD_PIN_UNPIN_BUTTON_CLICKED: "error card pin unpin button clicked",
+    ERROR_CARD_DISMISS_BUTTON_CLICKED: "error card dismiss button clicked",
+    ERROR_CARD_PIN_UNDISMISS_BUTTON_CLICKED:
+      "error card pin undismiss button clicked"
   },
   " "
 );

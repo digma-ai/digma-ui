@@ -20,6 +20,7 @@ import { TimestampKeyValue } from "../ErrorCard/TimestampKeyValue";
 import { usePinning } from "../GlobalErrorsList/usePinning";
 import { getTagType, HIGH_SEVERITY_SCORE_THRESHOLD } from "../Score";
 import { trackingEvents } from "../tracking";
+import { useDismissal } from "./hooks/useDismissal";
 import { OccurrenceChart } from "./OccurrenceChart";
 import * as s from "./styles";
 import { NewErrorCardProps } from "./types";
@@ -31,6 +32,7 @@ export const NewErrorCard = ({
   data,
   onSourceLinkClick,
   onPinStatusChange,
+  onDismissStatusChange,
   onPinStatusToggle
 }: NewErrorCardProps) => {
   const [isHistogramVisible, setIsHistogramVisible] = useState(false);
@@ -47,12 +49,18 @@ export const NewErrorCard = ({
     FeatureFlag.IS_GLOBAL_ERROR_PIN_ENABLED
   );
 
+  const isDismissEnabled = getFeatureFlagValue(
+    backendInfo,
+    FeatureFlag.IS_GLOBAL_ERROR_DISMISS_ENABLED
+  );
+
   const {
     pin,
     unpin,
     data: pinUnpinResponse,
     isInProgress: isPinUnpinInProgress
   } = usePinning(data.id);
+
   const previousPinUnpinResponse = usePrevious(pinUnpinResponse);
 
   const {
@@ -64,9 +72,17 @@ export const NewErrorCard = ({
     fromFullyQualifiedName,
     status,
     firstDetected,
-    lastDetected
+    lastDetected,
+    isDismissed
   } = data;
   const statusTagType = getTagType(score.score);
+  const {
+    isDismissalChangeInProgress,
+    dismiss,
+    show,
+    data: dismissalData
+  } = useDismissal(id);
+  const previousDismissalData = usePrevious(dismissalData);
   const selectorOptions: Option[] = useMemo(
     () =>
       affectedEndpoints.map((x) => ({
@@ -90,6 +106,15 @@ export const NewErrorCard = ({
       setSelectedEndpoint(selectorOptions[0]);
     }
   }, [selectorOptions, selectedEndpoint]);
+
+  useEffect(() => {
+    if (
+      previousDismissalData !== dismissalData &&
+      dismissalData?.payload.status === "success"
+    ) {
+      onDismissStatusChange(dismissalData.payload.id);
+    }
+  }, [dismissalData, onDismissStatusChange, previousDismissalData]);
 
   useEffect(() => {
     if (
@@ -158,6 +183,20 @@ export const NewErrorCard = ({
     onPinStatusToggle();
   };
 
+  const handleDismissalButtonClick = () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.ERROR_CARD_DISMISS_BUTTON_CLICKED
+    );
+    dismiss();
+  };
+
+  const handleUndismissalButtonClick = () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.ERROR_CARD_PIN_UNDISMISS_BUTTON_CLICKED
+    );
+    show();
+  };
+
   const isCritical = score.score > HIGH_SEVERITY_SCORE_THRESHOLD;
   const isPinned = Boolean(data.pinnedAt);
 
@@ -193,78 +232,100 @@ export const NewErrorCard = ({
 
   return (
     <s.Container $isCritical={isCritical} $isPinned={isPinned}>
-      <s.Header>
-        <s.TitleContainer>
-          <Tooltip title={errorType}>
-            <s.Title>{errorType}</s.Title>
-          </Tooltip>
-          <Tooltip title={fromFullyQualifiedName ?? fromDisplayName}>
-            <s.SourceLink onClick={handleLinkClick}>
-              {fromDisplayName}
-            </s.SourceLink>
-          </Tooltip>
-        </s.TitleContainer>
-        {status && (
-          <s.StatusTag
-            content={getStatusString(status)}
-            title={
-              <s.StatusTagTooltipContainer>
-                <TimestampKeyValue
-                  key={"first-detected"}
-                  label={"First detected"}
-                  timestamp={firstDetected}
-                />
-                <TimestampKeyValue
-                  key={"last-detected"}
-                  label={"Last detected"}
-                  timestamp={lastDetected}
-                />
-                <span>
-                  <s.StatusTagTooltipKey>Score:</s.StatusTagTooltipKey>{" "}
-                  {score.score}
-                </span>
-              </s.StatusTagTooltipContainer>
-            }
-            type={statusTagType}
-          />
+      <s.Content>
+        <s.Header>
+          <s.TitleContainer>
+            <Tooltip title={errorType}>
+              <s.Title>{errorType}</s.Title>
+            </Tooltip>
+            <Tooltip title={fromFullyQualifiedName ?? fromDisplayName}>
+              <s.SourceLink onClick={handleLinkClick}>
+                {fromDisplayName}
+              </s.SourceLink>
+            </Tooltip>
+          </s.TitleContainer>
+          {status && (
+            <s.StatusTag
+              content={getStatusString(status)}
+              title={
+                <s.StatusTagTooltipContainer>
+                  <TimestampKeyValue
+                    key={"first-detected"}
+                    label={"First detected"}
+                    timestamp={firstDetected}
+                  />
+                  <TimestampKeyValue
+                    key={"last-detected"}
+                    label={"Last detected"}
+                    timestamp={lastDetected}
+                  />
+                  <span>
+                    <s.StatusTagTooltipKey>Score:</s.StatusTagTooltipKey>{" "}
+                    {score.score}
+                  </span>
+                </s.StatusTagTooltipContainer>
+              }
+              type={statusTagType}
+            />
+          )}
+        </s.Header>
+        {selectorOptions.length > 0 && (
+          <s.AffectedEndpointsContainer>
+            Affected Endpoints ({selectorOptions.length})
+            <AffectedEndpointsSelector
+              onChange={handleAffectedEndpointsSelectorChange}
+              onAssetLinkClick={handleAffectedEndpointLinkClick}
+              value={selectorValue}
+              options={selectorOptions}
+            />
+          </s.AffectedEndpointsContainer>
         )}
-      </s.Header>
-      {selectorOptions.length > 0 && (
-        <s.AffectedEndpointsContainer>
-          Affected Endpoints ({selectorOptions.length})
-          <AffectedEndpointsSelector
-            onChange={handleAffectedEndpointsSelectorChange}
-            onAssetLinkClick={handleAffectedEndpointLinkClick}
-            value={selectorValue}
-            options={selectorOptions}
-          />
-        </s.AffectedEndpointsContainer>
-      )}
-      {isOccurrenceChartEnabled && selectedEndpoint && (
-        <>
-          <CSSTransition
-            in={isHistogramVisible}
-            timeout={s.TRANSITION_DURATION}
-            classNames={s.chartContainerTransitionClassName}
-            nodeRef={chartContainerRef}
-            mountOnEnter={true}
-            unmountOnExit={true}
-          >
-            <s.OccurrenceChartContainer
-              ref={chartContainerRef}
-              $transitionClassName={s.chartContainerTransitionClassName}
-              $transitionDuration={s.TRANSITION_DURATION}
+        {isOccurrenceChartEnabled && selectedEndpoint && (
+          <>
+            <CSSTransition
+              in={isHistogramVisible}
+              timeout={s.TRANSITION_DURATION}
+              classNames={s.chartContainerTransitionClassName}
+              nodeRef={chartContainerRef}
+              mountOnEnter={true}
+              unmountOnExit={true}
             >
-              <OccurrenceChart
-                service={selectedEndpoint.serviceName}
-                spanCodeObjectId={selectedEndpoint.spanCodeObjectId}
-                errorId={id}
+              <s.OccurrenceChartContainer
+                ref={chartContainerRef}
+                $transitionClassName={s.chartContainerTransitionClassName}
+                $transitionDuration={s.TRANSITION_DURATION}
+              >
+                <OccurrenceChart
+                  service={selectedEndpoint.serviceName}
+                  spanCodeObjectId={selectedEndpoint.spanCodeObjectId}
+                  errorId={id}
+                />
+              </s.OccurrenceChartContainer>
+            </CSSTransition>
+          </>
+        )}
+      </s.Content>
+      {(toolbarActions.length > 0 || isDismissEnabled) && (
+        <s.Footer>
+          <s.FooterContainer>
+            {isDismissEnabled && (
+              <s.StyledDismissPanel
+                confirmationMessage="Dismiss error?"
+                onShow={handleUndismissalButtonClick}
+                onDismiss={handleDismissalButtonClick}
+                state={
+                  isDismissalChangeInProgress
+                    ? "in-progress"
+                    : isDismissed
+                    ? "dismissed"
+                    : "visible"
+                }
               />
-            </s.OccurrenceChartContainer>
-          </CSSTransition>
-        </>
+            )}
+            {toolbarActions}
+          </s.FooterContainer>
+        </s.Footer>
       )}
-      {toolbarActions.length > 0 && <s.Footer>{toolbarActions}</s.Footer>}
     </s.Container>
   );
 };

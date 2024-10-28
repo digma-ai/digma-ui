@@ -4,6 +4,7 @@ import { IconProps } from "../types";
 
 interface EyeIconProps extends IconProps {
   crossOut?: boolean;
+  className?: string;
 }
 
 const EyeIconComponent = (props: EyeIconProps) => {
@@ -14,6 +15,7 @@ const EyeIconComponent = (props: EyeIconProps) => {
       xmlns="http://www.w3.org/2000/svg"
       width={size}
       height={size}
+      className={props.className}
       viewBox="0 0 16 12"
       fill="none"
     >

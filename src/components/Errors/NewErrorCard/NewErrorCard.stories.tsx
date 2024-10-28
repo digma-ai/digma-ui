@@ -1,5 +1,6 @@
 import { Meta, StoryObj } from "@storybook/react";
 
+import { fn } from "@storybook/test";
 import { NewErrorCard } from ".";
 import { mockedGlobalErrorData } from "./mockData";
 
@@ -20,12 +21,14 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
+    onPinStatusChange: fn(),
     data: mockedGlobalErrorData
   }
 };
 
 export const Critical: Story = {
   args: {
+    onPinStatusChange: fn(),
     data: {
       ...mockedGlobalErrorData,
       score: {

@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export interface PaginationProps {
   itemsCount: number;
   page: number;
@@ -6,4 +8,5 @@ export interface PaginationProps {
   extendedNavigation?: boolean;
   withDescription?: boolean;
   trackingEventPrefix?: string;
+  children?: ReactNode;
 }

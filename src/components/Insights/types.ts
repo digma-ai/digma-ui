@@ -681,4 +681,5 @@ export { InsightType };
 
 export interface DismissUndismissInsightPayload {
   insightId: string;
+  id: string;
 }

@@ -4,6 +4,7 @@ export interface NewErrorCardProps {
   data: GlobalErrorData;
   onSourceLinkClick: (codeObjectId: string) => void;
   onPinStatusChange: (errorId: string) => void;
+  onDismissStatusChange: (errorId: string) => void;
   onPinStatusToggle: () => void;
 }
 

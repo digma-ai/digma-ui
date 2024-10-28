@@ -7,6 +7,8 @@ import { StyledCardProps } from "./types";
 export const InsightFooter = styled.div`
   display: flex;
   justify-content: space-between;
+  position: relative;
+  min-height: 27px;
 `;
 
 export const Description = styled.div`
@@ -57,27 +59,6 @@ export const StyledCard = styled(Card)<StyledCardProps>`
           }
         `
       : ""}
-`;
-
-export const DismissDialog = styled.div`
-  display: flex;
-  justify-content: space-between;
-  padding: 7px;
-  align-items: center;
-  margin: -7px;
-  background: ${({ theme }) => theme.colors.v3.surface.sidePanelHeader};
-
-  ${subscriptRegularTypography}
-`;
-
-export const DismissDialogActions = styled.div`
-  display: flex;
-  gap: 8px;
-`;
-
-export const ButtonContainer = styled.div`
-  display: flex;
-  align-items: center;
 `;
 
 export const InfoActionButton = styled(NewIconButton)`

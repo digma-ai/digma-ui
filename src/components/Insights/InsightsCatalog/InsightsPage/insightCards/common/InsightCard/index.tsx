@@ -5,7 +5,7 @@ import { useConfigSelector } from "../../../../../../../store/config/useConfigSe
 import { isString } from "../../../../../../../typeGuards/isString";
 import { sendUserActionTrackingEvent } from "../../../../../../../utils/actions/sendUserActionTrackingEvent";
 import { getInsightTypeInfo } from "../../../../../../../utils/getInsightTypeInfo";
-import { Spinner } from "../../../../../../Navigation/CodeButtonMenu/Spinner";
+import { DismissPanel } from "../../../../../../common/DismissPanel";
 import { CheckmarkCircleIcon } from "../../../../../../common/icons/12px/CheckmarkCircleIcon";
 import { TraceIcon } from "../../../../../../common/icons/12px/TraceIcon";
 import { DoubleCircleIcon } from "../../../../../../common/icons/16px/DoubleCircleIcon";
@@ -13,9 +13,7 @@ import { HistogramIcon } from "../../../../../../common/icons/16px/HistogramIcon
 import { PinIcon } from "../../../../../../common/icons/16px/PinIcon";
 import { QuestionMark } from "../../../../../../common/icons/16px/QuestionMark";
 import { RecheckIcon } from "../../../../../../common/icons/16px/RecheckIcon";
-import { CrossIcon } from "../../../../../../common/icons/CrossIcon";
 import { JiraButton } from "../../../../../../common/v3/JiraButton";
-import { NewButton } from "../../../../../../common/v3/NewButton";
 import { Tooltip } from "../../../../../../common/v3/Tooltip";
 import { actions } from "../../../../../actions";
 import { trackingEvents } from "../../../../../tracking";
@@ -52,8 +50,6 @@ export const InsightCard = ({
   viewMode,
   mainMetric
 }: InsightCardProps) => {
-  const [isDismissConfirmationOpened, setDismissConfirmationOpened] =
-    useState(false);
   const { isDismissalChangeInProgress, dismiss, show } = useDismissal(
     insight.id
   );
@@ -159,7 +155,6 @@ export const InsightCard = ({
       }
     );
     dismiss();
-    setDismissConfirmationOpened(false);
   };
 
   const handleShowClick = () => {
@@ -437,55 +432,23 @@ export const InsightCard = ({
         }
         footer={
           isFooterVisible ? (
-            <>
-              {!isDismissConfirmationOpened ? (
-                <s.InsightFooter>
-                  {insight.isDismissible && (
-                    <s.ButtonContainer>
-                      {insight.isDismissed ? (
-                        <NewButton
-                          label={
-                            isDismissalChangeInProgress ? "Showing" : "Show"
-                          }
-                          buttonType={"secondaryBorderless"}
-                          isDisabled={isDismissalChangeInProgress}
-                          onClick={handleShowClick}
-                        />
-                      ) : (
-                        <NewButton
-                          icon={CrossIcon}
-                          isDisabled={isDismissalChangeInProgress}
-                          label={
-                            isDismissalChangeInProgress
-                              ? "Dismissing"
-                              : "Dismiss"
-                          }
-                          buttonType={"secondaryBorderless"}
-                          onClick={() => setDismissConfirmationOpened(true)}
-                        />
-                      )}
-                      {isDismissalChangeInProgress && <Spinner />}
-                    </s.ButtonContainer>
-                  )}
-                  {renderActions()}
-                </s.InsightFooter>
-              ) : (
-                <s.DismissDialog>
-                  Dismiss insight?
-                  <s.DismissDialogActions>
-                    <NewButton
-                      label={"No"}
-                      onClick={() => setDismissConfirmationOpened(false)}
-                    />
-                    <NewButton
-                      label={"Yes, dismiss"}
-                      buttonType={"secondary"}
-                      onClick={handleDismissClick}
-                    />
-                  </s.DismissDialogActions>
-                </s.DismissDialog>
+            <s.InsightFooter>
+              {insight.isDismissible && (
+                <DismissPanel
+                  onShow={handleShowClick}
+                  onDismiss={handleDismissClick}
+                  confirmationMessage="Dismiss insight?"
+                  state={
+                    isDismissalChangeInProgress
+                      ? "in-progress"
+                      : insight.isDismissed
+                      ? "dismissed"
+                      : "visible"
+                  }
+                />
               )}
-            </>
+              {renderActions()}
+            </s.InsightFooter>
           ) : undefined
         }
       />
