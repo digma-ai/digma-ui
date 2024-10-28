@@ -173,16 +173,14 @@ export const AssetEntry = ({
           <s.StatsColumn>
             <s.Stats>
               <span>Performance impact</span>
-              <Tooltip title={impactScore}>
-                <s.ValueContainer>
-                  <ImpactScore
-                    score={impactScore}
-                    showIndicator={
-                      sortingCriterion === SORTING_CRITERION.PERFORMANCE_IMPACT
-                    }
-                  />
-                </s.ValueContainer>
-              </Tooltip>
+              <s.ValueContainer>
+                <ImpactScore
+                  score={impactScore}
+                  showIndicator={
+                    sortingCriterion === SORTING_CRITERION.PERFORMANCE_IMPACT
+                  }
+                />
+              </s.ValueContainer>
             </s.Stats>
           </s.StatsColumn>
         )}
