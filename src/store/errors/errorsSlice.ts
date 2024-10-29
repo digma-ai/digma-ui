@@ -72,7 +72,8 @@ export const globalErrorsInitialState = {
     errorTypes: null
   },
   globalErrorsViewMode: ViewMode.All,
-  globalErrorsSelectedFilters: selectedFiltersInitialState
+  globalErrorsSelectedFilters: selectedFiltersInitialState,
+  globalErrorsLastDays: 7
 };
 
 export const initialState: ErrorsState = {

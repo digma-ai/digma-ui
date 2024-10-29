@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import {
   bodyRegularTypography,
   footnoteRegularTypography
@@ -6,7 +6,7 @@ import {
 import { NewButton } from "../../../common/v3/NewButton";
 import { TextField } from "../../../common/v3/TextField";
 import { Popup } from "../../../Navigation/common/Popup";
-import { DaysButtonProps } from "./types";
+import { CounterInputProps, DaysButtonProps } from "./types";
 
 export const ButtonIconContainer = styled.div`
   color: ${({ theme }) => theme.colors.v3.icon.tertiary};
@@ -57,12 +57,27 @@ export const Counter = styled.div`
   align-items: center;
 `;
 
-export const CounterInput = styled(TextField)`
+export const CounterInput = styled(TextField)<CounterInputProps>`
   ${footnoteRegularTypography}
   padding: 4px;
+  ${({ theme, $isActive }) =>
+    $isActive
+      ? css`
+          color: ${theme.colors.v3.text.link};
+          border: 1px solid ${theme.colors.v3.surface.brandPrimary};
+        `
+      : undefined};
 
   input {
     max-width: 16px;
+    text-align: center;
+
+    ${({ theme, $isActive }) =>
+      $isActive
+        ? css`
+            color: ${theme.colors.v3.text.link};
+          `
+        : undefined};
   }
 `;
 

@@ -15,7 +15,7 @@ import { DaysFilterProps } from "./types";
 
 const MAX_VALUE = 14;
 const MIN_VALUE = 1;
-
+const DEFAULT_VALUE = 7;
 const DEFAULT_LIST_OPTIONS = [7, 14];
 
 const getOptionLabel = (days: number) => `${days} ${formatUnit(days, "Day")}`;
@@ -23,17 +23,15 @@ const getOptionLabel = (days: number) => `${days} ${formatUnit(days, "Day")}`;
 export const DaysFilter = ({ onChanged }: DaysFilterProps) => {
   const [isDateMenuOpen, setIsDateMenuOpen] = useState(false);
   const [selectedDays, setSelectedDays] = useState<number>();
-  const [currentValue, setCurrentValue] = useState<number>();
-  const previousSelectedDays = usePrevious(selectedDays);
-  const handleSelectionChange = useCallback(
-    (days: number) => {
-      const value = selectedDays === days ? undefined : days;
-      setSelectedDays(value);
-      setCurrentValue(value);
-      setIsDateMenuOpen(false);
-    },
-    [selectedDays]
+  const [currentValue, setCurrentValue] = useState<number | undefined>(
+    DEFAULT_VALUE
   );
+  const previousSelectedDays = usePrevious(selectedDays);
+  const handleSelectionChange = useCallback((days: number) => {
+    setSelectedDays(days);
+    setCurrentValue(days);
+    setIsDateMenuOpen(false);
+  }, []);
 
   const daysFilterMenuItems = useMemo(
     () =>
@@ -48,11 +46,11 @@ export const DaysFilter = ({ onChanged }: DaysFilterProps) => {
 
   useEffect(() => {
     if (previousSelectedDays !== selectedDays) {
-      onChanged(selectedDays);
+      onChanged(selectedDays ?? DEFAULT_VALUE);
     }
   }, [selectedDays, previousSelectedDays, onChanged]);
 
-  const handleSortingMenuButtonClick = () => {
+  const handleMenuButtonClick = () => {
     sendUserActionTrackingEvent(
       trackingEvents.GLOBAL_ERRORS_VIEW_DATES_FILTERS_CHANGE
     );
@@ -67,7 +65,7 @@ export const DaysFilter = ({ onChanged }: DaysFilterProps) => {
       !newValue || Number.isNaN(intValue)
         ? undefined
         : intValue > MAX_VALUE
-        ? selectedDays
+        ? currentValue
         : intValue;
 
     sendUserActionTrackingEvent(
@@ -101,7 +99,12 @@ export const DaysFilter = ({ onChanged }: DaysFilterProps) => {
     sendUserActionTrackingEvent(
       trackingEvents.GLOBAL_ERRORS_DAYS_FILTER_APPLY_BTN_CLICKED
     );
-    setSelectedDays(currentValue);
+
+    if (!currentValue) {
+      setCurrentValue(DEFAULT_VALUE);
+    } else {
+      setSelectedDays(currentValue);
+    }
     setIsDateMenuOpen(false);
   };
 
@@ -117,16 +120,19 @@ export const DaysFilter = ({ onChanged }: DaysFilterProps) => {
               <s.Counter>
                 <NewIconButton
                   buttonType="secondaryBorderless"
-                  icon={() => <MinusIcon size={16} />}
+                  icon={() => <MinusIcon size={16} color="currentColor" />}
                   onClick={handleDecrement}
                 />
                 <s.CounterInput
                   onChange={handleCounterInputChange}
-                  value={currentValue?.toString() ?? ""}
+                  $isActive={Boolean(
+                    selectedDays && !DEFAULT_LIST_OPTIONS.includes(selectedDays)
+                  )}
+                  value={currentValue?.toString()}
                 />
                 <NewIconButton
                   buttonType="secondaryBorderless"
-                  icon={() => <PlusIcon size={16} />}
+                  icon={() => <PlusIcon size={16} color="currentColor" />}
                   onClick={handleIncrement}
                 />
                 <s.Text>Last days</s.Text>
@@ -151,7 +157,7 @@ export const DaysFilter = ({ onChanged }: DaysFilterProps) => {
         )}
         label={selectedDays ? getOptionLabel(selectedDays) : "Dates"}
         buttonType={"secondary"}
-        onClick={handleSortingMenuButtonClick}
+        onClick={handleMenuButtonClick}
       />
     </NewPopover>
   );
