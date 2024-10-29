@@ -17,6 +17,7 @@ export interface GetGlobalErrorsDataPayload {
   criticalities?: ErrorCriticality[];
   handlingTypes?: ErrorHandlingType[];
   dismissed?: boolean;
+  lastDays?: number;
 }
 
 export interface GlobalErrorData {

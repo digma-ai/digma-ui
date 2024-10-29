@@ -47,6 +47,7 @@ export interface ErrorsState {
   globalErrorsSelectedFilters: GlobalErrorsSelectedFiltersState;
   globalErrorsViewMode: ViewMode;
   errorDetailsWorkspaceItemsOnly: boolean;
+  globalErrorsLastDays?: number;
 }
 
 const selectedFiltersInitialState = {
@@ -114,6 +115,8 @@ export const errorsSlice = createSlice({
     ) => set({ errorDetailsWorkspaceItemsOnly }),
     setGlobalErrorsViewMode: (mode: ViewMode) =>
       set({ globalErrorsViewMode: mode }),
+    setGlobalErrorsLastDays: (days?: number) =>
+      set({ globalErrorsLastDays: days }),
     resetGlobalErrors: () => set({ ...globalErrorsInitialState })
   }
 });

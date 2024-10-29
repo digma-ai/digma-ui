@@ -37,6 +37,7 @@ import { actions } from "../actions";
 import { NewErrorCard } from "../NewErrorCard";
 import { NoDataEmptyState } from "../NoDataEmptyState";
 import { trackingEvents } from "../tracking";
+import { DaysFilter } from "./DaysFilter";
 import { GlobalErrorsFilters } from "./GlobalErrorsFilters";
 import * as s from "./styles";
 import {
@@ -78,7 +79,8 @@ export const GlobalErrorsList = () => {
     globalErrorsPageSize: pageSize,
     globalErrorsList: list,
     globalErrorsTotalCount: totalCount,
-    globalErrorsSelectedFilters: selectedFilters
+    globalErrorsSelectedFilters: selectedFilters,
+    globalErrorsLastDays: lastDays
   } = useErrorsSelector();
 
   const previousList = usePrevious(list);
@@ -90,12 +92,18 @@ export const GlobalErrorsList = () => {
     setGlobalErrorsPage,
     resetGlobalErrors,
     resetGlobalErrorsSelectedFilters,
-    setGlobalErrorsViewMode
+    setGlobalErrorsViewMode,
+    setGlobalErrorsLastDays
   } = useStore.getState();
 
   const areGlobalErrorsFiltersEnabled = getFeatureFlagValue(
     backendInfo,
     FeatureFlag.ARE_GLOBAL_ERRORS_FILTERS_ENABLED
+  );
+
+  const isGlobalErrorsLastDaysFilterEnabled = getFeatureFlagValue(
+    backendInfo,
+    FeatureFlag.IS_GLOBAL_ERROR_LAST_DAYS_FILTER_ENABLED
   );
 
   const areGlobalErrorsCriticalityAndUnhandledFiltersEnabled =
@@ -131,6 +139,7 @@ export const GlobalErrorsList = () => {
       searchCriteria: search,
       sortBy: sorting,
       page,
+      lastDays,
       pageSize: PAGE_SIZE,
       dismissed: mode === ViewMode.OnlyDismissed,
       ...(areGlobalErrorsFiltersEnabled
@@ -153,6 +162,7 @@ export const GlobalErrorsList = () => {
       sorting,
       page,
       mode,
+      lastDays,
       areGlobalErrorsFiltersEnabled,
       selectedFilters.services,
       selectedFilters.endpoints,
@@ -265,6 +275,10 @@ export const GlobalErrorsList = () => {
     setGlobalErrorsSearch(search);
   };
 
+  const handleDayFilterChange = (days?: number) => {
+    setGlobalErrorsLastDays(days);
+  };
+
   const handleSortingMenuButtonClick = () => {
     sendUserActionTrackingEvent(
       trackingEvents.GLOBAL_ERRORS_VIEW_SORTING_CHANGE
@@ -366,6 +380,9 @@ export const GlobalErrorsList = () => {
           <s.ToolbarContainer>
             {areGlobalErrorsFiltersEnabled && <GlobalErrorsFilters />}
             <SearchInput value={search} onChange={handleSearchInputChange} />
+            {isGlobalErrorsLastDaysFilterEnabled && (
+              <DaysFilter onChanged={handleDayFilterChange} />
+            )}
             <NewPopover
               isOpen={isSortingMenuOpen}
               onOpenChange={setIsSortingMenuOpen}
@@ -378,9 +395,9 @@ export const GlobalErrorsList = () => {
             >
               <NewButton
                 icon={() => (
-                  <s.SortButtonIconContainer>
+                  <s.ButtonIconContainer>
                     <OppositeArrowsIcon size={12} color={"currentColor"} />
-                  </s.SortButtonIconContainer>
+                  </s.ButtonIconContainer>
                 )}
                 label={"Sort"}
                 buttonType={"secondary"}
