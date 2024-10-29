@@ -1,5 +1,4 @@
-import { useAutoAnimate } from "@formkit/auto-animate/react";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { dispatcher } from "../../../dispatcher";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import {
@@ -50,20 +49,8 @@ export const GlobalErrorsList = () => {
   const { goTo } = useHistory();
   const [isSortingMenuOpen, setIsSortingMenuOpen] = useState(false);
   const listContainerRef = useRef<HTMLDivElement | null>(null);
-  const [parent, toggleAnimations] = useAutoAnimate({
-    duration: PIN_UNPIN_ANIMATION_DURATION
-  });
   const [latestPinChangedId, setLatestPinChangedId] = useState<string>();
-
-  // useAutoAnimate requires to memoize callback
-  const getListContainerRef = useCallback(
-    (el: HTMLDivElement | null) => {
-      listContainerRef.current = el;
-      parent(el);
-    },
-    [parent, listContainerRef]
-  );
-
+  const [areAnimationsEnabled, setAreAnimationsEnabled] = useState(false);
   const { environment, backendInfo } = useConfigSelector();
   const isDismissEnabled = getFeatureFlagValue(
     backendInfo,
@@ -191,9 +178,8 @@ export const GlobalErrorsList = () => {
     };
   }, [getData]);
 
+  // Cleanup errors store slice on unmount
   useMount(() => {
-    toggleAnimations(false);
-
     return () => {
       resetGlobalErrors();
     };
@@ -219,14 +205,14 @@ export const GlobalErrorsList = () => {
 
       if (isLatestChangedIdInList) {
         setTimeout(() => {
-          toggleAnimations(false);
+          setAreAnimationsEnabled(false);
         }, PIN_UNPIN_ANIMATION_DURATION);
       } else {
-        toggleAnimations(false);
+        setAreAnimationsEnabled(false);
       }
       setLatestPinChangedId(undefined);
     }
-  }, [previousList, list, latestPinChangedId, toggleAnimations]);
+  }, [previousList, list, latestPinChangedId]);
 
   // Reset page on filters change
   useEffect(() => {
@@ -305,7 +291,7 @@ export const GlobalErrorsList = () => {
   };
 
   const handlePinStatusToggle = () => {
-    toggleAnimations(true);
+    setAreAnimationsEnabled(true);
   };
 
   const handlePinStatusChange = (errorId: string) => {
@@ -389,20 +375,22 @@ export const GlobalErrorsList = () => {
             </NewPopover>
           </s.ToolbarContainer>
           {list.length > 0 ? (
-            <>
-              <s.ListContainer ref={getListContainerRef}>
-                {list.map((x) => (
-                  <NewErrorCard
-                    key={x.id}
-                    data={x}
-                    onSourceLinkClick={handleErrorSourceLinkClick}
-                    onPinStatusChange={handlePinStatusChange}
-                    onPinStatusToggle={handlePinStatusToggle}
-                    onDismissStatusChange={handleDismissalStatusChange}
-                  />
-                ))}
-              </s.ListContainer>
-            </>
+            <s.ListContainer
+              ref={listContainerRef}
+              isAnimationEnabled={areAnimationsEnabled}
+              animationOptions={{ duration: PIN_UNPIN_ANIMATION_DURATION }}
+            >
+              {list.map((x) => (
+                <NewErrorCard
+                  key={x.id}
+                  data={x}
+                  onSourceLinkClick={handleErrorSourceLinkClick}
+                  onPinStatusChange={handlePinStatusChange}
+                  onPinStatusToggle={handlePinStatusToggle}
+                  onDismissStatusChange={handleDismissalStatusChange}
+                />
+              ))}
+            </s.ListContainer>
           ) : areAnyFiltersApplied ? (
             <NewEmptyState
               icon={CardsColoredIcon}
