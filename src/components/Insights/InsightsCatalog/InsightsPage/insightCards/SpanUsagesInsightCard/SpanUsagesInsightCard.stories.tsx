@@ -33,3 +33,18 @@ export const WithoutUsage: Story = {
     }
   }
 };
+
+export const WithSmallUsage: Story = {
+  args: {
+    insight: {
+      ...mockedSpanUsagesInsight,
+      sampleTrace: "sampleTraceId",
+      flows: [
+        mockedSpanUsagesInsight.flows[0],
+        mockedSpanUsagesInsight.flows[1],
+        { ...mockedSpanUsagesInsight.flows[2], percentage: 0.001 }
+      ],
+      isRecalculateEnabled: false
+    }
+  }
+};
