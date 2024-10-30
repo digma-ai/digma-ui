@@ -1,5 +1,6 @@
 import { ChangeEvent, useCallback, useEffect, useMemo, useState } from "react";
 import { usePrevious } from "../../../../hooks/usePrevious";
+import { DAYS_FILTER_DEFAULT_VALUE } from "../../../../store/errors/errorsSlice";
 import { isUndefined } from "../../../../typeGuards/isUndefined";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { formatUnit } from "../../../../utils/formatUnit";
@@ -15,17 +16,17 @@ import { DaysFilterProps } from "./types";
 
 const MAX_VALUE = 14;
 const MIN_VALUE = 1;
-const DEFAULT_VALUE = 7;
+
 const DEFAULT_LIST_OPTIONS = [7, 14];
 
 const getOptionLabel = (days: number) => `${days} ${formatUnit(days, "Day")}`;
 
 export const DaysFilter = ({ onChanged }: DaysFilterProps) => {
   const [isDateMenuOpen, setIsDateMenuOpen] = useState(false);
-  const [selectedDays, setSelectedDays] = useState<number>();
-  const [currentValue, setCurrentValue] = useState<number | undefined>(
-    DEFAULT_VALUE
+  const [selectedDays, setSelectedDays] = useState<number>(
+    DAYS_FILTER_DEFAULT_VALUE
   );
+  const [currentValue, setCurrentValue] = useState<number | undefined>();
   const previousSelectedDays = usePrevious(selectedDays);
   const handleSelectionChange = useCallback((days: number) => {
     setSelectedDays(days);
@@ -46,7 +47,7 @@ export const DaysFilter = ({ onChanged }: DaysFilterProps) => {
 
   useEffect(() => {
     if (previousSelectedDays !== selectedDays) {
-      onChanged(selectedDays ?? DEFAULT_VALUE);
+      onChanged(selectedDays ?? DAYS_FILTER_DEFAULT_VALUE);
     }
   }, [selectedDays, previousSelectedDays, onChanged]);
 
@@ -101,7 +102,7 @@ export const DaysFilter = ({ onChanged }: DaysFilterProps) => {
     );
 
     if (!currentValue) {
-      setCurrentValue(DEFAULT_VALUE);
+      setCurrentValue(DAYS_FILTER_DEFAULT_VALUE);
     } else {
       setSelectedDays(currentValue);
     }
