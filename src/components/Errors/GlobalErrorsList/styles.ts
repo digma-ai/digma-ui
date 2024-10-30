@@ -4,6 +4,7 @@ import {
   subscriptMediumTypography,
   subscriptRegularTypography
 } from "../../common/App/typographies";
+import { AutoAnimatedContainer } from "../../common/AutoAnimatedContainer";
 import { EyeIcon } from "../../common/icons/16px/EyeIcon";
 import { DismissBtnIconProps } from "./types";
 
@@ -64,7 +65,7 @@ export const ToolbarContainer = styled.div`
   gap: 4px;
 `;
 
-export const ListContainer = styled.div`
+export const ListContainer = styled(AutoAnimatedContainer)`
   display: flex;
   flex-direction: column;
   gap: 8px;

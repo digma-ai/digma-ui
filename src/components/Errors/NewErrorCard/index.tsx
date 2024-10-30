@@ -38,6 +38,7 @@ export const NewErrorCard = ({
   const [isHistogramVisible, setIsHistogramVisible] = useState(false);
   const chartContainerRef = useRef<HTMLDivElement>(null);
   const { backendInfo } = useConfigSelector();
+  const [isPinned, setIsPinned] = useState(Boolean(data.pinnedAt));
 
   const isOccurrenceChartEnabled = getFeatureFlagValue(
     backendInfo,
@@ -55,15 +56,6 @@ export const NewErrorCard = ({
   );
 
   const {
-    pin,
-    unpin,
-    data: pinUnpinResponse,
-    isInProgress: isPinUnpinInProgress
-  } = usePinning(data.id);
-
-  const previousPinUnpinResponse = usePrevious(pinUnpinResponse);
-
-  const {
     id,
     affectedEndpoints,
     score,
@@ -73,8 +65,19 @@ export const NewErrorCard = ({
     status,
     firstDetected,
     lastDetected,
-    isDismissed
+    isDismissed,
+    pinnedAt
   } = data;
+
+  const {
+    pin,
+    unpin,
+    data: pinUnpinResponse,
+    isInProgress: isPinUnpinInProgress
+  } = usePinning(id);
+
+  const previousPinUnpinResponse = usePrevious(pinUnpinResponse);
+
   const statusTagType = getTagType(score.score);
   const {
     isDismissalChangeInProgress,
@@ -124,6 +127,10 @@ export const NewErrorCard = ({
       onPinStatusChange(pinUnpinResponse.payload.id);
     }
   }, [onPinStatusChange, pinUnpinResponse, previousPinUnpinResponse]);
+
+  useEffect(() => {
+    setIsPinned(Boolean(pinnedAt));
+  }, [pinnedAt]);
 
   const handleLinkClick = () => {
     sendUserActionTrackingEvent(trackingEvents.ERROR_CARD_SOURCE_LINK_CLICKED);
@@ -180,6 +187,7 @@ export const NewErrorCard = ({
       unpin();
     }
 
+    setIsPinned(value);
     onPinStatusToggle();
   };
 
@@ -198,7 +206,6 @@ export const NewErrorCard = ({
   };
 
   const isCritical = score.score > HIGH_SEVERITY_SCORE_THRESHOLD;
-  const isPinned = Boolean(data.pinnedAt);
 
   const selectorValue = selectedEndpoint
     ? getEndpointKey(selectedEndpoint)
