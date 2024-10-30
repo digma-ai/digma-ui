@@ -108,7 +108,7 @@ export const SpanUsagesInsightCard = ({
         const percentage = info.getValue();
 
         const percentageString =
-          percentage < 0.01 ? "> 0.01%" : `${roundTo(percentage, 2)}%`;
+          percentage < 0.01 ? "<0.01%" : `${roundTo(percentage, 2)}%`;
         return (
           <Tag
             type={"highlight"}
