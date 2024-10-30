@@ -15,7 +15,17 @@ export const trackingEvents = addPrefix(
     WORKSPACE_ONLY_TOGGLE_SWITCHED: "workspace only toggle switched",
     GLOBAL_ERRORS_VIEW_SEARCH_CHANGED: "global errors view search changed",
     GLOBAL_ERRORS_VIEW_SORTING_CHANGE: "global errors view sorting change",
+    GLOBAL_ERRORS_VIEW_DATES_FILTERS_CHANGE:
+      "global errors view date filters change",
     GLOBAL_ERRORS_VIEW_PAGE_CHANGE: "global errors view page change",
+    GLOBAL_ERRORS_DAYS_FILTER_INPUT_VALUE_CHANGE:
+      "global errors days filter input value change",
+    GLOBAL_ERRORS_DAYS_FILTER_INCREMENT_CLICKED:
+      "global errors days filter increment change",
+    GLOBAL_ERRORS_DAYS_FILTER_DECREMENT_CLICKED:
+      "global errors days filter decrement change",
+    GLOBAL_ERRORS_DAYS_FILTER_APPLY_BTN_CLICKED:
+      "global errors days filter apply button clicked",
     GLOBAL_ERRORS_VIEW_RESET_FILTERS_BUTTON_CLICKED:
       "global errors view reset filters button clicked",
     GLOBAL_ERRORS_VIEW_FILTERS_BUTTON_CLICKED:

@@ -7,6 +7,7 @@ export interface MenuListProps {
   highlightSelected?: boolean;
   header?: ReactNode;
   isDisabled?: boolean;
+  className?: string;
 }
 
 export interface ListItemProps {

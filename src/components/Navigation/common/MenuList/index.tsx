@@ -12,7 +12,8 @@ export const MenuList = ({
   items,
   showGroupDividers,
   highlightSelected,
-  header
+  header,
+  className
 }: MenuListProps) => {
   const groups = groupBy(
     items,
@@ -21,7 +22,7 @@ export const MenuList = ({
 
   const groupElements = Object.entries(groups).map(([groupName, items]) => {
     return (
-      <s.ListGroup key={groupName}>
+      <s.ListGroup key={groupName} className={className}>
         {showGroupNames && groupName !== UNGROUPED_GROUP_LABEL && (
           <s.ListGroupName>{groupName}</s.ListGroupName>
         )}

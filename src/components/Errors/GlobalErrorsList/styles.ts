@@ -92,7 +92,7 @@ export const EmptyStateContent = styled.div`
   color: ${({ theme }) => theme.colors.v3.text.tertiary};
 `;
 
-export const SortButtonIconContainer = styled.div`
+export const ButtonIconContainer = styled.div`
   color: ${({ theme }) => theme.colors.v3.icon.tertiary};
 `;
 
