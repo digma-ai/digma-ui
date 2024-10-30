@@ -23,10 +23,10 @@ const getOptionLabel = (days: number) => `${days} ${formatUnit(days, "Day")}`;
 
 export const DaysFilter = ({ onChanged }: DaysFilterProps) => {
   const [isDateMenuOpen, setIsDateMenuOpen] = useState(false);
-  const [selectedDays, setSelectedDays] = useState<number>(
+  const [selectedDays, setSelectedDays] = useState<number>();
+  const [currentValue, setCurrentValue] = useState<number | undefined>(
     DAYS_FILTER_DEFAULT_VALUE
   );
-  const [currentValue, setCurrentValue] = useState<number | undefined>();
   const previousSelectedDays = usePrevious(selectedDays);
   const handleSelectionChange = useCallback((days: number) => {
     setSelectedDays(days);
