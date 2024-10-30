@@ -31,3 +31,7 @@ export interface DaysButtonProps extends ButtonProps {
 export interface DaysFilterProps {
   onChanged: (days?: number) => void;
 }
+
+export interface CounterInputProps {
+  $isActive: boolean;
+}

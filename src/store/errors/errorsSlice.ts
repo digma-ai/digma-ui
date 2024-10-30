@@ -6,6 +6,7 @@ import {
 } from "../../components/Errors/GlobalErrorsList/types";
 
 export const PAGE_SIZE = 10;
+export const DAYS_FILTER_DEFAULT_VALUE = 7;
 
 export enum GLOBAL_ERROR_SORTING_CRITERION {
   CRITICALITY = "Criticality",
@@ -72,7 +73,8 @@ export const globalErrorsInitialState = {
     errorTypes: null
   },
   globalErrorsViewMode: ViewMode.All,
-  globalErrorsSelectedFilters: selectedFiltersInitialState
+  globalErrorsSelectedFilters: selectedFiltersInitialState,
+  globalErrorsLastDays: DAYS_FILTER_DEFAULT_VALUE
 };
 
 export const initialState: ErrorsState = {
