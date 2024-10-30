@@ -64,7 +64,7 @@ export const DaysFilter = ({ onChanged }: DaysFilterProps) => {
     const newValue = e.target.value;
     const intValue = parseInt(newValue);
     const days =
-      !newValue || isNaN(intValue)
+      !newValue || Number.isNaN(intValue)
         ? undefined
         : intValue > MAX_VALUE
         ? selectedDays
