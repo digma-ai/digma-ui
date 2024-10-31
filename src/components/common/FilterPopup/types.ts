@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 
 export interface FilterPopupProps {
+  onApply: () => void;
   onClose: () => void;
   title: string;
   onClearAll: () => void;

@@ -3,6 +3,7 @@ import { usePrevious } from "../../../hooks/usePrevious";
 import { FilterButton } from "../FilterButton";
 import { CrossIcon } from "../icons/16px/CrossIcon";
 import { NewPopover } from "../NewPopover";
+import { NewButton } from "../v3/NewButton";
 import * as s from "./styles";
 import { FilterPopupProps } from "./types";
 
@@ -12,7 +13,8 @@ export const FilterPopup = ({
   title,
   selectedFiltersCount,
   filters,
-  onStateChange
+  onStateChange,
+  onApply
 }: FilterPopupProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const previousIsOpen = usePrevious(isOpen);
@@ -23,14 +25,24 @@ export const FilterPopup = ({
     }
   }, [isOpen, previousIsOpen, onStateChange]);
 
+  const handleApplyButtonClick = () => {
+    setIsOpen(false);
+    onApply();
+  };
+
   const handleCloseButtonClick = () => {
     setIsOpen(false);
     onClose();
   };
 
+  const handleFilterButtonClick = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
     <NewPopover
       width={"100%"}
+      closeOnOutsidePress={false}
       content={
         <s.Container>
           <s.Header>
@@ -39,7 +51,6 @@ export const FilterPopup = ({
               <CrossIcon color={"currentColor"} size={16} />
             </s.CloseButton>
           </s.Header>
-
           {filters.map((x) => (
             <s.Filter key={x.title}>
               <s.FilterCategoryName>{x.title}</s.FilterCategoryName>
@@ -47,6 +58,10 @@ export const FilterPopup = ({
             </s.Filter>
           ))}
           <s.Footer>
+            <NewButton
+              label={"Apply filters"}
+              onClick={handleApplyButtonClick}
+            />
             <s.ClearAllButton
               buttonType={"primaryBorderless"}
               label={"Clear filters"}
@@ -66,6 +81,7 @@ export const FilterPopup = ({
           showCount={true}
           selectedCount={selectedFiltersCount}
           isActive={isOpen}
+          onClick={handleFilterButtonClick}
         />
       </div>
     </NewPopover>

@@ -34,25 +34,30 @@ const getSelectPlaceholder = (options: SelectItem[], placeholder: string) =>
   options.filter((x) => x.selected).length > 0 ? placeholder : "All";
 
 export const GlobalErrorsFilters = () => {
-  const { environment, backendInfo } = useConfigSelector();
-
+  const {
+    environment,
+    backendInfo,
+    selectedServices: globallySelectedServices
+  } = useConfigSelector();
   const areGlobalErrorsCriticalityAndUnhandledFiltersEnabled =
     getFeatureFlagValue(
       backendInfo,
       FeatureFlag.ARE_GLOBAL_ERRORS_CRITICALITY_AND_UNHANDLED_FILTERS_ENABLED
     );
-
   const { globalErrorsFilters, globalErrorsSelectedFilters } =
     useErrorsSelector();
-  const { setGlobalErrorsFilters, setGlobalErrorsSelectedFilters } =
-    useStore.getState();
+  const {
+    setGlobalErrorsFilters,
+    setGlobalErrorsSelectedFilters,
+    setSelectedServices: setGloballySelectedServices
+  } = useStore.getState();
   const { services, endpoints, errorTypes } = globalErrorsFilters;
   const environmentId = environment?.id;
   const [lastChangedFilter, setLastChangedFilter] = useState<
     ErrorFilter | undefined
   >(undefined);
   const [selectedServices, setSelectedServices] = useState<string[]>(
-    globalErrorsSelectedFilters.services
+    globallySelectedServices ?? []
   );
   const [selectedEndpoints, setSelectedEndpoints] = useState<string[]>(
     globalErrorsSelectedFilters.endpoints
@@ -159,6 +164,8 @@ export const GlobalErrorsFilters = () => {
     globalErrorsSelectedFilters.endpoints,
     globalErrorsSelectedFilters.errorTypes
   ]);
+
+  // TODO: clear filters on environment change. but keep the selected services
 
   const handleServicesChange = (value: string | string[]) => {
     sendUserActionTrackingEvent(
@@ -408,12 +415,22 @@ export const GlobalErrorsFilters = () => {
       criticalities: selectedCriticalities,
       handlingTypes: selectedHandlingTypes
     });
+    setGloballySelectedServices(selectedServices);
   };
 
   const handleClose = () => {
     sendUserActionTrackingEvent(
       trackingEvents.GLOBAL_ERRORS_VIEW_FILTERS_CLOSE_BUTTON_CLICKED
     );
+
+    // TODO: discard changes
+  };
+
+  const handleApply = () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.GLOBAL_ERRORS_VIEW_FILTERS_APPLY_FILTERS_BUTTON_CLICKED
+    );
+
     applyFilters();
   };
 
@@ -436,19 +453,13 @@ export const GlobalErrorsFilters = () => {
     selectedHandlingTypes.length
   ].filter((x) => x > 0).length;
 
-  const handlePopupOpenStateChange = (isOpen: boolean) => {
-    if (!isOpen) {
-      applyFilters();
-    }
-  };
-
   return (
     <FilterPopup
+      onApply={handleApply}
       onClose={handleClose}
       onClearAll={handleClearAll}
       title={"Filters"}
       selectedFiltersCount={selectedFiltersCount}
-      onStateChange={handlePopupOpenStateChange}
       filters={filters}
     />
   );

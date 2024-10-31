@@ -6,9 +6,9 @@ import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { useInsightsSelector } from "../../../store/insights/useInsightsSelector";
 import { useStore } from "../../../store/useStore";
 import { GetIssuesFiltersPayload } from "../../../types";
+import { IssuesFiltersData } from "../InsightsCatalog/FilterPanel/IssuesFilter/types";
 import { ViewMode } from "../InsightsCatalog/types";
 import { actions as issuesActions } from "./actions";
-import { IssuesFiltersData } from "./IssuesFilter/types";
 import { GetIssuesFiltersQuery } from "./types";
 
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds

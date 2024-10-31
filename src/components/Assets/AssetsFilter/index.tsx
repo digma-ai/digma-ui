@@ -195,6 +195,12 @@ export const AssetsFilter = () => {
       isEnvironment(previousEnvironment) &&
       previousEnvironment.id !== environment?.id
     ) {
+      setSelectedServices([]);
+      setSelectedEndpoints([]);
+      setSelectedConsumers([]);
+      setSelectedInternals([]);
+      setSelectedInsights([]);
+
       const defaultFilters = {
         services: [],
         operations: [],
@@ -227,6 +233,10 @@ export const AssetsFilter = () => {
       previousScope &&
       previousScope.span?.spanCodeObjectId !== scopeSpanCodeObjectId
     ) {
+      setSelectedEndpoints([]);
+      setSelectedConsumers([]);
+      setSelectedInternals([]);
+      setSelectedInsights([]);
       const newFilters = {
         services: selectedServices,
         operations: [],
@@ -337,39 +347,6 @@ export const AssetsFilter = () => {
     isServicesFilterEnabled
   ]);
 
-  // Apply filters when the popover is closed
-  useEffect(() => {
-    if (previousIsOpen && !isOpen) {
-      const filtersQuery = {
-        services: isServicesFilterEnabled ? selectedServices : [],
-        operations: [
-          ...selectedEndpoints,
-          ...selectedConsumers,
-          ...selectedInternals
-        ],
-        insights: selectedInsights
-      };
-      setFilters(filtersQuery);
-      setPersistedFilters(filtersQuery);
-      if (isServicesFilterEnabled) {
-        setGloballySelectedServices(filtersQuery.services);
-      }
-      sendTrackingEvent(trackingEvents.FILTER_APPLIED);
-    }
-  }, [
-    previousIsOpen,
-    isOpen,
-    selectedConsumers,
-    selectedEndpoints,
-    selectedInsights,
-    selectedInternals,
-    selectedServices,
-    setPersistedFilters,
-    setGloballySelectedServices,
-    isServicesFilterEnabled,
-    setFilters
-  ]);
-
   const handleClearFiltersButtonClick = () => {
     getData({
       ...query,
@@ -465,7 +442,35 @@ export const AssetsFilter = () => {
     sendUserActionTrackingEvent(
       trackingEvents.FILTERS_POPUP_CLOSE_BUTTON_CLICKED
     );
+
+    // TODO: discard changes
   };
+
+  const handleApplyButtonClick = () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.FILTERS_POPUP_APPLY_FILTERS_BUTTON_CLICKED
+    );
+
+    const filtersQuery = {
+      services: isServicesFilterEnabled ? selectedServices : [],
+      operations: [
+        ...selectedEndpoints,
+        ...selectedConsumers,
+        ...selectedInternals
+      ],
+      insights: selectedInsights
+    };
+
+    setFilters(filtersQuery);
+    setPersistedFilters(filtersQuery);
+
+    if (isServicesFilterEnabled) {
+      setGloballySelectedServices(filtersQuery.services);
+    }
+
+    sendTrackingEvent(trackingEvents.FILTER_APPLIED);
+  };
+
   const handleOnStateChange = (state: boolean) => {
     setIsOpen(state);
   };
@@ -530,6 +535,7 @@ export const AssetsFilter = () => {
 
   return (
     <FilterPopup
+      onApply={handleApplyButtonClick}
       onClose={handleCloseButtonClick}
       onClearAll={handleClearFiltersButtonClick}
       title={"Filters"}
