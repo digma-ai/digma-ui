@@ -110,6 +110,15 @@ export interface ScopeWithCustomProtocolLinkContext
   };
 }
 
+export interface ScopeWithErrorDetailsId extends Omit<Scope, "context"> {
+  context: {
+    event: string;
+    payload: {
+      id?: string;
+    };
+  };
+}
+
 export interface InsightsQuery {
   displayName: string | null;
   sortBy: string;

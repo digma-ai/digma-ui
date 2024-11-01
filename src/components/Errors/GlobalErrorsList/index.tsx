@@ -17,7 +17,8 @@ import { useErrorsSelector } from "../../../store/errors/useErrorsSelector";
 import { useStore } from "../../../store/useStore";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { isUndefined } from "../../../typeGuards/isUndefined";
-import { FeatureFlag } from "../../../types";
+import { FeatureFlag, SCOPE_CHANGE_EVENTS } from "../../../types";
+import { changeScope } from "../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { formatUnit } from "../../../utils/formatUnit";
 import { OppositeArrowsIcon } from "../../common/icons/12px/OppositeArrowsIcon";
@@ -250,8 +251,25 @@ export const GlobalErrorsList = () => {
     }
   }, [environmentId, search, sorting, page]);
 
-  const handleErrorSourceLinkClick = (errorId: string) => {
-    goTo(errorId);
+  const handleErrorSourceLinkClick = (
+    errorId: string,
+    spanCodeObjectId?: string | null
+  ) => {
+    if (spanCodeObjectId) {
+      changeScope({
+        span: {
+          spanCodeObjectId: spanCodeObjectId
+        },
+        context: {
+          event: SCOPE_CHANGE_EVENTS.ERROR_CARD_LINK_CLICKED,
+          payload: {
+            id: errorId
+          }
+        }
+      });
+    } else {
+      goTo(errorId);
+    }
   };
 
   const handleSearchInputChange = (search: string) => {

@@ -134,7 +134,7 @@ export const NewErrorCard = ({
 
   const handleLinkClick = () => {
     sendUserActionTrackingEvent(trackingEvents.ERROR_CARD_SOURCE_LINK_CLICKED);
-    onSourceLinkClick(id);
+    onSourceLinkClick(id, data.fromSpanCodeObjectId);
   };
 
   const handleAffectedEndpointsSelectorChange = (
