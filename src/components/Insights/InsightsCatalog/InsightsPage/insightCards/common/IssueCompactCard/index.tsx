@@ -19,11 +19,25 @@ import { MenuList } from "../../../../../../Navigation/common/MenuList";
 import { MenuItem } from "../../../../../../Navigation/common/MenuList/types";
 import { trackingEvents } from "../../../../../tracking";
 import { isEndpointInsight, isSpanInsight } from "../../../../../typeGuards";
+import { GenericCodeObjectInsight, InsightStatus } from "../../../../../types";
 import { InsightIcon } from "../InsightCard/InsightHeader/InsightIcon";
-import { KeyValue } from "../InsightCard/InsightHeader/InsightStatusTooltipContent/KeyValue";
+import { InsightStatusTooltipContent } from "../InsightCard/InsightHeader/InsightStatusTooltipContent";
 import { getInsightStatusInfo } from "../InsightStatusBadge/getInsightStatusInfo";
 import * as s from "./styles";
 import { IssueCompactCardProps } from "./types";
+
+const renderInsightStatusTooltipContent = (
+  insight: GenericCodeObjectInsight
+) => {
+  switch (insight.status) {
+    case InsightStatus.Active:
+    case InsightStatus.PossiblyFixed:
+    case InsightStatus.Regression:
+      return <InsightStatusTooltipContent insight={insight} />;
+  }
+
+  return null;
+};
 
 export const IssueCompactCard = ({
   insight,
@@ -58,6 +72,7 @@ export const IssueCompactCard = ({
       onMarkAsRead();
     }
   };
+  const statusTooltipContent = renderInsightStatusTooltipContent(insight);
 
   const handleSpanLinkClick = () => {
     sendUserActionTrackingEvent(
@@ -176,7 +191,8 @@ export const IssueCompactCard = ({
         {metric && <Tag content={metric} type={"highlight"} />}
         {insight.status && statusInfo && (
           <Tooltip
-            title={<KeyValue label={"Status"}>{statusInfo.label}</KeyValue>}
+            title={statusTooltipContent}
+            isDisabled={!statusTooltipContent}
             placement={"top"}
             fullWidth={true}
           >
