@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useConfigSelector } from "../../../../../../store/config/useConfigSelector";
 import { isNull } from "../../../../../../typeGuards/isNull";
 import { getDurationString } from "../../../../../../utils/getDurationString";
@@ -19,6 +19,12 @@ import { ContentContainer, Description, Details } from "../styles";
 import * as s from "./styles";
 import { SpanEndpointBottleneckInsightCardProps } from "./types";
 
+const getSelectorOption = (endpoint: BottleneckEndpointInfo): Option => ({
+  route: trimEndpointScheme(endpoint.endpointInfo.route),
+  serviceName: endpoint.endpointInfo.serviceName,
+  spanCodeObjectId: endpoint.endpointInfo.spanCodeObjectId
+});
+
 export const SpanEndpointBottleneckInsightCard = ({
   insight,
   onJiraTicketCreate,
@@ -36,6 +42,11 @@ export const SpanEndpointBottleneckInsightCard = ({
     () => insight.slowEndpoints ?? [],
     [insight.slowEndpoints]
   );
+  const selectorOptions: Option[] = useMemo(
+    () => slowEndpoints.map(getSelectorOption),
+    [slowEndpoints]
+  );
+
   const endpointWithMaxDuration =
     slowEndpoints.length > 0
       ? slowEndpoints.reduce(
@@ -51,9 +62,17 @@ export const SpanEndpointBottleneckInsightCard = ({
     ? getDurationString(endpointWithMaxDuration.avgDurationWhenBeingBottleneck)
     : undefined;
 
-  const [selectedEndpoint, setSelectedEndpoint] = useState<
-    BottleneckEndpointInfo | undefined
-  >(slowEndpoints[0]);
+  const [selectedEndpointKey, setSelectedEndpointKey] = useState<
+    string | undefined
+  >(selectorOptions[0] ? getEndpointKey(selectorOptions[0]) : undefined);
+
+  useEffect(() => {
+    const newOption = selectedEndpointKey
+      ? selectorOptions.find((x) => getEndpointKey(x) === selectedEndpointKey)
+      : undefined;
+
+    setSelectedEndpointKey(newOption ? getEndpointKey(newOption) : undefined);
+  }, [selectorOptions, selectedEndpointKey]);
 
   const handleSpanLinkClick = (spanCodeObjectId?: string) => {
     if (spanCodeObjectId) {
@@ -81,42 +100,22 @@ export const SpanEndpointBottleneckInsightCard = ({
   const handleAffectedEndpointsSelectorChange = (
     selectedOption: Option | null
   ) => {
-    const newValue = selectedOption
-      ? slowEndpoints.find(
-          (x) =>
-            x.endpointInfo.spanCodeObjectId ===
-              selectedOption.spanCodeObjectId &&
-            x.endpointInfo.serviceName === selectedOption.serviceName
-        )
-      : undefined;
+    const newValue =
+      selectedOption && selectedEndpointKey
+        ? selectorOptions.find((x) => getEndpointKey(x) === selectedEndpointKey)
+        : undefined;
 
-    setSelectedEndpoint(newValue);
+    setSelectedEndpointKey(newValue ? getEndpointKey(newValue) : undefined);
   };
 
-  const selectorOptions: Option[] = useMemo(
+  const selectedEndpoint = useMemo(
     () =>
-      slowEndpoints.map((x) => ({
-        route: trimEndpointScheme(x.endpointInfo.route),
-        serviceName: x.endpointInfo.serviceName,
-        spanCodeObjectId: x.endpointInfo.spanCodeObjectId
-      })),
-    [slowEndpoints]
-  );
-
-  const selectedOption = useMemo(
-    () =>
-      selectedEndpoint &&
-      selectorOptions.find(
-        (x) =>
-          x.serviceName === selectedEndpoint.endpointInfo.serviceName &&
-          x.spanCodeObjectId === selectedEndpoint.endpointInfo.spanCodeObjectId
-      ),
-    [selectedEndpoint, selectorOptions]
-  );
-
-  const selectorValue = useMemo(
-    () => (selectedOption ? getEndpointKey(selectedOption) : undefined),
-    [selectedOption]
+      selectedEndpointKey
+        ? slowEndpoints.find(
+            (x) => getEndpointKey(x.endpointInfo) === selectedEndpointKey
+          )
+        : undefined,
+    [selectedEndpointKey, slowEndpoints]
   );
 
   return (
@@ -137,7 +136,7 @@ export const SpanEndpointBottleneckInsightCard = ({
               <AffectedEndpointsSelector
                 onChange={handleAffectedEndpointsSelectorChange}
                 onAssetLinkClick={handleSpanLinkClick}
-                value={selectorValue}
+                value={selectedEndpointKey}
                 options={selectorOptions}
                 isDisabled={selectorOptions.length === 0}
               />

@@ -95,20 +95,17 @@ export const NewErrorCard = ({
       })),
     [affectedEndpoints]
   );
-  const [selectedEndpoint, setSelectedEndpoint] = useState<Option | undefined>(
-    selectorOptions[0]
-  );
+  const [selectedEndpointKey, setSelectedEndpointKey] = useState<
+    string | undefined
+  >(selectorOptions[0] ? getEndpointKey(selectorOptions[0]) : undefined);
 
   useEffect(() => {
-    if (
-      selectedEndpoint &&
-      !selectorOptions.find(
-        (x) => getEndpointKey(x) === getEndpointKey(selectedEndpoint)
-      )
-    ) {
-      setSelectedEndpoint(selectorOptions[0]);
-    }
-  }, [selectorOptions, selectedEndpoint]);
+    const option = selectedEndpointKey
+      ? selectorOptions.find((x) => getEndpointKey(x) === selectedEndpointKey)
+      : undefined;
+
+    setSelectedEndpointKey(option ? getEndpointKey(option) : undefined);
+  }, [selectorOptions, selectedEndpointKey]);
 
   useEffect(() => {
     if (
@@ -143,15 +140,13 @@ export const NewErrorCard = ({
     sendUserActionTrackingEvent(
       trackingEvents.ERROR_CARD_SELECTED_AFFECTED_ENDPOINT_CHANGED
     );
-    const newValue = selectedOption
+    const newOption = selectedOption
       ? selectorOptions.find(
-          (x) =>
-            x.serviceName === selectedOption.serviceName &&
-            x.spanCodeObjectId === selectedOption.spanCodeObjectId
+          (x) => getEndpointKey(x) === getEndpointKey(selectedOption)
         )
       : undefined;
 
-    setSelectedEndpoint(newValue);
+    setSelectedEndpointKey(newOption ? getEndpointKey(newOption) : undefined);
   };
 
   const handleAffectedEndpointLinkClick = (spanCodeObjectId: string) => {
@@ -207,9 +202,13 @@ export const NewErrorCard = ({
 
   const isCritical = score.score > HIGH_SEVERITY_SCORE_THRESHOLD;
 
-  const selectorValue = selectedEndpoint
-    ? getEndpointKey(selectedEndpoint)
-    : undefined;
+  const selectedOption = useMemo(
+    () =>
+      selectedEndpointKey
+        ? selectorOptions.find((x) => getEndpointKey(x) === selectedEndpointKey)
+        : undefined,
+    [selectedEndpointKey, selectorOptions]
+  );
 
   const toolbarActions = [
     ...(isPinEnabled
@@ -224,7 +223,7 @@ export const NewErrorCard = ({
           />
         ]
       : []),
-    ...(isOccurrenceChartEnabled && selectedEndpoint
+    ...(isOccurrenceChartEnabled && selectedEndpointKey
       ? [
           <NewIconButton
             key={"toggle-occurrence-chart"}
@@ -282,12 +281,12 @@ export const NewErrorCard = ({
             <AffectedEndpointsSelector
               onChange={handleAffectedEndpointsSelectorChange}
               onAssetLinkClick={handleAffectedEndpointLinkClick}
-              value={selectorValue}
+              value={selectedEndpointKey}
               options={selectorOptions}
             />
           </s.AffectedEndpointsContainer>
         )}
-        {isOccurrenceChartEnabled && selectedEndpoint && (
+        {isOccurrenceChartEnabled && selectedOption && (
           <>
             <CSSTransition
               in={isHistogramVisible}
@@ -303,8 +302,8 @@ export const NewErrorCard = ({
                 $transitionDuration={s.TRANSITION_DURATION}
               >
                 <OccurrenceChart
-                  service={selectedEndpoint.serviceName}
-                  spanCodeObjectId={selectedEndpoint.spanCodeObjectId}
+                  service={selectedOption.serviceName}
+                  spanCodeObjectId={selectedOption.spanCodeObjectId}
                   errorId={id}
                 />
               </s.OccurrenceChartContainer>
