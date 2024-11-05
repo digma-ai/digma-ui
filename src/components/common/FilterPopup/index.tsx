@@ -10,6 +10,7 @@ export const FilterPopup = ({
   onClose,
   title,
   selectedFiltersCount,
+  appliedFiltersCount,
   filters,
   onApply,
   isOpen,
@@ -66,7 +67,7 @@ export const FilterPopup = ({
         <FilterButton
           title={"Filters"}
           showCount={true}
-          selectedCount={selectedFiltersCount}
+          selectedCount={appliedFiltersCount}
           isActive={isOpen}
           onClick={handleFilterButtonClick}
         />
