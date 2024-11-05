@@ -8,7 +8,8 @@ export const trackingEvents = addPrefix(
     FILTER_OPTION_SELECTED: "filter option selected",
     APPLY_FILTERS_BUTTON_CLICKED: "apply filters button clicked",
     CLEAR_ALL_FILTERS_BUTTON_CLICKED: "clear all filters button clicked",
-    CLOSE_FILTER_DIALOG_CLICKED: "close filter dialog clicked"
+    CLOSE_FILTER_DIALOG_CLICKED: "close filter dialog clicked",
+    FILTERS_BUTTON_CLICKED: "filters button clicked"
   },
   " "
 );

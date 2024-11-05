@@ -103,6 +103,7 @@ export const useIssuesFilters = () => {
 
   return {
     data,
-    refresh
+    refresh,
+    getData: getFilters
   };
 };

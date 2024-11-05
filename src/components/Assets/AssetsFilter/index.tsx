@@ -1,4 +1,10 @@
-import { ComponentType, useEffect, useMemo, useState } from "react";
+import {
+  ComponentType,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState
+} from "react";
 import { dispatcher } from "../../../dispatcher";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import { usePersistence } from "../../../hooks/usePersistence";
@@ -92,8 +98,8 @@ export const AssetsFilter = () => {
     setAssetsFilters: setFilters,
     setSelectedServices: setGloballySelectedServices
   } = useStore.getState();
-  const [isOpen, setIsOpen] = useState(false);
-  const previousIsOpen = usePrevious(isOpen);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const previousIsOpen = usePrevious(isPopupOpen);
   const {
     selectedServices: globallySelectedServices,
     environment,
@@ -122,8 +128,12 @@ export const AssetsFilter = () => {
   const query = useMemo(
     () => ({
       services: isServicesFilterEnabled ? selectedServices : [],
-      operations: filters.operations,
-      insights: filters.insights as InsightType[],
+      operations: [
+        ...selectedEndpoints,
+        ...selectedConsumers,
+        ...selectedInternals
+      ],
+      insights: selectedInsights,
       viewMode: areExtendedAssetsFiltersEnabled ? viewMode : undefined,
       scopeSpanCodeObjectId: areExtendedAssetsFiltersEnabled
         ? scopeSpanCodeObjectId
@@ -133,8 +143,10 @@ export const AssetsFilter = () => {
     [
       isServicesFilterEnabled,
       selectedServices,
-      filters.operations,
-      filters.insights,
+      selectedEndpoints,
+      selectedConsumers,
+      selectedInternals,
+      selectedInsights,
       viewMode,
       searchQuery,
       scopeSpanCodeObjectId,
@@ -203,11 +215,17 @@ export const AssetsFilter = () => {
 
       const defaultFilters = {
         services: [],
-        operations: [],
+        endpoints: [],
+        consumers: [],
+        internals: [],
         insights: []
       };
       setFilters(defaultFilters);
-      setPersistedFilters(defaultFilters);
+      setPersistedFilters({
+        services: [],
+        operations: [],
+        insights: []
+      });
       if (isServicesFilterEnabled) {
         setGloballySelectedServices(defaultFilters.services);
       }
@@ -237,19 +255,27 @@ export const AssetsFilter = () => {
       setSelectedConsumers([]);
       setSelectedInternals([]);
       setSelectedInsights([]);
-      const newFilters = {
+
+      setPersistedFilters({
         services: selectedServices,
         operations: [],
         insights: []
-      };
-      setPersistedFilters(newFilters);
+      });
       if (isServicesFilterEnabled) {
-        setGloballySelectedServices(newFilters.services);
+        setGloballySelectedServices(selectedServices);
       }
-      setFilters(newFilters);
+      setFilters({
+        services: selectedServices,
+        endpoints: [],
+        consumers: [],
+        internals: [],
+        insights: []
+      });
       getData({
         ...query,
-        ...newFilters
+        services: selectedServices,
+        operations: [],
+        insights: []
       });
     }
   }, [
@@ -264,14 +290,58 @@ export const AssetsFilter = () => {
     query
   ]);
 
+  const discardChanges = useCallback(() => {
+    setSelectedServices(filters.services);
+    setSelectedEndpoints(filters.endpoints);
+    setSelectedConsumers(filters.consumers);
+    setSelectedInternals(filters.internals);
+    setSelectedInsights(filters.insights as InsightType[]);
+
+    getData({
+      ...query,
+      services: filters.services,
+      operations: [
+        ...filters.endpoints,
+        ...filters.consumers,
+        ...filters.internals
+      ],
+      insights: filters.insights as InsightType[]
+    });
+  }, [
+    filters.services,
+    filters.endpoints,
+    filters.consumers,
+    filters.internals,
+    filters.insights,
+    query
+  ]);
+
+  // Close popup on environment or scope changes
+  useEffect(() => {
+    if (
+      previousEnvironment?.id !== environment?.id ||
+      previousScope?.span?.spanCodeObjectId !== scopeSpanCodeObjectId
+    ) {
+      setIsPopupOpen(false);
+
+      discardChanges();
+    }
+  }, [
+    environment,
+    scopeSpanCodeObjectId,
+    previousEnvironment,
+    previousScope,
+    discardChanges
+  ]);
+
   // Get data when the popover is opened
   useEffect(() => {
-    if (isOpen && !previousIsOpen) {
+    if (isPopupOpen && !previousIsOpen) {
       getData(query);
     }
-  }, [isOpen, previousIsOpen, query]);
+  }, [isPopupOpen, previousIsOpen, query]);
 
-  // Apply filters when data is loaded
+  // Update selected filters when data is fetched
   useEffect(() => {
     if (previousData === data || isNull(data)) {
       return;
@@ -314,40 +384,11 @@ export const AssetsFilter = () => {
       ?.entries?.filter((x) => x.selected)
       .map((x) => x.name) ?? []) as InsightType[];
     setSelectedInsights(insightsToSelect);
-
-    if (!filters) {
-      const filtersQuery = {
-        services: servicesToSelect,
-        operations: [
-          ...endpointsToSelect,
-          ...consumersToSelect,
-          ...internalsToSelect
-        ],
-        insights: insightsToSelect
-      };
-
-      setPersistedFilters(filtersQuery);
-      if (isServicesFilterEnabled) {
-        setGloballySelectedServices(filtersQuery.services);
-      }
-      setFilters(filtersQuery);
-    }
-  }, [
-    previousData,
-    data,
-    filters,
-    setFilters,
-    selectedServices,
-    selectedEndpoints,
-    selectedConsumers,
-    selectedInternals,
-    selectedInsights,
-    setPersistedFilters,
-    setGloballySelectedServices,
-    isServicesFilterEnabled
-  ]);
+  }, [previousData, data]);
 
   const handleClearFiltersButtonClick = () => {
+    sendUserActionTrackingEvent(trackingEvents.CLEAR_FILTERS_BUTTON_CLICKED);
+
     getData({
       ...query,
       services: isServicesFilterEnabled ? [] : selectedServices,
@@ -430,20 +471,40 @@ export const AssetsFilter = () => {
     entries: []
   };
 
-  const selectedFilters = [
+  const selectedFiltersCount = [
     ...(isServicesFilterEnabled ? selectedServices : []),
     ...selectedEndpoints,
     ...selectedConsumers,
     ...selectedInternals,
     ...selectedInsights
-  ];
+  ].length;
+
+  const appliedFiltersCount = [
+    ...(isServicesFilterEnabled ? filters.services : []),
+    ...filters.endpoints,
+    ...filters.consumers,
+    ...filters.internals,
+    ...filters.insights
+  ].length;
 
   const handleCloseButtonClick = () => {
     sendUserActionTrackingEvent(
       trackingEvents.FILTERS_POPUP_CLOSE_BUTTON_CLICKED
     );
 
-    // TODO: discard changes
+    setIsPopupOpen(false);
+
+    discardChanges();
+  };
+
+  const handleFiltersButtonClick = () => {
+    sendUserActionTrackingEvent(trackingEvents.FILTERS_BUTTON_CLICKED);
+
+    setIsPopupOpen(!isPopupOpen);
+
+    if (isPopupOpen) {
+      discardChanges();
+    }
   };
 
   const handleApplyButtonClick = () => {
@@ -451,28 +512,32 @@ export const AssetsFilter = () => {
       trackingEvents.FILTERS_POPUP_APPLY_FILTERS_BUTTON_CLICKED
     );
 
-    const filtersQuery = {
-      services: isServicesFilterEnabled ? selectedServices : [],
+    setIsPopupOpen(false);
+
+    const newServices = isServicesFilterEnabled ? selectedServices : [];
+
+    setFilters({
+      services: newServices,
+      endpoints: selectedEndpoints,
+      consumers: selectedConsumers,
+      internals: selectedInternals,
+      insights: selectedInsights
+    });
+    setPersistedFilters({
+      services: newServices,
       operations: [
         ...selectedEndpoints,
         ...selectedConsumers,
         ...selectedInternals
       ],
       insights: selectedInsights
-    };
-
-    setFilters(filtersQuery);
-    setPersistedFilters(filtersQuery);
+    });
 
     if (isServicesFilterEnabled) {
-      setGloballySelectedServices(filtersQuery.services);
+      setGloballySelectedServices(newServices);
     }
 
     sendTrackingEvent(trackingEvents.FILTER_APPLIED);
-  };
-
-  const handleOnStateChange = (state: boolean) => {
-    setIsOpen(state);
   };
 
   const filterComponents = [
@@ -540,8 +605,10 @@ export const AssetsFilter = () => {
       onClearAll={handleClearFiltersButtonClick}
       title={"Filters"}
       filters={filterComponents}
-      selectedFiltersCount={selectedFilters.length}
-      onStateChange={handleOnStateChange}
+      selectedFiltersCount={selectedFiltersCount}
+      appliedFiltersCount={appliedFiltersCount}
+      isOpen={isPopupOpen}
+      onFiltersButtonClick={handleFiltersButtonClick}
     />
   );
 };

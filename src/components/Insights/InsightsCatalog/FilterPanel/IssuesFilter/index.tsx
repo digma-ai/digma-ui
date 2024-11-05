@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getFeatureFlagValue } from "../../../../../featureFlags";
 import { usePrevious } from "../../../../../hooks/usePrevious";
 import { useConfigSelector } from "../../../../../store/config/useConfigSelector";
@@ -15,16 +15,19 @@ import { WarningTriangleIcon } from "../../../../common/icons/WarningTriangleIco
 import { IconProps } from "../../../../common/icons/types";
 import { SelectItem } from "../../../../common/v3/Select/types";
 import { useIssuesFilters } from "../../../Issues/useIssuesFilters";
-import { InsightFilterType } from "../../types";
+import { InsightFilterType, ViewMode } from "../../types";
 import * as s from "./styles";
 import { trackingEvents } from "./tracking";
 
 export const IssuesFilter = () => {
-  const { filteredInsightTypes, filters } = useInsightsSelector();
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const { filteredInsightTypes, filters, viewMode, search } =
+    useInsightsSelector();
   const {
     selectedServices: globallySelectedServices,
     backendInfo,
-    scope
+    scope,
+    environment
   } = useConfigSelector();
   const {
     setSelectedServices: setGloballySelectedServices,
@@ -37,9 +40,12 @@ export const IssuesFilter = () => {
   const [isUnreadOnly, setIsUnreadOnly] = useState<boolean>(
     filters.includes("unread")
   );
-  const { data } = useIssuesFilters();
+  const { data, getData } = useIssuesFilters();
   const previousData = usePrevious(data);
+  const environmentId = environment?.id;
+  const previousEnvironmentId = usePrevious(environmentId);
   const scopeSpanCodeObjectId = scope?.span?.spanCodeObjectId;
+  const previousScopeSpanCodeObjectId = usePrevious(scopeSpanCodeObjectId);
   const isServicesFilterEnabled =
     Boolean(
       getFeatureFlagValue(backendInfo, FeatureFlag.ARE_ISSUES_FILTERS_ENABLED)
@@ -50,6 +56,7 @@ export const IssuesFilter = () => {
   const [selectedInsightTypes, setSelectedInsightTypes] =
     useState<string[]>(filteredInsightTypes);
 
+  // Update selected filters when data is fetched
   useEffect(() => {
     if (previousData && previousData !== data) {
       if (selectedInsightTypes.length > 0) {
@@ -83,8 +90,55 @@ export const IssuesFilter = () => {
     isServicesFilterEnabled
   ]);
 
+  const discardChanges = useCallback(() => {
+    const newServices = globallySelectedServices ?? [];
+    setSelectedServices(newServices);
+    setSelectedInsightTypes(filteredInsightTypes);
+    setIsCriticalOnly(filters.includes("criticality"));
+    setIsUnreadOnly(filters.includes("unread"));
+
+    getData({
+      displayName: search,
+      showDismissed: ViewMode.OnlyDismissed === viewMode,
+      filters: [
+        ...(filters.includes("criticality") ? ["criticality"] : []),
+        ...(filters.includes("unread") ? ["unread"] : [])
+      ] as InsightFilterType[],
+      insightTypes: filteredInsightTypes,
+      services: newServices,
+      scopedSpanCodeObjectId: scopeSpanCodeObjectId
+    });
+  }, [
+    filteredInsightTypes,
+    filters,
+    globallySelectedServices,
+    search,
+    scopeSpanCodeObjectId,
+    viewMode,
+    getData
+  ]);
+
+  // Close popup and discard changes on environment or scope changes
+  useEffect(() => {
+    if (
+      previousEnvironmentId !== environmentId ||
+      previousScopeSpanCodeObjectId !== scopeSpanCodeObjectId
+    ) {
+      setIsPopupOpen(false);
+      discardChanges();
+    }
+  }, [
+    discardChanges,
+    environmentId,
+    previousEnvironmentId,
+    previousScopeSpanCodeObjectId,
+    scopeSpanCodeObjectId
+  ]);
+
   const handleApplyFiltersButtonClick = () => {
     sendUserActionTrackingEvent(trackingEvents.APPLY_FILTERS_BUTTON_CLICKED);
+
+    setIsPopupOpen(false);
 
     setFilteredInsightTypes(selectedInsightTypes);
     setFilters([
@@ -102,16 +156,9 @@ export const IssuesFilter = () => {
     );
 
     setSelectedServices([]);
-    setFilteredInsightTypes([]);
+    setSelectedInsightTypes([]);
     setIsCriticalOnly(false);
     setIsUnreadOnly(false);
-
-    setFilteredInsightTypes([]);
-    setFilters([]);
-
-    if (isServicesFilterEnabled) {
-      setGloballySelectedServices([]);
-    }
   };
 
   const handleIssueTypesChange = (value: string | string[]) => {
@@ -119,7 +166,7 @@ export const IssuesFilter = () => {
       filterType: "issueType"
     });
     const newInsightTypes = Array.isArray(value) ? value : [value];
-    setFilteredInsightTypes(newInsightTypes);
+    setSelectedInsightTypes(newInsightTypes);
   };
 
   const handleServiceChange = (value: string | string[]) => {
@@ -133,7 +180,17 @@ export const IssuesFilter = () => {
   const handleCloseButtonClick = () => {
     sendUserActionTrackingEvent(trackingEvents.CLOSE_FILTER_DIALOG_CLICKED);
 
-    // TODO: discard changes
+    setIsPopupOpen(false);
+    discardChanges();
+  };
+
+  const handleFiltersButtonClick = () => {
+    sendUserActionTrackingEvent(trackingEvents.FILTERS_BUTTON_CLICKED);
+    setIsPopupOpen(!isPopupOpen);
+
+    if (isPopupOpen) {
+      discardChanges();
+    }
   };
 
   const handleToggleFilterChange = (
@@ -210,13 +267,42 @@ export const IssuesFilter = () => {
     criticalityFilterOptions.find((x) => x.selected)?.label ?? "All";
   const readStatusFilterPlaceholder =
     readStatusFilterOptions.find((x) => x.selected)?.label ?? "All";
+
   const selectedFiltersCount =
     selectedInsightTypes.length +
     (isServicesFilterEnabled ? selectedServices.length : 0) +
     (isCriticalOnly ? 1 : 0) +
     (isUnreadOnly ? 1 : 0);
 
+  const appliedFiltersCount =
+    filteredInsightTypes.length +
+    (isServicesFilterEnabled ? (globallySelectedServices ?? []).length : 0) +
+    (filters.includes("criticality") ? 1 : 0) +
+    (filters.includes("unread") ? 1 : 0);
+
   const filterComponents = [
+    ...(isServicesFilterEnabled
+      ? [
+          {
+            title: "Services",
+            component: (
+              <s.StyledSelect
+                key={"services"}
+                items={servicesFilterOptions}
+                onChange={handleServiceChange}
+                placeholder={selectedServices.length > 0 ? "Services" : "All"}
+                multiselect={true}
+                icon={(props: IconProps) => (
+                  <s.InsightIconContainer>
+                    <WrenchIcon {...props} />
+                  </s.InsightIconContainer>
+                )}
+                disabled={issueTypesFilterOptions?.length === 0}
+              />
+            )
+          }
+        ]
+      : []),
     {
       title: "Issues",
       component: (
@@ -271,35 +357,17 @@ export const IssuesFilter = () => {
     }
   ];
 
-  if (isServicesFilterEnabled) {
-    filterComponents.unshift({
-      title: "Services",
-      component: (
-        <s.StyledSelect
-          key={"services"}
-          items={servicesFilterOptions}
-          onChange={handleServiceChange}
-          placeholder={selectedServices.length > 0 ? "Services" : "All"}
-          multiselect={true}
-          icon={(props: IconProps) => (
-            <s.InsightIconContainer>
-              <WrenchIcon {...props} />
-            </s.InsightIconContainer>
-          )}
-          disabled={issueTypesFilterOptions?.length === 0}
-        />
-      )
-    });
-  }
-
   return (
     <FilterPopup
+      isOpen={isPopupOpen}
       onApply={handleApplyFiltersButtonClick}
       onClearAll={handleClearFiltersButtonClick}
       onClose={handleCloseButtonClick}
       title={"Filters"}
       selectedFiltersCount={selectedFiltersCount}
+      appliedFiltersCount={appliedFiltersCount}
       filters={filterComponents}
+      onFiltersButtonClick={handleFiltersButtonClick}
     />
   );
 };
