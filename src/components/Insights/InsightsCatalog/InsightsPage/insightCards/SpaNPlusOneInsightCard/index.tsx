@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useConfigSelector } from "../../../../../../store/config/useConfigSelector";
 import { getDurationString } from "../../../../../../utils/getDurationString";
 import {
@@ -17,6 +17,12 @@ import { ContentContainer, Description, Details } from "../styles";
 import * as s from "./styles";
 import { SpaNPlusOneInsightCardProps } from "./types";
 
+const getSelectorOption = (endpoint: NPlusOneEndpointInfo): Option => ({
+  route: endpoint.endpointInfo.route,
+  serviceName: endpoint.endpointInfo.serviceName,
+  spanCodeObjectId: endpoint.endpointInfo.entrySpanCodeObjectId
+});
+
 export const SpaNPlusOneInsightCard = ({
   insight,
   onAssetLinkClick,
@@ -30,15 +36,27 @@ export const SpaNPlusOneInsightCard = ({
   viewMode
 }: SpaNPlusOneInsightCardProps) => {
   const endpoints = useMemo(() => insight.endpoints ?? [], [insight.endpoints]);
+  const selectorOptions = useMemo(
+    () => endpoints.map(getSelectorOption),
+    [endpoints]
+  );
   const endpointWithMaxDuration = endpoints.reduce(
     (acc, cur) => (acc.duration.raw >= cur.duration.raw ? acc : cur),
     endpoints[0]
   );
   const maxDurationString = getDurationString(endpointWithMaxDuration.duration);
   const { isJaegerEnabled } = useConfigSelector();
-  const [selectedEndpoint, setSelectedEndpoint] = useState<
-    NPlusOneEndpointInfo | undefined
-  >(endpoints[0]);
+  const [selectedEndpointKey, setSelectedEndpointKey] = useState<
+    string | undefined
+  >(selectorOptions[0] ? getEndpointKey(selectorOptions[0]) : undefined);
+
+  useEffect(() => {
+    const option = selectedEndpointKey
+      ? selectorOptions.find((x) => getEndpointKey(x) === selectedEndpointKey)
+      : undefined;
+
+    setSelectedEndpointKey(option ? getEndpointKey(option) : undefined);
+  }, [selectorOptions, selectedEndpointKey]);
 
   const handleSpanLinkClick = (spanCodeObjectId?: string) => {
     if (spanCodeObjectId) {
@@ -63,43 +81,18 @@ export const SpaNPlusOneInsightCard = ({
     }
   };
 
-  const handleAffectedEndpointsSelectorChange = (option: Option | null) => {
-    const newValue = option
-      ? endpoints.find(
-          (x) =>
-            x.endpointInfo.serviceName === option.serviceName &&
-            x.endpointInfo.entrySpanCodeObjectId === option.spanCodeObjectId
-        )
-      : undefined;
-
-    setSelectedEndpoint(newValue);
+  const handleAffectedEndpointsSelectorChange = (endpointKey: string) => {
+    setSelectedEndpointKey(endpointKey);
   };
 
-  const selectorOptions = useMemo(
+  const selectedEndpoint = useMemo(
     () =>
-      endpoints.map((x) => ({
-        route: x.endpointInfo.route,
-        serviceName: x.endpointInfo.serviceName,
-        spanCodeObjectId: x.endpointInfo.entrySpanCodeObjectId
-      })),
-    [endpoints]
-  );
-
-  const selectedOption = useMemo(
-    () =>
-      selectedEndpoint &&
-      selectorOptions.find(
-        (x) =>
-          x.serviceName === selectedEndpoint.endpointInfo.serviceName &&
-          x.spanCodeObjectId ===
-            selectedEndpoint.endpointInfo.entrySpanCodeObjectId
-      ),
-    [selectedEndpoint, selectorOptions]
-  );
-
-  const selectorValue = useMemo(
-    () => (selectedOption ? getEndpointKey(selectedOption) : undefined),
-    [selectedOption]
+      selectedEndpointKey
+        ? endpoints.find(
+            (x) => getEndpointKey(x.endpointInfo) === selectedEndpointKey
+          )
+        : undefined,
+    [selectedEndpointKey, endpoints]
   );
 
   return (
@@ -113,7 +106,7 @@ export const SpaNPlusOneInsightCard = ({
             </Description>
             <s.SelectContainer>
               <AffectedEndpointsSelector
-                value={selectorValue}
+                value={selectedEndpointKey}
                 onChange={handleAffectedEndpointsSelectorChange}
                 options={selectorOptions}
                 onAssetLinkClick={handleSpanLinkClick}
