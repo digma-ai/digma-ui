@@ -49,6 +49,7 @@ export const Select = ({
 
   const handleButtonClick = () => {
     setIsOpen(!isOpen);
+    setSearchValue("");
   };
 
   const handleItemClick = (item: SelectItem) => {
@@ -59,6 +60,7 @@ export const Select = ({
     if (!multiselect) {
       onChange(item.value);
       setIsOpen(false);
+      setSearchValue("");
       return;
     }
 
@@ -112,6 +114,7 @@ export const Select = ({
                 type={"text"}
                 placeholder={"Search"}
                 onChange={handleSearchChange}
+                value={searchValue}
               />
             </s.SearchInputContainer>
           )}

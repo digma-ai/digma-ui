@@ -2,7 +2,7 @@ import React from "react";
 import { useIconProps } from "../hooks";
 import { IconProps } from "../types";
 
-const QuestionMarkComponent = (props: IconProps) => {
+const QuestionMarkIconComponent = (props: IconProps) => {
   const { size, color } = useIconProps(props);
 
   return (
@@ -25,4 +25,4 @@ const QuestionMarkComponent = (props: IconProps) => {
   );
 };
 
-export const QuestionMark = React.memo(QuestionMarkComponent);
+export const QuestionMarkIcon = React.memo(QuestionMarkIconComponent);

@@ -310,7 +310,7 @@ export const NewErrorCard = ({
           <s.FooterContainer>
             {isDismissEnabled && (
               <s.StyledDismissPanel
-                confirmationMessage="Dismiss error?"
+                confirmationMessage={"Dismiss error?"}
                 onShow={handleUndismissalButtonClick}
                 onDismiss={handleDismissalButtonClick}
                 state={

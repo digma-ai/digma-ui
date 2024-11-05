@@ -23,7 +23,7 @@ export const LinkedEndpointsMenu = ({
           id: x.spanCodeObjectId,
           customContent: (
             <s.MenuItem onClick={() => handleMenuItemClick(x)}>
-              <HTTPClientIcon size={12} color="currentColor" />
+              <HTTPClientIcon size={12} color={"currentColor"} />
               <span>{x.displayName}</span>
             </s.MenuItem>
           ),
