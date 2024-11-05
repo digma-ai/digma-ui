@@ -26,6 +26,7 @@ export interface GlobalErrorData {
   fromDisplayName: string;
   fromFullyQualifiedName?: string;
   fromCodeObjectId: string;
+  fromSpanCodeObjectId?: string | null;
   status: string;
   firstDetected: string;
   lastDetected: string;

@@ -11,7 +11,7 @@ export interface ContainerProps {
 export interface AffectedEndpointsSelectorProps {
   value?: string;
   options: Option[];
-  onChange: (selected: Option | null) => void;
+  onChange: (value: string) => void;
   onAssetLinkClick: (spanCodeObjectId: string) => void;
   isDisabled?: boolean;
 }

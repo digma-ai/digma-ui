@@ -39,6 +39,9 @@ export const InsightStatusTooltipContent = ({
           <TimestampKeyValue key={"first-detected"} label={"First detected"}>
             {insight.firstDetected}
           </TimestampKeyValue>
+          <TimestampKeyValue key={"last-seen"} label={"Last seen"}>
+            {insight.lastDetected}
+          </TimestampKeyValue>
           <TimestampKeyValue key={"last-fixed"} label={"Last fixed"}>
             {insight.lastDeactivated}
           </TimestampKeyValue>

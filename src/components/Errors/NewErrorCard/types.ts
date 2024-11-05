@@ -2,7 +2,10 @@ import { GlobalErrorData } from "../GlobalErrorsList/types";
 
 export interface NewErrorCardProps {
   data: GlobalErrorData;
-  onSourceLinkClick: (codeObjectId: string) => void;
+  onSourceLinkClick: (
+    codeObjectId: string,
+    spanCodeObjectId?: string | null
+  ) => void;
   onPinStatusChange: (errorId: string) => void;
   onDismissStatusChange: (errorId: string) => void;
   onPinStatusToggle: () => void;

@@ -23,7 +23,8 @@ import { actions } from "./actions";
 import * as s from "./styles";
 import {
   isScopeWithCodeLensContext,
-  isScopeWithCustomProtocolLinkContext
+  isScopeWithCustomProtocolLinkContext,
+  isScopeWithErrorDetailsIdContext
 } from "./typeGuards";
 import { HistoryState } from "./types";
 import { useBrowserLocationUpdater } from "./updateBrowserLocationUpdater";
@@ -256,6 +257,14 @@ export const Main = () => {
               break;
             }
             defaultGoTo(scope, state);
+            break;
+          }
+          case SCOPE_CHANGE_EVENTS.ERROR_CARD_LINK_CLICKED as string: {
+            const errorId = isScopeWithErrorDetailsIdContext(scope)
+              ? "/" + scope.context.payload.id
+              : "";
+
+            goTo(`/${TAB_IDS.ERRORS}${errorId}`, { state });
             break;
           }
           case SCOPE_CHANGE_EVENTS.IDE_CUSTOM_PROTOCOL_LINK_CLICKED as string: {

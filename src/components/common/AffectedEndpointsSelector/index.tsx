@@ -52,11 +52,8 @@ export const AffectedEndpointsSelector = ({
     }
   };
 
-  const handleSelectChange = (selectedOption: string) => {
-    const selected =
-      options.find((x) => getEndpointKey(x) === selectedOption) ?? null;
-
-    onChange(selected);
+  const handleSelectChange = (value: string) => {
+    onChange(value);
   };
 
   return (
