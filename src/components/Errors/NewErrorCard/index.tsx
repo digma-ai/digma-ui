@@ -134,25 +134,19 @@ export const NewErrorCard = ({
     onSourceLinkClick(id);
   };
 
-  const handleAffectedEndpointsSelectorChange = (
-    selectedOption: Option | null
-  ) => {
+  const handleAffectedEndpointsSelectorChange = (endpointKey: string) => {
     sendUserActionTrackingEvent(
       trackingEvents.ERROR_CARD_SELECTED_AFFECTED_ENDPOINT_CHANGED
     );
-    const newOption = selectedOption
-      ? selectorOptions.find(
-          (x) => getEndpointKey(x) === getEndpointKey(selectedOption)
-        )
-      : undefined;
 
-    setSelectedEndpointKey(newOption ? getEndpointKey(newOption) : undefined);
+    setSelectedEndpointKey(endpointKey);
   };
 
   const handleAffectedEndpointLinkClick = (spanCodeObjectId: string) => {
     sendUserActionTrackingEvent(
       trackingEvents.ERROR_CARD_AFFECTED_ENDPOINT_LINK_CLICKED
     );
+
     changeScope({
       span: {
         spanCodeObjectId

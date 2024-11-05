@@ -81,14 +81,8 @@ export const SpaNPlusOneInsightCard = ({
     }
   };
 
-  const handleAffectedEndpointsSelectorChange = (option: Option | null) => {
-    const newOption = option
-      ? selectorOptions.find(
-          (x) => getEndpointKey(x) === getEndpointKey(option)
-        )
-      : undefined;
-
-    setSelectedEndpointKey(newOption ? getEndpointKey(newOption) : undefined);
+  const handleAffectedEndpointsSelectorChange = (endpointKey: string) => {
+    setSelectedEndpointKey(endpointKey);
   };
 
   const selectedEndpoint = useMemo(

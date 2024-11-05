@@ -97,15 +97,8 @@ export const SpanEndpointBottleneckInsightCard = ({
     onTraceButtonClick(trace, insightType, spanCodeObjectId);
   };
 
-  const handleAffectedEndpointsSelectorChange = (
-    selectedOption: Option | null
-  ) => {
-    const newValue =
-      selectedOption && selectedEndpointKey
-        ? selectorOptions.find((x) => getEndpointKey(x) === selectedEndpointKey)
-        : undefined;
-
-    setSelectedEndpointKey(newValue ? getEndpointKey(newValue) : undefined);
+  const handleAffectedEndpointsSelectorChange = (endpointKey: string) => {
+    setSelectedEndpointKey(endpointKey);
   };
 
   const selectedEndpoint = useMemo(
