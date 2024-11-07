@@ -4,6 +4,7 @@ export interface FilterButtonProps {
   selectedCount?: number;
   showCount?: boolean;
   isActive: boolean;
+  onClick?: () => void;
 }
 
 export interface ButtonProps {

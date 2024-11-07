@@ -1,11 +1,11 @@
 import { MemoExoticComponent } from "react";
+import { AssetsFilters } from "../../store/assets/assetsSlice";
 import { CodeMarkerPinIcon } from "../common/icons/CodeMarkerPinIcon";
 import { DatabaseIcon } from "../common/icons/DatabaseIcon";
 import { EndpointIcon } from "../common/icons/EndpointIcon";
 import { HTTPClientIcon } from "../common/icons/HTTPClientIcon";
 import { UserIcon } from "../common/icons/UserIcon";
 import { IconProps } from "../common/icons/types";
-import { AssetFilterQuery } from "./AssetsFilter/types";
 
 interface AssetTypeInfo {
   label: string;
@@ -53,14 +53,17 @@ export const getAssetTypeInfo = (
 };
 
 export const checkIfAnyFiltersApplied = (
-  filters: AssetFilterQuery,
+  filters: AssetsFilters | null,
   searchQuery: string,
   isServicesFilterEnabled: boolean
 ) =>
   Boolean(
-    [
-      ...filters.insights,
-      ...filters.operations,
-      ...(isServicesFilterEnabled ? filters.services : [])
-    ].length > 0
+    filters &&
+      [
+        ...filters.insights,
+        ...filters.endpoints,
+        ...filters.consumers,
+        ...filters.internals,
+        ...(isServicesFilterEnabled ? filters.services : [])
+      ].length > 0
   ) || searchQuery.length > 0;

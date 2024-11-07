@@ -1,14 +1,18 @@
-import { ComponentType, useEffect, useMemo, useState } from "react";
+import {
+  ComponentType,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState
+} from "react";
 import { dispatcher } from "../../../dispatcher";
 import { getFeatureFlagValue } from "../../../featureFlags";
-import { usePersistence } from "../../../hooks/usePersistence";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { useAssetsSelector } from "../../../store/assets/useAssetsSelector";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { useStore } from "../../../store/useStore";
 import { isEnvironment } from "../../../typeGuards/isEnvironment";
 import { isNull } from "../../../typeGuards/isNull";
-import { isUndefined } from "../../../typeGuards/isUndefined";
 import { FeatureFlag, InsightType } from "../../../types";
 import { sendTrackingEvent } from "../../../utils/actions/sendTrackingEvent";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
@@ -23,13 +27,10 @@ import { trackingEvents } from "../tracking";
 import * as s from "./styles";
 import {
   AssetFilterCategory,
-  AssetFilterQuery,
   AssetsFiltersData,
   GetAssetFiltersDataParams,
   GetAssetFiltersDataPayload
 } from "./types";
-
-const PERSISTENCE_KEY = "assetsFilters";
 
 const getData = ({
   services,
@@ -92,17 +93,15 @@ export const AssetsFilter = () => {
     setAssetsFilters: setFilters,
     setSelectedServices: setGloballySelectedServices
   } = useStore.getState();
-  const [isOpen, setIsOpen] = useState(false);
-  const previousIsOpen = usePrevious(isOpen);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const previousIsOpen = usePrevious(isPopupOpen);
   const {
     selectedServices: globallySelectedServices,
     environment,
     scope,
     backendInfo
   } = useConfigSelector();
-  const [persistedFilters, setPersistedFilters] =
-    usePersistence<AssetFilterQuery>(PERSISTENCE_KEY, "project");
-  const previousPersistedFilters = usePrevious(persistedFilters);
+
   const isServicesFilterEnabled = !scope?.span?.spanCodeObjectId;
   const [selectedServices, setSelectedServices] = useState<string[]>(
     isServicesFilterEnabled ? globallySelectedServices ?? [] : []
@@ -122,8 +121,12 @@ export const AssetsFilter = () => {
   const query = useMemo(
     () => ({
       services: isServicesFilterEnabled ? selectedServices : [],
-      operations: filters.operations,
-      insights: filters.insights as InsightType[],
+      operations: [
+        ...selectedEndpoints,
+        ...selectedConsumers,
+        ...selectedInternals
+      ],
+      insights: selectedInsights,
       viewMode: areExtendedAssetsFiltersEnabled ? viewMode : undefined,
       scopeSpanCodeObjectId: areExtendedAssetsFiltersEnabled
         ? scopeSpanCodeObjectId
@@ -133,44 +136,16 @@ export const AssetsFilter = () => {
     [
       isServicesFilterEnabled,
       selectedServices,
-      filters.operations,
-      filters.insights,
+      selectedEndpoints,
+      selectedConsumers,
+      selectedInternals,
+      selectedInsights,
       viewMode,
       searchQuery,
       scopeSpanCodeObjectId,
       areExtendedAssetsFiltersEnabled
     ]
   );
-
-  // Get data after filters have been rehydrated
-  useEffect(() => {
-    if (
-      isUndefined(previousPersistedFilters) &&
-      !isUndefined(persistedFilters)
-    ) {
-      getData({
-        ...query,
-        services: isServicesFilterEnabled ? selectedServices : [],
-        operations: persistedFilters?.operations ?? [
-          ...selectedEndpoints,
-          ...selectedConsumers,
-          ...selectedInternals
-        ],
-        insights:
-          (persistedFilters?.insights as InsightType[]) || selectedInsights
-      });
-    }
-  }, [
-    previousPersistedFilters,
-    persistedFilters,
-    selectedServices,
-    selectedEndpoints,
-    selectedConsumers,
-    selectedInternals,
-    selectedInsights,
-    isServicesFilterEnabled,
-    query
-  ]);
 
   // Handle filters data response
   useEffect(() => {
@@ -195,13 +170,20 @@ export const AssetsFilter = () => {
       isEnvironment(previousEnvironment) &&
       previousEnvironment.id !== environment?.id
     ) {
+      setSelectedServices([]);
+      setSelectedEndpoints([]);
+      setSelectedConsumers([]);
+      setSelectedInternals([]);
+      setSelectedInsights([]);
+
       const defaultFilters = {
         services: [],
-        operations: [],
+        endpoints: [],
+        consumers: [],
+        internals: [],
         insights: []
       };
       setFilters(defaultFilters);
-      setPersistedFilters(defaultFilters);
       if (isServicesFilterEnabled) {
         setGloballySelectedServices(defaultFilters.services);
       }
@@ -214,10 +196,8 @@ export const AssetsFilter = () => {
     setFilters,
     previousEnvironment,
     environment,
-    setPersistedFilters,
     isServicesFilterEnabled,
     setGloballySelectedServices,
-    areExtendedAssetsFiltersEnabled,
     query
   ]);
 
@@ -227,41 +207,83 @@ export const AssetsFilter = () => {
       previousScope &&
       previousScope.span?.spanCodeObjectId !== scopeSpanCodeObjectId
     ) {
-      const newFilters = {
+      setSelectedEndpoints([]);
+      setSelectedConsumers([]);
+      setSelectedInternals([]);
+      setSelectedInsights([]);
+
+      if (isServicesFilterEnabled) {
+        setGloballySelectedServices(selectedServices);
+      }
+      setFilters({
+        services: selectedServices,
+        endpoints: [],
+        consumers: [],
+        internals: [],
+        insights: []
+      });
+      getData({
+        ...query,
         services: selectedServices,
         operations: [],
         insights: []
-      };
-      setPersistedFilters(newFilters);
-      if (isServicesFilterEnabled) {
-        setGloballySelectedServices(newFilters.services);
-      }
-      setFilters(newFilters);
-      getData({
-        ...query,
-        ...newFilters
       });
     }
   }, [
     setFilters,
-    setPersistedFilters,
     setGloballySelectedServices,
     previousScope,
     scopeSpanCodeObjectId,
     selectedServices,
     isServicesFilterEnabled,
-    areExtendedAssetsFiltersEnabled,
     query
+  ]);
+
+  const discardChanges = useCallback(() => {
+    setSelectedServices(filters?.services ?? []);
+    setSelectedEndpoints(filters?.endpoints ?? []);
+    setSelectedConsumers(filters?.consumers ?? []);
+    setSelectedInternals(filters?.internals ?? []);
+    setSelectedInsights((filters?.insights as InsightType[]) ?? []);
+
+    getData({
+      ...query,
+      services: filters?.services ?? [],
+      operations: [
+        ...(filters?.endpoints ?? []),
+        ...(filters?.consumers ?? []),
+        ...(filters?.internals ?? [])
+      ],
+      insights: (filters?.insights as InsightType[]) ?? []
+    });
+  }, [filters, query]);
+
+  // Close popup on environment or scope changes
+  useEffect(() => {
+    if (
+      previousEnvironment?.id !== environment?.id ||
+      previousScope?.span?.spanCodeObjectId !== scopeSpanCodeObjectId
+    ) {
+      setIsPopupOpen(false);
+
+      discardChanges();
+    }
+  }, [
+    environment,
+    scopeSpanCodeObjectId,
+    previousEnvironment,
+    previousScope,
+    discardChanges
   ]);
 
   // Get data when the popover is opened
   useEffect(() => {
-    if (isOpen && !previousIsOpen) {
+    if (isPopupOpen && !previousIsOpen) {
       getData(query);
     }
-  }, [isOpen, previousIsOpen, query]);
+  }, [isPopupOpen, previousIsOpen, query]);
 
-  // Apply filters when data is loaded
+  // Update selected filters when data is fetched
   useEffect(() => {
     if (previousData === data || isNull(data)) {
       return;
@@ -304,73 +326,11 @@ export const AssetsFilter = () => {
       ?.entries?.filter((x) => x.selected)
       .map((x) => x.name) ?? []) as InsightType[];
     setSelectedInsights(insightsToSelect);
-
-    if (!filters) {
-      const filtersQuery = {
-        services: servicesToSelect,
-        operations: [
-          ...endpointsToSelect,
-          ...consumersToSelect,
-          ...internalsToSelect
-        ],
-        insights: insightsToSelect
-      };
-
-      setPersistedFilters(filtersQuery);
-      if (isServicesFilterEnabled) {
-        setGloballySelectedServices(filtersQuery.services);
-      }
-      setFilters(filtersQuery);
-    }
-  }, [
-    previousData,
-    data,
-    filters,
-    setFilters,
-    selectedServices,
-    selectedEndpoints,
-    selectedConsumers,
-    selectedInternals,
-    selectedInsights,
-    setPersistedFilters,
-    setGloballySelectedServices,
-    isServicesFilterEnabled
-  ]);
-
-  // Apply filters when the popover is closed
-  useEffect(() => {
-    if (previousIsOpen && !isOpen) {
-      const filtersQuery = {
-        services: isServicesFilterEnabled ? selectedServices : [],
-        operations: [
-          ...selectedEndpoints,
-          ...selectedConsumers,
-          ...selectedInternals
-        ],
-        insights: selectedInsights
-      };
-      setFilters(filtersQuery);
-      setPersistedFilters(filtersQuery);
-      if (isServicesFilterEnabled) {
-        setGloballySelectedServices(filtersQuery.services);
-      }
-      sendTrackingEvent(trackingEvents.FILTER_APPLIED);
-    }
-  }, [
-    previousIsOpen,
-    isOpen,
-    selectedConsumers,
-    selectedEndpoints,
-    selectedInsights,
-    selectedInternals,
-    selectedServices,
-    setPersistedFilters,
-    setGloballySelectedServices,
-    isServicesFilterEnabled,
-    setFilters
-  ]);
+  }, [previousData, data]);
 
   const handleClearFiltersButtonClick = () => {
+    sendUserActionTrackingEvent(trackingEvents.CLEAR_FILTERS_BUTTON_CLICKED);
+
     getData({
       ...query,
       services: isServicesFilterEnabled ? [] : selectedServices,
@@ -453,21 +413,66 @@ export const AssetsFilter = () => {
     entries: []
   };
 
-  const selectedFilters = [
+  const selectedFiltersCount = [
     ...(isServicesFilterEnabled ? selectedServices : []),
     ...selectedEndpoints,
     ...selectedConsumers,
     ...selectedInternals,
     ...selectedInsights
-  ];
+  ].length;
+
+  const appliedFiltersCount = filters
+    ? [
+        ...(isServicesFilterEnabled ? filters.services : []),
+        ...filters.endpoints,
+        ...filters.consumers,
+        ...filters.internals,
+        ...filters.insights
+      ].length
+    : 0;
 
   const handleCloseButtonClick = () => {
     sendUserActionTrackingEvent(
       trackingEvents.FILTERS_POPUP_CLOSE_BUTTON_CLICKED
     );
+
+    setIsPopupOpen(false);
+
+    discardChanges();
   };
-  const handleOnStateChange = (state: boolean) => {
-    setIsOpen(state);
+
+  const handleFiltersButtonClick = () => {
+    sendUserActionTrackingEvent(trackingEvents.FILTERS_BUTTON_CLICKED);
+
+    setIsPopupOpen(!isPopupOpen);
+
+    if (isPopupOpen) {
+      discardChanges();
+    }
+  };
+
+  const handleApplyButtonClick = () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.FILTERS_POPUP_APPLY_FILTERS_BUTTON_CLICKED
+    );
+
+    setIsPopupOpen(false);
+
+    const newServices = isServicesFilterEnabled ? selectedServices : [];
+
+    setFilters({
+      services: newServices,
+      endpoints: selectedEndpoints,
+      consumers: selectedConsumers,
+      internals: selectedInternals,
+      insights: selectedInsights
+    });
+
+    if (isServicesFilterEnabled) {
+      setGloballySelectedServices(newServices);
+    }
+
+    sendTrackingEvent(trackingEvents.FILTER_APPLIED);
   };
 
   const filterComponents = [
@@ -530,12 +535,15 @@ export const AssetsFilter = () => {
 
   return (
     <FilterPopup
+      onApply={handleApplyButtonClick}
       onClose={handleCloseButtonClick}
       onClearAll={handleClearFiltersButtonClick}
       title={"Filters"}
       filters={filterComponents}
-      selectedFiltersCount={selectedFilters.length}
-      onStateChange={handleOnStateChange}
+      selectedFiltersCount={selectedFiltersCount}
+      appliedFiltersCount={appliedFiltersCount}
+      isOpen={isPopupOpen}
+      onFiltersButtonClick={handleFiltersButtonClick}
     />
   );
 };

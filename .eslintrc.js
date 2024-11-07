@@ -36,8 +36,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ["./**/*.tsx"],
-      excludedFiles: ["./src/common/icons/**/*Icon.tsx"],
+      files: ["./src/components/common/icons/**/*Icon.tsx"],
       rules: {
         "react/jsx-curly-brace-presence": "off"
       }

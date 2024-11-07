@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-curly-brace-presence */
 import React from "react";
 import { CircleLoader } from "../CircleLoader";
 import { LoaderProps } from "./types";

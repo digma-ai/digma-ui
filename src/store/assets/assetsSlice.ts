@@ -6,8 +6,18 @@ import {
   SORTING_ORDER
 } from "../../components/Assets/AssetList/types";
 import { AssetCategoriesData } from "../../components/Assets/AssetTypeList/types";
-import { AssetFilterQuery } from "../../components/Assets/AssetsFilter/types";
 import { ViewMode } from "../../components/Assets/AssetsViewScopeConfiguration/types";
+
+export interface AssetsFilters {
+  services: string[];
+  endpoints: string[];
+  consumers: string[];
+  internals: string[];
+  insights: string[];
+  scopedSpanCodeObjectId?: string;
+  directOnly?: boolean;
+  displayName?: string;
+}
 
 export interface AssetsState {
   assetCategoriesData: AssetCategoriesData | null;
@@ -15,7 +25,7 @@ export interface AssetsState {
   selectedAssetCategory: string | null;
   assets: AssetsData | null;
   areAssetsLoading: boolean;
-  filters: AssetFilterQuery;
+  filters: AssetsFilters | null;
   viewMode: ViewMode;
   search: string;
   page: number;
@@ -24,17 +34,13 @@ export interface AssetsState {
 }
 
 const allFiltersInitialState: {
-  filters: AssetFilterQuery;
+  filters: AssetsFilters | null;
   viewMode: ViewMode;
   search: string;
   page: number;
   sorting: Sorting;
 } = {
-  filters: {
-    services: [],
-    operations: [],
-    insights: []
-  },
+  filters: null,
   viewMode: "descendants",
   search: "",
   page: 0,
@@ -72,7 +78,7 @@ export const assetsSlice = createSlice({
     setAssets: (assets: AssetsData) => set({ assets }),
     setAreAssetsLoading: (isLoading: boolean) =>
       set({ areAssetsLoading: isLoading }),
-    setAssetsFilters: (filters: AssetFilterQuery) => set({ filters }),
+    setAssetsFilters: (filters: AssetsFilters) => set({ filters }),
     setAssetsViewMode: (viewMode: ViewMode) => set({ viewMode }),
     setAssetsSearch: (search: string) => set({ search }),
     setAssetsPage: (page: number) => set({ page }),

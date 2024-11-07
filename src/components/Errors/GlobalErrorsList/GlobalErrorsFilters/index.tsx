@@ -34,25 +34,36 @@ const getSelectPlaceholder = (options: SelectItem[], placeholder: string) =>
   options.filter((x) => x.selected).length > 0 ? placeholder : "All";
 
 export const GlobalErrorsFilters = () => {
-  const { environment, backendInfo } = useConfigSelector();
-
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const {
+    environment,
+    backendInfo,
+    selectedServices: globallySelectedServices,
+    scope
+  } = useConfigSelector();
   const areGlobalErrorsCriticalityAndUnhandledFiltersEnabled =
     getFeatureFlagValue(
       backendInfo,
       FeatureFlag.ARE_GLOBAL_ERRORS_CRITICALITY_AND_UNHANDLED_FILTERS_ENABLED
     );
-
   const { globalErrorsFilters, globalErrorsSelectedFilters } =
     useErrorsSelector();
-  const { setGlobalErrorsFilters, setGlobalErrorsSelectedFilters } =
-    useStore.getState();
+  const {
+    setGlobalErrorsFilters,
+    setGlobalErrorsSelectedFilters,
+    setSelectedServices: setGloballySelectedServices
+  } = useStore.getState();
   const { services, endpoints, errorTypes } = globalErrorsFilters;
   const environmentId = environment?.id;
+  const previousEnvironmentId = usePrevious(environmentId);
+  const scopeSpanCodeObjectId = scope?.span?.spanCodeObjectId;
+  const previousScopeSpanCodeObjectId = usePrevious(scopeSpanCodeObjectId);
+
   const [lastChangedFilter, setLastChangedFilter] = useState<
     ErrorFilter | undefined
   >(undefined);
   const [selectedServices, setSelectedServices] = useState<string[]>(
-    globalErrorsSelectedFilters.services
+    globallySelectedServices ?? []
   );
   const [selectedEndpoints, setSelectedEndpoints] = useState<string[]>(
     globalErrorsSelectedFilters.endpoints
@@ -158,6 +169,48 @@ export const GlobalErrorsFilters = () => {
     globalErrorsSelectedFilters.services,
     globalErrorsSelectedFilters.endpoints,
     globalErrorsSelectedFilters.errorTypes
+  ]);
+
+  // Clear filters on environment change, but keep the selected services
+  useEffect(() => {
+    if (previousEnvironmentId !== environmentId) {
+      setSelectedEndpoints([]);
+      setSelectedErrorTypes([]);
+      setSelectedCriticalities([]);
+      setSelectedHandlingTypes([]);
+    }
+  }, [environmentId, previousEnvironmentId]);
+
+  const discardChanges = useCallback(() => {
+    setSelectedServices(globalErrorsSelectedFilters.services);
+    setSelectedEndpoints(globalErrorsSelectedFilters.endpoints);
+    setSelectedErrorTypes(globalErrorsSelectedFilters.errorTypes);
+    setSelectedCriticalities(globalErrorsSelectedFilters.criticalities);
+    setSelectedHandlingTypes(globalErrorsSelectedFilters.handlingTypes);
+  }, [
+    globalErrorsSelectedFilters.services,
+    globalErrorsSelectedFilters.endpoints,
+    globalErrorsSelectedFilters.errorTypes,
+    globalErrorsSelectedFilters.criticalities,
+    globalErrorsSelectedFilters.handlingTypes
+  ]);
+
+  // Close popup on environment or scope changes
+  useEffect(() => {
+    if (
+      previousEnvironmentId !== environmentId ||
+      previousScopeSpanCodeObjectId !== scopeSpanCodeObjectId
+    ) {
+      setIsPopupOpen(false);
+
+      discardChanges();
+    }
+  }, [
+    environmentId,
+    scopeSpanCodeObjectId,
+    previousEnvironmentId,
+    previousScopeSpanCodeObjectId,
+    discardChanges
   ]);
 
   const handleServicesChange = (value: string | string[]) => {
@@ -399,7 +452,35 @@ export const GlobalErrorsFilters = () => {
       : [])
   ];
 
-  const applyFilters = () => {
+  const handleClose = () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.GLOBAL_ERRORS_VIEW_FILTERS_CLOSE_BUTTON_CLICKED
+    );
+
+    setIsPopupOpen(false);
+
+    discardChanges();
+  };
+
+  const handleFiltersButtonClick = () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.GLOBAL_ERRORS_VIEW_FILTERS_BUTTON_CLICKED
+    );
+
+    setIsPopupOpen(!isPopupOpen);
+
+    if (isPopupOpen) {
+      discardChanges();
+    }
+  };
+
+  const handleApply = () => {
+    sendUserActionTrackingEvent(
+      trackingEvents.GLOBAL_ERRORS_VIEW_FILTERS_APPLY_FILTERS_BUTTON_CLICKED
+    );
+
+    setIsPopupOpen(false);
+
     setGlobalErrorsSelectedFilters({
       ...globalErrorsSelectedFilters,
       services: selectedServices,
@@ -408,13 +489,7 @@ export const GlobalErrorsFilters = () => {
       criticalities: selectedCriticalities,
       handlingTypes: selectedHandlingTypes
     });
-  };
-
-  const handleClose = () => {
-    sendUserActionTrackingEvent(
-      trackingEvents.GLOBAL_ERRORS_VIEW_FILTERS_CLOSE_BUTTON_CLICKED
-    );
-    applyFilters();
+    setGloballySelectedServices(selectedServices);
   };
 
   const handleClearAll = () => {
@@ -436,20 +511,25 @@ export const GlobalErrorsFilters = () => {
     selectedHandlingTypes.length
   ].filter((x) => x > 0).length;
 
-  const handlePopupOpenStateChange = (isOpen: boolean) => {
-    if (!isOpen) {
-      applyFilters();
-    }
-  };
+  const appliedFiltersCount = [
+    (globallySelectedServices ?? []).length,
+    globalErrorsSelectedFilters.endpoints.length,
+    globalErrorsSelectedFilters.errorTypes.length,
+    globalErrorsSelectedFilters.criticalities.length,
+    globalErrorsSelectedFilters.handlingTypes.length
+  ].filter((x) => x > 0).length;
 
   return (
     <FilterPopup
+      onApply={handleApply}
       onClose={handleClose}
       onClearAll={handleClearAll}
       title={"Filters"}
       selectedFiltersCount={selectedFiltersCount}
-      onStateChange={handlePopupOpenStateChange}
+      appliedFiltersCount={appliedFiltersCount}
       filters={filters}
+      isOpen={isPopupOpen}
+      onFiltersButtonClick={handleFiltersButtonClick}
     />
   );
 };

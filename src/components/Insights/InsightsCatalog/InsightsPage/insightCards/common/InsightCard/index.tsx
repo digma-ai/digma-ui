@@ -11,7 +11,7 @@ import { TraceIcon } from "../../../../../../common/icons/12px/TraceIcon";
 import { DoubleCircleIcon } from "../../../../../../common/icons/16px/DoubleCircleIcon";
 import { HistogramIcon } from "../../../../../../common/icons/16px/HistogramIcon";
 import { PinIcon } from "../../../../../../common/icons/16px/PinIcon";
-import { QuestionMark } from "../../../../../../common/icons/16px/QuestionMark";
+import { QuestionMarkIcon } from "../../../../../../common/icons/16px/QuestionMarkIcon";
 import { RecheckIcon } from "../../../../../../common/icons/16px/RecheckIcon";
 import { JiraButton } from "../../../../../../common/v3/JiraButton";
 import { Tooltip } from "../../../../../../common/v3/Tooltip";
@@ -325,7 +325,7 @@ export const InsightCard = ({
             }}
           >
             <s.InfoActionButton
-              icon={QuestionMark}
+              icon={QuestionMarkIcon}
               buttonType={"secondaryBorderless"}
               onClick={() => {
                 setShowInfo(!showInfo);
@@ -437,7 +437,7 @@ export const InsightCard = ({
                 <DismissPanel
                   onShow={handleShowClick}
                   onDismiss={handleDismissClick}
-                  confirmationMessage="Dismiss insight?"
+                  confirmationMessage={"Dismiss insight?"}
                   state={
                     isDismissalChangeInProgress
                       ? "in-progress"

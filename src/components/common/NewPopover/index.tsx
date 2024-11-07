@@ -74,7 +74,8 @@ export const NewPopover = ({
   children,
   sameWidth,
   width,
-  content
+  content,
+  closeOnOutsidePress
 }: PopoverProps) => {
   const arrowRef = useRef(null);
   const theme = useTheme();
@@ -102,7 +103,9 @@ export const NewPopover = ({
   });
 
   const click = useClick(context);
-  const dismiss = useDismiss(context);
+  const dismiss = useDismiss(context, {
+    outsidePress: closeOnOutsidePress
+  });
 
   const { getReferenceProps, getFloatingProps } = useInteractions([
     ...(useClickInteraction === false ? [] : [click]),

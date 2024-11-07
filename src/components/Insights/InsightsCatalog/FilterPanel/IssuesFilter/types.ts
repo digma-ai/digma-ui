@@ -1,4 +1,4 @@
-import { InsightFilterType } from "../../InsightsCatalog/types";
+import { InsightFilterType } from "../../types";
 
 export interface IssuesFilterEntry {
   enabled: boolean;

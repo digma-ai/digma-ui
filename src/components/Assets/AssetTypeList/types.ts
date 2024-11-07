@@ -21,3 +21,14 @@ export interface AssetCategoryData {
   label?: string;
   icon?: MemoExoticComponent<(props: IconProps) => JSX.Element>;
 }
+
+export interface GetAssetCategoriesDataPayload {
+  query: {
+    directOnly: boolean;
+    scopedSpanCodeObjectId?: string;
+    services: string[];
+    operations: string[];
+    insights: string[];
+    displayName?: string;
+  };
+}

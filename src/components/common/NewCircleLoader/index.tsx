@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-curly-brace-presence */
 // Source: https://www.benmvp.com/blog/how-to-create-circle-svg-gradient-loading-spinner/
 import { DefaultTheme, useTheme } from "styled-components";
 import { DEFAULT_ICON_SIZE } from "../icons/hooks";

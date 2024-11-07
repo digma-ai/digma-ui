@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Select } from "../../../common/v3/Select";
+import { Select } from "../../../../common/v3/Select";
 
 export const InsightIconContainer = styled.div`
   display: flex;

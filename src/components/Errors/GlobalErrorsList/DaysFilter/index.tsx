@@ -120,8 +120,8 @@ export const DaysFilter = ({ onChanged }: DaysFilterProps) => {
             <s.CustomCounterContainer>
               <s.Counter>
                 <NewIconButton
-                  buttonType="secondaryBorderless"
-                  icon={() => <MinusIcon size={16} color="currentColor" />}
+                  buttonType={"secondaryBorderless"}
+                  icon={() => <MinusIcon size={16} color={"currentColor"} />}
                   onClick={handleDecrement}
                 />
                 <s.CounterInput
@@ -132,15 +132,15 @@ export const DaysFilter = ({ onChanged }: DaysFilterProps) => {
                   value={currentValue?.toString()}
                 />
                 <NewIconButton
-                  buttonType="secondaryBorderless"
-                  icon={() => <PlusIcon size={16} color="currentColor" />}
+                  buttonType={"secondaryBorderless"}
+                  icon={() => <PlusIcon size={16} color={"currentColor"} />}
                   onClick={handleIncrement}
                 />
                 <s.Text>Last days</s.Text>
               </s.Counter>
               <s.ApplyButton
-                buttonType="primary"
-                label="Apply filters"
+                buttonType={"primary"}
+                label={"Apply filters"}
                 onClick={handleApplyClick}
               />
             </s.CustomCounterContainer>

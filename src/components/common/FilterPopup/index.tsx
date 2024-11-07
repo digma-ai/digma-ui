@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
-import { usePrevious } from "../../../hooks/usePrevious";
 import { FilterButton } from "../FilterButton";
 import { CrossIcon } from "../icons/16px/CrossIcon";
 import { NewPopover } from "../NewPopover";
+import { NewButton } from "../v3/NewButton";
 import * as s from "./styles";
 import { FilterPopupProps } from "./types";
 
@@ -11,26 +10,28 @@ export const FilterPopup = ({
   onClose,
   title,
   selectedFiltersCount,
+  appliedFiltersCount,
   filters,
-  onStateChange
+  onApply,
+  isOpen,
+  onFiltersButtonClick
 }: FilterPopupProps) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const previousIsOpen = usePrevious(isOpen);
-
-  useEffect(() => {
-    if (isOpen !== previousIsOpen && onStateChange) {
-      onStateChange(isOpen);
-    }
-  }, [isOpen, previousIsOpen, onStateChange]);
+  const handleApplyButtonClick = () => {
+    onApply();
+  };
 
   const handleCloseButtonClick = () => {
-    setIsOpen(false);
     onClose();
+  };
+
+  const handleFilterButtonClick = () => {
+    onFiltersButtonClick();
   };
 
   return (
     <NewPopover
       width={"100%"}
+      closeOnOutsidePress={false}
       content={
         <s.Container>
           <s.Header>
@@ -39,7 +40,6 @@ export const FilterPopup = ({
               <CrossIcon color={"currentColor"} size={16} />
             </s.CloseButton>
           </s.Header>
-
           {filters.map((x) => (
             <s.Filter key={x.title}>
               <s.FilterCategoryName>{x.title}</s.FilterCategoryName>
@@ -47,6 +47,10 @@ export const FilterPopup = ({
             </s.Filter>
           ))}
           <s.Footer>
+            <NewButton
+              label={"Apply filters"}
+              onClick={handleApplyButtonClick}
+            />
             <s.ClearAllButton
               buttonType={"primaryBorderless"}
               label={"Clear filters"}
@@ -56,7 +60,6 @@ export const FilterPopup = ({
           </s.Footer>
         </s.Container>
       }
-      onOpenChange={setIsOpen}
       isOpen={isOpen}
       placement={"bottom-end"}
     >
@@ -64,8 +67,9 @@ export const FilterPopup = ({
         <FilterButton
           title={"Filters"}
           showCount={true}
-          selectedCount={selectedFiltersCount}
+          selectedCount={appliedFiltersCount}
           isActive={isOpen}
+          onClick={handleFilterButtonClick}
         />
       </div>
     </NewPopover>
