@@ -25,7 +25,7 @@ export interface AssetsState {
   selectedAssetCategory: string | null;
   assets: AssetsData | null;
   areAssetsLoading: boolean;
-  filters: AssetsFilters;
+  filters: AssetsFilters | null;
   viewMode: ViewMode;
   search: string;
   page: number;
@@ -34,19 +34,13 @@ export interface AssetsState {
 }
 
 const allFiltersInitialState: {
-  filters: AssetsFilters;
+  filters: AssetsFilters | null;
   viewMode: ViewMode;
   search: string;
   page: number;
   sorting: Sorting;
 } = {
-  filters: {
-    services: [],
-    endpoints: [],
-    consumers: [],
-    internals: [],
-    insights: []
-  },
+  filters: null,
   viewMode: "descendants",
   search: "",
   page: 0,

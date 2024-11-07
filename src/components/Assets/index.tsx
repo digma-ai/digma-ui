@@ -1,10 +1,13 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDebounce } from "../../hooks/useDebounce";
+import { usePersistence } from "../../hooks/usePersistence";
 import { usePrevious } from "../../hooks/usePrevious";
+import { AssetsFilters } from "../../store/assets/assetsSlice";
 import { useAssetsSelector } from "../../store/assets/useAssetsSelector";
 import { useConfigSelector } from "../../store/config/useConfigSelector";
 import { useStore } from "../../store/useStore";
+import { isUndefined } from "../../typeGuards/isUndefined";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 import { useHistory } from "../Main/useHistory";
 import { EmptyState } from "../common/EmptyState";
@@ -22,6 +25,7 @@ import * as s from "./styles";
 import { trackingEvents } from "./tracking";
 import { DataRefresher } from "./types";
 
+const PERSISTENCE_KEY = "assetsFiltersV2";
 const SEARCH_INPUT_DEBOUNCE_DELAY = 1000; // in milliseconds
 
 const getAssetCategoryCount = (
@@ -33,11 +37,17 @@ const getAssetCategoryCount = (
   ) ?? 0;
 
 export const Assets = () => {
+  const [persistedFilters, setPersistedFilters] = usePersistence<AssetsFilters>(
+    PERSISTENCE_KEY,
+    "project"
+  );
+  const previousPersistedFilters = usePrevious(persistedFilters);
   const [assetsCount, setAssetsCount] = useState<number>();
   const params = useParams();
   const selectedAssetTypeId = useMemo(() => params.typeId, [params]);
   const { search, filters, assets, assetCategoriesData } = useAssetsSelector();
-  const { setAssetsSearch: setSearch } = useStore.getState();
+  const { setAssetsSearch: setSearch, setAssetsFilters: setFilters } =
+    useStore.getState();
   const [searchInputValue, setSearchInputValue] = useState(search);
   const debouncedSearchInputValue = useDebounce(
     searchInputValue,
@@ -53,6 +63,7 @@ export const Assets = () => {
   const { goTo } = useHistory();
   const isBackendUpgradeMessageVisible = false;
   const { showAssetsHeaderToolBox } = useAssetsSelector();
+  const isInitialized = Boolean(filters);
 
   useEffect(() => {
     if (previousScopeSpanCodeObjectId !== scopeSpanCodeObjectId) {
@@ -63,6 +74,23 @@ export const Assets = () => {
   useEffect(() => {
     setSearch(debouncedSearchInputValue);
   }, [debouncedSearchInputValue, setSearch]);
+
+  useEffect(() => {
+    if (
+      isUndefined(previousPersistedFilters) &&
+      !isUndefined(persistedFilters) &&
+      persistedFilters
+    ) {
+      setFilters(persistedFilters);
+    }
+  }, [previousPersistedFilters, persistedFilters, setFilters]);
+
+  // Update persisted filters on filters change
+  useEffect(() => {
+    if (isInitialized) {
+      setPersistedFilters(filters);
+    }
+  }, [isInitialized, filters, setPersistedFilters]);
 
   const handleGoToAllAssets = () => {
     goTo("..");
@@ -154,6 +182,10 @@ export const Assets = () => {
       />
     );
   };
+
+  if (!isInitialized) {
+    return null;
+  }
 
   return (
     <s.Container>

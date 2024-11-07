@@ -144,13 +144,13 @@ export const AssetList = ({
         sortOrder: sorting.order,
         scopedSpanCodeObjectId: scopeSpanCodeObjectId,
         ...(search.length > 0 ? { displayName: search } : {}),
-        insights: filters.insights,
+        insights: filters?.insights ?? [],
         operations: [
-          ...filters.endpoints,
-          ...filters.consumers,
-          ...filters.internals
+          ...(filters?.endpoints ?? []),
+          ...(filters?.consumers ?? []),
+          ...(filters?.internals ?? [])
         ],
-        services: scopeSpanCodeObjectId ? [] : filters.services,
+        services: scopeSpanCodeObjectId ? [] : filters?.services ?? [],
         directOnly: viewMode === "children"
       }
     }),

@@ -41,7 +41,7 @@ export const ASSET_TYPE_IDS = [
 ];
 
 const getData = (
-  filters: AssetsFilters,
+  filters: AssetsFilters | null,
   searchQuery: string,
   viewMode: ViewMode,
   scopeSpanCodeObjectId?: string
@@ -53,13 +53,13 @@ const getData = (
         directOnly: viewMode === "children",
         scopedSpanCodeObjectId: scopeSpanCodeObjectId,
         ...{
-          insights: filters.insights,
+          insights: filters?.insights ?? [],
           operations: [
-            ...filters.endpoints,
-            ...filters.consumers,
-            ...filters.internals
+            ...(filters?.endpoints ?? []),
+            ...(filters?.consumers ?? []),
+            ...(filters?.internals ?? [])
           ],
-          services: scopeSpanCodeObjectId ? [] : filters.services
+          services: scopeSpanCodeObjectId ? [] : filters?.services ?? []
         },
         ...(searchQuery.length > 0 ? { displayName: searchQuery } : {})
       }
