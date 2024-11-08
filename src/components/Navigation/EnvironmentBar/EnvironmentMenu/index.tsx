@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import useDimensions from "react-cool-dimensions";
 import { useConfigSelector } from "../../../../store/config/useConfigSelector";
 import { Environment } from "../../../common/App/types";
 import { EnvironmentIcon } from "../../../common/EnvironmentIcon";
@@ -14,10 +16,11 @@ export const EnvironmentMenu = ({
   const handleMenuItemClick = (environment: Environment) => {
     onMenuItemClick(environment);
   };
-  const { innerHeight } = window;
+  const { observe, height } = useDimensions();
+  useEffect(() => observe(document.body), []);
 
   return (
-    <s.EnvironmentMenuPopup height={innerHeight * 0.55 + "px"}>
+    <s.EnvironmentMenuPopup height={height * 0.55 + "px"}>
       <MenuList
         highlightSelected={true}
         showGroupNames={true}
