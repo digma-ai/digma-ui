@@ -14,9 +14,10 @@ export const EnvironmentMenu = ({
   const handleMenuItemClick = (environment: Environment) => {
     onMenuItemClick(environment);
   };
+  const { innerHeight } = window;
 
   return (
-    <s.EnvironmentMenuPopup height={"140px"}>
+    <s.EnvironmentMenuPopup height={innerHeight * 0.55 + "px"}>
       <MenuList
         highlightSelected={true}
         showGroupNames={true}
