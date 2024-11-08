@@ -20,7 +20,7 @@ export const EnvironmentMenu = ({
   useEffect(() => observe(document.body), []);
 
   return (
-    <s.EnvironmentMenuPopup height={height * 0.55 + "px"}>
+    <s.EnvironmentMenuPopup height={`${height * 0.55}px`}>
       <MenuList
         highlightSelected={true}
         showGroupNames={true}
