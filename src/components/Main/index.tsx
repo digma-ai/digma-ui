@@ -23,8 +23,8 @@ import { actions } from "./actions";
 import * as s from "./styles";
 import {
   isScopeWithCodeLensContext,
-  isScopeWithCustomProtocolLinkContext,
-  isScopeWithErrorDetailsIdContext
+  isScopeWithErrorDetailsIdContext,
+  isScopeWithRestApiCallContext
 } from "./typeGuards";
 import { HistoryState } from "./types";
 import { useBrowserLocationUpdater } from "./updateBrowserLocationUpdater";
@@ -52,10 +52,8 @@ const getURLToNavigateOnCodeLensClick = (scope: Scope): string | undefined => {
   }
 };
 
-const getUrlToNavigateFromCustomProtocolLink = (
-  scope: Scope
-): string | undefined => {
-  if (!isScopeWithCustomProtocolLinkContext(scope)) {
+const getUrlToNavigateFromRestApiCall = (scope: Scope): string | undefined => {
+  if (!isScopeWithRestApiCallContext(scope)) {
     return;
   }
 
@@ -267,8 +265,8 @@ export const Main = () => {
             goTo(`/${TAB_IDS.ERRORS}${errorId}`, { state });
             break;
           }
-          case SCOPE_CHANGE_EVENTS.IDE_CUSTOM_PROTOCOL_LINK_CLICKED as string: {
-            const url = getUrlToNavigateFromCustomProtocolLink(scope);
+          case SCOPE_CHANGE_EVENTS.IDE_REST_API_CALL as string: {
+            const url = getUrlToNavigateFromRestApiCall(scope);
             if (url) {
               goTo(url, { state });
               break;
