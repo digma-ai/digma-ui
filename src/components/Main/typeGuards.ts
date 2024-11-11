@@ -11,10 +11,10 @@ export const isScopeWithCodeLensContext = (
 ): x is ScopeWithCodeLensContext =>
   x.context?.event === SCOPE_CHANGE_EVENTS.IDE_CODE_LENS_CLICKED;
 
-export const isScopeWithCustomProtocolLinkContext = (
+export const isScopeWithRestApiCallContext = (
   x: Scope
 ): x is ScopeWithCustomProtocolLinkContext =>
-  x.context?.event === SCOPE_CHANGE_EVENTS.IDE_CUSTOM_PROTOCOL_LINK_CLICKED;
+  x.context?.event === SCOPE_CHANGE_EVENTS.IDE_REST_API_CALL;
 
 export const isScopeWithErrorDetailsIdContext = (
   x: Scope
