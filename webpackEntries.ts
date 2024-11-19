@@ -9,6 +9,9 @@ export const entries: AppEntries = {
     entry: path.resolve(__dirname, "./src/containers/Documentation/index.tsx"),
     environmentVariables: ["documentationPage"]
   },
+  ideLauncher: {
+    entry: path.resolve(__dirname, "./src/containers/IdeLauncher/index.tsx")
+  },
   installationWizard: {
     entry: path.resolve(
       __dirname,
