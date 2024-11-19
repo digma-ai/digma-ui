@@ -10,3 +10,10 @@ export interface PluginInfo {
   isCentralized: boolean;
   openProjects: string[];
 }
+
+export interface ShowIdeProjectResult {
+  result: "success" | "failure";
+  error?: { message: string };
+}
+
+export type IdeScanningResult = { port: number; response: PluginInfo }[];

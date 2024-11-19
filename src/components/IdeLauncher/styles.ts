@@ -27,6 +27,10 @@ export const Content = styled.main`
   flex-grow: 1;
   padding: 88px 60px 0;
   gap: 32px;
+
+  @media (width <= 375px) {
+    padding: 88px 45px 0;
+  }
 `;
 
 export const TextContainer = styled.div`
@@ -42,6 +46,10 @@ export const Title = styled.h1`
   color: ${({ theme }) => theme.colors.v3.text.primary};
   font-size: 40px;
   font-weight: 500;
+
+  @media (width <= 375px) {
+    font-size: 32px;
+  }
 `;
 
 export const Description = styled.p`
@@ -49,6 +57,14 @@ export const Description = styled.p`
   font-size: 24px;
   font-weight: 400;
   line-height: 150%;
+
+  @media (width <= 375px) {
+    font-size: 16px;
+  }
+`;
+
+export const ButtonName = styled.span`
+  color: ${({ theme }) => theme.colors.v3.text.primary};
 `;
 
 export const SelectContainer = styled.div`
@@ -65,6 +81,7 @@ export const Footer = styled.footer`
   line-height: 30px;
   opacity: 0.35;
   padding: 32px 68px;
+  white-space: nowrap;
 `;
 
 export const FooterLink = styled.a`

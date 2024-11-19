@@ -1,12 +1,12 @@
 import axios from "axios";
 import { isString } from "../../typeGuards/isString";
-import { PluginInfo } from "./types";
+import { IdeScanningResult, PluginInfo } from "./types";
 
 const DEFAULT_PORT = 63342;
 const PORT_RANGE = 20;
 const ABOUT_PATH = "api/digma/about";
 
-export const scanIDEs = async () => {
+export const scanRunningIdeProjects = async (): Promise<IdeScanningResult> => {
   const instances = Array.from(
     { length: PORT_RANGE },
     (_, i) => DEFAULT_PORT + i
