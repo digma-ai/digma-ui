@@ -1,4 +1,4 @@
-import { forwardRef, useState } from "react";
+import { useState } from "react";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { CrossIcon } from "../icons/CrossIcon";
 import { NewButton } from "../v3/NewButton";
@@ -6,7 +6,7 @@ import { Spinner } from "../v3/Spinner";
 import * as s from "./styles";
 import { DismissPanelProps } from "./types";
 
-const DismissPanelComponent = ({
+export const DismissPanel = ({
   state,
   onShow,
   onDismiss,
@@ -76,5 +76,3 @@ const DismissPanelComponent = ({
     </>
   );
 };
-
-export const DismissPanel = forwardRef(DismissPanelComponent);

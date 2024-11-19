@@ -1,6 +1,6 @@
 {
   "name": "digma-ui",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "description": "Digma UI",
   "main": "dist/index.js",
   "scripts": {
@@ -15,6 +15,7 @@
     "build-storybook": "storybook build",
     "build:dashboard:dev": "webpack --config webpack.dev.ts --env app=dashboard",
     "build:documentation:dev": "webpack --config webpack.dev.ts --env app=documentation",
+    "build:ide-launcher:dev": "webpack --config webpack.dev.ts --env app=ideLauncher",
     "build:installation-wizard:dev": "webpack --config webpack.dev.ts --env app=installationWizard",
     "build:main:dev": "webpack --config webpack.dev.ts --env app=main",
     "build:notifications:dev": "webpack --config webpack.dev.ts --env app=notifications",
@@ -24,6 +25,7 @@
     "build:dev:web": "webpack --config webpack.dev.ts --env platform=Web",
     "build:dashboard:prod": "webpack --config webpack.prod.ts --env app=dashboard",
     "build:documentation:prod": "webpack --config webpack.prod.ts --env app=documentation",
+    "build:ide-launcher:prod": "webpack --config webpack.prod.ts --env app=ideLauncher",
     "build:installation-wizard:prod": "webpack --config webpack.prod.ts --env app=installationWizard",
     "build:main:prod": "webpack --config webpack.prod.ts --env app=main",
     "build:notifications:prod": "webpack --config webpack.prod.ts --env app=notifications",

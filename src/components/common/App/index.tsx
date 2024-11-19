@@ -4,7 +4,9 @@ import { ThemeProvider } from "styled-components";
 import { actions } from "../../../actions";
 import { dispatcher } from "../../../dispatcher";
 import { Theme } from "../../../globals";
+import { useColorScheme } from "../../../hooks/useColorScheme";
 import { logger } from "../../../logging";
+import { platform } from "../../../platform";
 import { useStore } from "../../../store/useStore";
 import { isBoolean } from "../../../typeGuards/isBoolean";
 import { isNull } from "../../../typeGuards/isNull";
@@ -58,7 +60,10 @@ const defaultMainFont = isString(window.mainFont) ? window.mainFont : "";
 const defaultCodeFont = isString(window.codeFont) ? window.codeFont : "";
 
 export const App = ({ theme, children, id }: AppProps) => {
-  const [currentTheme, setCurrentTheme] = useState(theme ?? getTheme());
+  const colorScheme = useColorScheme();
+  const [currentTheme, setCurrentTheme] = useState(
+    theme ?? getTheme() ?? colorScheme
+  );
   const [mainFont, setMainFont] = useState(defaultMainFont);
   const [codeFont, setCodeFont] = useState(defaultCodeFont);
   const [config, setConfig] = useState(useContext(ConfigContext));
@@ -98,6 +103,12 @@ export const App = ({ theme, children, id }: AppProps) => {
       setCurrentTheme(theme);
     }
   }, [theme]);
+
+  useEffect(() => {
+    if (platform === "Web") {
+      setCurrentTheme(colorScheme);
+    }
+  }, [colorScheme]);
 
   useEffect(() => {
     const handleSetTheme = (data: unknown) => {
