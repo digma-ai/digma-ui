@@ -87,19 +87,22 @@ export const IdeLauncher = () => {
     }
   }, [tryToShowIdeProject]);
 
-  const handleSelectChange = (value: string | string[]) => {
+  const handleSelectChange = async (value: string | string[]) => {
     const selectedValue = isString(value) ? value : value[0];
+    const { port, project } = parseSelectedItemValue(selectedValue);
 
-    setSelectItems((prev) => {
-      if (!prev) {
-        return prev;
-      }
+    if (!selectItems) {
+      return;
+    }
 
-      return prev.map((item) => ({
+    setSelectItems(
+      selectItems.map((item) => ({
         ...item,
         selected: item.value === selectedValue
-      }));
-    });
+      }))
+    );
+
+    await tryToShowIdeProject(port, project);
   };
 
   const handleRefreshButtonClick = () => {
@@ -213,7 +216,9 @@ export const IdeLauncher = () => {
             <Select
               placeholder={selectedItem?.label ?? "Select IDE Project"}
               items={selectItems}
-              onChange={handleSelectChange}
+              onChange={(value) => {
+                void handleSelectChange(value);
+              }}
             />
           </s.SelectContainer>
         </>
