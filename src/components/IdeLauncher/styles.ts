@@ -44,6 +44,7 @@ export const TextContainer = styled.div`
 
 export const Title = styled.h1`
   color: ${({ theme }) => theme.colors.v3.text.primary};
+  margin: 0;
   font-size: 40px;
   font-weight: 500;
 
@@ -54,6 +55,7 @@ export const Title = styled.h1`
 
 export const Description = styled.p`
   color: ${({ theme }) => theme.colors.v3.text.tertiary};
+  margin: 0;
   font-size: 24px;
   font-weight: 400;
   line-height: 150%;
@@ -68,7 +70,7 @@ export const EmphasizedText = styled.span`
 `;
 
 export const SelectContainer = styled.div`
-  width: 320px;
+  width: 560px;
 `;
 
 export const Footer = styled.footer`

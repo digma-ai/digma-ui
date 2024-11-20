@@ -169,7 +169,9 @@ export const Select = ({
           </s.ButtonIconContainer>
         )}
         {isString(placeholder) && (
-          <s.ButtonLabel $isActive={isActive}>{placeholder}</s.ButtonLabel>
+          <Tooltip title={placeholder} isDisabled={placeholder.length === 0}>
+            <s.ButtonLabel $isActive={isActive}>{placeholder}</s.ButtonLabel>
+          </Tooltip>
         )}
         {multiselect && isSelectedStateEnabled && selectedValues.length > 0 && (
           <s.Number>{selectedValues.length}</s.Number>
