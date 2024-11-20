@@ -33,6 +33,9 @@ const getURLQueryParams = (url: string) => {
 export const IdeLauncher = () => {
   const theme = useTheme();
   const themeKind = getThemeKind(theme);
+  const params = getURLQueryParams(window.location.search);
+  const { environmentName, spanDisplayName } = params;
+  const action = params["plugin.action"];
   const [selectItems, setSelectItems] = useState<SelectItem[]>();
   const isMobile = ["Android", "iPhone", "iPad"].some((x) =>
     window.navigator.userAgent.includes(x)
@@ -170,7 +173,7 @@ export const IdeLauncher = () => {
             </s.Title>
             <s.Description>
               Please check that IDE is running and click the{" "}
-              <s.ButtonName>Try again</s.ButtonName> button below.
+              <s.EmphasizedText>Try again</s.EmphasizedText> button below.
             </s.Description>
           </s.TextContainer>
           <NewButton
@@ -194,11 +197,33 @@ export const IdeLauncher = () => {
             <s.Title>Failed to find IDEs with Digma plugin running</s.Title>
             <s.Description>
               Please open the IDE with Digma plugin installed, check its
-              settings and click the <s.ButtonName>Refresh</s.ButtonName> button
-              below.
+              settings and click the{" "}
+              <s.EmphasizedText>Refresh</s.EmphasizedText> button below.
             </s.Description>
           </s.TextContainer>
           <NewButton label={"Refresh"} onClick={handleRefreshButtonClick} />
+        </>
+      );
+    }
+
+    if (selectItems.length === 1) {
+      return (
+        <>
+          <s.TextContainer>
+            <s.Title>Opening the IDE...</s.Title>
+            <s.Description>
+              Your IDE client is opening automatically; you can close this tab.
+            </s.Description>
+          </s.TextContainer>
+          <s.SelectContainer>
+            <Select
+              placeholder={selectedItem?.label ?? "Select IDE Project"}
+              items={selectItems}
+              onChange={(value) => {
+                void handleSelectChange(value);
+              }}
+            />
+          </s.SelectContainer>
         </>
       );
     }
@@ -207,7 +232,19 @@ export const IdeLauncher = () => {
       return (
         <>
           <s.TextContainer>
-            <s.Title>Select the IDE project to view issues in Digma</s.Title>
+            {action === "OpenReport" ? (
+              <s.Title>
+                Select the IDE project to view Metrics report in Digma
+              </s.Title>
+            ) : (
+              <s.Title>
+                Select the IDE project to view{" "}
+                {spanDisplayName && <>{spanDisplayName} </>}
+                issues{" "}
+                {environmentName && <>for {environmentName} environment </>}
+                in Digma
+              </s.Title>
+            )}
             <s.Description>
               Please select the IDE project you&apos;d like to open.
             </s.Description>

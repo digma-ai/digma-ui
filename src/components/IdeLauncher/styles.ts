@@ -38,7 +38,7 @@ export const TextContainer = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 24px;
-  max-width: 820px;
+  max-width: 1100px;
   text-align: center;
 `;
 
@@ -63,12 +63,12 @@ export const Description = styled.p`
   }
 `;
 
-export const ButtonName = styled.span`
+export const EmphasizedText = styled.span`
   color: ${({ theme }) => theme.colors.v3.text.primary};
 `;
 
 export const SelectContainer = styled.div`
-  width: 228px;
+  width: 320px;
 `;
 
 export const Footer = styled.footer`
