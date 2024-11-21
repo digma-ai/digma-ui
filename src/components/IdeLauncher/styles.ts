@@ -53,7 +53,7 @@ export const Title = styled.h1`
   }
 `;
 
-export const Description = styled.p`
+export const Subtitle = styled.h2`
   color: ${({ theme }) => theme.colors.v3.text.tertiary};
   margin: 0;
   font-size: 24px;
@@ -67,6 +67,11 @@ export const Description = styled.p`
 
 export const EmphasizedText = styled.span`
   color: ${({ theme }) => theme.colors.v3.text.primary};
+`;
+
+export const ButtonsContainer = styled.div`
+  display: flex;
+  gap: 16px;
 `;
 
 export const SelectContainer = styled.div`
