@@ -34,7 +34,6 @@ export const IdeLauncher = () => {
   const theme = useTheme();
   const themeKind = getThemeKind(theme);
   const params = getURLQueryParams(window.location.search);
-  const { environmentName, spanDisplayName } = params;
   const action = params["plugin.action"];
   const [selectItems, setSelectItems] = useState<SelectItem[]>();
   const isMobile = ["Android", "iPhone", "iPad"].some((x) =>
@@ -108,11 +107,11 @@ export const IdeLauncher = () => {
     await tryToShowIdeProject(port, project);
   };
 
-  const handleRefreshButtonClick = () => {
+  const handleTryScanningAgainButtonClick = () => {
     window.location.reload();
   };
 
-  const handleTryAgainButtonClick = async () => {
+  const handleTryShowIdeProjectAgainButtonClick = async () => {
     const selectedItemValue = selectItems?.find((item) => item.selected)?.value;
     if (!selectedItemValue) {
       return;
@@ -120,6 +119,14 @@ export const IdeLauncher = () => {
 
     const { port, project } = parseSelectedItemValue(selectedItemValue);
     await tryToShowIdeProject(port, project);
+  };
+
+  const handleGetDigmaButtonClick = () => {
+    window.open(
+      "https://plugins.jetbrains.com/plugin/19470-digma-continuous-feedback",
+      "_blank",
+      "noopener noreferrer"
+    );
   };
 
   useEffect(() => {
@@ -135,13 +142,22 @@ export const IdeLauncher = () => {
   const selectedItem = selectItems?.find((item) => item.selected);
 
   const renderContent = () => {
+    if (!action) {
+      return (
+        <s.TextContainer>
+          <s.Title>Invalid link</s.Title>
+          <s.Subtitle>Link is partial or invalid</s.Subtitle>
+        </s.TextContainer>
+      );
+    }
+
     if (isMobile) {
       return (
         <s.TextContainer>
-          <s.Title>Unsupported platform</s.Title>
-          <s.Description>
-            The IDE cannot be opened on this device.
-          </s.Description>
+          <s.Title>Can&apos;t open Digma link</s.Title>
+          <s.Subtitle>
+            Digma links can only be opened on desktop/laptop
+          </s.Subtitle>
         </s.TextContainer>
       );
     }
@@ -149,7 +165,11 @@ export const IdeLauncher = () => {
     if (isIdeProjectScanningInProgress) {
       return (
         <s.TextContainer>
-          <s.Title>Looking for running IDEs...</s.Title>
+          <s.Title>Searching for a running IDE</s.Title>
+          <s.Subtitle>
+            You&apos;ll need an IDE installed with Digma configured to open the
+            link
+          </s.Subtitle>
         </s.TextContainer>
       );
     }
@@ -157,32 +177,39 @@ export const IdeLauncher = () => {
     if (isShowIdeProjectInProgress) {
       return (
         <s.TextContainer>
-          <s.Title>
-            Opening the {selectedItem?.label ?? "IDE project"}...
-          </s.Title>
+          <s.Title>Opening the Digma link in your IDE</s.Title>
         </s.TextContainer>
       );
     }
 
-    if (showIdeProjectResult?.error) {
+    if (showIdeProjectResult?.result === "failure") {
       return (
         <>
           <s.TextContainer>
-            <s.Title>
-              Failed to open the {selectedItem?.label ?? "IDE project"}
-            </s.Title>
-            <s.Description>
+            <s.Title>There was an issue opening the link in the IDE</s.Title>
+            <s.Subtitle>
               Please check that IDE is running and click the{" "}
               <s.EmphasizedText>Try again</s.EmphasizedText> button below.
-            </s.Description>
+            </s.Subtitle>
           </s.TextContainer>
           <NewButton
             label={"Try again"}
             onClick={() => {
-              void handleTryAgainButtonClick();
+              void handleTryShowIdeProjectAgainButtonClick();
             }}
           />
         </>
+      );
+    }
+
+    if (showIdeProjectResult?.result === "success") {
+      return (
+        <s.TextContainer>
+          <s.Title>Opening the Digma link in your IDE</s.Title>
+          <s.Subtitle>
+            Switching over to the IDE. You can close this tab.
+          </s.Subtitle>
+        </s.TextContainer>
       );
     }
 
@@ -194,60 +221,37 @@ export const IdeLauncher = () => {
       return (
         <>
           <s.TextContainer>
-            <s.Title>Failed to find IDEs with Digma plugin running</s.Title>
-            <s.Description>
-              Please open the IDE with Digma plugin installed, check its
-              settings and click the{" "}
-              <s.EmphasizedText>Refresh</s.EmphasizedText> button below.
-            </s.Description>
+            <s.Title>Unable to open the Digma link</s.Title>
+            <s.Subtitle>
+              Opening this link requires a running IDE with Digma installed and
+              configured. Launch your IDE and install Digma as needed, then
+              click the <s.EmphasizedText>Try again</s.EmphasizedText> button.
+            </s.Subtitle>
           </s.TextContainer>
-          <NewButton label={"Refresh"} onClick={handleRefreshButtonClick} />
-        </>
-      );
-    }
-
-    if (selectItems.length === 1) {
-      return (
-        <>
-          <s.TextContainer>
-            <s.Title>Opening the IDE...</s.Title>
-            <s.Description>
-              Your IDE client is opening automatically; you can close this tab.
-            </s.Description>
-          </s.TextContainer>
-          <s.SelectContainer>
-            <Select
-              placeholder={selectedItem?.label ?? "Select IDE Project"}
-              items={selectItems}
-              onChange={(value) => {
-                void handleSelectChange(value);
-              }}
+          <s.ButtonsContainer>
+            <NewButton
+              label={"Try again"}
+              onClick={handleTryScanningAgainButtonClick}
+              buttonType={"secondary"}
             />
-          </s.SelectContainer>
+            <NewButton
+              label={"Get Digma"}
+              onClick={handleGetDigmaButtonClick}
+            />
+          </s.ButtonsContainer>
         </>
       );
     }
 
-    if (selectItems.length > 0) {
+    if (selectItems.length > 1) {
       return (
         <>
           <s.TextContainer>
-            {action === "OpenReport" ? (
-              <s.Title>
-                Select the IDE project to view Metrics report in Digma
-              </s.Title>
-            ) : (
-              <s.Title>
-                Select the IDE project to view{" "}
-                {spanDisplayName && <>{spanDisplayName} </>}
-                issues{" "}
-                {environmentName && <>for {environmentName} environment </>}
-                in Digma
-              </s.Title>
-            )}
-            <s.Description>
-              Please select the IDE project you&apos;d like to open.
-            </s.Description>
+            <s.Title>Select the IDE project to view the Digma link</s.Title>
+            <s.Subtitle>
+              We&apos;ll automatically switch to the IDE once you make a
+              selection
+            </s.Subtitle>
           </s.TextContainer>
           <s.SelectContainer>
             <Select
