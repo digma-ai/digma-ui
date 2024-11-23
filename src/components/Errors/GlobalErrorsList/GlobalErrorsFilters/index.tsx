@@ -379,6 +379,7 @@ export const GlobalErrorsFilters = () => {
             endpointsFilterOptions,
             "Endpoints"
           )}
+          searchable={true}
           multiselect={true}
           icon={(props: IconProps) => (
             <s.SelectItemIconContainer>
