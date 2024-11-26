@@ -4,6 +4,7 @@ import { getFeatureFlagValue } from "../../featureFlags";
 import { usePersistence } from "../../hooks/usePersistence";
 import { usePrevious } from "../../hooks/usePrevious";
 import { useConfigSelector } from "../../store/config/useConfigSelector";
+import { GlobalErrorsSelectedFiltersState } from "../../store/errors/errorsSlice";
 import { useErrorsSelector } from "../../store/errors/useErrorsSelector";
 import { useStore } from "../../store/useStore";
 import { trackingEvents as globalEvents } from "../../trackingEvents";
@@ -21,10 +22,17 @@ import { ErrorsList } from "./ErrorsList";
 import { GlobalErrorsList } from "./GlobalErrorsList";
 import * as s from "./styles";
 
+const PERSISTENCE_KEY = "globalErrorsFilters";
 const SHOW_ONLY_WORKSPACE_ERROR_STACK_TRACE_ITEMS_PERSISTENCE_KEY =
   "showOnlyWorkspaceErrorStackTraceItems";
 
 export const Errors = () => {
+  const [persistedFilters, setPersistedFilters] =
+    usePersistence<GlobalErrorsSelectedFiltersState>(
+      PERSISTENCE_KEY,
+      "project"
+    );
+  const previousPersistedFilters = usePrevious(persistedFilters);
   const [persistedShowWorkspaceItemsOnly, setPersistedShowWorkspaceItemsOnly] =
     usePersistence<ShowOnlyWorkspaceErrorStackTraceItemsPayload>(
       SHOW_ONLY_WORKSPACE_ERROR_STACK_TRACE_ITEMS_PERSISTENCE_KEY,
@@ -38,12 +46,14 @@ export const Errors = () => {
   const previousPersistedShowWorkspaceItemsOnly = usePrevious(
     persistedShowWorkspaceItemsOnly
   );
-  const { scope, backendInfo } = useConfigSelector();
-  const { errorDetailsWorkspaceItemsOnly } = useErrorsSelector();
+  const { scope, backendInfo, selectedServices } = useConfigSelector();
+  const { errorDetailsWorkspaceItemsOnly, globalErrorsSelectedFilters } =
+    useErrorsSelector();
   const previousErrorDetailsWorkspaceItemsOnly = usePrevious(
     errorDetailsWorkspaceItemsOnly
   );
-  const { setErrorDetailsWorkspaceItemsOnly } = useStore.getState();
+  const { setErrorDetailsWorkspaceItemsOnly, setGlobalErrorsSelectedFilters } =
+    useStore.getState();
   const spanCodeObjectId = scope?.span?.spanCodeObjectId;
   const methodId = scope?.span?.methodId ?? undefined;
   const { goTo } = useHistory();
@@ -53,6 +63,35 @@ export const Errors = () => {
     backendInfo,
     FeatureFlag.ARE_GLOBAL_ERRORS_ENABLED
   );
+  const isInitialized = Boolean(globalErrorsSelectedFilters);
+
+  useEffect(() => {
+    if (
+      isUndefined(previousPersistedFilters) &&
+      !isUndefined(persistedFilters)
+    ) {
+      setGlobalErrorsSelectedFilters(
+        persistedFilters ?? {
+          endpoints: [],
+          errorTypes: [],
+          criticalities: [],
+          handlingTypes: []
+        }
+      );
+    }
+  }, [
+    previousPersistedFilters,
+    persistedFilters,
+    selectedServices,
+    setGlobalErrorsSelectedFilters
+  ]);
+
+  // Update persisted filters on filters change
+  useEffect(() => {
+    if (isInitialized) {
+      setPersistedFilters(globalErrorsSelectedFilters);
+    }
+  }, [isInitialized, globalErrorsSelectedFilters, setPersistedFilters]);
 
   // Rehydrate "Workspace only" toggle value from persistence
   useEffect(() => {
@@ -103,6 +142,10 @@ export const Errors = () => {
     });
     goTo(`/${TAB_IDS.ASSETS}`);
   };
+
+  if (!isInitialized) {
+    return null;
+  }
 
   const renderContent = () => {
     if (selectedErrorId) {

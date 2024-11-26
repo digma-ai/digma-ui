@@ -29,7 +29,6 @@ export interface GlobalErrorsFiltersState {
 }
 
 export interface GlobalErrorsSelectedFiltersState {
-  services: string[];
   endpoints: string[];
   errorTypes: string[];
   criticalities: ErrorCriticality[];
@@ -45,14 +44,13 @@ export interface ErrorsState {
   globalErrorsPageSize: number;
   globalErrorsSorting: GLOBAL_ERROR_SORTING_CRITERION;
   globalErrorsFilters: GlobalErrorsFiltersState;
-  globalErrorsSelectedFilters: GlobalErrorsSelectedFiltersState;
+  globalErrorsSelectedFilters: GlobalErrorsSelectedFiltersState | null;
   globalErrorsViewMode: ViewMode;
   errorDetailsWorkspaceItemsOnly: boolean;
   globalErrorsLastDays?: number;
 }
 
-const selectedFiltersInitialState = {
-  services: [],
+const selectedFiltersInitialState: GlobalErrorsSelectedFiltersState = {
   endpoints: [],
   errorTypes: [],
   criticalities: [],
@@ -73,7 +71,7 @@ export const globalErrorsInitialState = {
     errorTypes: null
   },
   globalErrorsViewMode: ViewMode.All,
-  globalErrorsSelectedFilters: selectedFiltersInitialState,
+  globalErrorsSelectedFilters: null,
   globalErrorsLastDays: DAYS_FILTER_DEFAULT_VALUE
 };
 

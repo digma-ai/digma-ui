@@ -41,7 +41,7 @@ export const useFetchData = <T, K>(
     refreshWithDebounce = false,
     debounceDelay = 0
   }: DataFetcherConfiguration,
-  query?: T
+  payload?: T
 ) => {
   const [data, setData] = useState<K>();
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
@@ -53,24 +53,17 @@ export const useFetchData = <T, K>(
     () => refreshWithInterval && refreshInterval > 0,
     [refreshWithInterval, refreshInterval]
   );
-  const isDebounceEnabled = useMemo(
-    () => refreshWithDebounce && debounceDelay >= 0,
-    [refreshWithDebounce, debounceDelay]
-  );
   const isPreviousRefreshWithIntervalEnabled = usePrevious(
     isRefreshWithIntervalEnabled
   );
   const previousRefreshInterval = usePrevious(refreshInterval);
   const previousIsEnabled = usePrevious(isEnabled);
-  const [payload, setPayload] = useState(
-    !isDebounceEnabled ? query : undefined
-  );
   const previousPayload = usePrevious(payload);
   const [isMounted, setIsMounted] = useState(false);
 
   useMount(() => {
     if (isEnabled && fetchOnMount) {
-      sendMessage(requestAction, query);
+      sendMessage(requestAction, payload);
     }
     setIsMounted(true);
 
@@ -79,22 +72,6 @@ export const useFetchData = <T, K>(
       window.clearTimeout(debounceTimerId.current);
     };
   });
-
-  useEffect(() => {
-    if (!isMounted) {
-      return;
-    }
-
-    if (!isDebounceEnabled) {
-      setPayload(query);
-      return;
-    }
-
-    window.clearTimeout(debounceTimerId.current);
-    debounceTimerId.current = window.setTimeout(() => {
-      setPayload(query);
-    }, debounceDelay);
-  }, [debounceDelay, query, isMounted, isDebounceEnabled]);
 
   // Clear timer and get data on request action change
   useEffect(() => {
@@ -121,7 +98,14 @@ export const useFetchData = <T, K>(
       previousPayload !== payload
     ) {
       window.clearTimeout(refreshTimerId.current);
-      sendMessage<T>(requestAction, payload);
+
+      if (refreshWithDebounce && debounceDelay >= 0) {
+        refreshTimerId.current = window.setTimeout(() => {
+          sendMessage<T>(requestAction, payload);
+        }, debounceDelay);
+      } else {
+        sendMessage<T>(requestAction, payload);
+      }
     }
   }, [
     previousPayload,
@@ -152,6 +136,7 @@ export const useFetchData = <T, K>(
       isPreviousRefreshWithIntervalEnabled !== isRefreshWithIntervalEnabled
     ) {
       window.clearTimeout(refreshTimerId.current);
+
       if (isEnabled && isRefreshWithIntervalEnabled) {
         sendMessage(requestAction, payload);
       }

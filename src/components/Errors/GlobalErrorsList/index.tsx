@@ -53,7 +53,7 @@ export const GlobalErrorsList = () => {
   const listContainerRef = useRef<HTMLDivElement | null>(null);
   const [latestPinChangedId, setLatestPinChangedId] = useState<string>();
   const [areAnimationsEnabled, setAreAnimationsEnabled] = useState(false);
-  const { environment, backendInfo } = useConfigSelector();
+  const { environment, backendInfo, selectedServices } = useConfigSelector();
   const isDismissEnabled = getFeatureFlagValue(
     backendInfo,
     FeatureFlag.IS_GLOBAL_ERROR_DISMISS_ENABLED
@@ -101,6 +101,7 @@ export const GlobalErrorsList = () => {
     );
 
   const environmentId = environment?.id;
+  const previousEnvironmentId = usePrevious(environmentId);
 
   const sortingMenuItems = Object.values(GLOBAL_ERROR_SORTING_CRITERION).map(
     (x) => ({
@@ -132,15 +133,15 @@ export const GlobalErrorsList = () => {
       dismissed: mode === ViewMode.OnlyDismissed,
       ...(areGlobalErrorsFiltersEnabled
         ? {
-            services: selectedFilters.services,
-            endpoints: selectedFilters.endpoints,
-            errorTypes: selectedFilters.errorTypes
+            services: selectedServices ?? [],
+            endpoints: selectedFilters?.endpoints ?? [],
+            errorTypes: selectedFilters?.errorTypes ?? []
           }
         : {}),
       ...(areGlobalErrorsCriticalityAndUnhandledFiltersEnabled
         ? {
-            criticalities: selectedFilters.criticalities,
-            handlingTypes: selectedFilters.handlingTypes
+            criticalities: selectedFilters?.criticalities ?? [],
+            handlingTypes: selectedFilters?.handlingTypes ?? []
           }
         : {})
     }),
@@ -152,11 +153,11 @@ export const GlobalErrorsList = () => {
       mode,
       lastDays,
       areGlobalErrorsFiltersEnabled,
-      selectedFilters.services,
-      selectedFilters.endpoints,
-      selectedFilters.errorTypes,
-      selectedFilters.criticalities,
-      selectedFilters.handlingTypes,
+      selectedServices,
+      selectedFilters?.endpoints,
+      selectedFilters?.errorTypes,
+      selectedFilters?.criticalities,
+      selectedFilters?.handlingTypes,
       areGlobalErrorsCriticalityAndUnhandledFiltersEnabled
     ]
   );
@@ -232,17 +233,19 @@ export const GlobalErrorsList = () => {
     environmentId,
     search,
     setGlobalErrorsPage,
-    selectedFilters.services,
-    selectedFilters.endpoints,
-    selectedFilters.errorTypes,
-    selectedFilters.criticalities,
-    selectedFilters.handlingTypes
+    selectedServices,
+    selectedFilters?.endpoints,
+    selectedFilters?.errorTypes,
+    selectedFilters?.criticalities,
+    selectedFilters?.handlingTypes
   ]);
 
   // Reset filters on environment change
   useEffect(() => {
-    resetGlobalErrorsSelectedFilters();
-  }, [environmentId, resetGlobalErrorsSelectedFilters]);
+    if (previousEnvironmentId && environmentId !== previousEnvironmentId) {
+      resetGlobalErrorsSelectedFilters();
+    }
+  }, [previousEnvironmentId, environmentId, resetGlobalErrorsSelectedFilters]);
 
   // Reset scroll position on filters change
   useEffect(() => {
@@ -338,11 +341,11 @@ export const GlobalErrorsList = () => {
   const areAnyFiltersApplied =
     search ||
     [
-      selectedFilters.services,
-      selectedFilters.endpoints,
-      selectedFilters.errorTypes,
-      selectedFilters.criticalities,
-      selectedFilters.handlingTypes
+      selectedServices ?? [],
+      selectedFilters?.endpoints ?? [],
+      selectedFilters?.errorTypes ?? [],
+      selectedFilters?.criticalities ?? [],
+      selectedFilters?.handlingTypes ?? []
     ].some((x) => x.length > 0);
 
   const renderDismissBtn = () => (
