@@ -29,7 +29,6 @@ export interface GlobalErrorsFiltersState {
 }
 
 export interface GlobalErrorsSelectedFiltersState {
-  services: string[];
   endpoints: string[];
   errorTypes: string[];
   criticalities: ErrorCriticality[];
@@ -45,21 +44,20 @@ export interface ErrorsState {
   globalErrorsPageSize: number;
   globalErrorsSorting: GLOBAL_ERROR_SORTING_CRITERION;
   globalErrorsFilters: GlobalErrorsFiltersState;
-  globalErrorsSelectedFilters: GlobalErrorsSelectedFiltersState;
+  globalErrorsSelectedFilters: GlobalErrorsSelectedFiltersState | null;
   globalErrorsViewMode: ViewMode;
   errorDetailsWorkspaceItemsOnly: boolean;
   globalErrorsLastDays?: number;
 }
 
-const selectedFiltersInitialState = {
-  services: [],
+const selectedFiltersInitialState: GlobalErrorsSelectedFiltersState = {
   endpoints: [],
   errorTypes: [],
   criticalities: [],
   handlingTypes: []
 };
 
-export const globalErrorsInitialState = {
+export const globalErrorsWithoutFiltersInitialState = {
   globalErrorsList: null,
   globalErrorsTotalCount: 0,
   areGlobalErrorsLoading: false,
@@ -73,8 +71,13 @@ export const globalErrorsInitialState = {
     errorTypes: null
   },
   globalErrorsViewMode: ViewMode.All,
-  globalErrorsSelectedFilters: selectedFiltersInitialState,
+  globalErrorsSelectedFilters: null,
   globalErrorsLastDays: DAYS_FILTER_DEFAULT_VALUE
+};
+
+export const globalErrorsInitialState = {
+  ...globalErrorsWithoutFiltersInitialState,
+  globalErrorsSelectedFilters: selectedFiltersInitialState
 };
 
 export const initialState: ErrorsState = {
@@ -119,6 +122,6 @@ export const errorsSlice = createSlice({
       set({ globalErrorsViewMode: mode }),
     setGlobalErrorsLastDays: (days?: number) =>
       set({ globalErrorsLastDays: days }),
-    resetGlobalErrors: () => set({ ...globalErrorsInitialState })
+    resetGlobalErrors: () => set({ ...globalErrorsWithoutFiltersInitialState })
   }
 });

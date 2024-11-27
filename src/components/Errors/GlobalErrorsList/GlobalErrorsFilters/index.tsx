@@ -1,13 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { getFeatureFlagValue } from "../../../../featureFlags";
-import { useFetchData } from "../../../../hooks/useFetchData";
 import { usePrevious } from "../../../../hooks/usePrevious";
 import { useConfigSelector } from "../../../../store/config/useConfigSelector";
 import {
   ErrorCriticality,
-  ErrorFilter,
-  ErrorHandlingType,
-  GlobalErrorsFiltersState
+  ErrorHandlingType
 } from "../../../../store/errors/errorsSlice";
 import { useErrorsSelector } from "../../../../store/errors/useErrorsSelector";
 import { useStore } from "../../../../store/useStore";
@@ -21,20 +18,16 @@ import { CrossCircleIcon } from "../../../common/icons/CrossCircleIcon";
 import { EndpointIcon } from "../../../common/icons/EndpointIcon";
 import { IconProps } from "../../../common/icons/types";
 import { SelectItem } from "../../../common/v3/Select/types";
-import { actions } from "../../actions";
 import { trackingEvents } from "../../tracking";
+import { getFiltersOptions } from "./getFiltersOptions";
 import * as s from "./styles";
-import {
-  EndpointFilterData,
-  GetGlobalErrorsFiltersDataPayload,
-  SetGlobalErrorsFiltersDataPayload
-} from "./types";
 
 const getSelectPlaceholder = (options: SelectItem[], placeholder: string) =>
   options.filter((x) => x.selected).length > 0 ? placeholder : "All";
 
 export const GlobalErrorsFilters = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const previousIsPopupOpen = usePrevious(isPopupOpen);
   const {
     environment,
     backendInfo,
@@ -58,122 +51,81 @@ export const GlobalErrorsFilters = () => {
   const previousEnvironmentId = usePrevious(environmentId);
   const scopeSpanCodeObjectId = scope?.span?.spanCodeObjectId;
   const previousScopeSpanCodeObjectId = usePrevious(scopeSpanCodeObjectId);
-
-  const [lastChangedFilter, setLastChangedFilter] = useState<
-    ErrorFilter | undefined
-  >(undefined);
+  const [areFilterOptionsLoaded, setAreFiltersOptionsLoaded] = useState(false);
   const [selectedServices, setSelectedServices] = useState<string[]>(
     globallySelectedServices ?? []
   );
   const [selectedEndpoints, setSelectedEndpoints] = useState<string[]>(
-    globalErrorsSelectedFilters.endpoints
+    globalErrorsSelectedFilters?.endpoints ?? []
   );
   const [selectedErrorTypes, setSelectedErrorTypes] = useState<string[]>(
-    globalErrorsSelectedFilters.errorTypes
+    globalErrorsSelectedFilters?.errorTypes ?? []
   );
   const [selectedCriticalities, setSelectedCriticalities] = useState<
     ErrorCriticality[]
-  >(globalErrorsSelectedFilters.criticalities);
+  >(globalErrorsSelectedFilters?.criticalities ?? []);
   const [selectedHandlingTypes, setSelectedHandlingTypes] = useState<
     ErrorHandlingType[]
-  >(globalErrorsSelectedFilters.handlingTypes);
+  >(globalErrorsSelectedFilters?.handlingTypes ?? []);
 
-  const getLastSelectedFilterValues = useCallback(
-    (changedFilter: ErrorFilter) => {
-      switch (changedFilter) {
-        case "Services":
-          return selectedServices;
-        case "Endpoints":
-          return selectedEndpoints;
-        case "ErrorTypes":
-          return selectedErrorTypes;
-      }
-    },
-    [selectedServices, selectedEndpoints, selectedErrorTypes]
-  );
+  const getOptions = useCallback(async () => {
+    if (!environmentId || !isPopupOpen) {
+      return;
+    }
 
-  const payload: GetGlobalErrorsFiltersDataPayload = useMemo(
-    () => ({
-      environment: environmentId ?? "",
-      ...(lastChangedFilter
-        ? {
-            filterName: lastChangedFilter,
-            filterData: {
-              values: getLastSelectedFilterValues(lastChangedFilter),
-              ...(lastChangedFilter === "Endpoints"
-                ? { services: selectedServices }
-                : {})
-            }
-          }
-        : {})
-    }),
-    [
+    const filterOptions = await getFiltersOptions(
       environmentId,
       selectedServices,
-      getLastSelectedFilterValues,
-      lastChangedFilter
-    ]
-  );
+      selectedEndpoints
+    );
 
-  const { data } = useFetchData<
-    GetGlobalErrorsFiltersDataPayload,
-    SetGlobalErrorsFiltersDataPayload
-  >(
-    {
-      requestAction: actions.GET_GLOBAL_ERRORS_FILTERS_DATA,
-      responseAction: actions.SET_GLOBAL_ERRORS_FILTERS_DATA,
-      refreshWithInterval: false,
-      refreshOnPayloadChange: true,
-      isEnabled: Boolean(environment)
-    },
-    payload
-  );
-  const previousData = usePrevious(data);
-
-  useEffect(() => {
-    if (previousData !== data && data) {
-      const newServices = data.filters.find((x) => x.filterName === "Services");
-      const newEndpoints = data.filters.find(
-        (x) => x.filterName === "Endpoints"
-      );
-      const newErrorTypes = data.filters.find(
-        (x) => x.filterName === "ErrorTypes"
-      );
-
-      const newGlobalErrorsFilters: GlobalErrorsFiltersState = {
-        ...globalErrorsFilters
-      };
-
-      if (newServices) {
-        newGlobalErrorsFilters.services = newServices.values as string[];
-      }
-
-      if (newEndpoints) {
-        newGlobalErrorsFilters.endpoints =
-          newEndpoints.values as EndpointFilterData[];
-      }
-
-      if (newErrorTypes) {
-        newGlobalErrorsFilters.errorTypes = newErrorTypes.values as string[];
-      }
-
-      setGlobalErrorsFilters(newGlobalErrorsFilters);
-    }
-  }, [previousData, data, setGlobalErrorsFilters, globalErrorsFilters]);
-
-  useEffect(() => {
-    setSelectedServices(globalErrorsSelectedFilters.services);
-    setSelectedEndpoints(globalErrorsSelectedFilters.endpoints);
-    setSelectedErrorTypes(globalErrorsSelectedFilters.errorTypes);
+    setGlobalErrorsFilters(filterOptions);
   }, [
-    globalErrorsSelectedFilters.services,
-    globalErrorsSelectedFilters.endpoints,
-    globalErrorsSelectedFilters.errorTypes
+    isPopupOpen,
+    environmentId,
+    selectedServices,
+    selectedEndpoints,
+    setGlobalErrorsFilters
+  ]);
+
+  // Get filter options on popup open
+  useEffect(() => {
+    if (!previousIsPopupOpen && isPopupOpen) {
+      void getOptions().then(() => {
+        setAreFiltersOptionsLoaded(true);
+      });
+    }
+  }, [previousIsPopupOpen, isPopupOpen, getOptions]);
+
+  // Get filter options on selected services/endpoints change
+  useEffect(() => {
+    void getOptions();
+  }, [getOptions]);
+
+  // Clear filter options loaded state on popup close
+  useEffect(() => {
+    if (!isPopupOpen && previousIsPopupOpen) {
+      setAreFiltersOptionsLoaded(false);
+    }
+  }, [isPopupOpen, previousIsPopupOpen, setGlobalErrorsFilters]);
+
+  useEffect(() => {
+    setSelectedServices(globallySelectedServices ?? []);
+    setSelectedEndpoints(globalErrorsSelectedFilters?.endpoints ?? []);
+    setSelectedErrorTypes(globalErrorsSelectedFilters?.errorTypes ?? []);
+    setSelectedCriticalities(globalErrorsSelectedFilters?.criticalities ?? []);
+    setSelectedHandlingTypes(globalErrorsSelectedFilters?.handlingTypes ?? []);
+  }, [
+    globallySelectedServices,
+    globalErrorsSelectedFilters?.endpoints,
+    globalErrorsSelectedFilters?.errorTypes,
+    globalErrorsSelectedFilters?.criticalities,
+    globalErrorsSelectedFilters?.handlingTypes
   ]);
 
   // Clear filters on environment change, but keep the selected services
   useEffect(() => {
-    if (previousEnvironmentId !== environmentId) {
+    if (previousEnvironmentId ?? previousEnvironmentId !== environmentId) {
       setSelectedEndpoints([]);
       setSelectedErrorTypes([]);
       setSelectedCriticalities([]);
@@ -182,17 +134,17 @@ export const GlobalErrorsFilters = () => {
   }, [environmentId, previousEnvironmentId]);
 
   const discardChanges = useCallback(() => {
-    setSelectedServices(globalErrorsSelectedFilters.services);
-    setSelectedEndpoints(globalErrorsSelectedFilters.endpoints);
-    setSelectedErrorTypes(globalErrorsSelectedFilters.errorTypes);
-    setSelectedCriticalities(globalErrorsSelectedFilters.criticalities);
-    setSelectedHandlingTypes(globalErrorsSelectedFilters.handlingTypes);
+    setSelectedServices(globallySelectedServices ?? []);
+    setSelectedEndpoints(globalErrorsSelectedFilters?.endpoints ?? []);
+    setSelectedErrorTypes(globalErrorsSelectedFilters?.errorTypes ?? []);
+    setSelectedCriticalities(globalErrorsSelectedFilters?.criticalities ?? []);
+    setSelectedHandlingTypes(globalErrorsSelectedFilters?.handlingTypes ?? []);
   }, [
-    globalErrorsSelectedFilters.services,
-    globalErrorsSelectedFilters.endpoints,
-    globalErrorsSelectedFilters.errorTypes,
-    globalErrorsSelectedFilters.criticalities,
-    globalErrorsSelectedFilters.handlingTypes
+    globallySelectedServices,
+    globalErrorsSelectedFilters?.endpoints,
+    globalErrorsSelectedFilters?.errorTypes,
+    globalErrorsSelectedFilters?.criticalities,
+    globalErrorsSelectedFilters?.handlingTypes
   ]);
 
   // Close popup on environment or scope changes
@@ -218,7 +170,6 @@ export const GlobalErrorsFilters = () => {
       trackingEvents.GLOBAL_ERRORS_VIEW_SERVICES_FILTER_CHANGED
     );
     const newValue = Array.isArray(value) ? value : [value];
-    setLastChangedFilter("Services");
     setSelectedServices(newValue);
     setSelectedEndpoints([]);
     setSelectedErrorTypes([]);
@@ -229,7 +180,6 @@ export const GlobalErrorsFilters = () => {
       trackingEvents.GLOBAL_ERRORS_VIEW_ENDPOINTS_FILTER_CHANGED
     );
     const newValue = Array.isArray(value) ? value : [value];
-    setLastChangedFilter("Endpoints");
     setSelectedEndpoints(newValue);
     setSelectedErrorTypes([]);
   };
@@ -239,7 +189,6 @@ export const GlobalErrorsFilters = () => {
       trackingEvents.GLOBAL_ERRORS_VIEW_ERROR_TYPES_FILTER_CHANGED
     );
     const newValue = Array.isArray(value) ? value : [value];
-    setLastChangedFilter("Endpoints");
     setSelectedErrorTypes(newValue);
   };
 
@@ -320,18 +269,18 @@ export const GlobalErrorsFilters = () => {
     () => [
       {
         label: "Yes",
-        value: "Handled",
-        selected:
-          selectedHandlingTypes.length === 1 &&
-          selectedHandlingTypes[0] === "Handled",
-        enabled: true
-      },
-      {
-        label: "No",
         value: "Unhandled",
         selected:
           selectedHandlingTypes.length === 1 &&
           selectedHandlingTypes[0] === "Unhandled",
+        enabled: true
+      },
+      {
+        label: "No",
+        value: "Handled",
+        selected:
+          selectedHandlingTypes.length === 1 &&
+          selectedHandlingTypes[0] === "Handled",
         enabled: true
       },
       {
@@ -364,7 +313,9 @@ export const GlobalErrorsFilters = () => {
               <WrenchIcon {...props} />
             </s.SelectItemIconContainer>
           )}
-          disabled={servicesFilterOptions?.length === 0}
+          disabled={
+            servicesFilterOptions?.length === 0 || !areFilterOptionsLoaded
+          }
         />
       )
     },
@@ -379,13 +330,16 @@ export const GlobalErrorsFilters = () => {
             endpointsFilterOptions,
             "Endpoints"
           )}
+          searchable={true}
           multiselect={true}
           icon={(props: IconProps) => (
             <s.SelectItemIconContainer>
               <EndpointIcon {...props} />
             </s.SelectItemIconContainer>
           )}
-          disabled={endpointsFilterOptions?.length === 0}
+          disabled={
+            endpointsFilterOptions?.length === 0 || !areFilterOptionsLoaded
+          }
         />
       )
     },
@@ -406,7 +360,9 @@ export const GlobalErrorsFilters = () => {
               <CrossCircleIcon {...props} />
             </s.SelectItemIconContainer>
           )}
-          disabled={errorTypesFilterOptions?.length === 0}
+          disabled={
+            errorTypesFilterOptions?.length === 0 || !areFilterOptionsLoaded
+          }
         />
       )
     },
@@ -429,6 +385,7 @@ export const GlobalErrorsFilters = () => {
                     <WarningTriangleIcon {...props} />
                   </s.SelectItemIconContainer>
                 )}
+                disabled={!areFilterOptionsLoaded}
               />
             )
           },
@@ -445,6 +402,7 @@ export const GlobalErrorsFilters = () => {
                     <EyeIcon {...props} />
                   </s.SelectItemIconContainer>
                 )}
+                disabled={!areFilterOptionsLoaded}
               />
             )
           }
@@ -483,7 +441,6 @@ export const GlobalErrorsFilters = () => {
 
     setGlobalErrorsSelectedFilters({
       ...globalErrorsSelectedFilters,
-      services: selectedServices,
       endpoints: selectedEndpoints,
       errorTypes: selectedErrorTypes,
       criticalities: selectedCriticalities,
@@ -513,10 +470,10 @@ export const GlobalErrorsFilters = () => {
 
   const appliedFiltersCount = [
     (globallySelectedServices ?? []).length,
-    globalErrorsSelectedFilters.endpoints.length,
-    globalErrorsSelectedFilters.errorTypes.length,
-    globalErrorsSelectedFilters.criticalities.length,
-    globalErrorsSelectedFilters.handlingTypes.length
+    (globalErrorsSelectedFilters?.endpoints ?? []).length,
+    (globalErrorsSelectedFilters?.errorTypes ?? []).length,
+    (globalErrorsSelectedFilters?.criticalities ?? []).length,
+    (globalErrorsSelectedFilters?.handlingTypes ?? []).length
   ].filter((x) => x > 0).length;
 
   return (

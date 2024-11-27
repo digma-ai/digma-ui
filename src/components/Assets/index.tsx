@@ -78,10 +78,17 @@ export const Assets = () => {
   useEffect(() => {
     if (
       isUndefined(previousPersistedFilters) &&
-      !isUndefined(persistedFilters) &&
-      persistedFilters
+      !isUndefined(persistedFilters)
     ) {
-      setFilters(persistedFilters);
+      setFilters(
+        persistedFilters ?? {
+          services: [],
+          endpoints: [],
+          consumers: [],
+          internals: [],
+          insights: []
+        }
+      );
     }
   }, [previousPersistedFilters, persistedFilters, setFilters]);
 
@@ -217,7 +224,6 @@ export const Assets = () => {
           </>
         )}
       </s.Header>
-
       {renderContent()}
     </s.Container>
   );

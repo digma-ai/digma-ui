@@ -42,6 +42,7 @@ export const ASSET_TYPE_IDS = [
 
 const getData = (
   filters: AssetsFilters | null,
+  globallySelectedServices: string[] | null,
   searchQuery: string,
   viewMode: ViewMode,
   scopeSpanCodeObjectId?: string
@@ -59,7 +60,7 @@ const getData = (
             ...(filters?.consumers ?? []),
             ...(filters?.internals ?? [])
           ],
-          services: scopeSpanCodeObjectId ? [] : filters?.services ?? []
+          services: scopeSpanCodeObjectId ? [] : globallySelectedServices ?? []
         },
         ...(searchQuery.length > 0 ? { displayName: searchQuery } : {})
       }
@@ -84,7 +85,11 @@ export const AssetTypeList = ({
   const previousData = usePrevious(data);
   const [lastSetDataTimeStamp, setLastSetDataTimeStamp] = useState<number>();
   const previousLastSetDataTimeStamp = usePrevious(lastSetDataTimeStamp);
-  const { scope, environment } = useConfigSelector();
+  const {
+    scope,
+    environment,
+    selectedServices: globallySelectedServices
+  } = useConfigSelector();
   const scopeSpanCodeObjectId = scope?.span?.spanCodeObjectId;
   const previousScopeSpanCodeObjectId = usePrevious(scopeSpanCodeObjectId);
   const previousEnvironment = usePrevious(environment);
@@ -95,8 +100,15 @@ export const AssetTypeList = ({
   const isInitialLoading = !data;
 
   const refreshData = useCallback(
-    () => getData(filters, search, viewMode, scopeSpanCodeObjectId),
-    [filters, scopeSpanCodeObjectId, viewMode, search]
+    () =>
+      getData(
+        filters,
+        globallySelectedServices,
+        search,
+        viewMode,
+        scopeSpanCodeObjectId
+      ),
+    [filters, globallySelectedServices, scopeSpanCodeObjectId, viewMode, search]
   );
 
   useEffect(() => {
@@ -106,7 +118,8 @@ export const AssetTypeList = ({
   const areAnyFiltersApplied = checkIfAnyFiltersApplied(
     filters,
     search,
-    isServicesFilterEnabled
+    isServicesFilterEnabled,
+    globallySelectedServices
   );
 
   useEffect(() => {

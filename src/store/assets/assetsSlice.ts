@@ -78,7 +78,7 @@ export const assetsSlice = createSlice({
     setAssets: (assets: AssetsData) => set({ assets }),
     setAreAssetsLoading: (isLoading: boolean) =>
       set({ areAssetsLoading: isLoading }),
-    setAssetsFilters: (filters: AssetsFilters) => set({ filters }),
+    setAssetsFilters: (filters: AssetsFilters | null) => set({ filters }),
     setAssetsViewMode: (viewMode: ViewMode) => set({ viewMode }),
     setAssetsSearch: (search: string) => set({ search }),
     setAssetsPage: (page: number) => set({ page }),

@@ -271,6 +271,7 @@ export const IdeLauncher = () => {
     <s.Container>
       <Helmet>
         <title>Digma IDE Plugin Launcher</title>
+        <meta name={"viewport"} content={"width=device-width"} />
       </Helmet>
       <s.Header>
         <a

@@ -7,14 +7,15 @@ import {
   flip,
   offset,
   shift,
+  size,
   useClick,
   useDismiss,
   useFloating,
   useInteractions
 } from "@floating-ui/react";
-import { Children, cloneElement, useRef } from "react";
+import { Children, cloneElement, useRef, useState } from "react";
 import { DefaultTheme, useTheme } from "styled-components";
-import { isUndefined } from "../../../typeGuards/isUndefined";
+import { isNumber } from "../../../typeGuards/isNumber";
 import { LAYERS } from "../App/styles";
 import { PopoverProps } from "./types";
 
@@ -75,8 +76,12 @@ export const NewPopover = ({
   sameWidth,
   width,
   content,
-  closeOnOutsidePress
+  closeOnOutsidePress,
+  useShift
 }: PopoverProps) => {
+  const [minWidth, setMinWidth] = useState<number | string | undefined>();
+  const [maxWidth, setMaxWidth] = useState<number | string | undefined>();
+
   const arrowRef = useRef(null);
   const theme = useTheme();
   const arrowColor = getArrowColor(theme);
@@ -87,10 +92,43 @@ export const NewPopover = ({
     onOpenChange: onOpenChange,
     middleware: [
       offset(showArrow ? ARROW_HEIGHT + ARROW_GAP : GAP),
-      flip(),
-      shift({
-        boundary
+      size({
+        apply({ rects, availableWidth }) {
+          if (sameWidth) {
+            setMinWidth(rects.reference.width);
+            setMaxWidth(rects.reference.width);
+          } else {
+            const safeAvailableWidth = Math.max(availableWidth, 0);
+            const viewportWidth = window.innerWidth;
+            const anchorLeft = rects.reference.x;
+
+            const minWidth = width;
+            const maxWidth =
+              useShift === false
+                ? Math.max(viewportWidth - anchorLeft, 0)
+                : width;
+
+            setMinWidth(
+              isNumber(minWidth)
+                ? Math.min(minWidth, safeAvailableWidth)
+                : minWidth
+            );
+            setMaxWidth(
+              isNumber(maxWidth)
+                ? Math.min(maxWidth, safeAvailableWidth)
+                : maxWidth
+            );
+          }
+        }
       }),
+      flip(),
+      ...(useShift === false
+        ? []
+        : [
+            shift({
+              boundary
+            })
+          ]),
       ...(showArrow
         ? [
             arrow({
@@ -126,11 +164,8 @@ export const NewPopover = ({
             ref={refs.setFloating}
             style={{
               ...floatingStyles,
-              width: sameWidth
-                ? context.elements.reference?.getBoundingClientRect().width
-                : isUndefined(width)
-                ? undefined
-                : width,
+              minWidth,
+              maxWidth,
               zIndex: LAYERS.MODAL
             }}
             {...getFloatingProps()}

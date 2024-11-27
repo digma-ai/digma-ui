@@ -1,4 +1,4 @@
-import { ChangeEvent, useCallback, useRef, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
 import useDimensions from "react-cool-dimensions";
 import { isString } from "../../../../typeGuards/isString";
 import { isUndefined } from "../../../../typeGuards/isUndefined";
@@ -32,7 +32,9 @@ export const Select = ({
   placeholder,
   className,
   searchable,
-  showSelectedState
+  showSelectedState,
+  useShift,
+  sameWidth
 }: SelectProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
@@ -49,7 +51,6 @@ export const Select = ({
 
   const handleButtonClick = () => {
     setIsOpen(!isOpen);
-    setSearchValue("");
   };
 
   const handleItemClick = (item: SelectItem) => {
@@ -60,7 +61,6 @@ export const Select = ({
     if (!multiselect) {
       onChange(item.value);
       setIsOpen(false);
-      setSearchValue("");
       return;
     }
 
@@ -78,6 +78,12 @@ export const Select = ({
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
   };
+
+  useEffect(() => {
+    if (!isOpen) {
+      setSearchValue("");
+    }
+  }, [isOpen]);
 
   const selectedValues = items.filter((x) => x.selected).map((x) => x.value);
 
@@ -102,7 +108,8 @@ export const Select = ({
     isOpen || (isSelectedStateEnabled && selectedValues.length > 0);
   return (
     <NewPopover
-      sameWidth={true}
+      sameWidth={sameWidth !== false}
+      useShift={useShift !== false}
       content={
         <s.MenuContainer>
           {isSearchBarVisible && (

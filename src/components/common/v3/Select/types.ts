@@ -27,6 +27,8 @@ export interface SelectProps {
   icon?: ComponentType<IconProps>;
   className?: string;
   showSelectedState?: boolean;
+  useShift?: boolean;
+  sameWidth?: boolean;
 }
 
 export interface ButtonProps {

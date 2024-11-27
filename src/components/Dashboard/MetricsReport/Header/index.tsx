@@ -311,6 +311,8 @@ export const Header = ({ onGoBack }: HeaderProps) => {
                   selected: selectedEndpoints.includes(x.spanCodeObjectId)
                 })) ?? []
               }
+              useShift={false}
+              sameWidth={false}
               showSelectedState={true}
               multiselect={true}
               icon={WrenchIcon}

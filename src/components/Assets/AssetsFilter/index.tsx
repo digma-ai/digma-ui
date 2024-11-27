@@ -240,7 +240,7 @@ export const AssetsFilter = () => {
   ]);
 
   const discardChanges = useCallback(() => {
-    setSelectedServices(filters?.services ?? []);
+    setSelectedServices(globallySelectedServices ?? []);
     setSelectedEndpoints(filters?.endpoints ?? []);
     setSelectedConsumers(filters?.consumers ?? []);
     setSelectedInternals(filters?.internals ?? []);
@@ -248,7 +248,7 @@ export const AssetsFilter = () => {
 
     getData({
       ...query,
-      services: filters?.services ?? [],
+      services: globallySelectedServices ?? [],
       operations: [
         ...(filters?.endpoints ?? []),
         ...(filters?.consumers ?? []),
@@ -256,7 +256,7 @@ export const AssetsFilter = () => {
       ],
       insights: (filters?.insights as InsightType[]) ?? []
     });
-  }, [filters, query]);
+  }, [globallySelectedServices, filters, query]);
 
   // Close popup on environment or scope changes
   useEffect(() => {
@@ -423,7 +423,7 @@ export const AssetsFilter = () => {
 
   const appliedFiltersCount = filters
     ? [
-        ...(isServicesFilterEnabled ? filters.services : []),
+        ...(isServicesFilterEnabled ? globallySelectedServices ?? [] : []),
         ...filters.endpoints,
         ...filters.consumers,
         ...filters.internals,

@@ -13,4 +13,5 @@ export interface PopoverProps {
   sameWidth?: boolean;
   useClickInteraction?: boolean;
   closeOnOutsidePress?: boolean;
+  useShift?: boolean;
 }
