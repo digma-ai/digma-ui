@@ -57,7 +57,10 @@ const selectedFiltersInitialState: GlobalErrorsSelectedFiltersState = {
   handlingTypes: []
 };
 
-export const globalErrorsWithoutFiltersInitialState = {
+export const globalErrorsWithoutFiltersInitialState: Omit<
+  ErrorsState,
+  "globalErrorsSelectedFilters"
+> = {
   globalErrorsList: null,
   globalErrorsTotalCount: 0,
   areGlobalErrorsLoading: false,
@@ -71,8 +74,8 @@ export const globalErrorsWithoutFiltersInitialState = {
     errorTypes: null
   },
   globalErrorsViewMode: ViewMode.All,
-  globalErrorsSelectedFilters: null,
-  globalErrorsLastDays: DAYS_FILTER_DEFAULT_VALUE
+  globalErrorsLastDays: DAYS_FILTER_DEFAULT_VALUE,
+  errorDetailsWorkspaceItemsOnly: false
 };
 
 export const globalErrorsInitialState = {
