@@ -113,10 +113,14 @@ export const GlobalErrorsFilters = () => {
     setSelectedServices(globallySelectedServices ?? []);
     setSelectedEndpoints(globalErrorsSelectedFilters?.endpoints ?? []);
     setSelectedErrorTypes(globalErrorsSelectedFilters?.errorTypes ?? []);
+    setSelectedCriticalities(globalErrorsSelectedFilters?.criticalities ?? []);
+    setSelectedHandlingTypes(globalErrorsSelectedFilters?.handlingTypes ?? []);
   }, [
     globallySelectedServices,
     globalErrorsSelectedFilters?.endpoints,
-    globalErrorsSelectedFilters?.errorTypes
+    globalErrorsSelectedFilters?.errorTypes,
+    globalErrorsSelectedFilters?.criticalities,
+    globalErrorsSelectedFilters?.handlingTypes
   ]);
 
   // Clear filters on environment change, but keep the selected services

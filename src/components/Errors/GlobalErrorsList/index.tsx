@@ -81,7 +81,8 @@ export const GlobalErrorsList = () => {
     resetGlobalErrors,
     resetGlobalErrorsSelectedFilters,
     setGlobalErrorsViewMode,
-    setGlobalErrorsLastDays
+    setGlobalErrorsLastDays,
+    setSelectedServices
   } = useStore.getState();
 
   const areGlobalErrorsFiltersEnabled = getFeatureFlagValue(
@@ -313,6 +314,7 @@ export const GlobalErrorsList = () => {
     setGlobalErrorsSearch("");
     setGlobalErrorsPage(0);
     resetGlobalErrorsSelectedFilters();
+    setSelectedServices([]);
   };
 
   const handleDismissalViewModeButtonClick = () => {

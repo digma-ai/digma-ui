@@ -129,7 +129,12 @@ export const AssetList = ({
   );
   const listRef = useRef<HTMLUListElement>(null);
 
-  const { environment, backendInfo, scope } = useConfigSelector();
+  const {
+    environment,
+    backendInfo,
+    scope,
+    selectedServices: globallySelectedServices
+  } = useConfigSelector();
   const scopeSpanCodeObjectId = scope?.span?.spanCodeObjectId;
   const isServicesFilterEnabled = !scopeSpanCodeObjectId;
   const isInitialLoading = !data;
@@ -150,7 +155,7 @@ export const AssetList = ({
           ...(filters?.consumers ?? []),
           ...(filters?.internals ?? [])
         ],
-        services: scopeSpanCodeObjectId ? [] : filters?.services ?? [],
+        services: scopeSpanCodeObjectId ? [] : globallySelectedServices ?? [],
         directOnly: viewMode === "children"
       }
     }),
@@ -158,6 +163,7 @@ export const AssetList = ({
       page,
       assetTypeId,
       filters,
+      globallySelectedServices,
       viewMode,
       scopeSpanCodeObjectId,
       search,
@@ -198,7 +204,8 @@ export const AssetList = ({
   const areAnyFiltersApplied = checkIfAnyFiltersApplied(
     filters,
     search,
-    isServicesFilterEnabled
+    isServicesFilterEnabled,
+    globallySelectedServices
   );
 
   useEffect(() => {

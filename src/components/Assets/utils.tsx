@@ -55,7 +55,8 @@ export const getAssetTypeInfo = (
 export const checkIfAnyFiltersApplied = (
   filters: AssetsFilters | null,
   searchQuery: string,
-  isServicesFilterEnabled: boolean
+  isServicesFilterEnabled: boolean,
+  globallySelectedServices: string[] | null
 ) =>
   Boolean(
     filters &&
@@ -64,6 +65,6 @@ export const checkIfAnyFiltersApplied = (
         ...filters.endpoints,
         ...filters.consumers,
         ...filters.internals,
-        ...(isServicesFilterEnabled ? filters.services : [])
+        ...(isServicesFilterEnabled ? globallySelectedServices ?? [] : [])
       ].length > 0
   ) || searchQuery.length > 0;
