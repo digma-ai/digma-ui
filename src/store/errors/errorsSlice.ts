@@ -50,16 +50,9 @@ export interface ErrorsState {
   globalErrorsLastDays?: number;
 }
 
-const selectedFiltersInitialState: GlobalErrorsSelectedFiltersState = {
-  endpoints: [],
-  errorTypes: [],
-  criticalities: [],
-  handlingTypes: []
-};
-
 export const globalErrorsWithoutFiltersInitialState: Omit<
   ErrorsState,
-  "globalErrorsSelectedFilters"
+  "globalErrorsSelectedFilters" | "errorDetailsWorkspaceItemsOnly"
 > = {
   globalErrorsList: null,
   globalErrorsTotalCount: 0,
@@ -74,13 +67,15 @@ export const globalErrorsWithoutFiltersInitialState: Omit<
     errorTypes: null
   },
   globalErrorsViewMode: ViewMode.All,
-  globalErrorsLastDays: DAYS_FILTER_DEFAULT_VALUE,
-  errorDetailsWorkspaceItemsOnly: false
+  globalErrorsLastDays: DAYS_FILTER_DEFAULT_VALUE
 };
 
-export const globalErrorsInitialState = {
+export const globalErrorsInitialState: Omit<
+  ErrorsState,
+  "errorDetailsWorkspaceItemsOnly"
+> = {
   ...globalErrorsWithoutFiltersInitialState,
-  globalErrorsSelectedFilters: selectedFiltersInitialState
+  globalErrorsSelectedFilters: null
 };
 
 export const initialState: ErrorsState = {
@@ -117,7 +112,14 @@ export const errorsSlice = createSlice({
       filters: ErrorsState["globalErrorsSelectedFilters"]
     ) => set({ globalErrorsSelectedFilters: filters }),
     resetGlobalErrorsSelectedFilters: () =>
-      set({ globalErrorsSelectedFilters: selectedFiltersInitialState }),
+      set({
+        globalErrorsSelectedFilters: {
+          endpoints: [],
+          errorTypes: [],
+          criticalities: [],
+          handlingTypes: []
+        }
+      }),
     setErrorDetailsWorkspaceItemsOnly: (
       errorDetailsWorkspaceItemsOnly: boolean
     ) => set({ errorDetailsWorkspaceItemsOnly }),
