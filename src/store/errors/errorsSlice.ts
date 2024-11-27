@@ -57,7 +57,7 @@ const selectedFiltersInitialState: GlobalErrorsSelectedFiltersState = {
   handlingTypes: []
 };
 
-export const globalErrorsInitialState = {
+export const globalErrorsWithoutFiltersInitialState = {
   globalErrorsList: null,
   globalErrorsTotalCount: 0,
   areGlobalErrorsLoading: false,
@@ -73,6 +73,11 @@ export const globalErrorsInitialState = {
   globalErrorsViewMode: ViewMode.All,
   globalErrorsSelectedFilters: null,
   globalErrorsLastDays: DAYS_FILTER_DEFAULT_VALUE
+};
+
+export const globalErrorsInitialState = {
+  ...globalErrorsWithoutFiltersInitialState,
+  globalErrorsSelectedFilters: selectedFiltersInitialState
 };
 
 export const initialState: ErrorsState = {
@@ -117,6 +122,6 @@ export const errorsSlice = createSlice({
       set({ globalErrorsViewMode: mode }),
     setGlobalErrorsLastDays: (days?: number) =>
       set({ globalErrorsLastDays: days }),
-    resetGlobalErrors: () => set({ ...globalErrorsInitialState })
+    resetGlobalErrors: () => set({ ...globalErrorsWithoutFiltersInitialState })
   }
 });
