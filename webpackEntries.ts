@@ -12,6 +12,9 @@ export const entries: AppEntries = {
   ideLauncher: {
     entry: path.resolve(__dirname, "./src/containers/IdeLauncher/index.tsx")
   },
+  jaegerLogin: {
+    entry: path.resolve(__dirname, "./src/containers/JaegerLogin/index.tsx")
+  },
   installationWizard: {
     entry: path.resolve(
       __dirname,

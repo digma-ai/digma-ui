@@ -174,7 +174,7 @@ export const SearchInputContainer = styled.div`
   gap: 4px;
   display: flex;
   align-items: center;
-  box-shadow: 0 2px 4px 0 rgba(0 0 0 / 13%);
+  box-shadow: 0 2px 4px 0 rgb(0 0 0 / 13%);
 `;
 
 export const SearchInput = styled.input`
