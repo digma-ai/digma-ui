@@ -62,7 +62,7 @@ const defaultCodeFont = isString(window.codeFont) ? window.codeFont : "";
 export const App = ({ theme, children, id }: AppProps) => {
   const colorScheme = useColorScheme();
   const [currentTheme, setCurrentTheme] = useState(
-    theme ?? getTheme() ?? colorScheme
+    theme ?? platform === "Web" ? colorScheme : getTheme()
   );
   const [mainFont, setMainFont] = useState(defaultMainFont);
   const [codeFont, setCodeFont] = useState(defaultCodeFont);
