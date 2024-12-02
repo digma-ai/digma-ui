@@ -103,7 +103,8 @@ export const Select = ({
       optionListRef.current.scrollHeight > optionListRef.current.clientHeight
   );
   const isSearchBarVisible =
-    searchable && (optionListHasVerticalScrollbar || searchValue.length > 0);
+    (Boolean(searchable) || (isUndefined(searchable) && items.length > 10)) &&
+    (optionListHasVerticalScrollbar || searchValue.length > 0);
   const isActive =
     isOpen || (isSelectedStateEnabled && selectedValues.length > 0);
   return (
