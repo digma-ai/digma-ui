@@ -11,8 +11,8 @@ permissions:
   packages: write
 
 jobs:
-  build:
-    name: Build
+  lint-test:
+    name: Lint & test
     runs-on: ubuntu-latest
 
     steps:
@@ -36,6 +36,65 @@ jobs:
 
       - run: npm run lint
       - run: npm run test -- --bail
+
+  build:
+    name: Build
+    needs: [lint-test]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        id: setup-node
+        with:
+          node-version-file: ".nvmrc"
+          cache: "npm"
+
+      - id: node-modules-cache
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ steps.setup-node.outputs.node-version }}-node_modules-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ steps.setup-node.outputs.node-version }}-node_modules-
+
+      - if: steps.node-modules-cache.outputs.cache-hit != 'true'
+        run: npm ci
+
+      - run: npm run build
+
+      - run: zip -r dist-${{ github.event.release.tag_name }}.zip dist
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: dist-${{ github.event.release.tag_name }}.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build-web:
+    name: Build for web
+    needs: [lint-test]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        id: setup-node
+        with:
+          node-version-file: ".nvmrc"
+          cache: "npm"
+
+      - id: node-modules-cache
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-${{ steps.setup-node.outputs.node-version }}-node_modules-${{ hashFiles('package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ steps.setup-node.outputs.node-version }}-node_modules-
+
+      - if: steps.node-modules-cache.outputs.cache-hit != 'true'
+        run: npm ci
+
       - run: npm run build:prod:web
 
       - uses: actions/upload-artifact@v4
@@ -53,9 +112,17 @@ jobs:
           name: dockerfile
           path: Dockerfile
 
+      - run: zip -r dist-web-${{ github.event.release.tag_name }}.zip dist
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: dist-web-${{ github.event.release.tag_name }}.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   download:
     name: Build and push Docker image
-    needs: [build]
+    needs: [build, build-web]
     runs-on: ubuntu-latest
 
     steps:
