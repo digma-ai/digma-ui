@@ -1,0 +1,29 @@
+name: Bump NPM version and push git tag
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to set (e.g., 1.2.3)"
+        required: true
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        id: setup-node
+        with:
+          node-version-file: ".nvmrc"
+
+      - run: |
+          npm version ${{ inputs.version }} --no-git-tag-version
+          git add package.json package-lock.json
+          git commit -m "Bump version to ${{ inputs.version }}"
+          git tag "v${{ inputs.version }}"
+          git push --follow-tags
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
