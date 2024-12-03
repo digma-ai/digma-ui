@@ -1,7 +1,7 @@
 import { Configuration as WebpackConfiguration } from "webpack";
 import { merge } from "webpack-merge";
+import { WebpackEnv } from "./apps";
 import commonConfig from "./webpack.common";
-import { WebpackEnv } from "./webpackEntries";
 
 const getConfig = (env: WebpackEnv): WebpackConfiguration =>
   merge(commonConfig(env), {
