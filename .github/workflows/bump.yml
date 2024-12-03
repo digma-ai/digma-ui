@@ -30,4 +30,5 @@ jobs:
           git add package.json package-lock.json
           git commit -m "Bump version to ${{ inputs.version }} [skip ci]"
           git tag "v${{ inputs.version }}"
-          git push --follow-tags
+          git push
+          git push origin "v${{ inputs.version }}"

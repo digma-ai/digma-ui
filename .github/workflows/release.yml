@@ -1,14 +1,12 @@
 name: Lint & test & build & publish release
 
-# Controls when the workflow will run
 on:
   workflow_dispatch:
   release:
     types: [released]
 
-# permissions are needed if pushing to ghcr.io
 permissions:
-  packages: write
+  contents: write
 
 jobs:
   lint-test:
@@ -61,7 +59,7 @@ jobs:
       - if: steps.node-modules-cache.outputs.cache-hit != 'true'
         run: npm ci
 
-      - run: npm run build
+      - run: npm run build:prod
 
       - run: zip -r dist-${{ github.event.release.tag_name }}.zip dist
 
