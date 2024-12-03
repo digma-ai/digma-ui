@@ -19,11 +19,13 @@ export const EarlyAccessRegistrationCard = ({
       scope={"early-access"}
       successLogo={
         <SuccessRegistrationImage
-          basePath={"/images/promotion/early-access/"}
+          basePath={"/assets/images/promotion/early-access/"}
         />
       }
       icon={
-        <img src={`/images/promotion/early-access/registrationPromoLogo.svg`} />
+        <img
+          src={`/assets/images/promotion/early-access/registrationPromoLogo.svg`}
+        />
       }
       details={
         <s.Description>

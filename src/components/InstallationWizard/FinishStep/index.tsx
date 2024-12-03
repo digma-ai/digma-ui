@@ -146,7 +146,7 @@ export const FinishStep = ({
         </SectionDescription>
         <s.IllustrationContainer>
           <s.RunOrDebugIllustration
-            src={`/images/runOrDebug_${themeKind}.gif`}
+            src={`/assets/images/runOrDebug_${themeKind}.gif`}
           />
         </s.IllustrationContainer>
       </s.Section>
@@ -162,7 +162,7 @@ export const FinishStep = ({
               <s.ThumbnailPlayCircleIcon color={"currentColor"} />
             </s.PlayIconContainer>
             <s.GettingStartedVideoThumbnail
-              src={`/images/gettingStartedVideoThumbnail_${themeKind}.png`}
+              src={`/assets/images/gettingStartedVideoThumbnail_${themeKind}.png`}
             />
           </s.IllustrationContainer>
         </Link>

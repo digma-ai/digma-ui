@@ -35,8 +35,8 @@ jobs:
       - run: npm run lint
       - run: npm run test -- --bail
 
-  build:
-    name: Build
+  build-jetbrains:
+    name: Build for JetBrains
     needs: [lint-test]
     runs-on: ubuntu-latest
 
@@ -59,13 +59,13 @@ jobs:
       - if: steps.node-modules-cache.outputs.cache-hit != 'true'
         run: npm ci
 
-      - run: npm run build:prod
+      - run: npm run build:prod:jetbrains
 
       - run: zip -r dist-${{ github.event.release.tag_name }}.zip dist
 
       - uses: softprops/action-gh-release@v2
         with:
-          files: dist-${{ github.event.release.tag_name }}.zip
+          files: dist-jetbrains-${{ github.event.release.tag_name }}.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
