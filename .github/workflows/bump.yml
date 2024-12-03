@@ -13,6 +13,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.CONTENTS_WRITE_PAT }}
 
       - run: |
           git config user.name "github-actions[bot]"
@@ -29,5 +31,3 @@ jobs:
           git commit -m "Bump version to ${{ inputs.version }} [skip ci]"
           git tag "v${{ inputs.version }}"
           git push --follow-tags
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
