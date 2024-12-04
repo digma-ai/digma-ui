@@ -10,7 +10,7 @@ export const getDigmathonInsightCardData = (
         title: "Span Scaling",
         description: "How well does this scale?",
         illustration: (
-          <img src={"/images/insightCards/SpanScalingInsightCard.svg"} />
+          <img src={"/assets/images/insightCards/SpanScalingInsightCard.svg"} />
         )
       };
     case InsightType.SpanNexus:
@@ -18,7 +18,7 @@ export const getDigmathonInsightCardData = (
         title: "Code Nexus",
         description: "The most important piece in your code Jenga tower",
         illustration: (
-          <img src={"/images/insightCards/SpanNexusInsightCard.svg"} />
+          <img src={"/assets/images/insightCards/SpanNexusInsightCard.svg"} />
         )
       };
     case InsightType.EndpointQueryOptimizationV2:
@@ -27,7 +27,9 @@ export const getDigmathonInsightCardData = (
         title: "Query Optimization Suggested",
         description: "Caching anyone?",
         illustration: (
-          <img src={"/images/insightCards/QueryOptimizationInsightCard.svg"} />
+          <img
+            src={"/assets/images/insightCards/QueryOptimizationInsightCard.svg"}
+          />
         )
       };
     case InsightType.HotSpot:
@@ -35,7 +37,7 @@ export const getDigmathonInsightCardData = (
         title: "Error Hotspot",
         description: "Where errors congregate",
         illustration: (
-          <img src={"/images/insightCards/HotSpotInsightCard.svg"} />
+          <img src={"/assets/images/insightCards/HotSpotInsightCard.svg"} />
         )
       };
     case InsightType.EndpointSpanNPlusOne:
@@ -44,7 +46,7 @@ export const getDigmathonInsightCardData = (
         title: "N+1 Select",
         description: "Excuse me sir, your abstraction is leaking",
         illustration: (
-          <img src={"/images/insightCards/NPlusOneInsightCard.svg"} />
+          <img src={"/assets/images/insightCards/NPlusOneInsightCard.svg"} />
         )
       };
     case InsightType.EndpointSessionInView:
@@ -53,7 +55,9 @@ export const getDigmathonInsightCardData = (
         description: "Why'd you go and do that?",
         illustration: (
           <img
-            src={"/images/insightCards/EndpointSessionInViewInsightCard.svg"}
+            src={
+              "/assets/images/insightCards/EndpointSessionInViewInsightCard.svg"
+            }
           />
         )
       };
@@ -62,7 +66,7 @@ export const getDigmathonInsightCardData = (
         title: "Top Usage",
         description: "Know where you're coming from to know where you're going",
         illustration: (
-          <img src={"/images/insightCards/SpanUsagesInsightCard.svg"} />
+          <img src={"/assets/images/insightCards/SpanUsagesInsightCard.svg"} />
         )
       };
     case InsightType.EndpointHighNumberOfQueries:
@@ -72,7 +76,7 @@ export const getDigmathonInsightCardData = (
         illustration: (
           <img
             src={
-              "/images/insightCards/EndpointHighNumberOfQueriesInsightCard.svg"
+              "/assets/images/insightCards/EndpointHighNumberOfQueriesInsightCard.svg"
             }
           />
         )
@@ -83,7 +87,7 @@ export const getDigmathonInsightCardData = (
         title: "Bottleneck",
         description: "Only one way to handle clogged pipes",
         illustration: (
-          <img src={"/images/insightCards/BottleneckInsightCard.svg"} />
+          <img src={"/assets/images/insightCards/BottleneckInsightCard.svg"} />
         )
       };
   }

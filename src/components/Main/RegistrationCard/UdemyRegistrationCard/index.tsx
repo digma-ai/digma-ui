@@ -17,7 +17,9 @@ export const UdemyRegistrationCard = ({
       className={className}
       show={show}
       successLogo={
-        <SuccessRegistrationImage basePath={"/images/promotion/udemy/"} />
+        <SuccessRegistrationImage
+          basePath={"/assets/images/promotion/udemy/"}
+        />
       }
       scope={"promotion"}
       icon={<RegistrationPromoImage />}

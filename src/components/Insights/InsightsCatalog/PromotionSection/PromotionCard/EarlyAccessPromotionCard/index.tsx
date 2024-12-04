@@ -22,13 +22,13 @@ export const EarlyAccessPromotionCard = ({
         <Right>
           <img
             src={
-              "/images/promotion/early-access/collapsedContainerBackground.svg"
+              "/assets/images/promotion/early-access/collapsedContainerBackground.svg"
             }
           />
         </Right>
       }
       background={
-        <img src={"/images/promotion/early-access/promotionLogo.svg"} />
+        <img src={"/assets/images/promotion/early-access/promotionLogo.svg"} />
       }
     >
       <s.StyledDescription>

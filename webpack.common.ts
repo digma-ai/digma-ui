@@ -3,31 +3,22 @@ import CopyWebpackPlugin from "copy-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import path from "path";
 import { Configuration as WebpackConfiguration } from "webpack";
-import { WebpackEnv, entries } from "./webpackEntries";
-
-const toKebabCase = (str: string): string =>
-  str.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
+import { WebpackEnv, appData } from "./apps";
 
 const getConfig = (env: WebpackEnv): WebpackConfiguration => {
-  let entriesToBuild: Record<string, string> = env.app
-    ? { [env.app]: entries[env.app].entry }
-    : Object.entries(entries).reduce(
-        (acc, [name, entry]) => ({
-          ...acc,
-          [name]: entry.entry
-        }),
-        {}
-      );
-
-  if (env.platform === "Web") {
-    entriesToBuild = Object.entries(entriesToBuild).reduce(
-      (acc, [k, v]) => ({
-        ...acc,
-        [toKebabCase(k)]: v
-      }),
-      {}
-    );
-  }
+  const entriesToBuild: Record<string, string> = env.app
+    ? { [env.app]: appData[env.app].entry }
+    : Object.entries(appData)
+        .filter(
+          ([, entry]) => !env.platform || entry.platforms.includes(env.platform)
+        )
+        .reduce(
+          (acc, [name, entry]) => ({
+            ...acc,
+            [name]: entry.entry
+          }),
+          {}
+        );
 
   return {
     entry: entriesToBuild,
@@ -56,22 +47,28 @@ const getConfig = (env: WebpackEnv): WebpackConfiguration => {
           }
         ]
       }),
-      ...Object.keys(entriesToBuild).map((entry) => {
-        return new HtmlWebpackPlugin({
-          template: path.resolve(
-            __dirname,
-            `./assets/${env.platform === "Web" ? "index.web.ejs" : "index.ejs"}`
-          ),
-          filename: `${entry}/index.html`,
-          chunks: [entry],
-          inject: false,
-          minify: false,
-          scriptLoading: "blocking",
-          templateParameters: {
-            environmentVariables: entries[entry]?.environmentVariables ?? []
-          }
-        });
-      })
+      ...(env.platform !== "JetBrains"
+        ? [
+            ...Object.keys(entriesToBuild).map((app) => {
+              return new HtmlWebpackPlugin({
+                template: path.resolve(
+                  __dirname,
+                  `./assets/${
+                    env.platform === "Web" ? "index.web.ejs" : "index.ejs"
+                  }`
+                ),
+                filename: `${app}/index.html`,
+                chunks: [app],
+                inject: false,
+                minify: false,
+                scriptLoading: "blocking",
+                templateParameters: {
+                  environmentVariables: appData[app]?.environmentVariables ?? []
+                }
+              });
+            })
+          ]
+        : [])
     ]
   };
 };

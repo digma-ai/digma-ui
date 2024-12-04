@@ -8,11 +8,15 @@ import { UdemyCoursePromotionCardProps } from "./types";
 const UdemyPromotionCollapsedBackground = () => (
   <>
     <Centered>
-      <img src={"/images/promotion/udemy/collapsedContainerBackground.svg"} />
+      <img
+        src={"/assets/images/promotion/udemy/collapsedContainerBackground.svg"}
+      />
     </Centered>
     <Right>
       <img
-        src={"/images/promotion/udemy/collapsedContainerEllipseShadow.svg"}
+        src={
+          "/assets/images/promotion/udemy/collapsedContainerEllipseShadow.svg"
+        }
       />
     </Right>
   </>
@@ -20,9 +24,9 @@ const UdemyPromotionCollapsedBackground = () => (
 
 const UdemyPromotionBackground = () => (
   <>
-    <img src={`/images/promotion/udemy/promotionLogo.svg`} />
+    <img src={`/assets/images/promotion/udemy/promotionLogo.svg`} />
     <s.AnimatedPromotionBackground>
-      <img src={`/images/promotion/udemy/promotionLogoWithShadow.svg`} />
+      <img src={`/assets/images/promotion/udemy/promotionLogoWithShadow.svg`} />
     </s.AnimatedPromotionBackground>
   </>
 );
