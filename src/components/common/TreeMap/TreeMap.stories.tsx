@@ -21,6 +21,10 @@ export const Default: Story = {
     width: 800,
     height: 800,
     padding: 40,
+    minTileDimensions: {
+      width: 100,
+      height: 100
+    },
     data: [
       {
         id: "payment",

@@ -1,29 +1,90 @@
-import squarify from "squarify";
+import squarify, { Input } from "squarify";
+import { logger } from "../../../logging";
 import { isNull } from "../../../typeGuards/isNull";
-import { TreeMapProps } from "./types";
+import { TileData, TreeMapProps } from "./types";
 
-export const TreeMap = ({ padding = 0, data, width, height }: TreeMapProps) => {
+const calculateTiles = (
+  data: Input<TileData>[],
+  container: { x0: number; y0: number; x1: number; y1: number },
+  minTileDimensions?: {
+    width: number;
+    height: number;
+  }
+) => {
+  logger.info("render");
+  let containerDimensions = container;
+  let tiles = squarify(data, containerDimensions);
+
+  let areTilesValid =
+    !minTileDimensions ||
+    (minTileDimensions &&
+      tiles.every(
+        (tile) =>
+          tile.x1 - tile.x0 >= minTileDimensions.width &&
+          tile.y1 - tile.y0 >= minTileDimensions.height
+      ));
+
+  // const MAX_WIDTH = 10000;
+  const MAX_ITERATIONS = 100;
+  let iterations = 0;
+  let currentWidth = containerDimensions.x1;
+
+  while (!areTilesValid && iterations < MAX_ITERATIONS) {
+    containerDimensions = {
+      ...containerDimensions,
+      x1: Math.trunc(currentWidth * 1.1)
+    };
+
+    tiles = squarify(data, containerDimensions);
+
+    logger.info("currentWidth", currentWidth);
+    logger.info("iterations", iterations);
+
+    areTilesValid =
+      !minTileDimensions ||
+      (minTileDimensions &&
+        tiles.every(
+          (tile) =>
+            tile.x1 - tile.x0 >= minTileDimensions.width &&
+            tile.y1 - tile.y0 >= minTileDimensions.height
+        ));
+
+    iterations++;
+    currentWidth = containerDimensions.x1;
+  }
+
+  return { tiles, container: containerDimensions };
+};
+
+export const TreeMap = ({
+  padding = 0,
+  data,
+  width,
+  height,
+  minTileDimensions
+}: TreeMapProps) => {
   const container = { x0: 0, y0: 0, x1: width, y1: height };
 
   const dataMax = Math.max(...data.map((item) => item.value));
-  const minNormalizedValue = dataMax > 0 ? dataMax * 0.05 : 1;
+  const minNormalizedValue = dataMax > 0 ? dataMax * 0.01 : 1;
   const normalizedData = data.map((item, index) => {
     return {
-      id: index,
+      id: String(index),
       value: item.value < minNormalizedValue ? minNormalizedValue : item.value,
       content: item.content
     };
   });
   const sortedData = [...normalizedData].sort((a, b) => b.value - a.value);
-  const tiles = squarify(sortedData, container);
+
+  const tilesData = calculateTiles(sortedData, container, minTileDimensions);
 
   // Transform coordinates to add paddings between tiles
   const transformedTiles = padding
-    ? tiles.map((tile) => {
+    ? tilesData.tiles.map((tile) => {
         const isLeftEdge = tile.x0 === 0;
         const isTopEdge = tile.y0 === 0;
-        const isRightEdge = tile.x1 - width < 1;
-        const isBottomEdge = tile.y1 - height < 1;
+        const isRightEdge = tile.x1 - tilesData.container.x1 < 1;
+        const isBottomEdge = tile.y1 - tilesData.container.y1 < 1;
 
         return {
           ...tile,
@@ -33,12 +94,16 @@ export const TreeMap = ({ padding = 0, data, width, height }: TreeMapProps) => {
           y1: isBottomEdge ? tile.y1 : tile.y1 - padding
         };
       })
-    : tiles;
+    : tilesData.tiles;
+
+  logger.info("tilesData", tilesData);
 
   return (
     <div
       style={{
         position: "relative",
+        overflow: "auto",
+        overflowY: "hidden",
         width,
         height
       }}

@@ -58,7 +58,16 @@ export const Chart = ({
 
   return (
     <s.Container ref={observe}>
-      <TreeMap data={chartData} padding={12} width={width} height={height} />
+      <TreeMap
+        data={chartData}
+        padding={12}
+        width={width}
+        height={height}
+        minTileDimensions={{
+          width: 148,
+          height: 145
+        }}
+      />
     </s.Container>
   );
 };

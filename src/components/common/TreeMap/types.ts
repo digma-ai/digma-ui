@@ -11,4 +11,8 @@ export interface TreeMapProps {
   data: Input<TileData>[];
   width: number;
   height: number;
+  minTileDimensions?: {
+    width: number;
+    height: number;
+  };
 }
