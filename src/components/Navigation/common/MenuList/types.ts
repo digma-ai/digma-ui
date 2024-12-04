@@ -21,10 +21,10 @@ export interface ListItemIconContainerProps {
 }
 
 export interface MenuItem {
-  customContent?: React.ReactNode;
+  customContent?: ReactNode;
   id: string;
   label?: string;
-  icon?: React.ReactNode;
+  icon?: ReactNode;
   onClick?: () => void;
   isDisabled?: boolean;
   groupName?: string;

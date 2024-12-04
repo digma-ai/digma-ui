@@ -1,10 +1,12 @@
+import { CSSProperties } from "react";
+
 export interface BadgeProps {
   customStyles?: {
-    main: React.CSSProperties;
-    outline: React.CSSProperties;
+    main: CSSProperties;
+    outline: CSSProperties;
   };
 }
 
 export interface CustomStylesProps {
-  $customStyles?: React.CSSProperties;
+  $customStyles?: CSSProperties;
 }

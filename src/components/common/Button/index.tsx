@@ -1,4 +1,4 @@
-import React, { ForwardedRef, forwardRef } from "react";
+import { ForwardedRef, forwardRef, MouseEvent } from "react";
 import * as s from "./styles";
 import { ButtonProps } from "./types";
 
@@ -14,7 +14,7 @@ export const ButtonComponent = (
   }: ButtonProps,
   ref: ForwardedRef<HTMLButtonElement>
 ) => {
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
     if (onClick) {
       onClick(e);
     }

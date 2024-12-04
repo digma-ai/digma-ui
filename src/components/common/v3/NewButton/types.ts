@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes } from "react";
+import { ButtonHTMLAttributes, ComponentType } from "react";
 import { IconProps } from "../../icons/types";
 
 export type ButtonType =
@@ -8,7 +8,7 @@ export type ButtonType =
   | "secondaryBorderless";
 
 export interface BaseButtonProps {
-  icon?: React.ComponentType<IconProps>;
+  icon?: ComponentType<IconProps>;
   label?: string;
   buttonType?: ButtonType;
 }

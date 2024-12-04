@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes } from "react";
+import { ButtonHTMLAttributes, ComponentType } from "react";
 import { IconProps } from "../../common/icons/types";
 
 export interface ButtonThemeColors {
@@ -32,7 +32,7 @@ export type ButtonType = "primary" | "secondary" | "tertiary";
 export type ButtonSize = "small" | "large";
 
 export interface NewButtonProps {
-  icon?: React.ComponentType<IconProps>;
+  icon?: ComponentType<IconProps>;
   label?: string;
   title?: string;
   onClick?: () => void;

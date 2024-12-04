@@ -1,5 +1,6 @@
 // Source: https://floating-ui.com/docs/popover#reusable-popover-component
 
+import { ReactNode } from "react";
 import { PopoverContext, usePopover } from "./hooks";
 import { PopoverProps } from "./types";
 
@@ -9,7 +10,7 @@ export function Popover({
   modal = false,
   ...restOptions
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 } & PopoverProps) {
   // This can accept any props as options, e.g. `placement`,
   // or other positioning options.

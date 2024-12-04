@@ -1,4 +1,4 @@
-import { ComponentType } from "react";
+import { ComponentType, ReactNode } from "react";
 import { IconProps } from "../../common/icons/types";
 
 type EmptyStateType = "default" | "success" | "lowSeverity";
@@ -8,7 +8,7 @@ export interface EmptyStateCardProps {
   icon: ComponentType<IconProps>;
   title?: string;
   text?: string;
-  customContent?: React.ReactNode;
+  customContent?: ReactNode;
   blurredContent?: JSX.Element;
 }
 

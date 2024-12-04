@@ -1,6 +1,7 @@
+import { ReactNode } from "react";
 import { GenericMetrics, HighlightData } from "../../types";
 
 export interface HighlightCardProps {
-  content: React.ReactNode;
+  content: ReactNode;
   highlight: HighlightData<GenericMetrics>;
 }

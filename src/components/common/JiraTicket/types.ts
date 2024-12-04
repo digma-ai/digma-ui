@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ChangeEvent, ReactNode } from "react";
 
 export interface JiraTicketThemeColors {
   background: string;
@@ -27,7 +27,7 @@ export interface JiraTicketProps {
     link?: string | null;
     errorMessage?: string | null;
   };
-  onTicketLinkChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onTicketLinkChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   unlinkTicket?: () => void;
   linkTicket?: (link: string) => void;
 }

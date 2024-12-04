@@ -1,5 +1,4 @@
-import squarify, { Input } from "squarify";
-import { logger } from "../../../logging";
+import squarify, { ILayoutRect, Input } from "squarify";
 import { isNull } from "../../../typeGuards/isNull";
 import { TileData, TreeMapProps } from "./types";
 
@@ -11,34 +10,13 @@ const calculateTiles = (
     height: number;
   }
 ) => {
-  logger.info("render");
-  let containerDimensions = container;
-  let tiles = squarify(data, containerDimensions);
-
-  let areTilesValid =
-    !minTileDimensions ||
-    (minTileDimensions &&
-      tiles.every(
-        (tile) =>
-          tile.x1 - tile.x0 >= minTileDimensions.width &&
-          tile.y1 - tile.y0 >= minTileDimensions.height
-      ));
-
-  // const MAX_WIDTH = 10000;
+  let tiles: ILayoutRect<TileData>[] = [];
+  let areTilesValid = false;
   const MAX_ITERATIONS = 100;
   let iterations = 0;
-  let currentWidth = containerDimensions.x1;
 
   while (!areTilesValid && iterations < MAX_ITERATIONS) {
-    containerDimensions = {
-      ...containerDimensions,
-      x1: Math.trunc(currentWidth * 1.1)
-    };
-
-    tiles = squarify(data, containerDimensions);
-
-    logger.info("currentWidth", currentWidth);
-    logger.info("iterations", iterations);
+    tiles = squarify(data, container);
 
     areTilesValid =
       !minTileDimensions ||
@@ -49,11 +27,15 @@ const calculateTiles = (
             tile.y1 - tile.y0 >= minTileDimensions.height
         ));
 
+    container = {
+      ...container,
+      x1: Math.trunc(container.x1 * 1.1)
+    };
+
     iterations++;
-    currentWidth = containerDimensions.x1;
   }
 
-  return { tiles, container: containerDimensions };
+  return { tiles, container };
 };
 
 export const TreeMap = ({
@@ -96,14 +78,10 @@ export const TreeMap = ({
       })
     : tilesData.tiles;
 
-  logger.info("tilesData", tilesData);
-
   return (
     <div
       style={{
         position: "relative",
-        overflow: "auto",
-        overflowY: "hidden",
         width,
         height
       }}

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { isValidHttpUrl } from "../../../../utils/isValidUrl";
 import { Button } from "../../Button";
 import { ActionableTextField } from "../ActionableTextField";
@@ -13,7 +13,7 @@ export const TicketLinkButton = ({
     ticketLink?.errorMessage ?? null
   );
   const [link, setLink] = useState<string | null>(ticketLink?.link ?? null);
-  const onTicketLinkChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onTicketLinkChange = (event: ChangeEvent<HTMLInputElement>) => {
     const ticketLink = event.target.value;
     setLink(ticketLink);
     if (!ticketLink || isValidHttpUrl(ticketLink)) {
