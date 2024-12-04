@@ -279,7 +279,7 @@ export const IdeLauncher = () => {
           rel={"noopener noreferrer"}
           href={"https://digma.ai"}
         >
-          <s.Logo src={`/images/digmaLogo_${themeKind}.svg`} />
+          <s.Logo src={`/assets/images/digmaLogo_${themeKind}.svg`} />
         </a>
       </s.Header>
       <s.Content>{renderContent()}</s.Content>

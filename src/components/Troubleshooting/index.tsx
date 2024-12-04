@@ -87,7 +87,9 @@ export const Troubleshooting = () => {
         <span>
           Be sure to enable observability via the the Digma side panel
         </span>
-        <img src={`/images/observabilityToggleSwitch_${themeKind}.png`} />
+        <img
+          src={`/assets/images/observabilityToggleSwitch_${themeKind}.png`}
+        />
       </s.Section>
       <s.Section>
         <s.SectionTitle>Running your app differently?</s.SectionTitle>

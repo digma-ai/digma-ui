@@ -7,7 +7,7 @@ export const RegistrationPromoImage = () => {
 
   return (
     <img
-      src={`/images/promotion/udemy/registrationPromoLogo_${themeKind}.svg`}
+      src={`/assets/images/promotion/udemy/registrationPromoLogo_${themeKind}.svg`}
     />
   );
 };

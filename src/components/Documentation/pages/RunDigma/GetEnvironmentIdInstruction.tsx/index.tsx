@@ -17,7 +17,9 @@ export const GetEnvironmentIdInstruction = () => {
         </span>
       ),
       image: (
-        <img src={`/images/howToSetupEnvironmentMenuItem_${themeKind}.svg`} />
+        <img
+          src={`/assets/images/howToSetupEnvironmentMenuItem_${themeKind}.svg`}
+        />
       )
     },
     {
@@ -25,7 +27,7 @@ export const GetEnvironmentIdInstruction = () => {
       description: (
         <span>Copy the Environment ID value from the instructions page</span>
       ),
-      image: <img src={`/images/environmentId_${themeKind}.svg`} />
+      image: <img src={`/assets/images/environmentId_${themeKind}.svg`} />
     }
   ];
 
