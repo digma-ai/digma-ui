@@ -2,6 +2,14 @@ import squarify, { ILayoutRect, Input } from "squarify";
 import { isNull } from "../../../typeGuards/isNull";
 import { TileData, TreeMapProps } from "./types";
 
+const minMaxNormalize = (
+  value: number,
+  min: number,
+  max: number,
+  newMin: number,
+  newMax: number
+) => ((value - min) * (newMax - newMin)) / (max - min) + newMin;
+
 const calculateTiles = (
   data: Input<TileData>[],
   container: { x0: number; y0: number; x1: number; y1: number },
@@ -47,15 +55,27 @@ export const TreeMap = ({
 }: TreeMapProps) => {
   const container = { x0: 0, y0: 0, x1: width, y1: height };
 
+  const dataMin = Math.min(...data.map((item) => item.value)) || 1;
   const dataMax = Math.max(...data.map((item) => item.value));
-  const minNormalizedValue = dataMax > 0 ? dataMax * 0.01 : 1;
+  const NORMALIZED_MIN = 1;
+  const NORMALIZED_MAX = 10;
+  // eslint-disable-next-line no-console
+  console.log("data", data);
   const normalizedData = data.map((item, index) => {
     return {
       id: String(index),
-      value: item.value < minNormalizedValue ? minNormalizedValue : item.value,
+      value: minMaxNormalize(
+        item.value,
+        dataMin,
+        dataMax,
+        NORMALIZED_MIN,
+        NORMALIZED_MAX
+      ),
       content: item.content
     };
   });
+  // eslint-disable-next-line no-console
+  console.log("normalizedData", normalizedData);
   const sortedData = [...normalizedData].sort((a, b) => b.value - a.value);
 
   const tilesData = calculateTiles(sortedData, container, minTileDimensions);
