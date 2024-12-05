@@ -3,7 +3,13 @@ import CopyWebpackPlugin from "copy-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import path from "path";
 import { Configuration as WebpackConfiguration } from "webpack";
+import ZipPlugin from "zip-webpack-plugin";
 import { WebpackEnv, appData } from "./apps";
+import packageJson from "./package.json";
+
+interface PackageJson {
+  version: string;
+}
 
 const getConfig = (env: WebpackEnv): WebpackConfiguration => {
   const entriesToBuild: Record<string, string> = env.app
@@ -68,7 +74,16 @@ const getConfig = (env: WebpackEnv): WebpackConfiguration => {
               });
             })
           ]
-        : [])
+        : []),
+      new ZipPlugin({
+        filename: [
+          "dist",
+          (env.platform ?? "").toLocaleLowerCase(),
+          `v${(packageJson as PackageJson).version}.zip`
+        ]
+          .filter(Boolean)
+          .join("-")
+      })
     ]
   };
 };

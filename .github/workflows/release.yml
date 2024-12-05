@@ -61,11 +61,9 @@ jobs:
 
       - run: npm run build:prod:jetbrains
 
-      - run: zip -r dist-${{ github.event.release.tag_name }}.zip dist
-
       - uses: softprops/action-gh-release@v2
         with:
-          files: dist-jetbrains-${{ github.event.release.tag_name }}.zip
+          files: dist/dist-*.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -98,7 +96,9 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: build
-          path: dist/
+          path: |
+            dist/
+            !dist/dist-*.zip
 
       - uses: actions/upload-artifact@v4
         with:
@@ -110,11 +110,9 @@ jobs:
           name: dockerfile
           path: Dockerfile
 
-      - run: zip -r dist-web-${{ github.event.release.tag_name }}.zip dist
-
       - uses: softprops/action-gh-release@v2
         with:
-          files: dist-web-jetbrains-${{ github.event.release.tag_name }}.zip
+          files: dist/dist-*.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
