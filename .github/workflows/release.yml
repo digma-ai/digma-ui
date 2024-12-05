@@ -114,13 +114,13 @@ jobs:
 
       - uses: softprops/action-gh-release@v2
         with:
-          files: dist-web-${{ github.event.release.tag_name }}.zip
+          files: dist-web-jetbrains-${{ github.event.release.tag_name }}.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   download:
     name: Build and push Docker image
-    needs: [build, build-web]
+    needs: [build-jetbrains, build-web]
     runs-on: ubuntu-latest
 
     steps:
