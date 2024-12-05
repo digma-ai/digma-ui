@@ -2,13 +2,28 @@ import squarify, { ILayoutRect, Input } from "squarify";
 import { isNull } from "../../../typeGuards/isNull";
 import { TileData, TreeMapProps } from "./types";
 
-const minMaxNormalize = (
-  value: number,
-  min: number,
-  max: number,
-  newMin: number,
-  newMax: number
-) => ((value - min) * (newMax - newMin)) / (max - min) + newMin;
+const normalizeData = (data: Input<TileData>[]) => {
+  const MIN_MAX_RATIO = 5;
+  const NORMALIZED_MIN = 1;
+  const NORMALIZED_MAX = MIN_MAX_RATIO;
+
+  const dataMin = Math.min(...data.map((item) => item.value)) || 1;
+  const dataMax = Math.max(...data.map((item) => item.value));
+  const dataMinMaxRatio = dataMax / dataMin;
+
+  return dataMinMaxRatio > MIN_MAX_RATIO
+    ? data.map((item) => {
+        return {
+          id: item.id,
+          value:
+            ((item.value - dataMin) * (NORMALIZED_MAX - NORMALIZED_MIN)) /
+              (dataMax - dataMin) +
+            NORMALIZED_MIN, // min-max normalization
+          content: item.content
+        };
+      })
+    : data;
+};
 
 const calculateTiles = (
   data: Input<TileData>[],
@@ -54,35 +69,8 @@ export const TreeMap = ({
   minTileDimensions
 }: TreeMapProps) => {
   const container = { x0: 0, y0: 0, x1: width, y1: height };
-
-  const dataMin = Math.min(...data.map((item) => item.value)) || 1;
-  const dataMax = Math.max(...data.map((item) => item.value));
-  const dataMinMaxRatio = dataMax / dataMin;
-  const MIN_MAX_RATIO = 10;
-  const NORMALIZED_MAX = MIN_MAX_RATIO;
-  const NORMALIZED_MIN = 1;
-  // eslint-disable-next-line no-console
-  console.log("data", data);
-  const normalizedData =
-    dataMinMaxRatio > MIN_MAX_RATIO
-      ? data.map((item) => {
-          return {
-            id: item.id,
-            value: minMaxNormalize(
-              item.value,
-              dataMin,
-              dataMax,
-              NORMALIZED_MIN,
-              NORMALIZED_MAX
-            ),
-            content: item.content
-          };
-        })
-      : data;
-  // eslint-disable-next-line no-console
-  console.log("normalizedData", normalizedData);
+  const normalizedData = normalizeData(data);
   const sortedData = [...normalizedData].sort((a, b) => b.value - a.value);
-
   const tilesData = calculateTiles(sortedData, container, minTileDimensions);
 
   // Transform coordinates to add paddings between tiles
