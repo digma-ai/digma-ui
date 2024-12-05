@@ -1,5 +1,6 @@
 import { format } from "date-fns";
 import {
+  MouseEvent,
   UIEvent,
   useCallback,
   useEffect,
@@ -253,10 +254,7 @@ export const LiveView = ({ data, onClose }: LiveViewProps) => {
     );
   };
 
-  const handleAreaMouseMove = (
-    props: unknown,
-    e: React.MouseEvent<SVGElement>
-  ) => {
+  const handleAreaMouseMove = (props: unknown, e: MouseEvent<SVGElement>) => {
     setAreaTooltip({ x: e.clientX, y: e.clientY });
   };
 
@@ -266,7 +264,7 @@ export const LiveView = ({ data, onClose }: LiveViewProps) => {
 
   const handleDotMouseOver = (
     props: unknown,
-    e: React.MouseEvent<SVGCircleElement>
+    e: MouseEvent<SVGCircleElement>
   ) => {
     setDotTooltip({
       coordinates: { x: e.clientX, y: e.clientY },

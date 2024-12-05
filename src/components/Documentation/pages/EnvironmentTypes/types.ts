@@ -1,10 +1,11 @@
+import { MemoExoticComponent } from "react";
 import { ThemeableIconProps } from "../../../common/icons/types";
 import { EnvironmentStatus } from "./EnvironmentTypeCard/types";
 import { InsightCardType } from "./InsightCard/types";
 
 export interface EnvironmentTypeData {
   id: string;
-  icon: React.MemoExoticComponent<
+  icon: MemoExoticComponent<
     (props: ThemeableIconProps & { height: number }) => JSX.Element
   >;
   name: string;

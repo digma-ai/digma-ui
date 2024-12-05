@@ -1,3 +1,4 @@
+import { MemoExoticComponent } from "react";
 import { IconProps } from "../../../../common/icons/types";
 
 export interface InsightCardProps {
@@ -15,7 +16,7 @@ export interface CountChipProps {
 }
 
 export interface InsightCardTypeData {
-  icon?: React.MemoExoticComponent<(props: IconProps) => JSX.Element>;
+  icon?: MemoExoticComponent<(props: IconProps) => JSX.Element>;
   name: string;
   description: string;
 }

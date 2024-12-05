@@ -1,4 +1,6 @@
+import { UIEvent, useEffect, useState } from "react";
 import useDimensions from "react-cool-dimensions";
+import useScrollbarSize from "react-scrollbar-size";
 import { Input } from "squarify";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { TreeMap } from "../../../common/TreeMap";
@@ -16,7 +18,21 @@ export const Chart = ({
   timeMode,
   viewLevel
 }: ChartProps) => {
-  const { width, height, observe } = useDimensions();
+  const { width, height, entry, observe } = useDimensions();
+  const [isLeftOverlayVisible, setIsLeftOverlayVisible] = useState(false);
+  const [isRightOverlayVisible, setIsRightOverlayVisible] = useState(false);
+  const scrollbar = useScrollbarSize();
+
+  useEffect(() => {
+    if (entry) {
+      setIsLeftOverlayVisible(entry.target.scrollLeft > 0);
+
+      setIsRightOverlayVisible(
+        entry.target.scrollWidth > width &&
+          entry.target.scrollLeft + width !== entry.target.scrollWidth
+      );
+    }
+  }, [width, entry]);
 
   const chartData: Input<TileData>[] = data.map((x) => {
     const score = x.score;
@@ -56,9 +72,39 @@ export const Chart = ({
     };
   });
 
+  const handleContainerScroll = (e: UIEvent<HTMLDivElement>) => {
+    setIsLeftOverlayVisible(e.currentTarget.scrollLeft > 0);
+    setIsRightOverlayVisible(
+      e.currentTarget.scrollWidth > width &&
+        e.currentTarget.scrollLeft + e.currentTarget.clientWidth !==
+          e.currentTarget.scrollWidth
+    );
+  };
+
   return (
-    <s.Container ref={observe}>
-      <TreeMap data={chartData} padding={12} width={width} height={height} />
+    <s.Container>
+      <s.ContentContainer ref={observe} onScroll={handleContainerScroll}>
+        <TreeMap
+          data={chartData}
+          padding={12}
+          width={width}
+          height={height}
+          minTileDimensions={{
+            width: 148,
+            height: 145
+          }}
+        />
+      </s.ContentContainer>
+      <s.Overlay
+        $visible={isLeftOverlayVisible}
+        $placement={"left"}
+        style={{ bottom: scrollbar.width }}
+      />
+      <s.Overlay
+        $visible={isRightOverlayVisible}
+        $placement={"right"}
+        style={{ bottom: scrollbar.width }}
+      />
     </s.Container>
   );
 };

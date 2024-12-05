@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 export const usePagination = <T>(
   items: T[],
   pageSize: number,
   key?: string
-): [T[], number, React.Dispatch<React.SetStateAction<number>>] => {
+): [T[], number, Dispatch<SetStateAction<number>>] => {
   const [page, setPage] = useState(0);
 
   const pageCount = Math.ceil(items.length / pageSize) || 1;

@@ -1,12 +1,11 @@
 import { Placement } from "@floating-ui/react";
+import { Dispatch, SetStateAction } from "react";
 import { usePopover } from "./hooks";
 
 export type ContextType =
   | (ReturnType<typeof usePopover> & {
-      setLabelId: React.Dispatch<React.SetStateAction<string | undefined>>;
-      setDescriptionId: React.Dispatch<
-        React.SetStateAction<string | undefined>
-      >;
+      setLabelId: Dispatch<SetStateAction<string | undefined>>;
+      setDescriptionId: Dispatch<SetStateAction<string | undefined>>;
     })
   | null;
 

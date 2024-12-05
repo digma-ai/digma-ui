@@ -1,4 +1,9 @@
-import { ChangeEventHandler, HTMLInputTypeAttribute, ReactNode } from "react";
+import {
+  ChangeEventHandler,
+  ComponentType,
+  HTMLInputTypeAttribute,
+  ReactNode
+} from "react";
 import { IconProps } from "../../icons/types";
 
 export interface TextFieldProps {
@@ -11,7 +16,7 @@ export interface TextFieldProps {
   isInvalid?: boolean;
   error?: string;
   type?: HTMLInputTypeAttribute;
-  icon?: React.ComponentType<IconProps>;
+  icon?: ComponentType<IconProps>;
   alwaysRenderError?: boolean;
 }
 

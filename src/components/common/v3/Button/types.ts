@@ -1,10 +1,10 @@
-import { ButtonHTMLAttributes } from "react";
+import { ButtonHTMLAttributes, ComponentType } from "react";
 import { IconProps } from "../../icons/types";
 
 export type ButtonType = "primary" | "secondary" | "tertiary";
 
 export interface BaseButtonProps {
-  icon?: React.ComponentType<IconProps>;
+  icon?: ComponentType<IconProps>;
   label?: string;
   buttonType?: ButtonType;
 }

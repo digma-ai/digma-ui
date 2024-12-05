@@ -1,5 +1,5 @@
 import { Placement } from "@floating-ui/react";
-import { ReactElement, ReactNode } from "react";
+import { CSSProperties, ReactElement, ReactNode } from "react";
 
 export interface TooltipThemeColors {
   background: string;
@@ -10,6 +10,6 @@ export interface TooltipProps {
   children: ReactElement;
   title: ReactNode;
   placement?: Placement;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
   isOpen?: boolean;
 }

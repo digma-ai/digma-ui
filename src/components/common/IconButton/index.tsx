@@ -1,3 +1,4 @@
+import { MouseEvent } from "react";
 import * as s from "./styles";
 import { IconButtonProps } from "./types";
 
@@ -6,7 +7,7 @@ export const IconButton = ({
   disabled,
   icon: Icon
 }: IconButtonProps) => {
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
     onClick(e);
   };
 

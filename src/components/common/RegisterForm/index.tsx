@@ -1,4 +1,4 @@
-import { useContext, useMemo } from "react";
+import { FormEventHandler, useContext, useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 import { actions as globalActions } from "../../../actions";
@@ -71,7 +71,7 @@ export const RegisterForm = ({
     onNext(true);
   };
 
-  const handleOnSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
+  const handleOnSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     void handleSubmit(onSubmit)(e);
   };

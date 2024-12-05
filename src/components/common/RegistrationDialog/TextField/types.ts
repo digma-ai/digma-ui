@@ -1,9 +1,9 @@
-import { ChangeEventHandler, FocusEventHandler } from "react";
+import { ChangeEventHandler, ComponentType, FocusEventHandler } from "react";
 import { IconProps } from "../../icons/types";
 
 export interface TextFieldProps {
   placeholder?: string;
-  icon?: React.ComponentType<IconProps>;
+  icon?: ComponentType<IconProps>;
   value: string;
   onChange: ChangeEventHandler<HTMLInputElement>;
   className?: string;

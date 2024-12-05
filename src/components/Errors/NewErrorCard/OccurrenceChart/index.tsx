@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { useEffect, useMemo, useState } from "react";
+import { SVGProps, useEffect, useMemo, useState } from "react";
 import {
   Bar,
   BarChart,
@@ -45,18 +45,18 @@ export const OccurrenceChart = ({
   const { environment } = useConfigSelector();
   const environmentId = environment?.id;
 
-  const tickLabelStyles: React.SVGProps<SVGTextElement> = {
+  const tickLabelStyles: SVGProps<SVGTextElement> = {
     fill: theme.colors.v3.text.secondary,
     opacity: 0.5
   };
 
-  const YAxisTickLabelStyles: React.SVGProps<SVGTextElement> = {
+  const YAxisTickLabelStyles: SVGProps<SVGTextElement> = {
     ...tickLabelStyles,
     fontSize: theme.typographies.footNote.fontSize,
     fontWeight: theme.typographies.footNote.fontWeight.regular
   };
 
-  const XAxisTickLabelStyles: React.SVGProps<SVGTextElement> = {
+  const XAxisTickLabelStyles: SVGProps<SVGTextElement> = {
     ...tickLabelStyles,
     fontSize: theme.typographies.captionOne.fontSize,
     fontWeight: theme.typographies.captionOne.fontWeight.regular

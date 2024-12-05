@@ -1,8 +1,8 @@
-import { ReactNode } from "react";
+import { ComponentType, ReactNode } from "react";
 import { ThemeableIconProps } from "../../common/icons/types";
 
 export interface EmptyStateProps {
-  icon?: React.ComponentType<ThemeableIconProps>;
+  icon?: ComponentType<ThemeableIconProps>;
   title?: string;
   content?: ReactNode;
 }

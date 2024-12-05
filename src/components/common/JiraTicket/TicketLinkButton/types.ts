@@ -1,9 +1,11 @@
+import { ChangeEvent } from "react";
+
 export interface TicketLinkButtonProps {
   ticketLink?: {
     link?: string | null;
     errorMessage?: string | null;
   };
-  onTicketLinkChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onTicketLinkChange?: (event: ChangeEvent<HTMLInputElement>) => void;
   unlinkTicket?: () => void;
   linkTicket?: (value: string) => void;
 }
