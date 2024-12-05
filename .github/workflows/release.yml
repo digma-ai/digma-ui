@@ -120,7 +120,7 @@ jobs:
 
   download:
     name: Build and push Docker image
-    needs: [build, build-web]
+    needs: [build-jetbrains, build-web]
     runs-on: ubuntu-latest
 
     steps:
