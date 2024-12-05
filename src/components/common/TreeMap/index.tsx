@@ -57,23 +57,28 @@ export const TreeMap = ({
 
   const dataMin = Math.min(...data.map((item) => item.value)) || 1;
   const dataMax = Math.max(...data.map((item) => item.value));
+  const dataMinMaxRatio = dataMax / dataMin;
+  const MIN_MAX_RATIO = 10;
+  const NORMALIZED_MAX = MIN_MAX_RATIO;
   const NORMALIZED_MIN = 1;
-  const NORMALIZED_MAX = 10;
   // eslint-disable-next-line no-console
   console.log("data", data);
-  const normalizedData = data.map((item, index) => {
-    return {
-      id: String(index),
-      value: minMaxNormalize(
-        item.value,
-        dataMin,
-        dataMax,
-        NORMALIZED_MIN,
-        NORMALIZED_MAX
-      ),
-      content: item.content
-    };
-  });
+  const normalizedData =
+    dataMinMaxRatio > MIN_MAX_RATIO
+      ? data.map((item) => {
+          return {
+            id: item.id,
+            value: minMaxNormalize(
+              item.value,
+              dataMin,
+              dataMax,
+              NORMALIZED_MIN,
+              NORMALIZED_MAX
+            ),
+            content: item.content
+          };
+        })
+      : data;
   // eslint-disable-next-line no-console
   console.log("normalizedData", normalizedData);
   const sortedData = [...normalizedData].sort((a, b) => b.value - a.value);
