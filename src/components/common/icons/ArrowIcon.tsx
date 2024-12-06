@@ -6,7 +6,7 @@ interface ArrowIconProps extends RotatableIconProps {
   dashed?: boolean;
 }
 
-const directionRotateMap: { [key in Direction]: string } = {
+const directionRotateMap: Record<Direction, string> = {
   [Direction.UP]: "0",
   [Direction.LEFT]: "0",
   [Direction.RIGHT]: "0",

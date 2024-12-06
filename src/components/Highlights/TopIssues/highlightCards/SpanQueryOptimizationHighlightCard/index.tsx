@@ -31,7 +31,7 @@ export const SpanQueryOptimizationHighlightCard = ({
         header: "Affected endpoints",
         cell: (info) => {
           const metric = info.getValue();
-          const value = metric ? String(metric.value) : "";
+          const value = metric ? String(metric.value as number) : "";
           return metric ? <TableText title={value}>{value}</TableText> : null;
         }
       }
@@ -61,7 +61,7 @@ export const SpanQueryOptimizationHighlightCard = ({
       header: "Database",
       cell: (info) => {
         const metric = info.getValue();
-        const value = metric ? String(metric.value) : "";
+        const value = metric ? metric.value : "";
         return metric ? <TableText title={value}>{value}</TableText> : null;
       }
     })

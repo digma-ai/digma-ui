@@ -2,7 +2,7 @@ import React from "react";
 import { useIconProps } from "./hooks";
 import { Direction, RotatableIconProps } from "./types";
 
-const directionRotateMap: { [key in Direction]: string } = {
+const directionRotateMap: Record<Direction, string> = {
   [Direction.UP]: "180",
   [Direction.LEFT]: "90",
   [Direction.RIGHT]: "-90",

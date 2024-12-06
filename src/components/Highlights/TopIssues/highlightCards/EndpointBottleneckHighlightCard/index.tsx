@@ -31,7 +31,7 @@ export const EndpointBottleneckHighlightCard = ({
         header: "% of Duration",
         cell: (info) => {
           const metric = info.getValue();
-          const value = metric ? `${String(metric.value)}%` : "";
+          const value = metric ? `${String(metric.value as number)}%` : "";
           return metric ? <TableText title={value}>{value}</TableText> : null;
         }
       }
@@ -42,7 +42,7 @@ export const EndpointBottleneckHighlightCard = ({
         header: "Requests",
         cell: (info) => {
           const metric = info.getValue();
-          const value = metric ? `${String(metric.value)}%` : "";
+          const value = metric ? `${String(metric.value as number)}%` : "";
           return metric ? <TableText title={value}>{value}</TableText> : null;
         }
       }
