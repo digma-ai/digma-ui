@@ -45,7 +45,7 @@ jobs:
       platform: "web"
 
   build-test-docker-image:
-    name: Build & test Docker image
+    name: Build Docker image
     needs: [build-jetbrains, build-web]
     uses: ./.github/workflows/docker-image.yml
     with:

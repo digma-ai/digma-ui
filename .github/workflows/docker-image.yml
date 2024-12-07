@@ -1,4 +1,4 @@
-name: Build & test & push Docker image
+name: Build & push Docker image
 
 on:
   workflow_call:
@@ -9,9 +9,6 @@ on:
       push:
         type: boolean
         required: false
-
-env:
-  TEST_TAG: digmaai/digma-ui:test
 
 jobs:
   build:
@@ -26,17 +23,6 @@ jobs:
           mkdir -p dist
           unzip -q ${{ inputs.dist-artifact-name }} -d dist
 
-      - name: Set up Docker
-        uses: docker/setup-docker-action@v4
-        with:
-          daemon-config: |
-            {
-              "debug": true,
-              "features": {
-                "containerd-snapshotter": true
-              }
-            }
-
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
@@ -44,28 +30,13 @@ jobs:
         id: buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build and export to Docker
-        uses: docker/build-push-action@v6
-        with:
-          load: true
-          context: .
-          file: ./Dockerfile
-          platforms: linux/amd64,linux/arm64
-          tags: ${{ env.TEST_TAG }}
-
-      - name: Test
-        run: |
-          docker run --rm ${{ env.TEST_TAG }}
-
       - name: Login to Docker Hub
-        if: ${{ inputs.push == 'true' }}
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_DIGMAAI_USERNAME }}
           password: ${{ secrets.DOCKERHUB_DIGMAAI_TOKEN }}
 
       - name: Docker meta
-        if: ${{ inputs.push == 'true' }}
         id: metadata
         uses: docker/metadata-action@v5
         with:
