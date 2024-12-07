@@ -36,6 +36,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           load: true
+          context: .
           tags: ${{ env.TEST_TAG }}
 
       - name: Test
