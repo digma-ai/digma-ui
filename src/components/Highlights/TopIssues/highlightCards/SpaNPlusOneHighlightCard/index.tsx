@@ -29,7 +29,7 @@ export const SpaNPlusOneHighlightCard = ({
         header: "Affected endpoints",
         cell: (info) => {
           const metric = info.getValue();
-          const value = metric ? String(metric.value) : "";
+          const value = metric ? String(metric.value as number) : "";
           return metric ? <TableText title={value}>{value}</TableText> : null;
         }
       }
@@ -38,7 +38,7 @@ export const SpaNPlusOneHighlightCard = ({
       header: "Max Repeats",
       cell: (info) => {
         const metric = info.getValue();
-        const value = metric ? String(metric.value) : "";
+        const value = metric ? String(metric.value as number) : "";
         return metric ? <TableText title={value}>{value}</TableText> : null;
       }
     }),
@@ -48,7 +48,7 @@ export const SpaNPlusOneHighlightCard = ({
         header: "Max Requests",
         cell: (info) => {
           const metric = info.getValue();
-          const value = metric ? `${String(metric.value)}%` : "";
+          const value = metric ? `${String(metric.value as number)}%` : "";
           return metric ? <TableText title={value}>{value}</TableText> : null;
         }
       }
