@@ -6,6 +6,9 @@ on:
       platform:
         type: string
         required: true
+    outputs:
+      dist-filename:
+        value: ${{ jobs.build.outputs.dist_filename }}
 
 jobs:
   build:
