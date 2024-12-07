@@ -61,7 +61,7 @@ export const SpanQueryOptimizationHighlightCard = ({
       header: "Database",
       cell: (info) => {
         const metric = info.getValue();
-        const value = metric ? metric.value : "";
+        const value = metric ? (metric.value as string) : "";
         return metric ? <TableText title={value}>{value}</TableText> : null;
       }
     })

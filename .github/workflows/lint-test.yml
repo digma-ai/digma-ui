@@ -1,17 +1,11 @@
-name: Build
+name: Lint & test
 
 on:
   workflow_call:
-    inputs:
-      platform:
-        type: string
-        required: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    outputs:
-      dist-filename: ${{ steps.set-artifact-name.outputs.dist-filename }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -31,16 +25,8 @@ jobs:
       - if: steps.node-modules-cache.outputs.cache-hit != 'true'
         run: npm ci
 
-      - run: npm run build:prod:${{ inputs.platform }}
+      - name: Lint
+        run: npm run lint
 
-      - name: Get distributive filename
-        run: |
-          FILENAME=$(ls dist/dist-*.zip | head -n 1 | xargs basename)
-          echo "DIST_FILENAME=$FILENAME" >> $GITHUB_ENV
-          echo "dist-filename=$FILENAME" >> $GITHUB_OUTPUT
-
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ env.DIST_FILENAME }}
-          path: dist/${{ env.DIST_FILENAME }}
+      - name: Test
+        run: npm run test -- --bail

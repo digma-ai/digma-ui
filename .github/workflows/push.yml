@@ -1,0 +1,53 @@
+name: Lint & test & build
+
+on:
+  push:
+    branches: ["main"]
+    # Github Actions don't support YAML anchors yet, so we have to repeat
+    # the paths-ignore in both push and pull_request events.
+    # More info: https://github.com/actions/runner/issues/1182
+    paths-ignore:
+      - ".husky/**"
+      - ".vscode/**"
+      - "website/**"
+      - ".prettierignore"
+      - ".prettierrc"
+      - "LICENSE"
+      - "README.md"
+  pull_request:
+    branches: ["main"]
+    paths-ignore:
+      - ".husky/**"
+      - ".vscode/**"
+      - "website/**"
+      - ".prettierignore"
+      - ".prettierrc"
+      - "LICENSE"
+      - "README.md"
+
+jobs:
+  lint-test:
+    name: Lint & test
+    uses: ./.github/workflows/lint-test.yml
+
+  build-jetbrains:
+    name: Build for JetBrains
+    needs: lint-test
+    uses: ./.github/workflows/build.yml
+    with:
+      platform: "jetbrains"
+
+  build-web:
+    name: Build for web
+    needs: lint-test
+    uses: ./.github/workflows/build.yml
+    with:
+      platform: "web"
+
+  build-test-docker-image:
+    name: Build & test Docker image
+    needs: [build-jetbrains, build-web]
+    uses: ./.github/workflows/build-docker-image.yml
+    with:
+      dist-artifact-name: ${{ needs.build-web.outputs.dist-filename }}
+      push: false
