@@ -11,7 +11,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     outputs:
-      dist-filename: ${{ steps.set-artifact-name.outputs.dist-filename }}
+      dist-filename: ${{ steps.get-dist-filename.outputs.dist-filename }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -34,6 +34,7 @@ jobs:
       - run: npm run build:prod:${{ inputs.platform }}
 
       - name: Get distributive filename
+        id: get-dist-filename
         run: |
           FILENAME=$(ls dist/dist-*.zip | head -n 1 | xargs basename)
           echo "DIST_FILENAME=$FILENAME" >> $GITHUB_ENV
