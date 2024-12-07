@@ -47,7 +47,7 @@ jobs:
   build-test-docker-image:
     name: Build & test Docker image
     needs: [build-jetbrains, build-web]
-    uses: ./.github/workflows/build-docker-image.yml
+    uses: ./.github/workflows/docker-image.yml
     with:
       dist-artifact-name: ${{ needs.build-web.outputs.dist-filename }}
       push: false

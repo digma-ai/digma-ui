@@ -23,7 +23,7 @@ jobs:
   attach-jetbrains-dist-asset:
     name: Attach JetBrains release asset
     needs: build-jetbrains
-    uses: ./.github/workflows/attach-release-artifact.yml
+    uses: ./.github/workflows/release-asset.yml
     with:
       artifact-name: ${{ needs.build-jetbrains.outputs.dist-filename }}
 
@@ -37,14 +37,14 @@ jobs:
   attach-web-dist-asset:
     name: Attach web release asset
     needs: build-web
-    uses: ./.github/workflows/attach-release-artifact.yml
+    uses: ./.github/workflows/release-asset.yml
     with:
       artifact-name: ${{ needs.build-web.outputs.dist-filename }}
 
   build-push-docker-image:
     name: Build & test & push Docker image
     needs: [build-jetbrains, build-web]
-    uses: ./.github/workflows/build-docker-image.yml
+    uses: ./.github/workflows/docker-image.yml
     with:
       dist-artifact-name: ${{ needs.build-web.outputs.dist-filename }}
       push: true
