@@ -8,7 +8,7 @@ on:
         required: true
     outputs:
       dist-filename:
-        value: ${{ jobs.build.outputs.dist_filename }}
+        value: ${{ jobs.build.outputs.dist-filename }}
 
 jobs:
   build:
