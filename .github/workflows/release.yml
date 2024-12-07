@@ -16,9 +16,14 @@ jobs:
   build-jetbrains:
     name: Build for JetBrains
     needs: lint-test
-    uses: ./.github/workflows/build.yml
-    with:
-      platform: "jetbrains"
+    runs-on: ubuntu-latest
+    outputs:
+      dist-filename: ${{ steps.build.outputs.dist-filename }}
+    steps:
+      - id: "build"
+        uses: ./.github/workflows/build.yml
+        with:
+          platform: "jetbrains"
 
   attach-jetbrains-dist-asset:
     name: Attach JetBrains release asset
@@ -30,9 +35,14 @@ jobs:
   build-web:
     name: Build for web
     needs: lint-test
-    uses: ./.github/workflows/build.yml
-    with:
-      platform: "web"
+    runs-on: ubuntu-latest
+    outputs:
+      dist-filename: ${{ steps.build.outputs.dist-filename }}
+    steps:
+      - id: "build"
+        uses: ./.github/workflows/build.yml
+        with:
+          platform: "web"
 
   attach-web-dist-asset:
     name: Attach web release asset

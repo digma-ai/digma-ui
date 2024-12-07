@@ -40,9 +40,14 @@ jobs:
   build-web:
     name: Build for web
     needs: lint-test
-    uses: ./.github/workflows/build.yml
-    with:
-      platform: "web"
+    runs-on: ubuntu-latest
+    outputs:
+      dist-filename: ${{ steps.build.outputs.dist-filename }}
+    steps:
+      - id: "build"
+        uses: ./.github/workflows/build.yml
+        with:
+          platform: "web"
 
   build-test-docker-image:
     name: Build & test Docker image
