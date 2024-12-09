@@ -29,7 +29,7 @@ export const EndpointSpanNPlusOneHighlightCard = ({
       header: "Repeats",
       cell: (info) => {
         const metric = info.getValue();
-        const value = metric ? String(metric.value) : "";
+        const value = metric ? String(metric.value as number) : "";
         return metric ? <TableText title={value}>{value}</TableText> : null;
       }
     }),
@@ -39,7 +39,7 @@ export const EndpointSpanNPlusOneHighlightCard = ({
         header: "Requests",
         cell: (info) => {
           const metric = info.getValue();
-          const value = metric ? `${String(metric.value)}%` : "";
+          const value = metric ? `${String(metric.value as number)}%` : "";
           return metric ? <TableText title={value}>{value}</TableText> : null;
         }
       }

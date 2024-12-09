@@ -1,41 +1,20 @@
-name: Lint & test & build
+name: Build
 
 on:
-  push:
-    branches: ["main"]
-    # Github Actions don't support YAML anchors yet, so we have to repeat
-    # the paths-ignore in both push and pull_request events.
-    # More info: https://github.com/actions/runner/issues/1182
-    paths-ignore:
-      - "public/**"
-      - ".husky/**"
-      - ".vscode/**"
-      - "*.html"
-      - ".nvmrc"
-      - ".prettierignore"
-      - ".prettierrc"
-      - "Dockerfile"
-      - "LICENSE"
-      - "nginx.conf.template"
-      - "README.md"
-  pull_request:
-    branches: ["main"]
-    paths-ignore:
-      - "public/**"
-      - ".husky/**"
-      - ".vscode/**"
-      - "*.html"
-      - ".nvmrc"
-      - ".prettierignore"
-      - ".prettierrc"
-      - "Dockerfile"
-      - "LICENSE"
-      - "nginx.conf.template"
-      - "README.md"
+  workflow_call:
+    inputs:
+      platform:
+        type: string
+        required: true
+    outputs:
+      dist-filename:
+        value: ${{ jobs.build.outputs.dist-filename }}
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      dist-filename: ${{ steps.get-dist-filename.outputs.dist_filename }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -55,12 +34,17 @@ jobs:
       - if: steps.node-modules-cache.outputs.cache-hit != 'true'
         run: npm ci
 
-      - run: npm run lint
-      - run: npm run test -- --bail
-      - run: npm run build:prod
+      - run: npm run build:prod:${{ inputs.platform }}
 
-      - name: Upload build artifact
+      - name: Get distributive filename
+        id: get-dist-filename
+        run: |
+          FILENAME=$(ls dist/dist-*.zip | head -n 1 | xargs basename)
+          echo "DIST_FILENAME=$FILENAME" >> $GITHUB_ENV
+          echo "dist_filename=$FILENAME" >> $GITHUB_OUTPUT
+
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: dist
-          path: dist/
+          name: ${{ env.DIST_FILENAME }}
+          path: dist/${{ env.DIST_FILENAME }}
