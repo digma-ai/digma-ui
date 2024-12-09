@@ -13,6 +13,7 @@ import { useHistory } from "../../Main/useHistory";
 import { HomeIcon } from "../../common/icons/16px/HomeIcon";
 import { ChevronIcon } from "../../common/icons/20px/ChevronIcon";
 import { Direction } from "../../common/icons/types";
+import { Tooltip } from "../../common/v3/Tooltip";
 import { trackingEvents } from "../tracking";
 import * as s from "./styles";
 
@@ -151,29 +152,37 @@ export const HistoryNavigationPanel = () => {
 
   return (
     <s.Container $isActive={isAtSpan}>
-      <s.Button onClick={handleBackButtonClick} disabled={!canGoBack}>
-        <ChevronIcon
-          direction={Direction.LEFT}
-          size={16}
-          color={"currentColor"}
-        />
-      </s.Button>
-      <s.Button onClick={handleForwardButtonClick} disabled={!canGoForward}>
-        <ChevronIcon
-          direction={Direction.RIGHT}
-          size={16}
-          color={"currentColor"}
-        />
-      </s.Button>
-      <s.Button onClick={handleHomeButtonClick} disabled={!isAtSpan}>
-        <HomeIcon
-          color={isAtSpan ? "currentColor" : theme.colors.v3.icon.brandPrimary}
-          size={16}
-          fillColor={
-            isAtSpan ? undefined : theme.colors.v3.surface.brandPrimary
-          }
-        />
-      </s.Button>
+      <Tooltip title={"Go back"}>
+        <s.Button onClick={handleBackButtonClick} disabled={!canGoBack}>
+          <ChevronIcon
+            direction={Direction.LEFT}
+            size={16}
+            color={"currentColor"}
+          />
+        </s.Button>
+      </Tooltip>
+      <Tooltip title={"Go forward"}>
+        <s.Button onClick={handleForwardButtonClick} disabled={!canGoForward}>
+          <ChevronIcon
+            direction={Direction.RIGHT}
+            size={16}
+            color={"currentColor"}
+          />
+        </s.Button>
+      </Tooltip>
+      <Tooltip title={"Go home"}>
+        <s.Button onClick={handleHomeButtonClick} disabled={!isAtSpan}>
+          <HomeIcon
+            color={
+              isAtSpan ? "currentColor" : theme.colors.v3.icon.brandPrimary
+            }
+            size={16}
+            fillColor={
+              isAtSpan ? undefined : theme.colors.v3.surface.brandPrimary
+            }
+          />
+        </s.Button>
+      </Tooltip>
     </s.Container>
   );
 };

@@ -1,30 +1,27 @@
 import path from "path";
 import createStyledComponentsTransformer from "typescript-plugin-styled-components";
 import { Configuration as WebpackConfiguration } from "webpack";
-import { merge } from "webpack-merge";
-import { WebpackEnv } from "./apps";
-import commonConfig from "./webpack.common";
 
 const styledComponentsTransformer = createStyledComponentsTransformer();
 
-const getConfig = (env: WebpackEnv): WebpackConfiguration =>
-  merge(commonConfig(env), {
-    mode: "development",
-    devtool: "eval-source-map",
-    module: {
-      rules: [
-        {
-          test: /\.tsx?$/,
-          loader: "ts-loader",
-          options: {
-            configFile: path.resolve(__dirname, "./tsconfig.dev.json"),
-            getCustomTransformers: () => ({
-              before: [styledComponentsTransformer]
-            })
-          }
+const config: WebpackConfiguration = {
+  extends: path.resolve(__dirname, "./webpack.common.ts"),
+  mode: "development",
+  devtool: "eval-source-map",
+  module: {
+    rules: [
+      {
+        test: /\.tsx?$/,
+        loader: "ts-loader",
+        options: {
+          configFile: path.resolve(__dirname, "./tsconfig.dev.json"),
+          getCustomTransformers: () => ({
+            before: [styledComponentsTransformer]
+          })
         }
-      ]
-    }
-  });
+      }
+    ]
+  }
+};
 
-export default getConfig;
+export default config;
