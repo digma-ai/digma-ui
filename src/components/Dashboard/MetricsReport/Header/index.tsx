@@ -17,6 +17,7 @@ import { InfinityIcon } from "../../../common/icons/16px/InfinityIcon";
 import { TableIcon } from "../../../common/icons/16px/TableIcon";
 import { TreemapIcon } from "../../../common/icons/16px/TreemapIcon";
 import { ChevronIcon } from "../../../common/icons/20px/ChevronIcon";
+import { DatabaseIcon } from "../../../common/icons/DatabaseIcon";
 import { Direction } from "../../../common/icons/types";
 import { ToggleValue } from "../../../common/Toggle/types";
 import { NewIconButton } from "../../../common/v3/NewIconButton";
@@ -369,7 +370,7 @@ export const Header = ({ onGoBack }: HeaderProps) => {
                 selected: selectedCriticalityLevels.includes(item.id)
               }))}
               multiselect={true}
-              icon={WrenchIcon}
+              icon={DatabaseIcon}
               onChange={handleDataChanged}
               placeholder={"Data"}
             />
