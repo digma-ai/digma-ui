@@ -53,28 +53,22 @@ const getConfig = (env: WebpackEnv): WebpackConfiguration => {
           }
         ]
       }),
-      ...(env.platform !== "JetBrains"
-        ? [
-            ...Object.keys(entriesToBuild).map((app) => {
-              return new HtmlWebpackPlugin({
-                template: path.resolve(
-                  __dirname,
-                  `./assets/${
-                    env.platform === "Web" ? "index.web.ejs" : "index.ejs"
-                  }`
-                ),
-                filename: `${app}/index.html`,
-                chunks: [app],
-                inject: false,
-                minify: false,
-                scriptLoading: "blocking",
-                templateParameters: {
-                  environmentVariables: appData[app]?.environmentVariables ?? []
-                }
-              });
-            })
-          ]
-        : []),
+      ...Object.keys(entriesToBuild).map((app) => {
+        return new HtmlWebpackPlugin({
+          template: path.resolve(
+            __dirname,
+            `./assets/${env.platform === "Web" ? "index.web.ejs" : "index.ejs"}`
+          ),
+          filename: `${app}/index.html`,
+          chunks: [app],
+          inject: false,
+          minify: false,
+          scriptLoading: "blocking",
+          templateParameters: {
+            environmentVariables: appData[app]?.environmentVariables ?? []
+          }
+        });
+      }),
       new ZipPlugin({
         filename: [
           "dist",
