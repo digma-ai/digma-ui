@@ -29,4 +29,4 @@ jobs:
           git add dependencies.json
           git commit -m "Update Jaeger dependencies"
           git push origin ${{ env.BRANCH_NAME }}
-          gh pr create -t "Update Jaeger dependencies" -b "Update Jaeger dependencies" -B main -H ${{ env.BRANCH_NAME }}
+          gh pr create -f -B main
