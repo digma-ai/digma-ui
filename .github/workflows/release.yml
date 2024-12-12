@@ -66,13 +66,13 @@ jobs:
           DEPENDENCIES=$(cat dependencies.json | jq -c '.')
           echo "DEPENDENCIES=$DEPENDENCIES" >> $GITHUB_ENV
 
-      - name: Create PR in digma-ui
+      - name: Update digma
         run: |
           curl -X POST -H "Accept: application/vnd.github.v3+json" \
           -H "Authorization: token ${{ secrets.RELEASE_PAT }}" \
           https://api.github.com/repos/digma-ai/digma-ui/dispatches \
           -d '{
-            "event_type": "update-ui-dependencies",
+            "event_type": "update-ui",
             "client_payload": {
               release: "'"${{ github.ref_name }}"'",
               dependencies: '"${{ env.DEPENDENCIES }}"'
