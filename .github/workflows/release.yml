@@ -20,12 +20,12 @@ jobs:
     with:
       platform: "jetbrains"
 
-  attach-jetbrains-dist-asset:
-    name: Attach JetBrains release asset
+  attach-release-jetbrains-asset:
+    name: Attach release JetBrains asset
     needs: build-jetbrains
     uses: ./.github/workflows/release-asset.yml
     with:
-      artifact-name: ${{ needs.build-jetbrains.outputs.dist-filename }}
+      artifact-name: ${{ needs.build-jetbrains.outputs.artifact-name }}
 
   build-web:
     name: Build for web
@@ -34,12 +34,12 @@ jobs:
     with:
       platform: "web"
 
-  attach-web-dist-asset:
-    name: Attach web release asset
+  attach-release-web-asset:
+    name: Attach release web asset
     needs: build-web
     uses: ./.github/workflows/release-asset.yml
     with:
-      artifact-name: ${{ needs.build-web.outputs.dist-filename }}
+      artifact-name: ${{ needs.build-web.outputs.artifact-name }}
 
   build-push-docker-image:
     name: Build & push Docker image
@@ -47,5 +47,34 @@ jobs:
     uses: ./.github/workflows/docker-image.yml
     secrets: inherit
     with:
-      dist-artifact-name: ${{ needs.build-web.outputs.dist-filename }}
+      dist-artifact-name: ${{ needs.build-web.outputs.artifact-name }}
       push: true
+
+  update-digma:
+    name: Update version file in digma
+    needs:
+      [
+        attach-release-web-asset,
+        attach-release-jetbrains-asset,
+        build-push-docker-image
+      ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Get dependencies
+        run: |
+          DEPENDENCIES=$(cat dependencies.json | jq -c '.')
+          echo "DEPENDENCIES=$DEPENDENCIES" >> $GITHUB_ENV
+
+      - name: Create PR in digma-ui
+        run: |
+          curl -X POST -H "Accept: application/vnd.github.v3+json" \
+          -H "Authorization: token ${{ secrets.RELEASE_PAT }}" \
+          https://api.github.com/repos/digma-ai/digma-ui/dispatches \
+          -d '{
+            "event_type": "update-ui-dependencies",
+            "client_payload": {
+              release: "'"${{ github.ref_name }}"'",
+              dependencies: '"${{ env.DEPENDENCIES }}"'
+            }
+          }'

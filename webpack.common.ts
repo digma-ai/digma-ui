@@ -1,4 +1,3 @@
-import { CleanWebpackPlugin } from "clean-webpack-plugin";
 import CopyWebpackPlugin from "copy-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import path from "path";
@@ -12,19 +11,17 @@ interface PackageJson {
 }
 
 const getConfig = (env: WebpackEnv): WebpackConfiguration => {
-  const entriesToBuild: Record<string, string> = env.app
-    ? { [env.app]: appData[env.app].entry }
-    : Object.entries(appData)
-        .filter(
-          ([, entry]) => !env.platform || entry.platforms.includes(env.platform)
-        )
-        .reduce(
-          (acc, [name, entry]) => ({
-            ...acc,
-            [name]: entry.entry
-          }),
-          {}
-        );
+  const entriesToBuild: Record<string, string> = Object.entries(appData)
+    .filter(
+      ([, entry]) => !env.platform || entry.platforms.includes(env.platform)
+    )
+    .reduce(
+      (acc, [name, entry]) => ({
+        ...acc,
+        [name]: entry.entry
+      }),
+      {}
+    );
 
   return {
     entry: entriesToBuild,
@@ -45,12 +42,19 @@ const getConfig = (env: WebpackEnv): WebpackConfiguration => {
       ]
     },
     plugins: [
-      ...(env.app ? [] : [new CleanWebpackPlugin()]),
       new CopyWebpackPlugin({
         patterns: [
           {
             from: path.resolve(__dirname, "./public")
-          }
+          },
+          ...(env.platform === "JetBrains"
+            ? [
+                {
+                  from: path.resolve(__dirname, `./jaeger-ui/dist`),
+                  to: "jaeger-ui"
+                }
+              ]
+            : [])
         ]
       }),
       ...Object.keys(entriesToBuild).map((app) => {
@@ -69,15 +73,19 @@ const getConfig = (env: WebpackEnv): WebpackConfiguration => {
           }
         });
       }),
-      new ZipPlugin({
-        filename: [
-          "dist",
-          (env.platform ?? "").toLocaleLowerCase(),
-          `v${(packageJson as PackageJson).version}.zip`
-        ]
-          .filter(Boolean)
-          .join("-")
-      })
+      ...(env.compress
+        ? [
+            new ZipPlugin({
+              filename: [
+                "dist",
+                (env.platform ?? "").toLocaleLowerCase(),
+                `v${(packageJson as PackageJson).version}.zip`
+              ]
+                .filter(Boolean)
+                .join("-")
+            })
+          ]
+        : [])
     ]
   };
 };

@@ -19,9 +19,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: ${{ inputs.dist-artifact-name }}
-      - run: |
-          mkdir -p dist
-          unzip -q ${{ inputs.dist-artifact-name }} -d dist
+          path: dist
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3

@@ -46,11 +46,11 @@ jobs:
     with:
       platform: "web"
 
-  build-test-docker-image:
+  build-docker-image:
     name: Build Docker image
     needs: [build-jetbrains, build-web]
     uses: ./.github/workflows/docker-image.yml
     secrets: inherit
     with:
-      dist-artifact-name: ${{ needs.build-web.outputs.dist-filename }}
+      dist-artifact-name: ${{ needs.build-web.outputs.artifact-name }}
       push: false

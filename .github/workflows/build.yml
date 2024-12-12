@@ -7,14 +7,14 @@ on:
         type: string
         required: true
     outputs:
-      dist-filename:
-        value: ${{ jobs.build.outputs.dist-filename }}
+      artifact-name:
+        value: ${{ jobs.build.outputs.artifact-name }}
 
 jobs:
   build:
     runs-on: ubuntu-latest
     outputs:
-      dist-filename: ${{ steps.get-dist-filename.outputs.dist_filename }}
+      artifact-name: ${{ steps.get-artifact-name.outputs.artifact_name }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -27,15 +27,18 @@ jobs:
 
       - run: npm run build:prod:${{ inputs.platform }}
 
-      - name: Get distributive filename
-        id: get-dist-filename
+      - name: Get artifact name
+        id: get-artifact-name
         run: |
-          FILENAME=$(ls dist/dist-*.zip | head -n 1 | xargs basename)
-          echo "DIST_FILENAME=$FILENAME" >> $GITHUB_ENV
-          echo "dist_filename=$FILENAME" >> $GITHUB_OUTPUT
+          git fetch --tags
+          LATEST_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
+          echo "LATEST_TAG=$LATEST_TAG" >> $GITHUB_ENV
+          NAME="dist-${{ inputs.platform }}-$LATEST_TAG"
+          echo "ARTIFACT_NAME=$NAME" >> $GITHUB_ENV
+          echo "artifact_name=$NAME" >> $GITHUB_OUTPUT
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.DIST_FILENAME }}
-          path: dist/${{ env.DIST_FILENAME }}
+          name: ${{ env.ARTIFACT_NAME }}
+          path: dist/
