@@ -16,7 +16,7 @@ jobs:
 
       - name: Update dependencies.json
         run: |
-          echo ${{ toJson(github.event.client_payload) }} > dependencies_diff.json
+          echo '${{ toJson(github.event.client_payload) }}' > ./dependencies_diff.json
           npm run update-jaeger
 
       - name: Commit, push changes and create PR
