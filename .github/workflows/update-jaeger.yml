@@ -9,8 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       BRANCH_NAME: update-jaeger
-      DEPENDENCIES_FILENAME: dependencies.json
-      JAEGER_DIFF_FILENAME: dependencies.diff
     steps:
       - uses: actions/checkout@v4
         with:
@@ -18,10 +16,12 @@ jobs:
 
       - name: Update dependencies.json
         run: |
-          echo ${{ toJson(github.event.client_payload) }} > dependencies.diff.json
+          echo ${{ toJson(github.event.client_payload) }} > dependencies_diff.json
           npm run update-jaeger
 
       - name: Commit, push changes and create PR
+        env:
+          GH_TOKEN: ${{ secrets.CONTENTS_WRITE_PAT }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
