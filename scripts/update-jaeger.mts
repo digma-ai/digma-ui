@@ -23,7 +23,7 @@ const readDependencyFile = async (path: string): Promise<Dependencies> => {
 const dependenciesFilePath = path.resolve("./dependencies.json");
 const dependencies = await readDependencyFile(dependenciesFilePath);
 
-const dependenciesDiffFilePath = path.resolve("./dependencies.diff.json");
+const dependenciesDiffFilePath = path.resolve("./dependencies_diff.json");
 const dependenciesDiff = await readDependencyFile(dependenciesDiffFilePath);
 
 const mergedDependencies = { ...dependencies, ...dependenciesDiff };
