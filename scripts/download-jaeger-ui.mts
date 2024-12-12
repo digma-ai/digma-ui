@@ -3,7 +3,7 @@ import { Octokit } from "@octokit/rest";
 import AdmZip from "adm-zip";
 import fs from "fs";
 import path from "path";
-import dependenciesJson from "./dependencies.json" assert { type: "json" };
+import dependenciesJson from "../dependencies.json" assert { type: "json" };
 
 interface DependenciesJson {
   jetBrainsPluginVersion: string;

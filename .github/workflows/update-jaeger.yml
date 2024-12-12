@@ -1,0 +1,32 @@
+name: Update Jaeger dependencies
+
+on:
+  repository_dispatch:
+    types: [update-jaeger]
+
+jobs:
+  update-jaeger:
+    runs-on: ubuntu-latest
+    env:
+      BRANCH_NAME: update-jaeger
+      DEPENDENCIES_FILENAME: dependencies.json
+      JAEGER_DIFF_FILENAME: dependencies.diff
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.CONTENTS_WRITE_PAT }}
+
+      - name: Update dependencies.json
+        run: |
+          echo ${{ toJson(github.event.client_payload) }} > dependencies.diff.json
+          npm run update-jaeger
+
+      - name: Commit, push changes and create PR
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b ${{ env.BRANCH_NAME }}
+          git add dependencies.json
+          git commit -m "Update Jaeger dependencies"
+          git push origin ${{ env.BRANCH_NAME }}
+          gh pr create -t "Update Jaeger dependencies" -B main -H ${{ env.BRANCH_NAME }}
