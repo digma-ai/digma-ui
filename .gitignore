@@ -1,5 +1,6 @@
 coverage/
 dist/
+jaeger-ui/
 node_modules/
 storybook-static/
 .DS_Store

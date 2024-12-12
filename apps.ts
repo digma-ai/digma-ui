@@ -61,6 +61,6 @@ type AppData = Record<
 export interface WebpackEnv {
   WEBPACK_BUNDLE: true;
   WEBPACK_BUILD: true;
-  app?: keyof typeof appData;
   platform?: string;
+  compress?: boolean;
 }
