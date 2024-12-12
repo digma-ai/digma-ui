@@ -72,4 +72,8 @@ jobs:
           token: ${{ secrets.RELEASE_PAT }}
           repository: digma-ai/digma
           event-type: update-ui
-          client-payload: '{ "release": "${{ github.ref_name }}", "dependencies": "${{ toJson(env.DEPENDENCIES) }}" }'
+          client-payload: |-
+            {
+              "release": "${{ github.ref_name }}",
+              "dependencies": "${{ toJson(env.DEPENDENCIES) }}"
+            }
