@@ -50,7 +50,7 @@ const allFiltersInitialState: {
   }
 };
 
-export const initialState: AssetsState = {
+const initialState: AssetsState = {
   ...allFiltersInitialState,
   assetCategoriesData: null,
   isAssetCategoriesDataLoading: false,

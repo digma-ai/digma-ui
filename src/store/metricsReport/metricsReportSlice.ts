@@ -27,7 +27,7 @@ export interface MetricsReportState {
   metricsReportEndpointsIssuesData: EndpointIssuesData[] | null;
 }
 
-export const initialState: MetricsReportState = {
+const initialState: MetricsReportState = {
   metricsReportViewMode: "treemap",
   metricsReportViewLevel: "services",
   metricsReportTimeMode: "baseline",

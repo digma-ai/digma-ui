@@ -1,6 +1,6 @@
 export type OperatingSystem = "Linux" | "macOS" | "Windows" | "Other";
 
-export const getOperatingSystem = (): OperatingSystem => {
+const getOperatingSystem = (): OperatingSystem => {
   if (navigator.userAgent.includes("Linux")) {
     return "Linux";
   }

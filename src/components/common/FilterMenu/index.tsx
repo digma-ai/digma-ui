@@ -51,11 +51,9 @@ export const FilterMenu = ({
               <Tooltip title={x.label} key={x.value}>
                 <s.Tag>
                   <s.TagText>{x.label}</s.TagText>
-                  <s.DeleteTagButton
-                    onClick={() => handleMenuItemClick(x.value)}
-                  >
+                  <s.IconButton onClick={() => handleMenuItemClick(x.value)}>
                     <CrossIcon color={"currentColor"} size={14} />
-                  </s.DeleteTagButton>
+                  </s.IconButton>
                 </s.Tag>
               </Tooltip>
             ))}
@@ -82,9 +80,9 @@ export const FilterMenu = ({
     <s.Container>
       <s.Header>
         {title}
-        <s.CloseButton onClick={handleCloseButtonClick}>
+        <s.IconButton onClick={handleCloseButtonClick}>
           <CrossIcon color={"currentColor"} size={14} />
-        </s.CloseButton>
+        </s.IconButton>
       </s.Header>
       <s.SearchInputContainer>
         <s.SearchInputIconContainer>

@@ -20,7 +20,7 @@ import { OpenTelemetryLogoIcon } from "../../common/icons/16px/OpenTelemetryLogo
 import { SlackLogoIcon } from "../../common/icons/16px/SlackLogoIcon";
 import { ChevronIcon } from "../../common/icons/ChevronIcon";
 import { DigmaLogoIcon } from "../../common/icons/DigmaLogoIcon";
-import { ThreeDotsIcon } from "../../common/icons/ThreeDotsIcon";
+import { ThreeDotsVerticalIcon } from "../../common/icons/ThreeDotsVerticalIcon";
 import { Direction } from "../../common/icons/types";
 import { trackingEvents } from "../tracking";
 import { ExtendedEnvironment } from "../types";
@@ -243,7 +243,7 @@ export const EnvironmentPanel = ({
         }
       >
         <div>
-          <NewButton buttonType={"tertiary"} icon={ThreeDotsIcon} />
+          <NewButton buttonType={"tertiary"} icon={ThreeDotsVerticalIcon} />
         </div>
       </NewPopover>
     );

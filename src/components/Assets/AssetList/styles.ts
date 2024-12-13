@@ -15,14 +15,6 @@ export const Container = styled.div`
   overflow: hidden;
 `;
 
-export const BackButton = styled.button`
-  background: none;
-  border: none;
-  display: flex;
-  padding: 0;
-  cursor: pointer;
-`;
-
 export const Toolbar = styled.div`
   display: flex;
   justify-content: space-between;
@@ -169,19 +161,6 @@ export const SortingOrderIconContainer = styled.div<SortingOrderIconContainerPro
   );
 `;
 
-export const ItemsCount = styled.span`
-  margin-left: auto;
-  color: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#828797";
-      case "dark":
-      case "dark-jetbrains":
-        return "#9f9f9f";
-    }
-  }};
-`;
-
 export const List = styled.ul`
   padding: 0 9px 8px;
   display: flex;
@@ -190,10 +169,6 @@ export const List = styled.ul`
   margin: 0;
   overflow: auto;
   height: 100%;
-`;
-
-export const ListItem = styled.li`
-  display: flex;
 `;
 
 export const NoDataText = styled.span`
@@ -210,21 +185,6 @@ export const NoDataText = styled.span`
         return "#9b9b9b";
     }
   }};
-`;
-
-export const InsightIconsContainer = styled.span`
-  display: flex;
-  gap: 2px;
-`;
-
-export const InsightIconContainer = styled.span`
-  background: #2e2e2e;
-  border-radius: 4px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 20px;
-  height: 20px;
 `;
 
 export const Footer = styled.div`

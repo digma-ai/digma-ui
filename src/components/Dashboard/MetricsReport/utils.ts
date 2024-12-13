@@ -6,11 +6,7 @@ import {
   ServiceIssuesData
 } from "./types";
 
-export const getSeverity = (
-  min: number,
-  max: number,
-  value: number
-): Severity => {
+const getSeverity = (min: number, max: number, value: number): Severity => {
   const normalizedMin = Math.max(min, 0);
   const range = max - normalizedMin;
   const lowThreshold = normalizedMin + 0.15 * range;

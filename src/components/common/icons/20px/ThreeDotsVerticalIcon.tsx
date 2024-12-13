@@ -2,7 +2,7 @@ import React from "react";
 import { useIconProps } from "../hooks";
 import { IconProps } from "../types";
 
-export const KebabIconComponent = (props: IconProps) => {
+export const ThreeDotsVerticalIconComponent = (props: IconProps) => {
   const { size, color } = useIconProps(props);
 
   return (
@@ -25,4 +25,4 @@ export const KebabIconComponent = (props: IconProps) => {
   );
 };
 
-export const KebabIcon = React.memo(KebabIconComponent);
+export const ThreeDotsVerticalIcon = React.memo(ThreeDotsVerticalIconComponent);

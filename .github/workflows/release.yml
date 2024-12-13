@@ -75,5 +75,5 @@ jobs:
           client-payload: |-
             {
               "release": "${{ github.ref_name }}",
-              "dependencies": "${{ toJson(env.DEPENDENCIES) }}"
+              "dependencies": ${{ toJson(env.DEPENDENCIES) }}
             }

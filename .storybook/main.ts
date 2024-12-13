@@ -4,7 +4,6 @@ const config: StorybookConfig = {
   stories: ["../src/**/*.mdx", "../src/**/*.stories.tsx"],
   addons: [
     "@storybook/addon-webpack5-compiler-babel",
-    "@storybook/addon-links",
     "@storybook/addon-essentials",
     "@storybook/addon-interactions",
     "@storybook/addon-a11y",

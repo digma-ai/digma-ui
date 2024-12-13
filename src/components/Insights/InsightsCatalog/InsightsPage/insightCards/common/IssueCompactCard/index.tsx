@@ -9,7 +9,7 @@ import { FourPointedStarWithPlusesIcon } from "../../../../../../common/icons/16
 import { JiraLogoIcon } from "../../../../../../common/icons/16px/JiraLogoIcon";
 import { RecheckIcon } from "../../../../../../common/icons/16px/RecheckIcon";
 import { TraceIcon } from "../../../../../../common/icons/16px/TraceIcon";
-import { ThreeDotsIcon } from "../../../../../../common/icons/ThreeDotsIcon";
+import { ThreeDotsVerticalIcon } from "../../../../../../common/icons/ThreeDotsVerticalIcon";
 import { NewPopover } from "../../../../../../common/NewPopover";
 import { Link } from "../../../../../../common/v3/Link";
 import { NewIconButton } from "../../../../../../common/v3/NewIconButton";
@@ -213,7 +213,7 @@ export const IssueCompactCard = ({
           }
         >
           <NewIconButton
-            icon={ThreeDotsIcon}
+            icon={ThreeDotsVerticalIcon}
             buttonType={"secondaryBorderless"}
             size={"small"}
           />

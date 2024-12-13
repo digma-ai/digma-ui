@@ -59,12 +59,6 @@ export const Link = styled(CommonLink)`
   color: inherit;
 `;
 
-export const InsightContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-`;
-
 export const AddEnvironmentButton = styled(Button)`
   width: 100%;
   color: #b9c2eb;
