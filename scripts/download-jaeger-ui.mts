@@ -34,8 +34,12 @@ if (outputArgIndex !== -1 && process.argv[outputArgIndex + 1]) {
 fs.mkdirSync(outputPath, { recursive: true });
 
 const extractZip = (zipPath: string, extractPath: string) => {
+  if (fs.existsSync(extractPath)) {
+    fs.rmdirSync(extractPath, { recursive: true });
+  }
+
   const zip = new AdmZip(zipPath);
-  zip.extractAllTo(extractPath, true);
+  zip.extractAllTo(extractPath);
 };
 
 const downloadReleaseAsset = async ({

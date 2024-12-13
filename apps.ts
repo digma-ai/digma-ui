@@ -63,4 +63,5 @@ export interface WebpackEnv {
   WEBPACK_BUILD: true;
   platform?: string;
   compress?: boolean;
+  ["zip-filename-format"]?: string;
 }
