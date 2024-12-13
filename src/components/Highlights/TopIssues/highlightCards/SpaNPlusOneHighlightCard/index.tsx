@@ -1,5 +1,4 @@
 import { Row, createColumnHelper } from "@tanstack/react-table";
-import { Duration } from "../../../../../globals";
 import { useConfigSelector } from "../../../../../store/config/useConfigSelector";
 import { SCOPE_CHANGE_EVENTS } from "../../../../../types";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
@@ -29,7 +28,7 @@ export const SpaNPlusOneHighlightCard = ({
         header: "Affected endpoints",
         cell: (info) => {
           const metric = info.getValue();
-          const value = metric ? String(metric.value as number) : "";
+          const value = metric ? String(metric.value) : "";
           return metric ? <TableText title={value}>{value}</TableText> : null;
         }
       }
@@ -38,7 +37,7 @@ export const SpaNPlusOneHighlightCard = ({
       header: "Max Repeats",
       cell: (info) => {
         const metric = info.getValue();
-        const value = metric ? String(metric.value as number) : "";
+        const value = metric ? String(metric.value) : "";
         return metric ? <TableText title={value}>{value}</TableText> : null;
       }
     }),
@@ -48,7 +47,7 @@ export const SpaNPlusOneHighlightCard = ({
         header: "Max Requests",
         cell: (info) => {
           const metric = info.getValue();
-          const value = metric ? `${String(metric.value as number)}%` : "";
+          const value = metric ? `${String(metric.value)}%` : "";
           return metric ? <TableText title={value}>{value}</TableText> : null;
         }
       }
@@ -57,7 +56,7 @@ export const SpaNPlusOneHighlightCard = ({
       header: "Max Duration",
       cell: (info) => {
         const metric = info.getValue();
-        const value = metric ? getDurationString(metric.value as Duration) : "";
+        const value = metric ? getDurationString(metric.value) : "";
         return metric ? <Tag title={value} content={value} /> : null;
       }
     })

@@ -13,7 +13,6 @@ import { Direction } from "../../../common/icons/types";
 import { Tooltip } from "../../../common/v3/Tooltip";
 import { HIGH_SEVERITY_SCORE_THRESHOLD } from "../../Score";
 import { trackingEvents } from "../../tracking";
-import { FlowInfo } from "../types";
 import { FlowStack } from "./FlowStack";
 import { isServiceInfoWithName } from "./FlowStack/SpanFrameGroup/typeGuards";
 import * as s from "./styles";
@@ -41,7 +40,7 @@ export const ErrorDetailsCardContent = ({
   const lastString = formatTimeDistance(data.lastOccurenceTime);
   const avgPerDay = data.dayAvg;
 
-  const flows = data.errors.filter((x) => !isNull(x)) as FlowInfo[];
+  const flows = data.errors.filter((x) => !isNull(x));
   const currentFlow = flows[currentFlowStack];
 
   const isPreviousFlowButtonDisabled = currentFlowStack === 0;
