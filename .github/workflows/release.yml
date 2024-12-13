@@ -51,7 +51,7 @@ jobs:
       push: true
 
   update-digma:
-    name: Update version file in digma
+    name: Update UI releases in digma
     needs:
       [
         attach-release-web-asset,
@@ -69,11 +69,11 @@ jobs:
       - name: Dispatch event in digma
         uses: peter-evans/repository-dispatch@v3
         with:
-          token: ${{ secrets.RELEASE_PAT }}
+          token: ${{ secrets.CONTENTS_WRITE_PAT }}
           repository: digma-ai/digma
           event-type: update-ui
           client-payload: |-
             {
               "release": "${{ github.ref_name }}",
-              "dependencies": ${{ toJson(env.DEPENDENCIES) }}
+              "dependencies": ${{ fromJson(env.DEPENDENCIES) }}
             }
