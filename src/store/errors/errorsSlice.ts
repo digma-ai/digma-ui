@@ -50,7 +50,7 @@ export interface ErrorsState {
   globalErrorsLastDays?: number;
 }
 
-export const globalErrorsWithoutFiltersInitialState: Omit<
+const globalErrorsWithoutFiltersInitialState: Omit<
   ErrorsState,
   "globalErrorsSelectedFilters" | "errorDetailsWorkspaceItemsOnly"
 > = {
@@ -70,7 +70,7 @@ export const globalErrorsWithoutFiltersInitialState: Omit<
   globalErrorsLastDays: DAYS_FILTER_DEFAULT_VALUE
 };
 
-export const globalErrorsInitialState: Omit<
+const globalErrorsInitialState: Omit<
   ErrorsState,
   "errorDetailsWorkspaceItemsOnly"
 > = {
@@ -78,7 +78,7 @@ export const globalErrorsInitialState: Omit<
   globalErrorsSelectedFilters: null
 };
 
-export const initialState: ErrorsState = {
+const initialState: ErrorsState = {
   ...globalErrorsInitialState,
   errorDetailsWorkspaceItemsOnly: false
 };

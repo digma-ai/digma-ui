@@ -1,5 +1,4 @@
 import { Row, createColumnHelper } from "@tanstack/react-table";
-import { Duration } from "../../../../../globals";
 import { useConfigSelector } from "../../../../../store/config/useConfigSelector";
 import { SCOPE_CHANGE_EVENTS } from "../../../../../types";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
@@ -31,7 +30,7 @@ export const SpanQueryOptimizationHighlightCard = ({
         header: "Affected endpoints",
         cell: (info) => {
           const metric = info.getValue();
-          const value = metric ? String(metric.value as number) : "";
+          const value = metric ? String(metric.value) : "";
           return metric ? <TableText title={value}>{value}</TableText> : null;
         }
       }
@@ -40,7 +39,7 @@ export const SpanQueryOptimizationHighlightCard = ({
       header: "Duration",
       cell: (info) => {
         const metric = info.getValue();
-        const value = metric ? getDurationString(metric.value as Duration) : "";
+        const value = metric ? getDurationString(metric.value) : "";
         return metric ? <Tag title={value} content={value} /> : null;
       }
     }),
@@ -50,9 +49,7 @@ export const SpanQueryOptimizationHighlightCard = ({
         header: "Typical Duration",
         cell: (info) => {
           const metric = info.getValue();
-          const value = metric
-            ? getDurationString(metric.value as Duration)
-            : "";
+          const value = metric ? getDurationString(metric.value) : "";
           return metric ? <Tag title={value} content={value} /> : null;
         }
       }
@@ -61,7 +58,7 @@ export const SpanQueryOptimizationHighlightCard = ({
       header: "Database",
       cell: (info) => {
         const metric = info.getValue();
-        const value = metric ? (metric.value as string) : "";
+        const value = metric ? metric.value : "";
         return metric ? <TableText title={value}>{value}</TableText> : null;
       }
     })

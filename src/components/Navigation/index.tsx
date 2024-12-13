@@ -11,7 +11,7 @@ import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionT
 // import { SCOPE_CHANGE_EVENTS } from "../Main/types";
 import { Environment } from "../common/App/types";
 import { NewPopover } from "../common/NewPopover";
-import { ThreeDotsIcon } from "../common/icons/ThreeDotsIcon";
+import { ThreeDotsVerticalIcon } from "../common/icons/ThreeDotsVerticalIcon";
 // import { Tooltip } from "../common/v3/Tooltip";
 // import { CodeButton } from "./CodeButton";
 // import { CodeButtonMenu } from "./CodeButtonMenu";
@@ -416,7 +416,7 @@ export const Navigation = () => {
         >
           <IconButton
             isHighlighted={isAtSpan}
-            icon={<ThreeDotsIcon size={16} color={"currentColor"} />}
+            icon={<ThreeDotsVerticalIcon size={16} color={"currentColor"} />}
             onClick={handleKebabButtonClick}
           />
         </NewPopover>

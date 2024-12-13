@@ -3,7 +3,7 @@ import { getInsightCriticalityColor } from "../../../../utils/getInsightCritical
 import { caption2RegularTypography } from "../../../common/App/typographies";
 import { grayScale } from "../../../common/App/v2colors";
 import { CopyButton } from "../../../common/v3/CopyButton";
-import { ImpactScoreIndicatorProps, InsightIconContainerProps } from "./types";
+import { InsightIconContainerProps } from "./types";
 
 export const Container = styled.div`
   display: flex;
@@ -176,20 +176,6 @@ export const Suffix = styled.span`
         return "#9b9b9b";
     }
   }};
-`;
-
-export const ImpactScoreIndicatorContainer = styled.div`
-  display: flex;
-  align-items: center;
-  height: 100%;
-  padding-left: 4px;
-`;
-
-export const ImpactScoreIndicator = styled.div<ImpactScoreIndicatorProps>`
-  border-radius: 50%;
-  width: 10px;
-  height: 10px;
-  background: hsl(14deg 66% ${({ $score }) => 100 - 50 * $score}%);
 `;
 
 export const ScopeName = styled.div`

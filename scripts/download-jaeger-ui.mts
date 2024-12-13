@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { Octokit } from "@octokit/rest";
 import AdmZip from "adm-zip";
 import fs from "fs";
@@ -26,6 +25,7 @@ const outputArgIndex = process.argv.indexOf("--output");
 if (outputArgIndex !== -1 && process.argv[outputArgIndex + 1]) {
   outputPath = path.resolve(process.argv[outputArgIndex + 1]);
 } else {
+  // eslint-disable-next-line no-console
   console.log("No output path provided.");
   process.exit(1);
 }
@@ -57,6 +57,7 @@ const downloadReleaseAsset = async ({
 
     const asset = release.data.assets.find((a) => a.name === assetName);
     if (!asset) {
+      // eslint-disable-next-line no-console
       console.error("GitHub release asset not found in release.");
       return;
     }
@@ -74,6 +75,7 @@ const downloadReleaseAsset = async ({
       extractZip(filePath, extractPath);
     }
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error("Error downloading GitHub release asset:", error.message);
   }
 };
@@ -85,6 +87,7 @@ const extractPath = path.resolve(outputPath, "./dist");
 const zipPath = path.join(outputPath, assetName);
 
 if (fs.existsSync(zipPath)) {
+  // eslint-disable-next-line no-console
   console.log("Jaeger UI release asset already exists, skipping download...");
   extractZip(zipPath, extractPath);
   process.exit(0);

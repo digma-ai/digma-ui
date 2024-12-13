@@ -37,7 +37,7 @@ export const Header = styled.div`
   }};
 `;
 
-export const CloseButton = styled.button`
+export const IconButton = styled.button`
   padding: 0;
   cursor: pointer;
   background: none;
@@ -45,8 +45,6 @@ export const CloseButton = styled.button`
   height: 14px;
   color: inherit;
 `;
-
-export const DeleteTagButton = CloseButton;
 
 export const SearchInputContainer = styled.div`
   display: flex;

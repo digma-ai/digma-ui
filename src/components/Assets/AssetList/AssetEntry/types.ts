@@ -7,10 +7,6 @@ export interface AssetEntryProps {
   isImpactHidden: boolean;
 }
 
-export interface ImpactScoreIndicatorProps {
-  $score: number;
-}
-
 export interface InsightIconContainerProps {
   $criticality: number;
 }

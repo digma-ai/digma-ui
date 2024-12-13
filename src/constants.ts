@@ -45,9 +45,6 @@ export const QUERY_OPTIMIZATION_ISSUES_DOCUMENTATION_URL =
 export const CODE_NEXUS_DOCUMENTATION_URL =
   "https://docs.digma.ai/digma-developer-guide/digma-features/analytics/code-nexus";
 
-export const TEST_OBSERVABILITY_DOCUMENTATION_URL =
-  "https://docs.digma.ai/digma-developer-guide/digma-features/test-observability";
-
 export const DIGMA_DOCUMENTATION = "https://docs.digma.ai";
 
 export const PERCENTILES: {

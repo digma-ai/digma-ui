@@ -1,5 +1,4 @@
 import { Row, createColumnHelper } from "@tanstack/react-table";
-import { Duration } from "../../../../../globals";
 import { useConfigSelector } from "../../../../../store/config/useConfigSelector";
 import { SCOPE_CHANGE_EVENTS } from "../../../../../types";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
@@ -31,7 +30,7 @@ export const EndpointBottleneckHighlightCard = ({
         header: "% of Duration",
         cell: (info) => {
           const metric = info.getValue();
-          const value = metric ? `${String(metric.value as number)}%` : "";
+          const value = metric ? `${String(metric.value)}%` : "";
           return metric ? <TableText title={value}>{value}</TableText> : null;
         }
       }
@@ -42,7 +41,7 @@ export const EndpointBottleneckHighlightCard = ({
         header: "Requests",
         cell: (info) => {
           const metric = info.getValue();
-          const value = metric ? `${String(metric.value as number)}%` : "";
+          const value = metric ? `${String(metric.value)}%` : "";
           return metric ? <TableText title={value}>{value}</TableText> : null;
         }
       }
@@ -53,9 +52,7 @@ export const EndpointBottleneckHighlightCard = ({
         header: "Duration",
         cell: (info) => {
           const metric = info.getValue();
-          const value = metric
-            ? getDurationString(metric.value as Duration)
-            : "";
+          const value = metric ? getDurationString(metric.value) : "";
           return metric ? <Tag title={value} content={value} /> : null;
         }
       }

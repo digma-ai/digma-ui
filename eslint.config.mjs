@@ -7,7 +7,7 @@ import tseslint from "typescript-eslint";
 
 export default tseslint.config(
   {
-    ignores: ["dist/", "!.storybook", "storybook-static/"]
+    ignores: ["!.storybook", "dist/", "jaeger-ui/", "storybook-static/"]
   },
   eslint.configs.recommended,
   tseslint.configs.recommendedTypeChecked,
