@@ -10,6 +10,22 @@ interface PackageJson {
   version: string;
 }
 
+const getZipFilename = (env: WebpackEnv): string => {
+  const ZIP_NAME_FORMATS: Record<string, string> = {
+    default: "dist-{platform}-v{version}",
+    JetBrains: "digma-ui-{version}"
+  };
+
+  const argFormat = env["zip-filename-format"];
+  const format =
+    (argFormat && ZIP_NAME_FORMATS[argFormat]) ?? ZIP_NAME_FORMATS.default;
+
+  return format
+    .replace("{platform}", (env.platform ?? "").toLocaleLowerCase())
+    .replace("{version}", (packageJson as PackageJson).version)
+    .replace(/-{2,}/g, "-");
+};
+
 const getConfig = (env: WebpackEnv): WebpackConfiguration => {
   const entriesToBuild: Record<string, string> = Object.entries(appData)
     .filter(
@@ -69,20 +85,15 @@ const getConfig = (env: WebpackEnv): WebpackConfiguration => {
           minify: false,
           scriptLoading: "blocking",
           templateParameters: {
-            environmentVariables: appData[app]?.environmentVariables ?? []
+            environmentVariables: appData[app]?.environmentVariables ?? [],
+            version: (packageJson as PackageJson).version
           }
         });
       }),
       ...(env.compress
         ? [
             new ZipPlugin({
-              filename: [
-                "dist",
-                (env.platform ?? "").toLocaleLowerCase(),
-                `v${(packageJson as PackageJson).version}.zip`
-              ]
-                .filter(Boolean)
-                .join("-")
+              filename: getZipFilename(env)
             })
           ]
         : [])
