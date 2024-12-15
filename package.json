@@ -14,7 +14,7 @@
     "start": "npm run storybook",
     "build-storybook": "storybook build",
     "get-jaeger-ui": "node --experimental-transform-types ./scripts/get-jaeger-ui.mts",
-    "update-jaeger": "node --experimental-transform-types ./scripts/update-jaeger.mts",
+    "update-dependencies": "node --experimental-transform-types ./scripts/update-dependencies.mts",
     "prebuild": "rimraf dist && npm run get-jaeger-ui",
     "build:dev": "npm run prebuild && webpack --progress --config webpack.dev.ts",
     "build:dev:jetbrains": "npm run build:dev --env PLATFORM=JetBrains",
