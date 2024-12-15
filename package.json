@@ -5,7 +5,7 @@
   "scripts": {
     "lint:eslint": "eslint --cache .",
     "lint:stylelint": "stylelint '**/*.ts'",
-    "lint:knip": "knip --cache > knip.log",
+    "lint:knip": "knip --cache",
     "lint": "npm run lint:eslint && npm run lint:stylelint",
     "fix:prettier": "prettier --write '**/*.{json,md,mjs,ts,tsx}'",
     "test": "jest",
