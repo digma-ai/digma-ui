@@ -1,10 +1,13 @@
 import CopyWebpackPlugin from "copy-webpack-plugin";
+import dotenv from "dotenv";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import path from "path";
 import { Configuration as WebpackConfiguration } from "webpack";
 import ZipPlugin from "zip-webpack-plugin";
 import { WebpackEnv, appData } from "./apps";
 import packageJson from "./package.json";
+
+dotenv.config();
 
 interface PackageJson {
   version: string;
@@ -16,12 +19,12 @@ const getZipFilename = (env: WebpackEnv): string => {
     JetBrains: "digma-ui-{version}"
   };
 
-  const argFormat = env["zip-filename-format"];
+  const argFormat = env.ZIP_FILE_FORMAT;
   const format =
     (argFormat && ZIP_NAME_FORMATS[argFormat]) ?? ZIP_NAME_FORMATS.default;
 
   return format
-    .replace("{platform}", (env.platform ?? "").toLocaleLowerCase())
+    .replace("{platform}", (env.PLATFORM ?? "").toLocaleLowerCase())
     .replace("{version}", (packageJson as PackageJson).version)
     .replace(/-{2,}/g, "-");
 };
@@ -29,7 +32,7 @@ const getZipFilename = (env: WebpackEnv): string => {
 const getConfig = (env: WebpackEnv): WebpackConfiguration => {
   const entriesToBuild: Record<string, string> = Object.entries(appData)
     .filter(
-      ([, entry]) => !env.platform || entry.platforms.includes(env.platform)
+      ([, entry]) => !env.PLATFORM || entry.platforms.includes(env.PLATFORM)
     )
     .reduce(
       (acc, [name, entry]) => ({
@@ -63,7 +66,7 @@ const getConfig = (env: WebpackEnv): WebpackConfiguration => {
           {
             from: path.resolve(__dirname, "./public")
           },
-          ...(env.platform === "JetBrains"
+          ...(env.PLATFORM === "JetBrains"
             ? [
                 {
                   from: path.resolve(__dirname, `./jaeger-ui/dist`),
@@ -77,7 +80,7 @@ const getConfig = (env: WebpackEnv): WebpackConfiguration => {
         return new HtmlWebpackPlugin({
           template: path.resolve(
             __dirname,
-            `./assets/${env.platform === "Web" ? "index.web.ejs" : "index.ejs"}`
+            `./assets/${env.PLATFORM === "Web" ? "index.web.ejs" : "index.ejs"}`
           ),
           filename: `${app}/index.html`,
           chunks: [app],
@@ -90,7 +93,7 @@ const getConfig = (env: WebpackEnv): WebpackConfiguration => {
           }
         });
       }),
-      ...(env.compress
+      ...(env.COMPRESS
         ? [
             new ZipPlugin({
               filename: getZipFilename(env)

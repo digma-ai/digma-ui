@@ -61,7 +61,7 @@ type AppData = Record<
 export interface WebpackEnv {
   WEBPACK_BUNDLE: true;
   WEBPACK_BUILD: true;
-  platform?: string;
-  compress?: boolean;
-  ["zip-filename-format"]?: string;
+  PLATFORM?: string;
+  COMPRESS?: boolean;
+  ["ZIP_FILE_FORMAT"]?: string;
 }
