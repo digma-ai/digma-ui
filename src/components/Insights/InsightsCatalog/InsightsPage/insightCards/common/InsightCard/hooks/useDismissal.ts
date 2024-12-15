@@ -1,7 +1,7 @@
 import { useAction } from "../../../../../../../../hooks/useAction";
 import { actions } from "../../../../../../actions";
-import { DismissUndismissInsightPayload } from "../../../../../../types";
-import { DismissUndismissResponsePayload } from "../types";
+import type { DismissUndismissInsightPayload } from "../../../../../../types";
+import type { DismissUndismissResponsePayload } from "../types";
 
 const mapId = (response: DismissUndismissResponsePayload) => response.insightId;
 

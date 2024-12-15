@@ -1,4 +1,5 @@
-import { ForwardedRef, forwardRef, useState } from "react";
+import type { ForwardedRef } from "react";
+import { forwardRef, useState } from "react";
 import { useTheme } from "styled-components";
 import { openURLInDefaultBrowser } from "../../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
@@ -14,7 +15,7 @@ import { NewPopover } from "../../NewPopover";
 import { NewButton } from "../NewButton";
 import { NewIconButton } from "../NewIconButton";
 import * as s from "./styles";
-import { JiraButtonProps } from "./types";
+import type { JiraButtonProps } from "./types";
 
 export const JiraButtonComponent = (
   {

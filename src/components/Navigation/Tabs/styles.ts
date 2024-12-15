@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 import { isNumber } from "../../../typeGuards/isNumber";
-import { IndicatorProps, TabProps } from "./types";
+import type { IndicatorProps, TabProps } from "./types";
 
 export const TabList = styled.ul`
   display: flex;

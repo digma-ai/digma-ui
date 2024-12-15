@@ -8,7 +8,7 @@ import { runDigmaWithCommandLine } from "./pages/RunDigma/runDigmaWithCommandLin
 import { runDigmaWithDocker } from "./pages/RunDigma/runDigmaWithDocker";
 import { runDigmaWithGradleTasks } from "./pages/RunDigma/runDigmaWithGradleTasks";
 import { trackingEvents } from "./tracking";
-import { DocumentationProps } from "./types";
+import type { DocumentationProps } from "./types";
 
 const pages: Record<string, JSX.Element> = {
   "run-digma-with-terminal": <Page {...runDigmaWithCommandLine} />,

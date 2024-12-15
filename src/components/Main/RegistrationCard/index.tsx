@@ -8,7 +8,7 @@ import { CrossIcon } from "../../common/icons/CrossIcon";
 import { trackingEvents } from "../tracking";
 import * as s from "./styles";
 import { SuccessRegistration } from "./SuccessRegistration";
-import { RegistrationCardProps } from "./types";
+import type { RegistrationCardProps } from "./types";
 
 const TRANSITION_CLASS_NAME = "registration-card";
 const DEFAULT_TRANSITION_DURATION = 1000;

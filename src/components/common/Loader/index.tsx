@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-curly-brace-presence */
 import { memo } from "react";
 import { CircleLoader } from "../CircleLoader";
-import { LoaderProps } from "./types";
+import type { LoaderProps } from "./types";
 
 const LoaderComponent = ({ size = 20, status, themeKind }: LoaderProps) => {
   switch (status) {

@@ -1,4 +1,4 @@
-import { ChangeEventHandler, ReactElement } from "react";
+import type { ChangeEventHandler, ReactElement } from "react";
 
 export interface TextFieldProps {
   onChange: ChangeEventHandler<HTMLInputElement>;

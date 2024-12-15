@@ -1,11 +1,11 @@
 import { format } from "date-fns";
-import { MouseEvent } from "react";
+import type { MouseEvent } from "react";
 import { openURLInDefaultBrowser } from "../../../../../utils/actions/openURLInDefaultBrowser";
 import { intersperse } from "../../../../../utils/intersperse";
 import { Link } from "../../../../common/Link";
-import { CommitInfosData } from "../../types";
+import type { CommitInfosData } from "../../types";
 import * as s from "./styles";
-import { CommitInfosProps } from "./types";
+import type { CommitInfosProps } from "./types";
 
 const renderCommit = (
   commitInfos: CommitInfosData | undefined | null,

@@ -2,11 +2,11 @@ import { getFeatureFlagValue } from "../../../featureFlags";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { FeatureFlag } from "../../../types";
 import { roundTo } from "../../../utils/roundTo";
-import { BackendInfo } from "../App/types";
+import type { BackendInfo } from "../App/types";
 import { ScoreIndicator } from "../ScoreIndicator";
 import { Tooltip } from "../Tooltip";
 import * as s from "./styles";
-import { ImpactScoreProps } from "./types";
+import type { ImpactScoreProps } from "./types";
 
 const getImpactScoreLabel = (
   score: number,

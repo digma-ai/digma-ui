@@ -1,4 +1,4 @@
-import { GlobalErrorData } from "../GlobalErrorsList/types";
+import type { GlobalErrorData } from "../GlobalErrorsList/types";
 
 export interface NewErrorCardProps {
   data: GlobalErrorData;

@@ -1,10 +1,15 @@
-import { DefaultTheme, useTheme } from "styled-components";
+import type { DefaultTheme } from "styled-components";
+import { useTheme } from "styled-components";
 import { CrossCircleIcon } from "../../../common/icons/20px/CrossCircleIcon";
 import { PetalsIcon } from "../../../common/icons/32px/PetalsIcon";
 import { CardsColoredIcon } from "../../../common/icons/CardsColoredIcon";
 import { NewButton } from "../../../common/v3/NewButton";
 import * as s from "./styles";
-import { EmptyStateContent, EmptyStateProps, EmptyStateType } from "./types";
+import type {
+  EmptyStateContent,
+  EmptyStateProps,
+  EmptyStateType
+} from "./types";
 
 const getContent = (type: EmptyStateType, theme: DefaultTheme) => {
   const handleRefreshButtonClick = () => {

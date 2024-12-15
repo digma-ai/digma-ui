@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { StepProps } from "./types";
+import type { StepProps } from "./types";
 
 export const Container = styled.div`
   box-sizing: border-box;

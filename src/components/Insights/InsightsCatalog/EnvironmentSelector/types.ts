@@ -1,4 +1,7 @@
-import { Environment, EnvironmentIssueCounts } from "../../../common/App/types";
+import type {
+  Environment,
+  EnvironmentIssueCounts
+} from "../../../common/App/types";
 
 export interface SelectorEnvironment {
   environment: Environment;

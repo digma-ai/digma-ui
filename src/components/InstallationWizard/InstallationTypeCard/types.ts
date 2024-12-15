@@ -1,5 +1,5 @@
-import { ReactNode } from "react";
-import { InstallationType } from "../types";
+import type { ReactNode } from "react";
+import type { InstallationType } from "../types";
 
 export interface InstallationTypeCardProps {
   disabled?: boolean;

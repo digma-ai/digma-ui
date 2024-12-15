@@ -1,5 +1,5 @@
 import { InsightType } from "../../Insights/types";
-import {
+import type {
   EndpointBottleneckMetrics,
   EndpointChattyApiV2Metrics,
   EndpointHighNumberOfQueriesMetrics,

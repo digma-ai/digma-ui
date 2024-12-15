@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { DefaultTheme } from "styled-components/dist/types";
-import { ButtonElementProps, ButtonType, LabelProps } from "./types";
+import type { DefaultTheme } from "styled-components/dist/types";
+import type { ButtonElementProps, ButtonType, LabelProps } from "./types";
 
 const getButtonStyles = (
   theme: DefaultTheme,

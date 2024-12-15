@@ -1,5 +1,5 @@
 import * as s from "./styles";
-import { DashboardCardProps } from "./types";
+import type { DashboardCardProps } from "./types";
 
 export const DashboardCard = ({
   title,

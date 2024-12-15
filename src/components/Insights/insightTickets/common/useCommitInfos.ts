@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { dispatcher } from "../../../../dispatcher";
 import { actions } from "../../actions";
-import { GenericCodeObjectInsight } from "../../types";
+import type { GenericCodeObjectInsight } from "../../types";
 import { getInsightCommits } from "../getInsightCommits";
-import { CommitInfosData } from "../types";
+import type { CommitInfosData } from "../types";
 import { useLoading } from "./useLoading";
 
 export const useCommitInfos = <TInsight extends GenericCodeObjectInsight>(

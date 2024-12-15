@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 import { Button } from "../../../common/Button";
-import { ContentContainerProps } from "./types";
+import type { ContentContainerProps } from "./types";
 
 export const Container = styled.div`
   display: flex;

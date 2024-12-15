@@ -1,4 +1,4 @@
-import { MouseEvent } from "react";
+import type { MouseEvent } from "react";
 import { actions } from "../../../actions";
 import { isString } from "../../../typeGuards/isString";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
@@ -10,7 +10,7 @@ import { Popup } from "../common/Popup";
 import { trackingEvents } from "../tracking";
 import { Spinner } from "./Spinner";
 import * as s from "./styles";
-import { CodeButtonMenuProps } from "./types";
+import type { CodeButtonMenuProps } from "./types";
 
 export const CodeButtonMenu = ({
   codeContext,

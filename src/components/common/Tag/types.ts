@@ -1,5 +1,5 @@
-import { MemoExoticComponent } from "react";
-import { IconProps } from "../icons/types";
+import type { MemoExoticComponent } from "react";
+import type { IconProps } from "../icons/types";
 
 export type TagType =
   | "highSeverity"

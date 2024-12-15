@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { CursorFollowerProps } from "./types";
+import type { CursorFollowerProps } from "./types";
 
 const MAX_ROTATION_DEGREE = 40;
 const PERSPECTIVE = 100;

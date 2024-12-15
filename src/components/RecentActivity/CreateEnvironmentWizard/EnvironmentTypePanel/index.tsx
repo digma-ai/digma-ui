@@ -3,13 +3,13 @@ import { CENTRAL_ON_PREM_INSTALLATION_GUIDE_URL } from "../../../../constants";
 import { openURLInDefaultBrowser } from "../../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { ConfigContext } from "../../../common/App/ConfigContext";
-import { EnvironmentType } from "../../../common/App/types";
+import type { EnvironmentType } from "../../../common/App/types";
 import { IconTag } from "../../../common/IconTag";
 import { CodeIcon } from "../../../common/icons/16px/CodeIcon";
 import { InfinityIcon } from "../../../common/icons/InfinityIcon";
 import { trackingEvents } from "../../tracking";
 import * as s from "./styles";
-import { EnvironmentTypeData, EnvironmentTypePanelProps } from "./types";
+import type { EnvironmentTypeData, EnvironmentTypePanelProps } from "./types";
 
 export const EnvironmentTypePanel = ({
   onEnvironmentTypeSelect

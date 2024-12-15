@@ -2,7 +2,7 @@ import { RegistrationCard } from "..";
 import { SuccessRegistrationImage } from "../Images/SuccessRegistrationImage";
 import { RegistrationPromoImage } from "./Images/RegistrationPromoImage";
 import * as s from "./styles";
-import { UdemyRegistrationCardProps } from "./types";
+import type { UdemyRegistrationCardProps } from "./types";
 
 export const UdemyRegistrationCard = ({
   onClose,

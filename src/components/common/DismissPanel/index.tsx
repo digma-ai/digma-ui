@@ -4,7 +4,7 @@ import { CrossIcon } from "../icons/CrossIcon";
 import { NewButton } from "../v3/NewButton";
 import { Spinner } from "../v3/Spinner";
 import * as s from "./styles";
-import { DismissPanelProps } from "./types";
+import type { DismissPanelProps } from "./types";
 
 export const DismissPanel = ({
   state,

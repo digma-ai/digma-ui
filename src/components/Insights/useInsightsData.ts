@@ -1,24 +1,28 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { actions as globalActions } from "../../actions";
-import { DigmaMessageError } from "../../api/types";
+import type { DigmaMessageError } from "../../api/types";
 import { dispatcher } from "../../dispatcher";
 import { getFeatureFlagValue } from "../../featureFlags";
 import { usePrevious } from "../../hooks/usePrevious";
 import { useConfigSelector } from "../../store/config/useConfigSelector";
 import { useInsightsSelector } from "../../store/insights/useInsightsSelector";
 import { useStore } from "../../store/useStore";
-import {
-  FeatureFlag,
+import type {
   GetInsightStatsPayload,
   GetIssuesDataListPayload
 } from "../../types";
-import { GetInsightsDataListPayload, InsightsQuery } from "../common/App/types";
-import { Sorting } from "../common/SortingSelector/types";
-import { InsightFilterType, ViewMode } from "./InsightsCatalog/types";
+import { FeatureFlag } from "../../types";
+import type {
+  GetInsightsDataListPayload,
+  InsightsQuery
+} from "../common/App/types";
+import type { Sorting } from "../common/SortingSelector/types";
+import type { InsightFilterType } from "./InsightsCatalog/types";
+import { ViewMode } from "./InsightsCatalog/types";
 import { actions as issuesActions } from "./Issues/actions";
-import { GetIssuesDataListQuery } from "./Issues/types";
+import type { GetIssuesDataListQuery } from "./Issues/types";
 import { actions } from "./actions";
-import { InsightViewType, WrappedInsightData } from "./types";
+import type { InsightViewType, WrappedInsightData } from "./types";
 
 interface UseInsightsDataProps {
   areFiltersRehydrated: boolean;

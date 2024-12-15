@@ -6,7 +6,7 @@ import { Score } from "../../Score";
 import { getErrorMethodId } from "../../getErrorMethodId";
 import { trackingEvents } from "../../tracking";
 import * as s from "./styles";
-import { ErrorDetailsCardHeaderProps } from "./types";
+import type { ErrorDetailsCardHeaderProps } from "./types";
 
 export const ErrorDetailsCardHeader = ({
   onGoBack,

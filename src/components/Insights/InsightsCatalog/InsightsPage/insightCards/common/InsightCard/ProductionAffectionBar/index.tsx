@@ -1,7 +1,7 @@
 import { SparkleIcon } from "../../../../../../../common/icons/16px/SparkleIcon";
 import { Link } from "../../../../../../../common/v3/Link";
 import * as s from "./styles";
-import { ProductionAffectionBarProps } from "./types";
+import type { ProductionAffectionBarProps } from "./types";
 
 export const ProductionAffectionBar = ({
   onCreateTicket,

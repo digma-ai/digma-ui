@@ -1,4 +1,4 @@
-import { Environment } from "../App/types";
+import type { Environment } from "../App/types";
 
 export interface EnvironmentIconProps {
   environment: Environment;

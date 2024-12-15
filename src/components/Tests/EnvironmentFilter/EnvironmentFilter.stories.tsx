@@ -1,8 +1,8 @@
-import { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react";
 
 import { useState } from "react";
 import { EnvironmentFilter } from ".";
-import { MenuItem } from "../../common/FilterMenu/types";
+import type { MenuItem } from "../../common/FilterMenu/types";
 
 const mockedItems: MenuItem[] = [
   {

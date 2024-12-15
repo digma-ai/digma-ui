@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 import { footnoteRegularTypography } from "../../App/typographies";
-import { LinkElementProps } from "./types";
+import type { LinkElementProps } from "./types";
 
 export const Link = styled.a<LinkElementProps>`
   ${footnoteRegularTypography}

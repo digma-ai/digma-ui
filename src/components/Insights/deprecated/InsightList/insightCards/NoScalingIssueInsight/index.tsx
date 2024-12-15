@@ -1,7 +1,7 @@
 import { Button } from "../../../../../common/Button";
 import { ChartIcon } from "../../../../../common/icons/ChartIcon";
 import { InsightCard } from "../../InsightCard";
-import { NoScalingIssueInsightProps } from "./types";
+import type { NoScalingIssueInsightProps } from "./types";
 
 /**
  * @deprecated

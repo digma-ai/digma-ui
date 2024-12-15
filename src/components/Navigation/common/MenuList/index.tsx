@@ -1,9 +1,9 @@
-import { ReactElement } from "react";
+import type { ReactElement } from "react";
 import { groupBy } from "../../../../utils/groupBy";
 import { intersperse } from "../../../../utils/intersperse";
 import { Tooltip } from "../../../common/v3/Tooltip";
 import * as s from "./styles";
-import { MenuListProps } from "./types";
+import type { MenuListProps } from "./types";
 
 const UNGROUPED_GROUP_LABEL = "__ungrouped";
 

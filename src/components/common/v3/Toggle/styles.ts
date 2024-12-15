@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { footnoteRegularTypography } from "../../App/typographies";
-import { OptionButtonProps } from "./types";
+import type { OptionButtonProps } from "./types";
 
 export const Container = styled.div`
   display: flex;

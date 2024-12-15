@@ -1,5 +1,5 @@
 import * as s from "./styles";
-import { EnvironmentMenuProps } from "./types";
+import type { EnvironmentMenuProps } from "./types";
 
 export const EnvironmentMenu = ({ onSelect, items }: EnvironmentMenuProps) => {
   const handleMenuItemClick = (value: string) => {

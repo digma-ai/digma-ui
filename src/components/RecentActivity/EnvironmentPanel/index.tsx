@@ -3,7 +3,7 @@ import useDimensions from "react-cool-dimensions";
 import { RECENT_ACTIVITY_CONTAINER_ID } from "..";
 import { actions as globalActions } from "../../../actions";
 import { SLACK_WORKSPACE_URL } from "../../../constants";
-import { SetObservabilityPayload } from "../../../types";
+import type { SetObservabilityPayload } from "../../../types";
 import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { MenuList } from "../../Navigation/common/MenuList";
@@ -23,10 +23,10 @@ import { DigmaLogoIcon } from "../../common/icons/DigmaLogoIcon";
 import { ThreeDotsVerticalIcon } from "../../common/icons/ThreeDotsVerticalIcon";
 import { Direction } from "../../common/icons/types";
 import { trackingEvents } from "../tracking";
-import { ExtendedEnvironment } from "../types";
+import type { ExtendedEnvironment } from "../types";
 import { EnvironmentTab } from "./EnvironmentTab";
 import * as s from "./styles";
-import { EnvironmentPanelProps, ScrollDirection } from "./types";
+import type { EnvironmentPanelProps, ScrollDirection } from "./types";
 
 const FONT_WIDTH_TRANSITION_THRESHOLD = 5; // in pixels
 

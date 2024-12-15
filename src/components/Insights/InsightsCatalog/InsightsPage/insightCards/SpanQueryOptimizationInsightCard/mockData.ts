@@ -1,9 +1,5 @@
-import {
-  InsightCategory,
-  InsightScope,
-  InsightType,
-  SpanQueryOptimizationInsight
-} from "../../../../types";
+import type { SpanQueryOptimizationInsight } from "../../../../types";
+import { InsightCategory, InsightScope, InsightType } from "../../../../types";
 
 export const mockedSpanQueryOptimizationInsight: SpanQueryOptimizationInsight =
   {

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
-import { Environment } from "../../common/App/types";
+import type { Environment } from "../../common/App/types";
 import { EnvironmentIcon } from "../../common/EnvironmentIcon";
 import { NewPopover } from "../../common/NewPopover";
 import { ChevronIcon } from "../../common/icons/12px/ChevronIcon";
@@ -10,7 +10,7 @@ import { Tooltip } from "../../common/v3/Tooltip";
 import { trackingEvents } from "../tracking";
 import { EnvironmentMenu } from "./EnvironmentMenu";
 import * as s from "./styles";
-import { EnvironmentBarProps } from "./types";
+import type { EnvironmentBarProps } from "./types";
 
 export const EnvironmentBar = ({
   environments,

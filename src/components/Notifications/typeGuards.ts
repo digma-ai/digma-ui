@@ -1,5 +1,5 @@
 import { isString } from "../../typeGuards/isString";
-import { NotificationsViewMode } from "./types";
+import type { NotificationsViewMode } from "./types";
 
 export const isNotificationsViewMode = (
   viewMode: unknown

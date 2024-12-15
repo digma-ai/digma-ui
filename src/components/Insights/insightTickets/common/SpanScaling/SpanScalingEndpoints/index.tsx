@@ -1,7 +1,7 @@
 import { DELIMITER } from "../../../../../../constants";
 import { trimEndpointScheme } from "../../../../../../utils/trimEndpointScheme";
 import * as s from "../styles";
-import { ScalingIssueCommonProps } from "../types";
+import type { ScalingIssueCommonProps } from "../types";
 
 export const ScalingIssueAffectedEndpoints = ({
   insight

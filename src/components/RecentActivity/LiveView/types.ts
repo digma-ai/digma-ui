@@ -1,5 +1,5 @@
-import { ChartOffset } from "recharts/types/util/types";
-import { Duration } from "../../../globals";
+import type { ChartOffset } from "recharts/types/util/types";
+import type { Duration } from "../../../globals";
 
 export interface LiveViewProps {
   data: LiveData;

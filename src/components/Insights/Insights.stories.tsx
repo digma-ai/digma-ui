@@ -1,7 +1,7 @@
-import { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react";
 import { Insights } from ".";
 import { ConfigContext, initialState } from "../common/App/ConfigContext";
-import { ConfigContextData } from "../common/App/types";
+import type { ConfigContextData } from "../common/App/types";
 import { actions as globalActions } from "./../../actions";
 import { IS_INSIGHT_JIRA_TICKET_HINT_SHOWN_PERSISTENCE_KEY } from "./InsightsCatalog/InsightsPage";
 import { mockedEndpointBreakdownInsight } from "./InsightsCatalog/InsightsPage/insightCards/EndpointBreakdownInsightCard/mockData";

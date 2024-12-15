@@ -4,7 +4,8 @@ import {
 } from "../../../../utils/formatTimeDistance";
 import { Tooltip } from "../../../common/v3/Tooltip";
 import * as s from "./styles";
-import { StatusProps, StatusState } from "./types";
+import type { StatusProps } from "./types";
+import { StatusState } from "./types";
 
 const getStatus = (lastSeen: Date) => {
   const interval = getTimeDistance(

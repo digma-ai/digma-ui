@@ -1,7 +1,8 @@
 import { act, renderHook } from "@testing-library/react";
-import { ActionListener } from "../api/types";
+import type { ActionListener } from "../api/types";
 import { dispatcher } from "../dispatcher";
-import { DataFetcherConfiguration, useFetchData } from "./useFetchData";
+import type { DataFetcherConfiguration } from "./useFetchData";
+import { useFetchData } from "./useFetchData";
 
 jest.mock("../dispatcher", () => ({
   dispatcher: {

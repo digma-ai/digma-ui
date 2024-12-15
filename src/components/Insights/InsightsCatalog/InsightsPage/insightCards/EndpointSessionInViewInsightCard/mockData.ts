@@ -1,9 +1,5 @@
-import {
-  EndpointSessionInViewInsight,
-  InsightCategory,
-  InsightScope,
-  InsightType
-} from "../../../../types";
+import type { EndpointSessionInViewInsight } from "../../../../types";
+import { InsightCategory, InsightScope, InsightType } from "../../../../types";
 
 export const mockedEndpointSessionInViewInsight: EndpointSessionInViewInsight =
   {

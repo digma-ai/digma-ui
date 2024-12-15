@@ -10,7 +10,7 @@ import { TextField } from "./TextField";
 import { isWorkEmail } from "./isWorkEmail";
 import * as s from "./styles";
 import { trackingEvents } from "./tracking";
-import { RegistrationDialogProps, RegistrationFormValues } from "./types";
+import type { RegistrationDialogProps, RegistrationFormValues } from "./types";
 
 const validateEmail = (email: string): string | boolean => {
   const emailMessage = "Please enter a valid work email address";

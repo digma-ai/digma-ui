@@ -1,5 +1,5 @@
 import * as s from "./styles";
-import { PopupProps } from "./types";
+import type { PopupProps } from "./types";
 
 export const Popup = ({ className, height, header, children }: PopupProps) => (
   <s.Container className={className} $height={height}>

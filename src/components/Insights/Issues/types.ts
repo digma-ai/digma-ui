@@ -1,5 +1,5 @@
-import { Sorting } from "../../common/SortingSelector/types";
-import { InsightFilterType } from "../InsightsCatalog/types";
+import type { Sorting } from "../../common/SortingSelector/types";
+import type { InsightFilterType } from "../InsightsCatalog/types";
 
 export interface GetIssuesFiltersQuery {
   displayName: string | null;

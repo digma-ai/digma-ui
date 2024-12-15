@@ -3,13 +3,13 @@ import { actions as globalActions } from "../../../../actions";
 import { dispatcher } from "../../../../dispatcher";
 import { usePersistence } from "../../../../hooks/usePersistence";
 import { PLUGIN_EVENTS } from "../../../../pluginEvents";
-import { SendPluginEventPayload } from "../../../../types";
+import type { SendPluginEventPayload } from "../../../../types";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { trackingEvents as mainTrackingEvents } from "../../../Main/tracking";
 import { ToolbarRow } from "../styles";
 import { EarlyAccessPromotion } from "./Promotions/EarlyAccessPromotion";
 import { UdemyPromotion } from "./Promotions/UdemyPromotion";
-import { EarlyAccessPromotionDetails, PromotionType } from "./types";
+import type { EarlyAccessPromotionDetails, PromotionType } from "./types";
 
 const EARLY_ACCESS_PROMOTION_PERSISTENCE_KEY = "EARLY_ACCESS_PROMOTION";
 

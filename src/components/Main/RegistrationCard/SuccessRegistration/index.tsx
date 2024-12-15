@@ -1,5 +1,5 @@
 import * as s from "./styles";
-import { SuccessRegistrationProps } from "./types";
+import type { SuccessRegistrationProps } from "./types";
 
 export const SuccessRegistration = ({ image }: SuccessRegistrationProps) => {
   return (

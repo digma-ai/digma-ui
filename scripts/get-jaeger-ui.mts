@@ -3,7 +3,7 @@ import AdmZip from "adm-zip";
 import dotenv from "dotenv";
 import fs from "fs-extra";
 import path from "path";
-import dependenciesJson from "../dependencies.json" assert { type: "json" };
+import dependenciesJson from "../dependencies.json" with { type: "json" };
 
 dotenv.config();
 

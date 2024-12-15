@@ -1,6 +1,6 @@
-import { InsightType } from "../../../../../../types";
-import { InsightCardCommonProps } from "../../../../InsightsCatalog/InsightsPage/insightCards/common/InsightCard/types";
-import { CodeObjectErrorsInsight } from "../../../../types";
+import type { InsightType } from "../../../../../../types";
+import type { InsightCardCommonProps } from "../../../../InsightsCatalog/InsightsPage/insightCards/common/InsightCard/types";
+import type { CodeObjectErrorsInsight } from "../../../../types";
 
 export interface ErrorsInsightProps extends InsightCardCommonProps {
   insight: CodeObjectErrorsInsight;

@@ -1,4 +1,4 @@
-import { Logger } from "./Logger";
+import type { Logger } from "./Logger";
 import { LOG_LEVEL } from "./types";
 
 export class TaggedLogger {

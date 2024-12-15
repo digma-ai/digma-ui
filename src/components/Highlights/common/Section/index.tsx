@@ -1,6 +1,6 @@
 import { isString } from "../../../../typeGuards/isString";
 import * as s from "./styles";
-import { SectionProps } from "./types";
+import type { SectionProps } from "./types";
 
 export const Section = ({ title, toolbarContent, children }: SectionProps) => (
   <s.Container>

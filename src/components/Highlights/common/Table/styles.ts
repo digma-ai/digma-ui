@@ -3,7 +3,7 @@ import {
   footnoteRegularTypography,
   subscriptRegularTypography
 } from "../../../common/App/typographies";
-import { TableCellContentProps } from "./types";
+import type { TableCellContentProps } from "./types";
 
 export const Table = styled.table`
   width: 100%;

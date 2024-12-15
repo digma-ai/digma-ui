@@ -7,7 +7,7 @@ import {
   subscriptRegularTypography
 } from "../../../common/App/typographies";
 import { Button } from "../../../common/v3/Button";
-import {
+import type {
   FoundIssuesNumberProps,
   NewIssuesFoundMessageProps,
   UpdateProgressButtonProps

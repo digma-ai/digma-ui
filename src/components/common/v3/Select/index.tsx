@@ -1,4 +1,5 @@
-import { ChangeEvent, useCallback, useEffect, useRef, useState } from "react";
+import type { ChangeEvent } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import useDimensions from "react-cool-dimensions";
 import { isString } from "../../../../typeGuards/isString";
 import { isUndefined } from "../../../../typeGuards/isUndefined";
@@ -9,7 +10,7 @@ import { Direction } from "../../icons/types";
 import { Checkmark } from "../Checkmark";
 import { Tooltip } from "../Tooltip";
 import * as s from "./styles";
-import { SelectItem, SelectProps } from "./types";
+import type { SelectItem, SelectProps } from "./types";
 
 const sortItemsBySelectedState = (a: SelectItem, b: SelectItem) => {
   if (a.selected && !b.selected) {

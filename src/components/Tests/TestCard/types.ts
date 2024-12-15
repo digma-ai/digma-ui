@@ -1,4 +1,4 @@
-import { Test, TestsData } from "../types";
+import type { Test, TestsData } from "../types";
 
 export interface TestCardProps {
   test: Test;

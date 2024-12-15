@@ -1,5 +1,5 @@
 import * as s from "./styles";
-import { GlowingIconButtonProps } from "./types";
+import type { GlowingIconButtonProps } from "./types";
 
 export const GlowingIconButton = ({
   type,

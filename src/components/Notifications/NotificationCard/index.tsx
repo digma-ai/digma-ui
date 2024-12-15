@@ -1,12 +1,13 @@
-import { DefaultTheme, useTheme } from "styled-components";
+import type { DefaultTheme } from "styled-components";
+import { useTheme } from "styled-components";
 import { formatTimeDistance } from "../../../utils/formatTimeDistance";
 import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
 import { InsightScope } from "../../Insights/types";
 import { Badge } from "../../common/Badge";
 import { Tooltip } from "../../common/Tooltip";
-import { CodeObjectData, InsightNotificationData } from "../types";
+import type { CodeObjectData, InsightNotificationData } from "../types";
 import * as s from "./styles";
-import { NotificationCardProps } from "./types";
+import type { NotificationCardProps } from "./types";
 
 const getBadgeStyles = (theme: DefaultTheme) => {
   switch (theme.mode) {

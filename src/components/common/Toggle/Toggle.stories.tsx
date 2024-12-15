@@ -1,9 +1,9 @@
-import { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react";
 
 import { useState } from "react";
 import { Toggle } from ".";
 import { PERCENTILES } from "../../../constants";
-import { ToggleValue } from "./types";
+import type { ToggleValue } from "./types";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof Toggle> = {

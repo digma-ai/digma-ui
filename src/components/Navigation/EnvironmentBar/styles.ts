@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { footnoteRegularTypography } from "../../common/App/typographies";
 import { Bar } from "../common/Bar";
-import { EnvironmentBarElementProps } from "./types";
+import type { EnvironmentBarElementProps } from "./types";
 
 export const ChevronIconContainer = styled.div`
   margin-left: auto;

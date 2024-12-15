@@ -2,7 +2,7 @@ import { getDurationString } from "../../../../../utils/getDurationString";
 import { roundTo } from "../../../../../utils/roundTo";
 import { trimEndpointScheme } from "../../../../../utils/trimEndpointScheme";
 import * as s from "./styles";
-import { BottleneckEndpointsProps } from "./types";
+import type { BottleneckEndpointsProps } from "./types";
 
 export const BottleneckEndpoints = ({ insight }: BottleneckEndpointsProps) => {
   if (!insight) {

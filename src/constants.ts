@@ -1,4 +1,4 @@
-import { PercentileKey } from "./types";
+import type { PercentileKey } from "./types";
 
 export const SLACK_WORKSPACE_URL =
   "https://join.slack.com/t/continuous-feedback/shared_invite/zt-2gsif7wdy-6Jf17HIJESc2tknT5gybtw";

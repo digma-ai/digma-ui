@@ -8,7 +8,7 @@ import { EnvelopeIcon } from "../../../common/icons/16px/EnvelopeIcon";
 import { Spinner } from "../../../common/v3/Spinner";
 import { TextField } from "../../../common/v3/TextField";
 import * as s from "../styles";
-import { RegisterFormValues, RegistrationProps } from "./types";
+import type { RegisterFormValues, RegistrationProps } from "./types";
 import { useRegistration } from "./useRegistration";
 
 const validateEmail = (email: string): string | boolean => {

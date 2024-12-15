@@ -1,9 +1,6 @@
 import { InsightType } from "../../../../../../types";
-import {
-  EndpointHighNumberOfQueriesInsight,
-  InsightCategory,
-  InsightScope
-} from "../../../../types";
+import type { EndpointHighNumberOfQueriesInsight } from "../../../../types";
+import { InsightCategory, InsightScope } from "../../../../types";
 
 export const mockedEndpointHighNumberOfQueriesInsight: EndpointHighNumberOfQueriesInsight =
   {

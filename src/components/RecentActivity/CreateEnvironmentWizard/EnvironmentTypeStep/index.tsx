@@ -1,7 +1,7 @@
-import { EnvironmentType } from "../../../common/App/types";
+import type { EnvironmentType } from "../../../common/App/types";
 import { EnvironmentTypePanel } from "../EnvironmentTypePanel";
 import * as s from "./styles";
-import { EnvironmentTypeStepProps } from "./types";
+import type { EnvironmentTypeStepProps } from "./types";
 
 export const EnvironmentTypeStep = ({
   handleEnvironmentTypeSelect,

@@ -1,9 +1,10 @@
-import { NavigateOptions, To, resolvePath } from "react-router-dom";
+import type { NavigateOptions, To } from "react-router-dom";
+import { resolvePath } from "react-router-dom";
 import { history } from "../../containers/Main/history";
-import { HistoryEntry, HistoryEntryLocation } from "../../history/History";
+import type { HistoryEntry, HistoryEntryLocation } from "../../history/History";
 import { useConfigSelector } from "../../store/config/useConfigSelector";
 import { isString } from "../../typeGuards/isString";
-import { HistoryState } from "./types";
+import type { HistoryState } from "./types";
 
 const isLocationChanged = (to: To, location: HistoryEntryLocation) => {
   const newResolvedPath = resolvePath(to, location.pathname);

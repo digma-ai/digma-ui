@@ -1,5 +1,5 @@
 import * as s from "./styles";
-import { CardProps } from "./types";
+import type { CardProps } from "./types";
 
 export const Card = ({
   className,

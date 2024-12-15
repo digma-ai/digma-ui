@@ -1,5 +1,5 @@
-import { EnvironmentType } from "../../common/App/types";
-import { Severity } from "./Table/types";
+import type { EnvironmentType } from "../../common/App/types";
+import type { Severity } from "./Table/types";
 
 export type Criticality = "Low" | "Medium" | "High";
 

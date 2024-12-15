@@ -4,7 +4,7 @@ import { NewIconButton } from "../../../common/v3/NewIconButton";
 import { Tooltip } from "../../../common/v3/Tooltip";
 import { trackingEvents } from "../../tracking";
 import * as s from "./styles";
-import { FilterButtonProps } from "./types";
+import type { FilterButtonProps } from "./types";
 
 export const FilterButton = ({
   isActive,

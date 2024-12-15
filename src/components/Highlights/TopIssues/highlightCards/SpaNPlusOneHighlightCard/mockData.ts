@@ -1,5 +1,5 @@
 import { InsightStatus, InsightType } from "../../../../Insights/types";
-import { HighlightData, SpaNPlusOneMetrics } from "../../types";
+import type { HighlightData, SpaNPlusOneMetrics } from "../../types";
 
 export const mockedSpaNPlusOneInsights: SpaNPlusOneMetrics = [
   { id: "AffectedEndpoints", value: 50 },

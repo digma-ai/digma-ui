@@ -1,4 +1,4 @@
-import { Test } from "../types";
+import type { Test } from "../types";
 
 export const mockedTest: Test = {
   name: "GET /owners/{ownerId}/pets/{petId}/visits/new",

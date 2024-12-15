@@ -1,4 +1,4 @@
-import {
+import type {
   GenericCodeObjectInsight,
   InsightType,
   InsightViewType

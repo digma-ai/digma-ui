@@ -2,7 +2,7 @@ import { InsightStatus } from "../../../../../../../types";
 import { KeyValue } from "./KeyValue";
 import { TimestampKeyValue } from "./TimestampKeyValue";
 import * as s from "./styles";
-import { InsightStatusTooltipContentProps } from "./types";
+import type { InsightStatusTooltipContentProps } from "./types";
 
 export const InsightStatusTooltipContent = ({
   insight

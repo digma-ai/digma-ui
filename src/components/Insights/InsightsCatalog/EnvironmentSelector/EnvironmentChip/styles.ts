@@ -2,7 +2,8 @@ import styled, { css } from "styled-components";
 import { footnoteRegularTypography } from "../../../../common/App/typographies";
 import { Chip } from "../../../../common/Chip";
 import { activeStyles } from "../../../../common/Chip/styles";
-import { CounterProps, ISSUE_CRITICALITY, StyledChipProps } from "./types";
+import type { CounterProps, StyledChipProps } from "./types";
+import { ISSUE_CRITICALITY } from "./types";
 
 export const StyledChip = styled(Chip)<StyledChipProps>`
   gap: 4px;

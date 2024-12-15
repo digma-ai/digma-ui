@@ -2,9 +2,10 @@ import CopyWebpackPlugin from "copy-webpack-plugin";
 import dotenv from "dotenv";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import path from "path";
-import { Configuration as WebpackConfiguration } from "webpack";
+import type { Configuration as WebpackConfiguration } from "webpack";
 import ZipPlugin from "zip-webpack-plugin";
-import { WebpackEnv, appData } from "./apps";
+import type { WebpackEnv } from "./apps";
+import { appData } from "./apps";
 import packageJson from "./package.json";
 
 dotenv.config();

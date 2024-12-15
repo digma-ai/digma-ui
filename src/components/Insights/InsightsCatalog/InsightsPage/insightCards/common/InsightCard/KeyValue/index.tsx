@@ -1,8 +1,9 @@
-import { ForwardedRef, forwardRef } from "react";
+import type { ForwardedRef } from "react";
+import { forwardRef } from "react";
 import { Info } from "../../../../../../../common/v3/Info";
 import { Tooltip } from "../../../../../../../common/v3/Tooltip";
 import * as s from "./styles";
-import { KeyValueProps } from "./types";
+import type { KeyValueProps } from "./types";
 
 const KeyValueComponent = (
   { className, label, children, info, title = "" }: KeyValueProps,

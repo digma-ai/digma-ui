@@ -1,15 +1,13 @@
-import { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react";
 
-import {
-  RouterRoute,
-  reactRouterParameters
-} from "storybook-addon-remix-react-router";
+import type { RouterRoute } from "storybook-addon-remix-react-router";
+import { reactRouterParameters } from "storybook-addon-remix-react-router";
 import { Main } from ".";
 import { routes } from "../../containers/Main/router";
 import { mockedEnvironments } from "../Navigation/EnvironmentBar/mockData";
 import { TAB_IDS } from "../Navigation/Tabs/types";
 import { ConfigContext, initialState } from "../common/App/ConfigContext";
-import { ConfigContextData } from "../common/App/types";
+import type { ConfigContextData } from "../common/App/types";
 
 const mockedConfig: ConfigContextData = {
   ...initialState,

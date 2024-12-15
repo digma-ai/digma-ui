@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { LinkProps } from "./types";
+import type { LinkProps } from "./types";
 
 export const Container = styled.div`
   display: flex;

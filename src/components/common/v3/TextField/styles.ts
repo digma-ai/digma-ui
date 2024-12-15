@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { footnoteRegularTypography } from "../../App/typographies";
-import {
+import type {
   ContainerProps,
   IconContainerProps,
   InputProps,

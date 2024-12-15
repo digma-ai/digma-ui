@@ -1,5 +1,5 @@
 import * as s from "./styles";
-import { IconTagProps } from "./types";
+import type { IconTagProps } from "./types";
 
 export const IconTag = ({ size = "small", icon: Icon }: IconTagProps) => {
   const iconSize = size === "large" ? 16 : 12;

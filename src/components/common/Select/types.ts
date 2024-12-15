@@ -1,5 +1,5 @@
-import { ComponentType } from "react";
-import { IconProps } from "../icons/types";
+import type { ComponentType } from "react";
+import type { IconProps } from "../icons/types";
 
 export interface SelectThemeColors {
   menu: {

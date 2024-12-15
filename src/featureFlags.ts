@@ -1,5 +1,5 @@
 import { gte, valid } from "semver";
-import { BackendInfo } from "./components/common/App/types";
+import type { BackendInfo } from "./components/common/App/types";
 import { FeatureFlag } from "./types";
 
 export const featureFlagMinBackendVersions: Record<FeatureFlag, string> = {

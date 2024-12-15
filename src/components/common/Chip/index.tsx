@@ -1,7 +1,8 @@
-import { ForwardedRef, forwardRef } from "react";
+import type { ForwardedRef } from "react";
+import { forwardRef } from "react";
 import { isString } from "../../../typeGuards/isString";
 import * as s from "./styles";
-import { ChipProps } from "./types";
+import type { ChipProps } from "./types";
 
 export const ChipComponent = (
   { children, className, ...rest }: ChipProps,

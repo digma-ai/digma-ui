@@ -1,8 +1,8 @@
-import { MouseEvent } from "react";
+import type { MouseEvent } from "react";
 import useDimensions from "react-cool-dimensions";
 import { Tooltip } from "../../v3/Tooltip";
 import * as s from "./styles";
-import { TileProps } from "./types";
+import type { TileProps } from "./types";
 
 const MIN_HEIGHT = 86; // in pixels
 const MIN_WIDTH = 92; // in pixels

@@ -1,9 +1,10 @@
-import {
-  DataFetcherConfiguration,
-  useFetchData
-} from "../../../hooks/useFetchData";
+import type { DataFetcherConfiguration } from "../../../hooks/useFetchData";
+import { useFetchData } from "../../../hooks/useFetchData";
 import { actions } from "../actions";
-import { GetEndpointsIssuesPayload, SetEndpointsIssuesPayload } from "./types";
+import type {
+  GetEndpointsIssuesPayload,
+  SetEndpointsIssuesPayload
+} from "./types";
 
 export const useEndpointsIssuesData = (
   payload: GetEndpointsIssuesPayload,

@@ -2,8 +2,8 @@ import { logger } from "../logging";
 import { TaggedLogger } from "../logging/TaggedLogger";
 import { platform } from "../platform";
 import { isObject } from "../typeGuards/isObject";
-import { ActionDispatcher } from "./ActionDispatcher";
-import { DigmaMessageEvent, DigmaOutgoingMessageData } from "./types";
+import type { ActionDispatcher } from "./ActionDispatcher";
+import type { DigmaMessageEvent, DigmaOutgoingMessageData } from "./types";
 import { sendMessageToWebService } from "./web/sendMessageToWebService";
 
 const messagingLogger = new TaggedLogger(logger, "MESSAGING");

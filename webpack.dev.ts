@@ -1,6 +1,6 @@
 import path from "path";
 import createStyledComponentsTransformer from "typescript-plugin-styled-components";
-import { Configuration as WebpackConfiguration } from "webpack";
+import type { Configuration as WebpackConfiguration } from "webpack";
 
 const styledComponentsTransformer = createStyledComponentsTransformer();
 

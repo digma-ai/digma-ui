@@ -1,5 +1,5 @@
 import { InsightStatus, InsightType } from "../../../../Insights/types";
-import { HighlightData, HotSpotMetrics } from "../../types";
+import type { HighlightData, HotSpotMetrics } from "../../types";
 
 export const mockedHotSpotMetrics: HotSpotMetrics = [
   {

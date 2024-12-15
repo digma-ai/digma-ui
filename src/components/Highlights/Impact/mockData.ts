@@ -1,4 +1,4 @@
-import { ImpactData } from "./types";
+import type { ImpactData } from "./types";
 
 export const mockedImpactData: ImpactData = {
   impactHighlights: [

@@ -1,6 +1,7 @@
-import { ForwardedRef, forwardRef, MouseEvent } from "react";
+import type { ForwardedRef, MouseEvent } from "react";
+import { forwardRef } from "react";
 import * as s from "./styles";
-import { ButtonType, NewIconButtonProps } from "./types";
+import type { ButtonType, NewIconButtonProps } from "./types";
 
 const getButtonComponent = (buttonType: ButtonType) => {
   switch (buttonType) {

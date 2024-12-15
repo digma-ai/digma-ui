@@ -1,5 +1,5 @@
 import { InsightType } from "../../types";
-import {
+import type {
   CodeObjectErrorsInsight,
   CodeObjectHotSpotInsight,
   CodeObjectInsight,
@@ -16,7 +16,6 @@ import {
   EndpointSlowdownSourceInsight,
   EndpointSpanNPlusOneInsight,
   GenericFunctionInsight,
-  InsightScope,
   SlowEndpointInsight,
   SpaNPlusOneInsight,
   SpanDurationBreakdownInsight,
@@ -30,6 +29,7 @@ import {
   SpanScalingWellInsight,
   SpanUsagesInsight
 } from "./types";
+import { InsightScope } from "./types";
 
 export const isFunctionInsight = (
   insight: CodeObjectInsight

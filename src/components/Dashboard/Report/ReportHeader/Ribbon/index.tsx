@@ -5,7 +5,7 @@ import { RecheckIcon } from "../../../../common/icons/16px/RecheckIcon";
 import { NewButton } from "../../../../common/v3/NewButton";
 import { trackingEvents } from "../../tracking";
 import * as s from "./styles";
-import { RibbonProps } from "./types";
+import type { RibbonProps } from "./types";
 
 export const Ribbon = ({ onRefresh }: RibbonProps) => {
   const theme = useTheme();

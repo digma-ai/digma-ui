@@ -1,7 +1,7 @@
-import { ChangeEvent } from "react";
+import type { ChangeEvent } from "react";
 import { CheckmarkIcon } from "../../icons/CheckmarkIcon";
 import * as s from "./styles";
-import { CheckmarkProps } from "./types";
+import type { CheckmarkProps } from "./types";
 
 export const Checkmark = ({ onChange, value, disabled }: CheckmarkProps) => {
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {

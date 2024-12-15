@@ -3,7 +3,7 @@ import { dispatcher } from "../../../../../dispatcher";
 import { isValidHttpUrl } from "../../../../../utils/isValidUrl";
 import { JiraTicket } from "../../../../common/JiraTicket";
 import { actions } from "../../../actions";
-import {
+import type {
   InsightJiraTicketProps,
   LinkTicketPayload,
   LinkTicketResponse,

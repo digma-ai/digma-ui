@@ -1,5 +1,5 @@
 import { InsightStatus, InsightType } from "../../../../Insights/types";
-import { HighlightData, SpanEndpointBottleneckMetrics } from "../../types";
+import type { HighlightData, SpanEndpointBottleneckMetrics } from "../../types";
 
 export const mockedSpanEndpointBottleneckMetrics: SpanEndpointBottleneckMetrics =
   [

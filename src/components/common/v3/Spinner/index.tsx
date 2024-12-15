@@ -1,7 +1,8 @@
-import { ForwardedRef, forwardRef } from "react";
+import type { ForwardedRef } from "react";
+import { forwardRef } from "react";
 import { PetalsIcon } from "../../../common/icons/16px/PetalsIcon";
 import * as s from "./styles";
-import { SpinnerProps } from "./types";
+import type { SpinnerProps } from "./types";
 
 const SpinnerComponent = (
   { className, size = 16 }: SpinnerProps,

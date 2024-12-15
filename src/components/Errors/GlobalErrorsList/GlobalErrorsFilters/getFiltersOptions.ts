@@ -1,6 +1,6 @@
 import { fetchData } from "../../../../utils/fetchData";
 import { actions } from "../../actions";
-import {
+import type {
   EndpointFilterData,
   GetGlobalErrorsFiltersDataPayload,
   SetGlobalErrorsFiltersDataPayload

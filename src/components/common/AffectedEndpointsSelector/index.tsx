@@ -1,11 +1,11 @@
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import { DELIMITER } from "../../../constants";
 import { trimEndpointScheme } from "../../../utils/trimEndpointScheme";
 import { Select } from "../../Insights/InsightsCatalog/InsightsPage/insightCards/common/InsightCard/Select";
-import { CustomContentProps } from "../../Insights/InsightsCatalog/InsightsPage/insightCards/common/InsightCard/Select/types";
+import type { CustomContentProps } from "../../Insights/InsightsCatalog/InsightsPage/insightCards/common/InsightCard/Select/types";
 import { EndpointOption } from "./EndpointOption";
 import * as s from "./styles";
-import { AffectedEndpointsSelectorProps, Option } from "./types";
+import type { AffectedEndpointsSelectorProps, Option } from "./types";
 
 export const getEndpointKey = (option: Option): string => {
   return [option.serviceName, option.spanCodeObjectId].join(DELIMITER);

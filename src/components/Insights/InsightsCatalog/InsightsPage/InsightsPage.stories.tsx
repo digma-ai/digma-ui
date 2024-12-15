@@ -1,9 +1,9 @@
-import { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react";
 import { InsightsPage } from ".";
 import { ConfigContext, initialState } from "../../../common/App/ConfigContext";
-import { Scope } from "../../../common/App/types";
+import type { Scope } from "../../../common/App/types";
 import { mockedEndpointBottleneckInsight } from "./insightCards/EndpointBottleneckInsightCard/mockData";
-import { InsightsPageProps } from "./types";
+import type { InsightsPageProps } from "./types";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof InsightsPage> = {

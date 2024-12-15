@@ -1,6 +1,6 @@
 import { CodeSnippet } from "../../../common/CodeSnippet";
 import { GetEnvironmentIdInstruction } from "./GetEnvironmentIdInstruction.tsx";
-import { PageContent } from "./Page/types";
+import type { PageContent } from "./Page/types";
 
 export const runDigmaWithDocker: PageContent = {
   title: "How to use Digma if your application is running via Docker Compose",

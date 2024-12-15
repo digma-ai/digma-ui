@@ -1,6 +1,6 @@
 import { PERCENTILES } from "../../../../../../../../constants";
 import { Toggle } from "../../../../../../../common/v3/Toggle";
-import { PercentileViewModeToggleProps } from "./types";
+import type { PercentileViewModeToggleProps } from "./types";
 
 export const PercentileViewModeToggle = ({
   viewMode,

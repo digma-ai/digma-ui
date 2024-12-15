@@ -5,7 +5,7 @@ import { Tooltip } from "../../common/v3/Tooltip";
 import { trackingEvents } from "../../Main/tracking";
 import { Status } from "./Status";
 import * as s from "./styles";
-import { SpanInfoProps } from "./types";
+import type { SpanInfoProps } from "./types";
 
 const getLanguage = (assetTypeId: string) => {
   if (assetTypeId === "DatabaseQueries") {

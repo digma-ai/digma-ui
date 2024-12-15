@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import useDimensions from "react-cool-dimensions";
 import { useConfigSelector } from "../../../../store/config/useConfigSelector";
-import { Environment } from "../../../common/App/types";
+import type { Environment } from "../../../common/App/types";
 import { EnvironmentIcon } from "../../../common/EnvironmentIcon";
 import { MenuList } from "../../common/MenuList";
 import * as s from "./styles";
-import { EnvironmentMenuProps } from "./types";
+import type { EnvironmentMenuProps } from "./types";
 
 export const EnvironmentMenu = ({
   environments,

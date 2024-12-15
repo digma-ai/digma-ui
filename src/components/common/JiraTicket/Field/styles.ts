@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { ButtonContainerProps, ContentProps } from "./types";
+import type { ButtonContainerProps, ContentProps } from "./types";
 
 export const ContentContainer = styled.div`
   display: flex;

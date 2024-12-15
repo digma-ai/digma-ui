@@ -2,7 +2,7 @@ import { CloudDownloadIcon } from "../../../common/icons/CloudDownloadIcon";
 import { CodeDisplayIcon } from "../../../common/icons/CodeDisplayIcon";
 import { InfiniteLoopIcon } from "../../../common/icons/InfiniteLoopIcon";
 import { InsightCardType } from "./InsightCard/types";
-import { EnvironmentTypeData } from "./types";
+import type { EnvironmentTypeData } from "./types";
 
 export const environmentTypesData: EnvironmentTypeData[] = [
   {

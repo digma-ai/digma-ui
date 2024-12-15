@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { bodyRegularTypography } from "../../../../../../../common/App/typographies";
-import { SelectBarProps } from "./types";
+import type { SelectBarProps } from "./types";
 
 export const ExpandButton = styled.button`
   border: none;

@@ -1,6 +1,6 @@
 import { useTheme } from "styled-components";
 import { getThemeKind } from "../../../../common/App/styles";
-import { SuccessRegistrationImageProps } from "./types";
+import type { SuccessRegistrationImageProps } from "./types";
 
 export const SuccessRegistrationImage = ({
   basePath

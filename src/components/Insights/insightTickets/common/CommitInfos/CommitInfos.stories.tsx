@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react";
 import { CommitInfos } from ".";
 import { mockedSpaNPlusOneInsight } from "../../../InsightsCatalog/InsightsPage/insightCards/SpaNPlusOneInsightCard/mockData";
 

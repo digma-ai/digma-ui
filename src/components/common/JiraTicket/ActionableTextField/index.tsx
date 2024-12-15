@@ -1,5 +1,5 @@
 import * as s from "./styles";
-import { TextFieldProps as ActionableTextFieldProps } from "./types";
+import type { TextFieldProps as ActionableTextFieldProps } from "./types";
 
 export const ActionableTextField = ({
   label,

@@ -1,5 +1,5 @@
 import * as s from "../styles";
-import { ScalingIssueCommonProps } from "../types";
+import type { ScalingIssueCommonProps } from "../types";
 
 export const ScalingIssueRootCauses = ({
   insight

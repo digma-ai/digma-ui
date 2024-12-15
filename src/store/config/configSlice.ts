@@ -1,5 +1,5 @@
 import { createSlice } from "zustand-slices";
-import {
+import type {
   BackendInfo,
   DigmaStatus,
   Environment,

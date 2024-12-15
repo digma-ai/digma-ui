@@ -3,12 +3,12 @@ import { isString } from "../../../../typeGuards/isString";
 import { sendTrackingEvent } from "../../../../utils/actions/sendTrackingEvent";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { ConfigContext } from "../../../common/App/ConfigContext";
-import { ConfigContextData } from "../../../common/App/types";
+import type { ConfigContextData } from "../../../common/App/types";
 import { CheckmarkCircleIcon } from "../../../common/icons/12px/CheckmarkCircleIcon";
 import { trackingEvents } from "../../tracking";
-import { DigmathonInsightData } from "../../types";
+import type { DigmathonInsightData } from "../../types";
 import * as s from "./styles";
-import { CongratulationsViewProps } from "./types";
+import type { CongratulationsViewProps } from "./types";
 
 const EMAIL_ADDRESS = "digmathon@digma.ai";
 

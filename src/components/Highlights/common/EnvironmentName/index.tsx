@@ -1,7 +1,7 @@
 import { GlobeIcon } from "../../../common/icons/16px/GlobeIcon";
 import { Tooltip } from "../../../common/v3/Tooltip";
 import * as s from "./styles";
-import { EnvironmentNameProps } from "./types";
+import type { EnvironmentNameProps } from "./types";
 
 export const EnvironmentName = ({
   name,

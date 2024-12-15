@@ -2,7 +2,7 @@ import { DELIMITER } from "../../../../../constants";
 import { getCriticalityLabel } from "../../../../../utils/getCriticalityLabel";
 import { trimEndpointScheme } from "../../../../../utils/trimEndpointScheme";
 import * as s from "./styles";
-import { NPlusOneEndpointsProps } from "./types";
+import type { NPlusOneEndpointsProps } from "./types";
 
 export const NPlusOneEndpoints = ({ insight }: NPlusOneEndpointsProps) => {
   if (!insight) {

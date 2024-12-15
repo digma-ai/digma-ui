@@ -5,7 +5,7 @@ import {
   primaryScale,
   redScale
 } from "../../App/v2colors";
-import { ContainerProps, IconContainerProps, InputProps } from "./types";
+import type { ContainerProps, IconContainerProps, InputProps } from "./types";
 
 export const Container = styled.div<ContainerProps>`
   display: flex;

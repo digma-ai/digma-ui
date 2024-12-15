@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { ListProps } from "./types";
+import type { ListProps } from "./types";
 
 export const Container = styled.div`
   display: flex;

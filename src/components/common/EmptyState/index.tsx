@@ -1,7 +1,7 @@
 import { useTheme } from "styled-components";
 import { getThemeKind } from "../../common/App/styles";
 import * as s from "./styles";
-import { EmptyStateProps } from "./types";
+import type { EmptyStateProps } from "./types";
 
 export const EmptyState = ({ icon: Icon, title, content }: EmptyStateProps) => {
   const theme = useTheme();

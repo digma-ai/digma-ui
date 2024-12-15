@@ -9,7 +9,7 @@ import { usePagination } from "../../../../../../hooks/usePagination";
 import { usePrevious } from "../../../../../../hooks/usePrevious";
 import { useConfigSelector } from "../../../../../../store/config/useConfigSelector";
 import { isNumber } from "../../../../../../typeGuards/isNumber";
-import { InsightType } from "../../../../../../types";
+import type { InsightType } from "../../../../../../types";
 import { roundTo } from "../../../../../../utils/roundTo";
 import { TraceIcon } from "../../../../../common/icons/12px/TraceIcon";
 import { ArrowToTopIcon } from "../../../../../common/icons/20px/ArrowToTopIcon";
@@ -20,10 +20,10 @@ import { NewButton } from "../../../../../common/v3/NewButton";
 import { Pagination } from "../../../../../common/v3/Pagination";
 import { Tag } from "../../../../../common/v3/Tag";
 import { Tooltip } from "../../../../../common/v3/Tooltip";
-import { SpanUsagesInsight, Trace } from "../../../../types";
+import type { SpanUsagesInsight, Trace } from "../../../../types";
 import { InsightCard } from "../common/InsightCard";
 import * as s from "./styles";
-import { ColumnMeta, SpanUsagesInsightCardProps } from "./types";
+import type { ColumnMeta, SpanUsagesInsightCardProps } from "./types";
 
 const PAGE_SIZE = 3;
 

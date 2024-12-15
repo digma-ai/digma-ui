@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { ListItemIconContainerProps, ListItemProps } from "./types";
+import type { ListItemIconContainerProps, ListItemProps } from "./types";
 
 export const List = styled.ul`
   display: flex;

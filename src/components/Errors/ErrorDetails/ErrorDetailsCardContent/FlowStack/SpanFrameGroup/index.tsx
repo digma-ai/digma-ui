@@ -1,4 +1,4 @@
-import { MouseEvent } from "react";
+import type { MouseEvent } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { isString } from "../../../../../../typeGuards/isString";
 import { sendUserActionTrackingEvent } from "../../../../../../utils/actions/sendUserActionTrackingEvent";
@@ -6,9 +6,9 @@ import { CodeIcon } from "../../../../../common/icons/12px/CodeIcon";
 import { OpenTelemetryLogoIcon } from "../../../../../common/icons/12px/OpenTelemetryLogoIcon";
 import { Tooltip } from "../../../../../common/v3/Tooltip";
 import { trackingEvents } from "../../../../tracking";
-import { Frame } from "../../../types";
+import type { Frame } from "../../../types";
 import * as s from "./styles";
-import { FrameItemCodeLocation, SpanFrameGroupProps } from "./types";
+import type { FrameItemCodeLocation, SpanFrameGroupProps } from "./types";
 
 const getFrameItemText = (frame: Frame) => {
   if (window.ide === "PyCharm" && frame.executedCode) {

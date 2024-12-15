@@ -1,5 +1,5 @@
-import { InsightType } from "../../../../types";
-import { ActionButtonType } from "../../../Insights/InsightsCatalog/InsightsPage/insightCards/common/InsightCard/ActionButton/types";
+import type { InsightType } from "../../../../types";
+import type { ActionButtonType } from "../../../Insights/InsightsCatalog/InsightsPage/insightCards/common/InsightCard/ActionButton/types";
 
 export interface JiraButtonProps {
   onTicketInfoOpen: (

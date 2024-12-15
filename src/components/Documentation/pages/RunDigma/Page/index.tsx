@@ -1,5 +1,5 @@
 import * as s from "./styles";
-import { PageProps } from "./types";
+import type { PageProps } from "./types";
 
 export const Page = ({ title, description, sections }: PageProps) => (
   <s.Container>

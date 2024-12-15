@@ -3,13 +3,9 @@ import { dispatcher } from "../../../dispatcher";
 import { sendTrackingEvent } from "../../../utils/actions/sendTrackingEvent";
 import { actions } from "../actions";
 import { trackingEvents } from "../tracking";
-import { AsyncActionResultData } from "../types";
-import {
-  CurrentOperation,
-  EngineState,
-  FailedOperation,
-  Operation
-} from "./types";
+import type { AsyncActionResultData } from "../types";
+import type { CurrentOperation, EngineState, FailedOperation } from "./types";
+import { Operation } from "./types";
 
 const operationActions = {
   [Operation.INSTALL]: actions.INSTALL_DIGMA_ENGINE,

@@ -1,4 +1,4 @@
-import { LinkedEndpoint } from "../../SpanInfo/types";
+import type { LinkedEndpoint } from "../../SpanInfo/types";
 
 export interface LinkedEndpointsMenuProps {
   endpoints: LinkedEndpoint[];

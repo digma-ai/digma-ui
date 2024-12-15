@@ -1,4 +1,4 @@
-import {
+import type {
   ErrorCriticality,
   ErrorHandlingType,
   GLOBAL_ERROR_SORTING_CRITERION

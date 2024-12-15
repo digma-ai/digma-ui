@@ -1,6 +1,7 @@
-import { ForwardedRef, forwardRef, useState } from "react";
+import type { ForwardedRef } from "react";
+import { forwardRef, useState } from "react";
 import * as s from "./styles";
-import { TextFieldProps } from "./types";
+import type { TextFieldProps } from "./types";
 
 export const TextFieldComponent = (
   {

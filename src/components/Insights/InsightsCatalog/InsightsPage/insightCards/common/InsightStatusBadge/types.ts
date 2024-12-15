@@ -1,4 +1,4 @@
-import { InsightStatus } from "../../../../../types";
+import type { InsightStatus } from "../../../../../types";
 
 export interface InsightStatusBadgeProps {
   status: InsightStatus;

@@ -1,6 +1,7 @@
-import { ForwardedRef, forwardRef } from "react";
+import type { ForwardedRef } from "react";
+import { forwardRef } from "react";
 import * as s from "./styles";
-import { BarProps } from "./types";
+import type { BarProps } from "./types";
 
 export const BarComponent = (
   { children, className, ...rest }: BarProps,

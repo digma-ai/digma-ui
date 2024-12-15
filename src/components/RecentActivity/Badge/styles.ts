@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { BadgeElementProps, BadgeSize } from "./types";
+import type { BadgeElementProps, BadgeSize } from "./types";
 
 const getDimensions = (size: BadgeSize) => {
   switch (size) {

@@ -1,9 +1,9 @@
-import { ReactElement } from "react";
+import type { ReactElement } from "react";
 import { InsightType } from "../../../../types";
 import { getCriticalityLabel } from "../../../../utils/getCriticalityLabel";
 import { intersperse } from "../../../../utils/intersperse";
 import { DigmaSignature } from "../../../common/DigmaSignature";
-import {
+import type {
   EndpointBottleneckInsight,
   SpanEndpointBottleneckInsight
 } from "../../types";
@@ -12,7 +12,7 @@ import { CodeLocations } from "../common/CodeLocations";
 import { CommitInfos } from "../common/CommitInfos";
 import { InsightJiraTicket } from "../common/InsightJiraTicket";
 import { useEndpointDataSource } from "../common/useEndpointDataSource";
-import { InsightTicketProps } from "../types";
+import type { InsightTicketProps } from "../types";
 
 export const EndpointBottleneckInsightTicket = ({
   data,

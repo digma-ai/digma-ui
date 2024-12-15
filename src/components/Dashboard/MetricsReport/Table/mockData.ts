@@ -1,4 +1,4 @@
-import { SetMetricsReportDataPayload } from "../types";
+import type { SetMetricsReportDataPayload } from "../types";
 
 export const mockedReport: SetMetricsReportDataPayload = {
   reports: [

@@ -1,4 +1,4 @@
-import { BackendInfo } from "../components/common/App/types";
+import type { BackendInfo } from "../components/common/App/types";
 
 export const areBackendInfosEqual = (
   a: BackendInfo | null,

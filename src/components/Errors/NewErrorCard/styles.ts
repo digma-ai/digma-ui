@@ -7,7 +7,7 @@ import { DismissPanel } from "../../common/DismissPanel";
 import { Link } from "../../common/v3/Link";
 import { Tag } from "../../common/v3/Tag";
 import { HEIGHT } from "./OccurrenceChart/styles";
-import { ContainerProps, OccurrenceChartContainerProps } from "./types";
+import type { ContainerProps, OccurrenceChartContainerProps } from "./types";
 
 export const TRANSITION_DURATION = 300;
 export const chartContainerTransitionClassName = "chart-container";

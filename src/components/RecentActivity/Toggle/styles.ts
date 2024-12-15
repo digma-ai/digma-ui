@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { ToggleOptionButtonProps } from "./types";
+import type { ToggleOptionButtonProps } from "./types";
 
 export const Container = styled.div`
   display: flex;

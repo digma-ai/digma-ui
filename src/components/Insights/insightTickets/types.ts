@@ -1,4 +1,4 @@
-import { GenericCodeObjectInsight, InsightTicketInfo } from "../types";
+import type { GenericCodeObjectInsight, InsightTicketInfo } from "../types";
 
 export interface CodeLocationsData {
   codeLocations: string[];

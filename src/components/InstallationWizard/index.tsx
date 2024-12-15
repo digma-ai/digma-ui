@@ -1,7 +1,8 @@
-import { ChangeEvent, useContext, useEffect, useRef, useState } from "react";
+import type { ChangeEvent } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import { SLACK_WORKSPACE_URL } from "../../constants";
-import { IDE } from "../../globals";
+import type { IDE } from "../../globals";
 import { useDebounce } from "../../hooks/useDebounce";
 import { ide } from "../../platform";
 import { openURLInDefaultBrowser } from "../../utils/actions/openURLInDefaultBrowser";
@@ -15,11 +16,11 @@ import { SlackLogoIcon } from "../common/icons/SlackLogoIcon";
 import { FinishStep } from "./FinishStep";
 import { InstallStep } from "./InstallStep";
 import { Step } from "./Step";
-import { StepData, StepStatus } from "./Step/types";
+import type { StepData, StepStatus } from "./Step/types";
 import { actions } from "./actions";
 import * as s from "./styles";
 import { trackingEvents } from "./tracking";
-import { FieldsErrors } from "./types";
+import type { FieldsErrors } from "./types";
 
 const DIGMA_DOCKER_EXTENSION_URL =
   "https://open.docker.com/extensions/marketplace?extensionId=digmaai/digma-docker-extension";

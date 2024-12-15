@@ -1,4 +1,4 @@
-import { GlobalErrorData } from "../GlobalErrorsList/types";
+import type { GlobalErrorData } from "../GlobalErrorsList/types";
 
 export const mockedGlobalErrorData: GlobalErrorData = {
   id: "034b64a4-83de-11ef-bc2a-0242ac160003",

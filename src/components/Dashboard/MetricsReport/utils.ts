@@ -1,5 +1,5 @@
-import { Severity } from "./Table/types";
-import {
+import type { Severity } from "./Table/types";
+import type {
   EndpointIssuesData,
   PresentationalReportData,
   ScoreCriterion,

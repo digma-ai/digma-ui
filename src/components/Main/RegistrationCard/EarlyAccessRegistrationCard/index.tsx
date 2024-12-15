@@ -1,7 +1,7 @@
 import { RegistrationCard } from "..";
 import { SuccessRegistrationImage } from "../Images/SuccessRegistrationImage";
 import * as s from "./styles";
-import { EarlyAccessRegistrationCardPros } from "./types";
+import type { EarlyAccessRegistrationCardPros } from "./types";
 
 export const EarlyAccessRegistrationCard = ({
   onClose,

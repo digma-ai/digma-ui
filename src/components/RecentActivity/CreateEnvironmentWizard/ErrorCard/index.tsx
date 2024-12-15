@@ -3,7 +3,7 @@ import { CSSTransition } from "react-transition-group";
 import { CrossIcon } from "../../../common/icons/12px/CrossIcon";
 import { ErrorIcon } from "../../../common/icons/16px/ErrorIcon";
 import * as s from "./styles";
-import { ErrorCardProps } from "./types";
+import type { ErrorCardProps } from "./types";
 
 const HIDE_INTERVAL = 4000;
 

@@ -1,6 +1,6 @@
-import { MemoExoticComponent } from "react";
-import { SpanInfo } from "../../../types";
-import { IconProps } from "../../common/icons/types";
+import type { MemoExoticComponent } from "react";
+import type { SpanInfo } from "../../../types";
+import type { IconProps } from "../../common/icons/types";
 
 export interface AssetTypeListProps {
   onAssetTypeSelect: (assetTypeId: string) => void;

@@ -1,5 +1,5 @@
+import type { Row } from "@tanstack/react-table";
 import {
-  Row,
   flexRender,
   getCoreRowModel,
   useReactTable
@@ -11,7 +11,7 @@ import { isNumber } from "../../../../typeGuards/isNumber";
 import { Info } from "../../../common/v3/Info";
 import { Pagination } from "../../../common/v3/Pagination";
 import * as s from "./styles";
-import { ColumnMeta, TableProps } from "./types";
+import type { ColumnMeta, TableProps } from "./types";
 
 const PAGE_SIZE = 5;
 

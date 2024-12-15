@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react";
 import { TreeMap } from ".";
 import { ReportTile } from "../../Dashboard/MetricsReport/Chart/ReportTile";
 

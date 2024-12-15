@@ -2,14 +2,14 @@ import { useEffect } from "react";
 import { CircleLoader } from "../../common/CircleLoader";
 import { Pagination } from "../../common/Pagination";
 import { Toggle } from "../../common/Toggle";
-import { ToggleValue } from "../../common/Toggle/types";
+import type { ToggleValue } from "../../common/Toggle/types";
 import { EmptyState } from "../EmptyState";
 import { ErrorEmptyState } from "../ErrorEmptyState";
 import { Header } from "../Header";
 import { NotificationList } from "../NotificationList";
-import { CodeObjectData } from "../types";
+import type { CodeObjectData } from "../types";
 import * as s from "./styles";
-import { FullViewProps } from "./types";
+import type { FullViewProps } from "./types";
 
 export const FullView = ({
   onClose,

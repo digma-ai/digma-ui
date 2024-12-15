@@ -7,19 +7,16 @@ import {
 import { useMemo, useState } from "react";
 import { Cell, Pie, PieChart } from "recharts";
 import { useTheme } from "styled-components";
-import { DefaultTheme } from "styled-components/dist/types";
+import type { DefaultTheme } from "styled-components/dist/types";
 import { getDurationString } from "../../../../../../utils/getDurationString";
 import { roundTo } from "../../../../../../utils/roundTo";
 import { Tag } from "../../../../../common/v3/Tag";
-import {
-  Component,
-  ComponentType,
-  EndpointBreakdownInsight
-} from "../../../../types";
+import type { Component, EndpointBreakdownInsight } from "../../../../types";
+import { ComponentType } from "../../../../types";
 import { InsightCard } from "../common/InsightCard";
 import { PercentileViewModeToggle } from "../common/InsightCard/PercentileViewModeToggle";
 import * as s from "./styles";
-import { EndpointBreakdownInsightCardProps } from "./types";
+import type { EndpointBreakdownInsightCardProps } from "./types";
 
 const PIE_CHART_RADIUS = 50;
 const PIE_CHART_ARC_WIDTH = 4;

@@ -1,7 +1,7 @@
 import { NotificationCard } from "../NotificationCard";
-import { CodeObjectData } from "../types";
+import type { CodeObjectData } from "../types";
 import * as s from "./styles";
-import { NotificationListProps } from "./types";
+import type { NotificationListProps } from "./types";
 
 export const NotificationList = ({
   notifications,

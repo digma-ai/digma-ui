@@ -1,4 +1,5 @@
-import { ForwardedRef, forwardRef, useEffect, useState } from "react";
+import type { ForwardedRef } from "react";
+import { forwardRef, useEffect, useState } from "react";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { isBoolean } from "../../../typeGuards/isBoolean";
 import { ClockWithTicksIcon } from "../../common/icons/20px/ClockWithTicksIcon";
@@ -7,7 +8,7 @@ import { OpenTelemetryLogoIcon } from "../../common/icons/20px/OpenTelemetryLogo
 import { AnimatedCodeButton } from "./AnimatedCodeButton";
 import { GlowingIconButton } from "./GlowingIconButton";
 import * as s from "./styles";
-import { CodeButtonProps } from "./types";
+import type { CodeButtonProps } from "./types";
 
 const CodeButtonComponent = (
   {

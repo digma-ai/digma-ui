@@ -1,5 +1,5 @@
-import { MemoExoticComponent, ReactNode } from "react";
-import { IconProps } from "../../common/icons/types";
+import type { MemoExoticComponent, ReactNode } from "react";
+import type { IconProps } from "../../common/icons/types";
 
 export interface DashboardCardProps {
   icon: MemoExoticComponent<(props: IconProps) => JSX.Element>;

@@ -1,8 +1,8 @@
 import { WarningCircleIcon } from "../../../common/icons/WarningCircleIcon";
 import { Link } from "../../styles";
-import { Method } from "../../types";
+import type { Method } from "../../types";
 import * as s from "./styles";
-import { PreviewProps } from "./types";
+import type { PreviewProps } from "./types";
 
 /**
  * @deprecated

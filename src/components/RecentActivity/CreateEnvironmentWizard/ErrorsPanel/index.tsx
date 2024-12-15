@@ -1,6 +1,6 @@
 import { ErrorCard } from "../ErrorCard";
 import * as s from "./styles";
-import { ErrorsPanelProps } from "./types";
+import type { ErrorsPanelProps } from "./types";
 
 export const ErrorsPanel = ({ errors }: ErrorsPanelProps) => {
   return (

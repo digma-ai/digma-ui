@@ -1,9 +1,9 @@
-import {
+import type {
   EndpointQueryOptimizationV2Insight,
   InsightType,
   Trace
 } from "../../../../types";
-import { InsightCardCommonProps } from "../common/InsightCard/types";
+import type { InsightCardCommonProps } from "../common/InsightCard/types";
 
 export interface EndpointQueryOptimizationV2InsightCardProps
   extends InsightCardCommonProps {

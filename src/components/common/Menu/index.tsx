@@ -1,5 +1,5 @@
 import * as s from "./styles";
-import { MenuProps } from "./types";
+import type { MenuProps } from "./types";
 
 export const Menu = ({ onSelect, title, width, items }: MenuProps) => {
   const handleMenuItemClick = (value: string) => {

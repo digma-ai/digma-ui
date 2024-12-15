@@ -1,4 +1,4 @@
-import { AssetsData } from "./types";
+import type { AssetsData } from "./types";
 
 export const mockedAssetsData: AssetsData = {
   data: [

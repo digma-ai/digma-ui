@@ -1,10 +1,10 @@
 import { Text } from "recharts";
-import { CartesianViewBox } from "recharts/types/util/types";
+import type { CartesianViewBox } from "recharts/types/util/types";
 import { useTheme } from "styled-components";
 import { isNumber } from "../../../../../../../typeGuards/isNumber";
 import { isString } from "../../../../../../../typeGuards/isString";
 import { DIVIDER, LABEL_HEIGHT } from "../constants";
-import { ReferenceLineLabelProps } from "./types";
+import type { ReferenceLineLabelProps } from "./types";
 
 const LABEL_GAP = 4; // in pixels
 

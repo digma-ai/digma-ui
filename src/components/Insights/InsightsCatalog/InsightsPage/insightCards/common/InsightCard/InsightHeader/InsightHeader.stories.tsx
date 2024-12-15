@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react";
 import { InsightHeader } from ".";
 import { mockedEndpointSpanNPlusOneInsight } from "../../../EndpointSpanNPlusOneInsightInsightCard/mockData";
 

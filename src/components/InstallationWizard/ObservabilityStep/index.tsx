@@ -9,7 +9,7 @@ import { SectionTitle } from "../SectionTitle";
 import { Tip } from "../Tip";
 import { MainButton } from "../styles";
 import * as s from "./styles";
-import { ObservabilityStepProps } from "./types";
+import type { ObservabilityStepProps } from "./types";
 
 const COLLECTOR_CONFIGURATION_SNIPPET = `otlp/digma:
 endpoint: "localhost:5050"

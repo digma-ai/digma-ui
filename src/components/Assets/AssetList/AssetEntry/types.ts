@@ -1,4 +1,4 @@
-import { AssetEntry, SORTING_CRITERION } from "../types";
+import type { AssetEntry, SORTING_CRITERION } from "../types";
 
 export interface AssetEntryProps {
   entry: AssetEntry;

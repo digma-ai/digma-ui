@@ -3,7 +3,7 @@ import { CrossIcon } from "../icons/16px/CrossIcon";
 import { NewPopover } from "../NewPopover";
 import { NewButton } from "../v3/NewButton";
 import * as s from "./styles";
-import { FilterPopupProps } from "./types";
+import type { FilterPopupProps } from "./types";
 
 export const FilterPopup = ({
   onClearAll,

@@ -1,6 +1,6 @@
 import React from "react";
 import { useIconProps } from "./hooks";
-import { ThemeableIconProps } from "./types";
+import type { ThemeableIconProps } from "./types";
 
 const LightBulbSmallCrossedIconComponent = (props: ThemeableIconProps) => {
   const { size } = useIconProps(props);

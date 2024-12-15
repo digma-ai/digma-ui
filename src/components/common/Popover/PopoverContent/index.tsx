@@ -5,7 +5,8 @@ import {
   FloatingPortal,
   useMergeRefs
 } from "@floating-ui/react";
-import { CSSProperties, ForwardedRef, HTMLProps, forwardRef } from "react";
+import type { CSSProperties, ForwardedRef, HTMLProps } from "react";
+import { forwardRef } from "react";
 import { usePopoverContext } from "../hooks";
 
 /** @deprecated */

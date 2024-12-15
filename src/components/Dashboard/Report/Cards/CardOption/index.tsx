@@ -1,5 +1,5 @@
 import * as s from "./styles";
-import { CardOptionsProps } from "./types";
+import type { CardOptionsProps } from "./types";
 
 export const CardOption = ({
   title,

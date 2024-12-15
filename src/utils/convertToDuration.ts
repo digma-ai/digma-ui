@@ -1,4 +1,4 @@
-import { Duration } from "../globals";
+import type { Duration } from "../globals";
 import { convertToDurationUnit } from "./convertToDurationUnit";
 import { roundTo } from "./roundTo";
 

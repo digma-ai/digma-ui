@@ -1,4 +1,4 @@
-import { SetGlobalErrorsDataPayload } from "./types";
+import type { SetGlobalErrorsDataPayload } from "./types";
 
 export const DefaultErrorList: SetGlobalErrorsDataPayload = {
   totalCount: 2,

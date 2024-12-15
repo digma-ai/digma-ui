@@ -1,6 +1,7 @@
-import { ForwardedRef, forwardRef } from "react";
+import type { ForwardedRef } from "react";
+import { forwardRef } from "react";
 import * as s from "./styles";
-import { CardProps } from "./types";
+import type { CardProps } from "./types";
 
 const CardComponent = (
   { className, onClick, header, content, footer }: CardProps,

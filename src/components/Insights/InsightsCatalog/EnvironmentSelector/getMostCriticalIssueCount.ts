@@ -1,4 +1,4 @@
-import { EnvironmentIssueCounts } from "../../../common/App/types";
+import type { EnvironmentIssueCounts } from "../../../common/App/types";
 import { ISSUE_CRITICALITY } from "./EnvironmentChip/types";
 
 export const getMostCriticalIssueCount = (

@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useTheme } from "styled-components";
 import { getThemeKind } from "../App/styles";
-import { IconProps } from "./types";
+import type { IconProps } from "./types";
 
 export const DEFAULT_ICON_SIZE = 12;
 

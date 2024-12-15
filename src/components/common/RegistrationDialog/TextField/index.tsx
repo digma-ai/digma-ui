@@ -1,8 +1,9 @@
-import { FocusEvent, ForwardedRef, forwardRef, useState } from "react";
+import type { FocusEvent, ForwardedRef } from "react";
+import { forwardRef, useState } from "react";
 import { CheckmarkCircleInvertedIcon } from "../../icons/CheckmarkCircleInvertedIcon";
 import { CrossCircleIcon } from "../../icons/CrossCircleIcon";
 import * as s from "./styles";
-import { TextFieldProps } from "./types";
+import type { TextFieldProps } from "./types";
 
 export const TextFieldComponent = (
   {

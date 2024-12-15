@@ -1,9 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { DefaultTheme, useTheme } from "styled-components";
-import {
-  DataFetcherConfiguration,
-  useFetchData
-} from "../../../hooks/useFetchData";
+import type { DefaultTheme } from "styled-components";
+import { useTheme } from "styled-components";
+import type { DataFetcherConfiguration } from "../../../hooks/useFetchData";
+import { useFetchData } from "../../../hooks/useFetchData";
 import { useMount } from "../../../hooks/useMount";
 import { useAssetsSelector } from "../../../store/assets/useAssetsSelector";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
@@ -26,14 +25,13 @@ import { trackingEvents } from "../tracking";
 import { checkIfAnyFiltersApplied, getAssetTypeInfo } from "../utils";
 import { AssetEntry as AssetEntryComponent } from "./AssetEntry";
 import * as s from "./styles";
-import {
+import type {
   AssetEntry,
   AssetListProps,
   AssetsData,
-  GetAssetsListDataPayload,
-  SORTING_CRITERION,
-  SORTING_ORDER
+  GetAssetsListDataPayload
 } from "./types";
+import { SORTING_CRITERION, SORTING_ORDER } from "./types";
 
 const PAGE_SIZE = 10;
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds

@@ -1,5 +1,5 @@
 import { DiscoveredCard } from "../DiscoveredCard";
-import { DiscoveredIssuesProps } from "./types";
+import type { DiscoveredIssuesProps } from "./types";
 
 export const DiscoveredIssues = ({
   statistics = {

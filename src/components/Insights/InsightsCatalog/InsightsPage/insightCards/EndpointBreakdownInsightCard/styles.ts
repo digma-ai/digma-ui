@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { caption1RegularTypography } from "../../../../../common/App/typographies";
-import {
+import type {
   FractionProgressBarValueProps,
   LegendItemDataColorBadgeProps
 } from "./types";

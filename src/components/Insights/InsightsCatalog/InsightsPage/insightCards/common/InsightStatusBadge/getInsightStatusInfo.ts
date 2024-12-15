@@ -1,4 +1,4 @@
-import { DefaultTheme } from "styled-components/dist/types";
+import type { DefaultTheme } from "styled-components/dist/types";
 import { InsightStatus } from "../../../../../types";
 
 interface InsightStatusInfo {

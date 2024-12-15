@@ -1,7 +1,7 @@
-import { TagType } from "../../common/v3/Tag/types";
+import type { TagType } from "../../common/v3/Tag/types";
 import { Tooltip } from "../../common/v3/Tooltip";
 import * as s from "./styles";
-import { ScoreProps } from "./types";
+import type { ScoreProps } from "./types";
 
 export const HIGH_SEVERITY_SCORE_THRESHOLD = 80;
 

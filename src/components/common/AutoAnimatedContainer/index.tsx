@@ -1,7 +1,8 @@
 import { useAutoAnimate } from "@formkit/auto-animate/react";
-import { ForwardedRef, forwardRef, useCallback, useEffect } from "react";
+import type { ForwardedRef } from "react";
+import { forwardRef, useCallback, useEffect } from "react";
 import { useMount } from "../../../hooks/useMount";
-import { AutoAnimatedContainerProps } from "./types";
+import type { AutoAnimatedContainerProps } from "./types";
 
 export const AutoAnimatedContainerComponent = (
   {

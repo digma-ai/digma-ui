@@ -5,7 +5,7 @@ import { DiscoveredIssues } from "./Cards/DiscoveredIssues";
 import { ReportFooter } from "./ReportFooter";
 import { ReportHeader } from "./ReportHeader";
 import * as s from "./styles";
-import { ReportFilterQuery } from "./types";
+import type { ReportFilterQuery } from "./types";
 import { useReportsData } from "./useReportsData";
 
 const DefaultQuery: ReportFilterQuery = {

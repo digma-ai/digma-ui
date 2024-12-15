@@ -1,8 +1,12 @@
-import { ComponentType } from "react";
+import type { ComponentType } from "react";
 import { isNumber } from "../../../../../typeGuards/isNumber";
 import { Tooltip } from "../../../../common/v3/Tooltip";
 import * as s from "./styles";
-import { FilterChipComponentProps, FilterChipProps, FilterType } from "./types";
+import type {
+  FilterChipComponentProps,
+  FilterChipProps,
+  FilterType
+} from "./types";
 
 const filtersData: Record<
   FilterType,

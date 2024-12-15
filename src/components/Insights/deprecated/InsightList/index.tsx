@@ -22,7 +22,7 @@ import {
   isSpanScalingInsufficientDataInsight,
   isSpanScalingWellInsight
 } from "../../typeGuards";
-import {
+import type {
   GenericCodeObjectInsight,
   GenericEndpointInsight,
   GenericSpanInsight,
@@ -36,7 +36,7 @@ import { NoScalingIssueInsight } from "./insightCards/NoScalingIssueInsight";
 import { PerformanceAtScaleInsight } from "./insightCards/PerformanceAtScaleInsight";
 
 import * as s from "./styles";
-import {
+import type {
   InsightListProps,
   RecalculatePayload,
   isInsightJiraTicketHintShownPayload

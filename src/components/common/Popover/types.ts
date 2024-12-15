@@ -1,6 +1,6 @@
-import { Placement } from "@floating-ui/react";
-import { Dispatch, SetStateAction } from "react";
-import { usePopover } from "./hooks";
+import type { Placement } from "@floating-ui/react";
+import type { Dispatch, SetStateAction } from "react";
+import type { usePopover } from "./hooks";
 
 export type ContextType =
   | (ReturnType<typeof usePopover> & {

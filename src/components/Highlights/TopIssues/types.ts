@@ -1,6 +1,6 @@
-import { Duration } from "../../../globals";
-import { SpanInfo } from "../../../types";
-import { InsightStatus, InsightType } from "../../Insights/types";
+import type { Duration } from "../../../globals";
+import type { SpanInfo } from "../../../types";
+import type { InsightStatus, InsightType } from "../../Insights/types";
 
 export interface EnvironmentData<T> {
   environmentId: string;

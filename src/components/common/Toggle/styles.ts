@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { OptionButtonProps } from "./types";
+import type { OptionButtonProps } from "./types";
 
 export const Container = styled.div`
   display: flex;

@@ -3,7 +3,7 @@ import { PromoText, PromoTextBold } from "../../../styles";
 import { PromotionTag } from "../PromotionTag";
 import { Centered, Description, Right } from "../styles";
 import * as s from "./styles";
-import { UdemyCoursePromotionCardProps } from "./types";
+import type { UdemyCoursePromotionCardProps } from "./types";
 
 const UdemyPromotionCollapsedBackground = () => (
   <>

@@ -1,6 +1,6 @@
 import React from "react";
 import { useIconProps } from "../hooks";
-import { IconProps } from "../types";
+import type { IconProps } from "../types";
 
 export interface HomeIconProps extends IconProps {
   fillColor?: string;

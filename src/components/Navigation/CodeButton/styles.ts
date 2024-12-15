@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { IconButton } from "../common/IconButton";
-import { ExtendedIconButtonProps } from "./types";
+import type { ExtendedIconButtonProps } from "./types";
 
 export const Container = styled.div`
   display: flex;

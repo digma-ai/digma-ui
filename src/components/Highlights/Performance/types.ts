@@ -1,5 +1,5 @@
-import { Duration } from "../../../globals";
-import { EnvironmentType } from "../../common/App/types";
+import type { Duration } from "../../../globals";
+import type { EnvironmentType } from "../../common/App/types";
 
 interface PerformancePercentileData {
   duration: Duration;

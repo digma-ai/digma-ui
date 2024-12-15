@@ -1,6 +1,6 @@
-import { InsightType } from "../../../../../../types";
-import { InsightCardCommonProps } from "../../../../InsightsCatalog/InsightsPage/insightCards/common/InsightCard/types";
-import { SpanScalingWellInsight } from "../../../../types";
+import type { InsightType } from "../../../../../../types";
+import type { InsightCardCommonProps } from "../../../../InsightsCatalog/InsightsPage/insightCards/common/InsightCard/types";
+import type { SpanScalingWellInsight } from "../../../../types";
 
 export interface NoScalingIssueInsightProps extends InsightCardCommonProps {
   insight: SpanScalingWellInsight;

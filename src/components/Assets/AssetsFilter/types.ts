@@ -1,4 +1,4 @@
-import { InsightType } from "../../Insights/types";
+import type { InsightType } from "../../Insights/types";
 
 export interface AssetFilterEntry {
   enabled: boolean;

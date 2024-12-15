@@ -5,7 +5,10 @@ import { Overlay } from "../../common/Overlay";
 import { RegisterForm } from "../../common/RegisterForm";
 import { Link } from "../../common/v3/Link";
 import { NewIconButton } from "../../common/v3/NewIconButton";
-import { AnimatedRegistrationCardProps, StyledOverlayProps } from "./types";
+import type {
+  AnimatedRegistrationCardProps,
+  StyledOverlayProps
+} from "./types";
 
 export const Container = styled.div<AnimatedRegistrationCardProps>`
   display: flex;

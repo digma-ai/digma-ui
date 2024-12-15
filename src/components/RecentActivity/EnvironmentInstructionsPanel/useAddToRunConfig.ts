@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { dispatcher } from "../../../dispatcher";
 import { actions } from "../actions";
-import { AddToConfigResult, AddToRunConfigState } from "./types";
+import type { AddToConfigResult, AddToRunConfigState } from "./types";
 
 export const useAddToRunConfig = (environment: string) => {
   const [addToConfigState, setAddToConfigState] =

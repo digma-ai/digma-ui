@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react";
 import { InsightsCatalog } from ".";
 import { ConfigContext, initialState } from "../../common/App/ConfigContext";
 

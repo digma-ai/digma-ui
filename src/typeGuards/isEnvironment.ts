@@ -1,4 +1,4 @@
-import { Environment } from "../components/common/App/types";
+import type { Environment } from "../components/common/App/types";
 import { isObject } from "./isObject";
 import { isString } from "./isString";
 

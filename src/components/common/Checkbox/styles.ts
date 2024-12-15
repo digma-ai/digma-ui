@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { LabelProps } from "./types";
+import type { LabelProps } from "./types";
 
 export const CheckboxContainer = styled.div`
   position: relative;

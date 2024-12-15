@@ -4,7 +4,8 @@ import {
   subscriptRegularTypography
 } from "../../../common/App/typographies";
 import { v3colors } from "../../../common/App/v3colors";
-import { IndicatorProps, StatusState } from "./types";
+import type { IndicatorProps } from "./types";
+import { StatusState } from "./types";
 
 export const Container = styled.div`
   padding: 5px 8px;

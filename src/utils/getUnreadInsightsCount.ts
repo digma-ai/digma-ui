@@ -1,4 +1,4 @@
-import { ConfigContextData } from "../components/common/App/types";
+import type { ConfigContextData } from "../components/common/App/types";
 
 export const getUnreadInsightsCount = (config: ConfigContextData) => {
   if (

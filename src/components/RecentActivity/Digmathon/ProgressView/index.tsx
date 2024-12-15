@@ -14,7 +14,7 @@ import { trackingEvents } from "../../tracking";
 import { DigmathonInsightCard } from "../DigmathonInsightCard";
 import { getProgressEmailLink } from "../getProgressEmailLink";
 import * as s from "./styles";
-import { ProgressViewProps } from "./types";
+import type { ProgressViewProps } from "./types";
 
 const DIGMATHON_URL = "https://www.digma.ai/digmathon";
 const DIGMATHON_LEADERBOARD_URL = "https://www.digma.ai/digmathon/#leaderboard";

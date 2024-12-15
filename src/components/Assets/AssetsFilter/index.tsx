@@ -1,10 +1,5 @@
-import {
-  ComponentType,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState
-} from "react";
+import type { ComponentType } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { dispatcher } from "../../../dispatcher";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import { usePrevious } from "../../../hooks/usePrevious";
@@ -13,7 +8,8 @@ import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { useStore } from "../../../store/useStore";
 import { isEnvironment } from "../../../typeGuards/isEnvironment";
 import { isNull } from "../../../typeGuards/isNull";
-import { FeatureFlag, InsightType } from "../../../types";
+import type { InsightType } from "../../../types";
+import { FeatureFlag } from "../../../types";
 import { sendTrackingEvent } from "../../../utils/actions/sendTrackingEvent";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { getInsightTypeInfo } from "../../../utils/getInsightTypeInfo";
@@ -21,11 +17,11 @@ import { FilterPopup } from "../../common/FilterPopup";
 import { WrenchIcon } from "../../common/icons/12px/WrenchIcon";
 import { EndpointIcon } from "../../common/icons/EndpointIcon";
 import { SparkleIcon } from "../../common/icons/SparkleIcon";
-import { IconProps } from "../../common/icons/types";
+import type { IconProps } from "../../common/icons/types";
 import { actions } from "../actions";
 import { trackingEvents } from "../tracking";
 import * as s from "./styles";
-import {
+import type {
   AssetFilterCategory,
   AssetsFiltersData,
   GetAssetFiltersDataParams,

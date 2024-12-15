@@ -1,7 +1,7 @@
 import { getDurationString } from "../../../../utils/getDurationString";
 import { TooltipContent } from "../TooltipContent";
 import * as s from "./styles";
-import { AreaTooltipContentProps } from "./types";
+import type { AreaTooltipContentProps } from "./types";
 
 export const AreaTooltipContent = ({ p50, p95 }: AreaTooltipContentProps) => (
   <TooltipContent>

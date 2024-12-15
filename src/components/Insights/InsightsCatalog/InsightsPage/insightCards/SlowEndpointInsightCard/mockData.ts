@@ -1,9 +1,5 @@
-import {
-  InsightCategory,
-  InsightScope,
-  InsightType,
-  SlowEndpointInsight
-} from "../../../../types";
+import type { SlowEndpointInsight } from "../../../../types";
+import { InsightCategory, InsightScope, InsightType } from "../../../../types";
 
 export const mockedSlowEndpointInsight: SlowEndpointInsight = {
   sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",

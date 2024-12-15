@@ -1,4 +1,4 @@
-import { LiveData } from "./types";
+import type { LiveData } from "./types";
 
 export const mockData: LiveData = {
   liveDataRecords: [

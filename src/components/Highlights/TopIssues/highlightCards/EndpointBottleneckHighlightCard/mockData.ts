@@ -1,5 +1,5 @@
 import { InsightStatus, InsightType } from "../../../../Insights/types";
-import { EndpointBottleneckMetrics, HighlightData } from "../../types";
+import type { EndpointBottleneckMetrics, HighlightData } from "../../types";
 
 export const mockedEndpointBottleneckMetrics: EndpointBottleneckMetrics = [
   { id: "PercentageWhenBottleneck", value: 50 },

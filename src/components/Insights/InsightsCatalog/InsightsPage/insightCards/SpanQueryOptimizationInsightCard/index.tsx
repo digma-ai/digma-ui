@@ -4,14 +4,14 @@ import { getDurationString } from "../../../../../../utils/getDurationString";
 import { trimEndpointScheme } from "../../../../../../utils/trimEndpointScheme";
 import { Pagination } from "../../../../../common/v3/Pagination";
 import { Tooltip } from "../../../../../common/v3/Tooltip";
-import { InsightType, Trace } from "../../../../types";
+import type { InsightType, Trace } from "../../../../types";
 import { InsightCard } from "../common/InsightCard";
 import { ColumnsContainer } from "../common/InsightCard/ColumnsContainer";
 import { KeyValue } from "../common/InsightCard/KeyValue";
 import { ListItem } from "../common/InsightCard/ListItem";
 import { ContentContainer, Description } from "../styles";
 import * as s from "./styles";
-import { SpanQueryOptimizationInsightCardProps } from "./types";
+import type { SpanQueryOptimizationInsightCardProps } from "./types";
 
 const PAGE_SIZE = 3;
 

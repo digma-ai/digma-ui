@@ -1,11 +1,12 @@
-import { Fragment, ReactNode } from "react";
+import type { ReactNode } from "react";
+import { Fragment } from "react";
 import { getFeatureFlagValue } from "../../../../featureFlags";
 import { useConfigSelector } from "../../../../store/config/useConfigSelector";
 import { isString } from "../../../../typeGuards/isString";
 import { FeatureFlag } from "../../../../types";
 import { intersperse } from "../../../../utils/intersperse";
 import { HighlightedCode } from "../styles";
-import { DigmaAttribute } from "./types";
+import type { DigmaAttribute } from "./types";
 
 const OTELAGENT_ATTRIBUTES_PREFIX = "OTEL_RESOURCE_ATTRIBUTES";
 const MICROMETER_ATTRIBUTES_PREFIX =

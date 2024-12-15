@@ -1,4 +1,4 @@
-import { DigmaStatus } from "../components/common/App/types";
+import type { DigmaStatus } from "../components/common/App/types";
 
 export const isDigmaEngineRunning = (digmaStatus: DigmaStatus | null) =>
   Boolean(

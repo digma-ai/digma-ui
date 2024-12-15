@@ -1,14 +1,14 @@
-import { ReactElement } from "react";
+import type { ReactElement } from "react";
 import { getCriticalityLabel } from "../../../../utils/getCriticalityLabel";
 import { intersperse } from "../../../../utils/intersperse";
 import { DigmaSignature } from "../../../common/DigmaSignature";
-import { SpanEndpointBottleneckInsight } from "../../types";
+import type { SpanEndpointBottleneckInsight } from "../../types";
 import { useSpanDataSource } from "../common";
 import { BottleneckEndpoints } from "../common/BottleneckEndpoints";
 import { CodeLocations } from "../common/CodeLocations";
 import { CommitInfos } from "../common/CommitInfos";
 import { InsightJiraTicket } from "../common/InsightJiraTicket";
-import { InsightTicketProps } from "../types";
+import type { InsightTicketProps } from "../types";
 
 export const SpanEndpointBottleneckInsightTicket = ({
   data,

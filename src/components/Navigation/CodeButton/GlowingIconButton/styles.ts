@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 import { IconButton } from "../../common/IconButton";
-import { BorderContainerProps } from "./types";
+import type { BorderContainerProps } from "./types";
 
 export const BorderContainer = styled.div<BorderContainerProps>`
   height: 32px;

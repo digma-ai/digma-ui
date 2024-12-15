@@ -1,5 +1,5 @@
-import { EndpointBreakdownInsight } from "../../../../types";
-import { InsightCardCommonProps } from "../common/InsightCard/types";
+import type { EndpointBreakdownInsight } from "../../../../types";
+import type { InsightCardCommonProps } from "../common/InsightCard/types";
 
 export interface EndpointBreakdownInsightCardProps
   extends InsightCardCommonProps {

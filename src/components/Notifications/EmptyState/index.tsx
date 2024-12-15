@@ -1,6 +1,6 @@
 import { CrossedBellIcon } from "../../common/icons/CrossedBellIcon";
 import * as s from "./styles";
-import { EmptyStateProps } from "./types";
+import type { EmptyStateProps } from "./types";
 
 export const EmptyState = ({ title, content }: EmptyStateProps) => (
   <s.Container>

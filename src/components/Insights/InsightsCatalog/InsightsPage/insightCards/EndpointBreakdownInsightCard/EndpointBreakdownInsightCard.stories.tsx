@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react";
 import { EndpointBreakdownInsightCard } from ".";
 import { ComponentType } from "../../../../types";
 import { mockedEndpointBreakdownInsight } from "./mockData";

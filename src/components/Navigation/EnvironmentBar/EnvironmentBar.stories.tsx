@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react";
 
 import { EnvironmentBar } from ".";
 import { mockedEnvironments } from "./mockData";

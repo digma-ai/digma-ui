@@ -1,11 +1,11 @@
 import { getDurationString } from "../../../../../../utils/getDurationString";
 import { Tooltip } from "../../../../../common/v3/Tooltip";
-import { InsightType, Trace } from "../../../../types";
+import type { InsightType, Trace } from "../../../../types";
 import { InsightCard } from "../common/InsightCard";
 import { ColumnsContainer } from "../common/InsightCard/ColumnsContainer";
 import { KeyValue } from "../common/InsightCard/KeyValue";
 import { AssetLink, ContentContainer, Details } from "../styles";
-import { EndpointQueryOptimizationV2InsightCardProps } from "./types";
+import type { EndpointQueryOptimizationV2InsightCardProps } from "./types";
 
 export const EndpointQueryOptimizationV2InsightCard = ({
   insight,

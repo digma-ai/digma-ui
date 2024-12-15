@@ -1,7 +1,7 @@
 import { isUndefined } from "../../../typeGuards/isUndefined";
 import { Tooltip } from "../Tooltip";
 import * as s from "./styles";
-import { TagProps } from "./types";
+import type { TagProps } from "./types";
 
 const renderValue = (value: TagProps["value"]) => {
   switch (typeof value) {

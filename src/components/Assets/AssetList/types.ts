@@ -1,5 +1,5 @@
-import { Duration } from "../../../globals";
-import { AssetFilterQuery } from "../AssetsFilter/types";
+import type { Duration } from "../../../globals";
+import type { AssetFilterQuery } from "../AssetsFilter/types";
 
 export interface AssetListProps {
   onGoToAllAssets: () => void;

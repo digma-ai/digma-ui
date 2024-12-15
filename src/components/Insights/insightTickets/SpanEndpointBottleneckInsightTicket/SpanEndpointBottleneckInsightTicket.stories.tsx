@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react";
 import { SpanEndpointBottleneckInsightTicket } from ".";
 import { mockedSpanEndpointBottleneckInsight } from "../../InsightsCatalog/InsightsPage/insightCards/SpanEndpointBottleneckInsightCard/mockData";
 

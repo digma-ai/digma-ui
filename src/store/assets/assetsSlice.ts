@@ -1,12 +1,14 @@
 import { createSlice } from "zustand-slices";
-import {
+import type {
   AssetsData,
-  Sorting,
+  Sorting
+} from "../../components/Assets/AssetList/types";
+import {
   SORTING_CRITERION,
   SORTING_ORDER
 } from "../../components/Assets/AssetList/types";
-import { AssetCategoriesData } from "../../components/Assets/AssetTypeList/types";
-import { ViewMode } from "../../components/Assets/AssetsViewScopeConfiguration/types";
+import type { AssetCategoriesData } from "../../components/Assets/AssetTypeList/types";
+import type { ViewMode } from "../../components/Assets/AssetsViewScopeConfiguration/types";
 
 export interface AssetsFilters {
   services: string[];

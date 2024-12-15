@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { grayScale, primaryScale } from "../App/v2colors";
-import {
+import type {
   ButtonProps,
   ChevronIconContainerProps,
   OptionListItemProps

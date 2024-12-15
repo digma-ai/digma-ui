@@ -4,7 +4,7 @@ import { CSSTransition } from "react-transition-group";
 import { useTheme } from "styled-components";
 import { CheckmarkCircleInvertedIcon } from "../../common/icons/CheckmarkCircleInvertedIcon";
 import * as s from "./styles";
-import { StepProps } from "./types";
+import type { StepProps } from "./types";
 
 const TRANSITION_CLASS_NAME = "step";
 const NUMBER_TRANSITION_CLASS_NAME = "number-link";

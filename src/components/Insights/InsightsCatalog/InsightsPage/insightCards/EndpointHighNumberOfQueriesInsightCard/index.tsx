@@ -1,10 +1,10 @@
 import { Tag } from "../../../../../common/v3/Tag";
-import { InsightType, Trace } from "../../../../types";
+import type { InsightType, Trace } from "../../../../types";
 import { InsightCard } from "../common/InsightCard";
 import { ColumnsContainer } from "../common/InsightCard/ColumnsContainer";
 import { KeyValue } from "../common/InsightCard/KeyValue";
 import { ContentContainer, Description } from "../styles";
-import { EndpointHighNumberOfQueriesInsightCardProps } from "./types";
+import type { EndpointHighNumberOfQueriesInsightCardProps } from "./types";
 
 export const EndpointHighNumberOfQueriesInsightCard = ({
   insight,

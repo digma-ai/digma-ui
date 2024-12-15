@@ -3,7 +3,7 @@ import {
   caption2BoldTypography,
   footnoteRegularTypography
 } from "../../../../common/App/typographies";
-import { IndexProps, NameProps } from "./types";
+import type { IndexProps, NameProps } from "./types";
 
 export const Container = styled.div`
   display: flex;

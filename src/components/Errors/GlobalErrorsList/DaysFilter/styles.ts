@@ -6,7 +6,7 @@ import {
 import { NewButton } from "../../../common/v3/NewButton";
 import { TextField } from "../../../common/v3/TextField";
 import { Popup } from "../../../Navigation/common/Popup";
-import { CounterInputProps, DaysButtonProps } from "./types";
+import type { CounterInputProps, DaysButtonProps } from "./types";
 
 export const ButtonIconContainer = styled.div`
   color: ${({ theme }) => theme.colors.v3.icon.tertiary};

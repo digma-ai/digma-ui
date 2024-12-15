@@ -1,4 +1,4 @@
-import { TickData } from "../types";
+import type { TickData } from "../types";
 
 export interface XAxisTickProps {
   x: number;

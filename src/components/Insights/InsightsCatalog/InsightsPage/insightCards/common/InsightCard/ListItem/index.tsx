@@ -1,8 +1,9 @@
-import { ForwardedRef, MouseEvent, forwardRef } from "react";
+import type { ForwardedRef, MouseEvent } from "react";
+import { forwardRef } from "react";
 import { Link } from "../../../../../../../common/v3/Link";
 import { Tooltip } from "../../../../../../../common/v3/Tooltip";
 import * as s from "./styles";
-import { ListItemProps } from "./types";
+import type { ListItemProps } from "./types";
 
 const ListItemComponent = (
   { name, onClick, className, endContent }: ListItemProps,

@@ -1,9 +1,7 @@
 import { useEffect, useMemo, useRef } from "react";
 import { v4 as uuidv4 } from "uuid";
-import {
-  DataFetcherConfiguration,
-  useFetchData
-} from "../../../../../hooks/useFetchData";
+import type { DataFetcherConfiguration } from "../../../../../hooks/useFetchData";
+import { useFetchData } from "../../../../../hooks/useFetchData";
 import { useErrorsSelector } from "../../../../../store/errors/useErrorsSelector";
 import { useStore } from "../../../../../store/useStore";
 import { isNull } from "../../../../../typeGuards/isNull";
@@ -15,7 +13,7 @@ import { ToggleSwitch } from "../../../../common/v3/ToggleSwitch";
 import { Tooltip } from "../../../../common/v3/Tooltip";
 import { actions } from "../../../actions";
 import { trackingEvents } from "../../../tracking";
-import {
+import type {
   FilesURIsMap,
   Frame,
   FrameStack,
@@ -26,9 +24,9 @@ import {
   SetFilesURIsPayload
 } from "../../types";
 import { SpanFrameGroup } from "./SpanFrameGroup";
-import { FrameItemCodeLocation } from "./SpanFrameGroup/types";
+import type { FrameItemCodeLocation } from "./SpanFrameGroup/types";
 import * as s from "./styles";
-import { FlowProps as FlowStackProps } from "./types";
+import type { FlowProps as FlowStackProps } from "./types";
 
 const filesURIsDataFetcherConfiguration: DataFetcherConfiguration = {
   requestAction: actions.GET_FILES_URIS,

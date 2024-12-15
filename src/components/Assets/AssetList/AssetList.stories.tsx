@@ -1,9 +1,10 @@
-import { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react";
 
 import { fn } from "@storybook/test";
 import { AssetList } from ".";
 import { ConfigContext, initialState } from "../../common/App/ConfigContext";
-import { ConfigContextData, DeploymentType } from "../../common/App/types";
+import type { ConfigContextData } from "../../common/App/types";
+import { DeploymentType } from "../../common/App/types";
 import { actions } from "../actions";
 import { mockedAssetsData } from "./mockedData";
 

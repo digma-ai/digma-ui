@@ -1,4 +1,4 @@
-import { PerformanceData } from "./types";
+import type { PerformanceData } from "./types";
 
 export const mockedPerformanceData: PerformanceData = {
   performance: [

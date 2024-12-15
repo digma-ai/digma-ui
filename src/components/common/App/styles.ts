@@ -1,4 +1,5 @@
-import { createGlobalStyle, css, DefaultTheme } from "styled-components";
+import type { DefaultTheme } from "styled-components";
+import { createGlobalStyle, css } from "styled-components";
 import { os } from "../../../os";
 import { platform } from "../../../platform";
 

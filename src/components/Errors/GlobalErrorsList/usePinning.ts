@@ -2,8 +2,8 @@ import { useCallback, useEffect, useState } from "react";
 import { dispatcher } from "../../../dispatcher";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { actions } from "../actions";
-import { PinUnpinErrorPayload } from "../NewErrorCard/types";
-import { SetPinUnpinErrorResultPayload } from "./types";
+import type { PinUnpinErrorPayload } from "../NewErrorCard/types";
+import type { SetPinUnpinErrorResultPayload } from "./types";
 
 export const usePinning = (errorId: string) => {
   const { environment } = useConfigSelector();

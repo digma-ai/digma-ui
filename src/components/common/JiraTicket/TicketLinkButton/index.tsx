@@ -1,8 +1,9 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import type { ChangeEvent } from "react";
+import { useEffect, useState } from "react";
 import { isValidHttpUrl } from "../../../../utils/isValidUrl";
 import { Button } from "../../Button";
 import { ActionableTextField } from "../ActionableTextField";
-import { TicketLinkButtonProps } from "./types";
+import type { TicketLinkButtonProps } from "./types";
 
 export const TicketLinkButton = ({
   ticketLink,

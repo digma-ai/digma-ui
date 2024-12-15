@@ -1,7 +1,7 @@
-import { ReactNode } from "react";
-import { Theme } from "../../../globals";
-import { InsightFilterType } from "../../Insights/InsightsCatalog/types";
-import { InsightViewType } from "../../Insights/types";
+import type { ReactNode } from "react";
+import type { Theme } from "../../../globals";
+import type { InsightFilterType } from "../../Insights/InsightsCatalog/types";
+import type { InsightViewType } from "../../Insights/types";
 
 export interface AppProps {
   children: ReactNode;

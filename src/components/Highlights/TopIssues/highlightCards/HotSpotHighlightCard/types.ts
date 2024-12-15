@@ -1,4 +1,4 @@
-import { HighlightData, HotSpotMetrics } from "../../types";
+import type { HighlightData, HotSpotMetrics } from "../../types";
 
 export interface HotSpotHighlightCardProps {
   data: HighlightData<HotSpotMetrics>;

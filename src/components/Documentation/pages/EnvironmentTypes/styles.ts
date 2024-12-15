@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { ContainerProps, HeaderProps } from "./types";
+import type { ContainerProps, HeaderProps } from "./types";
 
 // in pixels
 const COLUMN_MIN_WIDTH = 280;

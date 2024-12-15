@@ -1,9 +1,5 @@
-import {
-  CodeObjectErrorsInsight,
-  InsightCategory,
-  InsightScope,
-  InsightType
-} from "../../../../types";
+import type { CodeObjectErrorsInsight } from "../../../../types";
+import { InsightCategory, InsightScope, InsightType } from "../../../../types";
 
 export const mockedErrorsInsight: CodeObjectErrorsInsight = {
   sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",

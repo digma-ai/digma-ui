@@ -10,7 +10,7 @@ import {
   AffectedEndpointsSelector,
   getEndpointKey
 } from "../../common/AffectedEndpointsSelector";
-import { Option } from "../../common/AffectedEndpointsSelector/types";
+import type { Option } from "../../common/AffectedEndpointsSelector/types";
 import { HistogramIcon } from "../../common/icons/16px/HistogramIcon";
 import { PinFillIcon } from "../../common/icons/16px/PinFillIcon";
 import { PinIcon } from "../../common/icons/16px/PinIcon";
@@ -23,7 +23,7 @@ import { trackingEvents } from "../tracking";
 import { useDismissal } from "./hooks/useDismissal";
 import { OccurrenceChart } from "./OccurrenceChart";
 import * as s from "./styles";
-import { NewErrorCardProps } from "./types";
+import type { NewErrorCardProps } from "./types";
 
 export const getStatusString = (status: string) =>
   status.toLowerCase().startsWith("recent") ? "Recent" : status;

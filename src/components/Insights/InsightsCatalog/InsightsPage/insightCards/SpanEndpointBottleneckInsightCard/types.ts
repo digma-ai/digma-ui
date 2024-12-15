@@ -1,9 +1,9 @@
-import {
+import type {
   InsightType,
   SpanEndpointBottleneckInsight,
   Trace
 } from "../../../../types";
-import { InsightCardCommonProps } from "../common/InsightCard/types";
+import type { InsightCardCommonProps } from "../common/InsightCard/types";
 
 export interface SpanEndpointBottleneckInsightCardProps
   extends InsightCardCommonProps {

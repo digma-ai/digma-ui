@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { getInsightImportanceColor } from "../../../../../utils/getInsightImportanceColor";
 import { Link as CommonLink } from "../../../../common/Link";
-import { InsightIconContainerProps } from "./types";
+import type { InsightIconContainerProps } from "./types";
 
 export const Link = styled.a`
   color: #7891d0;

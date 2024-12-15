@@ -1,9 +1,7 @@
 import { useEffect, useMemo } from "react";
 import { getFeatureFlagValue } from "../../../../featureFlags";
-import {
-  DataFetcherConfiguration,
-  useFetchData
-} from "../../../../hooks/useFetchData";
+import type { DataFetcherConfiguration } from "../../../../hooks/useFetchData";
+import { useFetchData } from "../../../../hooks/useFetchData";
 import { useConfigSelector } from "../../../../store/config/useConfigSelector";
 import { useMetricsReportSelector } from "../../../../store/metricsReport/useMetricsReportSelector";
 import { useStore } from "../../../../store/useStore";
@@ -19,12 +17,12 @@ import { TreemapIcon } from "../../../common/icons/16px/TreemapIcon";
 import { ChevronIcon } from "../../../common/icons/20px/ChevronIcon";
 import { DatabaseIcon } from "../../../common/icons/DatabaseIcon";
 import { Direction } from "../../../common/icons/types";
-import { ToggleValue } from "../../../common/Toggle/types";
+import type { ToggleValue } from "../../../common/Toggle/types";
 import { NewIconButton } from "../../../common/v3/NewIconButton";
 import { Tooltip } from "../../../common/v3/Tooltip";
 import { actions } from "../../actions";
 import { trackingEvents } from "../tracking";
-import {
+import type {
   Criticality,
   GetServiceEndpointsPayload,
   GetServiceEnvironmentsPayload,
@@ -34,7 +32,7 @@ import {
   SetServiceEnvironmentsPayload
 } from "../types";
 import * as s from "./styles";
-import { GetServicesPayload, HeaderProps } from "./types";
+import type { GetServicesPayload, HeaderProps } from "./types";
 
 const criticalityOptions: { id: Criticality; label: string }[] = [
   {

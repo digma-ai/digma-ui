@@ -1,4 +1,4 @@
-import { FilesURIsMap, Frame } from "../../../types";
+import type { FilesURIsMap, Frame } from "../../../types";
 
 export interface FrameItemCodeLocation {
   URI: string;

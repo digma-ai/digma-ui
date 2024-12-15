@@ -1,9 +1,9 @@
-import { MouseEvent } from "react";
+import type { MouseEvent } from "react";
 import { Tile } from "../../../../common/TreeMap/Tile";
-import { ReportTimeMode } from "../../types";
+import type { ReportTimeMode } from "../../types";
 import * as s from "./styles";
 import { TooltipKeyValue } from "./TooltipKeyValue";
-import { ReportTileProps } from "./types";
+import type { ReportTileProps } from "./types";
 
 const getFormattedNumber = (viewMode: ReportTimeMode, value: number) =>
   `${viewMode === "changes" && value > 0 ? "+" : ""}${value}`;

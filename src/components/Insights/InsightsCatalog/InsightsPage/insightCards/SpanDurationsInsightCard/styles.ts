@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { footnoteRegularTypography } from "../../../../../common/App/typographies";
 import { KeyValue } from "../common/InsightCard/KeyValue";
-import { ChartContainerProps } from "./types";
+import type { ChartContainerProps } from "./types";
 
 export const Container = styled.div`
   display: flex;

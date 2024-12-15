@@ -1,12 +1,12 @@
 import styled from "styled-components";
 import { bodyRegularTypography } from "../../common/App/typographies";
 import { Link } from "../../common/v3/Link";
-import {
-  SORTING_ORDER,
+import type {
   SortingMenuButtonProps,
   SortingOrderIconContainerProps,
   SortingOrderOptionProps
 } from "./types";
+import { SORTING_ORDER } from "./types";
 
 export const Container = styled.div`
   display: flex;

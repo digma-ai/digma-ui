@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react";
 import { ListItem } from ".";
 import { Button } from "../../../../../../../common/Button";
 import { JiraLogoIcon } from "../../../../../../../common/icons/12px/JiraLogoIcon";

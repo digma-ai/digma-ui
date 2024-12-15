@@ -1,5 +1,5 @@
 import * as s from "./styles";
-import { DigmathonInsightCardProps } from "./types";
+import type { DigmathonInsightCardProps } from "./types";
 
 export const DigmathonInsightCard = ({
   number,

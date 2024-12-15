@@ -1,10 +1,8 @@
 import { useMemo } from "react";
-import {
-  DataFetcherConfiguration,
-  useFetchData
-} from "../../../hooks/useFetchData";
+import type { DataFetcherConfiguration } from "../../../hooks/useFetchData";
+import { useFetchData } from "../../../hooks/useFetchData";
 import { actions } from "../actions";
-import {
+import type {
   DiscoveredAssetsStatistics,
   DiscoveredIssuesStatistics,
   ReportFilterQuery

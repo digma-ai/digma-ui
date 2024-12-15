@@ -1,5 +1,5 @@
-import { ButtonHTMLAttributes, ComponentType } from "react";
-import { IconProps } from "../../icons/types";
+import type { ButtonHTMLAttributes, ComponentType } from "react";
+import type { IconProps } from "../../icons/types";
 
 export type ButtonType = "primary" | "secondary" | "tertiary";
 

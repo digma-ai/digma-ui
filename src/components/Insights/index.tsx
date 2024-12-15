@@ -1,4 +1,5 @@
-import { KeyboardEvent, useCallback, useEffect, useState } from "react";
+import type { KeyboardEvent } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { actions as globalActions } from "../../actions";
 import { SLACK_WORKSPACE_URL } from "../../constants";
 import { usePersistence } from "../../hooks/usePersistence";
@@ -14,7 +15,7 @@ import { areBackendInfosEqual } from "../../utils/areBackendInfosEqual";
 import { CircleLoader } from "../common/CircleLoader";
 import { EmptyState } from "../common/EmptyState";
 import { RegistrationDialog } from "../common/RegistrationDialog";
-import { RegistrationFormValues } from "../common/RegistrationDialog/types";
+import type { RegistrationFormValues } from "../common/RegistrationDialog/types";
 import { CardsIcon } from "../common/icons/CardsIcon";
 import { DocumentWithMagnifierIcon } from "../common/icons/DocumentWithMagnifierIcon";
 import { LightBulbSmallCrossedIcon } from "../common/icons/LightBulbSmallCrossedIcon";
@@ -22,7 +23,7 @@ import { LightBulbSmallIcon } from "../common/icons/LightBulbSmallIcon";
 import { OpenTelemetryLogoCrossedSmallIcon } from "../common/icons/OpenTelemetryLogoCrossedSmallIcon";
 import { SlackLogoIcon } from "../common/icons/SlackLogoIcon";
 import { InsightsCatalog } from "./InsightsCatalog";
-import { IssuesFilterQuery } from "./InsightsCatalog/FilterPanel/IssuesFilter/types";
+import type { IssuesFilterQuery } from "./InsightsCatalog/FilterPanel/IssuesFilter/types";
 import { EndpointBottleneckInsightTicket } from "./insightTickets/EndpointBottleneckInsightTicket";
 import { EndpointHighNumberOfQueriesInsightTicket } from "./insightTickets/EndpointHighNumberOfQueriesInsightTicket";
 import { EndpointQueryOptimizationV2InsightTicket } from "./insightTickets/EndpointQueryOptimizationV2InsightTicket";
@@ -43,7 +44,7 @@ import {
   isSpanQueryOptimizationInsight,
   isSpanScalingBadlyInsight
 } from "./typeGuards";
-import {
+import type {
   EndpointBottleneckInsight,
   EndpointHighNumberOfQueriesInsight,
   EndpointQueryOptimizationV2Insight,
@@ -52,12 +53,12 @@ import {
   InsightTicketInfo,
   InsightsData,
   InsightsProps,
-  InsightsStatus,
   SpaNPlusOneInsight,
   SpanEndpointBottleneckInsight,
   SpanQueryOptimizationInsight,
   SpanScalingInsight
 } from "./types";
+import { InsightsStatus } from "./types";
 import { useInsightsData } from "./useInsightsData";
 
 const renderInsightTicket = (

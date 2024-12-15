@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { DefaultTheme } from "styled-components/dist/types";
-import {
+import type { DefaultTheme } from "styled-components/dist/types";
+import type {
   CircleProps,
   ContainerProps,
   SwitchContainerProps,

@@ -1,5 +1,5 @@
-import { ReactNode } from "react";
-import { Severity } from "../../../Dashboard/MetricsReport/Table/types";
+import type { ReactNode } from "react";
+import type { Severity } from "../../../Dashboard/MetricsReport/Table/types";
 
 export interface TileProps {
   title: string;

@@ -1,6 +1,6 @@
-import { MemoExoticComponent } from "react";
-import { IconProps } from "../../../common/icons/types";
-import { EngineState } from "../types";
+import type { MemoExoticComponent } from "react";
+import type { IconProps } from "../../../common/icons/types";
+import type { EngineState } from "../types";
 
 export interface EngineManagerProps {
   onManualInstallSelect?: () => void;

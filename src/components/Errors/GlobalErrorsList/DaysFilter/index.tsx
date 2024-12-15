@@ -1,4 +1,5 @@
-import { ChangeEvent, useCallback, useEffect, useMemo, useState } from "react";
+import type { ChangeEvent } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { usePrevious } from "../../../../hooks/usePrevious";
 import { DAYS_FILTER_DEFAULT_VALUE } from "../../../../store/errors/errorsSlice";
 import { isUndefined } from "../../../../typeGuards/isUndefined";
@@ -12,7 +13,7 @@ import { NewIconButton } from "../../../common/v3/NewIconButton";
 import { MenuList } from "../../../Navigation/common/MenuList";
 import { trackingEvents } from "../../tracking";
 import * as s from "./styles";
-import { DaysFilterProps } from "./types";
+import type { DaysFilterProps } from "./types";
 
 const MAX_VALUE = 14;
 const MIN_VALUE = 1;

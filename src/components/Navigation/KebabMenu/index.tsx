@@ -2,7 +2,8 @@ import { actions as globalActions } from "../../../actions";
 import { DIGMA_DOCUMENTATION } from "../../../constants";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
-import { FeatureFlag, OpenInstallationWizardPayload } from "../../../types";
+import type { OpenInstallationWizardPayload } from "../../../types";
+import { FeatureFlag } from "../../../types";
 import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { isDigmaEngineRunning } from "../../../utils/isDigmaEngineRunning";
@@ -14,11 +15,11 @@ import { LogoutIcon } from "../../common/icons/16px/LogoutIcon";
 import { FourSquaresIcon } from "../../common/icons/FourSquaresIcon";
 import { LocalEngineIcon } from "../../common/icons/LocalEngineIcon";
 import { MenuList } from "../common/MenuList";
-import { MenuItem } from "../common/MenuList/types";
+import type { MenuItem } from "../common/MenuList/types";
 import { Popup } from "../common/Popup";
 import { trackingEvents } from "../tracking";
-import { OpenDashboardPayload, OpenDocumentationPayload } from "../types";
-import { KebabMenuProps } from "./types";
+import type { OpenDashboardPayload, OpenDocumentationPayload } from "../types";
+import type { KebabMenuProps } from "./types";
 
 export const KebabMenu = ({ onClose }: KebabMenuProps) => {
   const { backendInfo, digmaStatus, environment } = useConfigSelector();

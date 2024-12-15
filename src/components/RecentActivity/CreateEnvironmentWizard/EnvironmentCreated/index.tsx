@@ -1,7 +1,7 @@
 import { CheckmarkCircleIcon } from "../../../common/icons/20px/CheckmarkCircleIcon";
 import { Button } from "../../../common/v3/Button";
 import * as s from "./styles";
-import { EnvironmentCreatedProps } from "./types";
+import type { EnvironmentCreatedProps } from "./types";
 
 export const EnvironmentCreated = ({
   goToEnvironment

@@ -1,4 +1,5 @@
-import { ChangeEvent, useContext, useEffect, useState } from "react";
+import type { ChangeEvent } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   INSTALL_DIGMA_IN_ORGANIZATION_DOCUMENTATION_URL,
   SETUP_PLUGIN_TO_ORGANIZATION_DIGMA_URL,
@@ -10,9 +11,9 @@ import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefault
 import { sendTrackingEvent } from "../../../utils/actions/sendTrackingEvent";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { getHostnameFromURL } from "../../../utils/getHostNameFromURL";
-import { AsyncActionResultData } from "../../InstallationWizard/types";
+import type { AsyncActionResultData } from "../../InstallationWizard/types";
 import { ConfigContext } from "../../common/App/ConfigContext";
-import { ConfigContextData } from "../../common/App/types";
+import type { ConfigContextData } from "../../common/App/types";
 import { NewCircleLoader } from "../../common/NewCircleLoader";
 import { Tooltip } from "../../common/Tooltip";
 import { CheckmarkCircleInvertedIcon } from "../../common/icons/CheckmarkCircleInvertedIcon";
@@ -23,7 +24,7 @@ import { WarningCircleLargeIcon } from "../../common/icons/WarningCircleLargeIco
 import { actions } from "../actions";
 import { trackingEvents } from "../tracking";
 import * as s from "./styles";
-import { SetupOrgDigmaPanelProps } from "./types";
+import type { SetupOrgDigmaPanelProps } from "./types";
 
 const isIDEConnectedToLocalDigma = (config: ConfigContextData): boolean => {
   const hostname = getHostnameFromURL(config.digmaApiUrl);

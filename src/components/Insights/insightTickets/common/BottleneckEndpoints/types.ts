@@ -1,4 +1,4 @@
-import { SpanEndpointBottleneckInsight } from "../../../types";
+import type { SpanEndpointBottleneckInsight } from "../../../types";
 
 export interface BottleneckEndpointsProps {
   insight: SpanEndpointBottleneckInsight | null;

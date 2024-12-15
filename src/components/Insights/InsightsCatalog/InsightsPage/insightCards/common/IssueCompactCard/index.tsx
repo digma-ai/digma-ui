@@ -16,15 +16,16 @@ import { NewIconButton } from "../../../../../../common/v3/NewIconButton";
 import { Tag } from "../../../../../../common/v3/Tag";
 import { Tooltip } from "../../../../../../common/v3/Tooltip";
 import { MenuList } from "../../../../../../Navigation/common/MenuList";
-import { MenuItem } from "../../../../../../Navigation/common/MenuList/types";
+import type { MenuItem } from "../../../../../../Navigation/common/MenuList/types";
 import { trackingEvents } from "../../../../../tracking";
 import { isEndpointInsight, isSpanInsight } from "../../../../../typeGuards";
-import { GenericCodeObjectInsight, InsightStatus } from "../../../../../types";
+import type { GenericCodeObjectInsight } from "../../../../../types";
+import { InsightStatus } from "../../../../../types";
 import { InsightIcon } from "../InsightCard/InsightHeader/InsightIcon";
 import { InsightStatusTooltipContent } from "../InsightCard/InsightHeader/InsightStatusTooltipContent";
 import { getInsightStatusInfo } from "../InsightStatusBadge/getInsightStatusInfo";
 import * as s from "./styles";
-import { IssueCompactCardProps } from "./types";
+import type { IssueCompactCardProps } from "./types";
 
 const renderInsightStatusTooltipContent = (
   insight: GenericCodeObjectInsight

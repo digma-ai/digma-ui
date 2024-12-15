@@ -7,9 +7,9 @@ import { formatUnit } from "../../../utils/formatUnit";
 import { ArrowIcon } from "../../common/icons/12px/ArrowIcon";
 import { TreeNodesIcon } from "../../common/icons/12px/TreeNodesIcon";
 import { Toggle } from "../../common/v3/Toggle";
-import { ToggleOption } from "../../common/v3/Toggle/types";
+import type { ToggleOption } from "../../common/v3/Toggle/types";
 import * as s from "./styles";
-import { AssetsViewScopeConfigurationProps, ViewMode } from "./types";
+import type { AssetsViewScopeConfigurationProps, ViewMode } from "./types";
 
 export const AssetsViewScopeConfiguration = ({
   assetsCount

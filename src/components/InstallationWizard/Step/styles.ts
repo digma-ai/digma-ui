@@ -1,5 +1,6 @@
-import styled, { DefaultTheme } from "styled-components";
-import {
+import type { DefaultTheme } from "styled-components";
+import styled from "styled-components";
+import type {
   ContainerProps,
   HeaderProps,
   NumberContainerProps,

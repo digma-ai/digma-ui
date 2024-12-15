@@ -1,6 +1,7 @@
-import squarify, { ILayoutRect, Input } from "squarify";
+import type { ILayoutRect, Input } from "squarify";
+import squarify from "squarify";
 import { isNull } from "../../../typeGuards/isNull";
-import { TileData, TreeMapProps } from "./types";
+import type { TileData, TreeMapProps } from "./types";
 
 const normalizeData = (data: Input<TileData>[]) => {
   const MIN_MAX_RATIO = 5;

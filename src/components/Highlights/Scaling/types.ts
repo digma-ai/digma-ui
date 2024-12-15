@@ -1,5 +1,5 @@
-import { Duration } from "../../../globals";
-import { InsightStatus } from "../../Insights/types";
+import type { Duration } from "../../../globals";
+import type { InsightStatus } from "../../Insights/types";
 
 export interface ScalingMetrics {
   concurrency: number;

@@ -1,8 +1,6 @@
 import { useMemo } from "react";
-import {
-  DataFetcherConfiguration,
-  useFetchData
-} from "../../../hooks/useFetchData";
+import type { DataFetcherConfiguration } from "../../../hooks/useFetchData";
+import { useFetchData } from "../../../hooks/useFetchData";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { NewCircleLoader } from "../../common/NewCircleLoader";
 import { ErrorCard } from "../ErrorCard";
@@ -10,9 +8,9 @@ import { NoDataEmptyState } from "../NoDataEmptyState";
 import { actions } from "../actions";
 import { EmptyStateContainer } from "../styles";
 import { trackingEvents } from "../tracking";
-import { GetErrorsDataPayload, SetErrorsDataPayload } from "../types";
+import type { GetErrorsDataPayload, SetErrorsDataPayload } from "../types";
 import * as s from "./styles";
-import { ErrorsListProps } from "./types";
+import type { ErrorsListProps } from "./types";
 
 const dataFetcherConfiguration: DataFetcherConfiguration = {
   requestAction: actions.GET_ERRORS_DATA,

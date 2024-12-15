@@ -1,15 +1,16 @@
 import { createSlice } from "zustand-slices";
+import type { Sorting } from "../../components/common/SortingSelector/types";
+import { SORTING_ORDER } from "../../components/common/SortingSelector/types";
+import type { IssuesFiltersData } from "../../components/Insights/InsightsCatalog/FilterPanel/IssuesFilter/types";
+import type { InsightFilterType } from "../../components/Insights/InsightsCatalog/types";
 import {
-  Sorting,
-  SORTING_ORDER
-} from "../../components/common/SortingSelector/types";
-import { IssuesFiltersData } from "../../components/Insights/InsightsCatalog/FilterPanel/IssuesFilter/types";
-import {
-  InsightFilterType,
   SORTING_CRITERION,
   ViewMode
 } from "../../components/Insights/InsightsCatalog/types";
-import { InsightsData, InsightViewType } from "../../components/Insights/types";
+import type {
+  InsightsData,
+  InsightViewType
+} from "../../components/Insights/types";
 
 interface InsightsState {
   data: InsightsData | null;

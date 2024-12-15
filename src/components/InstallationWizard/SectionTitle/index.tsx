@@ -1,5 +1,5 @@
 import * as s from "./styles";
-import { SectionTitleProps } from "./types";
+import type { SectionTitleProps } from "./types";
 
 export const SectionTitle = ({
   className,

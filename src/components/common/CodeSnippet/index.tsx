@@ -1,14 +1,16 @@
-import { ForwardedRef, forwardRef, useRef } from "react";
+import type { ForwardedRef } from "react";
+import { forwardRef, useRef } from "react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import {
   atomOneDark,
   atomOneLight
 } from "react-syntax-highlighter/dist/esm/styles/hljs";
-import { DefaultTheme, useTheme } from "styled-components";
+import type { DefaultTheme } from "styled-components";
+import { useTheme } from "styled-components";
 import { isString } from "../../../typeGuards/isString";
 import { CopyButton } from "../v3/CopyButton";
 import * as s from "./styles";
-import { CodeSnippetProps, HighlighterTheme } from "./types";
+import type { CodeSnippetProps, HighlighterTheme } from "./types";
 
 const getHighlighterTheme = (theme: DefaultTheme): HighlighterTheme => {
   switch (theme.mode) {

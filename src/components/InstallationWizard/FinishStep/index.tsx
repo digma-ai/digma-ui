@@ -1,5 +1,6 @@
 import { useContext } from "react";
-import { DefaultTheme, useTheme } from "styled-components";
+import type { DefaultTheme } from "styled-components";
+import { useTheme } from "styled-components";
 import { GETTING_STARTED_VIDEO_URL } from "../../../constants";
 import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
@@ -18,7 +19,7 @@ import { WarningCircleLargeIcon } from "../../common/icons/WarningCircleLargeIco
 import { SectionDescription } from "../styles";
 import { trackingEvents } from "../tracking";
 import * as s from "./styles";
-import { FinishStepProps } from "./types";
+import type { FinishStepProps } from "./types";
 
 const EMAIL_ERROR_MESSAGE = "Enter a valid email";
 

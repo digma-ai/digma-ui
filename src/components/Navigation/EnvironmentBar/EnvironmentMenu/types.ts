@@ -1,4 +1,4 @@
-import { Environment } from "../../../common/App/types";
+import type { Environment } from "../../../common/App/types";
 
 export interface EnvironmentMenuProps {
   environments: Environment[];

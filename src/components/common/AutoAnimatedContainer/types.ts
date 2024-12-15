@@ -1,5 +1,5 @@
-import { AutoAnimateOptions } from "@formkit/auto-animate";
-import { ReactNode } from "react";
+import type { AutoAnimateOptions } from "@formkit/auto-animate";
+import type { ReactNode } from "react";
 
 export interface AutoAnimatedContainerProps {
   isAnimationEnabled: boolean;

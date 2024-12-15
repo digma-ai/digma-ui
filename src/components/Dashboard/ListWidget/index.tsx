@@ -8,13 +8,13 @@ import { getPercentileKey } from "../../../utils/getPercentileKey";
 import { NewCircleLoader } from "../../common/NewCircleLoader";
 import { Pagination } from "../../common/Pagination";
 import { Toggle } from "../../common/Toggle";
-import { ToggleValue } from "../../common/Toggle/types";
+import type { ToggleValue } from "../../common/Toggle/types";
 import { LightBulbSmallCrossedIcon } from "../../common/icons/LightBulbSmallCrossedIcon";
 import { WarningCircleLargeIcon } from "../../common/icons/WarningCircleLargeIcon";
 import { DashboardCard } from "../DashboardCard";
 import { actions } from "../actions";
 import * as s from "./styles";
-import { GetDataPayload, ListWidgetData, ListWidgetProps } from "./types";
+import type { GetDataPayload, ListWidgetData, ListWidgetProps } from "./types";
 
 const PAGE_SIZE = 4;
 const DEFAULT_PERCENTILE = 0.5;

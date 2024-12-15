@@ -1,6 +1,6 @@
-import { DefaultTheme } from "styled-components";
-import { Theme } from "../../../globals";
-import { ThemeColors } from "../../../styled";
+import type { DefaultTheme } from "styled-components";
+import type { Theme } from "../../../globals";
+import type { ThemeColors } from "../../../styled";
 import { darkTheme } from "./themes/darkTheme";
 import { lightTheme } from "./themes/lightTheme";
 import { typographies } from "./typographies";

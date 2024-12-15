@@ -1,7 +1,7 @@
 import { Button } from "../../../../../common/Button";
 import { ChartIcon } from "../../../../../common/icons/ChartIcon";
 import { InsightCard } from "../../InsightCard";
-import { PerformanceAtScaleInsightProps } from "./types";
+import type { PerformanceAtScaleInsightProps } from "./types";
 
 import {
   createColumnHelper,
@@ -9,9 +9,9 @@ import {
   getCoreRowModel,
   useReactTable
 } from "@tanstack/react-table";
-import { Duration } from "../../../../../../globals";
+import type { Duration } from "../../../../../../globals";
 import { formatUnit } from "../../../../../../utils/formatUnit";
-import { Concurrency } from "../../../../types";
+import type { Concurrency } from "../../../../types";
 import * as s from "./styles";
 
 const MIN_CONCURRENCY_STATES_TO_EVALUATE_SCALE = 4;

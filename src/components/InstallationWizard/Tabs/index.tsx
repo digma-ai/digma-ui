@@ -1,6 +1,6 @@
 import { Tab } from "./Tab";
 import * as s from "./styles";
-import { TabsProps } from "./types";
+import type { TabsProps } from "./types";
 
 export const Tabs = ({
   onSelect,

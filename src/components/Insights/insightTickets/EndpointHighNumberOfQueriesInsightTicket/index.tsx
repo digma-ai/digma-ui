@@ -1,11 +1,11 @@
-import { ReactElement } from "react";
+import type { ReactElement } from "react";
 import { intersperse } from "../../../../utils/intersperse";
 import { DigmaSignature } from "../../../common/DigmaSignature";
-import { EndpointHighNumberOfQueriesInsight } from "../../types";
+import type { EndpointHighNumberOfQueriesInsight } from "../../types";
 import { useCommitInfos } from "../common";
 import { CommitInfos } from "../common/CommitInfos";
 import { InsightJiraTicket } from "../common/InsightJiraTicket";
-import { InsightTicketProps } from "../types";
+import type { InsightTicketProps } from "../types";
 
 export const EndpointHighNumberOfQueriesInsightTicket = ({
   data,

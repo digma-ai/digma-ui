@@ -1,11 +1,8 @@
-import { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react";
 import { InsightJiraTicket } from ".";
 import { InsightType } from "../../../../../types";
-import {
-  InsightCategory,
-  InsightScope,
-  SpanUsagesInsight
-} from "../../../types";
+import type { SpanUsagesInsight } from "../../../types";
+import { InsightCategory, InsightScope } from "../../../types";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof InsightJiraTicket> = {

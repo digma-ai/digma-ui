@@ -1,11 +1,11 @@
-import { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react";
 import { RecentActivity } from ".";
 import { actions as globalActions } from "../../actions";
 import { ConfigContext, initialState } from "../common/App/ConfigContext";
 import { mockedDigmathonProgressData } from "./Digmathon/mockData";
 import { mockData as liveData } from "./LiveView/mockData";
 import { actions } from "./actions";
-import { RecentActivityData } from "./types";
+import type { RecentActivityData } from "./types";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof RecentActivity> = {

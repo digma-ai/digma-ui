@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { dispatcher } from "../../dispatcher";
 import { actions } from "./actions";
-import { RecentActivityData } from "./types";
+import type { RecentActivityData } from "./types";
 
 export const useRecentActivityData = () => {
   const [data, setData] = useState<RecentActivityData>();

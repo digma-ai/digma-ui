@@ -2,7 +2,7 @@ import { EnvironmentIcon } from "../../../../common/EnvironmentIcon";
 import { Tooltip } from "../../../../common/v3/Tooltip";
 import { getMostCriticalIssueCount } from "../getMostCriticalIssueCount";
 import * as s from "./styles";
-import { EnvironmentChipProps } from "./types";
+import type { EnvironmentChipProps } from "./types";
 
 export const EnvironmentChip = ({
   environment,

@@ -1,5 +1,5 @@
 import { createSlice } from "zustand-slices";
-import {
+import type {
   Criticality,
   EndpointData,
   EndpointIssuesData,
@@ -8,7 +8,7 @@ import {
   ReportViewMode,
   ServiceIssuesData
 } from "../../components/Dashboard/MetricsReport/types";
-import { Environment } from "../../components/common/App/types";
+import type { Environment } from "../../components/common/App/types";
 
 export interface MetricsReportState {
   metricsReportViewMode: ReportViewMode;

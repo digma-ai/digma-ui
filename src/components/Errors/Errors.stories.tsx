@@ -1,8 +1,8 @@
-import { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react";
 
 import { Errors } from ".";
 import { ConfigContext, initialState } from "../common/App/ConfigContext";
-import { ConfigContextData } from "../common/App/types";
+import type { ConfigContextData } from "../common/App/types";
 import { mockedErrorDetails } from "./ErrorDetails/mockData";
 import { actions } from "./actions";
 import { mockedErrorsData } from "./mockData";

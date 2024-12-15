@@ -1,4 +1,4 @@
-import { CardProps } from "../../../common/v3/Card/types";
+import type { CardProps } from "../../../common/v3/Card/types";
 
 import * as s from "./styles";
 

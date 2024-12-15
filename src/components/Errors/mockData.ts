@@ -1,5 +1,5 @@
 import { mockedError } from "./ErrorCard/mockData";
-import { SetErrorsDataPayload } from "./types";
+import type { SetErrorsDataPayload } from "./types";
 
 export const mockedErrorsData: SetErrorsDataPayload = {
   errors: [

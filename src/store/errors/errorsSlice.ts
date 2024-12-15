@@ -1,6 +1,6 @@
 import { createSlice } from "zustand-slices";
-import { EndpointFilterData } from "../../components/Errors/GlobalErrorsList/GlobalErrorsFilters/types";
-import {
+import type { EndpointFilterData } from "../../components/Errors/GlobalErrorsList/GlobalErrorsFilters/types";
+import type {
   GlobalErrorData,
   SetGlobalErrorsDataPayload
 } from "../../components/Errors/GlobalErrorsList/types";

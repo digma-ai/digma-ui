@@ -2,9 +2,9 @@ import { getInsightTypeInfo } from "../../../../../utils/getInsightTypeInfo";
 import { InsightIcon } from "../../../../Insights/InsightsCatalog/InsightsPage/insightCards/common/InsightCard/InsightHeader/InsightIcon";
 import { Card } from "../../../../common/v3/Card";
 import { Info } from "../../../../common/v3/Info";
-import { EnvironmentData, GenericMetrics } from "../../types";
+import type { EnvironmentData, GenericMetrics } from "../../types";
 import * as s from "./styles";
-import { HighlightCardProps } from "./types";
+import type { HighlightCardProps } from "./types";
 
 const getCriticality = (environments: EnvironmentData<GenericMetrics>[]) =>
   environments.reduce((acc, env) => Math.max(acc, env.insightCriticality), 0);

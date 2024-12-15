@@ -1,5 +1,5 @@
 import { isString } from "../../../typeGuards/isString";
-import { GenericCodeObjectInsight } from "../types";
+import type { GenericCodeObjectInsight } from "../types";
 
 export const getInsightCommits = (
   insight: GenericCodeObjectInsight | null | undefined

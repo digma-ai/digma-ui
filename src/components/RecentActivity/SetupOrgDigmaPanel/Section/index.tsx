@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { DefaultTheme, useTheme } from "styled-components";
+import type { DefaultTheme } from "styled-components";
+import { useTheme } from "styled-components";
 import { ChevronIcon } from "../../../common/icons/ChevronIcon";
 import { Direction } from "../../../common/icons/types";
 import * as s from "./styles";
-import { SectionProps } from "./types";
+import type { SectionProps } from "./types";
 
 const getChevronIconColor = (theme: DefaultTheme) => {
   switch (theme.mode) {

@@ -17,7 +17,7 @@ import { OpenLinkIcon } from "../common/icons/OpenLinkIcon";
 import { actions } from "./actions";
 import * as s from "./styles";
 import { trackingEvents } from "./tracking";
-import { EnvironmentInfoData } from "./types";
+import type { EnvironmentInfoData } from "./types";
 import { ClientSpansPerformanceImpact } from "./widgets/ClientSpansPerformanceImpact";
 import { SlowQueries } from "./widgets/SlowQueries";
 

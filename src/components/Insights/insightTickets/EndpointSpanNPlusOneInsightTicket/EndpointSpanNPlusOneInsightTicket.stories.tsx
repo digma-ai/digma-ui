@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react";
 import { EndpointSpanNPlusOneInsightTicket } from ".";
 import { mockedEndpointSpanNPlusOneInsight } from "../../InsightsCatalog/InsightsPage/insightCards/EndpointSpanNPlusOneInsightInsightCard/mockData";
 

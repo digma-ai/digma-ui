@@ -1,5 +1,5 @@
-import { ComponentType } from "react";
-import { IconProps } from "../../../../../../../common/icons/types";
+import type { ComponentType } from "react";
+import type { IconProps } from "../../../../../../../common/icons/types";
 
 export interface IconButtonProps {
   icon: {

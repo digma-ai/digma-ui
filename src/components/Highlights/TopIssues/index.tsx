@@ -5,7 +5,7 @@ import { usePagination } from "../../../hooks/usePagination";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { InsightType } from "../../Insights/types";
 import { actions as mainActions } from "../../Main/actions";
-import { GetHighlightsTopIssuesDataPayload } from "../../Main/types";
+import type { GetHighlightsTopIssuesDataPayload } from "../../Main/types";
 import { CheckmarkCircleIcon } from "../../common/icons/16px/CheckmarkCircleIcon";
 import { RefreshIcon } from "../../common/icons/16px/RefreshIcon";
 import { EmptyStateCard } from "../EmptyStateCard";
@@ -37,7 +37,7 @@ import {
   isSpanQueryOptimizationHighlight,
   isSpanScalingHighlight
 } from "./typeGuards";
-import { GenericMetrics, HighlightData, TopIssuesData } from "./types";
+import type { GenericMetrics, HighlightData, TopIssuesData } from "./types";
 
 const PAGE_SIZE = 2;
 

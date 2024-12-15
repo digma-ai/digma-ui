@@ -6,7 +6,7 @@ import { ChevronIcon } from "../../icons/12px/ChevronIcon";
 import { DoubleChevronIcon } from "../../icons/DoubleChevronIcon";
 import { Direction } from "../../icons/types";
 import * as s from "./styles";
-import { PaginationProps } from "./types";
+import type { PaginationProps } from "./types";
 
 export const Pagination = ({
   itemsCount,

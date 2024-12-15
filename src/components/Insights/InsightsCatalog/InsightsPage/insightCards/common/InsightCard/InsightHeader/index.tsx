@@ -6,16 +6,14 @@ import { Link } from "../../../../../../../common/v3/Link";
 import { NewTag } from "../../../../../../../common/v3/NewTag";
 import { Tooltip } from "../../../../../../../common/v3/Tooltip";
 import { isEndpointInsight, isSpanInsight } from "../../../../../../typeGuards";
-import {
-  GenericCodeObjectInsight,
-  InsightStatus
-} from "../../../../../../types";
+import type { GenericCodeObjectInsight } from "../../../../../../types";
+import { InsightStatus } from "../../../../../../types";
 import { InsightStatusBadge } from "../../InsightStatusBadge";
 import { AsyncTag } from "./AsyncTag";
 import { InsightIcon } from "./InsightIcon";
 import { InsightStatusTooltipContent } from "./InsightStatusTooltipContent";
 import * as s from "./styles";
-import { InsightHeaderProps } from "./types";
+import type { InsightHeaderProps } from "./types";
 
 const IS_NEW_TIME_LIMIT = 1000 * 60 * 10; // in milliseconds
 

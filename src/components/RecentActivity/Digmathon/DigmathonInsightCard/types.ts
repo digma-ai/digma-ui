@@ -1,4 +1,4 @@
-import { DigmathonInsightCardData } from "../../types";
+import type { DigmathonInsightCardData } from "../../types";
 
 export interface DigmathonInsightCardProps {
   number: number;

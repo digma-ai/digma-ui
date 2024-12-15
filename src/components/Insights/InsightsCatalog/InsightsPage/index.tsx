@@ -10,7 +10,7 @@ import { changeScope } from "../../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { useHistory } from "../../../Main/useHistory";
 import { TAB_IDS } from "../../../Navigation/Tabs/types";
-import { Scope } from "../../../common/App/types";
+import type { Scope } from "../../../common/App/types";
 import { EmptyState } from "../../../common/EmptyState";
 import { PulseIcon } from "../../../common/icons/32px/PulseIcon";
 import { CardsIcon } from "../../../common/icons/CardsIcon";
@@ -40,7 +40,7 @@ import {
   isSpanScalingBadlyInsight,
   isSpanUsagesInsight
 } from "../../typeGuards";
-import {
+import type {
   CodeObjectInsight,
   GenericCodeObjectInsight,
   InsightViewType,
@@ -64,9 +64,9 @@ import { SpanNexusInsightCard } from "./insightCards/SpanNexusInsightCard";
 import { SpanQueryOptimizationInsightCard } from "./insightCards/SpanQueryOptimizationInsightCard";
 import { SpanScalingInsightCard } from "./insightCards/SpanScalingInsightCard";
 import { SpanUsagesInsightCard } from "./insightCards/SpanUsagesInsightCard";
-import { InsightCardViewMode } from "./insightCards/common/InsightCard/types";
+import type { InsightCardViewMode } from "./insightCards/common/InsightCard/types";
 import * as s from "./styles";
-import {
+import type {
   InsightsPageProps,
   MarkInsightTypesAsViewedPayload,
   OpenHistogramPayload,

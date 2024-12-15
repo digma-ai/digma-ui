@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { CustomStylesProps } from "./types";
+import type { CustomStylesProps } from "./types";
 
 export const Outline = styled.div<CustomStylesProps>`
   display: flex;

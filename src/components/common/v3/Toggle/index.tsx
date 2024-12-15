@@ -1,5 +1,5 @@
 import * as s from "./styles";
-import { ToggleProps, ToggleValue } from "./types";
+import type { ToggleProps, ToggleValue } from "./types";
 
 export const Toggle = <T extends ToggleValue>({
   size = "large",

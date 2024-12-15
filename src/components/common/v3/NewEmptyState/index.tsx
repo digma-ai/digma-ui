@@ -1,5 +1,5 @@
 import * as s from "./styles";
-import { EmptyStateProps } from "./types";
+import type { EmptyStateProps } from "./types";
 
 export const NewEmptyState = ({
   icon: Icon,

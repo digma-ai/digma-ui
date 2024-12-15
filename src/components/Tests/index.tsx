@@ -1,4 +1,5 @@
-import { KeyboardEvent, useEffect, useMemo, useRef, useState } from "react";
+import type { KeyboardEvent } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { actions as globalActions } from "../../actions";
 import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
@@ -9,11 +10,11 @@ import { sendTrackingEvent } from "../../utils/actions/sendTrackingEvent";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 import { useHistory } from "../Main/useHistory";
 import { TAB_IDS } from "../Navigation/Tabs/types";
-import { MenuItem } from "../common/FilterMenu/types";
+import type { MenuItem } from "../common/FilterMenu/types";
 import { NewCircleLoader } from "../common/NewCircleLoader";
 import { Pagination } from "../common/Pagination";
 import { RegistrationDialog } from "../common/RegistrationDialog";
-import { RegistrationFormValues } from "../common/RegistrationDialog/types";
+import type { RegistrationFormValues } from "../common/RegistrationDialog/types";
 import { RefreshIcon } from "../common/icons/16px/RefreshIcon";
 import { NewButton } from "../common/v3/NewButton";
 import { NewEmptyState } from "../common/v3/NewEmptyState";
@@ -23,7 +24,7 @@ import { TestTicket } from "./TestTicket";
 import { actions } from "./actions";
 import * as s from "./styles";
 import { trackingEvents } from "./tracking";
-import {
+import type {
   GetSpanLatestDataPayload,
   RegisterPayload,
   SetSpanLatestDataPayload,

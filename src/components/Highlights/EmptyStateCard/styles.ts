@@ -4,7 +4,7 @@ import {
   subscriptRegularTypography
 } from "../../common/App/typographies";
 import { Card as CommonCard } from "../../common/v3/Card";
-import { CardProps, ContainerProps, IconContainerProps } from "./types";
+import type { CardProps, ContainerProps, IconContainerProps } from "./types";
 
 const MIN_HEIGHT = 140; // in pixels
 

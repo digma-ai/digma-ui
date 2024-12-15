@@ -1,7 +1,7 @@
 import { ThreeDotsVerticalIcon } from "../icons/ThreeDotsVerticalIcon";
 
 import * as s from "./styles";
-import { KebabMenuButtonProps } from "./types";
+import type { KebabMenuButtonProps } from "./types";
 
 export const KebabMenuButton = ({
   disabled,

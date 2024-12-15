@@ -1,4 +1,4 @@
-import { ExtendedLiveDataRecord } from "../types";
+import type { ExtendedLiveDataRecord } from "../types";
 
 export interface DotTooltipContentProps {
   data: ExtendedLiveDataRecord;

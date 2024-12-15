@@ -4,7 +4,7 @@ import { isString } from "../../../typeGuards/isString";
 import { changeScope } from "../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { trackingEvents as mainTrackingEvents } from "../../Main/tracking";
-import { CodeDetails, Scope } from "../../common/App/types";
+import type { CodeDetails, Scope } from "../../common/App/types";
 import { NewPopover } from "../../common/NewPopover";
 import { ChainIcon } from "../../common/icons/14px/ChainIcon";
 import { CrosshairIcon } from "../../common/icons/16px/CrosshairIcon";
@@ -13,15 +13,15 @@ import { MinimizeIcon } from "../../common/icons/16px/MinimizeIcon";
 import { EndpointIcon } from "../../common/icons/EndpointIcon";
 import { NewIconButton } from "../../common/v3/NewIconButton";
 import { Tooltip } from "../../common/v3/Tooltip";
-import { LinkedEndpoint } from "../SpanInfo/types";
+import type { LinkedEndpoint } from "../SpanInfo/types";
 import { actions } from "../actions";
 import { Popup } from "../common/Popup";
 import { trackingEvents } from "../tracking";
-import { CodeContext, GoToCodeLocationPayload } from "../types";
+import type { CodeContext, GoToCodeLocationPayload } from "../types";
 import { LinkedEndpointsMenu } from "./LinkedEndpointsMenu";
 import { TargetButtonMenu } from "./TargetButtonMenu";
 import * as s from "./styles";
-import { ScopeBarProps } from "./types";
+import type { ScopeBarProps } from "./types";
 
 const EXPANDED_SCOPE_DISPLAY_NAME_PLACEHOLDER = "Full scope text below";
 

@@ -3,7 +3,10 @@ import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { actions as mainActions } from "../../Main/actions";
-import { GetHighlightsPerformanceDataPayload, PerformanceData } from "./types";
+import type {
+  GetHighlightsPerformanceDataPayload,
+  PerformanceData
+} from "./types";
 
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 

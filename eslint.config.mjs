@@ -19,6 +19,9 @@ export default tseslint.config(
         tsconfigRootDir: import.meta.dirname,
         ecmaVersion: 2022
       }
+    },
+    rules: {
+      "@typescript-eslint/consistent-type-imports": "error"
     }
   },
   {

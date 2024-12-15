@@ -1,7 +1,7 @@
+import type { Placement } from "@floating-ui/react";
 import {
   FloatingArrow,
   FloatingPortal,
-  Placement,
   arrow,
   autoUpdate,
   flip,
@@ -15,12 +15,13 @@ import {
   useInteractions,
   useTransitionStyles
 } from "@floating-ui/react";
-import { CSSProperties, Children, cloneElement, useRef, useState } from "react";
+import type { CSSProperties } from "react";
+import { Children, cloneElement, useRef, useState } from "react";
 import { useTheme } from "styled-components";
 import { isBoolean } from "../../../../typeGuards/isBoolean";
 import { isString } from "../../../../typeGuards/isString";
 import * as s from "./styles";
-import { TooltipProps } from "./types";
+import type { TooltipProps } from "./types";
 
 // in pixels
 const ARROW_MARGIN = -4;

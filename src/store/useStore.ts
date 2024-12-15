@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { withSlices } from "zustand-slices";
-import { Scope } from "../components/common/App/types";
+import type { Scope } from "../components/common/App/types";
 import { assetsSlice } from "./assets/assetsSlice";
 import { configSlice } from "./config/configSlice";
 import { errorsSlice } from "./errors/errorsSlice";

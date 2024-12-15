@@ -1,9 +1,11 @@
 import { actions as globalActions } from "../../actions";
 import { actions as dashboardActions } from "../../components/Dashboard/actions";
-import { DigmaOutgoingMessageData } from "../types";
+import type { DigmaOutgoingMessageData } from "../types";
 import { getAboutInfo } from "./services/about";
-import { GetDashboardParams, getDashboard } from "./services/dashboard";
-import { GetEnvironmentParams, getEnvironment } from "./services/environments";
+import type { GetDashboardParams } from "./services/dashboard";
+import { getDashboard } from "./services/dashboard";
+import type { GetEnvironmentParams } from "./services/environments";
+import { getEnvironment } from "./services/environments";
 
 export const sendMessageToWebService = <T>(
   message: DigmaOutgoingMessageData<T>

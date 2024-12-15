@@ -1,5 +1,5 @@
-import { MemoExoticComponent } from "react";
-import { IconProps } from "../../common/icons/types";
+import type { MemoExoticComponent } from "react";
+import type { IconProps } from "../../common/icons/types";
 
 export interface EnvironmentMenuItem {
   label: string;

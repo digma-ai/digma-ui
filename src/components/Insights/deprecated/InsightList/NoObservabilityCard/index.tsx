@@ -3,7 +3,7 @@ import { Card } from "../../../../common/Card";
 import { OpenTelemetryLogoCrossedSmallIcon } from "../../../../common/icons/OpenTelemetryLogoCrossedSmallIcon";
 import { Description, Link } from "../../../styles";
 import * as s from "./styles";
-import { NoObservabilityCardProps } from "./types";
+import type { NoObservabilityCardProps } from "./types";
 
 /**
  * @deprecated

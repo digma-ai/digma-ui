@@ -1,8 +1,8 @@
 import { CheckmarkIcon } from "../../../../common/icons/12px/CheckmarkIcon";
 import { ErrorIcon } from "../../../../common/icons/16px/ErrorIcon";
-import { StepStatus } from "../../types";
+import type { StepStatus } from "../../types";
 import * as s from "./styles";
-import { TabProps } from "./types";
+import type { TabProps } from "./types";
 
 const getState = (index: number, state: StepStatus) => {
   switch (state) {

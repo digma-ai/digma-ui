@@ -1,7 +1,7 @@
 import { CrossIcon } from "../icons/12px/CrossIcon";
 import { Button } from "../v3/Button";
 import * as s from "./styles";
-import { DeleteEnvironmentConfirmationProps } from "./types";
+import type { DeleteEnvironmentConfirmationProps } from "./types";
 
 export const CancelConfirmation = ({
   onCancel,

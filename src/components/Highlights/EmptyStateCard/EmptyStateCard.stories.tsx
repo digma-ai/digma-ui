@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react";
 
 import { EmptyStateCard } from ".";
 import { CrossCircleIcon } from "../../common/icons/16px/CrossCircleIcon";
