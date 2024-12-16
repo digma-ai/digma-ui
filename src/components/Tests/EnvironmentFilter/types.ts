@@ -1,4 +1,4 @@
-import { MenuItem } from "../../common/FilterMenu/types";
+import type { MenuItem } from "../../common/FilterMenu/types";
 
 export interface EnvironmentFilterProps {
   items: MenuItem[];

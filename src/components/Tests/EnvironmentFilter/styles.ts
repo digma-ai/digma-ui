@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { MenuButtonProps } from "./types";
+import type { MenuButtonProps } from "./types";
 
 export const MenuButton = styled.button<MenuButtonProps>`
   border: 1px solid

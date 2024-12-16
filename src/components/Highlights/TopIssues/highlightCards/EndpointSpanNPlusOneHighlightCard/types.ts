@@ -1,4 +1,4 @@
-import { EndpointSpanNPlusOneMetrics, HighlightData } from "../../types";
+import type { EndpointSpanNPlusOneMetrics, HighlightData } from "../../types";
 
 export interface EndpointSpanNPlusOneHighlightCardProps {
   data: HighlightData<EndpointSpanNPlusOneMetrics>;

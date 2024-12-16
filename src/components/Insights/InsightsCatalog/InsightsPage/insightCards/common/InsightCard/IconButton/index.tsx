@@ -1,6 +1,7 @@
-import { ForwardedRef, forwardRef } from "react";
+import type { ForwardedRef } from "react";
+import { forwardRef } from "react";
 import * as s from "./styles";
-import { IconButtonProps } from "./types";
+import type { IconButtonProps } from "./types";
 
 export const IconButtonComponent = (
   { isDisabled, onClick, className, icon }: IconButtonProps,

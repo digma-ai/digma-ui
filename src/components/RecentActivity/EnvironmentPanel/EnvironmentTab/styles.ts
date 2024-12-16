@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 import { subscriptRegularTypography } from "../../../common/App/typographies";
 import { KebabMenuButton } from "../../../common/KebabMenuButton";
-import {
+import type {
   ContainerProps,
   LabelProps,
   StyledKebabMenuButtonProps

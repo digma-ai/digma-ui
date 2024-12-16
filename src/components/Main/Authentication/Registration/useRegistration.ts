@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { actions } from "../../../../actions";
 import { dispatcher } from "../../../../dispatcher";
 import { useLoading } from "../../../Insights/insightTickets/common";
-import { ErrorData, RegisterPayload, RegisterResult } from "../../types";
+import type { ErrorData, RegisterPayload, RegisterResult } from "../../types";
 
 export const useRegistration = () => {
   const [isLoading, setIsLoading] = useLoading(false);

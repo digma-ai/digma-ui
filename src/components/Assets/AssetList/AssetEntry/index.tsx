@@ -14,7 +14,7 @@ import { GlobeIcon } from "../../../common/icons/GlobeIcon";
 import { getAssetTypeInfo } from "../../utils";
 import { SORTING_CRITERION } from "../types";
 import * as s from "./styles";
-import { AssetEntryProps } from "./types";
+import type { AssetEntryProps } from "./types";
 
 const IS_NEW_TIME_LIMIT = 1000 * 60 * 10; // in milliseconds
 

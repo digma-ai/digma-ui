@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import { ReportCard } from "../../ReportCard";
 import { CardOption } from "../CardOption";
 import * as s from "./styles";
-import { DiscoveredCardProps } from "./types";
+import type { DiscoveredCardProps } from "./types";
 
 export const DiscoveredCard = ({ options, title }: DiscoveredCardProps) => {
   const [selected] = useState<string>();

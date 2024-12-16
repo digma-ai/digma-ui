@@ -1,5 +1,5 @@
 import { InsightType } from "../../Insights/types";
-import { DigmathonInsightCardData } from "../types";
+import type { DigmathonInsightCardData } from "../types";
 
 export const getDigmathonInsightCardData = (
   type: InsightType

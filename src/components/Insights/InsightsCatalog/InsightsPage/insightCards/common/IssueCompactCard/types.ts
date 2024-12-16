@@ -1,5 +1,5 @@
-import { ReactNode } from "react";
-import { GenericCodeObjectInsight } from "../../../../../types";
+import type { ReactNode } from "react";
+import type { GenericCodeObjectInsight } from "../../../../../types";
 
 export interface IssueCompactCardProps {
   insight: GenericCodeObjectInsight;

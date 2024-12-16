@@ -1,10 +1,11 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import type { ChangeEvent } from "react";
+import { useEffect, useState } from "react";
 import { isNull } from "../../../../typeGuards/isNull";
 import { CheckmarkCircleIcon } from "../../../common/icons/12px/CheckmarkCircleIcon";
 import { ErrorIcon } from "../../../common/icons/12px/ErrorIcon";
 import { Button } from "../../../common/v3/Button";
 import * as s from "./styles";
-import { EnvironmentNameStepProps } from "./types";
+import type { EnvironmentNameStepProps } from "./types";
 
 const ENVIRONMENT_NAME_REGEX = /^[A-Z0-9_.-]{1,50}$/;
 

@@ -3,7 +3,7 @@ import { Button } from "../../../../../common/Button";
 import { Description, Link } from "../../../../styles";
 import { InsightCard } from "../../InsightCard";
 import * as s from "./styles";
-import { ErrorsInsightProps } from "./types";
+import type { ErrorsInsightProps } from "./types";
 
 /**
  * @deprecated

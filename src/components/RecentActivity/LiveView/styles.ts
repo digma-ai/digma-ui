@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { CopyButton } from "../../common/v3/CopyButton";
-import {
+import type {
   AreaLegendIllustrationProps,
   AxisChartContainerProps,
   ChartsContainerProps,

@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-import { DefaultTheme, useTheme } from "styled-components";
+import type { DefaultTheme } from "styled-components";
+import { useTheme } from "styled-components";
 import { Menu } from "../Menu";
 import { Popover } from "../Popover";
 import { PopoverContent } from "../Popover/PopoverContent";
@@ -8,7 +9,8 @@ import { ChevronIcon } from "../icons/ChevronIcon";
 import { SortIcon } from "../icons/SortIcon";
 import { Direction } from "../icons/types";
 import * as s from "./styles";
-import { SORTING_ORDER, Sorting, SortingSelectorProps } from "./types";
+import type { Sorting, SortingSelectorProps } from "./types";
+import { SORTING_ORDER } from "./types";
 
 const getSortingMenuChevronColor = (theme: DefaultTheme) => {
   switch (theme.mode) {

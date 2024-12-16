@@ -1,8 +1,8 @@
 // Source: https://floating-ui.com/docs/popover#reusable-popover-component
 
-import { ReactNode } from "react";
+import type { ReactNode } from "react";
 import { PopoverContext, usePopover } from "./hooks";
-import { PopoverProps } from "./types";
+import type { PopoverProps } from "./types";
 
 /** @deprecated */
 export function Popover({

@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react";
 import { SpanDurationsInsightCard } from ".";
 import { mockedSpanDurationsInsight } from "./mockData";
 

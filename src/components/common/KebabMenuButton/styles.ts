@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { KebabMenuButtonProps } from "./types";
+import type { KebabMenuButtonProps } from "./types";
 
 export const Container = styled.div<KebabMenuButtonProps>`
   width: 14px;

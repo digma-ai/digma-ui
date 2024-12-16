@@ -1,7 +1,7 @@
 import { Text } from "recharts";
 import { useTheme } from "styled-components";
 import { DIVIDER, LABEL_HEIGHT } from "../constants";
-import { XAxisTickProps } from "./types";
+import type { XAxisTickProps } from "./types";
 
 export const XAxisTick = (props: XAxisTickProps) => {
   const theme = useTheme();

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { getFeatureFlagValue } from "../../../../featureFlags";
 import { usePrevious } from "../../../../hooks/usePrevious";
 import { useConfigSelector } from "../../../../store/config/useConfigSelector";
-import {
+import type {
   ErrorCriticality,
   ErrorHandlingType
 } from "../../../../store/errors/errorsSlice";
@@ -16,8 +16,8 @@ import { WarningTriangleIcon } from "../../../common/icons/12px/WarningTriangleI
 import { WrenchIcon } from "../../../common/icons/12px/WrenchIcon";
 import { CrossCircleIcon } from "../../../common/icons/CrossCircleIcon";
 import { EndpointIcon } from "../../../common/icons/EndpointIcon";
-import { IconProps } from "../../../common/icons/types";
-import { SelectItem } from "../../../common/v3/Select/types";
+import type { IconProps } from "../../../common/icons/types";
+import type { SelectItem } from "../../../common/v3/Select/types";
 import { trackingEvents } from "../../tracking";
 import { getFiltersOptions } from "./getFiltersOptions";
 import * as s from "./styles";

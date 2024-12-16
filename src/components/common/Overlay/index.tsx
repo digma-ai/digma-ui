@@ -1,6 +1,7 @@
-import { ForwardedRef, KeyboardEvent, forwardRef } from "react";
+import type { ForwardedRef, KeyboardEvent } from "react";
+import { forwardRef } from "react";
 import * as s from "./styles";
-import { OverlayProps } from "./types";
+import type { OverlayProps } from "./types";
 
 const OverlayComponent = (
   { children, tabIndex, onClose, className }: OverlayProps,

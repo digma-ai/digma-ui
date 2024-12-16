@@ -1,5 +1,5 @@
-import { ButtonHTMLAttributes, ComponentType } from "react";
-import { IconProps } from "../../common/icons/types";
+import type { ButtonHTMLAttributes, ComponentType } from "react";
+import type { IconProps } from "../../common/icons/types";
 
 export interface ButtonThemeColors {
   background?: {

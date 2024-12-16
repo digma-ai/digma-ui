@@ -1,10 +1,10 @@
-import { EndpointSlowdownSource } from "../../../../types";
+import type { EndpointSlowdownSource } from "../../../../types";
 import { DurationChange } from "../common/DurationChange";
 import { InsightCard } from "../common/InsightCard";
 import { ListItem } from "../common/InsightCard/ListItem";
 import { ContentContainer, Description } from "../styles";
 import * as s from "./styles";
-import { EndpointSlowdownSourceInsightCardProps } from "./types";
+import type { EndpointSlowdownSourceInsightCardProps } from "./types";
 
 export const EndpointSlowdownSourceInsightCard = ({
   insight,

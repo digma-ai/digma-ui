@@ -1,13 +1,13 @@
 import { formatDuration, intervalToDuration } from "date-fns";
-import { Duration } from "../../../../../../../globals";
+import type { Duration } from "../../../../../../../globals";
 import { formatTimeDistance } from "../../../../../../../utils/formatTimeDistance";
 import { roundTo } from "../../../../../../../utils/roundTo";
 import { ArrowIcon } from "../../../../../../common/icons/ArrowIcon";
 import { Direction } from "../../../../../../common/icons/types";
 import { Tag } from "../../../../../../common/v3/Tag";
-import { TagType } from "../../../../../../common/v3/Tag/types";
+import type { TagType } from "../../../../../../common/v3/Tag/types";
 import * as s from "./styles";
-import { DurationChangeProps } from "./types";
+import type { DurationChangeProps } from "./types";
 
 const DURATION_RATIO_MIN_LIMIT = 0.1;
 const DURATION_DIFF_MIN_LIMIT = 10 * 1000; // in nanoseconds

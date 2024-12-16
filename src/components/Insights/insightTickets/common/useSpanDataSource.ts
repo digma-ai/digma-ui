@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { SpanInfo } from "../../../../types";
-import { GenericCodeObjectInsight } from "../../types";
+import type { SpanInfo } from "../../../../types";
+import type { GenericCodeObjectInsight } from "../../types";
 import { getInsightCommits } from "../getInsightCommits";
 import { useCodeLocations } from "./useCodeLocations";
 import { useCommitInfos } from "./useCommitInfos";

@@ -1,13 +1,11 @@
 import { useMemo } from "react";
 import { getFeatureFlagValue } from "../../../featureFlags";
-import {
-  DataFetcherConfiguration,
-  useFetchData
-} from "../../../hooks/useFetchData";
+import type { DataFetcherConfiguration } from "../../../hooks/useFetchData";
+import { useFetchData } from "../../../hooks/useFetchData";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { FeatureFlag } from "../../../types";
 import { actions } from "../actions";
-import {
+import type {
   GetMetricsReportDataPayloadV1,
   GetMetricsReportDataPayloadV2,
   SetMetricsReportDataPayload,

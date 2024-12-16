@@ -1,4 +1,4 @@
-import { MemoExoticComponent } from "react";
+import type { MemoExoticComponent } from "react";
 import * as descriptionProvider from "../components/common/InsightsDescription";
 import { AlarmClockIcon } from "../components/common/icons/AlarmClockIcon";
 import { BottleneckIcon } from "../components/common/icons/BottleneckIcon";
@@ -13,7 +13,7 @@ import { SineIcon } from "../components/common/icons/SineIcon";
 import { SnailIcon } from "../components/common/icons/SnailIcon";
 import { SpotIcon } from "../components/common/icons/SpotIcon";
 import { WarningCircleIcon } from "../components/common/icons/WarningCircleIcon";
-import { IconProps } from "../components/common/icons/types";
+import type { IconProps } from "../components/common/icons/types";
 import {
   BOTTLENECK_ISSUE_DOCUMENTATION_URL,
   CHATTY_API_ISSUE_DOCUMENTATION_URL,

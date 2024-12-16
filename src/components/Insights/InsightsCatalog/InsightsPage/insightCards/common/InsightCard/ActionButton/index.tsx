@@ -2,7 +2,7 @@ import { isUndefined } from "../../../../../../../../typeGuards/isUndefined";
 import { NewButton } from "../../../../../../../common/v3/NewButton";
 import { NewIconButton } from "../../../../../../../common/v3/NewIconButton";
 import { Tooltip } from "../../../../../../../common/v3/Tooltip";
-import { ActionButtonProps } from "./types";
+import type { ActionButtonProps } from "./types";
 
 export const ActionButton = ({
   type,

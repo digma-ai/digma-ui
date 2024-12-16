@@ -4,7 +4,7 @@ import { CrossIcon } from "../../../../../../../common/icons/12px/CrossIcon";
 import { Tooltip } from "../../../../../../../common/v3/Tooltip";
 import { trackingEvents } from "../../../../../../tracking";
 import * as s from "./styles";
-import { InsightsInfoProps } from "./types";
+import type { InsightsInfoProps } from "./types";
 
 export const InsightsInfo = ({
   isOpen,

@@ -16,7 +16,7 @@ import { trackingEvents } from "../../tracking";
 import { FlowStack } from "./FlowStack";
 import { isServiceInfoWithName } from "./FlowStack/SpanFrameGroup/typeGuards";
 import * as s from "./styles";
-import { ErrorDetailsCardContentProps } from "./types";
+import type { ErrorDetailsCardContentProps } from "./types";
 
 export const ErrorDetailsCardContent = ({
   id,

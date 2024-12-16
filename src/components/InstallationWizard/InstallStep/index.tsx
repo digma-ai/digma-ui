@@ -1,14 +1,15 @@
 import { useContext, useEffect, useState } from "react";
-import { DefaultTheme, useTheme } from "styled-components";
+import type { DefaultTheme } from "styled-components";
+import { useTheme } from "styled-components";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
 import { sendTrackingEvent } from "../../../utils/actions/sendTrackingEvent";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { isDigmaEngineRunning } from "../../../utils/isDigmaEngineRunning";
 import { ConfigContext } from "../../common/App/ConfigContext";
-import { ConfigContextData } from "../../common/App/types";
+import type { ConfigContextData } from "../../common/App/types";
 import { CircleLoader } from "../../common/CircleLoader";
-import { CircleLoaderColors } from "../../common/CircleLoader/types";
+import type { CircleLoaderColors } from "../../common/CircleLoader/types";
 import { CodeSnippet } from "../../common/CodeSnippet";
 import { Link } from "../../common/Link";
 import { ChatFillIcon } from "../../common/icons/ChatIFillIcon";
@@ -19,10 +20,11 @@ import { SlackLogoIcon } from "../../common/icons/SlackLogoIcon";
 import { Tabs } from "../Tabs";
 import { MainButton, SectionDescription } from "../styles";
 import { trackingEvents } from "../tracking";
-import { AsyncActionResultData } from "../types";
+import type { AsyncActionResultData } from "../types";
 import { EngineManager } from "./EngineManager";
 import * as s from "./styles";
-import { InstallStepProps, Operation } from "./types";
+import type { InstallStepProps } from "./types";
+import { Operation } from "./types";
 import { useEngine } from "./useEngine";
 
 const getCircleLoaderColors = (theme: DefaultTheme): CircleLoaderColors => {

@@ -1,7 +1,7 @@
-import { MemoExoticComponent } from "react";
-import { ThemeableIconProps } from "../../../common/icons/types";
-import { EnvironmentStatus } from "./EnvironmentTypeCard/types";
-import { InsightCardType } from "./InsightCard/types";
+import type { MemoExoticComponent } from "react";
+import type { ThemeableIconProps } from "../../../common/icons/types";
+import type { EnvironmentStatus } from "./EnvironmentTypeCard/types";
+import type { InsightCardType } from "./InsightCard/types";
 
 export interface EnvironmentTypeData {
   id: string;

@@ -1,19 +1,17 @@
 import { useMemo, useState } from "react";
 import { actions as globalActions } from "../../../../actions";
-import {
-  DataFetcherConfiguration,
-  useFetchData
-} from "../../../../hooks/useFetchData";
+import type { DataFetcherConfiguration } from "../../../../hooks/useFetchData";
+import { useFetchData } from "../../../../hooks/useFetchData";
 import { useConfigSelector } from "../../../../store/config/useConfigSelector";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { GlobeIcon } from "../../../common/icons/12px/GlobeIcon";
 import { WrenchIcon } from "../../../common/icons/12px/WrenchIcon";
 import { actions } from "../../actions";
 import { trackingEvents } from "../tracking";
-import { GetServicesPayload } from "../types";
+import type { GetServicesPayload } from "../types";
 import { Ribbon } from "./Ribbon";
 import * as s from "./styles";
-import { ReportHeaderProps } from "./types";
+import type { ReportHeaderProps } from "./types";
 
 const baseFetchConfig = {
   refreshWithInterval: false,

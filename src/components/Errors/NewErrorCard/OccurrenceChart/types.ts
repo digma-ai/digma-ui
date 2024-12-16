@@ -1,4 +1,4 @@
-import { ChartOffset } from "recharts/types/util/types";
+import type { ChartOffset } from "recharts/types/util/types";
 
 export interface OccurrenceChartProps {
   errorId: string;

@@ -1,6 +1,6 @@
 import useDimensions from "react-cool-dimensions";
 import * as s from "./styles";
-import { EmptyStateCardProps } from "./types";
+import type { EmptyStateCardProps } from "./types";
 
 export const EmptyStateCard = ({
   type = "default",

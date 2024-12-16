@@ -17,9 +17,9 @@ import { GlobeIcon } from "../../common/icons/GlobeIcon";
 import { PlayIcon } from "../../common/icons/PlayIcon";
 import { actions } from "../actions";
 import { trackingEvents } from "../tracking";
-import { Test } from "../types";
+import type { Test } from "../types";
 import * as s from "./styles";
-import { GoToTracePayload, RunTestPayload, TestCardProps } from "./types";
+import type { GoToTracePayload, RunTestPayload, TestCardProps } from "./types";
 
 const renderTestResultTag = (test: Test) => {
   switch (test.result) {

@@ -1,7 +1,7 @@
 import { createContext } from "react";
 import { isEnvironment } from "../../../typeGuards/isEnvironment";
 import { isString } from "../../../typeGuards/isString";
-import { ConfigContextData } from "./types";
+import type { ConfigContextData } from "./types";
 
 export const initialState: ConfigContextData = {
   digmaApiUrl: isString(window.digmaApiUrl) ? window.digmaApiUrl : "",

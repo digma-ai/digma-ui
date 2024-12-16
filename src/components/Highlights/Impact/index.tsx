@@ -1,4 +1,5 @@
-import { Row, createColumnHelper } from "@tanstack/react-table";
+import type { Row } from "@tanstack/react-table";
+import { createColumnHelper } from "@tanstack/react-table";
 import { useEffect } from "react";
 import { PERFORMANCE_IMPACT_DOCUMENTATION_URL } from "../../../constants";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
@@ -19,7 +20,7 @@ import { TableText } from "../common/TableText";
 import { handleEnvironmentTableRowClick } from "../handleEnvironmentTableRowClick";
 import { trackingEventNames, trackingEvents } from "../tracking";
 import * as s from "./styles";
-import { EnvironmentImpactData } from "./types";
+import type { EnvironmentImpactData } from "./types";
 import { useImpactData } from "./useImpactData";
 
 const demoData: EnvironmentImpactData[] = [

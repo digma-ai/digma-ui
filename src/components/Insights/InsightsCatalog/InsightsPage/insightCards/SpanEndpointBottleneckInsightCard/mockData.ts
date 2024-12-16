@@ -1,9 +1,5 @@
-import {
-  InsightCategory,
-  InsightScope,
-  InsightType,
-  SpanEndpointBottleneckInsight
-} from "../../../../types";
+import type { SpanEndpointBottleneckInsight } from "../../../../types";
+import { InsightCategory, InsightScope, InsightType } from "../../../../types";
 
 export const mockedSpanEndpointBottleneckInsight: SpanEndpointBottleneckInsight =
   {

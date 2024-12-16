@@ -1,4 +1,4 @@
-import { GetEnvironmentResponse } from "../../api/web/services/environments";
+import type { GetEnvironmentResponse } from "../../api/web/services/environments";
 
 export interface EnvironmentInfoData {
   data: GetEnvironmentResponse | null;

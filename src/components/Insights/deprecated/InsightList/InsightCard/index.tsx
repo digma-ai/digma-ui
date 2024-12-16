@@ -15,7 +15,7 @@ import { PopoverContent } from "../../../../common/Popover/PopoverContent";
 import { PopoverTrigger } from "../../../../common/Popover/PopoverTrigger";
 import { Tag } from "../../../../common/Tag";
 import { Toggle } from "../../../../common/Toggle";
-import { ToggleValue } from "../../../../common/Toggle/types";
+import type { ToggleValue } from "../../../../common/Toggle/types";
 import { Tooltip } from "../../../../common/Tooltip";
 import { OpenTelemetryLogoIcon } from "../../../../common/icons/12px/OpenTelemetryLogoIcon";
 import { ChevronIcon } from "../../../../common/icons/ChevronIcon";
@@ -23,7 +23,7 @@ import { InfoCircleIcon } from "../../../../common/icons/InfoCircleIcon";
 import { Direction } from "../../../../common/icons/types";
 import { Description, Link } from "../../../styles";
 import * as s from "./styles";
-import { InsightCardProps } from "./types";
+import type { InsightCardProps } from "./types";
 
 const RECALCULATE = "recalculate";
 const DEFAULT_PERCENTILE = 0.5;

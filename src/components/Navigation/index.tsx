@@ -4,12 +4,13 @@ import { dispatcher } from "../../dispatcher";
 import { usePrevious } from "../../hooks/usePrevious";
 // import { isNull } from "../../typeGuards/isNull";
 // import { isUndefined } from "../../typeGuards/isUndefined";
-import { FeatureFlag, GetInsightStatsPayload } from "../../types";
+import type { GetInsightStatsPayload } from "../../types";
+import { FeatureFlag } from "../../types";
 import { changeScope } from "../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 // import { AsyncActionResultData } from "../InstallationWizard/types";
 // import { SCOPE_CHANGE_EVENTS } from "../Main/types";
-import { Environment } from "../common/App/types";
+import type { Environment } from "../common/App/types";
 import { NewPopover } from "../common/NewPopover";
 import { ThreeDotsVerticalIcon } from "../common/icons/ThreeDotsVerticalIcon";
 // import { Tooltip } from "../common/v3/Tooltip";
@@ -25,7 +26,7 @@ import { HistoryNavigationPanel } from "./HistoryNavigationPanel";
 import { KebabMenu } from "./KebabMenu";
 import { ScopeBar } from "./ScopeBar";
 import { SpanInfo } from "./SpanInfo";
-import {
+import type {
   GetHighlightsSpanInfoDataPayload,
   SpanInfoData
 } from "./SpanInfo/types";
@@ -34,7 +35,7 @@ import { actions } from "./actions";
 import { IconButton } from "./common/IconButton";
 import * as s from "./styles";
 import { trackingEvents } from "./tracking";
-import {
+import type {
   // AddAnnotationPayload,
   // AutoFixMissingDependencyPayload,
   CodeContext

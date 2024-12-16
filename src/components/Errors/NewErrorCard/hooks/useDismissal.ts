@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAction } from "../../../../hooks/useAction";
 import { actions } from "../../actions";
-import { DismissPayload, UndismissPayload } from "./types";
+import type { DismissPayload, UndismissPayload } from "./types";
 
 export const useDismissal = (id: string) => {
   const [data, setData] = useState<{

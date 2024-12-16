@@ -1,5 +1,5 @@
 import { css } from "styled-components";
-import { Typographies } from "../../../styled";
+import type { Typographies } from "../../../styled";
 
 export const typographies: Typographies = {
   code: {

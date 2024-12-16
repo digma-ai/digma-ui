@@ -5,7 +5,7 @@ import { ChevronIcon } from "../../common/icons/ChevronIcon";
 import { GlobeIcon } from "../../common/icons/GlobeIcon";
 import { Direction } from "../../common/icons/types";
 import * as s from "./styles";
-import { EnvironmentFilterProps } from "./types";
+import type { EnvironmentFilterProps } from "./types";
 
 export const EnvironmentFilter = ({
   onMenuItemClick,

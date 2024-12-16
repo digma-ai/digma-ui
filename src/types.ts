@@ -1,8 +1,8 @@
-import {
+import type {
   GetIssuesDataListQuery,
   GetIssuesFiltersQuery
 } from "./components/Insights/Issues/types";
-import { Duration } from "./globals";
+import type { Duration } from "./globals";
 
 export enum FeatureFlag {
   IS_HIGHLIGHTS_IMPACT_ENABLED,

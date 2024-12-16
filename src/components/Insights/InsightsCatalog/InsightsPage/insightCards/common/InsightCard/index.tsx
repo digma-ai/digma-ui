@@ -21,7 +21,7 @@ import { isEndpointInsight, isSpanInsight } from "../../../../../typeGuards";
 import { InsightStatus } from "../../../../../types";
 import { IssueCompactCard } from "../IssueCompactCard";
 import { ActionButton } from "./ActionButton";
-import { ActionButtonType } from "./ActionButton/types";
+import type { ActionButtonType } from "./ActionButton/types";
 import { InsightHeader } from "./InsightHeader";
 import { InsightsInfo } from "./InsightsInfo";
 import { ProductionAffectionBar } from "./ProductionAffectionBar";
@@ -29,7 +29,7 @@ import { RecalculateBar } from "./RecalculateBar";
 import { useDismissal } from "./hooks/useDismissal";
 import { useMarkingAsRead } from "./hooks/useMarkingAsRead";
 import * as s from "./styles";
-import { Action, InsightCardProps, RecalculateResponse } from "./types";
+import type { Action, InsightCardProps, RecalculateResponse } from "./types";
 
 const HIGH_CRITICALITY_THRESHOLD = 0.8;
 

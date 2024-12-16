@@ -1,16 +1,16 @@
 import "styled-components";
-import { TabThemeColors } from "./components/RecentActivity/EnvironmentPanel/EnvironmentTab/types";
-import { ToggleThemeColors } from "./components/RecentActivity/Toggle/types";
-import { RecentActivityThemeColors } from "./components/RecentActivity/types";
-import { IconTagThemeColors } from "./components/common/IconTag/types";
-import { AttachmentTagThemeColors } from "./components/common/JiraTicket/AttachmentTag/types";
-import { FieldThemeColors } from "./components/common/JiraTicket/Field/types";
-import { JiraTicketThemeColors } from "./components/common/JiraTicket/types";
-import { ButtonThemeColors } from "./components/common/NewButton/types";
-import { SelectThemeColors } from "./components/common/Select/types";
-import { TagThemeColors } from "./components/common/Tag/types";
-import { TooltipThemeColors } from "./components/common/Tooltip/types";
-import { Theme } from "./globals";
+import type { TabThemeColors } from "./components/RecentActivity/EnvironmentPanel/EnvironmentTab/types";
+import type { ToggleThemeColors } from "./components/RecentActivity/Toggle/types";
+import type { RecentActivityThemeColors } from "./components/RecentActivity/types";
+import type { IconTagThemeColors } from "./components/common/IconTag/types";
+import type { AttachmentTagThemeColors } from "./components/common/JiraTicket/AttachmentTag/types";
+import type { FieldThemeColors } from "./components/common/JiraTicket/Field/types";
+import type { JiraTicketThemeColors } from "./components/common/JiraTicket/types";
+import type { ButtonThemeColors } from "./components/common/NewButton/types";
+import type { SelectThemeColors } from "./components/common/Select/types";
+import type { TagThemeColors } from "./components/common/Tag/types";
+import type { TooltipThemeColors } from "./components/common/Tooltip/types";
+import type { Theme } from "./globals";
 
 export interface ThemeColors {
   icon: {

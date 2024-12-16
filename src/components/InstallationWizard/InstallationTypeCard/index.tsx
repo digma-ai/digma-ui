@@ -1,5 +1,5 @@
 import * as s from "./styles";
-import { InstallationTypeCardProps } from "./types";
+import type { InstallationTypeCardProps } from "./types";
 
 export const InstallationTypeCard = ({
   disabled,

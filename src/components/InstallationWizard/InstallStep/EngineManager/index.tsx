@@ -10,10 +10,10 @@ import { DigmaLogoIcon } from "../../../common/icons/DigmaLogoIcon";
 import { PlayCircleIcon } from "../../../common/icons/PlayCircleIcon";
 import { StopCircleIcon } from "../../../common/icons/StopCircleIcon";
 import { trackingEvents } from "../../tracking";
-import { AsyncActionStatus } from "../../types";
+import type { AsyncActionStatus } from "../../types";
 import { Operation } from "../types";
 import * as s from "./styles";
-import { EngineManagerProps, OperationInfo } from "./types";
+import type { EngineManagerProps, OperationInfo } from "./types";
 
 const getLoaderStatus = (
   isEngineInstalled: boolean,

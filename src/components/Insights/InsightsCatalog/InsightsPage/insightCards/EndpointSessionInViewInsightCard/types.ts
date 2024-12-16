@@ -1,9 +1,9 @@
-import {
+import type {
   EndpointSessionInViewInsight,
   InsightType,
   Trace
 } from "../../../../types";
-import { InsightCardCommonProps } from "../common/InsightCard/types";
+import type { InsightCardCommonProps } from "../common/InsightCard/types";
 
 export interface EndpointSessionInViewInsightCardProps
   extends InsightCardCommonProps {

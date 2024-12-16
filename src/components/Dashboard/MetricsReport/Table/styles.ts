@@ -3,7 +3,7 @@ import {
   subheading1BoldTypography,
   subheading1RegularTypography
 } from "../../../common/App/typographies";
-import { TableBodyCellProps, TableCellContentProps } from "./types";
+import type { TableBodyCellProps, TableCellContentProps } from "./types";
 
 export const Table = styled.table`
   width: 100%;

@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { Button as CommonButton } from "../../common/Button";
 import { Link as CommonLink } from "../../common/Link";
 import { TextField as CommonTextField } from "../../common/TextField";
-import { NotificationMessageProps } from "./types";
+import type { NotificationMessageProps } from "./types";
 
 export const Container = styled.div`
   display: flex;

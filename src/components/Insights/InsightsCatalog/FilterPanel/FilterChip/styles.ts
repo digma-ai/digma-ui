@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 import { footnoteRegularTypography } from "../../../../common/App/typographies";
 import { Chip } from "../../../../common/Chip";
 import { activeStyles } from "../../../../common/Chip/styles";
-import { FilterChipComponentProps } from "./types";
+import type { FilterChipComponentProps } from "./types";
 
 export const StatCounter = styled.div`
   ${footnoteRegularTypography}

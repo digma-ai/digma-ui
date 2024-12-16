@@ -1,7 +1,7 @@
 import { Link } from "../../v3/Link";
 import { Tooltip } from "../../v3/Tooltip";
 import * as s from "./styles";
-import { EndpointOptionProps } from "./types";
+import type { EndpointOptionProps } from "./types";
 
 export const EndpointOption = ({
   serviceName,

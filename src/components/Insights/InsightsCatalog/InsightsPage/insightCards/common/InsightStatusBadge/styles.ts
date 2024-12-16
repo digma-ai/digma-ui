@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 import { footnoteRegularTypography } from "../../../../../../common/App/typographies";
 import { getInsightStatusInfo } from "./getInsightStatusInfo";
-import { IndicatorProps } from "./types";
+import type { IndicatorProps } from "./types";
 
 export const Container = styled.div`
   ${footnoteRegularTypography}

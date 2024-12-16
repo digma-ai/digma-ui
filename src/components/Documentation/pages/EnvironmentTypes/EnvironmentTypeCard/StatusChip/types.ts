@@ -1,4 +1,4 @@
-import { EnvironmentStatus } from "../types";
+import type { EnvironmentStatus } from "../types";
 
 export interface StatusChipProps {
   status: EnvironmentStatus;

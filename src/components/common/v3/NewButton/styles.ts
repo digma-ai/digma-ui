@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { subscriptRegularTypography } from "../../App/typographies";
-import { ButtonElementProps } from "./types";
+import type { ButtonElementProps } from "./types";
 
 const BaseButton = styled.button<ButtonElementProps>`
   ${subscriptRegularTypography}

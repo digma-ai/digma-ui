@@ -1,7 +1,7 @@
-import { MemoExoticComponent } from "react";
-import { PercentileKey } from "../../../types";
-import { IconProps } from "../../common/icons/types";
-import { WidgetType } from "../widgets/types";
+import type { MemoExoticComponent } from "react";
+import type { PercentileKey } from "../../../types";
+import type { IconProps } from "../../common/icons/types";
+import type { WidgetType } from "../widgets/types";
 
 export interface ListWidgetProps<T> {
   icon: MemoExoticComponent<(props: IconProps) => JSX.Element>;

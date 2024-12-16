@@ -5,7 +5,7 @@ import { Link } from "../../../../common/v3/Link";
 import { Tooltip } from "../../../../common/v3/Tooltip";
 import { trackingEvents } from "../../../tracking";
 import * as s from "./styles";
-import { AssetLinkProps } from "./types";
+import type { AssetLinkProps } from "./types";
 
 export const AssetLink = ({ asset }: AssetLinkProps) => {
   const handleAssetLinkClick = () => {

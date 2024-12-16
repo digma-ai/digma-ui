@@ -1,4 +1,5 @@
-import { MouseEvent, useState } from "react";
+import type { MouseEvent } from "react";
+import { useState } from "react";
 import { MenuList } from "../../../../../../../Navigation/common/MenuList";
 import { Popup } from "../../../../../../../Navigation/common/Popup";
 import { NewPopover } from "../../../../../../../common/NewPopover";
@@ -6,7 +7,7 @@ import { ChevronIcon } from "../../../../../../../common/icons/16px/ChevronIcon"
 import { Direction } from "../../../../../../../common/icons/types";
 import { Tooltip } from "../../../../../../../common/v3/Tooltip";
 import * as s from "./styles";
-import { SelectOption, SelectProps } from "./types";
+import type { SelectOption, SelectProps } from "./types";
 
 export const Select = ({
   options,

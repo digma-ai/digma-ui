@@ -1,8 +1,9 @@
-import { DefaultTheme, useTheme } from "styled-components";
+import type { DefaultTheme } from "styled-components";
+import { useTheme } from "styled-components";
 import { BellIcon } from "../../common/icons/BellIcon";
 import { CrossIcon } from "../../common/icons/CrossIcon";
 import * as s from "./styles";
-import { HeaderProps } from "./types";
+import type { HeaderProps } from "./types";
 
 const getIconColor = (theme: DefaultTheme) => {
   switch (theme.mode) {

@@ -3,7 +3,7 @@ import { getInsightCriticalityColor } from "../../../../utils/getInsightCritical
 import { caption2RegularTypography } from "../../../common/App/typographies";
 import { grayScale } from "../../../common/App/v2colors";
 import { CopyButton } from "../../../common/v3/CopyButton";
-import { InsightIconContainerProps } from "./types";
+import type { InsightIconContainerProps } from "./types";
 
 export const Container = styled.div`
   display: flex;

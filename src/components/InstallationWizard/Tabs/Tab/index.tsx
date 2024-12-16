@@ -1,5 +1,5 @@
 import * as s from "./styles";
-import { TabProps } from "./types";
+import type { TabProps } from "./types";
 
 export const Tab = ({
   isDisabled,

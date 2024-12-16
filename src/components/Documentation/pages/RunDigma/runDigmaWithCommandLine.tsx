@@ -1,6 +1,6 @@
 import { CodeSnippet } from "../../../common/CodeSnippet";
 import { GetEnvironmentIdInstruction } from "./GetEnvironmentIdInstruction.tsx";
-import { PageContent } from "./Page/types";
+import type { PageContent } from "./Page/types";
 
 export const runDigmaWithCommandLine: PageContent = {
   title:

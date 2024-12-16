@@ -12,10 +12,10 @@ import { changeScope } from "../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 import { groupBy } from "../../utils/groupBy";
 import { ConfigContext } from "../common/App/ConfigContext";
-import { Environment, Scope } from "../common/App/types";
+import type { Environment, Scope } from "../common/App/types";
 import { Overlay } from "../common/Overlay";
 import { RegistrationDialog } from "../common/RegistrationDialog";
-import { RegistrationFormValues } from "../common/RegistrationDialog/types";
+import type { RegistrationFormValues } from "../common/RegistrationDialog/types";
 import { ListIcon } from "../common/icons/ListIcon";
 import { TableIcon } from "../common/icons/TableIcon";
 import { ConfirmationDialog } from "./ConfirmationDialog";
@@ -24,7 +24,7 @@ import { Digmathon } from "./Digmathon";
 import { EnvironmentInstructionsPanel } from "./EnvironmentInstructionsPanel";
 import { EnvironmentPanel } from "./EnvironmentPanel";
 import { getEnvironmentTabId } from "./EnvironmentPanel/EnvironmentTab/getEnvironmentTabIdPrefix";
-import { ViewMode } from "./EnvironmentPanel/types";
+import type { ViewMode } from "./EnvironmentPanel/types";
 import { LiveView } from "./LiveView";
 import { NoData } from "./NoData";
 import { ObservabilityStatusBadge } from "./ObservabilityStatusBadge";
@@ -34,7 +34,7 @@ import { WelcomeScreen } from "./WelcomeScreen";
 import { actions } from "./actions";
 import * as s from "./styles";
 import { trackingEvents } from "./tracking";
-import {
+import type {
   EntrySpan,
   EnvironmentClearDataTimeStamps,
   EnvironmentInstructionsVisibility,

@@ -10,7 +10,7 @@ import { UserIcon } from "../../../common/icons/UserIcon";
 import { trackingEvents } from "../../tracking";
 import { isWorkEmail } from "./isWorkEmail";
 import * as s from "./styles";
-import { RegisterStepProps, RegistrationFormValues } from "./types";
+import type { RegisterStepProps, RegistrationFormValues } from "./types";
 
 const validateEmail = (email: string): string | boolean => {
   const emailMessage = "Please enter a valid work email address";

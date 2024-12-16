@@ -1,9 +1,5 @@
-import {
-  EndpointSlowdownSourceInsight,
-  InsightCategory,
-  InsightScope,
-  InsightType
-} from "../../../../types";
+import type { EndpointSlowdownSourceInsight } from "../../../../types";
+import { InsightCategory, InsightScope, InsightType } from "../../../../types";
 
 export const mockedEndpointSlowdownSourceInsight: EndpointSlowdownSourceInsight =
   {

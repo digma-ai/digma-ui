@@ -1,6 +1,6 @@
 import { Tooltip } from "../../../common/Tooltip";
 import * as s from "./styles";
-import { AttachmentTagProps } from "./types";
+import type { AttachmentTagProps } from "./types";
 
 export const AttachmentTag = ({ icon: Icon, text }: AttachmentTagProps) => (
   <s.Container>

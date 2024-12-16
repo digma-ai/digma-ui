@@ -7,17 +7,21 @@ import {
   AffectedEndpointsSelector,
   getEndpointKey
 } from "../../../../../common/AffectedEndpointsSelector";
-import { Option } from "../../../../../common/AffectedEndpointsSelector/types";
+import type { Option } from "../../../../../common/AffectedEndpointsSelector/types";
 import { TraceIcon } from "../../../../../common/icons/12px/TraceIcon";
 import { Button } from "../../../../../common/v3/Button";
 import { Tooltip } from "../../../../../common/v3/Tooltip";
-import { BottleneckEndpointInfo, InsightType, Trace } from "../../../../types";
+import type {
+  BottleneckEndpointInfo,
+  InsightType,
+  Trace
+} from "../../../../types";
 import { InsightCard } from "../common/InsightCard";
 import { ColumnsContainer } from "../common/InsightCard/ColumnsContainer";
 import { KeyValue } from "../common/InsightCard/KeyValue";
 import { ContentContainer, Description, Details } from "../styles";
 import * as s from "./styles";
-import { SpanEndpointBottleneckInsightCardProps } from "./types";
+import type { SpanEndpointBottleneckInsightCardProps } from "./types";
 
 const getSelectorOption = (endpoint: BottleneckEndpointInfo): Option => ({
   route: trimEndpointScheme(endpoint.endpointInfo.route),

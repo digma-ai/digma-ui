@@ -1,9 +1,5 @@
-import {
-  InsightCategory,
-  InsightScope,
-  InsightType,
-  SpaNPlusOneInsight
-} from "../../../../types";
+import type { SpaNPlusOneInsight } from "../../../../types";
+import { InsightCategory, InsightScope, InsightType } from "../../../../types";
 
 export const mockedSpaNPlusOneInsight: SpaNPlusOneInsight = {
   sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",

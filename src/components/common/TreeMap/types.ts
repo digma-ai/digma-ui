@@ -1,5 +1,5 @@
-import { ReactNode } from "react";
-import { Input } from "squarify";
+import type { ReactNode } from "react";
+import type { Input } from "squarify";
 
 export interface TileData {
   id: string;

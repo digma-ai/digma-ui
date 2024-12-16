@@ -1,7 +1,7 @@
 import { DELIMITER } from "../../../../../constants";
 import { trimEndpointScheme } from "../../../../../utils/trimEndpointScheme";
 import * as s from "./styles";
-import { QueryOptimizationEndpointsProps } from "./types";
+import type { QueryOptimizationEndpointsProps } from "./types";
 
 export const QueryOptimizationEndpoints = ({
   insight

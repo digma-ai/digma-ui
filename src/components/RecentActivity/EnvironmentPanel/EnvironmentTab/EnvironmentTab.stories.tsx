@@ -1,6 +1,6 @@
-import { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react";
 import { EnvironmentTab } from ".";
-import { ExtendedEnvironment } from "../../types";
+import type { ExtendedEnvironment } from "../../types";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof EnvironmentTab> = {

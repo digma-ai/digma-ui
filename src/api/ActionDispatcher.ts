@@ -1,4 +1,4 @@
-import { ActionListener, DigmaMessageError } from "./types";
+import type { ActionListener, DigmaMessageError } from "./types";
 
 export class ActionDispatcher {
   private actions: Record<string, ActionListener[]>;

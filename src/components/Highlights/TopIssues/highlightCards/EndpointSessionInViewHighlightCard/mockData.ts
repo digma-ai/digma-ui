@@ -1,5 +1,5 @@
 import { InsightStatus, InsightType } from "../../../../Insights/types";
-import { EndpointSessionInViewMetrics, HighlightData } from "../../types";
+import type { EndpointSessionInViewMetrics, HighlightData } from "../../types";
 
 export const mockedEndpointSessionInViewMetrics: EndpointSessionInViewMetrics =
   [];

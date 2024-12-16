@@ -1,6 +1,6 @@
 import { isString } from "../../../typeGuards/isString";
-import { ConfigContextData } from "../../common/App/types";
-import { DigmathonInsightData } from "../types";
+import type { ConfigContextData } from "../../common/App/types";
+import type { DigmathonInsightData } from "../types";
 
 export const EMAIL_ADDRESS = "digmathon@digma.ai";
 const LINE_BREAK = "%0D%0A";

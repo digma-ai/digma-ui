@@ -1,4 +1,4 @@
-import { EndpointBottleneckMetrics, HighlightData } from "../../types";
+import type { EndpointBottleneckMetrics, HighlightData } from "../../types";
 
 export interface EndpointBottleneckHighlightCardProps {
   data: HighlightData<EndpointBottleneckMetrics>;

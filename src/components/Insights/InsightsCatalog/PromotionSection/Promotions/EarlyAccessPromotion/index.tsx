@@ -7,7 +7,7 @@ import { EarlyAccessRegistrationCard } from "../../../../../Main/RegistrationCar
 import { MainOverlay } from "../../../../../Main/styles";
 import { trackingEvents as mainTrackingEvents } from "../../../../../Main/tracking";
 import { EarlyAccessPromotionCard } from "../../PromotionCard/EarlyAccessPromotionCard";
-import { PromotionProps } from "../types";
+import type { PromotionProps } from "../types";
 
 export const EarlyAccessPromotion = ({
   onDiscard,

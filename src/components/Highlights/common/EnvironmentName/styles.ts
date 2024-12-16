@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { isNumber } from "../../../../typeGuards/isNumber";
 import { getInsightCriticalityColor } from "../../../../utils/getInsightCriticalityColor";
-import { IconContainerProps } from "./types";
+import type { IconContainerProps } from "./types";
 
 export const Container = styled.div`
   display: flex;

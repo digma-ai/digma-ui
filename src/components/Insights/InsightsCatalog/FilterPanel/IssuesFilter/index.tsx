@@ -12,10 +12,11 @@ import { EyeIcon } from "../../../../common/icons/12px/EyeIcon";
 import { FourPointedStarIcon } from "../../../../common/icons/12px/FourPointedStarIcon";
 import { WrenchIcon } from "../../../../common/icons/12px/WrenchIcon";
 import { WarningTriangleIcon } from "../../../../common/icons/WarningTriangleIcon";
-import { IconProps } from "../../../../common/icons/types";
-import { SelectItem } from "../../../../common/v3/Select/types";
+import type { IconProps } from "../../../../common/icons/types";
+import type { SelectItem } from "../../../../common/v3/Select/types";
 import { useIssuesFilters } from "../../../Issues/useIssuesFilters";
-import { InsightFilterType, ViewMode } from "../../types";
+import type { InsightFilterType } from "../../types";
+import { ViewMode } from "../../types";
 import * as s from "./styles";
 import { trackingEvents } from "./tracking";
 

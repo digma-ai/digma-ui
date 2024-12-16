@@ -4,8 +4,8 @@
     "davidanson.vscode-markdownlint",
     "esbenp.prettier-vscode",
     "Orta.vscode-jest",
+    "streetsidesoftware.code-spell-checker",
     "stylelint.vscode-stylelint",
-    "styled-components.vscode-styled-components",
-    "streetsidesoftware.code-spell-checker"
+    "styled-components.vscode-styled-components"
   ]
 }

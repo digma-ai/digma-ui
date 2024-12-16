@@ -1,7 +1,7 @@
 import { Badge } from "../../../../../common/Badge";
-import { EnvironmentStatus } from "../types";
+import type { EnvironmentStatus } from "../types";
 import * as s from "./styles";
-import { StatusChipProps } from "./types";
+import type { StatusChipProps } from "./types";
 
 const getBadgeStyles = (status: EnvironmentStatus) => {
   switch (status) {

@@ -5,9 +5,9 @@ import { EmptyState } from "../EmptyState";
 import { ErrorEmptyState } from "../ErrorEmptyState";
 import { Header } from "../Header";
 import { NotificationList } from "../NotificationList";
-import { CodeObjectData } from "../types";
+import type { CodeObjectData } from "../types";
 import * as s from "./styles";
-import { RecentViewProps } from "./types";
+import type { RecentViewProps } from "./types";
 
 export const RecentView = ({
   onClose,

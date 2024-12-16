@@ -1,4 +1,4 @@
-import { ThemeColors } from "../../../../styled";
+import type { ThemeColors } from "../../../../styled";
 import {
   blueScale,
   grayScale,

@@ -5,12 +5,13 @@ import { isNumber } from "../../../typeGuards/isNumber";
 import { isString } from "../../../typeGuards/isString";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { useHistory } from "../../Main/useHistory";
-import { InsightStats, Scope } from "../../common/App/types";
+import type { InsightStats, Scope } from "../../common/App/types";
 import { MagicWandIcon } from "../../common/icons/16px/MagicWandIcon";
 import { Tooltip } from "../../common/v3/Tooltip";
 import { trackingEvents } from "../tracking";
 import * as s from "./styles";
-import { BaseTabData, TAB_IDS, TabData } from "./types";
+import type { BaseTabData, TabData } from "./types";
+import { TAB_IDS } from "./types";
 
 const tabs: BaseTabData[] = [
   {

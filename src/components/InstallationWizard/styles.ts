@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { Button } from "../common/Button";
 import { Link } from "../common/Link";
-import { FinishStepFooterContentProps } from "./types";
+import type { FinishStepFooterContentProps } from "./types";
 
 export const Container = styled.div`
   height: 100vh;

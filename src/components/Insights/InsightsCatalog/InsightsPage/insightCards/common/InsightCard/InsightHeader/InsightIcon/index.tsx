@@ -1,9 +1,9 @@
-import { InsightTypeInfo } from "../../../../../../../../../utils/getInsightTypeInfo";
+import type { InsightTypeInfo } from "../../../../../../../../../utils/getInsightTypeInfo";
 import { roundTo } from "../../../../../../../../../utils/roundTo";
 import { Tag } from "../../../../../../../../common/v3/Tag";
-import { TagType } from "../../../../../../../../common/v3/Tag/types";
+import type { TagType } from "../../../../../../../../common/v3/Tag/types";
 import * as s from "./styles";
-import { InsightIconProps } from "./types";
+import type { InsightIconProps } from "./types";
 
 export const getTagType = (criticality: number): TagType => {
   if (criticality < 0.2) {

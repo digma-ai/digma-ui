@@ -1,6 +1,6 @@
+import type { EndpointBreakdownInsight } from "../../../../types";
 import {
   ComponentType,
-  EndpointBreakdownInsight,
   InsightCategory,
   InsightScope,
   InsightType

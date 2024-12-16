@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react";
 import { EndpointBottleneckInsightTicket } from ".";
 import { mockedEndpointBottleneckInsight } from "../../InsightsCatalog/InsightsPage/insightCards/EndpointBottleneckInsightCard/mockData";
 

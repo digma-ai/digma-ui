@@ -1,6 +1,6 @@
 import { isObject } from "../../../../../../typeGuards/isObject";
 import { isString } from "../../../../../../typeGuards/isString";
-import { ServiceInfo } from "../../../types";
+import type { ServiceInfo } from "../../../types";
 
 export const isServiceInfoWithName = (
   x: ServiceInfo | null

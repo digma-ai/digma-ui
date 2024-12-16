@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { PageButtonProps } from "./types";
+import type { PageButtonProps } from "./types";
 
 export const Container = styled.div`
   display: flex;

@@ -3,7 +3,7 @@ import useDimensions from "react-cool-dimensions";
 import { useConfigSelector } from "../../../../store/config/useConfigSelector";
 import { changeScope } from "../../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
-import { Environment } from "../../../common/App/types";
+import type { Environment } from "../../../common/App/types";
 import { NewPopover } from "../../../common/NewPopover";
 import { NewButton } from "../../../common/v3/NewButton";
 import { EnvironmentMenu } from "../../../Navigation/EnvironmentBar/EnvironmentMenu";
@@ -11,7 +11,7 @@ import { trackingEvents } from "../../tracking";
 import { EnvironmentChip } from "./EnvironmentChip";
 import { getMostCriticalIssueCount } from "./getMostCriticalIssueCount";
 import * as s from "./styles";
-import { EnvironmentSelectorProps, SelectorEnvironment } from "./types";
+import type { EnvironmentSelectorProps, SelectorEnvironment } from "./types";
 
 const ENVIRONMENT_CHIP_COUNT = 3;
 

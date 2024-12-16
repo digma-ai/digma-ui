@@ -1,5 +1,5 @@
 import styled, { keyframes } from "styled-components";
-import { InnerCircleProps, OuterCircleProps } from "./types";
+import type { InnerCircleProps, OuterCircleProps } from "./types";
 
 const rotateAnimation = keyframes`
   from { transform: rotate(0); }

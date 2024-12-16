@@ -1,5 +1,8 @@
 import { InsightStatus, InsightType } from "../../../../Insights/types";
-import { EndpointQueryOptimizationV2Metrics, HighlightData } from "../../types";
+import type {
+  EndpointQueryOptimizationV2Metrics,
+  HighlightData
+} from "../../types";
 
 export const mockedEndpointQueryOptimizationV2Metrics: EndpointQueryOptimizationV2Metrics =
   [

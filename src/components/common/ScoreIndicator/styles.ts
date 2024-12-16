@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { IndicatorProps } from "./types";
+import type { IndicatorProps } from "./types";
 
 export const Container = styled.div`
   display: flex;

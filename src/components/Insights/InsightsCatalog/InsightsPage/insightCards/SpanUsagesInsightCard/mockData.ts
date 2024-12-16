@@ -1,9 +1,5 @@
-import {
-  InsightCategory,
-  InsightScope,
-  InsightType,
-  SpanUsagesInsight
-} from "../../../../types";
+import type { SpanUsagesInsight } from "../../../../types";
+import { InsightCategory, InsightScope, InsightType } from "../../../../types";
 
 export const mockedSpanUsagesInsight: SpanUsagesInsight = {
   sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",

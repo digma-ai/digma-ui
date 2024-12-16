@@ -1,5 +1,5 @@
 import React from "react";
-import { ThemeableIconProps } from "./types";
+import type { ThemeableIconProps } from "./types";
 
 interface CloudDownloadIconProps extends ThemeableIconProps {
   height?: number;

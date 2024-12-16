@@ -1,10 +1,10 @@
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { HTTPClientIcon } from "../../../common/icons/HTTPClientIcon";
 import { MenuList } from "../../common/MenuList";
-import { LinkedEndpoint } from "../../SpanInfo/types";
+import type { LinkedEndpoint } from "../../SpanInfo/types";
 import { trackingEvents } from "../../tracking";
 import * as s from "./styles";
-import { LinkedEndpointsMenuProps } from "./types";
+import type { LinkedEndpointsMenuProps } from "./types";
 
 export const LinkedEndpointsMenu = ({
   endpoints,

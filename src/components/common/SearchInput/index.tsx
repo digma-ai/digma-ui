@@ -1,8 +1,8 @@
-import { ChangeEvent } from "react";
+import type { ChangeEvent } from "react";
 import { CrossIcon } from "../icons/CrossIcon";
 import { MagnifierIcon } from "../icons/MagnifierIcon";
 import * as s from "./styles";
-import { SearchInputProps } from "./types";
+import type { SearchInputProps } from "./types";
 
 export const SearchInput = ({
   onChange,

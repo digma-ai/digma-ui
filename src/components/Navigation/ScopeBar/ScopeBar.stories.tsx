@@ -1,8 +1,8 @@
-import { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react";
 
 import { ScopeBar } from ".";
-import { Scope } from "../../common/App/types";
-import { CodeContext } from "../types";
+import type { Scope } from "../../common/App/types";
+import type { CodeContext } from "../types";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof ScopeBar> = {

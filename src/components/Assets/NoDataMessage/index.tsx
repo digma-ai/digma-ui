@@ -5,7 +5,7 @@ import { EmptyState } from "../../common/EmptyState";
 import { NewCircleLoader } from "../../common/NewCircleLoader";
 import { CardsIcon } from "../../common/icons/CardsIcon";
 import * as s from "./styles";
-import { NoDataMessageProps } from "./types";
+import type { NoDataMessageProps } from "./types";
 
 export const NoDataMessage = ({ type }: NoDataMessageProps) => {
   const handleTroubleshootingLinkClick = () => {

@@ -13,7 +13,7 @@ import { actions } from "./actions";
 import * as s from "./styles";
 import { trackingEvents } from "./tracking";
 import { isNotificationsViewMode } from "./typeGuards";
-import {
+import type {
   CodeObjectData,
   NotificationsData,
   NotificationsError,

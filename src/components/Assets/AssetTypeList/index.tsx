@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { DigmaMessageError } from "../../../api/types";
+import type { DigmaMessageError } from "../../../api/types";
 import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
-import { AssetsFilters } from "../../../store/assets/assetsSlice";
+import type { AssetsFilters } from "../../../store/assets/assetsSlice";
 import { useAssetsSelector } from "../../../store/assets/useAssetsSelector";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { useStore } from "../../../store/useStore";
@@ -13,14 +13,14 @@ import { SCOPE_CHANGE_EVENTS } from "../../../types";
 import { changeScope } from "../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { ChildIcon } from "../../common/icons/30px/ChildIcon";
-import { ViewMode } from "../AssetsViewScopeConfiguration/types";
+import type { ViewMode } from "../AssetsViewScopeConfiguration/types";
 import { NoDataMessage } from "../NoDataMessage";
 import { actions } from "../actions";
 import { trackingEvents } from "../tracking";
 import { checkIfAnyFiltersApplied, getAssetTypeInfo } from "../utils";
 import { AssetTypeListItem } from "./AssetTypeListItem";
 import * as s from "./styles";
-import {
+import type {
   AssetCategoriesData,
   AssetCategoryData,
   AssetTypeListProps,

@@ -1,4 +1,4 @@
-import { InsightStatus } from "../../../Insights/types";
+import type { InsightStatus } from "../../../Insights/types";
 
 export interface TableInsightStatusBadgeProps {
   status: InsightStatus;

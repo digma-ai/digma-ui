@@ -1,5 +1,5 @@
 import * as s from "./styles";
-import { CodeLocationsProps } from "./types";
+import type { CodeLocationsProps } from "./types";
 
 export const CodeLocations = ({ codeLocations }: CodeLocationsProps) => {
   if (!codeLocations || codeLocations.length === 0) {

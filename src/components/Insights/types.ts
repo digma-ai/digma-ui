@@ -1,9 +1,10 @@
-import { MemoExoticComponent } from "react";
-import { Duration } from "../../globals";
-import { InsightType, SpanInfo, SpanInstanceInfo } from "../../types";
-import { Sorting } from "../common/SortingSelector/types";
-import { IconProps } from "../common/icons/types";
-import { InsightFilterType } from "./InsightsCatalog/types";
+import type { MemoExoticComponent } from "react";
+import type { Duration } from "../../globals";
+import type { SpanInfo, SpanInstanceInfo } from "../../types";
+import { InsightType } from "../../types";
+import type { Sorting } from "../common/SortingSelector/types";
+import type { IconProps } from "../common/icons/types";
+import type { InsightFilterType } from "./InsightsCatalog/types";
 
 export enum ViewMode {
   PREVIEW = "PREVIEW",

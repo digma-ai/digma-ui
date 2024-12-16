@@ -1,11 +1,12 @@
-import { ChangeEvent, useState } from "react";
+import type { ChangeEvent } from "react";
+import { useState } from "react";
 import { Checkbox } from "../Checkbox";
 import { NewCircleLoader } from "../NewCircleLoader";
 import { Tooltip } from "../Tooltip";
 import { CrossIcon } from "../icons/CrossIcon";
 import { MagnifierIcon } from "../icons/MagnifierIcon";
 import * as s from "./styles";
-import { FilterMenuProps } from "./types";
+import type { FilterMenuProps } from "./types";
 
 export const FilterMenu = ({
   onClose,

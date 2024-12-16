@@ -1,4 +1,4 @@
-import { ErrorDetails } from "../types";
+import type { ErrorDetails } from "../types";
 
 export interface ErrorDetailsCardHeaderProps {
   onGoBack: () => void;

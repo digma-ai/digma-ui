@@ -1,5 +1,5 @@
-import { KebabMenuButtonProps } from "../../../common/KebabMenuButton/types";
-import { ExtendedEnvironment } from "../../types";
+import type { KebabMenuButtonProps } from "../../../common/KebabMenuButton/types";
+import type { ExtendedEnvironment } from "../../types";
 
 export interface TabThemeColors {
   text: {

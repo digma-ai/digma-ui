@@ -1,13 +1,13 @@
-import { ReactElement } from "react";
+import type { ReactElement } from "react";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { isString } from "../../../typeGuards/isString";
 import { getDurationString } from "../../../utils/getDurationString";
 import { intersperse } from "../../../utils/intersperse";
 import { DigmaSignature } from "../../common/DigmaSignature";
 import { JiraTicket } from "../../common/JiraTicket";
-import { Attachment } from "../../common/JiraTicket/types";
+import type { Attachment } from "../../common/JiraTicket/types";
 import { getTraceAttachment } from "../../Insights/insightTickets/common/SpanScaling";
-import { TestTicketProps } from "./types";
+import type { TestTicketProps } from "./types";
 
 export const TestTicket = ({
   test,

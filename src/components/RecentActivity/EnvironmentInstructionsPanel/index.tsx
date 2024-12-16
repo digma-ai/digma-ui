@@ -6,7 +6,10 @@ import { FeatureFlag } from "../../../types";
 import { openURLInDefaultBrowser } from "../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
-import { ConfigContextData, EnvironmentType } from "../../common/App/types";
+import type {
+  ConfigContextData,
+  EnvironmentType
+} from "../../common/App/types";
 import { CheckmarkIcon } from "../../common/icons/12px/CheckmarkIcon";
 import { InfinityIcon } from "../../common/icons/32px/InfinityIcon";
 import { Link } from "../../common/v3/Link";
@@ -15,7 +18,7 @@ import { actions } from "../actions";
 import { trackingEvents } from "../tracking";
 import { EnvironmentVariableCode } from "./EnvironmentVariableCode";
 import * as s from "./styles";
-import { EnvironmentInstructionsPanelProps } from "./types";
+import type { EnvironmentInstructionsPanelProps } from "./types";
 import { useAddToRunConfig } from "./useAddToRunConfig";
 
 const getIsActiveRunConfigSet = (

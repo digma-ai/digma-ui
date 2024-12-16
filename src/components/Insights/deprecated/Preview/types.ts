@@ -1,4 +1,4 @@
-import { Method } from "../../types";
+import type { Method } from "../../types";
 
 export interface PreviewProps {
   methods: Method[];

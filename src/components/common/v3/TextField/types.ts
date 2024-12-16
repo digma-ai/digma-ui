@@ -1,10 +1,10 @@
-import {
+import type {
   ChangeEventHandler,
   ComponentType,
   HTMLInputTypeAttribute,
   ReactNode
 } from "react";
-import { IconProps } from "../../icons/types";
+import type { IconProps } from "../../icons/types";
 
 export interface TextFieldProps {
   placeholder?: string;

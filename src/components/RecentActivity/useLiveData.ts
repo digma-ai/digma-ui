@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { dispatcher } from "../../dispatcher";
-import { LiveData } from "./LiveView/types";
+import type { LiveData } from "./LiveView/types";
 import { actions } from "./actions";
 
 export const useLiveData = () => {

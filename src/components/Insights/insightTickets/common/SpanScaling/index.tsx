@@ -1,5 +1,5 @@
 import { getCriticalityLabel } from "../../../../../utils/getCriticalityLabel";
-import { SpanScalingInsight } from "../../../types";
+import type { SpanScalingInsight } from "../../../types";
 import { ScalingIssueDuration as ScalingIssueDuration_ } from "./SpanScalingDuration";
 import { ScalingIssueAffectedEndpoints as ScalingIssueAffectedEndpoints_ } from "./SpanScalingEndpoints";
 import { ScalingIssueMessage as ScalingIssueMessage_ } from "./SpanScalingMessage";

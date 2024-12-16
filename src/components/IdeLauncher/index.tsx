@@ -5,11 +5,11 @@ import { isString } from "../../typeGuards/isString";
 import { getThemeKind } from "../common/App/styles";
 import { NewButton } from "../common/v3/NewButton";
 import { Select } from "../common/v3/Select";
-import { SelectItem } from "../common/v3/Select/types";
+import type { SelectItem } from "../common/v3/Select/types";
 import { scanRunningIdeProjects } from "./scanRunningIdeProjects";
 import { showIdeProject } from "./showIdeProject";
 import * as s from "./styles";
-import { ShowIdeProjectResult } from "./types";
+import type { ShowIdeProjectResult } from "./types";
 
 const SELECT_VALUE_DELIMITER = ":";
 

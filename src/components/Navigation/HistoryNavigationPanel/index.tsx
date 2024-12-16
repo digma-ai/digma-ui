@@ -1,13 +1,14 @@
 import { useEffect } from "react";
-import { Location, useLocation, useNavigate } from "react-router-dom";
+import type { Location } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useTheme } from "styled-components";
 import { history } from "../../../containers/Main/history";
-import { HistoryEntry } from "../../../history/History";
+import type { HistoryEntry } from "../../../history/History";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { SCOPE_CHANGE_EVENTS } from "../../../types";
 import { changeScope } from "../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
-import { HistoryState, ReactRouterLocationState } from "../../Main/types";
+import type { HistoryState, ReactRouterLocationState } from "../../Main/types";
 import { useBrowserLocationUpdater } from "../../Main/updateBrowserLocationUpdater";
 import { useHistory } from "../../Main/useHistory";
 import { HomeIcon } from "../../common/icons/16px/HomeIcon";

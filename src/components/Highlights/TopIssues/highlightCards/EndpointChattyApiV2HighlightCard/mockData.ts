@@ -1,5 +1,5 @@
 import { InsightStatus, InsightType } from "../../../../Insights/types";
-import { EndpointChattyApiV2Metrics, HighlightData } from "../../types";
+import type { EndpointChattyApiV2Metrics, HighlightData } from "../../types";
 
 export const mockedEndpointChattyApiV2Metrics: EndpointChattyApiV2Metrics = [
   {

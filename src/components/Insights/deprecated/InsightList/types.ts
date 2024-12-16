@@ -1,4 +1,4 @@
-import { GenericCodeObjectInsight, MethodSpan } from "../../types";
+import type { GenericCodeObjectInsight, MethodSpan } from "../../types";
 
 export interface InsightListProps {
   insights: GenericCodeObjectInsight[];

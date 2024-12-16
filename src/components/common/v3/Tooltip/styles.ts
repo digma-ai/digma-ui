@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 import { LAYERS } from "../../App/styles";
 import { footnoteRegularTypography } from "../../App/typographies";
-import { TooltipComponentProps } from "./types";
+import type { TooltipComponentProps } from "./types";
 
 export const TooltipContainer = styled.div`
   z-index: ${LAYERS.TOOLTIP};

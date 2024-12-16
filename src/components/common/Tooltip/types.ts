@@ -1,5 +1,5 @@
-import { Placement } from "@floating-ui/react";
-import { CSSProperties, ReactElement, ReactNode } from "react";
+import type { Placement } from "@floating-ui/react";
+import type { CSSProperties, ReactElement, ReactNode } from "react";
 
 export interface TooltipThemeColors {
   background: string;

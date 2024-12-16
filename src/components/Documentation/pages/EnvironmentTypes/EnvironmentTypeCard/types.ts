@@ -1,6 +1,6 @@
-import { MemoExoticComponent } from "react";
-import { ThemeableIconProps } from "../../../../common/icons/types";
-import { InsightCardType } from "../InsightCard/types";
+import type { MemoExoticComponent } from "react";
+import type { ThemeableIconProps } from "../../../../common/icons/types";
+import type { InsightCardType } from "../InsightCard/types";
 
 export type EnvironmentStatus = "active" | "waiting-for-data";
 

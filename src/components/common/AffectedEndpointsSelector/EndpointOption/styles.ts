@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 import { footnoteRegularTypography } from "../../App/typographies";
 import { CopyButton } from "../../v3/CopyButton";
-import { EndpointNameProps } from "./types";
+import type { EndpointNameProps } from "./types";
 
 export const StyledCopyButton = styled(CopyButton)`
   display: none;

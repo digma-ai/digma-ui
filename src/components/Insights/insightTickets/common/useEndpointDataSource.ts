@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { dispatcher } from "../../../../dispatcher";
-import { InsightType, SpanInfo } from "../../../../types";
+import type { InsightType, SpanInfo } from "../../../../types";
 import { actions } from "../../actions";
-import { GenericCodeObjectInsight } from "../../types";
+import type { GenericCodeObjectInsight } from "../../types";
 import { useLoading } from "./useLoading";
 import { useSpanDataSource } from "./useSpanDataSource";
 

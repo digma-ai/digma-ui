@@ -1,4 +1,5 @@
-import { Row, createColumnHelper } from "@tanstack/react-table";
+import type { Row } from "@tanstack/react-table";
+import { createColumnHelper } from "@tanstack/react-table";
 import { useEffect } from "react";
 import { SCALING_ISSUE_DOCUMENTATION_URL } from "../../../constants";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
@@ -18,14 +19,14 @@ import { NewButton } from "../../common/v3/NewButton";
 import { Tag } from "../../common/v3/Tag";
 import { EmptyStateCard } from "../EmptyStateCard";
 import { addEnvironmentColumns } from "../TopIssues/highlightCards/addEnvironmentColumns";
-import { EnvironmentData } from "../TopIssues/types";
+import type { EnvironmentData } from "../TopIssues/types";
 import { Section } from "../common/Section";
 import { Table } from "../common/Table";
 import { TableText } from "../common/TableText";
 import { handleEnvironmentTableRowClick } from "../handleEnvironmentTableRowClick";
 import { trackingEventNames, trackingEvents } from "../tracking";
 import * as s from "./styles";
-import { EnvironmentScalingData, ScalingMetrics } from "./types";
+import type { EnvironmentScalingData, ScalingMetrics } from "./types";
 import { useScalingData } from "./useScalingData";
 
 const demoData: EnvironmentScalingData[] = [

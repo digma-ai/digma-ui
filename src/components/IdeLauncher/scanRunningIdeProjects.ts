@@ -1,6 +1,6 @@
 import axios from "axios";
 import { isString } from "../../typeGuards/isString";
-import { IdeScanningResult, PluginInfo } from "./types";
+import type { IdeScanningResult, PluginInfo } from "./types";
 
 const DEFAULT_PORT = 63342;
 const PORT_RANGE = 20;

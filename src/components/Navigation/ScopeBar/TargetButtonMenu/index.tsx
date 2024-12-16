@@ -1,9 +1,9 @@
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
-import { CodeDetails } from "../../../common/App/types";
+import type { CodeDetails } from "../../../common/App/types";
 import { MenuList } from "../../common/MenuList";
 import { trackingEvents } from "../../tracking";
 import * as s from "./styles";
-import { TargetButtonMenuProps } from "./types";
+import type { TargetButtonMenuProps } from "./types";
 
 export const TargetButtonMenu = ({
   onGoToCodeLocation,

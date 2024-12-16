@@ -1,4 +1,4 @@
-import { CodeObjectData, Notification } from "../types";
+import type { CodeObjectData, Notification } from "../types";
 
 export interface NotificationCardProps {
   data: Notification;

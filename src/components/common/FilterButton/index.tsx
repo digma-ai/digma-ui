@@ -1,7 +1,7 @@
 import { isNumber } from "../../../typeGuards/isNumber";
 import { FunnelIcon } from "../icons/FunnelIcon";
 import * as s from "./styles";
-import { FilterButtonProps } from "./types";
+import type { FilterButtonProps } from "./types";
 
 export const FilterButton = ({
   selectedCount,

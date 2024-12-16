@@ -1,6 +1,6 @@
-import { Duration } from "../../globals";
-import { SpanInfo } from "../../types";
-import { Scope } from "../common/App/types";
+import type { Duration } from "../../globals";
+import type { SpanInfo } from "../../types";
+import type { Scope } from "../common/App/types";
 
 export interface Test {
   name: string;

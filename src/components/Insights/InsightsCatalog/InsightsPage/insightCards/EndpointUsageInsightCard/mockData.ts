@@ -1,5 +1,5 @@
+import type { EndpointNormalUsageInsight } from "../../../../types";
 import {
-  EndpointNormalUsageInsight,
   InsightCategory,
   InsightImportance,
   InsightScope,

@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { subscriptRegularTypography } from "../../common/App/typographies";
 import { Link } from "../../common/Link";
 import { CopyButton } from "../../common/v3/CopyButton";
-import { ListItemProps, TableBodyRowProps, TableHeadProps } from "./types";
+import type { ListItemProps, TableBodyRowProps, TableHeadProps } from "./types";
 
 export const Table = styled.div`
   width: 100%;

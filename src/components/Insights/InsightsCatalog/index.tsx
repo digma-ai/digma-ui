@@ -14,7 +14,8 @@ import { formatUnit } from "../../../utils/formatUnit";
 import { Pagination } from "../../common/Pagination";
 import { SearchInput } from "../../common/SearchInput";
 import { SortingSelector } from "../../common/SortingSelector";
-import { SORTING_ORDER, Sorting } from "../../common/SortingSelector/types";
+import type { Sorting } from "../../common/SortingSelector/types";
+import { SORTING_ORDER } from "../../common/SortingSelector/types";
 import { ChevronIcon } from "../../common/icons/16px/ChevronIcon";
 import { EyeIcon } from "../../common/icons/16px/EyeIcon";
 import { RefreshIcon } from "../../common/icons/16px/RefreshIcon";
@@ -24,19 +25,15 @@ import { NewIconButton } from "../../common/v3/NewIconButton";
 import { Tooltip } from "../../common/v3/Tooltip";
 import { trackingEvents } from "../tracking";
 import { EnvironmentSelector } from "./EnvironmentSelector";
-import { SelectorEnvironment } from "./EnvironmentSelector/types";
+import type { SelectorEnvironment } from "./EnvironmentSelector/types";
 import { FilterButton } from "./FilterButton";
 import { FilterPanel } from "./FilterPanel";
 import { IssuesFilter } from "./FilterPanel/IssuesFilter";
 import { InsightsPage } from "./InsightsPage";
 import { PromotionSection } from "./PromotionSection";
 import * as s from "./styles";
-import {
-  InsightFilterType,
-  InsightsCatalogProps,
-  SORTING_CRITERION,
-  ViewMode
-} from "./types";
+import type { InsightFilterType, InsightsCatalogProps } from "./types";
+import { SORTING_CRITERION, ViewMode } from "./types";
 import { useMarkingAllAsRead } from "./useMarkingAllAsRead";
 
 const PAGE_SIZE = 10;

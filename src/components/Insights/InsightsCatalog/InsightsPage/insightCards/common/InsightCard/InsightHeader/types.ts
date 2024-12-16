@@ -1,4 +1,4 @@
-import { GenericCodeObjectInsight } from "../../../../../../types";
+import type { GenericCodeObjectInsight } from "../../../../../../types";
 
 export interface InsightHeaderProps {
   insight: GenericCodeObjectInsight;

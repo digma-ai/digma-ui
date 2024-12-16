@@ -1,4 +1,4 @@
-import { ScalingIssueCommonProps } from "../types";
+import type { ScalingIssueCommonProps } from "../types";
 
 export const ScalingIssueTestedConcurrency = ({
   insight

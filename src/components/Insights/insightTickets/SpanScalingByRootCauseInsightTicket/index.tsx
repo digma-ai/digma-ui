@@ -1,10 +1,10 @@
-import { ReactElement } from "react";
+import type { ReactElement } from "react";
 import { useConfigSelector } from "../../../../store/config/useConfigSelector";
 import { InsightType } from "../../../../types";
 import { intersperse } from "../../../../utils/intersperse";
 import { DigmaSignature } from "../../../common/DigmaSignature";
-import { Attachment } from "../../../common/JiraTicket/types";
-import { RootCauseSpanInfo, SpanScalingInsight } from "../../types";
+import type { Attachment } from "../../../common/JiraTicket/types";
+import type { RootCauseSpanInfo, SpanScalingInsight } from "../../types";
 import { useEndpointDataSource } from "../common";
 import { CodeLocations } from "../common/CodeLocations";
 import { CommitInfos } from "../common/CommitInfos";
@@ -19,7 +19,7 @@ import {
   getScalingIssueSummary,
   getTraceAttachment
 } from "../common/SpanScaling";
-import { InsightTicketProps } from "../types";
+import type { InsightTicketProps } from "../types";
 
 export const SpanScalingByRootCauseInsightTicket = ({
   data,

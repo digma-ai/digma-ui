@@ -4,7 +4,7 @@ import { addPrefix } from "../../../../utils/addPrefix";
 import { ChevronIcon } from "../../../common/icons/16px/ChevronIcon";
 import { Direction } from "../../../common/icons/types";
 import * as s from "./styles";
-import { CarouselPaginationProps } from "./types";
+import type { CarouselPaginationProps } from "./types";
 
 export const CarouselPagination = ({
   itemsCount,

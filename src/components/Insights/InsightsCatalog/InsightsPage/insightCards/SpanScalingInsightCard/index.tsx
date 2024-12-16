@@ -7,13 +7,13 @@ import { Button } from "../../../../../common/v3/Button";
 import { JiraButton } from "../../../../../common/v3/JiraButton";
 import { Pagination } from "../../../../../common/v3/Pagination";
 import { Tooltip } from "../../../../../common/v3/Tooltip";
-import { InsightType, RootCauseSpanInfo, Trace } from "../../../../types";
+import type { InsightType, RootCauseSpanInfo, Trace } from "../../../../types";
 import { InsightCard } from "../common/InsightCard";
 import { ColumnsContainer } from "../common/InsightCard/ColumnsContainer";
 import { KeyValue } from "../common/InsightCard/KeyValue";
 import { ContentContainer, Description } from "../styles";
 import * as s from "./styles";
-import { SpanScalingInsightCardProps } from "./types";
+import type { SpanScalingInsightCardProps } from "./types";
 
 const PAGE_SIZE = 3;
 

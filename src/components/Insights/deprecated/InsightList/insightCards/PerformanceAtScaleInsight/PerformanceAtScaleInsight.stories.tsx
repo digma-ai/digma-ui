@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react";
 import { PerformanceAtScaleInsight } from ".";
 import { InsightType } from "../../../../../../types";
 import { InsightCategory, InsightScope } from "../../../../types";

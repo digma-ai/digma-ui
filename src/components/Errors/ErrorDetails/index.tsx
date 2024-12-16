@@ -1,15 +1,13 @@
 import { useMemo } from "react";
-import {
-  DataFetcherConfiguration,
-  useFetchData
-} from "../../../hooks/useFetchData";
+import type { DataFetcherConfiguration } from "../../../hooks/useFetchData";
+import { useFetchData } from "../../../hooks/useFetchData";
 import { NewCircleLoader } from "../../common/NewCircleLoader";
 import { actions } from "../actions";
 import { EmptyStateContainer } from "../styles";
 import { ErrorDetailsCardContent } from "./ErrorDetailsCardContent";
 import { ErrorDetailsCardHeader } from "./ErrorDetailsCardHeader";
 import * as s from "./styles";
-import {
+import type {
   ErrorDetailsProps,
   GetErrorDetailsPayload,
   SetErrorDetailsPayload

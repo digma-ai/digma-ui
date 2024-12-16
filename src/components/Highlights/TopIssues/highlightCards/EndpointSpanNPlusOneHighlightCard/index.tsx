@@ -1,4 +1,5 @@
-import { Row, createColumnHelper } from "@tanstack/react-table";
+import type { Row } from "@tanstack/react-table";
+import { createColumnHelper } from "@tanstack/react-table";
 import { useConfigSelector } from "../../../../../store/config/useConfigSelector";
 import { SCOPE_CHANGE_EVENTS } from "../../../../../types";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
@@ -10,10 +11,10 @@ import { handleEnvironmentTableRowClick } from "../../../handleEnvironmentTableR
 import { trackingEvents } from "../../../tracking";
 import { AssetLink } from "../../common/AssetLink";
 import { HighlightCard } from "../../common/HighlightCard";
-import { EndpointSpanNPlusOneMetrics, EnvironmentData } from "../../types";
+import type { EndpointSpanNPlusOneMetrics, EnvironmentData } from "../../types";
 import { addEnvironmentColumns } from "../addEnvironmentColumns";
 import { DescriptionContainer } from "../styles";
-import { EndpointSpanNPlusOneHighlightCardProps } from "./types";
+import type { EndpointSpanNPlusOneHighlightCardProps } from "./types";
 
 export const EndpointSpanNPlusOneHighlightCard = ({
   data

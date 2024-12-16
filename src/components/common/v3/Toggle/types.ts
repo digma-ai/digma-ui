@@ -1,5 +1,5 @@
-import { ComponentType, ReactNode } from "react";
-import { IconProps } from "../../icons/types";
+import type { ComponentType, ReactNode } from "react";
+import type { IconProps } from "../../icons/types";
 
 export type ToggleValue = string | number;
 export type ToggleSize = "small" | "large";

@@ -5,7 +5,7 @@ import {
   footnoteRegularTypography,
   subscriptRegularTypography
 } from "../../App/typographies";
-import {
+import type {
   ButtonLabelProps,
   ButtonProps,
   ChevronIconContainerProps,

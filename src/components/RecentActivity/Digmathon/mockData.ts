@@ -1,5 +1,5 @@
 import { InsightType } from "../../Insights/types";
-import { SetDigmathonProgressDataPayload } from "../types";
+import type { SetDigmathonProgressDataPayload } from "../types";
 
 export const mockedDigmathonProgressData: SetDigmathonProgressDataPayload = {
   insights: [

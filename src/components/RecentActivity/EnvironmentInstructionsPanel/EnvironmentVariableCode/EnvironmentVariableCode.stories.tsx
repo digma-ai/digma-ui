@@ -1,7 +1,8 @@
-import { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react";
 import { EnvironmentVariableCode } from ".";
 import { ConfigContext, initialState } from "../../../common/App/ConfigContext";
-import { ConfigContextData, DeploymentType } from "../../../common/App/types";
+import type { ConfigContextData } from "../../../common/App/types";
+import { DeploymentType } from "../../../common/App/types";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof EnvironmentVariableCode> = {

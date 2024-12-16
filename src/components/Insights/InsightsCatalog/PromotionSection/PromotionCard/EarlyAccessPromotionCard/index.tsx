@@ -1,7 +1,7 @@
 import { PromoText, PromoTextBold } from "../../../styles";
 import { Right } from "../styles";
 import * as s from "./styles";
-import { EarlyAccessPromotionCardProps } from "./types";
+import type { EarlyAccessPromotionCardProps } from "./types";
 
 export const EarlyAccessPromotionCard = ({
   onAccept,

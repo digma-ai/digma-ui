@@ -5,7 +5,7 @@ import { InsightCard } from "../common/InsightCard";
 import { ColumnsContainer } from "../common/InsightCard/ColumnsContainer";
 import { KeyValue } from "../common/InsightCard/KeyValue";
 import * as s from "./styles";
-import { EndpointUsageInsightCardProps } from "./types";
+import type { EndpointUsageInsightCardProps } from "./types";
 
 const suffixes = [
   { value: 1, symbol: "" },

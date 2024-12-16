@@ -2,7 +2,7 @@ import { useCallback, useRef } from "react";
 import useDimensions from "react-cool-dimensions";
 import useScrollbarSize from "react-scrollbar-size";
 import * as s from "./styles";
-import { ButtonPosition, FieldProps } from "./types";
+import type { ButtonPosition, FieldProps } from "./types";
 
 export const Field = ({ multiline, children, button }: FieldProps) => {
   const scrollbar = useScrollbarSize();

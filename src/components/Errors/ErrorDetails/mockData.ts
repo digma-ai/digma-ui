@@ -1,4 +1,4 @@
-import { FrameStack, SetErrorDetailsPayload } from "./types";
+import type { FrameStack, SetErrorDetailsPayload } from "./types";
 
 export const mockedFrameStack: FrameStack = {
   exceptionType: "exceptionType1",

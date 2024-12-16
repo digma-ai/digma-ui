@@ -1,4 +1,4 @@
-import { IDE, Platform } from "./globals";
+import type { IDE, Platform } from "./globals";
 import { isString } from "./typeGuards/isString";
 
 const PLATFORMS = ["JetBrains", "VS Code", "Web"];

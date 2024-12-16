@@ -1,6 +1,6 @@
 import { act, renderHook } from "@testing-library/react";
 import { actions } from "../actions";
-import { ActionListener } from "../api/types";
+import type { ActionListener } from "../api/types";
 import { dispatcher } from "../dispatcher";
 import { usePersistence } from "./usePersistence";
 

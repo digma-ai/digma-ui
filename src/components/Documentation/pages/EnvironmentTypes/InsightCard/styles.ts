@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Link as CommonLink } from "../../../../common/Link";
-import { ContainerProps, CountChipProps } from "./types";
+import type { ContainerProps, CountChipProps } from "./types";
 
 export const Container = styled.div<ContainerProps>`
   display: flex;

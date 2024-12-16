@@ -1,5 +1,5 @@
-import { ViewMode } from "../EnvironmentPanel/types";
-import { ActivityEntry, EntrySpan } from "../types";
+import type { ViewMode } from "../EnvironmentPanel/types";
+import type { ActivityEntry, EntrySpan } from "../types";
 
 export interface RecentActivityTableProps {
   data: ActivityEntry[];

@@ -1,5 +1,5 @@
 import axios, { isAxiosError } from "axios";
-import { ShowIdeProjectResult } from "./types";
+import type { ShowIdeProjectResult } from "./types";
 
 export const showIdeProject = async (
   port: number,

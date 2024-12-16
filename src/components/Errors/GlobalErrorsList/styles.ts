@@ -6,7 +6,7 @@ import {
 } from "../../common/App/typographies";
 import { AutoAnimatedContainer } from "../../common/AutoAnimatedContainer";
 import { EyeIcon } from "../../common/icons/16px/EyeIcon";
-import { DismissBtnIconProps } from "./types";
+import type { DismissBtnIconProps } from "./types";
 
 export const Container = styled.div`
   display: flex;

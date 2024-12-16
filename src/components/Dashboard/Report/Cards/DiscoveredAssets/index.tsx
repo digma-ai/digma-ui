@@ -1,7 +1,7 @@
 import { getAssetTypeInfo } from "../../../../Assets/utils";
 import { DiscoveredCard } from "../DiscoveredCard";
-import { OptionConfig } from "../DiscoveredCard/types";
-import { DiscoveredAssetsProps } from "./types";
+import type { OptionConfig } from "../DiscoveredCard/types";
+import type { DiscoveredAssetsProps } from "./types";
 
 const ROW_SIZE = 4;
 

@@ -1,10 +1,10 @@
 import { useInsightsSelector } from "../../../../store/insights/useInsightsSelector";
 import { useStore } from "../../../../store/useStore";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
-import { InsightFilterType } from "../types";
+import type { InsightFilterType } from "../types";
 import { FilterChip } from "./FilterChip";
 import * as s from "./styles";
-import { FilterPanelProps } from "./types";
+import type { FilterPanelProps } from "./types";
 
 export const FilterPanel = ({
   criticalCount,

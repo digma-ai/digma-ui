@@ -7,7 +7,7 @@ import { UdemyRegistrationCard } from "../../../../../Main/RegistrationCard/Udem
 import { MainOverlay } from "../../../../../Main/styles";
 import { trackingEvents as mainTrackingEvents } from "../../../../../Main/tracking";
 import { UdemyCoursePromotionCard } from "../../PromotionCard/UdemyCoursePromotionCard";
-import { PromotionProps } from "../types";
+import type { PromotionProps } from "../types";
 
 export const UdemyPromotion = ({
   onDiscard,

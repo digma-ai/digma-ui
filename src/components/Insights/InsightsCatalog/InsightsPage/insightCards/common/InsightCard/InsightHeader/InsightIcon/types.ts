@@ -1,4 +1,4 @@
-import { InsightTypeInfo } from "../../../../../../../../../utils/getInsightTypeInfo";
+import type { InsightTypeInfo } from "../../../../../../../../../utils/getInsightTypeInfo";
 
 export interface InsightIconProps {
   insightTypeInfo: InsightTypeInfo;

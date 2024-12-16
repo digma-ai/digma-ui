@@ -1,5 +1,5 @@
 import * as s from "./styles";
-import { AnimatedCodeButtonProps } from "./types";
+import type { AnimatedCodeButtonProps } from "./types";
 
 export const AnimatedCodeButton = ({ onClick }: AnimatedCodeButtonProps) => (
   <s.Button onClick={onClick}>

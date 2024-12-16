@@ -7,11 +7,8 @@ import { SnailIcon } from "../../../../common/icons/SnailIcon";
 import { SpotIcon } from "../../../../common/icons/SpotIcon";
 import { WarningCircleIcon } from "../../../../common/icons/WarningCircleIcon";
 import * as s from "./styles";
-import {
-  InsightCardProps,
-  InsightCardType,
-  InsightCardTypeData
-} from "./types";
+import type { InsightCardProps, InsightCardTypeData } from "./types";
+import { InsightCardType } from "./types";
 
 const getInsightTypeCardData = (type: InsightCardType): InsightCardTypeData => {
   const data = {

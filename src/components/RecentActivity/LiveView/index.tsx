@@ -1,13 +1,6 @@
 import { format } from "date-fns";
-import {
-  MouseEvent,
-  UIEvent,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState
-} from "react";
+import type { MouseEvent, UIEvent } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import useDimensions from "react-cool-dimensions";
 import useScrollbarSize from "react-scrollbar-size";
 
@@ -22,7 +15,8 @@ import {
   XAxis,
   YAxis
 } from "recharts";
-import { DefaultTheme, useTheme } from "styled-components";
+import type { DefaultTheme } from "styled-components";
+import { useTheme } from "styled-components";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
@@ -45,7 +39,7 @@ import { AreaTooltipContent } from "./AreaTooltipContent";
 import { ChangeStatus } from "./ChangeStatus";
 import { DotTooltipContent } from "./DotTooltipContent";
 import * as s from "./styles";
-import {
+import type {
   Coordinates,
   DotProps,
   DotTooltipProps,

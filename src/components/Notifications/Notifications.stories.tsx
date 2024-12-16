@@ -2,12 +2,12 @@
 // spanCodeObjectId:
 //   "span:OpenTelemetry.Instrumentation.AspNetCore$_$HTTP POST Transfer/TransferFunds",
 
-import { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react";
 import { Notifications } from ".";
 import { InsightType } from "../../types";
 import { InsightScope } from "../Insights/types";
 import { actions } from "./actions";
-import { Notification } from "./types";
+import type { Notification } from "./types";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof Notifications> = {

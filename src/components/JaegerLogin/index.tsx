@@ -1,5 +1,6 @@
 import axios, { isAxiosError } from "axios";
-import { ChangeEvent, FormEvent, useState } from "react";
+import type { ChangeEvent, FormEvent } from "react";
+import { useState } from "react";
 import { Helmet } from "react-helmet";
 import { TextField } from "../common/v3/TextField";
 import * as s from "./styles";

@@ -8,11 +8,11 @@ import { TrashBinIcon } from "../../../common/icons/16px/TrashBinIcon";
 import { WrenchIcon } from "../../../common/icons/16px/WrenchIcon";
 import { Badge } from "../../Badge";
 import { EnvironmentMenu } from "../../EnvironmentMenu";
-import { EnvironmentMenuItem } from "../../EnvironmentMenu/types";
+import type { EnvironmentMenuItem } from "../../EnvironmentMenu/types";
 import { trackingEvents } from "../../tracking";
 import { getEnvironmentTabId } from "./getEnvironmentTabIdPrefix";
 import * as s from "./styles";
-import { EnvironmentTabProps } from "./types";
+import type { EnvironmentTabProps } from "./types";
 
 export const EnvironmentTab = ({
   environment,

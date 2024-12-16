@@ -1,9 +1,9 @@
-import { ComponentType } from "react";
-import { Duration } from "../../globals";
-import { InsightType } from "../Insights/types";
-import { EnvironmentType } from "../common/App/types";
-import { IconProps } from "../common/icons/types";
-import { ViewMode } from "./EnvironmentPanel/types";
+import type { ComponentType } from "react";
+import type { Duration } from "../../globals";
+import type { InsightType } from "../Insights/types";
+import type { EnvironmentType } from "../common/App/types";
+import type { IconProps } from "../common/icons/types";
+import type { ViewMode } from "./EnvironmentPanel/types";
 
 export interface RecentActivityThemeColors {
   background: string;

@@ -1,6 +1,9 @@
-import { ReactNode } from "react";
-import { InsightType, SpanInfo } from "../../../../../types";
-import { GenericCodeObjectInsight, InsightImportance } from "../../../types";
+import type { ReactNode } from "react";
+import type { InsightType, SpanInfo } from "../../../../../types";
+import type {
+  GenericCodeObjectInsight,
+  InsightImportance
+} from "../../../types";
 
 export interface InsightCardProps {
   data: GenericCodeObjectInsight;

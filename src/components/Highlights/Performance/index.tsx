@@ -1,4 +1,5 @@
-import { Row, createColumnHelper } from "@tanstack/react-table";
+import type { Row } from "@tanstack/react-table";
+import { createColumnHelper } from "@tanstack/react-table";
 import { useEffect, useState } from "react";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
@@ -19,7 +20,7 @@ import { Table } from "../common/Table";
 import { handleEnvironmentTableRowClick } from "../handleEnvironmentTableRowClick";
 import { trackingEvents } from "../tracking";
 import * as s from "./styles";
-import { EnvironmentPerformanceData } from "./types";
+import type { EnvironmentPerformanceData } from "./types";
 import { usePerformanceData } from "./usePerformanceData";
 
 export const Performance = () => {

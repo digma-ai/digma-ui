@@ -1,5 +1,5 @@
-import { ChangeEvent } from "react";
-import { FieldsErrors } from "../types";
+import type { ChangeEvent } from "react";
+import type { FieldsErrors } from "../types";
 
 export interface FinishStepProps {
   quickstartURL?: string;

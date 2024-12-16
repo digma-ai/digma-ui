@@ -1,9 +1,10 @@
-import { ErrorInfo, useContext, useEffect, useState } from "react";
+import type { ErrorInfo } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { ThemeProvider } from "styled-components";
 import { actions } from "../../../actions";
 import { dispatcher } from "../../../dispatcher";
-import { Theme } from "../../../globals";
+import type { Theme } from "../../../globals";
 import { useColorScheme } from "../../../hooks/useColorScheme";
 import { logger } from "../../../logging";
 import { platform } from "../../../platform";
@@ -17,7 +18,7 @@ import { ErrorScreen } from "../ErrorScreen";
 import { ConfigContext } from "./ConfigContext";
 import { getStyledComponentsTheme } from "./getTheme";
 import { GlobalStyle } from "./styles";
-import {
+import type {
   AppProps,
   BackendInfo,
   DigmaStatus,

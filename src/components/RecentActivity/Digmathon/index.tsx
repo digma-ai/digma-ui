@@ -4,11 +4,11 @@ import { NewCircleLoader } from "../../common/NewCircleLoader";
 import { ChevronIcon } from "../../common/icons/16px/ChevronIcon";
 import { Direction } from "../../common/icons/types";
 import { trackingEvents } from "../tracking";
-import { DigmathonProgressData } from "../types";
+import type { DigmathonProgressData } from "../types";
 import { CongratulationsView } from "./CongratulationsView";
 import { ProgressView } from "./ProgressView";
 import * as s from "./styles";
-import { DigmathonProgressProps } from "./types";
+import type { DigmathonProgressProps } from "./types";
 
 export const Digmathon = ({
   data,

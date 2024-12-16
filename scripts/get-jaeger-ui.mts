@@ -1,8 +1,11 @@
 import { Octokit } from "@octokit/rest";
 import AdmZip from "adm-zip";
-import fs from "fs";
+import dotenv from "dotenv";
+import fs from "fs-extra";
 import path from "path";
-import dependenciesJson from "../dependencies.json" assert { type: "json" };
+import dependenciesJson from "../dependencies.json" with { type: "json" };
+
+dotenv.config();
 
 interface DependenciesJson {
   jetBrainsPluginVersion: string;
@@ -19,25 +22,12 @@ interface DownloadReleaseAssetOptions {
   extractPath?: string;
 }
 
-// Get output path from command line arguments
-let outputPath = "";
-const outputArgIndex = process.argv.indexOf("--output");
-if (outputArgIndex !== -1 && process.argv[outputArgIndex + 1]) {
-  outputPath = path.resolve(process.argv[outputArgIndex + 1]);
-} else {
-  // eslint-disable-next-line no-console
-  console.log("No output path provided.");
-  process.exit(1);
-}
+const OUTPUT_PATH = path.resolve("./jaeger-ui");
 
 // Ensure the output directory exists
-fs.mkdirSync(outputPath, { recursive: true });
+fs.mkdirSync(OUTPUT_PATH, { recursive: true });
 
 const extractZip = (zipPath: string, extractPath: string) => {
-  if (fs.existsSync(extractPath)) {
-    fs.rmdirSync(extractPath, { recursive: true });
-  }
-
   const zip = new AdmZip(zipPath);
   zip.extractAllTo(extractPath);
 };
@@ -87,8 +77,31 @@ const downloadReleaseAsset = async ({
 const jaegerUIVersion = (dependenciesJson as DependenciesJson).jaegerUIVersion;
 const tag = `v${jaegerUIVersion}`;
 const assetName = `dist-${tag}.zip`;
-const extractPath = path.resolve(outputPath, "./dist");
-const zipPath = path.join(outputPath, assetName);
+const extractPath = path.resolve(OUTPUT_PATH, "./dist");
+const zipPath = path.join(OUTPUT_PATH, assetName);
+
+if (fs.existsSync(extractPath)) {
+  fs.rmdirSync(extractPath, { recursive: true });
+}
+
+if (process.env.JAEGER_UI_PATH) {
+  const customJaegerUIPath = path.resolve(process.env.JAEGER_UI_PATH);
+
+  if (!fs.existsSync(customJaegerUIPath)) {
+    // eslint-disable-next-line no-console
+    console.error(
+      `Jaeger UI distributive has not been found at ${customJaegerUIPath}`
+    );
+    process.exit(1);
+  }
+
+  // eslint-disable-next-line no-console
+  console.log(`Using Jaeger UI distributive from ${customJaegerUIPath}`);
+
+  fs.copySync(customJaegerUIPath, extractPath);
+
+  process.exit(0);
+}
 
 if (fs.existsSync(zipPath)) {
   // eslint-disable-next-line no-console
@@ -101,7 +114,7 @@ if (fs.existsSync(zipPath)) {
     repo: "jaeger-ui",
     tag,
     assetName,
-    outputPath,
+    outputPath: OUTPUT_PATH,
     extractPath
   });
 }

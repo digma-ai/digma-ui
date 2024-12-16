@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { dispatcher } from "../../../../../../../../dispatcher";
 import { actions } from "../../../../../../actions";
-import { MarkAsReadPayload, SetMarkAsReadResponsePayload } from "../types";
+import type { MarkAsReadPayload, SetMarkAsReadResponsePayload } from "../types";
 
 export const useMarkingAsRead = (insightId: string) => {
   const [isMarkingAsReadInProgress, setIsMarkingAsReadInProgress] =

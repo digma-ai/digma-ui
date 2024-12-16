@@ -3,7 +3,7 @@ import { bodyBoldTypography } from "../../../../../../common/App/typographies";
 import { CopyButton } from "../../../../../../common/v3/CopyButton";
 import { Popup } from "../../../../../../Navigation/common/Popup";
 import { InsightStatusBadge } from "../InsightStatusBadge";
-import { ContainerProps } from "./types";
+import type { ContainerProps } from "./types";
 
 export const Container = styled.div<ContainerProps>`
   display: flex;

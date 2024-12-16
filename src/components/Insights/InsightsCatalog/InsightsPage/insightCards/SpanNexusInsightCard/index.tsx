@@ -4,7 +4,7 @@ import { ColumnsContainer } from "../common/InsightCard/ColumnsContainer";
 import { KeyValue } from "../common/InsightCard/KeyValue";
 import { ContentContainer } from "../styles";
 import * as s from "./styles";
-import { SpanNexusInsightCardProps } from "./types";
+import type { SpanNexusInsightCardProps } from "./types";
 
 const getTagType = (isHigh: boolean) => {
   return isHigh ? "mediumSeverity" : "default";

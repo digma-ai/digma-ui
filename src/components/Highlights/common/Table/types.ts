@@ -1,4 +1,4 @@
-import { ColumnDef, Row } from "@tanstack/react-table";
+import type { ColumnDef, Row } from "@tanstack/react-table";
 
 export interface TableProps<T> {
   data: T[];

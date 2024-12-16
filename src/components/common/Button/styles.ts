@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { ButtonElementProps } from "./types";
+import type { ButtonElementProps } from "./types";
 
 export const Button = styled.button<ButtonElementProps>`
   font-family: inherit;

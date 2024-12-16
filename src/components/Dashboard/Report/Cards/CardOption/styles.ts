@@ -3,7 +3,7 @@ import {
   bodyRegularTypography,
   displaySemiboldTypography
 } from "../../../../common/App/typographies";
-import { ContainerProps } from "./types";
+import type { ContainerProps } from "./types";
 
 export const Title = styled.div`
   ${bodyRegularTypography}

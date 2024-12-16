@@ -8,9 +8,10 @@ import {
   Tooltip,
   XAxis
 } from "recharts";
-import { DefaultTheme, useTheme } from "styled-components";
+import type { DefaultTheme } from "styled-components";
+import { useTheme } from "styled-components";
 import { PERCENTILES } from "../../../../../../constants";
-import { Duration } from "../../../../../../globals";
+import type { Duration } from "../../../../../../globals";
 import { isNumber } from "../../../../../../typeGuards/isNumber";
 import { convertToDuration } from "../../../../../../utils/convertToDuration";
 import { formatTimeDistance } from "../../../../../../utils/formatTimeDistance";
@@ -18,7 +19,7 @@ import { getDurationString } from "../../../../../../utils/getDurationString";
 import { getPercentileLabel } from "../../../../../../utils/getPercentileLabel";
 import { Tag } from "../../../../../common/v3/Tag";
 import { Tooltip as CommonTooltip } from "../../../../../common/v3/Tooltip";
-import {
+import type {
   HistogramBarData,
   NormalizedHistogramBarData,
   Trace
@@ -34,7 +35,7 @@ import { ReferenceLineLabel } from "./ReferenceLineLabel";
 import { XAxisTick } from "./XAxisTick";
 import { DIVIDER, LABEL_HEIGHT } from "./constants";
 import * as s from "./styles";
-import { SpanDurationsInsightCardProps, TickData } from "./types";
+import type { SpanDurationsInsightCardProps, TickData } from "./types";
 
 const LAST_CALL_TIME_DISTANCE_LIMIT = 60 * 1000; // in milliseconds
 

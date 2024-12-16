@@ -1,7 +1,7 @@
 import { useTheme } from "styled-components";
 import { getThemeKind } from "../../../../common/App/styles";
 import * as s from "./styles";
-import { EnvironmentTypeCardProps } from "./types";
+import type { EnvironmentTypeCardProps } from "./types";
 
 export const EnvironmentTypeCard = ({
   name,

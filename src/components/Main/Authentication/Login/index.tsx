@@ -15,7 +15,7 @@ import {
   Loader,
   SubmitButton
 } from "../styles";
-import { LoginFormValues, LoginProps } from "./types";
+import type { LoginFormValues, LoginProps } from "./types";
 import { useLogin } from "./useLogin";
 
 const formDefaultValues: LoginFormValues = {

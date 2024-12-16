@@ -1,4 +1,4 @@
-import { ErrorFilter } from "../../../../store/errors/errorsSlice";
+import type { ErrorFilter } from "../../../../store/errors/errorsSlice";
 
 export interface GetGlobalErrorsFiltersDataPayload {
   environment: string;

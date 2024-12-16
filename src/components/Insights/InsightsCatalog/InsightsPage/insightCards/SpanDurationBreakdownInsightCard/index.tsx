@@ -16,14 +16,17 @@ import { getPercentileLabel } from "../../../../../../utils/getPercentileLabel";
 import { Info } from "../../../../../common/v3/Info";
 import { Pagination } from "../../../../../common/v3/Pagination";
 import { Tag } from "../../../../../common/v3/Tag";
-import {
+import type {
   DurationPercentile,
   SpanDurationBreakdownEntry
 } from "../../../../types";
 import { InsightCard } from "../common/InsightCard";
 import { PercentileViewModeToggle } from "../common/InsightCard/PercentileViewModeToggle";
 import * as s from "./styles";
-import { ColumnMeta, SpanDurationBreakdownInsightCardProps } from "./types";
+import type {
+  ColumnMeta,
+  SpanDurationBreakdownInsightCardProps
+} from "./types";
 
 const DEFAULT_PERCENTILE = 0.5;
 const PAGE_SIZE = 3;

@@ -1,5 +1,5 @@
-import { ComponentType, MouseEventHandler } from "react";
-import { IconProps } from "../../icons/types";
+import type { ComponentType, MouseEventHandler } from "react";
+import type { IconProps } from "../../icons/types";
 
 export type ButtonType = "primary" | "secondary" | "secondaryBorderless";
 

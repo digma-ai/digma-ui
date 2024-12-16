@@ -1,4 +1,4 @@
-import { MouseEvent, ReactNode } from "react";
+import type { MouseEvent, ReactNode } from "react";
 
 export interface LinkProps {
   href?: string;

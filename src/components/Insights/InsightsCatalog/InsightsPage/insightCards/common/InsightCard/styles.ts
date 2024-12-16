@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 import { subscriptRegularTypography } from "../../../../../../common/App/typographies";
 import { Card } from "../../../../../../common/v3/Card";
 import { NewIconButton } from "../../../../../../common/v3/NewIconButton";
-import { StyledCardProps } from "./types";
+import type { StyledCardProps } from "./types";
 
 export const InsightFooter = styled.div`
   display: flex;

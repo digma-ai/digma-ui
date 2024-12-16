@@ -5,7 +5,7 @@ import { CrossIcon } from "../../common/icons/CrossIcon";
 import { NewButton } from "../../common/v3/NewButton";
 import { trackingEvents } from "../tracking";
 import * as s from "./styles";
-import { ConfirmationDialogProps } from "./types";
+import type { ConfirmationDialogProps } from "./types";
 
 export const ConfirmationDialog = ({
   title,

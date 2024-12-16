@@ -6,7 +6,7 @@ import { HIGH_SEVERITY_SCORE_THRESHOLD, Score, getTagType } from "../Score";
 import { getErrorMethodId } from "../getErrorMethodId";
 import { TimestampKeyValue } from "./TimestampKeyValue";
 import * as s from "./styles";
-import { ErrorCardProps } from "./types";
+import type { ErrorCardProps } from "./types";
 
 export const ErrorCard = ({ data, onClick }: ErrorCardProps) => {
   const tagType = getTagType(data.scoreInfo.score);

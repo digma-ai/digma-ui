@@ -6,7 +6,7 @@ import { InsightCard } from "../common/InsightCard";
 import { ColumnsContainer } from "../common/InsightCard/ColumnsContainer";
 import { KeyValue } from "../common/InsightCard/KeyValue";
 import * as s from "./styles";
-import { SlowEndpointInsightCardProps } from "./types";
+import type { SlowEndpointInsightCardProps } from "./types";
 
 export const SlowEndpointInsightCard = ({
   insight,

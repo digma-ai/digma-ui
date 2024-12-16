@@ -1,7 +1,7 @@
-import { ReactNode } from "react";
-import { InsightsQuery } from "../../../../common/App/types";
-import { Attachment } from "../../../../common/JiraTicket/types";
-import { GenericCodeObjectInsight } from "../../../types";
+import type { ReactNode } from "react";
+import type { InsightsQuery } from "../../../../common/App/types";
+import type { Attachment } from "../../../../common/JiraTicket/types";
+import type { GenericCodeObjectInsight } from "../../../types";
 
 export interface InsightJiraTicketProps {
   summary: string;

@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useDebounce } from "../../hooks/useDebounce";
 import { usePersistence } from "../../hooks/usePersistence";
 import { usePrevious } from "../../hooks/usePrevious";
-import { AssetsFilters } from "../../store/assets/assetsSlice";
+import type { AssetsFilters } from "../../store/assets/assetsSlice";
 import { useAssetsSelector } from "../../store/assets/useAssetsSelector";
 import { useConfigSelector } from "../../store/config/useConfigSelector";
 import { useStore } from "../../store/useStore";
@@ -17,13 +17,13 @@ import { NewIconButton } from "../common/v3/NewIconButton";
 import { Tooltip } from "../common/v3/Tooltip";
 import { AssetList } from "./AssetList";
 import { AssetTypeList } from "./AssetTypeList";
-import { AssetCategoriesData } from "./AssetTypeList/types";
+import type { AssetCategoriesData } from "./AssetTypeList/types";
 import { AssetsFilter } from "./AssetsFilter";
 import { AssetsViewScopeConfiguration } from "./AssetsViewScopeConfiguration";
 import { NoDataMessage } from "./NoDataMessage";
 import * as s from "./styles";
 import { trackingEvents } from "./tracking";
-import { DataRefresher } from "./types";
+import type { DataRefresher } from "./types";
 
 const PERSISTENCE_KEY = "assetsFiltersV2";
 const SEARCH_INPUT_DEBOUNCE_DELAY = 1000; // in milliseconds

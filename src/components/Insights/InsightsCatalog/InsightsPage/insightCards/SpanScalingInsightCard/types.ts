@@ -1,5 +1,5 @@
-import { InsightType, SpanScalingInsight, Trace } from "../../../../types";
-import { InsightCardCommonProps } from "../common/InsightCard/types";
+import type { InsightType, SpanScalingInsight, Trace } from "../../../../types";
+import type { InsightCardCommonProps } from "../common/InsightCard/types";
 
 export interface SpanScalingInsightCardProps extends InsightCardCommonProps {
   insight: SpanScalingInsight;

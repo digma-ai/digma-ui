@@ -3,7 +3,7 @@ import { dispatcher } from "../../../dispatcher";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { actions as mainActions } from "../../Main/actions";
-import { GetHighlightsScalingDataPayload, ScalingData } from "./types";
+import type { GetHighlightsScalingDataPayload, ScalingData } from "./types";
 
 const REFRESH_INTERVAL = 10 * 1000; // in milliseconds
 

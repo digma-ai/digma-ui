@@ -3,7 +3,7 @@ import { Outlet, matchPath, useLocation } from "react-router-dom";
 import { actions as globalActions } from "../../actions";
 import { history } from "../../containers/Main/history";
 import { dispatcher } from "../../dispatcher";
-import { HistoryEntryLocation } from "../../history/History";
+import type { HistoryEntryLocation } from "../../history/History";
 import { usePersistence } from "../../hooks/usePersistence";
 import { usePrevious } from "../../hooks/usePrevious";
 import { logger } from "../../logging";
@@ -12,12 +12,13 @@ import { useConfigSelector } from "../../store/config/useConfigSelector";
 import { useStore } from "../../store/useStore";
 import { trackingEvents as globalTrackingEvents } from "../../trackingEvents";
 import { isUndefined } from "../../typeGuards/isUndefined";
-import { SCOPE_CHANGE_EVENTS, SendPluginEventPayload } from "../../types";
+import type { SendPluginEventPayload } from "../../types";
+import { SCOPE_CHANGE_EVENTS } from "../../types";
 import { sendTrackingEvent } from "../../utils/actions/sendTrackingEvent";
 import { areBackendInfosEqual } from "../../utils/areBackendInfosEqual";
 import { Navigation } from "../Navigation";
 import { TAB_IDS } from "../Navigation/Tabs/types";
-import { Scope } from "../common/App/types";
+import type { Scope } from "../common/App/types";
 import { Authentication } from "./Authentication";
 import { actions } from "./actions";
 import * as s from "./styles";
@@ -26,7 +27,7 @@ import {
   isScopeWithErrorDetailsIdContext,
   isScopeWithRestApiCallContext
 } from "./typeGuards";
-import { HistoryState } from "./types";
+import type { HistoryState } from "./types";
 import { useBrowserLocationUpdater } from "./updateBrowserLocationUpdater";
 import { useHistory } from "./useHistory";
 

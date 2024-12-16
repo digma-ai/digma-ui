@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react";
 import { InsightCard } from ".";
 import { Button } from "../../../../common/Button";
 import { mockedErrorsInsight } from "../insightCards/ErrorsInsight/mockData";

@@ -1,4 +1,4 @@
-import { DigmaOutgoingMessageData } from "./api/types";
+import type { DigmaOutgoingMessageData } from "./api/types";
 
 export {};
 

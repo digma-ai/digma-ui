@@ -1,4 +1,4 @@
-import { DigmathonProgressData } from "../types";
+import type { DigmathonProgressData } from "../types";
 
 export interface DigmathonProgressProps {
   data?: DigmathonProgressData;

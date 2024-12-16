@@ -1,6 +1,6 @@
 import { Tooltip } from "../../../common/Tooltip";
 import * as s from "./styles";
-import { IconButtonProps } from "./types";
+import type { IconButtonProps } from "./types";
 
 export const IconButton = ({
   title,

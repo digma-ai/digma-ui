@@ -4,11 +4,11 @@ import { dispatcher } from "../../../dispatcher";
 import { sendTrackingEvent } from "../../../utils/actions/sendTrackingEvent";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { ConfigContext } from "../../common/App/ConfigContext";
-import { Environment } from "../../common/App/types";
+import type { Environment } from "../../common/App/types";
 import { actions } from "../actions";
 import { RecentActivityContainerBackgroundGradient } from "../styles";
 import { trackingEvents } from "../tracking";
-import {
+import type {
   CreateEnvironmentPayload,
   EnvironmentCreatedData,
   ErrorResponseData
@@ -18,10 +18,10 @@ import { EnvironmentCreated } from "./EnvironmentCreated";
 import { EnvironmentNameStep } from "./EnvironmentNameStep";
 import { EnvironmentTypeStep } from "./EnvironmentTypeStep";
 import { ErrorsPanel } from "./ErrorsPanel";
-import { ErrorData } from "./ErrorsPanel/types";
+import type { ErrorData } from "./ErrorsPanel/types";
 import { RegisterStep } from "./RegisterStep";
 import * as s from "./styles";
-import {
+import type {
   CreateEnvironmentWizardProps,
   ErrorDefinitions,
   StepDefinitions

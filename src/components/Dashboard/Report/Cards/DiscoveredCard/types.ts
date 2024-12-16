@@ -1,4 +1,4 @@
-import { DiscoverdCardType } from "../CardOption/types";
+import type { DiscoverdCardType } from "../CardOption/types";
 
 export interface DiscoveredCardProps {
   options: OptionConfig[][];

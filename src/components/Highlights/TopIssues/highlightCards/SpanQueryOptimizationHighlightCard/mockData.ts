@@ -1,5 +1,5 @@
 import { InsightStatus, InsightType } from "../../../../Insights/types";
-import { HighlightData, SpanQueryOptimizationMetrics } from "../../types";
+import type { HighlightData, SpanQueryOptimizationMetrics } from "../../types";
 
 export const mockedSpanQueryOptimizationMetrics: SpanQueryOptimizationMetrics =
   [

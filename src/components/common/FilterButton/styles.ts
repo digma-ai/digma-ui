@@ -3,7 +3,7 @@ import {
   footnoteRegularTypography,
   subscriptRegularTypography
 } from "../App/typographies";
-import { ButtonProps } from "./types";
+import type { ButtonProps } from "./types";
 
 export const Button = styled.button<ButtonProps>`
   border-radius: 4px;

@@ -1,5 +1,5 @@
 import * as s from "./styles";
-import { AssetTypeListItemProps } from "./types";
+import type { AssetTypeListItemProps } from "./types";
 
 export const AssetTypeListItem = ({
   onAssetTypeClick,

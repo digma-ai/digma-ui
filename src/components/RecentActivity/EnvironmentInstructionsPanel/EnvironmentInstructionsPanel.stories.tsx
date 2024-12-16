@@ -1,8 +1,9 @@
-import { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react";
 import { EnvironmentInstructionsPanel } from ".";
 import { ConfigContext, initialState } from "../../common/App/ConfigContext";
-import { ConfigContextData, DeploymentType } from "../../common/App/types";
-import { ExtendedEnvironment } from "../types";
+import type { ConfigContextData } from "../../common/App/types";
+import { DeploymentType } from "../../common/App/types";
+import type { ExtendedEnvironment } from "../types";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof EnvironmentInstructionsPanel> = {

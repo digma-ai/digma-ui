@@ -1,9 +1,5 @@
-import {
-  InsightCategory,
-  InsightScope,
-  InsightType,
-  SpanDurationBreakdownInsight
-} from "../../../../types";
+import type { SpanDurationBreakdownInsight } from "../../../../types";
+import { InsightCategory, InsightScope, InsightType } from "../../../../types";
 
 export const mockedSpanDurationBreakdownInsight: SpanDurationBreakdownInsight =
   {

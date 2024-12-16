@@ -1,6 +1,7 @@
-import { ForwardedRef, MouseEvent, forwardRef } from "react";
+import type { ForwardedRef, MouseEvent } from "react";
+import { forwardRef } from "react";
 import * as s from "./styles";
-import { LinkProps } from "./types";
+import type { LinkProps } from "./types";
 
 const LinkComponent = (
   { onClick, href, className, target, rel, children }: LinkProps,

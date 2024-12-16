@@ -1,5 +1,5 @@
 import * as s from "./styles";
-import { TooltipKeyValueProps } from "./types";
+import type { TooltipKeyValueProps } from "./types";
 
 export const TooltipKeyValue = ({ label, children }: TooltipKeyValueProps) => (
   <s.Container>

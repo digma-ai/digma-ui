@@ -1,4 +1,4 @@
-import { CodeContext } from "../types";
+import type { CodeContext } from "../types";
 
 export interface CodeButtonMenuProps {
   codeContext: CodeContext;

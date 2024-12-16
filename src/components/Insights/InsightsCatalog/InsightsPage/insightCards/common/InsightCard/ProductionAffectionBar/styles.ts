@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { footnoteRegularTypography } from "../../../../../../../common/App/typographies";
-import { ContainerProps } from "./types";
+import type { ContainerProps } from "./types";
 
 export const Container = styled.div<ContainerProps>`
   ${footnoteRegularTypography}

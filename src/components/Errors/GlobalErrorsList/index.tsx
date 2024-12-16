@@ -1,10 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { dispatcher } from "../../../dispatcher";
 import { getFeatureFlagValue } from "../../../featureFlags";
-import {
-  DataFetcherConfiguration,
-  useFetchData
-} from "../../../hooks/useFetchData";
+import type { DataFetcherConfiguration } from "../../../hooks/useFetchData";
+import { useFetchData } from "../../../hooks/useFetchData";
 import { useMount } from "../../../hooks/useMount";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
@@ -40,7 +38,7 @@ import { trackingEvents } from "../tracking";
 import { DaysFilter } from "./DaysFilter";
 import { GlobalErrorsFilters } from "./GlobalErrorsFilters";
 import * as s from "./styles";
-import {
+import type {
   GetGlobalErrorsDataPayload,
   SetGlobalErrorsDataPayload
 } from "./types";

@@ -1,4 +1,4 @@
-import { FlowInfo } from "../../types";
+import type { FlowInfo } from "../../types";
 
 export interface FlowProps {
   data: FlowInfo;

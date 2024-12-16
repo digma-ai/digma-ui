@@ -1,7 +1,7 @@
+import type { Placement } from "@floating-ui/react";
 import {
   FloatingArrow,
   FloatingPortal,
-  Placement,
   arrow,
   autoUpdate,
   flip,
@@ -14,10 +14,11 @@ import {
   useInteractions
 } from "@floating-ui/react";
 import { Children, cloneElement, useRef, useState } from "react";
-import { DefaultTheme, useTheme } from "styled-components";
+import type { DefaultTheme } from "styled-components";
+import { useTheme } from "styled-components";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { LAYERS } from "../App/styles";
-import { PopoverProps } from "./types";
+import type { PopoverProps } from "./types";
 
 // in pixels
 const ARROW_MARGIN = -3;

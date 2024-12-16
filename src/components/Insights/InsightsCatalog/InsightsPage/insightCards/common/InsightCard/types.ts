@@ -1,7 +1,10 @@
-import { ReactNode } from "react";
-import { ScopeSpan } from "../../../../../../common/App/types";
-import { CardProps } from "../../../../../../common/v3/Card/types";
-import { GenericCodeObjectInsight, InsightType } from "../../../../../types";
+import type { ReactNode } from "react";
+import type { ScopeSpan } from "../../../../../../common/App/types";
+import type { CardProps } from "../../../../../../common/v3/Card/types";
+import type {
+  GenericCodeObjectInsight,
+  InsightType
+} from "../../../../../types";
 
 export type InsightCardViewMode = "full" | "compact";
 

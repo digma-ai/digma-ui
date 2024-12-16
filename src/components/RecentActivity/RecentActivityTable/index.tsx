@@ -6,7 +6,7 @@ import {
 } from "@tanstack/react-table";
 import { useMemo } from "react";
 import { getFeatureFlagValue } from "../../../featureFlags";
-import { Duration } from "../../../globals";
+import type { Duration } from "../../../globals";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { isNumber } from "../../../typeGuards/isNumber";
 import { FeatureFlag } from "../../../types";
@@ -19,11 +19,11 @@ import { Tag } from "../../common/Tag";
 import { Tooltip } from "../../common/Tooltip";
 import { TraceIcon } from "../../common/icons/12px/TraceIcon";
 import { Badge } from "../Badge";
-import { ViewMode } from "../EnvironmentPanel/types";
-import { ActivityEntry, EntrySpan, SlimInsight } from "../types";
+import type { ViewMode } from "../EnvironmentPanel/types";
+import type { ActivityEntry, EntrySpan, SlimInsight } from "../types";
 import { getTagType } from "./getTagType";
 import * as s from "./styles";
-import { ColumnMeta, RecentActivityTableProps } from "./types";
+import type { ColumnMeta, RecentActivityTableProps } from "./types";
 
 const columnHelper = createColumnHelper<ActivityEntry>();
 

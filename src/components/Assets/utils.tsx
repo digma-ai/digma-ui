@@ -1,11 +1,11 @@
-import { MemoExoticComponent } from "react";
-import { AssetsFilters } from "../../store/assets/assetsSlice";
+import type { MemoExoticComponent } from "react";
+import type { AssetsFilters } from "../../store/assets/assetsSlice";
 import { CodeMarkerPinIcon } from "../common/icons/CodeMarkerPinIcon";
 import { DatabaseIcon } from "../common/icons/DatabaseIcon";
 import { EndpointIcon } from "../common/icons/EndpointIcon";
 import { HTTPClientIcon } from "../common/icons/HTTPClientIcon";
 import { UserIcon } from "../common/icons/UserIcon";
-import { IconProps } from "../common/icons/types";
+import type { IconProps } from "../common/icons/types";
 
 interface AssetTypeInfo {
   label: string;

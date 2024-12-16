@@ -1,6 +1,6 @@
 import { memo } from "react";
 import * as s from "./styles";
-import { BadgeProps } from "./types";
+import type { BadgeProps } from "./types";
 
 const BadgeComponent = ({ customStyles }: BadgeProps) => (
   <s.Outline $customStyles={customStyles?.outline}>

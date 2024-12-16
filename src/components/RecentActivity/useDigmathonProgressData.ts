@@ -7,7 +7,7 @@ import { isString } from "../../typeGuards/isString";
 import { InsightType } from "../Insights/types";
 import { getDigmathonInsightCardData } from "./Digmathon/getDigmathonInsightData";
 import { actions } from "./actions";
-import {
+import type {
   DigmathonInsightData,
   DigmathonProgressData,
   DigmathonProgressInsightData,

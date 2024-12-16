@@ -1,5 +1,5 @@
-import { ViewData } from "../Main/types";
-import { CodeDetails } from "../common/App/types";
+import type { ViewData } from "../Main/types";
+import type { CodeDetails } from "../common/App/types";
 
 export interface NavigationProps {
   view: ViewData;

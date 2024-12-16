@@ -1,4 +1,4 @@
-import { ErrorScoreInfo } from "../types";
+import type { ErrorScoreInfo } from "../types";
 
 export interface ErrorDetailsProps {
   id: string;

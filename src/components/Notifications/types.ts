@@ -1,5 +1,5 @@
-import { InsightType, SpanInfo } from "../../types";
-import { InsightScope } from "../Insights/types";
+import type { InsightType, SpanInfo } from "../../types";
+import type { InsightScope } from "../Insights/types";
 
 export type NotificationsViewMode = "popup" | "full";
 

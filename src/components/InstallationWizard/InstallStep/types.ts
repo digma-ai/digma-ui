@@ -1,4 +1,4 @@
-import { AsyncActionStatus } from "../types";
+import type { AsyncActionStatus } from "../types";
 
 export enum Operation {
   INSTALL = "install",

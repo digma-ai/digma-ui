@@ -1,6 +1,6 @@
 import styled, { css } from "styled-components";
 import { subheading2RegularTypography } from "../../App/typographies";
-import {
+import type {
   ChildrenContainerProps,
   TileContainerProps,
   TitleProps

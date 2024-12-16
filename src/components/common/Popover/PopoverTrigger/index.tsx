@@ -1,16 +1,10 @@
 // Source: https://floating-ui.com/docs/popover#reusable-popover-component
 
 import { useMergeRefs } from "@floating-ui/react";
-import {
-  cloneElement,
-  ForwardedRef,
-  forwardRef,
-  HTMLProps,
-  isValidElement,
-  Ref
-} from "react";
+import type { ForwardedRef, HTMLProps, Ref } from "react";
+import { cloneElement, forwardRef, isValidElement } from "react";
 import { usePopoverContext } from "../hooks";
-import { PopoverTriggerProps } from "./types";
+import type { PopoverTriggerProps } from "./types";
 
 /** @deprecated */
 const PopoverTriggerComponent = (

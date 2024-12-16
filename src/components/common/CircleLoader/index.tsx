@@ -1,7 +1,8 @@
-import { DefaultTheme, useTheme } from "styled-components";
+import type { DefaultTheme } from "styled-components";
+import { useTheme } from "styled-components";
 import { DEFAULT_ICON_SIZE } from "../icons/hooks";
 import * as s from "./styles";
-import { CircleLoaderColors, CircleLoaderProps } from "./types";
+import type { CircleLoaderColors, CircleLoaderProps } from "./types";
 
 const getDefaultColors = (theme: DefaultTheme): CircleLoaderColors => {
   switch (theme.mode) {

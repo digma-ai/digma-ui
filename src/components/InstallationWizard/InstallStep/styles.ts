@@ -4,7 +4,7 @@ import { Link } from "../../common/Link";
 import { SectionTitle as CommonSectionTitle } from "../SectionTitle";
 import { Tabs } from "../Tabs";
 import { SectionDescription } from "../styles";
-import { TabContentContainerProps } from "./types";
+import type { TabContentContainerProps } from "./types";
 
 export const Container = styled.div`
   display: flex;

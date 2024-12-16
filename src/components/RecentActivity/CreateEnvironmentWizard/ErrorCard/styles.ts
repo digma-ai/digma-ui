@@ -4,7 +4,7 @@ import {
   subscriptRegularTypography
 } from "../../../common/App/typographies";
 import { Button } from "../../../common/v3/Button";
-import { ContainerProps } from "./types";
+import type { ContainerProps } from "./types";
 
 export const Container = styled.div<ContainerProps>`
   display: flex;

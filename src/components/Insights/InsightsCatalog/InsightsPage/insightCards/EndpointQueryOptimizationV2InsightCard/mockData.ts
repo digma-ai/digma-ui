@@ -1,9 +1,5 @@
-import {
-  EndpointQueryOptimizationV2Insight,
-  InsightCategory,
-  InsightScope,
-  InsightType
-} from "../../../../types";
+import type { EndpointQueryOptimizationV2Insight } from "../../../../types";
+import { InsightCategory, InsightScope, InsightType } from "../../../../types";
 
 export const mockedEndpointQueryOptimizationV2Insight: EndpointQueryOptimizationV2Insight =
   {

@@ -1,4 +1,5 @@
-import { ChangeEvent, useCallback, useRef, useState } from "react";
+import type { ChangeEvent } from "react";
+import { useCallback, useRef, useState } from "react";
 import useDimensions from "react-cool-dimensions";
 import { isString } from "../../../typeGuards/isString";
 import { Checkbox } from "../Checkbox";
@@ -8,7 +9,7 @@ import { ChevronIcon } from "../icons/ChevronIcon";
 import { MagnifierIcon } from "../icons/MagnifierIcon";
 import { Direction } from "../icons/types";
 import * as s from "./styles";
-import { SelectItem, SelectProps } from "./types";
+import type { SelectItem, SelectProps } from "./types";
 
 const sortItemsBySelectedState = (a: SelectItem, b: SelectItem) => {
   if (a.selected && !b.selected) {

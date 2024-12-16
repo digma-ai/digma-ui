@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { dispatcher } from "../../../../dispatcher";
-import { SpanInfo } from "../../../../types";
+import type { SpanInfo } from "../../../../types";
 import { actions } from "../../actions";
-import { CodeLocationsData } from "../types";
+import type { CodeLocationsData } from "../types";
 import { useLoading } from "./useLoading";
 
 export const useCodeLocations = (spanInfo: SpanInfo | null) => {

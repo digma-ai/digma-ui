@@ -1,6 +1,7 @@
 import React from "react";
 import { useIconProps } from "./hooks";
-import { Direction, RotatableIconProps } from "./types";
+import type { RotatableIconProps } from "./types";
+import { Direction } from "./types";
 
 interface ArrowIconProps extends RotatableIconProps {
   dashed?: boolean;

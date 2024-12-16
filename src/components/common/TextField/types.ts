@@ -1,4 +1,4 @@
-import { ChangeEventHandler, ReactNode } from "react";
+import type { ChangeEventHandler, ReactNode } from "react";
 
 export interface TextFieldProps {
   placeholder?: string;

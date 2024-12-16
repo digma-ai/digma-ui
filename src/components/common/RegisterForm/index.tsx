@@ -1,4 +1,5 @@
-import { FormEventHandler, useContext, useMemo } from "react";
+import type { FormEventHandler } from "react";
+import { useContext, useMemo } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 import { actions as globalActions } from "../../../actions";
@@ -8,7 +9,7 @@ import { EnvelopeIcon } from "../icons/16px/EnvelopeIcon";
 import { UserIcon } from "../icons/UserIcon";
 import { isWorkEmail } from "./isWorkEmail";
 import * as s from "./styles";
-import {
+import type {
   RegisterFromProps as RegisterFormProps,
   RegistrationFormValues
 } from "./types";

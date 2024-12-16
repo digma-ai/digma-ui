@@ -1,5 +1,5 @@
 import * as s from "./styles";
-import { ToggleProps } from "./types";
+import type { ToggleProps } from "./types";
 
 export const Toggle = <T extends string>({
   onChange,

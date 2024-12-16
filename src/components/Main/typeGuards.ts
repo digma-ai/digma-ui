@@ -1,5 +1,5 @@
 import { SCOPE_CHANGE_EVENTS } from "../../types";
-import {
+import type {
   Scope,
   ScopeWithCodeLensContext,
   ScopeWithCustomProtocolLinkContext,

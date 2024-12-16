@@ -12,7 +12,7 @@ import {
   useRole
 } from "@floating-ui/react";
 import { createContext, useContext, useMemo, useState } from "react";
-import { ContextType, PopoverProps } from "./types";
+import type { ContextType, PopoverProps } from "./types";
 
 export const usePopover = ({
   initialOpen = false,

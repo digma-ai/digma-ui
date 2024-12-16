@@ -1,5 +1,6 @@
 import { format } from "date-fns";
-import { SVGProps, useEffect, useMemo, useState } from "react";
+import type { SVGProps } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Bar,
   BarChart,
@@ -10,10 +11,8 @@ import {
   YAxis
 } from "recharts";
 import { useTheme } from "styled-components";
-import {
-  DataFetcherConfiguration,
-  useFetchData
-} from "../../../../hooks/useFetchData";
+import type { DataFetcherConfiguration } from "../../../../hooks/useFetchData";
+import { useFetchData } from "../../../../hooks/useFetchData";
 import { useConfigSelector } from "../../../../store/config/useConfigSelector";
 import { isNumber } from "../../../../typeGuards/isNumber";
 import { measureTextWidth } from "../../../../utils/measureTextWidth";
@@ -21,7 +20,7 @@ import { HistogramIcon } from "../../../common/icons/30px/HistogramIcon";
 import { PetalsIcon } from "../../../common/icons/32px/PetalsIcon";
 import { actions } from "../../actions";
 import * as s from "./styles";
-import {
+import type {
   ErrorOccurrenceRecord,
   GetErrorTimeSeriesDataPayload,
   HorizontalCoordinatesGeneratorProps,

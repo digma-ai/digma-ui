@@ -1,6 +1,6 @@
 import { LockIcon } from "../icons/12px/LockIcon";
 import { InfinityIcon } from "../icons/InfinityIcon";
-import { EnvironmentIconProps } from "./types";
+import type { EnvironmentIconProps } from "./types";
 
 export const EnvironmentIcon = ({
   environment,

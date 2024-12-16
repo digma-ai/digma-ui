@@ -4,7 +4,7 @@ import { InsightCard } from "../common/InsightCard";
 import { ColumnsContainer } from "../common/InsightCard/ColumnsContainer";
 import { KeyValue } from "../common/InsightCard/KeyValue";
 import { AssetLink, ContentContainer, Description, Details } from "../styles";
-import { EndpointBottleneckInsightCardProps } from "./types";
+import type { EndpointBottleneckInsightCardProps } from "./types";
 
 export const EndpointBottleneckInsightCard = ({
   insight,

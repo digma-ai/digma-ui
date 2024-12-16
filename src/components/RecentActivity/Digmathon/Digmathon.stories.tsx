@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react";
 import { Digmathon } from ".";
 import { actions } from "../actions";
 import { useDigmathonProgressData } from "../useDigmathonProgressData";

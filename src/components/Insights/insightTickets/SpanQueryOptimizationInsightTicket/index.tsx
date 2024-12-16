@@ -1,17 +1,17 @@
-import { ReactElement } from "react";
+import type { ReactElement } from "react";
 import { useConfigSelector } from "../../../../store/config/useConfigSelector";
 import { getCriticalityLabel } from "../../../../utils/getCriticalityLabel";
 import { getDurationString } from "../../../../utils/getDurationString";
 import { intersperse } from "../../../../utils/intersperse";
 import { DigmaSignature } from "../../../common/DigmaSignature";
-import { Attachment } from "../../../common/JiraTicket/types";
-import { SpanQueryOptimizationInsight } from "../../types";
+import type { Attachment } from "../../../common/JiraTicket/types";
+import type { SpanQueryOptimizationInsight } from "../../types";
 import { useCommitInfos } from "../common";
 import { CommitInfos } from "../common/CommitInfos";
 import { InsightJiraTicket } from "../common/InsightJiraTicket";
 import { QueryOptimizationEndpoints } from "../common/QueryOptimizationEndpoints";
 import { getTraceAttachment } from "../common/SpanScaling";
-import { InsightTicketProps } from "../types";
+import type { InsightTicketProps } from "../types";
 
 export const SpanQueryOptimizationInsightTicket = ({
   data,

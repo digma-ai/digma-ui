@@ -1,4 +1,4 @@
-import { EndpointSlowdownSourceMetrics, HighlightData } from "../../types";
+import type { EndpointSlowdownSourceMetrics, HighlightData } from "../../types";
 
 export interface EndpointSlowdownSourceHighlightCardProps {
   data: HighlightData<EndpointSlowdownSourceMetrics>;

@@ -1,5 +1,5 @@
+import type { EndpointSpanNPlusOneInsight } from "../../../../types";
 import {
-  EndpointSpanNPlusOneInsight,
   InsightCategory,
   InsightScope,
   InsightStatus,

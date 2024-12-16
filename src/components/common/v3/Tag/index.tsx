@@ -1,7 +1,8 @@
-import { ForwardedRef, forwardRef } from "react";
+import type { ForwardedRef } from "react";
+import { forwardRef } from "react";
 import { Tooltip } from "../Tooltip";
 import * as s from "./styles";
-import { TagProps } from "./types";
+import type { TagProps } from "./types";
 
 const TagComponent = (
   { className, type, content, title }: TagProps,

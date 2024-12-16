@@ -7,7 +7,7 @@ import { SnailIcon } from "../../../common/icons/SnailIcon";
 import { ListWidget } from "../../ListWidget";
 import { WidgetType } from "../types";
 import * as s from "./styles";
-import { SlowQueriesProps, SlowQueryEntry } from "./types";
+import type { SlowQueriesProps, SlowQueryEntry } from "./types";
 
 const renderSlowQueryEntry = (
   item: SlowQueryEntry,

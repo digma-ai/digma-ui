@@ -1,4 +1,4 @@
-import { TagType } from "../../common/Tag/types";
+import type { TagType } from "../../common/Tag/types";
 
 export const getTagType = (criticality?: number): TagType => {
   if (criticality === undefined) {

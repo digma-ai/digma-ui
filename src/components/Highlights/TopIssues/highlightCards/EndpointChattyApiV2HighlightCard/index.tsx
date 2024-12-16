@@ -1,4 +1,5 @@
-import { Row, createColumnHelper } from "@tanstack/react-table";
+import type { Row } from "@tanstack/react-table";
+import { createColumnHelper } from "@tanstack/react-table";
 import { useConfigSelector } from "../../../../../store/config/useConfigSelector";
 import { SCOPE_CHANGE_EVENTS } from "../../../../../types";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
@@ -8,10 +9,10 @@ import { handleEnvironmentTableRowClick } from "../../../handleEnvironmentTableR
 import { trackingEvents } from "../../../tracking";
 import { AssetLink } from "../../common/AssetLink";
 import { HighlightCard } from "../../common/HighlightCard";
-import { EndpointChattyApiV2Metrics, EnvironmentData } from "../../types";
+import type { EndpointChattyApiV2Metrics, EnvironmentData } from "../../types";
 import { addEnvironmentColumns } from "../addEnvironmentColumns";
 import { DescriptionContainer } from "../styles";
-import { EndpointChattyApiV2HighlightCardProps } from "./types";
+import type { EndpointChattyApiV2HighlightCardProps } from "./types";
 
 export const EndpointChattyApiV2HighlightCard = ({
   data

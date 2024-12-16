@@ -1,5 +1,5 @@
 import * as s from "./styles";
-import { KeyValueProps } from "./types";
+import type { KeyValueProps } from "./types";
 
 export const KeyValue = ({ label, children }: KeyValueProps) => (
   <s.Container>

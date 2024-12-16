@@ -1,13 +1,13 @@
 import copy from "copy-to-clipboard";
 import { useRef, useState } from "react";
 import { useTheme } from "styled-components";
-import { DefaultTheme } from "styled-components/dist/types";
+import type { DefaultTheme } from "styled-components/dist/types";
 import { isString } from "../../../typeGuards/isString";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { addPrefix } from "../../../utils/addPrefix";
 import { downloadFile } from "../../../utils/downloadFile";
 import { CircleLoader } from "../../common/CircleLoader";
-import { CircleLoaderColors } from "../../common/CircleLoader/types";
+import type { CircleLoaderColors } from "../../common/CircleLoader/types";
 import { IconTag } from "../../common/IconTag";
 import { Tooltip } from "../../common/Tooltip";
 import { CopyIcon } from "../../common/icons/12px/CopyIcon";
@@ -22,7 +22,7 @@ import { Section } from "./Section";
 import { TicketLinkButton } from "./TicketLinkButton";
 import * as s from "./styles";
 import { trackingEvents } from "./tracking";
-import { JiraTicketProps } from "./types";
+import type { JiraTicketProps } from "./types";
 
 const getCircleLoaderColors = (theme: DefaultTheme): CircleLoaderColors => {
   switch (theme.mode) {

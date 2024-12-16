@@ -1,9 +1,10 @@
-import { DefaultTheme, useTheme } from "styled-components";
+import type { DefaultTheme } from "styled-components";
+import { useTheme } from "styled-components";
 import { ArrowIcon } from "../../../common/icons/ArrowIcon";
 import { Direction } from "../../../common/icons/types";
-import { LiveDataDurationPercentile } from "../types";
+import type { LiveDataDurationPercentile } from "../types";
 import * as s from "./styles";
-import { ChangeStatusProps } from "./types";
+import type { ChangeStatusProps } from "./types";
 
 const getStatusString = (percentile: LiveDataDurationPercentile) => {
   if (!percentile.previousDuration) {

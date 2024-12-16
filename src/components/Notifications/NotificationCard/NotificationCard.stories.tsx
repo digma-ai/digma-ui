@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react";
 import { NotificationCard } from ".";
 import { InsightType } from "../../../types";
 import { InsightScope } from "../../Insights/types";

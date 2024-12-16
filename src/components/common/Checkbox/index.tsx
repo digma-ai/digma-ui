@@ -1,8 +1,8 @@
-import { ChangeEvent } from "react";
+import type { ChangeEvent } from "react";
 import { Tooltip } from "../Tooltip";
 import { CheckmarkIcon } from "../icons/CheckmarkIcon";
 import * as s from "./styles";
-import { CheckboxProps } from "./types";
+import type { CheckboxProps } from "./types";
 
 export const Checkbox = ({
   onChange,

@@ -5,17 +5,21 @@ import {
   AffectedEndpointsSelector,
   getEndpointKey
 } from "../../../../../common/AffectedEndpointsSelector";
-import { Option } from "../../../../../common/AffectedEndpointsSelector/types";
+import type { Option } from "../../../../../common/AffectedEndpointsSelector/types";
 import { TraceIcon } from "../../../../../common/icons/12px/TraceIcon";
 import { Button } from "../../../../../common/v3/Button";
 import { Tooltip } from "../../../../../common/v3/Tooltip";
-import { InsightType, NPlusOneEndpointInfo, Trace } from "../../../../types";
+import type {
+  InsightType,
+  NPlusOneEndpointInfo,
+  Trace
+} from "../../../../types";
 import { InsightCard } from "../common/InsightCard";
 import { ColumnsContainer } from "../common/InsightCard/ColumnsContainer";
 import { KeyValue } from "../common/InsightCard/KeyValue";
 import { ContentContainer, Description, Details } from "../styles";
 import * as s from "./styles";
-import { SpaNPlusOneInsightCardProps } from "./types";
+import type { SpaNPlusOneInsightCardProps } from "./types";
 
 const getSelectorOption = (endpoint: NPlusOneEndpointInfo): Option => ({
   route: endpoint.endpointInfo.route,

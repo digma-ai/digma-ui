@@ -1,4 +1,4 @@
-import { Meta, StoryObj } from "@storybook/react";
+import type { Meta, StoryObj } from "@storybook/react";
 import { InstallationWizard } from ".";
 import { actions as globalActions } from "../../actions";
 

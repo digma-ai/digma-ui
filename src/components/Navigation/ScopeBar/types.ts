@@ -1,6 +1,6 @@
-import { Scope } from "../../common/App/types";
-import { LinkedEndpoint } from "../SpanInfo/types";
-import { CodeContext } from "../types";
+import type { Scope } from "../../common/App/types";
+import type { LinkedEndpoint } from "../SpanInfo/types";
+import type { CodeContext } from "../types";
 
 export interface ScopeBarProps {
   codeContext?: CodeContext;

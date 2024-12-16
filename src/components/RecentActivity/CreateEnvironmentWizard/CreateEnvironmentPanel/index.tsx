@@ -7,7 +7,7 @@ import { Direction } from "../../../common/icons/types";
 import { trackingEvents } from "../../tracking";
 import { Tab } from "./Tab";
 import * as s from "./styles";
-import { CreateEnvironmentPanelProps } from "./types";
+import type { CreateEnvironmentPanelProps } from "./types";
 
 export const CreateEnvironmentPanel = ({
   onCancel,

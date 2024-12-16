@@ -1,4 +1,4 @@
-import { ExtendedEnvironment } from "../types";
+import type { ExtendedEnvironment } from "../types";
 
 export interface EnvironmentInstructionsPanelProps {
   environment: ExtendedEnvironment;
