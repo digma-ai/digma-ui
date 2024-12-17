@@ -4,11 +4,11 @@ import { isString } from "../../../typeGuards/isString";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
 import { NewButton } from "../../common/NewButton";
 import { CodeIcon } from "../../common/icons/16px/CodeIcon";
+import { Spinner } from "../../common/v3/Spinner";
 import { Tooltip } from "../../common/v3/Tooltip";
 import { MenuList } from "../common/MenuList";
 import { Popup } from "../common/Popup";
 import { trackingEvents } from "../tracking";
-import { Spinner } from "./Spinner";
 import * as s from "./styles";
 import type { CodeButtonMenuProps } from "./types";
 

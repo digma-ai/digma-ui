@@ -38,23 +38,21 @@ export const FilterChip = ({
 }: FilterChipProps) => {
   const { Component, label } = filtersData[type];
   return (
-    <Tooltip title={label}>
-      <Component disabled={disabled} $selected={selected} onClick={onClick}>
-        <Tooltip title={label}>
-          <span>{label}</span>
+    <Component disabled={disabled} $selected={selected} onClick={onClick}>
+      <Tooltip title={label}>
+        <span>{label}</span>
+      </Tooltip>
+      {isNumber(count) ? (
+        <s.StatCounter>{count}</s.StatCounter>
+      ) : (
+        <Tooltip
+          title={
+            "To see more statistics, please update digma backend to the latest version"
+          }
+        >
+          <s.StatCounter>N/A</s.StatCounter>
         </Tooltip>
-        {isNumber(count) ? (
-          <s.StatCounter>{count}</s.StatCounter>
-        ) : (
-          <Tooltip
-            title={
-              "To see more statistics, please update digma backend to the latest version"
-            }
-          >
-            <s.StatCounter>N/A</s.StatCounter>
-          </Tooltip>
-        )}
-      </Component>
-    </Tooltip>
+      )}
+    </Component>
   );
 };
