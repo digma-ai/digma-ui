@@ -21,7 +21,7 @@ npm run test
 Build package:
 
 ```shell
-npm run build:{platform}:prod
+npm run build:prod:{platform}
 ```
 
 Supported `platform` values:
