@@ -11,11 +11,10 @@ import { trackingEvents as globalEvents } from "../../trackingEvents";
 import { isUndefined } from "../../typeGuards/isUndefined";
 import { FeatureFlag } from "../../types";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
-import { ErrorIcon } from "../common/icons/16px/ErrorIcon";
 import { NewButton } from "../common/v3/NewButton";
-import { NewEmptyState } from "../common/v3/NewEmptyState";
 import { useHistory } from "../Main/useHistory";
 import { TAB_IDS } from "../Navigation/Tabs/types";
+import { EmptyState } from "./EmptyState";
 import { ErrorDetails } from "./ErrorDetails";
 import type { ShowOnlyWorkspaceErrorStackTraceItemsPayload } from "./ErrorDetails/ErrorDetailsCardContent/FlowStack/types";
 import { ErrorsList } from "./ErrorsList";
@@ -163,27 +162,16 @@ export const Errors = () => {
       }
 
       return (
-        <s.EmptyStateContainer>
-          <NewEmptyState
-            icon={ErrorIcon}
-            title={"Select an asset to view errors"}
-            content={
-              <>
-                <s.EmptyStateTextContainer>
-                  <span>The Errors tab shows details for</span>
-                  <span>exceptions for each Digma-tracked</span>
-                  <span>asset. See all tracked assets on the</span>
-                  <span>Assets page.</span>
-                </s.EmptyStateTextContainer>
-                <NewButton
-                  buttonType={"primary"}
-                  onClick={handleSeeAllAssetsClick}
-                  label={"See all assets"}
-                />
-              </>
-            }
-          />
-        </s.EmptyStateContainer>
+        <EmptyState
+          preset={"selectAsset"}
+          customContent={
+            <NewButton
+              buttonType={"primary"}
+              onClick={handleSeeAllAssetsClick}
+              label={"See all assets"}
+            />
+          }
+        />
       );
     }
 

@@ -1,27 +1,22 @@
-import type { DefaultTheme } from "styled-components";
-import { useTheme } from "styled-components";
 import { CrossCircleIcon } from "../../../common/icons/20px/CrossCircleIcon";
-import { PetalsIcon } from "../../../common/icons/32px/PetalsIcon";
 import { CardsColoredIcon } from "../../../common/icons/CardsColoredIcon";
+import { EmptyState as CommonEmptyState } from "../../../common/v3/EmptyState";
+import type { EmptyStateProps as CommonEmptyStateProps } from "../../../common/v3/EmptyState/types";
 import { NewButton } from "../../../common/v3/NewButton";
 import * as s from "./styles";
-import type {
-  EmptyStateContent,
-  EmptyStateProps,
-  EmptyStateType
-} from "./types";
+import type { EmptyStatePreset, EmptyStateProps } from "./types";
 
-const getContent = (type: EmptyStateType, theme: DefaultTheme) => {
+const getPresetContent = (preset: EmptyStatePreset) => {
   const handleRefreshButtonClick = () => {
     window.location.reload();
   };
 
-  const content: Record<EmptyStateType, EmptyStateContent> = {
+  const content: Record<EmptyStatePreset, CommonEmptyStateProps> = {
     noData: {
       title: "No available data",
       message:
         "Make sure you have at least one active environment to fetch data from",
-      icon: <CrossCircleIcon color={theme.colors.v3.surface.gray} size={32} />,
+      icon: <CrossCircleIcon size={32} color={"currentColor"} />,
       customContent: (
         <NewButton
           buttonType={"secondary"}
@@ -33,37 +28,37 @@ const getContent = (type: EmptyStateType, theme: DefaultTheme) => {
     noServices: {
       title: "No Results",
       message: "No services recorded for this environment",
-      icon: <CardsColoredIcon size={40} />
+      icon: <CardsColoredIcon size={33} />
     },
     noEndpoints: {
       title: "No Results",
       message: "No entry points recorded for this environment",
-      icon: <CardsColoredIcon size={40} />
+      icon: <CardsColoredIcon size={33} />
     },
     loading: {
       title: "Fetching results",
       message: "Updating the results list may take a few moments",
-      icon: <PetalsIcon color={theme.colors.v3.surface.gray} size={32} />
+      icon: <s.Spinner size={32} />
     }
   };
 
-  return content[type];
+  return content[preset];
 };
 
-export const EmptyState = ({ type }: EmptyStateProps) => {
-  const theme = useTheme();
-  const content = getContent(type, theme);
+export const EmptyState = ({
+  preset,
+  icon,
+  title,
+  message,
+  customContent
+}: EmptyStateProps) => {
+  const props: EmptyStateProps = {
+    ...(preset ? getPresetContent(preset) : {}),
+    ...(icon ? { icon } : {}),
+    ...(title ? { title } : {}),
+    ...(message ? { message } : {}),
+    ...(customContent ? { customContent } : {})
+  };
 
-  return content ? (
-    <s.Container>
-      <s.ContentContainer>
-        <s.IconContainer>{content.icon}</s.IconContainer>
-        <s.TextContainer>
-          <s.Title>{content.title}</s.Title>
-          <span>{content.message}</span>
-        </s.TextContainer>
-        {content.customContent}
-      </s.ContentContainer>
-    </s.Container>
-  ) : null;
+  return <CommonEmptyState {...props} />;
 };

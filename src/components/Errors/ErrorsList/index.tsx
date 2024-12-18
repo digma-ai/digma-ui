@@ -2,11 +2,9 @@ import { useMemo } from "react";
 import type { DataFetcherConfiguration } from "../../../hooks/useFetchData";
 import { useFetchData } from "../../../hooks/useFetchData";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
-import { NewCircleLoader } from "../../common/NewCircleLoader";
+import { EmptyState } from "../EmptyState";
 import { ErrorCard } from "../ErrorCard";
-import { NoDataEmptyState } from "../NoDataEmptyState";
 import { actions } from "../actions";
-import { EmptyStateContainer } from "../styles";
 import { trackingEvents } from "../tracking";
 import type { GetErrorsDataPayload, SetErrorsDataPayload } from "../types";
 import * as s from "./styles";
@@ -39,15 +37,11 @@ export const ErrorsList = ({
 
   if (!data) {
     // TODO: replace with skeletons
-    return (
-      <EmptyStateContainer>
-        <NewCircleLoader size={32} />
-      </EmptyStateContainer>
-    );
+    return <EmptyState preset={"loading"} />;
   }
 
   if (data.errors.length === 0) {
-    return <NoDataEmptyState />;
+    return <EmptyState preset={"noData"} />;
   }
 
   const handleErrorCardClick = (errorId: string) => {

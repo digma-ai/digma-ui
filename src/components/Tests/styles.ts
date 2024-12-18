@@ -1,24 +1,11 @@
 import styled from "styled-components";
 import { LAYERS } from "../common/App/styles";
-import { footnoteRegularTypography } from "../common/App/typographies";
 
 export const Container = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-`;
-
-export const NoDataContainer = styled.div`
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  text-align: center;
-  color: ${({ theme }) => theme.colors.text.subtext};
-  font-size: 14px;
 `;
 
 export const EnvironmentFilterContainer = styled.div`
@@ -44,18 +31,6 @@ export const TestsList = styled.div`
   flex-direction: column;
   overflow: auto;
   gap: 12px;
-`;
-
-export const EmptyStateTextContainer = styled.div`
-  ${footnoteRegularTypography}
-
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  gap: 4px;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  color: ${({ theme }) => theme.colors.v3.text.tertiary};
 `;
 
 export const PaginationContainer = styled.div`

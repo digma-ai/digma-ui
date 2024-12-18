@@ -21,19 +21,17 @@ import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActi
 import { formatUnit } from "../../../utils/formatUnit";
 import { OppositeArrowsIcon } from "../../common/icons/12px/OppositeArrowsIcon";
 import { ChevronIcon } from "../../common/icons/16px/ChevronIcon";
-import { CardsColoredIcon } from "../../common/icons/CardsColoredIcon";
 import { Direction } from "../../common/icons/types";
 import { NewPopover } from "../../common/NewPopover";
 import { SearchInput } from "../../common/SearchInput";
 import { NewButton } from "../../common/v3/NewButton";
-import { NewEmptyState } from "../../common/v3/NewEmptyState";
 import { Pagination } from "../../common/v3/Pagination";
 import { useHistory } from "../../Main/useHistory";
 import { MenuList } from "../../Navigation/common/MenuList";
 import { Popup } from "../../Navigation/common/Popup";
 import { actions } from "../actions";
+import { EmptyState } from "../EmptyState";
 import { NewErrorCard } from "../NewErrorCard";
-import { NoDataEmptyState } from "../NoDataEmptyState";
 import { trackingEvents } from "../tracking";
 import { DaysFilter } from "./DaysFilter";
 import { GlobalErrorsFilters } from "./GlobalErrorsFilters";
@@ -430,24 +428,21 @@ export const GlobalErrorsList = () => {
               ))}
             </s.ListContainer>
           ) : areAnyFiltersApplied ? (
-            <NewEmptyState
-              icon={CardsColoredIcon}
-              title={"No errors"}
-              content={
-                <s.EmptyStateContent>
-                  <span>
-                    No data is available for the selected filters. Try resetting
-                    your filters.
-                  </span>
+            search.length > 0 ? (
+              <EmptyState preset={"noSearchResults"} />
+            ) : (
+              <EmptyState
+                preset={"noFilteredData"}
+                customContent={
                   <NewButton
                     label={"Reset filters"}
                     onClick={handleResetFiltersButtonClick}
                   />
-                </s.EmptyStateContent>
-              }
-            />
+                }
+              />
+            )
           ) : (
-            <NoDataEmptyState />
+            <EmptyState preset={"noData"} />
           )}
           {list.length > 0 ? (
             <Pagination
@@ -465,7 +460,7 @@ export const GlobalErrorsList = () => {
           ) : undefined}
         </>
       ) : !environmentId ? (
-        <NoDataEmptyState />
+        <EmptyState preset={"noData"} />
       ) : null}
     </s.Container>
   );

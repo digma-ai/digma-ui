@@ -17,7 +17,6 @@ import { useConfigSelector } from "../../../../store/config/useConfigSelector";
 import { isNumber } from "../../../../typeGuards/isNumber";
 import { measureTextWidth } from "../../../../utils/measureTextWidth";
 import { HistogramIcon } from "../../../common/icons/30px/HistogramIcon";
-import { PetalsIcon } from "../../../common/icons/32px/PetalsIcon";
 import { actions } from "../../actions";
 import * as s from "./styles";
 import type {
@@ -205,7 +204,7 @@ export const OccurrenceChart = ({
       ) : (
         <s.EmptyStateContainer>
           <s.EmptyStateIconContainer>
-            <PetalsIcon size={32} color={"currentColor"} />
+            <s.Spinner size={32} />
           </s.EmptyStateIconContainer>
           <span>Loading</span>
         </s.EmptyStateContainer>

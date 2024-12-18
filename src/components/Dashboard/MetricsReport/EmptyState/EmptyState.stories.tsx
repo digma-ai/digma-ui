@@ -19,24 +19,24 @@ type Story = StoryObj<typeof meta>;
 // More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
 export const NoData: Story = {
   args: {
-    type: "noData"
+    preset: "noData"
   }
 };
 
 export const NoEndpoints: Story = {
   args: {
-    type: "noEndpoints"
+    preset: "noEndpoints"
   }
 };
 
 export const NoServices: Story = {
   args: {
-    type: "noServices"
+    preset: "noServices"
   }
 };
 
 export const Loading: Story = {
   args: {
-    type: "loading"
+    preset: "loading"
   }
 };

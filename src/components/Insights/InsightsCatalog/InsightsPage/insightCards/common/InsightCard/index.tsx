@@ -2,6 +2,8 @@ import { Fragment, useEffect, useRef, useState } from "react";
 import { dispatcher } from "../../../../../../../dispatcher";
 import { usePrevious } from "../../../../../../../hooks/usePrevious";
 import { useConfigSelector } from "../../../../../../../store/config/useConfigSelector";
+import { useInsightsSelector } from "../../../../../../../store/insights/useInsightsSelector";
+import { useStore } from "../../../../../../../store/useStore";
 import { isString } from "../../../../../../../typeGuards/isString";
 import { sendUserActionTrackingEvent } from "../../../../../../../utils/actions/sendUserActionTrackingEvent";
 import { getInsightTypeInfo } from "../../../../../../../utils/getInsightTypeInfo";
@@ -19,6 +21,7 @@ import { actions } from "../../../../../actions";
 import { trackingEvents } from "../../../../../tracking";
 import { isEndpointInsight, isSpanInsight } from "../../../../../typeGuards";
 import { InsightStatus } from "../../../../../types";
+import { ViewMode } from "../../../../types";
 import { IssueCompactCard } from "../IssueCompactCard";
 import { ActionButton } from "./ActionButton";
 import type { ActionButtonType } from "./ActionButton/types";
@@ -50,9 +53,15 @@ export const InsightCard = ({
   viewMode,
   mainMetric
 }: InsightCardProps) => {
-  const { isDismissalChangeInProgress, dismiss, show } = useDismissal(
-    insight.id
-  );
+  const { data } = useInsightsSelector();
+  const { setInsightsViewMode } = useStore.getState();
+  const {
+    isDismissalChangeInProgress,
+    dismiss,
+    show,
+    data: dismissalData
+  } = useDismissal(insight.id);
+  const previousDismissalData = usePrevious(dismissalData);
   const { isMarkingAsReadInProgress, markAsRead } = useMarkingAsRead(
     insight.id
   );
@@ -103,6 +112,18 @@ export const InsightCard = ({
     onRefresh,
     insight.type
   ]);
+
+  useEffect(() => {
+    if (
+      previousDismissalData !== dismissalData &&
+      dismissalData?.payload.status === "success" &&
+      dismissalData.action === actions.SET_UNDISMISS_RESPONSE &&
+      data?.dismissedCount === 1 &&
+      data.insights[0].id === dismissalData.payload.insightId
+    ) {
+      setInsightsViewMode(ViewMode.All);
+    }
+  }, [data, dismissalData, previousDismissalData, setInsightsViewMode]);
 
   const handleRecheckButtonClick = () => {
     if (onRecalculate) {

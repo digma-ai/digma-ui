@@ -6,7 +6,6 @@ import type {
 
 export interface InsightsPageProps {
   insights: GenericCodeObjectInsight[];
-  isFilteringEnabled: boolean;
   onJiraTicketCreate: (
     insight: GenericCodeObjectInsight,
     spanCodeObjectId?: string

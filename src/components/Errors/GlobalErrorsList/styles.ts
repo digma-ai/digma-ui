@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import {
-  footnoteRegularTypography,
   subscriptMediumTypography,
   subscriptRegularTypography
 } from "../../common/App/typographies";
@@ -71,25 +70,6 @@ export const ListContainer = styled(AutoAnimatedContainer)`
   gap: 8px;
   flex-grow: 1;
   overflow: auto;
-`;
-
-export const EmptyStateContainer = styled.div`
-  display: flex;
-  width: 100%;
-  height: 100%;
-  align-items: center;
-  justify-content: center;
-`;
-
-export const EmptyStateContent = styled.div`
-  ${footnoteRegularTypography}
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 8px;
-  max-width: 210px;
-  color: ${({ theme }) => theme.colors.v3.text.tertiary};
 `;
 
 export const ButtonIconContainer = styled.div`
