@@ -1,9 +1,9 @@
 import React from "react";
 import { useIconProps } from "./hooks";
-import type { ThemeableIconProps } from "./types";
+import type { IconProps } from "./types";
 
-const LightBulbSmallIconComponent = (props: ThemeableIconProps) => {
-  const { size } = useIconProps(props);
+const LightBulbSmallIconComponent = (props: IconProps) => {
+  const { size, color } = useIconProps(props);
 
   return (
     <svg
@@ -14,7 +14,7 @@ const LightBulbSmallIconComponent = (props: ThemeableIconProps) => {
       viewBox="0 0 72 72"
     >
       <path
-        fill={props.themeKind === "light" ? "#fbfdff" : "#83858e"}
+        fill={color}
         d="M45 55.5a1.5 1.5 0 0 1-1.5 1.5h-15a1.5 1.5 0 1 1 0-3h15a1.5 1.5 0 0 1 1.5 1.5Zm7.5-24a16.41 16.41 0 0 1-6.3 12.98 3.05 3.05 0 0 0-1.2 2.4V48a3 3 0 0 1-3 3H30a3 3 0 0 1-3-3v-1.13a3 3 0 0 0-1.17-2.37 16.42 16.42 0 0 1-6.33-12.9A16.58 16.58 0 0 1 35.6 15a16.5 16.5 0 0 1 16.9 16.5Zm-6.02-1.75a10.8 10.8 0 0 0-8.73-8.73 1.5 1.5 0 1 0-.5 2.96 7.86 7.86 0 0 1 6.27 6.27 1.5 1.5 0 0 0 2.96-.5Z"
       />
     </svg>

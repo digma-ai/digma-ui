@@ -28,10 +28,3 @@ export const HeaderItem = styled.div`
   flex-shrink: 0;
   height: 36px;
 `;
-
-export const UpgradeMessage = styled.div`
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  gap: 8px;
-`;

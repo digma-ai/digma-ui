@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
 import { useAction } from "../../../../hooks/useAction";
 import { actions } from "../../actions";
-import type { DismissPayload, UndismissPayload } from "./types";
+import type { DismissResultPayload, UndismissResultPayload } from "./types";
 
 export const useDismissal = (id: string) => {
   const [data, setData] = useState<{
     action: string;
-    payload: DismissPayload | UndismissPayload;
+    payload: DismissResultPayload | UndismissResultPayload;
   } | null>(null);
 
   const {
     isOperationInProgress: isDismissInProgress,
     execute: dismiss,
     data: dismissData
-  } = useAction<{ id: string }, DismissPayload>(
+  } = useAction<{ id: string }, DismissResultPayload>(
     actions.DISMISS_ERROR,
     actions.SET_DISMISS_ERROR_RESULT,
     {
@@ -25,7 +25,7 @@ export const useDismissal = (id: string) => {
     isOperationInProgress: isUndismissInProgress,
     execute: undismiss,
     data: undismissData
-  } = useAction<{ id: string }, UndismissPayload>(
+  } = useAction<{ id: string }, UndismissResultPayload>(
     actions.UNDISMISS_ERROR,
     actions.SET_UNDISMISS_ERROR_RESULT,
     {

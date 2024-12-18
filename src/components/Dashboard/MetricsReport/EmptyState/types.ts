@@ -1,18 +1,11 @@
-import type { ReactNode } from "react";
+import type { EmptyStateProps as CommonEmptyStateProps } from "../../../common/v3/EmptyState/types";
 
-export type EmptyStateType =
+export type EmptyStatePreset =
   | "noEndpoints"
   | "noServices"
   | "noData"
   | "loading";
 
-export interface EmptyStateProps {
-  type: EmptyStateType;
-}
-
-export interface EmptyStateContent {
-  title: string;
-  message: string;
-  icon: ReactNode;
-  customContent?: ReactNode;
+export interface EmptyStateProps extends CommonEmptyStateProps {
+  preset?: EmptyStatePreset;
 }

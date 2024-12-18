@@ -1,27 +1,16 @@
 import type { KeyboardEvent } from "react";
 import { useCallback, useEffect, useState } from "react";
 import { actions as globalActions } from "../../actions";
-import { SLACK_WORKSPACE_URL } from "../../constants";
 import { usePersistence } from "../../hooks/usePersistence";
 import { usePrevious } from "../../hooks/usePrevious";
 import { useConfigSelector } from "../../store/config/useConfigSelector";
 import { useInsightsSelector } from "../../store/insights/useInsightsSelector";
 import { useStore } from "../../store/useStore";
-import { trackingEvents as globalTrackingEvents } from "../../trackingEvents";
 import { isUndefined } from "../../typeGuards/isUndefined";
-import { openURLInDefaultBrowser } from "../../utils/actions/openURLInDefaultBrowser";
-import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 import { areBackendInfosEqual } from "../../utils/areBackendInfosEqual";
-import { CircleLoader } from "../common/CircleLoader";
-import { EmptyState } from "../common/EmptyState";
 import { RegistrationDialog } from "../common/RegistrationDialog";
 import type { RegistrationFormValues } from "../common/RegistrationDialog/types";
-import { CardsIcon } from "../common/icons/CardsIcon";
-import { DocumentWithMagnifierIcon } from "../common/icons/DocumentWithMagnifierIcon";
-import { LightBulbSmallCrossedIcon } from "../common/icons/LightBulbSmallCrossedIcon";
-import { LightBulbSmallIcon } from "../common/icons/LightBulbSmallIcon";
-import { OpenTelemetryLogoCrossedSmallIcon } from "../common/icons/OpenTelemetryLogoCrossedSmallIcon";
-import { SlackLogoIcon } from "../common/icons/SlackLogoIcon";
+import { EmptyState } from "./EmptyState";
 import { InsightsCatalog } from "./InsightsCatalog";
 import type { IssuesFilterQuery } from "./InsightsCatalog/FilterPanel/IssuesFilter/types";
 import { EndpointBottleneckInsightTicket } from "./insightTickets/EndpointBottleneckInsightTicket";
@@ -173,46 +162,6 @@ const renderInsightTicket = (
   return null;
 };
 
-const NoDataYet = () => {
-  const handleTroubleshootingLinkClick = () => {
-    sendUserActionTrackingEvent(
-      globalTrackingEvents.TROUBLESHOOTING_LINK_CLICKED,
-      {
-        origin: "insights"
-      }
-    );
-
-    sendMessage(globalActions.OPEN_TROUBLESHOOTING_GUIDE);
-  };
-
-  return (
-    <EmptyState
-      icon={CardsIcon}
-      title={"No data yet"}
-      content={
-        <>
-          <s.EmptyStateDescription>
-            Trigger actions that call this application to learn more about its
-            runtime behavior
-          </s.EmptyStateDescription>
-          <s.TroubleshootingLink onClick={handleTroubleshootingLinkClick}>
-            Not seeing your application data?
-          </s.TroubleshootingLink>
-        </>
-      }
-    />
-  );
-};
-
-const sendMessage = (action: string, data?: object) => {
-  return window.sendMessageToDigma({
-    action,
-    payload: {
-      ...data
-    }
-  });
-};
-
 export const ISSUES_FILTERS_PERSISTENCE_KEY = "issuesFilters";
 
 export const Insights = ({ insightViewType }: InsightsProps) => {
@@ -354,10 +303,6 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
     environmentId
   ]);
 
-  const handleSlackLinkClick = () => {
-    openURLInDefaultBrowser(SLACK_WORKSPACE_URL);
-  };
-
   const handleJiraTicketPopupOpen = useCallback(
     (insight: GenericCodeObjectInsight, spanCodeObjectId?: string) => {
       setInfoToOpenJiraTicket({ insight, spanCodeObjectId });
@@ -370,9 +315,12 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
   };
 
   const handleRegistrationSubmit = (formData: RegistrationFormValues) => {
-    sendMessage(globalActions.PERSONALIZE_REGISTER, {
-      ...formData,
-      scope: "insights view jira ticket info"
+    window.sendMessageToDigma({
+      action: globalActions.PERSONALIZE_REGISTER,
+      payload: {
+        ...formData,
+        scope: "insights view jira ticket info"
+      }
     });
 
     setIsRegistrationInProgress(true);
@@ -398,68 +346,24 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
       !storedInsightViewType ||
       !areFiltersRehydrated;
     if (isInitialLoading) {
-      return <EmptyState content={<CircleLoader size={32} />} />;
+      return <EmptyState preset={"loading"} />;
     }
 
     if (!environments?.length) {
-      return <NoDataYet />;
+      return <EmptyState preset={"noDataYet"} />;
     }
 
     switch (data?.insightsStatus) {
       case InsightsStatus.STARTUP:
-        return (
-          <EmptyState
-            title={"Nothing to show"}
-            icon={DocumentWithMagnifierIcon}
-            content={
-              <>
-                <s.StartupText>
-                  <s.EmptyStateDescription>
-                    Navigate to any code file in your workspace,
-                  </s.EmptyStateDescription>
-                  <s.EmptyStateDescription>
-                    or click a recent activity,
-                  </s.EmptyStateDescription>
-                  <s.EmptyStateDescription>
-                    to see runtime data and insights here.
-                  </s.EmptyStateDescription>
-                </s.StartupText>
-                <s.SlackLink onClick={handleSlackLinkClick}>
-                  <SlackLogoIcon size={14} />
-                  Join Our Slack Channel for Support
-                </s.SlackLink>
-              </>
-            }
-          />
-        );
+        return <EmptyState preset={"nothingToShow"} />;
       case InsightsStatus.NO_INSIGHTS:
-        return (
-          <EmptyState icon={LightBulbSmallCrossedIcon} title={"No insights"} />
-        );
+        return <EmptyState preset={"noInsights"} />;
       case InsightsStatus.INSIGHT_PENDING:
-        return (
-          <EmptyState
-            icon={LightBulbSmallIcon}
-            title={"Processing insights..."}
-          />
-        );
+        return <EmptyState preset={"processing"} />;
       case InsightsStatus.NO_SPANS_DATA:
-        return <NoDataYet />;
+        return <EmptyState preset={"noDataYet"} />;
       case InsightsStatus.NO_OBSERVABILITY:
-        return (
-          <EmptyState
-            icon={OpenTelemetryLogoCrossedSmallIcon}
-            title={"No observability"}
-            content={
-              <>
-                <s.EmptyStateDescription>
-                  Add an annotation to observe this method and collect data
-                  about its runtime behavior
-                </s.EmptyStateDescription>
-              </>
-            }
-          />
-        );
+        return <EmptyState preset={"noObservability"} />;
       case InsightsStatus.DEFAULT:
       default:
         return (

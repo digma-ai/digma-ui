@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { actions as globalActions } from "../../../../actions";
 import { usePersistence } from "../../../../hooks/usePersistence";
 import { useConfigSelector } from "../../../../store/config/useConfigSelector";
+import { useInsightsSelector } from "../../../../store/insights/useInsightsSelector";
 import { trackingEvents as globalEvents } from "../../../../trackingEvents";
 import { isNumber } from "../../../../typeGuards/isNumber";
 import { isUndefined } from "../../../../typeGuards/isUndefined";
@@ -11,11 +12,7 @@ import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserA
 import { useHistory } from "../../../Main/useHistory";
 import { TAB_IDS } from "../../../Navigation/Tabs/types";
 import type { Scope } from "../../../common/App/types";
-import { EmptyState } from "../../../common/EmptyState";
-import { PulseIcon } from "../../../common/icons/32px/PulseIcon";
-import { CardsIcon } from "../../../common/icons/CardsIcon";
 import { NewButton } from "../../../common/v3/NewButton";
-import { NewEmptyState } from "../../../common/v3/NewEmptyState";
 import { actions } from "../../actions";
 import { trackingEvents } from "../../tracking";
 import {
@@ -46,6 +43,8 @@ import type {
   InsightViewType,
   Trace
 } from "../../types";
+import { ViewMode } from "../types";
+import { EmptyState } from "./EmptyState";
 import { EndpointBottleneckInsightCard } from "./insightCards/EndpointBottleneckInsightCard";
 import { EndpointBreakdownInsightCard } from "./insightCards/EndpointBreakdownInsightCard";
 import { EndpointChattyApiV2InsightCard } from "./insightCards/EndpointChattyApiV2InsightCard";
@@ -482,7 +481,9 @@ const renderInsightCard = (
 };
 
 const renderEmptyState = (
-  isFilteringEnabled: boolean,
+  viewMode: ViewMode,
+  areAnyFiltersApplied: boolean,
+  search: string,
   scope: Scope | null,
   insightsViewType: InsightViewType | null,
   goTo: (location: string) => void
@@ -509,18 +510,16 @@ const renderEmptyState = (
     goTo(`/${TAB_IDS.ASSETS}`);
   };
 
-  if (isFilteringEnabled) {
-    return (
-      <EmptyState
-        icon={CardsIcon}
-        title={"No data found"}
-        content={
-          <s.EmptyStateDescription>
-            There are no insights for this criteria
-          </s.EmptyStateDescription>
-        }
-      />
-    );
+  if (search.length > 0) {
+    return <EmptyState preset={"noSearchResults"} />;
+  }
+
+  if (areAnyFiltersApplied) {
+    return <EmptyState preset={"noFilteredData"} />;
+  }
+
+  if (viewMode === ViewMode.OnlyDismissed) {
+    return <EmptyState preset={"noDismissedData"} />;
   }
 
   if (
@@ -530,65 +529,35 @@ const renderEmptyState = (
   ) {
     return (
       <EmptyState
-        icon={CardsIcon}
-        title={"No insights yet"}
-        content={
-          <s.EmptyStateDescription>
+        preset={"noInsightsYet"}
+        message={
+          <>
             Performing more actions that trigger this asset will increase the
             chance of identifying insights. You can also check out the{" "}
             <s.TroubleshootingLink onClick={handleAnalyticsTabLinkClick}>
               analytics
             </s.TroubleshootingLink>{" "}
             tab
-          </s.EmptyStateDescription>
+          </>
         }
       />
     );
   }
 
   if (scope?.span) {
-    return (
-      <EmptyState
-        icon={CardsIcon}
-        title={"No data yet"}
-        content={
-          <s.EmptyStateDescription>
-            No data received yet for this span, please trigger some actions
-            using this code to see more insights.
-          </s.EmptyStateDescription>
-        }
-      />
-    );
+    return <EmptyState preset={"noDataYet"} />;
   }
 
   if (!scope?.span?.spanCodeObjectId && insightsViewType == "Analytics") {
     return (
-      <NewEmptyState
-        icon={PulseIcon}
-        title={"Select an asset to view data"}
-        content={
-          <s.HomeEmptyStateContainer>
-            <s.EmptyDescriptionContainer>
-              <s.EmptyStateDescription>
-                The Analytics tab shows
-              </s.EmptyStateDescription>
-              <s.EmptyStateDescription>
-                performance data for each Digma-
-              </s.EmptyStateDescription>
-              <s.EmptyStateDescription>
-                tracked asset. See all tracked assets
-              </s.EmptyStateDescription>
-              <s.EmptyStateDescription>
-                on the Assets page.
-              </s.EmptyStateDescription>
-            </s.EmptyDescriptionContainer>
-
-            <NewButton
-              buttonType={"primary"}
-              onClick={handleSeeAllAssetsClick}
-              label={"See all assets"}
-            />
-          </s.HomeEmptyStateContainer>
+      <EmptyState
+        preset={"analyticsSelectAsset"}
+        customContent={
+          <NewButton
+            buttonType={"primary"}
+            onClick={handleSeeAllAssetsClick}
+            label={"See all assets"}
+          />
         }
       />
     );
@@ -596,18 +565,11 @@ const renderEmptyState = (
 
   return (
     <EmptyState
-      icon={CardsIcon}
-      title={"No data yet"}
-      content={
-        <>
-          <s.EmptyStateDescription>
-            Trigger actions that call this application to learn more about its
-            runtime behavior
-          </s.EmptyStateDescription>
-          <s.TroubleshootingLink onClick={handleTroubleshootingLinkClick}>
-            Not seeing your application data?
-          </s.TroubleshootingLink>
-        </>
+      preset={"noDataYet"}
+      customContent={
+        <s.TroubleshootingLink onClick={handleTroubleshootingLinkClick}>
+          Not seeing your application data?
+        </s.TroubleshootingLink>
       }
     />
   );
@@ -622,10 +584,13 @@ export const InsightsPage = ({
   onJiraTicketCreate,
   onRefresh,
   isMarkAsReadButtonEnabled,
-  isFilteringEnabled,
   insightsViewType
 }: InsightsPageProps) => {
   const { scope, environment } = useConfigSelector();
+  const { viewMode, search, filters, filteredInsightTypes } =
+    useInsightsSelector();
+  const areAnyFiltersApplied =
+    filters.length > 0 || filteredInsightTypes.length > 0 || search.length > 0;
   const [isInsightJiraTicketHintShown, setIsInsightJiraTicketHintShown] =
     usePersistence<isInsightJiraTicketHintShownPayload>(
       IS_INSIGHT_JIRA_TICKET_HINT_SHOWN_PERSISTENCE_KEY,
@@ -682,7 +647,14 @@ export const InsightsPage = ({
               isAtSpan ? "full" : "compact"
             );
           })
-        : renderEmptyState(isFilteringEnabled, scope, insightsViewType, goTo)}
+        : renderEmptyState(
+            viewMode,
+            areAnyFiltersApplied,
+            search,
+            scope,
+            insightsViewType,
+            goTo
+          )}
     </s.Container>
   );
 };

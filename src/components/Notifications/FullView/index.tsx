@@ -1,10 +1,8 @@
 import { useEffect } from "react";
-import { CircleLoader } from "../../common/CircleLoader";
 import { Pagination } from "../../common/Pagination";
 import { Toggle } from "../../common/Toggle";
 import type { ToggleValue } from "../../common/Toggle/types";
 import { EmptyState } from "../EmptyState";
-import { ErrorEmptyState } from "../ErrorEmptyState";
 import { Header } from "../Header";
 import { NotificationList } from "../NotificationList";
 import type { CodeObjectData } from "../types";
@@ -53,19 +51,13 @@ export const FullView = ({
 
   const renderEmptyState = () => {
     if (isLoading) {
-      return (
-        <s.CircleLoaderContainer>
-          <CircleLoader size={32} />
-        </s.CircleLoaderContainer>
-      );
+      return <EmptyState preset={"loading"} />;
     }
 
     return error ? (
-      <ErrorEmptyState />
+      <EmptyState preset={"error"} />
     ) : (
-      <EmptyState
-        title={showAll ? "No notifications" : "No unread notifications"}
-      />
+      <EmptyState preset={showAll ? "noData" : "noUnreadData"} />
     );
   };
 

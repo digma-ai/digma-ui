@@ -171,22 +171,6 @@ export const List = styled.ul`
   height: 100%;
 `;
 
-export const NoDataText = styled.span`
-  padding: 10px;
-  font-weight: 500;
-  font-size: 14px;
-  text-align: center;
-  color: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#828797";
-      case "dark":
-      case "dark-jetbrains":
-        return "#9b9b9b";
-    }
-  }};
-`;
-
 export const Footer = styled.div`
   display: flex;
   justify-content: space-between;

@@ -12,9 +12,8 @@ import { isString } from "../../../typeGuards/isString";
 import { SCOPE_CHANGE_EVENTS } from "../../../types";
 import { changeScope } from "../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
-import { ChildIcon } from "../../common/icons/30px/ChildIcon";
 import type { ViewMode } from "../AssetsViewScopeConfiguration/types";
-import { NoDataMessage } from "../NoDataMessage";
+import { EmptyState } from "../EmptyState";
 import { actions } from "../actions";
 import { trackingEvents } from "../tracking";
 import { checkIfAnyFiltersApplied, getAssetTypeInfo } from "../utils";
@@ -210,50 +209,42 @@ export const AssetTypeList = ({
   };
 
   if (isInitialLoading) {
-    return <NoDataMessage type={"loading"} />;
+    return <EmptyState preset={"loading"} />;
   }
 
   if (data?.assetCategories.every((x) => x.count === 0)) {
     if (areAnyFiltersApplied) {
-      return <NoDataMessage type={"noSearchResults"} />;
+      if (search.length > 0) {
+        return <EmptyState preset={"noSearchResults"} />;
+      }
+      return <EmptyState preset={"noFilteredData"} />;
     }
 
     if (!scope) {
-      return <NoDataMessage type={"noDataYet"} />;
+      return <EmptyState preset={"noDataYet"} />;
     }
 
     if (showNoDataWithParents && data.parents) {
       return (
-        <s.EmptyStateContainer>
-          <s.StyledEmptyState
-            icon={ChildIcon}
-            title={"No Child Assets"}
-            content={
-              <>
-                <s.EmptyStateTextContainer>
-                  <span>
-                    There are no child assets under this asset. You can try
-                  </span>
-                  <span>
-                    browsing its parent spans to continue to explore the trace.
-                  </span>
-                </s.EmptyStateTextContainer>
-                {data.parents.map((x) => (
-                  <s.ParentLink
-                    key={x.spanCodeObjectId}
-                    onClick={() => handleAssetLinkClick(x.spanCodeObjectId)}
-                  >
-                    {x.displayName}
-                  </s.ParentLink>
-                ))}
-              </>
-            }
-          />
-        </s.EmptyStateContainer>
+        <EmptyState
+          preset={"noChildAssets"}
+          customContent={
+            <>
+              {data.parents.map((x) => (
+                <s.ParentLink
+                  key={x.spanCodeObjectId}
+                  onClick={() => handleAssetLinkClick(x.spanCodeObjectId)}
+                >
+                  {x.displayName}
+                </s.ParentLink>
+              ))}
+            </>
+          }
+        />
       );
     }
 
-    return <NoDataMessage type={"noDataForAsset"} />;
+    return <EmptyState preset={"noDataForAsset"} />;
   }
 
   const assetTypeListItems = ASSET_TYPE_IDS.map((assetTypeId) => {

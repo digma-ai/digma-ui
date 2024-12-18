@@ -21,7 +21,7 @@ export const OptionButton = styled.button<OptionButtonProps>`
   outline: none;
   cursor: pointer;
   user-select: none;
-  border-radius: ${({ $size }) => ($size === "small" ? "2px" : " 4px")};
+  border-radius: ${({ $size }) => ($size === "small" ? "2px" : "4px")};
   padding: ${({ $size }) => ($size === "small" ? "2px" : "2px 4px")};
   color: ${({ theme, $selected }) =>
     $selected ? theme.colors.v3.text.white : theme.colors.v3.text.primary};

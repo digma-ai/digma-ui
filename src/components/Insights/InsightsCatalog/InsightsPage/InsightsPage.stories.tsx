@@ -33,7 +33,6 @@ const scope: Scope = {
 
 const props: InsightsPageProps = {
   insights: [],
-  isFilteringEnabled: false,
   onJiraTicketCreate: () => {
     return undefined;
   },
@@ -106,25 +105,6 @@ export const NoInsightsAndNoAnalyticsAtSpan: Story = {
     )
   ],
   args: props
-};
-
-export const NoInsightsWithAppliedFilters: Story = {
-  decorators: [
-    (Story) => (
-      <ConfigContext.Provider
-        value={{
-          ...initialState,
-          scope
-        }}
-      >
-        <Story />
-      </ConfigContext.Provider>
-    )
-  ],
-  args: {
-    ...props,
-    isFilteringEnabled: true
-  }
 };
 
 export const NoInsightsButAnalyticsExist: Story = {

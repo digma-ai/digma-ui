@@ -1,8 +1,6 @@
 import { formatUnit } from "../../../utils/formatUnit";
-import { CircleLoader } from "../../common/CircleLoader";
 import { Link } from "../../common/Link";
 import { EmptyState } from "../EmptyState";
-import { ErrorEmptyState } from "../ErrorEmptyState";
 import { Header } from "../Header";
 import { NotificationList } from "../NotificationList";
 import type { CodeObjectData } from "../types";
@@ -33,17 +31,13 @@ export const RecentView = ({
 
   const renderEmptyState = () => {
     if (isLoading) {
-      return (
-        <s.CircleLoaderContainer>
-          <CircleLoader size={32} />
-        </s.CircleLoaderContainer>
-      );
+      return <EmptyState preset={"loading"} />;
     }
 
     return error ? (
-      <ErrorEmptyState />
+      <EmptyState preset={"error"} />
     ) : (
-      <EmptyState title={"No unread notifications"} />
+      <EmptyState preset={"noUnreadData"} />
     );
   };
 

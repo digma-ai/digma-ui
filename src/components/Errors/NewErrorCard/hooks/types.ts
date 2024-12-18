@@ -1,4 +1,4 @@
-export interface DismissPayload {
+export interface DismissResultPayload {
   id: string;
   status: "success" | "failure";
   error?: {
@@ -6,7 +6,7 @@ export interface DismissPayload {
   };
 }
 
-export interface UndismissPayload {
+export interface UndismissResultPayload {
   id: string;
   status: "success" | "failure";
   error?: {

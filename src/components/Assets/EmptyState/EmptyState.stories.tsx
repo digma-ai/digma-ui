@@ -1,11 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
-
-import { NoDataMessage } from ".";
+import { EmptyState } from ".";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
-const meta: Meta<typeof NoDataMessage> = {
-  title: "Assets/NoDataMessage",
-  component: NoDataMessage,
+const meta: Meta<typeof EmptyState> = {
+  title: "Assets/EmptyState",
+  component: EmptyState,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
     layout: "fullscreen"
@@ -16,27 +15,32 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-// More on writing stories with args: https://storybook.js.org/docs/react/writing-stories/args
+export const UpdateRequired: Story = {
+  args: {
+    preset: "updateRequired"
+  }
+};
+
 export const Loading: Story = {
   args: {
-    type: "loading"
+    preset: "loading"
   }
 };
 
 export const NoDataYet: Story = {
   args: {
-    type: "noDataYet"
+    preset: "noDataYet"
+  }
+};
+
+export const NoDataForAsset: Story = {
+  args: {
+    preset: "noDataForAsset"
   }
 };
 
 export const NoSearchResults: Story = {
   args: {
-    type: "noSearchResults"
-  }
-};
-
-export const NoDataForAssetResults: Story = {
-  args: {
-    type: "noDataForAsset"
+    preset: "noSearchResults"
   }
 };

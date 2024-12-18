@@ -3,6 +3,9 @@ import { CSSTransition } from "react-transition-group";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
+import { ViewMode } from "../../../store/errors/errorsSlice";
+import { useErrorsSelector } from "../../../store/errors/useErrorsSelector";
+import { useStore } from "../../../store/useStore";
 import { FeatureFlag } from "../../../types";
 import { changeScope } from "../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
@@ -16,6 +19,7 @@ import { PinFillIcon } from "../../common/icons/16px/PinFillIcon";
 import { PinIcon } from "../../common/icons/16px/PinIcon";
 import { NewIconButton } from "../../common/v3/NewIconButton";
 import { Tooltip } from "../../common/v3/Tooltip";
+import { actions } from "../actions";
 import { TimestampKeyValue } from "../ErrorCard/TimestampKeyValue";
 import { usePinning } from "../GlobalErrorsList/usePinning";
 import { getTagType, HIGH_SEVERITY_SCORE_THRESHOLD } from "../Score";
@@ -38,6 +42,8 @@ export const NewErrorCard = ({
   const [isHistogramVisible, setIsHistogramVisible] = useState(false);
   const chartContainerRef = useRef<HTMLDivElement>(null);
   const { backendInfo } = useConfigSelector();
+  const { globalErrorsList } = useErrorsSelector();
+  const { setGlobalErrorsViewMode } = useStore.getState();
   const [isPinned, setIsPinned] = useState(Boolean(data.pinnedAt));
 
   const isOccurrenceChartEnabled = getFeatureFlagValue(
@@ -113,8 +119,22 @@ export const NewErrorCard = ({
       dismissalData?.payload.status === "success"
     ) {
       onDismissStatusChange(dismissalData.payload.id);
+
+      if (
+        dismissalData.action === actions.SET_UNDISMISS_ERROR_RESULT &&
+        globalErrorsList?.length === 1 &&
+        globalErrorsList[0].id === dismissalData.payload.id
+      ) {
+        setGlobalErrorsViewMode(ViewMode.All);
+      }
     }
-  }, [dismissalData, onDismissStatusChange, previousDismissalData]);
+  }, [
+    dismissalData,
+    globalErrorsList,
+    onDismissStatusChange,
+    previousDismissalData,
+    setGlobalErrorsViewMode
+  ]);
 
   useEffect(() => {
     if (

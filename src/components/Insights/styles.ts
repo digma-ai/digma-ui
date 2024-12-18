@@ -12,13 +12,6 @@ export const Container = styled.div`
   position: relative;
 `;
 
-export const StartupText = styled.span`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-`;
-
 export const Description = styled.div`
   display: flex;
   gap: 8px;
@@ -67,33 +60,6 @@ export const Link = styled(CommonLink)`
         return "#92affa";
     }
   }};
-`;
-
-export const SlackLink = styled(Link)`
-  display: flex;
-  align-items: center;
-  gap: 4px;
-`;
-
-export const EmptyStateDescription = styled.span`
-  font-size: 14px;
-  font-weight: 500;
-  margin-bottom: 4px;
-  text-align: center;
-  color: ${({ theme }) => {
-    switch (theme.mode) {
-      case "light":
-        return "#788ca9";
-      case "dark":
-      case "dark-jetbrains":
-        return "#7c7c94";
-    }
-  }};
-`;
-
-export const TroubleshootingLink = styled(Link)`
-  font-size: 14px;
-  text-decoration: underline;
 `;
 
 export const Overlay = styled.div`

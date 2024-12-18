@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { bodySemiboldTypography } from "../../../common/App/typographies";
+import { Spinner as CommonSpinner } from "../../../common/v3/Spinner";
 import { Tooltip } from "../../../common/v3/Tooltip/styles";
 
 export const HEIGHT = 208; // in pixels
@@ -55,4 +56,8 @@ export const EmptyStateIconContainer = styled.div`
   border-radius: 50%;
   background: ${({ theme }) => theme.colors.v3.surface.sidePanelHeader};
   color: ${({ theme }) => theme.colors.v3.surface.gray};
+`;
+
+export const Spinner = styled(CommonSpinner)`
+  color: currentcolor;
 `;

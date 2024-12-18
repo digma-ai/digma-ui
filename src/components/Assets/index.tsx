@@ -10,7 +10,6 @@ import { useStore } from "../../store/useStore";
 import { isUndefined } from "../../typeGuards/isUndefined";
 import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionTrackingEvent";
 import { useHistory } from "../Main/useHistory";
-import { EmptyState } from "../common/EmptyState";
 import { SearchInput } from "../common/SearchInput";
 import { RefreshIcon } from "../common/icons/16px/RefreshIcon";
 import { NewIconButton } from "../common/v3/NewIconButton";
@@ -20,7 +19,7 @@ import { AssetTypeList } from "./AssetTypeList";
 import type { AssetCategoriesData } from "./AssetTypeList/types";
 import { AssetsFilter } from "./AssetsFilter";
 import { AssetsViewScopeConfiguration } from "./AssetsViewScopeConfiguration";
-import { NoDataMessage } from "./NoDataMessage";
+import { EmptyState } from "./EmptyState";
 import * as s from "./styles";
 import { trackingEvents } from "./tracking";
 import type { DataRefresher } from "./types";
@@ -149,27 +148,15 @@ export const Assets = () => {
 
   const renderContent = () => {
     if (isBackendUpgradeMessageVisible) {
-      return (
-        <EmptyState
-          content={
-            <s.UpgradeMessage>
-              <span>We&apos;ve added some new features.</span>
-              <span>
-                Please update the Digma Engine to the latest version using the
-                action above to continue using Digma
-              </span>
-            </s.UpgradeMessage>
-          }
-        />
-      );
+      return <EmptyState preset={"updateRequired"} />;
     }
 
     if (!environments?.length) {
-      return <NoDataMessage type={"noDataYet"} />;
+      return <EmptyState preset={"noDataYet"} />;
     }
 
     if (!filters && showAssetsHeaderToolBox) {
-      return <NoDataMessage type={"loading"} />;
+      return <EmptyState preset={"loading"} />;
     }
 
     if (!selectedAssetTypeId) {

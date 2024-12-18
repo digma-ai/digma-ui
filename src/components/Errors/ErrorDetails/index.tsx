@@ -1,9 +1,8 @@
 import { useMemo } from "react";
 import type { DataFetcherConfiguration } from "../../../hooks/useFetchData";
 import { useFetchData } from "../../../hooks/useFetchData";
-import { NewCircleLoader } from "../../common/NewCircleLoader";
 import { actions } from "../actions";
-import { EmptyStateContainer } from "../styles";
+import { EmptyState } from "../EmptyState";
 import { ErrorDetailsCardContent } from "./ErrorDetailsCardContent";
 import { ErrorDetailsCardHeader } from "./ErrorDetailsCardHeader";
 import * as s from "./styles";
@@ -35,11 +34,7 @@ export const ErrorDetails = ({ id, onGoToAllErrors }: ErrorDetailsProps) => {
 
   if (!data) {
     // TODO: replace with skeletons
-    return (
-      <EmptyStateContainer>
-        <NewCircleLoader size={32} />
-      </EmptyStateContainer>
-    );
+    return <EmptyState preset={"loading"} />;
   }
 
   const handleGoBack = () => {

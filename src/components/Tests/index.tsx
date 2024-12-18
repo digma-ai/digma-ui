@@ -11,13 +11,11 @@ import { sendUserActionTrackingEvent } from "../../utils/actions/sendUserActionT
 import { useHistory } from "../Main/useHistory";
 import { TAB_IDS } from "../Navigation/Tabs/types";
 import type { MenuItem } from "../common/FilterMenu/types";
-import { NewCircleLoader } from "../common/NewCircleLoader";
 import { Pagination } from "../common/Pagination";
 import { RegistrationDialog } from "../common/RegistrationDialog";
 import type { RegistrationFormValues } from "../common/RegistrationDialog/types";
-import { RefreshIcon } from "../common/icons/16px/RefreshIcon";
 import { NewButton } from "../common/v3/NewButton";
-import { NewEmptyState } from "../common/v3/NewEmptyState";
+import { EmptyState } from "./EmptyState";
 import { EnvironmentFilter } from "./EnvironmentFilter";
 import { TestCard } from "./TestCard";
 import { TestTicket } from "./TestTicket";
@@ -89,6 +87,7 @@ export const Tests = () => {
   const scopeSpan = scope?.span ?? null;
   const previousScopeSpan = usePrevious(scopeSpan);
   const { goTo } = useHistory();
+  const areAnyFiltersApplied = selectedEnvironments.length > 0;
 
   const environmentMenuItems: MenuItem[] = (environments ?? []).map(
     (environment) => ({
@@ -250,6 +249,10 @@ export const Tests = () => {
     }
   };
 
+  const handleResetFiltersButtonClick = () => {
+    setSelectedEnvironments([]);
+  };
+
   const handlePageChange = (page: number) => {
     window.sendMessageToDigma<GetSpanLatestDataPayload>({
       action: actions.GET_SPAN_LATEST_DATA,
@@ -276,26 +279,29 @@ export const Tests = () => {
 
   const renderContent = () => {
     if (isInitialLoading) {
-      return (
-        <s.NoDataContainer>
-          <NewCircleLoader size={32} />
-        </s.NoDataContainer>
-      );
+      return <EmptyState preset={"loading"} />;
     }
 
     if (data?.error) {
-      return <s.NoDataContainer>{data.error.message}</s.NoDataContainer>;
+      return <EmptyState message={data.error.message} />;
     }
 
     if (data?.data?.entries.length === 0) {
-      return (
-        <s.NoDataContainer>
-          <span>Run tests with Digma</span>
-          <span>
-            Run your test with Digma enabled to see related tests and insights
-          </span>
-        </s.NoDataContainer>
-      );
+      if (areAnyFiltersApplied) {
+        return (
+          <EmptyState
+            preset={"noFilteredData"}
+            customContent={
+              <NewButton
+                onClick={handleResetFiltersButtonClick}
+                label={"Reset filters"}
+              />
+            }
+          />
+        );
+      }
+
+      return <EmptyState preset={"noData"} />;
     }
 
     return (
@@ -353,28 +359,16 @@ export const Tests = () => {
           )}
         </>
       ) : (
-        <s.NoDataContainer>
-          <NewEmptyState
-            icon={RefreshIcon}
-            title={"Select an asset to run tests"}
-            content={
-              <>
-                <s.EmptyStateTextContainer>
-                  <span>The Errors tab shows details for</span>
-                  <span>exceptions for each Digma-tracked</span>
-                  <span>asset. See all tracked assets on the</span>
-                  <span>Assets page.</span>
-                </s.EmptyStateTextContainer>
-
-                <NewButton
-                  buttonType={"primary"}
-                  onClick={handleSeeAllAssetsClick}
-                  label={"See all assets"}
-                />
-              </>
-            }
-          />
-        </s.NoDataContainer>
+        <EmptyState
+          preset={"selectAsset"}
+          customContent={
+            <NewButton
+              buttonType={"primary"}
+              onClick={handleSeeAllAssetsClick}
+              label={"See all assets"}
+            />
+          }
+        />
       )}
     </s.Container>
   );

@@ -223,16 +223,16 @@ export const MetricsReport = () => {
       (viewLevel === "services" && !servicesIssuesData) ||
       (viewLevel === "endpoints" && !endpointsIssuesData)
     ) {
-      return <EmptyState type={"loading"} />;
+      return <EmptyState preset={"loading"} />;
     }
 
     if (data.length === 0) {
       if (viewLevel === "services") {
-        return <EmptyState type={"noServices"} />;
+        return <EmptyState preset={"noServices"} />;
       }
 
       if (viewLevel === "endpoints") {
-        return <EmptyState type={"noEndpoints"} />;
+        return <EmptyState preset={"noEndpoints"} />;
       }
     }
 
@@ -274,10 +274,10 @@ export const MetricsReport = () => {
               {renderContent()}
             </>
           ) : (
-            <EmptyState type={"noData"} />
+            <EmptyState preset={"noData"} />
           )
         ) : (
-          <EmptyState type={"loading"} />
+          <EmptyState preset={"loading"} />
         )}
         <s.Footer>
           <DigmaLogoIcon size={14} />

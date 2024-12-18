@@ -10,9 +10,7 @@ import { useStore } from "../../../store/useStore";
 import { SCOPE_CHANGE_EVENTS } from "../../../types";
 import { changeScope } from "../../../utils/actions/changeScope";
 import { sendUserActionTrackingEvent } from "../../../utils/actions/sendUserActionTrackingEvent";
-import { EmptyState } from "../../common/EmptyState";
 import { Menu } from "../../common/Menu";
-import { NewCircleLoader } from "../../common/NewCircleLoader";
 import { Pagination } from "../../common/Pagination";
 import { Popover } from "../../common/Popover";
 import { PopoverContent } from "../../common/Popover/PopoverContent";
@@ -20,6 +18,7 @@ import { PopoverTrigger } from "../../common/Popover/PopoverTrigger";
 import { ChevronIcon } from "../../common/icons/ChevronIcon";
 import { SortIcon } from "../../common/icons/SortIcon";
 import { Direction } from "../../common/icons/types";
+import { EmptyState } from "../EmptyState";
 import { actions } from "../actions";
 import { trackingEvents } from "../tracking";
 import { checkIfAnyFiltersApplied, getAssetTypeInfo } from "../utils";
@@ -292,7 +291,7 @@ export const AssetList = ({
 
   const renderContent = () => {
     if (isInitialLoading) {
-      return <EmptyState content={<NewCircleLoader size={32} />} />;
+      return <EmptyState preset={"loading"} />;
     }
 
     return entries.length > 0 ? (
@@ -329,20 +328,14 @@ export const AssetList = ({
           />
         </s.Footer>
       </>
+    ) : areAnyFiltersApplied ? (
+      search.length > 0 ? (
+        <EmptyState preset={"noSearchResults"} />
+      ) : (
+        <EmptyState preset={"noFilteredData"} />
+      )
     ) : (
-      <s.NoDataText>
-        {areAnyFiltersApplied ? (
-          <>
-            It seems there are no assets matching your selected filters at the
-            moment
-          </>
-        ) : (
-          <>
-            Not seeing your data here? Maybe you&apos;re missing some
-            instrumentation!
-          </>
-        )}
-      </s.NoDataText>
+      <EmptyState preset={"noData"} />
     );
   };
 

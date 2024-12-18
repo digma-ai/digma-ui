@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTheme } from "styled-components";
 import { getFeatureFlagValue } from "../../../featureFlags";
-import { useDebounce } from "../../../hooks/useDebounce";
 import { usePrevious } from "../../../hooks/usePrevious";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { useInsightsSelector } from "../../../store/insights/useInsightsSelector";
@@ -71,8 +70,6 @@ export const InsightsCatalog = ({
     scope,
     backendInfo
   } = useConfigSelector();
-
-  const debouncedSearchInputValue = useDebounce(searchInputValue, 1000);
 
   const insights = data?.insights ?? [];
   const totalCount = data?.totalCount ?? 0;
@@ -300,9 +297,6 @@ export const InsightsCatalog = ({
         page={page}
         insights={insights}
         insightsViewType={insightViewType}
-        isFilteringEnabled={
-          debouncedSearchInputValue !== null && debouncedSearchInputValue !== ""
-        }
         onJiraTicketCreate={onJiraTicketCreate}
         onRefresh={onRefresh}
         isMarkAsReadButtonEnabled={isShowUnreadOnly(filters)}
