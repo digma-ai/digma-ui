@@ -14,32 +14,9 @@
   </head>
   <body>
     <div id="root"></div>
-    <!-- Environment variables -->
-    <script>
-      window.digmaApiUrl;
-      window.theme;
-      window.platform;
-      window.ide;
-      window.mainFont;
-      window.codeFont;
-      window.jaegerURL;
-      window.isJaegerEnabled;
-      window.userEmail;
-      window.userRegistrationEmail;
-      window.environment;
-      window.isObservabilityEnabled;
-      window.isDigmaEngineInstalled;
-      window.isDigmaEngineRunning;
-      window.isDockerInstalled;
-      window.isDockerComposeInstalled;
-      window.isMicrometerProject;
-      window.productKey;
-      window.userId;
-      window.isDigmathonModeEnabled;
-      window.isDigmathonGameFinished;
-      <% for (var i = 0; i < environmentVariables.length; i++) { %>
-      window.<%= environmentVariables[i] %>;<% } %>
-    </script>
-    <script src="./index.js"></script>
+    <script src="./env.js"></script>
+    <% for (const jsFile of jsAssets) { %>
+    <script src="./<%= jsFile %>"></script>
+    <% } %>
   </body>
 </html>

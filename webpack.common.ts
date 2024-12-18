@@ -1,3 +1,4 @@
+import * as cheerio from "cheerio";
 import CopyWebpackPlugin from "copy-webpack-plugin";
 import dotenv from "dotenv";
 import HtmlWebpackPlugin from "html-webpack-plugin";
@@ -50,8 +51,8 @@ const getConfig = (env: WebpackEnv): WebpackConfiguration => {
     },
     output: {
       path: path.resolve(__dirname, "dist"),
-      filename: "[name]/index.js",
-      publicPath: "/"
+      filename: "[name]/index.[contenthash].js",
+      publicPath: ""
     },
     module: {
       rules: [
@@ -62,6 +63,35 @@ const getConfig = (env: WebpackEnv): WebpackConfiguration => {
       ]
     },
     plugins: [
+      new CopyWebpackPlugin({
+        patterns: [
+          {
+            from: path.resolve(__dirname, "./public")
+          },
+          ...(env.PLATFORM === "JetBrains"
+            ? [
+                {
+                  from: path.resolve(__dirname, `./jaeger-ui/dist/static`),
+                  to: "jaeger-ui/static"
+                },
+                {
+                  from: path.resolve(__dirname, `./jaeger-ui/dist/index.html`),
+                  to: "jaeger-ui/index.html",
+                  transform(content: Buffer) {
+                    const BASE_URL = "/jaeger-ui/";
+                    const $ = cheerio.load(content.toString());
+                    $('base[data-inject-target="BASE_URL"]').attr(
+                      "href",
+                      BASE_URL
+                    );
+                    $("head").append('<script src="./env.js"></script>');
+                    return Buffer.from($.html());
+                  }
+                }
+              ]
+            : [])
+        ]
+      }),
       new CopyWebpackPlugin({
         patterns: [
           {
@@ -88,10 +118,17 @@ const getConfig = (env: WebpackEnv): WebpackConfiguration => {
           inject: false,
           minify: false,
           scriptLoading: "blocking",
-          templateParameters: {
-            environmentVariables: appData[app]?.environmentVariables ?? [],
-            version: (packageJson as PackageJson).version
-          }
+          templateParameters: (compilation, assets, assetTags, options) => ({
+            compilation,
+            webpackConfig: compilation.options,
+            htmlWebpackPlugin: {
+              tags: assetTags,
+              files: assets,
+              options
+            },
+            version: (packageJson as PackageJson).version,
+            jsAssets: assets.js.map((js) => path.basename(js))
+          })
         });
       }),
       ...(env.COMPRESS

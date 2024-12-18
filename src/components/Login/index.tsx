@@ -5,7 +5,7 @@ import { Helmet } from "react-helmet";
 import { TextField } from "../common/v3/TextField";
 import * as s from "./styles";
 
-export const JaegerLogin = () => {
+export const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -62,10 +62,7 @@ export const JaegerLogin = () => {
         <s.Panel>
           <s.TitleContainer>
             <s.Title>Sign in</s.Title>
-            <s.Subtitle>
-              Sign in with your Digma credentials for secure access to your
-              Jaeger traces.
-            </s.Subtitle>
+            <s.Subtitle>Sign in with your Digma credentials</s.Subtitle>
           </s.TitleContainer>
           <s.Form onSubmit={handleSubmit}>
             <TextField

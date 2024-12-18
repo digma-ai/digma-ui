@@ -15,8 +15,8 @@ export const appData: AppData = {
     entry: path.resolve(__dirname, "./src/containers/IdeLauncher/index.tsx"),
     platforms: ["Web"]
   },
-  ["jaeger-login"]: {
-    entry: path.resolve(__dirname, "./src/containers/JaegerLogin/index.tsx"),
+  login: {
+    entry: path.resolve(__dirname, "./src/containers/Login/index.tsx"),
     platforms: ["Web"]
   },
   ["installation-wizard"]: {

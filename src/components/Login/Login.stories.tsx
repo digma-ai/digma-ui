@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { JaegerLogin } from ".";
+import { Login } from ".";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
-const meta: Meta<typeof JaegerLogin> = {
-  title: "Jaeger Login/JaegerLogin",
-  component: JaegerLogin,
+const meta: Meta<typeof Login> = {
+  title: "Login/Login",
+  component: Login,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout
     layout: "fullscreen"
