@@ -70,12 +70,11 @@
   </head>
   <body>
     <div id="root"></div>
-    <!-- Environment variables -->
     <script>
       window.platform = "Web";
-      <% for (var i = 0; i < environmentVariables.length; i++) { %>
-      window.<%= environmentVariables[i] %>;<% } %>
     </script>
-    <script src="./index.js"></script>
+    <% for (const jsFile of jsAssets) { %>
+    <script src="./<%= jsFile %>"></script>
+    <% } %>
   </body>
 </html>
