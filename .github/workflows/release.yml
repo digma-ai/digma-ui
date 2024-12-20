@@ -3,7 +3,7 @@ name: Lint & test & build & publish Docker image
 on:
   workflow_dispatch:
   release:
-    types: [released]
+    types: [prereleased, released]
 
 permissions:
   contents: write
@@ -59,6 +59,7 @@ jobs:
         build-push-docker-image
       ]
     runs-on: ubuntu-latest
+    if: github.event.release.prerelease == false
     steps:
       - uses: actions/checkout@v4
       - name: Get version and dependencies

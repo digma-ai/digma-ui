@@ -40,14 +40,12 @@ jobs:
         with:
           images: digmaai/digma-ui
           tags: |
-            type=schedule
             type=ref,event=branch
             type=ref,event=pr
             type=match,pattern=v(.*),group=1
             type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
-            type=sha
+            type=semver,pattern={{major}}.{{minor}},enable=${{ !contains(github.ref, '-') }}
+            type=semver,pattern={{major}},enable=${{ !contains(github.ref, '-') }}
             # set latest tag for main branch
             type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
 
