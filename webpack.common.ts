@@ -1,6 +1,5 @@
 import * as cheerio from "cheerio";
 import CopyWebpackPlugin from "copy-webpack-plugin";
-import dotenv from "dotenv";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import path from "path";
 import type { Configuration as WebpackConfiguration } from "webpack";
@@ -8,8 +7,6 @@ import ZipPlugin from "zip-webpack-plugin";
 import type { WebpackEnv } from "./apps";
 import { appData } from "./apps";
 import packageJson from "./package.json";
-
-dotenv.config();
 
 interface PackageJson {
   version: string;
@@ -131,7 +128,7 @@ const getConfig = (env: WebpackEnv): WebpackConfiguration => {
           })
         });
       }),
-      ...(env.COMPRESS
+      ...(env.ZIP
         ? [
             new ZipPlugin({
               filename: getZipFilename(env)
