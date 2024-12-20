@@ -1,12 +1,14 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
+  display: flex;
   height: 100%;
-  padding: 0 20px;
+  background: ${({ theme }) => theme.colors.v3.surface.secondary};
 `;
 
 export const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100%;
+  flex-grow: 1;
+  overflow: hidden;
 `;
