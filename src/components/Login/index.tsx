@@ -55,7 +55,7 @@ export const Login = () => {
   return (
     <s.Container>
       <Helmet>
-        <title>Digma Jaeger Login</title>
+        <title>Digma login</title>
         <meta name={"viewport"} content={"width=device-width"} />
       </Helmet>
       <s.ContentContainer>

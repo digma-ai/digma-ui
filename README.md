@@ -18,6 +18,14 @@ Run tests:
 npm run test
 ```
 
+Start dev server:
+
+```shell
+npm run start
+```
+
+Dev server will start `http://localhost:3000`
+
 Build package:
 
 ```shell
@@ -31,11 +39,22 @@ Supported `platform` values:
 
 Build of the package will be in the `./dist` directory
 
+## Environment variables
+
+To set environment variables use .env file
+
+| Name           | Type   | Default | Description                                     |
+| -------------- | ------ | ------- | ----------------------------------------------- |
+| API_BASE_URL   | string | -       | Base URL to proxy API requests (for dev server) |
+| USERNAME       | string | -       | User login (for dev server)                     |
+| PASSWORD       | string | -       | User password (for dev server)                  |
+| JAEGER_UI_PATH | string | -       | Path to custom Jaeger UI build                  |
+
 ## Jaeger UI
 
 The Digma UI distributive includes a [Digma fork of Jaeger UI](https://github.com/digma-ai/jaeger-ui). You can find the linked version in the [./dependencies.json](./dependencies.json) file.
 
-To use a custom build of Jaeger UI during development, create a `.env` file in the root of this repository and add the following line:
+To use a custom build of Jaeger UI during development use `JAEGER_UI_PATH` environment variable.
 
 ```env
 JAEGER_UI_PATH=path/to/jaeger-ui/dist
