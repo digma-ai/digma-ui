@@ -40,7 +40,6 @@ jobs:
         with:
           images: digmaai/digma-ui
           tags: |
-            type=schedule
             type=ref,event=branch
             type=ref,event=pr
             type=match,pattern=v(.*),group=1
