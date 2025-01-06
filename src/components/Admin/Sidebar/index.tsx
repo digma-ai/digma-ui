@@ -1,47 +1,33 @@
-import { logger } from "../../../logging";
-import { HomeIcon } from "../../common/icons/16px/HomeIcon";
+import { useEffect } from "react";
+import { useLogoutMutation } from "../../../redux/services/auth";
 import { LogoutIcon } from "../../common/icons/16px/LogoutIcon";
+import { NavMenu } from "./NavMenu";
 import * as s from "./styles";
-import type { NavigationItem } from "./types";
-
-const navigationItems: NavigationItem[] = [
-  {
-    id: "home",
-    name: "Home",
-    route: "/",
-    icon: <HomeIcon size={16} color={"currentColor"} />,
-    isActive: true
-  }
-];
 
 export const Sidebar = () => {
-  // TODO: Replace with actual theme kind
-  const themeKind = "light";
+  const [logout, result] = useLogoutMutation();
 
   const handleLogoutButtonClick = () => {
-    // TODO: Implement
-    logger.info("Logout button clicked");
+    void logout();
   };
+
+  useEffect(() => {
+    if (result.isSuccess) {
+      window.location.href = "/admin";
+    }
+  }, [result.isSuccess]);
 
   return (
     <s.Sidebar>
       <s.Logo
-        src={`/assets/images/digmaLogoLarge_${themeKind}.svg`}
+        // TODO: Replace with actual theme
+        src={`/assets/images/digmaLogoLarge_light.svg`}
         alt={"Digma logotype"}
       />
-      <nav>
-        <s.NavigationList>
-          {navigationItems.map((x) => (
-            <s.NavigationListItem key={x.id} $isActive={x.isActive}>
-              {x.icon}
-              <span>{x.name}</span>
-            </s.NavigationListItem>
-          ))}
-        </s.NavigationList>
-      </nav>
-      <s.LogoutButton onClick={handleLogoutButtonClick}>
+      <NavMenu />
+      <s.LogoutButton onClick={handleLogoutButtonClick} as={"button"}>
         <LogoutIcon size={16} color={"currentColor"} />
-        Logout
+        Log out
       </s.LogoutButton>
     </s.Sidebar>
   );

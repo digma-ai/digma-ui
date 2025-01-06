@@ -4,6 +4,7 @@ import https from "https";
 import path from "path";
 import createStyledComponentsTransformer from "typescript-plugin-styled-components";
 import type { WebpackConfiguration } from "webpack-dev-server";
+import { appData } from "./apps";
 
 interface Credentials {
   username: string;
@@ -34,7 +35,10 @@ const apiProxyClient = axios.create({
   baseURL: process.env.API_BASE_URL,
   httpsAgent: new https.Agent({
     rejectUnauthorized: false
-  })
+  }),
+  headers: {
+    "Digma-Access-Token": `Token ${process.env.API_TOKEN}`
+  }
 });
 
 const login = async ({ username, password }: Credentials) => {
@@ -84,18 +88,36 @@ const getSession = async (
 
 const styledComponentsTransformer = createStyledComponentsTransformer();
 
+const webApps = Object.entries(appData)
+  .filter(([, entry]) => entry.platforms.includes("Web"))
+  .map(([name]) => name);
+
 const config: WebpackConfiguration = {
   extends: path.resolve(__dirname, "./webpack.common.ts"),
   mode: "development",
   devtool: "eval-source-map",
   devServer: {
+    historyApiFallback: {
+      rewrites: [
+        // Bypass HMR-related requests
+        {
+          from: /\.hot-update\.json$/,
+          to: ({ request }) => request.url
+        },
+        ...webApps.map((app) => ({
+          from: new RegExp(`/${app}/`),
+          to: `/${app}/index.html`
+        }))
+      ]
+    },
     port: 3000,
     proxy: [
       {
-        context: ["/api"],
+        context: ["/api", "/auth"],
         target: process.env.API_BASE_URL,
         pathRewrite: { "^/api": "" },
-        secure: false
+        secure: false,
+        changeOrigin: true
       }
     ],
     setupMiddlewares: (middlewares, devServer) => {
@@ -107,10 +129,13 @@ const config: WebpackConfiguration = {
         getSession(credentials, session)
           .then((session) => {
             req.headers.authorization = `Bearer ${session?.accessToken}`;
+            req.headers[
+              "Digma-Access-Token"
+            ] = `Token ${process.env.API_TOKEN}`;
           })
           .catch((error) => {
             // eslint-disable-next-line no-console
-            console.error("Failed to enrich request with token", error);
+            console.error("Failed to enrich request with tokens", error);
           })
           .finally(() => {
             next();

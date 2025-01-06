@@ -8,12 +8,34 @@ export const Reports = () => (
       <s.WidgetsContainer>
         {[
           {
-            title: "Code issues"
+            title: "Code issues",
+            route: "/reports/code-issues",
+            // TODO: Replace with themed image
+            backgroundImage: "/assets/images/admin/reports/codeIssues_dark.svg",
+            isEnabled: true
           },
-          { title: "Breaking changes" },
-          { title: "Critical issues tracking" }
+          {
+            title: "Breaking changes",
+            route: "#",
+            // TODO: Replace with themed image
+            backgroundImage: "/assets/images/admin/reports/codeIssues_dark.svg",
+            isEnabled: false
+          },
+          {
+            title: "Critical issues tracking",
+            route: "#",
+            // TODO: Replace with themed image
+            backgroundImage: "/assets/images/admin/reports/codeIssues_dark.svg",
+            isEnabled: false
+          }
         ].map((x, i) => (
-          <ReportWidget key={i} title={x.title} />
+          <ReportWidget
+            key={i}
+            title={x.title}
+            route={x.route}
+            backgroundImage={x.backgroundImage}
+            isEnabled={x.isEnabled}
+          />
         ))}
       </s.WidgetsContainer>
     </HomeSection>

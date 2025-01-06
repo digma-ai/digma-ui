@@ -1,3 +1,4 @@
+import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import {
   cancelMessage,
@@ -26,9 +27,11 @@ const rootElement = document.getElementById("root");
 if (rootElement) {
   const root = createRoot(rootElement);
   root.render(
-    <App id={APP_ID}>
-      <GlobalStyle />
-      <Troubleshooting />
-    </App>
+    <StrictMode>
+      <App id={APP_ID}>
+        <GlobalStyle />
+        <Troubleshooting />
+      </App>
+    </StrictMode>
   );
 }

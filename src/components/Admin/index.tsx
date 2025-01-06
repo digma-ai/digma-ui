@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet";
+import { Outlet } from "react-router-dom";
 import { Header } from "./Header";
-import { Home } from "./Home";
 import { Sidebar } from "./Sidebar";
 import * as s from "./styles";
 
@@ -13,10 +13,9 @@ export const Admin = () => (
     <Sidebar />
     <s.ContentContainer>
       <Header />
-      <main>
-        {/* // TODO: replace with dynamic content */}
-        <Home />
-      </main>
+      <s.MainContainer>
+        <Outlet />
+      </s.MainContainer>
     </s.ContentContainer>
   </s.Container>
 );

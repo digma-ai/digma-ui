@@ -124,7 +124,8 @@ const getConfig = (env: WebpackEnv): WebpackConfiguration => {
               options
             },
             version: (packageJson as PackageJson).version,
-            jsAssets: assets.js.map((js) => path.basename(js))
+            jsAssets: assets.js.map((js) => path.basename(js)),
+            baseUrl: `/${app}/`
           })
         });
       }),

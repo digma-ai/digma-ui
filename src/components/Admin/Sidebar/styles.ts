@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import type { NavigationListItemProps } from "./types";
+import { menuItemStyles } from "./NavMenu/NavMenuItem/styles";
 
 export const Sidebar = styled.aside`
   display: flex;
@@ -17,33 +17,11 @@ export const Logo = styled.img`
   height: 23px;
 `;
 
-export const NavigationList = styled.ul`
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-`;
+export const LogoutButton = styled.button`
+  ${menuItemStyles}
 
-export const NavigationListItem = styled.li<NavigationListItemProps>`
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  padding: 12px;
-  border-radius: 8px;
-  color: ${({ $isActive, theme }) =>
-    $isActive ? theme.colors.v3.text.primary : theme.colors.v3.text.tertiary};
-  background: ${({ $isActive, theme }) =>
-    $isActive ? theme.colors.v3.surface.primary : "none"};
-  cursor: pointer;
-
-  &:hover {
-    color: ${({ theme }) => theme.colors.v3.text.primary};
-    background: ${({ theme }) => theme.colors.v3.surface.primary};
-  }
-`;
-
-export const LogoutButton = styled(NavigationListItem)`
+  font-family: inherit;
+  border: none;
+  background: none;
   margin-top: auto;
 `;

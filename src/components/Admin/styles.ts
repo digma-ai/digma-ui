@@ -12,3 +12,8 @@ export const ContentContainer = styled.div`
   flex-grow: 1;
   overflow: hidden;
 `;
+
+export const MainContainer = styled.main`
+  overflow: auto;
+  flex-grow: 1;
+`;
