@@ -1,9 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import {
   useAdminDispatch,
   useAdminSelector
 } from "../../../../containers/Admin/hooks";
+import { getFeatureFlagValue } from "../../../../featureFlags";
 import {
+  useGetAboutQuery,
   useGetEndpointsIssuesQuery,
   useGetEnvironmentServicesQuery,
   useGetEnvironmentsQuery,
@@ -14,11 +16,14 @@ import {
   setSelectedService,
   setViewLevel
 } from "../../../../redux/slices/codeIssuesReportSlice";
+import { FeatureFlag } from "../../../../types";
 import { Chart } from "../../../Dashboard/MetricsReport/Chart";
 import { EmptyState } from "../../../Dashboard/MetricsReport/EmptyState";
 import { Table } from "../../../Dashboard/MetricsReport/Table";
 import type {
   EndpointIssuesData,
+  GetMetricsReportDataPayloadV1,
+  GetMetricsReportDataPayloadV2,
   ScoreCriterion,
   ServiceIssuesData
 } from "../../../Dashboard/MetricsReport/types";
@@ -30,14 +35,15 @@ import { Header } from "./Header";
 import * as s from "./styles";
 
 export const CodeIssues = () => {
+  // TODO: create selectors
   const selectedEnvironmentId = useAdminSelector(
     (state) => state.codeIssuesReport.selectedEnvironmentId
   );
-  const selectedCriticalityLevels = useAdminSelector(
-    (state) => state.codeIssuesReport.selectedCriticalityLevels
+  const criticalityLevels = useAdminSelector(
+    (state) => state.codeIssuesReport.criticalityLevels
   );
-  const selectedPeriodInDays = useAdminSelector(
-    (state) => state.codeIssuesReport.selectedPeriodInDays
+  const periodInDays = useAdminSelector(
+    (state) => state.codeIssuesReport.periodInDays
   );
   const selectedService = useAdminSelector(
     (state) => state.codeIssuesReport.selectedService
@@ -45,54 +51,20 @@ export const CodeIssues = () => {
   const selectedServices = useAdminSelector(
     (state) => state.codeIssuesReport.selectedServices
   );
-  const selectedViewLevel = useAdminSelector(
+  const viewLevel = useAdminSelector(
     (state) => state.codeIssuesReport.viewLevel
   );
-  const selectedViewMode = useAdminSelector(
-    (state) => state.codeIssuesReport.viewMode
-  );
-  const selectedTimeMode = useAdminSelector(
-    (state) => state.codeIssuesReport.timeMode
-  );
+  const viewMode = useAdminSelector((state) => state.codeIssuesReport.viewMode);
+  const timeMode = useAdminSelector((state) => state.codeIssuesReport.timeMode);
   const selectedEndpoints = useAdminSelector(
     (state) => state.codeIssuesReport.selectedEndpoints
   );
 
   const dispatch = useAdminDispatch();
 
-  const { data: services } = useGetEnvironmentServicesQuery(
-    {
-      environment: selectedEnvironmentId ?? null
-    },
-    {
-      skip: !selectedEnvironmentId || selectedViewLevel !== "services"
-    }
-  );
+  const { data: about } = useGetAboutQuery();
 
   const { data: environments } = useGetEnvironmentsQuery();
-
-  const isInitialized = environments;
-
-  const { data: servicesIssues } = useGetServicesIssuesQuery(
-    {
-      criticalities: selectedCriticalityLevels,
-      keys: (selectedServices.length > 0
-        ? selectedServices
-        : services ?? []
-      ).map((x) => ({
-        environment: selectedEnvironmentId ?? "",
-        service: x,
-        lastDays: selectedTimeMode === "baseline" ? null : selectedPeriodInDays
-      }))
-    },
-    {
-      skip:
-        !isInitialized ||
-        !selectedEnvironmentId ||
-        !selectedServices ||
-        selectedViewLevel !== "services"
-    }
-  );
 
   useEffect(() => {
     if (environments && environments.length > 0 && !selectedEnvironmentId) {
@@ -100,109 +72,101 @@ export const CodeIssues = () => {
     }
   }, [environments, selectedEnvironmentId, dispatch]);
 
+  const isInitialized = Boolean(environments && about);
+
+  const { data: services } = useGetEnvironmentServicesQuery(
+    {
+      environment: selectedEnvironmentId ?? null
+    },
+    {
+      skip: !selectedEnvironmentId || viewLevel !== "services"
+    }
+  );
+
+  const isDataFilterEnabled = Boolean(
+    about &&
+      getFeatureFlagValue(
+        about,
+        FeatureFlag.IS_METRICS_REPORT_DATA_FILTER_ENABLED
+      )
+  );
+
+  const getServicesIssuesPayloadV1: GetMetricsReportDataPayloadV1 =
+    useMemo(() => {
+      const servicesArray =
+        selectedServices.length > 0 ? selectedServices : services ?? [];
+
+      return {
+        keys: servicesArray.map((x) => ({
+          environment: selectedEnvironmentId ?? "",
+          service: x,
+          lastDays: timeMode === "baseline" ? null : periodInDays
+        }))
+      };
+    }, [
+      selectedServices,
+      services,
+      selectedEnvironmentId,
+      timeMode,
+      periodInDays
+    ]);
+
+  const getServicesIssuesPayloadV2: GetMetricsReportDataPayloadV2 =
+    useMemo(() => {
+      const servicesArray =
+        selectedServices.length > 0 ? selectedServices : services ?? [null];
+
+      return {
+        criticalities: criticalityLevels,
+        keys: servicesArray.map((x) => ({
+          environment: selectedEnvironmentId ?? "",
+          service: x,
+          lastDays: timeMode === "baseline" ? null : periodInDays
+        }))
+      };
+    }, [
+      selectedServices,
+      services,
+      selectedEnvironmentId,
+      criticalityLevels,
+      timeMode,
+      periodInDays
+    ]);
+
+  const getServicesIssuesPayload = isDataFilterEnabled
+    ? getServicesIssuesPayloadV2
+    : getServicesIssuesPayloadV1;
+
+  const { data: servicesIssues } = useGetServicesIssuesQuery(
+    getServicesIssuesPayload,
+    {
+      skip:
+        !isInitialized ||
+        !selectedEnvironmentId ||
+        !services ||
+        viewLevel !== "services"
+    }
+  );
+
   const { data: endpointsIssues } = useGetEndpointsIssuesQuery(
     {
       environment: selectedEnvironmentId ?? "",
       service: selectedService ?? "",
       endpoints: selectedEndpoints,
-      criticalities: selectedCriticalityLevels,
-      lastDays: selectedTimeMode === "baseline" ? null : selectedPeriodInDays
+      criticalities: criticalityLevels,
+      lastDays: timeMode === "baseline" ? null : periodInDays
     },
     {
       skip:
         !isInitialized ||
         !selectedEnvironmentId ||
         !selectedService ||
-        selectedViewLevel !== "endpoints"
+        viewLevel !== "endpoints"
     }
   );
 
-  // const isCriticalityEnabled = Boolean(
-  //   backendInfo &&
-  //     getFeatureFlagValue(
-  //       backendInfo,
-  //       FeatureFlag.IS_METRICS_REPORT_CRITICALITY_ENABLED
-  //     )
-  // );
-
-  // TODO: support feature flags
-  const isCriticalityEnabled = true;
-
-  const scoreCriterion: ScoreCriterion = isCriticalityEnabled
-    ? "criticality"
-    : "impact";
-
-  // && backendInfo;
-
-  // const useServiceIssuesDataPayload: UseServicesIssuesDataProps =
-  //   useMemo(() => {
-  //     return {
-  //       environmentId: selectedEnvironmentId,
-  //       services:
-  //         selectedServices.length > 0 ? selectedServices : services ?? [],
-  //       criticalities: selectedCriticalityLevels,
-  //       lastDays: timeMode === "baseline" ? null : selectedPeriodInDays
-  //     };
-  //   }, [
-  //     selectedEnvironmentId,
-  //     selectedServices,
-  //     selectedCriticalityLevels,
-  //     selectedPeriodInDays,
-  //     services,
-  //     timeMode
-  //   ]);
-
-  // const { data: servicesData } = useServicesIssuesData(
-  //   useServiceIssuesDataPayload,
-  //   Boolean(
-  //     isInitialized &&
-  //       selectedEnvironmentId &&
-  //       services &&
-  //       viewLevel === "services"
-  //   )
-  // );
-
-  // useEffect(() => {
-  //   if (servicesData) {
-  //     setServicesIssuesData(servicesData.reports);
-  //   }
-  // }, [servicesData, setServicesIssuesData]);
-
-  // const endpointsIssuesPayload: GetEndpointsIssuesPayload = useMemo(
-  //   () => ({
-  //     environment: selectedEnvironmentId ?? "",
-  //     service: selectedService ?? "",
-  //     endpoints: selectedEndpoints,
-  //     criticalities: selectedCriticalityLevels,
-  //     lastDays: timeMode === "baseline" ? null : selectedPeriodInDays
-  //   }),
-  //   [
-  //     selectedEnvironmentId,
-  //     selectedService,
-  //     selectedEndpoints,
-  //     selectedCriticalityLevels,
-  //     selectedPeriodInDays,
-  //     timeMode
-  //   ]
-  // );
-  // const { data: endpointsData } = useEndpointsIssuesData(
-  //   endpointsIssuesPayload,
-  //   Boolean(
-  //     isInitialized &&
-  //       selectedEnvironmentId &&
-  //       selectedService &&
-  //       viewLevel === "endpoints"
-  //   )
-  // );
-
-  // useEffect(() => {
-  //   if (endpointsData) {
-  //     setEndpointsIssuesData(endpointsData.reports);
-  //   }
-  // }, [endpointsData, setEndpointsIssuesData]);
-
   const handleTitleClick = (value: string) => {
-    if (selectedViewLevel === "services") {
+    if (viewLevel === "services") {
       dispatch(setSelectedService(value));
       dispatch(setViewLevel("endpoints"));
     }
@@ -219,53 +183,65 @@ export const CodeIssues = () => {
     dispatch(setSelectedService(null));
   };
 
+  const isCriticalityEnabled = Boolean(
+    about &&
+      getFeatureFlagValue(
+        about,
+        FeatureFlag.IS_METRICS_REPORT_CRITICALITY_ENABLED
+      )
+  );
+
+  const scoreCriterion: ScoreCriterion = isCriticalityEnabled
+    ? "criticality"
+    : "impact";
+
   const data =
-    (selectedViewLevel === "services"
+    (viewLevel === "services"
       ? servicesIssues?.reports
       : endpointsIssues?.reports) ?? [];
   const transformedData =
-    selectedViewLevel === "services"
+    viewLevel === "services"
       ? transformServicesData(data as ServiceIssuesData[], scoreCriterion)
       : transformEndpointsData(data as EndpointIssuesData[], scoreCriterion);
 
   const renderContent = () => {
     if (
-      (selectedViewLevel === "services" && !servicesIssues) ||
-      (selectedViewLevel === "endpoints" && !endpointsIssues)
+      (viewLevel === "services" && !servicesIssues) ||
+      (viewLevel === "endpoints" && !endpointsIssues)
     ) {
       return <EmptyState preset={"loading"} />;
     }
 
     if (data.length === 0) {
-      if (selectedViewLevel === "services") {
+      if (viewLevel === "services") {
         return <EmptyState preset={"noServices"} />;
       }
 
-      if (selectedViewLevel === "endpoints") {
+      if (viewLevel === "endpoints") {
         return <EmptyState preset={"noEndpoints"} />;
       }
     }
 
     return (
       <>
-        {selectedViewMode === "table" && (
+        {viewMode === "table" && (
           <Table
             scoreCriterion={scoreCriterion}
             data={transformedData}
-            timeMode={selectedTimeMode}
+            timeMode={timeMode}
             onTitleClick={handleTitleClick}
             onIssuesStatsClick={handleIssuesStatsClick}
-            viewLevel={selectedViewLevel}
+            viewLevel={viewLevel}
           />
         )}
-        {selectedViewMode === "treemap" && (
+        {viewMode === "treemap" && (
           <Chart
             scoreCriterion={scoreCriterion}
             data={transformedData}
-            timeMode={selectedTimeMode}
+            timeMode={timeMode}
             onTitleClick={handleTitleClick}
             onIssuesStatsClick={handleIssuesStatsClick}
-            viewLevel={selectedViewLevel}
+            viewLevel={viewLevel}
           />
         )}
       </>
@@ -276,7 +252,7 @@ export const CodeIssues = () => {
     <s.Section>
       <s.Container>
         {isInitialized ? (
-          environments.length > 0 ? (
+          environments && environments.length > 0 ? (
             <>
               <Header onGoBack={handleGoBack} />
               {renderContent()}

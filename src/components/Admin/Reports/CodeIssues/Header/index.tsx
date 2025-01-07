@@ -3,21 +3,24 @@ import {
   useAdminDispatch,
   useAdminSelector
 } from "../../../../../containers/Admin/hooks";
+import { getFeatureFlagValue } from "../../../../../featureFlags";
 import {
+  useGetAboutQuery,
   useGetEnvironmentServicesQuery,
   useGetEnvironmentsQuery,
   useGetServiceEndpointsQuery,
   useGetServiceEnvironmentsQuery
 } from "../../../../../redux/services/digma";
 import {
-  setSelectedCriticalityLevels,
+  setCriticalityLevels,
+  setPeriodInDays,
   setSelectedEndpoints,
   setSelectedEnvironmentId,
-  setSelectedPeriodInDays,
   setSelectedServices,
   setTimeMode,
   setViewMode
 } from "../../../../../redux/slices/codeIssuesReportSlice";
+import { FeatureFlag } from "../../../../../types";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { formatUnit } from "../../../../../utils/formatUnit";
 import { CodeIcon } from "../../../../common/icons/12px/CodeIcon";
@@ -59,14 +62,15 @@ const criticalityOptions: { id: Criticality; label: string }[] = [
 const DEFAULT_PERIOD = 7;
 
 export const Header = ({ onGoBack }: HeaderProps) => {
+  // TODO: create selectors
   const selectedEnvironmentId = useAdminSelector(
     (state) => state.codeIssuesReport.selectedEnvironmentId
   );
   const selectedCriticalityLevels = useAdminSelector(
-    (state) => state.codeIssuesReport.selectedCriticalityLevels
+    (state) => state.codeIssuesReport.criticalityLevels
   );
-  const selectedPeriodInDays = useAdminSelector(
-    (state) => state.codeIssuesReport.selectedPeriodInDays
+  const periodInDays = useAdminSelector(
+    (state) => state.codeIssuesReport.periodInDays
   );
   const selectedService = useAdminSelector(
     (state) => state.codeIssuesReport.selectedService
@@ -74,49 +78,37 @@ export const Header = ({ onGoBack }: HeaderProps) => {
   const selectedServices = useAdminSelector(
     (state) => state.codeIssuesReport.selectedServices
   );
-  const selectedViewLevel = useAdminSelector(
+  const viewLevel = useAdminSelector(
     (state) => state.codeIssuesReport.viewLevel
   );
-  const selectedViewMode = useAdminSelector(
-    (state) => state.codeIssuesReport.viewMode
-  );
-  const selectedTimeMode = useAdminSelector(
-    (state) => state.codeIssuesReport.timeMode
-  );
+  const viewMode = useAdminSelector((state) => state.codeIssuesReport.viewMode);
+  const timeMode = useAdminSelector((state) => state.codeIssuesReport.timeMode);
   const selectedEndpoints = useAdminSelector(
     (state) => state.codeIssuesReport.selectedEndpoints
   );
 
   const dispatch = useAdminDispatch();
 
-  const {
-    data: environments
-    // error: environmentsError,
-    // isLoading: environmentsLoading
-  } = useGetEnvironmentsQuery();
+  const { data: about } = useGetAboutQuery();
 
-  const {
-    data: serviceEnvironments
-    // error: serviceEnvironmentsError,
-    // isLoading: serviceEnvironmentsLoading
-  } = useGetServiceEnvironmentsQuery(
+  const { data: environments } = useGetEnvironmentsQuery();
+
+  const { data: serviceEnvironments } = useGetServiceEnvironmentsQuery(
     {
       service: selectedService ?? ""
     },
     {
       skip:
-        !selectedEnvironmentId ||
-        !selectedService ||
-        selectedViewLevel !== "endpoints"
+        !selectedEnvironmentId || !selectedService || viewLevel !== "endpoints"
     }
   );
 
   const environmentsToSelect = useMemo(
     () =>
-      (selectedViewLevel === "services"
+      (viewLevel === "services"
         ? environments
         : serviceEnvironments?.environments) ?? [],
-    [selectedViewLevel, environments, serviceEnvironments]
+    [viewLevel, environments, serviceEnvironments]
   );
 
   const selectedEnvironment = useMemo(
@@ -125,119 +117,32 @@ export const Header = ({ onGoBack }: HeaderProps) => {
     [selectedEnvironmentId, environmentsToSelect]
   );
 
-  const isDataFilterEnabled = true;
-  // const isDataFilterEnabled = Boolean(
-  //   getFeatureFlagValue(
-  //     backendInfo,
-  //     FeatureFlag.IS_METRICS_REPORT_DATA_FILTER_ENABLED
-  //   )
-  // );
+  const isDataFilterEnabled = Boolean(
+    about &&
+      getFeatureFlagValue(
+        about,
+        FeatureFlag.IS_METRICS_REPORT_DATA_FILTER_ENABLED
+      )
+  );
 
-  const {
-    data: services
-    // isLoading: servicesLoading,
-    // refetch: servicesRefetch
-  } = useGetEnvironmentServicesQuery(
+  const { data: services } = useGetEnvironmentServicesQuery(
     {
       environment: selectedEnvironmentId ?? null
     },
     {
-      skip: !selectedEnvironmentId || selectedViewLevel !== "services"
+      skip: !selectedEnvironmentId || viewLevel !== "services"
     }
   );
 
-  const {
-    data: serviceEndpoints
-    // isLoading: serviceEndpointsLoading,
-    // refetch: serviceEndpointsRefetch
-  } = useGetServiceEndpointsQuery(
+  const { data: serviceEndpoints } = useGetServiceEndpointsQuery(
     {
       service: selectedService ?? "",
-      data: {
-        service: selectedService ?? "",
-        environment: selectedEnvironmentId ?? ""
-      }
+      environment: selectedEnvironmentId ?? ""
     },
     {
       skip: !selectedEnvironmentId || !selectedService
     }
   );
-
-  // const dataFetcherServicesConfiguration: DataFetcherConfiguration = {
-  //   requestAction: actions.GET_SERVICES,
-  //   responseAction: actions.SET_SERVICES,
-  //   refreshOnPayloadChange: true,
-  //   isEnabled: Boolean(selectedEnvironmentId && viewLevel === "services")
-  // };
-
-  // const getServicesPayload: GetServicesPayload = useMemo(
-  //   () => ({ environment: selectedEnvironmentId ?? null }),
-  //   [selectedEnvironmentId]
-  // );
-
-  // const { data: services } = useFetchData<GetServicesPayload, string[]>(
-  //   dataFetcherServicesConfiguration,
-  //   getServicesPayload
-  // );
-
-  // useEffect(() => {
-  //   if (services) {
-  //     setServices(services);
-  //   }
-  // }, [services, setServices]);
-
-  // const dataFetcherEnvironmentsConfiguration: DataFetcherConfiguration = {
-  //   requestAction: actions.GET_SERVICE_ENVIRONMENTS,
-  //   responseAction: actions.SET_SERVICE_ENVIRONMENTS,
-  //   refreshOnPayloadChange: true,
-  //   isEnabled: Boolean(
-  //     selectedEnvironmentId && selectedService && viewLevel === "endpoints"
-  //   )
-  // };
-
-  // const getEnvironmentsPayload: GetServiceEnvironmentsPayload = useMemo(
-  //   () => ({
-  //     service: selectedService ?? ""
-  //   }),
-  //   [selectedService]
-  // );
-
-  // const { data: serviceEnvironmentsData } = useFetchData<
-  //   GetServiceEnvironmentsPayload,
-  //   SetServiceEnvironmentsPayload
-  // >(dataFetcherEnvironmentsConfiguration, getEnvironmentsPayload);
-
-  // const dataFetcherEndpointsConfiguration: DataFetcherConfiguration = {
-  //   requestAction: actions.GET_SERVICE_ENDPOINTS_DATA,
-  //   responseAction: actions.SET_SERVICE_ENDPOINTS_DATA,
-  //   refreshOnPayloadChange: true,
-  //   isEnabled: Boolean(selectedEnvironmentId && selectedService)
-  // };
-
-  // useEffect(() => {
-  //   if (serviceEnvironments?.environments) {
-  //     setServiceEnvironments(serviceEnvironmentsData?.environments);
-  //   }
-  // }, [serviceEnvironmentsData, setServiceEnvironments]);
-
-  // const getEndpointsPayload: GetServiceEndpointsPayload = useMemo(
-  //   () => ({
-  //     environment: selectedEnvironmentId ?? "",
-  //     service: selectedService ?? ""
-  //   }),
-  //   [selectedEnvironmentId, selectedService]
-  // );
-
-  // const { data: endpointsData } = useFetchData<
-  //   GetServiceEndpointsPayload,
-  //   SetServiceEndpointsPayload
-  // >(dataFetcherEndpointsConfiguration, getEndpointsPayload);
-
-  // useEffect(() => {
-  //   if (endpointsData?.endpoints) {
-  //     setServiceEndpoints(endpointsData.endpoints);
-  //   }
-  // }, [endpointsData, setServiceEndpoints]);
 
   const handleGoBack = () => {
     onGoBack();
@@ -266,24 +171,24 @@ export const Header = ({ onGoBack }: HeaderProps) => {
   const handleDataChanged = (option: string | string[]) => {
     sendUserActionTrackingEvent(trackingEvents.DATA_FILTER_SELECTED);
     const newItem = Array.isArray(option) ? option : [option];
-    dispatch(setSelectedCriticalityLevels(newItem as Criticality[]));
+    dispatch(setCriticalityLevels(newItem as Criticality[]));
   };
 
   const handlePeriodChanged = (option: string | string[]) => {
     sendUserActionTrackingEvent(trackingEvents.PERIOD_FILTER_CHANGED);
     const newItem = Array.isArray(option) ? option : [option];
     if (newItem.length === 0) {
-      dispatch(setSelectedPeriodInDays(DEFAULT_PERIOD));
+      dispatch(setPeriodInDays(DEFAULT_PERIOD));
       return;
     }
 
     const value = newItem[0];
     const newValue = Number(value);
-    dispatch(setSelectedPeriodInDays(newValue));
+    dispatch(setPeriodInDays(newValue));
   };
 
   const handleViewModeChanged = (value: ToggleValue) => {
-    // sendUserActionTrackingEvent(trackingEvents.VIEW_MODE_CHANGED, { value });
+    sendUserActionTrackingEvent(trackingEvents.VIEW_MODE_CHANGED, { value });
     const newViewMode = value as ReportViewMode;
     dispatch(setViewMode(newViewMode));
   };
@@ -292,6 +197,8 @@ export const Header = ({ onGoBack }: HeaderProps) => {
     sendUserActionTrackingEvent(trackingEvents.TIME_MODE_CHANGED, { value });
     const newTimeMode = value as ReportTimeMode;
     dispatch(setTimeMode(newTimeMode));
+
+    // TODO: check if still needed
     // if (selectedViewLevel === "services") {
     // setServicesIssuesData(null);
     // }
@@ -302,17 +209,17 @@ export const Header = ({ onGoBack }: HeaderProps) => {
   };
 
   const title =
-    selectedViewLevel === "endpoints"
+    viewLevel === "endpoints"
       ? `${selectedService ?? ""} Service`
-      : "Issues Map";
-  const titleSuffix = selectedViewLevel === "endpoints" ? " Endpoints" : "";
+      : "Code Issues";
+  const titleSuffix = viewLevel === "endpoints" ? " Endpoints" : "";
   const tooltipTitle = `${title} ${titleSuffix}`;
 
   return (
     <s.Container>
       <s.Row>
         <s.TitleContainer>
-          {selectedViewLevel === "endpoints" ? (
+          {viewLevel === "endpoints" ? (
             <>
               <NewIconButton
                 icon={(props) => (
@@ -338,7 +245,7 @@ export const Header = ({ onGoBack }: HeaderProps) => {
             { value: "baseline", label: "Baseline" },
             { value: "changes", label: "Changes" }
           ]}
-          value={selectedTimeMode}
+          value={timeMode}
           onValueChange={handleTimeModeChanged}
         />
       </s.Row>
@@ -365,7 +272,7 @@ export const Header = ({ onGoBack }: HeaderProps) => {
             placeholder={selectedEnvironment?.name ?? "Select Environments"}
             disabled={environmentsToSelect.length === 0}
           />
-          {selectedViewLevel === "endpoints" ? (
+          {viewLevel === "endpoints" ? (
             <s.FilterSelect
               items={[...(serviceEndpoints?.endpoints ?? [])]
                 .sort()
@@ -409,19 +316,19 @@ export const Header = ({ onGoBack }: HeaderProps) => {
               disabled={!services || services.length === 0}
             />
           )}
-          {selectedTimeMode === "changes" && (
+          {timeMode === "changes" && (
             <s.FilterSelect
               items={[1, 7].map((x) => ({
                 value: x.toString(),
                 label: `${x} ${formatUnit(x, "Day")}`,
-                selected: x === selectedPeriodInDays,
+                selected: x === periodInDays,
                 enabled: true
               }))}
               showSelectedState={false}
               icon={DurationBreakdownIcon}
               onChange={handlePeriodChanged}
-              placeholder={`Period: ${selectedPeriodInDays} ${formatUnit(
-                selectedPeriodInDays,
+              placeholder={`Period: ${periodInDays} ${formatUnit(
+                periodInDays,
                 "day"
               )}`}
             />
@@ -453,7 +360,7 @@ export const Header = ({ onGoBack }: HeaderProps) => {
               icon: (props) => <TableIcon {...props} size={16} />
             }
           ]}
-          value={selectedViewMode}
+          value={viewMode}
           onValueChange={handleViewModeChanged}
         />
       </s.Row>

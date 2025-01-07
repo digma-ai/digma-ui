@@ -5,3 +5,8 @@ export const WidgetsContainer = styled.div`
   gap: 16px;
   overflow: auto;
 `;
+
+export const OverviewWidgetPlaceholderImage = styled.img`
+  width: 279px;
+  height: 108px;
+`;

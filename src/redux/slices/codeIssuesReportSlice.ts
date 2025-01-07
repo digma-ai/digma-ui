@@ -13,8 +13,8 @@ export interface CodeIssuesReportState {
   timeMode: ReportTimeMode;
   selectedEnvironmentId: string | null;
   selectedService: string | null;
-  selectedCriticalityLevels: Criticality[];
-  selectedPeriodInDays: number;
+  criticalityLevels: Criticality[];
+  periodInDays: number;
   selectedEndpoints: string[];
   selectedServices: string[];
 }
@@ -25,8 +25,8 @@ const initialState: CodeIssuesReportState = {
   timeMode: "baseline",
   selectedEnvironmentId: null,
   selectedService: null,
-  selectedCriticalityLevels: ["Medium", "High"],
-  selectedPeriodInDays: 7,
+  criticalityLevels: ["Medium", "High"],
+  periodInDays: 7,
   selectedEndpoints: [],
   selectedServices: []
 };
@@ -50,14 +50,11 @@ export const codeIssuesReportSlice = createSlice({
     setSelectedService: (state, action: PayloadAction<string | null>) => {
       state.selectedService = action.payload;
     },
-    setSelectedCriticalityLevels: (
-      state,
-      action: PayloadAction<Criticality[]>
-    ) => {
-      state.selectedCriticalityLevels = action.payload;
+    setCriticalityLevels: (state, action: PayloadAction<Criticality[]>) => {
+      state.criticalityLevels = action.payload;
     },
-    setSelectedPeriodInDays: (state, action: PayloadAction<number>) => {
-      state.selectedPeriodInDays = action.payload;
+    setPeriodInDays: (state, action: PayloadAction<number>) => {
+      state.periodInDays = action.payload;
     },
     setSelectedEndpoints: (state, action: PayloadAction<string[]>) => {
       state.selectedEndpoints = action.payload;
@@ -74,8 +71,8 @@ export const {
   setTimeMode,
   setSelectedEnvironmentId,
   setSelectedService,
-  setSelectedCriticalityLevels,
-  setSelectedPeriodInDays,
+  setCriticalityLevels,
+  setPeriodInDays,
   setSelectedEndpoints,
   setSelectedServices
 } = codeIssuesReportSlice.actions;

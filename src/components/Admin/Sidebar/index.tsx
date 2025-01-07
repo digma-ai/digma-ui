@@ -1,10 +1,14 @@
 import { useEffect } from "react";
+import { useTheme } from "styled-components";
 import { useLogoutMutation } from "../../../redux/services/auth";
+import { getThemeKind } from "../../common/App/styles";
 import { LogoutIcon } from "../../common/icons/16px/LogoutIcon";
 import { NavMenu } from "./NavMenu";
 import * as s from "./styles";
 
 export const Sidebar = () => {
+  const theme = useTheme();
+  const themeKind = getThemeKind(theme);
   const [logout, result] = useLogoutMutation();
 
   const handleLogoutButtonClick = () => {
@@ -13,15 +17,14 @@ export const Sidebar = () => {
 
   useEffect(() => {
     if (result.isSuccess) {
-      window.location.href = "/admin";
+      window.location.href = "/admin/";
     }
   }, [result.isSuccess]);
 
   return (
     <s.Sidebar>
       <s.Logo
-        // TODO: Replace with actual theme
-        src={`/assets/images/digmaLogoLarge_light.svg`}
+        src={`/assets/images/admin/digmaLogo_${themeKind}.svg`}
         alt={"Digma logotype"}
       />
       <NavMenu />

@@ -18,9 +18,10 @@ export const ReportWidget = ({
 
   return (
     <s.Link to={route} onClick={handleClick} $isEnabled={isEnabled}>
-      <s.Background src={backgroundImage} />
+      <s.Background src={backgroundImage} $isEnabled={isEnabled} />
       <s.TitleContainer>
         <s.Title>{title}</s.Title>
+        {!isEnabled && <s.SoonBadge>Soon</s.SoonBadge>}
         <s.ChevronIconContainer>
           <ChevronIcon
             size={20}

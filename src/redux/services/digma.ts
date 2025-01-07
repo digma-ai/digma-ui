@@ -3,6 +3,7 @@ import { type GetEnvironmentsResponse } from "../../api/web/services/environment
 import type { GetServicesPayload } from "../../components/Dashboard/MetricsReport/Header/types";
 import {
   type GetEndpointsIssuesPayload,
+  type GetMetricsReportDataPayloadV1,
   type GetMetricsReportDataPayloadV2,
   type GetServiceEndpointsPayload,
   type GetServiceEnvironmentsPayload,
@@ -11,29 +12,20 @@ import {
   type SetServiceEndpointsPayload,
   type SetServiceEnvironmentsPayload
 } from "../../components/Dashboard/MetricsReport/types";
-import type { DeploymentType } from "../../components/common/App/types";
+import type {
+  GetAboutResponse,
+  GetEnvironmentServicesResponse,
+  GetUserProfileResponse
+} from "./types";
 
 export const digmaApi = createApi({
   reducerPath: "digmaApi",
   baseQuery: fetchBaseQuery({ baseUrl: "/api/", credentials: "same-origin" }),
   endpoints: (builder) => ({
-    getAbout: builder.query<
-      {
-        applicationVersion: string;
-        deploymentType: DeploymentType;
-        isCentralize: boolean;
-        site: string;
-      },
-      void
-    >({
+    getAbout: builder.query<GetAboutResponse, void>({
       query: () => "about"
     }),
-    getUserProfile: builder.query<
-      {
-        email: string;
-      },
-      void
-    >({
+    getUserProfile: builder.query<GetUserProfileResponse, void>({
       query: () => "authentication/logged-in-user"
     }),
     getEnvironments: builder.query<GetEnvironmentsResponse, void>({
@@ -41,7 +33,7 @@ export const digmaApi = createApi({
     }),
     getServicesIssues: builder.query<
       SetMetricsReportDataPayload,
-      GetMetricsReportDataPayloadV2
+      GetMetricsReportDataPayloadV1 | GetMetricsReportDataPayloadV2
     >({
       query: (data) => ({
         url: "reports/services/issues",
@@ -59,20 +51,25 @@ export const digmaApi = createApi({
         body: data
       })
     }),
-    getEnvironmentServices: builder.query<string[], GetServicesPayload>({
-      query: ({ environment }) => ({
+    getEnvironmentServices: builder.query<
+      GetEnvironmentServicesResponse,
+      GetServicesPayload
+    >({
+      query: (data) => ({
         url: "services/getServices",
-        params: { environment }
+        params: data
       })
     }),
     getServiceEndpoints: builder.query<
       SetServiceEndpointsPayload,
-      { service: string; data: GetServiceEndpointsPayload }
+      GetServiceEndpointsPayload
     >({
-      query: ({ service, data }) => ({
+      query: ({ service, environment }) => ({
         url: `services/${service}/endpoints`,
         method: "POST",
-        body: data
+        body: {
+          environment
+        }
       })
     }),
     getServiceEnvironments: builder.query<

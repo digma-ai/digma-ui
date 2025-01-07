@@ -14,7 +14,7 @@ export const Sidebar = styled.aside`
 
 export const Logo = styled.img`
   align-self: start;
-  height: 23px;
+  height: 24px;
 `;
 
 export const LogoutButton = styled.button`

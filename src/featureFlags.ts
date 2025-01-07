@@ -1,5 +1,6 @@
 import { gte, valid } from "semver";
 import type { BackendInfo } from "./components/common/App/types";
+import type { GetAboutResponse } from "./redux/services/types";
 import { FeatureFlag } from "./types";
 
 export const featureFlagMinBackendVersions: Record<FeatureFlag, string> = {
@@ -31,7 +32,7 @@ export const featureFlagMinBackendVersions: Record<FeatureFlag, string> = {
 };
 
 export const getFeatureFlagValue = (
-  backendInfo: BackendInfo | null,
+  backendInfo: BackendInfo | GetAboutResponse | null,
   featureFlag: FeatureFlag
 ) => {
   const backendVersion = backendInfo?.applicationVersion;

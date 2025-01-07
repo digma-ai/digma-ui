@@ -8,3 +8,7 @@ export interface ReportWidgetProps {
 export interface LinkProps {
   $isEnabled: boolean;
 }
+
+export interface BackgroundProps {
+  $isEnabled: boolean;
+}
