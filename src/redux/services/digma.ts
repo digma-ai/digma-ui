@@ -12,6 +12,7 @@ import {
   type SetServiceEndpointsPayload,
   type SetServiceEnvironmentsPayload
 } from "../../components/Dashboard/MetricsReport/types";
+import { isString } from "../../typeGuards/isString";
 import type {
   GetAboutResponse,
   GetEnvironmentServicesResponse,
@@ -20,7 +21,12 @@ import type {
 
 export const digmaApi = createApi({
   reducerPath: "digmaApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "/api/", credentials: "same-origin" }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: isString(window.digmaApiProxyPrefix)
+      ? window.digmaApiProxyPrefix
+      : "/api/",
+    credentials: "same-origin"
+  }),
   endpoints: (builder) => ({
     getAbout: builder.query<GetAboutResponse, void>({
       query: () => "about"
@@ -66,8 +72,7 @@ export const digmaApi = createApi({
     >({
       query: ({ service, environment }) => ({
         url: `services/${service}/endpoints`,
-        method: "POST",
-        body: {
+        params: {
           environment
         }
       })
