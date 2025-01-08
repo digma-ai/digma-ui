@@ -8,21 +8,27 @@ const normalizeData = (data: Input<TileData>[]) => {
   const NORMALIZED_MIN = 1;
   const NORMALIZED_MAX = MIN_MAX_RATIO;
 
-  const dataMin = Math.min(...data.map((item) => item.value)) || 1;
-  const dataMax = Math.max(...data.map((item) => item.value));
+  const dataMin = Math.min(...data.map((item) => item.value)) || NORMALIZED_MIN;
+  const dataMax = Math.max(...data.map((item) => item.value)) || NORMALIZED_MIN;
+
+  if (dataMin === dataMax) {
+    return data.map((item) => ({
+      ...item,
+      value: NORMALIZED_MIN
+    }));
+  }
+
   const dataMinMaxRatio = dataMax / dataMin;
 
   return dataMinMaxRatio > MIN_MAX_RATIO
-    ? data.map((item) => {
-        return {
-          id: item.id,
-          value:
-            ((item.value - dataMin) * (NORMALIZED_MAX - NORMALIZED_MIN)) /
-              (dataMax - dataMin) +
-            NORMALIZED_MIN, // min-max normalization
-          content: item.content
-        };
-      })
+    ? data.map((item) => ({
+        id: item.id,
+        value:
+          ((item.value - dataMin) * (NORMALIZED_MAX - NORMALIZED_MIN)) /
+            (dataMax - dataMin) +
+          NORMALIZED_MIN, // min-max normalization
+        content: item.content
+      }))
     : data;
 };
 
@@ -69,7 +75,7 @@ export const TreeMap = ({
   height,
   minTileDimensions
 }: TreeMapProps) => {
-  const container = { x0: 0, y0: 0, x1: width, y1: height };
+  const container = { x0: 0, y0: 0, x1: width ?? 0, y1: height ?? 0 };
   const normalizedData = normalizeData(data);
   const sortedData = [...normalizedData].sort((a, b) => b.value - a.value);
   const tilesData = calculateTiles(sortedData, container, minTileDimensions);
@@ -96,8 +102,8 @@ export const TreeMap = ({
     <div
       style={{
         position: "relative",
-        width,
-        height
+        width: container.x1,
+        height: container.y1
       }}
     >
       {[width, height].some(isNull)

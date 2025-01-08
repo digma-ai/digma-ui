@@ -26,6 +26,7 @@ export interface BackendInfo {
   applicationVersion: string;
   deploymentType: DeploymentType;
   centralize: boolean;
+  site?: string;
 }
 
 export enum DeploymentType {

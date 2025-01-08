@@ -9,8 +9,8 @@ export interface TileData {
 export interface TreeMapProps {
   padding?: number;
   data: Input<TileData>[];
-  width: number;
-  height: number;
+  width: number | null;
+  height: number | null;
   minTileDimensions?: {
     width: number;
     height: number;

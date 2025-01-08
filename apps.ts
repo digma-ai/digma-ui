@@ -1,6 +1,10 @@
 import path from "path";
 
 export const appData: AppData = {
+  admin: {
+    entry: path.resolve(__dirname, "./src/containers/Admin/index.tsx"),
+    platforms: ["Web"]
+  },
   dashboard: {
     entry: path.resolve(__dirname, "./src/containers/Dashboard/index.tsx"),
     environmentVariables: ["dashboardEnvironment"],
@@ -62,6 +66,6 @@ export interface WebpackEnv {
   WEBPACK_BUNDLE: true;
   WEBPACK_BUILD: true;
   PLATFORM?: string;
-  COMPRESS?: boolean;
+  ZIP?: boolean;
   ["ZIP_FILE_FORMAT"]?: string;
 }
