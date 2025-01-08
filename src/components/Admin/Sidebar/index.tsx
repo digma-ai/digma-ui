@@ -16,9 +16,19 @@ export const Sidebar = () => {
   };
 
   useEffect(() => {
+    let timeoutId: number | null = null;
+
     if (result.isSuccess) {
-      window.location.href = "/admin/";
+      timeoutId = window.setTimeout(() => {
+        window.location.reload();
+      }, 500);
     }
+
+    return () => {
+      if (timeoutId) {
+        window.clearTimeout(timeoutId);
+      }
+    };
   }, [result.isSuccess]);
 
   return (

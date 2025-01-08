@@ -43,13 +43,14 @@ Build of the package will be in the `./dist` directory
 
 To set environment variables use .env file
 
-| Name           | Type   | Default | Description                                     |
-| -------------- | ------ | ------- | ----------------------------------------------- |
-| API_BASE_URL   | string | -       | Base URL to proxy API requests (for dev server) |
-| API_TOKEN      | string | -       | API token (for dev server)                      |
-| USERNAME       | string | -       | User login (for dev server)                     |
-| PASSWORD       | string | -       | User password (for dev server)                  |
-| JAEGER_UI_PATH | string | -       | Path to custom Jaeger UI build                  |
+| Name              | Type   | Default | Description                                          |
+| ----------------- | ------ | ------- | ---------------------------------------------------- |
+| API_BASE_URL      | string | -       | Base URL to proxy API requests (for dev server)      |
+| AUTH_API_BASE_URL | string | -       | Base URL to proxy auth API requests (for dev server) |
+| API_TOKEN         | string | -       | API token (for dev server)                           |
+| USERNAME          | string | -       | User login (for dev server)                          |
+| PASSWORD          | string | -       | User password (for dev server)                       |
+| JAEGER_UI_PATH    | string | -       | Path to custom Jaeger UI build                       |
 
 ## Jaeger UI
 

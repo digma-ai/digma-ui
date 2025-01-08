@@ -11,12 +11,6 @@ export interface GetEnvironmentResponse {
   displayName: string;
 }
 
-export type GetEnvironmentsResponse = {
-  type: "Private" | "Public";
-  id: string;
-  name: string;
-}[];
-
 const REQUEST_TIMEOUT = 3000;
 
 export const getEnvironment = async (
@@ -48,16 +42,5 @@ export const getEnvironment = async (
         }
       }
     });
-  }
-};
-
-export const getEnvironments = async () => {
-  try {
-    const response = await client.get<GetEnvironmentsResponse>("/environments");
-
-    return response.data;
-  } catch (e) {
-    logger.error(e);
-    return Promise.reject(e instanceof Error ? e : new Error(String(e)));
   }
 };

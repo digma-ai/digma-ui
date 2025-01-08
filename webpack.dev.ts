@@ -113,9 +113,15 @@ const config: WebpackConfiguration = {
     port: 3000,
     proxy: [
       {
-        context: ["/api", "/auth"],
+        context: ["/api"],
         target: process.env.API_BASE_URL,
         pathRewrite: { "^/api": "" },
+        secure: false,
+        changeOrigin: true
+      },
+      {
+        context: ["/auth"],
+        target: process.env.AUTH_API_BASE_URL,
         secure: false,
         changeOrigin: true
       }

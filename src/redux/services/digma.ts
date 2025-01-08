@@ -1,5 +1,4 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { type GetEnvironmentsResponse } from "../../api/web/services/environments";
 import type { GetServicesPayload } from "../../components/Dashboard/MetricsReport/Header/types";
 import {
   type GetEndpointsIssuesPayload,
@@ -16,6 +15,7 @@ import { isString } from "../../typeGuards/isString";
 import type {
   GetAboutResponse,
   GetEnvironmentServicesResponse,
+  GetEnvironmentsResponse,
   GetUserProfileResponse
 } from "./types";
 
