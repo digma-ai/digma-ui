@@ -11,4 +11,10 @@ export interface GetUserProfileResponse {
   email: string;
 }
 
+export type GetEnvironmentsResponse = {
+  type: "Private" | "Public";
+  id: string;
+  name: string;
+}[];
+
 export type GetEnvironmentServicesResponse = string[];
