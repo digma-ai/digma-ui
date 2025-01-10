@@ -65,7 +65,8 @@ export const issuesReportSlice = createSlice({
     },
     setSelectedServices: (state, action: PayloadAction<string[]>) => {
       state.selectedServices = action.payload;
-    }
+    },
+    clear: () => initialState
   }
 });
 
@@ -78,7 +79,8 @@ export const {
   setCriticalityLevels,
   setPeriodInDays,
   setSelectedEndpoints,
-  setSelectedServices
+  setSelectedServices,
+  clear
 } = issuesReportSlice.actions;
 
 export default issuesReportSlice.reducer;

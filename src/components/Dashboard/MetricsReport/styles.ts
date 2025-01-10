@@ -36,7 +36,7 @@ export const ContainerBackgroundGradient = styled.div`
   filter: blur(5px);
 `;
 
-export const IssuesReportContainer = styled.div`
+export const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -44,7 +44,6 @@ export const IssuesReportContainer = styled.div`
   padding: 24px 24px 16px;
   gap: 24px;
   box-sizing: border-box;
-  overflow: auto;
 `;
 
 export const Footer = styled.div`

@@ -2,8 +2,10 @@ import {
   useAdminDispatch,
   useAdminSelector
 } from "../../../../containers/Admin/hooks";
+import { useMount } from "../../../../hooks/useMount";
 import type { IssueCriticality } from "../../../../redux/services/types";
 import {
+  clear,
   setCriticalityLevels,
   setPeriodInDays,
   setSelectedEndpoints,
@@ -18,6 +20,7 @@ import {
   type IssuesReportViewMode
 } from "../../../../redux/slices/issuesReportSlice";
 import { IssuesReport } from "../../../common/IssuesReport";
+import * as s from "./styles";
 
 export const CodeIssues = () => {
   const selectedEnvironmentId = useAdminSelector(
@@ -45,6 +48,12 @@ export const CodeIssues = () => {
   );
 
   const dispatch = useAdminDispatch();
+
+  useMount(() => {
+    return () => {
+      dispatch(clear());
+    };
+  });
 
   const handleTileTitleClick = () =>
     // viewLevel: IssuesReportViewLevel,
@@ -97,28 +106,30 @@ export const CodeIssues = () => {
   };
 
   return (
-    <IssuesReport
-      selectedEnvironmentId={selectedEnvironmentId}
-      criticalityLevels={criticalityLevels}
-      periodInDays={periodInDays}
-      selectedService={selectedService}
-      selectedServices={selectedServices}
-      selectedEndpoints={selectedEndpoints}
-      viewLevel={viewLevel}
-      viewMode={viewMode}
-      timeMode={timeMode}
-      defaultHeaderTitle={"Code Issues"}
-      onTileTitleClick={handleTileTitleClick}
-      onTileIssuesStatsClick={handleTileIssuesStatsClick}
-      onSelectedEnvironmentIdChange={handleSelectedEnvironmentIdChange}
-      onSelectedServicesChange={handleSelectedServicesChange}
-      onSelectedEndpointsChange={handleSelectedEndpointsChange}
-      onCriticalityLevelsChange={handleCriticalityLevelsChange}
-      onPeriodInDaysChange={handlePeriodInDaysChange}
-      onTimeModeChange={handleTimeModeChange}
-      onViewModeChange={handleViewModeChange}
-      onViewLevelChange={handleViewLevelChange}
-      onSelectedServiceChange={handleSelectedServiceChange}
-    />
+    <s.Container>
+      <IssuesReport
+        selectedEnvironmentId={selectedEnvironmentId}
+        criticalityLevels={criticalityLevels}
+        periodInDays={periodInDays}
+        selectedService={selectedService}
+        selectedServices={selectedServices}
+        selectedEndpoints={selectedEndpoints}
+        viewLevel={viewLevel}
+        viewMode={viewMode}
+        timeMode={timeMode}
+        defaultHeaderTitle={"Code Issues"}
+        onTileTitleClick={handleTileTitleClick}
+        onTileIssuesStatsClick={handleTileIssuesStatsClick}
+        onSelectedEnvironmentIdChange={handleSelectedEnvironmentIdChange}
+        onSelectedServicesChange={handleSelectedServicesChange}
+        onSelectedEndpointsChange={handleSelectedEndpointsChange}
+        onCriticalityLevelsChange={handleCriticalityLevelsChange}
+        onPeriodInDaysChange={handlePeriodInDaysChange}
+        onTimeModeChange={handleTimeModeChange}
+        onViewModeChange={handleViewModeChange}
+        onViewLevelChange={handleViewLevelChange}
+        onSelectedServiceChange={handleSelectedServiceChange}
+      />
+    </s.Container>
   );
 };

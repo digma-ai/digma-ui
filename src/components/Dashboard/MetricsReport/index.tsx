@@ -174,7 +174,7 @@ export const MetricsReport = () => {
     <s.Container>
       <s.ContainerBackground />
       <s.ContainerBackgroundGradient />
-      <s.IssuesReportContainer>
+      <s.ContentContainer>
         <IssuesReport
           selectedEnvironmentId={selectedEnvironmentId}
           criticalityLevels={criticalityLevels}
@@ -202,7 +202,7 @@ export const MetricsReport = () => {
           <DigmaLogoIcon size={14} />
           <span>© {new Date().getFullYear()} digma.ai</span>
         </s.Footer>
-      </s.IssuesReportContainer>
+      </s.ContentContainer>
     </s.Container>
   );
 };
