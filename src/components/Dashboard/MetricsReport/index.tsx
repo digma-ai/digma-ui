@@ -1,68 +1,62 @@
-import { useEffect, useLayoutEffect, useMemo } from "react";
-import { getFeatureFlagValue } from "../../../featureFlags";
+import { useLayoutEffect } from "react";
+import {
+  useDashboardDispatch,
+  useDashboardSelector
+} from "../../../containers/Dashboard/hooks";
 import { useMount } from "../../../hooks/useMount";
-import { useConfigSelector } from "../../../store/config/useConfigSelector";
-import { useMetricsReportSelector } from "../../../store/metricsReport/useMetricsReportSelector";
-import { useStore } from "../../../store/useStore";
+import { type IssueCriticality } from "../../../redux/services/types";
+import {
+  setCriticalityLevels,
+  setPeriodInDays,
+  setSelectedEndpoints,
+  setSelectedEnvironmentId,
+  setSelectedService,
+  setSelectedServices,
+  setTimeMode,
+  setViewLevel,
+  setViewMode,
+  type IssuesReportTimeMode,
+  type IssuesReportViewLevel,
+  type IssuesReportViewMode
+} from "../../../redux/slices/issuesReportSlice";
 import { isString } from "../../../typeGuards/isString";
-import { FeatureFlag, SCOPE_CHANGE_EVENTS } from "../../../types";
+import { SCOPE_CHANGE_EVENTS } from "../../../types";
 import { changeScope } from "../../../utils/actions/changeScope";
+import { IssuesReport } from "../../common/IssuesReport";
 import { DigmaLogoIcon } from "../../common/icons/16px/DigmaLogoIcon";
 import { actions } from "../actions";
-import { Chart } from "./Chart";
-import { EmptyState } from "./EmptyState";
-import { Header } from "./Header";
 import * as s from "./styles";
-import { Table } from "./Table";
-import type {
-  EndpointIssuesData,
-  GetEndpointsIssuesPayload,
-  ScoreCriterion,
-  ServiceIssuesData,
-  UseServicesIssuesDataProps
-} from "./types";
-import { useEndpointsIssuesData } from "./useEndpointsIssuesData";
-import { useServicesIssuesData } from "./useServicesIssuesData";
-import { transformEndpointsData, transformServicesData } from "./utils";
 
 export const MetricsReport = () => {
-  const { environments, backendInfo } = useConfigSelector();
-  const {
-    metricsReportViewLevel: viewLevel,
-    metricsReportViewMode: viewMode,
-    metricsReportTimeMode: timeMode,
-    metricsReportSelectedEnvironmentId: selectedEnvironmentId,
-    metricsReportSelectedService: selectedService,
-    metricsReportSelectedServices: selectedServices,
-    metricsReportSelectedCriticalityLevels: selectedCriticalityLevels,
-    metricsReportSelectedPeriodInDays: selectedPeriodInDays,
-    metricsReportSelectedEndpoints: selectedEndpoints,
-    metricsReportServices: services,
-    metricsReportServicesIssuesData: servicesIssuesData,
-    metricsReportEndpointsIssuesData: endpointsIssuesData
-  } = useMetricsReportSelector();
-
-  const {
-    setMetricsReportSelectedService: setSelectedService,
-    setMetricsReportSelectedEnvironmentId: setSelectedEnvironmentId,
-    setMetricsReportViewLevel: setViewLevel,
-    setMetricsReportServicesIssuesData: setServicesIssuesData,
-    setMetricsReportEndpointsIssuesData: setEndpointsIssuesData
-  } = useStore.getState();
-
-  const isCriticalityEnabled = Boolean(
-    backendInfo &&
-      getFeatureFlagValue(
-        backendInfo,
-        FeatureFlag.IS_METRICS_REPORT_CRITICALITY_ENABLED
-      )
+  const selectedEnvironmentId = useDashboardSelector(
+    (state) => state.metricsReport.selectedEnvironmentId
+  );
+  const criticalityLevels = useDashboardSelector(
+    (state) => state.metricsReport.criticalityLevels
+  );
+  const periodInDays = useDashboardSelector(
+    (state) => state.metricsReport.periodInDays
+  );
+  const selectedService = useDashboardSelector(
+    (state) => state.metricsReport.selectedService
+  );
+  const selectedServices = useDashboardSelector(
+    (state) => state.metricsReport.selectedServices
+  );
+  const viewLevel = useDashboardSelector(
+    (state) => state.metricsReport.viewLevel
+  );
+  const viewMode = useDashboardSelector(
+    (state) => state.metricsReport.viewMode
+  );
+  const timeMode = useDashboardSelector(
+    (state) => state.metricsReport.timeMode
+  );
+  const selectedEndpoints = useDashboardSelector(
+    (state) => state.metricsReport.selectedEndpoints
   );
 
-  const scoreCriterion: ScoreCriterion = isCriticalityEnabled
-    ? "criticality"
-    : "impact";
-
-  const isInitialized = environments && backendInfo;
+  const dispatch = useDashboardDispatch();
 
   useLayoutEffect(() => {
     window.sendMessageToDigma({
@@ -75,73 +69,6 @@ export const MetricsReport = () => {
       setSelectedEnvironmentId(window.dashboardEnvironment);
     }
   });
-
-  const useServiceIssuesDataPayload: UseServicesIssuesDataProps =
-    useMemo(() => {
-      return {
-        environmentId: selectedEnvironmentId,
-        services:
-          selectedServices.length > 0 ? selectedServices : services ?? [],
-        criticalities: selectedCriticalityLevels,
-        lastDays: timeMode === "baseline" ? null : selectedPeriodInDays
-      };
-    }, [
-      selectedEnvironmentId,
-      selectedServices,
-      selectedCriticalityLevels,
-      selectedPeriodInDays,
-      services,
-      timeMode
-    ]);
-
-  const { data: servicesData } = useServicesIssuesData(
-    useServiceIssuesDataPayload,
-    Boolean(
-      isInitialized &&
-        selectedEnvironmentId &&
-        services &&
-        viewLevel === "services"
-    )
-  );
-
-  useEffect(() => {
-    if (servicesData) {
-      setServicesIssuesData(servicesData.reports);
-    }
-  }, [servicesData, setServicesIssuesData]);
-
-  const endpointsIssuesPayload: GetEndpointsIssuesPayload = useMemo(
-    () => ({
-      environment: selectedEnvironmentId ?? "",
-      service: selectedService ?? "",
-      endpoints: selectedEndpoints,
-      criticalities: selectedCriticalityLevels,
-      lastDays: timeMode === "baseline" ? null : selectedPeriodInDays
-    }),
-    [
-      selectedEnvironmentId,
-      selectedService,
-      selectedEndpoints,
-      selectedCriticalityLevels,
-      selectedPeriodInDays,
-      timeMode
-    ]
-  );
-  const { data: endpointsData } = useEndpointsIssuesData(
-    endpointsIssuesPayload,
-    Boolean(
-      isInitialized &&
-        selectedEnvironmentId &&
-        selectedService &&
-        viewLevel === "endpoints"
-    )
-  );
-
-  useEffect(() => {
-    if (endpointsData) {
-      setEndpointsIssuesData(endpointsData.reports);
-    }
-  }, [endpointsData, setEndpointsIssuesData]);
 
   const goToEndpointIssues = ({
     spanCodeObjectId,
@@ -167,12 +94,10 @@ export const MetricsReport = () => {
     });
   };
 
-  const handleTitleClick = (value: string) => {
-    if (viewLevel === "services") {
-      setSelectedService(value);
-      setViewLevel("endpoints");
-    }
-
+  const handleTileTitleClick = (
+    viewLevel: IssuesReportViewLevel,
+    value: string
+  ) => {
     if (viewLevel === "endpoints" && selectedEnvironmentId && selectedService) {
       goToEndpointIssues({
         spanCodeObjectId: value,
@@ -182,7 +107,10 @@ export const MetricsReport = () => {
     }
   };
 
-  const handleIssuesStatsClick = (value: string) => {
+  const handleIssuesStatsClick = (
+    viewLevel: IssuesReportViewLevel,
+    value: string
+  ) => {
     if (viewLevel === "services") {
       changeScope({
         span: null,
@@ -206,84 +134,75 @@ export const MetricsReport = () => {
     }
   };
 
-  const handleGoBack = () => {
-    setViewLevel("services");
-    setSelectedService(null);
+  const handleSelectedEnvironmentIdChange = (environmentId: string) => {
+    dispatch(setSelectedEnvironmentId(environmentId));
   };
 
-  const data =
-    (viewLevel === "services" ? servicesIssuesData : endpointsIssuesData) ?? [];
-  const transformedData =
-    viewLevel === "services"
-      ? transformServicesData(data as ServiceIssuesData[], scoreCriterion)
-      : transformEndpointsData(data as EndpointIssuesData[], scoreCriterion);
+  const handleSelectedServicesChange = (services: string[]) => {
+    dispatch(setSelectedServices(services));
+  };
 
-  const renderContent = () => {
-    if (
-      (viewLevel === "services" && !servicesIssuesData) ||
-      (viewLevel === "endpoints" && !endpointsIssuesData)
-    ) {
-      return <EmptyState preset={"loading"} />;
-    }
+  const handleSelectedEndpointsChange = (endpoints: string[]) => {
+    dispatch(setSelectedEndpoints(endpoints));
+  };
 
-    if (data.length === 0) {
-      if (viewLevel === "services") {
-        return <EmptyState preset={"noServices"} />;
-      }
+  const handleCriticalityLevelsChange = (criticalities: IssueCriticality[]) => {
+    dispatch(setCriticalityLevels(criticalities));
+  };
 
-      if (viewLevel === "endpoints") {
-        return <EmptyState preset={"noEndpoints"} />;
-      }
-    }
+  const handlePeriodInDaysChange = (periodInDays: number) => {
+    dispatch(setPeriodInDays(periodInDays));
+  };
 
-    return (
-      <>
-        {viewMode === "table" && (
-          <Table
-            scoreCriterion={scoreCriterion}
-            data={transformedData}
-            timeMode={timeMode}
-            onTitleClick={handleTitleClick}
-            onIssuesStatsClick={handleIssuesStatsClick}
-            viewLevel={viewLevel}
-          />
-        )}
-        {viewMode === "treemap" && (
-          <Chart
-            scoreCriterion={scoreCriterion}
-            data={transformedData}
-            timeMode={timeMode}
-            onTitleClick={handleTitleClick}
-            onIssuesStatsClick={handleIssuesStatsClick}
-            viewLevel={viewLevel}
-          />
-        )}
-      </>
-    );
+  const handleTimeModeChange = (timeMode: IssuesReportTimeMode) => {
+    dispatch(setTimeMode(timeMode));
+  };
+
+  const handleViewModeChange = (viewMode: IssuesReportViewMode) => {
+    dispatch(setViewMode(viewMode));
+  };
+
+  const handleViewLevelChange = (viewLevel: IssuesReportViewLevel) => {
+    dispatch(setViewLevel(viewLevel));
+  };
+
+  const handleSelectedServiceChange = (service: string | null) => {
+    dispatch(setSelectedService(service));
   };
 
   return (
-    <s.Section>
-      <s.SectionBackground />
+    <s.Container>
+      <s.ContainerBackground />
       <s.ContainerBackgroundGradient />
-      <s.Container>
-        {isInitialized ? (
-          environments.length > 0 ? (
-            <>
-              <Header onGoBack={handleGoBack} />
-              {renderContent()}
-            </>
-          ) : (
-            <EmptyState preset={"noData"} />
-          )
-        ) : (
-          <EmptyState preset={"loading"} />
-        )}
+      <s.IssuesReportContainer>
+        <IssuesReport
+          selectedEnvironmentId={selectedEnvironmentId}
+          criticalityLevels={criticalityLevels}
+          periodInDays={periodInDays}
+          selectedService={selectedService}
+          selectedServices={selectedServices}
+          selectedEndpoints={selectedEndpoints}
+          viewLevel={viewLevel}
+          viewMode={viewMode}
+          timeMode={timeMode}
+          defaultHeaderTitle={"Issues Map"}
+          onTileTitleClick={handleTileTitleClick}
+          onTileIssuesStatsClick={handleIssuesStatsClick}
+          onSelectedEnvironmentIdChange={handleSelectedEnvironmentIdChange}
+          onSelectedServicesChange={handleSelectedServicesChange}
+          onSelectedEndpointsChange={handleSelectedEndpointsChange}
+          onCriticalityLevelsChange={handleCriticalityLevelsChange}
+          onPeriodInDaysChange={handlePeriodInDaysChange}
+          onTimeModeChange={handleTimeModeChange}
+          onViewModeChange={handleViewModeChange}
+          onViewLevelChange={handleViewLevelChange}
+          onSelectedServiceChange={handleSelectedServiceChange}
+        />
         <s.Footer>
           <DigmaLogoIcon size={14} />
           <span>© {new Date().getFullYear()} digma.ai</span>
         </s.Footer>
-      </s.Container>
-    </s.Section>
+      </s.IssuesReportContainer>
+    </s.Container>
   );
 };

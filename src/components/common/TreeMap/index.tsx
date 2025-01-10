@@ -4,12 +4,17 @@ import { isNull } from "../../../typeGuards/isNull";
 import type { TileData, TreeMapProps } from "./types";
 
 const normalizeData = (data: Input<TileData>[]) => {
+  if (data.length === 0) {
+    return data;
+  }
+
   const MIN_MAX_RATIO = 5;
   const NORMALIZED_MIN = 1;
   const NORMALIZED_MAX = MIN_MAX_RATIO;
 
-  const dataMin = Math.min(...data.map((item) => item.value)) || NORMALIZED_MIN;
-  const dataMax = Math.max(...data.map((item) => item.value)) || NORMALIZED_MIN;
+  const values = data.map((item) => item.value);
+  const dataMin = Math.min(...values);
+  const dataMax = Math.max(...values);
 
   if (dataMin === dataMax) {
     return data.map((item) => ({
@@ -18,18 +23,15 @@ const normalizeData = (data: Input<TileData>[]) => {
     }));
   }
 
-  const dataMinMaxRatio = dataMax / dataMin;
-
-  return dataMinMaxRatio > MIN_MAX_RATIO
-    ? data.map((item) => ({
-        id: item.id,
-        value:
-          ((item.value - dataMin) * (NORMALIZED_MAX - NORMALIZED_MIN)) /
-            (dataMax - dataMin) +
-          NORMALIZED_MIN, // min-max normalization
-        content: item.content
-      }))
-    : data;
+  return data.map((item) => ({
+    id: item.id,
+    value:
+      ((Math.max(0, item.value) - dataMin) *
+        (NORMALIZED_MAX - NORMALIZED_MIN)) /
+        (dataMax - dataMin) +
+      NORMALIZED_MIN, // min-max normalization
+    content: item.content
+  }));
 };
 
 const calculateTiles = (
@@ -73,10 +75,11 @@ export const TreeMap = ({
   data,
   width,
   height,
-  minTileDimensions
+  minTileDimensions,
+  normalize
 }: TreeMapProps) => {
   const container = { x0: 0, y0: 0, x1: width ?? 0, y1: height ?? 0 };
-  const normalizedData = normalizeData(data);
+  const normalizedData = normalize ? normalizeData(data) : data;
   const sortedData = [...normalizedData].sort((a, b) => b.value - a.value);
   const tilesData = calculateTiles(sortedData, container, minTileDimensions);
 

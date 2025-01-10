@@ -37,7 +37,7 @@ export default tseslint.config(
     files: ["**/*.tsx"],
     ...reactPlugin.configs.flat["jsx-runtime"]
   },
-  // TODO: Fix types by updating "eslint-plugin-react-hooks" once the following issue is resolved
+  // TODO: fix types by updating "eslint-plugin-react-hooks" once the following issue is resolved
   // https://github.com/facebook/react/issues/28313
   // https://github.com/facebook/react/pull/30774
   {
@@ -73,6 +73,16 @@ export default tseslint.config(
     files: ["src/components/common/icons/**/*Icon.tsx"],
     rules: {
       "react/jsx-curly-brace-presence": "off"
+    }
+  },
+  {
+    files: ["src/redux/services/digmaCodeGen.ts"],
+    rules: {
+      "@typescript-eslint/dot-notation": "warn",
+      "@typescript-eslint/no-redundant-type-constituents": "warn",
+      "@typescript-eslint/no-explicit-any": "warn",
+      "@typescript-eslint/consistent-indexed-object-style": "warn",
+      "@typescript-eslint/consistent-type-definitions": "warn"
     }
   }
 );

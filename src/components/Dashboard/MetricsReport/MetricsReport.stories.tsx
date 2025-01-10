@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
 import { MetricsReport } from ".";
+import { mockedReport } from "../../common/IssuesReport/Table/mockData";
 import { actions } from "../actions";
-import { mockedReport } from "./Table/mockData";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof MetricsReport> = {

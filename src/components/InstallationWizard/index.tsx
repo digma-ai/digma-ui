@@ -77,7 +77,7 @@ export const InstallationWizard = () => {
   // const [userEmail, setUserEmail] = useState("");
   // const [isUserEmailCaptured, setIsUserEmailCaptured] = useState(false);
 
-  // TO DO:
+  // TODO:
   // add environment variable for presetting the correct installation type
   // if Digma already installed
   // const preselectedInstallationType =
