@@ -34,4 +34,4 @@ jobs:
           git add dependencies.json
           git commit -m "Update dependencies"
           git push origin ${{ env.BRANCH_NAME }}
-          gh pr create -f -B main
+          gh pr create -f -B main --head ${{ env.BRANCH_NAME }}

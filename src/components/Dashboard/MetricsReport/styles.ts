@@ -3,31 +3,19 @@ import { bodyRegularTypography } from "../../common/App/typographies";
 
 export const Container = styled.div`
   display: flex;
-  flex-direction: column;
-  height: 100%;
-  width: 100%;
-  padding: 24px 24px 16px;
-  gap: 24px;
-  box-sizing: border-box;
-  overflow: auto;
-`;
-
-export const Footer = styled.div`
-  align-items: center;
-  display: flex;
-  justify-content: start;
-  gap: 8px;
-  margin-top: auto;
-  color: ${({ theme }) => theme.colors.v3.text.disabled};
-  ${bodyRegularTypography}
-`;
-
-export const Section = styled.div`
-  display: flex;
   height: 100%;
   flex-direction: column;
   position: relative;
   overflow: hidden;
+`;
+
+export const ContainerBackground = styled.div`
+  z-index: -1;
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  width: 100%;
+  background: ${({ theme }) => theme.colors.v3.surface.secondary};
 `;
 
 export const ContainerBackgroundGradient = styled.div`
@@ -48,11 +36,22 @@ export const ContainerBackgroundGradient = styled.div`
   filter: blur(5px);
 `;
 
-export const SectionBackground = styled.div`
-  z-index: -1;
-  position: absolute;
-  inset: 0;
+export const ContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
   height: 100%;
   width: 100%;
-  background: ${({ theme }) => theme.colors.v3.surface.secondary};
+  padding: 24px 24px 16px;
+  gap: 24px;
+  box-sizing: border-box;
+`;
+
+export const Footer = styled.div`
+  align-items: center;
+  display: flex;
+  justify-content: start;
+  gap: 8px;
+  margin-top: auto;
+  color: ${({ theme }) => theme.colors.v3.text.disabled};
+  ${bodyRegularTypography}
 `;

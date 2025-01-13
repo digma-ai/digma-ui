@@ -7,6 +7,7 @@ export interface TileData {
 }
 
 export interface TreeMapProps {
+  normalize?: boolean;
   padding?: number;
   data: Input<TileData>[];
   width: number | null;

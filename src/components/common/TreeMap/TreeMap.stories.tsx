@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { TreeMap } from ".";
-import { ReportTile } from "../../Dashboard/MetricsReport/Chart/ReportTile";
+import { ReportTile } from "../IssuesReport/Chart/ReportTile";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof TreeMap> = {
@@ -36,7 +36,7 @@ export const Default: Story = {
             score={1500}
             scoreCriterion={"criticality"}
             severity={"Top"}
-            viewMode={"baseline"}
+            timeMode={"baseline"}
           />
         )
       },
@@ -50,7 +50,7 @@ export const Default: Story = {
             score={710}
             scoreCriterion={"criticality"}
             severity={"High"}
-            viewMode={"baseline"}
+            timeMode={"baseline"}
           />
         )
       },
@@ -64,7 +64,7 @@ export const Default: Story = {
             score={530}
             scoreCriterion={"criticality"}
             severity={"Medium"}
-            viewMode={"baseline"}
+            timeMode={"baseline"}
           />
         )
       },
@@ -78,7 +78,7 @@ export const Default: Story = {
             score={100}
             scoreCriterion={"criticality"}
             severity={"Low"}
-            viewMode={"baseline"}
+            timeMode={"baseline"}
           />
         )
       },
@@ -92,7 +92,7 @@ export const Default: Story = {
             score={100}
             scoreCriterion={"criticality"}
             severity={"Low"}
-            viewMode={"baseline"}
+            timeMode={"baseline"}
           />
         )
       }

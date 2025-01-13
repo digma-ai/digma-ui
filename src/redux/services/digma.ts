@@ -1,22 +1,20 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import type { GetServicesPayload } from "../../components/Dashboard/MetricsReport/Header/types";
-import {
-  type GetEndpointsIssuesPayload,
-  type GetMetricsReportDataPayloadV1,
-  type GetMetricsReportDataPayloadV2,
-  type GetServiceEndpointsPayload,
-  type GetServiceEnvironmentsPayload,
-  type SetEndpointsIssuesPayload,
-  type SetMetricsReportDataPayload,
-  type SetServiceEndpointsPayload,
-  type SetServiceEnvironmentsPayload
-} from "../../components/Dashboard/MetricsReport/types";
 import { isString } from "../../typeGuards/isString";
 import type {
   GetAboutResponse,
+  GetEndpointsIssuesPayload,
+  GetEnvironmentServicesPayload,
   GetEnvironmentServicesResponse,
   GetEnvironmentsResponse,
-  GetUserProfileResponse
+  GetMetricsReportDataPayloadV1,
+  GetMetricsReportDataPayloadV2,
+  GetServiceEndpointsPayload,
+  GetServiceEnvironmentsPayload,
+  GetUserProfileResponse,
+  SetEndpointsIssuesPayload,
+  SetMetricsReportDataPayload,
+  SetServiceEndpointsPayload,
+  SetServiceEnvironmentsPayload
 } from "./types";
 
 export const digmaApi = createApi({
@@ -59,7 +57,7 @@ export const digmaApi = createApi({
     }),
     getEnvironmentServices: builder.query<
       GetEnvironmentServicesResponse,
-      GetServicesPayload
+      GetEnvironmentServicesPayload
     >({
       query: (data) => ({
         url: "services/getServices",

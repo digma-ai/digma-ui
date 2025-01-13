@@ -1,5 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { Provider } from "react-redux";
 import {
   cancelMessage,
   initializeDigmaMessageListener,
@@ -11,6 +12,7 @@ import { App } from "../../components/common/App";
 import { dispatcher } from "../../dispatcher";
 import { isString } from "../../typeGuards/isString";
 import { handleUncaughtError } from "../../utils/handleUncaughtError";
+import { store } from "../Dashboard/store";
 import { GlobalStyle } from "./styles";
 
 const APP_ID = "dashboard";
@@ -44,10 +46,12 @@ if (rootElement) {
   const root = createRoot(rootElement);
   root.render(
     <StrictMode>
-      <App id={APP_ID}>
-        <GlobalStyle />
-        {getView()}
-      </App>
+      <Provider store={store}>
+        <App id={APP_ID}>
+          <GlobalStyle />
+          {getView()}
+        </App>
+      </Provider>
     </StrictMode>
   );
 }

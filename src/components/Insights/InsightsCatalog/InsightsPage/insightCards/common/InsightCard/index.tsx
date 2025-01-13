@@ -328,7 +328,7 @@ export const InsightCard = ({
             label={"Pin"}
             title={"Pin"}
             onClick={() =>
-              //TODO: implement
+              // TODO: implement
               {
                 return undefined;
               }
