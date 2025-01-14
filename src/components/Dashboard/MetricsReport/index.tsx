@@ -109,7 +109,7 @@ export const MetricsReport = () => {
 
   const handleIssuesStatsClick = (
     viewLevel: IssuesReportViewLevel,
-    value: string
+    target: { value: string; displayName?: string }
   ) => {
     if (viewLevel === "services") {
       changeScope({
@@ -119,7 +119,7 @@ export const MetricsReport = () => {
         context: {
           event: SCOPE_CHANGE_EVENTS.METRICS_SERVICE_SELECTED,
           payload: {
-            service: value
+            service: target.value
           }
         }
       });
@@ -127,7 +127,7 @@ export const MetricsReport = () => {
 
     if (viewLevel === "endpoints" && selectedEnvironmentId && selectedService) {
       goToEndpointIssues({
-        spanCodeObjectId: value,
+        spanCodeObjectId: target.value,
         service: selectedService,
         environmentId: selectedEnvironmentId
       });

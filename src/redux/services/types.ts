@@ -2,6 +2,7 @@ import type {
   DeploymentType,
   EnvironmentType
 } from "../../components/common/App/types";
+import type { GenericCodeObjectInsight } from "../../components/Insights/types";
 
 export type IssueCriticality = "Low" | "Medium" | "High";
 
@@ -105,3 +106,43 @@ export interface GetEnvironmentServicesPayload {
 }
 
 export type GetEnvironmentServicesResponse = string[];
+
+export interface GetIssuesPayload {
+  environment?: string;
+  scopedSpanCodeObjectId?: string;
+  displayName?: string;
+  showDismissed?: boolean;
+  filters?: string[];
+  services?: string[];
+  insightTypes?: string[];
+  sortBy?: string;
+  sortOrder?: string;
+  page?: number;
+  pageSize?: number;
+}
+
+export interface GetIssuesResponse {
+  insights: GenericCodeObjectInsight[];
+  totalCount: number;
+  dismissedCount?: number;
+  unreadCount?: number;
+}
+
+export interface MarkInsightAsReadPayload {
+  insightIds: string[];
+}
+
+export interface DismissUndismissInsightPayload {
+  uid: string;
+}
+
+export interface LinkTicketToIssuePayload {
+  environment: string;
+  insightId: string;
+  ticketLink: string;
+}
+
+export interface UnlinkTicketFromIssuePayload {
+  environment: string;
+  insightId: string;
+}

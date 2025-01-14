@@ -27,7 +27,7 @@ export interface IssuesReportProps {
   onTileTitleClick: (viewLevel: IssuesReportViewLevel, value: string) => void;
   onTileIssuesStatsClick: (
     viewLevel: IssuesReportViewLevel,
-    value: string
+    target: { value: string; displayName?: string }
   ) => void;
   onViewLevelChange: (viewLevel: IssuesReportViewLevel) => void;
   onSelectedServiceChange: (service: string | null) => void;

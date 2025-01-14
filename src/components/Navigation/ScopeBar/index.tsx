@@ -65,7 +65,8 @@ export const ScopeBar = ({
   isExpanded,
   onExpandCollapseChange,
   isSpanInfoEnabled,
-  linkedEndpoints
+  linkedEndpoints,
+  isTargetButtonMenuVisible = true
 }: ScopeBarProps) => {
   const [isTargetButtonMenuOpen, setIsTargetButtonMenuOpen] = useState(false);
   const [isLinkedEndpointsMenuOpen, setIsLinkedEndpointsMenuOpen] =
@@ -218,26 +219,30 @@ export const ScopeBar = ({
           />
         </Tooltip>
       )}
-      {isTargetButtonMenuEnabled ? (
-        <NewPopover
-          content={
-            <Popup height={"126px"}>
-              {scope && (
-                <TargetButtonMenu
-                  scope={scope}
-                  onGoToCodeLocation={handleGoToCodeLocation}
-                />
-              )}
-            </Popup>
-          }
-          onOpenChange={setIsTargetButtonMenuOpen}
-          isOpen={isTargetButtonMenuOpen}
-          placement={"bottom-end"}
-        >
-          <div>{renderTargetButton()}</div>
-        </NewPopover>
-      ) : (
-        renderTargetButton()
+      {isTargetButtonMenuVisible && (
+        <>
+          {isTargetButtonMenuEnabled ? (
+            <NewPopover
+              content={
+                <Popup height={"126px"}>
+                  {scope && (
+                    <TargetButtonMenu
+                      scope={scope}
+                      onGoToCodeLocation={handleGoToCodeLocation}
+                    />
+                  )}
+                </Popup>
+              }
+              onOpenChange={setIsTargetButtonMenuOpen}
+              isOpen={isTargetButtonMenuOpen}
+              placement={"bottom-end"}
+            >
+              <div>{renderTargetButton()}</div>
+            </NewPopover>
+          ) : (
+            renderTargetButton()
+          )}
+        </>
       )}
     </s.ScopeBar>
   );

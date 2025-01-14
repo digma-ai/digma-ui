@@ -1,20 +1,27 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import type { LinkTicketResponse } from "../../components/Insights/insightTickets/common/InsightJiraTicket/types";
 import { isString } from "../../typeGuards/isString";
 import type {
+  DismissUndismissInsightPayload,
   GetAboutResponse,
   GetEndpointsIssuesPayload,
   GetEnvironmentServicesPayload,
   GetEnvironmentServicesResponse,
   GetEnvironmentsResponse,
+  GetIssuesPayload,
+  GetIssuesResponse,
   GetMetricsReportDataPayloadV1,
   GetMetricsReportDataPayloadV2,
   GetServiceEndpointsPayload,
   GetServiceEnvironmentsPayload,
   GetUserProfileResponse,
+  LinkTicketToIssuePayload,
+  MarkInsightAsReadPayload,
   SetEndpointsIssuesPayload,
   SetMetricsReportDataPayload,
   SetServiceEndpointsPayload,
-  SetServiceEnvironmentsPayload
+  SetServiceEnvironmentsPayload,
+  UnlinkTicketFromIssuePayload
 } from "./types";
 
 export const digmaApi = createApi({
@@ -80,6 +87,50 @@ export const digmaApi = createApi({
       GetServiceEnvironmentsPayload
     >({
       query: ({ service }) => `services/${service}/environments`
+    }),
+    getIssues: builder.query<GetIssuesResponse, GetIssuesPayload>({
+      query: (data) => ({ url: "insights/issues", method: "POST", body: data })
+    }),
+    markInsightAsRead: builder.mutation<void, MarkInsightAsReadPayload>({
+      query: (data) => ({
+        url: `Insights/markRead`,
+        method: "POST",
+        body: data
+      })
+    }),
+    dismissInsight: builder.mutation<void, DismissUndismissInsightPayload>({
+      query: (data) => ({
+        url: `InsightsActions/dismiss`,
+        method: "PUT",
+        body: data
+      })
+    }),
+    undismissInsight: builder.mutation<void, DismissUndismissInsightPayload>({
+      query: (data) => ({
+        url: `InsightsActions/unDismiss`,
+        method: "PUT",
+        body: data
+      })
+    }),
+    linkTicketToIssue: builder.mutation<
+      LinkTicketResponse,
+      LinkTicketToIssuePayload
+    >({
+      query: (data) => ({
+        url: `/InsightsActions/link-ticket`,
+        method: "PUT",
+        body: data
+      })
+    }),
+    unlinkTicketFromIssue: builder.mutation<
+      LinkTicketResponse,
+      UnlinkTicketFromIssuePayload
+    >({
+      query: (data) => ({
+        url: `/InsightsActions/unlink-ticket`,
+        method: "PUT",
+        body: data
+      })
     })
   })
 });
@@ -92,5 +143,11 @@ export const {
   useGetEndpointsIssuesQuery,
   useGetEnvironmentServicesQuery,
   useGetServiceEndpointsQuery,
-  useGetServiceEnvironmentsQuery
+  useGetServiceEnvironmentsQuery,
+  useGetIssuesQuery,
+  useMarkInsightAsReadMutation,
+  useDismissInsightMutation,
+  useUndismissInsightMutation,
+  useLinkTicketToIssueMutation,
+  useUnlinkTicketFromIssueMutation
 } = digmaApi;

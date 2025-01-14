@@ -156,7 +156,18 @@ export const IssuesReport = ({
   };
 
   const handleIssuesStatsClick = (value: string) => {
-    onTileIssuesStatsClick(viewLevel, value);
+    if (viewLevel === "services") {
+      onTileIssuesStatsClick(viewLevel, { value });
+    }
+
+    if (viewLevel === "endpoints") {
+      onTileIssuesStatsClick(viewLevel, {
+        value,
+        displayName: endpointsIssues?.reports.find(
+          (x) => x.spanCodeObjectId === value
+        )?.displayName
+      });
+    }
   };
 
   const handleGoBack = () => {

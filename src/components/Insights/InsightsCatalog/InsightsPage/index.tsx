@@ -1,10 +1,12 @@
 import { useEffect, useRef } from "react";
 import { actions as globalActions } from "../../../../actions";
 import { usePersistence } from "../../../../hooks/usePersistence";
+import { platform } from "../../../../platform";
 import { useConfigSelector } from "../../../../store/config/useConfigSelector";
 import { useInsightsSelector } from "../../../../store/insights/useInsightsSelector";
 import { trackingEvents as globalEvents } from "../../../../trackingEvents";
 import { isNumber } from "../../../../typeGuards/isNumber";
+import { isString } from "../../../../typeGuards/isString";
 import { isUndefined } from "../../../../typeGuards/isUndefined";
 import { InsightType, SCOPE_CHANGE_EVENTS } from "../../../../types";
 import { changeScope } from "../../../../utils/actions/changeScope";
@@ -93,7 +95,7 @@ const getInsightToShowJiraHint = (insights: CodeObjectInsight[]): number => {
   );
 };
 
-const renderInsightCard = (
+export const renderInsightCard = (
   insight: GenericCodeObjectInsight,
   onJiraTicketCreate: (
     insight: GenericCodeObjectInsight,
@@ -134,6 +136,20 @@ const renderInsightCard = (
     insightType: InsightType,
     spanCodeObjectId?: string
   ) => {
+    if (
+      platform === "Web" &&
+      isString(window.jaegerURL) &&
+      window.jaegerURL.length > 0
+    ) {
+      let url = `${window.jaegerURL}/trace/${trace.id}`;
+
+      if (spanCodeObjectId) {
+        url = url.concat(`?uiFind=${spanCodeObjectId}`);
+      }
+      window.open(url, "_blank", "noopener noreferrer");
+      return;
+    }
+
     window.sendMessageToDigma({
       action: actions.GO_TO_TRACE,
       payload: {

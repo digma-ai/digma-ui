@@ -9,4 +9,5 @@ export interface ScopeBarProps {
   onExpandCollapseChange: (isExpanded: boolean) => void;
   isSpanInfoEnabled: boolean;
   linkedEndpoints: LinkedEndpoint[];
+  isTargetButtonMenuVisible?: boolean;
 }

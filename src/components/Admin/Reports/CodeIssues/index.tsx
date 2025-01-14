@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   useAdminDispatch,
   useAdminSelector
@@ -20,9 +21,13 @@ import {
   type IssuesReportViewMode
 } from "../../../../redux/slices/issuesReportSlice";
 import { IssuesReport } from "../../../common/IssuesReport";
+import { IssuesSidebar } from "./IssuesSidebar";
 import * as s from "./styles";
 
 export const CodeIssues = () => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [scope, setScope] = useState<{ value: string; displayName?: string }>();
+
   const selectedEnvironmentId = useAdminSelector(
     (state) => state.codeIssuesReport.selectedEnvironmentId
   );
@@ -62,12 +67,17 @@ export const CodeIssues = () => {
       // TODO: implement
     };
 
-  const handleTileIssuesStatsClick = () =>
-    // viewLevel: IssuesReportViewLevel,
-    // value: string
-    {
-      // TODO: implement
-    };
+  const handleTileIssuesStatsClick = (
+    viewLevel: IssuesReportViewLevel,
+    target: { value: string; displayName?: string }
+  ) => {
+    if (!selectedEnvironmentId) {
+      return;
+    }
+
+    setScope(target);
+    setIsSidebarOpen(true);
+  };
 
   const handleSelectedEnvironmentIdChange = (environmentId: string) => {
     dispatch(setSelectedEnvironmentId(environmentId));
@@ -105,6 +115,10 @@ export const CodeIssues = () => {
     dispatch(setSelectedService(service));
   };
 
+  const handleIssuesSidebarClose = () => {
+    setIsSidebarOpen(false);
+  };
+
   return (
     <s.Container>
       <IssuesReport
@@ -130,6 +144,14 @@ export const CodeIssues = () => {
         onViewLevelChange={handleViewLevelChange}
         onSelectedServiceChange={handleSelectedServiceChange}
       />
+      {isSidebarOpen && (
+        <IssuesSidebar
+          onClose={handleIssuesSidebarClose}
+          scope={scope}
+          environmentId={selectedEnvironmentId ?? undefined}
+          viewLevel={viewLevel}
+        />
+      )}
     </s.Container>
   );
 };
