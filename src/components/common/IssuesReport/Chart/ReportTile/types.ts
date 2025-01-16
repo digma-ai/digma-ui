@@ -11,4 +11,5 @@ export interface ReportTileProps {
   timeMode: IssuesReportTimeMode;
   onTitleClick?: () => void;
   onIssuesClick?: () => void;
+  isActive?: boolean;
 }

@@ -253,6 +253,10 @@ const renderInsightCard = (
     });
   };
 
+  const handleDismissalChange = () => {
+    return undefined;
+  };
+
   if (isCodeObjectErrorsInsight(insight)) {
     return (
       <ErrorsInsight
@@ -265,6 +269,7 @@ const renderInsightCard = (
         onGoToSpan={handleGoToSpan}
         isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
         viewMode={"full"}
+        onDismissalChange={handleDismissalChange}
       />
     );
   }
@@ -296,6 +301,7 @@ const renderInsightCard = (
         onGoToSpan={handleGoToSpan}
         isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
         viewMode={"full"}
+        onDismissalChange={handleDismissalChange}
       />
     );
   }
@@ -311,6 +317,7 @@ const renderInsightCard = (
         onGoToSpan={handleGoToSpan}
         isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
         viewMode={"full"}
+        onDismissalChange={handleDismissalChange}
       />
     );
   }

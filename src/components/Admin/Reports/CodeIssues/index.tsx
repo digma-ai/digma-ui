@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { CSSTransition } from "react-transition-group";
 import {
   useAdminDispatch,
   useAdminSelector
@@ -27,6 +28,11 @@ import * as s from "./styles";
 export const CodeIssues = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [scope, setScope] = useState<{ value: string; displayName?: string }>();
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const sidebarContainerRef = useRef<HTMLDivElement>(null);
+  const [activeTileIds, setActiveTileIds] = useState<string[] | undefined>(
+    undefined
+  );
 
   const selectedEnvironmentId = useAdminSelector(
     (state) => state.codeIssuesReport.selectedEnvironmentId
@@ -60,15 +66,8 @@ export const CodeIssues = () => {
     };
   });
 
-  const handleTileTitleClick = () =>
-    // viewLevel: IssuesReportViewLevel,
-    // value: string
-    {
-      // TODO: implement
-    };
-
   const handleTileIssuesStatsClick = (
-    viewLevel: IssuesReportViewLevel,
+    _: IssuesReportViewLevel,
     target: { value: string; displayName?: string }
   ) => {
     if (!selectedEnvironmentId) {
@@ -77,6 +76,7 @@ export const CodeIssues = () => {
 
     setScope(target);
     setIsSidebarOpen(true);
+    setActiveTileIds([target.value]);
   };
 
   const handleSelectedEnvironmentIdChange = (environmentId: string) => {
@@ -117,6 +117,7 @@ export const CodeIssues = () => {
 
   const handleIssuesSidebarClose = () => {
     setIsSidebarOpen(false);
+    setActiveTileIds(undefined);
   };
 
   return (
@@ -132,7 +133,6 @@ export const CodeIssues = () => {
         viewMode={viewMode}
         timeMode={timeMode}
         defaultHeaderTitle={"Code Issues"}
-        onTileTitleClick={handleTileTitleClick}
         onTileIssuesStatsClick={handleTileIssuesStatsClick}
         onSelectedEnvironmentIdChange={handleSelectedEnvironmentIdChange}
         onSelectedServicesChange={handleSelectedServicesChange}
@@ -143,15 +143,42 @@ export const CodeIssues = () => {
         onViewModeChange={handleViewModeChange}
         onViewLevelChange={handleViewLevelChange}
         onSelectedServiceChange={handleSelectedServiceChange}
+        activeTileIds={activeTileIds}
       />
-      {isSidebarOpen && (
-        <IssuesSidebar
-          onClose={handleIssuesSidebarClose}
-          scope={scope}
-          environmentId={selectedEnvironmentId ?? undefined}
-          viewLevel={viewLevel}
+      <CSSTransition
+        in={isSidebarOpen}
+        timeout={s.TRANSITION_DURATION}
+        classNames={s.overlayTransitionClassName}
+        mountOnEnter={true}
+        unmountOnExit={true}
+      >
+        <s.Overlay
+          $isVisible={isSidebarOpen}
+          ref={overlayRef}
+          $transitionClassName={s.overlayTransitionClassName}
+          $transitionDuration={s.TRANSITION_DURATION}
         />
-      )}
+      </CSSTransition>
+      <CSSTransition
+        in={isSidebarOpen}
+        timeout={s.TRANSITION_DURATION}
+        classNames={s.sidebarContainerTransitionClassName}
+        mountOnEnter={true}
+        unmountOnExit={true}
+      >
+        <s.IssuesSidebarContainer
+          ref={sidebarContainerRef}
+          $transitionClassName={s.sidebarContainerTransitionClassName}
+          $transitionDuration={s.TRANSITION_DURATION}
+        >
+          <IssuesSidebar
+            onClose={handleIssuesSidebarClose}
+            scope={scope}
+            environmentId={selectedEnvironmentId ?? undefined}
+            viewLevel={viewLevel}
+          />
+        </s.IssuesSidebarContainer>
+      </CSSTransition>
     </s.Container>
   );
 };

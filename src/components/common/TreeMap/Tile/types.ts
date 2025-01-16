@@ -7,10 +7,16 @@ export interface TileProps {
   severity?: Severity;
   tooltip?: ReactNode;
   onTitleClick?: () => void;
+  isActive?: boolean;
 }
 
 export interface TileContainerProps {
   $severity?: Severity;
+  $isActive?: boolean;
+}
+
+export interface ContentContainerProps {
+  $isActive?: boolean;
 }
 
 export interface TitleProps {

@@ -2,6 +2,7 @@ import styled, { css } from "styled-components";
 import { subheading2RegularTypography } from "../../App/typographies";
 import type {
   ChildrenContainerProps,
+  ContentContainerProps,
   TileContainerProps,
   TitleProps
 } from "./types";
@@ -15,7 +16,12 @@ export const TileContainer = styled.div<TileContainerProps>`
   width: 100%;
   height: 100%;
   border-radius: 12px;
-  background: ${({ $severity }) => {
+  transition: background 300ms ease-out;
+  background: ${({ $isActive, $severity }) => {
+    if (!$isActive) {
+      return "radial-gradient(1166.07% 138.62% at 0% 0%, #4C4E59 0%, #27282E 100%)";
+    }
+
     switch ($severity) {
       case "Top":
         return "radial-gradient(1166.07% 138.62% at 0% 0%, #B92B2B 0%, #B95E2B 100%)";
@@ -30,12 +36,13 @@ export const TileContainer = styled.div<TileContainerProps>`
   }};
 `;
 
-export const ContentContainer = styled.div`
+export const ContentContainer = styled.div<ContentContainerProps>`
   display: flex;
   flex-direction: column;
   gap: 8px;
   padding: 24px;
   box-sizing: border-box;
+  opacity: ${({ $isActive }) => ($isActive ? 1 : 0.35)};
 `;
 
 const TitleStyles = css`

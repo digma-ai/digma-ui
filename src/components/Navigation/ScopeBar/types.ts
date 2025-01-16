@@ -6,7 +6,7 @@ export interface ScopeBarProps {
   codeContext?: CodeContext;
   scope: Scope | null;
   isExpanded: boolean;
-  onExpandCollapseChange: (isExpanded: boolean) => void;
+  onExpandCollapseChange?: (isExpanded: boolean) => void;
   isSpanInfoEnabled: boolean;
   linkedEndpoints: LinkedEndpoint[];
   isTargetButtonMenuVisible?: boolean;

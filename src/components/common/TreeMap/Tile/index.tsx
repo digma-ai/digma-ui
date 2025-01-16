@@ -13,7 +13,8 @@ export const Tile = ({
   children,
   severity,
   tooltip,
-  onTitleClick
+  onTitleClick,
+  isActive = true
 }: TileProps) => {
   const { observe: observeContainer, entry: containerEntry } = useDimensions();
 
@@ -36,9 +37,9 @@ export const Tile = ({
   return (
     <s.Container ref={observeContainer}>
       <Tooltip title={tooltip} followCursor={true}>
-        <s.TileContainer $severity={severity}>
+        <s.TileContainer $severity={severity} $isActive={isActive}>
           {isContentVisible && (
-            <s.ContentContainer>
+            <s.ContentContainer $isActive={isActive}>
               {onTitleClick ? (
                 <s.TitleLink href={"#"} onClick={handleTitleClick}>
                   {title}

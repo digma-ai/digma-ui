@@ -137,7 +137,7 @@ export const ScopeBar = ({
         mainTrackingEvents.SCOPE_BAR_EXPAND_BUTTON_CLICKED
       );
     }
-    onExpandCollapseChange(!isExpanded);
+    onExpandCollapseChange?.(!isExpanded);
   };
 
   const handleLinkedEndpointsButtonClick = () => {

@@ -146,3 +146,22 @@ export interface UnlinkTicketFromIssuePayload {
   environment: string;
   insightId: string;
 }
+
+export interface GetSpanPercentilesHistogramPayload {
+  environment: string;
+  spanCodeObjectId: string;
+}
+
+export interface GetInsightBySpanPayload {
+  spanCodeObjectId: string;
+  insightType: string;
+  environment: string;
+}
+
+export type GetInsightBySpanResponse = GenericCodeObjectInsight;
+
+export interface LinkTicketResponse {
+  ticketLink: string | null;
+  success: boolean;
+  message: string | null;
+}

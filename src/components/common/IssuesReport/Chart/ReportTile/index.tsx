@@ -16,7 +16,8 @@ export const ReportTile = ({
   severity,
   timeMode,
   onTitleClick,
-  onIssuesClick
+  onIssuesClick,
+  isActive
 }: ReportTileProps) => {
   const formattedCriticalIssuesCount = getFormattedNumber(
     timeMode,
@@ -39,6 +40,7 @@ export const ReportTile = ({
 
   return (
     <Tile
+      isActive={isActive}
       title={name}
       severity={severity}
       onTitleClick={onTitleClick ? handleTitleClick : undefined}

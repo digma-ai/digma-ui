@@ -6,6 +6,7 @@ import { sendMessage } from "../../api";
 import { App } from "../../components/common/App";
 import { router } from "./router";
 import { store } from "./store";
+import { GlobalStyle } from "./styles";
 
 const APP_ID = "admin";
 
@@ -20,6 +21,7 @@ if (rootElement) {
     <StrictMode>
       <Provider store={store}>
         <App id={APP_ID}>
+          <GlobalStyle />
           <RouterProvider router={router} />
         </App>
       </Provider>

@@ -1,19 +1,17 @@
 import styled from "styled-components";
+import { LAYERS } from "../../../../common/App/styles";
 import {
   bodyBoldTypography,
   caption1RegularTypography
 } from "../../../../common/App/typographies";
 
 export const Container = styled.div`
-  position: absolute;
-  right: 0;
-  top: 0;
-  bottom: 0;
   background: ${({ theme }) =>
     `linear-gradient(0deg, ${theme.colors.v3.surface.primary} 0%, ${theme.colors.v3.surface.primary} 100%), #fff`};
   display: flex;
   flex-direction: column;
-  width: 382px;
+  border-radius: 8px 0 0 8px;
+  height: 100%;
 `;
 
 export const Header = styled.div`
@@ -21,7 +19,7 @@ export const Header = styled.div`
   flex-direction: column;
   gap: 8px;
   padding: 16px;
-  border-radius: 0 0 8px 8px;
+  border-radius: 8px 0 8px 8px;
   border-bottom: 1px solid ${({ theme }) => theme.colors.v3.stroke.primary};
   background: ${({ theme }) => theme.colors.v3.surface.brandDarkest};
 `;
@@ -74,4 +72,23 @@ export const FooterPageItemsCount = styled.span`
         return "#dfe1e5";
     }
   }};
+`;
+
+export const Overlay = styled.div`
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  background: rgb(18 18 21 / 70%);
+  z-index: ${LAYERS.OVERLAY};
+  overflow: auto;
+`;
+
+export const PopupContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
+  padding: 16px 4%;
+  overflow: hidden;
+  box-sizing: border-box;
 `;

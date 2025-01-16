@@ -111,7 +111,7 @@ export const InsightsCatalog = ({
   const isIssuesView = insightViewType === "Issues";
 
   const isDismissalViewModeButtonVisible =
-    isIssuesView && (isUndefined(dismissedCount) || dismissedCount > 0); // isUndefined - check for backward compatibility, always show when BE does not return this counter
+    isIssuesView && data && (isUndefined(dismissedCount) || dismissedCount > 0); // isUndefined - check for backward compatibility, always show when BE does not return this counter
   const isMarkingAsReadOptionsEnabled =
     isIssuesView &&
     isNumber(unreadCount) &&

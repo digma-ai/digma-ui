@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { actions } from "../../../../actions";
 import { dispatcher } from "../../../../dispatcher";
-import { useLoading } from "../../../Insights/insightTickets/common";
+import { useLoading } from "../../../Insights/InsightTicketRenderer/insightTickets/common";
 import type { ErrorData, RegisterPayload, RegisterResult } from "../../types";
 
 export const useRegistration = () => {

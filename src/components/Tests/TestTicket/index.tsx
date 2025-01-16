@@ -6,7 +6,7 @@ import { intersperse } from "../../../utils/intersperse";
 import { DigmaSignature } from "../../common/DigmaSignature";
 import { JiraTicket } from "../../common/JiraTicket";
 import type { Attachment } from "../../common/JiraTicket/types";
-import { getTraceAttachment } from "../../Insights/insightTickets/common/SpanScaling";
+import { getTraceAttachment } from "../../Insights/InsightTicketRenderer/insightTickets/common/SpanScaling";
 import type { TestTicketProps } from "./types";
 
 export const TestTicket = ({
