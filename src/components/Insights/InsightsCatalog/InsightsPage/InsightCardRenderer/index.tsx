@@ -65,7 +65,8 @@ export const InsightCardRenderer = ({
   isMarkAsReadButtonEnabled,
   viewMode,
   environmentId,
-  onDismissalChange
+  onDismissalChange,
+  onOpenSuggestion
 }: InsightCardRendererProps) => {
   const [triggerSpanPercentilesHistogramFetch] =
     useLazyGetSpanPercentilesHistogramQuery();
@@ -482,6 +483,7 @@ export const InsightCardRenderer = ({
         isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
         viewMode={viewMode}
         onDismissalChange={onDismissalChange}
+        onOpenSuggestion={onOpenSuggestion}
       />
     );
   }
@@ -501,6 +503,7 @@ export const InsightCardRenderer = ({
         isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
         viewMode={viewMode}
         onDismissalChange={onDismissalChange}
+        onOpenSuggestion={onOpenSuggestion}
       />
     );
   }

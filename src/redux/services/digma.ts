@@ -9,6 +9,8 @@ import type {
   GetEnvironmentsResponse,
   GetInsightBySpanPayload,
   GetInsightBySpanResponse,
+  GetIssueRecommendationsPayload,
+  GetIssueRecommendationsResponse,
   GetIssuesPayload,
   GetIssuesResponse,
   GetMetricsReportDataPayloadV1,
@@ -154,6 +156,15 @@ export const digmaApi = createApi({
       GetServiceEnvironmentsPayload
     >({
       query: ({ service }) => `Services/${service}/environments`
+    }),
+    getIssueRecommendations: builder.query<
+      GetIssueRecommendationsResponse,
+      GetIssueRecommendationsPayload
+    >({
+      query: (data) => ({
+        url: "AI/issue",
+        params: data
+      })
     })
   })
 });
@@ -174,5 +185,6 @@ export const {
   useGetEndpointsIssuesQuery,
   useGetEnvironmentServicesQuery,
   useGetServiceEndpointsQuery,
-  useGetServiceEnvironmentsQuery
+  useGetServiceEnvironmentsQuery,
+  useGetIssueRecommendationsQuery
 } = digmaApi;

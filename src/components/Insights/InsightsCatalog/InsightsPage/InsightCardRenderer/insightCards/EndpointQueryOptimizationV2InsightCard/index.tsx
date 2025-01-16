@@ -18,7 +18,8 @@ export const EndpointQueryOptimizationV2InsightCard = ({
   onGoToSpan,
   isMarkAsReadButtonEnabled,
   viewMode,
-  onDismissalChange
+  onDismissalChange,
+  onOpenSuggestion
 }: EndpointQueryOptimizationV2InsightCardProps) => {
   const handleSpanLinkClick = (spanCodeObjectId: string) => {
     onAssetLinkClick(spanCodeObjectId, insight.type);
@@ -93,6 +94,7 @@ export const EndpointQueryOptimizationV2InsightCard = ({
         </Tooltip>
       }
       onDismissalChange={onDismissalChange}
+      onOpenSuggestion={onOpenSuggestion}
     />
   );
 };

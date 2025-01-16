@@ -1,6 +1,7 @@
 import styled, { css } from "styled-components";
 import { subscriptRegularTypography } from "../../../../../../../common/App/typographies";
 import { Card } from "../../../../../../../common/v3/Card";
+import { NewButton } from "../../../../../../../common/v3/NewButton";
 import { NewIconButton } from "../../../../../../../common/v3/NewIconButton";
 import type { StyledCardProps } from "./types";
 
@@ -64,5 +65,22 @@ export const StyledCard = styled(Card)<StyledCardProps>`
 export const InfoActionButton = styled(NewIconButton)`
   &:hover {
     color: ${({ theme }) => theme.colors.v3.status.medium};
+  }
+`;
+
+export const SuggestionButton = styled(NewButton)`
+  background: ${({ theme }) => theme.colors.v3.status.medium};
+  border-color: ${({ theme }) => theme.colors.v3.status.medium};
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.v3.status.medium};
+    border-color: ${({ theme }) => theme.colors.v3.status.medium};
+  }
+
+  &:active {
+    border-color: ${({ theme }) =>
+      `linear-gradient(0deg, rgba(0 0 0 / 20%) 0%, rgba(0 0 0 20%) 100%), ${theme.colors.v3.status.medium}`};
+    background: ${({ theme }) =>
+      `linear-gradient(0deg, rgba(0 0 0 / 20%) 0%, rgba(0 0 0 20%) 100%), ${theme.colors.v3.status.medium}`};
   }
 `;

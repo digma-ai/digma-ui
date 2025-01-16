@@ -14,6 +14,7 @@ import { HistogramIcon } from "../../../../../../../common/icons/16px/HistogramI
 import { PinIcon } from "../../../../../../../common/icons/16px/PinIcon";
 import { QuestionMarkIcon } from "../../../../../../../common/icons/16px/QuestionMarkIcon";
 import { RecheckIcon } from "../../../../../../../common/icons/16px/RecheckIcon";
+import { LightBulbIcon } from "../../../../../../../common/icons/LightBulbIcon";
 import { JiraButton } from "../../../../../../../common/v3/JiraButton";
 import { Tooltip } from "../../../../../../../common/v3/Tooltip";
 import { actions } from "../../../../../../actions";
@@ -50,7 +51,8 @@ export const InsightCard = ({
   isAsync,
   viewMode,
   mainMetric,
-  onDismissalChange
+  onDismissalChange,
+  onOpenSuggestion
 }: InsightCardProps) => {
   const {
     isDismissalChangeInProgress,
@@ -65,7 +67,7 @@ export const InsightCard = ({
   const previousIsMarkingAsReadInProgress = usePrevious(
     isMarkingAsReadInProgress
   );
-  const { isJaegerEnabled } = useConfigSelector();
+  const { isJaegerEnabled, areInsightSuggestionsEnabled } = useConfigSelector();
   const [insightStatus, setInsightStatus] = useState(insight.status);
   const cardRef = useRef<HTMLDivElement>(null);
   const [showInfo, setShowInfo] = useState(false);
@@ -225,6 +227,12 @@ export const InsightCard = ({
     }
   };
 
+  const handleSuggestionButtonClick = () => {
+    if (onOpenSuggestion) {
+      onOpenSuggestion(insight.id);
+    }
+  };
+
   if (viewMode === "compact") {
     return (
       <IssueCompactCard
@@ -349,6 +357,15 @@ export const InsightCard = ({
             />
           </InsightsInfo>
         );
+      case "openSuggestion":
+        return (
+          <s.SuggestionButton
+            icon={LightBulbIcon}
+            onClick={handleSuggestionButtonClick}
+            label={"Suggestion"}
+          />
+        );
+
       default:
         return null;
     }
@@ -390,6 +407,10 @@ export const InsightCard = ({
 
     if (onPin) {
       actions.push("pin");
+    }
+
+    if (areInsightSuggestionsEnabled && onOpenSuggestion) {
+      actions.push("openSuggestion");
     }
 
     if (actions.length === 0) {

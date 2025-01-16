@@ -20,6 +20,7 @@ import type {
 } from "../../../../Insights/types";
 import { ScopeBar } from "../../../../Navigation/ScopeBar";
 import * as s from "./styles";
+import { SuggestionBar } from "./SuggestionBar";
 import type { IssuesHeaderProps } from "./types";
 
 const PAGE_SIZE = 10;
@@ -34,6 +35,11 @@ export const IssuesSidebar = ({
     useState<InsightTicketInfo<GenericCodeObjectInsight>>();
   const [viewMode, setViewMode] = useState<ViewMode>(ViewMode.All);
   const [page, setPage] = useState(0);
+  const [insightIdToOpenSuggestion, setInsightIdToOpenSuggestion] =
+    useState<string>();
+  const isOverlayVisible = Boolean(
+    infoToOpenJiraTicket ?? insightIdToOpenSuggestion
+  );
 
   const theme = useTheme();
   const { data, isFetching, refetch } = useGetIssuesQuery(
@@ -58,6 +64,8 @@ export const IssuesSidebar = ({
       if (e.key === "Escape") {
         if (infoToOpenJiraTicket) {
           handleJiraTicketPopupClose();
+        } else if (insightIdToOpenSuggestion) {
+          handleSuggestionBarClose();
         } else {
           onClose();
         }
@@ -69,7 +77,7 @@ export const IssuesSidebar = ({
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [infoToOpenJiraTicket, onClose]);
+  }, [infoToOpenJiraTicket, insightIdToOpenSuggestion, onClose]);
 
   const refresh = () => {
     void refetch();
@@ -105,6 +113,14 @@ export const IssuesSidebar = ({
 
   const handleJiraTicketPopupClose = () => {
     setInfoToOpenJiraTicket(undefined);
+  };
+
+  const handleOpenSuggestion = (insightId: string) => {
+    setInsightIdToOpenSuggestion(insightId);
+  };
+
+  const handleSuggestionBarClose = () => {
+    setInsightIdToOpenSuggestion(undefined);
   };
 
   const dismissedCount = data?.dismissedCount;
@@ -169,6 +185,7 @@ export const IssuesSidebar = ({
                   viewMode={"full"}
                   environmentId={environmentId}
                   onDismissalChange={handleDismissalChange}
+                  onOpenSuggestion={handleOpenSuggestion}
                 />
               ))}
           </s.IssuesList>
@@ -217,16 +234,26 @@ export const IssuesSidebar = ({
           />
         )}
       </s.Footer>
-      {infoToOpenJiraTicket && (
+      {isOverlayVisible && (
         <s.Overlay>
-          <s.PopupContainer>
-            <InsightTicketRenderer
-              data={infoToOpenJiraTicket}
-              refreshInsights={refresh}
-              onClose={handleJiraTicketPopupClose}
-              environmentId={environmentId}
-            />
-          </s.PopupContainer>
+          {infoToOpenJiraTicket && (
+            <s.PopupContainer>
+              <InsightTicketRenderer
+                data={infoToOpenJiraTicket}
+                refreshInsights={refresh}
+                onClose={handleJiraTicketPopupClose}
+                environmentId={environmentId}
+              />
+            </s.PopupContainer>
+          )}
+          {insightIdToOpenSuggestion && (
+            <s.DrawerContainer>
+              <SuggestionBar
+                insightId={insightIdToOpenSuggestion}
+                onClose={handleSuggestionBarClose}
+              />
+            </s.DrawerContainer>
+          )}
         </s.Overlay>
       )}
     </s.Container>

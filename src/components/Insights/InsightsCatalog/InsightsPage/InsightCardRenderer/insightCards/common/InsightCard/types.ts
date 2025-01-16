@@ -37,6 +37,7 @@ export interface InsightCardProps {
   viewMode: InsightCardViewMode;
   mainMetric?: ReactNode;
   onDismissalChange: (action: string, insightId: string) => void;
+  onOpenSuggestion?: (insightId: string) => void;
 }
 
 export interface StyledCardProps extends CardProps {
@@ -89,6 +90,7 @@ export interface InsightCardCommonProps {
   isMarkAsReadButtonEnabled: boolean;
   viewMode: InsightCardViewMode;
   onDismissalChange: (action: string, insightId: string) => void;
+  onOpenSuggestion?: (insightId: string) => void;
 }
 
 export type Action =
@@ -99,4 +101,5 @@ export type Action =
   | "openTrace"
   | "openLiveView"
   | "pin"
-  | "info";
+  | "info"
+  | "openSuggestion";

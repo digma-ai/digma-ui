@@ -92,3 +92,11 @@ export const PopupContainer = styled.div`
   overflow: hidden;
   box-sizing: border-box;
 `;
+
+export const DrawerContainer = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  min-height: 50%;
+`;

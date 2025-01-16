@@ -1,5 +1,5 @@
 import { Link as RouterLink } from "react-router-dom";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import {
   caption1RegularTypography,
   subheading2RegularTypography
@@ -16,6 +16,19 @@ export const Link = styled(RouterLink)<LinkProps>`
   box-sizing: border-box;
   overflow: hidden;
   cursor: ${({ $isEnabled }) => ($isEnabled ? "pointer" : "initial")};
+  transition: border-color, 300ms ease-out;
+
+  ${({ $isEnabled, theme }) =>
+    $isEnabled &&
+    css`
+      &:hover {
+        border-color: ${theme.colors.v3.stroke.brandPrimary};
+
+        ${Title} {
+          color: ${theme.colors.v3.surface.brandSecondary};
+        }
+      }
+    `}
 `;
 
 export const Background = styled.img<BackgroundProps>`
@@ -44,6 +57,7 @@ export const Title = styled.span`
   ${subheading2RegularTypography}
   color: ${({ theme }) => theme.colors.v3.text.primary};
   text-transform: capitalize;
+  transition: color, 300ms ease-out;
 `;
 
 export const SoonBadge = styled.div`

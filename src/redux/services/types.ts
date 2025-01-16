@@ -165,3 +165,26 @@ export interface LinkTicketResponse {
   success: boolean;
   message: string | null;
 }
+
+export interface GetIssueRecommendationsPayload {
+  IssueId: string;
+}
+
+export interface IssueRecommendationSource {
+  title: string;
+  url: string;
+}
+
+export interface IssueRecommendation {
+  title: string;
+  priority: string;
+  description: string;
+  actionItems: string[];
+  modifiedCode: string;
+  searchTerms: string[];
+  sources: IssueRecommendationSource[];
+}
+
+export interface GetIssueRecommendationsResponse {
+  recommendations: IssueRecommendation[];
+}

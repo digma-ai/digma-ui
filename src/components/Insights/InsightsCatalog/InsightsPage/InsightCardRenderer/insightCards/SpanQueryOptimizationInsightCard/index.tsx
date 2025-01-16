@@ -26,7 +26,8 @@ export const SpanQueryOptimizationInsightCard = ({
   isJiraHintEnabled,
   onJiraTicketCreate,
   viewMode,
-  onDismissalChange
+  onDismissalChange,
+  onOpenSuggestion
 }: SpanQueryOptimizationInsightCardProps) => {
   const endpoints = insight.endpoints ?? [];
   const [pageItems, page, setPage] = usePagination(
@@ -139,6 +140,7 @@ export const SpanQueryOptimizationInsightCard = ({
         </Tooltip>
       }
       onDismissalChange={onDismissalChange}
+      onOpenSuggestion={onOpenSuggestion}
     />
   );
 };

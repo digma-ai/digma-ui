@@ -14,4 +14,5 @@ export interface InsightCardRendererProps {
   viewMode: InsightCardViewMode;
   environmentId: string;
   onDismissalChange: (action: string, insightId: string) => void;
+  onOpenSuggestion?: (insightId: string) => void;
 }
