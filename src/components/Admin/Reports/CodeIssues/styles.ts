@@ -3,7 +3,7 @@ import type { IssuesSidebarContainerProps, OverlayProps } from "./types";
 
 export const TRANSITION_DURATION = 300;
 export const overlayTransitionClassName = "overlay";
-export const sidebarContainerTransitionClassName = "sidebar-container";
+export const sidebarContainerTransitionClassName = "sidebarContainer";
 
 export const Container = styled.div`
   height: 100%;

@@ -9,3 +9,8 @@ export interface IssuesHeaderProps {
   };
   viewLevel: IssuesReportViewLevel;
 }
+
+export interface DrawerContainerProps {
+  $transitionDuration: number;
+  $transitionClassName: string;
+}

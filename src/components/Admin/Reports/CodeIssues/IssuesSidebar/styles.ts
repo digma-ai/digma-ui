@@ -4,6 +4,10 @@ import {
   bodyBoldTypography,
   caption1RegularTypography
 } from "../../../../common/App/typographies";
+import type { DrawerContainerProps } from "./types";
+
+export const TRANSITION_DURATION = 300;
+export const drawerTransitionClassName = "drawer";
 
 export const Container = styled.div`
   background: ${({ theme }) =>
@@ -77,10 +81,9 @@ export const FooterPageItemsCount = styled.span`
 export const Overlay = styled.div`
   position: absolute;
   inset: 0;
-  margin: auto;
   background: rgb(18 18 21 / 70%);
   z-index: ${LAYERS.OVERLAY};
-  overflow: auto;
+  overflow: hidden;
 `;
 
 export const PopupContainer = styled.div`
@@ -93,10 +96,30 @@ export const PopupContainer = styled.div`
   box-sizing: border-box;
 `;
 
-export const DrawerContainer = styled.div`
+export const DrawerContainer = styled.div<DrawerContainerProps>`
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
-  min-height: 50%;
+  height: 90%;
+
+  ${({ $transitionClassName, $transitionDuration }) => `
+    &.${$transitionClassName}-enter {
+      transform: translateY(100%);
+    }
+    
+    &.${$transitionClassName}-enter-active {
+      transform: translateY(0);
+      transition: transform ${$transitionDuration}ms ease-out;
+    }
+
+    &.${$transitionClassName}-exit {
+      transform: translateY(0);
+    }
+    
+    &.${$transitionClassName}-exit-active {
+      transform: translateY(100%);
+      transition: transform ${$transitionDuration}ms ease-out;
+    }
+  `}
 `;

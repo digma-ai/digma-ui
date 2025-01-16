@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import {
   useAdminDispatch,
@@ -28,8 +28,6 @@ import * as s from "./styles";
 export const CodeIssues = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [scope, setScope] = useState<{ value: string; displayName?: string }>();
-  const overlayRef = useRef<HTMLDivElement>(null);
-  const sidebarContainerRef = useRef<HTMLDivElement>(null);
   const [activeTileIds, setActiveTileIds] = useState<string[] | undefined>(
     undefined
   );
@@ -154,7 +152,6 @@ export const CodeIssues = () => {
       >
         <s.Overlay
           $isVisible={isSidebarOpen}
-          ref={overlayRef}
           $transitionClassName={s.overlayTransitionClassName}
           $transitionDuration={s.TRANSITION_DURATION}
         />
@@ -167,7 +164,6 @@ export const CodeIssues = () => {
         unmountOnExit={true}
       >
         <s.IssuesSidebarContainer
-          ref={sidebarContainerRef}
           $transitionClassName={s.sidebarContainerTransitionClassName}
           $transitionDuration={s.TRANSITION_DURATION}
         >

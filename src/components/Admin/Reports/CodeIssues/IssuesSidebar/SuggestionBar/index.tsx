@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useGetIssueRecommendationsQuery } from "../../../../../../redux/services/digma";
 import { intersperse } from "../../../../../../utils/intersperse";
 import { CrossIcon } from "../../../../../common/icons/16px/CrossIcon";
-import { LightBulbIcon } from "../../../../../common/icons/LightBulbIcon";
+import { LightBulbWithScrewIcon } from "../../../../../common/icons/16px/LightBulbWithScrewIcon";
 import { EmptyState } from "../../../../../common/v3/EmptyState";
 import { NewIconButton } from "../../../../../common/v3/NewIconButton";
 import { Pagination } from "../../../../../common/v3/Pagination";
@@ -16,66 +16,34 @@ export const SuggestionBar = ({ insightId, onClose }: SuggestionBarProps) => {
     IssueId: insightId
   });
   const [assetsToggleValue, setAssetsToggleValue] = useState<string>("code");
+  const contentContainerRef = useRef<HTMLDivElement>(null);
+  const codeSnippetRef = useRef<HTMLDivElement>(null);
+  const actionItemsContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    contentContainerRef.current?.scrollTo(0, 0);
+    codeSnippetRef.current?.scrollTo(0, 0);
+    actionItemsContainerRef.current?.scrollTo(0, 0);
+    setAssetsToggleValue("code");
+  }, [page]);
 
   const handleAssetsToggleValueChange = (value: string) => {
     setAssetsToggleValue(value);
   };
-
-  // TODO: remove
-  // const mockedData: GetIssueRecommendationsResponse = {
-  //   recommendations: [
-  //     {
-  //       title: "Suggestion 1",
-  //       priority: "High",
-  //       description: "This is a suggestion",
-  //       actionItems: ["Do this", "Do that"],
-  //       modifiedCode: "SELECT * FROM USERS;",
-  //       searchTerms: ["sql", "query optimization"],
-  //       sources: [
-  //         {
-  //           title: "Source 1",
-  //           url: "https://example.com"
-  //         },
-  //         {
-  //           title: "Source 2",
-  //           url: "https://example.com"
-  //         }
-  //       ]
-  //     },
-  //     {
-  //       title: "Suggestion 2",
-  //       priority: "Medium",
-  //       description: "This is another suggestion",
-  //       actionItems: ["Do this", "Do that"],
-  //       modifiedCode: "SELECT * FROM ORDERS;",
-  //       searchTerms: ["sql", "query optimization"],
-  //       sources: [
-  //         {
-  //           title: "Source 3",
-  //           url: "https://example.com"
-  //         },
-  //         {
-  //           title: "Source 4",
-  //           url: "https://example.com"
-  //         }
-  //       ]
-  //     }
-  //   ]
-  // };
 
   const handleCloseButtonClick = () => {
     onClose();
   };
 
   const recommendationsCount = data?.recommendations.length ?? 0;
-  const currentRecommendation = data?.recommendations[page];
+  const currentRecommendation = data?.recommendations[page] ?? undefined;
 
   return (
     <s.Container>
       <s.Header>
         <s.TitleContainer>
           <s.TitleIconContainer>
-            <LightBulbIcon size={16} color={"currentColor"} />
+            <LightBulbWithScrewIcon size={16} color={"currentColor"} />
           </s.TitleIconContainer>
           Suggestion
         </s.TitleContainer>
@@ -90,7 +58,7 @@ export const SuggestionBar = ({ insightId, onClose }: SuggestionBarProps) => {
           {recommendationsCount > 0 && (
             <>
               {currentRecommendation && (
-                <s.ContentContainer>
+                <s.ContentContainer ref={contentContainerRef}>
                   <s.SectionsContainer>
                     <s.Section>
                       <s.SectionTitle>Reasoning</s.SectionTitle>
@@ -134,13 +102,14 @@ export const SuggestionBar = ({ insightId, onClose }: SuggestionBarProps) => {
                     />
                     {assetsToggleValue === "code" && (
                       <s.CodeSnippet
+                        ref={codeSnippetRef}
                         text={currentRecommendation.modifiedCode}
                         // TODO: get language from the response
                         language={"sql"}
                       />
                     )}
                     {assetsToggleValue === "actionItems" && (
-                      <s.ActionItemsContainer>
+                      <s.ActionItemsContainer ref={actionItemsContainerRef}>
                         {currentRecommendation.actionItems.map((x, i) => (
                           <s.ActionItem key={i}>{x}</s.ActionItem>
                         ))}

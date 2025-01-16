@@ -48,6 +48,7 @@ export const ContentContainer = styled.div`
   flex-grow: 1;
   border-radius: 8px;
   background: ${({ theme }) => theme.colors.v3.surface.primary};
+  overflow: auto;
 `;
 
 export const LoadingContainer = styled.div`
@@ -76,7 +77,6 @@ export const Spinner = styled(CommonSpinner)`
 export const SectionsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
   gap: 16px;
   padding: 16px;
 `;
@@ -128,10 +128,12 @@ export const AssetsContainer = styled.div`
   padding: 16px;
   height: 262px;
   box-sizing: border-box;
+  flex-grow: 1;
 `;
 
 export const CodeSnippet = styled(CommonCodeSnippet)`
   height: 100%;
+  overflow: auto;
 `;
 
 export const ActionItemsContainer = styled.div`

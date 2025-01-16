@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { CSSTransition } from "react-transition-group";
 import { useTheme } from "styled-components";
 import { useGetIssuesQuery } from "../../../../../redux/services/digma";
 import { isUndefined } from "../../../../../typeGuards/isUndefined";
@@ -37,9 +38,7 @@ export const IssuesSidebar = ({
   const [page, setPage] = useState(0);
   const [insightIdToOpenSuggestion, setInsightIdToOpenSuggestion] =
     useState<string>();
-  const isOverlayVisible = Boolean(
-    infoToOpenJiraTicket ?? insightIdToOpenSuggestion
-  );
+  const drawerRef = useRef<HTMLDivElement>(null);
 
   const theme = useTheme();
   const { data, isFetching, refetch } = useGetIssuesQuery(
@@ -234,28 +233,39 @@ export const IssuesSidebar = ({
           />
         )}
       </s.Footer>
-      {isOverlayVisible && (
+      {infoToOpenJiraTicket && (
         <s.Overlay>
-          {infoToOpenJiraTicket && (
-            <s.PopupContainer>
-              <InsightTicketRenderer
-                data={infoToOpenJiraTicket}
-                refreshInsights={refresh}
-                onClose={handleJiraTicketPopupClose}
-                environmentId={environmentId}
-              />
-            </s.PopupContainer>
-          )}
-          {insightIdToOpenSuggestion && (
-            <s.DrawerContainer>
-              <SuggestionBar
-                insightId={insightIdToOpenSuggestion}
-                onClose={handleSuggestionBarClose}
-              />
-            </s.DrawerContainer>
-          )}
+          <s.PopupContainer>
+            <InsightTicketRenderer
+              data={infoToOpenJiraTicket}
+              refreshInsights={refresh}
+              onClose={handleJiraTicketPopupClose}
+              environmentId={environmentId}
+            />
+          </s.PopupContainer>
         </s.Overlay>
       )}
+      <CSSTransition
+        in={Boolean(insightIdToOpenSuggestion)}
+        timeout={s.TRANSITION_DURATION}
+        classNames={s.drawerTransitionClassName}
+        mountOnEnter={true}
+        unmountOnExit={true}
+        nodeRef={drawerRef}
+      >
+        <s.Overlay>
+          <s.DrawerContainer
+            ref={drawerRef}
+            $transitionClassName={s.drawerTransitionClassName}
+            $transitionDuration={s.TRANSITION_DURATION}
+          >
+            <SuggestionBar
+              insightId={insightIdToOpenSuggestion ?? ""}
+              onClose={handleSuggestionBarClose}
+            />
+          </s.DrawerContainer>
+        </s.Overlay>
+      </CSSTransition>
     </s.Container>
   );
 };

@@ -11,10 +11,10 @@ import { CheckmarkCircleIcon } from "../../../../../../../common/icons/12px/Chec
 import { TraceIcon } from "../../../../../../../common/icons/12px/TraceIcon";
 import { DoubleCircleIcon } from "../../../../../../../common/icons/16px/DoubleCircleIcon";
 import { HistogramIcon } from "../../../../../../../common/icons/16px/HistogramIcon";
+import { LightBulbWithScrewIcon } from "../../../../../../../common/icons/16px/LightBulbWithScrewIcon";
 import { PinIcon } from "../../../../../../../common/icons/16px/PinIcon";
 import { QuestionMarkIcon } from "../../../../../../../common/icons/16px/QuestionMarkIcon";
 import { RecheckIcon } from "../../../../../../../common/icons/16px/RecheckIcon";
-import { LightBulbIcon } from "../../../../../../../common/icons/LightBulbIcon";
 import { JiraButton } from "../../../../../../../common/v3/JiraButton";
 import { Tooltip } from "../../../../../../../common/v3/Tooltip";
 import { actions } from "../../../../../../actions";
@@ -360,7 +360,7 @@ export const InsightCard = ({
       case "openSuggestion":
         return (
           <s.SuggestionButton
-            icon={LightBulbIcon}
+            icon={LightBulbWithScrewIcon}
             onClick={handleSuggestionButtonClick}
             label={"Suggestion"}
           />

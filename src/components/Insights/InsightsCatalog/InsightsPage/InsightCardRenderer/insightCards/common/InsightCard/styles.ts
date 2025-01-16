@@ -78,9 +78,7 @@ export const SuggestionButton = styled(NewButton)`
   }
 
   &:active {
-    border-color: ${({ theme }) =>
-      `linear-gradient(0deg, rgba(0 0 0 / 20%) 0%, rgba(0 0 0 20%) 100%), ${theme.colors.v3.status.medium}`};
-    background: ${({ theme }) =>
-      `linear-gradient(0deg, rgba(0 0 0 / 20%) 0%, rgba(0 0 0 20%) 100%), ${theme.colors.v3.status.medium}`};
+    background: #b66b26;
+    border-color: #b66b26;
   }
 `;
