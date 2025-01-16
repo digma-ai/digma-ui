@@ -12,9 +12,14 @@ import type { SuggestionBarProps } from "./types";
 
 export const SuggestionBar = ({ insightId, onClose }: SuggestionBarProps) => {
   const [page, setPage] = useState<number>(0);
-  const { data, isFetching, isError } = useGetIssueRecommendationsQuery({
-    IssueId: insightId
-  });
+  const { data, isFetching, isError } = useGetIssueRecommendationsQuery(
+    {
+      IssueId: insightId ?? ""
+    },
+    {
+      skip: !insightId
+    }
+  );
   const [assetsToggleValue, setAssetsToggleValue] = useState<string>("code");
   const contentContainerRef = useRef<HTMLDivElement>(null);
   const codeSnippetRef = useRef<HTMLDivElement>(null);

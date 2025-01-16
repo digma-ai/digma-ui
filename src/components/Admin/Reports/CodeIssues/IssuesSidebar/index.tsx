@@ -260,7 +260,7 @@ export const IssuesSidebar = ({
             $transitionDuration={s.TRANSITION_DURATION}
           >
             <SuggestionBar
-              insightId={insightIdToOpenSuggestion ?? ""}
+              insightId={insightIdToOpenSuggestion}
               onClose={handleSuggestionBarClose}
             />
           </s.DrawerContainer>

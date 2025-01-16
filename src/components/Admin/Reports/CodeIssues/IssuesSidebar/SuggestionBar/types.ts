@@ -1,4 +1,4 @@
 export interface SuggestionBarProps {
-  insightId: string;
+  insightId?: string;
   onClose: () => void;
 }
