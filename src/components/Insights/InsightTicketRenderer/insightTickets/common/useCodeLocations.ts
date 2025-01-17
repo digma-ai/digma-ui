@@ -9,6 +9,9 @@ import { groupBy } from "../../../../../utils/groupBy";
 import { actions } from "../../../actions";
 import type { CodeLocationsData } from "../types";
 
+const formatCodeLocation = (codeLocation: string) =>
+  codeLocation.replace("$_$", ".");
+
 const getCodeLocations = (
   data: GetSpanCodeLocationsResponse | undefined,
   methodCodeObjectId: string | undefined | null
@@ -16,7 +19,7 @@ const getCodeLocations = (
   const codeLocations: string[] = [];
 
   if (methodCodeObjectId && methodCodeObjectId.length > 0) {
-    codeLocations.push(methodCodeObjectId.replace("$_$", "."));
+    codeLocations.push(formatCodeLocation(methodCodeObjectId));
     return codeLocations;
   }
 
@@ -31,7 +34,7 @@ const getCodeLocations = (
     for (const span of spanGroup) {
       const methodCodeObjectId = span.methodCodeObjectId;
       if (methodCodeObjectId && methodCodeObjectId.length > 0) {
-        codeLocations.push(methodCodeObjectId.replace("$_$", "."));
+        codeLocations.push(formatCodeLocation(methodCodeObjectId));
         return codeLocations;
       }
     }
