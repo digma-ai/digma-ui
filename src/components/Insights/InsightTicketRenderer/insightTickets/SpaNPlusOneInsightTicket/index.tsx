@@ -21,7 +21,11 @@ export const SpaNPlusOneInsightTicket = ({
 }: InsightTicketProps<SpaNPlusOneInsight>) => {
   const spanInsight = data.insight;
   const { commitInfos, isLoading, codeLocations } =
-    useSpanDataSource<SpaNPlusOneInsight>(data.insight.spanInfo, data.insight);
+    useSpanDataSource<SpaNPlusOneInsight>(
+      data.insight.spanInfo,
+      data.insight,
+      environmentId
+    );
   const { jaegerURL } = useConfigSelector();
 
   const endpoints = data.insight.endpoints ?? [];

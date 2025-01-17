@@ -1,3 +1,4 @@
+import type { RecommendationPriority } from "../../components/Admin/Reports/CodeIssues/IssuesSidebar/SuggestionBar/types";
 import type {
   DeploymentType,
   EnvironmentType
@@ -152,13 +153,54 @@ export interface GetSpanPercentilesHistogramPayload {
   spanCodeObjectId: string;
 }
 
-export interface GetInsightBySpanPayload {
+export interface GetSpanCodeLocationsPayload {
+  environment: string;
+  spanCodeObjectId: string;
+}
+
+export interface GetSpanCodeLocationsResponse {
+  accountId: string;
+  environment: string;
+  spanCodeObjectId: string;
+  navigationEntry: {
+    spanInfo: {
+      name: string;
+      displayName: string;
+      instrumentationLibrary: string;
+      spanCodeObjectId: string;
+      methodCodeObjectId: string;
+      kind: string;
+    };
+    closestParentSpans: {
+      name: string;
+      displayName: string;
+      instrumentationLibrary: string;
+      spanCodeObjectId: string;
+      methodCodeObjectId: string;
+      kind: string;
+      navItemType: string;
+      distance: number;
+    }[];
+    navEndpointEntry: {
+      endpointCodeObjectId: string;
+      displayName: string;
+      methodCodeObjectId: string;
+    };
+    closestParentEntries: {
+      endpointCodeObjectId: string;
+      displayName: string;
+      methodCodeObjectId: string;
+    }[];
+  };
+}
+
+export interface GetSpanInsightPayload {
   spanCodeObjectId: string;
   insightType: string;
   environment: string;
 }
 
-export type GetInsightBySpanResponse = GenericCodeObjectInsight;
+export type GetSpanInsightResponse = GenericCodeObjectInsight;
 
 export interface LinkTicketResponse {
   ticketLink: string | null;
@@ -177,7 +219,7 @@ export interface IssueRecommendationSource {
 
 export interface IssueRecommendation {
   title: string;
-  priority: string;
+  priority: RecommendationPriority;
   description: string;
   actionItems: string[];
   modifiedCode: string;

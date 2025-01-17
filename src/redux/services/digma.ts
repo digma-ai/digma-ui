@@ -7,8 +7,6 @@ import type {
   GetEnvironmentServicesPayload,
   GetEnvironmentServicesResponse,
   GetEnvironmentsResponse,
-  GetInsightBySpanPayload,
-  GetInsightBySpanResponse,
   GetIssueRecommendationsPayload,
   GetIssueRecommendationsResponse,
   GetIssuesPayload,
@@ -17,6 +15,10 @@ import type {
   GetMetricsReportDataPayloadV2,
   GetServiceEndpointsPayload,
   GetServiceEnvironmentsPayload,
+  GetSpanCodeLocationsPayload,
+  GetSpanCodeLocationsResponse,
+  GetSpanInsightPayload,
+  GetSpanInsightResponse,
   GetSpanPercentilesHistogramPayload,
   GetUserProfileResponse,
   LinkTicketResponse,
@@ -44,9 +46,19 @@ export const digmaApi = createApi({
     getUserProfile: builder.query<GetUserProfileResponse, void>({
       query: () => "Authentication/logged-in-user"
     }),
-    getInsightBySpan: builder.query<
-      GetInsightBySpanResponse,
-      GetInsightBySpanPayload
+    getSpanCodeLocations: builder.query<
+      GetSpanCodeLocationsResponse,
+      GetSpanCodeLocationsPayload
+    >({
+      query: (data) => ({
+        url: "/CodeAnalytics/codeObjects/span_navigation",
+        method: "POST",
+        body: data
+      })
+    }),
+    getSpanInsight: builder.query<
+      GetSpanInsightResponse,
+      GetSpanInsightPayload
     >({
       query: (data) => ({
         url: "/CodeAnalytics/codeObjects/insight",
@@ -172,7 +184,8 @@ export const digmaApi = createApi({
 export const {
   useGetAboutQuery,
   useGetUserProfileQuery,
-  useGetInsightBySpanQuery,
+  useGetSpanCodeLocationsQuery,
+  useGetSpanInsightQuery,
   useGetEnvironmentsQuery,
   useLazyGetSpanPercentilesHistogramQuery,
   useMarkInsightAsReadMutation,

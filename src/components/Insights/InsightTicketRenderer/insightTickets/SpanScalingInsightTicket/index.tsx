@@ -31,7 +31,11 @@ export const SpanScalingInsightTicket = ({
   const insight = data.insight;
 
   const { commitInfos, isLoading, codeLocations } =
-    useSpanDataSource<SpanScalingInsight>(data.insight.spanInfo, data.insight);
+    useSpanDataSource<SpanScalingInsight>(
+      data.insight.spanInfo,
+      data.insight,
+      environmentId
+    );
 
   const renderDescription = () => {
     return (

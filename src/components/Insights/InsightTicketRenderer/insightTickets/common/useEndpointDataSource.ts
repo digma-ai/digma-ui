@@ -1,4 +1,4 @@
-import { useGetInsightBySpanQuery } from "../../../../../redux/services/digma";
+import { useGetSpanInsightQuery } from "../../../../../redux/services/digma";
 import type { InsightType, SpanInfo } from "../../../../../types";
 import type { GenericCodeObjectInsight } from "../../../types";
 import { useSpanDataSource } from "./useSpanDataSource";
@@ -8,7 +8,7 @@ export const useEndpointDataSource = <T extends GenericCodeObjectInsight>(
   insightType: InsightType,
   environmentId: string
 ) => {
-  const { data, isFetching, refetch } = useGetInsightBySpanQuery(
+  const { data, isFetching, refetch } = useGetSpanInsightQuery(
     {
       spanCodeObjectId: spanInfo?.spanCodeObjectId ?? "",
       insightType,
@@ -23,7 +23,7 @@ export const useEndpointDataSource = <T extends GenericCodeObjectInsight>(
     isLoading: isInsightMetaIsLoading,
     codeLocations,
     commitInfos
-  } = useSpanDataSource(spanInfo, data ?? null);
+  } = useSpanDataSource<T>(spanInfo, (data as T) ?? null, environmentId);
 
   const handleReloadSpanInsight = () => {
     void refetch();

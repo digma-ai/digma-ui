@@ -7,8 +7,8 @@ import type { GenericCodeObjectInsight } from "../../../types";
 import { getInsightCommits } from "../getInsightCommits";
 import type { CommitInfosData } from "../types";
 
-export const useCommitInfos = <TInsight extends GenericCodeObjectInsight>(
-  insight: TInsight | null
+export const useCommitInfos = <T extends GenericCodeObjectInsight>(
+  insight: T | null
 ) => {
   const [isLoading, setIsLoading] = useLoading(false);
   const [commitInfos, setCommitInfos] = useState<CommitInfosData | null>(null);

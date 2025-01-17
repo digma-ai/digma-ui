@@ -19,7 +19,8 @@ export const SpanEndpointBottleneckInsightTicket = ({
   const { commitInfos, codeLocations, isLoading } =
     useSpanDataSource<SpanEndpointBottleneckInsight>(
       data.insight.spanInfo,
-      data.insight
+      data.insight,
+      environmentId
     );
 
   const slowEndpoints = data.insight.slowEndpoints ?? [];

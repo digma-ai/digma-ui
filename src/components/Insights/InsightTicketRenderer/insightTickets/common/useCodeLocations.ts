@@ -2,13 +2,60 @@ import { useEffect, useState } from "react";
 import { dispatcher } from "../../../../../dispatcher";
 import { useLoading } from "../../../../../hooks/useLoading";
 import { platform } from "../../../../../platform";
+import { useGetSpanCodeLocationsQuery } from "../../../../../redux/services/digma";
+import type { GetSpanCodeLocationsResponse } from "../../../../../redux/services/types";
 import type { SpanInfo } from "../../../../../types";
+import { groupBy } from "../../../../../utils/groupBy";
 import { actions } from "../../../actions";
 import type { CodeLocationsData } from "../types";
 
-export const useCodeLocations = (spanInfo: SpanInfo | null) => {
+const getCodeLocations = (
+  data: GetSpanCodeLocationsResponse | undefined,
+  methodCodeObjectId: string | undefined | null
+): string[] => {
+  const codeLocations: string[] = [];
+
+  if (methodCodeObjectId && methodCodeObjectId.length > 0) {
+    codeLocations.push(methodCodeObjectId.replace("$_$", "."));
+    return codeLocations;
+  }
+
+  const spans = data?.navigationEntry.closestParentSpans ?? [];
+  const spanDistanceGroups = groupBy(spans, (x) => x.distance);
+  const sortedDistances = Object.keys(spanDistanceGroups)
+    .map(Number)
+    .sort((a, b) => a - b);
+
+  for (const distance of sortedDistances) {
+    const spanGroup = spanDistanceGroups[distance];
+    for (const span of spanGroup) {
+      const methodCodeObjectId = span.methodCodeObjectId;
+      if (methodCodeObjectId && methodCodeObjectId.length > 0) {
+        codeLocations.push(methodCodeObjectId.replace("$_$", "."));
+        return codeLocations;
+      }
+    }
+  }
+
+  return codeLocations;
+};
+
+export const useCodeLocations = (
+  environmentId: string | undefined,
+  spanInfo: SpanInfo | null
+) => {
   const [isLoading, setIsLoading] = useLoading(false);
   const [codeLocations, setCodeLocations] = useState<string[]>([]);
+  const { data, isFetching: areCodeLocationsLoading } =
+    useGetSpanCodeLocationsQuery(
+      {
+        environment: environmentId ?? "",
+        spanCodeObjectId: spanInfo?.spanCodeObjectId ?? ""
+      },
+      {
+        skip: !environmentId || !spanInfo?.spanCodeObjectId
+      }
+    );
 
   useEffect(() => {
     const handleCodeLocationsData = (data: unknown) => {
@@ -43,5 +90,12 @@ export const useCodeLocations = (spanInfo: SpanInfo | null) => {
       }
     });
   }, [spanInfo, setIsLoading]);
-  return { isLoading: platform === "Web" ? false : isLoading, codeLocations };
+
+  return {
+    isLoading: platform === "Web" ? areCodeLocationsLoading : isLoading,
+    codeLocations:
+      platform === "Web"
+        ? getCodeLocations(data, spanInfo?.methodCodeObjectId)
+        : codeLocations
+  };
 };

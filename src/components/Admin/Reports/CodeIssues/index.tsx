@@ -154,6 +154,7 @@ export const CodeIssues = () => {
           $isVisible={isSidebarOpen}
           $transitionClassName={s.overlayTransitionClassName}
           $transitionDuration={s.TRANSITION_DURATION}
+          onClick={handleIssuesSidebarClose}
         />
       </CSSTransition>
       <CSSTransition
