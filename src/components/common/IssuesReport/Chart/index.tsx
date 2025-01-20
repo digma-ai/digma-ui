@@ -17,7 +17,8 @@ export const Chart = ({
   onIssuesStatsClick,
   scoreCriterion,
   timeMode,
-  viewLevel
+  viewLevel,
+  activeTileIds
 }: ChartProps) => {
   const { width, height, entry, observe } = useDimensions();
   const [isLeftOverlayVisible, setIsLeftOverlayVisible] = useState(false);
@@ -60,6 +61,7 @@ export const Chart = ({
       value: score,
       content: (
         <ReportTile
+          isActive={activeTileIds ? activeTileIds.includes(x.id) : undefined}
           name={x.name}
           criticalIssuesCount={x.criticalIssuesCount}
           scoreCriterion={scoreCriterion}

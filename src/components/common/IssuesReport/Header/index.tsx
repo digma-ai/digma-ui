@@ -28,6 +28,7 @@ import { Direction } from "../../icons/types";
 import type { ToggleValue } from "../../Toggle/types";
 import { NewIconButton } from "../../v3/NewIconButton";
 import { Tooltip } from "../../v3/Tooltip";
+import { sortEnvironments } from "../utils";
 import * as s from "./styles";
 import type { HeaderProps } from "./types";
 
@@ -225,14 +226,12 @@ export const Header = ({
       <s.Row>
         <s.Filters>
           <s.FilterSelect
-            items={[...environmentsToSelect]
-              .sort((a, b) => a.name.localeCompare(b.name))
-              .map((x) => ({
-                label: x.name,
-                value: x.id,
-                enabled: true,
-                selected: x.id === selectedEnvironmentId
-              }))}
+            items={sortEnvironments(environmentsToSelect).map((x) => ({
+              label: x.name,
+              value: x.id,
+              enabled: true,
+              selected: x.id === selectedEnvironmentId
+            }))}
             showSelectedState={true}
             icon={(props) =>
               selectedEnvironment?.type === "Public" ? (

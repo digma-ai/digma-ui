@@ -20,7 +20,11 @@ import { Header } from "./Header";
 import * as s from "./styles";
 import { Table } from "./Table";
 import type { IssuesReportProps, ScoreCriterion } from "./types";
-import { transformEndpointsData, transformServicesData } from "./utils";
+import {
+  sortEnvironments,
+  transformEndpointsData,
+  transformServicesData
+} from "./utils";
 
 export const IssuesReport = ({
   viewMode,
@@ -43,18 +47,32 @@ export const IssuesReport = ({
   onViewLevelChange,
   onTileTitleClick,
   onTileIssuesStatsClick,
-  onSelectedServiceChange
+  onSelectedServiceChange,
+  activeTileIds
 }: IssuesReportProps) => {
   const { data: about } = useGetAboutQuery();
   const { data: environments } = useGetEnvironmentsQuery();
 
-  useEffect(() => {
-    if (environments && environments.length > 0 && !selectedEnvironmentId) {
-      onSelectedEnvironmentIdChange(environments[0].id);
-    }
-  }, [environments, selectedEnvironmentId, onSelectedEnvironmentIdChange]);
+  const sortedEnvironments = useMemo(
+    () => (environments ? sortEnvironments(environments) : undefined),
+    [environments]
+  );
 
-  const isInitialized = Boolean(environments && about);
+  useEffect(() => {
+    if (
+      sortedEnvironments &&
+      sortedEnvironments.length > 0 &&
+      !selectedEnvironmentId
+    ) {
+      onSelectedEnvironmentIdChange(sortedEnvironments[0].id);
+    }
+  }, [
+    sortedEnvironments,
+    selectedEnvironmentId,
+    onSelectedEnvironmentIdChange
+  ]);
+
+  const isInitialized = Boolean(sortedEnvironments && about);
 
   const { data: services } = useGetEnvironmentServicesQuery(
     {
@@ -119,44 +137,56 @@ export const IssuesReport = ({
     ? getServicesIssuesPayloadV2
     : getServicesIssuesPayloadV1;
 
-  const { data: servicesIssues } = useGetServicesIssuesQuery(
-    getServicesIssuesPayload,
-    {
+  const { data: servicesIssues, isFetching: areServicesIssuesLoading } =
+    useGetServicesIssuesQuery(getServicesIssuesPayload, {
       skip:
         !isInitialized ||
         !selectedEnvironmentId ||
         !services ||
         viewLevel !== "services"
-    }
-  );
+    });
 
-  const { data: endpointsIssues } = useGetEndpointsIssuesQuery(
-    {
-      environment: selectedEnvironmentId ?? "",
-      service: selectedService ?? "",
-      endpoints: selectedEndpoints,
-      criticalities: criticalityLevels,
-      lastDays: timeMode === "baseline" ? null : periodInDays
-    },
-    {
-      skip:
-        !isInitialized ||
-        !selectedEnvironmentId ||
-        !selectedService ||
-        viewLevel !== "endpoints"
-    }
-  );
+  const { data: endpointsIssues, isFetching: areEndpointIssuesLoading } =
+    useGetEndpointsIssuesQuery(
+      {
+        environment: selectedEnvironmentId ?? "",
+        service: selectedService ?? "",
+        endpoints: selectedEndpoints,
+        criticalities: criticalityLevels,
+        lastDays: timeMode === "baseline" ? null : periodInDays
+      },
+      {
+        skip:
+          !isInitialized ||
+          !selectedEnvironmentId ||
+          !selectedService ||
+          viewLevel !== "endpoints"
+      }
+    );
+
+  const isLoading = areServicesIssuesLoading || areEndpointIssuesLoading;
 
   const handleTitleClick = (value: string) => {
     if (viewLevel === "services") {
       onSelectedServiceChange(value);
       onViewLevelChange("endpoints");
     }
-    onTileTitleClick(viewLevel, value);
+    onTileTitleClick?.(viewLevel, value);
   };
 
   const handleIssuesStatsClick = (value: string) => {
-    onTileIssuesStatsClick(viewLevel, value);
+    if (viewLevel === "services") {
+      onTileIssuesStatsClick(viewLevel, { value });
+    }
+
+    if (viewLevel === "endpoints") {
+      onTileIssuesStatsClick(viewLevel, {
+        value,
+        displayName: endpointsIssues?.reports.find(
+          (x) => x.spanCodeObjectId === value
+        )?.displayName
+      });
+    }
   };
 
   const handleGoBack = () => {
@@ -223,6 +253,7 @@ export const IssuesReport = ({
             onTitleClick={handleTitleClick}
             onIssuesStatsClick={handleIssuesStatsClick}
             viewLevel={viewLevel}
+            activeTileIds={activeTileIds}
           />
         )}
       </>
@@ -232,7 +263,7 @@ export const IssuesReport = ({
   return (
     <s.Container>
       {isInitialized ? (
-        environments && environments.length > 0 ? (
+        sortedEnvironments && sortedEnvironments.length > 0 ? (
           <>
             <Header
               viewMode={viewMode}
@@ -254,7 +285,7 @@ export const IssuesReport = ({
               onGoBack={handleGoBack}
               defaultTitle={defaultHeaderTitle}
             />
-            {renderContent()}
+            {isLoading ? <EmptyState preset={"loading"} /> : renderContent()}
           </>
         ) : (
           <EmptyState preset={"noData"} />

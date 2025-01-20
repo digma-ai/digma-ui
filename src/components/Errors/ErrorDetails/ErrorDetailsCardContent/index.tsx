@@ -6,7 +6,7 @@ import { isString } from "../../../../typeGuards/isString";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
 import { formatTimeDistance } from "../../../../utils/formatTimeDistance";
 import { roundTo } from "../../../../utils/roundTo";
-import { ProductionAffectionBar } from "../../../Insights/InsightsCatalog/InsightsPage/insightCards/common/InsightCard/ProductionAffectionBar";
+import { ProductionAffectionBar } from "../../../Insights/InsightsCatalog/InsightsPage/InsightCardRenderer/insightCards/common/InsightCard/ProductionAffectionBar";
 import { ChevronIcon as ChevronIcon12px } from "../../../common/icons/12px/ChevronIcon";
 import { WrenchIcon } from "../../../common/icons/16px/WrenchIcon";
 import { Direction } from "../../../common/icons/types";

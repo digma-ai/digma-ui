@@ -52,6 +52,7 @@ declare global {
     userId?: unknown;
     isDigmathonGameFinished?: unknown;
     isLoggingEnabled?: unknown;
+    areInsightSuggestionsEnabled?: unknown;
   }
 }
 

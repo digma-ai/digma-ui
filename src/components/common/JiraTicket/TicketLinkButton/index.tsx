@@ -1,5 +1,6 @@
 import type { ChangeEvent } from "react";
 import { useEffect, useState } from "react";
+import { isUndefined } from "../../../../typeGuards/isUndefined";
 import { isValidHttpUrl } from "../../../../utils/isValidUrl";
 import { Button } from "../../Button";
 import { ActionableTextField } from "../ActionableTextField";
@@ -25,8 +26,6 @@ export const TicketLinkButton = ({
   };
 
   const onUnlink = () => {
-    setLink("");
-
     if (unlinkTicket) {
       unlinkTicket();
     }
@@ -41,7 +40,7 @@ export const TicketLinkButton = ({
   };
 
   useEffect(() => {
-    if (ticketLink?.link) {
+    if (!isUndefined(ticketLink?.link)) {
       setLink(ticketLink?.link);
     }
 

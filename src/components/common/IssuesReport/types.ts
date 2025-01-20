@@ -24,13 +24,14 @@ export interface IssuesReportProps {
   onPeriodInDaysChange: (periodInDays: number) => void;
   onTimeModeChange: (timeMode: IssuesReportTimeMode) => void;
   onViewModeChange: (viewMode: IssuesReportViewMode) => void;
-  onTileTitleClick: (viewLevel: IssuesReportViewLevel, value: string) => void;
+  onTileTitleClick?: (viewLevel: IssuesReportViewLevel, value: string) => void;
   onTileIssuesStatsClick: (
     viewLevel: IssuesReportViewLevel,
-    value: string
+    target: { value: string; displayName?: string }
   ) => void;
   onViewLevelChange: (viewLevel: IssuesReportViewLevel) => void;
   onSelectedServiceChange: (service: string | null) => void;
+  activeTileIds?: string[];
 }
 
 export type ScoreCriterion = "impact" | "criticality";

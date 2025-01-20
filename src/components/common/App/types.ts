@@ -182,6 +182,7 @@ export interface ConfigContextData {
   isDigmathonGameFinished: boolean;
   userInfo?: UserInfo;
   runConfig?: RunConfiguration;
+  areInsightSuggestionsEnabled: boolean;
 }
 
 export interface InsightStats {

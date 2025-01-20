@@ -40,6 +40,7 @@ export interface ConfigState {
   persistedState: PersistedState | null;
   selectedServices: string[] | null;
   scope: Scope | null;
+  areInsightSuggestionsEnabled: boolean | null;
 }
 
 const initialState: ConfigState = {
@@ -90,7 +91,10 @@ const initialState: ConfigState = {
     : null,
   selectedServices: null,
   persistedState: null,
-  scope: null
+  scope: null,
+  areInsightSuggestionsEnabled: isBoolean(window.areInsightSuggestionsEnabled)
+    ? window.areInsightSuggestionsEnabled
+    : null
 };
 
 const set = (update: Partial<ConfigState>) => (state: ConfigState) => ({

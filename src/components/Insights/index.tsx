@@ -13,154 +13,16 @@ import type { RegistrationFormValues } from "../common/RegistrationDialog/types"
 import { EmptyState } from "./EmptyState";
 import { InsightsCatalog } from "./InsightsCatalog";
 import type { IssuesFilterQuery } from "./InsightsCatalog/FilterPanel/IssuesFilter/types";
-import { EndpointBottleneckInsightTicket } from "./insightTickets/EndpointBottleneckInsightTicket";
-import { EndpointHighNumberOfQueriesInsightTicket } from "./insightTickets/EndpointHighNumberOfQueriesInsightTicket";
-import { EndpointQueryOptimizationV2InsightTicket } from "./insightTickets/EndpointQueryOptimizationV2InsightTicket";
-import { EndpointSpanNPlusOneInsightTicket } from "./insightTickets/EndpointSpanNPlusOneInsightTicket";
-import { SpaNPlusOneInsightTicket } from "./insightTickets/SpaNPlusOneInsightTicket";
-import { SpanEndpointBottleneckInsightTicket } from "./insightTickets/SpanEndpointBottleneckInsightTicket";
-import { SpanQueryOptimizationInsightTicket } from "./insightTickets/SpanQueryOptimizationInsightTicket";
-import { SpanScalingByRootCauseInsightTicket } from "./insightTickets/SpanScalingByRootCauseInsightTicket";
-import { SpanScalingInsightTicket } from "./insightTickets/SpanScalingInsightTicket";
+import { InsightTicketRenderer } from "./InsightTicketRenderer";
 import * as s from "./styles";
-import {
-  isEndpointBottleneckInsight,
-  isEndpointHighNumberOfQueriesInsight,
-  isEndpointQueryOptimizationV2Insight,
-  isEndpointSpanNPlusOneInsight,
-  isSpanEndpointBottleneckInsight,
-  isSpanNPlusOneInsight,
-  isSpanQueryOptimizationInsight,
-  isSpanScalingBadlyInsight
-} from "./typeGuards";
 import type {
-  EndpointBottleneckInsight,
-  EndpointHighNumberOfQueriesInsight,
-  EndpointQueryOptimizationV2Insight,
-  EndpointSpanNPlusOneInsight,
   GenericCodeObjectInsight,
   InsightTicketInfo,
   InsightsData,
-  InsightsProps,
-  SpaNPlusOneInsight,
-  SpanEndpointBottleneckInsight,
-  SpanQueryOptimizationInsight,
-  SpanScalingInsight
+  InsightsProps
 } from "./types";
 import { InsightsStatus } from "./types";
 import { useInsightsData } from "./useInsightsData";
-
-const renderInsightTicket = (
-  data: InsightTicketInfo<GenericCodeObjectInsight>,
-  refreshInsights: () => void,
-  onClose: () => void
-) => {
-  if (isSpanNPlusOneInsight(data.insight)) {
-    const ticketData = data as InsightTicketInfo<SpaNPlusOneInsight>;
-    return (
-      <SpaNPlusOneInsightTicket
-        data={ticketData}
-        refreshInsights={refreshInsights}
-        onClose={onClose}
-      />
-    );
-  }
-
-  if (isEndpointSpanNPlusOneInsight(data.insight)) {
-    const ticketData = data as InsightTicketInfo<EndpointSpanNPlusOneInsight>;
-    return (
-      <EndpointSpanNPlusOneInsightTicket
-        data={ticketData}
-        refreshInsights={refreshInsights}
-        onClose={onClose}
-      />
-    );
-  }
-
-  if (isSpanEndpointBottleneckInsight(data.insight)) {
-    const ticketData = data as InsightTicketInfo<SpanEndpointBottleneckInsight>;
-    return (
-      <SpanEndpointBottleneckInsightTicket
-        data={ticketData}
-        refreshInsights={refreshInsights}
-        onClose={onClose}
-      />
-    );
-  }
-
-  if (isEndpointBottleneckInsight(data.insight)) {
-    const ticketData = data as InsightTicketInfo<EndpointBottleneckInsight>;
-    return (
-      <EndpointBottleneckInsightTicket
-        data={ticketData}
-        refreshInsights={refreshInsights}
-        onClose={onClose}
-      />
-    );
-  }
-
-  if (isSpanQueryOptimizationInsight(data.insight)) {
-    const ticketData = data as InsightTicketInfo<SpanQueryOptimizationInsight>;
-    return (
-      <SpanQueryOptimizationInsightTicket
-        data={ticketData}
-        refreshInsights={refreshInsights}
-        onClose={onClose}
-      />
-    );
-  }
-
-  if (isEndpointQueryOptimizationV2Insight(data.insight)) {
-    const ticketData =
-      data as InsightTicketInfo<EndpointQueryOptimizationV2Insight>;
-    return (
-      <EndpointQueryOptimizationV2InsightTicket
-        data={ticketData}
-        refreshInsights={refreshInsights}
-        onClose={onClose}
-      />
-    );
-  }
-
-  if (isEndpointHighNumberOfQueriesInsight(data.insight)) {
-    const ticketData =
-      data as InsightTicketInfo<EndpointHighNumberOfQueriesInsight>;
-    return (
-      <EndpointHighNumberOfQueriesInsightTicket
-        data={ticketData}
-        refreshInsights={refreshInsights}
-        onClose={onClose}
-      />
-    );
-  }
-
-  if (isSpanScalingBadlyInsight(data.insight)) {
-    const ticketData = data as InsightTicketInfo<SpanScalingInsight>;
-    const selectedRootCause = data.insight.rootCauseSpans.find(
-      (r) => r.spanCodeObjectId == data.spanCodeObjectId
-    );
-    if (selectedRootCause) {
-      return (
-        <SpanScalingByRootCauseInsightTicket
-          rootCauseSpanInfo={selectedRootCause}
-          data={ticketData}
-          refreshInsights={refreshInsights}
-          onClose={onClose}
-        />
-      );
-    } else {
-      return (
-        <SpanScalingInsightTicket
-          data={ticketData}
-          refreshInsights={refreshInsights}
-          onClose={onClose}
-        />
-      );
-    }
-  }
-
-  return null;
-};
 
 export const ISSUES_FILTERS_PERSISTENCE_KEY = "issuesFilters";
 
@@ -388,11 +250,12 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
                 isRegistrationInProgress={isRegistrationInProgress}
               />
             ) : (
-              renderInsightTicket(
-                infoToOpenJiraTicket,
-                refresh,
-                handleJiraTicketPopupClose
-              )
+              <InsightTicketRenderer
+                data={infoToOpenJiraTicket}
+                refreshInsights={refresh}
+                onClose={handleJiraTicketPopupClose}
+                environmentId={environmentId}
+              />
             )}
           </s.PopupContainer>
         </s.Overlay>

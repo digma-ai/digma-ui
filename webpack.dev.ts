@@ -131,6 +131,23 @@ const config: WebpackConfiguration = {
         throw new Error("webpack-dev-server is not defined");
       }
 
+      webApps.forEach((app) =>
+        devServer.app?.get(`/${app}/env.js`, (req, res) => {
+          const envVariables = {
+            // Put app environment variables here
+          };
+
+          let envFileContent = "";
+
+          Object.entries(envVariables).forEach(([name, value]) => {
+            envFileContent += `window.${name} = ${JSON.stringify(value)};\n`;
+          });
+
+          res.setHeader("Content-Type", "application/javascript");
+          res.end(envFileContent);
+        })
+      );
+
       devServer.app?.use("/api", (req, res, next) => {
         getSession(credentials, session)
           .then((session) => {

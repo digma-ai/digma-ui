@@ -1,4 +1,4 @@
-import { ProductionAffectionBar } from "../../Insights/InsightsCatalog/InsightsPage/insightCards/common/InsightCard/ProductionAffectionBar";
+import { ProductionAffectionBar } from "../../Insights/InsightsCatalog/InsightsPage/InsightCardRenderer/insightCards/common/InsightCard/ProductionAffectionBar";
 import { CrossCircleIcon } from "../../common/icons/16px/CrossCircleIcon";
 import { Tag } from "../../common/v3/Tag";
 import { Tooltip } from "../../common/v3/Tooltip";

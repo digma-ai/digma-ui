@@ -16,23 +16,22 @@ export const Container = styled.div<ContainerProps>`
   width: 240px;
   background: ${({ theme }) => theme.colors.v3.status.backgroundHigh};
 
-  ${({ $transitionClassName, $transitionDuration }) => {
-    return `
+  ${({ $transitionClassName, $transitionDuration }) => `
     &.${$transitionClassName}-enter {
       transform: translateX(-100%);
     }
     &.${$transitionClassName}-enter-active {
       transform: translateX(0);
-      transition:all ${$transitionDuration}ms ease;
+      transition: all ${$transitionDuration}ms ease;
     }
     &.${$transitionClassName}-exit {
       transform: translateX(0);
     }
     &.${$transitionClassName}-exit-active {
       transform: translateX(100%);
-      transition:all ${$transitionDuration}ms ease;
-    }`;
-  }}
+      transition: all ${$transitionDuration}ms ease;
+    }
+  `}
 `;
 
 export const ContentContainer = styled.div`

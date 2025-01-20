@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { CSSTransition } from "react-transition-group";
 import {
   useAdminDispatch,
   useAdminSelector
@@ -20,9 +22,16 @@ import {
   type IssuesReportViewMode
 } from "../../../../redux/slices/issuesReportSlice";
 import { IssuesReport } from "../../../common/IssuesReport";
+import { IssuesSidebar } from "./IssuesSidebar";
 import * as s from "./styles";
 
 export const CodeIssues = () => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [scope, setScope] = useState<{ value: string; displayName?: string }>();
+  const [activeTileIds, setActiveTileIds] = useState<string[] | undefined>(
+    undefined
+  );
+
   const selectedEnvironmentId = useAdminSelector(
     (state) => state.codeIssuesReport.selectedEnvironmentId
   );
@@ -55,19 +64,18 @@ export const CodeIssues = () => {
     };
   });
 
-  const handleTileTitleClick = () =>
-    // viewLevel: IssuesReportViewLevel,
-    // value: string
-    {
-      // TODO: implement
-    };
+  const handleTileIssuesStatsClick = (
+    _: IssuesReportViewLevel,
+    target: { value: string; displayName?: string }
+  ) => {
+    if (!selectedEnvironmentId) {
+      return;
+    }
 
-  const handleTileIssuesStatsClick = () =>
-    // viewLevel: IssuesReportViewLevel,
-    // value: string
-    {
-      // TODO: implement
-    };
+    setScope(target);
+    setIsSidebarOpen(true);
+    setActiveTileIds([target.value]);
+  };
 
   const handleSelectedEnvironmentIdChange = (environmentId: string) => {
     dispatch(setSelectedEnvironmentId(environmentId));
@@ -105,6 +113,11 @@ export const CodeIssues = () => {
     dispatch(setSelectedService(service));
   };
 
+  const handleIssuesSidebarClose = () => {
+    setIsSidebarOpen(false);
+    setActiveTileIds(undefined);
+  };
+
   return (
     <s.Container>
       <IssuesReport
@@ -118,7 +131,6 @@ export const CodeIssues = () => {
         viewMode={viewMode}
         timeMode={timeMode}
         defaultHeaderTitle={"Code Issues"}
-        onTileTitleClick={handleTileTitleClick}
         onTileIssuesStatsClick={handleTileIssuesStatsClick}
         onSelectedEnvironmentIdChange={handleSelectedEnvironmentIdChange}
         onSelectedServicesChange={handleSelectedServicesChange}
@@ -129,7 +141,41 @@ export const CodeIssues = () => {
         onViewModeChange={handleViewModeChange}
         onViewLevelChange={handleViewLevelChange}
         onSelectedServiceChange={handleSelectedServiceChange}
+        activeTileIds={activeTileIds}
       />
+      <CSSTransition
+        in={isSidebarOpen}
+        timeout={s.TRANSITION_DURATION}
+        classNames={s.overlayTransitionClassName}
+        mountOnEnter={true}
+        unmountOnExit={true}
+      >
+        <s.Overlay
+          $isVisible={isSidebarOpen}
+          $transitionClassName={s.overlayTransitionClassName}
+          $transitionDuration={s.TRANSITION_DURATION}
+          onClick={handleIssuesSidebarClose}
+        />
+      </CSSTransition>
+      <CSSTransition
+        in={isSidebarOpen}
+        timeout={s.TRANSITION_DURATION}
+        classNames={s.sidebarContainerTransitionClassName}
+        mountOnEnter={true}
+        unmountOnExit={true}
+      >
+        <s.IssuesSidebarContainer
+          $transitionClassName={s.sidebarContainerTransitionClassName}
+          $transitionDuration={s.TRANSITION_DURATION}
+        >
+          <IssuesSidebar
+            onClose={handleIssuesSidebarClose}
+            scope={scope}
+            environmentId={selectedEnvironmentId ?? undefined}
+            viewLevel={viewLevel}
+          />
+        </s.IssuesSidebarContainer>
+      </CSSTransition>
     </s.Container>
   );
 };

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { KeyValue } from "../../../Insights/InsightsCatalog/InsightsPage/insightCards/common/InsightCard/KeyValue";
+import { KeyValue } from "../../../Insights/InsightsCatalog/InsightsPage/InsightCardRenderer/insightCards/common/InsightCard/KeyValue";
 import { subscriptRegularTypography } from "../../../common/App/typographies";
 
 export const Container = styled.div`

@@ -1,20 +1,34 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { isString } from "../../typeGuards/isString";
 import type {
+  DismissUndismissInsightPayload,
   GetAboutResponse,
   GetEndpointsIssuesPayload,
   GetEnvironmentServicesPayload,
   GetEnvironmentServicesResponse,
   GetEnvironmentsResponse,
+  GetIssueRecommendationsPayload,
+  GetIssueRecommendationsResponse,
+  GetIssuesPayload,
+  GetIssuesResponse,
   GetMetricsReportDataPayloadV1,
   GetMetricsReportDataPayloadV2,
   GetServiceEndpointsPayload,
   GetServiceEnvironmentsPayload,
+  GetSpanCodeLocationsPayload,
+  GetSpanCodeLocationsResponse,
+  GetSpanInsightPayload,
+  GetSpanInsightResponse,
+  GetSpanPercentilesHistogramPayload,
   GetUserProfileResponse,
+  LinkTicketResponse,
+  LinkTicketToIssuePayload,
+  MarkInsightAsReadPayload,
   SetEndpointsIssuesPayload,
   SetMetricsReportDataPayload,
   SetServiceEndpointsPayload,
-  SetServiceEnvironmentsPayload
+  SetServiceEnvironmentsPayload,
+  UnlinkTicketFromIssuePayload
 } from "./types";
 
 export const digmaApi = createApi({
@@ -27,20 +41,94 @@ export const digmaApi = createApi({
   }),
   endpoints: (builder) => ({
     getAbout: builder.query<GetAboutResponse, void>({
-      query: () => "about"
+      query: () => "About"
     }),
     getUserProfile: builder.query<GetUserProfileResponse, void>({
-      query: () => "authentication/logged-in-user"
+      query: () => "Authentication/logged-in-user"
+    }),
+    getSpanCodeLocations: builder.query<
+      GetSpanCodeLocationsResponse,
+      GetSpanCodeLocationsPayload
+    >({
+      query: (data) => ({
+        url: "/CodeAnalytics/codeObjects/span_navigation",
+        method: "POST",
+        body: data
+      })
+    }),
+    getSpanInsight: builder.query<
+      GetSpanInsightResponse,
+      GetSpanInsightPayload
+    >({
+      query: (data) => ({
+        url: "/CodeAnalytics/codeObjects/insight",
+        params: data
+      })
     }),
     getEnvironments: builder.query<GetEnvironmentsResponse, void>({
-      query: () => "environments"
+      query: () => "Environments"
+    }),
+    getSpanPercentilesHistogram: builder.query<
+      string,
+      GetSpanPercentilesHistogramPayload
+    >({
+      query: (data) => ({
+        url: "/Graphs/graphForSpanPercentiles",
+        method: "POST",
+        body: data,
+        responseHandler: "text"
+      })
+    }),
+    markInsightAsRead: builder.mutation<void, MarkInsightAsReadPayload>({
+      query: (data) => ({
+        url: `Insights/markRead`,
+        method: "POST",
+        body: data
+      })
+    }),
+    getIssues: builder.query<GetIssuesResponse, GetIssuesPayload>({
+      query: (data) => ({ url: "Insights/issues", method: "POST", body: data })
+    }),
+    linkTicketToIssue: builder.mutation<
+      LinkTicketResponse,
+      LinkTicketToIssuePayload
+    >({
+      query: (data) => ({
+        url: `/InsightsActions/link-ticket`,
+        method: "PUT",
+        body: data
+      })
+    }),
+    unlinkTicketFromIssue: builder.mutation<
+      LinkTicketResponse,
+      UnlinkTicketFromIssuePayload
+    >({
+      query: (data) => ({
+        url: `/InsightsActions/unlink-ticket`,
+        method: "PUT",
+        body: data
+      })
+    }),
+    dismissInsight: builder.mutation<void, DismissUndismissInsightPayload>({
+      query: (data) => ({
+        url: `InsightsActions/dismiss`,
+        method: "PUT",
+        body: data
+      })
+    }),
+    undismissInsight: builder.mutation<void, DismissUndismissInsightPayload>({
+      query: (data) => ({
+        url: `InsightsActions/unDismiss`,
+        method: "PUT",
+        body: data
+      })
     }),
     getServicesIssues: builder.query<
       SetMetricsReportDataPayload,
       GetMetricsReportDataPayloadV1 | GetMetricsReportDataPayloadV2
     >({
       query: (data) => ({
-        url: "reports/services/issues",
+        url: "Reports/services/issues",
         method: "POST",
         body: data
       })
@@ -50,7 +138,7 @@ export const digmaApi = createApi({
       GetEndpointsIssuesPayload
     >({
       query: (data) => ({
-        url: "reports/endpoints/issues",
+        url: "Reports/endpoints/issues",
         method: "POST",
         body: data
       })
@@ -60,7 +148,7 @@ export const digmaApi = createApi({
       GetEnvironmentServicesPayload
     >({
       query: (data) => ({
-        url: "services/getServices",
+        url: "Services/getServices",
         params: data
       })
     }),
@@ -69,7 +157,7 @@ export const digmaApi = createApi({
       GetServiceEndpointsPayload
     >({
       query: ({ service, environment }) => ({
-        url: `services/${service}/endpoints`,
+        url: `Services/${service}/endpoints`,
         params: {
           environment
         }
@@ -79,7 +167,16 @@ export const digmaApi = createApi({
       SetServiceEnvironmentsPayload,
       GetServiceEnvironmentsPayload
     >({
-      query: ({ service }) => `services/${service}/environments`
+      query: ({ service }) => `Services/${service}/environments`
+    }),
+    getIssueRecommendations: builder.query<
+      GetIssueRecommendationsResponse,
+      GetIssueRecommendationsPayload
+    >({
+      query: (data) => ({
+        url: "AI/issue",
+        params: data
+      })
     })
   })
 });
@@ -87,10 +184,20 @@ export const digmaApi = createApi({
 export const {
   useGetAboutQuery,
   useGetUserProfileQuery,
+  useGetSpanCodeLocationsQuery,
+  useGetSpanInsightQuery,
   useGetEnvironmentsQuery,
+  useLazyGetSpanPercentilesHistogramQuery,
+  useMarkInsightAsReadMutation,
+  useGetIssuesQuery,
+  useLinkTicketToIssueMutation,
+  useUnlinkTicketFromIssueMutation,
+  useDismissInsightMutation,
+  useUndismissInsightMutation,
   useGetServicesIssuesQuery,
   useGetEndpointsIssuesQuery,
   useGetEnvironmentServicesQuery,
   useGetServiceEndpointsQuery,
-  useGetServiceEnvironmentsQuery
+  useGetServiceEnvironmentsQuery,
+  useGetIssueRecommendationsQuery
 } = digmaApi;

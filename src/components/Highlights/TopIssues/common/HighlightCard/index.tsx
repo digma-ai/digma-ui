@@ -1,5 +1,5 @@
 import { getInsightTypeInfo } from "../../../../../utils/getInsightTypeInfo";
-import { InsightIcon } from "../../../../Insights/InsightsCatalog/InsightsPage/insightCards/common/InsightCard/InsightHeader/InsightIcon";
+import { InsightIcon } from "../../../../Insights/InsightsCatalog/InsightsPage/InsightCardRenderer/insightCards/common/InsightCard/InsightHeader/InsightIcon";
 import { Card } from "../../../../common/v3/Card";
 import { Info } from "../../../../common/v3/Info";
 import type { EnvironmentData, GenericMetrics } from "../../types";

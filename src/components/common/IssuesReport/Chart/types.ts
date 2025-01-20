@@ -11,4 +11,5 @@ export interface ChartProps {
   scoreCriterion: ScoreCriterion;
   viewLevel: IssuesReportViewLevel;
   timeMode: IssuesReportTimeMode;
+  activeTileIds?: string[];
 }
