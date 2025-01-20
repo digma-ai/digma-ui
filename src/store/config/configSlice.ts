@@ -41,6 +41,7 @@ export interface ConfigState {
   selectedServices: string[] | null;
   scope: Scope | null;
   areInsightSuggestionsEnabled: boolean | null;
+  googleClientId: string | null;
 }
 
 const initialState: ConfigState = {
@@ -94,7 +95,8 @@ const initialState: ConfigState = {
   scope: null,
   areInsightSuggestionsEnabled: isBoolean(window.areInsightSuggestionsEnabled)
     ? window.areInsightSuggestionsEnabled
-    : null
+    : null,
+  googleClientId: isString(window.googleClientId) ? window.googleClientId : null
 };
 
 const set = (update: Partial<ConfigState>) => (state: ConfigState) => ({
