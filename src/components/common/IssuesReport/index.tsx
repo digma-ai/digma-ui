@@ -11,7 +11,8 @@ import type {
   EndpointIssuesData,
   GetMetricsReportDataPayloadV1,
   GetMetricsReportDataPayloadV2,
-  ServiceIssuesData
+  ServiceIssuesData,
+  SetEndpointsIssuesPayload
 } from "../../../redux/services/types";
 import { FeatureFlag } from "../../../types";
 import { Chart } from "./Chart";
@@ -25,6 +26,13 @@ import {
   transformEndpointsData,
   transformServicesData
 } from "./utils";
+
+const getEndpointDisplayName = (
+  endpointsIssues: SetEndpointsIssuesPayload | undefined,
+  value: string
+): string | undefined =>
+  endpointsIssues?.reports.find((x) => x.spanCodeObjectId === value)
+    ?.displayName;
 
 export const IssuesReport = ({
   viewMode,
@@ -171,22 +179,22 @@ export const IssuesReport = ({
       onSelectedServiceChange(value);
       onViewLevelChange("endpoints");
     }
-    onTileTitleClick?.(viewLevel, value);
+
+    const displayName =
+      viewLevel === "endpoints"
+        ? getEndpointDisplayName(endpointsIssues, value)
+        : undefined;
+
+    onTileTitleClick?.(viewLevel, { value, displayName });
   };
 
   const handleIssuesStatsClick = (value: string) => {
-    if (viewLevel === "services") {
-      onTileIssuesStatsClick(viewLevel, { value });
-    }
+    const displayName =
+      viewLevel === "endpoints"
+        ? getEndpointDisplayName(endpointsIssues, value)
+        : undefined;
 
-    if (viewLevel === "endpoints") {
-      onTileIssuesStatsClick(viewLevel, {
-        value,
-        displayName: endpointsIssues?.reports.find(
-          (x) => x.spanCodeObjectId === value
-        )?.displayName
-      });
-    }
+    onTileIssuesStatsClick(viewLevel, { value, displayName });
   };
 
   const handleGoBack = () => {

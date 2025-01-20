@@ -22,6 +22,7 @@ import {
   type IssuesReportViewMode
 } from "../../../../redux/slices/issuesReportSlice";
 import { IssuesReport } from "../../../common/IssuesReport";
+import type { TargetScope } from "../../../common/IssuesReport/types";
 import { IssuesSidebar } from "./IssuesSidebar";
 import * as s from "./styles";
 
@@ -64,14 +65,21 @@ export const CodeIssues = () => {
     };
   });
 
+  const handleTileTitleClick = (
+    viewLevel: IssuesReportViewLevel,
+    target: TargetScope
+  ) => {
+    if (viewMode === "table" && viewLevel === "endpoints") {
+      setScope(target);
+      setIsSidebarOpen(true);
+      setActiveTileIds([target.value]);
+    }
+  };
+
   const handleTileIssuesStatsClick = (
     _: IssuesReportViewLevel,
-    target: { value: string; displayName?: string }
+    target: TargetScope
   ) => {
-    if (!selectedEnvironmentId) {
-      return;
-    }
-
     setScope(target);
     setIsSidebarOpen(true);
     setActiveTileIds([target.value]);
@@ -131,6 +139,7 @@ export const CodeIssues = () => {
         viewMode={viewMode}
         timeMode={timeMode}
         defaultHeaderTitle={"Code Issues"}
+        onTileTitleClick={handleTileTitleClick}
         onTileIssuesStatsClick={handleTileIssuesStatsClick}
         onSelectedEnvironmentIdChange={handleSelectedEnvironmentIdChange}
         onSelectedServicesChange={handleSelectedServicesChange}
