@@ -183,6 +183,7 @@ export interface ConfigContextData {
   userInfo?: UserInfo;
   runConfig?: RunConfiguration;
   areInsightSuggestionsEnabled: boolean;
+  googleClientId: string;
 }
 
 export interface InsightStats {

@@ -53,6 +53,7 @@ declare global {
     isDigmathonGameFinished?: unknown;
     isLoggingEnabled?: unknown;
     areInsightSuggestionsEnabled?: unknown;
+    googleClientId?: unknown;
   }
 }
 
