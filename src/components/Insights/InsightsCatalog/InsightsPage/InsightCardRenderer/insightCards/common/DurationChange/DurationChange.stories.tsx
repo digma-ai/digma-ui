@@ -4,7 +4,7 @@ import { DurationChange } from ".";
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof DurationChange> = {
   title:
-    "Insights/InsightsCatalog/InsightsPage/InsightCardRenderer/insightsCards/common/DurationChange",
+    "Insights/InsightsCatalog/InsightsPage/InsightCardRenderer/insightCards/common/DurationChange",
   component: DurationChange,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout

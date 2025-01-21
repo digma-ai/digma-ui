@@ -90,14 +90,26 @@ export const SpaNPlusOneInsightCard = ({
     setSelectedEndpointKey(endpointKey);
   };
 
-  const selectedEndpoint = useMemo(
+  const selectedOption = useMemo(
     () =>
       selectedEndpointKey
+        ? selectorOptions.find((x) => getEndpointKey(x) === selectedEndpointKey)
+        : undefined,
+    [selectedEndpointKey, selectorOptions]
+  );
+
+  const selectedEndpoint = useMemo(
+    () =>
+      selectedOption
         ? endpoints.find(
-            (x) => getEndpointKey(x.endpointInfo) === selectedEndpointKey
+            (x) =>
+              x.endpointInfo.route === selectedOption.route &&
+              x.endpointInfo.serviceName === selectedOption.serviceName &&
+              x.endpointInfo.entrySpanCodeObjectId ===
+                selectedOption.spanCodeObjectId
           )
         : undefined,
-    [selectedEndpointKey, endpoints]
+    [selectedOption, endpoints]
   );
 
   return (
@@ -135,7 +147,6 @@ export const SpaNPlusOneInsightCard = ({
               )}
             </s.SelectContainer>
           </Details>
-
           {selectedEndpoint && (
             <ColumnsContainer>
               <KeyValue

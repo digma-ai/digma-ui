@@ -34,7 +34,8 @@ export const initialState: ConfigContextData = {
   userId: isString(window.userId) ? window.userId : "",
   isDigmathonGameFinished: window.isDigmathonGameFinished === true,
   runConfig: undefined,
-  areInsightSuggestionsEnabled: window.areInsightSuggestionsEnabled === true
+  areInsightSuggestionsEnabled: window.areInsightSuggestionsEnabled === true,
+  googleClientId: isString(window.googleClientId) ? window.googleClientId : ""
 };
 
 export const ConfigContext = createContext<ConfigContextData>(initialState);

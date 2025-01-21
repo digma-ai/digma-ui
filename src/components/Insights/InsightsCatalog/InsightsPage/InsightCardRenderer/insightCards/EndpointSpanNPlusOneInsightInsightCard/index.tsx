@@ -78,7 +78,7 @@ export const EndpointSpanNPlusOneInsightCard = ({
             <KeyValue
               label={"Repeats"}
               info={
-                "The median number of times this query repeats in each requets"
+                "The median number of times this query repeats in each requests"
               }
             >
               {span.occurrences}

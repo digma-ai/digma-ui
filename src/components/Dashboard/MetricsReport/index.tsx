@@ -23,6 +23,7 @@ import { isString } from "../../../typeGuards/isString";
 import { SCOPE_CHANGE_EVENTS } from "../../../types";
 import { changeScope } from "../../../utils/actions/changeScope";
 import { IssuesReport } from "../../common/IssuesReport";
+import type { TargetScope } from "../../common/IssuesReport/types";
 import { DigmaLogoIcon } from "../../common/icons/16px/DigmaLogoIcon";
 import { actions } from "../actions";
 import * as s from "./styles";
@@ -96,11 +97,11 @@ export const MetricsReport = () => {
 
   const handleTileTitleClick = (
     viewLevel: IssuesReportViewLevel,
-    value: string
+    target: TargetScope
   ) => {
     if (viewLevel === "endpoints" && selectedEnvironmentId && selectedService) {
       goToEndpointIssues({
-        spanCodeObjectId: value,
+        spanCodeObjectId: target.value,
         service: selectedService,
         environmentId: selectedEnvironmentId
       });
@@ -109,7 +110,7 @@ export const MetricsReport = () => {
 
   const handleIssuesStatsClick = (
     viewLevel: IssuesReportViewLevel,
-    target: { value: string; displayName?: string }
+    target: TargetScope
   ) => {
     if (viewLevel === "services") {
       changeScope({

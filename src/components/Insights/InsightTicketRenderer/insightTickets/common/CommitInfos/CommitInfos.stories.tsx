@@ -4,7 +4,7 @@ import { mockedSpaNPlusOneInsight } from "../../../../InsightsCatalog/InsightsPa
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof CommitInfos> = {
-  title: "Insights/insightTickets/common/CommitInfos",
+  title: "Insights/InsightTicketRenderer/insightTickets/common/CommitInfos",
   component: CommitInfos,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout

@@ -4,7 +4,8 @@ import { mockedSpaNPlusOneInsight } from "../../../../InsightsCatalog/InsightsPa
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof NPlusOneEndpoints> = {
-  title: "Insights/insightTickets/common/NPlusOneEndpoints",
+  title:
+    "Insights/InsightTicketRenderer/insightTickets/common/NPlusOneEndpoints",
   component: NPlusOneEndpoints,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout

@@ -1,8 +1,11 @@
+import type { CodeResponse } from "@react-oauth/google";
 import axios, { isAxiosError } from "axios";
 import type { ChangeEvent, FormEvent } from "react";
 import { useState } from "react";
 import { Helmet } from "react-helmet";
+import { isString } from "../../typeGuards/isString";
 import { TextField } from "../common/v3/TextField";
+import { GoogleSignInButton } from "./GoogleSignInButton";
 import * as s from "./styles";
 
 export const Login = () => {
@@ -34,7 +37,7 @@ export const Login = () => {
         }
       })
       .catch((error: Error) => {
-        let errorMessage = "Unknown error";
+        let errorMessage = "Failed to sign in";
 
         if (isAxiosError(error)) {
           if (error.response) {
@@ -50,6 +53,31 @@ export const Login = () => {
 
         setError(errorMessage);
       });
+  };
+
+  const handleGoogleSignInSuccess = (
+    response: Omit<CodeResponse, "error" | "error_description" | "error_uri">
+  ) => {
+    axios
+      .post("/auth/google", {
+        code: response.code
+      })
+      .then(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const returnUrl = urlParams.get("return_url");
+        if (returnUrl) {
+          window.location.href = returnUrl;
+        }
+      })
+      .catch((error: Error) => {
+        // eslint-disable-next-line no-console
+        console.error(error);
+        setError("Failed to sign in with Google");
+      });
+  };
+
+  const handleGoogleSignInError = () => {
+    setError("Failed to sign in with Google");
   };
 
   return (
@@ -70,12 +98,14 @@ export const Login = () => {
               type={"text"}
               value={username}
               onChange={handleUsernameChange}
+              autoComplete={"email"}
             />
             <TextField
               placeholder={"Password"}
               type={"password"}
               value={password}
               onChange={handlePasswordChange}
+              autoComplete={"current-password"}
             />
             <s.SignInButton
               type={"submit"}
@@ -83,6 +113,21 @@ export const Login = () => {
               isDisabled={Boolean(!username || !password)}
             />
           </s.Form>
+          {isString(window.googleClientId) &&
+            window.googleClientId.length > 0 && (
+              <>
+                <s.SignInSeparator>
+                  <s.Divider />
+                  or
+                  <s.Divider />
+                </s.SignInSeparator>
+                <GoogleSignInButton
+                  onSuccess={handleGoogleSignInSuccess}
+                  onError={handleGoogleSignInError}
+                  onNonOAuthError={handleGoogleSignInError}
+                />
+              </>
+            )}
           <s.Footer>
             <s.FooterText>By signing in you agree with</s.FooterText>
             <s.TermsLink

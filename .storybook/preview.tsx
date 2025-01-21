@@ -2,6 +2,7 @@ import type { Preview, StoryFn } from "@storybook/react";
 // TODO: remove React import due to new JSX transform
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import React, { useEffect, useState } from "react";
+import { Provider } from "react-redux";
 import { withRouter } from "storybook-addon-remix-react-router";
 import {
   cancelMessage,
@@ -11,6 +12,7 @@ import {
 import { App, THEMES } from "../src/components/common/App";
 import { dispatcher } from "../src/dispatcher";
 import type { Theme } from "../src/globals";
+import { store } from "./store";
 
 const preview: Preview = {
   decorators: [
@@ -32,9 +34,11 @@ const preview: Preview = {
       }, []);
 
       return isInitialized ? (
-        <App theme={theme}>
-          <Story />
-        </App>
+        <Provider store={store}>
+          <App theme={theme}>
+            <Story />
+          </App>
+        </Provider>
       ) : (
         <>Initializing...</>
       );

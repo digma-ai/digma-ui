@@ -13,6 +13,7 @@ const DEFAULT_TRANSITION_DURATION = 500; // in milliseconds
 export const ErrorCard = ({ title, description }: ErrorCardProps) => {
   const [isVisible, setIsVisible] = useState(true);
   const hideTimerId = useRef<number>();
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const startTimer = () => {
     hideTimerId.current = window.setTimeout(() => {
@@ -33,8 +34,10 @@ export const ErrorCard = ({ title, description }: ErrorCardProps) => {
       timeout={DEFAULT_TRANSITION_DURATION}
       classNames={TRANSITION_CLASS_NAME}
       unmountOnExit={true}
+      nodeRef={containerRef}
     >
       <s.Container
+        ref={containerRef}
         $transitionClassName={TRANSITION_CLASS_NAME}
         $transitionDuration={DEFAULT_TRANSITION_DURATION}
         onMouseEnter={() => {

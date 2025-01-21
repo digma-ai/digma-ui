@@ -3,7 +3,7 @@ import { AffectedEndpointsSelector } from ".";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof AffectedEndpointsSelector> = {
-  title: "Insights/InsightsCatalog/InsightPage/AffectedEndpointsSelector",
+  title: "Insights/InsightsCatalog/InsightsPage/AffectedEndpointsSelector",
   component: AffectedEndpointsSelector,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout

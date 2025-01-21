@@ -1,6 +1,7 @@
 import type {
   ChangeEventHandler,
   ComponentType,
+  HTMLInputAutoCompleteAttribute,
   HTMLInputTypeAttribute,
   ReactNode
 } from "react";
@@ -18,6 +19,7 @@ export interface TextFieldProps {
   type?: HTMLInputTypeAttribute;
   icon?: ComponentType<IconProps>;
   alwaysRenderError?: boolean;
+  autoComplete?: HTMLInputAutoCompleteAttribute;
 }
 
 export interface ContainerProps {

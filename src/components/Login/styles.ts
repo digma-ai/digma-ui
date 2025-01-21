@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import {
+  caption1BoldTypography,
   heading2BoldTypography,
   subheading1RegularTypography,
   subscriptRegularTypography
@@ -32,7 +33,7 @@ export const ContentContainer = styled.div`
 export const Panel = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 16px;
   padding: 32px;
   border-radius: 16px;
   background: ${({ theme }) => theme.colors.v3.surface.secondary};
@@ -60,7 +61,7 @@ export const Subtitle = styled.span`
 `;
 
 export const Form = styled.form`
-  margin-top: 16px;
+  margin-top: 4px;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -69,6 +70,22 @@ export const Form = styled.form`
 export const SignInButton = styled(NewButton)`
   width: 100%;
   justify-content: center;
+`;
+
+export const SignInSeparator = styled.div`
+  ${caption1BoldTypography}
+
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: ${({ theme }) => theme.colors.v3.text.tertiary};
+  text-transform: uppercase;
+  gap: 8px;
+`;
+
+export const Divider = styled.div`
+  flex-grow: 1;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.v3.stroke.dark};
 `;
 
 export const Footer = styled.div`

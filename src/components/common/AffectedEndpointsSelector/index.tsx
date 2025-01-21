@@ -7,9 +7,8 @@ import { EndpointOption } from "./EndpointOption";
 import * as s from "./styles";
 import type { AffectedEndpointsSelectorProps, Option } from "./types";
 
-export const getEndpointKey = (option: Option): string => {
-  return [option.serviceName, option.spanCodeObjectId].join(DELIMITER);
-};
+export const getEndpointKey = (option: Option): string =>
+  [option.serviceName, option.spanCodeObjectId].join(DELIMITER);
 
 const renderOptions = (
   endpoints: Option[],

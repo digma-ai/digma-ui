@@ -6,6 +6,11 @@ import type {
 } from "../../../redux/slices/issuesReportSlice";
 import type { Severity } from "../../common/IssuesReport/Table/types";
 
+export interface TargetScope {
+  value: string;
+  displayName?: string;
+}
+
 export interface IssuesReportProps {
   viewMode: IssuesReportViewMode;
   viewLevel: IssuesReportViewLevel;
@@ -24,10 +29,13 @@ export interface IssuesReportProps {
   onPeriodInDaysChange: (periodInDays: number) => void;
   onTimeModeChange: (timeMode: IssuesReportTimeMode) => void;
   onViewModeChange: (viewMode: IssuesReportViewMode) => void;
-  onTileTitleClick?: (viewLevel: IssuesReportViewLevel, value: string) => void;
+  onTileTitleClick?: (
+    viewLevel: IssuesReportViewLevel,
+    target: TargetScope
+  ) => void;
   onTileIssuesStatsClick: (
     viewLevel: IssuesReportViewLevel,
-    target: { value: string; displayName?: string }
+    target: TargetScope
   ) => void;
   onViewLevelChange: (viewLevel: IssuesReportViewLevel) => void;
   onSelectedServiceChange: (service: string | null) => void;

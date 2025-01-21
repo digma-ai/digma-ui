@@ -23,6 +23,7 @@ import { trackingEvents } from "../tracking";
 import * as s from "./styles";
 import type {
   AssetFilterCategory,
+  AssetFilterEntry,
   AssetsFiltersData,
   GetAssetFiltersDataParams,
   GetAssetFiltersDataPayload
@@ -57,10 +58,14 @@ const renderFilterCategory = (
   placeholder: string,
   selectedValues: string[],
   onChange: (value: string | string[], categoryName?: string) => void,
-  transformLabel?: (value: string) => string
+  transformLabel?: (value: string) => string,
+  sorter?: (a: AssetFilterEntry, b: AssetFilterEntry) => number
 ): JSX.Element => {
+  const sortedEntries =
+    (sorter ? category.entries?.sort(sorter) : category.entries) ?? [];
+
   const items =
-    category.entries?.map((entry) => ({
+    sortedEntries.map((entry) => ({
       value: entry.name,
       label: transformLabel ? transformLabel(entry.name) : entry.name,
       enabled: entry.enabled,
@@ -76,7 +81,7 @@ const renderFilterCategory = (
       placeholder={placeholder}
       multiselect={true}
       icon={icon}
-      disabled={category.entries?.length === 0}
+      disabled={sortedEntries.length === 0}
     />
   );
 };
@@ -524,7 +529,9 @@ export const AssetsFilter = () => {
         WrenchIcon,
         selectedServices.length > 0 ? "Services" : "All",
         selectedServices,
-        handleSelectedItemsChange
+        handleSelectedItemsChange,
+        undefined,
+        (a, b) => a.name.localeCompare(b.name)
       )
     });
   }
