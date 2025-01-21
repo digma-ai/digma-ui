@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import {
   useAdminDispatch,
@@ -32,6 +32,8 @@ export const CodeIssues = () => {
   const [activeTileIds, setActiveTileIds] = useState<string[] | undefined>(
     undefined
   );
+  const sidebarContainerRef = useRef<HTMLDivElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
 
   const selectedEnvironmentId = useAdminSelector(
     (state) => state.codeIssuesReport.selectedEnvironmentId
@@ -158,8 +160,10 @@ export const CodeIssues = () => {
         classNames={s.overlayTransitionClassName}
         mountOnEnter={true}
         unmountOnExit={true}
+        nodeRef={overlayRef}
       >
         <s.Overlay
+          ref={overlayRef}
           $isVisible={isSidebarOpen}
           $transitionClassName={s.overlayTransitionClassName}
           $transitionDuration={s.TRANSITION_DURATION}
@@ -172,8 +176,10 @@ export const CodeIssues = () => {
         classNames={s.sidebarContainerTransitionClassName}
         mountOnEnter={true}
         unmountOnExit={true}
+        nodeRef={sidebarContainerRef}
       >
         <s.IssuesSidebarContainer
+          ref={sidebarContainerRef}
           $transitionClassName={s.sidebarContainerTransitionClassName}
           $transitionDuration={s.TRANSITION_DURATION}
         >

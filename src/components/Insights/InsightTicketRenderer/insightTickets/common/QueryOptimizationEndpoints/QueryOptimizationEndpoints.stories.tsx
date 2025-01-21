@@ -4,7 +4,8 @@ import { mockedSpanQueryOptimizationInsight } from "../../../../InsightsCatalog/
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof QueryOptimizationEndpoints> = {
-  title: "Insights/insightTickets/common/QueryOptimizationEndpoints",
+  title:
+    "Insights/InsightTicketRenderer/insightTickets/common/QueryOptimizationEndpoints",
   component: QueryOptimizationEndpoints,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout

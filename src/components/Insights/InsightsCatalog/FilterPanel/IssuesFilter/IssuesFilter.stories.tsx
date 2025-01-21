@@ -5,7 +5,7 @@ import { actions } from "../../../Issues/actions";
 
 // More on how to set up stories at: https://storybook.js.org/docs/react/writing-stories/introduction
 const meta: Meta<typeof IssuesFilter> = {
-  title: "Insights/Issues/InsightsCatalog/FilterPanel/IssuesFilter",
+  title: "Insights/InsightsCatalog/FilterPanel/IssuesFilter",
   component: IssuesFilter,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/react/configure/story-layout

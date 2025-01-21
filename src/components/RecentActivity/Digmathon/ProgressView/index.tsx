@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { CSSTransition } from "react-transition-group";
 import { isString } from "../../../../typeGuards/isString";
 import { openURLInDefaultBrowser } from "../../../../utils/actions/openURLInDefaultBrowser";
@@ -20,7 +20,9 @@ const DIGMATHON_URL = "https://www.digma.ai/digmathon";
 const DIGMATHON_LEADERBOARD_URL = "https://www.digma.ai/digmathon/#leaderboard";
 
 export const ProgressView = ({ data }: ProgressViewProps) => {
+  const newIssuesFoundMessageRef = useRef<HTMLDivElement>(null);
   const config = useContext(ConfigContext);
+
   useEffect(() => {
     sendTrackingEvent(trackingEvents.DIGMATHON_PROGRESS_VIEWED);
   }, []);
@@ -103,8 +105,10 @@ export const ProgressView = ({ data }: ProgressViewProps) => {
           classNames={s.NEW_ISSUES_FOUND_MESSAGE_ANIMATION_CLASS_NAME}
           unmountOnExit={true}
           mountOnEnter={true}
+          nodeRef={newIssuesFoundMessageRef}
         >
           <s.NewIssuesFoundMessage
+            ref={newIssuesFoundMessageRef}
             $transitionClassName={
               s.NEW_ISSUES_FOUND_MESSAGE_ANIMATION_CLASS_NAME
             }
