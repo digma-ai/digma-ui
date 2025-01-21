@@ -210,12 +210,14 @@ export const GlobalErrorsFilters = () => {
 
   const servicesFilterOptions: SelectItem[] = useMemo(
     () =>
-      services?.map((x) => ({
-        label: x,
-        value: x,
-        selected: selectedServices.includes(x),
-        enabled: true
-      })) ?? [],
+      services
+        ?.map((x) => ({
+          label: x,
+          value: x,
+          selected: selectedServices.includes(x),
+          enabled: true
+        }))
+        .sort((a, b) => a.label.localeCompare(b.label)) ?? [],
     [services, selectedServices]
   );
 

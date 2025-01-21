@@ -219,12 +219,14 @@ export const IssuesFilter = () => {
   };
 
   const servicesFilterOptions: SelectItem[] =
-    data?.services?.map((entry) => ({
-      value: entry,
-      label: entry,
-      enabled: true,
-      selected: selectedServices.includes(entry)
-    })) ?? [];
+    data?.services
+      ?.map((entry) => ({
+        value: entry,
+        label: entry,
+        enabled: true,
+        selected: selectedServices.includes(entry)
+      }))
+      .sort((a, b) => a.label.localeCompare(b.label)) ?? [];
 
   const issueTypesFilterOptions: SelectItem[] =
     data?.issueTypeFilters?.map((entry) => ({
