@@ -76,7 +76,12 @@ export const SpanQueryOptimizationInsightCard = ({
             >
               {durationString}
             </KeyValue>
-            <KeyValue label={"Typical Duration"}>
+            <KeyValue
+              label={"Typical Duration"}
+              info={
+                "The average duration of other queries of the same type (e.g. SELECT, UPDATE, INSERT etc.) running against the same DB in the same environment"
+              }
+            >
               {getDurationString(insight.typicalDuration)}
             </KeyValue>
             <KeyValue label={"Database"}>{insight.dbName}</KeyValue>
