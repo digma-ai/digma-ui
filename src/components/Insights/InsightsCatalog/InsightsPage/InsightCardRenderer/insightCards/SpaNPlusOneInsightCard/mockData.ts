@@ -74,7 +74,7 @@ export const mockedSpaNPlusOneInsight: SpaNPlusOneInsight = {
       duration: {
         value: 3.64,
         unit: "sec",
-        raw: 1636050588.0
+        raw: 3636050588.0
       }
     }
   ],

@@ -1,4 +1,3 @@
-import { Link } from "../../v3/Link";
 import { Tooltip } from "../../v3/Tooltip";
 import * as s from "./styles";
 import type { EndpointOptionProps } from "./types";
@@ -10,7 +9,9 @@ export const EndpointOption = ({
   onSpanLinkClick,
   selected,
   hideCopyIcon,
-  onClick
+  onClick,
+  duration,
+  hideDuration
 }: EndpointOptionProps) => {
   const title = `${serviceName} ${route}`;
 
@@ -23,16 +24,21 @@ export const EndpointOption = ({
           onClick={() => onClick && onClick()}
         >
           <s.ServiceName>{serviceName}</s.ServiceName>
-          {spanCodeObjectId && onSpanLinkClick ? (
-            <Link onClick={() => onSpanLinkClick(spanCodeObjectId)}>
-              {route}
-            </Link>
-          ) : (
-            <span>{route}</span>
+          <s.Route>
+            {spanCodeObjectId && onSpanLinkClick ? (
+              <s.Link onClick={() => onSpanLinkClick(spanCodeObjectId)}>
+                {route}
+              </s.Link>
+            ) : (
+              <span>{route}</span>
+            )}
+          </s.Route>
+          {!hideCopyIcon && <s.StyledCopyButton text={route} />}
+          {!selected && !hideDuration && duration && (
+            <s.Duration>{duration}</s.Duration>
           )}
         </s.EndpointName>
       </Tooltip>
-      {!hideCopyIcon && <s.StyledCopyButton text={route} />}
     </s.Container>
   );
 };

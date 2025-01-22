@@ -6,6 +6,8 @@ export interface EndpointOptionProps {
   onSpanLinkClick?: (spanCodeObjectId: string) => void;
   hideCopyIcon?: boolean;
   onClick?: ((spanCodeObjectId?: string) => void) | null;
+  duration?: string;
+  hideDuration?: boolean;
 }
 
 export interface EndpointNameProps {

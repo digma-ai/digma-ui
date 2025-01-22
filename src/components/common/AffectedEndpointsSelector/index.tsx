@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { DELIMITER } from "../../../constants";
+import { getDurationString } from "../../../utils/getDurationString";
 import { trimEndpointScheme } from "../../../utils/trimEndpointScheme";
 import { Select } from "../../Insights/InsightsCatalog/InsightsPage/InsightCardRenderer/insightCards/common/InsightCard/Select";
 import type { CustomContentProps } from "../../Insights/InsightsCatalog/InsightsPage/InsightCardRenderer/insightCards/common/InsightCard/Select/types";
@@ -21,6 +22,7 @@ const renderOptions = (
   endpoints.map((x) => {
     const spanCodeObjectId = x.spanCodeObjectId;
     const route = trimEndpointScheme(x.route);
+    const durationString = x.duration && getDurationString(x.duration);
     return {
       label: route,
       customContent: ({ isSelected, onClick }) => (
@@ -32,6 +34,7 @@ const renderOptions = (
           onSpanLinkClick={handleLinkClick}
           hideCopyIcon={!isSelected}
           onClick={onClick}
+          duration={durationString}
         />
       ),
       value: getEndpointKey(x)
@@ -66,6 +69,7 @@ export const AffectedEndpointsSelector = ({
           <EndpointOption
             route={"Endpoint"}
             serviceName={"Service"}
+            duration={"Duration"}
             hideCopyIcon={true}
           />
         </s.ListHeader>

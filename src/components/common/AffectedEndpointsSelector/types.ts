@@ -1,3 +1,5 @@
+import type { Duration } from "../../../globals";
+
 export interface FilterButtonProps {
   isActive: boolean;
   onClick: () => void;
@@ -20,4 +22,5 @@ export interface Option {
   serviceName: string;
   route: string;
   spanCodeObjectId: string;
+  duration?: Duration;
 }
