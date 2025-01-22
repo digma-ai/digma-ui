@@ -13,6 +13,7 @@ import { isNumber } from "../../../../../../../typeGuards/isNumber";
 import { FeatureFlag } from "../../../../../../../types";
 import { getDurationString } from "../../../../../../../utils/getDurationString";
 import { getPercentileLabel } from "../../../../../../../utils/getPercentileLabel";
+import { roundTo } from "../../../../../../../utils/roundTo";
 import { Info } from "../../../../../../common/v3/Info";
 import { Pagination } from "../../../../../../common/v3/Pagination";
 import { Tag } from "../../../../../../common/v3/Tag";
@@ -82,6 +83,10 @@ export const SpanDurationBreakdownInsightCard = ({
     backendInfo,
     FeatureFlag.IS_DURATION_BREAKDOWN_QUANTITY_ENABLED
   );
+  const isPercentageOfCallsSupported = getFeatureFlagValue(
+    backendInfo,
+    FeatureFlag.IS_DURATION_BREAKDOWN_QUANTITY_ENABLED
+  );
 
   const columnHelper = createColumnHelper<SpanDurationBreakdownEntry>();
 
@@ -90,7 +95,7 @@ export const SpanDurationBreakdownInsightCard = ({
       header: "Asset",
       id: "asset",
       meta: {
-        width: "60%",
+        width: "55%",
         minWidth: 100
       },
       cell: (info) => {
@@ -109,7 +114,7 @@ export const SpanDurationBreakdownInsightCard = ({
       id: "quantity",
       meta: {
         minWidth: 30,
-        width: "20%",
+        width: "15%",
         info: "The number of times this asset repeats within the trace. The duration shown next to this column represents the overall duration of all asset instances."
       },
       cell: (info) => {
@@ -132,11 +137,41 @@ export const SpanDurationBreakdownInsightCard = ({
       }
     }),
     columnHelper.accessor((row) => row, {
+      header: "% Calls",
+      id: "percentageOfCalls",
+      meta: {
+        minWidth: 30,
+        width: "15%",
+        info: "The percentage of calls triggering this child asset"
+      },
+      cell: (info) => {
+        const entry = info.getValue();
+
+        const percentageOfCalls = entry.percentageOfCalls;
+        if (!percentageOfCalls) {
+          return null;
+        }
+
+        const percentageString = `${
+          percentageOfCalls < 1 ? "<1" : roundTo(percentageOfCalls, 2)
+        }%`;
+
+        return (
+          <Tag
+            key={"percentageOfCalls"}
+            title={percentageString}
+            type={"highlight"}
+            content={percentageString}
+          />
+        );
+      }
+    }),
+    columnHelper.accessor((row) => row, {
       header: "Duration",
       id: "duration",
       meta: {
         minWidth: 30,
-        width: "20%",
+        width: "15%",
         info: "The execution time of the asset"
       },
       cell: (info) => {
@@ -161,9 +196,12 @@ export const SpanDurationBreakdownInsightCard = ({
     })
   ];
 
-  let columnVisibility = { quantity: false };
+  let columnVisibility = { quantity: false, percentageOfCalls: false };
   if (isQuantitySupported) {
-    columnVisibility = { quantity: true };
+    columnVisibility = { ...columnVisibility, quantity: true };
+  }
+  if (isPercentageOfCallsSupported) {
+    columnVisibility = { ...columnVisibility, percentageOfCalls: true };
   }
 
   const filteredItems = useMemo(

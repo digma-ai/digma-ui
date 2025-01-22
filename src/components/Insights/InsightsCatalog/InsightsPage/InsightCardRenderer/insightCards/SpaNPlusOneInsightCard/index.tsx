@@ -24,7 +24,8 @@ import type { SpaNPlusOneInsightCardProps } from "./types";
 const getSelectorOption = (endpoint: NPlusOneEndpointInfo): Option => ({
   route: endpoint.endpointInfo.route,
   serviceName: endpoint.endpointInfo.serviceName,
-  spanCodeObjectId: endpoint.endpointInfo.entrySpanCodeObjectId
+  spanCodeObjectId: endpoint.endpointInfo.entrySpanCodeObjectId,
+  duration: endpoint.duration
 });
 
 export const SpaNPlusOneInsightCard = ({
@@ -42,7 +43,12 @@ export const SpaNPlusOneInsightCard = ({
 }: SpaNPlusOneInsightCardProps) => {
   const endpoints = useMemo(() => insight.endpoints ?? [], [insight.endpoints]);
   const selectorOptions = useMemo(
-    () => endpoints.map(getSelectorOption),
+    () =>
+      endpoints
+        .map(getSelectorOption)
+        .sort((a, b) =>
+          a.duration && b.duration ? b.duration.raw - a.duration.raw : 0
+        ),
     [endpoints]
   );
   const endpointWithMaxDuration = endpoints.reduce(

@@ -26,7 +26,8 @@ import type { SpanEndpointBottleneckInsightCardProps } from "./types";
 const getSelectorOption = (endpoint: BottleneckEndpointInfo): Option => ({
   route: trimEndpointScheme(endpoint.endpointInfo.route),
   serviceName: endpoint.endpointInfo.serviceName,
-  spanCodeObjectId: endpoint.endpointInfo.spanCodeObjectId
+  spanCodeObjectId: endpoint.endpointInfo.spanCodeObjectId,
+  duration: endpoint.avgDurationWhenBeingBottleneck
 });
 
 export const SpanEndpointBottleneckInsightCard = ({
@@ -48,7 +49,12 @@ export const SpanEndpointBottleneckInsightCard = ({
     [insight.slowEndpoints]
   );
   const selectorOptions: Option[] = useMemo(
-    () => slowEndpoints.map(getSelectorOption),
+    () =>
+      slowEndpoints
+        .map(getSelectorOption)
+        .sort((a, b) =>
+          a.duration && b.duration ? b.duration.raw - a.duration.raw : 0
+        ),
     [slowEndpoints]
   );
 
