@@ -317,6 +317,7 @@ export interface SpanDurationBreakdownEntry {
   spanCodeObjectId: string;
   percentiles: DurationPercentile[];
   codeObjectId: string | null;
+  percentageOfCalls?: number;
 }
 
 export interface SpanDurationBreakdownInsight extends SpanInsight {
