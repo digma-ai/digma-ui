@@ -31,7 +31,7 @@ const getSelectorOption = (
   spanCodeObjectId: endpoint.endpointInfo.spanCodeObjectId,
   metric: {
     value: getDurationString(endpoint.avgDurationWhenBeingBottleneck),
-    label: "Requests"
+    label: "Duration"
   }
 });
 
