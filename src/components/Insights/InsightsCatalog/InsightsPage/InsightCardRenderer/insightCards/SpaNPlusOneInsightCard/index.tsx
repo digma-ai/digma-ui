@@ -21,11 +21,14 @@ import { ContentContainer, Description, Details } from "../styles";
 import * as s from "./styles";
 import type { SpaNPlusOneInsightCardProps } from "./types";
 
-const getSelectorOption = (endpoint: NPlusOneEndpointInfo): Option => ({
+const getSelectorOption = (endpoint: NPlusOneEndpointInfo): Option<number> => ({
   route: endpoint.endpointInfo.route,
   serviceName: endpoint.endpointInfo.serviceName,
   spanCodeObjectId: endpoint.endpointInfo.entrySpanCodeObjectId,
-  duration: endpoint.duration
+  metric: {
+    value: endpoint.occurrences,
+    label: "Repeats"
+  }
 });
 
 export const SpaNPlusOneInsightCard = ({
@@ -41,21 +44,21 @@ export const SpaNPlusOneInsightCard = ({
   viewMode,
   onDismissalChange
 }: SpaNPlusOneInsightCardProps) => {
-  const endpoints = useMemo(() => insight.endpoints ?? [], [insight.endpoints]);
-  const selectorOptions = useMemo(
+  const endpoints = useMemo(
     () =>
-      endpoints
-        .map(getSelectorOption)
-        .sort((a, b) =>
-          a.duration && b.duration ? b.duration.raw - a.duration.raw : 0
-        ),
+      (insight.endpoints ?? []).sort((a, b) => b.occurrences - a.occurrences),
+    [insight.endpoints]
+  );
+
+  const selectorOptions = useMemo(
+    () => endpoints.map(getSelectorOption),
     [endpoints]
   );
-  const endpointWithMaxDuration = endpoints.reduce(
-    (acc, cur) => (acc.duration.raw >= cur.duration.raw ? acc : cur),
-    endpoints[0]
-  );
-  const maxDurationString = getDurationString(endpointWithMaxDuration.duration);
+  const endpointWithMaxDuration =
+    endpoints.length > 0 ? endpoints[0] : undefined;
+  const maxDurationString = endpointWithMaxDuration
+    ? getDurationString(endpointWithMaxDuration.duration)
+    : undefined;
   const { isJaegerEnabled } = useConfigSelector();
   const [selectedEndpointKey, setSelectedEndpointKey] = useState<
     string | undefined
@@ -192,9 +195,11 @@ export const SpaNPlusOneInsightCard = ({
       isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       viewMode={viewMode}
       mainMetric={
-        <Tooltip title={maxDurationString}>
-          <span>{maxDurationString}</span>
-        </Tooltip>
+        maxDurationString ? (
+          <Tooltip title={maxDurationString}>
+            <span>{maxDurationString}</span>
+          </Tooltip>
+        ) : undefined
       }
       onDismissalChange={onDismissalChange}
     />

@@ -23,11 +23,16 @@ import { ContentContainer, Description, Details } from "../styles";
 import * as s from "./styles";
 import type { SpanEndpointBottleneckInsightCardProps } from "./types";
 
-const getSelectorOption = (endpoint: BottleneckEndpointInfo): Option => ({
+const getSelectorOption = (
+  endpoint: BottleneckEndpointInfo
+): Option<string> => ({
   route: trimEndpointScheme(endpoint.endpointInfo.route),
   serviceName: endpoint.endpointInfo.serviceName,
   spanCodeObjectId: endpoint.endpointInfo.spanCodeObjectId,
-  duration: endpoint.avgDurationWhenBeingBottleneck
+  metric: {
+    value: getDurationString(endpoint.avgDurationWhenBeingBottleneck),
+    label: "Requests"
+  }
 });
 
 export const SpanEndpointBottleneckInsightCard = ({
@@ -45,30 +50,21 @@ export const SpanEndpointBottleneckInsightCard = ({
 }: SpanEndpointBottleneckInsightCardProps) => {
   const { isJaegerEnabled } = useConfigSelector();
   const slowEndpoints = useMemo(
-    () => insight.slowEndpoints ?? [],
+    () =>
+      (insight.slowEndpoints ?? []).sort(
+        (a, b) =>
+          b.avgDurationWhenBeingBottleneck.raw -
+          a.avgDurationWhenBeingBottleneck.raw
+      ),
     [insight.slowEndpoints]
   );
-  const selectorOptions: Option[] = useMemo(
-    () =>
-      slowEndpoints
-        .map(getSelectorOption)
-        .sort((a, b) =>
-          a.duration && b.duration ? b.duration.raw - a.duration.raw : 0
-        ),
+  const selectorOptions: Option<string>[] = useMemo(
+    () => slowEndpoints.map(getSelectorOption),
     [slowEndpoints]
   );
 
   const endpointWithMaxDuration =
-    slowEndpoints.length > 0
-      ? slowEndpoints.reduce(
-          (acc, cur) =>
-            acc.avgDurationWhenBeingBottleneck.raw >=
-            cur.avgDurationWhenBeingBottleneck.raw
-              ? acc
-              : cur,
-          slowEndpoints[0]
-        )
-      : undefined;
+    slowEndpoints.length > 0 ? slowEndpoints[0] : undefined;
   const maxDurationString = endpointWithMaxDuration
     ? getDurationString(endpointWithMaxDuration.avgDurationWhenBeingBottleneck)
     : undefined;
