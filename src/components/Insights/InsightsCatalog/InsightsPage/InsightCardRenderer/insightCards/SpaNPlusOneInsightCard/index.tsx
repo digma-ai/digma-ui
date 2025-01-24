@@ -46,7 +46,9 @@ export const SpaNPlusOneInsightCard = ({
 }: SpaNPlusOneInsightCardProps) => {
   const endpoints = useMemo(
     () =>
-      (insight.endpoints ?? []).sort((a, b) => b.occurrences - a.occurrences),
+      [...(insight.endpoints ?? [])].sort(
+        (a, b) => b.occurrences - a.occurrences
+      ),
     [insight.endpoints]
   );
 
