@@ -1,6 +1,9 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
+import { globalClear } from "../actions";
+import { STATE_VERSION } from "../constants";
 import type { IssueCriticality } from "../services/types";
+import type { BaseState } from "./types";
 
 export type IssuesReportViewMode = "treemap" | "table";
 
@@ -8,7 +11,7 @@ export type IssuesReportTimeMode = "baseline" | "changes";
 
 export type IssuesReportViewLevel = "services" | "endpoints";
 
-export interface IssuesReportState {
+export interface IssuesReportState extends BaseState {
   viewMode: IssuesReportViewMode;
   viewLevel: IssuesReportViewLevel;
   timeMode: IssuesReportTimeMode;
@@ -21,6 +24,7 @@ export interface IssuesReportState {
 }
 
 const initialState: IssuesReportState = {
+  version: STATE_VERSION,
   viewMode: "treemap",
   viewLevel: "services",
   timeMode: "baseline",
@@ -67,6 +71,9 @@ export const issuesReportSlice = createSlice({
       state.selectedServices = action.payload;
     },
     clear: () => initialState
+  },
+  extraReducers: (builder) => {
+    builder.addCase(globalClear, () => initialState);
   }
 });
 

@@ -2,7 +2,7 @@ import { Tooltip } from "../../v3/Tooltip";
 import * as s from "./styles";
 import type { EndpointOptionProps } from "./types";
 
-export const EndpointOption = ({
+export const EndpointOption = <T,>({
   serviceName,
   route,
   spanCodeObjectId,
@@ -10,9 +10,9 @@ export const EndpointOption = ({
   selected,
   hideCopyIcon,
   onClick,
-  duration,
-  hideDuration
-}: EndpointOptionProps) => {
+  metric,
+  isHeader
+}: EndpointOptionProps<T>) => {
   const title = `${serviceName} ${route}`;
 
   return (
@@ -34,8 +34,10 @@ export const EndpointOption = ({
             )}
           </s.Route>
           {!hideCopyIcon && <s.StyledCopyButton text={route} />}
-          {!selected && !hideDuration && duration && (
-            <s.Duration>{duration}</s.Duration>
+          {!selected && metric && (
+            <s.Duration>
+              {isHeader ? metric.label : String(metric.value)}
+            </s.Duration>
           )}
         </s.EndpointName>
       </Tooltip>

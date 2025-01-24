@@ -139,6 +139,7 @@
     "react-syntax-highlighter": "^15.5.0",
     "react-transition-group": "^4.4.5",
     "recharts": "^2.6.2",
+    "redux-remember": "^5.2.0",
     "semver": "^7.5.4",
     "squarify": "^1.1.0",
     "styled-components": "^6.1.13",

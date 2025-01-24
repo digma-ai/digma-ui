@@ -23,18 +23,30 @@ export const Default: Story = {
         route: "test",
         serviceName:
           "someasasdasdasdasdasdasdawerereasdsadsadsadsadsadasdsadasdsadsdhfkjdhskjfgdf;lgjhdfhglkdfhgklhsdklfghkhgdfgkdfklghrthysdfhsbfheslkbyieryiobyrieuytirosynoiuybioyustest2",
-        spanCodeObjectId: "spanCodeObjectId1"
+        spanCodeObjectId: "spanCodeObjectId1",
+        metric: {
+          value: 100,
+          label: "100 ms"
+        }
       },
       {
         route:
           "someasasdasdasdasdasdasdawerereasdsadsadsadsadsadasdsadasdsadsdhfkjdhskjfgdf;lgjhdfhglkdfhgklhsdklfghkhgdfgkdfklghrthysdfhsbfheslkbyieryiobyrieuytirosynoiuybioyustest",
         serviceName: "test1",
-        spanCodeObjectId: "spanCodeObjectId2"
+        spanCodeObjectId: "spanCodeObjectId2",
+        metric: {
+          value: 200,
+          label: "200 ms"
+        }
       },
       {
         route: "test",
         serviceName: "test1",
-        spanCodeObjectId: "spanCodeObjectId2"
+        spanCodeObjectId: "spanCodeObjectId2",
+        metric: {
+          value: 300,
+          label: "300 ms"
+        }
       }
     ]
   }

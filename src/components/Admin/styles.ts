@@ -18,3 +18,10 @@ export const MainContainer = styled.main`
   height: 100%;
   overflow: auto;
 `;
+
+export const LoadingContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+`;

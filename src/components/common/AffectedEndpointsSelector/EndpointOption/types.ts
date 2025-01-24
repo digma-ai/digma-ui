@@ -1,4 +1,4 @@
-export interface EndpointOptionProps {
+export interface EndpointOptionProps<T> {
   serviceName: string;
   route: string;
   spanCodeObjectId?: string;
@@ -6,8 +6,11 @@ export interface EndpointOptionProps {
   onSpanLinkClick?: (spanCodeObjectId: string) => void;
   hideCopyIcon?: boolean;
   onClick?: ((spanCodeObjectId?: string) => void) | null;
-  duration?: string;
-  hideDuration?: boolean;
+  metric?: {
+    value: T;
+    label: string;
+  };
+  isHeader?: boolean;
 }
 
 export interface EndpointNameProps {
