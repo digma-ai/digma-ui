@@ -95,7 +95,10 @@ export const Tooltip = ({
     flip({
       boundary
     }),
-    shift()
+    shift({
+      boundary,
+      padding: 16
+    })
   ];
   if (!hideArrow) {
     middlewares.push(

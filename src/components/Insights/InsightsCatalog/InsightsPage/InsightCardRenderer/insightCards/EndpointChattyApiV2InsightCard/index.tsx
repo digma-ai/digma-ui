@@ -16,7 +16,8 @@ export const EndpointChattyApiV2InsightCard = ({
   onGoToSpan,
   isMarkAsReadButtonEnabled,
   viewMode,
-  onDismissalChange
+  onDismissalChange,
+  tooltipBoundaryRef
 }: EndpointChattyApiV2InsightCardProps) => {
   const handleSpanLinkClick = (spanCodeObjectId: string) => {
     onAssetLinkClick(spanCodeObjectId, insight.type);
@@ -74,6 +75,7 @@ export const EndpointChattyApiV2InsightCard = ({
       isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       viewMode={viewMode}
       onDismissalChange={onDismissalChange}
+      tooltipBoundaryRef={tooltipBoundaryRef}
     />
   );
 };

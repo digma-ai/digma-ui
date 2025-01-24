@@ -66,7 +66,8 @@ export const InsightCardRenderer = ({
   viewMode,
   environmentId,
   onDismissalChange,
-  onOpenSuggestion
+  onOpenSuggestion,
+  tooltipBoundaryRef
 }: InsightCardRendererProps) => {
   const [triggerSpanPercentilesHistogramFetch] =
     useLazyGetSpanPercentilesHistogramQuery();
@@ -203,6 +204,7 @@ export const InsightCardRenderer = ({
         isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
         viewMode={viewMode}
         onDismissalChange={onDismissalChange}
+        tooltipBoundaryRef={tooltipBoundaryRef}
       />
     );
   }
@@ -219,6 +221,7 @@ export const InsightCardRenderer = ({
         isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
         viewMode={viewMode}
         onDismissalChange={onDismissalChange}
+        tooltipBoundaryRef={tooltipBoundaryRef}
       />
     );
   }
@@ -236,6 +239,7 @@ export const InsightCardRenderer = ({
         isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
         viewMode={viewMode}
         onDismissalChange={onDismissalChange}
+        tooltipBoundaryRef={tooltipBoundaryRef}
       />
     );
   }
@@ -255,6 +259,7 @@ export const InsightCardRenderer = ({
         isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
         viewMode={viewMode}
         onDismissalChange={onDismissalChange}
+        tooltipBoundaryRef={tooltipBoundaryRef}
       />
     );
   }
@@ -274,6 +279,7 @@ export const InsightCardRenderer = ({
         isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
         viewMode={viewMode}
         onDismissalChange={onDismissalChange}
+        tooltipBoundaryRef={tooltipBoundaryRef}
       />
     );
   }
@@ -289,6 +295,7 @@ export const InsightCardRenderer = ({
         isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
         viewMode={viewMode}
         onDismissalChange={onDismissalChange}
+        tooltipBoundaryRef={tooltipBoundaryRef}
       />
     );
   }
@@ -308,6 +315,7 @@ export const InsightCardRenderer = ({
         isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
         viewMode={viewMode}
         onDismissalChange={onDismissalChange}
+        tooltipBoundaryRef={tooltipBoundaryRef}
       />
     );
   }
@@ -327,6 +335,7 @@ export const InsightCardRenderer = ({
         isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
         viewMode={viewMode}
         onDismissalChange={onDismissalChange}
+        tooltipBoundaryRef={tooltipBoundaryRef}
       />
     );
   }
@@ -346,6 +355,7 @@ export const InsightCardRenderer = ({
         isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
         viewMode={viewMode}
         onDismissalChange={onDismissalChange}
+        tooltipBoundaryRef={tooltipBoundaryRef}
       />
     );
   }
@@ -366,6 +376,7 @@ export const InsightCardRenderer = ({
         isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
         viewMode={viewMode}
         onDismissalChange={onDismissalChange}
+        tooltipBoundaryRef={tooltipBoundaryRef}
       />
     );
   }
@@ -382,6 +393,7 @@ export const InsightCardRenderer = ({
         isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
         viewMode={viewMode}
         onDismissalChange={onDismissalChange}
+        tooltipBoundaryRef={tooltipBoundaryRef}
       />
     );
   }
@@ -397,6 +409,7 @@ export const InsightCardRenderer = ({
         isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
         viewMode={viewMode}
         onDismissalChange={onDismissalChange}
+        tooltipBoundaryRef={tooltipBoundaryRef}
       />
     );
   }
@@ -414,6 +427,7 @@ export const InsightCardRenderer = ({
         isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
         viewMode={viewMode}
         onDismissalChange={onDismissalChange}
+        tooltipBoundaryRef={tooltipBoundaryRef}
       />
     );
   }
@@ -431,6 +445,7 @@ export const InsightCardRenderer = ({
         isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
         viewMode={viewMode}
         onDismissalChange={onDismissalChange}
+        tooltipBoundaryRef={tooltipBoundaryRef}
       />
     );
   }
@@ -449,6 +464,7 @@ export const InsightCardRenderer = ({
         isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
         viewMode={viewMode}
         onDismissalChange={onDismissalChange}
+        tooltipBoundaryRef={tooltipBoundaryRef}
       />
     );
   }
@@ -464,6 +480,7 @@ export const InsightCardRenderer = ({
         isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
         viewMode={viewMode}
         onDismissalChange={onDismissalChange}
+        tooltipBoundaryRef={tooltipBoundaryRef}
       />
     );
   }
@@ -484,6 +501,7 @@ export const InsightCardRenderer = ({
         viewMode={viewMode}
         onDismissalChange={onDismissalChange}
         onOpenSuggestion={onOpenSuggestion}
+        tooltipBoundaryRef={tooltipBoundaryRef}
       />
     );
   }
@@ -504,6 +522,7 @@ export const InsightCardRenderer = ({
         viewMode={viewMode}
         onDismissalChange={onDismissalChange}
         onOpenSuggestion={onOpenSuggestion}
+        tooltipBoundaryRef={tooltipBoundaryRef}
       />
     );
   }

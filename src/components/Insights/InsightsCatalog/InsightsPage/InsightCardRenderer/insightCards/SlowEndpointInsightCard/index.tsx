@@ -15,7 +15,8 @@ export const SlowEndpointInsightCard = ({
   onGoToSpan,
   isMarkAsReadButtonEnabled,
   viewMode,
-  onDismissalChange
+  onDismissalChange,
+  tooltipBoundaryRef
 }: SlowEndpointInsightCardProps) => {
   const diff =
     (insight.median.raw / insight.endpointsMedianOfMedians.raw - 1) * 100;
@@ -49,6 +50,7 @@ export const SlowEndpointInsightCard = ({
         </Tooltip>
       }
       onDismissalChange={onDismissalChange}
+      tooltipBoundaryRef={tooltipBoundaryRef}
     />
   );
 };

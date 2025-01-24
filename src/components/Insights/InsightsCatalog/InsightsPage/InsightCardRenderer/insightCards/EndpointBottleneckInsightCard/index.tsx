@@ -17,7 +17,8 @@ export const EndpointBottleneckInsightCard = ({
   onRefresh,
   isMarkAsReadButtonEnabled,
   viewMode,
-  onDismissalChange
+  onDismissalChange,
+  tooltipBoundaryRef
 }: EndpointBottleneckInsightCardProps) => {
   const { span, ticketLink } = insight;
 
@@ -103,6 +104,7 @@ export const EndpointBottleneckInsightCard = ({
         </Tooltip>
       }
       onDismissalChange={onDismissalChange}
+      tooltipBoundaryRef={tooltipBoundaryRef}
     />
   );
 };

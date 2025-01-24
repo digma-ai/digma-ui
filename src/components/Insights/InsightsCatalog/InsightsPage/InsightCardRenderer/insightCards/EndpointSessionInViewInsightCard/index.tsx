@@ -22,7 +22,8 @@ export const EndpointSessionInViewInsightCard = ({
   onGoToSpan,
   isMarkAsReadButtonEnabled,
   viewMode,
-  onDismissalChange
+  onDismissalChange,
+  tooltipBoundaryRef
 }: EndpointSessionInViewInsightCardProps) => {
   const { isJaegerEnabled } = useConfigSelector();
 
@@ -103,6 +104,7 @@ export const EndpointSessionInViewInsightCard = ({
       isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       viewMode={viewMode}
       onDismissalChange={onDismissalChange}
+      tooltipBoundaryRef={tooltipBoundaryRef}
     />
   );
 };

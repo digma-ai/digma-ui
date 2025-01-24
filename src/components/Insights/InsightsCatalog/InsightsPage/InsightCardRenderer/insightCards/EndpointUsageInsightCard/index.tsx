@@ -49,7 +49,8 @@ export const EndpointUsageInsightCard = ({
   onGoToSpan,
   isMarkAsReadButtonEnabled,
   viewMode,
-  onDismissalChange
+  onDismissalChange,
+  tooltipBoundaryRef
 }: EndpointUsageInsightCardProps) => {
   const valueString = `${getValueString(insight.maxCallsIn1Min)}/min`;
 
@@ -74,6 +75,7 @@ export const EndpointUsageInsightCard = ({
       isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       viewMode={viewMode}
       onDismissalChange={onDismissalChange}
+      tooltipBoundaryRef={tooltipBoundaryRef}
     />
   );
 };

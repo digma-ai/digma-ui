@@ -25,13 +25,15 @@ import { IssuesSidebar } from "./IssuesSidebar";
 import * as s from "./styles";
 
 export const CodeIssues = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isIssuesSidebarOpen, setIsIssuesSidebarOpen] = useState(false);
   const [scope, setScope] = useState<{ value: string; displayName?: string }>();
   const [activeTileIds, setActiveTileIds] = useState<string[] | undefined>(
     undefined
   );
   const sidebarContainerRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
+  const [isIssuesSidebarTransitioning, setIsIssuesSidebarTransitioning] =
+    useState(false);
 
   const selectedEnvironmentId = useAdminSelector(
     (state) => state.codeIssuesReport.selectedEnvironmentId
@@ -65,7 +67,7 @@ export const CodeIssues = () => {
   ) => {
     if (viewMode === "table" && viewLevel === "endpoints") {
       setScope(target);
-      setIsSidebarOpen(true);
+      setIsIssuesSidebarOpen(true);
       setActiveTileIds([target.value]);
     }
   };
@@ -75,7 +77,7 @@ export const CodeIssues = () => {
     target: TargetScope
   ) => {
     setScope(target);
-    setIsSidebarOpen(true);
+    setIsIssuesSidebarOpen(true);
     setActiveTileIds([target.value]);
   };
 
@@ -116,8 +118,16 @@ export const CodeIssues = () => {
   };
 
   const handleIssuesSidebarClose = () => {
-    setIsSidebarOpen(false);
+    setIsIssuesSidebarOpen(false);
     setActiveTileIds(undefined);
+  };
+
+  const handleIssuesSidebarTransitionStart = () => {
+    setIsIssuesSidebarTransitioning(true);
+  };
+
+  const handleIssuesSidebarTransitionEnd = () => {
+    setIsIssuesSidebarTransitioning(false);
   };
 
   return (
@@ -147,7 +157,7 @@ export const CodeIssues = () => {
         activeTileIds={activeTileIds}
       />
       <CSSTransition
-        in={isSidebarOpen}
+        in={isIssuesSidebarOpen}
         timeout={s.TRANSITION_DURATION}
         classNames={s.overlayTransitionClassName}
         mountOnEnter={true}
@@ -156,19 +166,23 @@ export const CodeIssues = () => {
       >
         <s.Overlay
           ref={overlayRef}
-          $isVisible={isSidebarOpen}
+          $isVisible={isIssuesSidebarOpen}
           $transitionClassName={s.overlayTransitionClassName}
           $transitionDuration={s.TRANSITION_DURATION}
           onClick={handleIssuesSidebarClose}
         />
       </CSSTransition>
       <CSSTransition
-        in={isSidebarOpen}
+        in={isIssuesSidebarOpen}
         timeout={s.TRANSITION_DURATION}
         classNames={s.sidebarContainerTransitionClassName}
         mountOnEnter={true}
         unmountOnExit={true}
         nodeRef={sidebarContainerRef}
+        onEnter={handleIssuesSidebarTransitionStart}
+        onEntered={handleIssuesSidebarTransitionEnd}
+        onExit={handleIssuesSidebarTransitionStart}
+        onExited={handleIssuesSidebarTransitionEnd}
       >
         <s.IssuesSidebarContainer
           ref={sidebarContainerRef}
@@ -180,6 +194,7 @@ export const CodeIssues = () => {
             scope={scope}
             environmentId={selectedEnvironmentId ?? undefined}
             viewLevel={viewLevel}
+            isTransitioning={isIssuesSidebarTransitioning}
           />
         </s.IssuesSidebarContainer>
       </CSSTransition>

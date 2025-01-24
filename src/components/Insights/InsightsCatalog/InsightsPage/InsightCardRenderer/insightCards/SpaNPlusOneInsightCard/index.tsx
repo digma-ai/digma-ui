@@ -42,7 +42,8 @@ export const SpaNPlusOneInsightCard = ({
   onGoToSpan,
   isMarkAsReadButtonEnabled,
   viewMode,
-  onDismissalChange
+  onDismissalChange,
+  tooltipBoundaryRef
 }: SpaNPlusOneInsightCardProps) => {
   const endpoints = useMemo(
     () =>
@@ -204,6 +205,7 @@ export const SpaNPlusOneInsightCard = ({
         ) : undefined
       }
       onDismissalChange={onDismissalChange}
+      tooltipBoundaryRef={tooltipBoundaryRef}
     />
   );
 };

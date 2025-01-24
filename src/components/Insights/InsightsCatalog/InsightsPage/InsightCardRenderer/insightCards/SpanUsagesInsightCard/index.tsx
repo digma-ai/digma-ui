@@ -42,7 +42,8 @@ export const SpanUsagesInsightCard = ({
   onGoToSpan,
   isMarkAsReadButtonEnabled,
   viewMode,
-  onDismissalChange
+  onDismissalChange,
+  tooltipBoundaryRef
 }: SpanUsagesInsightCardProps) => {
   const { isJaegerEnabled } = useConfigSelector();
   const [data, setData] = useState({
@@ -333,6 +334,7 @@ export const SpanUsagesInsightCard = ({
       isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       viewMode={viewMode}
       onDismissalChange={onDismissalChange}
+      tooltipBoundaryRef={tooltipBoundaryRef}
     />
   );
 };

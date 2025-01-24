@@ -33,7 +33,8 @@ export const SpanScalingInsightCard = ({
   onGoToSpan,
   isMarkAsReadButtonEnabled,
   viewMode,
-  onDismissalChange
+  onDismissalChange,
+  tooltipBoundaryRef
 }: SpanScalingInsightCardProps) => {
   const { isJaegerEnabled } = useConfigSelector();
   const affectedEndpoints = insight.affectedEndpoints ?? [];
@@ -189,6 +190,7 @@ export const SpanScalingInsightCard = ({
         </Tooltip>
       }
       onDismissalChange={onDismissalChange}
+      tooltipBoundaryRef={tooltipBoundaryRef}
     />
   );
 };

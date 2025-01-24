@@ -30,8 +30,6 @@ import type {
   isInsightJiraTicketHintShownPayload
 } from "./types";
 
-export const INSIGHTS_PAGE_CONTAINER_ID = "insightsPageContainer";
-
 const getInsightToShowJiraHint = (insights: CodeObjectInsight[]): number => {
   const insightsWithJiraButton = [
     InsightType.EndpointSpanNPlusOne,
@@ -214,7 +212,7 @@ export const InsightsPage = ({
   };
 
   return (
-    <s.Container ref={listRef} id={INSIGHTS_PAGE_CONTAINER_ID}>
+    <s.Container ref={listRef}>
       {environment && insights.length > 0
         ? insights.map((insight, j) => (
             <InsightCardRenderer
@@ -231,6 +229,7 @@ export const InsightsPage = ({
               viewMode={isAtSpan ? "full" : "compact"}
               environmentId={environment.id}
               onDismissalChange={handleDismissalChange}
+              tooltipBoundaryRef={listRef}
             />
           ))
         : renderEmptyState(

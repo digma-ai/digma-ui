@@ -1,3 +1,4 @@
+import type { RefObject } from "react";
 import type { GenericCodeObjectInsight } from "../../../types";
 import type { InsightCardViewMode } from "./insightCards/common/InsightCard/types";
 
@@ -15,4 +16,5 @@ export interface InsightCardRendererProps {
   environmentId: string;
   onDismissalChange: (action: string, insightId: string) => void;
   onOpenSuggestion?: (insightId: string) => void;
+  tooltipBoundaryRef?: RefObject<HTMLElement>;
 }

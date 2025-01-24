@@ -8,10 +8,12 @@ import { digmaApi } from "../../redux/services/digma";
 import { appSlice } from "../../redux/slices/appSlice";
 import { authSlice } from "../../redux/slices/authSlice";
 import issuesReportSlice from "../../redux/slices/issuesReportSlice";
+import { persistSlice } from "../../redux/slices/persistSlice";
 import { getRememberEnhancer } from "../../redux/utils/getRememberEnhancer";
 import { APP_ID } from "./constants";
 
-const rememberedKeys = platform === "Web" ? ["auth", "codeIssuesReport"] : [];
+const rememberedKeys =
+  platform === "Web" ? ["auth", "codeIssuesReport", "persist"] : [];
 
 const persistPrefix = `${PERSIST_PREFIX}${APP_ID}-`;
 
@@ -19,6 +21,7 @@ const reducer = rememberReducer({
   app: appSlice.reducer,
   auth: authSlice.reducer,
   codeIssuesReport: issuesReportSlice,
+  persist: persistSlice.reducer,
   [authApi.reducerPath]: authApi.reducer,
   [digmaApi.reducerPath]: digmaApi.reducer
 });

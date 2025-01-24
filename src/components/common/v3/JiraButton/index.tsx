@@ -3,7 +3,6 @@ import { forwardRef, useState } from "react";
 import { useTheme } from "styled-components";
 import { openURLInDefaultBrowser } from "../../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../../utils/actions/sendUserActionTrackingEvent";
-import { INSIGHTS_PAGE_CONTAINER_ID } from "../../../Insights/InsightsCatalog/InsightsPage";
 import { trackingEvents } from "../../../Insights/tracking";
 import { MenuList } from "../../../Navigation/common/MenuList";
 import { Popup } from "../../../Navigation/common/Popup";
@@ -25,7 +24,8 @@ export const JiraButtonComponent = (
     spanCodeObjectId,
     type,
     label,
-    insightType
+    insightType,
+    boundaryRef
   }: JiraButtonProps,
   ref: ForwardedRef<HTMLDivElement>
 ) => {
@@ -129,13 +129,10 @@ export const JiraButtonComponent = (
     );
   };
 
-  const boundaryEl =
-    document.getElementById(INSIGHTS_PAGE_CONTAINER_ID) ?? undefined;
-
   return (
     <div ref={ref}>
       <Tooltip
-        boundary={boundaryEl}
+        boundary={boundaryRef?.current ?? undefined}
         fullWidth={true}
         placement={"top-start"}
         title={

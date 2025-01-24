@@ -16,7 +16,8 @@ export const EndpointHighNumberOfQueriesInsightCard = ({
   onGoToSpan,
   isMarkAsReadButtonEnabled,
   viewMode,
-  onDismissalChange
+  onDismissalChange,
+  tooltipBoundaryRef
 }: EndpointHighNumberOfQueriesInsightCardProps) => {
   const traceId = insight.traceId;
 
@@ -89,6 +90,7 @@ export const EndpointHighNumberOfQueriesInsightCard = ({
       isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       viewMode={viewMode}
       onDismissalChange={onDismissalChange}
+      tooltipBoundaryRef={tooltipBoundaryRef}
     />
   );
 };
