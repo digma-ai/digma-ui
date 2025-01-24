@@ -51,7 +51,7 @@ export const SpanEndpointBottleneckInsightCard = ({
   const { isJaegerEnabled } = useConfigSelector();
   const slowEndpoints = useMemo(
     () =>
-      (insight.slowEndpoints ?? []).sort(
+      [...(insight.slowEndpoints ?? [])].sort(
         (a, b) =>
           b.avgDurationWhenBeingBottleneck.raw -
           a.avgDurationWhenBeingBottleneck.raw
