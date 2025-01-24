@@ -84,6 +84,7 @@ export const SpanScalingInsightCard = ({
                 isHintEnabled={isJiraHintEnabled && i === 0}
                 insightType={insight.type}
                 type={"icon"}
+                boundaryRef={tooltipBoundaryRef}
               />
             ];
 
