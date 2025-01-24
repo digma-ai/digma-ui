@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useTheme } from "styled-components";
+import { useAdminDispatch } from "../../../containers/Admin/hooks";
 import { useLogoutMutation } from "../../../redux/services/auth";
 import { getThemeKind } from "../../common/App/styles";
 import { LogoutIcon } from "../../common/icons/16px/LogoutIcon";
@@ -10,6 +11,7 @@ export const Sidebar = () => {
   const theme = useTheme();
   const themeKind = getThemeKind(theme);
   const [logout, result] = useLogoutMutation();
+  const dispatch = useAdminDispatch();
 
   const handleLogoutButtonClick = () => {
     void logout();
@@ -29,7 +31,7 @@ export const Sidebar = () => {
         window.clearTimeout(timeoutId);
       }
     };
-  }, [result.isSuccess]);
+  }, [result.isSuccess, dispatch]);
 
   return (
     <s.Sidebar>

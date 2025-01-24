@@ -1,19 +1,42 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
+import { rememberReducer } from "redux-remember";
+import { platform } from "../../platform";
+import { PERSIST_PREFIX, STATE_VERSION } from "../../redux/constants";
 import { authApi } from "../../redux/services/auth";
 import { digmaApi } from "../../redux/services/digma";
+import { appSlice } from "../../redux/slices/appSlice";
+import { authSlice } from "../../redux/slices/authSlice";
 import issuesReportSlice from "../../redux/slices/issuesReportSlice";
+import { getRememberEnhancer } from "../../redux/utils/getRememberEnhancer";
+import { APP_ID } from "./constants";
+
+const rememberedKeys = platform === "Web" ? ["auth", "codeIssuesReport"] : [];
+
+const persistPrefix = `${PERSIST_PREFIX}${APP_ID}-`;
+
+const reducer = rememberReducer({
+  app: appSlice.reducer,
+  auth: authSlice.reducer,
+  codeIssuesReport: issuesReportSlice,
+  [authApi.reducerPath]: authApi.reducer,
+  [digmaApi.reducerPath]: digmaApi.reducer
+});
 
 export const store = configureStore({
-  reducer: {
-    codeIssuesReport: issuesReportSlice,
-    [authApi.reducerPath]: authApi.reducer,
-    [digmaApi.reducerPath]: digmaApi.reducer
-  },
+  reducer,
+  enhancers: (getDefaultEnhancers) =>
+    getDefaultEnhancers().concat(
+      getRememberEnhancer({
+        rememberedKeys,
+        prefix: persistPrefix,
+        version: STATE_VERSION
+      })
+    ),
+  // TODO: Fix types
+  // @ts-expect-error More info: https://github.com/zewish/redux-remember/issues/11
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware()
-      .concat(digmaApi.middleware)
-      .concat(authApi.middleware)
+    getDefaultMiddleware().concat(digmaApi.middleware, authApi.middleware)
 });
 
 setupListeners(store.dispatch);

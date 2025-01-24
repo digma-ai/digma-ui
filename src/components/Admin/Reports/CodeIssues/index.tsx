@@ -4,10 +4,8 @@ import {
   useAdminDispatch,
   useAdminSelector
 } from "../../../../containers/Admin/hooks";
-import { useMount } from "../../../../hooks/useMount";
 import type { IssueCriticality } from "../../../../redux/services/types";
 import {
-  clear,
   setCriticalityLevels,
   setPeriodInDays,
   setSelectedEndpoints,
@@ -60,12 +58,6 @@ export const CodeIssues = () => {
   );
 
   const dispatch = useAdminDispatch();
-
-  useMount(() => {
-    return () => {
-      dispatch(clear());
-    };
-  });
 
   const handleTileTitleClick = (
     viewLevel: IssuesReportViewLevel,
