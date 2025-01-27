@@ -102,7 +102,12 @@ export const InsightHeader = ({
       {!scope?.span && spanInfo && (
         <s.SpanInfoRow>
           <Tooltip title={spanInfo.displayName}>
-            <Link onClick={handleSpanLinkClick} href={spanIdeLauncherLink}>
+            <Link
+              onClick={handleSpanLinkClick}
+              href={spanIdeLauncherLink}
+              target={"_blank"}
+              rel={"noopener noreferrer"}
+            >
               {spanInfo.displayName}
             </Link>
           </Tooltip>
