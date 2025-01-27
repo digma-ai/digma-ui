@@ -17,3 +17,7 @@ export interface EndpointNameProps {
   $selected?: boolean;
   $clickable?: boolean;
 }
+
+export interface SpanLinkProps {
+  $selected?: boolean;
+}

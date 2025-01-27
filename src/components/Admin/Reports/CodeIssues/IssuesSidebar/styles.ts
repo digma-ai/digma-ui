@@ -4,18 +4,19 @@ import {
   bodyBoldTypography,
   caption1RegularTypography
 } from "../../../../common/App/typographies";
-import type { DrawerContainerProps } from "./types";
+import type { ContainerProps, DrawerContainerProps } from "./types";
 
 export const TRANSITION_DURATION = 300;
 export const drawerTransitionClassName = "drawer";
 
-export const Container = styled.div`
+export const Container = styled.div<ContainerProps>`
   background: ${({ theme }) =>
     `linear-gradient(0deg, ${theme.colors.v3.surface.primary} 0%, ${theme.colors.v3.surface.primary} 100%), #fff`};
   display: flex;
   flex-direction: column;
   border-radius: 8px 0 0 8px;
   height: 100%;
+  user-select: ${({ $isResizing }) => ($isResizing ? "none" : "auto")};
 `;
 
 export const Header = styled.div`

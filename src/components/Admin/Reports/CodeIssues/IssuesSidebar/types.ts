@@ -9,9 +9,14 @@ export interface IssuesSidebarProps {
   };
   viewLevel: IssuesReportViewLevel;
   isTransitioning: boolean;
+  isResizing?: boolean;
 }
 
 export interface DrawerContainerProps {
   $transitionDuration: number;
   $transitionClassName: string;
+}
+
+export interface ContainerProps {
+  $isResizing?: boolean;
 }

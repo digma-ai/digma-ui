@@ -55,7 +55,8 @@ export const IssuesSidebar = ({
   scope,
   environmentId,
   viewLevel,
-  isTransitioning
+  isTransitioning,
+  isResizing
 }: IssuesSidebarProps) => {
   const [infoToOpenJiraTicket, setInfoToOpenJiraTicket] =
     useState<InsightTicketInfo<GenericCodeObjectInsight>>();
@@ -192,7 +193,7 @@ export const IssuesSidebar = ({
   };
 
   return (
-    <s.Container>
+    <s.Container $isResizing={isResizing}>
       <s.Header>
         <s.HeaderTitleRow>
           <span>Issues</span>
