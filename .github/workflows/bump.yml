@@ -3,9 +3,18 @@ name: Bump NPM version and push git tag
 on:
   workflow_dispatch:
     inputs:
-      version:
-        description: "Version to set (e.g., 1.2.3)"
+      version_type:
+        description: "Type of version bump"
         required: true
+        type: choice
+        options:
+          - major
+          - minor
+          - patch
+          - premajor
+          - preminor
+          - prepatch
+          - prerelease
 
 jobs:
   bump:
@@ -25,9 +34,14 @@ jobs:
           node-version-file: ".nvmrc"
 
       - run: |
-          npm version ${{ inputs.version }} --no-git-tag-version
+          if [[ "${{ inputs.version_type }}" == "prerelease" || "${{ inputs.version_type }}" == "premajor" || "${{ inputs.version_type }}" == "preminor" || "${{ inputs.version_type }}" == "prepatch" ]]; then
+            npm version ${{ inputs.version_type }} --preid alpha --no-git-tag-version
+          else
+            npm version ${{ inputs.version_type }} --no-git-tag-version
+          fi
           git add package.json package-lock.json
-          git commit -m "Bump version to ${{ inputs.version }} [skip ci]"
-          git tag "v${{ inputs.version }}"
+          VERSION=$(node -p "require('./package.json').version")
+          git commit -m "Bump version to $VERSION [skip ci]"
+          git tag "v$VERSION"
           git push
-          git push origin "v${{ inputs.version }}"
+          git push origin "v$VERSION"

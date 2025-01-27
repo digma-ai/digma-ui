@@ -140,7 +140,7 @@ export const InsightCardRenderer = ({
       if (spanCodeObjectId) {
         url = url.concat(`?uiFind=${spanCodeObjectId}`);
       }
-      window.open(url, "_blank", "noopener noreferrer");
+      openURLInDefaultBrowser(url);
       return;
     }
 
