@@ -37,12 +37,37 @@ export const HeaderTitleRow = styled.div`
   align-items: center;
 `;
 
+export const ResizeHandle = styled.div`
+  width: 16px;
+  cursor: ew-resize;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${({ theme }) => theme.colors.v3.icon.disabled};
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.v3.icon.secondary};
+  }
+`;
+
+export const ContentContainer = styled.div`
+  position: relative;
+  flex-grow: 1;
+  display: flex;
+  overflow-y: auto;
+`;
+
 export const IssuesList = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
   overflow-y: auto;
   padding: 16px;
+  width: 100%;
 `;
 
 export const Footer = styled.div`

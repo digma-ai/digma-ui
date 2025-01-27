@@ -1,3 +1,4 @@
+import type { MouseEvent } from "react";
 import type { IssuesReportViewLevel } from "../../../../../redux/slices/issuesReportSlice";
 
 export interface IssuesSidebarProps {
@@ -10,6 +11,7 @@ export interface IssuesSidebarProps {
   viewLevel: IssuesReportViewLevel;
   isTransitioning: boolean;
   isResizing?: boolean;
+  onResizeHandleMouseDown: (e: MouseEvent) => void;
 }
 
 export interface DrawerContainerProps {
