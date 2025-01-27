@@ -370,11 +370,9 @@ export const InstallationWizard = () => {
             Follow the steps to configure your projects
           </s.HeaderSubtitle>
         </s.HeaderTitleContainer>
-        {!isFirstLaunch && (
-          <s.CloseButton onClick={handleCloseButtonClick}>
-            <CrossIcon color={"currentColor"} size={14} />
-          </s.CloseButton>
-        )}
+        <s.CloseButton onClick={handleCloseButtonClick}>
+          <CrossIcon color={"currentColor"} size={14} />
+        </s.CloseButton>
       </s.Header>
       {/* ) : (
         <s.WelcomeContainer>
