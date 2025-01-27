@@ -11,7 +11,10 @@ on:
           - major
           - minor
           - patch
-          - alpha
+          - premajor
+          - preminor
+          - prepatch
+          - prerelease
 
 jobs:
   bump:
@@ -31,8 +34,8 @@ jobs:
           node-version-file: ".nvmrc"
 
       - run: |
-          if [ "${{ inputs.version_type }}" == "alpha" ]; then
-            npm version prerelease --preid alpha --no-git-tag-version
+          if [[ "${{ inputs.version_type }}" == "prerelease" || "${{ inputs.version_type }}" == "premajor" || "${{ inputs.version_type }}" == "preminor" || "${{ inputs.version_type }}" == "prepatch" ]]; then
+            npm version ${{ inputs.version_type }} --preid alpha --no-git-tag-version
           else
             npm version ${{ inputs.version_type }} --no-git-tag-version
           fi
