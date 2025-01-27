@@ -98,6 +98,7 @@ export interface SpanInfo {
   spanCodeObjectId: string;
   methodCodeObjectId: string | null;
   kind: string | null;
+  uid?: string;
 }
 
 export interface SpanInstanceInfo {

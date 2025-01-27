@@ -1,6 +1,6 @@
 import type { SpanInfo } from "../types";
 
-export const goToSpanInIde = (spanInfo: SpanInfo) => {
+export const getIdeLauncherLinkForSpan = (spanInfo: SpanInfo) => {
   if (!spanInfo.uid) {
     return;
   }
@@ -12,5 +12,5 @@ export const goToSpanInIde = (spanInfo: SpanInfo) => {
   url.searchParams.append("plugin.spanUid", spanInfo.uid);
   url.searchParams.append("plugin.targetTab", "issues");
 
-  window.open(url.toString(), "_blank", "noopener noreferrer");
+  return url.toString();
 };
