@@ -4,11 +4,11 @@ import { globalClear } from "../actions";
 import { STATE_VERSION } from "../constants";
 import type { BaseState } from "./types";
 
-export interface GlobalState extends BaseState {
+export interface AppState extends BaseState {
   isInitialized: boolean;
 }
 
-const initialState: GlobalState = {
+const initialState: AppState = {
   version: STATE_VERSION,
   isInitialized: false
 };

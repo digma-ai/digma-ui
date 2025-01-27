@@ -18,7 +18,8 @@ export const EndpointSpanNPlusOneInsightCard = ({
   onRefresh,
   isMarkAsReadButtonEnabled,
   viewMode,
-  onDismissalChange
+  onDismissalChange,
+  tooltipBoundaryRef
 }: EndpointSpanNPlusOneInsightCardProps) => {
   const { span } = insight;
 
@@ -109,6 +110,7 @@ export const EndpointSpanNPlusOneInsightCard = ({
         </Tooltip>
       }
       onDismissalChange={onDismissalChange}
+      tooltipBoundaryRef={tooltipBoundaryRef}
     />
   );
 };

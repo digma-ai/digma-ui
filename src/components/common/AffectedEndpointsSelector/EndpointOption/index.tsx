@@ -15,20 +15,32 @@ export const EndpointOption = <T,>({
 }: EndpointOptionProps<T>) => {
   const title = `${serviceName} ${route}`;
 
+  const handleEndpointNameClick = () => {
+    if (onClick) {
+      onClick();
+    }
+  };
+
+  const handleRouteLinkClick = () => {
+    if (onSpanLinkClick && spanCodeObjectId) {
+      onSpanLinkClick(spanCodeObjectId);
+    }
+  };
+
   return (
     <s.Container>
       <Tooltip title={title}>
         <s.EndpointName
           $selected={selected}
           $clickable={Boolean(onClick)}
-          onClick={() => onClick && onClick()}
+          onClick={handleEndpointNameClick}
         >
           <s.ServiceName>{serviceName}</s.ServiceName>
           <s.Route>
             {spanCodeObjectId && onSpanLinkClick ? (
-              <s.Link onClick={() => onSpanLinkClick(spanCodeObjectId)}>
+              <s.RouteLink $selected={selected} onClick={handleRouteLinkClick}>
                 {route}
-              </s.Link>
+              </s.RouteLink>
             ) : (
               <span>{route}</span>
             )}

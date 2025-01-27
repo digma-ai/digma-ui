@@ -97,7 +97,8 @@ export const EndpointBreakdownInsightCard = ({
   onGoToSpan,
   isMarkAsReadButtonEnabled,
   viewMode,
-  onDismissalChange
+  onDismissalChange,
+  tooltipBoundaryRef
 }: EndpointBreakdownInsightCardProps) => {
   const theme = useTheme();
 
@@ -264,6 +265,7 @@ export const EndpointBreakdownInsightCard = ({
       isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       viewMode={viewMode}
       onDismissalChange={onDismissalChange}
+      tooltipBoundaryRef={tooltipBoundaryRef}
     />
   );
 };

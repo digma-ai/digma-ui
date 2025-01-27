@@ -43,7 +43,6 @@ export const IssuesSidebarContainer = styled.div<IssuesSidebarContainerProps>`
   right: 0;
   top: 0;
   bottom: 0;
-  width: 382px;
 
   ${({ $transitionClassName, $transitionDuration }) => `
     &.${$transitionClassName}-enter {
@@ -64,4 +63,21 @@ export const IssuesSidebarContainer = styled.div<IssuesSidebarContainerProps>`
       transition: transform ${$transitionDuration}ms ease-out;
     }
   `}
+`;
+
+export const ResizeHandle = styled.div`
+  width: 16px;
+  cursor: ew-resize;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${({ theme }) => theme.colors.v3.icon.disabled};
+
+  &:hover {
+    color: ${({ theme }) => theme.colors.v3.icon.secondary};
+  }
 `;

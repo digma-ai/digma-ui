@@ -46,7 +46,8 @@ export const SpanEndpointBottleneckInsightCard = ({
   onGoToSpan,
   isMarkAsReadButtonEnabled,
   viewMode,
-  onDismissalChange
+  onDismissalChange,
+  tooltipBoundaryRef
 }: SpanEndpointBottleneckInsightCardProps) => {
   const { isJaegerEnabled } = useConfigSelector();
   const slowEndpoints = useMemo(
@@ -208,6 +209,7 @@ export const SpanEndpointBottleneckInsightCard = ({
         ) : undefined
       }
       onDismissalChange={onDismissalChange}
+      tooltipBoundaryRef={tooltipBoundaryRef}
     />
   );
 };

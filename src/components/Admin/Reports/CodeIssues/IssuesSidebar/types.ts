@@ -1,6 +1,6 @@
 import type { IssuesReportViewLevel } from "../../../../../redux/slices/issuesReportSlice";
 
-export interface IssuesHeaderProps {
+export interface IssuesSidebarProps {
   onClose: () => void;
   environmentId?: string;
   scope?: {
@@ -8,9 +8,15 @@ export interface IssuesHeaderProps {
     displayName?: string;
   };
   viewLevel: IssuesReportViewLevel;
+  isTransitioning: boolean;
+  isResizing?: boolean;
 }
 
 export interface DrawerContainerProps {
   $transitionDuration: number;
   $transitionClassName: string;
+}
+
+export interface ContainerProps {
+  $isResizing?: boolean;
 }

@@ -140,7 +140,8 @@ export const SpanDurationsInsightCard = ({
   onGoToSpan,
   isMarkAsReadButtonEnabled,
   viewMode,
-  onDismissalChange
+  onDismissalChange,
+  tooltipBoundaryRef
 }: SpanDurationsInsightCardProps) => {
   const theme = useTheme();
   const { observe, width } = useDimensions();
@@ -444,6 +445,7 @@ ${getDurationString(insight.average)}${
       isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       viewMode={viewMode}
       onDismissalChange={onDismissalChange}
+      tooltipBoundaryRef={tooltipBoundaryRef}
     />
   );
 };

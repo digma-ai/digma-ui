@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ReactNode, RefObject } from "react";
 import type { ScopeSpan } from "../../../../../../../common/App/types";
 import type { CardProps } from "../../../../../../../common/v3/Card/types";
 import type {
@@ -38,6 +38,7 @@ export interface InsightCardProps {
   mainMetric?: ReactNode;
   onDismissalChange: (action: string, insightId: string) => void;
   onOpenSuggestion?: (insightId: string) => void;
+  tooltipBoundaryRef?: RefObject<HTMLElement>;
 }
 
 export interface StyledCardProps extends CardProps {
@@ -91,6 +92,7 @@ export interface InsightCardCommonProps {
   viewMode: InsightCardViewMode;
   onDismissalChange: (action: string, insightId: string) => void;
   onOpenSuggestion?: (insightId: string) => void;
+  tooltipBoundaryRef?: RefObject<HTMLElement>;
 }
 
 export type Action =

@@ -52,7 +52,8 @@ export const InsightCard = ({
   viewMode,
   mainMetric,
   onDismissalChange,
-  onOpenSuggestion
+  onOpenSuggestion,
+  tooltipBoundaryRef
 }: InsightCardProps) => {
   const {
     isDismissalChangeInProgress,
@@ -300,6 +301,7 @@ export const InsightCard = ({
               label={"Ticket"}
               onTicketInfoOpen={openTicketInfo}
               insightType={insight.type}
+              boundaryRef={tooltipBoundaryRef}
             />
           </Tooltip>
         );

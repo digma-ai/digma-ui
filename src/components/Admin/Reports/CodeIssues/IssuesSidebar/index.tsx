@@ -1,7 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { CSSTransition } from "react-transition-group";
 import { useTheme } from "styled-components";
+import {
+  useAdminDispatch,
+  useAdminSelector
+} from "../../../../../containers/Admin/hooks";
 import { useGetIssuesQuery } from "../../../../../redux/services/digma";
+import { setIsInsightJiraTicketHintShown } from "../../../../../redux/slices/persistSlice";
 import { isUndefined } from "../../../../../typeGuards/isUndefined";
 import type { Scope } from "../../../../common/App/types";
 import { CrossIcon } from "../../../../common/icons/16px/CrossIcon";
@@ -15,30 +20,58 @@ import { EmptyState as InsightsPageEmptyState } from "../../../../Insights/Insig
 import { InsightCardRenderer } from "../../../../Insights/InsightsCatalog/InsightsPage/InsightCardRenderer";
 import { ViewMode } from "../../../../Insights/InsightsCatalog/types";
 import { InsightTicketRenderer } from "../../../../Insights/InsightTicketRenderer";
-import type {
-  GenericCodeObjectInsight,
-  InsightTicketInfo
+import {
+  InsightType,
+  type CodeObjectInsight,
+  type GenericCodeObjectInsight,
+  type InsightTicketInfo
 } from "../../../../Insights/types";
 import { ScopeBar } from "../../../../Navigation/ScopeBar";
 import * as s from "./styles";
 import { SuggestionBar } from "./SuggestionBar";
-import type { IssuesHeaderProps } from "./types";
+import type { IssuesSidebarProps } from "./types";
 
 const PAGE_SIZE = 10;
+
+const getInsightToShowJiraHint = (insights: CodeObjectInsight[]): number => {
+  const insightsWithJiraButton = [
+    InsightType.EndpointSpanNPlusOne,
+    InsightType.SpaNPlusOne,
+    InsightType.SpanEndpointBottleneck,
+    InsightType.EndpointBottleneck,
+    InsightType.SpanQueryOptimization,
+    InsightType.EndpointHighNumberOfQueries,
+    InsightType.EndpointQueryOptimizationV2,
+    InsightType.SpanScaling
+  ];
+
+  return insights.findIndex((insight) =>
+    insightsWithJiraButton.includes(insight.type)
+  );
+};
 
 export const IssuesSidebar = ({
   onClose,
   scope,
   environmentId,
-  viewLevel
-}: IssuesHeaderProps) => {
+  viewLevel,
+  isTransitioning,
+  isResizing
+}: IssuesSidebarProps) => {
   const [infoToOpenJiraTicket, setInfoToOpenJiraTicket] =
     useState<InsightTicketInfo<GenericCodeObjectInsight>>();
   const [viewMode, setViewMode] = useState<ViewMode>(ViewMode.All);
   const [page, setPage] = useState(0);
   const [insightIdToOpenSuggestion, setInsightIdToOpenSuggestion] =
     useState<string>();
+  const [isDrawerTransitioning, setIsDrawerTransitioning] = useState(false);
   const drawerRef = useRef<HTMLDivElement>(null);
+  const dispatch = useAdminDispatch();
+  const isInsightJiraTicketHintShown = useAdminSelector(
+    (state) => state.persist.isInsightJiraTicketHintShown
+  );
+  const isDrawerOpen = Boolean(insightIdToOpenSuggestion);
+  const issuesListRef = useRef<HTMLDivElement>(null);
 
   const theme = useTheme();
   const { data, isFetching, refetch } = useGetIssuesQuery(
@@ -107,6 +140,7 @@ export const IssuesSidebar = ({
     insight: GenericCodeObjectInsight,
     spanCodeObjectId?: string
   ) => {
+    dispatch(setIsInsightJiraTicketHintShown(true));
     setInfoToOpenJiraTicket({ insight, spanCodeObjectId });
   };
 
@@ -120,6 +154,14 @@ export const IssuesSidebar = ({
 
   const handleSuggestionBarClose = () => {
     setInsightIdToOpenSuggestion(undefined);
+  };
+
+  const handleDrawerTransitionStart = () => {
+    setIsDrawerTransitioning(true);
+  };
+
+  const handleDrawerTransitionEnd = () => {
+    setIsDrawerTransitioning(false);
   };
 
   const dismissedCount = data?.dismissedCount;
@@ -151,7 +193,7 @@ export const IssuesSidebar = ({
   };
 
   return (
-    <s.Container>
+    <s.Container $isResizing={isResizing}>
       <s.Header>
         <s.HeaderTitleRow>
           <span>Issues</span>
@@ -171,20 +213,27 @@ export const IssuesSidebar = ({
       </s.Header>
       {data ? (
         data.insights.length > 0 ? (
-          <s.IssuesList>
+          <s.IssuesList ref={issuesListRef}>
             {environmentId &&
-              data.insights.map((insight) => (
+              data.insights.map((insight, i) => (
                 <InsightCardRenderer
                   key={insight.id}
                   insight={insight}
                   onJiraTicketCreate={handleJiraTicketPopupOpen}
-                  isJiraHintEnabled={false}
+                  isJiraHintEnabled={
+                    !isInsightJiraTicketHintShown &&
+                    !isDrawerOpen &&
+                    !isDrawerTransitioning &&
+                    !isTransitioning &&
+                    i === getInsightToShowJiraHint(data.insights)
+                  }
                   onRefresh={refresh}
                   isMarkAsReadButtonEnabled={false}
                   viewMode={"full"}
                   environmentId={environmentId}
                   onDismissalChange={handleDismissalChange}
                   onOpenSuggestion={handleOpenSuggestion}
+                  tooltipBoundaryRef={issuesListRef}
                 />
               ))}
           </s.IssuesList>
@@ -246,12 +295,16 @@ export const IssuesSidebar = ({
         </s.Overlay>
       )}
       <CSSTransition
-        in={Boolean(insightIdToOpenSuggestion)}
+        in={isDrawerOpen}
         timeout={s.TRANSITION_DURATION}
         classNames={s.drawerTransitionClassName}
         mountOnEnter={true}
         unmountOnExit={true}
         nodeRef={drawerRef}
+        onEnter={handleDrawerTransitionStart}
+        onEntered={handleDrawerTransitionEnd}
+        onExit={handleDrawerTransitionStart}
+        onExited={handleDrawerTransitionEnd}
       >
         <s.Overlay>
           <s.DrawerContainer

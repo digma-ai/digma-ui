@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 import { footnoteRegularTypography } from "../../App/typographies";
 import { CopyButton } from "../../v3/CopyButton";
 import { Link as CommonLink } from "../../v3/Link";
-import type { EndpointNameProps } from "./types";
+import type { EndpointNameProps, SpanLinkProps } from "./types";
 
 export const StyledCopyButton = styled(CopyButton)`
   display: none;
@@ -69,8 +69,13 @@ export const Route = styled.span`
   white-space: nowrap;
 `;
 
-export const Link = styled(CommonLink)`
-  width: 100%;
+export const RouteLink = styled(CommonLink)<SpanLinkProps>`
+  ${({ $selected }) =>
+    $selected
+      ? css`
+          width: 100%;
+        `
+      : ""}
 `;
 
 export const Duration = styled.span`
