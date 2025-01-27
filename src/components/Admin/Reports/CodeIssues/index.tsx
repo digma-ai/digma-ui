@@ -51,10 +51,11 @@ export const CodeIssues = () => {
   const overlayRef = useRef<HTMLDivElement>(null);
   const [isIssuesSidebarTransitioning, setIsIssuesSidebarTransitioning] =
     useState(false);
-  const defaultSidebarWidth = getDefaultSidebarWidth(window.innerWidth);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const defaultSidebarWidth = getDefaultSidebarWidth(windowWidth);
   const [isResizeHandlePressed, setIsResizeHandlePressed] = useState(false);
   const [startX, setStartX] = useState(0);
-  const [left, setLeft] = useState(window.innerWidth - defaultSidebarWidth);
+  const [left, setLeft] = useState(windowWidth - defaultSidebarWidth);
   const [startLeft, setStartLeft] = useState(0);
 
   const selectedEnvironmentId = useAdminSelector(
@@ -158,6 +159,23 @@ export const CodeIssues = () => {
     setStartLeft(left);
   };
 
+  const handleWindowResize = () => {
+    setWindowWidth(window.innerWidth);
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", handleWindowResize);
+
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    const newLeft = windowWidth - getDefaultSidebarWidth(windowWidth);
+    setLeft(newLeft);
+  }, [windowWidth]);
+
   useEffect(() => {
     if (!isResizeHandlePressed) {
       return;
@@ -166,8 +184,8 @@ export const CodeIssues = () => {
     const handleMouseMove = (e: MouseEvent) => {
       const newLeft = startLeft + (e.clientX - startX);
       if (
-        newLeft >= window.innerWidth - MAX_SIDEBAR_WIDTH &&
-        newLeft <= window.innerWidth - MIN_SIDEBAR_WIDTH
+        newLeft >= windowWidth - MAX_SIDEBAR_WIDTH &&
+        newLeft <= windowWidth - MIN_SIDEBAR_WIDTH
       ) {
         setLeft(newLeft);
       }
@@ -184,7 +202,7 @@ export const CodeIssues = () => {
       document.removeEventListener("mousemove", handleMouseMove);
       document.removeEventListener("mouseup", handleMouseUp);
     };
-  }, [isResizeHandlePressed, startX, startLeft, left]);
+  }, [isResizeHandlePressed, windowWidth, startX, startLeft, left]);
 
   return (
     <s.Container>
