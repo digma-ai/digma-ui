@@ -3,6 +3,6 @@ import type { GenericCodeObjectInsight } from "../../../../../../../types";
 export interface InsightHeaderProps {
   insight: GenericCodeObjectInsight;
   isAsync?: boolean;
-  onSpanLinkClick: (spanCodeObjectId: string) => void;
+  onSpanLinkClick: () => void;
   lastUpdateTimer?: string | null;
 }
