@@ -64,20 +64,3 @@ export const IssuesSidebarContainer = styled.div<IssuesSidebarContainerProps>`
     }
   `}
 `;
-
-export const ResizeHandle = styled.div`
-  width: 16px;
-  cursor: ew-resize;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: ${({ theme }) => theme.colors.v3.icon.disabled};
-
-  &:hover {
-    color: ${({ theme }) => theme.colors.v3.icon.secondary};
-  }
-`;

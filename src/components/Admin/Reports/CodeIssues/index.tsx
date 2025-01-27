@@ -19,7 +19,6 @@ import {
   type IssuesReportViewLevel,
   type IssuesReportViewMode
 } from "../../../../redux/slices/issuesReportSlice";
-import { TwoVerticalLinesIcon } from "../../../common/icons/16px/TwoVerticalLinesIcon";
 import { IssuesReport } from "../../../common/IssuesReport";
 import type { TargetScope } from "../../../common/IssuesReport/types";
 import { IssuesSidebar } from "./IssuesSidebar";
@@ -153,7 +152,7 @@ export const CodeIssues = () => {
     setIsIssuesSidebarTransitioning(false);
   };
 
-  const handleResizeHandleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleResizeHandleMouseDown = (e: React.MouseEvent) => {
     setIsResizeHandlePressed(true);
     setStartX(e.clientX);
     setStartLeft(left);
@@ -247,9 +246,6 @@ export const CodeIssues = () => {
           $transitionClassName={s.sidebarContainerTransitionClassName}
           $transitionDuration={s.TRANSITION_DURATION}
         >
-          <s.ResizeHandle onMouseDown={handleResizeHandleMouseDown}>
-            <TwoVerticalLinesIcon size={16} color={"currentColor"} />
-          </s.ResizeHandle>
           <IssuesSidebar
             isResizing={isResizeHandlePressed}
             onClose={handleIssuesSidebarClose}
@@ -257,6 +253,7 @@ export const CodeIssues = () => {
             environmentId={selectedEnvironmentId ?? undefined}
             viewLevel={viewLevel}
             isTransitioning={isIssuesSidebarTransitioning}
+            onResizeHandleMouseDown={handleResizeHandleMouseDown}
           />
         </s.IssuesSidebarContainer>
       </CSSTransition>

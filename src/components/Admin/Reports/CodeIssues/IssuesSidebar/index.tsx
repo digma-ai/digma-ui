@@ -11,6 +11,7 @@ import { isUndefined } from "../../../../../typeGuards/isUndefined";
 import type { Scope } from "../../../../common/App/types";
 import { CrossIcon } from "../../../../common/icons/16px/CrossIcon";
 import { EyeIcon } from "../../../../common/icons/16px/EyeIcon";
+import { TwoVerticalLinesIcon } from "../../../../common/icons/16px/TwoVerticalLinesIcon";
 import { Pagination } from "../../../../common/Pagination";
 import { NewButton } from "../../../../common/v3/NewButton";
 import { NewIconButton } from "../../../../common/v3/NewIconButton";
@@ -56,7 +57,8 @@ export const IssuesSidebar = ({
   environmentId,
   viewLevel,
   isTransitioning,
-  isResizing
+  isResizing,
+  onResizeHandleMouseDown
 }: IssuesSidebarProps) => {
   const [infoToOpenJiraTicket, setInfoToOpenJiraTicket] =
     useState<InsightTicketInfo<GenericCodeObjectInsight>>();
@@ -211,40 +213,47 @@ export const IssuesSidebar = ({
           isTargetButtonMenuVisible={false}
         />
       </s.Header>
-      {data ? (
-        data.insights.length > 0 ? (
-          <s.IssuesList ref={issuesListRef}>
-            {environmentId &&
-              data.insights.map((insight, i) => (
-                <InsightCardRenderer
-                  key={insight.id}
-                  insight={insight}
-                  onJiraTicketCreate={handleJiraTicketPopupOpen}
-                  isJiraHintEnabled={
-                    !isInsightJiraTicketHintShown &&
-                    !isDrawerOpen &&
-                    !isDrawerTransitioning &&
-                    !isTransitioning &&
-                    i === getInsightToShowJiraHint(data.insights)
-                  }
-                  onRefresh={refresh}
-                  isMarkAsReadButtonEnabled={false}
-                  viewMode={"full"}
-                  environmentId={environmentId}
-                  onDismissalChange={handleDismissalChange}
-                  onOpenSuggestion={handleOpenSuggestion}
-                  tooltipBoundaryRef={issuesListRef}
-                />
-              ))}
-          </s.IssuesList>
+      <s.ContentContainer>
+        <s.ResizeHandle onMouseDown={onResizeHandleMouseDown}>
+          <TwoVerticalLinesIcon size={16} color={"currentColor"} />
+        </s.ResizeHandle>
+        {data ? (
+          data.insights.length > 0 ? (
+            <s.IssuesList ref={issuesListRef}>
+              {environmentId &&
+                data.insights.map((insight, i) => (
+                  <InsightCardRenderer
+                    key={insight.id}
+                    insight={insight}
+                    onJiraTicketCreate={handleJiraTicketPopupOpen}
+                    isJiraHintEnabled={
+                      !isInsightJiraTicketHintShown &&
+                      !isDrawerOpen &&
+                      !isDrawerTransitioning &&
+                      !isTransitioning &&
+                      i === getInsightToShowJiraHint(data.insights)
+                    }
+                    onRefresh={refresh}
+                    isMarkAsReadButtonEnabled={false}
+                    viewMode={"full"}
+                    environmentId={environmentId}
+                    onDismissalChange={handleDismissalChange}
+                    onOpenSuggestion={handleOpenSuggestion}
+                    tooltipBoundaryRef={issuesListRef}
+                  />
+                ))}
+            </s.IssuesList>
+          ) : (
+            <InsightsPageEmptyState
+              preset={
+                viewMode === ViewMode.All ? "noDataYet" : "noDismissedData"
+              }
+            />
+          )
         ) : (
-          <InsightsPageEmptyState
-            preset={viewMode === ViewMode.All ? "noDataYet" : "noDismissedData"}
-          />
-        )
-      ) : (
-        isFetching && <EmptyState preset={"loading"} />
-      )}
+          isFetching && <EmptyState preset={"loading"} />
+        )}
+      </s.ContentContainer>
       <s.Footer>
         {totalCount > 0 && (
           <>
