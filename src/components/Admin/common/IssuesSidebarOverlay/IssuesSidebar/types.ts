@@ -1,17 +1,14 @@
 import type { MouseEvent } from "react";
-import type { IssuesReportViewLevel } from "../../../../../redux/slices/issuesReportSlice";
+import type { GetIssuesPayload } from "../../../../../redux/services/types";
 
 export interface IssuesSidebarProps {
   onClose: () => void;
-  environmentId?: string;
-  scope?: {
-    value: string;
-    displayName?: string;
-  };
-  viewLevel: IssuesReportViewLevel;
+  scopeDisplayName?: string;
   isTransitioning: boolean;
   isResizing?: boolean;
   onResizeHandleMouseDown: (e: MouseEvent) => void;
+  query?: Partial<GetIssuesPayload>;
+  isPaginationEnabled?: boolean;
 }
 
 export interface DrawerContainerProps {

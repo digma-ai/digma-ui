@@ -10,3 +10,10 @@ export const Header = styled.header`
   box-sizing: border-box;
   color: ${({ theme }) => theme.colors.v3.text.primary};
 `;
+
+export const HomeHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+`;

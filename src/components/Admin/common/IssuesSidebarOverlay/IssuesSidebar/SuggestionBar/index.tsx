@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useGetIssueRecommendationsQuery } from "../../../../../../redux/services/digma";
+import { RecommendationPriority } from "../../../../../../redux/services/types";
 import { intersperse } from "../../../../../../utils/intersperse";
 import { CrossIcon } from "../../../../../common/icons/16px/CrossIcon";
 import { LightBulbWithScrewIcon } from "../../../../../common/icons/16px/LightBulbWithScrewIcon";
@@ -10,7 +11,6 @@ import { Toggle } from "../../../../../common/v3/Toggle";
 import type { ToggleOption } from "../../../../../common/v3/Toggle/types";
 import * as s from "./styles";
 import type { AssetsViewMode, SuggestionBarProps } from "./types";
-import { RecommendationPriority } from "./types";
 
 const assetsViewModeToggleOptions: ToggleOption<AssetsViewMode>[] = [
   { label: "Action items", value: "actionItems" },

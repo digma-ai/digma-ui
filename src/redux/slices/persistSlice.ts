@@ -13,7 +13,7 @@ const initialState: PersistState = {
 };
 
 export const persistSlice = createSlice({
-  name: "persistSlice",
+  name: "persist",
   initialState,
   reducers: {
     setIsInsightJiraTicketHintShown: (

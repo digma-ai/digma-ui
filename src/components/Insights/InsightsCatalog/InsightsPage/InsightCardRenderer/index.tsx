@@ -64,7 +64,6 @@ export const InsightCardRenderer = ({
   onRefresh,
   isMarkAsReadButtonEnabled,
   viewMode,
-  environmentId,
   onDismissalChange,
   onOpenSuggestion,
   tooltipBoundaryRef
@@ -75,7 +74,8 @@ export const InsightCardRenderer = ({
   const handleHistogramButtonClick = (
     spanCodeObjectId: string,
     insightType: InsightType,
-    displayName: string
+    displayName: string,
+    environmentId: string
   ) => {
     if (platform === "Web") {
       switch (insightType) {

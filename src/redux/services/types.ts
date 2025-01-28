@@ -1,4 +1,3 @@
-import type { RecommendationPriority } from "../../components/Admin/Reports/CodeIssues/IssuesSidebar/SuggestionBar/types";
 import type {
   DeploymentType,
   EnvironmentType
@@ -215,6 +214,12 @@ export interface GetIssueRecommendationsPayload {
 export interface IssueRecommendationSource {
   title: string;
   url: string;
+}
+
+export enum RecommendationPriority {
+  Low = "low",
+  Medium = "medium",
+  High = "high"
 }
 
 export interface IssueRecommendation {

@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router-dom";
+import { EnvironmentSelect } from "./EnvironmentSelect";
 import { Greeting } from "./Greeting";
 import * as s from "./styles";
 
@@ -7,7 +8,12 @@ export const Header = () => (
     <Routes>
       <Route
         path={"home"}
-        element={<Greeting currentDateTime={Date.now()} />}
+        element={
+          <s.HomeHeader>
+            <Greeting currentDateTime={Date.now()} />
+            <EnvironmentSelect />
+          </s.HomeHeader>
+        }
       />
       <Route path={"reports/*"} element={<span>Reports</span>} />
     </Routes>

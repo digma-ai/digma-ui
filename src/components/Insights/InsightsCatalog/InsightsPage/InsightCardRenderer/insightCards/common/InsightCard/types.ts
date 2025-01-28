@@ -16,7 +16,8 @@ export interface InsightCardProps {
   onOpenHistogram?: (
     spanCodeObjectId: string,
     insightType: InsightType,
-    displayName: string
+    displayName: string,
+    environmentId: string
   ) => void;
   onRecalculate: (insightId: string) => void;
   onRefresh: (insightType: InsightType, spanCodeObjectId?: string) => void;

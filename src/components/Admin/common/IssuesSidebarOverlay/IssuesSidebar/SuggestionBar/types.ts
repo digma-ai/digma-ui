@@ -4,9 +4,3 @@ export interface SuggestionBarProps {
 }
 
 export type AssetsViewMode = "actionItems" | "code";
-
-export enum RecommendationPriority {
-  Low = "low",
-  Medium = "medium",
-  High = "high"
-}

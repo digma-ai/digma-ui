@@ -227,7 +227,6 @@ export const InsightsPage = ({
               onRefresh={onRefresh}
               isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
               viewMode={isAtSpan ? "full" : "compact"}
-              environmentId={environment.id}
               onDismissalChange={handleDismissalChange}
               tooltipBoundaryRef={listRef}
             />

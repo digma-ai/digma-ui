@@ -1,10 +1,12 @@
-import { useEffect, useRef, useState } from "react";
-import { CSSTransition } from "react-transition-group";
+import { useMemo, useState } from "react";
 import {
   useAdminDispatch,
   useAdminSelector
 } from "../../../../containers/Admin/hooks";
-import type { IssueCriticality } from "../../../../redux/services/types";
+import type {
+  GetIssuesPayload,
+  IssueCriticality
+} from "../../../../redux/services/types";
 import {
   setCriticalityLevels,
   setPeriodInDays,
@@ -21,7 +23,7 @@ import {
 } from "../../../../redux/slices/issuesReportSlice";
 import { IssuesReport } from "../../../common/IssuesReport";
 import type { TargetScope } from "../../../common/IssuesReport/types";
-import { IssuesSidebar } from "./IssuesSidebar";
+import { IssuesSidebarOverlay } from "../../common/IssuesSidebarOverlay";
 import * as s from "./styles";
 
 export const MIN_SIDEBAR_WIDTH = 382; // in pixels
@@ -43,21 +45,10 @@ export const getDefaultSidebarWidth = (windowWidth: number) => {
 
 export const CodeIssues = () => {
   const [isIssuesSidebarOpen, setIsIssuesSidebarOpen] = useState(false);
-  const [scope, setScope] = useState<{ value: string; displayName?: string }>();
+  const [scope, setScope] = useState<TargetScope>();
   const [activeTileIds, setActiveTileIds] = useState<string[] | undefined>(
     undefined
   );
-  const sidebarContainerRef = useRef<HTMLDivElement>(null);
-  const overlayRef = useRef<HTMLDivElement>(null);
-  const [isIssuesSidebarTransitioning, setIsIssuesSidebarTransitioning] =
-    useState(false);
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const defaultSidebarWidth = getDefaultSidebarWidth(windowWidth);
-  const [isResizeHandlePressed, setIsResizeHandlePressed] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [left, setLeft] = useState(windowWidth - defaultSidebarWidth);
-  const [startLeft, setStartLeft] = useState(0);
-
   const selectedEnvironmentId = useAdminSelector(
     (state) => state.codeIssuesReport.selectedEnvironmentId
   );
@@ -80,6 +71,30 @@ export const CodeIssues = () => {
   const timeMode = useAdminSelector((state) => state.codeIssuesReport.timeMode);
   const selectedEndpoints = useAdminSelector(
     (state) => state.codeIssuesReport.selectedEndpoints
+  );
+
+  const query: Partial<GetIssuesPayload> = useMemo(
+    () => ({
+      environment: selectedEnvironmentId ?? undefined,
+      scopedSpanCodeObjectId:
+        viewLevel === "endpoints" ? scope?.value : undefined,
+      services:
+        viewLevel === "services"
+          ? scope?.value
+            ? [scope.value]
+            : []
+          : viewLevel === "endpoints" && selectedService
+          ? [selectedService]
+          : []
+    }),
+    [scope?.value, viewLevel, selectedEnvironmentId, selectedService]
+  );
+
+  const issuesSidebarQuery = useMemo(
+    () => ({
+      query
+    }),
+    [query]
   );
 
   const dispatch = useAdminDispatch();
@@ -145,65 +160,6 @@ export const CodeIssues = () => {
     setActiveTileIds(undefined);
   };
 
-  const handleIssuesSidebarTransitionStart = () => {
-    setIsIssuesSidebarTransitioning(true);
-  };
-
-  const handleIssuesSidebarTransitionEnd = () => {
-    setIsIssuesSidebarTransitioning(false);
-  };
-
-  const handleResizeHandleMouseDown = (e: React.MouseEvent) => {
-    setIsResizeHandlePressed(true);
-    setStartX(e.clientX);
-    setStartLeft(left);
-  };
-
-  const handleWindowResize = () => {
-    setWindowWidth(window.innerWidth);
-  };
-
-  useEffect(() => {
-    window.addEventListener("resize", handleWindowResize);
-
-    return () => {
-      window.removeEventListener("resize", handleWindowResize);
-    };
-  }, []);
-
-  useEffect(() => {
-    const newLeft = windowWidth - getDefaultSidebarWidth(windowWidth);
-    setLeft(newLeft);
-  }, [windowWidth]);
-
-  useEffect(() => {
-    if (!isResizeHandlePressed) {
-      return;
-    }
-
-    const handleMouseMove = (e: MouseEvent) => {
-      const newLeft = startLeft + (e.clientX - startX);
-      if (
-        newLeft >= windowWidth - MAX_SIDEBAR_WIDTH &&
-        newLeft <= windowWidth - MIN_SIDEBAR_WIDTH
-      ) {
-        setLeft(newLeft);
-      }
-    };
-
-    const handleMouseUp = () => {
-      setIsResizeHandlePressed(false);
-    };
-
-    document.addEventListener("mousemove", handleMouseMove);
-    document.addEventListener("mouseup", handleMouseUp);
-
-    return () => {
-      document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseup", handleMouseUp);
-    };
-  }, [isResizeHandlePressed, windowWidth, startX, startLeft, left]);
-
   return (
     <s.Container>
       <IssuesReport
@@ -230,51 +186,12 @@ export const CodeIssues = () => {
         onSelectedServiceChange={handleSelectedServiceChange}
         activeTileIds={activeTileIds}
       />
-      <CSSTransition
-        in={isIssuesSidebarOpen}
-        timeout={s.TRANSITION_DURATION}
-        classNames={s.overlayTransitionClassName}
-        mountOnEnter={true}
-        unmountOnExit={true}
-        nodeRef={overlayRef}
-      >
-        <s.Overlay
-          ref={overlayRef}
-          $isVisible={isIssuesSidebarOpen}
-          $transitionClassName={s.overlayTransitionClassName}
-          $transitionDuration={s.TRANSITION_DURATION}
-          onClick={handleIssuesSidebarClose}
-        />
-      </CSSTransition>
-      <CSSTransition
-        in={isIssuesSidebarOpen}
-        timeout={s.TRANSITION_DURATION}
-        classNames={s.sidebarContainerTransitionClassName}
-        mountOnEnter={true}
-        unmountOnExit={true}
-        nodeRef={sidebarContainerRef}
-        onEnter={handleIssuesSidebarTransitionStart}
-        onEntered={handleIssuesSidebarTransitionEnd}
-        onExit={handleIssuesSidebarTransitionStart}
-        onExited={handleIssuesSidebarTransitionEnd}
-      >
-        <s.IssuesSidebarContainer
-          style={{ left }}
-          ref={sidebarContainerRef}
-          $transitionClassName={s.sidebarContainerTransitionClassName}
-          $transitionDuration={s.TRANSITION_DURATION}
-        >
-          <IssuesSidebar
-            isResizing={isResizeHandlePressed}
-            onClose={handleIssuesSidebarClose}
-            scope={scope}
-            environmentId={selectedEnvironmentId ?? undefined}
-            viewLevel={viewLevel}
-            isTransitioning={isIssuesSidebarTransitioning}
-            onResizeHandleMouseDown={handleResizeHandleMouseDown}
-          />
-        </s.IssuesSidebarContainer>
-      </CSSTransition>
+      <IssuesSidebarOverlay
+        isSidebarOpen={isIssuesSidebarOpen}
+        onSidebarClose={handleIssuesSidebarClose}
+        issuesSidebarQuery={issuesSidebarQuery}
+        scopeDisplayName={scope?.displayName ?? scope?.value}
+      />
     </s.Container>
   );
 };

@@ -220,6 +220,11 @@ export const subheading1RegularTypography = css`
   font-weight: ${typographies.subheading1.fontWeight.regular};
 `;
 
+export const subheading1MediumTypography = css`
+  font-size: ${typographies.subheading1.fontSize}px;
+  font-weight: ${typographies.subheading1.fontWeight.medium};
+`;
+
 export const subheading1SemiboldTypography = css`
   font-size: ${typographies.subheading1.fontSize}px;
   font-weight: ${typographies.subheading1.fontWeight.semibold};
