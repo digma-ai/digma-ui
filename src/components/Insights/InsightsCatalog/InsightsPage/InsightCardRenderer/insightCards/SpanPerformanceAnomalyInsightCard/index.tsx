@@ -17,7 +17,8 @@ export const SpanPerformanceAnomalyInsightCard = ({
   viewMode,
   onDismissalChange,
   tooltipBoundaryRef,
-  onTraceButtonClick
+  onTraceButtonClick,
+  onHistogramButtonClick
 }: SpanPerformanceAnomalyInsightCardProps) => {
   const p50DurationString = getDurationString(insight.p50);
   const p95DurationString = getDurationString(insight.p95);
@@ -69,6 +70,7 @@ export const SpanPerformanceAnomalyInsightCard = ({
       tooltipBoundaryRef={tooltipBoundaryRef}
       onGoToP50Trace={handleGoToP50Trace}
       onGoToP95Trace={handleGoToP95Trace}
+      onOpenHistogram={onHistogramButtonClick}
     />
   );
 };

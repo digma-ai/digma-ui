@@ -131,7 +131,7 @@ export const InsightCardRenderer = ({
       action: actions.OPEN_HISTOGRAM,
       payload: {
         spanCodeObjectId,
-        // TODO: fix this after the plugin support is added
+        // TODO: fix after the plugin support of SpanPerformanceAnomaly insight is added
         insightType:
           insightType === InsightType.SpanPerformanceAnomaly
             ? InsightType.SpanDurations
@@ -567,6 +567,7 @@ export const InsightCardRenderer = ({
         onDismissalChange={onDismissalChange}
         tooltipBoundaryRef={tooltipBoundaryRef}
         onTraceButtonClick={handleTraceButtonClick}
+        onHistogramButtonClick={handleHistogramButtonClick}
       />
     );
   }

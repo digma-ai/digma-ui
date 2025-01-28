@@ -13,4 +13,10 @@ export interface SpanPerformanceAnomalyInsightCardProps
     insightType: InsightType,
     spanCodeObjectId?: string
   ) => void;
+  onHistogramButtonClick: (
+    spanCodeObjectId: string,
+    insightType: InsightType,
+    displayName: string,
+    environmentId: string
+  ) => void;
 }

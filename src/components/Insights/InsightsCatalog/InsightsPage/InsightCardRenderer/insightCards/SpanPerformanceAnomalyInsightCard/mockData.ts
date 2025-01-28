@@ -41,8 +41,8 @@ export const mockedSpanPerformanceAnomalyInsight: SpanPerformanceAnomalyInsight 
       "org.springframework.samples.petclinic.owner.PetController$_$processCreationForm",
     decorators: [
       {
-        title: "Excessive HTTP Calls",
-        description: "Numerous Http calls to the same endpoint detected "
+        title: "Performance Anomaly",
+        description: "Performance Anomaly detected"
       }
     ],
     environment: "BOB-LAPTOP[LOCAL]",
