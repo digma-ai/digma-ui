@@ -11,10 +11,4 @@ export interface EndpointSlowdownSourceInsightCardProps
     spanCodeObjectId: string,
     insightType: InsightType
   ) => void;
-  onHistogramButtonClick: (
-    spanCodeObjectId: string,
-    insightType: InsightType,
-    displayName: string,
-    environmentId: string
-  ) => void;
 }

@@ -84,7 +84,7 @@ export const InsightCardRenderer = ({
     displayName: string,
     environmentId: string
   ) => {
-    const digmaApiBaseUrl = `${window.location.origin}/${
+    const digmaApiBaseUrl = `${window.location.origin}${
       digmaApiProxyPrefix ?? "/api"
     }`;
 
