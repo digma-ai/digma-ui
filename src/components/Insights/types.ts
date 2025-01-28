@@ -698,6 +698,6 @@ export interface SpanPerformanceAnomalyInsight extends SpanInsight {
   p50: Duration;
   p95: Duration;
   slowerByPercentage: number;
-  p50TraceId: string;
-  p95TraceId: string;
+  p50TraceId: string | null;
+  p95TraceId: string | null;
 }

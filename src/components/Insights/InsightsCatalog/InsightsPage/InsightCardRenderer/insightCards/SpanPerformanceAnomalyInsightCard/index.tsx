@@ -37,10 +37,16 @@ export const SpanPerformanceAnomalyInsightCard = ({
   };
 
   const handleGoToP50Trace = () => {
+    if (!insight.p50TraceId) {
+      return;
+    }
     goToTrace(insight.p50TraceId);
   };
 
   const handleGoToP95Trace = () => {
+    if (!insight.p95TraceId) {
+      return;
+    }
     goToTrace(insight.p95TraceId);
   };
 
@@ -79,8 +85,8 @@ export const SpanPerformanceAnomalyInsightCard = ({
       viewMode={viewMode}
       onDismissalChange={onDismissalChange}
       tooltipBoundaryRef={tooltipBoundaryRef}
-      onGoToP50Trace={handleGoToP50Trace}
-      onGoToP95Trace={handleGoToP95Trace}
+      onGoToP50Trace={insight.p50TraceId ? handleGoToP50Trace : undefined}
+      onGoToP95Trace={insight.p50TraceId ? handleGoToP95Trace : undefined}
       onOpenHistogram={onHistogramButtonClick}
       onJiraButtonClick={handleTicketInfoButtonClick}
       jiraTicketInfo={{
