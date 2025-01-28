@@ -1,5 +1,6 @@
 import type { MemoExoticComponent } from "react";
 import * as descriptionProvider from "../components/common/InsightsDescription";
+import { PulseIcon } from "../components/common/icons/16px/PulseIcon";
 import { TwoHorizontalEndpointsIcon } from "../components/common/icons/16px/TwoHorizontalEndpointsIcon";
 import { AlarmClockIcon } from "../components/common/icons/AlarmClockIcon";
 import { BottleneckIcon } from "../components/common/icons/BottleneckIcon";
@@ -180,6 +181,10 @@ export const getInsightTypeInfo = (
       label: "Inefficient Query",
       description: descriptionProvider.QueryOptimizationDescription,
       documentationLink: QUERY_OPTIMIZATION_ISSUES_DOCUMENTATION_URL
+    },
+    [InsightType.SpanPerformanceAnomaly]: {
+      icon: PulseIcon,
+      label: "Performance Anomaly"
     }
   };
 

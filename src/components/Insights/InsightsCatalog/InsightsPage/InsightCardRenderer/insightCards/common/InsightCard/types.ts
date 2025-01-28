@@ -24,6 +24,8 @@ export interface InsightCardProps {
   onPin?: (insightId: string) => void;
   onGoToLive?: () => void;
   onGoToTrace?: () => void;
+  onGoToP50Trace?: () => void;
+  onGoToP95Trace?: () => void;
   jiraTicketInfo?: {
     ticketLink?: string | null;
     isHintEnabled?: boolean;
@@ -97,12 +99,15 @@ export interface InsightCardCommonProps {
 }
 
 export type Action =
+  | "info"
   | "markAsRead"
   | "openHistogram"
   | "recheck"
+  | "ide"
   | "viewTicketInfo"
+  | "openP50Trace"
+  | "openP95Trace"
   | "openTrace"
   | "openLiveView"
   | "pin"
-  | "info"
   | "openSuggestion";

@@ -1,8 +1,6 @@
-import { platform } from "../../../../../../../../../platform";
 import { useConfigSelector } from "../../../../../../../../../store/config/useConfigSelector";
 import { isString } from "../../../../../../../../../typeGuards/isString";
 import { formatTimeDistance } from "../../../../../../../../../utils/formatTimeDistance";
-import { getIdeLauncherLinkForSpan } from "../../../../../../../../../utils/getIdeLauncherLinkForSpan";
 import { getInsightTypeInfo } from "../../../../../../../../../utils/getInsightTypeInfo";
 import { Link } from "../../../../../../../../common/v3/Link";
 import { NewTag } from "../../../../../../../../common/v3/NewTag";
@@ -59,11 +57,6 @@ export const InsightHeader = ({
     }
   };
 
-  const spanIdeLauncherLink =
-    platform === "Web" && spanInfo
-      ? getIdeLauncherLinkForSpan(spanInfo)
-      : undefined;
-
   return (
     <s.Container>
       <s.TitleRow>
@@ -102,14 +95,7 @@ export const InsightHeader = ({
       {!scope?.span && spanInfo && (
         <s.SpanInfoRow>
           <Tooltip title={spanInfo.displayName}>
-            <Link
-              onClick={handleSpanLinkClick}
-              href={spanIdeLauncherLink}
-              target={"_blank"}
-              rel={"noopener noreferrer"}
-            >
-              {spanInfo.displayName}
-            </Link>
+            <Link onClick={handleSpanLinkClick}>{spanInfo.displayName}</Link>
           </Tooltip>
           <s.StyledCopyButton text={spanInfo.displayName} />
         </s.SpanInfoRow>

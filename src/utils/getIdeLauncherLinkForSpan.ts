@@ -1,6 +1,8 @@
 import type { SpanInfo } from "../types";
 
-export const getIdeLauncherLinkForSpan = (spanInfo: SpanInfo) => {
+export const getIdeLauncherLinkForSpan = (
+  spanInfo: SpanInfo
+): string | undefined => {
   if (!spanInfo.uid) {
     return;
   }

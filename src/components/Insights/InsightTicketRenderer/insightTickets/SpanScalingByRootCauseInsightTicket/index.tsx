@@ -8,6 +8,8 @@ import type { RootCauseSpanInfo, SpanScalingInsight } from "../../../types";
 import { useEndpointDataSource } from "../common";
 import { CodeLocations } from "../common/CodeLocations";
 import { CommitInfos } from "../common/CommitInfos";
+import { getHistogramAttachment } from "../common/getHistogramAttachment";
+import { getTraceAttachment } from "../common/getTraceAttachment";
 import { InsightJiraTicket } from "../common/InsightJiraTicket";
 import {
   ScalingIssueAffectedEndpoints,
@@ -15,9 +17,7 @@ import {
   ScalingIssueMessage,
   ScalingIssueRootCauses,
   ScalingIssueTestedConcurrency,
-  getHistogramAttachment,
-  getScalingIssueSummary,
-  getTraceAttachment
+  getScalingIssueSummary
 } from "../common/SpanScaling";
 import type { InsightTicketProps } from "../types";
 
@@ -30,7 +30,7 @@ export const SpanScalingByRootCauseInsightTicket = ({
 }: InsightTicketProps<SpanScalingInsight> & {
   rootCauseSpanInfo: RootCauseSpanInfo;
 }) => {
-  const { jaegerURL, digmaApiProxyPrefix } = useConfigSelector();
+  const { jaegerURL, digmaApiProxyPrefix, backendInfo } = useConfigSelector();
 
   const spanInfo = rootCauseSpanInfo;
 
@@ -95,7 +95,9 @@ export const SpanScalingByRootCauseInsightTicket = ({
   );
   const attachmentHistogram = getHistogramAttachment(
     digmaApiProxyPrefix,
-    spanInsight
+    spanInsight,
+    "spanScaling",
+    backendInfo
   );
   const attachments: Attachment[] = [
     ...(attachmentTrace ? [attachmentTrace] : []),

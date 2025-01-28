@@ -7,6 +7,7 @@ import { openURLInDefaultBrowser } from "../../../../../utils/actions/openURLInD
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
 import { openBrowserTabWithContent } from "../../../../../utils/openBrowserTabWithContent";
 import { actions } from "../../../actions";
+import { getInsightHistogramUrl } from "../../../getInsightHistogramUrl";
 import { trackingEvents } from "../../../tracking";
 import {
   isEndpointBottleneckInsight,
@@ -26,6 +27,7 @@ import {
   isSpanEndpointBottleneckInsight,
   isSpanNexusInsight,
   isSpanNPlusOneInsight,
+  isSpanPerformanceAnomalyInsight,
   isSpanQueryOptimizationInsight,
   isSpanScalingBadlyInsight,
   isSpanUsagesInsight
@@ -50,6 +52,7 @@ import { SpanDurationBreakdownInsightCard } from "./insightCards/SpanDurationBre
 import { SpanDurationsInsightCard } from "./insightCards/SpanDurationsInsightCard";
 import { SpanEndpointBottleneckInsightCard } from "./insightCards/SpanEndpointBottleneckInsightCard";
 import { SpanNexusInsightCard } from "./insightCards/SpanNexusInsightCard";
+import { SpanPerformanceAnomalyInsightCard } from "./insightCards/SpanPerformanceAnomalyInsightCard";
 import { SpaNPlusOneInsightCard } from "./insightCards/SpaNPlusOneInsightCard";
 import { SpanQueryOptimizationInsightCard } from "./insightCards/SpanQueryOptimizationInsightCard";
 import { SpanScalingInsightCard } from "./insightCards/SpanScalingInsightCard";
@@ -66,7 +69,9 @@ export const InsightCardRenderer = ({
   viewMode,
   onDismissalChange,
   onOpenSuggestion,
-  tooltipBoundaryRef
+  tooltipBoundaryRef,
+  jaegerURL,
+  backendInfo
 }: InsightCardRendererProps) => {
   const [triggerSpanPercentilesHistogramFetch] =
     useLazyGetSpanPercentilesHistogramQuery();
@@ -80,27 +85,43 @@ export const InsightCardRenderer = ({
     if (platform === "Web") {
       switch (insightType) {
         case InsightType.SpanScaling: {
-          const baseURL = `${window.location.origin}/api/Graphs/graphForSpanScaling`;
-          const url = new URL(baseURL);
+          const url = getInsightHistogramUrl(
+            jaegerURL,
+            "spanScaling",
+            environmentId,
+            spanCodeObjectId,
+            backendInfo
+          );
 
-          url.searchParams.append("env", environmentId);
-          url.searchParams.append("scoid", spanCodeObjectId);
-
-          openURLInDefaultBrowser(url.toString());
+          if (url) {
+            openURLInDefaultBrowser(url.toString());
+          }
 
           break;
         }
         case InsightType.SpanDurations:
-          // TODO: use links instead of opening the new tab
-          void triggerSpanPercentilesHistogramFetch({
-            environment: environmentId,
-            spanCodeObjectId
-          })
-            .unwrap()
-            .then((data) => {
-              openBrowserTabWithContent(data);
-            });
+        case InsightType.SpanPerformanceAnomaly: {
+          const url = getInsightHistogramUrl(
+            jaegerURL,
+            "spanPercentiles",
+            environmentId,
+            spanCodeObjectId,
+            backendInfo
+          );
+
+          if (!url) {
+            void triggerSpanPercentilesHistogramFetch({
+              environment: environmentId,
+              spanCodeObjectId
+            })
+              .unwrap()
+              .then((data) => {
+                openBrowserTabWithContent(data);
+              });
+          }
+
           break;
+        }
       }
 
       return;
@@ -110,7 +131,11 @@ export const InsightCardRenderer = ({
       action: actions.OPEN_HISTOGRAM,
       payload: {
         spanCodeObjectId,
-        insightType,
+        // TODO: fix this after the plugin support is added
+        insightType:
+          insightType === InsightType.SpanPerformanceAnomaly
+            ? InsightType.SpanDurations
+            : insightType,
         displayName
       }
     });
@@ -523,6 +548,25 @@ export const InsightCardRenderer = ({
         onDismissalChange={onDismissalChange}
         onOpenSuggestion={onOpenSuggestion}
         tooltipBoundaryRef={tooltipBoundaryRef}
+      />
+    );
+  }
+
+  if (isSpanPerformanceAnomalyInsight(insight)) {
+    return (
+      <SpanPerformanceAnomalyInsightCard
+        key={insight.id}
+        insight={insight}
+        onRecalculate={handleRecalculate}
+        onRefresh={onRefresh}
+        onJiraTicketCreate={onJiraTicketCreate}
+        isJiraHintEnabled={isJiraHintEnabled}
+        onGoToSpan={handleGoToSpan}
+        isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
+        viewMode={viewMode}
+        onDismissalChange={onDismissalChange}
+        tooltipBoundaryRef={tooltipBoundaryRef}
+        onTraceButtonClick={handleTraceButtonClick}
       />
     );
   }

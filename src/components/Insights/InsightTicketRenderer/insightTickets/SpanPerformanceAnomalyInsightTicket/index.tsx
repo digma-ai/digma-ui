@@ -1,37 +1,32 @@
 import type { ReactElement } from "react";
 import { useConfigSelector } from "../../../../../store/config/useConfigSelector";
+import { getCriticalityLabel } from "../../../../../utils/getCriticalityLabel";
+import { getDurationString } from "../../../../../utils/getDurationString";
 import { intersperse } from "../../../../../utils/intersperse";
+import { roundTo } from "../../../../../utils/roundTo";
 import { DigmaSignature } from "../../../../common/DigmaSignature";
 import type { Attachment } from "../../../../common/JiraTicket/types";
-import type { SpanScalingInsight } from "../../../types";
+import type { SpanPerformanceAnomalyInsight } from "../../../types";
 import { useSpanDataSource } from "../common";
 import { CodeLocations } from "../common/CodeLocations";
 import { CommitInfos } from "../common/CommitInfos";
 import { getHistogramAttachment } from "../common/getHistogramAttachment";
 import { getTraceAttachment } from "../common/getTraceAttachment";
 import { InsightJiraTicket } from "../common/InsightJiraTicket";
-import {
-  ScalingIssueAffectedEndpoints,
-  ScalingIssueDuration,
-  ScalingIssueMessage,
-  ScalingIssueRootCauses,
-  ScalingIssueTestedConcurrency,
-  getScalingIssueSummary
-} from "../common/SpanScaling";
 import type { InsightTicketProps } from "../types";
 
-export const SpanScalingInsightTicket = ({
+export const SpanPerformanceAnomalyInsightTicket = ({
   data,
   refreshInsights,
   onClose,
   environmentId
-}: InsightTicketProps<SpanScalingInsight>) => {
+}: InsightTicketProps<SpanPerformanceAnomalyInsight>) => {
   const { jaegerURL, digmaApiProxyPrefix, backendInfo } = useConfigSelector();
 
   const insight = data.insight;
 
   const { commitInfos, isLoading, codeLocations } =
-    useSpanDataSource<SpanScalingInsight>(
+    useSpanDataSource<SpanPerformanceAnomalyInsight>(
       data.insight.spanInfo,
       data.insight,
       environmentId
@@ -42,23 +37,16 @@ export const SpanScalingInsightTicket = ({
       <>
         {intersperse<ReactElement, ReactElement>(
           [
-            <ScalingIssueMessage key={"message"} insight={insight} />,
-            <ScalingIssueTestedConcurrency
-              key={"testedConcurrency"}
-              insight={insight}
-            />,
-            <ScalingIssueDuration
-              key={"scalingIssueDuration"}
-              insight={insight}
-            />,
-            <ScalingIssueRootCauses
-              key={"scalingIssueRootCauses"}
-              insight={insight}
-            />,
-            <ScalingIssueAffectedEndpoints
-              key={"scalingIssueEndpoints"}
-              insight={insight}
-            />,
+            <div key={"description"}>
+              The slowest 5% of this asset is{" "}
+              {roundTo(insight.slowerByPercentage, 2)}% slower than the median
+            </div>,
+            <span key={"p50duration"}>
+              Median duration: {getDurationString(insight.p50)}
+            </span>,
+            <span key={"p95duration"}>
+              5% duration: {getDurationString(insight.p95)}
+            </span>,
             <CodeLocations
               key={"codeLocations"}
               codeLocations={codeLocations}
@@ -78,20 +66,33 @@ export const SpanScalingInsightTicket = ({
     );
   };
 
-  const summary = getScalingIssueSummary(data.insight);
+  const criticalityString =
+    insight && insight.criticality > 0
+      ? `Criticality: ${getCriticalityLabel(insight.criticality)}`
+      : "";
 
-  const traceId = data.insight.affectedEndpoints
-    ?.map((ep) => ep.sampleTraceId)
-    ?.find((t) => t);
-  const attachmentTrace = getTraceAttachment(jaegerURL, traceId);
+  const summary = ["Performance anomaly found", criticalityString]
+    .filter(Boolean)
+    .join(" - ");
+
+  const attachmentP50Trace = getTraceAttachment(
+    jaegerURL,
+    data.insight.p50TraceId
+  );
+  const attachmentP95Trace = getTraceAttachment(
+    jaegerURL,
+    data.insight.p95TraceId
+  );
   const attachmentHistogram = getHistogramAttachment(
     digmaApiProxyPrefix,
     insight,
-    "spanScaling",
+    "spanPercentiles",
     backendInfo
   );
   const attachments: Attachment[] = [
-    ...(attachmentTrace ? [attachmentTrace] : []),
+    ...([attachmentP50Trace, attachmentP95Trace].filter(
+      Boolean
+    ) as Attachment[]),
     ...(attachmentHistogram ? [attachmentHistogram] : [])
   ];
 
