@@ -17,8 +17,7 @@ import type { InsightTicketProps } from "../types";
 export const EndpointBottleneckInsightTicket = ({
   data,
   refreshInsights,
-  onClose,
-  environmentId
+  onClose
 }: InsightTicketProps<EndpointBottleneckInsight>) => {
   const span = data.insight.span;
 
@@ -31,7 +30,7 @@ export const EndpointBottleneckInsightTicket = ({
   } = useEndpointDataSource<SpanEndpointBottleneckInsight>(
     span?.spanInfo || null,
     InsightType.SpanEndpointBottleneck,
-    environmentId ?? ""
+    data.insight.environment
   );
 
   const services = [
@@ -87,7 +86,6 @@ export const EndpointBottleneckInsightTicket = ({
       onReloadSpanInsight={onReloadSpanInsight}
       onClose={onClose}
       refreshInsights={refreshInsights}
-      environmentId={environmentId}
     />
   );
 };

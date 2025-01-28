@@ -18,6 +18,5 @@ export interface InsightCardRendererProps {
   onDismissalChange: (action: string, insightId: string) => void;
   onOpenSuggestion?: (insightId: string) => void;
   tooltipBoundaryRef?: RefObject<HTMLElement>;
-  jaegerURL: string | null;
   backendInfo: BackendInfo | GetAboutResponse | null;
 }

@@ -203,6 +203,7 @@ export interface CodeObjectInsight extends Insight {
   isRead?: boolean;
   isReadable?: boolean;
   flags?: string[];
+  ignoreCriticalityOnInsert?: boolean;
 }
 
 export interface SpanInsight extends CodeObjectInsight {
@@ -692,7 +693,7 @@ export interface SpanPerformanceAnomalyInsight extends SpanInsight {
   type: InsightType.SpanPerformanceAnomaly;
   category: InsightCategory.Performance;
   specifity: InsightSpecificity.OwnInsight;
-  isRecalculatedEnabled: true;
+  isRecalculateEnabled: true;
   importance: InsightImportance.Critical;
   p50: Duration;
   p95: Duration;

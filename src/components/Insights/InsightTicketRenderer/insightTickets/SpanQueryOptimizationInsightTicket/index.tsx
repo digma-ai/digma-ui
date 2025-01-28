@@ -16,8 +16,7 @@ import type { InsightTicketProps } from "../types";
 export const SpanQueryOptimizationInsightTicket = ({
   data,
   refreshInsights,
-  onClose,
-  environmentId
+  onClose
 }: InsightTicketProps<SpanQueryOptimizationInsight>) => {
   const { isLoading, commitInfos } = useCommitInfos(data.insight);
   const { jaegerURL } = useConfigSelector();
@@ -97,7 +96,6 @@ export const SpanQueryOptimizationInsightTicket = ({
       insight={data.insight}
       onClose={onClose}
       refreshInsights={refreshInsights}
-      environmentId={environmentId}
     />
   );
 };

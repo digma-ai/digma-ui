@@ -18,7 +18,9 @@ export const SpanPerformanceAnomalyInsightCard = ({
   onDismissalChange,
   tooltipBoundaryRef,
   onTraceButtonClick,
-  onHistogramButtonClick
+  onHistogramButtonClick,
+  onJiraTicketCreate,
+  isJiraHintEnabled
 }: SpanPerformanceAnomalyInsightCardProps) => {
   const p50DurationString = getDurationString(insight.p50);
   const p95DurationString = getDurationString(insight.p95);
@@ -40,6 +42,15 @@ export const SpanPerformanceAnomalyInsightCard = ({
 
   const handleGoToP95Trace = () => {
     goToTrace(insight.p95TraceId);
+  };
+
+  const handleTicketInfoButtonClick = (
+    spanCodeObjectId: string | undefined,
+    event: string
+  ) => {
+    if (onJiraTicketCreate) {
+      onJiraTicketCreate(insight, spanCodeObjectId, event);
+    }
   };
 
   return (
@@ -71,6 +82,12 @@ export const SpanPerformanceAnomalyInsightCard = ({
       onGoToP50Trace={handleGoToP50Trace}
       onGoToP95Trace={handleGoToP95Trace}
       onOpenHistogram={onHistogramButtonClick}
+      onJiraButtonClick={handleTicketInfoButtonClick}
+      jiraTicketInfo={{
+        ticketLink: insight.ticketLink,
+        spanCodeObjectId: insight.spanInfo?.spanCodeObjectId,
+        isHintEnabled: isJiraHintEnabled
+      }}
     />
   );
 };

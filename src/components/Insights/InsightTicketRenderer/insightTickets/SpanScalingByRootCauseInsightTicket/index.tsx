@@ -25,8 +25,7 @@ export const SpanScalingByRootCauseInsightTicket = ({
   data,
   refreshInsights,
   onClose,
-  rootCauseSpanInfo,
-  environmentId
+  rootCauseSpanInfo
 }: InsightTicketProps<SpanScalingInsight> & {
   rootCauseSpanInfo: RootCauseSpanInfo;
 }) => {
@@ -43,7 +42,7 @@ export const SpanScalingByRootCauseInsightTicket = ({
   } = useEndpointDataSource<SpanScalingInsight>(
     spanInfo,
     InsightType.SpanScaling,
-    environmentId ?? ""
+    data.insight.environment
   );
 
   const renderDescription = () => {
@@ -119,7 +118,6 @@ export const SpanScalingByRootCauseInsightTicket = ({
       onClose={onClose}
       onReloadSpanInsight={onReloadSpanInsight}
       refreshInsights={refreshInsights}
-      environmentId={environmentId}
     />
   );
 };

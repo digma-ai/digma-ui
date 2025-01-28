@@ -455,12 +455,12 @@ export const InsightCard = ({
       actions.push("recheck");
     }
 
-    if (onJiraButtonClick) {
-      actions.push("viewTicketInfo");
-    }
-
     if (platform === "Web") {
       actions.push("ide");
+    }
+
+    if (onJiraButtonClick) {
+      actions.push("viewTicketInfo");
     }
 
     if (isJaegerEnabled && onGoToP50Trace) {

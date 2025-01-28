@@ -21,8 +21,7 @@ import type { InsightTicketProps } from "../types";
 export const EndpointQueryOptimizationV2InsightTicket = ({
   data,
   refreshInsights,
-  onClose,
-  environmentId
+  onClose
 }: InsightTicketProps<EndpointQueryOptimizationV2Insight>) => {
   const { jaegerURL } = useConfigSelector();
   const span = data.insight.span;
@@ -37,7 +36,7 @@ export const EndpointQueryOptimizationV2InsightTicket = ({
   } = useEndpointDataSource<SpanQueryOptimizationInsight>(
     spanInfo,
     InsightType.SpanQueryOptimization,
-    environmentId ?? ""
+    data.insight.environment
   );
 
   const services = [
@@ -123,7 +122,6 @@ export const EndpointQueryOptimizationV2InsightTicket = ({
       onClose={onClose}
       onReloadSpanInsight={onReloadSpanInsight}
       refreshInsights={refreshInsights}
-      environmentId={environmentId}
     />
   );
 };

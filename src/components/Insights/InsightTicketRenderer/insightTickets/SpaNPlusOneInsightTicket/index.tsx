@@ -16,15 +16,14 @@ import type { InsightTicketProps } from "../types";
 export const SpaNPlusOneInsightTicket = ({
   data,
   refreshInsights,
-  onClose,
-  environmentId
+  onClose
 }: InsightTicketProps<SpaNPlusOneInsight>) => {
   const spanInsight = data.insight;
   const { commitInfos, isLoading, codeLocations } =
     useSpanDataSource<SpaNPlusOneInsight>(
       data.insight.spanInfo,
       data.insight,
-      environmentId
+      data.insight.environment
     );
   const { jaegerURL } = useConfigSelector();
 
@@ -85,7 +84,6 @@ export const SpaNPlusOneInsightTicket = ({
       insight={data.insight}
       onClose={onClose}
       refreshInsights={refreshInsights}
-      environmentId={environmentId}
     />
   );
 };

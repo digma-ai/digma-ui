@@ -18,8 +18,7 @@ import type { InsightTicketProps } from "../types";
 export const SpanPerformanceAnomalyInsightTicket = ({
   data,
   refreshInsights,
-  onClose,
-  environmentId
+  onClose
 }: InsightTicketProps<SpanPerformanceAnomalyInsight>) => {
   const { jaegerURL, digmaApiProxyPrefix, backendInfo } = useConfigSelector();
 
@@ -29,7 +28,7 @@ export const SpanPerformanceAnomalyInsightTicket = ({
     useSpanDataSource<SpanPerformanceAnomalyInsight>(
       data.insight.spanInfo,
       data.insight,
-      environmentId
+      data.insight.environment
     );
 
   const renderDescription = () => {
@@ -107,7 +106,6 @@ export const SpanPerformanceAnomalyInsightTicket = ({
       insight={data.insight}
       onClose={onClose}
       refreshInsights={refreshInsights}
-      environmentId={environmentId}
     />
   );
 };

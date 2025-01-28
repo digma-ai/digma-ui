@@ -16,8 +16,7 @@ export const InsightJiraTicket = ({
   summary,
   attachments,
   onClose,
-  refreshInsights,
-  environmentId
+  refreshInsights
 }: InsightJiraTicketProps) => {
   const [errorMessage, setErrorMessage] = useState<string | null>();
   const [ticketLink, setTicketLink] = useState<string | null>(
@@ -42,9 +41,9 @@ export const InsightJiraTicket = ({
 
   const linkTicket = (link: string) => {
     setTicketLink(link);
-    if (link && isValidHttpUrl(link) && environmentId) {
+    if (link && isValidHttpUrl(link)) {
       void triggerLink({
-        environment: environmentId,
+        environment: insight.environment,
         insightId: relatedInsight?.id ?? insight.id,
         ticketLink: link
       })
@@ -59,17 +58,15 @@ export const InsightJiraTicket = ({
   };
 
   const unlinkTicket = () => {
-    if (environmentId) {
-      void triggerUnlink({
-        environment: environmentId,
-        insightId: relatedInsight?.id ?? insight.id
-      })
-        .unwrap()
-        .then(handleLinkUnlinkTicketResponse)
-        .catch((error: Error) => {
-          setErrorMessage(error.message);
-        });
-    }
+    void triggerUnlink({
+      environment: insight.environment,
+      insightId: relatedInsight?.id ?? insight.id
+    })
+      .unwrap()
+      .then(handleLinkUnlinkTicketResponse)
+      .catch((error: Error) => {
+        setErrorMessage(error.message);
+      });
   };
 
   useEffect(() => {

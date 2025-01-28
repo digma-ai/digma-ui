@@ -153,7 +153,7 @@ export const InsightsPage = ({
   isMarkAsReadButtonEnabled,
   insightsViewType
 }: InsightsPageProps) => {
-  const { scope, environment, backendInfo, jaegerURL } = useConfigSelector();
+  const { scope, environment, backendInfo } = useConfigSelector();
   const { viewMode, search, filters, filteredInsightTypes } =
     useInsightsSelector();
   const { setInsightsViewMode: setMode } = useStore.getState();
@@ -230,7 +230,6 @@ export const InsightsPage = ({
               onDismissalChange={handleDismissalChange}
               tooltipBoundaryRef={listRef}
               backendInfo={backendInfo}
-              jaegerURL={jaegerURL}
             />
           ))
         : renderEmptyState(
