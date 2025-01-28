@@ -62,7 +62,8 @@ export const IssuesSidebar = ({
   onResizeHandleMouseDown,
   query,
   scopeDisplayName,
-  isPaginationEnabled = true
+  isPaginationEnabled = true,
+  title = "Issues"
 }: IssuesSidebarProps) => {
   const { jaegerURL } = useConfigSelector();
   const [infoToOpenJiraTicket, setInfoToOpenJiraTicket] =
@@ -200,7 +201,7 @@ export const IssuesSidebar = ({
     <s.Container $isResizing={isResizing}>
       <s.Header>
         <s.HeaderTitleRow>
-          <span>Issues</span>
+          <span>{title}</span>
           <NewIconButton
             buttonType={"secondaryBorderless"}
             icon={CrossIcon}
