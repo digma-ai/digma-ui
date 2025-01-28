@@ -53,12 +53,12 @@ const getInsightToShowJiraHint = (insights: CodeObjectInsight[]): number => {
 
 export const IssuesSidebar = ({
   onClose,
-  scope,
-  environmentId,
-  viewLevel,
   isTransitioning,
   isResizing,
-  onResizeHandleMouseDown
+  onResizeHandleMouseDown,
+  query,
+  scopeDisplayName,
+  isPaginationEnabled = true
 }: IssuesSidebarProps) => {
   const [infoToOpenJiraTicket, setInfoToOpenJiraTicket] =
     useState<InsightTicketInfo<GenericCodeObjectInsight>>();
@@ -78,15 +78,12 @@ export const IssuesSidebar = ({
   const theme = useTheme();
   const { data, isFetching, refetch } = useGetIssuesQuery(
     {
-      environment: environmentId,
-      scopedSpanCodeObjectId:
-        viewLevel === "endpoints" && scope ? scope.value : undefined,
       showDismissed: viewMode === ViewMode.OnlyDismissed,
-      services: viewLevel === "services" && scope ? [scope.value] : undefined,
       sortBy: "criticalinsights",
       sortOrder: "desc",
       page,
-      pageSize: PAGE_SIZE
+      pageSize: PAGE_SIZE,
+      ...query
     },
     {
       refetchOnMountOrArgChange: true
@@ -178,8 +175,8 @@ export const IssuesSidebar = ({
 
   const extendedScope: Scope = {
     span: {
-      displayName: scope?.displayName ?? scope?.value ?? "",
-      spanCodeObjectId: scope?.value ?? "",
+      displayName: scopeDisplayName ?? query?.scopedSpanCodeObjectId ?? "",
+      spanCodeObjectId: query?.scopedSpanCodeObjectId ?? "",
       methodId: null,
       serviceName: null,
       role: null
@@ -205,13 +202,15 @@ export const IssuesSidebar = ({
             onClick={handleSidebarCloseButtonClick}
           />
         </s.HeaderTitleRow>
-        <ScopeBar
-          isExpanded={false}
-          isSpanInfoEnabled={false}
-          linkedEndpoints={[]}
-          scope={extendedScope}
-          isTargetButtonMenuVisible={false}
-        />
+        {scopeDisplayName && (
+          <ScopeBar
+            isExpanded={false}
+            isSpanInfoEnabled={false}
+            linkedEndpoints={[]}
+            scope={extendedScope}
+            isTargetButtonMenuVisible={false}
+          />
+        )}
       </s.Header>
       <s.ContentContainer>
         <s.ResizeHandle onMouseDown={onResizeHandleMouseDown}>
@@ -220,28 +219,26 @@ export const IssuesSidebar = ({
         {data ? (
           data.insights.length > 0 ? (
             <s.IssuesList ref={issuesListRef}>
-              {environmentId &&
-                data.insights.map((insight, i) => (
-                  <InsightCardRenderer
-                    key={insight.id}
-                    insight={insight}
-                    onJiraTicketCreate={handleJiraTicketPopupOpen}
-                    isJiraHintEnabled={
-                      !isInsightJiraTicketHintShown &&
-                      !isDrawerOpen &&
-                      !isDrawerTransitioning &&
-                      !isTransitioning &&
-                      i === getInsightToShowJiraHint(data.insights)
-                    }
-                    onRefresh={refresh}
-                    isMarkAsReadButtonEnabled={false}
-                    viewMode={"full"}
-                    environmentId={environmentId}
-                    onDismissalChange={handleDismissalChange}
-                    onOpenSuggestion={handleOpenSuggestion}
-                    tooltipBoundaryRef={issuesListRef}
-                  />
-                ))}
+              {data.insights.map((insight, i) => (
+                <InsightCardRenderer
+                  key={insight.id}
+                  insight={insight}
+                  onJiraTicketCreate={handleJiraTicketPopupOpen}
+                  isJiraHintEnabled={
+                    !isInsightJiraTicketHintShown &&
+                    !isDrawerOpen &&
+                    !isDrawerTransitioning &&
+                    !isTransitioning &&
+                    i === getInsightToShowJiraHint(data.insights)
+                  }
+                  onRefresh={refresh}
+                  isMarkAsReadButtonEnabled={false}
+                  viewMode={"full"}
+                  onDismissalChange={handleDismissalChange}
+                  onOpenSuggestion={handleOpenSuggestion}
+                  tooltipBoundaryRef={issuesListRef}
+                />
+              ))}
             </s.IssuesList>
           ) : (
             <InsightsPageEmptyState
@@ -255,7 +252,7 @@ export const IssuesSidebar = ({
         )}
       </s.ContentContainer>
       <s.Footer>
-        {totalCount > 0 && (
+        {isPaginationEnabled && totalCount > 0 && (
           <>
             <Pagination
               itemsCount={totalCount}
@@ -298,7 +295,6 @@ export const IssuesSidebar = ({
               data={infoToOpenJiraTicket}
               refreshInsights={refresh}
               onClose={handleJiraTicketPopupClose}
-              environmentId={environmentId}
             />
           </s.PopupContainer>
         </s.Overlay>

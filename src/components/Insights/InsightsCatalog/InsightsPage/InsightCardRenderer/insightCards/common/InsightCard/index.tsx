@@ -133,7 +133,8 @@ export const InsightCard = ({
       onOpenHistogram(
         insight.spanInfo.spanCodeObjectId,
         insight.type,
-        insight.spanInfo.displayName
+        insight.spanInfo.displayName,
+        insight.environment
       );
     }
   };

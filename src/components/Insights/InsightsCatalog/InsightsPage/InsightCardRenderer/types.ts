@@ -13,7 +13,6 @@ export interface InsightCardRendererProps {
   onRefresh: () => void;
   isMarkAsReadButtonEnabled: boolean;
   viewMode: InsightCardViewMode;
-  environmentId: string;
   onDismissalChange: (action: string, insightId: string) => void;
   onOpenSuggestion?: (insightId: string) => void;
   tooltipBoundaryRef?: RefObject<HTMLElement>;

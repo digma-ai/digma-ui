@@ -225,28 +225,26 @@ export const InsightsCatalog = ({
                 onChange={handleSearchInputChange}
                 value={searchInputValue}
               />
-              <SortingSelector
-                onChange={(val: Sorting) => {
-                  setSorting(val);
-                }}
-                options={[
-                  ...(isIssuesView
-                    ? [
-                        {
-                          value: SORTING_CRITERION.CRITICAL_INSIGHTS,
-                          label: "Critical issues",
-                          defaultOrder: SORTING_ORDER.DESC
-                        }
-                      ]
-                    : []),
-                  {
-                    value: SORTING_CRITERION.LATEST,
-                    label: "Latest",
-                    defaultOrder: SORTING_ORDER.DESC
-                  }
-                ]}
-                defaultSorting={sorting}
-              />
+              {isIssuesView && (
+                <SortingSelector
+                  onChange={(val: Sorting) => {
+                    setSorting(val);
+                  }}
+                  options={[
+                    {
+                      value: SORTING_CRITERION.CRITICAL_INSIGHTS,
+                      label: "Critical issues",
+                      defaultOrder: SORTING_ORDER.DESC
+                    },
+                    {
+                      value: SORTING_CRITERION.LATEST,
+                      label: "Latest",
+                      defaultOrder: SORTING_ORDER.DESC
+                    }
+                  ]}
+                  defaultSorting={sorting}
+                />
+              )}
             </s.ToolbarRow>
           </>
         )}

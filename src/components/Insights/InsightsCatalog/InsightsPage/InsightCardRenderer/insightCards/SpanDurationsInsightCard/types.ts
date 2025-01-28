@@ -6,7 +6,8 @@ export interface SpanDurationsInsightCardProps extends InsightCardCommonProps {
   onHistogramButtonClick: (
     spanCodeObjectId: string,
     insightType: InsightType,
-    displayName: string
+    displayName: string,
+    environmentId: string
   ) => void;
   onLiveButtonClick: (codeObjectId: string) => void;
 }

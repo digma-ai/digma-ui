@@ -2,24 +2,23 @@ import { useTheme } from "styled-components";
 import { getThemeKind } from "../../../common/App/styles";
 import { HomeSection } from "../HomeSection";
 import * as s from "./styles";
+import { TopIssuesWidget } from "./TopIssuesWidget";
+import type { OverviewProps } from "./types";
 
-export const Overview = () => {
+export const Overview = ({ onGetIssues }: OverviewProps) => {
   const theme = useTheme();
   const themeKind = getThemeKind(theme);
 
   return (
     <HomeSection title={"Overview"}>
       <s.WidgetsContainer>
-        {Array(4)
-          .fill(null)
-          .map((_, i) => (
-            <s.OverviewWidgetPlaceholderImage
-              key={i}
-              src={`/assets/images/admin/home/placeholders/overviewWidgetPlaceholder${
-                i + 1
-              }_${themeKind}.svg`}
-            />
-          ))}
+        <TopIssuesWidget onGetIssues={onGetIssues} />
+        {[1, 2, 3].map((x) => (
+          <s.OverviewWidgetPlaceholderImage
+            key={x}
+            src={`/assets/images/admin/home/placeholders/overviewWidgetPlaceholder${x}_${themeKind}.svg`}
+          />
+        ))}
       </s.WidgetsContainer>
     </HomeSection>
   );
