@@ -1,3 +1,4 @@
+import type { GetAboutResponse } from "../../../../../redux/services/types";
 import type { BackendInfo } from "../../../../common/App/types";
 import {
   getInsightHistogramUrl,
@@ -9,7 +10,7 @@ const getApiUrl = <T extends SpanInsight>(
   baseURL: string | null,
   histogramType: HistogramType,
   insight: T,
-  backendInfo: BackendInfo | null
+  backendInfo: BackendInfo | GetAboutResponse | null
 ) => {
   switch (histogramType) {
     case "spanScaling": {
@@ -37,7 +38,7 @@ export const getHistogramAttachment = <T extends SpanInsight>(
   baseURL: string | null,
   insight: T | null,
   histogramType: "spanScaling" | "spanPercentiles",
-  backendInfo: BackendInfo | null
+  backendInfo: BackendInfo | GetAboutResponse | null
 ) => {
   if (!insight) {
     return undefined;

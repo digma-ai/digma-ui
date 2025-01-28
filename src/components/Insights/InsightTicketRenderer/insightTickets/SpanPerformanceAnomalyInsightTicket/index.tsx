@@ -18,9 +18,10 @@ import type { InsightTicketProps } from "../types";
 export const SpanPerformanceAnomalyInsightTicket = ({
   data,
   refreshInsights,
-  onClose
+  onClose,
+  backendInfo
 }: InsightTicketProps<SpanPerformanceAnomalyInsight>) => {
-  const { jaegerURL, digmaApiProxyPrefix, backendInfo } = useConfigSelector();
+  const { jaegerURL, digmaApiProxyPrefix } = useConfigSelector();
 
   const insight = data.insight;
 
@@ -83,7 +84,7 @@ export const SpanPerformanceAnomalyInsightTicket = ({
     data.insight.p95TraceId
   );
   const attachmentHistogram = getHistogramAttachment(
-    digmaApiProxyPrefix,
+    `${window.location.origin}${digmaApiProxyPrefix ?? "/api"}`,
     insight,
     "spanPercentiles",
     backendInfo

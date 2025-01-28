@@ -300,6 +300,7 @@ export const IssuesSidebar = ({
               data={infoToOpenJiraTicket}
               refreshInsights={refresh}
               onClose={handleJiraTicketPopupClose}
+              backendInfo={about ?? null}
             />
           </s.PopupContainer>
         </s.Overlay>
