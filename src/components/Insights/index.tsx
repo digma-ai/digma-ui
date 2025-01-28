@@ -254,7 +254,7 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
                 data={infoToOpenJiraTicket}
                 refreshInsights={refresh}
                 onClose={handleJiraTicketPopupClose}
-                environmentId={environmentId}
+                backendInfo={backendInfo}
               />
             )}
           </s.PopupContainer>

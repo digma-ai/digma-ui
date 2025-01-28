@@ -37,7 +37,8 @@ import type { InsightTicketRendererProps } from "./types";
 export const InsightTicketRenderer = ({
   data,
   refreshInsights,
-  onClose
+  onClose,
+  backendInfo
 }: InsightTicketRendererProps) => {
   if (isSpanNPlusOneInsight(data.insight)) {
     const ticketData = data as InsightTicketInfo<SpaNPlusOneInsight>;
@@ -46,6 +47,7 @@ export const InsightTicketRenderer = ({
         data={ticketData}
         refreshInsights={refreshInsights}
         onClose={onClose}
+        backendInfo={backendInfo}
       />
     );
   }
@@ -57,6 +59,7 @@ export const InsightTicketRenderer = ({
         data={ticketData}
         refreshInsights={refreshInsights}
         onClose={onClose}
+        backendInfo={backendInfo}
       />
     );
   }
@@ -68,6 +71,7 @@ export const InsightTicketRenderer = ({
         data={ticketData}
         refreshInsights={refreshInsights}
         onClose={onClose}
+        backendInfo={backendInfo}
       />
     );
   }
@@ -79,6 +83,7 @@ export const InsightTicketRenderer = ({
         data={ticketData}
         refreshInsights={refreshInsights}
         onClose={onClose}
+        backendInfo={backendInfo}
       />
     );
   }
@@ -90,6 +95,7 @@ export const InsightTicketRenderer = ({
         data={ticketData}
         refreshInsights={refreshInsights}
         onClose={onClose}
+        backendInfo={backendInfo}
       />
     );
   }
@@ -102,6 +108,7 @@ export const InsightTicketRenderer = ({
         data={ticketData}
         refreshInsights={refreshInsights}
         onClose={onClose}
+        backendInfo={backendInfo}
       />
     );
   }
@@ -114,6 +121,7 @@ export const InsightTicketRenderer = ({
         data={ticketData}
         refreshInsights={refreshInsights}
         onClose={onClose}
+        backendInfo={backendInfo}
       />
     );
   }
@@ -130,6 +138,7 @@ export const InsightTicketRenderer = ({
           data={ticketData}
           refreshInsights={refreshInsights}
           onClose={onClose}
+          backendInfo={backendInfo}
         />
       );
     } else {
@@ -138,6 +147,7 @@ export const InsightTicketRenderer = ({
           data={ticketData}
           refreshInsights={refreshInsights}
           onClose={onClose}
+          backendInfo={backendInfo}
         />
       );
     }
@@ -150,6 +160,7 @@ export const InsightTicketRenderer = ({
         data={ticketData}
         refreshInsights={refreshInsights}
         onClose={onClose}
+        backendInfo={backendInfo}
       />
     );
   }
