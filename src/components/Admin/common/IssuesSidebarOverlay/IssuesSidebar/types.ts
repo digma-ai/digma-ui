@@ -7,7 +7,7 @@ export interface IssuesSidebarProps {
   isTransitioning: boolean;
   isResizing?: boolean;
   onResizeHandleMouseDown: (e: MouseEvent) => void;
-  query?: Partial<GetIssuesPayload>;
+  query?: GetIssuesPayload;
   isPaginationEnabled?: boolean;
 }
 
