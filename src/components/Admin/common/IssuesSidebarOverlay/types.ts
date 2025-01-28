@@ -3,6 +3,7 @@ import type { GetIssuesPayload } from "../../../../redux/services/types";
 export interface IssuesSidebarQuery {
   query?: GetIssuesPayload;
   limit?: number;
+  title?: string;
 }
 
 export interface IssuesSidebarOverlayProps {

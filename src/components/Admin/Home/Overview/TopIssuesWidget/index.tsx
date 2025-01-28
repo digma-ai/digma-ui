@@ -24,7 +24,8 @@ export const TopIssuesWidget = ({ onGetIssues }: TopIssuesWidgetProps) => {
       query: {
         environment: environmentId ?? undefined
       },
-      limit: ISSUES_LIMIT
+      limit: ISSUES_LIMIT,
+      title: "Top issues by criticality"
     });
   };
 
@@ -34,7 +35,8 @@ export const TopIssuesWidget = ({ onGetIssues }: TopIssuesWidgetProps) => {
         environment: environmentId ?? undefined,
         sortBy: "severity"
       },
-      limit: ISSUES_LIMIT
+      limit: ISSUES_LIMIT,
+      title: "Top issues by severity"
     });
   };
 

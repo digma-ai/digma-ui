@@ -9,6 +9,7 @@ export interface IssuesSidebarProps {
   onResizeHandleMouseDown: (e: MouseEvent) => void;
   query?: GetIssuesPayload;
   isPaginationEnabled?: boolean;
+  title?: string;
 }
 
 export interface DrawerContainerProps {

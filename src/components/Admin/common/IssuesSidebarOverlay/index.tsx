@@ -147,6 +147,7 @@ export const IssuesSidebarOverlay = ({
             onResizeHandleMouseDown={handleResizeHandleMouseDown}
             scopeDisplayName={scopeDisplayName}
             isPaginationEnabled={isPaginationEnabled}
+            title={issuesSidebarQuery?.title}
           />
         </s.IssuesSidebarContainer>
       </CSSTransition>

@@ -23,6 +23,7 @@ import type {
   SpanEndpointBottleneckInsight,
   SpanInsight,
   SpanNexusInsight,
+  SpanPerformanceAnomalyInsight,
   SpanQueryOptimizationInsight,
   SpanScalingInsight,
   SpanScalingInsufficientDataInsight,
@@ -154,3 +155,8 @@ export const isSpanQueryOptimizationInsight = (
   insight: CodeObjectInsight
 ): insight is SpanQueryOptimizationInsight =>
   insight.type === InsightType.SpanQueryOptimization;
+
+export const isSpanPerformanceAnomalyInsight = (
+  insight: CodeObjectInsight
+): insight is SpanPerformanceAnomalyInsight =>
+  insight.type === InsightType.SpanPerformanceAnomaly;

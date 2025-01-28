@@ -82,3 +82,9 @@ export const SuggestionButton = styled(NewButton)`
     border-color: #b66b26;
   }
 `;
+
+export const TraceActionButtonIconContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+`;

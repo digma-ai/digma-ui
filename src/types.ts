@@ -30,7 +30,8 @@ export enum FeatureFlag {
   IS_GLOBAL_ERROR_DISMISS_ENABLED,
   IS_GLOBAL_ERROR_LAST_DAYS_FILTER_ENABLED,
   IS_DURATION_BREAKDOWN_PERCENTAGE_OF_CALLS_ENABLED,
-  IS_INSIGHT_SEVERITY_SORTING_ENABLED
+  IS_INSIGHT_SEVERITY_SORTING_ENABLED,
+  IS_HTTP_GET_METHOD_SPAN_PERCENTILES_HISTOGRAM_ENABLED
 }
 
 export enum InsightType {
@@ -58,7 +59,8 @@ export enum InsightType {
   SpanNexus = "SpanNexus",
   SpanQueryOptimization = "SpanQueryOptimization",
   EndpointQueryOptimizationV2 = "EndpointQueryOptimizationV2",
-  EndpointSlowdownSource = "EndpointSlowdownSource"
+  EndpointSlowdownSource = "EndpointSlowdownSource",
+  SpanPerformanceAnomaly = "SpanPerformanceAnomaly"
 }
 
 export enum SCOPE_CHANGE_EVENTS {

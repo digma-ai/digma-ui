@@ -54,7 +54,8 @@ export type GenericSpanInsight =
   | SpanScalingWellInsight
   | SpanScalingInsufficientDataInsight
   | SpanNexusInsight
-  | SpanQueryOptimizationInsight;
+  | SpanQueryOptimizationInsight
+  | SpanPerformanceAnomalyInsight;
 
 export interface MethodSpan {
   spanCodeObjectId: string;
@@ -684,4 +685,18 @@ export { InsightType };
 export interface DismissUndismissInsightPayload {
   insightId: string;
   id: string;
+}
+
+export interface SpanPerformanceAnomalyInsight extends SpanInsight {
+  name: "Performance Anomaly";
+  type: InsightType.SpanPerformanceAnomaly;
+  category: InsightCategory.Performance;
+  specifity: InsightSpecificity.OwnInsight;
+  isRecalculatedEnabled: true;
+  importance: InsightImportance.Critical;
+  p50: Duration;
+  p95: Duration;
+  slowerByPercentage: number;
+  p50TraceId: string;
+  p95TraceId: string;
 }

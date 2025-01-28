@@ -8,9 +8,9 @@ import type { Attachment } from "../../../../common/JiraTicket/types";
 import type { SpanQueryOptimizationInsight } from "../../../types";
 import { useCommitInfos } from "../common";
 import { CommitInfos } from "../common/CommitInfos";
+import { getTraceAttachment } from "../common/getTraceAttachment";
 import { InsightJiraTicket } from "../common/InsightJiraTicket";
 import { QueryOptimizationEndpoints } from "../common/QueryOptimizationEndpoints";
-import { getTraceAttachment } from "../common/SpanScaling";
 import type { InsightTicketProps } from "../types";
 
 export const SpanQueryOptimizationInsightTicket = ({

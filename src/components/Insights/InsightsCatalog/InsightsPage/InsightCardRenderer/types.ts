@@ -1,4 +1,6 @@
 import type { RefObject } from "react";
+import type { GetAboutResponse } from "../../../../../redux/services/types";
+import type { BackendInfo } from "../../../../common/App/types";
 import type { GenericCodeObjectInsight } from "../../../types";
 import type { InsightCardViewMode } from "./insightCards/common/InsightCard/types";
 
@@ -16,4 +18,6 @@ export interface InsightCardRendererProps {
   onDismissalChange: (action: string, insightId: string) => void;
   onOpenSuggestion?: (insightId: string) => void;
   tooltipBoundaryRef?: RefObject<HTMLElement>;
+  jaegerURL: string | null;
+  backendInfo: BackendInfo | GetAboutResponse | null;
 }

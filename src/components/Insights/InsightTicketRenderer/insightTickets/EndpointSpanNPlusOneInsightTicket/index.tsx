@@ -12,9 +12,9 @@ import type {
 import { useEndpointDataSource } from "../common";
 import { CodeLocations } from "../common/CodeLocations";
 import { CommitInfos } from "../common/CommitInfos";
+import { getTraceAttachment } from "../common/getTraceAttachment";
 import { InsightJiraTicket } from "../common/InsightJiraTicket";
 import { NPlusOneEndpoints } from "../common/NPlusOneEndpoints";
-import { getTraceAttachment } from "../common/SpanScaling";
 import type { InsightTicketProps } from "../types";
 
 export const EndpointSpanNPlusOneInsightTicket = ({

@@ -6,41 +6,6 @@ import { ScalingIssueMessage as ScalingIssueMessage_ } from "./SpanScalingMessag
 import { ScalingIssueRootCauses as ScalingIssueRootCauses_ } from "./SpanScalingRootCauses";
 import { ScalingIssueTestedConcurrency as ScalingIssueTestedConcurrency_ } from "./SpanScalingTestedConcurrency";
 
-export const getHistogramAttachment = (
-  baseURL: string | null,
-  insight: SpanScalingInsight | null
-) => {
-  if (!insight) {
-    return undefined;
-  }
-
-  const histogramUrlParams = new URLSearchParams({
-    env: insight.environment,
-    scoid: insight.spanInfo?.spanCodeObjectId ?? ""
-  });
-
-  return {
-    url: `${
-      baseURL ?? ""
-    }/Graphs/graphForSpanScaling?${histogramUrlParams.toString()}`,
-    fileName: `histogram.html`
-  };
-};
-
-export const getTraceAttachment = (
-  baseURL: string | null,
-  traceId: string | null | undefined
-) => {
-  if (!traceId) {
-    return undefined;
-  }
-
-  return {
-    url: `${baseURL ?? ""}/api/traces/${traceId}?prettyPrint=true`,
-    fileName: `trace-${traceId}.json`
-  };
-};
-
 export const getScalingIssueSummary = (insight: SpanScalingInsight | null) => {
   const criticalityString =
     insight && insight.criticality > 0

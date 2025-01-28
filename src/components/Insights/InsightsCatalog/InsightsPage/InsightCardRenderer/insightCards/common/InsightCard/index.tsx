@@ -4,11 +4,14 @@ import { usePrevious } from "../../../../../../../../hooks/usePrevious";
 import { platform } from "../../../../../../../../platform";
 import { useConfigSelector } from "../../../../../../../../store/config/useConfigSelector";
 import { isString } from "../../../../../../../../typeGuards/isString";
+import { openURLInDefaultBrowser } from "../../../../../../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../../../../../../utils/actions/sendUserActionTrackingEvent";
+import { getIdeLauncherLinkForSpan } from "../../../../../../../../utils/getIdeLauncherLinkForSpan";
 import { getInsightTypeInfo } from "../../../../../../../../utils/getInsightTypeInfo";
 import { DismissPanel } from "../../../../../../../common/DismissPanel";
 import { CheckmarkCircleIcon } from "../../../../../../../common/icons/12px/CheckmarkCircleIcon";
 import { TraceIcon } from "../../../../../../../common/icons/12px/TraceIcon";
+import { CodeIcon } from "../../../../../../../common/icons/16px/CodeIcon";
 import { DoubleCircleIcon } from "../../../../../../../common/icons/16px/DoubleCircleIcon";
 import { HistogramIcon } from "../../../../../../../common/icons/16px/HistogramIcon";
 import { LightBulbWithScrewIcon } from "../../../../../../../common/icons/16px/LightBulbWithScrewIcon";
@@ -45,6 +48,8 @@ export const InsightCard = ({
   jiraTicketInfo,
   isMarkAsReadButtonEnabled,
   onGoToTrace,
+  onGoToP50Trace,
+  onGoToP95Trace,
   onGoToLive,
   onPin,
   content,
@@ -125,6 +130,20 @@ export const InsightCard = ({
   const handleRecheckButtonClick = () => {
     if (onRecalculate) {
       onRecalculate(insight.id);
+    }
+  };
+
+  const handleIdeButtonClick = () => {
+    if (
+      (isSpanInsight(insight) || isEndpointInsight(insight)) &&
+      insight.spanInfo
+    ) {
+      const spanInfo = insight.spanInfo;
+      const spanIdeLauncherLink = getIdeLauncherLinkForSpan(spanInfo);
+
+      if (spanIdeLauncherLink) {
+        openURLInDefaultBrowser(spanIdeLauncherLink);
+      }
     }
   };
 
@@ -291,6 +310,16 @@ export const InsightCard = ({
             onClick={handleRecheckButtonClick}
           />
         );
+      case "ide":
+        return (
+          <ActionButton
+            type={type}
+            icon={CodeIcon}
+            label={"IDE"}
+            title={"Open in IDE"}
+            onClick={handleIdeButtonClick}
+          />
+        );
       case "viewTicketInfo":
         return (
           <Tooltip title={"Open ticket info"}>
@@ -305,6 +334,36 @@ export const InsightCard = ({
               boundaryRef={tooltipBoundaryRef}
             />
           </Tooltip>
+        );
+      case "openP50Trace":
+        return (
+          <ActionButton
+            type={type}
+            icon={(props) => (
+              <s.TraceActionButtonIconContainer>
+                <TraceIcon {...props} />
+                Median
+              </s.TraceActionButtonIconContainer>
+            )}
+            label={"Trace"}
+            title={"Open Median Trace"}
+            onClick={() => onGoToP50Trace && onGoToP50Trace()}
+          />
+        );
+      case "openP95Trace":
+        return (
+          <ActionButton
+            type={type}
+            icon={(props) => (
+              <s.TraceActionButtonIconContainer>
+                <TraceIcon {...props} />
+                5%
+              </s.TraceActionButtonIconContainer>
+            )}
+            label={"Trace"}
+            title={"Open %5 Trace"}
+            onClick={() => onGoToP95Trace && onGoToP95Trace()}
+          />
         );
       case "openTrace":
         return (
@@ -398,6 +457,18 @@ export const InsightCard = ({
 
     if (onJiraButtonClick) {
       actions.push("viewTicketInfo");
+    }
+
+    if (platform === "Web") {
+      actions.push("ide");
+    }
+
+    if (isJaegerEnabled && onGoToP50Trace) {
+      actions.push("openP50Trace");
+    }
+
+    if (isJaegerEnabled && onGoToP95Trace) {
+      actions.push("openP95Trace");
     }
 
     if (isJaegerEnabled && onGoToTrace) {
