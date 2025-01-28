@@ -1,5 +1,6 @@
 import { platform } from "../../../../../platform";
 import { useLazyGetSpanPercentilesHistogramQuery } from "../../../../../redux/services/digma";
+import { useConfigSelector } from "../../../../../store/config/useConfigSelector";
 import { isString } from "../../../../../typeGuards/isString";
 import { SCOPE_CHANGE_EVENTS } from "../../../../../types";
 import { changeScope } from "../../../../../utils/actions/changeScope";
@@ -70,9 +71,10 @@ export const InsightCardRenderer = ({
   onDismissalChange,
   onOpenSuggestion,
   tooltipBoundaryRef,
-  jaegerURL,
   backendInfo
 }: InsightCardRendererProps) => {
+  const { digmaApiProxyPrefix } = useConfigSelector();
+
   const [triggerSpanPercentilesHistogramFetch] =
     useLazyGetSpanPercentilesHistogramQuery();
 
@@ -82,11 +84,15 @@ export const InsightCardRenderer = ({
     displayName: string,
     environmentId: string
   ) => {
+    const digmaApiBaseUrl = `${window.location.origin}${
+      digmaApiProxyPrefix ?? "/api"
+    }`;
+
     if (platform === "Web") {
       switch (insightType) {
         case InsightType.SpanScaling: {
           const url = getInsightHistogramUrl(
-            jaegerURL,
+            digmaApiBaseUrl,
             "spanScaling",
             environmentId,
             spanCodeObjectId,
@@ -102,14 +108,16 @@ export const InsightCardRenderer = ({
         case InsightType.SpanDurations:
         case InsightType.SpanPerformanceAnomaly: {
           const url = getInsightHistogramUrl(
-            jaegerURL,
+            digmaApiBaseUrl,
             "spanPercentiles",
             environmentId,
             spanCodeObjectId,
             backendInfo
           );
 
-          if (!url) {
+          if (url) {
+            openURLInDefaultBrowser(url.toString());
+          } else {
             void triggerSpanPercentilesHistogramFetch({
               environment: environmentId,
               spanCodeObjectId

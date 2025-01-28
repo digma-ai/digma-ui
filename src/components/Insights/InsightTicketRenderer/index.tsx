@@ -5,6 +5,7 @@ import {
   isEndpointSpanNPlusOneInsight,
   isSpanEndpointBottleneckInsight,
   isSpanNPlusOneInsight,
+  isSpanPerformanceAnomalyInsight,
   isSpanQueryOptimizationInsight,
   isSpanScalingBadlyInsight
 } from "../typeGuards";
@@ -15,6 +16,7 @@ import type {
   EndpointSpanNPlusOneInsight,
   InsightTicketInfo,
   SpanEndpointBottleneckInsight,
+  SpanPerformanceAnomalyInsight,
   SpaNPlusOneInsight,
   SpanQueryOptimizationInsight,
   SpanScalingInsight
@@ -24,6 +26,7 @@ import { EndpointHighNumberOfQueriesInsightTicket } from "./insightTickets/Endpo
 import { EndpointQueryOptimizationV2InsightTicket } from "./insightTickets/EndpointQueryOptimizationV2InsightTicket";
 import { EndpointSpanNPlusOneInsightTicket } from "./insightTickets/EndpointSpanNPlusOneInsightTicket";
 import { SpanEndpointBottleneckInsightTicket } from "./insightTickets/SpanEndpointBottleneckInsightTicket";
+import { SpanPerformanceAnomalyInsightTicket } from "./insightTickets/SpanPerformanceAnomalyInsightTicket";
 import { SpaNPlusOneInsightTicket } from "./insightTickets/SpaNPlusOneInsightTicket";
 import { SpanQueryOptimizationInsightTicket } from "./insightTickets/SpanQueryOptimizationInsightTicket";
 import { SpanScalingByRootCauseInsightTicket } from "./insightTickets/SpanScalingByRootCauseInsightTicket";
@@ -34,8 +37,7 @@ import type { InsightTicketRendererProps } from "./types";
 export const InsightTicketRenderer = ({
   data,
   refreshInsights,
-  onClose,
-  environmentId
+  onClose
 }: InsightTicketRendererProps) => {
   if (isSpanNPlusOneInsight(data.insight)) {
     const ticketData = data as InsightTicketInfo<SpaNPlusOneInsight>;
@@ -44,7 +46,6 @@ export const InsightTicketRenderer = ({
         data={ticketData}
         refreshInsights={refreshInsights}
         onClose={onClose}
-        environmentId={environmentId}
       />
     );
   }
@@ -56,7 +57,6 @@ export const InsightTicketRenderer = ({
         data={ticketData}
         refreshInsights={refreshInsights}
         onClose={onClose}
-        environmentId={environmentId}
       />
     );
   }
@@ -68,7 +68,6 @@ export const InsightTicketRenderer = ({
         data={ticketData}
         refreshInsights={refreshInsights}
         onClose={onClose}
-        environmentId={environmentId}
       />
     );
   }
@@ -80,7 +79,6 @@ export const InsightTicketRenderer = ({
         data={ticketData}
         refreshInsights={refreshInsights}
         onClose={onClose}
-        environmentId={environmentId}
       />
     );
   }
@@ -92,7 +90,6 @@ export const InsightTicketRenderer = ({
         data={ticketData}
         refreshInsights={refreshInsights}
         onClose={onClose}
-        environmentId={environmentId}
       />
     );
   }
@@ -105,7 +102,6 @@ export const InsightTicketRenderer = ({
         data={ticketData}
         refreshInsights={refreshInsights}
         onClose={onClose}
-        environmentId={environmentId}
       />
     );
   }
@@ -118,7 +114,6 @@ export const InsightTicketRenderer = ({
         data={ticketData}
         refreshInsights={refreshInsights}
         onClose={onClose}
-        environmentId={environmentId}
       />
     );
   }
@@ -135,7 +130,6 @@ export const InsightTicketRenderer = ({
           data={ticketData}
           refreshInsights={refreshInsights}
           onClose={onClose}
-          environmentId={environmentId}
         />
       );
     } else {
@@ -144,10 +138,20 @@ export const InsightTicketRenderer = ({
           data={ticketData}
           refreshInsights={refreshInsights}
           onClose={onClose}
-          environmentId={environmentId}
         />
       );
     }
+  }
+
+  if (isSpanPerformanceAnomalyInsight(data.insight)) {
+    const ticketData = data as InsightTicketInfo<SpanPerformanceAnomalyInsight>;
+    return (
+      <SpanPerformanceAnomalyInsightTicket
+        data={ticketData}
+        refreshInsights={refreshInsights}
+        onClose={onClose}
+      />
+    );
   }
 
   return null;

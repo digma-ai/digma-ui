@@ -1,70 +1,74 @@
 import { InsightType } from "../../../../../../../types";
 import type { SpanPerformanceAnomalyInsight } from "../../../../../types";
-import { InsightCategory, InsightScope } from "../../../../../types";
+import {
+  InsightCategory,
+  InsightScope,
+  InsightStatus
+} from "../../../../../types";
 
-// TODO: check
 export const mockedSpanPerformanceAnomalyInsight: SpanPerformanceAnomalyInsight =
   {
-    sourceSpanCodeObjectInsight: "sourceSpanCodeObjectInsightId",
-    id: "60b54792-8262-4c5d-9628-7cce7979ad6d",
-    firstDetected: "2023-12-05T17:25:47.010Z",
-    lastDetected: "2024-01-05T13:14:47.010Z",
-    criticality: 0,
-    impact: 0,
-    firstCommitId: "b3f7b3f",
-    lastCommitId: "a1b2c3d",
-    deactivatedCommitId: null,
-    reopenCount: 0,
-    ticketLink: null,
     name: "Performance Anomaly",
     category: InsightCategory.Performance,
     specifity: 4,
+    isRecalculateEnabled: true,
     importance: 2,
+    p50: {
+      value: 112.94,
+      unit: "ms",
+      raw: 112944900
+    },
+    p95: {
+      value: 1.28,
+      unit: "sec",
+      raw: 1283027500
+    },
+    slowerByPercentage: 1135.976480567073,
+    p50TraceId: "2239C9C15845A34E6F6E735048D8D697",
+    p95TraceId: "2239C9C15845A34E6F6E735048D8D697",
     scope: InsightScope.Span,
     spanInfo: {
-      name: "HTTP POST /owners/{ownerId}/pets/new",
-      displayName: "HTTP POST /owners/{ownerId}/pets/new",
-      instrumentationLibrary: "io.opentelemetry.tomcat-10.0",
+      uid: "5ffb43b2-dd9e-11ef-b7cf-4669405db3a3",
+      name: "SpanWithPerformanceAnomaly",
+      displayName: "SpanWithPerformanceAnomaly",
+      instrumentationLibrary: "SampleInsightsController",
       spanCodeObjectId:
-        "span:io.opentelemetry.tomcat-10.0$_$HTTP POST /owners/{ownerId}/pets/new",
-      methodCodeObjectId:
-        "method:org.springframework.samples.petclinic.owner.PetController$_$processCreationForm",
-      kind: "Server"
+        "span:SampleInsightsController$_$SpanWithPerformanceAnomaly",
+      methodCodeObjectId: null,
+      kind: "Internal"
     },
+    codeObjectId: "span:SampleInsightsController$_$SpanWithPerformanceAnomaly",
+    id: "69ecbfd6-dd9e-11ef-8928-4669405db3a3",
     shortDisplayInfo: {
       title: "",
       targetDisplayName: "",
       subtitle: "",
       description: ""
     },
-    codeObjectId:
-      "org.springframework.samples.petclinic.owner.PetController$_$processCreationForm",
-    decorators: [
-      {
-        title: "Performance Anomaly",
-        description: "Performance Anomaly detected"
-      }
-    ],
-    environment: "BOB-LAPTOP[LOCAL]",
-    severity: 0.0,
-    isRecalculateEnabled: false,
-    customStartTime: null,
-    actualStartTime: "2023-08-10T08:04:00Z",
-    type: InsightType.SpanPerformanceAnomaly,
-    isDismissed: false,
+    decorators: null,
+    environment: "ANOMALY-DIGMA#ID#817E16AB-62A7-45D8-8240-5532C61A8DFC",
+    severity: 0.5,
+    impact: 0,
+    criticality: 0.5,
+    reopenCount: 0,
+    ticketLink: null,
     isDismissible: true,
-    isRecalculatedEnabled: true,
-    p50: {
-      value: 3.89,
-      unit: "sec",
-      raw: 3887134558.2822084
-    },
-    p95: {
-      value: 3.89,
-      unit: "sec",
-      raw: 3887134558.2822084
-    },
-    p50TraceId: "00E4D714D4FAD0A00F9D8A39C8A49E8A",
-    p95TraceId: "00E4D714D4FAD0A00F9D8A39C8A49E8A",
-    slowerByPercentage: 0.5
+    isReadable: true,
+    isDismissed: false,
+    customStartTime: null,
+    actualStartTime: "0001-01-01T00:00:00",
+    firstCommitId: "a1d9711cd0fbb7ff7daefd10576e3fdf0c28aa54",
+    lastCommitId: "a1d9711cd0fbb7ff7daefd10576e3fdf0c28aa54",
+    deactivatedCommitId: null,
+    sourceSpanCodeObjectInsight: "",
+    firstDetected: "2025-01-28T17:36:32.344401Z",
+    lastDetected: "2025-01-28T17:57:15.103137Z",
+    status: InsightStatus.Active,
+    flags: [],
+    isRead: false,
+    firstFixed: null,
+    lastReopen: null,
+    lastDeactivated: null,
+    ignoreCriticalityOnInsert: false,
+    type: InsightType.SpanPerformanceAnomaly
   };

@@ -10,7 +10,6 @@ import {
   useGetIssuesQuery
 } from "../../../../../redux/services/digma";
 import { setIsInsightJiraTicketHintShown } from "../../../../../redux/slices/persistSlice";
-import { useConfigSelector } from "../../../../../store/config/useConfigSelector";
 import { isUndefined } from "../../../../../typeGuards/isUndefined";
 import type { Scope } from "../../../../common/App/types";
 import { CrossIcon } from "../../../../common/icons/16px/CrossIcon";
@@ -65,7 +64,6 @@ export const IssuesSidebar = ({
   isPaginationEnabled = true,
   title = "Issues"
 }: IssuesSidebarProps) => {
-  const { jaegerURL } = useConfigSelector();
   const [infoToOpenJiraTicket, setInfoToOpenJiraTicket] =
     useState<InsightTicketInfo<GenericCodeObjectInsight>>();
   const [viewMode, setViewMode] = useState<ViewMode>(ViewMode.All);
@@ -244,7 +242,6 @@ export const IssuesSidebar = ({
                   onOpenSuggestion={handleOpenSuggestion}
                   tooltipBoundaryRef={issuesListRef}
                   backendInfo={about ?? null}
-                  jaegerURL={jaegerURL}
                 />
               ))}
             </s.IssuesList>

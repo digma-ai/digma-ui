@@ -8,7 +8,6 @@ export interface InsightTicketProps<T extends GenericCodeObjectInsight> {
   data: InsightTicketInfo<T>;
   refreshInsights: () => void;
   onClose: () => void;
-  environmentId?: string;
 }
 
 export interface CommitInfosData {

@@ -16,7 +16,6 @@ export interface InsightJiraTicketProps {
   onClose: () => void;
   onReloadSpanInsight?: () => void;
   refreshInsights: () => void;
-  environmentId?: string;
 }
 
 export interface InsightsGetDataListQuery {
