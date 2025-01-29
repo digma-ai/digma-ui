@@ -7,7 +7,7 @@ export const getTraceAttachment = (
   }
 
   return {
-    url: `${baseURL ?? ""}/api/traces/${traceId}?prettyPrint=true`,
+    url: `${baseURL ?? ""}/traces/${traceId}?prettyPrint=true`,
     fileName: `trace-${traceId}.json`
   };
 };

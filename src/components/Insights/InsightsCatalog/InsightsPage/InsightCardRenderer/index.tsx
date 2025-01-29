@@ -1,7 +1,8 @@
+import { getFeatureFlagValue } from "../../../../../featureFlags";
 import { platform } from "../../../../../platform";
 import { useLazyGetSpanPercentilesHistogramQuery } from "../../../../../redux/services/digma";
 import { isString } from "../../../../../typeGuards/isString";
-import { SCOPE_CHANGE_EVENTS } from "../../../../../types";
+import { FeatureFlag, SCOPE_CHANGE_EVENTS } from "../../../../../types";
 import { changeScope } from "../../../../../utils/actions/changeScope";
 import { openURLInDefaultBrowser } from "../../../../../utils/actions/openURLInDefaultBrowser";
 import { sendUserActionTrackingEvent } from "../../../../../utils/actions/sendUserActionTrackingEvent";
@@ -81,51 +82,41 @@ export const InsightCardRenderer = ({
     displayName: string,
     environmentId: string
   ) => {
+    const isSpanPercentilesHistogramIsEnabled = Boolean(
+      backendInfo &&
+        getFeatureFlagValue(
+          backendInfo,
+          FeatureFlag.IS_HTTP_GET_METHOD_SPAN_PERCENTILES_HISTOGRAM_ENABLED
+        )
+    );
+
     if (platform === "Web") {
-      const digmaApiBaseUrl = `${window.location.origin}/api`;
+      const url = getInsightHistogramUrl(
+        `${window.location.origin}/api`,
+        insightType,
+        environmentId,
+        spanCodeObjectId,
+        backendInfo
+      );
 
-      switch (insightType) {
-        case InsightType.SpanScaling: {
-          const url = getInsightHistogramUrl(
-            digmaApiBaseUrl,
-            "spanScaling",
-            environmentId,
-            spanCodeObjectId,
-            backendInfo
-          );
-
-          if (url) {
-            openURLInDefaultBrowser(url.toString());
-          }
-
-          break;
-        }
-        case InsightType.EndpointSlowdownSource:
-        case InsightType.SpanDurations:
-        case InsightType.SpanPerformanceAnomaly: {
-          const url = getInsightHistogramUrl(
-            digmaApiBaseUrl,
-            "spanPercentiles",
-            environmentId,
-            spanCodeObjectId,
-            backendInfo
-          );
-
-          if (url) {
-            openURLInDefaultBrowser(url.toString());
-          } else {
-            void triggerSpanPercentilesHistogramFetch({
-              environment: environmentId,
-              spanCodeObjectId
-            })
-              .unwrap()
-              .then((data) => {
-                openBrowserTabWithContent(data);
-              });
-          }
-
-          break;
-        }
+      if (url) {
+        openURLInDefaultBrowser(url.toString());
+      } else if (
+        [
+          InsightType.EndpointSlowdownSource,
+          InsightType.SpanDurations,
+          InsightType.SpanPerformanceAnomaly
+        ].includes(insightType) &&
+        !isSpanPercentilesHistogramIsEnabled
+      ) {
+        void triggerSpanPercentilesHistogramFetch({
+          environment: environmentId,
+          spanCodeObjectId
+        })
+          .unwrap()
+          .then((data) => {
+            openBrowserTabWithContent(data);
+          });
       }
 
       return;

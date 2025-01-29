@@ -119,6 +119,17 @@ const config: WebpackConfiguration = {
         secure: false,
         changeOrigin: true
       },
+      ...(process.env.UI_BASE_URL && process.env.JAEGER_API_PATH
+        ? [
+            {
+              context: [process.env.JAEGER_API_PATH],
+              target: `${process.env.UI_BASE_URL}${process.env.JAEGER_API_PATH}`,
+              pathRewrite: { "^/api": "" },
+              secure: false,
+              changeOrigin: true
+            }
+          ]
+        : []),
       {
         context: ["/auth"],
         target: process.env.AUTH_API_BASE_URL,

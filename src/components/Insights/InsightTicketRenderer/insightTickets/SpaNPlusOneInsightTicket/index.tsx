@@ -25,7 +25,7 @@ export const SpaNPlusOneInsightTicket = ({
       data.insight,
       data.insight.environment
     );
-  const { jaegerURL } = useConfigSelector();
+  const { jaegerApiPath } = useConfigSelector();
 
   const endpoints = data.insight.endpoints ?? [];
 
@@ -68,7 +68,10 @@ export const SpaNPlusOneInsightTicket = ({
   );
 
   const traceId = data.insight.traceId;
-  const traceAttachment = getTraceAttachment(jaegerURL, traceId);
+  const traceAttachment = getTraceAttachment(
+    `${window.location.origin}${jaegerApiPath ?? ""}`,
+    traceId
+  );
   const attachments: Attachment[] = [
     ...(traceAttachment ? [traceAttachment] : [])
   ];

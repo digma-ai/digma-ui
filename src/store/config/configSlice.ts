@@ -23,6 +23,7 @@ export interface ConfigState {
   isDockerComposeInstalled: boolean | null;
   backendInfo: BackendInfo | null;
   jaegerURL: string | null;
+  jaegerApiPath: string | null;
   isJaegerEnabled: boolean | null;
   isMicrometerProject: boolean | null;
   runConfig: RunConfiguration | null;
@@ -64,6 +65,7 @@ const initialState: ConfigState = {
     : null,
   backendInfo: null,
   jaegerURL: isString(window.jaegerURL) ? window.jaegerURL : null,
+  jaegerApiPath: isString(window.jaegerApiPath) ? window.jaegerApiPath : null,
   isJaegerEnabled: isBoolean(window.isJaegerEnabled)
     ? window.isJaegerEnabled
     : null,

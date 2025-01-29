@@ -1,19 +1,17 @@
 import { getFeatureFlagValue } from "../../featureFlags";
 import type { GetAboutResponse } from "../../redux/services/types";
-import { FeatureFlag } from "../../types";
+import { FeatureFlag, InsightType } from "../../types";
 import type { BackendInfo } from "../common/App/types";
-
-export type HistogramType = "spanScaling" | "spanPercentiles";
 
 export const getInsightHistogramUrl = (
   baseURL: string | null,
-  histogramType: HistogramType,
+  insightType: InsightType,
   environmentId: string,
   spanCodeObjectId: string,
   backendInfo: BackendInfo | GetAboutResponse | null
 ) => {
-  switch (histogramType) {
-    case "spanScaling": {
+  switch (insightType) {
+    case InsightType.SpanScaling: {
       const histogramUrlParams = new URLSearchParams({
         env: environmentId,
         scoid: spanCodeObjectId
@@ -22,7 +20,9 @@ export const getInsightHistogramUrl = (
       const path = "/Graphs/graphForSpanScaling";
       return `${baseURL ?? ""}${path}?${histogramUrlParams.toString()}`;
     }
-    case "spanPercentiles": {
+    case InsightType.EndpointSlowdownSource:
+    case InsightType.SpanDurations:
+    case InsightType.SpanPerformanceAnomaly: {
       const isSpanPercentilesHistogramIsEnabled = Boolean(
         backendInfo &&
           getFeatureFlagValue(

@@ -30,7 +30,7 @@ export const SpanScalingByRootCauseInsightTicket = ({
 }: InsightTicketProps<SpanScalingInsight> & {
   rootCauseSpanInfo: RootCauseSpanInfo;
 }) => {
-  const { jaegerURL, digmaApiProxyPrefix } = useConfigSelector();
+  const { jaegerApiPath, digmaApiProxyPrefix } = useConfigSelector();
 
   const spanInfo = rootCauseSpanInfo;
 
@@ -90,13 +90,12 @@ export const SpanScalingByRootCauseInsightTicket = ({
   const summary = getScalingIssueSummary(spanInsight);
 
   const attachmentTrace = getTraceAttachment(
-    jaegerURL,
+    `${window.location.origin}${jaegerApiPath ?? ""}`,
     spanInfo?.sampleTraceId
   );
   const attachmentHistogram = getHistogramAttachment(
     `${window.location.origin}${digmaApiProxyPrefix ?? "/api"}`,
     spanInsight,
-    "spanScaling",
     backendInfo
   );
   const attachments: Attachment[] = [
