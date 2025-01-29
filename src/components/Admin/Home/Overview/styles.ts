@@ -7,6 +7,5 @@ export const WidgetsContainer = styled.div`
 `;
 
 export const OverviewWidgetPlaceholderImage = styled.img`
-  width: 279px;
-  height: 108px;
+  height: 122px;
 `;
