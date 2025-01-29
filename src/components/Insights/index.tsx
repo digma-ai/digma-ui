@@ -55,19 +55,24 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
   const {
     setInsightViewType,
     setInsightsFilteredInsightTypes: setFilteredInsightTypes,
+    setInsightsFilteredInsightTypesInGlobalScope:
+      setFilteredInsightTypesInGlobalScope,
     setInsightsFilters: setFilters,
     resetInsights: reset
   } = useStore.getState();
   const {
     insightViewType: storedInsightViewType,
-    filteredInsightTypes,
+    filteredInsightTypes: filteredInsightTypesInSpanScope,
+    filteredInsightTypesInGlobalScope,
     filters
   } = useInsightsSelector();
-
+  const scopeSpanCodeObjectId = scope?.span?.spanCodeObjectId;
+  const filteredInsightTypes = scopeSpanCodeObjectId
+    ? filteredInsightTypesInSpanScope
+    : filteredInsightTypesInGlobalScope;
   const previousFilteredInsightTypes = usePrevious(filteredInsightTypes);
   const previousFilters = usePrevious(filters);
   const previousBackendInfo = usePrevious(backendInfo);
-  const scopeSpanCodeObjectId = scope?.span?.spanCodeObjectId;
   const previousScope = usePrevious(scope);
   const previousScopeSpanCodeObjectId = previousScope?.span?.spanCodeObjectId;
   const environmentId = environment?.id;
@@ -103,6 +108,9 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
       !isUndefined(persistedFilters)
     ) {
       setFilteredInsightTypes(persistedFilters?.issueTypes ?? []);
+      setFilteredInsightTypesInGlobalScope(
+        persistedFilters?.issueTypesInGlobalScope ?? []
+      );
       setFilters(persistedFilters?.filters ?? []);
       setAreFiltersRehydrated(true);
     }
@@ -110,7 +118,8 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
     previousPersistedFilters,
     persistedFilters,
     setFilters,
-    setFilteredInsightTypes
+    setFilteredInsightTypes,
+    setFilteredInsightTypesInGlobalScope
   ]);
 
   // Persist filters on its change
@@ -121,7 +130,16 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
       areFiltersRehydrated
     ) {
       setPersistedFilters({
-        issueTypes: filteredInsightTypes,
+        ...(scopeSpanCodeObjectId
+          ? {
+              issueTypes: filteredInsightTypes ?? [],
+              issueTypesInGlobalScope:
+                persistedFilters?.issueTypesInGlobalScope ?? []
+            }
+          : {
+              issueTypes: persistedFilters?.issueTypes ?? [],
+              issueTypesInGlobalScope: filteredInsightTypes
+            }),
         filters
       });
     }
@@ -132,7 +150,45 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
     filters,
     setPersistedFilters,
     areFiltersRehydrated,
-    persistedFilters
+    persistedFilters,
+    scopeSpanCodeObjectId
+  ]);
+
+  // Reset insight type filters (for span and global scopes) on backend instance, environment change
+  useEffect(() => {
+    if (
+      (areFiltersRehydrated &&
+        Boolean(
+          previousBackendInfo &&
+            !areBackendInfosEqual(previousBackendInfo, backendInfo)
+        )) ||
+      Boolean(previousEnvironmentId && previousEnvironmentId !== environmentId)
+    ) {
+      setFilteredInsightTypes([]);
+      setFilteredInsightTypesInGlobalScope([]);
+    }
+  }, [
+    previousBackendInfo,
+    backendInfo,
+    areFiltersRehydrated,
+    setFilteredInsightTypes,
+    setFilteredInsightTypesInGlobalScope,
+    previousEnvironmentId,
+    environmentId
+  ]);
+
+  // Reset insight type filter (for span scope) on scope change from span to global and vice versa
+  useEffect(() => {
+    if (
+      (previousScopeSpanCodeObjectId && !scopeSpanCodeObjectId) ||
+      (!previousScopeSpanCodeObjectId && scopeSpanCodeObjectId)
+    ) {
+      setFilteredInsightTypes([]);
+    }
+  }, [
+    previousScopeSpanCodeObjectId,
+    scopeSpanCodeObjectId,
+    setFilteredInsightTypes
   ]);
 
   // Reset filters on backend instance, scope or environment change
@@ -148,7 +204,6 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
       ) ||
       Boolean(previousEnvironmentId && previousEnvironmentId !== environmentId)
     ) {
-      setFilteredInsightTypes([]);
       setFilters([]);
     }
   }, [
@@ -160,6 +215,7 @@ export const Insights = ({ insightViewType }: InsightsProps) => {
     areFiltersRehydrated,
     persistedFilters,
     setFilteredInsightTypes,
+    setFilteredInsightTypesInGlobalScope,
     setFilters,
     previousEnvironmentId,
     environmentId

@@ -145,7 +145,8 @@ export const useInsightsData = ({
     sorting,
     viewMode,
     filters,
-    filteredInsightTypes,
+    filteredInsightTypes: filteredInsightTypesInSpanScope,
+    filteredInsightTypesInGlobalScope,
     isDataLoading: isLoading,
     insightViewType
   } = useInsightsSelector();
@@ -162,6 +163,9 @@ export const useInsightsData = ({
     [selectedServices]
   );
   const spanCodeObjectId = scope?.span?.spanCodeObjectId ?? null;
+  const filteredInsightTypes = spanCodeObjectId
+    ? filteredInsightTypesInSpanScope
+    : filteredInsightTypesInGlobalScope;
   const showDismissed = viewMode === ViewMode.OnlyDismissed;
   const isAppReadyToGetData = useMemo(
     () =>

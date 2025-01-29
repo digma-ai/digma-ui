@@ -56,7 +56,8 @@ export const InsightsCatalog = ({
     search: searchInputValue,
     sorting,
     filters,
-    filteredInsightTypes,
+    filteredInsightTypes: filteredInsightTypesInSpanScope,
+    filteredInsightTypesInGlobalScope,
     data,
     viewMode: mode,
     insightViewType
@@ -82,6 +83,9 @@ export const InsightsCatalog = ({
   );
   const scopeSpanCodeObjectId = scope?.span?.spanCodeObjectId;
   const isAtSpan = Boolean(scope?.span);
+  const filteredInsightTypes = isAtSpan
+    ? filteredInsightTypesInSpanScope
+    : filteredInsightTypesInGlobalScope;
   const theme = useTheme();
   const { isMarkingAllAsReadInProgress, markAllAsRead } = useMarkingAllAsRead(
     scope?.span ?? null
@@ -93,12 +97,22 @@ export const InsightsCatalog = ({
 
   const isServicesFilterEnabled = !scopeSpanCodeObjectId;
 
+  const isIssuesView = insightViewType === "Issues";
+
   const appliedFilterCount =
-    filters.length +
-    (filteredInsightTypes.length > 0 ? 1 : 0) +
-    (isServicesFilterEnabled && selectedServices && selectedServices.length > 0
+    (isIssuesView
+      ? filters.length +
+        (filteredInsightTypes.length > 0 ? 1 : 0) +
+        (isServicesFilterEnabled &&
+        selectedServices &&
+        selectedServices.length > 0
+          ? 1
+          : 0)
+      : 0) +
+      searchInputValue.length >
+    0
       ? 1
-      : 0);
+      : 0;
 
   const areSpanEnvironmentsEnabled = getFeatureFlagValue(
     backendInfo,
@@ -107,8 +121,6 @@ export const InsightsCatalog = ({
   const selectorEnvironments: SelectorEnvironment[] = areSpanEnvironmentsEnabled
     ? insightStats?.spanEnvironments ?? []
     : environments?.map((x) => ({ environment: x })) ?? [];
-
-  const isIssuesView = insightViewType === "Issues";
 
   const isDismissalViewModeButtonVisible =
     isIssuesView && data && (isUndefined(dismissedCount) || dismissedCount > 0); // isUndefined - check for backward compatibility, always show when BE does not return this counter

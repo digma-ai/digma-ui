@@ -12,6 +12,7 @@ export interface IssuesFiltersData {
 
 export interface IssuesFilterQuery {
   issueTypes: string[];
+  issueTypesInGlobalScope?: string[];
   filters?: InsightFilterType[];
   services?: string[];
 }
