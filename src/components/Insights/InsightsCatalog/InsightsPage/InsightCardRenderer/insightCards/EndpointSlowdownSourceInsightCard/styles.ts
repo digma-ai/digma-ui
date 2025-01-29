@@ -8,6 +8,8 @@ export const SourceList = styled.div`
 `;
 
 export const InsightDescription = styled.span`
-  padding-bottom: 8px;
   ${subscriptRegularTypography}
+
+  padding-bottom: 8px;
+  color: ${({ theme }) => theme.colors.v3.text.primary};
 `;

@@ -1,9 +1,10 @@
 import styled from "styled-components";
-import { footnoteRegularTypography } from "../../../../../../common/App/typographies";
-import { ListItem } from "../common/InsightCard/ListItem";
+import { subscriptRegularTypography } from "../../../../../../common/App/typographies";
 
 export const InsightDescription = styled.span`
-  ${footnoteRegularTypography}
+  ${subscriptRegularTypography}
+
+  color: ${({ theme }) => theme.colors.v3.text.primary};
 `;
 
 export const List = styled.div`
@@ -16,8 +17,4 @@ export const RootCause = styled.div`
   align-items: center;
   justify-content: space-between;
   gap: 4px;
-`;
-
-export const StyledListItem = styled(ListItem)`
-  height: 32px;
 `;

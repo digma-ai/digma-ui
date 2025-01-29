@@ -1,3 +1,6 @@
+import { HistogramIcon } from "../../../../../../common/icons/16px/HistogramIcon";
+import { NewIconButton } from "../../../../../../common/v3/NewIconButton";
+import { Tooltip } from "../../../../../../common/v3/Tooltip";
 import type { EndpointSlowdownSource } from "../../../../../types";
 import { DurationChange } from "../common/DurationChange";
 import { InsightCard } from "../common/InsightCard";
@@ -15,10 +18,20 @@ export const EndpointSlowdownSourceInsightCard = ({
   isMarkAsReadButtonEnabled,
   viewMode,
   onDismissalChange,
-  tooltipBoundaryRef
+  tooltipBoundaryRef,
+  onHistogramButtonClick
 }: EndpointSlowdownSourceInsightCardProps) => {
   const handleSpanLinkClick = (spanCodeObjectId: string) => {
     onAssetLinkClick(spanCodeObjectId, insight.type);
+  };
+
+  const handleHistogramIconButtonClick = (source: EndpointSlowdownSource) => {
+    onHistogramButtonClick(
+      source.spanInfo.spanCodeObjectId,
+      insight.type,
+      source.spanInfo.displayName,
+      insight.environment
+    );
   };
 
   const p50Sources = insight.endpointSlowdownSources?.filter(
@@ -41,12 +54,20 @@ export const EndpointSlowdownSourceInsightCard = ({
             onClick={() => handleSpanLinkClick(spanCodeObjectId)}
             name={spanName}
             endContent={
-              <DurationChange
-                key={"duration"}
-                currentDuration={x.currentDuration}
-                previousDuration={x.previousDuration}
-                changeTime={x.changeTime}
-              />
+              <>
+                <DurationChange
+                  key={"duration"}
+                  currentDuration={x.currentDuration}
+                  previousDuration={x.previousDuration}
+                  changeTime={x.changeTime}
+                />
+                <Tooltip title={"Open Histogram"}>
+                  <NewIconButton
+                    icon={HistogramIcon}
+                    onClick={() => handleHistogramIconButtonClick(x)}
+                  />
+                </Tooltip>
+              </>
             }
           />
         );

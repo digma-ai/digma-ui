@@ -100,6 +100,7 @@ export const InsightCardRenderer = ({
 
           break;
         }
+        case InsightType.EndpointSlowdownSource:
         case InsightType.SpanDurations:
         case InsightType.SpanPerformanceAnomaly: {
           const url = getInsightHistogramUrl(
@@ -134,11 +135,13 @@ export const InsightCardRenderer = ({
       action: actions.OPEN_HISTOGRAM,
       payload: {
         spanCodeObjectId,
-        // TODO: fix after the plugin support of SpanPerformanceAnomaly insight is added
-        insightType:
-          insightType === InsightType.SpanPerformanceAnomaly
-            ? InsightType.SpanDurations
-            : insightType,
+        // TODO: Remove after the plugin supports other insights types besides SpanDurations and SpanScaling
+        insightType: [
+          InsightType.SpanPerformanceAnomaly,
+          InsightType.EndpointSlowdownSource
+        ].includes(insightType)
+          ? InsightType.SpanDurations
+          : insightType,
         displayName
       }
     });
@@ -422,6 +425,7 @@ export const InsightCardRenderer = ({
         viewMode={viewMode}
         onDismissalChange={onDismissalChange}
         tooltipBoundaryRef={tooltipBoundaryRef}
+        onHistogramButtonClick={handleHistogramButtonClick}
       />
     );
   }

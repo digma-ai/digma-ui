@@ -1,5 +1,4 @@
 import styled, { css } from "styled-components";
-import { subscriptRegularTypography } from "../../../../../../../common/App/typographies";
 import { Card } from "../../../../../../../common/v3/Card";
 import { NewButton } from "../../../../../../../common/v3/NewButton";
 import { NewIconButton } from "../../../../../../../common/v3/NewIconButton";
@@ -10,20 +9,6 @@ export const InsightFooter = styled.div`
   justify-content: space-between;
   position: relative;
   min-height: 27px;
-`;
-
-export const Description = styled.div`
-  ${subscriptRegularTypography}
-
-  display: flex;
-  gap: 8px;
-  color: ${({ theme }) => theme.colors.v3.text.secondary};
-`;
-
-export const RefreshContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
 `;
 
 export const Actions = styled.div`

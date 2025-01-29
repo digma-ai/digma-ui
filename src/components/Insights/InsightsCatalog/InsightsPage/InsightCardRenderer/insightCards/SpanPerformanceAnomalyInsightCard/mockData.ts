@@ -65,7 +65,7 @@ export const mockedSpanPerformanceAnomalyInsight: SpanPerformanceAnomalyInsight 
     lastDetected: "2025-01-28T17:57:15.103137Z",
     status: InsightStatus.Active,
     flags: [],
-    isRead: false,
+    isRead: true,
     firstFixed: null,
     lastReopen: null,
     lastDeactivated: null,

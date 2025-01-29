@@ -109,7 +109,7 @@ export const TableBody = styled.div`
 export const TableBodyRow = styled.div`
   display: flex;
   gap: 12px;
-  padding: 8px 0;
+  padding: 4px;
   border-radius: 4px;
   background: ${({ theme }) => theme.colors.v3.surface.primary};
 `;
@@ -119,12 +119,7 @@ export const TableBodyCell = styled.div`
   align-items: flex-start;
   overflow: hidden;
 
-  &:first-child {
-    padding-left: 8px;
-  }
-
   &:last-child {
-    padding-right: 8px;
     justify-content: flex-end;
   }
 `;

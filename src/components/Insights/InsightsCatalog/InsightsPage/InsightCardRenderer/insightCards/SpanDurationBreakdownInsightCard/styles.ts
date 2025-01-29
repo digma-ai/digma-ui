@@ -54,6 +54,7 @@ export const TableBody = styled.div`
 
 export const TableBodyRow = styled.div`
   display: flex;
+  padding: 6px 8px;
   border-radius: 4px;
   background: ${({ theme }) => theme.colors.v3.surface.primary};
   justify-content: space-between;
@@ -61,7 +62,7 @@ export const TableBodyRow = styled.div`
 
 export const TableBodyCell = styled.div`
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -73,4 +74,5 @@ export const TableBodyCell = styled.div`
 
 export const TableItem = styled(ListItem)`
   overflow: hidden;
+  height: 24px;
 `;

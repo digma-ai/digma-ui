@@ -4,8 +4,7 @@ import { Tag } from "../../../../../../common/v3/Tag";
 import { InsightCard } from "../common/InsightCard";
 import { ColumnsContainer } from "../common/InsightCard/ColumnsContainer";
 import { KeyValue } from "../common/InsightCard/KeyValue";
-import { ContentContainer } from "../styles";
-import * as s from "./styles";
+import { ContentContainer, Description } from "../styles";
 import type { SpanPerformanceAnomalyInsightCardProps } from "./types";
 
 export const SpanPerformanceAnomalyInsightCard = ({
@@ -64,10 +63,10 @@ export const SpanPerformanceAnomalyInsightCard = ({
       insight={insight}
       content={
         <ContentContainer>
-          <s.Description>
+          <Description>
             The slowest 5% of this asset is{" "}
             {roundTo(insight.slowerByPercentage, 2)}% slower than the median
-          </s.Description>
+          </Description>
           <ColumnsContainer>
             <KeyValue label={"Median"}>
               <Tag content={p50DurationString} title={p50DurationString} />
