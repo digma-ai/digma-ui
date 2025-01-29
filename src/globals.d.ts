@@ -30,6 +30,7 @@ declare global {
     mainFont?: unknown;
     codeFont?: unknown;
     jaegerURL?: unknown;
+    jaegerApiPath?: unknown;
     isJaegerEnabled?: unknown;
     userEmail?: unknown;
     userRegistrationEmail?: unknown;

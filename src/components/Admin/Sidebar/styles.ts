@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { menuItemStyles } from "./NavMenu/NavMenuItem/styles";
 
@@ -10,6 +11,10 @@ export const Sidebar = styled.aside`
   border-right: 1px solid ${({ theme }) => theme.colors.v3.stroke.tertiary};
   box-sizing: border-box;
   flex-shrink: 0;
+`;
+
+export const LogoLink = styled(Link)`
+  display: flex;
 `;
 
 export const Logo = styled.img`

@@ -26,7 +26,7 @@ export const SpanScalingInsightTicket = ({
   onClose,
   backendInfo
 }: InsightTicketProps<SpanScalingInsight>) => {
-  const { jaegerURL, digmaApiProxyPrefix } = useConfigSelector();
+  const { jaegerApiPath, digmaApiProxyPrefix } = useConfigSelector();
 
   const insight = data.insight;
 
@@ -83,11 +83,13 @@ export const SpanScalingInsightTicket = ({
   const traceId = data.insight.affectedEndpoints
     ?.map((ep) => ep.sampleTraceId)
     ?.find((t) => t);
-  const attachmentTrace = getTraceAttachment(jaegerURL, traceId);
+  const attachmentTrace = getTraceAttachment(
+    `${window.location.origin}${jaegerApiPath ?? ""}`,
+    traceId
+  );
   const attachmentHistogram = getHistogramAttachment(
     `${window.location.origin}${digmaApiProxyPrefix ?? "/api"}`,
     insight,
-    "spanScaling",
     backendInfo
   );
   const attachments: Attachment[] = [

@@ -9,7 +9,7 @@ export const Container = styled.div`
   padding: 4px;
   border-radius: 4px;
   background: ${({ theme }) => theme.colors.v3.surface.primary};
-  height: 28px;
+  height: 36px;
   box-sizing: border-box;
 `;
 

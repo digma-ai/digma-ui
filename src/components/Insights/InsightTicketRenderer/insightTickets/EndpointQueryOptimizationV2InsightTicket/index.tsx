@@ -23,7 +23,7 @@ export const EndpointQueryOptimizationV2InsightTicket = ({
   refreshInsights,
   onClose
 }: InsightTicketProps<EndpointQueryOptimizationV2Insight>) => {
-  const { jaegerURL } = useConfigSelector();
+  const { jaegerApiPath } = useConfigSelector();
   const span = data.insight.span;
   const spanInfo = span?.spanInfo || null;
 
@@ -102,7 +102,10 @@ export const EndpointQueryOptimizationV2InsightTicket = ({
   );
 
   const traceId = span?.traceId;
-  const traceAttachment = getTraceAttachment(jaegerURL, traceId);
+  const traceAttachment = getTraceAttachment(
+    `${window.location.origin}${jaegerApiPath ?? ""}`,
+    traceId
+  );
   const attachments: Attachment[] = [
     ...(traceAttachment ? [traceAttachment] : [])
   ];

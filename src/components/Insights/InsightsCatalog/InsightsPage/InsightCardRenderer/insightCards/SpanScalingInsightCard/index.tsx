@@ -15,6 +15,7 @@ import type {
 import { InsightCard } from "../common/InsightCard";
 import { ColumnsContainer } from "../common/InsightCard/ColumnsContainer";
 import { KeyValue } from "../common/InsightCard/KeyValue";
+import { ListItem } from "../common/InsightCard/ListItem";
 import { ContentContainer, Description } from "../styles";
 import * as s from "./styles";
 import type { SpanScalingInsightCardProps } from "./types";
@@ -107,7 +108,7 @@ export const SpanScalingInsightCard = ({
               );
             }
             return (
-              <s.StyledListItem
+              <ListItem
                 key={spanCodeObjectId}
                 name={spanName}
                 onClick={() => handleLinkClick(spanCodeObjectId)}
@@ -152,7 +153,7 @@ export const SpanScalingInsightCard = ({
               {pageItems.map((endpoint) => {
                 const endpointRoute = trimEndpointScheme(endpoint.route);
                 return (
-                  <s.StyledListItem
+                  <ListItem
                     key={endpoint.route}
                     onClick={() => handleLinkClick(endpoint.spanCodeObjectId)}
                     name={endpointRoute}

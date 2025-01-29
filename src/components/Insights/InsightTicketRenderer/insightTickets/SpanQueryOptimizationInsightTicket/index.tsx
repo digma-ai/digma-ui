@@ -19,7 +19,7 @@ export const SpanQueryOptimizationInsightTicket = ({
   onClose
 }: InsightTicketProps<SpanQueryOptimizationInsight>) => {
   const { isLoading, commitInfos } = useCommitInfos(data.insight);
-  const { jaegerURL } = useConfigSelector();
+  const { jaegerApiPath } = useConfigSelector();
 
   const criticalityString =
     data.insight.criticality > 0
@@ -80,7 +80,10 @@ export const SpanQueryOptimizationInsightTicket = ({
   );
 
   const traceId = data.insight.traceId;
-  const traceAttachment = getTraceAttachment(jaegerURL, traceId);
+  const traceAttachment = getTraceAttachment(
+    `${window.location.origin}${jaegerApiPath ?? ""}`,
+    traceId
+  );
   const attachments: Attachment[] = [
     ...(traceAttachment ? [traceAttachment] : [])
   ];

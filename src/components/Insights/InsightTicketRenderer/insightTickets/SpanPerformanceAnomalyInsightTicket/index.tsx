@@ -21,7 +21,7 @@ export const SpanPerformanceAnomalyInsightTicket = ({
   onClose,
   backendInfo
 }: InsightTicketProps<SpanPerformanceAnomalyInsight>) => {
-  const { jaegerURL, digmaApiProxyPrefix } = useConfigSelector();
+  const { jaegerApiPath, digmaApiProxyPrefix } = useConfigSelector();
 
   const insight = data.insight;
 
@@ -41,14 +41,10 @@ export const SpanPerformanceAnomalyInsightTicket = ({
               The slowest 5% of this asset is{" "}
               {roundTo(insight.slowerByPercentage, 2)}% slower than the median
             </div>,
-            <>
-              <div key={"p50duration"}>
-                Median duration: {getDurationString(insight.p50)}
-              </div>
-              <div key={"p95duration"}>
-                5% duration: {getDurationString(insight.p95)}
-              </div>
-            </>,
+            <div key={"durations"}>
+              <div>Median duration: {getDurationString(insight.p50)}</div>
+              <div>5% duration: {getDurationString(insight.p95)}</div>
+            </div>,
             <CodeLocations
               key={"codeLocations"}
               codeLocations={codeLocations}
@@ -77,18 +73,19 @@ export const SpanPerformanceAnomalyInsightTicket = ({
     .filter(Boolean)
     .join(" - ");
 
+  const jaegerBaseURL = `${window.location.origin}${jaegerApiPath ?? ""}`;
+
   const attachmentP50Trace = getTraceAttachment(
-    jaegerURL,
+    jaegerBaseURL,
     data.insight.p50TraceId
   );
   const attachmentP95Trace = getTraceAttachment(
-    jaegerURL,
+    jaegerBaseURL,
     data.insight.p95TraceId
   );
   const attachmentHistogram = getHistogramAttachment(
     `${window.location.origin}${digmaApiProxyPrefix ?? "/api"}`,
     insight,
-    "spanPercentiles",
     backendInfo
   );
   const attachments: Attachment[] = [

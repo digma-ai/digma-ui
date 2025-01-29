@@ -1,11 +1,11 @@
 import styled from "styled-components";
-import { caption1RegularTypography } from "../../../../../common/App/typographies";
+import { footnoteRegularTypography } from "../../../../../common/App/typographies";
 import { ListItem } from "./common/InsightCard/ListItem";
 
 export const Description = styled.div`
   color: ${({ theme }) => theme.colors.v3.text.secondary};
 
-  ${caption1RegularTypography}
+  ${footnoteRegularTypography}
 `;
 
 export const Details = styled.div`

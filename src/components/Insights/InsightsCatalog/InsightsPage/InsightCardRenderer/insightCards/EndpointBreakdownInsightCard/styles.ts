@@ -1,5 +1,8 @@
 import styled from "styled-components";
-import { caption1RegularTypography } from "../../../../../../common/App/typographies";
+import {
+  caption1RegularTypography,
+  footnoteRegularTypography
+} from "../../../../../../common/App/typographies";
 import type {
   FractionProgressBarValueProps,
   LegendItemDataColorBadgeProps
@@ -71,7 +74,7 @@ export const TableHead = styled.thead`
 `;
 
 export const TableHeaderCell = styled.th`
-  ${caption1RegularTypography}
+  ${footnoteRegularTypography}
 
   &:first-child {
     text-align: start;
@@ -102,7 +105,7 @@ export const TableBodyCell = styled.td`
 `;
 
 export const CategoryName = styled.span`
-  ${caption1RegularTypography}
+  ${footnoteRegularTypography}
   color: ${({ theme }) => theme.colors.v3.text.primary};
   display: flex;
   white-space: nowrap;

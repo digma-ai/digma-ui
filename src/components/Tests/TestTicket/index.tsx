@@ -23,8 +23,7 @@ export const TestTicket = ({
     contextsSpanCodeObjectIds
   } = test;
   const summary = `"${name}" test failed`;
-  const { jaegerURL } = useConfigSelector();
-  const jaegerURLString = jaegerURL ?? "";
+  const { jaegerApiPath } = useConfigSelector();
 
   const relatedSpans = spanContexts
     .filter((x) => contextsSpanCodeObjectIds.includes(x.spanCodeObjectId))
@@ -55,7 +54,10 @@ export const TestTicket = ({
     </>
   );
 
-  const traceAttachment = getTraceAttachment(jaegerURLString, traceId);
+  const traceAttachment = getTraceAttachment(
+    `${window.location.origin}${jaegerApiPath ?? ""}`,
+    traceId
+  );
   const attachments: Attachment[] = [
     ...(traceAttachment ? [traceAttachment] : [])
   ];

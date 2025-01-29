@@ -35,10 +35,12 @@ export const Sidebar = () => {
 
   return (
     <s.Sidebar>
-      <s.Logo
-        src={`/assets/images/admin/digmaLogo_${themeKind}.svg`}
-        alt={"Digma logotype"}
-      />
+      <s.LogoLink to={"/"}>
+        <s.Logo
+          src={`/assets/images/admin/digmaLogo_${themeKind}.svg`}
+          alt={"Digma logotype"}
+        />
+      </s.LogoLink>
       <NavMenu />
       <s.LogoutButton onClick={handleLogoutButtonClick} as={"button"}>
         <LogoutIcon size={16} color={"currentColor"} />
