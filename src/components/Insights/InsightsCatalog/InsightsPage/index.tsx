@@ -154,11 +154,22 @@ export const InsightsPage = ({
   insightsViewType
 }: InsightsPageProps) => {
   const { scope, environment, backendInfo } = useConfigSelector();
-  const { viewMode, search, filters, filteredInsightTypes } =
-    useInsightsSelector();
+  const {
+    viewMode,
+    search,
+    filters,
+    filteredInsightTypes: filteredInsightTypesInSpanScope,
+    filteredInsightTypesInGlobalScope
+  } = useInsightsSelector();
   const { setInsightsViewMode: setMode } = useStore.getState();
+  const isAtSpan = Boolean(scope?.span);
+  const filteredInsightTypes = isAtSpan
+    ? filteredInsightTypesInSpanScope
+    : filteredInsightTypesInGlobalScope;
   const areAnyFiltersApplied =
-    filters.length > 0 || filteredInsightTypes.length > 0 || search.length > 0;
+    (insightsViewType === "Issues"
+      ? filters.length > 0 || filteredInsightTypes.length > 0
+      : 0) || search.length > 0;
   const [isInsightJiraTicketHintShown, setIsInsightJiraTicketHintShown] =
     usePersistence<isInsightJiraTicketHintShownPayload>(
       IS_INSIGHT_JIRA_TICKET_HINT_SHOWN_PERSISTENCE_KEY,
@@ -166,7 +177,6 @@ export const InsightsPage = ({
     );
   const listRef = useRef<HTMLDivElement>(null);
   const { goTo } = useHistory();
-  const isAtSpan = Boolean(scope?.span);
 
   const insightIndexWithJiraHint = getInsightToShowJiraHint(insights);
 

@@ -21,6 +21,7 @@ interface InsightsState {
   viewMode: ViewMode;
   filters: InsightFilterType[];
   filteredInsightTypes: string[];
+  filteredInsightTypesInGlobalScope: string[];
   insightViewType: InsightViewType | null;
   issuesFilters: IssuesFiltersData | null;
   areIssuesFiltersLoading: boolean;
@@ -38,6 +39,7 @@ const initialState: InsightsState = {
   viewMode: ViewMode.All,
   filters: [],
   filteredInsightTypes: [],
+  filteredInsightTypesInGlobalScope: [],
   insightViewType: null,
   issuesFilters: null,
   areIssuesFiltersLoading: false
@@ -62,6 +64,9 @@ export const insightsSlice = createSlice({
     setInsightsFilters: (filters: InsightFilterType[]) => set({ filters }),
     setInsightsFilteredInsightTypes: (filteredInsightTypes: string[]) =>
       set({ filteredInsightTypes }),
+    setInsightsFilteredInsightTypesInGlobalScope: (
+      filteredInsightTypesInGlobalScope: string[]
+    ) => set({ filteredInsightTypesInGlobalScope }),
     setInsightViewType: (insightViewType: InsightViewType) =>
       set({ insightViewType }),
     setInsightsIssuesFilters: (issuesFilters: IssuesFiltersData) =>

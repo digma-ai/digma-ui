@@ -22,8 +22,13 @@ import { trackingEvents } from "./tracking";
 
 export const IssuesFilter = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  const { filteredInsightTypes, filters, viewMode, search } =
-    useInsightsSelector();
+  const {
+    filteredInsightTypes: filteredInsightTypesInSpanScope,
+    filteredInsightTypesInGlobalScope,
+    filters,
+    viewMode,
+    search
+  } = useInsightsSelector();
   const {
     selectedServices: globallySelectedServices,
     backendInfo,
@@ -32,7 +37,9 @@ export const IssuesFilter = () => {
   } = useConfigSelector();
   const {
     setSelectedServices: setGloballySelectedServices,
-    setInsightsFilteredInsightTypes: setFilteredInsightTypes,
+    setInsightsFilteredInsightTypes: setFilteredInsightTypesInSpanScope,
+    setInsightsFilteredInsightTypesInGlobalScope:
+      setFilteredInsightTypesInGlobalScope,
     setInsightsFilters: setFilters
   } = useStore.getState();
   const [isCriticalOnly, setIsCriticalOnly] = useState<boolean>(
@@ -47,6 +54,9 @@ export const IssuesFilter = () => {
   const previousEnvironmentId = usePrevious(environmentId);
   const scopeSpanCodeObjectId = scope?.span?.spanCodeObjectId;
   const previousScopeSpanCodeObjectId = usePrevious(scopeSpanCodeObjectId);
+  const filteredInsightTypes = scopeSpanCodeObjectId
+    ? filteredInsightTypesInSpanScope
+    : filteredInsightTypesInGlobalScope;
   const isServicesFilterEnabled =
     Boolean(
       getFeatureFlagValue(backendInfo, FeatureFlag.ARE_ISSUES_FILTERS_ENABLED)
@@ -141,7 +151,12 @@ export const IssuesFilter = () => {
 
     setIsPopupOpen(false);
 
-    setFilteredInsightTypes(selectedInsightTypes);
+    if (scopeSpanCodeObjectId) {
+      setFilteredInsightTypesInSpanScope(selectedInsightTypes);
+    } else {
+      setFilteredInsightTypesInGlobalScope(selectedInsightTypes);
+    }
+
     setFilters([
       ...(isCriticalOnly ? ["criticality"] : []),
       ...(isUnreadOnly ? ["unread"] : [])

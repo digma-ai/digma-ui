@@ -26,7 +26,8 @@ export const useIssuesFilters = () => {
   const {
     issuesFilters: data,
     search,
-    filteredInsightTypes,
+    filteredInsightTypes: filteredInsightTypesInSpanScope,
+    filteredInsightTypesInGlobalScope,
     viewMode,
     filters
   } = useInsightsSelector();
@@ -37,6 +38,17 @@ export const useIssuesFilters = () => {
   const { environment, scope, backendInfo } = useConfigSelector();
   const environmentId = environment?.id;
   const spanCodeObjectId = scope?.span?.spanCodeObjectId ?? null;
+  const filteredInsightTypes = useMemo(
+    () =>
+      spanCodeObjectId
+        ? filteredInsightTypesInSpanScope
+        : filteredInsightTypesInGlobalScope,
+    [
+      spanCodeObjectId,
+      filteredInsightTypesInSpanScope,
+      filteredInsightTypesInGlobalScope
+    ]
+  );
 
   const query: GetIssuesFiltersQuery = useMemo(
     () => ({
