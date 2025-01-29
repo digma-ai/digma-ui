@@ -1,7 +1,7 @@
 import type { MemoExoticComponent } from "react";
 import * as descriptionProvider from "../components/common/InsightsDescription";
 import { PulseIcon } from "../components/common/icons/16px/PulseIcon";
-import { TwoHorizontalEndpointsIcon } from "../components/common/icons/16px/TwoHorizontalEndpointsIcon";
+import { SoundWaveIcon } from "../components/common/icons/16px/SoundWaveIcon";
 import { AlarmClockIcon } from "../components/common/icons/AlarmClockIcon";
 import { BottleneckIcon } from "../components/common/icons/BottleneckIcon";
 import { ClockWithTicksIcon } from "../components/common/icons/ClockWithTicksIcon";
@@ -153,7 +153,7 @@ export const getInsightTypeInfo = (
       documentationLink: SESSION_IN_VIEW_DOCUMENTATION_URL
     },
     [InsightType.EndpointChattyApiV2]: {
-      icon: TwoHorizontalEndpointsIcon,
+      icon: SoundWaveIcon,
       label: "Excessive API Calls Detected",
       description: descriptionProvider.ChattyApiDescription,
       documentationLink: CHATTY_API_ISSUE_DOCUMENTATION_URL

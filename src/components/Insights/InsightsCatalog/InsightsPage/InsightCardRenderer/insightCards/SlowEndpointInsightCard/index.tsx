@@ -1,3 +1,4 @@
+import { convertToDuration } from "../../../../../../../utils/convertToDuration";
 import { getDurationString } from "../../../../../../../utils/getDurationString";
 import { roundTo } from "../../../../../../../utils/roundTo";
 import { Tag } from "../../../../../../common/v3/Tag";
@@ -21,7 +22,9 @@ export const SlowEndpointInsightCard = ({
   const diff =
     (insight.median.raw / insight.endpointsMedianOfMedians.raw - 1) * 100;
 
-  const durationString = getDurationString(insight.median);
+  const slowerByDurationString = getDurationString(
+    convertToDuration(insight.median.raw - insight.endpointsMedianOfMedians.raw)
+  );
 
   return (
     <InsightCard
@@ -34,7 +37,10 @@ export const SlowEndpointInsightCard = ({
               {roundTo(diff, 2)}%
             </s.DescriptionColumn>
             <KeyValue label={"Slower by"}>
-              <Tag content={durationString} title={durationString} />
+              <Tag
+                content={slowerByDurationString}
+                title={slowerByDurationString}
+              />
             </KeyValue>
           </ColumnsContainer>
         </s.ContentContainer>
@@ -45,8 +51,8 @@ export const SlowEndpointInsightCard = ({
       isMarkAsReadButtonEnabled={isMarkAsReadButtonEnabled}
       viewMode={viewMode}
       mainMetric={
-        <Tooltip title={durationString}>
-          <span>{durationString}</span>
+        <Tooltip title={slowerByDurationString}>
+          <span>{slowerByDurationString}</span>
         </Tooltip>
       }
       onDismissalChange={onDismissalChange}
