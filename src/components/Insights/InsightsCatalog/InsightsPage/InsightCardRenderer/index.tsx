@@ -1,6 +1,5 @@
 import { platform } from "../../../../../platform";
 import { useLazyGetSpanPercentilesHistogramQuery } from "../../../../../redux/services/digma";
-import { useConfigSelector } from "../../../../../store/config/useConfigSelector";
 import { isString } from "../../../../../typeGuards/isString";
 import { SCOPE_CHANGE_EVENTS } from "../../../../../types";
 import { changeScope } from "../../../../../utils/actions/changeScope";
@@ -73,8 +72,6 @@ export const InsightCardRenderer = ({
   tooltipBoundaryRef,
   backendInfo
 }: InsightCardRendererProps) => {
-  const { digmaApiProxyPrefix } = useConfigSelector();
-
   const [triggerSpanPercentilesHistogramFetch] =
     useLazyGetSpanPercentilesHistogramQuery();
 
@@ -84,11 +81,9 @@ export const InsightCardRenderer = ({
     displayName: string,
     environmentId: string
   ) => {
-    const digmaApiBaseUrl = `${window.location.origin}${
-      digmaApiProxyPrefix ?? "/api"
-    }`;
-
     if (platform === "Web") {
+      const digmaApiBaseUrl = `${window.location.origin}/api`;
+
       switch (insightType) {
         case InsightType.SpanScaling: {
           const url = getInsightHistogramUrl(

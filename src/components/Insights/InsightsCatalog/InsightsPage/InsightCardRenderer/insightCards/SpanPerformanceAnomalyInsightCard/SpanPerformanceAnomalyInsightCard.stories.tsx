@@ -22,3 +22,13 @@ export const Default: Story = {
     insight: mockedSpanPerformanceAnomalyInsight
   }
 };
+
+export const WithoutTraces: Story = {
+  args: {
+    insight: {
+      ...mockedSpanPerformanceAnomalyInsight,
+      p50TraceId: null,
+      p95TraceId: null
+    }
+  }
+};

@@ -41,12 +41,14 @@ export const SpanPerformanceAnomalyInsightTicket = ({
               The slowest 5% of this asset is{" "}
               {roundTo(insight.slowerByPercentage, 2)}% slower than the median
             </div>,
-            <span key={"p50duration"}>
-              Median duration: {getDurationString(insight.p50)}
-            </span>,
-            <span key={"p95duration"}>
-              5% duration: {getDurationString(insight.p95)}
-            </span>,
+            <>
+              <div key={"p50duration"}>
+                Median duration: {getDurationString(insight.p50)}
+              </div>
+              <div key={"p95duration"}>
+                5% duration: {getDurationString(insight.p95)}
+              </div>
+            </>,
             <CodeLocations
               key={"codeLocations"}
               codeLocations={codeLocations}
