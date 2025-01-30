@@ -1,4 +1,5 @@
 import { Fragment, useEffect, useRef, useState } from "react";
+import { NOT_SUPPORTED_IN_SANDBOX_MODE_MESSAGE } from "../../../../../../../../constants";
 import { dispatcher } from "../../../../../../../../dispatcher";
 import { usePrevious } from "../../../../../../../../hooks/usePrevious";
 import { platform } from "../../../../../../../../platform";
@@ -73,10 +74,16 @@ export const InsightCard = ({
   const previousIsMarkingAsReadInProgress = usePrevious(
     isMarkingAsReadInProgress
   );
-  const { isJaegerEnabled, areInsightSuggestionsEnabled } = useConfigSelector();
+  const {
+    isJaegerEnabled,
+    areInsightSuggestionsEnabled,
+    isSandboxModeEnabled
+  } = useConfigSelector();
   const [insightStatus, setInsightStatus] = useState(insight.status);
   const cardRef = useRef<HTMLDivElement>(null);
   const [showInfo, setShowInfo] = useState(false);
+  const [isIdeSandboxTooltipVisible, setIsIdeSandboxTooltipVisible] =
+    useState(false);
 
   const isCritical = insight.criticality > HIGH_CRITICALITY_THRESHOLD;
 
@@ -134,6 +141,11 @@ export const InsightCard = ({
   };
 
   const handleIdeButtonClick = () => {
+    if (isSandboxModeEnabled) {
+      setIsIdeSandboxTooltipVisible(true);
+      return;
+    }
+
     if (
       (isSpanInsight(insight) || isEndpointInsight(insight)) &&
       insight.spanInfo
@@ -192,7 +204,14 @@ export const InsightCard = ({
         insightType: insight.type
       }
     );
-    dismiss();
+
+    if (!isSandboxModeEnabled) {
+      dismiss();
+    }
+  };
+
+  const handleIdeActionButtonTooltipDismiss = () => {
+    setIsIdeSandboxTooltipVisible(false);
   };
 
   const handleShowClick = () => {
@@ -202,7 +221,10 @@ export const InsightCard = ({
         insightType: insight.type
       }
     );
-    show();
+
+    if (!isSandboxModeEnabled) {
+      show();
+    }
   };
 
   const handleMarkAsReadButtonClick = () => {
@@ -312,13 +334,22 @@ export const InsightCard = ({
         );
       case "ide":
         return (
-          <ActionButton
-            type={type}
-            icon={CodeIcon}
-            label={"IDE"}
-            title={"Open in IDE"}
-            onClick={handleIdeButtonClick}
-          />
+          <Tooltip
+            title={NOT_SUPPORTED_IN_SANDBOX_MODE_MESSAGE}
+            isOpen={isIdeSandboxTooltipVisible}
+            onDismiss={handleIdeActionButtonTooltipDismiss}
+          >
+            <div>
+              <ActionButton
+                type={type}
+                icon={CodeIcon}
+                label={"IDE"}
+                title={isIdeSandboxTooltipVisible ? undefined : "Open in IDE"}
+                onClick={handleIdeButtonClick}
+                onTooltipDismiss={handleIdeActionButtonTooltipDismiss}
+              />
+            </div>
+          </Tooltip>
         );
       case "viewTicketInfo":
         return (

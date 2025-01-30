@@ -22,11 +22,17 @@ export const Logo = styled.img`
   height: 24px;
 `;
 
+export const Footer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  margin-top: auto;
+`;
+
 export const LogoutButton = styled.button`
   ${menuItemStyles}
 
   font-family: inherit;
   border: none;
   background: none;
-  margin-top: auto;
 `;

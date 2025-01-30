@@ -2,9 +2,11 @@ import { useEffect } from "react";
 import { useTheme } from "styled-components";
 import { useAdminDispatch } from "../../../containers/Admin/hooks";
 import { useLogoutMutation } from "../../../redux/services/auth";
+import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import { getThemeKind } from "../../common/App/styles";
 import { LogoutIcon } from "../../common/icons/16px/LogoutIcon";
 import { NavMenu } from "./NavMenu";
+import { PromotionCard } from "./PromotionCard";
 import * as s from "./styles";
 
 export const Sidebar = () => {
@@ -12,6 +14,7 @@ export const Sidebar = () => {
   const themeKind = getThemeKind(theme);
   const [logout, result] = useLogoutMutation();
   const dispatch = useAdminDispatch();
+  const { isSandboxModeEnabled } = useConfigSelector();
 
   const handleLogoutButtonClick = () => {
     void logout();
@@ -42,10 +45,13 @@ export const Sidebar = () => {
         />
       </s.LogoLink>
       <NavMenu />
-      <s.LogoutButton onClick={handleLogoutButtonClick} as={"button"}>
-        <LogoutIcon size={16} color={"currentColor"} />
-        Log out
-      </s.LogoutButton>
+      <s.Footer>
+        {isSandboxModeEnabled && <PromotionCard />}
+        <s.LogoutButton onClick={handleLogoutButtonClick}>
+          <LogoutIcon size={16} color={"currentColor"} />
+          Log out
+        </s.LogoutButton>
+      </s.Footer>
     </s.Sidebar>
   );
 };

@@ -7,6 +7,5 @@ export const WidgetsContainer = styled.div`
 `;
 
 export const EnvironmentWidgetPlaceholderImage = styled.img`
-  width: 279px;
   height: 184px;
 `;

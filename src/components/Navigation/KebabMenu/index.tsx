@@ -1,5 +1,5 @@
 import { actions as globalActions } from "../../../actions";
-import { DIGMA_DOCUMENTATION } from "../../../constants";
+import { DIGMA_DOCUMENTATION_URL } from "../../../constants";
 import { getFeatureFlagValue } from "../../../featureFlags";
 import { useConfigSelector } from "../../../store/config/useConfigSelector";
 import type { OpenInstallationWizardPayload } from "../../../types";
@@ -63,7 +63,7 @@ export const KebabMenu = ({ onClose }: KebabMenuProps) => {
 
   const handleOpenDocsClick = () => {
     sendUserActionTrackingEvent(trackingEvents.OPEN_DOCS_CLICKED);
-    openURLInDefaultBrowser(DIGMA_DOCUMENTATION);
+    openURLInDefaultBrowser(DIGMA_DOCUMENTATION_URL);
     onClose();
   };
 

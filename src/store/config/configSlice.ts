@@ -43,6 +43,7 @@ export interface ConfigState {
   scope: Scope | null;
   areInsightSuggestionsEnabled: boolean | null;
   googleClientId: string | null;
+  isSandboxModeEnabled: boolean | null;
 }
 
 const initialState: ConfigState = {
@@ -98,7 +99,12 @@ const initialState: ConfigState = {
   areInsightSuggestionsEnabled: isBoolean(window.areInsightSuggestionsEnabled)
     ? window.areInsightSuggestionsEnabled
     : null,
-  googleClientId: isString(window.googleClientId) ? window.googleClientId : null
+  googleClientId: isString(window.googleClientId)
+    ? window.googleClientId
+    : null,
+  isSandboxModeEnabled: isBoolean(window.isSandboxModeEnabled)
+    ? window.isSandboxModeEnabled
+    : null
 };
 
 const set = (update: Partial<ConfigState>) => (state: ConfigState) => ({

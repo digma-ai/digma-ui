@@ -7,7 +7,7 @@ export const GETTING_STARTED_VIDEO_URL =
   "https://www.youtube.com/watch?v=iXUeazxCVvU";
 
 export const INSTALL_DIGMA_IN_ORGANIZATION_DOCUMENTATION_URL =
-  "https://digma.ai/installing-digma-in-your-organization/";
+  "https://digma.ai/installing-digma-in-your-organization";
 
 export const SETUP_PLUGIN_TO_ORGANIZATION_DIGMA_URL =
   "https://digma.ai/installing-digma-in-your-organization/#Connecting";
@@ -45,7 +45,12 @@ export const QUERY_OPTIMIZATION_ISSUES_DOCUMENTATION_URL =
 export const CODE_NEXUS_DOCUMENTATION_URL =
   "https://docs.digma.ai/digma-developer-guide/digma-features/analytics/code-nexus";
 
-export const DIGMA_DOCUMENTATION = "https://docs.digma.ai";
+export const BOOK_DEMO_URL = "https://digma.ai/book-a-demo";
+
+export const DIGMA_DOCUMENTATION_URL = "https://docs.digma.ai";
+
+export const NOT_SUPPORTED_IN_SANDBOX_MODE_MESSAGE =
+  "Feature not supported in sandbox mode";
 
 export const PERCENTILES: {
   label: string;
