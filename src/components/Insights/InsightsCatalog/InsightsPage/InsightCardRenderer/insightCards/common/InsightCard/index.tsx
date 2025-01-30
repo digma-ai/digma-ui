@@ -346,7 +346,6 @@ export const InsightCard = ({
                 label={"IDE"}
                 title={isIdeSandboxTooltipVisible ? undefined : "Open in IDE"}
                 onClick={handleIdeButtonClick}
-                onTooltipDismiss={handleIdeActionButtonTooltipDismiss}
               />
             </div>
           </Tooltip>

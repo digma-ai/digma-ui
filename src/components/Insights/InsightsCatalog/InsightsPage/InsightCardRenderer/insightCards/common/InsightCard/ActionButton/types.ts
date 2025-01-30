@@ -11,5 +11,4 @@ export interface ActionButtonProps {
   onClick: () => void;
   isDisabled?: boolean;
   className?: string;
-  onTooltipDismiss?: () => void;
 }
