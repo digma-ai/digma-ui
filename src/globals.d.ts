@@ -55,6 +55,7 @@ declare global {
     isLoggingEnabled?: unknown;
     areInsightSuggestionsEnabled?: unknown;
     googleClientId?: unknown;
+    isSandboxModeEnabled?: unknown;
   }
 }
 
